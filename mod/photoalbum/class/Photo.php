@@ -328,15 +328,12 @@ class PHPWS_Photo extends PHPWS_Item {
                     $_REQUEST['PHPWS_Photo_op'] = 'edit';
                     $this->action();
                     return;
-                }         
-                if(PHOTOALBUM_RS) {
-                    $resized = PHPWS_File::makeThumbnail($this->_name, $dir, $dir, PHOTOALBUM_RS_WIDTH, PHOTOALBUM_RS_HEIGHT, TRUE);
-                    if(!is_array($resized))
-                      exit('Resizing error');
-                    if(is_file(PHOTOALBUM_DIR . $this->_album . "/" . $resized[0])) {
-                      $this->_width = $resized[1];
-                      $this->_height = $resized[2];
-                    }
+                }
+                if (PHOTOALBUM_RS) {
+                    PHPWS_File::scaleImage($file, $file, PHOTOALBUM_RS_WIDTH, PHOTOALBUM_RS_HEIGHT);
+                    $new_size = getimagesize($file);
+                    $this->_width = $new_size[0];
+                    $this->_height = $new_size[1];
                 }
             } else {
                 $_SESSION['PHPWS_AlbumManager']->message = dgettext('photoalbum', 'There was a problem uploading the specified image.');

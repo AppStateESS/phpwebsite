@@ -1,5 +1,10 @@
 Note: this log is only for work done since the conversion for 1.x
 
+7 November 2007
++ Increased resize width and height for photoalbum
++ Fixed resize functionality
++ Updated : conf/config.php
+
 Version 1.4.2 -- 20 August 2007
 ----------------------------------------------------------------
 16 August 2007
