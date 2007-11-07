@@ -591,7 +591,13 @@ class PHPWS_File {
      */
     function makeThumbnail($fileName, $directory, $tndirectory, $maxWidth=125, $maxHeight=125, $replaceFile=FALSE) {
         $source_dir = $directory . $fileName;
-        return PHPWS_File::scaleImage($source_dir, $tndirectory, $maxWidth, $maxHeight);
+        $new_file   = preg_replace('/\.(jpg|jpeg|gif|png)$/i', '_tn.\\1', $fileName); 
+        $dest_dir   = $tndirectory . $new_file;
+        if (!PHPWS_File::scaleImage($source_dir, $dest_dir, $maxWidth, $maxHeight)) {
+            return false;
+        } else {
+            return array($new_file, $maxWidth, $maxHeight);
+        }
     }
 
     function rmdir($dir) 

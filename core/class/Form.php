@@ -358,9 +358,20 @@ class PHPWS_Form {
         return mktime($hour, $minute, 0, $month, $day, $year);
     }
 
-    function dateSelect($name, $month_format= '%B', $years_past=1, $years_ahead=3)
+    function testDate($name)
+    {
+        $month = @ $_POST[$name . '_month'];
+        $day   = @ $_POST[$name . '_day'];
+        $year  = @ $_POST[$name . '_year'];
+        return checkdate($month, $day, $year);
+    }
+
+    function dateSelect($name, $current_date=0, $month_format= '%B', $years_past=1, $years_ahead=3)
     {
         $allowed_month_formats = array('%b', '%B', '%m');
+        if ($current_date < 1) {
+            $current_date = mktime();
+        }
 
         if (!in_array($month_format, $allowed_month_formats)) {
             $month_format = '%B';
@@ -403,13 +414,30 @@ class PHPWS_Form {
         $am_pm[0] = strftime('%p', mktime(1));
         $am_pm[1] = strftime('%p', mktime(15));
 
-        $this->addSelect(sprintf('%s_year', $name), $years);
-        $this->addSelect(sprintf('%s_month', $name), $months);
-        $this->addSelect(sprintf('%s_day', $name), $days);
-        $this->addSelect(sprintf('%s_12hour', $name), $hours_12);
-        $this->addSelect(sprintf('%s_24hour', $name), $hours_24);
-        $this->addSelect(sprintf('%s_minute', $name), $minutes);
-        $this->addSelect(sprintf('%s_ampm', $name), $am_pm);
+
+        $this->addSelect($name . '_year', $years);
+        $this->setMatch($name . '_year', (int)strftime('%Y', $current_date));
+
+        $this->addSelect($name . '_month', $months);
+        $this->setMatch($name . '_month', (int)strftime('%m', $current_date));
+
+        $this->addSelect($name . '_day', $days);
+        $this->setMatch($name . '_day', (int)strftime('%d', $current_date));
+
+        $this->addSelect($name . '_12hour', $hours_12);
+        $this->setMatch($name . '_12hour', strftime('%I', $current_date));
+
+        $this->addSelect($name . '_24hour', $hours_24);
+        $this->setMatch($name . '_24hour', strftime('%H', $current_date));
+
+        $this->addSelect($name . '_minute', $minutes);
+        $this->setMatch($name . '_minute', strftime('%M', $current_date));
+
+        $am_pm_match = (int)strftime('%H', $current_date) < 12 ? 0 : 1;
+
+        $this->addSelect($name . '_ampm', $am_pm);
+        $this->setMatch($name . '_ampm', $am_pm_match);
+
     }
 
 

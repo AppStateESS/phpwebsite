@@ -807,6 +807,73 @@ array of elements. The 'elements' key contains the input tags. The
 'labels' key contains the labels for those elements.
 
 
+Adding a date form
+-------------------------------------------------
+Manually creating a drop down list of dates and times is a lengthy
+process. The Form class can help you with this process.
+
+
+// The name given to the form element
+$name = 'event_date';
+
+// The date you want the drop downs to match. If set to 0, the current
+// date will be used
+$date = strtotime('5 March 2004');
+
+// The strftime string format you want to use for the date.
+// see http://www.php.net/manual/en/function.strftime.php
+// The default is %B for full month name
+$month_format = '%b'; // Abbrevated month name
+
+// Number of years in the past you want the drop down to display
+$years_past = 2; //default 1
+
+// Number of years in the future you want the drop down to display
+$years_ahead = 10; //default 3
+
+
+$result = $form->dateSelect($name,
+                            $date,
+                            $month_format, 
+                            $years_past,
+                            $years_ahead);
+
+The dateSelect function will create template tags based on your form
+element name. You just need to add them to your template. Using
+event_date as an example, here would be the resulting tags:
+
+{EVENT_DATE_YEAR}
+{EVENT_DATE_MONTH}
+{EVENT_DATE_DAY}
+{EVENT_DATE_12HOUR}
+{EVENT_DATE_24HOUR}
+{EVENT_DATE_MINUTE}
+{EVENT_DATE_AMPM}
+
+Capturing date form
+---------------------------------------------------
+If you want the result from a dateSelect posting, call the
+getPostedDate function with the form element name to receive the unix
+time:
+
+$unix_time = PHPWS_Form::getPostedDate('event_date');
+
+Keep in mind the following:
+
+- 24 hour tag takes precedent over the 12 hour tag.
+- You will need the AMPM tag if using the 12 hour tag.
+- Any tags not posted are assumed to be of the current time. So if the
+  month tag is missing, it will use the current month.
+
+Testing the date
+---------------------------------------------------
+If you want to check the validity of your posted date (e.g. 31
+February), use the testDate function:
+
+if (!PHPWS_Form::testDate('event_date')) {
+   echo 'That date does not exist.';
+}
+
 
 Conclusion
 --------------------------------------------------

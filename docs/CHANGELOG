@@ -2,6 +2,13 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+7 November 2007
++ Fixed makeThumbnail function. Works as intended again.
++ Added testDate function to Form
++ Added match settings to dateSelect function.
++ Updated Forms documentation with dateSelect information.
++ Fixed bad css in default theme.
+
 5 November 2007
 + Added getPostedDate. Returns unix time from last posted dateSelect.
 
