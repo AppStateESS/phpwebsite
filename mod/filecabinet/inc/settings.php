@@ -16,6 +16,6 @@ $settings = array('base_doc_directory'   => PHPWS_HOME_DIR . 'files/filecabinet/
                   'multimedia_thumbnail' => false,
                   'auto_link_parent'     => true,
                   'no_kids'              => false,
-                  'classify_directory'   => PHPWS_HOME_DIR . 'files/filecabinet/incoming/');
-
+                  'classify_directory'   => PHPWS_HOME_DIR . 'files/filecabinet/incoming/',
+                  'crop_threshold'       => 20);
 ?>

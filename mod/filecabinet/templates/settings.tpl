@@ -20,6 +20,8 @@
     {MAX_IMAGE_SIZE}</p>
     <p style="margin-bottom : 1em"><strong>{MAX_PINNED_IMAGES_LABEL}</strong> 
     {MAX_PINNED_IMAGES}</p>
+    <p style="margin-bottom : 1em"><strong>{CROP_THRESHOLD_LABEL}</strong> 
+    {CROP_THRESHOLD}</p>
 </fieldset>
 <fieldset>
     <legend>{MULTIMEDIA_SETTINGS}</legend>

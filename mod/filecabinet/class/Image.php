@@ -34,7 +34,6 @@ if (!defined('FC_MIN_POPUP_SIZE')) {
     define('FC_MIN_POPUP_SIZE', 400);
  }
 
-
 class PHPWS_Image extends File_Common {
     var $width            = NULL;
     var $height           = NULL;
@@ -279,13 +278,22 @@ class PHPWS_Image extends File_Common {
             $new_height = $max_height;
         }
 
-        PHPWS_File::cropImage($this->getPath(), $dst, $new_width, $new_height);
-        return PHPWS_File::scaleImage($dst, $dst, $max_width, $max_height);
+        if ( ($this->width - $new_width) > PHPWS_Settings::get('filecabinet', 'crop_threshold')  && 
+             ($this->width - $new_width) > PHPWS_Settings::get('filecabinet', 'crop_threshold') ) {
+            PHPWS_File::cropImage($this->getPath(), $dst, $new_width, $new_height);
+            return PHPWS_File::scaleImage($dst, $dst, $max_width, $max_height);
+        } else {
+            return PHPWS_File::scaleImage($this->getPath(), $dst, $max_width, $max_height);
+        }
     }
 
     function makeThumbnail()
     {
-        return $this->resize($this->thumbnailPath(), FC_THUMBNAIL_WIDTH, FC_THUMBNAIL_HEIGHT);
+        if ($this->width <= FC_THUMBNAIL_WIDTH && $this->height <= FC_THUMKBNAIL_HEIGHT) {
+            return @copy($this->getPath(), $this->thumbnailPath());
+        } else {
+            return $this->resize($this->thumbnailPath(), FC_THUMBNAIL_WIDTH, FC_THUMBNAIL_HEIGHT);
+        }
     }
 
 

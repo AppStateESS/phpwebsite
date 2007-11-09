@@ -333,6 +333,9 @@ class Cabinet_Form {
         $form->setLabel('max_pinned_documents', dgettext('filecabinet', 'Maximum pinned documents shown (0 for all)'));
         $form->setSize('max_pinned_documents', 3, 3);
 
+        $form->addText('crop_threshold', PHPWS_Settings::get('filecabinet', 'crop_threshold'));
+        $form->setLabel('crop_threshold', dgettext('filecabinet', 'Crop pixel threshold'));
+        $form->setSize('crop_threshold', 4, 4);
 
         $form->addCheck('use_ffmpeg', 1);
         $form->setMatch('use_ffmpeg', PHPWS_Settings::get('filecabinet', 'use_ffmpeg'));

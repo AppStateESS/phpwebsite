@@ -1,3 +1,11 @@
+9 November 2007
++ Added a crop threshold to the cropping function. If the pixel
+  difference between the old image and the new is less than the
+  threshold, the crop will not occur.
++ Images makeThumbnail function will now properly copy the image to
+  the tn directory if it is under the thumbnail size.
++ Updated: templates/settings.tpl
+
 25 October 2007
 + Fixed clear Image link. Wasn't returning clear image to correct
   size.
