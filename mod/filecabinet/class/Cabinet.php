@@ -686,7 +686,7 @@ class Cabinet {
         if ($threshold < 0) {
             PHPWS_Settings::set('filecabinet', 'crop_threshold', 0);
         } else {
-            PHPWS_Settings::set('filecabinet', 'crop_threshold', & $threshold);
+            PHPWS_Settings::set('filecabinet', 'crop_threshold', $threshold);
         }
 
         if (empty($_POST['max_pinned_documents'])) {
