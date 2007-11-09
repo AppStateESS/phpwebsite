@@ -1,3 +1,6 @@
+9 November 2007
++ Forgot password will work if CAPTCHA is disabled.
+
 29 October 2007
 + Using new savePermissions function instead of save.
 

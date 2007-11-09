@@ -786,12 +786,16 @@ class User_Action {
 
         case 'post_forgot':
             $title = dgettext('users', 'Forgot Password');
-            PHPWS_Core::initCoreClass('Captcha.php');
-            if (!Captcha::verify($_POST['captcha'])) {
-                $content = dgettext('users', 'Captcha information was incorrect.');
-                $content .= User_Form::forgotForm();
-            } else if (!User_Action::postForgot($content)) {
-                $content .= User_Form::forgotForm();
+            if (ALLOW_CAPTCHA) {
+                PHPWS_Core::initCoreClass('Captcha.php');
+                if (!Captcha::verify($_POST['captcha'])) {
+                    $content = dgettext('users', 'Captcha information was incorrect.');
+                    $content .= User_Form::forgotForm();
+                } else if (!User_Action::postForgot($content)) {
+                    $content .= User_Form::forgotForm();
+                }
+            } elseif (!User_Action::postForgot($content)) {
+                    $content .= User_Form::forgotForm();
             }
 
             break;

@@ -1031,13 +1031,16 @@ class User_Form {
         $form->setSize('fg_email', 40);
         $form->setLabel('fg_email', dgettext('users', 'Forgotten your user name? Enter your email address instead.'));
 
-        $form->addText('captcha');
-        $form->setLabel('captcha', dgettext('users', 'Enter the word from the image above.'));
+        if (ALLOW_CAPTCHA) {
+            $captcha = Captcha::get();
+            $form->addText('captcha');
+            $form->setLabel('captcha', dgettext('users', 'Enter the word from the image above.'));
+            $form->addTplTag('CAPTCHA_IMAGE', $captcha);
+        }
 
         $form->addSubmit(dgettext('users', 'Send reminder'));
 
         $tpl = $form->getTemplate();
-        $tpl['CAPTCHA_IMAGE'] = Captcha::get();
 
         return PHPWS_Template::process($tpl, 'users', 'forms/forgot.tpl');
     }
