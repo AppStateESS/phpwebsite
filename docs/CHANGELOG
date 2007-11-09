@@ -2,6 +2,11 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+9 November 2007
++ Added sanity check to scaleImage. If width and height of image is
+  less than the resize only copy if the source and destination
+  directories are different.
+
 7 November 2007
 + Fixed makeThumbnail function. Works as intended again.
 + Added testDate function to Form

@@ -544,8 +544,12 @@ class PHPWS_File {
         $height    = & $size[1];
         $file_type = & $size['mime'];
 
-        if ($width < $max_width && $height < $max_height) {
-            return @copy($source_dir, $dest_dir);
+        if ($width <= $max_width && $height <= $max_height) {
+            if ($source_dir != $dest_dir) {
+                return @copy($source_dir, $dest_dir);
+            } else {
+                return true;
+            }
         }
 
         if ($width > $height) {
