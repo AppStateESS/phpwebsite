@@ -82,6 +82,7 @@ div.fc-icon {
    height : 150px;
 }
 
+
 div.fc-files {
    overflow : hidden;            
 }
@@ -91,10 +92,29 @@ padding :8px;
 }
 
 ul#image-folders li {
-list-style-type : none;
-text-align : center;
-line-height : 1em;
-margin-bottom : 1em;
+   list-style-type : none;
+   text-align : center;
+   line-height : 1em;
+   margin-bottom : 1em;
+}
+
+ul#image-list li {
+   display : inline;
+   list-style-type : none;
+   float : left;
+   margin : 10px;
+   padding : 2px 3px 1px 3px;
+}
+
+ul#image-list li a.image-link {
+   display : block;
+   width : 100px;
+   height : 100px;
+   text-align : center;
+}
+
+ul#image-list li a.image-link:hover {
+   background-color : #e7e7e7;
 }
 
 
@@ -144,18 +164,12 @@ left : 500px;
 top : 552px;
 }
 
-ul#image-list li {
-display : inline;
-list-style-type : none;
-float : left;
-margin : 10px;
-padding : 2px 3px 1px 3px;
-}
 
 ul#image-list li p.dimensions {
 text-align : center;
 font-size : .9em;
 margin : 0px;
+line-height : 1em;
 }
 
 li.image-select {

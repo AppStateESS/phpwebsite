@@ -82,7 +82,7 @@ class FC_Image_Manager {
         } else {
             if ($folder->loadFiles()) {
                 $js_vars['itemname']  = $this->itemname;
-                
+
                 foreach ($folder->_files as $image) {
                     if (!$image->parent_id || $image->id == $image_id) {
                         $tpl['DISPLAY'] = 'inline';
@@ -103,11 +103,11 @@ class FC_Image_Manager {
                     $image_url = $image->getPath();
 
                     if ( ($this->max_width < $image->width) || ($this->max_height < $image->height) ) {
-                        $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="oversized(%s, \'%s\', \'%s\', %s, %s); return false">%s</a>',
+                        $tpl['THUMBNAIL'] = sprintf('<a href="#" class="image-link" onclick="oversized(%s, \'%s\', \'%s\', %s, %s); return false">%s</a>',
                                                     $image->id, $image_url, addslashes($image->title), $image->width, $image->height, $image->getThumbnail());
                     } else {
 
-                        $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="pick_image(%s, \'%s\', \'%s\', %s, %s); return false">%s</a>',
+                        $tpl['THUMBNAIL'] = sprintf('<a href="#" class="image-link" onclick="pick_image(%s, \'%s\', \'%s\', %s, %s); return false">%s</a>',
                                                     $image->id, $image_url, addslashes($image->title), $image->width, $image->height, $image->getThumbnail());
                     }
 

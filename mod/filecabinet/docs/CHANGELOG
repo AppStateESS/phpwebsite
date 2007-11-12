@@ -1,3 +1,8 @@
+12 November 2007
++ Added image height limits to standardize the image manager selection
+screen.
++ Updated: templates/style.css
+
 9 November 2007
 + Added a crop threshold to the cropping function. If the pixel
   difference between the old image and the new is less than the
