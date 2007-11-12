@@ -298,53 +298,55 @@ class Blog_Admin {
 
     function postSettings()
     {
-        if (isset($_POST['allow_comments'])) {
-            PHPWS_Settings::set('blog', 'allow_comments', 1);
-        } else {
-            PHPWS_Settings::set('blog', 'allow_comments', 0);
-        }
-
-        if (isset($_POST['anonymous_comments'])) {
-            PHPWS_Settings::set('blog', 'anonymous_comments', 1);
-        } else {
-            PHPWS_Settings::set('blog', 'anonymous_comments', 0);
-        }
-
-        if (isset($_POST['cache_view'])) {
-            PHPWS_Settings::set('blog', 'cache_view', 1);
-        } else {
-            PHPWS_Settings::set('blog', 'cache_view', 0);
-        }
-
-        if (isset($_POST['captcha_submissions'])) {
-            PHPWS_Settings::set('blog', 'captcha_submissions', 1);
-        } else {
-            PHPWS_Settings::set('blog', 'captcha_submissions', 0);
-        }
-
-        if (isset($_POST['home_page_display'])) {
-            PHPWS_Settings::set('blog', 'home_page_display', 1);
-        } else {
-            PHPWS_Settings::set('blog', 'home_page_display', 0);
-        }
-
         if (isset($_POST['show_recent'])) {
             PHPWS_Settings::set('blog', 'show_recent', $_POST['show_recent']);
         }
 
-        if (isset($_POST['allow_anonymous_submits'])) {
-            PHPWS_Settings::set('blog', 'allow_anonymous_submits', 1);
-        } else {
+
+        isset($_POST['allow_comments']) ?
+            PHPWS_Settings::set('blog', 'allow_comments', 1) :
+            PHPWS_Settings::set('blog', 'allow_comments', 0);
+
+
+        isset($_POST['anonymous_comments']) ?
+            PHPWS_Settings::set('blog', 'anonymous_comments', 1) :
+            PHPWS_Settings::set('blog', 'anonymous_comments', 0);
+
+        isset($_POST['cache_view']) ?
+            PHPWS_Settings::set('blog', 'cache_view', 1) :
+            PHPWS_Settings::set('blog', 'cache_view', 0);
+
+        isset($_POST['captcha_submissions']) ?
+            PHPWS_Settings::set('blog', 'captcha_submissions', 1) :
+            PHPWS_Settings::set('blog', 'captcha_submissions', 0);
+
+        isset($_POST['home_page_display']) ?
+            PHPWS_Settings::set('blog', 'home_page_display', 1) :
+            PHPWS_Settings::set('blog', 'home_page_display', 0);
+
+        isset($_POST['allow_anonymous_submits']) ?
+            PHPWS_Settings::set('blog', 'allow_anonymous_submits', 1) :
             PHPWS_Settings::set('blog', 'allow_anonymous_submits', 0);
-        }
+
+        isset($_POST['show_category_icons']) ? 
+            PHPWS_Settings::set('blog', 'show_category_icons', 1) :
+            PHPWS_Settings::set('blog', 'show_category_icons', 0);
+
+        isset($_POST['show_category_links']) ? 
+            PHPWS_Settings::set('blog', 'show_category_links', 1) :
+            PHPWS_Settings::set('blog', 'show_category_links', 0);
+
+        isset($_POST['single_cat_icon']) ? 
+            PHPWS_Settings::set('blog', 'single_cat_icon', 1) :
+            PHPWS_Settings::set('blog', 'single_cat_icon', 0);
+            
+            
 
         if (isset($_POST['simple_image'])) {
             PHPWS_Settings::set('blog', 'simple_image', 1);
-            if (isset($_POST['mod_folders_only'])) {
-                PHPWS_Settings::set('blog', 'mod_folders_only', 1);
-            } else {
+            isset($_POST['mod_folders_only']) ?
+                PHPWS_Settings::set('blog', 'mod_folders_only', 1) :
                 PHPWS_Settings::set('blog', 'mod_folders_only', 0);
-            }
 
             if ( !empty($_POST['max_width']) ) {
                 $max_width = (int)$_POST['max_width'];

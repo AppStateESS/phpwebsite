@@ -1,60 +1,43 @@
 {START_FORM}
-<table class="form-table" cellpadding="6">
-   <tr>
-      <td>{CACHE_VIEW_LABEL}<br /><span class="smaller">{RESET_CACHE}</span>
-      </td>
-      <td>{CACHE_VIEW}
-      </td>
-   </tr>
-   <tr>
-      <td>{BLOG_LIMIT_LABEL}
-      </td>
-      <td>{BLOG_LIMIT}
-      </td>
-   </tr>
-   <tr>
-      <td>{PAST_ENTRIES_LABEL}<br /><span class="smaller">{PAST_NOTE}</span>
-      </td>
-      <td>{PAST_ENTRIES}
-      </td>
-   </tr>
-   <tr>
-      <td>{ALLOW_ANONYMOUS_SUBMITS_LABEL}<br /><span class="smaller">{MENU_LINK}</span>
-      </td>
-      <td>{ALLOW_ANONYMOUS_SUBMITS}
-      </td>
-   </tr>
-   <tr>
-      <td>{CAPTCHA_SUBMISSIONS_LABEL}</td>
-      <td>{CAPTCHA_SUBMISSIONS}
-      </td>
-   </tr>
-   <tr>
-      <td>{ALLOW_COMMENTS_LABEL}
-      </td>
-      <td>{ALLOW_COMMENTS}
-      </td>
-   </tr>
-   <tr>
-      <td>{ANONYMOUS_COMMENTS_LABEL}
-      </td>
-      <td>{ANONYMOUS_COMMENTS}
-      </td>
-   </tr>
-   <tr>
-      <td>{HOME_PAGE_DISPLAY_LABEL}
-      </td>
-      <td>{HOME_PAGE_DISPLAY}
-      </td>
-   </tr>
-   <tr>
-      <td>{SHOW_RECENT_LABEL}
-      </td>
-      <td>{SHOW_RECENT}
-      </td>
-   </tr>
-</table>
-<fieldset><legend>{SIMPLE_IMAGE} {SIMPLE_IMAGE_LABEL}</legend>
+
+<fieldset><legend><strong>{VIEW_LABEL}</strong></legend>
+<p>{CACHE_VIEW} {CACHE_VIEW_LABEL} <span class="smaller">({RESET_CACHE})</span></p>
+
+<p> {HOME_PAGE_DISPLAY} {HOME_PAGE_DISPLAY_LABEL}</p>
+
+
+<p>{BLOG_LIMIT_LABEL} {BLOG_LIMIT}</p>
+
+<p>{PAST_ENTRIES_LABEL} {PAST_ENTRIES}<br />
+<span class="smaller">{PAST_NOTE}</span>
+</p>
+
+<p>{SHOW_RECENT_LABEL}
+{SHOW_RECENT}
+</p>
+
+</fieldset>
+
+<fieldset><legend><strong>{CATEGORY_LABEL}</strong></legend>
+<p>{SHOW_CATEGORY_LINKS} {SHOW_CATEGORY_LINKS_LABEL}</p>
+<p>{SHOW_CATEGORY_ICONS} {SHOW_CATEGORY_ICONS_LABEL}<br />
+<span class="smaller" style="margin-left : 2em;">{SINGLE_CAT_ICON} {SINGLE_CAT_ICON_LABEL}</span></p>
+</fieldset>
+
+
+<fieldset><legend><strong>{COMMENT_LABEL}</strong></legend>
+<p>{ALLOW_ANONYMOUS_SUBMITS} {ALLOW_ANONYMOUS_SUBMITS_LABEL}
+<!-- BEGIN menu-link --><br /><span class="smaller">{MENU_LINK}</span><!-- END menu-link -->
+</p>
+
+<p>{CAPTCHA_SUBMISSIONS} {CAPTCHA_SUBMISSIONS_LABEL}</p>
+
+<p>{ALLOW_COMMENTS} {ALLOW_COMMENTS_LABEL}</p>
+
+<p>{ANONYMOUS_COMMENTS} {ANONYMOUS_COMMENTS_LABEL}</p>
+</fieldset>
+
+<fieldset><legend><strong>{SIMPLE_IMAGE} {SIMPLE_IMAGE_LABEL}</strong></legend>
 <p>{MOD_FOLDERS_ONLY} {MOD_FOLDERS_ONLY_LABEL}</p>
 <p>{MAX_WIDTH_LABEL} {MAX_WIDTH}</p>
 <p>{MAX_HEIGHT_LABEL} {MAX_HEIGHT}</p>

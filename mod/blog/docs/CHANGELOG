@@ -1,3 +1,11 @@
+12 November 2007
++ Blog entries now show category icons.
++ Restructured admin settings page.
++ Added style.css to help with category icons
++ Requires Categories 2.2.0
++ Updated: templates/settings.tpl, templates/style.css,
+           templates/view.tpl
+
 26 October 2007
 + Fixed typo in edit blog form.
 

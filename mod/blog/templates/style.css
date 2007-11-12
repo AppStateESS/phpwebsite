@@ -1,0 +1,12 @@
+ul.blog-category-icons {
+   margin : 0;
+   padding : 0;
+}
+
+ul.blog-category-icons li {
+   display : inline;
+   margin : 0;
+   margin-right : 10px;
+   padding : 0;
+   list-style : none;
+}

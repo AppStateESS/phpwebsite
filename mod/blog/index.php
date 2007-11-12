@@ -20,10 +20,13 @@ if (isset($_GET['xmlrpc']))
 }
 
 
-if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'admin' &&
-    Current_User::allow('blog')) {
-    PHPWS_Core::initModClass('blog', 'Blog_Admin.php');
-    Blog_Admin::main();
+if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'admin') {
+    if (Current_User::allow('blog')) {
+        PHPWS_Core::initModClass('blog', 'Blog_Admin.php');
+        Blog_Admin::main();
+    } else {
+        Current_User::disallow();
+    }
 } else {
     Blog_User::main();
 }

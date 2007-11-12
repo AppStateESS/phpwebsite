@@ -32,6 +32,7 @@ class Blog_User {
 
         switch ($action) {
         case 'view_comments':
+            Layout::addStyle('blog');
             Layout::addPageTitle($blog->title);
             $content = $blog->view(TRUE, FALSE);
             break;
@@ -167,6 +168,7 @@ class Blog_User {
 
     function show()
     {
+        Layout::addStyle('blog');
         $total_entries = Blog_User::totalEntries();
 
         $limit = PHPWS_Settings::get('blog', 'blog_limit');

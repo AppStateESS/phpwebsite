@@ -19,5 +19,8 @@ $settings['captcha_submissions']     = 1;
 $settings['show_recent']             = 1;
 $settings['obey_publish']            = 0;
 $settings['mod_folders_only']        = 0;
+$settings['show_category_links']     = false;
+$settings['single_cat_icon']         = true;
+$settings['show_category_icons']     = true;
 
 ?>

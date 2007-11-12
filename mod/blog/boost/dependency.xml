@@ -13,6 +13,12 @@
     <url>http://phpwebsite.appstate.edu/downloads/modules/filecabinet/</url>
   </module>
   <module>
+    <title>categories</title>
+    <properName>Categories</properName>
+    <version>2.2.0</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/categories/</url>
+  </module>
+  <module>
     <title>comments</title>
     <properName>Comments</properName>
     <version>0.6.1</version>
