@@ -670,7 +670,7 @@ class PHPWS_User {
         if (PEAR::isError($result)) {
             return $result;
         } elseif (!isset($result)) {
-            return PHPWS_Error::get(USER_ERR_MISSING_GROUP, 'users', 'getUserGroup');
+            return PHPWS_Error::get(USER_ERR_MISSING_GROUP, 'users', 'getUserGroup', $this->getId());
         } else {
             return $result;
         }

@@ -1,5 +1,9 @@
+12 November 2007
++ Error for missing user groups now reports user id.
+
 9 November 2007
 + Forgot password will work if CAPTCHA is disabled.
++ Updated: templates/forms/forgot.tpl
 
 29 October 2007
 + Using new savePermissions function instead of save.
