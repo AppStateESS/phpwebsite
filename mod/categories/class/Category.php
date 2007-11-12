@@ -159,15 +159,19 @@ class Category{
         return $db->delete();
     }
 
-    function getViewLink($module=NULL)
+    function getViewLink($module=NULL, $label=null)
     {
+        if (empty($label)) {
+            $label = & $this->title;
+        }
+
         if (isset($module)) {
             $vars['action']  = 'view';
             $vars['id']      = $this->id;
             $vars['ref_mod'] = $module;
-            return PHPWS_Text::moduleLink($this->title, 'categories', $vars);
+            return PHPWS_Text::moduleLink($label, 'categories', $vars);
         } else {
-            return PHPWS_Text::rewriteLink($this->title, 'categories', $this->id);
+            return PHPWS_Text::rewriteLink($label, 'categories', $this->id);
         }
     }
 

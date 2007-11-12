@@ -203,22 +203,7 @@ class Categories{
     function getSimpleLinks($key=NULL, $show_uncategorized=FALSE)
     {
         $link = NULL;
-        if (empty($key)) {
-            $key = Key::getCurrent();
-        } elseif (is_numeric($key)) {
-            $key = new Key($key);
-        }
-
-        if (!Key::checkKey($key, FALSE)) {
-            return NULL;
-        }
-
-        $cat_result = Categories::_getItemsCategories($key);
-
-        if (empty($cat_result)) {
-            return NULL;
-        }
-
+        $cat_result = Categories::catList($key);
         foreach ($cat_result as $cat){
             if (!$cat->id && !$show_uncategorized) {
                 continue;
@@ -227,6 +212,42 @@ class Categories{
         }
 
         return $link;
+    }
+
+    function catList($key)
+    {
+        if (empty($key)) {
+            $key = Key::getCurrent();
+        } elseif (is_numeric($key)) {
+            $key = new Key($key);
+        }
+        
+        if (!Key::checkKey($key, FALSE)) {
+            return NULL;
+        }
+        
+        $cat_result = Categories::_getItemsCategories($key);
+        
+        if (empty($cat_result)) {
+            return NULL;
+        } else {
+            return $cat_result;
+        }
+    }
+
+    function getIcons($key=null)
+    {
+        $cat_result = Categories::catList($key);
+        foreach ($cat_result as $cat){
+            if (!$cat->id) {
+                continue;
+            }
+            $image = $cat->getIcon();
+            if ($image->id) {
+                $icons[] = $cat->getViewLink(null, $image->getTag());
+            }
+        }
+        return $icons;
     }
 
     function _createExtendedLink($category, $mode)

@@ -8,30 +8,29 @@ div#cookie-menu ul li {
    position : relative;
    display : inline;
    float : left;
-   margin-right : 5px;
-   background-color : white;
-}
-
-div#cookie-menu ul li {
-   border : 1px black solid;
+   margin-right : 3px;
 }
 
 
 div#cookie-menu ul li a {
+   width : 100px;
    height : 25px;
    font-size : 13px;
    display : block;
    padding : 0px 5px 0px 5px;
    text-decoration : none;
+   background-color : white;
+   border : 1px solid black;
 }
 
 div#cookie-menu ul li ul li {
    display : none;
    position : absolute;
-   top : 25px;
+   top : 28px;
    left : 0px;
 }
 
 div#cookie-menu ul li:hover ul li {
    display : block;
 }
+
