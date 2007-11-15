@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+15 November 2007
++ Added ability to reference table names.
++ DBPager can now order by joined columns.
++ Removed construct by reference calls in Key.
++ Updated Database_Class.txt with table reference information.
+
 9 November 2007
 + Added sanity check to scaleImage. If width and height of image is
   less than the resize only copy if the source and destination

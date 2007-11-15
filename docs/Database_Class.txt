@@ -219,10 +219,6 @@ $db->addWhere('firstname', 'Ted');
 $db->addWhere('table2.age', '30', '>');
 $db->addWhere('table2.id', 'table1.id');
 
-// You can also use addJoinWhere if there is a problem
-// with the Database class detecting the value in the above
-
-
 $result = $db->select();
 
 This is the equivalent of:
@@ -250,6 +246,58 @@ WHERE ( table1.firstname = 'Ted' AND
 
 Use 'table2.*' to get all the column results.
 
+
+If you need to join the results of two columns to one table, you can
+reference a table with a new name.
+
+For example:
+
+table1
+ownername | pet_id_1  | pet_id_2
+---------------------------------
+  matt    |     2     |    1
+
+table2
+  id    |   title
+---------------------
+   1    | Cat
+   2    | Dog
+
+I want the ownername plus the pet type joined from each column.
+
+First I create a database object:
+
+$db = new PHPWS_DB('table1');
+
+Next I add two tables with the second parameter naming the table
+reference.
+Note: you MUST add/name the tables before accessing them in column or
+where
+
+$db->addTable('table2', 'pet1');
+$db->addTable('table2', 'pet2');
+
+Now, using the new table names, I grab columns I want to see
+$db->addColumn('table1.ownername');
+
+I need to give the next two different names so I don't get two 'title'
+columns.
+
+$db->addColumn('pet1.title', null, 'first_pet');
+$db->addColumn('pet2.title', null, 'second_pet');
+
+Now I can use the join elements of where:
+
+$db->addWhere('table1.pet_id_1', 'pet1.id');
+$db->addWhere('table1.pet_id_2', 'pet2.id');
+
+$result = $db->select();
+
+The result should be:
+
+ownername  |   first_pet  | second_pet 
+--------------------------------------
+matt       |     Dog      |    Cat
 
 
 Ordering

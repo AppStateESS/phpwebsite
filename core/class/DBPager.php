@@ -140,6 +140,10 @@ class DBPager {
 
     var $anchor = null;
 
+    var $sub_result = array();
+
+    var $sub_order = array();
+
     function DBPager($table, $class=NULL)
     {
         if (empty($table)) {
@@ -209,6 +213,20 @@ class DBPager {
         } elseif (isset($_REQUEST['pager_search'])) {
             $this->search = preg_replace('/\W/', '', $_REQUEST['pager_search']);
         }
+    }
+
+    function joinResult($source_column, $join_table, $join_column, $content_column, $new_name)
+    {
+        static $index = 1;
+
+        $this->sub_result['dbp' . $index] = array('sc' => $source_column,
+                                                  'jt' => $join_table,
+                                                  'jc' => $join_column,
+                                                  'cc' => $content_column,
+                                                  'nn' => $new_name);
+        $this->sub_order[$new_name] = array('dbp' . $index, $content_column);
+        $this->table_columns[] = $new_name;
+        $index++;
     }
 
     function loadLink()
@@ -508,13 +526,28 @@ class DBPager {
         }
 
         if (isset($this->orderby)) {
-            $this->db->addOrder($this->orderby . ' ' . $this->orderby_dir);
+            $sub_order = @$this->sub_order[$this->orderby];
+            if (!empty($sub_order)) {
+                $orderby = implode('.', $sub_order);
+            } else {
+                $orderby = $this->orderby;
+            }
+            $this->db->addOrder($orderby . ' ' . $this->orderby_dir);
         } elseif (isset($this->default_order)) {
             $this->db->addOrder($this->default_order . ' ' . $this->default_order_dir);
         }
 
         if (!$load_rows) {
             return true;
+        }
+
+        if (!empty($this->sub_result)) {
+            $this->db->addColumn('*');
+            foreach ($this->sub_result as $sub_table => $sub) {
+                $this->db->addTable($sub['jt'], $sub_table);
+                $this->db->addWhere($sub['sc'], $sub_table . '.' . $sub['jc']);
+                $this->db->addColumn($sub_table . '.' . $sub['cc'], null, $sub['nn']);
+            }
         }
 
         if (empty($this->class)) {
@@ -657,7 +690,8 @@ class DBPager {
         if (empty($this->table_columns)) {
             return NULL;
         }
-        foreach ($this->table_columns as $varname){
+
+        foreach ($this->table_columns as $varname) {
             $vars = array();
             $values = $this->getLinkValues();
             $buttonname = str_replace('.', '_', $varname) . '_SORT';
@@ -936,7 +970,6 @@ class DBPager {
      */
     function get($return_blank_results=TRUE)
     {
-        
         $template = array();
 
         if (empty($this->display_rows)) {
@@ -1003,7 +1036,7 @@ class DBPager {
 
         DBPager::plugPageTags($template);
         $this->final_template = &$template;
-        
+
         return PHPWS_Template::process($template, $this->module, $this->template);
     }
 

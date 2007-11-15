@@ -58,6 +58,7 @@ class PHPWS_DB {
     var $_test_mode  = false;
     var $_join       = null;
     var $_join_tables = null;
+    var $table_as     = array();
 
 
     function PHPWS_DB($table=null)
@@ -363,7 +364,7 @@ class PHPWS_DB {
                                       'join_on_2' => $join_on_2);
     }
 
-    function addTable($table)
+    function addTable($table, $as=null)
     {
         if (is_array($table)) {
             foreach ($table as $tbl_name) {
@@ -372,7 +373,9 @@ class PHPWS_DB {
             return;
         }
         if (PHPWS_DB::allowed($table)) {
-            if (empty($this->tables) || !in_array($table, $this->tables)) {
+            if ($as) {
+                $this->table_as[$as] = $table;
+            } elseif (empty($this->tables) || !in_array($table, $this->tables)) {
                 $this->tables[] = $table;
             }
         } else {
@@ -453,6 +456,14 @@ class PHPWS_DB {
                 $join_on = 'ON ' . $result;
             }
 
+            if (isset($this->table_as[$join_to])) {
+                $join_to = sprintf('%s as %s', $this->table_as[$join_to], $join_to);
+            }
+
+            if (isset($this->table_as[$join_from])) {
+                $join_from = sprintf('%s as %s', $this->table_as[$join_from], $join_from);
+            }
+
             if (in_array($join_from, $join_info['tables'])) {
                 $allJoin[] = sprintf('%s %s %s',
                                      strtoupper($join_type) . ' JOIN',
@@ -492,11 +503,16 @@ class PHPWS_DB {
                 if ($join_info && in_array($table, $join_info['tables'])) {
                     continue;
                 }
+
                 $table_list[] = $table;
             }
 
             if ($join_info) {
                 $table_list[] = $join_info['join'];
+            } elseif (!empty($this->table_as)) {
+                foreach ($this->table_as as $sub => $table) {
+                    $table_list[] = sprintf('%s as %s', $table, $sub);
+                }
             }
             return implode(',', $table_list);
         } else {
@@ -639,7 +655,9 @@ class PHPWS_DB {
 	if (is_string($value)) {
             if (substr_count($value, '.') == 1) {
                 list($join_table, $join_column) = explode('.', $value);
-                if (PHPWS_DB::inDatabase($join_table, $join_column)) {
+                if (isset($this->table_as[$join_table])) {
+                    $where->setJoin(true);
+                } elseif ($this->inDatabase($join_table, $join_column)) {
                     $where->setJoin(true);
                     $this->addTable($join_table);
                 }
@@ -658,6 +676,7 @@ class PHPWS_DB {
         }
 
     }
+
 
     function checkOperator($operator)
     {
@@ -822,7 +841,9 @@ class PHPWS_DB {
         $table = $this->tables[0];
         if (strpos($column, '.')) {
             list($table, $column) = explode('.', $column);
-            $this->addTable($table);
+            if (!isset($this->table_as[$table])) {
+                $this->addTable($table);
+            }
         }
 
         if (!empty($as)) {

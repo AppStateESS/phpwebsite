@@ -138,7 +138,7 @@ class Key {
 
     function loadViewGroups()
     {
-        $db = & new PHPWS_DB('phpws_key_view');
+        $db = new PHPWS_DB('phpws_key_view');
         $db->addWhere('key_id', $this->id);
         $db->addColumn('group_id');
         $result = $db->select('col');
@@ -160,7 +160,7 @@ class Key {
 
     function loadEditGroups()
     {
-        $db = & new PHPWS_DB('phpws_key_edit');
+        $db = new PHPWS_DB('phpws_key_edit');
         $db->addWhere('key_id', $this->id);
         $db->addColumn('group_id');
         $result = $db->select('col');
@@ -222,7 +222,7 @@ class Key {
 
     function init()
     {
-        $db = & new PHPWS_DB('phpws_key');
+        $db = new PHPWS_DB('phpws_key');
 
         $result = $db->loadObject($this);
 
@@ -404,7 +404,7 @@ class Key {
     function &getHomeKey()
     {
         if (!isset($GLOBALS['Home_Key'])) {
-            $key = & new Key;
+            $key = new Key;
             $key->id = 0;
             $key->module = $key->item_name = 'home';
             $key->item_id = 0;
@@ -427,7 +427,7 @@ class Key {
 
     function drop($key_id)
     {
-        $key = & new Key($key_id);
+        $key = new Key($key_id);
         return $key->delete();
     }
 
@@ -451,7 +451,7 @@ class Key {
     function delete()
     {
         $all_is_well = true;
-        $db = & new PHPWS_DB('phpws_key');
+        $db = new PHPWS_DB('phpws_key');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
 
@@ -648,7 +648,7 @@ class Key {
 
     function modulesInUse()
     {
-        $db = & new PHPWS_DB('phpws_key');
+        $db = new PHPWS_DB('phpws_key');
         $db->addColumn('module');
         $db->addColumn('modules.proper_name');
         $db->addWhere('module', 'modules.title');
@@ -670,7 +670,7 @@ class Key {
         }
 
         $_SESSION['Key_Views'][] = $this->id;
-        $db = & new PHPWS_DB('phpws_key');
+        $db = new PHPWS_DB('phpws_key');
         $db->addWhere('id', $this->id);
         return $db->incrementColumn('times_viewed');
     }
@@ -729,7 +729,7 @@ class Key {
     function unregister()
     {
         $success = true;
-        $db = & new PHPWS_DB('phpws_key_register');
+        $db = new PHPWS_DB('phpws_key_register');
         $db->addColumn('module');
         $result = $db->select('col');
         if (empty($result)) {
@@ -763,7 +763,7 @@ class Key {
 
     function registerModule($module)
     {
-        $db = & new PHPWS_DB('phpws_key_register');
+        $db = new PHPWS_DB('phpws_key_register');
         $db->addValue('module', $module);
         return $db->insert();
     }
@@ -780,7 +780,7 @@ class Key {
     {
         $error_free = true;
 
-        $db1 = & new PHPWS_DB('phpws_key');
+        $db1 = new PHPWS_DB('phpws_key');
         $db1->addWhere('module', $module);
         $result = $db1->getObjects('Key');
         if (PEAR::isError($result)) {
@@ -796,7 +796,7 @@ class Key {
             }
         }
 
-        $db2 = & new PHPWS_DB('phpws_key_register');
+        $db2 = new PHPWS_DB('phpws_key_register');
         $db2->addWhere('module', $module);
         $result = $db2->delete();
         if (PEAR::isError($result)) {
@@ -808,7 +808,7 @@ class Key {
 
     function getAllIds($module)
     {
-        $db = & new PHPWS_DB('phpws_key');
+        $db = new PHPWS_DB('phpws_key');
         $db->addColumn('id');
         $db->addWhere('module', $module);
         return $db->select('col');
