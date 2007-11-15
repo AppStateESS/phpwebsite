@@ -118,7 +118,7 @@ class Category{
      * Returns the icon as an image object
      */
 
-    function &getIcon()
+    function getIcon()
     {
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         return new PHPWS_Image($this->icon);
