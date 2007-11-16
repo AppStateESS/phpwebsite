@@ -138,6 +138,12 @@ class pgsql_PHPWS_SQL {
         return 'ILIKE';
     }
 
+    function getRegexp()
+    {
+        return '~';
+    }
+
+
     /**
      * Postgres doesn't accept "after" or "before"
      */

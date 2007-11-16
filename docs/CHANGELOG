@@ -2,6 +2,16 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+16 November 2007
++ Database
+  o AddWhere needed a little fix for the source column to use table as.
+  o Added '~' and 'RLIKE' to allowed operators.
+  o mysql and psql sub classes now handle regular expression calls
+    properly.
++ DBPager
+  o Can now search columns on joined tables entered with joinResult.
+
+
 15 November 2007
 + Added ability to reference table names.
 + DBPager can now order by joined columns.

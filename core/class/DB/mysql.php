@@ -111,6 +111,11 @@ class mysql_PHPWS_SQL {
         return 'LIKE';
     }
 
+    function getRegexp()
+    {
+        return 'REGEXP';
+    }
+
     function addColumn($table, $column, $parameter, $after=null)
     {
         if (!empty($after)) {

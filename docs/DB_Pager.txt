@@ -358,6 +358,44 @@ row. Make sure that if you are using item classes with the pager that
 you create a variable to hold the extra column.
 
 
+Advanced Joins
+--------------------------------------------------------------------
+If you want the results of a join to appear in your page, you can use
+the joinResult function.
+
+There are several parameters in this function:
+
+source_column
+This column matches the id from the joined table. In the previous
+example, category_id would be the source_column.
+
+join_table
+The table we want to join to. Again, using the above, category_table
+would be the join_table.
+
+join_column
+The column to join the source_column to (e.g. "id").
+
+content_column
+The result we want returned. In category_table it could be the "title"
+column.
+
+new_name
+If you don't want result under the join_column name, give it a
+substitute.
+
+Example:
+
+$pager->joinResult('category_id', 'category_table', 'id', 'title',
+                   'category_title');
+
+DBPager will also create a SORT tag for the new column.
+
+One last thing, if you are using objects with you DB_Pager
+implementation, you MUST create a variable your object. In this case I
+would need $object->category_title to exist.
+
+
 Conclusion
 --------------------------------------------------------------------
 I hope you find the DB Pager class useful. If you have questions,

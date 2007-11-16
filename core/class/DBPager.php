@@ -144,6 +144,8 @@ class DBPager {
 
     var $sub_order = array();
 
+    var $sub_search = false;
+
     function DBPager($table, $class=NULL)
     {
         if (empty($table)) {
@@ -205,28 +207,41 @@ class DBPager {
 
         if (isset($_REQUEST['pager_c_search'])) {
             if (!empty($_REQUEST['pager_c_search'])) {
-                $this->search = preg_replace('/\W/', '', $_REQUEST['pager_c_search']);
+                $this->loadSearch($_REQUEST['pager_c_search']);
                 $this->current_page = 1;
             } else {
                 $this->search = NULL;
             }
         } elseif (isset($_REQUEST['pager_search'])) {
-            $this->search = preg_replace('/\W/', '', $_REQUEST['pager_search']);
+            $this->loadSearch($_REQUEST['pager_search']);
         }
     }
 
-    function joinResult($source_column, $join_table, $join_column, $content_column, $new_name)
+    function joinResult($source_column, $join_table, $join_column, $content_column, $new_name=null, $searchable=false)
     {
         static $index = 1;
+
+        if ($searchable) {
+            $this->sub_search = true;
+        }
 
         $this->sub_result['dbp' . $index] = array('sc' => $source_column,
                                                   'jt' => $join_table,
                                                   'jc' => $join_column,
                                                   'cc' => $content_column,
-                                                  'nn' => $new_name);
+                                                  'nn' => $new_name,
+                                                  'srch' => (bool)$searchable);
+
         $this->sub_order[$new_name] = array('dbp' . $index, $content_column);
         $this->table_columns[] = $new_name;
         $index++;
+    }
+
+    function loadSearch($search)
+    {
+        $search = preg_replace('/[^\w\s]/', '', trim($search));
+        $search = preg_replace('/\s{2,}/', '!', $search);
+        $this->search = & $search;
     }
 
     function loadLink()
@@ -500,14 +515,40 @@ class DBPager {
             $this->limit = DBPAGER_DEFAULT_LIMIT;
         }
 
-        if (!empty($this->search) && isset($this->searchColumn)) {
+        if ($this->search) {
+            $search = preg_replace('/\s+/', '|', $this->search);
+        } else {
+            $search = null;
+        }
+
+        if (!empty($this->sub_result)) {
+            foreach ($this->sub_result as $sub_table => $sub) {
+                $this->db->addTable($sub['jt'], $sub_table);
+                $this->db->addWhere($sub['sc'], $sub_table . '.' . $sub['jc']);
+
+                if (!empty($search)) {
+                    if ($sub['srch']) {
+                        $col = $sub_table . '.' . $sub['cc'];
+                        $this->db->addWhere($col, $search, 'regexp', 'or', 1);
+                    }
+                }
+            }
+        }
+
+        if (!empty($search) && isset($this->searchColumn)) {
             foreach ($this->searchColumn as $column_name) {
-                // change to OR
-                $this->addWhere($column_name, '%' . strtolower($this->search) . '%', 'like', 'or', 1);
+                $this->db->addWhere($column_name, $search, 'regexp', 'or', 1);
             }
         }
 
         $count = $this->getTotalRows();
+
+        if (!empty($this->sub_result)) {
+            $this->db->addColumn('*');
+            foreach ($this->sub_result as $sub_table => $sub) {
+                $this->db->addColumn($sub_table . '.' . $sub['cc'], null, $sub['nn']);
+            }
+        }
 
         if (PEAR::isError($count)) {
             return $count;
@@ -541,21 +582,12 @@ class DBPager {
             return true;
         }
 
-        if (!empty($this->sub_result)) {
-            $this->db->addColumn('*');
-            foreach ($this->sub_result as $sub_table => $sub) {
-                $this->db->addTable($sub['jt'], $sub_table);
-                $this->db->addWhere($sub['sc'], $sub_table . '.' . $sub['jc']);
-                $this->db->addColumn($sub_table . '.' . $sub['cc'], null, $sub['nn']);
-            }
-        }
-
         if (empty($this->class)) {
             $result = $this->db->select();
         } else {
             $result = $this->db->getObjects($this->class);
         }
-        
+ 
         $this->row_query = $this->db->lastQuery();
 
         if (PEAR::isError($result)) {
@@ -960,7 +992,7 @@ class DBPager {
         $template['TOTAL_ROWS']  = $start_row . ' - ' . $end_row . ' ' . _('of') . ' ' . $total_row;
         $template['LIMITS']      = $this->getLimitList();
 
-        if (isset($this->searchColumn)) {
+        if (isset($this->searchColumn) || $this->sub_search) {
             $template['SEARCH'] = $this->getSearchBox();
         }
     }
@@ -1002,7 +1034,6 @@ class DBPager {
         $this->getSortButtons($template);
 
         if (isset($rows)) {
-
             foreach ($rows as $rowitem){
                 if (isset($max_tog)) {
                     if ($max_tog == 1) {

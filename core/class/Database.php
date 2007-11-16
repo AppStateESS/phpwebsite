@@ -640,10 +640,13 @@ class PHPWS_DB {
 	if (is_string($column)) {
             if (substr_count($column, '.') == 1) {
                 list($join_table, $join_column) = explode('.', $column);
-                if (PHPWS_DB::inDatabase($join_table, $join_column)) {
-                    $column = &$join_column;
+
+                if (isset($this->table_as[$join_table])) {
                     $source_table = $join_table;
-                    $where->setTable($join_table);
+                    $column = & $join_column;
+                } elseif (PHPWS_DB::inDatabase($join_table, $join_column)) {
+                    $column = & $join_column;
+                    $source_table = $join_table;
                     $this->addTable($join_table);
                 }
             }
@@ -691,12 +694,14 @@ class PHPWS_DB {
                          'LIKE',
                          'ILIKE',
                          'REGEXP',
+                         'RLIKE',
                          'IN',
                          'NOT IN',
                          'BETWEEN',
                          'NOT BETWEEN',
                          'IS',
-                         'IS NOT');
+                         'IS NOT',
+                         '~');
 
         return in_array(strtoupper($operator), $allowed);
     }
@@ -2536,6 +2541,8 @@ class PHPWS_DB_Where {
 
         if ($operator == 'LIKE' || $operator == 'ILIKE') {
             $operator = $GLOBALS['PHPWS_DB']['lib']->getLike();
+        } elseif ($operator == '~' || $operator == 'REGEXP' || $operator == 'RLIKE') {
+            $operator = $GLOBALS['PHPWS_DB']['lib']->getRegexp();
         }
 
         $this->operator = $operator;
