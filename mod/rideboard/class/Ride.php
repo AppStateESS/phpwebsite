@@ -8,14 +8,14 @@
 
 class RB_Ride {
     var $id            = 0;
+    var $ride_type     = 0;
     var $user_id       = 0;
     var $s_location    = 0;
     var $d_location    = 0;
-    var $allow_smoking = false;
-    var $gender_pref   = 0;
+    var $depart_time   = 0;
+    var $smoking       = false;
     var $comments      = null;
-    var $contact_email = null;
-    var $views         = 0;
+    var $detour        = 0;
 }
 
 ?>
