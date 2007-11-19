@@ -13,5 +13,6 @@ CREATE TABLE rb_ride (
 
 CREATE TABLE rb_location (
 id INT NOT NULL default 0,
-city_state VARCHAR( 255 ) NOT NULL
+city_state VARCHAR( 255 ) NOT NULL,
+PRIMARY KEY  (id)
 );
