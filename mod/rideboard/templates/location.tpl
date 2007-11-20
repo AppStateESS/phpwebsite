@@ -2,6 +2,7 @@
 
 {TOTAL_ROWS}
 <table cellpadding="4" width="100%">
+<tr><th>{CITY_STATE_SORT} {LOCATION_LABEL}</th><th>&nbsp;</th></tr>
 <!-- BEGIN listrows -->
   <tr {TOGGLE}>
     <td>{CITY_STATE}</td><td>{LINKS}</td>

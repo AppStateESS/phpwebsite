@@ -33,6 +33,10 @@ class Rideboard {
             $this->locations();
             break;
 
+        case 'settings':
+            $this->settings();
+            break;
+
         case 'edit_location':
             $js = true;
             $this->editLocation();
@@ -46,6 +50,13 @@ class Rideboard {
             } else {
                 PHPWS_Core::goBack();
             }
+            break;
+
+        case 'post_settings':
+            PHPWS_Settings::set('rideboard', 'default_slocation', (int)$_POST['default_slocation']);
+            PHPWS_Settings::set('rideboard', 'miles_or_kilometers', (int)$_POST['miles_or_kilometers']);
+            PHPWS_Settings::save('rideboard');
+            $this->settings();
             break;
         }
 
@@ -75,7 +86,8 @@ class Rideboard {
 
         switch ($command) {
         case 'add_ride':
-
+            $this->loadRide();
+            $this->addRide();
             break;
 
         case 'view_offers':
@@ -117,6 +129,9 @@ class Rideboard {
         $link = PHPWS_Text::linkAddress('rideboard', array('aop'=>'main'));;
         $tabs['locations']      = array ('title' => dgettext('rideboard', 'Locations'),
                                          'link'  => $link);
+
+        $tabs['settings']      = array ('title' => dgettext('rideboard', 'Settings'),
+                                        'link'  => $link);
        
         $this->panel = new PHPWS_Panel('rideboard-admin');
         $this->panel->quickSetTabs($tabs);
@@ -164,6 +179,7 @@ class Rideboard {
         $this->title = dgettext('rideboard', 'Edit locations');
         PHPWS_Core::initCoreClass('DBPager.php');
         $tpl['ADD_LOCATION'] = $this->locationForm();
+        $tpl['LOCATION_LABEL'] = dgettext('rideboard', 'Locations');
 
         $pager = new DBPager('rb_location');
         $pager->setModule('rideboard');
@@ -171,6 +187,7 @@ class Rideboard {
         $pager->addPageTags($tpl);
         $pager->addToggle('class="bgcolor1"');
         $pager->addRowFunction(array('Rideboard', 'locationRow'));
+        $pager->setDefaultOrder('city_state');
 
         $this->content = $pager->get();
     }
@@ -197,6 +214,17 @@ class Rideboard {
         }
     }
 
+    function getLocations()
+    {
+        $db = new PHPWS_DB('rb_location');
+        $db->addColumn('id');
+        $db->addColumn('city_state');
+        $db->addOrder('city_state');
+
+        $db->setIndexBy('id');
+        return $db->select('col');
+    }
+
     function locationRow($value)
     {
         $js['address'] = PHPWS_Text::linkAddress('rideboard', array('aop'=>'edit_location',
@@ -210,6 +238,92 @@ class Rideboard {
         return $tpl;
     }
 
+    function settings()
+    {
+        $form = new PHPWS_Form('settings');
+        $form->addHidden('module', 'rideboard');
+        $form->addHidden('aop', 'post_settings');
+
+        $locations = $this->getLocations();
+
+        if (PHPWS_Error::logIfError($locations) || empty($locations)) {
+            $locations = array(0=> dgettext('rideboard', 'No default'));
+        }
+
+        $form->addSelect('default_slocation', $locations);
+        $form->setLabel('default_slocation', dgettext('rideboard', 'Default starting location'));
+        $form->setMatch('default_slocation', PHPWS_Settings::get('rideboard', 'default_slocation'));
+        $form->addSubmit(dgettext('rideboard', 'Save settings'));
+
+
+        $form->addRadio('miles_or_kilometers', array(0,1));
+        $form->setLabel('miles_or_kilometers', array(0=>dgettext('rideboard', 'Miles'),
+                                                     1=>dgettext('rideboard', 'Kilometers')));
+        $form->setMatch('miles_or_kilometers', PHPWS_Settings::get('rideboard', 'miles_or_kilometers'));
+                       
+        $tpl = $form->getTemplate();
+
+        $tpl['DISTANCE_LABEL'] = dgettext('rideboard', 'Distance format');
+        $this->content = PHPWS_Template::process($tpl, 'rideboard', 'settings.tpl');
+        $this->title = dgettext('rideboard', 'Rideboard Settings');
+    }
+
+    function loadRide()
+    {
+        PHPWS_Core::initModClass('rideboard', 'Ride.php');
+
+        if (isset($_REQUEST['rid'])) {
+            $this->ride = new RB_Ride($_REQUEST['rid']);
+        } else {
+            $this->ride = new RB_Ride;
+        }
+    }
+
+    function addRide()
+    {
+        $ride = & $this->ride;
+
+        if ($ride->id) {
+            $this->title = dgettext('rideboard', 'Update ride');
+        } else {
+            $this->title = dgettext('rideboard', 'Post ride');
+        }
+
+        $locations = $this->getLocations();
+        if (PHPWS_Error::logIfError($locations) || empty($locations)) {
+            $locations = array(0 => dgettext('rideboard', '- Location in comments -'));
+        } else {
+            $locations = array_reverse($locations, true);
+            $locations[0] = dgettext('rideboard', '- Locations in comments -');
+            $locations = array_reverse($locations, true);
+        }
+
+
+        $form = new PHPWS_Form('ride');
+        $form->addHidden('module', 'rideboard');
+        $form->dateSelect('depart_time', $ride->depart_time, null, 0, 2);
+
+        $form->addText('title', $ride->title);
+        $form->setLabel('title', dgettext('rideboard', 'Trip title'));
+
+        $form->addSelect('s_location', $locations);
+        $form->setLabel('s_location', dgettext('rideboard', 'Leaving from'));
+        if (!$ride->id) {
+            $form->setMatch('s_location', PHPWS_Settings::get('rideboard', 'default_slocation'));
+        } else {
+            $form->setMatch('s_location', $ride->s_location);
+        }
+
+        $form->addSelect('d_location', $locations);
+        $form->setLabel('d_location', dgettext('rideboard', 'Going to'));
+        $form->setMatch('d_location', $ride->d_location);
+
+        $tpl = $form->getTemplate();
+        $this->content = PHPWS_Template::process($tpl, 'rideboard', 'ride_form.tpl');
+k
+
+    }
+    
 }
 
 

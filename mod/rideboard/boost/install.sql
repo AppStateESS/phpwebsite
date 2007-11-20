@@ -1,5 +1,6 @@
 CREATE TABLE rb_ride (
   id int NOT NULL default 0,
+  title varchar(255) default NULL,
   ride_type smallint default 1,
   user_id int NOT NULL default 0,
   s_location int NOT NULL default 0,

@@ -8,6 +8,7 @@
 
 class RB_Ride {
     var $id            = 0;
+    var $title         = null;
     var $ride_type     = 0;
     var $user_id       = 0;
     var $s_location    = 0;
@@ -16,6 +17,19 @@ class RB_Ride {
     var $smoking       = false;
     var $comments      = null;
     var $detour        = 0;
+
+    function RB_Ride($id=0)
+    {
+        if (!$id) {
+            return;
+        }
+
+        $this->id = (int)$id;
+        $db = new PHPWS_DB('rb_ride');
+        if (PHPWS_Error::logIfError($db->loadObject($this))) {
+            $this->id = 0;
+        }
+    }
 }
 
 ?>
