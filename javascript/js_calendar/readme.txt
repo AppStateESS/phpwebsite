@@ -37,10 +37,10 @@ echo javascript('js_calendar', $js_vars);
 
 $js_vars['form_name'] = 'select_example';
 $js_vars['date_name'] = 'my_date';
-$js_vars['type']      = 'text';
+$js_vars['type']      = 'select';
 echo javascript('js_calendar', $js_vars);
 
-Month and day must be in double digit format.
+**** Month and day MUST be in double digit format ****
 
 If you want to use the clock select from the calendar, use type
 "select_clock" instead. You will obviously need a "hour" and "minute"
