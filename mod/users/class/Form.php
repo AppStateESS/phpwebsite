@@ -918,9 +918,17 @@ class User_Form {
         $view_matches = $key->getViewGroups();
         $edit_matches = $key->getEditGroups();
 
+        if (!empty($edit_groups)) {
+            $edit_select = User_Form::_createMultiple($edit_groups['restricted']['all'], 'edit_groups', $edit_matches);
+        } else {
+            $edit_select = null;
+        }
 
-        $edit_select = User_Form::_createMultiple($edit_groups['restricted']['all'], 'edit_groups', $edit_matches);
-        $view_select = User_Form::_createMultiple($view_groups, 'view_groups', $view_matches);
+        if (!empty($view_groups)) {
+            $view_select = User_Form::_createMultiple($view_groups, 'view_groups', $view_matches);
+        } else {
+            $view_select = null;
+        }
 
         $form = new PHPWS_Form('choose_permissions');
         $form->addHidden('module', 'users');
@@ -954,7 +962,7 @@ class User_Form {
         if ($view_select) {
             $tpl['VIEW_SELECT'] = $view_select;
         } else {
-            $tpl['VIEW_SELECT'] = dgettext('users', 'No groups found.');
+            $tpl['VIEW_SELECT'] = dgettext('users', 'No view groups found.');
         }
 
         if ($popbox) {
