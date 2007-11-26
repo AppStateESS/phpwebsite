@@ -81,12 +81,21 @@ class Rideboard {
 
         switch ($command) {
         case 'user_post':
-
             if (isset($_POST['post_ride'])) {
                 $this->loadRide();
-                if ($this->postRide()) {
-                    $this->title = dgettext('rideboard', 'Ride posted!');
-                    $this->content = PHPWS_Text::moduleLink(dgettext('rideboard', 'Return to Ride Board menu.'));
+                if ($this->postLimit()) {
+                    $this->title = dgettext('rideboard', 'Sorry');
+                    $this->content = sprintf(dgettext('rideboard', 'You are limited to %s ride posts per account.'),
+                                             PHPWS_Settings::get('rideboard', 'post_limit'));
+                } elseif ($this->postRide()) {
+                    if (PHPWS_Error::logIfError($this->ride->save())) {
+                        $this->title = dgettext('rideboard', 'Sorry');
+                        $this->content = dgettext('rideboard', 'An error occurred when trying to save your ride. Please try again later.');
+                        $this->content .= '<br />' . PHPWS_Text::moduleLink(dgettext('rideboard', 'Return to Ride Board menu.'), 'rideboard');
+                    } else {
+                        $this->title = dgettext('rideboard', 'Ride posted!');
+                        $this->content = PHPWS_Text::moduleLink(dgettext('rideboard', 'Return to Ride Board menu.'), 'rideboard');
+                    }
                 } else {
                     $this->userMain();
                 }
@@ -346,7 +355,7 @@ class Rideboard {
         $form->setMatch('s_location', $ride->s_location);
 
         $form->addSelect('d_location', $locations);
-        $form->setLabel('d_location', dgettext('rideboard', 'Going to'));
+        $form->setLabel('d_location', dgettext('rideboard', 'Arriving at'));
         $form->setMatch('d_location', $ride->d_location);
         $form->addTextArea('comments', $ride->comments);
         $form->setLabel('comments', dgettext('rideboard', 'Comments'));
@@ -360,7 +369,7 @@ class Rideboard {
         $form->setMatch('search_s_location', PHPWS_Settings::get('rideboard', 'default_slocation'));
 
         $form->addSelect('search_d_location', $locations);
-        $form->setLabel('search_d_location', dgettext('rideboard', 'Going to'));
+        $form->setLabel('search_d_location', dgettext('rideboard', 'Arriving at'));
         $form->setMatch('search_d_location', PHPWS_Settings::get('rideboard', 'default_slocation'));
 
         $form->dateSelect('search_time', $ride->search_time, null, 0, 1);
@@ -386,8 +395,11 @@ class Rideboard {
 
     function postRide()
     {
+        if (PHPWS_Core::isPosted()) {
+            return false;
+        }
+
         $errors = array();
-        test($_POST);
 
         if (empty($_POST['title'])) {
             $errors[] = dgettext('rideboard', 'Please give your ride a trip title.');
@@ -398,14 +410,22 @@ class Rideboard {
         $this->ride->s_location = (int)$_POST['s_location'];
         $this->ride->d_location = (int)$_POST['d_location'];
 
+        if ($this->ride->s_location && 
+            $this->ride->s_location == $this->ride->d_location) {
+            $errors[] = dgettext('rideboard', 'Your leaving and arriving locations must be different.');
+        }
+
         if (PHPWS_Form::testDate('depart_time')) {
             $this->ride->depart_time = (int)PHPWS_Form::getPostedDate('depart_time');
+            if ($this->ride->depart_time < mktime()) {
+                $errors[] = dgettext('rideboard', 'Your leaving date must be in the future.');
+            }
         } else {
             $errors[] = dgettext('rideboard', 'Invalid leaving date');
         }
 
         if (empty($_POST['comments']) && (!$this->ride->s_location || !$this->ride->d_location)) {
-            $errors[] = dgettext('rideboard', 'If you haven\'t set your departure and arriving locations, you must add information to your comments.');
+            $errors[] = dgettext('rideboard', 'If you haven\'t set your leaving and arriving locations, you must add information to your comments.');
         } else {
             $this->ride->setComments($_POST['comments']);
         }
@@ -414,9 +434,24 @@ class Rideboard {
         $this->ride->gender_pref = (int)$_POST['gender_pref'];
         $this->ride->smoking     = (int)$_POST['smoking'];
 
-        
-        
+        if (!empty($errors)) {
+            $this->message = $errors;
+            return false;
+        } else {
+            return true;
+        }
+    }
 
+    function postLimit()
+    {
+        $db = new PHPWS_DB('rb_ride');
+        $db->addWhere('user_id', Current_User::getId());
+        $result = $db->count();
+        if (PHPWS_Error::logIfError($result)) {
+            return true;
+        }
+
+        return ($result >= PHPWS_Settings::get('rideboard', 'post_limit'));
     }
     
 }

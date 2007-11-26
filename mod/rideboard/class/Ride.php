@@ -55,6 +55,16 @@ class RB_Ride {
     {
         $this->comments = trim(strip_tags($comments));
     }
+
+    function save()
+    {
+        $db = new PHPWS_DB('rb_ride');
+        if (!$this->user_id) {
+            $this->user_id = Current_User::getId();
+        }
+
+        return $db->saveObject($this);
+    }
 }
 
 ?>

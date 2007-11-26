@@ -16,8 +16,8 @@
       <td>
       <h2>{SEARCH_TITLE}</h2>
       <p><strong>{SEARCH_WORDS_LABEL}</strong><br />{SEARCH_WORDS}</p>
-      <p><strong>{SEARCH_S_LOCATION_LABEL}</strong><br />{S_LOCATION}</p>
-      <p><strong>{SEARCH_D_LOCATION_LABEL}</strong><br />{D_LOCATION}</p>
+      <p><strong>{SEARCH_S_LOCATION_LABEL}</strong><br />{SEARCH_S_LOCATION}</p>
+      <p><strong>{SEARCH_D_LOCATION_LABEL}</strong><br />{SEARCH_D_LOCATION}</p>
       <p><strong>{SEARCH_TIME_LABEL}</strong><br />{SEARCH_TIME_MONTH} {SEARCH_TIME_DAY} {SEARCH_TIME_YEAR} {SEARCH_JS}</p>
       <p><strong>{SEARCH_RIDE_TYPE_LABEL}</strong><br />{SEARCH_RIDE_TYPE}</p>
       <p><strong>{SEARCH_GENDER_PREF_LABEL}</strong><br />{SEARCH_GENDER_PREF}</p>
