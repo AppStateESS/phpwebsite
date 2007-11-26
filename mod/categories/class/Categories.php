@@ -238,6 +238,9 @@ class Categories{
     function getIcons($key=null)
     {
         $cat_result = Categories::catList($key);
+        if (empty($cat_result)) {
+            return null;
+        }
         foreach ($cat_result as $cat){
             if (!$cat->id) {
                 continue;
