@@ -239,7 +239,8 @@ function convertPhatforms()
         } 
         $tbl_prefix = Convert::getTblPrefix();
         foreach ($result as $row) {
-            $db = Convert::getSourceDB('mod_phatform_form_' . $row['id']);
+            $form_table_name = 'mod_phatform_form_' . $row['id'];
+            $db = Convert::getSourceDB($form_table_name);
             if (!$db) {
                 continue;
             } elseif (PEAR::isError($db)) {
@@ -287,6 +288,7 @@ function convertPhatforms()
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
             }
+            createSeqTable($form_table_name);
         }
     }
 

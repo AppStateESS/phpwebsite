@@ -4,6 +4,7 @@ its own separate CHANGELOG file.
 
 26 November 2007
 + Changed numbers of dateSelect values to double digit format.
++ Form Generator convert was not reindexing the new form tables.
 
 16 November 2007
 + Database
