@@ -1,3 +1,8 @@
+26 November 2007
++ Added classes to the posted by and posted on headers
++ Commented out the entry content area.
++ Updated: templates/view.tpl
+
 12 November 2007
 + Blog entries now show category icons.
 + Restructured admin settings page.

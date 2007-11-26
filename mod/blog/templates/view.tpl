@@ -1,8 +1,8 @@
   <div class="hentry box">
     <div class="box-title">
     <h2 class="entry-title">{TITLE}</h2>
-    <h3>{POSTED_BY} <abbr class="author">{AUTHOR}</abbr></h3>
-    <h3>{POSTED_ON} <abbr class="published" title="{PUBLISHED_DATE}">{LOCAL_DATE}</abbr></h3>
+    <h3 class="posted-by">{POSTED_BY} <abbr class="author">{AUTHOR}</abbr></h3>
+    <h3 class="posted-on">{POSTED_ON} <abbr class="published" title="{PUBLISHED_DATE}">{LOCAL_DATE}</abbr></h3>
     </div>
     <!-- BEGIN categories -->
     <div class="blog-category-links">{CATEGORIES}</div>
@@ -12,11 +12,11 @@
     </ul><!-- END icons -->
     <div class="box-content">
       <div class="entry-summary"><!-- BEGIN image --><div class="entry-image">{IMAGE}</div><!-- END image -->{SUMMARY}</div>
-      <div class="entry-content">{ENTRY}</div>
+      <!-- BEGIN entry-content --><div class="entry-content">{ENTRY}</div><!-- END entry-content -->
       <!-- BEGIN edit-link --><div class="align-right">{EDIT_LINK}</div><!-- END edit-link -->
       <!-- BEGIN comment-info -->
       <div class="read-more">
-      <!-- BEGIN read-more -->{READ_MORE} |<!-- END read-more --> {COMMENT_LINK}
+      <!-- BEGIN read-more -->{READ_MORE}<!-- END read-more --> <!-- BEGIN comment -->{COMMENT_LINK}<!-- END comment -->
 
       <!-- BEGIN last-poster -->- {LAST_POSTER_LABEL}:
       {LAST_POSTER}<!-- END last-poster -->
@@ -27,4 +27,3 @@
       <!-- END comments -->
     </div>
   </div>
-
