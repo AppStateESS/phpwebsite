@@ -295,7 +295,7 @@ class PHPWS_Multimedia extends File_Common {
     function genericTN($file_name)
     {
         $this->thumbnail = $file_name . '.png';
-        @copy('images/mod/filecabinet/video_generic.png', $thumbnail_directory . $this->thumbnail);
+        return @copy('images/mod/filecabinet/video_generic.png', $this->thumbnailDirectory() . $this->thumbnail);
     }
 
     function makeVideoThumbnail()
