@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+26 November 2007
++ Changed numbers of dateSelect values to double digit format.
+
 16 November 2007
 + Database
   o AddWhere needed a little fix for the source column to use table as.

@@ -392,23 +392,27 @@ class PHPWS_Form {
         }
 
         for ($i = 1; $i < 13; $i++) {
-            $months[$i] = strftime($month_format, mktime(0,0,0,$i,1,2004));
+            $months[strftime('%m', mktime(0,0,0,$i,1,2004))] = strftime($month_format, mktime(0,0,0,$i,1,2004));
         }
 
         for ($i = 1; $i < 32; $i++) {
-            $days[$i] = $i;
+            $day = strftime('%d', mktime(0,0,0,1,$i,2004));
+            $days[$day] = $day;
         }
 
         for ($i = 1; $i < 13; $i++) {
-            $hours_12[$i] = strftime('%I', mktime($i));
+            $hour = strftime('%I', mktime($i));
+            $hours_12[$hour] = $hour;
         }
 
         for ($i = 0; $i < 24; $i++) {
-            $hours_24[$i] = strftime('%H', mktime($i));
+            $hour = strftime('%H', mktime($i));
+            $hours_24[$hour] = $hour;
         }
 
         for ($i = 0; $i < 60; $i += 5) {
-            $minutes[$i] = strftime('%M', mktime(1, $i));;
+            $minute = strftime('%M', mktime(1, $i));
+            $minutes[$minute] = $minute;
         }
 
         $am_pm[0] = strftime('%p', mktime(1));
