@@ -7,7 +7,10 @@ CREATE TABLE rb_ride (
   d_location int NOT NULL default 0,
   depart_time int NOT NULL default 0,
   smoking smallint NOT NULL,
+  comments text,
   detour smallint NOT NULL default 0,
+  marked smallint NOT NULL default 0,
+  gender_pref smallint NOT NULL default 0,
   PRIMARY KEY  (id)
 );
 
