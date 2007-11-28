@@ -13,14 +13,14 @@
     <div class="box-content">
       <div class="entry-summary"><!-- BEGIN image --><div class="entry-image">{IMAGE}</div><!-- END image -->{SUMMARY}</div>
       <!-- BEGIN entry-content --><div class="entry-content">{ENTRY}</div><!-- END entry-content -->
-      <!-- BEGIN edit-link --><div class="align-right">{EDIT_LINK}</div><!-- END edit-link -->
       <!-- BEGIN comment-info -->
       <div class="read-more">
-      <!-- BEGIN read-more -->{READ_MORE}<!-- END read-more --> <!-- BEGIN comment -->{COMMENT_LINK}<!-- END comment -->
+      <!-- BEGIN read-more -->{READ_MORE}<!-- END read-more --> {SEPARATOR} <!-- BEGIN comment -->{COMMENT_LINK}<!-- END comment -->
 
       <!-- BEGIN last-poster -->- {LAST_POSTER_LABEL}:
       {LAST_POSTER}<!-- END last-poster -->
       </div>
+      <!-- BEGIN edit-link --><div class="align-right">{EDIT_LINK}</div><!-- END edit-link -->
       <!-- END comment-info -->
       <!-- BEGIN comments -->
       {COMMENTS}

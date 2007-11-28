@@ -362,6 +362,10 @@ class Blog {
                     $template['COMMENT_LINK'] = sprintf('<a href="index.php?module=blog&amp;id=%d#comments">%s</a>', $this->id, $link);
                 }
 
+                if (isset($template['READ_MORE'])) {
+                    $template['SEPARATOR'] = '|';
+                }
+
                 $last_poster = $comments->getLastPoster();
                 
                 if (!empty($last_poster)) {

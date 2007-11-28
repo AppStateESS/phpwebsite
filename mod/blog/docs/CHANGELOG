@@ -1,3 +1,7 @@
+28 November 2007
++ Changed the template and layout for view a little.
++ Updated: templates/view.tpl
+
 26 November 2007
 + Added classes to the posted by and posted on headers
 + Commented out the entry content area.
