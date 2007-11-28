@@ -100,7 +100,8 @@ class Rideboard {
             $search = preg_replace('/\s{2,}/', ' ', $search);
             $_SESSION['rb_search']['search'] = preg_replace('/\s/', '|', $search);
         }
-        
+
+        $_SESSION['rb_search']['use_date']           = isset($_POST['use_date']);
         $_SESSION['rb_search']['search_time']        = PHPWS_Form::getPostedDate('search_time');
         $_SESSION['rb_search']['search_ride_type']   = (int)$_POST['search_ride_type'];
         $_SESSION['rb_search']['search_gender_pref'] = (int)$_POST['search_gender_pref'];
@@ -389,7 +390,6 @@ class Rideboard {
         $this->searchForm($form, $locations);
 
         $tpl = $form->getTemplate();
-        $tpl['SEARCH_TIME_LABEL'] = dgettext('rideboard', 'Leaving around');
         $tpl['DEPART_TIME_LABEL'] = dgettext('rideboard', 'Leaving on');
 
         $js_vars['form_name'] = 'ride';
@@ -450,9 +450,9 @@ class Rideboard {
 
     function searchForm(&$form, $locations)
     {
+        $locations[0] = dgettext('rideboard', '- Do not limit -');
         $form->addSelect('search_s_location', $locations);
         $form->setLabel('search_s_location', dgettext('rideboard', 'Leaving from'));
-        $form->setMatch('search_s_location', PHPWS_Settings::get('rideboard', 'default_slocation'));
 
         $form->addSelect('search_d_location', $locations);
         $form->setLabel('search_d_location', dgettext('rideboard', 'Destination'));
@@ -479,6 +479,10 @@ class Rideboard {
                                                  RB_EITHER     => dgettext('rideboard', 'Does not matter')));
         $form->setLabel('search_smoking', dgettext('rideboard', 'Smoking preference'));
         $form->setMatch('search_smoking', RB_EITHER);
+
+        $form->addCheck('use_date', 1);
+        $form->setLabel('use_date', dgettext('rideboard', 'Leaving around'));
+        $form->addTplTag('NOTE',  dgettext('rideboard', 'uncheck to disregard'));
     }
 
     function postRide()
@@ -637,16 +641,19 @@ class Rideboard {
             $pager->db->addWhere('s_location', $d_location);
         }
 
-        $search_before = $search_time - (86400 * 7);
-        $search_after  = $search_time + (86400 * 7);
 
-        if ($search_before < mktime()) {
-            $search_before = mktime();
+        if ($use_date) {
+            $search_before = $search_time - (86400 * 7);
+            $search_after  = $search_time + (86400 * 7);
+            
+            if ($search_before < mktime()) {
+                $search_before = mktime();
+            }
+
+            $pager->db->addWhere('depart_time', $search_before, '>', null, 'time');
+            $pager->db->addWhere('depart_time', $search_after, '<', null, 'time');
         }
-
-        $pager->db->addWhere('depart_time', $search_before, '>', null, 'time');
-        $pager->db->addWhere('depart_time', $search_after, '<', null, 'time');
-
+            
         if ($search_ride_type != RB_EITHER) {
             $pager->db->addWhere('ride_type', $search_ride_type);
         }
@@ -659,8 +666,6 @@ class Rideboard {
             $pager->db->addWhere('gender_pref', $search_gender_pref);
         }
 
-
-        //        $pager->db->setTestMode();
         $this->title = dgettext('rideboard', 'Search rides');
         $this->content = $pager->get();
     }
