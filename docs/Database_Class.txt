@@ -201,8 +201,62 @@ You can use this function if having problems using the addWhere
 function.
 
 
-Joining table Queries
 
+
+Ordering
+If we wanted to select in a certain order we use the addOrder
+function:
+$db->addOrder(columnname_direction);
+
+For example, if we wanted the list in reverse order by name:
+$db->addOrder('name desc');
+
+If we wanted it the next ordering element to be age in ascending
+order:
+$db->addOrder('age asc');
+
+
+Setting columns
+-----------------------------------------------------------------
+Normally, the select function will grab all the columns from a
+table. You may not want this. If this is the case then you need to
+specify which columns to grab using the addColumn function.
+
+$db->addColumn(column_name, max_min, as, count);
+
+So if I wanted to only receive the 'name' column in my result:
+$db->addColumn('name');
+
+I can keep adding columns that I want to receive as well:
+$db->addColumn('age');
+
+If I want the maximum amount of a column (in this case the name last
+in the alphabet)
+$db->addColumn('name', FALSE, 'max');
+
+Minimum would be:
+$db->addColumn('name', FALSE, 'min');
+
+If you want the result referenced under a different name, you can use
+the 'as' column.
+
+$db->addColumn('name', null, 'patient_last_name');
+
+
+Finally, if 'count' is true, the column will be surrounded by the
+COUNT() function:
+
+// Query: select count(name) from table
+$db->addColumn('name', null, null, true);
+
+
+Note that when you do not set any columns, a select query will default
+to a 'get all' query or in sql terms 'SELECT * FROM table_name'
+As soon as you set a column, the database object will NO LONGER call
+'*', this includes adding a column from a joined table.
+
+Joining table Queries
+----------------------------------------------------------------------
 By default, the database works on one table. You may however retrieve
 the results using more than one.
 
@@ -300,56 +354,37 @@ ownername  |   first_pet  | second_pet
 matt       |     Dog      |    Cat
 
 
-Ordering
-If we wanted to select in a certain order we use the addOrder
-function:
-$db->addOrder(columnname_direction);
-
-For example, if we wanted the list in reverse order by name:
-$db->addOrder('name desc');
-
-If we wanted it the next ordering element to be age in ascending
-order:
-$db->addOrder('age asc');
+Advanced joins
+----------------------------------------------------------------
+Database also contains a addJoin function. It facilitates inner/outer
+left/right joins. Using the same settings from above, we'll just
+addJoin.
 
 
-Setting columns
-Normally, the select function will grab all the columns from a
-table. You may not want this. If this is the case then you need to
-specify which columns to grab using the addColumn function.
+$db = new PHPWS_DB('table1');
+$db->addTable('table2', 'pet1');
+$db->addTable('table2', 'pet2');
+$db->addColumn('table1.ownername');
+$db->addColumn('pet1.title', null, 'first_pet');
+$db->addColumn('pet2.title', null, 'second_pet');
 
-$db->addColumn(column_name, distinct, max_min);
+// left, left inner, right, etc.
+$join_type = 'left';
+$join_from = 'table1';
+$join_to_1   = 'pet1';
+$join_to_2   = 'pet2';
+$join_on_1 = 'pet_id_1';
+$join_on_2 = 'pet_id_2';
 
-So if I wanted to only receive the 'name' column in my result:
-$db->addColumn('name');
+$db->addJoin($join_type,$join_from,$join_to_1,$join_on_1,$join_on_2);
+$db->addJoin($join_type,$join_from,$join_to_2,$join_on_1,$join_on_2);
 
-I can keep adding columns that I want to receive as well:
-$db->addColumn('age');
-
-If I want distinct answers, I can send TRUE as the second
-parameter. For example, say I wanted a column of all names but I
-didn't want any repeats. If I use:
-
-$db->addColumn('name', TRUE);
-
-then I will not see the name 'Chris' twice. Distinct defaults
-to FALSE.
-
-If I want the maximum amount of a column (in this case the name last
-in the alphabet)
-$db->addColumn('name', FALSE, 'max');
-
-Minimum would be:
-$db->addColumn('name', FALSE, 'min');
-
-Note that when you do not set any columns, a select query will default
-to a 'get all' query or in sql terms 'SELECT * FROM table_name'
-As soon as you set a column, the database object will NO LONGER call
-'*', this includes adding a column from a joined table.
+In this case I would get the same results except now I first_pet and
+second_pet can be null if the ids don't join.
 
 
 Limiting results
-
+----------------------------------------------------------------
 If you want to control how many results you receive, use the setLimit
 function.
 $db->setLimit(amount);

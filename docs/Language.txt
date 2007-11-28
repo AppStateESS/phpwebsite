@@ -72,7 +72,7 @@ directory ending in php.
 However, since there can be many files through different directories,
 it might be easier to just create a list of files to translate.
 
-grep -lr --include='*.php' 'dgettext' * > translate_list.txt
+grep -lr --include='*.php' 'gettext' * > translate_list.txt
 
 Open the list and make sure the file list looks correct. Now run
 xgettext against it. Make sure you run the list from where it was

@@ -240,7 +240,7 @@ class DBPager {
     function loadSearch($search)
     {
         $search = preg_replace('/[^\w\s]/', '', trim($search));
-        $search = preg_replace('/\s{2,}/', '!', $search);
+        $search = preg_replace('/\s{2,}/', ' ', $search);
         $this->search = & $search;
     }
 
@@ -516,7 +516,7 @@ class DBPager {
         }
 
         if ($this->search) {
-            $search = preg_replace('/\s+/', '|', $this->search);
+            $search = preg_replace('/\s/', '|', $this->search);
         } else {
             $search = null;
         }
@@ -524,7 +524,8 @@ class DBPager {
         if (!empty($this->sub_result)) {
             foreach ($this->sub_result as $sub_table => $sub) {
                 $this->db->addTable($sub['jt'], $sub_table);
-                $this->db->addWhere($sub['sc'], $sub_table . '.' . $sub['jc']);
+                $this->db->addJoin('left', $this->table, $sub_table, $sub['sc'], $sub['jc']);
+                //                $this->db->addWhere($sub['sc'], $sub_table . '.' . $sub['jc']);
 
                 if (!empty($search)) {
                     if ($sub['srch']) {

@@ -2,6 +2,13 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+28 November 2007
++ Fixed some leftover test code from DBPager.
++ Added information about using addJoin in Database_Class.txt
++ Small change to Language.txt. Need to pick up dngettext files as
+  well.
+
+
 26 November 2007
 + Changed numbers of dateSelect values to double digit format.
 + Form Generator convert was not reindexing the new form tables.
