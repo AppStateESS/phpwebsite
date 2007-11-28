@@ -6,18 +6,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-define('RB_RIDER', 0);
-define('RB_DRIVER', 1);
-
-define('RB_MALE', 0);
-define('RB_FEMALE', 1);
-
-define('RB_NONSMOKER', 0);
-define('RB_SMOKER', 1);
-
-// works for all above
-define('RB_EITHER', 2);
-
 class RB_Ride {
     var $id            = 0;
     var $title         = null;
@@ -32,6 +20,9 @@ class RB_Ride {
     var $gender_pref   = RB_EITHER;
     var $marked        = 0;
 
+    var $start_location = null;
+    var $dest_location  = null;
+
     function RB_Ride($id=0)
     {
         if (!$id) {
@@ -41,6 +32,14 @@ class RB_Ride {
 
         $this->id = (int)$id;
         $db = new PHPWS_DB('rb_ride');
+        $db->addTable('rb_location', 't1');
+        $db->addTable('rb_location', 't2');
+        $db->addColumn('*');
+        $db->addJoin('left', 'rb_ride', 't1', 's_location', 'id');
+        $db->addJoin('left', 'rb_ride', 't2', 'd_location', 'id');
+        $db->addColumn('t1.city_state', null, 'start_location');
+        $db->addColumn('t2.city_state', null, 'dest_location');
+
         if (PHPWS_Error::logIfError($db->loadObject($this))) {
             $this->id = 0;
         }
@@ -64,6 +63,146 @@ class RB_Ride {
         }
 
         return $db->saveObject($this);
+    }
+
+    function getDepartTime()
+    {
+        if (mktime() > $this->depart_time) {
+            return sprintf('%s (%s)', strftime('%d %b, %Y', $this->depart_time),
+                           dgettext('rideboard', 'Expired'));
+        } else {
+            return strftime('%d %B, %Y', $this->depart_time);
+        }
+    }
+
+
+    function getRideType()
+    {
+        switch ($this->ride_type) {
+        case RB_RIDER:
+            return dgettext('rideboard', 'Rider');
+
+        case RB_DRIVER:
+            return dgettext('rideboard', 'Driver');
+
+        case RB_EITHER:
+            return dgettext('rideboard', 'Driver or rider');
+        }
+    }
+
+    function getGenderPref()
+    {
+        switch ($this->gender_pref) {
+        case RB_MALE:
+            return dgettext('rideboard', 'Male');
+
+        case RB_FEMALE:
+            return dgettext('rideboard', 'Female');
+
+        case RB_EITHER:
+            return dgettext('rideboard', 'Either gender');
+        }
+    }
+
+    function getSmoking()
+    {
+        switch ($this->smoking) {
+        case RB_NONSMOKER:
+            return dgettext('rideboard', 'Non-smokers only');
+
+        case RB_SMOKER:
+            return dgettext('rideboard', 'Smokers please');
+
+        case RB_EITHER:
+            return dgettext('rideboard', 'Smoking not important');
+        }
+    }
+
+    function tags($admin=true)
+    {
+        $tpl['TITLE']       = & $this->title;
+        $tpl['RIDE_TYPE']   = $this->getRideType();
+        $tpl['GENDER_PREF'] = $this->getGenderPref();
+        $tpl['SMOKING']     = $this->getSmoking();
+        $tpl['COMMENTS']    = PHPWS_Text::parseOutput($this->comments);
+        $tpl['DEPART_TIME'] = $this->getDepartTime();
+
+        if ($this->s_location) {
+            $tpl['START_LOCATION'] = & $this->start_location;
+        } else {
+            $tpl['START_LOCATION'] = dgettext('rideboard', 'Not indicated');
+        }
+
+        if ($this->d_location) {
+            $tpl['DEST_LOCATION'] = & $this->dest_location;
+        } else {
+            $tpl['DEST_LOCATION'] = dgettext('rideboard', 'Not indicated');
+        }
+
+        $links[] = javascript('open_window',
+                              array('address'=>PHPWS_Text::linkAddress('rideboard', array('uop'=>'view_ride',
+                                                                                          'rid'=>$this->id)),
+                                    'label'  => dgettext('rideboard', 'Read more'),
+                                    'width' => 640,
+                                    'height' => 480
+                                    ));
+
+        if ($admin && ($this->user_id == Current_User::getId() || Current_User::allow('rideboard'))) {
+            $js['question'] = dgettext('rideboard', 'Are you sure you want to delete this ride?');
+            $js['address'] = PHPWS_Text::linkAddress('rideboard', array('uop'=>'delete_ride',
+                                                                        'rid'=>$this->id),
+                                                     true);
+            $js['link'] = dgettext('rideboard', 'Delete');
+            $links[] = javascript('confirm', $js);
+        }
+
+        $tpl['ADMIN_LINKS'] = implode(' | ', $links);        
+
+        return $tpl;
+    }
+
+    function delete()
+    {
+        $db = new PHPWS_DB('rb_ride');
+        $db->addWhere('id', $this->id);
+        return !PHPWS_Error::logIfError($db->delete());
+    }
+
+    function view()
+    {
+        $tpl = $this->tags(false);
+
+        if ($this->depart_time < mktime()) {
+            $tpl['WARNING'] = dgettext('rideboard', 'The ride has expired.');
+        }
+
+        $user = new PHPWS_User($this->user_id);
+        
+        $tpl['EMAIL'] = sprintf('<a href="mailto:%s">%s</a>',
+                                $user->getEmail(),
+                                dgettext('rideboard', 'Email user'));
+        $tpl['RIDE_TYPE_LABEL'] = dgettext('rideboard', 'Driver or Rider');
+        $tpl['GEN_PREF_LABEL']  = dgettext('rideboard', 'Gender preference');
+        $tpl['SMOKE_LABEL']     = dgettext('rideboard', 'Smoking preference');
+        if ($this->ride_type == RB_DRIVER) {
+            $tpl['INFO']            = sprintf(dgettext('rideboard', 'Driving from <strong>%s</strong> on <strong>%s</strong> to <strong>%s</strong>.'),
+                                              $tpl['START_LOCATION'], $tpl['DEPART_TIME'],
+                                              $tpl['DEST_LOCATION']);
+        } elseif ($this->ride_type == RB_RIDER) {
+            $tpl['INFO']            = sprintf(dgettext('rideboard', 'Need a ride from <strong>%s</strong> on or around <strong>%s</strong> to <strong>%s</strong>.'),
+                                              $tpl['START_LOCATION'], $tpl['DEPART_TIME'],
+                                              $tpl['DEST_LOCATION']);
+        } else {
+            $tpl['INFO']            = sprintf(dgettext('rideboard', 'Sharing (driving or riding) a ride from <strong>%s</strong> on or around <strong>%s</strong> to <strong>%s</strong>.'),
+                                              $tpl['START_LOCATION'], $tpl['DEPART_TIME'],
+                                              $tpl['DEST_LOCATION']);
+        }
+
+        $tpl['COMMENT_LABEL'] = dgettext('rideboard', 'Comments');
+
+        $tpl['CLOSE'] = javascript('close_window');
+
+        return PHPWS_Template::process($tpl, 'rideboard', 'view_ride.tpl');
     }
 }
 

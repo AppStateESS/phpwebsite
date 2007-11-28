@@ -43,6 +43,10 @@ class Rideboard {
             break;
 
         case 'post_location':
+            if (!Current_User::authorized('rideboard')) {
+                Current_User::disallow(null, false);
+            }
+
             $this->postLocation();
             if (isset($_POST['lid'])) {
                 javascript('close_refresh');
@@ -52,7 +56,19 @@ class Rideboard {
             }
             break;
 
+        case 'purge_rides':
+            if (!Current_User::authorized('rideboard')) {
+                Current_User::disallow(null, false);
+            }
+            $this->purgeRides();
+            PHPWS_Core::reroute(PHPWS_Text::linkAddress('rideboard', array('aop'=>'settings')));
+            break;
+           
+
         case 'post_settings':
+            if (!Current_User::authorized('rideboard')) {
+                Current_User::disallow(null, false);
+            }
             PHPWS_Settings::set('rideboard', 'default_slocation', (int)$_POST['default_slocation']);
             PHPWS_Settings::set('rideboard', 'miles_or_kilometers', (int)$_POST['miles_or_kilometers']);
             PHPWS_Settings::save('rideboard');
@@ -75,11 +91,41 @@ class Rideboard {
         }
     }
 
+    function searchSession()
+    {
+        $_SESSION['rb_search'] = array();
+
+        if (!empty($_POST['search_words'])) {
+            $search = preg_replace('/[^\w\s]/', '', $_POST['search_words']);
+            $search = preg_replace('/\s{2,}/', ' ', $search);
+            $_SESSION['rb_search']['search'] = preg_replace('/\s/', '|', $search);
+        }
+        
+        $_SESSION['rb_search']['search_time']        = PHPWS_Form::getPostedDate('search_time');
+        $_SESSION['rb_search']['search_ride_type']   = (int)$_POST['search_ride_type'];
+        $_SESSION['rb_search']['search_gender_pref'] = (int)$_POST['search_gender_pref'];
+        $_SESSION['rb_search']['search_smoking']     = (int)$_POST['search_smoking'];
+        $_SESSION['rb_search']['s_location']         = (int)$_POST['s_location'];
+        $_SESSION['rb_search']['d_location']         = (int)$_POST['d_location'];
+    }
+
     function user()
     {
+        Current_User::requireLogin();
+
         $command = @ $_REQUEST['uop'];
 
+        $js = false;
+
         switch ($command) {
+        case 'view_ride':
+            $js = true;
+            $this->viewRide();
+            break;
+
+        case 'search_rides':
+            $this->searchRides();
+            break;
         case 'user_post':
             if (isset($_POST['post_ride'])) {
                 $this->loadRide();
@@ -100,8 +146,24 @@ class Rideboard {
                     $this->userMain();
                 }
             } else {
-                $this->searchRides();
+                $this->searchSession();
+                PHPWS_Core::reroute(PHPWS_Text::linkAddress('rideboard', array('uop'=>'search_rides')));
             }
+            break;
+
+        case 'view_my_rides':
+            $this->viewMyRides();
+            break;
+
+        case 'delete_ride':
+            $this->loadRide();
+            if ($this->ride->id) {
+                if ( Current_User::authorized('rideboard') || 
+                     (Current_User::verifyAuthKey() && Current_User::getId() == $this->ride->user_id) ) {
+                    $this->ride->delete();
+                }
+            }
+            PHPWS_Core::goBack();
             break;
 
         default:
@@ -116,7 +178,11 @@ class Rideboard {
         $tpl['MESSAGE'] = $this->getMessage();
 
         $content = PHPWS_Template::process($tpl, 'rideboard', 'main.tpl');
-        Layout::add($content);
+        if ($js) {
+            Layout::nakedDisplay($content);
+        } else {
+            Layout::add($content);
+        }
     }
 
 
@@ -254,6 +320,22 @@ class Rideboard {
                        
         $tpl = $form->getTemplate();
 
+        $db = new PHPWS_DB('rb_ride');
+        $db->addWhere('depart_time', mktime(), '<');
+        $db->addColumn('id');
+        $old_rides = $db->count();
+
+        if ($old_rides) {
+            $tpl['PURGE'] = PHPWS_Text::secureLink(sprintf(dngettext('rideboard', 'You have %s ride that has expired. Click here to purge it.',
+                                                                     'You have %s rides that have expired. Click here to purge them.', $old_rides),
+                                                           $old_rides),
+                                                   'rideboard',
+                                                   array('aop'=>'purge_rides')
+                                                   );
+        } else {
+            $tpl['PURGE'] = dgettext('rideboard', 'No rides need purging.');
+        }
+
         $tpl['DISTANCE_LABEL'] = dgettext('rideboard', 'Distance format');
         $this->content = PHPWS_Template::process($tpl, 'rideboard', 'settings.tpl');
         $this->title = dgettext('rideboard', 'Rideboard Settings');
@@ -307,7 +389,8 @@ class Rideboard {
         $this->searchForm($form, $locations);
 
         $tpl = $form->getTemplate();
-        $tpl['SEARCH_TIME_LABEL'] = $tpl['DEPART_TIME_LABEL'] = dgettext('rideboard', 'Leaving on');
+        $tpl['SEARCH_TIME_LABEL'] = dgettext('rideboard', 'Leaving around');
+        $tpl['DEPART_TIME_LABEL'] = dgettext('rideboard', 'Leaving on');
 
         $js_vars['form_name'] = 'ride';
         $js_vars['date_name'] = 'depart_time';
@@ -320,7 +403,10 @@ class Rideboard {
         $tpl['POST_TITLE'] = dgettext('rideboard', 'Post ride');
         $tpl['SEARCH_TITLE'] = dgettext('rideboard', 'Search for ride');
 
-        
+        $links[] = PHPWS_Text::moduleLink(dgettext('rideboard', 'View my rides'), 'rideboard',
+                                          array('uop' => 'view_my_rides'));
+
+        $tpl['LINKS'] = implode(' | ', $links);
         $this->content = PHPWS_Template::process($tpl, 'rideboard', 'ride_form.tpl');
     }
 
@@ -355,7 +441,7 @@ class Rideboard {
         $form->setMatch('s_location', $ride->s_location);
 
         $form->addSelect('d_location', $locations);
-        $form->setLabel('d_location', dgettext('rideboard', 'Arriving at'));
+        $form->setLabel('d_location', dgettext('rideboard', 'Destination'));
         $form->setMatch('d_location', $ride->d_location);
         $form->addTextArea('comments', $ride->comments);
         $form->setLabel('comments', dgettext('rideboard', 'Comments'));
@@ -369,28 +455,30 @@ class Rideboard {
         $form->setMatch('search_s_location', PHPWS_Settings::get('rideboard', 'default_slocation'));
 
         $form->addSelect('search_d_location', $locations);
-        $form->setLabel('search_d_location', dgettext('rideboard', 'Arriving at'));
-        $form->setMatch('search_d_location', PHPWS_Settings::get('rideboard', 'default_slocation'));
+        $form->setLabel('search_d_location', dgettext('rideboard', 'Destination'));
 
-        $form->dateSelect('search_time', $ride->search_time, null, 0, 1);
+        $form->dateSelect('search_time', null, null, 0, 1);
         $form->addSubmit('search_ride', dgettext('rideboard', 'Search for rides'));
         $form->addText('search_words');
         $form->setLabel('search_words', dgettext('rideboard', 'Search words'));
 
-        $form->addSelect('search_ride_type', array(RB_RIDER  => dgettext('rideboard', 'Passengers'),
+        $form->addSelect('search_ride_type', array(RB_RIDER  => dgettext('rideboard', 'Rider'),
                                                    RB_DRIVER => dgettext('rideboard', 'Drivers'),
                                                    RB_EITHER => dgettext('rideboard', 'Anyone')));
+        $form->setMatch('search_ride_type', RB_EITHER);
         $form->setLabel('search_ride_type', dgettext('rideboard', 'Looking for'));
 
         $form->addSelect('search_gender_pref', array(RB_MALE   => dgettext('rideboard', 'Male'),
                                                      RB_FEMALE => dgettext('rideboard', 'Female'),
                                                      RB_EITHER => dgettext('rideboard', 'Does not matter')));
         $form->setLabel('search_gender_pref', dgettext('rideboard', 'Gender preference'));
+        $form->setMatch('search_gender_pref', RB_EITHER);
         
         $form->addSelect('search_smoking', array(RB_NONSMOKER  => dgettext('rideboard', 'Non-smokers only'),
-                                                 RB_SMOKER     => dgettext('rideboard', 'Will ride with smokers'),
+                                                 RB_SMOKER     => dgettext('rideboard', 'Smokers welcome'),
                                                  RB_EITHER     => dgettext('rideboard', 'Does not matter')));
         $form->setLabel('search_smoking', dgettext('rideboard', 'Smoking preference'));
+        $form->setMatch('search_smoking', RB_EITHER);
     }
 
     function postRide()
@@ -453,7 +541,149 @@ class Rideboard {
 
         return ($result >= PHPWS_Settings::get('rideboard', 'post_limit'));
     }
-    
+
+    function getRidesDB()
+    {
+        $db = new PHPWS_DB('rb_ride');
+        $db->addTable('rb_location', 't1');
+        $db->addTable('rb_location', 't2');
+        $db->loadClass('rideboard', 'Ride.php');
+        $db->addOrder('depart_time desc');
+        $db->addColumn('*');
+        $db->addJoin('left', 'rb_ride', 't1', 's_location', 'id');
+        $db->addJoin('left', 'rb_ride', 't2', 'd_location', 'id');
+
+        $db->addColumn('t1.city_state', null, 'start_location');
+        $db->addColumn('t2.city_state', null, 'dest_location');
+        
+        return $db;
+    }
+
+    function viewMyRides()
+    {
+        $this->title = dgettext('rideboard', 'View my Rides');
+        $db = $this->getRidesDB();
+        $db->addWhere('user_id', Current_User::getId());
+
+        $result = $db->getObjects('RB_Ride');
+
+        if (PHPWS_Error::logIfError($result)) {
+            $this->content = dgettext('rideboard', 'An error occurred when pulling your rides.');
+            return;
+        }
+
+        if (empty($result)) {
+            $this->content = dgettext('rideboard', 'You do not have any rides.');
+            return;
+        }
+
+        foreach ($result as $ride) {
+            $tpl['rides'][] = $ride->tags();
+        }
+
+        $tpl['TITLE_LABEL']     = dgettext('rideboard', 'Trip title');
+        $tpl['RIDE_TYPE_LABEL'] = dgettext('rideboard', 'Driver or Rider');
+        $tpl['PREF_LABEL']      = dgettext('rideboard', 'Gender - Smoking Preference');
+        $tpl['START_LABEL']     = dgettext('rideboard', 'Leaving from');
+        $tpl['DEST_LABEL']      = dgettext('rideboard', 'Destination');
+
+        $this->content = PHPWS_Template::process($tpl, 'rideboard', 'my_rides.tpl');
+    }
+
+    function searchRides()
+    {
+        PHPWS_Core::initCoreClass('DBPager.php');
+        PHPWS_Core::initModClass('rideboard', 'Ride.php');
+
+
+        if (!isset($_SESSION['rb_search'])) {
+            $this->title = dgettext('rideboard', 'Sorry');
+            $this->content = dgettext('rideboard', 'Your session timed out.');
+            $this->content .= '<br />' . PHPWS_Text::moduleLink(dgettext('rideboard', 'Back to search'), 'rideboard');
+            return;
+        }
+        
+        $tpl['LINK'] = PHPWS_Text::moduleLink(dgettext('rideboard', 'Back to search'), 'rideboard');
+        $tpl['TITLE_LABEL']     = dgettext('rideboard', 'Trip title');
+        $tpl['RIDE_TYPE_LABEL'] = dgettext('rideboard', 'Driver or Rider');
+        $tpl['RIDE_TYPE_ABBR']  = dgettext('rideboard', 'D/R');
+        $tpl['GEN_PREF_LABEL']  = dgettext('rideboard', 'Gender');
+        $tpl['SMOKE_LABEL']     = dgettext('rideboard', 'Smoking');
+        $tpl['START_LABEL']     = dgettext('rideboard', 'Leaving from/on');
+        $tpl['DEST_LABEL']      = dgettext('rideboard', 'Destination');
+
+        $pager = new DBPager('rb_ride', 'RB_Ride');
+        $pager->setModule('rideboard');
+        $pager->setTemplate('search_rides.tpl');
+        $pager->addRowTags('tags', false);
+        $pager->addPageTags($tpl);
+        $pager->setEmptyMessage(dgettext('rideboard', 'No rides found fitting your criteria.'));
+
+        $pager->joinResult('s_location', 'rb_location', 'id', 'city_state', 'start_location');
+        $pager->joinResult('d_location', 'rb_location', 'id', 'city_state', 'dest_location');
+
+        extract($_SESSION['rb_search']);
+
+        if (!empty($search)) {
+            $pager->db->addWhere('title', $search, 'regexp', 'or', 1);
+            $pager->db->addWhere('comments', $search, 'regexp', 'or', 1);
+        }
+
+        if ($s_location) {
+            $pager->db->addWhere('s_location', $s_location);
+        }
+
+        if ($d_location) {
+            $pager->db->addWhere('s_location', $d_location);
+        }
+
+        $search_before = $search_time - (86400 * 7);
+        $search_after  = $search_time + (86400 * 7);
+
+        if ($search_before < mktime()) {
+            $search_before = mktime();
+        }
+
+        $pager->db->addWhere('depart_time', $search_before, '>', null, 'time');
+        $pager->db->addWhere('depart_time', $search_after, '<', null, 'time');
+
+        if ($search_ride_type != RB_EITHER) {
+            $pager->db->addWhere('ride_type', $search_ride_type);
+        }
+
+        if ($search_smoking != RB_EITHER) {
+            $pager->db->addWhere('smoking', $search_smoking);
+        }
+
+        if ($search_gender_pref != RB_EITHER) {
+            $pager->db->addWhere('gender_pref', $search_gender_pref);
+        }
+
+
+        //        $pager->db->setTestMode();
+        $this->title = dgettext('rideboard', 'Search rides');
+        $this->content = $pager->get();
+    }
+
+    function viewRide()
+    {
+        $this->loadRide();
+        if (!$this->ride->id) {
+            $this->title = dgettext('rideboard', 'Sorry');
+            $this->content = dgettext('rideboard', 'This ride could not be found.');
+            return;
+        }
+        $this->title = $this->ride->title;
+        $this->content = $this->ride->view();
+    }
+  
+    function purgeRides()
+    {
+        $db = new PHPWS_DB('rb_ride');
+        $db->addWhere('depart_time', mktime(), '<');
+        return !PHPWS_Error::logIfError($db->delete());
+    }
+  
 }
 
 

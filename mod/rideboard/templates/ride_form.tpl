@@ -1,3 +1,4 @@
+{LINKS}
 {START_FORM}
 <table cellpadding="6">
    <tr>
