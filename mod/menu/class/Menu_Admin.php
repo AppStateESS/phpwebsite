@@ -571,11 +571,6 @@ class Menu_Admin {
         $form->setLabel('max_link_characters', dgettext('menu', 'Maximum link characters'));
         $form->setSize('max_link_characters', 3, 3);
 
-        $form->addText('max_link_characters', PHPWS_Settings::get('menu', 'max_link_characters'));
-        $form->setLabel('max_link_characters', dgettext('menu', 'Maximum link characters'));
-        $form->setSize('max_link_characters', 3, 3);
-
-
         $form->addSubmit('submit', dgettext('menu', 'Save settings'));
 
         $tpl = $form->getTemplate();

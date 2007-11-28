@@ -1,3 +1,10 @@
+28 November 2007
++ Removed redundancy.
+
+
+27 November 2007
++ Menu character limit set in settings now.
+
 1 November 2007
 + Added enableAdminMode function to menu. Called statically.
 
