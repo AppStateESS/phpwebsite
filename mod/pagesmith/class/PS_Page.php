@@ -176,11 +176,11 @@ class PS_Page {
     function frontPageToggle()
     {
         if ($this->front_page) {
-            $label = dgettext('pagesmith', 'On&nbsp;front');
+            $label = dgettext('pagesmith', 'Remove from front');
             $title = dgettext('pagesmith', 'Click to remove from front page');
             $vars['fp'] = 0;
         } else {
-            $label = dgettext('pagesmith', 'Off&nbsp;front');
+            $label = dgettext('pagesmith', 'Add to front');
             $title = dgettext('pagesmith', 'Click to display on front page');
             $vars['fp'] = 1;
 
@@ -262,6 +262,7 @@ class PS_Page {
     {
         if (Current_User::allow('pagesmith', 'edit_page', $this->id)) {
             MiniAdmin::add('pagesmith', $this->editLink(sprintf(dgettext('pagesmith', 'Edit %s'), $this->title)));
+            MiniAdmin::add('pagesmith', $this->frontPageToggle());
         }
 
         $key = 'pagesmith' . $this->id;

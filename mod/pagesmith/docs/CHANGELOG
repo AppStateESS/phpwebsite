@@ -1,3 +1,7 @@
+29 November 2007
++ Changed wording on move to front functionality
++ Added move to front to miniadmin
+
 25 October 2007
 + Fixed text_only template. Missing closing </div>
 + Updated: templates/page_templates/text_only/page.tpl
