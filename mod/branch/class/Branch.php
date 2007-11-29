@@ -93,7 +93,7 @@ class Branch {
         } else {
             $http = &$this->url;
         }
-        return sprintf('<a href="%s">%s</a>', $http, $http);
+        return sprintf('<a href="%s">%s</a>', $http, PHPWS_Text::shortenUrl($http));
     }
 
     function createDirectories()
@@ -154,6 +154,7 @@ class Branch {
      */
     function getTpl()
     {
+        
         $tpl['URL'] = $this->getUrl();
 
         $links[] = PHPWS_Text::secureLink(dgettext('branch', 'Edit'), 'branch', 
@@ -168,7 +169,8 @@ class Branch {
 
         $links[] = PHPWS_Text::secureLink(dgettext('branch', 'Modules'), 'branch',
                                           array('command'=>'branch_modules', 'branch_id'=>$this->id));
-
+	$tpl['DIRECTORY'] = sprintf('<abbr title="%s">%s</abbr>', $this->directory,
+				    PHPWS_Text::shortenUrl($this->directory));
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
