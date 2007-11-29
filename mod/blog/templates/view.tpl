@@ -20,7 +20,7 @@
       <!-- BEGIN last-poster -->- {LAST_POSTER_LABEL}:
       {LAST_POSTER}<!-- END last-poster -->
       </div>
-      <!-- BEGIN edit-link --><div class="align-right">{EDIT_LINK}</div><!-- END edit-link -->
+      <!-- BEGIN edit-link --><div class="blog-edit">{EDIT_LINK}</div><!-- END edit-link -->
       <!-- END comment-info -->
       <!-- BEGIN comments -->
       {COMMENTS}

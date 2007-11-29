@@ -1,3 +1,7 @@
+29 November 2007
++ Gave the edit link a class in view template.
++ Update templates/view.tpl
+
 28 November 2007
 + Changed the template and layout for view a little.
 + Updated: templates/view.tpl
