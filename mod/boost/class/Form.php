@@ -190,10 +190,10 @@ class Boost_Form {
 
                 if ($GLOBALS['Boost_Ready']) {
                     if (javascriptEnabled()) {
-                        $js['address'] = PHPWS_Text::linkAddress('boost', $link_command, true);
-                        $js['label'] = $link_title;
                         $js['width'] = 640;
                         $js['height'] = 480;
+                        $js['address'] = PHPWS_Text::linkAddress('boost', $link_command, true);
+                        $js['label'] = $link_title;
                         $links[] = javascript('open_window', $js);
                         unset($js);
                     } else {
@@ -218,7 +218,12 @@ class Boost_Form {
                         $link_command['action'] = 'show_dependency';
                     }
                     if ($allow_update) {
-                        $links[] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
+                        $js['width'] = 640;
+                        $js['height'] = 480;
+                        $js['address'] = PHPWS_Text::linkAddress('boost', $link_command, true);
+                        $js['label'] = $link_title;
+                        $links[] = javascript('open_window', $js);
+                        unset($js);
                     } else {
                         $links[] = & $link_title;
                     }
