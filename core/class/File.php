@@ -378,7 +378,7 @@ class PHPWS_File {
         if ($degrees > 360) {
             $degrees = $degrees % 360;
         }
-
+        
         $source = PHPWS_File::_imageCopy($source_dir, $file_type);
         $rotate = imagerotate($source, $degrees, 0);
 
@@ -427,6 +427,10 @@ class PHPWS_File {
      * percentage : percentage of crop reduction
      */
     function cropImage($source_dir, $dest_dir, $new_width, $new_height, $origin=5) {
+        if (!extension_loaded('gd')) {
+            return false;
+        }
+
         $size = getimagesize($source_dir);
         if (empty($size)) {
             return false;

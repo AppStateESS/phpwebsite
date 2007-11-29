@@ -25,6 +25,13 @@ if (!is_file('lib/pear/DB.php')) {
     exit();
 }
 
+if (!extension_loaded('gd')) {
+    echo 'You need to compile the <a href="http://www.libgd.org/Main_Page">GD image library</a> into PHP.';
+    echo '<br />File Cabinet will not function properly with out it.';
+    exit();
+}
+
+
 if (!is_dir('config/core/') || !is_file('config/core/language.php')) {
     require 'core/class/File.php';
     if (!is_writable('config/')) {
