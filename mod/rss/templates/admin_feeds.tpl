@@ -2,7 +2,7 @@
 
 <table width="98%" cellpadding="3" cellspacing="3">
     <tr>
-        <th>{TITLE_LABEL}</th>
+        <th>{TITLE_SORT} {TITLE_LABEL}</th>
         <th>{ADDRESS_LABEL}</th>
         <th>{LIMIT_LABEL}</th>
         <th>{REFRESH_TIME_LABEL}</th>

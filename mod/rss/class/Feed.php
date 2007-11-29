@@ -116,8 +116,9 @@ class RSS_Feed {
 
         $refresh_time = sprintf(dgettext('rss', 'Every %s'), $time);
 
-
+        $tpl['ADDRESS'] = sprintf('<a href="%s">%s</a>', $this->address, PHPWS_Text::shortenUrl($this->address));
         $tpl['REFRESH_TIME'] = $refresh_time;
+
         return $tpl;
     }
 
