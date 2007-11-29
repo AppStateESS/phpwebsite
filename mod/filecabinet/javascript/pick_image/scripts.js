@@ -64,3 +64,47 @@ function cancel()
     window.close();
 }
 
+function pick_image(image_id, src, title, width, height) {
+    span = opener.document.getElementById(itemname + '-current-image');
+    image = opener.document.getElementById('image-manager-' + itemname);
+    hidden = opener.document.getElementById(itemname + '_hidden_value');
+    image.src = src;
+    image.title = title;
+    image.width = width;
+    image.height = height;
+
+    hidden.setAttribute('value', image_id);
+    span_update = span.innerHTML.replace(/current=\d*\'/gi, 'current=' + image_id + '\'');
+
+    span.innerHTML = span_update;
+    window.close();
+}
+
+function oversized(image_id, src, title, width, height) {
+    var link = 'index.php?module=filecabinet&aop=resize_image&authkey=' + authkey + '&mw=' + maxwidth + '&mh=' + maxheight + '&image_id=' + image_id;
+    var success = 'resize_update(requester.responseXML)';
+    var failure = 'alert(failure_message)';
+
+    if (confirm(confirm_message)) {
+        loadRequester(link, success, failure);
+    } else {
+        pick_image(image_id, src, title, width, height);
+    }
+    return false;
+}
+
+function resize_update(response)
+{
+    src = response.documentElement.getElementsByTagName('path')[0].firstChild.data;
+    image_id = response.documentElement.getElementsByTagName('id')[0].firstChild.data;
+    title = response.documentElement.getElementsByTagName('title')[0].firstChild.data;
+    width = response.documentElement.getElementsByTagName('width')[0].firstChild.data;
+    height = response.documentElement.getElementsByTagName('height')[0].firstChild.data;
+
+    if (!response) {
+        alert(failure_message);
+    } else {
+        pick_image(image_id, src, title, width, height);
+        window.location.href = window.location.href;
+    }
+}

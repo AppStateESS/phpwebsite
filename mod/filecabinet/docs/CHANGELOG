@@ -1,3 +1,12 @@
+29 November 2007
++ Delete link in image selection works again.
++ Moved scripts out of head.js and into their own files.
++ Updated: javascript/folder_contents/head.js,
+           javascript/folder_contents/scripts.js,
+           javascript/pick_image/head.js,
+           javascript/pick_image/scripts.js
+
+
 26 November 2007
 + Fixed multimedia generic thumbnail copying.
 

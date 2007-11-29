@@ -523,6 +523,9 @@ class FC_Image_Manager {
      */
     function editImage()
     {
+        // Needed for the delete link for images.
+        javascript('confirm');
+
         if (isset($_GET['current'])) {
             $image = new PHPWS_Image($_GET['current']);
             $folder = new Folder($image->folder_id);
