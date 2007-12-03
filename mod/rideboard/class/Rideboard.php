@@ -106,8 +106,8 @@ class Rideboard {
         $_SESSION['rb_search']['search_ride_type']   = (int)$_POST['search_ride_type'];
         $_SESSION['rb_search']['search_gender_pref'] = (int)$_POST['search_gender_pref'];
         $_SESSION['rb_search']['search_smoking']     = (int)$_POST['search_smoking'];
-        $_SESSION['rb_search']['s_location']         = (int)$_POST['s_location'];
-        $_SESSION['rb_search']['d_location']         = (int)$_POST['d_location'];
+        $_SESSION['rb_search']['search_s_location']  = (int)$_POST['search_s_location'];
+        $_SESSION['rb_search']['search_d_location']  = (int)$_POST['search_d_location'];
     }
 
     function user()
@@ -426,7 +426,7 @@ class Rideboard {
         $form->setMatch('gender_pref', $ride->gender_pref);
 
         $form->addSelect('smoking', array(RB_NONSMOKER  => dgettext('rideboard', 'Non-smokers only'),
-                                          RB_SMOKER     => dgettext('rideboard', 'Will ride with smokers'),
+                                          RB_SMOKER     => dgettext('rideboard', 'Prefer smokers'),
                                           RB_EITHER     => dgettext('rideboard', 'Does not matter')));
         $form->setLabel('smoking', dgettext('rideboard', 'Smoking preference'));
         $form->setMatch('smoking', $ride->smoking);
@@ -475,7 +475,7 @@ class Rideboard {
         $form->setMatch('search_gender_pref', RB_EITHER);
         
         $form->addSelect('search_smoking', array(RB_NONSMOKER  => dgettext('rideboard', 'Non-smokers only'),
-                                                 RB_SMOKER     => dgettext('rideboard', 'Smokers welcome'),
+                                                 RB_SMOKER     => dgettext('rideboard', 'Prefer smokers'),
                                                  RB_EITHER     => dgettext('rideboard', 'Does not matter')));
         $form->setLabel('search_smoking', dgettext('rideboard', 'Smoking preference'));
         $form->setMatch('search_smoking', RB_EITHER);
@@ -599,7 +599,6 @@ class Rideboard {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('rideboard', 'Ride.php');
 
-
         if (!isset($_SESSION['rb_search'])) {
             $this->title = dgettext('rideboard', 'Sorry');
             $this->content = dgettext('rideboard', 'Your session timed out.');
@@ -633,12 +632,12 @@ class Rideboard {
             $pager->db->addWhere('comments', $search, 'regexp', 'or', 1);
         }
 
-        if ($s_location) {
-            $pager->db->addWhere('s_location', $s_location);
+        if ($search_s_location) {
+            $pager->db->addWhere('s_location', $search_s_location);
         }
 
-        if ($d_location) {
-            $pager->db->addWhere('s_location', $d_location);
+        if ($search_d_location) {
+            $pager->db->addWhere('s_location', $search_d_location);
         }
 
 

@@ -184,18 +184,47 @@ class RB_Ride {
         $tpl['RIDE_TYPE_LABEL'] = dgettext('rideboard', 'Driver or Rider');
         $tpl['GEN_PREF_LABEL']  = dgettext('rideboard', 'Gender preference');
         $tpl['SMOKE_LABEL']     = dgettext('rideboard', 'Smoking preference');
-        if ($this->ride_type == RB_DRIVER) {
-            $tpl['INFO']            = sprintf(dgettext('rideboard', 'Driving from <strong>%s</strong> on <strong>%s</strong> to <strong>%s</strong>.'),
-                                              $tpl['START_LOCATION'], $tpl['DEPART_TIME'],
-                                              $tpl['DEST_LOCATION']);
-        } elseif ($this->ride_type == RB_RIDER) {
-            $tpl['INFO']            = sprintf(dgettext('rideboard', 'Need a ride from <strong>%s</strong> on or around <strong>%s</strong> to <strong>%s</strong>.'),
-                                              $tpl['START_LOCATION'], $tpl['DEPART_TIME'],
-                                              $tpl['DEST_LOCATION']);
+
+        if ($this->s_location) {
+            if ($this->d_location) {
+                $drive_info = sprintf(dgettext('rideboard', 'Driving from <strong>%s</strong> on <strong>%s</strong> to <strong>%s</strong>.'),
+                                      $tpl['START_LOCATION'], $tpl['DEPART_TIME'],
+                                      $tpl['DEST_LOCATION']);
+                $ride_info  = sprintf(dgettext('rideboard', 'Need a ride from <strong>%s</strong> on or around <strong>%s</strong> to <strong>%s</strong>.'),
+                                      $tpl['START_LOCATION'], $tpl['DEPART_TIME'],
+                                      $tpl['DEST_LOCATION']);
+                $share_info = sprintf(dgettext('rideboard', 'Sharing (driving or riding) a ride from <strong>%s</strong> on or around <strong>%s</strong> to <strong>%s</strong>.'),
+                                      $tpl['START_LOCATION'], $tpl['DEPART_TIME'],
+                                      $tpl['DEST_LOCATION']);
+            } else {
+                $drive_info = sprintf(dgettext('rideboard', 'Driving from <strong>%s</strong> on <strong>%s</strong>.'),
+                                      $tpl['START_LOCATION'], $tpl['DEPART_TIME']);
+                $ride_info  = sprintf(dgettext('rideboard', 'Need a ride from <strong>%s</strong> on or around <strong>%s</strong>.'),
+                                      $tpl['START_LOCATION'], $tpl['DEPART_TIME']);
+                $share_info = sprintf(dgettext('rideboard', 'Sharing (driving or riding) a ride from <strong>%s</strong> on or around <strong>%s</strong>.'),
+                                      $tpl['START_LOCATION'], $tpl['DEPART_TIME']);
+            }
         } else {
-            $tpl['INFO']            = sprintf(dgettext('rideboard', 'Sharing (driving or riding) a ride from <strong>%s</strong> on or around <strong>%s</strong> to <strong>%s</strong>.'),
-                                              $tpl['START_LOCATION'], $tpl['DEPART_TIME'],
-                                              $tpl['DEST_LOCATION']);
+            if ($this->d_location) {
+                $drive_info = sprintf(dgettext('rideboard', 'Driving to <strong>%s</strong> on <strong>%s</strong>.'),
+                                      $tpl['DEST_LOCATION'], $tpl['DEPART_TIME']);
+                $ride_info  = sprintf(dgettext('rideboard', 'Need a ride to <strong>%s</strong> on or around <strong>%s</strong>.'),
+                                      $tpl['DEST_LOCATION'], $tpl['DEPART_TIME']);
+                $share_info = sprintf(dgettext('rideboard', 'Sharing (driving or riding) a ride to <strong>%s</strong> on or around <strong>%s</strong>.'),
+                                      $tpl['DEST_LOCATION'], $tpl['DEPART_TIME']);
+            } else {
+                $drive_info = sprintf(dgettext('rideboard', 'Driving on <strong>%s</strong>.'), $tpl['DEPART_TIME']);
+                $ride_info  = sprintf(dgettext('rideboard', 'Need a ride on or around <strong>%s</strong>.'), $tpl['DEPART_TIME']);
+                $share_info = sprintf(dgettext('rideboard', 'Sharing (driving or riding) a ride on or around <strong>%s</strong>.'), $tpl['DEPART_TIME']);
+            }
+        }
+
+        if ($this->ride_type == RB_DRIVER) {
+            $tpl['INFO']            = $drive_info;
+        } elseif ($this->ride_type == RB_RIDER) {
+            $tpl['INFO']            = $ride_info;
+        } else {
+            $tpl['INFO']            = $share_info;
         }
 
         $tpl['COMMENT_LABEL'] = dgettext('rideboard', 'Comments');
