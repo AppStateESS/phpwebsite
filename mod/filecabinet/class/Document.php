@@ -171,6 +171,7 @@ class PHPWS_Document extends File_Common {
             $js['width'] = 550;
             $js['height'] = 430;
             $links[] = javascript('open_window', $js);
+            $js = array();
 
             $vars['aop']      = 'clip_document';
             $links[] = PHPWS_Text::moduleLink(dgettext('filecabinet', 'Clip'), 'filecabinet', $vars);
@@ -209,6 +210,10 @@ class PHPWS_Document extends File_Common {
 
         if (!is_writable($this->file_directory)) {
             return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Document::save', $this->file_directory);
+        }
+
+        if (empty($this->title)) {
+            $this->title = $this->file_name;
         }
 
         if ($write) {

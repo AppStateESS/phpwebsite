@@ -1,3 +1,7 @@
+3 December 2007
++ Fixed delete link in document listing.
++ If no title is entered for a document, it uses the file name.
+
 29 November 2007
 + Delete link in image selection works again.
 + Moved scripts out of head.js and into their own files.
