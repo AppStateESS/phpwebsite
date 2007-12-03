@@ -213,3 +213,16 @@ div.upcoming h3.day {
    margin-top : 1em;
    border-bottom : 1px solid black;
 }
+
+
+ul.event-listing {
+   font-size : 90%;
+   line-height : 1.2em;
+   margin : 0px;
+   padding : 0px;
+}
+
+ul.event-listing li {
+   margin : 0px;
+   padding : 0px;
+}

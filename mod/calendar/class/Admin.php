@@ -485,6 +485,25 @@ class Calendar_Admin {
             $this->editSchedule();
             break;
 
+        case 'blog_event':
+            if (PHPWS_Core::moduleExists('blog') &&
+                Current_User::allow('blog', 'edit_blog') && 
+                $this->calendar->schedule->checkPermissions(true)) {
+                $event = $this->calendar->schedule->loadEvent();
+                $this->blogEvent();
+            }
+            break;
+
+        case 'post_blog':
+            if (PHPWS_Core::moduleExists('blog') &&
+                Current_User::allow('blog', 'edit_blog') && 
+                $this->calendar->schedule->checkPermissions(true)) {
+                $this->postBlog();
+            }
+            javascript('close_refresh');
+            Layout::nakedDisplay();
+            break;
+
         case 'delete_event':
             if ($this->calendar->schedule->checkPermissions(true)) {
                 $event = $this->calendar->schedule->loadEvent();
@@ -702,6 +721,7 @@ class Calendar_Admin {
         PHPWS_Settings::set('calendar', 'display_mini', (int)$_POST['display_mini']);
         PHPWS_Settings::set('calendar', 'starting_day', (int)$_POST['starting_day']);
         PHPWS_Settings::set('calendar', 'default_view', $_POST['default_view']);
+        PHPWS_Settings::set('calendar', 'brief_grid', $_POST['brief_grid']);
 
         PHPWS_Settings::save('calendar');
         PHPWS_Cache::clearCache();
@@ -1096,7 +1116,7 @@ class Calendar_Admin {
             $js_vars['address'] = PHPWS_Text::linkAddress('calendar', $vars);
             $js_vars['label']   = $label;
             $js_vars['width']   = 640;
-            $js_vars['height']  = 600;
+            $js_vars['height']  = 640;
             $page_tags['ADD_CALENDAR']       = javascript('open_window', $js_vars);
         } else {
             $page_tags['ADD_CALENDAR'] = PHPWS_Text::secureLink($label, 'calendar', $vars);
@@ -1151,6 +1171,11 @@ class Calendar_Admin {
         $form->setLabel('starting_day', $start_days_label);
         $form->setMatch('starting_day', PHPWS_Settings::get('calendar', 'starting_day'));
 
+        $form->addRadio('brief_grid', array(0,1));
+        $form->setMatch('brief_grid', PHPWS_Settings::get('calendar', 'brief_grid'));
+        $form->setLabel('brief_grid', array(0 => dgettext('calendar', 'Show event titles'), 
+                                            1 => dgettext('calendar', 'Show number of events')));
+
         $form->addCheck('personal_schedules', 1);
         $form->setLabel('personal_schedules', dgettext('calendar', 'Allow personal schedules'));
         $form->setMatch('personal_schedules', PHPWS_Settings::get('calendar', 'personal_schedules'));
@@ -1175,6 +1200,7 @@ class Calendar_Admin {
         $form->addSubmit(dgettext('calendar', 'Save settings'));
         $tpl = $form->getTemplate();
 
+        $tpl['BRIEF_GRID_LABEL'] = dgettext('calendar', 'Grid event display');
         $tpl['MINI_CALENDAR'] = dgettext('calendar', 'Display mini calendar');
 
         $tpl['START_LABEL'] = dgettext('calendar', 'Week start day');
@@ -1183,6 +1209,62 @@ class Calendar_Admin {
         $this->title   = dgettext('calendar', 'Calendar settings');
     }
 
+    function blogEvent()
+    {
+        $event = $this->calendar->schedule->loadEvent();
+        $form = new PHPWS_Form('blog_event');
+        $form->addHidden('module', 'calendar');
+        $form->addHidden('aop', 'post_blog');
+        $form->addHidden('event_id', $event->id);
+        $form->addHidden('sch_id', $this->calendar->schedule->id);
+
+        $advance[0]  = dgettext('calendar', 'Date of occurence');
+        $advance[1]  = dgettext('calendar', 'A day prior');
+        $advance[2]  = dgettext('calendar', 'Two days prior');
+        $advance[3]  = dgettext('calendar', 'Three days prior');
+        $advance[7]  = dgettext('calendar', 'A week prior');
+        $advance[14] = dgettext('calendar', 'Two weeks prior');
+        $advance[30] = dgettext('calendar', 'One month prior');
+        $form->addSelect('advance_post', $advance);
+        $form->setLabel('advance_post', dgettext('calendar', 'When should it post?'));
+        $form->addSubmit(dgettext('calendar', 'Post to Blog'));
+
+        $tpl = $form->getTemplate();
+        $tpl['CLOSE'] = javascript('close_window');
+        $this->title = dgettext('calendar', 'Post Event to Blog');
+        $this->content = PHPWS_Template::process($tpl, 'calendar', 'admin/forms/blog.tpl');
+    }
+
+    function postBlog()
+    {
+        $event = $this->calendar->schedule->loadEvent();
+
+        if (!PHPWS_Core::initModClass('blog', 'Blog.php')) {
+            return;
+        }
+        $blog = new Blog;
+        $blog->title = $event->summary;
+
+        $tpl = $event->tplFormatTime();
+        $summary[] = sprintf('%s %s %s', $tpl['START_TIME'], $tpl['TO'], $tpl['END_TIME']);
+        if (!empty($event->location)) {
+            $summary[] = $event->getLocation(); 
+        }
+
+        $blog->summary = PHPWS_Text::parseInput('<p class="calendar-post">' . implode('<br />', $summary) . '</p>') . $event->description;
+        $blog->approved = 1;
+
+        $days = (int)$_POST['advance_post'];
+
+        $publish = $event->start_time - ($days * 86400);
+        if ($publish < mktime()) {
+            $blog->publish_date = mktime();
+        } else {
+            $blog->publish_date = & $publish;
+        }
+
+        return !PHPWS_Error::logIfError($blog->save());
+    }
 }
 
 ?>

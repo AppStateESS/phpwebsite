@@ -21,12 +21,15 @@
         </td>
     </tr>
     <tr>
-        <td>
-            {DEFAULT_VIEW_LABEL}
-        </td>
+        <td><strong>{DEFAULT_VIEW_LABEL}</strong></td>
         <td>
             {DEFAULT_VIEW}
         </td>
+    </tr>
+    <tr>
+        <td><strong>{BRIEF_GRID_LABEL}</strong></td>
+        <td>{BRIEF_GRID_1} {BRIEF_GRID_1_LABEL}<br />
+            {BRIEF_GRID_2} {BRIEF_GRID_2_LABEL}</td>    
     </tr>
 </table>
 {SUBMIT}

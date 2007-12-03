@@ -14,7 +14,9 @@
       <tr>
       {CAL_ROW}
       <!-- BEGIN calendar-col --><td class="{CLASS}"><div class="cal-day">{DAY}</div>
-      <!-- BEGIN calendar-events --><div class="cal-events">{COUNT}</div><!-- END calendar-events --></td><!-- END calendar-col -->
+      <!-- BEGIN calendar-events --><div class="cal-events">{COUNT}
+      <!-- BEGIN show-events --><ul class="event-listing"><!-- BEGIN event-list --><li>{EVENT}</li><!-- END event-list --></ul><!-- END show-events -->
+      </div><!-- END calendar-events --></td><!-- END calendar-col -->
       </tr>
     <!-- END calendar-row -->
     </table>

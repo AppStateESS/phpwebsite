@@ -380,16 +380,19 @@ class Calendar_User {
     }
 
     /**
-     * Fills in event totals for each day
+     * Fills in event totals for each day in month grids
      */
-    function _month_days(&$oMonth, &$oTpl, $link_days=true)
+    function _month_days(&$oMonth, &$oTpl, $link_days=true, $list_events=false)
     {
         while($day = $oMonth->fetch()) {
+            $data = array();
             $data['COUNT'] = null;
             $no_of_events = 0;
 
-            if (isset($this->calendar->sorted_list[$day->year]['months'][$day->month]['days'][$day->day]['events'])) {
-                $no_of_events = count($this->calendar->sorted_list[$day->year]['months'][$day->month]['days'][$day->day]['events']);
+            @$events = &$this->calendar->sorted_list[$day->year]['months'][$day->month]['days'][$day->day]['events'];
+
+            if (isset($events)) {
+                $no_of_events = count($events);
             } 
 
             if ($link_days || $no_of_events) {
@@ -409,10 +412,21 @@ class Calendar_User {
             }
 
             if ($no_of_events) {
-                $data['COUNT'] = PHPWS_Text::moduleLink(sprintf('%s event(s)', $no_of_events), 
-                                                        'calendar', array('view'=>'day',
-                                                                          'date'=>$day->thisDay(true),
-                                                                          'sch_id'=>$this->calendar->schedule->id));
+                if ($list_events) {
+                    foreach ($events as $event) {
+                        $event_tpl['EVENT'] = $event->getSummary();
+                        $oTpl->setCurrentBlock('event-list');
+                        $oTpl->setData($event_tpl);
+                        $oTpl->parseCurrentBlock();
+                    }
+
+                    //                    $data['EVENTS'] = implode('<br />', $listing);
+                } else {
+                    $data['COUNT'] = PHPWS_Text::moduleLink(sprintf('%s event(s)', $no_of_events), 
+                                                            'calendar', array('view'=>'day',
+                                                                              'date'=>$day->thisDay(true),
+                                                                              'sch_id'=>$this->calendar->schedule->id));
+                }
             }
 
             $oTpl->setCurrentBlock('calendar-col');
@@ -478,11 +492,11 @@ class Calendar_User {
         reset($oMonth->children);
 
         // create day cells in grid
-        $this->_month_days($oMonth, $oTpl);
+        $this->_month_days($oMonth, $oTpl, true, !PHPWS_Settings::get('calendar', 'brief_grid'));
 
         $vars['date'] = mktime(0,0,0,$month, 1, $year);
         $vars['view'] = 'grid';
-        $template['FULL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
+        $template['FULL_MONTH_NAME']    = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
         $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
 
         $template['TITLE']         = $this->calendar->schedule->title;
@@ -533,7 +547,6 @@ class Calendar_User {
 
         $date_pick = $this->getDatePick();
 
-
         $this->calendar->loadEventList($startdate, $enddate);
 
         $tpl = new PHPWS_Template('calendar');
@@ -542,6 +555,7 @@ class Calendar_User {
         $events_found = false;
         for ($i = $startdate; $i <= $enddate; $i += 86400) {
             $day_result = $this->getDaysEvents($i, $tpl);
+
             if ($day_result) {
                 $events_found = true;
                 $day_tpl['FULL_WEEKDAY'] = PHPWS_Text::moduleLink(strftime('%A', $i), 'calendar',

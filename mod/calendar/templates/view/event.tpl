@@ -9,7 +9,7 @@
         </div>
         <div class="box-content">
             <div class="description">{DESCRIPTION}</div>
-            <div class="align-right"><!-- BEGIN admin -->{LINKS} | <!-- END admin-->{BACK_LINK}</div>
+            <div class="align-right"><!-- BEGIN admin -->{LINKS} | <!-- END admin -->{BACK_LINK}</div>
         </div>
     </div>
 </div>

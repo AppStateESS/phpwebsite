@@ -200,6 +200,21 @@ class Calendar_Event {
     }
 
 
+    function blogLink()
+    {
+        $var['aop']      = 'blog_event';
+        $var['sch_id']   = $this->_schedule->id;
+        $var['event_id'] = $this->id;
+        $var['js']       = 1;
+
+        $js['address'] = PHPWS_Text::linkAddress('calendar', $var, true);
+        $js['label'] = dgettext('calendar', 'Blog this');
+        $js['width'] = '320';
+        $js['height'] = '240';
+        return javascript('open_window', $js);
+    }
+
+
     function editLink($full=false)
     {
         $linkvar['aop']      = 'edit_event';
@@ -312,26 +327,16 @@ class Calendar_Event {
     function getSummary($linked=true)
     {
         if ($linked) {
-            $vars['view']   = 'event';
-            $vars['event_id']     = $this->id;
-            $vars['sch_id'] = $this->_schedule->id;
-            $url = PHPWS_Text::linkAddress('calendar', $vars, false, true);
+            $url = $this->getViewLink();
             return sprintf('<a href="%s" class="url">%s</a>', $url, $this->summary);
         } else {
             return $this->summary;
         }
     }
 
-    function getTpl()
+    function tplFormatTime()
     {
-        
-        if ( $this->show_busy && !$this->_schedule->checkPermissions() ) {
-            $tpl['SUMMARY']     = dgettext('calendar', 'Busy');
-            $tpl['DESCRIPTION'] = null;
-        } else {
-            $tpl['SUMMARY']     = $this->getSummary();
-            $tpl['DESCRIPTION'] = $this->getDescription();
-        }
+        static $tpl = null;
 
         if (CALENDAR_MONTH_FIRST) {
             $month_day_mode = '%B %e';
@@ -341,6 +346,8 @@ class Calendar_Event {
 
         if ($this->all_day) {
             $tpl['TO'] = '&ndash;';
+            $tpl['START_TIME'] = $this->formatStartTime();
+
             if (date('Ymd', $this->start_time) != date('Ymd', $this->end_time)) {
                 if (CALENDAR_MONTH_FIRST) {
                     if (date('Y', $this->start_time) != date('Y', $this->end_time)) {
@@ -401,24 +408,49 @@ class Calendar_Event {
             $tpl['TO'] = dgettext('calendar', 'to');
         }
 
+        return $tpl;
+    }
+
+
+    function getLocation()
+    {
+        if (!empty($this->loc_link)) {
+            return sprintf('<a href="%s" title="%s">%s</a>',
+                                       PHPWS_Text::checkLink($this->loc_link),
+                                       dgettext('calendar', 'Visit this location\'s web site.'),
+                                       $this->location);
+        } else {
+            return $this->location;
+        }
+    }
+
+    function getTpl()
+    {
+        $tpl = $this->tplFormatTime();
+
+        if ( $this->show_busy && !$this->_schedule->checkPermissions() ) {
+            $tpl['SUMMARY']     = dgettext('calendar', 'Busy');
+            $tpl['DESCRIPTION'] = null;
+        } else {
+            $tpl['SUMMARY']     = $this->getSummary();
+            $tpl['DESCRIPTION'] = $this->getDescription();
+        }
 
         if ($this->_schedule->checkPermissions()) {
             $link[] = $this->editLink();
             $link[] = $this->deleteLink();
+            if (PHPWS_Core::moduleExists('blog')) {
+                if (Current_User::allow('blog', 'edit_blog', null, null, true)) {
+                    $link[] = $this->blogLink();
+                }
+            }
             $tpl['LINKS'] = implode(' | ', $link);
         }
+
         
         if (!empty($this->location)) {
             $tpl['LOCATION_LABEL'] = dgettext('calendar', 'Location');
-
-            if (!empty($this->loc_link)) {
-                $tpl['LOCATION'] = sprintf('<a href="%s" title="%s">%s</a>',
-                                           PHPWS_Text::checkLink($this->loc_link),
-                                           dgettext('calendar', 'Visit this location\'s web site.'),
-                                           $this->location);
-            } else {
-                $tpl['LOCATION'] = $this->location;
-            }
+            $tpl['LOCATION'] = $this->getLocation();
         }
 
         $tpl['BACK_LINK'] = PHPWS_Text::backLink();
@@ -428,9 +460,9 @@ class Calendar_Event {
 
     function getViewLink()
     {
-        $vars['view']   = 'event';
-        $vars['event_id']     = $this->id;
-        $vars['sch_id'] = $this->_schedule->id;
+        $vars['view']     = 'event';
+        $vars['event_id'] = $this->id;
+        $vars['sch_id']   = $this->_schedule->id;
         return PHPWS_Text::linkAddress('calendar', $vars);
     }
     

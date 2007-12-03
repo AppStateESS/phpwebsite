@@ -8,7 +8,6 @@
     {ADD_EVENT}
     <!-- BEGIN message --><p>{MESSAGE}</p><!-- END message -->
         <div class="month-view">
-        <!-- BEGIN message -->{MESSAGE}<!-- END message -->
         <!-- BEGIN days -->
             <div class="day bgcolor1">{FULL_WEEKDAY} {DAY_NUMBER}</div>
             <!-- BEGIN calendar-events -->

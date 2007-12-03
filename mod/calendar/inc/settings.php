@@ -21,6 +21,7 @@ $settings = array('use_calendar_style' => 1,
                   'default_view'       => 'grid',
                   'allow_submissions'  => 0,
                   'mini_event_link'    => 0,
-                  'cache_month_views'  => 0);
+                  'cache_month_views'  => 0,
+                  'brief_grid'         => 0);
 
 ?>
