@@ -1,3 +1,8 @@
+4 December 2007
++ Fixed printErrors function in File_Common.
++ If pear return application/octet-stream as the mime type, file
+  common tries to use mime_content_type to verify.
+
 3 December 2007
 + Fixed delete link in document listing.
 + If no title is entered for a document, it uses the file name.

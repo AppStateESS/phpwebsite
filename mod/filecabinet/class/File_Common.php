@@ -166,6 +166,13 @@ class File_Common {
 
             $this->file_type = $file_vars['type'];
 
+            if ($this->file_type == 'application/octet-stream' && function_exists('mime_content_type')) {
+                $mime = mime_content_type($file_vars['tmp_name']);
+                if ($mime != $this->file_type) {
+                    $this->file_type = & $mime;
+                }
+            }
+
             if ($this->size && !$this->allowSize()) {
                 if ($this->_classtype == 'document') {
                     $this->_errors[] = PHPWS_Error::get(FC_DOCUMENT_SIZE, 'filecabinet', 'File_Common::importPost', array($this->size, $this->_max_size));
@@ -294,8 +301,8 @@ class File_Common {
 
     function printErrors()
     {
-        if ( !empty($this->errors) && is_array($this->errors) ) {
-            foreach ($this->errors as $error) {
+        if ( !empty($this->_errors) && is_array($this->_errors) ) {
+            foreach ($this->_errors as $error) {
                 $foo[] = $error->getMessage();
             }
             return implode('<br />', $foo);
