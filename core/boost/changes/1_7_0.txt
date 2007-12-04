@@ -1,0 +1,88 @@
+Core Version 1.7.0
+
+Classes
+----------------------------------------------
++ Batch
+  o Added nextPage function to Batch. Automatically adds the meta tag
+    forward.
+  o Added graph padding to total width of graph.
+
++ File
+  o Added gd check to cropImage
+  o Added sanity check to scaleImage. If width and height of image is
+    less than the resize only copy if the source and destination
+    directories are different.
+  o Fixed makeThumbnail function. Works as intended again.
+
++ Text
+  o Added area tag to breaker function in Text class.
+
++ DBPager
+  o DBPager can now order by joined columns.
+  o Can now search columns on joined tables entered with joinResult.
+  o initialize function now has optional parameter that delays
+    the row loading.
+  o Error prevention added to getPageRows function.
+  o Added Eloi George's patch #1814159 to DBPager.php.
+
++ Form
+  o Added new function, dateSelect. Works sort of like the old
+    dateForm.
+  o Added getPostedDate. Returns unix time from last posted
+    dateSelect. 
+  o Added testDate function to verify correct dateSelect dates.
+  o Fixed: Form wasn't properly creating id tags on array elements.
+  o Added function addRadioAssoc, allows you to send an associative
+    array to create a set of radio buttons. The array keys are the
+    input values and the array values are the labels.
+
++ Database
+  o AddWhere needed a little fix for the source column to use table as.
+  o Added '~' and 'RLIKE' to allowed operators.
+  o mysql and psql sub classes now handle regular expression calls
+    properly.
+  o Added ability to reference table names.
+  o Small change to allow numerical prefixes.
+  o Added order and limit to update and delete function.
+
++ Key
+  o Removed construct by reference calls in Key.
+  o Moved permissions updates from save to savePermissions
+    function. Key was removing permissions after each successful
+    save. 
+
++ Mail
+  o Added HTML email capabilities.
+
+
+Other changes
+---------------------------------------------------
+
++ Convert
+  o Form Generator convert was not reindexing the new form tables.
+  o PageSmith and Web Page conversions remove the old menu suffixes.
+
++ Docs
+  o Added information about using addJoin in Database_Class.txt
+  o Small change to Language.txt. Need to pick up dngettext files as
+    well.
+  o Updated Forms documentation with dateSelect information.
+  o Updated Database_Class.txt with table reference information.
+  o Changed incorrect detail in Demographics document.
+  o Added loadClass information to Database.txt
+  o Updated Image_Manager documentation.
+  o Updated ControlPanel.txt with information on adding link_titles
+    and using Panel's new display parameters.
+  o Added note to freecap CAPTCHA
+
++ Setup
+  o Put a GD lib check into setup.
+
++ Javascript
+  o Added default 'No label' to open_window if one is not entered.
+  o Added open_window type information in example.
+  o Added random number to open_window window title to allow multiple
+    popups.
+
++ Default theme
+  o Fixed bad css in default theme.

@@ -163,6 +163,13 @@ function core_update(&$content, $version) {
         }
         $content[] = '</pre>';
 
+    case version_compare($version, '1.7.0', '<'):
+        $content[] = '<pre>';
+
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_7_0.txt');
+        }
+        $content[] = '</pre>';
 
     }
     return true;
