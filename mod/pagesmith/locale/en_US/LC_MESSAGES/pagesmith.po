@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-01 10:32-0400\n"
+"POT-Creation-Date: 2007-12-04 09:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +20,9 @@ msgid "(Untitled)"
 msgstr ""
 
 msgid "Action"
+msgstr ""
+
+msgid "Add to front"
 msgstr ""
 
 msgid "An error occurred when trying to load the page template."
@@ -92,12 +95,6 @@ msgstr ""
 msgid "No pages have been created."
 msgstr ""
 
-msgid "Off&nbsp;front"
-msgstr ""
-
-msgid "On&nbsp;front"
-msgstr ""
-
 msgid "Page Title (edit above)"
 msgstr ""
 
@@ -119,6 +116,9 @@ msgstr ""
 msgid "Pick a template"
 msgstr ""
 
+msgid "Remove from front"
+msgstr ""
+
 msgid "Save page"
 msgstr ""
 
@@ -135,4 +135,10 @@ msgid "Update page"
 msgstr ""
 
 msgid "Updated"
+msgstr ""
+
+msgid ""
+"You have exceeded the allowed character limit. The page will not save "
+"correctly. Click ok to save the text anyway, cancel to return to previous "
+"version."
 msgstr ""
