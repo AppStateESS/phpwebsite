@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-25 11:25-0400\n"
+"POT-Creation-Date: 2007-12-04 09:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,6 +26,12 @@ msgid "3rd"
 msgstr ""
 
 msgid "4th"
+msgstr ""
+
+msgid "A day prior"
+msgstr ""
+
+msgid "A week prior"
 msgstr ""
 
 msgid "Action"
@@ -87,6 +93,9 @@ msgstr ""
 msgid "Beginning of each month"
 msgstr ""
 
+msgid "Blog this"
+msgstr ""
+
 msgid "Busy"
 msgstr ""
 
@@ -133,6 +142,9 @@ msgid "Create/Edit public schedule"
 msgstr ""
 
 msgid "Daily"
+msgstr ""
+
+msgid "Date of occurence"
 msgstr ""
 
 msgid "Day"
@@ -228,6 +240,9 @@ msgstr ""
 msgid "Grid"
 msgstr ""
 
+msgid "Grid event display"
+msgstr ""
+
 msgid "Incorrect option"
 msgstr ""
 
@@ -298,6 +313,9 @@ msgstr ""
 msgid "On all pages"
 msgstr ""
 
+msgid "One month prior"
+msgstr ""
+
 msgid "Only link days with events in mini calendar"
 msgstr ""
 
@@ -314,6 +332,12 @@ msgid "Please pick a monthly repeat method."
 msgstr ""
 
 msgid "Please pick a proper monthly repeat method."
+msgstr ""
+
+msgid "Post Event to Blog"
+msgstr ""
+
+msgid "Post to Blog"
 msgstr ""
 
 msgid "Previous day"
@@ -386,7 +410,13 @@ msgstr ""
 msgid "Show busy"
 msgstr ""
 
+msgid "Show event titles"
+msgstr ""
+
 msgid "Show next two weeks"
+msgstr ""
+
+msgid "Show number of events"
 msgstr ""
 
 msgid "Show upcoming events"
@@ -437,6 +467,9 @@ msgstr ""
 msgid "This week"
 msgstr ""
 
+msgid "Three days prior"
+msgstr ""
+
 msgid "Title"
 msgstr ""
 
@@ -444,6 +477,12 @@ msgid "Title / Time / Description"
 msgstr ""
 
 msgid "Today"
+msgstr ""
+
+msgid "Two days prior"
+msgstr ""
+
+msgid "Two weeks prior"
 msgstr ""
 
 msgid "Unable to save your event suggestion."
@@ -477,6 +516,9 @@ msgid "Weekly"
 msgstr ""
 
 msgid "Weekly repeats require you pick one or more days."
+msgstr ""
+
+msgid "When should it post?"
 msgstr ""
 
 msgid "Yearly"
