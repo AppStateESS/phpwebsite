@@ -165,6 +165,8 @@ function core_update(&$content, $version) {
 
     case version_compare($version, '1.7.0', '<'):
         $content[] = '<pre>';
+        $files = array('templates/graph.tpl', 'img/ajax-loader.gif');
+        coreUpdateFiles($files, $content);
 
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_7_0.txt');
