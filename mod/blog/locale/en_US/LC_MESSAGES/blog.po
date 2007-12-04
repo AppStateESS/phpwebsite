@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-03 16:05-0400\n"
+"POT-Creation-Date: 2007-12-04 09:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -117,10 +117,16 @@ msgstr ""
 msgid "Cache anonymous view"
 msgstr ""
 
+msgid "Category"
+msgstr ""
+
 msgid "Change settings (Unrestricted only)"
 msgstr ""
 
 msgid "Clip for menu"
+msgstr ""
+
+msgid "Comment"
 msgstr ""
 
 msgid "Create first blog entry!"
@@ -207,6 +213,9 @@ msgstr ""
 msgid "Only on home page"
 msgstr ""
 
+msgid "Only show one category icon"
+msgstr ""
+
 msgid "Please enter word in image correctly."
 msgstr ""
 
@@ -259,6 +268,12 @@ msgid "Settings"
 msgstr ""
 
 msgid "Show blog on home page"
+msgstr ""
+
+msgid "Show category icons"
+msgstr ""
+
+msgid "Show category links"
 msgstr ""
 
 msgid "Show recent entries"
