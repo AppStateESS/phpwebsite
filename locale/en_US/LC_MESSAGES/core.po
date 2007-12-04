@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-01 10:30-0400\n"
+"POT-Creation-Date: 2007-12-04 09:43-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -388,17 +388,7 @@ msgstr ""
 msgid "Directory is not writable."
 msgstr ""
 
-msgid "Directory not set."
-msgstr ""
-
 msgid "Do you want phpWebSite to create the database?"
-msgstr ""
-
-msgid "Document not found."
-msgstr ""
-
-#, php-format
-msgid "Document was %sK making it larger than %sK size limit."
 msgstr ""
 
 msgid "Documents module converted."
@@ -465,13 +455,7 @@ msgstr ""
 msgid "File not found."
 msgstr ""
 
-msgid "File not uploaded."
-msgstr ""
-
 msgid "File not writable."
-msgstr ""
-
-msgid "Filename not set."
 msgstr ""
 
 msgid "Finished converting Photo Album."
@@ -593,21 +577,6 @@ msgstr ""
 msgid ""
 "If your host specification requires access via a specific port, enter it "
 "here."
-msgstr ""
-
-#, php-format
-msgid "Image height was %spx, making it larger than %d pixel limit."
-msgstr ""
-
-msgid "Image not found"
-msgstr ""
-
-#, php-format
-msgid "Image was %sK making it larger than %sK size limit."
-msgstr ""
-
-#, php-format
-msgid "Image width was %spx, making it larger than %d pixel limit."
 msgstr ""
 
 msgid "Images copied during a 0.10.x conversion."
@@ -1103,9 +1072,6 @@ msgstr ""
 msgid "There is a problem with your sessions."
 msgstr ""
 
-msgid "There was a problem loading the image file."
-msgstr ""
-
 msgid ""
 "This is an incomplete object. If this is a sessioned object, make sure to "
 "declare the class before the variable."
@@ -1174,12 +1140,6 @@ msgid "Unable to write %s file."
 msgstr ""
 
 msgid "Unable to write to log directory."
-msgstr ""
-
-msgid "Unacceptable document type."
-msgstr ""
-
-msgid "Unacceptable image type."
 msgstr ""
 
 msgid "Unapproved"
