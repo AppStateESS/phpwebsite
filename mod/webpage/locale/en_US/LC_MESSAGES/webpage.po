@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-01 10:32-0400\n"
+"POT-Creation-Date: 2007-12-04 09:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,6 +27,9 @@ msgid "A problem occurred when trying to approve a web page."
 msgstr ""
 
 msgid "A problem occurred when trying to delete your webpage."
+msgstr ""
+
+msgid "A problem occurred when trying to disapprove a web page."
 msgstr ""
 
 msgid "Action"
@@ -92,6 +95,9 @@ msgstr ""
 msgid "Attempted to approve a webpage."
 msgstr ""
 
+msgid "Attempted to disapprove a webpage."
+msgstr ""
+
 msgid "Cannot find template file."
 msgstr ""
 
@@ -116,7 +122,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-msgid "Delete page"
+msgid "Delete page (Unrestricted only)"
 msgstr ""
 
 msgid "Disapprove"
@@ -300,7 +306,7 @@ msgstr ""
 msgid "Save settings"
 msgstr ""
 
-msgid "Set featured pages"
+msgid "Set featured pages  (Unrestricted only)"
 msgstr ""
 
 msgid "Settings"
@@ -310,6 +316,9 @@ msgid "Settings saved."
 msgstr ""
 
 msgid "Simple image forms"
+msgstr ""
+
+msgid "Sorry, this web page is restricted."
 msgstr ""
 
 msgid "Sort"
@@ -361,6 +370,9 @@ msgid "Web Pages"
 msgstr ""
 
 msgid "Web page approved."
+msgstr ""
+
+msgid "Web page disapproved."
 msgstr ""
 
 msgid "Webpage title"
