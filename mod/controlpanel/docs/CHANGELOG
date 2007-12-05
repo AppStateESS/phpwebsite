@@ -1,3 +1,5 @@
+Version 2.1.4
+--------------------------------------------------------------
 12 October 2007
 + Panel::display now includes the options to send content, title, and
   message information to be put in a default template.

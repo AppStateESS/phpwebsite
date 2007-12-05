@@ -11,7 +11,7 @@ function controlpanel_update(&$content, $currentVersion)
     case version_compare($currentVersion, '2.0.3', '<'):
         $content[] = '<pre>';
         $files = array('templates/style.css');
-        filecabUpdate($files, $content);
+        cpFileUpdate($files, $content);
 
         $content[] = '2.0.3 Changes
 ------------
@@ -23,7 +23,7 @@ function controlpanel_update(&$content, $currentVersion)
     case version_compare($currentVersion, '2.1.0', '<'):
         $files = array('templates/link_form.tpl','templates/panelList.tpl','templates/tab_form.tpl', 'img/controlpanel.png');
         $content[] = '<pre>';
-        filecabUpdate($files, $content);
+        cpFileUpdate($files, $content);
         $content[] = '
 2.1.0 Changes
 --------------
@@ -38,7 +38,7 @@ function controlpanel_update(&$content, $currentVersion)
     case version_compare($currentVersion, '2.1.1', '<'):
         $files = array('templates/link_form.tpl','templates/panelList.tpl','templates/tab_form.tpl', 'img/controlpanel.png', 'templates/style.css');
         $content[] = '<pre>';
-        filecabUpdate($files, $content);
+        cpFileUpdate($files, $content);
         $content[] = '
 2.1.1 Changes
 --------------
@@ -52,7 +52,7 @@ function controlpanel_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '2.1.2', '<'):
         $content[] = '<pre>';
-        filecabUpdate(array('templates/style.css'), $content);
+        cpFileUpdate(array('templates/style.css'), $content);
         $content[] = '2.1.2 changes
 ----------------
 + Control panel will now direct a user to login if their session times
@@ -69,11 +69,19 @@ function controlpanel_update(&$content, $currentVersion)
   user to mouse over tabs to get extended information.
 </pre>';
 
+    case version_compare($currentVersion, '2.1.4', '<'):
+        $content[] = '<pre>';
+        cpFileUpdate(array('templates/default.tpl'), $content);
+        $content[] = '2.1.4 changes
+----------------
++ Panel::display now includes the options to send content, title, and
+  message information to be put in a default template.
+</pre>';
     }
     return true;
 }
 
-function filecabUpdate($files, &$content) {
+function cpFileUpdate($files, &$content) {
     if (PHPWS_Boost::updateFiles($files, 'controlpanel')) {
         $content[] = '-- Successfully updated the following files:';
     } else {
