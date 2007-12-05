@@ -193,6 +193,13 @@ function blog_update(&$content, $currentVersion)
         }
         $content[] = '</pre>';
 
+  case version_compare($currentVersion, '1.6.3', '<'):
+        $content[] = '<pre>
+1.6.3 changes
+----------------
++ Small fix to allow linkable images on cached pages.        
+</pre>';
+
 
     } // end of switch
     return true;

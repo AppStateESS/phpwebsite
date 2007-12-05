@@ -70,6 +70,7 @@ class Blog {
             $image->logErrors();
             return null;
         }
+
         return $image->getTag();
     }
 

@@ -65,11 +65,6 @@ function pagesmith_update(&$content, $currentVersion)
         $source_dir = PHPWS_SOURCE_DIR . 'mod/pagesmith/templates/page_templates/text_only/';
         $dest_dir   = $home_dir . 'templates/pagesmith/page_templates/text_only/';
 
-        /*
-        if (!is_dir($dest_dir)) {
-            @mkdir($dest_dir);
-        }
-        */
         if (PHPWS_File::copy_directory($source_dir, $dest_dir)) {
             $content[] = "--- Successfully copied $source_dir\n    to $dest_dir\n";
         } else {
@@ -109,6 +104,14 @@ function pagesmith_update(&$content, $currentVersion)
 + Added move to front to miniadmin
 + Fixed text_only template. Missing closing div tag.
 </pre>';
+
+    case version_compare($currentVersion, '1.0.6', '<'):
+        $content[] = '<pre>
+1.0.6 changes
+-------------
++ Small fix to allow linkable images on cached pages.
+</pre>';
+
 
     } // end switch
 

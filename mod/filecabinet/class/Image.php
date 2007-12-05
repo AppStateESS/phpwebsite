@@ -232,6 +232,7 @@ class PHPWS_Image extends File_Common {
             if ($this->url == 'parent' && $this->parent_id) {
                 $parent = new PHPWS_Image($this->parent_id);
                 if ($parent->id) {
+                    echo 1;
                     $image_tag = $parent->getJSView(false, $image_tag);
                 }
             } elseif($this->url == 'folder') {

@@ -1,0 +1,16 @@
+1.0.1 Changes
+------------------------------------------------------------
++ The front page indicator (yes/no) is now linkable.
++ The volume listing is restricted by edit rights.
++ canEdit function in Volume fixed.
++ Labeled Feature and Delete page permissions as Unrestricted only
++ Moved permission checks out to individual commands.
++ Added missing disapprove function.
++ Restricted users can no longer join, move, de/activate pages.
++ When restricted users added pages, they weren't showing up when
+  trying to edit again.
++ Removed delete, de/activate and move options from web page listing
+  for restricted users.
++ Added canEdit function to volume to ease permission checks.
++ Commented drop down box on page listing to hide area for restricted
+  users. 

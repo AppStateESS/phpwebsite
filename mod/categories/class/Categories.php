@@ -204,6 +204,9 @@ class Categories{
     {
         $link = NULL;
         $cat_result = Categories::catList($key);
+        if (empty($cat_result)) {
+            return null;
+        }
         foreach ($cat_result as $cat){
             if (!$cat->id && !$show_uncategorized) {
                 continue;

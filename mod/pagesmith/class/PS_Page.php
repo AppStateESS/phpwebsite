@@ -273,6 +273,8 @@ class PS_Page {
         $this->flag();
         
         if (!empty($content)) {
+            // needed for filecabinet
+            javascript('open_window');
             return $content;
         }
 

@@ -192,6 +192,8 @@ class Blog_User {
             !Current_User::allow('blog') &&
             PHPWS_Settings::get('blog', 'cache_view') &&
             $content = PHPWS_Cache::get($key)) {
+            // needed for filecabinet
+            javascript('open_window');
             return $content;
         }
 
