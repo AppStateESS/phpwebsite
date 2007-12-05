@@ -6,7 +6,7 @@
    */
 
 $proper_name  = 'Version';
-$version      = '0.1.5';
+$version      = '0.1.6';
 $register     = FALSE;
 $unregister   = TRUE;
 $import_sql   = FALSE;

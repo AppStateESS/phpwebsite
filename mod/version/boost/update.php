@@ -61,6 +61,14 @@ function version_update(&$content, $currentVersion)
   #1678115
 </pre>';
 
+    case version_compare($currentVersion, '0.1.6', '<'):
+        $content[] = '<pre>
+0.1.6 changes
+-------------
++ Many minor changes
++ New translations
+</pre>';
+
 
     }
     return TRUE;
