@@ -24,6 +24,12 @@ function clipboard_update(&$content, $currentVersion)
 -------------
 + Updated language functions.</pre>';
 
+    case version_compare($currentVersion, '1.0.1', '<'):
+        $content[] = '<pre>1.0.1 changes
+-------------
++ Added different window titles.
++ Increased popup width.</pre>';
+
     }
 
     return true;
