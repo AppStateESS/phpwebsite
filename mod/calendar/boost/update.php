@@ -169,6 +169,22 @@ function calendar_update(&$content, $version)
 -----------
 + Fixed issues with js_calendar.</pre>';
 
+    case version_compare($version, '1.6.0', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/style.css', 'templates/admin/forms/blog.tpl',
+                       'templates/admin/settings.tpl', 'templates/view/day.tpl',
+                       'templates/view/event.tpl', 'templates/view/month/grid.tpl',
+                       'templates/view/month/list.tpl');
+        calendarUpdateFiles($files, $content);
+        $content[] = '1.6.0 changes
+-------------------
++ Month grid view can be set to show events
++ Calendar events can be posted in the blog
++ Paragraph tag around day message
++ Fixed comment in event tpl preventing bar from disappearing in user
+  mode
++ Removed extra message tag from month list view.
++ Applied patch #1813081 from aDarkling</pre>';
 
     } // end of switch
 
