@@ -100,6 +100,16 @@ function pagesmith_update(&$content, $currentVersion)
 + Fixed pagesmith edit permission.
 + PageSmith home pages were missing edit link.</pre>';
 
+    case version_compare($currentVersion, '1.0.5', '<'):
+        $content[] = '<pre>';
+        pagesmithUpdateFiles(array('templates/page_templates/text_only/page.tpl'), $content);
+        $content[] ='1.0.5 changes
+----------------
++ Changed wording on move to front functionality
++ Added move to front to miniadmin
++ Fixed text_only template. Missing closing div tag.
+</pre>';
+
     } // end switch
 
     return true;
