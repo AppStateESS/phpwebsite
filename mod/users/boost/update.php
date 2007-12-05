@@ -156,6 +156,21 @@ timeout INT NOT NULL default 0,
         }
         $content[] = '</pre>';
 
+    case version_compare($currentVersion, '2.4.6', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/forms/forgot.tpl');
+        userUpdateFiles($files, $content);
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = '
+2.4.6 changes
+-------------------
++ Added error check to permission menu.
++ Error for missing user groups now reports user id.
++ Forgot password will work if CAPTCHA is disabled.
++ Using new savePermissions function instead of save.
++ Current_User was calling giveItemPermissions incorrectly.';
+        }
+        $content[] = '</pre>';
 
     } // End of switch statement
 
