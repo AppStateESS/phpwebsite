@@ -5,7 +5,7 @@
    */
 
 $proper_name  = 'RSSFeeds';
-$version      = '0.2.2';
+$version      = '0.2.3';
 $import_sql   = TRUE;
 $register     = TRUE;
 $unregister   = FALSE;

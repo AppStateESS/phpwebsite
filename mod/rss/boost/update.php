@@ -76,6 +76,16 @@ function rss_update(&$content, $version)
 + Added Vietnamese translation.
 </pre>';
 
+    case version_compare($version, '0.2.3', '<'):
+        PHPWS_Boost::updateFiles(array('templates/admin_feeds.tpl'), 'rss');
+        $content[] = '<pre>
+0.2.3 changes
+-------------
++ Added error check on feed listing.
++ Shortened urls
++ Added sort button to feed listing.
+</pre>';
+
 
     }
 
