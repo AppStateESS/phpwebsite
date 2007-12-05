@@ -1,0 +1,359 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-04 09:45-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Action"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Add Multiple Participants"
+msgstr ""
+
+msgid "Add alert"
+msgstr ""
+
+msgid "Add alert type"
+msgstr ""
+
+#, php-format
+msgid "Add all participants to %s"
+msgstr ""
+
+msgid "Add multiple"
+msgstr ""
+
+msgid "Add/Remove Alert participants."
+msgstr ""
+
+msgid "Added checked"
+msgstr ""
+
+msgid "Alert Settings"
+msgstr ""
+
+msgid "Alert Types"
+msgstr ""
+
+msgid "Alert could not be located."
+msgstr ""
+
+msgid "Alert saved."
+msgstr ""
+
+msgid "Alert type"
+msgstr ""
+
+msgid "Alert your community to important happenings."
+msgstr ""
+
+msgid "Alerts"
+msgstr ""
+
+msgid "All participants contacted."
+msgstr ""
+
+msgid "Allow email contact"
+msgstr ""
+
+msgid "An error occurred when trying to copy participants to the contact list."
+msgstr ""
+
+msgid ""
+"An error occurred when trying to determine the total number of participants."
+msgstr ""
+
+msgid "An error occurred when trying to load alert types. Check your logs."
+msgstr ""
+
+msgid "An error occurred while checking contact status."
+msgstr ""
+
+msgid "An error occurred within the alert type."
+msgstr ""
+
+msgid "An error occurred. Could not save alert type."
+msgstr ""
+
+msgid "An error occurred. Could not save alert."
+msgstr ""
+
+msgid "Are you sure you want to delete this alert type?"
+msgstr ""
+
+msgid "Are you sure you want to delete this alert?"
+msgstr ""
+
+msgid "Are you sure you want to reset this alert\\'s contact status?"
+msgstr ""
+
+msgid "Cannot continue processing batches. The batch has been set to zero."
+msgstr ""
+
+msgid "Change settings"
+msgstr ""
+
+msgid "Close this window"
+msgstr ""
+
+msgid "Contact participants via email when new alerts created"
+msgstr ""
+
+msgid "Copying participant list. Please wait."
+msgstr ""
+
+msgid "Could not delete alert type."
+msgstr ""
+
+msgid "Could not delete alert."
+msgstr ""
+
+msgid "Could not locate alert item."
+msgstr ""
+
+msgid "Could not locate alert type."
+msgstr ""
+
+msgid "Could not reset alert."
+msgstr ""
+
+msgid "Create Alert"
+msgstr ""
+
+msgid "Create RSS feed"
+msgstr ""
+
+msgid "Create alert type"
+msgstr ""
+
+msgid "Create, update and define alert types."
+msgstr ""
+
+msgid "Created"
+msgstr ""
+
+msgid "Daily listing"
+msgstr ""
+
+msgid "Date format"
+msgstr ""
+
+msgid "Date format can not be empty."
+msgstr ""
+
+msgid "Default message"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete alerts"
+msgstr ""
+
+msgid "Delete types"
+msgstr ""
+
+msgid "Deleted alert type."
+msgstr ""
+
+msgid "Deleted alert."
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Display settings for Alert module."
+msgstr ""
+
+msgid "Do not post on front page"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edit levels"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Email address"
+msgstr ""
+
+msgid "Email batch"
+msgstr ""
+
+msgid "Email contact"
+msgstr ""
+
+msgid "Email in progress. Do not close this window."
+msgstr ""
+
+msgid "Email participants"
+msgstr ""
+
+msgid ""
+"Enter the email addresses for each participant. Separate them with new lines."
+msgstr ""
+
+msgid "Error: Missing alert type id."
+msgstr ""
+
+msgid "Feed name"
+msgstr ""
+
+msgid "Finish incomplete mailing"
+msgstr ""
+
+msgid "High alert!"
+msgstr ""
+
+msgid "Image"
+msgstr ""
+
+msgid "List all alerts in the system."
+msgstr ""
+
+msgid "Manage Alert Types"
+msgstr ""
+
+msgid "Manage Alerts"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No alert types found"
+msgstr ""
+
+msgid ""
+"No participants have been assigned to this alert type. No emails were sent."
+msgstr ""
+
+msgid "Notice!!! An error occurred in the last batch. Check your logs."
+msgstr ""
+
+msgid "Participant list created. Starting to send emails."
+msgstr ""
+
+msgid "Participants"
+msgstr ""
+
+msgid "Please create a new alert type."
+msgstr ""
+
+msgid "Please enter an acceptable contact email address."
+msgstr ""
+
+msgid "Please give your alert a description."
+msgstr ""
+
+msgid "Please give your alert a title."
+msgstr ""
+
+msgid "Please give your alert type a title."
+msgstr ""
+
+msgid "Please give your rss feed an access name."
+msgstr ""
+
+msgid "Post type"
+msgstr ""
+
+msgid "RSS"
+msgstr ""
+
+msgid "RSS feed available"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+#, php-format
+msgid "Remove all participants from %s"
+msgstr ""
+
+msgid "Remove checked"
+msgstr ""
+
+msgid "Reset"
+msgstr ""
+
+msgid "Reset alert."
+msgstr ""
+
+msgid "Reset email contact"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Save settings"
+msgstr ""
+
+#, php-format
+msgid "Send Notices for %s"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Sorry"
+msgstr ""
+
+msgid "Start mailing"
+msgstr ""
+
+msgid "Subtract multiple"
+msgstr ""
+
+msgid "The following alerts need to send email notices."
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Type saved."
+msgstr ""
+
+msgid "Update Alert"
+msgstr ""
+
+msgid "Update alert type"
+msgstr ""
+
+msgid "Updated"
+msgstr ""
+
+msgid "Weekly listing"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "You may safely close this window now."
+msgstr ""
+
+msgid "Your email batch must be greater than 10."
+msgstr ""
+
+msgid "by"
+msgstr ""
