@@ -4,7 +4,7 @@
  * @version $Id: boost.php 31 2006-11-17 17:09:13Z matt $
  */
 
-$version       = '1.4.2';
+$version       = '1.4.3';
 $proper_name   = 'Photo Album';
 $priority      = 50;
 $import_sql    = true;

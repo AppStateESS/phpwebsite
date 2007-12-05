@@ -60,6 +60,15 @@ function photoalbum_update(&$content, $version) {
 + Image resize patch from Verdon Vaillancourt.
 </pre>';
 
+    case version_compare($version, '1.4.3', '<'):
+        PHPWS_Boost::updateFiles(array('conf/config.php'), 'photoalbum');
+        $content[] = '<pre>
+1.4.3 changes
+-------------
++ Increased resize width and height for photoalbum
++ Fixed resize functionality
+</pre>';
+
     }
 
     return true;
