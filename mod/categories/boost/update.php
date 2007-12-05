@@ -64,6 +64,14 @@ function categories_update(&$content, $currentVersion)
 + Added Vietnamese translations.
 </pre>';
 
+    case version_compare($currentVersion, '2.2.0', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/style.css');
+        categoryUpdateFiles($files, $content);
+        $content[] = '2.2.0 changes
+----------------
++ Added error check to category icon search.
++ Added getIcons function.</pre>';
     }
     return true;
 }
