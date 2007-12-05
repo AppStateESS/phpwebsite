@@ -2,6 +2,7 @@
 <script language="javascript" type="text/javascript">
     tinyMCE.init({
         mode : "specific_textareas",
+        strict_loading_mode : true,
         textarea_trigger : "mceEditor",
             plugins : "table,advimage,print,preview,searchreplace",
             theme_advanced_buttons2 : "bullist,numlist,outdent,indent,separator,undo,redo,link,unlink,anchor,image,cleanup,preview",
