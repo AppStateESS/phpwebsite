@@ -31,6 +31,12 @@ function profiler_update(&$content, $currentVersion)
 </pre>
 ';
 
+    case version_compare($currentVersion, '0.3.3', '<'):
+        PHPWS_Boost::updateFiles(array('templates/forms/edit.tpl'), 'profiler');
+        $content[] = '<pre>
+0.3.3 changes
+---------------
++ Updated image manager code.</pre>';
     }     
     
     return true;
