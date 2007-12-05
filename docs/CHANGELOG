@@ -4,6 +4,9 @@ its own separate CHANGELOG file.
 
 Version 1.7.0
 ---------------------------------------------------------------------
+5 December 2007
++ Added Office 2007 file types to allowed list.
+
 29 November 2007
 + Added gd check to cropImage in File.php
 + Moved open_window script into window.js to save room in head.
