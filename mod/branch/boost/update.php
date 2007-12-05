@@ -82,6 +82,12 @@ function branch_update(&$content, $version)
   a specific database.
 </pre>';
 
+    case version_compare($version, '1.1.4', '<'):
+        $content[] = '<pre>1.1.4 Changes
+-------------
++ Added text shortening on urls and directories.
+</pre>';
+
     }
     return true;
 }
