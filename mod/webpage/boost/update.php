@@ -61,6 +61,17 @@ Please download version 0.5.3</pre>';
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/webpage/boost/changes/1_0_0.txt');
         }
         $content[] = '</pre>';
+
+    case version_compare($currentVersion, '1.0.1', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/forms/list.tpl');
+        webpageUpdateFiles($files, $content);
+      
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/webpage/boost/changes/1_0_1.txt');
+        }
+        $content[] = '</pre>';
+
     }
 
     return TRUE;
