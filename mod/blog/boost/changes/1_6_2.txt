@@ -1,0 +1,10 @@
+1.6.2 Changes
+------------------------
++ Gave the edit link a class in view template.
++ Changed the view template and layout a little.
++ Added classes to the posted by and posted on headers
++ Commented out the entry content area.
++ Blog entries now show category icons.
++ Restructured admin settings page.
++ Added style.css to help with category icons
++ Fixed typo in edit blog form.

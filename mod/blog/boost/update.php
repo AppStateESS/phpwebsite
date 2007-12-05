@@ -183,6 +183,16 @@ function blog_update(&$content, $currentVersion)
         }
         $content[] = '</pre>';
 
+  case version_compare($currentVersion, '1.6.2', '<'):
+        $content[] = '<pre>';
+        
+        blogUpdateFiles(array('templates/view.tpl', 'templates/settings.tpl', 'templates/style.css'), $content);
+        
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/blog/boost/changes/1_6_2.txt');
+        }
+        $content[] = '</pre>';
+
 
     } // end of switch
     return true;
