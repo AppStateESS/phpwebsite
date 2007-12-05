@@ -1,8 +1,10 @@
+Version 2.2.1
+-----------------------------------------------------
 29 November 2007
 + Update wasn't using popup.
 
 5 November 2007
-+ Install, uninstall, and update come us popups now.
++ Install, uninstall, and update use popups now.
 
 Version 2.2.0
 -----------------------------------------------------

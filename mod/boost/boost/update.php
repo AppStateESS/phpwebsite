@@ -54,6 +54,12 @@ Please download update 2.1.1.</pre>';
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/boost/boost/changes/2_2_0.txt');
         }
         $content[] = '</pre>';
+
+    case version_compare($currentVersion, '2.2.1', '<'):
+        $content[] = '<pre>
+2.2.1 changes
+----------------
++ Install, uninstall, and update use popups now.</pre>';
     }
 
     return TRUE;

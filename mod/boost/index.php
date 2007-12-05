@@ -59,7 +59,9 @@ switch ($_REQUEST['action']){
 
  case 'install':
      $js = javascriptEnabled();
-     $content[] =  $backToBoost . '<br />';
+     if (!$js) {
+         $content[] =  $backToBoost . '<br />';
+     }
 
      $result = Boost_Action::installModule($_REQUEST['opmod']);
      if (PEAR::isError($result)) {
@@ -84,7 +86,9 @@ switch ($_REQUEST['action']){
 
  case 'update':
      $js = javascriptEnabled();
-     $content[] =  $backToBoost . '<br />';
+     if (!$js) {
+         $content[] =  $backToBoost . '<br />';
+     }
      $content[] = Boost_Action::updateModule($_REQUEST['opmod']);
      break;
 
