@@ -248,6 +248,22 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/1_3_0.txt');
         }
         $content[] = '</pre>';
+
+    case version_compare($version, '1.4.0', '<'):
+        $content[] = '<pre>';
+        $files = array('javascript/folder_contents/head.js',
+                       'javascript/folder_contents/scripts.js',
+                       'javascript/pick_image/head.js',
+                       'javascript/pick_image/scripts.js',
+                       'javascript/clear_image/body.js',
+                       'javascript/clear_image/head.js',
+                       'templates/style.css',
+                       'templates/settings.tpl');
+        fc_updatefiles($files, $content);
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/1_4_0.txt');
+        }
+        $content[] = '</pre>';
     }
 
     return true;

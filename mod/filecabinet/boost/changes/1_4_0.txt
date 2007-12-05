@@ -1,0 +1,20 @@
+Version 1.4.0
+-----------------------------------------------------------------------
++ Fixed printErrors function in File_Common.
++ If pear return application/octet-stream as the mime type, file
+  common tries to use mime_content_type to verify.
++ Fixed delete link in document listing.
++ If no title is entered for a document, it uses the file name.
++ Delete link in image selection works again.
++ Moved scripts out of head.js and into their own files.
++ Fixed multimedia generic thumbnail copying.
++ Added image height limits to standardize the image manager selection
+  screen.
++ Added a crop threshold to the cropping function. If the pixel
+  difference between the old image and the new is less than the
+  threshold, the crop will not occur.
++ Images makeThumbnail function will now properly copy the image to
+  the tn directory if it is under the thumbnail size.
++ Fixed clear Image link. Wasn't returning clear image to correct
+  size.
+
