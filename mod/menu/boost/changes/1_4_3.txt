@@ -1,0 +1,8 @@
+1.4.3 changes
+-------------------------------------------------------------
++ Menu character limit set in settings now.
++ Added enableAdminMode function to menu. Called statically.
++ Bug #1814628 : Menu will only add a home link on new menus, not
+  updated ones. 
++ All links without parents were opening when on the home page.
+  Changed code to prevent it.
