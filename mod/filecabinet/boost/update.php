@@ -264,6 +264,23 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/1_4_0.txt');
         }
         $content[] = '</pre>';
+
+  case version_compare($version, '1.4.1', '<'):
+      $content[] = '<pre>';
+      $db = new PHPWS_DB('folders');
+      if (!$db->isTableColumn('module_created')) {
+          if (PHPWS_Error::logIfError($db->addTableColumn('module_created', 'varchar(40) default null'))) {
+              $content[] = '--- Could not create column module_created on folders table.</pre>';
+              return false;
+          } else {
+              $content[] = '--- Created module_created column on folders table.';
+          }
+      }
+      $content[] = '1.4.1 changes
+--------------
++ module_created column missing from > 1.3.0 install.
+</pre>';
+  
     }
 
     return true;

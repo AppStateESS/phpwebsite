@@ -54,6 +54,7 @@ CREATE TABLE folders (
   ftype smallint not null default 1,
   public_folder smallint not null default 1,
   icon varchar(255) not null,
+  module_created varchar(40) default null,
   primary key (id)
 );
 
