@@ -2,6 +2,21 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+7 December 2007
++ DBPager
+  o New method to determine total rows. If a primary index
+    is found, counts on it.
+  o New function setTotalColumn to force count column.
++ Database
+  o getIndex can now be passed a table name. If it is not,
+    assumes current table.
+  o addColumn has a distinct parameter again.
+  o Transaction support added.
+
++ Database documentation updated with transation and addColumn
+  information.
+
+
 Version 1.7.0
 ---------------------------------------------------------------------
 5 December 2007
@@ -18,7 +33,6 @@ Version 1.7.0
 + Added information about using addJoin in Database_Class.txt
 + Small change to Language.txt. Need to pick up dngettext files as
   well.
-
 
 26 November 2007
 + Changed numbers of dateSelect values to double digit format.

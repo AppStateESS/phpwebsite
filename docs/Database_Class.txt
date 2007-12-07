@@ -222,7 +222,7 @@ Normally, the select function will grab all the columns from a
 table. You may not want this. If this is the case then you need to
 specify which columns to grab using the addColumn function.
 
-$db->addColumn(column_name, max_min, as, count);
+$db->addColumn(column_name, max_min, as, count, distinct);
 
 So if I wanted to only receive the 'name' column in my result:
 $db->addColumn('name');
@@ -243,11 +243,18 @@ the 'as' column.
 $db->addColumn('name', null, 'patient_last_name');
 
 
-Finally, if 'count' is true, the column will be surrounded by the
+If 'count' is true, the column will be surrounded by the
 COUNT() function:
 
 // Query: select count(name) from table
 $db->addColumn('name', null, null, true);
+
+If 'distinct' is true, the column will be wrapped by a distinct
+function call.
+
+// Query: select name column without repeats
+$db->addColumn('name', null, null, false, true);
+
 
 
 Note that when you do not set any columns, a select query will default
@@ -674,7 +681,7 @@ columns, the index by value, and the QWhere value. The table stays intact.
 
 
 Table functions
-
+-----------------------------------------------------------------
 The database class has a few other functions to help you alter or
 review the structure of the table it was assigned.
 
@@ -739,6 +746,49 @@ $db->dropTableColumn(column_name);
 To remove the favorite_food column.
 $db->dropTableColumn('favorite_food');
 
+
+
+Transactions
+---------------------------------------------------------------------
+The database class has basic transaction support. Transactions are
+processed with three functions: begin, commit, and rollback.
+
+
+
+$db = new PHPWS_DB('table1');
+$db2 = new PHPWS_DB('table2');
+
+/**
+ * The begin function starts the transation. PHPWS_DB will ignore
+ * subsequent begin calls until the current transation is committed or
+ * rolled back
+ */
+PHPWS_DB::begin();
+
+$id = (int)$_POST['name_id'];
+
+$db2->addColumn('first_name');
+$db2->addWhere('id', $id);
+$name = $db2->select('one');
+
+$db2->delete();
+$db->addValue('name', $name);
+$result = $db->update();
+
+if (!PEAR::isError($result)) {
+   /*
+    * commit finishes the transaction
+    */
+   PHPWS_DB::commit();
+} else {
+   /*
+    * rollback returns the tables to their previous status
+    *
+   PHPWS_DB::rollback();
+}
+
+-- Note: MySQL tables must be using the InnoDB table type. If a table --
+-- is not, it will IGNORE transaction queries.                        --
 
 
 This concludes the directions for the database class. If you have any

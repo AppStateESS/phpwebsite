@@ -398,13 +398,16 @@ class PHPWS_DB {
         $this->index = $index;
     }
 
-    function getIndex()
+    function getIndex($table=null)
     {
         if (isset($this->index)) {
             return $this->index;
         }
 
-        $table = $this->getTable(false);
+        if (empty($table)) {
+            $table = $this->getTable(false);
+        }
+
         $table = $this->addPrefix($table);
 
         $columns =  $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
@@ -837,7 +840,7 @@ class PHPWS_DB {
         $this->_distinct = (bool)$distinct;
     }
 
-    function addColumn($column, $max_min=null, $as=null, $count=false)
+    function addColumn($column, $max_min=null, $as=null, $count=false, $distinct=false)
     {
         if (!in_array(strtolower($max_min), array('max', 'min'))) {
             $max_min = null;
@@ -864,7 +867,8 @@ class PHPWS_DB {
         $col['table']    = $table;
         $col['name']     = $column;
         $col['max_min']  = $max_min;
-        $col['count']    = $count;
+        $col['count']    = (bool)$count;
+        $col['distinct'] = (bool)$distinct;
         if ($column != '*') {
             $col['as']       = $as;
         }
@@ -888,9 +892,17 @@ class PHPWS_DB {
                     $as = null;
                     extract($col);
                     if ($count) {
-                        $table_name = sprintf('count(%s.%s)', $table, $name);
+                        if ($distinct) {
+                            $table_name = sprintf('count(distinct(%s.%s))', $table, $name);
+                        } else {
+                            $table_name = sprintf('count(%s.%s)', $table, $name);
+                        }
                     } else {
-                        $table_name = sprintf('%s.%s', $table, $name);
+                        if ($distinct) {
+                            $table_name = sprintf('distinct(%s.%s)', $table, $name);
+                        } else {
+                            $table_name = sprintf('%s.%s', $table, $name);
+                        }
                     }
                     if ($max_min) {
                         $columns[] = strtoupper($max_min) . "($table_name)";
@@ -2507,6 +2519,37 @@ class PHPWS_DB {
 
         $query = $GLOBALS['PHPWS_DB']['lib']->unlockTables();
         return $this->query($query);
+    }
+
+
+    function begin()
+    {
+        // If transaction started already, return false.
+        if ($GLOBALS['DB_Transaction']) {
+            return false;
+        }
+        $GLOBALS['DB_Transaction'] = true;
+        return PHPWS_DB::query('BEGIN');
+    }
+
+    function commit()
+    {
+        // if transaction not started, return false.
+        if (!$GLOBALS['DB_Transaction']) {
+            return false;
+        }
+        $GLOBALS['DB_Transaction'] = false;
+        return PHPWS_DB::query('COMMIT');
+    }
+
+    function rollback()
+    {
+        // if transaction not started, return false.
+        if (!$GLOBALS['DB_Transaction']) {
+            return false;
+        }
+        $GLOBALS['DB_Transaction'] = false;
+        return PHPWS_DB::query('ROLLBACK');
     }
 
 }

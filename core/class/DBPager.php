@@ -146,6 +146,8 @@ class DBPager {
 
     var $sub_search = false;
 
+    var $total_column = null;
+
     function DBPager($table, $class=NULL)
     {
         if (empty($table)) {
@@ -159,7 +161,6 @@ class DBPager {
 
         $this->table = &$table;
         $this->db = & new PHPWS_DB($table);
-        $this->db->setDistinct(TRUE);
         $this->table_columns = $this->db->getTableColumns();
 
         if (PEAR::isError($this->db)){
@@ -475,23 +476,90 @@ class DBPager {
         return array((int)$this->limit, (int)$start);
     }
 
+    function setTotalColumn($column)
+    {
+        if (!strstr($column, '.')) {
+            $table = $this->db->getTable();
+            if ($table) {
+                $this->total_column = $table . '.' . trim($column);
+            }
+        } else {
+            $this->total_column = trim($column);
+        }
+    }
+
     function getTotalRows()
     {
         if (isset($this->error)) {
             return;
         }
 
-        if (count($this->db->tables) > 1) {
-            $this->db->_distinct = FALSE;
+        /**
+         * if total_column is set, use it to get total rows
+         */
+        if ($this->total_column) {
             $columns = $this->db->columns;
-            $this->db->columns = NULL;
-            $result = $this->db->select('count');
+            $this->db->columns = null;
+            $this->db->addColumn($this->total_column, null, null, true, true);
+            $result = $this->db->select('one');
             $this->db->columns = $columns;
-            $this->db->_distinct = TRUE;
+            return $result;
         } else {
-            $result = $this->db->select('count');
+            /**
+             * If total_column is not set check number of tables
+             */
+            if (count($this->db->tables) > 1) {
+                /**
+                 * if more than one table, go through each and look for an index.
+                 * if an index is found, set it as the total_column and recursively
+                 * call this function.
+                 */
+                foreach ($this->db->tables as $table) {
+                    if ($index = $this->db->getIndex($table)) {
+                        $this->total_column = & $index;
+                        return $this->getTotalRows();
+                    }
+                }
+
+                /**
+                 * An index could not be found, use full count method to return
+                 * row count.
+                 */
+                return $this->fullRowCount();
+            } else {
+                /**
+                 * There is only one table. See if it has an index
+                 */
+                if ($index = $this->db->getIndex()) {
+                    /**
+                     * An index was found, set as total_column and recursively
+                     * call this function
+                     */
+                    $this->total_column = & $index;
+                    return $this->getTotalRows();
+                } else {
+                    /**
+                     * An index could not be found, use full count method to return
+                     * row count.
+                     */
+                    return $this->fullRowCount();
+                }
+            }
         }
 
+    }
+
+    /**
+     * Calls a count on *. Less reliable than counting on one column.
+     * A fallback method for getTotalRows
+     */
+    function fullRowCount()
+    {
+        $this->db->setDistinct(TRUE);
+        $columns = $this->db->columns;
+        $this->db->columns = null;
+        $result = $this->db->select('count');
+        $this->db->columns = $columns;
         return $result;
     }
 
@@ -525,7 +593,6 @@ class DBPager {
             foreach ($this->sub_result as $sub_table => $sub) {
                 $this->db->addTable($sub['jt'], $sub_table);
                 $this->db->addJoin('left', $this->table, $sub_table, $sub['sc'], $sub['jc']);
-                //                $this->db->addWhere($sub['sc'], $sub_table . '.' . $sub['jc']);
 
                 if (!empty($search)) {
                     if ($sub['srch']) {
@@ -544,6 +611,7 @@ class DBPager {
 
         $count = $this->getTotalRows();
 
+        $this->db->setDistinct(TRUE);
         if (!empty($this->sub_result)) {
             $this->db->addColumn('*');
             foreach ($this->sub_result as $sub_table => $sub) {
