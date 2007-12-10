@@ -34,7 +34,7 @@ class PHPWS_DB {
     var $columns     = null;
     var $qwhere      = null;
     var $indexby     = null;
-    var $groupby     = null;
+    var $group_by     = null;
     var $locked      = null;
 
     /**
@@ -546,20 +546,23 @@ class PHPWS_DB {
                 $group_by = $this->tables[0] . '.' . $group_by;
             }
 
-            $this->groupBy[] = $group_by;
+            if (empty($this->group_by) || !in_array($group_by, $this->group_by)) {
+                $this->group_by[] = $group_by;
+            }
         }
+        return true;
     }
 
     function getGroupBy($dbReady=false)
     {
         if ((bool)$dbReady == true) {
-            if (empty($this->groupBy)) {
+            if (empty($this->group_by)) {
                 return null;
             } else {
-                return 'GROUP BY ' . implode(', ', $this->groupBy);
+                return 'GROUP BY ' . implode(', ', $this->group_by);
             }
         }
-        return $this->groupBy;
+        return $this->group_by;
     }
 
     /**
@@ -862,6 +865,10 @@ class PHPWS_DB {
 
         if (!PHPWS_DB::allowed($column)) {
             return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addColumn', $column);
+        }
+
+        if ($distinct && !$count) {
+            $this->addGroupBy($table . '.' . $column);
         }
 
         $col['table']    = $table;
@@ -1219,12 +1226,12 @@ class PHPWS_DB {
         $where   = $this->getWhere(true);
         $order   = $this->getOrder(true);
         $limit   = $this->getLimit(true);
-        $groupby = $this->getGroupBy(true);
+        $group_by = $this->getGroupBy(true);
 
         $sql_array['columns'] = &$columns;
         $sql_array['table']   = &$table;
         $sql_array['where']   = &$where;
-        $sql_array['groupby'] = &$groupby;
+        $sql_array['group_by'] = &$group_by;
         $sql_array['order']   = &$order;
         $sql_array['limit']   = &$limit;
 
@@ -1263,23 +1270,23 @@ class PHPWS_DB {
                 return $sql_array;
             }
 
-            // extract will get $columns, $table, $where, $groupby
+            // extract will get $columns, $table, $where, $group_by
             // $order, and $limit
             extract($sql_array);
 
             if ($type == 'count') {
                 if (empty($columns)) {
-                    // order and groupby are not needed if count is
+                    // order and group_by are not needed if count is
                     // using all rows
                     $order = null;
-                    $groupby = null;
+                    $group_by = null;
                     $columns = 'COUNT(*)';
                 } else {
                     $add_group = $columns;
                     $columns .= ', COUNT(*)';   
 
-                    if (empty($groupby)) {
-                        $groupby = "GROUP BY $add_group";
+                    if (empty($group_by)) {
+                        $group_by = "GROUP BY $add_group";
                     } 
                 }
             }
@@ -1295,7 +1302,7 @@ class PHPWS_DB {
             }
 
 
-            $sql = "SELECT $distinct $columns FROM $table $where $groupby $order $limit";
+            $sql = "SELECT $distinct $columns FROM $table $where $group_by $order $limit";
         } else {
             $mode = DB_FETCHMODE_ASSOC;
         }

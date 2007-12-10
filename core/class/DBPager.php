@@ -498,11 +498,15 @@ class DBPager {
          * if total_column is set, use it to get total rows
          */
         if ($this->total_column) {
-            $columns = $this->db->columns;
-            $this->db->columns = null;
+            $order    = $this->db->order;
+            $columns  = $this->db->columns;
+            $group_by = $this->db->group_by;
+            $this->db->group_by = $this->db->order = $this->db->columns = null;
             $this->db->addColumn($this->total_column, null, null, true, true);
             $result = $this->db->select('one');
-            $this->db->columns = $columns;
+            $this->db->columns  = $columns;
+            $this->db->order    = $order;
+            $this->db->group_by = $group_by;
             return $result;
         } else {
             /**
@@ -516,7 +520,7 @@ class DBPager {
                  */
                 foreach ($this->db->tables as $table) {
                     if ($index = $this->db->getIndex($table)) {
-                        $this->total_column = & $index;
+                        $this->total_column = $table . '.' . $index;
                         return $this->getTotalRows();
                     }
                 }
@@ -535,7 +539,8 @@ class DBPager {
                      * An index was found, set as total_column and recursively
                      * call this function
                      */
-                    $this->total_column = & $index;
+                    $table = $this->db->getTable();
+                    $this->total_column = $table . '.' . $index;
                     return $this->getTotalRows();
                 } else {
                     /**
@@ -556,10 +561,14 @@ class DBPager {
     function fullRowCount()
     {
         $this->db->setDistinct(TRUE);
-        $columns = $this->db->columns;
+        $order    = $this->db->order;
+        $columns  = $this->db->columns;
+        $group_by = $this->db->group_by;
         $this->db->columns = null;
         $result = $this->db->select('count');
         $this->db->columns = $columns;
+        $this->db->order   = $order;
+        $this->db->group_by = $group_by;
         return $result;
     }
 
