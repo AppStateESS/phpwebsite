@@ -6,8 +6,8 @@
  * File Cabinet is meant (for those devs that utilize it)
  * as a central place to administrate all the files uploaded to the site.
  *
+ * @version $Id$
  * @author Matthew McNaney <matt at tux dot appstate dot edu>
- * $Id$
  */
 
 PHPWS_Core::initModClass('filecabinet', 'Folder.php');
