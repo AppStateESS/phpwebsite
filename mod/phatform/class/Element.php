@@ -481,9 +481,9 @@ class PHAT_Element extends PHPWS_Item {
         } else {
             switch($_REQUEST['PHAT_EL_OP']) {
             case 'SaveElement':
-
                 if(Current_User::allow('phatform', 'edit_forms')) {
                     $result = $this->save();
+
                     if(PHPWS_Error::isError($result)) {
                         $GLOBALS['CNT_phatform']['message'] =  $result->getMessage();
                         $content .= $this->edit();

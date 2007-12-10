@@ -133,7 +133,7 @@ class PHAT_Textfield extends PHAT_Element {
         if((!$_SESSION['PHAT_FormManager']->form->checkLabel($_REQUEST['PHAT_ElementName']) && ($this->getLabel() != $_REQUEST['PHAT_ElementName']))
            || PHPWS_Error::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
             $message = dgettext('phatform', 'The name you entered for the Textfield is not valid or is already in use with this form.');
-            $currentError = new PHPWS_Error('phatform', 'PHAT_Textfield::save()', $message, 'continue', PHAT_DEBUG_MODE);
+            $currentError = PHPWS_Error::get(PHATFORM_INVALID_NAME, 'phatform', 'PHAT_Checkbox::save()', $_REQUEST['PHAT_ElementName']);
             $error = TRUE;
         }
 
@@ -168,8 +168,7 @@ class PHAT_Textfield extends PHAT_Element {
             return $currentError;
         } else {
             if(PHPWS_Error::isError($this->commit())) {
-                $message = sprintf(dgettext('phatform', 'The %s element could not be saved to the database.'), '<b><i>Textfield</i></b>');
-                return new PHPWS_Error('phatform', 'PHAT_Textfield::save()', $message, 'continue', PHAT_DEBUG_MODE);
+                return PHPWS_Error::get(PHATFORM_ELEMENT_FAIL, 'phatform', 'PHAT_Textfield::save');
             } else {
                 return sprintf(dgettext('phatform', 'The %s element was saved successfully.'), '<b><i>Textfield</i></b>');
             }

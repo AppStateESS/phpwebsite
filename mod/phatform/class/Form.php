@@ -1099,6 +1099,12 @@ class PHAT_Form extends PHPWS_Item {
     }
 
     function checkLabel($label) {
+        $restricted = array('id', 'user', 'updated', 'position');
+
+        if (in_array(strtolower($label), $restricted)) {
+            return false;
+        }
+
         if(is_array($this->_elements)) {
             foreach($this->_elements as $value) {
                 $elementInfo = explode(':', $value);

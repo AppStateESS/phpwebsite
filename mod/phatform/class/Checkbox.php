@@ -118,7 +118,7 @@ class PHAT_Checkbox extends PHAT_Element {
            || PEAR::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
             
             $message = dgettext('phatform', 'The name you entered for the Checkbox is not valid or is already in use with this form.');
-            $currentError = PHPWS_Error::get('phatform', PHATFORM_INVALID_NAME, 'PHAT_Checkbox::save()', $_REQUEST['PHAT_ElementName']);
+            $currentError = PHPWS_Error::get(PHATFORM_INVALID_NAME, 'phatform', 'PHAT_Checkbox::save()', $_REQUEST['PHAT_ElementName']);
             $error = TRUE;
         }
 
