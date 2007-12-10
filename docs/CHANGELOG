@@ -3,6 +3,7 @@ This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
 10 December 2007
++ Core - small change to getHomeHttp to try and fix IIS error.
 + Database
   o changed groupBy to group_by to match rest of variable names
   o Group by added on distinct columns only if count is not set.
