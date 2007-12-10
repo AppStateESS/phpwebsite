@@ -1,3 +1,6 @@
+10 December 2007
++ Removed "echo '1'" from Image.php. Thanks again verdon.
+
 Version 1.4.1
 -----------------------------------------------------------------------
 + Fixed missing table column (thanks verdon)
