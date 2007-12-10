@@ -261,7 +261,7 @@ class Branch {
             return (bool)$_SESSION['Approved_Branch'];
         }
 
-        Branch::loadHubDb();
+        Branch::loadHubDB();
 
         if (!PHPWS_DB::isConnected()) {
             $_SESSION['Approved_Branch'] = FALSE;
