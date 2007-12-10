@@ -7,7 +7,7 @@
  * as a central place to administrate all the files uploaded to the site.
  *
  * @author Matthew McNaney <matt at tux dot appstate dot edu>
- * @version $Id$
+ * $Id$
  */
 
 PHPWS_Core::initModClass('filecabinet', 'Folder.php');
@@ -1059,6 +1059,12 @@ class Cabinet {
             $obj->save(false, false);
         }
         return true;
+    }
+
+    function listFolders($type=null)
+    {
+        $db = new PHPWS_DB('folders');
+        //        $db->addWhere($type
     }
 }
 
