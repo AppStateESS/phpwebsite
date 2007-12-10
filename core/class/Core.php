@@ -696,7 +696,7 @@ class PHPWS_Core {
         $address[] = $_SERVER['HTTP_HOST'];
 
         if ($with_directory) {
-            $address = dirname($_SERVER['PHP_SELF']);
+            $address[] = dirname($_SERVER['PHP_SELF']);
         }
 
         $url = implode('', $address);
