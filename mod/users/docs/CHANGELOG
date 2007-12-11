@@ -1,3 +1,9 @@
+Version 2.4.7
+--------------------------------------------------------------------
+10 December 2007
++ Dropped GLOBAL authorization from canChangePassword since it isn't
+  in the system yet.
+
 Version 2.4.6
 --------------------------------------------------------------------
 26 November 2007

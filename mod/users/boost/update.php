@@ -172,6 +172,15 @@ timeout INT NOT NULL default 0,
         }
         $content[] = '</pre>';
 
+    case version_compare($currentVersion, '2.4.7', '<'):
+        $content[] = '<pre>
+2.4.7 changes
+-------------------
++ Removed global authorization from change password check since it is not
+  written yet.
+</pre>';
+
+
     } // End of switch statement
 
     return TRUE;

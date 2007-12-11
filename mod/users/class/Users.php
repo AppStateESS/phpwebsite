@@ -420,7 +420,7 @@ class PHPWS_User {
 
     function canChangePassword()
     {
-        return ($this->authorize == LOCAL_AUTHORIZATION || $this->authorize == GLOBAL_AUTHORIZATION) ? true : false;
+        return ($this->authorize == LOCAL_AUTHORIZATION) ? true : false;
     }
 
     function verifyAuthKey()
