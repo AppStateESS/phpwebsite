@@ -1,10 +1,16 @@
 <?php
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+define('IMAGE_FOLDER',      1);
+define('DOCUMENT_FOLDER',   2);
+define('MULTIMEDIA_FOLDER', 3);
 
+/**
+ * Error defines
+ */
 define('FC_FILENAME_NOT_SET',       -100);
 define('FC_DIRECTORY_NOT_SET',      -101);
 define('FC_BOUND_FAILED',           -102);
@@ -29,4 +35,6 @@ define('FC_MULTIMEDIA_WRONG_TYPE',  -120);
 define('FC_MULTIMEDIA_NOT_FOUND',   -121);
 define('FC_THUMBNAIL_NOT_WRITABLE', -122);
 define('FC_FFMPEG_NOT_FOUND',       -123);
+
+
 ?>

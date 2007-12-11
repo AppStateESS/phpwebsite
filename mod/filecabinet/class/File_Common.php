@@ -7,8 +7,6 @@
  * @version $Id$
  */
 
-require_once PHPWS_SOURCE_DIR . 'mod/filecabinet/inc/errorDefines.php';
-
 class File_Common {
     var $id              = 0;
     var $file_name       = null;

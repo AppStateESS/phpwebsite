@@ -1061,10 +1061,15 @@ class Cabinet {
         return true;
     }
 
-    function listFolders($type=null)
+    function listFolders($type=null, $simple=false)
     {
         $db = new PHPWS_DB('folders');
-        //        $db->addWhere($type
+        if ($type) {
+            $db->addWhere('ftype', (int)$type);
+        }
+        if ($simple) {
+            $db->select();
+        }
     }
 }
 

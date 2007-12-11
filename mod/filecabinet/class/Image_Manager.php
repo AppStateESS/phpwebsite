@@ -138,6 +138,9 @@ class FC_Image_Manager {
      */
     function edit()
     {
+        
+        
+
         $form = new PHPWS_Form;
         $form->addHidden('module', 'filecabinet');
 

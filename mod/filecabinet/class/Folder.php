@@ -5,10 +5,6 @@
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
 
-define('IMAGE_FOLDER',      1);
-define('DOCUMENT_FOLDER',   2);
-define('MULTIMEDIA_FOLDER', 3);
-
 class Folder {
     var $id              = 0;
     var $key_id          = 0;
