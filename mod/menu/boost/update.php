@@ -130,10 +130,14 @@ Please download 1.2.1.</pre>';
     case version_compare($currentVersion, '1.4.4', '<'):
         $content[] = '<pre>
 1.4.4 Changes
---------------';
-        $content[] = '</pre>';
-
-
+--------------
++ Added three new menu functions:
+  o quickLink - inserts a new link on any menu pinned on all pages;
+                passed a title and url.
+  o quickKeyLink - same as above but passed key_id
+  o updateKeyLink - causes a link to reset its url, title, and active
+                    status based on the condition of the current key
+                    it is based on.</pre>';
     }
     return true;
 }
