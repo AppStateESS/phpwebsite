@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version $Id: uninstall.php 9 2006-06-05 20:24:53Z matt $
+ * @version $Id$
  */
 
 if (!Current_User::isDeity()){

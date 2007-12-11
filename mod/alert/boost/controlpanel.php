@@ -1,7 +1,7 @@
 <?php
 
   /**
-   * @version $Id: controlpanel.php 4583 2007-04-04 19:12:02Z matt $
+   * @version $Id$
    * @author Matthew McNaney <mcnaney at appstate dot edu>
    */
 

@@ -2,7 +2,7 @@
   /**
    * This class is responsible for displaying a slide show for photoalbum using no javascript.
    *
-   * @version $Id: NoJSSlideShow.php 9 2006-06-05 20:24:53Z matt $
+   * @version $Id$
    * @author  Darren Greene <dg49379@NOSPAM.tux.appstate.edu>
    * @modified Matthew McNaney <mcnaney at gmail dot com>
    */

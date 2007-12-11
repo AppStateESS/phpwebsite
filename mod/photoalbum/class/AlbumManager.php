@@ -1,7 +1,7 @@
 <?php
 
   /**
-   * @version $Id: AlbumManager.php 20 2006-10-18 18:36:05Z matt $
+   * @version $Id$
    * @author  Steven Levin <steven at NOSPAM tux[dot]appstate[dot]edu>
    * @modified Matthew McNaney <mcnaney at gmail dot com>
    */

@@ -14,7 +14,7 @@
    *
    * @author raphael at schwarzschmid dot de
    * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id: XMLParser.php 3535 2006-08-28 20:04:42Z matt $
+   * @version $Id$
    */ 
 
 

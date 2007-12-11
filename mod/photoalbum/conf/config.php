@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version $Id: config.php 15 2006-09-27 19:54:45Z matt $
+ * @version $Id$
  * @author  Steven Levin <steven at NOSPAM tux[dot]appstate[dot]edu>
  */
 

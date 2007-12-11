@@ -1,7 +1,7 @@
 <?php
 
   /**
-   * @version $Id: index.php 15 2006-09-27 19:54:45Z matt $
+   * @version $Id$
    * @author  Steven Levin
    * @modified Matthew McNaney <mcnaney at gmail dot com>
    */

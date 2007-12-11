@@ -1,7 +1,7 @@
 <?php
 
   /**
-   * @version $Id: Album.php 28 2006-11-15 16:26:47Z matt $
+   * @version $Id$
    * @author  Steven Levin
    * @modified Matthew McNaney <mcnaney at gmail dot com>
    * @modified Verdon Vaillancourt

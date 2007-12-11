@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version $Id: boost.php 31 2006-11-17 17:09:13Z matt $
+ * @version $Id$
  */
 
 $version       = '1.4.3';

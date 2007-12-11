@@ -2,7 +2,7 @@
 
 /**
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * $Id: update.php 31 2006-11-17 17:09:13Z matt $
+ * $Id$
  */
 
 function photoalbum_update(&$content, $version) {

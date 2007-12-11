@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version $Id: manager.php 10 2006-06-06 12:36:51Z matt $
+ * @version $Id$
  * @author  Steven Levin <steven at NOSPAM tux[dot]appstate[dot]edu>
  */
 

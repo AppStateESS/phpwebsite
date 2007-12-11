@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version $Id: controlpanel.php 2 2006-01-13 19:23:53Z matt $
+ * @version $Id$
  * @author  Steven Levin <steven at NOSPAM tux[dot]appstate[dot]edu>
  */
 
