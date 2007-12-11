@@ -280,6 +280,14 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 --------------
 + module_created column missing from > 1.3.0 install.
 </pre>';
+
+  case version_compare($version, '1.4.2', '<'):
+      $content[] = '<pre>
+1.4.2 changes
+--------------
++ Removed test echo 1
++ moved all defines to one file.
+</pre>';
   
     }
 
