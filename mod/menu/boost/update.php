@@ -127,6 +127,13 @@ Please download 1.2.1.</pre>';
         }
         $content[] = '</pre>';
 
+    case version_compare($currentVersion, '1.4.4', '<'):
+        $content[] = '<pre>
+1.4.4 Changes
+--------------';
+        $content[] = '</pre>';
+
+
     }
     return true;
 }

@@ -13,6 +13,14 @@ class Menu {
         PHPWS_Core::initModClass('menu', 'Menu_Admin.php');
         Menu_Admin::main();
     }
+
+    function getPinAllMenus()
+    {
+        $db = new PHPWS_DB('menus');
+        $db->addWhere('pin_all', 1);
+        $db->loadClass('menu', 'Menu_Item.php');
+        return $db->getObjects('Menu_Item');
+    }
     
     /**
      * Grabs all the menus pinned to every page and displays
@@ -21,11 +29,8 @@ class Menu {
     function showPinned()
     {
         Layout::addStyle('menu');
-        $db = new PHPWS_DB('menus');
-        $db->addWhere('pin_all', 1);
-        $db->loadClass('menu', 'Menu_Item.php');
-        $result = $db->getObjects('Menu_Item');
 
+        $result = Menu::getPinAllMenus();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             return;
@@ -272,5 +277,71 @@ class Menu {
         }
         $content[] = '</ol>';
     }
+
+
+    function quickLink($title, $url)
+    {
+        if (empty($title) || empty($url)) {
+            return false;
+        }
+
+        $menus = Menu::getPinAllMenus();
+        if (PHPWS_Error::logIfError($menus) || empty($menus)) {
+            return false;
+        }
+
+        foreach ($menus as $mn) {
+            $mn->addRawLink(strip_tags($title), strip_tags($url));
+        }
+    }
+
+    /**
+     * Adds a link to a current pin_all menu
+     */
+    function quickKeyLink($key_id)
+    {
+        if (!$key_id) {
+            return false;
+        }
+
+        $menus = Menu::getPinAllMenus();
+        if (PHPWS_Error::logIfError($menus) || empty($menus)) {
+            return false;
+        }
+
+        foreach ($menus as $mn) {
+            $mn->addLink($key_id);
+        }
+    }
+
+    function updateKeyLink($key_id)
+    {
+        if (empty($key_id)) {
+            return false;
+        }
+
+        $key = new Key($key_id);
+
+        if ($key->isDummy()) {
+            return false;
+        }
+
+        PHPWS_Core::initModClass('menu', 'Menu_Link.php');
+
+        $link = new Menu_Link;
+
+        $db = new PHPWS_DB('menu_links');
+        $db->addWhere('key_id', (int)$key_id);
+        $result = $db->loadObject($link);
+        if (!$result || PHPWS_Error::logIfError($result)) {
+            return false;
+        }
+
+        $link->title  = & $key->title;
+        $link->url    = & $key->url;
+        $link->active = & $key->active;
+        return !PHPWS_Error::logIfError($link->save());
+    }
+
 }
 ?>
