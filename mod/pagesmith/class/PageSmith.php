@@ -52,6 +52,10 @@ class PageSmith {
             case 'list':
                 $this->forms->pageList();
                 break;
+
+            case 'settings':
+                $this->forms->settings();
+                break;
             }
             break;
 
@@ -119,6 +123,16 @@ class PageSmith {
             $this->loadForms();
             $this->forms->pageList();
             break;
+
+        case 'post_settings':
+            if (!Current_User::authorized('pagesmith',null,null,null,true)) {
+                Current_User::disallow();
+            }
+            $this->postSettings();
+            $this->message = dgettext('pagesmith', 'Settings saved');
+            $this->loadForms();
+            $this->forms->settings();
+            break;
             
         default:
             PHPWS_Core::errorPage('404');
@@ -167,6 +181,9 @@ class PageSmith {
         $link = 'index.php?module=pagesmith&amp;aop=menu';
         $tabs['new']  = array('title'=>dgettext('pagesmith', 'New'), 'link'=>$link);
         $tabs['list'] = array('title'=>dgettext('pagesmith', 'List'), 'link'=>$link);
+        if (Current_User::isUnrestricted('pagesmith')) {
+            $tabs['settings'] = array('title'=>dgettext('pagesmith', 'Settings'), 'link'=>$link);
+        }
 
         $this->panel->quickSetTabs($tabs);
         $this->panel->setModule('pagesmith');
@@ -184,7 +201,11 @@ class PageSmith {
         $this->page->loadTemplate();
         $this->page->loadSections(false);
 
-        $this->page->title = strip_tags($_POST['title']);
+        $post_title = strip_tags($_POST['title']);
+        if ($post_title != $this->page->title) {
+            $this->page->_title_change = true;
+        }
+        $this->page->title = & $post_title;
 
         if (empty($this->page->title)) {
             $this->page->title = dgettext('pagesmith', '(Untitled)');
@@ -218,9 +239,19 @@ class PageSmith {
             return false;
         }
 
-        // reset page sections and save
-        //        $this->page->_sections = $sections;
+        if  (!$this->page->id && PHPWS_Settings::get('pagesmith', 'auto_link')) {
+            $menu_link = true;
+        } else {
+            $menu_link = false;
+        }
+
         $this->page->save();
+
+        if ($menu_link && PHPWS_Core::moduleExists('menu')) {
+            if (PHPWS_Core::initModClass('menu', 'Menu.php')) {
+                Menu::quickKeyLink($this->page->key_id);
+            }
+        }
 
         return true;
     }
@@ -297,6 +328,17 @@ class PageSmith {
             $vars['warning'] = addslashes($warning);
         }
         Layout::nakedDisplay( javascript('modules/pagesmith/update', $vars));
+    }
+
+    function postSettings()
+    {
+        if (isset($_POST['auto_link'])) {
+            PHPWS_Settings::set('pagesmith', 'auto_link', 1);
+        } else {
+            PHPWS_Settings::set('pagesmith', 'auto_link', 0);
+        }
+
+        PHPWS_Settings::save('pagesmith');
     }
 
 }

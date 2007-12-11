@@ -1,3 +1,11 @@
+Version 1.0.7
+----------------------------------------------------------------
+11 December 2007
++ PageSmith can be set to automatically create a link when a new page
+  is created.
++ Changing a page title now updates the menu link.
++ Updated : templates/settings.tpl
+
 Version 1.0.6
 ----------------------------------------------------------------
 5 December 2007

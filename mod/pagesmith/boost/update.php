@@ -112,6 +112,18 @@ function pagesmith_update(&$content, $currentVersion)
 + Small fix to allow linkable images on cached pages.
 </pre>';
 
+    case version_compare($currentVersion, '1.0.7', '<'):
+        $content[] = '<pre>';
+        pagesmithUpdateFiles(array('templates/settings.tpl'), $content);
+
+        $content[] = '1.0.7 changes
+-------------
++ PageSmith can be set to automatically create a link when a new page
+  is created.
++ Changing a page title now updates the menu link.
+</pre>';
+
+
 
     } // end switch
 

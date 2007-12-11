@@ -1,0 +1,6 @@
+{START_FORM}
+
+<p>{AUTO_LINK} {AUTO_LINK_LABEL}</p>
+
+<p>{SUBMIT}</p>
+{END_FORM}

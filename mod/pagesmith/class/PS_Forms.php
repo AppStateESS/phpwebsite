@@ -233,6 +233,21 @@ class PS_Forms {
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'pick_template.tpl');
     }
 
+    function settings()
+    {
+        $form = new PHPWS_Form('ps-settings');
+        $form->addHidden('module', 'pagesmith');
+        $form->addHidden('aop', 'post_settings');
+        $form->addSubmit(dgettext('pagesmith', 'Save'));
+
+        $form->addCheck('auto_link', 1);
+        $form->setMatch('auto_link', PHPWS_Settings::get('pagesmith', 'auto_link'));
+        $form->setLabel('auto_link', dgettext('pagesmith', 'Add menu link for new pages.'));
+
+        $this->ps->title = dgettext('pagesmith', 'PageSmith Settings');
+        $this->ps->content = PHPWS_Template::process($form->getTemplate(), 'pagesmith', 'settings.tpl');
+    }
+
 }
 
 ?>

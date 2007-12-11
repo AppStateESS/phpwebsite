@@ -5,18 +5,23 @@
    */
 
 class PS_Page {
-    var $id           = 0;
-    var $key_id       = 0;
-    var $title        = null;
-    var $template     = null;
-    var $create_date  = 0;
-    var $last_updated = 0;
-    var $front_page   = 0;
+    var $id            = 0;
+    var $key_id        = 0;
+    var $title         = null;
+    var $template      = null;
+    var $create_date   = 0;
+    var $last_updated  = 0;
+    var $front_page    = 0;
 
-    var $_tpl         = null;
-    var $_sections    = array();
-    var $_content     = null;
-    var $_error       = null;
+    var $_tpl          = null;
+    var $_sections     = array();
+    var $_content      = null;
+    var $_error        = null;
+    /**
+     * Determines whether the menu link will be updated
+     * @var boolean
+     */
+    var $_title_change = false;
 
     function PS_Page($id=0)
     {
@@ -228,11 +233,7 @@ class PS_Page {
         $key->setItemId($this->id);
         $key->setEditPermission('edit_page');
 
-        if (MOD_REWRITE_ENABLED) {
-            $key->setUrl('pagesmith/' . $this->id);
-        } else {
-            $key->setUrl('index.php?module=pagesmith&amp;id=' . $this->id);
-        }
+        $key->setUrl($this->url());
 
         $key->setTitle($this->title);
         $result = $key->save();
@@ -246,6 +247,11 @@ class PS_Page {
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
             PHPWS_Error::logIfError($db->update());
+        } elseif ($this->_title_change) {
+            if (PHPWS_Core::moduleExists('menu')){
+                PHPWS_Core::initModClass('menu', 'Menu.php');
+                Menu::updateKeyLink($this->key_id);
+            }
         }
         return true;
     }
