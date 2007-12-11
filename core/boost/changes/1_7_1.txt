@@ -1,0 +1,19 @@
+Core Version 1.7.1
+
++ Core - small change to getHomeHttp to try and fix IIS error.
++ Database
+  o changed groupBy to group_by to match rest of variable names
+  o Group by added on distinct columns only if count is not set.
+  o getIndex can now be passed a table name. If it is not,
+    assumes current table.
+  o addColumn has a distinct parameter again.
+  o Transaction support added.
+
++ DBPager
+  o New method to determine total rows. If a primary index
+    is found, counts on it.
+  o New function setTotalColumn to force count column.
+  o Pager clears order, columns, and group_by before figuring totals.
+
++ Database documentation updated with transation and addColumn
+  information.

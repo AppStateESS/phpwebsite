@@ -2,6 +2,8 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+Version 1.7.1
+---------------------------------------------------------------------
 10 December 2007
 + Core - small change to getHomeHttp to try and fix IIS error.
 + Database
