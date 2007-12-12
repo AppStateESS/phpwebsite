@@ -187,7 +187,11 @@ class DBPager {
         if (isset($_REQUEST['change_page'])) {
             $this->current_page = (int)$_REQUEST['change_page'];
         } elseif (isset($_REQUEST['pg'])) {
-            $this->current_page = (int)$_REQUEST['pg'];
+            if ($_REQUEST['pg'] == 'last') {
+                $this->current_page = $_REQUEST['pg'];
+            } else {
+                $this->current_page = (int)$_REQUEST['pg'];
+            }
         }
 
         if (!$this->current_page) {
@@ -639,7 +643,7 @@ class DBPager {
         $this->total_rows = &$count;
         $this->total_pages = ceil($this->total_rows / $this->limit);
 
-        if ($this->current_page > $this->total_pages) {
+        if ($this->current_page > $this->total_pages || $this->current_page == 'last') {
             $this->current_page = $this->total_pages;
             $this->db->setLimit($this->getLimit());
         }
@@ -726,11 +730,13 @@ class DBPager {
                 if ($current_page != 1) {
                     $divider--;
                     for ($i=2; $i < $current_page; $i++) {
-                        $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $i, $anchor, $i);
+                        if ($i != $current_page) {
+                            $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $i, $anchor, $i);
+                        } else {
+                            $pageList[] = "[$current_page]";
+                        }
                         $divider--;
                     }
-
-                    $pageList[] = '[' . $current_page . ']';
                 }
                 $remaining_pages = $total_pages - $current_page;
                 $skip = floor($remaining_pages / $divider);
