@@ -5,6 +5,7 @@ its own separate CHANGELOG file.
 12 December 2007
 + Patch #1821914 - Eloi George's addition of a 'last' parameter for
   DBPager.
++ Patch #1821701 - Removed invalid css overflow properties.
 
 
 Version 1.7.1
