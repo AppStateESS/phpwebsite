@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_1_0,Rss0_1_3\n"
+"Project-Id-Version: PHPWS1_3_2,Rss0_2_2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-15 10:21-0500\n"
-"PO-Revision-Date: 2007-03-05 12:09+0100\n"
+"PO-Revision-Date: 2007-11-27 12:03+0100\n"
 "Last-Translator: Peter Heppner <heppner@gmx.de>\n"
 "Language-Team: Peter Heppner <heppner@gmx.de>\n"
 "MIME-Version: 1.0\n"
@@ -83,6 +83,9 @@ msgstr "Kanal gespeichert."
 msgid "Channels"
 msgstr "Kanäle"
 
+msgid "Copyright"
+msgstr "Copyright"
+
 msgid "Delete"
 msgstr "Löschen"
 
@@ -105,6 +108,9 @@ msgstr "Alle %s"
 msgid "Feed title will be used if left empty"
 msgstr "Der Feedtitel wird benutzt wenn leergelassen"
 
+msgid "General Settings"
+msgstr "Allgemeine Einstellungen"
+
 msgid "Import"
 msgstr "Import"
 
@@ -120,6 +126,9 @@ msgstr "Fehlerhafte Feedadresse"
 msgid "Item limit"
 msgstr "Maximale Elementanzahl"
 
+msgid "Managing editor email address"
+msgstr "Chefredakteur E-Mailadresse"
+
 msgid "Module unregistered from RSSFeeds."
 msgstr "Modul aus RSS Feeds unregistriert."
 
@@ -131,6 +140,12 @@ msgstr "RSS Datei nicht gefunden."
 
 msgid "No channels have been registered."
 msgstr "Keine Kanäle registriert."
+
+msgid "Please check editor email format."
+msgstr "Bitte überprüfe das Redakteur-E-Mailformat"
+
+msgid "Please check webmaster email format."
+msgstr "Bitte überprüfe das Webmaster E-Mailformat"
 
 msgid "Please enable Cache Lite in your config/core/config.php file."
 msgstr "Bitte Cache Lite in deiner config/core/config.php Datei einschalten."
@@ -163,6 +178,15 @@ msgstr "Speichern"
 msgid "Save Channel"
 msgstr "Speichere Kanal"
 
+msgid "Save settings"
+msgstr "Einstellungen speichern"
+
+msgid "Settings"
+msgstr "Einstellungen"
+
+msgid "Settings saved successfully."
+msgstr "Einstellungen gespeichert."
+
 msgid "Sorry"
 msgstr "Pech"
 
@@ -174,6 +198,9 @@ msgstr "Titel"
 
 msgid "Unable to list feed."
 msgstr "Feed konnte nicht angezeigt werden."
+
+msgid "Webmaster email address"
+msgstr "Webmaster E-Mailadresse"
 
 msgid "Yes"
 msgstr "Ja"

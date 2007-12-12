@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_1_0,Filecabinet0_3_2\n"
+"Project-Id-Version: PHPWS1_3_2,Filecabinet1_3_0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-15 10:21-0500\n"
-"PO-Revision-Date: 2007-03-05 11:58+0100\n"
+"PO-Revision-Date: 2007-11-26 18:09+0100\n"
 "Last-Translator: Peter Heppner <heppner@gmx.de>\n"
 "Language-Team: Peter Heppner <heppner@gmx.de>\n"
 "MIME-Version: 1.0\n"
@@ -17,33 +17,105 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 
-msgid " (system wide)"
-msgstr "Systemnachricht"
+#, php-format
+msgid "%d bytes"
+msgstr "%d Bytes"
+
+#, php-format
+msgid "%d bytes (system wide)"
+msgstr "%d Bytes (Systemweit)"
+
+#, php-format
+msgid "%dKB (%d bytes)"
+msgstr "%dKB (%d Bytes)"
+
+#, php-format
+msgid "%dMB (%d bytes)"
+msgstr "%dMB (%d Bytes)"
+
+#, php-format
+msgid "%s bytes"
+msgstr "%s Bytes"
+
+#, php-format
+msgid "%s image"
+msgid_plural "%s images"
+msgstr[0] "%s Bild"
+msgstr[1] "%s Bilder"
+
+msgid "-- Pick option --"
+msgstr "-- Option auswählen --"
+
+msgid "180 degrees"
+msgstr "180 Grad"
+
+msgid "90 degrees clockwise"
+msgstr "90 Grad im Uhrzeigersinn"
+
+msgid "90 degrees counter clockwise"
+msgstr "90 Grad gegen den Uhrzeigersinn"
+
+msgid "Absolute upload limit"
+msgstr "Absolutes Uploadlimit"
 
 msgid "Action"
 msgstr "Aktion"
 
+msgid "Add document"
+msgstr "Dokument hinzufügen"
+
+msgid "Add file"
+msgstr "Datei hinzufügen"
+
+msgid "Add folder"
+msgstr "Ordner hinzufügen"
+
+msgid "Add image"
+msgstr "Bild hinzufügen"
+
 msgid "Alternate text"
 msgstr "Alternativtext"
 
-msgid "An error occurred when trying to delete a document."
-msgstr "Ein Fehler ist beim Löschen des Dokuments aufgetreten."
+msgid "An error occurred when trying to read your incoming file directory."
+msgstr "Ein Fehler ist beim Lesen des Eingangsverzeichnisses aufgetreten."
+
+msgid "An error occurred when trying to save your document."
+msgstr "Ein Fehler ist beim Speichern des Dokuments aufgetreten."
 
 msgid "An error occurred when trying to save your image."
 msgstr "Ein Fehler ist beim Speichern des Bildes aufgetreten."
 
-msgid "An error occurred while saving your document."
-msgstr "Ein Fehler ist beim Speichern des Dokuments aufgetreten."
+msgid "An error occurred when trying to save your multimedia file."
+msgstr "Ein Fehler ist beim Speichern der Multimediadatei aufgetreten."
+
+msgid "Are you certain you want to delete this folder and all its contents?"
+msgstr "Soll dieses Verzeichnis und der gesamte Inhalt gelöscht werden?"
 
 msgid "Are you sure you want to delete this document?"
 msgstr "Soll dieses Dokument gelöscht werden?"
 
+msgid "Are you sure you want to delete this file?"
+msgstr "Soll diese Datei gelöscht werden?"
+
 msgid "Are you sure you want to delete this image?"
 msgstr "Soll dieses Bild gelöscht werden?"
 
-msgid "Are you sure you want to permanently delete this image?"
-msgstr "Soll dieses Bild für immer gelöscht werden?"
+msgid "Are you sure you want to delete this multimedia file?"
+msgstr "Soll diese Multimediadatei gelöscht werden?"
+
+msgid "Are you sure you wish to delete these files?"
+msgstr "Sollen diese Dateien gelöscht werden?"
+
+msgid "Automatically link child images to parent"
+msgstr "Automatisch Unterbilder verknüpfen"
+
+msgid "Back to folder list"
+msgstr "Zurück zur Ordnerliste"
+
+msgid "Bad folder id."
+msgstr "Schlechte Ordner-ID."
 
 msgid "Base document directory"
 msgstr "Basisdokumentverzeichnis "
@@ -54,8 +126,32 @@ msgstr "Abbruch"
 msgid "Change Thumbnail"
 msgstr "Vorschaubild wechseln"
 
-msgid "Choose a image first."
-msgstr "Vorher Bild auswählen."
+msgid "Choose a folder."
+msgstr "Ordner auswählen."
+
+msgid "Choose an image folder"
+msgstr "Bildordner auswählen."
+
+msgid "Classify"
+msgstr "Klassifizieren"
+
+msgid "Classify Files"
+msgstr "Dateien klassifizieren"
+
+msgid "Classify checked"
+msgstr "Markierte klassifizieren"
+
+msgid "Classify directory could not be found."
+msgstr "Klassifizierungsverzeichnis konnte nicht gefunden werden."
+
+msgid "Classify files"
+msgstr "Dateien klassifizieren"
+
+msgid "Classify files (Unrestricted only)"
+msgstr "Dateien klassifizieren (Nur unbeschränkte)"
+
+msgid "Classify settings"
+msgstr "Klassifizierungseinstellungen"
 
 msgid "Clear image"
 msgstr "Bild löschen"
@@ -63,17 +159,39 @@ msgstr "Bild löschen"
 msgid "Clip"
 msgstr "Zuschneiden"
 
-msgid "Close window"
-msgstr "Fenster schliessen"
-
-msgid "Copy"
-msgstr "Kopieren"
+msgid "Close"
+msgstr "Schliessen"
 
 msgid "Could not delete file."
 msgstr "Konnte Datei nicht löschen."
 
+msgid "Could not find ffmpeg executable."
+msgstr ""
+
+#, php-format
+msgid "Could not move file \"%s\" to \"%s\" folder directory."
+msgstr "Konnte Datei \"%s\" nicht in Verzeichnis \"%s\" verschieben."
+
+msgid "Could not save thumbnail image."
+msgstr "Konnte Thumbnail nicht speichern."
+
 msgid "Could not write to directory."
 msgstr "Kann nicht ins Verzeichnis schreiben."
+
+msgid "Create document folder"
+msgstr "Dokumentordner erstellen"
+
+msgid "Create folder"
+msgstr "Ordner erstellen"
+
+msgid "Create image folder"
+msgstr "Bildordner erstellen"
+
+msgid "Create multimedia folder"
+msgstr "Multimediaordner erstellen"
+
+msgid "Created in"
+msgstr "Erstellt in"
 
 msgid "Current document"
 msgstr "Aktuelles Dokument"
@@ -81,35 +199,38 @@ msgstr "Aktuelles Dokument"
 msgid "Current image"
 msgstr "Aktuelles Bild"
 
+msgid "Current multimedia"
+msgstr "Aktuelle Multimedia"
+
+msgid "Decription"
+msgstr "Beschreibung"
+
 msgid "Default document directory may not be blank"
 msgstr "Standarddokumentverzeichnis darf nicht leer sein"
 
 msgid "Delete"
 msgstr "Löschen"
 
-msgid "Delete files"
-msgstr "Dateien löschen"
+msgid "Delete checked"
+msgstr "Markierte löschen"
 
-msgid "Delete images"
-msgstr "Bilder löschen"
+msgid "Delete folders (Unrestricted only)"
+msgstr "Ordner löschen (nur uneingeschränkte Benutzer erlaubt)"
 
 msgid "Description"
 msgstr "Beschreibung"
 
-msgid "Directory"
-msgstr "Verzeichnis"
-
 msgid "Directory not set."
 msgstr "Verzeichnis nicht gesetzt."
 
-msgid "Document"
-msgstr "Dokument"
-
-msgid "Document deleted."
-msgstr "Dokument gelöscht."
+msgid "Do not link image"
+msgstr "Keine Bildverknüpfung"
 
 msgid "Document directory does not exist."
 msgstr "Dokumentverzeichnis existiert nicht."
+
+msgid "Document folders"
+msgstr "Dokumentordner"
 
 msgid "Document location"
 msgstr "Dokumentort"
@@ -117,27 +238,54 @@ msgstr "Dokumentort"
 msgid "Document not found."
 msgstr "Dokument nicht gefunden."
 
-msgid "Document saved successfully."
-msgstr "Dokument gespeichert."
+msgid "Document settings"
+msgstr "Dokumenteinstellungen"
 
 #, php-format
-msgid "Document was %sK making it larger than %sK size limit."
+msgid "Document was %s bytes making it larger than %s byte size limit."
 msgstr ""
 
-msgid "Documents"
-msgstr "Dokumente"
+msgid "Don't show resized images when viewing folders publicly."
+msgstr "Zeige größengeänderte Bilder nicht wenn Ordner öffentlich sind."
+
+msgid "Download"
+msgstr "Download"
 
 msgid "Edit"
 msgstr "Bearbeiten"
 
-msgid "Edit Image"
+msgid "Edit folders"
+msgstr "Ordner bearbeiten"
+
+msgid "Edit image"
 msgstr "Bild bearbeiten"
 
-msgid "Edit files"
-msgstr "Dateien bearbeiten"
+msgid "Edit multimedia file"
+msgstr "Multimediadatei bearbeiten"
 
-msgid "Edit images"
-msgstr "Bilder bearbeiten"
+msgid "Enable FFMpeg thumbnails"
+msgstr ""
+
+msgid "Enable FFMpeg thumbnails (enabled on ffmpeg confirmation)"
+msgstr ""
+
+msgid "FFMpeg directory"
+msgstr ""
+
+msgid "FFMpeg file not found."
+msgstr ""
+
+msgid "Failed to create files/filecabinet/ directory."
+msgstr ""
+
+msgid "Failed to create files/filecabinet/incoming directory."
+msgstr ""
+
+msgid "Failed to create files/multimedia directory."
+msgstr ""
+
+msgid "Failed to create folder. Please check your logs."
+msgstr ""
 
 msgid "File Cabinet"
 msgstr "File Cabinet"
@@ -151,11 +299,36 @@ msgstr "Datei nicht hochgeladen."
 msgid "File type"
 msgstr "Dateityp"
 
+#, php-format
+msgid "File uploaded exceeded %sK size limit."
+msgstr ""
+
 msgid "Filename not set."
 msgstr "Dateiname nicht gesetzt."
 
-msgid "Image Browser"
-msgstr "Bildbrowser"
+msgid "Folder"
+msgstr "Ordner"
+
+msgid "Folder empty."
+msgstr "Leerer Ordner."
+
+msgid "Folder is empty."
+msgstr "Ordner ist leer."
+
+msgid "Form upload limit"
+msgstr "Formularuploadlimit"
+
+msgid "General"
+msgstr "Allgemein"
+
+msgid "Go"
+msgstr "Los!"
+
+msgid "Height"
+msgstr "Höhe"
+
+msgid "Image folders"
+msgstr "Bildordner"
 
 #, php-format
 msgid "Image height was %spx, making it larger than %d pixel limit."
@@ -165,76 +338,154 @@ msgstr ""
 msgid "Image is %spx by %spx, the maximum dimensions are %spx by %spx."
 msgstr "Bild hat %spx x %spx, Maximalgröße ist %spx x %spx."
 
+msgid "Image link url"
+msgstr "Bild-URL."
+
 msgid "Image location"
 msgstr "Bildort"
+
+msgid "Image must be a jpeg file."
+msgstr "Bild muss JPEG-Typ haben."
 
 msgid "Image not found"
 msgstr "Bild nicht gefunden"
 
-msgid "Image uploaded!"
-msgstr "Bild hochgeladen!"
+msgid "Image settings"
+msgstr "Bildeinstellungen"
 
 #, php-format
-msgid "Image was %sK making it larger than %sK size limit."
+msgid "Image was %s bytes making it larger than %s byte size limit."
 msgstr ""
 
 #, php-format
 msgid "Image width was %spx, making it larger than %d pixel limit."
 msgstr ""
 
-msgid "Images"
-msgstr "Bilder"
+msgid "Incoming classify directory"
+msgstr "Eingangsklassifizierungsverzeichnis"
 
-msgid "Manage Documents"
-msgstr "Dokumente verwalten"
+msgid "Items"
+msgstr "Elemente"
 
-msgid "Manage Images"
-msgstr "Bilder verwalten"
+msgid "Link image"
+msgstr "Bild verknüpfen"
+
+msgid "Link image to original, full sized image"
+msgstr ""
+
+msgid "Link image to web site"
+msgstr ""
+
+msgid "Link to image folder"
+msgstr "Verknüpfe ins Bilderverzeichnis"
 
 msgid "Manages images and documents uploaded to your site."
 msgstr "Verwaltet hochgeladene Bilder und Dokumente."
 
+#, php-format
+msgid "Max thumbnail size : %sx%s."
+msgstr "Maximale Thumbnailgröße: %sx%s."
+
+msgid "Maximum document file size (in bytes)"
+msgstr "Maximale Dokumentgröße (in Bytes)"
+
 msgid "Maximum file size"
 msgstr "Maximale Dateigröße"
 
-msgid "Maximum height"
-msgstr "Maximale Höhe"
+msgid "Maximum image dimension"
+msgstr "Maximale Bilddimension"
 
-msgid "Maximum width"
-msgstr "Maximale Breite"
+msgid "Maximum image file size (in bytes)"
+msgstr "Maximale Bildgröße (in Bytes)"
 
-msgid "No documents found."
-msgstr "Keine Dokumente gefunden."
+msgid "Maximum image pixel dimension"
+msgstr "Maximale Bilddimension in Pixeln"
+
+msgid "Maximum multimedia file size (in bytes)"
+msgstr "Maximale Multimediadateigröße (in Bytes)"
+
+msgid "Maximum pinned documents shown (0 for all)"
+msgstr ""
+
+msgid "Maximum pinned images shown (0 for all)"
+msgstr ""
+
+msgid "Missing folder information."
+msgstr "Fehlende Ordnerinformation."
+
+msgid "Missing temporary upload directory."
+msgstr "Temporäres Verzeichnis für Upload fehlt."
+
+msgid "Missing title."
+msgstr "Titel fehlt."
+
+msgid "More..."
+msgstr "Mehr..."
+
+msgid "Multimedia file not found."
+msgstr "Multimediadatei nicht gefunden."
+
+#, php-format
+msgid "Multimedia file was %s bytes making it larger than %s byte size limit."
+msgstr ""
+
+msgid "Multimedia folders"
+msgstr "Multimediaordner"
+
+msgid "Multimedia location"
+msgstr "Multimediaposition"
+
+msgid "Multimedia settings"
+msgstr "Multimediaeinstellungen"
+
+msgid "No folders found."
+msgstr "Keine Ordner gefunden."
 
 msgid "No image"
 msgstr "Kein Bild"
 
-msgid "No images found."
-msgstr "Keine Bilder gefunden."
+msgid "No public folders are available."
+msgstr "Keine öffentlichen Ordner verfügbar."
 
-msgid "No items found."
-msgstr "Keine Elemente gefunden."
+msgid "None"
+msgstr "Keiner"
 
-msgid "No thumbnail"
-msgstr "Keine Vorschau"
+msgid "Pin folder"
+msgstr "Ordner anheften"
 
-msgid "Ok"
-msgstr "Ok"
+#, php-format
+msgid "Pin folder to \"%s\""
+msgstr "Ordner an \"%s\" heften"
 
-msgid "Please check your logs."
-msgstr "Bitte Logdateien überprüfen."
+msgid "Please create a new folder."
+msgstr "Bitte erstelle einen neuen Ordner."
 
-msgid "Save directory"
-msgstr "Verzeichnis speichern"
+msgid "Private"
+msgstr "Privat"
+
+msgid "Public"
+msgstr "Öffentlich"
+
+msgid "Resize image if over"
+msgstr "Größe anpassen wenn über"
+
+msgid "Rotate image"
+msgstr "Bild drehen"
 
 msgid "Save settings"
 msgstr "Einstellungen speichern"
+
+msgid "Server upload limit"
+msgstr "Serveruploadlimit"
 
 msgid "Settings"
 msgstr "Einstellungen"
 
 msgid "Settings saved."
 msgstr "Einstellungen gespeichert"
+
+msgid "Show source images only"
+msgstr "Nur Quellbilder anzeigen"
 
 msgid "Size"
 msgstr "Grösse"
@@ -248,20 +499,54 @@ msgstr "Auf die Datei kann zur Zeit nicht zugegriffen werden."
 msgid "Sorry, you are not allowed access to this file."
 msgstr "Kein Zugriff auf diese Datei erlaubt."
 
+msgid "Sorry.."
+msgstr "Pech"
+
+msgid "System upload limits"
+msgstr "Systemuploadlimit"
+
+msgid "The incoming file directory is currently empty."
+msgstr "Das Eingangsverzeichnis ist zur Zeit leer."
+
+msgid "The max image dimension must be greater than 50 pixels."
+msgstr "Die Bilddimension muss über 50 Pixel liegen."
+
+msgid "The web server does not have permission to access files in the classify directory."
+msgstr ""
+
+msgid "The web server does not have permission to delete files from the classify directory."
+msgstr ""
+
+msgid "The web server does not have permissions for the classify directory."
+msgstr ""
+
 msgid "There was a problem loading the image file."
 msgstr "Ein Problem ist beim Laden des Bildes aufgetreten."
 
-msgid "Thumbnail"
-msgstr "Vorschau"
+#, php-format
+msgid "This image is larger than the %s x %s limit. Do you want to resize the image to fit?"
+msgstr ""
+
+msgid "This is a private folder."
+msgstr "Dies ist privater Ordner."
+
+msgid "Thumbnail directory not writable."
+msgstr "Verzeichnis ist nicht beschreibbar."
 
 msgid "Title"
 msgstr "Titel"
+
+msgid "Unable to locate the classify directory. Please check your File Cabinet settings, configuration file and directory permissions."
+msgstr ""
 
 msgid "Unable to move the file to its new directory."
 msgstr "Konnte Datei nicht in das neue Verzeichnis verschieben."
 
 msgid "Unable to read document directory."
 msgstr "Kann nicht vom Dokumentverzeichnis lesen."
+
+msgid "Unable to resize image."
+msgstr "Kann Bildergröße nicht anpassen."
 
 msgid "Unable to write to document directory."
 msgstr "Kann nicht ins Dokumentverzeichnis schreiben."
@@ -272,8 +557,26 @@ msgstr "Unzulässiger Dokumenttyp."
 msgid "Unacceptable image type."
 msgstr "Unzulässiger Bildtyp."
 
+msgid "Unacceptable multimedia file type."
+msgstr "Nicht erlaubter Multimediatyp."
+
 msgid "Update"
 msgstr "Aktualisieren"
+
+msgid "Update document folder"
+msgstr "Dokumentordner aktualisieren"
+
+msgid "Update folder"
+msgstr "Ordner aktualisieren"
+
+msgid "Update image"
+msgstr "Bild aktualisieren"
+
+msgid "Update image folder"
+msgstr "Bildordner aktualisieren"
+
+msgid "Update multimedia folder"
+msgstr "Multimediaordner aktualisieren"
 
 msgid "Upload"
 msgstr "Hochladen"
@@ -284,12 +587,12 @@ msgstr "Dokument hochladen"
 msgid "Upload image"
 msgstr "Bild hochladen"
 
-msgid "Upload new document"
-msgstr "Neues Dokument hochladen"
+msgid "Upload multimedia"
+msgstr "Mutlimedia hochladen"
 
-msgid "View full image"
-msgstr "Vollbildanzeige"
+msgid "Upload new thumbnail"
+msgstr "Neues Thumbnail hochladen"
 
-msgid "images"
-msgstr "Bilder"
+msgid "Upload thumbnail"
+msgstr "Thumbnail hochladen"
 

@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_1_0,Search0_2_1\n"
+"Project-Id-Version: PHPWS1_3_2,Search0_3_0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-15 10:21-0500\n"
-"PO-Revision-Date: 2007-03-05 12:09+0100\n"
+"PO-Revision-Date: 2007-11-27 13:23+0100\n"
 "Last-Translator: Peter Heppner <heppner@gmx.de>\n"
 "Language-Team: Peter Heppner <heppner@gmx.de>\n"
 "MIME-Version: 1.0\n"
@@ -105,6 +105,9 @@ msgstr "Keine Ergebnisse gefunden."
 msgid "Nothing found"
 msgstr "Nichts gefunden"
 
+msgid "Save settings"
+msgstr "Einstellungen speichern"
+
 msgid "Search"
 msgstr "Suche"
 
@@ -114,11 +117,23 @@ msgstr "Suche Admin"
 msgid "Search Results"
 msgstr "Suchergebnisse"
 
+msgid "Search Settings"
+msgstr "Sucheinstellungen"
+
 msgid "Search for:"
 msgstr "Suche von:"
 
 msgid "Search location"
 msgstr "Suchort"
+
+msgid "Settings"
+msgstr "Einstellungen"
+
+msgid "Settings saved"
+msgstr "Einstellungen gespeichert"
+
+msgid "Show alternate options"
+msgstr "Zeige weitere Optionen"
 
 msgid "Success"
 msgstr "Erfolg"

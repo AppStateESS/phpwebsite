@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_1_0,Layout2_3_0\n"
+"Project-Id-Version: PHPWS1_3_2,Layout2_4_2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-26 15:18-0500\n"
-"PO-Revision-Date: 2007-03-05 12:01+0100\n"
+"PO-Revision-Date: 2007-11-26 18:24+0100\n"
 "Last-Translator: Peter Heppner <heppner@gmx.de>\n"
 "Language-Team: Peter Heppner <heppner@gmx.de>\n"
 "MIME-Version: 1.0\n"
@@ -21,14 +21,20 @@ msgstr ""
 msgid "-- Use default style --"
 msgstr "-- Standardstil benutzen --"
 
-msgid "Adjust Boxes"
-msgstr "Boxen korrigieren"
-
 msgid "Allow indexing"
 msgstr "Indizierung erlauben"
 
 msgid "Allow link following"
 msgstr "Linkverfolgung erlauben"
+
+msgid "An instruction was requested on a missing theme variable."
+msgstr ""
+
+msgid "Arrange"
+msgstr "Einrichten"
+
+msgid "Arrange Layout"
+msgstr "Layout einrichten"
 
 msgid "Available styles"
 msgstr "Verfügbare Stile"
@@ -39,23 +45,26 @@ msgstr "Box bewegen aus"
 msgid "Box order is out of sequence."
 msgstr "Boxreihenfolge ist völlig durcheinander."
 
-msgid "Box positioning"
-msgstr "Boxpositionierung"
-
-msgid "Boxes"
-msgstr "Boxen"
-
 msgid "Cancel"
 msgstr "Abbruch"
 
 msgid "Change CSS"
 msgstr "CSS ändern"
 
-msgid "Change Settings"
-msgstr "Einstellungen ändern"
-
 msgid "Change style"
 msgstr "Stil ändern"
+
+msgid "Clear cache"
+msgstr "Cache löschen"
+
+msgid "Clear templates"
+msgstr "Vorlagen löschen"
+
+msgid "Clears all Cache Lite files. Good to try if module updates do not display."
+msgstr ""
+
+msgid "Click to move"
+msgstr "Klicke um zu verschieben"
 
 msgid "Complete the theme change"
 msgstr "Themenänderung fertigstellen"
@@ -84,9 +93,6 @@ msgstr "Abschalten"
 msgid "Display settings"
 msgstr "Anzeigeeinstellungen"
 
-msgid "Don't reset"
-msgstr "Nicht zurücksetzen"
-
 msgid "Done"
 msgstr "Fertig"
 
@@ -99,8 +105,8 @@ msgstr "Kopfzeile bearbeiten"
 msgid "Edit Meta Tags"
 msgstr "Meta Tags bearbeiten"
 
-msgid "Enable"
-msgstr "Einschalten"
+msgid "Enable box move"
+msgstr "Boxverschiebung erlauben"
 
 msgid "Error"
 msgstr "Fehler"
@@ -153,8 +159,9 @@ msgstr "Meta Tags aktualisiert."
 msgid "Meta tags"
 msgstr "Meta Tags"
 
-msgid "Move"
-msgstr "Verschieben"
+#, php-format
+msgid "Move box: %s"
+msgstr "Box verschieben: %s"
 
 msgid "Move down"
 msgstr "Nach unten verschieben"
@@ -169,7 +176,7 @@ msgid "Move up"
 msgstr "Nach oben verschieben"
 
 msgid "No alternate style sheets available."
-msgstr ""
+msgstr "Keine alternativen Stylesheets verfügbar."
 
 msgid "No themes installed."
 msgstr "Keine Themen installiert."
@@ -192,11 +199,17 @@ msgstr "Thema auswählen"
 msgid "Please enter a page title."
 msgstr "Bitte Seitentitel eingeben."
 
+msgid "Removes all files from the current template cache directory. Good to try if your theme is not displaying properly."
+msgstr "Alle Dateien aus dem Vorlagencache werden gelöscht. Sinnvoll wenn die Anzeige der Themendatei nicht richtig funktioniert."
+
 msgid "Removing old layout components."
-msgstr "Alte Layoutkomponenten werden entfernt."
+msgstr "Alte Layoutkomponenten werden gelöscht."
 
 msgid "Reset boxes"
 msgstr "Boxen zurücksetzen"
+
+msgid "Resets all content back to its original location. Use if problems with Box Move occurred."
+msgstr "Alle Inhalte werden auf ihre Originalposition gesetzt. Notwendig wenn Probleme mit Boxverschiebung auftreten."
 
 msgid "Restore the default theme"
 msgstr "Standardthema wiederherstellen"
@@ -210,14 +223,12 @@ msgstr "Speichern"
 msgid "Save settings"
 msgstr "Einstellungen speichern"
 
-msgid "Send to"
-msgstr "Senden an"
+#, php-format
+msgid "Send to %s"
+msgstr "Senden an %s"
 
 msgid "Set meta tags"
 msgstr "Meta Tags setzen"
-
-msgid "Settings changed."
-msgstr "Einstellungen geändert."
 
 msgid "Settings saved"
 msgstr "Einstellungen gespeichert"
@@ -240,6 +251,9 @@ msgstr "Ein Problem ist beim Lesen der Themenverzeichnisse aufgetreten."
 msgid "There was a problem updating the settings."
 msgstr "Ein Problem ist beim Bearbeiten der Einstellungen aufgetreten."
 
+msgid "This site requires you to enable cookies on your browser."
+msgstr ""
+
 msgid "Unable to receive theme information."
 msgstr "Kann keine Themeninformationen empfangen."
 
@@ -254,4 +268,7 @@ msgstr "Kopfzeile aktualisieren"
 
 msgid "Update Theme Settings"
 msgstr "Themeneinstellungen aktualisieren"
+
+msgid "When enabled, this allows you to shift content to other area of your layout. Movement options depend on the current theme."
+msgstr ""
 

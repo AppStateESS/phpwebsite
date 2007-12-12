@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_1_0,Boost2_0_0\n"
+"Project-Id-Version: PHPWS1_3_2,Boost2_2_0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-15 10:20-0500\n"
-"PO-Revision-Date: 2007-03-05 11:44+0100\n"
+"PO-Revision-Date: 2007-11-26 12:43+0100\n"
 "Last-Translator: Peter Heppner <heppner@gmx.de>\n"
 "Language-Team: Peter Heppner <heppner@gmx.de>\n"
 "MIME-Version: 1.0\n"
@@ -47,8 +47,11 @@ msgstr "Ein Fehler ist bei der Registrierung aufgetreten."
 msgid "An error occurred updating the core."
 msgstr "Ein Fehler ist beim Update von Core aufgetreten."
 
-msgid "An error occurred while installing this module."
-msgstr "Ein Fehler ist während der Installation des Moduls aufgetreten."
+msgid "An error occurred when tryingt to access your branch site listing."
+msgstr "Ein Fehler ist beim Zugriff auf den Branch aufgetreten."
+
+msgid "An error occurred when trying to access your branch site listing."
+msgstr "Ein Fehler ist beim Zugriff auf den Branch aufgetreten."
 
 #, php-format
 msgid "An error occurred while registering the %s module."
@@ -79,6 +82,12 @@ msgstr "Boost ist für die Installation und das Upgrade von Modulen zuständig."
 msgid "Boost requires updating! You should do so before any other module!"
 msgstr "Boost benötigt ein Update! Das sollte vor allen anderen Modulen geschehen!"
 
+msgid "Branch directories are ready."
+msgstr "Branchverzeichnisse sind fertig."
+
+msgid "Branches could not be checked."
+msgstr "Branches konnten nicht geprüft werden."
+
 msgid "Changes"
 msgstr "Änderungen"
 
@@ -91,6 +100,25 @@ msgstr "Alle überprüfen"
 msgid "Check your logs for more information."
 msgstr "Bitte Logdatei prüfen."
 
+#, php-format
+msgid "Checking branch \"%s\""
+msgstr "Prüfe Branch \"%s\""
+
+msgid "Click here to force an uninstall."
+msgstr "Hier klicken um die Deinstallation zu erzwingen."
+
+msgid ""
+"Clicking OK will copy the core\\'s configuration, image and (if on a branch site) javascript directories locally.\\n"
+"No backups will occur and all local files will be overwritten.\\n"
+"Are you certain you want to do this?"
+msgstr ""
+
+msgid ""
+"Clicking OK will copy this module\\'s configuration, image, templates, and javascript folders locally.\\n"
+"No backups will occur and all local files will be overwritten.\\n"
+"Are you certain you want to do this?"
+msgstr ""
+
 msgid "Continue installation..."
 msgstr "Installation fortführen..."
 
@@ -101,8 +129,14 @@ msgstr "Kopiere Konfigurationsdateien."
 msgid "Copying directory %1$s to %2$s"
 msgstr "Kopiere Verzeichnis %1$s nach %2$s"
 
+msgid "Copying image files."
+msgstr "Kopiere Bilddateien."
+
 msgid "Copying javascript directories."
 msgstr "Kopiere Javascriptverzeichnisse."
+
+msgid "Copying javascript files. Be aware that module javascript files will be overwritten."
+msgstr "Kopiere Javascriptdateien. Beachte, dass Moduljavascriptdateieen überschrieben werden."
 
 msgid "Copying source image directory for module."
 msgstr "Kopiere Bildverzeichnis für Modul."
@@ -112,6 +146,9 @@ msgstr "Kopiere Vorlagendateien."
 
 msgid "Core Modules"
 msgstr "Coremodule"
+
+msgid "Core revert finished!"
+msgstr "Core Rückgängig beendet."
 
 msgid "Core successfully updated."
 msgstr "Core wurde aktualisiert."
@@ -185,6 +222,9 @@ msgstr "Installiere"
 msgid "Installation complete!"
 msgstr "Installation fertig!"
 
+msgid "Installation file not implemented."
+msgstr "Installationsdatei nicht implementiert."
+
 msgid "Installing"
 msgstr "Installiere"
 
@@ -219,13 +259,16 @@ msgid "Module does not require updating."
 msgstr "Modul benötigt kein Update."
 
 msgid "Module is missing register file."
-msgstr ""
+msgstr "Modul hat keine Registrierdatei."
 
 msgid "Module is missing register function."
-msgstr ""
+msgstr "Modul hat keine Registrierfunktion."
 
 msgid "Module is not installed."
 msgstr "Modul ist nicht installiert."
+
+msgid "Module revert finished!"
+msgstr "Modul Rückgängig beendet."
 
 msgid "Module title"
 msgstr "Modultitel"
@@ -237,7 +280,7 @@ msgid "Module's settings removed successfully."
 msgstr "Moduleinstellungen entfernt."
 
 msgid "Modules have not been set."
-msgstr ""
+msgstr "Module wurden nicht gesetzt."
 
 msgid "More info"
 msgstr "Weitere Informationen"
@@ -247,9 +290,6 @@ msgstr "Weitere Information"
 
 msgid "Needs upgrading"
 msgstr "Benötigt Upgrade"
-
-msgid "No installation file found."
-msgstr "Installationsdatei nicht gefunden."
 
 msgid "No modules available."
 msgstr "Keine Module verfügbar."
@@ -278,11 +318,11 @@ msgstr "Andere Module"
 msgid "Passed!"
 msgstr "Genehmigt!"
 
-msgid "Permission Help"
-msgstr "Berechtigungshilfe"
-
 msgid "Please check your error logs."
-msgstr "Bitte Logdatei prüfen."
+msgstr "Bitte Fehlerlogs überprüfen."
+
+msgid "Please remove them from the mod directory."
+msgstr "Bitte entferne diese aus dem Modulverzeichnis."
 
 msgid "Processing installation file."
 msgstr "Verarbeite Installationsdatei."
@@ -315,6 +355,22 @@ msgstr "Verzeichnis %s wird entfernt"
 msgid "Return to Boost"
 msgstr "Zurück zu Boost"
 
+msgid "Return to Boost listing"
+msgstr ""
+
+msgid "Revert"
+msgstr "Rückgängig"
+
+#, php-format
+msgid "Reverting %s module's local files"
+msgstr ""
+
+msgid "Reverting the core's local files"
+msgstr ""
+
+msgid "Skipping javascript files."
+msgstr ""
+
 msgid "Some key unregistrations were unsuccessful. Check your logs."
 msgstr "Einige Keyunregistrierungen sind fehlgeschlagen. Bitte Logdatei prüfen."
 
@@ -333,11 +389,17 @@ msgstr "Status"
 msgid "The About file is missing for this module."
 msgstr "Die Aboutdatei für dieses Modul fehlt."
 
+msgid "The Core requires updating! You should do so before any modules."
+msgstr "Der Core benötigt ein Update!. Das muss vor allen anderen Modulen geschehen."
+
 msgid "The following directories are not writable:"
 msgstr "Folgende Verzeichnisse sind nicht beschreibbar:"
 
 msgid "The following directories need to be created:"
 msgstr "Folgende Verzeichnisse müssen erstellt werden:"
+
+msgid "The following modules are from an earlier version of phpWebSite and will not function."
+msgstr "Die folgenden Module sind von einer früheren Version von phpWebSite und werden nicht funktionieren."
 
 msgid "The following modules depend on this module to function:"
 msgstr "Folgende Module sind von diesem Modul abhängig:"
@@ -426,9 +488,6 @@ msgstr "Version benötigt"
 
 msgid "WARNING: Only deities can uninstall core modules. Doing so may corrupt your installation!"
 msgstr ""
-
-msgid "You will need to change the permissions."
-msgstr "Berechtigungen müssen geändert werden."
 
 #, php-format
 msgid "Your logs/%s file must be readable and writable."

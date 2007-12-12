@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_1_0,Access0_1_2\n"
+"Project-Id-Version: PHPWS1_3_2,Access0_2_3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-15 10:20-0500\n"
-"PO-Revision-Date: 2007-03-05 11:33+0100\n"
+"PO-Revision-Date: 2007-11-26 12:07+0100\n"
 "Last-Translator: Peter Heppner <heppner@gmx.de>\n"
 "Language-Team: Peter Heppner <heppner@gmx.de>\n"
 "MIME-Version: 1.0\n"
@@ -18,11 +18,17 @@ msgstr ""
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-msgid ".htaccess File Options"
-msgstr ".htaccess Dateioptionen"
+msgid "-- Choose option --"
+msgstr "-- Wähle Option --"
+
+msgid ".htaccess file is currently absent."
+msgstr ".htaccess Datei ist nicht vorhanden."
 
 msgid ".htaccess file is missing."
 msgstr ".htaccess Datei fehlt."
+
+msgid ".htaccess file options"
+msgstr ".htaccess Dateioptionen"
 
 msgid ".htaccess file written."
 msgstr ".htaccess Datei geschrieben."
@@ -69,6 +75,12 @@ msgstr "Alles erlauben"
 msgid "Allow file update"
 msgstr "Erlaube Dateiaktualisierung"
 
+msgid "Allow/Deny"
+msgstr "Erlauben/Ablehnen"
+
+msgid "Allow/Deny enabled"
+msgstr "Erlauben/Ablehnen eingeschaltet"
+
 msgid "Allowed IPs"
 msgstr "Erlaubte IPs"
 
@@ -99,11 +111,17 @@ msgstr "Sollen die markierten Verknüpfungen gelöscht werden?"
 msgid "Are you sure you want to delete this shortcut?"
 msgstr "Soll diese Verknüpfung gelöscht werden?"
 
-msgid "Bad keyword. Use only alphanumeric characters and underlines."
+msgid "Are you sure you want to restore the default .htaccess file?"
+msgstr "Soll die Standard .htaccess datei wiederhergestellt werden?"
+
+msgid "Bad keyword. Use only alphanumeric characters, dashes and spaces."
 msgstr "Schlechtes Schlüsselwort. Benutze nur Buchstaben und Unterstriche."
 
 msgid "Cancel"
 msgstr "Abbruch"
+
+msgid "Cannot create a new .htaccess file because the installation directory is not writable."
+msgstr "Die .htaccess Datei kann nicht erstellt werden da das Installationsverzeichnis nicht beschreibbar ist."
 
 msgid "Close window"
 msgstr "Fenster schliessen"
@@ -111,8 +129,14 @@ msgstr "Fenster schliessen"
 msgid "Controls the .htaccess file for Apache and creates shortcuts."
 msgstr "Steuert die .htaccess Datei für Apache und erstellt Verknüpfungen."
 
+msgid "Current .htaccess file"
+msgstr "Aktuelle .htaccess Datei"
+
 msgid "Deactivate"
 msgstr "Deaktivieren"
+
+msgid "Default .htaccess file restored."
+msgstr "Standard .htaccess Datei wiederhergestellt."
 
 msgid "Delete"
 msgstr "Löschen"
@@ -123,23 +147,23 @@ msgstr "Abgelehnte IPs"
 msgid "Deny all"
 msgstr "Alles ablehnen"
 
-msgid "Deny/Allow"
-msgstr "Ablehnen/Erlauben"
-
 msgid "Denys and Allows"
 msgstr "Ablehnen und Erlauben"
 
 msgid "Do not allow all"
-msgstr ""
+msgstr "Nicht \"Erlaube alles\" erlauben"
 
 msgid "Do not deny all"
-msgstr ""
+msgstr "Nicht \"Lehne alles ab\" erlauben"
 
 msgid "Edit"
 msgstr "Bearbeiten"
 
 msgid "Go"
 msgstr "Los!"
+
+msgid "Go to the Update tab and try to create a new file."
+msgstr "Gehe zu Update Tab und erstelle eine neue Datei."
 
 msgid "IP Address"
 msgstr "IP-Adresse"
@@ -165,7 +189,7 @@ msgstr "Schlüsselwort fehlt."
 msgid "Missing url."
 msgstr "URL fehlt."
 
-msgid "Mod Rewrite Options"
+msgid "Mod Rewrite options"
 msgstr "Mod Rewrite Optionen"
 
 msgid "No"
@@ -178,7 +202,7 @@ msgid "No denied ip addresses found."
 msgstr "Keine abgelehnten IP-Adressen gefunden."
 
 msgid "Open your config/core/config.php file in a text editor."
-msgstr ""
+msgstr "Öffne die config/core/config.php Datei in einem Editor."
 
 msgid "Please check your error.log."
 msgstr "Bitte Logdatei überprüfen."
@@ -187,7 +211,10 @@ msgid "Please check your logs."
 msgstr "Bitte Logdatei prüfen."
 
 msgid "Remember to \"Update\" your access file when finished changing IP rules."
-msgstr ""
+msgstr "Denke an \"Aktualisieren\" der Zugriffsdatei, wenn die IP-Regeländerungen abgeschlossen sind."
+
+msgid "Restore default .htaccess"
+msgstr "Standard .htaccess Datei wiederherstellen"
 
 msgid "Return to previous page."
 msgstr "Zurück zur vorherigen Seite."
@@ -199,7 +226,7 @@ msgid "Save settings"
 msgstr "Einstellungen speichern"
 
 msgid "Set your \"MOD_REWRITE_ENABLED\" define equal to TRUE."
-msgstr ""
+msgstr "Setze \"MOD_REWRITE_ENABLED\" Definition auf TRUE."
 
 msgid "Settings saved."
 msgstr "Einstellungen gespeichert."
@@ -222,8 +249,8 @@ msgstr "Pech"
 msgid "The files/access/ directory is not writable."
 msgstr "Das files/access Verzeichnis ist nicht beschreibbar."
 
-msgid "Type keyword here"
-msgstr "Hier Schlüsselwort eingeben"
+msgid "Unable to restore default .htaccess file."
+msgstr "Die Standard .htaccess Datei konnte nicht wiederhergestellt werden."
 
 msgid "Unable to save .htaccess file."
 msgstr "Kann .htaccess Datei nicht speichern."
@@ -264,6 +291,12 @@ msgstr "\"Deny all\" ist eingeschaltet. Alle Zeilen werden ignoriert."
 msgid "Your .htaccess file will contain the below:"
 msgstr "Die .htaccess Datei wird folgendes enthalten:"
 
+msgid "Your <b>.htaccess</b> file does not exist."
+msgstr "Die <b>.htaccess</b> Datei ist nicht vorhanden."
+
 msgid "Your <b>.htaccess</b> file is not writable."
 msgstr "Die <b>.htaccess</b> Datei ist nicht beschreibbar."
+
+msgid "Your installation directory must be writable if you want to create a new .htaccess file."
+msgstr "Das Installationsverzeichnis muss beschreibbar sein, wenn eine neue .htaccess Datei erstellt werden soll."
 

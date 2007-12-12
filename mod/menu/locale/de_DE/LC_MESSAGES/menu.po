@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_1_0,Menu1_1_0\n"
+"Project-Id-Version: PHPWS1_3_2,Menu1_4_2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-26 15:18-0500\n"
-"PO-Revision-Date: 2007-03-05 12:02+0100\n"
+"PO-Revision-Date: 2007-11-26 18:36+0100\n"
 "Last-Translator: Peter Heppner <heppner@gmx.de>\n"
 "Language-Team: Peter Heppner <heppner@gmx.de>\n"
 "MIME-Version: 1.0\n"
@@ -24,14 +24,20 @@ msgstr "Ein Problem ist beim Speichern der Verknüpfung aufgetreten."
 msgid "Action"
 msgstr "Aktion"
 
-msgid "Add Other Link"
-msgstr "Weitere Verknüpfung hinzufügen"
+msgid "Add current page"
+msgstr "Aktuelle Seite hinzufügen"
+
+msgid "Add home link on new menus"
+msgstr "Homeverknüpfung in neue Menüs einfügen"
 
 msgid "Add link"
 msgstr "Verknüpfung hinzufügen"
 
 msgid "Add other link"
 msgstr "Weitere Verknüpfung hinzufügen"
+
+msgid "Add stored page"
+msgstr "Gespeicherte Seite hinzufügen"
 
 msgid "Add to menu"
 msgstr "Zum Menü hinzufügen"
@@ -45,6 +51,9 @@ msgstr "Adminmodus aus"
 msgid "Admin mode on"
 msgstr "Adminmodus ein"
 
+msgid "Admin mode status"
+msgstr "Adminmodusstatus"
+
 msgid "Are you sure you want to delete this link: "
 msgstr "Soll diese Verknüpfung gelöscht werden: "
 
@@ -57,8 +66,14 @@ msgstr "Soll dieses Menü von allen Seiten losgeheftet werden?"
 msgid "Are you sure you want to unpin this menu from this page?"
 msgstr "Soll dieses Menü von dieser Seite losgeheftet werden?"
 
+msgid "Cancel"
+msgstr "Abbruch"
+
 msgid "Cannot locate any menu templates. Cannot continue."
 msgstr "Menüvorlagen nicht gefunden. Es geht nicht weiter."
+
+msgid "Clear from list"
+msgstr "Aus der Liste löschen"
 
 msgid "Clip"
 msgstr "Festhalten"
@@ -93,23 +108,26 @@ msgstr "Menüs löschen"
 msgid "Delete link"
 msgstr "Verknüpfung löschen"
 
-msgid "Disable Administration Mode"
-msgstr "Adminmodus deaktivieren"
-
 msgid "Edit"
 msgstr "Bearbeiten"
 
+msgid "Edit Link"
+msgstr "Verknüpfung bearbeiten"
+
+msgid "Edit link"
+msgstr "Verknüpfung bearbeiten"
+
 msgid "Edit link title"
 msgstr "Verknüpfungstitel bearbeiten"
-
-msgid "Enable Administration Mode"
-msgstr "Adminmodus aktivieren"
 
 msgid "Enter link title"
 msgstr "Verknüpfungstitel eingeben"
 
 msgid "Error"
 msgstr "Fehler"
+
+msgid "Home"
+msgstr "Home"
 
 msgid "Link is missing a title, url, or menu id."
 msgstr "Dem Link fehlt ein Titel, URL oder Menü-ID."
@@ -119,6 +137,9 @@ msgstr "Liste"
 
 msgid "Main menu"
 msgstr "Hauptmenü"
+
+msgid "Maximum link characters"
+msgstr "Maximale Linkzeichenzahl"
 
 msgid "Menu"
 msgstr "Menü"
@@ -147,20 +168,41 @@ msgstr "URL fehlt."
 msgid "Move down"
 msgstr "Nach unten verschieben"
 
+msgid "Move link down"
+msgstr "Verknüpfung nach unten verschieben"
+
+msgid "Move link up"
+msgstr "Verknüpfung nach oben verschieben"
+
 msgid "Move up"
 msgstr "Nach oben verschieben"
 
 msgid "New"
 msgstr "Neu"
 
+msgid "No admin options"
+msgstr "Keine Adminoptionen"
+
 msgid "No links in queue."
 msgstr "Keine Verknüpfung in Warteschlange."
+
+msgid "No menus found. Click on \"New\" to create one."
+msgstr "Kein Menü gefunden. Klicke \"Neu\" um eins zu erzeugen."
+
+msgid "Off"
+msgstr "Aus"
+
+msgid "On"
+msgstr "Ein"
 
 msgid "Pin"
 msgstr "Anheften"
 
 msgid "Pin links"
 msgstr "Verknüpfung anheften"
+
+msgid "Pin page"
+msgstr "Seite anheften"
 
 msgid "Pin to all pages"
 msgstr "An alle Seiten heften"
@@ -171,11 +213,23 @@ msgstr "An Element heften"
 msgid "Pinned links"
 msgstr "Angeheftete Verknüpfungen"
 
+msgid "Reorder links"
+msgstr "Verknüpfung neu sortieren"
+
+msgid "Save"
+msgstr "Speichern"
+
 msgid "Save link"
 msgstr "Verknüpfung speichern"
 
+msgid "Save settings"
+msgstr "Einstellungen speichern"
+
 msgid "Settings"
 msgstr "Einstellungen"
+
+msgid "Settings updated."
+msgstr "Einstellungen aktualisiert."
 
 msgid "Site map"
 msgstr "Site map"
@@ -194,6 +248,9 @@ msgstr "Titel"
 
 msgid "Type the new title for this link."
 msgstr "Neuen Titel für Verknüpfung eingeben."
+
+msgid "Unable to locate menu template."
+msgstr "Die Menüvorlage konnte nicht gefunden werden."
 
 msgid "Unable to save menu. Please check error logs."
 msgstr "Kann das Menü nicht speichern. Bitte Logdatei überprüfen."
@@ -216,6 +273,15 @@ msgstr "Menü aktualisieren"
 msgid "Url"
 msgstr "URL"
 
+msgid "Use MiniAdmin instead of Admin mode link"
+msgstr "Benutze Miniadmin anstatt Adminmodus"
+
+msgid "Use floating admin links"
+msgstr "Benutze fliegende Adminlinks"
+
 msgid "User attempted access to Menu administration."
 msgstr "Der Benutzer versuchte Zugriff auf Menüadministration."
+
+msgid "You must enter a link title."
+msgstr "Ein Verknüpfungstitel muss angegeben werden."
 

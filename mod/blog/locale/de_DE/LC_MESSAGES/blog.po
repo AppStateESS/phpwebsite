@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_1_0,Blog1_4_2\n"
+"Project-Id-Version: PHPWS1_3_2,Blog1_6_1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-15 10:20-0500\n"
-"PO-Revision-Date: 2007-03-05 11:41+0100\n"
+"PO-Revision-Date: 2007-11-26 12:28+0100\n"
 "Last-Translator: Peter Heppner <heppner@gmx.de>\n"
 "Language-Team: Peter Heppner <heppner@gmx.de>\n"
 "MIME-Version: 1.0\n"
@@ -39,6 +39,9 @@ msgstr "Blog hinzufügen"
 msgid "Allow anonymous comments"
 msgstr "Anonyme Kommentare erlauben"
 
+msgid "Allow anonymous comments by default"
+msgstr "Anonyme Kommentare erlauben (Standard)"
+
 msgid "Allow anonymous submissions"
 msgstr "Anonyme Antworten erlaubt"
 
@@ -47,6 +50,9 @@ msgstr "Kommentare erlauben"
 
 msgid "Allow comments by default"
 msgstr "Kommentare erlauben (Standard)"
+
+msgid "Always"
+msgstr "Immer"
 
 msgid "An error occurred when saving your version."
 msgstr "Ein Fehler ist beim Speichern der Version aufgetreten."
@@ -106,6 +112,9 @@ msgstr "Blogtabellen entfernt."
 msgid "Blog view limit"
 msgstr "Blogansichtmenge"
 
+msgid "CAPTCHA submissions"
+msgstr "CAPTCHA Antworten"
+
 msgid "Cache anonymous view"
 msgstr "Seitenliste anzeigen"
 
@@ -130,6 +139,9 @@ msgstr "Blog löschen"
 msgid "Disapprove"
 msgstr "Ablehnen"
 
+msgid "Do not show"
+msgstr "Zeige nicht"
+
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -144,6 +156,15 @@ msgstr "Eintrag"
 
 msgid "Entry saved successfully."
 msgstr "Eintrag gespeichert."
+
+msgid "Expire"
+msgstr "Ablauf"
+
+msgid "Expire date/time"
+msgstr "Ablaufdatum/zeit"
+
+msgid "Hide general image folders"
+msgstr "Verstecke normale Bilderordner"
 
 msgid "Image"
 msgstr "Bild"
@@ -175,11 +196,20 @@ msgstr "Nächste Seite"
 msgid "No action"
 msgstr "Keine Aktion"
 
+msgid "No expiration"
+msgstr "Kein Ablauf"
+
 msgid "No title"
 msgstr "Kein Titel"
 
 msgid "Number of past entries"
 msgstr "Anzahl älterer Einträge"
+
+msgid "Only on home page"
+msgstr "Nur auf der Titelseite"
+
+msgid "Please enter word in image correctly."
+msgstr "Bitte das Wort im Bild korrekt eingeben."
 
 msgid "Post current thoughts, happenings, and discussions."
 msgstr "Ankündigungen, Ereignisse und Diskussionen."
@@ -196,6 +226,9 @@ msgstr "Vorherige Blogeinträge"
 msgid "Previous page"
 msgstr "Vorherige Seite"
 
+msgid "Publish"
+msgstr "Veröffentliche"
+
 msgid "Publish date/time"
 msgstr "Veröffentlichungsdatum/zeit"
 
@@ -203,7 +236,7 @@ msgid "Read more"
 msgstr "Mehr..."
 
 msgid "Recent blog entries"
-msgstr "Ältere Blogeinträge"
+msgstr "Jüngste Blogeinträge"
 
 msgid "Repeat submission"
 msgstr "Wiederhole Sendung"
@@ -229,11 +262,17 @@ msgstr "Einstellungen"
 msgid "Show blog on home page"
 msgstr "Zeige Blog auf der Hauptseite"
 
+msgid "Show recent entries"
+msgstr "Zeige jüngste Einträge"
+
+msgid "Site is not accepting anonymous submissions."
+msgstr "Diese Site akzeptiert keine anonymen Antworten."
+
 msgid "Sorry"
 msgstr "Pech"
 
-msgid "Sorry you do not have permission to view this blog entry."
-msgstr "Du hast nicht die Berechtigung um diesen Blogeintrag anzusehen!"
+msgid "Sticky"
+msgstr ""
 
 msgid "Submit Entry"
 msgstr "Eintrag abschicken"
@@ -261,6 +300,12 @@ msgstr "Titel"
 
 msgid "Tried to edit an unapproved item."
 msgstr "Versuch der Bearbeitung eines ungenehmigten Elements."
+
+msgid "Type the word seen in the image."
+msgstr "Bitte das Wort im Bild eingeben."
+
+msgid "Unsticky"
+msgstr ""
 
 msgid "Update Blog Entry"
 msgstr "Blogeintrag aktualisieren"
@@ -294,4 +339,7 @@ msgstr "Dein Beitrag wird für eine Genehmigung bereitgehalten."
 
 msgid "Your submission is still awaiting approval."
 msgstr "Deine Antwort wartet noch auf Genehmigung."
+
+msgid "Your submission must have a summary."
+msgstr "Deine Antwort benötigt eine Zusammenfassung."
 

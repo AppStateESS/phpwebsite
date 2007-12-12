@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_1_0,Core1_4_2\n"
+"Project-Id-Version: PHPWS1_3_2,Core1_6_3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-21 12:08-0500\n"
-"PO-Revision-Date: 2007-03-05 11:31+0100\n"
+"PO-Revision-Date: 2007-11-26 12:37+0100\n"
 "Last-Translator: Peter Heppner <heppner@gmx.de>\n"
 "Language-Team: Peter Heppner <heppner@gmx.de>\n"
 "MIME-Version: 1.0\n"
@@ -88,17 +88,23 @@ msgstr "Ein Fehler ist beim Kopieren der mod_phatform_textfield Tabelle aufgetre
 msgid "An error occurred when trying to copy your mod_photoalbum_photos table."
 msgstr "Ein Fehler ist beim Kopieren der mod_photoalbum_photos Tabelle aufgetreten."
 
+msgid "An error occurred while accessing your Document tables."
+msgstr "Ein Fehler ist beim Zugriff auf die Dokumentetabelle aufgetreten."
+
 msgid "An error occurred while accessing your mod_blockmaker_data table."
 msgstr "Ein Fehler ist beim Zugriff auf die mod_blockmaker_data Tabelle aufgetreten."
-
-msgid "An error occurred while accessing your mod_documents_files table."
-msgstr "Ein Fehler ist beim Zugriff auf die mod_documents_files Tabelle aufgetreten."
 
 msgid "An error occurred while converting your old blocks."
 msgstr "Ein Fehler ist beim Konvertieren der alten Blöcke aufgetreten."
 
 msgid "An error occurred while converting your old documents."
 msgstr "Ein Fehler ist beim Konvertieren der alten Dokumente aufgetreten."
+
+msgid "An error occurred while converting your old phatfiles."
+msgstr "Ein Fehler ist beim Konvertieren der alten Phatfiles aufgetreten."
+
+msgid "An error occurred while trying to convert your old file modules."
+msgstr "Ein Fehler ist beim Konvertieren der alten dateimodule aufgetreten."
 
 msgid "An error occurred while trying to install your modules."
 msgstr "Ein Fehler ist beim Installieren der Module aufgetreten."
@@ -127,6 +133,15 @@ msgstr "Versuchter XSS-Angriff."
 msgid "Automatic mode converts the data without your interaction."
 msgstr "Der Automatikmodus konvertiert alle Daten ohne Benutzereingriff."
 
+msgid "Back 10 pages"
+msgstr "10 Seiten zurück"
+
+msgid "Back 50 pages"
+msgstr "50 Seiten zurück"
+
+msgid "Back one page"
+msgstr "Ein Seite zurück"
+
 msgid "Batch previously run."
 msgstr "Batch previously run."
 
@@ -150,6 +165,10 @@ msgstr "Modul Blog ist schon konvertiert."
 
 msgid "Blog is not installed."
 msgstr "Modul Blog ist nicht installiert."
+
+#, php-format
+msgid "Branch : %s"
+msgstr "Branch: %s"
 
 msgid "Cache Lite is disabled."
 msgstr "Cache Lite ist abgeschaltet."
@@ -250,10 +269,10 @@ msgid "Continue: Convert everyone."
 msgstr "Weiter um alles zu konvertieren."
 
 msgid "Continue: Only those logged on within 6 months."
-msgstr ""
+msgstr "Weiter: Nur solche, die innerhalb von 6 Monaten eingeloggt waren."
 
 msgid "Continue: Only those logged on within the last year."
-msgstr ""
+msgstr "Weiter: Nur solche, die innerhalb des letzten Jahres eingeloggt waren."
 
 msgid "Conversion"
 msgstr "Konvertierung"
@@ -279,8 +298,16 @@ msgstr "Konvertiere!"
 msgid "Converted"
 msgstr "Konvertiert"
 
+#, php-format
+msgid "Copy all the files you need converted into your %s directory."
+msgstr "Kopiere alle benötigten Dateien für die Konvertierung in das Verzeichnis %s."
+
 msgid "Core installation successful."
 msgstr "Coreinstallation erfolgreich."
+
+#, php-format
+msgid "Could not copy file %s to %s."
+msgstr "Datei %s konnte nicht nach %s kopiert werden."
 
 #, php-format
 msgid "Could not find info file. File : %s"
@@ -291,6 +318,10 @@ msgstr "Konnte Keyunregisterdatei nicht finden."
 
 msgid "Could not find key unregister function."
 msgstr "Konnte Keyunregisterfunktion nicht finden."
+
+#, php-format
+msgid "Could not locate file: %s"
+msgstr "Datei %s nicht gefunden."
 
 msgid "Create Config File"
 msgstr "Einstellungsdatei erstellt"
@@ -362,10 +393,13 @@ msgstr "Dokument nicht gefunden."
 msgid "Document was %sK making it larger than %sK size limit."
 msgstr ""
 
-msgid "Documents converted."
+msgid "Documents module converted."
 msgstr "Dokumente konvertiert."
 
-msgid "Documents module is not installed on the current database."
+msgid "Documents module did not contain any files."
+msgstr "Dokumentmodul enthielt keine Dateien."
+
+msgid "Documents module not installed or empty."
 msgstr "Dokumentmodul ist in der aktuellen Datenbank nicht installiert."
 
 msgid "Drop box table failed to copy successfully."
@@ -373,6 +407,9 @@ msgstr "Dropboxtabelle wurde nicht kopiert."
 
 msgid "Drop box table imported successfully."
 msgstr "Dropboxtabelle importiert."
+
+msgid "Duplicate key found."
+msgstr "Doppelter Schlüssel vorhanden."
 
 msgid "Edit permission column does not exist."
 msgstr "Rechtespalte bearbeiten ist nicht vorhanden."
@@ -383,8 +420,11 @@ msgstr "Das Datenbankkennwort hier eingeben."
 msgid "Error"
 msgstr "Fehler"
 
+msgid "Error when creating a new folder."
+msgstr "Ein Fehler ist beim Erstellen eines Verzeichnisses aufgetreten."
+
 msgid "Events pulled from 0.10.x calendar module."
-msgstr ""
+msgstr "Ereignisse wurden aus dem 0.10.x Kalendermodul gezogen."
 
 #, php-format
 msgid "Execution time: %s seconds."
@@ -403,7 +443,10 @@ msgid "Failed to run batch. Check your session settings."
 msgstr "Batch konnte nicht gestartet werden. Bitte Sitzungseinstellungen überprüfen.."
 
 msgid "Failed to write cookie."
-msgstr ""
+msgstr "Cookie konnte nicht geschrieben werden."
+
+msgid "File Cabinet converted."
+msgstr "Dateikabinett konvertiert."
 
 msgid "File Cabinet has already converted Documents files."
 msgstr "Filecabinet hat Dokumentdateien schon konvertiert."
@@ -416,6 +459,9 @@ msgstr "Datei nicht gefunden."
 
 msgid "File not uploaded."
 msgstr "Datei nicht hochgeladen."
+
+msgid "File not writable."
+msgstr "Datei nicht beschreibbar."
 
 msgid "Filename not set."
 msgstr "Dateiname nicht gesetzt."
@@ -449,6 +495,15 @@ msgstr "Formulargenerator ist nicht installiert."
 
 msgid "Form generator forms converted and keyed!"
 msgstr "Formulargenerator Formulare konvertiert!"
+
+msgid "Forward 10 pages"
+msgstr "10 Seiten vorwärts."
+
+msgid "Forward 50 pages"
+msgstr "50 Seiten vorwärts."
+
+msgid "Forward one page"
+msgstr "Eine Seite vorwärts."
 
 msgid "Function expected a string variable."
 msgstr "Funktion erwartet eine Stringvariable."
@@ -540,6 +595,9 @@ msgstr ""
 msgid "Image width was %spx, making it larger than %d pixel limit."
 msgstr ""
 
+msgid "Images copied during a 0.10.x conversion."
+msgstr "Bilder wurden kopiert während einer 0.10.x Konvertierung."
+
 msgid "Importing core database file."
 msgstr "Importiere Coredatenbankdatei."
 
@@ -610,17 +668,17 @@ msgid "Main page"
 msgstr "Hauptseite"
 
 msgid "Manager cannot initialize, the module was not set."
-msgstr ""
+msgstr "Manager konnte nicht initialisieren, das Modul wurde nicht gesetzt."
 
 msgid "Manager configuration file is an improper format."
-msgstr ""
+msgstr "Managerkonfigurationsdatei hat ein ungültiges Format."
 
 #, php-format
 msgid "Manager configuration file not found for module: %s"
-msgstr ""
+msgstr "Managerkonfigurationsdatei für Modul %s nicht gefunden"
 
 msgid "Manager was not fully initialized to get a list."
-msgstr ""
+msgstr "Manager war nicht vollständig initialisiert um eine Liste zu erhalten."
 
 msgid "Manual mode requires you to click through the conversion process."
 msgstr ""
@@ -684,6 +742,9 @@ msgstr "Name nicht gesetzt."
 
 msgid "No Images"
 msgstr "Keine Bilder"
+
+msgid "No PhatFile files were found."
+msgstr "Phatfile Dateien wurden gefunden."
 
 msgid "No active modules installed."
 msgstr "Keine aktiven Module installiert."
@@ -767,10 +828,10 @@ msgid "One or more errors occurred while copying over Form Generator tables. Ple
 msgstr ""
 
 msgid "Only those logged on within 6 months."
-msgstr ""
+msgstr "Nur solche die innerhalb der letzten 6 Monate eingeloggt waren."
 
 msgid "Only those logged on within the last year."
-msgstr ""
+msgstr "Nur solche die innerhalb des letzten Jahres eingeloggt waren."
 
 msgid "Op not set."
 msgstr "Operator nicht gesetzt."
@@ -782,7 +843,7 @@ msgid "Options table imported successfully."
 msgstr "Optionentabelle importiert."
 
 msgid "Otherwise, click on the \"Main page\" link above."
-msgstr ""
+msgstr "Andernfalls klicke auf die \"Hauptseite\"-Verknüpfung oben."
 
 msgid "Otherwise, enter the ip or dns to the database server."
 msgstr ""
@@ -797,6 +858,18 @@ msgstr ""
 msgid "Page"
 msgstr "Seite"
 
+msgid "PageSmith conversion"
+msgstr "PageSmith Konvertierung"
+
+msgid "PageSmith has already been converted."
+msgstr "PageSmith wurde schon konvertiert."
+
+msgid "PageSmith has been converted as well. Make sure to check the defines in the menu convert.php file before running."
+msgstr "PageSmith wurde ebenfalls konvertiert. Überprüfe die Definitionen in der convert.php vor der Benutzung."
+
+msgid "PageSmith is not installed."
+msgstr "PageSmith ist nicht installiert."
+
 msgid "Password"
 msgstr "Kennwort"
 
@@ -805,6 +878,12 @@ msgstr "PEAR Konfiguration"
 
 msgid "Permission Help"
 msgstr "Berechtigungshilfe"
+
+msgid "PhatFile module not installed."
+msgstr "PhatFile Modul nicht installiert."
+
+msgid "Phatfile files converted."
+msgstr "PhatFile Dateien konvertiert."
 
 msgid "Photo Album has already been converted."
 msgstr "Fotoalbum schon konvertiert."
@@ -832,6 +911,10 @@ msgstr "Bitte Logdatei überprüfen."
 
 msgid "Please check your error logs and try again."
 msgstr "Überprüfe die Fehlerlogs und versuche es noch einmal."
+
+#, php-format
+msgid "Please create a directory in %simages/ named \"pagemaster\". Copy all images from the old Web Pages image directory into it."
+msgstr ""
 
 msgid "Please enter the connect information for the database you wish to convert from."
 msgstr "Die Verbindungsinformationen der Datenbank, die konvertiert werden soll."
@@ -1019,6 +1102,9 @@ msgstr "Keine Verbindung zur Datenbank mit den übergebenen Informationen."
 msgid "Unable to connect."
 msgstr "Keine Verbindung."
 
+msgid "Unable to copy file."
+msgstr "Datei konnte nicht kopiert werden."
+
 msgid "Unable to create file directory."
 msgstr "Verzeichnis konnte nicht erstellt werden."
 
@@ -1039,7 +1125,7 @@ msgid "Unable to find element \"%s\"."
 msgstr "Element \"%s\" konnte nicht gefunden werden."
 
 msgid "Unable to find the specified editor type."
-msgstr ""
+msgstr "Der angegebene Editor konnte nicht gefunden werden."
 
 msgid "Unable to find your module's settings.php file."
 msgstr ""
@@ -1055,6 +1141,13 @@ msgstr "Kann Datei nicht in angegebenem Verzeichnis speichern."
 
 msgid "Unable to verify source directory. Check PHPWS_SOURCE_DIR."
 msgstr ""
+
+#, php-format
+msgid "Unable to write %s file."
+msgstr "Datei %s konnte nicht geschrieben werden."
+
+msgid "Unable to write to log directory."
+msgstr "In das Logverzeichnis konnte nicht geschrieben werden."
 
 msgid "Unacceptable document type."
 msgstr "Unzulässiger Dokumenttyp."
@@ -1101,10 +1194,14 @@ msgstr "Unbekannter Formulartyp."
 msgid "Unsorted"
 msgstr "Unsortiert"
 
+msgid "Untitled"
+msgstr "Ohne Titel"
+
 msgid "Upload directory not set in file object."
 msgstr ""
 
-msgid "Upload file size is larger than allowed."
+#, php-format
+msgid "Upload file size is larger than the server %s maximum."
 msgstr ""
 
 msgid "Use Pear files included with phpWebSite (recommended)."
@@ -1156,10 +1253,13 @@ msgstr "Warnung"
 msgid "We suggest you use the library files included with phpWebSite."
 msgstr ""
 
+msgid "Web Page conversion"
+msgstr "Webseitenkonvertierung"
+
 msgid "Web Page is not installed."
 msgstr "Modul Webpage ist nicht installiert."
 
-msgid "Web pages have already been converted."
+msgid "Web Pages have already been converted."
 msgstr "Webseiten sind schon konvertiert."
 
 msgid "Wrong data type."
@@ -1181,6 +1281,9 @@ msgid "You may choose to ignore users who haven't logged in for a while."
 msgstr ""
 
 msgid "You may convert two different ways."
+msgstr ""
+
+msgid "You may delete your images/pagemaster/ directory if you wish."
 msgstr ""
 
 #, php-format
@@ -1224,7 +1327,7 @@ msgstr "von"
 msgid "phpWebSite %s Setup"
 msgstr ""
 
-msgid "phpWebSite 1.0.0 Convert"
+msgid "phpWebSite 1.x.x Convert"
 msgstr ""
 
 msgid "phpWebSite depends on sessions to move data between pages."

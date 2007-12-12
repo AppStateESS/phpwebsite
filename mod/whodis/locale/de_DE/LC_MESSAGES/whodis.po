@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_1_0,Whodis0_0_5\n"
+"Project-Id-Version: PHPWS1_3_2,Whodis0_1_2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-26 15:18-0500\n"
-"PO-Revision-Date: 2007-03-05 12:15+0100\n"
+"PO-Revision-Date: 2007-11-27 17:40+0100\n"
 "Last-Translator: Peter Heppner <heppner@gmx.de>\n"
 "Language-Team: Peter Heppner <heppner@gmx.de>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 msgid "- Referrer age -"
-msgstr ""
+msgstr "- Referrer Alter -"
 
 msgid "1 day old"
 msgstr "1 Tag alt"
@@ -67,10 +67,10 @@ msgid "Records the href referrers from who is visiting your site."
 msgstr "Zeichnet href-referrer auf, die diese Website besuchen."
 
 msgid "Referrer"
-msgstr ""
+msgstr "Referrer"
 
 msgid "Referrers"
-msgstr ""
+msgstr "Referrer"
 
 msgid "Total visits"
 msgstr "Alle Besuche"

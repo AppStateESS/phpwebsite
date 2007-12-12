@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PWPWS1_1_0,Notes0_1_3\n"
+"Project-Id-Version: PWPWS1_3_2,Notes0_2_0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-15 10:21-0500\n"
-"PO-Revision-Date: 2007-03-05 12:03+0100\n"
+"PO-Revision-Date: 2007-11-27 09:16+0100\n"
 "Last-Translator: Peter Heppner <heppner@gmx.de>\n"
 "Language-Team: Peter Heppner <heppner@gmx.de>\n"
 "MIME-Version: 1.0\n"

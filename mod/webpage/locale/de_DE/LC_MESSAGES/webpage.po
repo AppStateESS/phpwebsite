@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_1_0,Webpages0_5_0\n"
+"Project-Id-Version: PHPWS1_3_2,Webpages1_0_0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-26 15:18-0500\n"
-"PO-Revision-Date: 2007-03-05 12:14+0100\n"
+"PO-Revision-Date: 2007-11-27 17:40+0100\n"
 "Last-Translator: Peter Heppner <heppner@gmx.de>\n"
 "Language-Team: Peter Heppner <heppner@gmx.de>\n"
 "MIME-Version: 1.0\n"
@@ -193,6 +193,9 @@ msgstr "Kopfzeilenversion gelöscht."
 msgid "Ignoring repeat post."
 msgstr "Ignoriere wiederholte Einstellung."
 
+msgid "Image"
+msgstr "Bild"
+
 msgid "List"
 msgstr "Liste"
 
@@ -243,10 +246,6 @@ msgstr "Keine Seite wurde erzeugt."
 
 msgid "Page"
 msgstr "Seite"
-
-#, php-format
-msgid "Page %s"
-msgstr "Seite %s"
 
 msgid "Page held for approval."
 msgstr "Seite wurde für Genehmigung zurückgehalten."
@@ -312,8 +311,14 @@ msgstr "Sortieren"
 msgid "Summary"
 msgstr "Zusammenfassung"
 
+msgid "There is a problem with your page templates. Check your error log."
+msgstr "Ein Problem mit den Webseitenvorlagen ist aufgetreten. Bitte Fehlerlogs überprüfen."
+
 msgid "Title"
 msgstr "Titel"
+
+msgid "Unable to locate page template directory."
+msgstr "Das Vorlagenverzeichnis konnte nicht gefunden werden."
 
 msgid "Up"
 msgstr "Auf"
@@ -356,4 +361,7 @@ msgstr "Webseitentitel"
 
 msgid "Yes"
 msgstr "Ja"
+
+msgid "[Unapproved]"
+msgstr "[Ungenehmigt]"
 

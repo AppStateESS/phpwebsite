@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_1_0,Phatform3_0_6\n"
+"Project-Id-Version: PHPWS1_3_2,Phatform3_1_1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-26 15:18-0500\n"
-"PO-Revision-Date: 2007-03-05 12:05+0100\n"
+"PO-Revision-Date: 2007-11-27 11:29+0100\n"
 "Last-Translator: Peter Heppner <heppner@gmx.de>\n"
 "Language-Team: Peter Heppner <heppner@gmx.de>\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,7 @@ msgid "Add"
 msgstr "Hinzufügen"
 
 msgid "Admin Email (comma delimited)"
-msgstr ""
+msgstr "Admin E-Mailadresse (Kommagetrennt)"
 
 msgid "All"
 msgstr "Alle"
@@ -383,7 +383,7 @@ msgid "Page %1$s of %2$s"
 msgstr "Seite %1$s von %2$s"
 
 msgid "Position must be an integer value."
-msgstr ""
+msgstr "Position muss ein Ganzzahltyp sein"
 
 msgid "Post Process Code"
 msgstr ""
@@ -642,7 +642,7 @@ msgid "You must be logged in to view this form!"
 msgstr "Du musst angemeldet sein, um dieses Formular anzusehen!"
 
 msgid "You must fill out all required fields to continue."
-msgstr ""
+msgstr "Vor der Fortsetzung müssen alle benötigten Felder ausgefüllt werden."
 
 msgid "You must have at least one element to save this form."
 msgstr ""
