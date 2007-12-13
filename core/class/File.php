@@ -604,7 +604,8 @@ class PHPWS_File {
         if (!PHPWS_File::scaleImage($source_dir, $dest_dir, $maxWidth, $maxHeight)) {
             return false;
         } else {
-            return array($new_file, $maxWidth, $maxHeight);
+            $size = getimagesize($dest_dir);
+            return array($new_file, $size[0], $size[1]);
         }
     }
 

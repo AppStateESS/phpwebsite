@@ -2,11 +2,15 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+13 December 2007
++ File - makeThumbnail returns the dimensions of the new thumbnail and
+         not the limits
+
 12 December 2007
 + Patch #1821914 - Eloi George's addition of a 'last' parameter for
   DBPager.
 + Patch #1821701 - Removed invalid css overflow properties.
-
++ Updated German translation file from Peter Heppner
 
 Version 1.7.1
 ---------------------------------------------------------------------
