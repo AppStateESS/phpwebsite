@@ -64,7 +64,7 @@ class Categories{
 
         $current_cat_ids = Categories::getCurrent($key->id);
 
-        if (!empty($current_cat_ids)) {
+        if (!empty($current_cat_ids) && !empty($add_list)) {
             foreach ($add_list as $cat_id => $cat) {
                 if (in_array($cat_id, $current_cat_ids)) {
                     $remove_list[$cat_id] = $cat;
@@ -240,11 +240,13 @@ class Categories{
 
     function getIcons($key=null)
     {
+        $icons = null;
+
         $cat_result = Categories::catList($key);
         if (empty($cat_result)) {
             return null;
         }
-        foreach ($cat_result as $cat){
+        foreach ($cat_result as $cat) {
             if (!$cat->id) {
                 continue;
             }
