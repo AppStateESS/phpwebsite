@@ -346,7 +346,7 @@ class Calendar_Event {
 
         if ($this->all_day) {
             $tpl['TO'] = '&ndash;';
-            $tpl['START_TIME'] = $this->formatStartTime();
+            $tpl['START_TIME'] = $this->getStartTime();
 
             if (date('Ymd', $this->start_time) != date('Ymd', $this->end_time)) {
                 if (CALENDAR_MONTH_FIRST) {

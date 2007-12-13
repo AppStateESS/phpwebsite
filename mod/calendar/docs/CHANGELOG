@@ -1,3 +1,6 @@
+13 December 2007
++ Fixed call to absent function in Event.php
+
 Version 1.6.0
 ----------------------------------------------------------------
 3 December 2007
