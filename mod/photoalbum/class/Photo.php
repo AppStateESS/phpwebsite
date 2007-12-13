@@ -261,7 +261,7 @@ class PHPWS_Photo extends PHPWS_Item {
 
                 trim($this->_label);
 
-                $message = dgettext('photoalbum', 'The image was successfully removed.') . '<br /><br />';
+                $message = dgettext('photoalbum', 'The image was successfully removed.');
                 $_SESSION['PHPWS_AlbumManager']->message = $message;
             } else {
                 $message =  dgettext('photoalbum', 'There was a problem removing the image.');
@@ -377,10 +377,9 @@ class PHPWS_Photo extends PHPWS_Item {
         PHPWS_DB::query($sql);
 
         if(isset($thumbnail) && PHPWS_Error::isError($thumbnail)) {
-            $message='<span style="color:red">' . sprintf(dgettext('photoalbum', 'The Photo %s was saved but their was a problem creating the thumbnail image.'), 
-                                                            '<b><i>' . $this->getLabel() . '</i></b>') . '</span><br /><br />';      
+            $message=sprintf(dgettext('photoalbum', 'The Photo %s was saved but their was a problem creating the thumbnail image.'), $this->getLabel());
         } else {
-            $message = sprintf(dgettext('photoalbum', 'The Photo %s was successfully saved.'), '<b><i>' . $this->getLabel() . '</i></b>') . "<br />\n";
+            $message = sprintf(dgettext('photoalbum', 'The Photo %s was successfully saved.'), $this->getLabel());
         }
 
         $_SESSION['PHPWS_AlbumManager']->message = $message;
@@ -433,7 +432,7 @@ class PHPWS_Photo extends PHPWS_Item {
             $this->_unlink();
             $this->kill();
 
-            $message = sprintf(dgettext('photoalbum', 'The photo %s was successfully deleted from the database.'), '<b><i>' . $this->getLabel() . '</i></b>');
+            $message = sprintf(dgettext('photoalbum', 'The photo %s was successfully deleted from the database.'), $this->getLabel());
             $_SESSION['PHPWS_AlbumManager']->message = $message;
 
             $_SESSION['PHPWS_AlbumManager']->updateAlbumList($this->_album);
@@ -516,7 +515,7 @@ class PHPWS_Photo extends PHPWS_Item {
 
     function action() {
         if(isset($_SESSION['PHPWS_AlbumManager']->message)) {
-            javascript('alert', array('content'=>$_SESSION['PHPWS_AlbumManager']->message));
+            javascript('alert', array('content'=>trim($_SESSION['PHPWS_AlbumManager']->message)));
             unset($_SESSION['PHPWS_AlbumManager']->message);
         }
 

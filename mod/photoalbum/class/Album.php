@@ -276,7 +276,7 @@ class PHPWS_Album extends PHPWS_Item {
 
             PHPWS_File::rmdir('images/photoalbum/' . $this->getId() . '/');
 
-            $message = sprintf(dgettext('photoalbum', 'The album %s and all its photos were successfully deleted from the database.'), '<b><i>' . $this->getLabel() . '</i></b>');
+            $message = sprintf(dgettext('photoalbum', 'The album %s and all its photos were successfully deleted from the database.'), $this->getLabel());
             javascript('alert', array('content' => $message));
             Layout::add($message);
 

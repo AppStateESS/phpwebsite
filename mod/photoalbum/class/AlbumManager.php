@@ -7,7 +7,6 @@
    */
 
 require_once(PHPWS_SOURCE_DIR . 'mod/photoalbum/class/Album.php');
-include(PHPWS_SOURCE_DIR . 'mod/photoalbum/conf/config.php');
 
 class PHPWS_AlbumManager {
 

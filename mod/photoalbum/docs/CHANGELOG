@@ -1,5 +1,10 @@
 Note: this log is only for work done since the conversion for 1.x
 
+13 December 2007
++ Removed html tags and newline calls causing javascript errors.
++ Fixed: photoalbum was calling hub config file instead of local
+  version 
+
 Version 1.4.3 - 4 Dec 2007
 ----------------------------------------------------------------
 7 November 2007
