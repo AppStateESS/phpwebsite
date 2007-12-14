@@ -148,6 +148,12 @@ class DBPager {
 
     var $total_column = null;
 
+    var $clear_button = false;
+
+    var $search_button = true;
+
+    var $search_label = true;
+
     function DBPager($table, $class=NULL)
     {
         if (empty($table)) {
@@ -979,7 +985,7 @@ class DBPager {
 
                 if(isset($this->run_function)) {
                     $row_result = call_user_func($this->run_function, $disp_row);
-                    if (!empty($row_result)) {
+                    if (!empty($row_result) && is_array($row_result)) {
                         $template[$count] = array_merge($template[$count], $row_result);
                     }
                 }
@@ -1035,13 +1041,27 @@ class DBPager {
 
     function getSearchBox()
     {
-        $form = & new PHPWS_Form('search_list');
+        $form = new PHPWS_Form('search_list');
         $form->setMethod('get');
         $values = $this->getLinkValues();
         unset($values['pager_search']);
+        unset($values['go']);
         $form->addHidden($values);
         $form->addText('pager_c_search', $this->search);
-        $form->setLabel('pager_c_search', _('Search'));
+        $form->setSize('pager_c_search', 20);
+        if ($this->search_label) {
+            $form->setLabel('pager_c_search', _('Search'));
+        }
+
+        if ($this->clear_button) {
+            $form->addButton('clear', _('Clear'));
+            $form->setExtra('clear', 'onclick="this.form.search_list_pager_c_search.value=\'\'"');
+        }
+
+        if ($this->search_button) {
+            $form->addSubmit('go', _('Search'));
+        }
+
         $template = $form->getTemplate();
         if (PEAR::isError($template)) {
             PHPWS_Error::log($template);

@@ -235,6 +235,15 @@ class PHPWS_Form {
         return $this->add($name, 'submit', $value);
     }
 
+    function addReset($name, $value=null)
+    {
+        if (empty($value)) {
+            $value = $name;
+            $name = 'reset';
+        }
+        return $this->add($name, 'reset', $value);
+    }
+
     function addButton($name, $value=null)
     {
         if (empty($value)) {
@@ -1090,7 +1099,11 @@ class PHPWS_Form {
             $obj = new Form_Button($name, $value);
             return $obj;
             break;
-            
+
+        case 'reset':
+            $obj = new Form_Reset($name, $value);
+            return $obj;
+            break;
 
         case 'password':
             $obj = new Form_Password($name, $value);
@@ -1532,7 +1545,23 @@ class Form_Button extends Form_Element {
             . $this->getClass(true)
             . $this->getData() . ' />';
     }
+}
 
+class Form_Reset extends Form_Element {
+    var $type = 'reset';
+
+    function get()
+    {
+        
+        return '<input type="reset" '
+            . $this->getName(true) 
+            . $this->getValue(true) 
+            . $this->getDisabled()
+            . $this->getReadOnly()
+            . $this->getWidth(true)
+            . $this->getClass(true)
+            . $this->getData() . ' />';
+    }
 }
 
 class Form_Hidden extends Form_Element {

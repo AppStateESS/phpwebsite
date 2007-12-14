@@ -2,6 +2,13 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+14 December 2007
++ DBPager
+  o Added error check to run function
+  o Added ability to toggle search label, clear button, and submit
+    button.
++ Form - new form element with addReset creates form reset button.
+
 13 December 2007
 + File - makeThumbnail returns the dimensions of the new thumbnail and
          not the limits
