@@ -501,6 +501,16 @@ class Current_User {
         }
     }
 
+    function banUser()
+    {
+        return PHPWS_User::banUser($_SERVER['REMOTE_ADDR']);
+    }
+
+    function removeBan()
+    {
+        return PHPWS_User::removeBan($_SERVER['REMOTE_ADDR']);
+    }
+
 }
 
 ?>
