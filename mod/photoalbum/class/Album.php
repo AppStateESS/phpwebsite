@@ -558,12 +558,11 @@ class PHPWS_Album extends PHPWS_Item {
                                 $this->_batch[$key]['tnheight'] = $thumbnail[2];
                             }
                             if(PHOTOALBUM_RS) {
-                                $resized = PHPWS_File::makeThumbnail($this->_batch[$key]['name'], $dir,
-                                                                     $dir, PHOTOALBUM_RS_WIDTH, PHOTOALBUM_RS_HEIGHT, TRUE);
-                                if(is_file($dir . $resized[0])) {
-                                    $this->_batch[$key]['width'] = $resized[1];
-                                    $this->_batch[$key]['height'] = $resized[2];
-                                }
+                                $file = $dir . $this->_batch[$key]['name'];
+                                PHPWS_File::scaleImage($file, $file, PHOTOALBUM_RS_WIDTH, PHOTOALBUM_RS_HEIGHT);
+                                $new_size = getimagesize($file);
+                                $this->_batch[$key]['width']  = $new_size[0];
+                                $this->_batch[$key]['height'] = $new_size[1];
                             }
                         }
                     } else {

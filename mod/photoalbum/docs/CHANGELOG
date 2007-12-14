@@ -1,5 +1,8 @@
 Note: this log is only for work done since the conversion for 1.x
 
+14 December 2007
++ Fixes attempted for batch upload.
+
 13 December 2007
 + Removed html tags and newline calls causing javascript errors.
 + Fixed: photoalbum was calling hub config file instead of local
