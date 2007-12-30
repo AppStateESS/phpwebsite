@@ -46,7 +46,7 @@ class Profiler_Division {
 
     function post()
     {
-        $this->title = @preg_replace('/[^\w\s]/', '', $_POST['title']);
+        $this->title = @preg_replace('/[^\w\s]/u', '', $_POST['title']);
 
         $db = new PHPWS_DB('profiler_division');
         $db->addWhere('title', $this->title);

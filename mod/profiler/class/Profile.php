@@ -63,7 +63,7 @@ class Profile {
 
         $images = $this->loadImages();
         
-        $template_name = preg_replace('/\W/', '', $template_name);
+        $template_name = preg_replace('/\W/u', '', $template_name);
 
         $template['FIRST_NAME'] = $this->firstname;
         $template['LAST_NAME'] = $this->lastname;
@@ -146,12 +146,12 @@ class Profile {
 
     function setFirstName($firstname)
     {
-        $this->firstname = preg_replace('/[^\w\s]/', '', trim($firstname));
+        $this->firstname = preg_replace('/[^\w\s]/u', '', trim($firstname));
     }
 
     function setLastName($lastname)
     {
-        $this->lastname = preg_replace('/^\w\s/', '', trim($lastname));
+        $this->lastname = preg_replace('/^\w\s/u', '', trim($lastname));
     }
 
     function setCaption($caption)
