@@ -385,7 +385,7 @@ class PHPWS_Text {
 
         switch ($type) {
         case 'chars_space':
-            if (preg_match('/^[\w\s]+$/i',$userEntry)) return TRUE;
+            if (preg_match('/^[\w\s]+$/ui',$userEntry)) return TRUE;
             else return FALSE;
             break;
 
