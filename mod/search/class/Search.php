@@ -101,12 +101,12 @@ class Search {
     {
         // can't use strip_tags because we need the spaces
         $text = preg_replace('/(<|&lt;).*(>|&gt;)/sUi', ' ', $text);
+        $text = preg_replace('/[^\w\-\s;&]/', '', $text);
         $text = str_replace(' - ', ' ', $text);
         if ($encode) {
             $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
         }
         $text = strtolower($text);
-        $text = preg_replace('/[^\w\-\s;&]/', '', $text);
         $text = preg_replace('/(-{2,}|\/)/U', ' ', $text);
         return $text;
     }
