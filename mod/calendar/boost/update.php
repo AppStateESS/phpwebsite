@@ -186,6 +186,13 @@ function calendar_update(&$content, $version)
 + Removed extra message tag from month list view.
 + Applied patch #1813081 from aDarkling</pre>';
 
+    case version_compare($version, '1.6.1', '<'):
+        $content[] = '<pre>
+1.6.1 changes
+-------------
++ Fixed call to absent function in Event.php</pre>';
+
+
     } // end of switch
 
     return true;
