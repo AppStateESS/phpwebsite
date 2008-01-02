@@ -2,6 +2,8 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+Version 1.7.2
+---------------------------------------------------------------------
 2 Jan 2008
 + DBPager - changed to prevent XSS (thanks to Audun Larsen) and allow
             accented characters.
