@@ -69,6 +69,15 @@ function search_update(&$content, $currentVersion)
 + Added ability to put search radio buttons on search bar.
 </pre>';        
 
+    case version_compare($currentVersion, '0.3.1', '<'):
+        $content[] = '<pre>';
+        $content[] = '0.3.1 changes
+-------------
++ Foreign chanacters properly checked
++ Moved a character check higher to prevent possible XSS
+  (Thanks Audun Larsen).
+</pre>';        
+
     }
 
     return TRUE;
