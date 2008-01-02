@@ -250,7 +250,7 @@ class DBPager {
 
     function loadSearch($search)
     {
-        $search = preg_replace('/[^\w\s]/u', '', trim($search));
+        $search = preg_replace('/[^\w\s\pL]/u', '', trim($search));
         $search = preg_replace('/\s{2,}/', ' ', $search);
         $this->search = & $search;
     }
@@ -311,7 +311,7 @@ class DBPager {
         $col_list = func_get_args();
 
         foreach ($col_list as $column) {
-            if (!preg_match('/\W/u', $column) && $this->db->isTableColumn($column)) {
+            if (!preg_match('/[^\w\pL]/u', $column) && $this->db->isTableColumn($column)) {
                 $this->searchColumn[] = $column;
             }
         }
@@ -887,7 +887,7 @@ class DBPager {
         // pull any extra values in current url
         $extra = PHPWS_Text::getGetValues();
         $search_val = & $extra['search'];
-        $search_val = preg_replace('/[^\w\s]/u', '', $search_val);
+        $search_val = preg_replace('/[^\w\s\pL]/u', '', $search_val);
         $search_val = preg_replace('/\s/', '+', $search_val);
 
         // if extra values exist, add them to the values array
