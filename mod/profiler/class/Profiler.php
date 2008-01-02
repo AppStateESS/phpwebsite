@@ -157,6 +157,18 @@ class Profiler {
             Layout::nakedDisplay($content);
             break;
 
+        case 'delete_division':
+            if (!Current_User::authorized('profiler', 'delete_divisions')) {
+                Current_User::disallow();
+            }
+            if (isset($_REQUEST['division_id'])) {
+                $division = new Profiler_Division($_REQUEST['division_id']);
+                $division->delete();
+            }
+
+            PHPWS_Core::goBack();
+            break;
+
         case 'update_division':
             PHPWS_Core::initModClass('profiler', 'Division.php');            
             if (isset($_REQUEST['division_id'])) {

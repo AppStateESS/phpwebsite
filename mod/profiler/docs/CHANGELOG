@@ -1,3 +1,9 @@
+2 January 2007
++ Change made to division to allow accented and non-english
+  characters.
++ Added ability to delete divisions.
++ Updated: templates/forms/division_list.tpl
+
 Version 0.3.3
 -------------------------------------------------------------------
 25 October 2007

@@ -309,7 +309,7 @@ class Profile {
 
         $tpl['SUBMIT_DATE'] = strftime(PRF_SUBMIT_DATE_FORMAT, $this->submit_date);
 
-        if (Current_User::allow('profiler', 'delete_profiles')){
+        if (Current_User::allow('profiler', 'delete_profiles')) {
             $vars['command'] = 'delete';
             $confirm_vars['QUESTION'] = dgettext('profiler', 'Are you sure you want to permanently delete this profile?');
             $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('profiler', $vars, TRUE);

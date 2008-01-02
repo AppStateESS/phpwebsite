@@ -2,7 +2,7 @@
 <table cellpadding="4" cellspacing="1" width="99%">
   <tr>
     <th>{ID_LABEL} {ID_SORT}</th>
-    <th width="75%">{TITLE_LABEL} {TITLE_SORT}</th>
+    <th width="65%">{TITLE_LABEL} {TITLE_SORT}</th>
     <th>{ACTION_LABEL}</th>
   </tr>
 <!-- BEGIN listrows -->

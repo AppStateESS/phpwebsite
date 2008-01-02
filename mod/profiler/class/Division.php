@@ -40,16 +40,26 @@ class Profiler_Division {
         $js_vars['label']   = dgettext('profiler', 'Edit');
         $links[] = javascript('open_window', $js_vars);
 
+        if (Current_User::allow('profiler', 'delete_divisions')) {
+            $js_vars = array();
+            $js_vars['address']  = sprintf('index.php?module=profiler&amp;command=delete_division&division_id=%s&authkey=%s', 
+                                           $this->id, Current_User::getAuthKey());
+            $js_vars['link']     = dgettext('profiler', 'Delete');
+            $js_vars['question'] = dgettext('profiler', 'Deleting this division will remove all the profiles under it.\nAre you sure you want to do this?');
+            $links[] = javascript('confirm', $js_vars);
+        }
+
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
 
     function post()
     {
-        $this->title = @preg_replace('/[^\w\s]/u', '', $_POST['title']);
+        $this->title = preg_replace('/[^\w\pL\s]/u', '', $_POST['title']);
 
         $db = new PHPWS_DB('profiler_division');
         $db->addWhere('title', $this->title);
+        $db->addWhere('id', $this->id, '!=');
         if ($db->select('one')) {
             return FALSE;
         }
@@ -71,6 +81,17 @@ class Profiler_Division {
         $vars['user_cmd'] = 'view_div';
         $vars['div_id'] = $this->id;
         return PHPWS_Text::moduleLink($this->title, 'profiler', $vars);
+    }
+
+    function delete()
+    {
+        $db = new PHPWS_DB('profiler_division');
+        $db->addWhere('id', $this->id);
+        if (!PHPWS_Error::logIfError($db->delete())) {
+            $db = new PHPWS_DB('profiles');
+            $db->addWhere('profile_type', $this->id);
+            return !PHPWS_Error::logIfError($db->delete());
+        }
     }
 
 }
