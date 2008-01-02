@@ -101,7 +101,7 @@ class Search {
     {
         // can't use strip_tags because we need the spaces
         $text = preg_replace('/(<|&lt;).*(>|&gt;)/sUi', ' ', $text);
-        $text = preg_replace('/[^\w\-\s;&]/u', '', $text);
+        $text = preg_replace('/[^\w\pL\-\s;&]/u', '', $text);
         $text = str_replace(' - ', ' ', $text);
         
         if ($encode) {

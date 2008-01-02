@@ -1,3 +1,8 @@
+2 January 2007
++ Foreign chanacters properly checked
++ Moved a character check higher to prevent possible XSS (Thanks Audun
+  Larsen).
+
 Version 0.3.0
 -----------------------------------------------------------------------
 4 October 2007
