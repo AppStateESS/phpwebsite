@@ -168,7 +168,8 @@ class Calendar_User {
         $template['SCHEDULE_PICK']  = $this->schedulePick();
         $template['PICK']           = $this->getDatePick();
         $template['SUGGEST']        = $this->suggestLink();
-        if ($this->calendar->schedule->checkPermissions()) {
+
+        if ($this->calendar->schedule->id && $this->calendar->schedule->checkPermissions()) {
             $template['ADD_EVENT'] = $this->calendar->schedule->addEventLink($this->calendar->current_date);
         }
 

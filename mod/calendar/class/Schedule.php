@@ -188,11 +188,17 @@ class Calendar_Schedule {
         $db = $this->getDB();
         $db->addWhere('id', $this->id);
 
+        printf('the id is %s and the current public is %s<br>', $this->id, PHPWS_Settings::get('calendar', 'public_schedule'));
+
         $result = $db->delete();
 
         if (!PEAR::isError($result)) {
             return PHPWS_DB::dropTable($this->getEventTable());
         } else {
+            if (PHPWS_Settings::get('calendar', 'public_schedule') == $this->id) {
+                PHPWS_Settings::set('calendar', 'public_schedule', 0);
+                PHPWS_Settings::save('calendar');
+            }
             return $result;
         }
     }

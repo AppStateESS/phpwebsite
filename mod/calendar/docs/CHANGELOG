@@ -1,3 +1,8 @@
+3 January 2008
++ Day view doesn't allow you to add an event until you create a
+  schedule.
++ Deleting the public calendar resets if the default.
+
 Version 1.6.1
 ----------------------------------------------------------------
 13 December 2007
