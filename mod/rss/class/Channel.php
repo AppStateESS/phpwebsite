@@ -130,7 +130,7 @@ class RSS_Channel {
     function view()
     {
         $cache_key = $this->module . '_cache_key';
-        $content = PHPWS_Cache::get($cache_key);
+        $content = PHPWS_Cache::get($cache_key, RSS_CACHE_TIMEOUT);
 
         if (!empty($content)) {
             return $content;
@@ -184,7 +184,7 @@ class RSS_Channel {
         }
 
         $content = PHPWS_Template::process($template, 'rss', $tpl_file);
-        PHPWS_Cache::save($cache_key, $content, RSS_CACHE_TIMEOUT);
+        PHPWS_Cache::save($cache_key, $content);
         return $content;
     }
 

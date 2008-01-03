@@ -130,7 +130,7 @@ class RSS_Feed {
 
         if ($use_cache) {
             $cache_key = $this->address;
-            $data = PHPWS_Cache::get($cache_key);
+            $data = PHPWS_Cache::get($cache_key, $this->refresh_time);
         }
 
         if (!empty($data)) {
@@ -149,7 +149,7 @@ class RSS_Feed {
             
             $this->mapData();
             if ($use_cache) {
-                PHPWS_Cache::save($cache_key, serialize($this->mapped), $this->refresh_time);
+                PHPWS_Cache::save($cache_key, serialize($this->mapped));
             }
         }
         return TRUE;
