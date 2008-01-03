@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+3 January 2008
++ Cache - added lifetime to get function. Thanks Verdon.
++ Updated Cache_Lite documentation.
++ Updated CREDITS file adding a little more info.
+
+
 Version 1.7.2
 ---------------------------------------------------------------------
 2 Jan 2008

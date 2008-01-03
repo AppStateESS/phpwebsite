@@ -18,23 +18,21 @@ use but be aware of the following issues:
   automatically. Do cache the results of several templates observing
   the rules above.
 
-
 Cache in action
 ----------------------------
 Here is how your code might look on a simple application:
 
 $key = 'myModsContent';
+$lifetime = 600; // number of seconds until cache refresh
+                 // default is set in CACHE_LIFETIME in the
+                 // config/core/config.php file
+                 // 600 seconds = 10 minutes
 
-$content = PHPWS_Cache::get($key);
+$content = PHPWS_Cache::get($key, $lifetime);
 
 if (empty($content)) {
   $content = getContentTheHardWay();
-
-  $lifetime = 86400; // number of seconds until cache refresh
-                     // default is set in CACHE_LIFETIME in the
-                     // config/core/config.php file
-
-  PHPWS_Cache::save($key, $content, $lifetime);
+  PHPWS_Cache::save($key, $content);
 }
  
 Layout::add($content);

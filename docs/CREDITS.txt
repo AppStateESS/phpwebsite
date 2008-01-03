@@ -93,9 +93,6 @@ Anssi Piirainen and Geoff Stearns
 FlowPlayer
 http://flowplayer.sourceforge.net/
 
-Eloi George/aDarkling
-Created foundation of xmlrpc
-
 
 --------------------------------------------------------------------------
 To those who translate, we salute you.
@@ -104,7 +101,6 @@ Peter Heppner (German translations)
 Claus Iversen (Danish translations)
 Dang Hoai Phuc (Vietnamese translations)
 
-
 --------------------------------------------------------------------------
 The phpWebSite team would also like to thank the following people in
 alphabetical order for their contributions and support:
@@ -112,26 +108,34 @@ alphabetical order for their contributions and support:
 Scott Baer
 Dr. Greg Blimling
 Fridtjof Busse
-Wendall Cada
+Christian - hosts phpws.de, German support
+Wendall Cada - SF maintainer, bug reporter
+Eloi George/aDarkling - xmlrpc dev, bug/feature patches, mods
 Darren Greene
-Bobby Kennedy/fatman
-Rene Kiesler/rck
-Greg Meiste/blindman1344
+Hilmar
+Thomas de Jesus - SF bugs and RFE, irc assistance
+Bobby Kennedy/fatman - phpwebsitemanual host
+Rene Kiesler/rck - kiesler.at, phpws advocate and developer
+Kevin McElligott/XiRoCCo - phpwsforums host
+Greg Meiste/blindman1344 - developer, bug/RFE patch & report
 Greg Morgan/dr_kludge
-Shaun Murray/singletrack
-Ken Nordquist/kenphused
-Mike Noyes/mhnoyes
+Shaun Murray/singletrack - Developer, user help, bugs, UI RFE
+Ken Nordquist/kenphused - mod developer
+Mike Noyes/mhnoyes - Black belt in standards & accessibility
 Paivi/spiggy
 Andrew Patterson/inuitart
 Ortwin Pinke
-Kenneth Poulsen/KennethP
-Michael Rasmussen/TechElephant
-Sharon Renshaw/Sharondippity
+Kenneth Poulsen/KennethP - User assistance, help maintain home site
+Michael Rasmussen/TechElephant - bug fixes and developer
+Sharon Renshaw/Sharondippity - Theme developer and advice
 Don Seiler/rizzo
 Geoff Staples
 Richard Sumilang
+Verdon Vaillancourt - Bugs, 3rd party modules, user help, morale
+Paul Van Voorst
 Pete Wachs
-Paul van Voorst
+Cindy Wallace - Vice Chancellor of Student Development @ AppState
+Kevin Wilcox
 
 
 And all those who have contributed to phpWebSite. Thanks for your
