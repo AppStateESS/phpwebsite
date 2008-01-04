@@ -29,6 +29,7 @@ class XMLParser {
     {
         $this->filename = $xml_file;
         $this->xml = xml_parser_create();
+        xml_parser_set_option($this->xml, XML_OPTION_TARGET_ENCODING, 'UTF-8');
         xml_set_object($this->xml, $this);
         xml_set_element_handler($this->xml, 'startHandler', 'endHandler');
         xml_set_character_data_handler($this->xml, 'dataHandler');

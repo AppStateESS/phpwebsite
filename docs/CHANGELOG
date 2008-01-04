@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+4 January 2008
++ Fixed Bug 1843292, Peter Heppner : RSS Feeds with Encoding 8859-1
+  and Umlauts 
+
 3 January 2008
 + Cache - added lifetime to get function. Thanks Verdon.
 + Updated Cache_Lite documentation.
