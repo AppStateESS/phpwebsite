@@ -1,3 +1,6 @@
+4 January 2008
++ Fixed bug #1850815 : unknown function itemIsAllowed in Permission-php
+
 14 December 2007
 + New functions in Users and Current_User to ban and unban users
 + New panel tab and form for unbanning users.

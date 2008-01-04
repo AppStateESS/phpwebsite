@@ -127,7 +127,7 @@ class Users_Permission {
             } else {
                 if ($item_id) {
                     // subpermission is not set and item id is set
-                    return $this->itemIsAllowed($module, $item_id, $itemname);
+                    return $this->allowedItem($module, $item_id, $itemname);
                 } else {
                     // subpermission is not set and item id is not set
                     return TRUE;
