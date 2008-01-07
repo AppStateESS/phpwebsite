@@ -157,14 +157,14 @@ class PHPWS_File {
 
         if (!is_dir($dest_directory)) {
             if(!@mkdir($dest_directory)) {
-                PHPWS_Error::log(PHPWS_DIR_CANT_CREATE, 'core', 'PHPWS_File::recursiveFileCopy', $dest_directory);
+                PHPWS_Error::log(PHPWS_DIR_CANT_CREATE, 'core', 'PHPWS_File::copy_directory', $dest_directory);
                 return FALSE;
             }
             @chmod($dest_directory, 0755);
         }
 
         if (!is_writable($dest_directory)) {
-            PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::recursiveFileCopy', $dest_directory);
+            PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::copy_directory', $dest_directory);
             return FALSE;
         }
 
@@ -181,20 +181,27 @@ class PHPWS_File {
             }
 
             $dest_file = $dest_directory . $file_name;
-            if (is_file($source_directory . $file_name)) {
-                if (!$overwrite && is_file($file_name)) {
-                    continue;
+            $src_file  = $source_directory . $file_name;
+            if (is_file($src_file)) {
+                if (is_file($dest_file)) {
+                    if (!$overwrite) {
+                        continue;
+                    }
+                    $dest_exists = true;
+                } else {
+                    $dest_exists = false;
                 }
 
-                if (!@copy($source_directory . $file_name, $dest_file)) {
-                    @chmod($dest_file, 0644);
-                    if (!is_writable($dest_file)) {
-                        PHPWS_Error::log(PHPWS_FILE_NOT_WRITABLE, 'core', 'PHPWS_File::recursiveFileCopy', $dest_file);
+                if (!@copy($src_file, $dest_file)) {
+                    if ($dest_exists && !is_writable($dest_file)) {
+                        PHPWS_Error::log(PHPWS_FILE_NOT_WRITABLE, 'core', 'PHPWS_File::copy_directory', $dest_file);
                     } else {
-                        PHPWS_Error::log(PHPWS_FILE_NO_COPY, 'core', 'PHPWS_File::recursiveFileCopy', $dest_file);
+                        PHPWS_Error::log(PHPWS_FILE_NO_COPY, 'core', 'PHPWS_File::copy_directory', $dest_file);
                     }
+                } else {
+                    @chmod($dest_file, 0644);
                 }
-            }  elseif (is_dir($source_directory . $file_name)) {
+            }  elseif (is_dir($src_file)) {
                 if(!PHPWS_File::copy_directory($source_directory . $file_name . '/', $dest_file . '/')) {
                     return FALSE;
                 }

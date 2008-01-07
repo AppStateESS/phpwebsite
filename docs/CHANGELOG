@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+7 January 2008
++ File
+  o recoded portion of copy_directory.
+  o Fixed error messages
+
+
 4 January 2008
 + Fixed Bug 1843292, Peter Heppner : RSS Feeds with Encoding 8859-1
   and Umlauts 
