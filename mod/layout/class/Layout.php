@@ -8,6 +8,8 @@
  * @package Core
  */
 
+PHPWS_Core::requireConfig('layout');
+
 /********** Errors ****************/
 
 define('LAYOUT_SESSION_NOT_SET',    -1);
@@ -29,7 +31,6 @@ if (!defined('XML_MODE')) {
 
 PHPWS_Core::initModClass('layout', 'Layout_Settings.php');
 PHPWS_Core::initCoreClass('Template.php');
-PHPWS_Core::requireConfig('layout');
 
 class Layout {
 
