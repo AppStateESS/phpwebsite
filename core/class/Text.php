@@ -463,12 +463,12 @@ class PHPWS_Text {
     /**
      * Returns a module link with the authkey attached
      */
-    function secureLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL){
+    function secureLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL, $class_name=null){
         if (Current_User::isLogged()) {
             $getVars['authkey'] = Current_User::getAuthKey();
         }
 
-        return PHPWS_Text::moduleLink($subject, $module, $getVars, $target, $title);
+        return PHPWS_Text::moduleLink($subject, $module, $getVars, $target, $title, $class_name);
     }
 
     /**
@@ -526,9 +526,10 @@ class PHPWS_Text {
      * @param string title String to appear as the 'click on' word(s)
      * @param string module Name of module to access
      * @param array getVars Associative array of GET variable to append to the link
+     * @param string class_name String added to css class 
      * @return string The complated link.
      */
-    function moduleLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL){
+    function moduleLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL, $class_name=null){
         $link[] = '<a ';
 
         if (isset($title))
@@ -537,10 +538,15 @@ class PHPWS_Text {
         $link[] = 'href="./';
         $link[] = PHPWS_Text::linkAddress($module, $getVars);
         $link[] = '"';
-        if ($target=='blank' || $target === TRUE)
+        if ($target=='blank' || $target === TRUE) {
             $link[] = ' target="_blank" ';
-        elseif ($target=='index')
+        } elseif ($target=='index') {
             $link[] = ' target="index" ';
+        }
+
+        if($class_name) {
+            $link[] = sprintf(' class="%s" ', $class_name);
+        }
 
         $link[] = '>';
 

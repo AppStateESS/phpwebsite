@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+8 January 2008
++ XMLParser - now includes content and attribute tags.
++ Debug - incomplete objects will work with test now.
++ Text - you can now give your moduleLink a class name
+
+
 7 January 2008
 + File
   o recoded portion of copy_directory.

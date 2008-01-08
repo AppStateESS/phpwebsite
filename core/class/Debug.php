@@ -174,7 +174,7 @@ class PHPWS_Debug {
                         $value = '<pre>' . PHPWS_Debug::emptyVal($value) . '</pre>';
                     } else if(is_array($value)) {
                         $value = PHPWS_Debug::testArray($value, $displayTags, $show_recursive);
-                    } else if(is_object($value)) {
+                    } else if(is_object($value) || gettype($value) == 'object') {
                         $value = PHPWS_Debug::testObject($value, $displayTags, $show_recursive);
                     } else if($displayTags && is_string($value)) {
                         $value = htmlspecialchars($value);

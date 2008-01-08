@@ -118,7 +118,17 @@ class XMLParser {
 
             return array($foo['name']=>$content);
         } else {
-            return array($foo['name']=>$foo['content']);
+            if (isset($foo['attributes'])) {
+                $row['ATTRIBUTES'] = $foo['attributes'];
+            }
+
+            if (isset($foo['content'])) {
+                $row['CONTENT'] = $foo['content'];
+            }
+
+            if ($row) {
+                return array($foo['name']=>$row);
+            }
         }
     }
 
