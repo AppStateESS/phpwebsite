@@ -1,3 +1,9 @@
+15 January 2008
++ Changed pagesmith to work with xmlparser changes
++ Added url parser to passinfo script to allow images to work in some
+  editors (i.e. fck)
++ Updated files: javascript/passinfo/head.js
+
 Version 1.0.7
 ----------------------------------------------------------------
 11 December 2007

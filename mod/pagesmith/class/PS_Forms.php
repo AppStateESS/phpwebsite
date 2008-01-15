@@ -92,6 +92,7 @@ class PS_Forms {
 
         $vars['parent_section'] = 'pagesmith_' . $section_name;
         $vars['edit_input']     = 'edit_header';
+        $vars['url']            = PHPWS_Core::getHomeHttp();
         javascript('modules/pagesmith/passinfo', $vars);
 
         $form = new PHPWS_Form('edit');
@@ -116,6 +117,7 @@ class PS_Forms {
 
         $vars['parent_section'] = 'pagesmith_' . $section_name;
         $vars['edit_input']     = 'edit_text';
+        $vars['url']            = PHPWS_Core::getHomeHttp();
         javascript('modules/pagesmith/passinfo', $vars);
 
         $form = new PHPWS_Form('edit');
