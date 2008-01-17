@@ -341,7 +341,7 @@ class PHPWS_Image extends File_Common {
     
     function editLink($icon=false)
     {
-        $vars['aop'] = 'upload_image_form';
+        $vars['iop'] = 'upload_image_form';
         $vars['image_id'] = $this->id;
         $vars['folder_id'] = $this->folder_id;
             
@@ -361,7 +361,7 @@ class PHPWS_Image extends File_Common {
 
     function deleteLink($icon=false)
     {
-        $vars['aop'] = 'delete_image';
+        $vars['iop'] = 'delete_image';
         $vars['image_id'] = $this->id;
         $vars['folder_id'] = $this->folder_id;
 
@@ -380,7 +380,7 @@ class PHPWS_Image extends File_Common {
     {
         if (Current_User::isLogged()) {
             $links[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Clip'), 'filecabinet',
-                                              array('aop'      => 'clip_image',
+                                              array('iop'      => 'clip_image',
                                                     'image_id' => $this->id));
         }
 
@@ -400,7 +400,41 @@ class PHPWS_Image extends File_Common {
         
         return $tpl;
     }
+
+    function getManagerIcon($fmanager)
+    {
+        if ( ($fmanager->max_width < $this->width) || ($fmanager->max_height < $this->height) ) {
+            return sprintf('<a href="#" onclick="oversized(%s); return false">%s</a>', $this->id, $this->getThumbnail());
+        } else {
+            $vars = $fmanager->linkInfo(false);
+            $vars['fop']       = 'pick_file';
+            $vars['file_type'] = FC_IMAGE;
+            $vars['id']        = $this->id;
+            $link = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+            return sprintf('<a href="%s">%s</a>', $link, $this->getThumbnail());
+        }
+    }
     
+    function managerTpl($fmanager)
+    {
+        $tpl['ICON'] = $this->getManagerIcon($fmanager);
+
+        $tpl['TITLE'] = $this->title;
+        $tpl['INFO'] = sprintf('%s x %s - %s', $this->width, $this->height,
+                               $this->getSize(true));
+
+        $links[] = $this->getJSView(false);
+        if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
+            $links[] = $this->editLink(true);
+            $links[] = $this->deleteLink(true);
+        }
+
+        if (isset($links)) {
+            $tpl['LINKS'] = implode(' ', $links);
+        }
+        return $tpl;
+    }
+
     function xmlFormat()
     {
         $values = PHPWS_Core::stripObjValues($this);
@@ -639,6 +673,22 @@ class PHPWS_Image extends File_Common {
         default:
                 return null;
         }
+    }
+
+    function resizePath()
+    {
+        $dir = FM_RESIZE_DIR . $this->id . '/';
+        if(is_dir($dir)) {
+            if (!is_writable($dir)) {
+                return false;
+            }
+        } else {
+            if (!@mkdir($dir)) {
+                return false;
+            }
+        }
+        
+        return $dir;
     }
 
 }

@@ -9,6 +9,17 @@ define('DOCUMENT_FOLDER',   2);
 define('MULTIMEDIA_FOLDER', 3);
 
 /**
+ * File association types
+ */
+define('FC_IMAGE',           1);
+define('FC_DOCUMENT',        2);
+define('FC_MEDIA',           3);
+define('FC_IMAGE_FOLDER',    4);
+define('FC_DOCUMENT_FOLDER', 5);
+define('FC_IMAGE_RANDOM',    6);
+define('FC_IMAGE_RESIZE',    7);
+
+/**
  * Error defines
  */
 define('FC_FILENAME_NOT_SET',       -100);
@@ -36,5 +47,7 @@ define('FC_MULTIMEDIA_NOT_FOUND',   -121);
 define('FC_THUMBNAIL_NOT_WRITABLE', -122);
 define('FC_FFMPEG_NOT_FOUND',       -123);
 
+
+define('FM_RESIZE_DIR', 'images/filecabinet/resize/');
 
 ?>

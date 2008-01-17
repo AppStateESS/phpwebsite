@@ -56,4 +56,9 @@ define('RESIZE_IMAGE_USE_DUPLICATE', true);
 define('FC_ALLOW_CLASSIFY_DIR_SETTING', true);
 define('FC_CLASSIFY_DIRECTORY', 'files/filecabinet/incoming/');
 
+/**
+ * Placeholder graphic for File Manager form
+ */
+define('FC_PLACEHOLDER', 'images/mod/filecabinet/file_select.png');
+
 ?>

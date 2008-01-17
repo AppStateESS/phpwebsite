@@ -23,6 +23,94 @@ class Cabinet {
     var $image_mgr      = null;
     var $document_mgr   = null;
     var $multimedia_mgr = null;
+    var $file_manager   = null;
+
+
+    /**
+     * File manager administrative options.
+     */
+    function fmAdmin()
+    {
+        if (!$this->authenticate()) {
+            Current_User::disallow();
+        }
+        if ($this->loadFileManager()) {
+            Layout::nakedDisplay($this->file_manager->admin());
+        } else {
+            Layout::nakedDisplay(javascript('close_refresh'));
+        }
+    }
+
+    /**
+     * Document manager administrative options.
+     */
+    function dmAdmin()
+    {
+        if (!$this->authenticate()) {
+            Current_User::disallow();
+        }
+        $this->loadDocumentManager();
+        Layout::nakedDisplay($this->document_mgr->admin());
+    }
+
+    /**
+     * Image manager administrative options.
+     */
+    function imAdmin()
+    {
+        if (!$this->authenticate()) {
+            Current_User::disallow();
+        }
+
+        $this->loadImageManager();
+        Layout::nakedDisplay($this->image_mgr->admin());
+    }
+
+    /**
+     * Multimedia manager administrative options.
+     */
+    function mmAdmin()
+    {
+        if (!$this->authenticate()) {
+            Current_User::disallow();
+        }
+
+        $this->loadMultimediaManager();
+        Layout::nakedDisplay($this->multimedia_mgr->admin());
+    }
+
+
+    /**
+     * Loads the file manager object into the cabinet variable.
+     * Attempts to pull a current sessioned object if available
+     */
+    function loadFileManager()
+    {
+        PHPWS_Core::initModClass('filecabinet', 'File_Manager.php');
+
+        if (!@$module = $_GET['cm']) {
+            return false;
+        }
+
+        if (!@$itemname = $_GET['itn']) {
+            return false;
+        }
+
+        $this->file_manager = new FC_File_Manager($module, $itemname, $_GET['fid']);
+        if (isset($_GET['mw'])) {
+            $this->file_manager->max_width = (int)$_GET['mw'];
+        }
+
+        if (isset($_GET['mh'])) {
+            $this->file_manager->max_height = (int)$_GET['mh'];
+        }
+
+        if (isset($_GET['ftype'])) {
+            $this->file_manager->folder_type = (int)$_GET['ftype'];
+        }
+
+        return true;
+    }
 
     function admin()
     {
@@ -45,7 +133,7 @@ class Cabinet {
             Current_User::disallow();
             return;
         }
-
+        echo $aop;
         // Requires an unrestricted user
         switch ($aop) {
         case 'pin_folder':
@@ -59,6 +147,9 @@ class Cabinet {
         }
 
         switch ($aop) {
+       /** File manager functions **/
+       /** end file manager functions **/
+
         case 'image':
             $this->panel->setCurrentTab('image');
             $this->title = dgettext('filecabinet', 'Image folders');
@@ -175,40 +266,11 @@ class Cabinet {
             PHPWS_Core::goBack();
             break;
 
-        case 'delete_document':
-            $this->loadDocumentManager();
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->document_mgr->document->folder_id, 'folder')) {
-                Current_User::disallow();
-            }
-
-            $this->document_mgr->document->delete();
-            PHPWS_Core::returnToBookmark();
-            break;
-
-        case 'delete_image':
-            $this->loadImageManager();
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image_mgr->image->folder_id, 'folder')) {
-                Current_User::disallow();
-            }
-            $this->image_mgr->image->delete();
-            PHPWS_Core::returnToBookmark();
-            break;
-
         case 'delete_incoming':
             $this->deleteIncoming();
             $this->loadForms();
             $this->forms->classifyFileList();
             break;
-
-        case 'delete_multimedia':
-            $this->loadMultimediaManager();
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia_mgr->multimedia->folder_id, 'folder')) {
-                Current_User::disallow();
-            }
-            $this->multimedia_mgr->multimedia->delete();
-            PHPWS_Core::returnToBookmark();
-            break;
-
 
         case 'document':
             $this->panel->setCurrentTab('document');
@@ -224,15 +286,6 @@ class Cabinet {
             $this->editFolder();
             break;
 
-        case 'edit_image':
-            $javascript = true;
-            PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
-            $this->loadImageManager();
-            if (!$this->image_mgr->authenticate()) {
-                Current_User::disallow(null, false);
-            }
-            $this->image_mgr->editImage();
-            break;
 
         case 'change_tn':
             $javascript = true;
@@ -248,35 +301,6 @@ class Cabinet {
                 $this->changeTN();
             }
             break;
-
-        case 'post_document_upload':
-            $javascript = true;
-            $this->loadDocumentManager();
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->document_mgr->document->folder_id, 'folder')) {
-                Current_User::disallow();
-            }
-            $this->document_mgr->postDocumentUpload();
-            break;
-
-        case 'post_image_upload':
-            $javascript = true;
-            $this->loadImageManager();
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image_mgr->image->folder_id, 'folder')) {
-                Current_User::disallow();
-            }
-
-            $this->image_mgr->postImageUpload();
-            break;
-
-        case 'post_multimedia_upload':
-            $javascript = true;
-            $this->loadMultimediaManager();
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia_mgr->multimedia->folder_id, 'folder')) {
-                Current_User::disallow();
-            }
-            $this->multimedia_mgr->postMultimediaUpload();
-            break;
-
 
         case 'post_folder':
             $this->loadFolder();
@@ -296,13 +320,6 @@ class Cabinet {
             }
             break;
 
-        case 'get_images':
-            $this->loadImageManager();
-            if (!$this->image_mgr->authenticate()) {
-                Current_User::disallow(null, false);
-            }
-            $this->passImages();
-            break;
             
         case 'save_settings':
             $result = $this->saveSettings();
@@ -317,39 +334,10 @@ class Cabinet {
             $this->content = $this->forms->settings();
             break;
 
-
-        case 'upload_document_form':
-            $javascript = true;
-            $this->loadDocumentManager();
-            $this->document_mgr->edit();
-            break;
-
-        case 'upload_image_form':
-            $javascript = true;
-            $this->loadImageManager();
-            $this->image_mgr->edit();
-            break;
-
-        case 'upload_multimedia_form':
-            $javascript = true;
-            $this->loadMultimediaManager();
-            $this->multimedia_mgr->edit();
-            break;
-
-
         case 'view_folder':
             $this->viewFolder();
             break;
 
-        case 'resize_image':
-            $this->loadImageManager();
-            echo $this->image_mgr->resizeImage();
-            break;
-
-        case 'multimedia_manager':
-            $this->loadMultimediaManager();
-            $this->multimedia_mgr->editMultimedia();
-            break;
 
         }
 
@@ -426,6 +414,8 @@ class Cabinet {
         Layout::add($main);
     }
 
+    /**
+// needs rewrite for new filemanager
     function imageManager($image_id, $itemname, $width, $height, $module_only=false)
     {
         PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
@@ -434,6 +424,19 @@ class Cabinet {
         $manager->setMaxWidth($width);
         $manager->setMaxHeight($height);
         $manager->module_only = (bool)$module_only;
+        return $manager;
+    }
+    */
+
+    function fileManager($itemname, $file_id=0)
+    {
+        Layout::addStyle('filecabinet');
+        PHPWS_Core::initModClass('filecabinet', 'File_Manager.php');
+        $module = $_REQUEST['module'];
+        if (!is_numeric($file_id)) {
+            return false;
+        }
+        $manager = new FC_File_Manager($module, $itemname, $file_id);
         return $manager;
     }
 
@@ -499,20 +502,13 @@ class Cabinet {
     function loadImageManager()
     {
         PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
-        $this->loadFolder(IMAGE_FOLDER);
         $this->image_mgr = new FC_Image_Manager;
-        if (isset($_GET['tn']) && $_GET['tn'] == 0) {
-            $this->image_mgr->thumbnail = false;
-        }
-        $this->image_mgr->cabinet = & $this;
     }
 
     function loadDocumentManager()
     {
         PHPWS_Core::initModClass('filecabinet', 'Document_Manager.php');
-        $this->loadFolder(DOCUMENT_FOLDER);
         $this->document_mgr = new FC_Document_Manager;
-        $this->document_mgr->cabinet = & $this;
     }
 
     function loadMultimediaManager()
@@ -520,23 +516,8 @@ class Cabinet {
         PHPWS_Core::initModClass('filecabinet', 'Multimedia_Manager.php');
         $this->loadFolder(MULTIMEDIA_FOLDER);
         $this->multimedia_mgr = new FC_Multimedia_Manager;
-        $this->multimedia_mgr->cabinet = & $this;
     }
 
-    function loadFolder($ftype=IMAGE_FOLDER, $folder_id=0)
-    {
-        if (!$folder_id && isset($_REQUEST['folder_id'])) {
-            $folder_id = &$_REQUEST['folder_id'];
-        } else {
-        }
-        $this->folder = new Folder($folder_id);
-        if (!$this->folder->id) {
-            $this->folder->ftype = $ftype;
-            if (isset($_REQUEST['ftype'])) {
-                $this->folder->ftype = (int)$_REQUEST['ftype'];
-            }
-        }
-    }
 
     function loadForms()
     {
@@ -1071,6 +1052,45 @@ class Cabinet {
             $db->select();
         }
     }
+
+
+    function getFile($id)
+    {
+        Layout::addStyle('filecabinet', 'file_view.css');
+        PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+        $file_assoc = new FC_File_Assoc($id);
+        return $file_assoc->getTag();
+    }
+
+    function loadFolder($folder_id=0)
+    {
+        if (!$folder_id && isset($_REQUEST['folder_id'])) {
+            $folder_id = &$_REQUEST['folder_id'];
+        }
+
+        $this->folder = new Folder($folder_id);
+        if (!$this->folder->id) {
+            $this->folder->ftype = $_REQUEST['ftype'];
+        }
+    }
+
+    function authenticate()
+    {
+        if (!Current_User::isLogged()) {
+            javascript('close_refresh');
+            Layout::nakedDisplay();
+            exit();
+        }
+
+        $module = @$_REQUEST['module'];
+
+        if (!$module) {
+            return false;
+        }
+
+        return Current_User::allow($module);
+    }
+
 }
 
 ?>

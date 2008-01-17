@@ -1,18 +1,19 @@
-<div id="{ID}">
-<strong>You need to upgrade your Flash Player</strong>
-</div>
+<object type="application/x-shockwave-flash" data="templates/filecabinet/filters/flash/FlowPlayerLP.swf" width="{WIDTH}" height="{HEIGHT}" id="{ID}">
+	<param name="allowScriptAccess" value="sameDomain" />
+	<param name="movie" value="FlowPlayer.swf" />
+	<param name="quality" value="high" />
+	<param name="scale" value="noScale" />
+	<param name="wmode" value="transparent" />
+	<param name="flashvars" value="config={ 
+        initialScale: 'scale',
+        autoPlay: false, 
+        autoBuffering : false,
+        showLoopButton: false, 
+        loop: false, 
+        playList: [ { {START_SCREEN}, overlayId: 'play' },
+                    { url: '{FILE_PATH}' },
+                    { overlayId: 'play' } ],
+        }"
+/>
+</object>
 
-<script type="text/javascript">
-		// <![CDATA[
-		var so = new SWFObject("templates/filecabinet/filters/flash/FlowPlayerLP.swf", "FlowPlayerLP", "{WIDTH}", "{HEIGHT}", "8", "#ffffff");
-                // this line is optional, but this example uses the variable and displays this text inside the flash movie
-                so.addParam("allowScriptAccess", "sameDomain");
-                so.addParam("movie", "FlowPlayerLP.swf");
-                so.addParam("quality", "high");
-                so.addParam("scale", "noScale");
-                so.addParam("wmode", "transparent");
-                so.addParam("flashvars", "config={initialScale: 'scale',autoPlay: false, autoBuffering : false,showLoopButton: false, loop: false, showPlayListButtons: false, playList: [{ {START_SCREEN} },{ url: '{FILE_PATH}' }]}");
-		so.write("{ID}");
-		
-		// ]]>
-</script>

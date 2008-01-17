@@ -289,6 +289,18 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + moved all defines to one file.
 </pre>';
   
+    case version_compare($version, '2.0.0', '<'):
+        $content[] = '<pre>';
+        if (!PHPWS_DB::isTable('fc_file_assoc')) {
+            $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/file_assoc.sql');
+            if (!PHPWS_Error::logIfError($result)) {
+                $content[] = '--- File assoc table created successfully.';
+            } else {
+                $content[] = '--- Failed to create File assoc table.</pre>';
+                return false;
+            }
+        }
+        $content[] = '</pre>';
     }
 
     return true;

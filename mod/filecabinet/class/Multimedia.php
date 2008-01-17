@@ -8,7 +8,7 @@
 PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 
-define('GENERIC_VIDEO_ICON', 'images/mod/filecabinet/video_generic.png');
+define('GENERIC_VIDEO_ICON', 'images/mod/filecabinet/video_generic.jpg');
 define('GENERIC_AUDIO_ICON', 'images/mod/filecabinet/audio.png');
 
 class PHPWS_Multimedia extends File_Common {
@@ -111,7 +111,7 @@ class PHPWS_Multimedia extends File_Common {
     function rowTags()
     {
         $links[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Clip'), 'filecabinet',
-                                          array('aop'=>'clip_multimedia',
+                                          array('mop'=>'clip_multimedia',
                                                 'multimedia_id' => $this->id));
         
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
@@ -204,7 +204,7 @@ class PHPWS_Multimedia extends File_Common {
 
     function editLink($icon=false)
     {
-        $vars['aop'] = 'upload_multimedia_form';
+        $vars['mop'] = 'upload_multimedia_form';
         $vars['multimedia_id'] = $this->id;
         $vars['folder_id'] = $this->folder_id;
         
@@ -222,15 +222,21 @@ class PHPWS_Multimedia extends File_Common {
 
     }
 
-    function deleteLink()
+    function deleteLink($icon=false)
     {
-        $vars['aop'] = 'delete_multimedia';
+        $vars['mop'] = 'delete_multimedia';
         $vars['multimedia_id'] = $this->id;
         $vars['folder_id'] = $this->folder_id;
         
         $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this multimedia file?');
         $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
-        $js['LINK']     = dgettext('filecabinet', 'Delete');
+
+        if ($icon) {
+            $js['LINK'] = '<img src="images/mod/filecabinet/delete.png" />';
+        } else {
+            $js['LINK'] = dgettext('filecabinet', 'Delete');
+        }
+
         return javascript('confirm', $js);
     }
     
@@ -294,8 +300,8 @@ class PHPWS_Multimedia extends File_Common {
 
     function genericTN($file_name)
     {
-        $this->thumbnail = $file_name . '.png';
-        return @copy('images/mod/filecabinet/video_generic.png', $this->thumbnailDirectory() . $this->thumbnail);
+        $this->thumbnail = $file_name . '.jpg';
+        return @copy('images/mod/filecabinet/video_generic.jpg', $this->thumbnailDirectory() . $this->thumbnail);
     }
 
     function makeVideoThumbnail()
@@ -443,8 +449,53 @@ class PHPWS_Multimedia extends File_Common {
             $this->width = 0;
         }
 
+        if (empty($this->title)) {
+            $this->title = $this->file_name;
+        }
+
         $db = new PHPWS_DB('multimedia');
         return $db->saveObject($this);
     }
+
+    function managerTpl($fmanager)
+    {
+        $tpl['ICON'] = $this->getManagerIcon($fmanager);
+        $title_len = strlen($this->title);
+        if ($title_len > 20) {
+            $file_name = sprintf('<abbr title="%s">%s</abbr>', $this->file_name,
+                                 PHPWS_Text::shortenUrl($this->file_name, 20));
+        } else {
+            $file_name = & $this->file_name;
+        } 
+        $tpl['TITLE'] = PHPWS_Text::shortenUrl($this->title, 30);
+
+        $filename_len = strlen($this->file_name);
+
+        if ($filename_len > 20) {
+            $file_name = sprintf('<abbr title="%s">%s</abbr>', $this->file_name,
+                                 PHPWS_Text::shortenUrl($this->file_name, 20));
+        } else {
+            $file_name = & $this->file_name;
+        }
+
+        $tpl['INFO'] = sprintf('%s<br>%s', $file_name, $this->getSize(true));
+        if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
+            $links[] = $this->editLink(true);
+            $links[] = $this->deleteLink(true);
+            $tpl['LINKS'] = implode(' ', $links);
+        }
+        return $tpl;
+    }
+
+    function getManagerIcon($fmanager)
+    {
+        $vars = $fmanager->linkInfo(false);
+        $vars['fop']       = 'pick_file';
+        $vars['file_type'] = FC_MEDIA;
+        $vars['id']        = $this->id;
+        $link = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+        return sprintf('<a href="%s">%s</a>', $link, $this->getThumbnail());
+    }
+
 }
 ?>

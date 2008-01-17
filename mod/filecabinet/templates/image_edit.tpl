@@ -9,6 +9,7 @@ function voila(foo) {
 }
 </script>
 
+<h1>{FORM_TITLE}</h1>
 {START_FORM}
 <!-- BEGIN error-list -->
 <ul>

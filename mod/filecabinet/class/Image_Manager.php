@@ -14,6 +14,7 @@ if (!defined('RESIZE_IMAGE_USE_DUPLICATE')) {
 }
 
 class FC_Image_Manager {
+    var $folder      = null;
     var $module      = null;
     var $image       = null;
     var $itemname    = null;
@@ -22,10 +23,11 @@ class FC_Image_Manager {
     var $max_width   = 0;
     var $max_height  = 0;
     var $max_size    = 0;
+    var $content     = null;
     /**
      * If true, manager will only show image folders for the current module
      */
-    var $module_only = false;
+
     var $_noimage_max_width = 300;
     var $_noimage_max_height = 300;
 
@@ -33,6 +35,64 @@ class FC_Image_Manager {
     {
         $this->loadImage($image_id);
         $this->loadSettings();
+        $this->loadFolder();
+    }
+
+    /**
+// what is this for?
+        if (isset($_GET['tn']) && $_GET['tn'] == 0) {
+            $this->image_mgr->thumbnail = false;
+        }
+    */
+
+    /*
+     * Expects 'dop' command to direct action.
+     */
+    function admin()
+    {
+        switch ($_REQUEST['iop']) {
+        case 'edit_image':
+            $this->editImage();
+            break;
+
+
+        case 'delete_image':
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image_mgr->image->folder_id, 'folder')) {
+                Current_User::disallow();
+            }
+            $this->image->delete();
+            PHPWS_Core::goBack();
+            break;
+
+
+        case 'post_image_upload':
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image_mgr->image->folder_id, 'folder')) {
+                Current_User::disallow();
+            }
+
+            $this->postImageUpload();
+            break;
+
+            /**
+             * not needed?
+        case 'get_images':
+
+            if (!$this->image_mgr->authenticate()) {
+                Current_User::disallow(null, false);
+            }
+            $this->passImages();
+            break;
+            */
+
+        case 'upload_image_form':
+            $this->edit();
+            break;
+
+        case 'resize_image':
+            echo $this->resizeImage();
+            break;
+        }
+        return $this->content;
     }
 
     // backward compatibility
@@ -75,6 +135,7 @@ class FC_Image_Manager {
     /**
      * shows image choices from pop up menu
      */
+    /* Old format delete
     function showImages($folder, $image_id=0)
     {
         if (!$folder->id) {
@@ -132,23 +193,20 @@ class FC_Image_Manager {
         
         return $content;
     }
-
+    */
     /**
      * Upload image form
      */
     function edit()
     {
-        
-        
-
         $form = new PHPWS_Form;
         $form->addHidden('module', 'filecabinet');
 
-        $form->addHidden('aop',      'post_image_upload');
+        $form->addHidden('iop',      'post_image_upload');
         $form->addHidden('ms',        $this->max_size);
         $form->addHidden('mh',        $this->max_height);
         $form->addHidden('mw',        $this->max_width);
-        $form->addHidden('folder_id', $this->cabinet->folder->id);
+        $form->addHidden('folder_id', $this->folder->id);
 
         // if 'im' is set, then we are inside the image manage interface
         // the post needs to be aware of that to respond correctly
@@ -158,9 +216,9 @@ class FC_Image_Manager {
 
         if ($this->image->id) {
             $form->addHidden('image_id', $this->image->id);
-            $this->cabinet->title = dgettext('filecabinet', 'Update image');
+            $form->addTplTag('FORM_TITLE', dgettext('filecabinet', 'Update image'));
         } else {
-            $this->cabinet->title = dgettext('filecabinet', 'Upload image');
+            $form->addTplTag('FORM_TITLE', dgettext('filecabinet', 'Upload image'));
         }
 
         $form->addFile('file_name');
@@ -313,7 +371,7 @@ class FC_Image_Manager {
         }
 
 
-        $this->cabinet->content = PHPWS_Template::process($template, 'filecabinet', 'image_edit.tpl');
+        $this->content = PHPWS_Template::process($template, 'filecabinet', 'image_edit.tpl');
     }
 
 
@@ -338,7 +396,7 @@ class FC_Image_Manager {
             PHPWS_Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
-            $this->cabinet->content = dgettext('filecabinet', 'An error occurred when trying to save your image.');
+            $this->content = dgettext('filecabinet', 'An error occurred when trying to save your image.');
             javascript('close_refresh', $vars);
             return;
         } elseif ($result) {
@@ -376,25 +434,24 @@ class FC_Image_Manager {
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
             }
+
+            javascript('close_refresh');
+
+            // investigate not needed
+            /*
             if (!isset($_POST['im'])) {
                 javascript('close_refresh');
             } else {
                 javascript('modules/filecabinet/refresh_manager', array('image_id'=>$this->image->id));
             }
+            */
         } else {
-            $this->cabinet->message = $this->image->printErrors();
+            $this->message = $this->image->printErrors();
             $this->edit();
             return;
         }
     }
 
-    function authenticate()
-    {
-        if (empty($this->module)) {
-            return false;
-        }
-        return Current_User::allow($this->module);
-    }
 
     function loadAuthMod()
     {
@@ -413,7 +470,7 @@ class FC_Image_Manager {
         }
 
         $link_vars = $this->getSettings();
-        $link_vars['aop']      = 'edit_image';
+        $link_vars['iop']      = 'edit_image';
         $link_vars['current']  = $this->image->id;
         $link_vars['mod_only'] = $this->module_only;
 
@@ -524,6 +581,7 @@ class FC_Image_Manager {
     /**
      * This is the pop up menu where a user can pick an image.
      */
+    /*
     function editImage()
     {
         // Needed for the delete link for images.
@@ -535,7 +593,7 @@ class FC_Image_Manager {
         }
 
         Layout::addStyle('filecabinet');
-        $this->cabinet->title = dgettext('filecabinet', 'Choose an image folder');
+        $this->title = dgettext('filecabinet', 'Choose an image folder');
 
         // Needed for image view popups
         javascript('open_window');
@@ -575,7 +633,7 @@ class FC_Image_Manager {
         }
 
         if (Current_User::allow('filecabinet', 'edit_folders', $folder->id, 'folder')) {
-            $address = PHPWS_Text::linkAddress('filecabinet', array('aop'=>'upload_image_form', 'im'=>1, 'folder_id'=>$folder->id), true);
+            $address = PHPWS_Text::linkAddress('filecabinet', array('iop'=>'upload_image_form', 'im'=>1, 'folder_id'=>$folder->id), true);
             $image_window = sprintf("javascript:open_window('%s', %s, %s, 'new_image'); return false", $address, 600, 550);
             $image_button = sprintf('<input id="add-image" type="button" name="add_image" value="%s" onclick="%s" />', dgettext('filecabinet', 'Add image'), $image_window);
             $tpl['ADD_IMAGE'] = $image_button;
@@ -603,9 +661,9 @@ class FC_Image_Manager {
         $tpl['ORIGINAL'] = '<input id="original-only" type="checkbox" name="original_only" value="1" checked="checked" onclick="source_trigger(this)" />';
         $tpl['ORIGINAL_LABEL'] = dgettext('pagesmith', 'Show source images only');
 
-        $this->cabinet->content = PHPWS_Template::process($tpl, 'filecabinet', 'image_folders.tpl');
+        $this->content = PHPWS_Template::process($tpl, 'filecabinet', 'image_folders.tpl');
     }
-
+    */
 
     /**
      * Resizes an image outside a modules defined boundaries.
@@ -680,6 +738,19 @@ class FC_Image_Manager {
 
         exit();
     }
+
+    function loadFolder($folder_id=0)
+    {
+        if (!$folder_id && isset($_REQUEST['folder_id'])) {
+            $folder_id = &$_REQUEST['folder_id'];
+        }
+
+        $this->folder = new Folder($folder_id);
+        if (!$this->folder->id) {
+            $this->folder->ftype = IMAGE_FOLDER;
+        }
+    }
+
 }
 
 ?>

@@ -13,13 +13,13 @@ $tpl['HEIGHT'] = $tpl['HEIGHT'] + 22; //the FlowPlayer requires 22 extra height 
 $fa = explode('.', $this->file_name);
 array_pop($fa);
 $tn = $this->thumbnailPath();
-
+/*
 if (is_file($tn)) {
-    $tpl['START_SCREEN'] = "overlayId: 'play',url: '$tn'";
+    $tpl['START_SCREEN'] = "url: '$tn'";
 } else {
     $tpl['START_SCREEN'] = "url: 'templates/filecabinet/filters/flash/play-button-328x240.jpg'";
 }
+*/
 $tpl['ID'] = mt_rand();
 
-Layout::addJSHeader('<script type="text/javascript" src="templates/filecabinet/filters/flash/swfobject.js"></script>', 'swfobject');
 ?>

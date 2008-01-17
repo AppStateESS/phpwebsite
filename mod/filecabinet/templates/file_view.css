@@ -1,0 +1,37 @@
+div.fc-info ul {
+   padding-top : 10px;
+   line-height : 1.2em;
+}
+
+div.fc-dl-icon {
+   float : left;
+   width : 120px;
+   height : 150px;
+   background-image : url('download.png');
+   background-repeat : no-repeat;
+}
+
+div.fc-download-document {
+   border : 2px solid #87b48c;
+   font-family : arial;
+   width : 250px;
+   min-height : 150px;
+   font-size : 13px;
+}
+
+div.fc-download-document ul li{
+   padding : 0px;
+   margin-left : 10px;
+}
+
+span.fc-download-label {
+   font-family : arial;
+   font-weight : bold;
+   font-style : italic;
+   text-align : center;   
+}
+
+.fc-download-document .fc-mime-icon {
+   float : none;
+}
+

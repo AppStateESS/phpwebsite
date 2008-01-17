@@ -6,15 +6,37 @@
 PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
 
 class FC_Multimedia_Manager {
-    var $cabinet    = null;
     var $multimedia = null;
     var $max_size   = 0;
+    var $folder     = null;
+    var $content    = null;
 
     function FC_Multimedia_Manager($multimedia_id=0)
     {
         $this->loadMultimedia($multimedia_id);
         $this->loadSettings();
+        $this->loadFolder();
     }
+
+    function admin()
+    {
+        switch ($_REQUEST['mop']) {
+        case 'delete_multimedia':
+            $this->multimedia->delete();
+            PHPWS_Core::returnToBookmark();
+            break;
+
+        case 'post_multimedia_upload':
+            $this->postMultimediaUpload();
+            break;
+
+        case 'upload_multimedia_form':
+            return $this->edit();
+            break;
+        }
+        return $this->content;
+    }
+
 
     function loadMultimedia($multimedia_id=0)
     {
@@ -36,7 +58,6 @@ class FC_Multimedia_Manager {
 
     function edit()
     {
-        $this->cabinet->title = dgettext('filecabinet', 'Upload multimedia');
         if (empty($this->multimedia)) {
             $this->loadMultimedia();
         }
@@ -47,7 +68,7 @@ class FC_Multimedia_Manager {
         $form->addHidden('module',    'filecabinet');
         $form->addHidden('aop',       'post_multimedia_upload');
         $form->addHidden('ms',        $this->max_size);
-        $form->addHidden('folder_id', $this->cabinet->folder->id);
+        $form->addHidden('folder_id', $this->folder->id);
 
         $form->addFile('file_name');
         $form->setSize('file_name', 30);
@@ -61,6 +82,7 @@ class FC_Multimedia_Manager {
         $form->setLabel('description', dgettext('filecabinet', 'Description'));
 
         if ($this->multimedia->id) {
+            $form->getTplTag('FORM_TITLE', 'Edit multimedia');
             $form->addHidden('multimedia_id', $this->multimedia->id);
             $form->addSubmit('submit', dgettext('filecabinet', 'Update'));
 
@@ -72,6 +94,7 @@ class FC_Multimedia_Manager {
             $form->setSize('height', 5, 5);
             $form->setLabel('height', dgettext('filecabinet', 'Height'));
         } else {
+            $form->getTplTag('FORM_TITLE', 'Upload multimedia');
             $form->addSubmit('submit', dgettext('filecabinet', 'Upload'));
         }
 
@@ -117,7 +140,7 @@ class FC_Multimedia_Manager {
         } else {
             $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%d bytes'), $max_size);
         }
-        $this->cabinet->content = PHPWS_Template::process($template, 'filecabinet', 'multimedia_edit.tpl');
+        $this->content = PHPWS_Template::process($template, 'filecabinet', 'multimedia_edit.tpl');
     }
 
     function setMaxSize($size)
@@ -136,7 +159,7 @@ class FC_Multimedia_Manager {
             PHPWS_Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
-            $this->cabinet->content = dgettext('filecabinet', 'An error occurred when trying to save your multimedia file.');
+            $this->content = dgettext('filecabinet', 'An error occurred when trying to save your multimedia file.');
             javascript('close_refresh', $vars);
             return;
         } elseif ($result) {
@@ -155,10 +178,23 @@ class FC_Multimedia_Manager {
                 javascript('modules/filecabinet/refresh_manager', array('multimedia_id'=>$this->multimedia->id));
             }
         } else {
-            $this->cabinet->message = $this->multimedia->printErrors();
+            $this->message = $this->multimedia->printErrors();
             $this->edit();
             return;
         }
     }
+
+    function loadFolder($folder_id=0)
+    {
+        if (!$folder_id && isset($_REQUEST['folder_id'])) {
+            $folder_id = &$_REQUEST['folder_id'];
+        }
+
+        $this->folder = new Folder($folder_id);
+        if (!$this->folder->id) {
+            $this->folder->ftype = MULTIMEDIA_FOLDER;
+        }
+    }
+
 }
 ?>

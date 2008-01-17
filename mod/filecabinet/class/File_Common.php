@@ -41,7 +41,6 @@ class File_Common {
         if (!isset($type)) {
             $type = $this->file_type;
         }
-
         return in_array($type, $this->_allowed_types);
     }
 
@@ -182,6 +181,24 @@ class File_Common {
                 return false;
             }
 
+
+            if ($this->file_type == 'application/x-zip' || $this->file_type == 'application/vnd.openxmlformats') {
+                $ext = $this->getExtension();
+                switch ($ext) {
+                case 'pptx':
+                    $this->file_type = 'application/vnd.ms-powerpoint';
+                    break;
+
+                case 'docx':
+                    $this->file_type = 'application/msword';
+                    break;
+
+                case 'xlsx':
+                    $this->file_type = 'application/vnd.ms-excel';
+                    break;
+                }
+            }
+
             if (!$this->allowType()) {
                 if ($this->_classtype == 'document') {
                     $this->_errors[] = PHPWS_Error::get(FC_DOCUMENT_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
@@ -297,14 +314,21 @@ class File_Common {
         }
     }
 
-    function printErrors()
+    function getErrors()
     {
+        $foo = array();
         if ( !empty($this->_errors) && is_array($this->_errors) ) {
             foreach ($this->_errors as $error) {
                 $foo[] = $error->getMessage();
             }
-            return implode('<br />', $foo);
         }
+        return $foo;
+    }
+
+    function printErrors()
+    {
+        $foo = $this->getErrors();
+        return implode('<br />', $foo);
     }
 
     function loadFileSize()
@@ -350,6 +374,12 @@ class File_Common {
     {
         $last_dot = strrpos($this->file_name, '.');
         return substr($this->file_name, 0, $last_dot);
+    }
+
+    function getExtension()
+    {
+        $last_dot = strrpos($this->file_name, '.');
+        return substr($this->file_name, $last_dot + 1, strlen($this->file_name));
     }
 }
 ?>

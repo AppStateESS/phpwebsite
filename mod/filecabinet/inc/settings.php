@@ -17,5 +17,7 @@ $settings = array('base_doc_directory'   => PHPWS_HOME_DIR . 'files/filecabinet/
                   'auto_link_parent'     => true,
                   'no_kids'              => false,
                   'classify_directory'   => PHPWS_HOME_DIR . 'files/filecabinet/incoming/',
-                  'crop_threshold'       => 20);
+                  'crop_threshold'       => 20,
+                  'use_ffmpeg'           => 0,
+                  'ffmpeg_directory'     => '');
 ?>

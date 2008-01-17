@@ -80,6 +80,7 @@ class Folder {
 
         $js['width'] = 370;
         $js['height'] = 420;
+        $js['type'] = 'button';
         return javascript('open_window', $js);
     }
 
@@ -136,29 +137,34 @@ class Folder {
 
     function imageUploadLink()
     {
-        $vars['address'] = 'index.php?module=filecabinet&aop=upload_image_form&folder_id=' . $this->id;
+        $vars['address'] = 'index.php?module=filecabinet&iop=upload_image_form&folder_id=' . $this->id;
         $vars['width']   = 600;
         $vars['height']  = 600;
-        $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add image');
+        $vars['title']   = $vars['label']   = dgettext('filecabinet', 'Add image');
+        $vars['type']    = 'button';
         return javascript('open_window', $vars);
     }
 
 
     function documentUploadLink()
     {
-        $vars['address'] = 'index.php?module=filecabinet&aop=upload_document_form&folder_id=' . $this->id;
+        $vars['address'] = PHPWS_Text::linkAddress('filecabinet', array('dop'=>'upload_document_form',
+                                                                        'folder_id'=>$this->id),
+                                                   true);
         $vars['width']   = 600;
         $vars['height']  = 600;
-        $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add document');
+        $vars['title']   = $vars['label']   = dgettext('filecabinet', 'Add document');
+        $vars['type']    = 'button';
         return javascript('open_window', $vars);
     }
 
     function multimediaUploadLink()
     {
-        $vars['address'] = 'index.php?module=filecabinet&aop=upload_multimedia_form&folder_id=' . $this->id;
+        $vars['address'] = 'index.php?module=filecabinet&mop=upload_multimedia_form&folder_id=' . $this->id;
         $vars['width']   = 600;
         $vars['height']  = 600;
         $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add file');
+        $vars['type']    = 'button';
         return javascript('open_window', $vars);
     }
 
@@ -342,7 +348,7 @@ class Folder {
         $items = $this->tallyItems();
         $tpl['ITEMS'] = sprintf(dngettext('filecabinet', '%s image', '%s images', $items), $items);
 
-        $vars['aop']       = 'get_images';
+        $vars['iop']       = 'get_images';
         $vars['folder_id'] = $this->id;
         $vars['mw']        = $max_width;
         $vars['mh']        = $max_height;

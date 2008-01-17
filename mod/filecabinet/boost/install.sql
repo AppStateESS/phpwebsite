@@ -6,7 +6,7 @@ CREATE TABLE documents (
   file_name varchar(255) NOT NULL,
   file_directory varchar(255) NOT NULL,
   folder_id int not null default 0,
-  file_type varchar(30) NOT NULL,
+  file_type varchar(100) NOT NULL,
   title varchar(255) NOT NULL,
   description text NULL,
   size int NOT NULL default 0,
@@ -61,4 +61,12 @@ CREATE TABLE folders (
 CREATE TABLE filecabinet_pins (
 key_id INT NOT NULL default 0,
 folder_id INT NOT NULL default 0
+);
+
+CREATE TABLE fc_file_assoc (
+id INT NOT NULL default 0,
+file_type SMALLINT NOT NULL default 0,
+file_id INT NOT NULL default 0,
+tag text null,
+PRIMARY KEY ( id )
 );

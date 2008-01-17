@@ -1,0 +1,77 @@
+div.fc-placeholder {
+
+}
+
+div#type-select {
+   border-bottom : 1px solid black;
+}
+
+div#main-selection {
+   margin-top : 140px;
+   margin-left : 40px;
+}
+
+div#main-selection div {
+   float : left;
+   text-align : center;
+}
+
+div#main-selection span.label {
+   font-size : 1.3em;
+   font-weight : bold;
+}
+
+div#close-button {
+}
+
+div#options {
+   position : absolute;
+   width : 780px;
+   border-top : 1px black solid;
+   padding-top : 10px;
+   top : 550px
+}
+
+div#folder-selection, div#selection {
+   width : 770px;
+   height : 415px;
+   overflow : auto;
+}
+
+a.folder, div.item {
+   text-align : center;
+   float : left;
+   margin : 6px 5px;
+}
+
+a.folder:hover, div.item:hover {
+   text-decoration : none;
+   background-color : #eee;
+}
+
+a.folder {
+   width : 100px;
+   height : 130px;
+}
+
+
+div.item {
+   padding-top : 5px;
+   width : 140px;
+   height : 180px;
+}
+
+div#current-folder {
+   font-size : 1.3em;
+}
+
+div#selection {
+   background-repeat : no-repeat;
+   background-image : url(folder_back.png);
+}
+
+p.fc-options {
+     text-align : center;
+     clear : both;
+}
+

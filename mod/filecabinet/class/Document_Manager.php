@@ -7,7 +7,7 @@
 PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
 class FC_Document_Manager {
-    var $cabinet  = null;
+    var $folder   = null;
     var $document = null;
     var $max_size = 0;
 
@@ -15,11 +15,45 @@ class FC_Document_Manager {
     {
         $this->loadDocument($document_id);
         $this->loadSettings();
+        $this->loadFolder();
     }
 
+    /*
+     * Expects 'dop' command to direct action.
+     */
+    function admin()
+    {
+        switch ($_REQUEST['dop']) {
+        case 'delete_document':
+            $this->document->delete();
+            PHPWS_Core::returnToBookmark();
+            break;
+        case 'post_document_upload':
+            $this->postDocumentUpload();
+            break;
+        case 'upload_document_form':
+            return $this->edit();
+            break;
+        }
+
+    }
+
+    function authenticate()
+    {
+        if (empty($this->module)) {
+            return false;
+        }
+        return Current_User::allow($this->module);
+    }
+
+    /**
+    function authenticate()
+    {
+        return Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder');
+    }
+    */
     function edit()
     {
-        $this->cabinet->title = dgettext('filecabinet', 'Upload document');
         if (empty($this->document)) {
             $this->loadDocument();
         }
@@ -28,9 +62,9 @@ class FC_Document_Manager {
 
         $form = new PHPWS_FORM;
         $form->addHidden('module',    'filecabinet');
-        $form->addHidden('aop',       'post_document_upload');
+        $form->addHidden('dop',       'post_document_upload');
         $form->addHidden('ms',        $this->max_size);
-        $form->addHidden('folder_id', $this->cabinet->folder->id);
+        $form->addHidden('folder_id', $this->folder->id);
 
         $form->addFile('file_name');
         $form->setSize('file_name', 30);
@@ -43,10 +77,12 @@ class FC_Document_Manager {
         $form->addTextArea('description', $this->document->description);
         $form->setLabel('description', dgettext('filecabinet', 'Description'));
 
-        if (!empty($this->document->id)) {
+        if ($this->document->id) {
+            $form->addTplTag('FORM_TITLE', dgettext('filecabinet', 'Update file'));
             $form->addHidden('document_id', $this->document->id);
             $form->addSubmit('submit', dgettext('filecabinet', 'Update'));
         } else {
+            $form->addTplTag('FORM_TITLE', dgettext('filecabinet', 'Upload new file'));
             $form->addSubmit('submit', dgettext('filecabinet', 'Upload'));
         }
 
@@ -74,7 +110,11 @@ class FC_Document_Manager {
             $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%d bytes'), $this->max_size);
         }
 
-        $this->cabinet->content = PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
+        if ($this->document->_errors) {
+            $template['errors'] = $this->document->getErrors();
+        }
+
+        return PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
     }
 
     function loadDocument($document_id=0)
@@ -82,7 +122,6 @@ class FC_Document_Manager {
         if (!$document_id && isset($_REQUEST['document_id'])) {
             $document_id = $_REQUEST['document_id'];
         }
-
         $this->document = new PHPWS_Document($document_id);
     }
 
@@ -97,7 +136,6 @@ class FC_Document_Manager {
 
     function postDocumentUpload()
     {
-        $this->loadDocument();
 
         // importPost in File_Common
         $result = $this->document->importPost('file_name');
@@ -105,25 +143,25 @@ class FC_Document_Manager {
             PHPWS_Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
-            $this->cabinet->content = dgettext('filecabinet', 'An error occurred when trying to save your document.');
             javascript('close_refresh', $vars);
-            return;
+            return dgettext('filecabinet', 'An error occurred when trying to save your document.');
         } elseif ($result) {
             $result = $this->document->save();
+
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
             }
+            PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+            FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->downloadLink());
+
             if (!isset($_POST['im'])) {
                 javascript('close_refresh');
             } else {
                 javascript('modules/filecabinet/refresh_manager', array('document_id'=>$this->document->id));
             }
         } else {
-            $this->cabinet->message = $this->document->printErrors();
-            $this->edit();
-            return;
+            return $this->edit();
         }
-
     }
 
     function setMaxSize($size)
@@ -131,7 +169,17 @@ class FC_Document_Manager {
         $this->max_size = (int)$size;
     }
 
+    function loadFolder($folder_id=0)
+    {
+        if (!$folder_id && isset($_REQUEST['folder_id'])) {
+            $folder_id = &$_REQUEST['folder_id'];
+        }
 
+        $this->folder = new Folder($folder_id);
+        if (!$this->folder->id) {
+            $this->folder->ftype = DOCUMENT_FOLDER;
+        }
+    }
 }
 
 ?>

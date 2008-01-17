@@ -1,3 +1,7 @@
+17 January 2008
++ Rewrite of File Cabinet in process.
++ all boost directories need replacing
+
 10 December 2007
 + Removed "echo '1'" from Image.php. Thanks again verdon.
 

@@ -48,35 +48,23 @@ class PHPWS_Document extends File_Common {
     }
 
 
-    function getIconView($small=false)
+    function getIconView()
     {
         static $icon_list = NULL;
 
         if (empty($icon_list)) {
             $file = PHPWS_Core::getConfigFile('filecabinet', 'icons.php');
             if (!$file) {
-                return sprintf('<img src="./images/mod/filecabinet/icons/document.png" title="%s" alt="%s" />', $this->title, $this->title);
+                return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/text.png" title="%s" alt="%s" />', $this->title, $this->title);
             } else {
                 include $file;
             }
         }
 
         if (!@$graphic = $icon_list[$this->file_type]) {
-            if ($small) {
-                return sprintf('<img src="./images/mod/filecabinet/icons/document_small.png" title="%s" alt="%s" />', $this->title, $this->title);
-            } else {
-                return sprintf('<img src="./images/mod/filecabinet/icons/document.png" title="%s" alt="%s" />', $this->title, $this->title);
-            }
+            return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/text.png" title="%s" alt="%s" />', $this->title, $this->title);
         } else {
-            if ($small) {
-                $ga = explode('.', $graphic);
-                $ext = array_pop($ga);
-                $last_node = array_pop($ga);
-                $ga[] = $last_node . '_small';
-                $ga[] = $ext;
-                $graphic = implode('.', $ga);
-            }
-            return sprintf('<img src="./images/mod/filecabinet/icons/%s" title="%s" alt="%s" />', $graphic, $this->title, $this->title);
+            return sprintf('<img class="fc-mime-icon" src="images/mod/filecabinet/mime_types/%s" title="%s" alt="%s" />', $graphic, $this->title, $this->title);
         }
     }
 
@@ -116,12 +104,8 @@ class PHPWS_Document extends File_Common {
             case 'smallicon':
                 return sprintf('<a href="%s">%s</a>', $link, $this->getIconView(true));
 
-
             case 'filename':
                 return sprintf('<a href="%s">%s</a>', $link, $this->file_name);
-
-            case 'download':
-                return sprintf('<a href="%s">%s</a>', $link, dgettext('filecabinet', 'Download'));
             }
         } else {
             return $link;
@@ -164,19 +148,13 @@ class PHPWS_Document extends File_Common {
         $tpl['TITLE']     = $this->title;
 
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
-            $vars['document_id'] = $this->id;
-            $vars['aop'] = 'upload_document_form';
-            $js['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
-            $js['label'] = dgettext('filecabinet', 'Edit');
-            $js['width'] = 550;
-            $js['height'] = 430;
-            $links[] = javascript('open_window', $js);
-            $js = array();
+            $links[] = $this->editLink();
 
-            $vars['aop']      = 'clip_document';
+            $vars['document_id'] = $this->id;
+            $vars['dop']      = 'clip_document';
             $links[] = PHPWS_Text::moduleLink(dgettext('filecabinet', 'Clip'), 'filecabinet', $vars);
             
-            $vars['aop'] = 'delete_document';
+            $vars['dop'] = 'delete_document';
             $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this document?');
             $js['LINK'] = dgettext('filecabinet', 'Delete');
             $js['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
@@ -246,6 +224,90 @@ class PHPWS_Document extends File_Common {
         $db->addWhere('id', $this->id);
         return $db->delete();
     }
+
+    function managerTpl($fmanager)
+    {
+        $tpl['ICON'] = $this->getManagerIcon($fmanager);
+        $title_len = strlen($this->title);
+        if ($title_len > 20) {
+            $file_name = sprintf('<abbr title="%s">%s</abbr>', $this->file_name,
+                                 PHPWS_Text::shortenUrl($this->file_name, 20));
+        } else {
+            $file_name = & $this->file_name;
+        } 
+        $tpl['TITLE'] = PHPWS_Text::shortenUrl($this->title, 30);
+
+        $filename_len = strlen($this->file_name);
+
+        if ($filename_len > 20) {
+            $file_name = sprintf('<abbr title="%s">%s</abbr>', $this->file_name,
+                                 PHPWS_Text::shortenUrl($this->file_name, 20));
+        } else {
+            $file_name = & $this->file_name;
+        }
+
+        $tpl['INFO'] = sprintf('%s<br>%s', $file_name, $this->getSize(true));
+        if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
+            $links[] = $this->editLink(true);
+            $links[] = $this->deleteLink(true);
+            $tpl['LINKS'] = implode(' ', $links);
+        }
+        return $tpl;
+    }
+
+    function deleteLink($icon=false)
+    {
+        $vars['dop']         = 'delete_document';
+        $vars['document_id'] = $this->id;
+        $vars['folder_id']   = $this->folder_id;
+
+        $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this document?');
+        $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+
+        if ($icon) {
+            $js['LINK'] = '<img src="images/mod/filecabinet/delete.png" />';
+        } else {
+            $js['LINK'] = dgettext('filecabinet', 'Delete');
+        }
+        return javascript('confirm', $js);
+    }
+    
+    function editLink($icon=false)
+    {
+        $vars['document_id'] = $this->id;
+        $vars['dop'] = 'upload_document_form';
+        $js['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+
+        $js['width'] = 550;
+        $js['height'] = 430;
+
+        if ($icon) {
+            $js['label'] =sprintf('<img src="images/mod/filecabinet/edit.png" width="16" height="16" title="%s" />', dgettext('filecabinet', 'Edit document'));
+        } else {
+            $js['label'] = dgettext('filecabinet', 'Edit');
+        }
+        return javascript('open_window', $js);
+    }
+
+    function getManagerIcon($fmanager)
+    {
+        $vars = $fmanager->linkInfo(false);
+        $vars['fop']       = 'pick_file';
+        $vars['file_type'] = FC_DOCUMENT;
+        $vars['id']        = $this->id;
+        $link = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+        return sprintf('<a href="%s">%s</a>', $link, $this->getIconView());
+    }
+
+    function downloadLink()
+    {
+        $tpl['ICON'] = $this->getViewLink(true, 'icon');
+        $tpl['DOWNLOAD'] = dgettext('filecabinet', 'Download file');
+        $tpl['TITLE'] =  $this->getViewLink(true);
+        $tpl['SIZE']  = $this->getSize(true);
+        return PHPWS_Template::process($tpl, 'filecabinet', 'document_download.tpl');
+    }
+
 }
 
 ?>

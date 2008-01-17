@@ -14,6 +14,14 @@ PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
 $cabinet = new Cabinet;
 if (isset($_REQUEST['uop'])) {
     $cabinet->user();
+} elseif (isset($_REQUEST['fop'])) {
+    $cabinet->fmAdmin();
+} elseif (isset($_REQUEST['dop'])) {
+    $cabinet->dmAdmin();
+} elseif (isset($_REQUEST['iop'])) {
+    $cabinet->imAdmin();
+} elseif (isset($_REQUEST['mop'])) {
+    $cabinet->mmAdmin();
 } elseif (isset($_REQUEST['aop']) || isset($_REQUEST['tab'])) {
     $cabinet->admin();
 } elseif ( isset($_GET['id']) ) {
