@@ -14,8 +14,7 @@
  */
 $autogrow = true;
 
-  // The below depends on Text.php's makeRelative function substituting the home http for "./"
-$data['VALUE'] = str_replace('./images/', PHPWS_Core::getHomeHttp() . 'images/', $data['VALUE']);
+$data['VALUE'] = preg_replace('@src="(./)?images/@', 'src="' . PHPWS_Core::getHomeHttp() . 'images/', $data['VALUE']);
 
 
 if (empty($data['WIDTH']) || empty($data['HEIGHT'])) {
