@@ -61,16 +61,13 @@ class Blog_Form {
                 $form->setMatch('allow_anon', PHPWS_Settings::get('blog', 'anonymous_comments'));
             }
 
-            if (PHPWS_Settings::get('blog', 'simple_image')) {
-                PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
-                $manager = Cabinet::imageManager($blog->image_id, 'image_id',
-                                                 PHPWS_Settings::get('blog', 'max_width'),
-                                                 PHPWS_Settings::get('blog', 'max_height'),
-                                                 PHPWS_Settings::get('blog', 'mod_folders_only'));
-                if ($manager) {
-                    $form->addTplTag('IMAGE_MANAGER', $manager->get());
-                    $form->addTplTag('IMAGE_LABEL', dgettext('blog', 'Image'));
-                }
+            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+            $manager = Cabinet::fileManager('image_id', $blog->image_id);
+            $manager->maxImageWidth(PHPWS_Settings::get('blog', 'max_width'));
+            $manager->maxImageHeight(PHPWS_Settings::get('blog', 'max_height'));
+
+            if ($manager) {
+                $form->addTplTag('FILE_MANAGER', $manager->get());
             }
         }
 

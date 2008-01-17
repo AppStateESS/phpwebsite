@@ -8,7 +8,7 @@
     <tr>
 <!-- BEGIN image -->
     <td>
-        <div class="padded"><label>{IMAGE_LABEL}</label><div>{IMAGE_MANAGER}</div></div>
+        <div class="padded">{FILE_MANAGER}</div>
     </td>
 <!-- END image -->
     <td>

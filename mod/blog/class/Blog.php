@@ -23,7 +23,7 @@ class Blog {
     var $allow_anon     = 0;
     var $publish_date   = 0;
     var $expire_date    = 0;
-    var $image_id       = 0;
+    var $image_id        = 0;
     var $sticky         = 0;
     var $_error         = null;
 
@@ -58,20 +58,12 @@ class Blog {
         }
     }
 
-    function getImage()
+    function getFile()
     {
         if (!$this->image_id) {
             return null;
         }
-
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
-        $image = new PHPWS_Image($this->image_id);
-        if (!$image->id) {
-            $image->logErrors();
-            return null;
-        }
-
-        return $image->getTag();
+        return Cabinet::getFile($this->image_id);
     }
 
     function setEntry($entry)
@@ -335,7 +327,7 @@ class Blog {
             $template['ENTRY'] = PHPWS_Text::parseTag($entry);
         }
 
-        $template['IMAGE'] = $this->getImage();
+        $template['IMAGE'] = $this->getFile();
 
         if ( $edit && 
              ( Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ||
