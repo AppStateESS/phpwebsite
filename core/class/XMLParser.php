@@ -19,11 +19,19 @@
 
 
 class XMLParser {
-    var $filename = NULL;
-    var $xml      = NULL;
-    var $data     = NULL;
-    var $error    = NULL;
-    var $mapped   = NULL;
+    var $filename     = null;
+    var $xml          = null;
+    var $data         = null;
+    var $error        = null;
+    var $mapped       = null;
+    /**
+     * If content_only is true, attribute values will be ignored and only
+     * the 'content' tags will be paired to the tag name.
+     * If false, the tag name will contain an array with the content and 
+     * attributes.
+     * @var boolean
+     */
+    var $content_only = false;
   
     function XMLParser($xml_file)
     {
@@ -65,6 +73,14 @@ class XMLParser {
         $data['name'] = $name;
         if ($attributes) { $data['attributes'] = $attributes; }
         $this->data[] = $data;
+    }
+
+    /**
+     * Sets the value of content_only. See variable description.
+     */
+    function setContentOnly($only=true)
+    {
+        $this->content_only = (bool)$only;
     }
 
     function dataHandler($parser, $data) {
@@ -117,6 +133,8 @@ class XMLParser {
             }
 
             return array($foo['name']=>$content);
+        } elseif ($this->content_only) {
+            return array($foo['name']=>$foo['content']);
         } else {
             if (isset($foo['attributes'])) {
                 $row['ATTRIBUTES'] = $foo['attributes'];

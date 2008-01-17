@@ -42,6 +42,13 @@ $allowedMultimediaTypes = array('wav'  => 'audio/x-wav',
                                 'wmd'  => 'application/x-ms-wmd'
                                 );
 
+
+/**
+ * Alternative types
+ * 'xlsx'  => 'application/vnd.openxmlformats',
+ * 'docx'  => 'application/vnd.openxmlformats',
+ * 'pptx'  => 'application/vnd.openxmlformats',
+ */
 $allowedDocumentTypes = array('doc'   => 'application/msword',
                               'pdf'   => 'application/pdf',
                               'xls'   => 'application/vnd.ms-excel',
@@ -52,14 +59,14 @@ $allowedDocumentTypes = array('doc'   => 'application/msword',
                               'swf'   => 'application/x-shockwave-flash',
                               'tar'   => 'application/x-tar',
                               'ustar' => 'application/x-ustar',
-                              'xlsx'  => 'application/x-zip',
-                              'docx'  => 'application/x-zip',
-                              'pptx'  => 'application/x-zip',
                               'xhtml' => 'application/xhtml+xml',
                               'xht'   => 'application/xhtml+xml',
                               'zip'   => 'application/zip',
                               'wmz'   => 'application/x-ms-wmz',
                               'wmd'   => 'application/x-ms-wmd',
+                              'xlsx'  => 'application/x-zip',
+                              'docx'  => 'application/x-zip',
+                              'pptx'  => 'application/x-zip',
                               'au'    => 'audio/basic',
                               'snd'   => 'audio/basic',
                               'mid'   => 'audio/midi',

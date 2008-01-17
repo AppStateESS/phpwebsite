@@ -263,9 +263,15 @@ class PHPWS_Core {
         }
     }
 
-    function bookmark()
+    function bookmark($allow_authkey=true)
     {
-        $_SESSION['PHPWS_Bookmark'] = PHPWS_Core::getCurrentUrl();
+        $url = PHPWS_Core::getCurrentUrl();
+
+        if(!$allow_authkey && preg_match('/authkey=/', $url)) {
+            $url = null;
+        }
+
+        $_SESSION['PHPWS_Bookmark'] = $url;
     }
 
     function returnToBookmark($clear_bm=true)
@@ -276,7 +282,6 @@ class PHPWS_Core {
                 $_SESSION['PHPWS_Bookmark'] = null;
                 unset($_SESSION['PHPWS_Bookmark']);
             }
-                
             PHPWS_Core::reroute($bm);
         } else {
             PHPWS_Core::goBack();

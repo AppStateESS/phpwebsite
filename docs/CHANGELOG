@@ -2,6 +2,16 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+15 January 2008
++ Core: Added option to bookmark function to ignore urls with authkeys
+in them.
++ XMLParser: added a content only parameter to allow script to work
+like previously coded
++ Added em tag to text settings
++ added alternate office mime types to file_types
+
++ Updated: conf/text_settings.php, conf/file_types.php
+
 8 January 2008
 + XMLParser - now includes content and attribute tags.
 + Debug - incomplete objects will work with test now.

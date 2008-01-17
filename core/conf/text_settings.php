@@ -20,7 +20,7 @@ define('PHPWS_ALLOWED_TAGS', '<pre>
 <table><tr><td><tbody><dd><dt><dl>
 <p><br><div><span><blockquote>
 <th><tt><img><pre><hr><h1><h2><h3><h4>
-<fieldset><legend><code>
+<fieldset><legend><code><em>
 ');
 
 /***************** HTML ENCODING ********************************
