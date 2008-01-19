@@ -229,6 +229,7 @@ class Folder {
 
         $db = new PHPWS_DB('folders');
         $result = $db->saveObject($this);
+
         if (PHPWS_Error::logIfError($result)) {
             return false;
         }
@@ -253,6 +254,7 @@ class Folder {
                     }
                 }
             } else {
+                PHPWS_Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'Folder:save', $full_dir);
                 $this->delete();
                 return false;
             }
