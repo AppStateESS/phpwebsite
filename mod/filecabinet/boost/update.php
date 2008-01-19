@@ -46,18 +46,8 @@ Please download version 1.0.2.</pre>';
 
     case version_compare($version, '1.1.0', '<'):
         $content[] = '<pre>';
-        if (!is_dir($home_dir . 'files/multimedia')) {
-            if (is_writable($home_dir . 'files/') && @mkdir($home_dir . 'files/multimedia')) {
-                $content[] = '--- "files/multimedia" directory created.';
-            } else {
-                $content[] = 'File Cabinet 1.1.0 requires the creation of a "multimedia" directory.
-Please place it in the files/ directory.
-Example: mkdir phpwebsite/files/multimedia/</pre>';
-                return false;
-            }
-        } elseif (!is_writable($home_dir . 'files/multimedia')) {
-            $content[] = 'Your files/multimedia directory is not writable by the web server.
- Please change its permissions and return.</pre>';
+
+        if (!checkMultimediaDir($content, $home_dir)) {
             return false;
         }
 
@@ -300,6 +290,11 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                 return false;
             }
         }
+
+        if (!checkMultimediaDir($content, $home_dir)) {
+            return false;
+        }
+
         $content[] = '</pre>';
     }
 
@@ -318,5 +313,22 @@ function fc_updatefiles($files, &$content)
     $content[] = '';
 }
 
-
+function checkMultimediaDir(&$content, $home_dir)
+{
+        if (!is_dir($home_dir . 'files/multimedia')) {
+            if (is_writable($home_dir . 'files/') && @mkdir($home_dir . 'files/multimedia')) {
+                $content[] = '--- "files/multimedia" directory created.';
+            } else {
+                $content[] = 'File Cabinet 1.1.0 requires the creation of a "multimedia" directory.
+Please place it in the files/ directory.
+Example: mkdir phpwebsite/files/multimedia/</pre>';
+                return false;
+            }
+        } elseif (!is_writable($home_dir . 'files/multimedia')) {
+            $content[] = 'Your files/multimedia directory is not writable by the web server.
+ Please change its permissions and return.</pre>';
+            return false;
+        }
+        return true;
+}
 ?>
