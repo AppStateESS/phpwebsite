@@ -36,7 +36,7 @@ class FC_File_Manager {
          */
         switch($_REQUEST['fop']) {
         case 'open_file_manager':
-            return $this->menu();
+            return $this->openFileManager();
             break;
 
         case 'fm_folders':
@@ -126,7 +126,7 @@ class FC_File_Manager {
     {
         $info['cm']   = $this->module;
         $info['itn']  = $this->itemname;
-        $info['fid']  = $this->file_assoc->file_id;
+        $info['fid']  = $this->file_assoc->id;
 
         if ($dimensions) {
             if ($this->max_width) {
@@ -378,7 +378,7 @@ class FC_File_Manager {
         return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/folder_content_view.tpl');
     }
 
-    function menu()
+    function openFileManager()
     {
         /**
          * File has an id, show file

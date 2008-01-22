@@ -1,10 +1,23 @@
+22 January 2008
++ Added resize directory creation.
++ Turning cacheOff on javascript popups. Allows thumbnail refresh.
++ Renamed menu function to openFileManager to match operation name.
++ If an image is deleted, its resize directory is as well. Also
+  removed old parent/child deletion logic.
++ Added a degrees parameter to Image's rotate function.
++ module and itemname variables and functions removed from image
+  manager.
++ Old method of choosing images removed from Image Manager.
++ Starting (but not completed) resize images function for updates.
+
+
 19 January 2008
 + Added logged error message if a folder can not be created.
 + Checking for multimedia directory creation again on update. Could be
 slipping by on some updates.
 
 17 January 2008
-+ Rewrite of File Cabinet in process.
++ Rewrite of File Cabinet in progress.
 + all boost directories need replacing
 
 10 December 2007

@@ -317,19 +317,7 @@ class PHPWS_Image extends File_Common {
             PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Image::delete', $path);
         }
 
-        // if child linked to parent, remove link
-        $db->reset();
-        $db->addWhere('parent_id', $this->id);
-        $db->addWhere('url', 'parent');
-        $db->addValue('url', null);
-        PHPWS_Error::logIfError($db->update());
-
-        // now remove link to parent entirely.
-        $db->reset();
-        $db->addWhere('parent_id', $this->id);
-        $db->addValue('parent_id', 0);
-        PHPWS_Error::logIfError($db->update());
-
+        PHPWS_File::rmdir('images/filecabinet/resize/' . $this->id);
         return true;
     }
 
@@ -453,9 +441,11 @@ class PHPWS_Image extends File_Common {
     /**
      * Rotates an image
      */
-    function rotate($save=true)
+    function rotate($save=true, $degrees=0)
     {
-        $degrees = $this->_getDegrees();
+        if (!$degrees) {
+            $degrees = $this->_getDegrees();
+        }
 
         if (!$degrees) {
             return true;

@@ -34,6 +34,8 @@ class Cabinet {
         if (!$this->authenticate()) {
             Current_User::disallow();
         }
+
+        Layout::cacheOff();
         if ($this->loadFileManager()) {
             Layout::nakedDisplay($this->file_manager->admin());
         } else {
@@ -49,6 +51,7 @@ class Cabinet {
         if (!$this->authenticate()) {
             Current_User::disallow();
         }
+        Layout::cacheOff();
         $this->loadDocumentManager();
         Layout::nakedDisplay($this->document_mgr->admin());
     }
@@ -61,7 +64,7 @@ class Cabinet {
         if (!$this->authenticate()) {
             Current_User::disallow();
         }
-
+        Layout::cacheOff();
         $this->loadImageManager();
         Layout::nakedDisplay($this->image_mgr->admin());
     }
@@ -74,7 +77,7 @@ class Cabinet {
         if (!$this->authenticate()) {
             Current_User::disallow();
         }
-
+        Layout::cacheOff();
         $this->loadMultimediaManager();
         Layout::nakedDisplay($this->multimedia_mgr->admin());
     }

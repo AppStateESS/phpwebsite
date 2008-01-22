@@ -281,6 +281,16 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
   
     case version_compare($version, '2.0.0', '<'):
         $content[] = '<pre>';
+        if (!is_dir('./images/filecabinet/resize/')) {
+            if (@mkdir('./images/filecabinet/resize/')) {
+                $content[] = '--- Created ./images/filecabinet/resize directory.';
+            } else {
+                $content[] = '--- Could not create ./images/filecabinet/resize directory.\n
+                                  Change directory permissions or create manually.</pre>';
+                return false;
+            }
+        }
+
         if (!PHPWS_DB::isTable('fc_file_assoc')) {
             $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/file_assoc.sql');
             if (!PHPWS_Error::logIfError($result)) {
@@ -290,7 +300,6 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                 return false;
             }
         }
-
         if (!checkMultimediaDir($content, $home_dir)) {
             return false;
         }
