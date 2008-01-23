@@ -424,7 +424,7 @@ class Current_User {
         if (Current_User::isLogged()) {
             return false;
         }
-        PHPWS_Core::bookmark();
+        PHPWS_Core::bookmark(false);
         $url = 'index.php?module=users&action=user&command=login_page';
         PHPWS_Core::reroute($url);
     }

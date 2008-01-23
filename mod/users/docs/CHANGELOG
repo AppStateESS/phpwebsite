@@ -1,3 +1,6 @@
+23 January 2008
++ bookmark won't return a user to a authkey page if their session dies.
+
 9 January 2008
 + Added missing table users_banned to update and install sql.
 
