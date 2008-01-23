@@ -898,7 +898,7 @@ class Layout {
 
     function cacheOff()
     {
-        $_SESSION['Layout_Settings']->_cache = FALSE;
+        $_SESSION['Layout_Settings']->cache = FALSE;
     }
 
     function getBase()
@@ -926,7 +926,6 @@ class Layout {
         $db->addWhere('key_id', $key_id);
         return $db->select('row');
     }
-
 
     function loadHeaderTags(&$template)
     {
