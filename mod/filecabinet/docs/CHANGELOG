@@ -1,3 +1,12 @@
+23 January 2008
++ Random image and slideshow options added to file manager's image
+  screen
++ Removed imageTags function from folder
++ Current images and folder options are highlighted now.
++ All image resizes are performed when an image is updated.
+
+
+
 22 January 2008
 + Added resize directory creation.
 + Turning cacheOff on javascript popups. Allows thumbnail refresh.

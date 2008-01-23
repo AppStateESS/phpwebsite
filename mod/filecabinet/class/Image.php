@@ -405,11 +405,15 @@ class PHPWS_Image extends File_Common {
     
     function managerTpl($fmanager)
     {
-        $tpl['ICON'] = $this->getManagerIcon($fmanager);
+        if ($fmanager->file_assoc->file_type == FC_IMAGE &&
+            $fmanager->file_assoc->file_id == $this->id) {
+            $tpl['HIGHLIGHT'] = 'highlight';
+        }
 
+        $tpl['ICON']  = $this->getManagerIcon($fmanager);
         $tpl['TITLE'] = $this->title;
-        $tpl['INFO'] = sprintf('%s x %s - %s', $this->width, $this->height,
-                               $this->getSize(true));
+        $tpl['INFO']  = sprintf('%s x %s - %s', $this->width, $this->height,
+                                $this->getSize(true));
 
         $links[] = $this->getJSView(false);
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {

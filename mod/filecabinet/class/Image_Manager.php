@@ -355,21 +355,12 @@ class FC_Image_Manager {
             }
 
             $result = $this->image->save();
-            $this->updateResizes($image);
+            $this->updateResizes($this->image);
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
             }
 
             javascript('close_refresh');
-
-            // investigate not needed
-            /*
-            if (!isset($_POST['im'])) {
-                javascript('close_refresh');
-            } else {
-                javascript('modules/filecabinet/refresh_manager', array('image_id'=>$this->image->id));
-            }
-            */
         } else {
             $this->message = $this->image->printErrors();
             $this->edit();
@@ -423,7 +414,7 @@ class FC_Image_Manager {
 
     function updateResizes($image)
     {
-        $dir = './images/filecabinet/resize/' . $image->id;
+        $dir = './images/filecabinet/resize/' . $image->id . '/';
         if (!is_dir($dir)) {
             return;
         }
@@ -434,15 +425,14 @@ class FC_Image_Manager {
         }
         
         foreach ($images as $file_name) {
-            if (!preg_match('/\d+x\d+\.\w{1,4$}/', $file_name)) {
+            if (!preg_match('/\d+x\d+\.\w{1,4}$/', $file_name)) {
                 continue;
             }
-            //            explode('x', $file_name);
-            $path = $dir . $file_name;
-            echo $path;
-
+            $last_dot = strrpos($file_name, '.');
+            $base = substr($file_name, 0, $last_dot);
+            $dimensions = explode('x', $base);
+            $image->resize($dir . $file_name, $dimensions[0], $dimensions[1]);
         }
-
     }
 
 }

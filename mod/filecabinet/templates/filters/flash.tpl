@@ -10,10 +10,9 @@
         autoBuffering : false,
         showLoopButton: false, 
         loop: false, 
-        playList: [ { {START_SCREEN}, overlayId: 'play' },
+        playList: [ <!-- BEGIN start-screen -->{ {START_SCREEN}, overlayId: 'play' },<!-- END start-screen -->
                     { url: '{FILE_PATH}' },
                     { overlayId: 'play' } ],
         }"
 />
 </object>
-

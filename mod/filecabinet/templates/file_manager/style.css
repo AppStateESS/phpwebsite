@@ -21,15 +21,13 @@ div#main-selection span.label {
    font-weight : bold;
 }
 
-div#close-button {
-}
-
 div#options {
    position : absolute;
    width : 780px;
    border-top : 1px black solid;
    padding-top : 10px;
    top : 550px
+   background-color : white;
 }
 
 div#folder-selection, div#selection {
@@ -75,3 +73,25 @@ p.fc-options {
      clear : both;
 }
 
+span#heading {
+    font-size : 1.4em;
+    font-weight : bold;
+}
+
+.alt {
+    margin-left : 20px;
+}
+
+div#folder-title {
+    padding : 3px 0px 3px 10px;
+    background-color : #ddd;
+}
+
+.highlight {
+    background-color : #80B26B;
+}
+
+.alt-high img {
+    background-color : #80B26B;
+    border : 2px solid #80B26B;
+}

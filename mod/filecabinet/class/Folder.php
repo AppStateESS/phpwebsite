@@ -340,35 +340,6 @@ class Folder {
         }
     }
 
-    /**
-     * Image link that pops the image manager menu to the users
-     */
-    function imageTags($max_width, $max_height)
-    {
-        $icon = sprintf('<img src="%s" alt="%s" title="%s" />', $this->icon, $this->title, $this->title);
-        $tpl['TITLE'] = $this->title;
-        $items = $this->tallyItems();
-        $tpl['ITEMS'] = sprintf(dngettext('filecabinet', '%s image', '%s images', $items), $items);
-
-        $vars['iop']       = 'get_images';
-        $vars['folder_id'] = $this->id;
-        $vars['mw']        = $max_width;
-        $vars['mh']        = $max_height;
-
-        $jsvars['success'] = sprintf('show_images(requester.responseText, %s)', $this->id);
-        $jsvars['failure'] = "alert('A problem occurred')"; 
-
-        $tpl['ICON'] = sprintf('<a href="#"  onclick="loadRequester(\'%s\', \'%s\', \'%s\'); return false">%s</a>',
-                               PHPWS_Text::linkAddress('filecabinet', $vars, true, false, false),
-                               addslashes($jsvars['success']),
-                               addslashes($jsvars['failure']),
-                               $icon);
-
-        javascript('ajax', $jsvars);
-        javascript('modules/filecabinet/folder_contents', array('error_message'=>dgettext('filecabinet', 'Bad folder id.')));
-        return $tpl;
-    }
-
     function rowTags()
     {
         $icon = sprintf('<img src="%s" />', $this->icon);
@@ -532,6 +503,5 @@ class Folder {
         Layout::add($content, 'filecabinet', 'pinfolder');
     }
 }
-
 
 ?>

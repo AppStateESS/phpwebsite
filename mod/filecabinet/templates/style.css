@@ -194,3 +194,12 @@ ul#image-folders li {
 }
 
 
+div.fc-thumbnails {
+   padding : 5px;
+   width : 220px;
+   height : 200px;
+   text-align : center;
+   overflow : auto;
+   border : 1px solid black;
+}
+

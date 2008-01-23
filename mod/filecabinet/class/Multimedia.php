@@ -104,6 +104,9 @@ class PHPWS_Multimedia extends File_Common {
 
     function thumbnailPath()
     {
+        if (!$this->thumbnail) {
+            return null;
+        }
         return $this->thumbnailDirectory() . $this->thumbnail;
     }
 

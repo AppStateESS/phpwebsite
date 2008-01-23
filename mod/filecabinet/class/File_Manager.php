@@ -255,7 +255,6 @@ class FC_File_Manager {
                                 $icon_name,
                                 dgettext('filecabinet', 'View media folders'));
 
-
         $vars = $this->linkInfo();
         $vars['fop']   = 'fm_folders';
         $vars['ftype'] = DOCUMENT_FOLDER;
@@ -303,7 +302,7 @@ class FC_File_Manager {
                 $tpl['folder-list'][] = $row;
             }
         }
-
+        $tpl['FOLDER_TITLE'] = 'folder view';
         return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/folder_view.tpl');
     }
 
@@ -343,6 +342,34 @@ class FC_File_Manager {
             $db = new PHPWS_DB('images');
             $class_name = 'PHPWS_Image';
             $file_type = FC_IMAGE;
+            $image = new PHPWS_Image;
+            $image->file_directory = 'images/mod/filecabinet/file_manager/';
+            $image->file_name      = 'folder_random.png';
+            $image->title          = dgettext('filecabinet', 'Show a random image from this folder');
+            $image->alt            = dgettext('filecabinet', 'Random image icon');
+            $image->loadDimensions();
+            $altvars = $this->linkInfo();
+            $altvars['id']        = $this->current_folder->id;
+            $altvars['fop']       = 'pick_file';
+
+            $altvars['file_type'] = FC_IMAGE_RANDOM;
+            $tpl['ALT1'] = PHPWS_Text::secureLink($image->getTag(), 'filecabinet', $altvars);
+
+            if ($this->file_assoc->file_type == FC_IMAGE_RANDOM && $this->current_folder->id == $this->file_assoc->file_id) {
+                $tpl['ALT_HIGH1'] = ' alt-high';
+            }
+
+            $image->file_name = 'thumbnails.png';
+            $image->title     = dgettext('filecabinet', 'Show block of thumbnails');
+            $image->alt       = dgettext('filecabinet', 'Thumbnail icon');
+            $image->loadDimensions();
+
+            $altvars['file_type'] = FC_IMAGE_FOLDER;
+            if ($this->file_assoc->file_type == FC_IMAGE_FOLDER) {
+                $tpl['ALT_HIGH2'] = ' alt-high';
+            }
+
+            $tpl['ALT2'] = PHPWS_Text::secureLink($image->getTag(), 'filecabinet', $altvars);
             break;
 
         case DOCUMENT_FOLDER:
@@ -369,11 +396,14 @@ class FC_File_Manager {
                 $stpl = $item->managerTpl($this);
                 $tpl['items'][] = $stpl;
             }
+        } else {
+            unset($tpl['ALT1']);
+            unset($tpl['ALT_HIGH1']);
+            unset($tpl['ALT2']);
+            unset($tpl['ALT_HIGH2']);
         }
         
         $tpl['ADD_FILE'] = $this->current_folder->uploadLink();
-
-
         $tpl['CLOSE'] = javascript('close_window');
         return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/folder_content_view.tpl');
     }
@@ -400,13 +430,14 @@ class FC_File_Manager {
     {
         $file = $this->getFileAssoc($_REQUEST['file_type'], $_REQUEST['id'], true);
         $vars['id']      = $this->session_id;
-        $vars['data']    = $this->jsReady($file->tag);
+        $vars['data']    = $this->jsReady($file->getTag());
         $vars['new_id']  = $file->id;
         javascript('modules/filecabinet/update_file', $vars);
     }
 
     function jsReady($data)
     {
+        $data = htmlentities($data, ENT_QUOTES, 'UTF-8');
         $data = preg_replace("/\n/", '\\n', $data);
         return $data;
     }
@@ -430,7 +461,7 @@ class FC_File_Manager {
         }
 
         $file_assoc->file_type = &$file_type;
-        $file_assoc->file_id = $id;
+        $file_assoc->file_id   = $id;
 
         switch($file_type) {
         case FC_IMAGE:
@@ -453,6 +484,12 @@ class FC_File_Manager {
             $file_assoc->setTag(sprintf('<img src="%s" title="" />', $dst, $image->title));
             break;
 
+        case FC_IMAGE_FOLDER:
+            $file_assoc->tag = 'slideshow';
+        case FC_IMAGE_RANDOM:
+            $file_assoc->tag = 'random';
+            break;
+
         case FC_DOCUMENT:
             PHPWS_Core::initModClass('filecabinet', 'Document.php');
             $document = new PHPWS_Document($id);
@@ -465,7 +502,6 @@ class FC_File_Manager {
             $file_assoc->setTag($multimedia->getTag());
         }
         $file_assoc->save();
-
         return $file_assoc;
     }
 
