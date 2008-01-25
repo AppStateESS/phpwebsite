@@ -55,8 +55,9 @@ a.folder {
 
 div.item {
    padding-top : 5px;
+   /* Compare width to FC_THUMBNAIL_WIDTH */
    width : 140px;
-   height : 180px;
+   height : 200px;
 }
 
 div#current-folder {

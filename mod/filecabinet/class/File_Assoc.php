@@ -8,7 +8,7 @@ class FC_File_Assoc {
     var $id        = 0;
     var $file_type = 0;
     var $file_id   = 0;
-    var $tag       = null;
+    var $resize    = null;
 
     function FC_File_Assoc($id=0)
     {
@@ -24,6 +24,15 @@ class FC_File_Assoc {
                 $this->id = 0;
             }
         }
+    }
+
+    function deadAssoc()
+    {
+        $this->delete();
+        $this->id        = 0;
+        $this->file_type = 0;
+        $this->file_id   = 0;
+        $this->resize    = null;
     }
 
     /*
@@ -67,20 +76,65 @@ class FC_File_Assoc {
     }
     
 
-    function getTag()
+    function getTag($embed=false)
     {
+        PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        PHPWS_Core::initModClass('filecabinet', 'Document.php');
+
         switch ($this->file_type) {
-        case FC_IMAGE_RANDOM:
-            return $this->randomImage();
+        case FC_IMAGE:
+            $image = new PHPWS_Image($this->file_id);
+            if ($image->id) {
+                return $image->getTag();
+            } else {
+                $this->deadAssoc();
+            }
             break;
-            
+
+        case FC_IMAGE_RESIZE:
+            return $image->getResize($this->width, $this->height);
+
         case FC_IMAGE_FOLDER:
             return $this->slideshow();
+
+        case FC_IMAGE_RANDOM:
+            return $this->randomImage();
+
+        case FC_DOCUMENT:
+            $document = new PHPWS_Document($this->file_id);
+            if ($document->id) {
+                return $document->getTag($embed);
+            } else {
+                $this->deadAssoc();
+            }
             break;
-            
-        default:
-            return PHPWS_Text::decodeText($this->tag);            
+
+        case FC_DOCUMENT_FOLDER:
+            return $this->documentFolder();
+
+        case FC_MEDIA:
+            $media = new PHPWS_Multimedia($this->file_id);
+            if ($media->id) {
+                return $media->getTag($embed);
+            } else {
+                $this->deadAssoc();
+            }
+            break;
         }
+        return null;
+    }
+
+    function documentFolder()
+    {
+        $folder = new Folder($this->file_id);
+        $folder->loadFiles();
+        foreach ($folder->_files as $document) {
+            $tpl['files'][] = array('TITLE'=>$document->getViewLink(true), 'SIZE'=>$document->getSize(true));
+        }
+        $tpl['ICON'] = '<img src="images/mod/filecabinet/file_manager/folder_contents.png" />';
+        $tpl['DOWNLOAD'] = sprintf(dgettext('filecabinet', 'Download from %s'), $folder->title);
+        return PHPWS_Template::process($tpl, 'filecabinet', 'document_download.tpl');
 
     }
 
@@ -139,7 +193,8 @@ class FC_File_Assoc {
     function getFolder()
     {
         $db = new PHPWS_DB('folders');
-        if ($this->file_type == FC_IMAGE_RANDOM || $this->file_type == FC_IMAGE_FOLDER) {
+        if ($this->file_type == FC_IMAGE_RANDOM || $this->file_type == FC_IMAGE_FOLDER
+            || $this->file_type == FC_DOCUMENT_FOLDER) {
             $folder = new Folder($this->file_id);
             if (PHPWS_Error::logIfError($folder) || !$folder->id) {
                 return false;
@@ -184,6 +239,13 @@ class FC_File_Assoc {
         $db->addWhere('folder_id', $this->file_id);
         $result = $db->getObjects('PHPWS_Image');
         test($result,1);
+    }
+
+    function delete()
+    {
+        $db = new PHPWS_DB('fc_file_assoc');
+        $db->addWhere('id', $this->id);
+        return $db->delete();
     }
 }
 

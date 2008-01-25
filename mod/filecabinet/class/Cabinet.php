@@ -691,13 +691,6 @@ class Cabinet {
             PHPWS_Settings::set('filecabinet', 'auto_link_parent', 0);
         }
 
-        if (isset($_POST['no_kids'])) {
-            PHPWS_Settings::set('filecabinet', 'no_kids', 1);
-        } else {
-            PHPWS_Settings::set('filecabinet', 'no_kids', 0);
-        }
-
-
         $ffmpeg_dir = strip_tags($_POST['ffmpeg_directory']);
         if (empty($ffmpeg_dir)) {
             PHPWS_Settings::set('filecabinet', 'ffmpeg_directory', null);
@@ -1000,7 +993,7 @@ class Cabinet {
 
         $tpl['CLOSE'] = javascript('close_window');
 
-        $warnings[] = sprintf(dgettext('filecabinet', 'Max thumbnail size : %sx%s.'), MAX_TN_IMAGE_WIDTH, MAX_TN_IMAGE_HEIGHT);
+        $warnings[] = sprintf(dgettext('filecabinet', 'Max thumbnail size : %sx%s.'), FC_THUMBNAIL_WIDTH, FC_THUMBNAIL_HEIGHT);
         if ($mm->isVideo()) {
             $warnings[] = dgettext('filecabinet', 'Image must be a jpeg file.');
         }
@@ -1024,8 +1017,8 @@ class Cabinet {
         }
 
         $image = new PHPWS_Image;
-        $image->setMaxWidth(MAX_TN_IMAGE_WIDTH);
-        $image->setMaxHeight(MAX_TN_IMAGE_HEIGHT);
+        $image->setMaxWidth(FC_THUMBNAIL_WIDTH);
+        $image->setMaxHeight(FC_THUMBNAIL_HEIGHT);
         if (!$image->importPost('thumbnail')) {
             return false;
         }

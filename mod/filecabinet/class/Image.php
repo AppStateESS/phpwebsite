@@ -289,7 +289,7 @@ class PHPWS_Image extends File_Common {
 
     function makeThumbnail()
     {
-        if ($this->width <= FC_THUMBNAIL_WIDTH && $this->height <= FC_THUMKBNAIL_HEIGHT) {
+        if ($this->width <= FC_THUMBNAIL_WIDTH && $this->height <= FC_THUMBBNAIL_HEIGHT) {
             return @copy($this->getPath(), $this->thumbnailPath());
         } else {
             return $this->resize($this->thumbnailPath(), FC_THUMBNAIL_WIDTH, FC_THUMBNAIL_HEIGHT);
@@ -517,6 +517,7 @@ class PHPWS_Image extends File_Common {
             return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::save', $this->file_directory);
         }
 
+
         if (empty($this->alt)) {
             if (empty($this->title)) {
                 $this->title = $this->file_name;
@@ -525,6 +526,14 @@ class PHPWS_Image extends File_Common {
         }
 
         if ($write) {
+            if (!is_writable($this->file_directory)) {
+                return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::save', $this->file_directory);
+            }
+
+            if (!$this->id && is_file($this->getPath())) {
+                return PHPWS_Error::get(FC_DUPLICATE_FILE, 'filecabinet', 'PHPWS_Image::save', $this->getPath());
+            }
+
             $result = $this->write();
             if (PEAR::isError($result)) {
                 return $result;

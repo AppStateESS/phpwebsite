@@ -99,8 +99,14 @@ class FC_File_Manager {
             $tpl['FILE'] = $this->placeHolder();
             $tpl['FILE_ID'] = 0;
         } else {
-            $tpl['FILE'] = $this->file_assoc->getTag();
-            $tpl['FILE_ID'] = $this->file_assoc->id;
+            $tag = $this->file_assoc->getTag();
+            if (empty($tag)) {
+                $tpl['FILE'] = $this->placeHolder();
+                $tpl['FILE_ID'] = 0;
+            } else {
+                $tpl['FILE'] = $tag;
+                $tpl['FILE_ID'] = $this->file_assoc->id;
+            }
         }
 
         // Copy of image manager's getClearLink
@@ -110,6 +116,7 @@ class FC_File_Manager {
         $tpl['EDIT_LINK']   = $this->editLink();
         $tpl['LINK_ID']     = 'l_' . $this->session_id;
         $tpl['ITEMNAME']    = $this->itemname;
+
         return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/placeholder.tpl');
     }
 
@@ -311,6 +318,7 @@ class FC_File_Manager {
      */
     function folderContentView()
     {
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
         javascript('confirm'); // needed for deletion
 
         Layout::addStyle('filecabinet', 'file_manager/style.css');
@@ -338,7 +346,6 @@ class FC_File_Manager {
                                           $this->max_height);
             
             javascript('modules/filecabinet/pick_file', $js);
-            PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $db = new PHPWS_DB('images');
             $class_name = 'PHPWS_Image';
             $file_type = FC_IMAGE;
@@ -377,6 +384,23 @@ class FC_File_Manager {
             $db = new PHPWS_DB('documents');
             $class_name = 'PHPWS_Document';
             $file_type = FC_DOCUMENT;
+            $image = new PHPWS_Image;
+            $image->file_directory = 'images/mod/filecabinet/file_manager/';
+            $image->file_name      = 'all_files.png';
+            $image->title          = dgettext('filecabinet', 'Show all files in the folder');
+            $image->alt            = dgettext('filecabinet', 'All files icon');
+            $image->loadDimensions();
+            $altvars = $this->linkInfo();
+            $altvars['id']        = $this->current_folder->id;
+            $altvars['fop']       = 'pick_file';
+
+            $altvars['file_type'] = FC_DOCUMENT_FOLDER;
+            $tpl['ALT1'] = PHPWS_Text::secureLink($image->getTag(), 'filecabinet', $altvars);
+
+            if ($this->file_assoc->file_type == FC_DOCUMENT_FOLDER && $this->current_folder->id == $this->file_assoc->file_id) {
+                $tpl['ALT_HIGH1'] = ' alt-high';
+            }
+
             break;
 
         case MULTIMEDIA_FOLDER:
@@ -430,7 +454,7 @@ class FC_File_Manager {
     {
         $file = $this->getFileAssoc($_REQUEST['file_type'], $_REQUEST['id'], true);
         $vars['id']      = $this->session_id;
-        $vars['data']    = $this->jsReady($file->getTag());
+        $vars['data']    = $this->jsReady($file->getTag(true));
         $vars['new_id']  = $file->id;
         javascript('modules/filecabinet/update_file', $vars);
     }
@@ -463,14 +487,7 @@ class FC_File_Manager {
         $file_assoc->file_type = &$file_type;
         $file_assoc->file_id   = $id;
 
-        switch($file_type) {
-        case FC_IMAGE:
-            PHPWS_Core::initModClass('filecabinet', 'Image.php');
-            $image = new PHPWS_Image($id);
-            $file_assoc->setTag($image->getTag());
-            break;
-
-        case FC_IMAGE_RESIZE:
+        if ($file_assoc->file_type == FC_IMAGE_RESIZE) {
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $image = new PHPWS_Image($id);
             if (!$dst = $image->resizePath()) {
@@ -481,26 +498,9 @@ class FC_File_Manager {
             if (!$image->resize($dst, $this->max_width, $this->max_height)) {
                 return false;
             }
-            $file_assoc->setTag(sprintf('<img src="%s" title="" />', $dst, $image->title));
-            break;
-
-        case FC_IMAGE_FOLDER:
-            $file_assoc->tag = 'slideshow';
-        case FC_IMAGE_RANDOM:
-            $file_assoc->tag = 'random';
-            break;
-
-        case FC_DOCUMENT:
-            PHPWS_Core::initModClass('filecabinet', 'Document.php');
-            $document = new PHPWS_Document($id);
-            $file_assoc->setTag($document->downloadLink());
-            break;
-
-        case FC_MEDIA:
-            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
-            $multimedia = new PHPWS_Multimedia($id);
-            $file_assoc->setTag($multimedia->getTag());
+            $file_assoc->resize = $dst;
         }
+
         $file_assoc->save();
         return $file_assoc;
     }

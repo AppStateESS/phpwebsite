@@ -23,7 +23,7 @@ class FC_Multimedia_Manager {
         switch ($_REQUEST['mop']) {
         case 'delete_multimedia':
             $this->multimedia->delete();
-            PHPWS_Core::returnToBookmark();
+            PHPWS_Core::goBack();
             break;
 
         case 'post_multimedia_upload':
@@ -31,7 +31,7 @@ class FC_Multimedia_Manager {
             break;
 
         case 'upload_multimedia_form':
-            return $this->edit();
+            $this->edit();
             break;
         }
         return $this->content;
@@ -66,7 +66,7 @@ class FC_Multimedia_Manager {
 
         $form = new PHPWS_FORM;
         $form->addHidden('module',    'filecabinet');
-        $form->addHidden('aop',       'post_multimedia_upload');
+        $form->addHidden('mop',       'post_multimedia_upload');
         $form->addHidden('ms',        $this->max_size);
         $form->addHidden('folder_id', $this->folder->id);
 
@@ -82,7 +82,7 @@ class FC_Multimedia_Manager {
         $form->setLabel('description', dgettext('filecabinet', 'Description'));
 
         if ($this->multimedia->id) {
-            $form->getTplTag('FORM_TITLE', 'Edit multimedia');
+            $form->addTplTag('FORM_TITLE', 'Edit multimedia');
             $form->addHidden('multimedia_id', $this->multimedia->id);
             $form->addSubmit('submit', dgettext('filecabinet', 'Update'));
 
@@ -94,7 +94,7 @@ class FC_Multimedia_Manager {
             $form->setSize('height', 5, 5);
             $form->setLabel('height', dgettext('filecabinet', 'Height'));
         } else {
-            $form->getTplTag('FORM_TITLE', 'Upload multimedia');
+            $form->addTplTag('FORM_TITLE', 'Upload multimedia');
             $form->addSubmit('submit', dgettext('filecabinet', 'Upload'));
         }
 
@@ -171,12 +171,13 @@ class FC_Multimedia_Manager {
             
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
+                $this->content = dgettext('filecabinet', 'An error occurred when trying to save your multimedia file.');
+                $this->content .= '<br /><strong>' . $result->getMessage() . '</strong>';
+                $this->content .= '<br /><br />' . javascript('close_window', array('value'=> dgettext('filecabinet', 'Close this window')));
+                return;
             }
-            if (!isset($_POST['im'])) {
-                javascript('close_refresh');
-            } else {
-                javascript('modules/filecabinet/refresh_manager', array('multimedia_id'=>$this->multimedia->id));
-            }
+
+            javascript('close_refresh');
         } else {
             $this->message = $this->multimedia->printErrors();
             $this->edit();

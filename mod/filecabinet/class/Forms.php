@@ -305,10 +305,6 @@ class Cabinet_Form {
         $form->setMatch('auto_link_parent', PHPWS_Settings::get('filecabinet', 'auto_link_parent'));
         $form->setLabel('auto_link_parent', dgettext('filecabinet', 'Automatically link child images to parent'));
 
-        $form->addCheck('no_kids', 1);
-        $form->setMatch('no_kids', PHPWS_Settings::get('filecabinet', 'no_kids'));
-        $form->setLabel('no_kids', dgettext('filecabinet', 'Don\'t show resized images when viewing folders publicly.'));
-
         $form->addText('max_image_dimension', PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
         $form->setLabel('max_image_dimension', dgettext('filecabinet', 'Maximum image pixel dimension'));
         $form->setSize('max_image_dimension', 4, 4);

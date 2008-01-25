@@ -12,7 +12,7 @@ var mw              = '{mw}';
 var mh              = '{mh}';
 var cm              = '{cm}';
 var itn             = '{itn}';
-
+var fid             = '{fid}';
 
 //]]>
 </script>

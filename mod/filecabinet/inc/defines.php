@@ -46,6 +46,7 @@ define('FC_MULTIMEDIA_WRONG_TYPE',  -120);
 define('FC_MULTIMEDIA_NOT_FOUND',   -121);
 define('FC_THUMBNAIL_NOT_WRITABLE', -122);
 define('FC_FFMPEG_NOT_FOUND',       -123);
+define('FC_DUPLICATE_FILE',         -124);
 
 
 define('FM_RESIZE_DIR', 'images/filecabinet/resize/');

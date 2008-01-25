@@ -5,9 +5,6 @@
    * @version $Id$
    */
 
-define('MAX_TN_IMAGE_WIDTH', 150);
-define('MAX_TN_IMAGE_HEIGHT', 150);
-
 define('FC_VIEW_MARGIN_WIDTH', 20);
 define('FC_VIEW_MARGIN_HEIGHT', 100);
 
@@ -19,8 +16,8 @@ define('FC_NONE_IMAGE_SRC', 'images/mod/filecabinet/no_image.png');
 define('FC_MAX_IMAGE_POPUP_WIDTH', 1024);
 define('FC_MAX_IMAGE_POPUP_HEIGHT', 768);
 
-define('FC_THUMBNAIL_WIDTH', 100);
-define('FC_THUMBNAIL_HEIGHT', 100);
+define('FC_THUMBNAIL_WIDTH', 120);
+define('FC_THUMBNAIL_HEIGHT', 120);
 
 define('FC_MAX_MULTIMEDIA_POPUP_WIDTH', 1024);
 define('FC_MAX_MULTIMEDIA_POPUP_HEIGHT', 768);

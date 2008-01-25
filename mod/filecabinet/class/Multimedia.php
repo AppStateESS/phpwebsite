@@ -243,48 +243,54 @@ class PHPWS_Multimedia extends File_Common {
         return javascript('confirm', $js);
     }
     
-    function getTag()
-    {
-        $filter_tpl = $this->getFilter();
+    function getTag($embed=false) {
+        
+        $filter = $this->getFilter();
 
-        if ($this->isVideo()) {
-            $tpl['WIDTH']  = $this->width;
-            $tpl['HEIGHT'] = $this->height;
-        }
+        $tpl['WIDTH']  = $this->width;
+        $tpl['HEIGHT'] = $this->height;
+         
+        $is_video = $this->isVideo();
+
+        $thumbnail = $this->thumbnailPath();
+
         $tpl['FILE_PATH'] = PHPWS_Core::getHomeHttp() . $this->getPath();
-
+    
         // check for filter file
-        $filter = 'templates/filecabinet/' . str_replace('.tpl', '', $filter_tpl) . '/filter.php';
-
-        if (is_file($filter)) {
-            include $filter;
+        $filter_exe = "templates/filecabinet/filters/$filter/filter.php";
+        if ($filter == 'media' && $embed) {
+            $filter_tpl = "filters/media_embed.tpl";
+        } else {
+            $filter_tpl = "filters/$filter.tpl";
         }
+
+        if (is_file($filter_exe)) {
+            include $filter_exe;
+        }
+        $tpl['ID'] = 'media' . $this->id;
+
 
         return PHPWS_Template::process($tpl, 'filecabinet', $filter_tpl);
     }
 
     function getFilter()
     {
-
         switch ($this->file_type) {
         case 'application/x-extension-flv':
         case 'video/x-flv':
         case 'application/x-flash-video':
-            return 'filters/flash.tpl';
-            break;
-
         case 'audio/mpeg':
-            return 'filters/mp3.tpl';
+            return 'media';
             break;
 
         case 'video/quicktime':
-            return 'filters/quicktime.tpl';
+            return 'quicktime';
             break;
 
         case 'video/mpeg':
         case 'video/x-msvideo':
         case 'video/x-ms-wmv':
-            return 'filters/windows.tpl';
+            return 'windows';
             break;
         }
     }
@@ -318,6 +324,7 @@ class PHPWS_Multimedia extends File_Common {
         }
 
         $raw_file_name = $this->dropExtension();
+        $this->loadVideoDimensions();
 
         if (!PHPWS_Settings::get('filecabinet', 'use_ffmpeg')) {
             $this->genericTN($raw_file_name);
@@ -327,7 +334,7 @@ class PHPWS_Multimedia extends File_Common {
 
             if (!is_file($ffmpeg_directory . 'ffmpeg')) {
                 PHPWS_Error::log(FC_FFMPREG_NOT_FOUND, 'filecabinet',
-                             'Multimedia::makeVideoThumbnail', $ffmpeg_directory);
+                                 'Multimedia::makeVideoThumbnail', $ffmpeg_directory);
                 $this->genericTN($raw_file_name);
                 return true;
             }
@@ -346,10 +353,22 @@ class PHPWS_Multimedia extends File_Common {
             $jpeg = $raw_file_name . '.jpg';
             $thumb_path = $thumbnail_directory . $jpeg;
 
-            $command = sprintf('%sffmpeg -i %s -an -s 160x120 -ss 00:00:05 -r 1 -vframes 1 -y -f mjpeg %s%s',
-                               $ffmpeg_directory, $this->getPath(), $thumbnail_directory, $jpeg);
-            system($command);
-            
+            $max_size = FC_THUMBNAIL_WIDTH;
+
+            if ($this->width > $this->height) {
+                $diff = $max_size / $this->width;
+                $new_width = $max_size;
+                $new_height = round($this->height * $diff);
+            } else {
+                $diff = $max_size / $this->height;
+                $new_height = $max_size;
+                $new_width = round($this->width * $diff);
+            }
+
+            $command = sprintf('%sffmpeg -i %s -an -s %sx%s -ss 00:00:05 -r 1 -vframes 1 -y -f mjpeg %s',
+                               $ffmpeg_directory, $this->getPath(), $new_width, $new_height, $thumb_path);
+            @system($command);
+
             if (!is_file($thumb_path) || filesize($thumb_path) < 10) {
                 @unlink($thumb_path);
                 $this->genericTN($raw_file_name);
@@ -423,11 +442,15 @@ class PHPWS_Multimedia extends File_Common {
             }
         }
 
-        if (!is_writable($this->file_directory)) {
-            return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Multimedia::save', $this->file_directory);
-        }
-
         if ($write) {
+            if (!is_writable($this->file_directory)) {
+                return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Multimedia::save', $this->file_directory);
+            }
+
+            if (!$this->id && is_file($this->getPath())) {
+                return PHPWS_Error::get(FC_DUPLICATE_FILE, 'filecabinet', 'PHPWS_Multimedia::save', $this->getPath());
+            }
+
             $result = $this->write();
             if (PEAR::isError($result)) {
                 return $result;

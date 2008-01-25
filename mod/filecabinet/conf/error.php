@@ -28,5 +28,6 @@ $errors[FC_MULTIMEDIA_WRONG_TYPE]  = dgettext('filecabinet', 'Unacceptable multi
 $errors[FC_MULTIMEDIA_NOT_FOUND]   = dgettext('filecabinet', 'Multimedia file not found.');
 $errors[FC_THUMBNAIL_NOT_WRITABLE] = dgettext('filecabinet', 'Thumbnail directory not writable.');
 $errors[FC_FFMPEG_NOT_FOUND]       = dgettext('filecabinet', 'FFMpeg file not found.');
+$errors[FC_DUPLICATE_FILE]         = dgettext('filecabinet', 'Duplicate file found.');
 
 ?>

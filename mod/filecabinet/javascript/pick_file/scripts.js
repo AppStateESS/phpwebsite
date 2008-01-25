@@ -7,7 +7,7 @@ function oversized(image_id) {
 
     window.location.href = 'index.php?module=filecabinet&fop=pick_file&mw=' + mw + '&mh=' + mh + 
                            '&cm=' + cm + '&authkey=' + authkey + '&itn=' + itn +
-                           '&file_type=' + file_type + '&id=' + image_id;
+                           '&file_type=' + file_type + '&id=' + image_id + '&fid=' + fid;
     return false;
 }
 

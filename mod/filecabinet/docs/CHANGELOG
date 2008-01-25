@@ -1,10 +1,26 @@
+25 January 2008
++ Restructured file_assoc - no longer uses tag variable
+ ( Resize is broken now, will fix next commit. )
++ Removed one set of thumbnail dimension defines
++ Added file checks to file types. FC will not let you save a
+  new, duplicate file in the same directory.
++ Document folder option added.
++ A blank tag from a file_assoc will delete that file_assoc.
++ Documents sorted by title not file name.
++ Removed no_kids variable. Not used now that resizes aren't saved to
+  database.
++ Fixed typo in image that created thumbnails.
++ mp3 and flash videos now use the media filter only.
++ Fixed some problems with the media upload form.
++ Added missing fid variable from pick_file script
++ Dumping icons
+
 23 January 2008
 + Random image and slideshow options added to file manager's image
   screen
 + Removed imageTags function from folder
 + Current images and folder options are highlighted now.
 + All image resizes are performed when an image is updated.
-
 
 
 22 January 2008

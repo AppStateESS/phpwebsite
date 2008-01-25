@@ -397,9 +397,6 @@ class Folder {
         if ($this->ftype == IMAGE_FOLDER) {
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $db = new PHPWS_DB('images');
-            if ($original_only) {
-                $db->addWhere('parent_id', 0);
-            }
             $obj_name = 'PHPWS_Image';
         } elseif ($this->ftype == DOCUMENT_FOLDER) {
             PHPWS_Core::initModClass('filecabinet', 'Document.php');
@@ -412,7 +409,7 @@ class Folder {
         }
 
         $db->addWhere('folder_id', $this->id);
-        $db->addOrder('file_name');
+        $db->addOrder('title');
         $result = $db->getObjects($obj_name);
 
         if (PEAR::isError($result)) {

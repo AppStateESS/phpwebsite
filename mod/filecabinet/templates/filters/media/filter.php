@@ -5,7 +5,7 @@
  */
 
 $floatbar       = false;
-$use_thumbnails = false;
+$use_thumbnails = true;
 
 if ($is_video) {
     if ($floatbar) {
