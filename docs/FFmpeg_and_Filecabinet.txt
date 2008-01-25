@@ -1,0 +1,29 @@
+FFmpeg allows phpWebSite to create thumbnails for their flash video
+files (among other things slated for the future).
+Unfortunately, just installing FFmpeg won't necessarily help.
+
+FFmpeg does not ship with flv (i.e. Flash video format) compatibility
+by default. In order to enable it, you will need compile it
+separately.
+
+If you want to test your installation of ffmpeg, try the following:
+
+ffmpeg -i movie.flv -an -s 340x240 -r 1 -vframes 1 -y -f mjpeg /
+movie.jpg
+
+This will take the first frame of a movie.flv and create a jpeg
+file. If it doesn't work, then it will not work in phpWebSite.
+
+Also, when setting the ffmpeg directory in file cabinet, enter the
+directory it is "in" not the command itself:
+
+$ whereis ffmpeg
+ffmpeg: /usr/local/bin/ffmpeg
+
+So you would enter:
+/usr/local/bin/
+
+NOT
+
+/usr/local/bin/ffmpeg
+

@@ -2,6 +2,14 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+25 January 2008
++ Added doc about ffmpeg and filecabinet
++ Updated media credits
+
+24 January 2008
++ adding slashes to the question in the confirm script
++ Updated: javascript/confirm/default.php
+
 17 January 2008
 + Changed the search and replace method for image directories in fckeditor
 + updated: javascript/editors/fckeditor/default.php

@@ -86,12 +86,17 @@ Corz (BB decoder)
 http://corz.org/
 
 Jeroen Wijering
-MP3Player
+Media Player
 http://www.jeroenwijering.com/
 
-Anssi Piirainen and Geoff Stearns
+Geoff Stearns
+SWFObject
+http://blog.deconcept.com/swfobject/
+
+Anssi Piirainen
 FlowPlayer
 http://flowplayer.sourceforge.net/
+(no longer in use but still appreciated)
 
 
 --------------------------------------------------------------------------
