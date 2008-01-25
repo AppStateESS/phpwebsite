@@ -1,0 +1,9 @@
+<embed 
+src="templates/filecabinet/filters/media/mediaplayer.swf" 
+width="{WIDTH}" 
+height="{HEIGHT}"
+allowscriptaccess="always" 
+allowfullscreen="true" 
+flashvars="width={WIDTH}&height={HEIGHT}&file={FILE_PATH}"
+displayheight="{HEIGHT}"
+/>
