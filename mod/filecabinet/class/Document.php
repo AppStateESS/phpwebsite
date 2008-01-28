@@ -64,7 +64,7 @@ class PHPWS_Document extends File_Common {
         if (!@$graphic = $icon_list[$this->file_type]) {
             return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/text.png" title="%s" alt="%s" />', $this->title, $this->title);
         } else {
-            return sprintf('<img class="fc-mime-icon" src="images/mod/filecabinet/mime_types/%s" title="%s" alt="%s" />', $graphic, $this->title, $this->title);
+            return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/%s" title="%s" alt="%s" />', $graphic, $this->title, $this->title);
         }
     }
 
@@ -100,9 +100,6 @@ class PHPWS_Document extends File_Common {
 
             case 'icon':
                 return sprintf('<a href="%s">%s</a>', $link, $this->getIconView());
-
-            case 'smallicon':
-                return sprintf('<a href="%s">%s</a>', $link, $this->getIconView(true));
 
             case 'filename':
                 return sprintf('<a href="%s">%s</a>', $link, $this->file_name);

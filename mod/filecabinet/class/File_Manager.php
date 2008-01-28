@@ -293,7 +293,7 @@ class FC_File_Manager {
 
         $folder = new Folder;
         $folder->ftype = $this->folder_type;
-        $tpl['ADD_FOLDER'] = $folder->editLink(true);
+        $tpl['ADD_FOLDER'] = $folder->editLink('button');
 
         $db = new PHPWS_DB('folders');
         $db->addWhere('ftype', $this->folder_type);
@@ -334,7 +334,16 @@ class FC_File_Manager {
 
         $tpl = array();
         $this->folderIcons($tpl);
-        $tpl['FOLDER_TITLE'] = & $this->current_folder->title;
+
+        if (Current_User::allow('filecabinet', 'edit_folders')) {
+            $tpl['FOLDER_TITLE'] = $this->current_folder->editLink('title');
+        } else {
+
+            $tpl['FOLDER_TITLE'] = & $this->current_folder->title;
+        }
+
+        $img_dir = 'images/mod/filecabinet/file_manager/';
+        $image_string = '<img src="%s" title="%s" alt="%s" />';
 
         switch ($this->folder_type) {
         case IMAGE_FOLDER:
@@ -348,37 +357,43 @@ class FC_File_Manager {
             javascript('modules/filecabinet/pick_file', $js);
             $db = new PHPWS_DB('images');
             $class_name = 'PHPWS_Image';
-            $file_type = FC_IMAGE;
-            $image = new PHPWS_Image;
-            $image->file_directory = 'images/mod/filecabinet/file_manager/';
-            $image->file_name      = 'folder_random.png';
-            $image->title          = dgettext('filecabinet', 'Show a random image from this folder');
-            $image->alt            = dgettext('filecabinet', 'Random image icon');
-            $image->loadDimensions();
-            $altvars = $this->linkInfo();
+            $file_type  = FC_IMAGE;
+            $altvars    = $this->linkInfo();
+
+            $img1       = 'folder_random.png';
+            $img2       = 'thumbnails.png';
+            $img1_alt   = dgettext('filecabinet', 'Random image icon');
+            $img2_alt   = dgettext('filecabinet', 'Thumbnail icon');
 
             if ($this->current_folder->public_folder) {
                 $altvars['id']        = $this->current_folder->id;
                 $altvars['fop']       = 'pick_file';
-                
                 $altvars['file_type'] = FC_IMAGE_RANDOM;
-                $tpl['ALT1'] = PHPWS_Text::secureLink($image->getTag(), 'filecabinet', $altvars);
+
+                $img1_title = dgettext('filecabinet', 'Show a random image from this folder');
+                $image1 = sprintf($image_string, $img_dir . $img1, $img1_title, $img1_alt);
+                $tpl['ALT1'] = PHPWS_Text::secureLink($image1, 'filecabinet', $altvars);
                 
                 if ($this->file_assoc->file_type == FC_IMAGE_RANDOM && $this->current_folder->id == $this->file_assoc->file_id) {
                     $tpl['ALT_HIGH1'] = ' alt-high';
                 }
                 
-                $image->file_name = 'thumbnails.png';
-                $image->title     = dgettext('filecabinet', 'Show block of thumbnails');
-                $image->alt       = dgettext('filecabinet', 'Thumbnail icon');
-                $image->loadDimensions();
-
                 $altvars['file_type'] = FC_IMAGE_FOLDER;
                 if ($this->file_assoc->file_type == FC_IMAGE_FOLDER) {
                     $tpl['ALT_HIGH2'] = ' alt-high';
                 }
 
-                $tpl['ALT2'] = PHPWS_Text::secureLink($image->getTag(), 'filecabinet', $altvars);
+                $img2_title = dgettext('filecabinet', 'Show block of thumbnails');
+                $image2 = sprintf($image_string, $img_dir . $img2, $img2_title, $img2_alt);
+                $tpl['ALT2'] = PHPWS_Text::secureLink($image2, 'filecabinet', $altvars);
+            } else {
+                $not_allowed = dgettext('filecabinet', 'Action not allowed - private folder');
+                $image1 = sprintf($image_string, $img_dir . $img1, $not_allowed, $img1_alt);
+                $image2 = sprintf($image_string, $img_dir . $img2, $not_allowed, $img2_alt);
+                $tpl['ALT1'] = $image1;
+                $tpl['ALT_HIGH1'] = ' no-use';
+                $tpl['ALT2'] = $image2;
+                $tpl['ALT_HIGH2'] = ' no-use';
             }
             break;
 
@@ -387,23 +402,28 @@ class FC_File_Manager {
             $db = new PHPWS_DB('documents');
             $class_name = 'PHPWS_Document';
             $file_type = FC_DOCUMENT;
-            $image = new PHPWS_Image;
-            $image->file_directory = 'images/mod/filecabinet/file_manager/';
-            $image->file_name      = 'all_files.png';
-            $image->title          = dgettext('filecabinet', 'Show all files in the folder');
-            $image->alt            = dgettext('filecabinet', 'All files icon');
-            $image->loadDimensions();
+
+            $img1     = 'all_files.png';
+            $img1_alt = dgettext('filecabinet', 'All files icon');
             if ($this->current_folder->public_folder) {
                 $altvars = $this->linkInfo();
                 $altvars['id']        = $this->current_folder->id;
                 $altvars['fop']       = 'pick_file';
-
                 $altvars['file_type'] = FC_DOCUMENT_FOLDER;
-                $tpl['ALT1'] = PHPWS_Text::secureLink($image->getTag(), 'filecabinet', $altvars);
+
+                $img1_title = dgettext('filecabinet', 'Show all files in the folder');
+                $image1 = sprintf($image_string, $img_dir . $img1, $img1_title, $img1_alt);
+
+                $tpl['ALT1'] = PHPWS_Text::secureLink($image1, 'filecabinet', $altvars);
 
                 if ($this->file_assoc->file_type == FC_DOCUMENT_FOLDER && $this->current_folder->id == $this->file_assoc->file_id) {
                     $tpl['ALT_HIGH1'] = ' alt-high';
                 }
+            } else {
+                $not_allowed = dgettext('filecabinet', 'Action not allowed - private folder');
+                $image1 = sprintf($image_string, $img_dir . $img1, $not_allowed, $img1_alt);
+                $tpl['ALT1'] = $image1;
+                $tpl['ALT_HIGH1'] = ' no-use';
             }
             break;
 
@@ -425,10 +445,20 @@ class FC_File_Manager {
                 $tpl['items'][] = $stpl;
             }
         } else {
-            unset($tpl['ALT1']);
-            unset($tpl['ALT_HIGH1']);
-            unset($tpl['ALT2']);
-            unset($tpl['ALT_HIGH2']);
+            $not_allowed = dgettext('filecabinet', 'No files in folder');
+            if (isset($tpl['ALT1'])) {
+
+                $image1 = sprintf($image_string, $img_dir . $img1, $not_allowed, $img1_alt);
+                $tpl['ALT1'] = $image1;
+                $tpl['ALT_HIGH1'] = ' no-use';
+            }
+
+            if (isset($tpl['ALT2'])) {
+                $image2 = sprintf($image_string, $img_dir . $img2, $not_allowed, $img2_alt);
+                $tpl['ALT2'] = $image2;
+                $tpl['ALT_HIGH2'] = ' no-use';
+
+            }
         }
         
         $tpl['ADD_FILE'] = $this->current_folder->uploadLink();

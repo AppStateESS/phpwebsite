@@ -35,23 +35,6 @@ class FC_File_Assoc {
         $this->resize    = null;
     }
 
-    /*
-    function getSource()
-    {
-        if (!$this->id) {
-            return false;
-        }
-
-        switch ($this->file_type) {
-        case FC_IMAGE:
-            PHPWS_Core::initModClass('filecabinet', 'Image.php');
-            $image = new PHPWS_Image($this->file_id);
-            return $image;
-            break;
-        }
-    }
-    */
-
     function getFolderType()
     {
         switch ($this->file_type) {

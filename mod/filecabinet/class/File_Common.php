@@ -356,7 +356,6 @@ class File_Common {
 
     function isVideo()
     {
-
         if ($this->_classtype != 'multimedia') {
             return false;
         }

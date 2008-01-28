@@ -8,6 +8,7 @@ $video_types = array(
                      'flv'  => 'video/x-flv',
                      'flv1' => 'application/x-extension-flv',
                      'flv2' => 'application/x-flash-video',
+                     'swf'   => 'application/x-shockwave-flash',
                      'avi'  => 'video/x-msvideo',
                      'mov'  => 'video/quicktime',
                      'mpeg' => 'video/mpeg',

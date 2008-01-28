@@ -10,6 +10,7 @@ class FC_Multimedia_Manager {
     var $max_size   = 0;
     var $folder     = null;
     var $content    = null;
+    var $message    = null;
 
     function FC_Multimedia_Manager($multimedia_id=0)
     {
@@ -139,6 +140,10 @@ class FC_Multimedia_Manager {
             $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%dKB (%d bytes)'), floor($max_size / 1000), $max_size);
         } else {
             $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%d bytes'), $max_size);
+        }
+
+        if ($this->message) {
+            $template['ERROR'] = $this->message;
         }
         $this->content = PHPWS_Template::process($template, 'filecabinet', 'multimedia_edit.tpl');
     }

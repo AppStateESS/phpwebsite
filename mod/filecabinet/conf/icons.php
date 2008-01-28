@@ -4,7 +4,7 @@
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
 $icon_list = array('application/asx'          => 'video.png',
-                   'application/futuresplash' => 'flash_icon.png',
+                   'application/futuresplash' => 'flash.png',
                    'application/pdf'          => 'pdf.png',
                    'application/vnd.ms-excel' => 'spreadsheet.png',
                    'application/vnd.ms-powerpoint' => 'powerpoint.png',
@@ -12,7 +12,7 @@ $icon_list = array('application/asx'          => 'video.png',
                    'application/x-gtar'       => 'package.png',
                    'application/x-gzip'       => 'package.png',
                    'application/x-javascript' => 'document.png',
-                   'application/x-shockwave-flash' => 'flash_icon.png',
+                   'application/x-shockwave-flash' => 'flash.png',
                    'application/x-ustar'      => 'package.png',
                    'text/html'                => 'html.png',
                    'application/x-bzip2'      => 'package.png',

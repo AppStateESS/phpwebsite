@@ -63,16 +63,23 @@ class Folder {
     /**
      * Creates javascript pop up for creating a new folder
      */
-    function editLink($button=false)
+    function editLink($mode=null)
     {
         if ($this->id) {
             $vars['aop']    = 'edit_folder';
             $vars['folder_id'] = $this->id;
-            $js['label'] = dgettext('filecabinet', 'Edit');
+            if ($mode == 'title') {
+                $js['label'] = $this->title;
+            } else {
+                $js['label'] = dgettext('filecabinet', 'Edit');
+            }
         } else {
             $js['label'] = dgettext('filecabinet', 'Add folder');
             $vars['aop'] = 'add_folder';
         }
+        if ($mode == 'image') {
+            $js['label'] = '<img src="" />';
+        } 
 
         $vars['ftype'] = $this->ftype;
 
@@ -80,7 +87,7 @@ class Folder {
 
         $js['width'] = 370;
         $js['height'] = 420;
-        if ($button) {
+        if ($mode == 'button') {
             $js['type'] = 'button';
         }
         return javascript('open_window', $js);

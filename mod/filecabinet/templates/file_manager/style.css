@@ -96,3 +96,7 @@ div#folder-title {
     background-color : #80B26B;
     border : 2px solid #80B26B;
 }
+
+.no-use img {
+    opacity : .2;
+}

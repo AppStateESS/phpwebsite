@@ -246,7 +246,6 @@ class PHPWS_Multimedia extends File_Common {
     function getTag($embed=false) {
         
         $filter = $this->getFilter();
-
         $tpl['WIDTH']  = $this->width;
         $tpl['HEIGHT'] = $this->height;
          
@@ -258,10 +257,16 @@ class PHPWS_Multimedia extends File_Common {
     
         // check for filter file
         $filter_exe = "templates/filecabinet/filters/$filter/filter.php";
-        if ($filter == 'media' && $embed) {
-            $filter_tpl = "filters/media_embed.tpl";
-        } else {
-            $filter_tpl = "filters/$filter.tpl";
+        $filter_tpl = "filters/$filter.tpl";
+
+        if ($embed) {
+            if ($filter == 'media') {
+                $filter_tpl = "filters/media_embed.tpl";
+            } elseif ($filter == 'shockwave'){
+                $filter_tpl = "filters/shockwave_embed.tpl";
+            } else {
+
+            }
         }
 
         if (is_file($filter_exe)) {
@@ -291,6 +296,12 @@ class PHPWS_Multimedia extends File_Common {
         case 'video/x-msvideo':
         case 'video/x-ms-wmv':
             return 'windows';
+            break;
+
+        case 'application/x-shockwave-flash':
+            $this->width = 400;
+            $this->height = 400;
+            return 'shockwave';
             break;
         }
     }
@@ -326,7 +337,8 @@ class PHPWS_Multimedia extends File_Common {
         $raw_file_name = $this->dropExtension();
         $this->loadVideoDimensions();
 
-        if (!PHPWS_Settings::get('filecabinet', 'use_ffmpeg')) {
+        if (!PHPWS_Settings::get('filecabinet', 'use_ffmpeg') || 
+            $this->file_type == 'application/x-shockwave-flash') {
             $this->genericTN($raw_file_name);
             return;
         } else {

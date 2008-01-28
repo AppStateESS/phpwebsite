@@ -4,6 +4,12 @@
 + Fixed file assoc's image resize code.
 + Fixed button vs link in file cabinet's admin screens
 + Lightened border on image thumbs
++ Fixed the button links in the admin screens
++ Folder title opens the folder edit page if permissioned
++ If a folder is empty or private, the folder actions are lightened
+  with new titles.
++ Added shockwave in multimedia.
++ Multimedia wasn't echoing errors from uploading
 
 25 January 2008
 + Restructured file_assoc - no longer uses tag variable
