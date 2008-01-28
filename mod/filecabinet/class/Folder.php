@@ -63,7 +63,7 @@ class Folder {
     /**
      * Creates javascript pop up for creating a new folder
      */
-    function editLink()
+    function editLink($button=false)
     {
         if ($this->id) {
             $vars['aop']    = 'edit_folder';
@@ -80,7 +80,9 @@ class Folder {
 
         $js['width'] = 370;
         $js['height'] = 420;
-        $js['type'] = 'button';
+        if ($button) {
+            $js['type'] = 'button';
+        }
         return javascript('open_window', $js);
     }
 
@@ -127,26 +129,28 @@ class Folder {
     function uploadLink()
     {
         if ($this->ftype == DOCUMENT_FOLDER) {
-            return $this->documentUploadLink();
+            return $this->documentUploadLink(true);
         } elseif ($this->ftype == IMAGE_FOLDER) {
-            return $this->imageUploadLink();
+            return $this->imageUploadLink(true);
         } else {
-            return $this->multimediaUploadLink();
+            return $this->multimediaUploadLink(true);
         }
     }
 
-    function imageUploadLink()
+    function imageUploadLink($button=false)
     {
         $vars['address'] = 'index.php?module=filecabinet&iop=upload_image_form&folder_id=' . $this->id;
         $vars['width']   = 600;
         $vars['height']  = 600;
         $vars['title']   = $vars['label']   = dgettext('filecabinet', 'Add image');
-        $vars['type']    = 'button';
+        if ($button) {
+            $vars['type']    = 'button';
+        }
         return javascript('open_window', $vars);
     }
 
 
-    function documentUploadLink()
+    function documentUploadLink($button=false)
     {
         $vars['address'] = PHPWS_Text::linkAddress('filecabinet', array('dop'=>'upload_document_form',
                                                                         'folder_id'=>$this->id),
@@ -154,17 +158,21 @@ class Folder {
         $vars['width']   = 600;
         $vars['height']  = 600;
         $vars['title']   = $vars['label']   = dgettext('filecabinet', 'Add document');
-        $vars['type']    = 'button';
+        if ($button) {
+            $vars['type']    = 'button';
+        }
         return javascript('open_window', $vars);
     }
 
-    function multimediaUploadLink()
+    function multimediaUploadLink($button=false)
     {
         $vars['address'] = 'index.php?module=filecabinet&mop=upload_multimedia_form&folder_id=' . $this->id;
         $vars['width']   = 600;
         $vars['height']  = 600;
         $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add file');
-        $vars['type']    = 'button';
+        if ($button) {
+            $vars['type']    = 'button';
+        }
         return javascript('open_window', $vars);
     }
 

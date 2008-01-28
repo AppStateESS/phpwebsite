@@ -93,7 +93,7 @@ class FC_File_Assoc {
             break;
 
         case FC_IMAGE_RESIZE:
-            return $image->getResize($this->width, $this->height);
+            return $this->getResize();
 
         case FC_IMAGE_FOLDER:
             return $this->slideshow();
@@ -123,6 +123,15 @@ class FC_File_Assoc {
             break;
         }
         return null;
+    }
+
+    function getResize()
+    {
+        $image = new PHPWS_Image($this->file_id);
+        $image->file_directory = sprintf('images/filecabinet/resize/%s/', $this->file_id);
+        $image->file_name = $this->resize;
+        $image->loadDimensions();
+        return $image->getTag();
     }
 
     function documentFolder()

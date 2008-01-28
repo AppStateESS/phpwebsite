@@ -136,7 +136,7 @@ class Cabinet {
             Current_User::disallow();
             return;
         }
-        echo $aop;
+
         // Requires an unrestricted user
         switch ($aop) {
         case 'pin_folder':
@@ -1050,9 +1050,11 @@ class Cabinet {
     }
 
 
-    function getFile($id)
+    function getFile($id, $style=true)
     {
-        Layout::addStyle('filecabinet', 'file_view.css');
+        if ($style) {
+            Layout::addStyle('filecabinet', 'file_view.css');
+        }
         PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
         $file_assoc = new FC_File_Assoc($id);
         return $file_assoc->getTag();

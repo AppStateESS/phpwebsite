@@ -293,7 +293,7 @@ class FC_File_Manager {
 
         $folder = new Folder;
         $folder->ftype = $this->folder_type;
-        $tpl['ADD_FOLDER'] = $folder->editLink();
+        $tpl['ADD_FOLDER'] = $folder->editLink(true);
 
         $db = new PHPWS_DB('folders');
         $db->addWhere('ftype', $this->folder_type);
@@ -356,27 +356,30 @@ class FC_File_Manager {
             $image->alt            = dgettext('filecabinet', 'Random image icon');
             $image->loadDimensions();
             $altvars = $this->linkInfo();
-            $altvars['id']        = $this->current_folder->id;
-            $altvars['fop']       = 'pick_file';
 
-            $altvars['file_type'] = FC_IMAGE_RANDOM;
-            $tpl['ALT1'] = PHPWS_Text::secureLink($image->getTag(), 'filecabinet', $altvars);
+            if ($this->current_folder->public_folder) {
+                $altvars['id']        = $this->current_folder->id;
+                $altvars['fop']       = 'pick_file';
+                
+                $altvars['file_type'] = FC_IMAGE_RANDOM;
+                $tpl['ALT1'] = PHPWS_Text::secureLink($image->getTag(), 'filecabinet', $altvars);
+                
+                if ($this->file_assoc->file_type == FC_IMAGE_RANDOM && $this->current_folder->id == $this->file_assoc->file_id) {
+                    $tpl['ALT_HIGH1'] = ' alt-high';
+                }
+                
+                $image->file_name = 'thumbnails.png';
+                $image->title     = dgettext('filecabinet', 'Show block of thumbnails');
+                $image->alt       = dgettext('filecabinet', 'Thumbnail icon');
+                $image->loadDimensions();
 
-            if ($this->file_assoc->file_type == FC_IMAGE_RANDOM && $this->current_folder->id == $this->file_assoc->file_id) {
-                $tpl['ALT_HIGH1'] = ' alt-high';
+                $altvars['file_type'] = FC_IMAGE_FOLDER;
+                if ($this->file_assoc->file_type == FC_IMAGE_FOLDER) {
+                    $tpl['ALT_HIGH2'] = ' alt-high';
+                }
+
+                $tpl['ALT2'] = PHPWS_Text::secureLink($image->getTag(), 'filecabinet', $altvars);
             }
-
-            $image->file_name = 'thumbnails.png';
-            $image->title     = dgettext('filecabinet', 'Show block of thumbnails');
-            $image->alt       = dgettext('filecabinet', 'Thumbnail icon');
-            $image->loadDimensions();
-
-            $altvars['file_type'] = FC_IMAGE_FOLDER;
-            if ($this->file_assoc->file_type == FC_IMAGE_FOLDER) {
-                $tpl['ALT_HIGH2'] = ' alt-high';
-            }
-
-            $tpl['ALT2'] = PHPWS_Text::secureLink($image->getTag(), 'filecabinet', $altvars);
             break;
 
         case DOCUMENT_FOLDER:
@@ -390,17 +393,18 @@ class FC_File_Manager {
             $image->title          = dgettext('filecabinet', 'Show all files in the folder');
             $image->alt            = dgettext('filecabinet', 'All files icon');
             $image->loadDimensions();
-            $altvars = $this->linkInfo();
-            $altvars['id']        = $this->current_folder->id;
-            $altvars['fop']       = 'pick_file';
+            if ($this->current_folder->public_folder) {
+                $altvars = $this->linkInfo();
+                $altvars['id']        = $this->current_folder->id;
+                $altvars['fop']       = 'pick_file';
 
-            $altvars['file_type'] = FC_DOCUMENT_FOLDER;
-            $tpl['ALT1'] = PHPWS_Text::secureLink($image->getTag(), 'filecabinet', $altvars);
+                $altvars['file_type'] = FC_DOCUMENT_FOLDER;
+                $tpl['ALT1'] = PHPWS_Text::secureLink($image->getTag(), 'filecabinet', $altvars);
 
-            if ($this->file_assoc->file_type == FC_DOCUMENT_FOLDER && $this->current_folder->id == $this->file_assoc->file_id) {
-                $tpl['ALT_HIGH1'] = ' alt-high';
+                if ($this->file_assoc->file_type == FC_DOCUMENT_FOLDER && $this->current_folder->id == $this->file_assoc->file_id) {
+                    $tpl['ALT_HIGH1'] = ' alt-high';
+                }
             }
-
             break;
 
         case MULTIMEDIA_FOLDER:
@@ -493,12 +497,13 @@ class FC_File_Manager {
             if (!$dst = $image->resizePath()) {
                 return false;
             }
-                
-            $dst .= sprintf('%sx%s.%s', $this->max_width, $this->max_height, $image->getExtension());
-            if (!$image->resize($dst, $this->max_width, $this->max_height)) {
+
+            $resize_file_name = sprintf('%sx%s.%s', $this->max_width, $this->max_height, $image->getExtension());
+
+            if (!$image->resize($dst . $resize_file_name, $this->max_width, $this->max_height)) {
                 return false;
             }
-            $file_assoc->resize = $dst;
+            $file_assoc->resize = & $resize_file_name;
         }
 
         $file_assoc->save();

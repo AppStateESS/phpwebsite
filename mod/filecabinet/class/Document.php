@@ -287,7 +287,7 @@ class PHPWS_Document extends File_Common {
         $js['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
 
         $js['width'] = 550;
-        $js['height'] = 430;
+        $js['height'] = 500;
 
         if ($icon) {
             $js['label'] =sprintf('<img src="images/mod/filecabinet/edit.png" width="16" height="16" title="%s" />', dgettext('filecabinet', 'Edit document'));
