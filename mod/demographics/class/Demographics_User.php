@@ -89,18 +89,20 @@ class Demographics_User {
         return TRUE;
     }
 
-    function delete()
+    function delete($all_user_info=false)
     {
         if (!$this->user_id) {
             return FALSE;
         }
 
-        $db = new PHPWS_DB('demographics');
-        $db->addWhere('user_id', $this->user_id);
-        $result = $db->delete();
-        if (PEAR::isError($result)) {
-            $this->_error = $result;
-            return $result;
+        if  ($all_user_info) {
+            $db = new PHPWS_DB('demographics');
+            $db->addWhere('user_id', $this->user_id);
+            $result = $db->delete();
+            if (PEAR::isError($result)) {
+                $this->_error = $result;
+                return $result;
+            }
         }
 
         if (isset($this->_table)) {
