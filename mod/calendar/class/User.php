@@ -11,6 +11,10 @@ if (!defined('CALENDAR_TOTAL_SUGGESTIONS')) {
     define('CALENDAR_TOTAL_SUGGESTIONS', 5);
  }
 
+if (!defined('CALENDAR_UPCOMING_FORMAT')) {
+    define('CALENDAR_UPCOMING_FORMAT', '%A, %e %b');
+}
+
 class Calendar_User {
 
     /**
@@ -1078,8 +1082,8 @@ class Calendar_User {
 
                 $tpl['events'][$count] = $event->getTpl();
 
-                if ($current_day != strftime('%A', $event->start_time)) {
-                    $current_day = strftime('%A', $event->start_time);
+                if ($current_day != strftime(CALENDAR_UPCOMING_FORMAT, $event->start_time)) {
+                    $current_day = strftime(CALENDAR_UPCOMING_FORMAT, $event->start_time);
                     $tpl['events'][$count]['DAY'] = PHPWS_Text::moduleLink($current_day, 'calendar', $vars);
                 } else {
                     $tpl['events'][$count]['DAY'] = null;
