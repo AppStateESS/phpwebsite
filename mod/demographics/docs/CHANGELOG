@@ -1,7 +1,7 @@
 29 January 2008
 + Added parameter to delete function to prevent deletion of all user
   information.
-
++ Demographics loads itself above the extended class. Thanks verdon.
 
 Version 1.0.0 -- 16 August 2007
 ----------------------------------
