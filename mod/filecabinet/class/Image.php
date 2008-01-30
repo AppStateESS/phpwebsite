@@ -38,7 +38,6 @@ class PHPWS_Image extends File_Common {
     var $width            = NULL;
     var $height           = NULL;
     var $alt              = NULL;
-    var $border           = 0;
     /**
      * If an image is a smaller version of a main image,
      * the parent_id is the link to the parent.
@@ -212,15 +211,28 @@ class PHPWS_Image extends File_Common {
         return $this->thumbnailDirectory() . $this->file_name;
     }
 
+    function captioned()
+    {
+        if (empty($this->description)) {
+            return $this->getTag();
+        }
+
+        $width = $this->width - 6;
+
+        $tpl['IMAGE']   = $this->getTag();
+        $tpl['CAPTION'] = $this->getDescription();
+        $tpl['WIDTH']   = $width . 'px';
+        return PHPWS_Template::process($tpl, 'filecabinet', 'captioned_image.tpl');
+    }
+
     function getTag($id=null, $linked=true)
     {
         $tag[] = '<img';
         $tag[] = 'src="'    . $this->getPath() . '"';
         $tag[] = 'alt="'    . $this->getAlt(TRUE)   . '"';
         $tag[] = 'title="'  . $this->title . '"';
-        $tag[] = 'width="'  . $this->width     . '"';
-        $tag[] = 'height="' . $this->height    . '"';
-        $tag[] = 'border="' . $this->border    . '"';
+        $tag[] = 'width="'  . $this->width     . 'px"';
+        $tag[] = 'height="' . $this->height    . 'px"';
         if ($id) {
             $tag[] = 'id="' . $id .'"';
         }

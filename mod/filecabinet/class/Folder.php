@@ -133,14 +133,14 @@ class Folder {
         return PHPWS_Text::secureLink($img, 'filecabinet', array('aop'=>'unpin', 'folder_id'=>$this->id, 'key_id'=>$key->id));
     }
 
-    function uploadLink()
+    function uploadLink($button=true)
     {
         if ($this->ftype == DOCUMENT_FOLDER) {
-            return $this->documentUploadLink(true);
+            return $this->documentUploadLink($button);
         } elseif ($this->ftype == IMAGE_FOLDER) {
-            return $this->imageUploadLink(true);
+            return $this->imageUploadLink($button);
         } else {
-            return $this->multimediaUploadLink(true);
+            return $this->multimediaUploadLink($button);
         }
     }
 

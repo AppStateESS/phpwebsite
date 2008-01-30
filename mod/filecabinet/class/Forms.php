@@ -221,7 +221,7 @@ class Cabinet_Form {
         }
 
         if (Current_User::allow('filecabinet', 'edit_folders', $folder->id, 'folder')) {
-            $links[] = $folder->uploadLink();
+            $links[] = $folder->uploadLink(false);
             $links[] = $folder->editLink();
         }
 
@@ -335,6 +335,10 @@ class Cabinet_Form {
 
         $form->addCheck('use_ffmpeg', 1);
         $form->setMatch('use_ffmpeg', PHPWS_Settings::get('filecabinet', 'use_ffmpeg'));
+
+        $form->addCheck('caption_images', 1);
+        $form->setMatch('caption_images', PHPWS_Settings::get('filecabinet', 'caption_images'));
+        $form->setLabel('caption_images', dgettext('filecabinet', 'Caption images'));
 
 
         $ffmpeg_directory = PHPWS_Settings::get('filecabinet', 'ffmpeg_directory');

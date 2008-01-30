@@ -34,6 +34,13 @@ class FC_Document_Manager {
         case 'upload_document_form':
             return $this->edit();
             break;
+
+        case 'clip_document':
+            if ($this->document->id) {
+                Clipboard::copy($this->document->title, '[filecabinet:doc:' . $this->document->id . ']');
+            }
+            PHPWS_Core::goBack();
+            break;
         }
 
     }

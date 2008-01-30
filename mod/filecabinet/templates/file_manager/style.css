@@ -23,11 +23,11 @@ div#main-selection span.label {
 
 div#options {
    position : absolute;
+   top : 550px;
+   background-color : white;
    width : 780px;
    border-top : 1px black solid;
    padding-top : 10px;
-   top : 550px
-   background-color : white;
 }
 
 div#folder-selection, div#selection {

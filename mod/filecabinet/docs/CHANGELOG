@@ -1,3 +1,20 @@
+30 January 2008
++ Added image, document, media only commands to isolated what is
+  allowed to place.
++ Fixed the clip functionality
++ Fixed the edit folder functionality
++ Added image captioning
++ Added function to convert images to file associations for module
+  conversion.
++ Added parameters to importpost to ignore empty file submissions and
+  to ignore folder ids if used outside filecabinet.
++ Image descriptions are now encoded and basic emphasis and bold tags
+  are allowed.
++ All upload and edit links should be correct now.
++ Removed border from image tag.
++ New icon for shockwave files.
+
+
 28 January 2008
 + getFile has second parameter to forgo style from file cabinet
 + Increase document upload size.

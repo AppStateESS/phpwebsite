@@ -150,8 +150,8 @@ class Cabinet {
         }
 
         switch ($aop) {
-       /** File manager functions **/
-       /** end file manager functions **/
+            /** File manager functions **/
+            /** end file manager functions **/
 
         case 'image':
             $this->panel->setCurrentTab('image');
@@ -233,33 +233,6 @@ class Cabinet {
             $this->forms->pinFolder($key_id);
             break;
 
-        case 'clip_image':
-            PHPWS_Core::initModClass('filecabinet', 'Image.php');
-            $image = new PHPWS_Image($_GET['image_id']);
-            if ($image->id) {
-                Clipboard::copy($image->title, '[filecabinet:image:' . $image->id . ']');
-            }
-            PHPWS_Core::goBack();
-            break;
-
-        case 'clip_multimedia':
-            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
-            $multimedia = new PHPWS_Multimedia($_GET['multimedia_id']);
-            if ($multimedia->id) {
-                Clipboard::copy($multimedia->title, '[filecabinet:mm:' . $multimedia->id . ']');
-            }
-            PHPWS_Core::goBack();
-            break;
-
-        case 'clip_document':
-            PHPWS_Core::initModClass('filecabinet', 'Document.php');
-            $document = new PHPWS_Document($_GET['document_id']);
-            if ($document->id) {
-                Clipboard::copy($document->title, '[filecabinet:doc:' . $document->id . ']');
-            }
-            PHPWS_Core::goBack();
-            break;
-
         case 'delete_folder':
             if (!Current_User::authorized('filecabinet', 'delete_folders', null, null, true)) {
                 Current_User::disallow();
@@ -284,7 +257,7 @@ class Cabinet {
 
         case 'edit_folder':
             $javascript = true;
-            $this->loadFolder(IMAGE_FOLDER);
+            $this->loadFolder();
             // permission check in function below
             $this->editFolder();
             break;
@@ -416,20 +389,6 @@ class Cabinet {
         $main = PHPWS_Template::process($template, 'filecabinet', 'plain.tpl');
         Layout::add($main);
     }
-
-    /**
-// needs rewrite for new filemanager
-    function imageManager($image_id, $itemname, $width, $height, $module_only=false)
-    {
-        PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
-        $manager = new FC_Image_Manager($image_id);
-        $manager->setItemname($itemname);
-        $manager->setMaxWidth($width);
-        $manager->setMaxHeight($height);
-        $manager->module_only = (bool)$module_only;
-        return $manager;
-    }
-    */
 
     function fileManager($itemname, $file_id=0)
     {
@@ -689,6 +648,12 @@ class Cabinet {
             PHPWS_Settings::set('filecabinet', 'auto_link_parent', 1);
         } else {
             PHPWS_Settings::set('filecabinet', 'auto_link_parent', 0);
+        }
+
+        if (isset($_POST['caption_images'])) {
+            PHPWS_Settings::set('filecabinet', 'caption_images', 1);
+        } else {
+            PHPWS_Settings::set('filecabinet', 'caption_images', 0);
         }
 
         $ffmpeg_dir = strip_tags($_POST['ffmpeg_directory']);
@@ -1089,6 +1054,40 @@ class Cabinet {
         return Current_User::allow($module);
     }
 
+    function convertImagesToFileAssoc($table, $column)
+    {
+        $db = new PHPWS_DB($table);
+        $db->addColumn('id');
+        $db->addColumn($column);
+        $db->setIndexBy('id');
+        $images = $db->select('col');
+        if (empty($images)) {
+            return true;
+        }
+
+        foreach ($items as $item_id=>$image_id) {
+            $db->reset();
+
+            if (@$file_assoc_id = $images_converted[$image_id]) {
+                $db->addValue($column, $file_assoc_id);
+                $db->addWhere('id', $item_id);
+                PHPWS_Error::logIfError($db->update());
+            } else {
+                $file_assoc = new FC_File_Assoc;
+                $file_assoc->file_type = FC_IMAGE;
+                $file_assoc->file_id = $image_id;
+                if (!PHPWS_Error::logIfError($file_assoc->save())) {
+                    $db->addValue($column, $file_assoc->id);
+                    $db->addWhere('id', $item_id);
+                    if (PHPWS_Error::logIfError($db->update())) {
+                        continue;
+                    }
+                }
+                $images_converted[$image_id] = $file_assoc->id;
+            }
+        }
+        return true;
+    }
 }
 
 ?>

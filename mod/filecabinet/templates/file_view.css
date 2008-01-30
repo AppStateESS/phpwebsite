@@ -35,3 +35,8 @@ span.fc-download-label {
    float : none;
 }
 
+.fc-captioned-image div.caption {
+   padding : 3px;
+   background-color : #E9E9E9;
+   font-size : 10px;
+}

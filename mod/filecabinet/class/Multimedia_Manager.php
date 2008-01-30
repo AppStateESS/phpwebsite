@@ -34,6 +34,13 @@ class FC_Multimedia_Manager {
         case 'upload_multimedia_form':
             $this->edit();
             break;
+
+        case 'clip_multimedia':
+            if ($this->multimedia->id) {
+                Clipboard::copy($this->multimedia->title, '[filecabinet:mm:' . $this->multimedia->id . ']');
+            }
+            PHPWS_Core::goBack();
+            break;
         }
         return $this->content;
     }

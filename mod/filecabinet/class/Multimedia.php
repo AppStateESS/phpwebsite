@@ -321,7 +321,11 @@ class PHPWS_Multimedia extends File_Common {
     function genericTN($file_name)
     {
         $this->thumbnail = $file_name . '.jpg';
-        return @copy('images/mod/filecabinet/video_generic.jpg', $this->thumbnailDirectory() . $this->thumbnail);
+        if ($this->file_type == 'application/x-shockwave-flash') {
+            return @copy('images/mod/filecabinet/shockwave.jpg', $this->thumbnailDirectory() . $this->thumbnail);
+        } else {
+            return @copy('images/mod/filecabinet/video_generic.jpg', $this->thumbnailDirectory() . $this->thumbnail);
+        }
     }
 
     function makeVideoThumbnail()

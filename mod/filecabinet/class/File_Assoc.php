@@ -69,7 +69,11 @@ class FC_File_Assoc {
         case FC_IMAGE:
             $image = new PHPWS_Image($this->file_id);
             if ($image->id) {
-                return $image->getTag();
+                if (PHPWS_Settings::get('filecabinet', 'caption_images')) {
+                    return $image->captioned();
+                } else {
+                    return $image->getTag();
+                }
             } else {
                 $this->deadAssoc();
             }

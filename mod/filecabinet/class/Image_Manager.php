@@ -71,23 +71,19 @@ class FC_Image_Manager {
             $this->postImageUpload();
             break;
 
-            /**
-             * not needed?
-        case 'get_images':
-
-            if (!$this->authenticate()) {
-                Current_User::disallow(null, false);
-            }
-            $this->passImages();
-            break;
-            */
-
         case 'upload_image_form':
             $this->edit();
             break;
 
         case 'resize_image':
             echo $this->resizeImage();
+            break;
+
+        case 'clip_image':
+            if ($this->image->id) {
+                Clipboard::copy($this->image->title, '[filecabinet:image:' . $this->image->id . ']');
+            }
+            PHPWS_Core::goBack();
             break;
         }
         return $this->content;

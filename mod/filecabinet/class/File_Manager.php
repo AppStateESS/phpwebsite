@@ -13,6 +13,7 @@ class FC_File_Manager {
     var $current_folder = 0;
     var $max_width      = 0;
     var $max_height     = 0;
+    var $lock_type      = 0;
     /**
      * id to session holding manager information
      */
@@ -24,6 +25,7 @@ class FC_File_Manager {
         $this->itemname   = & $itemname;
         $this->session_id = md5($this->module . $this->itemname);
         $this->loadFileAssoc($file_id);
+        $this->lock_type = (int)@$_SESSION['FM_Type_Lock'][$this->session_id];
     }
 
     /*
@@ -51,6 +53,32 @@ class FC_File_Manager {
             $this->pickFile();
             break;
         }
+    }
+
+    function imageOnly()
+    {
+        $this->lock_type = FC_IMAGE;
+        $_SESSION['FM_Type_Lock'][$this->session_id] = FC_IMAGE;
+    }
+
+    function documentOnly()
+    {
+        $this->lock_type = FC_DOCUMENT;
+        $_SESSION['FM_Type_Lock'][$this->session_id] = FC_DOCUMENT;
+    }
+
+    function mediaOnly()
+    {
+        $this->lock_type = FC_MEDIA;
+        $_SESSION['FM_Type_Lock'][$this->session_id] = FC_MEDIA;
+    }
+
+    function clearLock()
+    {
+        if (!isset($_SESSION['FM_Type_Lock'])) {
+            return;
+        }
+        unset($_SESSION['FM_Type_Lock'][$this->session_id]);
     }
 
     function loadFileAssoc($file_id)
@@ -235,47 +263,53 @@ class FC_File_Manager {
 
     function folderIcons(&$tpl)
     {
-        if ($this->folder_type == DOCUMENT_FOLDER) {
-            $icon_name = 'document80.png';
-        } else {
-            $icon_name = 'document80_bw.png';
-        }
-        $document_img = sprintf('<img src="images/mod/filecabinet/file_manager/file_type/%s" title="%s"/>',
-                                $icon_name,
-                                dgettext('filecabinet', 'View document folders'));
-
-        if ($this->folder_type == IMAGE_FOLDER) {
-            $icon_name = 'image80.png';
-        } else {
-            $icon_name = 'image80_bw.png';
-        }
-        $image_img    = sprintf('<img src="images/mod/filecabinet/file_manager/file_type/%s" title="%s"/>',
-                                $icon_name,
-                                dgettext('filecabinet', 'View image folders'));
-
-        if ($this->folder_type == MULTIMEDIA_FOLDER) {
-            $icon_name = 'media80.png';
-        } else {
-            $icon_name = 'media80_bw.png';
-        }
-        $media_img    = sprintf('<img src="images/mod/filecabinet/file_manager/file_type/%s" title="%s"/>',
-                                $icon_name,
-                                dgettext('filecabinet', 'View media folders'));
-
         $vars = $this->linkInfo();
         $vars['fop']   = 'fm_folders';
-        $vars['ftype'] = DOCUMENT_FOLDER;
-        $document = PHPWS_Text::secureLink($document_img, 'filecabinet', $vars);
 
-        $vars['ftype'] = IMAGE_FOLDER;
-        $image    = PHPWS_Text::secureLink($image_img, 'filecabinet', $vars);
-        
-        $vars['ftype'] = MULTIMEDIA_FOLDER;
-        $media    = PHPWS_Text::secureLink($media_img, 'filecabinet', $vars);
+        if (!$this->lock_type || $this->lock_type == FC_DOCUMENT) {
+            if ($this->folder_type == DOCUMENT_FOLDER) {
+                $icon_name = 'document80.png';
+            } else {
+                $icon_name = 'document80_bw.png';
+            }
+            $document_img = sprintf('<img src="images/mod/filecabinet/file_manager/file_type/%s" title="%s"/>',
+                                    $icon_name,
+                                    dgettext('filecabinet', 'View document folders'));
+     
+            $vars['ftype'] = DOCUMENT_FOLDER;
+            $document = PHPWS_Text::secureLink($document_img, 'filecabinet', $vars);
+            $tpl['DOCUMENT_ICON'] = & $document;
+        }
 
-        $tpl['DOCUMENT_ICON'] = & $document;
-        $tpl['MEDIA_ICON']    = & $media;
-        $tpl['IMAGE_ICON']    = & $image;
+        if (!$this->lock_type || $this->lock_type == FC_IMAGE) {
+            if ($this->folder_type == IMAGE_FOLDER) {
+                $icon_name = 'image80.png';
+            } else {
+                $icon_name = 'image80_bw.png';
+            }
+            $image_img    = sprintf('<img src="images/mod/filecabinet/file_manager/file_type/%s" title="%s"/>',
+                                    $icon_name,
+                                    dgettext('filecabinet', 'View image folders'));
+
+            $vars['ftype'] = IMAGE_FOLDER;
+            $image    = PHPWS_Text::secureLink($image_img, 'filecabinet', $vars);
+            $tpl['IMAGE_ICON']    = & $image;
+        }
+
+        if (!$this->lock_type || $this->lock_type == FC_MEDIA) {
+            if ($this->folder_type == MULTIMEDIA_FOLDER) {
+                $icon_name = 'media80.png';
+            } else {
+                $icon_name = 'media80_bw.png';
+            }
+            $media_img    = sprintf('<img src="images/mod/filecabinet/file_manager/file_type/%s" title="%s"/>',
+                                    $icon_name,
+                                    dgettext('filecabinet', 'View media folders'));
+            
+            $vars['ftype'] = MULTIMEDIA_FOLDER;
+            $media    = PHPWS_Text::secureLink($media_img, 'filecabinet', $vars);
+            $tpl['MEDIA_ICON']    = & $media;
+        }
     }
 
     /**
@@ -480,7 +514,26 @@ class FC_File_Manager {
             }
             return $this->folderContentView();
         } else {
-            return $this->startView();
+            switch ($this->lock_type) {
+            case FC_IMAGE:
+                $this->folder_type = IMAGE_FOLDER;
+                return $this->folderView();
+                break;
+
+            case FC_MEDIA:
+                $this->folder_type = MULTIMEDIA_FOLDER;
+                return $this->folderView();
+                break;
+
+            case FC_DOCUMENT:
+                $this->folder_type = DOCUMENT_FOLDER;
+                return $this->folderView();
+                break;
+
+            default:
+                return $this->startView();
+            }
+
         }
     }
 

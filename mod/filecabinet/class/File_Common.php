@@ -75,13 +75,13 @@ class File_Common {
      * Called from Image_Manager's postImageUpload function and Cabinet_Action's
      * postDocument function.
      */
-    function importPost($var_name)
+    function importPost($var_name, $use_folder=true, $ignore_missing_file=false)
     {
         require 'HTTP/Upload.php';
 
         if (!empty($_POST['folder_id'])) {
             $this->folder_id = (int)$_POST['folder_id'];
-        } elseif (!$this->folder_id) {
+        } elseif (!$this->folder_id && $use_folder) {
             $this->_errors[] = PHPWS_Error::get(FC_MISSING_FOLDER, 'filecabinet', 'File_Common::importPost');
         }
 
@@ -129,8 +129,8 @@ class File_Common {
                 break;
 
             case UPLOAD_ERR_NO_FILE:
-                // Missing file is not important for an update
-                if ($this->id) {
+                // Missing file is not important for an update or if they specify to ignore it.
+                if ($this->id || $ignore_missing_file) {
                     return true;
                 } else {
                     $this->_errors[] = PHPWS_Error::get(FC_NO_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost');
@@ -241,12 +241,12 @@ class File_Common {
 
     function setDescription($description)
     {
-        $this->description = strip_tags($description);
+        $this->description = PHPWS_Text::parseInput(strip_tags($description, '<em><strong><b><i><u>'));
     }
 
     function getDescription()
     {
-        return $this->description;
+        return PHPWS_Text::parseOutput($this->description);
     }
 
     function setDirectory($directory)
