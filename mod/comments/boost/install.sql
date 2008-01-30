@@ -32,3 +32,5 @@ CREATE TABLE comments_users (
   joined_date int NOT NULL default 0,
   locked smallint(6) NOT NULL default 0
 );
+
+CREATE UNIQUE INDEX userid_idx on comments_users(user_id);

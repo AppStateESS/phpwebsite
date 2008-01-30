@@ -245,13 +245,14 @@ class Comment_User extends Demographics_User {
                 $image->setMaxWidth(COMMENT_MAX_AVATAR_WIDTH);
                 $image->setMaxHeight(COMMENT_MAX_AVATAR_HEIGHT);
                 
-                if (!$image->importPost('avatar')) {
+                if (!$image->importPost('avatar', false, true)) {
                     if (isset($image->_errors)) {
                         foreach ($image->_errors as $oError) {
                             $errors[] = $oError->getMessage();
                         }
                     }
-                } else {
+                } elseif ($image->file_name) {
+                    // checking file name in case they don't want an avatar
                     $result = $image->write();
                     if (PEAR::isError($result)) {
                         PHPWS_Error::log($result);

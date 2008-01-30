@@ -1,3 +1,8 @@
+30 January 2008
++ Creating unique index on comment_users (needed in update)
++ Fixed: Posting user infomration without avatar. Requires file
+  cabinet upgrade.
+
 Version 0.6.4 - 25 July 2007
 -------------------------------------------------------------------
 8 June 2007

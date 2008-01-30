@@ -15,7 +15,7 @@ PHPWS_Core::initModClass('comments', 'Comment_User.php');
 
 class Comments {
 
-    function &getThread($key=NULL)
+    function getThread($key=NULL)
     {
         
         if (empty($key)) {
