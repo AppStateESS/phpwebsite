@@ -1,3 +1,9 @@
+30 January 2008
++ Made user_id column unique (may need update to fix table)
++ Added _base_id and _extend_id. Allows demographics and extended
+  object to work independently of one another.
+
+
 29 January 2008
 + Added parameter to delete function to prevent deletion of all user
   information.

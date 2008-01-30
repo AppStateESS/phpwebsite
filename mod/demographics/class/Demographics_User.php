@@ -12,11 +12,13 @@
 
 
 class Demographics_User {
-    var $user_id = 0;
-    var $_error = NULL;
+    var $user_id        = 0;
+    var $_error         = NULL;
     // indicates a new demographics user
-    var $_new_user = FALSE;
-    var $_table = NULL;
+    var $_base_id       = 0;
+    var $_extend_id     = 0;
+    var $_new_user      = TRUE;
+    var $_table         = NULL;
 
     function load() 
     {
@@ -28,7 +30,9 @@ class Demographics_User {
             $db = new PHPWS_DB($this->_table);
             $db->addJoin('left', 'demographics', $this->_table, 'user_id', 'user_id');
             $db->addColumn($this->_table . '.*');
+            $db->addColumn($this->_table . '.user_id', null, '_extend_id');
             $db->addColumn('demographics.*');
+            $db->addColumn('demographics.user_id', null, '_base_id');
         } else {
             $db = new PHPWS_DB('demographics');
         }
@@ -40,6 +44,7 @@ class Demographics_User {
             $this->_error = $result;
             return FALSE;
         } elseif ($result) {
+            $this->_new_user = FALSE;
             return TRUE;
         } else {
             $this->_new_user = TRUE;
@@ -48,6 +53,11 @@ class Demographics_User {
 
     }
 
+    /**
+     * Returns whether this is a new EXTENDED demographics user. If 
+     * the extended is removed, the original remains but is not considered
+     * "new"
+     */
     function isNew()
     {
         return $this->_new_user;
@@ -63,8 +73,8 @@ class Demographics_User {
         }
 
         $db = new PHPWS_DB('demographics');
-        if (!$this->_new_user) {
-            $db->addWhere('user_id', $this->user_id);
+        if ($this->_base_id) {
+            $db->addWhere('user_id', $this->_base_id);
         }
 
         $result = $db->saveObject($this);
@@ -75,12 +85,14 @@ class Demographics_User {
 
         if (isset($this->_table)) {
             $db = new PHPWS_DB($this->_table);
-            if (!$this->_new_user) {
-                $db->addWhere('user_id', $this->user_id);
+            if ($this->_extend_id) {
+                $db->addWhere('user_id', $this->_extend_id);
             }
-
+            
             $result = $db->saveObject($this);
-
+            //            test($this);
+            //test($db->lastQuery());
+            //test($result,1);
             if (PEAR::isError($result)) {
                 $this->_error = $result;
                 return $result;
