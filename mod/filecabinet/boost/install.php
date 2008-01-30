@@ -9,7 +9,7 @@ function filecabinet_install(&$content)
 {
     $home_dir = PHPWS_Boost::getHomeDir();
 
-    $mm_dir = $home_dir . 'files/multimedia';
+    $mm_dir = $home_dir . 'files/multimedia/';
     if (!is_dir($mm_dir)) {
         if (!@mkdir($mm_dir)) {
             $content[] = dgettext('filecabinet', 'Failed to create files/multimedia directory.');
@@ -29,13 +29,23 @@ function filecabinet_install(&$content)
         }
     }
 
-    $classify_dir = $home_dir . 'files/filecabinet/incoming';
+    $classify_dir = $home_dir . 'files/filecabinet/incoming/';
     if (!is_dir($classify_dir)) {
         if (!@mkdir($classify_dir)) {
             $content[] = dgettext('filecabinet', 'Failed to create files/filecabinet/incoming directory.');
             return false;
         } else {
             $content[] = dgettext('filecabinet', 'files/filecabinet/incoming directory created successfully.');
+        }
+    }
+
+    $resize_dir = $home_dir . 'images/filecabinet/resize/';
+    if (!is_dir($resize_dir)) {
+        if (!@mkdir($resize_dir)) {
+            $content[] = dgettext('filecabinet', 'Failed to create images/filecabinet/resize/.');
+            return false;
+        } else {
+            $content[] = dgettext('filecabinet', 'images/filecabinet/resize/ directory created successfully.');
         }
     }
 
