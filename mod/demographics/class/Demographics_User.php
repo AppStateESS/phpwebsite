@@ -44,13 +44,11 @@ class Demographics_User {
             $this->_error = $result;
             return FALSE;
         } elseif ($result) {
-            $this->_new_user = FALSE;
-            return TRUE;
+            $this->_new_user = !(bool)$this->_extend_id;
         } else {
             $this->_new_user = TRUE;
-            return FALSE;
         }
-
+        return TRUE;
     }
 
     /**
