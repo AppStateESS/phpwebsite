@@ -100,6 +100,9 @@ class Clipboard
 
     function copy($title, $content)
     {
+        if (empty($title) || empty($content)) {
+            return false;
+        }
         if (!isset($_SESSION['Clipboard'])) {
             Clipboard::init();
         }
