@@ -376,7 +376,8 @@ class Cabinet_Form {
         return PHPWS_Template::process($tpl, 'filecabinet', 'settings.tpl');
     }
 
-    function classifyFile($files) {
+    function classifyFile($files) 
+    {
         $this->cabinet->title = dgettext('filecabinet', 'Classify Files');
         $classify_dir = $this->cabinet->getClassifyDir();
 
@@ -497,7 +498,11 @@ class Cabinet_Form {
         $form->addHidden('module', 'filecabinet');
         $form->addHidden('aop', 'post_classifications');
 
-        $form_template = $form->getTemplate(true,true,$tpl);
+        if (isset($tpl)) {
+            $form_template = $form->getTemplate();
+        } else {
+            $form_template = $form->getTemplate(true,true,$tpl);
+        }
 
         $this->cabinet->content = PHPWS_Template::process($form_template, 'filecabinet', 'classify_file.tpl');
     }
