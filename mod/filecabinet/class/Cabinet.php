@@ -1014,12 +1014,15 @@ class Cabinet {
         }
     }
 
-
-    function getFile($id, $style=true)
+    function getFile($id)
     {
-        if ($style) {
-            Layout::addStyle('filecabinet', 'file_view.css');
-        }
+        PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+        $file_assoc = new FC_File_Assoc($id);
+        return $file_assoc;
+    }
+
+    function getTag($id)
+    {
         PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
         $file_assoc = new FC_File_Assoc($id);
         return $file_assoc->getTag();

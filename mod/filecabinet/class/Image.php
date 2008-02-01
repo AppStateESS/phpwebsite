@@ -39,8 +39,7 @@ class PHPWS_Image extends File_Common {
     var $height           = NULL;
     var $alt              = NULL;
     /**
-     * If an image is a smaller version of a main image,
-     * the parent_id is the link to the parent.
+     * 
      */
     var $parent_id        = 0;
     var $url              = null;
@@ -211,7 +210,7 @@ class PHPWS_Image extends File_Common {
         return $this->thumbnailDirectory() . $this->file_name;
     }
 
-    function captioned()
+    function captioned($id=null, $linked=true)
     {
         if (empty($this->description)) {
             return $this->getTag();
@@ -219,7 +218,7 @@ class PHPWS_Image extends File_Common {
 
         $width = $this->width - 6;
 
-        $tpl['IMAGE']   = $this->getTag();
+        $tpl['IMAGE']   = $this->getTag($id, $linked);
         $tpl['CAPTION'] = $this->getDescription();
         $tpl['WIDTH']   = $width . 'px';
         return PHPWS_Template::process($tpl, 'filecabinet', 'captioned_image.tpl');
@@ -241,12 +240,7 @@ class PHPWS_Image extends File_Common {
         $image_tag = implode(' ', $tag);
 
         if ($linked && !empty($this->url)) {
-            if ($this->url == 'parent' && $this->parent_id) {
-                $parent = new PHPWS_Image($this->parent_id);
-                if ($parent->id) {
-                    $image_tag = $parent->getJSView(false, $image_tag);
-                }
-            } elseif($this->url == 'folder') {
+            if($this->url == 'folder') {
                 $link =   $link = sprintf('index.php?module=filecabinet&amp;uop=view_folder&amp;folder_id=%s', $this->folder_id);
                 $image_tag =  sprintf('<a href="%s" title="%s">%s</a>', $link, dgettext('filecabinet', 'View all images in folder'),
                                       $image_tag);

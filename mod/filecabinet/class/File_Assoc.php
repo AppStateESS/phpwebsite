@@ -5,10 +5,16 @@
  */
 
 class FC_File_Assoc {
-    var $id        = 0;
-    var $file_type = 0;
-    var $file_id   = 0;
-    var $resize    = null;
+    var $id         = 0;
+    var $file_type  = 0;
+    var $file_id    = 0;
+    var $resize     = null;
+    var $_use_style = true;
+    /**
+     * If the file assoc is an image and no_link is true,
+     * the image's default link (if any) will be supressed
+     */
+    var $_link_image = true;
 
     function FC_File_Assoc($id=0)
     {
@@ -24,6 +30,35 @@ class FC_File_Assoc {
                 $this->id = 0;
             }
         }
+    }
+
+    function allowImageLink($link=true)
+    {
+        $this->_link_image = (bool)$link;
+    }
+
+    function isImage($include_resize=false)
+    {
+        if ($include_resize) {
+            return ($this->file_type == FC_IMAGE || $this->file_type == FC_IMAGE_RESIZE);
+        } else {
+            return ($this->file_type == FC_IMAGE);
+        }
+    }
+
+    function isDocument()
+    {
+        return ($this->file_type == FC_DOCUMENT);
+    }
+
+    function isMedia()
+    {
+        return ($this->file_type == FC_MEDIA);
+    }
+
+    function isResize()
+    {
+        return ($this->file_type == FC_IMAGE_RESIZE);
     }
 
     function deadAssoc()
@@ -65,14 +100,18 @@ class FC_File_Assoc {
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
+        if ($this->_use_style) {
+            Layout::addStyle('filecabinet', 'file_view.css');
+        }
+
         switch ($this->file_type) {
         case FC_IMAGE:
             $image = new PHPWS_Image($this->file_id);
             if ($image->id) {
                 if (PHPWS_Settings::get('filecabinet', 'caption_images')) {
-                    return $image->captioned();
+                    return $image->captioned(null, !$this->_link_image);
                 } else {
-                    return $image->getTag();
+                    return $image->getTag(null, !$this->_link_image);
                 }
             } else {
                 $this->deadAssoc();
@@ -112,13 +151,19 @@ class FC_File_Assoc {
         return null;
     }
 
-    function getResize()
+    function getResize($link_parent=false)
     {
-        $image = new PHPWS_Image($this->file_id);
-        $image->file_directory = sprintf('images/filecabinet/resize/%s/', $this->file_id);
-        $image->file_name = $this->resize;
-        $image->loadDimensions();
-        return $image->getTag();
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        $source = new PHPWS_Image($this->file_id);
+        $resize = clone($source);
+        $resize->file_directory = sprintf('images/filecabinet/resize/%s/', $this->file_id);
+        $resize->file_name = $this->resize;
+        $resize->loadDimensions();
+        if ($link_parent) {
+            return $source->getJSView(false, $resize->getTag(null, false));
+        } else {
+            return $resize->getTag(null, $this->_link_image);
+        }
     }
 
     function documentFolder()
