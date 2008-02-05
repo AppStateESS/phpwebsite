@@ -1,3 +1,6 @@
+5 February 2008
++ Raised version but no update script yet.
+
 30 January 2008
 + Made user_id column unique (may need update to fix table)
 + Added _base_id and _extend_id. Allows demographics and extended
