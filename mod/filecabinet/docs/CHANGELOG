@@ -12,7 +12,7 @@
 + loadVideoDimensions is now just loadDimensions.
 + Resize directory is now in the folder containing the image. Removed
   define from config file.
-+ 
++ Added youtube filters.
 
 1 February 2008
 + getFile returns actually object. getTag returns just content.
