@@ -1,3 +1,12 @@
+5 February 2008
++ Raising version for next update
++ Added image_link column for extra image linking.
++ Should be compatible with FC changes.
++ Editing a blog sends you to the blog view when finished instead of
+  the blog listing.
++ MiniAdmin has blog listing option when viewing a specific blog.
++ Updated: templates/edit.tpl
+
 17 January 2008
 + Testing file cabinet in blog.
 + updated : templates/edit.tpl

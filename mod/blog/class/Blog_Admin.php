@@ -252,7 +252,7 @@ class Blog_Admin {
                 if (!$blog->approved) {
                     Blog_Admin::setForward(dgettext('blog', 'Your entry is being held for approval.'), 'list');
                 } else {
-                    Blog_Admin::setForward(dgettext('blog', 'Entry saved successfully.'), 'list');
+                    PHPWS_Core::reroute($blog->getViewLink(true));
                 }
             }
             break;

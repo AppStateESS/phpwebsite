@@ -14,6 +14,13 @@ if (!defined('MAX_BLOG_CACHE_PAGES')) {
 
 class Blog_User {
 
+    function miniAdminList()
+    {
+        $vars['action'] = 'admin';
+        $vars['tab'] = 'list';
+        MiniAdmin::add('blog', PHPWS_Text::secureLink(dgettext('blog', 'Blog list'), 'blog', $vars));
+    }
+
     function main()
     {
         if (!isset($_REQUEST['blog_id']) && isset($_REQUEST['id'])) {
@@ -34,6 +41,7 @@ class Blog_User {
         case 'view_comments':
             Layout::addStyle('blog');
             Layout::addPageTitle($blog->title);
+            Blog_User::miniAdminList();
             $content = $blog->view(TRUE, FALSE);
             break;
 
@@ -169,6 +177,7 @@ class Blog_User {
     function show()
     {
         Layout::addStyle('blog');
+
         $total_entries = Blog_User::totalEntries();
 
         $limit = PHPWS_Settings::get('blog', 'blog_limit');
@@ -259,9 +268,8 @@ class Blog_User {
             PHPWS_Settings::get('blog', 'cache_view')) {
             PHPWS_Cache::save($key, $content);
         } elseif (Current_User::allow('blog', 'edit_blog')) {
+            Blog_User::miniAdminList();
             $vars['action'] = 'admin';
-            $vars['tab'] = 'list';
-            $link[] = PHPWS_Text::secureLink(dgettext('blog', 'Edit blogs'), 'blog', $vars);
             $vars['tab'] = 'new';
             $link[] = PHPWS_Text::secureLink(dgettext('blog', 'Add new blog'), 'blog', $vars);
             MiniAdmin::add('blog', $link);

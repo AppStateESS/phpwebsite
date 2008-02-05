@@ -201,6 +201,17 @@ function blog_update(&$content, $currentVersion)
 </pre>';
 
 
+    case version_compare($currentVersion, '1.7.0', '<'):
+        $content[] = '<pre>';
+        $db = new PHPWS_DB('blog_entries');
+        if (PHPWS_Error::logIfError($db->addTableColumn('image_link', "varchar(255) NOT NULL default 'default'"))) {
+            $content[] = 'Unable to create image_link column on blog_entries table.</pre>';
+            return false;
+        } else {
+            $content[] = 'Created image_link column on blog_entries table';
+        }
+        break;
+
     } // end of switch
     return true;
 }

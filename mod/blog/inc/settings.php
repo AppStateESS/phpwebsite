@@ -22,5 +22,6 @@ $settings['mod_folders_only']        = 0;
 $settings['show_category_links']     = false;
 $settings['single_cat_icon']         = true;
 $settings['show_category_icons']     = true;
+$settings['image_link']              = 'readmore';
 
 ?>

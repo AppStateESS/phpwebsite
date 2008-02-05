@@ -14,7 +14,7 @@ class Blog_Form {
      */
     function edit(&$blog, $version_id=NULL, $limited=false)
     {
-        $form = new PHPWS_Form;
+        $form = new PHPWS_Form('edit-blog');
         $form->addHidden('module', 'blog');
 
         if ($limited) {
@@ -60,6 +60,36 @@ class Blog_Form {
             } else {
                 $form->setMatch('allow_anon', PHPWS_Settings::get('blog', 'anonymous_comments'));
             }
+
+            $link_choices['none']       = dgettext('blog', 'No link and ignore image link setting');
+            $link_choices['default']    = dgettext('blog', 'No link but allow image link setting');
+            $link_choices['readmore']   = dgettext('blog', 'Link to read more');
+            $link_choices['parent']     = dgettext('blog', 'Link resized image to parent');
+            $link_choices['url']        = dgettext('blog', 'Link the url below');
+
+            $form->addSelect('image_link', $link_choices);
+            $form->setExtra('image_link', 'onchange="toggleUrl(this)"');
+            $form->setLabel('image_link', dgettext('blog', 'Link setting (if image)'));
+            if (!isset($link_choices[$blog->image_link])) {
+                $url = $blog->image_link;
+                $form->addTplTag('OP', '1');
+                $match = 'url';
+            } else {
+                $url = null;
+                $form->addTplTag('OP', '.5');
+                $match = $blog->image_link;
+            }
+
+            $form->setMatch('image_link', $match);
+            $form->addText('image_url', $url);
+            $form->setSize('image_url', 40);
+            $form->setLabel('image_url', dgettext('blog', 'Image url'));
+            if ($match == 'url') {
+                $form->setDisabled('image_url', false);
+            } else {
+                $form->setDisabled('image_url', true);
+            }
+
 
             PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('image_id', $blog->image_id);

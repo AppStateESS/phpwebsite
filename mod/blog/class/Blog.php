@@ -23,8 +23,16 @@ class Blog {
     var $allow_anon     = 0;
     var $publish_date   = 0;
     var $expire_date    = 0;
-    var $image_id        = 0;
+    var $image_id       = 0;
     var $sticky         = 0;
+    /**
+     * default    : let image control linking
+     * readmore   : link image to complete entry
+     * parent     : if a resized image, link to full size image
+     * none       : don't link even if image has one
+     * (url)      : http address
+     */
+    var $image_link     = 'default';
     var $_error         = null;
 
     function Blog($id=null)
@@ -33,6 +41,7 @@ class Blog {
 
         if (empty($id)) {
             $this->allow_comments = PHPWS_Settings::get('blog', 'allow_comments');
+            $this->image_link = PHPWS_Settings::get('blog', 'default_link');
             return;
         }
 
@@ -63,7 +72,29 @@ class Blog {
         if (!$this->image_id) {
             return null;
         }
-        return Cabinet::getFile($this->image_id);
+        $file = Cabinet::getFile($this->image_id);
+        if ($file->isImage(true)) {
+            if ($this->image_link == 'default') {
+                return $file->getTag();
+            }
+            
+            $file->allowImageLink(false);
+            if ($this->image_link == 'none') {
+                return $file->getTag();
+            }
+
+            if ($file->isResize() && $this->image_link == 'parent') {
+                return $file->getResize(true);
+            } elseif ($this->image_link == 'readmore') {
+                $url =  $this->getViewLink(true);
+            } else {
+                $url = $this->image_link;
+            }
+
+            return sprintf('<a href="%s">%s</a>',$url, $file->getTag());
+        } else {
+            return $file->getTag();
+        }
     }
 
     function setEntry($entry)
@@ -464,7 +495,7 @@ class Blog {
     function post_entry()
     {
         $set_permissions = false;
-        
+
         if ($this->id && !Current_User::authorized('blog', 'edit_blog')) {
             Current_User::disallow();
         } elseif (empty($this->id) && !Current_User::authorized('blog')) {
@@ -521,6 +552,22 @@ class Blog {
             $this->approved = 0;
         } else {
             $this->approved = 1;
+        }
+        $link_choices[] = 'none';
+        $link_choices[] = 'default';
+        $link_choices[] = 'readmore';
+        $link_choices[] = 'parent';
+        $link_choices[] = 'url';
+
+        $image_link = &$_POST['image_link'];
+        if (!in_array($image_link, $link_choices)) {
+            $this->image_link = 'default';
+        } elseif ($_POST['image_link'] != 'url') {
+            $this->image_link = $image_link;
+        } else {
+            $url = $_POST['image_url'];
+            $url = PHPWS_Text::checkLink($url);
+            $this->image_link = $url;
         }
 
         return true;
