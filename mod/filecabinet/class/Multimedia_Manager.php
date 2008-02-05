@@ -41,8 +41,81 @@ class FC_Multimedia_Manager {
             }
             PHPWS_Core::goBack();
             break;
+
+        case 'edit_embed':
+            $this->editEmbed();
+            break;
+
+        case 'post_embed':
+            if (!$this->postEmbed()) {
+                $this->editEmbed();
+            } else {
+                javascript('close_refresh');
+            }
+            break;
+            
         }
         return $this->content;
+    }
+
+    function postEmbed()
+    {
+        require 'config/filecabinet/allow_embed.php';
+        $embed_type = & $_POST['embed_type'];
+        if (!in_array($embed_type, $allowed_embeds)) {
+            return false;
+        }
+        $this->multimedia->file_type = $embed_type;
+
+        include sprintf('%smod/filecabinet/inc/embed/%s.php', PHPWS_SOURCE_DIR, $this->multimedia->file_type);
+
+        if (preg_match('/http:\/\//', $_POST['video_id'])) {
+            $video_id = preg_replace($pull_regexp, "\\$pull_replace", $_POST['video_id']);
+        } else {
+            $video_id = $_POST['video_id'];
+        }
+
+        if (empty($video_id) || preg_match('/[?&]/', $video_id)) {
+            $this->message = dgettext('filecabinet', 'Unable to find video id from url');
+            return false;
+        } else {
+            $this->multimedia->file_name = $video_id;
+            $this->multimedia->folder_id = $_POST['folder_id'];
+            $this->multimedia->file_directory = 'files/multimedia/folder' . $this->multimedia->folder_id . '/';
+            
+            if (!$this->multimedia->importExternalMedia()) {
+                    $this->message = dgettext('filecabinet', 'Unable to parse video info from host site.');
+                    return false;
+            }
+            return !PHPWS_Error::logIfError($this->multimedia->save(false, false));
+        }
+    }
+
+    function editEmbed()
+    {
+        $form = new PHPWS_Form('embedd');
+        $form->addHidden('module', 'filecabinet');
+        $form->addHidden('mop', 'post_embed');
+        $form->addHidden('folder_id', $this->folder->id);
+
+        $form->addText('video_id');
+        $form->setSize('video_id', 30);
+        $form->setLabel('video_id', dgettext('filecabinet', 'Video url or id'));
+
+        $form->addSelect('embed_type', array('youtube' => 'YouTube.com'));
+        $form->setLabel('embed_type', dgettext('filecabinet', 'Video site'));
+
+        $form->addSubmit(dgettext('filecabinet', 'Submit video'));
+        $tpl = $form->getTemplate();
+
+        $tpl['FORM_TITLE'] = dgettext('filecabinet', 'Add embedded video');
+        $tpl['CANCEL'] = javascript('close_window');
+
+        if ($this->message) {
+            $tpl['ERROR'] = $this->message;
+        }
+
+        $this->content = PHPWS_Template::process($tpl, 'filecabinet', 'embed_edit.tpl');
     }
 
 

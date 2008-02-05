@@ -43,6 +43,8 @@ CREATE TABLE multimedia (
   width smallint NOT NULL default 0,
   height smallint NOT NULL default 0,
   thumbnail varchar(255) not null,
+  duration int not null default 0,
+  embedded smallint NOT NULL default 0,
   PRIMARY KEY  (id)
 );
 

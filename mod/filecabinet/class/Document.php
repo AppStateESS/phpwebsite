@@ -212,22 +212,7 @@ class PHPWS_Document extends File_Common {
 
     function delete()
     {
-        if (!$this->id) {
-            return FALSE;
-        }
-        
-        $file_dir = $this->file_directory . $this->file_name;
-        
-        // if the file is not there, we want to continue anyway
-        if (is_file($file_dir)) {
-            if (!@unlink($file_dir)) {
-                return PHPWS_Error::get(FC_COULD_NOT_DELETE, 'filecabinet', 'Document::delete', $file_dir);
-            }
-        }
-
-        $db = new PHPWS_DB('documents');
-        $db->addWhere('id', $this->id);
-        return $db->delete();
+        return $this->commonDelete();
     }
 
     function managerTpl($fmanager)
@@ -315,6 +300,14 @@ class PHPWS_Document extends File_Common {
         $tpl['ICON'] = $this->getViewLink(true, 'icon');
         $tpl['DOWNLOAD'] = dgettext('filecabinet', 'Download file');
         return PHPWS_Template::process($tpl, 'filecabinet', 'document_download.tpl');
+    }
+
+    function deleteAssoc()
+    {
+        $db = new PHPWS_DB('fc_file_assoc');
+        $db->addWhere('file_type', FC_DOCUMENT);
+        $db->addWhere('file_id', $this->id);
+        return $db->delete();
     }
 
 }

@@ -156,7 +156,7 @@ class FC_File_Assoc {
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $source = new PHPWS_Image($this->file_id);
         $resize = clone($source);
-        $resize->file_directory = sprintf('images/filecabinet/resize/%s/', $this->file_id);
+        $resize->file_directory = $source->getResizePath();
         $resize->file_name = $this->resize;
         $resize->loadDimensions();
         if ($link_parent) {

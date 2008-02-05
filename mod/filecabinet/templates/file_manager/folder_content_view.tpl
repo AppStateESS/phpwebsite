@@ -11,12 +11,12 @@
         <!-- BEGIN items --><div class="item {HIGHLIGHT}"><div>
            {ICON}<br />
            {TITLE}<br />
-           <span class="smaller">{INFO}</span><br />
+           <!-- BEGIN info --><span class="smaller">{INFO}</span><br /><!-- END info -->
            {LINKS}</div>
      </div><!-- END items -->
      </div>
 </div>
 
 <div id="options">
-{CLOSE} {ADD_FILE}
+{CLOSE} {ADD_FILE} {ADD_EMBED}
 </div>

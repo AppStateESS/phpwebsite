@@ -281,16 +281,6 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
   
     case version_compare($version, '2.0.0', '<'):
         $content[] = '<pre>';
-        if (!is_dir('./images/filecabinet/resize/')) {
-            if (@mkdir('./images/filecabinet/resize/')) {
-                $content[] = '--- Created ./images/filecabinet/resize directory.';
-            } else {
-                $content[] = '--- Could not create ./images/filecabinet/resize directory.\n
-                                  Change directory permissions or create manually.</pre>';
-                return false;
-            }
-        }
-
         if (!PHPWS_DB::isTable('fc_file_assoc')) {
             $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/file_assoc.sql');
             if (!PHPWS_Error::logIfError($result)) {
@@ -300,6 +290,38 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                 return false;
             }
         }
+        
+        $db = new PHPWS_DB('multimedia');
+        if (!$db->isTableColumn('duration')) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('duration', 'int not null default 0'))) {
+                $content[] = 'Failed to create duration column on multimedia table.</pre>';
+                return false;
+            } else {
+                $content[] = 'Created duration column on multimedia table.';
+            }
+        }
+
+        if (!$db->isTableColumn('embedded')) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('embedded', 'smallint not null default 0'))) {
+                $content[] = 'Failed to create embedded column on multimedia table.</pre>';
+                return false;
+            } else {
+                $content[] = 'Created embedded column on multimedia table.';
+            }
+        }
+
+        PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+        $result = $db->getObjects('PHPWS_Multimedia');
+
+        if ($result) {
+            foreach ($result as $mm) {
+                $mm->loadDimensions();
+                PHPWS_Error::logIfError($mm->save());
+            }
+        }
+
+        $content[] = 'Durations added to multimedia files.';
+
         if (!checkMultimediaDir($content, $home_dir)) {
             return false;
         }

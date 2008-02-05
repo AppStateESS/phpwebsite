@@ -330,6 +330,7 @@ class FC_File_Manager {
         $tpl['ADD_FOLDER'] = $folder->editLink('button');
 
         $db = new PHPWS_DB('folders');
+        $db->addOrder('title');
         $db->addWhere('ftype', $this->folder_type);
         $folders = $db->getObjects('Folder');
         if (!empty($folders)) {
@@ -466,6 +467,7 @@ class FC_File_Manager {
             $db = new PHPWS_DB('multimedia');
             $class_name = 'PHPWS_Multimedia';
             $file_type = FC_MEDIA;
+            $tpl['ADD_EMBED'] = $this->current_folder->embedLink(true);
             break;
         }
 
@@ -491,7 +493,6 @@ class FC_File_Manager {
                 $image2 = sprintf($image_string, $img_dir . $img2, $not_allowed, $img2_alt);
                 $tpl['ALT2'] = $image2;
                 $tpl['ALT_HIGH2'] = ' no-use';
-
             }
         }
         
@@ -540,10 +541,14 @@ class FC_File_Manager {
     function pickFile()
     {
         $file = $this->getFileAssoc($_REQUEST['file_type'], $_REQUEST['id'], true);
-        $vars['id']      = $this->session_id;
-        $vars['data']    = $this->jsReady($file->getTag(true));
-        $vars['new_id']  = $file->id;
-        javascript('modules/filecabinet/update_file', $vars);
+        if ($file) {
+            $vars['id']      = $this->session_id;
+            $vars['data']    = $this->jsReady($file->getTag(true));
+            $vars['new_id']  = $file->id;
+            javascript('modules/filecabinet/update_file', $vars);
+        } else {
+            exit(dgettext('filecabinet', 'An error occurred. Please check your logs.'));
+        }
     }
 
     function jsReady($data)
@@ -577,7 +582,7 @@ class FC_File_Manager {
         if ($file_assoc->file_type == FC_IMAGE_RESIZE) {
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $image = new PHPWS_Image($id);
-            if (!$dst = $image->resizePath()) {
+            if (!$dst = $image->makeResizePath()) {
                 return false;
             }
 

@@ -1,3 +1,19 @@
+5 February 2008
++ Added duration and embedded column to multimedia table.
++ File deletions moved to File_Common (commonDelete) to reduce overlap
++ Each file type deletes it file association as well.
++ Resize code is now using the define for its directory.
++ Folder deletion now deletes any associations.
++ Size default in File_Common is zero not null.
++ Error check added to pickFile function.
++ Added the option to add embedded videos to multimedia folders.
++ resizePath broken into getResizePath and makeResizePath
++ Removed some unnecessary code.
++ loadVideoDimensions is now just loadDimensions.
++ Resize directory is now in the folder containing the image. Removed
+  define from config file.
++ 
+
 1 February 2008
 + getFile returns actually object. getTag returns just content.
 + getResize function can be set to return with a link to the parent

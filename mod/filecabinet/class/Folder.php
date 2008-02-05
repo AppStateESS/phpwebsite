@@ -183,6 +183,18 @@ class Folder {
         return javascript('open_window', $vars);
     }
 
+    function embedLink($button=false)
+    {
+        $vars['address'] = 'index.php?module=filecabinet&mop=edit_embed&folder_id=' . $this->id;
+        $vars['width']   = 400;
+        $vars['height']  = 200;
+        $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add embedded');
+        if ($button) {
+            $vars['type']    = 'button';
+        }
+        return javascript('open_window', $vars);
+    }
+
     function logError()
     {
         PHPWS_Error::log($this->_error);
@@ -331,28 +343,61 @@ class Folder {
 
     function delete()
     {
+
         if ($this->ftype = IMAGE_FOLDER) {
-            $db = new PHPWS_DB('images');
+            $table = 'images';
         } elseif ($this->ftype == DOCUMENT_FOLDER) {
-            $db = new PHPWS_DB('documents');
+            $table = 'documents';
         } elseif ($this->ftype == MULTIMEDIA_FOLDER) {
-            $db = new PHPWS_DB('multimedia');
+            $table = 'multimedia';
         } else {
             return false;
         }
 
-        $db->addWhere('folder_id', $this->id);
-        $db->delete();
+        /**
+         * Delete file associations inside folder
+         */
+        $db = new PHPWS_DB('fc_file_assoc');
+        $db->addWhere($table . '.folder_id', $this->id);
+        $db->addWhere($table . '.id', 'fc_file_assoc.file_id');
+        PHPWS_Error::logIfError($db->delete());
 
+
+        /**
+         * Delete the special folder associations to this folder
+         */
+        $db->reset();
+        $db->addWhere('file_type', FC_IMAGE_FOLDER, '=', 'or', 1);
+        $db->addWhere('file_type', FC_IMAGE_RANDOM, '=', 'or', 1);
+        $db->addWhere('file_type', FC_DOCUMENT_FOLDER, '=', 'or', 1);
+        $db->addWhere('file_id', $this->id);
+        PHPWS_Error::logIfError($db->delete());
+
+        /**
+         * Delete the files in the folder from the db
+         */
+        unset($db);
+        $db = new PHPWS_DB($table);
+        $db->addWhere('folder_id', $this->id);
+        PHPWS_Error::logIfError($db->delete());
+
+        /**
+         * Delete the folder from the database
+         */
         $db = new PHPWS_DB('folders');
         $db->addWhere('id', $this->id);
-        $db->delete();
+        PHPWS_Error::logIfError($db->delete());
 
+        /**
+         * Delete the physical directory the folder occupies
+         */
         $directory = $this->getFullDirectory();
 
         if (is_dir($directory)) {
             PHPWS_File::rmdir($directory);
         }
+ 
+        return true;
     }
 
     function rowTags()

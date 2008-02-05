@@ -305,17 +305,9 @@ class PHPWS_Image extends File_Common {
 
     function delete()
     {
-        $db = new PHPWS_DB('images');
-        $db->addWhere('id', $this->id);
-        $result = $db->delete();
+        $result = $this->commonDelete();
         if (PEAR::isError($result)) {
             return $result;
-        }
-        
-        $path = $this->getPath();
-
-        if (!@unlink($path)) {
-            PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Image::delete', $path);
         }
 
         $tn = $this->thumbnailPath();
@@ -323,9 +315,22 @@ class PHPWS_Image extends File_Common {
             PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Image::delete', $path);
         }
 
-        PHPWS_File::rmdir('images/filecabinet/resize/' . $this->id);
+        $path = $this->getResizePath();
+        if ($path) {
+            PHPWS_File::rmdir($path);
+        }
         return true;
     }
+
+    function deleteAssoc()
+    {
+        $db = new PHPWS_DB('fc_file_assoc');
+        $db->addWhere('file_type', FC_IMAGE, '=', 'or', 1);
+        $db->addWhere('file_type', FC_IMAGE_RESIZE, '=', 'or', 1);
+        $db->addWhere('file_id', $this->id);
+        return $db->delete();
+    }
+
 
     function pinTags()
     {
@@ -684,20 +689,34 @@ class PHPWS_Image extends File_Common {
         }
     }
 
-    function resizePath()
+    function getResizePath()
     {
-        $dir = FM_RESIZE_DIR . $this->id . '/';
-        if(is_dir($dir)) {
-            if (!is_writable($dir)) {
-                return false;
+        return sprintf('%sresize/%s/', $this->file_directory, $this->id);
+    }
+
+    function makeResizePath()
+    {
+        $base_dir = sprintf('%sresize/', $this->file_directory);
+        $full_dir = $base_dir . $this->id . '/';
+        if(is_dir($base_dir)) {
+            if (is_dir($full_dir)) {
+                if (!is_writable($full_dir)) {
+                    return false;
+                }
             }
         } else {
-            if (!@mkdir($dir)) {
+            if (!@mkdir($base_dir)) {
+                PHPWS_Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::makeResizePath', $dir);
+                return false;
+            }
+
+            if (!@mkdir($full_dir)) {
+                PHPWS_Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::makeResizePath', $dir);
                 return false;
             }
         }
         
-        return $dir;
+        return $full_dir;
     }
 
 }

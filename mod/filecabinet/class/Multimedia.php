@@ -15,13 +15,17 @@ class PHPWS_Multimedia extends File_Common {
     var $width     = 0;
     var $height    = 0;
     var $thumbnail = null;
+    /**
+     * In seconds
+     */
+    var $duration  = 0;
+    var $embedded  = 0;
 
     var $_classtype       = 'multimedia';
 
     function PHPWS_Multimedia($id=0)
     {
         $this->loadAllowedTypes();
-        //        $this->loadDefaultDimensions();
         $this->setMaxSize(PHPWS_Settings::get('filecabinet', 'max_multimedia_size'));
 
         if (empty($id)) {
@@ -62,14 +66,13 @@ class PHPWS_Multimedia extends File_Common {
 
         // File to get info from
         $file_location = $this->getPath();
-
         // Get information from the file
         $fileinfo = $getID3->analyze($file_location);
         getid3_lib::CopyTagsToComments($fileinfo);
         return $fileinfo;
     }
 
-    function loadVideoDimensions()
+    function loadDimensions()
     {
         $fileinfo = $this->getID3();
 
@@ -80,14 +83,11 @@ class PHPWS_Multimedia extends File_Common {
             $this->width = & $fileinfo['video']['streams'][2]['resolution_x'];
             $this->height = & $fileinfo['video']['streams'][2]['resolution_y'];
         } else {
-            $this->loadDefaultDimensions();
+            $this->width = PHPWS_Settings::get('filecabinet', 'default_mm_width');
+            $this->height = PHPWS_Settings::get('filecabinet', 'default_mm_height');
         }
-    }
 
-    function loadDefaultDimensions()
-    {
-        $this->width = PHPWS_Settings::get('filecabinet', 'default_mm_width');
-        $this->height = PHPWS_Settings::get('filecabinet', 'default_mm_height');
+        $this->duration = & $fileinfo['playtime_seconds'];
     }
 
 
@@ -254,6 +254,7 @@ class PHPWS_Multimedia extends File_Common {
         $thumbnail = $this->thumbnailPath();
 
         $tpl['FILE_PATH'] = PHPWS_Core::getHomeHttp() . $this->getPath();
+        $tpl['FILE_NAME'] = $this->file_name;
     
         // check for filter file
         $filter_exe = "templates/filecabinet/filters/$filter/filter.php";
@@ -280,6 +281,9 @@ class PHPWS_Multimedia extends File_Common {
 
     function getFilter()
     {
+        if ($this->embedded) {
+            return $this->file_type;
+        }
         switch ($this->file_type) {
         case 'application/x-extension-flv':
         case 'video/x-flv':
@@ -339,7 +343,6 @@ class PHPWS_Multimedia extends File_Common {
         }
 
         $raw_file_name = $this->dropExtension();
-        $this->loadVideoDimensions();
 
         if (!PHPWS_Settings::get('filecabinet', 'use_ffmpeg') || 
             $this->file_type == 'application/x-shockwave-flash') {
@@ -414,29 +417,25 @@ class PHPWS_Multimedia extends File_Common {
     
     function delete()
     {
-
-        $db = new PHPWS_DB('multimedia');
-        $db->addWhere('id', $this->id);
-        $result = $db->delete();
+        $result = $this->commonDelete();
 
         if (PEAR::isError($result)) {
             return $result;
         }
-        
-        $path = $this->getPath();
 
-        
-        if (!@unlink($path)) {
-            PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $path);
-        }
-        
         if ($this->isVideo()) {
             $tn_path = $this->thumbnailDirectory() . $this->dropExtension() . '.*';
-            
             foreach (glob($tn_path) as $filename) {
                 if (!@unlink($filename)) {
                     PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $filename);
                 }
+            }
+        }
+
+        if ($this->embedded) {
+            $filename = $this->thumbnailDirectory() . $this->file_name . '.jpg';
+            if (!@unlink($filename)) {
+                PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $filename);
             }
         }
 
@@ -472,6 +471,10 @@ class PHPWS_Multimedia extends File_Common {
                 return $result;
             }
         }
+        
+        if (!$this->width || !$this->height) {
+            $this->loadDimensions();
+        }
 
         if ($thumbnail) {
             if ($this->isVideo()) {
@@ -479,16 +482,6 @@ class PHPWS_Multimedia extends File_Common {
             } else {
                 $this->makeAudioThumbnail();
             }
-        }
-
-
-        if ($this->isVideo()) {
-            if (!$this->width && !$this->height) {
-                $this->loadVideoDimensions();
-            }
-        } else {
-            $this->height = 0;
-            $this->width = 0;
         }
 
         if (empty($this->title)) {
@@ -519,10 +512,13 @@ class PHPWS_Multimedia extends File_Common {
         } else {
             $file_name = & $this->file_name;
         }
-
-        $tpl['INFO'] = sprintf('%s<br>%s', $file_name, $this->getSize(true));
+        if (!$this->embedded) {
+            $tpl['INFO'] = sprintf('%s<br>%s', $file_name, $this->getSize(true));
+        }
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
-            $links[] = $this->editLink(true);
+            if (!$this->embedded) {
+                $links[] = $this->editLink(true);
+            }
             $links[] = $this->deleteLink(true);
             $tpl['LINKS'] = implode(' ', $links);
         }
@@ -539,5 +535,60 @@ class PHPWS_Multimedia extends File_Common {
         return sprintf('<a href="%s">%s</a>', $link, $this->getThumbnail());
     }
 
+    function deleteAssoc()
+    {
+        $db = new PHPWS_DB('fc_file_assoc');
+        $db->addWhere('file_type', FC_MEDIA);
+        $db->addWhere('file_id', $this->id);
+        return $db->delete();
+    }
+
+    function importExternalMedia()
+    {
+        PHPWS_Core::initCoreClass('XMLParser.php');
+        $file_id = $this->file_name;
+
+        include sprintf('%smod/filecabinet/inc/embed/%s.php', PHPWS_SOURCE_DIR, $this->file_type);
+
+        $parse = new XMLParser($feed_url . $file_id, false);
+        if ($parse->error) {
+            PHPWS_Error::log($parse->error);
+            return false;
+        }
+        $parse->setContentOnly(false);
+        $info = $parse->format();
+
+        if (isset($title)) {
+            $this->title = eval ("return \$info$title;");
+        }
+
+        if (isset($description)) {
+            $this->description = eval ("return \$info$description;");
+        }
+
+        if (isset($duration)) {
+            $this->duration = eval ("return \$info$duration;");
+        }
+
+        if (isset($thumbnail)) {
+            $cpy_thumb = eval ("return \$info$thumbnail;");
+            $new_tn = $this->file_name . '.jpg';
+            $thumb_path = $this->thumbnailDirectory() . $new_tn;
+
+            if (@copy($cpy_thumb, $thumb_path)) {
+                $this->thumbnail = $new_tn;
+            } else {
+                $this->genericTN();
+            }
+        }
+
+        if (!empty($width) && !empty($height)) {
+            $this->width = $width;
+            $this->height = $height;
+        }
+
+        $this->embedded = 1;
+        return true;
+    }
 }
 ?>

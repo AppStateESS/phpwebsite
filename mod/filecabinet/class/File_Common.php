@@ -16,7 +16,7 @@ class File_Common {
     var $file_type       = null;
     var $title           = null;
     var $description     = null;
-    var $size            = null;
+    var $size            = 0;
 
     /**
      * PEAR upload object
@@ -379,6 +379,46 @@ class File_Common {
     {
         $last_dot = strrpos($this->file_name, '.');
         return substr($this->file_name, $last_dot + 1, strlen($this->file_name));
+    }
+
+    /**
+     * Deletes a file database entry, its directory, and its file association
+     * Requires each to have a deleteAssoc function.
+     */
+    function commonDelete()
+    {
+        if (!$this->id) {
+            return false;
+        }
+
+        switch ($this->_classtype) {
+        case 'image':
+            $db = new PHPWS_DB('images');
+            break;
+
+        case 'document':
+            $db = new PHPWS_DB('document');
+            break;
+
+        case 'multimedia':
+            $db = new PHPWS_DB('multimedia');
+            break;
+        }
+
+        $db->addWhere('id', $this->id);
+        $result = $db->delete();
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        $path = $this->getPath();
+
+        if (!@unlink($path)) {
+            PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'File_Common::commonDelete', $path);
+        }
+
+        PHPWS_Error::logIfError($this->deleteAssoc());
+        return true;
     }
 }
 ?>

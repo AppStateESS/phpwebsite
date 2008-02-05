@@ -36,13 +36,6 @@ class FC_Image_Manager {
         $this->loadFolder();
     }
 
-    /**
-// what is this for?
-        if (isset($_GET['tn']) && $_GET['tn'] == 0) {
-            $this->thumbnail = false;
-        }
-    */
-
     /*
      * Expects 'dop' command to direct action.
      */
@@ -53,7 +46,6 @@ class FC_Image_Manager {
             $this->editImage();
             break;
 
-
         case 'delete_image':
             if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image->folder_id, 'folder')) {
                 Current_User::disallow();
@@ -61,7 +53,6 @@ class FC_Image_Manager {
             $this->image->delete();
             PHPWS_Core::goBack();
             break;
-
 
         case 'post_image_upload':
             if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image->folder_id, 'folder')) {
@@ -73,10 +64,6 @@ class FC_Image_Manager {
 
         case 'upload_image_form':
             $this->edit();
-            break;
-
-        case 'resize_image':
-            echo $this->resizeImage();
             break;
 
         case 'clip_image':
@@ -410,7 +397,7 @@ class FC_Image_Manager {
 
     function updateResizes($image)
     {
-        $dir = './images/filecabinet/resize/' . $image->id . '/';
+        $dir = $image->getResizePath();
         if (!is_dir($dir)) {
             return;
         }
