@@ -98,6 +98,9 @@ FlowPlayer
 http://flowplayer.sourceforge.net/
 (no longer in use but still appreciated)
 
+James Heinrich
+getID3
+http://www.getid3.org
 
 --------------------------------------------------------------------------
 To those who translate, we salute you.

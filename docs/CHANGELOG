@@ -2,6 +2,19 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+5 February 2008
++ DBPager, Text : Now checks UTF8_MODE before matching foreign characters.
++ Key : was using 'itemname' instead of 'item_name' on error
++ XMLParser's constructor has a second parameter to indicate with a
+  failed parse should die or just return false.
++ UTF8_MODE define added to config.tpl
++ James Heinrich was added to the CREDITS file
++ Fixed some grammar in DB_Pager.txt
+
+28 January 2008
++ Added shockwave files to media file type
++ Updated: conf/file_types.php
+
 25 January 2008
 + Added doc about ffmpeg and filecabinet
 + Updated media credits
@@ -16,9 +29,9 @@ its own separate CHANGELOG file.
 
 15 January 2008
 + Core: Added option to bookmark function to ignore urls with authkeys
-in them.
+  in them.
 + XMLParser: added a content only parameter to allow script to work
-like previously coded
+  like previously coded
 + Added em tag to text settings
 + added alternate office mime types to file_types
 

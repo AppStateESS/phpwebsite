@@ -247,4 +247,16 @@ define('CACHE_DIRECTORY', '{cache_directory}');
 
 define('MOD_REWRITE_ENABLED', FALSE);
 
+/******************* UTF8 Mode *********************************/
+/**
+ * Some core functions perform regular expressions matches using the \pL
+ * parameter. Some versions of php don't support this. If you are getting 
+ * error messages with preg functions or dbpager search is not functioning,
+ * try changing this value to FALSE. Some accent character support -may-
+ * be lost as a result. You may also change this to false if your site
+ * is native English.
+ */
+
+define ('UTF8_MODE', true);
+
 ?>

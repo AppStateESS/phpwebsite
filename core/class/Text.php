@@ -13,6 +13,10 @@
    * @package Core
    */
 
+if (!defined('UTF8_MODE')) {
+    define ('UTF8_MODE', true);
+}
+
 PHPWS_Core::configRequireOnce('core', 'text_settings.php');
 
 if (!defined('PHPWS_HOME_HTTP')) {
@@ -385,7 +389,12 @@ class PHPWS_Text {
 
         switch ($type) {
         case 'chars_space':
-            if (preg_match('/^[\w\s\pL]+$/ui',$userEntry)) return TRUE;
+            if (UTF8_MODE) {
+                $preg = '/^[\w\s\pL]+$/ui';
+            } else {
+                $preg = '/^[\w\s]+$/ui';
+            }
+            if (preg_match($preg,$userEntry)) return TRUE;
             else return FALSE;
             break;
 

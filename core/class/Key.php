@@ -276,7 +276,7 @@ class Key {
                 return $result;
             } elseif ($result) {
                 return PHPWS_Error::get(KEY_DUPLICATE, 'core', 'Key::save', 
-                                        sprintf('%s-%s-%s', $this->module, $this->itemname, $this->item_id));
+                                        sprintf('%s-%s-%s', $this->module, $this->item_name, $this->item_id));
             }
             $db->reset();
         }

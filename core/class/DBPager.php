@@ -4,6 +4,10 @@ define ('DBPAGER_DEFAULT_LIMIT', 10);
 define ('DBPAGER_PAGE_LIMIT', 12);
 define ('DBPAGER_DEFAULT_EMPTY_MESSAGE', _('No rows found.'));
 
+if (!defined('UTF8_MODE')) {
+    define ('UTF8_MODE', true);
+}
+
 /**
  * DB Pager differs from other paging methods in that it applies
  * limits and store the object results. Other pagers require you
@@ -250,7 +254,13 @@ class DBPager {
 
     function loadSearch($search)
     {
-        $search = preg_replace('/[^\w\s\pL]/u', '', trim($search));
+
+        if (UTF8_MODE) {
+            $preg = '/[^\w\s\pL]/u';
+        } else {
+            $preg = '/[^\w\s]/u';
+        }
+        $search = preg_replace($preg, '', trim($search));
         $search = preg_replace('/\s{2,}/', ' ', $search);
         $this->search = & $search;
     }
@@ -311,7 +321,13 @@ class DBPager {
         $col_list = func_get_args();
 
         foreach ($col_list as $column) {
-            if (!preg_match('/[^\w\pL]/u', $column) && $this->db->isTableColumn($column)) {
+            if (UTF8_MODE) {
+                $preg = '/[^\w\pL]/u';
+            } else {
+                $preg = '/[^\w]/u';
+            }
+
+            if (!preg_match($preg, $column) && $this->db->isTableColumn($column)) {
                 $this->searchColumn[] = $column;
             }
         }
@@ -887,7 +903,13 @@ class DBPager {
         // pull any extra values in current url
         $extra = PHPWS_Text::getGetValues();
         $search_val = & $extra['search'];
-        $search_val = preg_replace('/[^\w\s\pL]/u', '', $search_val);
+        if (UTF8_MODE) {
+            $preg = '/[^\w\s\pL]/u';
+        } else {
+            $preg = '/[^\w\s]/u';
+        }
+
+        $search_val = preg_replace($preg, '', $search_val);
         $search_val = preg_replace('/\s/', '+', $search_val);
 
         // if extra values exist, add them to the values array

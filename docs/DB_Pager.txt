@@ -392,8 +392,8 @@ $pager->joinResult('category_id', 'category_table', 'id', 'title',
 DBPager will also create a SORT tag for the new column.
 
 One last thing, if you are using objects with you DB_Pager
-implementation, you MUST create a variable your object. In this case I
-would need $object->category_title to exist.
+implementation, you MUST create a variable for your object. In this
+case I would need $object->category_title to exist.
 
 
 Conclusion

@@ -33,7 +33,7 @@ class XMLParser {
      */
     var $content_only = false;
   
-    function XMLParser($xml_file)
+    function XMLParser($xml_file, $die_on_error=true)
     {
         $this->filename = $xml_file;
         $this->xml = xml_parser_create();
@@ -41,13 +41,15 @@ class XMLParser {
         xml_set_object($this->xml, $this);
         xml_set_element_handler($this->xml, 'startHandler', 'endHandler');
         xml_set_character_data_handler($this->xml, 'dataHandler');
-        $result = $this->parse($xml_file);
+
+        $result = $this->parse($xml_file, $die_on_error);
+
         if (PEAR::isError($result)) {
             $this->error = $result;
         }
     }
   
-    function parse($xml_file)
+    function parse($xml_file, $die_on_error=true)
     {
         $file_contents = @file($xml_file);
 
@@ -57,11 +59,16 @@ class XMLParser {
 
         foreach ($file_contents as $data) {
             $parse = xml_parse($this->xml, $data);
+
             if (!$parse) {
-                die(sprintf("XML error: %s at line %d",
-                            xml_error_string(xml_get_error_code($this->xml)),
-                            xml_get_current_line_number($this->xml)));
-                xml_parser_free($this->xml);
+                if ($die_on_error) {
+                    die(sprintf("XML error: %s at line %d",
+                                xml_error_string(xml_get_error_code($this->xml)),
+                                xml_get_current_line_number($this->xml)));
+                    xml_parser_free($this->xml);
+                } else {
+                    return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', 'XMLParset:parse', $xml_file);
+                }
             }
         }
 
