@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+6 February 2008
++ Trimmed newline from body.js in various javascripts.
+
 5 February 2008
 + DBPager, Text : Now checks UTF8_MODE before matching foreign characters.
 + Key : was using 'itemname' instead of 'item_name' on error
