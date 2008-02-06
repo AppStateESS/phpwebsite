@@ -175,7 +175,7 @@ class PHPWS_Image extends File_Common {
             if ($thumbnail) {
                 $values['label'] = $this->getThumbnail();
             } else {
-                $values['label'] = sprintf('<img src="images/mod/filecabinet/viewmag+.png" width="16" height="16" title="%s" />',
+                $values['label'] = sprintf('<img src="images/mod/filecabinet/viewmag+.png" title="%s" />',
                                            dgettext('filecabinet', 'View full image'));
             }
         }
@@ -350,7 +350,7 @@ class PHPWS_Image extends File_Common {
         $jsvars['window_name'] = 'edit_link';
 
         if ($icon) {
-            $jsvars['label'] =sprintf('<img src="images/mod/filecabinet/edit.png" width="16" height="16" title="%s" />', dgettext('filecabinet', 'Edit image'));
+            $jsvars['label'] =sprintf('<img src="images/mod/filecabinet/edit.png" title="%s" />', dgettext('filecabinet', 'Edit image'));
         } else {
             $jsvars['label'] = dgettext('filecabinet', 'Edit');
         }
@@ -378,18 +378,19 @@ class PHPWS_Image extends File_Common {
     function rowTags()
     {
         if (Current_User::isLogged()) {
-            $links[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Clip'), 'filecabinet',
+            $clip = sprintf('<img src="images/mod/filecabinet/clip.png" title="%s" />', dgettext('filecabinet', 'Clip image'));
+            $links[] = PHPWS_Text::secureLink($clip, 'filecabinet',
                                               array('iop'      => 'clip_image',
                                                     'image_id' => $this->id));
         }
 
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
-            $links[] = $this->editLink();
-            $links[] = $this->deleteLink();
+            $links[] = $this->editLink(true);
+            $links[] = $this->deleteLink(true);
         }
 
         if (isset($links)) {
-            $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode('', $links);
         }
         $tpl['SIZE'] = $this->getSize(TRUE);
         $tpl['FILE_NAME'] = $this->file_name;
@@ -436,21 +437,6 @@ class PHPWS_Image extends File_Common {
             $tpl['LINKS'] = implode(' ', $links);
         }
         return $tpl;
-    }
-
-    function xmlFormat()
-    {
-        $values = PHPWS_Core::stripObjValues($this);
-
-        foreach ($values as $key=>$value) {
-            if (substr($key, 0, 1) == '_') {
-                continue;
-            }
-            $tpl['rows'][] = array('key'=>$key, 'value'=>addslashes($value));
-        }
-        $tpl['rows'][] = array('key'=>'thumbnail', 'value'=>$this->thumbnailPath());
-        $tpl['rows'][] = array('key'=>'path', 'value'=>$this->getPath());
-        return PHPWS_Template::process($tpl, 'filecabinet', 'image.xml');
     }
 
     /**
@@ -701,6 +687,11 @@ class PHPWS_Image extends File_Common {
         if(is_dir($base_dir)) {
             if (is_dir($full_dir)) {
                 if (!is_writable($full_dir)) {
+                    return false;
+                }
+            } else {
+                if (!@mkdir($full_dir)) {
+                    PHPWS_Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::makeResizePath', $dir);
                     return false;
                 }
             }

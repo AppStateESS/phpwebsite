@@ -1,3 +1,8 @@
+6 February 2008
++ Combined and pared style sheets.
++ Fixed convert function to use proper variable
++ Style changes to admin document form
+
 5 February 2008
 + Added duration and embedded column to multimedia table.
 + File deletions moved to File_Common (commonDelete) to reduce overlap

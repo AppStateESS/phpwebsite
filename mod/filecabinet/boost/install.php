@@ -39,16 +39,6 @@ function filecabinet_install(&$content)
         }
     }
 
-    $resize_dir = $home_dir . 'images/filecabinet/resize/';
-    if (!is_dir($resize_dir)) {
-        if (!@mkdir($resize_dir)) {
-            $content[] = dgettext('filecabinet', 'Failed to create images/filecabinet/resize/.');
-            return false;
-        } else {
-            $content[] = dgettext('filecabinet', 'images/filecabinet/resize/ directory created successfully.');
-        }
-    }
-
     return true;
 }
 

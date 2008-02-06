@@ -1,0 +1,34 @@
+2.0.0 Changes
+----------------------------------------------------------------------
++ File Cabinet rewritten.
++ Added duration and embedded column to multimedia table.
++ File deletions moved to File_Common (commonDelete) to reduce overlap
++ Each file type deletes it file association as well.
++ Added the option to add embedded videos to multimedia folders.
++ Added youtube embedding.
++ loadVideoDimensions is now just loadDimensions.
++ Added image, document, media only commands to isolated what is
+  allowed to place.
++ Fixed the clip functionality
++ Fixed the edit folder functionality
++ Added image captioning
++ Image descriptions are now encoded and basic emphasis and bold tags
+  are allowed.
++ Removed border from image tag.
++ New icon for shockwave files.
++ Increase document upload size.
++ Folder title opens the folder edit page if permissioned
++ Added shockwave in multimedia.
++ Added file checks to file types. FC will not let you save a
+  new, duplicate file in the same directory.
++ Documents sorted by title not file name.
++ mp3 and flash videos now use the media filter only.
++ Fixed some problems with the media upload form.
++ Added missing fid variable from pick_file script
++ Random image and slideshow options added to file manager's image
+  screen
++ All image resizes are performed when an image is updated.
++ Turning cacheOff on javascript popups. Allows thumbnail refresh.
++ Added logged error message if a folder can not be created.
++ Checking for multimedia directory creation again on update. Could be
+slipping by on some updates.

@@ -77,8 +77,9 @@ class Folder {
             $js['label'] = dgettext('filecabinet', 'Add folder');
             $vars['aop'] = 'add_folder';
         }
+
         if ($mode == 'image') {
-            $js['label'] = '<img src="" />';
+            $js['label'] = '<img src="images/mod/filecabinet/edit.png" />';
         } 
 
         $vars['ftype'] = $this->ftype;

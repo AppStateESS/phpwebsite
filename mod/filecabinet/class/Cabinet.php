@@ -1068,7 +1068,7 @@ class Cabinet {
             return true;
         }
 
-        foreach ($items as $item_id=>$image_id) {
+        foreach ($images as $item_id=>$image_id) {
             $db->reset();
 
             if (@$file_assoc_id = $images_converted[$image_id]) {

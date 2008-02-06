@@ -141,25 +141,25 @@ class PHPWS_Document extends File_Common {
             $tpl['FILE_NAME'] = $this->file_name;
         }
 
-        $tpl['ICON']      = $this->getViewLink(true, 'smallicon');
+        $tpl['ICON']      = $this->getViewLink(true, 'icon');
         $tpl['TITLE']     = $this->title;
-
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
-            $links[] = $this->editLink();
+            $links[] = $this->editLink(true);
 
             $vars['document_id'] = $this->id;
             $vars['dop']      = 'clip_document';
-            $links[] = PHPWS_Text::moduleLink(dgettext('filecabinet', 'Clip'), 'filecabinet', $vars);
+            $clip = sprintf('<img src="images/mod/filecabinet/clip.png" title="%s" />', dgettext('filecabinet', 'Clip document'));
+            $links[] = PHPWS_Text::moduleLink($clip, 'filecabinet', $vars);
             
             $vars['dop'] = 'delete_document';
             $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this document?');
-            $js['LINK'] = dgettext('filecabinet', 'Delete');
+            $js['LINK'] = sprintf('<img src="images/mod/filecabinet/delete.png" title="%s" />', dgettext('filecabinet', 'Delete document'));
             $js['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
             $links[] = javascript('confirm', $js);
         }
 
         if ($links) {
-            $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode('', $links);
         } else {
             $tpl['ACTION'] = $this->getViewLink(true, 'download');
         }
@@ -272,7 +272,7 @@ class PHPWS_Document extends File_Common {
         $js['height'] = 500;
 
         if ($icon) {
-            $js['label'] =sprintf('<img src="images/mod/filecabinet/edit.png" width="16" height="16" title="%s" />', dgettext('filecabinet', 'Edit document'));
+            $js['label'] =sprintf('<img src="images/mod/filecabinet/edit.png" title="%s" />', dgettext('filecabinet', 'Edit document'));
         } else {
             $js['label'] = dgettext('filecabinet', 'Edit');
         }

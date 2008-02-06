@@ -5,18 +5,17 @@
 <hr />
 <table width="100%" cellpadding="2">
   <tr>
-    <th>{TITLE_SORT} {TITLE_LABEL}</th>
-    <th>{FILE_NAME_SORT} {FILE_NAME_LABEL}</th>
-    <th colspan="2">{FILE_TYPE_SORT} {FILE_TYPE_LABEL}</th>
+    <th>{TITLE_SORT} {TITLE_LABEL}<br />
+        {FILE_NAME_SORT} {FILE_NAME_LABEL}</th>
+    <th>{FILE_TYPE_SORT} {FILE_TYPE_LABEL}</th>
     <th>{SIZE_SORT} {SIZE_LABEL}</th>
     <th>{ACTION_LABEL}</th>
   </tr>
 <!-- BEGIN listrows -->
   <tr {TOGGLE}
-    <td class="fc-title">{TITLE}</td>
-    <td class="fc-file-name">{FILE_NAME}</td>
-    <td class="fc-icon">{ICON}</td>
-    <td class="fc-type">{FILE_TYPE}</td>
+    <td class="fc-title">{TITLE}<br />
+    <i>{FILE_NAME}</i></td>
+    <td class="fc-file-type">{ICON}<br />{FILE_TYPE}</td>
     <td class="fc-size">{SIZE}</td>
     <td>{ACTION}</td>
   </tr>

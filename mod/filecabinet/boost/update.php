@@ -326,6 +326,10 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             return false;
         }
 
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/2_0_0.txt');
+        }
+
         $content[] = '</pre>';
     }
 

@@ -1,60 +1,3 @@
-/* Directory menu */
-
-#cookie-menu {
-margin-bottom : 10px;
-}
-
-/*  List by James N Pope via http://css.maxdesign.com.au/ */
-
-
-div.image-info {
-    float : left;
-    width : 85px;
-    background-color : white;
-    display : inline;
-    margin : 10px 10px 0px 0px;
-    text-align : center;
-}
-
-div.image-info img {
-    text-align : center;
-}
-
-#directory {
-    border : 1px solid black;
-    margin : 0;
-    background-color : white;
-    position : fixed;
-    left : 0px;
-    top : 0px;
-    z-index : 2;
-}
-
-#buttons {
-    border : 1px solid black;
-    margin : 0;
-    width : 98%;
-    background-color : white;
-    position : fixed;
-    left : 0px;
-    bottom : 0px;
-    z-index : 2;
-    padding : 4px;
-}
-
-#clear-both {
-    clear  : both;
-    margin-bottom : 40px;
-}
-
-div.tn-image-block {
-     background-repeat : no-repeat;
-}
-
-#image-manager-list {
-margin-top : 20px;
-}
-
 div#fc-folder-list {
      overflow : auto;
 }
@@ -71,6 +14,12 @@ div.fc-file {
    margin-bottom : 10px;
 }
 
+td.fc-file-type {
+   text-align : center;
+   font-size : .9em;
+}
+
+
 div.fc-icon {
    text-align : center;
    float : left;
@@ -81,118 +30,10 @@ div.fc-icon {
    height : 150px;
 }
 
-
-div.fc-files {
-   overflow : hidden;            
-}
-
-ul#image-folders {
-padding :8px;
-}
-
-ul#image-folders li {
-   list-style-type : none;
-   text-align : center;
-   line-height : 1em;
-   margin-bottom : 1em;
-}
-
-ul#image-list li {
-   display : inline;
-   list-style-type : none;
-   float : left;
-   margin : 10px;
-   padding : 2px 3px 1px 3px;
-}
-
-ul#image-list li a.image-link {
-   display : block;
-   width : 100px;
-   height : 100px;
-   text-align : center;
-}
-
-ul#image-list li a.image-link:hover {
-   background-color : #e7e7e7;
-}
-
-/*
-div#folders {
-position : absolute;
-top : 40px;
-left : 5px;
-width : 90px;
-height : 500px;
-background-color : white;
-overflow : auto;
-padding : 3px;
-}
-*/
-
-div#images {
-position : absolute;
-top : 40px;
-left : 110px;
-width : 550px;
-height : 500px;
-background-color : white;
-overflow : auto;
-padding : 3px;
-}
-
-input#add-folder {
-position : absolute;
-left : 20px;
-top : 552px;
-}
-
-input#add-image {
-position : absolute;
-left : 320px;
-top : 552px;
-}
-
-div#original {
-position : absolute;
-left : 250px;
-top : 10px;
-}
-
-input#close-image {
-position : absolute;
-left : 500px;
-top : 552px;
-}
-
-
-ul#image-list li p.dimensions {
-text-align : center;
-font-size : .9em;
-margin : 0px;
-line-height : 1em;
-}
-
-li.image-select {
-background-color : #D4D4D4;
-}
-
-div#fc-file-list td.fc-size{
-  text-align : right;
-}
-
-div#fc-file-list th {
-  padding : 5px;
-}
-
-div#fc-file-list td.fc-icon {
+#fc-folder-list div.fc-icon p {
+   margin : 0px;
    padding : 0px;
 }
-
-
-ul#image-folders li {
-   list-style : none;
-}
-
 
 div.fc-thumbnails {
    padding : 5px;
@@ -201,5 +42,108 @@ div.fc-thumbnails {
    text-align : center;
    overflow : auto;
    border : 1px solid #999;
+}
+
+div.fc-placeholder {
+width : 300px;
+}
+
+div#type-select {
+   border-bottom : 1px solid black;
+}
+
+div#main-selection {
+   margin-top : 140px;
+   margin-left : 40px;
+}
+
+div#main-selection div {
+   float : left;
+   text-align : center;
+}
+
+div#main-selection span.label {
+   font-size : 1.3em;
+   font-weight : bold;
+}
+
+div#options {
+   position : absolute;
+   top : 550px;
+   background-color : white;
+   width : 780px;
+   border-top : 1px black solid;
+   padding-top : 10px;
+}
+
+div#folder-selection, div#selection {
+   width : 770px;
+   height : 415px;
+   overflow : auto;
+}
+
+a.folder, div.item {
+   text-align : center;
+   float : left;
+   margin : 6px 5px;
+}
+
+a.folder:hover, div.item:hover {
+   text-decoration : none;
+   background-color : #eee;
+}
+
+a.folder {
+   width : 100px;
+   height : 130px;
+}
+
+
+div.item {
+   padding-top : 5px;
+   /* Compare width to FC_THUMBNAIL_WIDTH */
+   width : 140px;
+   height : 200px;
+}
+
+div#current-folder {
+   font-size : 1.3em;
+}
+
+div#selection {
+   background-repeat : no-repeat;
+   background-image : url(folder_back.png);
+}
+
+p.fc-options {
+     text-align : center;
+     clear : both;
+}
+
+span#heading {
+    font-size : 1.4em;
+    font-weight : bold;
+}
+
+.alt {
+    margin-left : 20px;
+}
+
+div#folder-title {
+    padding : 3px 0px 3px 10px;
+    background-color : #ddd;
+}
+
+.highlight {
+    background-color : #80B26B;
+}
+
+.alt-high img {
+    background-color : #80B26B;
+    border : 2px solid #80B26B;
+}
+
+.no-use img {
+    opacity : .2;
 }
 

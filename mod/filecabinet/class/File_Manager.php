@@ -118,7 +118,7 @@ class FC_File_Manager {
     function get()
     {
         Layout::addStyle('filecabinet', 'file_view.css');
-        Layout::addStyle('filecabinet', 'file_manager/style.css');
+        Layout::addStyle('filecabinet');
 
         /**
          * No label, show default graphic
@@ -225,7 +225,7 @@ class FC_File_Manager {
      */
     function startView()
     {
-        Layout::addStyle('filecabinet', 'file_manager/style.css');
+        Layout::addStyle('filecabinet');
         $document_img = sprintf('<img src="images/mod/filecabinet/file_manager/file_type/document200.png" title="%s"/>',
                                 dgettext('filecabinet', 'Add a document or a document folder'));
 
@@ -317,7 +317,7 @@ class FC_File_Manager {
      */
     function folderView()
     {
-        Layout::addStyle('filecabinet', 'file_manager/style.css');
+        Layout::addStyle('filecabinet');
 
         $tpl = array();
 
@@ -356,7 +356,7 @@ class FC_File_Manager {
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         javascript('confirm'); // needed for deletion
 
-        Layout::addStyle('filecabinet', 'file_manager/style.css');
+        Layout::addStyle('filecabinet');
         if (isset($_GET['folder_id'])) {
             $this->current_folder = new Folder($_GET['folder_id']);
         }
