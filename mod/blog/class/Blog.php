@@ -566,8 +566,11 @@ class Blog {
             $this->image_link = $image_link;
         } else {
             $url = $_POST['image_url'];
-            $url = PHPWS_Text::checkLink($url);
-            $this->image_link = $url;
+            if (!empty($url) || $url == 'http://') {
+                $this->image_link = PHPWS_Text::checkLink($url);
+            } else {
+                $this->image_link = 'default';
+            }
         }
 
         return true;

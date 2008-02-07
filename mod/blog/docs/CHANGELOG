@@ -1,5 +1,8 @@
 Version 1.7.0
 ----------------------------------------------------------------
+7 Feb 2008
++ If the link image url is blank, the link is reset to default.
+
 5 February 2008
 + Raising version for next update
 + Added image_link column for extra image linking.
