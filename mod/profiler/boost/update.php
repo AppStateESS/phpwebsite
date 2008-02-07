@@ -37,6 +37,17 @@ function profiler_update(&$content, $currentVersion)
 0.3.3 changes
 ---------------
 + Updated image manager code.</pre>';
+
+    case version_compare($currentVersion, '0.4.0', '<'):
+        $content[] = '<pre>';
+        PHPWS_Boost::updateFiles(array('templates/forms/division_list.tpl'), 'profiler');
+        $content[] = '0.4.0 changes
+---------------
++ Supports new File Cabinet changes.
++ Can now delete divisions.
++ Change made to allow accented characters for division names.
+</pre>';
+
     }     
     
     return true;

@@ -72,15 +72,16 @@ class Profile {
 
         if (!empty($images['small'])) {
             $image = & $images['small'];
-            $template['PHOTO_SMALL'] = sprintf('<a href="%s">%s</a>', $link, $images['small']->getTag(TRUE));
+            $image->allowImageLink(false);
+            $template['PHOTO_SMALL'] = sprintf('<a href="%s">%s</a>', $link, $image->getTag());
         }
 
         if (!empty($images['medium'])) {
-            $template['PHOTO_MEDIUM'] = $images['medium']->getTag(TRUE);
+            $template['PHOTO_MEDIUM'] = $images['medium']->getTag();
         }
 
         if (!empty($images['large'])) {
-            $template['PHOTO_LARGE'] = $images['large']->getTag(TRUE);
+            $template['PHOTO_LARGE'] = $images['large']->getTag();
         }
 
         $template['FULLSTORY'] = $this->getFullstory();
@@ -116,19 +117,19 @@ class Profile {
 
     function loadImages()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $images['small'] = $images['medium'] = $images['large'] = null;
 
         if ($this->photo_small) {
-            $images['small'] = new PHPWS_Image($this->photo_small);
+            $images['small'] = Cabinet::getFile($this->photo_small);
         }
 
         if ($this->photo_medium) {
-            $images['medium'] = new PHPWS_Image($this->photo_medium);
+            $images['medium'] = Cabinet::getFile($this->photo_medium);
         }
  
         if ($this->photo_large) {
-            $images['large'] = new PHPWS_Image($this->photo_large);
+            $images['large'] = Cabinet::getFile($this->photo_large);
         }
 
         return $images;

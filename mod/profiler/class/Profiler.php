@@ -56,7 +56,6 @@ class Profiler {
             }
 
             Profiler::view((int)$_REQUEST['div_id']);
-            
             break;
         }
 

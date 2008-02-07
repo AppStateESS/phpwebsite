@@ -76,9 +76,20 @@ class Profile_Forms {
 
         $template = $form->getTemplate();
 
-        $lmanager = Cabinet::imageManager($profile->photo_large, 'photo_large', 720, 300);
-        $mmanager = Cabinet::imageManager($profile->photo_medium, 'photo_medium', 200, 200);
-        $smanager = Cabinet::imageManager($profile->photo_small, 'photo_small', 150, 150);
+        $lmanager = Cabinet::fileManager('photo_large',$profile->photo_large);
+        $lmanager->setMaxWidth(720);
+        $lmanager->setMaxHeight(300);
+        $lmanager->imageOnly();
+
+        $mmanager = Cabinet::fileManager('photo_medium', $profile->photo_medium);
+        $mmanager->setMaxWidth(200);
+        $mmanager->setMaxHeight(200);
+        $mmanager->imageOnly();
+
+        $smanager = Cabinet::fileManager('photo_small', $profile->photo_small);
+        $smanager->setMaxWidth(150);
+        $smanager->setMaxHeight(150);
+        $smanager->imageOnly();
 
         $template['PHOTO_LARGE']  = $lmanager->get();
         $template['PHOTO_MEDIUM'] = $mmanager->get();

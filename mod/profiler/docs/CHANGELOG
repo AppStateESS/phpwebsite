@@ -1,4 +1,9 @@
-2 January 2007
+Version 0.4.0
+-------------------------------------------------------------------
+7 February 2008
++ Altered to work with File Cabinet 2.0
+
+2 January 2008
 + Change made to division to allow accented and non-english
   characters.
 + Added ability to delete divisions.
