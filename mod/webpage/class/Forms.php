@@ -129,7 +129,9 @@ class Webpage_Forms {
         
         if (PHPWS_Settings::get('webpage', 'add_images')) {
             PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
-            $manager = Cabinet::imageManager($page->image_id, 'image_id', 640, 480);
+            $manager = Cabinet::fileManager('image_id', $page->image_id);
+            $manager->maxImageWidth(640);
+            $manager->maxImageHeight(480);
             if ($manager) {
                 $form->addTplTag('PAGE_IMAGE', $manager->get());
                 $form->addTplTag('IMAGE_LABEL', dgettext('webpage', 'Image'));

@@ -1,3 +1,12 @@
+Version 1.1.0
+-------------------------------------------------------------------------
+7 Feb 2008
++ Made compatible with File Cabinet 2.0
++ Styled the admin links
++ Updated: templates/page/basic.tpl, templates/page/prev_next.tpl,
+templates/page/short_links.tpl,
+templates/page/verbose_links.tpl, templates/style.css
+
 Version 1.0.1
 -------------------------------------------------------------------------
 29 October 2007

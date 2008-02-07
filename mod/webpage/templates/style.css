@@ -10,3 +10,7 @@ text-decoration : none;
 div.page-links span a:visited {
 text-decoration : none;
 }
+
+p.wp-admin-links {
+   text-align : center;
+}

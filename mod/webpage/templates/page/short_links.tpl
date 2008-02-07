@@ -16,7 +16,7 @@
     </div>
     <!-- END page-listing -->
     <!-- BEGIN edit-page -->
-    <div class="align-center">{ADMIN_LINKS}</div>
+    <p class="wp-admin-links">{ADMIN_LINKS}</p>
     <!-- END edit-page -->
   </div>
 </div>

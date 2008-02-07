@@ -170,9 +170,8 @@ class Webpage_Page {
         if (!$this->image_id) {
             return null;
         } else {
-            PHPWS_Core::initModClass('filecabinet', 'Image.php');
-            $image = new PHPWS_Image($this->image_id);
-            return $image->getTag();
+            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+            return Cabinet::getTag($this->image_id);
         }
     }
 

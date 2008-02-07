@@ -72,6 +72,24 @@ Please download version 0.5.3</pre>';
         }
         $content[] = '</pre>';
 
+    case version_compare($currentVersion, '1.1.0', '<'):
+        $content[] = '<pre>';
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        if (Cabinet::convertImagesToFileAssoc('webpage_page', 'image_id')) {
+            $content[] = '--- Converted images to new File Cabinet format.';
+        } else {
+            $content[] = '--- Could not convert images to new File Cabinet format.</pre>';
+            return false;
+        }
+        $files = array('templates/page/basic.tpl', 'templates/page/prev_next.tpl',
+                       'templates/page/short_links.tpl', 'templates/page/verbose_links.tpl',
+                       'templates/style.css');
+
+        webpageUpdateFiles($files, $content);
+        $content[] = '1.1.0 changes
+---------------
++ Updated to work with File Cabinet 2.0
++ Styled the admin links</pre>';
     }
 
     return TRUE;

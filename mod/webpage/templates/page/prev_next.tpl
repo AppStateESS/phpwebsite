@@ -20,7 +20,7 @@
     </table>
     <!-- END page-listing -->
     <!-- BEGIN edit-page -->
-    <p>{ADMIN_LINKS}</p>
+    <p class="wp-admin-links">{ADMIN_LINKS}</p>
     <!-- END edit-page -->
   </div>
 </div>
