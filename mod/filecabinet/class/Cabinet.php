@@ -1064,6 +1064,16 @@ class Cabinet {
 
     function convertToFileAssoc($table, $column, $type)
     {
+        $db = new PHPWS_DB('fc_convert');
+        $db->addWhere('table_name', $table);
+        $db->addWhere('column_name', $column);
+        $result = $db->select();
+        if (PHPWS_Error::logIfError($result)) {
+            return false;
+        } elseif ($result) {
+            return true;
+        }
+
         PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
         $db = new PHPWS_DB($table);
         $db->addColumn('id');
@@ -1095,8 +1105,12 @@ class Cabinet {
                 $item_converted[$item_id] = $file_assoc->id;
             }
         }
-        return true;
 
+        $db->reset();
+        $db->addValue('table_name', $table);
+        $db->addValue('column_name', $column);
+        PHPWS_Error::logIfError($db->insert());
+        return true;
     }
 
     function convertImagesToFileAssoc($table, $column)

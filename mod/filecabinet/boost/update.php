@@ -278,9 +278,19 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Removed test echo 1
 + moved all defines to one file.
 </pre>';
-  
+
     case version_compare($version, '2.0.0', '<'):
         $content[] = '<pre>';
+        if (!PHPWS_DB::isTable('fc_converted')) {
+            $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/fc_convert.sql');
+            if (!PHPWS_Error::logIfError($result)) {
+                $content[] = '--- File conversion table created successfully.';
+            } else {
+                $content[] = '--- Failed to create File conversion table.</pre>';
+                return false;
+            }
+        }
+
         if (!PHPWS_DB::isTable('fc_file_assoc')) {
             $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/file_assoc.sql');
             if (!PHPWS_Error::logIfError($result)) {
