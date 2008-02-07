@@ -1,3 +1,8 @@
+Version 1.1.0
+----------------------------------------------------------------
+6 February 2008
++ Pagesmith works with new File Cabinet
+
 15 January 2008
 + Changed pagesmith to work with xmlparser changes
 + Added url parser to passinfo script to allow images to work in some

@@ -123,7 +123,18 @@ function pagesmith_update(&$content, $currentVersion)
 + Changing a page title now updates the menu link.
 </pre>';
 
+    case version_compare($currentVersion, '1.1.0', '<'):
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        $content[] = '<pre>';
+        Cabinet::convertImagesToFileAssoc('ps_block', 'type_id');
+        $content[] = '--- Images converted for File Cabinet 2.0.0.';
+        pagesmithUpdateFiles(array('javascript/passinfo/head.js'), $content);
 
+        $content[] = '1.1.0 changes
+-------------
++ PageSmith conforms to new File Cabinet update.
++ Added url parser to passinfo script to allow images to work with fck better.
+</pre>';
 
     } // end switch
 

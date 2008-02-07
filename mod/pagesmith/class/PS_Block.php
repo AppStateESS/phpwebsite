@@ -42,7 +42,10 @@ class PS_Block extends PS_Section {
     function loadFiller()
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
-        $manager = Cabinet::imageManager($this->type_id, $this->secname, $this->width, $this->height, false);
+        $manager = Cabinet::fileManager($this->secname, $this->type_id);
+        $manager->maxImageWidth($this->width);
+        $manager->maxImageHeight($this->height);
+
         $this->content = $manager->get();
     }
 
@@ -57,11 +60,8 @@ class PS_Block extends PS_Section {
         if (empty($this->content)) {
             switch ($this->btype) {
             case 'image':
-                PHPWS_Core::initModClass('filecabinet', 'Image.php');
-                $image = new PHPWS_Image($this->type_id);
-                if ($image->id) {
-                    $this->content = $image->getTag();
-                }
+                PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+                $this->content = Cabinet::getFile($this->type_id);
             }
         }
         return $this->content;
