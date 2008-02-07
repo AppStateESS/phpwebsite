@@ -14,7 +14,7 @@ class Category{
     var $title       = NULL;
     var $description = NULL;
     var $parent      = 0;
-    var $icon        = NULL;
+    var $icon        = 0;
     var $children    = NULL;
 
 
@@ -120,8 +120,8 @@ class Category{
 
     function getIcon()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
-        return new PHPWS_Image($this->icon);
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        return Cabinet::getTag($this->icon);
     }
 
     function loadChildren()

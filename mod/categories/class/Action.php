@@ -276,14 +276,12 @@ class Categories_Action {
 
     function getManager($image_id, $image_name)
     {
-        PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
-        $manager = new FC_Image_Manager($image_id);
-        $manager->setMaxWidth(CAT_MAX_ICON_WIDTH);
-        $manager->setMaxHeight(CAT_MAX_ICON_HEIGHT);
-        $manager->setMaxSize(CAT_MAX_ICON_SIZE);
-        $manager->setModule('categories');
-        $manager->setItemname($image_name);
-
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        $manager = Cabinet::fileManager($image_name, $image_id);
+        $manager->maxImageWidth(CAT_MAX_ICON_WIDTH);
+        $manager->maxImageHeight(CAT_MAX_ICON_HEIGHT);
+        $manager->imageOnly(false, false);
+        $manager->forceResize();
         return $manager->get();
     }
 
@@ -334,7 +332,7 @@ class Categories_Action {
             $template['CATEGORY_DESCRIPTION'] = $category->getDescription();
             if ($category->icon) {
                 $icon = $category->getIcon();
-                $template['CATEGORY_ICON'] = $icon->getTag();
+                $template['CATEGORY_ICON'] = $icon;
             }
             if (isset($module) && $module != '0') {
                 $template['TITLE'] = sprintf(dgettext('categories', '%s: Module listing for %s'), $category->title, $oMod->getProperName());

@@ -251,8 +251,8 @@ class Categories{
                 continue;
             }
             $image = $cat->getIcon();
-            if ($image->id) {
-                $icons[] = $cat->getViewLink(null, $image->getTag());
+            if ($image) {
+                $icons[] = $cat->getViewLink(null, $image);
             }
         }
         return $icons;
