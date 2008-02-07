@@ -84,7 +84,7 @@ class Blog {
             }
 
             if ($file->isResize() && $this->image_link == 'parent') {
-                return $file->getResize(true);
+                return $file->parentLinked();
             } elseif ($this->image_link == 'readmore') {
                 $url =  $this->getViewLink(true);
             } else {
