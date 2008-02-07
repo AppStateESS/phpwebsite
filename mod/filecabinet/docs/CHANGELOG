@@ -14,6 +14,7 @@ Version 2.0.0
   source.
 + Fixed '=' instead of '==' error in Folder.php
 + Added missing pinTags function to Multimedia.
++ Rewrote some of getTag to use source
 
 6 February 2008
 + Combined and pared style sheets.

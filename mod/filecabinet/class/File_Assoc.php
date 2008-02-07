@@ -66,16 +66,41 @@ class FC_File_Assoc {
         case FC_IMAGE_RESIZE:
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $this->_resize_parent = new PHPWS_Image($this->file_id);
+            if (!$this->_resize_parent->id) {
+                $this->_resize_parent = null;
+                return;
+            }
             $this->_source = clone($this->_resize_parent);
             $this->_source->file_directory = $this->_resize_parent->getResizePath();
             $this->_source->file_name = $this->resize;
             $this->_source->loadDimensions();
             break;
 
+        case FC_IMAGE_RANDOM:
+            PHPWS_Core::initModClass('filecabinet', 'Image.php');
+            $image = new PHPWS_Image;
+            $db = new PHPWS_DB('images');
+            $db->addWhere('folder_id', $this->file_id);
+            $db->addorder('random');
+            $db->setLimit(1);
+            if ($db->loadObject($image)) {
+                $this->_source = $image;
+            }
+            break;
+
         default:
             return;
         }
         $this->_file_path = $this->_source->getPath();
+    }
+
+    function parentLinked()
+    {
+        if (!$this->_resize_parent) {
+            return $this->getTag();
+        }
+
+        return $this->_resize_parent->getJSView(false, $this->_source->getTag(null, false));
     }
 
     function allowImageLink($link=true)
@@ -160,6 +185,8 @@ class FC_File_Assoc {
 
         switch ($this->file_type) {
         case FC_IMAGE:
+        case FC_IMAGE_RANDOM:
+        case FC_IMAGE_RESIZE:
             if ($this->_source->id) {
                 if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
                     return $this->_source->captioned(null, !$this->_link_image);
@@ -171,14 +198,8 @@ class FC_File_Assoc {
             }
             break;
 
-        case FC_IMAGE_RESIZE:
-            return $this->getResize();
-
         case FC_IMAGE_FOLDER:
             return $this->slideshow();
-
-        case FC_IMAGE_RANDOM:
-            return $this->randomImage();
 
         case FC_DOCUMENT:
         case FC_MEDIA:
@@ -195,15 +216,6 @@ class FC_File_Assoc {
         return null;
     }
 
-    function getResize($link_parent=false)
-    {
-        if ($link_parent) {
-            return $this->_resize_parent->getJSView(false, $this->_source->getTag(null, false));
-        } else {
-            return $this->_source->getTag(null, $this->_link_image);
-        }
-    }
-
     function documentFolder()
     {
         $folder = new Folder($this->file_id);
@@ -214,7 +226,6 @@ class FC_File_Assoc {
         $tpl['ICON'] = '<img src="images/mod/filecabinet/file_manager/folder_contents.png" />';
         $tpl['DOWNLOAD'] = sprintf(dgettext('filecabinet', 'Download from %s'), $folder->title);
         return PHPWS_Template::process($tpl, 'filecabinet', 'document_download.tpl');
-
     }
 
     function randomImage()
