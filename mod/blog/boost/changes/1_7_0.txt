@@ -1,0 +1,7 @@
+1.7.0 changes
+-----------------
++ Blog works with new File Cabinet
++ Image linking abilities.
++ Editing a blog sends you to the blog view when finished instead of
+  the blog listing.
++ MiniAdmin has blog listing option when viewing a specific blog.

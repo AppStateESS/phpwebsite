@@ -205,13 +205,25 @@ function blog_update(&$content, $currentVersion)
         $content[] = '<pre>';
         $db = new PHPWS_DB('blog_entries');
         if (PHPWS_Error::logIfError($db->addTableColumn('image_link', "varchar(255) NOT NULL default 'default'"))) {
-            $content[] = 'Unable to create image_link column on blog_entries table.</pre>';
+            $content[] = '--- Unable to create image_link column on blog_entries table.</pre>';
             return false;
         } else {
-            $content[] = 'Created image_link column on blog_entries table';
+            $content[] = '--- Created image_link column on blog_entries table';
         }
-        break;
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        if (Cabinet::convertImagesToFileAssoc('blog_entries', 'image_id')) {
+            $content[] = '--- Converted images to new File Cabinet format.';
+        } else {
+            $content[] = '--- Could not convert images to new File Cabinet format.</pre>';
+            return false;
+        }
 
+        blogUpdateFiles(array('templates/edit.tpl'));
+
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/blog/boost/changes/1_7_0.txt');
+        }
+        $content[] = '</pre>';
     } // end of switch
     return true;
 }

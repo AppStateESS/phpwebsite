@@ -6,12 +6,12 @@
 
 $proper_name  = 'Blog';
 $version      = '1.7.0';
-$register     = FALSE;
-$unregister   = FALSE;
-$import_sql   = TRUE;
+$register     = false;
+$unregister   = false;
+$import_sql   = true;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/blog/check.xml';
-$about        = TRUE;
+$about        = true;
 $priority     = 50;
-$dependency   = TRUE;
+$dependency   = true;
 $image_dir    = true;
 ?>
