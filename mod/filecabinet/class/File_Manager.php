@@ -659,6 +659,7 @@ class FC_File_Manager {
         }
 
         $file_assoc->save();
+        $file_assoc->loadSource();
         return $file_assoc;
     }
 

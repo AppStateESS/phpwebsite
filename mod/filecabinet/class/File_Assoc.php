@@ -14,8 +14,11 @@ class FC_File_Assoc {
      * If the file assoc is an image and no_link is true,
      * the image's default link (if any) will be supressed
      */
-    var $_link_image = true;
+    var $_source        = null;
+    var $_resize_parent = null;
+    var $_link_image    = true;
     var $_allow_caption = true;
+    var $_file_path     = null;
 
     function FC_File_Assoc($id=0)
     {
@@ -31,30 +34,48 @@ class FC_File_Assoc {
                 $this->id = 0;
             }
         }
+        $this->loadSource();
+        if ($this->_source) {
+            $this->_file_path = $this->_source->getPath();
+        }
     }
 
     function getSource()
     {
+        return $this->_source;
+    }
+
+    function loadSource()
+    {
         switch ($this->file_type) {
         case FC_IMAGE:
-        case FC_IMAGE_RESIZE:
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
-            $image = new PHPWS_Image($this->file_id);
-            return $image;
+            $this->_source = new PHPWS_Image($this->file_id);
+            break;
 
         case FC_DOCUMENT:
             PHPWS_Core::initModClass('filecabinet', 'Document.php');
-            $document = new PHPWS_Document($this->file_id);
-            return $document;
+            $this->_source = new PHPWS_Document($this->file_id);
+            break;
 
         case FC_MEDIA:
             PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
-            $media = new PHPWS_Multimedia($this->file_id);
-            return $media;
+            $this->_source = new PHPWS_Multimedia($this->file_id);
+            break;
+
+        case FC_IMAGE_RESIZE:
+            PHPWS_Core::initModClass('filecabinet', 'Image.php');
+            $this->_resize_parent = new PHPWS_Image($this->file_id);
+            $this->_source = clone($this->_resize_parent);
+            $this->_source->file_directory = $this->_resize_parent->getResizePath();
+            $this->_source->file_name = $this->resize;
+            $this->_source->loadDimensions();
+            break;
 
         default:
-            return null;
+            return;
         }
+        $this->_file_path = $this->_source->getPath();
     }
 
     function allowImageLink($link=true)
@@ -118,6 +139,14 @@ class FC_File_Assoc {
         }
     }
 
+    /**
+     * Returns an image, media, or document path.
+     * Does not work with random images or folder listing
+     */
+    function getPath()
+    {
+        return $this->_file_path;
+    }
 
     function getTag($embed=false)
     {
@@ -131,12 +160,11 @@ class FC_File_Assoc {
 
         switch ($this->file_type) {
         case FC_IMAGE:
-            $image = new PHPWS_Image($this->file_id);
-            if ($image->id) {
+            if ($this->_source->id) {
                 if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
-                    return $image->captioned(null, !$this->_link_image);
+                    return $this->_source->captioned(null, !$this->_link_image);
                 } else {
-                    return $image->getTag(null, !$this->_link_image);
+                    return $this->_source->getTag(null, !$this->_link_image);
                 }
             } else {
                 $this->deadAssoc();
@@ -153,9 +181,9 @@ class FC_File_Assoc {
             return $this->randomImage();
 
         case FC_DOCUMENT:
-            $document = new PHPWS_Document($this->file_id);
-            if ($document->id) {
-                return $document->getTag($embed);
+        case FC_MEDIA:
+            if ($this->_source->id) {
+                return $this->_source->getTag($embed);
             } else {
                 $this->deadAssoc();
             }
@@ -163,31 +191,16 @@ class FC_File_Assoc {
 
         case FC_DOCUMENT_FOLDER:
             return $this->documentFolder();
-
-        case FC_MEDIA:
-            $media = new PHPWS_Multimedia($this->file_id);
-            if ($media->id) {
-                return $media->getTag($embed);
-            } else {
-                $this->deadAssoc();
-            }
-            break;
         }
         return null;
     }
 
     function getResize($link_parent=false)
     {
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
-        $source = new PHPWS_Image($this->file_id);
-        $resize = clone($source);
-        $resize->file_directory = $source->getResizePath();
-        $resize->file_name = $this->resize;
-        $resize->loadDimensions();
         if ($link_parent) {
-            return $source->getJSView(false, $resize->getTag(null, false));
+            return $this->_resize_parent->getJSView(false, $this->_source->getTag(null, false));
         } else {
-            return $resize->getTag(null, $this->_link_image);
+            return $this->_source->getTag(null, $this->_link_image);
         }
     }
 
@@ -213,6 +226,7 @@ class FC_File_Assoc {
         $db->addorder('random');
         $db->setLimit(1);
         if ($db->loadObject($image)) {
+            $this->_file_path = $image->getPath();
             return $image->getTag();
         } else {
             return dgettext('filecabinet', 'Folder missing image files.');

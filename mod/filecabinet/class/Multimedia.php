@@ -526,6 +526,11 @@ class PHPWS_Multimedia extends File_Common {
         return $tpl;
     }
 
+    function pinTags()
+    {
+        return array('TN'=>$this->getJSView(true));
+    }
+
     function getManagerIcon($fmanager)
     {
         $vars = $fmanager->linkInfo(false);

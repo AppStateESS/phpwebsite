@@ -529,7 +529,7 @@ class Folder {
 
         if ($this->ftype == IMAGE_FOLDER) {
             $max = PHPWS_Settings::get('filecabinet', 'max_pinned_images');
-        } elseif ($this->ftype = DOCUMENT_FOLDER) {
+        } elseif ($this->ftype == DOCUMENT_FOLDER) {
             $max = PHPWS_Settings::get('filecabinet', 'max_pinned_documents');
         } else {
             $max = PHPWS_Settings::get('filecabinet', 'max_pinned_multimedia');
@@ -540,7 +540,6 @@ class Folder {
         }
 
         $count = 1;
-
         foreach ($this->_files as $file) {
             if ($count > $max) {
                 break;

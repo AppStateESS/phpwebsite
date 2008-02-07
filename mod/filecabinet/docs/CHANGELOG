@@ -9,6 +9,11 @@ Version 2.0.0
 + documentOnly can now suppress folder option
 + converting images is now tracked in new table
 + Fixed bug on type locking.
++ Changing file_assoc to load the source on initialization
++ Added _file_path parameter to File_Assoc which is set when loading
+  source.
++ Fixed '=' instead of '==' error in Folder.php
++ Added missing pinTags function to Multimedia.
 
 6 February 2008
 + Combined and pared style sheets.
