@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+7 February
++ Added File_Manager.txt document
++ Changed Image_Manager document to point to File_Manager.
+
 6 February 2008
 + Trimmed newline from body.js in various javascripts.
 

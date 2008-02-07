@@ -1,0 +1,202 @@
+Programming with File Manager
+by Matthew McNaney
+------------------------------------------------------------
+
+Introduction
+-------------
+File Manager is a class within the File Cabinet module. It assists
+with image, document, and media placement within content modules. File
+Manager is a replacement for the Image Manager.
+
+The File Manager works with the File_Assoc class. This class makes
+associations with the different types of files. This allows you to
+store just one id number instead of having to store a different id per
+file type.
+
+File selection
+---------------
+To start, you will want to give users a way to select the file they
+want to use.
+
+First include the Cabinet class:
+
+PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+
+Next you create a file manager object.
+
+$manager = Cabinet::fileManager('element_name', $element_id);
+
+The 'element_name' is the variable name given to the eventual file
+id. The 'element_id' is the numeric id of the current file.
+
+Once you have the manager object, there are a few parameters you can
+set.
+
+$manager->maxImageWidth(300);
+$manager->maxImageHeight(300);
+
+These two functions will be familiar to those that used the Image
+Manager. They set dimension limits should the user pick an image. If
+the image is larger than one of the two dimensions, the File Manager
+will give them the opportunity to resize the image down. If they
+refuse, the image will be imported at its full size.
+
+If you want to force the user to resize over your dimensions, you can
+call:
+
+$manager->forceResize();
+
+The default parameter is 'true' but you can send 'false' instead if
+you wish. If you do not use this function, users will be able to
+ignore the resize confirmation.
+
+
+Limiting user options
+-----------------------
+
+Normally, the user is able to pick any image, document, or media
+file. If you wish to lock the user into a specific format, then use
+one of these three functions:
+
+$manager->imageOnly();
+
+When the above is set, the user will only be able to select
+images. They will also be able to pick random images or the image
+folder option unless you set the parameters to false. For example:
+
+$manager->imageOnly(true);         // Allow thumbnail folder, not random
+$manager->imageOnly(true, false);  // ditto above
+$manager->imageOnly(false, true);  // Allow random images, but not
+                                   // thumbnail folder
+$manager->imageOnly(false, false); // Don't allow either random and folder
+
+
+
+$manager->documentOnly();
+
+
+$manager->mediaOnly();
+
+Once these are set, the user will only be able to choose the
+appropriate format. If you want to give them full access again, call:
+
+$manager->allFiles();
+
+
+Including the interface
+-------------------------
+Before inserting the file manager interface, you must make sure it is
+inside a set of form tags. The interface alters a hidden tag named
+after the element_name with which you constructed the object.
+
+Example:
+
+$form = new PHPWS_Form;
+$form->addHidden('module', 'my_mod');
+$form->addSubmit('Use this file');
+$tpl = $form->getTemplate();
+$tpl['FILE_ID'] = $manager->get();
+
+echo PHPWS_Template::process($tpl, 'my_mod', 'file_form.tpl');
+
+
+Here would be an example of your template file_form.tpl
+
+{START_FORM}
+
+Pick a file
+{FILE_ID}
+
+{SUBMIT}
+{END_FORM}
+
+When the form is submitted, a variable named after the
+constructor parameter is posted to the next page.
+
+
+Receiving the result
+--------------------
+Now you just need to catch the result and save it:
+
+$my_file_object = new My_File_Object;
+$my_file_object->file_id = $_POST['element_name'];
+$my_file_object->save();
+
+
+Displaying your file
+---------------------
+When you are ready to display your file, simply call getTag with the
+saved file id:
+
+echo Cabinet::getTag($my_file_object->file_id);
+
+
+
+File Association methods
+------------------------
+If you prefer, you may get the File_Assoc object and call other
+commands upon it:
+
+$file = Cabinet::getFile($file_id);
+
+To display the contents:
+
+echo $file->getTag();
+
+There are currently 7 file types
+FC_IMAGE           : an image file
+FC_DOCUMENT        : a downloadable document file
+FC_MEDIA           : a media file (video, sound, etc.)
+FC_IMAGE_FOLDER    : thumbnails of all images in a folder
+FC_DOCUMENT_FOLDER : documents listing in a folder
+FC_IMAGE_RANDOM    : a random image display
+FC_IMAGE_RESIZE    : a resized image
+
+The file object stores its type in the file_type variable:
+
+if ($file->file_type == FC_DOCUMENT_FOLDER) {
+   echo 'This is a document folder!';
+}
+
+You can also check for the three basic file types using isImage,
+isDocument, or isMedia functions
+
+
+if ($file->isImage()) {
+   echo '<a href="index.php">' . $file->getTag() . '</a>';
+}
+
+Note: isImage includes resized images by default. If you don't want to
+include resized images call $file->isImage(FALSE) instead. You may
+also call $file->isResize();
+
+
+If you want to get the source of the file association:
+if ($file->isImage()) {
+   $image = $file->getSource();
+   echo 'The file name of this image is ' . $image->file_name;
+}
+
+Note: getSource on an resize will return the parent object of the
+image. There isn't an actual resize object.
+
+Images allow the admin to set specific images to be linkable. If you
+wish to suppress this behavior, call allowImageLink:
+
+if ($file->isImage()) {
+   $file->allowImageLink(false);
+   echo '<a href="http://different_site.com">' . $file->getTag() . '</a>';
+}
+
+Note: You could also getSource on the file and call
+$image->getTag(null, false);
+
+Images can be set to show captions. If you want to suppress it, call
+$file->allowCaption(false)
+
+
+Conclusion
+--------------------
+Hopefully you and your users will find File Manager easy to use. If
+you have questions or comments, direct them to
+phpwebsite@tux.appstate.edu.
