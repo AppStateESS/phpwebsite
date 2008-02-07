@@ -8,6 +8,7 @@ Version 2.0.0
 + imageOnly can now be set to suppress random and folder options
 + documentOnly can now suppress folder option
 + converting images is now tracked in new table
++ Fixed bug on type locking.
 
 6 February 2008
 + Combined and pared style sheets.

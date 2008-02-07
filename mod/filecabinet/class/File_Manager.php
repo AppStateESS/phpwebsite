@@ -583,27 +583,22 @@ class FC_File_Manager {
                 return $this->startView();
             }
             return $this->folderContentView();
-        } else {
-            switch ($this->lock_type) {
+        } elseif ($this->lock_type) {
+            switch (1) {
             case in_array(FC_IMAGE, $this->lock_type):
                 $this->folder_type = IMAGE_FOLDER;
                 return $this->folderView();
-                break;
 
             case in_array(FC_MEDIA, $this->lock_type):
                 $this->folder_type = MULTIMEDIA_FOLDER;
                 return $this->folderView();
-                break;
 
             case in_array(FC_DOCUMENT, $this->lock_type):
                 $this->folder_type = DOCUMENT_FOLDER;
                 return $this->folderView();
-                break;
-
-            default:
-                return $this->startView();
             }
-
+        } else {
+            return $this->startView();
         }
     }
 
