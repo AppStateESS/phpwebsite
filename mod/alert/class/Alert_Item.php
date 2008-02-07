@@ -4,8 +4,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::initModClass('filecabinet', 'Image.php');
-
 class Alert_Item {
     var $id               = 0;
     var $title            = null;
@@ -123,11 +121,11 @@ class Alert_Item {
 
     function view()
     {
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $tpl['TITLE']       = $this->title;
         $tpl['DESCRIPTION'] = $this->getDescription();
         if ($this->image_id) {
-            $image = new PHPWS_Image($this->image_id);
-            $tpl['IMAGE'] = $image->getTag();
+            $tpl['IMAGE'] = Cabinet::getTag($this->image_id);
         } else {
             $tpl['IMAGE'] = null;
         }

@@ -11,7 +11,9 @@ class Alert_Forms {
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $item = & $this->alert->item;
-        $manager = Cabinet::imageManager($item->image_id, 'image_id', 500, 500, 1);
+        $manager = Cabinet::fileManager('image_id', $item->image_id);
+        $manager->maxImageWidth(500);
+        $manager->maxImageHeight(500);
 
         $form = new PHPWS_Form('alert-item');
 
@@ -51,8 +53,6 @@ class Alert_Forms {
         $form->addSubmit(dgettext('alert', 'Save'));
 
         $tpl = $form->getTemplate();
-        $manager->setNoimageMaxWidth(200);
-        $manager->setNoimageMaxHeight(200);
         $tpl['IMAGE'] = $manager->get();
         $tpl['IMAGE_LABEL'] = dgettext('alert', 'Image');
 
