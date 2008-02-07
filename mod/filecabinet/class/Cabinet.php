@@ -112,6 +112,10 @@ class Cabinet {
             $this->file_manager->folder_type = (int)$_GET['ftype'];
         }
 
+        if (isset($_GET['fr'])) {
+            $this->file_manager->force_resize = (bool)$_GET['fr'];
+        }
+
         return true;
     }
 
@@ -399,6 +403,7 @@ class Cabinet {
             return false;
         }
         $manager = new FC_File_Manager($module, $itemname, $file_id);
+        $manager->allFiles();
         return $manager;
     }
 
@@ -1057,40 +1062,53 @@ class Cabinet {
         return Current_User::allow($module);
     }
 
-    function convertImagesToFileAssoc($table, $column)
+    function convertToFileAssoc($table, $column, $type)
     {
+        PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
         $db = new PHPWS_DB($table);
         $db->addColumn('id');
         $db->addColumn($column);
         $db->setIndexBy('id');
-        $images = $db->select('col');
-        if (empty($images)) {
+        $item = $db->select('col');
+        if (empty($item)) {
             return true;
         }
 
-        foreach ($images as $item_id=>$image_id) {
+        foreach ($item as $id=>$item_id) {
             $db->reset();
 
-            if (@$file_assoc_id = $images_converted[$image_id]) {
+            if (@$file_assoc_id = $item_converted[$item_id]) {
                 $db->addValue($column, $file_assoc_id);
-                $db->addWhere('id', $item_id);
+                $db->addWhere('id', $id);
                 PHPWS_Error::logIfError($db->update());
             } else {
                 $file_assoc = new FC_File_Assoc;
-                $file_assoc->file_type = FC_IMAGE;
-                $file_assoc->file_id = $image_id;
+                $file_assoc->file_type = $type;
+                $file_assoc->file_id = $item_id;
                 if (!PHPWS_Error::logIfError($file_assoc->save())) {
                     $db->addValue($column, $file_assoc->id);
-                    $db->addWhere('id', $item_id);
+                    $db->addWhere('id', $id);
                     if (PHPWS_Error::logIfError($db->update())) {
                         continue;
                     }
                 }
-                $images_converted[$image_id] = $file_assoc->id;
+                $item_converted[$item_id] = $file_assoc->id;
             }
         }
         return true;
+
     }
+
+    function convertImagesToFileAssoc($table, $column)
+    {
+        return Cabinet::convertToFileAssoc($table, $column, FC_IMAGE);
+    }
+
+    function convertMediaToFileAssoc($table, $column)
+    {
+        return Cabinet::convertToFileAssoc($table, $column, FC_MEDIA);
+    }
+
 }
 
 ?>

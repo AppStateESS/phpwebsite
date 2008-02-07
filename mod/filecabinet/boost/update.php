@@ -294,10 +294,10 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         $db = new PHPWS_DB('multimedia');
         if (!$db->isTableColumn('duration')) {
             if (PHPWS_Error::logIfError($db->addTableColumn('duration', 'int not null default 0'))) {
-                $content[] = 'Failed to create duration column on multimedia table.</pre>';
+                $content[] = '--- Failed to create duration column on multimedia table.</pre>';
                 return false;
             } else {
-                $content[] = 'Created duration column on multimedia table.';
+                $content[] = '--- Created duration column on multimedia table.';
             }
         }
 
@@ -306,7 +306,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                 $content[] = 'Failed to create embedded column on multimedia table.</pre>';
                 return false;
             } else {
-                $content[] = 'Created embedded column on multimedia table.';
+                $content[] = '--- Created embedded column on multimedia table.';
             }
         }
 
@@ -320,7 +320,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             }
         }
 
-        $content[] = 'Durations added to multimedia files.';
+        $content[] = '--- Durations added to multimedia files.';
 
         if (!checkMultimediaDir($content, $home_dir)) {
             return false;

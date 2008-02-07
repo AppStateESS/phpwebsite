@@ -13,7 +13,11 @@ class FC_File_Manager {
     var $current_folder = 0;
     var $max_width      = 0;
     var $max_height     = 0;
-    var $lock_type      = 0;
+    var $lock_type      = null;
+    /**
+     * If true, user must resize to fit image limits
+     */
+    var $force_resize   = false;
     /**
      * id to session holding manager information
      */
@@ -21,11 +25,12 @@ class FC_File_Manager {
 
     function FC_File_Manager($module, $itemname, $file_id=0)
     {
+        $this->max_width = $this->max_height = PHPWS_Settings::get('filecabinet', 'max_image_dimension');
         $this->module     = & $module;
         $this->itemname   = & $itemname;
         $this->session_id = md5($this->module . $this->itemname);
         $this->loadFileAssoc($file_id);
-        $this->lock_type = (int)@$_SESSION['FM_Type_Lock'][$this->session_id];
+        $this->lock_type = @$_SESSION['FM_Type_Lock'][$this->session_id];
     }
 
     /*
@@ -34,7 +39,7 @@ class FC_File_Manager {
     function admin()
     {
         /**
-         * Folder permissions needed
+         * Folder permissions neededx1
          */
         switch($_REQUEST['fop']) {
         case 'open_file_manager':
@@ -55,22 +60,49 @@ class FC_File_Manager {
         }
     }
 
-    function imageOnly()
+    function imageOnly($folder=true, $random=true)
     {
-        $this->lock_type = FC_IMAGE;
-        $_SESSION['FM_Type_Lock'][$this->session_id] = FC_IMAGE;
+        $locks = array(FC_IMAGE);
+
+        if ($random) {
+            $locks[] = FC_IMAGE_RANDOM;
+        }
+
+        if ($folder) {
+            $locks[] = FC_IMAGE_FOLDER;
+        }
+
+        $this->lock_type = $locks;
+        $_SESSION['FM_Type_Lock'][$this->session_id] = $this->lock_type;
     }
 
-    function documentOnly()
+    function documentOnly($folder=true)
     {
-        $this->lock_type = FC_DOCUMENT;
-        $_SESSION['FM_Type_Lock'][$this->session_id] = FC_DOCUMENT;
+        $locks = array(FC_DOCUMENT);
+        if ($folder) {
+            $locks[] = FC_DOCUMENT_FOLDER;
+        }
+
+        $this->lock_type = $locks;
+        $_SESSION['FM_Type_Lock'][$this->session_id] = $this->lock_type;
     }
 
     function mediaOnly()
     {
-        $this->lock_type = FC_MEDIA;
-        $_SESSION['FM_Type_Lock'][$this->session_id] = FC_MEDIA;
+        $this->lock_type = array(FC_MEDIA);
+        $_SESSION['FM_Type_Lock'][$this->session_id] = $this->lock_type;
+    }
+
+    function allFiles()
+    {
+        $this->lock_type = null;
+        $_SESSION['FM_Type_Lock'][$this->session_id] = null;
+        unset($_SESSION['FM_Type_Lock'][$this->session_id]);
+    }
+
+    function forceResize($force=true)
+    {
+        $this->force_resize = (bool)$force;
     }
 
     function clearLock()
@@ -109,10 +141,25 @@ class FC_File_Manager {
 
     function placeHolder()
     {
-        return sprintf('<img src="%s" title="%s" />',
-                       FC_PLACEHOLDER,
-                       dgettext('filecabinet', 'Add an image, media, or document file.')
-                       );
+        if (!$this->lock_type) {
+            return sprintf('<img src="%s" title="%s" />',
+                           FC_PLACEHOLDER,
+                           dgettext('filecabinet', 'Add an image, media, or document file.')
+                           );
+        }
+
+        switch (1) {
+        case in_array(FC_IMAGE, $this->lock_type):
+            return sprintf('<img src="images/mod/filecabinet/file_manager/file_type/image200.png" title="%s"/>',
+                                dgettext('filecabinet', 'Add a image, an image folder, or a randomly changing image'));
+
+        case in_array(FC_DOCUMENT, $this->lock_type):
+            return sprintf('<img src="images/mod/filecabinet/file_manager/file_type/document200.png" title="%s"/>',
+                                    dgettext('filecabinet', 'Add a document or a document folder'));
+        case in_array(FC_MEDIA, $this->lock_type):
+            return sprintf('<img src="images/mod/filecabinet/file_manager/file_type/media200.png" title="%s"/>',
+                                dgettext('filecabinet', 'Add a video or sound file'));
+        }
     }
 
     function get()
@@ -162,6 +209,7 @@ class FC_File_Manager {
         $info['cm']   = $this->module;
         $info['itn']  = $this->itemname;
         $info['fid']  = $this->file_assoc->id;
+        $info['fr']   = $this->force_resize ? 1 : 0;
 
         if ($dimensions) {
             if ($this->max_width) {
@@ -266,7 +314,7 @@ class FC_File_Manager {
         $vars = $this->linkInfo();
         $vars['fop']   = 'fm_folders';
 
-        if (!$this->lock_type || $this->lock_type == FC_DOCUMENT) {
+        if (!$this->lock_type || in_array(FC_DOCUMENT, $this->lock_type)) {
             if ($this->folder_type == DOCUMENT_FOLDER) {
                 $icon_name = 'document80.png';
             } else {
@@ -281,7 +329,7 @@ class FC_File_Manager {
             $tpl['DOCUMENT_ICON'] = & $document;
         }
 
-        if (!$this->lock_type || $this->lock_type == FC_IMAGE) {
+        if (!$this->lock_type || in_array(FC_IMAGE, $this->lock_type)) {
             if ($this->folder_type == IMAGE_FOLDER) {
                 $icon_name = 'image80.png';
             } else {
@@ -296,7 +344,7 @@ class FC_File_Manager {
             $tpl['IMAGE_ICON']    = & $image;
         }
 
-        if (!$this->lock_type || $this->lock_type == FC_MEDIA) {
+        if (!$this->lock_type || in_array(FC_MEDIA, $this->lock_type)) {
             if ($this->folder_type == MULTIMEDIA_FOLDER) {
                 $icon_name = 'media80.png';
             } else {
@@ -404,23 +452,36 @@ class FC_File_Manager {
                 $altvars['id']        = $this->current_folder->id;
                 $altvars['fop']       = 'pick_file';
                 $altvars['file_type'] = FC_IMAGE_RANDOM;
+                $not_allowed = dgettext('filecabinet', 'Action not allowed');
 
-                $img1_title = dgettext('filecabinet', 'Show a random image from this folder');
-                $image1 = sprintf($image_string, $img_dir . $img1, $img1_title, $img1_alt);
-                $tpl['ALT1'] = PHPWS_Text::secureLink($image1, 'filecabinet', $altvars);
+                if (!$this->lock_type || in_array(FC_IMAGE_RANDOM, $this->lock_type)) {
+                    $img1_title = dgettext('filecabinet', 'Show a random image from this folder');
+                    $image1 = sprintf($image_string, $img_dir . $img1, $img1_title, $img1_alt);
+                    $tpl['ALT1'] = PHPWS_Text::secureLink($image1, 'filecabinet', $altvars);
                 
-                if ($this->file_assoc->file_type == FC_IMAGE_RANDOM && $this->current_folder->id == $this->file_assoc->file_id) {
-                    $tpl['ALT_HIGH1'] = ' alt-high';
-                }
-                
-                $altvars['file_type'] = FC_IMAGE_FOLDER;
-                if ($this->file_assoc->file_type == FC_IMAGE_FOLDER) {
-                    $tpl['ALT_HIGH2'] = ' alt-high';
+                    if ($this->file_assoc->file_type == FC_IMAGE_RANDOM && $this->current_folder->id == $this->file_assoc->file_id) {
+                        $tpl['ALT_HIGH1'] = ' alt-high';
+                    }
+                } else {
+                    $image1 = sprintf($image_string, $img_dir . $img1, $not_allowed, $img1_alt);
+                    $tpl['ALT1'] = $image1;
+                    $tpl['ALT_HIGH1'] = ' no-use';
                 }
 
-                $img2_title = dgettext('filecabinet', 'Show block of thumbnails');
-                $image2 = sprintf($image_string, $img_dir . $img2, $img2_title, $img2_alt);
-                $tpl['ALT2'] = PHPWS_Text::secureLink($image2, 'filecabinet', $altvars);
+                if (!$this->lock_type || in_array(FC_IMAGE_FOLDER, $this->lock_type)) {
+                    $altvars['file_type'] = FC_IMAGE_FOLDER;
+                    if ($this->file_assoc->file_type == FC_IMAGE_FOLDER) {
+                        $tpl['ALT_HIGH2'] = ' alt-high';
+                    }
+
+                    $img2_title = dgettext('filecabinet', 'Show block of thumbnails');
+                    $image2 = sprintf($image_string, $img_dir . $img2, $img2_title, $img2_alt);
+                    $tpl['ALT2'] = PHPWS_Text::secureLink($image2, 'filecabinet', $altvars);
+                } else {
+                    $image2 = sprintf($image_string, $img_dir . $img2, $not_allowed, $img2_alt);
+                    $tpl['ALT2'] = $image2;
+                    $tpl['ALT_HIGH2'] = ' no-use';
+                }
             } else {
                 $not_allowed = dgettext('filecabinet', 'Action not allowed - private folder');
                 $image1 = sprintf($image_string, $img_dir . $img1, $not_allowed, $img1_alt);
@@ -440,19 +501,27 @@ class FC_File_Manager {
 
             $img1     = 'all_files.png';
             $img1_alt = dgettext('filecabinet', 'All files icon');
+
             if ($this->current_folder->public_folder) {
-                $altvars = $this->linkInfo();
-                $altvars['id']        = $this->current_folder->id;
-                $altvars['fop']       = 'pick_file';
-                $altvars['file_type'] = FC_DOCUMENT_FOLDER;
-
-                $img1_title = dgettext('filecabinet', 'Show all files in the folder');
-                $image1 = sprintf($image_string, $img_dir . $img1, $img1_title, $img1_alt);
-
-                $tpl['ALT1'] = PHPWS_Text::secureLink($image1, 'filecabinet', $altvars);
-
-                if ($this->file_assoc->file_type == FC_DOCUMENT_FOLDER && $this->current_folder->id == $this->file_assoc->file_id) {
-                    $tpl['ALT_HIGH1'] = ' alt-high';
+                if (!$this->lock_type || in_array(FC_DOCUMENT_FOLDER, $this->lock_type)) {
+                    $altvars = $this->linkInfo();
+                    $altvars['id']        = $this->current_folder->id;
+                    $altvars['fop']       = 'pick_file';
+                    $altvars['file_type'] = FC_DOCUMENT_FOLDER;
+                    
+                    $img1_title = dgettext('filecabinet', 'Show all files in the folder');
+                    $image1 = sprintf($image_string, $img_dir . $img1, $img1_title, $img1_alt);
+                    
+                    $tpl['ALT1'] = PHPWS_Text::secureLink($image1, 'filecabinet', $altvars);
+                    
+                    if ($this->file_assoc->file_type == FC_DOCUMENT_FOLDER && $this->current_folder->id == $this->file_assoc->file_id) {
+                        $tpl['ALT_HIGH1'] = ' alt-high';
+                    }
+                } else {
+                    $not_allowed = dgettext('filecabinet', 'Action not allowed');
+                    $image1 = sprintf($image_string, $img_dir . $img1, $not_allowed, $img1_alt);
+                    $tpl['ALT1'] = $image1;
+                    $tpl['ALT_HIGH1'] = ' no-use';
                 }
             } else {
                 $not_allowed = dgettext('filecabinet', 'Action not allowed - private folder');
@@ -516,17 +585,17 @@ class FC_File_Manager {
             return $this->folderContentView();
         } else {
             switch ($this->lock_type) {
-            case FC_IMAGE:
+            case in_array(FC_IMAGE, $this->lock_type):
                 $this->folder_type = IMAGE_FOLDER;
                 return $this->folderView();
                 break;
 
-            case FC_MEDIA:
+            case in_array(FC_MEDIA, $this->lock_type):
                 $this->folder_type = MULTIMEDIA_FOLDER;
                 return $this->folderView();
                 break;
 
-            case FC_DOCUMENT:
+            case in_array(FC_DOCUMENT, $this->lock_type):
                 $this->folder_type = DOCUMENT_FOLDER;
                 return $this->folderView();
                 break;

@@ -31,4 +31,6 @@
 + Turning cacheOff on javascript popups. Allows thumbnail refresh.
 + Added logged error message if a folder can not be created.
 + Checking for multimedia directory creation again on update. Could be
-slipping by on some updates.
+  slipping by on some updates.
++ Developer can set images, documents, or media only on selection.
++ Resizing can be enforced by the developer.

@@ -15,6 +15,7 @@ class FC_File_Assoc {
      * the image's default link (if any) will be supressed
      */
     var $_link_image = true;
+    var $_allow_caption = true;
 
     function FC_File_Assoc($id=0)
     {
@@ -32,12 +33,36 @@ class FC_File_Assoc {
         }
     }
 
+    function getSource()
+    {
+        switch ($this->file_type) {
+        case FC_IMAGE:
+        case FC_IMAGE_RESIZE:
+            PHPWS_Core::initModClass('filecabinet', 'Image.php');
+            $image = new PHPWS_Image($this->file_id);
+            return $image;
+
+        case FC_DOCUMENT:
+            PHPWS_Core::initModClass('filecabinet', 'Document.php');
+            $document = new PHPWS_Document($this->file_id);
+            return $document;
+
+        case FC_MEDIA:
+            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+            $media = new PHPWS_Multimedia($this->file_id);
+            return $media;
+
+        default:
+            return null;
+        }
+    }
+
     function allowImageLink($link=true)
     {
         $this->_link_image = (bool)$link;
     }
 
-    function isImage($include_resize=false)
+    function isImage($include_resize=true)
     {
         if ($include_resize) {
             return ($this->file_type == FC_IMAGE || $this->file_type == FC_IMAGE_RESIZE);
@@ -59,6 +84,11 @@ class FC_File_Assoc {
     function isResize()
     {
         return ($this->file_type == FC_IMAGE_RESIZE);
+    }
+
+    function allowCaption($allow=true)
+    {
+        $this->_allow_caption = (bool)$allow;
     }
 
     function deadAssoc()
@@ -88,11 +118,6 @@ class FC_File_Assoc {
         }
     }
 
-    function setTag($tag)
-    {
-        $this->tag = htmlentities($tag, ENT_QUOTES, 'UTF-8');
-    }
-    
 
     function getTag($embed=false)
     {
@@ -108,7 +133,7 @@ class FC_File_Assoc {
         case FC_IMAGE:
             $image = new PHPWS_Image($this->file_id);
             if ($image->id) {
-                if (PHPWS_Settings::get('filecabinet', 'caption_images')) {
+                if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
                     return $image->captioned(null, !$this->_link_image);
                 } else {
                     return $image->getTag(null, !$this->_link_image);

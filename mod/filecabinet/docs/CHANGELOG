@@ -1,3 +1,11 @@
+7 February 2008
++ Added ability to force users to resize their images.
++ convertMediaToFileAssoc added.
++ Added getSource function to return an association's source object
++ Added ability for dev to suppress image captions.
++ imageOnly can now be set to suppress random and folder options
++ documentOnly can now suppress folder option
+
 6 February 2008
 + Combined and pared style sheets.
 + Fixed convert function to use proper variable

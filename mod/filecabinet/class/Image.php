@@ -403,8 +403,9 @@ class PHPWS_Image extends File_Common {
 
     function getManagerIcon($fmanager)
     {
+        $force = $fmanager->force_resize ? 'true' : 'false';
         if ( ($fmanager->max_width < $this->width) || ($fmanager->max_height < $this->height) ) {
-            return sprintf('<a href="#" onclick="oversized(%s); return false">%s</a>', $this->id, $this->getThumbnail());
+            return sprintf('<a href="#" onclick="oversized(%s, %s); return false">%s</a>', $this->id, $force, $this->getThumbnail());
         } else {
             $vars = $fmanager->linkInfo(false);
             $vars['fop']       = 'pick_file';
