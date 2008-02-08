@@ -77,13 +77,13 @@ class Blog {
             if ($this->image_link == 'default') {
                 return $file->getTag();
             }
-            
+
             $file->allowImageLink(false);
             if ($this->image_link == 'none') {
                 return $file->getTag();
             }
 
-            if ($file->isResize() && $this->image_link == 'parent') {
+            if ($this->image_link == 'parent') {
                 return $file->parentLinked();
             } elseif ($this->image_link == 'readmore') {
                 $url =  $this->getViewLink(true);
