@@ -64,12 +64,12 @@ class FC_File_Manager {
     {
         $locks = array(FC_IMAGE);
 
-        if ($random) {
-            $locks[] = FC_IMAGE_RANDOM;
-        }
-
         if ($folder) {
             $locks[] = FC_IMAGE_FOLDER;
+        }
+
+        if ($random) {
+            $locks[] = FC_IMAGE_RANDOM;
         }
 
         $this->lock_type = $locks;

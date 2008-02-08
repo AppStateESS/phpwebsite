@@ -96,11 +96,18 @@ class FC_File_Assoc {
 
     function parentLinked()
     {
-        if (!$this->_resize_parent) {
+        if ($this->file_type != FC_IMAGE_RESIZE || !$this->_resize_parent) {
+            $this->_link_image = true;
             return $this->getTag();
         }
 
-        return $this->_resize_parent->getJSView(false, $this->_source->getTag(null, false));
+        if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
+            $img = $this->_source->captioned(null, false);
+        } else {
+            $img = $this->_source->getTag(null, false);
+        }
+
+        return $this->_resize_parent->getJSView(false, $img);
     }
 
     function allowImageLink($link=true)
@@ -186,12 +193,29 @@ class FC_File_Assoc {
         switch ($this->file_type) {
         case FC_IMAGE:
         case FC_IMAGE_RANDOM:
-        case FC_IMAGE_RESIZE:
+            //        case FC_IMAGE_RESIZE:
             if ($this->_source->id) {
                 if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
-                    return $this->_source->captioned(null, !$this->_link_image);
+                    return $this->_source->captioned(null, $this->_link_image);
                 } else {
-                    return $this->_source->getTag(null, !$this->_link_image);
+                    return $this->_source->getTag(null, $this->_link_image);
+                }
+            } else {
+                $this->deadAssoc();
+            }
+            break;
+
+        case FC_IMAGE_RESIZE:
+            if ($this->_source->id) {
+                if ($this->_link_image && PHPWS_Settings::get('filecabinet', 'auto_link_parent')
+                    && empty($this->_source->url)) {
+                    return $this->parentLinked();
+                } else {
+                    if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
+                        return $this->_source->captioned(null, $this->_link_image);
+                    } else {
+                        return $this->_source->getTag(null, $this->_link_image);
+                    }
                 }
             } else {
                 $this->deadAssoc();
@@ -329,7 +353,6 @@ class FC_File_Assoc {
         $db = new PHPWS_DB('images');
         $db->addWhere('folder_id', $this->file_id);
         $result = $db->getObjects('PHPWS_Image');
-        test($result,1);
     }
 
     function delete()

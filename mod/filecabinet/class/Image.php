@@ -213,9 +213,9 @@ class PHPWS_Image extends File_Common {
     function captioned($id=null, $linked=true)
     {
         if (empty($this->description)) {
-            return $this->getTag();
+            return $this->getTag(null, $linked);
         }
-
+        
         $width = $this->width - 6;
 
         $tpl['IMAGE']   = $this->getTag($id, $linked);
@@ -248,6 +248,7 @@ class PHPWS_Image extends File_Common {
                 $image_tag = sprintf('<a href="%s">%s</a>', $this->url, $image_tag);
             }
         }
+
         return $image_tag;
     }
 
