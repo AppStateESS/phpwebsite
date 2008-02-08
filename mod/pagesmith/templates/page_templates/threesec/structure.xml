@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<template>
+<title>Three sections</title>
+<summary>Three sections with space for files.</summary>
+<thumbnail>threesec.png</thumbnail>
+<style>page.css</style>
+<structure>
+   <section>
+      <name>text1</name>
+      <type>text</type>
+   </section>
+   <section>
+      <name>image1</name>
+      <type>image</type>
+      <width>300</width>
+      <height>300</height>
+   </section>
+   <section>
+      <name>text2</name>
+      <type>text</type>
+   </section>
+   <section>
+      <name>image2</name>
+      <type>image</type>
+      <width>300</width>
+      <height>300</height>
+   </section>
+   <section>
+      <name>text3</name>
+      <type>text</type>
+   </section>
+   <section>
+      <name>image3</name>
+      <type>image</type>
+      <width>300</width>
+      <height>300</height>
+   </section>
+</structure>
+</template>

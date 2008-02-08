@@ -128,7 +128,11 @@ function pagesmith_update(&$content, $currentVersion)
         $content[] = '<pre>';
         Cabinet::convertImagesToFileAssoc('ps_block', 'type_id');
         $content[] = '--- Images converted for File Cabinet 2.0.0.';
-        pagesmithUpdateFiles(array('javascript/passinfo/head.js'), $content);
+        pagesmithUpdateFiles(array('javascript/passinfo/head.js',
+                                   'templates/page_templates/threesec/page.css',
+                                   'templates/page_templates/threesec/page.tpl',
+                                   'templates/page_templates/threesec/structure.xml',
+                                   'templates/page_templates/threesec/threesec.png'), $content);
 
         $content[] = '1.1.0 changes
 -------------

@@ -1,0 +1,32 @@
+div#threesec-image1 {
+   float : right;
+   display : inline;
+   margin : 0px 0px 10px 10px;
+}
+
+div#threesec-image2 {
+   float : left;
+   display : inline;
+   margin : 0px 10px 10px 0px;
+}
+
+div#threesec-image3 {
+   float : right;
+   display : inline;
+   margin : 0px 0px 10px 10px;
+}
+
+div#threesec-page {
+   background-color : white;
+   color : inherit;
+   padding : 10px;
+   overflow : hidden;
+}
+
+div#threesec-page h1 {
+   margin-bottom : 1em;
+}
+
+div#threesec-page div.section {
+   margin-bottom : 2em;
+}

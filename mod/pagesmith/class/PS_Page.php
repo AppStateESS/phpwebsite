@@ -216,6 +216,7 @@ class PS_Page {
             $section->pid = $this->id;
             PHPWS_Error::logIfError($section->save());
         }
+        PHPWS_Cache::remove($this->cacheKey());
     }
 
     function saveKey()
@@ -264,6 +265,11 @@ class PS_Page {
         }
     }
 
+    function cacheKey()
+    {
+        return 'pagesmith' . $this->id;
+    }
+
     function view()
     {
         if (Current_User::allow('pagesmith', 'edit_page', $this->id)) {
@@ -271,8 +277,7 @@ class PS_Page {
             MiniAdmin::add('pagesmith', $this->frontPageToggle());
         }
 
-        $key = 'pagesmith' . $this->id;
-        $content = PHPWS_Cache::get($key);
+        $content = PHPWS_Cache::get($this->cacheKey());
 
         $this->loadTemplate();
         $this->_tpl->loadStyle();

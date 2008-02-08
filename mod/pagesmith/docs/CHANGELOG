@@ -1,5 +1,13 @@
 Version 1.1.0
 ----------------------------------------------------------------
+8 Feb 2008
++ Fixed call to getFile instead of getTag
++ Saving a page deletes its cache key.
++ Added threesec template
++ Updated: templates/page_templates/threesec/page.css
+           "/page.tpl, "/structure.xml, "/threesec.png
+                                             
+
 6 February 2008
 + Pagesmith works with new File Cabinet
 

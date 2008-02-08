@@ -61,7 +61,7 @@ class PS_Block extends PS_Section {
             switch ($this->btype) {
             case 'image':
                 PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
-                $this->content = Cabinet::getFile($this->type_id);
+                $this->content = Cabinet::getTag($this->type_id);
             }
         }
         return $this->content;
