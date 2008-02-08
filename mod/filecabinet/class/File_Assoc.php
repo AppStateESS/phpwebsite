@@ -193,7 +193,6 @@ class FC_File_Assoc {
         switch ($this->file_type) {
         case FC_IMAGE:
         case FC_IMAGE_RANDOM:
-            //        case FC_IMAGE_RESIZE:
             if ($this->_source->id) {
                 if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
                     return $this->_source->captioned(null, $this->_link_image);
@@ -249,7 +248,7 @@ class FC_File_Assoc {
         }
         $tpl['ICON'] = '<img src="images/mod/filecabinet/file_manager/folder_contents.png" />';
         $tpl['DOWNLOAD'] = sprintf(dgettext('filecabinet', 'Download from %s'), $folder->title);
-        return PHPWS_Template::process($tpl, 'filecabinet', 'document_download.tpl');
+        return PHPWS_Template::process($tpl, 'filecabinet', 'multi_doc_download.tpl');
     }
 
     function randomImage()

@@ -57,5 +57,6 @@ define('FC_CLASSIFY_DIRECTORY', 'files/filecabinet/incoming/');
  * Placeholder graphic for File Manager form
  */
 define('FC_PLACEHOLDER', 'images/mod/filecabinet/file_select.png');
+define('FC_NO_RIGHTS', 'images/mod/filecabinet/no_file_select.png');
 
 ?>

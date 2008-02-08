@@ -147,7 +147,10 @@ class Folder {
 
     function imageUploadLink($button=false)
     {
-        $vars['address'] = 'index.php?module=filecabinet&iop=upload_image_form&folder_id=' . $this->id;
+        $vars['address'] = PHPWS_Text::linkAddress('filecabinet',
+                                                   array('iop'      =>'upload_image_form',
+                                                         'folder_id'=>$this->id),
+                                                   true);
         $vars['width']   = 600;
         $vars['height']  = 600;
         $vars['title']   = $vars['label']   = dgettext('filecabinet', 'Add image');
@@ -160,8 +163,9 @@ class Folder {
 
     function documentUploadLink($button=false)
     {
-        $vars['address'] = PHPWS_Text::linkAddress('filecabinet', array('dop'=>'upload_document_form',
-                                                                        'folder_id'=>$this->id),
+        $vars['address'] = PHPWS_Text::linkAddress('filecabinet', 
+                                                   array('dop'      =>'upload_document_form',
+                                                         'folder_id'=>$this->id),
                                                    true);
         $vars['width']   = 600;
         $vars['height']  = 600;
@@ -174,7 +178,10 @@ class Folder {
 
     function multimediaUploadLink($button=false)
     {
-        $vars['address'] = 'index.php?module=filecabinet&mop=upload_multimedia_form&folder_id=' . $this->id;
+        $vars['address'] = PHPWS_Text::linkAddress('filecabinet',
+                                                   array('mop'      =>'upload_multimedia_form',
+                                                         'folder_id'=>$this->id),
+                                                   true);
         $vars['width']   = 600;
         $vars['height']  = 600;
         $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add file');
@@ -186,7 +193,10 @@ class Folder {
 
     function embedLink($button=false)
     {
-        $vars['address'] = 'index.php?module=filecabinet&mop=edit_embed&folder_id=' . $this->id;
+        $vars['address'] = PHPWS_Text::linkAddress('filecabinet',
+                                                   array('mop'      =>'edit_embed',
+                                                         'folder_id'=>$this->id),
+                                                   true);
         $vars['width']   = 400;
         $vars['height']  = 200;
         $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add embedded');

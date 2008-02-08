@@ -525,14 +525,6 @@ class PHPWS_Image extends File_Common {
         }
 
         if ($write) {
-            if (!is_writable($this->file_directory)) {
-                return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::save', $this->file_directory);
-            }
-
-            if (!$this->id && is_file($this->getPath())) {
-                return PHPWS_Error::get(FC_DUPLICATE_FILE, 'filecabinet', 'PHPWS_Image::save', $this->getPath());
-            }
-
             $result = $this->write();
             if (PEAR::isError($result)) {
                 return $result;

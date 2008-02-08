@@ -4,6 +4,12 @@ Version 2.0.0
 + Broke out image resize so default parent link setting would work
   again. 
 + Caption function grabs tag with linked status sent now.
++ Permissions checked against file cabinet now for posting files.
++ Different template used for single document download
++ Directory checks for writing files combined into one File_Common
+  function. 
++ Different placeholder graphic for those without permissions.
+
 
 7 February 2008
 + Added ability to force users to resize their images.

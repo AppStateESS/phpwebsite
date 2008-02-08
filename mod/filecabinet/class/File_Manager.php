@@ -142,10 +142,17 @@ class FC_File_Manager {
     function placeHolder()
     {
         if (!$this->lock_type) {
-            return sprintf('<img src="%s" title="%s" />',
-                           FC_PLACEHOLDER,
-                           dgettext('filecabinet', 'Add an image, media, or document file.')
-                           );
+            if (Current_User::allow('filecabinet')) {
+                return sprintf('<img src="%s" title="%s" />',
+                               FC_PLACEHOLDER,
+                               dgettext('filecabinet', 'Add an image, media, or document file.')
+                               );
+            } else {
+                return sprintf('<img src="%s" title="%s" />',
+                               FC_NO_RIGHTS,
+                               dgettext('filecabinet', 'Add an image, media, or document file.')
+                               );
+            }
         }
 
         switch (1) {
@@ -187,8 +194,11 @@ class FC_File_Manager {
         // Copy of image manager's getClearLink
         $tpl['PLACEHOLDER'] = 'pl_' . $this->session_id;
         $tpl['HIDDEN_ID']   = 'h_' . $this->session_id;
-        $tpl['CLEAR_LINK']  = $this->clearLink();
-        $tpl['EDIT_LINK']   = $this->editLink();
+        if (Current_User::allow('filecabinet')) {
+            $tpl['CLEAR_LINK']  = $this->clearLink();
+            $tpl['EDIT_LINK']   = $this->editLink();
+        }
+
         $tpl['LINK_ID']     = 'l_' . $this->session_id;
         $tpl['ITEMNAME']    = $this->itemname;
 
@@ -254,18 +264,6 @@ class FC_File_Manager {
     function maxImageHeight($height)
     {
         $this->max_height = (int)$height;
-    }
-
-    /**
-     * Verifies the current user has at least minimum rights in the module
-     * calling the manager
-     */
-    function authenticate()
-    {
-        if (empty($this->module)) {
-            return false;
-        }
-        return Current_User::allow($this->module);
     }
 
     /**
@@ -565,7 +563,7 @@ class FC_File_Manager {
             }
         }
         
-        $tpl['ADD_FILE'] = $this->current_folder->uploadLink();
+        $tpl['ADD_FILE'] = $this->current_folder->uploadLink(true);
         $tpl['CLOSE'] = javascript('close_window');
         return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/folder_content_view.tpl');
     }

@@ -278,6 +278,15 @@ class File_Common {
      */
     function write($public=true)
     {
+        if (!is_writable($this->file_directory)) {
+            return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'File_Common::write', $this->file_directory);
+        }
+        
+        if (!$this->id && is_file($this->getPath())) {
+            $this->file_name = mktime() . $this->file_name;
+            PHPWS_Error::log(FC_DUPLICATE_FILE, 'filecabinet', 'File_Common::write', $this->getPath());
+        }
+
         if ($this->_upload) {
             $this->_upload->setName($this->file_name);
             $directory = preg_replace('@[/\\\]$@', '', $this->file_directory);

@@ -281,6 +281,31 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
     case version_compare($version, '2.0.0', '<'):
         $content[] = '<pre>';
+        
+        if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/templates/', $home_dir . 'templates/filecabinet/')) {
+            $content[] = '--- Copied complete templates directory.';
+        } else {
+            $content[] = '--- Could not copy complete templates directory. Use revert or copy manually.';
+        }
+
+        if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/img/', $home_dir . 'images/mod/filecabinet/')) {
+            $content[] = '--- Copied complete images directory.';
+        } else {
+            $content[] = '--- Could not copy complete images directory. Use revert or copy manually.';
+        }
+
+        if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/conf/', $home_dir . 'config/filecabinet/')) {
+            $content[] = '--- Copied complete configuration directory.';
+        } else {
+            $content[] = '--- Could not copy complete configuration directory. Use revert or copy manually.';
+        }
+
+        if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/javascript/', $home_dir . 'javascript/modules/filecabinet/')) {
+            $content[] = '--- Copied complete javascript directory.';
+        } else {
+            $content[] = '--- Could not copy complete javascript directory. Use revert or copy manually.';
+        }
+
         if (!PHPWS_DB::isTable('fc_converted')) {
             $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/fc_convert.sql');
             if (!PHPWS_Error::logIfError($result)) {

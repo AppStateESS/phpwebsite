@@ -1,6 +1,6 @@
 2.0.0 Changes
 ----------------------------------------------------------------------
-+ File Cabinet rewritten.
++ MAJOR REWRITE of File Cabinet functionality.
 + Added duration and embedded column to multimedia table.
 + File deletions moved to File_Common (commonDelete) to reduce overlap
 + Each file type deletes it file association as well.

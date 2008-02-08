@@ -192,14 +192,6 @@ class PHPWS_Document extends File_Common {
         }
 
         if ($write) {
-            if (!is_writable($this->file_directory)) {
-                return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Document::save', $this->file_directory);
-            }
-
-            if (!$this->id && is_file($this->getPath())) {
-                return PHPWS_Error::get(FC_DUPLICATE_FILE, 'filecabinet', 'PHPWS_Document::save', $this->getPath());
-            }
-
             $result = $this->write(false);
             if (PEAR::isError($result)) {
                 return $result;
@@ -291,17 +283,13 @@ class PHPWS_Document extends File_Common {
 
     function getTag()
     {
-        return $this->downloadLink();
-    }
-    
-    function downloadLink()
-    {
-        $tpl['files'][] = array('TITLE'=>$this->getViewLink(true), 'SIZE'=>$this->getSize(true));
-        $tpl['ICON'] = $this->getViewLink(true, 'icon');
+        $tpl['TITLE']    = $this->getViewLink(true);
+        $tpl['SIZE']     = $this->getSize(true);
+        $tpl['ICON']     = $this->getViewLink(true, 'icon');
         $tpl['DOWNLOAD'] = dgettext('filecabinet', 'Download file');
         return PHPWS_Template::process($tpl, 'filecabinet', 'document_download.tpl');
     }
-
+    
     function deleteAssoc()
     {
         $db = new PHPWS_DB('fc_file_assoc');

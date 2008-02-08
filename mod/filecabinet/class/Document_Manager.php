@@ -159,7 +159,7 @@ class FC_Document_Manager {
                 PHPWS_Error::log($result);
             }
             PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
-            FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->downloadLink());
+            FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
 
             if (!isset($_POST['im'])) {
                 javascript('close_refresh');

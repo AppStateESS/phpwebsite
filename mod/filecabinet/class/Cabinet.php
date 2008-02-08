@@ -1053,13 +1053,7 @@ class Cabinet {
             exit();
         }
 
-        $module = @$_REQUEST['module'];
-
-        if (!$module) {
-            return false;
-        }
-
-        return Current_User::allow($module);
+        return Current_User::allow('filecabinet');
     }
 
     function convertToFileAssoc($table, $column, $type)
