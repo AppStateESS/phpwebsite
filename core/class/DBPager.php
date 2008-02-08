@@ -415,7 +415,7 @@ class DBPager {
 
     function setEmptyMessage($message)
     {
-        $this->empty_message = strip_tags($message);
+        $this->empty_message = $message;
     }
 
     function addToggleFunction($function, $toggle=2) 
