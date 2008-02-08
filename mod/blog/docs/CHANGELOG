@@ -1,5 +1,8 @@
 Version 1.7.0
 ----------------------------------------------------------------
+8 Feb 2008
++ Fixed call to getImage.
+
 7 Feb 2008
 + If the link image url is blank, the link is reset to default.
 

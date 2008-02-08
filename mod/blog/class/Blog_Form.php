@@ -90,7 +90,6 @@ class Blog_Form {
                 $form->setDisabled('image_url', true);
             }
 
-
             PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('image_id', $blog->image_id);
             $manager->maxImageWidth(PHPWS_Settings::get('blog', 'max_width'));

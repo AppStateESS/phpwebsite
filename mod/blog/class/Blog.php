@@ -304,7 +304,7 @@ class Blog {
         $template['PUBLISHED_DATE'] = PHPWS_Time::getDTTime($this->create_date);
         $template['SUMMARY'] = PHPWS_Text::parseTag($this->getSummary(true));
         $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(true));
-        $template['IMAGE'] = $this->getImage();
+        $template['IMAGE'] = $this->getFile();
 
         $template['POSTED_BY'] = dgettext('blog', 'Posted by');
         $template['POSTED_ON'] = dgettext('blog', 'Posted on');
