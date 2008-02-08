@@ -2,7 +2,20 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
-7 February
+8 February 2008
++ DBPager : Included '.' as an allowed character if someone passes a
+  table.column mix.
++ Database 
+  o changed getTable Columns
+    - If the query contains multiple tables, columns from both are
+      included. Previously, only the first table was returned. 
+    - The column checks are made again if the tables have
+      changed. Previously it was assumed they would not change.
+  o isTableColumn now separates the table from the column name if a
+    table.column combination is sent to it.
++ Updated information in File_Manager doc.
+
+7 February 2008
 + Added File_Manager.txt document
 + Changed Image_Manager document to point to File_Manager.
 

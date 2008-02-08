@@ -322,9 +322,9 @@ class DBPager {
 
         foreach ($col_list as $column) {
             if (UTF8_MODE) {
-                $preg = '/[^\w\pL]/u';
+                $preg = '/[^\.\w\pL]/u';
             } else {
-                $preg = '/[^\w]/u';
+                $preg = '/[^\.\w]/u';
             }
 
             if (!preg_match($preg, $column) && $this->db->isTableColumn($column)) {

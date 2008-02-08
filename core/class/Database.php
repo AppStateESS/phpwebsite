@@ -261,29 +261,37 @@ class PHPWS_DB {
      */
     function getTableColumns($fullInfo=false)
     {
-        if (isset($this->_allColumns) && $fullInfo == false) {
-            return $this->_allColumns;
-        } elseif (isset($this->_columnInfo) && $fullInfo == true) {
-            return $this->_columnInfo;
+        static $table_check = null;
+
+        $table_compare = implode(':', $this->tables);
+
+        if (!$table_check || $table_check == $table_compare) {
+            if (isset($this->_allColumns) && $fullInfo == false) {
+                return $this->_allColumns;
+            } elseif (isset($this->_columnInfo) && $fullInfo == true) {
+                return $this->_columnInfo;
+            }
         }
 
-        $table = $this->tables[0];
-
-        if (!isset($table)) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::getTableColumns');
-        }
-
-        $table = $this->addPrefix($table);
-
-        $columns =  $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
-
-        if (PEAR::isError($columns)) {
-            return $columns;
-        }
-
-        foreach ($columns as $colInfo) {
-            $this->_columnInfo[$colInfo['name']] = $colInfo;
-            $this->_allColumns[] = $colInfo['name'];
+        $table_check = $table_compare;
+        foreach ($this->tables as $table) {
+            if (!isset($table)) {
+                return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::getTableColumns');
+            }
+            
+            $table = $this->addPrefix($table);
+            
+            $columns =  $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
+            
+            if (PEAR::isError($columns)) {
+                return $columns;
+            }
+            
+            foreach ($columns as $colInfo) {
+                $col_name = & $colInfo['name'];
+                $this->_columnInfo[$col_name] = $colInfo;
+                $this->_allColumns[$col_name] = $col_name;
+            }
         }
 
         if ($fullInfo == true) {
@@ -297,15 +305,18 @@ class PHPWS_DB {
      * Returns true is the columnName is contained in the
      * current table
      */
-    function isTableColumn($columnName)
+    function isTableColumn($column_name)
     {
         $columns = $this->getTableColumns();
-
         if (PEAR::isError($columns)) {
             return $columns;
         }
+        if (strpos($column_name, '.')) {
+            $a = explode('.', $column_name);
+            $column_name = array_pop($a);
+        }
 
-        return in_array($columnName, $columns);
+        return in_array($column_name, $columns);
     }
 
     function setMode($mode)

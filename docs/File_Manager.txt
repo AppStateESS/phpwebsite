@@ -65,15 +65,14 @@ images. They will also be able to pick random images or the image
 folder option unless you set the parameters to false. For example:
 
 $manager->imageOnly(true);         // Allow thumbnail folder, not random
-$manager->imageOnly(true, false);  // ditto above
 $manager->imageOnly(false, true);  // Allow random images, but not
                                    // thumbnail folder
 $manager->imageOnly(false, false); // Don't allow either random and folder
 
 
-
 $manager->documentOnly();
-
+Like imageOnly, documentOnly can be sent a 'false' parameter to
+prevent folder file listing.
 
 $manager->mediaOnly();
 
@@ -193,6 +192,13 @@ $image->getTag(null, false);
 
 Images can be set to show captions. If you want to suppress it, call
 $file->allowCaption(false)
+
+If you check to see if $file->isResize(), you may want to link the
+resized image to its parent. To do so call
+
+$file->parentLinked();
+
+instead of $file->getTag();
 
 
 Conclusion
