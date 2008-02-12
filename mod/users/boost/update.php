@@ -184,7 +184,7 @@ timeout INT NOT NULL default 0,
         $content[] = 'Creating users_banned table.';
         $db = new PHPWS_DB('users_banned');
         $db->addValue('banned_ip', 'char(15) unique');
-        PHPWS_Core::createTable();
+        $db->createTable();
 
     } // End of switch statement
 
