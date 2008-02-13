@@ -1,0 +1,62 @@
+Installing Fileinfo
+by Matthew McNaney
+
+Fileinfo is the php standard for mime file type identification. PHP no
+longer supports mime_content_type. Instead you need to go through a
+long process to install a library that isn't enabled in default
+distributions.
+
+File Cabinet will use fileinfo if it is installed. Otherwise it falls
+back to mime_content_type. If that function doesn't exist, Pear's
+compatibility function fills in by calling a shell function to the
+"file" command native to Unix. If you don't have any of the above, you
+can let File Cabinet guess the file type by the extension. Although
+mime typing is not 100% exact, the forementioned method is really
+dangerous. Rename virus.exe to nudity.jpg and let the fun begin.
+
+In any case, the following will try and help you get fileinfo
+installed. Just prior to writing this, I got it installed by putting
+together information from Google searches. You may end up doing the
+same in the end, but hopefully this will give you a launch point. This
+document is written from an Ubuntu viewpoint. Adjust accordingly.
+
+1) I installed Imagic:
+   sudo apt-get install libmagic-dev
+   
+   This may not be necessary but it is where I got started.
+
+2) I installed the php5-dev files:
+   sudo apt-get install php5-dev
+
+   I tried to install fileinfo but was warned pecl wouldn't work until
+   I installed...
+
+3) sudo apt-get install php-pear
+   phpWebSite uses its own pear libs so I never had this installed.
+   Now I can install fileinfo using pecl
+
+4) sudo pecl install fileinfo
+   Finally we are getting somewhere! I restarted apache though and
+   still couldn't call fileinfo functions. So on to
+
+5) I editted my php.ini file and added the following line to the end:
+   extension=fileinfo.so
+
+   Note that extension=imagick.so was already there.
+
+6) Restarted apache and fileinfo function kinda worked. I got this
+   error:
+   Failed to load magic database /etc/magic
+
+   Sounds almost sarcastic no?
+   So I look in /etc/ and there is a "magic" file but it is pretty
+   empty so I made a symbolic link:
+
+7) sudo ln -s /usr/share/file/magic magic.mime
+   Notice the ".mime" portion. Although the error message says it is
+   looking for a file named "magic", it is lying, it wants
+   "magic.mime"
+
+
+Good luck!
+   
