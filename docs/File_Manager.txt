@@ -201,6 +201,13 @@ $file->parentLinked();
 instead of $file->getTag();
 
 
+Caching
+--------------------
+The File Cabinet uses a mod specific style sheet. If you are caching
+your page views, this file may not get included.
+You can call CAbinet::fileStyle() to assure it.
+
+
 Conclusion
 --------------------
 Hopefully you and your users will find File Manager easy to use. If

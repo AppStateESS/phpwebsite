@@ -23,7 +23,8 @@ document is written from an Ubuntu viewpoint. Adjust accordingly.
 1) I installed Imagic:
    sudo apt-get install libmagic-dev
    
-   This may not be necessary but it is where I got started.
+   I believe this installs the magic database file you will need
+   later.
 
 2) I installed the php5-dev files:
    sudo apt-get install php5-dev

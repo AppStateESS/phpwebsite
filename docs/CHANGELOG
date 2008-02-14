@@ -2,6 +2,13 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+14 February 2008
++ File_types file now contains a list of know files types. Which files
+  are allowed by the system will be contained in File Cabinet.
++ Access added to core modules
++ fileinfo received information about first install.
++ Added note to File_Manager about caching.
+
 8 February 2008
 + DBPager
   o Included '.' as an allowed character if someone passes a

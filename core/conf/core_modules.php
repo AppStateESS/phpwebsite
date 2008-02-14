@@ -20,6 +20,7 @@ $core_modules = array('users',
                       'comments',
                       'search',
                       'miniadmin',
+                      'access'
                       );
 
 
