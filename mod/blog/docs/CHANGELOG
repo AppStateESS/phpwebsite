@@ -1,3 +1,8 @@
+19 February 2008
++ Blog can list entries by date (month, year, or day)
++ Using new rewrite url format.
++ Calling new Cabinet::fileStyle function in case blog is cached.
+
 Version 1.7.0
 ----------------------------------------------------------------
 8 Feb 2008

@@ -21,18 +21,55 @@ class Blog_User {
         MiniAdmin::add('blog', PHPWS_Text::secureLink(dgettext('blog', 'Blog list'), 'blog', $vars));
     }
 
+    function fillInForward()
+    {
+        if (@$_GET['var1'] == 'archive') {
+            if (isset($_GET['var2'])) {
+                $year = (int)$_GET['var2'];
+                if ($year > 3000 || $year < 1980) {
+                    return;
+                }
+                
+                if (isset($_GET['var3'])) {
+                    $month = (int)$_GET['var3'];
+                    if ($month > 13 || $month < 1) {
+                        return;
+                    }
+                    $_GET['m'] = & $month;
+                }
+                
+                if (isset($_GET['var4'])) {
+                    $day = (int)$_GET['var4'];
+                    if ($day > 31 || $day < 1) {
+                        return;
+                    }
+                    $_GET['d'] = & $day;
+                }
+                
+                $_GET['y'] = & $year;
+                $_REQUEST['action'] = 'view';
+            }
+        } else {
+            $_REQUEST['action'] = 'view_comments';
+            $_REQUEST['blog_id'] = (int)$_GET['var1'];
+        }
+    }
+
     function main()
     {
-        if (!isset($_REQUEST['blog_id']) && isset($_REQUEST['id'])) {
-            $blog = new Blog((int)$_REQUEST['id']);
-        } elseif (isset($_REQUEST['blog_id'])) {
+
+        if ($_GET['var1']) {
+            Blog_User::fillInForward();
+        }
+
+        if (isset($_REQUEST['blog_id'])) {
             $blog = new Blog((int)$_REQUEST['blog_id']);
         } else {
             $blog = new Blog();
         }
 
         if (!isset($_REQUEST['action'])) {
-            $action = 'view_comments';
+            $action = 'view';
         } else {
             $action = $_REQUEST['action'];
         }
@@ -42,12 +79,38 @@ class Blog_User {
             Layout::addStyle('blog');
             Layout::addPageTitle($blog->title);
             Blog_User::miniAdminList();
-            $content = $blog->view(TRUE, FALSE);
+            $content = $blog->view(true, false);
             break;
 
         case 'view':
-            $content = Blog_User::show();
-            Layout::add($content, 'blog', 'view', TRUE);
+            if (@$_GET['y']) {
+                $day   = 1;
+                $month = 1;
+                $year  = $_GET['y'];
+                if (@$_GET['m']) {
+                    $month = $_GET['m'];
+
+                    if (@$_GET['d']) {
+                        $day = $_GET['d'];
+                        $start_date = mktime(0,0,0, $month, $day, $year);
+                        $end_date   = mktime(23,59,59, $month, $day, $year);
+                    } else {
+                        $start_day = 1;
+                        $end_day   = (int)date('t', mktime(0,0,0, $month, 1, $year));
+                        $start_date = mktime(0,0,0, $month, 1, $year);
+                        $end_date   = mktime(0,0,0, $month, $end_day, $year);
+                    }
+                } else {
+                    $start_date = mktime(0,0,0, 1, 1, $year);
+                    $end_date   = mktime(0,0,0, 12, 31, $year);
+                }
+            } else {
+                $start_date = null;
+                $end_date   = null;
+            }
+
+            $content = Blog_User::show($start_date, $end_date);
+            Layout::add($content, 'blog', 'view', true);
             return;
             break;
             
@@ -147,38 +210,45 @@ class Blog_User {
         return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
     }
 
-    function totalEntries()
+    function totalEntries(&$db)
     {
-        $db = new PHPWS_DB('blog_entries');
-        $db->addWhere('approved', 1);
-        $db->addWhere('publish_date', mktime(), '<');
-        $db->addWhere('expire_date', mktime(), '>', 'and', 1);
-        $db->addWhere('expire_date', 0, '=', 'or', 1);
-        Key::restrictView($db, 'blog');
-        return $db->count();
+        $db->addColumn('id',null, null, true);
+        //        $db->setTestMode();
+        return $db->select('one');
     }
 
     function getEntries(&$db, $limit, $offset=0)
     {
+        $db->resetColumns();
+        $db->setLimit($limit, $offset);
+        $db->addOrder('sticky desc'); 
+        $db->addOrder('publish_date desc');
+        $db->loadClass('blog', 'Blog.php');
+        return $db->getObjects('Blog');
+    }
+
+    function show($start_date=null, $end_date=null)
+    {
+        Layout::addStyle('blog');
+        $db = new PHPWS_DB('blog_entries');
+
+        if ($start_date) {
+            $db->addWhere('publish_date', $start_date, '>=', 'and', 2);
+        }
+
+        if ($end_date) {
+            $db->addWhere('publish_date', $end_date, '<=', 'and', 2);
+        }
+
+
         $db->addWhere('approved', 1);
         $db->addWhere('publish_date', mktime(), '<');
         $db->addWhere('expire_date', mktime(), '>', 'and', 1);
         $db->addWhere('expire_date', 0, '=', 'or', 1);
         $db->setGroupConj(1, 'and');
-
-        $db->setLimit($limit, $offset);
-        $db->addOrder('sticky desc'); 
-        $db->addOrder('publish_date desc');
         Key::restrictView($db, 'blog');
-        $db->loadClass('blog', 'Blog.php');
-        return $db->getObjects('Blog');
-    }
 
-    function show()
-    {
-        Layout::addStyle('blog');
-
-        $total_entries = Blog_User::totalEntries();
+        $total_entries = Blog_User::totalEntries($db);
 
         $limit = PHPWS_Settings::get('blog', 'blog_limit');
         $page = @$_GET['page'];
@@ -203,10 +273,9 @@ class Blog_User {
             $content = PHPWS_Cache::get($key)) {
             // needed for filecabinet
             javascript('open_window');
+            Cabinet::fileStyle();
             return $content;
         }
-
-        $db = new PHPWS_DB('blog_entries');
 
         $result = Blog_User::getEntries($db, $limit, $offset);
 
