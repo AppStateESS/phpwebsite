@@ -20,8 +20,8 @@ define('COMMENT_ANONYMOUS_TAG', dgettext('comments', '(Anon)'));
 define('COMMENT_DATE_FORMAT', '%c');
 
 // Maximum dimensions of an user's avatar graphic
-define('COMMENT_MAX_AVATAR_WIDTH', 150);
-define('COMMENT_MAX_AVATAR_HEIGHT', 150);
+define('COMMENT_MAX_AVATAR_WIDTH', 80);
+define('COMMENT_MAX_AVATAR_HEIGHT', 80);
 
 
 /**

@@ -148,6 +148,19 @@ class Comments {
             }
             break;
 
+        case 'report_comment':
+            if (isset($_GET['cm_id'])) {
+                $cm_id = (int)$_GET['cm_id'];
+                if (!$_SESSION['Users_Reported_Comments'][$cm_id]) {
+                    $db = new PHPWS_DB('comments_items');
+                    $db->addWhere('id', $cm_id);
+                    $db->incrementColumn('reported');
+                    $_SESSION['Users_Reported_Comments'][$cm_id] = true;
+                }
+            }
+            exit();
+            break;
+
         case 'change_view':
             Comments::changeView();
             break;
@@ -276,7 +289,7 @@ class Comments {
     
         if (isset($_REQUEST['cm_parent'])) {
             $c_parent = new Comment_Item($_REQUEST['cm_parent']);
-            $form->addHidden('cm_parent', $c_parent->getId());
+            $form->addHidden('cm_parent', $c_parent->id);
             $form->addTplTag('PARENT_SUBJECT', $c_parent->subject);
             $form->addTplTag('PARENT_ENTRY', $c_parent->getEntry());
         }
@@ -296,7 +309,7 @@ class Comments {
 
         $form->addHidden('module', 'comments');
         $form->addHidden('user_action', 'save_comment');
-        $form->addHidden('thread_id',    $thread->getId());
+        $form->addHidden('thread_id',    $thread->id);
 
         $form->addText('cm_subject');
         $form->setLabel('cm_subject', dgettext('comments', 'Subject'));
@@ -417,7 +430,7 @@ class Comments {
         
         $thread = new Comment_Thread($comment->getThreadId());
         $tpl = $comment->getTpl($thread->allow_anon);
-        $tpl['CHILDREN'] = $thread->view($comment->getId());
+        $tpl['CHILDREN'] = $thread->view($comment->id);
         $content = PHPWS_Template::process($tpl, 'comments', COMMENT_VIEW_ONE_TPL);
         
         return $content;

@@ -1,3 +1,12 @@
+19 February 2008
++ Added report function to flag comments. No interface written to view
+  them yet.
++ Reduced default avatar size (update not required)
+
++ Updated: javascript/report/head.js (new directory)
++ templates/alt_view.tpl, templates/alt_view_one.tpl,
+  templates/view.tpl, templates/view_one.tpl
+
 30 January 2008
 + Creating unique index on comment_users (needed in update)
 + Fixed: Posting user infomration without avatar. Requires file

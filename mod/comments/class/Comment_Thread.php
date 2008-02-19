@@ -109,11 +109,6 @@ class Comment_Thread {
         $this->id = (int)$id;
     }
 
-    function getId()
-    {
-        return $this->id;
-    }
-
     function setSourceUrl($link)
     {
         $link = str_replace('&amp;', '&', $link);
@@ -207,6 +202,8 @@ class Comment_Thread {
 
         Layout::addStyle('comments');
         PHPWS_Core::initCoreClass('DBPager.php');
+        
+        javascript('ajax', $ajaxvars);
 
         $time_period = array('all'    => dgettext('comments', 'All'),
                              'today'  => dgettext('comments', 'Today'),

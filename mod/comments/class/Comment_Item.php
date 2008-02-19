@@ -80,11 +80,6 @@ class Comment_Item {
 	$this->id = (int)$id;
     }
 
-    function getId()
-    {
-	return $this->id;
-    }
-
     function setThreadId($thread_id)
     {
 	$this->thread_id = (int)$thread_id;
@@ -286,12 +281,14 @@ class Comment_Item {
 	$template['CREATE_TIME']     = $this->getCreateTime();
         $template['RELATIVE_CREATE'] = $this->getRelativeTime();
         if ($can_post) {
-            $template['QUOTE_LINK']	     = $this->quoteLink();
-            $template['REPLY_LINK']      = $this->replyLink();
+            $template['QUOTE_LINK']  = $this->quoteLink();
+            $template['REPLY_LINK']  = $this->replyLink();
+            $template['REPORT_LINK'] = $this->reportLink();
         }
 	$template['EDIT_LINK']	     = $this->editLink();
 	$template['DELETE_LINK']     = $this->deleteLink();
 	$template['VIEW_LINK']	     = $this->viewLink();
+
 
         if ($this->parent) {
             $template['RESPONSE_LABEL']  = dgettext('comments', 'In response to');
@@ -370,7 +367,7 @@ class Comment_Item {
 	    ) {
 	    $vars['user_action']   = 'post_comment';
 	    $vars['thread_id']	   = $this->thread_id;
-	    $vars['cm_id']	   = $this->getId();
+	    $vars['cm_id']	   = $this->id;
 	    return PHPWS_Text::moduleLink(dgettext('comments', 'Edit'), 'comments', $vars);
 	} else {
 	    return null;
@@ -381,7 +378,7 @@ class Comment_Item {
     {
 	if (Current_User::allow('comments', 'delete_comments')) {
 	    $vars['QUESTION'] = dgettext('comments', 'Are you sure you want to delete this comment?');
-	    $vars['ADDRESS'] = 'index.php?module=comments&amp;cm_id=' . $this->getId() . '&amp;admin_action=delete_comment&amp;authkey='
+	    $vars['ADDRESS'] = 'index.php?module=comments&amp;cm_id=' . $this->id . '&amp;admin_action=delete_comment&amp;authkey='
 		. Current_User::getAuthKey();
 	    $vars['LINK'] = dgettext('comments', 'Delete');
 	    return Layout::getJavascript('confirm', $vars);
@@ -395,7 +392,7 @@ class Comment_Item {
     {
 	$vars['user_action']   = 'post_comment';
 	$vars['thread_id']     = $this->thread_id;
-	$vars['cm_parent']     = $this->getId();
+	$vars['cm_parent']     = $this->id;
 	return PHPWS_Text::moduleLink(dgettext('comments', 'Quote'), 'comments', $vars);
     }
 
@@ -404,6 +401,16 @@ class Comment_Item {
 	$vars['user_action']   = 'post_comment';
 	$vars['thread_id']     = $this->thread_id;
 	return PHPWS_Text::moduleLink(dgettext('comments', 'Reply'), 'comments', $vars);
+    }
+
+    function reportLink()
+    {
+        $link = PHPWS_Text::linkAddress('comments', array('user_action'=>'report_comment',
+                                                          'cm_id' => $this->id));
+        return sprintf('<a href="#" onclick="loadRequester(\'%s\', \'%s\', \'void(0)\'); return false">%s</a>',
+                       $link,
+                       sprintf('alert(\\\'%s\\\')', addslashes(dgettext('comments', 'Comment reported'))),
+                       dgettext('comments', 'Report'));
     }
 
     function viewLink()
