@@ -8,10 +8,10 @@ PHPWS_Core::requireConfig('access');
 
 class Access_Shortcut {
     var $id       = 0;
-    var $keyword  = NULL;
-    var $url      = NULL;
-    var $active   = 0;
-    var $_error   = NULL;
+    var $keyword  = null;
+    var $url      = null;
+    var $active   = 1;
+    var $_error   = null;
 
     function Access_Shortcut($id=0)
     {
@@ -36,6 +36,20 @@ class Access_Shortcut {
         return $result;
     }
 
+    /**/
+    function loadGet()
+    {
+        $url = explode(':', $this->url);
+        $_REQUEST['module'] = $_GET['module'] = array_shift($url);
+        if (!empty($url)) {
+            $count = 1;
+            foreach ($url as $var) {
+                $_GET['var' . $count] = $var;
+            }
+            $count++;
+        }
+    }
+
     function postShortcut()
     {
         if (!isset($_POST['keyword'])) {
@@ -47,7 +61,7 @@ class Access_Shortcut {
                 return PHPWS_Error::get(SHORTCUT_MISSING_KEY, 'access', 'Shortcut::postShortcut');
             } else {
                 $key = new Key((int)$_POST['key_id']);
-                $this->setUrl($key->url);
+                $this->setUrl($key->module, $key->item_id);
             }
         }
         
@@ -59,9 +73,14 @@ class Access_Shortcut {
         return TRUE;
     }
 
-    function setUrl($url)
+    function setUrl($module, $id)
     {
-        $this->url = strip_tags($url);
+        $this->url = sprintf('%s:%s', $module, $id);
+    }
+
+    function getUrl()
+    {
+        return sprintf('<a href="%s.html">%s.html</a>', $this->keyword, $this->keyword);
     }
 
     function setKeyword($keyword)
@@ -110,7 +129,8 @@ class Access_Shortcut {
 
         $tags[] = $js_link;
 
-        $template['URL'] = sprintf('<a href="%s">%s</a>', $this->url, $this->url);
+        $template['URL'] = $this->getUrl();
+
         if ($this->active) {
             $template['ACTIVE'] = dgettext('access', 'Yes');
         } else {
@@ -133,10 +153,6 @@ class Access_Shortcut {
             return PHPWS_Error::get(SHORTCUT_MISSING_URL, 'access', 'Shortcut::save');
         }
 
-        if (PHPWS_Settings::get('access', 'allow_file_update')) {
-            $this->active = 1;
-        }
-
         $db = new PHPWS_DB('access_shortcuts');
         return $db->saveObject($this);
     }
@@ -146,7 +162,7 @@ class Access_Shortcut {
         if ($full) {
             $address[] = PHPWS_Core::getHomeHttp();
         }
-        $address[] = $this->keyword;
+        $address[] = $this->keyword . '.html';
 
         $url = implode('', $address);
         if ($linkable) {
@@ -156,13 +172,6 @@ class Access_Shortcut {
         }
     }
 
-    function getHtaccess()
-    {
-        return 'RewriteCond %{REQUEST_FILENAME} !-d' . "\n" . 
-            'RewriteCond %{REQUEST_FILENAME} !-f' . "\n" . 
-            sprintf('RewriteRule ^%s$ %s [L]', $this->keyword, $this->url);
-    }
-    
     function delete()
     {
         $db = new PHPWS_DB('access_shortcuts');

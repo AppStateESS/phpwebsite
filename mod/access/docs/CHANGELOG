@@ -1,3 +1,12 @@
+19 February 2008
++ Rewritten to work with new url rewriting scheme
++ .htaccess writing functions removed
++ allow/deny moved into module
++ Admin tab removed
++ Access now a core module
+
++ Updated: templates/forms/allow_deny.tpl, template/forms/shortcut_list.tpl
+
 Version 0.2.3 -- 25 July 2007
 -----------------------------------------------------------------------------------
 25 July 2007

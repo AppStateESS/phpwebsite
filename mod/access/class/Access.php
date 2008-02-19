@@ -60,13 +60,7 @@ class Access {
                     Access::sendMessage(dgettext('access', 'Unable to restore default .htaccess file.'), 'update');
                 }
                 break;
-
-            case 'admin':
-                PHPWS_Core::initModClass('access', 'Forms.php');
-                $title = dgettext('access', 'Administrator');
-                $content = Access_Forms::administrator();
-                break;
-
+                
             case 'post_deny_allow':
                 $result = Access::postDenyAllow();
                 if ($result == false) {
@@ -98,11 +92,6 @@ class Access {
                     $result = $shortcut->delete();
                     if (PEAR::isError($result)) {
                         Access::sendMessage(dgettext('access', 'An error occurred when deleting your shortcut.'), 'shortcuts');
-                    } elseif (PHPWS_Settings::get('access', 'allow_file_update')) {
-                        $result = Access::writeAccess();
-                        if (PEAR::isError($result)) {
-                            Access::sendMessage(dgettext('access', 'An error occurred when updating your .htaccess file.'), 'shortcuts');
-                        }
                     }
                 }
                 Access::sendMessage(dgettext('access', 'Shortcut deleted'), 'shortcuts');
@@ -115,20 +104,6 @@ class Access {
                 break;
 
 
-            case 'post_update_file':
-                $result = Access::writeAccess();
-                if ($result) {
-                    $message = dgettext('access', '.htaccess file written.');
-                } else {
-                    if (is_file('.htaccess')) {
-                        $message = dgettext('access', 'Unable to save .htaccess file.');
-                    } elseif (!is_writable(PHPWS_HOME_DIR)) {
-                        $message = dgettext('access', 'Cannot create a new .htaccess file because the installation directory is not writable.');
-                    }
-                }
-                Access::sendMessage($message, 'update');
-                break;
-
             case 'post_shortcut_list':
                 $message = NULL;
                 $result = Access::postShortcutList();
@@ -136,12 +111,6 @@ class Access {
                     $message = dgettext('access', 'An error occurred.') . ' ' . dgettext('access', 'Please check your logs.');
                 }
                 Access::sendMessage($message, 'shortcuts');
-                break;
-
-            case 'update':
-                PHPWS_Core::initModClass('access', 'Forms.php');
-                $title = dgettext('access', 'Update .htaccess file');
-                $content = Access_Forms::updateFile();
                 break;
 
             case 'edit_shortcut':
@@ -163,9 +132,9 @@ class Access {
                 $result = $shortcut->postShortcut();
                 $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', dgettext('access', 'Close window'));
                 if (PEAR::isError($result)) {
-                    $tpl['TITLE'] = dgettext('access', 'An error occurred:') . '<br />' . $result->getMessage() . '<br />';
-                    $tpl['CONTENT']  = sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], dgettext('access', 'Return to previous page.'));
-                    $content = PHPWS_Template::process($tpl, 'access', 'box.tpl');
+                    PHPWS_Core::initModClass('access', 'Forms.php');
+                    $message = $result->getMessage();
+                    $content = Access_Forms::shortcut_menu();
                 } elseif ($result == false) {
                     $tpl['TITLE'] = dgettext('access', 'A serious error occurred. Please check your error.log.') . '<br />';
                     $tpl['CONTENT'] = sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], dgettext('access', 'Return to previous page.'));
@@ -174,15 +143,18 @@ class Access {
                     $content = Access::saveShortcut($shortcut);
                 }
 
-                Layout::nakedDisplay($content);
+                $tpl['MESSAGE'] = $message;
+                $tpl['CONTENT'] = $content;
+                
+                Layout::nakedDisplay(PHPWS_Template::process($tpl, 'access', 'main.tpl'));
                 break;
-
             }
         }
 
         $tpl['TITLE']   = $title;
         $tpl['MESSAGE'] = $message;
         $tpl['CONTENT'] = $content;
+
         $main = PHPWS_Template::process($tpl, 'access', 'main.tpl');
 
         $panel->setContent($main);
@@ -193,65 +165,23 @@ class Access {
 
     function saveShortcut(&$shortcut)
     {
-        $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', dgettext('access', 'Close window'));
         $result = $shortcut->save();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             $content[] = dgettext('access', 'A serious error occurred. Please check your error.log.');
+            $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', dgettext('access', 'Close window'));
         } else {
-            if (Access::check_htaccess() && PHPWS_Settings::get('access', 'allow_file_update')) {
-                $result = Access::writeAccess();
-                if (!$result) {
-                    $tpl['TITLE'] = dgettext('access', 'An error occurred.');
-                    $content[] =  dgettext('access', 'Please check your error.log.');
-                } else {
-                    $tpl['TITLE'] = dgettext('access', 'Access has saved your shortcut.');
-                    $content[] = dgettext('access', 'You can access this item with the following link:');
-                    $content[] = $shortcut->getRewrite(true, false);
-                }
-            } else {
-                $tpl['TITLE'] = dgettext('access', 'Access has saved your shortcut.');
-                $content[] = dgettext('access', 'An administrator will need to approve it before it is functional.');
-                $content[] = dgettext('access', 'When active, you will be able to use the following link:');
-                $content[] = $shortcut->getRewrite(true, false);
-            }
+            $tpl['TITLE'] = dgettext('access', 'Access has saved your shortcut.');
+            $content[] = dgettext('access', 'You can access this item with the following link:');
+            $url = $shortcut->getRewrite(true, false);
+            $content[] = $url;
+            $js['location'] = $url;
+            javascript('close_refresh', $js);
+            $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="closeWindow(); return false" />', dgettext('access', 'Close window'));
         }
         $tpl['CONTENT'] = implode('<br />', $content);
+
         return PHPWS_Template::process($tpl, 'access', 'box.tpl');
-    }
-
-    function saveAdmin()
-    {
-        if (isset($_POST['shortcuts_enabled'])) {
-            PHPWS_Settings::set('access', 'shortcuts_enabled', 1);
-        } else {
-            PHPWS_Settings::set('access', 'shortcuts_enabled', 0);
-        }
-
-        if (isset($_POST['allow_deny_enabled'])) {
-            PHPWS_Settings::set('access', 'allow_deny_enabled', 1);
-        } else {
-            PHPWS_Settings::set('access', 'allow_deny_enabled', 0);
-        }
-        
-        if (isset($_POST['rewrite_engine'])) {
-            PHPWS_Settings::set('access', 'rewrite_engine', 1);
-        } else {
-            PHPWS_Settings::set('access', 'rewrite_engine', 0);
-        }
-
-        if (isset($_POST['allow_file_update'])) {
-            PHPWS_Settings::set('access', 'allow_file_update', 1);
-        } else {
-            PHPWS_Settings::set('access', 'allow_file_update', 0);
-        }
-
-        PHPWS_Settings::save('access');
-    }
-
-    function check_htaccess()
-    {
-        return is_writable('.htaccess');
     }
 
     function getAllowDenyList()
@@ -335,46 +265,17 @@ class Access {
 
     }
 
-    /**
-     * Checks several factors to determine if the user can write
-     * the .htaccess file
-     */
-    function writeAccess()
+    function loadShortcut($title)
     {
-        if (!PHPWS_Settings::get('access', 'allow_file_update') && 
-            !Current_User::authorized('access', 'admin_options')) {
-            Current_User::disallow();
-            exit();
+        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        $shortcut = new Access_Shortcut;
+        $db = new PHPWS_DB('access_shortcuts');
+        $db->addWhere('keyword', $title);
+        $db->setLimit(1);
+        if (!$db->loadObject($shortcut)) {
+            return;
         }
-
-        if (!is_writable('files/access/')) {
-            PHPWS_Error::log(ACCESS_FILES_DIR, 'access', 'Access::writeAccess'); 
-            return false;
-        }
-
-        if (!is_file('.htaccess')) {
-            PHPWS_Error::log(ACCESS_HTACCESS_MISSING, 'access', 'Access::writeAccess');
-        } else {
-            if (!@copy('./.htaccess', './files/access/htaccess_' . mktime())) {
-                PHPWS_Error::log(ACCESS_FILES_DIR, 'access', 'Access::writeAccess'); 
-                return false;
-            }
-        }
-
-        $allow_deny = Access::getAllowDenyList() . "\n";
-        $rewrite =  Access::getRewrite() . "\n";
-
-        $filename = PHPWS_HOME_DIR . '.htaccess';
-
-        $result = @file_put_contents($filename, $allow_deny . $rewrite);
-        if (!$result) {
-            PHPWS_Error::log(ACCESS_HTACCESS_WRITE, 'access', 'Access::writeAccess'); 
-            return false;
-        }
-
-        return true;
     }
-
 
     function shortcut(&$key)
     {
@@ -389,44 +290,19 @@ class Access {
     }
 
 
-    function getRewrite()
-    {
-        if (PHPWS_Settings::get('access', 'rewrite_engine')) {
-            $content[] = 'RewriteEngine On';
-            $content[] = '';
-            $content[] = Access::listShortcuts();
-            $content[] = DEFAULT_CONDITION;
-            $content[] = DEFAULT_REWRITE_1;
-            $content[] = DEFAULT_CONDITION;
-            $content[] = DEFAULT_REWRITE_2;
-
-            return implode("\n", $content) . "\n";
-        } else {
-            return "RewriteEngine Off\n";
-        }
-    }
-
     function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link['link'] = 'index.php?module=access';
 
-        if (MOD_REWRITE_ENABLED && Access::check_htaccess()) {
+        if (MOD_REWRITE_ENABLED) {
             $link['title'] = dgettext('access', 'Shortcuts');
             $tabs['shortcuts'] = $link;
         }
 
         if (Current_User::allow('access', 'admin_options')) {
-            if (Access::check_htaccess()) {
-                $link['title'] = dgettext('access', 'Allow/Deny');
-                $tabs['deny_allow'] = $link;
-            }
-
-            $link['title'] = dgettext('access', 'Administrator');
-            $tabs['admin'] = $link;
-
-            $link['title'] = dgettext('access', 'Update');
-            $tabs['update'] = $link;
+            $link['title'] = dgettext('access', 'Allow/Deny');
+            $tabs['deny_allow'] = $link;
         }
  
         $panel = new PHPWS_Panel('access_panel');
@@ -438,28 +314,6 @@ class Access {
 
         $panel->setModule('access');
         return $panel;
-
-    }
-
-    function listShortcuts()
-    {
-        if (!PHPWS_Settings::get('access', 'shortcuts_enabled')) {
-            return null;
-        }
-
-        $shortcuts = Access::getShortcuts(true);
-
-        if (PEAR::isError($shortcuts)) {
-            PHPWS_Error::log($shortcuts);
-            return NULL;
-        } elseif (empty($shortcuts)) {
-            return NULL;
-        } else {
-            foreach ($shortcuts as $sc) {
-                $sc_list[] = $sc->getHtaccess();
-            }
-            return implode("\n", $sc_list);
-        }
 
     }
 
@@ -532,11 +386,6 @@ class Access {
         if (PEAR::isError($result)) {
             return $result;
         }
-
-        if (PHPWS_Settings::get('access', 'allow_file_update')) {
-            return Access::writeAccess();
-        }
-
     }
 
     function postDenyAllow()
@@ -547,6 +396,14 @@ class Access {
         }
 
         PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+
+        if (@$_POST['allow_deny_enabled']) {
+            PHPWS_Settings::set('access', 'allow_deny_enabled', 1);
+        } else {
+            PHPWS_Settings::set('access', 'allow_deny_enabled', 0);
+        }
+
+        PHPWS_Settings::save('access');
 
         if (isset($_POST['add_allow_address']) && !empty($_POST['allow_address'])) {
             $allow = new Access_Allow_Deny;
@@ -638,5 +495,80 @@ class Access {
         }
 
         return true;
+    }
+
+    function forward()
+    {
+        PHPWS_Core::initModClass('access', 'Access.php');
+        $db = new PHPWS_DB('access_shortcuts');
+        $db->addWhere('keyword', $GLOBALS['Forward']);
+        $db->setLimit(1);
+        $scl = $db->getObjects('Access_Shortcut');
+        if (@$sc = $scl[0]) {
+            $sc->loadGet();
+        }
+    }
+
+    function allowDeny()
+    {
+        if (!PHPWS_Settings::get('access', 'allow_deny_enabled')) {
+            $_SESSION['Access_Allow_Deny'] = true;
+            return;
+        }
+
+        $address = & $_SERVER['REMOTE_ADDR'];
+        $address = Access::inflateIp($address);
+
+        $allow_all = PHPWS_Settings::get('access', 'allow_all');
+        $deny_all  = PHPWS_Settings::get('access', 'deny_all');
+
+        $db = new PHPWS_DB('access_allow_deny');
+        $db->addWhere('active', 1);
+        $db->addColumn('allow_or_deny');
+        $db->addColumn('ip_address');
+        $db->setIndexBy('allow_or_deny');
+        $perms = $db->select('col');
+
+        if ($allow_all || (!empty($perms[1]) && Access::comparePermissions($perms[1], $address))) {
+             $_SESSION['Access_Allow_Deny'] = true;
+            return;
+        } 
+        
+        if ($deny_all || (!empty($perms[0]) && Access::comparePermissions($perms[0], $address))) {
+             $_SESSION['Access_Allow_Deny'] = false;
+            return;
+        }
+ 
+        $_SESSION['Access_Allow_Deny'] = true;
+        return;
+    }
+
+    function comparePermissions($permission_array, $ip)
+    {
+        foreach ($permission_array as $ip_compare) {
+            $ip_compare = Access::inflateIp($ip_compare);
+            $ip_compare = str_replace('.', '\.', $ip_compare);
+            if (preg_match("/^$ip_compare/", $ip)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function inflateIp($address)
+    {
+        $i = explode('.', $address);
+        foreach ($i as $sub) {
+            $subint = (int)$sub;
+            $newip[] = str_pad((string)$subint, 3, '0', STR_PAD_LEFT);
+        }
+
+        return implode('.', $newip);
+    }
+    
+    function denied()
+    {
+        $message = PHPWS_Settings::get('access', dgettext('access', 'You are denied access to this site.'));
+        Layout::nakedDisplay($message, dgettext('access', 'Sorry'));
     }
 }

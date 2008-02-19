@@ -101,6 +101,15 @@ function access_update(&$content, $version)
   is deleted. Thanks singletrack
 + Fixed bug #1690544: If the .htaccess file is not writable or
   missing, give the user a warning message.</pre>';
+
+    case version_compare($version, '1.0.0', '<'):
+        $content[] = '<pre>';
+        $content[] = '1.0.0 changes
+---------------
++ Rewritten for phpwebsite 1.5.0 changes.
+</pre>';
+
+
     }
 
     return true;

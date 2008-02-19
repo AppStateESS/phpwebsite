@@ -1,4 +1,5 @@
 {START_FORM}
+<p>{ALLOW_DENY_ENABLED} {ALLOW_DENY_ENABLED_LABEL} {GO}</p>
 <h2>{ALLOW_TITLE}</h2>
 <div class="align-center">{ALLOW_ADDRESS} {ADD_ALLOW_ADDRESS}</div>
 <table cellpadding="4" width="99%">

@@ -5,8 +5,4 @@ RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^([a-z0-9]+)/([a-z0-9]+)/?$ index.php?module=$1&id=$2 [L,NC]
-
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^([a-z0-9]+)/([a-z0-9]+)/([a-z0-9]+)/?$ index.php?module=$1&id=$2&page=$3 [L,NC]
+RewriteRule ^.*$ index.php [L,NC]

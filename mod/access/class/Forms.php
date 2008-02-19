@@ -29,7 +29,6 @@ class Access_Forms {
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_shortcut_list');
 
-
         $options['none'] = '';
         if (Current_User::allow('access', 'admin_options')) {
             $options['active'] = dgettext('access', 'Activate');
@@ -41,7 +40,6 @@ class Access_Forms {
 
         $page_tags = $form->getTemplate();
 
-        $page_tags['KEYWORD_LABEL']  = dgettext('access', 'Keywords');
         $page_tags['URL_LABEL']      = dgettext('access', 'Url');
         $page_tags['ACTIVE_LABEL'] = dgettext('access', 'Active?');
         $page_tags['ACTION_LABEL']   = dgettext('access', 'Action');
@@ -60,118 +58,6 @@ class Access_Forms {
         return $content;
     }
 
-    function administrator()
-    {
-        if (!Current_User::allow('access', 'admin_options')) {
-            Current_User::disallow();
-            return;
-        }
-        if (!MOD_REWRITE_ENABLED) {
-            $content[] = dgettext('access', 'You do not have mod rewrite enabled.');
-            $content[] = dgettext('access', 'Open your config/core/config.php file in a text editor.');
-            $content[] = dgettext('access', 'Set your "MOD_REWRITE_ENABLED" define equal to TRUE.');
-            return implode('<br />', $content);
-        } elseif (!Access::check_htaccess()) {
-            if (!is_file('.htaccess')) {
-                $content[] = dgettext('access', 'Your <b>.htaccess</b> file does not exist.');
-                $content[] = dgettext('access', 'Go to the Update tab and try to create a new file.');
-            } else {
-                $content[] = dgettext('access', 'Your <b>.htaccess</b> file is not writable.');
-                $content[] = dgettext('access', 'Look in your installation directory and give Apache write access.');
-            }
-            return implode('<br />', $content);
-        }
-
-        $form = new PHPWS_Form;
-        $form->addHidden('module', 'access');
-        $form->addHidden('command', 'post_admin');
-
-        $form->addCheckbox('rewrite_engine', 1);
-        $form->setLabel('rewrite_engine', dgettext('access', 'Rewrite engine on'));
-        if (PHPWS_Settings::get('access', 'rewrite_engine')) {
-            $form->setMatch('rewrite_engine', 1);
-        }
-
-        $form->addCheckbox('shortcuts_enabled', 1);
-        $form->setLabel('shortcuts_enabled', dgettext('access', 'Shortcuts enabled'));
-        if (PHPWS_Settings::get('access', 'shortcuts_enabled')) {
-            $form->setMatch('shortcuts_enabled', 1);
-        }
-
-        $form->addCheckbox('allow_deny_enabled', 1);
-        $form->setLabel('allow_deny_enabled', dgettext('access', 'Allow/Deny enabled'));
-        if (PHPWS_Settings::get('access', 'allow_deny_enabled')) {
-            $form->setMatch('allow_deny_enabled', 1);
-        }
-
-
-        $form->addCheckBox('allow_file_update', 1);
-        $form->setLabel('allow_file_update', dgettext('access', 'Allow file update'));
-        if (PHPWS_Settings::get('access', 'allow_file_update')) {
-            $form->setMatch('allow_file_update', 1);
-        }
-
-
-        $form->addSubmit(dgettext('access', 'Save settings'));
-        $template = $form->getTemplate();
-
-        $template['MOD_REWRITE_LABEL'] = dgettext('access', 'Mod Rewrite options');
-        $template['HTACCESS_LABEL'] = dgettext('access', '.htaccess file options');
-
-        return PHPWS_Template::process($template, 'access', 'forms/administrator.tpl');
-    }
-
-
-    function updateFile()
-    {
-        if (!Current_User::allow('access', 'admin_options')) {
-            Current_User::disallow();
-            return;
-        }
-
-        $form = new PHPWS_Form;
-        $form->addHidden('module', 'access');
-        $form->addHidden('command', 'post_update_file');
-        $form->addSubmit(dgettext('access', 'Write .htaccess file'));
-
-        $question = dgettext('access', 'Are you sure you want to restore the default .htaccess file?');
-        $link = PHPWS_Text::linkAddress('access', array('command'=>'restore_default'), true);
-        
-        javascript('confirm');
-        $form->addButton('restore', dgettext('access', 'Restore default .htaccess'));
-        $form->setExtra('restore', sprintf('onclick="confirm_link(\'%s\', \'%s\')"',
-                                           $question, $link));
-
-        $template = $form->getTemplate();
-
-        $template['INFO'] = dgettext('access', 'Your .htaccess file will contain the below:');
-
-        $allow_deny = Access::getAllowDenyList();
-        $template['HTACCESS'] = $allow_deny;
-        $template['HTACCESS'] .= Access::getRewrite();
-
-        $template['HTACCESS'] = str_replace('{', '&#123;', $template['HTACCESS']);
-        $template['HTACCESS'] = str_replace('}', '&#125;', $template['HTACCESS']);
-
-        if (is_file(PHPWS_HOME_DIR . '.htaccess')) {
-            $template['CURRENT'] = file_get_contents(PHPWS_HOME_DIR . '.htaccess');
-        } else {
-            $template['CURRENT'] = dgettext('access', '.htaccess file is currently absent.');
-            if (!is_writable(PHPWS_HOME_DIR)) {
-                $template['CURRENT']  .= '<br />' . dgettext('access', 'Your installation directory must be writable if you want to create a new .htaccess file.');
-            }
-        }
-        $template['CURRENT_LABEL'] = dgettext('access', 'Current .htaccess file');
-
-        $template['CURRENT'] = str_replace('{', '&#123;', $template['CURRENT']);
-        $template['CURRENT'] = str_replace('}', '&#125;', $template['CURRENT']);
-
-
-        $content = PHPWS_Template::process($template, 'access', 'forms/update_file.tpl');
-        return $content;
-    }
-
-
     function denyAllowForm()
     {
         if (!Current_User::allow('access', 'admin_options')) {
@@ -184,6 +70,11 @@ class Access_Forms {
         $form = new PHPWS_Form('allow_deny');
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_deny_allow');
+
+        $form->addCheck('allow_deny_enabled', 1);
+        $form->setMatch('allow_deny_enabled', PHPWS_Settings::get('access', 'allow_deny_enabled'));
+        $form->setLabel('allow_deny_enabled', dgettext('access', 'Allow/Deny enabled'));
+        $form->addSubmit('go', dgettext('access', 'Go'));
 
         $result = Access::getAllowDeny();
         if (PEAR::isError($result)) {
@@ -293,17 +184,16 @@ class Access_Forms {
         $template['IP_ADDRESS_LABEL'] = dgettext('access', 'IP Address');
         $template['WARNING']          = dgettext('access', 'Remember to "Update" your access file when finished changing IP rules.');
 
-
         return PHPWS_Template::process($template, 'access', 'forms/allow_deny.tpl');
     }
 
     function shortcut_menu()
     {
         PHPWS_Core::initModClass('access', 'Shortcut.php');
-        @$sc_id = $_GET['sc_id'];
+        @$sc_id = $_REQUEST['sc_id'];
 
         if (!$sc_id) {
-            @$key_id = $_GET['key_id'];
+            @$key_id = $_REQUEST['key_id'];
             if (!$key_id) {
                 javascript('close_window');
                 return;
