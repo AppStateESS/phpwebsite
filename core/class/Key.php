@@ -814,6 +814,23 @@ class Key {
         return $db->select('col');
     }
 
+    function getKey($module, $item_id, $item_name=null)
+    {
+        $key = new Key;
+        if (empty($item_name)) {
+            $item_name = $module;
+        }
+        $db = new PHPWS_DB('phpws_key');
+        $db->addWhere('item_id', (int)$item_id);
+        $db->addWhere('module', $module);
+        $db->addWhere('item_name', $item_name);
+        if ($db->loadObject($key)) {
+            return $key;
+        } else {
+            return false;
+        }
+    }
+
 }
 
 ?>

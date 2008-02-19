@@ -215,6 +215,16 @@ To get this:
 You would need to set the button's label (and add breaks in the
 template). That is covered in the "Setting Labels" section.
 
+Update: You can send an associative array if you use addRadioAssoc
+instead.
+
+$beverage = array('pepsi'=>'Pepsi-Cola', 'milk'=>'Moo Juice',
+                  'h20'=>'Water');
+$form->addRadioAssoc('beverage', $beverage);
+
+This function will send the keys to addRadio and the values to
+setLabel.
+
 
 check | checkbox
 Creates an input type "checkbox".
@@ -246,6 +256,15 @@ confused otherwise.
 Note: Like the radio button above, you need to set the labels for the
 text next to the check box.
 
+Update: You can send an associative array if you use addCheckAssoc
+instead.
+
+$beverage = array('pepsi'=>'Pepsi-Cola', 'milk'=>'Moo Juice',
+                  'h20'=>'Water');
+$form->addCheckAssoc('beverage', $beverage);
+
+This function will send the keys to addCheck and the values to
+setLabel.
 
 
 hidden

@@ -51,7 +51,8 @@ class PHPWS_Text {
         $this->setText($text, $encoded);
     }
 
-    function decodeText($text) {
+    function decodeText($text)
+    {
         if (version_compare(phpversion(), '5.0.0', '>=')) {
             return html_entity_decode($text, ENT_QUOTES, 'UTF-8');
         } else {
@@ -86,7 +87,8 @@ class PHPWS_Text {
      * @author Matthew McNaney <mcnaney at gmail dot com>
      */
 
-    function decode_entities($text, $quote_style = ENT_COMPAT) {
+    function decode_entities($text, $quote_style = ENT_COMPAT)
+    {
         if (!function_exists('html_entity_decode')) {
             $text = html_entity_decode($text, $quote_style, 'ISO-8859-1'); // NOTE: UTF-8 does not work!
         }
@@ -226,7 +228,8 @@ class PHPWS_Text {
                             $text);
     }
 
-    function encodeXHTML($text){
+    function encodeXHTML($text)
+    {
         $xhtml['™']    = '&trade;';
         $xhtml['•']    = '&bull;';
         $xhtml['°']    = '&deg;';
@@ -257,7 +260,8 @@ class PHPWS_Text {
      * @return string Parsed text
      * @access public
      */
-    function profanityFilter($text) {
+    function profanityFilter($text)
+    {
         if (!is_string($text)) {
             return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'PHPWS_Text::profanityFilter');
         }
@@ -280,7 +284,8 @@ class PHPWS_Text {
      * @return array   $text_array Array of sentences
      * @access public
      */
-    function sentence($text, $stripNewlines = FALSE){
+    function sentence($text, $stripNewlines = FALSE)
+    {
         if (!is_string($text)) {
             return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'PHPWS_Text::sentence');
         }
@@ -331,7 +336,8 @@ class PHPWS_Text {
         return $text;
     }
 
-    function parseInput($text, $encode=ENCODE_PARSED_TEXT){
+    function parseInput($text, $encode=ENCODE_PARSED_TEXT)
+    {
         $text = trim($text);
 
         if (MAKE_ADDRESSES_RELATIVE) {
@@ -384,7 +390,8 @@ class PHPWS_Text {
      * @return boolean TRUE on valid input, FALSE on invalid input
      * @access public
      */
-    function isValidInput($userEntry, $type=NULL) {
+    function isValidInput($userEntry, $type=NULL)
+    {
         if (empty($userEntry) || !is_string($userEntry)) return FALSE;
 
         switch ($type) {
@@ -428,29 +435,28 @@ class PHPWS_Text {
      * Creates a mod_rewrite link that can be parsed by Apache
      *
      */
-    function rewriteLink($subject, $module, $id, $page=NULL)
+    function rewriteLink($subject)
     {
-        if ( preg_match('/\W/', $module) ||
-             preg_match('/\W/', $id) ||
-             (!empty($page) && preg_match('/\W/', $page))
-             ) {
-            return NULL;
+        if (func_num_args() < 2) {
+            return null;
         }
-            
+        $vars = func_get_args();
+        unset($vars[0]);
 
-        if ((bool)MOD_REWRITE_ENABLED == FALSE) {
-            $vars['id'] = $id;
-            if ($page) {
-                $vars['page'] = $page;
-            }
-
-            return PHPWS_Text::moduleLink($subject, $module, $vars);
-        } else {
-            if ($page) {
-                return sprintf('<a href="%s/%s/%s">%s</a>', $module, $id, $page, $subject);
+        if (!MOD_REWRITE_ENABLED) {
+            $count = 1;
+            $module = array_shift($vars);
+            if (!empty($vars)) {
+                foreach ($vars as $getvar) {
+                    $modvar['var' . $count] = $getvar;
+                    $count++;
+                }
             } else {
-                return sprintf('<a href="%s/%s">%s</a>', $module, $id, $subject);
+                $modvar = null;
             }
+            return PHPWS_Text::moduleLink($subject, $module, $modvar);
+        } else {
+            return sprintf('<a href="%s">%s</a>', implode('/', $vars), $subject);
         }
     }
 
@@ -472,7 +478,11 @@ class PHPWS_Text {
     /**
      * Returns a module link with the authkey attached
      */
-    function secureLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL, $class_name=null){
+    function secureLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL, $class_name=null)
+    {
+        if (!class_exists('Current_User')) {
+            return null;
+        }
         if (Current_User::isLogged()) {
             $getVars['authkey'] = Current_User::getAuthKey();
         }
@@ -491,8 +501,9 @@ class PHPWS_Text {
      * @param boolean add_base    If true, add the site url to the address
      * @param boolean convert_amp If true, use "&amp;" instead of "&"
      */
-    function linkAddress($module=NULL, $getVars=NULL, $secure=FALSE, $add_base=FALSE, $convert_amp=TRUE){
-        if (Current_User::isLogged() && $secure) {
+    function linkAddress($module=NULL, $getVars=NULL, $secure=FALSE, $add_base=FALSE, $convert_amp=TRUE)
+    {
+        if (class_exists('Current_User') && Current_User::isLogged() && $secure) {
             $getVars['authkey'] = Current_User::getAuthKey();
         }
 
@@ -538,7 +549,8 @@ class PHPWS_Text {
      * @param string class_name String added to css class 
      * @return string The complated link.
      */
-    function moduleLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL, $class_name=null){
+    function moduleLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL, $class_name=null)
+    {
         $link[] = '<a ';
 
         if (isset($title))
@@ -573,7 +585,8 @@ class PHPWS_Text {
      * @return string $link Appended string
      * @access public
      */
-    function checkLink($link, $ssl=FALSE){
+    function checkLink($link, $ssl=FALSE)
+    {
         if (!stristr($link, '://')) {
             if ($ssl) {
                 return 'https://'.$link;
@@ -593,7 +606,8 @@ class PHPWS_Text {
      * @return boolean TRUE on success, FALSE on failure
      * @access public
      */
-    function checkUnslashed($text){
+    function checkUnslashed($text)
+    {
         if (preg_match("/[^\\\]+[\"']/", $text))
             return TRUE;
         else
@@ -608,7 +622,8 @@ class PHPWS_Text {
      * @return string $text Parsed text
      * @access public
      */
-    function stripSlashQuotes($text){
+    function stripSlashQuotes($text)
+    {
         $text = str_replace("\'", "'", $text);
         $text = str_replace("\\\"", "\"", $text);
         return $text;
@@ -618,7 +633,8 @@ class PHPWS_Text {
     /**
      * Makes links relative to home site
      */
-    function makeRelative(&$text, $prefix=true, $inlink_only=false){
+    function makeRelative(&$text, $prefix=true, $inlink_only=false)
+    {
         $address = addslashes(PHPWS_Core::getHomeHttp());
         if ($prefix) {
             $pre = './';
@@ -714,7 +730,8 @@ class PHPWS_Text {
      * @modified lorecarra at postino dot it
      * @modified Matt McNaney <matt at tux dot appstate dot edu>
      */
-    function xml2php($file, $level = 0) {
+    function xml2php($file, $level = 0)
+    {
         $xml_parser = xml_parser_create();
         $contents = @file_get_contents($file);
         if (!$contents) {
@@ -734,7 +751,8 @@ class PHPWS_Text {
      *
      * @author Matt McNaney <matt at tux dot appstate dot edu>
      */
-    function _orderXML(&$arr_vals) {
+    function _orderXML(&$arr_vals)
+    {
         if (empty($arr_vals)) {
             return NULL;
         }

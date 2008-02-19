@@ -1,5 +1,5 @@
 function loadRequester(file_directory, success_function, failure_function) {
-    if (!file_directory || !success || !failure) {
+    if (!file_directory || !success_function || !failure_function) {
         return false;
     }
      if (requester != null && requester.readyState != 0 && requester.readyState != 4) {

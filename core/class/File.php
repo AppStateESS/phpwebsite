@@ -713,6 +713,71 @@ class PHPWS_File {
             $directory .= '/';
         }
     }
+
+    function getMimeType($file_path)
+    {
+        if (function_exists('finfo_open')) {
+            if (!$finfo = finfo_open(FILEINFO_MIME)) {
+                return false;
+            }
+
+            if (!$mime_type = finfo_file($finfo, $file_path)) {
+                return false;
+            }
+            return $mime_type;
+        } else {
+            if (function_exists('mime_content_type')) {
+                $mime_type = mime_content_type($file_path);
+            } else {
+                require_once 'Compat/Function/mime_content_type.php';
+                $mime_type = php_compat_mime_content_type($file_path);
+            }
+            return $mime_type;
+        }
+    }
+
+    function checkMimeType($file_path, $ext=null)
+    {
+        $all_file_type = PHPWS_File::getAllFileTypes();
+        if (empty($ext)) {
+            $ext = PHPWS_File::getFileExtension($file_path);
+        }
+
+        if (@$file_info = $all_file_type[$ext]) {
+            $mime_type = PHPWS_File::getMimeType($file_path);
+            if (function_exists('finfo_open')) {
+                foreach ($file_info['fi'] as $fi) {
+                    if (preg_match("@$fi@i", $mime_type)) {
+                        return true;
+                    }
+                }
+                return false;
+            } else {
+                if (empty($mime_type) && $mct['bl']) {
+                    return true;
+                }
+                foreach ($file_info['mct'] as $mct) {
+                    if ($mct == $mime_type) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    function getAllFileTypes()
+    {
+        static $all_file_types = null;
+        if (empty($all_file_types)) {
+            include 'config/core/file_types.php';
+        }
+
+        return $all_file_types;
+    }
+
 }
 
 
@@ -778,7 +843,5 @@ if (!function_exists('imagerotate')) {
         return $rotate;
     }
 }
-
-
 
 ?>

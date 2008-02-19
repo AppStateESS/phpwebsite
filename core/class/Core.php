@@ -777,7 +777,7 @@ class PHPWS_Core {
     /**
      * Returns the url of the current page
      */
-    function getCurrentUrl($relative=TRUE, $use_redirect=TRUE)
+    function getCurrentUrl($relative=true, $use_redirect=true)
     {
         if (!$relative) {
             $address[] = PHPWS_Core::getHomeHttp();

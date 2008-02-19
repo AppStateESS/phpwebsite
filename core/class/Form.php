@@ -303,6 +303,17 @@ class PHPWS_Form {
         return $this->add($name, 'check', $value);
     }
 
+    function addCheckAssoc($name, $assoc)
+    {
+        if (!is_array($assoc)) {
+            return false;
+        }
+
+        $this->add($name, 'check', array_keys($assoc));
+        $this->setLabel($name, array_values($assoc));
+    }
+
+
     function addHidden($name, $value=null)
     {
         if (is_array($name)) {

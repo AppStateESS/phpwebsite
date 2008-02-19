@@ -2,12 +2,41 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+19 February 2008
++ New standard .htaccess file
++ New file in inc/ directory: Forward.php. Handles the new mod_rewrite
+  code.
++ Increase boost.php version. No update written yet.
++ File.php
+  o New function getMimeType returns a mime dependent on server configuration. 
+  o New function checkMimeType compares a file and its extension to
+    the mime type returned by getMimeType. Returns false if they don't
+    match.
++ Form.php : new function addCheckAssoc. Works like addRadioAssoc.
++ Key.php : new function getKey. Called statically, returns a key
+  based on module, item name, and item id.
++ Text.php : new rewriteLink function now supports the var{n} format
+  of variables.    
++ Added some more details to file_types.php
++ New information add to Forms.txt concerning associate arrays for
+  radio buttons and check boxes.
++ Javascript
+  o Ajax : typo fix in requester.js
+  o captcha : changed <? to <?php in freecap.php 
+  o trying different method of searching for checkboxes in check_all
+
++ Updated: conf/file_types.php, javascript/ajax/requester.js,
+           javascript/captcha/freecap/freecap.php,
+           javascript/check_all/head.js
+
+
 14 February 2008
 + File_types file now contains a list of know files types. Which files
   are allowed by the system will be contained in File Cabinet.
 + Access added to core modules
 + fileinfo received information about first install.
 + Added note to File_Manager about caching.
++ Updated: conf/file_types.php, conf/core_modules.php
 
 8 February 2008
 + DBPager
