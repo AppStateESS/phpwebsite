@@ -29,7 +29,7 @@ class FC_Document_Manager {
             PHPWS_Core::returnToBookmark();
             break;
         case 'post_document_upload':
-            $this->postDocumentUpload();
+            return $this->postDocumentUpload();
             break;
         case 'upload_document_form':
             return $this->edit();
@@ -118,7 +118,7 @@ class FC_Document_Manager {
         }
 
         if ($this->document->_errors) {
-            $template['errors'] = $this->document->getErrors();
+            $template['ERROR'] = $this->document->printErrors();
         }
 
         return PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
@@ -143,9 +143,9 @@ class FC_Document_Manager {
 
     function postDocumentUpload()
     {
-
         // importPost in File_Common
         $result = $this->document->importPost('file_name');
+
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             $vars['timeout'] = '3';

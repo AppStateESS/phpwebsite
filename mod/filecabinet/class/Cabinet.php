@@ -37,9 +37,9 @@ class Cabinet {
 
         Layout::cacheOff();
         if ($this->loadFileManager()) {
-            Layout::nakedDisplay($this->file_manager->admin());
+            Layout::nakedDisplay($this->file_manager->admin(), null, false);
         } else {
-            Layout::nakedDisplay(javascript('close_refresh'));
+            Layout::nakedDisplay(javascript('close_refresh'), null, false);
         }
     }
 
@@ -145,9 +145,7 @@ class Cabinet {
         switch ($aop) {
         case 'pin_folder':
         case 'delete_folder':
-        case 'save_settings':
         case 'unpin':
-        case 'settings':
             if (Current_User::isRestricted('filecabinet')) {
                 Current_User::disallow();
             }
@@ -300,15 +298,35 @@ class Cabinet {
             }
             break;
 
+        case 'post_allowed_files':
+            if (!Current_User::isDeity()) {
+                Current_User::disallow();
+            }
+
+            $this->loadForms();
+            $this->forms->postAllowedFiles();
+
+            $this->message = dgettext('filecabinet', 'File types saved.');
+            $this->title = dgettext('filecabinet', 'Allowed file types');
+            $this->content = $this->forms->fileTypes();
+            break;
             
         case 'save_settings':
-            $result = $this->saveSettings();
+            if (!Current_User::isDeity()) {
+                Current_User::disallow();
+            }
+            $this->loadForms();
+            $result = $this->forms->saveSettings();
             if (is_array($result)) {
                 $this->message = implode('<br />', $result);
             } else {
                 $this->message = dgettext('filecabinet', 'Settings saved.');
             }
+
         case 'settings':
+            if (!Current_User::isDeity()) {
+                Current_User::disallow();
+            }
             $this->loadForms();
             $this->title = dgettext('filecabinet', 'Settings');
             $this->content = $this->forms->settings();
@@ -318,6 +336,14 @@ class Cabinet {
             $this->viewFolder();
             break;
 
+        case 'file_types':
+            if (!Current_User::isDeity()) {
+                Current_User::disallow();
+            }
+            $this->loadForms();
+            $this->title = dgettext('filecabinet', 'Allowed file types');
+            $this->content = $this->forms->fileTypes();
+            break;
 
         }
 
@@ -352,9 +378,9 @@ class Cabinet {
         }
 
         $folder = new Folder($document->folder_id);
-
         if (!$folder->allow()) {
-            Layout::add(dgettext('filecabinet', 'Sorry, you are not allowed access to this file.'));
+            $content = dgettext('filecabinet', 'Sorry, the file you requested is off limits.');
+            Layout::add($content);
             return;
         }
 
@@ -412,12 +438,19 @@ class Cabinet {
         Layout::addStyle('filecabinet');
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $image = new PHPWS_Image($id);
+        $folder = new Folder($image->folder_id);
+
+        if (!$folder->allow()) {
+            $content = dgettext('filecabinet', 'Sorry, the file you requested is off limits.');
+            Layout::add($content);
+            return;
+        }
+
         $tpl['TITLE'] = $image->title;
         $tpl['IMAGE'] = $image->getTag();
         $tpl['DESCRIPTION'] = $image->getDescription();
         $tpl['CLOSE'] = javascript('close_window');
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'image_view.tpl');
-
         Layout::nakedDisplay($content);
     }
 
@@ -426,12 +459,20 @@ class Cabinet {
         Layout::addStyle('filecabinet');
         PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
         $multimedia = new PHPWS_Multimedia($id);
+
+        $folder = new Folder($multimedia->folder_id);
+        if (!$folder->allow()) {
+            $content = dgettext('filecabinet', 'Sorry, the file you requested is off limits.');
+            Layout::add($content);
+            return;
+        }
+
+
         $tpl['TITLE'] = $multimedia->title;
         $tpl['MULTIMEDIA'] = $multimedia->getTag();
         $tpl['DESCRIPTION'] = $multimedia->getDescription();
         $tpl['CLOSE'] = javascript('close_window');
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'multimedia_view.tpl');
-
         Layout::nakedDisplay($content);
     }
 
@@ -488,9 +529,11 @@ class Cabinet {
 
     function loadForms()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Forms.php');
-        $this->forms = new Cabinet_Form;
-        $this->forms->cabinet = & $this;
+        if (empty($this->forms)) {
+            PHPWS_Core::initModClass('filecabinet', 'Forms.php');
+            $this->forms = new Cabinet_Form;
+            $this->forms->cabinet = & $this;
+        }
     }
 
     function unpinFolder()
@@ -555,8 +598,9 @@ class Cabinet {
         $tabs['multimedia'] = $multimedia_command;
         $tabs['classify']   = $classify_command;
 
-        if (Current_User::isUnrestricted('filecabinet')) {
+        if (Current_User::isDeity()) {
             $tabs['settings']  = array('title'=> dgettext('filecabinet', 'Settings'), 'link' => $link);
+            $tabs['file_types'] = array('title'=> dgettext('filecabinet', 'File types'), 'link' => $link);
         }
 
         $this->panel = new PHPWS_Panel('filecabinet');
@@ -564,141 +608,6 @@ class Cabinet {
         $this->panel->setModule('filecabinet');
     }
 
-    function saveSettings()
-    {
-        if (empty($_POST['base_doc_directory'])) {
-            $errors[] = dgettext('filecabinet', 'Default document directory may not be blank');
-        } elseif (!is_dir($_POST['base_doc_directory'])) {
-            $errors[] = dgettext('filecabinet', 'Document directory does not exist.');
-        } elseif (!is_writable($_POST['base_doc_directory'])) {
-            $errors[] = dgettext('filecabinet', 'Unable to write to document directory.');
-        } elseif (!is_readable($_POST['base_doc_directory'])) {
-            $errors[] = dgettext('filecabinet', 'Unable to read document directory.');
-        } else {
-            $dir = $_POST['base_doc_directory'];
-            if (!preg_match('@/$@', $dir)) {
-                $dir .= '/';
-            }
-            PHPWS_Settings::set('filecabinet', 'base_doc_directory', $dir);
-        }
-
-        if (empty($_POST['max_image_dimension']) || $_POST['max_image_dimension'] < 50) {
-            $errors[] = dgettext('filecabinet', 'The max image dimension must be greater than 50 pixels.');
-        } else {
-            PHPWS_Settings::set('filecabinet', 'max_image_dimension', $_POST['max_image_dimension']);
-        }
-
-
-        $max_file_upload = preg_replace('/\D/', '', ini_get('upload_max_filesize'));
-
-        if (empty($_POST['max_image_size'])) {
-            $errors[] = dgettext('filecabinet', 'You must set a maximum image file size.');
-        } else {
-            $max_image_size = (int)$_POST['max_image_size'];
-            if ( ($max_image_size / 1000000) > ((int)$max_file_upload) ) {
-                $errors[] = sprintf(dgettext('filecabinet', 'Your maximum image size exceeds the server limit of %sMB.'), $max_file_upload);
-            } else {
-                PHPWS_Settings::set('filecabinet', 'max_image_size', $max_image_size);
-            }
-        }
-
-        if (empty($_POST['max_document_size'])) {
-            $errors[] = dgettext('filecabinet', 'You must set a maximum document file size.');
-        } else {
-            $max_document_size = (int)$_POST['max_document_size'];
-            if ( ($max_document_size / 1000000) > (int)$max_file_upload ) {
-                $errors[] = sprintf(dgettext('filecabinet', 'Your maximum document size exceeds the server limit of %sMB.'), $max_file_upload);
-            } else {
-                PHPWS_Settings::set('filecabinet', 'max_document_size', $max_document_size);
-            }
-        }
-
-        if (empty($_POST['max_multimedia_size'])) {
-            $errors[] = dgettext('filecabinet', 'You must set a maximum multimedia file size.');
-        } else {
-            $max_multimedia_size = (int)$_POST['max_multimedia_size'];
-            if ( ($max_multimedia_size / 1000000) > (int)$max_file_upload ) {
-                $errors[] = sprintf(dgettext('filecabinet', 'Your maximum multimedia size exceeds the server limit of %sMB.'), $max_file_upload);
-            } else {
-                PHPWS_Settings::set('filecabinet', 'max_multimedia_size', $max_multimedia_size);
-            }
-        }
-
-        if (empty($_POST['max_pinned_images'])) {
-            PHPWS_Settings::set('filecabinet', 'max_pinned_images', 0);
-        } else {
-            PHPWS_Settings::set('filecabinet', 'max_pinned_images', (int)$_POST['max_pinned_images']);
-        }
-
-        $threshold = (int)$_POST['crop_threshold'];
-        if ($threshold < 0) {
-            PHPWS_Settings::set('filecabinet', 'crop_threshold', 0);
-        } else {
-            PHPWS_Settings::set('filecabinet', 'crop_threshold', $threshold);
-        }
-
-        if (empty($_POST['max_pinned_documents'])) {
-            PHPWS_Settings::set('filecabinet', 'max_pinned_documents', 0);
-        } else {
-            PHPWS_Settings::set('filecabinet', 'max_pinned_documents', (int)$_POST['max_pinned_documents']);
-        }
-
-        if (isset($_POST['use_ffmpeg'])) {
-            PHPWS_Settings::set('filecabinet', 'use_ffmpeg', 1);
-        } else {
-            PHPWS_Settings::set('filecabinet', 'use_ffmpeg', 0);
-        }
-
-        if (isset($_POST['auto_link_parent'])) {
-            PHPWS_Settings::set('filecabinet', 'auto_link_parent', 1);
-        } else {
-            PHPWS_Settings::set('filecabinet', 'auto_link_parent', 0);
-        }
-
-        if (isset($_POST['caption_images'])) {
-            PHPWS_Settings::set('filecabinet', 'caption_images', 1);
-        } else {
-            PHPWS_Settings::set('filecabinet', 'caption_images', 0);
-        }
-
-        $ffmpeg_dir = strip_tags($_POST['ffmpeg_directory']);
-        if (empty($ffmpeg_dir)) {
-            PHPWS_Settings::set('filecabinet', 'ffmpeg_directory', null);
-            PHPWS_Settings::set('filecabinet', 'use_ffmpeg', 0);
-        } else {
-            if (!preg_match('@/$@', $ffmpeg_dir)) {
-                $ffmpeg_dir .= '/';
-            }
-            PHPWS_Settings::set('filecabinet', 'ffmpeg_directory', $ffmpeg_dir);
-            if (!is_file($ffmpeg_dir . 'ffmpeg')) {
-                $errors[] = dgettext('filecabinet', 'Could not find ffmpeg executable.');
-                PHPWS_Settings::set('filecabinet', 'use_ffmpeg', 0);
-            }
-        }
-
-        if (FC_ALLOW_CLASSIFY_DIR_SETTING) {
-            if (!empty($_POST['classify_directory'])) {
-                $classify_dir = $_POST['classify_directory'];
-                if (!preg_match('@/$@', $classify_dir)) {
-                    $classify_dir .= '/';
-                }
-                if (!is_dir($classify_dir)) {
-                    $errors[] = dgettext('filecabinet', 'Classify directory could not be found.');
-                } elseif(!is_writable($classify_dir)) {
-                    $errors[] = dgettext('filecabinet', 'The web server does not have permissions for the classify directory.');
-                } else {
-                    PHPWS_Settings::set('filecabinet', 'classify_directory', $classify_dir);
-                }
-            }
-        }
-
-        PHPWS_Settings::save('filecabinet');
-        if (isset($errors)) {
-            return $errors;
-        } else {
-            return true;
-        }
-    }
 
     function userViewFolder()
     {
@@ -733,69 +642,6 @@ class Cabinet {
         $this->title = sprintf('%s - %s', $this->folder->title, $this->folder->getPublic());
         $this->loadForms();
         $this->forms->folderContents($this->folder);
-    }
-
-    function fileInfo($file)
-    {
-        static $images = null;
-        static $mm     = null;
-        static $docs   = null;
-
-        PHPWS_Core::requireConfig('core', 'file_types.php');
-
-        if (empty($images)) {
-            $images = unserialize(ALLOWED_IMAGE_TYPES);
-        }
-
-        if (empty($mm)) {
-            $mm     = unserialize(ALLOWED_MULTIMEDIA_TYPES);
-        }
-
-        if (empty($docs)) {
-            $docs   = unserialize(ALLOWED_DOCUMENT_TYPES);
-        }
-
-        if (!is_file($file)) {
-            return null;
-        }
-
-        $file_type = mime_content_type($file);
-        
-        // some files are not correctly identified
-        if ($file_type == 'text/plain') {
-            $ext = PHPWS_File::getFileExtension($file);
-            if ($ext != 'txt') {
-                if (isset($images[$ext])) {
-                    $file_type = $images[$ext];
-                } elseif (isset($mm[$ext])) {
-                    $file_type = $mm[$ext];
-                } elseif (isset($docs[$ext])) {
-                    $file_type = $docs[$ext];
-                }
-            }
-        }
-
-        if (in_array($file_type, $images)) {
-            $info['image'] = true;
-        } else {
-            $info['image'] = false;
-        }
-
-        if (in_array($file_type, $docs)) {
-            $info['document'] = true;
-        } else {
-            $info['document'] = false;
-        }
-
-        if (in_array($file_type, $mm)) {
-            $info['multimedia'] = true;
-        } else {
-            $info['multimedia'] = false;
-        }
-
-        $info['file_type'] = $file_type;
-
-        return $info;
     }
 
     /**
@@ -861,8 +707,7 @@ class Cabinet {
                 continue;
             }
 
-            $file_info = $this->fileInfo($file_obj->getPath());
-            $file_obj->file_type = $file_info['file_type'];
+            $file_obj->file_type = PHPWS_File::getMimeType($file_obj->getPath());
             $file_obj->loadFileSize();
 
             // if image is getting saved, need to process
@@ -1026,6 +871,11 @@ class Cabinet {
         return $file_assoc;
     }
 
+    function fileStyle()
+    {
+        Layout::addStyle('filecabinet', 'file_view.css');
+    }
+
     function getTag($id)
     {
         PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
@@ -1117,6 +967,70 @@ class Cabinet {
         return Cabinet::convertToFileAssoc($table, $column, FC_MEDIA);
     }
 
+
+    function fileTypeAllowed($ext, $mode='all')
+    {
+        if (strpos($ext, '.')) {
+            $ext = PHPWS_File::getFileExtension($ext);
+        }
+
+        $types = Cabinet::getAllowedTypes($mode);
+        return in_array($ext, $types);
+    }
+
+    function getAllowedTypes($mode='all')
+    {
+        static $all = array();
+
+        if ($mode == 'all' && !empty($all)) {
+            return $all;
+        }
+
+        if ($mode=='all' || $mode=='image') {
+            $image = PHPWS_Settings::get('filecabinet', 'image_files');
+            if ($image) {
+                $image = explode(',', $image);
+            }
+            if ($mode == 'image') {
+                return $image;
+            }
+        }
+
+        if ($mode=='all' || $mode=='document') {
+            $docs  = PHPWS_Settings::get('filecabinet', 'document_files');
+            if ($docs) {
+                $docs = explode(',', $docs);
+            }
+            if ($mode == 'document') {
+                return $docs;
+            }
+        }
+
+        if ($mode=='all' || $mode=='media') {
+            $media = PHPWS_Settings::get('filecabinet', 'media_files');
+            if ($media) {
+                $media = explode(',', $media);
+            }
+            if ($mode == 'media') {
+                return $media;
+            }
+        }
+
+
+        if ($image) {
+            $all = array_merge($image, $all);
+        }
+
+        if ($docs) {
+            $all = array_merge($docs, $all);
+        }
+
+        if ($media) {
+            $all = array_merge($media, $all);
+        }
+
+        return $all;
+    }
 }
 
 ?>

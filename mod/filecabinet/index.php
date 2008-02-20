@@ -24,19 +24,19 @@ if (isset($_REQUEST['uop'])) {
     $cabinet->mmAdmin();
 } elseif (isset($_REQUEST['aop']) || isset($_REQUEST['tab'])) {
     $cabinet->admin();
-} elseif ( isset($_GET['id']) ) {
-    if (isset($_GET['page'])) {
-        if(strtolower($_GET['page']) == 'image') {
-            $cabinet->viewImage($_GET['id']);
-        } elseif (strtolower($_GET['page']) == 'multimedia') {
-            $cabinet->viewMultimedia($_GET['id']);
+} elseif ( isset($_GET['var1']) ) {
+    if (isset($_GET['var2'])) {
+        if(strtolower($_GET['var2']) == 'image') {
+            $cabinet->viewImage($_GET['var1']);
+        } elseif (strtolower($_GET['var2']) == 'multimedia') {
+            $cabinet->viewMultimedia($_GET['var1']);
         }
-    } elseif (isset($_GET['page']) && strtolower($_GET['page']) == 'folder') {
+    } elseif (isset($_GET['var2']) && strtolower($_GET['var2']) == 'folder') {
         $_REQUEST['uop'] = 'view_folder';
-        $_REQUEST['folder_id'] = (int)$_GET['id'];
+        $_REQUEST['folder_id'] = (int)$_GET['var1'];
         $cabinet->user();
     } else {
-        $cabinet->download($_GET['id']);
+        $cabinet->download($_GET['var1']);
     }
 }
 

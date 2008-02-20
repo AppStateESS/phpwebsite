@@ -35,6 +35,7 @@ class PHPWS_Document extends File_Common {
             $this->id = 0;
             $this->_errors[] = PHPWS_Error::get(FC_IMG_NOT_FOUND, 'filecabinet', 'PHPWS_Image');
         }
+        $this->loadExtension();
     }
 
     function init()
@@ -111,7 +112,7 @@ class PHPWS_Document extends File_Common {
 
     function loadAllowedTypes()
     {
-        $this->_allowed_types = unserialize(ALLOWED_DOCUMENT_TYPES);
+        $this->_allowed_types = explode(',', PHPWS_Settings::get('filecabinet', 'document_files'));
     }
 
     function allowDocumentType($type)

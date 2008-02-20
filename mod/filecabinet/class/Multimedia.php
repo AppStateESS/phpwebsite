@@ -41,6 +41,7 @@ class PHPWS_Multimedia extends File_Common {
             $this->id = 0;
             $this->_errors[] = PHPWS_Error::get(FC_MULTIMEDIA_NOT_FOUND, 'filecabinet', 'PHPWS_Multimedia');
         }
+        $this->loadExtension();
     }
 
     function init()
@@ -56,7 +57,7 @@ class PHPWS_Multimedia extends File_Common {
 
     function loadAllowedTypes()
     {
-        $this->_allowed_types = unserialize(ALLOWED_MULTIMEDIA_TYPES);
+        $this->_allowed_types = explode(',', PHPWS_Settings::get('filecabinet', 'media_files'));
     }
 
     function getID3()
@@ -113,17 +114,18 @@ class PHPWS_Multimedia extends File_Common {
 
     function rowTags()
     {
-        $clip = sprintf('<img src="images/mod/filecabinet/clip.png" title="%s" />', dgettext('filecabinet', 'Clip media'));
-        $links[] = PHPWS_Text::secureLink($clip, 'filecabinet',
-                                          array('mop'=>'clip_multimedia',
-                                                'multimedia_id' => $this->id));
-        
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
+            $clip = sprintf('<img src="images/mod/filecabinet/clip.png" title="%s" />', dgettext('filecabinet', 'Clip media'));
+            $links[] = PHPWS_Text::secureLink($clip, 'filecabinet',
+                                              array('mop'=>'clip_multimedia',
+                                                    'multimedia_id' => $this->id));
             $links[] = $this->editLink(true);
             $links[] = $this->deleteLink(true);
         }
 
-        $tpl['ACTION'] = implode('', $links);
+        if (isset($links)) {
+            $tpl['ACTION'] = implode('', $links);
+        }
         $tpl['SIZE'] = $this->getSize(TRUE);
         $tpl['FILE_NAME'] = $this->file_name;
         $tpl['THUMBNAIL'] = $this->getJSView(true);
@@ -285,25 +287,28 @@ class PHPWS_Multimedia extends File_Common {
         if ($this->embedded) {
             return $this->file_type;
         }
-        switch ($this->file_type) {
-        case 'application/x-extension-flv':
-        case 'video/x-flv':
-        case 'application/x-flash-video':
-        case 'audio/mpeg':
+
+        switch ($this->_ext) {
+        case 'flv':
+        case 'mp3':
+        case 'wav':
             return 'media';
             break;
 
-        case 'video/quicktime':
+        case 'qt':
+        case 'mov':
             return 'quicktime';
             break;
 
-        case 'video/mpeg':
-        case 'video/x-msvideo':
-        case 'video/x-ms-wmv':
+        case 'mpeg':
+        case 'mpe':
+        case 'mpg':
+        case 'wmv':
+        case 'avi':
             return 'windows';
             break;
 
-        case 'application/x-shockwave-flash':
+        case 'swf':
             $this->width = 400;
             $this->height = 400;
             return 'shockwave';

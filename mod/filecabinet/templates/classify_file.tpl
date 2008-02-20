@@ -8,6 +8,10 @@
       <td><strong>{FILE_TITLE_LABEL}</strong></td>
       <td>{FILE_TITLE}</td>
    </tr>
+   <!-- BEGIN file-type --><tr>
+      <td><strong>{FILE_TYPE_LABEL}</strong></td>
+      <td>{FILE_TYPE}</td>
+   </tr><!-- END file-type -->
    <tr>
       <td><strong>{FILE_DESCRIPTION_LABEL}</strong></td>
       <td>{FILE_DESCRIPTION}</td>

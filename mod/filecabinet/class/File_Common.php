@@ -12,7 +12,6 @@ class File_Common {
     var $file_name       = null;
     var $file_directory  = null;
     var $folder_id       = 0;
-    //    var $ext             = null;
     var $file_type       = null;
     var $title           = null;
     var $description     = null;
@@ -25,9 +24,9 @@ class File_Common {
     var $_errors         = array();
     var $_allowed_types  = null;
     var $_max_size       = 0;
+    var $_ext            = null;
 
-
-    function allowSize($size=NULL)
+    function allowSize($size=null)
     {
         if (!isset($size)) {
             $size = $this->getSize();
@@ -36,12 +35,18 @@ class File_Common {
         return ($size <= $this->_max_size && $size <= ABSOLUTE_UPLOAD_LIMIT) ? true : false;
     }
 
-    function allowType($type=NULL)
+    /**
+     * Compares against a set of allowable extensions. This should not be
+     * used alone as it is specific to File Cabinet. It is assumed you
+     * have run PHPWS_File::checkMimeType first.
+     */
+    function allowType($ext=null)
     {
-        if (!isset($type)) {
-            $type = $this->file_type;
+        if (!isset($ext)) {
+            $ext = $this->_ext;
         }
-        return in_array($type, $this->_allowed_types);
+
+        return in_array($ext, $this->_allowed_types);
     }
 
     function formatSize($size)
@@ -162,12 +167,28 @@ class File_Common {
             $this->setSize($file_vars['size']);
 
             $this->file_type = $file_vars['type'];
-
-            if ($this->file_type == 'application/octet-stream' && function_exists('mime_content_type')) {
-                $mime = mime_content_type($file_vars['tmp_name']);
+            if ($this->file_type == 'application/octet-stream') {
+                $mime = PHPWS_File::getMimeType($file_vars['tmp_name']);
                 if ($mime != $this->file_type) {
                     $this->file_type = & $mime;
                 }
+            }
+
+            if (!PHPWS_File::checkMimeType($file_vars['tmp_name'], $file_vars['ext'])) {
+                $this->_errors[] = PHPWS_Error::get(FC_FILE_TYPE_MISMATCH, 'filecabinet', 'File_Common::importPost', 
+                                                    $file_vars['ext'] . ':' . PHPWS_File::getMimeType($file_vars['tmp_name']));
+                return false;
+            }
+
+            if (!$this->allowType($file_vars['ext'])) {
+                if ($this->_classtype == 'document') {
+                    $this->_errors[] = PHPWS_Error::get(FC_DOCUMENT_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
+                } elseif ($this->_classtype == 'image') {
+                    $this->_errors[] = PHPWS_Error::get(FC_IMG_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
+                } else {
+                    $this->_errors[] = PHPWS_Error::get(FC_MULTIMEDIA_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
+                }
+                return false;
             }
 
             if ($this->size && !$this->allowSize()) {
@@ -177,35 +198,6 @@ class File_Common {
                     $this->_errors[] = PHPWS_Error::get(FC_IMG_SIZE, 'filecabinet', 'File_Common::importPost', array($this->size, $this->_max_size));
                 } else {
                     $this->_errors[] = PHPWS_Error::get(FC_MULTIMEDIA_SIZE, 'filecabinet', 'File_Common::importPost', array($this->size, $this->_max_size));
-                }
-                return false;
-            }
-
-
-            if ($this->file_type == 'application/x-zip' || $this->file_type == 'application/vnd.openxmlformats') {
-                $ext = $this->getExtension();
-                switch ($ext) {
-                case 'pptx':
-                    $this->file_type = 'application/vnd.ms-powerpoint';
-                    break;
-
-                case 'docx':
-                    $this->file_type = 'application/msword';
-                    break;
-
-                case 'xlsx':
-                    $this->file_type = 'application/vnd.ms-excel';
-                    break;
-                }
-            }
-
-            if (!$this->allowType()) {
-                if ($this->_classtype == 'document') {
-                    $this->_errors[] = PHPWS_Error::get(FC_DOCUMENT_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
-                } elseif ($this->_classtype == 'image') {
-                    $this->_errors[] = PHPWS_Error::get(FC_IMG_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
-                } else {
-                    $this->_errors[] = PHPWS_Error::get(FC_MULTIMEDIA_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
                 }
                 return false;
             }
@@ -224,7 +216,6 @@ class File_Common {
                     $this->errors[] = $result;
                     return false;
                 }
-                
             }
 
         } elseif ($this->_upload->isError()) {
@@ -356,13 +347,15 @@ class File_Common {
         static $video_types = null;
 
         if (empty($video_types)) {
-            PHPWS_Core::requireConfig('filecabinet', 'video_types.php');
-            $video_types = unserialize(FC_VIDEO_TYPES);
+            $video_types = explode(',', FC_VIDEO_TYPES);
         }
 
         return $video_types;
     }
 
+    /**
+     * Checks if a file is a known video file type
+     */
     function isVideo()
     {
         if ($this->_classtype != 'multimedia') {
@@ -371,11 +364,7 @@ class File_Common {
 
         $videos = $this->getVideoTypes();
 
-        if (in_array($this->file_type, $videos)) {
-            return true;
-        } else {
-            return false;
-        }
+        return in_array($this->_ext, $videos);
     } 
 
     function dropExtension()
@@ -386,8 +375,18 @@ class File_Common {
 
     function getExtension()
     {
-        $last_dot = strrpos($this->file_name, '.');
-        return substr($this->file_name, $last_dot + 1, strlen($this->file_name));
+        if (!$this->_ext) {
+            $this->loadExtension();
+        }
+
+        return $this->_ext;
+    }
+
+    function loadExtension()
+    {
+        if (!$this->_ext && $this->file_name) {
+            $this->_ext = PHPWS_File::getFileExtension($this->file_name);
+        }
     }
 
     /**
@@ -406,7 +405,7 @@ class File_Common {
             break;
 
         case 'document':
-            $db = new PHPWS_DB('document');
+            $db = new PHPWS_DB('documents');
             break;
 
         case 'multimedia':
@@ -416,6 +415,7 @@ class File_Common {
 
         $db->addWhere('id', $this->id);
         $result = $db->delete();
+
         if (PEAR::isError($result)) {
             return $result;
         }

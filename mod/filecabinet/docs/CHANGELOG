@@ -1,5 +1,20 @@
 Version 2.0.0
 ----------------------------------------------------------------
+20 February 2008
++ Settings tab is now deity only
++ Fixed instances of error messages not appearing on upload
++ Enforcing folder permissions on item views.
++ Moved some functions out of Cabinet to Forms hopefully to save some
+  memory.
++ Allowed file types now look at extensions. Mime types are checked by
+  the new PHPWS_File methods.
++ Deities can now choose the allowed file types from a new tab.
++ Media, Images, Docs pull their allowed types from the phpws_settings
+  now.
++ Changed over mime checking to new phpws_file methods.
++ Classify working with new file type code.
++ Clip ability now requires fc permission.
+
 8 February 2008
 + Broke out image resize so default parent link setting would work
   again. 

@@ -10,15 +10,10 @@ function voila(foo) {
 </script>
 
 <h1>{FORM_TITLE}</h1>
-{START_FORM}
-<!-- BEGIN error-list -->
-<ul>
 <!-- BEGIN errors -->
-<li class="error-text">{ERROR}</li>
+<p class="error">{ERRORS}</p>
 <!-- END errors -->
-</ul>
-<!-- END error-list -->
-
+{START_FORM}
 <table class="form-table">
 <!-- BEGIN current-image -->
   <tr>

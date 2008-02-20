@@ -1,11 +1,7 @@
 <h1>{FORM_TITLE}</h1>
 {START_FORM}
 <!-- BEGIN error-list -->
-<ul>
-<!-- BEGIN errors -->
-<li class="error">{ERROR}</li>
-<!-- END errors -->
-</ul>
+<p class="error">{ERROR}</p>
 <!-- END error-list -->
 
 <table class="form-table">

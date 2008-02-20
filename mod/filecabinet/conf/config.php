@@ -59,4 +59,9 @@ define('FC_CLASSIFY_DIRECTORY', 'files/filecabinet/incoming/');
 define('FC_PLACEHOLDER', 'images/mod/filecabinet/file_select.png');
 define('FC_NO_RIGHTS', 'images/mod/filecabinet/no_file_select.png');
 
+/**
+ * Helps FC determine if a file is a video
+ */
+define('FC_VIDEO_TYPES', 'flv,swf,avi,mov,mpeg,mpg,mpe,asf,wmv');
+
 ?>

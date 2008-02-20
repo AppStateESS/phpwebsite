@@ -19,5 +19,10 @@ $settings = array('base_doc_directory'   => PHPWS_HOME_DIR . 'files/filecabinet/
                   'crop_threshold'       => 20,
                   'use_ffmpeg'           => 0,
                   'ffmpeg_directory'     => '',
-                  'caption_images'       => 0);
+                  'caption_images'       => 0,
+                  'classify_file_type'   => 1,
+                  'image_files'          => 'png,gif,jpg,jpeg',
+                  'media_files'          => 'swf,flv,mov,avi,mp4,mpg,mp3,wav,wmv',
+                  'document_files'       => 'txt,doc,docx,mp3,pdf,ppt,pptx,rtf,tgz,xls,xlsx,zip,jpg,png'
+                  );
 ?>

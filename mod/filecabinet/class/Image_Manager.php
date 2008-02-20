@@ -277,6 +277,7 @@ class FC_Image_Manager {
             $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%d bytes'), $max_size);
         }
 
+        $template['ERRORS'] = $this->image->printErrors();
 
         $this->content = PHPWS_Template::process($template, 'filecabinet', 'image_edit.tpl');
     }
@@ -345,7 +346,6 @@ class FC_Image_Manager {
 
             javascript('close_refresh');
         } else {
-            $this->message = $this->image->printErrors();
             $this->edit();
             return;
         }

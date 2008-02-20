@@ -68,6 +68,7 @@ class PHPWS_Image extends File_Common {
             $this->id = 0;
             $this->_errors[] = PHPWS_Error::get(FC_IMG_NOT_FOUND, 'filecabinet', 'PHPWS_Image');
         }
+        $this->loadExtension();
     }
 
     function init()
@@ -265,7 +266,7 @@ class PHPWS_Image extends File_Common {
 
     function loadAllowedTypes()
     {
-        $this->_allowed_types = unserialize(ALLOWED_IMAGE_TYPES);
+        $this->_allowed_types = explode(',', PHPWS_Settings::get('filecabinet', 'image_files'));
     }
 
 
@@ -378,14 +379,11 @@ class PHPWS_Image extends File_Common {
 
     function rowTags()
     {
-        if (Current_User::isLogged()) {
+        if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
             $clip = sprintf('<img src="images/mod/filecabinet/clip.png" title="%s" />', dgettext('filecabinet', 'Clip image'));
             $links[] = PHPWS_Text::secureLink($clip, 'filecabinet',
                                               array('iop'      => 'clip_image',
                                                     'image_id' => $this->id));
-        }
-
-        if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
             $links[] = $this->editLink(true);
             $links[] = $this->deleteLink(true);
         }
