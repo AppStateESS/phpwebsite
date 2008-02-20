@@ -131,7 +131,7 @@ class SlideShow {
     
         $tags["LOW_TECH_LINK"] = dgettext('photoalbum', "Not working, try " .
                                    "the ");
-        $jsTags["PRE_FILLER"] = "'images/modphotoalbum/img/pre_filler.gif'";
+        $jsTags["PRE_FILLER"] = "'images/photoalbum/img/pre_filler.gif'";
     
         $linkText = dgettext('photoalbum', "low tech");
 
