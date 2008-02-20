@@ -14,6 +14,8 @@ Version 2.0.0
 + Changed over mime checking to new phpws_file methods.
 + Classify working with new file type code.
 + Clip ability now requires fc permission.
++ Video types moved to config.php. video_types.php removed
++ known_types.php file added to inc directory.
 
 8 February 2008
 + Broke out image resize so default parent link setting would work
