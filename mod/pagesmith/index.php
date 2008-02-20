@@ -14,6 +14,10 @@ PHPWS_Core::initModClass('pagesmith', 'PageSmith.php');
 
 $pageSmith = new PageSmith;
 
+if (isset($_GET['var1'])) {
+    $_REQUEST['id'] = $_GET['id'] = (int)$_GET['var1'];
+}
+
 if (isset($_REQUEST['uop'])) {
     $pageSmith->user();
 } elseif (isset($_REQUEST['aop'])) {
