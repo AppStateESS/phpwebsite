@@ -13,8 +13,7 @@ check boxes. The example is below.
 
 
 <?php
-echo javascript('check_all', array('checkbox_name' => 'color[]'));
+echo javascript('check_all', array('checkbox_name' => 'color'));
 ?>
 
 --------------------------- End ----------------------------------
-Make sure you include the square brackets
