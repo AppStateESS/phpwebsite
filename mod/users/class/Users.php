@@ -20,7 +20,7 @@ class PHPWS_User {
     var $username       = null;
     var $deity          = false;
     var $active         = true;
-    // method of authorizing the user
+    // id of authorizing file for user
     var $authorize      = 0;
     var $last_logged    = 0;
     var $log_count      = 0;
@@ -866,46 +866,6 @@ class PHPWS_User {
     function registerPermissions($module)
     {
         return Users_Permission::registerPermissions($module);
-    }
-
-    /**
-     * Adds the current user's ip address to the users_banned table.
-     * If ip is new or already listed (DB_ERROR_ALREADY_EXISTS), return true.
-     * If there is an error, log it and return false
-     */
-    function banUser($ip)
-    {
-        // Never ban local user
-        if ($ip == '127.0.0.1') {
-            return false;
-        }
-        
-        $db = new PHPWS_DB('users_banned');
-        $db->addValue('banned_ip', $ip);
-        $result = $db->insert();
-
-        if (PEAR::isError($result)) {
-            if ($result->code == DB_ERROR_ALREADY_EXISTS) {
-                return true;
-            } else {
-                PHPWS_Error::log($result);
-                return false;
-            }
-        } else {
-            return true;
-        }
-    }
-
-    function removeBan($ip)
-    {
-
-        if (!preg_match('/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/', $ip)) {
-            return false;
-        }
-
-        $db = new PHPWS_DB('users_banned');
-        $db->addWhere('banned_ip', $ip);
-        return !PHPWS_Error::logIfError($db->delete());
     }
 }
 

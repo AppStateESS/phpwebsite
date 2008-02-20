@@ -405,19 +405,6 @@ class User_Action {
             $content = User_Action::checkPermissionTables();
             break;
 
-
-        case 'ban_users':
-            $title = dgettext('users', 'Banned users');
-            $content = User_Action::bannedUsers();
-            break;
-
-        case 'remove_ban':
-            if (Current_User::authorized('users', 'ban_users')) {
-                PHPWS_User::removeBan($_GET['ip']);
-            }
-            PHPWS_core::goBack();
-            break;
-
         default:
             PHPWS_Core::errorPage('404');
             break;
@@ -651,10 +638,6 @@ class User_Action {
         if (Current_User::allow('users', 'add_edit_groups')){
             $tabs['new_group'] = array('title'=>dgettext('users', 'New Group'), 'link'=>$link);
             $tabs['manage_groups'] = array('title'=>dgettext('users', 'Manage Groups'), 'link'=>$link);
-        }
-
-        if (Current_User::allow('users', 'ban_users')) {
-            $tabs['ban_users'] = array('title'=>dgettext('users', 'Ban users'), 'link'=>$link);
         }
 
         if (Current_User::allow('users', 'settings')) {
@@ -1474,40 +1457,6 @@ class User_Action {
         }
         
         return true;
-    }
-
-    function bannedUsers()
-    {
-        $content = null;
-
-        $page_tags['BANNED_IP_LABEL'] = dgettext('users', 'IP addresses');
-
-        PHPWS_Core::initCoreClass('DBPager.php');
-        $pager = new DBPager('users_banned');
-        $pager->setModule('users');
-        $pager->setTemplate('forms/banned_users.tpl');
-        $pager->setEmptyMessage(dgettext('users', 'No banned ips found.'));
-        $pager->setOrder('banned_ip', 'asc', true);
-        $pager->addPageTags($page_tags);
-        $pager->addRowFunction(array('User_Action', 'banned_rows'));
-        $pager->setSearch('banned_ip');
-        $pager->search_label = false;
-
-        return $pager->get();
-    }
-
-    function banned_rows($value)
-    {
-        $vars['action']  = 'admin';
-        $vars['command'] = 'remove_ban';
-        $vars['ip']      = $value['banned_ip'];
-
-        $js['address']  = PHPWS_Text::linkAddress('users', $vars, true);
-        $js['question'] = sprintf(dgettext('users', 'Are you sure you want remove this ip ban : %s?'), $vars['ip']);
-        $js['link']     = dgettext('users', 'Remove ban');
-
-        $tpl['ACTION'] = javascript('confirm', $js);
-        return $tpl;
     }
 }
 

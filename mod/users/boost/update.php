@@ -181,11 +181,6 @@ timeout INT NOT NULL default 0,
 </pre>';
 
     case version_compare($currentVersion, '2.4.8', '<'):
-        $content[] = 'Creating users_banned table.';
-        $db = new PHPWS_DB('users_banned');
-        $db->addValue('banned_ip', 'char(15) unique');
-        $db->createTable();
-
     } // End of switch statement
 
     return TRUE;

@@ -60,8 +60,3 @@ user_id INT NOT NULL default 0,
 authhash CHAR( 32 ) NOT NULL default 0,
 timeout INT NOT NULL default 0
 );
-
-
-CREATE TABLE users_banned (
-  banned_ip char(15) unique
-);
