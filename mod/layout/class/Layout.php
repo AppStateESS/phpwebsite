@@ -254,10 +254,10 @@ class Layout {
      * retains style sheet information.
      *
      */
-    function nakedDisplay($content=NULL, $title=NULL)
+    function nakedDisplay($content=NULL, $title=NULL, $use_blank=false)
     {
         Layout::disableRobots();
-        echo Layout::wrap($content, $title, true);
+        echo Layout::wrap($content, $title, $use_blank);
         exit();
     }
 

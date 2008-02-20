@@ -1,3 +1,7 @@
+20 February 2008
++ nakedDisplay now allows a choice whether to use the blank template
+  or not when it wraps. Default is to not.
+
 23 January 2008
 + Fixed noCache.
 
