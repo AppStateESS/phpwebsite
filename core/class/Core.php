@@ -786,11 +786,12 @@ class PHPWS_Core {
         if (isset($_SERVER['REDIRECT_URL']) && $use_redirect) {
             $address[] = str_ireplace(dirname($_SERVER['PHP_SELF']) . '/', '', $_SERVER['REDIRECT_URL']);
             return implode('', $address);
-        } else {
-            $url = $_SERVER['PHP_SELF'];
         }
 
-        $address[] = str_ireplace(dirname($_SERVER['PHP_SELF']) . '/', '', $_SERVER['PHP_SELF']);
+        $stack = explode('/', $_SERVER['PHP_SELF']);
+        if ($url = array_pop($stack)) {
+            $address[] = $url;
+        }
 
         if (!empty($_SERVER['QUERY_STRING'])) {
             $address[] = '?';
@@ -837,6 +838,11 @@ class PHPWS_Core {
     function isBranch()
     {
         return $GLOBALS['Is_Branch'];
+    }
+
+    function plugInGet()
+    {
+        
     }
 
 }// End of core class
