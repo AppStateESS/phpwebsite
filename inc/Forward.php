@@ -7,7 +7,7 @@
 if (!(strpos($_SERVER['REQUEST_URI'], $_SERVER['PHP_SELF']) !== false)) {
     $url =  PHPWS_Core::getCurrentUrl();
 
-    if (empty($url) || $url == 'index.php') {
+    if ($url == 'index.php') {
         return;
     }
 

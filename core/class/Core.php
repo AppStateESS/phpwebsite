@@ -776,15 +776,22 @@ class PHPWS_Core {
 
     /**
      * Returns the url of the current page
+     * If redirect is true and a redirect occurs at the root level,
+     * index.php is returned.
      */
     function getCurrentUrl($relative=true, $use_redirect=true)
     {
         if (!$relative) {
             $address[] = PHPWS_Core::getHomeHttp();
-        } 
+        }
 
-        if (isset($_SERVER['REDIRECT_URL']) && $use_redirect) {
-            $address[] = str_ireplace(dirname($_SERVER['PHP_SELF']) . '/', '', $_SERVER['REDIRECT_URL']);
+        $_SERVER['REDIRECT_URL'] = '/';
+        if ($use_redirect && isset($_SERVER['REDIRECT_URL'])) {
+            if ($_SERVER['REDIRECT_URL'] != '/') {
+                $address[] = str_ireplace(dirname($_SERVER['PHP_SELF']) . '/', '', $_SERVER['REDIRECT_URL']);
+            } else {
+                $address[] = 'index.php';
+            }
             return implode('', $address);
         }
 
