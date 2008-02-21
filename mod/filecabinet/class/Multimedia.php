@@ -143,7 +143,7 @@ class PHPWS_Multimedia extends File_Common {
         if (MOD_REWRITE_ENABLED) {
             return sprintf('filecabinet/%s/multimedia', $this->id);
         } else {
-            return sprintf('index.php?module=filecabinet&amp;page=multimedia&amp;id=%s', $this->id);
+            return sprintf('index.php?module=filecabinet&amp;mtype=multimedia&amp;id=%s', $this->id);
         }
 
     }

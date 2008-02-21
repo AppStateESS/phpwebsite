@@ -11,6 +11,13 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 
 PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
 
+if (isset($_GET['var1'])) {
+    $_GET['id'] = & $_GET['var1'];
+    if (isset($_GET['var2'])) {
+        $_GET['mtype'] = & $_GET['var2'];
+    }
+}
+
 $cabinet = new Cabinet;
 if (isset($_REQUEST['uop'])) {
     $cabinet->user();
@@ -24,19 +31,19 @@ if (isset($_REQUEST['uop'])) {
     $cabinet->mmAdmin();
 } elseif (isset($_REQUEST['aop']) || isset($_REQUEST['tab'])) {
     $cabinet->admin();
-} elseif ( isset($_GET['var1']) ) {
-    if (isset($_GET['var2'])) {
-        if(strtolower($_GET['var2']) == 'image') {
-            $cabinet->viewImage($_GET['var1']);
-        } elseif (strtolower($_GET['var2']) == 'multimedia') {
-            $cabinet->viewMultimedia($_GET['var1']);
+} elseif ( isset($_GET['id']) ) {
+    if (isset($_GET['mtype'])) {
+        if(strtolower($_GET['mtype']) == 'image') {
+            $cabinet->viewImage($_GET['id']);
+        } elseif (strtolower($_GET['mtype']) == 'multimedia') {
+            $cabinet->viewMultimedia($_GET['id']);
         }
-    } elseif (isset($_GET['var2']) && strtolower($_GET['var2']) == 'folder') {
+    } elseif (isset($_GET['mtype']) && strtolower($_GET['mtype']) == 'folder') {
         $_REQUEST['uop'] = 'view_folder';
-        $_REQUEST['folder_id'] = (int)$_GET['var1'];
+        $_REQUEST['folder_id'] = (int)$_GET['id'];
         $cabinet->user();
     } else {
-        $cabinet->download($_GET['var1']);
+        $cabinet->download($_GET['id']);
     }
 }
 

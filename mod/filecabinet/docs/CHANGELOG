@@ -1,5 +1,8 @@
 Version 2.0.0
 ----------------------------------------------------------------
+21 February 2008
++ Fixed multimedia popup outside of mod_rewrite (thanks Verdon)
+
 20 February 2008
 + Settings tab is now deity only
 + Fixed instances of error messages not appearing on upload

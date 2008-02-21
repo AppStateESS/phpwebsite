@@ -1,0 +1,665 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-04 09:43-0500\n"
+"PO-Revision-Date: 2008-02-21 10:01+0100\n"
+"Last-Translator: Doriano Cometto <maclurad AT gmail DOT com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#, php-format
+msgid "%d bytes"
+msgstr "%d byte"
+
+#, php-format
+msgid "%d bytes (system wide)"
+msgstr "%d byte (totali)"
+
+#, php-format
+msgid "%dKB (%d bytes)"
+msgstr "%d KiB (%d bytes)"
+
+#, php-format
+msgid "%dMB (%d bytes)"
+msgstr "%dMiB (%d bytes)"
+
+#, php-format
+msgid "%s bytes"
+msgstr "%s byte"
+
+#, php-format
+msgid "%s image"
+msgid_plural "%s images"
+msgstr[0] "%s immagine"
+msgstr[1] "%s immagini"
+
+msgid "-- Pick option --"
+msgstr "-- Scegli opzione --"
+
+msgid "180 degrees"
+msgstr "180 gradi"
+
+msgid "90 degrees clockwise"
+msgstr "90 gradi in senso oratio"
+
+msgid "90 degrees counter clockwise"
+msgstr "90 gradi in senso antiorario"
+
+msgid "Absolute upload limit"
+msgstr "Limite assoluto di caricamento"
+
+msgid "Action"
+msgstr "Azione"
+
+msgid "Add document"
+msgstr "Aggiungi documento"
+
+msgid "Add file"
+msgstr "Aggiungi file"
+
+msgid "Add folder"
+msgstr "Aggiungi cartella"
+
+msgid "Add image"
+msgstr "Aggiungi immagine"
+
+msgid "Alternate text"
+msgstr "Testo alternativo"
+
+msgid "An error occurred when trying to read your incoming file directory."
+msgstr "Si &egrave; verificato un errore tentando di leggere la cartella di file in ingresso."
+
+msgid "An error occurred when trying to save your document."
+msgstr "Si &egrave; verificato un errore tentando di salvare il documento."
+
+msgid "An error occurred when trying to save your image."
+msgstr "Si &egrave; verificato un errore tentando di salvare l'immagine."
+
+msgid "An error occurred when trying to save your multimedia file."
+msgstr "Si &egrave; verificato un errore tentando di salvare il file multimediale."
+
+msgid "Are you certain you want to delete this folder and all its contents?"
+msgstr "Eliminare questa cartella e tutto il suo contenuto?"
+
+msgid "Are you sure you want to delete this document?"
+msgstr "Eliminare questo documento?"
+
+msgid "Are you sure you want to delete this file?"
+msgstr "Eliminare questo file?"
+
+msgid "Are you sure you want to delete this image?"
+msgstr "Eliminare questa immagine?"
+
+msgid "Are you sure you want to delete this multimedia file?"
+msgstr "Eliminare questo file multimediale?"
+
+msgid "Are you sure you wish to delete these files?"
+msgstr "Eliminare questi file?"
+
+msgid "Automatically link child images to parent"
+msgstr "Collega automaticamente le immagini figlie ai padri."
+
+msgid "Back to folder list"
+msgstr "Ritorna all'elenco delle cartelle"
+
+msgid "Bad folder id."
+msgstr "ID della cartella non valido."
+
+msgid "Base document directory"
+msgstr "Cartella base del documento"
+
+msgid "Cancel"
+msgstr "Annulla"
+
+msgid "Change settings (Unrestricted only)"
+msgstr "Modifica le impostazionei (Solo non protette)"
+
+msgid "Choose a folder."
+msgstr "Scegliere una cartella."
+
+msgid "Choose an image folder"
+msgstr "Scegliere una cartella per le immagini"
+
+msgid "Classify"
+msgstr "Classifica"
+
+msgid "Classify Files"
+msgstr "Classifica file"
+
+msgid "Classify checked"
+msgstr "Classifica verificata"
+
+msgid "Classify directory could not be found."
+msgstr "Impossibile trovare la classifica della cartella."
+
+msgid "Classify files"
+msgstr "Classifica file"
+
+msgid "Classify files (Unrestricted only)"
+msgstr "Classifica files (solo amministratori)"
+
+msgid "Classify settings"
+msgstr "Impostazioni di classificazione"
+
+msgid "Clear image"
+msgstr "Pulisci immagine"
+
+msgid "Clip"
+msgstr "Clip"
+
+msgid "Close"
+msgstr "Chiudi"
+
+msgid "Could not delete file."
+msgstr "Impossibile eliminare il file."
+
+msgid "Could not find ffmpeg executable."
+msgstr "Impossibile trovare il programma eseguibile FFMpeg."
+
+#, php-format
+msgid "Could not move file \"%s\" to \"%s\" folder directory."
+msgstr "Impossibile spostare il file \"%s\" nella cartella \"%s\""
+
+msgid "Could not save thumbnail image."
+msgstr "Impossibile salvare l'anteprima dell'immagine."
+
+msgid "Could not write to directory."
+msgstr "Impossibile scrivere nella cartella."
+
+msgid "Create document folder"
+msgstr "Crea cartella dei documenti"
+
+msgid "Create folder"
+msgstr "Crea cartella"
+
+msgid "Create image folder"
+msgstr "Crea cartella per le immagini"
+
+msgid "Create multimedia folder"
+msgstr "Crea cartella multimediale"
+
+msgid "Created in"
+msgstr "Creata in"
+
+msgid "Crop pixel threshold"
+msgstr "Pixel di tolleranza nel taglio"
+
+msgid "Current document"
+msgstr "Documento corrente"
+
+msgid "Current image"
+msgstr "Immagine corrente"
+
+msgid "Current multimedia"
+msgstr "File multimediale corrente"
+
+msgid "Decription"
+msgstr "Descrizione"
+
+msgid "Default document directory may not be blank"
+msgstr "La cartella predefinita dei documenti non pu&ograve; essere lasciata in bianco"
+
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Delete checked"
+msgstr "Elimina selezionati"
+
+msgid "Delete folders (Unrestricted only)"
+msgstr "Elimina cartelle (Solo non protette)"
+
+msgid "Description"
+msgstr "Descrizione"
+
+msgid "Directory not set."
+msgstr "Cartella non impostata"
+
+msgid "Do not link image"
+msgstr "Non collegare immagine"
+
+msgid "Document directory does not exist."
+msgstr "La cartella dei documenti non esiste."
+
+msgid "Document folders"
+msgstr "Cartelle dei documenti"
+
+msgid "Document location"
+msgstr "Ubicazione del documento"
+
+msgid "Document not found."
+msgstr "Documento non trovato."
+
+msgid "Document settings"
+msgstr "Impostazioni documento"
+
+#, php-format
+msgid "Document was %s bytes making it larger than %s byte size limit."
+msgstr "Il documento era %s bytes pi&ugrave; grande del limite di %s byte."
+
+msgid "Don't show resized images when viewing folders publicly."
+msgstr "Non visualizzare le immagini ridimensionate quando si visualizzano le cartelle pubblicamente."
+
+msgid "Download"
+msgstr "Scarica"
+
+msgid "Edit"
+msgstr "Modifica"
+
+msgid "Edit folders"
+msgstr "Modifica cartelle"
+
+msgid "Edit image"
+msgstr "Modifica immagine"
+
+msgid "Edit multimedia file"
+msgstr "Modifica file multimediale"
+
+msgid "Enable FFMpeg thumbnails"
+msgstr "Abilita anteprima FFMpeg"
+
+msgid "Enable FFMpeg thumbnails (enabled on ffmpeg confirmation)"
+msgstr "Abilita anteprima FFMpeg (conferma per l'abilitazione di ffmpeg)"
+
+msgid "FFMpeg directory"
+msgstr "Cartella FFMpeg"
+
+msgid "FFMpeg file not found."
+msgstr "Impossibile trovare il file FFMpeg"
+
+msgid "Failed to create files/filecabinet/ directory."
+msgstr "Impossibile creare la cartella files/filecabinet/."
+
+msgid "Failed to create files/filecabinet/incoming directory."
+msgstr "Impossibile creare la cartella files/filecabinet/incoming."
+
+msgid "Failed to create files/multimedia directory."
+msgstr "Impossibile creare la cartella files/multimedia/."
+
+msgid "Failed to create folder. Please check your logs."
+msgstr "Impossibile creare la cartella. Verificare i file di log."
+
+msgid "File Cabinet"
+msgstr "Archivio file"
+
+msgid "File name"
+msgstr "Nome file"
+
+msgid "File not uploaded."
+msgstr "File non caricato."
+
+msgid "File type"
+msgstr "Tipo di file"
+
+#, php-format
+msgid "File uploaded exceeded %sK size limit."
+msgstr "Il file che si &egrave; tentato di caricare supera il limite di %sKiB."
+
+msgid "Filename not set."
+msgstr "Nome di file non impostato."
+
+msgid "Folder"
+msgstr "Cartella"
+
+msgid "Folder empty."
+msgstr "Cartella vuota."
+
+msgid "Folder is empty."
+msgstr "La cartella &egrave; vuota."
+
+msgid "Form upload limit"
+msgstr "Limite di caricamento del formulario"
+
+msgid "General"
+msgstr "Generale"
+
+msgid "Go"
+msgstr "Avvia"
+
+msgid "Height"
+msgstr "Altezza"
+
+msgid "Image folders"
+msgstr "Cartelle delle immagini"
+
+#, php-format
+msgid "Image height was %spx, making it larger than %d pixel limit."
+msgstr "L'altezza dell'immagine &egrave; di %s pixel, mentre il limite &egrave; fissato in %d pixel."
+
+#, php-format
+msgid "Image is %spx by %spx, the maximum dimensions are %spx by %spx."
+msgstr "L'immagine &egrave; %s px per %s px, mentre la dimensione massima &egrave; fissata in %s px per %s px."
+
+msgid "Image link url"
+msgstr "URL del collegamento immagine"
+
+msgid "Image location"
+msgstr "Ubicazione dell'immagine"
+
+msgid "Image must be a jpeg file."
+msgstr "L'immagine deve essere un file JPEG"
+
+msgid "Image not found"
+msgstr "Immagine non trovata"
+
+msgid "Image settings"
+msgstr "Impostazioni immagine"
+
+#, php-format
+msgid "Image was %s bytes making it larger than %s byte size limit."
+msgstr "L'immagine era %s bytes pi&ugrave; grande del limite di %s byte."
+
+#, php-format
+msgid "Image width was %spx, making it larger than %d pixel limit."
+msgstr "La larghezza dell'immagine &egrave; di %s pixel, mentre il limite &egrave; fissato in %d pixel."
+
+msgid "Incoming classify directory"
+msgstr "Classifica cartella in ingresso"
+
+msgid "Items"
+msgstr "Elementi"
+
+msgid "Link image"
+msgstr "Collegamento immagine"
+
+msgid "Link image to original, full sized image"
+msgstr "Collega immagine all'originale, immagine a grandezza piena"
+
+msgid "Link image to web site"
+msgstr "Collega immagine al sito web"
+
+msgid "Link to image folder"
+msgstr "Collegamento alla cartella delle immagini"
+
+msgid "Manages images and documents uploaded to your site."
+msgstr "Gestisce le immagini e i documenti caricati sul sito."
+
+#, php-format
+msgid "Max thumbnail size : %sx%s."
+msgstr "Dimensione massima dell'anteprima: %s x %s."
+
+msgid "Maximum document file size (in bytes)"
+msgstr "Dimensione massima dei documenti (in byte)"
+
+msgid "Maximum file size"
+msgstr "Dimensione massima dei file"
+
+msgid "Maximum image dimension"
+msgstr "Dimensione massima dell'immagine"
+
+msgid "Maximum image file size (in bytes)"
+msgstr "Dimensione massima delle immagini (in byte)"
+
+msgid "Maximum image pixel dimension"
+msgstr "Dimensione massima in pixel dell'immagine"
+
+msgid "Maximum multimedia file size (in bytes)"
+msgstr "Massima dimensione (in byte) del file multimediale"
+
+msgid "Maximum pinned documents shown (0 for all)"
+msgstr "Numero di documenti mostrati alla volta (o per tutti)"
+
+msgid "Maximum pinned images shown (0 for all)"
+msgstr "Numero di immagini mostrate alla volta (o per tutte)"
+
+msgid "Missing folder information."
+msgstr "Informazioni cartella mancanti."
+
+msgid "Missing temporary upload directory."
+msgstr "Cartella temporanea di caricamento mancante."
+
+msgid "Missing title."
+msgstr "Titolo mancante."
+
+msgid "More..."
+msgstr "Ancora..."
+
+msgid "Multimedia file not found."
+msgstr "Impossibile trovare il file multimediale."
+
+#, php-format
+msgid "Multimedia file was %s bytes making it larger than %s byte size limit."
+msgstr "Il file multimediale era %s bytes pi&ugrave; grande del limite di %s byte."
+
+msgid "Multimedia folders"
+msgstr "Cartelle dei file multimediali"
+
+msgid "Multimedia location"
+msgstr "Ubicazione dei file multimediali"
+
+msgid "Multimedia settings"
+msgstr "Impostazione dei file multimediali"
+
+msgid "No folders found."
+msgstr "Nessuna cartella trovata."
+
+msgid "No image"
+msgstr "Nessuna immagina"
+
+msgid "No public folders are available."
+msgstr "Nessuna cartella pubblica disponibile."
+
+msgid "None"
+msgstr "Nessuno"
+
+msgid "Pin folder"
+msgstr "Fissa cartella"
+
+#, php-format
+msgid "Pin folder to \"%s\""
+msgstr "Fissa cartella a \"%s\""
+
+msgid "Please create a new folder."
+msgstr "Creare una nuova cartella."
+
+msgid "Private"
+msgstr "Pivato"
+
+msgid "Public"
+msgstr "Pubblico"
+
+msgid "Resize image if over"
+msgstr "Ridimensionare l'immagine se troppo grande"
+
+msgid "Rotate image"
+msgstr "Ruota immagine"
+
+msgid "Save settings"
+msgstr "Salva impostazioni"
+
+msgid "Server upload limit"
+msgstr "Limite di caricamento del server"
+
+msgid "Settings"
+msgstr "Impostazioni"
+
+msgid "Settings saved."
+msgstr "Impostazioni salvate"
+
+msgid "Show source images only"
+msgstr "Mostra solamente l'immagine sorgente"
+
+msgid "Size"
+msgstr "Dimensione"
+
+msgid "Sorry"
+msgstr "Spiacenti"
+
+msgid "Sorry but this file is inaccessible at this time."
+msgstr "Spiacenti, questo file non &egrave; al momento accessibile."
+
+msgid "Sorry, you are not allowed access to this file."
+msgstr "Spiacenti, non hai i permessi per accedere a questo file."
+
+msgid "Sorry.."
+msgstr "Spiacenti..."
+
+msgid "System upload limits"
+msgstr "Limite di caricamento del sistema"
+
+msgid "The incoming file directory is currently empty."
+msgstr "La cartella di file in ingresso &egrave; vuota."
+
+msgid "The max image dimension must be greater than 50 pixels."
+msgstr "La dimensione massima deve essere superiore a 50 pixel."
+
+msgid "The web server does not have permission to access files in the classify directory."
+msgstr "Il server web non ha i permessi per accedere ai file nella cartella riservata."
+
+msgid "The web server does not have permission to delete files from the classify directory."
+msgstr "Il server web non ha i permessi per eliminare i file dalla cartella riservata."
+
+msgid "The web server does not have permissions for the classify directory."
+msgstr "Il server web non ha i permessi per accedere la cartella riservata."
+
+msgid "There was a problem loading the image file."
+msgstr "Si &egrave; verificato un problema tentando di caricare il file dell'immagine."
+
+#, php-format
+msgid "This image is larger than the %s x %s limit. Do you want to resize the image to fit?"
+msgstr "Questa immagine &egrave; pi&ugrave; grande del limite di %s per %s pixel. Vuoi ridimensionare l'immagine per farla rientrare nei limiti?"
+
+msgid "This is a private folder."
+msgstr "Questa &egrave; una cartella privata."
+
+msgid "Thumbnail directory not writable."
+msgstr "Cartella delle anteprime protetta da scrittura."
+
+msgid "Title"
+msgstr "Titolo"
+
+msgid "Unable to locate the classify directory. Please check your File Cabinet settings, configuration file and directory permissions."
+msgstr "Impossibile localizzare la cartella riservata. Verificare le impostazioni del modulo Archivio File, il file di configurazione e i permessi della cartella."
+
+msgid "Unable to move the file to its new directory."
+msgstr "Impossibile spostare il file nella sua nuova cartella."
+
+msgid "Unable to read document directory."
+msgstr "Impossibile leggere la cartella dei documenti."
+
+msgid "Unable to resize image."
+msgstr "Impossibile ridimensionare l'immagine."
+
+msgid "Unable to write to document directory."
+msgstr "Impossibile scrivere nella cartella dei documenti."
+
+msgid "Unacceptable document type."
+msgstr "Tipo di documento non supportato."
+
+msgid "Unacceptable image type."
+msgstr "Tipo di immagine non supportato."
+
+msgid "Unacceptable multimedia file type."
+msgstr "Tipo di file multimediale non ammesso."
+
+msgid "Update"
+msgstr "Aggiorna"
+
+msgid "Update document folder"
+msgstr "Aggiorna cartella dei documenti"
+
+msgid "Update folder"
+msgstr "Aggiorna cartella"
+
+msgid "Update image"
+msgstr "Aggiorna immagine"
+
+msgid "Update image folder"
+msgstr "Aggiorna cartella delle immagini"
+
+msgid "Update multimedia folder"
+msgstr "Aggiorna file multimediale"
+
+msgid "Upload"
+msgstr "Aggiorna"
+
+msgid "Upload document"
+msgstr "Aggiorna documento"
+
+msgid "Upload image"
+msgstr "Aggiorna immagine"
+
+msgid "Upload multimedia"
+msgstr "Aggiorna file multimediale"
+
+msgid "Upload new thumbnail"
+msgstr "Carica nuova anteprima"
+
+msgid "Upload thumbnail"
+msgstr "Carica anteprima"
+
+msgid "View all images in folder"
+msgstr "Visualizza tutte le immagini nella cartella"
+
+msgid "View folder"
+msgstr "Visualizza cartella"
+
+msgid "View full image"
+msgstr "Visualizza immagine completa"
+
+msgid "Width"
+msgstr "Larghezza"
+
+msgid "You do not have permission to view this folder."
+msgstr "Permessi insufficienti per visualizzare la cartella."
+
+msgid "You must create a document folder."
+msgstr "Occorre creare una cartella per i documenti."
+
+msgid "You must create a document or multimedia folder."
+msgstr "Occorre creare una cartella per i documenti o i file multimediali."
+
+msgid "You must create a multimedia folder."
+msgstr "Occorre creare una cartella per i file multimediali."
+
+msgid "You must create an image folder."
+msgstr "Occorre creare una cartella per le immagini."
+
+msgid "You must entitle your folder."
+msgstr "Bisogna dare un titolo alla cartella."
+
+msgid "You must set a maximum document file size."
+msgstr "Occorre impostare una dimensione massima per i file dei documenti."
+
+msgid "You must set a maximum image file size."
+msgstr "Occorre impostare una dimensione massima per i file delle immagini."
+
+msgid "You must set a maximum multimedia file size."
+msgstr "Occorre impostare una dimensione massima per i file multimediali."
+
+msgid "Your documents directory is not writable."
+msgstr "La directory dei documenti &egrave; protetta da scrittura."
+
+msgid "Your images directory is not writable."
+msgstr "La directory delle immagini &egrave; protetta da scrittura."
+
+#, php-format
+msgid "Your maximum document size exceeds the server limit of %sMB."
+msgstr "La dimensione massima fissata per i documenti supera il limite di %s MiB ammessa dal server."
+
+#, php-format
+msgid "Your maximum image size exceeds the server limit of %sMB."
+msgstr "La dimensione massima fissata per le immagini supera il limite di %s MiB ammessa dal server."
+
+#, php-format
+msgid "Your maximum multimedia size exceeds the server limit of %sMB."
+msgstr "La dimensione massima dei file multimediali supera il limite di %sMiB del server."
+
+msgid "Your multimedia directory is not writable."
+msgstr "La directory dei file multimediali &egrave; protetta da scrittura."
+
+msgid "files/filecabinet/ directory created successfully."
+msgstr "La cartella files/filecabinet/ &egrave; stata creata."
+
+msgid "files/filecabinet/incoming directory created successfully."
+msgstr "&Egrave; stata creata la cartella file/filecabinet/incoming"
+
+msgid "files/multimedia directory created successfully."
+msgstr "La cartella files/multimedia &egrave; stata creata."
+
