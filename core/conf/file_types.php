@@ -65,7 +65,9 @@ $all_file_types['gif']['fi'][]  = 'gif image data';
 $all_file_types['gif']['vb']    = 'GIF Image';
 
 $all_file_types['jpg']['mct'][] = 'image/jpg';
-$all_file_types['jpg']['fi'][]  = 'jpg image data';
+$all_file_types['jpg']['mct'][] = 'image/jpeg';
+$all_file_types['jpg']['mct'][] = 'image/pjpeg';
+$all_file_types['jpg']['fi'][]  = 'jpeg image data';
 $all_file_types['jpg']['vb']    = 'JPG Image';
 $all_file_types['jpg']['base']  = 'jpg';
 
