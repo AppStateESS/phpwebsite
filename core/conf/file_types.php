@@ -141,6 +141,7 @@ $all_file_types['pdf']['fi'][]  = 'pdf document';
 $all_file_types['pdf']['vb']    = 'Acrobat PDF Document';
 
 $all_file_types['png']['mct'][] = 'image/png';
+$all_file_types['png']['mct'][] = 'text/plain';
 $all_file_types['png']['fi'][]  = 'png image data';
 $all_file_types['png']['vb']    = 'PNG Image';
 
