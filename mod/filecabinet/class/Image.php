@@ -196,7 +196,7 @@ class PHPWS_Image extends File_Common {
         if (MOD_REWRITE_ENABLED) {
             return sprintf('filecabinet/%s/image', $this->id);
         } else {
-            return sprintf('index.php?module=filecabinet&amp;page=image&amp;id=%s', $this->id);
+            return sprintf('index.php?module=filecabinet&amp;mtype=image&amp;id=%s', $this->id);
         }
 
     }

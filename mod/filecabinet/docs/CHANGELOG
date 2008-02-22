@@ -1,7 +1,11 @@
 Version 2.0.0
 ----------------------------------------------------------------
+22 February 2008
++ Fixed image popup link address
+
 21 February 2008
 + Fixed multimedia popup outside of mod_rewrite (thanks Verdon)
++ Added Italian translation
 
 20 February 2008
 + Settings tab is now deity only
