@@ -1,3 +1,23 @@
+22 February 2008
++ Reported interface written.
++ Punish system implemented
+  o Users can be locked out of posting.
+  o Users can be deactivated.
+  o IP address of author can be denied.
++ Moved comment forms into its own class
++ New rules added to canComment function.
++ Locked users have their avatar turned into lock icon.
++ Italian translations added.
++ user_action and admin_action shrunk to uop and aop
+
++ Note: Access update required
++ Updated: img/lock.png, javascript/admin/head.js,
+  templates/alt_view.tpl, templates/alt_view_one.tpl,
+  templates/punish_pop.tpl, templates/reported.tpl,
+  templates/style.css, templates/view.tpl, templates/view_one.tpl
+  
+
+
 19 February 2008
 + Added report function to flag comments. No interface written to view
   them yet.

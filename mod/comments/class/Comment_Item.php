@@ -47,6 +47,10 @@ class Comment_Item {
     // Name of person who edited the comment
     var $edit_author  = null;
 
+    // Number of times this comment has been reported
+    // as needing review
+    var $reported     = 0;
+
     // Error encountered when processing object
     var $_error	      = null;
 
@@ -249,20 +253,9 @@ class Comment_Item {
 	return $this->_error;
     }
 
-    function getTpl($allow_anon)
+    function getTpl($allow_anon, $can_post=true)
     {
         $author = $this->getAuthor();
-
-        /**
-         * If anonymous users are allowed to post or
-         * the current user is logged in
-         */
-        if ($allow_anon || Current_User::isLogged()) {
-            $can_post = true;
-        } else {
-            $can_post = false;
-        }
-
 	$author_info = $author->getTpl();
 
         if (!$this->author_id && $this->anon_name) {
@@ -283,12 +276,19 @@ class Comment_Item {
         if ($can_post) {
             $template['QUOTE_LINK']  = $this->quoteLink();
             $template['REPLY_LINK']  = $this->replyLink();
-            $template['REPORT_LINK'] = $this->reportLink();
+            if (!$_SESSION['Users_Reported_Comments'][$this->id]) {
+                $template['REPORT_LINK'] = $this->reportLink();
+            } else {
+                $template['REPORT_LINK'] = dgettext('comments', 'Reported!');
+            }
         }
-	$template['EDIT_LINK']	     = $this->editLink();
-	$template['DELETE_LINK']     = $this->deleteLink();
-	$template['VIEW_LINK']	     = $this->viewLink();
 
+        if ($can_post) {
+            $template['EDIT_LINK']    = $this->editLink();
+        }
+        $template['DELETE_LINK']  = $this->deleteLink();
+        $template['VIEW_LINK']    = $this->viewLink();
+        $template['PUNISH_LINK']     = $this->punishUserLink();
 
         if ($this->parent) {
             $template['RESPONSE_LABEL']  = dgettext('comments', 'In response to');
@@ -365,7 +365,7 @@ class Comment_Item {
 	if (Current_User::allow('comments') ||
 	    ($this->author_id > 0 && $this->author_id == Current_User::getId())
 	    ) {
-	    $vars['user_action']   = 'post_comment';
+	    $vars['uop']   = 'post_comment';
 	    $vars['thread_id']	   = $this->thread_id;
 	    $vars['cm_id']	   = $this->id;
 	    return PHPWS_Text::moduleLink(dgettext('comments', 'Edit'), 'comments', $vars);
@@ -378,7 +378,7 @@ class Comment_Item {
     {
 	if (Current_User::allow('comments', 'delete_comments')) {
 	    $vars['QUESTION'] = dgettext('comments', 'Are you sure you want to delete this comment?');
-	    $vars['ADDRESS'] = 'index.php?module=comments&amp;cm_id=' . $this->id . '&amp;admin_action=delete_comment&amp;authkey='
+	    $vars['ADDRESS'] = 'index.php?module=comments&amp;cm_id=' . $this->id . '&amp;aop=delete_comment&amp;authkey='
 		. Current_User::getAuthKey();
 	    $vars['LINK'] = dgettext('comments', 'Delete');
 	    return Layout::getJavascript('confirm', $vars);
@@ -388,9 +388,23 @@ class Comment_Item {
 
     }
 
+    function punishUserLink()
+    {
+        if (Current_User::allow('comments', 'punish_users')) {
+            $vars['address'] = PHPWS_Text::linkAddress('comments', array('aop'=>'punish_user',
+                                                                         'cm_id'=>$this->id), true);
+            $vars['label'] = dgettext('comments', 'Punish');
+            $vars['width'] = 240;
+            $vars['height'] = 180;
+            return javascript('open_window', $vars);
+        } else {
+            return null;
+        }
+    }
+
     function quoteLink()
     {
-	$vars['user_action']   = 'post_comment';
+	$vars['uop']   = 'post_comment';
 	$vars['thread_id']     = $this->thread_id;
 	$vars['cm_parent']     = $this->id;
 	return PHPWS_Text::moduleLink(dgettext('comments', 'Quote'), 'comments', $vars);
@@ -398,24 +412,21 @@ class Comment_Item {
 
     function replyLink()
     {
-	$vars['user_action']   = 'post_comment';
+	$vars['uop']   = 'post_comment';
 	$vars['thread_id']     = $this->thread_id;
 	return PHPWS_Text::moduleLink(dgettext('comments', 'Reply'), 'comments', $vars);
     }
 
     function reportLink()
     {
-        $link = PHPWS_Text::linkAddress('comments', array('user_action'=>'report_comment',
-                                                          'cm_id' => $this->id));
-        return sprintf('<a href="#" onclick="loadRequester(\'%s\', \'%s\', \'void(0)\'); return false">%s</a>',
-                       $link,
-                       sprintf('alert(\\\'%s\\\')', addslashes(dgettext('comments', 'Comment reported'))),
+        return sprintf('<a href="#" onclick="report(%s, this); return false">%s</a>',
+                       $this->id,
                        dgettext('comments', 'Report'));
     }
 
     function viewLink()
     {
-	$vars['user_action']   = 'view_comment';
+	$vars['uop']   = 'view_comment';
 	$vars['cm_id']	   = $this->id;
 
 	return PHPWS_Text::moduleLink($this->subject, 'comments', $vars);
@@ -450,7 +461,7 @@ class Comment_Item {
 
     function responseNumber()
     {
-	$vars['user_action'] = 'view_comment';
+	$vars['uop'] = 'view_comment';
 	$vars['cm_id']	     = $this->parent;
 
 	return PHPWS_Text::moduleLink($this->parent, 'comments', $vars);
@@ -459,9 +470,20 @@ class Comment_Item {
     function responseAuthor()
     {
         $comment = new Comment_Item($this->parent);
-	$vars['user_action']   = 'view_comment';
+	$vars['uop']   = 'view_comment';
 	$vars['cm_id']	       = $comment->id;
 	return PHPWS_Text::moduleLink($comment->getAuthorName(), 'comments', $vars);
+    }
+
+    function reportTags()
+    {
+        $tpl['SUBJECT'] = $this->viewLink();
+        $tpl['ENTRY']   = substr($this->entry, 0, 100);
+
+        $links[] = $this->deleteLink();
+        $links[] = $this->punishUserLink();
+        $tpl['ACTION']  = implode(' | ', $links);
+        return $tpl;
     }
 
 }

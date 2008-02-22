@@ -14,16 +14,17 @@ define('NO_COMMENTS_FOUND', 'none');
 
 class Comment_Thread {
     var $id             = 0;
-    var $key_id         = NULL;
+    var $key_id         = null;
     var $total_comments = 0;
-    var $last_poster    = NULL;
+    var $last_poster    = null;
     var $allow_anon     = 0;
-    var $_key           = NULL;
-    var $_comments      = NULL;
-    var $_error         = NULL;
+    var $_key           = null;
+    var $_comments      = null;
+    var $_error         = null;
+    var $_return_url    = null;
 
 
-    function Comment_Thread($id=NULL)
+    function Comment_Thread($id=0)
     {
         if (empty($id)) {
             return;
@@ -140,7 +141,7 @@ class Comment_Thread {
 
     function postLink()
     {
-        $vars['user_action']   = 'post_comment';
+        $vars['uop']   = 'post_comment';
         $vars['thread_id']     = $this->id;
         return PHPWS_Text::moduleLink(dgettext('comments', 'Post New Comment'), 'comments', $vars);
     }
@@ -194,8 +195,14 @@ class Comment_Thread {
 
     }
 
+    function setReturnUrl($url)
+    {
+        $this->_return_url = $url;
+    }
+
     function view($parent_id=0)
     {
+        javascript('modules/comments/report/', array('reported'=>dgettext('comments', 'Reported!')));
         if (Current_User::allow('comments')) {
             $this->miniAdmin();
         }
@@ -221,17 +228,22 @@ class Comment_Thread {
         $pager->saveLastView();
         $form = new PHPWS_Form;
 
-        $getVals = PHPWS_Text::getGetValues();
-        if (!empty($getVals)) {
-            $referer[] = 'index.php?';
-            foreach ($getVals as $key=>$val) {
-                $referer[] = "$key=$val";
+        if (!$this->_return_url) {
+            $getVals = PHPWS_Text::getGetValues();
+
+            if (!empty($getVals)) {
+                $referer[] = 'index.php?';
+                foreach ($getVals as $key=>$val) {
+                    $referer[] = "$key=$val";
+                }
+                $form->addHidden('referer', urlencode(implode('&', $referer)));
             }
-            $form->addHidden('referer', urlencode(implode('&', $referer)));
+        } else {
+            $form->addHidden('referer', urlencode($this->_return_url));
         }
 
         $form->addHidden('module', 'comments');
-        $form->addHidden('user_action', 'change_view');
+        $form->addHidden('uop', 'change_view');
         $form->addSelect('time_period', $time_period);
         $form->addSelect('order', $order_list);
 
@@ -277,7 +289,7 @@ class Comment_Thread {
         $pager->setModule('comments');
         $pager->setTemplate(COMMENT_VIEW_TEMPLATE);
         $pager->addPageTags($page_tags);
-        $pager->addRowTags('getTpl', $this->allow_anon);
+        $pager->addRowTags('getTpl', $this->allow_anon, $this->canComment());
         $pager->setLimitList(array(10, 20, 50));
         $pager->setDefaultLimit(COMMENT_DEFAULT_LIMIT);
         $pager->setEmptyMessage(dgettext('comments', 'No comments'));
@@ -296,7 +308,20 @@ class Comment_Thread {
 
     function canComment()
     {
-        return ($this->allow_anon || Current_User::isLogged()) ? TRUE : FALSE;
+        if (Current_User::isLogged() && !isset($_SESSION['Comment_User_Lock'])) {
+            $cu = new Comment_User(Current_User::getId());
+            if ($cu->user_id) {
+                $_SESSION['Comment_User_Lock'] = (bool)$cu->locked;
+            } else {
+                $_SESSION['Comment_User_Lock'] = false;
+            }
+        }
+
+        if ($_SESSION['Comment_User_Lock']) {
+            return false;
+        }
+
+        return ( $this->allow_anon || Current_User::isLogged() ) ? TRUE : FALSE;
     }
 
     function _createUserList($comment_list)
@@ -342,10 +367,10 @@ class Comment_Thread {
     {
         $vars['thread_id'] = $this->id;
         if ($this->allow_anon) {
-            $vars['admin_action'] = 'disable_anon_posting';
+            $vars['aop'] = 'disable_anon_posting';
             $link = PHPWS_Text::secureLink(dgettext('comments', 'Disable anonymous posting'), 'comments', $vars);
         } else {
-            $vars['admin_action'] = 'enable_anon_posting';
+            $vars['aop'] = 'enable_anon_posting';
             $link = PHPWS_Text::secureLink(dgettext('comments', 'Enable anonymous posting'), 'comments', $vars);
         }
 

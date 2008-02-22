@@ -6,7 +6,7 @@
     <tr>
         <td class="author-info bgcolor1" valign="top">
            <h2>{AUTHOR_NAME} {ANONYMOUS_TAG}<!-- BEGIN ip -->- {IP_ADDRESS}<!-- END ip --></h2>
-           {AVATAR}
+           <div class="avatar">{AVATAR}</div>
         </td>
         <td class="comment-body">
             <h2>{VIEW_LINK}</h2>
@@ -17,6 +17,7 @@
             <!-- END edit-info -->
             <div class="admin-links"><!-- BEGIN edit-link -->{EDIT_LINK}
                 <!-- BEGIN delete-link -->| {DELETE_LINK}<!-- END delete-link -->
+                <!-- BEGIN punish-link -->| {PUNISH_LINK}<!-- END punish-link -->
                 | <!-- END edit-link -->
                 <!-- BEGIN post -->{REPLY_LINK} | {QUOTE_LINK} | {REPORT_LINK}<!-- END post -->
             </div>

@@ -17,7 +17,6 @@ class Comments {
 
     function getThread($key=NULL)
     {
-        
         if (empty($key)) {
             $key = Key::getCurrent();
         }
@@ -54,7 +53,7 @@ class Comments {
             $result = $user->saveUser();
         }
 
-        $GLOBALS['Comment_Users'][$user_id] = &$user;
+        $GLOBALS['Comment_Users'][$user_id] = & $user;
         return $GLOBALS['Comment_Users'][$user_id];
     }
 
@@ -72,11 +71,25 @@ class Comments {
     }
 
 
+    function panel()
+    {
+        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+
+        $tabs['settings'] = array('title'=>dgettext('comments', 'Settings'), 'link'=>'index.php?module=comments');
+        $tabs['report']   = array('title'=>dgettext('comments', 'Reported'), 'link'=>'index.php?module=comments');
+
+        $panel = new PHPWS_Panel('comments');
+        $panel->quickSetTabs($tabs);
+        $panel->enableSecure();
+        return $panel;
+    }
+
     /**
      * Authorization checked in index.php
      */
     function adminAction($command)
     {
+        $panel = Comments::panel();
         $content = NULL;
         switch ($command) {
         case 'delete_comment':
@@ -86,9 +99,15 @@ class Comments {
             return;
             break;
             
-        case 'admin_menu':
+        case 'report':
+            PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+            $content = Comment_Forms::reported();
+            break;
+
+        case 'settings':
             if (Current_User::allow('comments', 'settings')) {
-                $content = Comments::settingsForm();
+                PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                $content = Comment_Forms::settingsForm();
             } else {
                 $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
             }
@@ -119,8 +138,94 @@ class Comments {
             }
             PHPWS_Core::goBack();
             break;
+
+        case 'unlock_user':
+        case 'lock_user':
+            if (Current_User::authorized('comments', 'punish_users')) {
+                $user = new PHPWS_User($_GET['id']);
+                if ($user->id && $user->allow('comments')) {
+                    exit();
+                }
+                $cuser = new Comment_User($_GET['id']);
+                
+                if ($cuser->id) {
+                    if ($_GET['aop'] == 'lock_user') {
+                        $cuser->locked = 1;
+                        printf('<a href="#" onclick="punish_user(%s, this, \'unlock_user\'); return false;">%s</a>',
+                               $cuser->id, dgettext('comments', 'Unlock user'));
+                        
+                    } else {
+                        $cuser->locked = 0;
+                        printf('<a href="#" onclick="punish_user(%s, this, \'lock_user\'); return false;">%s</a>',
+                               $cuser->id, dgettext('comments', 'Lock user'));
+                    }
+                    $cuser->save();
+                }
+            }
+            exit();
+            break;
+
+        case 'unban_user':
+        case 'ban_user':
+            if (Current_User::authorized('users', 'ban_users')) {
+                $user = new PHPWS_User($_GET['id']);
+                if ($user->id && $user->allow('users')) {
+                    exit();
+                }
+                if ($user->id) {
+                    if ($_GET['aop'] == 'ban_user') {
+                        $user->active = 0;
+                        printf('<a href="#" onclick="punish_user(%s, this, \'unban_user\'); return false;">%s</a>',
+                               $user->id, dgettext('comments', 'Unban user'));
+                        
+                    } else {
+                        $user->active = 1;
+                        printf('<a href="#" onclick="punish_user(%s, this, \'ban_user\'); return false;">%s</a>',
+                               $user->id, dgettext('comments', 'Ban user'));
+                    }
+                    $user->save();
+                }
+            }
+            exit();
+            break;
+
+        case 'deny_ip':
+            if (Current_User::authorized('access')) {
+                PHPWS_Core::initModClass('access', 'Access.php');
+                Access::addIp($_GET['id'], false);
+                echo sprintf('<a href="#" onclick="punish_user(\'%s\', this, \'remove_deny_ip\'); return false;">%s</a>',
+                             $_GET['id'], dgettext('comments', 'Remove IP denial'));
+            }
+            exit();
+            break;
+
+        case 'remove_deny_ip':
+            if (Current_User::authorized('access')) {
+                PHPWS_Core::initModClass('access', 'Access.php');
+
+                Access::removeIp($_GET['id'], false);
+                echo sprintf('<a href="#" onclick="punish_user(\'%s\', this, \'deny_ip\'); return false;">%s</a>',
+                             $_GET['id'], dgettext('comments', 'Deny IP address'));
+
+            }
+            exit();
+            break;
+
+        case 'punish_user':
+            if (!Current_User::authorized('comments', 'punish_users')) {
+                Current_User::disallow();
+            }
+            $comment = new Comment_Item($_REQUEST['cm_id']);
+            if ($comment->id) {
+                PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                $content = Comment_Forms::punishForm($comment);
+            }
+            Layout::nakedDisplay($content);
+            break;
+
         }
-        Layout::add(PHPWS_ControlPanel::display($content));
+        $panel->setContent($content);
+        Layout::add(PHPWS_ControlPanel::display($panel->display()));
     }
 
     function userAction($command)
@@ -223,6 +328,7 @@ class Comments {
     function changeView()
     {
         $getValues = PHPWS_Text::getGetValues();
+
         if (isset($_GET['referer'])) {
             $referer = PHPWS_Text::getGetValues(urldecode($_GET['referer']));
         } else {
@@ -283,79 +389,6 @@ class Comments {
         return true;
     }
 
-    function form(&$thread, $c_item)
-    {
-        $form = new PHPWS_Form;
-    
-        if (isset($_REQUEST['cm_parent'])) {
-            $c_parent = new Comment_Item($_REQUEST['cm_parent']);
-            $form->addHidden('cm_parent', $c_parent->id);
-            $form->addTplTag('PARENT_SUBJECT', $c_parent->subject);
-            $form->addTplTag('PARENT_ENTRY', $c_parent->getEntry());
-        }
-    
-        if (!empty($c_item->id)) {
-            $form->addHidden('cm_id', $c_item->id);
-            $form->addText('edit_reason', $c_item->getEditReason());
-            $form->setLabel('edit_reason', dgettext('comments', 'Reason for edit'));
-            $form->setSize('edit_reason', 50);
-        }
-
-        if (!Current_User::isLogged() && PHPWS_Settings::get('comments', 'anonymous_naming')) {
-            $form->addText('anon_name', $c_item->getEditReason());
-            $form->setLabel('anon_name', dgettext('comments', 'Name'));
-            $form->setSize('anon_name', 20, 20);
-        }
-
-        $form->addHidden('module', 'comments');
-        $form->addHidden('user_action', 'save_comment');
-        $form->addHidden('thread_id',    $thread->id);
-
-        $form->addText('cm_subject');
-        $form->setLabel('cm_subject', dgettext('comments', 'Subject'));
-        $form->setSize('cm_subject', 50);
-
-        if (isset($c_parent) && empty($c_item->subject)) {
-            $form->setValue('cm_subject', dgettext('comments', 'Re:') . $c_parent->subject);
-        } else {
-            $form->setValue('cm_subject', $c_item->subject);
-        }
-
-
-        if (!$c_item->id && isset($c_parent)) {
-            $entry_text = $c_parent->getEntry(FALSE, TRUE) . "\n\n" . $c_item->getEntry(FALSE);
-        } else {
-            $entry_text = $c_item->getEntry(FALSE);
-        }
-
-        $form->addTextArea('cm_entry', $entry_text);
-        $form->setLabel('cm_entry', dgettext('comments', 'Comment'));
-        $form->setCols('cm_entry', 50);
-        $form->setRows('cm_entry', 10);
-        $form->addSubmit(dgettext('comments', 'Post Comment'));
-
-        if (Comments::useCaptcha()) {
-            PHPWS_Core::initCoreClass('Captcha.php');
-            $form->addText('captcha');
-            $form->setLabel('captcha', dgettext('comments', 'Please copy the word in the above image.'));
-            $form->addTplTag('CAPTCHA_IMAGE', Captcha::get());
-        }
-
-        $template = $form->getTemplate();
-        if (isset($c_parent)) {
-            $template['BACK_LINK'] = $thread->getSourceUrl(TRUE, $c_parent->id);
-        } else {
-            $template['BACK_LINK'] = $thread->getSourceUrl(TRUE);
-        }
-
-        if ($c_item->_error) {
-            $template['ERROR'] = & $c_item->_error;
-        }
-
-
-        $content = PHPWS_Template::process($template, 'comments', 'edit.tpl');
-        return $content;
-    }
 
     /**
      * Determines if captcha should be used
@@ -477,72 +510,15 @@ class Comments {
         PHPWS_Settings::save('comments');
 
         $content[] = dgettext('comments', 'Settings saved.');
-        $vars['admin_action'] = 'admin_menu';
+        $vars['aop'] = 'admin_menu';
         $content[] = PHPWS_Text::secureLink(dgettext('comments', 'Go back to settings...'), 'comments', $vars);
         return implode('<br /><br />', $content);
     }
-
-    function settingsForm()
+    
+    function form(&$thread, $c_item)
     {
-        $settings = PHPWS_Settings::get('comments');
-
-        $form = new PHPWS_Form('comments');
-        $form->addHidden('module', 'comments');
-        $form->addHidden('admin_action', 'post_settings');
-
-        $form->addCheck('allow_signatures', 1);
-        $form->setLabel('allow_signatures', dgettext('comments', 'Allow user signatures'));
-        $form->setMatch('allow_signatures', $settings['allow_signatures']);
-                        
-
-        $form->addCheck('allow_image_signatures', 1);
-        $form->setLabel('allow_image_signatures', dgettext('comments', 'Allow images in signatures'));
-        $form->setMatch('allow_image_signatures', $settings['allow_image_signatures']);
-
-        $form->addCheck('allow_avatars', 1);
-        $form->setLabel('allow_avatars', dgettext('comments', 'Allow user avatars'));
-        $form->setMatch('allow_avatars', $settings['allow_avatars']);
-
-        $form->addCheck('local_avatars', 1);
-        $form->setLabel('local_avatars', dgettext('comments', 'Save avatars locally'));
-        $form->setMatch('local_avatars', $settings['local_avatars']);
-
-        $form->addCheck('anonymous_naming', 1);
-        $form->setLabel('anonymous_naming', dgettext('comments', 'Allow anonymous naming'));
-        $form->setMatch('anonymous_naming', $settings['anonymous_naming']);
-
-        $cmt_count[0]  = dgettext('comments', 'Do not show');
-        $cmt_count[5]  = sprintf(dgettext('comments', 'Show last %d'), 5);
-        $cmt_count[10] = sprintf(dgettext('comments', 'Show last %d'), 10);
-        $cmt_count[15] = sprintf(dgettext('comments', 'Show last %d'), 15);
-
-        $form->addSelect('recent_comments', $cmt_count);
-        $form->setLabel('recent_comments', dgettext('comments', 'Recent comment'));
-        $form->setMatch ('recent_comments', $settings['recent_comments']);
-
-        $order_list = array('old_all'  => dgettext('comments', 'Oldest first'),
-                            'new_all'  => dgettext('comments', 'Newest first'));
-
-        $form->addSelect('order', $order_list);
-        $form->setMatch('order', PHPWS_Settings::get('comments', 'default_order'));
-        $form->setLabel('order', dgettext('comments', 'Default order'));
-
-        $captcha[0] = dgettext('comments', 'Don\'t use');
-        $captcha[1] = dgettext('comments', 'Anonymous users only');
-        $captcha[2] = dgettext('comments', 'All users');
-
-        if (extension_loaded('gd')) {
-            $form->addSelect('captcha', $captcha);
-            $form->setMatch('captcha', PHPWS_Settings::get('comments', 'captcha'));
-            $form->setLabel('captcha', dgettext('comments', 'CAPTCHA use'));
-        }
-
-        $form->addSubmit(dgettext('comments', 'Save'));
-
-        $tpl = $form->getTemplate();
-
-        $tpl['TITLE'] = dgettext('comments', 'Comment settings');
-        return PHPWS_Template::process($tpl, 'comments', 'settings_form.tpl');
+        PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+        return Comment_Forms::form($thread, $c_item);
     }
 
 
@@ -599,7 +575,6 @@ class Comments {
         $content = PHPWS_Template::process($tpl, 'comments', 'recent.tpl');
         Layout::add($content, 'comments', 'recent');
     }
-
 }
 
 ?>

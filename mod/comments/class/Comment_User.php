@@ -201,8 +201,13 @@ class Comment_User extends Demographics_User {
             $template['JOINED_DATE_LABEL'] = dgettext('comments', 'Joined');
         }
 
-        if (isset($this->avatar)) {
-            $template['AVATAR'] = $this->getAvatar();
+        if ($this->locked) {
+            $template['AVATAR'] = CM_LOCK_IMAGE;
+            $template['AUTHOR_NAME'] .= sprintf(' <span class="smaller">(%s)</span>', dgettext('comments', 'Locked'));
+        } else {
+            if (isset($this->avatar)) {
+                $template['AVATAR'] = $this->getAvatar();
+            }
         }
 
         if (isset($this->contact_email)) {
@@ -293,6 +298,7 @@ class Comment_User extends Demographics_User {
             $user = new PHPWS_User($this->user_id);
             $this->display_name = $user->getDisplayName();
         }
+
         return $this->save();
     }
 

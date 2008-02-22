@@ -46,6 +46,12 @@ Please download 0.6.3.</pre>';
 + RFE #1720589 - Added ability to show most recent comments in a popup.
 + Added permission check on single comment view.
 </pre>';
+
+    case version_compare($currentVersion, '1.0.0', '<'):
+        $content[] = '<pre>';
+        PHPWS_Boost::registerMyModule('comments', 'controlpanel', $content);
+        $content[] = '</pre>';
+        
     }
             
     return true;
