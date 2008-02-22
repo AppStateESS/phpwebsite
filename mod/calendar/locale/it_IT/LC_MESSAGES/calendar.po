@@ -1,0 +1,541 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-04 09:43-0500\n"
+"PO-Revision-Date: 2008-02-21 10:01+0100\n"
+"Last-Translator: Doriano Cometto <maclurad AT gmail DOT com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "1st"
+msgstr "Primo"
+
+msgid "2nd"
+msgstr "Secondo"
+
+msgid "3rd"
+msgstr "Terzo"
+
+msgid "4th"
+msgstr "Quarto"
+
+msgid "A day prior"
+msgstr "Un giorno prima"
+
+msgid "A week prior"
+msgstr "Una settimana prima"
+
+msgid "Action"
+msgstr "Azione"
+
+msgid "Add event"
+msgstr "Aggiungi evento"
+
+msgid "All day"
+msgstr "Giornaliero"
+
+msgid "All day event"
+msgstr "Evento giornaliero"
+
+#, php-format
+msgid "All day event, %s"
+msgstr "Evento giornaliero, %s"
+
+msgid "Allow personal schedules"
+msgstr "Permetti programmazioni personali"
+
+msgid "Allow public event submissions"
+msgstr "Permetti invio di eventi a tutti"
+
+msgid "An administrator will review your submission. Thank you."
+msgstr "Un amministratore verificher&agrave; l'invio. Grazie."
+
+msgid "An error occurred when saving your event."
+msgstr "Si &egrave; verificato un errore durante il salvataggio dell'evento."
+
+msgid "An error occurred when saving your schedule."
+msgstr "Si &egrave; verificato un errore durante il salvataggio del programma."
+
+msgid "An error occurred when trying to repeat an event."
+msgstr "Si &egrave; verificato un errore durante la ripetizione di un evento."
+
+msgid "Apply changes to repeats?"
+msgstr "Applicare i cambiamenti anche alle ripetizioni?"
+
+#, php-format
+msgid "Approval (%s)"
+msgstr "Approvazione (%s)"
+
+msgid "Approve"
+msgstr "Approva"
+
+msgid "Are you sure you want to delete this schedule?"
+msgstr "Eliminare questo programma?"
+
+msgid "Are you sure you want to permanently delete this event?"
+msgstr "Eliminare in modo permanente questo evento?"
+
+msgid "Availability"
+msgstr "Disponibilit&agrave;"
+
+msgid "Back"
+msgstr "Indietro"
+
+msgid "Beginning of each month"
+msgstr "All'inizio di ogni mese"
+
+msgid "Blog this"
+msgstr "Al blog"
+
+msgid "Busy"
+msgstr "Occupato"
+
+msgid "Cache month views (public only)"
+msgstr "Viste mensili in cache (solo pubblico)"
+
+msgid "Calendar"
+msgstr "Calendario"
+
+msgid "Calendar settings"
+msgstr "Impostazioni calendario"
+
+msgid "Calendar tables removed."
+msgstr "Tabelle del calendario rimosse."
+
+msgid "Cancel"
+msgstr "Annulla"
+
+msgid "Cannot create event table."
+msgstr "Impossibile creare la tabella eventi."
+
+msgid "Change module settings (unrestricted only)"
+msgstr "Cambia le impostazioni del modulo (solo non protette)"
+
+msgid "Change schedule"
+msgstr "Cambia programma"
+
+msgid "Click here if you would prefer to edit the source event."
+msgstr "Fare click qui se si preferisce modificare l'evento di origine."
+
+msgid "Close"
+msgstr "Chiudi"
+
+msgid "Create event"
+msgstr "Crea evento"
+
+msgid "Create events and schedules."
+msgstr "Crea eventi e programmi."
+
+msgid "Create schedule"
+msgstr "Crea programma"
+
+msgid "Create/Edit public schedule"
+msgstr "Crea/Modifica programmi pubblici"
+
+msgid "Daily"
+msgstr "Giornaliero"
+
+msgid "Date of occurence"
+msgstr "Data della ricorrenza"
+
+msgid "Day"
+msgstr "Giorno"
+
+#, php-format
+msgid "Day %s"
+msgstr "Giorno %s"
+
+msgid "Day view"
+msgstr "Vista giornaliera"
+
+msgid "Default public"
+msgstr "Predefinito pubblico"
+
+msgid "Default public schedule set."
+msgstr "Impostazioni predefinite dei programmi pubblici."
+
+msgid "Default view"
+msgstr "Vista predefinita"
+
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Delete schedules (unrestricted only)"
+msgstr "Elimina programmi (solo non protetti)"
+
+msgid "Description"
+msgstr "Descrizione"
+
+msgid "Disapprove"
+msgstr "Non approvare"
+
+msgid "Display mini calendar"
+msgstr "Visualizza il mini calendario"
+
+msgid "Do not show upcoming events"
+msgstr "Non visualizza i prossimi eventi"
+
+msgid "Don't show"
+msgstr "Non mostrare"
+
+msgid "Duplicate suggestion."
+msgstr "Duplica suggerimento."
+
+msgid "Edit"
+msgstr "Modifica"
+
+msgid "Edit event"
+msgstr "Modifica evento"
+
+msgid "Edit private schedule"
+msgstr "Modifica programma privato"
+
+msgid "End of each month"
+msgstr "Fine di ogni mese"
+
+msgid "End time"
+msgstr "Ora di fine"
+
+msgid "Event"
+msgstr "Evento"
+
+msgid "Event saved"
+msgstr "Evento salvato"
+
+msgid "Event saved."
+msgstr "Evento salvato."
+
+msgid "Event submitted for approval."
+msgstr "Evento inviato per approvazione."
+
+msgid "Every"
+msgstr "Ogni"
+
+msgid "Every month"
+msgstr "Ogni mese"
+
+msgid "Every month on start date"
+msgstr "Ogni mese dalla data di inizio"
+
+#, php-format
+msgid "First day"
+msgstr "Il primo giorno"
+
+#, php-format
+msgid "From %s to %s"
+msgstr "Da %s a %s"
+
+msgid "General"
+msgstr "Generale"
+
+msgid "Grid"
+msgstr "Griglia"
+
+msgid "Grid event display"
+msgstr "Vista griglia eventi"
+
+msgid "Incorrect option"
+msgstr "Opzione errata"
+
+msgid "Last"
+msgstr "Ultimo"
+
+#, php-format
+msgid "Last day"
+msgstr "Ultimo giorno"
+
+msgid "Location"
+msgstr "Luogo"
+
+msgid "Location link"
+msgstr "Collegamento luogo"
+
+msgid "Make a repeating event"
+msgstr "Crea un evento ricorrente"
+
+msgid "Make default public"
+msgstr "Rendi pubblico predefinito"
+
+msgid "Maximum allowed repeats reached."
+msgstr "Raggiunto il numero massimo di ripetizioni."
+
+msgid "Missing title."
+msgstr "Titolo mancante."
+
+msgid "Month"
+msgstr "Mese"
+
+msgid "Month grid"
+msgstr "Griglia mensile"
+
+msgid "Month list"
+msgstr "Elenco mensile"
+
+msgid "Monthly"
+msgstr "Mensilmente"
+
+msgid "Next day"
+msgstr "Il prossimo giorno"
+
+msgid "Next month"
+msgstr "Mese Seguente"
+
+msgid "Next week"
+msgstr "Prossima settimana"
+
+msgid "No events on this day"
+msgstr "Nessun evento in questo giorno"
+
+msgid "No events this month."
+msgstr "Nessun evento in questo mese"
+
+msgid "No events this week."
+msgstr "Nessun evento in questa settimana"
+
+msgid "No schedules have been created."
+msgstr "Nessun programma &egrave; stato creato."
+
+msgid "No suggestions to approve."
+msgstr "Nessun suggerimento da approvare."
+
+msgid "None"
+msgstr "Nessuno"
+
+msgid "On all pages"
+msgstr "Su tutte le pagine"
+
+msgid "One month prior"
+msgstr "Un mese prima"
+
+msgid "Only link days with events in mini calendar"
+msgstr "Nel mini calendario collega solo i giorni con gli eventi"
+
+msgid "Only on front page"
+msgstr "Solo sulla pagina principale"
+
+msgid "Options"
+msgstr "Opzioni"
+
+msgid "Please choose options for the \"Every\" repeat method."
+msgstr "Selezionare le opzioni disponibili per il metodo \"Ogni\"."
+
+msgid "Please pick a monthly repeat method."
+msgstr "Selezionare un metodo di ripetizione mensile."
+
+msgid "Please pick a proper monthly repeat method."
+msgstr "Selezionare un metodo di ripetizione mensile appropriato."
+
+msgid "Post Event to Blog"
+msgstr "Invia evento al blog"
+
+msgid "Post to Blog"
+msgstr "Invia al blog"
+
+msgid "Previous day"
+msgstr "Giorno precedente"
+
+msgid "Previous month"
+msgstr "Mese Precedente"
+
+msgid "Previous week"
+msgstr "Settimana precedente"
+
+msgid "Private"
+msgstr "Pivato"
+
+msgid "Public"
+msgstr "Pubblico"
+
+msgid "Remove event from repeat list?"
+msgstr "Rimuovere l'evento dall'elenco degli eventi da ripetere?"
+
+msgid "Removed convert flag."
+msgstr "Bandiera di conversione rimossa."
+
+msgid "Repeat"
+msgstr "Ripeti"
+
+#, php-format
+msgid "Repeat event - %s"
+msgstr "Ripeti evento - %s"
+
+msgid "Repeat event until:"
+msgstr "Ripeti evento fino al:"
+
+msgid "Reset cache"
+msgstr "Azzera cache"
+
+msgid "Save"
+msgstr "Salva"
+
+msgid "Save and apply to repeats"
+msgstr "Salva e applica alle ripetizioni"
+
+msgid "Save and remove repeat"
+msgstr "Salva e rimuovi ripetizione"
+
+msgid "Save event"
+msgstr "Salva evento"
+
+msgid "Save settings"
+msgstr "Salva impostazioni"
+
+msgid "Schedule deleted."
+msgstr "Programma eliminato."
+
+msgid "Schedule event table is missing."
+msgstr "Manca la tabella degli eventi programmati."
+
+msgid "Schedule saved."
+msgstr "Programma salvato."
+
+msgid "Schedules"
+msgstr "Programmi"
+
+msgid "Settings"
+msgstr "Impostazioni"
+
+msgid "Settings saved"
+msgstr "Impostazioni salvate"
+
+msgid "Show busy"
+msgstr "Mostra occupato"
+
+msgid "Show event titles"
+msgstr "Mostra i titoli degli eventi"
+
+msgid "Show next two weeks"
+msgstr "Mostra le prossime due settimane"
+
+msgid "Show number of events"
+msgstr "Mostra il numero di eventi"
+
+msgid "Show upcoming events"
+msgstr "Mostra i prossimi eventi"
+
+msgid "Show upcoming month"
+msgstr "Mostra il mese prossimo"
+
+msgid "Show upcoming week"
+msgstr "Mostra la settimana prossima"
+
+msgid "Some errors occurred when uninstalling Calendar."
+msgstr "Si sono verificati alcuni errori durante la disinstallazione del Calendario."
+
+msgid "Sorry"
+msgstr "Spiacenti"
+
+msgid "Start time"
+msgstr "Ora di inizio"
+
+msgid "Suggest event"
+msgstr "Suggerisci evento"
+
+msgid "Suggested events"
+msgstr "Eventi suggeriti"
+
+msgid "Summary"
+msgstr "Sommario"
+
+msgid "Sync dates"
+msgstr "Sincronizza le date"
+
+msgid "The date to repeat until must be greater than the event's start date."
+msgstr "La data di \"ripeti fino a \" deve essere dopo la data di inizio dell'evento."
+
+msgid "The end time must be after the start time."
+msgstr "L'ora di fine deve essere dopo l'ora di inizio."
+
+msgid "This event does not exist."
+msgstr "Questo evento non esiste."
+
+msgid "This is a repeat of another event."
+msgstr "Questa &egrave; la ripetizione di un altro evento."
+
+msgid "This month"
+msgstr "Questo mese"
+
+msgid "This week"
+msgstr "Questa settimana"
+
+msgid "Three days prior"
+msgstr "Tre giorni prima"
+
+msgid "Title"
+msgstr "Titolo"
+
+msgid "Title / Time / Description"
+msgstr "Titolo / Ora / Descrizione"
+
+msgid "Today"
+msgstr "Oggi"
+
+msgid "Two days prior"
+msgstr "Due giorni prima"
+
+msgid "Two weeks prior"
+msgstr "Due settimane prima"
+
+msgid "Unable to save your event suggestion."
+msgstr "Impossibile salvare il suggerimento."
+
+msgid "Upcoming events"
+msgstr "Prossimi eventi"
+
+msgid "Update event"
+msgstr "Aggiorna evento"
+
+msgid "Update schedule"
+msgstr "Aggiorna programma"
+
+msgid "User"
+msgstr "Utente"
+
+msgid "Visit this location's web site."
+msgstr "Visita il sito web di questa locazione."
+
+msgid "Week"
+msgstr "Settimana"
+
+msgid "Week start day"
+msgstr "Giorno di inizio settimana:"
+
+msgid "Week view"
+msgstr "Vista settimana"
+
+msgid "Weekly"
+msgstr "Settimanale"
+
+msgid "Weekly repeats require you pick one or more days."
+msgstr "Le ripetizioni settimanali richiedono la selezione di uno o pi&ugrave; giorni."
+
+msgid "When should it post?"
+msgstr "Quando dovrei inviarlo?"
+
+msgid "Yearly"
+msgstr "Annuale"
+
+msgid "You have exceeded your allowed event submissions."
+msgstr "Hai superato il numero massimo di invii di evento ammessi."
+
+msgid "You may try to suggest a different event."
+msgstr "Puoi provare a suggerire un altro evento."
+
+msgid "You must choose a repeat mode."
+msgstr "Scegliere una modalit&agrave; di ripetizione."
+
+msgid "You must choose which weekdays to repeat."
+msgstr "Scegliere quali giorni della settimana ripetere."
+
+msgid "You must give your event a summary."
+msgstr "Attribuire un sommario all'evento."
+
+msgid "to"
+msgstr "a"
+
