@@ -1,0 +1,270 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-04 09:43-0500\n"
+"PO-Revision-Date: 2008-02-21 10:01+0100\n"
+"Last-Translator: Doriano Cometto <maclurad AT gmail DOT com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid "-- Use default style --"
+msgstr "-- Usa tema grafico predefinito --"
+
+msgid "Allow indexing"
+msgstr "Permetti l'indicizzazione"
+
+msgid "Allow link following"
+msgstr "Permetti di seguire i link"
+
+msgid "An instruction was requested on a missing theme variable."
+msgstr "&Egrave; stata richiesta una istruzione a una variabile mancante del tema."
+
+msgid "Arrange"
+msgstr "Sistema"
+
+msgid "Arrange Layout"
+msgstr "Sistema il layout"
+
+msgid "Available styles"
+msgstr "Temi grafici disponibili."
+
+msgid "Box move off"
+msgstr "Disabilita lo spostamento dei riquadri"
+
+msgid "Box order is out of sequence."
+msgstr "L'ordine del riquadro &egrave; fuori sequenza"
+
+msgid "Cancel"
+msgstr "Annulla"
+
+msgid "Change CSS"
+msgstr "Cambia CSS"
+
+msgid "Change style"
+msgstr "Modifica tema grafico"
+
+msgid "Clear cache"
+msgstr "Pulisci la cache"
+
+msgid "Clear templates"
+msgstr "Pulisci i modelli"
+
+msgid "Clears all Cache Lite files. Good to try if module updates do not display."
+msgstr "Pulisci tutti i file di Cache Lite. Eseguire se gli aggiornamenti del modulo non vengono visualizzati."
+
+msgid "Click to move"
+msgstr "Fare click per muovere"
+
+msgid "Complete the theme change"
+msgstr "Termina le modifiche al tema"
+
+msgid "Confirm Theme Change"
+msgstr "Conferma le modifiche al tema"
+
+msgid "Control the layout of your site."
+msgstr "Permette di gestire l'aspetto del sito"
+
+msgid "Data was not an array."
+msgstr "I dati non sono una matrice."
+
+msgid "Default Robot Settings"
+msgstr "Impostazioni Robot predefinite"
+
+msgid "Default Theme"
+msgstr "Tema predefinito"
+
+msgid "Description"
+msgstr "Descrizione"
+
+msgid "Disable box move"
+msgstr "Disabilita lo spostamento dei riquadri"
+
+msgid "Display settings"
+msgstr "Visualizza impostazioni"
+
+msgid "Done"
+msgstr "Finito"
+
+msgid "Edit Footer"
+msgstr "Modifica pi&eacute; di pagina"
+
+msgid "Edit Header"
+msgstr "Modifica intestazione pagina"
+
+msgid "Edit Meta Tags"
+msgstr "Modifica Meta tag"
+
+msgid "Enable box move"
+msgstr "Abilita lo spostamento dei riquadri"
+
+msgid "Error"
+msgstr "Errore"
+
+msgid "Expect an error theme when finished."
+msgstr "Previsto un errore sul tema grafico al termine."
+
+msgid "Failure to respond in ten seconds, reverts phpWebSite to the default theme."
+msgstr "Nessuna risposta dopo 10 secondi, ripristinato il tema predefinito di phpWebSite."
+
+msgid "Footer"
+msgstr "Pi&eacute; di pagina"
+
+msgid "Footer updated."
+msgstr "Pi&eacute; di pagina aggiornato."
+
+msgid "Header"
+msgstr "Intestazione "
+
+msgid "Header updated."
+msgstr "Intestazione aggiornata."
+
+msgid "If you are happy with the change, click the appropiate button."
+msgstr "Se siete soddisfatti dei cambiamenti, premere il pulsante appropriato."
+
+msgid "Javascript file was not found."
+msgstr "Il file Javascript non &egrave; stato trovato."
+
+msgid "Keywords"
+msgstr "Parole chiave"
+
+msgid "Layout"
+msgstr "Aspetto"
+
+msgid "Layout did not receive any data for display"
+msgstr "Il modulo Layout non ha ricevuto dati da visualizzare."
+
+msgid "Layout session not set"
+msgstr "La sessione di Layout non &egrave; stata impostata"
+
+msgid "Layout settings updated."
+msgstr "Impostazioni dell'aspetto aggiornate."
+
+msgid "Meta Tags"
+msgstr "Meta Tag"
+
+msgid "Meta Tags updated."
+msgstr "Meta Tag aggiornati"
+
+msgid "Meta tags"
+msgstr "Meta Tag"
+
+#, php-format
+msgid "Move box: %s"
+msgstr "Sposta il riquadro: %s"
+
+msgid "Move down"
+msgstr "Muovi gi&ugrave;"
+
+msgid "Move to bottom"
+msgstr "Muovi al fondo"
+
+msgid "Move to top"
+msgstr "Muovi in cima"
+
+msgid "Move up"
+msgstr "Sposta in alto"
+
+msgid "No alternate style sheets available."
+msgstr "Nessun foglio di stile alternativo disponibile."
+
+msgid "No themes installed."
+msgstr "Nessun tema grafico installato."
+
+msgid "Only show footer on front page"
+msgstr "Mostra il pi&eacute; di pagina solo sulla pagina principale"
+
+msgid "Only show header on front page"
+msgstr "Mostra l'intestazione solo sulla pagina principale"
+
+msgid "Page Title"
+msgstr "Titolo della pagina"
+
+msgid "Page Title: Name of your web site"
+msgstr "Titolo della pagina: Nome del vostro sito"
+
+msgid "Pick a theme"
+msgstr "Selezionare un tema grafico"
+
+msgid "Please enter a page title."
+msgstr "Inserisci un titolo di pagina."
+
+msgid "Removes all files from the current template cache directory. Good to try if your theme is not displaying properly."
+msgstr "Rimuove tutti i file dalla cartella del modello corrente. Eseguire se il tema non viene visualizzato correttamente."
+
+msgid "Removing old layout components."
+msgstr "Rimozione dei vecchi elementi di layout in corso."
+
+msgid "Reset boxes"
+msgstr "Reimposta i riquadri"
+
+msgid "Resets all content back to its original location. Use if problems with Box Move occurred."
+msgstr "Ripristina tutti i contenuti alla loro posizione originaria. Eseguire se si sono verificati problemi con lo spostamento dei riquadri. "
+
+msgid "Restore the default theme"
+msgstr "Ripristina il tema grafico predefinito"
+
+msgid "Restore to default"
+msgstr "Ripristina predefinito"
+
+msgid "Save"
+msgstr "Salva"
+
+msgid "Save settings"
+msgstr "Salva impostazioni"
+
+#, php-format
+msgid "Send to %s"
+msgstr "Invia a %s"
+
+msgid "Set meta tags"
+msgstr "Imposta i meta tag"
+
+msgid "Settings saved"
+msgstr "Impostazioni salvate"
+
+msgid "Style sheet"
+msgstr "Foglio di stile"
+
+msgid "The theme.ini file is missing for the default theme."
+msgstr "Manca il file theme.ini del tema grafico corrente."
+
+msgid "Theme settings updated."
+msgstr "Impostazioni del tema grafico aggiornate."
+
+msgid "Themes"
+msgstr "Temi"
+
+msgid "There was a problem reading the theme directories."
+msgstr "Si &egrave; verificato un problema leggendo le cartelle del tema grafico."
+
+msgid "There was a problem updating the settings."
+msgstr "Si &egrave; verificato un problema aggiornando le impostazioni."
+
+msgid "This site requires you to enable cookies on your browser."
+msgstr "Questo sito richiede che il tuo browser accetti i cookie."
+
+msgid "Unable to receive theme information."
+msgstr "Impossibile ricevere informazioni sul tema grafico."
+
+msgid "Update"
+msgstr "Aggiorna"
+
+msgid "Update Footer"
+msgstr "Aggiorna pi&eacute; di pagina"
+
+msgid "Update Header"
+msgstr "Aggiorna intestazione"
+
+msgid "Update Theme Settings"
+msgstr "Aggiorna impostazioni del tema grafico"
+
+msgid "When enabled, this allows you to shift content to other area of your layout. Movement options depend on the current theme."
+msgstr "Quando abilitata, permette di spostare il contenuto in altre aree del layout. Le opzioni di spostamento dipendono dal tema corrente."
+
