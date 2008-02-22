@@ -1,0 +1,126 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-04 09:43-0500\n"
+"PO-Revision-Date: 2008-02-21 10:01+0100\n"
+"Last-Translator: Doriano Cometto <maclurad AT gmail DOT com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid "- Search again -"
+msgstr "- Cerca ancora - "
+
+msgid "Allow user name searching"
+msgstr "Permetti la ricerca dei nomi utente"
+
+msgid "An error occurred when accessing the database."
+msgstr "Si &egrave; verificato un errore tentando di accedere al database."
+
+msgid "Associate note"
+msgstr "Associa appunto"
+
+#, php-format
+msgid "Associate note to item: %s"
+msgstr "Associa appunto alla voce: %s"
+
+msgid "Associated Notes"
+msgstr "Appunti associati"
+
+msgid "Cancel"
+msgstr "Annulla"
+
+msgid "Could not find match."
+msgstr "Impossibile trovare corrispondenze."
+
+msgid "Date sent"
+msgstr "Data inviata"
+
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Delete and close"
+msgstr "Elimina e chiudi"
+
+msgid "In reference to"
+msgstr "In riferimento a"
+
+msgid "Message"
+msgstr "Messaggio"
+
+msgid "Message deleted."
+msgstr "Messaggio eliminato."
+
+msgid "No"
+msgstr "No"
+
+msgid "No notes found."
+msgstr "Nessun appunto trovato."
+
+msgid "Note sent successfully."
+msgstr "Appunto inviato."
+
+msgid "Note was not sent successfully."
+msgstr "Appunto non inviato."
+
+msgid "Notes"
+msgstr "Appunti"
+
+msgid "Read"
+msgstr "Leggi"
+
+msgid "Read note"
+msgstr "Leggi appunto"
+
+msgid "Read notes"
+msgstr "Leggi appunti"
+
+msgid "Recipient"
+msgstr "Destinatario"
+
+msgid "Send note"
+msgstr "Invia appunto"
+
+#, php-format
+msgid "Send note to %s"
+msgstr "Avvia appunto a %s"
+
+msgid "Sent by"
+msgstr "Inviato da"
+
+msgid "Sent on"
+msgstr "Inviato il"
+
+msgid "System message"
+msgstr "Messaggio di sistema"
+
+msgid "Title"
+msgstr "Titolo"
+
+msgid "Unable to resolve user name."
+msgstr "Impossibile trovare il nome utente."
+
+msgid "Unknown user."
+msgstr "Utente sconosciuto."
+
+msgid "Unsuitable user name characters."
+msgstr "Nome utente con caratteri non validi."
+
+msgid "Yes"
+msgstr "S&igrave;"
+
+#, php-format
+msgid "You have %d unread notes."
+msgstr "Hai %d appunti non letti."
+
+msgid "You must enter a username."
+msgstr "Occorre digitare un nome utente."
+
+msgid "You need to enter a title or some content."
+msgstr "Occorre digitare un titolo o qualche contenuto."
