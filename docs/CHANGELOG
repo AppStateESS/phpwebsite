@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+22 February 2008
++ Removed test code from Core.php
++ Text.php - Rewrote getGetValues. Wasn't working with rewrites
++ Added Doriano to credits file
+
+
 20 February 2008
 + File.php - added getVbType. Returns verbose mime type of a file.
 + Changed instructions in README for check_all.

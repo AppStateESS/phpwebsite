@@ -105,9 +105,10 @@ http://www.getid3.org
 --------------------------------------------------------------------------
 To those who translate, we salute you.
 --------------------------------------------------------------------------
-Peter Heppner (German translations)
-Claus Iversen (Danish translations)
-Dang Hoai Phuc (Vietnamese translations)
+Peter Heppner (German)
+Claus Iversen (Danish)
+Dang Hoai Phuc (Vietnamese)
+Doriano Cometto (Italian)
 
 --------------------------------------------------------------------------
 The phpWebSite team would also like to thank the following people in

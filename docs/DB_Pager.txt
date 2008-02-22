@@ -47,7 +47,7 @@ The File Cabinet uses the image and document class extensively.
 
 Now I need to make my pager object:
 
-$pager = & new DBPager('images', 'PHPWS_Image');
+$pager = new DBPager('images', 'PHPWS_Image');
 
 The 'images' variable refers to what table to access. The second
 parameter 'PHPWS_Image' is the class to construct from the table

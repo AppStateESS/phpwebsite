@@ -1,7 +1,7 @@
 Installing Fileinfo
 by Matthew McNaney
 
-Fileinfo is the php standard for mime file type identification. PHP no
+Fileinfo is the PHP standard for mime file type identification. PHP no
 longer supports mime_content_type. Instead you need to go through a
 long process to install a library that isn't enabled in default
 distributions.

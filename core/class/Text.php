@@ -700,17 +700,29 @@ class PHPWS_Text {
         return TRUE;
     }
 
-    function getGetValues($address=NULL)
+    function getGetValues($query=NULL)
     {
-        if (empty($address) && isset($_SERVER['REDIRECT_QUERY_STRING'])) {
-            $query = $_SERVER['REDIRECT_QUERY_STRING'];
-        } else {
-            if (empty($address)) {
+        if (empty($query)) {
+            if (isset($_SERVER['REDIRECT_QUERY_STRING'])) {
+                $query = $_SERVER['REDIRECT_QUERY_STRING'];
+            } elseif(isset($_SERVER['REDIRECT_URL'])) {
+                $rewrite = str_ireplace(dirname($_SERVER['PHP_SELF']) .'/', '', $_SERVER['REDIRECT_URL']);
+                if (!empty($rewrite)) {
+                    $re_array = explode('/', $rewrite);
+                    $output['module'] = array_shift($re_array);
+                    $count = 1;
+                    foreach ($re_array as $val) {
+                        $output['var' . $count] = $val;
+                    }
+                    return $output;
+                }
+            } else {
                 $address = $_SERVER['REQUEST_URI'];
+                $url = parse_url($address);
+                extract($url);
             }
-
-            $url = parse_url($address);
-            extract($url);
+        } else {
+            $query = str_replace('index.php?', '', $query);
         }
 
         if (empty($query)) {

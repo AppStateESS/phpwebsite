@@ -785,7 +785,6 @@ class PHPWS_Core {
             $address[] = PHPWS_Core::getHomeHttp();
         }
 
-        $_SERVER['REDIRECT_URL'] = '/';
         if ($use_redirect && isset($_SERVER['REDIRECT_URL'])) {
             if ($_SERVER['REDIRECT_URL'] != '/') {
                 $address[] = str_ireplace(dirname($_SERVER['PHP_SELF']) . '/', '', $_SERVER['REDIRECT_URL']);
