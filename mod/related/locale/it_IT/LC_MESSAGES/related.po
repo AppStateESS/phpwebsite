@@ -1,0 +1,76 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-04 09:43-0500\n"
+"PO-Revision-Date: 2008-02-21 10:01+0100\n"
+"Last-Translator: Doriano Cometto <maclurad AT gmail DOT com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid "Add item"
+msgstr "Aggiungi voce"
+
+msgid "Bank not created."
+msgstr "Banco non creato."
+
+msgid "Build Related"
+msgstr "Costruisci correlati"
+
+msgid "Change Related Title"
+msgstr "Cambia titolo Correlati"
+
+msgid "Currently, nothing is associated with this item."
+msgstr "Al momento nulla &egrave; associato a questa voce."
+
+msgid "Edit"
+msgstr "Modifica"
+
+msgid "Friend not created."
+msgstr "Amico non creato."
+
+msgid ""
+"If you want to add related information to this item, click the \"Build "
+"Related\" link."
+msgstr ""
+"Per aggiungere delle informazioni correlate a questa voce, selezionare il "
+"collegamento \"Costruisci correlati\"."
+
+msgid "Missing position."
+msgstr "Posizione mancante."
+
+msgid "Module"
+msgstr "Modulo"
+
+msgid "Quit"
+msgstr "Esci"
+
+msgid "Related Topics"
+msgstr "Argomenti correlati"
+
+msgid "Related tables removed."
+msgstr "Rimosse le tabelle del modulo Correlati."
+
+msgid "Save"
+msgstr "Salva"
+
+msgid "The Related module encountered a database error."
+msgstr "Errore di database nel modulo \"Correlati\"."
+
+msgid "This item is related to the following:"
+msgstr "Questa voce &egrave; correlata ai seguenti argomenti:"
+
+msgid "Title"
+msgstr "Titolo"
+
+msgid "View other items to add them to the list."
+msgstr "Visualizza altre voci e aggiungile all'elenco."
+
+msgid "What do you want the title to be?"
+msgstr "Che nome si vuole dare al titolo?"
