@@ -146,18 +146,19 @@ class Comments {
                 if ($user->id && $user->allow('comments')) {
                     exit();
                 }
+
                 $cuser = new Comment_User($_GET['id']);
-                
-                if ($cuser->id) {
+
+                if ($cuser->user_id) {
                     if ($_GET['aop'] == 'lock_user') {
                         $cuser->locked = 1;
                         printf('<a href="#" onclick="punish_user(%s, this, \'unlock_user\'); return false;">%s</a>',
-                               $cuser->id, dgettext('comments', 'Unlock user'));
+                               $cuser->user_id, dgettext('comments', 'Unlock user'));
                         
                     } else {
                         $cuser->locked = 0;
                         printf('<a href="#" onclick="punish_user(%s, this, \'lock_user\'); return false;">%s</a>',
-                               $cuser->id, dgettext('comments', 'Lock user'));
+                               $cuser->user_id, dgettext('comments', 'Lock user'));
                     }
                     $cuser->save();
                 }
