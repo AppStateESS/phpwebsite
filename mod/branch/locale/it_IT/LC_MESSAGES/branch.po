@@ -1,0 +1,294 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-04 09:43-0500\n"
+"PO-Revision-Date: 2008-02-21 10:01+0100\n"
+"Last-Translator: Doriano Cometto <maclurad AT gmail DOT com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid ".htaccess detected on hub. Attempting to create default file on branch."
+msgstr ""
+"Rilevato il file .htaccess del sito padre. Creazione del file predefinito "
+"sul sito derivato in corso."
+
+msgid "Action"
+msgstr "Azione"
+
+msgid "All done!"
+msgstr "Finito!"
+
+msgid "An error occurred when trying to connect to the database."
+msgstr "Si &egrave; verificato un errore tentando di connettersi al database."
+
+msgid "An error occurred when trying to save the module list."
+msgstr ""
+"Si &egrave; verificato un errore tentando di salvare l'elenco dei moduli."
+
+msgid "An error occurred while saving your branch."
+msgstr "Si &egrave; verificato un errore tentando di salvare il sito derivato."
+
+msgid "An error occurred while trying to install your modules."
+msgstr "Si &egrave; verificato un errore tentando di installare i moduli."
+
+msgid "Branch"
+msgstr "Siti derivati"
+
+msgid "Branch List"
+msgstr "Elenco siti derivati"
+
+msgid "Branch created successfully."
+msgstr "Sito derivato creato."
+
+msgid "Branch directory does not exist."
+msgstr "La cartella del sito derivato non esiste."
+
+msgid "Branch name"
+msgstr "Nome del sito derivato"
+
+msgid "Branch specifications"
+msgstr "Specifiche del sito derivato"
+
+msgid "Config file created successfully."
+msgstr "File di configurazione creato."
+
+msgid "Connected successfully, but the database does not exist."
+msgstr "Connessione avvenuta, ma il database non esiste."
+
+msgid "Connected successfully, but this database already contains tables."
+msgstr "Connessione avvenuta, ma il database contiene gi&agrave; tabelle."
+
+msgid "Connection Port"
+msgstr "Porta di connessione"
+
+msgid "Connection successful. Database available."
+msgstr "Connessione avvenuta. Database disponibile."
+
+msgid "Continue to install branch core"
+msgstr "Continua l'installazione dei componenti base del sito derivato."
+
+msgid "Continue..."
+msgstr "Continua..."
+
+msgid "Copied admin file to branch."
+msgstr "I file amministrativi sono stati copiati nel sito derivato."
+
+msgid "Copied config files to branch."
+msgstr "I file di configurazione sono stati copiati nel sito derivato."
+
+msgid "Copied core images."
+msgstr "Le immagini del nucleo sono state copiate."
+
+msgid "Copied javascript files to branch."
+msgstr "I file javascript sono stati copiati nel sito derivato."
+
+msgid "Copied successfully."
+msgstr "Copia eseguita."
+
+msgid "Copied themes to branch."
+msgstr "I temi sono stati copiati sul sito derivato."
+
+msgid "Core SQL import failed."
+msgstr "Importazione del codice SQL principale non riuscita."
+
+msgid "Core SQL import successful."
+msgstr "Importazione del codice SQL principale riuscita."
+
+msgid "Core installed successfully. Continue to core module installation."
+msgstr "Moduli base installati. Installazione dei moduli."
+
+msgid "Could not connect to the database."
+msgstr "Impossibile connettersi al database."
+
+msgid "Create branch directories"
+msgstr "Crea le directory del sito derivato"
+
+msgid "Create branch information"
+msgstr "Crea le informazioni del sito derivato"
+
+msgid "Create new database"
+msgstr "Crea un nuovo database"
+
+msgid "Database Host"
+msgstr "Host del database"
+
+msgid "Database created successfully."
+msgstr "Database creato."
+
+msgid "Database information"
+msgstr "Informazioni sul database"
+
+msgid "Database name"
+msgstr "Nome del database"
+
+msgid "Database syntax"
+msgstr "Tipo di database"
+
+msgid "Directory"
+msgstr "Cartella"
+
+msgid "Directory creation successful."
+msgstr "Creazione cartella"
+
+msgid "Directory exists but already contains files."
+msgstr "La cartella esite ma non &egrave; vuota."
+
+msgid "Directory exists but is not writable."
+msgstr "La cartella esiste ma non ha i permessi di scrittura."
+
+msgid "Edit"
+msgstr "Modifica"
+
+msgid "Edit branch"
+msgstr "Modifica sito derivato"
+
+msgid "Enter your site's url address."
+msgstr "Inserire l'URLdel sito"
+
+msgid "Failed to copy admin file to branch."
+msgstr "Impossibile copiare il file di amministrazione nel sito derivato."
+
+msgid "Failed to copy core config files to branch."
+msgstr ""
+"Impossibile copiare i file di configurazione dei moduli base nel sito "
+"derivato."
+
+msgid "Failed to copy core images to branch."
+msgstr "Impossibile copiare le immagini dei moduli base nel sito derivato."
+
+msgid "Failed to copy javascript files to branch."
+msgstr "Impossibile copiare i file javascript nel sito derivato."
+
+msgid "Failed to copy theme files to branch."
+msgstr "Impossibile copiare i file dei temi grafici nel sito derivato."
+
+msgid "Failed to create config.php file in the branch."
+msgstr "Impossibile creare il file config.php nel sito derivato."
+
+msgid "ID hash"
+msgstr "Codice hash"
+
+msgid "Incorrect or missing branch id."
+msgstr "ID del sito derivato errato o mancante."
+
+msgid "Install and update branch sites."
+msgstr "Permette di installare e amministrare i siti derivati."
+
+msgid "Install branch core"
+msgstr "Installa i moduli base del sito derivato"
+
+msgid "Installing core modules"
+msgstr "Installazione dei moduli di base in corso"
+
+msgid "List"
+msgstr "Elenco"
+
+#, php-format
+msgid "Module access for \"%s\""
+msgstr "Accesso del modulo per \"%s\""
+
+msgid "Module list saved successfully."
+msgstr "Elenco dei moduli salvato."
+
+msgid "Modules"
+msgstr "Moduli"
+
+msgid "New"
+msgstr "Nuovo"
+
+msgid "Permission user"
+msgstr "Utente database"
+
+msgid "Please check your error logs and try again."
+msgstr "Verificare i file di log degli errori e riprovare."
+
+msgid "Remove"
+msgstr "Rimuovi"
+
+msgid ""
+"Removing this branch will make it inaccessible.\\nThe database and files "
+"will remain behind.\\nIf you are sure you want to remove the branch, type "
+"the branch name:"
+msgstr ""
+"La rimozione di questo sito derivato lo render&agrave; inaccessibile.\\nIl "
+"database e i file non saranno rimossi.\\nPer rimuovere il sito derivato "
+"digitare il nome del sito derivato:"
+
+msgid "Save"
+msgstr "Salva"
+
+msgid "Set up allowed modules"
+msgstr "Imposta i moduli consentiti"
+
+msgid "Setup branch database"
+msgstr "Impostazioni del database del sito derivato"
+
+msgid "Sorry, but Branch failed to make the proper directories."
+msgstr "Spiacenti, impossibile creare le cartelle necessarie."
+
+msgid "Table prefix"
+msgstr "Prefisso tabelle"
+
+msgid "Table prefix must be alphanumeric characters or underscores only"
+msgstr ""
+"Il prefisso delle tabelle pu&ograve; contenere solo caratteri alfanumerici o "
+"il carattere di sottolineatura."
+
+msgid "This database name is not allowed."
+msgstr "Il nome di database specificato non &egrave; valido."
+
+msgid "URL"
+msgstr "Indirizzo"
+
+msgid "Unable to copy .htaccess file."
+msgstr "Impossibile copiare il file .htaccess."
+
+msgid "Unable to create branch directories."
+msgstr "Impossibile creare le cartelle del sito derivato."
+
+msgid "Unable to create the database. You will need to create it manually."
+msgstr "Impossibile creare il database. Sar&agrave; necessario crearlo a mano."
+
+msgid "Unable to create the directory. You will need to create it manually."
+msgstr "Impossibile creare la cartella. Sar&agrave; necessario crearla a mano."
+
+msgid "Unable to get database connect information. Please try again."
+msgstr ""
+"Impossibile ottenere le informazioni di connessione al database. Riprovare."
+
+msgid "Unchecked modules cannot be installed on this branch."
+msgstr ""
+"I moduli non selezionati non potranno essere installati nel sito derivato."
+
+msgid "Update"
+msgstr "Aggiorna"
+
+msgid "Url"
+msgstr "Indirizzo"
+
+msgid "Use hub values"
+msgstr "Usa i valori del sito padre"
+
+msgid "User password"
+msgstr "Password database"
+
+msgid "You may not use that branch name."
+msgstr "Non &egrave; possibile utilizzare questo nome per il sito derivato."
+
+msgid "You must name your branch."
+msgstr "Occorre dare un nome al sito derivato."
+
+msgid "You must type a database name."
+msgstr "Occorre specificare il nome di un database."
+
+msgid "You must type a database user."
+msgstr "Bisogna specificare un utente del database."
+
+msgid "Your branch site must have a site_hash."
+msgstr "Il sito derivato deve avere un codice hash."
