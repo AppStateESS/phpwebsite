@@ -1,0 +1,223 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-04 09:43-0500\n"
+"PO-Revision-Date: 2008-02-21 10:01+0100\n"
+"Last-Translator: Doriano Cometto <maclurad AT gmail DOT com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#, php-format
+msgid "%d hours"
+msgstr "%d ore"
+
+#, php-format
+msgid "%d hours, "
+msgstr "%d ore,"
+
+#, php-format
+msgid "%d minutes"
+msgstr "%d minuti"
+
+#, php-format
+msgid "%d minutes, "
+msgstr "%d minuti,"
+
+#, php-format
+msgid "%d seconds"
+msgstr "%d secondi"
+
+msgid "Action"
+msgstr "Azione"
+
+msgid "Active"
+msgstr "Attivo"
+
+msgid "Add Feed"
+msgstr "Aggiungi Feed"
+
+msgid "Add feed"
+msgstr "Aggiungi Feed"
+
+msgid "Address"
+msgstr "Indirizzo"
+
+msgid "Administrate RSS Feeds"
+msgstr "Amministra i feed RSS"
+
+msgid "Administrative panel for setting RSS feeds."
+msgstr "Pannello amministrativo per le impostazioni dei feed RSS."
+
+msgid "An error occurred registering to RSS module."
+msgstr ""
+"Si &egrave; verificato un errore durante la registrazione del modulo RSS."
+
+msgid "An error occurred trying to unregister this module from RSSFeeds."
+msgstr ""
+"Si &egrave; verificato un errore tentando di deregistrare il modulo dal "
+"modulo Feed RSS."
+
+msgid "An error occurred when saving your channel."
+msgstr "Si &egrave; verificato un errore durante il salvataggio del canale."
+
+msgid "An error occurred when trying to access your RSS channels."
+msgstr "Si &egrave; verificato un errore tentando di accedere ai canali RSS."
+
+msgid "Are you sure you want to delete this RSS feed?"
+msgstr "Eliminare questo feed RSS?"
+
+msgid "Cancel"
+msgstr "Annulla"
+
+msgid "Channel saved."
+msgstr "Canale salvato."
+
+msgid "Channels"
+msgstr "Canali"
+
+msgid "Copyright"
+msgstr "Copyright"
+
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Description"
+msgstr "Descrizione"
+
+msgid "Display?"
+msgstr "Visualizzare?"
+
+msgid "Edit"
+msgstr "Modifica"
+
+msgid "Edit channel"
+msgstr "Modifica canale"
+
+#, php-format
+msgid "Every %s"
+msgstr "Ogni %s"
+
+msgid "Feed title will be used if left empty"
+msgstr "Se lasciato in bianco, verr&agrave; usato il titolo del feed"
+
+msgid "General Settings"
+msgstr "Impostazioni generali"
+
+msgid "Import"
+msgstr "Importa"
+
+msgid "Import RSS Feeds"
+msgstr "Imposta feed RSS"
+
+msgid "In seconds"
+msgstr "In secondi"
+
+msgid "Invalid feed address."
+msgstr "Indirizzo feed non valido."
+
+msgid "Item limit"
+msgstr "Limite elementi"
+
+msgid "Managing editor email address"
+msgstr "Editor di gestione degli indirizzi Email"
+
+msgid "Module unregistered from RSSFeeds."
+msgstr "Modulo deregistrato dal modulo Feed RSS."
+
+msgid "No"
+msgstr "No"
+
+msgid "No RSS file found."
+msgstr "Nessun file RSS trovato."
+
+msgid "No channels have been registered."
+msgstr "Nessun canale &egrave; stato registrato."
+
+msgid "Please check editor email format."
+msgstr "Verificare il formato Email dell'editor."
+
+msgid "Please check webmaster email format."
+msgstr "Verificare il formato Email del webmaster."
+
+msgid "Please enable Cache Lite in your config/core/config.php file."
+msgstr "Abilitare l'opzione Cache Lite nel file config/core/config.php."
+
+msgid "RSS Feeds"
+msgstr "Feed RSS"
+
+msgid "RSS file found but no channel information."
+msgstr "Trovato file RSS, ma &egrave; privo di informazioni sul canale."
+
+#, php-format
+msgid "RSS registration to %s module successful."
+msgstr "Registrazione RSS al modulo %s eseguita."
+
+msgid "Refresh feed"
+msgstr "Aggiorna feed"
+
+msgid "Refresh time"
+msgstr "Tempo di aggiornamento"
+
+msgid "Refresh time is too low. It must be over 60 seconds."
+msgstr ""
+"Il tempo di aggiornamento &egrave; troppo rapido. Deve essere oltre i 60 "
+"secondi."
+
+msgid "Reset"
+msgstr "Reimposta"
+
+msgid "Save"
+msgstr "Salva"
+
+msgid "Save Channel"
+msgstr "Salva canale"
+
+msgid "Save settings"
+msgstr "Salva impostazioni"
+
+msgid "Settings"
+msgstr "Impostazioni"
+
+msgid "Settings saved successfully."
+msgstr "Impostazioni salvate."
+
+msgid "Sorry"
+msgstr "Spiacenti"
+
+msgid "Sorry, unable to grab feed."
+msgstr "Spiacenti, impossibile catturare il feed."
+
+msgid "Title"
+msgstr "Titolo"
+
+msgid "Unable to list feed."
+msgstr "Imposibile elencare il feed."
+
+msgid "Webmaster email address"
+msgstr "Indirizzo Email del webmaster"
+
+msgid "Yes"
+msgstr "S&igrave;"
+
+#, php-format
+msgid "You may not pull more than %s feeds."
+msgstr "Non si possono succhiare pi&ugrave; di %s feed."
+
+msgid "You must enable allow_url_fopen in your php.ini file."
+msgstr "Occorre abilitare l'opzione allow_url_fopen nel file php.ini"
+
+msgid "You must enter a title."
+msgstr "Occorre digitare un titolo."
+
+msgid "You must enter an address."
+msgstr "Occorre digitare un indirizzo."
+
+msgid "You should refresh more often than every month."
+msgstr "Si dovrebbe aggiornare pi&ugrave; spesso di una volta al mese."

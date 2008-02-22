@@ -1,0 +1,412 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-04 09:43-0500\n"
+"PO-Revision-Date: 2008-02-21 10:01+0100\n"
+"Last-Translator: Doriano Cometto <maclurad AT gmail DOT com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#, php-format
+msgid "%s Participants"
+msgstr "%s partecipanti"
+
+msgid "A problem occurred when trying to register your application. If you continue to receive this message, please contact the site admistrator."
+msgstr "Si &egrave; verificato un problema tentando di registrare il tuo modulo di domanda. "
+
+msgid "Action"
+msgstr "Azione"
+
+msgid "Add"
+msgstr "Aggiungi"
+
+msgid "Add applicant"
+msgstr "Aggiungi richiedente"
+
+msgid "Add slot"
+msgstr "Aggiungi posto"
+
+#, php-format
+msgid "Add slot to %s"
+msgstr "Aggiungi posto a %s"
+
+msgid "An error occurred when accessing this sheet's slots."
+msgstr "Si &egrave; verificato un errore tentando di accedere ai posti di questo foglio."
+
+msgid "An error occurred when pulling applicants."
+msgstr "Si &egrave; verificato un errore tentando di ammettere i richiedenti."
+
+msgid "An error occurred when trying to save your application."
+msgstr "Si &egrave; verificato un errore tentando di salvare il tuo modulo di domanda."
+
+msgid "Applicant Listing"
+msgstr "Elenco dei richiedenti"
+
+msgid "Applicant saved successfully."
+msgstr "Richiedente salvato."
+
+msgid "Are you certain you want to delete this slot?"
+msgstr "Eliminare questo posto?"
+
+msgid "Are you sure you want to delete this person from their signup slot?"
+msgstr "Eliminare queste persone dai loro posti?"
+
+msgid ""
+"Are you sure you want to delete this sheet?\\n"
+"All slots and signup information will be permanently removed."
+msgstr ""
+"Eliminare questo foglio?\\n"
+"Tutti i posti e le informazioni di registrazione saranno irrimediabilmente eliminati."
+
+msgid "Available slots"
+msgstr "Posti disponibili"
+
+msgid "CSV file"
+msgstr "File CSV"
+
+msgid "Click on \"Add slot\" to allow applicants to sign up."
+msgstr "Fare click su \"Aggiungi posto\" per permettere ai richiedenti di registrarsi."
+
+msgid "Click the link below to confirm your participation in the following:"
+msgstr "Fare click sul collegamento qui sotto per confermare la partecipazione al seguente:"
+
+msgid "Close signup"
+msgstr "Chiudi registrazione"
+
+msgid "Congratulations!"
+msgstr "Congratulazioni!"
+
+msgid "Create"
+msgstr "Crea"
+
+msgid "Create signup sheet"
+msgstr "Crea foglio registrazioni"
+
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Delete slot"
+msgstr "Elimina posto"
+
+msgid "Description"
+msgstr "Descrizione"
+
+msgid "Down"
+msgstr "Gi&ugrave;"
+
+msgid "Edit"
+msgstr "Modifica"
+
+msgid "Edit sheets"
+msgstr "Modifica fogli"
+
+msgid "Edit slots"
+msgstr "Modifica foglio"
+
+msgid "Email"
+msgstr "Email"
+
+#, php-format
+msgid "Email %s applicants"
+msgstr "Invia Email ai %s registrati"
+
+msgid "Email address"
+msgstr "Indirizzo email"
+
+msgid "Emails not sent"
+msgstr "Email non inviate"
+
+msgid "Emails sent"
+msgstr "Email inviate"
+
+msgid "Error occurred when moving applicant. Slot may be full."
+msgstr "Si &egrave; verificato un errore tentando di spostare i registranti. I posti potrebbero essere pieni."
+
+msgid "Error occurred when saving applicant."
+msgstr "Si &egrave; verificato un errore tentando di salvare i registranti."
+
+msgid "Error occurred when saving sheet."
+msgstr "Si &egrave; verificato un errore tentando di salvare il foglio."
+
+msgid "Error occurred when saving slot."
+msgstr "Si &egrave; verificato un errore tentando di salvare il posto."
+
+msgid "Fatal error: Cannot create slot. Missing sheet id."
+msgstr "Errore irreversibile: Impossibile creare il posto. ID del foglio mancante."
+
+msgid "First name"
+msgstr "Nome"
+
+msgid "From"
+msgstr "Da:"
+
+msgid "Go"
+msgstr "Avvia"
+
+#, php-format
+msgid "Greetings from %s,"
+msgstr "Benvenuti da %s,"
+
+msgid "Invalid reply address."
+msgstr "Indirizzo pre rispost non valido."
+
+msgid "Last name"
+msgstr "Cognome"
+
+msgid "List"
+msgstr "Elenco"
+
+msgid "Message"
+msgstr "Messaggio"
+
+msgid "Missing internal information."
+msgstr "Informazione interna mancante."
+
+msgid "Move"
+msgstr "Sposta"
+
+msgid "Name"
+msgstr "Nome"
+
+msgid "New"
+msgstr "Nuovo"
+
+msgid "Number of openings"
+msgstr "Numero di aperture"
+
+msgid "Organization"
+msgstr "Organizzazione"
+
+msgid "Other slots full"
+msgstr "Altri posti pieni"
+
+msgid "Phone"
+msgstr "Telefono"
+
+msgid "Phone number"
+msgstr "Numero di telefono"
+
+msgid "Please check if there are any more available slots by clicking the link below."
+msgstr "Verificare se ci sono ancora posti disponibili facendo click sul collegamento qui sotto."
+
+msgid "Please enter a contact phone number."
+msgstr "Specificare un numero di telefono per contatti."
+
+msgid "Please enter a first name."
+msgstr "Digitare il nome."
+
+msgid "Please enter a last name."
+msgstr "Digitare il cognome."
+
+msgid "Please enter a message."
+msgstr "Inserire un messaggio."
+
+msgid "Please enter a subject."
+msgstr "Specificare un oggetto."
+
+msgid "Please specify an openings amount."
+msgstr "Specificare una data di apertura."
+
+msgid "Please wait"
+msgstr "Attendere prego..."
+
+msgid "Print"
+msgstr "Stampa"
+
+msgid "Print list"
+msgstr "Stampa elenco"
+
+msgid "Print page"
+msgstr "Stampa pagina"
+
+msgid "Report"
+msgstr "Report"
+
+msgid "Reset order"
+msgstr "Annulla ordine"
+
+msgid "Return to slot page"
+msgstr "Ritorna alla pagina dei posti"
+
+msgid "Returning to applicant listing."
+msgstr "Ritorna all'elenco dei partecipanti."
+
+msgid "Send emails"
+msgstr "Invia email"
+
+msgid "Sending emails"
+msgstr "Invia le email"
+
+msgid "Sheet previously posted."
+msgstr "Foglio inviato precedentemente."
+
+msgid "Sheet saved successfully."
+msgstr "Foglio salvato."
+
+msgid "Signup"
+msgstr "Iscrizione"
+
+msgid "Signup Sheets"
+msgstr "Fogli d'iscrizione"
+
+msgid "Signup confirmation"
+msgstr "Conferma iscrizione"
+
+#, php-format
+msgid "Signup event : %s"
+msgstr "Iscrizione evento: %s"
+
+msgid "Signup form"
+msgstr "Modulo d'iscrizione"
+
+msgid "Signup sheet deleted."
+msgstr "Foglio iscrizioni eliminato."
+
+msgid "Signup sheet did not contain any applicants."
+msgstr "Il registro delle iscrizioni non contiene richiedenti."
+
+msgid "Signup tables dropped."
+msgstr "Tabelle d'iscrizione rimosse."
+
+#, php-format
+msgid "Slot : %s"
+msgstr "Posto: %s"
+
+msgid "Slot can not be deleted until cleared of applicants."
+msgstr "I posti non possono essere eliminati se prima non vengono liberati dai richiedenti."
+
+msgid "Slot could not be deleted successfully."
+msgstr "Il posto non pu&ograve; essere rimosso."
+
+msgid "Slot deleted successfully."
+msgstr "Posto eliminato."
+
+msgid "Slot is missing sheet id."
+msgstr "Il posto non ha un ID di registro."
+
+msgid "Slot listing"
+msgstr "Elenco posti"
+
+msgid "Slot order reset."
+msgstr "Annulla ordinamento posti."
+
+msgid "Slot saved successfully."
+msgstr "Posto salvato."
+
+#, php-format
+msgid "Slot setup for %s"
+msgstr "Impostazioni posto per %s"
+
+msgid "Slots"
+msgstr "Posti"
+
+#, php-format
+msgid "Slots left: %s"
+msgstr "Posti liberi: %s"
+
+msgid "Sorry"
+msgstr "Spiacenti"
+
+msgid "Sorry, but all available slots are full. Please check back later for possible cancellations."
+msgstr "Spiacenti, tutti i posti sono occupati. Verificare in seguito se si verificano eventuali cancellazioni."
+
+msgid "Sorry, the slot you chose is no longer available."
+msgstr "Spiacenti, il posto scelto non &egrave; pi&ugrave; disponibile."
+
+msgid "Subject"
+msgstr "Oggetto"
+
+msgid "Submit"
+msgstr "Invia"
+
+msgid "Thank you"
+msgstr "Grazie"
+
+msgid "There is a problem with our email server. Please try again later."
+msgstr "C'&egrave; un problema con il nostro server di posta. Provare pi&ugrave; tardi."
+
+msgid "There is a problem with this signup sheet. Please check back later."
+msgstr "C'&egrave; un problema con questo registro d'iscrizioni. Provare pi&ugrave; tardi."
+
+msgid "This slot filled up before you could confirm your application."
+msgstr "Qualcuno ti ha barbato il posto prima che tu completassi la registrazione."
+
+msgid "Title"
+msgstr "Titolo"
+
+#, php-format
+msgid "Total openings: %s"
+msgstr "Aperture totali: %s"
+
+msgid "Unable to send emails. Signup sheet does not exist."
+msgstr "Impossibile inviare email. Il registro delle iscrizioni non esiste."
+
+msgid "Unsuitable email address."
+msgstr "Indirizzo email non valido."
+
+msgid "Up"
+msgstr "Su"
+
+msgid "Update"
+msgstr "Aggiorna"
+
+#, php-format
+msgid "Update %s slot"
+msgstr "Aggiorna posto %s"
+
+msgid "Update applicant"
+msgstr "Aggiorna richiedente"
+
+msgid "Update signup sheet"
+msgstr "Aggiorna registro iscrizioni"
+
+msgid "We are no longer accepting applications."
+msgstr "Non si accettano pi&ugrave; iscrizioni."
+
+msgid "You are already registered. There isn't any need to return to this page."
+msgstr "Risulti gi&agrave; registrato. Non vi &egrave; motivo di ritornare a questa pagina."
+
+#, php-format
+msgid "You are registered for the following event: %s"
+msgstr "Ti sei registrato per il seguente evento: %s"
+
+msgid "You cannot signup for more than one slot."
+msgstr "Non puoi registrare pi&ugrave; di un posto."
+
+msgid "You have one hour to confirm your application."
+msgstr "Hai un'ora di tempo per confermare la tua registrazione."
+
+msgid "You must give this signup sheet a title."
+msgstr "Occorre dare un titolo a questo registro."
+
+msgid "You must give your slot a title."
+msgstr "Occorre dare un titolo a questo posto."
+
+msgid "You should receive an email allowing you to verify your application.<br />You have one hour to confirm your application."
+msgstr "Dovresti ricevere un'email per permetterti di verificare la tua registrazione. <br />Hai un'ora di tempo per confermare la tua regisrtrazione."
+
+msgid "Your application could not be verified. If over a hour has passed since you applied, you may want to try again."
+msgstr "La tua registrazione non pu&ograve; essere verificata. Se &egrave; gi&agrave; un'ora dalla registrazione, potresti provare un'altra volta."
+
+msgid "email"
+msgstr "Email"
+
+msgid "firstname"
+msgstr "Nome"
+
+msgid "lastname"
+msgstr "Cognome"
+
+msgid "organization"
+msgstr "Azienda"
+
+msgid "phone"
+msgstr "Telefono"
+

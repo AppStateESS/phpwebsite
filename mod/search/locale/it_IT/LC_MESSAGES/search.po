@@ -1,0 +1,144 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-04 09:43-0500\n"
+"PO-Revision-Date: 2008-02-21 10:01+0100\n"
+"Last-Translator: Doriano Cometto <maclurad AT gmail DOT com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid "A problem occurred during your search."
+msgstr "Si &egrave; verificato un problema durante la ricerca."
+
+msgid "Add"
+msgstr "Aggiungi"
+
+msgid "Administrate and see information on searches."
+msgstr "Amministra e visualizza le informazioni sulle ricerche."
+
+msgid "Advanced Search"
+msgstr "Ricerca avanzata"
+
+msgid "All modules"
+msgstr "Tutti i moduli"
+
+msgid "Allow"
+msgstr "Permetti"
+
+msgid "Are you sure you want to delete the checked item(s)?"
+msgstr "Eliminare gli elementi selezionati?"
+
+msgid "Clip word"
+msgstr "Estrai parola"
+
+msgid "Clipped words"
+msgstr "Parole estratte"
+
+msgid "Close"
+msgstr "Chiudi"
+
+msgid "Current keywords"
+msgstr "Parole chiave correnti"
+
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Drop"
+msgstr "Elimina"
+
+msgid "Exact matches only"
+msgstr "Solo corrispondenze esatte"
+
+msgid "Failure"
+msgstr "Esito negativo"
+
+msgid "Go"
+msgstr "Avvia"
+
+msgid "Highest result"
+msgstr "Principali risultati"
+
+msgid "Ignore"
+msgstr "Ignora"
+
+msgid "Ignored"
+msgstr "Ignorato"
+
+msgid "Keyword"
+msgstr "Parola chiave"
+
+msgid "Keywords"
+msgstr "Parole chiave"
+
+msgid "Keywords added to admin menu."
+msgstr "Parole chiave aggiunte al menu amministrativo."
+
+msgid "Last called"
+msgstr "Ultima chiamata"
+
+msgid "Local"
+msgstr "Locale"
+
+msgid "Mixed"
+msgstr "Misto"
+
+msgid "Module"
+msgstr "Modulo"
+
+msgid "Module list"
+msgstr "Elenco moduli"
+
+msgid "No results found."
+msgstr "Nessun risultato."
+
+msgid "Nothing found"
+msgstr "Trovato nulla"
+
+msgid "Save settings"
+msgstr "Salva impostazioni"
+
+msgid "Search"
+msgstr "Cerca"
+
+msgid "Search Admin"
+msgstr "Amministrazione Ricerche"
+
+msgid "Search Results"
+msgstr "Risultati ricerca"
+
+msgid "Search Settings"
+msgstr "Impostazioni di ricerca"
+
+msgid "Search for:"
+msgstr "Ricerca: "
+
+msgid "Search location"
+msgstr "luogo di ricerca"
+
+msgid "Settings"
+msgstr "Impostazioni"
+
+msgid "Settings saved"
+msgstr "Impostazioni salvate"
+
+msgid "Show alternate options"
+msgstr "Mostra opzioni alternative"
+
+msgid "Success"
+msgstr "Esito positivo"
+
+msgid "The following search words were ignored"
+msgstr "I seguenti termini di ricerca sono stati ignorati"
+
+msgid "Title"
+msgstr "Titolo"
+
+msgid "Total queries"
+msgstr "Totale ricerche"
