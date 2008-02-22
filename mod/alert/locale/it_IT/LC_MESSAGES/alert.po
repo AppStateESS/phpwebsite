@@ -1,0 +1,354 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-04 09:43-0500\n"
+"PO-Revision-Date: 2008-02-21 10:01+0100\n"
+"Last-Translator: Doriano Cometto <maclurad AT gmail DOT com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "Action"
+msgstr "Azione"
+
+msgid "Active"
+msgstr "Attivo"
+
+msgid "Add"
+msgstr "Aggiungi"
+
+msgid "Add Multiple Participants"
+msgstr "Aggiungi partecipanti multipli"
+
+msgid "Add alert"
+msgstr "Aggiungi avviso"
+
+msgid "Add alert type"
+msgstr "Aggiungi tipo di avviso"
+
+#, php-format
+msgid "Add all participants to %s"
+msgstr "Aggiungi tutti i partecipanti a %s"
+
+msgid "Add multiple"
+msgstr "Aggiungi multiplo"
+
+msgid "Add/Remove Alert participants."
+msgstr "Aggiungi/rimuovi avviso partecipanti."
+
+msgid "Added checked"
+msgstr "Modo aggiunta selezionato"
+
+msgid "Alert Settings"
+msgstr "Impostazioni avviso"
+
+msgid "Alert Types"
+msgstr "Tipi di avviso"
+
+msgid "Alert could not be located."
+msgstr "L'avviso no pu&ograve; essere trovato."
+
+msgid "Alert saved."
+msgstr "Avviso salvato."
+
+msgid "Alert type"
+msgstr "Tipo di avviso"
+
+msgid "Alert your community to important happenings."
+msgstr "Avvisa la tua comunit&agrave; sugli avvenimenti importanti."
+
+msgid "Alerts"
+msgstr "Avvisi"
+
+msgid "All participants contacted."
+msgstr "Tutti i partecipanti contattati."
+
+msgid "Allow email contact"
+msgstr "Permette il contatto tramite email"
+
+msgid "An error occurred when trying to copy participants to the contact list."
+msgstr "Si &egrave; verificato un errore tentando di copiare dei partecipanti nella lista di contatto."
+
+msgid "An error occurred when trying to determine the total number of participants."
+msgstr "Si &egrave; verificato un errore tentando di determinare il numero totale di partecipanti."
+
+msgid "An error occurred when trying to load alert types. Check your logs."
+msgstr "Si &egrave; verificato un errore tentando di caricare i tipi di avviso. Verifica i file di log."
+
+msgid "An error occurred while checking contact status."
+msgstr "Si &egrave; verificato un errore verificando lo stato del contatto."
+
+msgid "An error occurred within the alert type."
+msgstr "Si &egrave; verificato un errore con il tipo di avviso."
+
+msgid "An error occurred. Could not save alert type."
+msgstr "Si &egrave; verificato un errore. Impossibile salvare il tipo di avviso."
+
+msgid "An error occurred. Could not save alert."
+msgstr "Si &egrave; verificato un errore. Impossibile salvare l'avviso."
+
+msgid "Are you sure you want to delete this alert type?"
+msgstr "Si vuole eliminare questo tipo di avviso?"
+
+msgid "Are you sure you want to delete this alert?"
+msgstr "Si vuole eliminare questo avviso?"
+
+msgid "Are you sure you want to reset this alert\\'s contact status?"
+msgstr "Si vuole annullare lo stato di contatto di questo avvviso?"
+
+msgid "Cannot continue processing batches. The batch has been set to zero."
+msgstr "Impossibile continuare il processamento batch. Il batch &egrave; stato impostato a zero."
+
+msgid "Change settings"
+msgstr "Modifica impostazioni"
+
+msgid "Close this window"
+msgstr "Chiudi questa finestra"
+
+msgid "Contact participants via email when new alerts created"
+msgstr "Contatta i partecipanti tramite email quando si crea un nuovo avviso."
+
+msgid "Copying participant list. Please wait."
+msgstr "Copia della lista dei partecipanti in corso. Pazientare."
+
+msgid "Could not delete alert type."
+msgstr "Impossibile eliminare questo tipo di avviso."
+
+msgid "Could not delete alert."
+msgstr "Impossibile eliminare l'avviso."
+
+msgid "Could not locate alert item."
+msgstr "Impossibile localizzare l'avviso."
+
+msgid "Could not locate alert type."
+msgstr "Impossibile localizzare il tipo di avviso."
+
+msgid "Could not reset alert."
+msgstr "Impossibile annullare l'avviso."
+
+msgid "Create Alert"
+msgstr "Crea avviso"
+
+msgid "Create RSS feed"
+msgstr "Crea feed RSS"
+
+msgid "Create alert type"
+msgstr "Crea tipo di avviso"
+
+msgid "Create, update and define alert types."
+msgstr "Crea, aggiorna e definisce i tipi di avviso."
+
+msgid "Created"
+msgstr "Creato"
+
+msgid "Daily listing"
+msgstr "Elenco giornaliero"
+
+msgid "Date format"
+msgstr "Formato data"
+
+msgid "Date format can not be empty."
+msgstr "Il campo data non pu&ograve; essere vuoto."
+
+msgid "Default message"
+msgstr "Messaggio predefinito"
+
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Delete alerts"
+msgstr "Elimina avvisi"
+
+msgid "Delete types"
+msgstr "Elimina tipi"
+
+msgid "Deleted alert type."
+msgstr "Tipo di avviso eliminato."
+
+msgid "Deleted alert."
+msgstr "Avviso eliminato"
+
+msgid "Description"
+msgstr "Descrizione"
+
+msgid "Display settings for Alert module."
+msgstr "Visualizza le impostazioni del modulo Avvisi."
+
+msgid "Do not post on front page"
+msgstr "Non visualizzare sulla pagina principale"
+
+msgid "Edit"
+msgstr "Modifica"
+
+msgid "Edit levels"
+msgstr "Modifica livelli"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Email address"
+msgstr "Indirizzo email"
+
+msgid "Email batch"
+msgstr "Invio email in batch"
+
+msgid "Email contact"
+msgstr "Email per contatti"
+
+msgid "Email in progress. Do not close this window."
+msgstr "Invio email in corso. Non chiudere questa finestra."
+
+msgid "Email participants"
+msgstr "Invia email ai partecipanti"
+
+msgid "Enter the email addresses for each participant. Separate them with new lines."
+msgstr "Inserisci l'indirizzo email di ogni partecipante. Separali con un ritorno a capo."
+
+msgid "Error: Missing alert type id."
+msgstr "Errore: ID del tipo di avviso mancante."
+
+msgid "Feed name"
+msgstr "Nome del feed"
+
+msgid "Finish incomplete mailing"
+msgstr "Terminato invio incompleto delle email"
+
+msgid "High alert!"
+msgstr "Avviso importante!"
+
+msgid "Image"
+msgstr "Immagine"
+
+msgid "List all alerts in the system."
+msgstr "Elenca tutti gli avvisi presenti nel sistema."
+
+msgid "Manage Alert Types"
+msgstr "Gestisce i tipi di avviso"
+
+msgid "Manage Alerts"
+msgstr "Gestisce gli avvisi"
+
+msgid "No"
+msgstr "No"
+
+msgid "No alert types found"
+msgstr "Nessun tipo di avviso trovato"
+
+msgid "No participants have been assigned to this alert type. No emails were sent."
+msgstr "Nessun partecipante &egrave; stato assegnato a questo tipo di avviso. Nessuna enail sar&agrave; inviata."
+
+msgid "Notice!!! An error occurred in the last batch. Check your logs."
+msgstr "Avviso!!! Si &egrave; verificato un errore nell'ultimo invio batch. Verificare i file di log."
+
+msgid "Participant list created. Starting to send emails."
+msgstr "Lista dei partecipanti creata. Inizio invio email. "
+
+msgid "Participants"
+msgstr "%s partecipanti"
+
+msgid "Please create a new alert type."
+msgstr "Creare un nuovo tipo di avviso."
+
+msgid "Please enter an acceptable contact email address."
+msgstr "Inserire un'email di contatto accettabile."
+
+msgid "Please give your alert a description."
+msgstr "Attribuire una descrizione all'avviso."
+
+msgid "Please give your alert a title."
+msgstr "Attribuire un titolo all'avviso."
+
+msgid "Please give your alert type a title."
+msgstr "Attribuire un titolo al tipo di avviso."
+
+msgid "Please give your rss feed an access name."
+msgstr "Attribuire un nome di accesso al feed RSS."
+
+msgid "Post type"
+msgstr "Tipo di invio"
+
+msgid "RSS"
+msgstr "RSS"
+
+msgid "RSS feed available"
+msgstr "fEED rss DISPONIBILE"
+
+msgid "Remove"
+msgstr "Rimuovi"
+
+#, php-format
+msgid "Remove all participants from %s"
+msgstr "Rimuove tutti i partecipanti da %s"
+
+msgid "Remove checked"
+msgstr "Modo rimozione selezionato"
+
+msgid "Reset"
+msgstr "Annulla"
+
+msgid "Reset alert."
+msgstr "Annulla avviso."
+
+msgid "Reset email contact"
+msgstr "Annulla email di contatto"
+
+msgid "Save"
+msgstr "Salva"
+
+msgid "Save settings"
+msgstr "Salva impostazioni"
+
+#, php-format
+msgid "Send Notices for %s"
+msgstr "Avvia avvisi per %s"
+
+msgid "Settings"
+msgstr "Impostazioni"
+
+msgid "Sorry"
+msgstr "Spiacenti"
+
+msgid "Start mailing"
+msgstr "Inizio invio email"
+
+msgid "Subtract multiple"
+msgstr "Sottrae multipli"
+
+msgid "The following alerts need to send email notices."
+msgstr "I seguenti avvisi devono inviare email di notifica."
+
+msgid "Title"
+msgstr "Titolo"
+
+msgid "Type saved."
+msgstr "Tipo salvato."
+
+msgid "Update Alert"
+msgstr "Aggiorna avviso"
+
+msgid "Update alert type"
+msgstr "Aggiorna tipo di avviso"
+
+msgid "Updated"
+msgstr "Aggiornato"
+
+msgid "Weekly listing"
+msgstr "Elenco settimanale"
+
+msgid "Yes"
+msgstr "S&igrave;"
+
+msgid "You may safely close this window now."
+msgstr "Ora &egrave; possibile chiudere questa finestra."
+
+msgid "Your email batch must be greater than 10."
+msgstr "Il batch di email deve essere maggiore di 10."
+
+msgid "by"
+msgstr "da "
+
