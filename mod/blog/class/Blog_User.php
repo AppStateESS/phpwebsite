@@ -57,7 +57,6 @@ class Blog_User {
 
     function main()
     {
-
         if ($_GET['var1']) {
             Blog_User::fillInForward();
         }
@@ -213,7 +212,6 @@ class Blog_User {
     function totalEntries(&$db)
     {
         $db->addColumn('id',null, null, true);
-        //        $db->setTestMode();
         return $db->select('one');
     }
 
@@ -239,7 +237,6 @@ class Blog_User {
         if ($end_date) {
             $db->addWhere('publish_date', $end_date, '<=', 'and', 2);
         }
-
 
         $db->addWhere('approved', 1);
         $db->addWhere('publish_date', mktime(), '<');

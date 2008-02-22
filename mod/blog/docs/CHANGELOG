@@ -1,3 +1,9 @@
+22 February 2008
++ Publish date was rounding the minutes. This would lead to close
+  posts not appearing in the correct order.
++ Changed the default date view to a shorter format. Removed seconds.
++ Italian translations
+
 19 February 2008
 + Blog can list entries by date (month, year, or day)
 + Using new rewrite url format.
