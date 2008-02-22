@@ -1,0 +1,881 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-04 09:43-0500\n"
+"PO-Revision-Date: 2008-02-21 10:01+0100\n"
+"Last-Translator: Doriano Cometto <maclurad AT gmail DOT com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#, php-format
+msgid "\"%s\" permission column created."
+msgstr "Colonna dei premessi \"%s\" creata."
+
+msgid "-- Use server's time zone --"
+msgstr "-- Usa il fuso orario del server --"
+
+msgid "A deity can not make themselves mortal."
+msgstr "Un amministratore non pu&ograve; trasformare s&egrave; stesso in utilizzatore."
+
+msgid "A group with this name already exists."
+msgstr "Esiste gi&agrave; un gruppo con questo nome."
+
+msgid "A problem occurred when accessing user information. Please try again later."
+msgstr "Si &egrave; verificato un errore tentando di accedere alle informazioni dell'utente. Provare di nuovo tra poco."
+
+msgid "A problem occurred when trying to register this module to My Page."
+msgstr "Si &egrave; verificato un problema tentando di registrare questo modulo nella scheda Pagina personale."
+
+msgid "A problem occurred when trying to update your password. Please try again later."
+msgstr "Si &egrave; verificato un errore tentando di aggiornare la password. Provare di nuovo tra poco."
+
+msgid "Account created successfully!"
+msgstr "Account creato!"
+
+msgid "Action"
+msgstr "Azione"
+
+msgid "Actions"
+msgstr "Azioni"
+
+msgid "Activate"
+msgstr "Attiva"
+
+msgid "Activate this user"
+msgstr "Attiva questo utente"
+
+msgid "Active"
+msgstr "Attivo"
+
+msgid "Add"
+msgstr "Aggiungi"
+
+msgid "Add / Edit Groups"
+msgstr "Aggiungi/Modifica gruppi"
+
+msgid "Add Group"
+msgstr "Aggiungi gruppo"
+
+msgid "Add Member"
+msgstr "Aggiungi membro"
+
+msgid "Add Script File"
+msgstr "Aggiungi file di script"
+
+msgid "Add User"
+msgstr "Aggiungi utente"
+
+msgid "Add this user to this group."
+msgstr "Aggiungi questo utente a questo gruppo."
+
+msgid "All visitors"
+msgstr "Tutti i visitatori"
+
+msgid "Allow Remember Me"
+msgstr "Permetti l'opzione Ricordami"
+
+msgid "An error occurred when trying to create your account. Please try again later."
+msgstr "Si &egrave; verificato un errore tentando di creare l'account. Provare di nuovo tra poco."
+
+msgid "An error occurred when trying to save the group."
+msgstr "Si &egrave; verificato un errore tentando di salvare il gruppo."
+
+msgid "An error occurred."
+msgstr "Si &egrave; verificato un errore"
+
+msgid "Are you SURE you want to remove this group?"
+msgstr "Sicuro di voler rimuovere questo gruppo?"
+
+msgid "Are you certain you want this user to have complete control of this web site?"
+msgstr "Vuoi che questo utente assuma il controllo completo di questo sito web?"
+
+#, php-format
+msgid "Are you certain you want to delete the user &quot;%s&quot; permanently?"
+msgstr "Eliminare definitivamente l'utente \" %s \"?"
+
+msgid "Are you sure you want to deify this user?"
+msgstr "Trasformare l'utente corrente in divinit&agrave;?"
+
+msgid "Are you sure you want to drop this authorization script?"
+msgstr "Eliminare questo script di autorizzazione?"
+
+msgid "Are you sure you want to remove deity status?"
+msgstr "Rimuovere lo stato di amministratore?"
+
+msgid "Authorization"
+msgstr "Autorizzazioni"
+
+msgid "Authorization Scripts"
+msgstr "Script di autorizzazione"
+
+msgid "Authorization updated."
+msgstr "Autorizzazioni aggiorate."
+
+msgid "Authorization/Settings"
+msgstr "Autorizzazioni/Impostazioni"
+
+msgid "Cancel"
+msgstr "Annulla"
+
+msgid "Captcha information was incorrect."
+msgstr "Informazione Captcha non corretta."
+
+msgid "Change my Settings"
+msgstr "Cambia le mie impostazioni"
+
+msgid "Check all restricted"
+msgstr "Verifica tutte le proibizioni"
+
+msgid "Check all unrestricted"
+msgstr "Verifica tutti i non riservati"
+
+#, php-format
+msgid "Checking %s module"
+msgstr "Verifica in corso del modulo %s"
+
+msgid "Click here if you are not redirected."
+msgstr "Fare click qui se la redirezione non ha inizio."
+
+msgid "Closest matches below."
+msgstr "Qui sotto i risultati pi&ugrave; simili."
+
+msgid "Confirm"
+msgstr "Conferma"
+
+msgid "Confirm Graphic"
+msgstr "Conferma grafica"
+
+msgid "Confirm text"
+msgstr "Conferma tesutale"
+
+msgid "Confirmation email"
+msgstr "Email di conferma"
+
+msgid "Confirmation phrase is not correct."
+msgstr "La frase di conferma non &egrave; corretta."
+
+msgid "Contact the site administrator"
+msgstr "Contattare l'amministratore del sito"
+
+msgid "Control Panel"
+msgstr "Pannello di controllo"
+
+msgid "Could not access hub database."
+msgstr "Impossibile accedere al database principale."
+
+#, php-format
+msgid "Could not create \"%s\" permission column."
+msgstr "Impossibile creare la colonna dei permessi \"%s\"."
+
+msgid "Could not find any hub deities."
+msgstr "Impossibile trovare divinit&agrave; principali."
+
+msgid "Could not find user."
+msgstr "Impossibile trovare l'utente."
+
+msgid "Create Group"
+msgstr "Crea gruppo"
+
+msgid "Create User"
+msgstr "Crea utente"
+
+msgid "Current Members"
+msgstr "Membro corrente"
+
+msgid "Deactivate"
+msgstr "Disattiva"
+
+msgid "Deactivate this user"
+msgstr "Disattivare questo utente"
+
+msgid "Default"
+msgstr "Predefinito"
+
+msgid "Deity"
+msgstr "Amministratore"
+
+msgid "Deity users copied to branch."
+msgstr "Utente amministratore copiato nel sito derivato."
+
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Delete Groups"
+msgstr "Elimina gruppo"
+
+msgid "Delete Users"
+msgstr "Elimina utente"
+
+msgid "Did you forget your password at our site?"
+msgstr "Hai dimenticato la password del sito?"
+
+msgid "Did you forget your user name at our site?"
+msgstr "Hai dimenticato la password del sito?"
+
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+msgid "Display name"
+msgstr "Nome visualizzato"
+
+msgid "Display name is improperly formatted."
+msgstr "Il nome visualizzato non &egrave; formattato correttamente."
+
+msgid "Drop"
+msgstr "Elimina"
+
+msgid "Drop this member from the group."
+msgstr "Elimina questo membro dal gruppo"
+
+msgid "Edit"
+msgstr "Modifica"
+
+msgid "Edit Authorization Script"
+msgstr "Modifica lo script di autorizzazione"
+
+msgid "Edit Group"
+msgstr "Modifica gruppo"
+
+msgid "Edit Permissions"
+msgstr "Modifica permessi"
+
+msgid "Edit User"
+msgstr "Modifica utente"
+
+msgid "Edit Users"
+msgstr "Modifica utenti"
+
+msgid "Edit restrictions"
+msgstr "Modifica limitazioni"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Email Address"
+msgstr "Indirizzo Email"
+
+msgid "Email Verification"
+msgstr "Verifca Email"
+
+msgid "Email address already in use."
+msgstr "Indirizzo Email gi&agrave; in uso"
+
+msgid "Email address not found. Please try again."
+msgstr "Indirizzo Email non trovato. Riprovare."
+
+msgid "Enter the word from the image above."
+msgstr "Digita la parola che leggi nell'immagine qui sopra."
+
+msgid "Enter your new password"
+msgstr "Digita la tua nuova password"
+
+msgid "Enter your user name."
+msgstr "Digita il tuo nome utente."
+
+msgid "Forbidden usernames (one per line)"
+msgstr "Nomi utente proibiti (uno per riga)"
+
+msgid "Forgot Password"
+msgstr "Password dimenticata"
+
+msgid "Forgot password?"
+msgstr "Password dimenticata?"
+
+msgid "Forgot your password?"
+msgstr "Password dimenticata?"
+
+msgid "Forgot your user name?"
+msgstr "Nome utente dimenticato?"
+
+msgid "Forgotten password attempt made on a deity account."
+msgstr "Tentativo di eseguire la procedura \"Passwor dimenticata\" su un account di un amministratore."
+
+msgid "Forgotten your user name? Enter your email address instead."
+msgstr "Nome utente dimenticato? Inserisci la tua Email al posto."
+
+msgid "Group Name"
+msgstr "Nome gruppo"
+
+msgid "Group created."
+msgstr "Gruppo creato."
+
+msgid "Group does not exist."
+msgstr "Il gruppo non esiste."
+
+msgid "Group name"
+msgstr "Nome gruppo"
+
+msgid "Groups"
+msgstr "Gruppi"
+
+msgid "Hello"
+msgstr "Ciao"
+
+msgid "Here is the address to return to our site:"
+msgstr "Indirizzo da inviare al nostro sito:"
+
+msgid "Hide login box"
+msgstr "Nascondi il riquadro di login"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "If so, you may click the link below to reset it."
+msgstr "Se &egrave; cos&igrave;, selezionare il collegamento qui sotto per resettarla."
+
+msgid "If you did not wish to reset your password, you may ignore this message."
+msgstr "Se non vuoi reimpostare la password, ignorare questo messaggio."
+
+msgid "Immediate"
+msgstr "Immediata"
+
+msgid "Improper permission level for action requested."
+msgstr "Livello di autorizzazione inadeguato per l'azione richiesta."
+
+msgid "Improperly formatted group name."
+msgstr "Nome di gruppo non ammissibile."
+
+msgid "Invalid variable name."
+msgstr "Nome di variabile non valido."
+
+msgid "Language preference"
+msgstr "Preferenze della lingua"
+
+msgid "Last Logged"
+msgstr "Ultimo accesso"
+
+msgid "Lets you create and edit users and groups."
+msgstr "Permette di creare e modificare utenti e gruppi."
+
+msgid "Local"
+msgstr "Locale"
+
+msgid "Log Out"
+msgstr "Uscita"
+
+msgid "Logged visitors"
+msgstr "Visitatori loggati"
+
+msgid "Login"
+msgstr "Entra"
+
+msgid "Login Page"
+msgstr "Pagina di entrata"
+
+msgid "Login page"
+msgstr "Pagina di accesso"
+
+msgid "Manage Groups"
+msgstr "Gestione gruppi"
+
+msgid "Manage Members"
+msgstr "Gestione membri"
+
+msgid "Manage Users"
+msgstr "Gestione utenti"
+
+msgid "Member added."
+msgstr "Aggiunto membro."
+
+msgid "Member not found."
+msgstr "Membro non trovato."
+
+msgid "Member removed."
+msgstr "Membro rimosso"
+
+msgid "Members"
+msgstr "Membri"
+
+msgid "Members found."
+msgstr "Membri trovati."
+
+msgid "Missing an email address."
+msgstr "Indirizzo Email mancante."
+
+msgid "Missing authorization script."
+msgstr "Script di autorizzazione mancante."
+
+msgid "Missing key information."
+msgstr "Informazione chiave mancante."
+
+msgid "Missing my_page function."
+msgstr "Funzione my_page mancante."
+
+msgid "Mistyped username."
+msgstr "Nome utente mal digitato."
+
+msgid "Module does not exist."
+msgstr "Il modulo non esiste."
+
+msgid "Module tried to detect a non-existant permission."
+msgstr "Tentativo di rilevare un permesso inesistente."
+
+msgid "Module's item permission file is missing."
+msgstr "Voce del file dei permessi del modulo mancante."
+
+msgid "Module's permission file is missing."
+msgstr "File dei permessi del modulo mancante."
+
+msgid "Mortal"
+msgstr "Utilizzatore"
+
+msgid "My Page"
+msgstr "Pagina personale"
+
+msgid "My Page registered to Users module."
+msgstr "Pagina personale registrata al modulo degli utenti."
+
+msgid "Never"
+msgstr "Mai"
+
+msgid "New Account Sign-up"
+msgstr "Nuova registrazione"
+
+msgid "New Group"
+msgstr "Nuovo gruppo"
+
+msgid "New User"
+msgstr "Nuovo utente"
+
+msgid "New user signup is currently disabled."
+msgstr "Registrazione di nuovi utenti al momento disabilitata."
+
+msgid "New user signup not allowed."
+msgstr "Registrazione di un nuovo utente non permessa."
+
+msgid "No"
+msgstr "No"
+
+msgid "No matches found."
+msgstr "Nessuna occorrenza trovata."
+
+msgid "No members."
+msgstr "Nessun membro."
+
+msgid "No modules are registered to My Page."
+msgstr "Nessun modulo registrato nella pagina personale."
+
+msgid "No new scripts found"
+msgstr "Nessun nuovo script torvato"
+
+msgid "No permissions file found."
+msgstr "Impossibile trovare il file dei permessi."
+
+msgid "No restricted edit groups found."
+msgstr "Trovati gruppi senza restrizioni di modifica."
+
+msgid "No view groups found."
+msgstr "Nessun gruppo trovato."
+
+msgid "No, leave them as a deity."
+msgstr "No, mantienili amministratori."
+
+msgid "No, leave them as a mortal."
+msgstr "No, mantienili come utilizzatori."
+
+msgid "None"
+msgstr "Nessuno"
+
+msgid "None found"
+msgstr "Nessuno trovato"
+
+msgid "Not allowed"
+msgstr "Non consentito"
+
+msgid "Only another deity can create a deity."
+msgstr "Solo un amministratore pu&ograve; creare un amministratore."
+
+msgid "Only another deity can create a mortal."
+msgstr "Solo un amministratore pu&ograve; creare un utilizzatore."
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Password confirm"
+msgstr "Conferma password"
+
+msgid "Password is too easy to guess."
+msgstr "Password troppo facile da indovinare."
+
+#, php-format
+msgid "Password must be at least %s characters in length."
+msgstr "La password deve essere lunga almeno %s caratteri."
+
+msgid "Passwords do not match."
+msgstr "Le password non coincidono."
+
+msgid "Passwords must be reentered on user name change."
+msgstr "Le password devono essere reinserite quando il nome utente cambia."
+
+msgid "Passwords were not acceptable for the following reason:"
+msgstr "Le password non sono accettabili per le seguenti ragioni:"
+
+msgid "Permission"
+msgstr "Permesso"
+
+msgid "Permission table name already exists."
+msgstr "La tabella dei permessi esiste gi&agrave;."
+
+msgid "Permission table not found."
+msgstr "Tabella dei permessi non trovata."
+
+msgid "Permissions"
+msgstr "Permessi"
+
+msgid "Permissions file not implemented."
+msgstr "File dei permessi non implementato."
+
+msgid "Permissions table created successfully."
+msgstr "Creata la tabella dei permessi."
+
+msgid "Permissions table not created successfully."
+msgstr "Tabella dei permessi non creata."
+
+msgid "Permissions table not removed successfully."
+msgstr "Tabella dei permessi rimossa."
+
+msgid "Permissions table removed successfully."
+msgstr "Tabella dei permessi rimossa."
+
+msgid "Permissions updated"
+msgstr "Permessi aggiornati"
+
+msgid "Permissions updated."
+msgstr "Permessi aggiornati."
+
+msgid "Please check your email for a response."
+msgstr "Verifica la tua casella di posta per una risposta."
+
+msgid "Please create a user to administrate the site."
+msgstr "Crea un utente per amministrare il sito."
+
+msgid "Please enter a valid email address as a site contact."
+msgstr "Inserisci un indirizzo Email valido come contatto."
+
+msgid "Please try another user name."
+msgstr "Prova un altro nome utente."
+
+msgid "Please type the word seen in the image."
+msgstr "Digita la parola che leggi nell'immagine."
+
+msgid "Preferred editor (admins only)"
+msgstr "Edito preferito (solo amministratori)"
+
+msgid "Register Module Permissions"
+msgstr "Registra i permessi del modulo"
+
+msgid "Register user permissions"
+msgstr "Registra i permessi dell'utente"
+
+msgid "Remember me"
+msgstr "Ricordami"
+
+msgid "Remove"
+msgstr "Rimuovi"
+
+msgid "Repeat it here please"
+msgstr "Ripererla qui, per favore"
+
+msgid "Reset my password"
+msgstr "Reimposta la mia password"
+
+msgid "Restricted"
+msgstr "Proibito"
+
+msgid "Save permissions"
+msgstr "Salva permessi"
+
+msgid "Script Filename"
+msgstr "Nome dello script"
+
+msgid "Send reminder"
+msgstr "Invia promemoria"
+
+msgid "Set Group Permissions"
+msgstr "Imposta permessi del gruppo"
+
+msgid "Set User Permissions"
+msgstr "Imposta permessi dell'utente"
+
+#, php-format
+msgid "Set permissions"
+msgstr "Imposta permessi"
+
+msgid "Settings"
+msgstr "Impostazioni"
+
+msgid "Sign up"
+msgstr "Registrazione"
+
+msgid "Site contact email"
+msgstr "Email per contatti"
+
+msgid "Sorry"
+msgstr "Spiacenti"
+
+msgid "Sorry but you do not authorize from this site."
+msgstr "Spiacenti, ma non sei autorizzato da questo sito."
+
+#, php-format
+msgid "Sorry but your authorization is not checked on this site. Please contact %s for information on reseting your password."
+msgstr "Spiacenti, ma l'autorizzazione fornita non &egrave; verificata su questo sito. Contattare %s per informazioni su come reimpostare la password."
+
+msgid "Sorry there is a problem with your account."
+msgstr "Spiacenti, si &egrave; verificato un problema con il tuo account."
+
+msgid "Sorry, we are not accepting new users at this time."
+msgstr "Spiacenti, non sono accettati nuovi utenti in questo momento."
+
+msgid "Specific group(s)"
+msgstr "Gruppo(i) specifico"
+
+msgid "The is a problem with My Page."
+msgstr "Si &egrave; verificato un problema con la Pagina personale"
+
+#, php-format
+msgid "The user name associated with your email address is \"%s\""
+msgstr "Il nome utente associato al tuo 'indirizzo Email &egrave; \"%s\""
+
+msgid "There is a problem with your authentication method. Contact the site administrator."
+msgstr "Si &egrave; verificato un problema con il metodo di autenticazione. Contattare l'amministratore del sito."
+
+msgid "There was a problem with this module's My Page file."
+msgstr "Si &egrave; verificato un problema con il file del modulo Pagina personale."
+
+msgid "There was problem creating your acccount. Check back later."
+msgstr "Si &egrave; verificato un problema nella creazione dell'account. Riprovare pi&ugrave; tardi."
+
+msgid ""
+"This authentication does not exist.<br />\n"
+" If you did not log in within the time frame specified in your email, please apply for another account."
+msgstr ""
+"Questa autenticazione non esiste.<br />\n"
+"Se non sei entrato utilizzando il time frame specificato nella tua Email devi creare un nuovo account."
+
+msgid "This email address cannot be used."
+msgstr "Questo indirizzo email non pu&ograve; essere utilizzato."
+
+msgid "This module is not registered with My Page"
+msgstr "Questo modulo non &egrave; registrato con Pagina personale"
+
+msgid "Time Zone"
+msgstr "Fuso orario"
+
+msgid "Tried to perform an admin function in Users."
+msgstr "Tentativo di eseguire una funzione amministrativa nel modulo Utenti."
+
+msgid "Unable to copy deity login to branch."
+msgstr "Impossibile copiare il login amministratore nel sito derivato."
+
+msgid "Unable to copy deity users to branch."
+msgstr "Impossibile copiare gli utenti amministratori nel sito derivato."
+
+msgid "Unable to create authorization script."
+msgstr "Impossibile creare lo script di autorizzazione."
+
+msgid "Unable to find font file for graphic confirmation."
+msgstr "Impossibile trovare il file del font per la conferma grafica."
+
+msgid "Unable to load key."
+msgstr "Impossibile caricare la chiave."
+
+msgid "Unable to save user information."
+msgstr "Impossibile salvare le informazioni dell'utente."
+
+msgid "Unable to set permissions. Bad key data."
+msgstr "Impossibile impostare i permessi. Dati della chiave non validi."
+
+msgid "Unable to write confirmation graphic to server."
+msgstr "Impossibile scrivere la grafica di conferma sul server."
+
+msgid "Uncheck all restricted"
+msgstr "Deseleziona tutte le proibizioni"
+
+msgid "Uncheck all unrestricted"
+msgstr "Deseleziona tutte le concessioni"
+
+msgid "Unknown error."
+msgstr "Errore sconosciuto."
+
+msgid "Unrestricted"
+msgstr "Non limitato"
+
+msgid "Update"
+msgstr "Aggiorna"
+
+msgid "Update Default"
+msgstr "Aggiorna predefiniti"
+
+msgid "Update Group"
+msgstr "Aggiorna gruppo"
+
+msgid "Update Settings"
+msgstr "Aggiorna impostazioni"
+
+msgid "Update User"
+msgstr "Aggiorna utente"
+
+msgid "Update my information"
+msgstr "Aggiorna le mie informazioni"
+
+msgid "Update password"
+msgstr "Aggiorna password"
+
+msgid "Use Daylight Savings Time"
+msgstr "Usa l'ora legale"
+
+msgid "Use graphic authentication"
+msgstr "Usa l'autenticazione grafica"
+
+msgid "User Administration"
+msgstr "Gestione utenti"
+
+msgid "User Menu"
+msgstr "Menu utente"
+
+msgid "User Signup Mode"
+msgstr "Modalit&agrave; di registrazione degli utenti"
+
+msgid "User account deactivated."
+msgstr "Account utente disattivato."
+
+msgid "User created successfully."
+msgstr "Utente creato."
+
+msgid "User created successfully. Check your email for your login information."
+msgstr "Utente creato.Verifica la tua casella di posta per le informazioni di accesso."
+
+msgid "User created."
+msgstr "Utente creato."
+
+msgid "User deified."
+msgstr "Utente divinizzato."
+
+msgid "User deleted."
+msgstr "Utente eliminato."
+
+msgid "User is missing their permission group"
+msgstr "L'utente non ha i permessi dei gruppi a cui appartiene."
+
+msgid "User name already in use."
+msgstr "Nome utente gi&agrave; in uso."
+
+msgid "User name not found. Check your spelling or enter an email address instead."
+msgstr "Nome utente non trovato. Controllare il nome digitato o digitarte un indirizzo email al posto."
+
+msgid "User remains a deity."
+msgstr "L'utente rimane amministratore"
+
+msgid "User remains a lowly mortal."
+msgstr "L'utente rimane un modesto utilizzatore."
+
+msgid "User settings updated."
+msgstr "Imostazioni dell'utente aggiornate."
+
+msgid "User transformed into a lowly mortal."
+msgstr "Utente trasformato in un modesto utilizzatore."
+
+msgid "User tried to login using Remember Me with a malformed cookie."
+msgstr "L'utente ha tentato di accedere utilizzando la funzione Ricordami con un cookie non corretto."
+
+#, php-format
+msgid "User tried to send bad hash (%s) to confirm user."
+msgstr "L'utente ha tentato di inviare un codice di hash errato (%s) nel tentativo di confermare l'utente."
+
+msgid "User updated."
+msgstr "Utente agiornato."
+
+msgid "User's email address is missing or malformed."
+msgstr "Indirizzo Email dell&igrave;'utente mancante o incorretto."
+
+msgid "User's email address is missing."
+msgstr "Indirizzo Email dell'utente mancante."
+
+msgid "User's email used as contact email address."
+msgstr "Indirizzo Email dell'utente usato come indirizzo Email di contatto."
+
+msgid "Username"
+msgstr "Nome utente"
+
+msgid "Username and password combination not found."
+msgstr "La combinazione Nome utente e Password non &egrave; stata trovata."
+
+msgid "Username and password refused."
+msgstr "Nome utente e password rifiutati."
+
+msgid "Username is improperly formatted."
+msgstr "Nome utente non ammissibile."
+
+msgid "Users"
+msgstr "Utenti"
+
+msgid "Users module will re-register each module's permissions."
+msgstr "Il modulo Utenti ri-registrer&agrave; i permessi di ciascun modulo."
+
+msgid "View restrictions"
+msgstr "Visualizza limitazioni"
+
+msgid "Want to join?"
+msgstr "Perch&egrave; registrarsi?"
+
+msgid "We are currently unable to send out email reminders. Try again later."
+msgstr "Impossibile al momento inviare un'email di promemoria. Provare pi&ugrave; tardi."
+
+msgid "We have sent you an email to reset your password."
+msgstr "Ti &egrave; stata inviata un'Email per reimpostare la tua password."
+
+msgid "We have sent you an user name reminder. Please check your email and return to log in."
+msgstr "Ti &egrave; stata inviata un'Email contenente un suggerimento per il tuo nome utente. Controlla la tua casella di posta e riprova ad accedere."
+
+msgid "Welcome!"
+msgstr "Benvenuto!"
+
+msgid "Why can't I change my password?"
+msgstr "Perch&egrave; non posso cambiare la mia password?"
+
+msgid "Yes"
+msgstr "S&igrave;"
+
+msgid "Yes, make them a deity."
+msgstr "S&igrave;, rendili amministratori."
+
+msgid "Yes, make them a mortal."
+msgstr "S&igrave;, rendili utilizzatori."
+
+msgid "You already have an account."
+msgstr "Hai gi&agrave; un account."
+
+msgid "You have one hour to respond."
+msgstr "Hai un'ora di tempo per rispondere."
+
+msgid "You must enter either a username or email address."
+msgstr "Devi digitare un nome utente o un indirizzo Email."
+
+msgid "You need to set a site contact address."
+msgstr "Devi specificare un'Email di contatto per il sito."
+
+msgid "You will return to the home page in five seconds."
+msgstr "Sarai reindirizzato alla pagina principale entro 5 secondi."
+
+msgid "Your account has been deactivated. You will need to contact a site administrator to have it reactivated."
+msgstr "Il tuo account &egrave; stato disattivato. Contattare un amministratore del sito per farlo riattivare."
+
+msgid "Your account has been successfully activated. Please log in."
+msgstr "Il tuo account &egrave; stato attivato. Effettuare l'accesso."
+
+msgid "Your email address is missing from your account. Please contact the site administrators."
+msgstr "Il tuo account &egrave; senza indirizzo email. Contattare l'amministratore del sito."
+
+msgid "Your password request was not found or timed out. Please apply again."
+msgstr "La tua richiesta di password non &egrave; etata trovata o &egrave; scaduta. Riprovare."
+
+msgid "Your user account has not been approved yet. Make sure you have responded to your authentication email."
+msgstr "Il tuo account utente non &egrave; ancora stato approvato. Verificare di aver risposto all'email di autenticazione."
+
