@@ -571,4 +571,72 @@ class Access {
         $message = PHPWS_Settings::get('access', dgettext('access', 'You are denied access to this site.'));
         Layout::nakedDisplay($message, dgettext('access', 'Sorry'));
     }
+
+
+    function isDenied($ip)
+    {
+        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        $ad = new Access_Allow_Deny;
+        if (!$ad->setIpAddress($ip)) {
+            return false;
+        }
+        $ad->resetDB();
+        $ad->_db->addColumn('id');
+        $ad->_db->addWhere('ip_address', $ad->ip_address);
+        $ad->_db->addWhere('allow_or_deny', 0);
+        $result = $ad->_db->select('one');
+        if (PHPWS_Error::logIfError($result)) {
+            return false;
+        }
+
+        return (bool)$result;
+    }
+
+
+    /**
+     * Adds an ip address to the allow or deny database
+     */
+    function addIP($ip, $allow_or_deny=false)
+    {
+        $allow_or_deny = (int)(bool)$allow_or_deny;
+
+        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        $ad = new Access_Allow_Deny;
+        if (!$ad->setIpAddress($ip)) {
+            return false;
+        }
+        $ad->resetDB();
+        $ad->_db->addColumn('id');
+        $ad->_db->addWhere('ip_address', $ad->ip_address);
+        $ad->_db->addWhere('allow_or_deny', $allow_or_deny);
+        $result = $ad->_db->select('one');
+        if (PHPWS_Error::logIfError($result)) {
+            return false;
+        }
+
+        if ($result) {
+            return true;
+        }
+
+        $ad->allow_or_deny = $allow_or_deny;
+        $ad->active = 1;
+        return $ad->save();
+    }
+
+    function removeIp($ip, $allow_or_deny=false)
+    {
+        $allow_or_deny = (int)(bool)$allow_or_deny;
+
+        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        $ad = new Access_Allow_Deny;
+        if (!$ad->setIpAddress($ip)) {
+            return false;
+        }
+
+        $db = new PHPWS_DB('access_allow_deny');
+        $db->addWhere('ip_address', $ad->ip_address);
+        $db->addWhere('allow_or_deny', $allow_or_deny);
+        //        $db->setTestMode();
+        return $db->delete();
+    }
 }

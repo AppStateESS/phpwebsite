@@ -1,3 +1,10 @@
+22 February 2008
++ New functions added:
+  o isDenied - returns true or false depending on if an ip is denied
+  o addIP - static method of adding a deny or allow ip
+  o removeIP - static method of removing an ip
++ Italian translations
+
 19 February 2008
 + Rewritten to work with new url rewriting scheme
 + .htaccess writing functions removed

@@ -1,0 +1,325 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-04 09:43-0500\n"
+"PO-Revision-Date: 2008-02-21 10:01+0100\n"
+"Last-Translator: Doriano Cometto <maclurad AT gmail DOT com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "-- Choose option --"
+msgstr "-- Scegliere un'opzione --"
+
+msgid ".htaccess file is currently absent."
+msgstr "Al momento il file .htaccess &egrave; mancante."
+
+msgid ".htaccess file is missing."
+msgstr "File .htaccess mancante."
+
+msgid ".htaccess file options"
+msgstr "Opzioni del file .htaccess"
+
+msgid ".htaccess file written."
+msgstr "File .htaccess scritto."
+
+msgid "A serious error occurred. Please check your error.log."
+msgstr "Si &egrave; verificato un errore grave. Verificare il file error.log"
+
+msgid "Access"
+msgstr "Accessi"
+
+msgid "Access has saved your shortcut."
+msgstr "Scorciatoia salvata nel modulo Accessi."
+
+msgid "Access needs a higher administrator's attention before you may use it."
+msgstr ""
+"Il modulo Accessi necessita di una pi&ugrave; alta attenzione da parte di un "
+"Amministratore prima di poter essere utilizzato."
+
+msgid "Access tables removed."
+msgstr "Le tabelle del modulo Accessi sono state rimosse."
+
+msgid "Action"
+msgstr "Azione"
+
+msgid "Activate"
+msgstr "Attiva"
+
+msgid "Active?"
+msgstr "Attivo?"
+
+msgid "Add allowed IP"
+msgstr "Aggiungere gli IP permessi"
+
+msgid "Add denied IP"
+msgstr "Aggiungere gli IP vietati"
+
+msgid "Administrative options"
+msgstr "Opzioni amministrative"
+
+msgid "Administrator"
+msgstr "Amministrazione"
+
+msgid "Allow all"
+msgstr "Autorizza tutti"
+
+msgid "Allow file update"
+msgstr "Permetti aggiornamento file"
+
+msgid "Allow/Deny"
+msgstr "Autorizza/Rifiuta"
+
+msgid "Allow/Deny enabled"
+msgstr "Autorizza/Rifiuta abilitato"
+
+msgid "Allowed IPs"
+msgstr "IP autorizzati"
+
+msgid "An administrator will need to approve it before it is functional."
+msgstr ""
+"Sar&agrave; necessaria l'approvazione di un amministratore prima che le "
+"impostazioni diventino operative."
+
+msgid "An error occurred when deleting your shortcut."
+msgstr ""
+"Si &egrave; verificato un errore tentatndo di eliminare la scorciatoria."
+
+msgid ""
+"An error occurred when trying to access the allowed and denied ip records. "
+"Please check your logs."
+msgstr ""
+"Si &egrave; verificato un errore tentando di accedere all'elenco degli IP "
+"autorizzati e rifiutati. Verificare i file di log."
+
+msgid "An error occurred when updating your .htaccess file."
+msgstr ""
+"Si &egrave; verificato un errore tentando di aggiornare il file .htaccess."
+
+msgid "An error occurred."
+msgstr "Si &egrave; verificato un errore"
+
+msgid "An error occurred:"
+msgstr "Si &egrave; verificato un errore:"
+
+msgid "Are you sure you want to delete the checked ips?"
+msgstr "Eliminare gli IP selezionati?"
+
+msgid "Are you sure you want to delete the checked shortcuts?"
+msgstr "Eliminare le scorciatoie selezionate?"
+
+msgid "Are you sure you want to delete this shortcut?"
+msgstr "Eliminare questa scorciatoia?"
+
+msgid "Are you sure you want to restore the default .htaccess file?"
+msgstr "Ripristinare il file .htaccess predefinito?"
+
+msgid "Bad keyword. Use only alphanumeric characters, dashes and spaces."
+msgstr ""
+"Keyword non valida. Usare solo caratteri alfanumerici, trattini e spazi."
+
+msgid "Cancel"
+msgstr "Annulla"
+
+msgid ""
+"Cannot create a new .htaccess file because the installation directory is not "
+"writable."
+msgstr ""
+"Impossibile creare un nuovo file .htaccess perch&eacute; la cartella di "
+"installazione non &egrave; scrivibile."
+
+msgid "Close window"
+msgstr "Chiudi finestra"
+
+msgid "Controls the .htaccess file for Apache and creates shortcuts."
+msgstr "Verifica il file .htaccess per Apache e crea la scorciatoie."
+
+msgid "Current .htaccess file"
+msgstr "File .htaccess corrente"
+
+msgid "Deactivate"
+msgstr "Disattiva"
+
+msgid "Default .htaccess file restored."
+msgstr "Ripristinato il file .htaccess predefinito."
+
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Denied IPs"
+msgstr "IP vietati"
+
+msgid "Deny all"
+msgstr "Rifiuta tutti"
+
+msgid "Denys and Allows"
+msgstr "Rifiutati e Autorizzati"
+
+msgid "Do not allow all"
+msgstr "Non autorizzare tutti"
+
+msgid "Do not deny all"
+msgstr "Non rifiutare tutti"
+
+msgid "Edit"
+msgstr "Modifica"
+
+msgid "Go"
+msgstr "Avvia"
+
+msgid "Go to the Update tab and try to create a new file."
+msgstr "Andare nella scheda Aggiorna e tentare di creare un nuovo file."
+
+msgid "IP Address"
+msgstr "Indirizzo IP"
+
+msgid "IP address deleted."
+msgstr "Indirizzo IP eliminato."
+
+msgid "IP address was not formatted correctly or not allowed."
+msgstr ""
+"L'indirizzo IP non &egrave; formattato correttamente o non &egrave; permesso."
+
+msgid "Keyword already in use. Choose another."
+msgstr "Keyword gi&agrave; in uso. Selezionarne un'altra."
+
+msgid "Keywords"
+msgstr "Parole chiave"
+
+msgid "Look in your installation directory and give Apache write access."
+msgstr ""
+"Assegnare ad Apache i permessi di scrittura nella cartella di installazione."
+
+msgid "Missing keyword."
+msgstr "Parole chiave mancanti."
+
+msgid "Missing url."
+msgstr "Indirizzi URL mancanti."
+
+msgid "Mod Rewrite options"
+msgstr "Opzioni di Mod Rewrite"
+
+msgid "No"
+msgstr "No"
+
+msgid "No allowed ip addresses found."
+msgstr "Impossibile trovare indirizzi IP autorizzati."
+
+msgid "No denied ip addresses found."
+msgstr "Impossibile trovare indirizzi IP rifiutati."
+
+msgid "Open your config/core/config.php file in a text editor."
+msgstr "Apre il file config/core/config.php in un editor di testo."
+
+msgid "Please check your error.log."
+msgstr "Verificare il file error.log."
+
+msgid "Please check your logs."
+msgstr "Verificare i file di log."
+
+msgid ""
+"Remember to \"Update\" your access file when finished changing IP rules."
+msgstr ""
+"Ricordarsi di \"aggiornare\" il file .htaccess dopo aver terminato di "
+"modificare le regole IP."
+
+msgid "Restore default .htaccess"
+msgstr "Ripristina il file .htaccess predefinito"
+
+msgid "Return to previous page."
+msgstr "Ritorna alla pagina precedente."
+
+msgid "Rewrite engine on"
+msgstr "Motore Rewrite attivo"
+
+msgid "Save settings"
+msgstr "Salva impostazioni"
+
+msgid "Set your \"MOD_REWRITE_ENABLED\" define equal to TRUE."
+msgstr "Impostare la definizione \"MOD_REWRITE_ENABLED\" al valore TRUE."
+
+msgid "Settings saved."
+msgstr "Impostazioni salvate"
+
+msgid "Shortcut"
+msgstr "Scorciatoia"
+
+msgid "Shortcut deleted"
+msgstr "Scorciatoia eliminata"
+
+msgid "Shortcuts"
+msgstr "Scorciatoie"
+
+msgid "Shortcuts enabled"
+msgstr "Scorciatoie abilitate"
+
+msgid "Sorry"
+msgstr "Spiacenti"
+
+msgid "The files/access/ directory is not writable."
+msgstr "La cartella files/access/ non ha i permessi di scrittura."
+
+msgid "Unable to restore default .htaccess file."
+msgstr "Impossibile ripristinare il file .htaccess predefinito."
+
+msgid "Unable to save .htaccess file."
+msgstr "Impossibile salvare il file .htaccess."
+
+msgid "Unable to write .htaccess file."
+msgstr "Impossibile scrivere il file .htaccess."
+
+msgid "Update"
+msgstr "Aggiorna"
+
+msgid "Update .htaccess file"
+msgstr "Aggiorna file .htaccess"
+
+msgid "Url"
+msgstr "Indirizzo"
+
+msgid "When active, you will be able to use the following link:"
+msgstr "Se attivo, &egrave; possibile usare il seguente collegamento:"
+
+msgid "Write .htaccess file"
+msgstr "Scrivi file .htaccess"
+
+msgid "Yes"
+msgstr "S&igrave;"
+
+msgid "You can access this item with the following link:"
+msgstr ""
+"&Egrave; possibile accedere a questa voce con il seguente collegamento:"
+
+msgid "You do not have mod rewrite enabled."
+msgstr "Mod Rewrite non &egrave; attivo."
+
+msgid "You have \"Allow all\" enabled. All rows below will be ignored."
+msgstr ""
+"L'opzione \"Autorizza tutti\" &egrave; abilitata. Tutte le righe seguenti "
+"saranno ignorate."
+
+msgid "You have \"Deny all\" enabled. All rows below will be ignored."
+msgstr ""
+"L'opzione \"Rifiuta tutti\" &egrave; abilitata. Tutte le righe seguenti "
+"saranno ignorate."
+
+msgid "Your .htaccess file will contain the below:"
+msgstr "Il file .htaccess conterr&agrave;:"
+
+msgid "Your <b>.htaccess</b> file does not exist."
+msgstr "Il file <b>.htaccess</b> non esiste."
+
+msgid "Your <b>.htaccess</b> file is not writable."
+msgstr "Il file <b>.htaccess</b> non ha i permessi di scrittura."
+
+msgid ""
+"Your installation directory must be writable if you want to create a new ."
+"htaccess file."
+msgstr ""
+"La cartella di installazione deve essere scrivibile per creare un nuovo "
+"file .htaccess."
