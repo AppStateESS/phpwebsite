@@ -72,7 +72,12 @@ class Search_User {
 
     function getModList()
     {
-        $result = Key::modulesInUse();
+        $db = new PHPWS_DB('search');
+        $db->addColumn('module', null, null, false, true);
+        $db->addColumn('modules.proper_name');
+        $db->addWhere('search.module', 'modules.title');
+        $db->setIndexBy('module');
+        $result = $db->select('col');
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
