@@ -790,7 +790,7 @@ class PHPWS_Core {
         if ($use_redirect && isset($_SERVER['REDIRECT_URL'])) {
             if ($_SERVER['REDIRECT_URL'] != '/') {
                 $root_url = substr($self, 0, strrpos($self, '/'));
-                $address[] = str_replace("$root_url/", '', $_SERVER['REDIRECT_URL']);
+                $address[] = preg_replace("@^$root_url/@", '', $_SERVER['REDIRECT_URL']);
             } else {
                 $address[] = 'index.php';
             }
