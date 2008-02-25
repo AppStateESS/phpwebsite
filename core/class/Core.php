@@ -785,16 +785,19 @@ class PHPWS_Core {
             $address[] = PHPWS_Core::getHomeHttp();
         }
 
+        $self = & $_SERVER['PHP_SELF'];
+
         if ($use_redirect && isset($_SERVER['REDIRECT_URL'])) {
             if ($_SERVER['REDIRECT_URL'] != '/') {
-                $address[] = str_ireplace(dirname($_SERVER['PHP_SELF']) . '/', '', $_SERVER['REDIRECT_URL']);
+                $root_url = substr($self, 0, strrpos($self, '/'));
+                $address[] = str_replace("$root_url/", '', $_SERVER['REDIRECT_URL']);
             } else {
                 $address[] = 'index.php';
             }
             return implode('', $address);
         }
 
-        $stack = explode('/', $_SERVER['PHP_SELF']);
+        $stack = explode('/', $self);
         if ($url = array_pop($stack)) {
             $address[] = $url;
         }
