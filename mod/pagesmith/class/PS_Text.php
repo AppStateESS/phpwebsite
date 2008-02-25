@@ -72,10 +72,17 @@ class PS_Text extends PS_Section {
     }
 
 
-    function save()
+    function save($key_id)
     {
         $db = new PHPWS_DB('ps_text');
-        return $db->saveObject($this);
+        $result = $db->saveObject($this);
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+        $search = new Search($key_id);
+        $search->resetKeywords();
+        $search->addKeywords($this->content);
+        return $search->save();
     }
 
 }

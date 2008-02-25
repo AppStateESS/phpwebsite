@@ -214,7 +214,7 @@ class PS_Page {
 
         foreach ($this->_sections as $section) {
             $section->pid = $this->id;
-            PHPWS_Error::logIfError($section->save());
+            PHPWS_Error::logIfError($section->save($this->key_id));
         }
         PHPWS_Cache::remove($this->cacheKey());
     }
@@ -235,6 +235,13 @@ class PS_Page {
         $key->setEditPermission('edit_page');
 
         $key->setUrl($this->url());
+
+        foreach ($this->_sections as $sec) {
+            if ($sec->sectype=='text') {
+                $key->setSummary($sec->getContent());
+                break;
+            }
+        }
 
         $key->setTitle($this->title);
         $result = $key->save();

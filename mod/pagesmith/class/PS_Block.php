@@ -67,7 +67,7 @@ class PS_Block extends PS_Section {
         return $this->content;
     }
 
-    function save()
+    function save($key_id=null)
     {
         $db = new PHPWS_DB('ps_block');
         $db->saveObject($this);
