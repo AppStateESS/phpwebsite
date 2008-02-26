@@ -759,7 +759,7 @@ class PHPWS_File {
                     return true;
                 }
                 foreach ($file_info['mct'] as $mct) {
-                    if ($mct == $mime_type) {
+                    if (preg_match("@^$mct@i", $mime_type)) {
                         return true;
                     }
                 }

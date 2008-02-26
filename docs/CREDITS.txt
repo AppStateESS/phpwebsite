@@ -102,6 +102,10 @@ James Heinrich
 getID3
 http://www.getid3.org
 
+John Resig
+jquery
+http://jquery.com
+
 --------------------------------------------------------------------------
 To those who translate, we salute you.
 --------------------------------------------------------------------------
