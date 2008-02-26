@@ -22,6 +22,19 @@
  * base: If a file can be uploaded with an alternate extension, the base
  *       indicates the parent extension.
  *
+ * Some servers may have problems identifying your file type. If so, you
+ * try adding the examples below to your list. Be that unwanted file types
+ * could get through. Know your users. Substitute your file extension
+ * for the 'ext' in the array.
+ *
+ * // a very common type 
+ * $all_file_types['ext']['mct'] = 'text/plain';
+ *
+ * // If mime_content_type is not working at all and file -iL
+ * // can't identify your filetype, this is what you get.
+ * $all_file_types['ext']['mct'] = 'application/octet-stream';
+ *
+ *
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
