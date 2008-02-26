@@ -10,7 +10,7 @@
    <tr{ERROR}>
       <td>{CHECK}</td>
       <td>{FILE_NAME}</td>
-      <td>{FILE_TYPE}<!-- BEGIN message --><br /><span class="smaller">({MESSAGE})</span><!-- END message --></td>
+      <td>{FILE_TYPE}<!-- BEGIN message --><br /><div class="smaller">({MESSAGE})</div><!-- END message --></td>
       <td>{ACTION}</td>
    </tr>
 <!-- END file-list -->
