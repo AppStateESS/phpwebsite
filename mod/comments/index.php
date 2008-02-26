@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
@@ -11,7 +11,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 }
 
 if ($_REQUEST['module'] != 'comments') {
-  return;
+    return;
 }
 
 
@@ -22,11 +22,11 @@ if (isset($_GET['user_action'])) {
 }
 
 if (isset($_REQUEST['uop'])) {
-  Comments::userAction($_REQUEST['uop']);
+    Comments::userAction($_REQUEST['uop']);
 } elseif (isset($_REQUEST['aop']) && Current_User::authorized('comments')) {
-  Comments::adminAction($_REQUEST['aop']);
+    Comments::adminAction($_REQUEST['aop']);
 } elseif (isset($_GET['tab']) && Current_User::authorized('comments')) {
-  Comments::adminAction($_REQUEST['tab']);
+    Comments::adminAction($_REQUEST['tab']);
 } elseif (isset($_REQUEST['cm_id'])) {
     Comments::userAction('view_comment');
 } else {

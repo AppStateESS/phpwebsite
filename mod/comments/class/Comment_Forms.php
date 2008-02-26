@@ -145,6 +145,8 @@ class Comment_Forms {
 
     function reported()
     {
+        javascript('modules/comments/admin');
+        Layout::addStyle('comments', 'admin.css');
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('comments', 'Comment_Item.php');
         $pager = new DBPager('comments_items', 'Comment_Item');
@@ -152,6 +154,7 @@ class Comment_Forms {
         $pager->setTemplate('reported.tpl');
         $pager->addWhere('reported', 0, '>');
         $pager->addRowTags('reportTags');
+        $pager->setEmptyMessage(dgettext('comments', 'No comments reported'));
 
         $tags['SUBJECT_LABEL']  = dgettext('comments', 'Subject');
         $tags['ENTRY_LABEL']    = dgettext('comments', 'Entry');

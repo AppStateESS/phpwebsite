@@ -1,3 +1,10 @@
+26 February 2008
++ Added clearing option to the reported form. It removes all
+  complaints.
++ Added mouseover to comment entries to read full text from the report
+  page.
++ Updated: ditto 22 Feb
+
 22 February 2008
 + Reported interface written.
 + Punish system implemented

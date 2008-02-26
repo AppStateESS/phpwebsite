@@ -388,6 +388,12 @@ class Comment_Item {
 
     }
 
+    function clearReportLink()
+    {
+        return PHPWS_Text::secureLink(dgettext('comments', 'Clear'), 'comments',
+                                      array('aop'=>'clear_report', 'cm_id'=>$this->id));
+    }
+
     function punishUserLink()
     {
         if (Current_User::allow('comments', 'punish_users')) {
@@ -478,8 +484,13 @@ class Comment_Item {
     function reportTags()
     {
         $tpl['SUBJECT'] = $this->viewLink();
-        $tpl['ENTRY']   = substr($this->entry, 0, 100);
 
+        $tpl['ENTRY']   = sprintf('<span class="pointer" onmouseout="quick_view(\'#cm%s\'); return false" onmouseover="quick_view(\'#cm%s\'); return false">%s</span>',
+                                  $this->id, $this->id,
+                                  substr($this->entry, 0, 50));
+        $tpl['FULL'] = sprintf('<div class="full-view" id="cm%s">%s</div>', $this->id, $this->getEntry());
+
+        $links[] = $this->clearReportLink();
         $links[] = $this->deleteLink();
         $links[] = $this->punishUserLink();
         $tpl['ACTION']  = implode(' | ', $links);

@@ -1,0 +1,13 @@
+.full-view {
+   position : absolute;
+   background-color : white;
+   border : 1px solid black;
+   border-right-width : 2px;
+   border-bottom-width : 2px;
+   width : 300px;
+   padding : 5px;
+}
+
+.pointer:hover {
+   cursor : pointer;
+}

@@ -100,11 +100,13 @@ class Comments {
             break;
             
         case 'report':
+            $panel->setCurrentTab('report');
             PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
             $content = Comment_Forms::reported();
             break;
 
         case 'settings':
+            $panel->setCurrentTab('settings');
             if (Current_User::allow('comments', 'settings')) {
                 PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
                 $content = Comment_Forms::settingsForm();
@@ -164,6 +166,15 @@ class Comments {
                 }
             }
             exit();
+            break;
+
+        case 'clear_report':
+            if (Current_User::authorized('comments', 'punish_users')) {
+                $comment = new Comment_Item($_GET['cm_id']);
+                $comment->reported = 0;
+                PHPWS_Error::logIfError($comment->save());
+            }
+            PHPWS_Core::goBack();
             break;
 
         case 'unban_user':

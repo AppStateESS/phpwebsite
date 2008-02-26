@@ -13,4 +13,13 @@ function punish_user(user_id, link, type)
      });
 }
 
+$(document).ready(function() {
+    $(".full-view").hide();
+});
+
+function quick_view(id)
+{
+    $(id).toggle();
+}
+
 </script>
