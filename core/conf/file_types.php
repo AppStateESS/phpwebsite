@@ -64,6 +64,11 @@ $all_file_types['gif']['mct'][] = 'image/gif';
 $all_file_types['gif']['fi'][]  = 'gif image data';
 $all_file_types['gif']['vb']    = 'GIF Image';
 
+$all_file_types['gz']['mct'][] = 'text/plain';
+$all_file_types['gz']['mct'][] = 'application/x-gzip';
+$all_file_types['gz']['fi'][]  = 'gzip compressed';
+$all_file_types['gz']['vb']    = 'Gzip Compressed Archive ';
+
 $all_file_types['jpg']['mct'][] = 'image/jpg';
 $all_file_types['jpg']['mct'][] = 'image/jpeg';
 $all_file_types['jpg']['mct'][] = 'image/pjpeg';
