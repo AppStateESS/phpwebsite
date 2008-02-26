@@ -11,5 +11,5 @@ $known_media  = array('asf', 'mov', 'flv', 'mp4', 'qt', 'mp3', 'mp4', 'mpg', 'og
 
 $known_documents = array('css', 'csv', 'doc', 'docx', 'mid', 'mp3', 'odb', 'odp',
                    'ods', 'odt', 'ogg', 'pdf', 'ppt', 'pptx', 'rpm', 'rtf',
-                   'tar', 'tgz', 'txt', 'wav', 'xls', 'xlsx', 'xml', 'zip');
+                   'tar', 'tgz', 'txt', 'wav', 'xls', 'xlsx', 'xml', 'zip', 'gz');
 ?>
