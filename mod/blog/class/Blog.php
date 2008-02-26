@@ -579,7 +579,7 @@ class Blog {
     function delete()
     {
         $all_is_well = true;
-        Key::drop($this->key_id);
+
         PHPWS_Core::initModClass('version', 'Version.php');
         Version::flush('blog_entries', $this->id);
         $db = new PHPWS_DB('blog_entries');

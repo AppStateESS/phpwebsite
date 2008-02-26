@@ -1,3 +1,6 @@
+26 February 2008
++ Removed redundant key drop from blog deletion.
+
 22 February 2008
 + Publish date was rounding the minutes. This would lead to close
   posts not appearing in the correct order.
