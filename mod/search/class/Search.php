@@ -101,15 +101,31 @@ class Search {
     {
         // can't use strip_tags because we need the spaces
         $text = preg_replace('/(<|&lt;).*(>|&gt;)/sUi', ' ', $text);
-        $text = preg_replace('/[^\w\pL\-\s;&]/u', '', $text);
-        $text = str_replace(' - ', ' ', $text);
-        
+
+        // strip dashes and quotes
+        $text = preg_replace('/&mdash;|&quot;| - /', ' ', $text);
+        $text = preg_replace('/(\w+)(\'|&#039;)s/', '\\1', $text);
+
+        // Removes abbreviations
+        $text = preg_replace('/\w+&#039;\w+/', '', $text);
+
+        if (UTF8_MODE) {
+            $preg = '/[^\w\pL\-\s;&#]/u';
+        } else {
+            $preg = '/[^\w\-\s;&#]/';
+        }
+
+        $text = preg_replace($preg, '', $text);
+
         if ($encode) {
             $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
         }
-        
+
         $text = strtolower($text);
         $text = preg_replace('/(-{2,}|\/)/U', ' ', $text);
+
+        // strip numbers
+        $text = preg_replace('/\d+\s/', '', $text);
         return $text;
     }
 
@@ -127,8 +143,7 @@ class Search {
         $file_name = translateFile('wordlist.txt');
 
         // Removes trademark/registered, contractions, and website suffix
-        $text = preg_replace('/\d|(n\'t|\'([sd]|ll|re|ve))|\.(com|edu|net|org)|\(tm\)|\(r\)/', '', $text);
-
+        $text = preg_replace('/(n\'t|\'([sd]|ll|re|ve))|\.(com|edu|net|org)|\(tm\)|\(r\)/', '', $text);
         $config_file = PHPWS_Core::getConfigFile('search', $file_name);
         if (!$config_file) {
             $config_file = PHPWS_Core::getConfigFile('search', 'wordlist.txt');
