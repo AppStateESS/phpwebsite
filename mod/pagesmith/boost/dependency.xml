@@ -18,4 +18,10 @@
     <version>1.4.4</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/menu/</url>
   </module>
+  <module>
+    <title>search</title>
+    <properName>Search</properName>
+    <version>0.3.1</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/search/</url>
+  </module>
 </dependency>

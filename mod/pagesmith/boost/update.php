@@ -140,6 +140,15 @@ function pagesmith_update(&$content, $currentVersion)
 + Added url parser to passinfo script to allow images to work with fck better.
 </pre>';
 
+    case version_compare($currentVersion, '1.2.0', '<'):
+        $content[] = '<pre>';
+        if (!pagesmithSearchIndex()) {
+            $content[] = '--- Unable to index pages in search. Check your error log.</pre>';
+            return false;
+        } else {
+            $content[] = '--- Pages added to search';
+        }
+        $content[] = '</pre>';
     } // end switch
 
     return true;
@@ -154,6 +163,36 @@ function pagesmithUpdateFiles($files, &$content)
     }
     $content[] = "    " . implode("\n     ", $files);
     $content[] = '';
+}
+
+/**
+ * Versions prior to 1.1.0 didn't have search. This function
+ * plugs in values for all current text sections.
+ */
+function pagesmithSearchIndex()
+{
+    PHPWS_Core::initModClass('search', 'Search.php');
+    $db = new PHPWS_DB('ps_text');
+    $db->addColumn('id');
+    $db->addColumn('content');
+    $db->addColumn('ps_page.key_id');
+    $db->addWhere('ps_text.pid', 'ps_page.id');
+    $db->addOrder('pid');
+    $db->addOrder('secname');
+    $result = $db->select();
+
+    if (!empty($result)) {
+        if (PHPWS_Error::logIfError($result)) {
+            return false;
+        }
+        foreach ($result as $pg) {
+            $search = new Search($pg['key_id']);
+            $value = $pg['content'];
+            $search->addKeywords($value);
+            PHPWS_Error::logIfError($search->save());
+        }
+    }
+    return true;
 }
 
 ?>
