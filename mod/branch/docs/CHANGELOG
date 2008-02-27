@@ -1,3 +1,8 @@
+27 February 2008
++ Fixed loadDSN : allows database passwords with spaces. Also checks
+  once for prefix to prevent having to scan whole config file.
+
+
 Version 1.1.4
 ----------------------------------------------------------
 29 November 2007

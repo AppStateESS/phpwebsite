@@ -24,21 +24,29 @@ class Branch {
         $this->init();
     }
 
+
     function loadDSN()
     {
-        $config = file($this->directory . 'config/core/config.php');
+        $config_contents = file_get_contents($this->directory . 'config/core/config.php');
+        $config = explode("\n", $config_contents);
+
+        if (preg_match('/phpws_table_prefix/i', $config_contents)) {
+            $prefix_used = true;
+        } else {
+            $prefix_used = false;
+        }
+
         foreach ($config as $row) {
-            $row = str_replace(' ', '', trim($row));
-            if (preg_match("/^define\('phpws_dsn'/i", $row)) {
+            if (preg_match('/phpws_dsn/i', $row) && preg_match('/^define/i', $row)) {
                 $sub = explode(',', $row);
                 $this->dsn = preg_replace("@'|\);$@", '', $sub[1]);
             }
 
-            if (preg_match("/^define\('phpws_table_prefix','\w+'/i", $row)) {
-                $this->prefix = preg_replace('/define\(\'phpws_table_prefix\',\'([\w\/:@]+)\'\);/iU', '\\1', $row);
+            if (preg_match('/phpws_table_prefix/i', $row) && preg_match('/^define/i', $row)) {
+                $this->prefix = preg_replace('/phpws_table_prefix|define|[\s\'"(),;]/i', '', $row);
             }
 
-            if (!empty($this->dsn) && !empty($this->prefix)) {
+            if (!empty($this->dsn) && (!$prefix_used || !empty($this->prefix))) {
                 return true;
             }
         }
