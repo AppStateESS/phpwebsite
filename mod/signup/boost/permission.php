@@ -8,6 +8,6 @@ $use_permissions = true;
 
 $permissions['edit_sheet'] = dgettext('signup', 'Edit sheets');
 
-$item_permissions = false;
+$item_permissions = true;
 
 ?>

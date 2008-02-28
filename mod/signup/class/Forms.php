@@ -159,6 +159,18 @@ class Signup_Forms {
     {
         $this->signup->title = sprintf(dgettext('signup', 'Slot setup for %s'), $this->signup->sheet->title);
 
+        if (isset($_GET['slot_id'])) {
+            PHPWS_Core::initModClass('signup', 'Slots.php');
+            $slot = new Signup_Slot($_GET['slot_id']);
+            if (!$slot->id || PHPWS_Error::logIfError($slot)) {
+                $this->signup->content = dgettext('signup', 'An error occurred when accessing this sheet\'s slots.');
+                return;
+            }
+            $tpl = $slot->viewTpl();
+            $vars['aop'] = 'reset_slot_order';
+            $tpl['RESET'] = PHPWS_Text::secureLink(dgettext('signup', 'Reset order'), 'signup', $vars);
+        }
+
         $vars['aop'] = 'edit_slot_popup';
         $vars['sheet_id'] = $this->signup->sheet->id;
         $vars['slot_id'] = 0;
@@ -166,11 +178,18 @@ class Signup_Forms {
         $js['label'] = dgettext('signup', 'Add slot');
         $tpl['ADD_SLOT'] = javascript('open_window', $js);
 
-        $vars['aop'] = 'reset_slot_order';
-        $tpl['RESET'] = PHPWS_Text::secureLink(dgettext('signup', 'Reset order'), 'signup', $vars);
-
-        $slots = $this->signup->sheet->getAllSlots();
-
+        $slots = $this->signup->sheet->getAllSlots(true);
+        $form = new PHPWS_Form('slot-pick');
+        $form->addHidden('module', 'signup');
+        $form->addHidden('sheet_id', $this->signup->sheet->id);
+        $form->addHidden('aop', 'edit_slots');
+        $form->setMethod('get');
+        $form->addSelect('slot_id', $slots);
+        $form->setMatch('slot_id', (int)@$_GET['slot_id']);
+        $form->addSubmit(dgettext('signup', 'Pick slot'));
+        $tpl['PICK_SLOT'] = implode('', $form->getTemplate());
+        /*
+        test($slots,1);
         if (PHPWS_Error::logIfError($slots)) {
             $this->signup->content = dgettext('signup', 'An error occurred when accessing this sheet\'s slots.');
             return;
@@ -183,7 +202,7 @@ class Signup_Forms {
         } else {
             $tpl['EMPTY'] = dgettext('signup', 'Click on "Add slot" to allow applicants to sign up.');
         }
-
+        */
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'slot_setup.tpl');
     }
 
@@ -195,7 +214,7 @@ class Signup_Forms {
         $form->addHidden('module', 'signup');
         $form->addHidden('aop', 'post_sheet');
         if ($sheet->id) {
-            $form->addHidden('id', $sheet->id);
+            $form->addHidden('sheet_id', $sheet->id);
             $form->addSubmit(dgettext('signup', 'Update'));
             $this->signup->title = dgettext('signup', 'Update signup sheet');
             $form->addTplTag('EDIT_SLOT', $this->signup->sheet->editSlotLink());
@@ -209,6 +228,9 @@ class Signup_Forms {
 
         $form->addTextArea('description', $sheet->description);
         $form->setLabel('description', dgettext('signup', 'Description'));
+
+        $form->addText('contact_email', $sheet->contact_email);
+        $form->setLabel('contact_email', dgettext('signup', 'Contact email'));
 
         // Functionality not finished. Hide for now.
 
@@ -299,9 +321,6 @@ class Signup_Forms {
         $this->signup->title = sprintf(dgettext('signup', '%s Participants'), $this->signup->sheet->title);
         $this->signup->content = $pager->get();
     }
-
-
-
 
     function listSignup()
     {

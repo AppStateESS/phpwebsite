@@ -1,12 +1,11 @@
-{ADD_SLOT} | {RESET}
+<p>{ADD_SLOT} <!-- BEGIN reset -->| {RESET}<!-- END reset --></p>
 <!-- BEGIN empty --><p>{EMPTY}</p><!-- END empty -->
-<!-- BEGIN current-slots -->
+<div style="margin-bottom : 1em">{PICK_SLOT}</div>
+<!-- BEGIN current-slot -->
 <div class="slot">
-<fieldset><legend>{TITLE}</legend>
+<h1>{TITLE}</h1>
 <p>{OPENINGS} | {LEFT}</p>
 {PEEPS}
 <p>{LINKS}</p>
 </div>
-</fieldset>
-<!-- END current-slots -->
-
+<!-- END current-slot -->

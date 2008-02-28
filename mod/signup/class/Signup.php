@@ -170,7 +170,7 @@ class Signup {
                     }
                 }
             } else {
-                $this->loadForm('edit');
+                $this->loadForm('edit_sheet');
             }
             break;
 
@@ -264,7 +264,7 @@ class Signup {
     {
         $db = new PHPWS_DB('signup_slots');
         $db->addWhere('sheet_id', $this->sheet->id);
-        $db->addColumn('id');
+        $db->addColumn('sheet_id');
         $db->addOrder('s_order');
         $slots = $db->select('col');
         if (empty($slots)) {
@@ -275,7 +275,7 @@ class Signup {
         $count = 1;
         foreach ($slots as $id) {
             $db->reset();
-            $db->addWhere('id', $id);
+            $db->addWhere('sheet_id', $id);
             $db->addValue('s_order', $count);
             PHPWS_Error::logIfError($db->update());
             $count++;
@@ -397,8 +397,6 @@ class Signup {
             $this->sheet = new Signup_Sheet($id);
         } elseif (isset($_REQUEST['sheet_id'])) {
             $this->sheet = new Signup_Sheet($_REQUEST['sheet_id']);
-        } elseif (isset($_REQUEST['id'])) {
-            $this->sheet = new Signup_Sheet($_REQUEST['id']);
         } else {
             $this->sheet = new Signup_Sheet;
         }
@@ -436,7 +434,7 @@ class Signup {
 
             $action = $_REQUEST['uop'];
         }
-            
+
         switch ($action) {
         case 'message':
             $this->loadMessage();
@@ -556,8 +554,11 @@ class Signup {
 
         $subject = dgettext('signup', 'Signup confirmation');
 
-        $from = PHPWS_Settings::get('users', 'site_contact');
-        $reply_to = PHPWS_Settings::get('users', 'site_contact');
+        if (!empty($sheet->contact_email)) {
+            $reply_to = $from = $sheet->contact_email;
+        } else {
+            $reply_to = $from = PHPWS_Settings::get('users', 'site_contact');
+        }
 
         $site_title = Layout::getPageTitle(true);
         $link = PHPWS_Core::getHomeHttp() . 'index.php?module=signup&uop=confirm&h=' . 
@@ -650,7 +651,7 @@ class Signup {
         $mail->send();
 
         $vars['aop'] = 'report';
-        $vars['id'] = $this->sheet->id;
+        $vars['sheet_id'] = $this->sheet->id;
         $link = PHPWS_Text::linkAddress('signup', $vars, true);
 
         $this->title = dgettext('signup', 'Emails sent');
@@ -769,6 +770,15 @@ class Signup {
             $this->sheet->start_time = strtotime($_POST['start_time']);
             if ($this->sheet->start_time < mktime(0,0,0,1,1,1970)) {
                 $this->sheet->defaultStart();
+            }
+        }
+
+        if (empty($_POST['contact_email'])) {
+            $this->sheet->contact_email = null;
+        } else {
+            $this->sheet->contact_email = $_POST['contact_email'];
+            if (!PHPWS_Text::isValidInput($this->sheet->contact_email, 'email')) {
+                $errors[] = dgettext('signup', 'Contact email improperly formatted.');
             }
         }
 
@@ -993,7 +1003,7 @@ class Signup {
             $this->title = dgettext('signup', 'Slot can not be deleted until cleared of applicants.');
         }
         $this->content = PHPWS_Text::secureLink(dgettext('signup', 'Return to slot page'), 'signup',
-                                                array('id'=>$this->sheet->id, 'aop'=>'edit_slots'));
+                                                array('sheet_id'=>$this->sheet->id, 'aop'=>'edit_slots'));
         
     }
 }

@@ -8,7 +8,7 @@
     <td><strong>{DESCRIPTION_LABEL}</strong></td><td>{DESCRIPTION}</td>
   </tr>
   <tr>
-    <td><strong>{START_TIME_LABEL}</strong></td><td>{START_TIME}{ST_JS}</td>
+    <td><strong>{CONTACT_EMAIL_LABEL}</strong></td><td>{CONTACT_EMAIL}</td>
   </tr>
   <tr>
     <td><strong>{END_TIME_LABEL}</strong></td><td>{END_TIME}{ET_JS}</td>

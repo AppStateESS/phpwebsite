@@ -23,6 +23,22 @@ function signup_update(&$content, $currentVersion)
 ----------------
 + Changed email to send individually.
 + Fixed: "All slots full" message was not displaying.</pre>';
+
+    case version_compare($currentVersion, '1.1.0', '<'):
+        $content[] = '<pre>';
+        PHPWS_Boost::registerMyModule('signup', 'users', $content);
+        $db = new PHPWS_DB('signup_sheet');
+        if (PHPWS_Error::logIfError($db->addTableColumn('contact_email', 'varchar(255) default NULL'))) {
+            $content[] = '--- Failed creating new column on signup_sheet.</pre>';
+            return false;
+        } else {
+            $content[] = '--- contact_email column created successfully on signup_sheet table.';
+        }
+        $content[] = '1.1.2 changes
+----------------
+</pre>';
+
+
     }
     return true;
 }

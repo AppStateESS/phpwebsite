@@ -138,7 +138,6 @@ class Signup_Slot {
         $sheet = new Signup_Sheet($this->sheet_id);
         $total_slots = $sheet->totalSlotsFilled();
         $all_slots = $sheet->getAllSlots();
-
         foreach ($all_slots as $slot) {
             if ($slot->id == $this->id) {
                 continue;
@@ -150,8 +149,8 @@ class Signup_Slot {
 
         if ($this->_peeps) {
             $jsconf['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this person from their signup slot?');
-            $jsconf['LINK'] = dgettext('signup', 'Delete');
-            $jspop['label']   = dgettext('signup', 'Edit');
+            $jsconf['LINK'] = sprintf('<img src="images/mod/signup/delete.png" title="%s" />', dgettext('signup', 'Delete'));
+            $jspop['label'] = sprintf('<img src="images/mod/signup/edit.png" title="%s" />', dgettext('signup', 'Edit'));
 
             foreach ($this->_peeps as $peep) {
                 $links = array();
@@ -171,7 +170,7 @@ class Signup_Slot {
                 $jsconf['ADDRESS'] = PHPWS_Text::linkAddress('signup', $vars, true);
                 $links[] = javascript('confirm', $jsconf);
 
-                $subtpl['ACTION'] = implode(' | ', $links);
+                $subtpl['ACTION'] = implode('', $links);
 
                 if (!empty($options)) {
                     $form = new PHPWS_Form;
@@ -187,11 +186,7 @@ class Signup_Slot {
                 }
 
                 $tpl['peep-row'][] = $subtpl;
-
-
             }
-
-
 
             $tpl['NAME_LABEL']         = dgettext('signup', 'Name');
             $tpl['EMAIL_LABEL']        = dgettext('signup', 'Email');

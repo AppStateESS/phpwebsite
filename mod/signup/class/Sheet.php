@@ -5,13 +5,14 @@
    */
 
 class Signup_Sheet {
-    var $id          = 0;
-    var $key_id      = 0;
-    var $title       = null;
-    var $description = null;
-    var $start_time  = 0;
-    var $end_time    = 0;
-    var $_error      = null;
+    var $id            = 0;
+    var $key_id        = 0;
+    var $title         = null;
+    var $description   = null;
+    var $start_time    = 0;
+    var $end_time      = 0;
+    var $contact_email = null;
+    var $_error        = null;
 
     function Signup_Sheet($id=0)
     {
@@ -102,23 +103,30 @@ class Signup_Sheet {
     function editSlotLink()
     {
         $vars['aop'] = 'edit_slots';
-        $vars['id']  = $this->id;
+        $vars['sheet_id']  = $this->id;
         return PHPWS_Text::moduleLink(dgettext('signup', 'Edit slots'), 'signup', $vars);
     }
 
-    function getAllSlots()
+    function getAllSlots($bare=false)
     {
         PHPWS_Core::initModClass('signup', 'Slots.php');
         $db = new PHPWS_DB('signup_slots');
         $db->addOrder('s_order');
         $db->addWhere('sheet_id', $this->id);
-        $result = $db->getObjects('Signup_Slot');
+        if ($bare) {
+            $db->addColumn('id');
+            $db->addColumn('title');
+            $db->setIndexBy('id');
+            return $db->select('col');
+        } else {
+            $result = $db->getObjects('Signup_Slot');
+        }
         return $result;
     }
 
     function rowTag()
     {
-        $vars['id'] = $this->id;
+        $vars['sheet_id'] = $this->id;
         $vars['aop']  = 'edit_sheet';
         $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Edit'), 'signup', $vars);
 
