@@ -849,9 +849,26 @@ class PHPWS_Core {
         return $GLOBALS['Is_Branch'];
     }
 
-    function plugInGet()
+    function plugForward()
     {
-        
+        $replacements = func_get_args();
+        if (empty($replacements)) {
+            return false;
+        }
+
+        $count = 0;
+        while(1) {
+            if (isset($_GET['var' . ($count + 1)])) {
+                $var = $_GET['var' . ($count + 1)];
+                $_GET[$replacements[$count]] = $var;
+                $_REQUEST[$replacements[$count]] = $var;
+            } else {
+                break;
+            }
+            $count++;
+        }
+
+        return true;
     }
 
 }// End of core class

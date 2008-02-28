@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+28 February 2008
++ Added plugForward function
+
+
 26 February 2008
 + checkMimeType needed a reg exp check on the mime type. Sometimes a
   server will add extra information to the end of the type so you
