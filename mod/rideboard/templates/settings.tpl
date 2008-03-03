@@ -1,4 +1,5 @@
 {START_FORM}
+<p>{MENU}</p>
 <p>{PURGE}</p>
 <p>{DEFAULT_SLOCATION_LABEL} {DEFAULT_SLOCATION}</p>
 <p><strong>{DISTANCE_LABEL}</strong><br />

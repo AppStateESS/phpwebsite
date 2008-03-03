@@ -74,6 +74,15 @@ class Rideboard {
             PHPWS_Settings::save('rideboard');
             $this->settings();
             break;
+
+        case 'add_link':
+            if (PHPWS_Core::moduleExists('menu')) {
+                if (PHPWS_Core::initModClass('menu', 'Menu.php')) {
+                    Menu::quickLink(dgettext('rideboard', 'Rideboard'), 'index.php?module=rideboard');
+                }
+            }
+            PHPWS_Core::goBack();
+            break;
         }
 
         $tpl['CONTENT'] = & $this->content;
@@ -336,6 +345,8 @@ class Rideboard {
         } else {
             $tpl['PURGE'] = dgettext('rideboard', 'No rides need purging.');
         }
+
+        $tpl['MENU'] = PHPWS_Text::moduleLink(dgettext('rideboard', 'Add menu link'), 'rideboard', array('aop'=>'add_link'));
 
         $tpl['DISTANCE_LABEL'] = dgettext('rideboard', 'Distance format');
         $this->content = PHPWS_Template::process($tpl, 'rideboard', 'settings.tpl');
