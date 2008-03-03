@@ -1449,7 +1449,13 @@ class User_Action {
         }
 
         $names = explode("\n", $forbidden);
+        if (empty($names)) {
+            return true;
+        }
         foreach ($names as $bad_name) {
+            if (empty($bad_name)) {
+                continue;
+            }
             $bad_name = preg_quote(trim($bad_name));
             if (preg_match("/$bad_name/i", $user->username)) {
                 return false;

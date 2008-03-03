@@ -215,6 +215,37 @@ class PHPWS_Group {
         $db->delete();
         $this->dropAllMembers();
         $this->clearMembership();
+        $this->dropPermissions();
+    }
+
+
+    function dropPermissions()
+    {
+        $modules = PHPWS_Core::getModules(true, true);
+        if (empty($modules)) {
+            return false;
+        }
+
+        foreach ($modules as $mod) {
+            $permTable = Users_Permission::getPermissionTableName($mod);
+
+            $db = new PHPWS_DB($permTable);            
+            if (!$db->isTable($permTable)) {
+                continue;
+            }
+
+            $db->addWhere('group_id', $this->id);
+            PHPWS_Error::logIfError($db->delete());
+
+            $db = new PHPWS_DB('phpws_key_edit');
+            $db->addWhere('group_id', $this->id);
+            PHPWS_Error::logIfError($db->delete());
+
+            $db = new PHPWS_DB('phpws_key_view');
+            $db->addWhere('group_id', $this->id);
+            PHPWS_Error::logIfError($db->delete());
+        }
+        return true;
     }
 
     function allow($module, $permission=NULL, $item_id=NULL, $itemname=NULL)
