@@ -529,7 +529,7 @@ class DBPager {
             $group_by = $this->db->group_by;
             $this->db->group_by = $this->db->order = $this->db->columns = null;
             $this->db->addColumn($this->total_column, null, null, true, true);
-            $result = $this->db->select('count');
+            $result = $this->db->select('one');
             $this->db->columns  = $columns;
             $this->db->order    = $order;
             $this->db->group_by = $group_by;
@@ -565,7 +565,7 @@ class DBPager {
                      * An index was found, set as total_column and recursively
                      * call this function
                      */
-                    $table = $this->db->getTable();
+                    $table = $this->db->getTable(false);
                     $this->total_column = $table . '.' . $index;
                     return $this->getTotalRows();
                 } else {
