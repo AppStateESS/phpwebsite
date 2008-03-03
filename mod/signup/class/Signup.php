@@ -32,7 +32,9 @@ class Signup {
 
         $this->loadMessage();
 
-        switch($_REQUEST['aop']) {
+        $command = $_REQUEST['aop'];
+
+        switch($command) {
         case 'add_slot_peep':
             $javascript = true;
             $this->loadPeep();
@@ -68,6 +70,12 @@ class Signup {
             $javascript = true;
             $this->loadSlot();
             $this->loadForm('edit_slot_popup');
+            break;
+
+        case 'edit_peep_popup':
+            $javascript = true;
+            $this->loadSlot();
+            $this->loadForm('edit_peep_popup');
             break;
 
         case 'print_applicants':
@@ -152,7 +160,8 @@ class Signup {
             break;
 
         case 'post_sheet':
-            if (!Current_User::authorized('signup')) {
+            $this->loadSheet();
+            if (!Current_User::authorized('signup', 'edit_sheet', $this->sheet->id, 'sheet')) {
                 Current_User::disallow();
             }
 
@@ -166,7 +175,7 @@ class Signup {
                         PHPWS_Core::reroute('index.php?module=signup&aop=list');
                     } else {
                         $this->forwardMessage(dgettext('signup', 'Sheet saved successfully.'));
-                        PHPWS_Core::reroute('index.php?module=signup&aop=edit_slots&id=' . $this->sheet->id);
+                        PHPWS_Core::reroute('index.php?module=signup&aop=edit_slots&sheet_id=' . $this->sheet->id);
                     }
                 }
             } else {
@@ -200,7 +209,7 @@ class Signup {
             if (PHPWS_Error::logIfError($result) || !$result) {
                 $this->forwardMessage(dgettext('signup', 'Error occurred when moving applicant. Slot may be full.'));
             }
-            PHPWS_Core::reroute('index.php?module=signup&id=' . $this->sheet->id . '&aop=edit_slots&authkey=' . Current_User::getAuthKey());
+            PHPWS_Core::reroute('index.php?module=signup&sheet_id=' . $this->sheet->id . '&aop=edit_slots&authkey=' . Current_User::getAuthKey());
             break;
 
         case 'move_up':
@@ -235,17 +244,18 @@ class Signup {
             $this->loadForm('report');
             break;
 
+        case 'alpha_order':
         case 'reset_slot_order':
             if (!Current_User::authorized('signup')) {
                 Current_User::disallow();
             }
             $this->loadSheet();
-            $this->resetSlots();
+            $this->resetSlots($command);
             $this->forwardMessage(dgettext('signup', 'Slot order reset.'));
-            PHPWS_Core::reroute('index.php?module=signup&id=' . $this->sheet->id . '&aop=edit_slots&authkey=' . Current_User::getAuthKey());
+            PHPWS_Core::reroute('index.php?module=signup&sheet_id=' . $this->sheet->id . '&aop=edit_slots&authkey=' . Current_User::getAuthKey());
             break;
-        }
 
+        }
 
         $tpl['TITLE']   = $this->title;
         $tpl['CONTENT'] = $this->content;
@@ -260,13 +270,19 @@ class Signup {
 
     }
 
-    function resetSlots()
+    function resetSlots($mode)
     {
         $db = new PHPWS_DB('signup_slots');
         $db->addWhere('sheet_id', $this->sheet->id);
-        $db->addColumn('sheet_id');
-        $db->addOrder('s_order');
+        $db->addColumn('id');
+        if ($mode == 'alpha_order') {
+            $db->addOrder('title');
+        } else {
+            $db->addOrder('s_order');
+        }
+
         $slots = $db->select('col');
+
         if (empty($slots)) {
             return true;
         } elseif (PHPWS_Error::logIfError($slots)) {
@@ -275,7 +291,7 @@ class Signup {
         $count = 1;
         foreach ($slots as $id) {
             $db->reset();
-            $db->addWhere('sheet_id', $id);
+            $db->addWhere('id', $id);
             $db->addValue('s_order', $count);
             PHPWS_Error::logIfError($db->update());
             $count++;
@@ -751,7 +767,6 @@ class Signup {
 
     function postSheet()
     {
-        $this->loadSheet();
         if (empty($_POST['title'])) {
             $errors[] = dgettext('signup', 'You must give this signup sheet a title.');
         } else {

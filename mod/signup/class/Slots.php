@@ -13,6 +13,7 @@ class Signup_Slot {
     var $s_order    = 1;
 
     var $_peeps     = null;
+    var $_filled    = 0;
 
     function Signup_Slot($id=0)
     {
@@ -100,18 +101,22 @@ class Signup_Slot {
         return $db->saveObject($this);
     }
 
+    function applicantAddLink()
+    {
+        $vars['aop']      = 'add_slot_peep';
+        $jsadd['label']   = dgettext('signup', 'Add applicant');
+        $jsadd['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
+        $jsadd['width'] = 300;
+        $jsadd['height'] = 470;
+        return javascript('open_window', $jsadd);
+    }
+
     function slotLinks()
     {
         $vars['slot_id'] = $this->id;
 
-        $total_peeps = count($this->_peeps);
-        if ($total_peeps < $this->openings) {
-            $vars['aop']      = 'add_slot_peep';
-            $jsadd['label']   = dgettext('signup', 'Add applicant');
-            $jsadd['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
-            $jsadd['width'] = 300;
-            $jsadd['height'] = 410;
-            $links[] = javascript('open_window', $jsadd);
+        if ($this->_filled < $this->openings) {
+            $links[] = $this->applicantAddLink();
         }
 
         if (empty($this->_peeps)) {
@@ -210,8 +215,27 @@ class Signup_Slot {
         $tpl['LEFT'] = sprintf(dgettext('signup', 'Slots left: %s'), $left);
 
         $tpl['PEEPS'] = $this->showPeeps();
-        $tpl['LINKS'] = $this->slotLinks();
+        $filled = count($this->_peeps);
+        if ($filled< $this->openings) {
+            $tpl['ADD'] = $this->applicantAddLink();
+        }
+        $tpl['CLOSE'] = javascript('close_window');
+        return $tpl;
+    }
 
+    function listTpl()
+    {
+        $vars['address'] = PHPWS_Text::linkAddress('signup', array('aop'=>'edit_peep_popup',
+                                                                   'slot_id'=>$this->id));
+        $vars['label'] = $this->title;
+        $vars['width'] = 800;
+        $vars['height'] = 600;
+                                        
+        $tpl['TITLE'] = javascript('open_window', $vars);
+        $tpl['OPENINGS'] = sprintf(dgettext('signup', 'Total openings: %s'), $this->openings);
+        $left = $this->openings - $this->_filled;
+        $tpl['LEFT'] = sprintf(dgettext('signup', 'Slots left: %s'), $left);
+        $tpl['LINKS'] = $this->slotLinks();
         return $tpl;
     }
 

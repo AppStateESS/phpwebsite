@@ -1,7 +1,13 @@
+3 March 2008
++ Added user permissions to signup
++ Removed some unneeded, commented code
++ Added alphabetic reordering
++ Fixed ordering up and downs.
++ Updated: templates/peep_pop.tpl, templates/slot_setup.tpl
+
 28 February 2008
 + Changed slot form to selection method. Previously showed all slots
   causing long page loads on big signups.
-+ Beginning work on permissions for sheets
 + Added contact email address for sheets.
 + Added url forwarding support.
 + Updated: templates/edit_sheet.tpl, templates/peeps.tpl,

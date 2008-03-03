@@ -119,6 +119,10 @@ class Signup_Sheet {
             $db->setIndexBy('id');
             return $db->select('col');
         } else {
+            $db->addColumn('signup_slots.*');
+            $db->addColumn('signup_peeps.id', false, '_filled', true);
+            $db->addJoin('left', 'signup_slots', 'signup_peeps', 'id', 'slot_id');
+            $db->addGroupBy('signup_slots.id');
             $result = $db->getObjects('Signup_Slot');
         }
         return $result;
@@ -127,20 +131,30 @@ class Signup_Sheet {
     function rowTag()
     {
         $vars['sheet_id'] = $this->id;
-        $vars['aop']  = 'edit_sheet';
-        $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Edit'), 'signup', $vars);
+        if (Current_User::allow('signup', 'edit_sheet', $this->id, 'sheet')) {
+            if (Current_User::isUnrestricted('signup')) {
+                $vars['aop']  = 'edit_sheet';
+                $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Edit'), 'signup', $vars);
+            }
 
-        $vars['aop']  = 'edit_slots';
-        $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Slots'), 'signup', $vars);
+            $vars['aop']  = 'edit_slots';
+            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Slots'), 'signup', $vars);
+
+            if (Current_User::isUnrestricted('signup')) {
+                $links[] = Current_User::popupPermission($this->key_id);
+            }
+        }
 
         $vars['aop'] = 'report';
         $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Report'), 'signup', $vars);
 
-        $vars['aop'] = 'delete_sheet';
-        $js['ADDRESS'] = PHPWS_Text::linkAddress('signup', $vars, true);
-        $js['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this sheet?\nAll slots and signup information will be permanently removed.');
-        $js['LINK'] = dgettext('signup', 'Delete');
-        $links[] = javascript('confirm', $js);
+        if (Current_User::isUnrestricted('signup')) {
+            $vars['aop'] = 'delete_sheet';
+            $js['ADDRESS'] = PHPWS_Text::linkAddress('signup', $vars, true);
+            $js['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this sheet?\nAll slots and signup information will be permanently removed.');
+            $js['LINK'] = dgettext('signup', 'Delete');
+            $links[] = javascript('confirm', $js);
+        }
 
         $tpl['TITLE'] = $this->viewLink();
         $tpl['ACTION'] = implode(' | ', $links);

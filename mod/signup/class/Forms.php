@@ -14,6 +14,10 @@ class Signup_Forms {
             if (empty($this->signup->sheet)) {
                 $this->signup->loadSheet();
             }
+            if (!Current_User::allow('signup', 'edit_sheet', $this->sheet->id, 'sheet')) {
+                Current_User::disallow();
+            }
+
             $this->editSheet();
             break;
 
@@ -32,6 +36,10 @@ class Signup_Forms {
 
         case 'edit_slot_popup':
             $this->editSlotPopup();
+            break;
+
+        case 'edit_peep_popup':
+            $this->editPeepPopup();
             break;
 
         case 'user_signup':
@@ -125,6 +133,7 @@ class Signup_Forms {
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_peep.tpl');
     }
 
+
     function editSlotPopup()
     {
         $form = new PHPWS_Form;
@@ -155,21 +164,22 @@ class Signup_Forms {
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_slot.tpl');
     }
 
+
+    function editPeepPopup()
+    {
+        $slot = & $this->signup->slot;
+        $slot->loadPeeps();
+        if (!$slot->id || PHPWS_Error::logIfError($slot)) {
+            $this->signup->content = dgettext('signup', 'An error occurred when accessing this sheet\'s slots.');
+            return;
+        }
+        $tpl = $slot->viewTpl();
+        $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'peep_pop.tpl');
+    }
+
     function editSlots()
     {
         $this->signup->title = sprintf(dgettext('signup', 'Slot setup for %s'), $this->signup->sheet->title);
-
-        if (isset($_GET['slot_id'])) {
-            PHPWS_Core::initModClass('signup', 'Slots.php');
-            $slot = new Signup_Slot($_GET['slot_id']);
-            if (!$slot->id || PHPWS_Error::logIfError($slot)) {
-                $this->signup->content = dgettext('signup', 'An error occurred when accessing this sheet\'s slots.');
-                return;
-            }
-            $tpl = $slot->viewTpl();
-            $vars['aop'] = 'reset_slot_order';
-            $tpl['RESET'] = PHPWS_Text::secureLink(dgettext('signup', 'Reset order'), 'signup', $vars);
-        }
 
         $vars['aop'] = 'edit_slot_popup';
         $vars['sheet_id'] = $this->signup->sheet->id;
@@ -178,33 +188,21 @@ class Signup_Forms {
         $js['label'] = dgettext('signup', 'Add slot');
         $tpl['ADD_SLOT'] = javascript('open_window', $js);
 
-        $slots = $this->signup->sheet->getAllSlots(true);
-        $form = new PHPWS_Form('slot-pick');
-        $form->addHidden('module', 'signup');
-        $form->addHidden('sheet_id', $this->signup->sheet->id);
-        $form->addHidden('aop', 'edit_slots');
-        $form->setMethod('get');
-        $form->addSelect('slot_id', $slots);
-        $form->setMatch('slot_id', (int)@$_GET['slot_id']);
-        $form->addSubmit(dgettext('signup', 'Pick slot'));
-        $tpl['PICK_SLOT'] = implode('', $form->getTemplate());
-        /*
-        test($slots,1);
-        if (PHPWS_Error::logIfError($slots)) {
-            $this->signup->content = dgettext('signup', 'An error occurred when accessing this sheet\'s slots.');
-            return;
+        $vars['aop'] = 'reset_slot_order';
+        $tpl['RESET'] = PHPWS_Text::secureLink(dgettext('signup', 'Reset order'), 'signup', $vars);
+
+        $vars['aop'] = 'alpha_order';
+        $tpl['ALPHA'] = PHPWS_Text::secureLink(dgettext('signup', 'Alphabetic order'), 'signup', $vars);
+
+        $slots = $this->signup->sheet->getAllSlots();
+
+        foreach ($slots as $slot) {
+            $tpl['slot-list'][] = $slot->listTpl();
         }
 
-        if ($slots) {
-            foreach ($slots as $slot) {
-                $tpl['current-slots'][] = $slot->viewTpl();
-            }
-        } else {
-            $tpl['EMPTY'] = dgettext('signup', 'Click on "Add slot" to allow applicants to sign up.');
-        }
-        */
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'slot_setup.tpl');
     }
+
 
     function editSheet()
     {
@@ -333,7 +331,8 @@ class Signup_Forms {
         $pager->setTemplate('sheet_list.tpl');
         $pager->addRowTags('rowTag');
         $pager->addPageTags($ptags);
-
+        Key::restrictEdit($pager->db, 'signup', 'edit_sheet');
+        
         $this->signup->content = $pager->get();
         $this->signup->title = dgettext('signup', 'Signup Sheets');
     }
