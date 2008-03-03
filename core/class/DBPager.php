@@ -529,7 +529,7 @@ class DBPager {
             $group_by = $this->db->group_by;
             $this->db->group_by = $this->db->order = $this->db->columns = null;
             $this->db->addColumn($this->total_column, null, null, true, true);
-            $result = $this->db->select('one');
+            $result = $this->db->select('count');
             $this->db->columns  = $columns;
             $this->db->order    = $order;
             $this->db->group_by = $group_by;

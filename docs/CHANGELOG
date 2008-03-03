@@ -2,9 +2,11 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+3 March 2008
++ DB_Pager : Fixed bug with joinResult and row counts. Thanks Greg.
+
 28 February 2008
 + Added plugForward function
-
 
 26 February 2008
 + checkMimeType needed a reg exp check on the mime type. Sometimes a
