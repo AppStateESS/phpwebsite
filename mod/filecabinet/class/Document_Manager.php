@@ -29,6 +29,9 @@ class FC_Document_Manager {
             PHPWS_Core::returnToBookmark();
             break;
         case 'post_document_upload':
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->document->folder_id, 'folder')) {
+                Current_User::disallow();
+            }
             return $this->postDocumentUpload();
             break;
         case 'upload_document_form':

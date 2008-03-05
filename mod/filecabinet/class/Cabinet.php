@@ -170,6 +170,9 @@ class Cabinet {
             break;
 
         case 'add_folder':
+            if (!Current_User::allow('filecabinet', 'edit_folders',null, null, true)) {
+                Current_User::disallow();
+            }
             $javascript = true;
             $this->loadFolder();
             $this->addFolder();
@@ -245,6 +248,9 @@ class Cabinet {
             break;
 
         case 'delete_incoming':
+            if (!Current_User::allow('filecabinet', 'classify', null, null, true)) {
+                Current_User::disallow();
+            }
             $this->deleteIncoming();
             $this->loadForms();
             $this->forms->classifyFileList();
@@ -263,7 +269,6 @@ class Cabinet {
             // permission check in function below
             $this->editFolder();
             break;
-
 
         case 'change_tn':
             $javascript = true;

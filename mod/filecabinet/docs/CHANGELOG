@@ -1,5 +1,9 @@
 Version 2.0.0
 ----------------------------------------------------------------
+5 March 2008
++ Extra permission checks added.
++ User must have rights to add folders or upload new files.
+
 26 February 2008
 + Small edit to classify template for error messages.
 

@@ -371,9 +371,11 @@ class FC_File_Manager {
 
         $tpl['CLOSE'] = javascript('close_window');
 
-        $folder = new Folder;
-        $folder->ftype = $this->folder_type;
-        $tpl['ADD_FOLDER'] = $folder->editLink('button');
+        if (Current_User::allow('filecabinet', 'edit_folders') && Current_User::isUnrestricted('filecabinet')) {
+            $folder = new Folder;
+            $folder->ftype = $this->folder_type;
+            $tpl['ADD_FOLDER'] = $folder->editLink('button');
+        }
 
         $db = new PHPWS_DB('folders');
         $db->addOrder('title');
@@ -562,8 +564,9 @@ class FC_File_Manager {
                 $tpl['ALT_HIGH2'] = ' no-use';
             }
         }
-        
-        $tpl['ADD_FILE'] = $this->current_folder->uploadLink(true);
+        if (Current_User::allow('filecabinet', 'edit_folders', $this->current_folder->id, 'folder')) {
+            $tpl['ADD_FILE'] = $this->current_folder->uploadLink(true);
+        }
         $tpl['CLOSE'] = javascript('close_window');
         return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/folder_content_view.tpl');
     }
