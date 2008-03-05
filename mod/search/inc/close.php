@@ -12,6 +12,6 @@ Search_User::searchBox();
 if (isset($_SESSION['Search_Admin'])) {
     PHPWS_Core::initModClass('search', 'Admin.php');
     Search_Admin::miniAdmin();
- }
+}
 
 ?>

@@ -12,11 +12,11 @@ class Search_User {
 
     function main()
     {
-        if (!isset($_REQUEST['user'])) {
+        if (!isset($_GET['user'])) {
             PHPWS_Core::errorPage('404');
         }
 
-        $command = $_REQUEST['user'];
+        $command = $_GET['user'];
 
         switch ($command) {
         case 'search':
@@ -121,14 +121,12 @@ class Search_User {
 
     function searchPost()
     {
-        if (!isset($_REQUEST['search'])) {
-            $search_phrase = NULL;
-        } else {
-            $search_phrase = Search::filterWords($_REQUEST['search']);
-        }
+        $search_phrase = @$_GET['search'];
+        $search_phrase = str_replace('+', ' ', $search_phrase);
+        $search_phrase = Search::filterWords($search_phrase);
 
-        if (isset($_REQUEST['alternate']) && $_REQUEST['alternate'] != 'local') {
-            Search_User::sendToAlternate($_REQUEST['alternate'], $search_phrase);
+        if (isset($_GET['alternate']) && $_GET['alternate'] != 'local') {
+            Search_User::sendToAlternate($_GET['alternate'], $search_phrase);
             exit();
         }
 
@@ -143,7 +141,7 @@ class Search_User {
 
         $form->addCheck('exact_only', 1);
         $form->setLabel('exact_only', dgettext('search', 'Exact matches only'));
-        if (isset($_REQUEST['exact_only'])) {
+        if (isset($_GET['exact_only'])) {
             $exact_match = TRUE;
             $form->setMatch('exact_only', 1);
         } else {
@@ -153,16 +151,16 @@ class Search_User {
         $mod_list = Search_User::getModList();
         $form->addSelect('mod_title', $mod_list);
         $form->setLabel('mod_title', dgettext('search', 'Module list'));
-        if (isset($_REQUEST['mod_title'])) {
-            $form->setMatch('mod_title', $_REQUEST['mod_title']); 
+        if (isset($_GET['mod_title'])) {
+            $form->setMatch('mod_title', $_GET['mod_title']); 
         }
 
         Search_User::addAlternates($form);
         
         $template = $form->getTemplate();
 
-        if (isset($_REQUEST['mod_title']) && $_REQUEST['mod_title'] != 'all') {
-            $module = preg_replace('/\W/', '', $_REQUEST['mod_title']);
+        if (isset($_GET['mod_title']) && $_GET['mod_title'] != 'all') {
+            $module = preg_replace('/\W/', '', $_GET['mod_title']);
         } else {
             $module = NULL;
         }

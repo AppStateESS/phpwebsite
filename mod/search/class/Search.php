@@ -99,11 +99,12 @@ class Search {
 
     function filterWords($text, $encode=true)
     {
+        $text = str_replace('&amp;', '&', $text);
         // can't use strip_tags because we need the spaces
         $text = preg_replace('/(<|&lt;).*(>|&gt;)/sUi', ' ', $text);
 
         // strip dashes and quotes
-        $text = preg_replace('/&mdash;|&quot;| - /', ' ', $text);
+        $text = preg_replace('/&mdash;|&quot;| - |&nbsp;|&#160;/', ' ', $text);
         $text = preg_replace('/(\w+)(\'|&#039;)s/', '\\1', $text);
 
         // Removes abbreviations
