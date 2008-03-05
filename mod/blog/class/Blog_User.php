@@ -77,7 +77,9 @@ class Blog_User {
         case 'view_comments':
             Layout::addStyle('blog');
             Layout::addPageTitle($blog->title);
-            Blog_User::miniAdminList();
+            if (Current_User::allow('blog', 'edit_blog')) {
+                Blog_User::miniAdminList();
+            }
             $content = $blog->view(true, false);
             break;
 
