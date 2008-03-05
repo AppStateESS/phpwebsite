@@ -3,7 +3,8 @@
 + Page titles now added to search.
 + Wrong page ids don't 404. Send to message page.
 + templates/page_templates/*, templates/pick_folder.tpl,
-  templates/pick_template.tpl, templates/style.css
+  templates/pick_template.tpl, templates/style.css,
+  conf/folder_icons.php, img/folder_icons/*
 
 27 February 2008
 + Search indexing added to update and version raised.
