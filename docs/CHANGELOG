@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+5 March 2008
++ XMLParser : single items were overwriting one another. Believe it is
+  fixed.
++ Forward.php : more edits. Dumping .html shortcut requirement,
+  checking for module status instead.
+
 3 March 2008
 + DB_Pager : Fixed bug with joinResult and row counts. Thanks Greg.
 
