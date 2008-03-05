@@ -1,3 +1,10 @@
+5 March 2008
++ PageSmith now allows the sorting of templates
++ Page titles now added to search.
++ Wrong page ids don't 404. Send to message page.
++ templates/page_templates/*, templates/pick_folder.tpl,
+  templates/pick_template.tpl, templates/style.css
+
 27 February 2008
 + Search indexing added to update and version raised.
 

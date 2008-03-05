@@ -16,6 +16,7 @@ class PS_Template {
     var $thumbnail = null;
     var $style     = null;
     var $structure = null;
+    var $folders   = null;
 
     var $error     = null;
     var $page      = null;
@@ -42,13 +43,13 @@ class PS_Template {
             return $xml->error;
         }
 
-        $result =  $xml->format();
+        $result = $xml->format();
 
         if (empty($result['TEMPLATE'])) {
             return;
         }
 
-        $this->data      = $result['TEMPLATE'];
+        $this->data = $result['TEMPLATE'];
         if (!isset($this->data['TITLE'])) {
             $this->error[] = PHPWS_Error::get(PS_TPL_NO_TITLE, 'pagesmith', 'PS_Template::loadTemplate', $this->name);
             return;
@@ -77,6 +78,10 @@ class PS_Template {
         }
 
         $this->structure = & $this->data['STRUCTURE']['SECTION'];
+
+        if (isset($this->data['FOLDERS'])) {
+            $this->folders = & $this->data['FOLDERS']['NAME'];
+        }
     }
 
     function loadStyle()

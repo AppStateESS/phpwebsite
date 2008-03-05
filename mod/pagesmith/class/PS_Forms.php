@@ -13,10 +13,12 @@ class PS_Forms {
     function editPage()
     {
         if (!$this->ps->page->id) {
-            if (isset($_REQUEST['tpl'])) {
+            if (isset($_GET['tpl'])) {
                 $this->pageLayout();
-            } else {
+            } elseif (isset($_GET['fname'])) {
                 $this->pickTemplate();
+            } else {
+                $this->pickFolder();
             }
             return;
         }
@@ -228,11 +230,48 @@ class PS_Forms {
             $this->ps->content = dgettext('pagesmith', 'Could not find any page templates. Please check your error log.');
         }
 
+        @$fname = $_GET['fname'];
+
         foreach ($this->tpl_list as $pgtpl) {
+            if ($fname && !empty($pgtpl->folders) && !in_array($fname, $pgtpl->folders)) {
+                continue;
+            }
             $tpl['page-templates'][] = $pgtpl->pickTpl();
         }
 
+        $tpl['BACK'] = PHPWS_Text::secureLink(dgettext('pagesmith', 'Back to style selection'), 'pagesmith', array('aop'=>'menu', 'tab'=>'new'));
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'pick_template.tpl');
+    }
+
+    function pickFolder()
+    {
+        @include 'config/pagesmith/folder_icons.php';
+
+        Layout::addStyle('pagesmith');
+        $this->loadTemplates();
+        foreach ($this->tpl_list as $template) {
+            if ($template->folders) {
+                foreach ($template->folders as $folder_name) {
+                    $folder_list[$folder_name]++;
+                }
+            }
+        }
+
+        $vars['aop'] = 'menu';
+        foreach ($folder_list as $name=>$count) {
+            $vars['fname'] = $name;
+            $image = @$folder_icon[$name];
+            if (!$image) {
+                $image = 'folder_contents.png';
+            }
+            $link = PHPWS_Text::linkAddress('pagesmith', $vars, true);
+            $tpl['folders'][] = array('TITLE' => ucwords(str_replace('-', '&nbsp;', $name)),
+                                      'IMAGE' => sprintf('<a href="%s"><img src="images/mod/pagesmith/folder_icons/%s" /></a>', $link, $image),
+                                      'COUNT' => sprintf(dngettext('pagesmith', '%s template', '%s templates', $count), $count));
+        }
+
+        $this->ps->title = dgettext('pagesmith', 'Choose a style');
+        $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'pick_folder.tpl');
     }
 
     function settings()

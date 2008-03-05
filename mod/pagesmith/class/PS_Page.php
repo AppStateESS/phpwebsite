@@ -212,6 +212,11 @@ class PS_Page {
 
         $this->saveKey();
 
+        $search = new Search($this->key_id);
+        $search->resetKeywords();
+        $search->addKeywords($this->title);
+        PHPWS_Error::logIfError($search->save());
+
         foreach ($this->_sections as $section) {
             $section->pid = $this->id;
             PHPWS_Error::logIfError($section->save($this->key_id));

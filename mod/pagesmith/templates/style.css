@@ -12,3 +12,10 @@ div#pick-templates img {
     width : 170px;
     height : 200px;
 }
+
+div.tpl-folder {
+    float : left;
+    display : inline;
+    width : 130px;
+    text-align : center;
+}

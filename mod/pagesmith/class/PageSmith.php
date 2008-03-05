@@ -35,6 +35,7 @@ class PageSmith {
         $this->loadPanel();
 
         $javascript = false;
+
         switch ($_REQUEST['aop']) {
         case 'menu':
             $this->loadForms();
@@ -278,7 +279,7 @@ class PageSmith {
             }
             Layout::add($content);
         } else {
-            PHPWS_Core::errorPage('404');
+            Layout::add(dgettext('pagesmith', 'Sorry, but your page could not be found. You may wish to search for it.'));
         }
     }
 

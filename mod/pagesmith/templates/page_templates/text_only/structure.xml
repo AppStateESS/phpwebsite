@@ -10,4 +10,8 @@
       <type>text</type>
    </section>
 </structure>
+<folders>
+   <name>one-column</name>
+   <name>no-image</name>
+</folders>
 </template>

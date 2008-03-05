@@ -36,4 +36,8 @@
       <height>300</height>
    </section>
 </structure>
+<folders>
+   <name>one-column</name>
+   <name>multiple-image</name>
+</folders>
 </template>

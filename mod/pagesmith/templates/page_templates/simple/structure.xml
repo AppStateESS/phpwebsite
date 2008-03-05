@@ -4,6 +4,10 @@
 <summary>One large text area with right float block.</summary>
 <thumbnail>simple.png</thumbnail>
 <style>page.css</style>
+<folders>
+   <name>one-column</name>
+   <name>one-image</name>
+</folders>
 <structure>
    <section>
       <name>header1</name>
