@@ -499,7 +499,7 @@ class Access {
 
     function forward()
     {
-        PHPWS_Core::initModClass('access', 'Access.php');
+        PHPWS_Core::initModClass('access', 'Shortcut.php');
         $db = new PHPWS_DB('access_shortcuts');
         $db->addWhere('keyword', $GLOBALS['Forward']);
         $db->setLimit(1);

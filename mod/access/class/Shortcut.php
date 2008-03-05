@@ -36,7 +36,6 @@ class Access_Shortcut {
         return $result;
     }
 
-    /**/
     function loadGet()
     {
         $url = explode(':', $this->url);
@@ -45,8 +44,8 @@ class Access_Shortcut {
             $count = 1;
             foreach ($url as $var) {
                 $_GET['var' . $count] = $var;
+                $count++;
             }
-            $count++;
         }
     }
 

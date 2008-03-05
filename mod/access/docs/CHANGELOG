@@ -1,3 +1,7 @@
+5 March 2008
++ Fixed include missing from access for shortcuts
++ Fixed shortcut code
+
 22 February 2008
 + New functions added:
   o isDenied - returns true or false depending on if an ip is denied
