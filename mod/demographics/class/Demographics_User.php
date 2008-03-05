@@ -88,9 +88,6 @@ class Demographics_User {
             }
             
             $result = $db->saveObject($this);
-            //            test($this);
-            //test($db->lastQuery());
-            //test($result,1);
             if (PEAR::isError($result)) {
                 $this->_error = $result;
                 return $result;
