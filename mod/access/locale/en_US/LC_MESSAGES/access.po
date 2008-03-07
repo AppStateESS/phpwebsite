@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-25 09:50-0400\n"
+"POT-Creation-Date: 2008-03-07 12:13-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,16 +19,7 @@ msgstr ""
 msgid "-- Choose option --"
 msgstr ""
 
-msgid ".htaccess file is currently absent."
-msgstr ""
-
 msgid ".htaccess file is missing."
-msgstr ""
-
-msgid ".htaccess file options"
-msgstr ""
-
-msgid ".htaccess file written."
 msgstr ""
 
 msgid "A serious error occurred. Please check your error.log."
@@ -64,13 +55,7 @@ msgstr ""
 msgid "Administrative options"
 msgstr ""
 
-msgid "Administrator"
-msgstr ""
-
 msgid "Allow all"
-msgstr ""
-
-msgid "Allow file update"
 msgstr ""
 
 msgid "Allow/Deny"
@@ -82,9 +67,6 @@ msgstr ""
 msgid "Allowed IPs"
 msgstr ""
 
-msgid "An administrator will need to approve it before it is functional."
-msgstr ""
-
 msgid "An error occurred when deleting your shortcut."
 msgstr ""
 
@@ -93,13 +75,7 @@ msgid ""
 "Please check your logs."
 msgstr ""
 
-msgid "An error occurred when updating your .htaccess file."
-msgstr ""
-
 msgid "An error occurred."
-msgstr ""
-
-msgid "An error occurred:"
 msgstr ""
 
 msgid "Are you sure you want to delete the checked ips?"
@@ -111,27 +87,16 @@ msgstr ""
 msgid "Are you sure you want to delete this shortcut?"
 msgstr ""
 
-msgid "Are you sure you want to restore the default .htaccess file?"
-msgstr ""
-
 msgid "Bad keyword. Use only alphanumeric characters, dashes and spaces."
 msgstr ""
 
 msgid "Cancel"
 msgstr ""
 
-msgid ""
-"Cannot create a new .htaccess file because the installation directory is not "
-"writable."
-msgstr ""
-
 msgid "Close window"
 msgstr ""
 
 msgid "Controls the .htaccess file for Apache and creates shortcuts."
-msgstr ""
-
-msgid "Current .htaccess file"
 msgstr ""
 
 msgid "Deactivate"
@@ -164,9 +129,6 @@ msgstr ""
 msgid "Go"
 msgstr ""
 
-msgid "Go to the Update tab and try to create a new file."
-msgstr ""
-
 msgid "IP Address"
 msgstr ""
 
@@ -179,19 +141,10 @@ msgstr ""
 msgid "Keyword already in use. Choose another."
 msgstr ""
 
-msgid "Keywords"
-msgstr ""
-
-msgid "Look in your installation directory and give Apache write access."
-msgstr ""
-
 msgid "Missing keyword."
 msgstr ""
 
 msgid "Missing url."
-msgstr ""
-
-msgid "Mod Rewrite options"
 msgstr ""
 
 msgid "No"
@@ -203,12 +156,6 @@ msgstr ""
 msgid "No denied ip addresses found."
 msgstr ""
 
-msgid "Open your config/core/config.php file in a text editor."
-msgstr ""
-
-msgid "Please check your error.log."
-msgstr ""
-
 msgid "Please check your logs."
 msgstr ""
 
@@ -216,19 +163,7 @@ msgid ""
 "Remember to \"Update\" your access file when finished changing IP rules."
 msgstr ""
 
-msgid "Restore default .htaccess"
-msgstr ""
-
 msgid "Return to previous page."
-msgstr ""
-
-msgid "Rewrite engine on"
-msgstr ""
-
-msgid "Save settings"
-msgstr ""
-
-msgid "Set your \"MOD_REWRITE_ENABLED\" define equal to TRUE."
 msgstr ""
 
 msgid "Settings saved."
@@ -243,9 +178,6 @@ msgstr ""
 msgid "Shortcuts"
 msgstr ""
 
-msgid "Shortcuts enabled"
-msgstr ""
-
 msgid "Sorry"
 msgstr ""
 
@@ -255,52 +187,23 @@ msgstr ""
 msgid "Unable to restore default .htaccess file."
 msgstr ""
 
-msgid "Unable to save .htaccess file."
-msgstr ""
-
 msgid "Unable to write .htaccess file."
-msgstr ""
-
-msgid "Update"
-msgstr ""
-
-msgid "Update .htaccess file"
 msgstr ""
 
 msgid "Url"
 msgstr ""
 
-msgid "When active, you will be able to use the following link:"
-msgstr ""
-
-msgid "Write .htaccess file"
-msgstr ""
-
 msgid "Yes"
 msgstr ""
 
-msgid "You can access this item with the following link:"
+msgid "You are denied access to this site."
 msgstr ""
 
-msgid "You do not have mod rewrite enabled."
+msgid "You can access this item with the following link:"
 msgstr ""
 
 msgid "You have \"Allow all\" enabled. All rows below will be ignored."
 msgstr ""
 
 msgid "You have \"Deny all\" enabled. All rows below will be ignored."
-msgstr ""
-
-msgid "Your .htaccess file will contain the below:"
-msgstr ""
-
-msgid "Your <b>.htaccess</b> file does not exist."
-msgstr ""
-
-msgid "Your <b>.htaccess</b> file is not writable."
-msgstr ""
-
-msgid ""
-"Your installation directory must be writable if you want to create a new ."
-"htaccess file."
 msgstr ""
