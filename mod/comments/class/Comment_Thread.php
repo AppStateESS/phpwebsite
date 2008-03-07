@@ -210,8 +210,6 @@ class Comment_Thread {
         Layout::addStyle('comments');
         PHPWS_Core::initCoreClass('DBPager.php');
         
-        javascript('ajax', $ajaxvars);
-
         $time_period = array('all'    => dgettext('comments', 'All'),
                              'today'  => dgettext('comments', 'Today'),
                              'yd'     => dgettext('comments', 'Since yesterday'),

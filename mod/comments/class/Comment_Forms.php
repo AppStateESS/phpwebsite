@@ -218,9 +218,15 @@ class Comment_Forms {
                     
                 }
             }
+        } 
+
+        if ($links) {
+            $tpl['LINKS'] = implode('<br />', $links);
+        } else {
+            $tpl['LINKS'] = dgettext('comments', 'Either your permissions do not allow you to punish users or this user posted from an unblockable IP address.');
         }
 
-        $tpl['LINKS'] = implode('<br />', $links);
+
         $tpl['CLOSE'] = javascript('close_window');
         return PHPWS_Template::process($tpl, 'comments', 'punish_pop.tpl');
     }

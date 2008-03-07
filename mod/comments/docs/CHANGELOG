@@ -1,3 +1,8 @@
+7 March 2008
++ Permission check added to popup.
++ Removed unneeded ajax call
++ jquery called in default to prevent repeat
+
 26 February 2008
 + Added clearing option to the reported form. It removes all
   complaints.
