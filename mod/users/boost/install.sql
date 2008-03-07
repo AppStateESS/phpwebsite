@@ -4,7 +4,7 @@
 CREATE TABLE users_groups (
  id INT NOT NULL PRIMARY KEY,
  active SMALLINT NOT NULL,
- name CHAR(50) NOT NULL,
+ name VARCHAR(255) NOT NULL,
  user_id INT NOT NULL
  );
 
@@ -22,8 +22,8 @@ CREATE TABLE users (
   updated int NOT NULL default 0,
   active smallint NOT NULL default 0,
   approved smallint NOT NULL default 0,
-  username varchar(30) NOT NULL,
-  display_name varchar(30) NOT NULL,
+  username varchar(255) NOT NULL,
+  display_name varchar(255) NOT NULL,
   email varchar(100) default NULL,
   deity smallint NOT NULL default 0,
   PRIMARY KEY  (id)

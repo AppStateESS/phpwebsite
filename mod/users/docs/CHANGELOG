@@ -1,3 +1,7 @@
+7 March 2008
++ Raised sql character limit in default username, display_name, and
+  group name installs.
+
 3 March 2008
 + Fixed bug with forbidden usernames
 + Added a function to group to remove its permissions upon deletion.
