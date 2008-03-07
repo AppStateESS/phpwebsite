@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-04 09:45-0500\n"
+"POT-Creation-Date: 2008-03-07 12:13-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,12 +37,6 @@ msgstr ""
 msgid "%s bytes"
 msgstr ""
 
-#, php-format
-msgid "%s image"
-msgid_plural "%s images"
-msgstr[0] ""
-msgstr[1] ""
-
 msgid "-- Pick option --"
 msgstr ""
 
@@ -61,7 +55,31 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
+msgid "Action not allowed"
+msgstr ""
+
+msgid "Action not allowed - private folder"
+msgstr ""
+
+msgid "Add a document or a document folder"
+msgstr ""
+
+msgid "Add a image, an image folder, or a randomly changing image"
+msgstr ""
+
+msgid "Add a video or sound file"
+msgstr ""
+
+msgid "Add an image, media, or document file."
+msgstr ""
+
 msgid "Add document"
+msgstr ""
+
+msgid "Add embedded"
+msgstr ""
+
+msgid "Add embedded video"
 msgstr ""
 
 msgid "Add file"
@@ -71,6 +89,12 @@ msgid "Add folder"
 msgstr ""
 
 msgid "Add image"
+msgstr ""
+
+msgid "All files icon"
+msgstr ""
+
+msgid "Allowed file types"
 msgstr ""
 
 msgid "Alternate text"
@@ -86,6 +110,9 @@ msgid "An error occurred when trying to save your image."
 msgstr ""
 
 msgid "An error occurred when trying to save your multimedia file."
+msgstr ""
+
+msgid "An error occurred. Please check your logs."
 msgstr ""
 
 msgid "Are you certain you want to delete this folder and all its contents?"
@@ -112,22 +139,16 @@ msgstr ""
 msgid "Back to folder list"
 msgstr ""
 
-msgid "Bad folder id."
-msgstr ""
-
 msgid "Base document directory"
 msgstr ""
 
 msgid "Cancel"
 msgstr ""
 
-msgid "Change settings (Unrestricted only)"
+msgid "Caption images"
 msgstr ""
 
-msgid "Choose a folder."
-msgstr ""
-
-msgid "Choose an image folder"
+msgid "Choose the type of file you wish to add"
 msgstr ""
 
 msgid "Classify"
@@ -145,19 +166,22 @@ msgstr ""
 msgid "Classify files"
 msgstr ""
 
-msgid "Classify files (Unrestricted only)"
-msgstr ""
-
 msgid "Classify settings"
 msgstr ""
 
-msgid "Clear image"
+msgid "Clear file"
 msgstr ""
 
-msgid "Clip"
+msgid "Clip document"
 msgstr ""
 
-msgid "Close"
+msgid "Clip image"
+msgstr ""
+
+msgid "Clip media"
+msgstr ""
+
+msgid "Close this window"
 msgstr ""
 
 msgid "Could not delete file."
@@ -215,6 +239,9 @@ msgstr ""
 msgid "Delete checked"
 msgstr ""
 
+msgid "Delete document"
+msgstr ""
+
 msgid "Delete folders (Unrestricted only)"
 msgstr ""
 
@@ -246,13 +273,26 @@ msgstr ""
 msgid "Document was %s bytes making it larger than %s byte size limit."
 msgstr ""
 
-msgid "Don't show resized images when viewing folders publicly."
+msgid "Documents"
 msgstr ""
 
-msgid "Download"
+msgid "Download file"
+msgstr ""
+
+#, php-format
+msgid "Download from %s"
+msgstr ""
+
+msgid "Duplicate file found."
 msgstr ""
 
 msgid "Edit"
+msgstr ""
+
+msgid "Edit document"
+msgstr ""
+
+msgid "Edit file"
 msgstr ""
 
 msgid "Edit folders"
@@ -262,6 +302,9 @@ msgid "Edit image"
 msgstr ""
 
 msgid "Edit multimedia file"
+msgstr ""
+
+msgid "Edit the current file"
 msgstr ""
 
 msgid "Enable FFMpeg thumbnails"
@@ -300,6 +343,15 @@ msgstr ""
 msgid "File type"
 msgstr ""
 
+msgid "File type not allowed"
+msgstr ""
+
+msgid "File types"
+msgstr ""
+
+msgid "File types saved."
+msgstr ""
+
 #, php-format
 msgid "File uploaded exceeded %sK size limit."
 msgstr ""
@@ -310,10 +362,10 @@ msgstr ""
 msgid "Folder"
 msgstr ""
 
-msgid "Folder empty."
+msgid "Folder is empty."
 msgstr ""
 
-msgid "Folder is empty."
+msgid "Folder missing image files."
 msgstr ""
 
 msgid "Form upload limit"
@@ -360,6 +412,9 @@ msgstr ""
 
 #, php-format
 msgid "Image width was %spx, making it larger than %d pixel limit."
+msgstr ""
+
+msgid "Images"
 msgstr ""
 
 msgid "Incoming classify directory"
@@ -411,6 +466,9 @@ msgstr ""
 msgid "Maximum pinned images shown (0 for all)"
 msgstr ""
 
+msgid "Media"
+msgstr ""
+
 msgid "Missing folder information."
 msgstr ""
 
@@ -439,10 +497,10 @@ msgstr ""
 msgid "Multimedia settings"
 msgstr ""
 
-msgid "No folders found."
+msgid "No files in folder"
 msgstr ""
 
-msgid "No image"
+msgid "No folders found."
 msgstr ""
 
 msgid "No public folders are available."
@@ -458,19 +516,25 @@ msgstr ""
 msgid "Pin folder to \"%s\""
 msgstr ""
 
-msgid "Please create a new folder."
-msgstr ""
-
 msgid "Private"
 msgstr ""
 
+msgid "Problem with opening browser page. Closing File Manager window."
+msgstr ""
+
 msgid "Public"
+msgstr ""
+
+msgid "Random image icon"
 msgstr ""
 
 msgid "Resize image if over"
 msgstr ""
 
 msgid "Rotate image"
+msgstr ""
+
+msgid "Save allowed files"
 msgstr ""
 
 msgid "Save settings"
@@ -485,7 +549,13 @@ msgstr ""
 msgid "Settings saved."
 msgstr ""
 
-msgid "Show source images only"
+msgid "Show a random image from this folder"
+msgstr ""
+
+msgid "Show all files in the folder"
+msgstr ""
+
+msgid "Show block of thumbnails"
 msgstr ""
 
 msgid "Size"
@@ -497,10 +567,13 @@ msgstr ""
 msgid "Sorry but this file is inaccessible at this time."
 msgstr ""
 
-msgid "Sorry, you are not allowed access to this file."
+msgid "Sorry, the file you requested is off limits."
 msgstr ""
 
 msgid "Sorry.."
+msgstr ""
+
+msgid "Submit video"
 msgstr ""
 
 msgid "System upload limits"
@@ -540,7 +613,16 @@ msgstr ""
 msgid "Thumbnail directory not writable."
 msgstr ""
 
+msgid "Thumbnail icon"
+msgstr ""
+
 msgid "Title"
+msgstr ""
+
+msgid "Unable to classify files."
+msgstr ""
+
+msgid "Unable to find video id from url"
 msgstr ""
 
 msgid ""
@@ -549,6 +631,9 @@ msgid ""
 msgstr ""
 
 msgid "Unable to move the file to its new directory."
+msgstr ""
+
+msgid "Unable to parse video info from host site."
 msgstr ""
 
 msgid "Unable to read document directory."
@@ -563,16 +648,25 @@ msgstr ""
 msgid "Unacceptable document type."
 msgstr ""
 
+msgid "Unacceptable file type."
+msgstr ""
+
 msgid "Unacceptable image type."
 msgstr ""
 
 msgid "Unacceptable multimedia file type."
 msgstr ""
 
+msgid "Unknown or mismatched mime type"
+msgstr ""
+
 msgid "Update"
 msgstr ""
 
 msgid "Update document folder"
+msgstr ""
+
+msgid "Update file"
 msgstr ""
 
 msgid "Update folder"
@@ -590,13 +684,10 @@ msgstr ""
 msgid "Upload"
 msgstr ""
 
-msgid "Upload document"
-msgstr ""
-
 msgid "Upload image"
 msgstr ""
 
-msgid "Upload multimedia"
+msgid "Upload new file"
 msgstr ""
 
 msgid "Upload new thumbnail"
@@ -605,7 +696,16 @@ msgstr ""
 msgid "Upload thumbnail"
 msgstr ""
 
+msgid "Video site"
+msgstr ""
+
+msgid "Video url or id"
+msgstr ""
+
 msgid "View all images in folder"
+msgstr ""
+
+msgid "View document folders"
 msgstr ""
 
 msgid "View folder"
@@ -614,22 +714,16 @@ msgstr ""
 msgid "View full image"
 msgstr ""
 
+msgid "View image folders"
+msgstr ""
+
+msgid "View media folders"
+msgstr ""
+
 msgid "Width"
 msgstr ""
 
 msgid "You do not have permission to view this folder."
-msgstr ""
-
-msgid "You must create a document folder."
-msgstr ""
-
-msgid "You must create a document or multimedia folder."
-msgstr ""
-
-msgid "You must create a multimedia folder."
-msgstr ""
-
-msgid "You must create an image folder."
 msgstr ""
 
 msgid "You must entitle your folder."
