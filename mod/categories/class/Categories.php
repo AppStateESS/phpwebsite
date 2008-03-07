@@ -13,7 +13,7 @@ PHPWS_Core::initModClass('categories', 'Category.php');
 
 define('CAT_LINK_DIVIDERS', '&gt;&gt;');
 
-class Categories{
+class Categories {
 
     function show()
     {
@@ -492,6 +492,32 @@ class Categories{
     function delete($category)
     {
         $category->kill();
+    }
+
+    /**
+     * Returns a category form for module inclusion
+     */
+    function getForm($match=null, $select_name='category', $multiple=true)
+    {
+        $categories = Categories::getCategories('list');
+
+        if ($multiple) {
+            $vars['id'] = 'cid-' . rand();
+            $vars['select_name'] = $select_name;
+            $vars['options'] = $categories;
+            if (!empty($match) && is_array($match)) {
+                $vars['match'] = $match;
+            }
+            return javascript('multiple_select', $vars);
+        } else {
+            $form = new PHPWS_Form;
+            $form->addSelect($select_name, $categories);
+            if (!empty($match) && is_string($match)) {
+                $form->setMatch($select_name, $match);
+            }
+            return $form->get($select_name);
+        }
+        
     }
 
 }
