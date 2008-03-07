@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-04 09:45-0500\n"
+"POT-Creation-Date: 2008-03-07 12:13-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,6 +24,9 @@ msgid "- Location in comments -"
 msgstr ""
 
 msgid "- Locations in comments -"
+msgstr ""
+
+msgid "Add menu link"
 msgstr ""
 
 msgid "An error occurred when pulling your rides."
@@ -244,6 +247,9 @@ msgid "Return to Ride Board menu."
 msgstr ""
 
 msgid "Ride posted!"
+msgstr ""
+
+msgid "Rideboard"
 msgstr ""
 
 msgid "Rideboard Settings"
