@@ -2,6 +2,11 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+7 March 2008
++ Added Sam Collett to credits since using his jquery script.
++ Added selectboxes jquery script from author above.
++ Added multiple_select javascript.
+
 5 March 2008
 + XMLParser : single items were overwriting one another. Believe it is
   fixed.

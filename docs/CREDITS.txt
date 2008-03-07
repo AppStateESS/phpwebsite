@@ -106,6 +106,10 @@ John Resig
 jquery
 http://jquery.com
 
+Sam Collett
+jquery select functions
+http://www.texotela.co.uk
+
 --------------------------------------------------------------------------
 To those who translate, we salute you.
 --------------------------------------------------------------------------
