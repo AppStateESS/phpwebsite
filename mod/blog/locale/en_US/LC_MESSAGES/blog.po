@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-04 09:45-0500\n"
+"POT-Creation-Date: 2008-03-07 12:13-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -102,6 +102,9 @@ msgstr ""
 msgid "Blog entry restored."
 msgstr ""
 
+msgid "Blog list"
+msgstr ""
+
 msgid "Blog settings saved."
 msgstr ""
 
@@ -153,9 +156,6 @@ msgstr ""
 msgid "Edit blog"
 msgstr ""
 
-msgid "Edit blogs"
-msgstr ""
-
 msgid "Entry"
 msgstr ""
 
@@ -171,10 +171,22 @@ msgstr ""
 msgid "Hide general image folders"
 msgstr ""
 
-msgid "Image"
+msgid "Image url"
 msgstr ""
 
 msgid "Last poster"
+msgstr ""
+
+msgid "Link resized image to parent"
+msgstr ""
+
+msgid "Link setting (if image)"
+msgstr ""
+
+msgid "Link the url below"
+msgstr ""
+
+msgid "Link to read more"
 msgstr ""
 
 msgid "List"
@@ -202,6 +214,12 @@ msgid "No action"
 msgstr ""
 
 msgid "No expiration"
+msgstr ""
+
+msgid "No link and ignore image link setting"
+msgstr ""
+
+msgid "No link but allow image link setting"
 msgstr ""
 
 msgid "No title"
