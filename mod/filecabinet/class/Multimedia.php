@@ -153,6 +153,14 @@ class PHPWS_Multimedia extends File_Common {
     {
         static $sizes = null;
 
+        if (!$this->width) {
+            $this->width = 100;
+        }
+
+        if (!$this->height) {
+            $this->height = 100;
+        }
+
         $dimensions = array(FC_MAX_MULTIMEDIA_POPUP_WIDTH, FC_MAX_MULTIMEDIA_POPUP_HEIGHT);
         if (isset($sizes[$this->id])) {
             return $sizes[$this->id];
