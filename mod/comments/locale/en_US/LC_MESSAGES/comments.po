@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-08 13:35-0400\n"
+"POT-Creation-Date: 2008-03-07 12:13-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,6 +34,9 @@ msgid "(Anon)"
 msgstr ""
 
 msgid "A problem occurred when trying to save your comment."
+msgstr ""
+
+msgid "A site admin wrote this comment and may not be punished."
 msgstr ""
 
 msgid "All"
@@ -72,10 +75,16 @@ msgstr ""
 msgid "Avatar"
 msgstr ""
 
+msgid "Ban user"
+msgstr ""
+
 msgid "CAPTCHA use"
 msgstr ""
 
 msgid "Change settings"
+msgstr ""
+
+msgid "Clear"
 msgstr ""
 
 msgid "Comment"
@@ -118,6 +127,9 @@ msgstr ""
 msgid "Delete comments"
 msgstr ""
 
+msgid "Deny IP address"
+msgstr ""
+
 msgid "Disable anonymous posting"
 msgstr ""
 
@@ -143,6 +155,9 @@ msgid "Edited on"
 msgstr ""
 
 msgid "Enable anonymous posting"
+msgstr ""
+
+msgid "Entry"
 msgstr ""
 
 msgid "Error"
@@ -172,6 +187,12 @@ msgstr ""
 msgid "Location"
 msgstr ""
 
+msgid "Lock user"
+msgstr ""
+
+msgid "Locked"
+msgstr ""
+
 msgid "Missing thread information."
 msgstr ""
 
@@ -182,6 +203,9 @@ msgid "Newest first"
 msgstr ""
 
 msgid "No comments"
+msgstr ""
+
+msgid "No comments reported"
 msgstr ""
 
 msgid "No subject"
@@ -208,6 +232,12 @@ msgstr ""
 msgid "Posted on"
 msgstr ""
 
+msgid "Punish"
+msgstr ""
+
+msgid "Punish users"
+msgstr ""
+
 msgid "Quote"
 msgstr ""
 
@@ -226,16 +256,37 @@ msgstr ""
 msgid "Recent comments"
 msgstr ""
 
+msgid "Remove IP denial"
+msgstr ""
+
+msgid "Remove ban"
+msgstr ""
+
+msgid "Remove their admin privileges and return."
+msgstr ""
+
 msgid "Removing module's comments."
 msgstr ""
 
 msgid "Reply"
 msgstr ""
 
+msgid "Report"
+msgstr ""
+
+msgid "Reported"
+msgstr ""
+
+msgid "Reported!"
+msgstr ""
+
 msgid "Save"
 msgstr ""
 
 msgid "Save avatars locally"
+msgstr ""
+
+msgid "Settings"
 msgstr ""
 
 msgid "Settings saved."
@@ -260,6 +311,9 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
+msgid "T.R."
+msgstr ""
+
 msgid "That name is not allowed. Try another."
 msgstr ""
 
@@ -272,7 +326,16 @@ msgstr ""
 msgid "This week"
 msgstr ""
 
+msgid "Times reported"
+msgstr ""
+
 msgid "Today"
+msgstr ""
+
+msgid "Unban user"
+msgstr ""
+
+msgid "Unlock user"
 msgstr ""
 
 msgid "Update"
