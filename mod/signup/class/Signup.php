@@ -739,16 +739,28 @@ class Signup {
     function postSlot()
     {
         $this->loadSlot();
-
         $this->slot->setTitle($_POST['title']);
 
         if (empty($this->slot->title)) {
             $errors[] = dgettext('signup', 'You must give your slot a title.');
         }
 
-        $this->slot->setOpenings($_POST['openings']);
-        if (empty($this->slot->openings)) {
+        $openings = (int)$_POST['openings'];
+
+        if (empty($openings)) {
             $errors[] = dgettext('signup', 'Please specify an openings amount.');
+        } elseif ($this->slot->id) {
+            $db = new PHPWS_DB('signup_peeps');
+            $db->addWhere('slot_id', $this->slot->id);
+            $db->addColumn('id', null, null, true);
+            $peeps = $db->select('one');
+            if ($peeps > $openings) {
+                $errors[] = dgettext('signup', 'The total signups may not exceed the slots offered.');
+            } else {
+                $this->slot->openings = $openings;
+            }
+        } else {
+            $this->slot->openings = $openings;
         }
 
         $this->slot->setSheetId($_POST['sheet_id']);

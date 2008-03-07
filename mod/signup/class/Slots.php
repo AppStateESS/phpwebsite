@@ -115,6 +115,10 @@ class Signup_Slot {
     {
         $vars['slot_id'] = $this->id;
 
+        $vars['aop'] = 'edit_slot_popup';
+        $links[] = javascript('open_window', array('label'  => dgettext('signup', 'Edit Slot'),
+                                                   'address'=> PHPWS_Text::linkAddress('signup', $vars, true)));
+
         if ($this->_filled < $this->openings) {
             $links[] = $this->applicantAddLink();
         }
