@@ -502,13 +502,22 @@ class Categories {
         $categories = Categories::getCategories('list');
 
         if ($multiple) {
-            $vars['id'] = 'cid-' . rand();
-            $vars['select_name'] = $select_name;
-            $vars['options'] = $categories;
-            if (!empty($match) && is_array($match)) {
-                $vars['match'] = $match;
+            if (javascriptEnabled()) {
+                $vars['id'] = 'cid-' . rand();
+                $vars['select_name'] = $select_name;
+                $vars['options'] = $categories;
+                if (!empty($match) && is_array($match)) {
+                    $vars['match'] = $match;
+                }
+                return javascript('multiple_select', $vars);
+            } else {
+                $form = new PHPWS_Form;
+                $form->addMultiple($select_name, $categories);
+                if (!empty($match) && is_array($match)) {
+                    $form->setMatch($select_name, $match);
+                }
+                return $form->get($select_name);
             }
-            return javascript('multiple_select', $vars);
         } else {
             $form = new PHPWS_Form;
             $form->addSelect($select_name, $categories);
