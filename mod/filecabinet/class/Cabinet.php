@@ -189,11 +189,18 @@ class Cabinet {
             break;
 
         case 'classify':
+            if (!Current_User::isDeity()) {
+                Current_User::errorPage();
+            }
             $this->loadForms();
             $this->forms->classifyFileList();
             break;
 
         case 'classify_file':
+            if (!Current_User::isDeity()) {
+                Current_User::errorPage();
+            }
+
             $this->loadForms();
             if (!empty($_POST['file_list'])) {
                 $this->forms->classifyFile($_POST['file_list']);
@@ -205,8 +212,8 @@ class Cabinet {
             break;
 
         case 'post_classifications':
-            if (!Current_User::authorized('filecabinet')) {
-                Current_User::disallow();
+            if (!Current_User::isDeity()) {
+                Current_User::errorPage();
             }
 
             $result = $this->classifyFiles();
@@ -596,14 +603,13 @@ class Cabinet {
         $image_command      = array('title'=>dgettext('filecabinet', 'Image folders'), 'link'=> $link);
         $document_command   = array('title'=>dgettext('filecabinet', 'Document folders'), 'link'=> $link);
         $multimedia_command = array('title'=>dgettext('filecabinet', 'Multimedia folders'), 'link'=> $link);
-        $classify_command   = array('title'=>dgettext('filecabinet', 'Classify'), 'link'=> $link);
 
         $tabs['image']      = $image_command;
         $tabs['document']   = $document_command;
         $tabs['multimedia'] = $multimedia_command;
-        $tabs['classify']   = $classify_command;
 
         if (Current_User::isDeity()) {
+            $tabs['classify']   = array('title'=>dgettext('filecabinet', 'Classify'), 'link'=> $link);
             $tabs['settings']  = array('title'=> dgettext('filecabinet', 'Settings'), 'link' => $link);
             $tabs['file_types'] = array('title'=> dgettext('filecabinet', 'File types'), 'link' => $link);
         }
