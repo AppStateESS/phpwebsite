@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-04 09:43-0500\n"
+"POT-Creation-Date: 2008-03-07 12:14-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -232,6 +232,9 @@ msgid "Class not found."
 msgstr ""
 
 msgid "Class not set."
+msgstr ""
+
+msgid "Clear"
 msgstr ""
 
 msgid "Click on the method you wish to use."
@@ -761,6 +764,9 @@ msgid "No menus found."
 msgstr ""
 
 msgid "No modules to convert."
+msgstr ""
+
+msgid "No options passed to function"
 msgstr ""
 
 msgid "No pages found."
