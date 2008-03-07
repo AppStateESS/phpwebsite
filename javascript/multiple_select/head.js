@@ -1,4 +1,3 @@
-<script type="text/javascript" src="javascript/jquery/jquery.js"></script>
 <script type="text/javascript" src="javascript/jquery/jquery.selectboxes.js"></script>
 <script type="text/javascript">
 /**
