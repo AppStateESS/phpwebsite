@@ -189,6 +189,58 @@ function core_update(&$content, $version) {
         }
         $content[] = '</pre>';
 
+    case version_compare($version, '1.8.0', '<'):
+        $htaccess = $home_directory . '.htaccess';
+        $new_htaccess = PHPWS_SOURCE_DIR . 'core/boost/new_htaccess';
+        $backup_loc = $home_directory . '.backup_htaccess';
+        
+        if (!isset($_GET['ignore_htaccess'])) {
+            $ignore = sprintf('<p>You will need to replace your current .htaccess file with the new copy stored at %s<br />
+<a href="index.php?module=boost&opmod=core&action=update_core&authkey=%s&ignore_htaccess=1">You can skip the .htaccess copy process by clicking here.</a></p>',
+                              $new_htaccess, Current_User::getAuthKey());
+
+            if (is_file($htaccess) && !is_writable($htaccess)) {
+                $content[] = '<p>phpWebSite needs to update your .htaccess file. Please make it writable for this update.
+When done, you may make it unwritable again.</p>';
+                $content[] = $ignore;
+                return false;
+            } else {
+                if (is_file($htaccess) && !@copy($htaccess,  $backup_loc)) {
+                    $content[] = 'Unable to backup your .htaccess file.';
+                    $content[] = $ignore;
+                    return false;
+                } else {
+                    $content[] = '<p>Backed up old .htaccess file.</p>';
+                }
+
+                if (!@copy($new_htaccess, $htaccess)) {
+                    $content[] = 'Unable to copy new .htaccess file to hub/branch home directory.
+You will need to make your hub/branch home directory writable if the file doesn\'t exist.';
+                    $content[] = $ignore;
+                    return false;
+                } else {
+                    $content[] = '<p>Copied new .htaccess file to home directory.</p>';
+                }
+            }
+        }
+
+        $content[] = '<pre>';
+        $files = array('conf/core_modules.php', 'conf/file_types.php',
+                       'conf/text_settings.php');
+        coreUpdateFiles($files, $content);
+
+        if (!PHPWS_Boost::inBranch()) {
+            $files = array('javascript/ajax/requester.js',
+                           'javascript/captcha/freecap/freecap.php', 'javascript/check_all/head.js',
+                           'javascript/confirm/default.php', 'javascript/editors/fckeditor/default.php',
+                           'javascript/jquery/head.js', 'javascript/jquery/jquery.js', 
+                           'javascript/jquery/jquery.selectboxes.js');
+            
+            coreUpdateFiles($files, $content);
+
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_8_0.txt');
+        }
+        $content[] = '</pre>';
     }
     return true;
 }
@@ -197,11 +249,14 @@ function coreUpdateFiles($files, &$content)
 {
     if (PHPWS_Boost::updateFiles($files, 'core')) {
         $content[] = '--- Updated the following files:';
+        $good = true;
     } else {
         $content[] = '--- Unable to update the following files:';
+        $good = false;
     }
     $content[] = "     " . implode("\n     ", $files);
     $content[] = '';
+    return $good;
 }
 
 
