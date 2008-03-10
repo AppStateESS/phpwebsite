@@ -72,6 +72,13 @@ function categories_update(&$content, $currentVersion)
 ----------------
 + Added error check to category icon search.
 + Added getIcons function.</pre>';
+
+    case version_compare($currentVersion, '2.2.1', '<'):
+        $content[] = '<pre>2.2.1 changes
+----------------
++ Added getForm function to Categories.
++ Rewrote portions to work with File Cabinet.
++ Fixed two notices with error checks.</pre>';
     }
     return true;
 }
