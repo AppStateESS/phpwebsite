@@ -79,7 +79,7 @@ class Access_Shortcut {
 
     function getUrl()
     {
-        return sprintf('<a href="%s.html">%s.html</a>', $this->keyword, $this->keyword);
+        return sprintf('<a href="%s">%s</a>', $this->keyword, $this->keyword);
     }
 
     function setKeyword($keyword)

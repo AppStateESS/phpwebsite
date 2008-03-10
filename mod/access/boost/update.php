@@ -104,12 +104,18 @@ function access_update(&$content, $version)
 
     case version_compare($version, '1.0.0', '<'):
         $content[] = '<pre>';
+        $files = array('templates/forms/allow_deny.tpl', 'templates/forms/shortcut_list.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'access')) {
+            $content[] = '--- The following files were updated successfully.';
+        } else {
+            $content[] = '--- The following files were not updated successfully.';
+        }
+
         $content[] = '1.0.0 changes
 ---------------
 + Rewritten for phpwebsite 1.5.0 changes.
++ addIP and removeIP allow modules to restrict users.
 </pre>';
-
-
     }
 
     return true;

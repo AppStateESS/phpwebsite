@@ -1,3 +1,8 @@
+Version 1.0.0
+---------------------------------------------------------------------------
+10 March 2008
++ Removed .html suffix to shortcuts.
+
 5 March 2008
 + Fixed include missing from access for shortcuts
 + Fixed shortcut code
