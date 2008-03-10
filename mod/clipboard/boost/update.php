@@ -30,6 +30,12 @@ function clipboard_update(&$content, $currentVersion)
 + Added different window titles.
 + Increased popup width.</pre>';
 
+    case version_compare($currentVersion, '1.0.2', '<'):
+        $content[] = '<pre>1.0.2 changes
+-------------
++ Clipboard won\'t allow clipping of items without a title and content.</pre>';
+
+
     }
 
     return true;

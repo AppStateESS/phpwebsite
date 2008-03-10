@@ -6,7 +6,7 @@
    */
 
 $proper_name  = 'Clipboard';
-$version      = '1.0.1';
+$version      = '1.0.2';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/clipboard/check.xml';
 $about        = true;
 $priority     = 50;
