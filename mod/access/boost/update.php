@@ -110,7 +110,7 @@ function access_update(&$content, $version)
         } else {
             $content[] = '--- The following files were not updated successfully.';
         }
-
+        $content[] = implode("\n", $files);
         $content[] = '1.0.0 changes
 ---------------
 + Rewritten for phpwebsite 1.5.0 changes.
