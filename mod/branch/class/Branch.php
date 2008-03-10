@@ -27,6 +27,7 @@ class Branch {
 
     function loadDSN()
     {
+
         $config_contents = file_get_contents($this->directory . 'config/core/config.php');
         $config = explode("\n", $config_contents);
 
@@ -39,17 +40,18 @@ class Branch {
         foreach ($config as $row) {
             if (preg_match('/phpws_dsn/i', $row) && preg_match('/^define/i', $row)) {
                 $sub = explode(',', $row);
-                $this->dsn = preg_replace("@'|\);$@", '', $sub[1]);
+                $this->dsn = preg_replace("@'|\);$@", '', trim($sub[1]));
             }
 
             if (preg_match('/phpws_table_prefix/i', $row) && preg_match('/^define/i', $row)) {
-                $this->prefix = preg_replace('/phpws_table_prefix|define|[\s\'"(),;]/i', '', $row);
+                $this->prefix = preg_replace('/phpws_table_prefix|define|[\s\'"(),;]/i', '', trim($row));
             }
 
             if (!empty($this->dsn) && (!$prefix_used || !empty($this->prefix))) {
                 return true;
             }
         }
+
         if (isset($this->dsn)) {
             return true;
         } else {

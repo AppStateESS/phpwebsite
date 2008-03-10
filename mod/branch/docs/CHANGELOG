@@ -1,3 +1,6 @@
+10 March 2008
++ Added trim function to dsn parsing.
+
 27 February 2008
 + Fixed loadDSN : allows database passwords with spaces. Also checks
   once for prefix to prevent having to scan whole config file.
