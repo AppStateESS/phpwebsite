@@ -78,6 +78,12 @@ function search_update(&$content, $currentVersion)
   (Thanks Audun Larsen).
 </pre>';        
 
+    case version_compare($currentVersion, '0.3.2', '<'):
+        $content[] = '<pre>0.3.2 changes
+-------------
++ Changed REQUEST references to GET.
++ More parsing of words added.
++ Search modules available shows only modules currently containing data.</pre>';        
     }
 
     return TRUE;
