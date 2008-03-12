@@ -88,6 +88,14 @@ function layout_update(&$content, $currentVersion)
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/layout/boost/changes/2_4_2.txt');
         }
         $content[] = '</pre>';
+
+    case version_compare($currentVersion, '2.4.3', '<'):
+        $content[] = '<pre>2.4.3 changes
+-----------------
++ nakedDisplay now allows a choice whether to use the blank template
+  or not when it wraps. Default is to not.
++ Fixed noCache.
+</pre>';
     }
     return true;
 }
