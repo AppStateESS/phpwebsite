@@ -1,0 +1,11 @@
+1.7.1 changes
+--------------------
++ Fixed miniadmin showing to non-admins
++ Removed redundant key drop from blog deletion.
++ Publish date was rounding the minutes. This would lead to close
+  posts not appearing in the correct order.
++ Changed the default date view to a shorter format. Removed seconds.
++ Italian translations
++ Blog can list entries by date (month, year, or day)
++ Using new rewrite url format.
++ Calling new Cabinet::fileStyle function in case blog is cached.

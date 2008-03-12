@@ -224,6 +224,12 @@ function blog_update(&$content, $currentVersion)
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/blog/boost/changes/1_7_0.txt');
         }
         $content[] = '</pre>';
+
+    case version_compare($currentVersion, '1.7.1', '<'):
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = '<pre>' . file_get_contents(PHPWS_SOURCE_DIR . 'mod/blog/boost/changes/1_7_0.txt') . '</pre>';
+        }
+
     } // end of switch
     return true;
 }
