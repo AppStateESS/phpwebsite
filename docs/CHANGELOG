@@ -4,6 +4,9 @@ its own separate CHANGELOG file.
 
 Version 1.8.0
 ---------------------------------------------------------------
+12 March 2008
++ Database: added unique parameter to createTableIndex
+
 7 March 2008
 + Added Sam Collett to credits since using his jquery script.
 + Added selectboxes jquery script from author above.
