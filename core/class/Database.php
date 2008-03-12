@@ -1623,7 +1623,7 @@ class PHPWS_DB {
      * on the table name. Setting your index name might be a smart thing to do
      * in case you ever need to DROP it.
      */
-    function createTableIndex($column, $name=null)
+    function createTableIndex($column, $name=null, $unique=false)
     {
         if(!DB_ALLOW_TABLE_INDEX) {
             return false;
@@ -1651,7 +1651,13 @@ class PHPWS_DB {
             $name = str_replace('_', '', $table) . '_idx';
         }
 
-        $sql = sprintf('CREATE INDEX %s ON %s (%s)', $name, $table, $column);
+        if ($unique) {
+            $unique_idx = 'UNIQUE ';
+        } else {
+            $unique_idx = ' ';
+        }
+ 
+        $sql = sprintf('CREATE %sINDEX %s ON %s (%s)', $unique_idx, $name, $table, $column);
 
         return $this->query($sql);
     }
