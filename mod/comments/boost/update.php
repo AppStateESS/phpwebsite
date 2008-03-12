@@ -49,12 +49,38 @@ Please download 0.6.3.</pre>';
 
     case version_compare($currentVersion, '1.0.0', '<'):
         $content[] = '<pre>';
+        $db = new PHPWS_DB('comments_users');
+        if (PHPWS_Error::logIfError($db->createTableIndex('user_id', null, true))) {
+            $content[] = 'Warning: A problems occurred when trying to create a unique index on the comments_users table.';
+        }
+
+        $files = array('javascript/report/head.js', 'javascript/report/default.php', 'javascript/admin/head.js', 
+                       'templates/alt_view.tpl', 'templates/alt_view_one.tpl', 'templates/view.tpl', 
+                       'templates/view_one.tpl', 'templates/punish_pop.tpl', 'templates/reported.tpl',
+                       'templates/style.css', 'img/lock.png');
+
+        commentsUpdatefiles($files, $content);
         PHPWS_Boost::registerMyModule('comments', 'controlpanel', $content);
+
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/comments/boost/changes/1_0_0.txt');
+        }
         $content[] = '</pre>';
-        
     }
             
     return true;
 }
+
+
+function commentsUpdateFiles($files, &$content)
+{
+    if (PHPWS_Boost::updateFiles($files, 'comments')) {
+        $content[] = '--- Updated the following files:';
+    } else {
+        $content[] = '--- Unable to update the following files:';
+    }
+    $content[] = "     " . implode("\n     ", $files);
+}
+
 
 ?>

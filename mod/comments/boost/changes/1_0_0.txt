@@ -1,0 +1,20 @@
+1.0.0 Changes
+-----------------------------------------
++ Permission check added to popup.
++ Removed unneeded ajax call
++ jquery called in default to prevent repeat
++ Added mouseover to comment entries to read full text from the report
+  page.
++ Reported interface written.
++ Punish system implemented
+  o Users can be locked out of posting.
+  o Users can be deactivated.
+  o IP address of author can be denied.
++ Moved comment forms into its own class
++ New rules added to canComment function.
++ Locked users have their avatar turned into lock icon.
++ Italian translations added.
++ user_action and admin_action shrunk to uop and aop
++ Reduced default avatar size (update not required)
++ Creating unique index on comment_users
++ Fixed: Posting user information without avatar.
