@@ -120,6 +120,14 @@ class My_Page {
         return $db->insert();
     }
 
+    function unregisterMyPage($mod_title)
+    {
+        $db = new PHPWS_DB('users_my_page_mods');
+        $db->addWhere('mod_title', $mod_title);
+        return $db->delete();
+    }
+
+
     function addHidden(&$form, $module)
     {
         $form->addHidden('module', 'users');

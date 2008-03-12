@@ -1,3 +1,8 @@
+Version 2.4.8
+-----------------------------------------------------------------------
+12 March 2008
++ My Pages are unregistered on module deletion (thanks Verdon).
+
 7 March 2008
 + Raised sql character limit in default username, display_name, and
   group name installs.

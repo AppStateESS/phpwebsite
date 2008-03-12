@@ -6,7 +6,7 @@
 
 function users_unregister($module, &$content){
     PHPWS_Core::initModClass('users', 'Permission.php');
-
+    PHPWS_Core::initModClass('users', 'My_Page.php');
     $result = Users_Permission::removePermissions($module);
 
     if (PEAR::isError($result)) {
@@ -16,9 +16,17 @@ function users_unregister($module, &$content){
         return FALSE;
     } elseif ($result) {
         $content[] = dgettext('users', 'Permissions table removed successfully.');
-        return TRUE;
     }
     
+    $result = My_Page::unregisterMyPage($module);
+    if (PEAR::isError($result)){
+        PHPWS_Boost::addLog('users', dgettext('users', 'A problem occurred when trying to unregister this module from My Page.'));
+        $content[] = dgettext('users', 'A problem occurred when trying to unregister this module from My Page.');
+        return FALSE;
+    } elseif ($result != FALSE) {
+          $content[] = dgettext('users', 'My Page unregistered from Users module.');
+    }
+
     return TRUE;
 }
 

@@ -181,6 +181,16 @@ timeout INT NOT NULL default 0,
 </pre>';
 
     case version_compare($currentVersion, '2.4.8', '<'):
+        $content[] = '<pre>2.4.8 changes
+-----------------
++ Raised sql character limit in default username, display_name, and
+  group name installs.
++ Fixed bug with forbidden usernames
++ Added a function to group to remove its permissions upon deletion.
++ Bookmark won\'t return a user to a authkey page if their session dies.
++ Fixed bug #1850815 : unknown function itemIsAllowed in Permission.php
++ My Pages are unregistered on module removal.
+</pre>';
     } // End of switch statement
 
     return TRUE;
