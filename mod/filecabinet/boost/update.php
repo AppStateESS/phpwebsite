@@ -306,7 +306,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             $content[] = '--- Could not copy complete javascript directory. Use revert or copy manually.';
         }
 
-        if (!PHPWS_DB::isTable('fc_converted')) {
+        if (!PHPWS_DB::isTable('fc_convert')) {
             $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/fc_convert.sql');
             if (!PHPWS_Error::logIfError($result)) {
                 $content[] = '--- File conversion table created successfully.';
