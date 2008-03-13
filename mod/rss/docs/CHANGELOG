@@ -1,3 +1,5 @@
+Version 0.2.4
+-----------------------------------------------------------------------------
 3 January 2008
 + Fixed the timeout setting for the rss caching.
 

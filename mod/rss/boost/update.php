@@ -86,6 +86,13 @@ function rss_update(&$content, $version)
 + Added sort button to feed listing.
 </pre>';
 
+    case version_compare($version, '0.2.4', '<'):
+        $content[] = '<pre>
+0.2.4 changes
+-------------
++ Fixed the timeout setting for the rss caching.
+</pre>';
+
 
     }
 
