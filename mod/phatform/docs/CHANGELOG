@@ -1,5 +1,7 @@
 Note: this log is only for notes post-1.0-conversion
 
+Version 3.1.2
+---------------------------------------------------------------
 10 December 2007
 + Fixed error construction in some element save functions.
 + Element now prohibits element names matching preexisting column names.

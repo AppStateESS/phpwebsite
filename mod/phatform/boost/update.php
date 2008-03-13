@@ -59,6 +59,15 @@ function phatform_update(&$content, $version)
 + Reduced control panel info.
 </pre>';
 
+    case version_compare($version, '3.1.2', '<'):
+        $content[] = '<pre>
+3.1.2 changes
+-------------
++ Fixed error construction in some element save functions.
++ Element now prohibits element names matching preexisting column names.
+</pre>';
+
+
     }
     return true;
 }
