@@ -4,6 +4,9 @@ its own separate CHANGELOG file.
 
 Version 1.8.0
 ---------------------------------------------------------------
+13 March 2008
++ PageSmith conversion : Added page titles to search.
+
 12 March 2008
 + Database: added unique parameter to createTableIndex
 

@@ -136,6 +136,10 @@ function convertPage($page)
         return FALSE;
     }
 
+    $search = new Search($key->id);
+    $search->addKeywords($val['title']);
+    $search->save();
+
     /**
      * Keeping web page conversion stuff just in case extra data is added.
      *
@@ -169,7 +173,6 @@ function convertSection($section_order, $id, $title, $key_id)
 
 function saveSections($sections, $id, $title, $key_id)
 {
-
     $header_sec['pid']     = $id;
     $header_sec['secname'] = 'header1';
     $header_sec['sectype'] = 'text';
