@@ -88,6 +88,13 @@ function branch_update(&$content, $version)
 + Added text shortening on urls and directories.
 </pre>';
 
+    case version_compare($version, '1.1.5', '<'):
+        $content[] = '<pre>1.1.5 Changes
+-------------
++ Fixed loadDSN : allows database passwords with spaces. Also checks
+  once for prefix to prevent having to scan whole config file.
+</pre>';
+
     }
     return true;
 }
