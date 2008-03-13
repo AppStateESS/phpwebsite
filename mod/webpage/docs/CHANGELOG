@@ -1,5 +1,8 @@
 Version 1.1.0
 -------------------------------------------------------------------------
+13 March 2008
++ Added plugForward to make mod_rewrite compatible.
+
 7 Feb 2008
 + Made compatible with File Cabinet 2.0
 + Styled the admin links

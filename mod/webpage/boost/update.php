@@ -88,6 +88,7 @@ Please download version 0.5.3</pre>';
         webpageUpdateFiles($files, $content);
         $content[] = '1.1.0 changes
 ---------------
++ Works with new mod_rewrite.
 + Updated to work with File Cabinet 2.0
 + Styled the admin links</pre>';
     }
