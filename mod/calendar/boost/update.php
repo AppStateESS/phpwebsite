@@ -192,7 +192,14 @@ function calendar_update(&$content, $version)
 -------------
 + Fixed call to absent function in Event.php</pre>';
 
-
+    case version_compare($version, '1.6.2', '<'):
+        $content[] = '<pre>';
+        calendarUpdateFiles(array('conf/config.php'), $content);
+        $content[] = '1.6.2 changes
+-------------
++ Added a upcoming date format
++ Fixed: Day view doesn\'t allow you to add an event until you create a schedule.
++ Deleting the default public calendar resets the selection.</pre>';
     } // end of switch
 
     return true;
