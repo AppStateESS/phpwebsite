@@ -69,6 +69,17 @@ function photoalbum_update(&$content, $version) {
 + Fixed resize functionality
 </pre>';
 
+    case version_compare($version, '1.4.4', '<'):
+        PHPWS_Boost::updateFiles(array('conf/config.php'), 'photoalbum');
+        $content[] = '<pre>
+1.4.4 changes
+-------------
++ Fixed path to icon in SlideShow.
++ Fixes attempted for batch upload.
++ Removed html tags and newline calls causing javascript errors.
++ Fixed: photoalbum was calling hub config file instead of local version 
+</pre>';
+
     }
 
     return true;
