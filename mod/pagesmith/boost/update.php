@@ -134,7 +134,7 @@ function pagesmith_update(&$content, $currentVersion)
                                    'templates/page_templates/threesec/structure.xml',
                                    'templates/page_templates/threesec/threesec.png'), $content);
 
-        $content[] = '1.1.0 changes
+        $content[] = '1.1.0 changes (unreleased)
 -------------
 + PageSmith conforms to new File Cabinet update.
 + Added url parser to passinfo script to allow images to work with fck better.
@@ -142,13 +142,54 @@ function pagesmith_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '1.2.0', '<'):
         $content[] = '<pre>';
+
+        $source_tpl = PHPWS_SOURCE_DIR . 'mod/pagesmith/templates/page_templates/';
+        $local_tpl  = $home_dir . 'templates/pagesmith/page_templates/';
+        $backup     = $home_dir . 'templates/pagesmith/_page_templates/';
+        $source_img = PHPWS_SOURCE_DIR . 'mod/pagesmith/img/folder_icons/';
+        $local_img  = $home_dir . 'images/mod/pagesmith/folder_icons/';
+
+        if (is_dir($backup) || @PHPWS_File::copy_directory($local_tpl, $backup)) {
+            $content[] = '--- Local page templates backed up to: ' . $backup;
+        } else { 
+            $content[] = sprintf('--- Could not backup directory "%s" to "%s"</pre>', $local_tpl, $backup);
+            return false;
+        }
+
+        if (@PHPWS_File::copy_directory($source_tpl, $local_tpl)) {
+            $content[] = '--- Local page templates updated.';
+        } else { 
+            $content[] = sprintf('--- Could not copy directory "%s" to "%s"</pre>', $source_tpl, $local_tpl);
+            return false;
+        }
+
+        if (@PHPWS_File::copy_directory($source_img, $local_img)) {
+            $content[] = '--- New page template icons copied locally.';
+        } else { 
+            $content[] = sprintf('--- Could not copy directory "%s" to "%s"</pre>', $source_img, $local_img);
+            return false;
+        }
+
         if (!pagesmithSearchIndex()) {
             $content[] = '--- Unable to index pages in search. Check your error log.</pre>';
             return false;
         } else {
             $content[] = '--- Pages added to search';
         }
-        $content[] = '</pre>';
+
+        $files = array('templates/pick_folder.tpl', 'templates/pick_template.tpl',
+                       'templates/style.css', 'conf/folder_icons.php');
+        pagesmithUpdateFiles($files, $content);
+
+
+        $content[] = '1.2.0 changes
+----------------
++ PageSmith now allows the sorting of templates
++ Page titles now added to search.
++ Wrong page ids don\'t 404. Send to message page.
++ Search indexing added to update and version raised.
++ Added search to pagesmith.
++ Changed to new url rewriting method.</pre>';
     } // end switch
 
     return true;
@@ -161,7 +202,7 @@ function pagesmithUpdateFiles($files, &$content)
     } else {
         $content[] = '--- Unable to update the following files:';
     }
-    $content[] = "    " . implode("\n     ", $files);
+    $content[] = "    " . implode("\n    ", $files);
     $content[] = '';
 }
 
@@ -176,6 +217,7 @@ function pagesmithSearchIndex()
     $db->addColumn('id');
     $db->addColumn('content');
     $db->addColumn('ps_page.key_id');
+    $db->addColumn('ps_page.title');
     $db->addWhere('ps_text.pid', 'ps_page.id');
     $db->addOrder('pid');
     $db->addOrder('secname');
@@ -187,11 +229,12 @@ function pagesmithSearchIndex()
         }
         foreach ($result as $pg) {
             $search = new Search($pg['key_id']);
-            $value = $pg['content'];
-            $search->addKeywords($value);
+            $search->addKeywords($pg['content']);
+            $search->addKeywords($pg['title']);
             PHPWS_Error::logIfError($search->save());
         }
     }
+
     return true;
 }
 
