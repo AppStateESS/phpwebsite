@@ -34,10 +34,24 @@ function signup_update(&$content, $currentVersion)
         } else {
             $content[] = '--- contact_email column created successfully on signup_sheet table.';
         }
-        $content[] = '1.1.2 changes
-----------------
-</pre>';
 
+        $files = array('templates/peep_pop.tpl', 'templates/slot_setup.tpl', 'templates/edit_sheet.tpl',
+                       'templates/peeps.tpl', 'templates/slot_setup.tpl', 'img/edit.png', 'img/delete.png');
+        signupUpdateFiles($files, $content);
+
+
+        $content[] = '1.1.0 changes
+----------------
++ Added way to update slots
++ Added user permissions to signup
++ Removed some unneeded, commented code
++ Added alphabetic reordering
++ Fixed ordering up and downs.
++ Changed slot form to selection method. Previously showed all slots
+  causing long page loads on big signups.
++ Added contact email address for sheets.
++ Added url forwarding support.
+</pre>';
 
     }
     return true;
