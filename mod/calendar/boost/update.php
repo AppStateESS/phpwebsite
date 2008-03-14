@@ -194,12 +194,14 @@ function calendar_update(&$content, $version)
 
     case version_compare($version, '1.6.2', '<'):
         $content[] = '<pre>';
-        calendarUpdateFiles(array('conf/config.php'), $content);
+        calendarUpdateFiles(array('conf/config.php', 'javascript/check_date/head.js'), $content);
         $content[] = '1.6.2 changes
 -------------
 + Added a upcoming date format
 + Fixed: Day view doesn\'t allow you to add an event until you create a schedule.
-+ Deleting the default public calendar resets the selection.</pre>';
++ Deleting the default public calendar resets the selection.
++ Fixed: Bug #1879356 - Events spanning multiple days do not autocorrect time.
+</pre>';
     } // end of switch
 
     return true;

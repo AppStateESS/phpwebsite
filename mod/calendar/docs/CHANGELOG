@@ -1,5 +1,10 @@
 Version 1.6.2
 ----------------------------------------------------------------
+14 March 2008
++ Fixed: Bug #1879356 - Events spanning multiple days do not
+  autocorrect time.
++ Updated: javascript/check_date/head.js
+
 5 February 2008
 + Removed test echo
 

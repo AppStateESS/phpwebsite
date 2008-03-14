@@ -25,7 +25,7 @@ function check_start_date() {
      start_time = form.event_form_start_time_hour.value - 0;
      end_time   = form.event_form_end_time_hour.value - 0;
 
-     if (start_time > end_time) {
+     if (start_date == end_date && start_time > end_time) {
          form.event_form_end_time_hour.value = start_time;
      }
 }
@@ -47,7 +47,7 @@ function check_end_date() {
     start_time = form.event_form_start_time_hour.value - 0;
     end_time   = form.event_form_end_time_hour.value - 0;
 
-    if (start_time > end_time) {
+    if (start_date == end_date && start_time > end_time) {
         form.event_form_start_time_hour.value = end_time;
     }
 }
