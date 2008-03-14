@@ -1,10 +1,15 @@
 Enabling spellchecking
 by Matthew McNaney
 
+--------------------------------------------------------------------
 Update: future versions of phpwebsite will ship with the Unix file
 uncommented. If you are running a Windows version of FCKeditor you
 will need to do the opposite of the below. Uncomment the 
 "C:\\Program Files\etc." line instead.
+
+If you are running Unix and update FCK, expect to have to edit this
+file again.
+--------------------------------------------------------------------
 
 To enable spellchecking with FCKeditor you need to perform a little
 work.
