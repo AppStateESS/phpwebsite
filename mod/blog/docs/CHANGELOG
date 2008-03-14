@@ -1,5 +1,8 @@
 Version 1.7.1
 ----------------------------------------------------------------
+14 March 2008
++ Fixed forward after blog creation. Was using id instead of blog_id
+
 5 March 2008
 + Fixed miniadmin showing to non-admins
 

@@ -290,7 +290,7 @@ class Blog {
             if (MOD_REWRITE_ENABLED) {
                 return 'blog/' . $this->id;
             } else {
-                return 'index.php?module=blog&amp;action=view_comments&amp;id=' . $this->id;
+                return 'index.php?module=blog&amp;action=view_comments&amp;blog_id=' . $this->id;
             }
         } else {
             return PHPWS_Text::rewriteLink(dgettext('blog', 'View'), 'blog', $this->id);
