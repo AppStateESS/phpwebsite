@@ -4,6 +4,10 @@ its own separate CHANGELOG file.
 
 Version 1.8.0
 ---------------------------------------------------------------
+14 March 2008
++ FCK spelling docs changed
++ Updated tinymce head file for 3.0+ version
+
 13 March 2008
 + PageSmith conversion : Added page titles to search.
 
