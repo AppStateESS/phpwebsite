@@ -234,7 +234,7 @@ You will need to make your hub/branch home directory writable if the file doesn\
                            'javascript/captcha/freecap/freecap.php', 'javascript/check_all/head.js',
                            'javascript/confirm/default.php', 'javascript/editors/fckeditor/default.php',
                            'javascript/jquery/head.js', 'javascript/jquery/jquery.js', 
-                           'javascript/jquery/jquery.selectboxes.js');
+                           'javascript/jquery/jquery.selectboxes.js', 'conf/version.php');
             
             coreUpdateFiles($files, $content);
 
