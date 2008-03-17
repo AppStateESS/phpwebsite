@@ -74,6 +74,40 @@ function categories_update(&$content, $currentVersion)
 + Added getIcons function.</pre>';
 
     case version_compare($currentVersion, '2.2.1', '<'):
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        $db = new PHPWS_DB('categories');
+        $result = $db->select();
+
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'An error occurred when accessing your categories table.';
+            return false;
+        }
+
+        $db->dropTable('categories');
+        if (!$db->importFile(PHPWS_SOURCE_DIR . 'mod/categories/boost/categories.sql')) {
+            $content[] = 'Could not import updated categories table.';
+            return false;
+        }
+
+        if (!empty($result)) {
+            foreach ($result as $cat) {
+                $cat['icon'] = (int)$cat['icon'];
+                $db->reset();
+                $db->addValue($cat);
+                PHPWS_Error::logIfError($db->insert(false));
+                $db->reset();
+            }
+        }
+        $db->updateSequenceTable();
+        $content[] = 'Updated categories.icon table column.';
+
+        if (Cabinet::convertImagesToFileAssoc('categories', 'icon')) {
+            $content[] = '--- Converted images to new File Cabinet format.';
+        } else {
+            $content[] = '--- Could not convert images to new File Cabinet format.</pre>';
+            return false;
+        }
+
         $content[] = '<pre>2.2.1 changes
 ----------------
 + Added getForm function to Categories.
