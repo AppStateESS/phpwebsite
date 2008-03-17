@@ -218,7 +218,7 @@ function blog_update(&$content, $currentVersion)
             return false;
         }
 
-        blogUpdateFiles(array('templates/edit.tpl'));
+        blogUpdateFiles(array('templates/edit.tpl'), $content);
 
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/blog/boost/changes/1_7_0.txt');
