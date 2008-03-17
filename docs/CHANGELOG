@@ -4,6 +4,10 @@ its own separate CHANGELOG file.
 
 Version 1.8.0
 ---------------------------------------------------------------
+17 March 2008
++ Changing backup directory for .htaccess to files so root directory
+  doesn't have to be writable.
+
 14 March 2008
 + FCK spelling docs changed
 + Updated tinymce head file for 3.0+ version

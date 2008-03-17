@@ -192,7 +192,7 @@ function core_update(&$content, $version) {
     case version_compare($version, '1.8.0', '<'):
         $htaccess = $home_directory . '.htaccess';
         $new_htaccess = PHPWS_SOURCE_DIR . 'core/boost/new_htaccess';
-        $backup_loc = $home_directory . '.backup_htaccess';
+        $backup_loc = $home_directory . 'files/.backup_htaccess';
         
         if (!isset($_GET['ignore_htaccess'])) {
             $ignore = sprintf('<p>You will need to replace your current .htaccess file with the new copy stored at %s<br />
@@ -200,8 +200,8 @@ function core_update(&$content, $version) {
                               $new_htaccess, Current_User::getAuthKey());
 
             if (is_file($htaccess) && !is_writable($htaccess)) {
-                $content[] = '<p>phpWebSite needs to update your .htaccess file. Please make it writable for this update.
-When done, you may make it unwritable again.</p>';
+                $content[] = 'phpWebSite needs to update your .htaccess file. Please make it writable for this update.
+When done, you may make it unwritable again.';
                 $content[] = $ignore;
                 return false;
             } else {
@@ -210,7 +210,7 @@ When done, you may make it unwritable again.</p>';
                     $content[] = $ignore;
                     return false;
                 } else {
-                    $content[] = '<p>Backed up old .htaccess file.</p>';
+                    $content[] = 'Backed up old .htaccess file to ./files/ directory.';
                 }
 
                 if (!@copy($new_htaccess, $htaccess)) {
@@ -219,7 +219,7 @@ You will need to make your hub/branch home directory writable if the file doesn\
                     $content[] = $ignore;
                     return false;
                 } else {
-                    $content[] = '<p>Copied new .htaccess file to home directory.</p>';
+                    $content[] = 'Copied new .htaccess file to home directory.';
                 }
             }
         }
