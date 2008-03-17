@@ -151,7 +151,7 @@ class PHPWS_File {
      *
      * @author Matthew McNaney <mcnaney at gmail dot com>
      */
-    function copy_directory($source_directory, $dest_directory, $overwrite=true) {
+    function copy_directory($source_directory, $dest_directory, $overwrite=true, $hidden=false) {
         PHPWS_File::appendSlash($source_directory);
         PHPWS_File::appendSlash($dest_directory);
 
@@ -176,7 +176,7 @@ class PHPWS_File {
         foreach ($source_files as $file_name) {
             // ignore directories, cvs, and backups
             if ($file_name == '.' || $file_name == '..' || $file_name == 'CVS'
-                || preg_match('/~$/', $file_name)) {
+                || preg_match('/~$/', $file_name) || (!$hidden && preg_match('/^\./', $file_name))) {
                 continue;
             }
 

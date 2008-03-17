@@ -5,6 +5,7 @@ its own separate CHANGELOG file.
 Version 1.8.0
 ---------------------------------------------------------------
 17 March 2008
++ copy_directory has a fourth parameter to ignore hidden files.
 + Changing backup directory for .htaccess to files so root directory
   doesn't have to be writable.
 
