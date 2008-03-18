@@ -88,7 +88,7 @@ class PHPWS_Multimedia extends File_Common {
             $this->height = PHPWS_Settings::get('filecabinet', 'default_mm_height');
         }
 
-        $this->duration = & $fileinfo['playtime_seconds'];
+        $this->duration = (int)$fileinfo['playtime_seconds'];
     }
 
 
