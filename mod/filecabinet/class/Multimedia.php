@@ -373,15 +373,6 @@ class PHPWS_Multimedia extends File_Common {
             }
 
             $tmp_name = mt_rand();
-            /**
-             * -i        filename
-             * -an       disable audio
-             * -ss       seek to position
-             * -r        frame rate
-             * -vframes  number of video frames to record
-             * -y        overwrite output files
-             * -f        force format
-             */
             
             $jpeg = $raw_file_name . '.jpg';
             $thumb_path = $thumbnail_directory . $jpeg;
@@ -397,6 +388,16 @@ class PHPWS_Multimedia extends File_Common {
                 $new_height = $max_size;
                 $new_width = round($this->width * $diff);
             }
+
+            /**
+             * -i        filename
+             * -an       disable audio
+             * -ss       seek to position
+             * -r        frame rate
+             * -vframes  number of video frames to record
+             * -y        overwrite output files
+             * -f        force format
+             */
 
             $command = sprintf('%sffmpeg -i %s -an -s %sx%s -ss 00:00:05 -r 1 -vframes 1 -y -f mjpeg %s',
                                $ffmpeg_directory, $this->getPath(), $new_width, $new_height, $thumb_path);

@@ -363,8 +363,9 @@ class File_Common {
         }
 
         $videos = $this->getVideoTypes();
+        $ext = $this->getExtension();
 
-        return in_array($this->_ext, $videos);
+        return in_array($ext, $videos);
     } 
 
     function dropExtension()
