@@ -13,6 +13,9 @@
   <tr>
     <td><strong>{END_TIME_LABEL}</strong></td><td>{END_TIME}{ET_JS}</td>
   </tr>
+  <tr>
+    <td><strong>{MULTIPLE_LABEL}</strong></td><td>{MULTIPLE}</td>
+  </tr>
 </table>
 {SUBMIT}
 {END_FORM}

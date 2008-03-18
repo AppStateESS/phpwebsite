@@ -1,5 +1,13 @@
 Version 1.1.0
 ------------------------------------------------------------------
+18 March 2008
++ Closing popup windows refreshes the parent now in case where an
+  update may be needed.
++ Signup sheets were not saving their key ids properly.
++ Added ability for a sheet to allow multiple signups.
++ Fixed add applicant.
++ Updated: templates/edit_sheet.tpl
+
 7 March 2008
 + Added way to update slots
 

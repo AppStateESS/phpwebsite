@@ -35,6 +35,13 @@ function signup_update(&$content, $currentVersion)
             $content[] = '--- contact_email column created successfully on signup_sheet table.';
         }
 
+        if (PHPWS_Error::logIfError($db->addTableColumn('multiple', 'smallint NOT NULL default 0'))) {
+            $content[] = '--- Failed creating new column on signup_sheet.</pre>';
+            return false;
+        } else {
+            $content[] = '--- "multiple" column created successfully on signup_sheet table.';
+        }
+
         $files = array('templates/peep_pop.tpl', 'templates/slot_setup.tpl', 'templates/edit_sheet.tpl',
                        'templates/peeps.tpl', 'templates/slot_setup.tpl', 'img/edit.png', 'img/delete.png');
         signupUpdateFiles($files, $content);
@@ -51,6 +58,7 @@ function signup_update(&$content, $currentVersion)
   causing long page loads on big signups.
 + Added contact email address for sheets.
 + Added url forwarding support.
++ Sheets can be set to allow multiple signups.
 </pre>';
 
     }

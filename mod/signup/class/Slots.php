@@ -104,10 +104,11 @@ class Signup_Slot {
     function applicantAddLink()
     {
         $vars['aop']      = 'add_slot_peep';
+        $vars['slot_id']  = $this->id;
         $jsadd['label']   = dgettext('signup', 'Add applicant');
         $jsadd['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
-        $jsadd['width'] = 300;
-        $jsadd['height'] = 470;
+        $jsadd['width']   = 300;
+        $jsadd['height']  = 470;
         return javascript('open_window', $jsadd);
     }
 
@@ -163,16 +164,17 @@ class Signup_Slot {
 
             foreach ($this->_peeps as $peep) {
                 $links = array();
-                $subtpl['FIRST_NAME'] = $peep->first_name;
-                $subtpl['LAST_NAME'] = $peep->last_name;
-                $subtpl['EMAIL'] = $peep->getEmail();
-                $subtpl['PHONE'] = $peep->getPhone();
+                $subtpl['FIRST_NAME']   = $peep->first_name;
+                $subtpl['LAST_NAME']    = $peep->last_name;
+                $subtpl['EMAIL']        = $peep->getEmail();
+                $subtpl['PHONE']        = $peep->getPhone();
                 $subtpl['ORGANIZATION'] = $peep->organization;
 
                 $vars['peep_id'] = $peep->id;
                 $vars['aop']     = 'edit_slot_peep';
                 $jspop['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
-
+                $jspop['width']  = 260;
+                $jspop['height'] = 425;
                 $links[] = javascript('open_window', $jspop);
 
                 $vars['aop']     = 'delete_slot_peep';
@@ -223,7 +225,10 @@ class Signup_Slot {
         if ($filled< $this->openings) {
             $tpl['ADD'] = $this->applicantAddLink();
         }
-        $tpl['CLOSE'] = javascript('close_window');
+
+        javascript('close_refresh', array('use_link'=>1));
+        $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="closeWindow(); return false" />',
+                                dgettext('signup', 'Close'));
         return $tpl;
     }
 
@@ -231,9 +236,10 @@ class Signup_Slot {
     {
         $vars['address'] = PHPWS_Text::linkAddress('signup', array('aop'=>'edit_peep_popup',
                                                                    'slot_id'=>$this->id));
-        $vars['label'] = $this->title;
-        $vars['width'] = 800;
-        $vars['height'] = 600;
+        $vars['label']      = $this->title;
+        $vars['width']      = 800;
+        $vars['height']     = 600;
+        $vars['link_title'] = dgettext('signup', 'Click to view and edit signups for this slot.');
                                         
         $tpl['TITLE'] = javascript('open_window', $vars);
         $tpl['OPENINGS'] = sprintf(dgettext('signup', 'Total openings: %s'), $this->openings);

@@ -12,6 +12,7 @@ class Signup_Sheet {
     var $start_time    = 0;
     var $end_time      = 0;
     var $contact_email = null;
+    var $multiple      = 0;
     var $_error        = null;
 
     function Signup_Sheet($id=0)
@@ -204,6 +205,7 @@ class Signup_Sheet {
         if (!$this->key_id) {
             $this->key_id = $key->id;
             $db = new PHPWS_DB('signup_sheet');
+            $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
             PHPWS_Error::logIfError($db->update());
         }

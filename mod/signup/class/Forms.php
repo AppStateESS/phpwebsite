@@ -128,7 +128,8 @@ class Signup_Forms {
         
         $tpl = $form->getTemplate();
 
-        $tpl['CLOSE'] = javascript('close_window');
+        $tpl['CLOSE'] = sprintf('<input type="button" value="%s" />', dgettext('signup', 'Close'));
+        $tpl['CLOSE'] = javascript('close_refresh', array('use_link'=>1));
             
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_peep.tpl');
     }
@@ -159,8 +160,10 @@ class Signup_Forms {
 
         $tpl = $form->getTemplate();
 
-        $tpl['CLEAR'] = javascript('close_window');
-
+        javascript('close_refresh', array('use_link'=>1));
+        $tpl['CLEAR'] = sprintf('<input type="button" value="%s" onclick="closeWindow(); return false" />',
+                                dgettext('signup', 'Close'));
+        
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_slot.tpl');
     }
 
@@ -174,6 +177,7 @@ class Signup_Forms {
             return;
         }
         $tpl = $slot->viewTpl();
+
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'peep_pop.tpl');
     }
 
@@ -195,9 +199,10 @@ class Signup_Forms {
         $tpl['ALPHA'] = PHPWS_Text::secureLink(dgettext('signup', 'Alphabetic order'), 'signup', $vars);
 
         $slots = $this->signup->sheet->getAllSlots();
-
-        foreach ($slots as $slot) {
-            $tpl['slot-list'][] = $slot->listTpl();
+        if ($slots) {
+            foreach ($slots as $slot) {
+                $tpl['slot-list'][] = $slot->listTpl();
+            }
         }
 
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'slot_setup.tpl');
@@ -230,8 +235,11 @@ class Signup_Forms {
         $form->addText('contact_email', $sheet->contact_email);
         $form->setLabel('contact_email', dgettext('signup', 'Contact email'));
 
-        // Functionality not finished. Hide for now.
+        $form->addCheck('multiple', 1);
+        $form->setMatch('multiple', $sheet->multiple);
+        $form->setLabel('multiple', dgettext('signup', 'Allow multiple signups'));
 
+        // Functionality not finished. Hide for now.
         /*
         $form->addText('start_time', $sheet->getStartTime());
         $form->setLabel('start_time', dgettext('signup', 'Start signup'));

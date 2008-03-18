@@ -166,16 +166,21 @@ class Signup {
             }
 
             if ($this->postSheet()) {
-                if (PHPWS_Core::isPosted()) {
+                if (!$this->sheet->id && PHPWS_Core::isPosted()) {
                     $this->message = dgettext('signup', 'Sheet previously posted.');
                     $this->loadForm('edit_sheet');
                 } else {
+                    $new_sheet = !$this->sheet->id;
                     if (PHPWS_Error::logIfError($this->sheet->save())) {
                         $this->forwardMessage(dgettext('signup', 'Error occurred when saving sheet.'));
                         PHPWS_Core::reroute('index.php?module=signup&aop=list');
                     } else {
                         $this->forwardMessage(dgettext('signup', 'Sheet saved successfully.'));
-                        PHPWS_Core::reroute('index.php?module=signup&aop=edit_slots&sheet_id=' . $this->sheet->id);
+                        if ($new_sheet) {
+                            PHPWS_Core::reroute('index.php?module=signup&aop=edit_slots&sheet_id=' . $this->sheet->id);
+                        } else {
+                            $this->loadForm('list');
+                        }
                     }
                 }
             } else {
@@ -209,13 +214,19 @@ class Signup {
             if (PHPWS_Error::logIfError($result) || !$result) {
                 $this->forwardMessage(dgettext('signup', 'Error occurred when moving applicant. Slot may be full.'));
             }
-            PHPWS_Core::reroute('index.php?module=signup&sheet_id=' . $this->sheet->id . '&aop=edit_slots&authkey=' . Current_User::getAuthKey());
+            PHPWS_Core::goBack();
             break;
 
         case 'move_up':
             $this->loadSlot();
             $this->slot->moveUp();
-            $this->loadForm('edit_slots');
+            PHPWS_Core::goBack();
+            break;
+
+        case 'move_down':
+            $this->loadSlot();
+            $this->slot->moveDown();
+            PHPWS_Core::goBack();
             break;
 
 
@@ -230,11 +241,6 @@ class Signup {
             PHPWS_Core::goBack();
             break;
 
-        case 'move_down':
-            $this->loadSlot();
-            $this->slot->moveDown();
-            $this->loadForm('edit_slots');
-            break;
 
         case 'report':
             if (!Current_User::authorized('signup')) {
@@ -408,7 +414,6 @@ class Signup {
     function loadSheet($id=0)
     {
         PHPWS_Core::initModClass('signup', 'Sheet.php');
-
         if ($id) {
             $this->sheet = new Signup_Sheet($id);
         } elseif (isset($_REQUEST['sheet_id'])) {
@@ -507,14 +512,19 @@ class Signup {
 
         // lock carries over to saving of peep.
         $db->setLock('signup_peeps', 'read');
-        $db->addColumn('id', null, null, true);
-        $db->addWhere('registered', 1);
-        $filled = $db->select('one');
-        $db->reset();
-        $db->addWhere('sheet_id', $peep->sheet_id);
-        $db->addWhere('email', $peep->email);
-        $db->addColumn('id');
-        $previous = $db->select('one');
+
+        if ($this->sheet->multiple) {
+            $previous = false;
+        } else {
+            $db->addColumn('id', null, null, true);
+            $db->addWhere('registered', 1);
+            $filled = $db->select('one');
+            $db->reset();
+            $db->addWhere('sheet_id', $peep->sheet_id);
+            $db->addWhere('email', $peep->email);
+            $db->addColumn('id');
+            $previous = $db->select('one');
+        }
 
         if (PHPWS_Error::logIfError($previous)) {
             $this->forwardMessage(dgettext('signup', 'An error occurred when trying to save your application.'), dgettext('signup', 'Sorry'));
@@ -816,6 +826,12 @@ class Signup {
             if ($this->sheet->end_time < mktime(0,0,0,1,1,1970)) {
                 $this->sheet->defaultEnd();
             }
+        }
+
+        if (isset($_POST['multiple'])) {
+            $this->sheet->multiple = 1;
+        } else {
+            $this->sheet->multiple = 0;
         }
 
         if (isset($errors)) {

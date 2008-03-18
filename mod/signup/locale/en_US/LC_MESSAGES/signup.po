@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-10 15:40-0400\n"
+"POT-Creation-Date: 2008-03-18 09:56-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,6 +39,9 @@ msgstr ""
 
 #, php-format
 msgid "Add slot to %s"
+msgstr ""
+
+msgid "Allow multiple signups"
 msgstr ""
 
 msgid "Alphabetic order"
@@ -77,6 +80,12 @@ msgid "CSV file"
 msgstr ""
 
 msgid "Click the link below to confirm your participation in the following:"
+msgstr ""
+
+msgid "Click to view and edit signups for this slot."
+msgstr ""
+
+msgid "Close"
 msgstr ""
 
 msgid "Close signup"
