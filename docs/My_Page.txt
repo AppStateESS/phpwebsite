@@ -12,7 +12,7 @@ Registering your module
 ------------------------------------
 This is simple. You just need to create a my_page.php file in your
 module's inc/ directory. When you module installs, the User module
-will see it an register your module. If you want to add a My Page tab
+will see it and register your module. If you want to add a My Page tab
 later, you can call:
 My_Page::registerMyPage('module_title');
 
