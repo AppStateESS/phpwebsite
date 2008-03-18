@@ -6,7 +6,7 @@ CREATE TABLE categories (
   title varchar(255) NOT NULL,
   description text,
   parent int NOT NULL default 0,
-  icon int default NOT NULL default 0,
+  icon int NOT NULL default 0,
   PRIMARY KEY  (id)
 );
 
