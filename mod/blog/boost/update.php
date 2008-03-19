@@ -227,7 +227,7 @@ function blog_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '1.7.1', '<'):
         if (!PHPWS_Boost::inBranch()) {
-            $content[] = '<pre>' . file_get_contents(PHPWS_SOURCE_DIR . 'mod/blog/boost/changes/1_7_0.txt') . '</pre>';
+            $content[] = '<pre>' . file_get_contents(PHPWS_SOURCE_DIR . 'mod/blog/boost/changes/1_7_1.txt') . '</pre>';
         }
 
     } // end of switch
