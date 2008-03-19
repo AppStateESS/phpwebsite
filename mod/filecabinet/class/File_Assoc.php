@@ -206,15 +206,10 @@ class FC_File_Assoc {
 
         case FC_IMAGE_RESIZE:
             if ($this->_source->id) {
-                if ($this->_link_image && PHPWS_Settings::get('filecabinet', 'auto_link_parent')
-                    && empty($this->_source->url)) {
-                    return $this->parentLinked();
+                if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
+                    return $this->_source->captioned(null, $this->_link_image);
                 } else {
-                    if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
-                        return $this->_source->captioned(null, $this->_link_image);
-                    } else {
-                        return $this->_source->getTag(null, $this->_link_image);
-                    }
+                    return $this->_source->getTag(null, $this->_link_image);
                 }
             } else {
                 $this->deadAssoc();

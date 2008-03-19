@@ -1,5 +1,12 @@
 Version 2.0.0
 ----------------------------------------------------------------
+19 March 2008
++ Update nulls the url column for those marked parent
++ Update drops parent_id column.
++ Resized images don't automatically link to parent anymore. Has to be
+  requested by module.
++ Udpated: templates/settings.tpl
+
 18 March 2008
 + Fixed bug in video thumbnailing.
 

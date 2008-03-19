@@ -25,7 +25,6 @@ CREATE TABLE images (
   size int NOT NULL default 0,
   width smallint NOT NULL default 0,
   height smallint NOT NULL default 0,
-  parent_id int NOT NULL default 0,
   url varchar(255) NULL,
   alt varchar(255) NOT NULL,
   PRIMARY KEY  (id)

@@ -41,7 +41,6 @@ class PHPWS_Image extends File_Common {
     /**
      * 
      */
-    var $parent_id        = 0;
     var $url              = null;
     
     var $_classtype       = 'image';

@@ -357,6 +357,8 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
         $content[] = '--- Durations added to multimedia files.';
 
+        fc_update_parent_links();
+
         if (!checkMultimediaDir($content, $home_dir)) {
             return false;
         }
@@ -400,5 +402,17 @@ Example: mkdir phpwebsite/files/multimedia/</pre>';
             return false;
         }
         return true;
+}
+
+function fc_update_parent_links()
+{
+    // Nulling the url column for images with 'parent' set as url
+    $db = new PHPWS_DB('images');
+    $db->addWhere('url', 'parent');
+    $db->addValue('url', NULL);
+    PHPWS_Error::logIfError($db->update());
+
+    // remove superfluous column
+    PHPWS_Error::logIfError($db->dropTableColumn('parent_id'));
 }
 ?>

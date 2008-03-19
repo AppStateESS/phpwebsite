@@ -12,7 +12,6 @@
 </fieldset>
 <fieldset>
     <legend>{IMAGE_SETTINGS}</legend>
-    <p style="margin-bottom : 1em">{AUTO_LINK_PARENT} <strong>{AUTO_LINK_PARENT_LABEL}</strong></p>
     <p style="margin-bottom : 1em">{CAPTION_IMAGES} <strong>{CAPTION_IMAGES_LABEL}</strong></p>
     <p style="margin-bottom : 1em"><strong>{MAX_IMAGE_DIMENSION_LABEL}</strong> 
     {MAX_IMAGE_DIMENSION}</p>
