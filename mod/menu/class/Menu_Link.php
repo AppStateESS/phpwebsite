@@ -184,23 +184,51 @@ class Menu_Link {
         return $db->saveObject($this);
     }
 
+    function isCurrentUrl() {
+        static $current_url = null;
+        static $redirect_url = null;
+
+        if (!$current_url) {
+            $current_url = preg_quote(PHPWS_Core::getCurrentUrl(true,false));
+        }
+
+        if (!$redirect_url) {
+            $redirect_url = preg_quote(PHPWS_Core::getCurrentUrl());
+        }
+
+        if ( preg_match("/$current_url$/", $this->url) ||
+             preg_match("/$redirect_url$/", $this->url) ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     function view($level='1')
     {
         static $current_parent = array();
 
-        $current_link = FALSE;
+        $current_link = false;
         $current_key = Key::getCurrent();
 
         if (!empty($current_key)) {
             if ($this->childIsCurrent($current_key)) {
                 $current_parent[] = $this->id;
             }
-           
+
             if ( (!$current_key->isDummy() && $current_key->id == $this->key_id) || ($current_key->url == $this->url) ) {
-                $current_link = TRUE;
+                $current_link = true;
                 $current_parent[] = $this->id;
                 $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
             }
+        } elseif (!$this->key_id && $this->isCurrentUrl()) {
+            if ($this->childIsCurrentUrl()) {
+                $current_parent[] = $this->id;
+            }
+
+            $current_link = true;
+            $current_parent[] = $this->id;
+            $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
         }
 
         if ($this->_menu->_show_all || $current_link || $this->parent == 0 ||
@@ -234,23 +262,44 @@ class Menu_Link {
     /**
      * Compares a link's children to the current key
      */
-    function childIsCurrent(&$current_key)
+    function childIsCurrent($current_key)
     {
         if (empty($this->_children)) {
-            return FALSE;
+            return false;
         }
 
         foreach ($this->_children as $child) {
-            if ( ($current_key->id !== 0 && $child->key_id == $current_key->id) || ($child->url == $current_key->url) ){
-                return TRUE;
+            if ( ($current_key->id !== 0 && $child->key_id == $current_key->id) || 
+                 ($child->url == $current_key->url)) {
+                return true;
             }
+
             if (!empty($child->_children)) {
                 if ($child->childIsCurrent($current_key)) {
                     return true;
                 }
             }
         }
-        return FALSE;
+        return false;
+    }
+
+    function childIsCurrentUrl()
+    {
+        if (empty($this->_children)) {
+            return false;
+        }
+
+        foreach ($this->_children as $child) {
+            if  ($this->isCurrentUrl()) {
+                return true;
+            }
+
+            if (!empty($child->_children)) {
+                if ($child->childIsCurrentUrl()) {
+                    return true;
+                }
+            }
+        }
     }
 
 
@@ -322,14 +371,14 @@ class Menu_Link {
         if ($this->key_id) {
             $vars['command'] = 'edit_link_title';
             $prompt_js['question']   = dgettext('menu', 'Type the new title for this link.');
-            $prompt_js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE);
+            $prompt_js['address']    = PHPWS_Text::linkAddress('menu', $vars, true);
             $prompt_js['answer']     = addslashes($this->getTitle());
             $prompt_js['value_name'] = 'link_title';
             $prompt_js['link']       = $link;
             return javascript('prompt', $prompt_js);
         } else {
             $vars['command'] = 'edit_link';
-            $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
+            $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
             $prompt_js['label']   = $link;
             $prompt_js['width']   = 425;
             $prompt_js['height']  = 225;
@@ -350,11 +399,11 @@ class Menu_Link {
         $vars['command'] = 'delete_link';
         $js['QUESTION'] = dgettext('menu', 'Are you sure you want to delete this link: ' . 
                                    addslashes($this->getTitle()));
-        $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
+        $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, true);
         return javascript('confirm', $js);
     }
 
-    function delete($save_links=FALSE)
+    function delete($save_links=false)
     {
         $db = $this->getDB();
         $db->addWhere('id', $this->id);
@@ -379,7 +428,7 @@ class Menu_Link {
             $this->link_order = $this->_getOrder();
             $this->save();
             $this->resetOrder();
-            return TRUE;
+            return true;
         }
 
         $above = new Menu_Link;
@@ -409,7 +458,7 @@ class Menu_Link {
             $this->link_order = -1;
             $this->save();
             $this->resetOrder();
-            return TRUE;
+            return true;
         }
 
         $below = new Menu_Link;

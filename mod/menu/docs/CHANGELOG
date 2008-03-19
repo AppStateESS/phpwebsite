@@ -1,5 +1,8 @@
 Version 1.4.4
 ----------------------------------------------------------------
+19 March 2008
++ Trying to get non-keyed menu items highlighted properly.
+
 11 December 2007
 + Added three new menu functions:
   o quickLink - inserts a new link on any menu pinned on all pages;
