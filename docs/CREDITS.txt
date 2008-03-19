@@ -129,7 +129,7 @@ Christian - hosts phpws.de, German support
 Wendall Cada - SF maintainer, bug reporter
 Eloi George/aDarkling - xmlrpc dev, bug/feature patches, mods
 Darren Greene
-Hilmar
+Hilmar - documentation, bugs
 Thomas de Jesus - SF bugs and RFE, irc assistance
 Bobby Kennedy/fatman - phpwebsitemanual host
 Rene Kiesler/rck - kiesler.at, phpws advocate and developer
