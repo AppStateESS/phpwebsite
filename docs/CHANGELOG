@@ -7,6 +7,7 @@ Version 1.8.0
 20 March 2008
 + getCurrentUrl now strips any forward slash from the front of the
   address
++ Added not like and not ilike to where.
 
 17 March 2008
 + copy_directory has a fourth parameter to ignore hidden files.

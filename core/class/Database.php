@@ -710,6 +710,8 @@ class PHPWS_DB {
                          '<=>',
                          'LIKE',
                          'ILIKE',
+                         'NOT LIKE',
+                         'NOT ILIKE',
                          'REGEXP',
                          'RLIKE',
                          'IN',
@@ -2608,6 +2610,8 @@ class PHPWS_DB_Where {
 
         if ($operator == 'LIKE' || $operator == 'ILIKE') {
             $operator = $GLOBALS['PHPWS_DB']['lib']->getLike();
+        } elseif ($operator == 'NOT LIKE' || $operator == 'NOT ILIKE') {
+            $operator = 'NOT ' . $GLOBALS['PHPWS_DB']['lib']->getLike();
         } elseif ($operator == '~' || $operator == 'REGEXP' || $operator == 'RLIKE') {
             $operator = $GLOBALS['PHPWS_DB']['lib']->getRegexp();
         }
