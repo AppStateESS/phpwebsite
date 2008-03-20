@@ -8,6 +8,8 @@ Version 1.8.0
 + getCurrentUrl now strips any forward slash from the front of the
   address
 + Added not like and not ilike to where.
++ Update missing fck and tinymce copy
++ Update missing multiple_select javascript
 
 17 March 2008
 + copy_directory has a fourth parameter to ignore hidden files.

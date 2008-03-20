@@ -226,19 +226,31 @@ You will need to make your hub/branch home directory writable if the file doesn\
 
         $content[] = '<pre>';
         $files = array('conf/core_modules.php', 'conf/file_types.php',
-                       'conf/text_settings.php');
+                       'conf/text_settings.php', 'conf/version.php');
+
         coreUpdateFiles($files, $content);
 
         if (!PHPWS_Boost::inBranch()) {
-            $files = array('javascript/ajax/requester.js',
-                           'javascript/captcha/freecap/freecap.php', 'javascript/check_all/head.js',
-                           'javascript/confirm/default.php', 'javascript/editors/fckeditor/default.php',
-                           'javascript/jquery/head.js', 'javascript/jquery/jquery.js', 
-                           'javascript/jquery/jquery.selectboxes.js', 'conf/version.php');
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_8_0.txt');
+        } else {
+            $files = array('javascript/ajax/requester.js', 'javascript/captcha/freecap/freecap.php', 'javascript/check_all/head.js',
+                           'javascript/confirm/default.php', 'javascript/jquery/head.js', 'javascript/jquery/jquery.js', 
+                           'javascript/jquery/jquery.selectboxes.js', 'javascript/multiple_select/body.js', 
+                           'javascript/multiple_select/head.js', 'javascript/multiple_select/default.php');
             
             coreUpdateFiles($files, $content);
 
-            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_8_0.txt');
+            if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor/', $home_directory . 'javascript/editors/fckeditor/')) {
+                $content[] = 'Successfully updated branch\'s FCKeditor.';
+            } else {
+                $content[] = 'Unsuccessfully updated branch\'s FCKeditor.';
+            }
+
+            if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/editors/tinymce/', $home_directory . 'javascript/editors/tinymce/')) {
+                $content[] = 'Successfully updated branch\'s TinyMCE.';
+            } else {
+                $content[] = 'Unsuccessfully updated branch\'s TinyMCE.';
+            }
         }
         $content[] = '</pre>';
     }
