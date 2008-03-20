@@ -84,6 +84,8 @@ function controlpanel_update(&$content, $currentVersion)
         $content[] = '2.1.5 changes
 ----------------
 + Commented out title in default template.
++ A module can force a control panel tab using the second parameter in
+  the display function.
 </pre>';
 
     }

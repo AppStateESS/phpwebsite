@@ -1,3 +1,10 @@
+Version 2.1.5
+--------------------------------------------------------------
++ A module can force a control panel tab using the second parameter in
+  the display function.
++ Commented out the title in the default template so it won't display
+  if not used.
+
 Version 2.1.4
 --------------------------------------------------------------
 12 October 2007

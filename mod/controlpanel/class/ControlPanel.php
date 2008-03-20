@@ -9,7 +9,7 @@ PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
 class PHPWS_ControlPanel {
 
-    function display($content=null)
+    function display($content=null, $current_tab=null)
     {
         Layout::addStyle('controlpanel');
 
@@ -41,9 +41,10 @@ class PHPWS_ControlPanel {
             $tabList[] = $tempTab['id'];
         }
 
+
         if (!empty($allLinks)) {
             $links = array_keys($allLinks);
-            if ($current_mod != 'controlpanel') {
+            if ($current_mod != 'controlpanel' && !$current_tab) {
                 foreach ($allLinks as $key => $tablinks) {
                     foreach($tablinks as $link) {
                         if ($link->itemname == $current_mod) {
@@ -54,6 +55,7 @@ class PHPWS_ControlPanel {
                 }
             }
         }
+
 
         foreach ($checkTabs as $tab) {
             if ($tab->getItemname() == 'controlpanel' &&
