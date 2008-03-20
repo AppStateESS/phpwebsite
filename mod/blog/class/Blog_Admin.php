@@ -285,14 +285,7 @@ class Blog_Admin {
             break;
         }
 
-        $template['TITLE']   = $title;
-        $template['MESSAGE'] = $message;
-        $template['CONTENT'] = $content;
-        $final = PHPWS_Template::process($template, 'blog', 'main.tpl');
-
-        $panel->setContent($final);
-        $finalPanel = $panel->display();
-        Layout::add(PHPWS_ControlPanel::display($finalPanel));
+        Layout::add(PHPWS_ControlPanel::display($panel->display($content, $title, $message)));
     }
 
 
