@@ -146,16 +146,14 @@ class PageSmith {
             break;
         }
 
-        $tpl['TITLE']   = $this->title;
-        $tpl['CONTENT'] = $this->content;
-        $tpl['MESSAGE'] = $this->message;
-
-        $content = PHPWS_Template::process($tpl, 'pagesmith', 'admin_main.tpl');
         if ($javascript) {
-            Layout::nakedDisplay($content);
+            $tpl['TITLE']   = $this->title;
+            $tpl['CONTENT'] = $this->content;
+            $tpl['MESSAGE'] = $this->message;
+            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'pagesmith', 'admin_main.tpl'));
         } else {
             $this->panel->setContent($content);
-            Layout::add(PHPWS_ControlPanel::display($this->panel->display($content)));
+            Layout::add(PHPWS_ControlPanel::display($this->panel->display($this->content, $this->title, $this->message)));
         }
     }
 
