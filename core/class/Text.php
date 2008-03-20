@@ -14,7 +14,7 @@
    */
 
 if (!defined('UTF8_MODE')) {
-    define ('UTF8_MODE', true);
+    define ('UTF8_MODE', false);
 }
 
 PHPWS_Core::configRequireOnce('core', 'text_settings.php');

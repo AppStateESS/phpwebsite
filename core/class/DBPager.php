@@ -5,7 +5,7 @@ define ('DBPAGER_PAGE_LIMIT', 12);
 define ('DBPAGER_DEFAULT_EMPTY_MESSAGE', _('No rows found.'));
 
 if (!defined('UTF8_MODE')) {
-    define ('UTF8_MODE', true);
+    define ('UTF8_MODE', false);
 }
 
 /**
