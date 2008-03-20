@@ -41,7 +41,7 @@ class My_Page {
         } else {
             $panel->setContent($content);
         }
-        Layout::add(PHPWS_ControlPanel::display($panel->display()));
+        Layout::add(PHPWS_ControlPanel::display($panel->display(), 'my_page'));
     }
 
     function init()

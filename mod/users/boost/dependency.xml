@@ -6,4 +6,10 @@
     <version>1.8.0</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
   </module>
+  <module>
+    <title>controlpanel</title>
+    <properName>Control Panel</properName>
+    <version>2.1.5</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/controlpanel/</url>
+  </module>
 </dependency>

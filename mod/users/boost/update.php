@@ -190,6 +190,7 @@ timeout INT NOT NULL default 0,
 + Bookmark won\'t return a user to a authkey page if their session dies.
 + Fixed bug #1850815 : unknown function itemIsAllowed in Permission.php
 + My Pages are unregistered on module removal.
++ My Page tab stays fixed.
 </pre>';
     } // End of switch statement
 

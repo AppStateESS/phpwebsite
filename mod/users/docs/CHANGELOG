@@ -1,5 +1,9 @@
 Version 2.4.8
 -----------------------------------------------------------------------
+20 March 2008
++ Now uses second display() parameter in controlpanel::display to hold
+  my_page as current tab
+
 12 March 2008
 + My Pages are unregistered on module deletion (thanks Verdon).
 
