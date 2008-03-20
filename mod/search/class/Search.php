@@ -6,6 +6,9 @@
    * @author Matthew McNaney <mcnaney at gmail dot com>
    * @version $Id$
    */
+if (!defined('UTF8_MODE')) {
+    define ('UTF8_MODE', false);
+}
 
 class Search {
     var $key_id   = 0;

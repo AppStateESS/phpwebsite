@@ -8,6 +8,10 @@ if (!(strpos($_SERVER['REQUEST_URI'], $_SERVER['PHP_SELF']) !== false)) {
     forwardInfo();
 }
 
+if (!defined('UTF8_MODE')) {
+    define ('UTF8_MODE', false);
+}
+
 function forwardInfo()
 {
     $url =  PHPWS_Core::getCurrentUrl();
