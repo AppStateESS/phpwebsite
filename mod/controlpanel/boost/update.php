@@ -77,6 +77,15 @@ function controlpanel_update(&$content, $currentVersion)
 + Panel::display now includes the options to send content, title, and
   message information to be put in a default template.
 </pre>';
+
+    case version_compare($currentVersion, '2.1.5', '<'):
+        $content[] = '<pre>';
+        cpFileUpdate(array('templates/default.tpl'), $content);
+        $content[] = '2.1.5 changes
+----------------
++ Commented out title in default template.
+</pre>';
+
     }
     return true;
 }
