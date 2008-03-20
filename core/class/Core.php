@@ -807,7 +807,8 @@ class PHPWS_Core {
             $address[] = $_SERVER['QUERY_STRING'];
         }
 
-        return implode('', $address);
+        $address = implode('', $address);
+        return preg_replace('@^/?@', '', $address);
     }
 
     /**
