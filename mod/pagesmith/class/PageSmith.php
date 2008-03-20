@@ -115,6 +115,7 @@ class PageSmith {
             if (!$this->postPage()) {
                 $this->message = dgettext('pagesmith', 'Not enough content to create a page.');
                 $this->loadForms();
+                $this->page->loadSections(true);
                 $this->forms->editPage();
             } else {
                 PHPWS_Cache::clearCache();
@@ -235,7 +236,9 @@ class PageSmith {
 
             // If this page is an update, or the section has some content
             // put it in the section list.
-            if ($this->page->id || !empty($section->content)) {
+
+            
+            if ($this->page->id || (!empty($section->content) && !($section->content == 'image' && !$section->type_id)) ) {
                 $sections[$section_name] = & $section;
             }
         }

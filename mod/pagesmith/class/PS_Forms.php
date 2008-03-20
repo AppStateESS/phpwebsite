@@ -13,13 +13,7 @@ class PS_Forms {
     function editPage()
     {
         if (!$this->ps->page->id) {
-            if (isset($this->ps->page->_tpl->name)) {
-                $tpl = $this->ps->page->_tpl->name;
-            } else {
-                $tpl = @$_GET['tpl'];
-            }
-
-            if (!empty($tpl)) {
+            if (!empty($this->ps->page->_tpl)) {
                 $this->pageLayout();
             } elseif (isset($_GET['fname'])) {
                 $this->pickTemplate();
