@@ -234,7 +234,7 @@ You will need to make your hub/branch home directory writable if the file doesn\
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_8_0.txt');
         }
 
-        if (PHPWS_Core::isBranch() {
+        if (PHPWS_Core::isBranch() || PHPWS_Boost::inBranch()) {
             $files = array('javascript/ajax/requester.js', 'javascript/captcha/freecap/freecap.php', 'javascript/check_all/head.js',
                            'javascript/confirm/default.php', 'javascript/jquery/head.js', 'javascript/jquery/jquery.js', 
                            'javascript/jquery/jquery.selectboxes.js', 'javascript/multiple_select/body.js', 
