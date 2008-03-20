@@ -1,5 +1,8 @@
 Version 1.2.0
 ---------------------------------------------------------------
+20 March 2008
++ Added error message if blank page is attempted.
+
 5 March 2008
 + PageSmith now allows the sorting of templates
 + Page titles now added to search.

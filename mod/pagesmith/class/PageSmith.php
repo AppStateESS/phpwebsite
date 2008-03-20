@@ -112,9 +112,14 @@ class PageSmith {
             break;
 
         case 'post_page':
-            $this->postPage();
-            PHPWS_Cache::clearCache();
-            PHPWS_Core::reroute($this->page->url());
+            if (!$this->postPage()) {
+                $this->message = dgettext('pagesmith', 'Not enough content to create a page.');
+                $this->loadForms();
+                $this->forms->editPage();
+            } else {
+                PHPWS_Cache::clearCache();
+                PHPWS_Core::reroute($this->page->url());
+            }
             break;
 
         case 'front_page_toggle':
