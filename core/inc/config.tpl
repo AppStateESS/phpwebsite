@@ -257,6 +257,6 @@ define('MOD_REWRITE_ENABLED', FALSE);
  * is native English.
  */
 
-define ('UTF8_MODE', true);
+define ('UTF8_MODE', false);
 
 ?>
