@@ -140,7 +140,7 @@ function pagesmith_update(&$content, $currentVersion)
 + Added url parser to passinfo script to allow images to work with fck better.
 </pre>';
 
-    case version_compare($currentVersion, '1.2.0', '<'):
+    case version_compare($currentVersion, '1.2.1', '<'):
         $content[] = '<pre>';
 
         $source_tpl = PHPWS_SOURCE_DIR . 'mod/pagesmith/templates/page_templates/';
@@ -182,7 +182,7 @@ function pagesmith_update(&$content, $currentVersion)
         pagesmithUpdateFiles($files, $content);
 
 
-        $content[] = '1.2.0 changes
+        $content[] = '1.2.1 changes
 ----------------
 + PageSmith now allows the sorting of templates
 + Page titles now added to search.
@@ -190,6 +190,7 @@ function pagesmith_update(&$content, $currentVersion)
 + Search indexing added to update and version raised.
 + Added search to pagesmith.
 + Changed to new url rewriting method.</pre>';
+
     } // end switch
 
     return true;
