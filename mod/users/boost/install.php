@@ -31,8 +31,8 @@ function users_install(&$content)
             Branch::restoreBranchDB();
             $auth_db = new PHPWS_DB('user_authorization');
             $user_db = new PHPWS_DB('users');
+            $group_db = new PHPWS_DB('users_groups');
             foreach ($deities as $deity) {
-
                 $auth_db->addValue('username', $deity['username']);
                 $auth_db->addValue('password', $deity['password']);
                 $result = $auth_db->insert();
@@ -51,6 +51,17 @@ function users_install(&$content)
                     Branch::loadBranchDB();
                     return FALSE;
                 }
+
+                $group_db->addValue('active', 1);
+                $group_db->addValue('name', $deity['username']);
+                $group_db->addValue('user_id', $result);
+                if (PHPWS_Error::logIfError($group_db->insert())) {
+                    $content[] = dgettext('users', 'Unable to copy deity user group to branch.');
+                    Branch::loadBranchDB();
+                    return FALSE;
+                }
+
+                $group_db->reset();
                 $auth_db->reset();
                 $user_db->reset();
             }

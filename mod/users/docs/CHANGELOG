@@ -1,5 +1,9 @@
 Version 2.4.8
 -----------------------------------------------------------------------
+21 March 2008
++ Install.php and update.php are now creating groups for branch copied
+  deities.
+
 20 March 2008
 + Now uses second display() parameter in controlpanel::display to hold
   my_page as current tab

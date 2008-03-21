@@ -181,7 +181,36 @@ timeout INT NOT NULL default 0,
 </pre>';
 
     case version_compare($currentVersion, '2.4.8', '<'):
-        $content[] = '<pre>2.4.8 changes
+        $content[] = '<pre>';
+
+        if (PHPWS_Core::isBranch() || PHPWS_Boost::inBranch()) {
+            $user_db = new PHPWS_DB('users');
+            $user_db->addWhere('deity', 1);
+            $user_db->addColumn('id');
+            $user_db->addColumn('username');
+            $user_db->setIndexBy('id');
+            $user_ids = $user_db->select('col');
+
+            if (!empty($user_ids) && !PHPWS_Error::logIfError($user_ids)) {
+                $group_db = new PHPWS_DB('users_groups');
+                foreach ($user_ids as $id=>$username) {
+                    $group_db->addWhere('user_id', $id);
+                    $result = $group_db->select('row');
+                    if (!$result) {
+                        $group_db->reset();
+                        $group_db->addValue('active', 1);
+                        $group_db->addValue('name', $username);
+                        $group_db->addValue('user_id', $id);
+                        if (!PHPWS_Error::logIfError($group_db->insert())) {
+                            $content[] = '--- Created missing group for user: ' . $username;
+                        }
+                    }
+                    $group_db->reset();
+                }
+            }
+        }
+
+        $content[] = '2.4.8 changes
 -----------------
 + Raised sql character limit in default username, display_name, and
   group name installs.
