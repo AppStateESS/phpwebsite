@@ -180,7 +180,7 @@ timeout INT NOT NULL default 0,
   written yet.
 </pre>';
 
-    case version_compare($currentVersion, '2.4.8', '<'):
+    case version_compare($currentVersion, '2.4.9', '<'):
         $content[] = '<pre>';
 
         if (PHPWS_Core::isBranch() || PHPWS_Boost::inBranch()) {
@@ -210,7 +210,7 @@ timeout INT NOT NULL default 0,
             }
         }
 
-        $content[] = '2.4.8 changes
+        $content[] = '2.4.9 changes
 -----------------
 + Raised sql character limit in default username, display_name, and
   group name installs.
