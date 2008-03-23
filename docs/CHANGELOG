@@ -4,6 +4,9 @@ its own separate CHANGELOG file.
 
 Version 1.8.0
 ---------------------------------------------------------------
+23 March 2008
++ Fix for atHome in Core
+
 20 March 2008
 + getCurrentUrl now strips any forward slash from the front of the
   address
