@@ -9,7 +9,7 @@ if (isset($data['match']) && is_array($data['match'])) {
     foreach ($data['match'] as $match) {
         $link = sprintf('<a href="#" onclick="remove(\'%s\', \'%s\'); return false;">%s</a>',
                         $data['id'], $match, $data['options'][$match]);
-        $input = sprintf('<input id="%s-hidden" type="hidden" name="list_item[]" value="%s" />', $data['id'], $match);
+        $input = sprintf('<input id="%s-hidden" type="hidden" name="%s[]" value="%s" />', $data['id'], $data['select_name'], $match);
         $divs[] = sprintf('<div id="%s-add-%s">%s%s</div>', $data['id'], $match, $link, $input);
         unset($data['options'][$match]);
     }

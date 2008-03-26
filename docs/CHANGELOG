@@ -4,6 +4,9 @@ its own separate CHANGELOG file.
 
 Version 1.8.0
 ---------------------------------------------------------------
+26 March 2008
++ Fixed multiple select input
+
 23 March 2008
 + Fix for atHome in Core
 
