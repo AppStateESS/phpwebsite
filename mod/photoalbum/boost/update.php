@@ -70,10 +70,11 @@ function photoalbum_update(&$content, $version) {
 </pre>';
 
     case version_compare($version, '1.4.4', '<'):
-        PHPWS_Boost::updateFiles(array('conf/config.php'), 'photoalbum');
+        PHPWS_Boost::updateFiles(array('conf/config.php', 'templates/albums/list.tpl'), 'photoalbum');
         $content[] = '<pre>
 1.4.4 changes
 -------------
++ Added page navigation to album listing.
 + Fixed path to icon in SlideShow.
 + Fixes attempted for batch upload.
 + Removed html tags and newline calls causing javascript errors.
