@@ -1,5 +1,7 @@
 Version 2.1.5
 --------------------------------------------------------------
+26 March 2008
++ Fixed unregister script for branches.
 + A module can force a control panel tab using the second parameter in
   the display function.
 + Commented out the title in the default template so it won't display

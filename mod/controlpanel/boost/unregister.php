@@ -20,7 +20,7 @@ function controlpanel_unregister($module, &$content)
         return FALSE;
     }
 
-    include_once($cpFile);
+    include $cpFile;
 
     /*** Get all the links associated with a module ***/
     if (isset($link) && is_array($link)) {
