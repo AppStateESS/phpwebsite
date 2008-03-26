@@ -16,6 +16,4 @@ $permissions['edit_permissions'] = dgettext('users', 'Edit Permissions');
  * Also controls individual user authorization setting
  */
 $permissions['settings']         = dgettext('users', 'Authorization/Settings');
-$permissions['ban_users']        = dgettext('users', 'Ban users');
-
 ?>
