@@ -265,7 +265,7 @@ class Profile {
             $this->contributor = Current_User::getUsername();
         }
 
-        if (isset($_POST['website'])) {
+        if (!empty($_POST['website'])) {
             $link = PHPWS_Text::checkLink($_POST['website']);
             $this->website = $link;
             if (!PHPWS_Text::isValidInput($link, 'url')) {

@@ -43,6 +43,7 @@ function profiler_update(&$content, $currentVersion)
         PHPWS_Boost::updateFiles(array('templates/forms/division_list.tpl'), 'profiler');
         $content[] = '0.4.0 changes
 ---------------
++ Website address is not required.
 + Supports new File Cabinet changes.
 + Can now delete divisions.
 + Change made to allow accented characters for division names.
