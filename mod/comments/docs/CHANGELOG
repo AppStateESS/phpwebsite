@@ -1,5 +1,8 @@
 Version 1.0.0
 ------------------------------------------------------------------------
+26 March 2008
++ added permission update to comments
++ Added error message for wrong admin call
 
 7 March 2008
 + Permission check added to popup.

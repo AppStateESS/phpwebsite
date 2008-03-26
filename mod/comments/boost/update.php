@@ -61,6 +61,7 @@ Please download 0.6.3.</pre>';
 
         commentsUpdatefiles($files, $content);
         PHPWS_Boost::registerMyModule('comments', 'controlpanel', $content);
+        PHPWS_Boost::registerMyModule('comments', 'users', $content);
 
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/comments/boost/changes/1_0_0.txt');

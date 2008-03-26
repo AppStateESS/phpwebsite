@@ -235,6 +235,8 @@ class Comments {
             Layout::nakedDisplay($content);
             break;
 
+        default:
+            PHPWS_Core::errorPage('404');
         }
         $panel->setContent($content);
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
