@@ -9,7 +9,7 @@
   <module>
     <title>boost</title>
     <properName>Boost</properName>
-    <version>2.1.2</version>
+    <version>2.2.1</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/boost/</url>
   </module>
 </dependency>
