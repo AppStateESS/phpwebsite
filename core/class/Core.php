@@ -256,7 +256,9 @@ class PHPWS_Core {
  
     function atHome()
     {
-        if (empty($_SERVER['QUERY_STRING']) && empty($_SERVER['REDIRECT_URL']) && $_SERVER['REQUEST_METHOD'] == 'GET') {
+        if ( empty($_SERVER['QUERY_STRING']) && 
+             (empty($_SERVER['REDIRECT_URL']) || $_SERVER['REDIRECT_URL'] == '/') && 
+             $_SERVER['REQUEST_METHOD'] == 'GET' ) {
             return TRUE;
         } else {
             return FALSE;
