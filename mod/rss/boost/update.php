@@ -93,6 +93,14 @@ function rss_update(&$content, $version)
 + Fixed the timeout setting for the rss caching.
 </pre>';
 
+    case version_compare($version, '0.2.5', '<'):
+        $content[] = '<pre>
+0.2.5 changes
+-------------
++ Mod rewrite link added to rss feed.
++ High ascii characters have their ampersand parsed.
+</pre>';
+
 
     }
 

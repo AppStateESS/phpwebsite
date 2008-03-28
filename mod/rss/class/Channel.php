@@ -95,9 +95,17 @@ class RSS_Channel {
     function getAddress($include_http=TRUE)
     {
         if ($include_http) {
-            return PHPWS_Core::getHomeHttp() . 'index.php?module=rss&amp;mod_title=' . $this->module;
+            if (MOD_REWRITE_ENABLED) {
+                return PHPWS_Core::getHomeHttp() . 'rss/' . $this->module;
+            } else {
+                return PHPWS_Core::getHomeHttp() . 'index.php?module=rss&amp;mod_title=' . $this->module;
+            }
         } else {
-            return 'index.php?module=rss&amp;mod_title=' . $this->module;
+            if (MOD_REWRITE_ENABLED) {
+                return 'rss/' . $this->module;
+            } else {
+                return 'index.php?module=rss&amp;mod_title=' . $this->module;
+            }
         }
     }
 
@@ -137,10 +145,10 @@ class RSS_Channel {
         }
 
         $home_http = PHPWS_Core::getHomeHttp();
-        $template['CHANNEL_TITLE']       = $this->title;
+        $template['CHANNEL_TITLE']       = preg_replace('/&(?!amp;)/', '&amp;', $this->title);
         $template['CHANNEL_ADDRESS']     = $this->getAddress();
         $template['HOME_ADDRESS']        = $home_http;
-        $template['CHANNEL_DESCRIPTION'] = $this->description;
+        $template['CHANNEL_DESCRIPTION'] = preg_replace('/&(?!amp;)/', '&amp;', $this->description);
         $template['LANGUAGE']            = CURRENT_LANGUAGE; // change later
         $template['SEARCH_LINK'] = sprintf('%sindex.php?module=search&amp;mod_title=%s&amp;user=search',
                                            $home_http, $this->module);
@@ -163,7 +171,7 @@ class RSS_Channel {
                 $itemTpl['ITEM_LINK']         = $home_http . preg_replace('/&(?!amp;)/', '&amp;', $key->url);
                 $itemTpl['ITEM_SOURCE']       = sprintf('%sindex.php?module=rss&amp;mod_title=%s', $home_http, $this->module);
 
-                $itemTpl['ITEM_DESCRIPTION']  = strip_tags(trim($key->summary));
+                $itemTpl['ITEM_DESCRIPTION']  = strip_tags(trim(preg_replace('/&(?!amp;)/', '&amp;', $key->summary)));
                 $itemTpl['ITEM_AUTHOR']       = $key->creator;
                 $itemTpl['ITEM_PUBDATE']      = $key->getCreateDate('%a, %d %b %Y %T GMT');
 
@@ -171,7 +179,7 @@ class RSS_Channel {
                 $itemTpl['ITEM_DC_TYPE']      = 'Text'; //pull from db later
                 $itemTpl['ITEM_DC_CREATOR']   = $key->creator;
 
-                $itemTpl['ITEM_SOURCE_TITLE'] = $this->title;
+                $itemTpl['ITEM_SOURCE_TITLE'] = preg_replace('/&(?!amp;)/', '&amp;', $this->title);
 
                 $template['item-listing'][] = $itemTpl;
             }

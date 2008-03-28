@@ -10,15 +10,17 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
+PHPWS_Core::plugForward('mod_title');
+
 if ( ( isset($_REQUEST['command']) || isset($_REQUEST['tab']) ) && Current_User::allow('rss')) {
     PHPWS_Core::initModClass('rss', 'Admin.php');
     RSS_Admin::main();
- } elseif (isset($_REQUEST['mod_title'])) {
+ } elseif (isset($_GET['mod_title'])) {
      PHPWS_Core::initModClass('rss', 'RSS.php');
-     RSS::viewChannel($_REQUEST['mod_title']);
- } elseif (isset($_REQUEST['id'])) {
+     RSS::viewChannel($_GET['mod_title']);
+ } elseif (isset($_GET['id'])) {
      PHPWS_Core::initModClass('rss', 'RSS.php');
-     RSS::viewChannel($_REQUEST['id']);
+     RSS::viewChannel($_GET['id']);
  } else {
     PHPWS_Core::errorPage('404');
  }

@@ -1,3 +1,9 @@
+Version 0.2.5
+-----------------------------------------------------------------------------
+28 March 2008
++ Mod rewrite link added to rss feed.
++ High ascii characters have their ampersand parsed.
+
 Version 0.2.4
 -----------------------------------------------------------------------------
 3 January 2008
