@@ -233,6 +233,7 @@ class PHPWS_Photo extends PHPWS_Item {
      * @modified Verdon Vaillancourt
      */
     function _save() {
+        $allowedImageTypes = unserialize(ALLOWED_IMAGE_TYPES);
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $id = $this->getId();
         $authorize = TRUE;
@@ -296,7 +297,7 @@ class PHPWS_Photo extends PHPWS_Item {
                 chmod($file, 0644);
                 $info = @getimagesize($file);
 
-                if (PHPWS_Image::allowImageType($_FILES['Photo']['type'])) {
+                if (in_array($_FILES['Photo']['type'], $allowedImageTypes)) {
                     $this->_name = $name;
                     $this->_type = $_FILES['Photo']['type'];
                     $this->_width = $info[0];

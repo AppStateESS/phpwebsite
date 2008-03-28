@@ -1,5 +1,10 @@
 Note: this log is only for work done since the conversion for 1.x
 
+Version 1.4.5
+-----------------------------------------------------------------
++ Fixed bug preventing image upload.
+
+
 Version 1.4.4
 -----------------------------------------------------------------
 26 March 2008

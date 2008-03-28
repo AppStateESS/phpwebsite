@@ -81,6 +81,14 @@ function photoalbum_update(&$content, $version) {
 + Fixed: photoalbum was calling hub config file instead of local version 
 </pre>';
 
+    case version_compare($version, '1.4.5', '<'):
+        PHPWS_Boost::updateFiles(array('conf/config.php'), 'photoalbum');
+        $content[] = '<pre>
+1.4.5 changes
+-------------
++ Fixed: inability to upload photos.
+</pre>';
+
     }
 
     return true;
