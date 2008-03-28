@@ -21,13 +21,13 @@
   <module>
     <title>comments</title>
     <properName>Comments</properName>
-    <version>0.6.1</version>
+    <version>1.0.0</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/comments/</url>
   </module>
   <module>
     <title>search</title>
     <properName>Search</properName>
-    <version>0.2.0</version>
+    <version>0.3.2</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/search/</url>
   </module>
   <module>
@@ -39,7 +39,7 @@
   <module>
     <title>users</title>
     <properName>Users</properName>
-    <version>2.3.2</version>
+    <version>2.4.9</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/users</url>
   </module>
 </dependency>
