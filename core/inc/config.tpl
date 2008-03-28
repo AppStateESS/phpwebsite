@@ -245,7 +245,7 @@ define('CACHE_DIRECTORY', '{cache_directory}');
  * function properly.
  */
 
-define('MOD_REWRITE_ENABLED', FALSE);
+define('MOD_REWRITE_ENABLED', TRUE);
 
 /******************* UTF8 Mode *********************************/
 /**
