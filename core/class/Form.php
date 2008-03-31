@@ -1302,7 +1302,7 @@ class PHPWS_Form {
         }
 
         unset($this->_elements['authkey']);
-        if (class_exists('Current_User')) {
+        if (class_exists('Current_User') && $this->use_auth_key) {
             if ($authkey = Current_User::getAuthKey()) {
                 $this->addHidden('authkey', $authkey);
             }
