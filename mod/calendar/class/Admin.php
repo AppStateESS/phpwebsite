@@ -981,6 +981,64 @@ class Calendar_Admin {
         }
     }
 
+    function repeatYearly(&$event)
+    {
+        $max_count = 0;
+        if ( (date('L', $event->start_time) && date('n', $event->start_time) == 2 && date('j', $event->start_time) == 29) && 
+             (date('L', $event->end_time) && date('n', $event->end_time) == 2 && date('j', $event->end_time) == 29) ) {
+            $leap_year = true;
+        } else {
+            $leap_year = false;
+        }
+        printf('start time %s<br>', strftime('%c', $event->start_time));
+        $c_hour  = (int)strftime('%H', $event->start_time);
+        $c_min   = (int)strftime('%M', $event->start_time);
+        $c_month = (int)strftime('%m', $event->start_time);
+        $c_day   = (int)strftime('%d', $event->start_time);
+        $c_year  = (int)strftime('%Y', $event->start_time);
+
+        $time_diff = $event->end_time - $event->start_time;
+        $copy_event = $event->repeatClone();
+
+        // start count on year ahead
+        if ($leap_year) {
+            $ts_count = mktime($c_hour, $c_min, 0, $c_month, $c_day, $c_year + 4);
+        } else {
+            $ts_count = mktime($c_hour, $c_min, 0, $c_month, $c_day, $c_year + 1);
+        }
+        
+        while ($ts_count <= $event->end_repeat) {
+            $copy_event->id = 0;
+            $c_hour   = (int)strftime('%H', $ts_count);
+            $c_min    = (int)strftime('%M', $ts_count);
+            $ts_month = $c_month = (int)strftime('%m', $ts_count);
+            $ts_day   = $c_day = (int)strftime('%d', $ts_count);
+            $c_year   = (int)strftime('%Y', $ts_count);
+
+            $max_count++;
+
+            if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
+                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatYearly');
+            }
+
+            $start_time = mktime($c_hour, $c_min, 0, $ts_month, $ts_day, $c_year);
+            $copy_event->start_time = $start_time;
+            $copy_event->end_time   = $start_time + $time_diff;
+
+            $result = $copy_event->save();
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+
+            if ($leap_year) {
+                $ts_count = mktime($c_hour, $c_min, 0, $c_month, $c_day, $c_year + 4);
+            } else {
+                $ts_count = mktime($c_hour, $c_min, 0, $c_month, $c_day, $c_year + 1);
+            }
+        }
+        return true;
+    }
+
 
     function repeatMonthly(&$event)
     {
@@ -1011,11 +1069,11 @@ class Calendar_Admin {
 
             $copy_event->id = 0;            
 
-            $c_hour = (int)strftime('%H', $ts_count);
-            $c_min = (int)strftime('%M', $ts_count);
+            $c_hour   = (int)strftime('%H', $ts_count);
+            $c_min    = (int)strftime('%M', $ts_count);
             $ts_month = $c_month = (int)strftime('%m', $ts_count);
-            $ts_day = $c_day = (int)strftime('%d', $ts_count);
-            $c_year = (int)strftime('%Y', $ts_count);
+            $ts_day   = $c_day = (int)strftime('%d', $ts_count);
+            $c_year   = (int)strftime('%Y', $ts_count);
 
             switch ($_POST['monthly_repeat']) {
             case 'begin':
