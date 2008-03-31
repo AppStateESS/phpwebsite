@@ -10,7 +10,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 }
 
 if (isset($_GET['var1'])) {
-    PHPWS_Core::plugForward('id');
+    PHPWS_Core::plugForward('id', 'page');
 }
 
 if (isset($_REQUEST['wp_user'])) {
