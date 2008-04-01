@@ -215,20 +215,22 @@ class Menu_Link {
             if ($this->childIsCurrent($current_key)) {
                 $current_parent[] = $this->id;
             }
-
             if ( (!$current_key->isDummy() && $current_key->id == $this->key_id) || ($current_key->url == $this->url) ) {
                 $current_link = true;
                 $current_parent[] = $this->id;
                 $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
             }
-        } elseif (!$this->key_id && $this->isCurrentUrl()) {
-            if ($this->childIsCurrentUrl()) {
+        } else {
+            if ($this->isCurrentUrl()) {
+                $current_link = true;
                 $current_parent[] = $this->id;
+                $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
             }
 
-            $current_link = true;
+        }
+
+        if ($this->childIsCurrentUrl()) {
             $current_parent[] = $this->id;
-            $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
         }
 
         if ($this->_menu->_show_all || $current_link || $this->parent == 0 ||
@@ -290,7 +292,7 @@ class Menu_Link {
         }
 
         foreach ($this->_children as $child) {
-            if  ($this->isCurrentUrl()) {
+            if  ($child->isCurrentUrl()) {
                 return true;
             }
 
