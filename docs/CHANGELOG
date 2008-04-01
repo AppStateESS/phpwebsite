@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+1 April 2008
++ Change to pullTables to allow create unique index to work properly.
+
 31 March 2008
 + Form class was ignoring the use_auth_key variable.
 

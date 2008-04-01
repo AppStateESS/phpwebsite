@@ -192,7 +192,7 @@ class PHPWS_DB {
         if ($prefix) {
             $sql = PHPWS_DB::prefixQuery($sql);
         }
-
+        echo $sql;
         PHPWS_DB::logDB($sql);
 
         return $GLOBALS['PHPWS_DB']['connection']->query($sql);
@@ -2407,7 +2407,7 @@ class PHPWS_DB {
             break;
 
         case 'create':
-            if (preg_match('/^create index/i', $sql)) {
+            if (preg_match('/^create (unique )?index/i', $sql)) {
                 $start = stripos($sql, ' on ') + 4;
                 $para = stripos($sql, '(');
                 $length = $para - $start;
