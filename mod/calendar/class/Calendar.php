@@ -95,7 +95,6 @@ class PHPWS_Calendar {
 
 
     function getEvents($start_search=null, $end_search=null) {
-
         PHPWS_Core::initModClass('calendar', 'Event.php');
         if (!isset($start_search)) {
             $start_search = mktime(0,0,0,1,1,1970);
@@ -205,7 +204,7 @@ class PHPWS_Calendar {
 
     function loadEventList($start_search=null, $end_search=null)
     {
-        $result = $this->getEvents($start_search, $end_search, $this->schedule->id);
+        $result = $this->getEvents($start_search, $end_search);
         $this->event_list = & $result;
         $this->sortEvents();
         return true;
