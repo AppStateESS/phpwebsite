@@ -192,7 +192,7 @@ class PHPWS_DB {
         if ($prefix) {
             $sql = PHPWS_DB::prefixQuery($sql);
         }
-        echo $sql;
+
         PHPWS_DB::logDB($sql);
 
         return $GLOBALS['PHPWS_DB']['connection']->query($sql);
