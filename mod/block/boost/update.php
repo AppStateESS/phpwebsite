@@ -50,9 +50,9 @@ Please download version 1.1.2.</pre>';
         }
         if (PHPWS_Boost::updateFiles(array('conf/config.php', 'templates/edit.tpl', 'templates/sample.tpl'),
                                      'block')) {
-            $content[] = '--- Successfully copied conf/config.php';
+            $content[] = '--- Successfully updated files.';
         } else {
-            $content[] = '--- Unable to copy conf/config.php';
+            $content[] = '--- Unable to update files. Please run revert in Boost.';
         }
         
         $content[] = '1.2.0 changes
