@@ -35,8 +35,30 @@ Please download version 1.1.2.</pre>';
 -------------
 + Changed the sample.tpl layout to conform with other "box" templates.
 </pre>';
+ 
+  case version_compare($currentVersion, '1.2.0', '<'):
+        $content[] = '<pre>';
+        $db = new PHPWS_DB('block');
+        if (PHPWS_Error::logIfError($db->addTableColumn('file_id', 'int not null default 0'))) {
+            $content[] = 'Unable to add file_id column to block table.</pre>';
+            return false;
+        }
+
+        if (PHPWS_Error::logIfError($db->addTableColumn('hide_title', 'smallint not null default 0'))) {
+            $content[] = 'Unable to add file_only column to block table.</pre>';
+            return false;
+        }
+        if (PHPWS_Boost::updateFiles(array('conf/config.php', 'templates/edit.tpl', 'templates/sample.tpl'),
+                                     'block')) {
+            $content[] = '--- Successfully copied conf/config.php';
+        } else {
+            $content[] = '--- Unable to copy conf/config.php';
+        }
+        
+        $content[] = '1.2.0 changes
+-----------------
++ Blocks can now contain File Cabinet elements.</pre>';
     }
-    
     return TRUE;
 }
 

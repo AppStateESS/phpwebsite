@@ -7,14 +7,16 @@
  */
 
 class Block_Item {
-    var $id        = 0;
-    var $key_id    = 0;
-    var $title     = NULL;
-    var $content   = NULL;
-    var $_pin_key  = NULL;
+    var $id         = 0;
+    var $key_id     = 0;
+    var $title      = null;
+    var $content    = null;
+    var $file_id    = 0;
+    var $hide_title = 0;
+    var $_pin_key   = null;
     
 
-    function Block_Item($id=NULL)
+    function Block_Item($id=null)
     {
         if (empty($id)) {
             return;
@@ -70,7 +72,7 @@ class Block_Item {
 
     function getKey()
     {
-        $key = & new Key('block', 'block', $this->id);
+        $key = new Key('block', 'block', $this->id);
         return $key;
     }
 
@@ -95,7 +97,7 @@ class Block_Item {
 
     function save($save_key=TRUE)
     {
-        $db = & new PHPWS_DB('block');
+        $db = new PHPWS_DB('block');
         $result = $db->saveObject($this);
         if (PEAR::isError($result)) {
             return $result;
@@ -158,7 +160,7 @@ class Block_Item {
 
     function view($pin_mode=FALSE, $admin_icon=TRUE)
     {
-        $edit = $opt = NULL;
+        $edit = $opt = null;
         if (Current_User::allow('block')) {
             $img = sprintf('<img src="./images/mod/block/edit.png" alt="%s" title="%s" />', dgettext('block', 'Edit block'), dgettext('block', 'Edit block'));
             $edit = PHPWS_Text::secureLink($img, 'block', array('block_id'=>$this->id,
@@ -183,11 +185,14 @@ class Block_Item {
         }
         
         $link['block_id'] = $this->id;
-        $template = array('TITLE'   => $this->getTitle(),
-                          'CONTENT' => $this->getContent(),
+        $template = array('CONTENT' => $this->getContent(),
+                          'FILE'    => Cabinet::getTag($this->file_id),
                           'OPT'     => $opt,
                           'EDIT'    => $edit
                           );
+        if (!$this->hide_title) {
+            $template['TITLE'] = $this->getTitle();
+        }
         return PHPWS_Template::process($template, 'block', 'sample.tpl');
     }
 

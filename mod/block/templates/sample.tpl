@@ -3,7 +3,7 @@
 <!-- BEGIN options -->
 <div style="float : right">{EDIT} {OPT}</div>
 <!-- END options -->
-	<div class="box-title"><h3>{TITLE}</h3></div>
-	<div class="box-content">{CONTENT}</div>
+<!-- BEGIN title --><div class="box-title"><h3>{TITLE}</h3></div><!-- END title -->
+<!-- BEGIN content --><div class="box-content">{FILE}{CONTENT}</div><!-- END content -->
 </div>
 </div>

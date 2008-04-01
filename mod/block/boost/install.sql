@@ -4,8 +4,10 @@
 CREATE TABLE block (
 id INT DEFAULT 0 NOT NULL ,
 key_id INT DEFAULT 0 NOT NULL,
-title VARCHAR( 255 ) ,
-content TEXT NOT NULL ,
+title VARCHAR( 255 ),
+content TEXT NOT NULL,
+file_id int not null default 0,
+hide_title smallint not null default 0,
 PRIMARY KEY ( id )
 );
 

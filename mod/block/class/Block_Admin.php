@@ -7,6 +7,8 @@
  * @version $Id$
  */
 
+PHPWS_Core::requireConfig('block');
+
 class Block_Admin {
 
     function action()
@@ -194,9 +196,14 @@ class Block_Admin {
 
     function edit(&$block, $js=FALSE)
     {
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         PHPWS_Core::initCoreClass('Editor.php');
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'block');
+
+        $form->addCheck('hide_title', 1);
+        $form->setMatch('hide_title', $block->hide_title);
+        $form->setLabel('hide_title', dgettext('block', 'Hide title'));
 
         if ($js) {
             $form->addHidden('action', 'postJSBlock');
@@ -220,14 +227,20 @@ class Block_Admin {
             $form->addSubmit('submit', dgettext('block', 'Update Current Block'));
         }
 
-
         $form->addTextArea('block_content', $block->getContent(false));
         $form->setRows('block_content', '10');
         $form->setWidth('block_content', '80%');
         $form->setLabel('block_content', dgettext('block', 'Entry'));
         $form->useEditor('block_content');
-
         $template = $form->getTemplate();
+
+        $manager = Cabinet::fileManager('file_id', $block->file_id);
+        if (defined('MAX_BLOCK_FILE_WIDTH') && defined('MAX_BLOCK_FILE_HEIGHT')) {
+            $manager->maxImageWidth(MAX_BLOCK_FILE_WIDTH);
+            $manager->maxImageHeight(MAX_BLOCK_FILE_HEIGHT);
+        }
+
+        $template['FILE_ID'] = $manager->get();
 
         $content = PHPWS_Template::process($template, 'block', 'edit.tpl');
         return $content;
@@ -237,6 +250,12 @@ class Block_Admin {
     {
         $block->setTitle($_POST['title']);
         $block->setContent($_POST['block_content']);
+        $block->file_id = (int)$_POST['file_id'];
+        if (isset($_POST['hide_title'])) {
+            $block->hide_title = 1;
+        } else {
+            $block->hide_title = 0;
+        }
         return TRUE;
     }
 
