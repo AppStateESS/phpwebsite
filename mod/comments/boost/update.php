@@ -67,6 +67,21 @@ Please download 0.6.3.</pre>';
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/comments/boost/changes/1_0_0.txt');
         }
         $content[] = '</pre>';
+
+    case version_compare($currentVersion, '1.0.1', '<'):
+        $content[] = '<pre>';
+        $db = new PHPWS_DB('comments_items');
+        $result = $db->addTableColumn('reported', 'smallint NOT NULL default 0');
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Unable to create reported column on comments_items table.</pre>';
+            return false;
+        } else {
+            $content[] = 'Table column added.';
+        }
+        $content[] = '1.0.1 Changes
+-------------
++ Fixed missing reported column on comments_items table.</pre>';
+
     }
             
     return true;

@@ -13,6 +13,7 @@ CREATE TABLE comments_items (
   create_time int NOT NULL default 0,
   edit_time int NOT NULL default 0,
   edit_reason varchar(255) default NULL,
+  reported smallint NOT NULL default 0,
   PRIMARY KEY  (id)
 );
 
