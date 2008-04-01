@@ -138,6 +138,13 @@ Please download 1.2.1.</pre>';
   o updateKeyLink - causes a link to reset its url, title, and active
                     status based on the condition of the current key
                     it is based on.</pre>';
+
+    case version_compare($currentVersion, '1.4.5', '<'):
+        $content[] = '<pre>
+1.4.5 Changes
+--------------
++ Fixed some submenus not appearing when sibling chosen.</pre>';
+
     }
     return true;
 }
