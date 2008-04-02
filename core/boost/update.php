@@ -263,7 +263,7 @@ You will need to make your hub/branch home directory writable if the file doesn\
 -----------------
 + Change to pullTables to allow create unique index to work properly.
 + Form class was ignoring the use_auth_key variable.
-+ Fixed to atHome function.</pre>';
++ Fixed atHome function.</pre>';
 
     }
     return true;
