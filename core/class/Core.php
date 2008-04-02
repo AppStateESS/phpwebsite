@@ -256,12 +256,10 @@ class PHPWS_Core {
  
     function atHome()
     {
-        if ( empty($_SERVER['QUERY_STRING']) && 
-             (empty($_SERVER['REDIRECT_URL']) || $_SERVER['REDIRECT_URL'] == '/') && 
-             $_SERVER['REQUEST_METHOD'] == 'GET' ) {
-            return TRUE;
+        if (isset($_REQUEST['module']) || isset($_POST['module']) || isset($_GET['module'])) {
+            return false;
         } else {
-            return FALSE;
+            return true;
         }
     }
 
