@@ -368,6 +368,13 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         }
 
         $content[] = '</pre>';
+
+    case version_compare($version, '2.0.1', '<'):
+        $content[] = '<pre>2.0.1 changes
+-------------
++ Updated youTube import.
++ Removed unused code.</pre>';
+
     }
 
     return true;
