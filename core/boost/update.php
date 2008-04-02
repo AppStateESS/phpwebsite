@@ -257,7 +257,9 @@ You will need to make your hub/branch home directory writable if the file doesn\
         $content[] = '</pre>';
 
     case version_compare($version, '1.8.1', '<'):
-        $content[] = '<pre>1.8.1 Changes
+        $content[] = '<pre>';
+        coreUpdateFiles(array('conf/version.php'), $content);
+        $content[] = '1.8.1 Changes
 -----------------
 + Change to pullTables to allow create unique index to work properly.
 + Form class was ignoring the use_auth_key variable.
