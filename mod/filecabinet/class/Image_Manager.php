@@ -150,10 +150,6 @@ class FC_Image_Manager {
         $link_choice['none'] = dgettext('filecabinet', 'Do not link image');
         $link_choice['url']  = dgettext('filecabinet', 'Link image to web site');
 
-        if ($this->image->parent_id) {
-            $link_choice['parent'] = dgettext('filecabinet', 'Link image to original, full sized image');
-        }
-
         if ($this->image->folder_id) {
             $folder = new Folder($this->image->folder_id);
             if ($folder->public_folder) {
