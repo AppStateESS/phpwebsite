@@ -202,6 +202,12 @@ function calendar_update(&$content, $version)
 + Deleting the default public calendar resets the selection.
 + Fixed: Bug #1879356 - Events spanning multiple days do not autocorrect time.
 </pre>';
+
+    case version_compare($version, '1.6.3', '<'):
+        $content[] = '<pre>1.6.3 changes
+-------------
++ Added missing repeatYearly function.</pre>';
+
     } // end of switch
 
     return true;
