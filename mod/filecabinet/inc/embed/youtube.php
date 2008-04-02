@@ -11,7 +11,7 @@ $feed_url    = "http://gdata.youtube.com/feeds/api/videos?vq=";
 $title       = "['FEED']['ENTRY'][0]['TITLE']['CONTENT']";
 $description = "['FEED']['ENTRY'][0]['CONTENT']['CONTENT']";
 $duration    = "['FEED']['ENTRY'][0]['MEDIA:GROUP'][0]['YT:DURATION']['ATTRIBUTES']['SECONDS']";
-$thumbnail   = "['FEED']['ENTRY'][0]['MEDIA:GROUP'][0]['MEDIA:THUMBNAIL']['ATTRIBUTES']['URL']";
+$thumbnail   = "['FEED']['ENTRY'][0]['MEDIA:GROUP'][0]['MEDIA:THUMBNAIL'][0][0][1]['ATTRIBUTES']['URL']";
 
 //Default youtube height and width
 $width       = 425;

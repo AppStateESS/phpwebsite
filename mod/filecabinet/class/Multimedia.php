@@ -584,6 +584,7 @@ class PHPWS_Multimedia extends File_Common {
 
         if (isset($thumbnail)) {
             $cpy_thumb = eval ("return \$info$thumbnail;");
+
             $new_tn = $this->file_name . '.jpg';
             $thumb_path = $this->thumbnailDirectory() . $new_tn;
 
