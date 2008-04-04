@@ -272,6 +272,7 @@ function convertImage($data)
         $folder = new Folder;
         $folder->title = _('PageSmith conversion');
         $folder->description = _('Images copied during a 0.10.x conversion.');
+        $folder->_base_directory = $home_dir . 'images/filecabinet/';
         if (PHPWS_Error::logIfError($folder->save())) {
             PHPWS_Core::log("Error creating saving conversion folder.", 'conversion.log');
             return false;
@@ -291,7 +292,7 @@ function convertImage($data)
     $image->file_name = $data['name'];
     $image->file_directory = $folder->getFullDirectory();
 
-    $image_dir = $image->getPath();
+    $image_dir = $home_dir . $image->getPath();
 
     $source_image = $home_dir . 'images/pagemaster/' . $image->file_name;
 

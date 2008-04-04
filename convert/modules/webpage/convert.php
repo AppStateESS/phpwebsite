@@ -296,7 +296,7 @@ function convertImage($data)
     $image->file_name = $data['name'];
     $image->file_directory = $folder->getFullDirectory();
 
-    $image_dir = $image->getPath();
+    $image_dir = $home_dir . $image->getPath();
 
     $source_image = $home_dir . 'images/pagemaster/' . $image->file_name;
 

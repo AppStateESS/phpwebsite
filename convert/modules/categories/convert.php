@@ -257,6 +257,7 @@ function convertImage ($image_name, $image_alt)
         $folder = new Folder;
         $folder->setTitle('Categories');
         $folder->setDescription('Category images');
+        $folder->_base_directory = $home_dir . 'images/filecabinet/';
         $result = $folder->save();
         $_SESSION['Category Folder'] = $folder->id;
         $_SESSION['Category Folder_Dir'] = $folder->getFullDirectory();
