@@ -1,14 +1,17 @@
 <?php
 
-  /**
-   * Category conversion file
-   *
-   * Transfers fatcat stuff to categories
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @modified Eloi George <adarkling at users dot sourceforge dot net>
-   * @version $Id$
-   */
+/**
+ * Category conversion file
+ *
+ * Transfers fatcat stuff to categories
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @modified Eloi George <adarkling at users dot sourceforge dot net>
+ * @version $Id$
+ */
+
+PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+PHPWS_Core::requireInc('filecabinet', 'defines.php');
 
 function convert()
 {
@@ -239,62 +242,70 @@ function createSeqTable()
 
 function convertImage ($image_name, $image_alt) 
 {
-	// If there's no image, return
-	if (empty($image_name))
-		return 0;
+    // If there's no image, return
+    if (empty($image_name))
+        return 0;
 
-	// Extract the image name out of FatCat's format
-	$arr = explode(':', $image_name);
-	$image_name = $arr[0];
+    // Extract the image name out of FatCat's format
+    $arr = explode(':', $image_name);
+    $image_name = $arr[0];
 
-	// Create an "Category" folder
+    // Create an "Category" folder
     if (!isset($_SESSION['Category Folder'])) {
-	    Convert::siteDB();
-		PHPWS_Core::initModClass('filecabinet', 'Folder.php');
-	    $folder = new Folder;
-	    $folder->setTitle('Categories');
-	    $folder->setDescription('Category images');
-	    $result = $folder->save();
-		$_SESSION['Category Folder'] = $folder->id;
-		$_SESSION['Category Folder_Dir'] = $folder->getFullDirectory();
-	}
+        Convert::siteDB();
+        PHPWS_Core::initModClass('filecabinet', 'Folder.php');
+        $folder = new Folder;
+        $folder->setTitle('Categories');
+        $folder->setDescription('Category images');
+        $result = $folder->save();
+        $_SESSION['Category Folder'] = $folder->id;
+        $_SESSION['Category Folder_Dir'] = $folder->getFullDirectory();
+    }
 
-	$old_file = PHPWS_HOME_DIR . 'convert/images/fatcat/images/' . $image_name;
-	$new_directory = PHPWS_HOME_DIR . $_SESSION['Category Folder_Dir'];
-	$err = PHPWS_File::fileCopy($old_file, $new_directory, $image_name, 1, 1);
-	if (PEAR::isError($err)) 
+    $old_file = PHPWS_HOME_DIR . 'convert/images/fatcat/images/' . $image_name;
+    $new_directory = PHPWS_HOME_DIR . $_SESSION['Category Folder_Dir'];
+    $err = PHPWS_File::fileCopy($old_file, $new_directory, $image_name, 1, 1);
+    if (PEAR::isError($err)) 
         exit(PHPWS_Error::printError($err));
-	if (!$err) 
+    if (!$err) 
         exit('Something went wrong with the image transfer');
 
-	// Get image specs
-	$image_size = filesize($new_directory . $image_name);
-	if (empty($image_width)) {
-		$x = getimagesize($new_directory . $image_name);
-		$image_width  = $x[0];
-		$image_height = $x[1];
-		$image_type = image_type_to_mime_type($x[2]);
-	}
+    // Get image specs
+    $image_size = filesize($new_directory . $image_name);
+    if (empty($image_width)) {
+        $x = getimagesize($new_directory . $image_name);
+        $image_width  = $x[0];
+        $image_height = $x[1];
+        $image_type = image_type_to_mime_type($x[2]);
+    }
 
-	// Add the file information to FileCabinet
-	PHPWS_Core::initModClass('filecabinet', 'Image.php');
-	$img = new PHPWS_Image();
-	$img->file_name = utf8_encode($image_name);
-	$img->file_directory = $_SESSION['Category Folder_Dir'];
-	$img->setTitle(utf8_encode($image_alt));
-	$img->setAlt(utf8_encode($image_alt));
-	$img->setSize(utf8_encode($image_size));
-	$img->width = $image_width;
-	$img->height = $image_height;
-	$img->file_type = $image_type;
-	$img->folder_id = $_SESSION['Category Folder'];
-	$result = $img->save(1,0);
+    // Add the file information to FileCabinet
+    PHPWS_Core::initModClass('filecabinet', 'Image.php');
+    $img = new PHPWS_Image();
+    $img->file_name = utf8_encode($image_name);
+    $img->file_directory = $_SESSION['Category Folder_Dir'];
+    $img->setTitle(utf8_encode($image_alt));
+    $img->setAlt(utf8_encode($image_alt));
+    $img->setSize(utf8_encode($image_size));
+    $img->width = $image_width;
+    $img->height = $image_height;
+    $img->file_type = $image_type;
+    $img->folder_id = $_SESSION['Category Folder'];
+    $result = $img->save(1,0);
     if (PEAR::isError($result)) {
         exit(PHPWS_Error::printError($result));
     }
 
-	// return the new FileCabinet id
-	return $img->id;
+    $file_assoc = new FC_File_Assoc;
+    $file_assoc->file_type = FC_IMAGE;
+    $file_assoc->file_id = $img->id;
+
+    if(PHPWS_Error::logIfError($file_assoc->save())) {
+        continue;
+    }
+
+    // return the new FileCabinet id
+    return $file_assoc->id;
 }
 
 

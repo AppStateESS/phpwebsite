@@ -14,6 +14,8 @@ PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
 PHPWS_Core::initModClass('pagesmith', 'PS_Block.php');
 PHPWS_Core::initModClass('filecabinet', 'Folder.php');
 PHPWS_Core::initModClass('filecabinet', 'Image.php');
+PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+PHPWS_Core::requireInc('filecabinet', 'defines.php');
 
 function convert()
 {
@@ -132,7 +134,7 @@ function convertPage($page)
     $db->addValue($val);
     $result = $db->insert(FALSE);
 
-    if (PEAR::isError($result)) {
+    if (PHPWS_Error::logIfError($result)) {
         return FALSE;
     }
 
@@ -187,6 +189,7 @@ function saveSections($sections, $id, $title, $key_id)
     $image_sec['sectype']   = 'image';
 
     $image_set = false;
+
     foreach ($sections as $sec) {
         if (!empty($sec['title'])) {
             if (!$title_set) {
@@ -200,9 +203,10 @@ function saveSections($sections, $id, $title, $key_id)
             }
         }
 
-        if (!empty($sec['image'])) {
+        if (!empty($sec['image']) && preg_match('/^a:4:/', $sec['image'])) {
             $image = @unserialize($sec['image']);
             $image_obj = convertImage($image);
+
             if ($image_obj && $image_obj->id) {
                 if ($image_set) {
                     switch ($sec['template']) {
@@ -216,7 +220,14 @@ function saveSections($sections, $id, $title, $key_id)
                         $page_content[] = sprintf('<div style="float : right; display : inline; margin : 0px 0px 10px 10px">%s</div>', $image_obj->getTag());
                     }
                 } else {
-                    $image_sec['type_id'] = $image_obj->id;
+                    $file_assoc = new FC_File_Assoc;
+                    $file_assoc->file_type = FC_IMAGE;
+                    $file_assoc->file_id = $image_obj->id;
+
+                    if(PHPWS_Error::logIfError($file_assoc->save())) {
+                        continue;
+                    }
+                    $image_sec['type_id'] = $file_assoc->id;
                     $image_sec['width']   = $image_obj->width;
                     $image_sec['height']  = $image_obj->height;
                     $db = new PHPWS_DB('ps_block');
@@ -237,13 +248,13 @@ function saveSections($sections, $id, $title, $key_id)
     }
 
     $text_sec['content'] = implode("\n", $page_content);
-
+    
     $search = new Search($key_id);
 
     $search->addKeywords($text_sec['content']);
     $search->addKeywords($header_sec['content']);
     $search->save();
-    
+
     $db = new PHPWS_DB('ps_text');
     $db->addValue($text_sec);
     PHPWS_Error::logIfError($db->insert());
