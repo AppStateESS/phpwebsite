@@ -33,16 +33,19 @@ if (!extension_loaded('gd')) {
 
 
 if (!is_dir('config/core/') || !is_file('config/core/language.php')) {
-    require 'core/class/File.php';
     if (!is_writable('config/')) {
         echo 'Please make your config/ directory writable to continue.<br />';
         exit();
     } else {
-        // in case they run php 4
-        require_once 'lib/pear/Compat/Function/scandir.php';
-        PHPWS_File::copy_directory('core/conf/', 'config/core/');
         if (!is_dir('config/core/')) {
-            echo 'Unable to copy core/conf/ directory to config/core/. Please do so manually.';
+            if (!@mkdir('config/core/')) {
+                echo 'Could not create config/core/ directory.';
+                exit();
+            }
+        }
+
+        if (!@copy('core/conf/language.php', 'config/core/language.php')) {
+            echo 'Unable to copy core/conf/language.php directory to config/core/language.php. Please do so manually.';
             exit();
         }
     }
