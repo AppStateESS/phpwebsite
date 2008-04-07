@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+7 April 2008
++ Changed function call in Setup to manual copy to avoid confusion in File class
+
 4 April 2008
 + Updated pagesmith and categories conversion for new File Cabinet.
 
