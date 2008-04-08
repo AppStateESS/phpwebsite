@@ -4,6 +4,10 @@ div#cookie-menu {
    position : relative;
 }
 
+div#cookie-menu ul {
+   margin : 0px;
+}
+
 div#cookie-menu ul li {
    position : relative;
    display : inline;
@@ -13,9 +17,9 @@ div#cookie-menu ul li {
 
 
 div#cookie-menu ul li a {
-   width : 100px;
-   height : 25px;
-   font-size : 13px;
+   width : 120px;
+   height : 30px;
+   font-size : 12px;
    display : block;
    padding : 0px 5px 0px 5px;
    text-decoration : none;
@@ -23,14 +27,19 @@ div#cookie-menu ul li a {
    border : 1px solid black;
 }
 
-div#cookie-menu ul li ul li {
+div#cookie-menu ul li ul {
    display : none;
    position : absolute;
-   top : 28px;
+   margin : 0px;
+   padding : 0px;
+   top : 32px;
    left : 0px;
 }
 
-div#cookie-menu ul li:hover ul li {
-   display : block;
+div#cookie-menu ul li ul li a {
+   border : 1px solid black;
 }
 
+div#cookie-menu ul li:hover ul {
+   display : block;
+}
