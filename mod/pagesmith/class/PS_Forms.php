@@ -132,7 +132,7 @@ class PS_Forms {
         $form->addSubmit(dgettext('pagesmith', 'Update'));
         $tpl = $form->getTemplate();
         $tpl['CANCEL'] = javascript('close_window');
-        $this->ps->title = dgettext('pagesmith', 'Edit header');
+        $this->ps->title = dgettext('pagesmith', 'Edit text');
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'edit_text.tpl');
     }
 
