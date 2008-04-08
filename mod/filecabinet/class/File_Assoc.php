@@ -180,6 +180,27 @@ class FC_File_Assoc {
         return $this->_file_path;
     }
 
+    function getThumbnail()
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        PHPWS_Core::initModClass('filecabinet', 'Document.php');
+
+        switch ($this->file_type) {
+        case FC_IMAGE:
+        case FC_IMAGE_RANDOM:
+            return $this->_source->getThumbnail(null, $this->_link_image);
+
+        case FC_DOCUMENT:
+            return $this->_source->getIconView();
+            break;
+
+        case FC_MEDIA:
+            return $this->_source->getThumbnail();
+            break;
+        }
+    }
+
     function getTag($embed=false)
     {
         PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');

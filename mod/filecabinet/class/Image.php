@@ -252,16 +252,26 @@ class PHPWS_Image extends File_Common {
         return $image_tag;
     }
 
-    function getThumbnail($css_id=null)
+    function getThumbnail($css_id=null, $linked=false)
     {
         if (empty($css_id)) {
             $css_id = $this->id;
         }
-        return sprintf('<img src="%s" title="%s" id="image-thumbnail-%s" />',
+        $image_tag = sprintf('<img src="%s" title="%s" id="image-thumbnail-%s" alt="%s" />',
                        $this->thumbnailPath(),
-                       $this->title, $css_id);
-    }
+                       $this->title, $css_id, $this->alt);
 
+        if ($linked && !empty($this->url)) {
+            if($this->url == 'folder') {
+                $link =   $link = sprintf('index.php?module=filecabinet&amp;uop=view_folder&amp;folder_id=%s', $this->folder_id);
+                $image_tag =  sprintf('<a href="%s" title="%s">%s</a>', $link, dgettext('filecabinet', 'View all images in folder'),
+                                      $image_tag);
+            } else {
+                $image_tag = sprintf('<a href="%s">%s</a>', $this->url, $image_tag);
+            }
+        }
+        return $image_tag;
+    }
 
     function loadAllowedTypes()
     {
