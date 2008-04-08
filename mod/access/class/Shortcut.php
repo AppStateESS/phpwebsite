@@ -161,7 +161,7 @@ class Access_Shortcut {
         if ($full) {
             $address[] = PHPWS_Core::getHomeHttp();
         }
-        $address[] = $this->keyword . '.html';
+        $address[] = $this->keyword;
 
         $url = implode('', $address);
         if ($linkable) {

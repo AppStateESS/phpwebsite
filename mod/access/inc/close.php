@@ -16,8 +16,7 @@ if (!$_SESSION['Access_Allow_Deny']) {
 }
 
 
-if (MOD_REWRITE_ENABLED && Current_User::allow('access') && 
-    PHPWS_Settings::get('access', 'shortcuts_enabled') && PHPWS_Settings::get('access', 'rewrite_engine')) {
+if (MOD_REWRITE_ENABLED && Current_User::allow('access')) {
     $key = Key::getCurrent();
     if (!empty($key) && !$key->isDummy()) {
         PHPWS_Core::initModClass('access', 'Access.php');
