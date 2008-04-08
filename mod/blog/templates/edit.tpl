@@ -20,6 +20,7 @@ function toggleUrl(select) {
     <p>{SUMMARY_LABEL}<br />{SUMMARY}</p>
 <!-- BEGIN image -->
     <div>{FILE_MANAGER}</div>
+    <p>{THUMBNAIL} {THUMBNAIL_LABEL}</p>
     <p>{IMAGE_LINK_LABEL}<br />{IMAGE_LINK}</p>
     <p id="image-url" style="opacity : {OP}">{IMAGE_URL_LABEL}<br />{IMAGE_URL}</p>
 <!-- END image -->

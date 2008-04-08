@@ -128,6 +128,10 @@ class Blog_Form {
         $form->setLabel('expire_date', dgettext('blog', 'Expire date/time'));
         $form->setSize('expire_date', 20);
 
+        $form->addCheck('thumbnail', 1);
+        $form->setMatch('thumbnail', $blog->thumbnail);
+        $form->setLabel('thumbnail', dgettext('blog', 'Show image or media thumbnail in list view'));
+
         $template = $form->getTemplate();
 
 

@@ -25,6 +25,7 @@ class Blog {
     var $expire_date    = 0;
     var $image_id       = 0;
     var $sticky         = 0;
+    var $thumbnail      = 0;
     /**
      * default    : let image control linking
      * readmore   : link image to complete entry
@@ -67,7 +68,7 @@ class Blog {
         }
     }
 
-    function getFile()
+    function getFile($thumbnail=false)
     {
         if (!$this->image_id) {
             return null;
@@ -75,23 +76,38 @@ class Blog {
         $file = Cabinet::getFile($this->image_id);
         if ($file->isImage(true)) {
             if ($this->image_link == 'default') {
-                return $file->getTag();
+                if ($thumbnail) {
+                    return $file->getThumbnail();
+                } else {
+                    return $file->getTag();
+                }
             }
 
             $file->allowImageLink(false);
             if ($this->image_link == 'none') {
-                return $file->getTag();
+                if ($thumbnail) {
+                    return $file->getThumbnail();
+                } else {
+                    return $file->getTag();
+                }
             }
 
             if ($this->image_link == 'parent') {
                 return $file->parentLinked();
             } elseif ($this->image_link == 'readmore') {
-                $url =  $this->getViewLink(true);
+                $url = $this->getViewLink(true);
             } else {
                 $url = $this->image_link;
             }
 
-            return sprintf('<a href="%s">%s</a>',$url, $file->getTag());
+            if ($thumbnail) {
+                return sprintf('<a href="%s">%s</a>',$url, $file->getThumbnail());
+            } else {
+                return sprintf('<a href="%s">%s</a>',$url, $file->getTag());
+            }
+        } elseif ($thumbnail && ($file->isMedia() && $file->_source->isVideo())) {
+            return sprintf('<a href="%s">%s</a>', $this->getViewLink(true),
+                           $file->getThumbnail());
         } else {
             return $file->getTag();
         }
@@ -304,7 +320,7 @@ class Blog {
         $template['PUBLISHED_DATE'] = PHPWS_Time::getDTTime($this->create_date);
         $template['SUMMARY'] = PHPWS_Text::parseTag($this->getSummary(true));
         $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(true));
-        $template['IMAGE'] = $this->getFile();
+        $template['IMAGE'] = $this->getFile($this->thumbnail);
 
         $template['POSTED_BY'] = dgettext('blog', 'Posted by');
         $template['POSTED_ON'] = dgettext('blog', 'Posted on');
@@ -358,7 +374,7 @@ class Blog {
             $template['ENTRY'] = PHPWS_Text::parseTag($entry);
         }
 
-        $template['IMAGE'] = $this->getFile();
+        $template['IMAGE'] = $this->getFile($this->thumbnail && $summarized);
 
         if ( $edit && 
              ( Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ||
@@ -530,6 +546,12 @@ class Blog {
             $this->allow_anon = 1;
         } else {
             $this->allow_anon = 0;
+        }
+
+        if (isset($_POST['thumbnail'])) {
+            $this->thumbnail = 1;
+        } else {
+            $this->thumbnail = 0;
         }
 
         if (empty($this->author)) {

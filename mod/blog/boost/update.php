@@ -230,6 +230,17 @@ function blog_update(&$content, $currentVersion)
             $content[] = '<pre>' . file_get_contents(PHPWS_SOURCE_DIR . 'mod/blog/boost/changes/1_7_1.txt') . '</pre>';
         }
 
+    case version_compare($currentVersion, '1.7.2', '<'):
+        $db = new PHPWS_DB('blog_entries');
+        if (PHPWS_Error::logIfError($db->addTableColumn('thumbnail', 'smallint not null default 0'))) {
+            $content[] = 'Unable to create thumbnail column on blog_entries table.';
+        }
+        $content[] = '<pre>';
+        blogUpdatefiles(array('templates/edit.tpl'), $content);
+        $content[] = '1.7.2 changes
+-------------
++ Can use media or image thumbnails on blog listing page.</pre>';
+
     } // end of switch
     return true;
 }
