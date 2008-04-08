@@ -116,6 +116,14 @@ function access_update(&$content, $version)
 + Rewritten for phpwebsite 1.5.0 changes.
 + addIP and removeIP allow modules to restrict users.
 </pre>';
+
+    case version_compare($version, '1.0.1', '<'):
+        $content[] = '<pre>1.0.1 changes
+---------------
++ Fixed Access option not appearing on MiniAdmin
++ .html completely removed from shortcuts
+</pre>';
+
     }
 
     return true;
