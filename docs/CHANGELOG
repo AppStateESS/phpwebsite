@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+9 April 2008
++ Added times for showing and hiding key elements.
+
 7 April 2008
 + Changed function call in Setup to manual copy to avoid confusion in File class
 
