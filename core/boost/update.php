@@ -265,6 +265,18 @@ You will need to make your hub/branch home directory writable if the file doesn\
 + Form class was ignoring the use_auth_key variable.
 + Fixed atHome function.</pre>';
 
+    case version_compare($version, '1.8.2', '<'):
+        $content[] = '<pre>';
+        $db = new PHPWS_DB('phpws_key');
+        $db->addTableColumn('show_after', "int UNSIGNED NOT NULL default '0'");
+        $db->addTableColumn('hide_after', "int UNSIGNED NOT NULL default '4000000000'");
+        $db->addValue('hide_after', '4000000000');
+        $db->update();
+        $content[] = '1.8.2 Changes
+-----------------
+
+</pre>';
+
     }
     return true;
 }

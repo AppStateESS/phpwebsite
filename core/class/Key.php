@@ -7,6 +7,7 @@
  * @version $Id$
  */
 
+define('HIDE_CEILING', 4000000000);
 define('KEY_NOT_RESTRICTED',    0);
 define('KEY_LOGGED_RESTRICTED', 1);
 define('KEY_GROUP_RESTRICTED',  2);
@@ -46,7 +47,9 @@ class Key {
     var $edit_permission = null;
 
     var $times_viewed    = 0;
-
+    
+    var $show_after      = 0;
+    var $hide_after      = HIDE_CEILING;
 
     // groups allowed to view
     var $_view_groups    = null;
@@ -136,6 +139,21 @@ class Key {
         }
     }
 
+    function setShowAfter($date)
+    {
+        $this->show_after = (int)$date;
+    }
+
+    function setHideAfter($date)
+    {
+        $date = (int)$date;
+        if (!$date) {
+            $this->hide_after = HIDE_CEILING;
+        } else {
+            $this->hide_after = $date;
+        }
+    }
+
     function loadViewGroups()
     {
         $db = new PHPWS_DB('phpws_key_view');
@@ -179,12 +197,18 @@ class Key {
         return $this->_edit_groups;
     }
 
-    function allowView()
+    function allowView($check_dates=true)
     {
         if (Current_User::allow($this->module, $this->edit_permission,
                                       $this->item_id, $this->item_name)) {
             return true;
         } elseif (!$this->active) {
+            return false;
+        }
+
+        $now = mktime();
+        if ($check_dates && 
+            (($this->hide_after < $now) || ($this->show_after > $now))) {
             return false;
         }
 
@@ -514,8 +538,9 @@ class Key {
      * to your db object.
      *
      */
-    function restrictView(&$db, $module=null)
+    function restrictView(&$db, $module=null, $check_dates=true)
     {
+        $now = mktime();
         $source_table = $db->tables[0];
 
         if ($source_table == 'phpws_key') {
@@ -545,13 +570,16 @@ class Key {
             $db->addJoin('left', 'phpws_key', $source_table, 'id', 'key_id');
         }
 
-
         if ( Current_User::isDeity() || 
              (isset($module) && Current_User::isUnrestricted($module) )
              ) {
             return;
         } 
 
+        if ($check_dates) {
+            $db->addWhere('phpws_key.show_after', $now, '<', null, 'active');
+            $db->addWhere('phpws_key.hide_after', $now, '>', null, 'active');
+        }
 
         if (!Current_User::isLogged()) {
             $db->addWhere('phpws_key.restricted', 0, null, 'and', 'active');

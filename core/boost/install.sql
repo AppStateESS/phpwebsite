@@ -51,6 +51,8 @@ CREATE TABLE phpws_key (
   updater_id int NOT NULL default 0,
   times_viewed int NOT NULL default 0,
   edit_permission varchar(30) default NULL,
+  show_after int unsigned NOT NULL default '0',
+  hide_after int unsigned NOT NULL default '4000000000',
   PRIMARY KEY  (id)
 );
 
