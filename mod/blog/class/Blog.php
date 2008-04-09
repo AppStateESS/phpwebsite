@@ -73,6 +73,7 @@ class Blog {
         if (!$this->image_id) {
             return null;
         }
+
         $file = Cabinet::getFile($this->image_id);
         if ($file->isImage(true)) {
             if ($this->image_link == 'default') {
@@ -93,7 +94,7 @@ class Blog {
             }
 
             if ($this->image_link == 'parent') {
-                return $file->parentLinked();
+                return $file->parentLinked($thumbnail);
             } elseif ($this->image_link == 'readmore') {
                 $url = $this->getViewLink(true);
             } else {
