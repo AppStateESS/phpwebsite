@@ -339,6 +339,10 @@ class Cabinet_Form {
         $form->setMatch('caption_images', PHPWS_Settings::get('filecabinet', 'caption_images'));
         $form->setLabel('caption_images', dgettext('filecabinet', 'Caption images'));
 
+        $form->addCheck('popup_image_navigation', 1);
+        $form->setMatch('popup_image_navigation', PHPWS_Settings::get('filecabinet', 'popup_image_navigation'));
+        $form->setLabel('popup_image_navigation', dgettext('filecabinet', 'Popup images allow folder navigation'));
+
 
         $ffmpeg_directory = PHPWS_Settings::get('filecabinet', 'ffmpeg_directory');
         if (empty($ffmpeg_directory) || !is_file($ffmpeg_directory . 'ffmpeg')) {
@@ -627,6 +631,12 @@ class Cabinet_Form {
             PHPWS_Settings::set('filecabinet', 'caption_images', 1);
         } else {
             PHPWS_Settings::set('filecabinet', 'caption_images', 0);
+        }
+
+        if (isset($_POST['popup_image_navigation'])) {
+            PHPWS_Settings::set('filecabinet', 'popup_image_navigation', 1);
+        } else {
+            PHPWS_Settings::set('filecabinet', 'popup_image_navigation', 0);
         }
 
         $ffmpeg_dir = strip_tags($_POST['ffmpeg_directory']);

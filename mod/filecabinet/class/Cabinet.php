@@ -459,9 +459,51 @@ class Cabinet {
         }
 
         $tpl['TITLE'] = $image->title;
-        $tpl['IMAGE'] = $image->getTag();
+
+        if ($image->width > FC_MAX_IMAGE_POPUP_WIDTH || $image->height > FC_MAX_IMAGE_POPUP_HEIGHT) {
+            if (FC_MAX_IMAGE_POPUP_WIDTH < FC_MAX_IMAGE_POPUP_HEIGHT) {
+                $ratio = FC_MAX_IMAGE_POPUP_WIDTH / $image->width;
+                $image->width = FC_MAX_IMAGE_POPUP_WIDTH;
+                $image->height = $image->height * $ratio;
+            } else {
+                $ratio = FC_MAX_IMAGE_POPUP_HEIGHT / $image->height;
+                $image->height = FC_MAX_IMAGE_POPUP_HEIGHT;
+                $image->width = $image->width * $ratio;
+            }
+            $tpl['IMAGE'] = sprintf('<a href="%s">%s</a>', $image->getPath(), $image->getTag());
+        } else {
+            $tpl['IMAGE'] = $image->getTag();
+        }
+
         $tpl['DESCRIPTION'] = $image->getDescription();
         $tpl['CLOSE'] = javascript('close_window');
+        if ($folder->public_folder) {
+            $db = new PHPWS_DB('images');
+            $db->setLimit(1);
+            $db->addWhere('folder_id', $image->folder_id);
+            $db->addWhere('title', $image->title, '>');
+            $db->addOrder('title');
+            $next_img = $db->getObjects('PHPWS_Image');
+
+            if (!empty($next_img)) {
+                $tpl['NEXT'] = sprintf('<a id="next-link" href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(),
+                                       $next_img[0]->popupAddress(),
+                                       dgettext('filecabinet', 'Next image'));
+            }
+            
+            $db->resetWhere();
+            $db->resetOrder();
+            $db->addWhere('folder_id', $image->folder_id);
+            $db->addWhere('title', $image->title, '<');
+            $db->addOrder('title desc');
+            $prev_img = $db->getObjects('PHPWS_Image');
+
+            if (!empty($prev_img)) {
+                $tpl['PREV'] = sprintf('<a id="prev-link" href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(),
+                                       $prev_img[0]->popupAddress(),
+                                       dgettext('filecabinet', 'Previous image'));
+            }
+        }
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'image_view.tpl');
         Layout::nakedDisplay($content);
     }

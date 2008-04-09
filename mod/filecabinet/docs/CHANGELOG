@@ -1,3 +1,10 @@
+9 April 2008
++ Popup images can be set to navigate among other images in the
+  folder.
++ getThumbnail handles a resized image now.
++ Popup windows all the same size.
++ Update: templates/image_view.tpl, templates/settings.tpl
+
 8 April 2008
 + Added getThumbnail function to File_Assoc
 + Image's getThumbnail can be linkable.

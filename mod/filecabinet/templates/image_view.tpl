@@ -5,4 +5,10 @@
       <!-- BEGIN desc --><p class="padded">{DESCRIPTION}</p><!-- END desc -->
    </div>
 </div>
-<div class="align-center">{CLOSE}</div>
+<table width="100%">
+<tr>
+<td style="text-align : left; width : 33%">{PREV}</td>
+<td style="text-align : center; width : 33%">{CLOSE}</td>
+<td style="text-align : right; width : 33%">{NEXT}</td>
+</tr>
+</table>

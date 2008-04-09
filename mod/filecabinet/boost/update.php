@@ -375,6 +375,16 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Updated youTube import.
 + Removed unused code.</pre>';
 
+    case version_compare($version, '2.0.2', '<'):
+        $content[] = '<pre>';
+        fc_updatefiles(array('templates/image_view.tpl', 'templates/settings.tpl'), $content);
+        $content[] = '2.0.2 changes
+-------------
++ Popup images can be set to navigate among other images in the
+  folder.
++ Popup windows all the same size.
++ Added getThumbnail function to File_Assoc
++ Image\'s getThumbnail can be linkable.</pre>';
     }
 
     return true;

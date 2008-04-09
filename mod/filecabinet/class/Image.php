@@ -180,11 +180,9 @@ class PHPWS_Image extends File_Common {
             }
         }
 
-        $size = $this->popupSize();
-
         $values['address']     = $this->popupAddress();
-        $values['width']       = $size[0] + 50;
-        $values['height']      = $size[1] + 100;
+        $values['width']       = FC_MAX_IMAGE_POPUP_WIDTH + 50;
+        $values['height']      = FC_MAX_IMAGE_POPUP_HEIGHT + 100;
         $values['window_name'] = 'image_view';
 
         return Layout::getJavascript('open_window', $values);

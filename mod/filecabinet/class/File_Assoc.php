@@ -94,14 +94,20 @@ class FC_File_Assoc {
         $this->_file_path = $this->_source->getPath();
     }
 
-    function parentLinked()
+    function parentLinked($thumbnail=false)
     {
         if ($this->file_type != FC_IMAGE_RESIZE || !$this->_resize_parent) {
             $this->_link_image = true;
-            return $this->getTag();
+            if ($thumbnail) {
+                return $this->_resize_parent->getThumbnail();
+            } else {
+                return $this->getTag();
+            }
         }
 
-        if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
+        if ($thumbnail) {
+            $img = $this->_resize_parent->getThumbnail();
+        } elseif (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
             $img = $this->_source->captioned(null, false);
         } else {
             $img = $this->_source->getTag(null, false);
@@ -190,6 +196,9 @@ class FC_File_Assoc {
         case FC_IMAGE:
         case FC_IMAGE_RANDOM:
             return $this->_source->getThumbnail(null, $this->_link_image);
+
+        case FC_IMAGE_RESIZE:
+            return $this->_resize_parent->getThumbnail(null, $this->_link_image);
 
         case FC_DOCUMENT:
             return $this->_source->getIconView();
