@@ -236,10 +236,14 @@ function blog_update(&$content, $currentVersion)
             $content[] = 'Unable to create thumbnail column on blog_entries table.';
         }
         $content[] = '<pre>';
-        blogUpdatefiles(array('templates/edit.tpl'), $content);
+        blogUpdatefiles(array('templates/edit.tpl', 'templates/style.css', 'templates/view.tpl'), $content);
         $content[] = '1.7.2 changes
 -------------
-+ Can use media or image thumbnails on blog listing page.</pre>';
++ Can use media or image thumbnails on blog listing page.
++ Blog uses new key datetime terminators.
++ File Cabinet style sheet called regardless of cache.
++ Indicators added for published status.
+</pre>';
 
     } // end of switch
     return true;

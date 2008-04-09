@@ -292,6 +292,8 @@ class Blog {
         $key->setEditPermission('edit_blog');
         $key->setUrl($this->getViewLink(true));
         $key->setTitle($this->title);
+        $key->setShowAfter($this->publish_date);
+        $key->setHideAfter($this->expire_date);
         if (!empty($this->summary)) {
             $key->setSummary($this->summary);
         } else {
@@ -357,6 +359,12 @@ class Blog {
 
         $template['TITLE'] = sprintf('<a href="%s" rel="bookmark">%s</a>',
                                      $this->getViewLink(true), $this->title);
+
+        if ($this->publish_date > mktime()) {
+            $template['UNPUBLISHED'] = dgettext('blog', 'Unpublished');
+        } elseif ($this->expire_date && $this->expire_date < mktime()) {
+            $template['UNPUBLISHED'] = dgettext('blog', 'Expired');
+        }
 
         $template['LOCAL_DATE']  = $this->getLocalDate();
 

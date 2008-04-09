@@ -10,3 +10,8 @@ ul.blog-category-icons li {
    padding : 0;
    list-style : none;
 }
+
+span.unpublished {
+   font-size : .9em;
+   font-style : italic;
+}

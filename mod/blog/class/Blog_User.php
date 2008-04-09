@@ -80,7 +80,11 @@ class Blog_User {
             if (Current_User::allow('blog', 'edit_blog')) {
                 Blog_User::miniAdminList();
             }
-            $content = $blog->view(true, false);
+            if ($blog->publish_date > mktime() && !Current_User::allow('blog')) {
+                PHPWS_Core::errorPage('404');
+            } else {
+                $content = $blog->view(true, false);
+            }
             break;
 
         case 'view':
@@ -230,6 +234,7 @@ class Blog_User {
     function show($start_date=null, $end_date=null)
     {
         Layout::addStyle('blog');
+        Layout::addStyle('filecabinet');
         $db = new PHPWS_DB('blog_entries');
 
         if ($start_date) {

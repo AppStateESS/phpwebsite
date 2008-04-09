@@ -2,6 +2,10 @@ Version 1.7.2
 ----------------------------------------------------------------
 8 April 2008
 + Can use media or image thumbnails on blog listing page.
++ Blog uses new key datetime terminators.
++ File Cabinet style sheet called regardless of cache.
++ Indicators added for published status.
++ Updated: templates/style.css. templates/view.tpl
 
 Version 1.7.1
 ----------------------------------------------------------------
