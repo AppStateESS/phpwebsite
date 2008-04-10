@@ -10,6 +10,11 @@ class Signup_Forms {
     {
         switch ($type) {
         case 'new':
+            if (Current_User::isRestricted('signup')) {
+                $this->signup->title   = dgettext('signup', 'Sorry');
+                $this->signup->content = dgettext('signup', 'You do not have permission for this action.');
+                return;
+            }
         case 'edit_sheet':
             if (empty($this->signup->sheet)) {
                 $this->signup->loadSheet();

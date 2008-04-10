@@ -692,9 +692,11 @@ class Signup {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('signup-panel');
         $link = 'index.php?module=signup&aop=menu';
-        
-        $tags['new'] = array('title'=>dgettext('signup', 'New'),
-                             'link'=>$link);
+
+        if (Current_User::isUnrestricted('signup')) {
+            $tags['new'] = array('title'=>dgettext('signup', 'New'),
+                                 'link'=>$link);
+        }
         $tags['list'] = array('title'=>dgettext('signup', 'List'),
                               'link'=>$link);
         $this->panel->quickSetTabs($tags);
