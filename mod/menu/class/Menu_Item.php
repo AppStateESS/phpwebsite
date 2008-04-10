@@ -192,7 +192,7 @@ class Menu_Item {
         $db->setIndexBy('id');
         $result = $db->getObjects('menu_link');
 
-        if (empty($result)) {
+        if (empty($result) || PHPWS_Error::logIfError($result)) {
             return NULL;
         }
 
