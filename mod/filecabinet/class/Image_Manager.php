@@ -165,35 +165,21 @@ class FC_Image_Manager {
         $form->setSize('url', 50, 255);
         $form->setLabel('url', dgettext('filecabinet', 'Image link url'));
 
-        switch (1) {
-        case $this->max_width >= 2000:
-            $resizes[2000] = '2000px';
-
-        case $this->max_width >= 1750:
-            $resizes[1750] = '1750px';
-
-        case $this->max_width >= 1500:
-            $resizes[1500] = '1500px';
-
-        case $this->max_width >= 1250:
-            $resizes[1250] = '1250px';
-
-        case $this->max_width >= 1000:
-            $resizes[1000] = '1000px';
-
-        case $this->max_width >= 800:
-            $resizes[800] = '800px';
-
-        case $this->max_width >= 600:
-            $resizes[600] = '600px';
+        if ($this->folder->max_image_dimension && 
+            ($this->folder->max_image_dimension < $this->max_width) ) {
+            $max_width = $this->folder->max_image_dimension;
+        } else {
+            $max_width = $this->max_width;
         }
 
-        if (isset($resizes)) {
+        $resizes = Cabinet::getResizes($max_width);
+        /*
+        if (!empty($resizes)) {
             $temp = array_reverse($resizes, true);
-            $temp[$this->max_width] = $this->max_width . 'px';
+            $temp[$max_width] = $max_width . 'px';
             $resizes = array_reverse($temp, true);
         }
-
+        */
         if (!empty($resizes)) {
             $form->addSelect('resize', $resizes);
             $form->setLabel('resize', dgettext('filecabinet', 'Resize image if over'));

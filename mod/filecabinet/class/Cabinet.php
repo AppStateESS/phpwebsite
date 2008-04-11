@@ -1084,6 +1084,52 @@ class Cabinet {
 
         return $all;
     }
+
+    function getResizes($max_width=0, $add_default=false)
+    {
+        if (!$max_width) {
+            $max_width = PHPWS_Settings::get('filecabinet', 'max_image_dimension');
+        }
+
+        if ($add_default) {
+            $resizes[0] = sprintf(dgettext('filecabinet', 'Default (%spx)'), 
+                                  PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
+        }
+
+        switch (1) {
+        case $max_width >= 2000:
+            $resizes[2000] = '2000px';
+
+        case $max_width >= 1750:
+            $resizes[1750] = '1750px';
+
+        case $max_width >= 1500:
+            $resizes[1500] = '1500px';
+
+        case $max_width >= 1250:
+            $resizes[1250] = '1250px';
+
+        case $max_width >= 1000:
+            $resizes[1000] = '1000px';
+
+        case $max_width >= 800:
+            $resizes[800] = '800px';
+
+        case $max_width >= 600:
+            $resizes[600] = '600px';
+
+        case $max_width >= 300:
+            $resizes[300] = '300px';
+
+        case $max_width >= 100:
+            $resizes[100] = '100px';
+
+        case $max_width >= 50:
+            $resizes[50] = '50px';
+        }
+
+        return $resizes;
+    }
 }
 
 ?>

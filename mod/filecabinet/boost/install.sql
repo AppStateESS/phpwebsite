@@ -56,6 +56,7 @@ CREATE TABLE folders (
   public_folder smallint not null default 1,
   icon varchar(255) not null,
   module_created varchar(40) default null,
+  max_image_dimension smallint not null default 0,
   primary key (id)
 );
 

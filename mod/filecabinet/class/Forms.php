@@ -181,6 +181,13 @@ class Cabinet_Form {
         $form->setLabel('public_folder', array( dgettext('filecabinet', 'Private'), dgettext('filecabinet', 'Public')));
         $form->setMatch('public_folder', $folder->public_folder);
 
+        if ($folder->ftype == IMAGE_FOLDER) {
+            $resizes = Cabinet::getResizes(0, true);
+            $form->addSelect('max_image_dimension', $resizes);
+            $form->setLabel('max_image_dimension', dgettext('filecabinet', 'Maximum image upload dimension'));
+            $form->setMatch('max_image_dimension', $folder->max_image_dimension);
+        }
+
         /**
          * Need to add icon selection. For now, images will use last uploaded
          * image. Documents and empty image folders will use default icon
@@ -342,7 +349,6 @@ class Cabinet_Form {
         $form->addCheck('popup_image_navigation', 1);
         $form->setMatch('popup_image_navigation', PHPWS_Settings::get('filecabinet', 'popup_image_navigation'));
         $form->setLabel('popup_image_navigation', dgettext('filecabinet', 'Popup images allow folder navigation'));
-
 
         $ffmpeg_directory = PHPWS_Settings::get('filecabinet', 'ffmpeg_directory');
         if (empty($ffmpeg_directory) || !is_file($ffmpeg_directory . 'ffmpeg')) {

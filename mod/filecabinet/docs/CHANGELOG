@@ -1,3 +1,8 @@
+11 April 2008
++ Image folders can be set to control default image default size.
++ Fixed an error call.
++ Updated: templates/edit_folder.tpl, templates/style.css
+
 9 April 2008
 + Popup images can be set to navigate among other images in the
   folder.

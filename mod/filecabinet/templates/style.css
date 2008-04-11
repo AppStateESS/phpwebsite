@@ -1,5 +1,6 @@
 div#fc-folder-list {
      overflow : auto;
+     min-height : 600px;
 }
 
 div.pin-list {

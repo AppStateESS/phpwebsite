@@ -385,6 +385,15 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Popup windows all the same size.
 + Added getThumbnail function to File_Assoc
 + Image\'s getThumbnail can be linkable.</pre>';
+
+    case version_compare($version, '2.0.3', '<'):
+        $db = new PHPWS_DB('folders');
+        if (PHPWS_Error::logIfError($db->addTableColumn('max_image_dimension', 'smallint not null default 0'))) {
+            $content[] = 'Unable to add max_image_dimension column to folders table.';
+            return false;
+        } else {
+            $content[] = 'Added max_image_dimension column to folders table.';
+        }
     }
 
     return true;

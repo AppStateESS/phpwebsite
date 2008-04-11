@@ -6,18 +6,19 @@
    */
 
 class Folder {
-    var $id              = 0;
-    var $key_id          = 0;
-    var $title           = null;
-    var $description     = null;
-    var $ftype           = IMAGE_FOLDER;
-    var $public_folder   = 0;
-    var $icon            = null;
-    var $module_created  = null;
+    var $id                  = 0;
+    var $key_id              = 0;
+    var $title               = null;
+    var $description         = null;
+    var $ftype               = IMAGE_FOLDER;
+    var $public_folder       = 0;
+    var $icon                = null;
+    var $module_created      = null;
+    var $max_image_dimension = 0;
     // An array of file objects
-    var $_files          = 0;
-    var $_error          = 0;
-    var $_base_directory = null;
+    var $_files              = 0;
+    var $_error              = 0;
+    var $_base_directory     = null;
 
     function Folder($id=0)
     {
@@ -87,7 +88,7 @@ class Folder {
         $js['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
 
         $js['width'] = 370;
-        $js['height'] = 420;
+        $js['height'] = 450;
         if ($mode == 'button') {
             $js['type'] = 'button';
         }
@@ -249,6 +250,7 @@ class Folder {
         }
 
         $this->ftype = $_POST['ftype'];
+        $this->max_image_dimension = (int)$_POST['max_image_dimension'];
         $this->public_folder = $_POST['public_folder'];
         return true;
     }

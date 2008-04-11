@@ -7,6 +7,9 @@
 <p style="margin-bottom : 1em">{DESCRIPTION_LABEL}<br />
 {DESCRIPTION}</p>
 
+<!-- BEGIN dimension --><p style="margin-bottom : 1em">{MAX_IMAGE_DIMENSION_LABEL}<br />
+{MAX_IMAGE_DIMENSION}</p><!-- END dimension -->
+
 <p>{SUBMIT}</p>
 {END_FORM}
 <div style="text-align : center">{CLOSE}</div>

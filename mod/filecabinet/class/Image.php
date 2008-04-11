@@ -11,17 +11,6 @@
 PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 
-// Normally set in config/core/file_types.php
-if (!defined('ALLOWED_IMAGE_TYPES')) {
-    define('ALLOWED_IMAGE_TYPES', serialize(array('image/jpeg',
-                                                  'image/jpg',
-                                                  'image/pjpeg',
-                                                  'image/png',
-                                                  'image/x-png',
-                                                  'image/gif',
-                                                  'image/wbmp')));
- }
-
 if (!defined('FC_THUMBNAIL_WIDTH')) {
     define('FC_THUMBNAIL_WIDTH', 100);
  }
@@ -38,9 +27,6 @@ class PHPWS_Image extends File_Common {
     var $width            = NULL;
     var $height           = NULL;
     var $alt              = NULL;
-    /**
-     * 
-     */
     var $url              = null;
     
     var $_classtype       = 'image';
@@ -639,10 +625,10 @@ class PHPWS_Image extends File_Common {
         $result = PHPWS_File::rotateImage($tmp_file, $cpy_file, $degrees);
 
         if (!PHPWS_Error::logIfError($result) && !$result) {
-            return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'File_Common::importPost', array($this->width, $this->height, $this->_max_width, $this->_max_height));                        
+            return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'PHPWS_Image::prewriteRotate', array($this->width, $this->height, $this->_max_width, $this->_max_height));                        
         } else {
             if (!@copy($cpy_file, $tmp_file)) {
-                return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'File_Common::importPost', array($this->width, $this->height, $this->_max_width, $this->_max_height));
+                return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'PHPWS_Image::prewriteRotate', array($this->width, $this->height, $this->_max_width, $this->_max_height));
             } else {
                 list($this->width, $this->height, $image_type, $image_attr) = getimagesize($tmp_file);
                 return true;
