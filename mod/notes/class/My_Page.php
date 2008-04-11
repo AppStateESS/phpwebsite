@@ -137,6 +137,10 @@ class Notes_My_Page {
 
     function postNote(&$note)
     {
+        if (empty($_POST['title'])) {
+            $this->errors['missing_title'] = dgettext('notes', 'Your note needs a title.');
+        }
+
         $note->setTitle($_POST['title']);
         $note->setContent($_POST['content']);
 
@@ -251,6 +255,7 @@ class Notes_My_Page {
 
     function sendNote(&$note, $users=null)
     {
+        Layout::addStyle('notes');
         $form = new PHPWS_Form('send_note');
 
         $form->addHidden($this->myPageVars());
@@ -277,6 +282,8 @@ class Notes_My_Page {
         if (javascriptEnabled()) {
             $form->addHidden('js', 1);
             $form->addTplTag('CANCEL', javascript('close_window', array('value' =>dgettext('notes', 'Cancel'))));
+            javascript('jquery');
+            javascript('modules/notes/search_user');
         }
 
         if (isset($users) && is_array($users)) {
