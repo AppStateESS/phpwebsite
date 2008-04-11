@@ -107,8 +107,11 @@ jquery
 http://jquery.com
 
 Sam Collett
-jquery select functions
+jquery select plugin
 http://www.texotela.co.uk
+
+Dylan Verheul
+jquery autocomplete plugin
 
 --------------------------------------------------------------------------
 To those who translate, we salute you.

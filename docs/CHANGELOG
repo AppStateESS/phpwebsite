@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+11 April 2008
++ Added autocomplete jquery plugin
+
 9 April 2008
 + Added times for showing and hiding key elements.
 
