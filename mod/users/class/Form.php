@@ -342,11 +342,11 @@ class User_Form {
 
     function getMemberList(&$group)
     {
-        PHPWS_Core::initCoreClass('Pager.php');
+        $col_limit = 30;
         $content = NULL;
-
+        
         $result = $group->getMembers();
-        unset($db);
+
         if ($result){
             $db = new PHPWS_DB('users_groups');
             $db->addColumn('name');
@@ -354,34 +354,30 @@ class User_Form {
             $db->addWhere('id', $result, '=', 'or');
 
             $groupResult = $db->select();
-
+            
             $count = 0;
 
             $vars['action'] = 'admin';
             $vars['command'] = 'dropMember';
             $vars['group_id'] = $group->getId();
 
-            foreach ($groupResult as $item){
+            foreach ($groupResult as $item) {
                 $count++;
                 $vars['member'] = $item['id'];
                 $action = PHPWS_Text::secureLink(dgettext('users', 'Drop'), 'users', $vars, NULL, dgettext('users', 'Drop this member from the group.'));
-                if ($count % 2) {
-                    $template['STYLE'] = 'class="bg-light"';
-                }
-                else {
-                    $template['STYLE'] = NULL;
-                }
-                $template['NAME'] = $item['name'];
-                $template['ACTION'] = $action;
+                $names[] = sprintf('%s&#160;%s<br />', $action, $item['name']);
 
-                $data[] = PHPWS_Template::process($template, 'users', 'forms/memberlist.tpl');
+                if ($count >= $col_limit) {
+                    $template['NAMES'] = implode("\n", $names);
+                    $rows['rows'][] = $template;
+                    $count = 0;
+                    $names = array();
+                }
             }
+            $template['NAMES'] = implode("\n", $names);
+            $rows['rows'][] = $template;
 
-            $pager = new PHPWS_Pager;
-            $pager->setData($data);
-            $pager->setLinkBack('index.php?module=users&amp;group=' . $group->getId() . '&amp;action=admin&amp;command=manageMembers');
-            $pager->pageData();
-            $content = $pager->getData();
+            $content = PHPWS_Template::process($rows, 'users', 'forms/memberlist.tpl');
         }
 
         if (!isset($content)) {
@@ -397,7 +393,9 @@ class User_Form {
 
     function userForm(&$user, $message=NULL)
     {
-        $form = new PHPWS_Form;
+        javascript('jquery');
+        javascript('modules/users/generate');
+        $form = new PHPWS_Form('edit-user');
         if ($user->getId() > 0) {
             $form->addHidden('user_id', $user->getId());
             $form->addSubmit('submit', dgettext('users', 'Update User'));
@@ -435,6 +433,8 @@ class User_Form {
         $form->setLabel('username', dgettext('users', 'Username'));
         $form->setLabel('display_name', dgettext('users', 'Display name'));
         $form->setLabel('password1', dgettext('users', 'Password'));
+
+        $form->addButton('create_pw', dgettext('users', 'Generate password'));
 
         if (isset($tpl)) {
             $form->mergeTemplate($tpl);
@@ -563,6 +563,7 @@ class User_Form {
     function memberListForm($group)
     {
         $members = $group->getMembers();
+
         if (!isset($members)) {
             return dgettext('users', 'None found');
         }

@@ -1,3 +1,15 @@
+15 April 2008
++ Fixed member listing  dropping names past 10.
++ Added random password generator on user edit form.
++ Removed reference from Action.php causing php notice.
++ Changed redundant static method call in Permission.
++ Added dash to allowed display name characters.
++ Added \pL to display name characters.
++ Updated: 
+  templates/forms/memberlist.tpl, templates/forms/userForm.tpl,
+  javascript/generate/head.js
+        
+
 Version 2.4.8
 -----------------------------------------------------------------------
 21 March 2008

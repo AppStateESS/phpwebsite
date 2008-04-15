@@ -95,7 +95,7 @@ class Users_Permission {
     {
         // If permissions object is not set, load it
         if (!isset($this->permissions[$module])) {
-            $result = Users_Permission::loadPermission($module, $this->permissions);
+            $result = Users_Permission::loadPermission($module);
             if (PEAR::isError($result)) {
                 return $result;
             }
@@ -143,7 +143,7 @@ class Users_Permission {
     function getPermissionLevel($module)
     {
         if (!isset($this->permissions[$module])) {
-            $result = Users_Permission::loadPermission($module, $this->permissions);
+            $result = Users_Permission::loadPermission($module);
             if (PEAR::isError($result)) {
                 return $result;
             }
@@ -152,14 +152,14 @@ class Users_Permission {
         return $this->permissions[$module]['permission_level'];
     }
 
-    function loadPermission($module, &$permissions)
+    function loadPermission($module)
     {
         $groups = $this->groups;
 
         $permTable = Users_Permission::getPermissionTableName($module);
 
         if(!PHPWS_DB::isTable($permTable)) {
-            $permissions[$module]['permission_level'] = UNRESTRICTED_PERMISSION;
+            $this->permissions[$module]['permission_level'] = UNRESTRICTED_PERMISSION;
             return TRUE;
         }
 
@@ -172,7 +172,7 @@ class Users_Permission {
         $permResult = $permDB->select();
 
         if (!isset($permResult)) {
-            $permissions[$module]['permission_level'] = NO_PERMISSION;
+            $this->permissions[$module]['permission_level'] = NO_PERMISSION;
             return TRUE;
         }
 
@@ -211,12 +211,12 @@ class Users_Permission {
         }
 
         if (isset($itemList)) {
-            $permissions[$module]['items'] = $itemList;
+            $this->permissions[$module]['items'] = $itemList;
         } else {
-            $permissions[$module]['items'] = NULL;
+            $this->permissions[$module]['items'] = NULL;
         }
-        $permissions[$module]['permission_level'] = $permissionLevel;
-        $permissions[$module]['permissions']      = $permissionSet;
+        $this->permissions[$module]['permission_level'] = $permissionLevel;
+        $this->permissions[$module]['permissions']      = $permissionSet;
         $this->levels[$module] = $permissionLevel;
         return TRUE;
     }

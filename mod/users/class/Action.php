@@ -27,7 +27,7 @@ class User_Action {
         }
 
         $message = User_Action::getMessage();
-        $panel = & User_Action::cpanel();
+        $panel = User_Action::cpanel();
         $panel->enableSecure();
     
         if (isset($_REQUEST['command'])) {

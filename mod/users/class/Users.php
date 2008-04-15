@@ -348,7 +348,14 @@ class PHPWS_User {
             return true;
         }
 
-        if (preg_match('/[^\w\s]/', $name)) {
+        if (UTF8_MODE) {
+            $preg = '/[^\w\-\s\pL]+$/ui';
+        } else {
+            $preg = '/[^\w\-\s]+$/ui';
+        }
+
+
+        if (preg_match($preg, $name)) {
             return PHPWS_Error::get(USER_ERR_BAD_DISPLAY_NAME, 'users',
                                     'setUsername', $name);
         }

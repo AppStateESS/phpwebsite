@@ -1,1 +1,5 @@
-<div {STYLE}>{ACTION} {NAME}</div>
+<table cellpadding="5" width="100%">
+<tr>
+<!-- BEGIN rows --><td>{NAMES}</td><!-- END rows -->
+</tr>
+</table>
