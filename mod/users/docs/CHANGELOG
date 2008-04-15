@@ -1,4 +1,5 @@
 15 April 2008
++ Testing new user notification.
 + Fixed member listing  dropping names past 10.
 + Added random password generator on user edit form.
 + Removed reference from Action.php causing php notice.
