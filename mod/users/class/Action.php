@@ -309,7 +309,7 @@ class User_Action {
             if ($result === true){
                 $user->setActive(true);
                 $user->setApproved(true);
-                //$user->save();
+                $user->save();
                 $panel->setCurrentTab('manage_users');
 
                 if (isset($_POST['user_id'])) {
@@ -1514,14 +1514,15 @@ class User_Action {
         $body[] = sprintf(dgettext('users', 'Site address: %s'), PHPWS_Core::getHomeHttp());
         $body[] = sprintf(dgettext('users', 'Username: %s'), $username);
         $body[] = sprintf(dgettext('users', 'Password: %s'), $password);
+        $body[] = dgettext('users', 'Please change your password immediately after logging in.');
             
         $mail = new PHPWS_Mail;
         $mail->addSendTo($email);
         $mail->setSubject(sprintf(dgettext('users', '%s account created'), $page_title));
         $mail->setFrom(PHPWS_User::getUserSetting('site_contact'));
         $mail->setReplyTo(PHPWS_User::getUserSetting('site_contact'));
-        $mail->setMessageBody(implode("\n", $body));
-        //        $result = !PHPWS_Error::logIfError($mail->send());
+        $mail->setMessageBody(implode("\n\n", $body));
+        $result = !PHPWS_Error::logIfError($mail->send());
         return $result;
     }
 }
