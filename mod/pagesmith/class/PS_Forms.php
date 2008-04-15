@@ -246,13 +246,14 @@ class PS_Forms {
     function pickFolder()
     {
         @include 'config/pagesmith/folder_icons.php';
+        $folder_list = array();
 
         Layout::addStyle('pagesmith');
         $this->loadTemplates();
         foreach ($this->tpl_list as $template) {
             if ($template->folders) {
                 foreach ($template->folders as $folder_name) {
-                    $folder_list[$folder_name]++;
+                    @$folder_list[$folder_name]++;
                 }
             }
         }

@@ -308,8 +308,8 @@ class PS_Page {
 
         $this->_content['page_title'] = & $this->title;
         $content = PHPWS_Template::process($this->_content, 'pagesmith', $this->_tpl->page_path . 'page.tpl');
-
-        PHPWS_Cache::save($key, $content);
+        
+        PHPWS_Cache::save($this->cacheKey(), $content);
         return $content;
     }
 

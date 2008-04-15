@@ -152,7 +152,6 @@ class PageSmith {
             $tpl['MESSAGE'] = $this->message;
             Layout::nakedDisplay(PHPWS_Template::process($tpl, 'pagesmith', 'admin_main.tpl'));
         } else {
-            $this->panel->setContent($content);
             Layout::add(PHPWS_ControlPanel::display($this->panel->display($this->content, $this->title, $this->message)));
         }
     }
