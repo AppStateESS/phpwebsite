@@ -22,6 +22,11 @@ if (isset($data['type'])) {
     if ($data['type'] = 'button') {
         $bodyfile = $base . 'javascript/open_window/body2.js';
     }
- }
+}
 
+$site_address = PHPWS_Core::getHomeHttp();
+
+if (!stristr($data['address'], $site_address)) {
+    $data['address'] = $site_address .  $data['address'];
+}
 ?>

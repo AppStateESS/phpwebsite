@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+16 April 2008
++ Added home url to open_window address because Internet Explorer
+(spit, spit) makes links relative to the mod_rewrite path.
+
 11 April 2008
 + Added autocomplete jquery plugin
 
