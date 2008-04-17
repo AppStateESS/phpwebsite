@@ -205,7 +205,7 @@ Caching
 --------------------
 The File Cabinet uses a mod specific style sheet. If you are caching
 your page views, this file may not get included.
-You can call CAbinet::fileStyle() to assure it.
+You can call Cabinet::fileStyle() to assure it.
 
 
 Conclusion
