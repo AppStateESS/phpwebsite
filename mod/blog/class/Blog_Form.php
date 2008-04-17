@@ -95,6 +95,8 @@ class Blog_Form {
             $manager->maxImageWidth(PHPWS_Settings::get('blog', 'max_width'));
             $manager->maxImageHeight(PHPWS_Settings::get('blog', 'max_height'));
 
+            $manager->moduleLimit(PHPWS_Settings::get('blog', 'mod_folders_only'));
+
             if ($manager) {
                 $form->addTplTag('FILE_MANAGER', $manager->get());
             }

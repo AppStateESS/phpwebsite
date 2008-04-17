@@ -57,7 +57,7 @@ class Blog_User {
 
     function main()
     {
-        if ($_GET['var1']) {
+        if (isset($_GET['var1'])) {
             Blog_User::fillInForward();
         }
 
