@@ -116,6 +116,10 @@ class Cabinet {
             $this->file_manager->force_resize = (bool)$_GET['fr'];
         }
 
+        if (isset($_GET['ml'])) {
+            $this->file_manager->mod_limit = (bool)$_GET['ml'];
+        }
+
         return true;
     }
 
@@ -294,6 +298,7 @@ class Cabinet {
 
         case 'post_folder':
             $this->loadFolder();
+
             if (!Current_User::authorized('filecabinet', 'edit_folders')) {
                 Current_User::disallow();
             }
@@ -945,6 +950,9 @@ class Cabinet {
         $this->folder = new Folder($folder_id);
         if (!$this->folder->id) {
             $this->folder->ftype = $_REQUEST['ftype'];
+            if (isset($_REQUEST['module_created'])) {
+                $this->folder->module_created = $_REQUEST['module_created'];
+            }
         }
     }
 

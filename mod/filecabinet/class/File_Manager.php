@@ -14,6 +14,7 @@ class FC_File_Manager {
     var $max_width      = 0;
     var $max_height     = 0;
     var $lock_type      = null;
+    var $mod_limit      = false;
     /**
      * If true, user must resize to fit image limits
      */
@@ -220,6 +221,7 @@ class FC_File_Manager {
         $info['itn']  = $this->itemname;
         $info['fid']  = $this->file_assoc->id;
         $info['fr']   = $this->force_resize ? 1 : 0;
+        $info['ml']   = $this->mod_limit ? 1 : 0;
 
         if ($dimensions) {
             if ($this->max_width) {
@@ -374,10 +376,20 @@ class FC_File_Manager {
         if (Current_User::allow('filecabinet', 'edit_folders') && Current_User::isUnrestricted('filecabinet')) {
             $folder = new Folder;
             $folder->ftype = $this->folder_type;
-            $tpl['ADD_FOLDER'] = $folder->editLink('button');
+            if ($this->mod_limit) {
+                $tpl['ADD_FOLDER'] = $folder->editLink('button', $this->module);
+            } else {
+                $tpl['ADD_FOLDER'] = $folder->editLink('button');
+            }
         }
 
         $db = new PHPWS_DB('folders');
+        $db->addWhere('module_created', $this->module, null, null, 'mod_limit');
+
+        if (!$this->mod_limit) {
+            $db->addWhere('module_created', null, null, 'or', 'mod_limit');
+        }
+
         $db->addOrder('title');
         $db->addWhere('ftype', $this->folder_type);
         $folders = $db->getObjects('Folder');
@@ -664,6 +676,13 @@ class FC_File_Manager {
         return $file_assoc;
     }
 
+    /**
+     * Limits folder selection by module.
+     */ 
+    function moduleLimit($limit=true)
+    {
+        $this->mod_limit = (bool)$limit;
+    }
 
 }
 

@@ -1,3 +1,9 @@
+17 April 2008
++ Can change module restriction per folder.
++ Added moduleLimit function to restrict folder view in file manager.
++ Some notices fixed
++ Updated: templates/edit_folder.tpl
+
 11 April 2008
 + Image folders can be set to control default image default size.
 + Fixed an error call.

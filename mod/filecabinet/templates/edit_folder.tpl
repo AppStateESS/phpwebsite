@@ -10,6 +10,8 @@
 <!-- BEGIN dimension --><p style="margin-bottom : 1em">{MAX_IMAGE_DIMENSION_LABEL}<br />
 {MAX_IMAGE_DIMENSION}</p><!-- END dimension -->
 
+<p style="margin-bottom : 1em">{MODULE_CREATED_LABEL}<br />{MODULE_CREATED}</p>
+
 <p>{SUBMIT}</p>
 {END_FORM}
 <div style="text-align : center">{CLOSE}</div>

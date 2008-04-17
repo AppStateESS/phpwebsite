@@ -64,7 +64,7 @@ class Folder {
     /**
      * Creates javascript pop up for creating a new folder
      */
-    function editLink($mode=null)
+    function editLink($mode=null, $module_created=null)
     {
         if ($this->id) {
             $vars['aop']    = 'edit_folder';
@@ -84,11 +84,14 @@ class Folder {
         } 
 
         $vars['ftype'] = $this->ftype;
+        if ($module_created) {
+            $vars['module_created'] = $module_created;
+        }
 
         $js['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
 
         $js['width'] = 370;
-        $js['height'] = 450;
+        $js['height'] = 500;
         if ($mode == 'button') {
             $js['type'] = 'button';
         }
@@ -245,8 +248,10 @@ class Folder {
 
         $this->setDescription($_POST['description']);
 
-        if (isset($_POST['module_created'])) {
+        if (!empty($_POST['module_created'])) {
             $this->module_created = $_POST['module_created'];
+        } else {
+            $this->module_created = null;
         }
 
         $this->ftype = $_POST['ftype'];
@@ -444,9 +449,10 @@ class Folder {
             $links[] = $this->deleteLink();
         }
 
+        $mods = PHPWS_Core::getModuleNames();
         if ($this->ftype == IMAGE_FOLDER) {
             if ($this->module_created) {
-                $tpl['MODULE_CREATED'] = $this->module_created;
+                $tpl['MODULE_CREATED'] = $mods[$this->module_created];
             } else {
                 $tpl['MODULE_CREATED'] = dgettext('filecabinet', 'General');
             }

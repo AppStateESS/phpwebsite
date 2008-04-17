@@ -157,16 +157,23 @@ class Cabinet_Form {
         $form->addHidden('aop', 'post_folder');
         $form->addHidden('ftype', $folder->ftype);
 
-        if (isset($_GET['module_created'])) {
-            $form->addHidden('module_created', $_GET['module_created']);
-        }
-
         if ($folder->id) {
             $form->addHidden('folder_id', $folder->id);
             $form->addSubmit('submit', dgettext('filecabinet', 'Update folder'));
         } else {
             $form->addSubmit('submit', dgettext('filecabinet', 'Create folder'));
         }
+
+        $modules = PHPWS_Core::getModuleNames();
+        $modlist[0] = dgettext('filecabinet', '-- General --');
+        foreach ($modules as $key=>$mod) {
+            $modlist[$key] = $mod;
+        }
+        $form->addSelect('module_created', $modlist);
+        if (!empty($folder->module_created)) {
+            $form->setMatch('module_created', $folder->module_created);                
+        }
+        $form->setLabel('module_created', dgettext('filecabinet', 'Module reservation'));
 
         $form->addTextField('title', $folder->title);
         $form->setSize('title', 40, 255);
@@ -528,7 +535,7 @@ class Cabinet_Form {
         foreach ($known as $type) {
             @$file_info = $all_file_types[$type];
 
-            if (empty($file_info) || ($file_info['base'] && @$file_info['base'] != $type)) {
+            if (empty($file_info) || (isset($file_info['base']) && @$file_info['base'] != $type)) {
                 continue;
             }
             $checks[$type] = $file_info['vb'];
