@@ -151,6 +151,7 @@ function convertAnnouncement($entry)
 
     $val['author']  = $entry['userCreated'];
     $val['create_date']    = strtotime($entry['dateCreated']);
+    $val['publish_date']   = $val['create_date'];
     $val['approved']       = $entry['approved'];
     $val['allow_comments'] = $entry['comments'];
 

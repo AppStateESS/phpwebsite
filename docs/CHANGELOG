@@ -4,6 +4,7 @@ its own separate CHANGELOG file.
 
 18 April 2008
 + Fixed filecabinet conversion.
++ Publish by date added to blog conversion.
 
 16 April 2008
 + Added home url to open_window address because Internet Explorer
