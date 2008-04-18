@@ -194,7 +194,7 @@ class Signup_Forms {
         $form->addHidden('module', 'signup');
         $form->addHidden('aop', 'edit_slots');
         $form->addHidden('sheet_id', $this->signup->sheet->id);
-        if (isset($_GET['search'])) {
+        if (!empty($_GET['search'])) {
             $search = $_GET['search'];
             $this->signup->message = dgettext('signup', 'The name you searched for is in these slots.');
         } else {
