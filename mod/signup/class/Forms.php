@@ -19,7 +19,7 @@ class Signup_Forms {
             if (empty($this->signup->sheet)) {
                 $this->signup->loadSheet();
             }
-            if (!Current_User::allow('signup', 'edit_sheet', $this->sheet->id, 'sheet')) {
+            if (!Current_User::allow('signup', 'edit_sheet', $this->signup->sheet->id, 'sheet')) {
                 Current_User::disallow();
             }
 
@@ -189,6 +189,20 @@ class Signup_Forms {
     function editSlots()
     {
         $this->signup->title = sprintf(dgettext('signup', 'Slot setup for %s'), $this->signup->sheet->title);
+        $form = new PHPWS_Form('seach_users');
+        $form->setMethod('get');
+        $form->addHidden('module', 'signup');
+        $form->addHidden('aop', 'edit_slots');
+        $form->addHidden('sheet_id', $this->signup->sheet->id);
+        if (isset($_GET['search'])) {
+            $search = $_GET['search'];
+            $this->signup->message = dgettext('signup', 'The name you searched for is in these slots.');
+        } else {
+            $search = null;
+        }
+        $form->addText('search', $search);
+        $form->setLabel('search', dgettext('signup', 'Search slots'));
+        $tpl = $form->getTemplate();
 
         $vars['aop'] = 'edit_slot_popup';
         $vars['sheet_id'] = $this->signup->sheet->id;
@@ -203,11 +217,14 @@ class Signup_Forms {
         $vars['aop'] = 'alpha_order';
         $tpl['ALPHA'] = PHPWS_Text::secureLink(dgettext('signup', 'Alphabetic order'), 'signup', $vars);
 
-        $slots = $this->signup->sheet->getAllSlots();
+        $slots = $this->signup->sheet->getAllSlots(false, $search);
+
         if ($slots) {
             foreach ($slots as $slot) {
                 $tpl['slot-list'][] = $slot->listTpl();
             }
+        } else {
+            $this->signup->message = dgettext('signup', 'No slots found.');
         }
 
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'slot_setup.tpl');

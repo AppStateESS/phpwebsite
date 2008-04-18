@@ -8,3 +8,6 @@
 {LINKS}</p>
 </div>
 <!-- END slot-list -->
+{START_FORM}
+{SEARCH_LABEL} {SEARCH}
+{END_FORM}

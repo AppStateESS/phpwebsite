@@ -139,6 +139,10 @@ class Signup {
             $this->loadForm('edit_slots');
             break;
 
+        case 'search_slot':
+            $this->searchSlots();
+            break;
+
         case 'post_peep':
             $javascript = true;
             if (!Current_User::authorized('signup')) {
@@ -304,6 +308,26 @@ class Signup {
         }
 
         return true;
+    }
+
+    function searchSlots()
+    {
+        PHPWS_Core::initModClass('signup', 'Sheet.php');
+        if (UTF8_MODE) {
+            $preg = '/[\W\-\PL]/';
+        } else {
+            $preg = '/[\W\-]/';
+        }
+
+        $search = preg_replace('/[^\w]/', '', $_GET['search']);
+        $db = new PHPWS_DB('signup_sheet');
+        $db->addWhere('signup_sheet.id', 'signup_peeps.sheet_id');
+        $db->addWhere('signup_peeps.first_name', "$search%", 'like', 'and', 'search');
+        $db->addWhere('signup_peeps.last_name', "$search%", 'like', 'or', 'search');
+        $result = $db->getObjects('Signup_Sheet');
+        if (empty($result) || PHPWS_Error::logIfError($result)) {
+
+        }
     }
 
     function sendMessage()

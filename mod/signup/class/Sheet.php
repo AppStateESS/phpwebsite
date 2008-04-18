@@ -108,12 +108,19 @@ class Signup_Sheet {
         return PHPWS_Text::moduleLink(dgettext('signup', 'Edit slots'), 'signup', $vars);
     }
 
-    function getAllSlots($bare=false)
+    function getAllSlots($bare=false, $search=null)
     {
         PHPWS_Core::initModClass('signup', 'Slots.php');
         $db = new PHPWS_DB('signup_slots');
         $db->addOrder('s_order');
         $db->addWhere('sheet_id', $this->id);
+
+        if ($search) {
+            $db->addWhere('signup_peeps.sheet_id', $this->id);
+            $db->addWhere('signup_peeps.first_name', "$search%", 'like', 'and', 'search');
+            $db->addWhere('signup_peeps.last_name', "$search%", 'like', 'or', 'search');
+        }
+
         if ($bare) {
             $db->addColumn('id');
             $db->addColumn('title');
