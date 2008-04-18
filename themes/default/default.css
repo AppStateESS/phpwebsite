@@ -162,9 +162,16 @@ div.backgrd {
     border-color: #90996E;
 }
 
-ul.tabmenu li {
+ul.tabmenu li a {
     border-color: #90996E;
     border-bottom : none;
+    padding-bottom : 1px;
+}
+
+ul.tabmenu li.active a {
+    border-color: #90996E;
+    border-bottom : none;
+    padding-bottom : 2px;
 }
 
 ul.tabmenu li.inactive {
