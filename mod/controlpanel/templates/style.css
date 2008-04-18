@@ -25,19 +25,25 @@ div.controlpanel {
 /*--------------- Tabs ---------------*/
 
 .tabmenu li {
-    padding: 3px 5px 2px 5px;
     display: inline;
     list-style-type: none;
-    border : 1px solid black;
-    /* Gecko browsers */
-    -moz-border-radius-topleft: 4px;
-    -moz-border-radius-topright: 4px;
     font-size: 0.8em;
     margin-right : 2px;
 }
 
+.tabmenu ul {
+    line-height : 1em;
+}
 
-.tabmenu li.active {
+.tabmenu li a {
+    padding: 3px 5px 2px 5px;
+    border : 1px solid black;
+    /* Gecko browsers */
+    -moz-border-radius-topleft: 4px;
+    -moz-border-radius-topright: 4px;
+}
+
+.tabmenu li.active a {
     color : white;
     background-color : #BFBFBF;
     border-bottom : none;
@@ -51,11 +57,11 @@ div.controlpanel {
     color : black;
 }
 
-.tabmenu li.inactive {
+.tabmenu li.inactive a {
     background-color : #E9E9E9;
 }
 
-.tabmenu li.inactive:hover {
+.tabmenu li.inactive a:hover {
     background: #F0F0F0;
     color: white;
 }
