@@ -7,7 +7,9 @@
    * @version $Id$
    */
 
+PHPWS_Core::initModClass('filecabinet', 'Folder.php');
 PHPWS_Core::initModClass('filecabinet', 'Document.php');
+PHPWS_Core::requireInc('filecabinet', 'defines.php');
 
 function convert()
 {

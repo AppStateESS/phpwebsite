@@ -8,7 +8,9 @@
    */
 
   // Must not be below 1
-define('GRAPH_MULTIPLIER', 2);
+if (!defined('GRAPH_MULTIPLIER')) {
+    define('GRAPH_MULTIPLIER', 2);
+}
 
 class Convert {
     function action()
@@ -105,7 +107,7 @@ class Convert {
         return $_SESSION['Convert_Tbl_Prefix'];
     }
 
-    function &getSourceDB($table)
+    function getSourceDB($table)
     {
         $dsn = $_SESSION['OTHER_DATABASE'];
         if (!empty($_SESSION['Convert_Tbl_Prefix'])) {
