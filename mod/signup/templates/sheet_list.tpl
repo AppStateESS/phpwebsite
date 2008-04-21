@@ -11,3 +11,8 @@
 <!-- END listrows -->
 </table>
 {EMPTY_MESSAGE}
+<div align="center">
+  <b>{PAGE_LABEL}</b><br />
+  {PAGES}<br />
+  {LIMITS}
+</div>

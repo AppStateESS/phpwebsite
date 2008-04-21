@@ -1,3 +1,7 @@
+21 April 2008
++ Added missing navigation links to sheet listing.
++ Updated: templates/sheet_list.tpl
+
 18 April 2008
 + Added search textfield to slot screen.
 + updated : templates/slot_setup.tpl
