@@ -24,14 +24,14 @@
 <span class="smaller" style="margin-left : 2em;">{SINGLE_CAT_ICON} {SINGLE_CAT_ICON_LABEL}</span></p>
 </fieldset>
 
-
-<fieldset><legend><strong>{COMMENT_LABEL}</strong></legend>
+<fieldset><legend><strong>{SUBMISSION_LABEL}</strong></legend>
 <p>{ALLOW_ANONYMOUS_SUBMITS} {ALLOW_ANONYMOUS_SUBMITS_LABEL}
 <!-- BEGIN menu-link --><br /><span class="smaller">{MENU_LINK}</span><!-- END menu-link -->
 </p>
-
 <p>{CAPTCHA_SUBMISSIONS} {CAPTCHA_SUBMISSIONS_LABEL}</p>
+</fieldset>
 
+<fieldset><legend><strong>{COMMENT_LABEL}</strong></legend>
 <p>{ALLOW_COMMENTS} {ALLOW_COMMENTS_LABEL}</p>
 
 <p>{ANONYMOUS_COMMENTS} {ANONYMOUS_COMMENTS_LABEL}</p>

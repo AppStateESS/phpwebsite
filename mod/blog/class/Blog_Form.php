@@ -28,8 +28,8 @@ class Blog_Form {
                 $form->setLabel('captcha', dgettext('blog', 'Type the word seen in the image.'));
                 $form->addTplTag('CAPTCHA_IMAGE', Captcha::get());
             }
-
         } else {
+
             $form->addHidden('action', 'admin');
             $form->addHidden('command', 'post_entry');
 
@@ -53,12 +53,22 @@ class Blog_Form {
             
             $form->addCheck('allow_anon', 1);
             $form->setLabel('allow_anon', dgettext('blog', 'Allow anonymous comments'));
+
+            $default_approval[0] = dgettext('blog', 'Comments preapproved');
+            $default_approval[1] = dgettext('blog', 'Anonymous comments require approval');
+            $default_approval[2] = dgettext('blog', 'All comments require approval');
+            
+            $form->addSelect('comment_approval', $default_approval);
+            $form->setLabel('comment_approval', dgettext('blog', 'Comment approval'));
+            
             if ($blog->id) {
                 PHPWS_Core::initModClass('comments', 'Comments.php');
                 $thread = Comments::getThread($blog->key_id);
                 $form->setMatch('allow_anon', $thread->allow_anon);
+                $form->setMatch('comment_approval', $thread->approval);
             } else {
                 $form->setMatch('allow_anon', PHPWS_Settings::get('blog', 'anonymous_comments'));
+                $form->setMatch('comment_approval', PHPWS_Settings::get('comments', 'default_approval'));
             }
 
             $link_choices['none']       = dgettext('blog', 'No link and ignore image link setting');
@@ -100,6 +110,10 @@ class Blog_Form {
             if ($manager) {
                 $form->addTplTag('FILE_MANAGER', $manager->get());
             }
+
+            $form->addCheck('thumbnail', 1);
+            $form->setMatch('thumbnail', $blog->thumbnail);
+            $form->setLabel('thumbnail', dgettext('blog', 'Show image or media thumbnail in list view'));
         }
 
         $form->addText('title', $blog->title);
@@ -130,12 +144,7 @@ class Blog_Form {
         $form->setLabel('expire_date', dgettext('blog', 'Expire date/time'));
         $form->setSize('expire_date', 20);
 
-        $form->addCheck('thumbnail', 1);
-        $form->setMatch('thumbnail', $blog->thumbnail);
-        $form->setLabel('thumbnail', dgettext('blog', 'Show image or media thumbnail in list view'));
-
         $template = $form->getTemplate();
-
 
         $template['EXAMPLE'] = 'YYMMDD HH:MM';
         if ($blog->_error) {
@@ -229,13 +238,12 @@ class Blog_Form {
         $form->addTextField('max_height', PHPWS_Settings::get('blog', 'max_height'));
         $form->setLabel('max_height', dgettext('blog', 'Maximum image height (50-2048)'));
         $form->setSize('max_height', 4,4);
-        
 
         $form->addSubmit(dgettext('blog', 'Save settings'));
 
         $template = $form->getTemplate();
 
-        if (PHPWS_Settings::get('blog', 'allow_anonymous_submit')) {
+        if (PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
             $template['MENU_LINK'] = PHPWS_Text::secureLink(dgettext('blog', 'Clip for menu'), 'blog',
                                                             array('action'=>'admin', 'command'=>'menu_submit_link'));
         }
@@ -243,6 +251,7 @@ class Blog_Form {
         $template['VIEW_LABEL']     = dgettext('blog', 'View');
         $template['CATEGORY_LABEL'] = dgettext('blog', 'Category');
         $template['COMMENT_LABEL']  = dgettext('blog', 'Comment');
+        $template['SUBMISSION_LABEL'] = dgettext('blog', 'Submission');
 
 
         $template['PAST_NOTE'] = dgettext('blog', 'Set to zero to prevent display');

@@ -478,6 +478,13 @@ class Blog_Admin {
         $pageTags['ACTION']  = dgettext('blog', 'Action');
 
         $pager = new DBPager('blog_entries', 'Blog');
+        $pager->addSortHeader('title', dgettext('blog', 'Title'));
+        $pager->addSortHeader('create_date', dgettext('blog', 'Creation'));
+        $pager->addSortHeader('publish_date', dgettext('blog', 'Publish'));
+        $pager->addSortHeader('expire_date', dgettext('blog', 'Expire'));
+
+        $pager->convertDate('create_date');
+
         $pager->setModule('blog');
         $pager->setTemplate('list.tpl');
         $pager->addToggle('class="toggle1"');

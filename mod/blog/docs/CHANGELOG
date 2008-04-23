@@ -1,3 +1,11 @@
+23 April 2008
++ Blog uses new dbpager sorting headers.
++ Lets you use new comments approval.
++ Fixed bug with setting allow anonymous submissions.
++ Updated: templates/edit.tpl, templates/list.tpl,
+  templates/settings.tpl
+
+
 17 April 2008
 + Fixed notice warning.
 + Readded ability to limit folder view by module.

@@ -35,6 +35,7 @@ class Blog {
      */
     var $image_link     = 'default';
     var $_error         = null;
+    var $_comment_approval = 0;
 
     function Blog($id=null)
     {
@@ -257,6 +258,7 @@ class Blog {
             PHPWS_Core::initModClass('comments', 'Comments.php');
             $thread = Comments::getThread($this->key_id);
             $thread->allowAnonymous($this->allow_anon);
+            $thread->setApproval($this->_comment_approval);
             $thread->save();
 
             $search = new Search($this->key_id);
@@ -550,6 +552,8 @@ class Blog {
         } else {
             $this->allow_comments = 0;
         }
+
+        $this->_comment_approval = (int)$_POST['comment_approval'];
 
         if (isset($_POST['allow_anon'])) {
             $this->allow_anon = 1;

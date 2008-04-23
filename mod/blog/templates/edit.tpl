@@ -36,7 +36,8 @@ function toggleUrl(select) {
 <!-- BEGIN comments -->
     <p>
         {ALLOW_COMMENTS} {ALLOW_COMMENTS_LABEL}<br />
-        {ALLOW_ANON} {ALLOW_ANON_LABEL}
+        {ALLOW_ANON} {ALLOW_ANON_LABEL}<br />
+        {COMMENT_APPROVAL}
     </p>
 <!-- END comments -->
     <!-- BEGIN captcha -->

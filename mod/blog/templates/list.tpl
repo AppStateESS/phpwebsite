@@ -1,10 +1,10 @@
 <table cellpadding="4" cellspacing="1" width="98%">
   <tr style="vertical-align : top">
-    <th width="25%">{TITLE_SORT} {TITLE}</th>
+    <th width="25%">{TITLE_SORT}</th>
     <th width="30%">{SUMMARY}</th>
-    <th width="25%">{CREATE_DATE_SORT} {CREATION_LABEL}<br />
-        {PUBLISH_DATE_SORT} {PUBLISH_LABEL}<br />
-        {EXPIRE_DATE_SORT} {EXPIRE_LABEL}
+    <th width="25%">{CREATE_DATE_SORT}<br />
+        {PUBLISH_DATE_SORT}<br />
+        {EXPIRE_DATE_SORT}
     </th>
     <th width="20%">{ACTION}</th>
   </tr>
