@@ -17,3 +17,9 @@ echo javascript('check_all', array('checkbox_name' => 'color'));
 ?>
 
 --------------------------- End ----------------------------------
+
+The default switch is a button. You may use a checkbox switch instead
+by setting the 'type' to 'checkbox':
+
+javascript('check_all', array('checkbox_name' => 'color',
+                              'type'          => 'checkbox'));

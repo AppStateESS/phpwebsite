@@ -7,8 +7,8 @@
  */
 var checked_status = false;
 
-function CheckAll(button, shortcut) {
-    for (i=0; checkbox = button.form.elements[i]; i++) {
+function CheckAll(input, shortcut) {
+    for (i=0; checkbox = input.form.elements[i]; i++) {
         if (checkbox.type=='checkbox' && checkbox.name.match(shortcut)) {
             if (checked_status) {
                 checkbox.checked = '';
@@ -18,10 +18,12 @@ function CheckAll(button, shortcut) {
         }
     }
 
-    if (checked_status) {
-        button.value = '{check_label}';
-    } else {
-        button.value = '{uncheck_label}';
+    if (input.type == 'button') {
+        if (checked_status) {
+            input.value = '{check_label}';
+        } else {
+            input.value = '{uncheck_label}';
+        }
     }
 
     checked_status = !checked_status;

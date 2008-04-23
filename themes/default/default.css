@@ -37,7 +37,7 @@ body {
     color : black;
 }
 
-.bgcolor2 {
+.highlight:hover, .bgcolor2 {
     background-color : #EDF4D1;
     color : black;
 }

@@ -2,6 +2,24 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+23 April 2008
++ Form.php - changed POST to REQUEST in testDate and getPostedDate
++ DBPager
+  o Added caching system to retain pager settings. Set with
+    cacheQueries function.
+  o Added convertDate function to format date columns
+  o Added addSortHeader function to allow a clickable column header.
++ Javascript
+  o Added a checkbox trigger for check all.
+  o Fixed a bug in open_window that prevented button use.
+
++ Updated: javascript/check_all/body.js, default.php, head.js,
+           README.txt
+           javascript/open_window/default.php
+
++ Themes
+  o Added a new stardard class "highlight" for hovering on rows.
+
 18 April 2008
 + Fixed filecabinet conversion.
 + Publish by date added to blog conversion.

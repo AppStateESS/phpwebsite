@@ -158,6 +158,15 @@ class DBPager {
 
     var $search_label = true;
 
+    var $sort_headers = array();
+
+    var $convert_date = array();
+
+    /**
+     * If true, DBPager will cache last user request
+     */
+    var $cache_queries = false;
+
     function DBPager($table, $class=NULL)
     {
         if (empty($table)) {
@@ -611,6 +620,16 @@ class DBPager {
      */
     function initialize($load_rows=true)
     {
+        if (empty($this->limit) && empty($this->orderby) &&
+            empty($this->search) &&
+            isset($_SESSION['DB_Cache'][$this->module][$this->template])) {
+            extract($_SESSION['DB_Cache'][$this->module][$this->template]);
+            $this->limit       = $limit;
+            $this->orderby     = $orderby;
+            $this->orderby_dir = $orderby_dir;
+            $this->search      = $search;
+        }
+
         if (isset($this->error)) {
             return $this->error;
         }
@@ -699,6 +718,17 @@ class DBPager {
         }
 
         $this->display_rows = &$result;
+
+        if ($this->cache_queries) {
+            $cache['limit']       = $this->limit;
+            $cache['orderby']     = $this->orderby;
+            $cache['orderby_dir'] = $this->orderby_dir;
+            $cache['search']      = $this->search;
+
+            $_SESSION['DB_Cache'][$this->module][$this->template] = $cache;
+        } else {
+            $this->clearQuery();
+        }
         return TRUE;
     }
 
@@ -861,11 +891,19 @@ class DBPager {
                 $vars[] = "$key=$value";
             }
 
+            if (isset($this->sort_headers[$varname])) {
+                $button .= '&nbsp;' . $this->sort_headers[$varname];
+            }
             $link = sprintf('<a href="%s?%s%s">%s</a>', $this->getLinkBase(), implode('&amp;', $vars), $this->getAnchor(), $button);
 
             $template[strtoupper($buttonname)] = $link;
         }
         return $template;
+    }
+
+    function addSortHeader($header, $title)
+    {
+        $this->sort_headers[$header] = $title;
     }
 
     function getLinkValues()
@@ -975,6 +1013,15 @@ class DBPager {
         }
 
         foreach ($this->display_rows as $disp_row) {
+            if (!empty($this->convert_date)) {
+                foreach ($this->convert_date as $key=>$format) {
+                    if ($this->class && isset($disp_row->$key)) {
+                        $disp_row->$key = strftime($format, $disp_row->$key);
+                    } elseif (isset($disp_row[$key])) {
+                        $disp_row[$key] = strftime($format, $disp_row[$key]);
+                    }
+                }
+            }
             if (isset($this->class) && isset($this->run_methods)){
                 foreach ($this->run_methods as $run_function) {
                     call_user_func(array(&$disp_row, $run_function));
@@ -1223,6 +1270,21 @@ class DBPager {
         } else {
             return null;
         }
+    }
+
+    function convertDate($column_name, $format='%c')
+    {
+        $this->convert_date[$column_name] = $format;
+    }
+
+    function clearQuery()
+    {
+        unset($_SESSION['DB_Cache'][$this->module][$this->template]);
+    }
+    
+    function cacheQueries($cache=true)
+    {
+        $this->cache_queries = (bool)$cache;
     }
 }
 

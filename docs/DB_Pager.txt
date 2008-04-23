@@ -152,6 +152,21 @@ $tags['ACTION']     = _('Action');
 $pager->addPageTags($tags);
 
 
+Converting the date
+--------------------------------------------------------------------
+If one of your table columns is in unix time, you can have DBPager
+format it for you:
+
+$pager->convertDate($column_name, $format[%c]);
+
+The $column_name is the title of the datetime column. The format
+matches the parameters used in the strftime function. The default
+value is '%c'.
+
+Keep in mind that dates are formatted BEFORE what is called in
+addRowTags. Don't format it twice.
+
+
 Plugging in Special Row Tags
 --------------------------------------------------------------------
 If you want to plug in special tags per row, then you can do so using
@@ -269,6 +284,18 @@ Notice the header row. It contains the labels for the columns. Next to
 the column name is a COLUMNNAME_SORT tag. This tag will display a
 sorting graphic. By clicking on this graphic, the user can order the
 data by column alphabetically.
+
+You can also create a custom sort header for a column. Say you wanted
+to sort by the column pet_name:
+
+$pager->addSortHeader('pet_name', 'My Pet Names');
+
+This would create a button/title combo that would sort the pet_name
+column. It would look something like this:
+
+[] My Pet Names
+
+You would just need to add "PET_NAME_SORT" to your template.
 
 After the headers come the actual rows. Notice that the column tag
 names are identical to the table column names. The ACTION tag is from
