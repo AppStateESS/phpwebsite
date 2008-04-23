@@ -77,6 +77,23 @@ class Comments {
 
         $tabs['settings'] = array('title'=>dgettext('comments', 'Settings'), 'link'=>'index.php?module=comments');
         $tabs['report']   = array('title'=>dgettext('comments', 'Reported'), 'link'=>'index.php?module=comments');
+        
+        $db = new PHPWS_DB('comments_items');
+        $db->addColumn('id', null, null, true);
+        $db->addWhere('approved', 0);
+        $count = $db->select('one');
+        if (PHPWS_Error::logIfError($count)) {
+            $count = 0;
+        }
+
+        if ($count) {
+            $tabs['approval'] = array('title'=> sprintf(dgettext('comments', 'Approval (%s)'), $count),
+                                      'link'=>'index.php?module=comments');
+        } else {
+            $tabs['approval'] = array('title'=> dgettext('comments', 'Approval'),
+                                      'link'=>'index.php?module=comments');
+        }
+
 
         $panel = new PHPWS_Panel('comments');
         $panel->quickSetTabs($tabs);
@@ -98,7 +115,20 @@ class Comments {
             PHPWS_Core::goBack();
             return;
             break;
-            
+
+        case 'approve':
+            // Admin approved a comment
+            $comment = new Comment_Item($_REQUEST['cm_id']);
+            $comment->approve();
+            PHPWS_Core::goBack();
+            break;
+
+        case 'remove':
+            $comment = new Comment_Item($_REQUEST['cm_id']);
+            $comment->delete(false);
+            PHPWS_Core::goBack();
+            break;
+
         case 'report':
             $panel->setCurrentTab('report');
             PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
@@ -113,6 +143,19 @@ class Comments {
             } else {
                 $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
             }
+            break;
+
+        case 'approve_all':
+            break;
+
+        case 'remove_all':
+            break;
+
+        case 'approval':
+            // Basic comment permissions allow approval
+            PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+            $panel->setCurrentTab('approval');
+            $content = Comment_Forms::approvalForm();
             break;
 
         case 'post_settings':
@@ -308,8 +351,14 @@ class Comments {
                     $content[] = dgettext('comments', 'Please try again later.');
                     break;
                 } else {
-                    PHPWS_Core::reroute($thread->getSourceUrl(false, $c_item->id));
-                    exit();
+                    if (!$c_item->approved) {
+                        $content[] = dgettext('comments', 'We are holding your comment for approval');
+                        $content[] = sprintf('<a href="%s">%s</a>', $thread->getSourceUrl(false, $c_item->id),
+                                             dgettext('comments', 'Return to the thread...'));
+                    } else {
+                        PHPWS_Core::reroute($thread->getSourceUrl(false, $c_item->id));
+                        exit();
+                    }
                 }
 
             } else {
@@ -361,7 +410,7 @@ class Comments {
         return;
     }
   
-    function postComment(&$thread, &$cm_item)
+    function postComment($thread, &$cm_item)
     {
         if (empty($_POST['cm_subject']) && empty($_POST['cm_entry'])) {
             $cm_item->_error = dgettext('comments', 'You must include a subject or comment.');
@@ -371,6 +420,24 @@ class Comments {
         $cm_item->setThreadId($thread->id);
         $cm_item->setSubject($_POST['cm_subject']);
         $cm_item->setEntry($_POST['cm_entry']);
+
+        /**
+         * If the user doesn't have permissions to edit the key
+         * AND the user does not have permissions to admin comments
+         * AND the comment is new (no id)
+         * AND the thread approval requires approval from everyone 
+         * OR the user is not logged in and the comment requires
+         * anonymous comments to be approved,
+         * THEN set the approval to 0
+         */
+        if ( !$thread->_key->allowEdit()      &&
+             !Current_User::allow('comments') &&
+             !$cm_item->id                    && 
+             ( $thread->approval == 2 ||
+               ( $thread->approval == 1 && !Current_User::isLogged() ) )
+        ) {
+            $cm_item->approved = 0;
+        }
 
         if (isset($_POST['cm_parent'])) {
             $cm_item->setParent($_POST['cm_parent']);
@@ -391,7 +458,6 @@ class Comments {
                 return false;
             }
         }
-
 
         if ( Comments::useCaptcha() ) {
             PHPWS_Core::initCoreClass('Captcha.php');
@@ -474,7 +540,6 @@ class Comments {
 
     function viewComment($comment)
     {
-        
         $thread = new Comment_Thread($comment->getThreadId());
         $tpl = $comment->getTpl($thread->allow_anon);
         $tpl['CHILDREN'] = $thread->view($comment->id);
@@ -518,13 +583,15 @@ class Comments {
             $settings['anonymous_naming'] = 0;
         }
 
+        $settings['default_approval'] = (int)$_POST['default_approval'];
+
         $settings['recent_comments'] = (int)$_POST['recent_comments'];
 
         PHPWS_Settings::set('comments', $settings);
         PHPWS_Settings::save('comments');
 
         $content[] = dgettext('comments', 'Settings saved.');
-        $vars['aop'] = 'admin_menu';
+        $vars['aop'] = 'settings';
         $content[] = PHPWS_Text::secureLink(dgettext('comments', 'Go back to settings...'), 'comments', $vars);
         return implode('<br /><br />', $content);
     }

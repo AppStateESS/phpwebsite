@@ -32,6 +32,11 @@
   <tr>
     <td>{RECENT_COMMENTS_LABEL}</td>
     <td>{RECENT_COMMENTS}</td>
-  </tr> </table>
+  </tr>
+  <tr>
+    <td>{DEFAULT_APPROVAL_LABEL}</td>
+    <td>{DEFAULT_APPROVAL}</td>
+  </tr>
+ </table>
 {SUBMIT}
 {END_FORM}

@@ -1,3 +1,12 @@
+Version 1.1.0
+------------------------------------------------------------------------
+23 April 2008
++ Comments now allows comment approval. (multiple approval not
+  finished)
++ Updated: img/cancel.png, img/noentry.png, img/ok.png
+  templates/approval.tpl, templates/settings_form.tpl
+  javascript/quick_view/head.js
+
 Version 1.0.1
 ------------------------------------------------------------------------
 1 April 2008

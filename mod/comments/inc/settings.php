@@ -13,6 +13,7 @@ $settings = array('allow_signatures'       => 0,
                   'default_order'          => 'old_all',
                   'captcha'                => 0,
                   'anonymous_naming'       => 0,
-                  'recent_comments'        => 0);
+                  'recent_comments'        => 0,
+                  'default_approval'       => 0);
 
 ?>

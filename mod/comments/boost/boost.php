@@ -4,7 +4,7 @@
    * @version $Id$
    */
 $proper_name  = 'Comments';
-$version      = '1.0.1';
+$version      = '1.1.0';
 $unregister   = TRUE;
 $import_sql   = TRUE;
 $image_dir    = TRUE;

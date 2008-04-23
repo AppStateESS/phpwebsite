@@ -82,6 +82,32 @@ Please download 0.6.3.</pre>';
 -------------
 + Fixed missing reported column on comments_items table.</pre>';
 
+    case version_compare($currentVersion, '1.1.0', '<'):
+        $content[] = '<pre>';
+        $db = new PHPWS_DB('comments_threads');
+        $result = $db->addTableColumn('approval', 'smallint NOT NULL default 0');
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Unable to create approval column on comments_threads table.</pre>';
+            return false;
+        } else {
+            $content[] = 'Table column added to comments_threads.';
+        }
+
+        $db = new PHPWS_DB('comments_items');
+        $result = $db->addTableColumn('approved', 'smallint NOT NULL default 1');
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Unable to create approved column on comments_items table.</pre>';
+            return false;
+        } else {
+            $content[] = 'Table column added to comments_items.';
+        }
+
+        $content[] = '1.1.0 Changes
+-------------
++ Comments can be approved now.
+</pre>';
+
+
     }
             
     return true;

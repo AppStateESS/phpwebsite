@@ -51,6 +51,11 @@ class Comment_Item {
     // as needing review
     var $reported     = 0;
 
+    // Approval status
+    var $approved     = 1;
+
+    var $author = null;
+
     // Error encountered when processing object
     var $_error	      = null;
 
@@ -276,7 +281,7 @@ class Comment_Item {
         if ($can_post) {
             $template['QUOTE_LINK']  = $this->quoteLink();
             $template['REPLY_LINK']  = $this->replyLink();
-            if (!$_SESSION['Users_Reported_Comments'][$this->id]) {
+            if (!isset($_SESSION['Users_Reported_Comments'][$this->id])) {
                 $template['REPORT_LINK'] = $this->reportLink();
             } else {
                 $template['REPORT_LINK'] = dgettext('comments', 'Reported!');
@@ -337,27 +342,29 @@ class Comment_Item {
 	    $this->stampCreateTime();
 	}
 
-	if (empty($this->id)) {
+	if (!$this->id) {
 	    $this->stampIP();
 	    $this->stampAuthor();
-	}
-
-	if ((bool)$this->id) {
+	    $increase_count = TRUE;
+	} else {
 	    $this->stampEditor();
 	    $increase_count = FALSE;
-	} else {
-	    $increase_count = TRUE;
-	}
+        }
 
 	$db = new PHPWS_DB('comments_items');
 	$result = $db->saveObject($this);
-	if (!PEAR::isError($result) && $increase_count) {
-	    $thread = new Comment_Thread($this->thread_id);
-	    $thread->increaseCount();
-	    $thread->postLastUser($this->author_id);
-	    $thread->save();
+	if (!PEAR::isError($result) && $increase_count && $this->approved) {
+            PHPWS_Error::logIfError($this->stampThread());
 	}
 	return $result;
+    }
+
+    function stampThread()
+    {
+        $thread = new Comment_Thread($this->thread_id);
+        $thread->increaseCount();
+        $thread->postLastUser($this->author_id);
+        return $thread->save();
     }
 
     function editLink()
@@ -394,12 +401,17 @@ class Comment_Item {
                                       array('aop'=>'clear_report', 'cm_id'=>$this->id));
     }
 
-    function punishUserLink()
+    function punishUserLink($graphic=false)
     {
         if (Current_User::allow('comments', 'punish_users')) {
             $vars['address'] = PHPWS_Text::linkAddress('comments', array('aop'=>'punish_user',
                                                                          'cm_id'=>$this->id), true);
-            $vars['label'] = dgettext('comments', 'Punish');
+            if ($graphic) {
+                $vars['label'] = sprintf('<img src="images/mod/comments/noentry.png" width="20" height="20" title="%s" alt="%s"/>',
+                                         dgettext('comments', 'Punish poster'), dgettext('comments', 'Punish icon'));
+            } else {
+                $vars['label'] = dgettext('comments', 'Punish');
+            }
             $vars['width'] = 240;
             $vars['height'] = 180;
             return javascript('open_window', $vars);
@@ -441,7 +453,7 @@ class Comment_Item {
     /**
      * Removes a comment from the database
      */
-    function delete()
+    function delete($reduce_count=true)
     {
         // physical removal
         $thread = new Comment_Thread($this->thread_id);
@@ -453,8 +465,10 @@ class Comment_Item {
         $this->clearChildren();
 
         // decrease thread count
-        $thread->decreaseCount();
-        $thread->save();
+        if ($reduce_count) {
+            $thread->decreaseCount();
+            $thread->save();
+        }
     }
 
     /**
@@ -495,6 +509,51 @@ class Comment_Item {
         $links[] = $this->punishUserLink();
         $tpl['ACTION']  = implode(' | ', $links);
         return $tpl;
+    }
+
+    function approvalTags()
+    {
+        if (!$this->author_id) {
+            if (!empty($this->anon_name)) {
+                $tpl['AUTHOR'] = sprintf('%s (%s)', $this->anon_name, DEFAULT_ANONYMOUS_TITLE);
+            } else {
+                $tpl['AUTHOR'] = DEFAULT_ANONYMOUS_TITLE;
+            }
+        }
+
+        $tpl['CHECKBOX'] = sprintf('<input type="checkbox" name="cm_id[]" value="%s" />', $this->id);
+
+        $approve = sprintf('<img src="images/mod/comments/ok.png" width="20" height="20" title="%s" alt="%s" />', 
+                           dgettext('comments', 'Approve this comment'),
+                           dgettext('comments', 'Approval icon'));
+
+        $remove = sprintf('<img src="images/mod/comments/cancel.png" width="20" height="20" title="%s" alt="%s" />', 
+                           dgettext('comments', 'Remove this comment'),
+                           dgettext('comments', 'Removal icon'));
+
+
+        $links[] = PHPWS_Text::secureLink($approve, 'comments', array('aop'=>'approve',
+                                                                      'cm_id'=>$this->id));
+        $links[] = PHPWS_Text::secureLink($remove, 'comments', array('aop'=>'remove',
+                                                                     'cm_id'=>$this->id));
+        $links[] = $this->punishUserLink(true);
+
+        $tpl['ENTRY']   = sprintf('<span class="pointer" onmouseout="quick_view(\'#cm%s\'); return false" onmouseover="quick_view(\'#cm%s\'); return false">%s</span>',
+                                  $this->id, $this->id,
+                                  substr($this->entry, 0, 50));
+        $tpl['FULL'] = sprintf('<div class="full-view" id="cm%s">%s</div>', $this->id, $this->getEntry());
+
+        $tpl['ACTION'] = implode('', $links);
+        return $tpl;
+    }
+
+    function approve()
+    {
+        $this->approved = 1;
+        $this->save();
+
+        // Thread is not increased on save
+        $this->stampThread();
     }
 
 }

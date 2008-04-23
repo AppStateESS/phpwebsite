@@ -6,7 +6,7 @@
 
 class Comment_Forms {
 
-    function form(&$thread, $c_item)
+    function form($thread, $c_item)
     {
         $form = new PHPWS_Form;
     
@@ -55,6 +55,7 @@ class Comment_Forms {
         $form->setLabel('cm_entry', dgettext('comments', 'Comment'));
         $form->setCols('cm_entry', 50);
         $form->setRows('cm_entry', 10);
+
         $form->addSubmit(dgettext('comments', 'Post Comment'));
 
         if (Comments::useCaptcha()) {
@@ -85,6 +86,7 @@ class Comment_Forms {
         $settings = PHPWS_Settings::get('comments');
 
         $form = new PHPWS_Form('comments');
+        $form->useRowRepeat();
         $form->addHidden('module', 'comments');
         $form->addHidden('aop', 'post_settings');
 
@@ -108,6 +110,14 @@ class Comment_Forms {
         $form->addCheck('anonymous_naming', 1);
         $form->setLabel('anonymous_naming', dgettext('comments', 'Allow anonymous naming'));
         $form->setMatch('anonymous_naming', $settings['anonymous_naming']);
+        
+        $default_approval[0] = dgettext('comments', 'All comments preapproved');
+        $default_approval[1] = dgettext('comments', 'Anonymous comments require approval');
+        $default_approval[2] = dgettext('comments', 'All comments require approval');
+
+        $form->addSelect('default_approval', $default_approval);
+        $form->setMatch('default_approval', PHPWS_Settings::get('comments', 'default_approval'));
+        $form->setLabel('default_approval', dgettext('comments', 'Default approval'));
 
         $cmt_count[0]  = dgettext('comments', 'Do not show');
         $cmt_count[5]  = sprintf(dgettext('comments', 'Show last %d'), 5);
@@ -139,13 +149,16 @@ class Comment_Forms {
 
         $tpl = $form->getTemplate();
 
+
         $tpl['TITLE'] = dgettext('comments', 'Comment settings');
         return PHPWS_Template::process($tpl, 'comments', 'settings_form.tpl');
     }
 
     function reported()
     {
+        javascript('jsquery');
         javascript('modules/comments/admin');
+        javascript('modules/comments/quick_view');
         Layout::addStyle('comments', 'admin.css');
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('comments', 'Comment_Item.php');
@@ -220,7 +233,7 @@ class Comment_Forms {
             }
         } 
 
-        if ($links) {
+        if (isset($links)) {
             $tpl['LINKS'] = implode('<br />', $links);
         } else {
             $tpl['LINKS'] = dgettext('comments', 'Either your permissions do not allow you to punish users or this user posted from an unblockable IP address.');
@@ -229,6 +242,36 @@ class Comment_Forms {
 
         $tpl['CLOSE'] = javascript('close_window');
         return PHPWS_Template::process($tpl, 'comments', 'punish_pop.tpl');
+    }
+
+    function approvalForm()
+    {
+        PHPWS_Core::initCoreClass('DBPager.php');
+        Layout::addStyle('comments', 'admin.css');
+        javascript('jquery');
+        javascript('modules/comments/quick_view');
+        $form = new PHPWS_Form('approval');
+        $form->addHidden('module', 'comments');
+        $form->addSelect('aop', array('approval'=>'', 'approve_all'=>dgettext('comments', 'Approve'),
+                                          'remove_all'=>dgettext('comments', 'Remove')));
+        $form->addSubmit(dgettext('comments', 'all checked'));
+
+        $tpl = $form->getTemplate();
+        $tpl['CHECK_ALL'] = javascript('check_all', array('checkbox_name'=>'cm_id', 'type'=>'checkbox'));
+        
+
+        $pager = new DBPager('comments_items', 'Comment_Item');
+        $pager->setModule('comments');
+        $pager->setTemplate('approval.tpl');
+        $pager->addWhere('approved', 0);
+        $pager->joinResult('author_id', 'users', 'id', 'username', 'author');
+        $pager->addPageTags($tpl);
+        $pager->addRowTags('approvalTags');
+        $pager->addSortHeader('subject', dgettext('comments', 'Subject/Comment'));
+        $pager->addSortHeader('author', dgettext('comments', 'Author'));
+        $pager->addSortHeader('create_time', dgettext('comments', 'Created on'));
+        $pager->convertDate('create_time');
+        return $pager->get();
     }
 }
 

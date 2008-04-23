@@ -18,6 +18,13 @@ class Comment_Thread {
     var $total_comments = 0;
     var $last_poster    = null;
     var $allow_anon     = 0;
+    /**
+     * Default approval type:
+     * 0 - no approval necessary
+     * 1 - anonymous must approve
+     * 2 - all user comments must be approved
+     */ 
+    var $approval       = 0;
     var $_key           = null;
     var $_comments      = null;
     var $_error         = null;
@@ -45,6 +52,14 @@ class Comment_Thread {
         }
 
         $this->loadKey();
+    }
+
+    function setApproval($approval)
+    {
+        $this->approval = (int)$approval;
+        if ($this->approval < 0 || $this->approval > 2) {
+            $this->approval = 0;
+        }
     }
 
     function allowAnonymous($anon)
@@ -202,12 +217,13 @@ class Comment_Thread {
 
     function view($parent_id=0)
     {
+        Layout::addStyle('comments');
+
         javascript('modules/comments/report/', array('reported'=>dgettext('comments', 'Reported!')));
         if (Current_User::allow('comments')) {
             $this->miniAdmin();
         }
 
-        Layout::addStyle('comments');
         PHPWS_Core::initCoreClass('DBPager.php');
         
         $time_period = array('all'    => dgettext('comments', 'All'),
@@ -222,6 +238,7 @@ class Comment_Thread {
 
 
         $pager = new DBPager('comments_items', 'Comment_Item');
+        $pager->addWhere('approved', 1);
         $pager->setAnchor('comments');
         $pager->saveLastView();
         $form = new PHPWS_Form;
@@ -315,8 +332,8 @@ class Comment_Thread {
             }
         }
 
-        if ($_SESSION['Comment_User_Lock']) {
-            return false;
+        if (isset($_SESSION['Comment_User_Lock'])) {
+            return !$_SESSION['Comment_User_Lock'];
         }
 
         return ( $this->allow_anon || Current_User::isLogged() ) ? TRUE : FALSE;
@@ -352,13 +369,19 @@ class Comment_Thread {
 
     function decreaseCount()
     {
-        $this->total_comments--;
+        if ($this->total_comments > 0) {
+            $this->total_comments--;
+        }
     }
 
     function postLastUser($author_id)
     {
-        $author = new Comment_User($author_id);
-        $this->last_poster = $author->display_name;
+        if ($author_id) {
+            $author = new Comment_User($author_id);
+            $this->last_poster = $author->display_name;
+        } else {
+            $this->last_poster = DEFAULT_ANONYMOUS_TITLE;
+        }
     }
 
     function miniAdmin()
