@@ -350,29 +350,29 @@ class PHPWS_Form {
         $hour   = 0;
         $minute = 0;
 
-        if (isset($_POST[sprintf('%s_year', $name)])) {
-            $year = $_POST[sprintf('%s_year', $name)];
+        if (isset($_REQUEST[sprintf('%s_year', $name)])) {
+            $year = $_REQUEST[sprintf('%s_year', $name)];
         }
 
-        if (isset($_POST[sprintf('%s_month', $name)])) {
-            $month = $_POST[sprintf('%s_month', $name)];
+        if (isset($_REQUEST[sprintf('%s_month', $name)])) {
+            $month = $_REQUEST[sprintf('%s_month', $name)];
         }
 
-        if (isset($_POST[sprintf('%s_day', $name)])) {
-            $day = $_POST[sprintf('%s_day', $name)];
+        if (isset($_REQUEST[sprintf('%s_day', $name)])) {
+            $day = $_REQUEST[sprintf('%s_day', $name)];
         }
 
-        if (isset($_POST[sprintf('%s_24hour', $name)])) {
-            $hour = $_POST[sprintf('%s_24hour', $name)];
-        } elseif (isset($_POST[sprintf('%s_12hour', $name)])) {
-            $hour = $_POST[sprintf('%s_12hour', $name)];
-            if (isset($_POST[sprintf('%s_ampm', $name)])) {
-                $hour += 12 * (int)$_POST[sprintf('%s_ampm', $name)];
+        if (isset($_REQUEST[sprintf('%s_24hour', $name)])) {
+            $hour = $_REQUEST[sprintf('%s_24hour', $name)];
+        } elseif (isset($_REQUEST[sprintf('%s_12hour', $name)])) {
+            $hour = $_REQUEST[sprintf('%s_12hour', $name)];
+            if (isset($_REQUEST[sprintf('%s_ampm', $name)])) {
+                $hour += 12 * (int)$_REQUEST[sprintf('%s_ampm', $name)];
             }
         }
 
-        if (isset($_POST[sprintf('%s_minute', $name)])) {
-            $minute = $_POST[sprintf('%s_minute', $name)];
+        if (isset($_REQUEST[sprintf('%s_minute', $name)])) {
+            $minute = $_REQUEST[sprintf('%s_minute', $name)];
         }
         
         return mktime($hour, $minute, 0, $month, $day, $year);
@@ -380,9 +380,9 @@ class PHPWS_Form {
 
     function testDate($name)
     {
-        $month = @ $_POST[$name . '_month'];
-        $day   = @ $_POST[$name . '_day'];
-        $year  = @ $_POST[$name . '_year'];
+        $month = @ $_REQUEST[$name . '_month'];
+        $day   = @ $_REQUEST[$name . '_day'];
+        $year  = @ $_REQUEST[$name . '_year'];
         return checkdate($month, $day, $year);
     }
 
