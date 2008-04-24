@@ -127,6 +127,9 @@ class XMLParser {
             $content = array();
             foreach ($foo['child'] as $bar) {
                 $result = $this->subformat($bar);
+                if (!is_array($result)) {
+                    continue;
+                }
                 list($key,$value) = each($result);
                 if (isset($bar['child'])) {
                     if (count($value) > 1) {
@@ -157,7 +160,7 @@ class XMLParser {
                 $row['CONTENT'] = $foo['content'];
             }
 
-            if ($row) {
+            if (isset($row)) {
                 return array($foo['name']=>$row);
             }
         }

@@ -2,6 +2,11 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+24 April 2008
++ Added clear style options on paragraphs to style selection.
++ Added some error checks to XMLParser.
++ Updated: javascript/editors/fckeditor/editor/phpwsstyles.xml
+
 23 April 2008
 + Form.php - changed POST to REQUEST in testDate and getPostedDate
 + DBPager
