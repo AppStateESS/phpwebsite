@@ -431,9 +431,8 @@ class FC_File_Manager {
         $this->folderIcons($tpl);
 
         if (Current_User::allow('filecabinet', 'edit_folders')) {
-            $tpl['FOLDER_TITLE'] = $this->current_folder->editLink('title');
+            $tpl['FOLDER_TITLE'] = $this->current_folder->editLink('title', $this->current_folder->module_created);
         } else {
-
             $tpl['FOLDER_TITLE'] = & $this->current_folder->title;
         }
 

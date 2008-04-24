@@ -123,6 +123,10 @@ class Cabinet {
         return true;
     }
 
+    /**
+     * Handles admin functions outside of file manager.
+     * Expects an 'aop' command.
+     */
     function admin()
     {
         $javascript = false; // if true, sends to nakedDisplay
@@ -545,7 +549,12 @@ class Cabinet {
         } else {
             $this->title   = dgettext('filecabinet', 'Create multimedia folder');
         }
-        $this->content = $this->forms->editFolder($this->folder);
+
+        if (isset($_GET['module_created'])) {
+            $this->content = $this->forms->editFolder($this->folder, false);
+        } else {
+            $this->content = $this->forms->editFolder($this->folder, true);
+        }
     }
 
     function editFolder()
@@ -562,7 +571,11 @@ class Cabinet {
         } else {
             $this->title   = dgettext('filecabinet', 'Update multimedia folder');
         }
-        $this->content = $this->forms->editFolder($this->folder);
+        if (isset($_GET['module_created'])) {
+            $this->content = $this->forms->editFolder($this->folder, false);
+        } else {
+            $this->content = $this->forms->editFolder($this->folder, true);
+        }
     }
     
 

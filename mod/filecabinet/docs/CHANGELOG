@@ -1,3 +1,10 @@
+24 April 2008
++ Revamped embedded code
++ Added flicker slide shows.
++ Fixed module restrictions on folders (I think)
++ Updated: templates/edit_folder.tpl, templates/embed_edit.tpl
++ Removed: templates/filters/youtube.tpl, inc/embed/youtube.php
+
 17 April 2008
 + Can change module restriction per folder.
 + Added moduleLimit function to restrict folder view in file manager.

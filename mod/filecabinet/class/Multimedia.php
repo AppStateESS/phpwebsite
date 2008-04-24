@@ -255,8 +255,10 @@ class PHPWS_Multimedia extends File_Common {
     }
     
     function getTag($embed=false) {
-        
+        $strict = false;
+
         $filter = $this->getFilter();
+
         $tpl['WIDTH']  = $this->width;
         $tpl['HEIGHT'] = $this->height;
          
@@ -268,26 +270,29 @@ class PHPWS_Multimedia extends File_Common {
         $tpl['FILE_NAME'] = $this->file_name;
     
         // check for filter file
-        $filter_exe = "templates/filecabinet/filters/$filter/filter.php";
-        $filter_tpl = "filters/$filter.tpl";
-
-        if ($embed) {
-            if ($filter == 'media') {
-                $filter_tpl = "filters/media_embed.tpl";
-            } elseif ($filter == 'shockwave'){
-                $filter_tpl = "filters/shockwave_embed.tpl";
-            } else {
-
+        if ($this->embedded) {
+            $strict = true;
+            $filter_tpl = sprintf('%smod/filecabinet/inc/embed/%s/embed.tpl',
+                                  PHPWS_SOURCE_DIR, $filter);
+        } else {
+            $filter_exe = "templates/filecabinet/filters/$filter/filter.php";
+            $filter_tpl = "filters/$filter.tpl";
+            if ($embed) {
+                if ($filter == 'media') {
+                    $filter_tpl = "filters/media_embed.tpl";
+                } elseif ($filter == 'shockwave') {
+                    $filter_tpl = "filters/shockwave_embed.tpl";
+                }
+            }
+            
+            if (is_file($filter_exe)) {
+                include $filter_exe;
             }
         }
 
-        if (is_file($filter_exe)) {
-            include $filter_exe;
-        }
         $tpl['ID'] = 'media' . $this->id;
 
-
-        return PHPWS_Template::process($tpl, 'filecabinet', $filter_tpl);
+        return PHPWS_Template::process($tpl, 'filecabinet', $filter_tpl, $strict);
     }
 
     function getFilter()
@@ -557,51 +562,14 @@ class PHPWS_Multimedia extends File_Common {
 
     function importExternalMedia()
     {
-        PHPWS_Core::initCoreClass('XMLParser.php');
-        $file_id = $this->file_name;
-
-        include sprintf('%smod/filecabinet/inc/embed/%s.php', PHPWS_SOURCE_DIR, $this->file_type);
-
-        $parse = new XMLParser($feed_url . $file_id, false);
-        if ($parse->error) {
-            PHPWS_Error::log($parse->error);
-            return false;
-        }
-        $parse->setContentOnly(false);
-        $info = $parse->format();
-
-        if (isset($title)) {
-            $this->title = eval ("return \$info$title;");
-        }
-
-        if (isset($description)) {
-            $this->description = eval ("return \$info$description;");
-        }
-
-        if (isset($duration)) {
-            $this->duration = eval ("return \$info$duration;");
-        }
-
-        if (isset($thumbnail)) {
-            $cpy_thumb = eval ("return \$info$thumbnail;");
-
-            $new_tn = $this->file_name . '.jpg';
-            $thumb_path = $this->thumbnailDirectory() . $new_tn;
-
-            if (@copy($cpy_thumb, $thumb_path)) {
-                $this->thumbnail = $new_tn;
-            } else {
-                $this->genericTN();
-            }
-        }
-
-        if (!empty($width) && !empty($height)) {
-            $this->width = $width;
-            $this->height = $height;
-        }
 
         $this->embedded = 1;
-        return true;
+        include sprintf('%smod/filecabinet/inc/embed/%s/import.php', PHPWS_SOURCE_DIR, $this->file_type);
+        $function_name  = $this->file_type . '_import';
+        if (!function_exists($function_name)) {
+            return false;
+        }
+        return call_user_func($function_name, $this);
     }
 }
 ?>

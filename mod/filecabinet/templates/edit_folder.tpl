@@ -10,7 +10,8 @@
 <!-- BEGIN dimension --><p style="margin-bottom : 1em">{MAX_IMAGE_DIMENSION_LABEL}<br />
 {MAX_IMAGE_DIMENSION}</p><!-- END dimension -->
 
-<p style="margin-bottom : 1em">{MODULE_CREATED_LABEL}<br />{MODULE_CREATED}</p>
+<!-- BEGIN module-created --><p style="margin-bottom : 1em">{MODULE_CREATED_LABEL}<br />
+{MODULE_CREATED}</p><!-- END module-created -->
 
 <p>{SUBMIT}</p>
 {END_FORM}

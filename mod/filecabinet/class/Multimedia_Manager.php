@@ -63,35 +63,25 @@ class FC_Multimedia_Manager {
 
     function postEmbed()
     {
-        require 'config/filecabinet/allow_embed.php';
-        $embed_type = & $_POST['embed_type'];
+        //        require 'config/filecabinet/allow_embed.php';
+
+        /*
+         * come back to this, add to settings
         if (!in_array($embed_type, $allowed_embeds)) {
             return false;
         }
-        $this->multimedia->file_type = $embed_type;
+        */
+        $this->multimedia->file_name      = $_POST['embed_id'];
+        $this->multimedia->file_type      = $_POST['embed_type'];
+        $this->multimedia->folder_id      = $_POST['folder_id'];
+        $this->multimedia->file_directory = 'files/multimedia/folder' . $this->multimedia->folder_id . '/';
 
-        include sprintf('%smod/filecabinet/inc/embed/%s.php', PHPWS_SOURCE_DIR, $this->multimedia->file_type);
 
-        if (preg_match('/http:\/\//', $_POST['video_id'])) {
-            $video_id = preg_replace($pull_regexp, "\\$pull_replace", $_POST['video_id']);
-        } else {
-            $video_id = $_POST['video_id'];
-        }
-
-        if (empty($video_id) || preg_match('/[?&]/', $video_id)) {
-            $this->message = dgettext('filecabinet', 'Unable to find video id from url');
+        if (!$this->multimedia->importExternalMedia()) {
+            $this->message = dgettext('filecabinet', 'Unable to process embedded information.');
             return false;
-        } else {
-            $this->multimedia->file_name = $video_id;
-            $this->multimedia->folder_id = $_POST['folder_id'];
-            $this->multimedia->file_directory = 'files/multimedia/folder' . $this->multimedia->folder_id . '/';
-            
-            if (!$this->multimedia->importExternalMedia()) {
-                    $this->message = dgettext('filecabinet', 'Unable to parse video info from host site.');
-                    return false;
-            }
-            return !PHPWS_Error::logIfError($this->multimedia->save(false, false));
         }
+        return !PHPWS_Error::logIfError($this->multimedia->save(false, false));
     }
 
     function editEmbed()
@@ -101,12 +91,23 @@ class FC_Multimedia_Manager {
         $form->addHidden('mop', 'post_embed');
         $form->addHidden('folder_id', $this->folder->id);
 
-        $form->addText('video_id');
-        $form->setSize('video_id', 30);
-        $form->setLabel('video_id', dgettext('filecabinet', 'Video url or id'));
+        $form->addText('embed_id');
+        $form->setSize('embed_id', 30);
+        $form->setLabel('embed_id', dgettext('filecabinet', 'Url or id'));
 
-        $form->addSelect('embed_type', array('youtube' => 'YouTube.com'));
-        $form->setLabel('embed_type', dgettext('filecabinet', 'Video site'));
+        $directories = PHPWS_File::listDirectories(PHPWS_SOURCE_DIR . 'mod/filecabinet/inc/embed/');
+
+        foreach ($directories as $dir) {
+            $file = sprintf('%smod/filecabinet/inc/embed/%s/data.php', PHPWS_SOURCE_DIR, $dir);
+            if (!is_file($file)) {
+                continue;
+            }
+            include $file;
+            $embed_type[$dir] = $embed_name;
+        }
+        
+        $form->addSelect('embed_type', $embed_type);
+        $form->setLabel('embed_type', dgettext('filecabinet', 'Embedded filter'));
 
         $form->addSubmit(dgettext('filecabinet', 'Submit video'));
         $tpl = $form->getTemplate();

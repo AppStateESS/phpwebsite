@@ -150,7 +150,7 @@ class Cabinet_Form {
 
     }
 
-    function editFolder($folder)
+    function editFolder($folder, $select_module=true)
     {
         $form = new PHPWS_Form('folder');
         $form->addHidden('module', 'filecabinet');
@@ -164,16 +164,20 @@ class Cabinet_Form {
             $form->addSubmit('submit', dgettext('filecabinet', 'Create folder'));
         }
 
-        $modules = PHPWS_Core::getModuleNames();
-        $modlist[0] = dgettext('filecabinet', '-- General --');
-        foreach ($modules as $key=>$mod) {
-            $modlist[$key] = $mod;
+        if ($select_module) {
+            $modules = PHPWS_Core::getModuleNames();
+            $modlist[0] = dgettext('filecabinet', '-- General --');
+            foreach ($modules as $key=>$mod) {
+                $modlist[$key] = $mod;
+            }
+            $form->addSelect('module_created', $modlist);
+            if (!empty($folder->module_created)) {
+                $form->setMatch('module_created', $folder->module_created);                
+            }
+            $form->setLabel('module_created', dgettext('filecabinet', 'Module reservation'));
+        } else {
+            $form->addHidden('module_created', $folder->module_created);
         }
-        $form->addSelect('module_created', $modlist);
-        if (!empty($folder->module_created)) {
-            $form->setMatch('module_created', $folder->module_created);                
-        }
-        $form->setLabel('module_created', dgettext('filecabinet', 'Module reservation'));
 
         $form->addTextField('title', $folder->title);
         $form->setSize('title', 40, 255);
@@ -239,6 +243,9 @@ class Cabinet_Form {
 
         if (Current_User::allow('filecabinet', 'edit_folders', $folder->id, 'folder')) {
             $links[] = $folder->uploadLink(false);
+            if ($folder->ftype == MULTIMEDIA_FOLDER) {
+                $links[] = $folder->embedLink();
+            }
             $links[] = $folder->editLink();
         }
 

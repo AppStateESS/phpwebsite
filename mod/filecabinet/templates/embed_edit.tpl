@@ -10,7 +10,7 @@
 
 <table class="form-table">
   <tr>
-    <td>{VIDEO_ID_LABEL}</td><td>{VIDEO_ID}</td>
+    <td>{EMBED_ID_LABEL}</td><td>{EMBED_ID}</td>
   </tr>
   <tr>
     <td>{EMBED_TYPE_LABEL}</td><td>{EMBED_TYPE}</td>
