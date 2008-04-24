@@ -15,6 +15,9 @@ PHPWS_Core::initModClass('comments', 'Comment_User.php');
 
 class Comments {
 
+    /**
+     * Returns the comment thread object associated with a specific key
+     */
     function getThread($key=NULL)
     {
         if (empty($key)) {
@@ -146,9 +149,17 @@ class Comments {
             break;
 
         case 'approve_all':
+            if (!empty($_POST['cm_id'])) {
+                Comments::multipleApprove($_POST['cm_id']);
+            }
+            PHPWS_Core::goBack();
             break;
 
         case 'remove_all':
+            if (!empty($_POST['cm_id'])) {
+                Comments::multipleRemove($_POST['cm_id']);
+            }
+            PHPWS_Core::goBack();
             break;
 
         case 'approval':
@@ -655,6 +666,32 @@ class Comments {
 
         $content = PHPWS_Template::process($tpl, 'comments', 'recent.tpl');
         Layout::add($content, 'comments', 'recent');
+    }
+    
+    function multipleApprove($comment_ids)
+    {
+        $all_approved = false;
+        foreach ($comment_ids as $id) {
+            $comment = new Comment_Item($id);
+            if ($comment->id) {
+                $comment->approve();
+                $all_approved = true;
+            }
+        }
+        return $all_approved;
+    }
+
+    function multipleRemove($comment_ids)
+    {
+        $all_removed = false;
+        foreach ($comment_ids as $id) {
+            $comment = new Comment_Item($id);
+            if ($comment->id) {
+                $comment->delete(false);
+                $all_removed = true;
+            }
+        }
+        return $all_removed;
     }
 }
 

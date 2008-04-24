@@ -102,9 +102,13 @@ Please download 0.6.3.</pre>';
             $content[] = 'Table column added to comments_items.';
         }
 
+        $files = array('img/cancel.png', 'img/noentry.png', 'img/ok.png', 'templates/approval.tpl',
+                       'templates/settings_form.tpl', 'javascript/quick_view/head.js');
+        commentsUpdateFiles($files, $content);
+
         $content[] = '1.1.0 Changes
 -------------
-+ Comments can be approved now.
++ Comments can be approved before posting.
 </pre>';
 
 

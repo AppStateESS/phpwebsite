@@ -79,8 +79,11 @@ class Comment_Item {
 
 	$db = new PHPWS_DB('comments_items');
 	$result = $db->loadObject($this);
-	if (PEAR::isError($result))
+	if (PEAR::isError($result)) {
 	    return $result;
+        } elseif (!$result) {
+            $this->id = 0;
+        }
     }
 
 
