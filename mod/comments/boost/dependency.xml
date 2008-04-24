@@ -3,13 +3,13 @@
   <module>
     <title>core</title>
     <properName>phpWebSite Core</properName>
-    <version>1.8.0</version>
+    <version>1.8.1</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
   </module>
   <module>
     <title>filecabinet</title>
     <properName>File Cabinet</properName>
-    <version>2.0.0</version>
+    <version>2.0.3</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/filecabinet/</url>
   </module>
 </dependency>
