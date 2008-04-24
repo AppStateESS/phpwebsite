@@ -8,6 +8,16 @@
  * 		Matthew McNaney <mcnaney at gmail dot com>
 -->
 <Styles>
+	<Style name="Remove CSS formatting" element="p">
+		<Attribute name="style" value="" />
+		<Attribute name="class" value="" />
+	</Style>
+	<Style name="Clear left" element="p">
+		<Attribute name="style" value="clear : left" />
+	</Style>
+	<Style name="Clear right" element="p">
+		<Attribute name="style" value="clear : right" />
+	</Style>
 	<Style name="Image on Left" element="img">
 		<Attribute name="class" value="float-left" />
 	</Style>
