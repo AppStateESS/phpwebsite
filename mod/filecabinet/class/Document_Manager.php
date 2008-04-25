@@ -101,6 +101,10 @@ class FC_Document_Manager {
 
         $form->setExtra('submit', 'onclick="this.style.display=\'none\'"');
 
+        if ($this->document->id && Current_User::allow('filecabinet', 'edit_folders', $this->folder->id, 'folder', true)) {
+            Cabinet::moveToForm($form, $this->folder);
+        }
+
         $template = $form->getTemplate();
 
         if ($this->document->id) {
@@ -164,6 +168,7 @@ class FC_Document_Manager {
             PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
             FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
 
+            $this->document->moveToFolder();
             if (!isset($_POST['im'])) {
                 javascript('close_refresh');
             } else {

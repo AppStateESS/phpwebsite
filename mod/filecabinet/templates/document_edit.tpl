@@ -18,6 +18,10 @@
   <tr>
     <td>{DESCRIPTION_LABEL}</td><td>{DESCRIPTION}</td>
   </tr>
+  <!-- BEGIN move --><tr>
+    <td>{MOVE_TO_FOLDER_LABEL}</td>
+    <td>{MOVE_TO_FOLDER}</td>
+  </tr><!-- END move -->
 </table>
 {SUBMIT} {CANCEL}
 {END_FORM}

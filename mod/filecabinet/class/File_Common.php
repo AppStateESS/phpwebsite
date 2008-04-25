@@ -430,5 +430,111 @@ class File_Common {
         PHPWS_Error::logIfError($this->deleteAssoc());
         return true;
     }
+
+    function moveToFolder()
+    {
+        if (empty($_POST['move_to_folder']) || $_POST['move_to_folder'] == $this->folder_id) {
+            return false;
+        }
+
+        $new_folder = new Folder($_POST['move_to_folder']);
+        $old_folder = new Folder($this->folder_id);
+
+        if ($new_folder->ftype != $old_folder->ftype) {
+            return false;
+        }
+
+        $dest_dir = $new_folder->getFullDirectory();
+
+        $source = $this->getPath();
+        $dest   = $dest_dir . $this->file_name;
+
+        if ($this->_classtype != 'document') {
+            $stn  = $this->thumbnailPath();
+            $dtn  = $dest_dir . 'tn/' . $this->tnFileName();
+        }
+
+        // A embedded file just needs thumbnails moved
+        if ($this->_classtype == 'multimedia' && $this->embedded) {
+            $this->folder_id      = $new_folder->id;
+            $this->file_directory = $dest_dir;
+            if (@copy($stn, $dtn)) {
+                if (!PHPWS_Error::logIfError($this->save(false, false))) {
+                    // no error occurs, unlink the source file and thumbnail
+                    unlink($stn);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        // If file already exists in folder, don't copy.
+        if (is_file($dest)) {
+            return false;
+        }
+        
+        // copy the source file to the new destination
+        if (@copy($source, $dest)) {
+            $this->folder_id      = $new_folder->id;
+            $this->file_directory = $dest_dir;
+            switch ($this->_classtype) {
+            case 'image':
+                // copy the thumbnail
+                if (@copy($stn, $dtn)) {
+                    if (!PHPWS_Error::logIfError($this->save(false, false, false))) {
+                        // no error occurs, unlink the source file and thumbnail
+                        unlink($source);
+                        unlink($stn);
+                        return true;
+                    } else {
+                        // error occurred, delete the copy file
+                        unlink($dest);
+                        return false;
+                    }
+                } else {
+                    // thumbnail copy failed, remove copy
+                    @unlink($dest);
+                    return false;
+                }
+                break;
+
+            case 'document':
+                if (!PHPWS_Error::logIfError($this->save(false, false))) {
+                    // no error occurs, unlink the source file
+                    unlink($source);
+                    return true;
+                } else {
+                    // error occurred, delete the copy file
+                    unlink($dest);
+                    return false;
+                }
+                break;
+
+            case 'multimedia':
+                // copy the thumbnail
+                if (@copy($stn, $dtn)) {
+                    if (!PHPWS_Error::logIfError($this->save(false, false))) {
+                        // no error occurs, unlink the source file and thumbnail
+                        unlink($source);
+                        unlink($stn);
+                        return true;
+                    } else {
+                        // error occurred, delete the copy file
+                        unlink($dest);
+                        return false;
+                    }
+                } else {
+                    // thumbnail copy failed, remove copy
+                    @unlink($dest);
+                    return false;
+                }
+                break;
+
+            }
+        }
+    }
 }
 ?>

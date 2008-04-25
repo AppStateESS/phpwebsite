@@ -2,9 +2,9 @@
 function voila(foo) {
     spanner = document.getElementById('link-url');
     if (foo.value == 'url') {
-        spanner.style.visibility = 'visible';
+        spanner.style.display = 'table-row';
     } else {
-        spanner.style.visibility = 'hidden';
+        spanner.style.display = 'none';
     }
 }
 </script>
@@ -36,6 +36,10 @@ function voila(foo) {
     <td>{LINK_LABEL}</td>
     <td>{LINK}</td>
   </tr>
+  <tr style="display : {VISIBLE};" id="link-url">
+    <td>{URL_LABEL}</td>
+    <td>{URL}</td>
+  </tr>
   <tr>
     <td>{RESIZE_LABEL}</td>
     <td>{RESIZE}</td>
@@ -44,10 +48,10 @@ function voila(foo) {
     <td>{ROTATE_LABEL}</td>
     <td>{ROTATE}</td>
   </tr>
-  <tr style="visibility : {VISIBLE};" id="link-url">
-    <td>{URL_LABEL}</td>
-    <td>{URL}</td>
-  </tr>
+  <!-- BEGIN move --><tr>
+    <td>{MOVE_TO_FOLDER_LABEL}</td>
+    <td>{MOVE_TO_FOLDER}</td>
+  </tr><!-- END move -->
 </table>
 {SUBMIT} {CANCEL}
 {END_FORM}

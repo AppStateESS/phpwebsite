@@ -194,6 +194,11 @@ class PHPWS_Image extends File_Common {
         return $this->thumbnailDirectory() . $this->file_name;
     }
 
+    function tnFileName()
+    {
+        return $this->file_name;
+    }
+
     function captioned($id=null, $linked=true)
     {
         if (empty($this->description)) {
@@ -290,7 +295,7 @@ class PHPWS_Image extends File_Common {
 
     function makeThumbnail()
     {
-        if ($this->width <= FC_THUMBNAIL_WIDTH && $this->height <= FC_THUMBBNAIL_HEIGHT) {
+        if ($this->width <= FC_THUMBNAIL_WIDTH && $this->height <= FC_THUMBNAIL_HEIGHT) {
             return @copy($this->getPath(), $this->thumbnailPath());
         } else {
             return $this->resize($this->thumbnailPath(), FC_THUMBNAIL_WIDTH, FC_THUMBNAIL_HEIGHT);

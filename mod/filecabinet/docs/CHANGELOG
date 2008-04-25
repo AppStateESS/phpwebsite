@@ -1,3 +1,8 @@
+25 April 2008
++ Fixed typo in Image:makeThumbnail
++ Added ability to move files to other folders.
++ Updated: templates/document_edit.tpl, templates/image_edit.tpl, templates/multimedia_edit.tpl
+
 24 April 2008
 + Revamped embedded code
 + Added flicker slide shows.

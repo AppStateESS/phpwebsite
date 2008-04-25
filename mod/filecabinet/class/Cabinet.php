@@ -1151,6 +1151,27 @@ class Cabinet {
 
         return $resizes;
     }
+
+    /**
+     * Called from the three file type managers. Adds a file listing
+     * to move files from one folder to another
+     */
+    function moveToForm(&$form, $folder)
+    {
+        $db = new PHPWS_DB('folders');
+        $db->addWhere('id', $folder->id, '!=');
+        $db->addWhere('ftype', $folder->ftype);
+        $db->addColumn('id');
+        $db->addColumn('title');
+        $db->setIndexBy('id');
+        $folders = $db->select('col');
+        
+        if (!empty($folders)) {
+            $folders = array(0=>'') + $folders;
+            $form->addSelect('move_to_folder', $folders);
+            $form->setLabel('move_to_folder', dgettext('filecabinet', 'Move to folder'));
+        }
+    }
 }
 
 ?>

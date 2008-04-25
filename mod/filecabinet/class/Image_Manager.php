@@ -1,4 +1,4 @@
-<?php
+$this<?php
 
   /**
    * @version $Id$
@@ -42,10 +42,6 @@ class FC_Image_Manager {
     function admin()
     {
         switch ($_REQUEST['iop']) {
-        case 'edit_image':
-            $this->editImage();
-            break;
-
         case 'delete_image':
             if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image->folder_id, 'folder')) {
                 Current_User::disallow();
@@ -115,6 +111,10 @@ class FC_Image_Manager {
         $form->addHidden('mw',        $this->max_width);
         $form->addHidden('folder_id', $this->folder->id);
 
+        if ($this->image->id && Current_User::allow('filecabinet', 'edit_folders', $this->folder->id, 'folder', true)) {
+            Cabinet::moveToForm($form, $this->folder);
+        }
+
         // if 'im' is set, then we are inside the image manage interface
         // the post needs to be aware of that to respond correctly
         if (isset($_GET['im'])) {
@@ -162,7 +162,7 @@ class FC_Image_Manager {
         $form->setExtra('link', 'onchange=voila(this)');
 
         $form->addText('url');
-        $form->setSize('url', 50, 255);
+        $form->setSize('url', 40, 255);
         $form->setLabel('url', dgettext('filecabinet', 'Image link url'));
 
         if ($this->folder->max_image_dimension && 
@@ -173,13 +173,7 @@ class FC_Image_Manager {
         }
 
         $resizes = Cabinet::getResizes($max_width);
-        /*
-        if (!empty($resizes)) {
-            $temp = array_reverse($resizes, true);
-            $temp[$max_width] = $max_width . 'px';
-            $resizes = array_reverse($temp, true);
-        }
-        */
+
         if (!empty($resizes)) {
             $form->addSelect('resize', $resizes);
             $form->setLabel('resize', dgettext('filecabinet', 'Resize image if over'));
@@ -197,24 +191,24 @@ class FC_Image_Manager {
         switch (1) {
         case empty($this->image->url):
             $form->setMatch('link', 'none');
-            $form->addTplTag('VISIBLE', 'hidden');
+            $form->addTplTag('VISIBLE', 'none');
             $form->setValue('url', 'http://');
             break;
 
         case $this->image->url == 'parent':
             $form->setMatch('link', 'parent');
-            $form->addTplTag('VISIBLE', 'hidden');
+            $form->addTplTag('VISIBLE', 'none');
             break;
 
         case $this->image->url == 'folder':
             $form->setMatch('link', 'folder');
-            $form->addTplTag('VISIBLE', 'hidden');
+            $form->addTplTag('VISIBLE', 'none');
             break;
 
         default:
             $form->setMatch('link', 'url');
             $form->setValue('url', $this->image->url);
-            $form->addTplTag('VISIBLE', 'visible');
+            $form->addTplTag('VISIBLE', 'table-row');
             break;
         }
 
@@ -326,6 +320,7 @@ class FC_Image_Manager {
                 PHPWS_Error::log($result);
             }
 
+            $this->image->moveToFolder();
             javascript('close_refresh');
         } else {
             $this->edit();
@@ -342,7 +337,6 @@ class FC_Image_Manager {
 
         return $vars;
     }
-
 
     function loadSettings()
     {

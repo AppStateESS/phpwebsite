@@ -188,6 +188,10 @@ class FC_Multimedia_Manager {
 
         $form->setExtra('submit', 'onclick="this.style.display=\'none\'"');
 
+        if ($this->multimedia->id && Current_User::allow('filecabinet', 'edit_folders', $this->folder->id, 'folder', true)) {
+            Cabinet::moveToForm($form, $this->folder);
+        }
+
         $template = $form->getTemplate();
 
         if ($this->multimedia->id) {
@@ -265,7 +269,7 @@ class FC_Multimedia_Manager {
                 $this->content .= '<br /><br />' . javascript('close_window', array('value'=> dgettext('filecabinet', 'Close this window')));
                 return;
             }
-
+            $this->multimedia->moveToFolder();
             javascript('close_refresh');
         } else {
             $this->message = $this->multimedia->printErrors();

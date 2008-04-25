@@ -28,6 +28,10 @@
   <tr>
     <td>{HEIGHT_LABEL}</td><td>{HEIGHT}</td>
   </tr><!-- END dimensions -->
+  <!-- BEGIN move --><tr>
+    <td>{MOVE_TO_FOLDER_LABEL}</td>
+    <td>{MOVE_TO_FOLDER}</td>
+  </tr><!-- END move -->
 </table>
 {SUBMIT} {CANCEL}
 {END_FORM}

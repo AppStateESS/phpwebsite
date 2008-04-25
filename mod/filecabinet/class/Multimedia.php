@@ -341,6 +341,11 @@ class PHPWS_Multimedia extends File_Common {
                        $this->title, $css_id);
     }
 
+    function tnFileName()
+    {
+        return $this->thumbnail;
+    }
+
     function genericTN($file_name)
     {
         $this->thumbnail = $file_name . '.jpg';
