@@ -12,7 +12,9 @@ Prado Maia for writing a very helpful tutorial on OnLamp.
 
 Before attempting to use gettext, please make sure that you have
 gettext compiled on your web server. You must have gettext enabled in
-PHP as well.
+PHP as well. Finally, if you wish to test using language other than
+English, you will need to compile that language dictionary on the
+server.
 
 
 Getting started

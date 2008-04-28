@@ -81,6 +81,16 @@ appropriate format. If you want to give them full access again, call:
 
 $manager->allFiles();
 
+Limiting the module
+-------------------------
+If you need to limit the file manager to a specific module, use the
+moduleLimit function:
+
+$manager->moduleLimit(true);
+
+The manager will use the current module as a restriction for the
+display and creation of folders.
+
 
 Including the interface
 -------------------------
