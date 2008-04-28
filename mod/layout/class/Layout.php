@@ -942,6 +942,12 @@ class Layout {
             }
         }
 
+        $js = PHPWS_Cookie::read('js_enabled');
+        
+        if (!$js) {
+            javascript('test');
+            PHPWS_Cookie::write('js_enabled', 'testing');
+        }
 
         if (isset($GLOBALS['Layout_JS'])) {
             foreach ($GLOBALS['Layout_JS'] as $script=>$javascript)
@@ -1032,6 +1038,7 @@ class Layout {
      */
     function getAlternateStyles()
     {
+        $sheets = null;
         $settings = &$_SESSION['Layout_Settings'];
 
         if (!isset($settings->_style_sheets)) {
@@ -1077,13 +1084,20 @@ class Layout {
     }
 }
 
+/**
+ * the test gets started on the first real page load
+ * (see loadHeaderTags). Only with a page load can we get javascript
+ * to write the test cookie. This method prevents the check getting
+ * started during a header reroute and spoiling the process.
+ * For ease of use, we are assuming the positive before the check
+ * is finished. 
+ */
 function javascriptEnabled()
 {
     $js = PHPWS_Cookie::read('js_enabled');
 
     if (!$js) {
-        javascript('test');
-        PHPWS_Cookie::write('js_enabled', 'testing');
+        return true;
     } elseif ($js == 'yes') {
         return true;
     } elseif ($js == 'testing') {
@@ -1120,7 +1134,5 @@ function check_cookie()
         }
     }
 }
-
-
 
 ?>
