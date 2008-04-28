@@ -26,6 +26,6 @@ define("PHOTOALBUM_RS", TRUE);
 define("PHOTOALBUM_RS_WIDTH", 1280);
 define("PHOTOALBUM_RS_HEIGHT", 1280);
 
-define('ALLOWED_IMAGE_TYPES', serialize(array('image/jpeg', 'image/gif', 'image/bmp', 'image/png')));
-
+define('ALLOWED_IMAGE_TYPES', serialize(array('image/jpeg', 'image/gif', 'image/bmp', 'image/png',
+                                              'image/pjpeg', 'image/x-png')));
 ?>
