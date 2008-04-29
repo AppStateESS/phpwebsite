@@ -1,5 +1,8 @@
 Note: this log is only for work done since the conversion for 1.x
 
+29 April 2008
++ Some edits to try and make sorting work better.
+
 Version 1.4.5
 -----------------------------------------------------------------
 + Fixed bug preventing image upload.

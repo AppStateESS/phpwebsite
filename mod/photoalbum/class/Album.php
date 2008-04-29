@@ -80,7 +80,6 @@ class PHPWS_Album extends PHPWS_Item {
         $this->setTable('mod_photoalbum_albums');
         $this->addExclude(array('photos', 'photo', 'pager', '_batch', 'order'));
 
-
         if(!empty($id)) {
             $this->setId($id);
             $this->init();
@@ -102,13 +101,14 @@ class PHPWS_Album extends PHPWS_Item {
             $sql[] = ' AND hidden=\'0\'';
         }
 
-        if($this->order == 0) {
-            $order = ' ORDER BY created DESC';
+        if ($this->order) {
+            $sql[] = ' order by created asc';
         } else {
-            $order = ' ORDER BY created ASC';
+            $sql[] = ' order by created desc';
         }
+        
+        $sql = implode(' ', $sql);
 
-        $sql = implode('', $sql) . $order;
         $this->photos = PHPWS_DB::getCol($sql);
     }
 
@@ -334,11 +334,16 @@ class PHPWS_Album extends PHPWS_Item {
         $pager->setEmptyMessage(dgettext('photoalbum', 'No photos found.'));
         $pager->setDefaultLimit(9);
         $pager->addWhere('album', $id);
+        $pager->addWhere('hidden', 0);
         if (isset($_REQUEST['missing_desc']) && Current_User::allow('photoalbum', 'edit_photo')) {
             $pager->addWhere('blurb', '');
         }
 
-        $pager->setOrder('created', 'desc', true);
+        if ($this->order) {
+            $pager->setOrder('created', 'asc', true);
+        } else {
+            $pager->setOrder('created', 'desc', true);
+        }
 
         $limits[1]  = 1;
         $limits[4]  = 4;
