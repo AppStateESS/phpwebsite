@@ -80,7 +80,7 @@ class User_Action {
             break;
 
         case 'do_not_notify':
-            $user_id = $_SESSION['user_id'];
+            $user_id = $_SESSION['New_User']['user_id'];
             unset($_SESSION['New_User']);
             User_Action::sendMessage(dgettext('users', 'User created.'), 'setUserPermissions&user_id=' . $user_id);
             break;

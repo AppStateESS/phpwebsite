@@ -1,3 +1,6 @@
+29 April 2008
++ Fixed: choosing 'Do not notify' after creating a user was failing.
+
 15 April 2008
 + Testing new user notification.
 + Fixed member listing  dropping names past 10.
