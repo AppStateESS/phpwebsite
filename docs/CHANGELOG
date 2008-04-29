@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+29 April 2008
++ Bug# 1778308 - Uninstalled modules are no longer accessible.
++ Removed pass by reference
++ Removed category content variable from themes.
++ Added active parameter to installModList
+
 28 April 2008
 + The Italian translation was causing problems using the confirm
   javascript. It was using " instead of &quot;. I added a check in the

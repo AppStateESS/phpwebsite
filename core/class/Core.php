@@ -86,7 +86,7 @@ class PHPWS_Core {
      * Array is indexed with the module title. The value of each
      * row is the module's proper name
      */
-    function &getModuleNames()
+    function getModuleNames()
     {
         if (isset($GLOBALS['Core_Module_Names'])) {
             return $GLOBALS['Core_Module_Names'];
@@ -141,6 +141,10 @@ class PHPWS_Core {
     function runCurrentModule()
     {
         if (isset($_REQUEST['module'])) {
+            $mods = PHPWS_Core::getModules(true, true);
+            if (!in_array($_REQUEST['module'], $mods)) {
+                PHPWS_Core::home();
+            }
             PHPWS_Core::setCurrentModule($_REQUEST['module']);
             $modFile = PHPWS_SOURCE_DIR . 'mod/' . $_REQUEST['module'] . '/index.php';
             if (is_file($modFile)) {
@@ -616,9 +620,12 @@ class PHPWS_Core {
     /**
      * Returns an array of all installed modules
      */
-    function installModList()
+    function installModList($active_only=false)
     {
         $db = new PHPWS_DB('modules');
+        if ($active_only) {
+            $db->addWhere('active', 1);
+        }
         $db->addColumn('title');
         return $db->select('col');
     }
