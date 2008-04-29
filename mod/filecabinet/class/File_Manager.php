@@ -40,7 +40,7 @@ class FC_File_Manager {
     function admin()
     {
         /**
-         * Folder permissions neededx1
+         * Folder permissions needed
          */
         switch($_REQUEST['fop']) {
         case 'open_file_manager':
@@ -198,9 +198,8 @@ class FC_File_Manager {
         if (Current_User::allow('filecabinet')) {
             $tpl['CLEAR_LINK']  = $this->clearLink();
             $tpl['EDIT_LINK']   = $this->editLink();
+            $tpl['LINK_ID']     = 'l_' . $this->session_id;
         }
-
-        $tpl['LINK_ID']     = 'l_' . $this->session_id;
         $tpl['ITEMNAME']    = $this->itemname;
 
         return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/placeholder.tpl');

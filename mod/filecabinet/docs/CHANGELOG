@@ -1,3 +1,7 @@
+29 April 2008
++ Hiding some elements if the user doesn't have file rights.
++ Updated: templates/file_manager/placeholder.tpl
+
 25 April 2008
 + Fixed typo in Image:makeThumbnail
 + Added ability to move files to other folders.
