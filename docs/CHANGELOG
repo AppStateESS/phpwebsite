@@ -3,6 +3,7 @@ This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
 29 April 2008
++ Added parameter to phpws_stats that gives you language information.
 + Bug# 1778308 - Uninstalled modules are no longer accessible.
 + Removed pass by reference
 + Removed category content variable from themes.

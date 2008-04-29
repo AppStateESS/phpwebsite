@@ -22,12 +22,13 @@
 
 define('stats_on',        false); // Must be true for anything to echo
 define('stats_classes',   false); // Show the classes currently included
-define('stats_time',      false);  // Show the amount of time it took to compute
-define('stats_memory',    false);  // Show amount of memory used
-define('stats_sessions',  false);  // Show the sessions currently used
-define('show_request',    false);  // Show the _REQUEST info
+define('stats_time',      false); // Show the amount of time it took to compute
+define('stats_memory',    false); // Show amount of memory used
+define('stats_sessions',  false); // Show the sessions currently used
+define('show_request',    false); // Show the _REQUEST info
 define('display_status',  false); // Shows configuration settings that may confuse developer
 define('browser_details', false); // Shows information collected about your browser
+define('language_details',false); // Shows the current and default language options.
 
 if (stats_on && stats_time) {
     list($usec, $sec) = explode(' ', microtime());
@@ -81,6 +82,15 @@ function show_stats()
             $subcontent[] = _('Using local configuration files.');
         }
 
+        $content[] = implode('<br />', $subcontent);
+    }
+
+    if (language_details) {
+        $subcontent[] = sprintf(_('The current language is %s.'), CURRENT_LANGUAGE);
+        $subcontent[] = sprintf(_('The default language is %s.'), DEFAULT_LANGUAGE);
+        if (FORCE_DEFAULT_LANGUAGE) {
+            $subcontent[] = _('The default language is being forced.');
+        }
         $content[] = implode('<br />', $subcontent);
     }
     
