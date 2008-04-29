@@ -1,3 +1,8 @@
+29 April 2008
++ Bug #1777242 - Shared bug with default themes. Made more
+  presentable.
++ Updated: templates/menu_bar.tpl, templates/style.css
+
 8 April 2008
 + Altered default category tabs to fix some listing problems
 

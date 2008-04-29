@@ -55,6 +55,7 @@ class Categories {
 
     function showForm(&$key, $popup=FALSE)
     {
+        Layout::addStyle('categories');
         $full_list = $add_list = Categories::getCategories('list');
         if (!empty($full_list)) {
             $full_list = array_reverse($full_list, true);

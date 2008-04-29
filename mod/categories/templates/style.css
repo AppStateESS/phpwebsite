@@ -43,3 +43,24 @@ div#cookie-menu ul li ul li a {
 div#cookie-menu ul li:hover ul {
    display : block;
 }
+
+div#category-select {
+   padding : 3px;
+}
+
+div#category-select, 
+div#category-select input,
+div#category-select select {
+   font-size : 90%;
+}
+
+div#category-select h3 {
+   margin : 0px;
+   padding : 0px;
+}
+
+div#category-select div#quick-add {
+   background-color : #e3e3e3;
+   margin : 2px;
+   padding : 2px;
+}
