@@ -114,7 +114,9 @@ class RSS_Channel {
         $db = new PHPWS_DB('phpws_key');
         $db->addWhere('module', $this->module);
         $db->addWhere('restricted', 0);
-
+        $db->addWhere('show_after', mktime(), '<');
+        $db->addWhere('hide_after', mktime(), '>');
+        
         $db->addOrder('create_date desc');
         // rss limit is 15
         $db->setLimit('15');
@@ -143,6 +145,8 @@ class RSS_Channel {
         if (!empty($content)) {
             return $content;
         }
+
+        $this->loadFeeds();
 
         $home_http = PHPWS_Core::getHomeHttp();
         $template['CHANNEL_TITLE']       = preg_replace('/&(?!amp;)/', '&amp;', $this->title);
