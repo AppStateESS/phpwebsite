@@ -87,8 +87,6 @@ class RSS {
             return NULL;
         }
 
-        $channel->loadFeeds();
-        
         header('Content-type: text/xml');
         echo $channel->view();
         exit();
