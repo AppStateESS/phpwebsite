@@ -1,0 +1,384 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-04 09:45-0500\n"
+"PO-Revision-Date: 2008-04-06 21:32+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#, php-format
+msgid "%d. (Untitled)"
+msgstr "%d. (Uten tittel)"
+
+msgid "- Select option -"
+msgstr "- Valg -"
+
+msgid "A problem occurred when trying to approve a web page."
+msgstr "Ett problem oppstod ved forsøk på å godkjenne en web side."
+
+msgid "A problem occurred when trying to delete your webpage."
+msgstr "Ett problem oppstod ved forsøk på å slette din webside."
+
+msgid "A problem occurred when trying to disapprove a web page."
+msgstr "Ett problem oppstod ved forsøk på å ikke godkjenne en web side."
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Activate"
+msgstr "Aktiver"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Add Page"
+msgstr "Legg til Side"
+
+msgid "Add new page"
+msgstr "Legg til ny side"
+
+#, php-format
+msgid "Add page: %s"
+msgstr "Legg til side: %s"
+
+#, php-format
+msgid "Administrate page: %s"
+msgstr "Administrer side: %s"
+
+msgid "An error occurred while saving your page. Please check the error log."
+msgstr "En feil oppstod ved lagring av din side. Vennligst sjekk feilmeldings loggen."
+
+msgid "An error occurred. Please check your logs."
+msgstr "En feil oppstod. Vennligst sjekk dine logger."
+
+msgid "Approval list"
+msgstr "Godkjennings liste"
+
+msgid "Approval view"
+msgstr "Godkjenning visning"
+
+#, php-format
+msgid "Approval(%s)"
+msgstr "Godkjenning(%s)"
+
+msgid "Approve"
+msgstr "Godkjenn"
+
+#, php-format
+msgid "Are you sure you want to delete &quot;%s&quot and all its pages?"
+msgstr "Er du sikker på at du ønsker å slette &quot;%s&quot og alle dets sider?"
+
+msgid "Are you sure you want to delete the checked web pages?"
+msgstr "Er du sikker på at du ønsker å slette den valgte websiden?"
+
+msgid "Are you sure you want to join ALL the pages into just one page? Warning: You will lose all page backups!"
+msgstr "Er du sikker på at du ønsker å slå sammen ALLE sidene til bare en side? Advarsel: Du vil miste alle side backupene!"
+
+msgid "Are you sure you want to join this page to the next?"
+msgstr "Er du sikker på at du ønsker å slå sammen denne siden med den neste?"
+
+msgid "Are you sure you want to remove this page?"
+msgstr "Er du sikker på at du ønsker å fjerne denne siden?"
+
+msgid "Attempted to approve a webpage."
+msgstr "Forsøkt på å godkjenne en webside."
+
+msgid "Attempted to disapprove a webpage."
+msgstr "Forsøkt på å ikke godkjenne en webside."
+
+msgid "Cannot find template file."
+msgstr "Kan ikke finne template fil."
+
+msgid "Content"
+msgstr "Innhold"
+
+msgid "Create header"
+msgstr "Opprett header"
+
+msgid "Created by"
+msgstr "Opprettet av"
+
+msgid "Created on"
+msgstr "Opprettet den"
+
+msgid "Creates web pages, articles, and the like."
+msgstr "Oppretter web sider, artikler, og liknende."
+
+msgid "Deactivate"
+msgstr "Deaktiver"
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Delete page (Unrestricted only)"
+msgstr "Slett side (Bare ubegrenset)"
+
+msgid "Disapprove"
+msgstr "Ikke godkjenn"
+
+msgid "Down"
+msgstr "Ned"
+
+msgid "Drop"
+msgstr "Slipp"
+
+msgid "Edit"
+msgstr "Endre"
+
+#, php-format
+msgid "Edit Page %s"
+msgstr "Endre side %s"
+
+msgid "Edit header"
+msgstr "Endre header"
+
+#, php-format
+msgid "Edit header page: %s"
+msgstr "Endre header side: %s"
+
+#, php-format
+msgid "Edit header: %s"
+msgstr "Endre header: %s"
+
+msgid "Edit page"
+msgstr "Endre side"
+
+msgid "Edit page header"
+msgstr "Endre side header"
+
+msgid "Edit web page"
+msgstr "Endre web side"
+
+msgid "Error"
+msgstr "Feil"
+
+msgid "Error occurred when trying to pull a page from the volume."
+msgstr "Feil oppstod ved forsøk på å trekke en side fra volumet."
+
+msgid "Error: Unable to force template."
+msgstr "Feil: ikke mulig å tvinge template."
+
+msgid "Feature"
+msgstr "Egenskap"
+
+msgid "Feature page"
+msgstr "Hoved side"
+
+msgid "Featured pages"
+msgstr "Oppslags sider"
+
+msgid "Force all pages to use this template"
+msgstr "Tving alle sider til å benytte denne template"
+
+msgid "Front page"
+msgstr "Forside"
+
+msgid "Go"
+msgstr "Gå"
+
+msgid "Go!"
+msgstr "Gå!"
+
+msgid "Header"
+msgstr "Header"
+
+msgid "Header restored."
+msgstr "Header gjenopprettet."
+
+msgid "Header saved successfully."
+msgstr "Header lagret med godt resultat."
+
+msgid "Header version deleted."
+msgstr "Header versjon slettet."
+
+msgid "Ignoring repeat post."
+msgstr "Ignorerer gjentatt post."
+
+msgid "Image"
+msgstr "Bilde"
+
+msgid "List"
+msgstr "Liste"
+
+msgid "List Web Pages"
+msgstr "Liste Web Sider"
+
+msgid "Missing page content."
+msgstr "Mangler side innhold."
+
+msgid "Missing page title"
+msgstr "Mangler side tittel"
+
+msgid "Missing template file."
+msgstr "Mangler template fil."
+
+msgid "Missing volume id."
+msgstr "Mangler volum id."
+
+msgid "Move down"
+msgstr "Flytt ned"
+
+msgid "Move off frontpage"
+msgstr "Flytt bort fra forside"
+
+msgid "Move to end"
+msgstr "Flytt til slutten"
+
+msgid "Move to front"
+msgstr "Flytt til front"
+
+msgid "Move to frontpage"
+msgstr "Flytt til forside"
+
+msgid "Move up"
+msgstr "Flytt opp"
+
+msgid "New"
+msgstr "Ny"
+
+msgid "Next page"
+msgstr "Neste side"
+
+msgid "No"
+msgstr "Nei"
+
+msgid "No pages have been created."
+msgstr "Ingen sider er blitt opprettet."
+
+msgid "Page"
+msgstr "Side"
+
+msgid "Page held for approval."
+msgstr "Side holdt for godkjenning."
+
+msgid "Page is missing content."
+msgstr "Side mangler innhold."
+
+msgid "Page is not complete."
+msgstr "Side er ikke ferdig."
+
+msgid "Page joined."
+msgstr "Side slått sammen."
+
+msgid "Page moved."
+msgstr "Side flyttet."
+
+msgid "Page removed."
+msgstr "Side fjernet"
+
+msgid "Page restored."
+msgstr "Side gjenopprettet."
+
+msgid "Page saved successfully."
+msgstr "Side lagret med godt resultat."
+
+msgid "Page template"
+msgstr "Side template"
+
+msgid "Pages joined."
+msgstr "Sider slått sammen."
+
+msgid "Previous page"
+msgstr "Forrige side"
+
+msgid "Restore"
+msgstr "Gjenopprett"
+
+#, php-format
+msgid "Restore Page %s"
+msgstr "Gjenopprett side %s"
+
+msgid "Restore Web Page Header"
+msgstr "Gjenopprett Web Side Header"
+
+msgid "Save settings"
+msgstr "Lagre innstillinger"
+
+msgid "Set featured pages  (Unrestricted only)"
+msgstr "Sett oppslag sider (Kun ubegrenset)"
+
+msgid "Settings"
+msgstr "Innstillinger"
+
+msgid "Settings saved."
+msgstr "Innstillinger lagret."
+
+msgid "Simple image forms"
+msgstr "Enkel bilde skjema"
+
+msgid "Sorry, this web page is restricted."
+msgstr "Beklager, denne websiden er begrenset."
+
+msgid "Sort"
+msgstr "Sorter"
+
+msgid "Summary"
+msgstr "Sammendrag"
+
+msgid "There is a problem with your page templates. Check your error log."
+msgstr "Det er ett problem med dine side templater. Sjekk din feilmeldings logg."
+
+msgid "Title"
+msgstr "Tittel"
+
+msgid "Unable to locate page template directory."
+msgstr "Ikke mulig å lokalisere side template mappe."
+
+msgid "Up"
+msgstr "Opp"
+
+msgid "Update header"
+msgstr "Oppdater header"
+
+msgid "Update page"
+msgstr "Oppdater side"
+
+msgid "Updated by"
+msgstr "Oppdatert av"
+
+msgid "Updated on"
+msgstr "Oppdatert den"
+
+msgid "View"
+msgstr "Se"
+
+msgid "View page list"
+msgstr "Se side liste"
+
+msgid "Volume is missing a title."
+msgstr "Volum mangler en tittel."
+
+msgid "Web Page Approval"
+msgstr "Web Side Godkjenning"
+
+msgid "Web Page tables removed."
+msgstr "Web Side tabeller fjernet."
+
+msgid "Web Pages"
+msgstr "Web Sider"
+
+msgid "Web page approved."
+msgstr "Web side godkjent."
+
+msgid "Web page disapproved."
+msgstr "Web side ikke godkjent."
+
+msgid "Webpage title"
+msgstr "Webside tittel"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "[Unapproved]"
+msgstr "[Ikke godkjent]"
+

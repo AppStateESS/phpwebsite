@@ -1,0 +1,220 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-08 13:35-0400\n"
+"PO-Revision-Date: 2008-04-06 21:30+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "%d hours"
+msgstr "%d timer"
+
+#, php-format
+msgid "%d hours, "
+msgstr "%d timer, "
+
+#, php-format
+msgid "%d minutes"
+msgstr "%d minutter"
+
+#, php-format
+msgid "%d minutes, "
+msgstr "%d minutter,"
+
+#, php-format
+msgid "%d seconds"
+msgstr "%d sekunder"
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Add Feed"
+msgstr "Legg til Feed"
+
+msgid "Add feed"
+msgstr "Legg til feed"
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "Administrate RSS Feeds"
+msgstr "Administrater RSS Feeder"
+
+msgid "Administrative panel for setting RSS feeds."
+msgstr "Administrativ panel for RSS feed innstillinger."
+
+msgid "An error occurred registering to RSS module."
+msgstr "En feil oppstod ved registrering til RSS modul."
+
+msgid "An error occurred trying to unregister this module from RSSFeeds."
+msgstr "En feil oppstod ved forsøk på å avregistrere denne modul fra RSSFeeds."
+
+msgid "An error occurred when saving your channel."
+msgstr "En feil oppstod ved lagring av din kanal."
+
+msgid "An error occurred when trying to access your RSS channels."
+msgstr "En feil oppstod ved forsøk på tilkobling til dine RSS kanaler."
+
+msgid "Are you sure you want to delete this RSS feed?"
+msgstr "Er du sikker på at du ønsker å slette denne RSS feeden?"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Channel saved."
+msgstr "Kanal lagret."
+
+msgid "Channels"
+msgstr "Kanaler"
+
+msgid "Copyright"
+msgstr "Kopibeskyttet"
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Description"
+msgstr "Beskrivelse"
+
+msgid "Display?"
+msgstr "Vis?"
+
+msgid "Edit"
+msgstr "Endre"
+
+msgid "Edit channel"
+msgstr "Endre kanal"
+
+#, php-format
+msgid "Every %s"
+msgstr "Hver %s"
+
+msgid "Feed title will be used if left empty"
+msgstr "Feed tittel vil bli brukt hvis etterlatt tom"
+
+msgid "General Settings"
+msgstr "Generelle Innstillinger"
+
+msgid "Import"
+msgstr "Importer"
+
+msgid "Import RSS Feeds"
+msgstr "Importer RSS Feeder"
+
+msgid "In seconds"
+msgstr "I sekunder"
+
+msgid "Invalid feed address."
+msgstr "Ugyldig "
+
+msgid "Item limit"
+msgstr "Punkt begrensning"
+
+msgid "Managing editor email address"
+msgstr "Administrere utgiver email adresse"
+
+msgid "Module unregistered from RSSFeeds."
+msgstr "Modul avregisrert fra RSSFeeder."
+
+msgid "No"
+msgstr "Nei"
+
+msgid "No RSS file found."
+msgstr "Ingen RSS fil funnet."
+
+msgid "No channels have been registered."
+msgstr "Ingen kanaler er blitt registrert."
+
+msgid "Please check editor email format."
+msgstr "Vennligst sjekk utgiver email format."
+
+msgid "Please check webmaster email format."
+msgstr "Vennligst sjekk webmaster email format."
+
+msgid "Please enable Cache Lite in your config/core/config.php file."
+msgstr "Vennligst aktiver Cache Lite in your config/core/config.php filen."
+
+msgid "RSS Feeds"
+msgstr "RSS Feeds"
+
+msgid "RSS file found but no channel information."
+msgstr "RSS fil funnet men ingen kanal informasjon."
+
+#, php-format
+msgid "RSS registration to %s module successful."
+msgstr "RSS registrert til %s modul med godt resultat."
+
+msgid "Refresh feed"
+msgstr "Oppdater feed"
+
+msgid "Refresh time"
+msgstr "Oppdaterings tid"
+
+msgid "Refresh time is too low. It must be over 60 seconds."
+msgstr "Oppdateringstid er for lav. den må være over 60 sekunder."
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Save"
+msgstr "Lagre"
+
+msgid "Save Channel"
+msgstr "Lagre kanal"
+
+msgid "Save settings"
+msgstr "Lagre innstillinger"
+
+msgid "Settings"
+msgstr "Innstillinger"
+
+msgid "Settings saved successfully."
+msgstr "Innstillinger lagret med godt resultat."
+
+msgid "Sorry"
+msgstr "Beklager"
+
+msgid "Sorry, unable to grab feed."
+msgstr "Beklager, ikke mulig å hente feed."
+
+msgid "Title"
+msgstr "Tittel"
+
+msgid "Unable to list feed."
+msgstr "Ikke mulig å hente feed."
+
+msgid "Webmaster email address"
+msgstr "Webmaster email adresse"
+
+msgid "Yes"
+msgstr "Ja"
+
+#, php-format
+msgid "You may not pull more than %s feeds."
+msgstr "Du kan ikke hente mer enn %s feeder."
+
+msgid "You must enable allow_url_fopen in your php.ini file."
+msgstr "Du må aktivisere allow_url_fopen i din php.ini fil."
+
+msgid "You must enter a title."
+msgstr "Du må legge til en tittel."
+
+msgid "You must enter an address."
+msgstr "Du må legge til en adresse."
+
+msgid "You should refresh more often than every month."
+msgstr "Du bør oppdatere oftere enn hver måned."
+

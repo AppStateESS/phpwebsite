@@ -1,0 +1,885 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-03-07 12:13-0500\n"
+"PO-Revision-Date: 2008-04-06 21:31+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "\"%s\" permission column created."
+msgstr "\"%s\" tillatelse kolonne opprettet."
+
+msgid "-- Use server's time zone --"
+msgstr "-- Benytt serverens tids sone --"
+
+msgid "A deity can not make themselves mortal."
+msgstr "En guddom kan ikke gjøre seg selv dødlig."
+
+msgid "A group with this name already exists."
+msgstr "En gruppe med dette navnet eksisterer alt."
+
+msgid "A problem occurred when accessing user information. Please try again later."
+msgstr "Et problem oppstod ved tilkobling til bruker informasjon. Vennligst prøv igjen senere."
+
+msgid "A problem occurred when trying to register this module to My Page."
+msgstr "Et problem oppstod ved forsøk på å registrere denne modulen til Min Side."
+
+msgid "A problem occurred when trying to update your password. Please try again later."
+msgstr "Et problem oppstod ved forsøk på å oppdatere ditt passord. Vennligst prøv igjen senere."
+
+msgid "Account created successfully!"
+msgstr "Kontoen opprettet med godt resultat!"
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Actions"
+msgstr "Handlinger"
+
+msgid "Activate"
+msgstr "Aktiver"
+
+msgid "Activate this user"
+msgstr "Aktiver denne bruker"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Add"
+msgstr "Legg til"
+
+msgid "Add / Edit Groups"
+msgstr "Legg til / Endre grupper"
+
+msgid "Add Group"
+msgstr "Legg til Gruppe"
+
+msgid "Add Member"
+msgstr "Legg til Medlem"
+
+msgid "Add Script File"
+msgstr "Legg til Script Fil"
+
+msgid "Add User"
+msgstr "Legg til Bruker"
+
+msgid "Add this user to this group."
+msgstr "Legg denne brukeren til denne gruppen."
+
+msgid "All visitors"
+msgstr "Alle besøkende"
+
+msgid "Allow Remember Me"
+msgstr "Tillat Husk Meg"
+
+msgid "An error occurred when trying to create your account. Please try again later."
+msgstr "Et problem oppstod ved forsøk på å opprette din konto. Vennligst prøv igjen senere."
+
+msgid "An error occurred when trying to save the group."
+msgstr "Et problem oppstod ved forsøk på å lagre denne gruppen."
+
+msgid "An error occurred."
+msgstr "Et problem oppstod."
+
+msgid "Are you SURE you want to remove this group?"
+msgstr "ER du SIKKER på at du ønsker å fjerne denne gruppen?"
+
+msgid "Are you certain you want this user to have complete control of this web site?"
+msgstr "Er du sikker på at du ønsker at denne brukeren skal få full kontroll over denne websiden?"
+
+#, php-format
+msgid "Are you certain you want to delete the user &quot;%s&quot; permanently?"
+msgstr "Er du sikker på at du ønsker å slette brukeren &quot;%s&quot; permanent?"
+
+msgid "Are you sure you want to deify this user?"
+msgstr "Er du sikker på at du ønsker å gjøre denne brukeren til en guddom?"
+
+msgid "Are you sure you want to drop this authorization script?"
+msgstr "Er du sikker på at du ønsker å droppe dette autorisasjons scriptet?"
+
+msgid "Are you sure you want to remove deity status?"
+msgstr "Er du sikker på at du ønsker å fjerne guddom status?"
+
+msgid "Authorization"
+msgstr "Autorisasjon"
+
+msgid "Authorization Scripts"
+msgstr "Autorisasjon Scripter"
+
+msgid "Authorization updated."
+msgstr "Autorisasjon oppdatert."
+
+msgid "Authorization/Settings"
+msgstr "Autorisasjon/Innstillinger"
+
+msgid "Ban users"
+msgstr "Utesteng brukere"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Captcha information was incorrect."
+msgstr "Captcha informasjon var ikke korrekt."
+
+msgid "Change my Settings"
+msgstr "Endre mine Innstillinger"
+
+msgid "Check all restricted"
+msgstr "Sjekk alle begrenset"
+
+msgid "Check all unrestricted"
+msgstr "Sjekk alle ubegrenset"
+
+#, php-format
+msgid "Checking %s module"
+msgstr "Sjekker %s modul"
+
+msgid "Click here if you are not redirected."
+msgstr "Klikk her hvis du ikke blir videresendt."
+
+msgid "Closest matches below."
+msgstr "Nærmeste treff under."
+
+msgid "Confirm"
+msgstr "Bekreft"
+
+msgid "Confirm Graphic"
+msgstr "Bekreft Grafikk"
+
+msgid "Confirm text"
+msgstr "Bekreft tekst"
+
+msgid "Confirmation email"
+msgstr "Bekreftelse email"
+
+msgid "Confirmation phrase is not correct."
+msgstr "Bekreftelse setning er ikke korrekt."
+
+msgid "Contact the site administrator"
+msgstr "Kontakt webside administratoren."
+
+msgid "Control Panel"
+msgstr "Kontrollpanel"
+
+msgid "Could not access hub database."
+msgstr "Kunne ikke tilkoble til hub databasen."
+
+#, php-format
+msgid "Could not create \"%s\" permission column."
+msgstr "Kunne ikke opprette \"%s\" tillatalse kolonne."
+
+msgid "Could not find any hub deities."
+msgstr "Kunne ikke finne noen hub guddommer."
+
+msgid "Could not find user."
+msgstr "Kunne ikke finne bruker."
+
+msgid "Create Group"
+msgstr "Opprett gruppe"
+
+msgid "Create User"
+msgstr "Opprett bruker"
+
+msgid "Current Members"
+msgstr "Nåværende Medlemmer"
+
+msgid "Deactivate"
+msgstr "Deaktiver"
+
+msgid "Deactivate this user"
+msgstr "Deaktiver denne bruker"
+
+msgid "Default"
+msgstr "Standard"
+
+msgid "Deity"
+msgstr "Guddom"
+
+msgid "Deity users copied to branch."
+msgstr "Guddom rukere kopiert til bransje."
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Delete Groups"
+msgstr "Slett Grupper"
+
+msgid "Delete Users"
+msgstr "Slett Brukere"
+
+msgid "Did you forget your password at our site?"
+msgstr "Glemte du ditt passord til vår webside?"
+
+msgid "Did you forget your user name at our site?"
+msgstr "Glemte du ditt brukernavn til vår webside?"
+
+msgid "Display Name"
+msgstr "Fremvisnings Navn"
+
+msgid "Display name"
+msgstr "Fremvisnings navn"
+
+msgid "Display name is improperly formatted."
+msgstr "Fremvisnings navn er ukorrekt formatert."
+
+msgid "Drop"
+msgstr "Dropp"
+
+msgid "Drop this member from the group."
+msgstr "Dropp denne medlemmen fra gruppen."
+
+msgid "Edit"
+msgstr "Endre"
+
+msgid "Edit Authorization Script"
+msgstr "Endre Autorisasjon Script"
+
+msgid "Edit Group"
+msgstr "Endre Gruppe"
+
+msgid "Edit Permissions"
+msgstr "Endre Tillatelser"
+
+msgid "Edit User"
+msgstr "Endre Bruker"
+
+msgid "Edit Users"
+msgstr "Endre Brukere"
+
+msgid "Edit restrictions"
+msgstr "Endre begrensninger"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Email Address"
+msgstr "Email Adresse"
+
+msgid "Email Verification"
+msgstr "Email Bekreftelse"
+
+msgid "Email address already in use."
+msgstr "Email adresse alt i bruk."
+
+msgid "Email address not found. Please try again."
+msgstr "Email adresse ikke funnet. Vennligst prøv igjen."
+
+msgid "Enter the word from the image above."
+msgstr "Legg inn ordet fra bildet over."
+
+msgid "Enter your new password"
+msgstr "Legg inn ditt nye passord"
+
+msgid "Enter your user name."
+msgstr "Legg inn ditt brukernavn."
+
+msgid "Forbidden usernames (one per line)"
+msgstr "Utilgjengelige brukernavn (ett per linje)"
+
+msgid "Forgot Password"
+msgstr "Glemt Passord"
+
+msgid "Forgot password?"
+msgstr "Glemt passord?"
+
+msgid "Forgot your password?"
+msgstr "Glemt ditt passord?"
+
+msgid "Forgot your user name?"
+msgstr "Glemt ditt brukernavn?"
+
+msgid "Forgotten password attempt made on a deity account."
+msgstr "Glemt passord forsøkt på en guddom konto."
+
+msgid "Forgotten your user name? Enter your email address instead."
+msgstr "Glemt ditt brukernavn? Legg inn din email adresse i stedet."
+
+msgid "Group Name"
+msgstr "Gruppe Navn"
+
+msgid "Group created."
+msgstr "Gruppe opprettet."
+
+msgid "Group does not exist."
+msgstr "Gruppe eksisterer ikke."
+
+msgid "Group name"
+msgstr "Gruppe navn"
+
+msgid "Groups"
+msgstr "Grupper"
+
+msgid "Hello"
+msgstr "Hallo"
+
+msgid "Here is the address to return to our site:"
+msgstr "Her er adressen til å returnere til vår side:"
+
+msgid "Hide login box"
+msgstr "Gjem innloggings boks"
+
+msgid "Home"
+msgstr "Hjem"
+
+msgid "If so, you may click the link below to reset it."
+msgstr "Hvis så, kan du klikke på linken under for å resette den."
+
+msgid "If you did not wish to reset your password, you may ignore this message."
+msgstr "Hvis du ikke ønsket å resette ditt passord, kan du ignorere denne meldingen."
+
+msgid "Immediate"
+msgstr "Øyeblikkelig"
+
+msgid "Improper permission level for action requested."
+msgstr "Ukorrekt tillatelses nivå for etterspurt handling."
+
+msgid "Improperly formatted group name."
+msgstr "Ukorrekt formatert gruppe navn."
+
+msgid "Invalid variable name."
+msgstr "Feil variabel navn."
+
+msgid "Language preference"
+msgstr "Språk preferanse"
+
+msgid "Last Logged"
+msgstr "Sist logget"
+
+msgid "Lets you create and edit users and groups."
+msgstr "Lar deg opprette og endre brukere og grupper."
+
+msgid "Local"
+msgstr "Lokal"
+
+msgid "Log Out"
+msgstr "Logg Ut"
+
+msgid "Logged visitors"
+msgstr "Logget besøkende"
+
+msgid "Login"
+msgstr "Logg Inn"
+
+msgid "Login Page"
+msgstr "Logg Inn Side"
+
+msgid "Login page"
+msgstr "Logg Inn Side"
+
+msgid "Manage Groups"
+msgstr "Administrere Grupper"
+
+msgid "Manage Members"
+msgstr "Administrere Medlemmer"
+
+msgid "Manage Users"
+msgstr "Administrere Brukere"
+
+msgid "Member added."
+msgstr "Medlem lagt til."
+
+msgid "Member not found."
+msgstr "Medlem ikke funnet."
+
+msgid "Member removed."
+msgstr "Medlem fjernet."
+
+msgid "Members"
+msgstr "Medlemmer"
+
+msgid "Members found."
+msgstr "Medlemmer funnet"
+
+msgid "Missing an email address."
+msgstr "Mangler en email adresse."
+
+msgid "Missing authorization script."
+msgstr "Mangler autorisasjon script."
+
+msgid "Missing key information."
+msgstr "Mangler nøkkel informasjon."
+
+msgid "Missing my_page function."
+msgstr "Mangler my_page funksjon."
+
+msgid "Mistyped username."
+msgstr "Feilstavet brukernavn."
+
+msgid "Module does not exist."
+msgstr "Modul eksisterer ikke."
+
+msgid "Module tried to detect a non-existant permission."
+msgstr "Modul forsøkte å finne en ikke-eksisterende tillatelse."
+
+msgid "Module's item permission file is missing."
+msgstr "Modulens objekt tillatelse fil mangler."
+
+msgid "Module's permission file is missing."
+msgstr "Modulens tillatelse fil mangler."
+
+msgid "Mortal"
+msgstr "Dødlig"
+
+msgid "My Page"
+msgstr "Min Side"
+
+msgid "My Page registered to Users module."
+msgstr "Min Side registrert til Bruker modul."
+
+msgid "Never"
+msgstr "Aldri"
+
+msgid "New Account Sign-up"
+msgstr "Ny konto Registrering"
+
+msgid "New Group"
+msgstr "Ny Gruppe"
+
+msgid "New User"
+msgstr "Ny Bruker"
+
+msgid "New user signup is currently disabled."
+msgstr "Ny bruker registrering er for øyeblikket deaktivisert."
+
+msgid "New user signup not allowed."
+msgstr "Ny bruker registrering er ikke tillatt."
+
+msgid "No"
+msgstr "Nei"
+
+msgid "No matches found."
+msgstr "Ingen tilsvarende funnet."
+
+msgid "No members."
+msgstr "Ingen medlemmer."
+
+msgid "No modules are registered to My Page."
+msgstr "Ingen moduler er registrert til Min Side."
+
+msgid "No new scripts found"
+msgstr "Ingen nye script funnet."
+
+msgid "No permissions file found."
+msgstr "Ingen tillatelse fil funnet."
+
+msgid "No restricted edit groups found."
+msgstr "Ingen begrenset endre grupper funnet."
+
+msgid "No view groups found."
+msgstr "Ingen se grupper funnet."
+
+msgid "No, leave them as a deity."
+msgstr "Nei, la dem være guddommelige."
+
+msgid "No, leave them as a mortal."
+msgstr "Nei, la dem være dødlige."
+
+msgid "None"
+msgstr "Ingen"
+
+msgid "None found"
+msgstr "Ingen funnet"
+
+msgid "Not allowed"
+msgstr "Ikke tillatt"
+
+msgid "Only another deity can create a deity."
+msgstr "Bare andre guddommer kan opprette guddommer."
+
+msgid "Only another deity can create a mortal."
+msgstr "Bare andre guddommer kan opprette en dødlig."
+
+msgid "Password"
+msgstr "Passord"
+
+msgid "Password confirm"
+msgstr "Bekreft passord"
+
+msgid "Password is too easy to guess."
+msgstr "Passordet er for enkelt å gjette."
+
+#, php-format
+msgid "Password must be at least %s characters in length."
+msgstr "Passordet må være minst %s tegn langt."
+
+msgid "Passwords do not match."
+msgstr "Passordene er ikke like."
+
+msgid "Passwords must be reentered on user name change."
+msgstr "Passordene må tastes inn på nytt ved endring av brukernavn."
+
+msgid "Passwords were not acceptable for the following reason:"
+msgstr "Passord var ikke akseptabelt for følgende grunn:"
+
+msgid "Permission"
+msgstr "Tillatelse"
+
+msgid "Permission table name already exists."
+msgstr "Tillatelse tabell navn eksisterer allerede."
+
+msgid "Permission table not found."
+msgstr "Tillatelse tabell ikke funnet."
+
+msgid "Permissions"
+msgstr "Tillatelse"
+
+msgid "Permissions file not implemented."
+msgstr "Tillatelse fil ikke implementert."
+
+msgid "Permissions table created successfully."
+msgstr "Tillatelse tabell opprettet med godt resultat."
+
+msgid "Permissions table not created successfully."
+msgstr "Tillatelse tabell ikke opprettet."
+
+msgid "Permissions table not removed successfully."
+msgstr "Tillatelse tabell ikke fjernet."
+
+msgid "Permissions table removed successfully."
+msgstr "Tillatelse tabell fjernet med godt resultat."
+
+msgid "Permissions updated"
+msgstr "Tillatelser oppdatert"
+
+msgid "Permissions updated."
+msgstr "Tillatelser oppdatert."
+
+msgid "Please check your email for a response."
+msgstr "Vennligst sjekk din email for respons."
+
+msgid "Please create a user to administrate the site."
+msgstr "Vennligst opprett en bruker for å administrere siden."
+
+msgid "Please enter a valid email address as a site contact."
+msgstr "Vennligst legg inn en gyldig email adresse som nettside kontakt."
+
+msgid "Please try another user name."
+msgstr "Vennligst prøv ett annet brukernavn."
+
+msgid "Please type the word seen in the image."
+msgstr "Vennligst tast inn ordet som vises i bildet."
+
+msgid "Preferred editor (admins only)"
+msgstr "Foretrukket editor (kun for admin)"
+
+msgid "Register Module Permissions"
+msgstr "Registrer Modul Tillatelser"
+
+msgid "Register user permissions"
+msgstr "Registrer bruker tillatelser"
+
+msgid "Remember me"
+msgstr "Husk meg"
+
+msgid "Remove"
+msgstr "Fjern"
+
+msgid "Repeat it here please"
+msgstr "Vennligst gjenta det her"
+
+msgid "Reset my password"
+msgstr "Reset mitt passord"
+
+msgid "Restricted"
+msgstr "Begrenset"
+
+msgid "Save permissions"
+msgstr "Lagre tillatelser"
+
+msgid "Script Filename"
+msgstr "Script Filnavn"
+
+msgid "Send reminder"
+msgstr "Send påminder"
+
+msgid "Set Group Permissions"
+msgstr "Sett Gruppe Tillatelser"
+
+msgid "Set User Permissions"
+msgstr "Sett Bruker Tillatelser"
+
+#, php-format
+msgid "Set permissions"
+msgstr "Sett tillatelser"
+
+msgid "Settings"
+msgstr "Innstillinger"
+
+msgid "Sign up"
+msgstr "Registrer"
+
+msgid "Site contact email"
+msgstr "Nettside kontakt email"
+
+msgid "Sorry"
+msgstr "Beklager"
+
+msgid "Sorry but you do not authorize from this site."
+msgstr "Beklager men du autoriserer ikke fra denne iden."
+
+#, php-format
+msgid "Sorry but your authorization is not checked on this site. Please contact %s for information on reseting your password."
+msgstr "Beklager men autorisasjonen din er ikke sjekket på denne siden. Vennligst kontakt %s for informasjon for resetting av ditt passord."
+
+msgid "Sorry there is a problem with your account."
+msgstr "Beklager det er ett problem med din side."
+
+msgid "Sorry, we are not accepting new users at this time."
+msgstr "Beklager, vi aksepterer ikke nye brukere for øyeblikket."
+
+msgid "Specific group(s)"
+msgstr "Spesifikke gruppe(r)"
+
+msgid "The is a problem with My Page."
+msgstr "Det er ett problem med Min Side."
+
+#, php-format
+msgid "The user name associated with your email address is \"%s\""
+msgstr "Brukernavnet assossiert med din email adresse er \"%s\""
+
+msgid "There is a problem with your authentication method. Contact the site administrator."
+msgstr "Det er ett problem med din autoriasasjon metode. Kontakt din webside administrator."
+
+msgid "There was a problem with this module's My Page file."
+msgstr "Det var ett problem med denne modulens Min Side fil."
+
+msgid "There was problem creating your acccount. Check back later."
+msgstr "Det er ett problem med å opprette din konto. Prøv igjen senere."
+
+msgid ""
+"This authentication does not exist.<br />\n"
+" If you did not log in within the time frame specified in your email, please apply for another account."
+msgstr ""
+"Denne autorisasjonen eksisterer ikke.<br />\n"
+"Hvis du ikke logget inn innen tidsrammen spesifisert i din email, vennligst søk for en ny konto."
+
+msgid "This email address cannot be used."
+msgstr "Denne email adressen kan ikke benyttes."
+
+msgid "This module is not registered with My Page"
+msgstr "Denne modulen er ikke registrert med Min Side."
+
+msgid "Time Zone"
+msgstr "Tids sone"
+
+msgid "Tried to perform an admin function in Users."
+msgstr "Forsøkte å utføre en admin funksjon i Brukere."
+
+msgid "Unable to copy deity login to branch."
+msgstr "Ikke mulig å kopiere guddom til bransje."
+
+msgid "Unable to copy deity users to branch."
+msgstr "Ikke mulig å kopiere guddommelige brukere til bransje."
+
+msgid "Unable to create authorization script."
+msgstr "Ikke mulig å opprette autorisasjon script"
+
+msgid "Unable to find font file for graphic confirmation."
+msgstr "Ikke mulig å finne font fil for grafisk bekreftelse."
+
+msgid "Unable to load key."
+msgstr "Ikke mulig å laste nøkkel."
+
+msgid "Unable to save user information."
+msgstr "Ikke mulig å lagre bruker informasjon."
+
+msgid "Unable to set permissions. Bad key data."
+msgstr "Ikke mulig å sette tillatelser. Feil nøkkel data."
+
+msgid "Unable to write confirmation graphic to server."
+msgstr "Ikke mulig å skrive bekreftelse grafikk til server."
+
+msgid "Uncheck all restricted"
+msgstr "Avmerk alle begrenset"
+
+msgid "Uncheck all unrestricted"
+msgstr "Avmerk alle ubegrenset"
+
+msgid "Unknown error."
+msgstr "Ukjent feil."
+
+msgid "Unrestricted"
+msgstr "Ubegrenset"
+
+msgid "Update"
+msgstr "Oppdater"
+
+msgid "Update Default"
+msgstr "Oppdater Standard"
+
+msgid "Update Group"
+msgstr "Oppdater Gruppe"
+
+msgid "Update Settings"
+msgstr "Oppdater Innstillinger."
+
+msgid "Update User"
+msgstr "Oppdater Bruker"
+
+msgid "Update my information"
+msgstr "Oppdater min informasjon"
+
+msgid "Update password"
+msgstr "Oppdater passord"
+
+msgid "Use Daylight Savings Time"
+msgstr "Benytt Sommertid"
+
+msgid "Use graphic authentication"
+msgstr "Benytt grafisk bekreftelse"
+
+msgid "User Administration"
+msgstr "Bruker Administrasjon"
+
+msgid "User Menu"
+msgstr "Bruker Meny"
+
+msgid "User Signup Mode"
+msgstr "Bruker Registrering Modus"
+
+msgid "User account deactivated."
+msgstr "Bruker konto deaktivisert"
+
+msgid "User created successfully."
+msgstr "Bruker opprettet med godt resultat."
+
+msgid "User created successfully. Check your email for your login information."
+msgstr "Bruker opprettet med godt resultat. Sjekk din email for å finne din innloggings informasjon."
+
+msgid "User created."
+msgstr "Bruker opprettet"
+
+msgid "User deified."
+msgstr "Bruker gjort guddommelig."
+
+msgid "User deleted."
+msgstr "Bruker slettet."
+
+msgid "User is missing their permission group"
+msgstr "Bruker mangler deres tillatelse gruppe"
+
+msgid "User name already in use."
+msgstr "Brukernavn alt i bruk."
+
+msgid "User name not found. Check your spelling or enter an email address instead."
+msgstr "Brukernavn ikke funnet. Sjekk for skrivefeil eller skriv inn din email adresse i stedet."
+
+msgid "User remains a deity."
+msgstr "Bruker forblir guddom."
+
+msgid "User remains a lowly mortal."
+msgstr "Bruker forblir ydmyk dødlig."
+
+msgid "User settings updated."
+msgstr "Bruker innstillinger oppdatert."
+
+msgid "User transformed into a lowly mortal."
+msgstr "Bruker omgjort til en ydmyk dødlig."
+
+msgid "User tried to login using Remember Me with a malformed cookie."
+msgstr "Bruker forsøkte å logge inn med Husk Meg med en deformert cookie."
+
+#, php-format
+msgid "User tried to send bad hash (%s) to confirm user."
+msgstr "Bruker forsøkte å sende dårlig virvar (%s) til bekreft bruker."
+
+msgid "User updated."
+msgstr "Bruker oppdatert."
+
+msgid "User's email address is missing or malformed."
+msgstr "Brukers email adresse mangler eller er feilskrevet."
+
+msgid "User's email address is missing."
+msgstr "Brukers email adresse mangler."
+
+msgid "User's email used as contact email address."
+msgstr "Bruker email brukt som kontakt email adresse."
+
+msgid "Username"
+msgstr "Brukernavn"
+
+msgid "Username and password combination not found."
+msgstr "Brukernavn og passord kombinasjon ikke funnet."
+
+msgid "Username and password refused."
+msgstr "Brukernavn og passord avvist."
+
+msgid "Username is improperly formatted."
+msgstr "Brukernavn er ukorrekt formatert."
+
+msgid "Users"
+msgstr "Brukere"
+
+msgid "Users module will re-register each module's permissions."
+msgstr "Bruker modul vil omregistrere hver moduls tillatelser."
+
+msgid "View restrictions"
+msgstr "Se begrensninger"
+
+msgid "Want to join?"
+msgstr "Vil du være med?"
+
+msgid "We are currently unable to send out email reminders. Try again later."
+msgstr "Vi er for tiden ikke i stand til å sende ut påmindelser. Prøv igjen senere."
+
+msgid "We have sent you an email to reset your password."
+msgstr "Vi har sendt deg en email for å resette ditt passord."
+
+msgid "We have sent you an user name reminder. Please check your email and return to log in."
+msgstr "Vi har sendt deg ett brukernavn påmindelse. Vennligst sjekk din email og returner til innlogging."
+
+msgid "Welcome!"
+msgstr "Velkommen!"
+
+msgid "Why can't I change my password?"
+msgstr "Hvorfor kan eg ikke endre mitt passord?"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "Yes, make them a deity."
+msgstr "Ja, gjør dem til guddommer."
+
+msgid "Yes, make them a mortal."
+msgstr "Ja, gjør dem til dødlige."
+
+msgid "You already have an account."
+msgstr "Du har allerede en konto."
+
+msgid "You have one hour to respond."
+msgstr "Du har en time på deg til å svare."
+
+msgid "You must enter either a username or email address."
+msgstr "Du må legge inn enten ett brukernavn eller en email adresse."
+
+msgid "You need to set a site contact address."
+msgstr "Du må sette en side kontakt adresse."
+
+msgid "You will return to the home page in five seconds."
+msgstr "Du vil returnere til hovedsiden om ca fem sekunder."
+
+msgid "Your account has been deactivated. You will need to contact a site administrator to have it reactivated."
+msgstr "Din konto har blitt deaktivisert. Du må kontakte en administrator for å re-aktivisere den."
+
+msgid "Your account has been successfully activated. Please log in."
+msgstr "Din konto er blitt aktivert. Vennligst logg inn."
+
+msgid "Your email address is missing from your account. Please contact the site administrators."
+msgstr "Din email adresse mangler fra din konto. Vennligst kontakt nettsteds administratoren."
+
+msgid "Your password request was not found or timed out. Please apply again."
+msgstr "Din passord forespørsel ble ikke funnet, eller det tok for lang tid. Vennligst prøv igjen."
+
+msgid "Your user account has not been approved yet. Make sure you have responded to your authentication email."
+msgstr "Din bruker konto har ikke blitt godkjent enda. Bekreft at du har svart på din autorisasjons email."
+

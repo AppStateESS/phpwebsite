@@ -108,15 +108,15 @@ class SlideShow {
         $form = new PHPWS_Form;
         $form->addSelect('adjustSpeedField', $speedOptions);
         $form->setMatch('adjustSpeedField', 5000);
-        $form->setExtra('adjustSpeedField', 'onchange="adjustSpeed()');
+        $form->setExtra('adjustSpeedField', 'onchange="adjustSpeed()"');
 
-        $form->addSelect('isFilterField', $ieFilters);
-        $form->setMatch('isFilterField', 'blendTrans(duration=1)');
-        $form->setExtra('isFilterField', 'onchange="changeFilter()');
+        $form->addSelect('ieFilterField', $ieFilters);
+        $form->setMatch('ieFilterField', 'blendTrans(duration=1)');
+        $form->setExtra('ieFilterField', 'onchange="changeFilter()"');
 
-        $jsTags["IE_FILTER_FIELD"] = str_replace("\n", "", $form->get('isFilterField'));
+        $jsTags["IE_FILTER_FIELD"] = str_replace("\n", "", $form->get('ieFilterField'));
 
-
+        $tags['STOP_TEXT'] = dgettext('photoalbum', 'Stop show');
         $tags['ADJUST_SPEED_TEXT_FIELD'] = $form->get('adjustSpeedField');
 
         $tags["ADJUST_SPEED_LABEL"] =

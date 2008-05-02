@@ -1,0 +1,760 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-03-07 12:13-0500\n"
+"PO-Revision-Date: 2008-04-06 21:26+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "%d bytes"
+msgstr "%d bytes"
+
+#, php-format
+msgid "%d bytes (system wide)"
+msgstr "%d bytes (system wide)"
+
+#, php-format
+msgid "%dKB (%d bytes)"
+msgstr "%dKB (%d bytes)"
+
+#, php-format
+msgid "%dMB (%d bytes)"
+msgstr "%dMB (%d bytes)"
+
+#, php-format
+msgid "%s bytes"
+msgstr "%s bytes"
+
+msgid "-- Pick option --"
+msgstr "-- Velg oppsett --"
+
+msgid "180 degrees"
+msgstr "180 grader"
+
+msgid "90 degrees clockwise"
+msgstr "90 grader med klokken"
+
+msgid "90 degrees counter clockwise"
+msgstr "90 grader mot klokken"
+
+msgid "Absolute upload limit"
+msgstr "Absolutt last opp granse"
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Action not allowed"
+msgstr "Handling ikke tillatt"
+
+msgid "Action not allowed - private folder"
+msgstr "Handling ikke tillatt - privat mappe"
+
+msgid "Add a document or a document folder"
+msgstr "Legg til et dokument eller en dokument mappe"
+
+msgid "Add a image, an image folder, or a randomly changing image"
+msgstr "Legg til et bilde, en bilde mappe, eller eller et tilfeldig forandret bilde"
+
+msgid "Add a video or sound file"
+msgstr "Legg til en video eller lydfil"
+
+msgid "Add an image, media, or document file."
+msgstr "Legg til et bilde, media, eller dokument fil."
+
+msgid "Add document"
+msgstr "Legg til dokument"
+
+msgid "Add embedded"
+msgstr "Legg til integrert"
+
+msgid "Add embedded video"
+msgstr "Legg til integrert video"
+
+msgid "Add file"
+msgstr "Legg til fil"
+
+msgid "Add folder"
+msgstr "Legg til mappe"
+
+msgid "Add image"
+msgstr "Legg til bilde"
+
+msgid "All files icon"
+msgstr "Alle filer ikon"
+
+msgid "Allowed file types"
+msgstr "Tillatte fil tper"
+
+msgid "Alternate text"
+msgstr "Alternativ tekst"
+
+msgid "An error occurred when trying to read your incoming file directory."
+msgstr "En feil oppstod ved forsøk på ålese inkommende fil mappe."
+
+msgid "An error occurred when trying to save your document."
+msgstr "En feil oppstod ved forsøk på å lagre ditt dokument."
+
+msgid "An error occurred when trying to save your image."
+msgstr "En feil oppstod ved forsøk på å lagre ditt bilde."
+
+msgid "An error occurred when trying to save your multimedia file."
+msgstr "En feil oppstod ved forsøk på å lagre din multimedia fil."
+
+msgid "An error occurred. Please check your logs."
+msgstr "En feil oppstod. Vennligst sjekk dine logger."
+
+msgid "Are you certain you want to delete this folder and all its contents?"
+msgstr "Er du sikker på at du ønsker å slette denne mappen og allt innhold i den?"
+
+msgid "Are you sure you want to delete this document?"
+msgstr "Er du sikker på at du ønsker å slette dette dokumentet?"
+
+msgid "Are you sure you want to delete this file?"
+msgstr "Er du sikker på at du ønsker å slette denne filen?"
+
+msgid "Are you sure you want to delete this image?"
+msgstr "Er du sikker på at du ønsker å slette dette bildet?"
+
+msgid "Are you sure you want to delete this multimedia file?"
+msgstr "Er du sikker på at du ønsker å slette denne multimedia filen?"
+
+msgid "Are you sure you wish to delete these files?"
+msgstr "Er du sikker på at du ønsker å slette disse filene?"
+
+msgid "Automatically link child images to parent"
+msgstr "Automatisk link små bilder til hovedbilde"
+
+msgid "Back to folder list"
+msgstr "Tilbake til mappe liste"
+
+msgid "Base document directory"
+msgstr "Basis dokument mappe"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Caption images"
+msgstr "Tittel bilder"
+
+msgid "Choose the type of file you wish to add"
+msgstr "Velg hvile filtyper du ønsker å legge til"
+
+msgid "Classify"
+msgstr "Klassifisere"
+
+msgid "Classify Files"
+msgstr "Klassifisere Filer"
+
+msgid "Classify checked"
+msgstr "Klassifisere sjekket"
+
+msgid "Classify directory could not be found."
+msgstr "Klassifisering mappe ikke funnet."
+
+msgid "Classify files"
+msgstr "Klassifisere filer"
+
+msgid "Classify settings"
+msgstr "Klassifisering innstillinger"
+
+msgid "Clear file"
+msgstr "Fjern fil"
+
+msgid "Clip document"
+msgstr "Spenne fast dokument"
+
+msgid "Clip image"
+msgstr "Spenne fast bilde"
+
+msgid "Clip media"
+msgstr "Spenne fast  media"
+
+msgid "Close this window"
+msgstr "Lukk dette vinduet"
+
+msgid "Could not delete file."
+msgstr "Kunne ikke slette fil."
+
+msgid "Could not find ffmpeg executable."
+msgstr "Kunne ikke finne ffmpeg kjørbar."
+
+#, php-format
+msgid "Could not move file \"%s\" to \"%s\" folder directory."
+msgstr "Kunne ikke flytte fil \"%s\" til \"%s\" mappe."
+
+msgid "Could not save thumbnail image."
+msgstr "Kunne ikke lagre miniatyrbilde."
+
+msgid "Could not write to directory."
+msgstr "Kunne ikke skrive til mappe."
+
+msgid "Create document folder"
+msgstr "Opprett dokument mappe"
+
+msgid "Create folder"
+msgstr "Opprett mappe"
+
+msgid "Create image folder"
+msgstr "Opprett bilde mappe"
+
+msgid "Create multimedia folder"
+msgstr "Opprett mulitmedia mappe"
+
+msgid "Created in"
+msgstr "Opprettet i"
+
+msgid "Crop pixel threshold"
+msgstr "Stuss pixel terskel"
+
+msgid "Current document"
+msgstr "Gjeldende dokument"
+
+msgid "Current image"
+msgstr "Gjeldende bilde"
+
+msgid "Current multimedia"
+msgstr "Gjeldende multimedia"
+
+msgid "Decription"
+msgstr "Dekoding"
+
+msgid "Default document directory may not be blank"
+msgstr "Standard dokument mappe er kanskje ikke tom"
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Delete checked"
+msgstr "Slett merkede"
+
+msgid "Delete document"
+msgstr "Slett dokument"
+
+msgid "Delete folders (Unrestricted only)"
+msgstr "Slett mapper"
+
+msgid "Description"
+msgstr "Beskrivelse"
+
+msgid "Directory not set."
+msgstr "Mappe ikke satt."
+
+msgid "Do not link image"
+msgstr "Ikke link bilde"
+
+msgid "Document directory does not exist."
+msgstr "Dokument mappe eksisterer ikke."
+
+msgid "Document folders"
+msgstr "Dokument mapper"
+
+msgid "Document location"
+msgstr "Dokument lokalitet"
+
+msgid "Document not found."
+msgstr "Dokument ikke funnet."
+
+msgid "Document settings"
+msgstr "Dokument innstillinger"
+
+#, php-format
+msgid "Document was %s bytes making it larger than %s byte size limit."
+msgstr "Dokument var %s bytes som gjorde det større enn %s byte begrensningen."
+
+msgid "Documents"
+msgstr "Dokumenter"
+
+msgid "Download file"
+msgstr "Last ned fil"
+
+#, php-format
+msgid "Download from %s"
+msgstr "Last ned fra %s"
+
+msgid "Duplicate file found."
+msgstr "Duplisert fil funnet."
+
+msgid "Edit"
+msgstr "Endre"
+
+msgid "Edit document"
+msgstr "Endre dokument"
+
+msgid "Edit file"
+msgstr "Endre fil"
+
+msgid "Edit folders"
+msgstr "Endre mapper"
+
+msgid "Edit image"
+msgstr "Endre bilde"
+
+msgid "Edit multimedia file"
+msgstr "Endre multimedia fil"
+
+msgid "Edit the current file"
+msgstr "Endre gjeldende fil"
+
+msgid "Enable FFMpeg thumbnails"
+msgstr "Aktiviser FFMpeg miniatyrbilder"
+
+msgid "Enable FFMpeg thumbnails (enabled on ffmpeg confirmation)"
+msgstr "Aktiviser FFMpeg miniatyrbilder (aktivisert på ffmpeg bekreftelse)"
+
+msgid "FFMpeg directory"
+msgstr "FFMpeg mappe"
+
+msgid "FFMpeg file not found."
+msgstr "FFMpeg fil ikke funnet."
+
+msgid "Failed to create files/filecabinet/ directory."
+msgstr "Feilet å opprette files/filecabinet/ mappe."
+
+msgid "Failed to create files/filecabinet/incoming directory."
+msgstr "Feilet å opprette files/filecabinet/incoming mappe."
+
+msgid "Failed to create files/multimedia directory."
+msgstr "Feilet å opprette files/multimedia mappe."
+
+msgid "Failed to create folder. Please check your logs."
+msgstr "Feilet å opprette mappe. Vennligst sjekk dine logger."
+
+msgid "File Cabinet"
+msgstr "File Cabinet"
+
+msgid "File name"
+msgstr "Fil navn"
+
+msgid "File not uploaded."
+msgstr "Fil ikke opplastet"
+
+msgid "File type"
+msgstr "Fil Type"
+
+msgid "File type not allowed"
+msgstr "Fil type ikke tillatt"
+
+msgid "File types"
+msgstr "Fil typer"
+
+msgid "File types saved."
+msgstr "Fil typer lagret"
+
+#, php-format
+msgid "File uploaded exceeded %sK size limit."
+msgstr "Fil opplastet overstiger %sK begrensning."
+
+msgid "Filename not set."
+msgstr "Filnavn ikke satt."
+
+msgid "Folder"
+msgstr "Mappe"
+
+msgid "Folder is empty."
+msgstr "Mappen er tom."
+
+msgid "Folder missing image files."
+msgstr "Mappe mangler bilde filer."
+
+msgid "Form upload limit"
+msgstr "Skjema opplasting begrensning"
+
+msgid "General"
+msgstr "Generell"
+
+msgid "Go"
+msgstr "Gå"
+
+msgid "Height"
+msgstr "Høyde"
+
+msgid "Image folders"
+msgstr "Bilde mapper"
+
+#, php-format
+msgid "Image height was %spx, making it larger than %d pixel limit."
+msgstr "Bilde høyden var %spx, som gjorde det større enn %d pixel begrensningen."
+
+#, php-format
+msgid "Image is %spx by %spx, the maximum dimensions are %spx by %spx."
+msgstr "Bilde er %spx ganger %spx, maksimum dimensjoner er %spx ganger %spx."
+
+msgid "Image link url"
+msgstr "Bilde link url"
+
+msgid "Image location"
+msgstr "Bilde plassering"
+
+msgid "Image must be a jpeg file."
+msgstr "Bilde må være en jpeg fil."
+
+msgid "Image not found"
+msgstr "Bilde ikke funnet"
+
+msgid "Image settings"
+msgstr "Bilde innstillinger"
+
+#, php-format
+msgid "Image was %s bytes making it larger than %s byte size limit."
+msgstr "Bildet var %s bytes som gjorde det større enn %s byte begrensningen."
+
+#, php-format
+msgid "Image width was %spx, making it larger than %d pixel limit."
+msgstr "Bilde bredden var %spx, som gjorde det større enn %d pixel begrensningen."
+
+msgid "Images"
+msgstr "Bilder"
+
+msgid "Incoming classify directory"
+msgstr "Innkommende klassifisering mappe"
+
+msgid "Items"
+msgstr "Elementer"
+
+msgid "Link image"
+msgstr "Link bilde"
+
+msgid "Link image to original, full sized image"
+msgstr "Link bilde tiloriginal full størrelse"
+
+msgid "Link image to web site"
+msgstr "Link bilde til hjemmeside"
+
+msgid "Link to image folder"
+msgstr "Link til bilde mappe"
+
+msgid "Manages images and documents uploaded to your site."
+msgstr "Administrerebilder og dokumenter opplastet til din side."
+
+#, php-format
+msgid "Max thumbnail size : %sx%s."
+msgstr "Maks miniatyrbilde størrelse : %sx%s."
+
+msgid "Maximum document file size (in bytes)"
+msgstr "Maksimum dokument fil størrelse (i bytes)"
+
+msgid "Maximum file size"
+msgstr "Maksimum fil størrelse"
+
+msgid "Maximum image dimension"
+msgstr "Maksimum bilde dimmensjoner"
+
+msgid "Maximum image file size (in bytes)"
+msgstr "Maksimum fil størrelse (i bytes)"
+
+msgid "Maximum image pixel dimension"
+msgstr "Maksimum pixel dimmensjoner"
+
+msgid "Maximum multimedia file size (in bytes)"
+msgstr "Maksimum multimedia fil størrelse (i bytes)"
+
+msgid "Maximum pinned documents shown (0 for all)"
+msgstr "Maksimum festet dokumenter vist (0 for alle)"
+
+msgid "Maximum pinned images shown (0 for all)"
+msgstr "Maksimum festet bilder vist (0 for alle)"
+
+msgid "Media"
+msgstr "Media"
+
+msgid "Missing folder information."
+msgstr "Mangler mappe informasjon."
+
+msgid "Missing temporary upload directory."
+msgstr "Mangler midlertidig opplastnings mappe."
+
+msgid "Missing title."
+msgstr "Mangler tittel"
+
+msgid "More..."
+msgstr "Mer..."
+
+msgid "Multimedia file not found."
+msgstr "Multimedia fil ikke funnet."
+
+#, php-format
+msgid "Multimedia file was %s bytes making it larger than %s byte size limit."
+msgstr "Multimedia fil var %s bytes som gjorde den større enn %s byte begrensningen."
+
+msgid "Multimedia folders"
+msgstr "Multimedia mapper"
+
+msgid "Multimedia location"
+msgstr "Multimedia plassering"
+
+msgid "Multimedia settings"
+msgstr "Multimedia innstilling"
+
+msgid "No files in folder"
+msgstr "Ingen filer i mappe"
+
+msgid "No folders found."
+msgstr "Ingen mapper funnet."
+
+msgid "No public folders are available."
+msgstr "Ingen offentlige mapper er tilgjengelig."
+
+msgid "None"
+msgstr "Ingen"
+
+msgid "Pin folder"
+msgstr "Fest mappe"
+
+#, php-format
+msgid "Pin folder to \"%s\""
+msgstr "Fest mappe til \"%s\""
+
+msgid "Private"
+msgstr "Privat"
+
+msgid "Problem with opening browser page. Closing File Manager window."
+msgstr "Problem med å åpne nettleser side. Stenger Fil Administrator vindu."
+
+msgid "Public"
+msgstr "Offentlig"
+
+msgid "Random image icon"
+msgstr "Tilfeldig bilde ikon"
+
+msgid "Resize image if over"
+msgstr "Endre bilde størrelse hvis over"
+
+msgid "Rotate image"
+msgstr "Roter bilde"
+
+msgid "Save allowed files"
+msgstr "Lagre tillatte filer"
+
+msgid "Save settings"
+msgstr "Lagre innstillinger"
+
+msgid "Server upload limit"
+msgstr "Server opplastnings begrensning"
+
+msgid "Settings"
+msgstr "Innstillinger"
+
+msgid "Settings saved."
+msgstr "Innstillinger lagret"
+
+msgid "Show a random image from this folder"
+msgstr "Vis et tilfeldig bilde fra denne mappen"
+
+msgid "Show all files in the folder"
+msgstr "Vis alle filer i mappen"
+
+msgid "Show block of thumbnails"
+msgstr "Vis boks med miniatyrbilder"
+
+msgid "Size"
+msgstr "Størrelse"
+
+msgid "Sorry"
+msgstr "Beklager"
+
+msgid "Sorry but this file is inaccessible at this time."
+msgstr "Beklager men denne filen er utilgjengelig for øyeblikket."
+
+msgid "Sorry, the file you requested is off limits."
+msgstr "Beklager, filen du spør etter er utenfor fastsatt grense."
+
+msgid "Sorry.."
+msgstr "Beklager.."
+
+msgid "Submit video"
+msgstr "Send inn video"
+
+msgid "System upload limits"
+msgstr "System opplastnings begrensninger"
+
+msgid "The incoming file directory is currently empty."
+msgstr "Den innkommende fil mappen er for øyeblikket tom."
+
+msgid "The max image dimension must be greater than 50 pixels."
+msgstr "Maksimum bilde dimmensjoner må være større enn 50 pixels."
+
+msgid "The web server does not have permission to access files in the classify directory."
+msgstr "Web serveren har ikke tilgang til filer i klassifissert mappe."
+
+msgid "The web server does not have permission to delete files from the classify directory."
+msgstr "Web serveren har ikke tilgang til å slette filer i klassifiserte mappe."
+
+msgid "The web server does not have permissions for the classify directory."
+msgstr "Web serveren har ikke tilgang til klassifisert mappe."
+
+msgid "There was a problem loading the image file."
+msgstr "Det oppstod et problem ved å laste bilde filen."
+
+#, php-format
+msgid "This image is larger than the %s x %s limit. Do you want to resize the image to fit?"
+msgstr "Dette bildet er større enn %s x %s begrensningen. Ønsker du å endre størrelsen til det passer?"
+
+msgid "This is a private folder."
+msgstr "Dette er en privat mappe."
+
+msgid "Thumbnail directory not writable."
+msgstr "Miniatyrbilde mappen er skrivebeskyttet."
+
+msgid "Thumbnail icon"
+msgstr "Miniatyrbilde ikon"
+
+msgid "Title"
+msgstr "Tittel"
+
+msgid "Unable to classify files."
+msgstr "Ikke mulig å klassifisere filer"
+
+msgid "Unable to find video id from url"
+msgstr "Ikke mulig å finne video id fra url"
+
+msgid "Unable to locate the classify directory. Please check your File Cabinet settings, configuration file and directory permissions."
+msgstr "Ikke mulig å finne klassifisert mappe. Vennligst sjekk din File Cabinet innstillinger, konfigurasjons fil og mappe rettigheter."
+
+msgid "Unable to move the file to its new directory."
+msgstr "Ikke mulig å flytte filen til dens nye mappe."
+
+msgid "Unable to parse video info from host site."
+msgstr "Ikke mulig å analysere video fra dens host side."
+
+msgid "Unable to read document directory."
+msgstr "Ikke mulig å lese dokument mappe."
+
+msgid "Unable to resize image."
+msgstr "Ikke mulig å endre størrelse på bildet."
+
+msgid "Unable to write to document directory."
+msgstr "Ikke mulig å skrive til dokument mappe."
+
+msgid "Unacceptable document type."
+msgstr "Uakseptabel dokument type."
+
+msgid "Unacceptable file type."
+msgstr "Uakseptabel fil type."
+
+msgid "Unacceptable image type."
+msgstr "Uakseptabel bilde type."
+
+msgid "Unacceptable multimedia file type."
+msgstr "Uakseptabel multimedia fil type."
+
+msgid "Unknown or mismatched mime type"
+msgstr "Ukjendt eller feiltilpasset mime type"
+
+msgid "Update"
+msgstr "Oppdater"
+
+msgid "Update document folder"
+msgstr "Oppdater dokument mappe"
+
+msgid "Update file"
+msgstr "Oppdater fil"
+
+msgid "Update folder"
+msgstr "Oppdater mappe"
+
+msgid "Update image"
+msgstr "Oppdater bilde"
+
+msgid "Update image folder"
+msgstr "Oppdater bilde mappe"
+
+msgid "Update multimedia folder"
+msgstr "Oppdater multimedia mappe"
+
+msgid "Upload"
+msgstr "Last opp"
+
+msgid "Upload image"
+msgstr "Last opp bilde"
+
+msgid "Upload new file"
+msgstr "Last opp ny fil"
+
+msgid "Upload new thumbnail"
+msgstr "Last opp nytt miniatyrbilde"
+
+msgid "Upload thumbnail"
+msgstr "Last opp miniatyrbilde"
+
+msgid "Video site"
+msgstr "Video side"
+
+msgid "Video url or id"
+msgstr "Video url eller id"
+
+msgid "View all images in folder"
+msgstr "Se alle bilder i mappe"
+
+msgid "View document folders"
+msgstr "Se dokument mapper"
+
+msgid "View folder"
+msgstr "Se mappe"
+
+msgid "View full image"
+msgstr "Se hele bildet"
+
+msgid "View image folders"
+msgstr "Se bilde mappe"
+
+msgid "View media folders"
+msgstr "Se media mappe"
+
+msgid "Width"
+msgstr "Bredde"
+
+msgid "You do not have permission to view this folder."
+msgstr "Du har ikke tilgang til å se denne mappen."
+
+msgid "You must entitle your folder."
+msgstr "Du må benevne din mappe."
+
+msgid "You must set a maximum document file size."
+msgstr "Du må sette en maksimum dokument størrelse."
+
+msgid "You must set a maximum image file size."
+msgstr "Du må sette en maksimum bilde størrelse"
+
+msgid "You must set a maximum multimedia file size."
+msgstr "Du må sette en maksimum multimedia fil størrelse."
+
+msgid "Your documents directory is not writable."
+msgstr "Din dokument mappe er skrivebeskyttet."
+
+msgid "Your images directory is not writable."
+msgstr "Din bilde mappe er skrivebeskyttet."
+
+#, php-format
+msgid "Your maximum document size exceeds the server limit of %sMB."
+msgstr "Din maksimum dokument størrelse overskrider serverens begrensning med %sMB."
+
+#, php-format
+msgid "Your maximum image size exceeds the server limit of %sMB."
+msgstr "Din maksimum bilde størrelse overskrider serverens begrensning med %sMB."
+
+#, php-format
+msgid "Your maximum multimedia size exceeds the server limit of %sMB."
+msgstr "Din maksimum multimedia størrelse overskrider serverens begrensning med %sMB."
+
+msgid "Your multimedia directory is not writable."
+msgstr "Din multimedia mappe er skrivebeskyttet."
+
+msgid "files/filecabinet/ directory created successfully."
+msgstr "files/filecabinet/ mappen opprettet med godt resultat."
+
+msgid "files/filecabinet/incoming directory created successfully."
+msgstr "files/filecabinet/incoming mappen opprettet med godt resultat."
+
+msgid "files/multimedia directory created successfully."
+msgstr "files/multimedia mappen opprettet med godt resultat."
+

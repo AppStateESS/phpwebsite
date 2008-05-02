@@ -6,13 +6,9 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-class Checkin_Admin {
-    var $title   = null;
-    var $message = null;
-    var $content = null;
+class Checkin_Admin extends Checkin {
     var $panel   = null;
 
-    var $staff   = null;
 
     function Checkin_Admin()
     {
@@ -21,6 +17,10 @@ class Checkin_Admin {
 
     function process()
     {
+        if (!Current_User::allow('checkin')) {
+            Current_User::disallow();
+        }
+
         if (isset($_REQUEST['aop'])) {
             $cmd = $_REQUEST['aop'];
         } elseif ($_REQUEST['tab']) {
@@ -31,30 +31,44 @@ class Checkin_Admin {
             $cmd = 'waiting';
         }
 
+        $js = false;
+
         switch ($cmd) {
         case 'assign':
+            $this->panel->setCurrentTab('assign');
             $this->assign();
             break;
 
         case 'waiting':
+            $this->panel->setCurrentTab('waiting');
             $this->waiting();
             break;
             
         case 'settings':
+            $this->panel->setCurrentTab('settings');
             $this->settings();
             break;
             
         case 'staff':
+            $this->panel->setCurrentTab('staff');
             $this->staff();
             break;
 
         case 'add_staff':
             $this->loadStaff();
-            $this->addStaff();
+            $this->editStaff();
+            break;
+
+        case 'search_users':
+            $this->searchUsers();
             break;
         }
 
-        Layout::add(PHPWS_ControlPanel::display($this->panel->display($this->content, $this->title, $this->message)));
+        if ($js) {
+            Layout::nakedDisplay($this->content, $this->title);
+        } else {
+            Layout::add(PHPWS_ControlPanel::display($this->panel->display($this->content, $this->title, $this->message)));
+        }
     }
 
     function loadPanel()
@@ -113,9 +127,43 @@ class Checkin_Admin {
     {
         $form = new PHPWS_Form('edit-staff');
         $form->addHidden('module', 'checkin');
-        $form->addText('username');
+        if (!$this->staff->user_id) {
+            javascript('jquery');
+            javascript('modules/checkin/search_user');
 
-        $this->content = PHPWS_Template::process($tpl, 'checkin', 'add_staff.tpl');
+            $this->title = dgettext('checkin', 'Add staff member');
+            $form->addText('username');
+            $form->setLabel('username', dgettext('checkin', 'Staff user name'));
+        } else {
+            $this->title = dgettext('checkin', 'Edit staff member');
+            $form->addTplTag('USERNAME', $this->staff->_display_name);
+            $form->addTplTag('USERNAME_LABEL', dgettext('checkin', 'Staff user name'));
+        }
+        
+        $form->addRadioAssoc('filter_type', array('none'     =>dgettext('checkin', 'None'),
+                                                  'last_name'=>dgettext('checkin', 'Last name'),
+                                                  'reason'   =>dgettext('checkin', 'Reason')));
+        $form->setMatch('filter_type', 'none');
+
+        $form->addText('last_name_filter', $this->staff->getFilter());
+        $form->setLabel('last_name_filter', dgettext('checkin', 'Example: a,b,ca-cf,d'));
+
+        $reasons = $this->getReasons();
+
+        if (empty($reasons)) {
+            $form->addTplTag('REASONS', dgettext('checkin', 'No reasons found.'));
+            $form->addTplTag('REASONS_LABEL',  dgettext('checkin', 'Reasons'));
+        } else {
+            $form->addMultiple('reasons', $reasons);
+            $form->setMatch('reasons', $this->staff->_reasons);
+            $form->setLabel('reasons', dgettext('checkin', 'Reasons'));
+        }
+
+        $tpl = $form->getTemplate();
+
+        $tpl['FILTER_LEGEND'] = dgettext('checkin', 'Visitor filter');
+
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'edit_staff.tpl');
     }
 
     function settings()
@@ -125,14 +173,28 @@ class Checkin_Admin {
 
     function addStaffLink()
     {
-        $vars['label'] = dgettext('checkin', 'Add staff member');
-        $vars['address'] = PHPWS_Text::linkAddress('checkin', array('aop'=>'add_staff'), true);
-        return javascript('open_window', $vars);
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Add staff member'), 'checkin', array('aop'=>'add_staff'));
     }
     
-    function loadStaff()
+    
+    function searchUsers()
     {
+        if (!Current_User::isLogged()) {
+            exit();
+        }
+        $db = new PHPWS_DB('users');
+        if (empty($_GET['q'])) {
+            exit();
+        }
         
+        $username = preg_replace('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', '', $_GET['q']);
+        $db->addWhere('username', "$username%", 'like');
+        $db->addColumn('username');
+        $result = $db->select('col');
+        if (!empty($result) && !PHPWS_Error::logIfError($result)) {
+            echo implode("\n", $result);         
+        }
+        exit();
     }
 }
 

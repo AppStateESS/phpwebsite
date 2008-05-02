@@ -147,7 +147,7 @@ class NoJSSlideShow {
 
         $tags['IMAGE_SRC'] = $this->filenames[$this->index];
         $tags['IMAGE_NAME'] = $this->names[$this->index];
-        $tags['IMAGE_BLURB'] = $this->descriptions[$this->index];
+        $tags['IMAGE_BLURB'] = PHPWS_Text::parseOutput($this->descriptions[$this->index]);
         $tags['IMAGE_INDEX_INFO'] = dgettext('photoalbum', 'Image ') .
             ($this->index + 1) . ' ' . dgettext('photoalbum', 'of') . ' '.$this->max_images;
         $tags['IMAGE_WIDTH'] = $this->widths[$this->index];

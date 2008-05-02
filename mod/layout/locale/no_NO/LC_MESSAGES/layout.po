@@ -1,0 +1,271 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-09-05 09:53-0400\n"
+"PO-Revision-Date: 2008-04-06 21:26+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "-- Use default style --"
+msgstr "-- Bruk standard Style --"
+
+msgid "Allow indexing"
+msgstr "Tillat indeksering"
+
+msgid "Allow link following"
+msgstr "Tillat link oppfølging"
+
+msgid "An instruction was requested on a missing theme variable."
+msgstr "En instruksjon var nødvendig i en manglende theme variabel."
+
+msgid "Arrange"
+msgstr "Arranger"
+
+msgid "Arrange Layout"
+msgstr "Arranger Layout"
+
+msgid "Available styles"
+msgstr "Tilgjengelige styler"
+
+msgid "Box move off"
+msgstr "Boks forflytning av"
+
+msgid "Box order is out of sequence."
+msgstr "Boks ordning er ute av sekvens."
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Change CSS"
+msgstr "Forandre CSS"
+
+msgid "Change style"
+msgstr "Forandre style"
+
+msgid "Clear cache"
+msgstr "Fjern cache"
+
+msgid "Clear templates"
+msgstr "fjern templates"
+
+msgid "Clears all Cache Lite files. Good to try if module updates do not display."
+msgstr "fjerner alle Cache Lite filer. Verdt å forsøke hvis din module oppdatering ikke vises."
+
+msgid "Click to move"
+msgstr "Klikk for å flytte"
+
+msgid "Complete the theme change"
+msgstr "Gjør ferdig theme forandringen"
+
+msgid "Confirm Theme Change"
+msgstr "Bekreft Theme Endring"
+
+msgid "Control the layout of your site."
+msgstr "Kontrollerer layout på din side."
+
+msgid "Data was not an array."
+msgstr "Data var ikke en tabell."
+
+msgid "Default Robot Settings"
+msgstr "Standard Robot Innstillinger"
+
+msgid "Default Theme"
+msgstr "Standard Theme"
+
+msgid "Description"
+msgstr "Beskrivelse"
+
+msgid "Disable box move"
+msgstr "Vis boks forflytning"
+
+msgid "Display settings"
+msgstr "Vis innstillinger"
+
+msgid "Done"
+msgstr "Ferdig"
+
+msgid "Edit Footer"
+msgstr "Endre Footer"
+
+msgid "Edit Header"
+msgstr "Endre Header"
+
+msgid "Edit Meta Tags"
+msgstr "Endre Meta Tags"
+
+msgid "Enable box move"
+msgstr "Aktiviser boks forflytning"
+
+msgid "Error"
+msgstr "Feil"
+
+msgid "Expect an error theme when finished."
+msgstr "Forvent en feil theme når ferdig."
+
+msgid "Failure to respond in ten seconds, reverts phpWebSite to the default theme."
+msgstr "Problemer med å svare innen ti sekunder, vender phpWebSite tilbake til standard theme."
+
+msgid "Footer"
+msgstr "Footer"
+
+msgid "Footer updated."
+msgstr "Footer oppdatert."
+
+msgid "Header"
+msgstr "Header"
+
+msgid "Header updated."
+msgstr "Header oppdatert."
+
+msgid "If you are happy with the change, click the appropiate button."
+msgstr "Hvis du er fornøyd med endringene, klikk på passende knapp."
+
+msgid "Javascript file was not found."
+msgstr "Javascript fil ikke funnet."
+
+msgid "Keywords"
+msgstr "Nøkkelord."
+
+msgid "Layout"
+msgstr "Layout"
+
+msgid "Layout did not receive any data for display"
+msgstr "Layout mottok ikke noe data for visning"
+
+msgid "Layout session not set"
+msgstr "Layout session ikke satt"
+
+msgid "Layout settings updated."
+msgstr "Layout innstillinger oppdatert."
+
+msgid "Meta Tags"
+msgstr "Meta Tags"
+
+msgid "Meta Tags updated."
+msgstr "Meta Tags oppdatert."
+
+msgid "Meta tags"
+msgstr "Meta tags"
+
+#, php-format
+msgid "Move box: %s"
+msgstr "Flytt boks: %s"
+
+msgid "Move down"
+msgstr "Flytt ned"
+
+msgid "Move to bottom"
+msgstr "Flytt til bunnen"
+
+msgid "Move to top"
+msgstr "Flytt til toppen"
+
+msgid "Move up"
+msgstr "Flytt opp"
+
+msgid "No alternate style sheets available."
+msgstr "Ingen alternative style sheets tilgjengelig."
+
+msgid "No themes installed."
+msgstr "Ingen themes installert."
+
+msgid "Only show footer on front page"
+msgstr "Vis bare footer på forsiden"
+
+msgid "Only show header on front page"
+msgstr "Vis bare header på forsiden"
+
+msgid "Page Title"
+msgstr "Side Tittel"
+
+msgid "Page Title: Name of your web site"
+msgstr "Side Tittel: Gi din hjemmeside ett navn"
+
+msgid "Pick a theme"
+msgstr "Velg en theme"
+
+msgid "Please enter a page title."
+msgstr "Vennligst velg en side tittel."
+
+msgid "Removes all files from the current template cache directory. Good to try if your theme is not displaying properly."
+msgstr "Fjerner alle filer fra gjeldende template cache mappe. Verdt å forsøke hvis din theme ikke vises korrekt."
+
+msgid "Removing old layout components."
+msgstr "Fjerner gamle layout komponenter."
+
+msgid "Reset boxes"
+msgstr "Reset bokser"
+
+msgid "Resets all content back to its original location. Use if problems with Box Move occurred."
+msgstr "Reset allt innhold til dets originale plassering. Benyttes hvis problemer med boks forflytning dukker opp."
+
+msgid "Restore the default theme"
+msgstr "Reset standard theme"
+
+msgid "Restore to default"
+msgstr "Gjenopprett til original"
+
+msgid "Save"
+msgstr "Lagre"
+
+msgid "Save settings"
+msgstr "Lagre innstillinger"
+
+#, php-format
+msgid "Send to %s"
+msgstr "Send til %s"
+
+msgid "Set meta tags"
+msgstr "Sett meta tags"
+
+msgid "Settings saved"
+msgstr "Innstillinger lagret"
+
+msgid "Style sheet"
+msgstr "Style sheet"
+
+msgid "The theme.ini file is missing for the default theme."
+msgstr "theme.ini filen mangler for standard theme."
+
+msgid "Theme settings updated."
+msgstr "Theme innstillinger oppdatert."
+
+msgid "Themes"
+msgstr "Themes"
+
+msgid "There was a problem reading the theme directories."
+msgstr "Det oppstod et problem ved lesing av theme mapper."
+
+msgid "There was a problem updating the settings."
+msgstr "Det oppstod et problem med oppdatering av innstillinger."
+
+msgid "This site requires you to enable cookies on your browser."
+msgstr "Denne siden trenger cookies aktivisert i din nettleser."
+
+msgid "Unable to receive theme information."
+msgstr "Ikke mulig å motta theme informasjon"
+
+msgid "Update"
+msgstr "Oppdater"
+
+msgid "Update Footer"
+msgstr "Oppdater Footer"
+
+msgid "Update Header"
+msgstr "Oppdater Header"
+
+msgid "Update Theme Settings"
+msgstr "Oppdater Theme Innstillinger"
+
+msgid "When enabled, this allows you to shift content to other area of your layout. Movement options depend on the current theme."
+msgstr "Når aktivisert, denne tillater deg å skifte innhold til andre områder av din layout. Bevegelser valg er forbeholdt det gjeldemde theme."
+

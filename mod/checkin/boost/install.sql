@@ -1,7 +1,6 @@
 CREATE TABLE checkin_staff (
   user_id int NOT NULL default 0,
   filter varchar(50) default NULL,
-  reason_id int NOT NULL default 0,
   available smallint NOT NULL default 0,
   visitor_id int NOT NULL default 0,
   UNIQUE (user_id)
@@ -27,4 +26,8 @@ CREATE TABLE checkin_visitor (
   finished smallint NOT NULL default 0,
   PRIMARY KEY  (id)
 );
-        
+
+CREATE TABLE checkin_rtos (
+  reason_id INT NOT NULL default 0,
+  staff_id INT NOT NULL default 0
+);

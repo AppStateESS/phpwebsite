@@ -1,0 +1,651 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-03-07 12:13-0500\n"
+"PO-Revision-Date: 2008-04-06 21:28+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "\"Thank you\" message is not formatted correctly."
+msgstr "\"Takk skal du ha\" beskjeden er ikke formatert korrekt."
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Actions"
+msgstr "Handling"
+
+msgid "Add"
+msgstr "Legg til"
+
+msgid "Admin Email (comma delimited)"
+msgstr "Admin Email (avskilt med komma)"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "All Form Generator static tables removed."
+msgstr "Alle Skjema Generator statiske tabeller fjernet."
+
+msgid "All of the options and values were not set.  Check the box below to use your options as values."
+msgstr "Alle valg og verdier var ikke satt. Sjekk boksen under for å bruke dine valg som verdier."
+
+msgid "All of the values were not set. You must fill out all of them."
+msgstr "Alle verdier var ikke satt. Du må fylle ut alle sammen."
+
+msgid "Allow anonymous submissions"
+msgstr "Tillat anonyme innsendinger"
+
+msgid "Allow multiple submissions"
+msgstr "Tillat mangfoldige innsendinger"
+
+msgid "Allow users to edit their form data"
+msgstr "Tillat brukere å endre deres skjema data"
+
+msgid "Anonymous submissions with editable form data are not allowed."
+msgstr "Anonyme innsendinger med endrbare skjema data er ikke tillatt."
+
+msgid "Approve"
+msgstr "Godkjenn"
+
+msgid "Approved"
+msgstr "Godkjendt"
+
+msgid "Archive"
+msgstr "Arkiv"
+
+msgid "Archive file was not found."
+msgstr "Arkivfil ble ikke funnet."
+
+msgid "Archive forms"
+msgstr "Arkiver skjema"
+
+msgid "Archived Form"
+msgstr "Arkivert Skjema"
+
+msgid "Are you sure you want to delete this entry?"
+msgstr "Er du sikker på at du ønsker å slette dette innlegget?"
+
+#, php-format
+msgid "Are you sure you want to remove this %s element?"
+msgstr "Er du sikker på at du ønsker å fjerne %s elementet?"
+
+#, php-format
+msgid "Are you sure you wish to delete the archive with filename \"<b>%s</b>\"?"
+msgstr "Er du sikker på at du ønsker å slette arkivet med filnavn \"<b>%s</b>\"?"
+
+#, php-format
+msgid "Are you sure you wish to delete the export with filename \"<b>%s</b>\"?"
+msgstr "Er du sikker på at du ønsker å slette eksporten med filnavnet  \"<b>%s</b>\"?"
+
+msgid "Are you sure you wish to delete the following forms?  All data associated with these forms will be lost!"
+msgstr "Er du sikker på at du ønsker å slette følgende skjema? Alle assosierte data med dette skjema will bli fjernet!"
+
+msgid "Are you sure you wish to view this archive?"
+msgstr "Er du sikker på at du ønsker å se dette arkivet?"
+
+msgid "Associated Text"
+msgstr "Assossiert Tekst"
+
+msgid "Back"
+msgstr "Tilbake"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Checkbox"
+msgstr "Markørboks"
+
+msgid "Checkbox Element Instructions"
+msgstr "Markørboks Element Instruksjoner"
+
+msgid "Clean-Up"
+msgstr "Rens-opp"
+
+msgid "Columns"
+msgstr "Kolonner"
+
+msgid "Complete"
+msgstr "Fullføre"
+
+msgid "Completed"
+msgstr "Fullført"
+
+msgid "Confirm"
+msgstr "Bekreft"
+
+msgid "Could not delete the element."
+msgstr "Kune ikke slette elementet."
+
+msgid "Create/Edit forms"
+msgstr "Opprett/Endre skjema"
+
+msgid "Created"
+msgstr "Opprettet"
+
+msgid "Date Created"
+msgstr "Dato Opprettet"
+
+msgid "Default"
+msgstr "Standard"
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Delete form confirmation"
+msgstr "Slett skjema bekreftelse"
+
+msgid "Delete form entries"
+msgstr "Slett skjema innlegg"
+
+msgid "Delete forms"
+msgstr "Slett skjemaer"
+
+msgid "Download"
+msgstr "Last ned"
+
+msgid "Dropbox"
+msgstr "Dropbox"
+
+msgid "Edit"
+msgstr "Endre"
+
+msgid "Edit Elements"
+msgstr "Endre Elementer"
+
+msgid "Edit form entries"
+msgstr "Endre skjema innlegg"
+
+msgid "Edit option set"
+msgstr "Endre valg oppsett"
+
+msgid "Edit option sets"
+msgstr "Endre valg oppsetter"
+
+msgid "Editor"
+msgstr "Forfatter"
+
+msgid "Element successfully added!"
+msgstr "Element lagt til med godt resultat!"
+
+msgid "Element successfully removed!"
+msgstr "Element fjernet med godt resultat!"
+
+msgid "Elements"
+msgstr "Elementer"
+
+msgid "Entries"
+msgstr "Innlegg"
+
+msgid "Existing Archives"
+msgstr "Eksisterende Arkiv"
+
+msgid "Existing Exports"
+msgstr "Eksisterende Eksporter"
+
+msgid "Export"
+msgstr "Eksport"
+
+msgid "Export report data"
+msgstr "Eksport rapport data"
+
+msgid "Failed to archive."
+msgstr "Feilet å arkivere."
+
+msgid "Failed to create archive directory."
+msgstr "Feilet å opprette arkiv mappe."
+
+msgid "Failed to create export directory."
+msgstr "Feilet å opprette eksport mappe."
+
+msgid "Failed to create files directory."
+msgstr "Feilet å opprette fil mappe."
+
+msgid "Failed to create report directory."
+msgstr "Feilet å opprette rapport mappe."
+
+msgid "File contained no archive to view."
+msgstr "Filen inneholder ingen arkiver å vise."
+
+msgid "File contained no content."
+msgstr "Filen inneholder ingen innhold."
+
+msgid "Filename"
+msgstr "Filnavn"
+
+msgid "Finish"
+msgstr "FErdig"
+
+msgid "Form"
+msgstr "Skjema"
+
+msgid "Form Information"
+msgstr "Skjema informasjon"
+
+msgid "Form Name"
+msgstr "Skjema navn"
+
+msgid "Form Settings"
+msgstr "Skjema Innstillinger"
+
+msgid "Form element is not an object."
+msgstr "Skjema element er ikke ett objekt."
+
+msgid "Form settings successfully saved!<br /><br />"
+msgstr "Skjema innstillinger lagret med godt resultat!<br /><br />"
+
+msgid "Forms"
+msgstr "Skjema"
+
+msgid "Forms are pre_approved"
+msgstr "Skjema er forhånds godkjendte"
+
+msgid "Full List"
+msgstr "Full Liste"
+
+msgid "Go"
+msgstr "Gå"
+
+msgid "Go!"
+msgstr "Gå!"
+
+msgid "Hidden"
+msgstr "Gjemt"
+
+msgid "Hide"
+msgstr "Gjem"
+
+msgid "Hide this form"
+msgstr "Gjem dette skjemaet"
+
+msgid "Home"
+msgstr "Hjem"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "In order to view this archive a new table will need to added to your database."
+msgstr "For å se dette arkivet må en ny tabell må tilføres din database."
+
+msgid "Incomplete"
+msgstr "Uferdig"
+
+msgid "Instructions"
+msgstr "Instruksjoner"
+
+msgid "Instructions are missing or formatted incorrectly."
+msgstr "Instruksjoner mangler eller er formatert feil."
+
+msgid "Invalid Filename Given"
+msgstr "Ugyldig Filnavn Gitt"
+
+msgid "Ip"
+msgstr "Ip"
+
+msgid "Item limit per page"
+msgstr "Objekt begrensning per side"
+
+msgid "Last Entry"
+msgstr "Siste Innlegg"
+
+msgid "List Archives"
+msgstr "Liste Arkiver"
+
+msgid "List Exports"
+msgstr "Liste Eksporter"
+
+msgid "List Forms"
+msgstr "Liste Skjemaer"
+
+msgid "Maxsize"
+msgstr "Maxsize"
+
+msgid "Missing form name."
+msgstr "Mangler skjema navn."
+
+msgid "Move Down"
+msgstr "Flytt ned"
+
+msgid "Move Up"
+msgstr "FLytt opp"
+
+msgid "Multiple Select"
+msgstr "Velg flere"
+
+msgid "Multiple submissions with editable form data are not allowed."
+msgstr "Flerfoldige innlegg med endrbare skjema data er ikke tillatt."
+
+msgid "Multiselect Element Instructions"
+msgstr "Multivalg Element Instruksjoner"
+
+msgid "Name"
+msgstr "Navn"
+
+msgid "New Form"
+msgstr "Nytt Skjema"
+
+msgid "Next"
+msgstr "Neste"
+
+msgid "Next Entry"
+msgstr "Neste Innlegg"
+
+msgid "No"
+msgstr "Nei"
+
+msgid "No element was removed."
+msgstr "Ingen element ble fjernet."
+
+msgid "No entries were found matching your search query."
+msgstr "Ingen innlegg passet dine søke kriterier."
+
+msgid "No form ID was passed"
+msgstr "Ingen skjema ID ble passert"
+
+msgid "No form entry was deleted from the database."
+msgstr "Ingen skjema innlegg ble slettet fra databasen."
+
+msgid "Number of Options"
+msgstr "Antall Valg"
+
+msgid "Only edit own forms"
+msgstr "Bare endre egne skjema"
+
+msgid "Option"
+msgstr "Valg"
+
+msgid "Option Instructions"
+msgstr "Valg Instruksjoner"
+
+msgid "Option Sets"
+msgstr "Valg setter"
+
+msgid "Owner"
+msgstr "Eiger"
+
+msgid "Page"
+msgstr "Side"
+
+#, php-format
+msgid "Page %1$s of %2$s"
+msgstr "SIde %1$s av %2$s"
+
+msgid "Position must be an integer value."
+msgstr "Posisjon må være en helhetlig verdi."
+
+msgid "Post Process Code"
+msgstr "Post Process Code"
+
+msgid "Predefined Option Set"
+msgstr "Predefinert Valg Sett"
+
+msgid "Previous Entry"
+msgstr "Forrige Innlegg"
+
+msgid "Print"
+msgstr "Skriv ut"
+
+msgid "Print View"
+msgstr "Utskriftsvennlig visning"
+
+msgid "Radio Button"
+msgstr "Radio Button"
+
+msgid "Radiobutton Element Instructions"
+msgstr "RadioButton Element Instruksjoner"
+
+msgid "Refuse"
+msgstr "Nekt"
+
+msgid "Remove"
+msgstr "Fjern"
+
+msgid "Removed all dynamic Form Generator tables."
+msgstr "Fjernet alle dynamiske Skjema Generator tabeller."
+
+msgid "Report"
+msgstr "Rapport"
+
+msgid "Report View"
+msgstr "Rapport Visning"
+
+msgid "Require"
+msgstr "Forlange"
+
+msgid "Required"
+msgstr "Forlangt"
+
+msgid "Retake Form"
+msgstr "Ta Skjema på nytt"
+
+msgid "Return to Report"
+msgstr "Returner til Rapport"
+
+msgid "Rows"
+msgstr "Rekker"
+
+msgid "Save"
+msgstr "Lagre"
+
+msgid "Save "
+msgstr "Lagre"
+
+msgid "Save Form"
+msgstr "Lagre Skjema"
+
+msgid "Save Settings"
+msgstr "Lagre Innstillinger"
+
+msgid "Save Textarea"
+msgstr "Lage Tekstområde"
+
+msgid "Save Textfield"
+msgstr "Lage tekstfelt"
+
+msgid "Save option set as"
+msgstr "Lagre valg sett som"
+
+msgid "Saved Forms"
+msgstr "Lagrede Skjema"
+
+msgid "Search"
+msgstr "Søk"
+
+msgid "Settings"
+msgstr "Innstillinger"
+
+msgid "Show"
+msgstr "Vis"
+
+msgid "Show form page numbers (eg: page 1 of 6)"
+msgstr "Vis skjema sidenummer (eks: side 1 av 6)"
+
+msgid "Show numbers for form elements (eg: 1, 2, 3)"
+msgstr "Vis nummer for skjema elementer (eks: 1, 2, 3)"
+
+msgid "Size"
+msgstr "Størrelse"
+
+msgid "Submission Message"
+msgstr "Innsendings Beskjed"
+
+msgid "Successfully deleted table associated with the archive with filename "
+msgstr "Slettet tabell assossiert med arkivet med filnavn"
+
+msgid "Text"
+msgstr "Tekst"
+
+msgid "Textarea"
+msgstr "Tekstområde"
+
+msgid "Textarea Element Instructions"
+msgstr "Tekstområde Element Instruksjoner"
+
+msgid "Textfield"
+msgstr "Tekstfelt"
+
+#, php-format
+msgid "The %s element was saved successfully."
+msgstr "Elementet %s ble lagret med godt resultat."
+
+#, php-format
+msgid "The %s was saved successfully."
+msgstr "%s ble lagret med godt resultat."
+
+msgid "The archive path is not web server writable."
+msgstr "Arkiv stien er web server skrivebeskyttet."
+
+msgid "The associated text for this element was not set."
+msgstr "Den assossierte teksten for dette elementet er ikke satt."
+
+msgid "The element was successfully removed."
+msgstr "Elementet ble fjernet med godt resultat."
+
+msgid "The export path is not web server writable."
+msgstr "Eksport stien er web server skrivebeskyttet."
+
+#, php-format
+msgid "The form %s was successfully archived."
+msgstr "Skjemaet %s ble arkivert med godt resultat."
+
+msgid "The form entry was successfully deleted from the database."
+msgstr "Skjema innlegget ble slettet fra databasen med godt resultat."
+
+msgid "The form must be saved before it is available to the public."
+msgstr "Skjemaet må lagres før det er tilgjengelig for offentligheten."
+
+msgid "The name you entered for the Checkbox is not valid or is already in use with this form."
+msgstr "Navnet du gav for markørboksen er ikke gyldig eller er allerede i bruk i dette skjemaet."
+
+msgid "The name you entered for the Multiselect is not valid or is already in use with this form."
+msgstr "Navnet du gav for Multiselect er ikke gyldig eller er allerede i bruk i dette skjemaet."
+
+msgid "The name you entered for the Textfield is not valid or is already in use with this form."
+msgstr "Navnet du gav for Tekstfeltet er ikke gyldig eller er allerede i bruk i dette skjemaet."
+
+msgid "The number of options must be a greater than zero."
+msgstr "Antall valg må være større enn null."
+
+#, php-format
+msgid "The option set %s was successfully saved."
+msgstr "Valget %s ble lagret med godt resultat."
+
+#, php-format
+msgid "The option set %s was unable to be saved."
+msgstr "Valget %s ble ikke lagret."
+
+msgid "The phatform archive was successfully <b>deleted</b>."
+msgstr "Phatform arkivet ble <b>slettet</b> med godt resultat."
+
+msgid "The phatform export was successfully <b>deleted</b>."
+msgstr "Phatform eksport ble <b>slettet</b> med godt resultat."
+
+msgid "The value for this element was not set."
+msgstr "Verdien for dette elementet var ikke satt."
+
+msgid "There is a problem with options, contact a system administrator."
+msgstr "Det er et problem med valg, kontakt din system administrator."
+
+msgid "There was a problem deleting the archive."
+msgstr "Det er ett problem med å slette arkivet."
+
+msgid "There was a problem deleting the export."
+msgstr "Det er ett problem med å slette eksport."
+
+msgid "There was a problem deleting viewing archive table associated for filename "
+msgstr "Det er ett problem med å slette se arkiv tabell assossiert for filnavn "
+
+msgid "This form is not available for viewing at this time."
+msgstr "Dette skjema er ikke tilgjengelig for visning for øyeblikket."
+
+msgid "Total"
+msgstr "Totalt"
+
+#, php-format
+msgid "Unable to save %s."
+msgstr "Ikke mulig å lagre %s."
+
+msgid "Unapproved Forms"
+msgstr "Ikke Godkjendte Skjemaer"
+
+msgid "Unknown"
+msgstr "Ukjendt"
+
+msgid "Unsaved Forms"
+msgstr "Ulagrede Skjemaer"
+
+msgid "Updated"
+msgstr "Oppdatert"
+
+msgid "Use option text as values"
+msgstr "Bruk valg tekst som verdier."
+
+msgid "User"
+msgstr "Bruker"
+
+msgid "Value"
+msgstr "Verdi"
+
+msgid "View"
+msgstr "Se"
+
+msgid "View reports"
+msgstr "Se rapporter"
+
+msgid "Viewing of archive has been canceled."
+msgstr "Visning av arkiv er avbrutt."
+
+msgid "WARNING!"
+msgstr "ADVARSEL!"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "You have already filled out this form!"
+msgstr "Du har allerede fylt ut dette skjema"
+
+#, php-format
+msgid "You have chosen <b>not</b> to delete the archive with the filename \"%s\"."
+msgstr "Du har valgt å <b>ikke</b>  slette dette arkivet med filnavn \"%s\"."
+
+#, php-format
+msgid "You have chosen <b>not</b> to delete the export with the filename \"%s\"."
+msgstr "Du har valgt å <b>ikke</b>  slette denne eksport med filnavn \"%s\"."
+
+msgid "You have chosen to edit a saved form! All current data will be archived and cleared if you chose to continue!  Make sure you export your data from your form before you continue!"
+msgstr "Du har valgt å endre ett lagret skjema! Alle gjeldende data vil bli arkivert og tømt hvis du velger å gå videre! Vær sikker på at du eksporterer dine data før du går videre!"
+
+#, php-format
+msgid "You have passed the maximum allowed characters in the %s text field."
+msgstr "Du har overskredet den maksimale tillatte tegn begrensningen i  %s tekst feltet."
+
+msgid "You may not use that name for this form element."
+msgstr "Du kan ikke benytte det navnet i dette skjema elementet."
+
+msgid "You must be logged in to view this form!"
+msgstr "Du må være logget inn for å se dette skjema!"
+
+msgid "You must fill out all required fields to continue."
+msgstr "Du må fylle ut alle de påkrevde feltene før du fortsetter."
+
+msgid "You must have at least one element to save this form."
+msgstr "Du må minimum ha ett element for å lagre dette skjemaet."
+
+msgid "You must provide a submission message."
+msgstr "Du må legge inn en innsending beskjed."
+
+msgid "You only have permission to edit your own forms!"
+msgstr "Du har bare tilgang til å endre dine egne skjema!"
+
+msgid "of"
+msgstr "av"
+

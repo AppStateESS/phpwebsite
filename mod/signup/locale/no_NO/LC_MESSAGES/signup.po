@@ -1,0 +1,434 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-03-18 09:56-0400\n"
+"PO-Revision-Date: 2008-04-06 21:31+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "%s Participants"
+msgstr "%s Deltakere"
+
+msgid "A problem occurred when trying to register your application. If you continue to receive this message, please contact the site admistrator."
+msgstr "Ett problem oppstod ved forsøk på å registrere din søknad. Hvis du fortsetter å motta denne meldingen, vennligst kontakt web administratoren."
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Add"
+msgstr "Legg til"
+
+msgid "Add applicant"
+msgstr "Legg til søker"
+
+msgid "Add slot"
+msgstr "Legg til spor"
+
+#, php-format
+msgid "Add slot to %s"
+msgstr "Legg til spor til %s"
+
+msgid "Allow multiple signups"
+msgstr "Tillat flertallige påmeldinger"
+
+msgid "Alphabetic order"
+msgstr "Alfabetisk rekkefølge"
+
+msgid "An error occurred when accessing this sheet's slots."
+msgstr "En feil oppstod ved tilkobling til denne sidens spor."
+
+msgid "An error occurred when pulling applicants."
+msgstr "En feil oppstod ved trekking av søkere."
+
+msgid "An error occurred when trying to save your application."
+msgstr "En feil oppstod ved forsøk på å lagre din søknad."
+
+msgid "Applicant Listing"
+msgstr "Søker Listing"
+
+msgid "Applicant saved successfully."
+msgstr "Søker lagret med godt resultat."
+
+msgid "Are you certain you want to delete this slot?"
+msgstr "Er du sikker på at du ønsker å slette dette spor?"
+
+msgid "Are you sure you want to delete this person from their signup slot?"
+msgstr "Er du sikker på at du ønsker å slette denne personen fra deres påmeldings spor?"
+
+msgid ""
+"Are you sure you want to delete this sheet?\\n"
+"All slots and signup information will be permanently removed."
+msgstr ""
+"Er du sikker på at du ønsker å slette denne siden?\\n"
+"Alle spor og påmelding informasjon vil bli permanent slettet."
+
+msgid "Available slots"
+msgstr "Tilgjengelige spor"
+
+msgid "CSV file"
+msgstr "CSV fil"
+
+msgid "Click the link below to confirm your participation in the following:"
+msgstr "Klikk på linken under for å bekrefte din deltagelse i følgende:"
+
+msgid "Click to view and edit signups for this slot."
+msgstr "Klikk for å se og endre påmeldinger for dette spor."
+
+msgid "Close"
+msgstr "Lukk"
+
+msgid "Close signup"
+msgstr "Steng påmelding"
+
+msgid "Congratulations!"
+msgstr "Gratulerer!"
+
+msgid "Contact email"
+msgstr "Kontakt email"
+
+msgid "Contact email improperly formatted."
+msgstr "Kontakt email ukorrekt formatert."
+
+msgid "Create"
+msgstr "Opprett"
+
+msgid "Create signup sheet"
+msgstr "Opprett påmeldings skjema"
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Delete slot"
+msgstr "Slett spor"
+
+msgid "Description"
+msgstr "Beskrivelse"
+
+msgid "Down"
+msgstr "Ned"
+
+msgid "Edit"
+msgstr "Endre"
+
+msgid "Edit Slot"
+msgstr "Endre Spor"
+
+msgid "Edit sheets"
+msgstr "Endre skjema"
+
+msgid "Edit slots"
+msgstr "Endre spor"
+
+msgid "Email"
+msgstr "mail"
+
+#, php-format
+msgid "Email %s applicants"
+msgstr "Email %s søkere"
+
+msgid "Email address"
+msgstr "Email adresse"
+
+msgid "Emails not sent"
+msgstr "Email ikke sendt"
+
+msgid "Emails sent"
+msgstr "Emailer sendt"
+
+msgid "Error occurred when moving applicant. Slot may be full."
+msgstr "En feil oppstod ved flytting av søker. Spor kan være full."
+
+msgid "Error occurred when saving applicant."
+msgstr "En feil oppstod ved lagring av søker."
+
+msgid "Error occurred when saving sheet."
+msgstr "En feil oppstod ved laging av skjema."
+
+msgid "Error occurred when saving slot."
+msgstr "En feil oppstod ved lagring av spor."
+
+msgid "Fatal error: Cannot create slot. Missing sheet id."
+msgstr "Fatal feil: Kan ikke opprette spor. Mangler skjema id."
+
+msgid "First name"
+msgstr "Fornavn"
+
+msgid "From"
+msgstr "Fra"
+
+msgid "Go"
+msgstr "Gå"
+
+#, php-format
+msgid "Greetings from %s,"
+msgstr "Helsinger fra %s,"
+
+msgid "Invalid reply address."
+msgstr "Feil svar adresse."
+
+msgid "Last name"
+msgstr "Etternavn"
+
+msgid "List"
+msgstr "Liste"
+
+msgid "Message"
+msgstr "Melding"
+
+msgid "Missing internal information."
+msgstr "Mangler intern informasjon."
+
+msgid "Move"
+msgstr "Flytt"
+
+msgid "Name"
+msgstr "Navn"
+
+msgid "New"
+msgstr "Ny"
+
+msgid "Number of openings"
+msgstr "Antall åpninger"
+
+msgid "Organization"
+msgstr "Organisasjon"
+
+msgid "Other slots full"
+msgstr "Andre spor fulle"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Phone number"
+msgstr "Tlf nummer"
+
+msgid "Please check if there are any more available slots by clicking the link below."
+msgstr "Vennligst sjekk om det er noen flere tilgjengelige spor ved å klikke på linken under."
+
+msgid "Please enter a contact phone number."
+msgstr "Vennligst legg inn ett kontakt telefon nummer."
+
+msgid "Please enter a first name."
+msgstr "Venligst legg inn fornavn."
+
+msgid "Please enter a last name."
+msgstr "Vennligst legg inn ett etternavn."
+
+msgid "Please enter a message."
+msgstr "Vennligst legg inn en beskjed."
+
+msgid "Please enter a subject."
+msgstr "Vennligst legg inn ett emne."
+
+msgid "Please specify an openings amount."
+msgstr "Vennligst spesifiser en åpnings mengde."
+
+msgid "Please wait"
+msgstr "Vennligst vent"
+
+msgid "Print"
+msgstr "Skriv ut"
+
+msgid "Print list"
+msgstr "Skriv ut liste"
+
+msgid "Print page"
+msgstr "Skriv ut side"
+
+msgid "Report"
+msgstr "Rapport"
+
+msgid "Reset order"
+msgstr "Reset rekkefølge"
+
+msgid "Return to slot page"
+msgstr "Returner til spor side"
+
+msgid "Returning to applicant listing."
+msgstr "Returnerer til søknad liste"
+
+msgid "Send emails"
+msgstr "Send emailer"
+
+msgid "Sending emails"
+msgstr "Sender emailer"
+
+msgid "Sheet previously posted."
+msgstr "Skjema tidligere sendt inn."
+
+msgid "Sheet saved successfully."
+msgstr "Skjema lagret med godt resultat."
+
+msgid "Signup"
+msgstr "Registrering"
+
+msgid "Signup Sheets"
+msgstr "Registrerings Skjema"
+
+msgid "Signup confirmation"
+msgstr "Registrering bekreftelse"
+
+#, php-format
+msgid "Signup event : %s"
+msgstr "Registrer hendelse : %s"
+
+msgid "Signup form"
+msgstr "Registrering skjema"
+
+msgid "Signup sheet deleted."
+msgstr "Registrerings skjema slettet."
+
+msgid "Signup sheet did not contain any applicants."
+msgstr "Registrerings skjema inneholdt ingen søkere."
+
+msgid "Signup tables dropped."
+msgstr "Registrering tabell fjernet."
+
+#, php-format
+msgid "Slot : %s"
+msgstr "Spor : %s"
+
+msgid "Slot can not be deleted until cleared of applicants."
+msgstr "Spor kan ikke bli slettet før tomt for søkere."
+
+msgid "Slot could not be deleted successfully."
+msgstr "Spor kunne ikke bli slettet."
+
+msgid "Slot deleted successfully."
+msgstr "Spor slettet med godt reultat."
+
+msgid "Slot is missing sheet id."
+msgstr "Spor mangler side id."
+
+msgid "Slot listing"
+msgstr "Spor liste"
+
+msgid "Slot order reset."
+msgstr "Spor rekkefølge reset."
+
+msgid "Slot saved successfully."
+msgstr "Spor lagret med godt resultat."
+
+#, php-format
+msgid "Slot setup for %s"
+msgstr "Spor oppsett for %s"
+
+msgid "Slots"
+msgstr "Spor"
+
+#, php-format
+msgid "Slots left: %s"
+msgstr "Spor igjen: %s"
+
+msgid "Sorry"
+msgstr "Beklager"
+
+msgid "Sorry, but all available slots are full. Please check back later for possible cancellations."
+msgstr "Beklager, men alle tilgjengelige spor er fulle. Vennligst sjekk igjen senere for mulige kansellasjoner."
+
+msgid "Sorry, the slot you chose is no longer available."
+msgstr "Beklager, men sporet du valgte er ikke lenger tilgjengelig."
+
+msgid "Subject"
+msgstr "Emne"
+
+msgid "Submit"
+msgstr "Send inn"
+
+msgid "Thank you"
+msgstr "Takk skal du ha"
+
+msgid "The total signups may not exceed the slots offered."
+msgstr "Totale registreringer kan ikke overskride spor tilbydt."
+
+msgid "There is a problem with our email server. Please try again later."
+msgstr "Det er ett problem med vår email server. Vennlist prøv igjen senere."
+
+msgid "There is a problem with this signup sheet. Please check back later."
+msgstr "Det er ett problem med dette registrerings skjemaet. Vennligst prøv igjen senere."
+
+msgid "This slot filled up before you could confirm your application."
+msgstr "Dette sporet ble fylt opp før du bekreftet din søknad."
+
+msgid "Title"
+msgstr "Tittel"
+
+#, php-format
+msgid "Total openings: %s"
+msgstr "Totale åpninger: %s"
+
+msgid "Unable to send emails. Signup sheet does not exist."
+msgstr "Ikke mulig å sende emailer. Registrerings skjema eksisterer ikke."
+
+msgid "Unsuitable email address."
+msgstr "Upassende email adresse."
+
+msgid "Up"
+msgstr "Opp"
+
+msgid "Update"
+msgstr "Oppdater"
+
+#, php-format
+msgid "Update %s slot"
+msgstr "Oppdater %s spor"
+
+msgid "Update applicant"
+msgstr "Oppdater søker"
+
+msgid "Update signup sheet"
+msgstr "Oppdater registrerings skjema"
+
+msgid "We are no longer accepting applications."
+msgstr "Vi aksepterer ikke lenger søknader."
+
+msgid "You are already registered. There isn't any need to return to this page."
+msgstr "Du er alt registrert. Det er ikke lenger nødvendig å returnere til denne siden."
+
+#, php-format
+msgid "You are registered for the following event: %s"
+msgstr "Du er registrert for følgende begivenhet: %s"
+
+msgid "You cannot signup for more than one slot."
+msgstr "Du kan ikke registrere deg for mer enn ett spor."
+
+msgid "You have one hour to confirm your application."
+msgstr "Du har en time på deg til å bekrefte din søknad."
+
+msgid "You must give this signup sheet a title."
+msgstr "Du må gi dette registrerings skjema en tittel."
+
+msgid "You must give your slot a title."
+msgstr "Du må gi ditt spor en tittel."
+
+msgid "You should receive an email allowing you to verify your application.<br />You have one hour to confirm your application."
+msgstr "Du skal motta en email som tillater deg å bekrefte din søknad.<br />Du har en time på deg til å bekrefte din søknad."
+
+msgid "Your application could not be verified. If over a hour has passed since you applied, you may want to try again."
+msgstr "Din søknad kunne ikke bli verifisert. Hvis en time er gått siden du sendte in din søknad, bør du kanskje prøve igjen."
+
+msgid "email"
+msgstr "email"
+
+msgid "firstname"
+msgstr "fornavn"
+
+msgid "lastname"
+msgstr "etternavn"
+
+msgid "organization"
+msgstr "organisasjon"
+
+msgid "phone"
+msgstr "telefon"
+

@@ -1,0 +1,284 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-10-01 10:32-0400\n"
+"PO-Revision-Date: 2008-04-06 21:27+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "A problem occurred when saving your link."
+msgstr "Et problem oppstod ved lagring av din link."
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Add current page"
+msgstr "Legg til gjeldende side"
+
+msgid "Add home link on new menus"
+msgstr "Legg til hjem link på nye menyer"
+
+msgid "Add link"
+msgstr "Legg til link"
+
+msgid "Add other link"
+msgstr "Legg til enda en link"
+
+msgid "Add stored page"
+msgstr "Legg til lagret side"
+
+msgid "Add to menu"
+msgstr "Legg til meny"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Admin mode off"
+msgstr "Admin modus av"
+
+msgid "Admin mode on"
+msgstr "Admin modus på"
+
+msgid "Admin mode status"
+msgstr "Admin modus status"
+
+msgid "Are you sure you want to delete this link: "
+msgstr "Er du sikker på at du ønsker å slette denne linken:"
+
+msgid "Are you sure you want to delete this menu and all its links."
+msgstr "Er du sikker på at du ønsker å slette denne menyen og alle dets linker."
+
+msgid "Are you sure you want to unpin this menu from all pages?"
+msgstr "Er du sikker på at du ønsker å avhefte denne menyen fra alle sider?"
+
+msgid "Are you sure you want to unpin this menu from this page?"
+msgstr "Er du sikker på at du ønsker å avhefte denne menyen fra denne siden?"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Cannot locate any menu templates. Cannot continue."
+msgstr "Kan ikke lokalisere noen meny templates. kan ikke fortsette."
+
+msgid "Clear from list"
+msgstr "Fjern fra liste"
+
+msgid "Clip"
+msgstr "Hefte sammen"
+
+msgid "Close"
+msgstr "Steng"
+
+msgid "Controls the layout and positioning of your menus."
+msgstr "Kontrollerer layout og posisjonering av dine menyer."
+
+msgid "Create"
+msgstr "Opprett"
+
+msgid "Create Link"
+msgstr "Opprett link"
+
+msgid "Create New Menu"
+msgstr "Opprett Ny Meny"
+
+msgid "Create New Menus"
+msgstr "Opprett Nye Menyer"
+
+msgid "Default menu created successfully."
+msgstr "Standard meny opprettet med godt resultat."
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Delete Menus"
+msgstr "Slett Menyer"
+
+msgid "Delete link"
+msgstr "Slett link"
+
+msgid "Edit"
+msgstr "Endre"
+
+msgid "Edit Link"
+msgstr "Endre Link"
+
+msgid "Edit link"
+msgstr "Endre link"
+
+msgid "Edit link title"
+msgstr "Endre link tittel"
+
+msgid "Enter link title"
+msgstr "Legg til link tittel"
+
+msgid "Error"
+msgstr "Feil"
+
+msgid "Home"
+msgstr "Hjem"
+
+msgid "Link is missing a title, url, or menu id."
+msgstr "Link mangler en tittel, url, eller meny id."
+
+msgid "List"
+msgstr "Liste"
+
+msgid "Main menu"
+msgstr "Hoved meny"
+
+msgid "Maximum link characters"
+msgstr "Maksimum link tegn"
+
+msgid "Menu"
+msgstr "Meny"
+
+msgid "Menu Settings"
+msgstr "Meny Innstillinger"
+
+msgid "Menu deleted."
+msgstr "Meny slettet."
+
+msgid "Menu saved"
+msgstr "Meny lagret"
+
+msgid "Menu tables removed."
+msgstr "Meny tabeller fjernet."
+
+msgid "Missing menu title."
+msgstr "Mangler meny tittel."
+
+msgid "Missing title."
+msgstr "Mangler tittel."
+
+msgid "Missing url."
+msgstr "Mangler url."
+
+msgid "Move down"
+msgstr "Flytt ned"
+
+msgid "Move link down"
+msgstr "Flytt link ned"
+
+msgid "Move link up"
+msgstr "Flytt link opp"
+
+msgid "Move up"
+msgstr "Flytt opp"
+
+msgid "New"
+msgstr "Ny"
+
+msgid "No admin options"
+msgstr "Ingenadmin valg"
+
+msgid "No links in queue."
+msgstr "Ingen linker i kø."
+
+msgid "No menus found. Click on \"New\" to create one."
+msgstr "Ingen menyer funnet. Klikk på  \"New\" for å opprette en."
+
+msgid "Off"
+msgstr "Av"
+
+msgid "On"
+msgstr "På"
+
+msgid "Pin"
+msgstr "Hekte på"
+
+msgid "Pin links"
+msgstr "Hekte linker"
+
+msgid "Pin page"
+msgstr "Hekte side"
+
+msgid "Pin to all pages"
+msgstr "Hekte til alle sider"
+
+msgid "Pin to item"
+msgstr "Hekte til element"
+
+msgid "Pinned links"
+msgstr "Hektet linker"
+
+msgid "Reorder links"
+msgstr "Ordne linker"
+
+msgid "Save"
+msgstr "Lagre"
+
+msgid "Save link"
+msgstr "Lagre link"
+
+msgid "Save settings"
+msgstr "Lagre innstillinger"
+
+msgid "Settings"
+msgstr "Innstillinger"
+
+msgid "Settings updated."
+msgstr "Innstillinger oppdatert."
+
+msgid "Site map"
+msgstr "Nettsteds kart"
+
+msgid "Sorry"
+msgstr "Beklager"
+
+msgid "Template"
+msgstr "Template"
+
+msgid "There was a problem saving your link."
+msgstr "Det oppstod et problem med å lagre din link."
+
+msgid "Title"
+msgstr "Tittel"
+
+msgid "Type the new title for this link."
+msgstr "Tast inn ny tittel for denne linken."
+
+msgid "Unable to locate menu template."
+msgstr "Ikke mulig å lokalisere meny template."
+
+msgid "Unable to save menu. Please check error logs."
+msgstr "Ikke mulig å lagre meny. Vennligst sjekk dine feilmeldings logger."
+
+msgid "Unclip"
+msgstr "Hefte fra"
+
+msgid "Unpin"
+msgstr "Hekte fra"
+
+msgid "Unpin menu"
+msgstr "Hekte fra meny"
+
+msgid "Update"
+msgstr "Oppdater"
+
+msgid "Update Menu"
+msgstr "Oppdater Meny"
+
+msgid "Url"
+msgstr "Url"
+
+msgid "Use MiniAdmin instead of Admin mode link"
+msgstr "Benytt MiniAdmin i stedet for Admin mode link"
+
+msgid "Use floating admin links"
+msgstr "Bruk flytende admin linker"
+
+msgid "User attempted access to Menu administration."
+msgstr "Bruker prøde å koble til Meny sdministrasjon."
+
+msgid "You must enter a link title."
+msgstr "Du må legge til en link tittel."
+

@@ -114,6 +114,11 @@ class Layout_Admin{
             }
             break;
 
+        case 'head_files':
+            $title = dgettext('layout', 'Add Head Files');
+            $content[] = Layout_Admin::addHeadFiles();
+            break;
+
         case 'footer':
             $title = dgettext('layout', 'Edit Footer');
             $content[] = Layout_Admin::editFooter();
@@ -280,12 +285,15 @@ class Layout_Admin{
     }
 
 
-    function &adminPanel()
+    function adminPanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=layout&amp;action=admin';
-        $tabs['arrange']     = array('title'=>dgettext('layout', 'Arrange'),     'link'=>$link);
+        $tabs['arrange']   = array('title'=>dgettext('layout', 'Arrange'),   'link'=>$link);
         $tabs['meta']      = array('title'=>dgettext('layout', 'Meta Tags'), 'link'=>$link);
+        if (Current_User::isDeity()) {
+            $tabs['head_files'] = array('title'=>dgettext('layout', 'Head Files'), 'link'=>$link);
+        }
         $tabs['theme']     = array('title'=>dgettext('layout', 'Themes'),    'link'=>$link);
         $tabs['header']    = array('title'=>dgettext('layout', 'Header'),    'link'=>$link);
         $tabs['footer']    = array('title'=>dgettext('layout', 'Footer'),    'link'=>$link);
@@ -632,6 +640,10 @@ class Layout_Admin{
 
         $content = PHPWS_Template::process($template, 'layout', 'move_box_select.tpl');
         Layout::nakedDisplay($content);
+    }
+
+    function addHeadFiles()
+    {
     }
 
 }

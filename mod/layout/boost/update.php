@@ -96,6 +96,11 @@ function layout_update(&$content, $currentVersion)
   or not when it wraps. Default is to not.
 + Fixed noCache.
 </pre>';
+
+    case version_compare($currentVersion, '2.4.4', '<'):
+        $db = new PHPWS_DB('layout_config');
+        $db->addTableColumn('head_tags', 'text');
+        $content[] = '';
     }
     return true;
 }

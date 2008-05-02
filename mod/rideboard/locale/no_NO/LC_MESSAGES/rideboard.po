@@ -1,0 +1,340 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-03-07 12:13-0500\n"
+"PO-Revision-Date: 2008-04-06 21:30+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "- Do not limit -"
+msgstr "- Ikke begrens -"
+
+msgid "- Location in comments -"
+msgstr "- Plassering i kommentarer -"
+
+msgid "- Locations in comments -"
+msgstr "- Plasseringer i kommentarer -"
+
+msgid "Add menu link"
+msgstr "Legg til meny link"
+
+msgid "An error occurred when pulling your rides."
+msgstr "En feil oppstod ved trekking av dine kjøreturer."
+
+msgid "An error occurred when trying to save your ride. Please try again later."
+msgstr "En feil oppstod ved forsøk på å lagre din kjøretur. Vennligst prøv igjen seinere."
+
+msgid "Anyone"
+msgstr "Noen"
+
+msgid "Are you sure you want to delete this ride?"
+msgstr "Er du sikker på at du ønsker å slette denne kjøreturen?"
+
+msgid "Back to search"
+msgstr "Tilbake til søk"
+
+msgid "Change settings"
+msgstr "Foandre innstillinger"
+
+msgid "Comments"
+msgstr "Kommentarer"
+
+msgid "D/R"
+msgstr "D/R"
+
+msgid "Default starting location"
+msgstr "Standard start plassering"
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Delete "
+msgstr "Slett"
+
+msgid "Delete ride offers"
+msgstr "Slett kjøretur tilbuder"
+
+msgid "Destination"
+msgstr "Destinasjon"
+
+msgid "Distance format"
+msgstr "Distanse format"
+
+msgid "Does not matter"
+msgstr "Gjør ingenting"
+
+msgid "Driver"
+msgstr "Sjåfør"
+
+msgid "Driver or Rider"
+msgstr "Sjåfør eller Passasjer"
+
+msgid "Driver or rider"
+msgstr "Sjåfør eller passasjer"
+
+msgid "Drivers"
+msgstr "Sjåfører"
+
+#, php-format
+msgid "Driving from <strong>%s</strong> on <strong>%s</strong> to <strong>%s</strong>."
+msgstr "Kjører fra <strong>%s</strong> den <strong>%s</strong> til <strong>%s</strong>."
+
+#, php-format
+msgid "Driving from <strong>%s</strong> on <strong>%s</strong>."
+msgstr "Kjører fra <strong>%s</strong> den <strong>%s</strong>."
+
+#, php-format
+msgid "Driving on <strong>%s</strong>."
+msgstr "Kjører den <strong>%s</strong>."
+
+#, php-format
+msgid "Driving to <strong>%s</strong> on <strong>%s</strong>."
+msgstr "Kjører til <strong>%s</strong> den <strong>%s</strong>."
+
+msgid "Edit"
+msgstr "Endre"
+
+msgid "Edit location"
+msgstr "Endre plassering"
+
+msgid "Edit locations"
+msgstr "Endre plasseringer"
+
+#, php-format
+msgid "Edit the location %s"
+msgstr "Endre plasseringen %s"
+
+msgid "Either"
+msgstr "Enten"
+
+msgid "Either gender"
+msgstr "Ene eller andre kjønn"
+
+msgid "Email user"
+msgstr "Email bruker"
+
+msgid "Expired"
+msgstr "Utgått"
+
+msgid "Female"
+msgstr "Kvinne"
+
+msgid "Gender"
+msgstr "Kjønn"
+
+msgid "Gender - Smoking Preference"
+msgstr "Kjønn - Røyke preferanse"
+
+msgid "Gender preference"
+msgstr "Kjønn Preferanse"
+
+msgid "Go"
+msgstr "Gå"
+
+msgid "I am"
+msgstr "Eg er"
+
+msgid "If you haven't set your leaving and arriving locations, you must add information to your comments."
+msgstr "Hvis du ikke har satt dine avgang og ankomst steder, må du legge til informasjon i dine kommentarer."
+
+msgid "Invalid leaving date"
+msgstr "Ugyldig avreise dato"
+
+msgid "Kilometers"
+msgstr "Kilometer"
+
+msgid "Leaving around"
+msgstr "Avreise rundt"
+
+msgid "Leaving from"
+msgstr "Avreise fra"
+
+msgid "Leaving from/on"
+msgstr "Avreise fra/den"
+
+msgid "Leaving on"
+msgstr "Avreise den"
+
+msgid "Locations"
+msgstr "Steder"
+
+msgid "Looking for"
+msgstr "Ser etter"
+
+msgid "Looking for a ride"
+msgstr "Ser etter tur"
+
+msgid "Male"
+msgstr "Mann"
+
+msgid "Miles"
+msgstr "Mil"
+
+#, php-format
+msgid "Need a ride from <strong>%s</strong> on or around <strong>%s</strong> to <strong>%s</strong>."
+msgstr "Trenger tur fra <strong>%s</strong> den eller rundt den <strong>%s</strong> til <strong>%s</strong>."
+
+#, php-format
+msgid "Need a ride from <strong>%s</strong> on or around <strong>%s</strong>."
+msgstr "Trenger tur fra <strong>%s</strong> den eller rundt den <strong>%s</strong>."
+
+#, php-format
+msgid "Need a ride on or around <strong>%s</strong>."
+msgstr "Trenger tur den eller rundt den <strong>%s</strong>."
+
+#, php-format
+msgid "Need a ride to <strong>%s</strong> on or around <strong>%s</strong>."
+msgstr "Trenger tur til <strong>%s</strong> den eller rundt den <strong>%s</strong>."
+
+msgid "New location"
+msgstr "Ny plassering"
+
+msgid "No default"
+msgstr "Ingen standard"
+
+msgid "No rides found fitting your criteria."
+msgstr "Ingen turer funnet som passer dine kriterier."
+
+msgid "No rides need purging."
+msgstr "Ingen turer trenger trekking."
+
+msgid "Non-smokers only"
+msgstr "Kun ikke røyk"
+
+msgid "Not indicated"
+msgstr "Ikke indikert"
+
+msgid "Offering to drive"
+msgstr "Tilbyr å kjøre"
+
+msgid "Please give your ride a trip title."
+msgstr "Vennligst gi din kjøretur en tur tittel."
+
+msgid "Post ride"
+msgstr "Send inn tur"
+
+msgid "Prefer smokers"
+msgstr "Foretrekker røykere"
+
+msgid "Read more"
+msgstr "Les mer"
+
+msgid "Removing location table."
+msgstr "Fjerner plassering tabell."
+
+msgid "Removing ride."
+msgstr "Fjerner tur."
+
+msgid "Return to Ride Board menu."
+msgstr "Returner til Ride Board meny."
+
+msgid "Ride posted!"
+msgstr "Kjøretur sendt inn!"
+
+msgid "Rideboard"
+msgstr "Rideboard"
+
+msgid "Rideboard Settings"
+msgstr "Rideboard innstillinger"
+
+msgid "Rider"
+msgstr "Kjører"
+
+msgid "Save settings"
+msgstr "Lagre innstillinger"
+
+msgid "Search for ride"
+msgstr "Søk etter kjøretur"
+
+msgid "Search for rides"
+msgstr "Søk etter kjøreturer"
+
+msgid "Search rides"
+msgstr "Søk kjøreturer"
+
+msgid "Search words"
+msgstr "Søk ord"
+
+msgid "Settings"
+msgstr "Innstillinger"
+
+#, php-format
+msgid "Sharing (driving or riding) a ride from <strong>%s</strong> on or around <strong>%s</strong> to <strong>%s</strong>."
+msgstr "Deler (kjører eller passasjer) en tur fra <strong>%s</strong> den eller rundt den <strong>%s</strong> til <strong>%s</strong>."
+
+#, php-format
+msgid "Sharing (driving or riding) a ride from <strong>%s</strong> on or around <strong>%s</strong>."
+msgstr "Deler (kjører eller passasjer) en tur fra <strong>%s</strong> den eller rundt den <strong>%s</strong>."
+
+#, php-format
+msgid "Sharing (driving or riding) a ride on or around <strong>%s</strong>."
+msgstr "Deler (kjører eller passasjer) en tur den eller rundt den <strong>%s</strong>."
+
+#, php-format
+msgid "Sharing (driving or riding) a ride to <strong>%s</strong> on or around <strong>%s</strong>."
+msgstr "Deler (kjører eller passasjer) en tur til <strong>%s</strong> den eller rundt den <strong>%s</strong>."
+
+msgid "Smokers please"
+msgstr "Røykere vennligst"
+
+msgid "Smoking"
+msgstr "Røyking"
+
+msgid "Smoking not important"
+msgstr "Røyking ikke viktig"
+
+msgid "Smoking preference"
+msgstr "Røyking preferanse"
+
+msgid "Sorry"
+msgstr "Beklager"
+
+msgid "The ride has expired."
+msgstr "Kjøreturen er utgått."
+
+msgid "This ride could not be found."
+msgstr "Kjøreturen ble ikke funnet."
+
+msgid "Trip title"
+msgstr "Tur tittel"
+
+msgid "View my Rides"
+msgstr "Se mine Kjøreturer"
+
+msgid "View my rides"
+msgstr "Se mine kjøreturer"
+
+#, php-format
+msgid "You are limited to %s ride posts per account."
+msgstr "Du er begrenset til %s tur innsendinger per konto."
+
+msgid "You do not have any rides."
+msgstr "Du har ingen kjøreturer."
+
+#, php-format
+msgid "You have %s ride that has expired. Click here to purge it."
+msgid_plural "You have %s rides that have expired. Click here to purge them."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Your leaving and arriving locations must be different."
+msgstr "Din avgangs dato og ankomst dato må være forskjellige."
+
+msgid "Your leaving date must be in the future."
+msgstr "Din avgangs dato må være i fremtiden."
+
+msgid "Your session timed out."
+msgstr "Din session tid er ute"
+
+msgid "uncheck to disregard"
+msgstr "fjern merket for å overse"
+

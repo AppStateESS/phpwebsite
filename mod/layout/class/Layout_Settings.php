@@ -10,31 +10,32 @@
 PHPWS_Core::initModClass('layout', 'Box.php');
 
 class Layout_Settings {
-    var $current_theme    = NULL;
-    var $default_theme    = NULL;
+    var $current_theme    = null;
+    var $default_theme    = null;
     var $userAllow        = 0;
-    var $page_title       = NULL;
-    var $meta_keywords    = NULL;
-    var $meta_description = NULL;
-    var $meta_robots      = NULL;
-    var $meta_owner       = NULL;
-    var $meta_author      = NULL;
-    var $meta_content     = NULL;
-    var $header           = NULL;
-    var $footer           = NULL;
-    var $cache            = TRUE;
+    var $page_title       = null;
+    var $meta_keywords    = null;
+    var $meta_description = null;
+    var $meta_robots      = null;
+    var $meta_owner       = null;
+    var $meta_author      = null;
+    var $meta_content     = null;
+    var $header           = null;
+    var $footer           = null;
+    var $cache            = true;
+    var $head_tags        = null;
 
     // !!! Make sure to update your saveSettings function !!!
     // Remove all hidden variables from the update
     var $_contentVars     = array();
     var $_boxes           = array();
     var $_box_order       = array();
-    var $_move_box        = FALSE;
-    var $_theme_variables = NULL;
-    var $_default_box     = NULL;
-    var $_style_sheets    = NULL;
-    var $_extra_styles    = NULL;
-    var $_key_styles      = NULL;
+    var $_move_box        = false;
+    var $_theme_variables = null;
+    var $_default_box     = null;
+    var $_style_sheets    = null;
+    var $_extra_styles    = null;
+    var $_key_styles      = null;
     var $_allowed_move    = null;
     var $_true_theme      = null;
 
@@ -51,7 +52,7 @@ class Layout_Settings {
         if (isset($this->_boxes[$module][$contentVar])) {
             return $this->_boxes[$module][$contentVar]->getThemeVar();
         } else {
-            return FALSE;
+            return false;
         }
     }
 
@@ -60,11 +61,11 @@ class Layout_Settings {
         if (isset($this->_boxes[$module][$contentVar])) {
             return $this->_boxes[$module][$contentVar]->getBoxOrder();
         } else {
-            return FALSE;
+            return false;
         }
     }
 
-    function getPageTitle($only_root=FALSE)
+    function getPageTitle($only_root=false)
     {
         if (isset($GLOBALS['Layout_Page_Title_Add']) && !$only_root) {
             return implode(PAGE_TITLE_DIVIDER, $GLOBALS['Layout_Page_Title_Add']) . PAGE_TITLE_DIVIDER . $this->page_title;
@@ -76,6 +77,11 @@ class Layout_Settings {
     function getContentVars()
     {
         return $this->_contentVars();
+    }
+
+    function getHeadTags()
+    {
+        return $this->head_tags;
     }
 
     function getMetaTags()
@@ -166,7 +172,7 @@ class Layout_Settings {
     function loadSettings($theme=null)
     {
         $db = new PHPWS_DB('layout_config');
-        $result = $db->loadObject($this, FALSE);
+        $result = $db->loadObject($this, false);
 
         if (PEAR::isError($result)){
             PHPWS_Error::log($result);
@@ -184,7 +190,7 @@ class Layout_Settings {
         $themeInit = 'themes/' . $this->current_theme . '/theme.ini';
 
         if (is_file($themeInit)){
-            $themeVars = parse_ini_file($themeInit, TRUE);
+            $themeVars = parse_ini_file($themeInit, true);
             $this->loadBoxSettings($themeVars);
             $this->loadStyleSheets($themeVars);
         } else {
@@ -195,8 +201,8 @@ class Layout_Settings {
 
     function loadStyleSheets($themeVars)
     {
-        $this->_extra_styles = NULL;
-        $this->_style_sheets = NULL;
+        $this->_extra_styles = null;
+        $this->_style_sheets = null;
         $directory = sprintf('themes/%s/', $this->current_theme);
         @$cookie = PHPWS_Cookie::read('layout_style');
 
@@ -211,9 +217,9 @@ class Layout_Settings {
                 if ($cookie && is_file($directory . $cookie)) {
                     if (isset($style['title'])) {
                         if ($cookie == $style_file) {
-                            $style['alternate'] = FALSE;
+                            $style['alternate'] = false;
                         } else {
-                            $style['alternate'] = TRUE;
+                            $style['alternate'] = true;
                         }
                     }
                 }
@@ -286,12 +292,12 @@ class Layout_Settings {
         $result = $db->select('one');
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $this->_key_styles[$key_id] = NULL;
-            return FALSE;
+            $this->_key_styles[$key_id] = null;
+            return false;
         }
 
         $this->_key_styles[$key_id] = $result;
-        return TRUE;
+        return true;
     }
 
 }

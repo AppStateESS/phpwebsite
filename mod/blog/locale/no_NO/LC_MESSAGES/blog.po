@@ -1,0 +1,375 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-03-07 12:13-0500\n"
+"PO-Revision-Date: 2008-04-06 21:22+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "A problem occured with your submission. Please try again later."
+msgstr "Et problem oppstod med ditt innlegg. Vennligst prøv igjen senere."
+
+msgid "A problem occurred when trying to disapprove this entry."
+msgstr "Et problem oppstod ved forsøk på å forkaste dette innlegget."
+
+msgid "A version of this entry is awaiting approval."
+msgstr "En versjon av dette innlegget venter på godkjennelse."
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Add entry"
+msgstr "Legg til innlegg"
+
+msgid "Add new blog"
+msgstr "Leg til ny blog"
+
+msgid "Allow anonymous comments"
+msgstr "Tillat anonyme kommentarer"
+
+msgid "Allow anonymous comments by default"
+msgstr "Tillat anonyme kommentarer som standard"
+
+msgid "Allow anonymous submissions"
+msgstr "Tillat anonyme innsendelser"
+
+msgid "Allow comments"
+msgstr "Tillat kommentarer"
+
+msgid "Allow comments by default"
+msgstr "Tillat kommentarer som standard"
+
+msgid "Always"
+msgstr "Alltid"
+
+msgid "An error occurred when saving your version."
+msgstr "En feil oppstod ved forsøk på å lagre din versjon."
+
+msgid "An error occurred when trying to save your entry. Please check your logs."
+msgstr "En feil oppstod ved forsøk på å lagre ditt innlegg. Vennligst sjekk dine logger."
+
+msgid "Anonymous"
+msgstr "Anonyme"
+
+#, php-format
+msgid "Approval (%s)"
+msgstr "Godkjenning  (%s)"
+
+msgid "Approval list"
+msgstr "Godkjenning liste"
+
+msgid "Approve"
+msgstr "Godkjenn"
+
+msgid "Are you sure you want to permanently delete this blog entry?"
+msgstr "Er du sikker på aat du ønsker å slette dette blog innlegget?"
+
+msgid "Blog Archive"
+msgstr "Blog arkiv"
+
+msgid "Blog Entries Awaiting Approval"
+msgstr "Blog Innlegg Avventer Godkjenning"
+
+msgid "Blog Restore"
+msgstr "Blog Gjenopprett"
+
+msgid "Blog Settings"
+msgstr "Blog Innstillinger"
+
+msgid "Blog entry approved."
+msgstr "Blog innlegg godkjendt."
+
+msgid "Blog entry deleted."
+msgstr "Blog innleggslettet."
+
+msgid "Blog entry disapproved."
+msgstr "Blog innlegg ikke godkjendt."
+
+msgid "Blog entry removed."
+msgstr "Blog innlegg fjernet."
+
+msgid "Blog entry restored."
+msgstr "Blog innlegg gjenopprettet."
+
+msgid "Blog list"
+msgstr "Blog liste"
+
+msgid "Blog settings saved."
+msgstr "Blog innstillinger lagret."
+
+msgid "Blog tables removed."
+msgstr "Blog tabeller fjernet."
+
+msgid "Blog view limit"
+msgstr "Blog visning begrensning"
+
+msgid "CAPTCHA submissions"
+msgstr "CAPTCHA innsendinger"
+
+msgid "Cache anonymous view"
+msgstr "Cache anonym visning"
+
+msgid "Category"
+msgstr "Kategori"
+
+msgid "Change settings (Unrestricted only)"
+msgstr "Forandre innstilling (Bare Ubegrenset)"
+
+msgid "Clip for menu"
+msgstr "Hekt på meny"
+
+msgid "Comment"
+msgstr "Kommentar"
+
+msgid "Create first blog entry!"
+msgstr "Opprett ditt første blog innlegg!"
+
+msgid "Creation"
+msgstr "Opprett"
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Delete blog"
+msgstr "Slett blog"
+
+msgid "Disapprove"
+msgstr "Ikke godkjenn"
+
+msgid "Do not show"
+msgstr "Ikke vis"
+
+msgid "Edit"
+msgstr "Endre"
+
+msgid "Edit blog"
+msgstr "Endre blog"
+
+msgid "Entry"
+msgstr "Innlegg"
+
+msgid "Entry saved successfully."
+msgstr "Innlegg lagret OK."
+
+msgid "Expire"
+msgstr "Utgår"
+
+msgid "Expire date/time"
+msgstr "Utgår dato/tid"
+
+msgid "Hide general image folders"
+msgstr "Gjem generel bilde mappe"
+
+msgid "Image url"
+msgstr "Bilde url"
+
+msgid "Last poster"
+msgstr "Siste "
+
+msgid "Link resized image to parent"
+msgstr "Link endret størrelse på bilde til overordnet"
+
+msgid "Link setting (if image)"
+msgstr "Link instilling (hvis bilde)"
+
+msgid "Link the url below"
+msgstr "Link url under"
+
+msgid "Link to read more"
+msgstr "Link til les mer"
+
+msgid "List"
+msgstr "Liste"
+
+msgid "Maximum image height (50-2048)"
+msgstr "Maksimum bilde høyde (50-2048)"
+
+msgid "Maximum image width (50-2048)"
+msgstr "Maksibum bilde bredde (50-2048)"
+
+msgid "Missing title."
+msgstr "Mangler tittel"
+
+msgid "New"
+msgstr "Ny"
+
+msgid "New Blog Entry"
+msgstr "Ny blog innlegg"
+
+msgid "Next page"
+msgstr "Neste side"
+
+msgid "No action"
+msgstr "Ingen handling"
+
+msgid "No expiration"
+msgstr "Ingen opphør"
+
+msgid "No link and ignore image link setting"
+msgstr "Ingen link og ignorer bilde link innstilling"
+
+msgid "No link but allow image link setting"
+msgstr "Ingen link men tillat bilde link innstilling"
+
+msgid "No title"
+msgstr "Ingen tittel"
+
+msgid "Number of past entries"
+msgstr "Antall tidligere innlegg"
+
+msgid "Only on home page"
+msgstr "Kun på hovedsiden"
+
+msgid "Only show one category icon"
+msgstr "Vis kun ett kategori ikon"
+
+msgid "Please enter word in image correctly."
+msgstr "Vennligst legg til ord i bilde kategori."
+
+msgid "Post current thoughts, happenings, and discussions."
+msgstr "Post gjeldende tanker, hendelser, og diskusjoner."
+
+msgid "Posted by"
+msgstr "Lagt inn av"
+
+msgid "Posted on"
+msgstr "Lagt inn den"
+
+msgid "Previous blog entries"
+msgstr "Forrige blog innlegg"
+
+msgid "Previous page"
+msgstr "Forrige side"
+
+msgid "Publish"
+msgstr "Offentliggjøre"
+
+msgid "Publish date/time"
+msgstr "Offentliggjort dato/tid"
+
+msgid "Read more"
+msgstr "Les mer"
+
+msgid "Recent blog entries"
+msgstr "Nylige blog innlegg"
+
+msgid "Repeat submission"
+msgstr "Gjenta anførsel"
+
+msgid "Reset cache"
+msgstr "Resett cache"
+
+msgid "Restore"
+msgstr "Gjenopprett"
+
+msgid "Save Changes and Approve"
+msgstr "Lagre Forandringer og Godkjenn"
+
+msgid "Save settings"
+msgstr "Lagre innstillinger"
+
+msgid "Set to zero to prevent display"
+msgstr "Sett til null for å forhindre visning"
+
+msgid "Settings"
+msgstr "Innstillinger"
+
+msgid "Show blog on home page"
+msgstr "Vis blog på hjemmesiden"
+
+msgid "Show category icons"
+msgstr "Vis kategori ikoner"
+
+msgid "Show category links"
+msgstr "Vis kategori linker"
+
+msgid "Show recent entries"
+msgstr "Vis nylige innlegg"
+
+msgid "Site is not accepting anonymous submissions."
+msgstr "Siden aksepterer ikke anonyme innlegg"
+
+msgid "Sorry"
+msgstr "Beklager"
+
+msgid "Sticky"
+msgstr "Klebrig"
+
+msgid "Submit Entry"
+msgstr "Send inn Innlegg"
+
+msgid "Submit entry"
+msgstr "Send inn innlegg"
+
+msgid "Suggest entry"
+msgstr "Foreslå innlegg"
+
+msgid "Summary"
+msgstr "Sammendrag"
+
+msgid "System caching disabled."
+msgstr "System caching deaktivisert."
+
+msgid "Thank you"
+msgstr "Tusen takk"
+
+msgid "This version has not been approved."
+msgstr "Denne versjonen har ikke blitt godkjendt."
+
+msgid "Title"
+msgstr "Tittel"
+
+msgid "Tried to edit an unapproved item."
+msgstr "Forsøkte å endre et ikke godkjendt objekt."
+
+msgid "Type the word seen in the image."
+msgstr "Tast inn ordet som avbildet"
+
+msgid "Unsticky"
+msgstr "Uklebrig"
+
+msgid "Update Blog Entry"
+msgstr "Oppdater blog innlegg"
+
+msgid "Update Unapproved Blog Entry"
+msgstr "Oppdater ikke godkjendt blog innlegg"
+
+msgid "Update entry"
+msgstr "Oppdater innlegg"
+
+msgid "Use Image Manager"
+msgstr "Bruk Image Manager"
+
+msgid "User attempted access to Blog administration."
+msgstr "Bruker prøvde å aksessere blog administrasjonen."
+
+msgid "User tried to edit a blog."
+msgstr "Bruker forsøkte å endre en blog."
+
+msgid "View"
+msgstr "Se"
+
+msgid "View version"
+msgstr "Se versjon"
+
+msgid "Your entry has been submitted for review."
+msgstr "Ditt innlegg har blitt sendt for anmeldelse."
+
+msgid "Your entry is being held for approval."
+msgstr "Ditt innlegg er holdt tilbake for godkjenning"
+
+msgid "Your submission is still awaiting approval."
+msgstr "Ditt innlegg venter fremdeles på godkjenning"
+
+msgid "Your submission must have a summary."
+msgstr "Din innsendelse må ha et sammendrag."
+

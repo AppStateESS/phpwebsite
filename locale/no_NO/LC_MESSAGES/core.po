@@ -1,0 +1,1292 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-03-07 12:14-0500\n"
+"PO-Revision-Date: 2008-04-06 21:35+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "%s days ago"
+msgstr "%s dager siden"
+
+#, php-format
+msgid "%s hours ago"
+msgstr "%s timer siden"
+
+#, php-format
+msgid "%s mins ago"
+msgstr "%s minutter siden"
+
+#, php-format
+msgid "%s weeks ago"
+msgstr "%s uker siden"
+
+msgid "1 day ago"
+msgstr "1 dag siden"
+
+msgid "1 hour ago"
+msgstr "1 time siden"
+
+msgid "1 week ago"
+msgstr "1 uke siden"
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Add"
+msgstr "Legg til"
+
+msgid "After you finish installing your modules in Boost, you should make your config and template directories non-writable."
+msgstr "Etter at du er ferdig med å installere dine moduler i Boost, bør du skrivebeskytte din config og template mapper."
+
+msgid "Albums converted and keyed."
+msgstr "Albumer forandret og fastkilt."
+
+msgid "All"
+msgstr "Alle"
+
+msgid "All done!"
+msgstr "Alt utført!"
+
+msgid "An error occurred when accessing the conversion database."
+msgstr "En feil oppstod ved tilkobling til konvertering databasen."
+
+msgid "An error occurred when trying to copy your mod_phatform_checkbox table."
+msgstr "En feil oppstod ved forsøk på å kopiere din mod_phatform_checkbox tabell."
+
+msgid "An error occurred when trying to copy your mod_phatform_dropbox table."
+msgstr "En feil oppstod ved forsøk på å kopiere din mod_phatform_dropbox tabell."
+
+msgid "An error occurred when trying to copy your mod_phatform_multiselect table."
+msgstr "En feil oppstod ved forsøk på å kopiere din mod_phatform_multiselect tabell."
+
+msgid "An error occurred when trying to copy your mod_phatform_options table."
+msgstr "En feil oppstod ved forsøk på å kopiere din mod_phatform_options tabell."
+
+msgid "An error occurred when trying to copy your mod_phatform_radiobutton table."
+msgstr "En feil oppstod ved forsøk på å kopiere din mod_phatform_radiobutton tabell."
+
+msgid "An error occurred when trying to copy your mod_phatform_textarea table."
+msgstr "En feil oppstod ved forsøk på å kopiere din mod_phatform_textarea tabell."
+
+msgid "An error occurred when trying to copy your mod_phatform_textfield table."
+msgstr "En feil oppstod ved forsøk på å kopiere din mod_phatform_textfield tabell."
+
+msgid "An error occurred when trying to copy your mod_photoalbum_photos table."
+msgstr "En feil oppstod ved forsøk på å kopiere din mod_photoalbum_photos tabell."
+
+msgid "An error occurred while accessing your Document tables."
+msgstr "En feil oppstod ved tilkobling til din Document tabell."
+
+msgid "An error occurred while accessing your mod_blockmaker_data table."
+msgstr "En feil oppstod ved tilkobling til din mod_blockmaker_data tabell."
+
+msgid "An error occurred while converting your old blocks."
+msgstr "En feil oppstod ved konvertering av dine gamle blocks."
+
+msgid "An error occurred while converting your old documents."
+msgstr "En feil oppstod ved konvertering av dine gamle dokumenter."
+
+msgid "An error occurred while converting your old phatfiles."
+msgstr "En feil oppstod ved konvertering av dine gamle phatfiles."
+
+msgid "An error occurred while trying to convert your old file modules."
+msgstr "En feil oppstod ved forsøk på konvertering av dine gamle fil moduler."
+
+msgid "An error occurred while trying to install your modules."
+msgstr "En feil oppstod ved forsøk på installering av dine moduler."
+
+msgid "An unrecoverable error occurred. Check your logs."
+msgstr "En uopprettelig feil oppstod. Sjekk dine logger."
+
+msgid "Announcements is not installed in this database."
+msgstr "Announcements er ikke installert på denne databasen."
+
+msgid "Any content modules using FatCat should be converted BEFORE continuing."
+msgstr "Enhver innholdsmodul som benytter FatCat bør konverteres FØR du fortsetter."
+
+msgid "Any content modules using Menu Manager should be converted BEFORE continuing.."
+msgstr "Enhver innholdsmodul som benytter Menu Manager bør konverteres FØR du fortsetter."
+
+msgid "Approved"
+msgstr "Godkjent"
+
+msgid "Array contained no values."
+msgstr "Tabell inneholder ingen verdier."
+
+msgid "Attempted cross-site scripting attack."
+msgstr "Forsøk på cross-site scripting angrep."
+
+msgid "Automatic mode converts the data without your interaction."
+msgstr "Automatisk modus konverterer dataene uten din innvirkning."
+
+msgid "Back 10 pages"
+msgstr "Tilbake 10 sider"
+
+msgid "Back 50 pages"
+msgstr "Tilbake 50 sider"
+
+msgid "Back one page"
+msgstr "Tilbake en side"
+
+msgid "Batch previously run."
+msgstr "Gruppe tidligere kjørt."
+
+msgid "Begin Installation"
+msgstr "Start Innstallasjon"
+
+msgid "Blank module title sent to get function."
+msgstr "Blank modul tittel sendt for funksjon."
+
+msgid "Block is already converted."
+msgstr "Block er alt konvertert."
+
+msgid "Block is not installed."
+msgstr "Block er ikke installert."
+
+msgid "Blocks converted."
+msgstr "Blocks konvertert."
+
+msgid "Blog has already been converted."
+msgstr "Blog er alt konvertert."
+
+msgid "Blog is not installed."
+msgstr "Blog er ikke installert."
+
+#, php-format
+msgid "Branch : %s"
+msgstr "Branch : %s"
+
+msgid "Cache Lite is disabled."
+msgstr "Cache Lite er deaktivert."
+
+msgid "Cache Lite is enabled."
+msgstr "Cache Lite er aktivert."
+
+msgid "Calendar has already been converted."
+msgstr "Calendar er alt konvertert."
+
+msgid "Calendar is not installed in other database."
+msgstr "Calendar er ikke installert i noen annen database."
+
+msgid "Calendar is not installed."
+msgstr "Calendar er ikke installert."
+
+msgid "Can not change name. Already in use."
+msgstr "Kan ikke endre navn. Alt i bruk."
+
+msgid "Cannot read file."
+msgstr "Kan ikke lese fil."
+
+msgid "Categories has already been converted."
+msgstr "Categories har alt blitt  konvertert."
+
+msgid "Change to"
+msgstr "Forandre til"
+
+msgid "Check Directory Permissions is enabled so be sure to secure your config and templates directories!"
+msgstr "Sjekk Mappe Tillatelser er aktivisert for å være sikker på at dine config og template mappene er sikret!"
+
+msgid "Check all"
+msgstr "Sjekk alle"
+
+msgid "Check box table failed to copy successfully."
+msgstr "Check box tabell feilet å kopiere."
+
+msgid "Check box table imported successfully."
+msgstr "Check box tabell ble importert OK."
+
+msgid "Check your configuration settings."
+msgstr "Sjekk dine konfigurasjons instillinger."
+
+msgid "Class Name"
+msgstr "Class navn"
+
+msgid "Class does not contain variables."
+msgstr "Class inneholder ingen verdier."
+
+msgid "Class does not exist."
+msgstr "Class eksisterer ikke."
+
+msgid "Class not found."
+msgstr "Class ble ikke funnet."
+
+msgid "Class not set."
+msgstr "Class ikke fastsatt."
+
+msgid "Clear"
+msgstr "Fjern"
+
+msgid "Click on the method you wish to use."
+msgstr "Klikk på den metoden du ønsker å benytte."
+
+msgid "Click the link below to continue or change your connection settings."
+msgstr "Klikk på linken under for å fortsette eller endre dine tilkoblings innstillinger."
+
+msgid "Click to continue anyway."
+msgstr "Klikk for å fortsette allikevel."
+
+msgid "Close"
+msgstr "Steng"
+
+#, php-format
+msgid "Coming from: %s"
+msgstr "Kommer fra: %s"
+
+msgid "Connect"
+msgstr "Tilkoble"
+
+#, php-format
+msgid "Connected to database \"%s\""
+msgstr "Tilkoblet til database \"%s\""
+
+msgid "Continue"
+msgstr "Fortsett"
+
+msgid "Continue conversion. . ."
+msgstr "Fortsett konvertering. . ."
+
+msgid "Continue to Module Installation"
+msgstr "Fortsett til Module Innstallasjon"
+
+msgid "Continue to convert category elements."
+msgstr "Fortsett for å konvertere category elementer."
+
+msgid "Continue to convert menu links."
+msgstr "Fortsett for å konvertere meny linker."
+
+msgid "Continue: Convert everyone."
+msgstr "Fortsett: Konverter enhver."
+
+msgid "Continue: Only those logged on within 6 months."
+msgstr "Continue: Bare de innlogget innen de siste 6 måneder."
+
+msgid "Continue: Only those logged on within the last year."
+msgstr "Continue: Bare de innlogget innen de siste året."
+
+msgid "Conversion"
+msgstr "Konvertering"
+
+msgid "Conversion site"
+msgstr "Konvertering side"
+
+msgid "Conversion will begin as soon as you make your choice."
+msgstr "Konvertering vil startes så snart du har gjort dine valg."
+
+msgid "Convert everyone."
+msgstr "Konverter enhver."
+
+msgid "Convert menu links"
+msgstr "Konverter meny linker"
+
+msgid "Convert menus"
+msgstr "Konverter menyer"
+
+msgid "Convert!"
+msgstr "Konvnter!"
+
+msgid "Converted"
+msgstr "Konvertert"
+
+#, php-format
+msgid "Copy all the files you need converted into your %s directory."
+msgstr "Kopier alle filene du ønsker konvertert til din %s mappe."
+
+msgid "Core installation successful."
+msgstr "Core installasjon OK."
+
+#, php-format
+msgid "Could not copy file %s to %s."
+msgstr "Kunne ikke kopiere filen %s til %s."
+
+#, php-format
+msgid "Could not find info file. File : %s"
+msgstr "Kunne ikke finne info filen. File : %s"
+
+msgid "Could not find key unregister file."
+msgstr "Kunne ikke finne nøkkel uregistrert fil."
+
+msgid "Could not find key unregister function."
+msgstr "Kunne ikke finne nøkkel uregistrert funksjon."
+
+#, php-format
+msgid "Could not locate file: %s"
+msgstr "Kunne ikke finne fil: %s"
+
+msgid "Create Config File"
+msgstr "Opprett Config Fil"
+
+msgid "Create Core"
+msgstr "Opprett Core"
+
+msgid "Create Database"
+msgstr "Opprett Database"
+
+msgid "Current sessions:"
+msgstr "Aktuelle sessions:"
+
+msgid "DB Operator:"
+msgstr "DB Operatør:"
+
+msgid "Database Help"
+msgstr "Database Hjelp"
+
+msgid "Database Name"
+msgstr "Database Navn"
+
+msgid "Database Password"
+msgstr "Database Passord"
+
+msgid "Database Type"
+msgstr "Database Type"
+
+msgid "Database User"
+msgstr "Database Bruker"
+
+msgid "Database columns not set."
+msgstr "Database kolonner ikke fastsatt."
+
+msgid "Database import failed."
+msgstr "Database import feilet."
+
+msgid "Database name"
+msgstr "Database navn"
+
+msgid "Database password may contain alphanumeric characters or underscores only."
+msgstr "Database passord kan bare inneholde alfanumerisk tegn eller understrek."
+
+msgid "Declared classes:"
+msgstr "Erklært classes:"
+
+msgid "Description"
+msgstr "Forklaring"
+
+msgid "Directories are not secure."
+msgstr "Mappene er ikke sikre."
+
+msgid "Directory Permissions"
+msgstr "Mappe Tillatelser"
+
+msgid "Directory is not writable."
+msgstr "Mappen er skrivebeskyttet."
+
+msgid "Do you want phpWebSite to create the database?"
+msgstr "Ønsker du at PHPWebSite skal opprette Databasen?"
+
+msgid "Documents module converted."
+msgstr "Document modulen konvertert."
+
+msgid "Documents module did not contain any files."
+msgstr "Document module inneholder ingen filer."
+
+msgid "Documents module not installed or empty."
+msgstr "Dokument modul er ikke installert, eller er tom."
+
+msgid "Drop box table failed to copy successfully."
+msgstr "Drop box tabell feilet i å kopiere."
+
+msgid "Drop box table imported successfully."
+msgstr "Drop box tabell importerte OK."
+
+msgid "Duplicate key found."
+msgstr "Duplikat nøkkel funnet."
+
+msgid "Edit permission column does not exist."
+msgstr "Endre tillatelse kolonne eksisterer ikke."
+
+msgid "Enter the database's user password here."
+msgstr "Legg til databasens bruker passord her."
+
+msgid "Error"
+msgstr "Feil"
+
+msgid "Error when creating a new folder."
+msgstr "Feil ved oprettelse av ny mappe."
+
+msgid "Events pulled from 0.10.x calendar module."
+msgstr "Begivenhet trukket fra 0.10.x kalender modul."
+
+#, php-format
+msgid "Execution time: %s seconds."
+msgstr "Utførelses tid: %s sekunder."
+
+msgid "Expecting an object variable."
+msgstr "Forventet en objekt variabel."
+
+msgid "Failed to connect."
+msgstr "Tilkobling feilet."
+
+msgid "Failed to make connection with the requested branch site."
+msgstr "Feilet i å opprette tilkobling til forespurte branch side."
+
+msgid "Failed to run batch. Check your session settings."
+msgstr "Feilet i å kjøre gruppe. Sjekk dine session innstillinger."
+
+msgid "Failed to write cookie."
+msgstr "Feilet i å opprette cookie."
+
+msgid "File Cabinet converted."
+msgstr "File Cabinet konvertert."
+
+msgid "File Cabinet has already converted Documents files."
+msgstr "File Cabinet har alt konvertert Document filer."
+
+msgid "File not found in _FILES array."
+msgstr "Fil ikke funnet i _FILES tabell."
+
+msgid "File not found."
+msgstr "Fil ikke funnet."
+
+msgid "File not writable."
+msgstr "Fil er skrivebeskyttet."
+
+msgid "Finished converting Photo Album."
+msgstr "Ferdig konvertering av Photo Album"
+
+msgid "Finished converting categories!"
+msgstr "Ferdig konvertering av categories!"
+
+msgid "Finished converting category items!"
+msgstr "Ferdig konvertering av category objekter"
+
+msgid "Finished converting links."
+msgstr "Ferdig konvertering av linker"
+
+msgid "Form"
+msgstr "Skjema"
+
+msgid "Form Generator does not appear to be installed in the source database."
+msgstr "Form Generator virker som ikke er installert i kilde databasen."
+
+msgid "Form Generator has already been converted."
+msgstr "Form Generater er alt konvertert."
+
+msgid "Form Generator is not installed in the supplied database."
+msgstr "Form Generator er ikke installert i tilbydt database."
+
+msgid "Form Generator is not installed locally."
+msgstr "Form Generator er ikke installert lokalt."
+
+msgid "Form generator forms converted and keyed!"
+msgstr "Form generator skjema er konvertert og kilt."
+
+msgid "Forward 10 pages"
+msgstr "Frem 10 sider"
+
+msgid "Forward 50 pages"
+msgstr "Frem 50 sider"
+
+msgid "Forward one page"
+msgstr "Frem en side"
+
+msgid "Function expected a string variable."
+msgstr "Funksjon forventet en snor variabel"
+
+msgid "Function name not found."
+msgstr "Funksjons navn ikke funnet"
+
+msgid "Function was expecting a \"where\" parameter."
+msgstr "funksjon forventet en \"where\" parameter."
+
+msgid "GD image libraries do not support this image type."
+msgstr "GD image bibliotek støtter ikke dette bilde typen."
+
+msgid "Go"
+msgstr "Gå"
+
+msgid "Go back to main menu."
+msgstr "Gå tilbake til hoved meny."
+
+msgid "Go to my new website!"
+msgstr "Gå til min nye hjemmeside!"
+
+msgid "Help option not found in help configuration file."
+msgstr "Hjelp valg ikke funnet i hjelp konfigursjons fil."
+
+msgid "Hidden"
+msgstr "Gjemt"
+
+msgid "Home"
+msgstr "Hjem"
+
+msgid "Host"
+msgstr "Vert"
+
+msgid "Host Specification"
+msgstr "Vert Spekifikasjon"
+
+msgid "Host Specification Port"
+msgstr "Vert Spekifikasjon Port"
+
+msgid "Hub site"
+msgstr "Nettnav Side"
+
+msgid "I want to install phpWebSite in this database."
+msgstr "Eg ønsker å installere phpWebSite på denne databasen."
+
+msgid "Id and table not set."
+msgstr "Id og tabell ikke valgt."
+
+msgid "If not, you will need to create the database yourself and return to the setup."
+msgstr "Hvis ikke, må du opprette databasen og selv og returnere til oppsett."
+
+msgid "If the first user on your old site is not you, then you will need to recreate them."
+msgstr "Hvis brukeren på din gamle side ikke er, må du gjenopprette dem."
+
+msgid "If you are installing phpWebSite in a shared environment, you may assign a prefix to tables.<br />We recommend you run without one."
+msgstr "Hvis du innstallerer phpWebSite i en delt omgivelse, kan du benytte prefix til tabeller.<br />Vi anbefaler at du kjører uten."
+
+msgid "If you do not change it now, your next page will be an error screen."
+msgstr "Hvis du ikke forandrer det nå, vil din neste side være en feilvisning."
+
+msgid "If you encounter problems, you should use manual mode."
+msgstr "Hvis du møter problemer, bør du bruke manuell modus"
+
+msgid "If you experienced any error messages, check your error.log file."
+msgstr "Hvis du møter noen feil, sjekk din errer.log fil."
+
+msgid "If your database is on the same server as your phpWebSite installation, leave this as &#x22;localhost&#x22;."
+msgstr "Hvis din databases ligger på samme server som din phpWebSite installasjon, la dette være som &#x22;localhost&#x22;."
+
+msgid "If your host specification requires access via a specific port, enter it here."
+msgstr "Hvis din vert spesifikasjon påkrever tilgang via en spesifikk port, legg den inn her."
+
+msgid "Images copied during a 0.10.x conversion."
+msgstr "Bilder kopiert under 0.10.x konversjon."
+
+msgid "Importing core database file."
+msgstr "Importer core database fil."
+
+msgid "Improper column name."
+msgstr "Ugyldig kolonne navn"
+
+msgid "Improper table name."
+msgstr "Ugyldig tabell navn."
+
+msgid "Improperly formated text."
+msgstr "Ugyldig formatert tekst."
+
+msgid "Input type not set."
+msgstr "Innførsel type ikke angitt."
+
+msgid "Install Modules"
+msgstr "Innstaller Moduler"
+
+msgid "Installation of phpWebSite is complete."
+msgstr "Innstallasjon av phpWebSite er ferdig."
+
+msgid "Installed modules"
+msgstr "Innstallerte moduler"
+
+msgid "Invalid value."
+msgstr "Ugyldig verdi."
+
+msgid "Join database does not exist."
+msgstr "Sammenføyning database eksisterer ikke."
+
+msgid "KEY"
+msgstr "NØKKEL"
+
+msgid "Key can not restrict items on phpws_key table alone."
+msgstr "Nøkkel kan ikke alene begrense objekter på _phpws_key tabell."
+
+msgid "Key not found."
+msgstr "Nøkkel ikke funnet."
+
+msgid "Limit"
+msgstr "Begrensning"
+
+msgid "List columns not set."
+msgstr "Liste kolonner ikke angitt."
+
+msgid "Log in"
+msgstr "Logg inn"
+
+msgid "Log out"
+msgstr "Logg ut"
+
+msgid "Login page"
+msgstr "Logg inn side"
+
+msgid "Login to Site Manager"
+msgstr "log inn til Side Manager"
+
+msgid "Main Menu"
+msgstr "Hoved Meny"
+
+msgid "Main page"
+msgstr "Hoved side"
+
+msgid "Manager cannot initialize, the module was not set."
+msgstr "Manager kan ikke initialise, modulen var ikke angitt."
+
+msgid "Manager configuration file is an improper format."
+msgstr "Manager konfigurasjon fil er av ugyldig format."
+
+#, php-format
+msgid "Manager configuration file not found for module: %s"
+msgstr "Manager konfigurasjon fil ikke funnet for module: %s"
+
+msgid "Manager was not fully initialized to get a list."
+msgstr "Manager var ikke helt initialisert for å få liste."
+
+msgid "Manual mode requires you to click through the conversion process."
+msgstr "Manuell modus krever at du har klikket deg igjennom konfigurasjons prosessen."
+
+msgid "Match for must be an array for a multiple input."
+msgstr "Jevnbyrdig som må være en tabell for flere innlegg."
+
+msgid "Menu conversion finished."
+msgstr "Meny konvertering ferdig."
+
+msgid "Menu has already been converted."
+msgstr "Meny har alt blitt konvertert."
+
+msgid "Menu is not installed."
+msgstr "Meny er ikke innstallert."
+
+msgid "Method 1 - Each section is placed into a separate page."
+msgstr "Metode 1 - Hver seksjon er plassert inni en separert side."
+
+msgid "Method 2 - Each section is collected into ONE page."
+msgstr "Metode 2 - Hver seksjon er plassert inni EN side."
+
+msgid "Method does not exist in specified class."
+msgstr "Metode eksisterer ikke i spesifisert class."
+
+msgid "Missing a database name."
+msgstr "Mangler en database navn."
+
+msgid "Missing a database password."
+msgstr "Mangler et database passord"
+
+msgid "Missing a database user name."
+msgstr "Mangler et database brukernavn."
+
+msgid "Missing column to select."
+msgstr "Mangler en kolonne å velge."
+
+msgid "Module not found."
+msgstr "Modul ikke funnet."
+
+msgid "Module not set."
+msgstr "Modul ikke angitt."
+
+msgid "Module title"
+msgstr "Modul tittel."
+
+msgid "Module was not set."
+msgstr "Modul ikke angitt."
+
+msgid "Move on to Step 2"
+msgstr "Fortsett til steg 2."
+
+msgid "Multi-select table failed to copy successfully."
+msgstr "Fler-valg tabell feilet i å kopiere."
+
+msgid "Multi-select table imported successfully."
+msgstr "Feir-valg tabell importert OK."
+
+msgid "Name not set."
+msgstr "Navn ikke valgt."
+
+msgid "No Images"
+msgstr "Ingen Bilder."
+
+msgid "No PhatFile files were found."
+msgstr "Ingen PhatFiles ble funnet."
+
+msgid "No active modules installed."
+msgstr "Ingen aktive moduler installert."
+
+msgid "No albums to convert."
+msgstr "Ingen albummer å konvertere."
+
+msgid "No announcements to convert."
+msgstr "Ingen nyheter å konvertere."
+
+msgid "No blocks found."
+msgstr "Ingen bokser funnet."
+
+msgid "No error message file found."
+msgstr "Ingen feilmelding fil funnet."
+
+msgid "No events to convert."
+msgstr "Ingen begivenheter å konvertere."
+
+msgid "No form elements have been created."
+msgstr "Ingen skjema elementer å konvertere."
+
+msgid "No forms to convert."
+msgstr "Ingen skjema å konvertere."
+
+msgid "No items for the current list."
+msgstr "Ingen objekt for gjeldende liste."
+
+msgid "No items passed."
+msgstr "Ingen objekter godkjent"
+
+msgid "No menu links to convert."
+msgstr "Ingen meny linker å konvertere."
+
+msgid "No menus found."
+msgstr "Ingen menyer funnet."
+
+msgid "No modules to convert."
+msgstr "Ingen moduler å konvertere."
+
+msgid "No options passed to function"
+msgstr "Ingen valg sendt til funksjon"
+
+msgid "No pages found."
+msgstr "Ingen sider funnet."
+
+msgid "No pages to convert."
+msgstr "Ingen sider å konvertere."
+
+msgid "No result returned from database."
+msgstr "Ingen resultater returnert fra database."
+
+msgid "No rows found."
+msgstr "ingen rader funnet."
+
+msgid "No users to convert."
+msgstr "Ingen brukere å konvertere."
+
+msgid "No values were set before the query"
+msgstr "Ingen verdier var satt før forespørsel"
+
+msgid "No variables in object."
+msgstr "Ingen variabler i objekt."
+
+msgid "Not a convert file."
+msgstr "Ikke en konvertert fil."
+
+msgid "Not an acceptable operator."
+msgstr "Ikke en akseptabel operatør."
+
+msgid "Note: if you have not made this database yet, you should do so before continuing."
+msgstr "Notis: Hvis du ikke har opprettet dennne databasen enda, bør du gjøre det før du fortsetter."
+
+msgid "Note: it is a good idea to give each phpWebSite installation its own user."
+msgstr "Notis: Det er en god ide å gi hver phpWebSite installasjon en egen bruker."
+
+msgid "One or more errors occurred while copying over Form Generator tables. Please check your logs, clear your database tables, and try again."
+msgstr "En feil til oppstod ved kopiering av Form Generator tabeller. Vennligst sjekk dine logger, slett dine databaser, og prøv igjen."
+
+msgid "Only those logged on within 6 months."
+msgstr "Bare dem logget inn siste 6 måneder."
+
+msgid "Only those logged on within the last year."
+msgstr "Bare dem logget inn siste året."
+
+msgid "Op not set."
+msgstr "Op ikke angitt."
+
+msgid "Options table failed to copy successfully."
+msgstr "Valg tabell feilet å kopiere."
+
+msgid "Options table imported successfully."
+msgstr "Valg tabell importert OK."
+
+msgid "Otherwise, click on the \"Main page\" link above."
+msgstr "Ellers, klikk på  \"Main page\" linken over."
+
+msgid "Otherwise, enter the ip or dns to the database server."
+msgstr "Ellers, tast inn ip eller dns til database serveren."
+
+#, php-format
+msgid "PHPWS_Debug: testObject received a/an %s variable, not an object."
+msgstr "PHPWS_Debug: testObject mottok a/an %s variabel, ikke et objekt."
+
+msgid "PHPWS_File received an unknown construct."
+msgstr "PHPWS_File mottok et ukjent begrep."
+
+msgid "Page"
+msgstr "Side"
+
+msgid "PageSmith conversion"
+msgstr "PageSmith konversjon"
+
+msgid "PageSmith has already been converted."
+msgstr "PageSmith har alt blitt konvertert."
+
+msgid "PageSmith has been converted as well. Make sure to check the defines in the menu convert.php file before running."
+msgstr "PageSmith er også konvertert. Vær sikker på å sjekke forklaringene i meny convert.php fil før du fortsetter."
+
+msgid "PageSmith is not installed."
+msgstr "PageSmith er ikke installert."
+
+msgid "Password"
+msgstr "Passord"
+
+msgid "Pear Configuration"
+msgstr "Pear Konfigurasjon"
+
+msgid "Permission Help"
+msgstr "Tillatelser Hjelp"
+
+msgid "PhatFile module not installed."
+msgstr "Phatfile module er ikke installert."
+
+msgid "Phatfile files converted."
+msgstr "Phatfile filer konvertert."
+
+msgid "Photo Album has already been converted."
+msgstr "Foto Album har alt blitt konvertert."
+
+msgid "Photo Album is not installed locally."
+msgstr "Foto Album er ikke installert lokalt."
+
+msgid "Photos table failed to copy successfully."
+msgstr "Photos tabell feilet i å kopiere."
+
+msgid "Photos table imported successfully."
+msgstr "Photo tabell importert OK."
+
+msgid "PhpWebSite was able to connect but the database itself does not exist."
+msgstr "PhpWebSite kunne tilkobles men databasen i seg selv eksisterer ikke."
+
+msgid "PhpWebSite was able to connect, but the database already contained tables."
+msgstr "PhpWebSite kunne tilkobles, men databasen inneholder alt tabeller."
+
+msgid "Pick date"
+msgstr "Velg Dato"
+
+msgid "Please check your directory permissions and try again."
+msgstr "Vennligst sjekk dine mappe tillatelser og prøv igjen."
+
+msgid "Please check your error log file."
+msgstr "Vennligst sjekk dine feilmelding log fil."
+
+msgid "Please check your error logs and try again."
+msgstr "Vennligst sjekk dine feilmelding log fil og prøv igjen."
+
+#, php-format
+msgid "Please create a directory in %simages/ named \"pagemaster\". Copy all images from the old Web Pages image directory into it."
+msgstr "Vennligst opprett en mappe i %simages/ named \"pagemaster\". Kopier alle bilder fra den gamle Web Pages bilde mapper inn i den."
+
+msgid "Please enter the connect information for the database you wish to convert from."
+msgstr "Vennligst tast inn tilkoblings informasjon til databasen du ønsker å konvertere fra."
+
+msgid "Please login"
+msgstr "Vennlisgt logg inn"
+
+msgid "Please note that the user with an index of 1 was ignored by the conversion."
+msgstr "Vennligst noter at brukerenmed en index 1 var ignorert av konverseringen."
+
+msgid "Please wait..."
+msgstr "Vennligst vent..."
+
+msgid "Port"
+msgstr "Port"
+
+msgid "Radio button table failed to copy successfully."
+msgstr "Radio button feilet i å kopiere."
+
+msgid "Radio button table imported successfully."
+msgstr "Radio button importert OK."
+
+msgid "Recursive array"
+msgstr "Gjentakende tabell"
+
+msgid "Recursive object:"
+msgstr "Gjentakende objekt:"
+
+msgid "Remove"
+msgstr "Fjern"
+
+msgid "Remove the following file and refresh to continue:"
+msgstr "Fjern følgende fil og oppdater for å fortsette:"
+
+msgid "Request"
+msgstr "Be om"
+
+msgid "Return to main page if you change your mind. Click the above link to continue."
+msgstr "Returner til hovedsiden hvis du endrer mening. Klikk på linken over for å fortsette."
+
+msgid "Return to main page."
+msgstr "Returner til hovedside."
+
+msgid "Return to previous page."
+msgstr "Returner til forrige side."
+
+msgid "Return to the main page."
+msgstr "Returner til hovedsiden"
+
+msgid "Search"
+msgstr "Søk"
+
+msgid "Select returned an empty result."
+msgstr "Velg returnert ett tomt resultat."
+
+msgid "Sessions Help"
+msgstr "Session Hjelp."
+
+msgid "Since you set a table prefix, you may force an installation into this database."
+msgstr "Siden du valgte et tabell prefix, må du kanskje tvinge installasjoneninn i denne databassen."
+
+msgid "Site Hash"
+msgstr "Site Hash"
+
+msgid "Site Setup"
+msgstr "Side Oppsett"
+
+msgid "Site hash may not be empty."
+msgstr "Site hash er kanskje ikke tomt."
+
+msgid "Some errors occurred when trying to convert the following pages:"
+msgstr "Noen feil oppstår ved forsøk på konvertering av følgende sider:"
+
+msgid "Some errors occurred while creating the core database tables."
+msgstr "Noen feil oppstår ved oppretting av core database tabeller."
+
+msgid "Some menus did not convert over properly. Please see logs."
+msgstr "Noen menyer konverterte ikke skikkelig. Vennligst se logger."
+
+msgid "Some users caused conversion errors."
+msgstr "Noen brukere forårsaket konvertering feil."
+
+msgid "Sort ascending"
+msgstr "Sortere oppstigende"
+
+msgid "Sort descending"
+msgstr "Sorter nedstigende"
+
+msgid "Source Directory"
+msgstr "Kilde Mappe"
+
+msgid "Spoiler"
+msgstr "Spoiler"
+
+msgid "Table does not exist."
+msgstr "Tabell eksisterer ikke"
+
+msgid "Table is blank"
+msgstr "Tabell er blank"
+
+msgid "Table name not set."
+msgstr "Tabell navn er ikke angitt."
+
+msgid "Table not set."
+msgstr "Tabell ikke angitt."
+
+msgid "Table prefix"
+msgstr "Tabell prefix"
+
+msgid "Table prefix must be alphanumeric characters or underscores only"
+msgstr "Tabell prefix må bare være alfanumetrisk tegn eller understrek."
+
+msgid "Template error."
+msgstr "Template feil."
+
+msgid "Template was not set."
+msgstr "Template var ikke angitt."
+
+msgid "Text area table failed to copy successfully."
+msgstr "Tekst område tabell feilet i å kopiere."
+
+msgid "Text area table imported successfully."
+msgstr "Tekst område tabell importert OK."
+
+msgid "Text field table failed to copy successfully."
+msgstr "Tekst feldt tabell feilet i å kopiereOK."
+
+msgid "Text field table imported successfully."
+msgstr "Tekst feldt område tabell imortert OK."
+
+msgid "The File Cabinet module is not installed."
+msgstr "File Cabinet modulen er ikke installert."
+
+msgid "The character string below differentiates your site from others on the same server."
+msgstr "Tegn snoren under differensierer din side fra andre sider på samme server."
+
+msgid "The database creation succeeded!"
+msgstr "Database opprettingen OK!"
+
+msgid "The database's name into which you are installing phpWebSite."
+msgstr "Database navnet somdu installerer phpWebSite til."
+
+msgid "The example is randomly generated."
+msgstr "Eksempelet er tilfeldig generert."
+
+msgid "The following directories are not writable:"
+msgstr "Følgende mapper er skrivebeskyttet:"
+
+msgid "The following directories need to be created:"
+msgstr "Følgende mapper må opprettes:"
+
+msgid "The submitted template is not an array."
+msgstr "Den avgitte template er ikke en tabell."
+
+msgid "There are two methods for converting your webpages:"
+msgstr "Det er to metoder for å konvertere dine websider:"
+
+msgid "There aren't any conversion files in the convert/modules directory."
+msgstr "Det er ingen konverterings filer i  convert/modules mappen."
+
+msgid "There is a problem with your sessions."
+msgstr "Det er et problem med dine sessions."
+
+msgid "This is an incomplete object. If this is a sessioned object, make sure to declare the class before the variable."
+msgstr "Dette er et uferdig objekt. Hvis dette er et session objekt, vær sikker på  erklære class før variabelen."
+
+msgid "This is the directory where phpWebSite is installed."
+msgstr "Dette er mappen hvor phpWebSite er installert."
+
+msgid "This is the user name that phpWebSite will use to access its database."
+msgstr "Dette er brukernavnet som phpWebSite vil benytte for å koble til databasen."
+
+msgid "Title"
+msgstr "Tittel"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Unable to connect to the database with the information provided."
+msgstr "Ikke mulig å koble til databasen med informasjonen tilgjengelig."
+
+msgid "Unable to connect."
+msgstr "Ikke mulig å koble til."
+
+msgid "Unable to copy file."
+msgstr "Ikke mulig å kopiere fil."
+
+msgid "Unable to create file directory."
+msgstr "Ikke mulig å opprette fil mappe."
+
+msgid "Unable to create the database."
+msgstr "Ikke mulig å opprette databassen."
+
+msgid "Unable to delete directory."
+msgstr "Ikke mulig å slette mapp."
+
+msgid "Unable to delete file."
+msgstr "Ikke mulig å slette fil."
+
+msgid "Unable to derive class variables."
+msgstr "Ikke mulig å utlede class variabel"
+
+#, php-format
+msgid "Unable to find element \"%s\"."
+msgstr "Ikke mulig å finne element \"%s\"."
+
+msgid "Unable to find the specified editor type."
+msgstr "Ikke mulig å finne den spesifiserte editor type."
+
+msgid "Unable to find your module's settings.php file."
+msgstr "Ikke mulig å finne din moduls settings.php fil."
+
+msgid "Unable to locate the source directory:"
+msgstr "Ikke mulig å finne kilde mappe:"
+
+msgid "Unable to log in to the database. Please check your settings."
+msgstr "Ikke mulig å logge inn i databasen. Vennligst sjekk dine innstillinger."
+
+msgid "Unable to save file in selected directory."
+msgstr "Ikke mulig å lager fili valgt mappe."
+
+msgid "Unable to verify source directory. Check PHPWS_SOURCE_DIR."
+msgstr "Ikke mulig å verifisere kilde mappe. Sjekk PHPWS_SOURCE_DIR."
+
+#, php-format
+msgid "Unable to write %s file."
+msgstr "Ikke mulig å skrive %s fil."
+
+msgid "Unable to write to log directory."
+msgstr "Ikke mulig å skrive til logg mappe."
+
+msgid "Unapproved"
+msgstr "Ikke godkjendt"
+
+msgid "Uncheck all"
+msgstr "Fjern alle"
+
+msgid "Uninstall"
+msgstr "Avinstallere"
+
+msgid "Unknown"
+msgstr "Ukjent"
+
+msgid "Unknown Error."
+msgstr "Ukjent Feil."
+
+msgid "Unknown column type:"
+msgstr "Ukjent kolonne type:"
+
+msgid "Unknown error code."
+msgstr "Ukjent feil kode."
+
+msgid "Unknown module."
+msgstr "Ukjent modul."
+
+msgid "Unknown or incorrect class."
+msgstr "Ukjent eller ikke korrekt class."
+
+msgid "Unknown source"
+msgstr "Ukjent kilde"
+
+msgid "Unknown user"
+msgstr "Ukjent bruker"
+
+msgid "Unrecognized form type."
+msgstr "Uigjenkjennelig skjema type"
+
+msgid "Unsorted"
+msgstr "Usortert"
+
+msgid "Untitled"
+msgstr "Ikke navngitt"
+
+msgid "Upload directory not set in file object."
+msgstr "Last opp mappe ikke angitt i fil objekt."
+
+#, php-format
+msgid "Upload file size is larger than the server %s maximum."
+msgstr "Last opp fil ftørrelse er større enn serverens %s maksimum."
+
+msgid "Use Pear files included with phpWebSite (recommended)."
+msgstr "Bruk Pear filer inkludert i phpWebSite (anbefalt)"
+
+msgid "Use server's Pear library files (not recommended)."
+msgstr "Bruk serverens Pear bibliotek filer (ikke anbefalt)"
+
+msgid "User name"
+msgstr "Bruker navn"
+
+msgid "User tried to post a file beyond server limits."
+msgstr "Bruker forsøkte å legge inn fil over serverens begrensninger."
+
+msgid "Username"
+msgstr "Brukernavn"
+
+msgid "Username and password combination not found."
+msgstr "Brukernavn og Passord kombinasjon ikke funnet."
+
+msgid "Using configuration files directly from module's directory."
+msgstr "Benytter konfigurasjon filer direkte fra modulens mappe."
+
+msgid "Using local configuration files."
+msgstr "Benytter lokal konfigurasjon fil."
+
+msgid "Using local templates, not module's."
+msgstr "Benytter lokal template, ikke modulens."
+
+msgid "Using module template, not local."
+msgstr "Benytter modul template, ikke lokale."
+
+msgid "VALUE"
+msgstr "VERDI"
+
+#, php-format
+msgid "Variable is a %s, not an object."
+msgstr "Variabel er en %s, ikke et objekt."
+
+msgid "Variable name not found in_FILES array."
+msgstr "Variabel navn ikke funnet i_FILES tabell."
+
+msgid "Visible"
+msgstr "Synlig"
+
+msgid "Warning"
+msgstr "Advarsel"
+
+msgid "We suggest you use the library files included with phpWebSite."
+msgstr "Vi anbefaler at du benytter bibliotek filer som er inkludert i phpWebSite."
+
+msgid "Web Page conversion"
+msgstr "Web Page  konvertering"
+
+msgid "Web Page is not installed."
+msgstr "Web Page er ikke installert."
+
+msgid "Web Pages have already been converted."
+msgstr "Web Page er alt konvertert."
+
+msgid "Wrong data type."
+msgstr "Feil data type."
+
+msgid "Wrong element type for procedure."
+msgstr "Feil element type for prosedyre."
+
+msgid "Wrong variable type."
+msgstr "Feil variabel type."
+
+msgid "You can now finish the creation of your config file."
+msgstr "Du kan nå fullføre opprettingen av din config fil."
+
+msgid "You may change it if you wish."
+msgstr "Du kan endre det hvis du ønsker."
+
+msgid "You may choose to ignore users who haven't logged in for a while."
+msgstr "Du kan velge å ignorere brukere som ikke har logget inn på en stund."
+
+msgid "You may convert two different ways."
+msgstr "Du kan konventere på to forskjellige måter."
+
+msgid "You may delete your images/pagemaster/ directory if you wish."
+msgstr "Du kan slette din images/pagemaster/ mappe hvis du ønsker."
+
+#, php-format
+msgid "You may not use \"%s\" as a form element name."
+msgstr "Du kan ikke bruke\"%s\" som et skjema element navn."
+
+msgid "You must be a deity to run Site Manager."
+msgstr "Du må være en guddommelighet for å kjøre Site Manager."
+
+msgid "You will need to change the permissions."
+msgstr "Du vil være nødt til å endre tilgangen."
+
+msgid "You will need to create it manually and rerun the setup."
+msgstr "Du vil være nødt til å opprette den manuelt, og gjenkjøre oppsett."
+
+msgid "Your configuration file already exists."
+msgstr "Din konfigurasjons fil eksisterer allerede."
+
+msgid "Your configuration file could not be written into the following directory:"
+msgstr "Din konfigurasjons fil kunne ikke skrives til følgende mappe:"
+
+msgid "Your configuration file was written successfully!"
+msgstr "Din konfigurasjons fil ble skrevet OK!"
+
+msgid "Your core config.php file is missing. Please create one and return."
+msgstr "Din kilde config.php fil mangler. Vennligst opprett en og returner."
+
+msgid "\\1 wrote"
+msgstr "\\1 skrev"
+
+msgid "a heartbeat ago"
+msgstr "et øyeblikk siden"
+
+msgid "loadObject expected the object to have an id or where clause."
+msgstr "loadObject forventet objektet å ha en id eller hvor setning."
+
+msgid "of"
+msgstr "av"
+
+#, php-format
+msgid "phpWebSite %s Setup"
+msgstr "phpWebSite %s Oppsett"
+
+msgid "phpWebSite 1.x.x Convert"
+msgstr "phpWebSite 1.x.x Konverter"
+
+msgid "phpWebSite depends on sessions to move data between pages."
+msgstr "phpWebSite kommer an på sessions for å flytte data mellom sider."
+
+msgid "phpWebSite supports several databases. Choose the type your server currently is running."
+msgstr "phpWebSite støtter flere databaser. Velg den typen som din server kjører."
+
+msgid "phpWebSite uses the Pear library extensively."
+msgstr "phpWebSite benytter Pear bibliotek i stor utstrekning."
+
