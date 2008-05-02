@@ -35,7 +35,7 @@ class Checkin_Staff {
 
     function loadReasons()
     {
-
+        $db = new PHPWS_DB('
     }
 
     function getFilter()

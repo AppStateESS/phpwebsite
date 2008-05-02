@@ -6,6 +6,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
+PHPWS_Core::initModClass('checkin', 'Checkin.php');
+
 class Checkin_Admin extends Checkin {
     var $panel   = null;
 
@@ -45,8 +47,10 @@ class Checkin_Admin extends Checkin {
             break;
             
         case 'settings':
-            $this->panel->setCurrentTab('settings');
-            $this->settings();
+            if (Current_User::allow('checkin', 'settings')) {
+                $this->panel->setCurrentTab('settings');
+                $this->settings();
+            }
             break;
             
         case 'staff':
@@ -62,6 +66,19 @@ class Checkin_Admin extends Checkin {
         case 'search_users':
             $this->searchUsers();
             break;
+
+        case 'post_settings':
+            // from Checkin_Admin::settings
+            if (Current_User::authorized('checkin', 'settings')) {
+                $this->postSettings();
+            }
+            PHPWS_Core::reroute('index.php?module=checkin&tab=settings');
+            break;
+            
+        }
+
+        if (empty($this->content)) {
+            $this->content = dgettext('checkin', 'Command not recognized.');
         }
 
         if ($js) {
@@ -149,9 +166,10 @@ class Checkin_Admin extends Checkin {
         $form->setLabel('last_name_filter', dgettext('checkin', 'Example: a,b,ca-cf,d'));
 
         $reasons = $this->getReasons();
-
+        test($reasons);
         if (empty($reasons)) {
-            $form->addTplTag('REASONS', dgettext('checkin', 'No reasons found.'));
+            $form->addTplTag('REASONS', PHPWS_Text::moduleLink(dgettext('checkin', 'No reasons found.'), 'checkin',
+                                                               array('aop'=>'settings')));
             $form->addTplTag('REASONS_LABEL',  dgettext('checkin', 'Reasons'));
         } else {
             $form->addMultiple('reasons', $reasons);
@@ -168,7 +186,33 @@ class Checkin_Admin extends Checkin {
 
     function settings()
     {
+        $form = new PHPWS_Form('reasons');
+        $form->addHidden('module', 'checkin');
+        $form->addHidden('aop', 'post_settings');
+        $form->addSubmit('add', dgettext('checkin', 'Add reason'));
+        $form->addText('new_reason');
+        $form->setLabel('new_reason', dgettext('checkin', 'Enter new reason'));
+        $form->setSize('new_reason', 40, 100);
+        $reasons = $this->getReasons();
+        if (!empty($reasons)) {
+            
+            $form->addSubmit('edit', dgettext('checkin', 'Edit'));
+            $form->addSubmit('delete', dgettext('checkin', 'Delete'));
+            $form->addSelect('edit_reason', $reasons);
+        }
 
+        $tpl = $form->getTemplate();
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'setting.tpl');
+    }
+
+    function postSettings()
+    {
+        if (isset($_POST['add'])) {
+            $reason = trim(strip_tags($_POST['new_reason']));
+            if (!empty($reason)) {
+                $this->addReason($reason);
+            }
+        }
     }
 
     function addStaffLink()
@@ -195,6 +239,13 @@ class Checkin_Admin extends Checkin {
             echo implode("\n", $result);         
         }
         exit();
+    }
+
+    function addReason($reason)
+    {
+        $db = new PHPWS_DB('checkin_reasons');
+        $db->addValue('summary', $reason);
+        return !PHPWS_Error::logIfError($db->insert());
     }
 }
 

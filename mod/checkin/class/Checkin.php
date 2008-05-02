@@ -22,7 +22,11 @@ class Checkin {
 
     function getReasons()
     {
-
+        $db = new PHPWS_DB('checkin_reasons');
+        $db->addColumn('id');
+        $db->addColumn('summary');
+        $db->setIndexBy('id');
+        return $db->select('col');
     }
 
 }

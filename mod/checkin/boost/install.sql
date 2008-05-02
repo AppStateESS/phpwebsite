@@ -8,8 +8,7 @@ CREATE TABLE checkin_staff (
 
 CREATE TABLE checkin_reasons (
   id int NOT NULL default 0,
-  summary varchar(255) NOT NULL default '',
-  confirmer_id int NOT NULL default 0,
+  summary varchar(255) NOT NULL default ''
   PRIMARY KEY  (id)
 );
 
