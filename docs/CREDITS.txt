@@ -120,6 +120,7 @@ Peter Heppner (German)
 Claus Iversen (Danish)
 Dang Hoai Phuc (Vietnamese)
 Doriano Cometto (Italian)
+Anders Haugarvoll (Norwegian)
 
 --------------------------------------------------------------------------
 The phpWebSite team would also like to thank the following people in
