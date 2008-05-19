@@ -20,7 +20,7 @@
  */
 
 if (!defined('DEFAULT_LANGUAGE')) {
-    define('DEFAULT_LANGUAGE', 'en_US');
+    define('DEFAULT_LANGUAGE', 'vi_VN');
 }
 
 /**
@@ -38,6 +38,12 @@ define('DISABLE_TRANSLATION', false);
  * problems. Test before setting this option.
  */
 define('FORCE_DEFAULT_LANGUAGE', false);
+
+/**
+ * If set to true, phpWebSite will ignore the browser language settings
+ * but WILL obey the user cookie
+ */
+define('IGNORE_BROWSER_LANGUAGE', false);
 
 /**
  * If true, phpWebSite will use the putenv function to set 

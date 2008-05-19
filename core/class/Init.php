@@ -19,6 +19,10 @@ if (!defined('PHPWS_HOME_DIR')) {
     define('PHPWS_HOME_DIR', './');
 }
 
+if (!defined('IGNORE_BROWSER_LANGUAGE')) {
+    define('IGNORE_BROWSER_LANGUAGE', false);
+}
+
 initializei18n();
 loadBrowserInformation();
 
@@ -137,7 +141,7 @@ function initLanguage()
     } else {
         $locale_found = FALSE;
 
-        if (!FORCE_DEFAULT_LANGUAGE) {
+        if (!FORCE_DEFAULT_LANGUAGE && !IGNORE_BROWSER_LANGUAGE) {
             $userLang = getBrowserLanguage();
             foreach ($userLang as $language) {
                 if (strpos($language, '-')) {

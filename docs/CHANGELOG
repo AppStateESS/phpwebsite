@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+19 May 2008
++ Added new language define IGNORE_BROWSER_LANGUAGE. Prevents
+  phpwebsite from using the browser's language preferences if the user
+  has not set their language cookie.
++ Updated: core/conf/language.php
+
 29 April 2008
 + Added parameter to phpws_stats that gives you language information.
 + Bug# 1778308 - Uninstalled modules are no longer accessible.
