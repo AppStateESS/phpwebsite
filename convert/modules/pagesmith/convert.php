@@ -38,6 +38,10 @@ function convert()
 
     $db = Convert::getSourceDB('mod_pagemaster_pages');
 
+    if (empty($db)) {
+        return _('Unable to find mod_pagemaster_pages table in source database.');
+    }
+
     $batch = new Batches('convert_pagemaster');
     $total_pages = $db->count();
     if ($total_pages < 1) {
@@ -78,7 +82,7 @@ function convert()
         $content[] = _('You may delete your images/pagemaster/ directory if you wish.');
         $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
     }
-    
+
     return implode('<br />', $content);
 }
 
@@ -192,7 +196,7 @@ function saveSections($sections, $id, $title, $key_id)
 
     foreach ($sections as $sec) {
         if (!empty($sec['title'])) {
-            if (!$title_set) {
+            if (empty($title_set)) {
                 $header_sec['content'] = PHPWS_Text::parseInput(strip_tags(utf8_encode($sec['title'])));
                 $db = new PHPWS_DB('ps_text');
                 $db->addValue($header_sec);
@@ -252,7 +256,9 @@ function saveSections($sections, $id, $title, $key_id)
     $search = new Search($key_id);
 
     $search->addKeywords($text_sec['content']);
-    $search->addKeywords($header_sec['content']);
+    if (!empty($header_sec['content'])) {
+        $search->addKeywords($header_sec['content']);
+    }
     $search->save();
 
     $db = new PHPWS_DB('ps_text');
@@ -313,16 +319,20 @@ function convertImage($data)
     }
 
     $image->file_type = $size['mime'];
-    $image->size = filesize($image_dir);
-    $image->width = $size[0];
-    $image->height = $size[1];
-    $image->alt = $data['alt'];
-    $image->title = $data['alt'];
+    $image->size      = filesize($image_dir);
+    $image->width     = $size[0];
+    $image->height    = $size[1];
+    $image->alt       = $data['alt'];
+    $image->title     = $data['alt'];
 
-    if (PHPWS_Error::logIfError($image->save(true, false, true))) {
+    if (PHPWS_Error::logIfError($image->save(true, false, false))) {
         PHPWS_Core::log("Failed to save Image object.", 'conversion.log');
         return false;
     } else {
+        $hold = $image->file_directory;
+        $image->file_directory = $home_dir . $hold;
+        $image->makeThumbnail();
+        $image->file_directory = $hold;
         return $image;
     }
 }

@@ -528,7 +528,7 @@ class Key {
 
     /**
      * added limitations to a select query to only pull rows that
-     * the user is allowed to see. This function does does not works alone.
+     * the user is allowed to see. This function does does not work alone.
      * it requires a database object to already be started.
      *
      * The user module MUST be active for this function to work.
@@ -593,10 +593,10 @@ class Key {
             $db->addJoin('left', 'phpws_key', 'phpws_key_view', 'id', 'key_id');
             
             // if key only has a level 1 restriction, a logged user can view it
-            $db->addWhere('phpws_key.restricted', 1, '<=', null, 'restrict_1');
+            $db->addWhere('phpws_key.restricted', KEY_LOGGED_RESTRICTED, '<=', null, 'restrict_1');
 
             // at level 2, the user must be in a group given view permissions
-            $db->addWhere('phpws_key.restricted', 2, '=', null, 'restrict_2');
+            $db->addWhere('phpws_key.restricted', KEY_GROUP_RESTRICTED, '=', null, 'restrict_2');
 
             $db->addWhere('phpws_key_view.group_id', $groups, 'in', null, 'restrict_2');
 

@@ -242,6 +242,8 @@ function createSeqTable()
 
 function convertImage ($image_name, $image_alt) 
 {
+    $home_dir = Convert::getHomeDir();
+
     // If there's no image, return
     if (empty($image_name))
         return 0;
@@ -292,10 +294,13 @@ function convertImage ($image_name, $image_alt)
     $img->height = $image_height;
     $img->file_type = $image_type;
     $img->folder_id = $_SESSION['Category Folder'];
-    $result = $img->save(1,0);
+    $result = $img->save(true, false, false);
     if (PEAR::isError($result)) {
         exit(PHPWS_Error::printError($result));
     }
+    $hold = $img->file_directory;
+    $img->file_directory = $home_dir . $hold;
+    $img->makeThumbnail();
 
     $file_assoc = new FC_File_Assoc;
     $file_assoc->file_type = FC_IMAGE;

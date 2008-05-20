@@ -2,6 +2,13 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+20 May 2008
++ Changed values in Key to their appropriate defines.
++ Added some error checks in pagesmith conversion.
++ Thumbnail directory fixes added to pagesmith and category
+  conversion.
+
+
 19 May 2008
 + Added new language define IGNORE_BROWSER_LANGUAGE. Prevents
   phpwebsite from using the browser's language preferences if the user
