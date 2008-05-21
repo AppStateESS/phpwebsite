@@ -1,4 +1,4 @@
-$this<?php
+<?php
 
   /**
    * @version $Id$
