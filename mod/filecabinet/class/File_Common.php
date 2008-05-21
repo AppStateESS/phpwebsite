@@ -45,7 +45,7 @@ class File_Common {
         if (!isset($ext)) {
             $ext = $this->_ext;
         }
-
+        $ext = strtolower($ext);
         return in_array($ext, $this->_allowed_types);
     }
 
