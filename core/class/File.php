@@ -745,6 +745,8 @@ class PHPWS_File {
             $ext = PHPWS_File::getFileExtension($file_path);
         }
 
+        $ext = strtolower($ext);
+
         if (@$file_info = $all_file_type[$ext]) {
             $mime_type = PHPWS_File::getMimeType($file_path);
             if (function_exists('finfo_open')) {

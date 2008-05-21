@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+21 May 2008
++ File::checkmimetype - Extension is forced to lowercase to allow
+  proper file checking. 
+
 20 May 2008
 + Changed values in Key to their appropriate defines.
 + Added some error checks in pagesmith conversion.
