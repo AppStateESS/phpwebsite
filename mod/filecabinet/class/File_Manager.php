@@ -542,6 +542,14 @@ class FC_File_Manager {
             break;
 
         case MULTIMEDIA_FOLDER:
+            $js = $this->linkInfo();
+            $js['authkey'] = Current_User::getAuthKey();
+            $js['failure_message'] = dgettext('filecabinet', 'Unable to resize media.');
+            $js['confirmation'] = sprintf(dgettext('filecabinet', 'This media is larger than the %s x %s limit. Do you want to resize the media to fit?'),
+                                          $this->max_width,
+                                          $this->max_height);
+
+            javascript('modules/filecabinet/pick_file', $js);
             PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
             $db = new PHPWS_DB('multimedia');
             $class_name = 'PHPWS_Multimedia';
@@ -667,9 +675,12 @@ class FC_File_Manager {
                 return false;
             }
             $file_assoc->resize = & $resize_file_name;
+        } elseif ($file_assoc->file_type == FC_MEDIA_RESIZE) {
+            $file_assoc->resize = sprintf('%sx%s', $this->max_width, $this->max_height);
         }
 
         $file_assoc->save();
+
         $file_assoc->loadSource();
         return $file_assoc;
     }

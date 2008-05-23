@@ -1,4 +1,4 @@
-<script>
+<script type="text/javascript">
 //<![CDATA[
 
 var placeholder = 'pl_{id}';

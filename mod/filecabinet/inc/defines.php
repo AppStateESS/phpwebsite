@@ -22,6 +22,7 @@ define('FC_IMAGE_FOLDER',    4);
 define('FC_DOCUMENT_FOLDER', 5);
 define('FC_IMAGE_RANDOM',    6);
 define('FC_IMAGE_RESIZE',    7);
+define('FC_MEDIA_RESIZE',    8);
 
 /**
  * Error defines

@@ -59,8 +59,10 @@ class FC_File_Assoc {
             break;
 
         case FC_MEDIA:
+        case FC_MEDIA_RESIZE:
             PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
             $this->_source = new PHPWS_Multimedia($this->file_id);
+            //            test($this,1);
             break;
 
         case FC_IMAGE_RESIZE:
@@ -205,6 +207,7 @@ class FC_File_Assoc {
             break;
 
         case FC_MEDIA:
+        case FC_MEDIA_RESIZE:
             return $this->_source->getThumbnail();
             break;
         }
@@ -249,6 +252,8 @@ class FC_File_Assoc {
         case FC_IMAGE_FOLDER:
             return $this->slideshow();
 
+        case FC_MEDIA_RESIZE:
+            $this->setMediaDimensions();
         case FC_DOCUMENT:
         case FC_MEDIA:
             if ($this->_source->id) {
@@ -385,6 +390,38 @@ class FC_File_Assoc {
         $db->addWhere('id', $this->id);
         return $db->delete();
     }
+
+    function setMediaDimensions()
+    {
+        if (empty($this->resize)) {
+            $this->file_type = 3;
+            return;
+        }
+
+        $dim = explode('x', $this->resize);
+        $max_width = &$dim[0];
+        $max_height = &$dim[1];
+
+        $width = $this->_source->width;
+        $height = $this->_source->height;
+
+        if ($max_width >= $width && $max_height >= $height) {
+            $this->file_type = 3;
+            return;
+        }
+
+        if ($max_width < $width || !$max_height) {
+            $new_width = $max_width;
+            $new_height = floor($height / ($width / $new_width));
+        } else {
+            $new_height = $max_height;
+            $new_width = floor($width / ($height / $new_height));
+        }
+
+        $this->_source->width = $new_width;
+        $this->_source->height = $new_height;
+    }
+
 }
 
 ?>

@@ -34,6 +34,7 @@ class PHPWS_Multimedia extends File_Common {
 
         $this->id = (int)$id;
         $result = $this->init();
+
         if (PEAR::isError($result)) {
             $this->id = 0;
             $this->_errors[] = $result;
@@ -254,7 +255,8 @@ class PHPWS_Multimedia extends File_Common {
         return javascript('confirm', $js);
     }
     
-    function getTag($embed=false) {
+    function getTag($embed=false) 
+    {
         $strict = false;
 
         $filter = $this->getFilter();
@@ -509,6 +511,9 @@ class PHPWS_Multimedia extends File_Common {
         return $db->saveObject($this);
     }
 
+    /**
+     * Template sent to File Manager for media selection.
+     */
     function managerTpl($fmanager)
     {
         $tpl['ICON'] = $this->getManagerIcon($fmanager);
@@ -549,12 +554,17 @@ class PHPWS_Multimedia extends File_Common {
 
     function getManagerIcon($fmanager)
     {
-        $vars = $fmanager->linkInfo(false);
-        $vars['fop']       = 'pick_file';
-        $vars['file_type'] = FC_MEDIA;
-        $vars['id']        = $this->id;
-        $link = PHPWS_Text::linkAddress('filecabinet', $vars, true);
-        return sprintf('<a href="%s">%s</a>', $link, $this->getThumbnail());
+        $force = $fmanager->force_resize ? 'true' : 'false';
+        if ( ($fmanager->max_width < $this->width) || ($fmanager->max_height < $this->height) ) {
+            return sprintf('<a href="#" onclick="oversized_media(%s, %s); return false">%s</a>', $this->id, $force, $this->getThumbnail());
+        } else {
+            $vars = $fmanager->linkInfo(false);
+            $vars['fop']       = 'pick_file';
+            $vars['file_type'] = FC_MEDIA;
+            $vars['id']        = $this->id;
+            $link = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+            return sprintf('<a href="%s">%s</a>', $link, $this->getThumbnail());
+        }
     }
 
     function deleteAssoc()

@@ -1,6 +1,13 @@
+23 May 2008
++ Filecabinet will now resize media as well as images.
++ Added type to javascript scripts
++ Updated: javascript/pick_file/head.js,
+           javascript/pick_file/scripts.js
+           javascript/update_file/head.js
+
+
 21 May 2008
 + When checking the mime type, the extension is forced into lowercase.
-
 
 29 April 2008
 + Hiding some elements if the user doesn't have file rights.
