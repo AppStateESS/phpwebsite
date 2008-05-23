@@ -4,6 +4,8 @@ its own separate CHANGELOG file.
 
 23 May 2008
 + Added button option to prompt javascript
++ Updated: javascript/prompt/body2.js, javascript/prompt/default.php,
+  javascript/prompt/readme.txt
 
 21 May 2008
 + File::checkmimetype - Extension is forced to lowercase to allow
