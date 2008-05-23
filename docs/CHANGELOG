@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+23 May 2008
++ Added button option to prompt javascript
+
 21 May 2008
 + File::checkmimetype - Extension is forced to lowercase to allow
   proper file checking. 
