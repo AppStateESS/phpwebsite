@@ -718,6 +718,10 @@ class Layout {
             return $result;
         }
 
+        if (@$GLOBALS['Layout_Collapse']) {
+            $template['COLLAPSE'] = 'id="layout-collapse"';
+        }
+
         $template['THEME_DIRECTORY'] = 'themes/' . $theme . '/';
         $tpl->setData($template);
         return $tpl;
@@ -1081,6 +1085,11 @@ class Layout {
         if (@$style = Layout::getKeyStyle($key->id)) {
             Layout::extraStyle($style);
         }
+    }
+
+    function collapse()
+    {
+        $GLOBALS['Layout_Collapse'] = true;
     }
 }
 
