@@ -302,7 +302,7 @@ class PS_Page {
         }
 
         $this->loadSections();
-        if (!empty($this->title)) {
+        if (!empty($this->title) && !PHPWS_Core::atHome()) {
             Layout::addPageTitle($this->title);
         }
 
