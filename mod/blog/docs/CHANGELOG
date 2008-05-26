@@ -1,3 +1,6 @@
+26 May 2008
++ Removed redundant page tags from blog listing.
+
 23 April 2008
 + Blog uses new dbpager sorting headers.
 + Lets you use new comments approval.

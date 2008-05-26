@@ -470,11 +470,7 @@ class Blog_Admin {
         $db->addColumn('blog_id');
         $GLOBALS['blog_stickies'] = $db->select('col');
 
-        $pageTags['TITLE']          = dgettext('blog', 'Title');
         $pageTags['SUMMARY']        = dgettext('blog', 'Summary');
-        $pageTags['CREATION_LABEL'] = dgettext('blog', 'Creation');
-        $pageTags['PUBLISH_LABEL']  = dgettext('blog', 'Publish');
-        $pageTags['EXPIRE_LABEL']   = dgettext('blog', 'Expire');
         $pageTags['ACTION']  = dgettext('blog', 'Action');
 
         $pager = new DBPager('blog_entries', 'Blog');
