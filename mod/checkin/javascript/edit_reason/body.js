@@ -1,0 +1,1 @@
+<input type="button" value="{label}" onclick="javascript:show_prompt(); return false" />

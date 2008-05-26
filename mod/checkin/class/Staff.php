@@ -7,6 +7,7 @@
 class Checkin_Staff {
     var $user_id       = 0;
     var $filter        = null;
+    var $filter_type   = 0;
     var $available     = 0;
     var $visitor_id    = 0;
     var $_display_name = null;
@@ -35,13 +36,21 @@ class Checkin_Staff {
 
     function loadReasons()
     {
-        $db = new PHPWS_DB('
+        $db = new PHPWS_DB('checkin_reasons');
+        $db->addColumn('id');
+        $db->addColumn('summary');
+        $db->setIndexBy('id');
+        $result = $db->select('col');
+        if (!PHPWS_Error::logIfError($result)) {
+            $this->_reasons = & $result;
+        }
     }
 
-    function getFilter()
+    function parseFilter($filter)
     {
-        return $this->filter;
+        $this->filter = $filter;
     }
+
 }
 
 ?>

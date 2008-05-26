@@ -8,13 +8,21 @@
 
 PHPWS_Core::initModClass('checkin', 'Checkin.php');
 
+define('CO_FT_LAST_NAME',  1);
+define('CO_FT_REASON',     2);
+
+
 class Checkin_Admin extends Checkin {
     var $panel   = null;
-
+    var $staff   = null;
+    var $title   = null;
+    var $content = null;
+    var $message = null;
 
     function Checkin_Admin()
     {
         $this->loadPanel();
+        Layout::collapse();
     }
 
     function process()
@@ -67,10 +75,35 @@ class Checkin_Admin extends Checkin {
             $this->searchUsers();
             break;
 
+        case 'update_reason':
+            if (Current_User::authorized('checkin', 'settings')) {
+                $this->updateReason();
+            }
+            $this->panel->setCurrentTab('settings');
+            $this->settings();
+            break;
+
+        case 'post_staff':
+            if (Current_User::authorized('checkin', 'edit_staff')) {
+                if ($this->postStaff()) {
+                    // save post
+                } else {
+                    // post failed
+                    $this->loadStaff();
+                    $this->editStaff();
+                }
+            }
+            break;
+
         case 'post_settings':
             // from Checkin_Admin::settings
             if (Current_User::authorized('checkin', 'settings')) {
                 $this->postSettings();
+            }
+            if (isset($_POST['edit'])) {
+                // edit reason
+            } elseif (isset($_POST['delete'])) {
+                $this->deleteReason($_POST['edit_reason']);
             }
             PHPWS_Core::reroute('index.php?module=checkin&tab=settings');
             break;
@@ -144,6 +177,7 @@ class Checkin_Admin extends Checkin {
     {
         $form = new PHPWS_Form('edit-staff');
         $form->addHidden('module', 'checkin');
+        $form->addHidden('aop', 'post_staff');
         if (!$this->staff->user_id) {
             javascript('jquery');
             javascript('modules/checkin/search_user');
@@ -151,22 +185,25 @@ class Checkin_Admin extends Checkin {
             $this->title = dgettext('checkin', 'Add staff member');
             $form->addText('username');
             $form->setLabel('username', dgettext('checkin', 'Staff user name'));
+            $form->addSubmit(dgettext('checkin', 'Add staff'));
         } else {
             $this->title = dgettext('checkin', 'Edit staff member');
+            $form->addHidden('staff_id', $this->staff->id);
             $form->addTplTag('USERNAME', $this->staff->_display_name);
             $form->addTplTag('USERNAME_LABEL', dgettext('checkin', 'Staff user name'));
+            $form->addSubmit(dgettext('checkin', 'Update staff'));
         }
         
-        $form->addRadioAssoc('filter_type', array('none'     =>dgettext('checkin', 'None'),
-                                                  'last_name'=>dgettext('checkin', 'Last name'),
-                                                  'reason'   =>dgettext('checkin', 'Reason')));
-        $form->setMatch('filter_type', 'none');
+        $form->addRadioAssoc('filter_type', array(0               =>dgettext('checkin', 'None'),
+                                                  CO_FT_LAST_NAME =>dgettext('checkin', 'Last name'),
+                                                  CO_FT_REASON    =>dgettext('checkin', 'Reason')));
+        $form->setMatch('filter_type', $this->staff->filter_type);
 
-        $form->addText('last_name_filter', $this->staff->getFilter());
+        $form->addText('last_name_filter', $this->staff->filter);
         $form->setLabel('last_name_filter', dgettext('checkin', 'Example: a,b,ca-cf,d'));
 
         $reasons = $this->getReasons();
-        test($reasons);
+
         if (empty($reasons)) {
             $form->addTplTag('REASONS', PHPWS_Text::moduleLink(dgettext('checkin', 'No reasons found.'), 'checkin',
                                                                array('aop'=>'settings')));
@@ -186,6 +223,7 @@ class Checkin_Admin extends Checkin {
 
     function settings()
     {
+        javascript('jquery');
         $form = new PHPWS_Form('reasons');
         $form->addHidden('module', 'checkin');
         $form->addHidden('aop', 'post_settings');
@@ -195,13 +233,15 @@ class Checkin_Admin extends Checkin {
         $form->setSize('new_reason', 40, 100);
         $reasons = $this->getReasons();
         if (!empty($reasons)) {
-            
-            $form->addSubmit('edit', dgettext('checkin', 'Edit'));
+            $form->addTplTag('EDIT', javascript('modules/checkin/edit_reason', array('question'=> dgettext('checkin', 'Update reason'),
+                                                                                     'address' => 'index.php?module=checkin&aop=update_reason&authkey=' . Current_User::getAuthKey(),
+                                                                                     'label' => dgettext('checkin', 'Edit'))));
             $form->addSubmit('delete', dgettext('checkin', 'Delete'));
             $form->addSelect('edit_reason', $reasons);
         }
 
         $tpl = $form->getTemplate();
+
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'setting.tpl');
     }
 
@@ -246,6 +286,103 @@ class Checkin_Admin extends Checkin {
         $db = new PHPWS_DB('checkin_reasons');
         $db->addValue('summary', $reason);
         return !PHPWS_Error::logIfError($db->insert());
+    }
+
+    /**
+     * Removes a reason from the reason table
+     */
+    function deleteReason($reason_id)
+    {
+        if (empty($reason_id) || !is_numeric($reason_id)) {
+            return false;
+        }
+
+        $db = new PHPWS_DB('checkin_reasons');
+        $db->addWhere('id', (int)$reason_id);
+        return $db->delete();
+    }
+
+    function updateReason()
+    {
+        if (empty($_GET['reason_id']) || empty($_GET['reason'])) {
+            return;
+        }
+
+        $db = new PHPWS_DB('checkin_reasons');
+        $db->addWhere('id', (int)$_GET['reason_id']);
+        $db->addValue('summary', strip_tags($_GET['reason']));
+        return !PHPWS_Error::logIfError($db->update());
+    }
+
+    function postStaff()
+    {
+        @$staff_id  = (int)$_POST['staff_id'];
+
+        if (!empty($staff_id)) {
+            $this->loadStaff($staff_id);
+        } else {
+            @$user_name = $_POST['username'];
+            if (empty($user_name) || !Current_User::allowUsername($user_name)) {
+                $this->message = dgettext('checkin', 'Please try another user name');
+                return false;
+            }
+
+            // Test user name, make sure exists
+            $db = new PHPWS_DB('checkin_staff');
+            $db->addWhere('user_id', 'users.id');
+            $db->addWhere('users.username', $user_name);
+            $db->addColumn('user_id');
+            $result = $db->select('one');
+            if (PHPWS_Error::logIfError($result)) {
+                $this->message = dgettext('checkin', 'Problem saving user.');
+                return false;
+            } elseif ($result) {
+                $this->message = dgettext('checkin', 'User already is staff member.');
+                return false;
+            }
+
+            // user is allowed and new, get user_id to create staff
+            $db = new PHPWS_DB('users');
+            $db->addWhere('username', $user_name);
+            $db->addColumn('id');
+            $user_id = $db->select('one');
+            if (PHPWS_Error::logIfError($result)) {
+                $this->message = dgettext('checkin', 'Problem saving user.');
+                return false;
+            }
+
+            if (!$user_id) {
+                $this->message = dgettext('checkin', 'Could not locate user with this user name.');
+                return false;
+            }
+            $this->loadStaff();
+            $this->staff->user_id = $user_id;
+        }
+
+        $this->staff->filter_type = (int)$_POST['filter_type'];
+        $this->staff->parseFilter($_POST['last_name_filter']);
+
+        if (!empty($_POST['reasons'])) {
+            $this->staff->_reasons = $_POST['reasons'];
+        }
+
+        test($this->staff);
+
+        test($_POST);
+
+        // Be sure they aren't already in system if id is zero
+
+        return true;
+    }
+
+    function loadStaff($id=0)
+    {
+        PHPWS_Core::initModClass('checkin', 'Staff.php');
+        if ($id) {
+            $this->staff = new Checkin_Staff($id);
+        } else {
+            $this->staff = new Checkin_Staff;
+        }
     }
 }
 
