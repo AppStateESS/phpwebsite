@@ -352,6 +352,7 @@ class User_Form {
             $db->addColumn('name');
             $db->addColumn('id');
             $db->addWhere('id', $result, '=', 'or');
+            $db->addOrder('name');
 
             $groupResult = $db->select();
             
