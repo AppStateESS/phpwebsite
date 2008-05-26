@@ -462,7 +462,9 @@ class Comment_Item {
         $thread = new Comment_Thread($this->thread_id);
         $db = new PHPWS_DB('comments_items');
         $db->addWhere('id', $this->id);
-        $db->delete();
+        if (PHPWS_Error::logIfError($db->delete())) {
+            return false;
+        }
 
         // clear replies to this comment
         $this->clearChildren();
@@ -472,6 +474,7 @@ class Comment_Item {
             $thread->decreaseCount();
             $thread->save();
         }
+        return true;
     }
 
     /**
@@ -494,12 +497,13 @@ class Comment_Item {
     {
         $comment = new Comment_Item($this->parent);
 	$vars['uop']   = 'view_comment';
-	$vars['cm_id']	       = $comment->id;
+	$vars['cm_id'] = $comment->id;
 	return PHPWS_Text::moduleLink($comment->getAuthorName(), 'comments', $vars);
     }
 
     function reportTags()
     {
+        $tpl['CHECK'] = sprintf('<input type="checkbox" name="cm_id[]" value="%s" />', $this->id);
         $tpl['SUBJECT'] = $this->viewLink();
 
         $tpl['ENTRY']   = sprintf('<span class="pointer" onmouseout="quick_view(\'#cm%s\'); return false" onmouseover="quick_view(\'#cm%s\'); return false">%s</span>',

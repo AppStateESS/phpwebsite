@@ -113,8 +113,19 @@ class Comments {
         $content = NULL;
         switch ($command) {
         case 'delete_comment':
-            $comment = new Comment_Item($_REQUEST['cm_id']);
-            $comment->delete();
+            if (Current_User::authorized('comments', 'delete_comments')) {
+                if (!is_array($_REQUEST['cm_id'])) {
+                    $cm_list = array($_REQUEST['cm_id']);
+                } else {
+                    $cm_list = & $_REQUEST['cm_id'];
+                }
+
+                foreach  ($cm_list as $cm_id) {
+                    $comment = new Comment_Item($cm_id);
+                    $comment->delete();
+                }
+            }
+
             PHPWS_Core::goBack();
             return;
             break;
@@ -224,9 +235,17 @@ class Comments {
 
         case 'clear_report':
             if (Current_User::authorized('comments', 'punish_users')) {
-                $comment = new Comment_Item($_GET['cm_id']);
-                $comment->reported = 0;
-                PHPWS_Error::logIfError($comment->save());
+                if (!is_array($_REQUEST['cm_id'])) {
+                    $cm_list = array($_REQUEST['cm_id']);
+                } else {
+                    $cm_list = & $_REQUEST['cm_id'];
+                }
+
+                foreach  ($cm_list as $cm_id) {
+                    $comment = new Comment_Item($cm_id);
+                    $comment->reported = 0;
+                    PHPWS_Error::logIfError($comment->save());
+                }
             }
             PHPWS_Core::goBack();
             break;

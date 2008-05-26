@@ -22,4 +22,11 @@ function quick_view(id)
     $(id).toggle();
 }
 
+function ignore()
+{
+    if ($('#reported_aop').val() != '') {
+        $('#reported').submit();
+    }
+}
+
 </script>

@@ -169,11 +169,22 @@ class Comment_Forms {
         $pager->addRowTags('reportTags');
         $pager->setEmptyMessage(dgettext('comments', 'No comments reported'));
 
+        $form = new PHPWS_Form('reported');
+        $form->addHidden('module', 'comments');
+        $form->addSelect('aop', array(''=>'',
+                                      'clear_report'=>dgettext('comments', 'Clear checked'),
+                                      'delete_comment' => dgettext('comments', 'Delete checked')));
+        $form->addButton('go', dgettext('comments', 'Go'));
+        $form->setExtra('go', 'onclick="ignore()"');
+
+        $tags = $form->getTemplate();
+
         $tags['SUBJECT_LABEL']  = dgettext('comments', 'Subject');
         $tags['ENTRY_LABEL']    = dgettext('comments', 'Entry');
         $tags['REPORTED_LABEL'] = sprintf('<abbr title="%s">%s</abbr>',
                                           dgettext('comments', 'Times reported'),
                                           dgettext('comments', 'T.R.'));
+        $tags['CHECK_ALL']      = javascript('check_all', array('checkbox_name'=>'cm_id'));
 
         $pager->addPageTags($tags);
         return $pager->get();
