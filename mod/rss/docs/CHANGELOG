@@ -1,3 +1,5 @@
+Version 0.2.6
+-----------------------------------------------------------------------------
 29 April 2008
 + RSS will not pull expired or unpublished keys any longer.
 

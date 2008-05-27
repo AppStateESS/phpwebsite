@@ -101,7 +101,12 @@ function rss_update(&$content, $version)
 + High ascii characters have their ampersand parsed.
 </pre>';
 
-
+    case version_compare($version, '0.2.6', '<'):
+        $content[] = '<pre>
+0.2.6 changes
+-------------
++ RSS will not pull expired or unpublished keys any longer.
+</pre>';
     }
 
     return true;
