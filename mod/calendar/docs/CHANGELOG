@@ -1,3 +1,5 @@
+Version 1.6.4
+---------------------------------------------------------------
 15 April 2008
 + Added missing pager navigation tags to schedule listing.
 + Updated: templates/admin/schedules.tpl

@@ -208,6 +208,14 @@ function calendar_update(&$content, $version)
 -------------
 + Added missing repeatYearly function.</pre>';
 
+    case version_compare($version, '1.6.4', '<'):
+        $content[] = '<pre>';
+        calendarUpdateFiles(array('templates/admin/schedules.tpl'), $content);
+        $content[] = '1.6.4 changes
+-------------
++ Added missing pager navigation tags to schedule listing.</pre>';
+
+
     } // end of switch
 
     return true;
