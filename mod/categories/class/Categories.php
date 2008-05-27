@@ -196,12 +196,9 @@ class Categories {
     /**
      * Returns an array of category links applicable to the item
      *
-     * If show_uncategorized is FALSE, then an uncategorized item
-     * will not return the uncategorized category link.
-     *
      * @author Matthew McNaney
      */
-    function getSimpleLinks($key=NULL, $show_uncategorized=FALSE)
+    function getSimpleLinks($key=NULL)
     {
         $link = NULL;
         $cat_result = Categories::catList($key);
@@ -209,7 +206,7 @@ class Categories {
             return null;
         }
         foreach ($cat_result as $cat){
-            if (!$cat->id && !$show_uncategorized) {
+            if (!$cat->id) {
                 continue;
             }
             $link[] = $cat->getViewLink($key->module);
@@ -296,15 +293,6 @@ class Categories {
             $db->addOrder('title');
 
             $cats = $db->getObjects('Category');
-
-            $uncat = new Category(0);
-
-            if (empty($cats)) {
-                $cats[] = $uncat;
-            }
-            else {
-                array_unshift($cats, $uncat);
-            }
 
             $result = Categories::initList($cats);
             break;
