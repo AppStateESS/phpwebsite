@@ -221,6 +221,24 @@ timeout INT NOT NULL default 0,
 + My Pages are unregistered on module removal.
 + My Page tab stays fixed.
 </pre>';
+
+    case version_compare($currentVersion, '2.5.0', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/forms/memberlist.tpl', 'templates/forms/userForm.tpl',
+                       'javascript/generate/head.js');
+        userUpdateFiles($files, $content);
+        $content[] = '2.5.0 changes
+-------------------
++ Members\' names alphabetized
++ New user email notification added.
++ Fixed member listing  dropping names past 10.
++ Added random password generator on user edit form.
++ Removed reference from Action.php causing php notice.
++ Changed redundant static method call in Permission.
++ Added dash to allowed display name characters.
++ Added \pL to display name characters.
+</pre>';
+
     } // End of switch statement
 
     return TRUE;

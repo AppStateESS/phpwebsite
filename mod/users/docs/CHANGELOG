@@ -1,3 +1,5 @@
+Version 2.5.0
+-----------------------------------------------------------------------
 26 May 2008
 + Members' names alphabetized
 
@@ -15,9 +17,8 @@
 + Updated: 
   templates/forms/memberlist.tpl, templates/forms/userForm.tpl,
   javascript/generate/head.js
-        
 
-Version 2.4.8
+Version 2.4.9
 -----------------------------------------------------------------------
 21 March 2008
 + Install.php and update.php are now creating groups for branch copied
