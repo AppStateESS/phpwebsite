@@ -7,7 +7,6 @@
 
 function categories_update(&$content, $currentVersion)
 {
-
     switch ($currentVersion) {
 
     case version_compare($currentVersion, '2.1.5', '<'):
@@ -113,6 +112,15 @@ function categories_update(&$content, $currentVersion)
 + Added getForm function to Categories.
 + Rewrote portions to work with File Cabinet.
 + Fixed two notices with error checks.</pre>';
+
+    case version_compare($currentVersion, '2.2.2', '<'):
+        $content[] = '<pre>';
+        categoryUpdateFiles(array('templates/menu_bar.tpl', 'templates/style.css'), $content);
+        $content[] = '2.2.2 changes
+-----------------
++ Bug #1777242 - Shared bug with default themes. Made more
+  presentable.
++ Altered default category tabs to fix some listing problems</pre>';
     }
     return true;
 }
