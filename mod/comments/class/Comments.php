@@ -79,7 +79,22 @@ class Comments {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
         $tabs['settings'] = array('title'=>dgettext('comments', 'Settings'), 'link'=>'index.php?module=comments');
-        $tabs['report']   = array('title'=>dgettext('comments', 'Reported'), 'link'=>'index.php?module=comments');
+
+        $db = new PHPWS_DB('comments_items');
+        $db->addColumn('id', null, null, true);
+        $db->addWhere('reported', 0, '>');
+        $count = $db->select('one');
+        if (PHPWS_Error::logIfError($count)) {
+            $count = 0;
+        }
+
+        if ($count) {
+            $tabs['report'] = array('title'=> sprintf(dgettext('comments', 'Reported (%s)'), $count),
+                                      'link'=>'index.php?module=comments');
+        } else {
+            $tabs['report'] = array('title'=> dgettext('comments', 'Reported'),
+                                      'link'=>'index.php?module=comments');
+        }
         
         $db = new PHPWS_DB('comments_items');
         $db->addColumn('id', null, null, true);
@@ -96,7 +111,6 @@ class Comments {
             $tabs['approval'] = array('title'=> dgettext('comments', 'Approval'),
                                       'link'=>'index.php?module=comments');
         }
-
 
         $panel = new PHPWS_Panel('comments');
         $panel->quickSetTabs($tabs);
@@ -163,14 +177,14 @@ class Comments {
             if (!empty($_POST['cm_id'])) {
                 Comments::multipleApprove($_POST['cm_id']);
             }
-            PHPWS_Core::goBack();
+            PHPWS_Core::reroute('index.php?module=comments&tab=approval&authkey=' . Current_User::getAuthKey());
             break;
 
         case 'remove_all':
             if (!empty($_POST['cm_id'])) {
                 Comments::multipleRemove($_POST['cm_id']);
             }
-            PHPWS_Core::goBack();
+            PHPWS_Core::reroute('index.php?module=comments&tab=approval&authkey=' . Current_User::getAuthKey());
             break;
 
         case 'approval':
@@ -399,15 +413,19 @@ class Comments {
             break;
 
         case 'view_comment':
-            $comment = new Comment_Item($_REQUEST['cm_id']);
-            $thread = new Comment_Thread($comment->thread_id);
+            $thread = new Comment_Thread($c_item->thread_id);
             $key = new Key($thread->key_id);
 
             if (!$key->allowView()) {
                 Current_User::requireLogin();
             }
-            $title = sprintf(dgettext('comments', 'Comment from: %s'), $key->getUrl());
-            $content[] = Comments::viewComment($comment);
+
+            if ($c_item->approved || Current_User::allow('comments')) {
+                $title = sprintf(dgettext('comments', 'Comment from: %s'), $key->getUrl());
+                $content[] = Comments::viewComment($c_item);
+            } else {
+                PHPWS_Core::errorPage('404');
+            }
             break;
         }
 

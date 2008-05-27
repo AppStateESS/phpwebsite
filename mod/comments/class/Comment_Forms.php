@@ -184,7 +184,7 @@ class Comment_Forms {
         $tags['REPORTED_LABEL'] = sprintf('<abbr title="%s">%s</abbr>',
                                           dgettext('comments', 'Times reported'),
                                           dgettext('comments', 'T.R.'));
-        $tags['CHECK_ALL']      = javascript('check_all', array('checkbox_name'=>'cm_id'));
+        $tags['CHECK_ALL']      = javascript('check_all', array('checkbox_name'=>'cm_id', 'type'=>'checkbox'));
 
         $pager->addPageTags($tags);
         return $pager->get();
@@ -263,9 +263,9 @@ class Comment_Forms {
         javascript('modules/comments/quick_view');
         $form = new PHPWS_Form('approval');
         $form->addHidden('module', 'comments');
-        $form->addSelect('aop', array('approval'=>'', 'approve_all'=>dgettext('comments', 'Approve'),
-                                          'remove_all'=>dgettext('comments', 'Remove')));
-        $form->addSubmit(dgettext('comments', 'all checked'));
+        $form->addSelect('aop', array('approval'=>'', 'approve_all'=>dgettext('comments', 'Approve checked'),
+                                          'remove_all'=>dgettext('comments', 'Remove checked')));
+        $form->addSubmit(dgettext('comments', 'Go'));
 
         $tpl = $form->getTemplate();
         $tpl['CHECK_ALL'] = javascript('check_all', array('checkbox_name'=>'cm_id', 'type'=>'checkbox'));

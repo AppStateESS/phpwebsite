@@ -331,7 +331,7 @@ class Comment_Item {
 	return $template;
     }
 
-    function save()
+    function save($stamp_update=true)
     {
 	if (empty($this->thread_id)) {
 	    return PHPWS_Error::get(COMMENTS_MISSING_THREAD, 'comments', 'Comment_Item::save');
@@ -350,7 +350,9 @@ class Comment_Item {
 	    $this->stampAuthor();
 	    $increase_count = TRUE;
 	} else {
-	    $this->stampEditor();
+            if ($stamp_update) {
+                $this->stampEditor();
+            }
 	    $increase_count = FALSE;
         }
 
@@ -549,15 +551,16 @@ class Comment_Item {
                                   $this->id, $this->id,
                                   substr($this->entry, 0, 50));
         $tpl['FULL'] = sprintf('<div class="full-view" id="cm%s">%s</div>', $this->id, $this->getEntry());
-
+        $tpl['SUBJECT'] = $this->viewLink();
         $tpl['ACTION'] = implode('', $links);
+
         return $tpl;
     }
 
     function approve()
     {
         $this->approved = 1;
-        $this->save();
+        $this->save(false);
 
         // Thread is not increased on save
         $this->stampThread();

@@ -1,9 +1,16 @@
+Version 1.1.0
+------------------------------------------------------------------------
+27 May 2008
++ Added counter to reported tab
++ Changed some wording here and there
++ Approving comments doesn't stamp updated
++ Removed some redundant code
+
 26 May 2008
 + Added checkboxes to report form for multiple selection.
 + updated: javascript/admin/head.js, templates/reported.tpl
 
-Version 1.1.0
-------------------------------------------------------------------------
+
 24 April 2008
 + Finished multiple approve/remove
 

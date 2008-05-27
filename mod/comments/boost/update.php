@@ -103,15 +103,15 @@ Please download 0.6.3.</pre>';
         }
 
         $files = array('img/cancel.png', 'img/noentry.png', 'img/ok.png', 'templates/approval.tpl',
-                       'templates/settings_form.tpl', 'javascript/quick_view/head.js');
+                       'templates/settings_form.tpl', 'javascript/quick_view/head.js',
+                       'javascript/admin/head.js', 'templates/reported.tpl');
         commentsUpdateFiles($files, $content);
 
         $content[] = '1.1.0 Changes
 -------------
 + Comments can be approved before posting.
++ Counter added to reported tab.
 </pre>';
-
-
     }
             
     return true;
