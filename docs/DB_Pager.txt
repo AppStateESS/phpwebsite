@@ -152,21 +152,6 @@ $tags['ACTION']     = _('Action');
 $pager->addPageTags($tags);
 
 
-Converting the date
---------------------------------------------------------------------
-If one of your table columns is in unix time, you can have DBPager
-format it for you:
-
-$pager->convertDate($column_name, $format[%c]);
-
-The $column_name is the title of the datetime column. The format
-matches the parameters used in the strftime function. The default
-value is '%c'.
-
-Keep in mind that dates are formatted BEFORE what is called in
-addRowTags. Don't format it twice.
-
-
 Plugging in Special Row Tags
 --------------------------------------------------------------------
 If you want to plug in special tags per row, then you can do so using
@@ -235,6 +220,21 @@ The result from the method should, again, be an associative array
 corresponding to your pager template.
 
 
+Converting the date
+--------------------------------------------------------------------
+If one of your table columns is in unix time, you can have DBPager
+format it for you:
+
+$pager->convertDate($column_name, $format[%c]);
+
+The $column_name is the title of the datetime column. The format
+matches the parameters used in the strftime function. The default
+value is '%c'.
+
+Keep in mind that dates are formatted BEFORE what is called in
+addRowTags. Don't format it twice.
+
+
 Adding Toggles
 --------------------------------------------------------------------
 Non-colored rows are not only boring, they make it more difficult to
@@ -277,16 +277,8 @@ Setting up your template
 Before you continue, make sure you know how templates work in
 phpWebSite(3). 
 
-The easiest way to make a page list is to use a table(4). Take a look
-at File Cabinet's pager template imageList.tpl.
-
-Notice the header row. It contains the labels for the columns. Next to
-the column name is a COLUMNNAME_SORT tag. This tag will display a
-sorting graphic. By clicking on this graphic, the user can order the
-data by column alphabetically.
-
-You can also create a custom sort header for a column. Say you wanted
-to sort by the column pet_name:
+It is easy to create a custom sort header for a column. Say you wanted
+to sort by the table column pet_name:
 
 $pager->addSortHeader('pet_name', 'My Pet Names');
 
@@ -296,6 +288,10 @@ column. It would look something like this:
 [] My Pet Names
 
 You would just need to add "PET_NAME_SORT" to your template.
+
+If you don't use addSortHeader, DBPager will still create a SORT
+button without the header text for every column returned from the
+database.
 
 After the headers come the actual rows. Notice that the column tag
 names are identical to the table column names. The ACTION tag is from
@@ -366,7 +362,8 @@ include a column from another table.
 
 For example, lets say that I have a category column in my main
 table. This integer column references the id of another table. We want
-the category title in that table.
+the category title in that table. (Note: this particular example would
+be better suited with the joinResult function).
 
 // Ask for the title from the category_table and retrieve it as
 // cat_title.
@@ -391,6 +388,9 @@ If you want the results of a join to appear in your page, you can use
 the joinResult function.
 
 There are several parameters in this function:
+
+$pager->joinResult(source_column, join_table, join_column,
+                   content_column, new_name);
 
 source_column
 This column matches the id from the joined table. In the previous
@@ -454,5 +454,3 @@ Example <tr {TOGGLE}><td>{TITLE}</td></tr>
 
 (3) Look in docs/template.txt.
 
-
-(4) Do you know how to make a tableless CSS design? Go for it :)

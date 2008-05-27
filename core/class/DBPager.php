@@ -249,6 +249,10 @@ class DBPager {
             $this->sub_search = true;
         }
 
+        if (empty($new_name)) {
+            $new_name = $content_column;
+        }
+
         $this->sub_result['dbp' . $index] = array('sc' => $source_column,
                                                   'jt' => $join_table,
                                                   'jc' => $join_column,
@@ -257,7 +261,7 @@ class DBPager {
                                                   'srch' => (bool)$searchable);
 
         $this->sub_order[$new_name] = array('dbp' . $index, $content_column);
-        $this->table_columns[] = $new_name;
+        $this->table_columns[$new_name] = $new_name;
         $index++;
     }
 
@@ -898,6 +902,7 @@ class DBPager {
 
             $template[strtoupper($buttonname)] = $link;
         }
+
         return $template;
     }
 

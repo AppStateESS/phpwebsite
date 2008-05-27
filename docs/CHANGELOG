@@ -2,6 +2,11 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+27 May 2008
++ DBPager : joined columns can now be header sorted.
++ Text: error check added in xml parsing.
++ DB_Pager.txt : updated info
+
 23 May 2008
 + Added button option to prompt javascript
 + Updated: javascript/prompt/body2.js, javascript/prompt/default.php,

@@ -769,6 +769,7 @@ class PHPWS_Text {
             return NULL;
         }
         while (@$xml_val = array_shift($arr_vals)) {
+            $value = null;
             extract($xml_val);
             if ($type == 'close') {
                 return $new_val;
