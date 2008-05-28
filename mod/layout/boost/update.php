@@ -98,9 +98,15 @@ function layout_update(&$content, $currentVersion)
 </pre>';
 
     case version_compare($currentVersion, '2.4.4', '<'):
-        $db = new PHPWS_DB('layout_config');
-        $db->addTableColumn('head_tags', 'text');
-        $content[] = '';
+        $content[] = '<pre>';
+        layoutUpdateFiles(array('templates/user_form.tpl'), $content);
+        $content[] = '2.4.4 changes
+-------------------
++ Added collapse function. Adds id="layout-collapse" to theme template
+  under the {COLLAPSE} tag.
++ Changed method of checking for javascript status. Less chance for
+  error.
++ Fixed notice.</pre>';
     }
     return true;
 }

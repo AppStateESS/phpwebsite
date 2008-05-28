@@ -1,3 +1,5 @@
+Version 2.4.4
+------------------------------------------------------------------
 26 May 2008
 + Added collapse function. Adds id="layout-collapse" to theme template
   under the {COLLAPSE} tag.

@@ -23,7 +23,6 @@ class Layout_Settings {
     var $header           = null;
     var $footer           = null;
     var $cache            = true;
-    var $head_tags        = null;
 
     // !!! Make sure to update your saveSettings function !!!
     // Remove all hidden variables from the update
@@ -77,11 +76,6 @@ class Layout_Settings {
     function getContentVars()
     {
         return $this->_contentVars();
-    }
-
-    function getHeadTags()
-    {
-        return $this->head_tags;
     }
 
     function getMetaTags()
