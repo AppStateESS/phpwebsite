@@ -9,6 +9,7 @@
  */
 
 PHPWS_Core::requireConfig('filecabinet');
+PHPWS_Core::requireInc('filecabinet', 'defines.php');
 PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 
 if (!defined('FC_THUMBNAIL_WIDTH')) {
@@ -268,32 +269,43 @@ class PHPWS_Image extends File_Common {
     }
 
 
-    function resize($dst, $max_width, $max_height)
+    function resize($dst, $max_width, $max_height, $crop_to_fit=true)
     {
-        if ($this->width > $this->height) {
-            $proportion = $this->width / $this->height;
-            $new_width = round($this->height * 0.8);
-            $new_height = round($new_width / $proportion);
-        } else {
-            $proportion = $this->height / $this->width;
-            $new_height = round($this->width * 0.8);
-            $new_width = round($new_height / $proportion);
-        }
+        $src_proportion = $this->width / $this->height;
+        $max_proportion = $max_width / $max_height;
 
-        if ($new_width < $max_width) {
-            $new_width = $max_width;
-        }
-
-        if ($new_height < $max_height) {
+        if ($max_width > $this->width) {
+            $new_width = $this->width;
+            $new_height = $this->height;
+            $crop_width = $new_width;
+            $crop_height = $max_height;
+        } elseif($max_height > $this->height) {
+            $new_width = $this->width;
+            $new_height = $this->height;
+            $crop_width = $max_width;
+            $crop_height = $new_height;
+        } elseif($max_width <= $max_height) {
             $new_height = $max_height;
-        }
-
-        if ( ($this->width - $new_width) > PHPWS_Settings::get('filecabinet', 'crop_threshold')  && 
-             ($this->width - $new_width) > PHPWS_Settings::get('filecabinet', 'crop_threshold') ) {
-            PHPWS_File::cropImage($this->getPath(), $dst, $new_width, $new_height);
-            return PHPWS_File::scaleImage($dst, $dst, $max_width, $max_height);
+            $new_width  = round($new_height * $src_proportion);
+            $crop_width = $max_width;
+            $crop_height = $new_height;
+            if ($crop_to_fit && $crop_width > $new_width) {
+                $new_width = $max_width;
+                $new_height = round($new_width / $src_proportion);
+            }
         } else {
-            return PHPWS_File::scaleImage($this->getPath(), $dst, $max_width, $max_height);
+            $new_width   = $max_width;
+            $new_height  = round($new_width * $src_proportion);
+            $crop_width = $new_width;
+            $crop_height = $max_height;
+        }
+        
+        $result = PHPWS_File::scaleImage($this->getPath(), $dst, $new_width, $new_height);
+
+        if ($result && $crop_to_fit) {
+            return PHPWS_File::cropImage($dst, $dst, $crop_width, $crop_height);
+        } else {
+            return $result;
         }
     }
 
