@@ -89,6 +89,14 @@ function photoalbum_update(&$content, $version) {
 + Fixed: inability to upload photos.
 </pre>';
 
+    case version_compare($version, '1.4.6', '<'):
+        PHPWS_Boost::updateFiles(array('conf/config.php'), 'photoalbum');
+        $content[] = '<pre>
+1.4.6 changes
+-------------
++ Some edits to try and make sorting work better.
+</pre>';
+
     }
 
     return true;
