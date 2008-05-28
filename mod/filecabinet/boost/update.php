@@ -375,11 +375,38 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Updated youTube import.
 + Removed unused code.</pre>';
 
-    case version_compare($version, '2.0.2', '<'):
+    case version_compare($version, '2.1.0', '<'):
         $content[] = '<pre>';
-        fc_updatefiles(array('templates/image_view.tpl', 'templates/settings.tpl'), $content);
-        $content[] = '2.0.2 changes
+        $files = array('templates/image_view.tpl', 'templates/settings.tpl', 
+                      'javascript/pick_file/head.js', 'javascript/pick_file/scripts.js',
+                      'javascript/update_file/head.js', 'templates/file_manager/placeholder.tpl',
+                      'templates/document_edit.tpl', 'templates/image_edit.tpl', 'templates/multimedia_edit.tpl',
+                      'templates/edit_folder.tpl', 'templates/embed_edit.tpl', 'templates/style.css');
+        fc_updatefiles($files, $content);
+
+        $db = new PHPWS_DB('folders');
+        if (PHPWS_Error::logIfError($db->addTableColumn('max_image_dimension', 'smallint not null default 0'))) {
+            $content[] = '--- Unable to add max_image_dimension column to folders table.';
+            return false;
+        } else {
+            $content[] = '--- Added max_image_dimension column to folders table.';
+        }
+        
+        $content[] = '2.1.0 changes
 -------------
++ Filecabinet will now resize media as well as images.
++ When checking the mime type, the extension is forced into lowercase.
++ Hiding some elements if the user doesn\'t have file rights.
++ Fixed typo in Image:makeThumbnail
++ Added ability to move files to other folders.
++ Revamped embedded code
++ Added flicker slide shows.
++ Fixed module restrictions on folders
++ Can change module restriction per folder.
++ Added moduleLimit function to restrict folder view in file manager.
++ Some notices fixed
++ Image folders can be set to control default image default size.
++ Fixed an error call.
 + Popup images can be set to navigate among other images in the
   folder.
 + Popup windows all the same size.
@@ -387,13 +414,6 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Image\'s getThumbnail can be linkable.</pre>';
 
     case version_compare($version, '2.0.3', '<'):
-        $db = new PHPWS_DB('folders');
-        if (PHPWS_Error::logIfError($db->addTableColumn('max_image_dimension', 'smallint not null default 0'))) {
-            $content[] = 'Unable to add max_image_dimension column to folders table.';
-            return false;
-        } else {
-            $content[] = 'Added max_image_dimension column to folders table.';
-        }
     }
 
     return true;

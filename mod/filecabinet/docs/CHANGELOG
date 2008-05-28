@@ -1,3 +1,5 @@
+Version 2.1.0
+--------------------------------------------------------------------------------------
 23 May 2008
 + Filecabinet will now resize media as well as images.
 + Added type to javascript scripts
