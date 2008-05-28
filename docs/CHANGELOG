@@ -2,6 +2,8 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+Version 1.8.2
+----------------------------------------------------------------------
 27 May 2008
 + DBPager : joined columns can now be header sorted.
 + Text: error check added in xml parsing.

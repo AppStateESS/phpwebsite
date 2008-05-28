@@ -268,15 +268,26 @@ You will need to make your hub/branch home directory writable if the file doesn\
     case version_compare($version, '1.8.2', '<'):
         $content[] = '<pre>';
         $db = new PHPWS_DB('phpws_key');
-        $db->addTableColumn('show_after', "int UNSIGNED NOT NULL default '0'");
-        $db->addTableColumn('hide_after', "int UNSIGNED NOT NULL default '4000000000'");
-        $db->addValue('hide_after', '4000000000');
-        $db->update();
-        $content[] = '1.8.2 Changes
------------------
+        if (!$db->isTableColumn('show_after')) {
+            $db->addTableColumn('show_after', "int UNSIGNED NOT NULL default '0'");
+            $db->addTableColumn('hide_after', "int UNSIGNED NOT NULL default '4000000000'");
+            $db->addValue('hide_after', '4000000000');
+            $db->update();
+            $content[] = 'show_after and hide_after columns added to key table.';
+        }
 
-</pre>';
+        $files = array('javascript/prompt/body2.js', 'javascript/prompt/default.php', 'javascript/prompt/readme.txt',
+                       'conf/language.php', 'javascript/editors/fckeditor/editor/phpwsstyles.xml', 'javascript/check_all/body.js',
+                       'javascript/check_all/default.php', 'javascript/check_all/head.js', 'javascript/check_all/README.txt',
+                       'javascript/open_window/default.php');
 
+        coreUpdateFiles($files, $content);
+
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_8_2.txt');
+        }
+
+        $content[] = '</pre>';
     }
     return true;
 }
