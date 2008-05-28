@@ -563,15 +563,24 @@ class PHPWS_File {
             }
         }
 
-        if ($width > $height) {
+        if ($width >= $height) {
             $diff = $max_width / $width;
             $new_width = $max_width;
             $new_height = round($height * $diff);
-        } else {
+        } 
+
+        if ($width < $height || $new_height > $max_height) {
             $diff = $max_height / $height;
             $new_height = $max_height;
             $new_width = round($width * $diff);
         }
+
+        // Leaving for testing
+        /*
+        printf('<hr>w=%s h=%s<br>mw=%s mh=%s<br>nw=%s nh=%s<hr>',
+               $width, $height, $max_width, $max_height,
+               $new_width, $new_height);
+        */
 
         $source_image = PHPWS_File::_imageCopy($source_dir, $file_type);
         $resampled_image = PHPWS_File::_resampleImage($new_width, $new_height);

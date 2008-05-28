@@ -14,15 +14,15 @@ PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 
 if (!defined('FC_THUMBNAIL_WIDTH')) {
     define('FC_THUMBNAIL_WIDTH', 100);
- }
+}
 
 if (!defined('FC_THUMBNAIL_HEIGHT')) {
     define('FC_THUMBNAIL_HEIGHT', 100);
- }
+}
 
 if (!defined('FC_MIN_POPUP_SIZE')) {
     define('FC_MIN_POPUP_SIZE', 400);
- }
+}
 
 class PHPWS_Image extends File_Common {
     var $width            = NULL;
@@ -248,8 +248,8 @@ class PHPWS_Image extends File_Common {
             $css_id = $this->id;
         }
         $image_tag = sprintf('<img src="%s" title="%s" id="image-thumbnail-%s" alt="%s" />',
-                       $this->thumbnailPath(),
-                       $this->title, $css_id, $this->alt);
+                             $this->thumbnailPath(),
+                             $this->title, $css_id, $this->alt);
 
         if ($linked && !empty($this->url)) {
             if($this->url == 'folder') {
@@ -273,39 +273,43 @@ class PHPWS_Image extends File_Common {
     {
         $src_proportion = $this->width / $this->height;
         $max_proportion = $max_width / $max_height;
+        $new_width = $this->width;
+        $new_height = $this->height;
 
-        if ($max_width > $this->width) {
-            $new_width = $this->width;
-            $new_height = $this->height;
-            $crop_width = $new_width;
-            $crop_height = $max_height;
-        } elseif($max_height > $this->height) {
-            $new_width = $this->width;
-            $new_height = $this->height;
-            $crop_width = $max_width;
-            $crop_height = $new_height;
-        } elseif($max_width <= $max_height) {
-            $new_height = $max_height;
-            $new_width  = round($new_height * $src_proportion);
-            $crop_width = $max_width;
-            $crop_height = $new_height;
-            if ($crop_to_fit && $crop_width > $new_width) {
-                $new_width = $max_width;
-                $new_height = round($new_width / $src_proportion);
+        if ($crop_to_fit) {
+            if ($max_width > $this->width) {
+                $crop_width = $new_width;
+                $crop_height = $max_height;
+            } elseif($max_height > $this->height) {
+                $crop_width = $max_width;
+                $crop_height = $new_height;
+            } elseif($max_width <= $max_height) {
+                $new_height = $max_height;
+                $new_width  = round($new_height * $src_proportion);
+                $crop_width = $max_width;
+                $crop_height = $new_height;
+                if ($crop_to_fit && $crop_width > $new_width) {
+                    $new_width = $max_width;
+                    $new_height = round($new_width / $src_proportion);
+                }
+            } else {
+                $new_width   = $max_width;
+                $new_height  = round($new_width * $src_proportion);
+                $crop_width = $new_width;
+                $crop_height = $max_height;
             }
-        } else {
-            $new_width   = $max_width;
-            $new_height  = round($new_width * $src_proportion);
-            $crop_width = $new_width;
-            $crop_height = $max_height;
-        }
-        
-        $result = PHPWS_File::scaleImage($this->getPath(), $dst, $new_width, $new_height);
 
-        if ($result && $crop_to_fit) {
+            PHPWS_File::scaleImage($this->getPath(), $dst, $new_width, $new_height);
+            // testing purposes
+            /*
+            printf('<hr>w=%s h=%s<br>mw=%s mh=%s<br>nw=%s nh=%s<br>cw=%s ch=%s<hr>',
+                   $this->width, $this->height, $max_width, $max_height,
+                   $new_width, $new_height, $crop_width, $crop_height);
+            */
+            
             return PHPWS_File::cropImage($dst, $dst, $crop_width, $crop_height);
         } else {
-            return $result;
+            return PHPWS_File::scaleImage($this->getPath(), $dst, $max_width, $max_height);
         }
     }
 
@@ -677,7 +681,7 @@ class PHPWS_Image extends File_Common {
             return 'bmp';
 
         default:
-                return null;
+            return null;
         }
     }
 
