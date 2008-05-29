@@ -101,7 +101,7 @@ function bb_filter($bb2html)
         $bb2html = str_ireplace('[/img]', '[/' . _('No Images') . ']', $bb2html);
     }
 
-
+    $bb2html = preg_replace('/\[color=(#\w{6})\](.*)\[\/color\]/Ui', '<span style="color : \\1">\\2</span>', $bb2html);
     $bb2html = preg_replace('/\[url=([\w:\/\.\-&=\s\?#]+)\](.*)\[\/url\]/Ui', '<a target="_blank" href="\\1">\\2</a>', $bb2html);
         
     if (BBCODE_QUOTE_TYPE == 'fieldset') {

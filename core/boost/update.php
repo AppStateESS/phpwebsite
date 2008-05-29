@@ -281,7 +281,8 @@ You will need to make your hub/branch home directory writable if the file doesn\
                        'javascript/check_all/default.php', 'javascript/check_all/head.js', 'javascript/check_all/README.txt',
                        'javascript/open_window/default.php', 'javascript/editors/tinymce/default.php',
                        'javascript/editors/tinymce/head.js', 'javascript/editors/tinymce/limited.js',
-                       'javascript/editors/tinymce/custom.js', 'javascript/editors/tinymce/default.php');
+                       'javascript/editors/tinymce/custom.js', 'javascript/editors/tinymce/default.php',
+                       'conf/smiles.pak', 'img/smilies/banana.gif');
 
         coreUpdateFiles($files, $content);
 

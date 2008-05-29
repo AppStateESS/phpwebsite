@@ -12,11 +12,16 @@ Version 1.8.2
 + TinyMCE - pulled configuration into included files to help with
             limited settings
 + TinyMCE - Fixed error message with GoogleSpell.
++ TinyMCE - Added emotions plugin
++ Added font color ability to bbcode filter
++ Banana added to smilies FINALLY
 + Updated: javascript/editors/tinymce/default.php,
            javascript/editors/tinymce/head.js,
            javascript/editors/tinymce/limited.js,
            javascript/editors/tinymce/custom.js,
-           javascript/editors/tinymce/default.php
+           javascript/editors/tinymce/default.php,
+           img/smilies/banana.gif
+           conf/smiles.pak
 
 27 May 2008
 + DBPager : joined columns can now be header sorted.

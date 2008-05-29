@@ -45,7 +45,7 @@ Javascript
 + TinyMCE - pulled configuration into included files to help with
             limited settings
 + TinyMCE - Fixed error message with GoogleSpell.
-
++ TinyMCE - Added emotions plugin
 
 Updated documentation
 ---------------------------------------------------------------------
@@ -81,7 +81,7 @@ Miscellaneous
 + Removed category content variable from themes.
 + Changed function call in Setup to manual copy to avoid confusion in
   File class 
-
++ Added font color to bbcode filter
 
 File updates
 ---------------------------------------------------------------------

@@ -21,6 +21,7 @@ phpWebsite ships with basic 'smilie' support.
 You may want to expand upon your collection. Here is an excellent
 source of graphics:
 http://sourceforge.net/project/shownotes.php?release_id=282009
+(Note: this package has since discontinued. Google smilie+pak)
 
 To add your smilies:
 1) copy the graphics into images/core/smilies/
