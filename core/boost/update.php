@@ -279,7 +279,9 @@ You will need to make your hub/branch home directory writable if the file doesn\
         $files = array('javascript/prompt/body2.js', 'javascript/prompt/default.php', 'javascript/prompt/readme.txt',
                        'conf/language.php', 'javascript/editors/fckeditor/editor/phpwsstyles.xml', 'javascript/check_all/body.js',
                        'javascript/check_all/default.php', 'javascript/check_all/head.js', 'javascript/check_all/README.txt',
-                       'javascript/open_window/default.php');
+                       'javascript/open_window/default.php', 'javascript/editors/tinymce/default.php',
+                       'javascript/editors/tinymce/head.js', 'javascript/editors/tinymce/limited.js',
+                       'javascript/editors/tinymce/custom.js', 'javascript/editors/tinymce/default.php');
 
         coreUpdateFiles($files, $content);
 

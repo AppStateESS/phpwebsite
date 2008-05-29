@@ -20,6 +20,9 @@ Core Classes
 
 + Form
   o Changed POST to REQUEST in testDate and getPostedDate
+  o added a force_name parameter to useEditor. Allows the dev to specify
+    which tool to use.
+
 
 + XMLParser
   o Added some error checks.
@@ -31,13 +34,17 @@ Javascript
 + The Italian translation was causing problems using the confirm
   javascript. It was using the quotation character instead of
   &quot;. I added a check in the default.php to change it back.
-+ FCKeditor : Added clear style options on paragraphs to style
++ FCKeditor - Added clear style options on paragraphs to style
   selection.
 + Added a checkbox trigger for check all.
 + Fixed a bug in open_window that prevented button use.
 + Added autocomplete jquery plugin
 + Added home url to open_window address because Internet Explorer
   makes links relative to the mod_rewrite path.
++ TinyMCE - added limited interface for bbcode. Used in comments.
++ TinyMCE - pulled configuration into included files to help with
+            limited settings
++ TinyMCE - Fixed error message with GoogleSpell.
 
 
 Updated documentation
