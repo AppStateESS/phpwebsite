@@ -4,6 +4,20 @@ its own separate CHANGELOG file.
 
 Version 1.8.2
 ----------------------------------------------------------------------
+29 May 2008
++ added a force_name parameter to useEditor. Allows the dev to specify
+  which tool to use.
++ Added comment about the use_filter parameter in parseOutput.
++ TinyMCE - added limited interface for bbcode. Used in comments.
++ TinyMCE - pulled configuration into included files to help with
+            limited settings
++ TinyMCE - Fixed error message with GoogleSpell.
++ Updated: javascript/editors/tinymce/default.php,
+           javascript/editors/tinymce/head.js,
+           javascript/editors/tinymce/limited.js,
+           javascript/editors/tinymce/custom.js,
+           javascript/editors/tinymce/default.php
+
 27 May 2008
 + DBPager : joined columns can now be header sorted.
 + Text: error check added in xml parsing.

@@ -359,11 +359,13 @@ class PHPWS_Text {
      * @author                       Matthew McNaney <matt at tux dot appstate dot edu>
      * @param   string  text         Text to parse
      * @param   boolean decode       Whether entity_decoding should take place.
+     * @param   boolean use_filters  If true, any filters requested in the text_settings file will be
+     *                               run against the output text.
      * @return  string  text         Stripped text
      */
     function parseOutput($text, $decode=ENCODE_PARSED_TEXT, $use_filters=false)
     {
-        $t = & new PHPWS_Text;
+        $t = new PHPWS_Text;
         $t->setText($text, $decode);
         $t->useFilters($use_filters);
         $text = $t->getPrint();

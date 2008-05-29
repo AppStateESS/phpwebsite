@@ -18,6 +18,12 @@ if (!empty($data['HEIGHT'])) {
     $rows = floor($data['HEIGHT'] / 19);
  }
 
+if ($data['LIMITED']) {
+    $data['config'] = 'limited.js';
+ } else {
+    $data['config'] = 'custom.js';
+ }
+
 $data['rows'] = $rows;
 $data['cols'] = $cols;
 
