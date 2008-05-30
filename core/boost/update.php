@@ -191,7 +191,7 @@ function core_update(&$content, $version) {
 
     case version_compare($version, '1.8.0', '<'):
         $htaccess = $home_directory . '.htaccess';
-        $new_htaccess = PHPWS_SOURCE_DIR . 'core/boost/new_htaccess';
+        $new_htaccess = PHPWS_SOURCE_DIR . 'core/inc/htaccess';
         $backup_loc = $home_directory . 'files/.backup_htaccess';
         
         if (!isset($_GET['ignore_htaccess'])) {
@@ -285,6 +285,12 @@ You will need to make your hub/branch home directory writable if the file doesn\
                        'conf/smiles.pak', 'img/smilies/banana.gif');
 
         coreUpdateFiles($files, $content);
+
+        if (@copy(PHPWS_SOURCE_DIR . 'core/inc/htaccess', $home_directory . '.htaccess')) {
+            $content[] = 'Copied standard .htaccess file to root directory.';
+        } else {
+            $content[] = 'Failed to copy standard .htaccess file to root directory. You may find it in core/inc/htaccess.';
+        }
 
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_8_2.txt');
