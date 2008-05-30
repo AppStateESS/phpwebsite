@@ -4,6 +4,10 @@ its own separate CHANGELOG file.
 
 Version 1.8.2
 ----------------------------------------------------------------------
+30 May 2008
++ created default htaccess file in core/inc/. Access and Branch module
+  updated to accommodate change.
+
 29 May 2008
 + added a force_name parameter to useEditor. Allows the dev to specify
   which tool to use.
