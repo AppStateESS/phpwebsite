@@ -1,3 +1,5 @@
+Version 1.7.2
+----------------------------------------------------------------
 26 May 2008
 + Removed redundant page tags from blog listing.
 
@@ -13,8 +15,6 @@
 + Fixed notice warning.
 + Readded ability to limit folder view by module.
 
-Version 1.7.2
-----------------------------------------------------------------
 8 April 2008
 + Can use media or image thumbnails on blog listing page.
 + Blog uses new key datetime terminators.
