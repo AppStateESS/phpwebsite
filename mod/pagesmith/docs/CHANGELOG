@@ -1,3 +1,6 @@
+30 May 2008
++ Fixed direct access to page allowing view.
+
 26 May 2008
 + Front page does not alter page title.
 
@@ -7,7 +10,7 @@
 8 April 2008
 + Changed wording on edit text windows.
 
-Version 1.2.0
+Version 1.2.1
 ---------------------------------------------------------------
 20 March 2008
 + Added error message if blank page is attempted.

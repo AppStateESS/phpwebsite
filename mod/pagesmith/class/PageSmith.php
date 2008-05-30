@@ -278,9 +278,16 @@ class PageSmith {
             $this->loadPage();
         }
         if ($this->page->id) {
-            $content = $this->page->view();
-            if (Current_User::allow('pagesmith', 'edit_page', $this->page->id)) {
-                $content .= sprintf('<p class="pagesmith-edit">%s</p>', $this->page->editLink());
+            $this->page->loadKey();
+            if ($this->page->_key->allowView()) {
+                $content = $this->page->view();
+                if (Current_User::allow('pagesmith', 'edit_page', $this->page->id)) {
+                    $content .= sprintf('<p class="pagesmith-edit">%s</p>', $this->page->editLink());
+                }
+            } else {
+                if  (!Current_User::requireLogin()) {
+                    $content = dgettext('pagesmith', 'Restricted page.');
+                }
             }
             Layout::add($content);
         } else {

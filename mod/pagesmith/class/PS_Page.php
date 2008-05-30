@@ -17,6 +17,8 @@ class PS_Page {
     var $_sections     = array();
     var $_content      = null;
     var $_error        = null;
+    var $_key          = null;
+
     /**
      * Determines whether the menu link will be updated
      * @var boolean
@@ -269,11 +271,18 @@ class PS_Page {
         return true;
     }
 
+    function loadKey()
+    {
+        if (empty($this->_key)) {
+            $this->_key = new Key($this->key_id);
+        }
+    }
+
     function flag()
     {
+        $this->loadKey();
         if (!$this->front_page && $this->key_id) {
-            $key = new Key($this->key_id);
-            $key->flag();
+            $this->_key->flag();
         }
     }
 
