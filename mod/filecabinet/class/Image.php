@@ -271,8 +271,11 @@ class PHPWS_Image extends File_Common {
 
     function resize($dst, $max_width, $max_height, $crop_to_fit=true)
     {
+        if (!$this->width || !$this->height) {
+            return false;
+        }
+
         $src_proportion = $this->width / $this->height;
-        $max_proportion = $max_width / $max_height;
         $new_width = $this->width;
         $new_height = $this->height;
 

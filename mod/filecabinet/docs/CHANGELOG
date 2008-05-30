@@ -1,5 +1,9 @@
 Version 2.1.0
---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+30 May 2008
++ Error check added to resize function.
++ Rewrote image resizing to avoid square images.
+
 23 May 2008
 + Filecabinet will now resize media as well as images.
 + Added type to javascript scripts
@@ -18,7 +22,8 @@ Version 2.1.0
 25 April 2008
 + Fixed typo in Image:makeThumbnail
 + Added ability to move files to other folders.
-+ Updated: templates/document_edit.tpl, templates/image_edit.tpl, templates/multimedia_edit.tpl
++ Updated: templates/document_edit.tpl, templates/image_edit.tpl,
+  templates/multimedia_edit.tpl 
 
 24 April 2008
 + Revamped embedded code
