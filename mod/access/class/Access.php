@@ -52,7 +52,7 @@ class Access {
                 break;
                 
             case 'restore_default':
-                $source = PHPWS_SOURCE_DIR . 'mod/access/inc/htaccess';
+                $source = PHPWS_SOURCE_DIR . 'core/inc/htaccess';
                 $dest = PHPWS_HOME_DIR . '.htaccess';
                 if (@copy($source, $dest)) {
                     Access::sendMessage(dgettext('access', 'Default .htaccess file restored.'), 'update');
