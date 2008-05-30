@@ -111,6 +111,7 @@ Please download 0.6.3.</pre>';
 -------------
 + Comments can be approved before posting.
 + Counter added to reported tab.
++ Added TinyMCE bbcode wysiwyg to comments.
 </pre>';
     }
             

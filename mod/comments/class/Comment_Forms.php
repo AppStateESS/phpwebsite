@@ -52,6 +52,7 @@ class Comment_Forms {
         }
 
         $form->addTextArea('cm_entry', $entry_text);
+        $form->useEditor('cm_entry', true, true, 0, 0, 'tinymce');
         $form->setLabel('cm_entry', dgettext('comments', 'Comment'));
         $form->setCols('cm_entry', 50);
         $form->setRows('cm_entry', 10);
