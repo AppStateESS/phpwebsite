@@ -267,7 +267,7 @@ class Branch_Admin {
 
         if (is_file(PHPWS_SOURCE_DIR . '.htaccess')) {
             $this->content[] = dgettext('branch', '.htaccess detected on hub. Attempting to create default file on branch.');
-            if (@copy(PHPWS_SOURCE_DIR . 'mod/branch/inc/htaccess', $this->branch->directory . '.htaccess')) {
+            if (@copy(PHPWS_SOURCE_DIR . 'core/inc/htaccess', $this->branch->directory . '.htaccess')) {
                 $this->content[] = dgettext('branch', 'Copied successfully.');
             } else {
                 $this->content[] = dgettext('branch', 'Unable to copy .htaccess file.');
