@@ -1068,6 +1068,7 @@ class PHPWS_Boost {
             }
 
             if (!isset($local_root) || !PHPWS_Boost::checkLocalRoot($local_root)) {
+                PHPWS_Error::log(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', $local_root);
                 return false;
             }
 
