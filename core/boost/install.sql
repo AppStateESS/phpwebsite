@@ -34,22 +34,22 @@ CREATE TABLE mod_settings (
 CREATE INDEX modsettings_idx ON mod_settings (module, setting_name);
 
 CREATE TABLE phpws_key (
-  id int NOT NULL default 0,
+  id int unsigned NOT NULL default 0,
   module varchar(40) NOT NULL,
   item_name varchar(40) NOT NULL,
-  item_id int NOT NULL default 0,
+  item_id int unsigned NOT NULL default 0,
   title varchar(255) default NULL,
   summary varchar(255) default NULL,
   url varchar(255) default NULL,
   active smallint NOT NULL default 1,
   restricted smallint NOT NULL default 0,
-  create_date int NOT NULL default 0,
-  update_date int NOT NULL default 0,
+  create_date int unsigned NOT NULL default 0,
+  update_date int unsigned NOT NULL default 0,
   creator varchar(60) default NULL,
-  creator_id int NOT NULL default 0,
+  creator_id int unsigned NOT NULL default 0,
   updater varchar(60) default NULL,
-  updater_id int NOT NULL default 0,
-  times_viewed int NOT NULL default 0,
+  updater_id int unsigned NOT NULL default 0,
+  times_viewed int unsigned NOT NULL default 0,
   edit_permission varchar(30) default NULL,
   show_after int unsigned NOT NULL default '0',
   hide_after int unsigned NOT NULL default '4000000000',
@@ -59,15 +59,15 @@ CREATE TABLE phpws_key (
 CREATE INDEX phpwskey_idx on phpws_key (restricted, active, module, create_date, update_date);
 
 CREATE TABLE phpws_key_view (
-  key_id int(11) NOT NULL default 0,
-  group_id int(11) NOT NULL default 0
+  key_id int unsigned NOT NULL default 0,
+  group_id int unsigned NOT NULL default 0
 );
 
 CREATE INDEX phpwskeyview_idx on phpws_key_view (key_id);
 
 CREATE TABLE phpws_key_edit (
-  key_id int(11) NOT NULL default 0,
-  group_id int(11) NOT NULL default 0
+  key_id int unsigned NOT NULL default 0,
+  group_id int unsigned NOT NULL default 0
 );
 
 CREATE INDEX phpwskeyedit_idx on phpws_key_edit (key_id);

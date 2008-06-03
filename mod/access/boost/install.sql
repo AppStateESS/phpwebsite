@@ -2,17 +2,17 @@
 -- @version $Id$
 
 CREATE TABLE access_shortcuts (
-  id int(11) NOT NULL default 0,
+  id int unsigned(11) NOT NULL default 0,
   keyword varchar(40) NOT NULL,
   url varchar(255) NOT NULL,
-  active smallint(6) NOT NULL default 0,
+  active smallint NOT NULL default 0,
   PRIMARY KEY  (id)
 );
 
 CREATE TABLE access_allow_deny (
-  id int(11) NOT NULL default 0,
+  id int unsigned NOT NULL default 0,
   ip_address varchar(40) NOT NULL,
-  allow_or_deny smallint(6) NOT NULL default 0,
-  active smallint(6) NOT NULL default 0,
+  allow_or_deny smallint NOT NULL default 0,
+  active smallint NOT NULL default 0,
   PRIMARY KEY  (id)
 );

@@ -2,22 +2,22 @@
 -- @version $Id$
 
 CREATE TABLE controlpanel_tab (
-  id CHAR(255) NOT NULL,
-  title CHAR(255) NOT NULL,
-  link CHAR(255) NOT NULL,
-  tab_order smallint NOT NULL default 0,
-  itemname CHAR(255) NOT NULL
+  id varchar(255) NOT NULL,
+  title varchar(255) NOT NULL,
+  link varchar(255) NOT NULL,
+  tab_order smallint unsigned NOT NULL default 0,
+  itemname varchar(255) NOT NULL
 );
 
 CREATE TABLE controlpanel_link (
- id INT NOT NULL PRIMARY KEY,
- tab CHAR(255) NOT NULL,
+ id INT UNSIGNED NOT NULL PRIMARY KEY,
+ tab varchar(255) NOT NULL,
  active SMALLINT NOT NULL,
- label CHAR(50) NULL,	
- itemname CHAR(50) NOT NULL,
+ label varchar(50) NULL,	
+ itemname varchar(50) NOT NULL,
  restricted SMALLINT NOT NULL default 0,
  url TEXT,
  description TEXT,
- image CHAR(255),
- link_order SMALLINT NOT NULL
+ image varchar(255),
+ link_order SMALLINT UNSIGNED NOT NULL
  );

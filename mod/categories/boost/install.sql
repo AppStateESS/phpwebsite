@@ -2,17 +2,17 @@
 -- @version $Id$
 
 CREATE TABLE categories (
-  id int NOT NULL default 0,
+  id int unsigned NOT NULL default 0,
   title varchar(255) NOT NULL,
   description text,
-  parent int NOT NULL default 0,
-  icon int NOT NULL default 0,
+  parent int unsigned NOT NULL default 0,
+  icon int unsigned NOT NULL default 0,
   PRIMARY KEY  (id)
 );
 
 CREATE TABLE category_items (
-  cat_id int NOT NULL default 0,
-  key_id int NOT NULL default 0,
+  cat_id int unsigned NOT NULL default 0,
+  key_id int unsigned NOT NULL default 0,
   module char(40) NOT NULL
 );
 
