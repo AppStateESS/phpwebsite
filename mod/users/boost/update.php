@@ -225,7 +225,8 @@ timeout INT NOT NULL default 0,
     case version_compare($currentVersion, '2.5.0', '<'):
         $content[] = '<pre>';
         $files = array('templates/forms/memberlist.tpl', 'templates/forms/userForm.tpl',
-                       'javascript/generate/head.js');
+                       'javascript/generate/head.js', 'templates/manager/groups.tpl',
+                       'templates/manager/users.tpl');
         userUpdateFiles($files, $content);
         $content[] = '2.5.0 changes
 -------------------

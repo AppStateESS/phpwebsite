@@ -230,9 +230,6 @@ class User_Form {
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
-        $pageTags['USERNAME_LABEL'] = dgettext('users', 'Username');
-        $pageTags['EMAIL_LABEL'] = dgettext('users', 'Email');
-        $pageTags['LAST_LOGGED_LABEL'] = dgettext('users', 'Last Logged');
         $pageTags['ACTIVE_LABEL'] = dgettext('users', 'Active');
         $pageTags['ACTIONS_LABEL'] = dgettext('users', 'Actions');
 
@@ -245,6 +242,10 @@ class User_Form {
         $pager->addRowTags('getUserTpl');
         $pager->addToggle('class="toggle1"');
         $pager->addToggle('class="toggle2"');
+        $pager->addSortHeader('username', dgettext('users', 'Username'));
+        $pager->addSortHeader('display_name', dgettext('users', 'Display'));
+        $pager->addSortHeader('email', dgettext('users', 'Email'));
+        $pager->addSortHeader('last_logged', dgettext('users', 'Last Logged'));
         $pager->setSearch('username', 'email');
 
         return $pager->get();
@@ -255,8 +256,6 @@ class User_Form {
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
-        $pageTags['GROUPNAME'] = dgettext('users', 'Group Name');
-        //    $pageTags['ACTIVE'] = dgettext('users', 'Active');
         $pageTags['MEMBERS_LABEL'] = dgettext('users', 'Members');
         $pageTags['ACTIONS_LABEL'] = dgettext('users', 'Actions');
 
@@ -268,6 +267,7 @@ class User_Form {
         $pager->addRowTags('getTplTags');
         $pager->addToggle('class="toggle1"');
         $pager->addToggle('class="toggle2"');
+        $pager->addSortHeader('name',  dgettext('users', 'Group Name'));
         $pager->addWhere('user_id', 0);
         $pager->setSearch('name');
 

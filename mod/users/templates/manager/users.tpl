@@ -1,15 +1,16 @@
 <table border="0" cellspacing="1" cellpadding="4" width="100%" id="user-manager">
 <tr>
-<th>{USERNAME_LABEL}&#160;{USERNAME_SORT}</th>
-<th>{EMAIL_LABEL}&#160;{EMAIL_SORT}</th>
-<th>{LAST_LOGGED_LABEL}&#160;{LAST_LOGGED_SORT}</th>
-<th width="10%">{ACTIVE_LABEL}</th>
+<th>{USERNAME_SORT}<br />
+{DISPLAY_NAME_SORT}</th>
+<th>{EMAIL_SORT}</th>
+<th>{LAST_LOGGED_SORT}</th>
+<th width="5%">{ACTIVE_LABEL}</th>
 <th>{ACTIONS_LABEL}</th>
 </tr>
 <!-- BEGIN listrows -->
 <tr {TOGGLE}>
 <td>
-{USERNAME}
+{USERNAME}<br />{DISPLAY_NAME}
 </td>
 <td>
 {EMAIL}

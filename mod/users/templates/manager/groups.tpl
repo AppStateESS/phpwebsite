@@ -1,7 +1,7 @@
 {TITLE}&#160;{NAV_INFO}
 <table border="0" cellspacing="1" cellpadding="4" width="100%">
   <tr>
-    <th width="20%">{GROUPNAME}&#160;{NAME_SORT}</th>
+    <th width="20%">{NAME_SORT}</th>
     <th width="15%">{MEMBERS_LABEL}</th>
     <th>{ACTIONS_LABEL}</th>
   </tr>
