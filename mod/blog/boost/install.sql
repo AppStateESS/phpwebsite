@@ -2,8 +2,8 @@
 -- @version $Id$
 
 CREATE TABLE blog_entries (
-id INT UNSIGNED NOT NULL,
-key_id INT UNSIGNED NOT NULL,
+id INT UNSIGNED NOT NULL default 0,
+key_id INT UNSIGNED NOT NULL default 0,
 title VARCHAR( 100 ) NOT NULL ,
 summary TEXT NULL,
 entry TEXT NOT NULL,
