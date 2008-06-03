@@ -1,3 +1,8 @@
+3 June 2008
++ Update to addSortHeaders.
++ Adding missing paging navigation.
++ Updated: templates/admin/menu_list.tpl
+
 1 April 2008
 + Work done on submenus appearing.
 

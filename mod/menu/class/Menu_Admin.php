@@ -492,7 +492,6 @@ class Menu_Admin {
 
     function menuList()
     {
-        $page_tags['TITLE'] = dgettext('menu', 'Title');
         $page_tags['ACTION'] = dgettext('menu', 'Action');
 
         PHPWS_Core::initCoreClass('DBPager.php');
@@ -502,6 +501,7 @@ class Menu_Admin {
         $pager->setTemplate('admin/menu_list.tpl');
         $pager->setLink('index.php?module=menu&amp;tab=list');
         $pager->addRowTags('getRowTags');
+        $pager->addSortHeader('title', dgettext('menu', 'Title'));
         $pager->setEmptyMessage(dgettext('menu', 'No menus found. Click on "New" to create one.'));
         $content = $pager->get();
         return $content;
