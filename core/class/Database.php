@@ -1898,10 +1898,15 @@ class PHPWS_DB {
                     $command = str_ireplace(' int ', ' INT NOT NULL ', $command);
                     $command = str_ireplace(' smallint ', ' SMALLINT NOT NULL ', $command);
                 }
-                
+               
                 if(!preg_match('/\sdefault/i', $command)) {
-                    $command = str_ireplace(' int ', ' INT DEFAULT 0 ', $command);
-                    $command = str_ireplace(' smallint ', ' SMALLINT DEFAULT 0 ', $command);
+                    if (preg_match ('/unsigned/i', $command)) {
+                        $command = str_ireplace(' int unsigned', ' INT UNSIGNED DEFAULT 0 ', $command);
+                        $command = str_ireplace(' smallint unsigned', ' SMALLINT UNSIGNED DEFAULT 0 ', $command);
+                    } else {
+                        $command = str_ireplace(' int ', ' INT DEFAULT 0 ', $command);
+                        $command = str_ireplace(' smallint ', ' SMALLINT DEFAULT 0 ', $command);
+                    }
                 }
                 
                 $command = preg_replace('/ default \'(\d+)\'/Ui', ' DEFAULT \\1', $command);

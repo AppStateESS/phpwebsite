@@ -6,6 +6,7 @@ Version 1.8.2
 ----------------------------------------------------------------------
 3 June 2008
 + Removed warning from Database.php begin function.
++ Added check for unsigned in the Database::homogenize function.
 
 30 May 2008
 + created default htaccess file in core/inc/. Access and Branch module
