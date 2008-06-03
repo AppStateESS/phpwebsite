@@ -2551,7 +2551,7 @@ class PHPWS_DB {
     function begin()
     {
         // If transaction started already, return false.
-        if ($GLOBALS['DB_Transaction']) {
+        if (isset($GLOBALS['DB_Transaction']) && $GLOBALS['DB_Transaction']) {
             return false;
         }
         $GLOBALS['DB_Transaction'] = true;
