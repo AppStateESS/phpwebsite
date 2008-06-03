@@ -17,6 +17,18 @@ switch ($_REQUEST['command']) {
    PHPWS_Core::goBack();
    break;
 
+ case 'delete_note':
+     PHPWS_Core::initModClass('notes', 'Note_Item.php');
+     $note = new Note_Item((int)$_REQUEST['id']);
+     $result = $note->delete();
+     if (PEAR::isError($result)) {
+         PHPWS_Error::log($result);
+     }
+     
+     Layout::nakedDisplay(javascript('close_refresh'));
+     exit();
+     break;
+
  case 'search_users':
      if (!Current_User::isLogged()) {
          exit();
@@ -26,13 +38,20 @@ switch ($_REQUEST['command']) {
          exit();
      }
 
-     $username = preg_replace('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', '', $_GET['q']);
-     $db->addWhere('username', "$username%", 'like');
-     $db->addColumn('username');
+     $username = preg_replace('/[^\w\s]/', '', $_GET['q']);
+     $db->addWhere('username', $username, 'regexp');
+     $db->addWhere('display_name', $username, 'regexp', 'or');
+     $db->addColumn('display_name');
+     $db->addColumn('id');
+     $db->setIndexBy('id');
      $result = $db->select('col');
      if (!empty($result) && !PHPWS_Error::logIfError($result)) {
-         echo implode("\n", $result);         
+         foreach ($result as $key=>$value) {
+             $output[] = "$value|$key";
+         }
+         echo implode("\n", $output);
      }
+     
      exit();
      break;
 }

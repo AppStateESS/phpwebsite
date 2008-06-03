@@ -1,14 +1,9 @@
-<div class="note">
-    <div class="box">
-        <div class="box-title">
-            <h1>{TITLE}</h1>
-            <h2>{DATE_LABEL}: {DATE_SENT}</h2>
-            <h2>{SENT_LABEL}:  {SENDER}</h2>
-            <!-- BEGIN associate --><h2>{ASSOCIATE_LABEL}:  {ASSOCIATE}</h2><!-- END associate -->
-        </div>
-        <div class="box-content">
-            {CONTENT}
-        </div>
-    </div>
+<div id="note-read">
+   <h1>{TITLE}</h1>
+   <span id="date-sent">{DATE_LABEL}: {DATE_SENT}</span><br />
+   <span id="sent-by">{SENT_LABEL}:  {SENDER}</span>
+   <!-- BEGIN associate --><span id="associated-to"><br />{ASSOCIATE_LABEL}:  {ASSOCIATE}</span><!-- END associate -->
+   <div id="note-content">{CONTENT}</div>
 </div>
-{DELETE}<br /> {CLOSE}
+<div id="close-button">{CLOSE}</div>
+<div id="delete-button">{DELETE}</div>

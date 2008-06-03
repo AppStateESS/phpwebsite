@@ -54,15 +54,9 @@ class Notes_My_Page {
             break;
 
         case 'read_note':
-            $js = javascriptEnabled();
+            Layout::addStyle('notes', 'note_style.css');
             $note = new Note_Item((int)$_REQUEST['id']);
-
-            $content = $note->read();
-            if ($js) {
-                Layout::nakedDisplay($content);
-            } else {
-                return $content;
-            }
+            Layout::nakedDisplay($note->read());
             break;
 
         case 'send_note':
@@ -78,10 +72,7 @@ class Notes_My_Page {
 
             $note = new Note_Item;
             $result = $this->postNote($note);
-
-            if (is_array($result)) {
-                $this->sendNote($note, $result);
-            } elseif (!$result) {
+            if (!$result) {
                 $this->message = implode('<br />', $this->errors);
                 $this->sendNote($note);
             } else {
@@ -116,8 +107,8 @@ class Notes_My_Page {
         if (javascriptEnabled()) {
             $js_vars['address'] = PHPWS_Text::linkAddress('users', $vars);
             $js_vars['label']   = dgettext('notes', 'Associate note');
-            $js_vars['width']   = 640;
-            $js_vars['height']  = 480;
+            $js_vars['width']   = 650;
+            $js_vars['height']  = 650;
             MiniAdmin::add('notes', javascript('open_window', $js_vars));
         } else {
             MiniAdmin::add('notes', PHPWS_Text::moduleLink(dgettext('notes', 'Associate note'), 'users', $vars));
@@ -140,76 +131,27 @@ class Notes_My_Page {
         if (empty($_POST['title'])) {
             $this->errors['missing_title'] = dgettext('notes', 'Your note needs a title.');
         }
+        $note->setUserId($_POST['uid']);
+
+        $user = new PHPWS_User($note->user_id);
 
         $note->setTitle($_POST['title']);
         $note->setContent($_POST['content']);
-
         $note->sender_id = Current_User::getId();
-        if (!empty($_POST['key_id'])) {
-            $note->key_id = (int)$_POST['key_id'];
+        $note->sender = Current_User::getDisplayName();
+
+        if (!$user->id) {
+            $this->errors['bad_user_id'] =  dgettext('notes', 'Unable to resolve user name.');
+        } else {
+            $note->username = $user->display_name;
         }
 
-        if (empty($_POST['user_id'])) {
-            if (empty($_POST['username'])) {
-                $this->errors['missing_username'] = dgettext('notes', 'You must enter a username.');
-            } elseif (!Current_User::allowUsername($_POST['username'])) {
-                $this->errors['bad_username'] = dgettext('notes', 'Unsuitable user name characters.');
-            } else {
-                $db = new PHPWS_DB('users');
-                $db->addWhere('display_name', $_POST['username']);
-                if (Current_User::allow('notes', 'search_usernames')) {
-                    $db->addWhere('username', $_POST['username'], null, 'or');
-                }
-
-                $db->addColumn('id');
-                $db->addColumn('display_name');
-                $db->setIndexBy('id');
-                $result = $db->select('col');
-
-                if (PEAR::isError($result)) {
-                    PHPWS_Error::log($result);
-                    $this->errors['unknown'] = dgettext('notes', 'An error occurred when accessing the database.');
-                } 
-
-                if (empty($result)) {
-                    if (NOTE_ALLOW_USERNAME_SEARCH) {
-                        $db->resetWhere();
-                        $db->addWhere('display_name', '%' . $_POST['username'] . '%', 'like');
-                        if (Current_User::allow('notes', 'search_usernames')) {
-                            $db->addWhere('username', '%' . $_POST['username'] . '%', 'like', 'or');
-                        }
-
-                        $result = $db->select('col');
-
-                        if (PEAR::isError($result)) {
-                            PHPWS_Error::log($result);
-                            $this->errors['unknown'] = dgettext('notes', 'An error occurred when accessing the database.');
-                        } elseif (empty($result)) {
-                            $this->errors['no_match'] = dgettext('notes', 'Could not find match.');
-                        } else {
-                            $note->username = $_POST['username'];
-                            return $result;
-                        }
-                    } else {
-                        $this->errors['no_match'] = dgettext('notes', 'Unknown user.');
-                    }
-                } else {
-                    list($note->user_id, $note->username) = each($result);
-                } 
-            }
-        } else {
-            if (empty($_POST['title']) && empty($_POST['content'])) {
-                $this->errors['no_content'] = dgettext('notes', 'You need to enter a title or some content.');
-            }
-            
-            $user = new PHPWS_User($_POST['user_id']);
-
-            if ($user->id) {
-                $note->user_id = $user->id;
-                $note->username = $user->username;
-            } else {
-                $this->errors['bad_user_id'] = dgettext('notes', 'Unable to resolve user name.');
-            }
+        if (empty($note->title) && empty($note->content)) {
+            $this->errors['no_content'] = dgettext('notes', 'You need to enter a title or some content.');
+        }
+        
+        if (!empty($_POST['key_id'])) {
+            $note->key_id = (int)$_POST['key_id'];
         }
 
         if (!empty($this->errors)) {
@@ -221,6 +163,7 @@ class Notes_My_Page {
 
     function read()
     {
+        Layout::addStyle('notes');
         unset($_SESSION['Notes_Unread']);
         PHPWS_Core::initCoreClass('DBPager.php');
         $pager = new DBPager('notes', 'Note_Item');
@@ -253,7 +196,7 @@ class Notes_My_Page {
     }
 
 
-    function sendNote(&$note, $users=null)
+    function sendNote(&$note)
     {
         Layout::addStyle('notes');
         $form = new PHPWS_Form('send_note');
@@ -270,26 +213,20 @@ class Notes_My_Page {
             }
         }
 
-        if (isset($_REQUEST['user_id'])) {
-            $user = new PHPWS_User((int)$_REQUEST['user_id']);
+        if (isset($_REQUEST['uid'])) {
+            $user = new PHPWS_User((int)$_REQUEST['uid']);
             if ($user->id) {
                 $note->user_id  = $user->id;
-                $note->username = $user->username;
+                $note->username = $user->display_name;
             }
         }
 
+        $form->addHidden('uid', $note->user_id);
 
-        if (javascriptEnabled()) {
-            $form->addHidden('js', 1);
-            $form->addTplTag('CANCEL', javascript('close_window', array('value' =>dgettext('notes', 'Cancel'))));
-            javascript('jquery');
-            javascript('modules/notes/search_user');
-        }
-
-        if (isset($users) && is_array($users)) {
-            $new_users = array(0 => dgettext('notes', '- Search again -')) + $users;
-            $form->addSelect('user_id', $new_users);
-        }
+        $form->addHidden('js', 1);
+        $form->addTplTag('CANCEL', javascript('close_window', array('value' =>dgettext('notes', 'Cancel'))));
+        javascript('jquery');
+        javascript('modules/notes/search_user');
 
         $form->addText('username', $note->username);
         $form->setLabel('username', dgettext('notes', 'Recipient'));
@@ -299,16 +236,11 @@ class Notes_My_Page {
         $form->setSize('title', 45);
 
         $form->addTextArea('content', $note->content);
+        $form->useEditor('content', true, true, 0, 0, 'tinymce');
         $form->setLabel('content', dgettext('notes', 'Message'));
         $form->setRows('content', 10);
         $form->setCols('content', 50);
-
-        /*
-        $form->addCheck('encrypted', 1);
-        $form->setMatch('encrypted', $note->encrypted);
-        $form->setLabel('encrypted', dgettext('notes', 'Encrypt message?'));
-        */
-
+        
         $form->addSubmit(dgettext('notes', 'Send note'));
 
         $tpl = $form->getTemplate();

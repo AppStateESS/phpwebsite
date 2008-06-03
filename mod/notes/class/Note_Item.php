@@ -82,7 +82,7 @@ class Note_Item {
 
   function getContent()
   {
-      return PHPWS_Text::parseOutput($this->content);
+      return PHPWS_Text::parseOutput($this->content, ENCODE_PARSED_TEXT, true);
   }
 
   function getDateSent($format=null)
@@ -139,7 +139,7 @@ class Note_Item {
       $tpl['TITLE'] = $this->title;
       $tpl['CONTENT'] = $this->getContent();
       if ($this->sender_id) {
-          $tpl['SENDER'] = $this->sendLink($this->sender_id, $this->sender);
+          $tpl['SENDER'] = $this->sendLink($this->sender_id, $this->sender, false);
       } else {
           $tpl['SENDER'] = dgettext('notes', 'System message');
       }
@@ -170,20 +170,12 @@ class Note_Item {
           $tpl['CLOSE'] = javascript('close_window');
       }
 
-      if (javascriptEnabled()) {
-          $form = new PHPWS_Form;
-          $form->setMethod('get');
-          $form->useFieldset(false);
-          $vars = Notes_My_Page::myPageVars();
-          $vars['op'] = 'delete_note';
-          $vars['id'] = $this->id;
-          $vars['js'] = 1;
-          $form->addHidden($vars);
-          $form->addSubmit('delete', dgettext('notes', 'Delete and close'));
-          $form_tpl = $form->getTemplate();
-          $tpl['DELETE'] = implode($form_tpl);
-      } 
+      $link = sprintf('document.location.href=\'index.php?module=notes&command=delete_note&id=%s\'',
+                      $this->id);
 
+      $tpl['DELETE'] = sprintf('<input type="button" onclick="%s" value="%s" />', 
+                               $link,
+                               dgettext('notes', 'Delete and close'));
 
       return PHPWS_Template::process($tpl, 'notes', 'note.tpl');
   }
@@ -229,12 +221,12 @@ class Note_Item {
   }
   
   
-  function sendLink($user_id=0, $label=null)
+  function sendLink($user_id=0, $label=null, $popup=true)
   {
       $vars = Notes_My_Page::myPageVars(false);
       $vars['op'] = 'send_note';
       if ($user_id) {
-          $vars['user_id'] = (int)$user_id;
+          $vars['uid'] = (int)$user_id;
       }
 
       if (empty($label)) {
@@ -243,7 +235,7 @@ class Note_Item {
           $title = sprintf(dgettext('notes', 'Send note to %s'), $label);
       }
       
-      if (javascriptEnabled()) {
+      if ($popup) {
           $js_vars['address'] = PHPWS_Text::linkAddress('users', $vars);
           $js_vars['label'] = $label;
           $js_vars['link_title'] = $title;

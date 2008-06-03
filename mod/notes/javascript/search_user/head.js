@@ -10,10 +10,10 @@ $(document).ready(function() {
                 matchSubset:1,
                 matchContains:1,
                 cacheLength:10,
-                autoFill:true
+                autoFill:true,
+                onFindValue:findValue
             }
                                           );
 });
-
 
 </script>

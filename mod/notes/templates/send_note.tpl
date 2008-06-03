@@ -3,7 +3,7 @@
 <table class="form-table" width="100%" cellpadding="4">
     <tr>
         <td>{USERNAME_LABEL}</td>
-        <td>{USERNAME} {USER_ID}</td>
+        <td>{USERNAME}</td>
     </tr>
     <tr>
         <td>{TITLE_LABEL}</td>
@@ -13,12 +13,8 @@
         <td>{CONTENT_LABEL}</td>
         <td>{CONTENT}</td>
     </tr>
-    <tr>
-        <td>&nbsp;</td>
-        <td>{ENCRYPTED} {ENCRYPTED_LABEL}</td>
-    </tr>
 </table>
+<div style="text-align : center">{SUBMIT}</div>
 
-{SUBMIT}
-<div class="align-center">{CANCEL}</div>
+<div style="position : absolute; bottom : 10px; right : 10px">{CANCEL}</div>
 {END_FORM}

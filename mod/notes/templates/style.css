@@ -2,9 +2,10 @@
  * User popup styles 
  */
 ac_results {
+        color : black;
 	padding: 0px;
-	border: 1px solid WindowFrame;
-	background-color: Window;
+	border: 1px solid black;
+	background-color: white;
 	overflow: hidden;
 }
 
@@ -17,8 +18,6 @@ ac_results {
 }
 
 .ac_results iframe {
-	display:none;/*sorry for IE5*/
-	display/**/:block;/*sorry for IE5*/
 	position:absolute;
 	top:0;
 	left:0;
@@ -38,15 +37,19 @@ ac_results {
 	font-size: 12px;
 	overflow: hidden;
         background-color : white;
-        border : 1px solid gray;
+        border : 1px solid black;
         border-top : none;
 }
 
 .ac_loading {
-	background : Window url('./indicator.gif') right center no-repeat;
+	background : url('images/core/ajax-loader.gif') right center no-repeat;
 }
 
-.ac_over {
-	background-color: Highlight;
-	color: HighlightText;
+li.ac_over {
+	background-color: #7f7f7f;
+	color: #ffffff;
+}
+
+span.note-not-read a {
+        font-style : italic;
 }
