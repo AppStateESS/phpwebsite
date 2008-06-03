@@ -1,6 +1,6 @@
 <table cellpadding="4" cellspacing="1" width="100%">
   <tr>
-    <th>{TITLE} {TITLE_SORT}</th>
+    <th>{TITLE_SORT}</th>
     <th>{CONTENT}</th>
     <th>{ACTION}</th>
   </tr>

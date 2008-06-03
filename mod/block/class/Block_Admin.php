@@ -264,15 +264,15 @@ class Block_Admin {
     {
         PHPWS_Core::initCoreClass('DBPager.php');
     
-        $pageTags['TITLE']   = dgettext('block', 'Title');
         $pageTags['CONTENT'] = dgettext('block', 'Content');
         $pageTags['ACTION']  = dgettext('block', 'Action');
-        $pager = & new DBPager('block', 'Block_Item');
+        $pager = new DBPager('block', 'Block_Item');
         $pager->setModule('block');
         $pager->setTemplate('list.tpl');
         $pager->addToggle('class="bgcolor1"');
         $pager->addPageTags($pageTags);
         $pager->addRowTags('getTpl');
+        $pager->addSortHeader('title', dgettext('block', 'Title'));
         
         $content = $pager->get();
         return $content;

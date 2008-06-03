@@ -1,3 +1,7 @@
+3 June 2008
++ Changed pager view to use addSortHeaders
++ Updated: templates/list.tpl
+
 Version 1.2.0
 ---------------------------------------------------------------
 1 April 2008
