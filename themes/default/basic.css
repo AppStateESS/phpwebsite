@@ -73,7 +73,7 @@ q {
     font-size : 90%;
 }
 
-ul {
+.controlpanel ul.tabmenu {
     margin : 0px;
     padding : 0px;
     padding-left : 8px;
