@@ -1,3 +1,7 @@
+3 June 2008
++ Updated pagers to addSortHeaders.
++ Updated: templates/page_list.tpl
+
 30 May 2008
 + Fixed direct access to page allowing view.
 

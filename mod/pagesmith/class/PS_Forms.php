@@ -142,10 +142,6 @@ class PS_Forms {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
 
-        $pgtags['ID_LABEL']      = dgettext('pagesmith', 'Id');
-        $pgtags['TITLE_LABEL']   = dgettext('pagesmith', 'Title');
-        $pgtags['CREATED_LABEL'] = dgettext('pagesmith', 'Created');
-        $pgtags['UPDATED_LABEL'] = dgettext('pagesmith', 'Updated');
         $pgtags['ACTION_LABEL']  = dgettext('pagesmith', 'Action');
 
         $pager = new DBPager('ps_page', 'PS_Page');
@@ -155,6 +151,10 @@ class PS_Forms {
         $pager->addRowTags('row_tags');
         $pager->setEmptyMessage(dgettext('pagesmith', 'No pages have been created.'));
         $pager->setSearch('title');
+        $pager->addSortHeader('id', dgettext('pagesmith', 'Id'));
+        $pager->addSortHeader('title', dgettext('pagesmith', 'Title'));
+        $pager->addSortHeader('create_date', dgettext('pagesmith', 'Created'));
+        $pager->addSortHeader('last_updated', dgettext('pagesmith', 'Updated'));
 
         $this->ps->title   = dgettext('pagesmith', 'Pages');
         $this->ps->content = $pager->get();
