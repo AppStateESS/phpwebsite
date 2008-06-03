@@ -1,4 +1,3 @@
-<script type="text/javascript" src="./javascript/jquery/jquery.slidepanel.pack.js"></script>
 <script type="text/javascript">
 //<![CDATA[
 
