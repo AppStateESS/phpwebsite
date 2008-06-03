@@ -648,7 +648,11 @@ class FC_File_Manager {
 
         $db = new PHPWS_DB('fc_file_assoc');
         $db->addWhere('file_type', (int)$file_type);
+        if ($file_type == FC_IMAGE_RESIZE) {
+            $db->addWhere('resize', sprintf('%sx%s%s', $this->max_width, $this->max_height, '%'), 'like');
+        }
         $db->addWhere('file_id', (int)$id);
+
         $result = $db->loadObject($file_assoc);
 
         if ($result) {
@@ -659,7 +663,7 @@ class FC_File_Manager {
             }
         }
 
-        $file_assoc->file_type = &$file_type;
+        $file_assoc->file_type = & $file_type;
         $file_assoc->file_id   = $id;
 
         if ($file_assoc->file_type == FC_IMAGE_RESIZE) {

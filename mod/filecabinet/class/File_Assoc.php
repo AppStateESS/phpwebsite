@@ -62,7 +62,6 @@ class FC_File_Assoc {
         case FC_MEDIA_RESIZE:
             PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
             $this->_source = new PHPWS_Multimedia($this->file_id);
-            //            test($this,1);
             break;
 
         case FC_IMAGE_RESIZE:

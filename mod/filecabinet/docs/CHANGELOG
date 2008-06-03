@@ -1,5 +1,9 @@
 Version 2.1.0
 ---------------------------------------------------------------------------------
+3 June 2008
++ Added conditional to prevent similiar resize from overwriting one
+  another.
+
 30 May 2008
 + Error check added to resize function.
 + Rewrote image resizing to avoid square images.
