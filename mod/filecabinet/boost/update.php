@@ -378,20 +378,50 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
     case version_compare($version, '2.1.0', '<'):
         $content[] = '<pre>';
         $files = array('templates/image_view.tpl', 'templates/settings.tpl', 
-                      'javascript/pick_file/head.js', 'javascript/pick_file/scripts.js',
-                      'javascript/update_file/head.js', 'templates/file_manager/placeholder.tpl',
-                      'templates/document_edit.tpl', 'templates/image_edit.tpl', 'templates/multimedia_edit.tpl',
-                      'templates/edit_folder.tpl', 'templates/embed_edit.tpl', 'templates/style.css');
+                       'javascript/pick_file/head.js', 'javascript/pick_file/scripts.js',
+                       'javascript/update_file/head.js', 'templates/file_manager/placeholder.tpl',
+                       'templates/document_edit.tpl', 'templates/image_edit.tpl', 'templates/multimedia_edit.tpl',
+                       'templates/edit_folder.tpl', 'templates/embed_edit.tpl', 'templates/style.css',
+                       'templates/file_manager/folder_content_view.tpl', 'templates/file_manager/resize.tpl');
         fc_updatefiles($files, $content);
 
         $db = new PHPWS_DB('folders');
-        if (PHPWS_Error::logIfError($db->addTableColumn('max_image_dimension', 'smallint not null default 0'))) {
+        $db->begin();
+        if (PHPWS_Error::logIfError($db->addTableColumn('max_image_dimension', 'smallint unsigned not null default 0'))) {
             $content[] = '--- Unable to add max_image_dimension column to folders table.';
+            $db->rollback();
             return false;
         } else {
             $content[] = '--- Added max_image_dimension column to folders table.';
         }
-        
+  
+        $db = new PHPWS_DB('fc_file_assoc');
+        if (PHPWS_Error::logIfError($db->addTableColumn('width', 'smallint unsigned NOT NULL default 0'))) {
+            $content[] = '--- Unable to add width column to fc_file_assoc.';
+            $db->rollback();
+            return false;
+        } else {
+            $content[] = '--- Added width column to fc_file_assoc table';
+        }
+
+        if (PHPWS_Error::logIfError($db->addTableColumn('height', 'smallint unsigned NOT NULL default 0'))) {
+            $content[] = '--- Unable to add height column to fc_file_assoc.';
+            $db->rollback();
+            return false;
+        } else {
+            $content[] = '--- Added height column to fc_file_assoc table';
+        }
+
+        if (PHPWS_Error::logIfError($db->addTableColumn('cropped', 'smallint NOT NULL default 0'))) {
+            $content[] = '--- Unable to add cropped column to fc_file_assoc.';
+            $db->rollback();
+            return false;
+        } else {
+            $content[] = '--- Added cropped column to fc_file_assoc table';
+        }
+
+        $db->commit();
+      
         $content[] = '2.1.0 changes
 -------------
 + Filecabinet will now resize media as well as images.

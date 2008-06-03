@@ -8,7 +8,7 @@
      </div>
      <div id="selection">
         <div id="item-selection">
-        <!-- BEGIN items --><div class="item {HIGHLIGHT}"><div>
+        <!-- BEGIN items --><div class="item {HIGHLIGHT}">{RESIZE}<div>
            {ICON}<br />
            {TITLE}<br />
            <!-- BEGIN info --><span class="smaller">{INFO}</span><br /><!-- END info -->

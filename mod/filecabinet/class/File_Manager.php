@@ -58,6 +58,10 @@ class FC_File_Manager {
         case 'pick_file':
             $this->pickFile();
             break;
+
+        case 'resize_pick':
+            $this->resizePick();
+            break;
         }
     }
 
@@ -412,6 +416,7 @@ class FC_File_Manager {
      */
     function folderContentView()
     {
+        javascript('jquery');
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         javascript('confirm'); // needed for deletion
 
@@ -624,6 +629,7 @@ class FC_File_Manager {
     function pickFile()
     {
         $file = $this->getFileAssoc($_REQUEST['file_type'], $_REQUEST['id'], true);
+
         if ($file) {
             $vars['id']      = $this->session_id;
             $vars['data']    = $this->jsReady($file->getTag(true));
@@ -645,11 +651,14 @@ class FC_File_Manager {
     function getFileAssoc($file_type, $id, $update=true)
     {
         $file_assoc = new FC_File_Assoc;
+        $cropped = (int)$file_type == FC_IMAGE_CROP;
 
         $db = new PHPWS_DB('fc_file_assoc');
         $db->addWhere('file_type', (int)$file_type);
-        if ($file_type == FC_IMAGE_RESIZE) {
-            $db->addWhere('resize', sprintf('%sx%s%s', $this->max_width, $this->max_height, '%'), 'like');
+        if ($file_type == FC_IMAGE_RESIZE || $file_type == FC_IMAGE_CROP) {
+            $db->addWhere('width', $this->max_width);
+            $db->addWhere('height', $this->max_height);
+            $db->addWhere('cropped', $cropped);
         }
         $db->addWhere('file_id', (int)$id);
 
@@ -666,21 +675,31 @@ class FC_File_Manager {
         $file_assoc->file_type = & $file_type;
         $file_assoc->file_id   = $id;
 
-        if ($file_assoc->file_type == FC_IMAGE_RESIZE) {
+        if ($file_assoc->file_type == FC_IMAGE_RESIZE || $file_assoc->file_type == FC_IMAGE_CROP) {
+            $file_assoc->width   = $this->max_width;
+            $file_assoc->height  = $this->max_height;
+            $file_assoc->cropped = $cropped;
+
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $image = new PHPWS_Image($id);
             if (!$dst = $image->makeResizePath()) {
                 return false;
             }
 
-            $resize_file_name = sprintf('%sx%s.%s', $this->max_width, $this->max_height, $image->getExtension());
+            if ($cropped) {
+                $resize_file_name = sprintf('%sx%s_crop.%s', $this->max_width, $this->max_height, $image->getExtension());
+            } else {
+                $resize_file_name = sprintf('%sx%s.%s', $this->max_width, $this->max_height, $image->getExtension());
+            }
 
-            if (!$image->resize($dst . $resize_file_name, $this->max_width, $this->max_height)) {
+            if (!$image->resize($dst . $resize_file_name, $this->max_width, $this->max_height, $cropped)) {
                 return false;
             }
+
             $file_assoc->resize = & $resize_file_name;
-        } elseif ($file_assoc->file_type == FC_MEDIA_RESIZE) {
-            $file_assoc->resize = sprintf('%sx%s', $this->max_width, $this->max_height);
+        } elseif ($file_assoc == FC_MEDIA_RESIZE) {
+            $file_assoc->width = $this->max_width;
+            $file_assoc->height = $this->max_height;
         }
 
         $file_assoc->save();

@@ -9,6 +9,9 @@ class FC_File_Assoc {
     var $file_type  = 0;
     var $file_id    = 0;
     var $resize     = null;
+    var $width      = 0;
+    var $height     = 0;
+    var $cropped    = 0;
     var $_use_style = true;
     /**
      * If the file assoc is an image and no_link is true,
@@ -65,6 +68,7 @@ class FC_File_Assoc {
             break;
 
         case FC_IMAGE_RESIZE:
+        case FC_IMAGE_CROP:
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $this->_resize_parent = new PHPWS_Image($this->file_id);
             if (!$this->_resize_parent->id) {
@@ -97,7 +101,7 @@ class FC_File_Assoc {
 
     function parentLinked($thumbnail=false)
     {
-        if ($this->file_type != FC_IMAGE_RESIZE || !$this->_resize_parent) {
+        if ( ($this->file_type != FC_IMAGE_RESIZE && $this->file_type != FC_IMAGE_CROP) || !$this->_resize_parent) {
             $this->_link_image = true;
             if ($thumbnail) {
                 return $this->_resize_parent->getThumbnail();
@@ -125,7 +129,8 @@ class FC_File_Assoc {
     function isImage($include_resize=true)
     {
         if ($include_resize) {
-            return ($this->file_type == FC_IMAGE || $this->file_type == FC_IMAGE_RESIZE);
+            return ($this->file_type == FC_IMAGE || $this->file_type == FC_IMAGE_RESIZE ||
+                    $this->file_type == FC_IMAGE_CROP);
         } else {
             return ($this->file_type == FC_IMAGE);
         }
@@ -144,6 +149,11 @@ class FC_File_Assoc {
     function isResize()
     {
         return ($this->file_type == FC_IMAGE_RESIZE);
+    }
+
+    function isCrop()
+    {
+        return ($this->file_type == FC_IMAGE_CROP);
     }
 
     function allowCaption($allow=true)
@@ -167,6 +177,7 @@ class FC_File_Assoc {
         case FC_IMAGE_FOLDER:
         case FC_IMAGE_RANDOM:
         case FC_IMAGE_RESIZE:
+        case FC_IMAGE_CROP:
             return IMAGE_FOLDER;
 
         case FC_DOCUMENT:
@@ -199,6 +210,7 @@ class FC_File_Assoc {
             return $this->_source->getThumbnail(null, $this->_link_image);
 
         case FC_IMAGE_RESIZE:
+        case FC_IMAGE_CROP:
             return $this->_resize_parent->getThumbnail(null, $this->_link_image);
 
         case FC_DOCUMENT:
@@ -237,6 +249,7 @@ class FC_File_Assoc {
             break;
 
         case FC_IMAGE_RESIZE:
+        case FC_IMAGE_CROP:
             if ($this->_source->id) {
                 if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
                     return $this->_source->captioned(null, $this->_link_image);
@@ -321,6 +334,7 @@ class FC_File_Assoc {
         case FC_IMAGE_FOLDER:
         case FC_IMAGE_RANDOM:
         case FC_IMAGE_RESIZE:
+        case FC_IMAGE_CROP:
             return 'images';
 
         case FC_DOCUMENT:

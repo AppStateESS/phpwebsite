@@ -3,6 +3,13 @@ Version 2.1.0
 3 June 2008
 + Added conditional to prevent similiar resize from overwriting one
   another.
++ Added new menu to pick resize method on image.
++ File_Assoc class now tracks width, height, and cropped status.
++ Updated: javascript/pick_file/head.js,
+           javascript/pick_file/scripts.js,
+           templates/style.css,
+           templates/file_manager/folder_content_view.tpl,
+           templates/file_manager/resize.tpl
 
 30 May 2008
 + Error check added to resize function.

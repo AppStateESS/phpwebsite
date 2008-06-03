@@ -70,5 +70,8 @@ id INT UNSIGNED NOT NULL default 0,
 file_type SMALLINT NOT NULL default 0,
 file_id INT UNSIGNED NOT NULL default 0,
 resize varchar(30) NULL,
+width smallint unsigned NOT NULL,
+height smallint unsigned NOT NULL,
+cropped smallint NOT NULL,
 PRIMARY KEY ( id )
 );

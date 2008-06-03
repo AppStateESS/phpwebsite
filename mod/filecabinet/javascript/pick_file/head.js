@@ -1,3 +1,4 @@
+<script type="text/javascript" src="./javascript/jquery/jquery.slidepanel.pack.js"></script>
 <script type="text/javascript">
 //<![CDATA[
 
@@ -17,3 +18,4 @@ var fid             = '{fid}';
 //]]>
 </script>
 <script type="text/javascript" src="./javascript/modules/filecabinet/pick_file/scripts.js"></script>
+

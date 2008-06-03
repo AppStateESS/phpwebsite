@@ -269,7 +269,7 @@ class PHPWS_Image extends File_Common {
     }
 
 
-    function resize($dst, $max_width, $max_height, $crop_to_fit=true)
+    function resize($dst, $max_width, $max_height, $crop_to_fit=false)
     {
         if (!$this->width || !$this->height) {
             return false;
@@ -425,7 +425,8 @@ class PHPWS_Image extends File_Common {
     {
         $force = $fmanager->force_resize ? 'true' : 'false';
         if ( ($fmanager->max_width < $this->width) || ($fmanager->max_height < $this->height) ) {
-            return sprintf('<a href="#" onclick="oversized(%s, %s); return false">%s</a>', $this->id, $force, $this->getThumbnail());
+            return sprintf('<a href="#" onclick="slider(%s); return false">%s</a>',
+                           $this->id, $this->getThumbnail());
         } else {
             $vars = $fmanager->linkInfo(false);
             $vars['fop']       = 'pick_file';
@@ -443,6 +444,7 @@ class PHPWS_Image extends File_Common {
             $tpl['HIGHLIGHT'] = 'highlight';
         }
 
+        $tpl['ID'] = $this->id;
         $tpl['ICON']  = $this->getManagerIcon($fmanager);
         $tpl['TITLE'] = $this->title;
         $tpl['INFO']  = sprintf('%s x %s - %s', $this->width, $this->height,
@@ -457,7 +459,38 @@ class PHPWS_Image extends File_Common {
         if (isset($links)) {
             $tpl['LINKS'] = implode(' ', $links);
         }
+        
+        $tpl['RESIZE'] = $this->resizeMenu($fmanager);
+
         return $tpl;
+    }
+
+    function resizeMenu($fmanager)
+    {
+        $tpl['ID'] = $this->id;
+
+        $tpl['MESSAGE'] = sprintf(dgettext('filecabinet', 'This image is larger than the %sx%s limit. What do you wish to do?'),
+                                  $fmanager->max_width, $fmanager->max_height);
+        $vars = $fmanager->linkInfo(false);
+        $vars['fop'] = 'pick_file';
+        $vars['mw'] = $fmanager->max_width;
+        $vars['mh'] = $fmanager->max_height;
+        $vars['id'] = $this->id;
+        $vars['file_type'] = 1;
+
+        $choices[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Use original image'), 'filecabinet', $vars);
+
+        $vars['file_type'] = 7;
+        $choices[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Resize image maintaining aspect'), 'filecabinet', $vars);
+
+        $vars['file_type'] = 9;
+        $choices[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Resize and crop excess'), 'filecabinet', $vars);
+
+        $choices[] = sprintf('<a href="#" onclick="slider(%s); return false;">%s</a>', $this->id,
+                            dgettext('filecabinet', 'Cancel'));
+
+        $tpl['CHOICES'] = implode('</li><li>',$choices);
+        return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/resize.tpl');
     }
 
     /**
