@@ -23,7 +23,7 @@
   <!-- BEGIN password-error -->
   <tr><td class="user-error" colspan="2">{PASSWORD_ERROR}</td></tr>
   <!-- END password-error -->
-  <tr><td>&#160;</td><td>{CREATE_PW} <span id="generated-password"></span></td></tr>
+  <!-- BEGIN generate --><tr><td>&#160;</td><td>{CREATE_PW} <span id="generated-password"></span></td></tr><!-- END generate -->
   <tr>
     <td>{EMAIL_LABEL}</td><td>{EMAIL}</td>
   </tr>
