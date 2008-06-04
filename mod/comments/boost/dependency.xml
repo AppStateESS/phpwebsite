@@ -12,4 +12,10 @@
     <version>2.0.3</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/filecabinet/</url>
   </module>
+  <module>
+    <title>users</title>
+    <properName>Users</properName>
+    <version>2.5.0</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/users/</url>
+  </module>
 </dependency>
