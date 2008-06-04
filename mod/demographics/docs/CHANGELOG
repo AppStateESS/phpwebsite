@@ -1,3 +1,8 @@
+4 June 2008
++ Removed deadend getUser function.
++ Removed some passed-by-reference ampersands.
++ Support for remove_users added.
+
 Version 1.1.0
 -------------------------------------
 5 March 2008

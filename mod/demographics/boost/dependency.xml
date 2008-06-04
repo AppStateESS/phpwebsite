@@ -6,4 +6,10 @@
     <version>1.8.0</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
   </module>
+  <module>
+    <title>users</title>
+    <properName>Users</properName>
+    <version>2.5.0</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/users/</url>
+  </module>
 </dependency>

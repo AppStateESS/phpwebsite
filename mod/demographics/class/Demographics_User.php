@@ -14,9 +14,9 @@
 class Demographics_User {
     var $user_id        = 0;
     var $_error         = NULL;
-    // indicates a new demographics user
     var $_base_id       = 0;
     var $_extend_id     = 0;
+    // indicates a new demographics user
     var $_new_user      = TRUE;
     var $_table         = NULL;
 
@@ -97,6 +97,10 @@ class Demographics_User {
         return TRUE;
     }
 
+    /**
+     * Delete a demographics user and, if the table is set,
+     * the information that extends it.
+     */
     function delete($all_user_info=false)
     {
         if (!$this->user_id) {

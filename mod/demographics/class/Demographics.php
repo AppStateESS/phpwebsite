@@ -4,32 +4,15 @@
    * @version $Id$
    */
 
-require_once PHPWS_SOURCE_DIR . 'mod/demographics/inc/errorDefines.php';
+PHPWS_Core::requireInc('demographics', 'errorDefines.php');
 PHPWS_Core::initModClass('demographics', 'Demographics_User.php');
 define('DEMOGRAPHICS_DEFAULT_LIMIT', 255);
 
 class Demographics {
-
-    /**
-     * Pulls a user's demographic information
-     */
-    function &getUser($user_id, $create_new=TRUE)
-    {
-        $demo_user = new Demographics_User($user_id, $create_new);
-        if ($demo_user->_error) {
-            return $demo_user->_error;
-        } elseif (!$demo_user->user_id) {
-            // return "no user" error here
-            return NULL;
-        }
-
-        return $demo_user;
-    }
-
     /**
      * Returns the fields currently used in demographics
      */
-    function &getFields()
+    function getFields()
     {
         $db = new PHPWS_DB('demographics');
         $columns = $db->getTableColumns();
@@ -37,7 +20,7 @@ class Demographics {
     }
 
     // returns default demographic fields
-    function &getDefaultFields()
+    function getDefaultFields()
     {
         static $fields;
         if (empty($fields)) {
@@ -245,11 +228,7 @@ class Demographics {
         } else {
             return $db->select();
         }
-
     }
-    
 }
-
-
 
 ?>
