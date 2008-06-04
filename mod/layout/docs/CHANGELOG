@@ -1,5 +1,8 @@
 Version 2.4.4
 ------------------------------------------------------------------
+4 June 2008
++ Removed allowUser from database and settings class.
+
 26 May 2008
 + Added collapse function. Adds id="layout-collapse" to theme template
   under the {COLLAPSE} tag.
