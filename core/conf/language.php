@@ -20,7 +20,7 @@
  */
 
 if (!defined('DEFAULT_LANGUAGE')) {
-    define('DEFAULT_LANGUAGE', 'vi_VN');
+    define('DEFAULT_LANGUAGE', 'en_US');
 }
 
 /**
