@@ -315,9 +315,10 @@ class Comment_Thread {
         }
 
         $content = $pager->get();
-
+        if (PHPWS_Error::logIfError($content)) {
+            return null;
+        }
         $GLOBALS['comments_viewed'] = true;
-        
         return $content;
     }
 

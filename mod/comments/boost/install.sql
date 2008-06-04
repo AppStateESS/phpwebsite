@@ -14,6 +14,7 @@ CREATE TABLE comments_items (
   edit_time int NOT NULL default 0,
   edit_reason varchar(255) default NULL,
   reported smallint NOT NULL default 0,
+  approved smallint NOT NULL default 1,
   PRIMARY KEY  (id)
 );
 
@@ -23,6 +24,7 @@ CREATE TABLE comments_threads (
   total_comments int NOT NULL default 0,
   last_poster varchar(40) default NULL,
   allow_anon smallint NOT NULL default 0,
+  approval smallint not null default 0,
   PRIMARY KEY  (id)
 );
 

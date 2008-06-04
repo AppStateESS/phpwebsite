@@ -2,6 +2,7 @@ Version 1.1.0
 ------------------------------------------------------------------------
 4 June 2008
 + Added support for remove_users.
++ Added missing columns to install.sql
 
 30 May 2008
 + Added bbcode wysiwyg to comments.
