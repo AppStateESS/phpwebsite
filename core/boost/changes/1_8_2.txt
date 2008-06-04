@@ -10,6 +10,10 @@ Core Classes
   o Added convertDate function to format date columns
   o Added addSortHeader function to allow a clickable column header.
 
++ Database
+  o Added column existence check to dropTableColumn
+  o homogenize removes unsigned option
+
 + File
   o checkmimetype - Extension is forced to lowercase to allow proper
     file checking.
