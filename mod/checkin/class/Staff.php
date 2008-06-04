@@ -5,12 +5,13 @@
  */
 
 class Checkin_Staff {
+    var $id            = 0;
     var $user_id       = 0;
     var $filter        = null;
     var $filter_type   = 0;
     var $available     = 0;
     var $visitor_id    = 0;
-    var $_display_name = null;
+    var $display_name = null;
     var $_reasons      = null;
 
     function Checkin_Staff($id=0)
@@ -19,18 +20,17 @@ class Checkin_Staff {
             return true;
         }
 
-        $this->user_id = (int)$id;
+        $this->id = (int)$id;
         if (!$this->init()) {
-            $this->user_id = 0;
+            $this->id = 0;
         }
     }
 
     function init()
     {
         $db = new PHPWS_DB('checkin_staff');
-        $db->addWhere('user_id', $this->user_id);
         $db->addJoin('left', 'checkin_staff', 'users', 'user_id', 'id');
-        $db->addColumn('users.display_name', null, '_display_name');
+        $db->addColumn('users.display_name');
         return $db->loadObject($this);
     }
 
@@ -51,6 +51,34 @@ class Checkin_Staff {
         $this->filter = $filter;
     }
 
+    function row_tags()
+    {
+        switch ($this->filter_type) {
+        case 0 :
+            $tpl['FILTER_INFO'] = dgettext('checkin', 'None');
+            break;
+
+        case CO_FT_LAST_NAME:
+            $tpl['FILTER_INFO'] = sprintf(dgettext('checkin', 'Last name: %s'), $this->filter);
+            break;
+
+        case CO_FT_REASON:
+            $this->loadReasons();
+            $tpl['FILTER_INFO'] = implode('<br>', $this->_reasons);
+            break;
+        }
+
+        return $tpl;
+    }
+
+    function save($new=false)
+    {
+        $db = new PHPWS_DB('checkin_staff');
+        $result = !PHPWS_Error::logIfError($db->saveObject($this));
+        // Save reason assignments
+
+        return $result;
+    }
 }
 
 ?>

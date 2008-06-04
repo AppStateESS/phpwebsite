@@ -419,7 +419,7 @@ class Version {
 
         $source_db = new PHPWS_DB($this->source_table);
         $allColumns = $source_db->getTableColumns(true);
-
+        test($allColumns);
         foreach ($allColumns as $editCol){
             $newColumns[] = $editCol;
             if ($editCol['name'] == 'id') {
@@ -444,9 +444,8 @@ class Version {
         foreach ($version_columns as $verCol) {
             $columns[] = $verCol['name'] . ' ' . $verCol['sql'];
         }
-
+        
         $sql = 'CREATE TABLE ' . $this->version_table . ' (' . implode(', ', $columns) . ')';
-
         $result = PHPWS_DB::query($sql);
         if (PEAR::isError($result)) {
             return $result;

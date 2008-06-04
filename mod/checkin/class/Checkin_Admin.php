@@ -14,10 +14,6 @@ define('CO_FT_REASON',     2);
 
 class Checkin_Admin extends Checkin {
     var $panel   = null;
-    var $staff   = null;
-    var $title   = null;
-    var $content = null;
-    var $message = null;
 
     function Checkin_Admin()
     {
@@ -86,6 +82,8 @@ class Checkin_Admin extends Checkin {
         case 'post_staff':
             if (Current_User::authorized('checkin', 'edit_staff')) {
                 if ($this->postStaff()) {
+                    $this->staff->save();
+                    PHPWS_Core::reroute('index.php?module=checkin&tab=settings');
                     // save post
                 } else {
                     // post failed
@@ -100,9 +98,8 @@ class Checkin_Admin extends Checkin {
             if (Current_User::authorized('checkin', 'settings')) {
                 $this->postSettings();
             }
-            if (isset($_POST['edit'])) {
-                // edit reason
-            } elseif (isset($_POST['delete'])) {
+
+            if (isset($_POST['delete'])) {
                 $this->deleteReason($_POST['edit_reason']);
             }
             PHPWS_Core::reroute('index.php?module=checkin&tab=settings');
@@ -161,13 +158,18 @@ class Checkin_Admin extends Checkin {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('checkin', 'Staff.php');
 
-        $page_tags['ADD_STAFF'] = $this->addStaffLink();
+        $page_tags['ADD_STAFF']    = $this->addStaffLink();
+        $page_tags['FILTER_LABEL'] = dgettext('checkin', 'Filter');
 
         $pager = new DBPager('checkin_staff', 'Checkin_Staff');
         $pager->setTemplate('staff.tpl');
         $pager->setModule('checkin');
+        $pager->addRowTags('row_tags');
         $pager->setEmptyMessage(dgettext('checkin', 'No staff found.'));
         $pager->addPageTags($page_tags);
+        $pager->joinResult('user_id', 'users', 'id', 'display_name');
+        $pager->addSortHeader('filter', 'Filter');
+        $pager->addSortHeader('display_name', 'Staff name');
 
         $this->title = dgettext('checkin', 'Staff');
         $this->content = $pager->get();
@@ -178,7 +180,7 @@ class Checkin_Admin extends Checkin {
         $form = new PHPWS_Form('edit-staff');
         $form->addHidden('module', 'checkin');
         $form->addHidden('aop', 'post_staff');
-        if (!$this->staff->user_id) {
+        if (!$this->staff->id) {
             javascript('jquery');
             javascript('modules/checkin/search_user');
 
@@ -331,7 +333,7 @@ class Checkin_Admin extends Checkin {
             $db = new PHPWS_DB('checkin_staff');
             $db->addWhere('user_id', 'users.id');
             $db->addWhere('users.username', $user_name);
-            $db->addColumn('user_id');
+            $db->addColumn('id');
             $result = $db->select('one');
             if (PHPWS_Error::logIfError($result)) {
                 $this->message = dgettext('checkin', 'Problem saving user.');
@@ -352,7 +354,7 @@ class Checkin_Admin extends Checkin {
             }
 
             if (!$user_id) {
-                $this->message = dgettext('checkin', 'Could not locate user with this user name.');
+                $this->message = dgettext('checkin', 'Could not locate anyone with this user name.');
                 return false;
             }
             $this->loadStaff();
@@ -365,25 +367,9 @@ class Checkin_Admin extends Checkin {
         if (!empty($_POST['reasons'])) {
             $this->staff->_reasons = $_POST['reasons'];
         }
-
-        test($this->staff);
-
-        test($_POST);
-
-        // Be sure they aren't already in system if id is zero
-
         return true;
     }
 
-    function loadStaff($id=0)
-    {
-        PHPWS_Core::initModClass('checkin', 'Staff.php');
-        if ($id) {
-            $this->staff = new Checkin_Staff($id);
-        } else {
-            $this->staff = new Checkin_Staff;
-        }
-    }
 }
 
 ?>

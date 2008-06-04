@@ -10,14 +10,19 @@ class Checkin {
     var $content = null;
     var $staff   = null;
 
-    function loadStaff()
+    function loadStaff($id=0)
     {
-        $id = 0;
         PHPWS_Core::initModClass('checkin', 'Staff.php');
-        if (!empty($_REQUEST['staff_id'])) {
-            $id = & $_REQUEST['staff_id'];
-        } 
-        $this->staff = new Checkin_Staff($id);
+
+        if (!$id && !empty($_REQUEST['staff_id'])) {
+            $id = (int)$_REQUEST['staff_id'];
+        }
+
+        if ($id) {
+            $this->staff = new Checkin_Staff($id);
+        } else {
+            $this->staff = new Checkin_Staff;
+        }
     }
 
     function getReasons()

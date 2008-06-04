@@ -1773,9 +1773,12 @@ class PHPWS_DB {
             return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::dropTableColumn', $column);
         }
 
-        $sql = "ALTER TABLE $table DROP $column";
-
-        return PHPWS_DB::query($sql);
+        if ($this->isTableColumn($column)) {
+            $sql = "ALTER TABLE $table DROP $column";
+            return PHPWS_DB::query($sql);
+        } else {
+            return true;
+        }
     }
 
 
@@ -1890,7 +1893,8 @@ class PHPWS_DB {
                     'text');
 
         foreach ($query_list as $command) {
-
+            // Remove mysql specific call
+            $command = str_ireplace('unsigned', '', $command);
             $command = preg_replace('/ default (\'\'|""|``)/i', '', $command);
 
             if (preg_match ('/\s(smallint|int)\s/i', $command)) {
@@ -1900,13 +1904,8 @@ class PHPWS_DB {
                 }
                
                 if(!preg_match('/\sdefault/i', $command)) {
-                    if (preg_match ('/unsigned/i', $command)) {
-                        $command = str_ireplace(' int unsigned', ' INT UNSIGNED DEFAULT 0 ', $command);
-                        $command = str_ireplace(' smallint unsigned', ' SMALLINT UNSIGNED DEFAULT 0 ', $command);
-                    } else {
                         $command = str_ireplace(' int ', ' INT DEFAULT 0 ', $command);
                         $command = str_ireplace(' smallint ', ' SMALLINT DEFAULT 0 ', $command);
-                    }
                 }
                 
                 $command = preg_replace('/ default \'(\d+)\'/Ui', ' DEFAULT \\1', $command);

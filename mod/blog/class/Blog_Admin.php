@@ -246,7 +246,7 @@ class Blog_Admin {
                 if (PEAR::isError($result)) {
                     $message = dgettext('blog', 'An error occurred when trying to save your entry. Please check your logs.');
                     PHPWS_Error::log($result);
-                    Blog_Admin::setForward($message);
+                    Blog_Admin::setForward($message, 'list');
                 } 
 
                 if (!$blog->approved) {

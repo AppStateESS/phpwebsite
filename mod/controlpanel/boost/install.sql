@@ -5,12 +5,12 @@ CREATE TABLE controlpanel_tab (
   id varchar(255) NOT NULL,
   title varchar(255) NOT NULL,
   link varchar(255) NOT NULL,
-  tab_order smallint unsigned NOT NULL default 0,
+  tab_order smallint NOT NULL default 0,
   itemname varchar(255) NOT NULL
 );
 
 CREATE TABLE controlpanel_link (
- id INT UNSIGNED NOT NULL PRIMARY KEY,
+ id INT NOT NULL PRIMARY KEY,
  tab varchar(255) NOT NULL,
  active SMALLINT NOT NULL,
  label varchar(50) NULL,	
@@ -19,5 +19,5 @@ CREATE TABLE controlpanel_link (
  url TEXT,
  description TEXT,
  image varchar(255),
- link_order SMALLINT UNSIGNED NOT NULL
+ link_order SMALLINT NOT NULL
  );

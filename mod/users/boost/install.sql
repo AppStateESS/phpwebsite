@@ -2,24 +2,24 @@
 -- @version $Id$
 
 CREATE TABLE users_groups (
- id INT UNSIGNED NOT NULL PRIMARY KEY,
+ id INT NOT NULL PRIMARY KEY,
  active SMALLINT NOT NULL,
  name VARCHAR(255) NOT NULL,
- user_id INT UNSIGNED NOT NULL
+ user_id INT NOT NULL
  );
 
 CREATE TABLE users_members (
- group_id INT UNSIGNED NOT NULL,
- member_id INT UNSIGNED NOT NULL
+ group_id INT NOT NULL,
+ member_id INT NOT NULL
  );
 
 CREATE TABLE users (
-  id int unsigned NOT NULL default 0,
-  last_logged int unsigned default 0,
-  log_count int unsigned NOT NULL default 0,
+  id int NOT NULL default 0,
+  last_logged int default 0,
+  log_count int NOT NULL default 0,
   authorize smallint NOT NULL default 0,
-  created int unsigned NOT NULL default 0,
-  updated int unsigned NOT NULL default 0,
+  created int NOT NULL default 0,
+  updated int NOT NULL default 0,
   active smallint NOT NULL default 0,
   approved smallint NOT NULL default 0,
   username varchar(255) NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE user_authorization (
 
 
 CREATE TABLE users_auth_scripts (
-  id smallint unsigned NOT NULL default 0,
+  id smallint NOT NULL default 0,
   display_name varchar(40) NOT NULL,
   filename varchar(40) NOT NULL,
   PRIMARY KEY (id)
@@ -49,14 +49,14 @@ CREATE TABLE users_my_page_mods (
 
 CREATE TABLE users_signup (
   authkey char(32) NOT NULL,
-  user_id int unsigned NOT NULL default 0,
-  deadline int unsigned NOT NULL default 0
+  user_id int NOT NULL default 0,
+  deadline int NOT NULL default 0
 );
 
 CREATE INDEX userssignup_idx on users_signup (authkey);
 
 CREATE TABLE users_pw_reset (
-user_id INT UNSIGNED NOT NULL default 0,
+user_id INT NOT NULL default 0,
 authhash CHAR( 32 ) NOT NULL default 0,
-timeout INT UNSIGNED NOT NULL default 0
+timeout INT NOT NULL default 0
 );

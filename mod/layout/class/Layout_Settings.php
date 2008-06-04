@@ -12,7 +12,6 @@ PHPWS_Core::initModClass('layout', 'Box.php');
 class Layout_Settings {
     var $current_theme    = null;
     var $default_theme    = null;
-    var $userAllow        = 0;
     var $page_title       = null;
     var $meta_keywords    = null;
     var $meta_description = null;

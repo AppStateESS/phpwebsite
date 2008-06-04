@@ -99,9 +99,17 @@ function layout_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '2.4.4', '<'):
         $content[] = '<pre>';
+        $db = new PHPWS_DB('layout_config');
+        if (PHPWS_Error::logIfError($db->dropTableColumn('userAllow'))) {
+            $content[] = '--- An error occurred when trying to drop the userAllow column from the layout_config table.';
+        } else {
+            $content[] = '--- Dropped the userAllow column from the layout_config table.';
+        }
+
         layoutUpdateFiles(array('templates/user_form.tpl'), $content);
         $content[] = '2.4.4 changes
 -------------------
++ Dropped unused column from config table.
 + Added collapse function. Adds id="layout-collapse" to theme template
   under the {COLLAPSE} tag.
 + Changed method of checking for javascript status. Less chance for

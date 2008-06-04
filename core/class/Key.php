@@ -7,7 +7,11 @@
  * @version $Id$
  */
 
-define('HIDE_CEILING', 4000000000);
+/**
+ * phpWebsite will not work properly after Mon, 18 Jan 2038
+ * Hopefully, it was a good ride.
+ */
+define('HIDE_CEILING', 2147400000);
 define('KEY_NOT_RESTRICTED',    0);
 define('KEY_LOGGED_RESTRICTED', 1);
 define('KEY_GROUP_RESTRICTED',  2);

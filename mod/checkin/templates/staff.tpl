@@ -1,8 +1,13 @@
 {ADD_STAFF}
 <table width="100%" cellpadding="5" cellspacing="0">
-   <tr>
-      <td></td>
-   </tr>
+  <tr>
+    <th>{DISPLAY_NAME_SORT}</th>
+    <th>{FILTER_LABEL}</th>
+  </tr>
+<!-- BEGIN listrows --><tr>
+      <td>{DISPLAY_NAME}</td>
+      <td>{FILTER_INFO}</td>
+   </tr><!-- END listrows -->
 </table>
 {EMPTY_MESSAGE}
 <div class="align-center">
