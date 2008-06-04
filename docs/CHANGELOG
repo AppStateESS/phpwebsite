@@ -4,6 +4,11 @@ its own separate CHANGELOG file.
 
 Version 1.8.2
 ----------------------------------------------------------------------
+4 June 2008
++ Added column existence check to Database's dropTableColumn
++ unsigned removed from import now, not worked around
++ Key's ceiling was changed to 2137400000 to conform with int limits
+
 3 June 2008
 + Removed warning from Database.php begin function.
 + Added check for unsigned in the Database::homogenize function.
