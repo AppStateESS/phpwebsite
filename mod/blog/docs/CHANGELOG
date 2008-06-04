@@ -1,5 +1,8 @@
 Version 1.7.2
 ----------------------------------------------------------------
+4 June 2008
++ Fixed forward message when entry creation encounters an error
+
 26 May 2008
 + Removed redundant page tags from blog listing.
 
