@@ -4,6 +4,7 @@ Version 1.1.0
 + Added support for remove_users.
 + Added missing columns to install.sql
 + Avatar file deleted on user deletion.
++ Avatar deleted if changed.
 
 30 May 2008
 + Added bbcode wysiwyg to comments.

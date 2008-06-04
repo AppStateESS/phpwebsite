@@ -1,8 +1,8 @@
 {START_FORM}
 <table class="form-table">
-  <tr>
+  <!-- BEGIN signature --><tr>
     <td class="label">{SIGNATURE_LABEL}</td><td>{SIGNATURE}</td>
-  </tr>
+  </tr><!-- END signature -->
   <tr>
     <td class="label">{AVATAR_LABEL}</td><td>{AVATAR}</td>
   </tr>

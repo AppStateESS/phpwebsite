@@ -225,8 +225,13 @@ class Comment_User extends Demographics_User {
         return $template;
     }
 
+    /**
+     * Saves user's options from the My Page Form
+     */
     function saveOptions()
     {
+        $current_avatar = $this->avatar;
+
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         if (PHPWS_Settings::get('comments', 'allow_signatures')) {
             $this->setSignature($_POST['signature']);
@@ -263,6 +268,9 @@ class Comment_User extends Demographics_User {
                         PHPWS_Error::log($result);
                         $errors[] = array(dgettext('comments', 'There was a problem saving your image.'));
                     } else {
+                        if ($current_avatar != $image->getPath() && is_file($current_avatar)) {
+                            @unlink($current_avatar);
+                        }
                         $this->setAvatar($image->getPath());
                     }
                 }
