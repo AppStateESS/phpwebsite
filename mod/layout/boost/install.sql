@@ -24,7 +24,7 @@ CREATE TABLE layout_config (
   cache smallint NOT NULL default 0
 );
 
-INSERT INTO layout_config VALUES ('default', 1, 'phpWebSite', 'phpwebsite', NULL, '11', NULL, NULL, 'utf-8', NULL, NULL, 1);
+INSERT INTO layout_config VALUES ('default', 'phpWebSite', 'phpwebsite', NULL, '11', NULL, NULL, 'utf-8', NULL, NULL, 1);
 
 CREATE TABLE layout_styles (
 key_id INT NOT NULL ,
