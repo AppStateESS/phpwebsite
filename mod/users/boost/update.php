@@ -238,6 +238,7 @@ timeout INT NOT NULL default 0,
 + Changed redundant static method call in Permission.
 + Added dash to allowed display name characters.
 + Added \pL to display name characters.
++ Users will now query modules should a user get deleted.
 </pre>';
 
     } // End of switch statement

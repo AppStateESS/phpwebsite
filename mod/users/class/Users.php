@@ -732,6 +732,8 @@ class PHPWS_User {
         if (PEAR::isError($result)) {
             return $result;
         }
+
+        $this->removeAssociations();
     
         if ($this->authorize == LOCAL_AUTHORIZATION) {
             $db2 = new PHPWS_DB('user_authorization');
@@ -744,7 +746,26 @@ class PHPWS_User {
         
         $user_group = new PHPWS_Group($this->getUserGroup());
         $user_group->kill();
-    
+    }
+
+
+    /**
+     * Looks for the user.php in an installed module's inc folder.
+     * If found, it runs the function within.
+     */
+    function removeAssociations()
+    {
+        $modules = PHPWS_Core::getModules(true, true);
+        foreach ($modules as $mod) {
+            $file = sprintf('%smod/%s/inc/remove_user.php', PHPWS_SOURCE_DIR, $mod);
+            if (is_file($file)) {
+                require_once $file;
+                $function_name = $mod . '_remove_user';
+                if (function_exists($function_name)) {
+                    $function_name($this->id);
+                }
+            }
+        }
     }
 
     function savePermissions($key)

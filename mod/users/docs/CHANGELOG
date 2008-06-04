@@ -1,5 +1,9 @@
 Version 2.5.0
 -----------------------------------------------------------------------
+4 June 2008
++ Users will now look for remove_user.php in all modules' inc/
+  directory in order to run the remove_user function.
+
 3 June 2008
 + Using pager's addSortHeaders in user and group listing
 + Updated: templates/manager/groups.tpl, templates/manager/users.tpl
