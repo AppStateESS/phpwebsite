@@ -419,7 +419,7 @@ class Version {
 
         $source_db = new PHPWS_DB($this->source_table);
         $allColumns = $source_db->getTableColumns(true);
-        test($allColumns);
+
         foreach ($allColumns as $editCol){
             $newColumns[] = $editCol;
             if ($editCol['name'] == 'id') {
