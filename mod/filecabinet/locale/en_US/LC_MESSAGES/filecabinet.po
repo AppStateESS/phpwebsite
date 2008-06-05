@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-07 12:13-0500\n"
+"POT-Creation-Date: 2008-06-05 14:09-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,14 @@ msgid "%dMB (%d bytes)"
 msgstr ""
 
 #, php-format
+msgid "%s Slide Show"
+msgstr ""
+
+#, php-format
 msgid "%s bytes"
+msgstr ""
+
+msgid "-- General --"
 msgstr ""
 
 msgid "-- Pick option --"
@@ -133,9 +140,6 @@ msgstr ""
 msgid "Are you sure you wish to delete these files?"
 msgstr ""
 
-msgid "Automatically link child images to parent"
-msgstr ""
-
 msgid "Back to folder list"
 msgstr ""
 
@@ -230,6 +234,10 @@ msgstr ""
 msgid "Decription"
 msgstr ""
 
+#, php-format
+msgid "Default (%spx)"
+msgstr ""
+
 msgid "Default document directory may not be blank"
 msgstr ""
 
@@ -305,6 +313,9 @@ msgid "Edit multimedia file"
 msgstr ""
 
 msgid "Edit the current file"
+msgstr ""
+
+msgid "Embedded filter"
 msgstr ""
 
 msgid "Enable FFMpeg thumbnails"
@@ -426,9 +437,6 @@ msgstr ""
 msgid "Link image"
 msgstr ""
 
-msgid "Link image to original, full sized image"
-msgstr ""
-
 msgid "Link image to web site"
 msgstr ""
 
@@ -457,6 +465,9 @@ msgstr ""
 msgid "Maximum image pixel dimension"
 msgstr ""
 
+msgid "Maximum image upload dimension"
+msgstr ""
+
 msgid "Maximum multimedia file size (in bytes)"
 msgstr ""
 
@@ -478,7 +489,13 @@ msgstr ""
 msgid "Missing title."
 msgstr ""
 
+msgid "Module reservation"
+msgstr ""
+
 msgid "More..."
+msgstr ""
+
+msgid "Move to folder"
 msgstr ""
 
 msgid "Multimedia file not found."
@@ -495,6 +512,9 @@ msgid "Multimedia location"
 msgstr ""
 
 msgid "Multimedia settings"
+msgstr ""
+
+msgid "Next image"
 msgstr ""
 
 msgid "No files in folder"
@@ -516,6 +536,12 @@ msgstr ""
 msgid "Pin folder to \"%s\""
 msgstr ""
 
+msgid "Popup images allow folder navigation"
+msgstr ""
+
+msgid "Previous image"
+msgstr ""
+
 msgid "Private"
 msgstr ""
 
@@ -528,7 +554,13 @@ msgstr ""
 msgid "Random image icon"
 msgstr ""
 
+msgid "Resize and crop excess"
+msgstr ""
+
 msgid "Resize image if over"
+msgstr ""
+
+msgid "Resize image maintaining aspect"
 msgstr ""
 
 msgid "Rotate image"
@@ -607,7 +639,17 @@ msgid ""
 "to fit?"
 msgstr ""
 
+#, php-format
+msgid "This image is larger than the %sx%s limit. What do you wish to do?"
+msgstr ""
+
 msgid "This is a private folder."
+msgstr ""
+
+#, php-format
+msgid ""
+"This media is larger than the %s x %s limit. Do you want to resize the media "
+"to fit?"
 msgstr ""
 
 msgid "Thumbnail directory not writable."
@@ -622,9 +664,6 @@ msgstr ""
 msgid "Unable to classify files."
 msgstr ""
 
-msgid "Unable to find video id from url"
-msgstr ""
-
 msgid ""
 "Unable to locate the classify directory. Please check your File Cabinet "
 "settings, configuration file and directory permissions."
@@ -633,13 +672,16 @@ msgstr ""
 msgid "Unable to move the file to its new directory."
 msgstr ""
 
-msgid "Unable to parse video info from host site."
+msgid "Unable to process embedded information."
 msgstr ""
 
 msgid "Unable to read document directory."
 msgstr ""
 
 msgid "Unable to resize image."
+msgstr ""
+
+msgid "Unable to resize media."
 msgstr ""
 
 msgid "Unable to write to document directory."
@@ -696,10 +738,10 @@ msgstr ""
 msgid "Upload thumbnail"
 msgstr ""
 
-msgid "Video site"
+msgid "Url or id"
 msgstr ""
 
-msgid "Video url or id"
+msgid "Use original image"
 msgstr ""
 
 msgid "View all images in folder"

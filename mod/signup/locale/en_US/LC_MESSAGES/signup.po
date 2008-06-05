@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-18 09:56-0400\n"
+"POT-Creation-Date: 2008-06-05 14:09-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -198,6 +198,9 @@ msgstr ""
 msgid "New"
 msgstr ""
 
+msgid "No slots found."
+msgstr ""
+
 msgid "Number of openings"
 msgstr ""
 
@@ -258,6 +261,9 @@ msgid "Return to slot page"
 msgstr ""
 
 msgid "Returning to applicant listing."
+msgstr ""
+
+msgid "Search slots"
 msgstr ""
 
 msgid "Send emails"
@@ -353,6 +359,9 @@ msgstr ""
 msgid "Thank you"
 msgstr ""
 
+msgid "The name you searched for is in these slots."
+msgstr ""
+
 msgid "The total signups may not exceed the slots offered."
 msgstr ""
 
@@ -406,6 +415,9 @@ msgid "You are registered for the following event: %s"
 msgstr ""
 
 msgid "You cannot signup for more than one slot."
+msgstr ""
+
+msgid "You do not have permission for this action."
 msgstr ""
 
 msgid "You have one hour to confirm your application."

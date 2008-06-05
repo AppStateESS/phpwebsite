@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:21-0500\n"
+"POT-Creation-Date: 2008-06-05 14:09-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,13 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "- Search again -"
-msgstr ""
-
 msgid "Allow user name searching"
-msgstr ""
-
-msgid "An error occurred when accessing the database."
 msgstr ""
 
 msgid "Associate note"
@@ -36,9 +30,6 @@ msgid "Associated Notes"
 msgstr ""
 
 msgid "Cancel"
-msgstr ""
-
-msgid "Could not find match."
 msgstr ""
 
 msgid "Date sent"
@@ -108,12 +99,6 @@ msgstr ""
 msgid "Unable to resolve user name."
 msgstr ""
 
-msgid "Unknown user."
-msgstr ""
-
-msgid "Unsuitable user name characters."
-msgstr ""
-
 msgid "Yes"
 msgstr ""
 
@@ -121,8 +106,8 @@ msgstr ""
 msgid "You have %d unread notes."
 msgstr ""
 
-msgid "You must enter a username."
+msgid "You need to enter a title or some content."
 msgstr ""
 
-msgid "You need to enter a title or some content."
+msgid "Your note needs a title."
 msgstr ""

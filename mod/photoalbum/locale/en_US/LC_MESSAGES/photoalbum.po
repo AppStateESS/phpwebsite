@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-25 09:50-0400\n"
+"POT-Creation-Date: 2008-06-05 14:09-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -292,6 +292,9 @@ msgid "Start Show"
 msgstr ""
 
 msgid "Stop Show"
+msgstr ""
+
+msgid "Stop show"
 msgstr ""
 
 msgid "Strips"

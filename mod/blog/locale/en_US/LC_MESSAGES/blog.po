@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-07 12:13-0500\n"
+"POT-Creation-Date: 2008-06-05 14:09-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,6 +32,9 @@ msgid "Add entry"
 msgstr ""
 
 msgid "Add new blog"
+msgstr ""
+
+msgid "All comments require approval"
 msgstr ""
 
 msgid "Allow anonymous comments"
@@ -60,6 +63,9 @@ msgid ""
 msgstr ""
 
 msgid "Anonymous"
+msgstr ""
+
+msgid "Anonymous comments require approval"
 msgstr ""
 
 #, php-format
@@ -132,6 +138,12 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
+msgid "Comment approval"
+msgstr ""
+
+msgid "Comments preapproved"
+msgstr ""
+
 msgid "Create first blog entry!"
 msgstr ""
 
@@ -166,6 +178,9 @@ msgid "Expire"
 msgstr ""
 
 msgid "Expire date/time"
+msgstr ""
+
+msgid "Expired"
 msgstr ""
 
 msgid "Hide general image folders"
@@ -294,6 +309,9 @@ msgstr ""
 msgid "Show category links"
 msgstr ""
 
+msgid "Show image or media thumbnail in list view"
+msgstr ""
+
 msgid "Show recent entries"
 msgstr ""
 
@@ -304,6 +322,9 @@ msgid "Sorry"
 msgstr ""
 
 msgid "Sticky"
+msgstr ""
+
+msgid "Submission"
 msgstr ""
 
 msgid "Submit Entry"
@@ -334,6 +355,9 @@ msgid "Tried to edit an unapproved item."
 msgstr ""
 
 msgid "Type the word seen in the image."
+msgstr ""
+
+msgid "Unpublished"
 msgstr ""
 
 msgid "Unsticky"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-07 12:13-0500\n"
+"POT-Creation-Date: 2008-06-05 14:09-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,14 @@ msgstr ""
 
 #, php-format
 msgid "\"%s\" permission column created."
+msgstr ""
+
+#, php-format
+msgid "%s account created"
+msgstr ""
+
+#, php-format
+msgid "%s created an user account for you."
 msgstr ""
 
 msgid "-- Use server's time zone --"
@@ -34,6 +42,9 @@ msgid ""
 msgstr ""
 
 msgid "A problem occurred when trying to register this module to My Page."
+msgstr ""
+
+msgid "A problem occurred when trying to unregister this module from My Page."
 msgstr ""
 
 msgid ""
@@ -126,9 +137,6 @@ msgid "Authorization updated."
 msgstr ""
 
 msgid "Authorization/Settings"
-msgstr ""
-
-msgid "Ban users"
 msgstr ""
 
 msgid "Cancel"
@@ -229,6 +237,9 @@ msgstr ""
 msgid "Did you forget your user name at our site?"
 msgstr ""
 
+msgid "Display"
+msgstr ""
+
 msgid "Display Name"
 msgstr ""
 
@@ -236,6 +247,9 @@ msgid "Display name"
 msgstr ""
 
 msgid "Display name is improperly formatted."
+msgstr ""
+
+msgid "Do you wish to notify the new user?"
 msgstr ""
 
 msgid "Drop"
@@ -308,6 +322,9 @@ msgid "Forgotten password attempt made on a deity account."
 msgstr ""
 
 msgid "Forgotten your user name? Enter your email address instead."
+msgstr ""
+
+msgid "Generate password"
 msgstr ""
 
 msgid "Group Name"
@@ -443,6 +460,9 @@ msgstr ""
 msgid "My Page registered to Users module."
 msgstr ""
 
+msgid "My Page unregistered from Users module."
+msgstr ""
+
 msgid "Never"
 msgstr ""
 
@@ -485,6 +505,9 @@ msgstr ""
 msgid "No view groups found."
 msgstr ""
 
+msgid "No, do not notify"
+msgstr ""
+
 msgid "No, leave them as a deity."
 msgstr ""
 
@@ -498,6 +521,9 @@ msgid "None found"
 msgstr ""
 
 msgid "Not allowed"
+msgstr ""
+
+msgid "Notify user"
 msgstr ""
 
 msgid "Only another deity can create a deity."
@@ -517,6 +543,10 @@ msgstr ""
 
 #, php-format
 msgid "Password must be at least %s characters in length."
+msgstr ""
+
+#, php-format
+msgid "Password: %s"
 msgstr ""
 
 msgid "Passwords do not match."
@@ -559,6 +589,9 @@ msgid "Permissions updated"
 msgstr ""
 
 msgid "Permissions updated."
+msgstr ""
+
+msgid "Please change your password immediately after logging in."
 msgstr ""
 
 msgid "Please check your email for a response."
@@ -625,6 +658,10 @@ msgstr ""
 msgid "Sign up"
 msgstr ""
 
+#, php-format
+msgid "Site address: %s"
+msgstr ""
+
 msgid "Site contact email"
 msgstr ""
 
@@ -686,6 +723,9 @@ msgid "Tried to perform an admin function in Users."
 msgstr ""
 
 msgid "Unable to copy deity login to branch."
+msgstr ""
+
+msgid "Unable to copy deity user group to branch."
 msgstr ""
 
 msgid "Unable to copy deity users to branch."
@@ -760,6 +800,9 @@ msgstr ""
 msgid "User account deactivated."
 msgstr ""
 
+msgid "User created and notified."
+msgstr ""
+
 msgid "User created successfully."
 msgstr ""
 
@@ -828,6 +871,10 @@ msgstr ""
 msgid "Username is improperly formatted."
 msgstr ""
 
+#, php-format
+msgid "Username: %s"
+msgstr ""
+
 msgid "Users"
 msgstr ""
 
@@ -866,10 +913,16 @@ msgstr ""
 msgid "Yes, make them a mortal."
 msgstr ""
 
+msgid "Yes, send them an email"
+msgstr ""
+
 msgid "You already have an account."
 msgstr ""
 
 msgid "You have one hour to respond."
+msgstr ""
+
+msgid "You may log-in using the following information:"
 msgstr ""
 
 msgid "You must enter either a username or email address."

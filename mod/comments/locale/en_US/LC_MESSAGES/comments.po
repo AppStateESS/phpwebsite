@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-10 15:40-0400\n"
+"POT-Creation-Date: 2008-06-05 14:09-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,6 +42,12 @@ msgstr ""
 msgid "All"
 msgstr ""
 
+msgid "All comments preapproved"
+msgstr ""
+
+msgid "All comments require approval"
+msgstr ""
+
 msgid "All users"
 msgstr ""
 
@@ -63,7 +69,26 @@ msgstr ""
 msgid "Anonymous"
 msgstr ""
 
+msgid "Anonymous comments require approval"
+msgstr ""
+
 msgid "Anonymous users only"
+msgstr ""
+
+msgid "Approval"
+msgstr ""
+
+#, php-format
+msgid "Approval (%s)"
+msgstr ""
+
+msgid "Approval icon"
+msgstr ""
+
+msgid "Approve checked"
+msgstr ""
+
+msgid "Approve this comment"
 msgstr ""
 
 msgid "Are you sure you want to delete this comment?"
@@ -73,6 +98,9 @@ msgid "Author"
 msgstr ""
 
 msgid "Avatar"
+msgstr ""
+
+msgid "Avatar graphics must be from offsite."
 msgstr ""
 
 msgid "Ban user"
@@ -87,6 +115,9 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
+msgid "Clear checked"
+msgstr ""
+
 msgid "Comment"
 msgstr ""
 
@@ -98,6 +129,9 @@ msgid "Comment from: %s"
 msgstr ""
 
 msgid "Comment missing thread information."
+msgstr ""
+
+msgid "Comment order preference"
 msgstr ""
 
 msgid "Comment settings"
@@ -115,13 +149,22 @@ msgstr ""
 msgid "Control administrative options for comments."
 msgstr ""
 
-msgid "Could not access image url."
+msgid "Could not verify file dimensions."
+msgstr ""
+
+msgid "Created on"
+msgstr ""
+
+msgid "Default approval"
 msgstr ""
 
 msgid "Default order"
 msgstr ""
 
 msgid "Delete"
+msgstr ""
+
+msgid "Delete checked"
 msgstr ""
 
 msgid "Delete comments"
@@ -240,6 +283,12 @@ msgstr ""
 msgid "Punish"
 msgstr ""
 
+msgid "Punish icon"
+msgstr ""
+
+msgid "Punish poster"
+msgstr ""
+
 msgid "Punish users"
 msgstr ""
 
@@ -261,13 +310,22 @@ msgstr ""
 msgid "Recent comments"
 msgstr ""
 
+msgid "Removal icon"
+msgstr ""
+
 msgid "Remove IP denial"
 msgstr ""
 
 msgid "Remove ban"
 msgstr ""
 
+msgid "Remove checked"
+msgstr ""
+
 msgid "Remove their admin privileges and return."
+msgstr ""
+
+msgid "Remove this comment"
 msgstr ""
 
 msgid "Removing module's comments."
@@ -282,7 +340,14 @@ msgstr ""
 msgid "Reported"
 msgstr ""
 
+#, php-format
+msgid "Reported (%s)"
+msgstr ""
+
 msgid "Reported!"
+msgstr ""
+
+msgid "Return to the thread..."
 msgstr ""
 
 msgid "Save"
@@ -316,6 +381,9 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
+msgid "Subject/Comment"
+msgstr ""
+
 msgid "T.R."
 msgstr ""
 
@@ -337,6 +405,12 @@ msgstr ""
 msgid "Today"
 msgstr ""
 
+msgid "Unacceptable file type."
+msgstr ""
+
+msgid "Unacceptable image file."
+msgstr ""
+
 msgid "Unban user"
 msgstr ""
 
@@ -346,6 +420,9 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
+msgid "We are holding your comment for approval"
+msgstr ""
+
 msgid "Website"
 msgstr ""
 
@@ -353,6 +430,10 @@ msgid "You failed verification. Try again."
 msgstr ""
 
 msgid "You must include a subject or comment."
+msgstr ""
+
+#, php-format
+msgid "Your avatar must be smaller than %sx%spx."
 msgstr ""
 
 msgid "Your contact email is formatted improperly."
