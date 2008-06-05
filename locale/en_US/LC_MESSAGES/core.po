@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-07 12:14-0500\n"
+"POT-Creation-Date: 2008-06-05 14:07-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1051,10 +1051,21 @@ msgid ""
 "server."
 msgstr ""
 
+#, php-format
+msgid "The current language is %s."
+msgstr ""
+
 msgid "The database creation succeeded!"
 msgstr ""
 
 msgid "The database's name into which you are installing phpWebSite."
+msgstr ""
+
+#, php-format
+msgid "The default language is %s."
+msgstr ""
+
+msgid "The default language is being forced."
 msgstr ""
 
 msgid "The example is randomly generated."
@@ -1121,6 +1132,9 @@ msgstr ""
 
 #, php-format
 msgid "Unable to find element \"%s\"."
+msgstr ""
+
+msgid "Unable to find mod_pagemaster_pages table in source database."
 msgstr ""
 
 msgid "Unable to find the specified editor type."
