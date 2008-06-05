@@ -1,5 +1,8 @@
 Version 2.5.0
 -----------------------------------------------------------------------
+5 June 2008
++ Added an error check to Permissions (Thanks Hilmar).
+
 4 June 2008
 + Commented password creation table row.
 + Users will now look for remove_user.php in all modules' inc/

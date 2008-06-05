@@ -435,6 +435,10 @@ class Users_Permission {
             return $result;
         }
 
+        if (empty($result)) {
+            return null;
+        }
+
         foreach ($result as $group) {
             $inputs[$group->getId()] = $group->getName();
         }
