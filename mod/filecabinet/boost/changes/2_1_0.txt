@@ -1,0 +1,28 @@
+2.1.0 changes
+-------------
++ Filecabinet will now resize media as well as images.
++ When checking the mime type, the extension is forced into lowercase.
++ Hiding some elements if the user doesn't have file rights.
++ Fixed typo in Image:makeThumbnail
++ Added ability to move files to other folders.
++ Revamped embedded code
++ Added flicker slide shows.
++ Fixed module restrictions on folders
++ Can change module restriction per folder.
++ Added moduleLimit function to restrict folder view in file manager.
++ Some notices fixed
++ Image folders can be set to control default image default size.
++ Fixed an error call.
++ Popup images can be set to navigate among other images in the
+  folder.
++ Popup windows all the same size.
++ Added getThumbnail function to File_Assoc
++ Image's getThumbnail can be linkable.
++ Added fourth parameter to importPost : file_prefix. Prefixes the
+  saved file with submitted characters.
++ Added conditional to prevent similiar resize from overwriting one
+  another.
++ Rewrote image resizing to avoid square images.
++ Added new menu to pick resize method on image.
++ File_Assoc class now tracks width, height, and cropped status.
+

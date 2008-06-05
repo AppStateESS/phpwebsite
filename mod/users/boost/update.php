@@ -239,6 +239,10 @@ timeout INT NOT NULL default 0,
 + Added dash to allowed display name characters.
 + Added \pL to display name characters.
 + Users will now query modules should a user get deleted.
++ Added an error check to Permissions.
++ Users will now look for remove_user.php in all modules\' inc/
+  directory in order to run the remove_user function.
++ Using pager\'s addSortHeaders in user and group listing
 </pre>';
 
     } // End of switch statement

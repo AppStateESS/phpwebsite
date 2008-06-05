@@ -191,6 +191,19 @@ function pagesmith_update(&$content, $currentVersion)
 + Added search to pagesmith.
 + Changed to new url rewriting method.</pre>';
 
+    case version_compare($currentVersion, '1.2.2', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/page_list.tpl');
+        pagesmithUpdateFiles($files, $content);
+        $content[] = '
+1.2.2 changes
+---------------
++ Updated pagers to addSortHeaders.
++ Fixed direct access to page allowing view.
++ Front page does not alter page title.
++ Fixed some notices and a caching bug.
++ Changed wording on edit text windows.</pre>';
+
     } // end switch
 
     return true;

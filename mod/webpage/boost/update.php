@@ -91,6 +91,13 @@ Please download version 0.5.3</pre>';
 + Works with new mod_rewrite.
 + Updated to work with File Cabinet 2.0
 + Styled the admin links</pre>';
+
+    case version_compare($currentVersion, '1.1.1', '<'):
+        $content[] = '<pre>1.1.1 changes
+---------------
++ Added missing page option to plugForward function.
+</pre>';
+
     }
 
     return TRUE;

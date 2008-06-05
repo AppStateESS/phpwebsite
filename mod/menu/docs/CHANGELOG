@@ -1,8 +1,12 @@
+Version 1.4.6
+------------------------------------------------------------
 3 June 2008
 + Update to addSortHeaders.
 + Adding missing paging navigation.
 + Updated: templates/admin/menu_list.tpl
 
+Version 1.4.5
+------------------------------------------------------------
 1 April 2008
 + Work done on submenus appearing.
 

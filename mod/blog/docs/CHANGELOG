@@ -16,7 +16,7 @@ Version 1.7.2
 
 17 April 2008
 + Fixed notice warning.
-+ Readded ability to limit folder view by module.
++ Re-added ability to limit folder view by module.
 
 8 April 2008
 + Can use media or image thumbnails on blog listing page.

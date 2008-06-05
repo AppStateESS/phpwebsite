@@ -88,6 +88,15 @@ function controlpanel_update(&$content, $currentVersion)
   the display function.
 </pre>';
 
+    case version_compare($currentVersion, '2.1.6', '<'):
+        $content[] = '<pre>';
+        cpFileUpdate(array('templates/style.css'), $content);
+        $content[] = '2.1.6 changes
+----------------
++ Changed tab formatting. The a tag is padded to make clickable area
+  larger.</pre>';
+
+
     }
     return true;
 }

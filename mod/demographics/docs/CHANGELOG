@@ -1,3 +1,5 @@
+Version 1.1.1
+-------------------------------------
 4 June 2008
 + Removed deadend getUser function.
 + Removed some passed-by-reference ampersands.

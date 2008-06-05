@@ -41,6 +41,12 @@ function demographics_update(&$content, $version)
 </pre>
 ';
 
+    case version_compare($version, '1.1.1', '<'):
+        $content[] = '<pre>1.1.1 changes
+--------------
++ Removed deadend getUser function.
++ Removed some passed-by-reference ampersands.
++ Support for remove_users added.</pre>';
     }
     return true;
 }

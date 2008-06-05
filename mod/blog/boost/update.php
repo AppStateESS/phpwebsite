@@ -236,13 +236,19 @@ function blog_update(&$content, $currentVersion)
             $content[] = 'Unable to create thumbnail column on blog_entries table.';
         }
         $content[] = '<pre>';
-        blogUpdatefiles(array('templates/edit.tpl', 'templates/style.css', 'templates/view.tpl'), $content);
+        blogUpdatefiles(array('templates/edit.tpl', 'templates/style.css', 'templates/view.tpl', 'templates/list.tpl', 'templates/settings.tpl'), $content);
         $content[] = '1.7.2 changes
 -------------
 + Can use media or image thumbnails on blog listing page.
 + Blog uses new key datetime terminators.
 + File Cabinet style sheet called regardless of cache.
 + Indicators added for published status.
++ Fixed notice warning.
++ Re-added ability to limit folder view by module.
++ Blog uses new dbpager sorting headers.
++ Lets you use new comments approval.
++ Fixed bug with setting allow anonymous submissions.
++ Fixed forward message when entry creation encounters an error
 </pre>';
 
     } // end of switch

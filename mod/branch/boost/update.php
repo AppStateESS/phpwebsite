@@ -95,6 +95,11 @@ function branch_update(&$content, $version)
   once for prefix to prevent having to scan whole config file.
 </pre>';
 
+    case version_compare($version, '1.1.6', '<'):
+        $content[] = '<pre>1.1.6 Changes
+-------------
++ Uses core\'s default htaccess file.</pre>';
+
     }
     return true;
 }

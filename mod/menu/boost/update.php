@@ -145,6 +145,13 @@ Please download 1.2.1.</pre>';
 --------------
 + Fixed some submenus not appearing when sibling chosen.</pre>';
 
+    case version_compare($currentVersion, '1.4.6', '<'):
+        $content[] = '<pre>';
+        menuUpdateFiles(array('templates/admin/menu_list.tpl'), $content);
+        $content[] = '1.4.6 Changes
+--------------
++ Update to addSortHeaders.
++ Adding missing paging navigation.</pre>';
     }
     return true;
 }

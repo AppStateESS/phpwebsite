@@ -61,6 +61,14 @@ function signup_update(&$content, $currentVersion)
 + Sheets can be set to allow multiple signups.
 </pre>';
 
+    case version_compare($currentVersion, '1.1.1', '<'):
+        $content[] = '<pre>';
+        signupUpdateFiles(array('templates/sheet_list.tpl', 'templates/slot_setup.tpl'), $content);
+        $content[] = '1.1.1 changes
+-------------------
++ Restricted users cannot create signup sheets.
++ Added search textfield to slot screen.
++ Added missing navigation links to sheet listing.</pre>';
     }
     return true;
 }

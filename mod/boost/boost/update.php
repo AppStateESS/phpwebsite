@@ -60,6 +60,13 @@ Please download update 2.1.1.</pre>';
 2.2.1 changes
 ----------------
 + Install, uninstall, and update use popups now.</pre>';
+
+    case version_compare($currentVersion, '2.2.2', '<'):
+        $content[] = '<pre>
+2.2.2 changes
+----------------
++ Added error log to copy directory command.</pre>';
+
     }
 
     return TRUE;

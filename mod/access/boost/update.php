@@ -124,6 +124,12 @@ function access_update(&$content, $version)
 + .html completely removed from shortcuts
 </pre>';
 
+    case version_compare($version, '1.0.2', '<'):
+        $content[] = '<pre>1.0.2 changes
+---------------
++ Removed htaccess file. Now expect core/inc/htaccess.
+</pre>';
+
     }
 
     return true;
