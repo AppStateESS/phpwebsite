@@ -1,5 +1,10 @@
 Version 1.1.0
 ------------------------------------------------------------------------
+5 June 2008
++ Remote avatar image fixed.
++ testAvatar function finished.
++ User can set comment order preference.
+
 4 June 2008
 + Added support for remove_users.
 + Added missing columns to install.sql

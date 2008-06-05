@@ -46,7 +46,7 @@ class Comment_User extends Demographics_User {
     {
         if (empty($sig)) {
             $this->signature = NULL;
-            return TRUE;
+            return true;
         }
         if (PHPWS_Settings::get('comments', 'allow_image_signatures')) {
             $this->signature = trim(strip_tags($sig, '<img>'));
@@ -56,7 +56,7 @@ class Comment_User extends Demographics_User {
             }
             $this->signature = trim(strip_tags($sig));
         }
-        return TRUE;
+        return true;
     }
 
     function getSignature()
@@ -84,7 +84,7 @@ class Comment_User extends Demographics_User {
         }
     }
 
-    function getJoinedDate($format=FALSE)
+    function getJoinedDate($format=false)
     {
         if ($format) {
             return strftime(COMMENT_DATE_FORMAT, $this->joined_date);
@@ -99,7 +99,7 @@ class Comment_User extends Demographics_User {
         $this->avatar = $avatar_url;
     }
 
-    function getAvatar($format=TRUE)
+    function getAvatar($format=true)
     {
         if (empty($this->avatar)) {
             return NULL;
@@ -115,13 +115,13 @@ class Comment_User extends Demographics_User {
     {
         if (PHPWS_Text::isValidInput($email_address, 'email')) {
             $this->contact_email = $email_address;
-            return TRUE;
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
 
-    function getContactEmail($format=FALSE)
+    function getContactEmail($format=false)
     {
         if ($format) {
             return '<a href="mailto:' . $this->contact_email . '" />' . $this->display_name . '</a>';
@@ -135,7 +135,7 @@ class Comment_User extends Demographics_User {
         $this->website = strip_tags($website);
     }
 
-    function getWebsite($format=FALSE)
+    function getWebsite($format=false)
     {
         if ($format && isset($this->website)) {
             return sprintf('<a href="%s" title="%s">%s</a>',
@@ -165,6 +165,15 @@ class Comment_User extends Demographics_User {
 
     function kill()
     {
+        if (preg_match('/^images\/comments/', $this->avatar)) {
+            @unlink($this->avatar);
+        }
+
+        $db = new PHPWS_DB('comments_items');
+        $db->addWhere('author_id', $this->user_id);
+        $db->addValue('author_id', 0);
+        PHPWS_Error::logIfError($db->update());
+
         return $this->delete();
     }
 
@@ -197,7 +206,7 @@ class Comment_User extends Demographics_User {
         }
 
         if (!empty($this->joined_date)) {
-            $template['JOINED_DATE'] = $this->getJoinedDate(TRUE);
+            $template['JOINED_DATE'] = $this->getJoinedDate(true);
             $template['JOINED_DATE_LABEL'] = dgettext('comments', 'Joined');
         }
 
@@ -211,11 +220,11 @@ class Comment_User extends Demographics_User {
         }
 
         if (isset($this->contact_email)) {
-            $template['CONTACT_EMAIL'] = $this->getContactEmail(TRUE);
+            $template['CONTACT_EMAIL'] = $this->getContactEmail(true);
         }
     
         if (isset($this->website)) {
-            $template['WEBSITE'] = $this->getWebsite(TRUE);
+            $template['WEBSITE'] = $this->getWebsite(true);
         }
 
         if (isset($this->location)) {
@@ -230,7 +239,10 @@ class Comment_User extends Demographics_User {
      */
     function saveOptions()
     {
+        $errors = array();
+
         $current_avatar = $this->avatar;
+        $local_avatar = PHPWS_Settings::get('comments', 'local_avatars');
 
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         if (PHPWS_Settings::get('comments', 'allow_signatures')) {
@@ -239,23 +251,21 @@ class Comment_User extends Demographics_User {
             $this->signature = NULL;
         }
 
-        if (empty($_POST['avatar'])) {
-            $val['avatar'] = NULL;
-        } else {
-            $image_info = @getimagesize($_POST['avatar']);
-            if (!$image_info) {
-                $errors[] = dgettext('comments', 'Could not access image url.');
+        if (!PHPWS_Settings::get('comments', 'allow_avatars') || 
+            (!$local_avatar && empty($_POST['avatar']))) {
+            if (!empty($current_avatar)) {
+                @unlink($current_avatar);
             }
-        }
-
-        if (PHPWS_Settings::get('comments', 'allow_avatars')) {
-            if (PHPWS_Settings::get('comments', 'local_avatars')) {
+            $this->avatar = null;
+        } else {
+            if ($local_avatar) {
                 $image = new PHPWS_Image;
                 $image->setDirectory('images/comments/');
                 $image->setMaxWidth(COMMENT_MAX_AVATAR_WIDTH);
                 $image->setMaxHeight(COMMENT_MAX_AVATAR_HEIGHT);
                 
-                if (!$image->importPost('avatar', false, true)) {
+                $prefix = sprintf('%s_%s_', Current_User::getId(), mktime());
+                if (!$image->importPost('avatar', false, true, $prefix)) {
                     if (isset($image->_errors)) {
                         foreach ($image->_errors as $oError) {
                             $errors[] = $oError->getMessage();
@@ -266,7 +276,7 @@ class Comment_User extends Demographics_User {
                     $result = $image->write();
                     if (PEAR::isError($result)) {
                         PHPWS_Error::log($result);
-                        $errors[] = array(dgettext('comments', 'There was a problem saving your image.'));
+                        $errors[] = dgettext('comments', 'There was a problem saving your image.');
                     } else {
                         if ($current_avatar != $image->getPath() && is_file($current_avatar)) {
                             @unlink($current_avatar);
@@ -275,12 +285,14 @@ class Comment_User extends Demographics_User {
                     }
                 }
             } else {
-                if ($this->testAvatar(trim($_POST['avatar']))) {
+                if ($this->testAvatar(trim($_POST['avatar']), $errors)) {
                     $this->setAvatar($_POST['avatar']);
                 }
             }
-        } else {
-            $this->avatar = NULL;
+        }
+
+        if (isset($_POST['order_pref'])) {
+            PHPWS_Cookie::write('cm_order_pref', (int)$_POST['order_pref']);
         }
 
         // need some error checking here
@@ -292,11 +304,12 @@ class Comment_User extends Demographics_User {
             }
         }
 
-        if (isset($errors)) {
+        if (!empty($errors)) {
+            $this->avatar = null;
             return $errors;
         } else {
             $this->saveUser();
-            return TRUE;
+            return true;
         }
     }
 
@@ -314,15 +327,39 @@ class Comment_User extends Demographics_User {
      * Tests an image's url to see if it is the correct file type,
      * dimensions, etc.
      */
-    // Not finished
-    function testAvatar($url)
+    function testAvatar($url, &$errors)
     {
-        $test = @getimagesize($url);
-        if (!$test) {
-            return FALSE;
+        if (!preg_match('@^http:@', $url)) {
+            $errors[] = dgettext('comments', 'Avatar graphics must be from offsite.');
+            return false;
         }
 
-        return TRUE;
+        $ext = PHPWS_File::getFileExtension($url);
+        if (!PHPWS_Image::allowImageType($ext)) {
+            $errors[] = dgettext('comments', 'Unacceptable image file.');
+            return false;
+        }
+
+        if (!PHPWS_File::checkMimeType($url, $ext)) {
+            $errors[] = dgettext('comments', 'Unacceptable file type.');
+            return false;
+        }
+
+        $test = @getimagesize($url);
+
+        if (!$test || !is_array($test)) {
+            $errors[] = dgettext('comments', 'Could not verify file dimensions.');
+            return false;
+        }
+
+        
+        if (COMMENT_MAX_AVATAR_WIDTH < $test[0] || COMMENT_MAX_AVATAR_HEIGHT < $test[1]) {
+            $errors[] = sprintf(dgettext('comments', 'Your avatar must be smaller than %sx%spx.'), 
+                                COMMENT_MAX_AVATAR_WIDTH, COMMENT_MAX_AVATAR_HEIGHT);
+            return false;
+        }
+
+        return true;
     }
 
 }

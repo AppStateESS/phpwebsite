@@ -10,10 +10,11 @@ function comments_remove_user($user_id)
 {
     PHPWS_Core::initModClass('comments', 'Comment_User.php');
     $comment_user = new Comment_User($user_id);
-    if (preg_match('/^images\/comments/', $comment_user->avatar)) {
-        @unlink($comment_user->avatar);
+    if (!$comment_user->user_id) {
+        return;
     }
-    return $comment_user->delete();
+
+    return $comment_user->kill();
 }
 
 ?>

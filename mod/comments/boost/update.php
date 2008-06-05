@@ -104,7 +104,7 @@ Please download 0.6.3.</pre>';
 
         $files = array('img/cancel.png', 'img/noentry.png', 'img/ok.png', 'templates/approval.tpl',
                        'templates/settings_form.tpl', 'javascript/quick_view/head.js',
-                       'javascript/admin/head.js', 'templates/reported.tpl');
+                       'javascript/admin/head.js', 'templates/reported.tpl', 'templates/user_settings.tpl');
         commentsUpdateFiles($files, $content);
 
         $content[] = '1.1.0 Changes
@@ -113,6 +113,9 @@ Please download 0.6.3.</pre>';
 + Counter added to reported tab.
 + Added TinyMCE bbcode wysiwyg to comments.
 + Comment users removed when user deleted.
++ Better clean-up process when a user is removed.
++ User can set order preference.
++ Avatar graphic code tightened up.
 </pre>';
     }
             

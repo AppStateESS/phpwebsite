@@ -79,12 +79,13 @@ class Comments_My_Page {
             $form->setLabel('signature', dgettext('comments', 'Signature'));
         }
 
+        $form->addTplTag('CURRENT_AVATAR', $user->getAvatar(TRUE));
+
         if (PHPWS_Settings::get('comments', 'allow_avatars')) {
             if (PHPWS_Settings::get('comments', 'local_avatars')) {
                 $form->addFile('avatar');
-                $form->addTplTag('CURRENT_AVATAR', $user->getAvatar(TRUE));
             } else {
-                $form->addText('avatar', $user->getAvatar());
+                $form->addText('avatar', $user->getAvatar(false));
                 $form->setSize('avatar', 60);
             }
             $form->setLabel('avatar', dgettext('comments', 'Avatar'));
@@ -93,6 +94,12 @@ class Comments_My_Page {
         $form->addText('contact_email', $user->getContactEmail());
         $form->setLabel('contact_email', dgettext('comments', 'Contact Email'));
         $form->setSize('contact_email', 40);
+
+        $form->addSelect('order_pref', array(1=>dgettext('comments', 'Oldest first'),
+                                             2=>dgettext('comments', 'Newest first')));
+        $form->setLabel('order_pref', dgettext('comments', 'Comment order preference'));
+        $form->setMatch('order_pref', PHPWS_Cookie::read('cm_order_pref'));
+
         $form->addSubmit(dgettext('comments', 'Update'));
         $template = $form->getTemplate();
         return PHPWS_Template::process($template, 'comments', 'user_settings.tpl');

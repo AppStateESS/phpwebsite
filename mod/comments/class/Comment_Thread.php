@@ -274,8 +274,16 @@ class Comment_Thread {
         }
         $pager->addWhere('thread_id', $this->id);
 
+        $user_order = PHPWS_Cookie::read('cm_order_pref');
+
         if (isset($_GET['order'])) {
             $default_order = &$_GET['order'];
+        } elseif ($user_order) {
+            if ($user_order == 1) {
+                $default_order = 'old_all';
+            } else {
+                $default_order = 'new_all';
+            }
         } else {
             $default_order = PHPWS_Settings::get('comments', 'default_order');
         }
