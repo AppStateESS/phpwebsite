@@ -4,6 +4,11 @@ its own separate CHANGELOG file.
 
 Version 1.8.2
 ----------------------------------------------------------------------
+5 June 2008
++ Added isIIS function to Core to detect IIS web server installation
++ Fixing local directory function in setup as recommended by
+  byerkes. Should prevent IIS errors.
+
 4 June 2008
 + Added column existence check to Database's dropTableColumn
 + unsigned removed from import now, not worked around

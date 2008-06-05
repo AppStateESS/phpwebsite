@@ -492,8 +492,12 @@ class Setup{
             for ($i=0; $i < 2; $i++) {
                 array_pop($dir);
             }
-            
-            $directory = implode(DIRECTORY_SLASH, $dir) . DIRECTORY_SLASH;
+
+            if (PHPWS_Core::isIIS()) {
+                $directory = implode(DIRECTORY_SLASH, $dir);
+            } else {
+                $directory = implode(DIRECTORY_SLASH, $dir) . DIRECTORY_SLASH;
+            }
         }
         return $directory;
     }

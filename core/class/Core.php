@@ -565,6 +565,15 @@ class PHPWS_Core {
         }
     }
 
+    function isIIS()
+    {
+        if (preg_match('/iis/i', $_SERVER['SERVER_SOFTWARE'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * If a file is posted beyond php's posting limits, it will drop the
      * POST without an error message. checkOverPost sends the user to an 
