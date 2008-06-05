@@ -1,5 +1,9 @@
 Version 2.1.0
 ---------------------------------------------------------------------------------
+5 June 2008
++ Added fourth parameter to importPost : file_prefix. Prefixes the
+  saved file with submitted characters.
+
 3 June 2008
 + Added conditional to prevent similiar resize from overwriting one
   another.

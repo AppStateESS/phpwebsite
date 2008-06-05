@@ -80,7 +80,7 @@ class File_Common {
      * Called from Image_Manager's postImageUpload function and Cabinet_Action's
      * postDocument function.
      */
-    function importPost($var_name, $use_folder=true, $ignore_missing_file=false)
+    function importPost($var_name, $use_folder=true, $ignore_missing_file=false, $file_prefix=null)
     {
         require 'HTTP/Upload.php';
 
@@ -161,7 +161,13 @@ class File_Common {
         if ($this->_upload->isValid()) {
             $file_vars = $this->_upload->getProp();
 
-            $this->setFilename($file_vars['real']);
+            if (!empty($file_prefix) && !preg_match('/\W/', $file_prefix)) {
+                $filename = $file_prefix . $file_vars['real'];
+            } else {
+                $filename = $file_vars['real'];
+            }
+
+            $this->setFilename($filename);
             $this->_upload->setName($this->file_name);
 
             $this->setSize($file_vars['size']);
