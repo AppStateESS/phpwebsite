@@ -493,11 +493,7 @@ class Setup{
                 array_pop($dir);
             }
 
-            if (preg_match('/iis/i', $_SERVER['SERVER_SOFTWARE'])) {
-                $directory = implode(DIRECTORY_SLASH, $dir);
-            } else {
-                $directory = implode(DIRECTORY_SLASH, $dir) . DIRECTORY_SLASH;
-            }
+            $directory = implode(DIRECTORY_SLASH, $dir) . DIRECTORY_SLASH;
         }
         return $directory;
     }
