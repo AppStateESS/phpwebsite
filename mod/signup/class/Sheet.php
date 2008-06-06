@@ -55,18 +55,18 @@ class Signup_Sheet {
     function getStartTime()
     {
         if (!$this->start_time) {
-            return strftime('%Y%m%d %H:00', mktime());
+            return strftime('%Y/%m/%d %H:00', mktime());
         } else {
-            return strftime('%Y%m%d %H:00', $this->start_time);
+            return strftime('%Y/%m/%d %H:00', $this->start_time);
         }
     }
 
     function getEndTime()
     {
         if (!$this->end_time) {
-            return strftime('%Y%m%d %H:00', mktime() + (86400 * 7));
+            return strftime('%Y/%m/%d %H:00', mktime() + (86400 * 7));
         } else {
-            return strftime('%Y%m%d %H:00', $this->end_time);
+            return strftime('%Y/%m/%d %H:00', $this->end_time);
         }
     }
 

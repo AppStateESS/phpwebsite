@@ -1,5 +1,8 @@
 Version 1.1.1
 -----------------------------------------------------------------
+6 June 2008
++ Added js_calendar to signup sheet expiration
+
 21 April 2008
 + Added missing navigation links to sheet listing.
 + Updated: templates/sheet_list.tpl

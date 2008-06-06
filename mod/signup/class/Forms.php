@@ -270,14 +270,16 @@ class Signup_Forms {
         $form->addText('end_time', $sheet->getEndTime());
         $form->setLabel('end_time', dgettext('signup', 'Close signup'));
 
+        $js_vars['type'] = 'text_clock';
+        $js_vars['form_name'] = 'signup_sheet';
+
         /*
         $js_vars['date_name'] = 'start_time';
-        $js_vars['type'] = 'text';
-        $js_vars['form_name'] = 'signup_sheet';
         $form->addTplTag('ST_JS', javascript('js_calendar', $js_vars));
+        */
+
         $js_vars['date_name'] = 'end_time';
         $form->addTplTag('ET_JS', javascript('js_calendar', $js_vars));
-        */
 
         $tpl = $form->getTemplate();
 
