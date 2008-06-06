@@ -27,11 +27,11 @@ function toggleUrl(select) {
     <p>{ENTRY_LABEL}<br />{ENTRY}</p>
     <p>
         {PUBLISH_DATE_LABEL} <span class="smaller">{EXAMPLE}</span><br />    
-        {PUBLISH_DATE}
+        {PUBLISH_DATE} {PUBLISH_CAL}
     </p>
     <p>
         {EXPIRE_DATE_LABEL} <span class="smaller">{EXAMPLE}</span><br />    
-        {EXPIRE_DATE}
+        {EXPIRE_DATE} {EXPIRE_CAL}
     </p>
 <!-- BEGIN comments -->
     <p>

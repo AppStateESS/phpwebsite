@@ -249,6 +249,7 @@ function blog_update(&$content, $currentVersion)
 + Lets you use new comments approval.
 + Fixed bug with setting allow anonymous submissions.
 + Fixed forward message when entry creation encounters an error
++ js_calendar added to edit form.
 </pre>';
 
     } // end of switch

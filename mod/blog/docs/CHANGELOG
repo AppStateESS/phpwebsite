@@ -1,5 +1,8 @@
 Version 1.7.2
 ----------------------------------------------------------------
+6 June 2008
++ Added js_calender to publish and expire
+
 4 June 2008
 + Fixed forward message when entry creation encounters an error
 

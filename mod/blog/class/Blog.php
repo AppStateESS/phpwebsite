@@ -167,16 +167,16 @@ class Blog {
     function getPublishDate()
     {
         if ($this->publish_date) {
-            return strftime('%Y%m%d %H:%M', $this->publish_date);
+            return strftime('%Y/%m/%d %H:%M', $this->publish_date);
         } else {
-            return strftime('%Y%m%d %H:%M', mktime());
+            return strftime('%Y/%m/%d %H:%M', mktime());
         }
     }
 
     function getExpireDate()
     {
         if ($this->expire_date) {
-            return strftime('%Y%m%d %H:00', $this->expire_date);
+            return strftime('%Y/%m/%d %H:00', $this->expire_date);
         } else {
             return null;
         }

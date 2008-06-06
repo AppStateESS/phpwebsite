@@ -146,7 +146,17 @@ class Blog_Form {
 
         $template = $form->getTemplate();
 
-        $template['EXAMPLE'] = 'YYMMDD HH:MM';
+        $jscal['form_name'] = 'edit-blog';
+        $jscal['type']      = 'text_clock';
+
+        $jscal['date_name'] = 'publish_date';
+
+        $template['PUBLISH_CAL'] = javascript('js_calendar', $jscal);
+
+        $jscal['date_name'] = 'expire_date';
+        $template['EXPIRE_CAL'] = javascript('js_calendar', $jscal);
+
+        $template['EXAMPLE'] = 'YY/MM/DD HH:MM';
         if ($blog->_error) {
             $template['MESSAGE'] = implode('<br />', $blog->_error);
         }
