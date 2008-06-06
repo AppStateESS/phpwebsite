@@ -73,6 +73,7 @@ class Menu_Link {
         $db = $this->getDB();
         $db->addWhere('parent', $this->id);
         $db->addOrder('link_order');
+        Key::restrictView($db);
         $result = $db->getObjects('menu_link');
         if (empty($result)) {
             return;

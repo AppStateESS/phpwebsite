@@ -1,5 +1,8 @@
 Version 1.4.6
 ------------------------------------------------------------
+6 June 2008
++ restrictView added to loadChildren.
+
 3 June 2008
 + Update to addSortHeaders.
 + Adding missing paging navigation.
