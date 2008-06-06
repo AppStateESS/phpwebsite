@@ -11,20 +11,21 @@ if (!isset($data['form_name'])) {
 }
 
 $default['date_name'] = 'date';
-$default['type'] = 'text';
 
-if ( !isset($data['type']) || 
-     ( $data['type'] != 'text' && $data['type'] != 'select' && $data['type'] != 'pick') ) {
-    $data['type'] = &$default['type'];
- }
+switch ($data['type']) {
+ case 'select':
+     $bodyfile = $base . 'javascript/js_calendar/body2.js';
+     break;
 
-if ($data['type'] == 'select') {
-    $bodyfile = $base . 'javascript/js_calendar/body2.js';
-} elseif ($data['type'] == 'select_clock') {
-    $bodyfile = $base . 'javascript/js_calendar/body4.js';
-}
+ case 'select_clock':
+     $bodyfile = $base . 'javascript/js_calendar/body4.js';
+     break;
 
-if ($data['type'] == 'pick') {
+ case 'text_clock':
+     $bodyfile = $base . 'javascript/js_calendar/body5.js';
+     break;
+
+ case 'pick':
     if (empty($data['year'])) {
         $data['year'] = date('Y');
     }
@@ -38,7 +39,12 @@ if ($data['type'] == 'pick') {
     }
 
     $bodyfile = $base . 'javascript/js_calendar/body3.js';
- }
+    break;
+
+ default:
+     //body.js used for normal text type
+}
+
 
 $data['alt'] = _('Pick date');
 

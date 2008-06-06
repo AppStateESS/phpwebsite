@@ -48,7 +48,7 @@ Version 2.1.2 8/30/2007 gfb  - Add switch to start week on Sunday
 */
 var turnOffYearSpan = false;     // true = Only show This Year and Next, false = show +/- 5 years
 var weekStartsOnSunday = false;  // true = Start the week on Sunday, false = start the week on Monday
-var showWeekNumber = false;  // true = show week number,  false = do not show week number
+var showWeekNumber = true;  // true = show week number,  false = do not show week number
 
 var languageCode = 'en';	// Possible values: 	en,ge,no,nl,es,pt-br,fr
 							// en = english, ge = german, no = norwegian,nl = dutch, es = spanish, pt-br = portuguese, fr = french, da = danish, hu = hungarian(Use UTF-8 doctype for hungarian)
@@ -87,7 +87,7 @@ switch(languageCode){
 		var todayString = '';
 		break;
 	case "ge":	/* German */
-		var monthArray = ['Januar','Februar','M�rz','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+		var monthArray = ['Januar','Februar','M�rz','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 		var monthArrayShort = ['Jan','Feb','Mar','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 		var dayArray = ['Mon','Die','Mit','Don','Fre','Sam','Son'];
 		var weekString = 'Woche';
@@ -122,7 +122,7 @@ switch(languageCode){
 		var todayString = 'Hoje &eacute;';
 		break;
 	case "fr":      /* French */
-		var monthArray = ['Janvier','F�vrier','Mars','Avril','Mai','Juin','Juillet','Ao�t','Septembre','Octobre','Novembre','D�cembre'];
+		var monthArray = ['Janvier','F�vrier','Mars','Avril','Mai','Juin','Juillet','Ao�t','Septembre','Octobre','Novembre','D�cembre'];
 		var monthArrayShort = ['Jan','Fev','Mar','Avr','Mai','Jun','Jul','Aou','Sep','Oct','Nov','Dec'];
 		var dayArray = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 		var weekString = 'Sem';
@@ -136,8 +136,8 @@ switch(languageCode){
 		var todayString = 'I dag er den';
 		break;
 	case "hu":	/* Hungarian  - Remember to use UTF-8 encoding, i.e. the <meta> tag */
-		var monthArray = ['Január','Február','Március','�?prilis','Május','Június','Július','Augusztus','Szeptember','Október','November','December'];
-		var monthArrayShort = ['Jan','Feb','Márc','�?pr','Máj','Jún','Júl','Aug','Szep','Okt','Nov','Dec'];
+		var monthArray = ['Január','Február','Március','�?prilis','Május','Június','Július','Augusztus','Szeptember','Október','November','December'];
+		var monthArrayShort = ['Jan','Feb','Márc','�?pr','Máj','Jún','Júl','Aug','Szep','Okt','Nov','Dec'];
 		var dayArray = ['Hé','Ke','Sze','Cs','Pé','Szo','Vas'];
 		var weekString = 'Hét';
 		var todayString = 'Mai nap';
@@ -156,9 +156,13 @@ switch(languageCode){
 		var weekString = 'Vecka';
 		var todayString = 'Idag &auml;r det den';
 		break;
-
-
-
+	case "cz":	/* Czech */
+		var monthArray = ['leden','&#250;nor','b&#345;ezen','duben','kv&#283;ten','&#269;erven','&#269;ervenec','srpen','z&#225;&#345;&#237;','&#345;&#237;jen','listopad','prosinec'];
+		var monthArrayShort = ['led','&#250;n','b&#345;','dub','kv&#283;','&#269;er','&#269;er-ec','srp','z&#225;&#345;','&#345;&#237;j','list','pros'];
+		var dayArray = ['Pon','&#218;t','St','&#268;t','P&#225;','So','Ne'];
+		var weekString = 't&#253;den';
+		var todayString = '';
+		break;	
 }
 
 if (weekStartsOnSunday) {
@@ -1047,12 +1051,6 @@ function pickDate(e,inputDay)
 	if(!inputDay && this)day = this.innerHTML; else day = inputDay;
 
 	if(day/1<10)day = '0' + day;
-        /**********************************************
-        // pickroute added specifically for phpwebsite
-        ***********************************************/
-        if (pickroute) {
-            forwardit(month, day);
-        } else 
 	if(returnFormat){
 		returnFormat = returnFormat.replace('dd',day);
 		returnFormat = returnFormat.replace('mm',month);
@@ -1354,10 +1352,10 @@ function calendarSortItems(a,b)
 function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
 {
 	if(displayTime)calendarDisplayTime=true; else calendarDisplayTime = false;
-	if(inputField.value.length>0){
-
-		if(!format.match(/^[0-9]*?$/gi)){
-			var items = inputField.value.split(/[^0-9]/gi);
+	
+	if(inputField.value.length>6){ //dates must have at least 6 digits...
+       if(!inputField.value.match(/^[0-9]*?$/gi)){
+ 			var items = inputField.value.split(/[^0-9]/gi);
 			var positionArray = new Array();
 			positionArray['m'] = format.indexOf('mm');
 			if(positionArray['m']==-1)positionArray['m'] = format.indexOf('m');

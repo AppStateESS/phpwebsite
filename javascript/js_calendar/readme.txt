@@ -41,7 +41,7 @@ $js_vars['type']      = 'select';
 echo javascript('js_calendar', $js_vars);
 
 **** Month and day MUST be in double digit format ****
-
+**** Text date format should be in YYYY/MM/DD HH:MM ****
 If you want to use the clock select from the calendar, use type
 "select_clock" instead. You will obviously need a "hour" and "minute"
 select box.
@@ -57,4 +57,4 @@ date_name : name of the form input linked to the script.
             If you are using the select feature, the 3 select boxes
             need to be suffixes with _month, _day, and _year.
 
-type      : either text or select. Defaults to text.
+type      : either text, text_clock, select or select_clock. Defaults to text.

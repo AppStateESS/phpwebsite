@@ -50,6 +50,7 @@ Javascript
             limited settings
 + TinyMCE - Fixed error message with GoogleSpell.
 + TinyMCE - Added emotions plugin
++ Updated js_calendar.
 
 Updated documentation
 ---------------------------------------------------------------------

@@ -282,7 +282,10 @@ You will need to make your hub/branch home directory writable if the file doesn\
                        'javascript/open_window/default.php', 'javascript/editors/tinymce/default.php',
                        'javascript/editors/tinymce/head.js', 'javascript/editors/tinymce/limited.js',
                        'javascript/editors/tinymce/custom.js', 'javascript/editors/tinymce/default.php',
-                       'conf/smiles.pak', 'img/smilies/banana.gif', 'conf/version.php');
+                       'conf/smiles.pak', 'img/smilies/banana.gif', 'conf/version.php', 
+                       'javascript/js_calendar/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css',
+                       'javascript/js_calendar/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js',
+                       'javascript/js_calendar/body5.js', 'javascript/js_calendar/default.php', 'javascript/js_calendar/readme.txt');
 
         coreUpdateFiles($files, $content);
 
