@@ -3,6 +3,7 @@
 + All thumbnail setting are derived from settings page
 + Viewing images in a folder can now be viewed using jcarousel lite.
 + Added settings to control jcarousel lite
++ Adding dimensions to thumbnails
 + Updated: javascript/jcaro_lite/*
            javascript/shutter/*
            templates/carousel_horz.tpl,

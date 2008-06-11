@@ -239,9 +239,13 @@ class PHPWS_Image extends File_Common {
         if (empty($css_id)) {
             $css_id = $this->id;
         }
-        $image_tag = sprintf('<img src="%s" title="%s" id="image-thumbnail-%s" alt="%s" />',
-                             $this->thumbnailPath(),
-                             $this->title, $css_id, $this->alt);
+        $thumbpath = $this->thumbnailPath();
+        $dimensions = getimagesize($thumbpath);
+
+        $image_tag = sprintf('<img src="%s" title="%s" id="image-thumbnail-%s" alt="%s" width="%s" height="%s" />',
+                             $thumbpath,
+                             $this->title, $css_id, $this->alt,
+                             $dimensions[0], $dimensions[1]);
 
         if ($linked && !empty($this->url)) {
             if($this->url == 'folder') {
