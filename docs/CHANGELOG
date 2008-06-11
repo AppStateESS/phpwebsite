@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+11 June 2008
++ Updated jquery to 1.2.6
+
 Version 1.8.2
 ----------------------------------------------------------------------
 6 June 2008
