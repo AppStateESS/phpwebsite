@@ -113,6 +113,11 @@ http://www.texotela.co.uk
 Dylan Verheul
 jquery autocomplete plugin
 
+Ganeshji Marwaha
+jCarousel Lite plugin
+http://www.gmarwaha.com/jquery/jcarousellite/index.php
+
+
 --------------------------------------------------------------------------
 To those who translate, we salute you.
 --------------------------------------------------------------------------
