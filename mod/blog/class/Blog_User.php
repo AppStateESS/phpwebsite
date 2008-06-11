@@ -233,8 +233,6 @@ class Blog_User {
 
     function show($start_date=null, $end_date=null)
     {
-        Layout::addStyle('blog');
-        Layout::addStyle('filecabinet');
         $db = new PHPWS_DB('blog_entries');
 
         if ($start_date) {
@@ -275,12 +273,12 @@ class Blog_User {
             !Current_User::allow('blog') &&
             PHPWS_Settings::get('blog', 'cache_view') &&
             $content = PHPWS_Cache::get($key)) {
-            // needed for filecabinet
-            javascript('open_window');
-            Cabinet::fileStyle();
+            Layout::getCacheHeaders($key);
             return $content;
         }
 
+        Layout::addStyle('blog');
+        Layout::addStyle('filecabinet');
         $result = Blog_User::getEntries($db, $limit, $offset);
 
         if (PEAR::isError($result)) {
@@ -340,6 +338,7 @@ class Blog_User {
             !Current_User::isLogged() && !Current_User::allow('blog') &&
             PHPWS_Settings::get('blog', 'cache_view')) {
             PHPWS_Cache::save($key, $content);
+            Layout::cacheHeaders($key);
         } elseif (Current_User::allow('blog', 'edit_blog')) {
             Blog_User::miniAdminList();
             $vars['action'] = 'admin';
