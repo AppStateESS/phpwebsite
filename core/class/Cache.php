@@ -62,7 +62,7 @@ class PHPWS_Cache {
 
     function clearCache()
     {
-        $cache = & PHPWS_Cache::initCache();
+        $cache = PHPWS_Cache::initCache();
         $cache->clean();
     }
 
@@ -76,7 +76,6 @@ class PHPWS_Cache {
     function save($key, $content, $ignore=null)
     {
         $key .= SITE_HASH . CURRENT_LANGUAGE;
-
         if (!PHPWS_Cache::isEnabled()) {
             return;
         }
