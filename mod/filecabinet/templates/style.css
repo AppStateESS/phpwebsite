@@ -166,6 +166,12 @@ div#folder-title {
     padding-left : 1.5em;
 }
 
+img.carousel-next:hover,
+img.carousel-prev:hover {
+    cursor : pointer;
+}
+
+
 .carousel-vert {
     background-color : #F0F6F9;
     padding : 4px;
