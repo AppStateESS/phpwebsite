@@ -1,5 +1,6 @@
 11 June 2008
 + Using new Layout cacheHeaders function
++ Dropping addStyle for filecabinet
 
 Version 1.7.2
 ----------------------------------------------------------------

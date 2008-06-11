@@ -278,7 +278,6 @@ class Blog_User {
         }
 
         Layout::addStyle('blog');
-        Layout::addStyle('filecabinet');
         $result = Blog_User::getEntries($db, $limit, $offset);
 
         if (PEAR::isError($result)) {
