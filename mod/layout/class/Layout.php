@@ -133,15 +133,6 @@ class Layout {
         Layout::resetBoxes();
     }
 
-    function addJSFile($directory)
-    {
-        $jsfile = PHPWS_SOURCE_DIR . $directory;
-
-        if (!is_file($jsfile)) {
-            return PHPWS_Error::get(LAYOUT_JS_FILE_NOT_FOUND, 'layout', 'addJSFile', $jsfile);
-        }
-    }
-
     // Index is the name of the javascript header
     // prevents repeated scripts
     function addJSHeader($script, $index=NULL)
@@ -954,8 +945,9 @@ class Layout {
         }
 
         if (isset($GLOBALS['Layout_JS'])) {
-            foreach ($GLOBALS['Layout_JS'] as $script=>$javascript)
+            foreach ($GLOBALS['Layout_JS'] as $script=>$javascript) {
                 $jsHead[] = $javascript['head'];
+            }
       
             $template['JAVASCRIPT'] = implode("\n", $jsHead);
         }
@@ -1090,6 +1082,45 @@ class Layout {
     function collapse()
     {
         $GLOBALS['Layout_Collapse'] = true;
+    }
+
+    /**
+     * Saves the current layout head information
+     */
+    function cacheHeaders($cache_key)
+    {
+        $cache_key = 'layout_header' . $cache_key;
+
+        $layout_data['Layout_JS']   = @$GLOBALS['Layout_JS'];
+        $layout_data['Style']       = @$GLOBALS['Style'];
+        $layout_data['Extra_Style'] = @$GLOBALS['Extra_Style'];
+        $layout_data['Layout_Page_Title_Add'] = @$GLOBALS['Layout_Page_Title_Add'];
+
+        PHPWS_Cache::save($cache_key, serialize($layout_data));
+    }
+
+    /**
+     * Retrieves the layout head information
+     */
+    function getCacheHeaders($cache_key)
+    {
+        $cache_key = 'layout_header' . $cache_key;
+        $data = PHPWS_Cache::get($cache_key);
+
+        if (empty($data)) {
+            return;
+        }
+
+        $array_data = @unserialize($data);
+        if (is_array($array_data)) {
+            foreach ($array_data as $global_key=>$value) {
+                if (is_array($value)) {
+                    foreach ($value as $name => $setting) {
+                        $GLOBALS[$global_key][$name] = $setting;
+                    }
+                }
+            }
+        }
     }
 }
 
