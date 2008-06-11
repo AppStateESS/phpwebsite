@@ -3,10 +3,12 @@
   <tr>
     <th>{DISPLAY_NAME_SORT}</th>
     <th>{FILTER_LABEL}</th>
+    <th>&#160;</th>
   </tr>
 <!-- BEGIN listrows --><tr>
       <td>{DISPLAY_NAME}</td>
       <td>{FILTER_INFO}</td>
+      <td>{ACTION}</td>
    </tr><!-- END listrows -->
 </table>
 {EMPTY_MESSAGE}

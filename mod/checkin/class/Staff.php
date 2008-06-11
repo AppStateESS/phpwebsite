@@ -67,7 +67,10 @@ class Checkin_Staff {
             $tpl['FILTER_INFO'] = implode('<br>', $this->_reasons);
             break;
         }
-
+        $vars['staff_id'] = $this->id;
+        $vars['aop'] = 'edit_staff';
+        $links[] = PHPWS_Text::secureLink(dgettext('checkin', 'Edit'), 'checkin', $vars);
+        $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
 

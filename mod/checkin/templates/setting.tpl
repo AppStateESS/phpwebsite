@@ -2,6 +2,7 @@
 <p><strong>{NEW_REASON_LABEL}</strong><br />{NEW_REASON} {ADD}</p>
 <!-- BEGIN reasons -->
 {EDIT_REASON} {EDIT} {DELETE}
-<div id="edit-reason"></div>
 <!-- END reasons -->
+<p>{FRONT_PAGE} {FRONT_PAGE_LABEL}</p>
+{DEFAULT}
 {END_FORM}

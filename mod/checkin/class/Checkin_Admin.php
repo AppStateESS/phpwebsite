@@ -67,6 +67,11 @@ class Checkin_Admin extends Checkin {
             $this->editStaff();
             break;
 
+        case 'edit_staff':
+            $this->loadStaff();
+            $this->editStaff();
+            break;
+
         case 'search_users':
             $this->searchUsers();
             break;
@@ -191,7 +196,7 @@ class Checkin_Admin extends Checkin {
         } else {
             $this->title = dgettext('checkin', 'Edit staff member');
             $form->addHidden('staff_id', $this->staff->id);
-            $form->addTplTag('USERNAME', $this->staff->_display_name);
+            $form->addTplTag('USERNAME', $this->staff->display_name);
             $form->addTplTag('USERNAME_LABEL', dgettext('checkin', 'Staff user name'));
             $form->addSubmit(dgettext('checkin', 'Update staff'));
         }
@@ -233,6 +238,9 @@ class Checkin_Admin extends Checkin {
         $form->addText('new_reason');
         $form->setLabel('new_reason', dgettext('checkin', 'Enter new reason'));
         $form->setSize('new_reason', 40, 100);
+        $form->addCheck('front_page', 1);
+        $form->setMatch('front_page', PHPWS_Settings::get('checkin', 'front_page'));
+        $form->setLabel('front_page', dgettext('checkin', 'Show public sign-in on front page'));
         $reasons = $this->getReasons();
         if (!empty($reasons)) {
             $form->addTplTag('EDIT', javascript('modules/checkin/edit_reason', array('question'=> dgettext('checkin', 'Update reason'),
@@ -241,6 +249,8 @@ class Checkin_Admin extends Checkin {
             $form->addSubmit('delete', dgettext('checkin', 'Delete'));
             $form->addSelect('edit_reason', $reasons);
         }
+
+        $form->addSubmit('default', dgettext('checkin', 'Save'));
 
         $tpl = $form->getTemplate();
 
@@ -255,6 +265,10 @@ class Checkin_Admin extends Checkin {
                 $this->addReason($reason);
             }
         }
+
+        $front_page = (int)isset($_POST['front_page']);
+        PHPWS_Settings::set('checkin', 'front_page', $front_page);
+        PHPWS_Settings::save('checkin');
     }
 
     function addStaffLink()
