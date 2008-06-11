@@ -311,9 +311,11 @@ class Cabinet_Form {
 
     function settings()
     {
+        javascript('jquery');
+        javascript('modules/filecabinet/shutter');
         $sizes = Cabinet::getMaxSizes();
 
-        $form = new PHPWS_FORM;
+        $form = new PHPWS_Form('settings');
         $form->addHidden('module', 'filecabinet');
         $form->addHidden('aop', 'save_settings');
 
@@ -364,6 +366,10 @@ class Cabinet_Form {
         $form->setMatch('popup_image_navigation', PHPWS_Settings::get('filecabinet', 'popup_image_navigation'));
         $form->setLabel('popup_image_navigation', dgettext('filecabinet', 'Popup images allow folder navigation'));
 
+        $form->addText('max_thumbnail_size', PHPWS_Settings::get('filecabinet', 'max_thumbnail_size'));
+        $form->setLabel('max_thumbnail_size', dgettext('filecabinet', 'Maximum thumbnail pixel dimension'));
+        $form->setSize('max_thumbnail_size', 3, 3);
+
         $ffmpeg_directory = PHPWS_Settings::get('filecabinet', 'ffmpeg_directory');
         if (empty($ffmpeg_directory) || !is_file($ffmpeg_directory . 'ffmpeg')) {
             $form->setDisabled('use_ffmpeg');
@@ -383,6 +389,19 @@ class Cabinet_Form {
             $form->setLabel('classify_directory', dgettext('filecabinet', 'Incoming classify directory'));
             $form->setSize('classify_directory', 50, 255);
         }
+
+        $form->addCheckbox('use_jcarousel', 1);
+        $form->setMatch('use_jcarousel', PHPWS_Settings::get('filecabinet', 'use_jcarousel'));
+        $form->setLabel('use_jcarousel', dgettext('filecabinet', 'Use jCarousel Lite for folder browsing'));
+
+        $form->addRadioAssoc('jcaro_type', array(0=>dgettext('filecabinet', 'Horizontal'),
+                                                 1=>dgettext('filecabinet', 'Vertical')));
+        $form->setMatch('jcaro_type', (int)PHPWS_Settings::get('filecabinet', 'vertical_folder'));
+
+        $num = array(1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8);
+        $form->addSelect('number_visible', $num);
+        $form->setMatch('number_visible', PHPWS_Settings::get('filecabinet', 'number_visible'));
+        $form->setLabel('number_visible', dgettext('filecabinet', 'Number of thumbnails visible'));
 
         $form->addSubmit(dgettext('filecabinet', 'Save settings'));
         $tpl = $form->getTemplate();
@@ -659,6 +678,19 @@ class Cabinet_Form {
             PHPWS_Settings::set('filecabinet', 'popup_image_navigation', 0);
         }
 
+        if (empty($_POST['max_thumbnail_size'])) {
+            PHPWS_Settings::set('filecabinet', 'max_thumbnail_size', 100);
+        } else {
+            $tn_size = (int)$_POST['max_thumbnail_size'];
+            if ($tn_size < 30) {
+                $errors[] = dgettext('filecabinet', 'Thumbnails must be over 30px in size.');
+            } elseif ($tn_size > 999) {
+                $errors[] = dgettext('filecabinet', 'Thumbnail size is too large.');
+            } else {
+                PHPWS_Settings::set('filecabinet', 'max_thumbnail_size', $tn_size);
+            }
+        }
+
         $ffmpeg_dir = strip_tags($_POST['ffmpeg_directory']);
         if (empty($ffmpeg_dir)) {
             PHPWS_Settings::set('filecabinet', 'ffmpeg_directory', null);
@@ -689,6 +721,10 @@ class Cabinet_Form {
                 }
             }
         }
+
+        PHPWS_Settings::set('filecabinet', 'use_jcarousel', (int) isset($_POST['use_jcarousel']));
+        PHPWS_Settings::set('filecabinet', 'vertical_folder', (int) $_POST['jcaro_type']);
+        PHPWS_Settings::set('filecabinet', 'number_visible', (int) $_POST['number_visible']);
 
         PHPWS_Settings::save('filecabinet');
         if (isset($errors)) {

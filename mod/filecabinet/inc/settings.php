@@ -24,6 +24,10 @@ $settings = array('base_doc_directory'   => PHPWS_HOME_DIR . 'files/filecabinet/
                   'image_files'          => 'png,gif,jpg,jpeg',
                   'media_files'          => 'swf,flv,mov,avi,mp4,mpg,mp3,wav,wmv',
                   'document_files'       => 'txt,doc,docx,mp3,pdf,ppt,pptx,rtf,tgz,xls,xlsx,zip,jpg,png',
-                  'popup_image_navigation' => 0
+                  'popup_image_navigation' => 0,
+                  'max_thumbnail_size'   => 100,
+                  'use_jcarousel'        => true,
+                  'vertical_folder'      => false,
+                  'number_visible'       => 3
                   );
 ?>

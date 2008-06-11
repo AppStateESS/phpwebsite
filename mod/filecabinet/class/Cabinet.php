@@ -878,8 +878,8 @@ class Cabinet {
         $tpl = $form->getTemplate();
 
         $tpl['CLOSE'] = javascript('close_window');
-
-        $warnings[] = sprintf(dgettext('filecabinet', 'Max thumbnail size : %sx%s.'), FC_THUMBNAIL_WIDTH, FC_THUMBNAIL_HEIGHT);
+        $thumb = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
+        $warnings[] = sprintf(dgettext('filecabinet', 'Max thumbnail size : %sx%s.'), $thumb, $thumb);
         if ($mm->isVideo()) {
             $warnings[] = dgettext('filecabinet', 'Image must be a jpeg file.');
         }
@@ -901,10 +901,10 @@ class Cabinet {
                 return false;
             }
         }
-
+        $thumb = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
         $image = new PHPWS_Image;
-        $image->setMaxWidth(FC_THUMBNAIL_WIDTH);
-        $image->setMaxHeight(FC_THUMBNAIL_HEIGHT);
+        $image->setMaxWidth($thumb);
+        $image->setMaxHeight($thumb);
         if (!$image->importPost('thumbnail')) {
             return false;
         }

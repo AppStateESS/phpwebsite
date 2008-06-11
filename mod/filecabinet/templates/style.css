@@ -165,3 +165,33 @@ div#folder-title {
     padding : 0px;
     padding-left : 1.5em;
 }
+
+.carousel-vert {
+    background-color : #F0F6F9;
+    padding : 4px;
+    width : 100px;
+    text-align : center;
+}
+
+.carousel-horz {
+    padding : 4px;
+    width : 380px;
+}
+
+.carousel-horz table {
+    background-color : #F0F6F9;
+}
+
+.carousel-vert .carousel-slides li {
+    margin-bottom: 5px;
+    background-color : white;
+}
+
+.carousel-horz .carousel-slides li {
+    margin-right: 5px;
+    background-color : white;
+}
+
+.carousel-slides li img {
+    display : block;
+}

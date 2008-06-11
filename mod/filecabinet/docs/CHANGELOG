@@ -1,3 +1,14 @@
+11 June 2008
++ Can now set thumbnail dimensions from settings
++ All thumbnail setting are derived from settings page
++ Viewing images in a folder can now be viewed using jcarousel lite.
++ Added settings to control jcarousel lite
++ Updated: javascript/jcaro_lite/*
+           javascript/shutter/*
+           templates/carousel_horz.tpl,
+           templates/carousel_vert.tpl, templates/settings.tpl,
+           templates/style.css
+
 Version 2.1.0
 ---------------------------------------------------------------------------------
 5 June 2008

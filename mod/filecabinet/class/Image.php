@@ -12,14 +12,6 @@ PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::requireInc('filecabinet', 'defines.php');
 PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 
-if (!defined('FC_THUMBNAIL_WIDTH')) {
-    define('FC_THUMBNAIL_WIDTH', 100);
-}
-
-if (!defined('FC_THUMBNAIL_HEIGHT')) {
-    define('FC_THUMBNAIL_HEIGHT', 100);
-}
-
 if (!defined('FC_MIN_POPUP_SIZE')) {
     define('FC_MIN_POPUP_SIZE', 400);
 }
@@ -318,10 +310,11 @@ class PHPWS_Image extends File_Common {
 
     function makeThumbnail()
     {
-        if ($this->width <= FC_THUMBNAIL_WIDTH && $this->height <= FC_THUMBNAIL_HEIGHT) {
+        $max_tn = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
+        if ($this->width <= $max_tn && $this->height <= $max_tn) {
             return @copy($this->getPath(), $this->thumbnailPath());
         } else {
-            return $this->resize($this->thumbnailPath(), FC_THUMBNAIL_WIDTH, FC_THUMBNAIL_HEIGHT);
+            return $this->resize($this->thumbnailPath(), $max_tn, $max_tn, true);
         }
     }
 
@@ -368,7 +361,7 @@ class PHPWS_Image extends File_Common {
         $vars['folder_id'] = $this->folder_id;
             
         $jsvars['width'] = 550;
-        $jsvars['height'] = 600 + FC_THUMBNAIL_HEIGHT;
+        $jsvars['height'] = 600 + PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
         $jsvars['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
         $jsvars['window_name'] = 'edit_link';
 

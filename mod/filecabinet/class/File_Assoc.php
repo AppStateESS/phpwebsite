@@ -323,7 +323,20 @@ class FC_File_Assoc {
             foreach ($result as $image) {
                 $tpl['thumbnails'][] = array('IMAGE'=> $image->getJSView(true));
             }
-            return PHPWS_Template::process($tpl, 'filecabinet', 'ss_box.tpl');
+            if (PHPWS_Settings::get('filecabinet', 'use_jcarousel')) {
+                javascript('jquery');
+                $vars['vertical'] = PHPWS_Settings::get('filecabinet', 'vertical_folder') ? 'true' : 'false';
+                $vars['visible']  = PHPWS_Settings::get('filecabinet', 'number_visible');
+                javascript('modules/filecabinet/jcaro_lite/', $vars);
+                if ($vars['vertical'] == 'true') {
+                    $tpl_file = 'carousel_vert.tpl';
+                } else {
+                    $tpl_file = 'carousel_horz.tpl';
+                }
+            } else {
+                $tpl_file = 'ss_box.tpl';
+            }
+            return PHPWS_Template::process($tpl, 'filecabinet', $tpl_file);
         }
     }
 
