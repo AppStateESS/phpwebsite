@@ -7,11 +7,11 @@ CREATE TABLE checkin_staff (
   filter_type smallint NOT NULL default 0,
   PRIMARY KEY (id),
   UNIQUE KEY user_id (user_id)
-)
+);
 
 CREATE TABLE checkin_reasons (
   id int NOT NULL default 0,
-  summary varchar(255) NOT NULL default ''
+  summary varchar(255) NOT NULL default '',
   PRIMARY KEY  (id)
 );
 
