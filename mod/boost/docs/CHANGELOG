@@ -1,3 +1,12 @@
+13 June 2008
++ updateFiles will return true on complete success and and array of
+  error messages should a file fail.
++ updateFiles will no longer stop if a single file fails
++ updateFiles now accepts a directory instead of a single file. The
+  destination directory will be backed up and the source directory
+  copied over.
++ updateFiles creates timestamped backup files now.
+
 Version 2.2.2
 -----------------------------------------------------
 30 May 2008

@@ -1023,14 +1023,14 @@ class PHPWS_Boost {
      * Receives an array of file locations. Updates
      * the local files and backs up the older version.
      */
-    function updateFiles($file_array, $module)
+    function updateFiles($file_array, $module, $return_failures=false)
     {
         if (!is_array($file_array)) {
             return false;
         }
 
         $home_dir = PHPWS_Boost::getHomeDir();
-
+        
         foreach ($file_array as $filename) {
             $filename = preg_replace('/^\/{1}/', '', $filename);
             $aFiles = explode('/', $filename);
@@ -1069,7 +1069,7 @@ class PHPWS_Boost {
 
             if (!isset($local_root) || !PHPWS_Boost::checkLocalRoot($local_root)) {
                 PHPWS_Error::log(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', $local_root);
-                return false;
+                $failures[] = sprintf(dgettext('boost', 'Inaccessible: %s'), $local_root);
             }
 
             if ($module == 'core') {
@@ -1088,10 +1088,32 @@ class PHPWS_Boost {
                 $source_file = sprintf('%smod/%s/%s', PHPWS_SOURCE_DIR, $module, $filename);
             }
 
-
             $local_file = sprintf('%s%s', $local_root, $source_filename);
 
-            if (!is_file($source_file)) {
+            // if file is a directory, back up the whole directory
+            if (is_dir($source_file)) {
+
+                // if directory exists, make a backup
+                if (is_dir($local_file)) {
+                    $local_array = explode('/', $local_file);
+
+                    $last_dir = array_pop($local_array);
+                    $local_array[] = sprintf('%s_%s', mktime(), $last_dir);
+                    $new_dir_name = implode('/', $local_array);
+
+                    if (!@rename($local_file, $new_dir_name)) {
+                        $failures[] = sprintf(dgettext('filecabinet', 'Failed directory backup: %s to %s'), $local_file, $new_dir_name);
+                        PHPWS_Error::log(BOOST_FAILED_BACKUP, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
+                    }
+                }
+
+                if (!PHPWS_File::copy_directory($source_file, $local_file)) {
+                    PHPWS_Error::log(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
+                    $failures[] = sprintf(dgettext('boost', 'Failed directory copy: %s to %s'), $source_file, $local_file);
+                }
+
+                continue;
+            } elseif (!is_file($source_file)) {
                 continue;
             }
 
@@ -1117,18 +1139,25 @@ class PHPWS_Boost {
                 }
                 if (!PHPWS_Boost::backupFile($local_file)) {
                     PHPWS_Error::log(BOOST_FAILED_BACKUP, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
-                    return false;
+                    $failures[] = sprintf(dgettext('boost', 'No backup: %s'), $local_file);
                 }
             }
 
             $result = @copy($source_file, $local_file);
             if (!$result) {
                 PHPWS_Error::log(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
-                return false;
+                $failures[] = sprintf(dgettext('boost', 'Copy file failure: %s to %s'), $source_file, $local_file);
             }
         }
-        
-        return true;
+        if (isset($failures)) {
+            if ($return_failures) {
+                return $failures;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
 
     function checkLocalRoot($local_root)
@@ -1157,13 +1186,8 @@ class PHPWS_Boost {
         $aFile = explode('/', $filename);
         $file_alone = array_pop($aFile);
 
-        $aFile_alone = explode('.', $file_alone);
-        $file_ext = array_pop($aFile_alone);
-        $new_file_ext = 'backup.' . $file_ext;
-
-        $aFile_alone[] = $new_file_ext;
-
-        $new_filename = implode('/', $aFile) . '/' . implode('.', $aFile_alone);
+        $file_alone = mktime() . '_' . $file_alone;
+        $new_filename = implode('/', $aFile) . '/' . $file_alone;
         return @copy($filename, $new_filename);
     }
 
