@@ -580,6 +580,10 @@ class Layout {
             $metatags[] = '<meta name="keywords" content="' . $meta_keywords .'" />';
         }
 
+        if (isset($GLOBALS['Layout_Description'])) {
+            $meta_description = & $GLOBALS['Layout_Description'];
+        }
+
         if (!empty($meta_description)) {
             $metatags[] = '<meta name="description" content="' . $meta_description . '" />';
         }
@@ -1120,6 +1124,25 @@ class Layout {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Fills in the meta description with the current key summary.
+     */
+    function keyDescriptions()
+    {
+        if (!PHPWS_Settings::get('layout', 'use_key_summaries')) {
+            return;
+        }
+        $key = Key::getCurrent();
+        if (!Key::checkKey($key, false)) {
+            return NULL;
+        }
+        if (!empty($key->summary)) {
+            $GLOBALS['Layout_Description'] = & $key->summary;
+        } elseif (!empty($key->title)) {
+            $GLOBALS['Layout_Description'] = & $key->title;
         }
     }
 }

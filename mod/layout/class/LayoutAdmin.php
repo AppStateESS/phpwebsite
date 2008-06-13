@@ -482,6 +482,10 @@ class Layout_Admin{
         $form->setMatch('follow', $follow);
         $form->setLabel('follow', dgettext('layout', 'Allow link following'));
 
+        $form->addCheckBox('use_key_summaries', 1);
+        $form->setMatch('use_key_summaries', PHPWS_Settings::get('layout', 'use_key_summaries'));
+        $form->setLabel('use_key_summaries', dgettext('layout', 'Use Key summaries for meta description'));
+
         $form->addSubmit('submit', dgettext('layout', 'Update'));
 
         $template = $form->getTemplate();
@@ -574,6 +578,9 @@ class Layout_Admin{
         } else {
             $follow = 0;
         }
+
+        PHPWS_Settings::set('layout', 'use_key_summaries', (int)isset($_POST['use_key_summaries']));
+        PHPWS_Settings::save('layout');
 
         $values['meta_robots'] = $index . $follow;
 

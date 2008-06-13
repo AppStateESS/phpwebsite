@@ -10,6 +10,7 @@ if (Current_User::allow('layout')) {
     Layout::miniLinks();
  }
 
+Layout::keyDescriptions();
 Layout::showKeyStyle();
 if (defined('LAYOUT_CHECK_COOKIE') && LAYOUT_CHECK_COOKIE) {
     check_cookie();
