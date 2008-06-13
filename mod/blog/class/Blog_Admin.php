@@ -488,6 +488,7 @@ class Blog_Admin {
         $pager->addPageTags($pageTags);
         $pager->setSearch('title');
         $pager->setDefaultOrder('create_date', 'desc');
+        $pager->cacheQueries();
         $content = $pager->get();
         return $content;
     }
