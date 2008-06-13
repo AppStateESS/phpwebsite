@@ -80,6 +80,8 @@ class DBPager {
      */
     var $limit = NULL;
 
+    var $default_limit = 0;
+
     var $limitList = array(5, 10, 25);
 
     var $searchColumn = NULL;
@@ -239,6 +241,7 @@ class DBPager {
         } elseif (isset($_REQUEST['pager_search'])) {
             $this->loadSearch($_REQUEST['pager_search']);
         }
+
     }
 
     function joinResult($source_column, $join_table, $join_column, $content_column, $new_name=null, $searchable=false)
@@ -297,6 +300,10 @@ class DBPager {
         }
     }
 
+    /**
+     * Sets the default order for the pager. If only_if_empty is TRUE
+     * then a sort can overwrite the direction.
+     */
     function setOrder($column, $direction='asc', $only_if_empty=false)
     {
         if ($only_if_empty && !empty($this->orderby)) {
@@ -324,9 +331,7 @@ class DBPager {
 
     function setDefaultLimit($limit)
     {
-        if (empty($this->limit)) {
-            $this->limit = (int)$limit;
-        }
+        $this->default_limit = (int)$limit;
     }
 
     function setSearch()
@@ -625,13 +630,14 @@ class DBPager {
     function initialize($load_rows=true)
     {
         if (empty($this->limit) && empty($this->orderby) &&
-            empty($this->search) &&
+            empty($this->search) && empty($this->orderby) &&
             isset($_SESSION['DB_Cache'][$this->module][$this->template])) {
             extract($_SESSION['DB_Cache'][$this->module][$this->template]);
-            $this->limit       = $limit;
-            $this->orderby     = $orderby;
-            $this->orderby_dir = $orderby_dir;
-            $this->search      = $search;
+            $this->limit        = $limit;
+            $this->orderby      = $orderby;
+            $this->orderby_dir  = $orderby_dir;
+            $this->search       = $search;
+            $this->current_page = $current_page;
         }
 
         if (isset($this->error)) {
@@ -681,9 +687,13 @@ class DBPager {
             return $count;
         }
 
+        if (!$this->limit && $this->default_limit) {
+            $this->limit == $this->default_limit;
+        }
+
         if ($this->limit > 0) {
             $this->db->setLimit($this->getLimit());
-        }
+        } 
 
         $this->total_rows = &$count;
         $this->total_pages = ceil($this->total_rows / $this->limit);
@@ -724,10 +734,11 @@ class DBPager {
         $this->display_rows = &$result;
 
         if ($this->cache_queries) {
-            $cache['limit']       = $this->limit;
-            $cache['orderby']     = $this->orderby;
-            $cache['orderby_dir'] = $this->orderby_dir;
-            $cache['search']      = $this->search;
+            $cache['limit']        = $this->limit;
+            $cache['orderby']      = $this->orderby;
+            $cache['orderby_dir']  = $this->orderby_dir;
+            $cache['search']       = $this->search;
+            $cache['current_page'] = $this->current_page;
 
             $_SESSION['DB_Cache'][$this->module][$this->template] = $cache;
         } else {

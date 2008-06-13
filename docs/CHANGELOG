@@ -2,6 +2,14 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+13 June 2008
++ DBPager : cacheQueries works better now especially with
+  setDefaultOrder.
++ Key : trimming the summary result.
++ added microsoft office document as identifier to file types.
++ Added cacheQueries information to DBPager documentation.
++ Updated: conf/file_types.php
+
 11 June 2008
 + Updated jquery to 1.2.6
 + Added jcarousel lite from filecabinet

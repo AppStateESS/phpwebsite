@@ -59,6 +59,7 @@ $all_file_types['csv']['vb']    = 'Comma Separated Value Text';
 
 $all_file_types['doc']['mct'][] = 'application/msword';
 $all_file_types['doc']['fi'][]  = 'microsoft installer';
+$all_file_types['doc']['fi'][]  = 'microsoft office document';
 $all_file_types['doc']['vb']    = 'Microsoft Word Document';
 
 $all_file_types['docx']['mct'][] = 'application/x-zip';

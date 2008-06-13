@@ -400,7 +400,7 @@ class Key {
     function setSummary($summary)
     {
         $summary = preg_replace('/(<|&lt;|\[).*(>|&gt;|\])/sUi', ' ', $summary);
-        $this->summary = PHPWS_Text::condense($summary, 255);
+        $this->summary = trim(PHPWS_Text::condense($summary, 255));
     }
 
     function setUrl($url, $local=true)
