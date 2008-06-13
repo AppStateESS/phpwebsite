@@ -5,6 +5,7 @@
    */
 $icon_list = array('application/asx'          => 'video.png',
                    'application/futuresplash' => 'flash.png',
+                   'application/msword'       => 'document.png',
                    'application/pdf'          => 'pdf.png',
                    'application/vnd.ms-excel' => 'spreadsheet.png',
                    'application/vnd.ms-powerpoint' => 'powerpoint.png',

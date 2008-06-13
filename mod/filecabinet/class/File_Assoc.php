@@ -311,8 +311,17 @@ class FC_File_Assoc {
 
     function slideshow()
     {
-        Layout::addStyle('filecabinet', 'style.css');
+        Layout::addStyle('filecabinet');
+        $message = null;
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        $folder = new Folder($this->file_id);
+        if (!$folder->public_folder) {
+            if (!Current_User::allow('filecabinet')) {
+                return null;
+            } else {
+                $message = dgettext('filecabinet', 'Folder is private. Slideshow not available');
+            }
+        }
         $db = new PHPWS_DB('images');
         $db->addWhere('folder_id', $this->file_id);
 
@@ -324,11 +333,8 @@ class FC_File_Assoc {
                 $tpl['thumbnails'][] = array('IMAGE'=> $image->getJSView(true));
             }
             if (PHPWS_Settings::get('filecabinet', 'use_jcarousel')) {
-                javascript('jquery');
-                $vars['vertical'] = PHPWS_Settings::get('filecabinet', 'vertical_folder') ? 'true' : 'false';
-                $vars['visible']  = PHPWS_Settings::get('filecabinet', 'number_visible');
-                javascript('modules/filecabinet/jcaro_lite/', $vars);
-                if ($vars['vertical'] == 'true') {
+                $this->loadCarousel();
+                if (PHPWS_Settings::get('filecabinet', 'vertical_folder')) {
                     $tpl_file = 'carousel_vert.tpl';
                 } else {
                     $tpl_file = 'carousel_horz.tpl';
@@ -336,8 +342,19 @@ class FC_File_Assoc {
             } else {
                 $tpl_file = 'ss_box.tpl';
             }
+            if ($message) {
+                $tpl['MESSAGE'] = $message;
+            }
             return PHPWS_Template::process($tpl, 'filecabinet', $tpl_file);
         }
+    }
+
+    function loadCarousel()
+    {
+        javascript('jquery');
+        $vars['vertical'] = PHPWS_Settings::get('filecabinet', 'vertical_folder') ? 'true' : 'false';
+        $vars['visible']  = PHPWS_Settings::get('filecabinet', 'number_visible');
+        javascript('modules/filecabinet/jcaro_lite/', $vars);
     }
 
     function getTable()

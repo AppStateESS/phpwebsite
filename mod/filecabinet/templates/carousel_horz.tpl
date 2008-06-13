@@ -10,3 +10,4 @@
 </div>
 </td><td style="vertical-align : middle"><img class="carousel-next" src="javascript/modules/filecabinet/jcaro_lite/right.png" /></td></tr></table>
 </div>
+<!-- BEGIN message --><p style="font-size : .9em; color : red; font-weight : bold">{MESSAGE}</p><!-- END message -->

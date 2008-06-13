@@ -24,6 +24,8 @@ edit_link.innerHTML = onclick_val.replace(/fid=\d+&/, 'fid=' + new_id + '&')
 hidden = opener.document.getElementById(hidden_id);
 hidden.value = new_id;
 
+window.opener.initSlides();
+
 window.close();
 
 //]]>

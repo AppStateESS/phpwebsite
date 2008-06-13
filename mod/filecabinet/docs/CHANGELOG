@@ -1,3 +1,16 @@
+13 June 2008
++ Replaced next and previous picture links with png arrows
++ Added a warning message if a folder is made private after a folder
+  slideshow is created.
++ application/msword loads the document.png now instead of the
+  text.png
++ Move the jcaro javascript into its own function so it could be
+  called by the update script in File Manager.
++ Removed width from the horizontal carousel
++ Updated: conf/icons.php, javascript/update_file/head.js,
+  templates/carousel_horz.tpl, templates/carousel_vert.tpl,
+  templates/ss_box.tpl, templates/style.css
+
 11 June 2008
 + Can now set thumbnail dimensions from settings
 + All thumbnail setting are derived from settings page

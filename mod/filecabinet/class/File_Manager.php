@@ -205,7 +205,7 @@ class FC_File_Manager {
             $tpl['LINK_ID']     = 'l_' . $this->session_id;
         }
         $tpl['ITEMNAME']    = $this->itemname;
-
+        $this->file_assoc->loadCarousel();
         return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/placeholder.tpl');
     }
 
