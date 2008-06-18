@@ -119,6 +119,7 @@ class Blog_Form {
         $form->addText('title', $blog->title);
         $form->setSize('title', 40);
         $form->setLabel('title', dgettext('blog', 'Title'));
+        $form->setRequired('title');
 
         $form->addTextArea('summary', $blog->getSummary());
         if (!$limited) {
