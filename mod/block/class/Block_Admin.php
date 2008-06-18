@@ -38,7 +38,7 @@ class Block_Admin {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
-    function &cpanel()
+    function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $linkBase = 'index.php?module=block';
