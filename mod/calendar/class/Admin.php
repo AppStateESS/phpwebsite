@@ -390,11 +390,12 @@ class Calendar_Admin {
             javascript('modules/calendar/edit_event');
             javascript('modules/calendar/check_date');
         }
+
         return PHPWS_Template::process($tpl, 'calendar', 'admin/forms/edit_event.tpl');
     }
 
 
-    function &getPanel()
+    function getPanel()
     {
         $panel = new PHPWS_Panel('calendar');
 
