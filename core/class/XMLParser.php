@@ -127,10 +127,13 @@ class XMLParser {
             $content = array();
             foreach ($foo['child'] as $bar) {
                 $result = $this->subformat($bar);
+
                 if (!is_array($result)) {
                     continue;
                 }
-                list($key,$value) = each($result);
+
+                foreach ($result as $key=>$value);
+
                 if (isset($bar['child'])) {
                     if (count($value) > 1) {
                         $content[$key][] = $value;
@@ -141,13 +144,19 @@ class XMLParser {
                     if (isset($content[$key])) {
                         $temp = $content[$key];
                         $content[$key] = array();
-                        $content[$key][] = $temp;
-                        $content[$key][] = $value;
+                        if (is_array($temp)) {
+                            $temp[] = $value;
+                            $content[$key] = $temp;
+                        } else {
+                            $content[$key][] = $temp;
+                            $content[$key][] = $value;
+                        }
                     } else {
                         $content = array_merge($content, $result);
                     }
                 }
             }
+
             return array($foo['name']=>$content);
         } elseif ($this->content_only) {
             return array($foo['name']=>$foo['content']);

@@ -3,6 +3,7 @@ This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
 18 June 2008
++ Fixed a bug in XMLParser that didn't stack arrays properly.
 + Removed unsigned calls in the core update.
 + Database : Added function alterColumnType
 + DBPager : current page is now bracketed and unlinked
