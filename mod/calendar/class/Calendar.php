@@ -85,7 +85,7 @@ class PHPWS_Calendar {
         $this->admin->main();
     }
 
-    function &getDay()
+    function getDay()
     {
         require_once 'Calendar/Day.php';
         $oDay = new Calendar_Day($this->int_year, $this->int_month, $this->int_day);
@@ -110,7 +110,7 @@ class PHPWS_Calendar {
 
 
         
-    function &getMonth($month=0, $year=0)
+    function getMonth($month=0, $year=0)
     {
         if (!$month) {
             $month = &$this->int_month;
@@ -157,7 +157,7 @@ class PHPWS_Calendar {
     }
 
 
-    function &getWeek()
+    function getWeek()
     {
         require_once 'Calendar/Week.php';
         $start_day = (int)PHPWS_Settings::get('calendar', 'starting_day');
