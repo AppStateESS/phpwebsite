@@ -482,7 +482,7 @@ class Branch_Admin {
      * the dsn line from variables in the object. If the variables are not
      * set, it returns null
      */
-    function &getDSN($dbname=true)
+    function getDSN($dbname=true)
         {
             if (isset($this->dbuser)) {
                 $dsn =  sprintf('%s://%s:%s@%s',
