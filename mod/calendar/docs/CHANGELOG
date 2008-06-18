@@ -1,3 +1,8 @@
+18 June 2008
++ Deleting an event clears the cache to prevent ghosts in grid view.
++ If a non existing event is accessed, calendar forwards to day view
+  instead of 404.
+
 Version 1.6.4
 ---------------------------------------------------------------
 15 April 2008

@@ -279,7 +279,7 @@ class Calendar_Schedule {
     }
 
 
-    function &getDB() {
+    function getDB() {
         $db = new PHPWS_DB('calendar_schedule');
         return $db;
     }
@@ -293,7 +293,7 @@ class Calendar_Schedule {
         }
     }
     
-    function &getKey()
+    function getKey()
     {
         if (!$this->_key) {
             $this->_key = new Key($this->key_id);
@@ -337,7 +337,7 @@ class Calendar_Schedule {
         }
     }
 
-    function &loadEvent()
+    function loadEvent()
     {
         PHPWS_Core::initModClass('calendar', 'Event.php');
 

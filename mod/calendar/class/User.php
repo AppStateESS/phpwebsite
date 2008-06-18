@@ -732,10 +732,6 @@ class Calendar_User {
             $this->calendar->loadDefaultSchedule();
         }
 
-        if (!$this->calendar->schedule->id) {
-            
-        }
-
         if ($this->calendar->schedule->checkPermissions()) {
             if ($this->calendar->schedule->id) {
                 $allowed = true;
@@ -796,11 +792,12 @@ class Calendar_User {
             } elseif (isset($_REQUEST['event_id'])) {
                 $event_id = $_REQUEST['event_id'];
             } else {
-                PHPWS_Core::errorPage('404');
+                $this->content = $this->day();
             }
 
             if (!$this->loadEvent($event_id) || !$this->event->id) {
-                PHPWS_Core::errorPage('404');
+                $this->content = $this->day();
+                break;
             }
 
             if (isset($_REQUEST['js'])) {

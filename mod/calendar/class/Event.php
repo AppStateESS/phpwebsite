@@ -176,7 +176,7 @@ class Calendar_Event {
         
         // Remove any possible children
         $db->addWhere('pid', $this->id, null, 'or');
-
+        PHPWS_Cache::clearCache();
         return $db->delete();
     }
 
@@ -293,7 +293,7 @@ class Calendar_Event {
     }
 
 
-    function &getKey()
+    function getKey()
     {
         if (!$this->_key) {
             $this->_key = new Key($this->key_id);
@@ -653,7 +653,7 @@ class Calendar_Event {
     /**
      * Makes a clone event
      */
-    function &repeatClone()
+    function repeatClone()
     {
         $clone = clone($this);
         $clone->pid         = $this->id;
