@@ -2,6 +2,18 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+18 June 2008
++ Removed unsigned calls in the core update.
++ Database : Added function alterColumnType
++ DBPager : current page is now bracketed and unlinked
++ setRequired will post a javascript alert if the required input it
+  left blank. Works with text fields only at this point. More left to
+  do.
++ js_calendar : fixed error notice
++ Updated files: javascript/js_calendar/default.php
+                 javascript/required_input
+
+
 13 June 2008
 + DBPager : cacheQueries works better now especially with
   setDefaultOrder.

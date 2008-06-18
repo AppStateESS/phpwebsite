@@ -15,7 +15,7 @@ if (!defined('UTF8_MODE')) {
  * This pager pulls only the data it needs for display.
  *
  * @version $Id$
- * @author  Matt McNaney <matt@NOSPAM.tux.appstate.edu>
+ * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package Core
  */
 
@@ -844,7 +844,11 @@ class DBPager {
 
         } else {
             for($i=2; $i < $total_pages; $i++) {
-                $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $i, $anchor, $i);
+                if ($i == $current_page) {
+                    $pageList[] = "[$i]";
+                } else {
+                    $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $i, $anchor, $i);
+                }
             }
         }
 
@@ -1180,7 +1184,7 @@ class DBPager {
         $template['PAGE_LABEL']  = _('Page');
         $template['LIMIT_LABEL'] = _('Limit');
         $template['PAGE_DROP']   = $this->getPageDrop();
-        $template['TOTAL_ROWS']  = $start_row . ' - ' . $end_row . ' ' . _('of') . ' ' . $total_row;
+        $template['TOTAL_ROWS']  = sprintf(_('%s - %s of %s'), $start_row, $end_row, $total_row);
         $template['LIMITS']      = $this->getLimitList();
 
         if (isset($this->searchColumn) || $this->sub_search) {

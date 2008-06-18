@@ -100,6 +100,11 @@ class PHPWS_Form {
     var $row_repeat = false;
 
     /**
+     * Indicates if a field in the form has been set as required
+     */
+    var $required_field = false;
+
+    /**
      * Constructor for class
      */
     function PHPWS_Form($id=null)
@@ -599,7 +604,7 @@ class PHPWS_Form {
     function makeLabel($name, $label)
     {
         $required = $this->getRequired();
-        return sprintf('%s<label class="%s-label" for="%s">%s</label>', $required, $this->type, $name, $label);
+        return sprintf('<label class="%s-label" id="%s-label" for="%s">%s</label>%s', $this->type, $name, $name, $label, $required);
     }
 
     
@@ -620,7 +625,6 @@ class PHPWS_Form {
             }
         }
     }
-
 
     function setLabel($name, $label=null)
     {
@@ -1090,7 +1094,7 @@ class PHPWS_Form {
     }
 
 
-    function &createElement($name, $type, $value)
+    function createElement($name, $type, $value)
     {
         switch ($type){
         case 'text':
@@ -1106,6 +1110,11 @@ class PHPWS_Form {
 
         case 'submit':
             $obj = new Form_Submit($name, $value);
+            if ($name == 'submit') {
+                // prevents problems with setRequires javascript
+                $obj->name = 'submit_form';
+                $obj->tag = 'SUBMIT';
+            }
             return $obj;
             break;
 
@@ -1426,7 +1435,10 @@ class PHPWS_Form {
         } else {
             $autocomplete = null;
         }
-
+        if (function_exists('javascript')) { 
+            javascript('jquery');
+            javascript('required_input');
+        }
         return '<form class="phpws-form" ' . $autocomplete . $formName . 'action="' . $this->_action . '" ' . $this->getMethod(true) . $this->_encode . '>';
     }
 
@@ -1531,7 +1543,13 @@ class Form_Submit extends Form_Element {
 
     function get()
     {
-        
+        if ($this->_form->required_field) {
+            $extra = 'onclick="check(this);"';
+            if (!empty($this->extra)) {
+                $extra = $this->extra . ' ' . $extra;
+            }
+            $this->setExtra($extra);
+        }
         return '<input type="submit" '
             . $this->getName(true) 
             . $this->getValue(true) 
@@ -1549,7 +1567,6 @@ class Form_Button extends Form_Element {
 
     function get()
     {
-        
         return '<input type="button" '
             . $this->getName(true) 
             . $this->getValue(true) 
@@ -2060,9 +2077,10 @@ class Form_Element {
         $this->label = $label;
     }
 
-    function setRequired()
+    function setRequired($required = true)
     {
-        $this->required = true;
+        $this->_form->required_field = true;
+        $this->required = (bool)$required;
     }
 
     function getRequired()
@@ -2171,6 +2189,13 @@ class Form_Element {
     function getClass($formMode=false)
     {
         if ($formMode) {
+            if ($this->required) {
+                if (empty($this->css_class)) {
+                    $this->css_class = 'input-required';
+                } else {
+                    $this->css_class .= ' input-required';
+                }
+            }
             return (isset($this->css_class)) ? 'class="' . $this->css_class . '"' : null;
         }
         else {

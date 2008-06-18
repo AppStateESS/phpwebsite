@@ -1761,6 +1761,35 @@ class PHPWS_DB {
         return true;
     }
 
+    function alterColumnType($column, $parameter)
+    {
+        $table = $this->getTable(false);
+        if (!$table) {
+            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::alterColumnType');
+        }
+
+        if (!PHPWS_DB::allowed($column)) {
+            return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::alterColumnType', $column);
+        }
+
+        if (!$this->isTableColumn($column)) {
+            return false;
+        }
+
+        $sql = $GLOBALS['PHPWS_DB']['lib']->alterTableColumn($table, $column, $parameter);
+        $this->begin();
+        foreach ($sql as $val) {
+            $result = $this->query($val);
+            if (PEAR::isError($result)) {
+                $this->rollback();
+                return $result;
+            }
+        }
+        $this->commit();
+        return true;
+    }
+
+
 
     function dropTableColumn($column)
     {
@@ -2393,7 +2422,6 @@ class PHPWS_DB {
 
         return $sql;
     }
-
 
     function pullTables($sql)
     {

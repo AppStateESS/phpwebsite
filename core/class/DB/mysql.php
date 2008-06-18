@@ -145,6 +145,12 @@ class mysql_PHPWS_SQL {
         return 'UNLOCK TABLES;';
     }
 
+    
+    function alterTableColumn($table, $column, $parameter)
+    {
+        $sql = "ALTER TABLE $table CHANGE $column $column $parameter";
+        return array($sql);
+    }
 }
 
 ?>

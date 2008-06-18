@@ -269,9 +269,9 @@ You will need to make your hub/branch home directory writable if the file doesn\
         $content[] = '<pre>';
         $db = new PHPWS_DB('phpws_key');
         if (!$db->isTableColumn('show_after')) {
-            $db->addTableColumn('show_after', "int UNSIGNED NOT NULL default '0'");
-            $db->addTableColumn('hide_after', "int UNSIGNED NOT NULL default '4000000000'");
-            $db->addValue('hide_after', '4000000000');
+            $db->addTableColumn('show_after', "int NOT NULL default 0");
+            $db->addTableColumn('hide_after', "int NOT NULL default 2147400000");
+            $db->addValue('hide_after', '2147400000');
             $db->update();
             $content[] = 'show_after and hide_after columns added to key table.';
         }

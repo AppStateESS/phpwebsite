@@ -229,6 +229,17 @@ class pgsql_PHPWS_SQL {
         return $extra;
     }
 
+    function alterTableColumn($table, $column, $parameter)
+    {
+        $backup = '_bak_' . $column;
+
+        $sql[] = "ALTER TABLE $table RENAME $column to $backup";
+        $sql[] = "ALTER TABLE $table ADD COLUMN $column $parameter";
+        $sql[] = "UPDATE $table SET $column=$backup";
+        $sql[] = "ALTER TABLE $table DROP COLUMN $backup";
+        return $sql;
+    }
+
     function lockTables($locked)
     {
         foreach ($locked as $lck) {
