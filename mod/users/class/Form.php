@@ -247,7 +247,7 @@ class User_Form {
         $pager->addSortHeader('email', dgettext('users', 'Email'));
         $pager->addSortHeader('last_logged', dgettext('users', 'Last Logged'));
         $pager->setSearch('username', 'email');
-
+        $pager->cacheQueries();
         return $pager->get();
     }
 
@@ -399,9 +399,9 @@ class User_Form {
         $form = new PHPWS_Form('edit-user');
         if ($user->getId() > 0) {
             $form->addHidden('user_id', $user->getId());
-            $form->addSubmit('submit', dgettext('users', 'Update User'));
+            $form->addSubmit('go', dgettext('users', 'Update User'));
         } else {
-            $form->addSubmit('submit', dgettext('users', 'Add User'));
+            $form->addSubmit('go', dgettext('users', 'Add User'));
         }
 
         $form->addHidden('action', 'admin');
@@ -424,11 +424,13 @@ class User_Form {
         }
 
         $form->addText('username', $user->getUsername());
+        $form->setRequired('username');
         $form->addText('display_name', $user->display_name);
         $form->addPassword('password1');
         $form->addPassword('password2');
         $form->addText('email', $user->getEmail());
         $form->setSize('email', 30);
+        $form->setRequired('email');
 
         $form->setLabel('email', dgettext('users', 'Email Address'));
         $form->setLabel('username', dgettext('users', 'Username'));

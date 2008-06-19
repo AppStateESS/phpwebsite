@@ -31,5 +31,5 @@
   <tr><td class="user-error" colspan="2">{EMAIL_ERROR}</td></tr>
   <!-- END email-error -->
 </table>
-{SUBMIT}
+{GO}
 {END_FORM}
