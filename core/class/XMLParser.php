@@ -125,6 +125,7 @@ class XMLParser {
     {
         if (isset($foo['child'])) {
             $content = array();
+            $used_keys = array();
             foreach ($foo['child'] as $bar) {
                 $result = $this->subformat($bar);
 
@@ -145,8 +146,14 @@ class XMLParser {
                         $temp = $content[$key];
                         $content[$key] = array();
                         if (is_array($temp)) {
-                            $temp[] = $value;
-                            $content[$key] = $temp;
+                            foreach ($temp as $tmp_key=>$tmp_value);
+                            if (isset($value[$tmp_key])) {
+                                $content[$key][] = $temp;
+                                $content[$key][] = $value;
+                            } else {
+                                $temp[] = $value;
+                                $content[$key] = $temp;
+                            }
                         } else {
                             $content[$key][] = $temp;
                             $content[$key][] = $value;
@@ -155,6 +162,7 @@ class XMLParser {
                         $content = array_merge($content, $result);
                     }
                 }
+                $used_keys[] = $key;
             }
 
             return array($foo['name']=>$content);

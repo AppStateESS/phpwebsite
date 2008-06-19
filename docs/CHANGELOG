@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+19 June 2008
++ More work on XMLParser
+
 18 June 2008
 + Fixed a bug in XMLParser that didn't stack arrays properly.
 + Removed unsigned calls in the core update.
