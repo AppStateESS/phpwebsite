@@ -26,8 +26,8 @@ define('MENU_LINK_ADMIN', sprintf('<img src="./images/mod/menu/foo.png" title="%
 
 define('MENU_PIN_LINK',  sprintf('<img src="./images/mod/menu/attach.png" title="%s" alt="%s" />', dgettext('menu', 'Pin links'), dgettext('menu', 'Pin links')));
 
-define('MENU_ADMIN_ON', dgettext('menu', 'Admin mode on'));
-define('MENU_ADMIN_OFF', dgettext('menu', 'Admin mode off'));
+define('MENU_ADMIN_ON', dgettext('menu', 'Menu admin off'));
+define('MENU_ADMIN_OFF', dgettext('menu', 'Menu admin on'));
 
 define('MENU_PIN', sprintf('<img style="float:right" src="./images/mod/menu/pin.png" alt="%s" title="%s" />', dgettext('menu', 'Pin to item'), dgettext('menu', 'Pin to item')));
 define('MENU_UNPIN', sprintf('<img style="float:right" src="./images/mod/menu/remove.png" alt="%s" title="%s" />', dgettext('menu', 'Unpin menu'), dgettext('menu', 'Unpin menu')));

@@ -56,7 +56,7 @@ class Menu_Link {
         $this->loadChildren();
     }
 
-    function &getDB()
+    function getDB()
         {
             if (empty($this->_db)) {
                 $this->_db = new PHPWS_DB('menu_links');
