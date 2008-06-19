@@ -415,7 +415,7 @@ class Webpage_Volume {
     }
 
 
-    function &getPagebyNumber($page_number)
+    function getPagebyNumber($page_number)
     {
         if (!$page_number) {
             return null;
@@ -438,7 +438,7 @@ class Webpage_Volume {
         }
     }
 
-    function &getPagebyId($page_id)
+    function getPagebyId($page_id)
     {
         if (!isset($this->_pages[(int)$page_id])) {
             return null;

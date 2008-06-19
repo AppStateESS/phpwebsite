@@ -685,7 +685,7 @@ class Webpage_Admin {
         return $template;
     }
 
-    function &cpanel()
+    function cpanel()
     {
         PHPWS_Core::initModClass('version', 'Version.php');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
