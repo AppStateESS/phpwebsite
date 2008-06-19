@@ -12,7 +12,7 @@ define('PR_MAX_FILE_SIZE', 60000);
 
 class Profile_Forms {
 
-    function &default_form()
+    function default_form()
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'profiler');
