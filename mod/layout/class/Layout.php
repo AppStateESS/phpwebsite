@@ -697,7 +697,7 @@ class Layout {
     /**
      * Inserts the content data into the current theme
      */
-    function &loadTheme($theme, $template)
+    function loadTheme($theme, $template)
     {
         $tpl = new PHPWS_Template;
         $themeDir = Layout::getThemeDir();
