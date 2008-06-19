@@ -364,7 +364,7 @@ class Search_Admin {
         return $db->update();
     }
     
-    function &cpanel()
+    function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=search';
