@@ -164,12 +164,12 @@ class Blog {
         return strftime($type, PHPWS_Time::getUserTime($this->create_date));
     }
 
-    function getPublishDate()
+    function getPublishDate($type=BLOG_VIEW_DATE_FORMAT)
     {
         if ($this->publish_date) {
-            return strftime('%Y/%m/%d %H:%M', $this->publish_date);
+            return strftime($type, $this->publish_date);
         } else {
-            return strftime('%Y/%m/%d %H:%M', mktime());
+            return strftime($type, mktime());
         }
     }
 
@@ -321,8 +321,8 @@ class Blog {
     function brief_view()
     {
         $template['TITLE'] = $this->title;
-        $template['LOCAL_DATE']  = $this->getLocalDate();
-        $template['PUBLISHED_DATE'] = PHPWS_Time::getDTTime($this->create_date);
+        $template['LOCAL_DATE']  = $this->getPublishDate();
+        $template['PUBLISHED_DATE'] = PHPWS_Time::getDTTime($this->publish_date);
         $template['SUMMARY'] = PHPWS_Text::parseTag($this->getSummary(true));
         $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(true));
         $template['IMAGE'] = $this->getFile($this->thumbnail);
@@ -368,7 +368,7 @@ class Blog {
             $template['UNPUBLISHED'] = dgettext('blog', 'Expired');
         }
 
-        $template['LOCAL_DATE']  = $this->getLocalDate();
+        $template['LOCAL_DATE']  = $this->getPublishDate();
 
         $summary = $this->getSummary(true);
         $entry   = $this->getEntry(true);

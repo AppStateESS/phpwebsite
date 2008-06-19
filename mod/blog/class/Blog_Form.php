@@ -137,7 +137,7 @@ class Blog_Form {
         $form->setCols('entry', '60');
         $form->setLabel('entry', dgettext('blog', 'Entry'));
 
-        $form->addText('publish_date', $blog->getPublishDate());
+        $form->addText('publish_date', $blog->getPublishDate('%Y/%m/%d %H:%M'));
         $form->setLabel('publish_date', dgettext('blog', 'Publish date/time'));
         $form->setSize('publish_date', 20);
 
