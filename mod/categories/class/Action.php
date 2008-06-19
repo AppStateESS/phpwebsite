@@ -193,7 +193,7 @@ class Categories_Action {
     }
 
 
-    function &cpanel()
+    function cpanel()
     {
         Layout::addStyle('categories');
 
