@@ -1,3 +1,7 @@
+19 June 2008
++ Added Layout::cacheHeader functions to prevent document css from
+  breaking on page caches.
+
 Version 1.2.2
 ---------------------------------------------------------------
 3 June 2008

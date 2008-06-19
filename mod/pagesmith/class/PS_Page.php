@@ -297,7 +297,7 @@ class PS_Page {
             MiniAdmin::add('pagesmith', $this->editLink(sprintf(dgettext('pagesmith', 'Edit %s'), $this->title)));
             MiniAdmin::add('pagesmith', $this->frontPageToggle());
         }
-
+        Layout::getCacheHeaders($this->cacheKey());
         $content = PHPWS_Cache::get($this->cacheKey());
 
         $this->loadTemplate();
@@ -317,7 +317,7 @@ class PS_Page {
 
         $this->_content['page_title'] = & $this->title;
         $content = PHPWS_Template::process($this->_content, 'pagesmith', $this->_tpl->page_path . 'page.tpl');
-        
+        Layout::cacheHeaders($this->cacheKey());
         PHPWS_Cache::save($this->cacheKey(), $content);
         return $content;
     }
