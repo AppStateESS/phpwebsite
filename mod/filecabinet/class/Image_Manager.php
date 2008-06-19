@@ -137,6 +137,7 @@ class FC_Image_Manager {
         $form->addText('title', $this->image->title);
         $form->setSize('title', 40);
         $form->setLabel('title', dgettext('filecabinet', 'Title'));
+        $form->setRequired('title');
 
         $form->addText('alt', $this->image->alt);
         $form->setSize('alt', 40);

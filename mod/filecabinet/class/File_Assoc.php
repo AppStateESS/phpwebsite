@@ -185,6 +185,7 @@ class FC_File_Assoc {
             return DOCUMENT_FOLDER;
 
         case FC_MEDIA:
+        case FC_MEDIA_RESIZE:
             return MULTIMEDIA_FOLDER;
         }
     }
@@ -372,6 +373,7 @@ class FC_File_Assoc {
             return 'documents';
 
         case FC_MEDIA:
+        case FC_MEDIA_RESIZE:
             return 'multimedia';
         }
 
@@ -394,8 +396,8 @@ class FC_File_Assoc {
             $db->addWhere('fc_file_assoc.id', $this->id);
             $db->addWhere('fc_file_assoc.file_id', "$table.id");
             $db->addWhere('folders.id', "$table.folder_id");
-
             $result = $db->loadObject($folder);
+
             if (PHPWS_Error::logIfError($result) || !$result) {
                 return false;
             } else {
@@ -436,18 +438,11 @@ class FC_File_Assoc {
 
     function setMediaDimensions()
     {
-        if (empty($this->resize)) {
-            $this->file_type = 3;
-            return;
-        }
-
-        $dim = explode('x', $this->resize);
-        $max_width = &$dim[0];
-        $max_height = &$dim[1];
+        $max_width = $this->width;
+        $max_height = $this->height;
 
         $width = $this->_source->width;
         $height = $this->_source->height;
-
         if ($max_width >= $width && $max_height >= $height) {
             $this->file_type = 3;
             return;

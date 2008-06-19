@@ -602,6 +602,7 @@ class FC_File_Manager {
         if ($this->file_assoc->id) {
             $this->folder_type = $this->file_assoc->getFolderType();
             $this->current_folder = $this->file_assoc->getFolder();
+
             if (empty($this->current_folder)) {
                 $this->file_assoc = new FC_File_Assoc;
                 return $this->startView();
@@ -697,7 +698,7 @@ class FC_File_Manager {
             }
 
             $file_assoc->resize = & $resize_file_name;
-        } elseif ($file_assoc == FC_MEDIA_RESIZE) {
+        } elseif ($file_assoc->file_type == FC_MEDIA_RESIZE) {
             $file_assoc->width = $this->max_width;
             $file_assoc->height = $this->max_height;
         }

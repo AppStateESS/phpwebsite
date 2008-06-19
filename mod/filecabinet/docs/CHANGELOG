@@ -1,3 +1,11 @@
+19 June 2008
++ Removed unsigned integers from update.php
++ Media resizing is working properly again.
++ Added a setRequired to Image title.
++ Changed youtube import to work properly with XMLParser fixes.
++ Fixed bad tag in document list view
++ Updated: templates/file_list.tpl
+
 13 June 2008
 + Replaced next and previous picture links with png arrows
 + Added a warning message if a folder is made private after a folder

@@ -387,7 +387,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
         $db = new PHPWS_DB('folders');
         $db->begin();
-        if (PHPWS_Error::logIfError($db->addTableColumn('max_image_dimension', 'smallint unsigned not null default 0'))) {
+        if (PHPWS_Error::logIfError($db->addTableColumn('max_image_dimension', 'smallint  not null default 0'))) {
             $content[] = '--- Unable to add max_image_dimension column to folders table.';
             $db->rollback();
             return false;
@@ -396,7 +396,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         }
   
         $db = new PHPWS_DB('fc_file_assoc');
-        if (PHPWS_Error::logIfError($db->addTableColumn('width', 'smallint unsigned NOT NULL default 0'))) {
+        if (PHPWS_Error::logIfError($db->addTableColumn('width', 'smallint NOT NULL default 0'))) {
             $content[] = '--- Unable to add width column to fc_file_assoc.';
             $db->rollback();
             return false;
@@ -404,7 +404,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             $content[] = '--- Added width column to fc_file_assoc table';
         }
 
-        if (PHPWS_Error::logIfError($db->addTableColumn('height', 'smallint unsigned NOT NULL default 0'))) {
+        if (PHPWS_Error::logIfError($db->addTableColumn('height', 'smallint NOT NULL default 0'))) {
             $content[] = '--- Unable to add height column to fc_file_assoc.';
             $db->rollback();
             return false;

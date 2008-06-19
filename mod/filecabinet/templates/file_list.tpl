@@ -12,7 +12,7 @@
     <th>{ACTION_LABEL}</th>
   </tr>
 <!-- BEGIN listrows -->
-  <tr {TOGGLE}
+  <tr {TOGGLE}>
     <td class="fc-title">{TITLE}<br />
     <i>{FILE_NAME}</i></td>
     <td class="fc-file-type">{ICON}<br />{FILE_TYPE}</td>
