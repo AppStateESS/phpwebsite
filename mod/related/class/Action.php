@@ -149,7 +149,7 @@ class Related_Action {
         $_SESSION['Related_Bank'] = $related;
     }
 
-    function &getBank()
+    function getBank()
     {
         return $_SESSION['Related_Bank'];
     }
