@@ -45,7 +45,7 @@ class Comments {
         return $thread;
     }
 
-    function &getCommentUser($user_id)
+    function getCommentUser($user_id)
     {
         if (isset($GLOBALS['Comment_Users'][$user_id])) {
             return $GLOBALS['Comment_Users'][$user_id];
