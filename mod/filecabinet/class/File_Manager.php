@@ -148,10 +148,12 @@ class FC_File_Manager {
     {
         if (!$this->lock_type) {
             if (Current_User::allow('filecabinet')) {
-                return sprintf('<img src="%s" title="%s" />',
+                $img = sprintf('<img src="%s" title="%s" />',
                                FC_PLACEHOLDER,
                                dgettext('filecabinet', 'Add an image, media, or document file.')
                                );
+                return $this->editLink($img);
+
             } else {
                 return sprintf('<img src="%s" title="%s" />',
                                FC_NO_RIGHTS,
@@ -214,7 +216,7 @@ class FC_File_Manager {
     {
         $js_vars['label']    = dgettext('filecabinet', 'Clear file');
         $js_vars['id']       = $this->session_id;
-        $js_vars['img']      = $this->placeHolder();
+        $js_vars['img']      = str_replace("'", "\'", $this->placeHolder());
         return javascript('modules/filecabinet/clear_file', $js_vars);
     }
 
@@ -239,7 +241,6 @@ class FC_File_Manager {
         if ($this->folder_type) {
             $info['ftype'] = $this->folder_type;
         }
-
         return $info;
     }
 
@@ -250,7 +251,11 @@ class FC_File_Manager {
     {
         $js['width']   = 800;
         $js['height']  = 600;
-        $js['label']   = dgettext('filecabinet', 'Edit file');
+        if (empty($label)) {
+            $js['label']   = dgettext('filecabinet', 'Edit file');
+        } else {
+            $js['label'] = $label;
+        }
         $js['title']   = dgettext('filecabinet', 'Edit the current file');
 
         $add_vars = $this->linkInfo();
@@ -379,6 +384,7 @@ class FC_File_Manager {
         if (Current_User::allow('filecabinet', 'edit_folders') && Current_User::isUnrestricted('filecabinet')) {
             $folder = new Folder;
             $folder->ftype = $this->folder_type;
+
             if ($this->mod_limit) {
                 $tpl['ADD_FOLDER'] = $folder->editLink('button', $this->module);
             } else {
@@ -442,10 +448,11 @@ class FC_File_Manager {
 
         $img_dir = 'images/mod/filecabinet/file_manager/';
         $image_string = '<img src="%s" title="%s" alt="%s" />';
+        $link_info = $this->linkInfo();
 
         switch ($this->folder_type) {
         case IMAGE_FOLDER:
-            $js = $this->linkInfo();
+            $js = $link_info;
             $js['authkey'] = Current_User::getAuthKey();
             $js['failure_message'] = dgettext('filecabinet', 'Unable to resize image.');
             $js['confirmation'] = sprintf(dgettext('filecabinet', 'This image is larger than the %s x %s limit. Do you want to resize the image to fit?'),
@@ -456,7 +463,7 @@ class FC_File_Manager {
             $db = new PHPWS_DB('images');
             $class_name = 'PHPWS_Image';
             $file_type  = FC_IMAGE;
-            $altvars    = $this->linkInfo();
+            $altvars    = $link_info;
 
             $img1       = 'folder_random.png';
             $img2       = 'thumbnails.png';
@@ -519,7 +526,7 @@ class FC_File_Manager {
 
             if ($this->current_folder->public_folder) {
                 if (!$this->lock_type || in_array(FC_DOCUMENT_FOLDER, $this->lock_type)) {
-                    $altvars = $this->linkInfo();
+                    $altvars = $link_info;
                     $altvars['id']        = $this->current_folder->id;
                     $altvars['fop']       = 'pick_file';
                     $altvars['file_type'] = FC_DOCUMENT_FOLDER;
@@ -547,7 +554,7 @@ class FC_File_Manager {
             break;
 
         case MULTIMEDIA_FOLDER:
-            $js = $this->linkInfo();
+            $js = $link_info;
             $js['authkey'] = Current_User::getAuthKey();
             $js['failure_message'] = dgettext('filecabinet', 'Unable to resize media.');
             $js['confirmation'] = sprintf(dgettext('filecabinet', 'This media is larger than the %s x %s limit. Do you want to resize the media to fit?'),
