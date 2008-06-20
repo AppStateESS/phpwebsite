@@ -293,8 +293,11 @@ class Categories {
             $db->addOrder('title');
 
             $cats = $db->getObjects('Category');
-
-            $result = Categories::initList($cats);
+            if (!empty($cats)) {
+                $result = Categories::initList($cats);
+            } else {
+                return null;
+            }
             break;
 
         case 'idlist':
