@@ -202,6 +202,7 @@ class PageSmith {
     function postPage()
     {
         $this->loadPage();
+
         $this->page->loadTemplate();
         $this->page->loadSections(false);
 
@@ -223,19 +224,19 @@ class PageSmith {
 
         foreach ($section_list as $section_name) {
             $section = & $this->page->_sections[$section_name];
-            if ($section->sectype != 'image') {
+            if ($section->sectype == 'header' || $section->sectype == 'text') {
                 $section->content = $_POST[$section_name];
             } else {
                 // set content to trigger test below
                 $section->type_id = $_POST[$section_name];
-                $section->content = 'image';
+                $section->content = $section->sectype;
             }
 
             // If this page is an update, or the section has some content
             // put it in the section list.
 
             
-            if ($this->page->id || (!empty($section->content) && !($section->content == 'image' && !$section->type_id)) ) {
+            if ($this->page->id || (!empty($section->content) && !(in_array($section->content, array('image', 'document', 'media', 'block')) && !$section->type_id)) ) {
                 $sections[$section_name] = & $section;
             }
         }
@@ -337,6 +338,7 @@ class PageSmith {
         $vars['hdn_section_name'] = sprintf('pagesmith_%s', $_POST['section_name']);
         $vars['content'] = addslashes($section->content);
         $vars['hidden_value'] = PHPWS_Text::parseInput($section->content);
+
         if ($warning) {
             $vars['warning'] = addslashes($warning);
         }

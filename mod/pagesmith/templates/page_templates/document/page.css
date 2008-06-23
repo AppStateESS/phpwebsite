@@ -1,0 +1,18 @@
+div#document-document {
+   margin-top : 10px;
+}
+
+div#document-page {
+   background-color : white;
+   color : inherit;
+   padding : 10px;
+   overflow : hidden;
+}
+
+div#document-page h1 {
+   margin-bottom : 1em;
+}
+
+div#document-document1 div.fc-download-document {
+   width : 100%;           
+}

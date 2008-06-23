@@ -72,15 +72,22 @@ class PS_Page {
         }
 
         foreach ($this->_tpl->structure as $section_xml) {
-            if ($section_xml['TYPE'] == 'image') {
+            switch ($section_xml['TYPE']) {
+            case 'image':
+            case 'document':
+            case 'media':
+            case 'block':
                 $section = new PS_Block;
-            } else {
+                break;
+
+            default:
                 $section = new PS_Text;
             }
+
             $section->plugSection($section_xml, $this->id);
 
             if ($form_mode) {
-                if (!$section->loadSaved()) {
+                if (!$result = $section->loadSaved()) {
                     if ($filler) {
                         $section->loadFiller();
                     }
@@ -105,7 +112,6 @@ class PS_Page {
             $text_sections = $text_db->select();
             $block_sections = $block_db->select();
 
-
             if (!empty($text_sections)) {
                 foreach ($text_sections as $secname=>$section) {
                     PHPWS_Core::plugObject($this->_sections[$secname], $section);
@@ -120,7 +126,6 @@ class PS_Page {
                         //reload the image form if the image is set
                         $this->_sections[$secname]->loadFiller();
                     }
-
                     $this->_content[$secname] = $this->_sections[$secname]->getContent();
                 }
             }

@@ -1,0 +1,14 @@
+div#banner-image1 {
+   margin : 0px 0px 10px 0px;
+}
+
+div#banner-page {
+   background-color : white;
+   color : inherit;
+   padding : 10px;
+   overflow : hidden;
+}
+
+div#banner-page h1 {
+   margin-bottom : 1em;
+}

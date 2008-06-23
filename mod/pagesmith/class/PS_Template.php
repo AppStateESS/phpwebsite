@@ -80,7 +80,11 @@ class PS_Template {
         $this->structure = & $this->data['STRUCTURE']['SECTION'];
 
         if (isset($this->data['FOLDERS'])) {
-            $this->folders = & $this->data['FOLDERS']['NAME'];
+            if (is_array($this->data['FOLDERS']['NAME'])) {
+                $this->folders = & $this->data['FOLDERS']['NAME'];
+            } else {
+                $this->folders = array($this->data['FOLDERS']['NAME']);
+            }
         }
     }
 
@@ -109,8 +113,10 @@ class PS_Template {
 
     function getThumbnail()
     {
-        return sprintf('<img src="templates/pagesmith/%s%s" title="%s" />',
-                       $this->page_path, $this->thumbnail, $this->title);
+        $tpl_dir = PHPWS_Template::getTemplateDirectory('pagesmith');
+        return sprintf('<img src="%s%s%s" title="%s" />',
+                       $tpl_dir, $this->page_path, 
+                       $this->thumbnail, $this->title);
     }
 }
 

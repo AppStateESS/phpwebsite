@@ -1,16 +1,16 @@
-div#threesec-image1 {
+div#threesec-block1 {
    float : right;
    display : inline;
    margin : 0px 0px 10px 10px;
 }
 
-div#threesec-image2 {
+div#threesec-block2 {
    float : left;
    display : inline;
    margin : 0px 10px 10px 0px;
 }
 
-div#threesec-image3 {
+div#threesec-block3 {
    float : right;
    display : inline;
    margin : 0px 0px 10px 10px;

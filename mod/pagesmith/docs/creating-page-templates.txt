@@ -58,10 +58,19 @@ page template.
 
 Each <section> contains at least its <name> and <type>. The <name>
 labels an area of the page template. The <type> tells PageSmith what
-kind of section to expect when editing and displaying.
+kind of section to expect when editing and displaying. The type can be
+one of the following:
 
-If the section is an image, the maximum <width> and <height> should be
-set as well.
+text : a large text area
+header : a short text field 
+block : allows access to any media, image, or document in File Cabinet
+image : only allows File Cabinet image access
+document : only allows File Cabinet document access
+media : only allows File Cabinet media access
+
+If the section is an image or block, the maximum <width> and <height> should be
+set as well. You can also set the width and height for media. File
+Cabinet will try and shape videos to fit inside this space.
 
 
 page.tpl
@@ -109,3 +118,20 @@ Note also the edit tags:
 For each text or header area in your structure file, you need to add
 an edit tag the user can click on to change that page. Keep in mind
 these icons will not be shown when the page is displayed.
+
+Troubleshooting
+-------------------------------------------------------------------
+1. After updating a section, a different section disappears
+
+Make sure that you keep your section separate.
+For example, the following example will not work:
+
+<div id="templatename-text1">{text1}
+<div id="templatename-block1">{block1}</div>
+</div>
+
+After text1 gets updated, block1, which is -inside- text1, will be
+overwritten. You would need to do this instead:
+
+<div id="templatename-text1">{text1}</div>
+<div id="templatename-block1">{block1}</div>

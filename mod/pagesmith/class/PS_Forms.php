@@ -178,21 +178,27 @@ class PS_Forms {
                 $tpl[$name] = $content;
             }
 
-            if ($section->sectype != 'image') {
-                if ($section->sectype == 'header') {
-                    $js['label'] = dgettext('pagesmith', 'Edit header');
-                    $js['link_title'] = dgettext('pagesmith', 'Change header');
-                    $vars['aop'] = 'edit_page_header';
-                    $js['width'] = 400;
-                    $js['height'] = 200;
-                } else {
-                    $js['label'] = dgettext('pagesmith', 'Edit text');
-                    $js['link_title'] = dgettext('pagesmith', 'Change text');
-                    $vars['aop'] = 'edit_page_text';
-                    $js['width'] = 800;
-                    $js['height'] = 600;
-                }
+            switch ($section->sectype) {
+            case 'header':
+                $js['label'] = dgettext('pagesmith', 'Edit header');
+                $js['link_title'] = dgettext('pagesmith', 'Change header');
+                $vars['aop'] = 'edit_page_header';
+                $js['width'] = 400;
+                $js['height'] = 200;
+                $edit_button = true;
+                break;
 
+            case 'text':
+                $js['label'] = dgettext('pagesmith', 'Edit text');
+                $js['link_title'] = dgettext('pagesmith', 'Change text');
+                $vars['aop'] = 'edit_page_text';
+                $js['width'] = 800;
+                $js['height'] = 600;
+                $edit_button = true;
+                break;
+            }
+
+            if ($edit_button) {
                 $vars['section'] = $name;
                 //                $js['type'] = 'button';
                 $js['label']   = PS_EDIT;
@@ -207,6 +213,7 @@ class PS_Forms {
                 }
             }
         }
+
         $template_file = $page->_tpl->page_path . 'page.tpl';
 
         if (empty($page->title)) {

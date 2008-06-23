@@ -1,3 +1,12 @@
+23 June 2008
++ Page templates can now control block type. The type can be image,
+  document, media, or block. Block allows all three.
++ Dropping btype from the block. Not used.
++ Fixed bug if template only had one folder.
++ Added some new page templates.
++ Added some colorful pics to page template samples
++ Made single column different from text only icon.
+
 19 June 2008
 + Added Layout::cacheHeader functions to prevent document css from
   breaking on page caches.

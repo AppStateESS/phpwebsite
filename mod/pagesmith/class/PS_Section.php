@@ -20,13 +20,9 @@ class PS_Section {
         $this->pid = $pid;
         $this->secname = $section['NAME'];
         $this->sectype = $section['TYPE'];
-
-        switch ($this->sectype) {
-        case 'image':
-            $this->btype = 'image';
-            $this->width = $section['WIDTH'];
-            $this->height = $section['HEIGHT'];
-            break;
+        if (isset($section['WIDTH'])) {
+            $this->width   = $section['WIDTH'];
+            $this->height  = $section['HEIGHT'];
         }
     }
 

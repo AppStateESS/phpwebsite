@@ -2,8 +2,8 @@ td.twocolumns-col {
    width : 50%;
 }
 
-td.twocolumns-col div#twocolumns-image1, 
-td.twocolumns-col div#twocolumns-image2{
+td.twocolumns-col div#twocolumns-block1, 
+td.twocolumns-col div#twocolumns-block2{
    text-align : center;
 } 
 

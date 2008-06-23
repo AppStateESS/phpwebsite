@@ -204,6 +204,10 @@ function pagesmith_update(&$content, $currentVersion)
 + Fixed some notices and a caching bug.
 + Changed wording on edit text windows.</pre>';
 
+    case version_compare($currentVersion, '1.2.3', '<'):
+        $db = new PHPWS_DB('ps_block');
+        $db->dropTableColumn('btype');
+        
     } // end switch
 
     return true;
