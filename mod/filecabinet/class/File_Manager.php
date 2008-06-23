@@ -148,12 +148,10 @@ class FC_File_Manager {
     {
         if (!$this->lock_type) {
             if (Current_User::allow('filecabinet')) {
-                $img = sprintf('<img src="%s" title="%s" />',
+                $link = sprintf('<img src="%s" title="%s" />',
                                FC_PLACEHOLDER,
                                dgettext('filecabinet', 'Add an image, media, or document file.')
                                );
-                return $this->editLink($img);
-
             } else {
                 return sprintf('<img src="%s" title="%s" />',
                                FC_NO_RIGHTS,
@@ -164,16 +162,20 @@ class FC_File_Manager {
 
         switch (1) {
         case in_array(FC_IMAGE, $this->lock_type):
-            return sprintf('<img src="images/mod/filecabinet/file_manager/file_type/image200.png" title="%s"/>',
+            $link = sprintf('<img src="images/mod/filecabinet/file_manager/file_type/image200.png" title="%s"/>',
                                 dgettext('filecabinet', 'Add a image, an image folder, or a randomly changing image'));
+            break;
 
         case in_array(FC_DOCUMENT, $this->lock_type):
-            return sprintf('<img src="images/mod/filecabinet/file_manager/file_type/document200.png" title="%s"/>',
+            $link =  sprintf('<img src="images/mod/filecabinet/file_manager/file_type/document200.png" title="%s"/>',
                                     dgettext('filecabinet', 'Add a document or a document folder'));
+            break;
         case in_array(FC_MEDIA, $this->lock_type):
-            return sprintf('<img src="images/mod/filecabinet/file_manager/file_type/media200.png" title="%s"/>',
+            $link =  sprintf('<img src="images/mod/filecabinet/file_manager/file_type/media200.png" title="%s"/>',
                                 dgettext('filecabinet', 'Add a video or sound file'));
+            break;
         }
+        return $this->editLink($link);
     }
 
     function get()
