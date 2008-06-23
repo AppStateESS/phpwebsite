@@ -24,13 +24,11 @@
     {CROP_THRESHOLD}</p>
     <p style="margin-bottom : 1em"><strong>{MAX_THUMBNAIL_SIZE_LABEL}</strong> 
     {MAX_THUMBNAIL_SIZE}</p>
-    <fieldset><legend>{USE_JCAROUSEL} <strong>{USE_JCAROUSEL_LABEL}</strong></legend>
-    <div id="jcarousel">
+    <fieldset><legend>{CAROUSEL}</legend>
     <p style="margin-bottom : 1em">{JCARO_TYPE_1} <strong>{JCARO_TYPE_1_LABEL}</strong><br />
 {JCARO_TYPE_2} <strong>{JCARO_TYPE_2_LABEL}</strong></p>
     <p style="margin-bottom : 1em"><strong>{NUMBER_VISIBLE_LABEL}</strong> 
     {NUMBER_VISIBLE}</p>
-    </div>
 </fieldset>
 </fieldset>
 <fieldset>

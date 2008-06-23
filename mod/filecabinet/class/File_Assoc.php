@@ -343,16 +343,14 @@ class FC_File_Assoc {
             foreach ($result as $image) {
                 $tpl['thumbnails'][] = array('IMAGE'=> $image->getJSView(true));
             }
-            if (PHPWS_Settings::get('filecabinet', 'use_jcarousel')) {
-                $this->loadCarousel();
-                if ($this->vertical) {
-                    $tpl_file = 'carousel_vert.tpl';
-                } else {
-                    $tpl_file = 'carousel_horz.tpl';
-                }
+
+            $this->loadCarousel();
+            if ($this->vertical) {
+                $tpl_file = 'carousel_vert.tpl';
             } else {
-                $tpl_file = 'ss_box.tpl';
+                $tpl_file = 'carousel_horz.tpl';
             }
+
             if ($message) {
                 $tpl['MESSAGE'] = $message;
             }

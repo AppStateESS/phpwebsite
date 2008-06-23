@@ -311,8 +311,6 @@ class Cabinet_Form {
 
     function settings()
     {
-        javascript('jquery');
-        javascript('modules/filecabinet/shutter');
         $sizes = Cabinet::getMaxSizes();
 
         $form = new PHPWS_Form('settings');
@@ -378,7 +376,6 @@ class Cabinet_Form {
             $form->setLabel('use_ffmpeg', dgettext('filecabinet', 'Enable FFMpeg thumbnails'));
         }
 
-
         $form->addTplTag('CLASSIFY_SETTINGS', dgettext('filecabinet', 'Classify settings'));
         $form->addText('ffmpeg_directory', $ffmpeg_directory);
         $form->setLabel('ffmpeg_directory', dgettext('filecabinet', 'FFMpeg directory'));
@@ -389,10 +386,6 @@ class Cabinet_Form {
             $form->setLabel('classify_directory', dgettext('filecabinet', 'Incoming classify directory'));
             $form->setSize('classify_directory', 50, 255);
         }
-
-        $form->addCheckbox('use_jcarousel', 1);
-        $form->setMatch('use_jcarousel', PHPWS_Settings::get('filecabinet', 'use_jcarousel'));
-        $form->setLabel('use_jcarousel', dgettext('filecabinet', 'Use jCarousel Lite for folder browsing'));
 
         $form->addRadioAssoc('jcaro_type', array(0=>dgettext('filecabinet', 'Horizontal'),
                                                  1=>dgettext('filecabinet', 'Vertical')));
@@ -406,6 +399,7 @@ class Cabinet_Form {
         $form->addSubmit(dgettext('filecabinet', 'Save settings'));
         $tpl = $form->getTemplate();
 
+        $tpl['CAROUSEL'] = dgettext('filecabinet', 'Carousel defaults');
         $tpl['SYSTEM_SIZE'] = dgettext('filecabinet', 'System upload limits');
         $tpl['SYSTEM_LABEL'] = dgettext('filecabinet', 'Server upload limit');
         $tpl['FORM_LABEL'] = dgettext('filecabinet', 'Form upload limit');
@@ -722,7 +716,6 @@ class Cabinet_Form {
             }
         }
 
-        PHPWS_Settings::set('filecabinet', 'use_jcarousel', (int) isset($_POST['use_jcarousel']));
         PHPWS_Settings::set('filecabinet', 'vertical_folder', (int) $_POST['jcaro_type']);
         PHPWS_Settings::set('filecabinet', 'number_visible', (int) $_POST['number_visible']);
 

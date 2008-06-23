@@ -6,9 +6,11 @@
 + Image crop association deletes added to image delete
 + Added reference to media embedd function to allow functioning with
   php 4
++ jCarousel is default view in File Manager
 + Updated: javascript/jcaro_lite/head.js, javascript/pick_file/
   javascript/update_file/head.js, templates/style.css, 
   templates/file_manager/carousel_pick.tpl
+  templates/settings.tpl
 
 20 June 2008
 + Not making image title required
