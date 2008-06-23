@@ -87,10 +87,11 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
     function allowSigmaCache()
     {
-        if (defined('ALLOW_SIGMA_CACHE'))
+        if (defined('ALLOW_SIGMA_CACHE')) {
             return ALLOW_SIGMA_CACHE;
-        else
+        } else {
             return FALSE;
+        }
     }
 
     /**
@@ -100,8 +101,12 @@ class PHPWS_Template extends HTML_Template_Sigma {
     function getTemplateDirectory($module, $directory=NULL)
     {
         $theme_dir  = PHPWS_Template::getTplDir($module) . $directory;
-        $local_dir  = sprintf('./templates/%s/', $module) . $directory;
-        $module_dir = sprintf(PHPWS_SOURCE_DIR . 'mod/%s/templates/', $module) . $directory;
+        $local_dir  = sprintf('templates/%s/%s', $module, $directory);
+        if (PHPWS_Core::isBranch()) {
+            $module_dir = sprintf('%smod/%s/templates/%s', PHPWS_SOURCE_DIR, $module, $directory);
+        } else {
+            $module_dir = sprintf('mod/%s/templates/%s', $module, $directory);
+        }
 
         if (FORCE_THEME_TEMPLATES || (!FORCE_MOD_TEMPLATES && is_dir($theme_dir))) {
             return $theme_dir;

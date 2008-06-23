@@ -795,9 +795,10 @@ class PHPWS_Core {
         $self = & $_SERVER['PHP_SELF'];
 
         if ($use_redirect && isset($_SERVER['REDIRECT_URL'])) {
-            if ($_SERVER['REDIRECT_URL'] != '/') {
+            // some users reported problems using redirect_url so parsing uri instead
+            if ($_SERVER['REQUEST_URI'] != '/') {
                 $root_url = substr($self, 0, strrpos($self, '/'));
-                $address[] = preg_replace("@^$root_url/@", '', $_SERVER['REDIRECT_URL']);
+                $address[] = preg_replace("@^$root_url/@", '', $_SERVER['REQUEST_URI']);
             } else {
                 $address[] = 'index.php';
             }
