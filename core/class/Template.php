@@ -105,7 +105,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         if (PHPWS_Core::isBranch()) {
             $module_dir = sprintf('%smod/%s/templates/%s', PHPWS_SOURCE_DIR, $module, $directory);
         } else {
-            $module_dir = sprintf('mod/%s/templates/%s', $module, $directory);
+            $module_dir = sprintf('./mod/%s/templates/%s', $module, $directory);
         }
 
         if (FORCE_THEME_TEMPLATES || (!FORCE_MOD_TEMPLATES && is_dir($theme_dir))) {
