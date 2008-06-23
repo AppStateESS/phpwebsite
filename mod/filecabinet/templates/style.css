@@ -200,3 +200,20 @@ img.carousel-prev:hover {
 .carousel-slides li img {
     display : block;
 }
+
+div#carousel-pick {
+    width : 140px;
+    height : 160px;
+    background-color : white;
+    display : none;
+    position : absolute;
+    border : 1px solid black;
+    float : right;
+    left : 160px;
+    top : 100px;
+    padding : 8px;
+}
+
+p.center {
+    text-align : center;
+}

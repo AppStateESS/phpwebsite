@@ -1,3 +1,15 @@
+23 June 2008
++ Removed cropped column from file_assoc; not needed, file_type covers
+  it
++ Storing carousel settings in file_assoc
++ Carousel settings can be made on file manager post
++ Image crop association deletes added to image delete
++ Added reference to media embedd function to allow functioning with
+  php 4
++ Updated: javascript/jcaro_lite/head.js, javascript/pick_file/
+  javascript/update_file/head.js, templates/style.css, 
+  templates/file_manager/carousel_pick.tpl
+
 20 June 2008
 + Not making image title required
 + Made placeholder image clickable.

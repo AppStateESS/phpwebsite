@@ -584,7 +584,8 @@ class PHPWS_Multimedia extends File_Common {
         if (!function_exists($function_name)) {
             return false;
         }
-        return call_user_func($function_name, $this);
+        // Reference call required for php 4
+        return call_user_func($function_name, &$this);
     }
 }
 ?>

@@ -425,6 +425,13 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/2_1_0.txt');
         }
         $content[] = '</pre>';
+
+    case version_compare($version, '2.1.1', '<'):
+        $db = new PHPWS_DB('fc_file_assoc');
+        $db->addTableColumn('vertical', 'smallint not null default 0');
+        $db->addTableColumn('num_visible', 'smallint not null default 3');
+        $db->dropTableColumn('cropped');
+        break;
     }
 
     return true;

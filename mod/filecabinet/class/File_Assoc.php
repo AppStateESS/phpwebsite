@@ -11,7 +11,17 @@ class FC_File_Assoc {
     var $resize     = null;
     var $width      = 0;
     var $height     = 0;
-    var $cropped    = 0;
+
+    /**
+     * Used with carousel, determines direction
+     */
+    var $vertical   = 0; 
+
+    /**
+     * Used with carousel, determines number images seen
+     */
+    var $num_visible = 3;
+
     var $_use_style = true;
     /**
      * If the file assoc is an image and no_link is true,
@@ -335,7 +345,7 @@ class FC_File_Assoc {
             }
             if (PHPWS_Settings::get('filecabinet', 'use_jcarousel')) {
                 $this->loadCarousel();
-                if (PHPWS_Settings::get('filecabinet', 'vertical_folder')) {
+                if ($this->vertical) {
                     $tpl_file = 'carousel_vert.tpl';
                 } else {
                     $tpl_file = 'carousel_horz.tpl';
@@ -353,8 +363,8 @@ class FC_File_Assoc {
     function loadCarousel()
     {
         javascript('jquery');
-        $vars['vertical'] = PHPWS_Settings::get('filecabinet', 'vertical_folder') ? 'true' : 'false';
-        $vars['visible']  = PHPWS_Settings::get('filecabinet', 'number_visible');
+        $vars['vertical'] = $this->vertical;
+        $vars['visible']  = $this->num_visible;
         javascript('modules/filecabinet/jcaro_lite/', $vars);
     }
 

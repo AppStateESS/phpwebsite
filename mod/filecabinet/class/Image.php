@@ -325,6 +325,7 @@ class PHPWS_Image extends File_Common {
 
     function delete()
     {
+        // deleteAssoc call occurs in commonDelete
         $result = $this->commonDelete();
         if (PEAR::isError($result)) {
             return $result;
@@ -347,6 +348,7 @@ class PHPWS_Image extends File_Common {
         $db = new PHPWS_DB('fc_file_assoc');
         $db->addWhere('file_type', FC_IMAGE, '=', 'or', 1);
         $db->addWhere('file_type', FC_IMAGE_RESIZE, '=', 'or', 1);
+        $db->addWhere('file_type', FC_IMAGE_CROP, '=', 'or', 1);
         $db->addWhere('file_id', $this->id);
         return $db->delete();
     }

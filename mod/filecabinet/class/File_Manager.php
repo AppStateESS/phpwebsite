@@ -467,6 +467,10 @@ class FC_File_Manager {
             $class_name = 'PHPWS_Image';
             $file_type  = FC_IMAGE;
             $altvars    = $link_info;
+            // check
+            unset($altvars['mw']);
+            unset($altvars['mh']);
+            unset($altvars['fr']);
 
             $img1       = 'folder_random.png';
             $img2       = 'thumbnails.png';
@@ -494,6 +498,39 @@ class FC_File_Manager {
                 }
 
                 if (!$this->lock_type || in_array(FC_IMAGE_FOLDER, $this->lock_type)) {
+                    /** start new **/
+                    
+                    if ($this->file_assoc->file_type == FC_IMAGE_FOLDER) {
+                        $tpl['ALT_HIGH2'] = ' alt-high';
+                    }
+
+                    $img2_title = dgettext('filecabinet', 'Show block of thumbnails');
+                    $image2 = sprintf($image_string, $img_dir . $img2, $img2_title, $img2_alt);
+
+                    $form = new PHPWS_Form('carousel-options');
+                    $form->setMethod('get');
+                    $altvars['file_type'] = FC_IMAGE_FOLDER;
+                    $form->addHidden($altvars);
+                    $form->addHidden('module', 'filecabinet');
+
+                    $form->addRadioAssoc('direction', array(0=>dgettext('filecabinet', 'Horizontal'), 1=>dgettext('filecabinet', 'Vertical')));
+                    $match = $this->file_assoc->vertical;
+                    $form->setMatch('direction', $match);
+
+                    $num = array(1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8);
+                    $form->addSelect('num_visible', $num);
+                    $form->setLabel('num_visible', dgettext('filecabinet', 'Number shown'));
+                    $form->setMatch('num_visible', $this->file_assoc->num_visible);
+
+                    $form->addSubmit('go', dgettext('filecabinet', 'Go'));
+                    $subtpl = $form->getTemplate();
+                    $subtpl['DIRECTION_DESC'] = dgettext('filecabinet', 'Carousel direction');
+                    $subtpl['LINK'] = sprintf('<a href="#" onclick="return carousel_pick();">%s</a>',
+                                              $image2);
+                    $subtpl['CANCEL'] = dgettext('filecabinet', 'Cancel');
+                    $tpl['ALT2'] = PHPWS_Template::process($subtpl, 'filecabinet', 'file_manager/carousel_pick.tpl');
+                    /** end new **/
+                    /*
                     $altvars['file_type'] = FC_IMAGE_FOLDER;
                     if ($this->file_assoc->file_type == FC_IMAGE_FOLDER) {
                         $tpl['ALT_HIGH2'] = ' alt-high';
@@ -502,6 +539,7 @@ class FC_File_Manager {
                     $img2_title = dgettext('filecabinet', 'Show block of thumbnails');
                     $image2 = sprintf($image_string, $img_dir . $img2, $img2_title, $img2_alt);
                     $tpl['ALT2'] = PHPWS_Text::secureLink($image2, 'filecabinet', $altvars);
+                    */
                 } else {
                     $image2 = sprintf($image_string, $img_dir . $img2, $not_allowed, $img2_alt);
                     $tpl['ALT2'] = $image2;
@@ -645,6 +683,8 @@ class FC_File_Manager {
             $vars['id']      = $this->session_id;
             $vars['data']    = $this->jsReady($file->getTag(true));
             $vars['new_id']  = $file->id;
+            $vars['vert']    = $file->vertical;
+            $vars['vis']     = $file->num_visible;
             javascript('modules/filecabinet/update_file', $vars);
         } else {
             exit(dgettext('filecabinet', 'An error occurred. Please check your logs.'));
@@ -664,15 +704,30 @@ class FC_File_Manager {
         $file_assoc = new FC_File_Assoc;
         $cropped = (int)$file_type == FC_IMAGE_CROP;
 
+        if ($file_type == FC_IMAGE_FOLDER) {
+            $vertical = (int)$_GET['direction'];
+            $num_visible = (int)$_GET['num_visible'];
+            if ($num_visible < 0 || $num_visible > 8) {
+                $num_visible = $file_assoc->num_visible;
+            }
+        }
+        
         $db = new PHPWS_DB('fc_file_assoc');
         $db->addWhere('file_type', (int)$file_type);
-        if ($file_type == FC_IMAGE_RESIZE || $file_type == FC_IMAGE_CROP) {
+        switch ($file_type) {
+        case FC_IMAGE_RESIZE:
+        case FC_IMAGE_CROP:
             $db->addWhere('width', $this->max_width);
             $db->addWhere('height', $this->max_height);
-            $db->addWhere('cropped', $cropped);
-        }
-        $db->addWhere('file_id', (int)$id);
+            break;
 
+        case FC_IMAGE_FOLDER:
+            $db->addWhere('vertical', $vertical);
+            $db->addWhere('num_visible', $num_visible);
+            break;
+        }
+
+        $db->addWhere('file_id', (int)$id);
         $result = $db->loadObject($file_assoc);
 
         if ($result) {
@@ -686,10 +741,12 @@ class FC_File_Manager {
         $file_assoc->file_type = & $file_type;
         $file_assoc->file_id   = $id;
 
-        if ($file_assoc->file_type == FC_IMAGE_RESIZE || $file_assoc->file_type == FC_IMAGE_CROP) {
+
+        switch ($file_type) {
+        case FC_IMAGE_RESIZE:
+        case FC_IMAGE_CROP:
             $file_assoc->width   = $this->max_width;
             $file_assoc->height  = $this->max_height;
-            $file_assoc->cropped = $cropped;
 
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $image = new PHPWS_Image($id);
@@ -708,11 +765,19 @@ class FC_File_Manager {
             }
 
             $file_assoc->resize = & $resize_file_name;
-        } elseif ($file_assoc->file_type == FC_MEDIA_RESIZE) {
+            break;
+
+        case FC_IMAGE_FOLDER:
+            $file_assoc->vertical = $vertical;
+            $file_assoc->num_visible = $num_visible;
+            break;
+
+        case FC_MEDIA_RESIZE:
             $file_assoc->width = $this->max_width;
             $file_assoc->height = $this->max_height;
+            break;
         }
-
+        
         $file_assoc->save();
 
         $file_assoc->loadSource();

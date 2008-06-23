@@ -33,3 +33,11 @@ function slider(id)
 
     return false;
 }
+
+function carousel_pick()
+{
+    $('#carousel-pick').toggle('fast');
+
+    return false;
+}
+

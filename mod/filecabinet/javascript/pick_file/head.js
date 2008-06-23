@@ -6,8 +6,6 @@ if (!opener) {
 }
 
 var authkey         = '{authkey}';
-var failure_message = '{failure_message}';
-var confirm_message = '{confirmation}';
 var mw              = '{mw}';
 var mh              = '{mh}';
 var cm              = '{cm}';

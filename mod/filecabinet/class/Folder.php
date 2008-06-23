@@ -361,7 +361,6 @@ class Folder {
 
     function delete()
     {
-
         if ($this->ftype = IMAGE_FOLDER) {
             $table = 'images';
         } elseif ($this->ftype == DOCUMENT_FOLDER) {
