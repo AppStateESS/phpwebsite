@@ -152,6 +152,7 @@ class FC_File_Manager {
                                FC_PLACEHOLDER,
                                dgettext('filecabinet', 'Add an image, media, or document file.')
                                );
+                return $this->editLink($link);
             } else {
                 return sprintf('<img src="%s" title="%s" />',
                                FC_NO_RIGHTS,
