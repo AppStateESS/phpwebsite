@@ -6,6 +6,9 @@
 + Added some new page templates.
 + Added some colorful pics to page template samples
 + Made single column different from text only icon.
++ Updated: templates/page_templates/
+  templates/style.css
+
 
 19 June 2008
 + Added Layout::cacheHeader functions to prevent document css from
