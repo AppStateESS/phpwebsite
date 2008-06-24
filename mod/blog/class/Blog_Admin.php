@@ -479,8 +479,6 @@ class Blog_Admin {
         $pager->addSortHeader('publish_date', dgettext('blog', 'Publish'));
         $pager->addSortHeader('expire_date', dgettext('blog', 'Expire'));
 
-        $pager->convertDate('create_date');
-
         $pager->setModule('blog');
         $pager->setTemplate('list.tpl');
         $pager->addToggle('class="toggle1"');
