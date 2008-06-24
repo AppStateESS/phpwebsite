@@ -530,14 +530,17 @@ class PHPWS_Core {
     {
         switch ($code) {
         case '400':
+            header('HTTP/1.0 400 Bad Request');
             include PHPWS_HOME_DIR . 'config/core/400.html';
             break;
 
         case '403':
+            header('HTTP/1.0 403 Forbidden');
             include PHPWS_HOME_DIR . 'config/core/403.html';
             break;
 
         case '404':
+            header('HTTP/1.0 404 Not Found');
             include PHPWS_HOME_DIR . 'config/core/404.html';
             break;
 
@@ -546,6 +549,7 @@ class PHPWS_Core {
             break;
 
         default:
+            header('HTTP/1.1 503 Service Unavailable');
             include PHPWS_HOME_DIR . 'config/core/error_page.html';
             break;
         }
