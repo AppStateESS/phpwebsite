@@ -31,15 +31,18 @@ class Checkin_Staff {
         $db = new PHPWS_DB('checkin_staff');
         $db->addJoin('left', 'checkin_staff', 'users', 'user_id', 'id');
         $db->addColumn('users.display_name');
+        $db->addColumn('*');
         return $db->loadObject($this);
     }
 
-    function loadReasons()
+    function loadReasons($include_summary=false)
     {
         $db = new PHPWS_DB('checkin_reasons');
         $db->addColumn('id');
-        $db->addColumn('summary');
-        $db->setIndexBy('id');
+        if ($include_summary) {
+            $db->addColumn('summary');
+            $db->setIndexBy('id');
+        }
         $result = $db->select('col');
         if (!PHPWS_Error::logIfError($result)) {
             $this->_reasons = & $result;
@@ -63,7 +66,7 @@ class Checkin_Staff {
             break;
 
         case CO_FT_REASON:
-            $this->loadReasons();
+            $this->loadReasons(true);
             $tpl['FILTER_INFO'] = implode('<br>', $this->_reasons);
             break;
         }
@@ -78,9 +81,25 @@ class Checkin_Staff {
     {
         $db = new PHPWS_DB('checkin_staff');
         $result = !PHPWS_Error::logIfError($db->saveObject($this));
+
+        if (!$result) {
+            return false;
+        }
         // Save reason assignments
 
-        return $result;
+        $db = new PHPWS_DB('checkin_rtos');
+        $db->addWhere('staff_id', $this->id);
+        $db->delete();
+        if ($this->filter_type == CO_FT_REASON) {
+            foreach ($this->_reasons as $rid) {
+                $db->reset();
+                $db->addValue('staff_id', $this->id);
+                $db->addValue('reason_id', $rid);
+                PHPWS_Error::logIfError($db->insert());
+            }
+        }
+
+        return true;
     }
 }
 

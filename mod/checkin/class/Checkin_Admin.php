@@ -18,7 +18,6 @@ class Checkin_Admin extends Checkin {
     function Checkin_Admin()
     {
         $this->loadPanel();
-        Layout::collapse();
     }
 
     function process()
@@ -56,7 +55,14 @@ class Checkin_Admin extends Checkin {
                 $this->settings();
             }
             break;
-            
+
+        case 'reasons':
+           if (Current_User::allow('checkin', 'settings')) {
+                $this->panel->setCurrentTab('reasons');
+                $this->reasons();
+           }
+           break;
+           
         case 'staff':
             $this->panel->setCurrentTab('staff');
             $this->staff();
@@ -68,7 +74,7 @@ class Checkin_Admin extends Checkin {
             break;
 
         case 'edit_staff':
-            $this->loadStaff();
+            $this->loadStaff(null, true);
             $this->editStaff();
             break;
 
@@ -87,9 +93,9 @@ class Checkin_Admin extends Checkin {
         case 'post_staff':
             if (Current_User::authorized('checkin', 'edit_staff')) {
                 if ($this->postStaff()) {
-                    $this->staff->save();
-                    PHPWS_Core::reroute('index.php?module=checkin&tab=settings');
                     // save post
+                    $this->staff->save();
+                    PHPWS_Core::reroute('index.php?module=checkin&tab=staff');
                 } else {
                     // post failed
                     $this->loadStaff();
@@ -109,7 +115,18 @@ class Checkin_Admin extends Checkin {
             }
             PHPWS_Core::reroute('index.php?module=checkin&tab=settings');
             break;
-            
+
+        case 'add_reason':
+            $this->loadReason();
+            $this->editReason();
+            break;
+
+        case 'delete_reason':
+            $this->loadReason();
+            $this->reason->delete();
+            PHPWS_Core::goBack();
+            break;
+
         }
 
         if (empty($this->content)) {
@@ -138,11 +155,14 @@ class Checkin_Admin extends Checkin {
                                     'link'=>$link);
         }
 
+
+
         if (Current_User::allow('checking', 'settings')) {
+            $tabs['reasons']  = array('title'=>dgettext('checkin', 'Reasons'),
+                                      'link'=>$link);
             $tabs['settings'] = array('title'=>dgettext('checkin', 'Settings'),
                                       'link'=>$link);
         }
-
 
         $this->panel = new PHPWS_Panel('check-admin');
         $this->panel->quickSetTabs($tabs);
@@ -228,29 +248,54 @@ class Checkin_Admin extends Checkin {
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'edit_staff.tpl');
     }
 
+    function reasons()
+    {
+        PHPWS_Core::initCoreClass('DBPager.php');
+        PHPWS_Core::initModClass('checkin', 'Reasons.php');
+
+        $pt['MESSAGE_LABEL'] = dgettext('checkin', 'Submission message');
+        $pt['ADD_REASON'] = PHPWS_Text::secureLink(dgettext('checkin', 'Add reason'), 'checkin',
+                                                   array('aop'=>'add_reason'));
+
+        $pager = new DBPager('checkin_reasons', 'Checkin_Reasons');
+        $pager->setModule('checkin');
+        $pager->setTemplate('reasons.tpl');
+        $pager->addPageTags($pt);
+        $pager->addSortHeader('id', dgettext('checkin', 'Id'));
+        $pager->addSortHeader('summary', dgettext('checkin', 'Summary'));
+        $pager->addRowTags('rowTags');
+
+        $this->title = dgettext('checkin', 'Reasons');
+        $this->content = $pager->get();
+
+    }
+
+    function editReason()
+    {
+        $reason =  & $this->reason;
+
+        $form = new PHPWS_Form('edit-reason');
+        $form->addHidden('module', 'checkin');
+        $form->addHidden('aop', 'post_reason');
+        $form->addHidden('reason_id', $reason->id);
+
+        if ($reason->id) {
+            $this->title = dgettext('checkin', 'Update reason');
+            $form->addSubmit('go', dgettext('checkin', 'Update'));
+        } else {
+            $this->title = dgettext('checkin', 'Add new reason');
+            $form->addSubmit('go', dgettext('checkin', 'Add'));
+        }
+    }
+
     function settings()
     {
+        $this->title = dgettext('checkin', 'Settings');
         javascript('jquery');
-        $form = new PHPWS_Form('reasons');
-        $form->addHidden('module', 'checkin');
-        $form->addHidden('aop', 'post_settings');
-        $form->addSubmit('add', dgettext('checkin', 'Add reason'));
-        $form->addText('new_reason');
-        $form->setLabel('new_reason', dgettext('checkin', 'Enter new reason'));
-        $form->setSize('new_reason', 40, 100);
+        $form = new PHPWS_Form('settings');
         $form->addCheck('front_page', 1);
         $form->setMatch('front_page', PHPWS_Settings::get('checkin', 'front_page'));
         $form->setLabel('front_page', dgettext('checkin', 'Show public sign-in on front page'));
-        $reasons = $this->getReasons();
-        if (!empty($reasons)) {
-            $form->addTplTag('EDIT', javascript('modules/checkin/edit_reason', array('question'=> dgettext('checkin', 'Update reason'),
-                                                                                     'address' => 'index.php?module=checkin&aop=update_reason&authkey=' . Current_User::getAuthKey(),
-                                                                                     'label' => dgettext('checkin', 'Edit'))));
-            $form->addSubmit('delete', dgettext('checkin', 'Delete'));
-            $form->addSelect('edit_reason', $reasons);
-        }
-
-        $form->addSubmit('default', dgettext('checkin', 'Save'));
 
         $tpl = $form->getTemplate();
 
@@ -381,6 +426,7 @@ class Checkin_Admin extends Checkin {
         if (!empty($_POST['reasons'])) {
             $this->staff->_reasons = $_POST['reasons'];
         }
+
         return true;
     }
 
