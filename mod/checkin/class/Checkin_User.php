@@ -23,6 +23,7 @@ class Checkin_User extends Checkin {
         $form->setRequired('last_name');
         
         $reasons = $this->getReasons();
+
         if (!empty($reasons)) {
             $form->addSelect('reason', $reasons);
             $form->setLabel('reason', dgettext('checkin', 'Reason for visit'));
@@ -55,6 +56,7 @@ class Checkin_User extends Checkin {
         switch ($command) {
         case 'post_checkin':
             if ($this->postCheckin()) {
+                $this->visitor->save();
                 echo 'done';
             } else {
                 echo 'fail';

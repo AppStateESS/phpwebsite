@@ -15,4 +15,17 @@ class Checkin_Visitor {
     var $assigned      = false;
     var $note          = null;
     var $finished      = false;
+
+    function Checkin_Visitor($id=0)
+    {
+        if (!$id) {
+            return;
+        }
+
+        $this->id = (int)$id;
+        $db = new PHPWS_DB('checkin_visitor');
+        if (!$db->loadObject($this)) {
+            $this->id = 0;
+        } 
+    }
 }

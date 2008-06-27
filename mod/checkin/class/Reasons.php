@@ -57,6 +57,12 @@ class Checkin_Reasons {
         }
         return false;
     }
+
+    function save()
+    {
+        $db = new PHPWS_DB('checkin_reasons');
+        return !PHPWS_Error::logIfError($db->saveObject($this));
+    }
 }
 
 ?>

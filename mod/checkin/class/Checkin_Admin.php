@@ -62,6 +62,16 @@ class Checkin_Admin extends Checkin {
                 $this->reasons();
            }
            break;
+
+        case 'post_reason':
+            $this->loadReason();
+            if ($this->postReason()) {
+                $this->reason->save();
+                PHPWS_Core::reroute('index.php?module=checkin&tab=reasons');
+            } else {
+                $this->editReason();
+            }
+            break;
            
         case 'staff':
             $this->panel->setCurrentTab('staff');
@@ -116,7 +126,7 @@ class Checkin_Admin extends Checkin {
             PHPWS_Core::reroute('index.php?module=checkin&tab=settings');
             break;
 
-        case 'add_reason':
+        case 'edit_reason':
             $this->loadReason();
             $this->editReason();
             break;
@@ -255,7 +265,7 @@ class Checkin_Admin extends Checkin {
 
         $pt['MESSAGE_LABEL'] = dgettext('checkin', 'Submission message');
         $pt['ADD_REASON'] = PHPWS_Text::secureLink(dgettext('checkin', 'Add reason'), 'checkin',
-                                                   array('aop'=>'add_reason'));
+                                                   array('aop'=>'edit_reason'));
 
         $pager = new DBPager('checkin_reasons', 'Checkin_Reasons');
         $pager->setModule('checkin');
@@ -279,6 +289,15 @@ class Checkin_Admin extends Checkin {
         $form->addHidden('aop', 'post_reason');
         $form->addHidden('reason_id', $reason->id);
 
+        $form->addText('summary', $reason->summary);
+        $form->setSize('summary', 40);
+        $form->setLabel('summary', dgettext('checkin', 'Summary'));
+        $form->setRequired('summary');
+
+        $form->addTextArea('message', $reason->message);
+        $form->setRequired('message');
+        $form->setLabel('message', dgettext('checkin', 'Completion message'));
+
         if ($reason->id) {
             $this->title = dgettext('checkin', 'Update reason');
             $form->addSubmit('go', dgettext('checkin', 'Update'));
@@ -286,6 +305,8 @@ class Checkin_Admin extends Checkin {
             $this->title = dgettext('checkin', 'Add new reason');
             $form->addSubmit('go', dgettext('checkin', 'Add'));
         }
+        $template = $form->getTemplate();
+        $this->content = PHPWS_Template::process($template, 'checkin', 'edit_reason.tpl');
     }
 
     function settings()
@@ -430,6 +451,20 @@ class Checkin_Admin extends Checkin {
         return true;
     }
 
+    function postReason()
+    {
+        $this->reason->summary = $_POST['summary'];
+        $this->reason->message = $_POST['message'];
+        if (empty($this->reason->summary)) {
+            $this->message[] = dgettext('checkin', 'Please enter the summary.');
+        }
+
+        if (empty($this->reason->message)) {
+            $this->message[] = dgettext('checkin', 'Please enter a completion message.');
+        }
+
+        return empty($this->message);
+    }
 }
 
 ?>

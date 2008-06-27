@@ -47,10 +47,12 @@ class Checkin {
     function getReasons($all=false)
     {
         $db = new PHPWS_DB('checkin_reasons');
+        $db->addOrder('summary');
         if (!$all) {
             $db->addColumn('id');
             $db->addColumn('summary');
             $db->setIndexBy('id');
+            return $db->select('col');
         }
         return $db->select();
     }
