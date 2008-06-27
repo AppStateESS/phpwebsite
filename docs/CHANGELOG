@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+27 June 2008
++ added textarea to required_input javascript
++ added slider javascript
+
 23 June 2008
 + Change to url retrieval function. Some servers return a different
   value for redirect_url than the request_uri. Switching them.
