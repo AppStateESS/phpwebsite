@@ -1,3 +1,6 @@
+27 June 2008
++ Removed call to help module. Using new slider javascript instead.
+
 19 June 2008
 + Added cacheQueries to the user pager. Delete was dropping preferences.
 + Added setRequired to username and email in user form.

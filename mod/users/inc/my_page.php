@@ -58,7 +58,9 @@ function my_page()
 
 class User_Settings {
 
-    function userForm(&$user, $message=NULL){
+    function userForm(&$user, $message=NULL)
+    {
+        javascript('jquery');
         $form = new PHPWS_Form;
 
         $form->addHidden('module', 'users');
@@ -71,6 +73,10 @@ class User_Settings {
             $form->setLabel('display_name', dgettext('users', 'Display Name'));
         } else {
             $form->addTplTag('DISPLAY_NAME_LABEL', dgettext('users', 'Display Name'));
+            $tpl['DISPLAY_NAME'] = javascript('slider', array('link' => $user->display_name,
+                                                              'id'   => 'name-info',
+                                                              'message' => dgettext('users', 'Once you change your display name, you may not change it again until reset by the site administrator.')));
+
             $form->addTplTag('DISPLAY_NAME', PHPWS_Help::show_link('users', 'display_name_change', $user->display_name));
         }
 
@@ -81,7 +87,9 @@ class User_Settings {
             $form->setLabel('password1', dgettext('users', 'Password'));
         } else {
             $tpl['PASSWORD1_LABEL'] =  dgettext('users', 'Password');
-            $tpl['PASSWORD1'] = PHPWS_Help::show_link('users', 'no_password', dgettext('users', 'Why can\'t I change my password?'));
+            $tpl['PASSWORD1'] = javascript('slider', array('link' => dgettext('users', 'Why can\'t I change my password?'),
+                                                           'id'   => 'pw-info',
+                                                           'message' => dgettext('users', 'Your account is authorized external to this site. You will need to update it at the source.')));
         }
 
         $form->addText('email', $user->getEmail());
