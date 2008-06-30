@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+30 June 2008
++ Database : inDatabase function was still checking for column
+  existance if not set. Fixed. Thanks Hilmar.
+
 27 June 2008
 + added textarea to required_input javascript
 + added slider javascript

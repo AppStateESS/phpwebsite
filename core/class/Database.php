@@ -34,7 +34,7 @@ class PHPWS_DB {
     var $columns     = null;
     var $qwhere      = null;
     var $indexby     = null;
-    var $group_by     = null;
+    var $group_by    = null;
     var $locked      = null;
 
     /**
@@ -218,7 +218,7 @@ class PHPWS_DB {
 
     function inDatabase($table, $column=null)
     {
-        $table = PHPWS_DB::addPrefix($table);
+        $table = PHPWS_DB::addPrefix(strip_tags($table));
 
         PHPWS_DB::touchDB();
         static $database_info = null;
@@ -234,13 +234,17 @@ class PHPWS_DB {
             }
         }
 
-        $result = $GLOBALS['PHPWS_DB']['connection']->tableInfo(strip_tags($table));
+        $result = $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
         if (PEAR::isError($result)) {
             if ($result->getCode() == DB_ERROR_NEED_MORE_DATA) {
                 return false;
             } else {
                 return $result;
             }
+        }
+
+        if (empty($column)) {
+            return true;
         }
 
         foreach ($result as $colInfo) {
