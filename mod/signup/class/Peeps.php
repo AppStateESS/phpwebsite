@@ -54,37 +54,7 @@ class Signup_Peep {
 
     function getPhone()
     {
-        if (empty($this->phone)) {
-            return null;
-        }
-        $phone_format = SU_PHONE_FORMAT;
-        
-        $number = & $this->phone;
-        
-        $no_array = str_split(strrev($number));
-        $fmt_array = str_split(strrev($phone_format));
-        
-        $number_length = strlen($phone_format);
-        
-        $j=0;
-        for ($i=0; $i < $number_length; $i++) {
-            if ($fmt_array[$i] == 'x') {
-                if (isset($no_array[$j])) {
-                    $new_number_array[] = $no_array[$j];
-                    $j++;
-                } else {
-                    break;
-        }
-            } else {
-                if (isset($no_array[$j + 1])) {
-                    $new_number_array[] = $fmt_array[$i];
-                }
-            }
-        }
-        
-        $new_number_string = implode('', $new_number_array);
-        $new_number_string = strrev($new_number_string);
-        return $new_number_string;
+        return $this->phone;
     }
 
 
@@ -100,7 +70,7 @@ class Signup_Peep {
 
     function setPhone($phone)
     {
-        $this->phone = preg_replace('/\D/', '', $phone);
+        $this->phone = preg_replace('/[^\w\-#\s\.]/', '', $phone);
 
     }
 

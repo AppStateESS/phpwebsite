@@ -1,3 +1,7 @@
+30 June 2008
++ Removed the phone number parsing. Got in the way of extensions and
+  the like.
+
 Version 1.1.1
 -----------------------------------------------------------------
 6 June 2008
