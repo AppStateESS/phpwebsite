@@ -11,6 +11,8 @@ class Checkin {
     var $staff   = null;
     var $visitor = null;
     var $reason  = null;
+    var $status  = null;
+
 
     function loadStaff($id=0, $load_reasons=false)
     {
@@ -26,6 +28,20 @@ class Checkin {
             }
         } else {
             $this->staff = new Checkin_Staff;
+        }
+    }
+
+    function loadStatus($id=0)
+    {
+        PHPWS_Core::initModClass('checkin', 'Status.php');
+
+        if (!$id && !empty($_REQUEST['status_id'])) {
+            $id = (int)$_REQUEST['status_id'];
+        }
+        if ($id) {
+            $this->status = new Checkin_Status($id);
+        } else {
+            $this->status = new Checkin_Status;
         }
     }
 
@@ -61,11 +77,39 @@ class Checkin {
     {
         PHPWS_Core::initModClass('checkin', 'Visitors.php');
         
-        if (!$id && !empty($_REQUEST['visitor_id'])) {
+        if (!$id || !empty($_REQUEST['visitor_id'])) {
             $this->visitor = new Checkin_Visitor;
         } else {
             $this->visitor = new Checkin_Visitor((int)$_REQUEST['visitor_id']);
         }
+    }
+
+    function getStaffList($as_object=false)
+    {
+        $db = new PHPWS_DB('checkin_staff');
+        $db->addWhere('user_id', 'users.id');
+        $db->addColumn('users.display_name');
+        if ($as_object) {
+            PHPWS_Core::initModClass('checkin', 'Staff.php');
+            $db->addColumn('*');
+            return $db->getObjects('Checkin_Staff');
+        } else {
+            $db->addColumn('id');
+            $db->setIndexBy('id');
+            return $db->select('col');
+        }
+    }
+
+    function getStatusList()
+    {
+        static $status_list = null;
+
+        if (!is_array($status_list)) {
+            $db = new PHPWS_DB('checkin_status');
+            $db->setIndexBy('id');
+            $status_list = $db->select();
+        }
+        return $status_list;
     }
 
 }

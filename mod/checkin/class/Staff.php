@@ -9,9 +9,9 @@ class Checkin_Staff {
     var $user_id       = 0;
     var $filter        = null;
     var $filter_type   = 0;
-    var $available     = 0;
+    var $status        = 0;
     var $visitor_id    = 0;
-    var $display_name = null;
+    var $display_name  = null;
     var $_reasons      = null;
 
     function Checkin_Staff($id=0)
@@ -100,6 +100,16 @@ class Checkin_Staff {
         }
 
         return true;
+    }
+
+    function assignRows()
+    {
+        $status_list = Checkin::getStatusList();
+        if (!$this->status) {
+            $tpl['STATUS'] = dgettext('checkin', 'Available for meeting');
+        } else {
+            
+        }
     }
 }
 

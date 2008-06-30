@@ -73,10 +73,11 @@ class Checkin_User extends Checkin {
     function postCheckin()
     {
         $this->loadVisitor();
-        $this->visitor->firstname = $_POST['first_name'];
-        $this->visitor->lastname  = $_POST['last_name'];
-        $this->visitor->reason_id = (int)$_POST['reason'];
 
+        $this->visitor->firstname = trim($_POST['first_name']);
+        $this->visitor->lastname  = trim($_POST['last_name']);
+        $this->visitor->reason    = (int)$_POST['reason'];
+        $this->visitor->assign();
         if (empty($this->visitor->firstname)) {
             $this->message[] = dgettext('checkin', 'Please enter your first name.');
         }
@@ -84,6 +85,7 @@ class Checkin_User extends Checkin {
         if (empty($this->visitor->lastname)) {
             $this->message[] = dgettext('checkin', 'Please enter your last name.');
         }
+
         return empty($this->message);
     }
 }

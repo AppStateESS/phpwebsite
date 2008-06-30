@@ -83,6 +83,12 @@ class Checkin_Admin extends Checkin {
             $this->editStaff();
             break;
 
+        case 'add_status':
+            $this->loadStatus();
+            $this->editStatus();
+            break;
+            
+
         case 'edit_staff':
             $this->loadStaff(null, true);
             $this->editStaff();
@@ -90,6 +96,10 @@ class Checkin_Admin extends Checkin {
 
         case 'search_users':
             $this->searchUsers();
+            break;
+
+        case 'status':
+            $this->statusList();
             break;
 
         case 'update_reason':
@@ -170,6 +180,10 @@ class Checkin_Admin extends Checkin {
         if (Current_User::allow('checking', 'settings')) {
             $tabs['reasons']  = array('title'=>dgettext('checkin', 'Reasons'),
                                       'link'=>$link);
+
+            $tabs['status']   = array('title'=>dgettext('checkin', 'Status'),
+                                      'link'=>$link);
+
             $tabs['settings'] = array('title'=>dgettext('checkin', 'Settings'),
                                       'link'=>$link);
         }
@@ -180,7 +194,16 @@ class Checkin_Admin extends Checkin {
 
     function assign()
     {
+        $this->title = dgettext('checkin', 'Assignment');
+        $staff_list = $this->getStaffList(true);
 
+        if (empty($staff)) {
+            $this->content = dgettext('checkin', 'No staff found');
+        }
+
+        foreach ($staff_list as $staff) {
+            $row = $staff->assignRows();
+        }
     }
 
     function waiting()
@@ -337,6 +360,11 @@ class Checkin_Admin extends Checkin {
         PHPWS_Settings::save('checkin');
     }
 
+    function addStatusLink()
+    {
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Add status'), 'checkin', array('aop'=>'add_status'));
+    }
+
     function addStaffLink()
     {
         return PHPWS_Text::secureLink(dgettext('checkin', 'Add staff member'), 'checkin', array('aop'=>'add_staff'));
@@ -465,6 +493,59 @@ class Checkin_Admin extends Checkin {
 
         return empty($this->message);
     }
+
+    function assignmentLink()
+    {
+        $vars['aop'] = 'assign';
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Assignment page'), 'checkin', $vars);
+    }
+
+    function menu()
+    {
+        $form = new PHPWS_Form('checkin-menu');
+        $form->setMethod('get');
+        $form->addHidden('module', 'checkin');
+        $form->addHidden('aop', 'view_staff');
+
+        $staff_list = $this->getStaffList();
+        $form->addSelect('staff_list', $staff_list);
+        $form->addSubmit('go', dgettext('checkin', 'View staff'));
+
+        $tpl = $form->getTemplate();
+        $tpl['ASSIGN_PAGE'] = $this->assignmentLink();
+        $tpl['TITLE'] = dgettext('checkin', 'Checkin Menu');
+        $content = PHPWS_Template::process($tpl, 'checkin', 'menu.tpl');
+        Layout::add($content, 'checkin', 'checkin-admin');
+    }
+
+    function statusList()
+    {
+        PHPWS_Core::initCoreClass('DBPager.php');
+        PHPWS_Core::initModClass('checkin', 'Status.php');
+        $page_tags['ADD_STATUS']      = $this->addStatusLink();
+        $page_tags['COLOR_LABEL']     = dgettext('checkin', 'Color');
+        $page_tags['AVAILABLE_LABEL'] = dgettext('checkin', 'Available');
+
+        $pager = new DBPager('checkin_status', 'Checkin_Status');
+        $pager->setTemplate('status.tpl');
+        $pager->setModule('checkin');
+        $pager->addRowTags('row_tags');
+        $pager->addPageTags($page_tags);
+        $this->title   = dgettext('checkin', 'Status');
+        $this->content = $pager->get();
+    }
+
+    function editStatus()
+    {
+        $form = new PHPWS_Form('checkin-status');
+        $form->addHidden('module', 'checkin');
+        $form->addHidden('aop', 'post_status');
+        $form->addText('summary', $this->status->summary);
+
+        $this->content = javascript('color_picker', array('input_id'=>'color'));
+
+    }
+
 }
 
 ?>

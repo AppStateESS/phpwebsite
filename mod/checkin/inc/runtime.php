@@ -10,4 +10,9 @@ if (PHPWS_Core::atHome() && PHPWS_Settings::get('checkin', 'front_page')) {
     $checkin->checkinForm();
 }
 
+if (Current_User::allow('checkin')) {
+    PHPWS_Core::initModClass('checkin', 'Checkin_Admin.php');
+    $checkin_admin = new Checkin_Admin;
+    $checkin_admin->menu();
+}
 ?>
