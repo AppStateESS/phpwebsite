@@ -1,0 +1,1 @@
+<a onclick="farb('{rand_id}', '{input_id}')" class="color_pick"><img src="javascript/pick_color/color.png" width="15" height="15" alt="Color icon" /></a><div style="display : none;" id="{rand_id}"></div>

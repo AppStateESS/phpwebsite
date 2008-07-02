@@ -117,6 +117,9 @@ Ganeshji Marwaha
 jCarousel Lite plugin
 http://www.gmarwaha.com/jquery/jcarousellite/index.php
 
+Steven Wittens
+Farbtastic jQuery plugin
+http://www.acko.net/dev/farbtastic
 
 --------------------------------------------------------------------------
 To those who translate, we salute you.

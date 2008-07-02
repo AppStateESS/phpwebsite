@@ -24,6 +24,9 @@ function convert()
     }
 
     $db = Convert::getSourceDB('mod_blockmaker_data');
+    if (!$db) {
+        return _('An error occurred while accessing your mod_blockmaker_data table.'); 
+    }
     $all_blocks = $db->select();
     $db->disconnect();
     Convert::siteDB();

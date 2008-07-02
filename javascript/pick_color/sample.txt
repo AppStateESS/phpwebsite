@@ -1,0 +1,7 @@
+pick color uses Farbtastic; written by Steven Wittens
+
+$form = new PHPWS_Form('my_form');
+$form->addText('color', $current_color);
+$tpl = $form->getTemplate();
+$tpl['PICK_COLOR'] = javascript('pick_color', array('input_id'=>'my_form_color'));
+
