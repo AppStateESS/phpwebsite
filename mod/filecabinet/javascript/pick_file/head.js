@@ -5,6 +5,7 @@ if (!opener) {
     document.location.href = 'index.php';
 }
 
+var confirm_message = '{confirmation}';
 var authkey         = '{authkey}';
 var mw              = '{mw}';
 var mh              = '{mh}';

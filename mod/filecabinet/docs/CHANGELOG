@@ -1,3 +1,7 @@
+2 July 2008
++ confirm message restored to pick_file script.
++ Updated: javascript/pick_file/head.js
+
 23 June 2008
 + Removed cropped column from file_assoc; not needed, file_type covers
   it
