@@ -69,6 +69,31 @@ function signup_update(&$content, $currentVersion)
 + Restricted users cannot create signup sheets.
 + Added search textfield to slot screen.
 + Added missing navigation links to sheet listing.</pre>';
+
+    case version_compare($currentVersion, '1.1.2', '<'):
+        $content[] = '<pre>';
+        $db = new PHPWS_DB('signup_sheet');
+        if (PHPWS_Error::logIfError($db->addTableColumn('contact_email', 'varchar(255) default NULL'))) {
+            $content[] = '--- Failed creating new column on signup_sheet.</pre>';
+            return false;
+        } else {
+            $content[] = '--- contact_email column created successfully on signup_sheet table.';
+        }
+
+        if (PHPWS_Error::logIfError($db->addTableColumn('multiple', 'smallint NOT NULL default 0'))) {
+            $content[] = '--- Failed creating new column on signup_sheet.</pre>';
+            return false;
+        } else {
+            $content[] = '--- "multiple" column created successfully on signup_sheet table.';
+        }
+
+
+        $content[] = '1.1.2 changes
+-------------------
++ Install sql was missing new columns in signup_sheet table.
++ Removed the phone number parsing. Got in the way of extensions and
+  the like.
+</pre>';
     }
     return true;
 }

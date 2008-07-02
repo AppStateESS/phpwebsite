@@ -5,6 +5,8 @@ CREATE TABLE signup_sheet (
     description text,
     start_time int not null default 0,
     end_time int not null default 0,
+    contact_email varchar(255) default null,
+    multiple smallint not null default 0,
     primary key (id)
 );
 

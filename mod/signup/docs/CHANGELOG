@@ -1,3 +1,8 @@
+Version 1.1.2
+-----------------------------------------------------------------
+2 July 2008
++ Install.sql missing new column. Trying again in update.
+
 30 June 2008
 + Removed the phone number parsing. Got in the way of extensions and
   the like.
