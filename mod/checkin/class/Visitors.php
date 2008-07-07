@@ -66,9 +66,9 @@ class Checkin_Visitor {
 
                 foreach ($farray as $val) {
                     switch (1) {
-                        case preg_match('/-/', $val) {
+                    case preg_match('/-/', $val):
                             
-                        }
+                        break;
                     }
                 }
 

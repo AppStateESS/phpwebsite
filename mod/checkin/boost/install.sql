@@ -37,7 +37,7 @@ CREATE TABLE checkin_rtos (
 
 CREATE TABLE checkin_status (
  id INT NOT NULL default 0,
- available SMALLINT NOT NULL default 0,
  color VARCHAR( 15 ) NOT NULL default '',
- summary VARCHAR( 255 ) NOT NULL default ''
+ summary VARCHAR( 255 ) NOT NULL default '',
+ PRIMARY KEY  (id)
 );

@@ -1,11 +1,14 @@
 {ADD_STATUS}
 <table width="100%" cellpadding="5" cellspacing="0">
   <tr>
+    <th>{SUMMARY_SORT}</th>
     <th>{COLOR_LABEL}</th>
-    <th>{AVAILABLE_LABEL}</th>
+    <th>{ACTION_LABEL}</th>
     <th>&#160;</th>
   </tr>
 <!-- BEGIN listrows --><tr>
+      <td>{SUMMARY}</td>
+      <td>{COLOR}</td>
       <td>{ACTION}</td>
    </tr><!-- END listrows -->
 </table>

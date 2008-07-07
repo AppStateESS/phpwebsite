@@ -13,7 +13,8 @@ define('CO_FT_REASON',     2);
 
 
 class Checkin_Admin extends Checkin {
-    var $panel   = null;
+    var $panel     = null;
+    var $use_panel = true;
 
     function Checkin_Admin()
     {
@@ -27,19 +28,54 @@ class Checkin_Admin extends Checkin {
         }
 
         if (isset($_REQUEST['aop'])) {
-            $cmd = $_REQUEST['aop'];
+            if ($_REQUEST['aop'] == 'switch') {
+                if (Current_User::allow('checkin', 'settings')) {
+                    $cmd = 'settings';
+                } elseif (Current_User::allow('checkin', 'assign_visitors')) {
+                    $cmd = 'assign';
+                } else {
+                    $cmd = 'waiting';
+                }
+            } else {
+                $cmd = $_REQUEST['aop'];
+            }
         } elseif ($_REQUEST['tab']) {
             $cmd = $_REQUEST['tab'];
-        } elseif (Current_User::allow('checkin', 'assign_visitors')) {
-            $cmd = 'assign';
         } else {
-            $cmd = 'waiting';
+            PHPWS_Core::errorPage('404');
         }
 
         $js = false;
 
         switch ($cmd) {
+        case 'reassign':
+            // Called via ajax
+            if (Current_User::authorized('checkin')) {
+                if (isset($_GET['staff_id']) && $_GET['staff_id'] >= 0  && isset($_GET['visitor_id'])) {
+                    $db = new PHPWS_DB('checkin_visitor');
+                    $db->addValue('assigned', (int)$_GET['staff_id']);
+                    $db->addWhere('id', (int)$_GET['visitor_id']);
+                    PHPWS_Error::logIfError($db->update());
+                    printf('staff_id %s, visitor_id %s', $_GET['staff_id'], $_GET['visitor_id']);
+                }
+            }
+            exit();
+            break;
+
         case 'assign':
+            $this->panel->setCurrentTab('assign');
+            $this->assign();
+            break;
+
+        case 'hide_panel':
+            PHPWS_Cookie::write('checkin_hide_panel', 1); 
+            $this->panel->setCurrentTab('assign');
+            $this->use_panel = false;
+            $this->assign();
+            break;
+
+        case 'show_panel':
+            PHPWS_Cookie::delete('checkin_hide_panel');
             $this->panel->setCurrentTab('assign');
             $this->assign();
             break;
@@ -78,12 +114,8 @@ class Checkin_Admin extends Checkin {
             $this->staff();
             break;
 
-        case 'add_staff':
-            $this->loadStaff();
-            $this->editStaff();
-            break;
 
-        case 'add_status':
+        case 'edit_status':
             $this->loadStatus();
             $this->editStatus();
             break;
@@ -111,16 +143,31 @@ class Checkin_Admin extends Checkin {
             break;
 
         case 'post_staff':
-            if (Current_User::authorized('checkin', 'edit_staff')) {
-                if ($this->postStaff()) {
-                    // save post
-                    $this->staff->save();
-                    PHPWS_Core::reroute('index.php?module=checkin&tab=staff');
-                } else {
-                    // post failed
-                    $this->loadStaff();
-                    $this->editStaff();
-                }
+            if (!Current_User::authorized('checkin', 'edit_staff')) {
+                Current_User::disallow();
+            }
+            if ($this->postStaff()) {
+                // save post
+                $this->staff->save();
+                PHPWS_Core::reroute('index.php?module=checkin&tab=staff');
+            } else {
+                // post failed
+                $this->loadStaff();
+                $this->editStaff();
+            }
+            
+            break;
+
+        case 'post_status':
+            if (!Current_User::authorized('checkin', 'settings')) {
+                Current_User::disallow();
+            } 
+            $this->loadStatus();
+            if (!$this->postStatus()) {
+                $this->editStatus();
+            } else {
+                PHPWS_Error::logIfError($this->status->save());
+                PHPWS_Core::reroute('index.php?module=checkin&tab=status');
             }
             break;
 
@@ -156,7 +203,18 @@ class Checkin_Admin extends Checkin {
         if ($js) {
             Layout::nakedDisplay($this->content, $this->title);
         } else {
-            Layout::add(PHPWS_ControlPanel::display($this->panel->display($this->content, $this->title, $this->message)));
+            if (is_array($this->message)) {
+                $this->message = implode('<br />', $this->message);
+            }
+            if ($this->use_panel) {
+                Layout::add(PHPWS_ControlPanel::display($this->panel->display($this->content, $this->title, $this->message)));
+            } else {
+                $tpl['TITLE'] = & $this->title;
+                $tpl['CONTENT'] = & $this->content;
+                $tpl['MESSAGE'] = & $this->message;
+
+                Layout::add(PHPWS_Template::process($tpl, 'checkin', 'main.tpl'));
+            }
         }
     }
 
@@ -167,17 +225,16 @@ class Checkin_Admin extends Checkin {
         $tabs['waiting'] = array('title'=>dgettext('checkin', 'Waiting'),
                                  'link'=>$link);
 
-        $tabs['staff'] =  array('title'=>dgettext('checkin', 'Staff'),
-                                 'link'=>$link);
-
         if (Current_User::allow('checkin', 'assign_filters')) {
             $tabs['assign'] = array('title'=>dgettext('checkin', 'Assignment'),
                                     'link'=>$link);
         }
 
 
-
         if (Current_User::allow('checking', 'settings')) {
+            $tabs['staff'] =  array('title'=>dgettext('checkin', 'Staff'),
+                                    'link'=>$link);
+
             $tabs['reasons']  = array('title'=>dgettext('checkin', 'Reasons'),
                                       'link'=>$link);
 
@@ -194,20 +251,108 @@ class Checkin_Admin extends Checkin {
 
     function assign()
     {
+        javascript('modules/checkin/reassign', array('authkey'=>Current_User::getAuthKey()));
         $this->title = dgettext('checkin', 'Assignment');
-        $staff_list = $this->getStaffList(true);
+        $this->loadVisitorList(null, true);
+        $this->loadStaffList();
 
-        if (empty($staff)) {
-            $this->content = dgettext('checkin', 'No staff found');
+        // id and name only for drop down menu
+        $staff_list = $this->getStaffList();
+        $staff_list = array_reverse($staff_list, true);
+        $staff_list[0] = dgettext('checkin', 'Unassigned');
+        $staff_list[-1] = dgettext('checkin', '-- Move visitor --');
+        $staff_list = array_reverse($staff_list, true);
+
+        if (empty($this->staff_list)) {
+            $this->content = dgettext('checkin', 'No staff found.');
+            return;
         }
 
-        foreach ($staff_list as $staff) {
-            $row = $staff->assignRows();
+        $status_list = $this->getStatusList();
+        // unassigned visitors
+
+        $staff = new Checkin_Staff;
+        $staff->display_name = dgettext('checkin', 'Unassigned');
+        
+        $row['VISITORS'] = $this->listVisitors($staff, $staff_list);
+        $row['COLOR']    = '#ffffff';
+        $row['DISPLAY_NAME'] = $staff->display_name;
+        $tpl['rows'][] = $row;
+
+        // Go through staff and list assignments
+        foreach ($this->staff_list as $staff) {
+            $row['VISITORS'] = $this->listVisitors($staff, $staff_list);
+            $row['COLOR']    = $status_list[$staff->status]['color'];
+            $row['DISPLAY_NAME'] = $staff->display_name;
+            $tpl['rows'][] = $row;
         }
+        $tpl['VISITORS_LABEL'] = dgettext('checkin', 'Visitors');
+        $tpl['DISPLAY_NAME_LABEL'] = dgettext('checkin', 'Staff name');
+        $tpl['TIME_WAITING_LABEL'] = dgettext('checkin', 'Time waiting');
+
+        if (PHPWS_Cookie::read('checkin_hide_panel') || $this->use_panel == false) {
+            $this->use_panel = false;
+            $tpl['HIDE_PANEL'] = PHPWS_Text::moduleLink(dgettext('checkin', 'Show panel'), 'checkin', array('aop'=>'show_panel'));
+        } else {
+            $tpl['HIDE_PANEL'] = PHPWS_Text::moduleLink(dgettext('checkin', 'Hide panel'), 'checkin', array('aop'=>'hide_panel'));
+        }
+
+
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'visitors.tpl');
+    }
+
+    function listVisitors($staff, $staff_list)
+    {
+        $vis_list = & $this->visitor_list[$staff->id];
+        if (empty($vis_list)) {
+            return dgettext('checkin', 'No visitors waiting');
+        }
+
+        unset($staff_list[$staff->id]);
+
+        $form = new PHPWS_Form;
+
+        if (is_array($vis_list)) {
+            foreach ($vis_list as $vis) {
+                $tpl['NAME'] = sprintf('%s %s', $vis->firstname, $vis->lastname);
+                $tpl['WAITING'] = $this->timeWaiting($vis->arrival_time);
+                $select = sprintf('visitor_%s', $vis->id);
+                $form->addSelect($select, $staff_list);
+                $form->setExtra($select, sprintf('onchange="reassign(this, %s)"', $vis->id));
+                $tpl['MOVE'] = $form->get($select);
+                $row['list'][] = $tpl;
+            }
+        } else {
+            $tpl['NAME'] = sprintf('%s %s', $vis_list->firstname, $vis_list->lastname);
+            $tpl['WAITING'] = $this->timeWaiting($vis_list->arrival_time);
+            $select = sprintf('visitor_%s', $vis_list->id);
+            $form->addSelect($select, $staff_list);
+            $form->setExtra($select, sprintf('onchange="reassign(this, %s)"', $vis_list->id));
+            $tpl['MOVE'] = $form->get($select);
+            $row['list'][] = $tpl;
+        }
+        $row['NAME_LABEL'] = dgettext('checkin', 'Name');
+        $row['WAITING_LABEL'] = dgettext('checkin', 'Time waiting');
+        return PHPWS_Template::process($row, 'checkin', 'queue.tpl');
     }
 
     function waiting()
     {
+        if (!$this->current_staff) {
+            $this->content = dgettext('checkin', 'You are not a staff member.');
+        }
+        $this->loadVisitorList($this->current_staff);
+        $this->loadStaffList();
+
+        $this->title = dgettext('checkin', 'Waiting list');
+        if (empty($this->staff_list)) {
+            $this->content = dgettext('checkin', 'Not staff in system');
+            return;
+        }
+
+        foreach ($this->staff_list as $staff) {
+
+        }
 
     }
 
@@ -362,12 +507,12 @@ class Checkin_Admin extends Checkin {
 
     function addStatusLink()
     {
-        return PHPWS_Text::secureLink(dgettext('checkin', 'Add status'), 'checkin', array('aop'=>'add_status'));
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Add status'), 'checkin', array('aop'=>'edit_status'));
     }
 
     function addStaffLink()
     {
-        return PHPWS_Text::secureLink(dgettext('checkin', 'Add staff member'), 'checkin', array('aop'=>'add_staff'));
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Add staff member'), 'checkin', array('aop'=>'edit_staff'));
     }
     
     
@@ -524,13 +669,14 @@ class Checkin_Admin extends Checkin {
         PHPWS_Core::initModClass('checkin', 'Status.php');
         $page_tags['ADD_STATUS']      = $this->addStatusLink();
         $page_tags['COLOR_LABEL']     = dgettext('checkin', 'Color');
-        $page_tags['AVAILABLE_LABEL'] = dgettext('checkin', 'Available');
+        $page_tags['ACTION_LABEL'] = dgettext('checkin', 'Action');
 
         $pager = new DBPager('checkin_status', 'Checkin_Status');
         $pager->setTemplate('status.tpl');
         $pager->setModule('checkin');
         $pager->addRowTags('row_tags');
         $pager->addPageTags($page_tags);
+        $pager->addSortHeader('summary', dgettext('checkin', 'Summary'));
         $this->title   = dgettext('checkin', 'Status');
         $this->content = $pager->get();
     }
@@ -538,12 +684,59 @@ class Checkin_Admin extends Checkin {
     function editStatus()
     {
         $form = new PHPWS_Form('checkin-status');
+        if ($this->status->id) {
+            $this->title = dgettext('checkin', 'Update status');
+        } else {
+            $this->title = dgettext('checkin', 'Add status');
+        }
+
         $form->addHidden('module', 'checkin');
         $form->addHidden('aop', 'post_status');
+        $form->addHidden('status_id', $this->status->id);
+
         $form->addText('summary', $this->status->summary);
+        $form->setLabel('summary', dgettext('checkin', 'Summary'));
+        $form->setSize('summary', 40);
+        $form->setRequired('summary');
 
-        $this->content = javascript('color_picker', array('input_id'=>'color'));
+        $form->addText('color', $this->status->color);
+        $form->setLabel('color', dgettext('checkin', 'Color'));
+        $form->setSize('color', 7, 7);
+        $form->setRequired('color');
 
+        $form->addSelect('available', array(1 => dgettext('checkin', 'Occupied with visitor'),
+                                            2 => dgettext('checkin', 'Unavailable')));
+        $form->setMatch('available', $this->status->available);
+        $form->setLabel('available', dgettext('checkin', 'Availability'));
+
+        $form->addSubmit(dgettext('checkin', 'Save status'));
+
+        $tpl = $form->getTemplate();
+        $tpl['PICK_COLOR'] = javascript('pick_color', array('input_id'=>'checkin-status_color'));
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'edit_status.tpl');
+    }
+
+    function postStatus()
+    {
+        if (empty($_POST['summary'])) {
+            $this->message[] = dgettext('checkin', 'Missing a summary');
+        } else {
+            $this->status->setSummary($_POST['summary']);
+        }
+
+        if (empty($_POST['color'])) {
+            $this->message[] = dgettext('checkin', 'Missing color code');
+        } elseif (!$this->status->setColor($_POST['color'])) {
+            $this->message[] = dgettext('checkin', 'Unacceptable color code');
+        }
+
+        $this->status->available = (int)$_POST['available'];
+
+        if ($this->message) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }

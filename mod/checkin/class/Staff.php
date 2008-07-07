@@ -8,6 +8,12 @@ class Checkin_Staff {
     var $id            = 0;
     var $user_id       = 0;
     var $filter        = null;
+    /**
+     * 0 = none
+     * CO_FT_LAST_NAME = last name regexp
+     * CO_FT_REASON    = by reason id
+     */
+    var $f_regexp      = null;
     var $filter_type   = 0;
     var $status        = 0;
     var $visitor_id    = 0;
@@ -51,8 +57,95 @@ class Checkin_Staff {
 
     function parseFilter($filter)
     {
-        $this->filter = $filter;
+        if (!$this->filter_type || $this->filter_type == CO_FT_REASON) {
+            $this->filter   = null;
+            $this->f_regexp = null;
+        } else {
+            $this->filter   = $filter;
+            $this->f_regexp = $this->decodeFilter($filter);
+        }
     }
+
+    function decodeFilter($filter)
+    {
+        $filter = strtolower(str_replace(' ', '', $filter));
+        $farray = explode(',', $filter);
+
+        foreach ($farray as $val) {
+            $subval = explode('-', $val);
+            switch (1) {
+            case strlen($val) == 1:
+                $final[] = $val;
+                break;
+
+            case preg_match('/^\w{1}-\w{1}$/', $val):
+                $final[] = "[$val]";
+                break;
+
+            case preg_match('/^\w{2}-\w{2}$/', $val):
+                if (substr($subval[0], 0, 1) == substr($subval[1], 0, 1)) {
+                    $final[] = sprintf('%s[%s-%s]', substr($subval[0], 0, 1),
+                                       substr($subval[0], 1, 1),
+                                       substr($subval[1], 1, 1));
+                } else {
+                    $char1 = substr($subval[0], 0, 1);
+                    $char2 = substr($subval[0], 1, 1);
+                    if ($char2 == 'a') {
+                        $final[] = $char1;
+                    } else {
+                        $final[] = sprintf('%s[a-%s]', $char1, $char2);
+                    }
+
+                    $char3 = substr($subval[1], 0, 1);
+                    $char4 = substr($subval[1], 1, 1);
+
+                    if ($char4 == 'a') {
+                        $final[] = $subval[1];
+                    } else {
+                        $final[] = sprintf('%s[a-%s]', $char3, $char4);
+                    }
+                }
+                break;
+
+            case preg_match('/^\w{1}-\w{2}$/', $val):
+                $final[] = $subval[0];
+                $char1 = substr($subval[1], 0, 1);
+                $char2 = substr($subval[1], 1, 1);
+                if ($char2 == 'a') {
+                    $final[] = $subval[1];
+                } else {
+                    $final[] = sprintf('%s[a-%s]', $char1, $char2);
+                }
+                break;
+
+            case preg_match('/^\w{2}-\w{1}$/', $val):
+                $char1 = substr($subval[0], 0, 1);
+                $char2 = substr($subval[0], 1, 1);
+                $char3 = substr($subval[1], 0, 1);
+                if ($char2 == 'z') {
+                    $final[] = $subval[0];
+                } else {
+                    $final[] = sprintf('%s[%s-z]', $char1, $char2);
+                }
+
+                $start_char = (int)ord($char1);
+                $final_char = (int)ord($char3);            
+                if ($final_char - $start_char == 1) {
+                    $final[] = $subval[1];
+                } else {
+                    for ($i = $start_char; $i < $final_char; $i++);
+                    $final[] = sprintf('[%s-%s]', chr($start_char + 1), chr($i));
+                }
+                break;
+     
+            default:
+                $final[] = $val;
+                break;
+            }
+        }
+        return implode('|', $final);
+    }
+
 
     function row_tags()
     {
@@ -100,16 +193,6 @@ class Checkin_Staff {
         }
 
         return true;
-    }
-
-    function assignRows()
-    {
-        $status_list = Checkin::getStatusList();
-        if (!$this->status) {
-            $tpl['STATUS'] = dgettext('checkin', 'Available for meeting');
-        } else {
-            
-        }
     }
 }
 
