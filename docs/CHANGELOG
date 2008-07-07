@@ -2,10 +2,14 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+7 July 2008
++ getObjects with setIndexBy now works better if you have identical indices.
+
 2 July 2008
 + Added farbtastic color picker
 + Added farbtastic creator to CREDITS
 + Error message added to block conversion.
++ Updated: javascript/pick_color/
 
 30 June 2008
 + Database : inDatabase function was still checking for column

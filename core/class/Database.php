@@ -2215,6 +2215,7 @@ class PHPWS_DB {
         $num_args = func_num_args();
         $args = func_get_args();
         array_shift($args);
+
         foreach ($result as $indexby => $itemResult) {
             $genClass = new $class_name;
 
@@ -2223,8 +2224,16 @@ class PHPWS_DB {
                 call_user_func_array(array(&$genClass, $class_name), $args);
             }
 
-            PHPWS_Core::plugObject($genClass, $itemResult);
-            $items[$indexby] = $genClass;
+            if (isset($itemResult[0]) && is_array($itemResult[0])) {
+                foreach ($itemResult as $key=>$sub) {
+                    $genClass = new $class_name;
+                    PHPWS_Core::plugObject($genClass, $sub);
+                    $items[$indexby][] = $genClass;
+                }
+            } else {
+                PHPWS_Core::plugObject($genClass, $itemResult);
+                $items[$indexby] = $genClass;
+            }
         }
 
         return $items;
