@@ -1,0 +1,15 @@
+.checkin-form {
+ display : none;
+ position : absolute;
+ background-color : white;
+ border : 1px solid black;
+ padding : 4px;
+}
+
+.checkin-form input {
+ font-size : 10px;
+}
+
+.note-link {
+ cursor : pointer;
+}

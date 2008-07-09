@@ -5,5 +5,6 @@
 <th>Action</th>
 </tr>
 <!-- BEGIN rows --><tr style="background-color : {COLOR}">
-<td>{DISPLAY_NAME}</td><td>{VISITORS}</td><td>&nbsp;</td></tr><!-- END rows -->
+<td>{DISPLAY_NAME}</td>
+<td>{VISITORS}</td><td>&nbsp;</td></tr><!-- END rows -->
 </table>

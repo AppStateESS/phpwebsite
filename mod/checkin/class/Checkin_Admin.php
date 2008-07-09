@@ -13,8 +13,9 @@ define('CO_FT_REASON',     2);
 
 
 class Checkin_Admin extends Checkin {
-    var $panel     = null;
-    var $use_panel = true;
+    var $panel         = null;
+    var $use_panel     = true;
+    var $current_staff = null;
 
     function Checkin_Admin()
     {
@@ -67,6 +68,12 @@ class Checkin_Admin extends Checkin {
             $this->assign();
             break;
 
+        case 'post_note':
+            $this->loadVisitor();
+            $this->saveNote();
+            PHPWS_Core::goBack();
+            break;
+
         case 'hide_panel':
             PHPWS_Cookie::write('checkin_hide_panel', 1); 
             $this->panel->setCurrentTab('assign');
@@ -82,6 +89,7 @@ class Checkin_Admin extends Checkin {
 
         case 'waiting':
             $this->panel->setCurrentTab('waiting');
+            $this->loadCurrentStaff();
             $this->waiting();
             break;
             
@@ -310,26 +318,14 @@ class Checkin_Admin extends Checkin {
 
         unset($staff_list[$staff->id]);
 
-        $form = new PHPWS_Form;
+
 
         if (is_array($vis_list)) {
             foreach ($vis_list as $vis) {
-                $tpl['NAME'] = sprintf('%s %s', $vis->firstname, $vis->lastname);
-                $tpl['WAITING'] = $this->timeWaiting($vis->arrival_time);
-                $select = sprintf('visitor_%s', $vis->id);
-                $form->addSelect($select, $staff_list);
-                $form->setExtra($select, sprintf('onchange="reassign(this, %s)"', $vis->id));
-                $tpl['MOVE'] = $form->get($select);
-                $row['list'][] = $tpl;
+                $row['list'][] = $vis->row($staff_list);
             }
         } else {
-            $tpl['NAME'] = sprintf('%s %s', $vis_list->firstname, $vis_list->lastname);
-            $tpl['WAITING'] = $this->timeWaiting($vis_list->arrival_time);
-            $select = sprintf('visitor_%s', $vis_list->id);
-            $form->addSelect($select, $staff_list);
-            $form->setExtra($select, sprintf('onchange="reassign(this, %s)"', $vis_list->id));
-            $tpl['MOVE'] = $form->get($select);
-            $row['list'][] = $tpl;
+            $row['list'][] = $vis_list->row();
         }
         $row['NAME_LABEL'] = dgettext('checkin', 'Name');
         $row['WAITING_LABEL'] = dgettext('checkin', 'Time waiting');
@@ -338,22 +334,30 @@ class Checkin_Admin extends Checkin {
 
     function waiting()
     {
+        Layout::addStyle('checkin');
+        javascript('modules/checkin/send_note/');
         if (!$this->current_staff) {
             $this->content = dgettext('checkin', 'You are not a staff member.');
         }
-        $this->loadVisitorList($this->current_staff);
-        $this->loadStaffList();
-
+        $this->loadVisitorList($this->current_staff->id);
+        
         $this->title = dgettext('checkin', 'Waiting list');
-        if (empty($this->staff_list)) {
-            $this->content = dgettext('checkin', 'Not staff in system');
-            return;
+        if (empty($this->visitor_list)) {
+            $tpl['MESSAGE'] = dgettext('checkin', 'You currently do not have any visitors.');
+            $this->loadVisitorList(0);
+            if (!empty($this->visitor_list)) {
+                $tpl['MESSAGE'] .= '<br />' . sprintf(dgettext('checkin', 'There are %s unassigned visitors.'), count($this->visitor_list));
+            }
+        } else {
+            foreach ($this->visitor_list as $vis) {
+                $row = $links = array();
+                $row = $vis->row();
+                $tpl['list'][] = $row;
+            }
         }
-
-        foreach ($this->staff_list as $staff) {
-
-        }
-
+        $tpl['NAME_LABEL'] = dgettext('checkin', 'Name / Notes');
+        $tpl['WAITING_LABEL'] = dgettext('checkin', 'Time waiting');
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'waiting.tpl');
     }
 
     function staff()
@@ -739,6 +743,22 @@ class Checkin_Admin extends Checkin {
         }
     }
 
+    function loadCurrentStaff()
+    {
+        PHPWS_Core::initModClass('checkin', 'Staff.php');
+        if (empty($this->current_staff)) {
+            $staff = new Checkin_Staff(Current_User::getId());
+            if ($staff->id) {
+                $this->current_staff = & $staff;
+            }
+        }
+    }
+
+    function saveNote()
+    {
+        $this->visitor->note = strip_tags(trim($_POST['note_body']));
+        PHPWS_Error::logIfError($this->visitor->save());
+    }
 }
 
 ?>

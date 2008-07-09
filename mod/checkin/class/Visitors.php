@@ -75,4 +75,81 @@ class Checkin_Visitor {
             }
         }
     }
+
+    function noteLink()
+    {
+        static $form_id = 0;
+        $form_id++;
+        $form = new PHPWS_Form('f_' . $form_id);
+        $form->addHidden('module', 'checkin');
+        $form->addHidden('aop', 'post_note');
+        $form->addHidden('visitor_id', $this->id);
+        $tpl = $form->getTemplate();
+        $tpl['NOTE'] = $this->note;
+
+        $tpl['NOTE_LINK'] = dgettext('checkin', 'Note');
+        $tpl['BUTTON'] = dgettext('checkin', 'Send');
+        $tpl['CLOSE'] = dgettext('checkin', 'Close');
+        $tpl['TITLE'] = sprintf('Note: %s %s', $this->firstname,$this->lastname);
+        return PHPWS_Template::process($tpl, 'checkin', 'note.tpl');
+    }
+
+    function row($staff_list=null)
+    {
+        static $meeting = 0;
+
+        $form = new PHPWS_Form;
+        $tpl['NAME'] = sprintf('%s %s', $this->firstname, $this->lastname);
+        $tpl['WAITING'] = $this->timeWaiting();
+        if ($staff_list) {
+            $select = sprintf('visitor_%s', $this->id);
+            $form->addSelect($select, $staff_list);
+            $form->setExtra($select, sprintf('onchange="reassign(this, %s)"', $this->id));
+            $tpl['MOVE'] = $form->get($select);
+        }
+
+        if ($this->note) {
+            $tpl['NOTE'] = $this->note;
+        }
+
+        $vars['aop'] = 'start_meeting';
+        $vars['visitor_id'] = $this->id;
+
+        if (!$meeting) {
+            $links[] = PHPWS_Text::secureLink(dgettext('checkin', 'Start meeting'), 'checkin', $vars);
+            $meeting = 1;
+        }
+
+        $links[] = $this->noteLink();
+        $tpl['ACTION'] = implode(' | ', $links);
+        return $tpl;
+    }
+
+    function timeWaiting()
+    {
+        $rel = time() - $this->arrival_time;
+
+        $hours = floor( $rel / 3600);
+        if ($hours) {
+            $rel = $rel % 3600;
+        }
+
+        $mins = floor( $rel / 60);
+
+        if ($hours) {
+            $waiting[] = sprintf(dngettext('checkin', '%s hour', '%s hours', $hours), $hours);
+        }
+
+        if ($mins) {
+            $waiting[] = sprintf(dngettext('checkin', '%s minute', '%s minutes', $mins), $mins);
+        }
+
+        if (!isset($waiting)) {
+            $waiting[] = dgettext('checkin', 'Just arrived');
+        }
+
+        return implode(', ', $waiting);
+    }
+
+
 }

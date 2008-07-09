@@ -14,7 +14,7 @@ class Checkin {
     var $status        = null;
     var $visitor_list  = null;
     var $staff_list    = null;
-    var $current_staff = 0;
+
 
     /**
      * staff_id = 0
@@ -30,7 +30,7 @@ class Checkin {
         if (isset($staff_id)) {
             $db->addWhere('assigned', $staff_id);
         }
-        $db->addOrder('arrival_time desc');
+        $db->addOrder('arrival_time asc');
         $result = $db->getObjects('Checkin_Visitor');
         //        test($result);
         if (!PHPWS_Error::logIfError($result)) {
@@ -115,8 +115,12 @@ class Checkin {
     function loadVisitor($id=0)
     {
         PHPWS_Core::initModClass('checkin', 'Visitors.php');
-        
-        if (!$id || !empty($_REQUEST['visitor_id'])) {
+
+        if (!$id && isset($_REQUEST['visitor_id'])) {
+            $id = (int)$_REQUEST['visitor_id'];
+        }
+
+        if (!$id) {
             $this->visitor = new Checkin_Visitor;
         } else {
             $this->visitor = new Checkin_Visitor((int)$_REQUEST['visitor_id']);
@@ -158,31 +162,6 @@ class Checkin {
         return $status_list;
     }
 
-    function timeWaiting($timestamp)
-    {
-        $rel   = time() - $timestamp;
 
-        $hours = floor( $rel / 3600);
-        if ($hours) {
-            $rel = $rel % 3600;
-        }
-
-        $mins = floor( $rel / 60);
-
-        if ($hours) {
-            $waiting[] = sprintf(dngettext('checkin', '%s hour', '%s hours', $hours), $hours);
-        }
-
-        if ($mins) {
-            $waiting[] = sprintf(dngettext('checkin', '%s minute', '%s minutes', $mins), $mins);
-        }
-
-        if (!isset($waiting)) {
-            $waiting[] = dgettext('checkin', 'Just arrived');
-        }
-
-        return implode(', ', $waiting);
-
-    }
 }
 ?>
