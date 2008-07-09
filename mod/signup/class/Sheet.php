@@ -130,6 +130,7 @@ class Signup_Sheet {
             $db->addColumn('signup_slots.*');
             $db->addColumn('signup_peeps.id', false, '_filled', true);
             $db->addJoin('left', 'signup_slots', 'signup_peeps', 'id', 'slot_id');
+            $db->addWhere('signup_peeps.registered', 1);
             $db->addGroupBy('signup_slots.id');
             $result = $db->getObjects('Signup_Slot');
         }
