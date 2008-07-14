@@ -1,0 +1,20 @@
+/* --------------- IE 7 CSS Hacks ------------- */
+
+img.float-left, img.float-right {
+    display : inline;
+}
+
+#top-menu, #user-login, .box-title {
+   zoom : 1;
+}
+
+.menu-admin-link {
+    display : none;
+}
+
+/* IE7 sometimes stretches buttons out. not sure why */
+/*
+input[type="submit"], input[type="button"]{
+  width : 150px;
+}
+*/

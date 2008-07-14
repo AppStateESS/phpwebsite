@@ -1,0 +1,355 @@
+body {
+    font-family: "Lucida Grande", Geneva, Verdana, Lucida, Arial, Helvetica, sans-serif;
+    font-size: 90%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    border: 0;           /* This removes the border around the viewport in old versions of IE */
+    min-width: 600px;    /* Minimum width of layout - remove line if not required */
+                        /* The min-width property does not work in old versions of Internet Explorer */
+}
+
+
+/*---- Main content areas ----*/
+
+#mast
+{
+	padding: 0;
+	margin: 0;
+}
+
+#banners
+{
+	float: right;
+}
+
+#header
+{
+	font-weight: bold;
+}
+
+#header .padding
+{
+	padding: .5em 1em .5em 1em;
+}
+
+#top-menu {
+    font-size: 0.8em;
+    text-align: right;
+}
+
+#top-menu .padding
+{
+	padding: .5em 1em .5em 1em;
+}
+
+/* left column */
+.col2 {
+    font-size: 0.85em;
+}
+
+/* right column */
+.col3 {
+    font-size: 0.85em;
+}
+
+/* center column */
+.col1 {
+    font-size: 1.0em;
+}
+
+#bottom
+{
+    font-size: 0.9em;
+}
+
+#footer {
+    font-size: 0.7em;
+}
+
+#footer .padding
+{
+	padding: .25em 1em .25em 1em;
+}
+
+
+/*---- Special boxes ----*/
+
+#search-box
+{
+    text-align: center;
+}
+
+.controlpanel ul.tabmenu {
+    margin: 0px;
+    padding: 0px;
+    padding-left: 8px;
+}
+
+
+
+/*---- The basics ----*/
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Georgia, Times, serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size:  1.3em;
+}
+
+h2 {
+    font-size:  1.2em;
+}
+
+h3 {
+    font-size:  1.1em;
+}
+
+h4, h5, h6 {
+    font-size:  1.0em;
+}
+
+pre {
+    font-size: 1.0em;
+}
+
+strong {
+    font-weight: bold;
+}
+
+q {
+    display: block;
+    padding: 5px;
+    font-size: 90%;
+}
+
+blockquote {
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+}
+
+fieldset {
+    margin: 10px;
+    padding: 10px;
+}
+
+legend {
+    font-style: italic;
+    font-size: 110%;
+}
+
+img {
+    border-style: none;
+}
+
+img.float-left {
+    float: left;
+    margin: 0px 10px 10px 0px;
+    display: inline;
+}
+
+img.float-right {
+    float: right;
+    margin: 0px 0px 10px 10px;
+    display: inline;
+}
+
+
+
+/* ----------- Form styles ----------- */
+
+form {
+     margin: 0;
+     padding: 0;
+}
+
+input, textarea {
+    font-family: inherit;
+    font-size: 9pt;
+    padding: 1px 2px;
+}
+
+select[multiple="multiple"] {
+    padding: 1px 2px 1px 2px;
+}
+
+ul.no-bullet {
+   list-style-type: none;
+}
+
+.required-input {
+   color: red;
+   background-color: inherit;
+   font-size: 1.3em;
+}
+
+
+/* ------------- Table ------------- */
+
+table {
+      border-collapse: collapse;
+}
+
+th {
+    font-weight: bold;
+    font-family: Georgia, Times, serif;
+    text-align: left;
+}
+
+td {
+    vertical-align: top;
+}
+
+/* ---------- Classes ---------- */
+
+fieldset.quote {
+    border: 1px solid black;
+}
+
+fieldset.quote legend {
+    font-style: italic;
+    font-weight: normal;
+    font-size: inherit;
+}
+
+.spoiler {
+    background-color: black;
+    color: black;
+}
+
+.error {
+    color: #cf2626;
+    font-weight: bold;
+}
+
+
+table.form-table {
+    margin: 4px;
+}
+
+table.form-table td {
+    padding: 4px;
+    vertical-align: top;
+}
+
+.form-table label {
+    font-weight: bold;
+    margin-right: 20px;
+    color: black;
+}
+
+
+.top-label label {
+    font-weight: bold;
+}
+
+
+.clear {
+    clear: both;
+}
+
+.padded {
+   padding: .8em;
+}
+
+.smaller, .smaller input, .smaller select {
+   font-size: 0.8em;
+}
+
+.larger {
+   font-size: 1.2em;
+}
+
+.align-center {
+   text-align: center;
+}
+
+.align-right {
+   text-align: right;
+}
+
+.align-left {
+   text-align: left;
+}
+
+/* ---------------- Box definitions -------------- */
+
+.box {
+    margin-bottom: 10px;
+}
+
+.col1 .box-title
+{
+    text-align: right;
+}
+
+.box-title, .box-content, .box-footer {
+    padding: 8px;
+
+}
+
+.entry-summary, .webpage-content, .webpage-summary {
+   /* prevents float overlap */
+    overflow: hidden;
+}
+
+
+abbr {
+    border: none;
+}
+
+
+div.webpage-image, div.entry-image{
+   float: right;
+   display: inline;
+   margin: 0 0 10px 10px;                  
+}
+
+.move-popup {
+   font-size: .8em;
+   margin: 0px;
+   padding: 0px;
+}
+
+.layout-variable {
+   padding: 4px;
+}
+
+.layout-variable legend {
+   font-size: .9em;
+}
+
+
+/* ----------- Compliant ------------ */
+code {
+    border: 1px solid #C0C0C0;
+    display: block;
+    overflow:auto;
+    background-color: white;
+    height: 200px;
+    white-space: pre;
+}
+
+/* Uncommenting the below may break CSS compliancy but will
+improve the appearence of the <code> tag in different browsers.
+Your choice. Please experiment */
+
+code {
+/* white-space: pre-wrap;      */  /* css-3 */
+/* white-space: -moz-pre-wrap; */  /* Mozilla, since 1999 */
+/* white-space: -pre-wrap;     */  /* Opera 4-6 */
+/* white-space: -o-pre-wrap;   */  /* Opera 7 */
+/* word-wrap: break-word;      */  /* Internet Explorer 5.5+ */
+}
+
+
+/*---- Module specific  ----*/
+
+/*---- Blog ----*/
+#blog-list-view {
+   margin-bottom: 2em;
+}
+
