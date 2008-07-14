@@ -435,6 +435,18 @@ The default parameter is true. This will take a snapshot of the
 current order, limit, and search. When the user returns, the snapshot
 will be loaded.
 
+Setting Cache identifier
+------------------------------------------------------------------
+DBPager's caching system uses the template location as its index. If
+you are running different processes on the same template, you may not
+want your caching to pass from page to page.
+
+To prevent this, label each process using setCacheIdentifier.
+Example:
+
+$pager1->setCacheIdentifier('process1');
+$pager2->setCacheIdentifier('process2');
+
 Grabbing the url
 -------------------------------------------------------------------
 If you want to store the url from pager use saveLastView:
