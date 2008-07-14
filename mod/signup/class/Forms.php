@@ -424,6 +424,7 @@ class Signup_Forms {
 
             $form->addSelect('slot_id', $options);
             $form->setLabel('slot_id', dgettext('signup', 'Available slots'));
+            $form->setMatch('slot_id', $peep->slot_id);
 
             $form->addText('first_name', $peep->first_name);
             $form->setLabel('first_name', dgettext('signup', 'First name'));
@@ -446,7 +447,6 @@ class Signup_Forms {
             
             $tpl = $form->getTemplate();
         }
-        $tpl['MESSAGE'] = $this->signup->message;
 
         $tpl['DESCRIPTION'] = $sheet->getDescription();
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'signup_form.tpl');

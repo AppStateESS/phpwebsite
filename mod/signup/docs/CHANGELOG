@@ -1,3 +1,8 @@
+14 July 2008
++ Fixed: signup errors reseting slot pick
++ Removed redundant error message
++ previous register fix would not list empty slots.
+
 9 July 2008
 + Only pulling registered users for slots open.
 
