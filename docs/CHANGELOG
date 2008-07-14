@@ -4,6 +4,8 @@ its own separate CHANGELOG file.
 
 14 July 2008
 + Added patch #2017069 by Eloi George. Adds a cache identifier to DBPager.
++ Added patch #1997460 by Eloi George. Class and title added to
+  confirm script.
 
 7 July 2008
 + getObjects with setIndexBy now works better if you have identical indices.
