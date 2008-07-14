@@ -112,13 +112,6 @@ class Checkin_Visitor {
             $tpl['NOTE'] = $this->note;
         }
 
-        $vars['aop'] = 'start_meeting';
-        $vars['visitor_id'] = $this->id;
-
-        if (!$meeting) {
-            $links[] = PHPWS_Text::secureLink(dgettext('checkin', 'Start meeting'), 'checkin', $vars);
-            $meeting = 1;
-        }
 
         $links[] = $this->noteLink();
         $tpl['ACTION'] = implode(' | ', $links);
@@ -149,6 +142,11 @@ class Checkin_Visitor {
         }
 
         return implode(', ', $waiting);
+    }
+
+    function getName()
+    {
+        return sprintf('%s %s', $this->firstname, $this->lastname);
     }
 
 

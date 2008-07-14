@@ -11,7 +11,6 @@ class Checkin {
     var $staff         = null;
     var $visitor       = null;
     var $reason        = null;
-    var $status        = null;
     var $visitor_list  = null;
     var $staff_list    = null;
 
@@ -30,6 +29,7 @@ class Checkin {
         if (isset($staff_id)) {
             $db->addWhere('assigned', $staff_id);
         }
+        $db->addWhere('finished', 0);
         $db->addOrder('arrival_time asc');
         $result = $db->getObjects('Checkin_Visitor');
         //        test($result);
@@ -67,20 +67,6 @@ class Checkin {
             }
         } else {
             $this->staff = new Checkin_Staff;
-        }
-    }
-
-    function loadStatus($id=0)
-    {
-        PHPWS_Core::initModClass('checkin', 'Status.php');
-
-        if (!$id && !empty($_REQUEST['status_id'])) {
-            $id = (int)$_REQUEST['status_id'];
-        }
-        if ($id) {
-            $this->status = new Checkin_Status($id);
-        } else {
-            $this->status = new Checkin_Status;
         }
     }
 
@@ -123,7 +109,7 @@ class Checkin {
         if (!$id) {
             $this->visitor = new Checkin_Visitor;
         } else {
-            $this->visitor = new Checkin_Visitor((int)$_REQUEST['visitor_id']);
+            $this->visitor = new Checkin_Visitor($id);
         }
     }
 
@@ -143,25 +129,22 @@ class Checkin {
         }
     }
 
-    function getStatusList()
+    function getStatusColors()
     {
-        static $status_list = null;
+        $list[0] = '#39f15a';
+        $list[1] = '#f9f95b';
+        $list[2] = '#f96567';
 
-        if (!is_array($status_list)) {
-            $db = new PHPWS_DB('checkin_status');
-            $db->setIndexBy('id');
-            $status_list = $db->select();
-        }
-        if (is_array($status_list)) {
-            $status_list = array_reverse($status_list, true);
-            $status_list[0] = array('id'=>0, 'available'=>0,
-                                    'color'=>'#7df774',
-                                    'summary'=>dgettext('checkin', 'Available for meeting'));
-            $status_list = array_reverse($status_list, true);
-        }
-        return $status_list;
+        return $list;
     }
 
+    function getStatusList()
+    {
+        $list[0] = dgettext('checkin', 'Available');
+        $list[1] = dgettext('checkin', 'Unavailable');
+        $list[2] = dgettext('checkin', 'Meeting with visitor');
 
+        return $list;
+    }
 }
 ?>

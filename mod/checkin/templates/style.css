@@ -13,3 +13,57 @@
 .note-link {
  cursor : pointer;
 }
+
+.action-button {
+   text-align : center;
+   display : block;
+   border : 1px solid black;
+   padding : 5px 10px;   
+   color : black;
+   float : left;
+   margin-right : 10px;
+}
+
+a.meet-button {
+   background-color : #F96567;
+   white-space : nowrap;
+}
+
+a.unavailable-button {
+   background-color : #f9f95b;
+}
+
+a.available-button {
+   background-color : #39f15a;
+}
+
+a.finish-button {
+   background-color : #39f15a;
+}
+
+#action-buttons {
+   overflow : auto;
+   margin-bottom : 10px;
+}
+
+#action-buttons a {
+   min-width : 100px;
+}
+
+div#current-meeting {
+   width : 100%;
+   text-align : center;
+   padding : 3px 0px;
+}
+
+div.available {
+   background-color :  #39f15a;
+}
+
+div.meeting {
+   background-color : #f96567;
+}
+
+div.unavailable {
+   background-color :  #f9f95b;
+}

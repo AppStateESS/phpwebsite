@@ -49,6 +49,32 @@ class Checkin_Admin extends Checkin {
         $js = false;
 
         switch ($cmd) {
+
+        case 'finish_meeting':
+            $this->finishMeeting();
+            PHPWS_Core::goBack();
+            break;
+
+        case 'start_meeting':
+            $this->startMeeting();
+            PHPWS_Core::goBack();
+            break;
+
+        case 'unavailable':
+            $this->unavailable();
+            PHPWS_Core::goBack();
+            break;
+
+        case 'available':
+            $this->available();
+            PHPWS_Core::goBack();
+            break;
+
+
+        case 'report':
+            $this->report();
+            break;
+
         case 'reassign':
             // Called via ajax
             if (Current_User::authorized('checkin')) {
@@ -123,12 +149,6 @@ class Checkin_Admin extends Checkin {
             break;
 
 
-        case 'edit_status':
-            $this->loadStatus();
-            $this->editStatus();
-            break;
-            
-
         case 'edit_staff':
             $this->loadStaff(null, true);
             $this->editStaff();
@@ -136,10 +156,6 @@ class Checkin_Admin extends Checkin {
 
         case 'search_users':
             $this->searchUsers();
-            break;
-
-        case 'status':
-            $this->statusList();
             break;
 
         case 'update_reason':
@@ -164,19 +180,6 @@ class Checkin_Admin extends Checkin {
                 $this->editStaff();
             }
             
-            break;
-
-        case 'post_status':
-            if (!Current_User::authorized('checkin', 'settings')) {
-                Current_User::disallow();
-            } 
-            $this->loadStatus();
-            if (!$this->postStatus()) {
-                $this->editStatus();
-            } else {
-                PHPWS_Error::logIfError($this->status->save());
-                PHPWS_Core::reroute('index.php?module=checkin&tab=status');
-            }
             break;
 
         case 'post_settings':
@@ -233,25 +236,22 @@ class Checkin_Admin extends Checkin {
         $tabs['waiting'] = array('title'=>dgettext('checkin', 'Waiting'),
                                  'link'=>$link);
 
-        if (Current_User::allow('checkin', 'assign_filters')) {
+        if (Current_User::allow('checking', 'settings')) {
             $tabs['assign'] = array('title'=>dgettext('checkin', 'Assignment'),
                                     'link'=>$link);
-        }
 
-
-        if (Current_User::allow('checking', 'settings')) {
             $tabs['staff'] =  array('title'=>dgettext('checkin', 'Staff'),
                                     'link'=>$link);
 
             $tabs['reasons']  = array('title'=>dgettext('checkin', 'Reasons'),
                                       'link'=>$link);
 
-            $tabs['status']   = array('title'=>dgettext('checkin', 'Status'),
-                                      'link'=>$link);
-
             $tabs['settings'] = array('title'=>dgettext('checkin', 'Settings'),
                                       'link'=>$link);
         }
+
+        $tabs['report'] = array('title'=>dgettext('checkin', 'Report'),
+                                'link'=>$link);
 
         $this->panel = new PHPWS_Panel('check-admin');
         $this->panel->quickSetTabs($tabs);
@@ -259,6 +259,8 @@ class Checkin_Admin extends Checkin {
 
     function assign()
     {
+        Layout::addStyle('checkin');
+        javascript('modules/checkin/send_note');
         javascript('modules/checkin/reassign', array('authkey'=>Current_User::getAuthKey()));
         $this->title = dgettext('checkin', 'Assignment');
         $this->loadVisitorList(null, true);
@@ -276,7 +278,7 @@ class Checkin_Admin extends Checkin {
             return;
         }
 
-        $status_list = $this->getStatusList();
+        $status_list = $this->getStatusColors();
         // unassigned visitors
 
         $staff = new Checkin_Staff;
@@ -290,7 +292,7 @@ class Checkin_Admin extends Checkin {
         // Go through staff and list assignments
         foreach ($this->staff_list as $staff) {
             $row['VISITORS'] = $this->listVisitors($staff, $staff_list);
-            $row['COLOR']    = $status_list[$staff->status]['color'];
+            $row['COLOR']    = $status_list[$staff->status];
             $row['DISPLAY_NAME'] = $staff->display_name;
             $tpl['rows'][] = $row;
         }
@@ -318,14 +320,12 @@ class Checkin_Admin extends Checkin {
 
         unset($staff_list[$staff->id]);
 
-
-
         if (is_array($vis_list)) {
             foreach ($vis_list as $vis) {
                 $row['list'][] = $vis->row($staff_list);
             }
         } else {
-            $row['list'][] = $vis_list->row();
+            $row['list'][] = $vis_list->row($staff_list);
         }
         $row['NAME_LABEL'] = dgettext('checkin', 'Name');
         $row['WAITING_LABEL'] = dgettext('checkin', 'Time waiting');
@@ -340,7 +340,8 @@ class Checkin_Admin extends Checkin {
             $this->content = dgettext('checkin', 'You are not a staff member.');
         }
         $this->loadVisitorList($this->current_staff->id);
-        
+
+       
         $this->title = dgettext('checkin', 'Waiting list');
         if (empty($this->visitor_list)) {
             $tpl['MESSAGE'] = dgettext('checkin', 'You currently do not have any visitors.');
@@ -350,14 +351,82 @@ class Checkin_Admin extends Checkin {
             }
         } else {
             foreach ($this->visitor_list as $vis) {
+                if ($vis->id == $this->current_staff->visitor_id) {
+                    $current_vis = $vis;
+                    continue;
+                }
+                if (!isset($first_visitor)) {
+                    $first_visitor = $vis->id;
+                }
                 $row = $links = array();
                 $row = $vis->row();
                 $tpl['list'][] = $row;
             }
         }
+
+        switch ($this->current_staff->status) {
+        case 0:
+            // Available
+            if (!empty($this->visitor_list)) {
+                $tpl['MEET'] = $this->startMeetingLink();
+            }
+            $tpl['UNAVAILABLE'] = $this->unavailableLink();
+            $tpl['CURRENT_MEETING'] = dgettext('checkin', 'You are currently available for meeting.');
+            $tpl['CURRENT_CLASS'] = 'available';
+            break;
+
+        case 1:
+            $tpl['AVAILABLE'] = $this->availableLink();
+            $tpl['CURRENT_MEETING'] = dgettext('checkin', 'You are currently unavailable.');
+            $tpl['CURRENT_CLASS'] = 'unavailable';
+            break;
+
+        case 2:
+            $tpl['FINISH'] = $this->finishLink($current_vis);
+            $this->loadVisitor($this->current_staff->visitor_id);
+
+            $tpl['CURRENT_MEETING'] = sprintf(dgettext('checkin', 'You are currently meeting with %s.'), $this->visitor->getName());
+            $tpl['CURRENT_CLASS'] = 'meeting';
+            break;
+        }
+
+
         $tpl['NAME_LABEL'] = dgettext('checkin', 'Name / Notes');
         $tpl['WAITING_LABEL'] = dgettext('checkin', 'Time waiting');
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'waiting.tpl');
+    }
+
+    function finishLink($visitor)
+    {
+        $vars['aop'] = 'finish_meeting';
+        $vars['visitor_id'] = $visitor->id;
+        $vars['staff_id'] = $this->current_staff->id;
+        $title = sprintf(dgettext('checkin', 'Finish meeting with %s %s'), $visitor->firstname, $visitor->lastname);
+        return PHPWS_Text::secureLink($title, 'checkin', $vars, null, $title, 'finish-button action-button');
+    }
+
+    function unavailableLink()
+    {
+        $vars['aop'] = 'unavailable';
+        $vars['staff_id'] = $this->current_staff->id;
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Unavailable'), 'checkin', $vars, null, dgettext('checkin', 'Unavailable for meeting'), 'unavailable-button action-button');
+    }
+
+    function availableLink()
+    {
+        $vars['aop'] = 'available';
+        $vars['staff_id'] = $this->current_staff->id;
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Available'), 'checkin', $vars, null, dgettext('checkin', 'Available for meeting'), 'available-button action-button');
+    }
+    
+    function startMeetingLink()
+    {
+        $first_visitor = $this->visitor_list[0];
+        $vars['aop'] = 'start_meeting';
+        $vars['staff_id'] = $this->current_staff->id;
+        $vars['visitor_id'] = $first_visitor->id;
+        $title = sprintf(dgettext('checkin', 'Start meeting w/ %s'), $first_visitor->getName());
+        return PHPWS_Text::secureLink($title, 'checkin', $vars, null, $title, 'meet-button action-button');
     }
 
     function staff()
@@ -507,11 +576,6 @@ class Checkin_Admin extends Checkin {
         $front_page = (int)isset($_POST['front_page']);
         PHPWS_Settings::set('checkin', 'front_page', $front_page);
         PHPWS_Settings::save('checkin');
-    }
-
-    function addStatusLink()
-    {
-        return PHPWS_Text::secureLink(dgettext('checkin', 'Add status'), 'checkin', array('aop'=>'edit_status'));
     }
 
     function addStaffLink()
@@ -667,82 +731,6 @@ class Checkin_Admin extends Checkin {
         Layout::add($content, 'checkin', 'checkin-admin');
     }
 
-    function statusList()
-    {
-        PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('checkin', 'Status.php');
-        $page_tags['ADD_STATUS']      = $this->addStatusLink();
-        $page_tags['COLOR_LABEL']     = dgettext('checkin', 'Color');
-        $page_tags['ACTION_LABEL'] = dgettext('checkin', 'Action');
-
-        $pager = new DBPager('checkin_status', 'Checkin_Status');
-        $pager->setTemplate('status.tpl');
-        $pager->setModule('checkin');
-        $pager->addRowTags('row_tags');
-        $pager->addPageTags($page_tags);
-        $pager->addSortHeader('summary', dgettext('checkin', 'Summary'));
-        $this->title   = dgettext('checkin', 'Status');
-        $this->content = $pager->get();
-    }
-
-    function editStatus()
-    {
-        $form = new PHPWS_Form('checkin-status');
-        if ($this->status->id) {
-            $this->title = dgettext('checkin', 'Update status');
-        } else {
-            $this->title = dgettext('checkin', 'Add status');
-        }
-
-        $form->addHidden('module', 'checkin');
-        $form->addHidden('aop', 'post_status');
-        $form->addHidden('status_id', $this->status->id);
-
-        $form->addText('summary', $this->status->summary);
-        $form->setLabel('summary', dgettext('checkin', 'Summary'));
-        $form->setSize('summary', 40);
-        $form->setRequired('summary');
-
-        $form->addText('color', $this->status->color);
-        $form->setLabel('color', dgettext('checkin', 'Color'));
-        $form->setSize('color', 7, 7);
-        $form->setRequired('color');
-
-        $form->addSelect('available', array(1 => dgettext('checkin', 'Occupied with visitor'),
-                                            2 => dgettext('checkin', 'Unavailable')));
-        $form->setMatch('available', $this->status->available);
-        $form->setLabel('available', dgettext('checkin', 'Availability'));
-
-        $form->addSubmit(dgettext('checkin', 'Save status'));
-
-        $tpl = $form->getTemplate();
-        $tpl['PICK_COLOR'] = javascript('pick_color', array('input_id'=>'checkin-status_color'));
-        $this->content = PHPWS_Template::process($tpl, 'checkin', 'edit_status.tpl');
-    }
-
-    function postStatus()
-    {
-        if (empty($_POST['summary'])) {
-            $this->message[] = dgettext('checkin', 'Missing a summary');
-        } else {
-            $this->status->setSummary($_POST['summary']);
-        }
-
-        if (empty($_POST['color'])) {
-            $this->message[] = dgettext('checkin', 'Missing color code');
-        } elseif (!$this->status->setColor($_POST['color'])) {
-            $this->message[] = dgettext('checkin', 'Unacceptable color code');
-        }
-
-        $this->status->available = (int)$_POST['available'];
-
-        if ($this->message) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     function loadCurrentStaff()
     {
         PHPWS_Core::initModClass('checkin', 'Staff.php');
@@ -759,6 +747,56 @@ class Checkin_Admin extends Checkin {
         $this->visitor->note = strip_tags(trim($_POST['note_body']));
         PHPWS_Error::logIfError($this->visitor->save());
     }
+
+    function startMeeting()
+    {
+        $this->loadStaff();
+        $this->loadVisitor();
+        
+        // set staff to meeting status and with current visitor
+        $this->staff->status = 2;
+        $this->staff->visitor_id = $this->visitor->id;
+        $this->staff->save();
+
+        $this->visitor->start_meeting = mktime();
+        $this->visitor->save();
+    }
+
+    function finishMeeting()
+    {
+        $this->loadStaff();
+        $this->loadVisitor();
+        
+        // set staff to meeting status and with current visitor
+        $this->staff->status = 0;
+        $this->staff->visitor_id = 0;
+        $this->staff->save();
+
+        $this->visitor->end_meeting = mktime();
+        $this->visitor->finished = true;
+        $this->visitor->save();
+    }
+
+    function unavailable()
+    {
+        $this->loadStaff();
+        $this->staff->status = 1;
+        $this->staff->save();
+    }
+
+    function available()
+    {
+        $this->loadStaff();
+        $this->staff->status = 0;
+        $this->staff->save();
+    }
+
+
+    function report()
+    {
+        $this->content = 'hi';
+    }
+
 }
 
 ?>
