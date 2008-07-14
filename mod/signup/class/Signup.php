@@ -728,7 +728,7 @@ class Signup {
 
         $this->peep->setPhone($_POST['phone']);
         
-        if (empty($this->peep->phone) || strlen($this->peep->phone) < 7) {
+        if (empty($this->peep->phone)) {
             $errors[] = dgettext('signup', 'Please enter a contact phone number.');
         }
 

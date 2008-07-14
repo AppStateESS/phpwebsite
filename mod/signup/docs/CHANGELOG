@@ -2,6 +2,7 @@
 + Fixed: signup errors reseting slot pick
 + Removed redundant error message
 + previous register fix would not list empty slots.
++ Removed string length on phone number
 
 9 July 2008
 + Only pulling registered users for slots open.
