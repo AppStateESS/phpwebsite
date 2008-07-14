@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+14 July 2008
++ Added patch #2017069 by Eloi George. Adds a cache identifier to DBPager.
+
 7 July 2008
 + getObjects with setIndexBy now works better if you have identical indices.
 

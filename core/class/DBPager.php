@@ -169,6 +169,12 @@ class DBPager {
      */
     var $cache_queries = false;
 
+    /**
+     * If set, DBPager will use a custom identifier for this object's 
+     * cache instance
+     */
+    var $cache_identifier = null;
+
     function DBPager($table, $class=NULL)
     {
         if (empty($table)) {
@@ -626,13 +632,16 @@ class DBPager {
      *
      * This function pulls the database information then plugs
      * the data it gets into the object.
+     * @modified Eloi George
      */
     function initialize($load_rows=true)
     {
+        if (empty($this->cache_identifier))
+            $this->cache_identifier = $this->template;
         if (empty($this->limit) && empty($this->orderby) &&
             empty($this->search) && empty($this->orderby) &&
-            isset($_SESSION['DB_Cache'][$this->module][$this->template])) {
-            extract($_SESSION['DB_Cache'][$this->module][$this->template]);
+            isset($_SESSION['DB_Cache'][$this->module][$this->cache_identifier])) {
+            extract($_SESSION['DB_Cache'][$this->module][$this->cache_identifier]);
             $this->limit        = $limit;
             $this->orderby      = $orderby;
             $this->orderby_dir  = $orderby_dir;
@@ -740,7 +749,7 @@ class DBPager {
             $cache['search']       = $this->search;
             $cache['current_page'] = $this->current_page;
 
-            $_SESSION['DB_Cache'][$this->module][$this->template] = $cache;
+            $_SESSION['DB_Cache'][$this->module][$this->cache_identifier] = $cache;
         } else {
             $this->clearQuery();
         }
@@ -1305,6 +1314,11 @@ class DBPager {
     function cacheQueries($cache=true)
     {
         $this->cache_queries = (bool)$cache;
+    }
+    
+    function setCacheIdentifier($str)
+    {
+        $this->cache_identifier = $str;
     }
 }
 
