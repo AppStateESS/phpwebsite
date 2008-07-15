@@ -82,7 +82,7 @@ instantiate a template object.
 
 First run the constructor:
 
-$tpl = & new PHPWS_Template($module);
+$tpl = new PHPWS_Template($module);
 
 Now set the file:
 
@@ -145,5 +145,3 @@ If the lastname rows were put before the first name list, the first
 names would be put under the wrong last names.
 
 Remember to work inside to outside for order of importance.
-
-
