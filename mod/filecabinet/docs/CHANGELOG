@@ -1,4 +1,5 @@
 15 July 2008
++ Added patch #1939151 by Eloi George. Removed redundant code.
 + Added patch #1939146 by Eloi George. Adds setPlaceholderMaxWidth and
   setPlaceholderMaxHeight functions.
 

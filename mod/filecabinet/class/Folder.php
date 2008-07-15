@@ -51,7 +51,7 @@ class Folder {
             return dgettext('filecabinet', 'Private');
         }
     }
-    
+
     function deleteLink()
     {
         $vars['QUESTION'] = dgettext('filecabinet', 'Are you certain you want to delete this folder and all its contents?');
@@ -81,7 +81,7 @@ class Folder {
 
         if ($mode == 'image') {
             $js['label'] = '<img src="images/mod/filecabinet/edit.png" />';
-        } 
+        }
 
         $vars['ftype'] = $this->ftype;
         if ($module_created) {
@@ -167,7 +167,7 @@ class Folder {
 
     function documentUploadLink($button=false)
     {
-        $vars['address'] = PHPWS_Text::linkAddress('filecabinet', 
+        $vars['address'] = PHPWS_Text::linkAddress('filecabinet',
                                                    array('dop'      =>'upload_document_form',
                                                          'folder_id'=>$this->id),
                                                    true);
@@ -319,7 +319,7 @@ class Folder {
                 $key = new Key;
             }
         }
-        
+
         $key->setModule('filecabinet');
         $key->setItemName('folder');
         $key->setItemId($this->id);
@@ -413,7 +413,7 @@ class Folder {
         if (is_dir($directory)) {
             PHPWS_File::rmdir($directory);
         }
- 
+
         return true;
     }
 
@@ -430,13 +430,7 @@ class Folder {
             $links[] = $this->editLink();
         }
 
-        if ($this->ftype == IMAGE_FOLDER) {
-            $links[] = $this->imageUploadLink();
-        } elseif ($this->ftype == DOCUMENT_FOLDER) {
-            $links[] = $this->documentUploadLink();
-        } else {
-            $links[] = $this->multimediaUploadLink();
-        }
+        $links[] = $this->uploadLink(false);
 
         if (Current_User::allow('filecabinet', 'edit_folders', $this->id, 'folder', true)) {
             if ($this->key_id) {
