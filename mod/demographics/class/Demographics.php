@@ -204,6 +204,9 @@ class Demographics {
         return TRUE;
     }
 
+    /**
+     * Patch #1939132 by Eloi George
+     */
     function getList($ids, $table=NULL, $class_name=NULL)
     {
         if (!is_array($ids)) {
@@ -215,7 +218,9 @@ class Demographics {
             $db->setDistinct(true);
             $db->addJoin('left', $table, 'demographics', 'user_id', 'user_id');
             $db->addColumn($table . '.*');
+            $db->addColumn($table . '.user_id', null, '_extend_id');
             $db->addColumn('demographics.*');
+            $db->addColumn('demographics.user_id', null, '_base_id');
         } else {
             $db = new PHPWS_DB('demographics');
         }
@@ -224,10 +229,25 @@ class Demographics {
         $db->setIndexBy('user_id');
 
         if ($class_name) {
-            return $db->getObjects($class_name);
+            $list = $db->getObjects($class_name);
+            if (PHPWS_Error::logIfError($list) || !is_array($list))
+                $list = array();
+            else {
+                foreach ($list as $key=>$value) {
+                    $list[$key]->_new_user = false;
+                }
+            }
         } else {
-            return $db->select();
+            $list = $db->select();
+            if (PHPWS_Error::logIfError($list) || !is_array($list)) {
+                $list = array();
+            } else  {
+                foreach ($list as $key=>$value) {
+                    $list[$key]['_new_user'] = false;
+                }
+            }
         }
+        return $list;
     }
 }
 

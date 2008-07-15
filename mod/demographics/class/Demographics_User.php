@@ -8,19 +8,19 @@
    *
    * @author Matthew McNaney <mcnaney at gmail dot com>
    * @version $Id$
-   */ 
+   */
 
 
 class Demographics_User {
     var $user_id        = 0;
-    var $_error         = NULL;
+    var $_error         = null;
     var $_base_id       = 0;
     var $_extend_id     = 0;
     // indicates a new demographics user
-    var $_new_user      = TRUE;
-    var $_table         = NULL;
+    var $_new_user      = true;
+    var $_table         = null;
 
-    function load() 
+    function load()
     {
         if (!$this->user_id) {
             return;
@@ -42,17 +42,17 @@ class Demographics_User {
 
         if (PEAR::isError($result)) {
             $this->_error = $result;
-            return FALSE;
+            return false;
         } elseif ($result) {
             $this->_new_user = !(bool)$this->_extend_id;
         } else {
-            $this->_new_user = TRUE;
+            $this->_new_user = true;
         }
-        return TRUE;
+        return true;
     }
 
     /**
-     * Returns whether this is a new EXTENDED demographics user. If 
+     * Returns whether this is a new EXTENDED demographics user. If
      * the extended is removed, the original remains but is not considered
      * "new"
      */
@@ -67,7 +67,7 @@ class Demographics_User {
     function save()
     {
         if (!$this->user_id) {
-            return FALSE;
+            return false;
         }
 
         $db = new PHPWS_DB('demographics');
@@ -86,15 +86,15 @@ class Demographics_User {
             if ($this->_extend_id) {
                 $db->addWhere('user_id', $this->_extend_id);
             }
-            
+
             $result = $db->saveObject($this);
             if (PEAR::isError($result)) {
                 $this->_error = $result;
                 return $result;
             }
 
-        } 
-        return TRUE;
+        }
+        return true;
     }
 
     /**
@@ -104,7 +104,7 @@ class Demographics_User {
     function delete($all_user_info=false)
     {
         if (!$this->user_id) {
-            return FALSE;
+            return false;
         }
 
         if  ($all_user_info) {
@@ -126,10 +126,9 @@ class Demographics_User {
                 $this->_error = $result;
                 return $result;
             }
-        } 
+        }
 
-        return TRUE;
-
+        return true;
     }
 }
 
