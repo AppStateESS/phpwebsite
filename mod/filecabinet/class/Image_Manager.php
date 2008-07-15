@@ -3,7 +3,6 @@
   /**
    * @version $Id$
    * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @modified Eloi George
    */
 
 PHPWS_Core::requireConfig('filecabinet');
@@ -25,9 +24,6 @@ class FC_Image_Manager {
     /**
      * If true, manager will only show image folders for the current module
      */
-
-    var $_noimage_max_width = 300;
-    var $_noimage_max_height = 300;
 
     function FC_Image_Manager($image_id=0)
     {
@@ -80,16 +76,6 @@ class FC_Image_Manager {
     function setMaxWidth($width)
     {
         $this->max_width = (int)$width;
-    }
-
-    function setNoimageMaxWidth($width)
-    {
-        $this->_noimage_max_width = (int)$width;
-    }
-
-    function setNoimageMaxHeight($height)
-    {
-        $this->_noimage_max_height = (int)$height;
     }
 
     function setMaxHeight($height)

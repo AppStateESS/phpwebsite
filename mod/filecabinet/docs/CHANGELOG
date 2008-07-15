@@ -1,3 +1,7 @@
+15 July 2008
++ Added patch #1939146 by Eloi George. Adds setPlaceholderMaxWidth and
+  setPlaceholderMaxHeight functions.
+
 2 July 2008
 + confirm message restored to pick_file script.
 + Updated: javascript/pick_file/head.js
