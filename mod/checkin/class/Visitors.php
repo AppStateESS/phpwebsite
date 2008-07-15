@@ -26,7 +26,7 @@ class Checkin_Visitor {
         $db = new PHPWS_DB('checkin_visitor');
         if (!$db->loadObject($this)) {
             $this->id = 0;
-        } 
+        }
     }
 
     function save()
@@ -67,7 +67,7 @@ class Checkin_Visitor {
                 foreach ($farray as $val) {
                     switch (1) {
                     case preg_match('/-/', $val):
-                            
+
                         break;
                     }
                 }
@@ -98,7 +98,7 @@ class Checkin_Visitor {
     {
         static $meeting = 0;
 
-        $form = new PHPWS_Form;
+        $form = new PHPWS_Form('form' . $this->id);
         $tpl['NAME'] = sprintf('%s %s', $this->firstname, $this->lastname);
         $tpl['WAITING'] = $this->timeWaiting();
         if ($staff_list) {
@@ -112,15 +112,20 @@ class Checkin_Visitor {
             $tpl['NOTE'] = $this->note;
         }
 
+        $tpl['REASON'] = $this->getReason();
 
         $links[] = $this->noteLink();
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
 
-    function timeWaiting()
+    function timeWaiting($from_now=true)
     {
-        $rel = time() - $this->arrival_time;
+        if ($from_now) {
+            $rel = time() - $this->arrival_time;
+        } else {
+            $rel = $this->start_meeting - $this->arrival_time;
+        }
 
         $hours = floor( $rel / 3600);
         if ($hours) {
@@ -149,5 +154,19 @@ class Checkin_Visitor {
         return sprintf('%s %s', $this->firstname, $this->lastname);
     }
 
+    function getReason()
+    {
+        static $reasons = null;
+
+        if (empty($reasons)) {
+            $reasons = Checkin::getReasons();
+        }
+
+        if (isset($reasons[$this->reason])) {
+            return $reasons[$this->reason];
+        } else {
+            return dgettext('checkin', 'Reason unknown');
+        }
+    }
 
 }

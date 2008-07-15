@@ -7,7 +7,7 @@
 if (PHPWS_Core::atHome() && PHPWS_Settings::get('checkin', 'front_page')) {
     PHPWS_Core::initModClass('checkin', 'Checkin_User.php');
     $checkin = new Checkin_User;
-    $checkin->checkinForm();
+    $checkin->process('checkin_form');
 }
 
 if (Current_User::allow('checkin')) {

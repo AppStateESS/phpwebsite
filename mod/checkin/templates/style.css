@@ -18,7 +18,7 @@
    text-align : center;
    display : block;
    border : 1px solid black;
-   padding : 5px 10px;   
+   padding : 5px 10px;
    color : black;
    float : left;
    margin-right : 10px;
@@ -66,4 +66,8 @@ div.meeting {
 
 div.unavailable {
    background-color :  #f9f95b;
+}
+
+span.move-visitor select {
+   font-size : .9em;
 }

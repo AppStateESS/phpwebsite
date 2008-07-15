@@ -32,7 +32,6 @@ class Checkin {
         $db->addWhere('finished', 0);
         $db->addOrder('arrival_time asc');
         $result = $db->getObjects('Checkin_Visitor');
-        //        test($result);
         if (!PHPWS_Error::logIfError($result)) {
             $this->visitor_list = & $result;
         }

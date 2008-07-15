@@ -72,7 +72,8 @@ class Checkin_Admin extends Checkin {
 
 
         case 'report':
-            $this->report();
+            $this->report(isset($_GET['print']));
+            $js = isset($_GET['print']);
             break;
 
         case 'reassign':
@@ -101,7 +102,7 @@ class Checkin_Admin extends Checkin {
             break;
 
         case 'hide_panel':
-            PHPWS_Cookie::write('checkin_hide_panel', 1); 
+            PHPWS_Cookie::write('checkin_hide_panel', 1);
             $this->panel->setCurrentTab('assign');
             $this->use_panel = false;
             $this->assign();
@@ -118,7 +119,7 @@ class Checkin_Admin extends Checkin {
             $this->loadCurrentStaff();
             $this->waiting();
             break;
-            
+
         case 'settings':
             if (Current_User::allow('checkin', 'settings')) {
                 $this->panel->setCurrentTab('settings');
@@ -127,11 +128,11 @@ class Checkin_Admin extends Checkin {
             break;
 
         case 'reasons':
-           if (Current_User::allow('checkin', 'settings')) {
+            if (Current_User::allow('checkin', 'settings')) {
                 $this->panel->setCurrentTab('reasons');
                 $this->reasons();
-           }
-           break;
+            }
+            break;
 
         case 'post_reason':
             $this->loadReason();
@@ -142,7 +143,7 @@ class Checkin_Admin extends Checkin {
                 $this->editReason();
             }
             break;
-           
+
         case 'staff':
             $this->panel->setCurrentTab('staff');
             $this->staff();
@@ -179,7 +180,7 @@ class Checkin_Admin extends Checkin {
                 $this->loadStaff();
                 $this->editStaff();
             }
-            
+
             break;
 
         case 'post_settings':
@@ -212,7 +213,11 @@ class Checkin_Admin extends Checkin {
         }
 
         if ($js) {
-            Layout::nakedDisplay($this->content, $this->title);
+            $tpl['TITLE'] = & $this->title;
+            $tpl['CONTENT'] = & $this->content;
+            $tpl['MESSAGE'] = & $this->message;
+            $content = PHPWS_Template::process($tpl, 'checkin', 'main.tpl');
+            Layout::nakedDisplay($content, $this->title);
         } else {
             if (is_array($this->message)) {
                 $this->message = implode('<br />', $this->message);
@@ -283,7 +288,7 @@ class Checkin_Admin extends Checkin {
 
         $staff = new Checkin_Staff;
         $staff->display_name = dgettext('checkin', 'Unassigned');
-        
+
         $row['VISITORS'] = $this->listVisitors($staff, $staff_list);
         $row['COLOR']    = '#ffffff';
         $row['DISPLAY_NAME'] = $staff->display_name;
@@ -341,7 +346,7 @@ class Checkin_Admin extends Checkin {
         }
         $this->loadVisitorList($this->current_staff->id);
 
-       
+
         $this->title = dgettext('checkin', 'Waiting list');
         if (empty($this->visitor_list)) {
             $tpl['MESSAGE'] = dgettext('checkin', 'You currently do not have any visitors.');
@@ -418,7 +423,7 @@ class Checkin_Admin extends Checkin {
         $vars['staff_id'] = $this->current_staff->id;
         return PHPWS_Text::secureLink(dgettext('checkin', 'Available'), 'checkin', $vars, null, dgettext('checkin', 'Available for meeting'), 'available-button action-button');
     }
-    
+
     function startMeetingLink()
     {
         $first_visitor = $this->visitor_list[0];
@@ -471,7 +476,7 @@ class Checkin_Admin extends Checkin {
             $form->addTplTag('USERNAME_LABEL', dgettext('checkin', 'Staff user name'));
             $form->addSubmit(dgettext('checkin', 'Update staff'));
         }
-        
+
         $form->addRadioAssoc('filter_type', array(0               =>dgettext('checkin', 'None'),
                                                   CO_FT_LAST_NAME =>dgettext('checkin', 'Last name'),
                                                   CO_FT_REASON    =>dgettext('checkin', 'Reason')));
@@ -582,8 +587,8 @@ class Checkin_Admin extends Checkin {
     {
         return PHPWS_Text::secureLink(dgettext('checkin', 'Add staff member'), 'checkin', array('aop'=>'edit_staff'));
     }
-    
-    
+
+
     function searchUsers()
     {
         if (!Current_User::isLogged()) {
@@ -593,13 +598,13 @@ class Checkin_Admin extends Checkin {
         if (empty($_GET['q'])) {
             exit();
         }
-        
+
         $username = preg_replace('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', '', $_GET['q']);
         $db->addWhere('username', "$username%", 'like');
         $db->addColumn('username');
         $result = $db->select('col');
         if (!empty($result) && !PHPWS_Error::logIfError($result)) {
-            echo implode("\n", $result);         
+            echo implode("\n", $result);
         }
         exit();
     }
@@ -752,7 +757,7 @@ class Checkin_Admin extends Checkin {
     {
         $this->loadStaff();
         $this->loadVisitor();
-        
+
         // set staff to meeting status and with current visitor
         $this->staff->status = 2;
         $this->staff->visitor_id = $this->visitor->id;
@@ -766,7 +771,7 @@ class Checkin_Admin extends Checkin {
     {
         $this->loadStaff();
         $this->loadVisitor();
-        
+
         // set staff to meeting status and with current visitor
         $this->staff->status = 0;
         $this->staff->visitor_id = 0;
@@ -792,9 +797,80 @@ class Checkin_Admin extends Checkin {
     }
 
 
-    function report()
+    function report($print=false)
     {
-        $this->content = 'hi';
+        $tpl = array();
+
+        if (isset($_GET['udate'])) {
+            $udate = (int)$_GET['udate'];
+        } elseif (isset($_GET['cdate'])) {
+            $udate = strtotime($_GET['cdate']);
+        } else {
+            $udate = mktime(0,0,0);
+        }
+        $current_date = strftime('%Y/%m/%d', $udate);
+
+        $this->title = sprintf(dgettext('checkin', 'Report for %s'), strftime('%e %B, %Y', $udate));
+
+        if (!$print) {
+            $form = new PHPWS_Form('report-date');
+            $form->setMethod('get');
+            $form->addHidden('module', 'checkin');
+            $form->addText('cdate', $current_date);
+            $form->addHidden('aop', 'report');
+            $form->setLabel('cdate', dgettext('checkin', 'Date'));
+            $form->addSubmit(dgettext('checkin', 'Go'));
+            $tpl = $form->getTemplate();
+
+            $js['form_name'] = 'report-date';
+            $js['date_name'] = 'cdate';
+            $tpl['CAL'] = javascript('js_calendar', $js);
+            $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin',
+                                                        array('aop'=>'report',
+                                                              'print'=>1,
+                                                              'udate'=>$udate));
+        }
+
+        $tObj = new PHPWS_Template('checkin');
+        $tObj->setFile('report.tpl');
+
+        $this->loadStaffList();
+        $reasons = $this->getReasons();
+
+        PHPWS_Core::initModClass('checkin', 'Visitors.php');
+        $db = new PHPWS_DB('checkin_visitor');
+        $db->addWhere('start_meeting', $udate, '>=');
+        $db->addWhere('end_meeting', $udate + 86400, '<');
+        $db->addWhere('finished', 1);
+        $db->setIndexBy('assigned');
+        $visitors = $db->getObjects('Checkin_Visitor');
+
+        $row['NAME_LABEL'] = dgettext('checkin', 'Name, Reason, & Note');
+        $row['WAITED_LABEL'] = dgettext('checkin', 'Time waited');
+
+        foreach ($this->staff_list as $staff) {
+            if (isset($visitors[$staff->id])) {
+                foreach ($visitors[$staff->id] as $vis) {
+                    $tObj->setCurrentBlock('subrow');
+                    $tObj->setData(array('VIS_NAME' => $vis->getName(),
+                                         'REASON'   => $reasons[$vis->reason],
+                                         'NOTE'     => $vis->note,
+                                         'WAITED'   => $vis->timeWaiting(false)));
+                    $tObj->parseCurrentBlock();
+                }
+            } else {
+                $tObj->setCurrentBlock('message');
+                $tObj->setData(array('NOBODY' => dgettext('checkin', 'No visitors seen')));
+                $tObj->parseCurrentBlock();
+            }
+            $tObj->setCurrentBlock('row');
+            $row['DISPLAY_NAME'] = & $staff->display_name;
+            $tObj->setData($row);
+            $tObj->parseCurrentBlock();
+        }
+
+        $tObj->setData($tpl);
+        $this->content = $tObj->get();
     }
 
 }
