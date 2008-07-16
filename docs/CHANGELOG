@@ -2,6 +2,13 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+16 July 2008
++ Added a force_array parameter to Database class. Allows symmetry of
+  repeat results on an index.
++ Added information in Database documentation concerning force_array.
++ Removed append function documentation from Settings. Added comment note.
+
+
 15 July 2008
 + Database: added longtext to homogenize function
 + Database: added parameter to update and delete that returns the

@@ -94,7 +94,7 @@ id   |   name   |   age    |  sex
 4    | Lucy     |   22     | female
 5    | Laura    |   44     | female
 6    | Mike     |   22     | male
-7    | Chris    |   18     | female      
+7    | Chris    |   18     | female
 
 
 Once you have created your object you merely need to call:
@@ -108,7 +108,7 @@ The result here would be an array with the following form:
       name  => Chris
       age   => 33
       sex   => male
-      
+
 1 =>  id    => 4
       name  => Lucy
       age   => 22
@@ -169,13 +169,13 @@ Grouping conditionals allow proper ordering:
 
 Where the id is greater than 3 and less than 6 OR
 the name starts with the letter 'L'
-$db->addWhere('id',    3,  '>'); 
+$db->addWhere('id',    3,  '>');
 $db->addWhere('id',    6,  '<');// AND is the default operator
 
 $db->addWhere('name', 'L%', 'like', NULL, 'namegroup');
-// since the above is the only item in the group, the operator is 
+// since the above is the only item in the group, the operator is
 // not important
- 
+
 $db->setGroupConj('namegroup', 'or');
 // the default is AND, so I user setGroupConj to change to OR
 
@@ -193,7 +193,7 @@ You also have the option of sending your own 'where' string to the
 object using setQWhere():
 
 // the conj defaults to 'AND' so you can leave it blank if you wish
-$conj = 'or'; 
+$conj = 'or';
 
 $db->setQWhere("(id > 3 AND id < 6) OR (name LIKE 'L%'", $conj);
 
@@ -287,7 +287,7 @@ This is the equivalent of:
 SELECT table1.lastname FROM table1, table2
 WHERE ( table1.firstname = 'ted' AND
         table2.age > '30' AND
-        table2.id = table1.id 
+        table2.id = table1.id
       )
 
 Note that when you use extra tables, the do NOT show results by
@@ -302,7 +302,7 @@ Which is equivalent to:
 SELECT table1.lastname, table2.age FROM table1, table2
 WHERE ( table1.firstname = 'Ted' AND
         table2.age > '30' AND
-	table2.id = table1.id 
+	table2.id = table1.id
       )
 
 Use 'table2.*' to get all the column results.
@@ -356,7 +356,7 @@ $result = $db->select();
 
 The result should be:
 
-ownername  |   first_pet  | second_pet 
+ownername  |   first_pet  | second_pet
 --------------------------------------
 matt       |     Dog      |    Cat
 
@@ -450,7 +450,7 @@ The result would look like the following:
       name  => Chris
       age   => 33
       sex   => male
-      
+
 4 =>  id    => 4
       name  => Lucy
       age   => 22
@@ -482,7 +482,7 @@ would return:
        name  => Chris
        age   => 33
        sex   => male
-      
+
 22 =>  0 =>  id    => 4
              name  => Lucy
              age   => 22
@@ -502,6 +502,41 @@ would return:
        name  => Chris
        age   => 18
        sex   => female
+
+Notice how index 22 returns the result in a numbered array. This would
+mean you would need to check the result type when moving through the
+array. To get around this, call setIndexBy with the second parameter
+as true:
+
+$db->setIndexBy('age', true);
+
+You would then get a symmetrical result, like so:
+33 =>  0 =>  id    => 3
+             name  => Chris
+             age   => 33
+             sex   => male
+
+22 =>  0 =>  id    => 4
+             name  => Lucy
+             age   => 22
+             sex   => female
+
+       1 =>  id    => 6
+             name  => Mike
+             age   => 22
+             sex   => male
+
+44 =>  0 =>  id    => 5
+             name  => Laura
+             age   => 44
+             sex   => female
+
+18 =>  0 =>  id    => 7
+             name  => Chris
+             age   => 18
+             sex   => female
+
+This pattern is much simplier to work through.
 
 
 Setting the Mode

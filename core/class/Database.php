@@ -34,6 +34,7 @@ class PHPWS_DB {
     var $columns     = null;
     var $qwhere      = null;
     var $indexby     = null;
+    var $force_array = false;
     var $group_by    = null;
     var $locked      = null;
 
@@ -945,9 +946,31 @@ class PHPWS_DB {
         }
     }
 
-    function setIndexBy($indexby)
+    /**
+     * Sets the result array key to the value of the indexby column.
+     * If you expect multiple results per index, you may wish to set
+     * force_array to true. This will ensure the results per line are always
+     * an array of results.
+     *
+     * For example, if you group by a foreign key you may get 2 results on one
+     * index a only one on the other. Here is an example array were that the result:
+     *
+     * 'cat' => 0 => 'Whiskers'
+     *          1 => 'Muffin'
+     * 'dog' => 'Rover'
+     *
+     * If you knew that repeats were possible and set force_array to true, this
+     * would be the result instead:
+     *
+     * 'cat' => 0 => 'Whiskers'
+     *          1 => 'Muffin'
+     * 'dog' => 0 => 'Rover'
+     *
+     */
+    function setIndexBy($indexby, $force_array=false)
     {
         $this->indexby = $indexby;
+        $this->force_array = (bool)$force_array;
     }
 
     function getIndexBy()
@@ -1475,7 +1498,9 @@ class PHPWS_DB {
 
     function _expandIndex(&$rows, $index, $item, &$stacked)
     {
-        if (isset($rows[$index])) {
+        if ($this->force_array) {
+            $rows[$index][] = $item;
+        } elseif (isset($rows[$index])) {
             if (is_array($rows[$index]) && !isset($rows[$index][0])) {
                 $hold = $rows[$index];
                 $rows[$index] = array();
@@ -2205,6 +2230,12 @@ class PHPWS_DB {
      *
      * --- Any extra parameters after class_name are piped into ---
      * ---          the object constructor.                     ---
+     * Example:
+     * $db->getObject('Class_Name', 'foo');
+     * class Class_Nane {
+     * function Class_Name($extra_param) {
+     * } // end constuctor
+     * } //end class
      *
      * @author Matthew McNaney <matt at tux dot appstate dot edu>
      * @param string $class_name Name of class used in object

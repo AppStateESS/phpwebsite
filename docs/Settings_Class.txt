@@ -33,7 +33,7 @@ Add additional settings to the array as you see fit.
 
 Getting a setting
 -----------------
-Simply call 
+Simply call
 
 $result = PHPWS_Settings::get('module_name', 'name_of_setting');
 
@@ -75,19 +75,8 @@ Final notes
 You can store almost any value though I would NOT recommend storing an
 object.
 
-If you are storing an array, you have the option to append to a
-setting.
-For example,
-
-$color_list = array ('orange', 'blue', 'red');
-
-foreach ($color_list as $color) {
-    PHPWS_Settings::append('my_mod', 'colors', $color);
-}
-
-Be warned that if you try to append a setting that is not empty or not
-already an array, append will fail and return FALSE.
-
+If you store an array or object, you will need to serialize it when
+you set it and unserialize when retrieving it.
 
 Conclusion
 ----------------

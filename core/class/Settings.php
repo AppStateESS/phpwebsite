@@ -82,6 +82,10 @@ class PHPWS_Settings {
         return true;
     }
 
+    /*
+     * Not in use and probably not usable. Removing notes on it but keeping it just 
+     * in case someone is using it.
+     */
     function append($module, $setting, $value)
     {
         if (is_array($setting)) {
@@ -100,6 +104,7 @@ class PHPWS_Settings {
         $GLOBALS['PHPWS_Settings'][$module][$setting][] = $value;
         return true;
     }
+
 
     /**
      * updates the settings table
@@ -186,7 +191,7 @@ class PHPWS_Settings {
 
     /**
      * Loads the settings into the session
-     * 
+     *
      */
     function load($module)
     {
@@ -195,7 +200,7 @@ class PHPWS_Settings {
             $GLOBALS['PHPWS_Settings'][$module] = 1;
             return PHPWS_Error::get(SETTINGS_MISSING_FILE, 'core', 'PHPWS_Settings::load', $module);
         }
-        
+
         include $default;
         PHPWS_Settings::set($module, $settings);
 
