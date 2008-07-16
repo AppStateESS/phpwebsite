@@ -24,7 +24,7 @@ class Checkin {
         PHPWS_Core::initModClass('checkin', 'Visitors.php');
         $db = new PHPWS_DB('checkin_visitor');
         if ($index) {
-            $db->setIndexBy('assigned');
+            $db->setIndexBy('assigned', true);
         }
         if (isset($staff_id)) {
             $db->addWhere('assigned', $staff_id);
@@ -32,6 +32,7 @@ class Checkin {
         $db->addWhere('finished', 0);
         $db->addOrder('arrival_time asc');
         $result = $db->getObjects('Checkin_Visitor');
+
         if (!PHPWS_Error::logIfError($result)) {
             $this->visitor_list = & $result;
         }
@@ -145,5 +146,111 @@ class Checkin {
 
         return $list;
     }
+
+
+    function parseFilter($filter)
+    {
+        $filter = strtolower(str_replace(' ', '', $filter));
+        $farray = explode(',', $filter);
+
+        foreach ($farray as $val) {
+            $subval = explode('-', $val);
+            switch (1) {
+            case strlen($val) == 1:
+                $final[] = $val;
+                break;
+
+            case preg_match('/^\w{1}-\w{1}$/', $val):
+                $final[] = "[$val]";
+                break;
+
+            case preg_match('/^\w{2}-\w{2}$/', $val):
+                if (substr($subval[0], 0, 1) == substr($subval[1], 0, 1)) {
+                    $final[] = sprintf('%s[%s-%s]', substr($subval[0], 0, 1),
+                                       substr($subval[0], 1, 1),
+                                       substr($subval[1], 1, 1));
+                } else {
+                    $char1 = substr($subval[0], 0, 1);
+                    $char2 = substr($subval[0], 1, 1);
+                    if ($char2 == 'a') {
+                        $final[] = $char1;
+                    } else {
+                        $final[] = sprintf('%s[a-%s]', $char1, $char2);
+                    }
+
+                    $char3 = substr($subval[1], 0, 1);
+                    $char4 = substr($subval[1], 1, 1);
+
+                    if ($char4 == 'a') {
+                        $final[] = $subval[1];
+                    } else {
+                        $final[] = sprintf('%s[a-%s]', $char3, $char4);
+                    }
+                }
+                break;
+
+            case preg_match('/^\w{1}-\w{2}$/', $val):
+                $final[] = $subval[0];
+                $char1 = substr($subval[1], 0, 1);
+                $char2 = substr($subval[1], 1, 1);
+                if ($char2 == 'a') {
+                    $final[] = $subval[1];
+                } else {
+                    $final[] = sprintf('%s[a-%s]', $char1, $char2);
+                }
+                break;
+
+            case preg_match('/^\w{2}-\w{1}$/', $val):
+                $char1 = substr($subval[0], 0, 1);
+                $char2 = substr($subval[0], 1, 1);
+                $char3 = substr($subval[1], 0, 1);
+                if ($char2 == 'z') {
+                    $final[] = $subval[0];
+                } else {
+                    $final[] = sprintf('%s[%s-z]', $char1, $char2);
+                }
+
+                $start_char = (int)ord($char1);
+                $final_char = (int)ord($char3);
+                if ($final_char - $start_char == 1) {
+                    $final[] = $subval[1];
+                } else {
+                    for ($i = $start_char; $i < $final_char; $i++);
+                    $final[] = sprintf('[%s-%s]', chr($start_char + 1), chr($i));
+                }
+                break;
+
+            default:
+                $final[] = $val;
+                break;
+            }
+        }
+        return sprintf('/^%s/i', implode('|', $final));
+    }
+
+    function timeWaiting($rel)
+    {
+        $hours = floor( $rel / 3600);
+        if ($hours) {
+            $rel = $rel % 3600;
+        }
+
+        $mins = floor( $rel / 60);
+
+        if ($hours) {
+            $waiting[] = sprintf(dgettext('checkin', '%s hr'), $hours);
+        }
+
+        if ($mins) {
+            $waiting[] = sprintf(dgettext('checkin', '%s min'), $mins);
+        }
+
+        if (!isset($waiting)) {
+            $waiting[] = dgettext('checkin', 'Just arrived');
+        }
+
+        return implode(', ', $waiting);
+    }
+
 }
 ?>

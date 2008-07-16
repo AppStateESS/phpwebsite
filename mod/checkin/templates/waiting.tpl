@@ -1,3 +1,4 @@
+<p>{HIDE_PANEL} | {HIDE_SIDEBAR}</p>
 <div id="action-buttons">{MEET} {AVAILABLE} {UNAVAILABLE} {FINISH}</div>
 <div id="current-meeting" class="{CURRENT_CLASS}">{CURRENT_MEETING}</div>
 <table width="100%" cellpadding="6" style="clear : both">

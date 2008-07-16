@@ -24,6 +24,15 @@
    margin-right : 10px;
 }
 
+div#assignment .action-button {
+   float : none;
+   margin : 0px;
+   margin-bottom : 3px;
+   font-size : .9em;
+   padding : 3px;
+   white-space : normal;
+}
+
 a.meet-button {
    background-color : #F96567;
    white-space : nowrap;
@@ -70,4 +79,12 @@ div.unavailable {
 
 span.move-visitor select {
    font-size : .9em;
+}
+
+span.reason, span.note, span.waiting {
+   font-size : .9em;
+}
+
+span.note {
+   font-style : italic;
 }

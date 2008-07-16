@@ -38,6 +38,7 @@ class Checkin_Visitor {
         return $db->saveObject($this);
     }
 
+
     function assign()
     {
         if (!$this->reason) {
@@ -59,21 +60,31 @@ class Checkin_Visitor {
             if (empty($filters)) {
                 return;
             }
+            for ($i=97; $i < 123; $i++) {
+                $alphabet[$i] = chr($i);
+            }
+
             foreach ($filters as $id=>$filter) {
                 $lastname = preg_quote($this->lastname);
-                $filter = str_replace(' ', '', $filter);
-                $farray = explode(',', $filter);
-
-                foreach ($farray as $val) {
-                    switch (1) {
-                    case preg_match('/-/', $val):
-
-                        break;
-                    }
+                $preg_filter = Checkin::parseFilter($filter);
+                if (preg_match($preg_filter, $lastname)) {
+                    $this->assigned = $id;
                 }
-
             }
         }
+    }
+
+
+
+    function removeLink()
+    {
+        $js['question'] = sprintf(dgettext('checkin', 'Are you sure you want to remove %s from the waiting list?'),
+                                  addslashes($this->getName()));
+        $js['address']  = PHPWS_Text::linkAddress('checkin', array('aop'=>'remove_visitor',
+                                                                   'visitor_id'=> $this->id));
+        $js['link']     = dgettext('checkin', 'Remove');
+        $js['title']    = dgettext('checkin', 'Remove visitor from checkin');
+        return javascript('confirm', $js);
     }
 
     function noteLink()
@@ -94,14 +105,14 @@ class Checkin_Visitor {
         return PHPWS_Template::process($tpl, 'checkin', 'note.tpl');
     }
 
-    function row($staff_list=null)
+    function row($staff_list=null, &$staff)
     {
         static $meeting = 0;
 
         $form = new PHPWS_Form('form' . $this->id);
         $tpl['NAME'] = sprintf('%s %s', $this->firstname, $this->lastname);
-        $tpl['WAITING'] = $this->timeWaiting();
-        if ($staff_list) {
+        $tpl['WAITING'] = Checkin::timeWaiting(time() - $this->arrival_time);
+        if ($staff_list && $staff->visitor_id != $this->id) {
             $select = sprintf('visitor_%s', $this->id);
             $form->addSelect($select, $staff_list);
             $form->setExtra($select, sprintf('onchange="reassign(this, %s)"', $this->id));
@@ -115,38 +126,12 @@ class Checkin_Visitor {
         $tpl['REASON'] = $this->getReason();
 
         $links[] = $this->noteLink();
+        if ($staff->visitor_id != $this->id) {
+            $links[] = $this->removeLink();
+        }
+
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
-    }
-
-    function timeWaiting($from_now=true)
-    {
-        if ($from_now) {
-            $rel = time() - $this->arrival_time;
-        } else {
-            $rel = $this->start_meeting - $this->arrival_time;
-        }
-
-        $hours = floor( $rel / 3600);
-        if ($hours) {
-            $rel = $rel % 3600;
-        }
-
-        $mins = floor( $rel / 60);
-
-        if ($hours) {
-            $waiting[] = sprintf(dngettext('checkin', '%s hour', '%s hours', $hours), $hours);
-        }
-
-        if ($mins) {
-            $waiting[] = sprintf(dngettext('checkin', '%s minute', '%s minutes', $mins), $mins);
-        }
-
-        if (!isset($waiting)) {
-            $waiting[] = dgettext('checkin', 'Just arrived');
-        }
-
-        return implode(', ', $waiting);
     }
 
     function getName()
@@ -169,4 +154,14 @@ class Checkin_Visitor {
         }
     }
 
+    function delete()
+    {
+        $db = new PHPWS_DB('checkin_visitor');
+        $db->addWhere('id', $this->id);
+        if (!PHPWS_Error::logIfError($db->delete())) {
+            $db = new PHPWS_DB('checkin_staff');
+            $db->addWhere('visitor_id', $this->id);
+            PHPWS_Error::logIfError($db->update('visitor_id', 0));
+        }
+    }
 }

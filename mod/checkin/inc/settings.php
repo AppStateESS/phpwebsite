@@ -6,5 +6,6 @@
  */
 
 $settings['front_page'] = 1;
+$settings['assign_refresh'] = 60;
 
 ?>

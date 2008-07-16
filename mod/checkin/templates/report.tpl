@@ -5,7 +5,7 @@
 <!-- END form -->
 <table border="1" width="99%" cellpadding="4">
   <!-- BEGIN row --><tr>
-    <td>{DISPLAY_NAME}</td>
+    <td><strong>{DISPLAY_NAME}</strong><br />{VISITORS_SEEN}<br />{TOTAL_WAIT}</td>
     <td>
       <table cellpadding="5" width="100%">
         <tr>
