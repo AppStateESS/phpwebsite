@@ -136,6 +136,12 @@ class Checkin_Admin extends Checkin {
             $this->waiting();
             break;
 
+        case 'small_wait':
+            $this->loadCurrentStaff();
+            $this->waiting(true);
+            $js = true;
+            break;
+
         case 'remove_visitor':
             $this->removeVisitor();
             PHPWS_Core::goBack();
@@ -264,10 +270,13 @@ class Checkin_Admin extends Checkin {
         $tabs['waiting'] = array('title'=>dgettext('checkin', 'Waiting'),
                                  'link'=>$link);
 
-        if (Current_User::allow('checking', 'settings')) {
+        if (Current_User::allow('checkin', 'assign_visitors')) {
             $tabs['assign'] = array('title'=>dgettext('checkin', 'Assignment'),
                                     'link'=>$link);
+        }
 
+
+        if (Current_User::allow('checkin', 'settings')) {
             $tabs['staff'] =  array('title'=>dgettext('checkin', 'Staff'),
                                     'link'=>$link);
 
@@ -383,7 +392,7 @@ class Checkin_Admin extends Checkin {
         return PHPWS_Template::process($row, 'checkin', 'queue.tpl');
     }
 
-    function waiting()
+    function waiting($small_view=false)
     {
         Layout::addStyle('checkin');
         javascript('modules/checkin/send_note/');
@@ -418,12 +427,31 @@ class Checkin_Admin extends Checkin {
         $this->current_visitor = $this->visitor_list[0];
         $this->statusButtons($tpl);
 
-        $tpl['HIDE_PANEL'] = $this->hidePanelLink();
-        $tpl['HIDE_SIDEBAR'] = $this->hideSidebarLink();
+        if ($small_view) {
+            $tpl['REDUCE'] = ' ';
+            $tpl['CLOSE'] = sprintf('<input type="button" onclick="window.close()" value="%s" />', dgettext('checkin', 'Close'));
+            Layout::metaRoute('index.php?module=checkin&aop=small_wait', PHPWS_Settings::get('checkin', 'waiting_refresh'));
+        } else {
+            $tpl['HIDE_PANEL'] = $this->hidePanelLink();
+            $tpl['HIDE_SIDEBAR'] = $this->hideSidebarLink();
+            $tpl['SMALL_VIEW'] = $this->smallViewLink();
+            Layout::metaRoute('index.php?module=checkin&aop=waiting', PHPWS_Settings::get('checkin', 'waiting_refresh'));
+        }
+
 
         $tpl['NAME_LABEL'] = dgettext('checkin', 'Name / Notes');
         $tpl['WAITING_LABEL'] = dgettext('checkin', 'Time waiting');
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'waiting.tpl');
+    }
+
+    function smallViewLink()
+    {
+        $vars['aop'] = 'small_wait';
+        $js['address'] = PHPWS_Text::linkAddress('checkin', $vars, true);
+        $js['label']   = dgettext('checkin', 'Small view');
+        $js['width'] = '640';
+        $js['height'] = '480';
+        return javascript('open_window', $js);
     }
 
     function statusButtons(&$tpl)
@@ -622,6 +650,10 @@ class Checkin_Admin extends Checkin {
         $form->addText('assign_refresh', PHPWS_Settings::get('checkin', 'assign_refresh'));
         $form->setSize('assign_refresh', '3');
         $form->setLabel('assign_refresh', dgettext('checkin', 'Assignment page refresh rate (in seconds)'));
+
+        $form->addText('waiting_refresh', PHPWS_Settings::get('checkin', 'waiting_refresh'));
+        $form->setSize('waiting_refresh', '3');
+        $form->setLabel('waiting_refresh', dgettext('checkin', 'Waiting page refresh rate (in seconds)'));
 
         $form->addSubmit(dgettext('checkin', 'Save settings'));
         $tpl = $form->getTemplate();

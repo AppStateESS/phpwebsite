@@ -88,3 +88,7 @@ span.reason, span.note, span.waiting {
 span.note {
    font-style : italic;
 }
+
+#small-view {
+   font-size : .9em;
+}

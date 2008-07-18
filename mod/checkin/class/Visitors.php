@@ -126,7 +126,7 @@ class Checkin_Visitor {
         $tpl['REASON'] = $this->getReason();
 
         $links[] = $this->noteLink();
-        if ($staff->visitor_id != $this->id) {
+        if (Current_User::allow('checkin', 'remove_visitors') && $staff->visitor_id != $this->id) {
             $links[] = $this->removeLink();
         }
 
