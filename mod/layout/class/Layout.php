@@ -40,12 +40,12 @@ class Layout {
      * If the module and content_var are set, layout will remember
      * the "position" of the content. The admin will then be able
      * to shift this position using the administrative options in Layout.
-     * 
-     * If the module and content_var are NOT set, the data goes into the 
+     *
+     * If the module and content_var are NOT set, the data goes into the
      * BODY tag.
      *
      * If default_body is true, then the content we will placed into the
-     * BODY tag by default instead of the DEFAULT tag. This occurs when 
+     * BODY tag by default instead of the DEFAULT tag. This occurs when
      * a preset theme variable was not created for the content variable.
      *
      * @author Matt McNaney <matt at tux dot appstate dot edu>
@@ -142,7 +142,7 @@ class Layout {
         if (empty($index)) {
             $index = $index_count++;
         }
-    
+
         $GLOBALS['Layout_JS'][$index]['head'] = $script;
     }
 
@@ -196,7 +196,7 @@ class Layout {
         }
 
         Layout::addToStyleList($cssFile);
-    
+
         $themeFile['file']   = PHPWS_Template::getTplDir($module) . $filename;
         $themeFile['import'] = TRUE;
 
@@ -309,7 +309,7 @@ class Layout {
         if (empty($GLOBALS['Layout_Held'])) {
             return;
         }
-    
+
         foreach ($GLOBALS['Layout_Held'] as $module => $content_info) {
             foreach ($content_info as $content_var => $info) {
                 $display = PHPWS_Template::process($info['values'], $module, $info['template']);
@@ -508,7 +508,7 @@ class Layout {
         $defaultfile = $base . 'javascript/' . $directory . '/default.php';
 
         if (is_file($defaultfile)) {
-            require $defaultfile;       
+            require $defaultfile;
         }
 
         if (isset($default)) {
@@ -587,7 +587,7 @@ class Layout {
         if (!empty($meta_description)) {
             $metatags[] = '<meta name="description" content="' . $meta_description . '" />';
         }
-    
+
         if (!empty($meta_owner)) {
             $metatags[] = '<meta name="owner" content="' . $meta_owner . '" />';
         }
@@ -680,12 +680,12 @@ class Layout {
         if (!is_dir($base . $dir_check)) {
             return FALSE;
         }
-      
+
         return Layout::getJavascript($script_name,$data, $base);
     }
 
-    function importStyleSheets() 	 
-    { 	 
+    function importStyleSheets()
+    {
         if (isset($_SESSION['Layout_Settings']->_style_sheets)) {
             foreach ($_SESSION['Layout_Settings']->_style_sheets as $css) {
                 Layout::addToStyleList($css);
@@ -781,7 +781,7 @@ class Layout {
         $key = Key::getCurrent();
         if (javascriptEnabled() && Layout::getExtraStyles() &&
             Key::checkKey($key)) {
-            
+
 
             $js_vars['width']  = 400;
             $js_vars['height'] = 200;
@@ -810,7 +810,7 @@ class Layout {
         MiniAdmin::add('layout', $links);
 
         // MiniAdmin runs get before layout and runtime won't work
-        // with flagged keys 
+        // with flagged keys
         MiniAdmin::get();
     }
 
@@ -942,7 +942,7 @@ class Layout {
         }
 
         $js = PHPWS_Cookie::read('js_enabled');
-        
+
         if (!$js) {
             javascript('test');
             PHPWS_Cookie::write('js_enabled', 'testing');
@@ -952,7 +952,7 @@ class Layout {
             foreach ($GLOBALS['Layout_JS'] as $script=>$javascript) {
                 $jsHead[] = $javascript['head'];
             }
-      
+
             $template['JAVASCRIPT'] = implode("\n", $jsHead);
         }
 
@@ -1153,7 +1153,7 @@ class Layout {
  * to write the test cookie. This method prevents the check getting
  * started during a header reroute and spoiling the process.
  * For ease of use, we are assuming the positive before the check
- * is finished. 
+ * is finished.
  */
 function javascriptEnabled()
 {
