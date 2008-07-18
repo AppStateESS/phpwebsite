@@ -2001,19 +2001,19 @@ class PHPWS_DB {
             if (stristr($info['flags'], 'multiple_key')) {
                 if (DB_ALLOW_TABLE_INDEX) {
                     $column_info['index'] = 'CREATE INDEX ' .  $info['name'] . ' on ' . $info['table']
-                        . '(' . $info['name'] . ')';
+                        . '(' . $info['name'] . ');';
                 }
                 $info['flags'] = str_replace(' multiple_key', '', $info['flags']);
             }
-            $preFlag = array('/not_null/i', '/primary_key/i', '/default_(\w+)?/i', '/blob/i', '/%3a%3asmallint/i');
-            $postFlag = array('NOT NULL', 'PRIMARY KEY', "DEFAULT '\\1'", '', '');
-            $multipleFlag = array('multiple_key', '');
-            $flags = ' ' . preg_replace($preFlag, $postFlag, $info['flags']);
 
-        }
-        else {
+            $preFlag = array('/not_null/i', '/primary_key/i', '/default_(\w+)?/i', '/blob/i', '/%3a%3asmallint/i', '/unique_key/');
+            $postFlag = array('NOT NULL', '', "DEFAULT '\\1'", '', '', 'UNIQUE KEY');
+
+            $flags = ' ' . preg_replace($preFlag, $postFlag, $info['flags']);
+        } else {
             $flags = null;
         }
+
 
         if ($strip_name == true) {
             $column_info['parameters'] = $setting . $flags;
@@ -2027,10 +2027,17 @@ class PHPWS_DB {
 
     function parseColumns($columns)
     {
+        static $primary_keys = array();
+        $table = $this->tables[0];
         foreach ($columns as $info){
             if (!is_array($info)) {
                 continue;
             }
+
+            if (stristr($info['flags'], 'primary_key')) {
+                $primary_keys[$table][] = $info['name'];
+            }
+
 
             $result = $this->parsePearCol($info);
             if (isset($result['index'])) {
@@ -2038,6 +2045,9 @@ class PHPWS_DB {
             }
 
             $column_info['parameters'][] = $result['parameters'];
+        }
+        if (!empty($primary_keys[$table])) {
+            $column_info['parameters'][] = sprintf('PRIMARY KEY (%s)', implode(',', $primary_keys[$table]));
         }
 
         return $column_info;
@@ -2052,7 +2062,7 @@ class PHPWS_DB {
             $columns =  $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
             $column_info = $this->parseColumns($columns);
             $index = $this->getIndex();
-
+            test($column_info);
             $sql[] = "CREATE TABLE $table ( " .  implode(', ', $column_info['parameters']) . ' );';
             if (isset($column_info['index'])) {
                 $sql = array_merge($sql, $column_info['index']);

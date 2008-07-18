@@ -4,7 +4,7 @@
    * Also contains extra HTML utilities
    *
    * See config/core/text_settings.php for configuration options
-   * 
+   *
    * @version $Id$
    * @author  Matthew McNaney <matt at tux dot appstate dot edu>
    * @author  Adam Morton
@@ -151,9 +151,9 @@ class PHPWS_Text {
         if (empty($this->text)) {
             return NULL;
         }
-        
+
         $text = $this->text;
-        
+
         if (ALLOW_TEXT_FILTERS && $this->use_filters) {
             $text = PHPWS_Text::filterText($text);
         }
@@ -249,7 +249,7 @@ class PHPWS_Text {
     {
         return preg_replace('/&(?!\w+;)(?!#)/U', '&amp;\\1', $text);
     }
-  
+
     /**
      * Removes profanity from a text string
      *
@@ -278,7 +278,7 @@ class PHPWS_Text {
 
     /**
      * Breaks text up into row sentences in an array
-     * 
+     *
      * @author Matt McNaney <matt@NOSPAM_tux.appstate.edu>
      * @param  string  $text       Text string to break into array
      * @return array   $text_array Array of sentences
@@ -323,11 +323,11 @@ class PHPWS_Text {
                               '/(<\/dd>)\n/iU',
                               '/(<\/dt>)\n/iU',
                               '/(<\/h\d>)\n/iU',
-                              '/(<blockquote>)\n/iU',                      
+                              '/(<blockquote>)\n/iU',
                               );
 
         $text = str_replace("\r\n", "\n", $text);
-        $text = preg_replace($do_not_break, '\\1', $text); 
+        $text = preg_replace($do_not_break, '\\1', $text);
         $text = preg_replace('/<pre>(.*)<\/pre>/Uies', "'<pre>' . str_replace(\"\n\", '[newline]', '\\1') . '</pre>'", $text);
         $text = nl2br($text);
         $text = str_replace('[newline]', "\n", $text);
@@ -384,7 +384,7 @@ class PHPWS_Text {
      *
      * Should be used anytime user input directly affects program logic,
      * is used to pull database data, etc. Also, will ALWAYS return FALSE
-     * if it receives blank data. 
+     * if it receives blank data.
      *
      * @author Matthew McNaney <matt at tux dot appstate dot edu>
      * @param  string  $userEntry Text to be checked
@@ -412,7 +412,7 @@ class PHPWS_Text {
             break;
 
         case 'url':
-            if (preg_match('/^(http(s){0,1}:\/\/)\w([\.\w\-\/&?\+=])+$/i', $userEntry)) return TRUE;
+            if (preg_match('/^(http(s){0,1}:\/\/)\w([\.\w\-\/&?\+=~])+$/i', $userEntry)) return TRUE;
             else return FALSE;
             break;
 
@@ -514,17 +514,17 @@ class PHPWS_Text {
         }
 
         $link[] = 'index.php';
-    
+
         if (isset($module)){
             $link[] = '?';
             $vars[] = "module=$module";
         }
-    
+
         if (is_array($getVars)){
             foreach ($getVars as $var_name=>$value)
                 $vars[] = $var_name . '=' . $value;
         }
-    
+
         if ($convert_amp) {
             $amp = '&amp;';
         } else {
@@ -540,7 +540,7 @@ class PHPWS_Text {
 
     /**
      * Allows a quick link function for phpWebSite modules to the index.php.
-     * 
+     *
      * For local links ONLY. It adds the hub web address and index.php automatically.
      * You supply the name of the module and the variables.
      *
@@ -548,7 +548,7 @@ class PHPWS_Text {
      * @param string title String to appear as the 'click on' word(s)
      * @param string module Name of module to access
      * @param array getVars Associative array of GET variable to append to the link
-     * @param string class_name String added to css class 
+     * @param string class_name String added to css class
      * @return string The complated link.
      */
     function moduleLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL, $class_name=null)
@@ -598,7 +598,7 @@ class PHPWS_Text {
         }
         else return $link;
     }// END FUNC checkLink()
-  
+
 
     /**
      * Returns TRUE if the text appears to have unslashed quotes or apostrophes
@@ -686,7 +686,7 @@ class PHPWS_Text {
                 $text = preg_replace_callback("/$search/Ui", 'getEmbedded', $text);
             }
         }
-    
+
         return $text;
     }
 
@@ -757,11 +757,11 @@ class PHPWS_Text {
 
         return getXMLLevel($result, $level);
     }
-  
+
 
     /**
      * Further processes the data from xml2php into a more
-     * useful array structure. 
+     * useful array structure.
      *
      * @author Matt McNaney <matt at tux dot appstate dot edu>
      */
@@ -848,11 +848,11 @@ class PHPWS_Text {
         }
 
         $url_length = strpos($url, '?');
-        
+
         if (!$url_length) {
             $url_length = floor($limit/2);
         }
-        
+
         $pickup = $limit - $url_length;
         if ($pickup < 3) {
             $pickup = 3;
@@ -889,7 +889,7 @@ function getEmbedded($stuff)
         return;
     }
 
-    if (count($GLOBALS['embedded_tags'][$module]) == 1 && 
+    if (count($GLOBALS['embedded_tags'][$module]) == 1 &&
         $parameters[0] != $GLOBALS['embedded_tags'][$module][0]) {
         $function_name = $GLOBALS['embedded_tags'][$module][0];
     } else {
