@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+18 July 2008
++ Javascript prompt: fixed the encode function
++ Fixed problems with the categories conversion.
+
 16 July 2008
 + Added a force_array parameter to Database class. Allows symmetry of
   repeat results on an index.

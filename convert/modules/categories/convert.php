@@ -52,7 +52,7 @@ function convertCategories()
     $content[] = sprintf('%s&#37; done<br>', $batch->percentDone());
 
     $batch->completeBatch();
-    
+
     if (!$batch->isFinished()) {
         $content[] =  $batch->continueLink();
     } else {
@@ -62,7 +62,7 @@ function convertCategories()
         $content[] =  _('Finished converting categories!');
         $content[] = '<a href="index.php?command=convert&amp;package=categories">' . _('Continue to convert category elements.') . '</a>';
     }
-    
+
     return implode('<br />', $content);
 }
 
@@ -108,10 +108,10 @@ function convertItems()
         $percent = $batch->percentDone();
         $content[] = Convert::getGraph($percent, $show_wait);
         $batch->completeBatch();
-    
+
         if (!$batch->isFinished()) {
             if ($_REQUEST['mode'] == 'manual') {
-                $content[] =  $batch->continueLink();                
+                $content[] =  $batch->continueLink();
             } else {
                 Convert::forward($batch->getAddress());
             }
@@ -121,7 +121,7 @@ function convertItems()
             $content[] =  _('Finished converting category items!');
             $content[] = '<a href="index.php">' . _('Return to the main page.') . '</a>';
         }
-    
+
         return implode('<br />', $content);
     }
 }
@@ -240,7 +240,7 @@ function createSeqTable()
     return $db->updateSequenceTable();
 }
 
-function convertImage ($image_name, $image_alt) 
+function convertImage ($image_name, $image_alt)
 {
     $home_dir = Convert::getHomeDir();
 
@@ -265,12 +265,13 @@ function convertImage ($image_name, $image_alt)
         $_SESSION['Category Folder_Dir'] = $folder->getFullDirectory();
     }
 
-    $old_file = PHPWS_HOME_DIR . 'convert/images/fatcat/images/' . $image_name;
-    $new_directory = PHPWS_HOME_DIR . $_SESSION['Category Folder_Dir'];
+    $old_file = $home_dir . 'images/fatcat/images/' . $image_name;
+    $new_directory = $_SESSION['Category Folder_Dir'];
+
     $err = PHPWS_File::fileCopy($old_file, $new_directory, $image_name, 1, 1);
-    if (PEAR::isError($err)) 
+    if (PEAR::isError($err))
         exit(PHPWS_Error::printError($err));
-    if (!$err) 
+    if (!$err)
         exit('Something went wrong with the image transfer');
 
     // Get image specs

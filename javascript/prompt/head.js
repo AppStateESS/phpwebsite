@@ -12,15 +12,30 @@ function show_prompt(question, address, answer, prompt_var) {
 }
 
 function encode(str) {
-	var result = "";
-	
+	var result = '';
+
 	for (i = 0; i < str.length; i++) {
-		if (str.charAt(i) == " ") result += "+";
-		else result += str.charAt(i);
+            switch (str.charAt(i)) {
+            case ' ':
+                result += '+';
+                break;
+
+            case '&':
+                result += '%26';
+                break;
+
+            case '+':
+                result += '%2B';
+                break;
+
+            default:
+                result += str.charAt(i);
+
+            }
 	}
+
         return result;
 }
 
 //]]>
 </script>
-
