@@ -100,7 +100,7 @@ class Menu_Link {
         $title = strip_tags(trim($title));
 
         $char_limit = PHPWS_Settings::get('menu', 'max_link_characters');
-        
+
         if ($char_limit > 0 && strlen($title) > $char_limit) {
             $title = substr($title, 0, $char_limit);
         }
@@ -172,7 +172,7 @@ class Menu_Link {
 
     function save()
     {
-        if (empty($this->menu_id) || empty($this->title) || 
+        if (empty($this->menu_id) || empty($this->title) ||
             empty($this->url) || !isset($this->key_id) ) {
             return PHPWS_Error::get(MENU_MISSING_INFO, 'menu', 'Menu_Link::save');
         }
@@ -272,7 +272,7 @@ class Menu_Link {
         }
 
         foreach ($this->_children as $child) {
-            if ( ($current_key->id !== 0 && $child->key_id == $current_key->id) || 
+            if ( ($current_key->id !== 0 && $child->key_id == $current_key->id) ||
                  ($child->url == $current_key->url)) {
                 return true;
             }
@@ -354,7 +354,7 @@ class Menu_Link {
                 $js['label'] = MENU_LINK_ADMIN;
                 $js['width'] = 200;
                 $js['height'] = 300;
-            
+
                 $template['ADMIN'] = javascript('open_window', $js);
             } else {
                 $template['ADMIN'] = NO_POST;
@@ -400,7 +400,7 @@ class Menu_Link {
 
         $vars['link_id'] = $this->id;
         $vars['command'] = 'delete_link';
-        $js['QUESTION'] = dgettext('menu', 'Are you sure you want to delete this link: ' . 
+        $js['QUESTION'] = dgettext('menu', 'Are you sure you want to delete this link: ' .
                                    addslashes($this->getTitle()));
         $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, true);
         return javascript('confirm', $js);
@@ -450,7 +450,6 @@ class Menu_Link {
             return $result;
         }
 
-        $this->save();
         return $this->save();
     }
 
@@ -465,7 +464,7 @@ class Menu_Link {
         }
 
         $below = new Menu_Link;
-        
+
         $db = $this->getDB();
         $db->addWhere('menu_id', $this->menu_id);
         $db->addWhere('parent', $this->parent);
