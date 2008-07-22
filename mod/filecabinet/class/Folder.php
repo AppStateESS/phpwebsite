@@ -444,7 +444,7 @@ class Folder {
 
         $mods = PHPWS_Core::getModuleNames();
         if ($this->ftype == IMAGE_FOLDER) {
-            if ($this->module_created) {
+            if ($this->module_created && isset($mods[$this->module_created])) {
                 $tpl['MODULE_CREATED'] = $mods[$this->module_created];
             } else {
                 $tpl['MODULE_CREATED'] = dgettext('filecabinet', 'General');
