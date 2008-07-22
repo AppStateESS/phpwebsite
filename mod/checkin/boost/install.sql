@@ -1,7 +1,8 @@
 CREATE TABLE checkin_staff (
   id int NOT NULL default 0,
   user_id int NOT NULL default 0,
-  filter varchar(50) default NULL,
+  filter varchar(255) default NULL,
+  f_regexp varchar(255) default NULL,
   status int NOT NULL default 0,
   visitor_id int NOT NULL default 0,
   filter_type smallint NOT NULL default 0,

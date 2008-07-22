@@ -33,6 +33,9 @@ class Checkin_User extends Checkin {
         $tpl = $form->getTemplate();
         $this->title =  dgettext('checkin', 'Please check in using the form below');
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'signin.tpl');
+        if (!Current_User::isLogged() && PHPWS_Settings::get('checkin', 'collapse_signin')) {
+            Layout::collapse();
+        }
     }
 
     function main()
@@ -62,9 +65,14 @@ class Checkin_User extends Checkin {
 
         case 'post_checkin':
             if ($this->postCheckin()) {
-                $this->visitor->save();
-                $this->title = dgettext('checkin', 'Thank you');
-                $this->content = dgettext('checkin', 'Please have a seat in the waiting area.');
+                if (PHPWS_Error::logIfError($this->visitor->save())) {
+                    $this->title = dgettext('checkin', 'Sorry');
+                    $this->content = dgettext('checkin', 'An error is preventing your account to save. Please alert the office.');
+                } else {
+                    $this->visitor->assign();
+                    $this->title = dgettext('checkin', 'Thank you');
+                    $this->content = dgettext('checkin', 'Please have a seat in the waiting area.');
+                }
                 Layout::metaRoute('index.php', 5);
             } else {
                 $this->checkinForm();
@@ -85,7 +93,6 @@ class Checkin_User extends Checkin {
         $this->visitor->firstname = trim($_POST['first_name']);
         $this->visitor->lastname  = trim($_POST['last_name']);
         $this->visitor->reason    = (int)$_POST['reason'];
-        $this->visitor->assign();
         if (empty($this->visitor->firstname)) {
             $this->message[] = dgettext('checkin', 'Please enter your first name.');
         }

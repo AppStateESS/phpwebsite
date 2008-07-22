@@ -54,20 +54,15 @@ class Checkin_Visitor {
         if (!$this->assigned) {
             $db = new PHPWS_DB('checkin_staff');
             $db->addColumn('id');
-            $db->addColumn('filter');
+            $db->addColumn('f_regexp');
             $db->setIndexBy('id');
             $filters = $db->select('col');
             if (empty($filters)) {
                 return;
             }
-            for ($i=97; $i < 123; $i++) {
-                $alphabet[$i] = chr($i);
-            }
-
-            foreach ($filters as $id=>$filter) {
-                $lastname = preg_quote($this->lastname);
-                $preg_filter = Checkin::parseFilter($filter);
-                if (preg_match($preg_filter, $lastname)) {
+            foreach ($filters as $id=>$preg_filter) {
+                // preg match requires parens and first character symbol
+                if (preg_match("/^($preg_filter)/", $this->lastname)) {
                     $this->assigned = $id;
                 }
             }

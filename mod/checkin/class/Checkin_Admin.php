@@ -655,6 +655,10 @@ class Checkin_Admin extends Checkin {
         $form->setSize('waiting_refresh', '3');
         $form->setLabel('waiting_refresh', dgettext('checkin', 'Waiting page refresh rate (in seconds)'));
 
+        $form->addCheck('collapse_signin', 1);
+        $form->setLabel('collapse_signin', dgettext('checkin', 'Hide sidebar for visitors'));
+        $form->setMatch('collapse_signin', PHPWS_Settings::get('checkin', 'collapse_signin'));
+
         $form->addSubmit(dgettext('checkin', 'Save settings'));
         $tpl = $form->getTemplate();
 
@@ -670,8 +674,8 @@ class Checkin_Admin extends Checkin {
             }
         }
 
-        $front_page = (int)isset($_POST['front_page']);
-        PHPWS_Settings::set('checkin', 'front_page', $front_page);
+        PHPWS_Settings::set('checkin', 'front_page', (int)isset($_POST['front_page']));
+        PHPWS_Settings::set('checkin', 'collapse_signin', (int)isset($_POST['collapse_signin']));
 
         $seconds = (int)$_POST['assign_refresh'];
         if ($seconds < 1) {
