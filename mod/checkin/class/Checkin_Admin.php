@@ -80,7 +80,7 @@ class Checkin_Admin extends Checkin {
 
         case 'reassign':
             // Called via ajax
-            if (Current_User::authorized('checkin')) {
+            if (Current_User::authorized('checkin', 'assign_visitors')) {
                 if (isset($_GET['staff_id']) && $_GET['staff_id'] >= 0  && isset($_GET['visitor_id'])) {
                     $db = new PHPWS_DB('checkin_visitor');
                     $db->addValue('assigned', (int)$_GET['staff_id']);
@@ -93,8 +93,10 @@ class Checkin_Admin extends Checkin {
             break;
 
         case 'assign':
-            $this->panel->setCurrentTab('assign');
-            $this->assign();
+            if (Current_User::allow('checkin', 'assign_visitors')) {
+                $this->panel->setCurrentTab('assign');
+                $this->assign();
+            }
             break;
 
         case 'post_note':
@@ -143,7 +145,9 @@ class Checkin_Admin extends Checkin {
             break;
 
         case 'remove_visitor':
-            $this->removeVisitor();
+            if (Current_User::allow('checkin', 'remove_visitors')) {
+                $this->removeVisitor();
+            }
             PHPWS_Core::goBack();
             break;
 
@@ -162,12 +166,14 @@ class Checkin_Admin extends Checkin {
             break;
 
         case 'post_reason':
-            $this->loadReason();
-            if ($this->postReason()) {
-                $this->reason->save();
-                PHPWS_Core::reroute('index.php?module=checkin&tab=reasons');
-            } else {
-                $this->editReason();
+            if (Current_User::allow('checkin', 'settings')) {
+                $this->loadReason();
+                if ($this->postReason()) {
+                    $this->reason->save();
+                    PHPWS_Core::reroute('index.php?module=checkin&tab=reasons');
+                } else {
+                    $this->editReason();
+                }
             }
             break;
 
@@ -178,8 +184,10 @@ class Checkin_Admin extends Checkin {
 
 
         case 'edit_staff':
-            $this->loadStaff(null, true);
-            $this->editStaff();
+            if (Current_User::allow('checkin', 'settings')) {
+                $this->loadStaff(null, true);
+                $this->editStaff();
+            }
             break;
 
         case 'search_users':
@@ -187,15 +195,17 @@ class Checkin_Admin extends Checkin {
             break;
 
         case 'update_reason':
-            if (Current_User::authorized('checkin', 'settings')) {
-                $this->updateReason();
+            if (Current_User::allow('checkin', 'settings')) {
+                if (Current_User::authorized('checkin', 'settings')) {
+                    $this->updateReason();
+                }
+                $this->panel->setCurrentTab('settings');
+                $this->settings();
             }
-            $this->panel->setCurrentTab('settings');
-            $this->settings();
             break;
 
         case 'post_staff':
-            if (!Current_User::authorized('checkin', 'edit_staff')) {
+            if (!Current_User::authorized('checkin', 'settings')) {
                 Current_User::disallow();
             }
             if ($this->postStaff()) {
@@ -558,25 +568,28 @@ class Checkin_Admin extends Checkin {
             $form->addSubmit(dgettext('checkin', 'Update staff'));
         }
 
-        $form->addRadioAssoc('filter_type', array(0               =>dgettext('checkin', 'None'),
-                                                  CO_FT_LAST_NAME =>dgettext('checkin', 'Last name'),
-                                                  CO_FT_REASON    =>dgettext('checkin', 'Reason')));
-        $form->setMatch('filter_type', $this->staff->filter_type);
-
-        $form->addText('last_name_filter', $this->staff->filter);
-        $form->setLabel('last_name_filter', dgettext('checkin', 'Example: a,b,ca-cf,d'));
-
         $reasons = $this->getReasons();
 
         if (empty($reasons)) {
             $form->addTplTag('REASONS', PHPWS_Text::moduleLink(dgettext('checkin', 'No reasons found.'), 'checkin',
-                                                               array('aop'=>'settings')));
+                                                               array('aop'=>'reasons')));
             $form->addTplTag('REASONS_LABEL',  dgettext('checkin', 'Reasons'));
+            $form->addRadioAssoc('filter_type', array(0               =>dgettext('checkin', 'None'),
+                                                      CO_FT_LAST_NAME =>dgettext('checkin', 'Last name')));
         } else {
             $form->addMultiple('reasons', $reasons);
             $form->setMatch('reasons', $this->staff->_reasons);
             $form->setLabel('reasons', dgettext('checkin', 'Reasons'));
+            $form->addRadioAssoc('filter_type', array(0               =>dgettext('checkin', 'None'),
+                                                      CO_FT_LAST_NAME =>dgettext('checkin', 'Last name'),
+                                                      CO_FT_REASON    =>dgettext('checkin', 'Reason')));
+
         }
+
+        $form->setMatch('filter_type', $this->staff->filter_type);
+
+        $form->addText('last_name_filter', $this->staff->filter);
+        $form->setLabel('last_name_filter', dgettext('checkin', 'Example: a,b,ca-cf,d'));
 
         $tpl = $form->getTemplate();
 

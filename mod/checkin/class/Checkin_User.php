@@ -92,7 +92,9 @@ class Checkin_User extends Checkin {
 
         $this->visitor->firstname = trim($_POST['first_name']);
         $this->visitor->lastname  = trim($_POST['last_name']);
-        $this->visitor->reason    = (int)$_POST['reason'];
+        if (isset($_POST['reason'])) {
+            $this->visitor->reason    = (int)$_POST['reason'];
+        }
         if (empty($this->visitor->firstname)) {
             $this->message[] = dgettext('checkin', 'Please enter your first name.');
         }

@@ -44,6 +44,8 @@ class Checkin_Staff {
     function loadReasons($include_summary=false)
     {
         $db = new PHPWS_DB('checkin_reasons');
+        $db->addWhere('checkin_rtos.staff_id', $this->id);
+        $db->addWhere('id', 'checkin_rtos.reason_id');
         $db->addColumn('id');
         if ($include_summary) {
             $db->addColumn('summary');
@@ -129,7 +131,7 @@ class Checkin_Staff {
                 }
 
                 $start_char = (int)ord($char1);
-                $final_char = (int)ord($char3);            
+                $final_char = (int)ord($char3);
                 if ($final_char - $start_char == 1) {
                     $final[] = $subval[1];
                 } else {
@@ -137,7 +139,7 @@ class Checkin_Staff {
                     $final[] = sprintf('[%s-%s]', chr($start_char + 1), chr($i));
                 }
                 break;
-     
+
             default:
                 $final[] = $val;
                 break;
