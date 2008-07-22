@@ -25,8 +25,8 @@ class Checkin_User extends Checkin {
         $reasons = $this->getReasons();
 
         if (!empty($reasons)) {
-            $form->addSelect('reason', $reasons);
-            $form->setLabel('reason', dgettext('checkin', 'Reason for visit'));
+            $form->addSelect('reason_id', $reasons);
+            $form->setLabel('reason_id', dgettext('checkin', 'Reason for visit'));
         }
         $form->addSubmit(dgettext('checkin', 'Check in'));
 
@@ -69,9 +69,9 @@ class Checkin_User extends Checkin {
                     $this->title = dgettext('checkin', 'Sorry');
                     $this->content = dgettext('checkin', 'An error is preventing your account to save. Please alert the office.');
                 } else {
-                    $this->visitor->assign();
                     $this->title = dgettext('checkin', 'Thank you');
-                    $this->content = dgettext('checkin', 'Please have a seat in the waiting area.');
+                    $this->loadReason();
+                    $this->content = $this->reason->message;
                 }
                 Layout::metaRoute('index.php', 5);
             } else {
@@ -92,8 +92,8 @@ class Checkin_User extends Checkin {
 
         $this->visitor->firstname = trim($_POST['first_name']);
         $this->visitor->lastname  = trim($_POST['last_name']);
-        if (isset($_POST['reason'])) {
-            $this->visitor->reason    = (int)$_POST['reason'];
+        if (isset($_POST['reason_id'])) {
+            $this->visitor->reason    = (int)$_POST['reason_id'];
         }
         if (empty($this->visitor->firstname)) {
             $this->message[] = dgettext('checkin', 'Please enter your first name.');
@@ -102,6 +102,7 @@ class Checkin_User extends Checkin {
         if (empty($this->visitor->lastname)) {
             $this->message[] = dgettext('checkin', 'Please enter your last name.');
         }
+        $this->visitor->assign();
 
         return empty($this->message);
     }

@@ -1,6 +1,6 @@
 {START_FORM}
 <p>{FIRST_NAME_LABEL} {FIRST_NAME}</p>
 <p>{LAST_NAME_LABEL} {LAST_NAME}</p>
-<p><!-- BEGIN reasons -->{REASON_LABEL} {REASON}<!-- END reasons --></p>
+<p><!-- BEGIN reasons -->{REASON_ID_LABEL} {REASON_ID}<!-- END reasons --></p>
 {SUBMIT}
 {END_FORM}

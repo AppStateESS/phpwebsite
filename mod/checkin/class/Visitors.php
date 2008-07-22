@@ -12,7 +12,7 @@ class Checkin_Visitor {
     var $arrival_time  = 0;
     var $start_meeting = 0;
     var $end_meeting   = 0;
-    var $assigned      = false;
+    var $assigned      = 0;
     var $note          = null;
     var $finished      = false;
 
@@ -53,19 +53,28 @@ class Checkin_Visitor {
 
         if (!$this->assigned) {
             $db = new PHPWS_DB('checkin_staff');
+            $db->addWhere('f_regexp', null, '!=');
             $db->addColumn('id');
             $db->addColumn('f_regexp');
             $db->setIndexBy('id');
+
             $filters = $db->select('col');
             if (empty($filters)) {
                 return;
             }
+
             foreach ($filters as $id=>$preg_filter) {
+                if (empty($preg_filter)) {
+                    continue;
+                }
+
                 // preg match requires parens and first character symbol
-                if (preg_match("/^($preg_filter)/", $this->lastname)) {
+                if (preg_match("/^($preg_filter)/i", $this->lastname)) {
                     $this->assigned = $id;
+                    return;
                 }
             }
+            $this->assigned = 0;
         }
     }
 
