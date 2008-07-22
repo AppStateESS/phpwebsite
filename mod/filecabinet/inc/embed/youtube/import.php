@@ -1,5 +1,5 @@
 <?php
-function youtube_import(&$media)
+function youtube_import($media)
 {
     PHPWS_Core::initCoreClass('XMLParser.php');
     $feed_url = 'http://gdata.youtube.com/feeds/api/videos?vq=';
@@ -23,17 +23,23 @@ function youtube_import(&$media)
 
     if (!empty($thumbnail)) {
         $thumb_name = $media->file_name . '.jpg';
-        $thumb_path = $media->thumbnailDirectory() . $thumb_name;
-        if (@copy($thumbnail, $thumb_path)) {
-            $media->thumbnail = $thumb_name;
-        } else {
+        $thumb_dir  = $media->thumbnailDirectory();
+        if (!is_dir($thumb_dir)) {
+            PHPWS_Error::log(FC_THUMBNAIL_NOT_WRITABLE, 'filecabinet', 'youtube_import', $thumb_dir);
             $media->genericTN($thumb_name);
+        } else {
+            $thumb_path = $thumb_dir . $thumb_name;
+            
+            if (@copy($thumbnail, $thumb_path)) {
+                $media->thumbnail = $thumb_name;
+            } else {
+                $media->genericTN($thumb_name);
+            }
         }
     }
 
     $media->width = 425;
     $media->height = 373;
-
     return true;
 }
 

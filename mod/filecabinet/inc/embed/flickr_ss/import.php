@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-function flickr_ss_import(&$media)
+function flickr_ss_import($media)
 {
     PHPWS_Core::initCoreClass('XMLParser.php');
     $feed_url = "http://api.flickr.com/services/feeds/photos_public.gne?id=";
