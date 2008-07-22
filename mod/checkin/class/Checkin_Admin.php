@@ -808,6 +808,9 @@ class Checkin_Admin extends Checkin {
 
         if (!empty($_POST['reasons'])) {
             $this->staff->_reasons = $_POST['reasons'];
+        } elseif ($this->staff->filter_type == CO_FT_REASON) {
+            $this->message = dgettext('checkin', 'Please pick one or more reasons.');
+            return false;
         }
 
         return true;
