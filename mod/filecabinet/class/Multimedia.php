@@ -577,7 +577,6 @@ class PHPWS_Multimedia extends File_Common {
 
     function importExternalMedia()
     {
-
         $this->embedded = 1;
         include sprintf('%smod/filecabinet/inc/embed/%s/import.php', PHPWS_SOURCE_DIR, $this->file_type);
         $function_name  = $this->file_type . '_import';
@@ -585,7 +584,7 @@ class PHPWS_Multimedia extends File_Common {
             return false;
         }
         // Reference call required for php 4
-        return call_user_func($function_name, &$this);
+        return call_user_func_array($function_name, array(&$this));
     }
 }
 ?>
