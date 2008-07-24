@@ -2,6 +2,11 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+24 July 2008
++ Simplified pagesmith conversion. Everything is put into the text
+  only template, images link to the pagemaster image directory. Also,
+  fixed section ordering.
+
 18 July 2008
 + Javascript prompt: fixed the encode function
 + Fixed problems with the categories conversion.
