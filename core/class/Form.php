@@ -33,7 +33,7 @@ PHPWS_Core::initCoreClass('Editor.php');
 
 class PHPWS_Form {
     var $id = 'phpws_form';
-  
+
     /**
      * Array of form elements
      * @var    array
@@ -45,7 +45,7 @@ class PHPWS_Form {
      * Directory destination of submitted form.
      * Note: if none is provided, getTemplate will try to use the core
      * home_http directory
-     * 
+     *
      * @var    string
      * @access private
      */
@@ -77,7 +77,7 @@ class PHPWS_Form {
     var $tagReplace = array();
 
     var $allowFormName = false;
-  
+
     var $use_auth_key = true;
 
     var $_autocomplete = true;
@@ -128,7 +128,7 @@ class PHPWS_Form {
         } else {
             $this->_encode = false;
         }
-            
+
     }
 
     function setFormId($id)
@@ -136,7 +136,7 @@ class PHPWS_Form {
         $this->id = $id;
     }
 
- 
+
     function useFieldset($fieldset=true)
     {
         $this->use_fieldset = (bool)$fieldset;
@@ -379,7 +379,7 @@ class PHPWS_Form {
         if (isset($_REQUEST[sprintf('%s_minute', $name)])) {
             $minute = $_REQUEST[sprintf('%s_minute', $name)];
         }
-        
+
         return mktime($hour, $minute, 0, $month, $day, $year);
     }
 
@@ -498,7 +498,7 @@ class PHPWS_Form {
                 if ($type != 'radio') {
                     $element->isArray = true;
                 }
-                
+
                 $element->_form = &$this;
 
                 $this->_elements[$name][$element->value] = $element;
@@ -564,7 +564,7 @@ class PHPWS_Form {
             }
         }
     }
-    
+
 
     /**
      * Sets an element's disabled status
@@ -607,7 +607,7 @@ class PHPWS_Form {
         return sprintf('<label class="%s-label" id="%s-label" for="%s">%s</label>%s', $this->type, $name, $name, $label, $required);
     }
 
-    
+
     function setOptgroup($name, $value, $label)
     {
         if (!$this->testName($name)) {
@@ -928,7 +928,7 @@ class PHPWS_Form {
      *
      * Should be used if you do not want to use the name of the post
      * variable for your template. A good function to use to convert
-     * old templates. 
+     * old templates.
      *
      * @author                Matthew McNaney <matt at tux dot appstate dot edu>
      * @param string name     Name of element to set the type
@@ -953,7 +953,7 @@ class PHPWS_Form {
      *
      * Use this function after setting the match.
      *
-     * Example: 
+     * Example:
      * $list = array('apple', 'orange', 'peach', 'banana');
      * $form = new PHPWS_Form;
      * $form->add('testing', 'multiple', $list);
@@ -1102,7 +1102,7 @@ class PHPWS_Form {
             $obj = new Form_TextField($name, $value);
             return $obj;
             break;
-      
+
         case 'textarea':
             $obj = new Form_TextArea($name, $value);
             return $obj;
@@ -1139,7 +1139,7 @@ class PHPWS_Form {
             $obj = new Form_File($name);
             return $obj;
             break;
-      
+
         case 'select':
         case 'dropbox':
             $obj = new Form_Select($name, $value);
@@ -1280,7 +1280,7 @@ class PHPWS_Form {
      * Hidden variables will AUTOMATICALLY be added to the START_FORM tag. If helperTags == false
      * they will be placed in a tag named HIDDEN.
      * It will also create a DEFAULT_SUBMIT button.
-     * 
+     *
      * Hidden variables will be added on to START_FORM. They will NOT have their own template tag.
      *
      * @author                     Matthew McNaney<matt at tux dot appstate dot edu>
@@ -1356,7 +1356,7 @@ class PHPWS_Form {
                 if ($multiple) {
                     $tagName .= "_$count";
                 }
-                
+
                 if (!empty($label)) {
                     $template[$tagName . '_LABEL'] = $label;
                 }
@@ -1364,7 +1364,7 @@ class PHPWS_Form {
                 $template[$tagName] = $subElement->get();
                 $count++;
             }
-        }      
+        }
 
         if ($helperTags) {
             if (isset($this->_action)) {
@@ -1380,7 +1380,7 @@ class PHPWS_Form {
         } elseif (isset($hidden_vars)) {
             $template['HIDDEN'] = implode("\n", $hidden_vars);
         }
-        
+
 
         if (isset($this->_template)) {
             $template = array_merge($this->_template, $template);
@@ -1393,7 +1393,7 @@ class PHPWS_Form {
         }
     }
 
-    
+
     function getMerge()
     {
         $form = $this->getTemplate();
@@ -1419,7 +1419,7 @@ class PHPWS_Form {
         if ($this->_multipart) {
             $this->_action .= '?check_overpost=1';
         }
-        
+
         if (isset($this->id)) {
             if ($this->allowFormName) {
                 $formName = 'name="' . $this->id . '" id="' . $this->id . '" ';
@@ -1435,7 +1435,7 @@ class PHPWS_Form {
         } else {
             $autocomplete = null;
         }
-        if (function_exists('javascript')) { 
+        if (function_exists('javascript')) {
             javascript('jquery');
             javascript('required_input');
         }
@@ -1464,7 +1464,7 @@ class PHPWS_Form {
     }
 
 
-    function formRadio($name, $value, $match=null, $match_diff=null, $label=null) 
+    function formRadio($name, $value, $match=null, $match_diff=null, $label=null)
     {
         $element = new Form_RadioButton($name, $value);
         $element->setMatch($match);
@@ -1503,7 +1503,7 @@ class PHPWS_Form {
         return $element->get();
     }
 
-    function formCheckBox($name, $value = 1, $match = null, $match_diff = null, $label = null) 
+    function formCheckBox($name, $value = 1, $match = null, $match_diff = null, $label = null)
     {
         $element = new Form_Checkbox($name, $value);
         $element->setMatch($match);
@@ -1513,7 +1513,7 @@ class PHPWS_Form {
 
     function makeForm($name, $action, $elements, $method='post', $breaks=false, $file=false)
     {
-        return sprintf('<form name="%s" method="%s" action="%s">%s</form>', 
+        return sprintf('<form name="%s" method="%s" action="%s">%s</form>',
                        $name, $method, $action, implode("\n", $elements));
     }
 
@@ -1526,11 +1526,11 @@ class Form_TextField extends Form_Element {
     function get()
     {
         return '<input type="text" '
-            . $this->getName(true) 
+            . $this->getName(true)
             . $this->getTitle(true)
             . $this->getDisabled()
             . $this->getReadOnly()
-            . $this->getValue(true) 
+            . $this->getValue(true)
             . $this->getWidth(true)
             . $this->getClass(true)
             . $this->getData() . ' />';
@@ -1551,8 +1551,8 @@ class Form_Submit extends Form_Element {
             $this->setExtra($extra);
         }
         return '<input type="submit" '
-            . $this->getName(true) 
-            . $this->getValue(true) 
+            . $this->getName(true)
+            . $this->getValue(true)
             . $this->getDisabled()
             . $this->getReadOnly()
             . $this->getWidth(true)
@@ -1568,8 +1568,8 @@ class Form_Button extends Form_Element {
     function get()
     {
         return '<input type="button" '
-            . $this->getName(true) 
-            . $this->getValue(true) 
+            . $this->getName(true)
+            . $this->getValue(true)
             . $this->getDisabled()
             . $this->getReadOnly()
             . $this->getWidth(true)
@@ -1583,10 +1583,10 @@ class Form_Reset extends Form_Element {
 
     function get()
     {
-        
+
         return '<input type="reset" '
-            . $this->getName(true) 
-            . $this->getValue(true) 
+            . $this->getName(true)
+            . $this->getValue(true)
             . $this->getDisabled()
             . $this->getReadOnly()
             . $this->getWidth(true)
@@ -1600,7 +1600,7 @@ class Form_Hidden extends Form_Element {
 
     function get()
     {
-        return '<input type="hidden" ' 
+        return '<input type="hidden" '
             . $this->getName(true)
             . $this->getValue(true)
             . '/>';
@@ -1612,9 +1612,9 @@ class Form_File extends Form_Element {
 
     function get()
     {
-        
+
         return '<input type="file" '
-            . $this->getName(true) 
+            . $this->getName(true)
             . $this->getTitle(true)
             . $this->getDisabled()
             . $this->getReadOnly()
@@ -1637,9 +1637,9 @@ class Form_Password extends Form_Element {
 
     function get()
     {
-        
+
         return '<input type="password" '
-            . $this->getName(true) 
+            . $this->getName(true)
             . $this->getTitle(true)
             . $this->getDisabled()
             . $this->getReadOnly()
@@ -1755,7 +1755,7 @@ class Form_TextArea extends Form_Element {
         }
 
         return '<textarea '
-            . $this->getName(true) 
+            . $this->getName(true)
             . $this->getTitle(true)
             . $this->getDisabled()
             . $this->getReadOnly()
@@ -1774,7 +1774,7 @@ class Form_Select extends Form_Element {
 
     function get()
     {
-        
+
         $content[] = '<select '
             . $this->getName(true)
             . $this->getClass(true)
@@ -1789,7 +1789,7 @@ class Form_Select extends Form_Element {
             if (!is_string($value) && !is_numeric($value)) {
                 continue;
             }
-            
+
             if ($this->optgroup && isset($this->optgroup[$value])) {
                 if (isset($current_opt)) {
                     $content[] = '</optgroup>';
@@ -1843,7 +1843,7 @@ class Form_Multiple extends Form_Element {
 
     function get()
     {
-        $content[] = '<select ' . $this->getName(true) . 'multiple="multiple" ' 
+        $content[] = '<select ' . $this->getName(true) . 'multiple="multiple" '
             . $this->getData()
             . $this->getWidth(true)
             . $this->getDisabled()
@@ -2004,7 +2004,7 @@ class Form_Element {
     // When multiple values are sent to an element, this variable
     // stores the position for labels and titles
     var $place       = 0;
-  
+
     function Form_Element($name, $value=null)
     {
         $this->setName($name);
@@ -2353,7 +2353,7 @@ class Form_Element {
             $name = str_replace('][', '_', $this->name);
             $name = str_replace('[', '_', $name);
             $name = str_replace(']', '', $name);
-      
+
             return strtoupper($name);
         }
     }
