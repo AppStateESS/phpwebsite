@@ -22,7 +22,7 @@ function convert()
     if (Convert::isConverted('pagesmith')) {
         return _('PageSmith has already been converted.');
     }
-    
+
     $home_dir = Convert::getHomeDir();
 
     if (!is_dir($home_dir . 'images/pagemaster')) {
@@ -49,11 +49,11 @@ function convert()
     }
     $batch->setTotalItems($total_pages);
     $batch->setBatchSet(5);
- 
+
     if (isset($_REQUEST['reset_batch'])) {
         $batch->clear();
     }
-   
+
     if (!$batch->load()) {
         $content[] = _('Batch previously run.');
     } else {
@@ -70,7 +70,7 @@ function convert()
 
 
     $batch->completeBatch();
-    
+
     if (!$batch->isFinished()) {
         Convert::forward($batch->getAddress());
     } else {
@@ -119,9 +119,9 @@ function convertPage($page)
     $db = new PHPWS_DB('ps_page');
     $val['id']            = $page['id'];
     $val['title']         = PHPWS_Text::parseInput(strip_tags(utf8_encode($page['title'])));
-    $val['template']      = 'simple';
+    $val['template']      = 'text_only';
     $val['create_date']   = strtotime($page['created_date']);
-    $val['last_updated']  = strtotime($page['updated_date']);    
+    $val['last_updated']  = strtotime($page['updated_date']);
     $val['front_page']      = (int)$page['mainpage'];
 
     $key = new Key;
@@ -136,6 +136,7 @@ function convertPage($page)
 
     $val['key_id'] = $key->id;
     $db->addValue($val);
+
     $result = $db->insert(FALSE);
 
     if (PHPWS_Error::logIfError($result)) {
@@ -163,7 +164,7 @@ function convertSection($section_order, $id, $title, $key_id)
 {
     $section_order = @unserialize($section_order);
 
-    if (!is_array($section_order)) {
+    if (!is_array($section_order) || empty($section_order)) {
         return;
     }
 
@@ -173,86 +174,67 @@ function convertSection($section_order, $id, $title, $key_id)
     $sections = $db->select();
     $db->disconnect();
     Convert::siteDB();
+    if (empty($sections)) {
+        return;
+    }
 
-    saveSections($sections, $id, $title, $key_id);
+    foreach ($section_order as $order) {
+        $new_sections[] = $sections[$order];
+    }
+    saveSections($new_sections, $id, $title, $key_id);
 }
 
 function saveSections($sections, $id, $title, $key_id)
 {
-    $header_sec['pid']     = $id;
-    $header_sec['secname'] = 'header1';
-    $header_sec['sectype'] = 'text';
-    
     $text_sec['pid']       = $id;
     $text_sec['secname']   = 'text1';
     $text_sec['sectype']   = 'text';
-
-    $image_sec['pid']       = $id;
-    $image_sec['btype']     = 'image';
-    $image_sec['secname']   = 'image1';
-    $image_sec['sectype']   = 'image';
-
     $image_set = false;
 
     foreach ($sections as $sec) {
         if (!empty($sec['title'])) {
-            if (empty($title_set)) {
-                $header_sec['content'] = PHPWS_Text::parseInput(strip_tags(utf8_encode($sec['title'])));
-                $db = new PHPWS_DB('ps_text');
-                $db->addValue($header_sec);
-                PHPWS_Error::logIfError($db->insert());
-                $title_set = true;
-            } else {
-                $page_content[] = '<h2>' . utf8_encode($sec['title']) . '</h2>';
-            }
+            $page_content[] = '<h2>' . utf8_encode($sec['title']) . '</h2>';
         }
 
-        if (!empty($sec['image']) && preg_match('/^a:4:/', $sec['image'])) {
+        if (!empty($sec['image']) && preg_match('/^a:\d:/', $sec['image'])) {
             $image = @unserialize($sec['image']);
-            $image_obj = convertImage($image);
+            if (!empty($image['name'])) {
 
-            if ($image_obj && $image_obj->id) {
-                if ($image_set) {
+                //test if a real image
                     switch ($sec['template']) {
-                    case 'image_left.tpl':
-                    case 'image_top_left.tpl':
-                    case 'image_float_left.tpl':
-                        $page_content[] = sprintf('<div style="float: left; display : inline; margin : 0px 10px 10px 0px">%s</div>', $image_obj->getTag());
+                    case 'default.tpl':
+                    case 'image_right.tpl':
+                    case 'image_top_right.tpl':
+                    case 'image_float_right.tpl':
+                        $class_name = 'float-right';
+                        break;
+
+                    case 'image-bottom.tpl':
+                        $content = preg_replace('/module=pagemaster(&|&amp;)page_user_op=view_page(&|&amp;)page_id=/i', 'module=pagesmith&id=', $sec['text']);
+                        $content = preg_replace('/&MMN_position=\d+:\d+/', '', $content);
+                        $page_content[] = PHPWS_Text::parseInput(utf8_encode(PHPWS_Text::breaker($content)));
+                        $page_content[] = sprintf('<img src="images/pagemaster/%s" style="margin : 15px auto" width="%spx" height="%spx" title="%s" alt="%s" />',
+                                                  $image['name'], $image['width'], $image['height'], $image['alt'], $image['alt']);
+                        continue;
                         break;
 
                     default:
-                        $page_content[] = sprintf('<div style="float : right; display : inline; margin : 0px 0px 10px 10px">%s</div>', $image_obj->getTag());
+                        $class_name = 'float-left';
+                        // right float
                     }
-                } else {
-                    $file_assoc = new FC_File_Assoc;
-                    $file_assoc->file_type = FC_IMAGE;
-                    $file_assoc->file_id = $image_obj->id;
-
-                    if(PHPWS_Error::logIfError($file_assoc->save())) {
-                        continue;
-                    }
-                    $image_sec['type_id'] = $file_assoc->id;
-                    $image_sec['width']   = $image_obj->width;
-                    $image_sec['height']  = $image_obj->height;
-                    $db = new PHPWS_DB('ps_block');
-                    $db->addValue($image_sec);
-                    if (PHPWS_Error::logIfError($db->insert())) {
-                        PHPWS_Core::log("Failed to save page block.", 'conversion.log');
-                        continue;
-                    }
-                    $image_set = true;
-                }
+                    $page_content[] = sprintf('<img src="images/pagemaster/%s" class="%s" width="%spx" height="%spx" title="%s" alt="%s" />',
+                                              $image['name'], $class_name, $image['width'], $image['height'], $image['alt'], $image['alt']);
             }
         }
 
         $content = preg_replace('/module=pagemaster(&|&amp;)page_user_op=view_page(&|&amp;)page_id=/i', 'module=pagesmith&id=', $sec['text']);
         $content = preg_replace('/&MMN_position=\d+:\d+/', '', $content);
 
-        $page_content[] = PHPWS_Text::parseInput(utf8_encode($content));
+        $page_content[] = PHPWS_Text::parseInput(utf8_encode(PHPWS_Text::breaker($content)));
     }
 
     $text_sec['content'] = implode("\n", $page_content);
-    
+
     $search = new Search($key_id);
 
     $search->addKeywords($text_sec['content']);
@@ -266,76 +248,6 @@ function saveSections($sections, $id, $title, $key_id)
     PHPWS_Error::logIfError($db->insert());
 }
 
-function convertImage($data)
-{
-    if (empty($data['name'])) {
-        return false;
-    }
-
-    $home_dir = Convert::getHomeDir();
-
-    if (!isset($_SESSION['Folder_Id'])) {
-        $folder = new Folder;
-        $folder->title = _('PageSmith conversion');
-        $folder->description = _('Images copied during a 0.10.x conversion.');
-        $folder->_base_directory = $home_dir . 'images/filecabinet/';
-        if (PHPWS_Error::logIfError($folder->save())) {
-            PHPWS_Core::log("Error creating saving conversion folder.", 'conversion.log');
-            return false;
-        } else {
-            $_SESSION['Folder_Id'] = $folder->id;
-        }
-    } else {
-        $folder = new Folder($_SESSION['Folder_Id']);
-        if (!$folder->id) {
-            PHPWS_Core::log("Unable to load folder.", 'conversion.log');
-            return false;
-        }
-    }
-
-    $image = new PHPWS_Image;
-    $image->folder_id = $folder->id;
-    $image->file_name = $data['name'];
-    $image->file_directory = $folder->getFullDirectory();
-
-    $image_dir = $home_dir . $image->getPath();
-
-    $source_image = $home_dir . 'images/pagemaster/' . $image->file_name;
-
-    if (!is_file($source_image)) {
-        PHPWS_Core::log("Missing source image: $source_image.", 'conversion.log');
-        return false;
-    } else {
-        if (!@copy($source_image, $image_dir)) {
-            PHPWS_Core::log("Failed to copy $source_image to $image_dir", 'conversion.log');
-            return false;
-        }
-    }
-
-    $size = @getimagesize($image_dir);
-
-    if (!$size) {
-        return false;
-    }
-
-    $image->file_type = $size['mime'];
-    $image->size      = filesize($image_dir);
-    $image->width     = $size[0];
-    $image->height    = $size[1];
-    $image->alt       = $data['alt'];
-    $image->title     = $data['alt'];
-
-    if (PHPWS_Error::logIfError($image->save(true, false, false))) {
-        PHPWS_Core::log("Failed to save Image object.", 'conversion.log');
-        return false;
-    } else {
-        $hold = $image->file_directory;
-        $image->file_directory = $home_dir . $hold;
-        $image->makeThumbnail();
-        $image->file_directory = $hold;
-        return $image;
-    }
-}
 
 function createSeqTables()
 {
