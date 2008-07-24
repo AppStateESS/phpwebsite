@@ -120,7 +120,7 @@ class Convert {
         if (!PHPWS_DB::isTable($table)) {
             return false;
         }
-        $db = new PHPWS_DB($table);        
+        $db = new PHPWS_DB($table);
         return $db;
     }
 
@@ -140,7 +140,7 @@ class Convert {
         if ($_SESSION['SITE']) {
             $result = Convert::siteDB();
         }
-        
+
         foreach ($directories as $mod_dir) {
             $filename = translateFile('info.ini');
             $info_file = $predir . $mod_dir . '/' . $filename;
@@ -317,7 +317,7 @@ class Convert {
         }
 
         if (isset($GLOBALS['branch_name'])) {
-            $title .= ' -- ' .  sprintf(_('Branch : %s'), $GLOBALS['branch_name']); 
+            $title .= ' -- ' .  sprintf(_('Branch : %s'), $GLOBALS['branch_name']);
         }
 
         if (isset($GLOBALS['Convert_Forward'])) {
@@ -394,7 +394,7 @@ class Convert {
 
         $form->setLabel('phpws_username', _('Username'));
         $form->setLabel('phpws_password', _('Password'));
-    
+
         $template = $form->getTemplate();
         if (isset($message)) {
             $template['MESSAGE'] = $message;
@@ -422,7 +422,7 @@ class Convert {
             $this->show(_('Not a convert file.'));
             return;
         }
-            
+
         include $filename;
         $result = convert();
 
@@ -476,7 +476,7 @@ class Convert {
 
     function getHomeDir()
     {
-        if ($GLOBALS['branch_dir']) {
+        if (isset($GLOBALS['branch_dir'])) {
             return $GLOBALS['branch_dir'];
         } else {
             return './';
