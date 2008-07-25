@@ -83,7 +83,7 @@ class PHPWS_Text {
      * This is a modified copy of a function from 'derernst at gmx dot ch' at php.net
      * I added the utf8_convert. His work was based on others. Please see notes under
      * html_entity_decode
-     * @ author derernst at gmx dot ch
+     * @author derernst at gmx dot ch
      * @author Matthew McNaney <mcnaney at gmail dot com>
      */
 
@@ -166,7 +166,8 @@ class PHPWS_Text {
             $text = strip_tags($text, $this->_allowed_tags);
         }
 
-        $text = PHPWS_Text::encodeXHTML($text);
+        // Moved to parseInput
+        //$text = PHPWS_Text::encodeXHTML($text);
 
         if ($this->use_breaker) {
             $text = PHPWS_Text::breaker($text);
@@ -228,6 +229,9 @@ class PHPWS_Text {
                             $text);
     }
 
+    /**
+     * Mostly used to clean up windows high ascii characters
+     */
     function encodeXHTML($text)
     {
         $xhtml['™']    = '&trade;';
@@ -240,6 +244,16 @@ class PHPWS_Text {
         $xhtml['\$']   = '&#x24;';
         $xhtml['<br>'] = '<br />';
         $xhtml['\'']    = '&#39;';
+
+        $xhtml[chr(226).chr(128).chr(153)] = '&rsquo;';
+        $xhtml[chr(226).chr(128).chr(156)] = '&ldquo;';
+        $xhtml[chr(226).chr(128).chr(157)] = '&rdquo;';
+        $xhtml[chr(226).chr(128)] = '&rdquo;';
+        $xhtml[chr(226).chr(128).chr(147)] = '&mdash;';
+        $xhtml[chr(226).chr(128).chr(166)] = '&hellip;';
+        $xhtml[chr(195).chr(169)] = '&eacute;';
+        $xhtml[chr(195).chr(175)] = '&iuml;';
+
         $text = strtr($text, $xhtml);
         $text = PHPWS_Text::fixAmpersand($text);
         return $text;
@@ -338,8 +352,8 @@ class PHPWS_Text {
 
     function parseInput($text, $encode=ENCODE_PARSED_TEXT)
     {
-        $text = trim($text);
-
+        // Moved over from getPrint/parseOutput
+        $text = PHPWS_Text::encodeXHTML(trim($text));
         if (MAKE_ADDRESSES_RELATIVE) {
             PHPWS_Text::makeRelative($text, true, true);
         }
