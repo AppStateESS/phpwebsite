@@ -50,7 +50,7 @@ class Access {
                 Access::saveAdmin();
                 Access::sendMessage(dgettext('access', 'Settings saved.'), 'admin');
                 break;
-                
+
             case 'restore_default':
                 $source = PHPWS_SOURCE_DIR . 'core/inc/htaccess';
                 $dest = PHPWS_HOME_DIR . '.htaccess';
@@ -60,7 +60,7 @@ class Access {
                     Access::sendMessage(dgettext('access', 'Unable to restore default .htaccess file.'), 'update');
                 }
                 break;
-                
+
             case 'post_deny_allow':
                 $result = Access::postDenyAllow();
                 if ($result == false) {
@@ -96,7 +96,7 @@ class Access {
                 }
                 Access::sendMessage(dgettext('access', 'Shortcut deleted'), 'shortcuts');
                 break;
-                
+
             case 'shortcuts':
                 PHPWS_Core::initModClass('access', 'Forms.php');
                 $title = dgettext('access', 'Shortcuts');
@@ -145,7 +145,7 @@ class Access {
 
                 $tpl['MESSAGE'] = $message;
                 $tpl['CONTENT'] = $content;
-                
+
                 Layout::nakedDisplay(PHPWS_Template::process($tpl, 'access', 'main.tpl'));
                 break;
             }
@@ -159,7 +159,7 @@ class Access {
 
         $panel->setContent($main);
         $finalPanel = $panel->display();
-        
+
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
@@ -260,7 +260,7 @@ class Access {
 
             }
         }
-        
+
         return implode("\n", $content) . "\n\n";
 
     }
@@ -280,7 +280,7 @@ class Access {
     function shortcut(&$key)
     {
         $vars['command'] = 'edit_shortcut';
-        $vars['key_id']  = $key->id; 
+        $vars['key_id']  = $key->id;
         $link = PHPWS_Text::linkAddress('access', $vars, true);
         $js_vars['address'] = $link;
         $js_vars['label'] = dgettext('access', 'Shortcut');
@@ -304,7 +304,7 @@ class Access {
             $link['title'] = dgettext('access', 'Allow/Deny');
             $tabs['deny_allow'] = $link;
         }
- 
+
         $panel = new PHPWS_Panel('access_panel');
         $panel->enableSecure();
 
@@ -372,12 +372,12 @@ class Access {
             $db->addValue('active', 1);
             $result = $db->update();
             break;
-            
+
         case 'deactive':
             $db->addValue('active', 0);
             $result = $db->update();
             break;
-            
+
         case 'delete':
             $result = $db->delete();
             break;
@@ -449,8 +449,8 @@ class Access {
                 case 'active':
                     $db->addValue('active', 1);
                     return $db->update();
-                    break;      
-          
+                    break;
+
                 case 'deactive':
                     $db->addValue('active', 0);
                     return $db->update();
@@ -476,18 +476,18 @@ class Access {
             // just in case something goes wrong
             $db->addWhere('allow_or_deny', 0);
             $db->addWhere('id', $_POST['denys']);
-            
+
             switch ($_POST['deny_action']) {
             case 'active':
                 $db->addValue('active', 1);
                 return $db->update();
-                break;      
-                
+                break;
+
             case 'deactive':
                 $db->addValue('active', 0);
                 return $db->update();
                 break;
-                
+
             case 'delete':
                 return $db->delete();
                 break;
@@ -531,14 +531,13 @@ class Access {
 
         if ($allow_all || (!empty($perms[1]) && Access::comparePermissions($perms[1], $address))) {
              $_SESSION['Access_Allow_Deny'] = true;
-            return;
-        } 
-        
+        }
+
         if ($deny_all || (!empty($perms[0]) && Access::comparePermissions($perms[0], $address))) {
              $_SESSION['Access_Allow_Deny'] = false;
             return;
         }
- 
+
         $_SESSION['Access_Allow_Deny'] = true;
         return;
     }
@@ -565,7 +564,7 @@ class Access {
 
         return implode('.', $newip);
     }
-    
+
     function denied()
     {
         $message = PHPWS_Settings::get('access', dgettext('access', 'You are denied access to this site.'));
