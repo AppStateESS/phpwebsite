@@ -107,6 +107,9 @@ class Convert {
         return $_SESSION['Convert_Tbl_Prefix'];
     }
 
+    /**
+     * Bug fix #2006026 by Tom Diesel
+     */
     function getSourceDB($table)
     {
         $dsn = $_SESSION['OTHER_DATABASE'];
@@ -116,7 +119,7 @@ class Convert {
             $prefix = null;
         }
 
-        PHPWS_DB::loadDB($dsn, $prefix);
+        PHPWS_DB::loadDB($dsn, $prefix, true);
         if (!PHPWS_DB::isTable($table)) {
             return false;
         }

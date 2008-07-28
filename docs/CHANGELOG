@@ -20,6 +20,8 @@ its own separate CHANGELOG file.
   o Calling breaker on converted content. Without it, text would
     collapse when pulled up in the wysiwyg editor.
 + Filecabinet conversion - wasn't saving convert status when done.
++ Convert - Bug #2006026 by Tom Diesel. Database load needed a reset
+  in order to use the table prefix.
 
 24 July 2008
 + Simplified pagesmith conversion. Everything is put into the text
