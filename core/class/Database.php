@@ -2062,7 +2062,7 @@ class PHPWS_DB {
             $columns =  $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
             $column_info = $this->parseColumns($columns);
             $index = $this->getIndex();
-            test($column_info);
+
             $sql[] = "CREATE TABLE $table ( " .  implode(', ', $column_info['parameters']) . ' );';
             if (isset($column_info['index'])) {
                 $sql = array_merge($sql, $column_info['index']);

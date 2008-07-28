@@ -2,6 +2,14 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+28 July 2008
++ DBPager
+  o Applied patch #2029054 from Eloi George. Puts DBPager's sort headers
+    in the correct direction.
+  o Added better description of sort status
+  o Added title to link itself and not just sort icon
++ Database.php - removed test function (thanks Hilmar)
+
 24 July 2008
 + Simplified pagesmith conversion. Everything is put into the text
   only template, images link to the pagemaster image directory. Also,

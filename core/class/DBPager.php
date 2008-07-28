@@ -11,7 +11,7 @@ if (!defined('UTF8_MODE')) {
 /**
  * DB Pager differs from other paging methods in that it applies
  * limits and store the object results. Other pagers require you
- * to pull all the data at once. 
+ * to pull all the data at once.
  * This pager pulls only the data it needs for display.
  *
  * @version $Id$
@@ -33,7 +33,7 @@ class DBPager {
     /**
      * Name of the module using list
      * Needed for template purposes
-     */ 
+     */
     var $module = NULL;
 
     var $toggles = NULL;
@@ -47,12 +47,12 @@ class DBPager {
     var $run_function = NULL;
 
     var $toggle_function = null;
-    
+
     var $toggle_func_number = 0;
 
     /**
      * List of methods in class
-     */  
+     */
     var $_methods = NULL;
 
     var $_class_vars = NULL;
@@ -96,7 +96,7 @@ class DBPager {
     /**
      * If set, then this order will be used if no other
      * orders are selected
-     */ 
+     */
     var $default_order = NULL;
 
     var $default_order_dir = 'asc';
@@ -170,7 +170,7 @@ class DBPager {
     var $cache_queries = false;
 
     /**
-     * If set, DBPager will use a custom identifier for this object's 
+     * If set, DBPager will use a custom identifier for this object's
      * cache instance
      */
     var $cache_identifier = null;
@@ -408,7 +408,7 @@ class DBPager {
 
     /**
      * Allows the developer to add extra or processes row tags
-     * 
+     *
      */
     function addRowTags()
     {
@@ -442,7 +442,7 @@ class DBPager {
         $this->empty_message = $message;
     }
 
-    function addToggleFunction($function, $toggle=2) 
+    function addToggleFunction($function, $toggle=2)
     {
         if (empty($function) || $toggle < 2) {
             return false;
@@ -459,7 +459,7 @@ class DBPager {
             } else {
                 $method = & $function[1];
             }
-            
+
             if ( in_array($method, get_class_methods($function[0])) ) {
                 $this->toggle_function = $function;
                 return true;
@@ -652,9 +652,6 @@ class DBPager {
         if (isset($this->error)) {
             return $this->error;
         }
-        if (empty($this->limit)) {
-            $this->limit = DBPAGER_DEFAULT_LIMIT;
-        }
 
         if ($this->search) {
             $search = preg_replace('/\s/', '|', $this->search);
@@ -696,13 +693,16 @@ class DBPager {
             return $count;
         }
 
-        if (!$this->limit && $this->default_limit) {
-            $this->limit == $this->default_limit;
+        if (empty($this->limit)) {
+            if ($this->default_limit)
+                $this->limit = $this->default_limit;
+            else
+                $this->limit = DBPAGER_DEFAULT_LIMIT;
         }
 
         if ($this->limit > 0) {
             $this->db->setLimit($this->getLimit());
-        } 
+        }
 
         $this->total_rows = &$count;
         $this->total_pages = ceil($this->total_rows / $this->limit);
@@ -733,7 +733,7 @@ class DBPager {
         } else {
             $result = $this->db->getObjects($this->class);
         }
- 
+
         $this->row_query = $this->db->lastQuery();
 
         if (PEAR::isError($result)) {
@@ -867,7 +867,7 @@ class DBPager {
             if ($total_pages > 100 && ($total_pages - 10) >= $current_page) {
                 $pageList[] = sprintf('<a href="%s&amp;pg=%s%s" title="%s">&gt;&gt;</a>',$url, $current_page + 10, $anchor, _('Forward 10 pages'));
             }
-            
+
             if ($total_pages > 500 && ($total_pages - 50) >= $current_page) {
                 $pageList[] = sprintf('<a href="%s&amp;pg=%s%s" title="%s">&gt;&gt;&gt;</a>',$url, $current_page + 50, $anchor, _('Forward 50 pages'));
             }
@@ -897,12 +897,12 @@ class DBPager {
             if ($this->orderby == $varname){
                 if ($this->orderby_dir == 'desc'){
                     unset($values['orderby_dir']);
-                    $alt = _('Sort ascending');
-                    $button = sprintf('<img src="images/core/list/up_pointer.png" border="0" alt="%s" title="%s" />', $alt, $alt);
-                } elseif ($this->orderby_dir =="asc") {
-                    $alt = _('Sort descending');
-                    $values['orderby_dir'] = 'desc';
+                    $alt = _('Sorted in descending order');
                     $button = sprintf('<img src="images/core/list/down_pointer.png" border="0" alt="%s" title="%s" />', $alt, $alt);
+                } elseif ($this->orderby_dir =="asc") {
+                    $alt = _('Sorted in ascending order');
+                    $values['orderby_dir'] = 'desc';
+                    $button = sprintf('<img src="images/core/list/up_pointer.png" border="0" alt="%s" title="%s" />', $alt, $alt);
                 } else {
                     $alt = _('Unsorted');
                     $button = sprintf('<img src="images/core/list/sort_none.png" border="0"  alt="%s" title="%s" />', $alt, $alt);
@@ -922,7 +922,9 @@ class DBPager {
             if (isset($this->sort_headers[$varname])) {
                 $button .= '&nbsp;' . $this->sort_headers[$varname];
             }
-            $link = sprintf('<a href="%s?%s%s">%s</a>', $this->getLinkBase(), implode('&amp;', $vars), $this->getAnchor(), $button);
+            $link = sprintf('<a href="%s?%s%s" title="%s">%s</a>',
+                            $this->getLinkBase(), implode('&amp;', $vars), $this->getAnchor(),
+                            $alt, $button);
 
             $template[strtoupper($buttonname)] = $link;
         }
@@ -1077,7 +1079,7 @@ class DBPager {
                         $template[$count] = array_merge($template[$count], $row_result);
                     }
                 }
-  
+
             } else {
                 foreach ($disp_row as $key => $value) {
                     $template[$count][strtoupper($key)] = $value;
@@ -1188,7 +1190,7 @@ class DBPager {
         if (PEAR::isError($pages)) {
             return $pages;
         }
-        
+
         $template['PAGES']       = $pages;
         $template['PAGE_LABEL']  = _('Page');
         $template['LIMIT_LABEL'] = _('Limit');
@@ -1250,7 +1252,7 @@ class DBPager {
                     } else {
                         $rowitem['TOGGLE'] = $this->toggles[$count];
                         $count++;
-                        
+
                         if ($count >= $max_tog) {
                             $count = 0;
                         }
@@ -1261,7 +1263,7 @@ class DBPager {
 
                 $template['listrows'][] = $rowitem;
             }
-      
+
 
         } elseif(!$return_blank_results) {
             return NULL;
@@ -1310,12 +1312,12 @@ class DBPager {
     {
         unset($_SESSION['DB_Cache'][$this->module][$this->template]);
     }
-    
+
     function cacheQueries($cache=true)
     {
         $this->cache_queries = (bool)$cache;
     }
-    
+
     function setCacheIdentifier($str)
     {
         $this->cache_identifier = $str;
