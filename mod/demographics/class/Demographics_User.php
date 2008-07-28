@@ -80,6 +80,7 @@ class Demographics_User {
             $this->_error = $result;
             return $result;
         }
+        $this->_base_id = $this->user_id;
 
         if (isset($this->_table)) {
             $db = new PHPWS_DB($this->_table);
@@ -92,6 +93,7 @@ class Demographics_User {
                 $this->_error = $result;
                 return $result;
             }
+            $this->_extend_id = $this->user_id;
 
         }
         return true;
