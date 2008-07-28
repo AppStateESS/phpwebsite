@@ -930,13 +930,12 @@ class PHPWS_DB {
                         }
                     }
                     if ($max_min) {
-                        $columns[] = strtoupper($max_min) . "($table_name)";
+                        $table_name = strtoupper($max_min) . "($table_name)";
+                    } 
+                    if (!empty($as)) {
+                        $columns[] = "$table_name AS $as";
                     } else {
-                        if (!empty($as)) {
-                            $columns[] = "$table_name AS $as";
-                        } else {
-                            $columns[] = "$table_name";
-                        }
+                        $columns[] = "$table_name";
                     }
                 }
                 return implode(', ', $columns);

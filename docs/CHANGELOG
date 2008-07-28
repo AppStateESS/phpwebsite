@@ -8,7 +8,10 @@ its own separate CHANGELOG file.
     in the correct direction.
   o Added better description of sort status
   o Added title to link itself and not just sort icon
-+ Database.php - removed test function (thanks Hilmar)
++ Database.php
+  o Removed test function (thanks Hilmar)
+  o Applied patch #2027299 from Eloi George. Fixed getColumn not
+    returning 'as' parameter if max_min was set.
 
 24 July 2008
 + Simplified pagesmith conversion. Everything is put into the text
