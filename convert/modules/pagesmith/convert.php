@@ -79,7 +79,7 @@ function convert()
         Convert::addConvert('pagesmith');
         PHPWS_Core::killSession('Folder_Id');
         $content[] = _('All done!');
-        $content[] = _('You may delete your images/pagemaster/ directory if you wish.');
+        $content[] = _('Your pages are using the images/pagemaster/ directory so do not delete it.');
         $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
     }
 
@@ -118,7 +118,7 @@ function convertPage($page)
 
     $db = new PHPWS_DB('ps_page');
     $val['id']            = $page['id'];
-    $val['title']         = PHPWS_Text::parseInput(strip_tags(utf8_encode($page['title'])));
+    $val['title']         = strip_tags(utf8_encode(PHPWS_Text::encodeXHTML($page['title'])));
     $val['template']      = 'text_only';
     $val['create_date']   = strtotime($page['created_date']);
     $val['last_updated']  = strtotime($page['updated_date']);
@@ -192,6 +192,8 @@ function saveSections($sections, $id, $title, $key_id)
     $image_set = false;
 
     foreach ($sections as $sec) {
+        $top = $content = $image_content = null;
+
         if (!empty($sec['title'])) {
             $page_content[] = '<h2>' . utf8_encode($sec['title']) . '</h2>';
         }
@@ -199,38 +201,41 @@ function saveSections($sections, $id, $title, $key_id)
         if (!empty($sec['image']) && preg_match('/^a:\d:/', $sec['image'])) {
             $image = @unserialize($sec['image']);
             if (!empty($image['name'])) {
-
                 //test if a real image
                     switch ($sec['template']) {
                     case 'default.tpl':
                     case 'image_right.tpl':
                     case 'image_top_right.tpl':
                     case 'image_float_right.tpl':
-                        $class_name = 'float-right';
+                        $image_content = sprintf('<img src="images/pagemaster/%s" class="float-right" width="%spx" height="%spx" title="%s" alt="%s" />',
+                                                 $image['name'], $image['width'], $image['height'], $image['alt'], $image['alt']);
+                        $top = 1;
                         break;
 
                     case 'image-bottom.tpl':
-                        $content = preg_replace('/module=pagemaster(&|&amp;)page_user_op=view_page(&|&amp;)page_id=/i', 'module=pagesmith&id=', $sec['text']);
-                        $content = preg_replace('/&MMN_position=\d+:\d+/', '', $content);
-                        $page_content[] = PHPWS_Text::parseInput(utf8_encode(PHPWS_Text::breaker($content)));
-                        $page_content[] = sprintf('<img src="images/pagemaster/%s" style="margin : 15px auto" width="%spx" height="%spx" title="%s" alt="%s" />',
-                                                  $image['name'], $image['width'], $image['height'], $image['alt'], $image['alt']);
-                        continue;
+                        $top = 0;
+                        $image_content = sprintf('<img src="images/pagemaster/%s" style="margin : 15px auto" width="%spx" height="%spx" title="%s" alt="%s" />',
+                                                 $image['name'], $image['width'], $image['height'], $image['alt'], $image['alt']);
                         break;
 
                     default:
-                        $class_name = 'float-left';
-                        // right float
+                        $top = 1;
+                        $image_content = sprintf('<img src="images/pagemaster/%s" class="float-left" width="%spx" height="%spx" title="%s" alt="%s" />',
+                                                 $image['name'], $image['width'], $image['height'], $image['alt'], $image['alt']);
                     }
-                    $page_content[] = sprintf('<img src="images/pagemaster/%s" class="%s" width="%spx" height="%spx" title="%s" alt="%s" />',
-                                              $image['name'], $class_name, $image['width'], $image['height'], $image['alt'], $image['alt']);
             }
+        }
+
+        if ($top && $image_content) {
+            $content = $image_content . $content;
         }
 
         $content = preg_replace('/module=pagemaster(&|&amp;)page_user_op=view_page(&|&amp;)page_id=/i', 'module=pagesmith&id=', $sec['text']);
         $content = preg_replace('/&MMN_position=\d+:\d+/', '', $content);
-
-        $page_content[] = PHPWS_Text::parseInput(utf8_encode(PHPWS_Text::breaker($content)));
+        if (!$top && $image_content) {
+            $content .= '<br /><p style="text-align : center">' . $image_content . '</p>';
+        }
+        $page_content[] = PHPWS_Text::parseInput(utf8_encode(PHPWS_Text::breaker(PHPWS_Text::encodeXHTML($content))));
     }
 
     $text_sec['content'] = implode("\n", $page_content);

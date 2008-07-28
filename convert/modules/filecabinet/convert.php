@@ -26,7 +26,7 @@ function convert()
 
     if (isset($GLOBALS['BRANCH'])) {
         $base_dir = $GLOBALS['BRANCH']->directory;
-        
+
         // We have to check the branch settings or they will get a default
         // based on the core settings
         $settings = new PHPWS_DB('mod_settings');
@@ -64,7 +64,7 @@ function convert()
         } elseif(PHPWS_Error::logIfError($all_files) || PHPWS_Error::logIfError($all_files)) {
             $aok = false;
             $content[] =  _('An error occurred while accessing your Document tables.');
-            
+
         } else {
             Convert::siteDB();
 
@@ -86,7 +86,7 @@ function convert()
                     $aok = false;
                     break;
                 }
-                
+
                 $doc_to_folder[$doc['id']] = $folder;
             }
 
@@ -113,21 +113,22 @@ function convert()
                     $document->file_type      = $file['type'];
                     $document->size           = $file['size'];
                     $document->setTitle(utf8_encode($file['name']));
-               
+
                     $result = $document->save(false);
-                
+
                     if (PHPWS_Error::logIfError($result)) {
                         $aok = false;
                         $content[] = _('An error occurred while converting your old documents.');
                     } else {
                         $source_path = $source_directory . $document->file_name;
                         if (!@copy($source_path, $document->getPath())) {
-                            $content[] = sprintf(_('Could not copy file %s to %s.'), $source_path, $document->getPath()); 
+                            $content[] = sprintf(_('Could not copy file %s to %s.'), $source_path, $document->getPath());
                         } else {
                             unlink($source_path);
                         }
                     }
                 }
+                Convert::addConvert('filecabinet');
                 $content[] = _('Documents module converted.');
             }
         }
@@ -171,20 +172,21 @@ function convert()
 
                     $document->setTitle(utf8_encode($file['label']));
                     $result = $document->save(false);
-                
+
                     if (PHPWS_Error::logIfError($result)) {
                         $aok = false;
                         $content[] = _('An error occurred while converting your old phatfiles.');
                     } else {
                         $source_path = $source_directory . $document->file_name;
                         if (!@copy($source_path, $document->getPath())) {
-                            $content[] = sprintf(_('Could not copy file %s to %s.'), $source_path, $document->getPath()); 
+                            $content[] = sprintf(_('Could not copy file %s to %s.'), $source_path, $document->getPath());
                         } else {
                             unlink($source_path);
                         }
                     }
                 }
             }
+            Convert::addConvert('filecabinet');
             $content[] = _('Phatfile files converted.');
         }
     }

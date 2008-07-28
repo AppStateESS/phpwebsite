@@ -12,6 +12,14 @@ its own separate CHANGELOG file.
   o Removed test function (thanks Hilmar)
   o Applied patch #2027299 from Eloi George. Fixed getColumn not
     returning 'as' parameter if max_min was set.
++ Pagesmith conversion
+  o Text only is used instead of Simple. Abandoned trying to port
+    images to filecabinet.
+  o Section ordering was fixed.
+  o Calling encodeXHTML before utf8 encoding to fix Word characters
+  o Calling breaker on converted content. Without it, text would
+    collapse when pulled up in the wysiwyg editor.
++ Filecabinet conversion - wasn't saving convert status when done.
 
 24 July 2008
 + Simplified pagesmith conversion. Everything is put into the text
