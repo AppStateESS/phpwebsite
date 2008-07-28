@@ -25,7 +25,7 @@ function users_install(&$content)
         }
         elseif (empty($deities)) {
             $content[] = dgettext('users', 'Could not find any hub deities.');
-            
+
             return FALSE;
         } else {
             Branch::restoreBranchDB();
@@ -44,7 +44,7 @@ function users_install(&$content)
                 unset($deity['password']);
                 $user_db->addValue($deity);
                 $result = $user_db->insert();
-                
+
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
                     $content[] = dgettext('users', 'Unable to copy deity users to branch.');
@@ -75,17 +75,17 @@ function users_install(&$content)
         if (PEAR::isError($authorize_id)) {
             PHPWS_Error::log($authorize_id);
             $content[] = dgettext('users', 'Unable to create authorization script.');
-            
+
             return FALSE;
         }
-        
+
         return TRUE;
     }
 
     $user = new PHPWS_User;
     $content[] = '<hr />';
 
-    
+
     if (isset($_POST['mod_title']) && $_POST['mod_title']=='users'){
         $result = User_Action::postUser($user);
         if (!is_array($result)) {
@@ -109,16 +109,16 @@ function users_install(&$content)
             $content[] = dgettext('users', 'User\'s email used as contact email address.');
         } else {
             $content[] = userForm($user, $result);
-            
+
             return FALSE;
         }
     } else {
         $content[] = dgettext('users', 'Please create a user to administrate the site.') . '<br />';
         $content[] = userForm($user);
-        
+
         return FALSE;
     }
-    
+
     return TRUE;
 }
 
@@ -145,13 +145,15 @@ function userForm(&$user, $errors=NULL){
     $form->setLabel('password1', dgettext('users', 'Password'));
     $form->setLabel('email', dgettext('users', 'Email'));
 
-    $form->addSubmit('submit', dgettext('users', 'Add User'));
-  
+    $form->addSubmit('go', dgettext('users', 'Add User'));
+
     $template = $form->getTemplate();
 
-    if (!empty($errors))
-        foreach ($errors as $tag=>$message)
+    if (!empty($errors)) {
+        foreach ($errors as $tag=>$message) {
             $template[$tag] = $message;
+        }
+    }
 
     $result = PHPWS_Template::process($template, 'users', 'forms/userForm.tpl');
 
