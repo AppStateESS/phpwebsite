@@ -43,7 +43,7 @@ class Blog_Admin {
         switch ($command){
         case 'edit':
             $panel->setCurrentTab('list');
-            if ( !Current_User::isUser($blog->author_id) && 
+            if ( !Current_User::isUser($blog->author_id) &&
                  !Current_User::authorized('blog', 'edit_blog', $_REQUEST['blog_id'], 'entry')) {
                 Current_User::disallow(dgettext('blog', 'User tried to edit a blog.'));
                 return;
@@ -73,7 +73,7 @@ class Blog_Admin {
                     $message = PHPWS_Text::secureLink($link, 'blog', $linkVar);
                     $content = Blog_Form::edit($blog);
                 }
-        
+
             } else {
                 $content = Blog_Form::edit($blog);
             }
@@ -216,7 +216,7 @@ class Blog_Admin {
                 Current_User::disallow();
                 return;
             }
-      
+
             $blog_id = &$_REQUEST['blog_id'];
 
             Blog_Admin::removePrevBlog($_REQUEST['version_id']);
@@ -247,7 +247,7 @@ class Blog_Admin {
                     $message = dgettext('blog', 'An error occurred when trying to save your entry. Please check your logs.');
                     PHPWS_Error::log($result);
                     Blog_Admin::setForward($message, 'list');
-                } 
+                }
 
                 if (!$blog->approved) {
                     Blog_Admin::setForward(dgettext('blog', 'Your entry is being held for approval.'), 'list');
@@ -321,19 +321,19 @@ class Blog_Admin {
             PHPWS_Settings::set('blog', 'allow_anonymous_submits', 1) :
             PHPWS_Settings::set('blog', 'allow_anonymous_submits', 0);
 
-        isset($_POST['show_category_icons']) ? 
+        isset($_POST['show_category_icons']) ?
             PHPWS_Settings::set('blog', 'show_category_icons', 1) :
             PHPWS_Settings::set('blog', 'show_category_icons', 0);
 
-        isset($_POST['show_category_links']) ? 
+        isset($_POST['show_category_links']) ?
             PHPWS_Settings::set('blog', 'show_category_links', 1) :
             PHPWS_Settings::set('blog', 'show_category_links', 0);
 
-        isset($_POST['single_cat_icon']) ? 
+        isset($_POST['single_cat_icon']) ?
             PHPWS_Settings::set('blog', 'single_cat_icon', 1) :
             PHPWS_Settings::set('blog', 'single_cat_icon', 0);
-            
-            
+
+
 
         if (isset($_POST['simple_image'])) {
             PHPWS_Settings::set('blog', 'simple_image', 1);
@@ -372,7 +372,7 @@ class Blog_Admin {
         } else {
             PHPWS_Settings::reset('blog', 'blog_limit');
         }
-        
+
         PHPWS_Settings::save('blog');
     }
 
@@ -429,14 +429,14 @@ class Blog_Admin {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $newLink = 'index.php?module=blog&amp;action=admin';
         $newCommand = array ('title'=>dgettext('blog', 'New'), 'link'=> $newLink);
-        
+
         $listLink = 'index.php?module=blog&amp;action=admin';
         $listCommand = array ('title'=>dgettext('blog', 'List'), 'link'=> $listLink);
 
         if (Current_User::isUnrestricted('blog')) {
             $version = new Version('blog_entries');
             $unapproved = $version->countUnapproved();
-            
+
             if (PEAR::isError($unapproved)) {
                 PHPWS_Error::log($unapproved);
                 $unapproved = '??';
@@ -444,7 +444,7 @@ class Blog_Admin {
             $approvalLink = 'index.php?module=blog&amp;action=admin';
             $approvalCommand = array ('title'=>sprintf(dgettext('blog', 'Approval (%s)'), $unapproved), 'link'=> $approvalLink);
         }
-         
+
         $tabs['new'] = &$newCommand;
 
         if (Current_User::allow('blog', 'edit_blog')) {
@@ -453,7 +453,7 @@ class Blog_Admin {
         }
 
         if (Current_User::allow('blog', 'settings')) {
-            $tabs['settings'] = array('title' => dgettext('blog', 'Settings'), 
+            $tabs['settings'] = array('title' => dgettext('blog', 'Settings'),
                                       'link' => 'index.php?module=blog&amp;action=admin');
         }
 
@@ -491,7 +491,7 @@ class Blog_Admin {
         return $content;
     }
 
-    function _loadCategory(&$cat_item, &$blog, $version=NULL)
+    function _loadCategory(&$cat_item, Blog $blog, $version=NULL)
     {
         $cat_item->setItemId($blog->id);
         $cat_item->setTitle($blog->getTitle() . ' - ' . $blog->getFormatedDate());
@@ -500,7 +500,7 @@ class Blog_Admin {
         } else {
             $link = 'index.php?module=blog&amp;action=view&amp;id=' . $blog->id;
         }
-    
+
         $cat_item->setLink($link);
 
         if (isset($version)) {
@@ -525,7 +525,7 @@ class Blog_Admin {
         $result = $restore->getList();
         return $result;
     }
-  
+
     function restoreBlog($version_id)
     {
         $version = new Version('blog_entries', $version_id);

@@ -29,7 +29,7 @@ class Blog_User {
                 if ($year > 3000 || $year < 1980) {
                     return;
                 }
-                
+
                 if (isset($_GET['var3'])) {
                     $month = (int)$_GET['var3'];
                     if ($month > 13 || $month < 1) {
@@ -37,7 +37,7 @@ class Blog_User {
                     }
                     $_GET['m'] = & $month;
                 }
-                
+
                 if (isset($_GET['var4'])) {
                     $day = (int)$_GET['var4'];
                     if ($day > 31 || $day < 1) {
@@ -45,7 +45,7 @@ class Blog_User {
                     }
                     $_GET['d'] = & $day;
                 }
-                
+
                 $_GET['y'] = & $year;
                 $_REQUEST['action'] = 'view';
             }
@@ -118,7 +118,7 @@ class Blog_User {
             Layout::add($content, 'blog', 'view', true);
             return;
             break;
-            
+
         case 'submit':
             if (Current_User::allow('blog', 'edit_blog')) {
                 PHPWS_Core::reroute(PHPWS_Text::linkAddress('blog', array('action'=>'admin', 'tab'=>'new'), 1));
@@ -139,7 +139,7 @@ class Blog_User {
                 $content = Blog_User::submitAnonymous($blog);
             }
             break;
-            
+
         default:
             PHPWS_Core::errorPage(404);
             break;
@@ -149,13 +149,13 @@ class Blog_User {
     }
 
 
-    function postSuggestion(&$blog)
+    function postSuggestion(Blog $blog)
     {
         if (!PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
             return dgettext('blog', 'Site is not accepting anonymous submissions.');
         }
-        
-       
+
+
         if (empty($_POST['title'])) {
             $blog->title = dgettext('blog', 'No title');
         } else {
@@ -207,7 +207,7 @@ class Blog_User {
     }
 
 
-    function submitAnonymous(&$blog)
+    function submitAnonymous(Blog $blog)
     {
         PHPWS_Core::initModClass('blog', 'Blog_Form.php');
         $tpl['TITLE'] = dgettext('blog', 'Submit Entry');
@@ -215,17 +215,17 @@ class Blog_User {
         return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
     }
 
-    function totalEntries(&$db)
+    function totalEntries(PHPWS_DB $db)
     {
         $db->addColumn('id',null, null, true);
         return $db->select('one');
     }
 
-    function getEntries(&$db, $limit, $offset=0)
+    function getEntries(PHPWS_DB $db, $limit, $offset=0)
     {
         $db->resetColumns();
         $db->setLimit($limit, $offset);
-        $db->addOrder('sticky desc'); 
+        $db->addOrder('sticky desc');
         $db->addOrder('publish_date desc');
         $db->loadClass('blog', 'Blog.php');
         return $db->getObjects('Blog');
@@ -307,7 +307,7 @@ class Blog_User {
                 }
             }
         }
-    
+
         foreach ($result as $blog) {
             $view = $blog->view();
             if (!empty($view)) {
@@ -333,7 +333,7 @@ class Blog_User {
         $content = PHPWS_Template::process($tpl, 'blog', 'list_view.tpl');
 
         // again only caching first pages
-        if ($page <= MAX_BLOG_CACHE_PAGES && 
+        if ($page <= MAX_BLOG_CACHE_PAGES &&
             !Current_User::isLogged() && !Current_User::allow('blog') &&
             PHPWS_Settings::get('blog', 'cache_view')) {
             PHPWS_Cache::save($key, $content);

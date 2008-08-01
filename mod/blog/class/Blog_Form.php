@@ -12,7 +12,7 @@ class Blog_Form {
     /**
      * @param boolean limited   If true, use anonymous submission form
      */
-    function edit(&$blog, $version_id=NULL, $limited=false)
+    function edit(Blog $blog, $version_id=NULL, $limited=false)
     {
         $form = new PHPWS_Form('edit-blog');
         $form->addHidden('module', 'blog');
@@ -50,17 +50,17 @@ class Blog_Form {
             $form->addCheck('allow_comments', 1);
             $form->setLabel('allow_comments', dgettext('blog', 'Allow comments'));
             $form->setMatch('allow_comments', $blog->allow_comments);
-            
+
             $form->addCheck('allow_anon', 1);
             $form->setLabel('allow_anon', dgettext('blog', 'Allow anonymous comments'));
 
             $default_approval[0] = dgettext('blog', 'Comments preapproved');
             $default_approval[1] = dgettext('blog', 'Anonymous comments require approval');
             $default_approval[2] = dgettext('blog', 'All comments require approval');
-            
+
             $form->addSelect('comment_approval', $default_approval);
             $form->setLabel('comment_approval', dgettext('blog', 'Comment approval'));
-            
+
             if ($blog->id) {
                 PHPWS_Core::initModClass('comments', 'Comments.php');
                 $thread = Comments::getThread($blog->key_id);
