@@ -6,7 +6,7 @@
 
 class Boost_Form {
 
-    function boostTab(&$panel)
+    public function boostTab(PHPWS_Panel $panel)
     {
         if (!isset($_REQUEST['tab']))
             return $panel->getCurrentTab();
@@ -14,10 +14,10 @@ class Boost_Form {
             return $_REQUEST['tab'];
     }
 
-    function setTabs(&$panel)
+    public function setTabs(PHPWS_Panel $panel)
     {
         $link = dgettext('boost', 'index.php?module=boost&amp;action=admin');
-    
+
         $core_links['title'] = dgettext('boost', 'Core Modules');
         $other_links['title'] = dgettext('boost', 'Other Modules');
 
@@ -29,7 +29,7 @@ class Boost_Form {
         $panel->quickSetTabs($tabs);
     }
 
-    function listModules($type)
+    public function listModules($type)
     {
         Layout::addStyle('boost');
         PHPWS_Core::initCoreClass('Module.php');
@@ -90,7 +90,7 @@ class Boost_Form {
             }
 
 
-            $link_command['opmod'] = 'core';            
+            $link_command['opmod'] = 'core';
             $link_command['action'] = 'check';
             $template['LATEST'] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
 
@@ -109,7 +109,7 @@ class Boost_Form {
                     $core_links[] = PHPWS_Text::secureLink(dgettext('boost', 'Missing dependency'), 'boost', $link_command);
                 }
 
-                $template['VERSION'] =sprintf('%s &gt; %s', $core_db->version, $core_file->version); 
+                $template['VERSION'] =sprintf('%s &gt; %s', $core_db->version, $core_file->version);
                 $template['COMMAND'] = implode(' | ', $core_links);
             } elseif ($allow_update) {
                 $js_file['QUESTION'] = dgettext('boost', 'Clicking OK will copy the core\\\'s configuration, image and (if on a branch site) javascript directories locally.\nNo backups will occur and all local files will be overwritten.\nAre you certain you want to do this?');
@@ -132,7 +132,7 @@ class Boost_Form {
         $tpl['COMMAND_LABEL'] = ('Commands');
         $tpl['ABOUT_LABEL']   = dgettext('boost', 'More information');
         $tpl['VERSION_LABEL'] = dgettext('boost', 'Current version');
-        
+
         if ($type == 'core_mods' && Current_User::isDeity() && DEITIES_CAN_UNINSTALL) {
             $tpl['WARNING'] = dgettext('boost', 'WARNING: Only deities can uninstall core modules. Doing so may corrupt your installation!');
         }
@@ -164,7 +164,7 @@ class Boost_Form {
             $template['ROW'] = ($count % 2) + 1;
 
             $version_check = $mod->getVersionHttp();
-            
+
             if (isset($version_check)) {
                 if (isset($_SESSION['Boost_Needs_Update'][$mod->title])) {
                     $link_title = $_SESSION['Boost_Needs_Update'][$mod->title];
@@ -174,7 +174,7 @@ class Boost_Form {
                 } else {
                     $link_title = dgettext('boost', 'Check');
                 }
-                
+
                 $link_command['action'] = 'check';
                 $template['LATEST'] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
             }
@@ -283,7 +283,7 @@ class Boost_Form {
         return $result;
     }
 
-    function oldModList()
+    public function oldModList()
     {
         if (!isset($GLOBALS['Boost_Old_Mods'])) {
             return null;
@@ -295,7 +295,7 @@ class Boost_Form {
         $content[] = dgettext('boost', 'Please remove them from the mod directory.');
         foreach ($old_mods as $mod) {
             include sprintf('%smod/%s/conf/boost.php', PHPWS_SOURCE_DIR, $mod);
-            $directory = sprintf('%smod/%s/', PHPWS_SOURCE_DIR, $mod); 
+            $directory = sprintf('%smod/%s/', PHPWS_SOURCE_DIR, $mod);
             $content[] = sprintf(' - %s : %s', $mod_pname, $directory);
         }
 

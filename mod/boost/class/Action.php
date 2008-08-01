@@ -9,11 +9,11 @@ PHPWS_Core::initModClass('boost', 'Boost.php');
 
 class Boost_Action {
 
-    function checkupdate($mod_title)
+    public function checkupdate($mod_title)
     {
         PHPWS_Core::initCoreClass('Module.php');
         $module = new PHPWS_Module($mod_title);
-    
+
         $file = $module->getVersionHttp();
         if (empty($file)) {
             return dgettext('boost', 'Update check file not found.');
@@ -35,7 +35,7 @@ class Boost_Action {
         } else {
             $_SESSION['Boost_Needs_Update'][$mod_title] = $version_info['VERSION'];
             $template['STABLE_VERSION'] = $version_info['VERSION'];
-        } 
+        }
 
         if (version_compare($version_info['VERSION'], $module->getVersion(), '>')) {
             $template['CHANGES_LABEL'] = dgettext('boost', 'Changes');
@@ -82,19 +82,19 @@ class Boost_Action {
         return PHPWS_Template::process($template, 'boost', 'check_update.tpl');
     }
 
-    function installModule($module_title)
+    public function installModule($module_title)
     {
         PHPWS_Core::initModClass('boost', 'Boost.php');
-    
+
         $boost = new PHPWS_Boost;
         $boost->loadModules(array($module_title));
         return $boost->install();
     }
 
-    function uninstallModule($module_title)
+    public function uninstallModule($module_title)
     {
         PHPWS_Core::initModClass('boost', 'Boost.php');
-    
+
         $boost = new PHPWS_Boost;
         $boost->loadModules(array($module_title));
 
@@ -103,7 +103,7 @@ class Boost_Action {
         return $content;
     }
 
-    function updateCore()
+    public function updateCore()
     {
         PHPWS_Core::initModClass('boost', 'Boost.php');
         $content[] = dgettext('boost', 'Updating core');
@@ -136,7 +136,7 @@ class Boost_Action {
         return implode('<br />', $content);
     }
 
-    function updateModule($module_title)
+    public function updateModule($module_title)
     {
         PHPWS_Core::initModClass('boost', 'Boost.php');
         $boost = new PHPWS_Boost;
@@ -146,10 +146,10 @@ class Boost_Action {
         if ($boost->update($content)) {
             $boost->updateBranches($content);
         }
-        return implode('<br />', $content);    
+        return implode('<br />', $content);
     }
 
-    function showDependedUpon($base_mod)
+    public function showDependedUpon($base_mod)
     {
         PHPWS_Core::initCoreClass('Module.php');
         $module = new PHPWS_Module($base_mod);
@@ -177,7 +177,7 @@ class Boost_Action {
         return PHPWS_Template::process($template, 'boost', 'main.tpl');
     }
 
-    function showDependency($base_module_title)
+    public function showDependency($base_module_title)
     {
         PHPWS_Core::initCoreClass('Module.php');
         $module = new PHPWS_Module($base_module_title);
@@ -226,7 +226,7 @@ class Boost_Action {
     /**
      * Checks all modules for update status
      */
-    function checkAll()
+    public function checkAll()
     {
         PHPWS_Core::initModClass('boost', 'Boost.php');
         $all_mods = PHPWS_Boost::getAllMods();
@@ -244,7 +244,7 @@ class Boost_Action {
             if (empty($file)) {
                 continue;
             }
-            
+
             $full_xml_array = PHPWS_Text::xml2php($file, 2);
 
             if (empty($full_xml_array)) {
@@ -255,12 +255,12 @@ class Boost_Action {
             if (empty($version_info) || empty($version_info['VERSION'])) {
                 continue;
             }
-  
+
             $_SESSION['Boost_Needs_Update'][$mod_title] = $version_info['VERSION'];
         }
     }
 
-    function copyLocal($module_title)
+    public function copyLocal($module_title)
     {
         PHPWS_Core::initCoreClass('Module.php');
 
@@ -284,7 +284,7 @@ class Boost_Action {
         return PHPWS_Template::process($tpl, 'boost', 'main.tpl');
     }
 
-    function copyCore()
+    public function copyCore()
     {
         $boost = new PHPWS_Boost;
         $local_dir = $boost->getHomeDir();
@@ -319,7 +319,7 @@ class Boost_Action {
         $tpl['TITLE'] = dgettext('boost', 'Reverting the core\'s local files');
         $tpl['CONTENT'] = implode('<br />', $content);
         return PHPWS_Template::process($tpl, 'boost', 'main.tpl');
-        
+
     }
 }
 
