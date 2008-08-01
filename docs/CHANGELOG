@@ -22,6 +22,7 @@ its own separate CHANGELOG file.
   o getGetValues rewritten to work with new mod_rewrite scheme
 + Forward.php - new mod_rewrite format, matches pairs of slash
   separated values
++ Core.php - removed plugForward
 + Updated Mod_Rewrite.txt documentation
 + Updated conf/text_settings.php
 

@@ -52,7 +52,7 @@ class PHPWS_Core {
             PHPWS_Error::log(PHPWS_NO_MODULES, 'core', 'runtimeModules');
             PHPWS_Core::errorPage();
         }
-    
+
         foreach ($GLOBALS['Modules'] as $mod){
             $includeFile = PHPWS_SOURCE_DIR . 'mod/' . $mod['title'] . '/inc/close.php';
             if (is_file($includeFile)) {
@@ -79,7 +79,7 @@ class PHPWS_Core {
             return $DB->select();
         }
     }
-    
+
     /**
      * Returns an associative array of all the modules in the
      * module table
@@ -192,7 +192,7 @@ class PHPWS_Core {
 
 
     /**
-     * Sets the last form post made to the website. 
+     * Sets the last form post made to the website.
      * Works with isPosted
      */
     function setLastPost()
@@ -232,7 +232,7 @@ class PHPWS_Core {
 
     /**
      * Checks to see if the currently post is in the LastPost
-     * session. If so, it returns TRUE. Function can be used to 
+     * session. If so, it returns TRUE. Function can be used to
      * prevent double posts.
      * If return_count is true, it returns the number of attempts
      * made with the same post.
@@ -257,7 +257,7 @@ class PHPWS_Core {
             return $result;
         }
     }
- 
+
     function atHome()
     {
         if (isset($_REQUEST['module']) || isset($_POST['module']) || isset($_GET['module'])) {
@@ -303,7 +303,7 @@ class PHPWS_Core {
             if (strtolower($current_url) == strtolower($_SERVER['HTTP_REFERER'])) {
                 PHPWS_Core::home();
             } else {
-                PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);            
+                PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);
             }
         } else {
             PHPWS_Core::home();
@@ -320,7 +320,7 @@ class PHPWS_Core {
 
     /**
      * Returns a url prefix dependent on the security
-     */ 
+     */
     function getHttp()
     {
         if ( isset($_SERVER['HTTPS']) &&
@@ -347,7 +347,7 @@ class PHPWS_Core {
             $dirArray = explode('/', $_SERVER['PHP_SELF']);
             array_pop($dirArray);
             $dirArray[] = '';
-      
+
             $directory = implode('/', $dirArray);
             $location = $http . $_SERVER['HTTP_HOST'] . $directory . $address;
         } else {
@@ -427,7 +427,7 @@ class PHPWS_Core {
         if (!is_file($file) || FORCE_MOD_CONFIG) {
             if (!is_file($altfile)) {
                 return FALSE;
-            } 
+            }
             else {
                 $file = $altfile;
             }
@@ -571,7 +571,7 @@ class PHPWS_Core {
 
     /**
      * If a file is posted beyond php's posting limits, it will drop the
-     * POST without an error message. checkOverPost sends the user to an 
+     * POST without an error message. checkOverPost sends the user to an
      * overpost error page.
      */
     function checkOverPost()
@@ -657,7 +657,7 @@ class PHPWS_Core {
 
         return $var_array;
     }
- 
+
     /**
      * Plugs an array of $variables into the $object. The associative array
      * keys must be identical to the object's variable names.
@@ -729,9 +729,9 @@ class PHPWS_Core {
      * version differences.
      *
      * Returns true if the object is of the entered class.
-     * The class name must be lower case. If it isn't well you should 
+     * The class name must be lower case. If it isn't well you should
      * have known PHP 5 was going to change the rules, on get_class
-     * shouldn't have ya? In other words, My_Class and my_class are 
+     * shouldn't have ya? In other words, My_Class and my_class are
      * the same as far as this function is concerned.
      * Mix up your class names.
      */
@@ -759,7 +759,7 @@ class PHPWS_Core {
 
     /**
      * Returns the core version.
-     * 
+     *
      * @param boolean get_file  If true, uses the boost.php file, if false
      *                          uses the database version.
      */
@@ -825,7 +825,7 @@ class PHPWS_Core {
 
     /**
      * Returns TRUE if the site is a hub or if the site is
-     * an allowed branch. If FALSE is returned, the index file 
+     * an allowed branch. If FALSE is returned, the index file
      * drops the user to an error page. Also sets the Is_Branch GLOBAL
      */
     function checkBranch()
@@ -860,28 +860,6 @@ class PHPWS_Core {
     function isBranch()
     {
         return $GLOBALS['Is_Branch'];
-    }
-
-    function plugForward()
-    {
-        $replacements = func_get_args();
-        if (empty($replacements)) {
-            return false;
-        }
-
-        $count = 0;
-        while(1) {
-            if (isset($_GET['var' . ($count + 1)])) {
-                $var = $_GET['var' . ($count + 1)];
-                $_GET[$replacements[$count]] = $var;
-                $_REQUEST[$replacements[$count]] = $var;
-            } else {
-                break;
-            }
-            $count++;
-        }
-
-        return true;
     }
 
 }// End of core class
