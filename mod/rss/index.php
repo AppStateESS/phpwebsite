@@ -10,8 +10,6 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-PHPWS_Core::plugForward('mod_title');
-
 if ( ( isset($_REQUEST['command']) || isset($_REQUEST['tab']) ) && Current_User::allow('rss')) {
     PHPWS_Core::initModClass('rss', 'Admin.php');
     RSS_Admin::main();

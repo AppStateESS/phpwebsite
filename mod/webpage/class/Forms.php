@@ -57,7 +57,7 @@ class Webpage_Forms {
         return $panel;
     }
 
-    function editHeader(&$volume, &$version)
+    function editHeader(Webpage_Volume $volume, Version $version)
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'webpage');
@@ -87,7 +87,7 @@ class Webpage_Forms {
     }
 
 
-    function editPage(&$page, &$version)
+    function editPage(Webpage_Page $page, Version $version)
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'webpage');
@@ -119,14 +119,14 @@ class Webpage_Forms {
         if (empty($page_templates)) {
             return dgettext('webpage', 'There is a problem with your page templates. Check your error log.');
         }
-        
+
         $form->addSelect('template', $page_templates);
         $form->setMatch ('template', $page->template);
         $form->setLabel('template', dgettext('webpage', 'Page template'));
 
         $form->addCheck('force_template', 1);
         $form->setLabel('force_template', dgettext('webpage', 'Force all pages to use this template'));
-        
+
         if (PHPWS_Settings::get('webpage', 'add_images')) {
             PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('image_id', $page->image_id);
@@ -184,7 +184,7 @@ class Webpage_Forms {
             $js['select_id']    = $form->getId('wp_admin');
             $js['action_match'] = 'delete_wp';
             $js['message']      = dgettext('webpage', 'Are you sure you want to delete the checked web pages?');
-            
+
             $tags['SUBMIT'] = javascript('select_confirm', $js);
         }
 

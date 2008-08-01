@@ -8,24 +8,24 @@
  */
 
 class Version_Approval {
-    var $module         = NULL;
-    var $source_table   = NULL;
-    var $version_table  = NULL;
-    var $view_url       = NULL;
-    var $edit_url       = NULL;
-    var $approve_url    = NULL;
-    var $disapprove_url = NULL;
-    var $class_name     = NULL;
-    var $view_method    = NULL;
-    var $where          = NULL;
-    var $columns        = array();
-    var $standard       = array('id', 'source_id', 'vr_creator', 'vr_editor',
+    public $module         = NULL;
+    public $source_table   = NULL;
+    public $version_table  = NULL;
+    public $view_url       = NULL;
+    public $edit_url       = NULL;
+    public $approve_url    = NULL;
+    public $disapprove_url = NULL;
+    public $class_name     = NULL;
+    public $view_method    = NULL;
+    public $where          = NULL;
+    public $columns        = array();
+    public $standard       = array('id', 'source_id', 'vr_creator', 'vr_editor',
                                 'vr_create_date', 'vr_edit_date', 'vr_number',
                                 'vr_current', 'vr_approved', 'vr_locked');
-    var $_db            = NULL;
-  
+    private $_db           = NULL;
 
-    function Version_Approval($module, $table, $class_name=NULL, $view_method=NULL)
+
+    public function __construct($module, $table, $class_name=NULL, $view_method=NULL)
     {
         $this->setModule($module);
         $this->setSourceTable($table);
@@ -40,54 +40,54 @@ class Version_Approval {
     }
 
 
-    function setModule($module)
+    public function setModule($module)
     {
         $this->module = $module;
     }
 
-    function setSourceTable($table)
+    public function setSourceTable($table)
     {
         $this->source_table = $table;
         $this->version_table = $this->source_table . VERSION_TABLE_SUFFIX;
     }
 
-    function addWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL, $join=FALSE)
+    public function addWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL, $join=FALSE)
     {
         return $this->_db->addWhere($column, $value, $operator, $conj, $group, $join);
     }
 
 
-    function setApproveUrl($approve_url)
+    public function setApproveUrl($approve_url)
     {
         $this->approve_url = $approve_url;
     }
 
-    function setDisapproveUrl($disapprove_url)
+    public function setDisapproveUrl($disapprove_url)
     {
         $this->disapprove_url = $disapprove_url;
     }
 
-    function setViewUrl($view_url)
+    public function setViewUrl($view_url)
     {
         $this->view_url = $view_url;
     }
 
-    function setEditUrl($edit_url)
+    public function setEditUrl($edit_url)
     {
         $this->edit_url = $edit_url;
     }
 
-    function setColumns()
+    public function setColumns()
     {
         $this->columns = func_get_args();
     }
 
-    function setClass($class_name)
+    public function setClass($class_name)
     {
         $this->class_name = $class_name;
     }
 
-    function setViewMethod($view_method)
+    public function setViewMethod($view_method)
     {
         $this->view_method = $view_method;
     }
@@ -97,7 +97,7 @@ class Version_Approval {
      * Returns an array of unapproved versions. Mainly used privately
      * within class but may be called publically.
      */
-    function get($obj_mode=TRUE)
+    public function get($obj_mode=TRUE)
     {
         if (!empty($this->columns)) {
             foreach ($this->columns as $value) {
@@ -129,19 +129,19 @@ class Version_Approval {
         }
     }
 
-    function getList($restrict_approval=TRUE)
+    public function getList($restrict_approval=TRUE)
     {
-        
+
         if (!PHPWS_DB::isTable($this->version_table)) {
             $msg = dgettext('version', 'No items for approval.');
-            
+
             return $msg;
         }
 
         if (empty($this->approve_url) || empty($this->disapprove_url)) {
             return FALSE;
         }
-    
+
         $result = $this->get(FALSE);
 
 
@@ -151,7 +151,7 @@ class Version_Approval {
 
         if (empty($result)) {
             $msg =  dgettext('version', 'No items for approval.');
-            
+
             return $msg;
         }
         $temp_count = 0;
@@ -197,7 +197,7 @@ class Version_Approval {
                 $template_file = 'approval_list.tpl';
                 foreach ($show_cols as $show_tag) {
                     $count++;
-                    
+
                     $row_tpl['COLUMN_LABEL_' . $count] = $show_tag;
                     $row_tpl['COLUMN_' . $count] = $app_item[$show_tag];
                 }
@@ -207,7 +207,7 @@ class Version_Approval {
                 $links[] = sprintf('<a href="%s">%s</a>',
                                    $this->approve_url . '&amp;version_id=' . $app_item['id'],
                                    dgettext('version', 'Approve'));
-        
+
                 $links[] = sprintf('<a href="%s">%s</a>',
                                    $this->disapprove_url . '&amp;version_id=' . $app_item['id'],
                                    dgettext('version', 'Disapprove'));
@@ -231,7 +231,7 @@ class Version_Approval {
             $template['approval-rows'][$temp_count] = $row_tpl;
             $temp_count++;
         }
-        
+
         return PHPWS_Template::process($template, 'version', $template_file);
     }
 

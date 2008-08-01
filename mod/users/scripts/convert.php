@@ -19,7 +19,7 @@
    * @version $Id$
    */
 
-function authorize(&$user, $password)
+function authorize(PHPWS_User $user, $password)
 {
     $db = new PHPWS_DB('users_conversion');
     if (preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', $user->username)) {

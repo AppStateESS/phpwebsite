@@ -6,12 +6,12 @@
    */
 
 class Profiler_Division {
-    var $id    = 0;
-    var $title = NULL;
-    var $show_homepage = 1;
-    var $error = NULL;
+    public $id    = 0;
+    public $title = NULL;
+    public $show_homepage = 1;
+    public $error = NULL;
 
-    function Profiler_Division($id=0) {
+    public function Profiler_Division($id=0) {
         if (empty($id)) {
             return;
         }
@@ -25,24 +25,24 @@ class Profiler_Division {
         }
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('profiler_division');
         $db->addWhere('id', $this->id);
         return $db->loadObject($this);
     }
 
-    function getTags()
+    public function getTags()
     {
         $js_vars['height']  = '200';
-        $js_vars['address'] = sprintf('index.php?module=profiler&amp;command=edit_division&division_id=%s&authkey=%s', 
+        $js_vars['address'] = sprintf('index.php?module=profiler&amp;command=edit_division&division_id=%s&authkey=%s',
                                       $this->id, Current_User::getAuthKey());
         $js_vars['label']   = dgettext('profiler', 'Edit');
         $links[] = javascript('open_window', $js_vars);
 
         if (Current_User::allow('profiler', 'delete_divisions')) {
             $js_vars = array();
-            $js_vars['address']  = sprintf('index.php?module=profiler&amp;command=delete_division&division_id=%s&authkey=%s', 
+            $js_vars['address']  = sprintf('index.php?module=profiler&amp;command=delete_division&division_id=%s&authkey=%s',
                                            $this->id, Current_User::getAuthKey());
             $js_vars['link']     = dgettext('profiler', 'Delete');
             $js_vars['question'] = dgettext('profiler', 'Deleting this division will remove all the profiles under it.\nAre you sure you want to do this?');
@@ -53,7 +53,7 @@ class Profiler_Division {
         return $tpl;
     }
 
-    function post()
+    public function post()
     {
         if (UTF8_MODE) {
             $this->title = preg_replace('/[^\w\pL\s]/u', '', $_POST['title']);
@@ -67,27 +67,27 @@ class Profiler_Division {
         if ($db->select('one')) {
             return FALSE;
         }
-        
+
         if (empty($this->title)) {
             return FALSE;
         }
         return TRUE;
     }
 
-    function save()
+    public function save()
     {
         $db = new PHPWS_DB('profiler_division');
         return $db->saveObject($this);
     }
 
-    function viewLink()
+    public function viewLink()
     {
         $vars['user_cmd'] = 'view_div';
         $vars['div_id'] = $this->id;
         return PHPWS_Text::moduleLink($this->title, 'profiler', $vars);
     }
 
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('profiler_division');
         $db->addWhere('id', $this->id);

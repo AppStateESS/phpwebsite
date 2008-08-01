@@ -8,7 +8,7 @@
  */
 
 
-function related_unregister_key(&$key)
+function related_unregister_key(PHPWS_Key $key)
 {
     if (empty($key) || empty($key->id)) {
         return FALSE;

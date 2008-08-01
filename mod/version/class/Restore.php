@@ -6,22 +6,22 @@
    */
 
 class Version_Restore {
-    var $source_table  = NULL;
-    var $version_table = NULL;
-    var $source_id     = 0;
-    var $backup_list   = NULL;
-    var $error         = NULL;
-    var $class_name    = NULL;
-    var $view_method   = NULL;
-    var $remove_url    = NULL;
-    var $restore_url   = NULL;
-    var $columns       = array();
-    var $standard       = array('id', 'source_id', 'vr_creator', 'vr_editor',
+    public $source_table  = NULL;
+    public $version_table = NULL;
+    public $source_id     = 0;
+    public $backup_list   = NULL;
+    public $error         = NULL;
+    public $class_name    = NULL;
+    public $view_method   = NULL;
+    public $remove_url    = NULL;
+    public $restore_url   = NULL;
+    public $columns       = array();
+    public $standard       = array('id', 'source_id', 'vr_creator', 'vr_editor',
                                 'vr_create_date', 'vr_edit_date', 'vr_number',
                                 'vr_current', 'vr_approved', 'vr_locked');
 
 
-    function Version_Restore($module, $source_table, $source_id, $class_name=NULL, $view_method=NULL) {
+    public function __construct($module, $source_table, $source_id, $class_name=NULL, $view_method=NULL) {
         $this->module = $module;
         $this->source_table = $source_table;
         $this->version_table = $this->source_table . VERSION_TABLE_SUFFIX;
@@ -37,7 +37,7 @@ class Version_Restore {
         $this->loadBackupList();
     }
 
-    function loadBackupList(){
+    public function loadBackupList(){
         if (empty($this->source_id)) {
             return FALSE;
         }
@@ -61,27 +61,27 @@ class Version_Restore {
         $this->backup_list = &$result;
     }
 
-    function setColumns()
+    public function setColumns()
     {
         $this->columns = func_get_args();
     }
 
-    function setRestoreUrl($url)
+    public function setRestoreUrl($url)
     {
         $this->restore_url = $url;
     }
 
-    function setRemoveUrl($url)
+    public function setRemoveUrl($url)
     {
         $this->remove_url = $url;
     }
 
-    function getList()
+    public function getList()
     {
-        
+
         if ( !PHPWS_DB::isTable($this->version_table) || empty($this->backup_list) ) {
             $msg = dgettext('version', 'No backup versions available.');
-            
+
             return $msg;
         }
 
@@ -123,7 +123,7 @@ class Version_Restore {
                 $template_file = 'restore_list.tpl';
                 foreach ($show_cols as $show_tag) {
                     $count++;
-                    
+
                     $row_tpl['COLUMN_LABEL_' . $count] = $show_tag;
                     $row_tpl['COLUMN_' . $count] = $version[$show_tag];
                 }
@@ -146,10 +146,10 @@ class Version_Restore {
 
         if (empty($template)) {
             $msg = dgettext('version', 'A problem occurred when trying to process the restoration list.');
-            
+
             return $msg;
         } else {
-            
+
             return PHPWS_Template::process($template, 'version', $template_file);
         }
     }

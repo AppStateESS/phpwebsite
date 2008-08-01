@@ -167,7 +167,7 @@ class Profile_Forms {
         return $pager->get();
     }
 
-    function editDivision(&$division, $error=FALSE)
+    function editDivision(Profiler_Division $division, $error=FALSE)
     {
         $form = new PHPWS_Form('division');
         $form->addHidden('module', 'profiler');

@@ -8,16 +8,16 @@
  */
 
 class PHPWS_Group {
-    var $id           = NULL;
-    var $name         = NULL;
-    var $user_id      = 0;
-    var $active       = FALSE;
-    var $_members     = NULL;
-    var $_permissions = NULL;
-    var $_groups      = NULL;
-    var $_error       = NULL;
-  
-    function PHPWS_Group($id=NULL, $loadGroups=TRUE)
+    public $id           = NULL;
+    public $name         = NULL;
+    public $user_id      = 0;
+    public $active       = FALSE;
+    public $_members     = NULL;
+    public $_permissions = NULL;
+    public $_groups      = NULL;
+    public $_error       = NULL;
+
+    public function __construct($id=NULL, $loadGroups=TRUE)
     {
         if (isset($id)){
             $this->setId($id);
@@ -32,33 +32,33 @@ class PHPWS_Group {
         }
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('users_groups');
         return $db->loadObject($this);
     }
 
-    function setId($id)
+    public function setId($id)
     {
         $this->id = (int)$id;
     }
 
-    function getId()
+    public function getId()
     {
         return $this->id;
     }
 
-    function setActive($active)
+    public function setActive($active)
     {
         $this->active = (bool)$active;
     }
 
-    function isActive()
+    public function isActive()
     {
         return (bool)$this->active;
     }
 
-    function loadGroups()
+    public function loadGroups()
     {
         $DB = new PHPWS_DB('users_members');
         $DB->addWhere('member_id', $this->getId());
@@ -69,21 +69,21 @@ class PHPWS_Group {
             PHPWS_Error::log($result);
             return;
         }
-    
+
         $this->setGroups($result);
     }
 
-    function setGroups($groups)
+    public function setGroups($groups)
     {
         $this->_groups = $groups;
     }
 
-    function getGroups()
+    public function getGroups()
     {
         return $this->_groups;
     }
 
-    function loadMembers()
+    public function loadMembers()
     {
         $db = new PHPWS_DB('users_members');
         $db->addWhere('group_id', $this->getId());
@@ -92,7 +92,7 @@ class PHPWS_Group {
         $this->setMembers($result);
     }
 
-    function setName($name, $test=FALSE)
+    public function setName($name, $test=FALSE)
     {
         if ($test == TRUE){
             if (empty($name) || preg_match('/[^\w\s]+/', $name))
@@ -120,27 +120,27 @@ class PHPWS_Group {
         }
     }
 
-    function getName()
+    public function getName()
     {
         return $this->name;
     }
 
-    function setUserId($id)
+    public function setUserId($id)
     {
         $this->user_id = $id;
     }
 
-    function getUserId()
+    public function getUserId()
     {
         return $this->user_id;
     }
 
-    function setMembers($members)
+    public function setMembers($members)
     {
         $this->_members = $members;
     }
 
-    function dropMember($member)
+    public function dropMember($member)
     {
         if (!is_array($this->_members))
             return;
@@ -149,23 +149,23 @@ class PHPWS_Group {
         unset($this->_members[$key]);
     }
 
-    function dropAllMembers()
+    public function dropAllMembers()
     {
         $db = new PHPWS_DB('users_members');
         $db->addWhere('group_id', $this->getId());
         return $db->delete();
     }
 
-    function clearMembership()
+    public function clearMembership()
     {
         $db = new PHPWS_DB('users_members');
         $db->addWhere('member_id', $this->getId());
         return $db->delete();
     }
 
-    function addMember($member, $test=FALSE)
+    public function addMember($member, $test=FALSE)
     {
-        if ($test == TRUE){
+        if ($test == TRUE) {
             $db = new PHPWS_DB('users_groups');
             $db->addWhere('id', $member);
             $result = $db->select('one');
@@ -180,16 +180,17 @@ class PHPWS_Group {
             }
 
             $result = $db->select('one');
-        } else
+        } else {
             $this->_members[] = $member;
+        }
     }
 
-    function getMembers()
+    public function getMembers()
     {
         return $this->_members;
     }
 
-    function save()
+    public function save()
     {
         $db = new PHPWS_DB('users_groups');
 
@@ -208,7 +209,7 @@ class PHPWS_Group {
         }
     }
 
-    function kill()
+    public function kill()
     {
         $db = new PHPWS_DB('users_groups');
         $db->addWhere('id', $this->id);
@@ -219,7 +220,7 @@ class PHPWS_Group {
     }
 
 
-    function dropPermissions()
+    public function dropPermissions()
     {
         $modules = PHPWS_Core::getModules(true, true);
         if (empty($modules)) {
@@ -229,7 +230,7 @@ class PHPWS_Group {
         foreach ($modules as $mod) {
             $permTable = Users_Permission::getPermissionTableName($mod);
 
-            $db = new PHPWS_DB($permTable);            
+            $db = new PHPWS_DB($permTable);
             if (!$db->isTable($permTable)) {
                 continue;
             }
@@ -248,7 +249,7 @@ class PHPWS_Group {
         return true;
     }
 
-    function allow($module, $permission=NULL, $item_id=NULL, $itemname=NULL)
+    public function allow($module, $permission=NULL, $item_id=NULL, $itemname=NULL)
     {
         PHPWS_Core::initModClass('users', 'Permission.php');
 
@@ -259,7 +260,7 @@ class PHPWS_Group {
         return $this->_permission->allow($module, $permission, $item_id, $itemname);
     }
 
-    function getPermissionLevel($module)
+    public function getPermissionLevel($module)
     {
         PHPWS_Core::initModClass('users', 'Permission.php');
 
@@ -270,7 +271,7 @@ class PHPWS_Group {
         return $this->_permission->getPermissionLevel($module);
     }
 
-    function loadPermissions($loadAll=TRUE)
+    public function loadPermissions($loadAll=TRUE)
     {
         if ($loadAll && isset($this->_groups)) {
             $groups = $this->_groups;
@@ -280,7 +281,7 @@ class PHPWS_Group {
         $this->_permission = new Users_Permission($groups);
     }
 
-    function getTplTags()
+    public function getTplTags()
     {
         $this->loadMembers();
         $id = $this->id;
@@ -296,7 +297,7 @@ class PHPWS_Group {
 
         $linkVar['command'] = 'manageMembers';
         $links[] = PHPWS_Text::secureLink(dgettext('users', 'Members'), 'users', $linkVar);
-    
+
         if ($this->active){
             $linkVar['command'] = 'deactivateGroup';
             $links[] = PHPWS_Text::moduleLink(dgettext('users', 'Deactivate'), 'groups', $linkVar);
@@ -304,7 +305,7 @@ class PHPWS_Group {
             $linkVar['command'] = 'activateGroup';
             $links[] = PHPWS_Text::moduleLink(dgettext('users', 'Activate'), 'groups', $linkVar);
         }
-    
+
         $linkVar['command'] = 'remove_group';
         $removelink['ADDRESS'] = PHPWS_Text::linkAddress('users', $linkVar, TRUE);
         $removelink['QUESTION'] = dgettext('users', 'Are you SURE you want to remove this group?');
@@ -312,7 +313,7 @@ class PHPWS_Group {
         $links[] = Layout::getJavascript('confirm', $removelink);
 
         $template['ACTIONS'] = implode(' | ', $links);
-    
+
         $members = $this->getMembers();
 
         if (isset($members)) {

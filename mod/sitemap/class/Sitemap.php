@@ -8,12 +8,12 @@
     * it under the terms of the GNU General Public License as published by
     * the Free Software Foundation; either version 2 of the License, or
     * (at your option) any later version.
-    * 
+    *
     * This program is distributed in the hope that it will be useful,
     * but WITHOUT ANY WARRANTY; without even the implied warranty of
     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     * GNU General Public License for more details.
-    * 
+    *
     * You should have received a copy of the GNU General Public License
     * along with this program; if not, write to the Free Software
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -26,14 +26,14 @@ PHPWS_Core::requireInc('sitemap', 'errordefines.php');
 PHPWS_Core::requireConfig('sitemap');
 
 class Sitemap {
-    var $forms       = null;
-    var $panel       = null;
-    var $message     = null;
-    var $map         = null;
-    var $title       = null;
-    var $content     = null;
+    public $forms       = null;
+    public $panel       = null;
+    public $message     = null;
+    public $map         = null;
+    public $title       = null;
+    public $content     = null;
 
-    function adminMenu()
+    public function adminMenu()
     {
         if (!Current_User::allow('sitemap')) {
             Current_User::disallow();
@@ -58,7 +58,7 @@ class Sitemap {
                 }
 
                 break;
-    
+
             case 'post_settings':
                 if (!Current_User::authorized('sitemap')) {
                     Current_User::disallow();
@@ -92,25 +92,25 @@ class Sitemap {
             $this->panel->setContent(PHPWS_Template::process($tpl, 'sitemap', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
-        
+
    }
 
 
-    function sendMessage()
+    public function sendMessage()
     {
         PHPWS_Core::reroute('index.php?module=sitemap&amp;uop=message');
     }
 
-    function forwardMessage($message, $title=null)
+    public function forwardMessage($message, $title=null)
     {
         $_SESSION['SM_Message']['message'] = $message;
         if ($title) {
             $_SESSION['SM_Message']['title'] = $title;
         }
     }
-    
 
-    function loadMessage()
+
+    public function loadMessage()
     {
         if (isset($_SESSION['SM_Message'])) {
             $this->message = $_SESSION['SM_Message']['message'];
@@ -122,7 +122,7 @@ class Sitemap {
     }
 
 
-    function loadForm($type)
+    public function loadForm($type)
     {
         PHPWS_Core::initModClass('sitemap', 'SM_Forms.php');
         $this->forms = new Sitemap_Forms;
@@ -131,12 +131,12 @@ class Sitemap {
     }
 
 
-    function loadPanel()
+    public function loadPanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('sitemap-panel');
         $link = 'index.php?module=sitemap&aop=menu';
-        
+
         if (Current_User::isUnrestricted('sitemap')) {
             $tags['new'] = array('title'=>dgettext('sitemap', 'Generate Map'),
                                  'link'=>$link);
@@ -149,7 +149,7 @@ class Sitemap {
     }
 
 
-    function postSettings()
+    public function postSettings()
     {
 
         isset($_POST['respect_privs']) ?
@@ -184,8 +184,8 @@ class Sitemap {
 
         if (isset($_POST['exclude_keys'])) {
             PHPWS_Settings::set('sitemap', 'exclude_keys', $_POST['exclude_keys']);
-        } 
-        
+        }
+
         $cache_timeout = (int)$_POST['cache_timeout'];
         if ((int)$cache_timeout <= 7200) {
             PHPWS_Settings::set('sitemap', 'cache_timeout', $cache_timeout);
@@ -199,7 +199,7 @@ class Sitemap {
         } else {
             if (PHPWS_Settings::save('sitemap')) {
                 return true;
-            } else { 
+            } else {
                 return falsel;
             }
         }
@@ -207,7 +207,7 @@ class Sitemap {
     }
 
 
-    function getMenuIds()
+    public function getMenuIds()
     {
         $db = new PHPWS_DB('menus');
         $db->addWhere('restricted', 0);
@@ -219,7 +219,7 @@ class Sitemap {
     }
 
 
-    function getMenus($match=null, $select_name='menus', $multiple=true, $count=true)
+    public function getMenus($match=null, $select_name='menus', $multiple=true, $count=true)
     {
 
         PHPWS_Core::initModClass('menu', 'Menu_Item.php');
@@ -269,7 +269,7 @@ class Sitemap {
     }
 
 
-    function getKeyMods($match=null, $select_name='keys', $multiple=true, $count=true)
+    public function getKeyMods($match=null, $select_name='keys', $multiple=true, $count=true)
     {
 
         PHPWS_Core::initCoreClass('Key.php');
@@ -318,18 +318,18 @@ class Sitemap {
 
     }
 
-    function mapIt()
+    public function mapIt()
     {
         if (PHPWS_Settings::get('sitemap', 'allow_feed')) {
             /* what menus for auto, all non-restricted */
             $menus = $this->getMenuIds();
-            
+
             /* the default exclude_keys list */
             $exclude_keys = unserialize(PHPWS_Settings::get('sitemap', 'exclude_keys'));
-            
+
             /* what to do about lastmod, nothing except for keyed items */
             $lastmod = null;
-            
+
             if (PHPWS_Settings::get('sitemap', 'cache_timeout') > 0) {
                 $cache_key = 'sitemap_cache_key';
                 $content = PHPWS_Cache::get($cache_key, PHPWS_Settings::get('sitemap', 'cache_timeout'));
@@ -339,12 +339,12 @@ class Sitemap {
                     exit();
                 }
             }
-            
+
             $content = $this->buildXML($menus, $exclude_keys, $lastmod, PHPWS_Settings::get('sitemap', 'addkeys'));
             if (PHPWS_Settings::get('sitemap', 'cache_timeout') > 0) {
                 PHPWS_Cache::save($cache_key, $content);
             }
-    
+
             header('Content-type: text/xml');
             echo $content;
             exit();
@@ -352,9 +352,9 @@ class Sitemap {
             PHPWS_Core::reroute();
         }
     }
-    
-    
-    function buildFile()
+
+
+    public function buildFile()
     {
         $menus = $_REQUEST['menus'];
         if (isset($_REQUEST['lastmod_default'])) {
@@ -390,33 +390,33 @@ class Sitemap {
         }
     }
 
-    function buildXML($menus, $exclude_keys=null, $lastmod=null, $addkeys=null)
+    public function buildXML($menus, $exclude_keys=null, $lastmod=null, $addkeys=null)
     {
         $menuitems = array();
         $otheritems = array();
         $content = null;
-        
+
         /* get the menu items */
         if (!empty($menus) && is_array($menus)) {
             $menuitems = $this->getMenuItems($menus);
-//            print_r($menuitems); //exit;            
+//            print_r($menuitems); //exit;
         }
-        
+
         /* get other keyed items */
         if ($addkeys) {
             $otheritems = $this->getOtherItems($exclude_keys);
-//            print_r($otheritems); //exit;            
+//            print_r($otheritems); //exit;
             /* compare the arrays for dupes and return the cleaned array */
             $menuitems = array_udiff($menuitems, $otheritems, array($this, 'compareURL'));
-//            print_r($menuitems); exit;            
+//            print_r($menuitems); exit;
         }
-        
+
         /* merge the two arrays */
         $allitems = array_merge($menuitems, $otheritems);
-//        print_r($allitems); exit;            
+//        print_r($allitems); exit;
 
         if (!empty($allitems) && is_array($allitems)) {
-            
+
             /* make a template array of what's left */
             foreach ($allitems as $link) {
 
@@ -471,11 +471,11 @@ class Sitemap {
     }
 
 
-    function getMenuItems($menus)
+    public function getMenuItems($menus)
     {
         $final = null;
         if (!empty($menus) && is_array($menus)) {
-    
+
             $db = new PHPWS_DB('menu_links');
 
             $db->addColumn('menu_links.*');
@@ -483,9 +483,9 @@ class Sitemap {
             $db->addColumn('phpws_key.active');
             $db->addColumn('phpws_key.create_date');
             $db->addColumn('phpws_key.update_date');
-    
+
             $db->addJoin('left', 'menu_links', 'phpws_key', 'key_id', 'id');
-        
+
             foreach ($menus as $menu_id) {
                 $db->addWhere('menu_id', $menu_id, NULL, 'or', 1);
             }
@@ -501,19 +501,19 @@ class Sitemap {
 
             /* pre-process the menu links */
             foreach ($result as $link) {
-                
+
                 $link['local'] = 1;
 
                 /* get rid of leading .'s */
                 if ($link['url'][0] == '.') {
                     $link['url'] = substr($link['url'], 1);
                 }
-                
+
                 /* get rid of leading /'s */
                 if ($link['url'][0] == '/') {
                     $link['url'] = substr($link['url'], 1);
                 }
-                
+
                 /* check for local vs remote */
                 if ($this->checkURL($link['url'])) {
                     $link['local'] = 0;
@@ -535,7 +535,7 @@ class Sitemap {
                         $tidy = null;
                     }
                 }
-                
+
                 /* now put the http part on local links */
                 if ($link['local']) {
                     $pre = 'http://' . $_SERVER['HTTP_HOST'];
@@ -550,13 +550,13 @@ class Sitemap {
                 $tidy['update_date'] = $link['update_date'];
                 $tidy['parent'] = $link['parent'];
                 $tidy['link_order'] = $link['link_order'];
-                
+
                 $final[] = $tidy;
             }
 
             /* filter out the null ones and get the cleaned array */
             $final = array_filter($final);
-//print_r($final); exit;            
+//print_r($final); exit;
 
             return $final;
         } else {
@@ -565,7 +565,7 @@ class Sitemap {
     }
 
 
-    function getOtherItems($exclude_keys=null)
+    public function getOtherItems($exclude_keys=null)
     {
         $final = null;
         $db = new PHPWS_DB('phpws_key');
@@ -587,19 +587,19 @@ class Sitemap {
 
         /* pre-process the menu links */
         foreach ($result as $link) {
-            
+
             $link['local'] = 1;
 
             /* get rid of leading .'s */
             if ($link['url'][0] == '.') {
                 $link['url'] = substr($link['url'], 1);
             }
-            
+
             /* get rid of leading /'s */
             if ($link['url'][0] == '/') {
                 $link['url'] = substr($link['url'], 1);
             }
-            
+
             /* check for local vs remote */
             if ($this->checkURL($link['url'])) {
                 $link['local'] = 0;
@@ -621,7 +621,7 @@ class Sitemap {
                     $tidy = null;
                 }
             }
-            
+
             /* now put the http part on local links */
             if ($link['local']) {
                 $pre = 'http://' . $_SERVER['HTTP_HOST'];
@@ -642,26 +642,26 @@ class Sitemap {
 
         /* filter out the null ones and get the cleaned array */
         $final = array_filter($final);
-//print_r($final); exit;            
+//print_r($final); exit;
 
         return $final;
     }
 
-    
-    function compareURL($a, $b)
+
+    public function compareURL($a, $b)
     {
         return strcmp($a['url'], $b['url']);
     }
-    
-    
-    function getChangeFreq($id)
+
+
+    public function getChangeFreq($id)
     {
         $freqs= array('1'=>'always', '2'=>'hourly', '3'=>'daily', '4'=>'weekly', '5'=>'monthly', '6'=>'yearly', '7'=>'never');
         return $freqs[$id];
     }
-    
-    
-    function checkURL($link)
+
+
+    public function checkURL($link)
     {
         $pattern = '/^(([\w]+:)?\/\/)?(([\d\w]|%[a-fA-f\d]{2,2})+(:([\d\w]|%[a-fA-f\d]{2,2})+)?@)?([\d\w][-\d\w]{0,253}[\d\w]\.)+[\w]{2,4}(:[\d]+)?(\/([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)*(\?(&?([-+_~.\d\w]|%[a-fA-f\d]{2,2})=?)*)?(#([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)?$/';
         preg_match($pattern, $link, $matches);
@@ -670,7 +670,7 @@ class Sitemap {
             return true;
         } else {
             return false;
-        } 
+        }
     }
 
 

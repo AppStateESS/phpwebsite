@@ -5,11 +5,10 @@
    */
 
 class My_Page {
-    var $modules = NULL;
+    public $modules = NULL;
 
-    function main()
+    public function main()
     {
-        
         if (!Current_User::isLogged()) {
             PHPWS_Core::errorPage('403');
         }
@@ -44,7 +43,7 @@ class My_Page {
         Layout::add(PHPWS_ControlPanel::display($panel->display(), 'my_page'));
     }
 
-    function init()
+    public function init()
     {
         PHPWS_Core::initCoreClass('Module.php');
         $db = new PHPWS_DB('users_my_page_mods');
@@ -65,12 +64,12 @@ class My_Page {
         return TRUE;
     }
 
-    function moduleIsRegistered($module)
+    public function moduleIsRegistered($module)
     {
         return in_array($module, array_keys($this->modules));
     }
 
-    function cpanel()
+    public function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=users&amp;action=user';
@@ -87,7 +86,7 @@ class My_Page {
         return $panel;
     }
 
-    function userOption($module_title)
+    public function userOption($module_title)
     {
         $module = new PHPWS_Module($module_title);
         $directory = $module->getDirectory();
@@ -108,7 +107,7 @@ class My_Page {
         return $content;
     }
 
-    function registerMyPage($mod_title)
+    public function registerMyPage($mod_title)
     {
         $filename = sprintf('%smod/%s/inc/my_page.php', PHPWS_SOURCE_DIR, $mod_title);
         if (!is_file($filename)) {
@@ -120,7 +119,7 @@ class My_Page {
         return $db->insert();
     }
 
-    function unregisterMyPage($mod_title)
+    public function unregisterMyPage($mod_title)
     {
         $db = new PHPWS_DB('users_my_page_mods');
         $db->addWhere('mod_title', $mod_title);
@@ -128,7 +127,7 @@ class My_Page {
     }
 
 
-    function addHidden(&$form, $module)
+    public function addHidden(PHPWS_Form $form, $module)
     {
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');

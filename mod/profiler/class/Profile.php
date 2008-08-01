@@ -13,27 +13,27 @@ PHPWS_Core::configRequireOnce('profiler', 'config.php');
 define('PFL_PROFILE_NOT_FOUND', 1);
 
 class Profile {
-    var $id              = 0;
-    var $firstname       = null;
-    var $lastname        = null;
-    var $photo_large     = 0;     // Id to the photo
-    var $photo_medium    = 0;     // Id to the photo
-    var $photo_small     = 0;     // Id to the photo
-    var $fullstory       = null;  // Complete prose to profile
-    var $caption         = null;  // Abbreviated intro to the profile
-    var $email           = null;  // Email to contact profile
-    var $website         = null;  // Web site run by profile
-    var $profile_type    = 0;     // Profile type number, see defines above
-    var $keywords        = null;  // Searchable words to find a profile
-    var $submit_date     = 0;     // Date of profile creation
-    var $contributor     = null;  // Name of contributor
-    var $contributor_id  = 0;
-    var $approved        = 0;
-    var $_error          = null;  // Error object holder
-    var $_db             = null;  // Database object
-    var $_division_title = null;
+    public $id              = 0;
+    public $firstname       = null;
+    public $lastname        = null;
+    public $photo_large     = 0;     // Id to the photo
+    public $photo_medium    = 0;     // Id to the photo
+    public $photo_small     = 0;     // Id to the photo
+    public $fullstory       = null;  // Complete prose to profile
+    public $caption         = null;  // Abbreviated intro to the profile
+    public $email           = null;  // Email to contact profile
+    public $website         = null;  // Web site run by profile
+    public $profile_type    = 0;     // Profile type number, see defines above
+    public $keywords        = null;  // Searchable words to find a profile
+    public $submit_date     = 0;     // Date of profile creation
+    public $contributor     = null;  // Name of contributor
+    public $contributor_id  = 0;
+    public $approved        = 0;
+    public $_error          = null;  // Error object holder
+    public $_db             = null;  // Database object
+    public $_division_title = null;
 
-    function Profile($id=null)
+    public function Profile($id=null)
     {
         if (empty($id)) {
             return TRUE;
@@ -48,7 +48,7 @@ class Profile {
         return TRUE;
     }
 
-    function resetdb()
+    public function resetdb()
     {
         if (isset($this->_db)) {
             $this->_db->reset();
@@ -57,12 +57,12 @@ class Profile {
         }
     }
 
-    function display($template_name)
+    public function display($template_name)
     {
         Layout::addStyle('profiler');
 
         $images = $this->loadImages();
-        
+
         $template_name = preg_replace('/\W/u', '', $template_name);
 
         $template['FIRST_NAME'] = $this->firstname;
@@ -92,21 +92,21 @@ class Profile {
 
         $template['EMAIL'] = $this->getEmail();
         $template['EMAIL_LABEL'] = dgettext('profiler', 'Email address');
-        
+
         return PHPWS_Template::process($template, 'profiler', 'views/' . $template_name . '.tpl');
     }
 
-    function getEmail()
+    public function getEmail()
     {
         if (empty($this->email)) {
             return null;
         }
-        
-        
+
+
         return sprintf('<a class="email" href="mailto:%s"><img src="images/mod/profiler/email.png" alt="%s" title="%s" /></a>', $this->email, dgettext('profiler', 'Email'), dgettext('profiler', 'Email'));
     }
 
-    function getWebsite()
+    public function getWebsite()
     {
         if (empty($this->website)) {
             return null;
@@ -115,7 +115,7 @@ class Profile {
         return sprintf('<a class="url" href="%s"><img src="images/mod/profiler/website.png" alt="%s" title="%s" /></a>', $this->website, dgettext('profiler', 'Web site'), dgettext('profiler', 'Web site'));
     }
 
-    function loadImages()
+    public function loadImages()
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $images['small'] = $images['medium'] = $images['large'] = null;
@@ -127,7 +127,7 @@ class Profile {
         if ($this->photo_medium) {
             $images['medium'] = Cabinet::getFile($this->photo_medium);
         }
- 
+
         if ($this->photo_large) {
             $images['large'] = Cabinet::getFile($this->photo_large);
         }
@@ -135,32 +135,32 @@ class Profile {
         return $images;
     }
 
-    function setId($id)
+    public function setId($id)
     {
         $this->id = (int)$id;
     }
 
-    function getId()
+    public function getId()
     {
         return $this->id;
     }
 
-    function setFirstName($firstname)
+    public function setFirstName($firstname)
     {
         $this->firstname = preg_replace('/[^\w\s]/u', '', trim($firstname));
     }
 
-    function setLastName($lastname)
+    public function setLastName($lastname)
     {
         $this->lastname = preg_replace('/^\w\s/u', '', trim($lastname));
     }
 
-    function setCaption($caption)
+    public function setCaption($caption)
     {
         $this->caption = PHPWS_Text::parseInput($caption);
     }
 
-    function getCaption($formatted=TRUE)
+    public function getCaption($formatted=TRUE)
     {
         if ($formatted) {
             return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->caption));
@@ -169,22 +169,22 @@ class Profile {
         }
     }
 
-    function setFullstory($fullstory)
+    public function setFullstory($fullstory)
     {
         $this->fullstory = PHPWS_Text::parseInput($fullstory);
     }
 
-    function setProfileType($profile_type)
+    public function setProfileType($profile_type)
     {
         $this->profile_type = (int)$profile_type;
     }
 
-    function setSubmitDate()
+    public function setSubmitDate()
     {
         $this->submit_date = mktime();
     }
 
-    function getFullstory($formatted=TRUE)
+    public function getFullstory($formatted=TRUE)
     {
         if ($formatted) {
             return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->fullstory));
@@ -193,7 +193,7 @@ class Profile {
         }
     }
 
-    function getProfileType()
+    public function getProfileType()
     {
         static $all_profiles = array();
 
@@ -214,7 +214,7 @@ class Profile {
         }
     }
 
-    function init()
+    public function init()
     {
         $this->resetdb();
         $result = $this->_db->loadObject($this);
@@ -222,13 +222,13 @@ class Profile {
         if (PEAR::isError($result)) {
             return $result;
         } elseif (empty($result)) {
-            return PHPWS_Error::get(PFL_PROFILE_NOT_FOUND, 'profiler', 
+            return PHPWS_Error::get(PFL_PROFILE_NOT_FOUND, 'profiler',
                                     'Profile::init', 'Id:' . $this->id);
         }
         return TRUE;
     }
 
-    function postProfile()
+    public function postProfile()
     {
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
 
@@ -299,7 +299,7 @@ class Profile {
         }
     }
 
-    function getProfileTags()
+    public function getProfileTags()
     {
         //        $tpl['PROFILE_TYPE'] = $this->getProfileType();
         $tpl['PROFILE_TYPE'] = $this->_division_title;
@@ -321,8 +321,8 @@ class Profile {
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
-  
-    function delete()
+
+    public function delete()
     {
         PHPWS_Core::initModClass('version', 'Version.php');
         $this->resetdb();
@@ -335,7 +335,7 @@ class Profile {
         return Version::flush('profiles', $this->id);
     }
 
-    function save()
+    public function save()
     {
         PHPWS_Core::initModClass('version', 'Version.php');
 
@@ -352,7 +352,7 @@ class Profile {
         $version->setApproved($this->approved);
         return $version->save();
     }
-  
+
 }
 
 

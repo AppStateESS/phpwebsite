@@ -168,7 +168,7 @@ class RSS_Admin {
     {
         $opt['link'] = 'index.php?module=rss';
 
-        $opt['title'] = dgettext('rss', 'Channels'); 
+        $opt['title'] = dgettext('rss', 'Channels');
         $tab['channels'] = $opt;
 
         $opt['title'] = dgettext('rss', 'Import');
@@ -182,7 +182,7 @@ class RSS_Admin {
         return $panel;
     }
 
-    function editChannel(&$channel)
+    function editChannel(RSS_Channel $channel)
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'rss');
@@ -200,7 +200,7 @@ class RSS_Admin {
         $form->setLabel('description', dgettext('rss', 'Description'));
 
         $formtpl = $form->getTemplate();
-        
+
         $tpl['CONTENT'] = PHPWS_Template::processTemplate($formtpl, 'rss', 'channel_form.tpl');
 
         $tpl['TITLE'] = dgettext('rss', 'Edit channel');
@@ -220,7 +220,7 @@ class RSS_Admin {
         $form->addRadio('rssfeed', $files);
         $form->setLabel('rssfeed', $filenames);
         $form->setMatch('rssfeed', PHPWS_Settings::get('rss', 'rssfeed'));
-        
+
 
         $form->addText('editor', PHPWS_Settings::get('rss', 'editor'));
         $form->setLabel('editor', dgettext('rss', 'Managing editor email address'));
@@ -239,7 +239,7 @@ class RSS_Admin {
 
         $fc['TITLE']   = dgettext('rss', 'General Settings');
         $fc['CONTENT'] = PHPWS_Template::process($tpl, 'rss', 'settings.tpl');
-        
+
         return $fc;
     }
 
@@ -271,7 +271,7 @@ class RSS_Admin {
         if (!empty($_POST['copyright'])) {
             PHPWS_Settings::set('rss', 'copyright', strip_tags($_POST['copyright']));
         }
-        
+
         return $message;
     }
 
@@ -283,7 +283,7 @@ class RSS_Admin {
         $db = new PHPWS_DB('rss_channel');
         $db->addOrder('title');
         $channels = $db->getObjects('RSS_Channel');
-        
+
         if (empty($channels)) {
             $final_tpl['CONTENT'] = dgettext('rss', 'No channels have been registered.');
             return $final_tpl;
@@ -314,7 +314,7 @@ class RSS_Admin {
         return $final_tpl;
     }
 
-    function editFeed(&$feed)
+    function editFeed(RSS_Feed $feed)
     {
         $form = new PHPWS_Form;
         if ($feed->id) {
@@ -332,7 +332,7 @@ class RSS_Admin {
         $form->setSize('title', '30');
 
         $form->addSubmit('submit', dgettext('rss', 'Save'));
-        
+
         $form->addButton('cancel', dgettext('rss', 'Cancel'));
         $form->setExtra('cancel', 'onclick="window.close()"');
 
@@ -345,7 +345,7 @@ class RSS_Admin {
         $form->setLabel('refresh_time', dgettext('rss', 'Refresh time'));
 
         $template = $form->getTemplate();
-        
+
         $template['TITLE_WARNING'] = dgettext('rss', 'Feed title will be used if left empty');
         $template['REFRESH_WARNING'] = dgettext('rss', 'In seconds');
 
@@ -359,17 +359,17 @@ class RSS_Admin {
     function import()
     {
         PHPWS_Core::requireConfig('rss');
-        
+
         if (!ini_get('allow_url_fopen')) {
             $tpl['TITLE'] = dgettext('rss', 'Sorry');
             $tpl['CONTENT'] = dgettext('rss', 'You must enable allow_url_fopen in your php.ini file.');
             return $tpl;
         }
-        
+
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('rss', 'Feed.php');
         $content = NULL;
-        
+
         $vars['address'] = 'index.php?module=rss&command=add_feed';
         $vars['label'] = dgettext('rss', 'Add feed');
         $vars['width'] = '450';

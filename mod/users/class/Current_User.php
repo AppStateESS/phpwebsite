@@ -15,7 +15,7 @@ if (!defined('ALLOW_DEITY_REMEMBER_ME')) {
     define('ALLOW_DEITY_REMEMBER_ME', false);
  }
 
-class Current_User {
+final class Current_User {
 
     /**
      * Initializes the User session
@@ -32,7 +32,7 @@ class Current_User {
     {
         return $_SESSION['User'];
     }
-  
+
     /**
      * Determines if a user is allowed to use a specific module, permission, and/or item
      *
@@ -40,8 +40,8 @@ class Current_User {
      * @param  string   subpermission      Name of the module permission to verify
      * @param  integer  item_id            Id of the item to verify
      * @param  string   itename            Name of the item permission
-     * @param  boolean  unrestricted_only  If true, user must have unrestricted 
-     *                                     priviledges for that module regardless of 
+     * @param  boolean  unrestricted_only  If true, user must have unrestricted
+     *                                     priviledges for that module regardless of
      *                                     module, subpermission, or item id
      */
     function allow($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
@@ -59,8 +59,8 @@ class Current_User {
      * @param  string   subpermission      Name of the module permission to verify
      * @param  integer  item_id            Id of the item to verify
      * @param  string   itename            Name of the item permission
-     * @param  boolean  unrestricted_only  If true, user must be have unrestricted 
-     *                                     priviledges for that module regardless of 
+     * @param  boolean  unrestricted_only  If true, user must be have unrestricted
+     *                                     priviledges for that module regardless of
      *                                     module, subpermission, or item id
      */
     function authorized($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
@@ -151,7 +151,7 @@ class Current_User {
         if (Current_User::isDeity()) {
             return false;
         }
-     
+
         $level = $_SESSION['User']->getPermissionLevel($module);
         return $level == RESTRICTED_PERMISSION ? true : false;
     }
@@ -268,7 +268,7 @@ class Current_User {
             return;
         }
 
-        if (Current_User::isUnrestricted($key->module) && 
+        if (Current_User::isUnrestricted($key->module) &&
             Current_User::allow($key->module, $key->edit_permission)) {
 
             if (!javascriptEnabled()) {
@@ -384,7 +384,7 @@ class Current_User {
         }
     }
 
-    function authorize($authorize, &$user, $password)
+    function authorize($authorize, PHPWS_User $user, $password)
     {
         $db = new PHPWS_DB('users_auth_scripts');
         $db->setIndexBy('id');
@@ -394,7 +394,7 @@ class Current_User {
             return false;
         }
 
-        if (isset($result[$authorize])) { 
+        if (isset($result[$authorize])) {
             extract($result[$authorize]);
             $file = PHPWS_SOURCE_DIR . 'mod/users/scripts/' . $filename;
 
@@ -418,7 +418,7 @@ class Current_User {
 
         return $result;
     }
-    
+
     function requireLogin()
     {
         if (Current_User::isLogged()) {
@@ -452,7 +452,7 @@ class Current_User {
         if (preg_match('/\W/', $rArray['password'])) {
             return false;
         }
-        
+
         $username = strtolower($rArray['username']);
         if (preg_match('/\'|"/', html_entity_decode($username, ENT_QUOTES))) {
             Security::log(dgettext('users', 'User tried to login using Remember Me with a malformed cookie.'));

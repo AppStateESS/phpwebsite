@@ -5,17 +5,17 @@
    */
 
 class Signup_Sheet {
-    var $id            = 0;
-    var $key_id        = 0;
-    var $title         = null;
-    var $description   = null;
-    var $start_time    = 0;
-    var $end_time      = 0;
-    var $contact_email = null;
-    var $multiple      = 0;
-    var $_error        = null;
+    public $id            = 0;
+    public $key_id        = 0;
+    public $title         = null;
+    public $description   = null;
+    public $start_time    = 0;
+    public $end_time      = 0;
+    public $contact_email = null;
+    public $multiple      = 0;
+    public $_error        = null;
 
-    function Signup_Sheet($id=0)
+    public function __construct($id=0)
     {
         if (!$id) {
             return;
@@ -25,7 +25,7 @@ class Signup_Sheet {
         $this->init();
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('signup_sheet');
         $result = $db->loadObject($this);
@@ -37,22 +37,22 @@ class Signup_Sheet {
         }
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = strip_tags($title);
     }
 
-    function setDescription($description)
+    public function setDescription($description)
     {
         $this->description = PHPWS_Text::parseInput($description);
     }
 
-    function getDescription()
+    public function getDescription()
     {
         return PHPWS_Text::parseOutput($this->description);
     }
 
-    function getStartTime()
+    public function getStartTime()
     {
         if (!$this->start_time) {
             return strftime('%Y/%m/%d %H:00', mktime());
@@ -61,7 +61,7 @@ class Signup_Sheet {
         }
     }
 
-    function getEndTime()
+    public function getEndTime()
     {
         if (!$this->end_time) {
             return strftime('%Y/%m/%d %H:00', mktime() + (86400 * 7));
@@ -70,17 +70,17 @@ class Signup_Sheet {
         }
     }
 
-    function defaultStart()
+    public function defaultStart()
     {
         $this->start_time = mktime() - 86400;
     }
 
-    function defaultEnd()
+    public function defaultEnd()
     {
         $this->end_time = mktime(0,0,0,1,1,2020);
     }
 
-    function delete()
+    public function delete()
     {
         if (!$this->id) {
             return;
@@ -101,14 +101,14 @@ class Signup_Sheet {
         PHPWS_Error::logIfError($db->delete());
     }
 
-    function editSlotLink()
+    public function editSlotLink()
     {
         $vars['aop'] = 'edit_slots';
         $vars['sheet_id']  = $this->id;
         return PHPWS_Text::moduleLink(dgettext('signup', 'Edit slots'), 'signup', $vars);
     }
 
-    function getAllSlots($bare=false, $search=null)
+    public function getAllSlots($bare=false, $search=null)
     {
         PHPWS_Core::initModClass('signup', 'Slots.php');
         $db = new PHPWS_DB('signup_slots');
@@ -132,17 +132,17 @@ class Signup_Sheet {
             $db->addJoin('left', 'signup_slots', 'signup_peeps', 'id', 'slot_id');
 
             $db->addWhere('signup_peeps.registered', 1, null, null, 1);
-            
+
             $db->addWhere('signup_peeps.slot_id', null, null, 'or', 1);
             $db->setGroupConj(1, 'and');
-            
+
             $db->addGroupBy('signup_slots.id');
             $result = $db->getObjects('Signup_Slot');
         }
         return $result;
     }
 
-    function rowTag()
+    public function rowTag()
     {
         $vars['sheet_id'] = $this->id;
         if (Current_User::allow('signup', 'edit_sheet', $this->id, 'sheet')) {
@@ -175,7 +175,7 @@ class Signup_Sheet {
         return $tpl;
     }
 
-    function save()
+    public function save()
     {
         $db = new PHPWS_DB('signup_sheet');
         $result = $db->saveObject($this);
@@ -187,7 +187,7 @@ class Signup_Sheet {
     }
 
 
-    function saveKey()
+    public function saveKey()
     {
         if (empty($this->key_id)) {
             $key = new Key;
@@ -229,7 +229,7 @@ class Signup_Sheet {
      * Returns an array indexed by slot id containing the number
      * of slots filled so far.
      */
-    function totalSlotsFilled()
+    public function totalSlotsFilled()
     {
         $db = new PHPWS_DB('signup_peeps');
         $db->addWhere('sheet_id', $this->id);
@@ -252,12 +252,12 @@ class Signup_Sheet {
         return $totals;
     }
 
-    function viewLink()
+    public function viewLink()
     {
         return PHPWS_Text::rewriteLink($this->title, 'signup', $this->id);
     }
 
-    function flag()
+    public function flag()
     {
         $key = new Key($this->key_id);
         $key->flag();

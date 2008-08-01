@@ -11,13 +11,13 @@ if (!defined('UTF8_MODE')) {
 }
 
 class Search {
-    var $key_id   = 0;
-    var $module   = NULL;
-    var $keywords = NULL;
-    var $created  = 0;
-    var $_error   = NULL;
-    
-    function Search($key=NULL)
+    public $key_id   = 0;
+    public $module   = NULL;
+    public $keywords = NULL;
+    public $created  = 0;
+    public $_error   = NULL;
+
+    public function _construct($key=NULL)
     {
         if (empty($key)) {
             return;
@@ -27,7 +27,7 @@ class Search {
         $this->init();
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('search');
         $db->addWhere('key_id', $this->key_id);
@@ -39,7 +39,7 @@ class Search {
         $this->loadKeywords();
     }
 
-    function loadKeywords()
+    public function loadKeywords()
     {
         if (!empty($this->keywords)) {
             $words = explode(' ', trim($this->keywords));
@@ -48,7 +48,7 @@ class Search {
 
     }
 
-    function setKey($key)
+    public function setKey($key)
     {
         if ( (strtolower(get_class($key)) == 'key') && $key->id > 0) {
             $this->key_id = (int)$key->id;
@@ -57,12 +57,12 @@ class Search {
         }
     }
 
-    function resetKeywords()
+    public function resetKeywords()
     {
         $this->keywords = null;
     }
 
-    function addKeywords($keywords, $parse_keywords=true)
+    public function addKeywords($keywords, $parse_keywords=true)
     {
         if ( !is_array($keywords) && !is_string($keywords) ) {
             return FALSE;
@@ -71,12 +71,12 @@ class Search {
         if ( is_array($keywords) ) {
             $keywords = implode(' ', $keywords);
         }
-        
+
         if ($parse_keywords) {
             $parse_text = $this->parseKeywords($keywords);
         } else {
             $parse_text = $this->filterWords($keywords, false);
-        }            
+        }
 
         if (empty($parse_text)) {
             return;
@@ -100,7 +100,7 @@ class Search {
         $this->keywords = array_unique($this->keywords);
     }
 
-    function filterWords($text, $encode=true)
+    public function filterWords($text, $encode=true)
     {
         $text = str_replace('&amp;', '&', $text);
         // can't use strip_tags because we need the spaces
@@ -136,7 +136,7 @@ class Search {
     /**
      * Filters text and clears common words from the inputed text
      */
-    function parseKeywords($text)
+    public function parseKeywords($text)
     {
         if (empty($text)) {
             return;
@@ -169,7 +169,7 @@ class Search {
         return $text;
     }
 
-    function removeKeyword($keyword)
+    public function removeKeyword($keyword)
     {
         $key = array_search($keyword, $this->keywords);
 
@@ -178,7 +178,7 @@ class Search {
         }
     }
 
-    function save()
+    public function save()
     {
         if (empty($this->key_id) || empty($this->keywords)) {
             return FALSE;

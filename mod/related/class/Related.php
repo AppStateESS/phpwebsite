@@ -13,16 +13,16 @@ PHPWS_Core::initModClass('related', 'Action.php');
 
 class Related {
 
-    var $id        = NULL;
-    var $key_id    = NULL;
-    var $title     = NULL;
-    var $friends   = NULL;
-    var $_banked   = FALSE;
-    var $_current  = NULL;
-    var $_key      = NULL;
+    public $id        = NULL;
+    public $key_id    = NULL;
+    public $title     = NULL;
+    public $friends   = NULL;
+    public $_banked   = FALSE;
+    public $_current  = NULL;
+    public $_key      = NULL;
 
 
-    function Related($id=NULL)
+    public function __construct($id=NULL)
     {
         if (empty($id)) {
             return;
@@ -35,7 +35,7 @@ class Related {
         }
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('related_main');
         $result = $db->loadObject($this);
@@ -50,12 +50,12 @@ class Related {
 
     }
 
-    function setId($id)
+    public function setId($id)
     {
         $this->id = (int)$id;
     }
 
-    function setKey($key)
+    public function setKey($key)
     {
         if (Key::isKey($key)) {
             $this->_key = $key;
@@ -71,11 +71,11 @@ class Related {
 
     }
 
-    function setTitle($title){
+    public function setTitle($title){
         $this->title = preg_replace('/[^' . ALLOWED_TITLE_CHARS . ']/', '', strip_tags($title));
     }
 
-    function getUrl($clickable=FALSE)
+    public function getUrl($clickable=FALSE)
     {
         if ($clickable) {
             return sprintf('<a href="%s">%s</a>', PHPWS_Text::fixAmpersand($this->_key->url), $this->title);
@@ -86,32 +86,32 @@ class Related {
     }
 
 
-    function setActive($active){
+    public function setActive($active){
         $this->active = (bool)$active;
     }
 
-    function isActive(){
+    public function isActive(){
         return $this->active;
     }
 
-    function setFriends($friends){
+    public function setFriends($friends){
         $this->friends = $friends;
     }
 
-    function addFriend($friend){
+    public function addFriend($friend){
         $this->friends[] = $friend;
     }
 
-    function setBanked($status){
+    public function setBanked($status){
         $this->_banked = (bool)$status;
     }
 
-    function isBanked(){
+    public function isBanked(){
         return $this->_banked;
     }
 
 
-    function loadFriends(){
+    public function loadFriends(){
         if (!isset($this->id)) {
             return NULL;
         }
@@ -133,7 +133,7 @@ class Related {
     }
 
 
-    function isFriend($checkObj){
+    public function isFriend($checkObj){
         if (empty($this->friends)) {
             return FALSE;
         }
@@ -147,7 +147,7 @@ class Related {
         return FALSE;
     }
 
-    function listFriends()
+    public function listFriends()
     {
         if (empty($this->friends)) {
             return NULL;
@@ -166,7 +166,7 @@ class Related {
     }
 
 
-    function moveFriendUp($position){
+    public function moveFriendUp($position){
         if (empty($this->friends))
             return FALSE;
 
@@ -189,7 +189,7 @@ class Related {
             $this->friends[] = $friend;
     }
 
-    function moveFriendDown($position){
+    public function moveFriendDown($position){
         if (empty($this->friends))
             return FALSE;
 
@@ -214,15 +214,15 @@ class Related {
             $this->friends[] = $friend;
     }
 
-    function removeFriend($position){
+    public function removeFriend($position){
         if (empty($this->friends))
             return FALSE;
 
         $friends = $this->friends;
         $this->friends = array();
-    
+
         $friend = $friends[$position];
-    
+
         if (isset($friend->id)){
             $friend->kill();
         }
@@ -234,7 +234,7 @@ class Related {
     }
 
 
-    function load(){
+    public function load(){
         if (!isset($this->id)) {
             $db = new PHPWS_DB('related_main');
             $db->addWhere('key_id', $this->key_id);
@@ -247,7 +247,7 @@ class Related {
         }
     }
 
-    function show($allowEdit=TRUE)
+    public function show($allowEdit=TRUE)
     {
         PHPWS_Core::initCoreClass('Module.php');
 
@@ -256,7 +256,7 @@ class Related {
         if (empty($key) || $key->isDummy() || empty($key->title) || empty($key->url)) {
             return NULL;
         }
-    
+
         $related = new Related;
         $related->setKey($key);
         $related->load();
@@ -290,14 +290,14 @@ class Related {
 
         if (!empty($body)) {
             $content = &$body;
-      
+
             Layout::add($content, 'related', 'bank');
         }
 
         return TRUE;
     }
 
-    function save()
+    public function save()
     {
         $db = new PHPWS_DB('related_main');
         $result = $db->saveObject($this);
@@ -327,19 +327,19 @@ class Related {
         }
     }
 
-    function clearRelated(){
+    public function clearRelated(){
         $db = new PHPWS_DB('related_friends');
         $db->addWhere('source_id', $this->id);
         $result = $db->delete();
     }
 
-    function clearFriends(){
+    public function clearFriends(){
         $db = new PHPWS_DB('related_friends');
         $db->addWhere('friend_id', $this->id);
         $result = $db->delete();
     }
 
-    function kill(){
+    public function kill(){
         $this->clearRelated();
         $this->clearFriends();
         $db = new PHPWS_DB('related_main');
@@ -347,7 +347,7 @@ class Related {
         $db->delete();
     }
 
-    function addRelation($id, $rating){
+    public function addRelation($id, $rating){
         $db = new PHPWS_DB('related_friends');
         $db->addValue('source_id', $this->id);
         $db->addValue('friend_id', $id);

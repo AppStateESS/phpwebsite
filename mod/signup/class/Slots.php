@@ -6,16 +6,16 @@
 
 class Signup_Slot {
 
-    var $id         = 0;
-    var $sheet_id   = 0;
-    var $title      = null;
-    var $openings   = 0;
-    var $s_order    = 1;
+    public $id         = 0;
+    public $sheet_id   = 0;
+    public $title      = null;
+    public $openings   = 0;
+    public $s_order    = 1;
 
-    var $_peeps     = null;
-    var $_filled    = 0;
+    public $_peeps     = null;
+    public $_filled    = 0;
 
-    function Signup_Slot($id=0)
+    public function __construct($id=0)
     {
         if ($id) {
             $this->id = (int)$id;
@@ -23,7 +23,7 @@ class Signup_Slot {
         }
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('signup_slots');
         $result = $db->loadObject($this);
@@ -34,7 +34,7 @@ class Signup_Slot {
         return true;
     }
 
-    function loadPeeps($registered=true)
+    public function loadPeeps($registered=true)
     {
         PHPWS_Core::initModClass('signup', 'Peeps.php');
 
@@ -57,12 +57,12 @@ class Signup_Slot {
         }
     }
 
-    function setOpenings($openings)
+    public function setOpenings($openings)
     {
         $this->openings = (int)$openings;
     }
 
-    function setSheetId($sheet_id)
+    public function setSheetId($sheet_id)
     {
         if (!is_numeric($sheet_id)) {
             return false;
@@ -72,12 +72,12 @@ class Signup_Slot {
         }
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = strip_tags($title);
     }
 
-    function save()
+    public function save()
     {
         if (!$this->sheet_id) {
             return PHPWS_Error::get(SU_NO_SHEET_ID, 'signup', 'Signup_Slot::save');
@@ -101,7 +101,7 @@ class Signup_Slot {
         return $db->saveObject($this);
     }
 
-    function applicantAddLink()
+    public function applicantAddLink()
     {
         $vars['aop']      = 'add_slot_peep';
         $vars['slot_id']  = $this->id;
@@ -112,7 +112,7 @@ class Signup_Slot {
         return javascript('open_window', $jsadd);
     }
 
-    function slotLinks()
+    public function slotLinks()
     {
         $vars['slot_id'] = $this->id;
 
@@ -143,7 +143,7 @@ class Signup_Slot {
     }
 
 
-    function showPeeps()
+    public function showPeeps()
     {
         $sheet = new Signup_Sheet($this->sheet_id);
         $total_slots = $sheet->totalSlotsFilled();
@@ -211,7 +211,7 @@ class Signup_Slot {
     }
 
 
-    function viewTpl()
+    public function viewTpl()
     {
         $tpl['TITLE'] = $this->title;
         $tpl['OPENINGS'] = sprintf(dgettext('signup', 'Total openings: %s'), $this->openings);
@@ -232,7 +232,7 @@ class Signup_Slot {
         return $tpl;
     }
 
-    function listTpl()
+    public function listTpl()
     {
         $vars['address'] = PHPWS_Text::linkAddress('signup', array('aop'=>'edit_peep_popup',
                                                                    'slot_id'=>$this->id));
@@ -240,7 +240,7 @@ class Signup_Slot {
         $vars['width']      = 800;
         $vars['height']     = 600;
         $vars['link_title'] = dgettext('signup', 'Click to view and edit signups for this slot.');
-                                        
+
         $tpl['TITLE'] = javascript('open_window', $vars);
         $tpl['OPENINGS'] = sprintf(dgettext('signup', 'Total openings: %s'), $this->openings);
         $left = $this->openings - $this->_filled;
@@ -249,7 +249,7 @@ class Signup_Slot {
         return $tpl;
     }
 
-    function moveUp()
+    public function moveUp()
     {
         $db = new PHPWS_DB('signup_slots');
         $db->addWhere('sheet_id', $this->sheet_id);
@@ -270,7 +270,7 @@ class Signup_Slot {
         }
     }
 
-    function moveDown()
+    public function moveDown()
     {
         $db = new PHPWS_DB('signup_slots');
         $db->addWhere('sheet_id', $this->sheet_id);
@@ -291,7 +291,7 @@ class Signup_Slot {
         }
     }
 
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('signup_slots');
         $db->addWhere('id', $this->id);
@@ -305,7 +305,7 @@ class Signup_Slot {
         return true;
     }
 
-    function currentOpenings()
+    public function currentOpenings()
     {
         $db = new PHPWS_DB('signup_peeps');
         $db->addWhere('slot_id', $this->id);
@@ -319,6 +319,6 @@ class Signup_Slot {
             return $this->openings - $applicants;
         }
     }
-   
+
 }
 ?>

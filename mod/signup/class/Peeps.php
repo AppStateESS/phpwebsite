@@ -5,22 +5,22 @@
  */
 
 class Signup_Peep {
-    var $id           = 0;
-    var $sheet_id     = 0;
-    var $slot_id      = 0;
-    var $first_name   = null;
-    var $last_name    = null;
-    var $email        = null;
-    var $phone        = null;
-    var $organization = null;
-    var $hashcheck    = null;
-    var $timeout      = 0;
-    var $registered   = 0;
+    public $id           = 0;
+    public $sheet_id     = 0;
+    public $slot_id      = 0;
+    public $first_name   = null;
+    public $last_name    = null;
+    public $email        = null;
+    public $phone        = null;
+    public $organization = null;
+    public $hashcheck    = null;
+    public $timeout      = 0;
+    public $registered   = 0;
 
-    var $_error       = null;
+    public $_error       = null;
 
 
-    function Signup_Peep($id=0)
+    public function __construct($id=0)
     {
         if (!$id) {
             return;
@@ -30,13 +30,13 @@ class Signup_Peep {
         $this->init();
     }
 
-    function clean($text)
+    public function clean($text)
     {
         return preg_replace('/[^\w\'\s\-\.]/', '', strip_tags(trim($text)));
     }
 
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('signup_peeps');
         $result = $db->loadObject($this);
@@ -47,52 +47,52 @@ class Signup_Peep {
         }
     }
 
-    function getEmail()
+    public function getEmail()
     {
         return sprintf('<a href="mailto:%s">%s</a>', $this->email, $this->email);
     }
 
-    function getPhone()
+    public function getPhone()
     {
         return $this->phone;
     }
 
 
-    function setFirstName($first_name)
+    public function setFirstName($first_name)
     {
         $this->first_name = $this->clean($first_name);
     }
 
-    function setLastName($last_name)
+    public function setLastName($last_name)
     {
         $this->last_name = $this->clean($last_name);
     }
 
-    function setPhone($phone)
+    public function setPhone($phone)
     {
         $this->phone = preg_replace('/[^\w\-#\s\.]/', '', $phone);
 
     }
 
-    function setOrganization($organization)
+    public function setOrganization($organization)
     {
         $this->organization = $this->clean($organization);
     }
 
-    function save()
+    public function save()
     {
         $db = new PHPWS_DB('signup_peeps');
         return $db->saveObject($this);
     }
 
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('signup_peeps');
         $db->addWhere('id', $this->id);
         $db->delete();
     }
 
-    function rowtags()
+    public function rowtags()
     {
         $tpl['PHONE'] = $this->getPhone();
         $tpl['EMAIL'] = $this->getEmail();

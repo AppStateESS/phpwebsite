@@ -12,17 +12,17 @@ if (!defined('SIGNUP_WINDOW')) {
 }
 
 class Signup {
-    var $forms   = null;
-    var $panel   = null;
-    var $title   = null;
-    var $message = null;
-    var $content = null;
-    var $sheet   = null;
-    var $slot    = null;
-    var $peep    = null;
-    var $email   = null;
+    public $forms   = null;
+    public $panel   = null;
+    public $title   = null;
+    public $message = null;
+    public $content = null;
+    public $sheet   = null;
+    public $slot    = null;
+    public $peep    = null;
+    public $email   = null;
 
-    function adminMenu()
+    public function adminMenu()
     {
         if (!Current_User::allow('signup')) {
             Current_User::disallow();
@@ -55,7 +55,7 @@ class Signup {
             $this->message = dgettext('signup', 'Signup sheet deleted.');
             $this->loadForm('list');
             break;
-            
+
         case 'edit_sheet':
             $this->loadForm('edit_sheet');
             break;
@@ -95,7 +95,7 @@ class Signup {
             $this->loadSheet();
             $this->loadForm('email_applicants');
             break;
-            
+
         case 'post_email':
             if (!Current_User::authorized('signup')) {
                 Current_User::disallow();
@@ -124,7 +124,7 @@ class Signup {
             }
             $this->loadSheet();
             $this->csvExport();
-            exit(); 
+            exit();
             break;
 
         case 'send_email':
@@ -280,7 +280,7 @@ class Signup {
 
     }
 
-    function resetSlots($mode)
+    public function resetSlots($mode)
     {
         $db = new PHPWS_DB('signup_slots');
         $db->addWhere('sheet_id', $this->sheet->id);
@@ -310,27 +310,27 @@ class Signup {
         return true;
     }
 
-    function sendMessage()
+    public function sendMessage()
     {
         PHPWS_Core::reroute('index.php?module=signup&amp;uop=message');
     }
 
-    function forwardMessage($message, $title=null)
+    public function forwardMessage($message, $title=null)
     {
         $_SESSION['SU_Message']['message'] = $message;
         if ($title) {
             $_SESSION['SU_Message']['title'] = $title;
         }
     }
-    
-    function loadEmail()
+
+    public function loadEmail()
     {
         $this->email['from'] = null;
         $this->email['subject'] = null;
         $this->email['message'] = null;
     }
 
-    function postEmail()
+    public function postEmail()
     {
         if (!PHPWS_Text::isValidInput($_POST['from'], 'email')) {
             $errors[] = dgettext('signup', 'Invalid reply address.');
@@ -362,7 +362,7 @@ class Signup {
     }
 
 
-    function loadMessage()
+    public function loadMessage()
     {
         if (isset($_SESSION['SU_Message'])) {
             $this->message = $_SESSION['SU_Message']['message'];
@@ -373,7 +373,7 @@ class Signup {
         }
     }
 
-    function loadForm($type)
+    public function loadForm($type)
     {
         PHPWS_Core::initModClass('signup', 'Forms.php');
         $this->forms = new Signup_Forms;
@@ -381,7 +381,7 @@ class Signup {
         $this->forms->get($type);
     }
 
-    function loadPeep($id=0)
+    public function loadPeep($id=0)
     {
         PHPWS_Core::initModClass('signup', 'Peeps.php');
         if ($id) {
@@ -408,14 +408,14 @@ class Signup {
                 $this->peep->slot_id = $this->slot->id;
             }
         }
-        
+
         // Sheet construction will be done by the loadSlot
         if (!$this->peep->sheet_id) {
             $this->peep->sheet_id = $this->sheet->id;
         }
     }
 
-    function loadSheet($id=0)
+    public function loadSheet($id=0)
     {
         PHPWS_Core::initModClass('signup', 'Sheet.php');
         if ($id) {
@@ -427,7 +427,7 @@ class Signup {
         }
     }
 
-    function loadSlot($id=0)
+    public function loadSlot($id=0)
     {
         PHPWS_Core::initModClass('signup', 'Slots.php');
         if ($id) {
@@ -449,7 +449,7 @@ class Signup {
 
     }
 
-    function userMenu($action=null)
+    public function userMenu($action=null)
     {
         $javascript = false;
         if (empty($action)) {
@@ -491,7 +491,7 @@ class Signup {
             $this->confirmPeep();
             $this->purgeOverdue();
             break;
-            
+
         }
 
         $tpl['TITLE']   = $this->title;
@@ -506,7 +506,7 @@ class Signup {
 
     }
 
-    function saveUnregistered()
+    public function saveUnregistered()
     {
         $peep = & $this->peep;
         $slot = & $this->slot;
@@ -544,7 +544,7 @@ class Signup {
             $this->message = dgettext('signup', 'Sorry, the slot you chose is no longer available.');
             return false;
         }
-        
+
         $peep->registered = 0;
         $peep->hashcheck = md5(rand());
         $peep->timeout = mktime() + SIGNUP_WINDOW;
@@ -566,7 +566,7 @@ class Signup {
         }
     }
 
-    function emailRegistration()
+    public function emailRegistration()
     {
         $peep  = & $this->peep;
         $sheet = & $this->sheet;
@@ -578,7 +578,7 @@ class Signup {
         if (preg_match('@["\'\.]@', $full_name)) {
             $name = str_replace('"', "'", $peep->first_name . ' ' . $peep->last_name);
             $send_to = sprintf('"%s" <%s>', $name, $peep->email);
-        } else { 
+        } else {
             $send_to = sprintf('%s %s <%s>', $peep->first_name, $peep->last_name, $peep->email);
         }
 
@@ -591,7 +591,7 @@ class Signup {
         }
 
         $site_title = Layout::getPageTitle(true);
-        $link = PHPWS_Core::getHomeHttp() . 'index.php?module=signup&uop=confirm&h=' . 
+        $link = PHPWS_Core::getHomeHttp() . 'index.php?module=signup&uop=confirm&h=' .
             $peep->hashcheck . '&p=' . $peep->id;
 
         $message[] = sprintf(dgettext('signup', 'Greetings from %s,'), $site_title);
@@ -603,9 +603,9 @@ class Signup {
         $message[] = $link;
         $message[] = '';
         $message[] = dgettext('signup', 'You have one hour to confirm your application.');
-        
+
         $mail = & new PHPWS_Mail;
-        
+
         $mail->addSendTo($send_to);
         $mail->setSubject($subject);
         $mail->setFrom($from);
@@ -617,7 +617,7 @@ class Signup {
     /**
      * Sends everyone (limited by search) in a specific sheet an email
      */
-    function sendEmail()
+    public function sendEmail()
     {
         PHPWS_Core::initCoreClass('Mail.php');
 
@@ -691,7 +691,7 @@ class Signup {
     }
 
 
-    function loadPanel()
+    public function loadPanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('signup-panel');
@@ -706,7 +706,7 @@ class Signup {
         $this->panel->quickSetTabs($tags);
     }
 
-    function postPeep()
+    public function postPeep()
     {
         $this->loadPeep();
         $this->peep->setFirstName($_POST['first_name']);
@@ -727,7 +727,7 @@ class Signup {
         }
 
         $this->peep->setPhone($_POST['phone']);
-        
+
         if (empty($this->peep->phone)) {
             $errors[] = dgettext('signup', 'Please enter a contact phone number.');
         }
@@ -752,7 +752,7 @@ class Signup {
 
     }
 
-    function postSlot()
+    public function postSlot()
     {
         $this->loadSlot();
         $this->slot->setTitle($_POST['title']);
@@ -793,7 +793,7 @@ class Signup {
         }
     }
 
-    function postSheet()
+    public function postSheet()
     {
         if (empty($_POST['title'])) {
             $errors[] = dgettext('signup', 'You must give this signup sheet a title.');
@@ -848,7 +848,7 @@ class Signup {
         }
     }
 
-    function confirmPeep()
+    public function confirmPeep()
     {
         if (!isset($_REQUEST['h']) || !isset($_REQUEST['p'])) {
             return false;
@@ -901,10 +901,10 @@ class Signup {
         }
     }
 
-    function slotListing()
+    public function slotListing()
     {
         $slots = $this->sheet->getAllSlots();
-        
+
         $tpl = new PHPWS_Template('signup');
         $tpl->setFile('report.tpl');
 
@@ -944,7 +944,7 @@ class Signup {
         exit();
     }
 
-    function csvExport()
+    public function csvExport()
     {
         PHPWS_Core::initModClass('signup', 'Peeps.php');
 
@@ -973,7 +973,7 @@ class Signup {
         exit();
     }
 
-    function printApplicants()
+    public function printApplicants()
     {
         PHPWS_Core::initModClass('signup', 'Peeps.php');
 
@@ -1019,15 +1019,15 @@ class Signup {
     }
 
 
-    function purgeOverdue()
+    public function purgeOverdue()
     {
         $db = new PHPWS_DB('signup_peeps');
         $db->addWhere('registered', 0);
         $db->addWhere('timeout', mktime(), '<');
         PHPWS_Error::logIfError($db->delete());
     }
-    
-    function movePeep()
+
+    public function movePeep()
     {
         $this->loadSlot($_POST['mv_slot']);
         $current_openings = $this->slot->currentOpenings();
@@ -1036,10 +1036,10 @@ class Signup {
         } else {
             $this->peep->slot_id = $this->slot->id;
             return $this->peep->save();
-        } 
+        }
     }
 
-    function deleteSlot()
+    public function deleteSlot()
     {
         $openings = $this->slot->currentOpenings();
         if ($openings == $this->slot->openings) {
@@ -1053,7 +1053,7 @@ class Signup {
         }
         $this->content = PHPWS_Text::secureLink(dgettext('signup', 'Return to slot page'), 'signup',
                                                 array('sheet_id'=>$this->sheet->id, 'aop'=>'edit_slots'));
-        
+
     }
 }
 

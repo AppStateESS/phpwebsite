@@ -5,8 +5,9 @@
    */
 
 class Signup_Forms {
-    var $signup = null;
-    function get($type)
+    public $signup = null;
+
+    public function get($type)
     {
         switch ($type) {
         case 'new':
@@ -62,7 +63,7 @@ class Signup_Forms {
 
     }
 
-    function emailApplicants()
+    public function emailApplicants()
     {
         $email = & $this->signup->email;
 
@@ -96,7 +97,7 @@ class Signup_Forms {
     }
 
 
-    function editPeep()
+    public function editPeep()
     {
         $peep = & $this->signup->peep;
 
@@ -130,17 +131,17 @@ class Signup_Forms {
 
         $form->addText('organization', $peep->organization);
         $form->setLabel('organization', dgettext('signup', 'Organization'));
-        
+
         $tpl = $form->getTemplate();
 
         $tpl['CLOSE'] = sprintf('<input type="button" value="%s" />', dgettext('signup', 'Close'));
         $tpl['CLOSE'] = javascript('close_refresh', array('use_link'=>1));
-            
+
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_peep.tpl');
     }
 
 
-    function editSlotPopup()
+    public function editSlotPopup()
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'signup');
@@ -168,12 +169,12 @@ class Signup_Forms {
         javascript('close_refresh', array('use_link'=>1));
         $tpl['CLEAR'] = sprintf('<input type="button" value="%s" onclick="closeWindow(); return false" />',
                                 dgettext('signup', 'Close'));
-        
+
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_slot.tpl');
     }
 
 
-    function editPeepPopup()
+    public function editPeepPopup()
     {
         $slot = & $this->signup->slot;
         $slot->loadPeeps();
@@ -186,7 +187,7 @@ class Signup_Forms {
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'peep_pop.tpl');
     }
 
-    function editSlots()
+    public function editSlots()
     {
         $this->signup->title = sprintf(dgettext('signup', 'Slot setup for %s'), $this->signup->sheet->title);
         $form = new PHPWS_Form('seach_users');
@@ -231,7 +232,7 @@ class Signup_Forms {
     }
 
 
-    function editSheet()
+    public function editSheet()
     {
         $form = new PHPWS_Form('signup_sheet');
         $sheet = & $this->signup->sheet;
@@ -286,7 +287,7 @@ class Signup_Forms {
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_sheet.tpl');
     }
 
-    function report()
+    public function report()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('signup', 'Peeps.php');
@@ -352,7 +353,7 @@ class Signup_Forms {
         $this->signup->content = $pager->get();
     }
 
-    function listSignup()
+    public function listSignup()
     {
         $ptags['TITLE_HEADER'] = dgettext('signup', 'Title');
 
@@ -364,12 +365,12 @@ class Signup_Forms {
         $pager->addRowTags('rowTag');
         $pager->addPageTags($ptags);
         Key::restrictEdit($pager->db, 'signup', 'edit_sheet');
-        
+
         $this->signup->content = $pager->get();
         $this->signup->title = dgettext('signup', 'Signup Sheets');
     }
 
-    function userSignup()
+    public function userSignup()
     {
         if (!$this->signup->sheet->id) {
             PHPWS_Core::errorPage('404');
@@ -444,7 +445,7 @@ class Signup_Forms {
             $form->setLabel('organization', dgettext('signup', 'Organization'));
 
             $form->addSubmit(dgettext('signup', 'Submit'));
-            
+
             $tpl = $form->getTemplate();
         }
 

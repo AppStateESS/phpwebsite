@@ -8,24 +8,24 @@
 PHPWS_Core::requireConfig('rss');
 
 class RSS_Channel {
-    var $id              = 0;
-    var $module          = NULL;
-    var $title           = NULL;
-    //    var $link            = NULL;
-    var $description     = NULL;
-    var $pub_date        = 0;
-    //    var $category        = NULL;
-    var $ttl             = 0;
-    var $image_id        = 0;
-    //    var $text_input      = NULL;
-    var $active          = 1;
+    public $id              = 0;
+    public $module          = NULL;
+    public $title           = NULL;
+    //    public $link            = NULL;
+    public $description     = NULL;
+    public $pub_date        = 0;
+    //    public $category        = NULL;
+    public $ttl             = 0;
+    public $image_id        = 0;
+    //    public $text_input      = NULL;
+    public $active          = 1;
 
-    var $_last_build_date = 0;
-    var $_feeds          = NULL;
-    var $_error          = NULL;
+    public $_last_build_date = 0;
+    public $_feeds          = NULL;
+    public $_error          = NULL;
 
 
-    function RSS_Channel($id=NULL)
+    public function RSS_Channel($id=NULL)
     {
         $this->_last_build_date = gmstrftime('%a, %d %b %Y %R GMT', mktime());
         if (!$id) {
@@ -36,7 +36,7 @@ class RSS_Channel {
         $this->init();
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('rss_channel');
         $result = $db->loadObject($this);
@@ -47,7 +47,7 @@ class RSS_Channel {
         }
     }
 
-    function post()
+    public function post()
     {
         if (isset($_POST['title'])) {
             $this->title = $_POST['title'];
@@ -67,7 +67,7 @@ class RSS_Channel {
         }
     }
 
-    function getTitle($linkable=true)
+    public function getTitle($linkable=true)
     {
         if ($linkable) {
             $vars['mod_title'] = $this->module;
@@ -77,13 +77,13 @@ class RSS_Channel {
         }
     }
 
-    function save()
+    public function save()
     {
         $db = new PHPWS_DB('rss_channel');
         return $db->saveObject($this);
     }
 
-    function getActionLinks()
+    public function getActionLinks()
     {
         $vars['channel_id'] = $this->id;
         $vars['command'] = 'edit_channel';
@@ -92,7 +92,7 @@ class RSS_Channel {
         return $links;
     }
 
-    function getAddress($include_http=TRUE)
+    public function getAddress($include_http=TRUE)
     {
         if ($include_http) {
             if (MOD_REWRITE_ENABLED) {
@@ -109,14 +109,14 @@ class RSS_Channel {
         }
     }
 
-    function loadFeeds()
+    public function loadFeeds()
     {
         $db = new PHPWS_DB('phpws_key');
         $db->addWhere('module', $this->module);
         $db->addWhere('restricted', 0);
         $db->addWhere('show_after', mktime(), '<');
         $db->addWhere('hide_after', mktime(), '>');
-        
+
         $db->addOrder('create_date desc');
         // rss limit is 15
         $db->setLimit('15');
@@ -137,7 +137,7 @@ class RSS_Channel {
     /**
      * Returns a RSS feed. Cached result is returned if exists.
      */
-    function view()
+    public function view()
     {
         $cache_key = $this->module . '_cache_key';
         $content = PHPWS_Cache::get($cache_key, RSS_CACHE_TIMEOUT);

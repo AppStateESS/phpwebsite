@@ -8,18 +8,18 @@
  */
 
 class Search_Stats {
-    var $keyword        = NULL;
-    var $query_success  = 0;
-    var $query_failure  = 0;
-    var $mixed_query    = 0;
-    var $total_query    = 0;
-    var $highest_result = 0;
-    var $last_called    = 0;
-    var $multiple_word  = 0;
-    var $exact_success  = 0;
+    public $keyword        = NULL;
+    public $query_success  = 0;
+    public $query_failure  = 0;
+    public $mixed_query    = 0;
+    public $total_query    = 0;
+    public $highest_result = 0;
+    public $last_called    = 0;
+    public $multiple_word  = 0;
+    public $exact_success  = 0;
 
 
-    function record($words, $found, $exact_match) {
+    public function record($words, $found, $exact_match) {
         if (empty($words)) {
             return FALSE;
         }
@@ -72,7 +72,7 @@ class Search_Stats {
         }
     }
 
-    function save($insert=TRUE)
+    public function save($insert=TRUE)
     {
         $db = new PHPWS_DB('search_stats');
         $this->keyword = trim($this->keyword);
@@ -83,18 +83,18 @@ class Search_Stats {
         return $db->saveObject($this);
     }
 
-    function getLastCalled()
+    public function getLastCalled()
     {
         return strftime('%c', $this->last_called);
     }
 
-    function getTplTags()
+    public function getTplTags()
     {
         $tpl['LAST_CALLED']  = $this->getLastCalled();
         $tpl['CHECKBOX'] = sprintf('<input type="checkbox" name="keyword[]" value="%s" />', $this->keyword);
         return $tpl;
     }
-    
+
 }
 
 

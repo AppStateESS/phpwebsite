@@ -9,20 +9,20 @@
 PHPWS_Core::requireInc('webpage', 'error_defines.php');
 
 class Webpage_Page {
-    var $id          = 0;
+    public $id          = 0;
     // Id of volume page belongs to
-    var $volume_id   = 0;
-    var $title       = null;
-    var $content     = null;
-    var $page_number = null;
-    var $template    = null;
-    var $approved    = 0;
-    var $image_id    = 0;
-    var $_error      = null;
-    var $_volume     = null;
-    var $_volume_ver = 0;
+    public $volume_id   = 0;
+    public $title       = null;
+    public $content     = null;
+    public $page_number = null;
+    public $template    = null;
+    public $approved    = 0;
+    public $image_id    = 0;
+    public $_error      = null;
+    public $_volume     = null;
+    public $_volume_ver = 0;
 
-    function Webpage_Page($id=null)
+    public function __construct($id=null)
     {
         if (empty($id)) {
             return;
@@ -32,7 +32,7 @@ class Webpage_Page {
         $this->init();
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('webpage_page');
         $result = $db->loadObject($this);
@@ -47,12 +47,12 @@ class Webpage_Page {
 
     }
 
-    function loadVolume()
+    public function loadVolume()
     {
         $this->_volume = new Webpage_Volume($this->volume_id);
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = strip_tags($title);
     }
@@ -60,18 +60,18 @@ class Webpage_Page {
     /**
      * Returns linked title
      */
-    function getTitle()
+    public function getTitle()
     {
         return $this->title;
     }
 
-    function setContent($content)
+    public function setContent($content)
     {
         $this->content = PHPWS_Text::parseInput($content);
     }
 
 
-    function getTemplateDirectory()
+    public function getTemplateDirectory()
     {
         if (FORCE_MOD_TEMPLATES) {
             $directory = PHPWS_SOURCE_DIR . 'mod/webpage/templates/page/';
@@ -81,12 +81,12 @@ class Webpage_Page {
         return $directory;
     }
 
-    function getContent()
+    public function getContent()
     {
         return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content));
     }
 
-    function getTemplateList()
+    public function getTemplateList()
     {
         $directory = $this->getTemplateDirectory();
         $files = @scandir($directory);
@@ -108,14 +108,14 @@ class Webpage_Page {
         }
     }
 
-    function checkTemplate()
+    public function checkTemplate()
     {
         $directory = $this->getTemplateDirectory() . $this->template;
         return is_file($directory);
     }
 
 
-    function post()
+    public function post()
     {
         if (empty($_POST['volume_id'])) {
             return PHPWS_Error::get('WP_MISSING_VOLUME_ID', 'webpage', 'Webpage_Page::post');
@@ -158,14 +158,14 @@ class Webpage_Page {
         }
     }
 
-    function viewBasic()
+    public function viewBasic()
     {
         $template['PAGE_TITLE'] = $this->getTitle();
         $template['CONTENT'] = $this->getContent();
         return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);
     }
 
-    function getImage()
+    public function getImage()
     {
         if (!$this->image_id) {
             return null;
@@ -175,7 +175,7 @@ class Webpage_Page {
         }
     }
 
-    function getTplTags($admin=false, $include_header=true, $version=0)
+    public function getTplTags($admin=false, $include_header=true, $version=0)
     {
         $template['TITLE'] = $this->getTitle();
         $template['IMAGE'] = $this->getImage();
@@ -190,7 +190,7 @@ class Webpage_Page {
             }
 
             $vars['wp_admin'] = 'edit_page';
-            
+
             $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit page'), 'webpage', $vars);
 
             if ($admin) {
@@ -210,14 +210,14 @@ class Webpage_Page {
         return $template;
     }
 
-    function moreAdminLinks(&$links)
+    public function moreAdminLinks(&$links)
     {
         if (Current_User::allow('webpage', 'delete_page', null, null, true)) {
             $jsvar['QUESTION'] = dgettext('webpage', 'Are you sure you want to remove this page?');
             $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=delete_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
                                         $this->id, $this->volume_id, Current_User::getAuthKey());
             $jsvar['LINK'] = ('Delete');
-                    
+
             $links[] = javascript('confirm', $jsvar);
         }
 
@@ -231,7 +231,7 @@ class Webpage_Page {
                                             $this->id, $this->volume_id, Current_User::getAuthKey());
                 $jsvar['LINK'] = ('Join next');
                 $links[] = javascript('confirm', $jsvar);
-                        
+
                 $jsvar['QUESTION'] = dgettext('webpage', 'Are you sure you want to join ALL the pages into just one page? Warning: You will lose all page backups!');
                 $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_all_pages&amp;volume_id=%s&amp;authkey=%s',
                                             $this->volume_id, Current_User::getAuthKey());
@@ -245,7 +245,7 @@ class Webpage_Page {
             } elseif (count($this->_volume->_pages) > 1) {
                 $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move to end'), 'webpage', $vars);
             }
-            
+
             $total_pages = $this->_volume->getTotalPages();
             $vars['wp_admin'] = 'page_down';
             if ($this->page_number < $total_pages) {
@@ -256,7 +256,7 @@ class Webpage_Page {
         }
     }
 
-    function moveUp()
+    public function moveUp()
     {
         $db = new PHPWS_DB('webpage_page');
         $db->addWhere('volume_id', $this->volume_id);
@@ -274,7 +274,7 @@ class Webpage_Page {
         $this->save();
     }
 
-    function moveDown()
+    public function moveDown()
     {
         $db = new PHPWS_DB('webpage_page');
         $db->addWhere('volume_id', $this->volume_id);
@@ -292,7 +292,7 @@ class Webpage_Page {
         $this->save();
     }
 
-    function getPageLink($verbose=false)
+    public function getPageLink($verbose=false)
     {
         $id = $this->_volume->id;
         $page = (int)$this->page_number;
@@ -306,7 +306,7 @@ class Webpage_Page {
         return PHPWS_Text::rewriteLink($address, 'webpage', $id, $page);
     }
 
-    function getPageUrl()
+    public function getPageUrl()
     {
         if (MOD_REWRITE_ENABLED) {
             return sprintf('webpage/%s/%s', $this->volume_id, $this->page_number);
@@ -315,18 +315,18 @@ class Webpage_Page {
         }
     }
 
-    function view($admin=false, $version_id=0)
+    public function view($admin=false, $version_id=0)
     {
         $template = $this->getTplTags($admin, true, $version_id);
 
         if (!is_file($this->getTemplateDirectory() . $this->template)) {
             return implode('<br />', $template);
         }
-       
+
         $this->_volume->flagKey();
-        
+
         if ( Current_User::isLogged() &&
-             ( Current_User::isUser($this->_volume->create_user_id) || 
+             ( Current_User::isUser($this->_volume->create_user_id) ||
                Current_User::allow('webpage', 'edit_page', $this->volume_id, 'volume') ) ) {
             $vars = array('wp_admin'  => 'edit_page',
                           'page_id'   => $this->id,
@@ -334,20 +334,20 @@ class Webpage_Page {
             if ($version_id) {
                 $vars['version_id'] = $version_id;
             }
-            
+
             $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit web page'), 'webpage', $vars);
-            
+
             $vars['wp_admin'] = 'edit_header';
             $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit page header'), 'webpage', $vars);
             $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'View page list'), 'webpage', array('tab' => 'list'));
-            
+
             MiniAdmin::add('webpage', $links);
         }
 
         return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);
     }
 
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('webpage_page');
         $db->addWhere('id', $this->id);
@@ -359,9 +359,9 @@ class Webpage_Page {
         }
 
         $db->reset();
-        $sql = sprintf('UPDATE webpage_page 
-                        SET page_number = page_number - 1 
-                        WHERE volume_id = %s 
+        $sql = sprintf('UPDATE webpage_page
+                        SET page_number = page_number - 1
+                        WHERE volume_id = %s
                         AND page_number > %s',
                        $this->volume_id, $this->page_number);
 
@@ -373,9 +373,9 @@ class Webpage_Page {
         }
     }
 
-    function save()
+    public function save()
     {
-        PHPWS_Core::initModClass('version', 'Version.php');        
+        PHPWS_Core::initModClass('version', 'Version.php');
         if (empty($this->volume_id)) {
             return PHPWS_Error::get('WP_MISSING_VOLUME_ID', 'webpage', 'Webpage_Page::save');
         }
@@ -385,7 +385,7 @@ class Webpage_Page {
         } else {
             $volume = & $this->_volume;
         }
-        
+
         if (empty($this->content)) {
             $this->content = dgettext('webpage', 'Page is missing content.');
         }

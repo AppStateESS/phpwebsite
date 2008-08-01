@@ -13,7 +13,7 @@ class Whodis {
             if (!preg_match('/["\']/', $referrer)) {
                 if (Whodis::passFilters($referrer)) {
                     PHPWS_Core::initModClass('whodis', 'Whodis_Referrer.php');
-                    
+
                     $whodis = new Whodis_Referrer;
                     $result = $whodis->save($referrer);
                     if (PEAR::isError($result)) {
@@ -24,11 +24,11 @@ class Whodis {
         }
     }
 
-    function passFilters(&$referrer)
+    function passFilters(Whodis_Referrer $referrer)
     {
         $home_url = PHPWS_Core::getHomeHttp();
         $preg_match = str_replace('/', '\/', ($home_url));
-        
+
         if (preg_match('/^' . $preg_match . '/', $referrer)) {
             return false;
         }
@@ -89,7 +89,7 @@ class Whodis {
             Current_User::disallow();
         }
 
-        
+
         if (isset($_REQUEST['op'])) {
             switch ($_REQUEST['op']) {
             case 'purge':
@@ -180,7 +180,7 @@ class Whodis {
         $content = $pager->get();
 
         Layout::add(PHPWS_Controlpanel::display($content));
-        
+
     }
 
     function checkbox($values)

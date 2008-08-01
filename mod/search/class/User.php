@@ -2,7 +2,7 @@
 
   /**
    * User instructions
-   * 
+   *
    * @author Matthew McNaney <mcnaney at gmail dot com>
    * @version $Id$
    */
@@ -42,7 +42,7 @@ class Search_User {
         $form->addHidden('user', 'search');
         $form->addText('search', SEARCH_DEFAULT);
         $form->setLabel('search', dgettext('search', 'Search'));
-        
+
         if (PHPWS_Settings::get('search', 'show_alternates')) {
             Search_User::addAlternates($form);
         }
@@ -55,7 +55,7 @@ class Search_User {
         $mod_list = Search_User::getModList();
 
         $form->addSelect('mod_title', $mod_list);
-        
+
         $key = Key::getCurrent();
 
         if (!empty($key) && !$key->isDummy()) {
@@ -152,11 +152,11 @@ class Search_User {
         $form->addSelect('mod_title', $mod_list);
         $form->setLabel('mod_title', dgettext('search', 'Module list'));
         if (isset($_GET['mod_title'])) {
-            $form->setMatch('mod_title', $_GET['mod_title']); 
+            $form->setMatch('mod_title', $_GET['mod_title']);
         }
 
         Search_User::addAlternates($form);
-        
+
         $template = $form->getTemplate();
 
         if (isset($_GET['mod_title']) && $_GET['mod_title'] != 'all') {
@@ -186,12 +186,12 @@ class Search_User {
         Layout::add($content);
     }
 
-    function addAlternates(&$form)
+    function addAlternates(PHPWS_Form $form)
     {
         $file = PHPWS_Core::getConfigFile('search', 'alternate.php');
         if ($file) {
             include($file);
-            
+
             if (!empty($alternate_search_engine) && is_array($alternate_search_engine)) {
                 $alternate_sites['local'] = dgettext('search', 'Local');
                 foreach ($alternate_search_engine as $title=>$altSite) {

@@ -5,18 +5,18 @@
    */
 
 class Whodis_Referrer {
-    var $id      = 0;
-    var $created = 0;
-    var $updated = 0;
-    var $url     = null;
-    var $visits  = 0;
+    public $id      = 0;
+    public $created = 0;
+    public $updated = 0;
+    public $url     = null;
+    public $visits  = 0;
 
-    function setUrl($url)
+    public function setUrl($url)
     {
         $this->url = htmlentities($url, ENT_QUOTES, 'UTF-8');
     }
 
-    function getUrl()
+    public function getUrl()
     {
         if (version_compare(phpversion(), '5.0.0', '>=')) {
             return html_entity_decode($this->url, ENT_QUOTES, 'UTF-8');
@@ -25,7 +25,7 @@ class Whodis_Referrer {
         }
     }
 
-    function save($url)
+    public function save($url)
     {
         $this->setUrl($url);
         $db = new PHPWS_DB('whodis');
@@ -36,7 +36,7 @@ class Whodis_Referrer {
         if (PEAR::isError($result)) {
             return $result;
         }
-        
+
         if ($result) {
             extract($result);
             $this->visits = $visits + 1;
@@ -51,7 +51,7 @@ class Whodis_Referrer {
         return $db->saveObject($this);
     }
 
-    function getTags()
+    public function getTags()
     {
         $url = $this->getUrl();
         $tags['CHECKBOX'] = sprintf('<input type="checkbox" name="referrer[]" value="%s" />',

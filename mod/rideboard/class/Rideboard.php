@@ -7,13 +7,13 @@
 PHPWS_Core::requireInc('rideboard', 'defines.php');
 
 class Rideboard {
-    var $ride     = null;
-    var $panel    = null;
-    var $content  = null;
-    var $title    = null;
-    var $message  = array();
+    public $ride     = null;
+    public $panel    = null;
+    public $content  = null;
+    public $title    = null;
+    public $message  = array();
 
-    function admin()
+    public function admin()
     {
         if (!Current_User::allow('rideboard')) {
             Current_User::disallow();
@@ -63,7 +63,7 @@ class Rideboard {
             $this->purgeRides();
             PHPWS_Core::reroute(PHPWS_Text::linkAddress('rideboard', array('aop'=>'settings')));
             break;
-           
+
 
         case 'post_settings':
             if (!Current_User::authorized('rideboard')) {
@@ -100,7 +100,7 @@ class Rideboard {
         }
     }
 
-    function searchSession()
+    public function searchSession()
     {
         $_SESSION['rb_search'] = array();
 
@@ -119,7 +119,7 @@ class Rideboard {
         $_SESSION['rb_search']['search_d_location']  = (int)$_POST['search_d_location'];
     }
 
-    function user()
+    public function user()
     {
         Current_User::requireLogin();
 
@@ -168,7 +168,7 @@ class Rideboard {
         case 'delete_ride':
             $this->loadRide();
             if ($this->ride->id) {
-                if ( Current_User::authorized('rideboard') || 
+                if ( Current_User::authorized('rideboard') ||
                      (Current_User::verifyAuthKey() && Current_User::getId() == $this->ride->user_id) ) {
                     $this->ride->delete();
                 }
@@ -196,7 +196,7 @@ class Rideboard {
     }
 
 
-    function loadAdminPanel()
+    public function loadAdminPanel()
     {
         $link = PHPWS_Text::linkAddress('rideboard', array('aop'=>'main'));;
         $tabs['locations']      = array ('title' => dgettext('rideboard', 'Locations'),
@@ -204,17 +204,17 @@ class Rideboard {
 
         $tabs['settings']      = array ('title' => dgettext('rideboard', 'Settings'),
                                         'link'  => $link);
-       
+
         $this->panel = new PHPWS_Panel('rideboard-admin');
         $this->panel->quickSetTabs($tabs);
     }
 
-    function getMessage()
+    public function getMessage()
     {
         return implode('<br />', $this->message);
     }
 
-    function locationForm($id=0)
+    public function locationForm($id=0)
     {
         $form = new PHPWS_Form('location');
         $form->addHidden('module', 'rideboard');
@@ -226,7 +226,7 @@ class Rideboard {
             $db->addColumn('city_state');
             $location = $db->select('one');
             if (!PHPWS_Error::logIfError($location) && !empty($location)) {
-                $form->addHidden('lid', $id);                
+                $form->addHidden('lid', $id);
                 $form->setValue('city_state', $location);
             }
             // edit uses the javascript popup
@@ -241,7 +241,7 @@ class Rideboard {
         return PHPWS_Template::process($tpl, 'rideboard', 'edit_location.tpl');
     }
 
-    function locations()
+    public function locations()
     {
         $this->title = dgettext('rideboard', 'Edit locations');
         PHPWS_Core::initCoreClass('DBPager.php');
@@ -259,13 +259,13 @@ class Rideboard {
         $this->content = $pager->get();
     }
 
-    function editLocation()
+    public function editLocation()
     {
         $this->title = dgettext('rideboard', 'Edit location');
         $this->content = $this->locationForm($_GET['lid']);
     }
 
-    function postLocation()
+    public function postLocation()
     {
         if(empty($_POST['city_state'])) {
             return;
@@ -281,7 +281,7 @@ class Rideboard {
         }
     }
 
-    function getLocations()
+    public function getLocations()
     {
         $db = new PHPWS_DB('rb_location');
         $db->addColumn('id');
@@ -292,7 +292,7 @@ class Rideboard {
         return $db->select('col');
     }
 
-    function locationRow($value)
+    public function locationRow($value)
     {
         $js['address'] = PHPWS_Text::linkAddress('rideboard', array('aop'=>'edit_location',
                                                                     'lid'=>$value['id']),
@@ -305,7 +305,7 @@ class Rideboard {
         return $tpl;
     }
 
-    function settings()
+    public function settings()
     {
         $form = new PHPWS_Form('settings');
         $form->addHidden('module', 'rideboard');
@@ -327,7 +327,7 @@ class Rideboard {
         $form->setLabel('miles_or_kilometers', array(0=>dgettext('rideboard', 'Miles'),
                                                      1=>dgettext('rideboard', 'Kilometers')));
         $form->setMatch('miles_or_kilometers', PHPWS_Settings::get('rideboard', 'miles_or_kilometers'));
-                       
+
         $tpl = $form->getTemplate();
 
         $db = new PHPWS_DB('rb_ride');
@@ -353,7 +353,7 @@ class Rideboard {
         $this->title = dgettext('rideboard', 'Rideboard Settings');
     }
 
-    function loadRide()
+    public function loadRide()
     {
         PHPWS_Core::initModClass('rideboard', 'Ride.php');
 
@@ -364,7 +364,7 @@ class Rideboard {
         }
     }
 
-    function userMain()
+    public function userMain()
     {
         $ride = & $this->ride;
 
@@ -421,7 +421,7 @@ class Rideboard {
         $this->content = PHPWS_Template::process($tpl, 'rideboard', 'ride_form.tpl');
     }
 
-    function postForm(&$form, $locations)
+    public function postForm(&$form, $locations)
     {
         $ride = & $this->ride;
         $form->addSelect('ride_type', array(RB_RIDER  => dgettext('rideboard', 'Looking for a ride'),
@@ -459,7 +459,7 @@ class Rideboard {
         $form->addSubmit('post_ride', dgettext('rideboard', 'Post ride'));
     }
 
-    function searchForm(&$form, $locations)
+    public function searchForm(&$form, $locations)
     {
         $locations[0] = dgettext('rideboard', '- Do not limit -');
         $form->addSelect('search_s_location', $locations);
@@ -484,7 +484,7 @@ class Rideboard {
                                                      RB_EITHER => dgettext('rideboard', 'Does not matter')));
         $form->setLabel('search_gender_pref', dgettext('rideboard', 'Gender preference'));
         $form->setMatch('search_gender_pref', RB_EITHER);
-        
+
         $form->addSelect('search_smoking', array(RB_NONSMOKER  => dgettext('rideboard', 'Non-smokers only'),
                                                  RB_SMOKER     => dgettext('rideboard', 'Prefer smokers'),
                                                  RB_EITHER     => dgettext('rideboard', 'Does not matter')));
@@ -496,7 +496,7 @@ class Rideboard {
         $form->addTplTag('NOTE',  dgettext('rideboard', 'uncheck to disregard'));
     }
 
-    function postRide()
+    public function postRide()
     {
         if (PHPWS_Core::isPosted()) {
             return false;
@@ -513,7 +513,7 @@ class Rideboard {
         $this->ride->s_location = (int)$_POST['s_location'];
         $this->ride->d_location = (int)$_POST['d_location'];
 
-        if ($this->ride->s_location && 
+        if ($this->ride->s_location &&
             $this->ride->s_location == $this->ride->d_location) {
             $errors[] = dgettext('rideboard', 'Your leaving and arriving locations must be different.');
         }
@@ -545,7 +545,7 @@ class Rideboard {
         }
     }
 
-    function postLimit()
+    public function postLimit()
     {
         $db = new PHPWS_DB('rb_ride');
         $db->addWhere('user_id', Current_User::getId());
@@ -557,7 +557,7 @@ class Rideboard {
         return ($result >= PHPWS_Settings::get('rideboard', 'post_limit'));
     }
 
-    function getRidesDB()
+    public function getRidesDB()
     {
         $db = new PHPWS_DB('rb_ride');
         $db->addTable('rb_location', 't1');
@@ -570,11 +570,11 @@ class Rideboard {
 
         $db->addColumn('t1.city_state', null, 'start_location');
         $db->addColumn('t2.city_state', null, 'dest_location');
-        
+
         return $db;
     }
 
-    function viewMyRides()
+    public function viewMyRides()
     {
         $this->title = dgettext('rideboard', 'View my Rides');
         $db = $this->getRidesDB();
@@ -605,7 +605,7 @@ class Rideboard {
         $this->content = PHPWS_Template::process($tpl, 'rideboard', 'my_rides.tpl');
     }
 
-    function searchRides()
+    public function searchRides()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('rideboard', 'Ride.php');
@@ -616,7 +616,7 @@ class Rideboard {
             $this->content .= '<br />' . PHPWS_Text::moduleLink(dgettext('rideboard', 'Back to search'), 'rideboard');
             return;
         }
-        
+
         $tpl['LINK'] = PHPWS_Text::moduleLink(dgettext('rideboard', 'Back to search'), 'rideboard');
         $tpl['TITLE_LABEL']     = dgettext('rideboard', 'Trip title');
         $tpl['RIDE_TYPE_LABEL'] = dgettext('rideboard', 'Driver or Rider');
@@ -655,7 +655,7 @@ class Rideboard {
         if ($use_date) {
             $search_before = $search_time - (86400 * 7);
             $search_after  = $search_time + (86400 * 7);
-            
+
             if ($search_before < mktime()) {
                 $search_before = mktime();
             }
@@ -663,7 +663,7 @@ class Rideboard {
             $pager->db->addWhere('depart_time', $search_before, '>', null, 'time');
             $pager->db->addWhere('depart_time', $search_after, '<', null, 'time');
         }
-            
+
         if ($search_ride_type != RB_EITHER) {
             $pager->db->addWhere('ride_type', $search_ride_type);
         }
@@ -680,7 +680,7 @@ class Rideboard {
         $this->content = $pager->get();
     }
 
-    function viewRide()
+    public function viewRide()
     {
         $this->loadRide();
         if (!$this->ride->id) {
@@ -691,14 +691,14 @@ class Rideboard {
         $this->title = $this->ride->title;
         $this->content = $this->ride->view();
     }
-  
-    function purgeRides()
+
+    public function purgeRides()
     {
         $db = new PHPWS_DB('rb_ride');
         $db->addWhere('depart_time', mktime(), '<');
         return !PHPWS_Error::logIfError($db->delete());
     }
-  
+
 }
 
 

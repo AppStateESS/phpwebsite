@@ -7,23 +7,23 @@
  */
 
 class RB_Ride {
-    var $id            = 0;
-    var $title         = null;
-    var $ride_type     = RB_RIDER;
-    var $user_id       = 0;
-    var $s_location    = 0;
-    var $d_location    = 0;
-    var $depart_time   = 0;
-    var $smoking       = RB_NONSMOKER;
-    var $comments      = null;
-    var $detour        = 0;
-    var $gender_pref   = RB_EITHER;
-    var $marked        = 0;
+    public $id            = 0;
+    public $title         = null;
+    public $ride_type     = RB_RIDER;
+    public $user_id       = 0;
+    public $s_location    = 0;
+    public $d_location    = 0;
+    public $depart_time   = 0;
+    public $smoking       = RB_NONSMOKER;
+    public $comments      = null;
+    public $detour        = 0;
+    public $gender_pref   = RB_EITHER;
+    public $marked        = 0;
 
-    var $start_location = null;
-    var $dest_location  = null;
+    public $start_location = null;
+    public $dest_location  = null;
 
-    function RB_Ride($id=0)
+    public function __construct($id=0)
     {
         if (!$id) {
             $this->s_location = PHPWS_Settings::get('rideboard', 'default_slocation');
@@ -44,18 +44,18 @@ class RB_Ride {
             $this->id = 0;
         }
     }
-    
-    function setTitle($title)
+
+    public function setTitle($title)
     {
         $this->title = trim(strip_tags($title));
     }
 
-    function setComments($comments)
+    public function setComments($comments)
     {
         $this->comments = trim(strip_tags($comments));
     }
 
-    function save()
+    public function save()
     {
         $db = new PHPWS_DB('rb_ride');
         if (!$this->user_id) {
@@ -65,7 +65,7 @@ class RB_Ride {
         return $db->saveObject($this);
     }
 
-    function getDepartTime()
+    public function getDepartTime()
     {
         if (mktime() > $this->depart_time) {
             return sprintf('%s (%s)', strftime('%d %b, %Y', $this->depart_time),
@@ -76,7 +76,7 @@ class RB_Ride {
     }
 
 
-    function getRideType()
+    public function getRideType()
     {
         switch ($this->ride_type) {
         case RB_RIDER:
@@ -90,7 +90,7 @@ class RB_Ride {
         }
     }
 
-    function getGenderPref()
+    public function getGenderPref()
     {
         switch ($this->gender_pref) {
         case RB_MALE:
@@ -104,7 +104,7 @@ class RB_Ride {
         }
     }
 
-    function getSmoking()
+    public function getSmoking()
     {
         switch ($this->smoking) {
         case RB_NONSMOKER:
@@ -118,7 +118,7 @@ class RB_Ride {
         }
     }
 
-    function tags($admin=true)
+    public function tags($admin=true)
     {
         $tpl['TITLE']       = & $this->title;
         $tpl['RIDE_TYPE']   = $this->getRideType();
@@ -156,19 +156,19 @@ class RB_Ride {
             $links[] = javascript('confirm', $js);
         }
 
-        $tpl['ADMIN_LINKS'] = implode(' | ', $links);        
+        $tpl['ADMIN_LINKS'] = implode(' | ', $links);
 
         return $tpl;
     }
 
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('rb_ride');
         $db->addWhere('id', $this->id);
         return !PHPWS_Error::logIfError($db->delete());
     }
 
-    function view()
+    public function view()
     {
         $tpl = $this->tags(false);
 
@@ -177,7 +177,7 @@ class RB_Ride {
         }
 
         $user = new PHPWS_User($this->user_id);
-        
+
         $tpl['EMAIL'] = sprintf('<a href="mailto:%s">%s</a>',
                                 $user->getEmail(),
                                 dgettext('rideboard', 'Email user'));

@@ -9,10 +9,6 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-if (isset($_GET['var1'])) {
-    PHPWS_Core::plugForward('id', 'page');
-}
-
 if (isset($_REQUEST['wp_user'])) {
     PHPWS_Core::initModClass('webpage', 'User.php');
     Webpage_User::main();

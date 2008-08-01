@@ -11,32 +11,32 @@ PHPWS_Core::requireConfig('webpage', 'config.php');
 PHPWS_Core::initModClass('webpage', 'Page.php');
 
 if (!defined('WP_VOLUME_DATE_FORMAT')) {
-    define('WP_VOLUME_DATE_FORMAT', '%c'); 
+    define('WP_VOLUME_DATE_FORMAT', '%c');
 }
 
 class Webpage_Volume {
-    var $id             = 0;
-    var $key_id         = 0;
-    var $title          = null;
-    var $summary        = null;
-    var $date_created   = 0;
-    var $date_updated   = 0;
-    var $create_user_id = 0;
-    var $created_user   = null;
-    var $update_user_id = 0;
-    var $updated_user   = null;
-    var $frontpage      = false;
-    var $approved       = 0;
-    var $active         = 1;
-    var $featured       = 0;
-    var $_current_page  = 1;
+    public $id             = 0;
+    public $key_id         = 0;
+    public $title          = null;
+    public $summary        = null;
+    public $date_created   = 0;
+    public $date_updated   = 0;
+    public $create_user_id = 0;
+    public $created_user   = null;
+    public $update_user_id = 0;
+    public $updated_user   = null;
+    public $frontpage      = false;
+    public $approved       = 0;
+    public $active         = 1;
+    public $featured       = 0;
+    public $_current_page  = 1;
     // array of pages indexed by order, value is id
-    var $_key           = null;
-    var $_pages         = null;
-    var $_error         = null;
-    var $_db            = null;
+    public $_key           = null;
+    public $_pages         = null;
+    public $_error         = null;
+    public $_db            = null;
 
-    function Webpage_Volume($id=null)
+    public function __construct($id=null)
     {
         if (empty($id)) {
             return;
@@ -47,7 +47,7 @@ class Webpage_Volume {
         $this->loadPages();
     }
 
-    function resetDB()
+    public function resetDB()
     {
         if (empty($this->_db)) {
             $this->_db = new PHPWS_DB('webpage_volume');
@@ -56,7 +56,7 @@ class Webpage_Volume {
         }
     }
 
-    function loadApprovalPages()
+    public function loadApprovalPages()
     {
         $this->loadPages();
         $approval = new Version_Approval('webpage', 'webpage_page', 'Webpage_Page');
@@ -74,7 +74,7 @@ class Webpage_Volume {
         }
     }
 
-    function loadPages()
+    public function loadPages()
     {
         $db = new PHPWS_DB('webpage_page');
         $db->addWhere('volume_id', $this->id);
@@ -98,7 +98,7 @@ class Webpage_Volume {
         }
     }
 
-    function init()
+    public function init()
     {
         $this->resetDB();
         $result = $this->_db->loadObject($this);
@@ -109,7 +109,7 @@ class Webpage_Volume {
     }
 
 
-    function getDateCreated($format=null)
+    public function getDateCreated($format=null)
     {
         if (empty($format)) {
             $format = WP_VOLUME_DATE_FORMAT;
@@ -118,7 +118,7 @@ class Webpage_Volume {
         return strftime($format, $this->date_created);
     }
 
-    function getDateUpdated($format=null)
+    public function getDateUpdated($format=null)
     {
         if (empty($format)) {
             $format = WP_VOLUME_DATE_FORMAT;
@@ -127,33 +127,33 @@ class Webpage_Volume {
         return strftime($format, $this->date_updated);
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = strip_tags($title);
     }
 
-    function getTitle()
+    public function getTitle()
     {
         return $this->title;
     }
 
-    function setSummary($summary)
+    public function setSummary($summary)
     {
         $this->summary = PHPWS_Text::parseInput($summary);
     }
 
 
-    function getSummary()
+    public function getSummary()
     {
         return PHPWS_Text::parseOutput($this->summary);
     }
 
-    function getTotalPages()
+    public function getTotalPages()
     {
         return count($this->_pages);
     }
 
-    function post()
+    public function post()
     {
         if (empty($_POST['title'])) {
             $errors[] = dgettext('webpage', 'Missing page title');
@@ -180,7 +180,7 @@ class Webpage_Volume {
         }
     }
 
-    function getViewLink($base=false)
+    public function getViewLink($base=false)
     {
         if ($base) {
             if (MOD_REWRITE_ENABLED) {
@@ -193,7 +193,7 @@ class Webpage_Volume {
         }
     }
 
-    function getCurrentPage()
+    public function getCurrentPage()
     {
         $page = $this->getPagebyNumber($this->_current_page);
         // Necessary for php 4
@@ -201,13 +201,13 @@ class Webpage_Volume {
         return $page;
     }
 
-    function getPageLink()
+    public function getPageLink()
     {
         $page = $this->getCurrentPage();
         return $page->getPageLink();
     }
 
-    function getPageUrl()
+    public function getPageUrl()
     {
         $page = $this->getCurrentPage();
         if ($page) {
@@ -220,13 +220,13 @@ class Webpage_Volume {
     /**
      * returns an associative array for the dbpager listing of volumes
      */
-    function rowTags()
+    public function rowTags()
     {
         $vars['volume_id'] = $this->id;
 
         /**
          * Show edit link if volume is not approved and the last person to update
-         * is currently logged in. Otherwise allow to edit if user has normal 
+         * is currently logged in. Otherwise allow to edit if user has normal
          * permissions.
          */
         if ($this->canEdit()) {
@@ -307,7 +307,7 @@ class Webpage_Volume {
         return $tpl;
     }
 
-    function delete()
+    public function delete()
     {
         $pagedb = new PHPWS_DB('webpage_page');
         $pagedb->addWhere('volume_id', $this->id);
@@ -331,11 +331,11 @@ class Webpage_Volume {
         }
 
         Version::flush('webpage_volume', $this->id);
-        
+
         return true;
     }
 
-    function save($version_update=false)
+    public function save($version_update=false)
     {
         PHPWS_Core::initModClass('version', 'Version.php');
 
@@ -384,13 +384,13 @@ class Webpage_Volume {
             $version = new Version('webpage_volume');
             $version->setSource($this);
             $version->setApproved($this->approved);
-            
+
             return $version->save();
         }
         return true;
     }
 
-    function saveKey()
+    public function saveKey()
     {
         if ($this->key_id) {
             $key = new Key($this->key_id);
@@ -415,7 +415,7 @@ class Webpage_Volume {
     }
 
 
-    function getPagebyNumber($page_number)
+    public function getPagebyNumber($page_number)
     {
         if (!$page_number) {
             return null;
@@ -438,7 +438,7 @@ class Webpage_Volume {
         }
     }
 
-    function getPagebyId($page_id)
+    public function getPagebyId($page_id)
     {
         if (!isset($this->_pages[(int)$page_id])) {
             return null;
@@ -447,7 +447,7 @@ class Webpage_Volume {
     }
 
 
-    function getPageSelect($alist)
+    public function getPageSelect($alist)
     {
         $form = new PHPWS_Form('page_select');
         $form->setMethod('get');
@@ -466,7 +466,7 @@ class Webpage_Volume {
         return implode("\n", $formtpl);
     }
 
-    function getTplTags($page_links=true, $version=0)
+    public function getTplTags($page_links=true, $version=0)
     {
         $template['PAGE_TITLE'] = $this->title;
         $template['SUMMARY'] = $this->getSummary();
@@ -489,7 +489,7 @@ class Webpage_Volume {
                 $page = $this->_current_page - 1;
                 $template['PAGE_LEFT'] = PHPWS_Text::rewriteLink(WP_PAGE_LEFT, 'webpage', $this->id, $page);
                 $template['PREVIOUS_PAGE']  = PHPWS_Text::rewriteLink(WP_PREVIOUS_PAGE, 'webpage', $this->id, $page);
-            } 
+            }
 
             if ($this->_current_page < count($this->_pages)) {
                 $page = $this->_current_page + 1;
@@ -497,12 +497,12 @@ class Webpage_Volume {
                 $template['NEXT_PAGE']  = PHPWS_Text::rewriteLink(WP_NEXT_PAGE, 'webpage', $this->id, $page);
             }
 
-           
+
             $template['BRIEF_PAGE_LINKS'] = implode('&nbsp;', $brief_link);
             $template['PAGE_LABEL'] = dgettext('webpage', 'Page');
         }
 
-        if ( (Current_User::allow('webpage', 'edit_page') && Current_User::isUser($this->create_user_id)) || 
+        if ( (Current_User::allow('webpage', 'edit_page') && Current_User::isUser($this->create_user_id)) ||
              Current_User::allow('webpage', 'edit_page', $this->id, 'volume')) {
             $vars['wp_admin'] = 'edit_header';
             $vars['volume_id'] = $this->id;
@@ -531,7 +531,7 @@ class Webpage_Volume {
         return $template;
     }
 
-    function viewHeader($version=0)
+    public function viewHeader($version=0)
     {
         if (!$this->frontpage) {
             $this->flagKey();
@@ -540,7 +540,7 @@ class Webpage_Volume {
         return PHPWS_Template::process($template, 'webpage', 'header.tpl');
     }
 
-    function forceTemplate($template)
+    public function forceTemplate($template)
     {
         $template_dir = Webpage_Page::getTemplateDirectory();
 
@@ -553,8 +553,8 @@ class Webpage_Volume {
         $db->addWhere('volume_id', $this->id);
         return $db->update();
     }
-    
-    function view($page=null, $show_page_title=true)
+
+    public function view($page=null, $show_page_title=true)
     {
         if (!$this->canView()) {
             if ($this->frontpage && PHPWS_Core::atHome()) {
@@ -593,7 +593,7 @@ class Webpage_Volume {
         return $content;
     }
 
-    function showAllPages($admin=false)
+    public function showAllPages($admin=false)
     {
         $template = $this->getTplTags(false);
         foreach ($this->_pages as $page) {
@@ -603,7 +603,7 @@ class Webpage_Volume {
         return PHPWS_Template::process($template, 'webpage', 'multiple/default.tpl');
     }
 
-    function flagKey()
+    public function flagKey()
     {
         if ($this->frontpage) {
             $key = Key::getHomeKey();
@@ -614,14 +614,14 @@ class Webpage_Volume {
         $this->_key->flag();
     }
 
-    function loadKey()
+    public function loadKey()
     {
         if (empty($this->_key)) {
             $this->_key = new Key($this->key_id);
         }
     }
 
-    function joinAllPages()
+    public function joinAllPages()
     {
         foreach ($this->_pages as $page) {
             if (!isset($first_page)) {
@@ -633,12 +633,12 @@ class Webpage_Volume {
             $all_content[] = '<h2>' . $page->title . '</h2>' . $page->content;
             $page->delete();
         }
-        
+
         $first_page->content = implode("\n", $all_content);
         $first_page->save();
     }
 
-    function joinPage($page_id)
+    public function joinPage($page_id)
     {
         if (!isset($this->_pages[$page_id])) {
             return true;
@@ -651,7 +651,7 @@ class Webpage_Volume {
                 break;
             }
         }
-        
+
         $next_page = current($this->_pages);
 
         $source->content .= '&lt;br /&gt;&lt;h2&gt;' . $next_page->title . '&lt;/h2&gt;' . $next_page->content;
@@ -666,7 +666,7 @@ class Webpage_Volume {
         unset($this->_pages[$next_page->id]);
     }
 
-    function dropPage($page_id)
+    public function dropPage($page_id)
     {
         if (!isset($this->_pages[$page_id])) {
             return true;
@@ -684,14 +684,14 @@ class Webpage_Volume {
         }
     }
 
-    function approval_view()
+    public function approval_view()
     {
         $template['TITLE'] = $this->title;
         $template['SUMMARY'] = $this->getSummary();
         return PHPWS_Template::process($template, 'webpage', 'approval_list.tpl');
     }
 
-    function saveSearch()
+    public function saveSearch()
     {
         $this->loadPages();
         if (empty($this->_pages)) {
@@ -713,14 +713,14 @@ class Webpage_Volume {
     /**
      * Decides if a user can edit a volume.
      */
-    function canEdit()
+    public function canEdit()
     {
         // If this is a new volume or unapproved and the current user created it
         // let them edit
         if ( (!$this->id || !$this->approved) && $this->create_user_id == Current_User::getId()) {
             return true;
         }
-      
+
         if (Current_User::allow('webpage', 'edit_page', $this->id, 'volume')) {
             return true;
         }
@@ -728,7 +728,7 @@ class Webpage_Volume {
         return false;
     }
 
-    function canView()
+    public function canView()
     {
         $this->loadKey();
         return $this->_key->allowView();

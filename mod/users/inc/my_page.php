@@ -52,13 +52,13 @@ function my_page()
     }
 
     $template['CONTENT'] = $content;
-    
-    return PHPWS_Template::process($template, 'users', 'my_page/main.tpl'); 
+
+    return PHPWS_Template::process($template, 'users', 'my_page/main.tpl');
 }
 
 class User_Settings {
 
-    function userForm(&$user, $message=NULL)
+    function userForm(PHPWS_User $user, $message=NULL)
     {
         javascript('jquery');
         $form = new PHPWS_Form;
@@ -111,7 +111,7 @@ class User_Settings {
             } else {
                 $timezones[$tz['id']] = $tz['id'];
             }
-            
+
         }
 
         if (isset($_REQUEST['timezone'])) {
@@ -194,7 +194,7 @@ class User_Settings {
         if ($_POST['timezone'] != 'server' && preg_match('/[^0-9\-]/', $_POST['timezone'])) {
             return;
         }
-        
+
         if ($_POST['timezone'] == 'server') {
             PHPWS_Cookie::delete('user_tz');
             PHPWS_Cookie::delete('user_dst');

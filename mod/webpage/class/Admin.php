@@ -347,12 +347,12 @@ class Webpage_Admin {
                     Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred. Please check your logs.'), 'list');
                 } else {
                     if ($new_vol) {
-                        Webpage_Admin::sendMessage(dgettext('webpage', 'Header saved successfully.'), 
+                        Webpage_Admin::sendMessage(dgettext('webpage', 'Header saved successfully.'),
                                                    sprintf('add_page&volume_id=%s&version_id=%s',
                                                            $volume->id, $version_id)
                                                    );
                     } else {
-                        Webpage_Admin::sendMessage(dgettext('webpage', 'Header saved successfully.'), 
+                        Webpage_Admin::sendMessage(dgettext('webpage', 'Header saved successfully.'),
                                                    'edit_webpage&tab=header&volume_id=' . $volume->id . '&version_id=' . $version_id);
                     }
                 }
@@ -375,7 +375,7 @@ class Webpage_Admin {
                 Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred while saving your page. Please check the error log.'),
                                            sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
                                                    $page->page_number, $volume->id, $page->id, $version_id));
-                
+
                 break;
             } elseif (is_array($result)) {
                 $title = sprintf(dgettext('webpage', 'Edit Page %s'),$page->page_number);
@@ -442,8 +442,8 @@ class Webpage_Admin {
             }
             Webpage_Admin::goBack();
             break;
-            
-            
+
+
         case 'delete_wp':
             if (!Current_User::allow('webpage', 'delete_page', $volume->id, 'volume', true)) {
                 Current_User::disallow();
@@ -617,10 +617,10 @@ class Webpage_Admin {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
-    function restorePage(&$volume, &$page)
+    function restorePage(Webpage_Volume $volume, Webpage_Page $page)
     {
         PHPWS_Core::initModClass('version', 'Restore.php');
-        
+
         $restore = new Version_Restore('webpage', 'webpage_page', $page->id,
                                        'Webpage_Page', 'viewBasic');
 
@@ -634,14 +634,14 @@ class Webpage_Admin {
 
         $restore->setRestoreUrl($restore_link);
         $restore->setRemoveUrl($remove_link);
-        
+
         return $restore->getList();
     }
 
-    function restoreVolume(&$volume)
+    function restoreVolume(Webpage_Volume $volume)
     {
         PHPWS_Core::initModClass('version', 'Restore.php');
-        
+
         $restore = new Version_Restore('webpage', 'webpage_volume', $volume->id,
                                        'Webpage_Volume', 'approval_view');
 
@@ -654,7 +654,7 @@ class Webpage_Admin {
 
         $restore->setRestoreUrl($restore_link);
         $restore->setRemoveUrl($remove_link);
-        
+
         return $restore->getList();
     }
 
@@ -767,7 +767,7 @@ class Webpage_Admin {
         }
     }
 
-    function approvalView(&$volume, &$version)
+    function approvalView(Webpage_Volume $volume, Version $version)
     {
         $template['PAGE_TITLE'] = $volume->title;
         $template['SUMMARY']    = $volume->getSummary();
@@ -918,7 +918,7 @@ class Webpage_Admin {
         $form->setMatch('add_images', PHPWS_Settings::get('webpage', 'add_images'));
         $form->setLabel('add_images', dgettext('webpage', 'Simple image forms'));
         $form->addSubmit('save', dgettext('webpage', 'Save settings'));
-        
+
         $tpl = $form->getTemplate();
         return PHPWS_Template::process($tpl, 'webpage', 'forms/settings.tpl');
     }
@@ -947,7 +947,7 @@ class Webpage_Admin {
         $db->addWhere('vol_order', $vol_order, '>');
         $db->reduceColumn('vol_order');
     }
-    
+
     function moveFeature($volume, $direction)
     {
         if (!$volume->id) {

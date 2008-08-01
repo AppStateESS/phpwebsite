@@ -23,10 +23,10 @@
 */
 
 class Sitemap_Forms {
-    var $sitemap = null;
+    public $sitemap = null;
 
 
-    function get($type)
+    public function get($type)
     {
         switch ($type) {
 
@@ -49,7 +49,7 @@ class Sitemap_Forms {
     }
 
 
-    function mapSetup()
+    public function mapSetup()
     {
         $form = new PHPWS_Form('sitemap');
         $form->addHidden('module', 'sitemap');
@@ -102,7 +102,7 @@ class Sitemap_Forms {
     }
 
 
-    function editSettings()
+    public function editSettings()
     {
 
         $form = new PHPWS_Form('sitemap_settings');
@@ -161,7 +161,7 @@ class Sitemap_Forms {
     }
 
 
-    function showInfo()
+    public function showInfo()
     {
 
         $tpl['TITLE'] = dgettext('sitemap', 'Important Information');

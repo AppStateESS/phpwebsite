@@ -10,18 +10,18 @@ PHPWS_Core::initCoreClass('XMLParser.php');
 PHPWS_Core::requireConfig('rss');
 
 class RSS_Feed {
-    var $id           = 0;
-    var $title        = NULL;
-    var $address      = NULL;
-    var $display      = 1;
-    var $item_limit   = RSS_FEED_LIMIT;
-    var $refresh_time = RSS_FEED_REFRESH;
-    var $_error       = NULL;
-    var $_parser      = NULL;
-    var $mapped       = NULL;
+    public $id           = 0;
+    public $title        = NULL;
+    public $address      = NULL;
+    public $display      = 1;
+    public $item_limit   = RSS_FEED_LIMIT;
+    public $refresh_time = RSS_FEED_REFRESH;
+    public $_error       = NULL;
+    public $_parser      = NULL;
+    public $mapped       = NULL;
 
 
-    function RSS_Feed($id=0)
+    public function RSS_Feed($id=0)
     {
         $this->id = $id;
 
@@ -32,7 +32,7 @@ class RSS_Feed {
         $this->init();
     }
 
-    function init()
+    public function init()
     {
         if (empty($this->id)) {
             return FALSE;
@@ -41,22 +41,22 @@ class RSS_Feed {
         return $db->loadObject($this);
     }
 
-    function setAddress($address)
+    public function setAddress($address)
     {
         $this->address = trim($address);
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = trim(strip_tags($title));
     }
 
-    function loadTitle()
+    public function loadTitle()
     {
         $this->title = $this->mapped['CHANNEL']['TITLE'];
     }
 
-    function pagerTags()
+    public function pagerTags()
     {
         $vars['command'] = 'reset_feed';
         $vars['feed_id'] = $this->id;
@@ -93,7 +93,7 @@ class RSS_Feed {
         $seconds = $remaining - $minutes * 60;
 
         $time = NULL;
-        
+
         if ($seconds) {
             $time = sprintf(dgettext('rss', '%d seconds'), $seconds);
         }
@@ -122,7 +122,7 @@ class RSS_Feed {
         return $tpl;
     }
 
-    function loadParser($use_cache=TRUE)
+    public function loadParser($use_cache=TRUE)
     {
         if (empty($this->address)) {
             return FALSE;
@@ -140,13 +140,13 @@ class RSS_Feed {
             if (isset($this->_parser) && empty($this->_parser->error)) {
                 return TRUE;
             }
-            
+
             $this->_parser = new XMLParser($this->address);
             if ($this->_parser->error) {
                 PHPWS_Error::log($this->_parser->error);
                 return FALSE;
             }
-            
+
             $this->mapData();
             if ($use_cache) {
                 PHPWS_Cache::save($cache_key, serialize($this->mapped));
@@ -158,13 +158,13 @@ class RSS_Feed {
     /**
      * Resets the cache on the RSS feed
      */
-    function reset()
+    public function reset()
     {
         $cache_key = $this->address;
         PHPWS_Cache::remove($cache_key);
     }
 
-    function post()
+    public function post()
     {
         if (!empty($_POST['title'])) {
             $this->setTitle($_POST['title']);
@@ -192,10 +192,10 @@ class RSS_Feed {
         } else {
             $this->item_limit = $item_limit;
         }
-        
+
 
         $refresh_time = (int)$_POST['refresh_time'];
-        
+
         if ($refresh_time < 60) {
             $error[] = dgettext('rss', 'Refresh time is too low. It must be over 60 seconds.');
             $this->refresh_time = RSS_FEED_REFRESH;
@@ -213,7 +213,7 @@ class RSS_Feed {
         }
     }
 
-    function save()
+    public function save()
     {
         if (empty($this->title)) {
             $this->loadTitle();
@@ -223,7 +223,7 @@ class RSS_Feed {
         return $db->saveObject($this);
     }
 
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('rss_feeds');
         $db->addWhere('id', $this->id);
@@ -233,7 +233,7 @@ class RSS_Feed {
     /**
      * Displays the feed
      */
-    function view()
+    public function view()
     {
         if (!$this->loadParser()) {
             $tpl['MESSAGE'] = dgettext('rss', 'Sorry, unable to grab feed.');
@@ -273,14 +273,14 @@ class RSS_Feed {
         } else {
             $tpl['FEED_TITLE'] = &$this->title;
         }
-                                         
+
         $content = PHPWS_Template::process($tpl, 'rss', 'feeds/view_rss.tpl');
 
         return $content;
     }
 
 
-    function pullChannel($data, $version)
+    public function pullChannel($data, $version)
     {
         foreach ($data as $info) {
             extract($info);
@@ -302,7 +302,7 @@ class RSS_Feed {
                     }
                 } elseif ($version == '2.0' || $version == '0.92') {
                     $this->addItem($info['child']);
-                }                
+                }
                 break;
 
             case 'IMAGE':
@@ -328,7 +328,7 @@ class RSS_Feed {
 
     }
 
-    function pullImage($data)
+    public function pullImage($data)
     {
         foreach ($data as $info) {
             extract($info);
@@ -336,7 +336,7 @@ class RSS_Feed {
         }
     }
 
-    function addItem($data)
+    public function addItem($data)
     {
         foreach ($data as $info) {
             extract($info);
@@ -345,7 +345,7 @@ class RSS_Feed {
         $this->mapped['ITEMS'][] = $item;
     }
 
-    function pullTextInput($data)
+    public function pullTextInput($data)
     {
         foreach ($data as $info) {
             extract($info);
@@ -353,7 +353,7 @@ class RSS_Feed {
         }
     }
 
-    function mapData()
+    public function mapData()
     {
         if (isset($this->_parser->data[0]['attributes']['VERSION'])) {
             $version = &$this->_parser->data[0]['attributes']['VERSION'];

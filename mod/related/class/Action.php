@@ -9,7 +9,7 @@
 
 class Related_Action {
 
-    function create(&$related)
+    function create(Related $related)
     {
         $template['TITLE_LBL'] = dgettext('related', 'Title');
         $template['MODULE_LBL'] = dgettext('related', 'Module');
@@ -30,7 +30,7 @@ class Related_Action {
         return PHPWS_Template::process($template, 'related', 'create.tpl');
     }
 
-    function edit(&$current)
+    function edit(Related $current)
     {
         PHPWS_Core::initCoreClass('Module.php');
         $related = & Related_Action::getBank();
@@ -58,7 +58,7 @@ class Related_Action {
             if (!empty($current->friends)) {
                 $extra_friends = $current->listFriends();
                 $template['EXTRA_INSTRUCTIONS'] = dgettext('related', 'This item is related to the following:');
-        
+
                 if (is_array($extra_friends)) {
                     foreach ($extra_friends as $key=>$friend_item){
                         $template['extra_list'][] = array('EXTRA_NAME'=>$friend_item);
@@ -101,7 +101,7 @@ class Related_Action {
     }
 
 
-    function view(&$related)
+    function view(Related $related)
     {
         $friends = $related->listFriends();
 
@@ -131,14 +131,14 @@ class Related_Action {
         return $tpl->get();
     }
 
-    function newBank(&$related)
+    function newBank(Related $related)
     {
         unset($_SESSION['Related__Bank']);
         $_SESSION['Related_Bank'] = $related;
     }
 
 
-    function setCurrent(&$friend)
+    function setCurrent(Related $friend)
     {
         unset($_SESSION['Current__Friend']);
         $_SESSION['Current_Friend'] = $friend;
@@ -260,7 +260,7 @@ class Related_Action {
             Layout::add(dgettext('related', 'The Related module encountered a database error.'));
             return;
         }
-    
+
         Related_Action::quit();
     }
 
