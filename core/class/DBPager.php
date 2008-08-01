@@ -23,159 +23,159 @@ class DBPager {
     /**
      * Name of the class used
      */
-    var $class = NULL;
+    public $class = NULL;
 
     /**
      * Object rows pulled from DB
      */
-    var $display_rows = NULL;
+    public $display_rows = NULL;
 
     /**
      * Name of the module using list
      * Needed for template purposes
      */
-    var $module = NULL;
+    public $module = NULL;
 
-    var $toggles = NULL;
+    public $toggles = NULL;
 
     /**
      * Methods the developer wants to run prior to
      * using the object
      */
-    var $run_methods = NULL;
+    public $run_methods = NULL;
 
-    var $run_function = NULL;
+    public $run_function = NULL;
 
-    var $toggle_function = null;
+    public $toggle_function = null;
 
-    var $toggle_func_number = 0;
+    public $toggle_func_number = 0;
 
     /**
      * List of methods in class
      */
-    var $_methods = NULL;
+    private $_methods = NULL;
 
-    var $_class_vars = NULL;
+    private $_class_vars = NULL;
 
-    var $table_columns = null;
+    public $table_columns = null;
 
-    var $page_tags = NULL;
+    public $page_tags = NULL;
 
     /**
      * Tags set per row by the object
      */
-    var $row_tags = NULL;
+    public $row_tags = NULL;
 
-    var $page_turner_left = '&lt;';
+    public $page_turner_left = '&lt;';
 
-    var $page_turner_right = '&gt;';
+    public $page_turner_right = '&gt;';
 
     /**
      * Template file name and directory
      */
-    var $template = NULL;
+    public $template = NULL;
 
     /**
      * Limit of rows to pull from db
      */
-    var $limit = NULL;
+    public $limit = NULL;
 
-    var $default_limit = 0;
+    public $default_limit = 0;
 
-    var $limitList = array(5, 10, 25);
+    public $limitList = array(5, 10, 25);
 
-    var $searchColumn = NULL;
+    public $searchColumn = NULL;
 
     /**
      * Which column to order by
      */
-    var $orderby = NULL;
+    public $orderby = NULL;
 
-    var $orderby_dir = NULL;
+    public $orderby_dir = NULL;
 
     /**
      * If set, then this order will be used if no other
      * orders are selected
      */
-    var $default_order = NULL;
+    public $default_order = NULL;
 
-    var $default_order_dir = 'asc';
+    public $default_order_dir = 'asc';
 
     /**
      * DBpager will derive the link from the url
      * If it has problems or you just want to force the link,
      * then you can set the link
      */
-    var $link = NULL;
+    public $link = NULL;
 
-    var $search = NULL;
+    public $search = NULL;
 
     /**
      * Total number of rows in database
      */
-    var $total_rows = NULL;
+    public $total_rows = NULL;
 
     /**
      * Total number of pages needed to display data
      */
-    var $total_pages = NULL;
+    public $total_pages = NULL;
 
     /**
      * Database object
      */
-    var $db = NULL;
+    public $db = NULL;
 
-    var $current_page = 1;
+    public $current_page = 1;
 
     /**
      * Message echoed if no rows are found
      */
-    var $empty_message = DBPAGER_DEFAULT_EMPTY_MESSAGE;
+    public $empty_message = DBPAGER_DEFAULT_EMPTY_MESSAGE;
 
     /**
      * Template made before processed
      */
-    var $final_template = NULL;
+    public $final_template = NULL;
 
-    var $error = null;
+    public $error = null;
 
-    var $table = null;
+    public $table = null;
 
     // Record of the sql query used to pull the rows.
-    var $row_query = null;
+    public $row_query = null;
 
-    var $anchor = null;
+    public $anchor = null;
 
-    var $sub_result = array();
+    public $sub_result = array();
 
-    var $sub_order = array();
+    public $sub_order = array();
 
-    var $sub_search = false;
+    public $sub_search = false;
 
-    var $total_column = null;
+    public $total_column = null;
 
-    var $clear_button = false;
+    public $clear_button = false;
 
-    var $search_button = true;
+    public $search_button = true;
 
-    var $search_label = true;
+    public $search_label = true;
 
-    var $sort_headers = array();
+    public $sort_headers = array();
 
-    var $convert_date = array();
+    public $convert_date = array();
 
     /**
      * If true, DBPager will cache last user request
      */
-    var $cache_queries = false;
+    public $cache_queries = false;
 
     /**
      * If set, DBPager will use a custom identifier for this object's
      * cache instance
      */
-    var $cache_identifier = null;
+    public $cache_identifier = null;
 
-    function DBPager($table, $class=NULL)
+    public function __construct($table, $class=NULL)
     {
         if (empty($table)) {
             $this->error = PHPWS_Error::get(DBPAGER_NO_TABLE, 'core', 'DB_Pager::DBPager');
@@ -250,7 +250,7 @@ class DBPager {
 
     }
 
-    function joinResult($source_column, $join_table, $join_column, $content_column, $new_name=null, $searchable=false)
+    public function joinResult($source_column, $join_table, $join_column, $content_column, $new_name=null, $searchable=false)
     {
         static $index = 1;
 
@@ -274,9 +274,8 @@ class DBPager {
         $index++;
     }
 
-    function loadSearch($search)
+    public function loadSearch($search)
     {
-
         if (UTF8_MODE) {
             $preg = '/[^\w\s\pL]/u';
         } else {
@@ -287,17 +286,17 @@ class DBPager {
         $this->search = & $search;
     }
 
-    function loadLink()
+    public function loadLink()
     {
         $this->link = PHPWS_Core::getCurrentUrl(TRUE, FALSE);
     }
 
-    function setAnchor($anchor)
+    public function setAnchor($anchor)
     {
         $this->anchor = $anchor;
     }
 
-    function getAnchor()
+    public function getAnchor()
     {
         if (empty($this->anchor)) {
             return null;
@@ -310,7 +309,7 @@ class DBPager {
      * Sets the default order for the pager. If only_if_empty is TRUE
      * then a sort can overwrite the direction.
      */
-    function setOrder($column, $direction='asc', $only_if_empty=false)
+    public function setOrder($column, $direction='asc', $only_if_empty=false)
     {
         if ($only_if_empty && !empty($this->orderby)) {
             return;
@@ -322,7 +321,7 @@ class DBPager {
         $this->orderby_dir = $direction;
     }
 
-    function setDefaultOrder($default_order, $direction='asc')
+    public function setDefaultOrder($default_order, $direction='asc')
     {
         if (preg_match('/\W/', $default_order)) {
             return FALSE;
@@ -335,12 +334,12 @@ class DBPager {
         return TRUE;
     }
 
-    function setDefaultLimit($limit)
+    public function setDefaultLimit($limit)
     {
         $this->default_limit = (int)$limit;
     }
 
-    function setSearch()
+    public function setSearch()
     {
         $col_list = func_get_args();
 
@@ -357,17 +356,17 @@ class DBPager {
         }
     }
 
-    function setPageTurnerLeft($turner)
+    public function setPageTurnerLeft($turner)
     {
         $this->page_turner_left = $turner;
     }
 
-    function setPageTurnerRight($turner)
+    public function setPageTurnerRight($turner)
     {
         $this->page_turner_right = $turner;
     }
 
-    function setLimitList($list)
+    public function setLimitList($list)
     {
         if (!is_array($list)) {
             return FALSE;
@@ -376,32 +375,32 @@ class DBPager {
         $this->limitList = $list;
     }
 
-    function addToggle($toggle)
+    public function addToggle($toggle)
     {
         $this->toggles[] = $toggle;
     }
 
-    function setLink($link)
+    public function setLink($link)
     {
         $this->link = $link;
     }
 
-    function getLinkQuery()
+    public function getLinkQuery()
     {
         return substr(strstr($this->link, '?'), 1);
     }
 
-    function getLinkBase()
+    public function getLinkBase()
     {
         return str_replace(strstr($this->link, '?'), '', $this->link);
     }
 
-    function setModule($module)
+    public function setModule($module)
     {
         $this->module = $module;
     }
 
-    function setTemplate($template)
+    public function setTemplate($template)
     {
         $this->template = $template;
     }
@@ -410,7 +409,7 @@ class DBPager {
      * Allows the developer to add extra or processes row tags
      *
      */
-    function addRowTags()
+    public function addRowTags()
     {
         $method = func_get_arg(0);
 
@@ -437,12 +436,12 @@ class DBPager {
         $this->row_tags = array('method'=>$method, 'variable'=>$variables);
     }
 
-    function setEmptyMessage($message)
+    public function setEmptyMessage($message)
     {
         $this->empty_message = $message;
     }
 
-    function addToggleFunction($function, $toggle=2)
+    public function addToggleFunction($function, $toggle=2)
     {
         if (empty($function) || $toggle < 2) {
             return false;
@@ -474,7 +473,7 @@ class DBPager {
     /**
      * Adds a function or static method call to pager
      */
-    function addRowFunction($function)
+    public function addRowFunction($function)
     {
         if (is_string($function) && function_exists($function)) {
             $this->run_function = $function;
@@ -497,7 +496,7 @@ class DBPager {
         }
     }
 
-    function addRunMethod($method)
+    public function addRunMethod($method)
     {
         if (!in_array(strtolower($method), $this->_methods)) {
             return;
@@ -506,17 +505,17 @@ class DBPager {
         $this->run_methods[] = $method;
     }
 
-    function addWhere($column, $value, $operator=NULL, $conj=NULL, $group=NULL)
+    public function addWhere($column, $value, $operator=NULL, $conj=NULL, $group=NULL)
     {
         return $this->db->addWhere($column, $value, $operator, $conj, $group);
     }
 
-    function addPageTags($tags)
+    public function addPageTags($tags)
     {
         $this->page_tags = $tags;
     }
 
-    function getLimit()
+    public function getLimit()
     {
         if (empty($this->limit) || !in_array($this->limit, $this->limitList)) {
             list($this->limit) = each($this->limitList);
@@ -526,7 +525,7 @@ class DBPager {
         return array((int)$this->limit, (int)$start);
     }
 
-    function setTotalColumn($column)
+    public function setTotalColumn($column)
     {
         if (!strstr($column, '.')) {
             $table = $this->db->getTable();
@@ -538,7 +537,7 @@ class DBPager {
         }
     }
 
-    function getTotalRows()
+    public function getTotalRows()
     {
         if (isset($this->error)) {
             return;
@@ -608,7 +607,7 @@ class DBPager {
      * Calls a count on *. Less reliable than counting on one column.
      * A fallback method for getTotalRows
      */
-    function fullRowCount()
+    public function fullRowCount()
     {
         $this->db->setDistinct(TRUE);
         $order    = $this->db->order;
@@ -622,7 +621,7 @@ class DBPager {
         return $result;
     }
 
-    function getRows()
+    public function getRows()
     {
         return $this->display_rows;
     }
@@ -634,7 +633,7 @@ class DBPager {
      * the data it gets into the object.
      * @modified Eloi George
      */
-    function initialize($load_rows=true)
+    public function initialize($load_rows=true)
     {
         if (empty($this->cache_identifier))
             $this->cache_identifier = $this->template;
@@ -756,7 +755,7 @@ class DBPager {
         return TRUE;
     }
 
-    function getPageLinks()
+    public function getPageLinks()
     {
         if ($this->total_pages < 1) {
             $current_page = $total_pages = 1;
@@ -772,27 +771,29 @@ class DBPager {
         $values = $this->getLinkValues();
         unset($values['pg']);
 
-        $url_base = $this->getLinkBase();
-
-        foreach ($values as $key => $value) {
-            $link_pairs[] = "$key=$value";
-        }
-
-        $url = sprintf('%s?%s', $url_base, implode('&amp;',$link_pairs));
+        $module = $values['module'];
+        unset($values['module']);
 
         $anchor = $this->getAnchor();
+        if ($anchor) {
+            $values['#'] = $anchor;
+        }
 
         // page one
         if ($current_page != 1) {
             if ($total_pages > 500 && $current_page > 50) {
-                $pageList[] = sprintf('<a href="%s&amp;pg=%s%s" title="%s">&lt;&lt;&lt;</a>',$url, $current_page - 50, $anchor, _('Back 50 pages'));
+                $values['pg'] = $current_page - 50;
+                $pageList[] = PHPWS_Text::moduleLink('&lt;&lt;&lt;', $module, $values, null, _('Back 50 pages'));
             }
 
             if ($total_pages > 100 && $current_page > 10) {
-                $pageList[] = sprintf('<a href="%s&amp;pg=%s%s" title="%s">&lt;&lt;</a>',$url, $current_page - 10, $anchor,  _('Back 10 pages'));
+                $values['pg'] = $current_page - 10;
+                $pageList[] = PHPWS_Text::moduleLink('&lt;&lt;', $module, $values, null, _('Back 10 pages'));
             }
-            $pageList[] = sprintf('<a href="%s&amp;pg=%s%s" title="%s">&lt;</a>',$url, $current_page - 1, $anchor, _('Back one page'));
-            $pageList[] = sprintf('<a href="%s&amp;pg=1%s">1</a>',$url, $anchor);
+            $values['pg'] = $current_page - 1;
+            $pageList[] = PHPWS_Text::moduleLink('&lt;', $module, $values, null, _('Back one page'));
+            $values['pg'] = 1;
+            $pageList[] = PHPWS_Text::moduleLink('1', $module, $values, null, _('First page'));
         } else {
             $pageList[] = '[1]';
         }
@@ -807,7 +808,8 @@ class DBPager {
                     $divider--;
                     for ($i=2; $i < $current_page; $i++) {
                         if ($i != $current_page) {
-                            $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $i, $anchor, $i);
+                            $values['pg'] = 1;
+                            $pageList[] = PHPWS_Text::moduleLink($i, $module, $values, null, sprintf(_('Go to page %s'), $i));
                         } else {
                             $pageList[] = "[$current_page]";
                         }
@@ -818,7 +820,8 @@ class DBPager {
                 $skip = floor($remaining_pages / $divider);
 
                 for ($i=0,$j = $current_page + $skip; $i < $divider; $i++,$j += $skip) {
-                    $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $j, $anchor, $j);
+                    $values['pg'] = $j;
+                    $pageList[] = PHPWS_Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
                 }
             } else {
                 $beginning_pages = $current_page - 1;
@@ -839,14 +842,16 @@ class DBPager {
                     $back_skip = round($remaining_pages / $divider);
                 }
                 for ($i=0,$j = 1 + $front_skip; $i < $divider - 1 && $j < $current_page; $i++,$j += $front_skip) {
-                    $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $j, $anchor, $j);
+                    $values['pg'] = $j;
+                    $pageList[] = PHPWS_Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
                 }
 
                 $pageList[] = "[$current_page]";
 
                 if ($back_skip) {
                     for ($i=0,$j = $current_page + $back_skip; $i < $divider - 1 && $j < $total_pages; $i++,$j += $back_skip) {
-                        $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $j, $anchor, $j);
+                        $values['pg'] = $j;
+                        $pageList[] = PHPWS_Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
                     }
                 }
             }
@@ -856,20 +861,27 @@ class DBPager {
                 if ($i == $current_page) {
                     $pageList[] = "[$i]";
                 } else {
-                    $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $i, $anchor, $i);
+                    $values['pg'] = $i;
+                    $pageList[] = PHPWS_Text::moduleLink($i, $module, $values, null, sprintf(_('Go to page %s'), $i));
                 }
             }
         }
 
         if ($total_pages != $current_page) {
-            $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $total_pages, $anchor, $total_pages);
-            $pageList[] = sprintf('<a href="%s&amp;pg=%s%s" title="%s">&gt;</a>',$url, $current_page + 1, $anchor, _('Forward one page'));
+            $values['pg'] = $total_pages;
+            $pageList[] = PHPWS_Text::moduleLink($total_pages, $module, $values, null, _('Last page'));
+
+            $values['pg'] = $current_page + 1;
+            $pageList[] = PHPWS_Text::moduleLink('&gt;', $module, $values, null, _('Forward one page'));
+
             if ($total_pages > 100 && ($total_pages - 10) >= $current_page) {
-                $pageList[] = sprintf('<a href="%s&amp;pg=%s%s" title="%s">&gt;&gt;</a>',$url, $current_page + 10, $anchor, _('Forward 10 pages'));
+                $values['pg'] = $current_page + 10;
+                $pageList[] = PHPWS_Text::moduleLink('&gt;&gt;', $module, $values, null, _('Forward 10 pages'));
             }
 
             if ($total_pages > 500 && ($total_pages - 50) >= $current_page) {
-                $pageList[] = sprintf('<a href="%s&amp;pg=%s%s" title="%s">&gt;&gt;&gt;</a>',$url, $current_page + 50, $anchor, _('Forward 50 pages'));
+                $values['pg'] = $current_page + 50;
+                $pageList[] = PHPWS_Text::moduleLink('&gt;&gt;&gt;', $module, $values, null, _('Forward 50 pages'));
             }
         } else {
             $pageList[] = "[$current_page]";
@@ -881,7 +893,7 @@ class DBPager {
     /**
      * Returns the sorting buttons for table columns
      */
-    function getSortButtons(&$template)
+    public function getSortButtons(&$template)
     {
         if (empty($this->table_columns)) {
             return NULL;
@@ -890,6 +902,15 @@ class DBPager {
         foreach ($this->table_columns as $varname) {
             $vars = array();
             $values = $this->getLinkValues();
+
+            $module = $values['module'];
+            unset($values['module']);
+
+            $anchor = $this->getAnchor();
+            if ($anchor) {
+                $values['#'] = $anchor;
+            }
+
             $buttonname = str_replace('.', '_', $varname) . '_SORT';
 
             $values['orderby'] = $varname;
@@ -915,16 +936,10 @@ class DBPager {
                 $values['orderby_dir'] = 'asc';
             }
 
-            foreach ($values as $key=>$value) {
-                $vars[] = "$key=$value";
-            }
-
             if (isset($this->sort_headers[$varname])) {
                 $button .= '&nbsp;' . $this->sort_headers[$varname];
             }
-            $link = sprintf('<a href="%s?%s%s" title="%s">%s</a>',
-                            $this->getLinkBase(), implode('&amp;', $vars), $this->getAnchor(),
-                            $alt, $button);
+            $link = PHPWS_Text::moduleLink($button, $module, $values, null, $alt);
 
             $template[strtoupper($buttonname)] = $link;
         }
@@ -932,12 +947,12 @@ class DBPager {
         return $template;
     }
 
-    function addSortHeader($header, $title)
+    public function addSortHeader($header, $title)
     {
         $this->sort_headers[$header] = $title;
     }
 
-    function getLinkValues()
+    public function getLinkValues()
     {
         $output = NULL;
         if (isset($GLOBALS['DBPager_Link_Values'])) {
@@ -1002,6 +1017,8 @@ class DBPager {
         // prevents a doubling of the value in the page form
         unset($values['change_page']);
         unset($values['pager_c_search']);
+        // Don't need the Go button from search to be carried along
+        unset($values['go']);
 
         $GLOBALS['DBPager_Link_Values'] = $values;
 
@@ -1009,20 +1026,25 @@ class DBPager {
     }
 
 
-    function getLimitList()
+    public function getLimitList()
     {
         $values = $this->getLinkValues();
         unset($values['limit']);
-        foreach ($values as $key => $value) {
-            $link_pairs[] = "$key=$value";
+
+        $module = $values['module'];
+        unset($values['module']);
+
+        $anchor = $this->getAnchor();
+        if ($anchor) {
+            $values['#'] = $anchor;
         }
 
         foreach ($this->limitList as $limit) {
             if ($limit == $this->limit) {
                 $links[] = $limit;
             } else {
-                $link_pairs['a'] = "limit=$limit";
-                $links[] = sprintf('<a href="%s?%s%s">%s</a>', $this->getLinkBase(), implode('&amp;', $link_pairs), $this->getAnchor(), $limit);
+                $values['limit'] = & $limit;
+                $links[] = PHPWS_Text::moduleLink($limit, $module, $values, null, sprintf(_('Limit results to %s rows'), $limit));
             }
         }
 
@@ -1034,7 +1056,7 @@ class DBPager {
      * Pulls variables from the object results. Calls object's formatting function if
      * specified.
      */
-    function getPageRows()
+    public function getPageRows()
     {
         $template = null;
         $count = 0;
@@ -1055,7 +1077,7 @@ class DBPager {
             }
             if (isset($this->class) && isset($this->run_methods)){
                 foreach ($this->run_methods as $run_function) {
-                    call_user_func(array(&$disp_row, $run_function));
+                    call_user_func(array($disp_row, $run_function));
                 }
             }
 
@@ -1070,9 +1092,9 @@ class DBPager {
                     }
 
                     if (empty($this->row_tags['variable'])) {
-                        $row_result = call_user_func(array(&$disp_row, $this->row_tags['method']));
+                        $row_result = call_user_func(array($disp_row, $this->row_tags['method']));
                     } else {
-                        $row_result = call_user_func_array(array(&$disp_row, $this->row_tags['method']), $this->row_tags['variable']);
+                        $row_result = call_user_func_array(array($disp_row, $this->row_tags['method']), $this->row_tags['variable']);
                     }
 
                     if (!empty($row_result) && is_array($row_result)) {
@@ -1108,7 +1130,7 @@ class DBPager {
         return $template;
     }
 
-    function getPageDrop()
+    public function getPageDrop()
     {
         if (empty($this->total_pages)) {
             $page_list[1] = 1;
@@ -1141,7 +1163,7 @@ class DBPager {
     }
 
 
-    function getSearchBox()
+    public function getSearchBox()
     {
         $form = new PHPWS_Form('search_list');
         $form->setMethod('get');
@@ -1173,7 +1195,7 @@ class DBPager {
         return implode("\n", $template);
     }
 
-    function _getNavigation(&$template)
+    public function _getNavigation(&$template)
     {
         if ($this->total_rows < 1) {
             $total_row = $start_row = $end_row = 1;
@@ -1206,7 +1228,7 @@ class DBPager {
     /**
      * Returns the content of the the pager object
      */
-    function get($return_blank_results=TRUE)
+    public function get($return_blank_results=TRUE)
     {
         $template = array();
 
@@ -1277,24 +1299,24 @@ class DBPager {
         return PHPWS_Template::process($template, $this->module, $this->template);
     }
 
-    function getFinalTemplate()
+    public function getFinalTemplate()
     {
         return $this->final_template;
     }
 
-    function plugPageTags(&$template){
+    public function plugPageTags(&$template){
         if (isset($this->page_tags)){
             foreach ($this->page_tags as $key=>$value)
                 $template[$key] = $value;
         }
     }
 
-    function saveLastView()
+    public function saveLastView()
     {
         $_SESSION['DBPager_Last_View'][$this->table] = PHPWS_Core::getCurrentUrl();
     }
 
-    function getLastView($table)
+    public function getLastView($table)
     {
         if (isset($_SESSION['DBPager_Last_View'][$table])) {
             return $_SESSION['DBPager_Last_View'][$table];
@@ -1303,22 +1325,22 @@ class DBPager {
         }
     }
 
-    function convertDate($column_name, $format='%c')
+    public function convertDate($column_name, $format='%c')
     {
         $this->convert_date[$column_name] = $format;
     }
 
-    function clearQuery()
+    public function clearQuery()
     {
         unset($_SESSION['DB_Cache'][$this->module][$this->template]);
     }
 
-    function cacheQueries($cache=true)
+    public function cacheQueries($cache=true)
     {
         $this->cache_queries = (bool)$cache;
     }
 
-    function setCacheIdentifier($str)
+    public function setCacheIdentifier($str)
     {
         $this->cache_identifier = $str;
     }
