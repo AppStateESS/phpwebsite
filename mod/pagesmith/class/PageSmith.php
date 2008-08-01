@@ -17,17 +17,17 @@ if (!defined('PS_CHECK_CHAR_LENGTH')) {
 
 
 class PageSmith {
-    var $forms   = null;
-    var $panel   = null;
+    public $forms   = null;
+    public $panel   = null;
 
-    var $title   = null;
-    var $message = null;
-    var $content = null;
+    public $title   = null;
+    public $message = null;
+    public $content = null;
 
-    var $page    = null;
+    public $page    = null;
 
 
-    function admin()
+    public function admin()
     {
         if (!Current_User::allow('pagesmith')) {
             Current_User::disallow();
@@ -43,7 +43,7 @@ class PageSmith {
                 $tab = $this->panel->getCurrentTab();
             } else {
                 $tab = & $_GET['tab'];
-            } 
+            }
 
             switch ($tab) {
             case 'new':
@@ -102,7 +102,7 @@ class PageSmith {
             $this->forms->editPageText();
             $javascript = true;
             break;
-            
+
         case 'post_header':
             $this->postHeader();
             break;
@@ -140,7 +140,7 @@ class PageSmith {
             $this->loadForms();
             $this->forms->settings();
             break;
-            
+
         default:
             PHPWS_Core::errorPage('404');
             break;
@@ -157,14 +157,14 @@ class PageSmith {
     }
 
 
-    function loadForms()
+    public function loadForms()
     {
         PHPWS_Core::initModClass('pagesmith', 'PS_Forms.php');
         $this->forms = new PS_Forms;
         $this->forms->ps = & $this;
     }
 
-    function loadPage()
+    public function loadPage()
     {
         PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
         if (@$_REQUEST['id']) {
@@ -177,7 +177,7 @@ class PageSmith {
         }
     }
 
-    function loadPanel()
+    public function loadPanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('pagesmith');
@@ -193,13 +193,13 @@ class PageSmith {
         $this->panel->setModule('pagesmith');
     }
 
-    function pageTplDir()
+    public function pageTplDir()
     {
         return PHPWS_Template::getTemplateDirectory('pagesmith')  . 'page_templates/';
     }
 
 
-    function postPage()
+    public function postPage()
     {
         $this->loadPage();
 
@@ -235,7 +235,7 @@ class PageSmith {
             // If this page is an update, or the section has some content
             // put it in the section list.
 
-            
+
             if ($this->page->id || (!empty($section->content) && !(in_array($section->content, array('image', 'document', 'media', 'block')) && !$section->type_id)) ) {
                 $sections[$section_name] = & $section;
             }
@@ -263,7 +263,7 @@ class PageSmith {
         return true;
     }
 
-    function user()
+    public function user()
     {
         switch ($_GET['uop']) {
         case 'view_page':
@@ -273,11 +273,12 @@ class PageSmith {
     }
 
 
-    function viewPage()
+    public function viewPage()
     {
         if (empty($this->page)) {
             $this->loadPage();
         }
+
         if ($this->page->id) {
             $this->page->loadKey();
             if ($this->page->_key->allowView()) {
@@ -296,13 +297,13 @@ class PageSmith {
         }
     }
 
-    function killSaved()
+    public function killSaved()
     {
         $_SESSION['PS_Page'] = null;
         PHPWS_Core::killSession('PS_Page');
     }
 
-    function postHeader()
+    public function postHeader()
     {
         PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
         $header = strip_tags($_POST['header'], PS_ALLOWED_HEADER_TAGS);
@@ -320,7 +321,7 @@ class PageSmith {
         Layout::nakedDisplay(javascript('modules/pagesmith/update', $vars));
     }
 
-    function postText()
+    public function postText()
     {
         $warning = null;
         PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
@@ -345,7 +346,7 @@ class PageSmith {
         Layout::nakedDisplay( javascript('modules/pagesmith/update', $vars));
     }
 
-    function postSettings()
+    public function postSettings()
     {
         if (isset($_POST['auto_link'])) {
             PHPWS_Settings::set('pagesmith', 'auto_link', 1);

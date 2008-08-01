@@ -6,16 +6,16 @@
    */
 
 class PS_Section {
-    var $id      = 0;
-    var $pid     = 0;
-    var $content = null;
-    var $secname = null;
-    var $sectype = null;
+    public $id      = 0;
+    public $pid     = 0;
+    public $content = null;
+    public $secname = null;
+    public $sectype = null;
 
-    var $_error  = null;
+    public $_error  = null;
 
 
-    function plugSection($section,$pid=0)
+    public function plugSection($section,$pid=0)
     {
         $this->pid = $pid;
         $this->secname = $section['NAME'];

@@ -8,11 +8,11 @@ PHPWS_Core::initModClass('pagesmith', 'PS_Section.php');
 
 class PS_Block extends PS_Section {
     // Id to the element tracked by this block e.g. the image id
-    var $type_id = 0;
-    var $width   = 0;
-    var $height  = 0;
+    public $type_id = 0;
+    public $width   = 0;
+    public $height  = 0;
 
-    function PS_Block($id=0)
+    public function __construct($id=0)
     {
         if (!$id) {
             return;
@@ -22,7 +22,7 @@ class PS_Block extends PS_Section {
         $this->init();
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('ps_block');
         $result = $db->loadObject($this);
@@ -37,7 +37,7 @@ class PS_Block extends PS_Section {
         }
     }
 
-    function loadFiller()
+    public function loadFiller()
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager($this->secname, $this->type_id);
@@ -62,13 +62,13 @@ class PS_Block extends PS_Section {
         $this->content = $manager->get();
     }
 
-    function loadSaved()
+    public function loadSaved()
     {
         $this->loadFiller();
         return true;
     }
-    
-    function getContent()
+
+    public function getContent()
     {
         if (empty($this->content)) {
                 PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
@@ -77,7 +77,7 @@ class PS_Block extends PS_Section {
         return $this->content;
     }
 
-    function save($key_id=null)
+    public function save($key_id=null)
     {
         $db = new PHPWS_DB('ps_block');
         $db->saveObject($this);

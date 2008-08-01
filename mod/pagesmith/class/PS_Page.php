@@ -5,27 +5,27 @@
    */
 
 class PS_Page {
-    var $id            = 0;
-    var $key_id        = 0;
-    var $title         = null;
-    var $template      = null;
-    var $create_date   = 0;
-    var $last_updated  = 0;
-    var $front_page    = 0;
+    public $id            = 0;
+    public $key_id        = 0;
+    public $title         = null;
+    public $template      = null;
+    public $create_date   = 0;
+    public $last_updated  = 0;
+    public $front_page    = 0;
 
-    var $_tpl          = null;
-    var $_sections     = array();
-    var $_content      = null;
-    var $_error        = null;
-    var $_key          = null;
+    public $_tpl          = null;
+    public $_sections     = array();
+    public $_content      = null;
+    public $_error        = null;
+    public $_key          = null;
 
     /**
      * Determines whether the menu link will be updated
      * @var boolean
      */
-    var $_title_change = false;
+    public $_title_change = false;
 
-    function PS_Page($id=0)
+    public function __construct($id=0)
     {
         if (!$id) {
             return;
@@ -35,7 +35,7 @@ class PS_Page {
         $this->init();
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('ps_page');
         $result = $db->loadObject($this);
@@ -51,13 +51,13 @@ class PS_Page {
     }
 
 
-    function getSectionContent($section_name)
+    public function getSectionContent($section_name)
     {
         return $this->_sections[$section_name]->content;
     }
 
 
-    function loadSections($form_mode=false, $filler=true)
+    public function loadSections($form_mode=false, $filler=true)
     {
         PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
         PHPWS_Core::initModClass('pagesmith', 'PS_Block.php');
@@ -99,7 +99,7 @@ class PS_Page {
 
         if ($this->id) {
             // load sections from database
-            // load sections should handle template 
+            // load sections should handle template
             $text_db = new PHPWS_DB('ps_text');
             $block_db = new PHPWS_DB('ps_block');
 
@@ -135,7 +135,7 @@ class PS_Page {
     /**
      * Loads a single template into the page object from the file
      */
-    function loadTemplate()
+    public function loadTemplate()
     {
         PHPWS_Core::initModClass('pagesmith', 'PS_Template.php');
         if (!empty($this->template)) {
@@ -147,7 +147,7 @@ class PS_Page {
         }
     }
 
-    function row_tags()
+    public function row_tags()
     {
         $vars['uop'] = 'view_page';
         $vars['id'] = $this->id;
@@ -165,7 +165,7 @@ class PS_Page {
         return $tpl;
     }
 
-    function deleteLink()
+    public function deleteLink()
     {
         $vars['id']  = $this->id;
         $vars['aop'] = 'delete_page';
@@ -175,7 +175,7 @@ class PS_Page {
         return javascript('confirm', $js);
     }
 
-    function editLink($label=null)
+    public function editLink($label=null)
     {
         if (empty($label)) {
             $label = dgettext('pagesmith', 'Edit');
@@ -185,7 +185,7 @@ class PS_Page {
         return PHPWS_Text::secureLink($label, 'pagesmith', $vars);
     }
 
-    function frontPageToggle()
+    public function frontPageToggle()
     {
         if ($this->front_page) {
             $label = dgettext('pagesmith', 'Remove from front');
@@ -204,7 +204,7 @@ class PS_Page {
         return PHPWS_Text::secureLink($label, 'pagesmith', $vars, null, $title);
     }
 
-    function save()
+    public function save()
     {
         if (!$this->id) {
             $this->create_date = mktime();
@@ -231,7 +231,7 @@ class PS_Page {
         PHPWS_Cache::remove($this->cacheKey());
     }
 
-    function saveKey()
+    public function saveKey()
     {
         if (empty($this->key_id)) {
             $key = new Key;
@@ -276,14 +276,14 @@ class PS_Page {
         return true;
     }
 
-    function loadKey()
+    public function loadKey()
     {
         if (empty($this->_key)) {
             $this->_key = new Key($this->key_id);
         }
     }
 
-    function flag()
+    public function flag()
     {
         $this->loadKey();
         if (!$this->front_page && $this->key_id) {
@@ -291,12 +291,12 @@ class PS_Page {
         }
     }
 
-    function cacheKey()
+    public function cacheKey()
     {
         return 'pagesmith' . $this->id;
     }
 
-    function view()
+    public function view()
     {
         if (Current_User::allow('pagesmith', 'edit_page', $this->id)) {
             MiniAdmin::add('pagesmith', $this->editLink(sprintf(dgettext('pagesmith', 'Edit %s'), $this->title)));
@@ -308,7 +308,7 @@ class PS_Page {
         $this->loadTemplate();
         $this->_tpl->loadStyle();
         $this->flag();
-        
+
         if (!empty($content)) {
             // needed for filecabinet
             javascript('open_window');
@@ -327,7 +327,7 @@ class PS_Page {
         return $content;
     }
 
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('ps_page');
         $db->addWhere('id', $this->id);
@@ -348,11 +348,11 @@ class PS_Page {
         return true;
     }
 
-    function url()
+    public function url()
     {
         $vars['uop'] = 'view_page';
         $vars['id'] = $this->id;
-        
+
         if (MOD_REWRITE_ENABLED) {
             return 'pagesmith/' . $vars['id'];
         } else {

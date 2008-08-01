@@ -5,23 +5,23 @@
    */
 
 class PS_Template {
-    var $name = null;
-    var $dir  = null;
-    var $page_path = null;
-    var $data = null;
-    var $file = null;
+    public $name = null;
+    public $dir  = null;
+    public $page_path = null;
+    public $data = null;
+    public $file = null;
 
-    var $title     = null;
-    var $summary   = null;
-    var $thumbnail = null;
-    var $style     = null;
-    var $structure = null;
-    var $folders   = null;
+    public $title     = null;
+    public $summary   = null;
+    public $thumbnail = null;
+    public $style     = null;
+    public $structure = null;
+    public $folders   = null;
 
-    var $error     = null;
-    var $page      = null;
+    public $error     = null;
+    public $page      = null;
 
-    function PS_Template($tpl_name)
+    public function __construct($tpl_name)
     {
         $this->name = $tpl_name;
         $this->dir  = PageSmith::pageTplDir() . $this->name;
@@ -34,7 +34,7 @@ class PS_Template {
         $this->loadTemplate($tpl_name);
     }
 
-    function loadTemplate()
+    public function loadTemplate()
     {
         PHPWS_Core::initCoreClass('XMLParser.php');
         $xml = new XMLParser($this->file);
@@ -67,7 +67,7 @@ class PS_Template {
         }
 
         $this->thumbnail = & $this->data['THUMBNAIL'];
-        
+
         if (isset($this->data['STYLE'])) {
             $this->style     = & $this->data['STYLE'];
         }
@@ -88,7 +88,7 @@ class PS_Template {
         }
     }
 
-    function loadStyle()
+    public function loadStyle()
     {
         if ($this->style) {
             Layout::addStyle('pagesmith', $this->page_path . $this->style);
@@ -96,7 +96,7 @@ class PS_Template {
     }
 
 
-    function pickTpl()
+    public function pickTpl()
     {
         $tpl['THUMBNAIL'] = $this->getPickLink();
         $tpl['TITLE']     = $this->title;
@@ -104,18 +104,18 @@ class PS_Template {
         return $tpl;
     }
 
-    function getPickLink()
+    public function getPickLink()
     {
         $vars['aop'] = 'pick_template';
         $vars['tpl'] = $this->name;
         return PHPWS_Text::secureLink($this->getThumbnail(), 'pagesmith', $vars);
     }
 
-    function getThumbnail()
+    public function getThumbnail()
     {
         $tpl_dir = PHPWS_Template::getTemplateDirectory('pagesmith');
         return sprintf('<img src="%s%s%s" title="%s" />',
-                       $tpl_dir, $this->page_path, 
+                       $tpl_dir, $this->page_path,
                        $this->thumbnail, $this->title);
     }
 }

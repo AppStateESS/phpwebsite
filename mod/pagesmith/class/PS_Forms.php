@@ -5,12 +5,12 @@
    */
 
 class PS_Forms {
-    var $template = null;
-    var $ps       = null;
-    var $tpl_list = null;
-    
+    public $template = null;
+    public $ps       = null;
+    public $tpl_list = null;
 
-    function editPage()
+
+    public function editPage()
     {
         if (!$this->ps->page->id) {
             if (!empty($this->ps->page->_tpl)) {
@@ -25,7 +25,7 @@ class PS_Forms {
     }
 
 
-    function loadTemplates()
+    public function loadTemplates()
     {
         PHPWS_Core::initModClass('pagesmith', 'PS_Template.php');
         if (!empty($this->tpl_list)) {
@@ -49,7 +49,7 @@ class PS_Forms {
         return true;
     }
 
-    function pageLayout()
+    public function pageLayout()
     {
         $page = & $this->ps->page;
 
@@ -88,7 +88,7 @@ class PS_Forms {
     }
 
 
-    function editPageHeader()
+    public function editPageHeader()
     {
         $section_name = $_GET['section'];
 
@@ -113,7 +113,7 @@ class PS_Forms {
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'edit_header.tpl');
     }
 
-    function editPageText()
+    public function editPageText()
     {
         $section_name = $_GET['section'];
 
@@ -137,7 +137,7 @@ class PS_Forms {
     }
 
 
-    function pageList()
+    public function pageList()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
@@ -161,7 +161,7 @@ class PS_Forms {
     }
 
 
-    function pageTemplateForm(&$form)
+    public function pageTemplateForm(PHPWS_Form $form)
     {
         $page = & $this->ps->page;
 
@@ -227,7 +227,7 @@ class PS_Forms {
         $form->addTplTag('PAGE_TEMPLATE', $pg_tpl);
     }
 
-    function pickTemplate()
+    public function pickTemplate()
     {
         Layout::addStyle('pagesmith');
         $this->ps->title = dgettext('pagesmith', 'Pick a template');
@@ -250,7 +250,7 @@ class PS_Forms {
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'pick_template.tpl');
     }
 
-    function pickFolder()
+    public function pickFolder()
     {
         @include 'config/pagesmith/folder_icons.php';
         $folder_list = array();
@@ -282,7 +282,7 @@ class PS_Forms {
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'pick_folder.tpl');
     }
 
-    function settings()
+    public function settings()
     {
         $form = new PHPWS_Form('ps-settings');
         $form->addHidden('module', 'pagesmith');

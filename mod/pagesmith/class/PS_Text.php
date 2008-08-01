@@ -8,7 +8,7 @@ PHPWS_Core::initModClass('pagesmith', 'PS_Section.php');
 
 class PS_Text extends PS_Section {
 
-    function PS_Text($id=0)
+    public function __construct($id=0)
     {
         if (!$id) {
             return;
@@ -18,7 +18,7 @@ class PS_Text extends PS_Section {
         $this->init();
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('ps_text');
         $result = $db->loadObject($this);
@@ -33,12 +33,12 @@ class PS_Text extends PS_Section {
         }
     }
 
-    function setSaved()
+    public function setSaved()
     {
         $_SESSION['PS_Page'][$this->pid][$this->secname] = & $this->content;
     }
 
-    function loadFiller()
+    public function loadFiller()
     {
         static $lorum = null;
 
@@ -53,7 +53,7 @@ class PS_Text extends PS_Section {
         $this->setSaved();
     }
 
-    function loadSaved()
+    public function loadSaved()
     {
         if (isset($_SESSION['PS_Page'][$this->pid][$this->secname])) {
             $this->content = $_SESSION['PS_Page'][$this->pid][$this->secname];
@@ -63,7 +63,7 @@ class PS_Text extends PS_Section {
         }
     }
 
-    function getContent()
+    public function getContent()
     {
         if (empty($this->content)) {
             return null;
@@ -72,7 +72,7 @@ class PS_Text extends PS_Section {
     }
 
 
-    function save($key_id)
+    public function save($key_id)
     {
         $db = new PHPWS_DB('ps_text');
         $result = $db->saveObject($this);
