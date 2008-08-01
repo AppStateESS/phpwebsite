@@ -1,3 +1,6 @@
+1 August 2008
++ Removed old mod_rewrite code.
+
 24 June 2008
 + Fixed create date display bug
 
@@ -153,7 +156,7 @@ Version 1.6.0
   functionality.
 + settings now has obey_publish. This needs to be added to settings.
   If true, then the XMLRPC will acknowledge a false publish as
-  approved=0 
+  approved=0
 
 29 August 2007
 + Added setting to control recent blog entries block
@@ -195,7 +198,7 @@ Version 1.5.0
 + Fixed cache reset
 + Added define to determine the highest amount of blog pages to cache
 + Updated files: templates/settings.tpl, templates/edit.tpl,
-                 conf/config.php 
+                 conf/config.php
 
 
 11 April 2007

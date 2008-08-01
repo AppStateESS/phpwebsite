@@ -12,7 +12,7 @@ class Blog_Form {
     /**
      * @param boolean limited   If true, use anonymous submission form
      */
-    function edit(Blog $blog, $version_id=NULL, $limited=false)
+    public function edit(Blog $blog, $version_id=NULL, $limited=false)
     {
         $form = new PHPWS_Form('edit-blog');
         $form->addHidden('module', 'blog');
@@ -164,7 +164,7 @@ class Blog_Form {
         return PHPWS_Template::process($template, 'blog', 'edit.tpl');
     }
 
-    function settings()
+    public function settings()
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'blog');

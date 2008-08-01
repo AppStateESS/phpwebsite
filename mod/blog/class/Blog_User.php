@@ -14,53 +14,15 @@ if (!defined('MAX_BLOG_CACHE_PAGES')) {
 
 class Blog_User {
 
-    function miniAdminList()
+    public function miniAdminList()
     {
         $vars['action'] = 'admin';
         $vars['tab'] = 'list';
         MiniAdmin::add('blog', PHPWS_Text::secureLink(dgettext('blog', 'Blog list'), 'blog', $vars));
     }
 
-    function fillInForward()
+    public function main()
     {
-        if (@$_GET['var1'] == 'archive') {
-            if (isset($_GET['var2'])) {
-                $year = (int)$_GET['var2'];
-                if ($year > 3000 || $year < 1980) {
-                    return;
-                }
-
-                if (isset($_GET['var3'])) {
-                    $month = (int)$_GET['var3'];
-                    if ($month > 13 || $month < 1) {
-                        return;
-                    }
-                    $_GET['m'] = & $month;
-                }
-
-                if (isset($_GET['var4'])) {
-                    $day = (int)$_GET['var4'];
-                    if ($day > 31 || $day < 1) {
-                        return;
-                    }
-                    $_GET['d'] = & $day;
-                }
-
-                $_GET['y'] = & $year;
-                $_REQUEST['action'] = 'view';
-            }
-        } else {
-            $_REQUEST['action'] = 'view_comments';
-            $_REQUEST['blog_id'] = (int)$_GET['var1'];
-        }
-    }
-
-    function main()
-    {
-        if (isset($_GET['var1'])) {
-            Blog_User::fillInForward();
-        }
-
         if (isset($_REQUEST['blog_id'])) {
             $blog = new Blog((int)$_REQUEST['blog_id']);
         } else {
@@ -149,7 +111,7 @@ class Blog_User {
     }
 
 
-    function postSuggestion(Blog $blog)
+    public function postSuggestion(Blog $blog)
     {
         if (!PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
             return dgettext('blog', 'Site is not accepting anonymous submissions.');
@@ -207,7 +169,7 @@ class Blog_User {
     }
 
 
-    function submitAnonymous(Blog $blog)
+    public function submitAnonymous(Blog $blog)
     {
         PHPWS_Core::initModClass('blog', 'Blog_Form.php');
         $tpl['TITLE'] = dgettext('blog', 'Submit Entry');
@@ -215,13 +177,13 @@ class Blog_User {
         return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
     }
 
-    function totalEntries(PHPWS_DB $db)
+    public function totalEntries(PHPWS_DB $db)
     {
         $db->addColumn('id',null, null, true);
         return $db->select('one');
     }
 
-    function getEntries(PHPWS_DB $db, $limit, $offset=0)
+    public function getEntries(PHPWS_DB $db, $limit, $offset=0)
     {
         $db->resetColumns();
         $db->setLimit($limit, $offset);
@@ -231,7 +193,7 @@ class Blog_User {
         return $db->getObjects('Blog');
     }
 
-    function show($start_date=null, $end_date=null)
+    public function show($start_date=null, $end_date=null)
     {
         $db = new PHPWS_DB('blog_entries');
 
@@ -350,10 +312,10 @@ class Blog_User {
     }
 
     /**
-     * Works with show function
+     * Works with show public function
      * Displays entries outside the page limit
      */
-    function showPast($entries)
+    public function showPast($entries)
     {
         if (empty($entries)) {
             return false;
@@ -370,7 +332,7 @@ class Blog_User {
     /**
      * Displays current blog entries to side box
      */
-    function showSide()
+    public function showSide()
     {
         switch(PHPWS_Settings::get('blog', 'show_recent')) {
         case 0:

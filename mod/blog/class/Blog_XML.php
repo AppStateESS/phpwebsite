@@ -7,14 +7,14 @@
 PHPWS_Core::initCoreClass('xmlrpc.php');
 
 class Blog_XML extends MyServer {
-    var $image_directory = 'images/blog/';
+    public $image_directory = 'images/blog/';
 
-    function Blog_XML()
+    public function Blog_XML()
     {
         $this->MyServer();
     }
 
-    function delete($id)
+    public function delete($id)
     {
         $blog = new Blog($id);
         if ($blog->delete()) {
@@ -25,7 +25,7 @@ class Blog_XML extends MyServer {
         }
     }
 
-    function allow($permission)
+    public function allow($permission)
     {
         if (Current_User::isRestricted('blog')) {
             return new IXR_Error(4010, 'You do not have permission to access Blog.');
@@ -55,7 +55,7 @@ class Blog_XML extends MyServer {
         return true;
     }
 
-    function getRecent($limit)
+    public function getRecent($limit)
     {
         $db = new PHPWS_DB('blog_entries');
         $db->setLimit($limit);
@@ -77,7 +77,7 @@ class Blog_XML extends MyServer {
         return $blogs;
     }
 
-    function getPost($id)
+    public function getPost($id)
     {
         $blog = new Blog($id);
         if (!$blog->id) {
@@ -87,7 +87,7 @@ class Blog_XML extends MyServer {
         }
     }
 
-    function post($id, $details, $publish)
+    public function post($id, $details, $publish)
     {
         // Blog doesn't use excerpt
         extract($details);
@@ -131,7 +131,7 @@ class Blog_XML extends MyServer {
         } else {
             $blog->approved = 1;
         }
-        
+
         $result = $blog->save();
 
         if (PHPWS_Error::logIfError($result)) {
@@ -142,7 +142,7 @@ class Blog_XML extends MyServer {
         }
     }
 
-    function getRPC($blog)
+    public function getRPC($blog)
     {
         $d = array();
         $d['userid']       = $blog->author_id;
@@ -170,13 +170,13 @@ class Blog_XML extends MyServer {
         } else {
             $d['mt_keywords'] = '';
         }
-		
+
         /* Get category list */
         //$d['categories'] = Categories::getCategories('list');
         return $d;
     }
 
-    function getKeyId($id)
+    public function getKeyId($id)
     {
         $blog = new Blog($id);
         if (!$blog->id) {

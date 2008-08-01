@@ -7,25 +7,25 @@
    */
 
 class Blog {
-    var $id             = 0;
-    var $key_id         = 0;
-    var $title          = null;
-    var $summary        = null;
-    var $entry          = null;
-    var $author_id      = 0;
-    var $author         = null;
-    var $create_date    = 0;
-    var $updater_id     = 0;
-    var $updater        = null;
-    var $update_date    = 0;
-    var $allow_comments = 0;
-    var $approved       = 0;
-    var $allow_anon     = 0;
-    var $publish_date   = 0;
-    var $expire_date    = 0;
-    var $image_id       = 0;
-    var $sticky         = 0;
-    var $thumbnail      = 0;
+    public $id             = 0;
+    public $key_id         = 0;
+    public $title          = null;
+    public $summary        = null;
+    public $entry          = null;
+    public $author_id      = 0;
+    public $author         = null;
+    public $create_date    = 0;
+    public $updater_id     = 0;
+    public $updater        = null;
+    public $update_date    = 0;
+    public $allow_comments = 0;
+    public $approved       = 0;
+    public $allow_anon     = 0;
+    public $publish_date   = 0;
+    public $expire_date    = 0;
+    public $image_id       = 0;
+    public $sticky         = 0;
+    public $thumbnail      = 0;
     /**
      * default    : let image control linking
      * readmore   : link image to complete entry
@@ -33,11 +33,11 @@ class Blog {
      * none       : don't link even if image has one
      * (url)      : http address
      */
-    var $image_link     = 'default';
-    var $_error         = null;
-    var $_comment_approval = 0;
+    public $image_link     = 'default';
+    public $_error         = null;
+    public $_comment_approval = 0;
 
-    function Blog($id=null)
+    public function __construct($id=null)
     {
         $this->update_date = mktime();
 
@@ -54,7 +54,7 @@ class Blog {
         }
     }
 
-    function init()
+    public function init()
     {
         if (!$this->id) {
             return false;
@@ -69,7 +69,7 @@ class Blog {
         }
     }
 
-    function getFile($thumbnail=false)
+    public function getFile($thumbnail=false)
     {
         if (!$this->image_id) {
             return null;
@@ -115,13 +115,13 @@ class Blog {
         }
     }
 
-    function setEntry($entry)
+    public function setEntry($entry)
     {
         $this->entry = PHPWS_Text::parseInput($entry);
     }
 
 
-    function getEntry($print=false)
+    public function getEntry($print=false)
     {
         if (empty($this->entry)) {
             return null;
@@ -134,13 +134,13 @@ class Blog {
         }
     }
 
-    function setSummary($summary)
+    public function setSummary($summary)
     {
         $this->summary = PHPWS_Text::parseInput($summary);
     }
 
 
-    function getSummary($print=false)
+    public function getSummary($print=false)
     {
         if (empty($this->summary)) {
             return null;
@@ -154,17 +154,17 @@ class Blog {
     }
 
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = strip_tags($title);
     }
 
-    function getLocalDate($type=BLOG_VIEW_DATE_FORMAT)
+    public function getLocalDate($type=BLOG_VIEW_DATE_FORMAT)
     {
         return strftime($type, PHPWS_Time::getUserTime($this->create_date));
     }
 
-    function getPublishDate($type=BLOG_VIEW_DATE_FORMAT)
+    public function getPublishDate($type=BLOG_VIEW_DATE_FORMAT)
     {
         if ($this->publish_date) {
             return strftime($type, $this->publish_date);
@@ -173,7 +173,7 @@ class Blog {
         }
     }
 
-    function getExpireDate()
+    public function getExpireDate()
     {
         if ($this->expire_date) {
             return strftime('%Y/%m/%d %H:00', $this->expire_date);
@@ -182,19 +182,19 @@ class Blog {
         }
     }
 
-    function relativeCreateDate($type=BLOG_VIEW_DATE_FORMAT)
+    public function relativeCreateDate($type=BLOG_VIEW_DATE_FORMAT)
     {
         return strftime($type, PHPWS_Time::getServerTime($this->create_date));
     }
 
 
-    function relativePublishDate($type=BLOG_VIEW_DATE_FORMAT)
+    public function relativePublishDate($type=BLOG_VIEW_DATE_FORMAT)
     {
         return strftime($type, PHPWS_Time::getServerTime($this->publish_date));
     }
 
 
-    function relativeExpireDate($type=BLOG_VIEW_DATE_FORMAT)
+    public function relativeExpireDate($type=BLOG_VIEW_DATE_FORMAT)
     {
         if (!$this->expire_date) {
             return dgettext('blog', 'No expiration');
@@ -204,13 +204,13 @@ class Blog {
     }
 
 
-    function save()
+    public function save()
     {
         PHPWS_Core::initModClass('version', 'Version.php');
         $db = new PHPWS_DB('blog_entries');
         if (empty($this->id)) {
             $this->create_date = mktime();
-            
+
             if (!$this->publish_date) {
                 $this->publish_date = $this->create_date;
             }
@@ -277,7 +277,7 @@ class Blog {
         return $version->save();
     }
 
-    function saveKey()
+    public function saveKey()
     {
         if (empty($this->key_id)) {
             $key = new Key;
@@ -306,7 +306,7 @@ class Blog {
         return $key;
     }
 
-    function getViewLink($bare=false){
+    public function getViewLink($bare=false){
         if ($bare) {
             if (MOD_REWRITE_ENABLED) {
                 return 'blog/' . $this->id;
@@ -318,7 +318,7 @@ class Blog {
         }
     }
 
-    function brief_view()
+    public function brief_view()
     {
         $template['TITLE'] = $this->title;
         $template['LOCAL_DATE']  = $this->getPublishDate();
@@ -345,7 +345,7 @@ class Blog {
      * @param boolean edit       If true, show edit link
      * @param boolean summarized If true, this is a summarized entry
      */
-    function view($edit=true, $summarized=true)
+    public function view($edit=true, $summarized=true)
     {
         if (!$this->id) {
             PHPWS_Core::errorPage(404);
@@ -356,7 +356,7 @@ class Blog {
         $key = new Key($this->key_id);
 
         if (!$key->allowView()) {
-            Current_User::requireLogin();            
+            Current_User::requireLogin();
         }
 
         $template['TITLE'] = sprintf('<a href="%s" rel="bookmark">%s</a>',
@@ -387,7 +387,7 @@ class Blog {
 
         $template['IMAGE'] = $this->getFile($this->thumbnail && $summarized);
 
-        if ( $edit && 
+        if ( $edit &&
              ( Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ||
                ( Current_User::allow('blog', 'edit_blog') && $this->author_id == Current_User::getId() )
                ) ) {
@@ -399,12 +399,12 @@ class Blog {
             $template['EDIT_LINK'] = PHPWS_Text::secureLink(dgettext('blog', 'Edit'), 'blog', $vars);
             if (!$summarized) {
                 MiniAdmin::add('blog', array(PHPWS_Text::secureLink(dgettext('blog', 'Edit blog'), 'blog', $vars)));
-            }        
+            }
         }
-        
+
         if ($this->allow_comments) {
             $comments = Comments::getThread($key);
-           
+
             if ($summarized && !empty($comments)) {
                 $link = $comments->countComments(true);
                 if (MOD_REWRITE_ENABLED) {
@@ -418,7 +418,7 @@ class Blog {
                 }
 
                 $last_poster = $comments->getLastPoster();
-                
+
                 if (!empty($last_poster)) {
                     $template['LAST_POSTER_LABEL'] = dgettext('blog', 'Last poster');
                     $template['LAST_POSTER'] = $last_poster;
@@ -464,7 +464,7 @@ class Blog {
 
 
 
-    function getPagerTags()
+    public function getPagerTags()
     {
         $template['TITLE'] = sprintf('<a href="%s">%s</a>', $this->getViewLink(true), $this->title);
         $template['CREATE_DATE'] = $this->relativeCreateDate();
@@ -475,7 +475,7 @@ class Blog {
         return $template;
     }
 
-    function getListAction(){
+    public function getListAction(){
         $link['action'] = 'admin';
         $link['blog_id'] = $this->id;
 
@@ -485,7 +485,7 @@ class Blog {
             $link['command'] = 'edit';
             $list[] = PHPWS_Text::secureLink(dgettext('blog', 'Edit'), 'blog', $link);
         }
-    
+
         if (Current_User::allow('blog', 'delete_blog')){
             $link['command'] = 'delete';
             $confirm_vars['QUESTION'] = dgettext('blog', 'Are you sure you want to permanently delete this blog entry?');
@@ -515,11 +515,11 @@ class Blog {
         return $response;
     }
 
-    function getListSummary(){
+    public function getListSummary(){
         return substr(ltrim(strip_tags(str_replace('<br />', ' ', $this->getSummary(true)))), 0, 60);
     }
 
-    function post_entry()
+    public function post_entry()
     {
         $set_permissions = false;
 
@@ -611,7 +611,7 @@ class Blog {
         return true;
     }
 
-    function delete()
+    public function delete()
     {
         $all_is_well = true;
 

@@ -14,7 +14,7 @@ if (!defined('MAX_BLOG_CACHE_PAGES')) {
 
 class Blog_Admin {
 
-    function main()
+    public function main()
     {
         if (!Current_User::authorized('blog')) {
             Current_User::disallow(dgettext('blog', 'User attempted access to Blog administration.'));
@@ -289,7 +289,7 @@ class Blog_Admin {
     }
 
 
-    function postSettings()
+    public function postSettings()
     {
         if (isset($_POST['show_recent'])) {
             PHPWS_Settings::set('blog', 'show_recent', $_POST['show_recent']);
@@ -377,7 +377,7 @@ class Blog_Admin {
     }
 
 
-    function viewVersion($version_id)
+    public function viewVersion($version_id)
     {
         $version = new Version('blog_entries', (int)$_REQUEST['version_id']);
         $blog = new Blog;
@@ -405,14 +405,14 @@ class Blog_Admin {
         return PHPWS_Template::process($template, 'blog', 'version_view.tpl');
     }
 
-    function setForward($message, $command)
+    public function setForward($message, $command)
     {
         $_SESSION['Blog_Forward'] = $message;
         $link = PHPWS_Text::linkAddress('blog', array('action'=>'admin', 'command' => $command), TRUE);
         PHPWS_Core::reroute($link);
     }
 
-    function getForward()
+    public function getForward()
     {
         if (!isset($_SESSION['Blog_Forward'])) {
             return NULL;
@@ -423,7 +423,7 @@ class Blog_Admin {
         return $message;
     }
 
-    function cpanel()
+    public function cpanel()
     {
         PHPWS_Core::initModClass('version', 'Version.php');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
@@ -463,7 +463,7 @@ class Blog_Admin {
     }
 
 
-    function entry_list()
+    public function entry_list()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         $db = new PHPWS_DB('blog_stickies');
@@ -491,7 +491,7 @@ class Blog_Admin {
         return $content;
     }
 
-    function _loadCategory(&$cat_item, Blog $blog, $version=NULL)
+    public function _loadCategory(&$cat_item, Blog $blog, $version=NULL)
     {
         $cat_item->setItemId($blog->id);
         $cat_item->setTitle($blog->getTitle() . ' - ' . $blog->getFormatedDate());
@@ -508,7 +508,7 @@ class Blog_Admin {
         }
     }
 
-    function restoreVersionList(&$blog)
+    public function restoreVersionList(&$blog)
     {
         PHPWS_Core::initModClass('version', 'Restore.php');
         $vars['action'] = 'admin';
@@ -526,19 +526,19 @@ class Blog_Admin {
         return $result;
     }
 
-    function restoreBlog($version_id)
+    public function restoreBlog($version_id)
     {
         $version = new Version('blog_entries', $version_id);
         $version->restore();
     }
 
-    function removePrevBlog($version_id)
+    public function removePrevBlog($version_id)
     {
         $version = new Version('blog_entries', $version_id);
         $version->delete();
     }
 
-    function sticky($blog)
+    public function sticky($blog)
     {
         $db = new PHPWS_DB('blog_entries');
         $db->addWhere('sticky', 0, '>');
@@ -564,7 +564,7 @@ class Blog_Admin {
         $db->update();
     }
 
-    function unsticky($blog)
+    public function unsticky($blog)
     {
         $blog->sticky = 0;
         $blog->save();
@@ -591,7 +591,7 @@ class Blog_Admin {
     /**
      * Clears Blog's anonymous cache
      */
-    function resetCache()
+    public function resetCache()
     {
         for ($i=1; $i <= MAX_BLOG_CACHE_PAGES; $i++) {
             PHPWS_Cache::remove(BLOG_CACHE_KEY . $i);
