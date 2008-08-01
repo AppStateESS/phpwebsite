@@ -8,14 +8,14 @@
  */
 
 class pgsql_PHPWS_SQL {
-    var $portability = null;
+    public $portability = null;
 
-    function pgsql_PHPWS_SQL()
+    public function __construct()
     {
         $this->portability = DB_PORTABILITY_RTRIM;
     }
 
-    function export(&$info){
+    public function export(&$info){
         switch ($info['type']){
 
         case 'int8':
@@ -51,15 +51,15 @@ class pgsql_PHPWS_SQL {
                 $info['flags'] = 'NULL';
             }
             break;
-    
+
         case 'date':
             $setting = 'DATE';
             break;
-    
+
         case 'real':
             $setting = 'FLOAT';
             break;
-    
+
         case 'timestamp':
             $setting = 'TIMESTAMP';
             $info['flags'] = NULL;
@@ -72,7 +72,7 @@ class pgsql_PHPWS_SQL {
         return $setting;
     }
 
-    function renameColumn($table, $column_name, $new_name, $specs)
+    public function renameColumn($table, $column_name, $new_name, $specs)
     {
         $table = PHPWS_DB::addPrefix($table);
         $sql = sprintf('ALTER TABLE %s RENAME COLUMN %s TO %s',
@@ -81,7 +81,7 @@ class pgsql_PHPWS_SQL {
     }
 
 
-    function getLimit($limit)
+    public function getLimit($limit)
     {
         $sql[] = 'LIMIT';
         $sql[] = $limit['total'];
@@ -92,7 +92,7 @@ class pgsql_PHPWS_SQL {
         return implode(' ', $sql);
     }
 
-    function readyImport(&$query){
+    public function readyImport(&$query){
 
         $from = array('/datetime/i',
                       '/double\((\d+),(\d+)\)/Uie'
@@ -111,12 +111,12 @@ class pgsql_PHPWS_SQL {
         }
     }
 
-    function randomOrder()
+    public function randomOrder()
     {
         return 'random()';
     }
 
-    function dropSequence($table)
+    public function dropSequence($table)
     {
         $table = PHPWS_DB::addPrefix($table);
         $result = $GLOBALS['PHPWS_DB']['connection']->query("DROP SEQUENCE $table");
@@ -128,17 +128,17 @@ class pgsql_PHPWS_SQL {
     }
 
 
-    function dropTableIndex($name, $table=NULL)
+    public function dropTableIndex($name, $table=NULL)
     {
      	return sprintf('DROP INDEX %s', $name);
     }
 
-    function getLike()
+    public function getLike()
     {
         return 'ILIKE';
     }
 
-    function getRegexp()
+    public function getRegexp()
     {
         return '~';
     }
@@ -147,7 +147,7 @@ class pgsql_PHPWS_SQL {
     /**
      * Postgres doesn't accept "after" or "before"
      */
-    function addColumn($table, $column, $parameter, $after=null)
+    public function addColumn($table, $column, $parameter, $after=null)
     {
         $parameter = strtolower($parameter);
         $parameter = preg_replace('/ {2,}/', ' ', trim($parameter));
@@ -170,7 +170,7 @@ class pgsql_PHPWS_SQL {
         default:
             $number = false;
         }
-        
+
         $length = count($pararray);
 
         for ($i=0; $i < $length; $i++) {
@@ -229,7 +229,7 @@ class pgsql_PHPWS_SQL {
         return $extra;
     }
 
-    function alterTableColumn($table, $column, $parameter)
+    public function alterTableColumn($table, $column, $parameter)
     {
         $backup = '_bak_' . $column;
 
@@ -240,7 +240,7 @@ class pgsql_PHPWS_SQL {
         return $sql;
     }
 
-    function lockTables($locked)
+    public function lockTables($locked)
     {
         foreach ($locked as $lck) {
             if ($lck['status'] == 'read') {
@@ -253,7 +253,7 @@ class pgsql_PHPWS_SQL {
         return sprintf("BEGIN WORK;\nLOCK TABLES %s", implode(', ', $tbls));
     }
 
-    function unlockTables()
+    public function unlockTables()
     {
         return 'COMMIT WORK;';
     }

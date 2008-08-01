@@ -9,7 +9,7 @@
  */
 
 class mysql_PHPWS_SQL {
-    function export(&$info)
+    public function export(&$info)
     {
         switch ($info['type']){
         case 'int':
@@ -52,7 +52,7 @@ class mysql_PHPWS_SQL {
     }
 
 
-    function renameColumn($table, $column_name, $new_name, $specs)
+    public function renameColumn($table, $column_name, $new_name, $specs)
     {
         $table = PHPWS_DB::addPrefix($table);
         $sql = sprintf('ALTER TABLE %s CHANGE %s %s %s',
@@ -60,7 +60,7 @@ class mysql_PHPWS_SQL {
         return $sql;
     }
 
-    function getLimit($limit)
+    public function getLimit($limit)
     {
         if (!isset($limit['total'])) {
             return null;
@@ -73,17 +73,17 @@ class mysql_PHPWS_SQL {
         }
     }
 
-    function readyImport(&$query)
+    public function readyImport(&$query)
     {
         return;
     }
 
-    function randomOrder()
+    public function randomOrder()
     {
         return 'rand()';
     }
 
-    function dropSequence($table)
+    public function dropSequence($table)
     {
         $table = PHPWS_DB::addPrefix($table);
         $result = $GLOBALS['PHPWS_DB']['connection']->query("DROP TABLE $table");
@@ -95,23 +95,23 @@ class mysql_PHPWS_SQL {
     }
 
 
-    function dropTableIndex($name, $table)
+    public function dropTableIndex($name, $table)
     {
         $table = PHPWS_DB::addPrefix($table);
         return sprintf('DROP INDEX %s ON %s', $name, $table);
     }
 
-    function getLike()
+    public function getLike()
     {
         return 'LIKE';
     }
 
-    function getRegexp()
+    public function getRegexp()
     {
         return 'REGEXP';
     }
 
-    function addColumn($table, $column, $parameter, $after=null)
+    public function addColumn($table, $column, $parameter, $after=null)
     {
         if (!empty($after)) {
             if (strtolower($after) == 'first') {

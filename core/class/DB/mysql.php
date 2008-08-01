@@ -8,13 +8,9 @@
  */
 
 class mysql_PHPWS_SQL {
-    var $portability = null;
+    public $portability = null;
 
-    function mysql_PHPWS_SQL()
-    {
-    }
-
-    function export(&$info)
+    public function export(&$info)
     {
         switch ($info['type']){
         case 'int':
@@ -23,12 +19,12 @@ class mysql_PHPWS_SQL {
             else
                 $setting = 'SMALLINT';
             break;
-    
+
         case 'blob':
             $setting = 'TEXT';
             $info['flags'] = NULL;
             break;
-    
+
         case 'string':
             if (!is_numeric($info['len']) || $info['len'] > 255) {
                 $length = 255;
@@ -37,15 +33,15 @@ class mysql_PHPWS_SQL {
             }
             $setting = "CHAR($length)";
             break;
-    
+
         case 'date':
             $setting = 'DATE';
             break;
-    
+
         case 'real':
             $setting = 'FLOAT';
             break;
-    
+
         case 'timestamp':
             $setting = 'TIMESTAMP';
             $info['flags'] = NULL;
@@ -57,7 +53,7 @@ class mysql_PHPWS_SQL {
     }
 
 
-    function renameColumn($table, $column_name, $new_name, $specs)
+    public function renameColumn($table, $column_name, $new_name, $specs)
     {
         $table = PHPWS_DB::addPrefix($table);
         $sql = sprintf('ALTER TABLE %s CHANGE %s %s %s',
@@ -65,7 +61,7 @@ class mysql_PHPWS_SQL {
         return $sql;
     }
 
-    function getLimit($limit)
+    public function getLimit($limit)
     {
         if (!isset($limit['total'])) {
             return null;
@@ -78,17 +74,17 @@ class mysql_PHPWS_SQL {
         }
     }
 
-    function readyImport(&$query)
+    public function readyImport(&$query)
     {
         return;
     }
 
-    function randomOrder()
+    public function randomOrder()
     {
         return 'rand()';
     }
 
-    function dropSequence($table)
+    public function dropSequence($table)
     {
         $table = PHPWS_DB::addPrefix($table);
         $result = $GLOBALS['PHPWS_DB']['connection']->query("DROP TABLE $table");
@@ -100,23 +96,23 @@ class mysql_PHPWS_SQL {
     }
 
 
-    function dropTableIndex($name, $table)
+    public function dropTableIndex($name, $table)
     {
         $table = PHPWS_DB::addPrefix($table);
         return sprintf('DROP INDEX %s ON %s', $name, $table);
     }
 
-    function getLike()
+    public function getLike()
     {
         return 'LIKE';
     }
 
-    function getRegexp()
+    public function getRegexp()
     {
         return 'REGEXP';
     }
 
-    function addColumn($table, $column, $parameter, $after=null)
+    public function addColumn($table, $column, $parameter, $after=null)
     {
         if (!empty($after)) {
             if (strtolower($after) == 'first') {
@@ -131,7 +127,7 @@ class mysql_PHPWS_SQL {
         return array("ALTER TABLE $table ADD $column $parameter $location;");
     }
 
-    function lockTables($locked)
+    public function lockTables($locked)
     {
         foreach ($locked as $lck) {
             $tbls[] = sprintf('%s %s', $lck['table'], strtoupper($lck['status']));
@@ -140,13 +136,13 @@ class mysql_PHPWS_SQL {
         return sprintf('LOCK TABLES %s', implode(', ', $tbls));
     }
 
-    function unlockTables()
+    public function unlockTables()
     {
         return 'UNLOCK TABLES;';
     }
 
-    
-    function alterTableColumn($table, $column, $parameter)
+
+    public function alterTableColumn($table, $column, $parameter)
     {
         $sql = "ALTER TABLE $table CHANGE $column $column $parameter";
         return array($sql);
