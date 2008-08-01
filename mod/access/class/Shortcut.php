@@ -7,13 +7,13 @@
 PHPWS_Core::requireConfig('access');
 
 class Access_Shortcut {
-    var $id       = 0;
-    var $keyword  = null;
-    var $url      = null;
-    var $active   = 1;
-    var $_error   = null;
+    public $id       = 0;
+    public $keyword  = null;
+    public $url      = null;
+    public $active   = 1;
+    public $_error   = null;
 
-    function Access_Shortcut($id=0)
+    public function Access_Shortcut($id=0)
     {
         if ($id == 0) {
             return;
@@ -23,7 +23,7 @@ class Access_Shortcut {
         $this->init();
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('access_shortcuts');
         $result = $db->loadObject($this);
@@ -36,7 +36,7 @@ class Access_Shortcut {
         return $result;
     }
 
-    function loadGet()
+    public function loadGet()
     {
         $url = explode(':', $this->url);
         $_REQUEST['module'] = $_GET['module'] = array_shift($url);
@@ -49,7 +49,7 @@ class Access_Shortcut {
         }
     }
 
-    function postShortcut()
+    public function postShortcut()
     {
         if (!isset($_POST['keyword'])) {
             return PHPWS_Error::get(SHORTCUT_MISSING_KEYWORD, 'access', 'Shortcut::postShortcut');
@@ -63,7 +63,7 @@ class Access_Shortcut {
                 $this->setUrl($key->module, $key->item_id);
             }
         }
-        
+
         $result = $this->setKeyword($_POST['keyword']);
         if (PEAR::isError($result) || $result == FALSE) {
             return $result;
@@ -72,17 +72,17 @@ class Access_Shortcut {
         return TRUE;
     }
 
-    function setUrl($module, $id)
+    public function setUrl($module, $id)
     {
         $this->url = sprintf('%s:%s', $module, $id);
     }
 
-    function getUrl()
+    public function getUrl()
     {
         return sprintf('<a href="%s">%s</a>', $this->keyword, $this->keyword);
     }
 
-    function setKeyword($keyword)
+    public function setKeyword($keyword)
     {
         $keyword = preg_replace('/[^\w\s\-]/', '', strtolower($keyword));
         $keyword = preg_replace('/\s/', '-', $keyword);
@@ -109,7 +109,7 @@ class Access_Shortcut {
         return TRUE;
     }
 
-    function rowTags()
+    public function rowTags()
     {
         $js['QUESTION'] = dgettext('access', 'Are you sure you want to delete this shortcut?');
         $js['ADDRESS']  = sprintf('index.php?module=access&amp;command=delete_shortcut&amp;shortcut_id=%s&amp;authkey=%s',
@@ -142,7 +142,7 @@ class Access_Shortcut {
         return $template;
     }
 
-    function save()
+    public function save()
     {
         if (empty($this->keyword)) {
             return PHPWS_Error::get(SHORTCUT_MISSING_KEYWORD, 'access', 'Shortcut::save');
@@ -156,7 +156,7 @@ class Access_Shortcut {
         return $db->saveObject($this);
     }
 
-    function getRewrite($full=FALSE, $linkable=TRUE)
+    public function getRewrite($full=FALSE, $linkable=TRUE)
     {
         if ($full) {
             $address[] = PHPWS_Core::getHomeHttp();
@@ -171,7 +171,7 @@ class Access_Shortcut {
         }
     }
 
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('access_shortcuts');
         $db->addWhere('id', $this->id);

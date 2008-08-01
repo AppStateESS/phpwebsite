@@ -6,13 +6,13 @@
    */
 
 class Access_Allow_Deny {
-    var $id            = 0;
-    var $ip_address    = NULL;
-    var $allow_or_deny = 0; // 0 deny | 1 allow
-    var $active        = 0;
-    var $_db           = NULL;
+    public $id            = 0;
+    public $ip_address    = NULL;
+    public $allow_or_deny = 0; // 0 deny | 1 allow
+    public $active        = 0;
+    public $_db           = NULL;
 
-    function Access_Allow_Deny($id=0)
+    public function Access_Allow_Deny($id=0)
     {
         if (empty($id)) {
             return;
@@ -22,14 +22,14 @@ class Access_Allow_Deny {
         $result = $this->init();
     }
 
-    function init()
+    public function init()
     {
         $this->resetDB();
         $this->_db->addWhere('id', $this->id);
         return $this->_db->loadObject($this);
     }
 
-    function resetDB()
+    public function resetDB()
     {
         if (empty($this->_db)) {
             $this->_db = new PHPWS_DB('access_allow_deny');
@@ -38,7 +38,7 @@ class Access_Allow_Deny {
         }
     }
 
-    function setIpAddress($ip_address)
+    public function setIpAddress($ip_address)
     {
         if (preg_match('/[^\d\.]/', $ip_address)) {
             return FALSE;
@@ -77,7 +77,7 @@ class Access_Allow_Deny {
         return TRUE;
     }
 
-    function inRange($ip_list, $in_range) {
+    public function inRange($ip_list, $in_range) {
 
         $compare = explode('.', $in_range);
 
@@ -89,11 +89,11 @@ class Access_Allow_Deny {
         case 3:
             if ((int)$ip_list[2] != $compare[2]) {
                 break;
-            } 
+            }
         case 2:
             if ((int)$ip_list[1] != $compare[1]) {
                 break;
-            } 
+            }
         case 1:
             if ((int)$ip_list[0] != $compare[0]) {
                 break;
@@ -101,18 +101,18 @@ class Access_Allow_Deny {
         default:
             return TRUE;
         }
-        
+
         return FALSE;
     }
 
 
-    function save()
+    public function save()
     {
         $this->resetDB();
         return $this->_db->saveObject($this);
     }
 
-    function delete()
+    public function delete()
     {
         $this->resetDB();
         $this->_db->addWhere('id', $this->id);

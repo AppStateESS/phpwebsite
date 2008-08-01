@@ -19,7 +19,7 @@ PHPWS_Core::requireConfig('access');
 
 class Access {
 
-    function main()
+    public function main()
     {
         $title = $content = NULL;
 
@@ -163,7 +163,7 @@ class Access {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
-    function saveShortcut(Access_Shortcut $shortcut)
+    public function saveShortcut(Access_Shortcut $shortcut)
     {
         $result = $shortcut->save();
         if (PEAR::isError($result)) {
@@ -184,7 +184,7 @@ class Access {
         return PHPWS_Template::process($tpl, 'access', 'box.tpl');
     }
 
-    function getAllowDenyList()
+    public function getAllowDenyList()
     {
         $content = array();
         PHPWS_Core::initModClass('access', 'Allow_Deny.php');
@@ -265,7 +265,7 @@ class Access {
 
     }
 
-    function loadShortcut($title)
+    public function loadShortcut($title)
     {
         PHPWS_Core::initModClass('access', 'Shortcut.php');
         $shortcut = new Access_Shortcut;
@@ -277,7 +277,7 @@ class Access {
         }
     }
 
-    function shortcut(Key $key)
+    public function shortcut(Key $key)
     {
         $vars['command'] = 'edit_shortcut';
         $vars['key_id']  = $key->id;
@@ -290,7 +290,7 @@ class Access {
     }
 
 
-    function cpanel()
+    public function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link['link'] = 'index.php?module=access';
@@ -317,14 +317,14 @@ class Access {
 
     }
 
-    function getAllowDeny()
+    public function getAllowDeny()
     {
         $db = new PHPWS_DB('access_allow_deny');
         $db->addOrder('ip_address');
         return $db->getObjects('Access_Allow_Deny');
     }
 
-    function getShortcuts($active_only=false)
+    public function getShortcuts($active_only=false)
     {
         PHPWS_Core::initModClass('access', 'Shortcut.php');
         $db = new PHPWS_DB('access_shortcuts');
@@ -335,14 +335,14 @@ class Access {
         return $db->getObjects('Access_Shortcut');
     }
 
-    function sendMessage($message, $command)
+    public function sendMessage($message, $command)
     {
         $_SESSION['Access_message'] = $message;
         PHPWS_Core::reroute(sprintf('index.php?module=access&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
         exit();
     }
 
-    function getMessage()
+    public function getMessage()
     {
         $message = NULL;
         if (isset($_SESSION['Access_message'])) {
@@ -352,7 +352,7 @@ class Access {
         return $message;
     }
 
-    function postShortcutList()
+    public function postShortcutList()
     {
         if (!Current_User::authorized('access')) {
             Current_User::disallow();
@@ -388,7 +388,7 @@ class Access {
         }
     }
 
-    function postDenyAllow()
+    public function postDenyAllow()
     {
         if (!Current_User::authorized('access', 'admin_options')) {
             Current_User::disallow();
@@ -497,7 +497,7 @@ class Access {
         return true;
     }
 
-    function forward()
+    public function forward()
     {
         PHPWS_Core::initModClass('access', 'Shortcut.php');
         $db = new PHPWS_DB('access_shortcuts');
@@ -509,7 +509,7 @@ class Access {
         }
     }
 
-    function allowDeny()
+    public function allowDeny()
     {
         if (!PHPWS_Settings::get('access', 'allow_deny_enabled')) {
             $_SESSION['Access_Allow_Deny'] = true;
@@ -542,7 +542,7 @@ class Access {
         return;
     }
 
-    function comparePermissions($permission_array, $ip)
+    public function comparePermissions($permission_array, $ip)
     {
         foreach ($permission_array as $ip_compare) {
             $ip_compare = Access::inflateIp($ip_compare);
@@ -554,7 +554,7 @@ class Access {
         return false;
     }
 
-    function inflateIp($address)
+    public function inflateIp($address)
     {
         $i = explode('.', $address);
         foreach ($i as $sub) {
@@ -565,14 +565,14 @@ class Access {
         return implode('.', $newip);
     }
 
-    function denied()
+    public function denied()
     {
         $message = PHPWS_Settings::get('access', dgettext('access', 'You are denied access to this site.'));
         Layout::nakedDisplay($message, dgettext('access', 'Sorry'));
     }
 
 
-    function isDenied($ip)
+    public function isDenied($ip)
     {
         PHPWS_Core::initModClass('access', 'Allow_Deny.php');
         $ad = new Access_Allow_Deny;
@@ -595,7 +595,7 @@ class Access {
     /**
      * Adds an ip address to the allow or deny database
      */
-    function addIP($ip, $allow_or_deny=false)
+    public function addIP($ip, $allow_or_deny=false)
     {
         $allow_or_deny = (int)(bool)$allow_or_deny;
 
@@ -622,7 +622,7 @@ class Access {
         return $ad->save();
     }
 
-    function removeIp($ip, $allow_or_deny=false)
+    public function removeIp($ip, $allow_or_deny=false)
     {
         $allow_or_deny = (int)(bool)$allow_or_deny;
 

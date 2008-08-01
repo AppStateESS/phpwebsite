@@ -10,7 +10,7 @@
 
 class Access_Forms {
 
-    function shortcuts()
+    public function shortcuts()
     {
         if (!Current_User::allow('access')) {
             Current_User::disallow();
@@ -58,7 +58,7 @@ class Access_Forms {
         return $content;
     }
 
-    function denyAllowForm()
+    public function denyAllowForm()
     {
         if (!Current_User::allow('access', 'admin_options')) {
             Current_User::disallow();
@@ -187,7 +187,7 @@ class Access_Forms {
         return PHPWS_Template::process($template, 'access', 'forms/allow_deny.tpl');
     }
 
-    function shortcut_menu()
+    public function shortcut_menu()
     {
         PHPWS_Core::initModClass('access', 'Shortcut.php');
         @$sc_id = $_REQUEST['sc_id'];
