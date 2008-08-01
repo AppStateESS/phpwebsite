@@ -163,7 +163,7 @@ class Access {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
-    function saveShortcut(&$shortcut)
+    function saveShortcut(Access_Shortcut $shortcut)
     {
         $result = $shortcut->save();
         if (PEAR::isError($result)) {
@@ -277,7 +277,7 @@ class Access {
         }
     }
 
-    function shortcut(&$key)
+    function shortcut(Key $key)
     {
         $vars['command'] = 'edit_shortcut';
         $vars['key_id']  = $key->id;
