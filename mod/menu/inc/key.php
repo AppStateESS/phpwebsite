@@ -8,7 +8,7 @@
  */
 
 
-function menu_unregister_key(&$key)
+function menu_unregister_key(Key $key)
 {
     PHPWS_Core::initModClass('menu', 'Menu_Link.php');
 

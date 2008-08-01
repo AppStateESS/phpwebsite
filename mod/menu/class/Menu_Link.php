@@ -13,21 +13,21 @@ if (!defined('NO_POST')) {
 }
 
 class Menu_Link {
-    var $id         = 0;
-    var $menu_id    = 0;
-    var $key_id     = NULL;
-    var $title      = NULL;
-    var $url        = NULL;
-    var $parent     = 0;
-    var $active     = 1;
-    var $link_order = 1;
-    var $_menu      = NULL;
-    var $_error     = NULL;
-    var $_children  = NULL;
-    var $_db        = NULL;
-    var $_key       = NULL;
+    public $id         = 0;
+    public $menu_id    = 0;
+    public $key_id     = NULL;
+    public $title      = NULL;
+    public $url        = NULL;
+    public $parent     = 0;
+    public $active     = 1;
+    public $link_order = 1;
+    public $_menu      = NULL;
+    public $_error     = NULL;
+    public $_children  = NULL;
+    public $_db        = NULL;
+    public $_key       = NULL;
 
-    function Menu_Link($id=NULL)
+    public function __construct($id=NULL)
     {
         if (empty($id)) {
             return;
@@ -41,7 +41,7 @@ class Menu_Link {
         }
     }
 
-    function init()
+    public function init()
     {
         $db = $this->getDB();
         $db = new PHPWS_DB('menu_links');
@@ -56,7 +56,7 @@ class Menu_Link {
         $this->loadChildren();
     }
 
-    function getDB()
+    public function getDB()
         {
             if (empty($this->_db)) {
                 $this->_db = new PHPWS_DB('menu_links');
@@ -68,7 +68,7 @@ class Menu_Link {
     /**
      * Grabs all the child links under the current link
      */
-    function loadChildren()
+    public function loadChildren()
     {
         $db = $this->getDB();
         $db->addWhere('parent', $this->id);
@@ -85,17 +85,17 @@ class Menu_Link {
         }
     }
 
-    function setParent($parent)
+    public function setParent($parent)
     {
         $this->parent = (int)$parent;
     }
 
-    function setKeyId($key_id)
+    public function setKeyId($key_id)
     {
         $this->key_id = (int)$key_id;
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $title = strip_tags(trim($title));
 
@@ -107,12 +107,12 @@ class Menu_Link {
         $this->title = htmlentities($title, ENT_QUOTES, 'UTF-8');
     }
 
-    function getTitle()
+    public function getTitle()
     {
         return PHPWS_Text::decodeText($this->title);
     }
 
-    function setUrl($url)
+    public function setUrl($url)
     {
         if (!preg_match('/^index.php/i', $url) && preg_match('/\w+\.\w{2,3}($|\/)/', $url)) {
             $url = PHPWS_Text::checkLink($url);
@@ -122,13 +122,13 @@ class Menu_Link {
         $this->url = preg_replace('/&?authkey=\w{32}/i', '', $url);
     }
 
-    function getUrl()
+    public function getUrl()
     {
         return sprintf('<a href="%s" title="%s">%s</a>', str_replace('&', '&amp;', $this->url), $this->title, $this->title);
     }
 
 
-    function resetOrder()
+    public function resetOrder()
     {
         $db = $this->getDB();
 
@@ -149,12 +149,12 @@ class Menu_Link {
     }
 
 
-    function setMenuId($id)
+    public function setMenuId($id)
     {
         $this->menu_id = (int)$id;
     }
 
-    function _getOrder()
+    public function _getOrder()
     {
         $db = $this->getDB();
         $db->addWhere('menu_id', $this->menu_id);
@@ -170,7 +170,7 @@ class Menu_Link {
         return $current_order;
     }
 
-    function save()
+    public function save()
     {
         if (empty($this->menu_id) || empty($this->title) ||
             empty($this->url) || !isset($this->key_id) ) {
@@ -185,7 +185,7 @@ class Menu_Link {
         return $db->saveObject($this);
     }
 
-    function isCurrentUrl() {
+    public function isCurrentUrl() {
         static $current_url = null;
         static $redirect_url = null;
 
@@ -205,7 +205,7 @@ class Menu_Link {
         }
     }
 
-    function view($level='1')
+    public function view($level='1')
     {
         static $current_parent = array();
 
@@ -265,7 +265,7 @@ class Menu_Link {
     /**
      * Compares a link's children to the current key
      */
-    function childIsCurrent($current_key)
+    public function childIsCurrent($current_key)
     {
         if (empty($this->_children)) {
             return false;
@@ -286,7 +286,7 @@ class Menu_Link {
         return false;
     }
 
-    function childIsCurrentUrl()
+    public function childIsCurrentUrl()
     {
         if (empty($this->_children)) {
             return false;
@@ -306,7 +306,7 @@ class Menu_Link {
     }
 
 
-    function _loadAdminLinks(&$template, $popup=false)
+    public function _loadAdminLinks(&$template, $popup=false)
     {
         if ( Menu::isAdminMode() && Current_User::allow('menu') ) {
             if (empty($_POST)) {
@@ -362,7 +362,7 @@ class Menu_Link {
         }
     }
 
-    function editLink($popup=false)
+    public function editLink($popup=false)
     {
         $vars['link_id'] = $this->id;
         $link = MENU_LINK_EDIT;
@@ -390,7 +390,7 @@ class Menu_Link {
     }
 
 
-    function deleteLink($popup=false)
+    public function deleteLink($popup=false)
     {
         $js['LINK'] = MENU_LINK_DELETE;
         if ($popup) {
@@ -406,7 +406,7 @@ class Menu_Link {
         return javascript('confirm', $js);
     }
 
-    function delete($save_links=false)
+    public function delete($save_links=false)
     {
         $db = $this->getDB();
         $db->addWhere('id', $this->id);
@@ -425,7 +425,7 @@ class Menu_Link {
         }
     }
 
-    function moveUp()
+    public function moveUp()
     {
         if ($this->link_order == 1) {
             $this->link_order = $this->_getOrder();
@@ -453,7 +453,7 @@ class Menu_Link {
         return $this->save();
     }
 
-    function moveDown()
+    public function moveDown()
     {
         $top_value = $this->_getOrder();
         if ($this->link_order == ($top_value - 1)) {

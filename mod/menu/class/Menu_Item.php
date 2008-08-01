@@ -10,16 +10,16 @@ PHPWS_Core::initModClass('menu', 'Menu_Link.php');
 define('MENU_MISSING_TPL', -2);
 
 class Menu_Item {
-    var $id         = 0;
-    var $title      = NULL;
-    var $template   = NULL;
-    var $pin_all    = 0;
-    var $_db        = NULL;
-    var $_show_all  = false;
-    var $_style     = null;
-    var $_error     = NULL;
+    public $id         = 0;
+    public $title      = NULL;
+    public $template   = NULL;
+    public $pin_all    = 0;
+    public $_db        = NULL;
+    public $_show_all  = false;
+    public $_style     = null;
+    public $_error     = NULL;
 
-    function Menu_Item($id=NULL)
+    public function __construct($id=NULL)
     {
         if (empty($id)) {
             return;
@@ -34,7 +34,7 @@ class Menu_Item {
         }
     }
 
-    function resetdb()
+    public function resetdb()
     {
         if (isset($this->_db)) {
             $this->_db->reset();
@@ -43,7 +43,7 @@ class Menu_Item {
         }
     }
 
-    function init()
+    public function init()
     {
         if (!isset($this->id)) {
             return FALSE;
@@ -56,36 +56,36 @@ class Menu_Item {
         }
     }
 
-    function getTitle()
+    public function getTitle()
     {
         $vars['site_map'] = $this->id;
-        
+
         return PHPWS_Text::moduleLink($this->title, 'menu', $vars);
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = strip_tags($title);
     }
 
-    function setTemplate($template)
+    public function setTemplate($template)
     {
         $this->template = $template;
     }
 
-    function setPinAll($pin)
+    public function setPinAll($pin)
     {
         $this->pin_all = (bool)$pin;
     }
-    
 
-    function getTemplateList()
+
+    public function getTemplateList()
     {
         $result = PHPWS_File::listDirectories(PHPWS_Template::getTemplateDirectory('menu') . 'menu_layout/');
         if (PHPWS_Error::logIfError($result) || empty($result)) {
             return null;
         }
-        
+
         foreach  ($result as $dir) {
             $directories[$dir] = $dir;
         }
@@ -93,7 +93,7 @@ class Menu_Item {
         return $directories;
     }
 
-    function post()
+    public function post()
     {
         if (empty($_POST['title'])) {
             $errors[] = dgettext('menu', 'Missing menu title.');
@@ -121,7 +121,7 @@ class Menu_Item {
         }
     }
 
-    function save()
+    public function save()
     {
         if (empty($this->title)) {
             return FALSE;
@@ -150,7 +150,7 @@ class Menu_Item {
     /**
      * Returns all the links in a menu for display
      */
-    function displayLinks($edit=FALSE)
+    public function displayLinks($edit=FALSE)
     {
         $all_links = $this->getLinks();
         if (empty($all_links)) {
@@ -162,14 +162,14 @@ class Menu_Item {
                 $link_list[] = $i;
             }
         }
-        
+
         return implode("\n", $link_list);
     }
 
     /**
      * Returns the menu link objects associated to a menu
      */
-    function getLinks($parent=0, $active_only=TRUE)
+    public function getLinks($parent=0, $active_only=TRUE)
     {
         $final = NULL;
 
@@ -209,13 +209,13 @@ class Menu_Item {
 
 
 
-    function getRowTags()
+    public function getRowTags()
     {
         $vars['menu_id'] = $this->id;
         $vars['command'] = 'edit_menu';
         $links[] = PHPWS_Text::secureLink(dgettext('menu', 'Edit'), 'menu', $vars);
 
-        if (!isset($_SESSION['Menu_Clip']) || 
+        if (!isset($_SESSION['Menu_Clip']) ||
             !isset($_SESSION['Menu_Clip'][$this->id])) {
             $vars['command'] = 'clip';
             $links[] = PHPWS_Text::secureLink(dgettext('menu', 'Clip'), 'menu', $vars);
@@ -250,7 +250,7 @@ class Menu_Item {
         return $tpl;
     }
 
-    function kill()
+    public function kill()
     {
         $db = new PHPWS_DB('menu_assoc');
         $db->addWhere('menu_id', $this->id);
@@ -267,7 +267,7 @@ class Menu_Item {
         Layout::purgeBox('menu_' . $this->id);
     }
 
-    function addRawLink($title, $url, $parent=0)
+    public function addRawLink($title, $url, $parent=0)
     {
         if (empty($title) || empty($url)) {
             return FALSE;
@@ -284,7 +284,7 @@ class Menu_Item {
         return $link->save();
     }
 
-    function addLink($key_id, $parent=0)
+    public function addLink($key_id, $parent=0)
     {
         $key = new Key($key_id);
         $link = new Menu_Link;
@@ -292,7 +292,7 @@ class Menu_Item {
         $link->setMenuId($this->id);
         $link->setKeyId($key->id);
         $link->setTitle($key->title);
-        $link->url = &$key->url;
+        $link->url = & $key->url;
         $link->setParent($parent);
 
         return $link->save();
@@ -301,7 +301,7 @@ class Menu_Item {
     /**
      * This link lets you add a stored link to the menu
      */
-    function getPinLink($menu_id, $link_id=0, $title=false)
+    public function getPinLink($menu_id, $link_id=0, $title=false)
     {
         if (!isset($_SESSION['Menu_Pin_Links'])) {
             return null;
@@ -312,7 +312,7 @@ class Menu_Item {
         if ($link_id) {
             $vars['link_id'] = $link_id;
         }
-        
+
         $js['width']   = '300';
         $js['height']  = '100';
 
@@ -327,7 +327,7 @@ class Menu_Item {
     }
 
 
-    function parseIni()
+    public function parseIni()
     {
         $inifile = PHPWS_Template::getTemplateDirectory('menu') . 'menu_layout/' . $this->template . '/options.ini';
         if (!is_file($inifile)) {
@@ -342,14 +342,14 @@ class Menu_Item {
         if (!empty($results['style_sheet'])) {
             $this->_style = $results['style_sheet'];
         }
-        
+
     }
 
 
     /**
      * Returns a menu and its links for display
      */
-    function view($pin_mode=FALSE)
+    public function view($pin_mode=FALSE)
     {
         $key = Key::getCurrent();
 
@@ -372,7 +372,7 @@ class Menu_Item {
             $style = sprintf('menu_layout/%s/%s', $this->template, $this->_style);
             Layout::addStyle('menu', $style);
         }
-        
+
         $admin_link = !PHPWS_Settings::get('menu', 'miniadmin');
 
         $content_var = 'menu_' . $this->id;
@@ -391,7 +391,7 @@ class Menu_Item {
                     } else {
                         $pinvars['lurl'] = urlencode(PHPWS_Core::getCurrentUrl());
                     }
-                    
+
                     $js['address'] = PHPWS_Text::linkAddress('menu', $pinvars);
                     $js['label']   = dgettext('menu', 'Pin page');
                     $js['width']   = 300;
@@ -428,8 +428,8 @@ class Menu_Item {
         $tpl['LINKS'] = $this->displayLinks($edit);
 
         if ($pin_mode &&
-            Current_User::allow('menu') && 
-            isset($_SESSION['Menu_Clip']) && 
+            Current_User::allow('menu') &&
+            isset($_SESSION['Menu_Clip']) &&
             isset($_SESSION['Menu_Clip'][$this->id])) {
 
             $pinvars['command'] = 'pin_menu';
@@ -442,8 +442,8 @@ class Menu_Item {
 
         Layout::set($content, 'menu', $content_var);
     }
-    
-    function reorderLinks()
+
+    public function reorderLinks()
     {
         if (!$this->id) {
             return false;

@@ -8,25 +8,25 @@
 
 class Menu {
 
-    function admin()
+    public function admin()
     {
         PHPWS_Core::initModClass('menu', 'Menu_Admin.php');
         Menu_Admin::main();
     }
 
-    function getPinAllMenus()
+    public function getPinAllMenus()
     {
         $db = new PHPWS_DB('menus');
         $db->addWhere('pin_all', 1);
         $db->loadClass('menu', 'Menu_Item.php');
         return $db->getObjects('Menu_Item');
     }
-    
+
     /**
      * Grabs all the menus pinned to every page and displays
      * them.
      */
-    function showPinned()
+    public function showPinned()
     {
         Layout::addStyle('menu');
 
@@ -46,8 +46,8 @@ class Menu {
             $menu->view();
         }
     }
-    
-    function miniadmin()
+
+    public function miniadmin()
     {
         if (!PHPWS_Settings::get('menu', 'miniadmin') ||
             !Current_User::allow('menu')) {
@@ -71,7 +71,7 @@ class Menu {
      * Function called by mod developer to add their
      * link or to just show the menu on that item
      */
-    function show()
+    public function show()
     {
         $seen = array();
 
@@ -109,13 +109,13 @@ class Menu {
 
     }
 
-    function atLink($url)
+    public function atLink($url)
     {
         $compare =  PHPWS_Core::getCurrentUrl();
         return $url == $compare;
     }
 
-    function getSiteLink($menu_id, $parent_id=0, $isKeyed=false, $popup=false)
+    public function getSiteLink($menu_id, $parent_id=0, $isKeyed=false, $popup=false)
     {
         $vars['command']   = 'add_site_link';
         $vars['menu_id']   = $menu_id;
@@ -141,7 +141,7 @@ class Menu {
         return javascript('open_window', $js);
     }
 
-    function getAddLink($menu_id, $parent_id=null, $popup=false)
+    public function getAddLink($menu_id, $parent_id=null, $popup=false)
     {
         $key = Key::getCurrent();
         if (empty($key->url)) {
@@ -189,7 +189,7 @@ class Menu {
 
     }
 
-    function pinLink($title, $url, $key_id=0)
+    public function pinLink($title, $url, $key_id=0)
     {
         $key = substr(md5($title . $url), 0, 8);
         $_SESSION['Menu_Pin_Links'][$key]['title'] = strip_tags($title);
@@ -199,7 +199,7 @@ class Menu {
         }
     }
 
-    function getUnpinLink($menu_id, $key_id, $pin_all=0)
+    public function getUnpinLink($menu_id, $key_id, $pin_all=0)
     {
         $vars['command'] = 'unpin_menu';
         $vars['menu_id'] = $menu_id;
@@ -217,20 +217,20 @@ class Menu {
         return javascript('confirm', $js);
     }
 
-    function deleteLink($link_id)
+    public function deleteLink($link_id)
     {
         $link = new Menu_Link($link_id);
         return $link->delete();
     }
 
 
-    function enableAdminMode()
+    public function enableAdminMode()
     {
         $_SESSION['Menu_Admin_Mode'] = true;
     }
 
 
-    function isAdminMode()
+    public function isAdminMode()
     {
         if (isset($_SESSION['Menu_Admin_Mode'])) {
             return $_SESSION['Menu_Admin_Mode'];
@@ -239,7 +239,7 @@ class Menu {
         }
     }
 
-    function siteMap()
+    public function siteMap()
     {
         if (!isset($_GET['site_map'])) {
             PHPWS_Core::errorPage('404');
@@ -264,7 +264,7 @@ class Menu {
         Layout::add(PHPWS_Template::process($tpl, 'menu', 'site_map.tpl'));
     }
 
-    function walkLinks($links, &$content)
+    public function walkLinks($links, &$content)
     {
         $content[] = '<ol>';
         foreach ($links as $link) {
@@ -279,7 +279,7 @@ class Menu {
     }
 
 
-    function quickLink($title, $url)
+    public function quickLink($title, $url)
     {
         if (empty($title) || empty($url)) {
             return false;
@@ -298,7 +298,7 @@ class Menu {
     /**
      * Adds a link to a current pin_all menu
      */
-    function quickKeyLink($key_id)
+    public function quickKeyLink($key_id)
     {
         if (!$key_id) {
             return false;
@@ -314,7 +314,7 @@ class Menu {
         }
     }
 
-    function updateKeyLink($key_id)
+    public function updateKeyLink($key_id)
     {
         if (empty($key_id)) {
             return false;

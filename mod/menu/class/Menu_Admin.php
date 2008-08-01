@@ -9,7 +9,7 @@
 
 class Menu_Admin {
 
-    function main()
+    public function main()
     {
         $title = $content = $message = NULL;
 
@@ -263,7 +263,7 @@ class Menu_Admin {
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
     }
 
-    function addPinLink()
+    public function addPinLink()
     {
         $pin_id = &$_POST['links'];
         $link_id = &$_POST['link_id'];
@@ -286,7 +286,7 @@ class Menu_Admin {
             if ($link_id) {
                 $link->parent = (int)$link_id;
             }
-            
+
             $result = $link->save();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
@@ -298,14 +298,14 @@ class Menu_Admin {
         }
     }
 
-    function sendMessage($message, $command)
+    public function sendMessage($message, $command)
     {
         $_SESSION['Menu_message'] = $message;
         PHPWS_Core::reroute(sprintf('index.php?module=menu&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
         exit();
     }
 
-    function pinPageForm($url, $error=false)
+    public function pinPageForm($url, $error=false)
     {
         $form = new PHPWS_Form('menu');
         $form->addText('title');
@@ -322,7 +322,7 @@ class Menu_Admin {
         return PHPWS_Template::process($tpl, 'menu', 'admin/offsite.tpl');
     }
 
-    function pinPage()
+    public function pinPage()
     {
         if (isset($_GET['key_id'])) {
             $key = new Key($_GET['key_id']);
@@ -345,7 +345,7 @@ class Menu_Admin {
         Layout::nakedDisplay($content);
     }
 
-    function pinMenu()
+    public function pinMenu()
     {
         if (!isset($_REQUEST['key_id']) || !isset($_REQUEST['menu_id'])) {
             return;
@@ -364,7 +364,7 @@ class Menu_Admin {
         return $db->insert();
     }
 
-    function unpinMenu(&$menu)
+    public function unpinMenu(Menu_Item $menu)
     {
         if (!isset($_REQUEST['key_id']) || !isset($_REQUEST['pin_all'])) {
             return;
@@ -382,7 +382,7 @@ class Menu_Admin {
 
     }
 
-    function getMessage()
+    public function getMessage()
     {
         $message = NULL;
         if (isset($_SESSION['Menu_message'])) {
@@ -392,7 +392,7 @@ class Menu_Admin {
         return $message;
     }
 
-    function addLink(&$menu, $key_id, $parent=0)
+    public function addLink(Menu_Item $menu, $key_id, $parent=0)
     {
         $result = $menu->addLink($key_id, $parent);
         if (PEAR::isError($result)) {
@@ -404,7 +404,7 @@ class Menu_Admin {
     }
 
 
-    function addRawLink(&$menu, $title, $url, $parent=0)
+    public function addRawLink(Menu_Item $menu, $title, $url, $parent=0)
     {
         $result = $menu->addRawLink($title, $url, $parent);
         if (PEAR::isError($result)) {
@@ -416,7 +416,7 @@ class Menu_Admin {
     }
 
 
-    function cpanel()
+    public function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
@@ -425,7 +425,7 @@ class Menu_Admin {
             $newCommand = array ('title'=>dgettext('menu', 'New'), 'link'=> $newLink);
             $tabs['new'] = $newCommand;
         }
-        
+
         $listLink = 'index.php?module=menu';
         $listCommand = array ('title'=>dgettext('menu', 'List'), 'link'=> $listLink);
         $tabs['list'] = $listCommand;
@@ -440,7 +440,7 @@ class Menu_Admin {
         return $panel;
     }
 
-    function editMenu(&$menu)
+    public function editMenu(Menu_Item $menu)
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'menu');
@@ -475,7 +475,7 @@ class Menu_Admin {
     }
 
 
-    function editLinkTitle($link_id, $title)
+    public function editLinkTitle($link_id, $title)
     {
         if (empty($title)) {
             return true;
@@ -490,7 +490,7 @@ class Menu_Admin {
         }
     }
 
-    function menuList()
+    public function menuList()
     {
         $page_tags['ACTION'] = dgettext('menu', 'Action');
 
@@ -507,7 +507,7 @@ class Menu_Admin {
         return $content;
     }
 
-    function pickLink()
+    public function pickLink()
     {
         $menu_id = (int)$_GET['menu_id'];
         if (isset($_GET['link_id'])) {
@@ -540,7 +540,7 @@ class Menu_Admin {
     }
 
 
-    function settings()
+    public function settings()
     {
         $form = new PHPWS_Form('menu-settings');
         $form->addHidden('module', 'menu');
@@ -579,7 +579,7 @@ class Menu_Admin {
         return PHPWS_Template::process($tpl, 'menu', 'admin/settings.tpl');
     }
 
-    function siteLink($menu, $link, $errors=NULL)
+    public function siteLink($menu, $link, $errors=NULL)
     {
         $form = new PHPWS_Form('site_link');
         if ($link->id) {
@@ -600,7 +600,7 @@ class Menu_Admin {
         $form->addText('url', $link->url);
         $form->setLabel('url', dgettext('menu', 'Url'));
         $form->setSize('url', 50);
-        
+
         $form->addSubmit(dgettext('menu', 'Save link'));
 
         $template = $form->getTemplate();
@@ -621,7 +621,7 @@ class Menu_Admin {
         Layout::nakedDisplay($content);
     }
 
-    function postSiteLink(&$link)
+    public function postSiteLink(Menu_Link $link)
     {
         if (empty($_POST['title'])) {
             $error[] = dgettext('menu', 'Missing title.');
@@ -651,7 +651,7 @@ class Menu_Admin {
         }
     }
 
-    function quickPinLink()
+    public function quickPinLink()
     {
         if (empty($_SESSION['Menu_Pin_Links'])) {
             return;
@@ -675,7 +675,7 @@ class Menu_Admin {
         unset($_SESSION['Menu_Pin_Links']);
     }
 
-    function popupLinkAdmin()
+    public function popupLinkAdmin()
     {
         $link = new Menu_Link($_GET['link_id']);
 
@@ -686,7 +686,7 @@ class Menu_Admin {
                 $key = Key::getHomeKey();
             }
             $key->flag();
-        } 
+        }
 
         $template = array();
         $link->_loadAdminLinks($template, true);
@@ -698,7 +698,7 @@ class Menu_Admin {
         return $content;
     }
 
-    function finish()
+    public function finish()
     {
         if (isset($_GET['pu'])) {
             javascript('close_refresh');
@@ -708,7 +708,7 @@ class Menu_Admin {
         }
     }
 
-    function saveSettings()
+    public function saveSettings()
     {
         if ($_POST['admin_mode'] == 'on') {
             $_SESSION['Menu_Admin_Mode'] = true;
