@@ -36,22 +36,22 @@ if (!defined('TEXT_FILTERS')) {
 }
 
 class PHPWS_Text {
-    var $use_profanity  = ALLOW_PROFANITY;
-    var $use_breaker    = true;
-    var $use_strip_tags = true;
-    var $use_filters    = false;
-    var $fix_anchors    = FIX_ANCHORS;
-    var $collapse_urls  = COLLAPSE_URLS;
-    var $_allowed_tags  = NULL;
+    public $use_profanity  = ALLOW_PROFANITY;
+    public $use_breaker    = true;
+    public $use_strip_tags = true;
+    public $use_filters    = false;
+    public $fix_anchors    = FIX_ANCHORS;
+    public $collapse_urls  = COLLAPSE_URLS;
+    private $_allowed_tags  = null;
 
 
-    function PHPWS_Text($text=NULL, $encoded=FALSE)
+    public function __construct($text=null, $encoded=false)
     {
         $this->resetAllowedTags();
         $this->setText($text, $encoded);
     }
 
-    function decodeText($text)
+    public function decodeText($text)
     {
         if (version_compare(phpversion(), '5.0.0', '>=')) {
             return html_entity_decode($text, ENT_QUOTES, 'UTF-8');
@@ -60,12 +60,12 @@ class PHPWS_Text {
         }
     }
 
-    function useFilters($filter)
+    public function useFilters($filter)
     {
         $this->use_filters = (bool)$filter;
     }
 
-    function setText($text, $decode=ENCODE_PARSED_TEXT)
+    public function setText($text, $decode=ENCODE_PARSED_TEXT)
     {
 
         if (empty($text) || !is_string($text)) {
@@ -87,7 +87,7 @@ class PHPWS_Text {
      * @author Matthew McNaney <mcnaney at gmail dot com>
      */
 
-    function decode_entities($text, $quote_style = ENT_COMPAT)
+    public function decode_entities($text, $quote_style = ENT_COMPAT)
     {
         if (!function_exists('html_entity_decode')) {
             $text = html_entity_decode($text, $quote_style, 'ISO-8859-1'); // NOTE: UTF-8 does not work!
@@ -103,22 +103,22 @@ class PHPWS_Text {
     }
 
 
-    function useProfanity($use = TRUE)
+    public function useProfanity($use = true)
     {
         $this->use_profanity = (bool)$use;
     }
 
-    function useBreaker($use = TRUE)
+    public function useBreaker($use = true)
     {
         $this->use_breaker = (bool)$use;
     }
 
-    function useStripTags($use = TRUE)
+    public function useStripTags($use = true)
     {
         $this->use_strip_tags = (bool)$use;
     }
 
-    function addAllowedTags($tags)
+    public function addAllowedTags($tags)
     {
         if (is_array($tags)) {
             $this->_allowed_tags .= implode('', $tags);
@@ -127,7 +127,7 @@ class PHPWS_Text {
         }
     }
 
-    function setAllowedTags($tags)
+    public function setAllowedTags($tags)
     {
         if (is_array($tags)) {
             $this->_allowed_tags = implode('', $tags);
@@ -136,20 +136,20 @@ class PHPWS_Text {
         }
     }
 
-    function resetAllowedTags()
+    public function resetAllowedTags()
     {
         $this->_allowed_tags = preg_replace('/\s/','',  PHPWS_ALLOWED_TAGS);
     }
 
-    function clearAllowedTags()
+    public function clearAllowedTags()
     {
-        $this->_allowed_tags = NULL;
+        $this->_allowed_tags = null;
     }
 
-    function getPrint()
+    public function getPrint()
     {
         if (empty($this->text)) {
-            return NULL;
+            return null;
         }
 
         $text = $this->text;
@@ -184,7 +184,7 @@ class PHPWS_Text {
         return $text;
     }
 
-    function filterText($text)
+    public function filterText($text)
     {
         static $filters = null;
 
@@ -220,7 +220,7 @@ class PHPWS_Text {
     /**
      * Fixes plain anchors. Makes them relative to the current page.
      */
-    function fixAnchors($text)
+    public function fixAnchors($text)
     {
         $home_http = PHPWS_Core::getCurrentUrl();
 
@@ -232,7 +232,7 @@ class PHPWS_Text {
     /**
      * Mostly used to clean up windows high ascii characters
      */
-    function encodeXHTML($text)
+    public function encodeXHTML($text)
     {
         $xhtml['™']    = '&trade;';
         $xhtml['•']    = '&bull;';
@@ -259,7 +259,7 @@ class PHPWS_Text {
         return $text;
     }
 
-    function fixAmpersand($text)
+    public function fixAmpersand($text)
     {
         return preg_replace('/&(?!\w+;)(?!#)/U', '&amp;\\1', $text);
     }
@@ -274,7 +274,7 @@ class PHPWS_Text {
      * @return string Parsed text
      * @access public
      */
-    function profanityFilter($text)
+    public function profanityFilter($text)
     {
         if (!is_string($text)) {
             return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'PHPWS_Text::profanityFilter');
@@ -298,7 +298,7 @@ class PHPWS_Text {
      * @return array   $text_array Array of sentences
      * @access public
      */
-    function sentence($text, $stripNewlines = FALSE)
+    public function sentence($text, $stripNewlines = false)
     {
         if (!is_string($text)) {
             return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'PHPWS_Text::sentence');
@@ -318,7 +318,7 @@ class PHPWS_Text {
      *
      * @author Matthew McNaney <matt at tux dot appstate dot edu>
      */
-    function breaker($text)
+    public function breaker($text)
     {
         $do_not_break = array('/(<table.*>)\n/iU',
                               '/(<tbody.*>)\n/iU',
@@ -350,7 +350,7 @@ class PHPWS_Text {
         return $text;
     }
 
-    function parseInput($text, $encode=ENCODE_PARSED_TEXT)
+    public function parseInput($text, $encode=ENCODE_PARSED_TEXT)
     {
         // Moved over from getPrint/parseOutput
         $text = PHPWS_Text::encodeXHTML(trim($text));
@@ -377,7 +377,7 @@ class PHPWS_Text {
      *                               run against the output text.
      * @return  string  text         Stripped text
      */
-    function parseOutput($text, $decode=ENCODE_PARSED_TEXT, $use_filters=false)
+    public function parseOutput($text, $decode=ENCODE_PARSED_TEXT, $use_filters=false)
     {
         $t = new PHPWS_Text;
         $t->setText($text, $decode);
@@ -397,18 +397,18 @@ class PHPWS_Text {
      * - default : alphanumeric and underline ONLY
      *
      * Should be used anytime user input directly affects program logic,
-     * is used to pull database data, etc. Also, will ALWAYS return FALSE
+     * is used to pull database data, etc. Also, will ALWAYS return false
      * if it receives blank data.
      *
      * @author Matthew McNaney <matt at tux dot appstate dot edu>
      * @param  string  $userEntry Text to be checked
      * @param  string  $type      What type of comparison
-     * @return boolean TRUE on valid input, FALSE on invalid input
+     * @return boolean true on valid input, false on invalid input
      * @access public
      */
-    function isValidInput($userEntry, $type=NULL)
+    public function isValidInput($userEntry, $type=null)
     {
-        if (empty($userEntry) || !is_string($userEntry)) return FALSE;
+        if (empty($userEntry) || !is_string($userEntry)) return false;
 
         switch ($type) {
         case 'chars_space':
@@ -417,8 +417,8 @@ class PHPWS_Text {
             } else {
                 $preg = '/^[\w\s]+$/ui';
             }
-            if (preg_match($preg,$userEntry)) return TRUE;
-            else return FALSE;
+            if (preg_match($preg,$userEntry)) return true;
+            else return false;
             break;
 
         case 'number':
@@ -426,84 +426,88 @@ class PHPWS_Text {
             break;
 
         case 'url':
-            if (preg_match('/^(http(s){0,1}:\/\/)\w([\.\w\-\/&?\+=~])+$/i', $userEntry)) return TRUE;
-            else return FALSE;
+            if (preg_match('/^(http(s){0,1}:\/\/)\w([\.\w\-\/&?\+=~])+$/i', $userEntry)) return true;
+            else return false;
             break;
 
         case 'email':
-            if (preg_match('/^[\w]+([\.\w\-]+)*@[\w\-]+([\.\w\-]+)+$/i', $userEntry)) return TRUE;
-            else return FALSE;
+            if (preg_match('/^[\w]+([\.\w\-]+)*@[\w\-]+([\.\w\-]+)+$/i', $userEntry)) return true;
+            else return false;
             break;
 
         case 'file':
-            if (preg_match('/^[\w\.]+$/i',$userEntry)) return TRUE;
-            else return FALSE;
+            if (preg_match('/^[\w\.]+$/i',$userEntry)) return true;
+            else return false;
             break;
 
         default:
-            if (preg_match('/^[\w]+$/i',$userEntry)) return TRUE;
-            else return FALSE;
+            if (preg_match('/^[\w]+$/i',$userEntry)) return true;
+            else return false;
             break;
         }
     }// END FUNC isValidInput()
 
     /**
      * Creates a mod_rewrite link that can be parsed by Apache
-     *
      */
-    function rewriteLink($subject)
+    public function rewriteLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
     {
-        if (func_num_args() < 2) {
-            return null;
-        }
-        $vars = func_get_args();
-        unset($vars[0]);
-
-        if (!MOD_REWRITE_ENABLED) {
-            $count = 1;
-            $module = array_shift($vars);
-            if (!empty($vars)) {
-                foreach ($vars as $getvar) {
-                    $modvar['var' . $count] = $getvar;
-                    $count++;
-                }
-            } else {
-                $modvar = null;
-            }
-            return PHPWS_Text::moduleLink($subject, $module, $modvar);
-        } else {
-            return sprintf('<a href="%s">%s</a>', implode('/', $vars), $subject);
-        }
+        $link = PHPWS_Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
+        $link->rewrite = true;
+        return $link->get();
     }
+
+    public function secureRewriteLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
+    {
+        $link = PHPWS_Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
+        $link->rewrite = true;
+        $link->secure  = true;
+        return $link->get();
+    }
+
 
     /**
      * Creates a link to the previous referer (page)
      */
-    function backLink($title=NULL)
+    public function backLink($title=null)
     {
         if (empty($title)) {
             $title = _('Return to previous page.');
         }
 
         if (!isset($_SERVER['HTTP_REFERER'])) {
-            return NULL;
+            return null;
         }
         return sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], $title);
+    }
+
+    public function quickLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
+    {
+        PHPWS_Core::initCoreClass('Link.php');
+        $link = new PHPWS_Link($subject, $module, $getVars);
+        $link->setTarget($target);
+
+        if (!empty($title)) {
+            $link->setTitle($title);
+        }
+
+        if (!empty($class_name)) {
+            $link->setClass($class_name);
+        }
+
+        $link->rewrite = false;
+
+        return $link;
     }
 
     /**
      * Returns a module link with the authkey attached
      */
-    function secureLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL, $class_name=null)
+    public function secureLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
     {
-        if (!class_exists('Current_User')) {
-            return null;
-        }
-        if (Current_User::isLogged()) {
-            $getVars['authkey'] = Current_User::getAuthKey();
-        }
-
-        return PHPWS_Text::moduleLink($subject, $module, $getVars, $target, $title, $class_name);
+        $link = PHPWS_Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
+        $link->secure = true;
+        return $link->get();
     }
 
     /**
@@ -517,39 +521,14 @@ class PHPWS_Text {
      * @param boolean add_base    If true, add the site url to the address
      * @param boolean convert_amp If true, use "&amp;" instead of "&"
      */
-    function linkAddress($module=NULL, $getVars=NULL, $secure=FALSE, $add_base=FALSE, $convert_amp=TRUE)
+    public function linkAddress($module=null, $getVars=null, $secure=false, $add_base=false, $convert_amp=true)
     {
-        if (class_exists('Current_User') && Current_User::isLogged() && $secure) {
-            $getVars['authkey'] = Current_User::getAuthKey();
-        }
-
-        if ($add_base == TRUE) {
-            $link[] = PHPWS_HOME_HTTP;
-        }
-
-        $link[] = 'index.php';
-
-        if (isset($module)){
-            $link[] = '?';
-            $vars[] = "module=$module";
-        }
-
-        if (is_array($getVars)){
-            foreach ($getVars as $var_name=>$value)
-                $vars[] = $var_name . '=' . $value;
-        }
-
-        if ($convert_amp) {
-            $amp = '&amp;';
-        } else {
-            $amp = '&';
-        }
-
-        if (isset($vars)) {
-            $link[] = implode($amp, $vars);
-        }
-
-        return implode('', $link);
+        PHPWS_Core::initCoreClass('Link.php');
+        $link = new PHPWS_Link(null, $module, $getVars);
+        $link->secure      = $secure;
+        $link->full_url    = $add_base;
+        $link->convert_amp = $convert_amp;
+        return $link->getAddress();
     }
 
     /**
@@ -565,30 +544,11 @@ class PHPWS_Text {
      * @param string class_name String added to css class
      * @return string The complated link.
      */
-    function moduleLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL, $class_name=null)
+    public function moduleLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
     {
-        $link[] = '<a ';
-
-        if (isset($title))
-            $link[] = 'title="' . strip_tags($title) . '" ';
-
-        $link[] = 'href="./';
-        $link[] = PHPWS_Text::linkAddress($module, $getVars);
-        $link[] = '"';
-        if ($target=='blank' || $target === TRUE) {
-            $link[] = ' target="_blank" ';
-        } elseif ($target=='index') {
-            $link[] = ' target="index" ';
-        }
-
-        if($class_name) {
-            $link[] = sprintf(' class="%s" ', $class_name);
-        }
-
-        $link[] = '>';
-
-        return implode('', $link) . strip_tags($subject, '<img>') . '</a>';
-    }// END FUNC indexLink()
+        $link = PHPWS_Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
+        return $link->get();
+    }// END FUNC moduleLink()
 
 
     /**
@@ -601,7 +561,7 @@ class PHPWS_Text {
      * @return string $link Appended string
      * @access public
      */
-    function checkLink($link, $ssl=FALSE)
+    public function checkLink($link, $ssl=false)
     {
         if (!stristr($link, '://')) {
             if ($ssl) {
@@ -615,19 +575,19 @@ class PHPWS_Text {
 
 
     /**
-     * Returns TRUE if the text appears to have unslashed quotes or apostrophes
+     * Returns true if the text appears to have unslashed quotes or apostrophes
      *
      * @author Matthew McNaney <matt at tux dot appstate dot edu>
      * @param  string  $text Text to be checked for unslashed quotes or apostrophes
-     * @return boolean TRUE on success, FALSE on failure
+     * @return boolean true on success, false on failure
      * @access public
      */
-    function checkUnslashed($text)
+    public function checkUnslashed($text)
     {
         if (preg_match("/[^\\\]+[\"']/", $text))
-            return TRUE;
+            return true;
         else
-            return FALSE;
+            return false;
     }// END FUNC checkUnslashed()
 
     /**
@@ -638,7 +598,7 @@ class PHPWS_Text {
      * @return string $text Parsed text
      * @access public
      */
-    function stripSlashQuotes($text)
+    public function stripSlashQuotes($text)
     {
         $text = str_replace("\'", "'", $text);
         $text = str_replace("\\\"", "\"", $text);
@@ -649,7 +609,7 @@ class PHPWS_Text {
     /**
      * Makes links relative to home site
      */
-    function makeRelative(&$text, $prefix=true, $inlink_only=false)
+    public function makeRelative(&$text, $prefix=true, $inlink_only=false)
     {
         $address = addslashes(PHPWS_Core::getHomeHttp());
         if ($prefix) {
@@ -673,7 +633,7 @@ class PHPWS_Text {
      * @param allowed_mods mixed Array of allowed modules or string of one
      * @param ignore_mods  mixed Array of ignored modules or string of one
      */
-    function parseTag($text, $allowed_mods=null, $ignored_mods=null)
+    public function parseTag($text, $allowed_mods=null, $ignored_mods=null)
     {
         if (!isset($GLOBALS['embedded_tags'])) {
             return $text;
@@ -704,19 +664,19 @@ class PHPWS_Text {
         return $text;
     }
 
-    function addTag($module, $function_names)
+    public function addTag($module, $function_names)
     {
         if (is_string($function_names)) {
             $GLOBALS['embedded_tags'][$module][] = $function_names;
         } elseif (is_array($function_names)) {
             $GLOBALS['embedded_tags'][$module] = $function_names;
         } else {
-            return FALSE;
+            return false;
         }
-        return TRUE;
+        return true;
     }
 
-    function getGetValues($query=NULL)
+    public function getGetValues($query=null)
     {
         if (empty($query)) {
             if (isset($_SERVER['REDIRECT_QUERY_STRING'])) {
@@ -726,10 +686,20 @@ class PHPWS_Text {
                 if (!empty($rewrite)) {
                     $re_array = explode('/', $rewrite);
                     $output['module'] = array_shift($re_array);
+
                     $count = 1;
-                    foreach ($re_array as $val) {
-                        $output['var' . $count] = $val;
+                    $continue = 1;
+                    $i = 0;
+                    while(isset($re_array[$i])) {
+                        $key = $re_array[$i];
+                        $i++;
+                        if (isset($re_array[$i])) {
+                            $value = $re_array[$i];
+                            $output[$key] = $value;
+                        }
+                        $i++;
                     }
+
                     return $output;
                 }
             } else {
@@ -742,7 +712,7 @@ class PHPWS_Text {
         }
 
         if (empty($query)) {
-            return NULL;
+            return null;
         }
 
         parse_str($query, $output);
@@ -758,12 +728,12 @@ class PHPWS_Text {
      * @modified lorecarra at postino dot it
      * @modified Matt McNaney <matt at tux dot appstate dot edu>
      */
-    function xml2php($file, $level = 0)
+    public function xml2php($file, $level = 0)
     {
         $xml_parser = xml_parser_create();
         $contents = @file_get_contents($file);
         if (!$contents) {
-            return FALSE;
+            return false;
         }
         xml_parse_into_struct($xml_parser, $contents, $arr_vals);
         xml_parser_free($xml_parser);
@@ -779,10 +749,10 @@ class PHPWS_Text {
      *
      * @author Matt McNaney <matt at tux dot appstate dot edu>
      */
-    function _orderXML(&$arr_vals)
+    public function _orderXML(&$arr_vals)
     {
         if (empty($arr_vals)) {
-            return NULL;
+            return null;
         }
         while (@$xml_val = array_shift($arr_vals)) {
             $value = null;
@@ -801,10 +771,10 @@ class PHPWS_Text {
         return $new_val;
     }
 
-    function tagXML($arr_vals)
+    public function tagXML($arr_vals)
     {
         if (empty($arr_vals)) {
-            return NULL;
+            return null;
         }
 
         foreach ($arr_vals as $tag) {
@@ -821,7 +791,7 @@ class PHPWS_Text {
      * Returns a condensed version of text based on the maximum amount
      * of characters allowed.
      */
-    function condense($text, $max_characters=255)
+    public function condense($text, $max_characters=255)
     {
         $text = strip_tags($text);
         if (strlen($text) < $max_characters) {
@@ -843,7 +813,7 @@ class PHPWS_Text {
         }
     }
 
-    function collapseUrls($text, $limit=COLLAPSE_LIMIT)
+    public function collapseUrls($text, $limit=COLLAPSE_LIMIT)
     {
         if (!(int)$limit) {
             return $text;
@@ -854,7 +824,7 @@ class PHPWS_Text {
                                                    $text));
     }
 
-    function shortenUrl($url, $limit=COLLAPSE_LIMIT)
+    public function shortenUrl($url, $limit=COLLAPSE_LIMIT)
     {
         // + 3 takes the "..." into account
         if (!(int)$limit || strlen($url) < $limit + 3) {
@@ -908,7 +878,7 @@ function getEmbedded($stuff)
         $function_name = $GLOBALS['embedded_tags'][$module][0];
     } else {
         if (empty($parameters) || empty($parameters[0])) {
-            return NULL;
+            return null;
         } else {
             $function_name = $parameters[0];
             unset($parameters[0]);
@@ -917,13 +887,13 @@ function getEmbedded($stuff)
 
 
     if (!in_array($function_name, $GLOBALS['embedded_tags'][$module])) {
-        return NULL;
+        return null;
     }
 
     $function_name = $module . '_' . $function_name;
 
     if (!function_exists($function_name)) {
-        return NULL;
+        return null;
     }
 
     return call_user_func_array($function_name, $parameters);
