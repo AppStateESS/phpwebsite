@@ -43,34 +43,34 @@
 PHPWS_Core::requireConfig('core', 'mail_settings.php');
 
 class PHPWS_Mail {
-    var $send_to           = array();
-    var $subject_line      = null;
-    var $from_address      = null;
-    var $reply_to_address  = null;
-    var $carbon_copy       = null;
-    var $blind_copy        = null;
-    var $message_body      = null;
-    var $html_body         = null;
-    var $message_tpl       = null;
-    var $send_individually = true;
-    var $backend_type      = MAIL_BACKEND;
+    public $send_to           = array();
+    public $subject_line      = null;
+    public $from_address      = null;
+    public $reply_to_address  = null;
+    public $carbon_copy       = null;
+    public $blind_copy        = null;
+    public $message_body      = null;
+    public $html_body         = null;
+    public $message_tpl       = null;
+    public $send_individually = true;
+    public $backend_type      = MAIL_BACKEND;
 
-    function addSendTo($address)
+    public function addSendTo($address)
     {
         return $this->_addAddress('send_to', $address);
     }
 
-    function sendIndividually($send=true)
+    public function sendIndividually($send=true)
     {
         $this->send_individually = (bool)$send;
     }
 
-    function setSubject($subject_line)
+    public function setSubject($subject_line)
     {
         $this->subject_line = strip_tags($subject_line);
     }
 
-    function setFrom($from_address)
+    public function setFrom($from_address)
     {
         if ($this->checkAddress($from_address)) {
             $this->from_address = $from_address;
@@ -80,7 +80,7 @@ class PHPWS_Mail {
         }
     }
 
-    function setReplyTo($reply_to_address)
+    public function setReplyTo($reply_to_address)
     {
         if ($this->checkAddress($reply_to_address)) {
             $this->reply_to_address = $reply_to_address;
@@ -90,17 +90,17 @@ class PHPWS_Mail {
         }
     }
 
-    function addCarbonCopy($address)
+    public function addCarbonCopy($address)
     {
         return $this->_addAddress('carbon_copy', $address);
     }
 
-    function addBlindCopy($address)
+    public function addBlindCopy($address)
     {
         return $this->_addAddress('blind_copy', $address);
     }
 
-    function _addAddress($variable_name, $address)
+    public function _addAddress($variable_name, $address)
     {
         $failures = array();
 
@@ -126,17 +126,17 @@ class PHPWS_Mail {
         }
     }
 
-    function setHTMLBody($html_body)
+    public function setHTMLBody($html_body)
     {
         $this->html_body = $html_body;
     }
 
-    function setMessageBody($message_body)
+    public function setMessageBody($message_body)
     {
         $this->message_body = $message_body;
     }
 
-    function setBackend($backend)
+    public function setBackend($backend)
     {
         if ($backend == 'sendmail' || $backend == 'mail' || $backend == 'smtp') {
             $this->backend_type = $backend;
@@ -153,7 +153,7 @@ class PHPWS_Mail {
      * more then, periods, at symbol and dashes
      * If address contains a newline character, it will be refused
      */
-    function checkAddress($email_address)
+    public function checkAddress($email_address)
     {
         if ( preg_match('/\n|\r/', $email_address) ) {
             return FALSE;
@@ -172,7 +172,7 @@ class PHPWS_Mail {
      *          If sent altogether, the error itself is returned. If all goes well,
      *          true is returned.
      */
-    function send()
+    public function send()
     {
         $param = array();
 

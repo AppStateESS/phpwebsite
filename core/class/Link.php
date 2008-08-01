@@ -9,8 +9,8 @@ class PHPWS_Link {
     public  $module      = null;
     public  $address     = null;
     public  $values      = null;
-    private $target      = null;
-    private $title       = null;
+    public  $target      = null;
+    public  $title       = null;
     public  $class_name  = null;
     public  $style       = null;
     public  $id          = null;
@@ -18,7 +18,6 @@ class PHPWS_Link {
     public  $onmouseout  = null;
     public  $onclick     = null;
     public  $anchor      = null;
-
     public  $rewrite     = false;
     public  $secure      = false;
     public  $full_url    = false;
@@ -29,7 +28,7 @@ class PHPWS_Link {
         $this->label = $label;
         $this->module = $module;
         if (is_array($values)) {
-            $this->values = $values;
+            $this->addValues($values);
         }
     }
 
@@ -59,6 +58,13 @@ class PHPWS_Link {
                        $this->address, $param_list, $this->label);
     }
 
+    public function setLabel($label)
+    {
+        if (is_string($label)) {
+            $this->label = $label;
+        }
+    }
+
     public function setTitle($title)
     {
         $this->title = strip_tags($title);
@@ -69,20 +75,38 @@ class PHPWS_Link {
         $this->id = strip_tags($id);
     }
 
+    public function setStyle($style)
+    {
+        if (is_array($style)) {
+            foreach  ($style as $key=>$var) {
+                $newstyle[] = "$key : $var";
+            }
+            $this->setStyle(implode('; ', $newstyle));
+            return;
+        }
+        $this->style = strip_tags($style);
+    }
+
     public function setClass($class_name)
     {
-        $this->class_name = $class_name;
+        $this->class_name = strip_tags($class_name);
     }
 
     public function setModule($module)
     {
-        $this->module = $module;
+        $this->module = !empty($module) ? $module : null;
     }
 
-    public function setValues($values)
+    public function addValues($values)
     {
         if (is_array($values)) {
-            $this->values = $values;
+            if (empty($this->values)) {
+                $this->values = $values;
+            } else {
+                foreach($values as $key=>$val) {
+                    $this->values[$key] = $val;
+                }
+            }
         }
     }
 
@@ -101,6 +125,7 @@ class PHPWS_Link {
             break;
 
         default:
+            $this->target = null;
             return;
         }
         $this->target = $target;
@@ -158,9 +183,13 @@ class PHPWS_Link {
         return $authkey;
     }
 
-    public function addValue($key, $value)
-    {
-        $this->values[$key] = $value;
+
+    public function setValue($key, $value) {
+        if (is_null($value)) {
+            $this->removeValue($key);
+        } else {
+            $this->values[$key] = $value;
+        }
     }
 
     public function removeValue($key)
@@ -168,12 +197,17 @@ class PHPWS_Link {
         unset($this->values[$key]);
     }
 
+    public function isRewrite()
+    {
+        return MOD_REWRITE_ENABLED && $this->rewrite;
+    }
+
     public function getAddress()
     {
         $separate = '';
 
         if (empty($this->module) && empty($this->values)) {
-            if ($this->rewrite) {
+            if ($this->isRewrite()) {
                 return null;
             } else {
                 return 'index.php';
@@ -186,7 +220,7 @@ class PHPWS_Link {
             $link[] = PHPWS_HOME_HTTP;
         }
 
-        if (MOD_REWRITE_ENABLED && $this->rewrite) {
+        if ($this->isRewrite()) {
             if ($this->module) {
                 $link[] = $this->module . '/';
             }
@@ -200,7 +234,7 @@ class PHPWS_Link {
         }
 
         if (is_array($this->values)) {
-            if (MOD_REWRITE_ENABLED && $this->rewrite) {
+            if ($this->isRewrite()) {
                 foreach ($this->values as $var_name=>$value) {
                     if ($var_name == '#') {
                         $this->anchor = $value;
@@ -216,10 +250,6 @@ class PHPWS_Link {
 
                 $separate = '/';
             } else {
-                if (!$this->module) {
-                    $link[] = '?';
-                }
-
                 foreach ($this->values as $var_name=>$value) {
                     if ($var_name == '#') {
                         $this->anchor = $value;
@@ -243,7 +273,7 @@ class PHPWS_Link {
 
 
         if (isset($vars)) {
-            if (!MOD_REWRITE_ENABLED && $this->rewrite && !$this->module) {
+            if (!$this->isRewrite() && !$this->module) {
                 $link[] = '?';
             }
             $link[] = implode($separate, $vars);

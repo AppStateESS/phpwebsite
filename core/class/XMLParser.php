@@ -15,25 +15,25 @@
    * @author raphael at schwarzschmid dot de
    * @author Matthew McNaney <mcnaney at gmail dot com>
    * @version $Id$
-   */ 
+   */
 
 
 class XMLParser {
-    var $filename     = null;
-    var $xml          = null;
-    var $data         = null;
-    var $error        = null;
-    var $mapped       = null;
+    public $filename     = null;
+    public $xml          = null;
+    public $data         = null;
+    public $error        = null;
+    public $mapped       = null;
     /**
      * If content_only is true, attribute values will be ignored and only
      * the 'content' tags will be paired to the tag name.
-     * If false, the tag name will contain an array with the content and 
+     * If false, the tag name will contain an array with the content and
      * attributes.
      * @var boolean
      */
-    var $content_only = false;
-  
-    function XMLParser($xml_file, $die_on_error=true)
+    public $content_only = false;
+
+    public function __construct($xml_file, $die_on_error=true)
     {
         $this->filename = $xml_file;
         $this->xml = xml_parser_create();
@@ -48,8 +48,8 @@ class XMLParser {
             $this->error = $result;
         }
     }
-  
-    function parse($xml_file, $die_on_error=true)
+
+    public function parse($xml_file, $die_on_error=true)
     {
         $file_contents = @file($xml_file);
 
@@ -74,8 +74,8 @@ class XMLParser {
 
         return true;
     }
-  
-    function startHandler($parser, $name, $attributes)
+
+    public function startHandler($parser, $name, $attributes)
     {
         $data['name'] = $name;
         if ($attributes) { $data['attributes'] = $attributes; }
@@ -85,12 +85,12 @@ class XMLParser {
     /**
      * Sets the value of content_only. See variable description.
      */
-    function setContentOnly($only=true)
+    public function setContentOnly($only=true)
     {
         $this->content_only = (bool)$only;
     }
 
-    function dataHandler($parser, $data) {
+    public function dataHandler($parser, $data) {
         //Trims everything except for spaces
         if($data = trim($data, "\t\n\r\0\x0B")) {
             $test = str_replace(' ', '', $data);
@@ -106,7 +106,7 @@ class XMLParser {
         }
     }
 
-    function endHandler($parser, $name)
+    public function endHandler($parser, $name)
     {
         if (count($this->data) > 1) {
             $data = array_pop($this->data);
@@ -115,13 +115,13 @@ class XMLParser {
         }
     }
 
-    function format()
+    public function format()
     {
         return $this->subformat($this->data[0]);
     }
 
 
-    function subformat($foo, $hold=null)
+    public function subformat($foo, $hold=null)
     {
         if (isset($foo['child'])) {
             $content = array();

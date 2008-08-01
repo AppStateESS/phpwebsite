@@ -2,7 +2,7 @@
 require_once PHPWS_SOURCE_DIR . '/lib/xml/XML-RPC/IXR_Library.inc.php';
 
 /**
- * This is a XML-RPC Server.  
+ * This is a XML-RPC Server.
  *
  * Extended by another class to allow XML-RPC functionality.
  * Originally written by Eloi George for the Article Manager.
@@ -26,16 +26,16 @@ define('ALLOW_OCTET_STREAM', true);
 
 
 /**
- * Until I work out all the kinks, I am leaving in my testing 
+ * Until I work out all the kinks, I am leaving in my testing
  */
 
 define('LOG_RESULTS', false);
 define('LOG_DIR', 'files/xml/');
 
 class MyServer extends IXR_IntrospectionServer {
-    var $validuser      = false;
+    public $validuser      = false;
 
-    function MyServer() {
+    public function __construct() {
         if (isset($GLOBALS['HTTP_RAW_POST_DATA'])) {
             record(__FUNCTION__,$GLOBALS['HTTP_RAW_POST_DATA']);
         }
@@ -54,7 +54,7 @@ class MyServer extends IXR_IntrospectionServer {
           'this:blogger_editPost',
           array('boolean'),
           'Updates the information about an existing post.'
-      ); 
+      );
 
       $this->addCallback(
           'blogger.getRecentPosts',
@@ -76,7 +76,7 @@ class MyServer extends IXR_IntrospectionServer {
                            array('array', 'string', 'string', 'string', 'string', 'boolean'),
                            'Deletes a post.'
                            );
-        
+
         $this->addCallback(
                            'blogger.getUsersBlogs',
                            'this:blogger_getUsersBlogs',
@@ -207,14 +207,14 @@ class MyServer extends IXR_IntrospectionServer {
         $this->serve();
     }
 
-    function removeCategoryItems($key_id)
+    public function removeCategoryItems($key_id)
     {
         $db = new PHPWS_DB('category_items');
         $db->addWhere('key_id', (int)$key_id);
         return $db->delete();
     }
 
-    function saveCategories($id, $categories, $api_type)
+    public function saveCategories($id, $categories, $api_type)
     {
         PHPWS_Core::initModClass('categories', 'Categories.php');
         PHPWS_Core::initModClass('categories', 'Action.php');
@@ -249,7 +249,7 @@ class MyServer extends IXR_IntrospectionServer {
         $this->removeCategoryItems($key_id);
 
         /* Save category ids */
-        foreach($cat_list as $cat_id) { 
+        foreach($cat_list as $cat_id) {
             Categories_Action::addCategoryItem($cat_id, $key_id);
         }
 
@@ -257,7 +257,7 @@ class MyServer extends IXR_IntrospectionServer {
     }
 
 
-    function blogger_deletePost($args)
+    public function blogger_deletePost($args)
     {
         $logged = $this->logUser($args[2], $args[3], 'delete');
         if ($logged !== true) {
@@ -268,12 +268,12 @@ class MyServer extends IXR_IntrospectionServer {
     }
 
 
-    function blogger_getUsersBlogs($args) {
+    public function blogger_getUsersBlogs($args) {
         return array(array('url'=>PHPWS_Core::getHomeHttp(), 'blogid'=>'1', 'blogName'=>Layout::getPageTitle(true)));
     }
 
 
-    function metaWeblog_newPost($args) {
+    public function metaWeblog_newPost($args) {
         /* Login the user */
         $logged = $this->logUser($args[1], $args[2], 'new');
         if ($logged !== true) {
@@ -292,16 +292,16 @@ class MyServer extends IXR_IntrospectionServer {
             return $id;
         }
 
-        
+
         if(!empty($args[3]['categories'])) {
             $this->saveCategories($id, $args[3]['categories'], 'metaWeblog');
         }
-       
+
         return $id;
     }
 
 
-    function metaWeblog_editPost($args) {
+    public function metaWeblog_editPost($args) {
         /* Login the user */
         $logged = $this->logUser($args[1], $args[2], 'edit');
         if ($logged !== true) {
@@ -329,7 +329,7 @@ class MyServer extends IXR_IntrospectionServer {
 
     }
 
-    function metaWeblog_getPost($args) {
+    public function metaWeblog_getPost($args) {
         $logged = $this->logUser($args[1], $args[2], 'edit');
         if ($logged !== true) {
             return $logged;
@@ -341,17 +341,17 @@ class MyServer extends IXR_IntrospectionServer {
     /**
      * There are five subpermission states. How your module handles them is up
      * to you.
-     * 
+     *
      * new      - user can create a new entry
      * edit     - user can edit an existing entry
      * list     - user can list entries
      * category - user can post category changes
      * delete   - user can delete entries
      */
-    function logUser($username, $password, $subpermission=null)
+    public function logUser($username, $password, $subpermission=null)
     {
         $result = Current_User::loginUser($username, $password);
-        
+
         // Bad result or blank result returns an error message
         if (PHPWS_Error::logIfError($result) || !$result) {
             return new IXR_Error(4000, XMLRPC_CANNOT_AUTHENTICATE);
@@ -378,19 +378,19 @@ class MyServer extends IXR_IntrospectionServer {
         }
     }
 
-    function dropUser()
+    public function dropUser()
     {
         PHPWS_Core::killSession('User');
     }
 
 
-    function metaWeblog_getRecentPosts($args)
+    public function metaWeblog_getRecentPosts($args)
     {
         $logged = $this->logUser($args[1], $args[2], 'list');
         if ($logged !== true) {
             return $logged;
         }
-        
+
         if (is_numeric($args[3])) {
             $limit = (int)$args[3];
         }
@@ -405,7 +405,7 @@ class MyServer extends IXR_IntrospectionServer {
      * If you update that file, make sure the base64 decode contains
      * a trim call on the currentTagContents variable.
      */
-    function metaWeblog_newMediaObject($args) {
+    public function metaWeblog_newMediaObject($args) {
         PHPWS_Core::requireConfig('core', 'file_types.php');
         PHPWS_Core::initCoreClass('File.php');
         $allowed_images = unserialize(ALLOWED_IMAGE_TYPES);
@@ -420,7 +420,7 @@ class MyServer extends IXR_IntrospectionServer {
         $filetype = $args[3]['type'];
         $ext = PHPWS_File::getFileExtension($filename);
 
-        if ( !(ALLOW_OCTET_STREAM && $filetype == 'application/octet-stream') 
+        if ( !(ALLOW_OCTET_STREAM && $filetype == 'application/octet-stream')
              && !in_array($filetype, $allowed_images)) {
             return new IXR_Error(-652, "File type '$filetype' not allowed.");
         }
@@ -453,16 +453,16 @@ class MyServer extends IXR_IntrospectionServer {
         return $url;
     }
 
-    function metaWeblog_getCategories($args) {
+    public function metaWeblog_getCategories($args) {
         return array_values(Categories::getCategories('list'));
     }
 
-    function mt_getRecentPostTitles($args)
+    public function mt_getRecentPostTitles($args)
     {
         return new IXR_Error(2, 'mt.getRecentPostTitles not supported yet.');
     }
 
-    function mt_getCategoryList($args)
+    public function mt_getCategoryList($args)
     {
         $result = array();
 
@@ -479,7 +479,7 @@ class MyServer extends IXR_IntrospectionServer {
         return $result;
     }
 
-    function mt_getPostCategories($args)
+    public function mt_getPostCategories($args)
     {
         $logged = $this->logUser($args[1], $args[2], 'category');
         if ($logged !== true) {
@@ -518,7 +518,7 @@ class MyServer extends IXR_IntrospectionServer {
         return $cat_result;
     }
 
-    function mt_setPostCategories($args)
+    public function mt_setPostCategories($args)
     {
         /* Login the user */
         $logged = $this->logUser($args[1], $args[2], 'category');
@@ -529,28 +529,28 @@ class MyServer extends IXR_IntrospectionServer {
         return $this->saveCategories($args[0], $args[3], 'MT');
     }
 
-    function mt_supportedMethods($args)
+    public function mt_supportedMethods($args)
     {
         return $this->listMethods();
     }
 
-    function mt_supportedTextFilters($args)
+    public function mt_supportedTextFilters($args)
     {
         return array();
     }
 
-    function mt_getTrackbackPings($args)
+    public function mt_getTrackbackPings($args)
     {
         return array();
     }
 
-    function mt_publishPost($args)
+    public function mt_publishPost($args)
     {
         return 1;
     }
 
 
-    function isLoggedIn($args)
+    public function isLoggedIn($args)
     {
         if (!$this->logUser($args[0], $args[1])) {
             return 'Not a User! Username:'.trim($args[0]).' Password:'.$args[1];
@@ -562,32 +562,32 @@ class MyServer extends IXR_IntrospectionServer {
     /**
      * Adds the full url to relative image links
      */
-    function appendImages($text)
+    public function appendImages($text)
     {
         $url = PHPWS_Core::getHomeHttp();
         return preg_replace('@(src=")\./(images)@', '\\1' . $url . '\\2', $text);
     }
 
-    
-    function getDate($args) {
+
+    public function getDate($args) {
         return date('r');
     }
 
-    function getTime($args) {
+    public function getTime($args) {
         return date('H:i:s');
     }
 
 
-    function helloWorld($args) {
+    public function helloWorld($args) {
         return 'Hello, World!';
     }
 
-    function ooh($args) {
+    public function ooh($args) {
         return new IXR_Error(4000, 'ha ha ha');
     }
 
 
-    function times10($value) {
+    public function times10($value) {
         return array(
                      'times10' => (int)$value * 10,
                      'times100' => (int)$value * 10,

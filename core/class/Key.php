@@ -25,44 +25,44 @@ if (!isset($_REQUEST['module'])) {
 class Key {
     // if the id is 0 (zero) then this is a _dummy_ key
     // dummy keys are not saved
-    var $id              = null;
-    var $module          = null;
-    var $item_name       = null;
-    var $item_id         = null;
-    var $title           = null;
-    var $summary         = null;
-    var $url             = null;
-    var $active          = 1;
+    public $id              = null;
+    public $module          = null;
+    public $item_name       = null;
+    public $item_id         = null;
+    public $title           = null;
+    public $summary         = null;
+    public $url             = null;
+    public $active          = 1;
 
     // if KEY_LOGGED_RESTRICTED, then only logged in users will access
     // if KEY_GROUP_RESTRICTED, user must be in group list
-    var $restricted      = 0;
+    public $restricted      = 0;
 
-    var $create_date     = 0;
-    var $update_date     = 0;
+    public $create_date     = 0;
+    public $update_date     = 0;
 
-    var $creator         = null;
-    var $creator_id      = 0;
+    public $creator         = null;
+    public $creator_id      = 0;
 
-    var $updater         = null;
-    var $updater_id      = 0;
+    public $updater         = null;
+    public $updater_id      = 0;
 
     // contains permission allow name for editing
-    var $edit_permission = null;
+    public $edit_permission = null;
 
-    var $times_viewed    = 0;
-    
-    var $show_after      = 0;
-    var $hide_after      = HIDE_CEILING;
+    public $times_viewed    = 0;
+
+    public $show_after      = 0;
+    public $hide_after      = HIDE_CEILING;
 
     // groups allowed to view
-    var $_view_groups    = null;
+    private $_view_groups    = null;
     // groups allowed to edit
-    var $_edit_groups    = null;
+    private $_edit_groups    = null;
 
-    var $_error          = null;
-  
-    function Key($id=null)
+    private $_error          = null;
+
+    function __construct($id=null)
     {
         if (empty($id)) {
             return null;
@@ -164,7 +164,7 @@ class Key {
         $db->addWhere('key_id', $this->id);
         $db->addColumn('group_id');
         $result = $db->select('col');
-        
+
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             return array();
@@ -211,7 +211,7 @@ class Key {
         }
 
         $now = mktime();
-        if ($check_dates && 
+        if ($check_dates &&
             (($this->hide_after < $now) || ($this->show_after > $now))) {
             return false;
         }
@@ -274,7 +274,7 @@ class Key {
         if (empty($this->module) || empty($this->item_id)) {
             return false;
         }
-        
+
         if (empty($this->item_name) || $this->item_name == 'home') {
             $this->item_name = $this->module;
         }
@@ -303,7 +303,7 @@ class Key {
             if (PEAR::isError($result)) {
                 return $result;
             } elseif ($result) {
-                return PHPWS_Error::get(KEY_DUPLICATE, 'core', 'Key::save', 
+                return PHPWS_Error::get(KEY_DUPLICATE, 'core', 'Key::save',
                                         sprintf('%s-%s-%s', $this->module, $this->item_name, $this->item_id));
             }
             $db->reset();
@@ -337,7 +337,7 @@ class Key {
         if (PEAR::isError($result)) {
             return $result;
         }
-        
+
         $edit_db = new PHPWS_DB('phpws_key_edit');
         $edit_db->addWhere('key_id', $this->id);
         $result = $edit_db->delete();
@@ -450,7 +450,7 @@ class Key {
             $this->id = 0;
         }
         $this->viewed();
-        $GLOBALS['Current_Flag'] = &$this;
+        $GLOBALS['Current_Flag'] = $this;
     }
 
     function drop($key_id)
@@ -499,7 +499,7 @@ class Key {
             PHPWS_Error::log($result);
             $all_is_well = false;
         }
-        
+
         $db->reset();
         $db->setTable('phpws_key_view');
         $db->addWhere('key_id', $this->id);
@@ -542,7 +542,7 @@ class Key {
      * to your db object.
      *
      */
-    function restrictView(&$db, $module=null, $check_dates=true)
+    function restrictView($db, $module=null, $check_dates=true)
     {
         $now = mktime();
         $source_table = $db->tables[0];
@@ -574,11 +574,11 @@ class Key {
             $db->addJoin('left', 'phpws_key', $source_table, 'id', 'key_id');
         }
 
-        if ( Current_User::isDeity() || 
+        if ( Current_User::isDeity() ||
              (isset($module) && Current_User::isUnrestricted($module) )
              ) {
             return;
-        } 
+        }
 
         if ($check_dates) {
             $db->addWhere('phpws_key.show_after', $now, '<', null, 'active');
@@ -595,7 +595,7 @@ class Key {
             }
 
             $db->addJoin('left', 'phpws_key', 'phpws_key_view', 'id', 'key_id');
-            
+
             // if key only has a level 1 restriction, a logged user can view it
             $db->addWhere('phpws_key.restricted', KEY_LOGGED_RESTRICTED, '<=', null, 'restrict_1');
 
@@ -629,9 +629,9 @@ class Key {
 
 
     /**
-     * Adds limits to a db select query to only pull items the user 
+     * Adds limits to a db select query to only pull items the user
      * has permissions to view
-     * 
+     *
      * Note that BEFORE this is called, the developer should check whether
      * the user has ANY rights to edit items in the first place.
      * In other words, if Current_User::allow('module', 'edit_permission') == false
@@ -639,7 +639,7 @@ class Key {
      * will be added (i.e. where 1 = 0);
      */
 
-    function restrictEdit(&$db, $module, $edit_permission)
+    function restrictEdit($db, $module, $edit_permission)
     {
         if (Current_User::isDeity()) {
             return;
@@ -675,7 +675,7 @@ class Key {
             $db->setGroupConj('key_1', 'or');
             return;
         }
-        
+
     }
 
     function modulesInUse()
@@ -710,7 +710,7 @@ class Key {
     /**
      * A set of checks on a key to see if it is usable for content indexing
      */
-    function checkKey(&$key, $allow_home_key=true) {
+    function checkKey($key, $allow_home_key=true) {
         if ( empty($key) || isset($key->_error) ) {
             return false;
         }

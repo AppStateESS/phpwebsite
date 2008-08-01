@@ -31,7 +31,7 @@ class PHPWS_File {
      * @author Matthew McNaney <mcnaney at gmail dot com>
      * @return array directories Array of directories if successful, NULL if nothing found
      */
-    function listDirectories($root_dir, $with_root=FALSE, $recursive=FALSE)
+    public function listDirectories($root_dir, $with_root=FALSE, $recursive=FALSE)
     {
         $directories = NULL;
 
@@ -76,7 +76,7 @@ class PHPWS_File {
     /**
      * Cannot set files_only and recursive to true
      */
-    function readDirectory($path, $directories_only=false, $files_only=false, $recursive=false, $extensions=null)
+    public function readDirectory($path, $directories_only=false, $files_only=false, $recursive=false, $extensions=null)
     {
         static $first_path = null;
         $listing = null;
@@ -151,7 +151,7 @@ class PHPWS_File {
      *
      * @author Matthew McNaney <mcnaney at gmail dot com>
      */
-    function copy_directory($source_directory, $dest_directory, $overwrite=true, $hidden=false) {
+    public function copy_directory($source_directory, $dest_directory, $overwrite=true, $hidden=false) {
         PHPWS_File::appendSlash($source_directory);
         PHPWS_File::appendSlash($dest_directory);
 
@@ -211,11 +211,11 @@ class PHPWS_File {
         return TRUE;
     }
 
-    function recursiveFileCopy($source_dir, $dest_dir) {
+    public function recursiveFileCopy($source_dir, $dest_dir) {
         return PHPWS_File::copy_directory($source_dir, $dest_dir);
     }
 
-    function writeFile($filename, $text, $allowOverwrite=FALSE, $errorReport=FALSE)
+    public function writeFile($filename, $text, $allowOverwrite=FALSE, $errorReport=FALSE)
     {
         if (!$allowOverwrite) {
             if (@is_writable($filename)) {
@@ -227,7 +227,7 @@ class PHPWS_File {
     }// END FUNC writeFile()
 
 
-    function readFile($filename, $error=NULL)
+    public function readFile($filename, $error=NULL)
     {
         return file_get_contents($filename);
     }
@@ -250,7 +250,7 @@ class PHPWS_File {
      * @return   boolean TRUE on success, FALSE on failure
      * @access   public
      */
-    function fileCopy($file_origin, $destination_directory, $file_destination, $overwrite, $fatal) 
+    public function fileCopy($file_origin, $destination_directory, $file_destination, $overwrite, $fatal) 
     {
         if ($fatal) {
             $fp = @fopen($file_origin, 'rb');
@@ -303,7 +303,7 @@ class PHPWS_File {
      * @return   boolean $dirCreated   true if directory was created
      * @access   public
      */
-    function makeDir($pathname, $permissions=NULL) 
+    public function makeDir($pathname, $permissions=NULL) 
     {
         if(is_dir($pathname)) {
             return true;
@@ -324,7 +324,7 @@ class PHPWS_File {
     }
 
 
-    function _imageCopy($path, $file_type)
+    public function _imageCopy($path, $file_type)
     {
         if ($file_type == 'image/gif') {
             return imagecreatefromgif($path);
@@ -338,7 +338,7 @@ class PHPWS_File {
         }
     }
 
-    function _writeImageCopy($resampled_image, $dest_dir, $file_type)
+    public function _writeImageCopy($resampled_image, $dest_dir, $file_type)
     {
         $result = false;
 
@@ -353,7 +353,7 @@ class PHPWS_File {
         return $result;
     }
 
-    function _resampleImage($new_width, $new_height)
+    public function _resampleImage($new_width, $new_height)
     {
         if(PHPWS_File::chkgd2()) {
             $resampled_image = imagecreatetruecolor($new_width, $new_height);
@@ -366,7 +366,7 @@ class PHPWS_File {
     }
 
 
-    function rotateImage($source_dir, $dest_dir, $degrees)
+    public function rotateImage($source_dir, $dest_dir, $degrees)
     {
         if (!extension_loaded('gd')) {
             return false;
@@ -402,7 +402,7 @@ class PHPWS_File {
     }
 
 
-    function cropPercent($source_dir, $dest_dir, $percentage, $origin=5)
+    public function cropPercent($source_dir, $dest_dir, $percentage, $origin=5)
     {
         if ($percentage > 99) {
             return false;
@@ -433,7 +433,7 @@ class PHPWS_File {
      *           bottom-right  = 9
      * percentage : percentage of crop reduction
      */
-    function cropImage($source_dir, $dest_dir, $new_width, $new_height, $origin=5) {
+    public function cropImage($source_dir, $dest_dir, $new_width, $new_height, $origin=5) {
         if (!extension_loaded('gd')) {
             return false;
         }
@@ -533,7 +533,7 @@ class PHPWS_File {
      * Scales an image down to smaller than the max_width and max_height.
      * You cannot scale an image to a higher resolution.
      */ 
-    function scaleImage($source_dir, $dest_dir, $max_width, $max_height)
+    public function scaleImage($source_dir, $dest_dir, $max_width, $max_height)
     {
         if (empty($max_width) || empty($max_height)) {
             return false;
@@ -606,14 +606,14 @@ class PHPWS_File {
     /**
      * Backward compatibility
      */
-    function resizeImage($source_dir, $dest_dir, $new_width, $new_height, $force_png=false) {
+    public function resizeImage($source_dir, $dest_dir, $new_width, $new_height, $force_png=false) {
         return PHPWS_File::scaleImage($source_dir, $dest_dir, $new_width, $new_height);
     }
 
     /**
      * Backward compatibility
      */
-    function makeThumbnail($fileName, $directory, $tndirectory, $maxWidth=125, $maxHeight=125, $replaceFile=FALSE) {
+    public function makeThumbnail($fileName, $directory, $tndirectory, $maxWidth=125, $maxHeight=125, $replaceFile=FALSE) {
         $source_dir = $directory . $fileName;
         $new_file   = preg_replace('/\.(jpg|jpeg|gif|png)$/i', '_tn.\\1', $fileName); 
         $dest_dir   = $tndirectory . $new_file;
@@ -625,7 +625,7 @@ class PHPWS_File {
         }
     }
 
-    function rmdir($dir) 
+    public function rmdir($dir) 
     {
         PHPWS_File::appendSlash($dir);
 
@@ -659,7 +659,7 @@ class PHPWS_File {
     }// END FUNC rmdir()
 
 
-    function chkgd2()
+    public function chkgd2()
     {
         if(function_exists('gd_info')) {
             $gdver = gd_info();
@@ -697,7 +697,7 @@ class PHPWS_File {
      * @param    int    $maxlen Maximun permited string length
      * @return   string Formatted file name
      */
-    function nameToSafe($name, $maxlen=250)
+    public function nameToSafe($name, $maxlen=250)
     {
         $noalpha = 'ÁÉÍÓÚÝáéíóúýÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÄËÏÖÜäëïöüÿÃãÕõÅåÑñÇç@°ºª';
         $alpha   = 'AEIOUYaeiouyAEIOUaeiouAEIOUaeiouAEIOUaeiouyAaOoAaNnCcaooa';
@@ -709,7 +709,7 @@ class PHPWS_File {
     }
 
 
-    function getFileExtension($filename)
+    public function getFileExtension($filename)
     {
         if (!strpos($filename, '.')) {
             return null;
@@ -718,14 +718,14 @@ class PHPWS_File {
         return array_pop($aFile);
     }
 
-    function appendSlash(&$directory)
+    public function appendSlash(&$directory)
     {
         if (!preg_match('/\/$/', $directory)) {
             $directory .= '/';
         }
     }
 
-    function getMimeType($file_path)
+    public function getMimeType($file_path)
     {
         if (function_exists('finfo_open')) {
             if (!$finfo = finfo_open(FILEINFO_MIME)) {
@@ -747,7 +747,7 @@ class PHPWS_File {
         }
     }
 
-    function checkMimeType($file_path, $ext=null)
+    public function checkMimeType($file_path, $ext=null)
     {
         $all_file_type = PHPWS_File::getAllFileTypes();
         if (empty($ext)) {
@@ -781,7 +781,7 @@ class PHPWS_File {
         }
     }
 
-    function getVbType($ext)
+    public function getVbType($ext)
     {
         if (strpos($ext, '.')) {
             $ext = PHPWS_File::getFileExtension($ext);
@@ -790,7 +790,7 @@ class PHPWS_File {
         return $all_types[$ext]['vb'];
     }
 
-    function getAllFileTypes()
+    public function getAllFileTypes()
     {
         static $all_file_types = null;
         if (empty($all_file_types)) {

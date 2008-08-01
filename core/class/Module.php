@@ -6,25 +6,25 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 class PHPWS_Module {
-    var $title         = null;
-    var $proper_name   = null;
-    var $priority      = 50;
-    var $directory     = null;
-    var $version       = null;
-    var $active        = true; 
-    var $image_dir     = false;
-    var $file_dir      = false;
-    var $register      = false;
-    var $unregister    = false;
-    var $import_sql    = false;
-    var $version_http  = null;
-    var $about         = false;
-    var $fullMod       = true;
-    var $_dependency   = false;
-    var $_dep_list     = null;
-    var $_error        = null;
+    public $title         = null;
+    public $proper_name   = null;
+    public $priority      = 50;
+    public $directory     = null;
+    public $version       = null;
+    public $active        = true;
+    public $image_dir     = false;
+    public $file_dir      = false;
+    public $register      = false;
+    public $unregister    = false;
+    public $import_sql    = false;
+    public $version_http  = null;
+    public $about         = false;
+    public $fullMod       = true;
+    private $_dependency   = false;
+    private $_dep_list     = null;
+    private $_error        = null;
 
-    function PHPWS_Module($title=null, $file=true)
+    public function __construct($title=null, $file=true)
     {
         if (isset($title)) {
             $this->setTitle($title);
@@ -32,14 +32,14 @@ class PHPWS_Module {
         }
     }
 
-    function initByDB()
+    public function initByDB()
     {
         $db = new PHPWS_DB('modules');
         $db->addWhere('title', $this->title);
         return $db->loadObject($this);
     }
 
-    function initByFile()
+    public function initByFile()
     {
         $filename = sprintf('%smod/%s/boost/boost.php', PHPWS_SOURCE_DIR, $this->title);
 
@@ -49,7 +49,7 @@ class PHPWS_Module {
         }
 
         include $filename;
-    
+
         if (isset($proper_name)) {
             $this->setProperName($proper_name);
         }
@@ -101,13 +101,13 @@ class PHPWS_Module {
         return true;
     }
 
-    function init($file=true)
+    public function init($file=true)
     {
         $title = &$this->title;
 
         if ($title == 'core') {
             $this->setDirectory(PHPWS_SOURCE_DIR . 'core/');
-            
+
             // even if use_file is false, we get the version_http from the file
             $filename = PHPWS_SOURCE_DIR . 'core/boost/boost.php';
             if (!is_file($filename)) {
@@ -115,7 +115,7 @@ class PHPWS_Module {
             } else {
                 include $filename;
             }
-            
+
             if (!$file) {
                 $db = new PHPWS_DB('core_version');
                 $db->addColumn('version');
@@ -146,17 +146,17 @@ class PHPWS_Module {
     }
 
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = trim($title);
     }
 
-    function setProperName($name)
+    public function setProperName($name)
     {
         $this->proper_name = $name;
     }
 
-    function getProperName($useTitle=false)
+    public function getProperName($useTitle=false)
     {
         if (!isset($this->proper_name) && $useTitle == true) {
             return ucwords(str_replace('_', ' ', $this->title));
@@ -166,117 +166,117 @@ class PHPWS_Module {
         }
     }
 
-    function setPriority($priority)
+    public function setPriority($priority)
     {
         $this->priority = (int)$priority;
     }
 
-    function getPriority()
+    public function getPriority()
     {
         return $this->priority;
     }
 
-    function setDirectory($directory)
+    public function setDirectory($directory)
     {
         $this->directory = $directory;
     }
 
-    function getDirectory()
+    public function getDirectory()
     {
         return $this->directory;
     }
 
-    function setVersion($version)
+    public function setVersion($version)
     {
         $this->version = $version;
     }
 
-    function getVersion()
+    public function getVersion()
     {
         return $this->version;
     }
 
-    function setRegister($register)
+    public function setRegister($register)
     {
         $this->register = (bool)$register;
     }
 
-    function isRegister()
+    public function isRegister()
     {
         return $this->register;
     }
 
-    function setUnregister($unregister)
+    public function setUnregister($unregister)
     {
         $this->unregister = (bool)$unregister;
     }
 
-    function isUnregister()
+    public function isUnregister()
     {
         return $this->unregister;
     }
 
-    function setImportSQL($sql)
+    public function setImportSQL($sql)
     {
         $this->import_sql = (bool)$sql;
     }
 
-    function isImportSQL()
+    public function isImportSQL()
     {
         return $this->import_sql;
     }
 
-    function setImageDir($switch)
+    public function setImageDir($switch)
     {
         $this->image_dir = (bool)$switch;
     }
 
-    function isImageDir()
+    public function isImageDir()
     {
         return $this->image_dir;
     }
 
-    function setFileDir($switch)
+    public function setFileDir($switch)
     {
         $this->file_dir = (bool)$switch;
     }
 
-    function isFileDir()
+    public function isFileDir()
     {
         return $this->file_dir;
     }
 
-    function setActive($active)
+    public function setActive($active)
     {
         $this->active = (bool)$active;
     }
 
-    function isActive()
+    public function isActive()
     {
         return $this->active;
     }
 
-    function setAbout($about)
+    public function setAbout($about)
     {
         $this->about = (bool)$about;
     }
 
-    function isAbout()
+    public function isAbout()
     {
         return $this->about;
     }
 
-    function setVersionHttp($http)
+    public function setVersionHttp($http)
     {
         $this->version_http = $http;
     }
 
-    function getVersionHttp()
+    public function getVersionHttp()
     {
         return $this->version_http;
     }
 
-    function save()
+    public function save()
     {
         if ($this->title != 'core') {
             $db = new PHPWS_DB('modules');
@@ -290,7 +290,7 @@ class PHPWS_Module {
             if (PEAR::isError($result)) {
                 return $result;
             }
-            
+
             return $this->saveDependencies();
         } else {
             $db = new PHPWS_DB('core_version');
@@ -302,7 +302,7 @@ class PHPWS_Module {
         }
     }
 
-    function saveDependencies()
+    public function saveDependencies()
     {
         if (!$this->_dependency) {
             return true;
@@ -331,7 +331,7 @@ class PHPWS_Module {
         }
     }
 
-    function isDependedUpon()
+    public function isDependedUpon()
     {
         static $depend_list = array();
 
@@ -339,7 +339,7 @@ class PHPWS_Module {
             isset($depend_list[$this->title])) {
             return $depend_list[$this->title];
         }
-        
+
         $db = new PHPWS_DB('dependencies');
         $db->addWhere('depended_on', $this->title);
         $db->addColumn('source_mod');
@@ -350,10 +350,10 @@ class PHPWS_Module {
         } else {
             return $depend_list[$this->title] = $result;
         }
-            
+
     }
 
-    function isInstalled($title=null)
+    public function isInstalled($title=null)
     {
         static $module_list = array();
 
@@ -395,7 +395,7 @@ class PHPWS_Module {
         }
     }
 
-    function needsUpdate()
+    public function needsUpdate()
     {
         $db = new PHPWS_DB('modules');
         $db->addWhere('title', $this->title);
@@ -406,13 +406,13 @@ class PHPWS_Module {
         }
         return version_compare($result['version'], $this->getVersion(), '<');
     }
-  
-    function isFullMod()
+
+    public function isFullMod()
     {
         return $this->fullMod;
     }
 
-    function checkDependency()
+    public function checkDependency()
     {
         // Module doesn't have dependencies therefore no
         // need to check
@@ -443,7 +443,7 @@ class PHPWS_Module {
     }
 
 
-    function getDependencies()
+    public function getDependencies()
     {
         $file = $this->getDirectory() . 'boost/dependency.xml';
         if (!is_file($file)) {

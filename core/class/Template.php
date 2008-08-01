@@ -18,11 +18,11 @@ if (!defined('CACHE_TPL_LOCALLY')) {
  }
 
 class PHPWS_Template extends HTML_Template_Sigma {
-    var $module           = NULL;
-    var $error            = NULL;
-    var $lastTemplatefile = NULL;
+    public $module           = NULL;
+    public $error            = NULL;
+    public $lastTemplatefile = NULL;
 
-    function PHPWS_Template($module=NULL, $file=NULL)
+    public function __construct($module=NULL, $file=NULL)
     {
         $this->HTML_Template_Sigma();
         if (isset($module))
@@ -42,7 +42,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
      * Grabs the THEME template directory unless layout is not
      * operational
      */
-    function getTplDir($module)
+    public function getTplDir($module)
     {
         if ($module == 'core') {
             return PHPWS_HOME_DIR . 'templates/core/';
@@ -56,7 +56,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         return sprintf('%stemplates/%s/', $theme, $module);
     }
 
-    function setCache()
+    public function setCache()
     {
         if (!PHPWS_Template::allowSigmaCache()) {
             return;
@@ -73,7 +73,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
                 $root_dir = 'unusable';
                 return;
             }
-            
+
             if (!is_writable($root_dir)) {
                 $root_dir = 'unusable';
                 return;
@@ -85,7 +85,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         $this->setCacheRoot($root_dir);
     }
 
-    function allowSigmaCache()
+    public function allowSigmaCache()
     {
         if (defined('ALLOW_SIGMA_CACHE')) {
             return ALLOW_SIGMA_CACHE;
@@ -95,10 +95,10 @@ class PHPWS_Template extends HTML_Template_Sigma {
     }
 
     /**
-     * returns the expected template directory based on settings in 
+     * returns the expected template directory based on settings in
      * the template.php config file and the existence of files
      */
-    function getTemplateDirectory($module, $directory=NULL)
+    public function getTemplateDirectory($module, $directory=NULL)
     {
         $theme_dir  = PHPWS_Template::getTplDir($module) . $directory;
         $local_dir  = sprintf('templates/%s/%s', $module, $directory);
@@ -121,9 +121,9 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
     /**
      * Lists the template files in a directory.
-     * Can be called statically. 
+     * Can be called statically.
      */
-    function listTemplates($module, $directory=NULL)
+    public function listTemplates($module, $directory=NULL)
     {
         $tpl_dir = PHPWS_Template::getTemplateDirectory($module, $directory);
 
@@ -144,7 +144,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
      * Sets the template file specified. Function decides which file to use based
      * on template.php settings and file availability
      */
-    function setFile($file, $strict=FALSE)
+    public function setFile($file, $strict=FALSE)
     {
         $module = $this->getModule();
         $this->setCache();
@@ -180,17 +180,17 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
     }
 
-    function setModule($module)
+    public function setModule($module)
     {
         $this->module = $module;
     }
 
-    function getModule()
+    public function getModule()
     {
         return $this->module;
     }
 
-    function setData($data)
+    public function setData($data)
     {
         if (PEAR::isError($data)){
             PHPWS_Error::log($data);
@@ -210,11 +210,11 @@ class PHPWS_Template extends HTML_Template_Sigma {
     }
 
 
-    function process($template, $module, $file, $strict=FALSE)
+    public function process($template, $module, $file, $strict=FALSE)
     {
         if (!is_array($template)) {
-            return PHPWS_Error::log(PHPWS_VAR_TYPE, 'core', 
-                                    'PHPWS_Template::process', 
+            return PHPWS_Error::log(PHPWS_VAR_TYPE, 'core',
+                                    'PHPWS_Template::process',
                                     'template=' . gettype($template));
             return NULL;
         }
@@ -250,7 +250,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
 
         $tpl->setData($template);
-        
+
         $result = $tpl->get();
 
         if (PEAR::isError($result)) {
@@ -271,7 +271,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
     }
 
-    function processTemplate($template, $module, $file, $defaultTpl=TRUE)
+    public function processTemplate($template, $module, $file, $defaultTpl=TRUE)
     {
         if ($defaultTpl)
             return PHPWS_Template::process($template, $module, $file);

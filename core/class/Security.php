@@ -8,7 +8,7 @@
  */
 
 class Security {
-    function log($message)
+    public function log($message)
     {
         if (class_exists('Current_User')) {
             $username = Current_User::getUsername();
