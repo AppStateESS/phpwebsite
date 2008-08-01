@@ -1,25 +1,15 @@
 <?php
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 class PHPWS_Error {
-    // Array used for old error calls from pre 1.x
-    var $crutch_info = NULL;
-
-    /**
-     * This is a crutch function for 0.x compatibility
-     */
-    function PHPWS_Error($module, $funcName, $message)
-    {
-        $this->crutch_info['module']  = $module;
-        $this->crutch_info['func']    = $funcName;
-        $this->crutch_info['message'] = $message;
-    }
-
-
-    function isError($item){
+    public function isError($item){
         return PEAR::isError($item);
     }
 
-    function logIfError($item)
+    public function logIfError($item)
     {
         if (PEAR::isError($item)) {
             PHPWS_Error::log($item);
@@ -29,7 +19,7 @@ class PHPWS_Error {
         }
     }
 
-    function get($value, $module, $funcName=NULL, $extraInfo=NULL){
+    public function get($value, $module, $funcName=NULL, $extraInfo=NULL){
         setLanguage(DEFAULT_LANGUAGE);
         $errorFile = PHPWS_Core::getConfigFile($module, 'error.php');
         if (empty($module)) {
@@ -79,7 +69,7 @@ class PHPWS_Error {
         return $error;
     }
 
-    function log($value, $module=NULL, $funcName=NULL, $extraInfo=NULL){
+    public function log($value, $module=NULL, $funcName=NULL, $extraInfo=NULL){
         if ((bool)PHPWS_LOG_ERRORS == FALSE) {
             return;
         }
@@ -88,23 +78,23 @@ class PHPWS_Error {
             $error = PHPWS_Error::get($value, $module, $funcName, $extraInfo);
         }
         else {
-            $error = &$value;
+            $error = $value;
         }
 
         $final = PHPWS_Error::printError($error);
-        
+
         PHPWS_Core::log($final, 'error.log', _('Error'));
     }
 
 
-    function printError($error){
+    public function printError($error){
         $code  = $error->getcode();
         $message = $error->getuserinfo();
-    
+
         if (!isset($message)) {
             $message = $error->getmessage();
         }
-    
+
         $final = '[' . $code . '] ' . $message;
 
         return $final;
