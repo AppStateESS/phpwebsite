@@ -11,7 +11,7 @@ PHPWS_Core::requireConfig('block');
 
 class Block_Admin {
 
-    function action()
+    public function action()
     {
         if (!Current_User::allow('block')) {
             Current_User::disallow();
@@ -38,7 +38,7 @@ class Block_Admin {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
-    function cpanel()
+    public function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $linkBase = 'index.php?module=block';
@@ -53,7 +53,7 @@ class Block_Admin {
         return $panel;
     }
 
-    function route($action)
+    public function route($action)
     {
         $title = $content = NULL;
         $message = Block_Admin::getMessage();
@@ -156,7 +156,7 @@ class Block_Admin {
         return PHPWS_Template::process($template, 'block', 'admin.tpl');
     }
 
-    function sendMessage($message, $command=null)
+    public function sendMessage($message, $command=null)
     {
         $_SESSION['block_message'] = $message;
         if (isset($command)) {
@@ -164,7 +164,7 @@ class Block_Admin {
         }
     }
 
-    function getMessage()
+    public function getMessage()
     {
         if (isset($_SESSION['block_message'])) {
             $message = $_SESSION['block_message'];
@@ -175,7 +175,7 @@ class Block_Admin {
         return NULL;
     }
 
-    function removeBlock()
+    public function removeBlock()
     {
         if (!isset($_GET['block_id'])) {
             return;
@@ -194,7 +194,7 @@ class Block_Admin {
 
     }
 
-    function edit(Block_Item $block, $js=FALSE)
+    public function edit(Block_Item $block, $js=FALSE)
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         PHPWS_Core::initCoreClass('Editor.php');
@@ -246,7 +246,7 @@ class Block_Admin {
         return $content;
     }
 
-    function postBlock(Block_Item $block)
+    public function postBlock(Block_Item $block)
     {
         $block->setTitle($_POST['title']);
         $block->setContent($_POST['block_content']);
@@ -260,7 +260,7 @@ class Block_Admin {
     }
 
 
-    function blockList()
+    public function blockList()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -279,12 +279,12 @@ class Block_Admin {
     }
 
 
-    function pinBlock(Block_Item $block)
+    public function pinBlock(Block_Item $block)
     {
         $_SESSION['Pinned_Blocks'][$block->getID()] = $block;
     }
 
-    function pinBlockAll(Block_Item $block)
+    public function pinBlockAll(Block_Item $block)
     {
         $values['block_id'] = $block->id;
         $db = & new PHPWS_DB('block_pinned');
@@ -299,7 +299,7 @@ class Block_Admin {
     }
 
 
-    function lockBlock($block_id, $key_id)
+    public function lockBlock($block_id, $key_id)
     {
         $block_id = (int)$block_id;
         $key_id = (int)$key_id;
@@ -316,7 +316,7 @@ class Block_Admin {
         return $db->insert();
     }
 
-    function copyBlock(Block_Item $block)
+    public function copyBlock(Block_Item $block)
     {
         Clipboard::copy($block->getTitle(), $block->getTag());
     }

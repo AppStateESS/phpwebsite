@@ -11,7 +11,7 @@ PHPWS_Core::initModClass('block', 'Block_Item.php');
 
 class Block {
 
-    function show()
+    public function show()
     {
         Block::showAllBlocks();
 
@@ -25,17 +25,17 @@ class Block {
         if (isset($_SESSION['Pinned_Blocks'])) {
             Block::viewPinnedBlocks($key);
         }
-  
+
     }
 
-    function showAllBlocks()
+    public function showAllBlocks()
     {
         $key = new Key;
         $key->id = -1;
         Block::showBlocks($key);
     }
 
-    function viewPinnedBlocks($key)
+    public function viewPinnedBlocks($key)
     {
         if (!isset($_SESSION['Pinned_Blocks'])) {
             return FALSE;
@@ -63,7 +63,7 @@ class Block {
         Layout::add($complete, 'block', 'Block_List');
     }
 
-    function showBlocks($key)
+    public function showBlocks($key)
     {
         $db = & new PHPWS_DB('block');
         $db->addWhere('block_pinned.key_id', $key->id);

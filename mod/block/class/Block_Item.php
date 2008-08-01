@@ -7,16 +7,16 @@
  */
 
 class Block_Item {
-    var $id         = 0;
-    var $key_id     = 0;
-    var $title      = null;
-    var $content    = null;
-    var $file_id    = 0;
-    var $hide_title = 0;
-    var $_pin_key   = null;
-    
+    public $id         = 0;
+    public $key_id     = 0;
+    public $title      = null;
+    public $content    = null;
+    public $file_id    = 0;
+    public $hide_title = 0;
+    public $_pin_key   = null;
 
-    function Block_Item($id=null)
+
+    public function __construct($id=null)
     {
         if (empty($id)) {
             return;
@@ -26,37 +26,37 @@ class Block_Item {
         $this->init();
     }
 
-    function setId($id)
+    public function setId($id)
     {
         $this->id = (int)$id;
     }
 
-    function getId()
+    public function getId()
     {
         return $this->id;
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = strip_tags($title);
     }
 
-    function getTitle()
+    public function getTitle()
     {
         return $this->title;
     }
 
-    function getContentVar()
+    public function getContentVar()
     {
         return 'block_' . $this->id;
     }
 
-    function setContent($content)
+    public function setContent($content)
     {
         $this->content = PHPWS_Text::parseInput($content);
     }
 
-    function getContent($format=TRUE)
+    public function getContent($format=TRUE)
     {
         if ($format) {
             return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content), null, 'block');
@@ -65,27 +65,27 @@ class Block_Item {
         }
     }
 
-    function setPinKey($key)
+    public function setPinKey($key)
     {
         $this->_pin_key = $key;
     }
 
-    function getKey()
+    public function getKey()
     {
         $key = new Key('block', 'block', $this->id);
         return $key;
     }
 
-    function getTag()
+    public function getTag()
     {
         return '[block:' . $this->id . ']';
     }
 
-    function summarize(){
+    public function summarize(){
         return substr(strip_tags($this->getContent()), 0, 40);
     }
 
-    function init()
+    public function init()
     {
         if (empty($this->id)) {
             return FALSE;
@@ -95,7 +95,7 @@ class Block_Item {
         return $db->loadObject($this);
     }
 
-    function save($save_key=TRUE)
+    public function save($save_key=TRUE)
     {
         $db = new PHPWS_DB('block');
         $result = $db->saveObject($this);
@@ -108,7 +108,7 @@ class Block_Item {
         }
     }
 
-    function saveKey()
+    public function saveKey()
     {
         if (empty($this->key_id)) {
             $key = & new Key;
@@ -129,17 +129,17 @@ class Block_Item {
             $this->key_id = $key->id;
             $this->save(FALSE);
         }
-        
+
     }
 
-    function clearPins()
+    public function clearPins()
     {
         $db = & new PHPWS_DB('block_pinned');
         $db->addWhere('block_id', $this->id);
         $db->delete();
     }
 
-    function kill()
+    public function kill()
     {
         $this->clearPins();
         $db = & new PHPWS_DB('block');
@@ -158,14 +158,14 @@ class Block_Item {
         }
     }
 
-    function view($pin_mode=FALSE, $admin_icon=TRUE)
+    public function view($pin_mode=FALSE, $admin_icon=TRUE)
     {
         $edit = $opt = null;
         if (Current_User::allow('block')) {
             $img = sprintf('<img src="./images/mod/block/edit.png" alt="%s" title="%s" />', dgettext('block', 'Edit block'), dgettext('block', 'Edit block'));
             $edit = PHPWS_Text::secureLink($img, 'block', array('block_id'=>$this->id,
                                                                 'action'=>'edit'));
-            
+
             if (!empty($this->_pin_key) && $pin_mode) {
                 $link['action']   = 'lock';
                 $link['block_id'] = $this->id;
@@ -179,11 +179,11 @@ class Block_Item {
                 $js_var['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
                 $js_var['QUESTION'] = dgettext('block', 'Are you sure you want to remove this block from this page?');
                 $js_var['LINK'] = sprintf('<img src="./images/mod/block/remove.png" alt="%s" title="%s" />', dgettext('block', 'Delete block'), ('Delete block'));
-        
+
                 $opt = Layout::getJavascript('confirm', $js_var);
             }
         }
-        
+
         $link['block_id'] = $this->id;
         $template = array('CONTENT' => $this->getContent(),
                           'FILE'    => Cabinet::getTag($this->file_id),
@@ -196,7 +196,7 @@ class Block_Item {
         return PHPWS_Template::process($template, 'block', 'sample.tpl');
     }
 
-    function isPinned()
+    public function isPinned()
     {
         if (!isset($_SESSION['Pinned_Blocks'])) {
             return FALSE;
@@ -205,7 +205,7 @@ class Block_Item {
         return isset($_SESSION['Pinned_Blocks'][$this->id]);
     }
 
-    function allPinned()
+    public function allPinned()
     {
         static $all_pinned = null;
 
@@ -233,7 +233,7 @@ class Block_Item {
 
     }
 
-    function getTpl()
+    public function getTpl()
     {
         $vars['block_id'] = $this->getId();
 
