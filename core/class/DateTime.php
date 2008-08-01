@@ -15,28 +15,28 @@ class PHPWS_DateTime extends PHPWS_Template {
    * @var    string
    * @access private
    */
-  var $date_month;
+  public $date_month;
 
   /**
    * Day format
    * @var    string
    * @access private
    */
-  var $date_day;
+  public $date_day;
 
   /**
    * Year format
    * @var    string
    * @access private
    */
-  var $date_year;
+  public $date_year;
 
   /**
    * Day of the week format
    * @var    string
    * @access private
    */
-  var $day_mode;
+  public $day_mode;
 
   /**
    * Day the week starts
@@ -45,28 +45,28 @@ class PHPWS_DateTime extends PHPWS_Template {
    * @var    string
    * @access private
    */
-  var $day_start;
+  public $day_start;
 
   /**
    * Order of the month, day and year with any other characters.
    * @var    string
    * @access private
    */
-  var $date_order;
+  public $date_order;
 
   /**
    * Format of the time display
    * @var    string
    * @access private
    */
-  var $time_format;
+  public $time_format;
 
   /**
    * Difference of time between server where viewed
    * @var    string
    * @access private
    */
-  var $time_dif;
+  public $time_dif;
 
   /**
    * Contructor for the PHPWS_DateTime class
@@ -74,7 +74,7 @@ class PHPWS_DateTime extends PHPWS_Template {
    * @author Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
    * @access public
    */
-  function loadDateTimeSettings() {
+  public function loadDateTimeSettings() {
     if (file_exists($this->home_dir . "conf/dateSettings.en.php"))
       $dateFile = $this->home_dir . "conf/dateSettings.en.php";
     elseif(file_exists($this->source_dir . "conf/dateSettings.en.php"))
@@ -115,7 +115,7 @@ class PHPWS_DateTime extends PHPWS_Template {
    * @param  boolean $timestamp Indicates whether the data is a timestamp
    * @access public
    */
-  function date($data=NULL, $timestamp=FALSE){
+  public function date($data=NULL, $timestamp=FALSE){
 
     if ($timestamp){
       $y = substr($data, 0 , 4);
@@ -195,7 +195,7 @@ class PHPWS_DateTime extends PHPWS_Template {
    * @return integer The epoched date
    * @access public
    */
-  function mkdate($date){
+  public function mkdate($date){
     $y = substr($date, 0, 4);
     $m = substr($date, 4, 2);
     $d = substr($date, 6, 2);
@@ -210,7 +210,7 @@ class PHPWS_DateTime extends PHPWS_Template {
    * @return  array  month  Array of months 1 to 12
    * @access  public
    */
-  function monthArray(){
+  public function monthArray(){
     for ($i=1; $i<13; $i++){
       $date = $this->date(mktime(2,0,0,$i,1,2000));
       $month[$i] = $date["month"];
@@ -225,7 +225,7 @@ class PHPWS_DateTime extends PHPWS_Template {
    * @return  array  month  Array of months 1 to 31
    * @access  public
    */
-  function dayArray(){
+  public function dayArray(){
     for ($i=1; $i<32; $i++){
       $date = $this->date(mktime(0,0,0,1,$i));
       $day[$i] = $date["day"];
@@ -245,7 +245,7 @@ class PHPWS_DateTime extends PHPWS_Template {
    * @return  array   month   Array of years present to length
    * @access  public
    */
-  function yearArray($start=NULL, $length=10){
+  public function yearArray($start=NULL, $length=10){
     if (!$start)
       $start = date("Y", mktime());
 

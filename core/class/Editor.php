@@ -15,17 +15,17 @@ if (!defined('FORCE_EDITOR')) {
  }
 
 class Editor {
-    var $data       = NULL; // Contains the editor text
-    var $name       = NULL;
-    var $id         = NULL; // text area id
-    var $type       = NULL; // WYSIWYG file
-    var $editorList = NULL;
-    var $error      = NULL;
-    var $limited    = false;
-    var $width      = 0;
-    var $height     = 0;
+    public $data       = NULL; // Contains the editor text
+    public $name       = NULL;
+    public $id         = NULL; // text area id
+    public $type       = NULL; // WYSIWYG file
+    public $editorList = NULL;
+    public $error      = NULL;
+    public $limited    = false;
+    public $width      = 0;
+    public $height     = 0;
 
-    function Editor($name=NULL, $data=NULL, $id=NULL, $type=NULL)
+    function __construct($name=NULL, $data=NULL, $id=NULL, $type=NULL)
     {
         $editorList = $this->getEditorList();
 
@@ -88,7 +88,7 @@ class Editor {
     {
         return PHPWS_File::readDirectory('javascript/editors/', TRUE);
     }
-    
+
     function getError()
     {
         return $this->error;

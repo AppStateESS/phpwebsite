@@ -12,7 +12,7 @@
 define('DEITY_ONLY_TEST', false);
 
 class PHPWS_Debug {
-    function test($value, $show_recursive=FALSE)
+    public function test($value, $show_recursive=FALSE)
     {
         if ( DEITY_ONLY_TEST && ( !class_exists('Current_User') || !Current_User::isDeity()) ) {
                 return;
@@ -51,42 +51,42 @@ class PHPWS_Debug {
         }
     }
 
-    function request()
+    public function request()
     {
         return PHPWS_Debug::test($_REQUEST);
     }
 
-    function post()
+    public function post()
     {
         return PHPWS_Debug::test($_POST);
     }
 
-    function get()
+    public function get()
     {
         return PHPWS_Debug::test($_GET);
     }
   
-    function server()
+    public function server()
     {
         return PHPWS_Debug::test($_SERVER);
     }
 
-    function env()
+    public function env()
     {
         return PHPWS_Debug::test($_ENV);
     }
 
-    function cookie()
+    public function cookie()
     {
         return PHPWS_Debug::test($_COOKIE);
     }
 
-    function files()
+    public function files()
     {
         return PHPWS_Debug::test($_FILES);
     }
 
-    function sessions()
+    public function sessions()
     {
         return PHPWS_Debug::test(array_keys($_SESSION));
     }
@@ -102,7 +102,7 @@ class PHPWS_Debug {
      * @param bool $displayTags whether or not to show html tags
      * @return string table of object variables
      */
-    function testObject($objVar, $displayTags=TRUE, $show_recursive=FALSE)
+    public function testObject($objVar, $displayTags=TRUE, $show_recursive=FALSE)
     {
         if(is_object($objVar)) {
             $test_recursion = md5(serialize($objVar));
@@ -141,7 +141,7 @@ class PHPWS_Debug {
      * @param bool $displayTags whether or not to show html tags
      * @return string table with contents of array 
      */
-    function testArray($arrayVar, $displayTags=TRUE, $show_recursive=FALSE) 
+    public function testArray($arrayVar, $displayTags=TRUE, $show_recursive=FALSE) 
     {
         
         if (empty($arrayVar)) {
@@ -199,7 +199,7 @@ class PHPWS_Debug {
         }
     } // END FUNC testArray
 
-    function emptyVal($value)
+    public function emptyVal($value)
     {
         switch (1) {
         case is_string($value):
