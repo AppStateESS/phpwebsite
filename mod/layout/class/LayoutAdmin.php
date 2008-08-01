@@ -12,7 +12,7 @@
 define('DEFAULT_LAYOUT_TAB', 'boxes');
 
 class Layout_Admin{
-    function admin()
+    public function admin()
     {
         if (!Current_User::allow('layout')) {
             Current_User::disallow();
@@ -142,7 +142,7 @@ class Layout_Admin{
             if (!empty($files) && is_array($files)) {
                 foreach ($files as $fn) {
                     @unlink('templates/cache/' . $fn);
-                } 
+                }
             }
             PHPWS_Core::goBack();
             break;
@@ -239,14 +239,14 @@ class Layout_Admin{
         }
         if (isset($message))
             $template['MESSAGE'] = $message;
-    
+
         $final = PHPWS_Template::process($template, 'layout', 'main.tpl');
         $panel->setContent($final);
 
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
     }
 
-    function jsStyleChange()
+    public function jsStyleChange()
     {
         $styles = Layout::getExtraStyles();
 
@@ -269,7 +269,7 @@ class Layout_Admin{
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'post_style_change');
         $form->addHidden('key_id', $key_id);
-        
+
         $form->addSelect('style', $styles);
         $form->setLabel('style', dgettext('layout', 'Style sheet'));
         $form->setMatch('style', $current_style);
@@ -285,7 +285,7 @@ class Layout_Admin{
     }
 
 
-    function adminPanel()
+    public function adminPanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=layout&amp;action=admin';
@@ -297,13 +297,13 @@ class Layout_Admin{
         $tabs['theme']     = array('title'=>dgettext('layout', 'Themes'),    'link'=>$link);
         $tabs['header']    = array('title'=>dgettext('layout', 'Header'),    'link'=>$link);
         $tabs['footer']    = array('title'=>dgettext('layout', 'Footer'),    'link'=>$link);
-        
+
         $panel = new PHPWS_Panel('layout');
         $panel->quickSetTabs($tabs);
         return $panel;
     }
 
-    function adminThemes()
+    public function adminThemes()
     {
         $form = new PHPWS_Form('themes');
         $form->addHidden('module', 'layout');
@@ -326,7 +326,7 @@ class Layout_Admin{
         return PHPWS_Template::process($template, 'layout', 'themes.tpl');
     }
 
-    function arrangeForm()
+    public function arrangeForm()
     {
         $vars['action'] = 'admin';
         $vars['command'] = 'reset_boxes';
@@ -356,7 +356,7 @@ class Layout_Admin{
     }
 
 
-    function changeTheme()
+    public function changeTheme()
     {
         $result = $_SESSION['Layout_Settings']->saveSettings();
         if (PEAR::isError($result)) {
@@ -365,7 +365,7 @@ class Layout_Admin{
         Layout::reset();
     }
 
-    function confirmThemeChange()
+    public function confirmThemeChange()
     {
         $form = new PHPWS_Form('confirmThemeChange');
         $form->addHidden('module', 'layout');
@@ -378,7 +378,7 @@ class Layout_Admin{
         return $form->getMerge();
     }
 
-    function editFooter()
+    public function editFooter()
     {
         $form = new PHPWS_Form('edit_footer');
         $form->addHidden('module', 'layout');
@@ -403,7 +403,7 @@ class Layout_Admin{
     }
 
 
-    function editHeader()
+    public function editHeader()
     {
         $form = new PHPWS_Form('edit_header');
         $form->addHidden('module', 'layout');
@@ -427,7 +427,7 @@ class Layout_Admin{
         return PHPWS_Template::process($template, 'layout', 'edit_header.tpl');
     }
 
-    function getThemeList()
+    public function getThemeList()
     {
         PHPWS_Core::initCoreClass('File.php');
         return PHPWS_File::readDirectory('themes/', 1);
@@ -437,7 +437,7 @@ class Layout_Admin{
      * Form for meta tags. Used for site mata tags and individual key
      * meta tags.
      */
-    function metaForm($key_id=0)
+    public function metaForm($key_id=0)
     {
         $meta_description = $meta_keywords = $page_title = null;
         $meta_robots = '11';
@@ -496,7 +496,7 @@ class Layout_Admin{
     /**
      * Receives the post results of the box change form.
      */
-    function moveBox()
+    public function moveBox()
     {
         PHPWS_Core::initModClass('layout', 'Box.php');
         $box = new Layout_Box($_GET['box_source']);
@@ -513,7 +513,7 @@ class Layout_Admin{
         return true;
     }
 
-    function postStyleChange()
+    public function postStyleChange()
     {
         Layout::reset();
         if (!isset($_POST['style']) || !isset($_POST['key_id']) ) {
@@ -528,11 +528,11 @@ class Layout_Admin{
             $db->addValue('key_id', (int)$_POST['key_id']);
             $db->addValue('style', $_POST['style']);
             $result = $db->insert();
-            
+
         }
     }
 
-    function postHeader()
+    public function postHeader()
     {
         if (isset($_POST['header_fp_only'])) {
             PHPWS_Settings::set('layout', 'header_fp_only', 1);
@@ -545,7 +545,7 @@ class Layout_Admin{
         return $_SESSION['Layout_Settings']->saveSettings();
     }
 
-    function postFooter()
+    public function postFooter()
     {
         if (isset($_POST['footer_fp_only'])) {
             PHPWS_Settings::set('layout', 'footer_fp_only', 1);
@@ -559,10 +559,10 @@ class Layout_Admin{
         return $_SESSION['Layout_Settings']->saveSettings();
     }
 
-    function postMeta()
+    public function postMeta()
     {
         extract($_POST);
-    
+
         $values['page_title'] = strip_tags($page_title);
         $values['meta_keywords'] = strip_tags($meta_keywords);
         $values['meta_description'] = strip_tags($meta_description);
@@ -602,13 +602,13 @@ class Layout_Admin{
         }
     }
 
-    function pageMetaTags($key_id)
+    public function pageMetaTags($key_id)
     {
         $content = Layout_Admin::metaForm($key_id);
         return $content;
     }
 
-    function moveBoxMenu()
+    public function moveBoxMenu()
     {
         $box = new Layout_Box($_GET['box']);
         $vars['action'] = 'admin';
@@ -648,11 +648,6 @@ class Layout_Admin{
         $content = PHPWS_Template::process($template, 'layout', 'move_box_select.tpl');
         Layout::nakedDisplay($content);
     }
-
-    function addHeadFiles()
-    {
-    }
-
 }
 
 ?>

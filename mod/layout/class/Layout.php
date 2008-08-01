@@ -50,7 +50,7 @@ class Layout {
      *
      * @author Matt McNaney <matt at tux dot appstate dot edu>
      */
-    function add($text, $module=NULL, $content_var=NULL, $default_body=FALSE)
+    public function add($text, $module=NULL, $content_var=NULL, $default_body=FALSE)
     {
         if (!is_string($text)) {
             return;
@@ -77,7 +77,7 @@ class Layout {
     }
 
 
-    function plug($content, $theme_var)
+    public function plug($content, $theme_var)
     {
         if (empty($content) || empty($theme_var) || preg_match('/\W/', $theme_var)) {
             return false;
@@ -85,7 +85,7 @@ class Layout {
         $GLOBALS['Layout_Plugs'][strtoupper($theme_var)][] = $content;
     }
 
-    function getPlugs()
+    public function getPlugs()
     {
         if (!isset($GLOBALS['Layout_Plugs'])) {
             return null;
@@ -97,12 +97,12 @@ class Layout {
         }
     }
 
-    function _loadBox($text, $module, $contentVar)
+    public function _loadBox($text, $module, $contentVar)
     {
         $GLOBALS['Layout'][$module][$contentVar][] = $text;
     }
 
-    function addBox($content_var, $module, $theme_var=NULL, $theme=NULL)
+    public function addBox($content_var, $module, $theme_var=NULL, $theme=NULL)
     {
         PHPWS_Core::initModClass('layout', 'Box.php');
 
@@ -112,6 +112,7 @@ class Layout {
 
         if (!isset($theme_var)) {
             $mod_theme_var = strtoupper(sprintf('%s_%s', $module, $content_var));
+
             if (in_array($mod_theme_var, $_SESSION['Layout_Settings']->_theme_variables)) {
                 $theme_var = $mod_theme_var;
             } else {
@@ -135,7 +136,7 @@ class Layout {
 
     // Index is the name of the javascript header
     // prevents repeated scripts
-    function addJSHeader($script, $index=NULL)
+    public function addJSHeader($script, $index=NULL)
     {
         static $index_count = 0;
 
@@ -146,7 +147,7 @@ class Layout {
         $GLOBALS['Layout_JS'][$index]['head'] = $script;
     }
 
-    function extraStyle($filename)
+    public function extraStyle($filename)
     {
         $styles = Layout::getExtraStyles();
         if (!isset($styles[$filename])) {
@@ -159,7 +160,7 @@ class Layout {
         $GLOBALS['Extra_Style'] = $link;
     }
 
-    function addLink($link)
+    public function addLink($link)
     {
         $GLOBALS['Layout_Links'][] = $link;
     }
@@ -167,7 +168,7 @@ class Layout {
     /**
      * Adds a module's style sheet to the style sheet list
      */
-    function addStyle($module, $filename=NULL)
+    public function addStyle($module, $filename=NULL)
     {
         if (!LAYOUT_ALLOW_STYLE_LINKS) {
             return NULL;
@@ -209,7 +210,7 @@ class Layout {
 
     }
 
-    function addToStyleList($value)
+    public function addToStyleList($value)
     {
         $alternate = FALSE;
         $title     = NULL;
@@ -245,7 +246,7 @@ class Layout {
      * retains style sheet information.
      *
      */
-    function nakedDisplay($content=NULL, $title=NULL, $use_blank=false)
+    public function nakedDisplay($content=NULL, $title=NULL, $use_blank=false)
     {
         Layout::disableRobots();
         echo Layout::wrap($content, $title, $use_blank);
@@ -253,24 +254,24 @@ class Layout {
     }
 
 
-    function checkSettings()
+    public function checkSettings()
     {
         if (!isset($_SESSION['Layout_Settings'])) {
             $_SESSION['Layout_Settings'] = new Layout_Settings;
         }
     }
 
-    function clear($module, $contentVar)
+    public function clear($module, $contentVar)
     {
         unset($GLOBALS['Layout'][$module][$contentVar]);
     }
 
-    function disableRobots()
+    public function disableRobots()
     {
         $GLOBALS['Layout_Robots'] = '00';
     }
 
-    function disableFollow()
+    public function disableFollow()
     {
         if (!isset($GLOBALS['Layout_Robots'])) {
             Layout::initLayout();
@@ -287,7 +288,7 @@ class Layout {
         }
     }
 
-    function disableIndex()
+    public function disableIndex()
     {
         if (!isset($GLOBALS['Layout_Robots'])) {
             Layout::initLayout();
@@ -304,7 +305,7 @@ class Layout {
         }
     }
 
-    function processHeld()
+    public function processHeld()
     {
         if (empty($GLOBALS['Layout_Held'])) {
             return;
@@ -327,7 +328,7 @@ class Layout {
      * Main function controlling the display of data passed
      * to layout
      */
-    function display()
+    public function display()
     {
         if (LAYOUT_THEME_EXEC) {
             $theme_exec = sprintf('themes/%s/theme.php', Layout::getCurrentTheme());
@@ -397,7 +398,7 @@ class Layout {
 
             Layout::loadHeaderTags($bodyLayout);
 
-            $finalTheme = &Layout::loadTheme(Layout::getCurrentTheme(), $bodyLayout);
+            $finalTheme = Layout::loadTheme(Layout::getCurrentTheme(), $bodyLayout);
 
             if (PEAR::isError($finalTheme)) {
                 $content = implode('', $bodyLayout);
@@ -416,7 +417,7 @@ class Layout {
         return $content;
     }
 
-    function getBox($module, $contentVar)
+    public function getBox($module, $contentVar)
     {
         if (isset($_SESSION['Layout_Settings']->_boxes[$module][$contentVar])) {
             return $_SESSION['Layout_Settings']->_boxes[$module][$contentVar];
@@ -425,13 +426,13 @@ class Layout {
         }
     }
 
-    function getContentVars()
+    public function getContentVars()
     {
         Layout::checkSettings();
         return $_SESSION['Layout_Settings']->getContentVars();
     }
 
-    function getCurrentTheme()
+    public function getCurrentTheme()
     {
         return $_SESSION['Layout_Settings']->current_theme;
     }
@@ -439,7 +440,7 @@ class Layout {
     /**
      * Loads information sent to add function
      */
-    function getBoxContent()
+    public function getBoxContent()
     {
         $list = NULL;
         if (!isset($GLOBALS['Layout'])) {
@@ -467,12 +468,12 @@ class Layout {
         return $list;
     }
 
-    function getDefaultTheme()
+    public function getDefaultTheme()
     {
         return $_SESSION['Layout_Settings']->default_theme;
     }
 
-    function getFooter()
+    public function getFooter()
     {
         if (PHPWS_Settings::get('layout', 'footer_fp_only') && isset($_REQUEST['module'])) {
             return null;
@@ -481,7 +482,7 @@ class Layout {
         return PHPWS_Text::parseOutput($_SESSION['Layout_Settings']->footer);
     }
 
-    function getHeader()
+    public function getHeader()
     {
         if (PHPWS_Settings::get('layout', 'header_fp_only') && isset($_REQUEST['module'])) {
             return null;
@@ -490,7 +491,7 @@ class Layout {
         return PHPWS_Text::parseOutput($_SESSION['Layout_Settings']->header);
     }
 
-    function getJavascript($directory, $data=NULL, $base=NULL)
+    public function getJavascript($directory, $data=NULL, $base=NULL)
     {
         if (isset($data) && !is_array($data)) {
             return;
@@ -532,7 +533,7 @@ class Layout {
 
     }
 
-    function getMetaRobot($meta_robots)
+    public function getMetaRobot($meta_robots)
     {
         switch ((string)$meta_robots){
         case '11':
@@ -553,7 +554,7 @@ class Layout {
         }
     }
 
-    function getMetaTags($page_metatags=null)
+    public function getMetaTags($page_metatags=null)
     {
         if (!$page_metatags) {
             extract($_SESSION['Layout_Settings']->getMetaTags());
@@ -605,7 +606,7 @@ class Layout {
     /**
      * Uses meta tags to load or refresh a new page
      */
-    function metaRoute($address=NULL, $time=5)
+    public function metaRoute($address=NULL, $time=5)
     {
         if (empty($address)) {
             $address = './index.php';
@@ -617,7 +618,7 @@ class Layout {
     }
 
 
-    function getStyleLinks($header=FALSE)
+    public function getStyleLinks($header=FALSE)
     {
         if (!isset($GLOBALS['Style'])) {
             return TRUE;
@@ -634,26 +635,26 @@ class Layout {
         return implode("\n", $links);
     }
 
-    function getTheme()
+    public function getTheme()
     {
         return $_SESSION['Layout_Settings']->current_theme;
     }
 
-    function getThemeDir()
+    public function getThemeDir()
     {
         Layout::checkSettings();
         $themeDir = Layout::getTheme();
         return 'themes/' . $themeDir . '/';
     }
 
-    function isMoveBox()
+    public function isMoveBox()
     {
         return $_SESSION['Layout_Settings']->isMoveBox();
     }
 
     // Loads a javascript file into the header of the theme
     // index is the name of javascript. prevents repeats
-    function loadJavascriptFile($filename, $index, $data=NULL)
+    public function loadJavascriptFile($filename, $index, $data=NULL)
     {
         if (!is_file($filename)) {
             return FALSE;
@@ -672,7 +673,7 @@ class Layout {
         }
     }
 
-    function getModuleJavascript($module, $script_name, $data=NULL)
+    public function getModuleJavascript($module, $script_name, $data=NULL)
     {
         $base = PHPWS_SOURCE_DIR . "mod/$module";
         $dir_check = "/javascript/$script_name";
@@ -684,7 +685,7 @@ class Layout {
         return Layout::getJavascript($script_name,$data, $base);
     }
 
-    function importStyleSheets()
+    public function importStyleSheets()
     {
         if (isset($_SESSION['Layout_Settings']->_style_sheets)) {
             foreach ($_SESSION['Layout_Settings']->_style_sheets as $css) {
@@ -697,7 +698,7 @@ class Layout {
     /**
      * Inserts the content data into the current theme
      */
-    function loadTheme($theme, $template)
+    public function loadTheme($theme, $template)
     {
         $tpl = new PHPWS_Template;
         $themeDir = Layout::getThemeDir();
@@ -722,12 +723,12 @@ class Layout {
         return $tpl;
     }
 
-    function moveBoxes($key)
+    public function moveBoxes($key)
     {
         $_SESSION['Layout_Settings']->_move_box = (bool)$key;
     }
 
-    function reset($theme=null)
+    public function reset($theme=null)
     {
         if ($theme) {
             $_SESSION['Layout_Settings'] = new Layout_Settings($theme);
@@ -737,12 +738,12 @@ class Layout {
     }
 
 
-    function resetBoxes()
+    public function resetBoxes()
     {
         $_SESSION['Layout_Settings']->loadBoxes();
     }
 
-    function resetDefaultBoxes()
+    public function resetDefaultBoxes()
     {
         $db = new PHPWS_DB('layout_box');
         $db->addWhere('theme', Layout::getDefaultTheme());
@@ -758,7 +759,7 @@ class Layout {
      * Unlike the add function, which appends a content variable's
      * data, set OVERWRITES the current values
      */
-    function set($text, $module=null, $contentVar=null)
+    public function set($text, $module=null, $contentVar=null)
     {
         Layout::checkSettings();
         if (!isset($contentVar)) {
@@ -769,7 +770,7 @@ class Layout {
         Layout::add($text, $module, $contentVar);
     }
 
-    function miniLinks()
+    public function miniLinks()
     {
         if (Layout::isMoveBox()) {
             $vars['action']  = 'admin';
@@ -814,7 +815,7 @@ class Layout {
         MiniAdmin::get();
     }
 
-    function styleLink($link, $header=FALSE)
+    public function styleLink($link, $header=FALSE)
     {
         $browser = getBrowserInfo('browser');
         $version = getBrowserInfo('browser_version');
@@ -859,7 +860,7 @@ class Layout {
         }
     }
 
-    function submitHeaders($theme, &$template)
+    public function submitHeaders($theme, &$template)
     {
         if (!defined('CURRENT_LANGUAGE')) {
             if (defined('DEFAULT_LANGUAGE')) {
@@ -895,12 +896,12 @@ class Layout {
         }
     }
 
-    function cacheOff()
+    public function cacheOff()
     {
         $_SESSION['Layout_Settings']->cache = FALSE;
     }
 
-    function getBase()
+    public function getBase()
     {
         return '<base href="'
             . PHPWS_Core::getHttp()
@@ -909,24 +910,24 @@ class Layout {
             . '" />';
     }
 
-    function getPageTitle($only_root=FALSE)
+    public function getPageTitle($only_root=FALSE)
     {
         return $_SESSION['Layout_Settings']->getPageTitle($only_root);
     }
 
-    function addPageTitle($title)
+    public function addPageTitle($title)
     {
         $GLOBALS['Layout_Page_Title_Add'][] = $title;
     }
 
-    function getMetaPage($key_id)
+    public function getMetaPage($key_id)
     {
         $db = new PHPWS_DB('layout_metatags');
         $db->addWhere('key_id', $key_id);
         return $db->select('row');
     }
 
-    function loadHeaderTags(&$template)
+    public function loadHeaderTags(&$template)
     {
         $page_metatags = null;
 
@@ -975,7 +976,7 @@ class Layout {
     /**
      * Wraps the content with the layout header
      */
-    function wrap($content, $title=NULL, $use_blank=false)
+    public function wrap($content, $title=NULL, $use_blank=false)
     {
         $template['CONTENT'] = $content;
         Layout::loadHeaderTags($template);
@@ -996,7 +997,7 @@ class Layout {
         return $result;
     }
 
-    function purgeBox($content_var)
+    public function purgeBox($content_var)
     {
         $db = new PHPWS_DB('layout_box');
         $db->addWhere('content_var', $content_var);
@@ -1019,7 +1020,7 @@ class Layout {
      * Makes a select form option to move boxes to other parts
      * of the layout
      */
-    function moveBoxesTag($box)
+    public function moveBoxesTag($box)
     {
         $vars['action']  = 'admin';
         $vars['command'] = 'move_popup';
@@ -1036,10 +1037,10 @@ class Layout {
     /**
      * Returns an array of alternate style sheets for the current theme
      */
-    function getAlternateStyles()
+    public function getAlternateStyles()
     {
         $sheets = null;
-        $settings = &$_SESSION['Layout_Settings'];
+        $settings = $_SESSION['Layout_Settings'];
 
         if (!isset($settings->_style_sheets)) {
             return NULL;
@@ -1056,7 +1057,7 @@ class Layout {
         return $sheets;
     }
 
-    function getKeyStyle($key_id)
+    public function getKeyStyle($key_id)
     {
         if (!isset($_SESSION['Layout_Settings']->_key_styles[$key_id])) {
             $_SESSION['Layout_Settings']->loadKeyStyle($key_id);
@@ -1065,13 +1066,13 @@ class Layout {
         return $_SESSION['Layout_Settings']->_key_styles[$key_id];
     }
 
-    function getExtraStyles()
+    public function getExtraStyles()
     {
         return $_SESSION['Layout_Settings']->_extra_styles;
     }
 
 
-    function showKeyStyle()
+    public function showKeyStyle()
     {
         $key = Key::getCurrent();
         if (!Key::checkKey($key)) {
@@ -1083,7 +1084,7 @@ class Layout {
         }
     }
 
-    function collapse()
+    public function collapse()
     {
         $GLOBALS['Layout_Collapse'] = true;
     }
@@ -1091,7 +1092,7 @@ class Layout {
     /**
      * Saves the current layout head information
      */
-    function cacheHeaders($cache_key)
+    public function cacheHeaders($cache_key)
     {
         $cache_key = 'layout_header' . $cache_key;
 
@@ -1106,7 +1107,7 @@ class Layout {
     /**
      * Retrieves the layout head information
      */
-    function getCacheHeaders($cache_key)
+    public function getCacheHeaders($cache_key)
     {
         $cache_key = 'layout_header' . $cache_key;
         $data = PHPWS_Cache::get($cache_key);
@@ -1130,7 +1131,7 @@ class Layout {
     /**
      * Fills in the meta description with the current key summary.
      */
-    function keyDescriptions()
+    public function keyDescriptions()
     {
         if (!PHPWS_Settings::get('layout', 'use_key_summaries')) {
             return;

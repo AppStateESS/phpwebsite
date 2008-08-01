@@ -10,34 +10,34 @@
 PHPWS_Core::initModClass('layout', 'Box.php');
 
 class Layout_Settings {
-    var $current_theme    = null;
-    var $default_theme    = null;
-    var $page_title       = null;
-    var $meta_keywords    = null;
-    var $meta_description = null;
-    var $meta_robots      = null;
-    var $meta_owner       = null;
-    var $meta_author      = null;
-    var $meta_content     = null;
-    var $header           = null;
-    var $footer           = null;
-    var $cache            = true;
+    public $current_theme    = null;
+    public $default_theme    = null;
+    public $page_title       = null;
+    public $meta_keywords    = null;
+    public $meta_description = null;
+    public $meta_robots      = null;
+    public $meta_owner       = null;
+    public $meta_author      = null;
+    public $meta_content     = null;
+    public $header           = null;
+    public $footer           = null;
+    public $cache            = true;
 
     // !!! Make sure to update your saveSettings function !!!
     // Remove all hidden variables from the update
-    var $_contentVars     = array();
-    var $_boxes           = array();
-    var $_box_order       = array();
-    var $_move_box        = false;
-    var $_theme_variables = null;
-    var $_default_box     = null;
-    var $_style_sheets    = null;
-    var $_extra_styles    = null;
-    var $_key_styles      = null;
-    var $_allowed_move    = null;
-    var $_true_theme      = null;
+    public $_contentVars     = array();
+    public $_boxes           = array();
+    public $_box_order       = array();
+    public $_move_box        = false;
+    public $_theme_variables = null;
+    public $_default_box     = null;
+    public $_style_sheets    = null;
+    public $_extra_styles    = null;
+    public $_key_styles      = null;
+    public $_allowed_move    = null;
+    public $_true_theme      = null;
 
-    function Layout_Settings($theme=null)
+    public function __construct($theme=null)
     {
         $this->loadSettings($theme);
         $this->loadContentVars();
@@ -45,7 +45,7 @@ class Layout_Settings {
         $GLOBALS['Layout_Robots'] = $this->meta_robots;
     }
 
-    function getBoxThemeVar($module, $contentVar)
+    public function getBoxThemeVar($module, $contentVar)
     {
         if (isset($this->_boxes[$module][$contentVar])) {
             return $this->_boxes[$module][$contentVar]->getThemeVar();
@@ -54,7 +54,7 @@ class Layout_Settings {
         }
     }
 
-    function getBoxOrder($module, $contentVar)
+    public function getBoxOrder($module, $contentVar)
     {
         if (isset($this->_boxes[$module][$contentVar])) {
             return $this->_boxes[$module][$contentVar]->getBoxOrder();
@@ -63,7 +63,7 @@ class Layout_Settings {
         }
     }
 
-    function getPageTitle($only_root=false)
+    public function getPageTitle($only_root=false)
     {
         if (isset($GLOBALS['Layout_Page_Title_Add']) && !$only_root) {
             return implode(PAGE_TITLE_DIVIDER, $GLOBALS['Layout_Page_Title_Add']) . PAGE_TITLE_DIVIDER . $this->page_title;
@@ -72,12 +72,12 @@ class Layout_Settings {
         }
     }
 
-    function getContentVars()
+    public function getContentVars()
     {
         return $this->_contentVars();
     }
 
-    function getMetaTags()
+    public function getMetaTags()
     {
         $meta['meta_author']      = $this->meta_author;
         $meta['meta_keywords']    = $this->meta_keywords;
@@ -89,7 +89,7 @@ class Layout_Settings {
         return $meta;
     }
 
-    function getPageMetaTags($key_id)
+    public function getPageMetaTags($key_id)
     {
         $db = new PHPWS_DB('layout_metatags');
         $db->addWhere('key_id', $key_id);
@@ -102,27 +102,27 @@ class Layout_Settings {
         return $row;
     }
 
-    function getThemeVariables()
+    public function getThemeVariables()
     {
         return $this->_theme_variables;
     }
 
-    function getAllowedVariables()
+    public function getAllowedVariables()
     {
         return $this->_allowed_move;
     }
 
-    function isContentVar($module, $contentVar)
+    public function isContentVar($module, $contentVar)
     {
         return in_array($module . '_' . $contentVar, $this->_contentVars);
     }
 
-    function isMoveBox()
+    public function isMoveBox()
     {
         return (bool)$this->_move_box;
     }
-  
-    function loadBoxes()
+
+    public function loadBoxes()
     {
         $theme = $this->current_theme;
         $db = new PHPWS_db('layout_box');
@@ -139,7 +139,7 @@ class Layout_Settings {
     }
 
 
-    function loadContentVars()
+    public function loadContentVars()
     {
         $db = new PHPWS_db('layout_box');
         $db->addWhere('theme', $this->current_theme);
@@ -151,7 +151,7 @@ class Layout_Settings {
             PHPWS_Error::log($result);
             PHPWS_Core::errorPage();
         }
-    
+
         if (empty($result)) {
             return;
         }
@@ -162,7 +162,7 @@ class Layout_Settings {
         }
     }
 
-    function loadSettings($theme=null)
+    public function loadSettings($theme=null)
     {
         $db = new PHPWS_DB('layout_config');
         $result = $db->loadObject($this, false);
@@ -192,7 +192,7 @@ class Layout_Settings {
         }
     }
 
-    function loadStyleSheets($themeVars)
+    public function loadStyleSheets($themeVars)
     {
         $this->_extra_styles = null;
         $this->_style_sheets = null;
@@ -228,7 +228,7 @@ class Layout_Settings {
     }
 
 
-    function loadBoxSettings($themeVars)
+    public function loadBoxSettings($themeVars)
     {
         $theme_variables[] = DEFAULT_THEME_VAR;
         $theme_variables[] = DEFAULT_BOX_VAR;
@@ -257,7 +257,7 @@ class Layout_Settings {
 
     }
 
-    function saveSettings()
+    public function saveSettings()
     {
         $db = new PHPWS_DB('layout_config');
         $vars = PHPWS_Core::stripObjValues($this);
@@ -272,12 +272,12 @@ class Layout_Settings {
         unset($vars['_extra_styles']);
         unset($vars['_key_styles']);
         unset($vars['_allowed_move']);
-        
+
         $db->addValue($vars);
         return $db->update();
     }
 
-    function loadKeyStyle($key_id)
+    public function loadKeyStyle($key_id)
     {
         $db = new PHPWS_DB('layout_styles');
         $db->addWhere('key_id', (int)$key_id);
