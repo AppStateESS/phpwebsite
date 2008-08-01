@@ -2,6 +2,29 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+1 August 2008
++ Added iframe, embed, and object to allowed tags in text_settings.php
++ Deleted Crutch_Form.php. Not used.
++ Started using php 5 for method and member definition
++ DBPager - changed various links to use Text methods instead of raw
+  sprintf calls
++ PHPWS_Error - removed crutch function.
++ PHPWS_Form - removed underscore from some public member names
++ Init - added autoload function.
++ Link.php - new class. Allows link creation. Used by Text for its
+  link functions.
++ Text.php
+  o moduleLink, secureLink, and linkAddress all use new Link
+    class.
+  o new/rewritten functions: rewriteLink. secureRewriteLink,
+    rewriteAddress
+  o rewrite parameter added to linkAddress
+  o getGetValues rewritten to work with new mod_rewrite scheme
++ Forward.php - new mod_rewrite format, matches pairs of slash
+  separated values
++ Updated Mod_Rewrite.txt documentation
++ Updated conf/text_settings.php
+
 28 July 2008
 + DBPager
   o Applied patch #2029054 from Eloi George. Puts DBPager's sort headers
@@ -31,7 +54,7 @@ its own separate CHANGELOG file.
 18 July 2008
 + Javascript prompt: fixed the encode function
 + Fixed problems with the categories conversion.
-+ Database: Bug #1988949 added tilde as allowable url character.
++ Text: Bug #1988949 added tilde as allowable url character.
 + Database: Patch #2014480, Database exports multiple part primary
   keys. Thanks Hilmar
 

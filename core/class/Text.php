@@ -521,14 +521,20 @@ class PHPWS_Text {
      * @param boolean add_base    If true, add the site url to the address
      * @param boolean convert_amp If true, use "&amp;" instead of "&"
      */
-    public function linkAddress($module=null, $getVars=null, $secure=false, $add_base=false, $convert_amp=true)
+    public function linkAddress($module=null, $getVars=null, $secure=false, $add_base=false, $convert_amp=true, $rewrite=false)
     {
         PHPWS_Core::initCoreClass('Link.php');
         $link = new PHPWS_Link(null, $module, $getVars);
         $link->secure      = $secure;
         $link->full_url    = $add_base;
         $link->convert_amp = $convert_amp;
+        $link->rewrite     = $rewrite;
         return $link->getAddress();
+    }
+
+    public function rewriteAddress($module=null, $getVars=null, $secure=false, $add_base=false, $convert_amp=true)
+    {
+        return linkAddress($module, $getVars, $secure, $add_base, $convert_amp, true)
     }
 
     /**

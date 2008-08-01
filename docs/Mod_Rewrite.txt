@@ -19,7 +19,7 @@ http://www.mysite.com/index.php?module=article&action=view&id=5312
 
 Using mod_rewrite functionality, you could change that link to:
 
-http://www.mysite.com/article5312.html
+http://www.mysite.com/article/action/view/id/5312
 
 This is more straight forward, easier for search engines to index, and
 much easier to explain over the phone. PhpWebSite can help you achieve
@@ -95,38 +95,20 @@ be viewed by the general public have no need to use rewrite.
 You will need a way to 'catch' the request for viewing an item in your
 module. Let's look at our previous example:
 
-http://www.mysite.com/article5312.html
+http://www.mysite.com/article/action/view/id/5312
 
 When this is sent to phpWebSite, it is going to go to the article
 module and tell it that it wants to view article 5312. It will rewrite
 the address to:
 
-http://www.mysite.com/index.php?module=article&id=5312
+http://www.mysite.com/index.php?module=article&action=view&id=5312
 
-You are sending two bits of information:
-1) what module you are using,
-2) what the id should be used.
+The quickest way to create a rewrite link is to use the Text
+class. For example, for the above:
 
-Since I am only using the mod_rewrite to view items, my index file
-assumes that if it only getting an id then this must be a user viewing
-a file.
-
-In my index.php file, I may have something like the following.
-
-if (isset($_REQUEST['id']){
-  $article = & new Article($_REQUEST['id']);
-  $article->view();
-}
-
-
-Keep in mind however that not everyone will use mod_rewrite, so you
-should plan accordingly.
-
-if (MOD_REWRITE_ENABLED == TRUE)
-   $link = 'article' . $id . '.html';
-else
-   $link = "index.php?module=article&id=5312";
-
+echo PHPWS_Text::rewriteLink('Click on me', 'article'
+                              array('action'=>'view',
+                                    'id'=>5312));
 
 One more quick note. When phpWebSite uses mod_rewrite, it has to make
 sure that relative links in your theme still function. Therefore, the
