@@ -8,13 +8,13 @@ PHPWS_Core::requireConfig('notes');
 PHPWS_Core::initModClass('notes', 'Note_Item.php');
 
 class Notes_My_Page {
-    var $title   = null;
-    var $content = null;
-    var $message = null;
+    public $title   = null;
+    public $content = null;
+    public $message = null;
 
-    var $errors  = null;
+    public $errors  = null;
 
-    function Notes_My_Page()
+    public function __construct()
     {
         if (isset($_SESSION['Note_Message'])) {
             $this->message = $_SESSION['Note_Message'];
@@ -22,7 +22,7 @@ class Notes_My_Page {
         }
     }
 
-    function main()
+    public function main()
     {
         $js = false;
 
@@ -91,7 +91,7 @@ class Notes_My_Page {
         $tpl['TITLE'] =  $this->title;
         $tpl['CONTENT'] = $this->content;
         $tpl['MESSAGE'] = $this->message;
-        
+
         if ($js) {
             Layout::nakedDisplay(PHPWS_Template::process($tpl, 'notes', 'main.tpl'));
         } else {
@@ -99,7 +99,7 @@ class Notes_My_Page {
         }
     }
 
-    function miniAdminLink($key)
+    public function miniAdminLink($key)
     {
         $vars = Notes_My_Page::myPageVars(false);
         $vars['op'] = 'send_note';
@@ -115,7 +115,7 @@ class Notes_My_Page {
         }
     }
 
-    function myPageVars($include_mod=true)
+    public function myPageVars($include_mod=true)
     {
         $vars = array('action' => 'user', 'tab' => 'notes');
 
@@ -126,7 +126,7 @@ class Notes_My_Page {
         return $vars;
     }
 
-    function postNote(&$note)
+    public function postNote(Note_Item $note)
     {
         if (empty($_POST['title'])) {
             $this->errors['missing_title'] = dgettext('notes', 'Your note needs a title.');
@@ -149,7 +149,7 @@ class Notes_My_Page {
         if (empty($note->title) && empty($note->content)) {
             $this->errors['no_content'] = dgettext('notes', 'You need to enter a title or some content.');
         }
-        
+
         if (!empty($_POST['key_id'])) {
             $note->key_id = (int)$_POST['key_id'];
         }
@@ -161,7 +161,7 @@ class Notes_My_Page {
         }
     }
 
-    function read()
+    public function read()
     {
         Layout::addStyle('notes');
         unset($_SESSION['Notes_Unread']);
@@ -182,8 +182,8 @@ class Notes_My_Page {
         $this->title = dgettext('notes', 'Read notes');
         $this->content = $pager->get();
     }
-    
-    function sendMessage($message, $js=false)
+
+    public function sendMessage($message, $js=false)
     {
         $_SESSION['Note_Message'] = $message;
         if ($js) {
@@ -196,7 +196,7 @@ class Notes_My_Page {
     }
 
 
-    function sendNote(&$note)
+    public function sendNote(Note_Item $note)
     {
         Layout::addStyle('notes');
         $form = new PHPWS_Form('send_note');
@@ -240,7 +240,7 @@ class Notes_My_Page {
         $form->setLabel('content', dgettext('notes', 'Message'));
         $form->setRows('content', 10);
         $form->setCols('content', 50);
-        
+
         $form->addSubmit(dgettext('notes', 'Send note'));
 
         $tpl = $form->getTemplate();
@@ -249,7 +249,7 @@ class Notes_My_Page {
         $this->content = PHPWS_Template::process($tpl, 'notes', 'send_note.tpl');
     }
 
-    function showAssociations($key)
+    public function showAssociations($key)
     {
         $db = new PHPWS_DB('notes');
         $db->addWhere('user_id', Current_User::getId());
@@ -269,7 +269,7 @@ class Notes_My_Page {
         Layout::add(PHPWS_Template::process($tpl, 'layout', 'box.tpl'), 'notes', 'reminder');
     }
 
-    function showUnread()
+    public function showUnread()
     {
         if ( isset($_SESSION['Notes_Unread']) && ( $_SESSION['Notes_Unread']['last_check'] + (NOTE_CHECK_INTERVAL * 60) >=  mktime() ) ) {
             $notes = $_SESSION['Notes_Unread']['last_count'];
