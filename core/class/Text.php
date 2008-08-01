@@ -534,7 +534,7 @@ class PHPWS_Text {
 
     public function rewriteAddress($module=null, $getVars=null, $secure=false, $add_base=false, $convert_amp=true)
     {
-        return linkAddress($module, $getVars, $secure, $add_base, $convert_amp, true)
+        return linkAddress($module, $getVars, $secure, $add_base, $convert_amp, true);
     }
 
     /**
