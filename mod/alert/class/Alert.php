@@ -14,30 +14,30 @@ class Alert {
     /**
      * First three variables display the content of the module
      */
-    var $title      = null;
-    var $content    = null;
-    var $message    = null;
+    public $title      = null;
+    public $content    = null;
+    public $message    = null;
 
     /**
      * An alert item
      */
-    var $item = null;
+    public $item = null;
 
     /**
      * An alert type object
      */
-    var $type = null;
+    public $type = null;
 
-    var $type_list = null;
+    public $type_list = null;
 
     /**
      * The forms object. Initialized with loadForms.
      */
-    var $forms = null;
-    var $panel = null;
-    var $rssfeed = null;
+    public $forms = null;
+    public $panel = null;
+    public $rssfeed = null;
 
-    function user()
+    public function user()
     {
         if (isset($_GET['rssfeed'])) {
             $command = 'rss';
@@ -72,7 +72,7 @@ class Alert {
         Layout::add(PHPWS_Template::process($tpl, 'alert', 'user.tpl'));
     }
 
-    function viewItems()
+    public function viewItems()
     {
         Layout::addStyle('alert');
         $high_alert = false;
@@ -139,7 +139,7 @@ class Alert {
         }
     }
 
-    function loadTypes()
+    public function loadTypes()
     {
         $db = new PHPWS_DB('alert_type');
         $db->addOrder('post_type desc');
@@ -155,7 +155,7 @@ class Alert {
     }
 
 
-    function admin()
+    public function admin()
     {
         if (!Current_User::allow('alert')) {
             Current_User::disallow();
@@ -299,7 +299,7 @@ class Alert {
             $this->addAllParticipants();
             PHPWS_Core::goBack();
             break;
-            
+
         case 'add_multiple':
             $this->loadForms();
             $this->forms->addMultiple();
@@ -325,7 +325,7 @@ class Alert {
     }
 
 
-    function assignParticipants()
+    public function assignParticipants()
     {
         if (empty($_POST['type_id'])) {
             return;
@@ -354,7 +354,7 @@ class Alert {
         }
     }
 
-    function removeAllParticipants()
+    public function removeAllParticipants()
     {
         if (!isset($_GET['type_id']) || !is_numeric($_GET['type_id'])) {
             return;
@@ -366,7 +366,7 @@ class Alert {
         PHPWS_Error::logIfError($db->delete());
     }
 
-    function addAllParticipants()
+    public function addAllParticipants()
     {
         if (!isset($_GET['type_id']) || !is_numeric($_GET['type_id'])) {
             return;
@@ -394,7 +394,7 @@ class Alert {
         }
     }
 
-    function js_display()
+    public function js_display()
     {
         $tpl['TITLE'] = $this->title;
         $tpl['MESSAGE'] = $this->getMessage();
@@ -402,13 +402,13 @@ class Alert {
         Layout::nakedDisplay(PHPWS_Template::process($tpl, 'alert', 'main.tpl'));
     }
 
-    function sendMessage($message, $aop)
+    public function sendMessage($message, $aop)
     {
         $_SESSION['Alert_Message'] = $message;
         PHPWS_Core::reroute(PHPWS_Text::linkAddress('alert', array('aop'=>$aop), true));
     }
 
-    function loadMessage()
+    public function loadMessage()
     {
         if (isset($_SESSION['Alert_Message'])) {
             $this->addMessage($_SESSION['Alert_Message']);
@@ -416,7 +416,7 @@ class Alert {
         }
     }
 
-    function loadItem()
+    public function loadItem()
     {
         PHPWS_Core::initModClass('alert', 'Alert_Item.php');
         if (isset($_REQUEST['id'])) {
@@ -429,7 +429,7 @@ class Alert {
         }
     }
 
-    function loadTypeByFeed()
+    public function loadTypeByFeed()
     {
         PHPWS_Core::initModClass('alert', 'Alert_Type.php');
 
@@ -448,7 +448,7 @@ class Alert {
         }
     }
 
-    function loadType($type_id=0)
+    public function loadType($type_id=0)
     {
         PHPWS_Core::initModClass('alert', 'Alert_Type.php');
 
@@ -466,34 +466,34 @@ class Alert {
         }
     }
 
-    function loadForms()
+    public function loadForms()
     {
         PHPWS_Core::initModClass('alert', 'Alert_Forms.php');
         $this->forms = new Alert_Forms;
         $this->forms->alert = & $this;
     }
 
-    function loadPanel()
+    public function loadPanel()
     {
         $this->panel = new PHPWS_Panel('alert');
         $link = 'index.php?module=alert&amp;aop=main';
 
-        $tabs['list']  = array('title'=>dgettext('alert', 'Alerts'), 'link'=>$link, 
+        $tabs['list']  = array('title'=>dgettext('alert', 'Alerts'), 'link'=>$link,
                                'link_title'=>dgettext('alert', 'List all alerts in the system.'));
-        $tabs['types'] = array('title'=>dgettext('alert', 'Alert Types'), 'link'=>$link, 
+        $tabs['types'] = array('title'=>dgettext('alert', 'Alert Types'), 'link'=>$link,
                                'link_title'=>dgettext('alert', 'Create, update and define alert types.'));
 
-        $tabs['participants'] = array('title'=>dgettext('alert', 'Participants'), 'link'=>$link, 
+        $tabs['participants'] = array('title'=>dgettext('alert', 'Participants'), 'link'=>$link,
                                'link_title'=>dgettext('alert', 'Add/Remove Alert participants.'));
 
 
-        $tabs['settings'] = array('title'=>dgettext('alert', 'Settings'), 'link'=>$link, 
+        $tabs['settings'] = array('title'=>dgettext('alert', 'Settings'), 'link'=>$link,
                                   'link_title'=>dgettext('alert', 'Display settings for Alert module.'));
 
         $this->panel->quickSetTabs($tabs);
     }
 
-    function getTypes($mode='form')
+    public function getTypes($mode='form')
     {
         $db = new PHPWS_DB('alert_type');
         switch ($mode) {
@@ -517,12 +517,12 @@ class Alert {
         }
     }
 
-    function addMessage($message)
+    public function addMessage($message)
     {
         $this->message[] = $message;
     }
 
-    function getMessage()
+    public function getMessage()
     {
         if (empty($this->message)) {
             return null;
@@ -531,7 +531,7 @@ class Alert {
         }
     }
 
-    function postItem()
+    public function postItem()
     {
         $allgood = true;
 
@@ -562,7 +562,7 @@ class Alert {
         return $allgood;
     }
 
-    function postType()
+    public function postType()
     {
         $allgood = true;
 
@@ -594,7 +594,7 @@ class Alert {
         return $allgood;
     }
 
-    function postSettings()
+    public function postSettings()
     {
         if (empty($_POST['date_format'])) {
             $this->addMessage(dgettext('alert', 'Date format can not be empty.'));
@@ -619,7 +619,7 @@ class Alert {
         PHPWS_Settings::save('alert');
     }
 
-    function contactNeeded()
+    public function contactNeeded()
     {
         $db = new PHPWS_DB('alert_item');
         $db->loadClass('alert', 'Alert_Item.php');
@@ -630,8 +630,8 @@ class Alert {
 
         return $db->getObjects('Alert_Item');
     }
-  
-    function sendContact()
+
+    public function sendContact()
     {
         $this->title = sprintf(dgettext('alert', 'Send Notices for %s'), $this->item->title);
         $item = & $this->item;
@@ -704,7 +704,7 @@ class Alert {
 
         // Grab alert_contact participants, limit by batch
         // I don't care about the batch start because I am
-        // deleting the records as I go. 
+        // deleting the records as I go.
         $limit = $batch->getLimit();
 
         $db = new PHPWS_DB('alert_contact');
@@ -732,12 +732,12 @@ class Alert {
 
         $batch->completeBatch();
 
-        // If no more results from contact_complete, we are finished.        
+        // If no more results from contact_complete, we are finished.
         if ($batch->isFinished()) {
             $batch->clear();
             $content[] = dgettext('alert', 'All participants contacted.');
             $content[] = dgettext('alert', 'You may safely close this window now.');
-            $content[] = sprintf('<p style="text-align : center"><input type="button" onclick="closeWindow()" value="%s" /></p>', 
+            $content[] = sprintf('<p style="text-align : center"><input type="button" onclick="closeWindow()" value="%s" /></p>',
                                  dgettext('alert', 'Close this window'));
             $content[] = javascript('close_refresh', array('use_link'=>true));
             $item->contact_complete = 2;
@@ -754,8 +754,8 @@ class Alert {
 
         // Set item contact_complete to 2
     }
-  
-    function _emailParticipant($email_address)
+
+    public function _emailParticipant($email_address)
     {
         PHPWS_Core::initCoreClass('Mail.php');
         $subject = sprintf('%s: %s', $this->type->title, $this->item->title);
@@ -775,7 +775,7 @@ class Alert {
         }
     }
 
-    function copyContacts()
+    public function copyContacts()
     {
         $db = new PHPWS_DB('alert_participant');
         $db->addWhere('item_id', $this->item->id);
@@ -807,7 +807,7 @@ class Alert {
         return true;
     }
 
-    function postMultipleAdds()
+    public function postMultipleAdds()
     {
         if (empty($_POST['multiple'])) {
             return;
@@ -832,7 +832,7 @@ class Alert {
 
     }
 
-    function showRSS()
+    public function showRSS()
     {
         $this->loadTypeByFeed();
 
@@ -840,7 +840,7 @@ class Alert {
         if (PHPWS_Error::logIfError($items) || empty($items)) {
             exit();
         }
-        
+
         foreach ($items as $item) {
             $feeds[] = $item->createFeed();
         }

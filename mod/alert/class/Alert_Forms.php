@@ -5,9 +5,9 @@
  */
 
 class Alert_Forms {
-    var $alert = null;
+    public $alert = null;
 
-    function editItem()
+    public function editItem()
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $item = & $this->alert->item;
@@ -49,7 +49,7 @@ class Alert_Forms {
 
         $form->addSelect('type_id', $types);
         $form->setLabel('type_id', dgettext('alert', 'Alert type'));
-        
+
         $form->addSubmit(dgettext('alert', 'Save'));
 
         $tpl = $form->getTemplate();
@@ -58,9 +58,9 @@ class Alert_Forms {
 
         $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'edit_item.tpl');
     }
-    
 
-    function editType()
+
+    public function editType()
     {
         $type = & $this->alert->type;
 
@@ -109,7 +109,7 @@ class Alert_Forms {
         $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'edit_type.tpl');
     }
 
-    function manageItems()
+    public function manageItems()
     {
         $pagetags['CONTACT_ALERT'] = $this->contactAlert();
 
@@ -138,7 +138,7 @@ class Alert_Forms {
         $this->alert->content = & $content;
     }
 
-    function manageParticipants()
+    public function manageParticipants()
     {
         javascript('modules/alert/check_all');
         PHPWS_Core::initCoreClass('DBPager.php');
@@ -185,7 +185,7 @@ class Alert_Forms {
                                                                $link, $type->title,
                                                                substr($type->title, 0, 3)));
             }
-            // Requires _checkboxTypes 
+            // Requires _checkboxTypes
             $pagetags['CHECK_ALL'] = javascript('check_all', array('checkbox_name'=>'type_id[]'));
         }
 
@@ -204,7 +204,7 @@ class Alert_Forms {
         $this->alert->content = $pager->get();
     }
 
-    function _checkboxTypes($value)
+    public function _checkboxTypes($value)
     {
         $matches = $GLOBALS['PRT_matches'];
         if (empty($GLOBALS['Alert_Types'])) {
@@ -226,7 +226,7 @@ class Alert_Forms {
         return array('TYPES' => '</td><td>' . implode('</td><td>', $cbs));
     }
 
-    function contactAlert()
+    public function contactAlert()
     {
         if (!Current_User::allow('alert', 'allow_contact')) {
             return null;
@@ -261,7 +261,7 @@ class Alert_Forms {
 
     }
 
-    function manageTypes()
+    public function manageTypes()
     {
         PHPWS_Core::initModClass('alert', 'Alert_Type.php');
         PHPWS_Core::initCoreClass('DBPager.php');
@@ -288,7 +288,7 @@ class Alert_Forms {
         $this->alert->content = & $content;
     }
 
-    function settings()
+    public function settings()
     {
         $settings = PHPWS_Settings::get('alert');
 
@@ -315,7 +315,7 @@ class Alert_Forms {
         $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'settings.tpl');
     }
 
-    function addMultiple()
+    public function addMultiple()
     {
         $form = new PHPWS_Form('add-multiple');
         $form->addHidden('module', 'alert');
@@ -323,10 +323,10 @@ class Alert_Forms {
         $form->addTextArea('multiple');
         $form->addSubmit(dgettext('alert', 'Save'));
         $tpl = $form->getTemplate();
-        
+
         $tpl['INSTRUCTIONS'] = dgettext('alert', 'Enter the email addresses for each participant. Separate them with new lines.');
         $tpl['CANCEL'] = javascript('close_window');
-        
+
         $this->alert->title = dgettext('alert', 'Add Multiple Participants');
         $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'multiple.tpl');
     }

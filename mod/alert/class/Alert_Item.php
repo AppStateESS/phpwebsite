@@ -5,26 +5,26 @@
  */
 
 class Alert_Item {
-    var $id               = 0;
-    var $title            = null;
-    var $description      = null;
-    var $image_id         = 0;
-    var $create_date      = 0;
-    var $update_date      = 0;
-    var $created_by_id    = 0;
-    var $created_name     = null;
-    var $updated_by_id    = 0;
-    var $updated_name     = null;
-    var $type_id          = 0;
+    public $id               = 0;
+    public $title            = null;
+    public $description      = null;
+    public $image_id         = 0;
+    public $create_date      = 0;
+    public $update_date      = 0;
+    public $created_by_id    = 0;
+    public $created_name     = null;
+    public $updated_by_id    = 0;
+    public $updated_name     = null;
+    public $type_id          = 0;
     /**
      * 0 = not done
      * 1 = partially done
      * 2 = all done
      */
-    var $contact_complete = 0;
-    var $active           = true;
+    public $contact_complete = 0;
+    public $active           = true;
 
-    function Alert_Item($id=0)
+    public function Alert_Item($id=0)
     {
         if (!$id) {
             return true;
@@ -34,29 +34,29 @@ class Alert_Item {
         $this->init();
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('alert_item');
         $db->loadObject($this);
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = trim(strip_tags($title));
     }
 
 
-    function setDescription($desc)
+    public function setDescription($desc)
     {
         $this->description = PHPWS_Text::parseInput($desc);
     }
 
-    function getDescription()
+    public function getDescription()
     {
         return PHPWS_Text::parseOutput($this->description);
     }
 
-    function rowTags()
+    public function rowTags()
     {
         $tpl = array();
         $vars['id'] = $this->id;
@@ -79,7 +79,7 @@ class Alert_Item {
             $js['address']  = PHPWS_Text::linkAddress('alert', $vars, true);
             $links[] = javascript('confirm', $js);
         }
-        
+
 
 
         $vars['aop'] = 'deactivate_item';
@@ -95,8 +95,8 @@ class Alert_Item {
 
         return $tpl;
     }
-    
-    function save()
+
+    public function save()
     {
         if (!$this->id) {
             $this->create_date = mktime();
@@ -112,14 +112,14 @@ class Alert_Item {
         return $db->saveObject($this);
     }
 
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('alert_item');
         $db->addWhere('id', $this->id);
         return !(PHPWS_Error::logIfError($db->delete()));
     }
 
-    function view()
+    public function view()
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $tpl['TITLE']       = $this->title;
@@ -133,13 +133,13 @@ class Alert_Item {
         return PHPWS_Template::process($tpl, 'alert', 'view_item.tpl');
     }
 
-    function reset()
+    public function reset()
     {
         $this->contact_complete = 0;
         return $this->save();
     }
 
-    function createFeed()
+    public function createFeed()
     {
         PHPWS_Core::initModClass('rss', 'Feed.php');
         $feed = new Key;
@@ -148,7 +148,7 @@ class Alert_Item {
         return $feed;
     }
 
-    function getHTML()
+    public function getHTML()
     {
         $body[] = '<html><body>';
         $body[] =  $this->view();
@@ -157,11 +157,11 @@ class Alert_Item {
         $content = implode('', $body);
         // Fixed relative links
         $content = str_replace('images/filecabinet', PHPWS_Core::getHomeHttp() . 'images/filecabinet', $content);
-        
+
         return $content;
     }
 
-    function getBody()
+    public function getBody()
     {
         return strip_tags($this->view());
     }

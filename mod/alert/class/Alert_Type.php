@@ -5,16 +5,16 @@
  */
 
 class Alert_Type {
-    var $id            = 0;
-    var $title         = null;
-    var $email         = false;
-    var $rssfeed       = false;
-    var $feedname      = null;
-    var $post_type     = 0;
-    var $default_alert = null;
-    var $_accessed     = false;
+    public $id            = 0;
+    public $title         = null;
+    public $email         = false;
+    public $rssfeed       = false;
+    public $feedname      = null;
+    public $post_type     = 0;
+    public $default_alert = null;
+    public $_accessed     = false;
 
-    function Alert_Type($id=0)
+    public function __construct($id=0)
     {
         if (!$id) {
             return true;
@@ -27,7 +27,7 @@ class Alert_Type {
         }
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('alert_type');
         $result = $db->loadObject($this);
@@ -38,35 +38,35 @@ class Alert_Type {
         return true;
     }
 
-    function setFeedName($feedname)
+    public function setFeedName($feedname)
     {
         $feedname = str_replace(' ', '_', $feedname);
         $this->feedname = preg_replace('/\W/', '', $feedname);
     }
 
-    function rowTags()
+    public function rowTags()
     {
         $links[] = PHPWS_Text::secureLink(dgettext('alert', 'Edit'), 'alert', array('aop'=>'edit_type', 'type_id'=>$this->id));
 
-        $links[] = sprintf('%s/%s&nbsp;all', 
-                         PHPWS_Text::secureLink(dgettext('alert', 'Add'), 'alert', 
+        $links[] = sprintf('%s/%s&nbsp;all',
+                         PHPWS_Text::secureLink(dgettext('alert', 'Add'), 'alert',
                                                 array('aop'=>'add_all_participants', 'type_id'=>$this->id),
                                                 null,
                                                 sprintf(dgettext('alert', 'Add all participants to %s'), $this->title)),
-                         PHPWS_Text::secureLink(dgettext('alert', 'Remove'), 'alert', 
+                         PHPWS_Text::secureLink(dgettext('alert', 'Remove'), 'alert',
                                                 array('aop'=>'remove_all_participants', 'type_id'=>$this->id),
                                                 null,
                                                 sprintf(dgettext('alert', 'Remove all participants from %s'), $this->title))
-                         
+
                          );
-                         
+
         if (Current_User::allow('alert', 'delete_type')) {
             $js['question'] = dgettext('alert', 'Are you sure you want to delete this alert type?');
             $js['link']     = dgettext('alert', 'Delete');
             $js['address']  = PHPWS_Text::linkAddress('alert', array('aop'=>'delete_type', 'type_id'=>$this->id), true);
             $links[] = javascript('confirm', $js);
         }
-    
+
         $tpl['EMAIL'] = $this->email ? dgettext('alert', 'Yes') : dgettext('alert', 'No');
         $tpl['RSSFEED'] = $this->rssfeed ? dgettext('alert', 'Yes') : dgettext('alert', 'No');
 
@@ -74,28 +74,28 @@ class Alert_Type {
         return $tpl;
     }
 
-    function getDefaultAlert()
+    public function getDefaultAlert()
     {
         return PHPWS_Text::parseOutput($this->default_alert);
     }
 
-    function setDefaultAlert($text)
+    public function setDefaultAlert($text)
     {
         $this->default_alert = PHPWS_Text::parseInput($text);
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = trim(strip_tags($title));
     }
 
-    function save()
+    public function save()
     {
         $db = new PHPWS_DB('alert_type');
         return $db->saveObject($this);
     }
 
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('alert_type');
         $db->addWhere('id', $this->id);
@@ -105,7 +105,7 @@ class Alert_Type {
     /**
      * Returns items for this type dependent on setting
      */
-    function getItems()
+    public function getItems()
     {
         $db = new PHPWS_DB('alert_item');
         $db->addWhere('type_id', $this->id);
@@ -125,7 +125,7 @@ class Alert_Type {
 
         case APST_PERM:
             break;
-            
+
         }
 
         $db->loadClass('alert', 'Alert_Item.php');
