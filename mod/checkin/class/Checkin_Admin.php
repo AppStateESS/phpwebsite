@@ -13,18 +13,18 @@ define('CO_FT_REASON',     2);
 
 
 class Checkin_Admin extends Checkin {
-    var $panel           = null;
-    var $use_panel       = true;
-    var $use_sidebar     = true;
-    var $current_staff   = null;
-    var $current_visitor = null;
+    public $panel           = null;
+    public $use_panel       = true;
+    public $use_sidebar     = true;
+    public $current_staff   = null;
+    public $current_visitor = null;
 
-    function Checkin_Admin()
+    public function __construct()
     {
         $this->loadPanel();
     }
 
-    function process()
+    public function process()
     {
         if (!Current_User::allow('checkin')) {
             Current_User::disallow();
@@ -273,7 +273,7 @@ class Checkin_Admin extends Checkin {
         }
     }
 
-    function loadPanel()
+    public function loadPanel()
     {
         $link = 'index.php?module=checkin';
 
@@ -304,7 +304,7 @@ class Checkin_Admin extends Checkin {
         $this->panel->quickSetTabs($tabs);
     }
 
-    function assign()
+    public function assign()
     {
         Layout::addStyle('checkin');
         javascript('modules/checkin/send_note');
@@ -364,7 +364,7 @@ class Checkin_Admin extends Checkin {
         Layout::metaRoute('index.php?module=checkin&aop=assign', PHPWS_Settings::get('checkin', 'assign_refresh'));
     }
 
-    function hideSidebarLink()
+    public function hideSidebarLink()
     {
         if (PHPWS_Cookie::read('checkin_hide_sidebar') || $this->use_sidebar == false) {
             $this->use_sidebar = false;
@@ -374,7 +374,7 @@ class Checkin_Admin extends Checkin {
         }
     }
 
-    function hidePanelLink()
+    public function hidePanelLink()
     {
         if (PHPWS_Cookie::read('checkin_hide_panel') || $this->use_panel == false) {
             $this->use_panel = false;
@@ -384,7 +384,7 @@ class Checkin_Admin extends Checkin {
         }
     }
 
-    function listVisitors($staff, $staff_list)
+    public function listVisitors($staff, $staff_list)
     {
         if (empty($this->visitor_list[$staff->id])) {
             return dgettext('checkin', 'No visitors waiting');
@@ -402,7 +402,7 @@ class Checkin_Admin extends Checkin {
         return PHPWS_Template::process($row, 'checkin', 'queue.tpl');
     }
 
-    function waiting($small_view=false)
+    public function waiting($small_view=false)
     {
         Layout::addStyle('checkin');
         javascript('modules/checkin/send_note/');
@@ -454,7 +454,7 @@ class Checkin_Admin extends Checkin {
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'waiting.tpl');
     }
 
-    function smallViewLink()
+    public function smallViewLink()
     {
         $vars['aop'] = 'small_wait';
         $js['address'] = PHPWS_Text::linkAddress('checkin', $vars, true);
@@ -464,7 +464,7 @@ class Checkin_Admin extends Checkin {
         return javascript('open_window', $js);
     }
 
-    function statusButtons(&$tpl)
+    public function statusButtons(&$tpl)
     {
         switch ($this->current_staff->status) {
         case 0:
@@ -493,7 +493,7 @@ class Checkin_Admin extends Checkin {
         }
     }
 
-    function finishLink()
+    public function finishLink()
     {
         $vars['aop'] = 'finish_meeting';
         $vars['visitor_id'] = $this->current_visitor->id;
@@ -502,21 +502,21 @@ class Checkin_Admin extends Checkin {
         return PHPWS_Text::secureLink($title, 'checkin', $vars, null, $title, 'finish-button action-button');
     }
 
-    function unavailableLink()
+    public function unavailableLink()
     {
         $vars['aop'] = 'unavailable';
         $vars['staff_id'] = $this->current_staff->id;
         return PHPWS_Text::secureLink(dgettext('checkin', 'Unavailable'), 'checkin', $vars, null, dgettext('checkin', 'Unavailable for meeting'), 'unavailable-button action-button');
     }
 
-    function availableLink()
+    public function availableLink()
     {
         $vars['aop'] = 'available';
         $vars['staff_id'] = $this->current_staff->id;
         return PHPWS_Text::secureLink(dgettext('checkin', 'Available'), 'checkin', $vars, null, dgettext('checkin', 'Available for meeting'), 'available-button action-button');
     }
 
-    function startMeetingLink()
+    public function startMeetingLink()
     {
         $vars['aop'] = 'start_meeting';
         $vars['staff_id'] = $this->current_staff->id;
@@ -525,7 +525,7 @@ class Checkin_Admin extends Checkin {
         return PHPWS_Text::secureLink($title, 'checkin', $vars, null, $title, 'meet-button action-button');
     }
 
-    function staff()
+    public function staff()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('checkin', 'Staff.php');
@@ -547,7 +547,7 @@ class Checkin_Admin extends Checkin {
         $this->content = $pager->get();
     }
 
-    function editStaff()
+    public function editStaff()
     {
         $form = new PHPWS_Form('edit-staff');
         $form->addHidden('module', 'checkin');
@@ -598,7 +598,7 @@ class Checkin_Admin extends Checkin {
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'edit_staff.tpl');
     }
 
-    function reasons()
+    public function reasons()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('checkin', 'Reasons.php');
@@ -620,7 +620,7 @@ class Checkin_Admin extends Checkin {
 
     }
 
-    function editReason()
+    public function editReason()
     {
         $reason =  & $this->reason;
 
@@ -649,7 +649,7 @@ class Checkin_Admin extends Checkin {
         $this->content = PHPWS_Template::process($template, 'checkin', 'edit_reason.tpl');
     }
 
-    function settings()
+    public function settings()
     {
         $this->title = dgettext('checkin', 'Settings');
         javascript('jquery');
@@ -678,7 +678,7 @@ class Checkin_Admin extends Checkin {
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'setting.tpl');
     }
 
-    function postSettings()
+    public function postSettings()
     {
         if (isset($_POST['add'])) {
             $reason = trim(strip_tags($_POST['new_reason']));
@@ -699,13 +699,13 @@ class Checkin_Admin extends Checkin {
         PHPWS_Settings::save('checkin');
     }
 
-    function addStaffLink()
+    public function addStaffLink()
     {
         return PHPWS_Text::secureLink(dgettext('checkin', 'Add staff member'), 'checkin', array('aop'=>'edit_staff'));
     }
 
 
-    function searchUsers()
+    public function searchUsers()
     {
         if (!Current_User::isLogged()) {
             exit();
@@ -725,7 +725,7 @@ class Checkin_Admin extends Checkin {
         exit();
     }
 
-    function addReason($reason)
+    public function addReason($reason)
     {
         $db = new PHPWS_DB('checkin_reasons');
         $db->addValue('summary', $reason);
@@ -735,7 +735,7 @@ class Checkin_Admin extends Checkin {
     /**
      * Removes a reason from the reason table
      */
-    function deleteReason($reason_id)
+    public function deleteReason($reason_id)
     {
         if (empty($reason_id) || !is_numeric($reason_id)) {
             return false;
@@ -746,7 +746,7 @@ class Checkin_Admin extends Checkin {
         return $db->delete();
     }
 
-    function updateReason()
+    public function updateReason()
     {
         if (empty($_GET['reason_id']) || empty($_GET['reason'])) {
             return;
@@ -758,7 +758,7 @@ class Checkin_Admin extends Checkin {
         return !PHPWS_Error::logIfError($db->update());
     }
 
-    function postStaff()
+    public function postStaff()
     {
         @$staff_id  = (int)$_POST['staff_id'];
 
@@ -816,7 +816,7 @@ class Checkin_Admin extends Checkin {
         return true;
     }
 
-    function postReason()
+    public function postReason()
     {
         $this->reason->summary = $_POST['summary'];
         $this->reason->message = $_POST['message'];
@@ -831,19 +831,19 @@ class Checkin_Admin extends Checkin {
         return empty($this->message);
     }
 
-    function assignmentLink()
+    public function assignmentLink()
     {
         $vars['aop'] = 'assign';
         return PHPWS_Text::secureLink(dgettext('checkin', 'Assignment page'), 'checkin', $vars);
     }
 
-    function waitingLink()
+    public function waitingLink()
     {
         $vars['aop'] = 'waiting';
         return PHPWS_Text::secureLink(dgettext('checkin', 'Waiting page'), 'checkin', $vars);
     }
 
-    function menu()
+    public function menu()
     {
         $tpl['WAITING'] = $this->waitingLink();
         $tpl['ASSIGN_PAGE'] = $this->assignmentLink();
@@ -852,7 +852,7 @@ class Checkin_Admin extends Checkin {
         Layout::add($content, 'checkin', 'checkin-admin');
     }
 
-    function loadCurrentStaff()
+    public function loadCurrentStaff()
     {
         PHPWS_Core::initModClass('checkin', 'Staff.php');
         if (empty($this->current_staff)) {
@@ -863,13 +863,13 @@ class Checkin_Admin extends Checkin {
         }
     }
 
-    function saveNote()
+    public function saveNote()
     {
         $this->visitor->note = strip_tags(trim($_POST['note_body']));
         PHPWS_Error::logIfError($this->visitor->save());
     }
 
-    function startMeeting()
+    public function startMeeting()
     {
         $this->loadStaff();
         $this->loadVisitor();
@@ -883,7 +883,7 @@ class Checkin_Admin extends Checkin {
         $this->visitor->save();
     }
 
-    function finishMeeting()
+    public function finishMeeting()
     {
         $this->loadStaff();
         $this->loadVisitor();
@@ -898,14 +898,14 @@ class Checkin_Admin extends Checkin {
         $this->visitor->save();
     }
 
-    function unavailable()
+    public function unavailable()
     {
         $this->loadStaff();
         $this->staff->status = 1;
         $this->staff->save();
     }
 
-    function available()
+    public function available()
     {
         $this->loadStaff();
         $this->staff->status = 0;
@@ -913,7 +913,7 @@ class Checkin_Admin extends Checkin {
     }
 
 
-    function report($print=false)
+    public function report($print=false)
     {
         $tpl = array();
 
@@ -995,7 +995,7 @@ class Checkin_Admin extends Checkin {
         $this->content = $tObj->get();
     }
 
-    function removeVisitor()
+    public function removeVisitor()
     {
         $this->loadVisitor();
         $this->visitor->delete();

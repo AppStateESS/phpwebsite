@@ -9,16 +9,16 @@
 
 PHPWS_Core::configRequireOnce('categories', 'config.php');
 
-class Category{
-    var $id          = NULL;
-    var $title       = NULL;
-    var $description = NULL;
-    var $parent      = 0;
-    var $icon        = 0;
-    var $children    = NULL;
+class Category {
+    public $id          = NULL;
+    public $title       = NULL;
+    public $description = NULL;
+    public $parent      = 0;
+    public $icon        = 0;
+    public $children    = NULL;
 
 
-    function Category($id=NULL)
+    public function __construct($id=NULL)
     {
         if (!isset($id)) {
             return;
@@ -35,8 +35,8 @@ class Category{
             PHPWS_Error::log($result);
         }
     }
-  
-    function init()
+
+    public function init()
     {
         $db = new PHPWS_DB('categories');
         $result = $db->loadObject($this);
@@ -47,47 +47,47 @@ class Category{
         $this->loadChildren();
     }
 
-    function setId($id)
+    public function setId($id)
     {
         $this->id = (int)$id;
     }
 
-    function getId()
+    public function getId()
     {
         return $this->id;
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = strip_tags($title);
     }
 
-    function getTitle()
+    public function getTitle()
     {
         return $this->title;
     }
 
-    function setDescription($description)
+    public function setDescription($description)
     {
         $this->description = PHPWS_Text::parseInput($description);
     }
 
-    function getDescription()
+    public function getDescription()
     {
         return PHPWS_Text::parseOutput($this->description);
     }
 
-    function setParent($parent)
+    public function setParent($parent)
     {
         $this->parent = (int)$parent;
     }
 
-    function getParent()
+    public function getParent()
     {
         return $this->parent;
     }
 
-    function getParentTitle()
+    public function getParentTitle()
     {
         static $parentTitle = array();
 
@@ -105,7 +105,7 @@ class Category{
         return $parent->title;
     }
 
-    function setIcon($icon)
+    public function setIcon($icon)
     {
         $this->icon = $icon;
 
@@ -118,13 +118,13 @@ class Category{
      * Returns the icon as an image object
      */
 
-    function getIcon()
+    public function getIcon()
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         return Cabinet::getTag($this->icon);
     }
 
-    function loadChildren()
+    public function loadChildren()
     {
         if ($this->id == 0) {
             return;
@@ -142,14 +142,14 @@ class Category{
         $this->children = Categories::initList($result);
     }
 
-    function save()
+    public function save()
     {
         $db = new PHPWS_DB('categories');
         $result = $db->saveObject($this);
         return $result;
     }
 
-    function kill()
+    public function kill()
     {
         if (empty($this->id)) {
             return FALSE;
@@ -159,7 +159,7 @@ class Category{
         return $db->delete();
     }
 
-    function getViewLink($module=NULL, $label=null)
+    public function getViewLink($module=NULL, $label=null)
     {
         if (empty($label)) {
             $label = & $this->title;
@@ -175,7 +175,7 @@ class Category{
         }
     }
 
-    function _addParent(&$list, $parent)
+    public function _addParent(&$list, $parent)
     {
         $cat = new Category($parent);
         $list[$cat->id] = $cat;
@@ -184,7 +184,7 @@ class Category{
         }
     }
 
-    function getFamily()
+    public function getFamily()
     {
         $list = array();
         $list[$this->id] = $this;
@@ -195,7 +195,7 @@ class Category{
         return $list;
     }
 
-    function getRowTags()
+    public function getRowTags()
     {
         $vars['module']      = 'categories';
         $vars['action']      = 'admin';
@@ -207,7 +207,7 @@ class Category{
         if (Current_User::allow('categories', 'delete_categories')) {
             if (javascriptEnabled()) {
                 $js_vars['QUESTION'] = dgettext('categories', 'Are you sure you want to delete this category?');
-                $js_vars['ADDRESS']  = 'index.php?module=categories&amp;action=admin&amp;subaction=deleteCategory&amp;category_id=' . 
+                $js_vars['ADDRESS']  = 'index.php?module=categories&amp;action=admin&amp;subaction=deleteCategory&amp;category_id=' .
                     $this->getId() . '&amp;authkey=' . Current_User::getAuthKey();
                 $js_vars['LINK']     = dgettext('categories', 'Delete');
                 $links[] = Layout::getJavascript('confirm', $js_vars);

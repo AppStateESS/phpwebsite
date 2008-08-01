@@ -41,7 +41,7 @@ class Comments {
         $thread->key_id = $key->id;
         $thread->_key = $key;
         $thread->buildThread();
-        
+
         return $thread;
     }
 
@@ -95,7 +95,7 @@ class Comments {
             $tabs['report'] = array('title'=> dgettext('comments', 'Reported'),
                                       'link'=>'index.php?module=comments');
         }
-        
+
         $db = new PHPWS_DB('comments_items');
         $db->addColumn('id', null, null, true);
         $db->addWhere('approved', 0);
@@ -235,7 +235,7 @@ class Comments {
                         $cuser->locked = 1;
                         printf('<a href="#" onclick="punish_user(%s, this, \'unlock_user\'); return false;">%s</a>',
                                $cuser->user_id, dgettext('comments', 'Unlock user'));
-                        
+
                     } else {
                         $cuser->locked = 0;
                         printf('<a href="#" onclick="punish_user(%s, this, \'lock_user\'); return false;">%s</a>',
@@ -276,7 +276,7 @@ class Comments {
                         $user->active = 0;
                         printf('<a href="#" onclick="punish_user(%s, this, \'unban_user\'); return false;">%s</a>',
                                $user->id, dgettext('comments', 'Unban user'));
-                        
+
                     } else {
                         $user->active = 1;
                         printf('<a href="#" onclick="punish_user(%s, this, \'ban_user\'); return false;">%s</a>',
@@ -343,7 +343,7 @@ class Comments {
         } else {
             $c_item = new Comment_Item;
         }
-    
+
         switch ($command) {
         case 'post_comment':
             if ($thread->canComment()) {
@@ -452,13 +452,13 @@ class Comments {
         foreach ($referer as $key=>$value) {
             $url[] = $key . '=' . $value;
         }
-        
+
         $link = 'index.php?' . implode('&', $url);
         PHPWS_Core::reroute($link);
         return;
     }
-  
-    function postComment($thread, &$cm_item)
+
+    function postComment($thread, Comment_Item $cm_item)
     {
         if (empty($_POST['cm_subject']) && empty($_POST['cm_entry'])) {
             $cm_item->_error = dgettext('comments', 'You must include a subject or comment.');
@@ -473,14 +473,14 @@ class Comments {
          * If the user doesn't have permissions to edit the key
          * AND the user does not have permissions to admin comments
          * AND the comment is new (no id)
-         * AND the thread approval requires approval from everyone 
+         * AND the thread approval requires approval from everyone
          * OR the user is not logged in and the comment requires
          * anonymous comments to be approved,
          * THEN set the approval to 0
          */
         if ( !$thread->_key->allowEdit()      &&
              !Current_User::allow('comments') &&
-             !$cm_item->id                    && 
+             !$cm_item->id                    &&
              ( $thread->approval == 2 ||
                ( $thread->approval == 1 && !Current_User::isLogged() ) )
         ) {
@@ -499,7 +499,7 @@ class Comments {
             }
         }
 
-        if (!Current_User::isLogged() && 
+        if (!Current_User::isLogged() &&
             PHPWS_Settings::get('comments', 'anonymous_naming')) {
             if (!$cm_item->setAnonName($_POST['anon_name'])) {
                 $cm_item->_error = dgettext('comments', 'That name is not allowed. Try another.');
@@ -592,7 +592,7 @@ class Comments {
         $tpl = $comment->getTpl($thread->allow_anon);
         $tpl['CHILDREN'] = $thread->view($comment->id);
         $content = PHPWS_Template::process($tpl, 'comments', COMMENT_VIEW_ONE_TPL);
-        
+
         return $content;
     }
 
@@ -612,7 +612,7 @@ class Comments {
         } else {
             $settings['allow_image_signatures'] = 0;
         }
- 
+
         if (@$_POST['allow_avatars']) {
             $settings['allow_avatars'] = 1;
         } else {
@@ -643,8 +643,8 @@ class Comments {
         $content[] = PHPWS_Text::secureLink(dgettext('comments', 'Go back to settings...'), 'comments', $vars);
         return implode('<br /><br />', $content);
     }
-    
-    function form(&$thread, $c_item)
+
+    function form(Comment_Thread $thread, $c_item)
     {
         PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
         return Comment_Forms::form($thread, $c_item);
@@ -671,32 +671,32 @@ class Comments {
         $db->addWhere('phpws_key.active', 1);
 
         if (!Current_User::isLogged()) {
-            $db->addWhere('phpws_key.restricted', 0); 
+            $db->addWhere('phpws_key.restricted', 0);
         }
-        
+
         $result = $db->select();
 
         if (empty($result)) {
             return;
         }
-        
+
 
         foreach ($result as $comment) {
             $date = PHPWS_Time::relativeTime($comment['create_time'], '%e %b');
             $from = sprintf(dgettext('comments', '%1$s - by %2$s from %3$s'),
-                            $comment['subject'], 
+                            $comment['subject'],
                             $comment['display_name'],
                             $date);
 
             $subtpl['TITLE']  = sprintf('<a href="%s#cm_%s" title="%s">%s</a>',
-                                        $comment['url'], 
+                                        $comment['url'],
                                         $comment['id'],
                                         $from,
                                         $comment['subject']);
 
             $subtpl['AUTHOR'] = $comment['display_name'];
             $subtpl['DATE']   = $date;
-            $tpl['comment-row'][] = $subtpl; 
+            $tpl['comment-row'][] = $subtpl;
         }
 
         $tpl['BOX_TITLE'] = dgettext('comments', 'Recent comments');
@@ -704,7 +704,7 @@ class Comments {
         $content = PHPWS_Template::process($tpl, 'comments', 'recent.tpl');
         Layout::add($content, 'comments', 'recent');
     }
-    
+
     function multipleApprove($comment_ids)
     {
         $all_approved = false;

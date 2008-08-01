@@ -7,19 +7,19 @@
 PHPWS_Core::initModClass('calendar', 'Event.php');
 
 class Calendar_Suggestion extends Calendar_Event {
-    var $id          = 0;
-    var $schedule_id = 0;
-    var $summary     = null;
-    var $location    = null;
-    var $loc_link    = null;
-    var $description = null;
-    var $all_day     = 0;
-    var $start_time  = 0;
-    var $end_time    = 0;
-    var $submitted   = 0;
+    public $id          = 0;
+    public $schedule_id = 0;
+    public $summary     = null;
+    public $location    = null;
+    public $loc_link    = null;
+    public $description = null;
+    public $all_day     = 0;
+    public $start_time  = 0;
+    public $end_time    = 0;
+    public $submitted   = 0;
 
 
-    function Calendar_Suggestion($id=0)
+    public function __construct($id=0)
     {
         if (empty($id)) {
             $this->start_time = PHPWS_Time::getUserTime();
@@ -37,14 +37,14 @@ class Calendar_Suggestion extends Calendar_Event {
         }
     }
 
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('calendar_suggestions');
         $db->addWhere('id', $this->id);
         return $db->delete();
     }
 
-    function getTpl()
+    public function getTpl()
     {
         $tpl['SUMMARY']     = $this->summary;
         $tpl['DESCRIPTION'] = $this->getDescription();
@@ -131,18 +131,18 @@ class Calendar_Suggestion extends Calendar_Event {
     }
 
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('calendar_suggestions');
         return $db->loadObject($this);
     }
 
-    function post()
+    public function post()
     {
         return parent::post(true);
     }
 
-    function save()
+    public function save()
     {
         $this->schedule_id = $this->_schedule->id;
         $this->submitted = mktime();

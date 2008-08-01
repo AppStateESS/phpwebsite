@@ -20,34 +20,34 @@ class Calendar_User {
     /**
      * @var pointer to the parent Calendar object
      */
-    var $calendar = null;
+    public $calendar = null;
 
     /**
      * @var string Contains printed content
      */
-    var $content = null;
+    public $content = null;
 
-    var $current_view = null;
+    public $current_view = null;
 
     /**
      * @var object If event is requested, contains object
      */
-    var $event = null;
+    public $event = null;
 
 
     /**
      * @var string Contains page title header
      */
-    var $title = null;
+    public $title = null;
 
-    var $message = null;
+    public $message = null;
 
     /**
      * @var Calendar_View object
      */
-    var $view  = null;
+    public $view  = null;
 
-    function Calendar_User()
+    public function __construct()
     {
         if (isset($_REQUEST['view'])) {
             $this->current_view = preg_replace('/\W/', '', $_REQUEST['view']);
@@ -59,7 +59,7 @@ class Calendar_User {
     }
 
 
-    function allowSuggestion()
+    public function allowSuggestion()
     {
         if ( isset($_SESSION['Calendar_Total_Suggestions']) &&
              $_SESSION['Calendar_Total_Suggestions'] >= CALENDAR_TOTAL_SUGGESTIONS ) {
@@ -69,14 +69,14 @@ class Calendar_User {
         }
     }
 
-    function getDaysEvents($startdate, &$tpl)
+    public function getDaysEvents($startdate, PHPWS_Template $tpl)
     {
         $year  = (int)date('Y', $startdate);
         $month = (int)date('m', $startdate);
         $day   = (int)date('d', $startdate);
 
         $day_events = @$this->calendar->sorted_list[$year]['months'][$month]['days'][$day]['events'];
-        
+
         if (!$day_events) {
             return false;
         }
@@ -128,7 +128,7 @@ class Calendar_User {
                         break;
                     }
                 }
-                    
+
                 if (!isset($hour_list[$hour])) {
                     $hour_list[$hour] = 1;
                     if ($hour == -1) {
@@ -148,7 +148,7 @@ class Calendar_User {
     /**
      * Displays a single day's events
      */
-    function day()
+    public function day()
     {
         if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
@@ -186,19 +186,19 @@ class Calendar_User {
     /**
      * Link to the day view
      */
-    function dayLink($label, $month, $day, $year)
+    public function dayLink($label, $month, $day, $year)
     {
         $vars = array('view' => 'day',
                       'date' => mktime(0,0,0, $month, $day, $year));
         if ($this->calendar->schedule->id) {
             $vars['sch_id'] = $this->calendar->schedule->id;
         }
-    
+
         return PHPWS_Text::moduleLink($label, 'calendar', $vars);
     }
 
 
-    function event($js=false) {
+    public function event($js=false) {
         PHPWS_Core::initModClass('calendar', 'Event.php');
         if (!$this->event->id) {
             PHPWS_Core::errorPage('404');
@@ -217,7 +217,7 @@ class Calendar_User {
     }
 
 
-    function getDatePick()
+    public function getDatePick()
     {
         $js['month'] = $this->calendar->int_month;
         $js['day']   = $this->calendar->int_day;
@@ -228,7 +228,7 @@ class Calendar_User {
         return javascript('js_calendar', $js);
     }
 
-    function getUrl()
+    public function getUrl()
     {
         $getVars = PHPWS_Text::getGetValues();
         if (empty($getVars)) {
@@ -245,7 +245,7 @@ class Calendar_User {
         return implode('', $address);
     }
 
-    function loadSuggestion($id=0)
+    public function loadSuggestion($id=0)
     {
         PHPWS_Core::initModClass('calendar', 'Suggestion.php');
         $this->event = new Calendar_Suggestion;
@@ -253,7 +253,7 @@ class Calendar_User {
         $this->event->schedule_id = $this->event->_schedule->id;
     }
 
-    function loadEvent($event_id)
+    public function loadEvent($event_id)
     {
         PHPWS_Core::initModClass('calendar', 'Event.php');
         $this->event = new Calendar_Event($this->calendar->schedule, $event_id);
@@ -261,7 +261,7 @@ class Calendar_User {
     }
 
 
-    function main()
+    public function main()
     {
         if (isset($_REQUEST['uop'])) {
             $command = $_REQUEST['uop'];
@@ -308,7 +308,7 @@ class Calendar_User {
             $tpl['MESSAGE'] = implode('<br />', $this->message);
         } else {
             $tpl['MESSAGE'] = $this->message;
-        } 
+        }
 
         // Clears in case of js window opening
         $this->content = $this->title = $this->message = null;
@@ -322,7 +322,7 @@ class Calendar_User {
         }
     }
 
-    function mini_month()
+    public function mini_month()
     {
         $month = (int)date('m');
         $year  = (int)date('Y');
@@ -330,7 +330,7 @@ class Calendar_User {
         // Check cache
         if (PHPWS_Settings::get('calendar', 'cache_month_views')) {
             $cache_key = sprintf('mini_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
-        
+
             $content = PHPWS_Cache::get($cache_key);
             if (!empty($content)) {
                 return $content;
@@ -349,7 +349,7 @@ class Calendar_User {
             $default_start = PHPWS_Settings::get('calendar','starting_day');
             $start_day = date('w', $startdate) - $default_start;
             $end_day  = date('w', $enddate);
-            
+
             $startdate -= $start_day * 86400;
             $enddate += $end_day * 86400;
             $this->calendar->loadEventList($startdate, $enddate);
@@ -387,7 +387,7 @@ class Calendar_User {
     /**
      * Fills in event totals for each day in month grids
      */
-    function _month_days(&$oMonth, &$oTpl, $link_days=true, $list_events=false)
+    public function _month_days($oMonth, $oTpl, $link_days=true, $list_events=false)
     {
         while($day = $oMonth->fetch()) {
             $data = array();
@@ -398,7 +398,7 @@ class Calendar_User {
 
             if (isset($events)) {
                 $no_of_events = count($events);
-            } 
+            }
 
             if ($link_days || $no_of_events) {
                 $data['DAY'] = $this->dayLink($day->day, $day->month, $day->day, $day->year);
@@ -427,7 +427,7 @@ class Calendar_User {
 
                     //                    $data['EVENTS'] = implode('<br />', $listing);
                 } else {
-                    $data['COUNT'] = PHPWS_Text::moduleLink(sprintf('%s event(s)', $no_of_events), 
+                    $data['COUNT'] = PHPWS_Text::moduleLink(sprintf('%s event(s)', $no_of_events),
                                                             'calendar', array('view'=>'day',
                                                                               'date'=>$day->thisDay(true),
                                                                               'sch_id'=>$this->calendar->schedule->id));
@@ -449,7 +449,7 @@ class Calendar_User {
     /**
      * Standard month calendar grid view
      */
-    function month_grid()
+    public function month_grid()
     {
         if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
@@ -463,7 +463,7 @@ class Calendar_User {
         // Check cache
         if ($this->calendar->schedule->public && PHPWS_Settings::get('calendar', 'cache_month_views')) {
             $cache_key = sprintf('grid_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
-        
+
             $content = PHPWS_Cache::get($cache_key);
             if (!empty($content)) {
                 return $content;
@@ -523,7 +523,7 @@ class Calendar_User {
     }
 
 
-    function month_list()
+    public function month_list()
     {
         if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
@@ -544,7 +544,7 @@ class Calendar_User {
                 return $content;
             }
         }
-        
+
         // cache empty, make calendar
 
         $startdate = mktime(0,0,0, $month, 1, $year);
@@ -598,15 +598,15 @@ class Calendar_User {
         if (isset($cache_key)) {
             PHPWS_Cache::save($cache_key, $content);
         }
-        
+
         return $content;
     }
 
 
-    function postSuggestion()
+    public function postSuggestion()
     {
         $this->loadSuggestion();
-        
+
         if ($this->event->post()) {
             if (PHPWS_Core::isPosted()) {
                 $this->title = dgettext('calendar', 'Duplicate suggestion.');
@@ -657,14 +657,14 @@ class Calendar_User {
     }
 
 
-    function resetCacheLink($type, $month, $year, $schedule)
+    public function resetCacheLink($type, $month, $year, $schedule)
     {
         $vars['aop'] = 'reset_cache';
         $vars['key'] = sprintf('%s_%s_%s_%s', $type, $month, $year, $schedule);
         MiniAdmin::add('calendar', PHPWS_Text::secureLink(dgettext('calendar', 'Reset cache'), 'calendar', $vars));
     }
 
-    function schedulePick()
+    public function schedulePick()
     {
         $schedules = $this->calendar->getScheduleList('brief');
         if (count($schedules) < 2) {
@@ -682,10 +682,10 @@ class Calendar_User {
         return implode("\n", $tpl);
     }
 
-    function suggestLink()
+    public function suggestLink()
     {
         if ( !$this->allowSuggestion()                      ||
-             !$this->calendar->schedule->public             || 
+             !$this->calendar->schedule->public             ||
              Current_User::allow('calendar', 'edit_public') ||
              !PHPWS_Settings::get('calendar', 'allow_submissions') ) {
             return null;
@@ -694,7 +694,7 @@ class Calendar_User {
         return $this->calendar->schedule->addSuggestLink($this->calendar->current_date);
     }
 
-    function todayLink($view)
+    public function todayLink($view)
     {
         $vars['sch_id'] = $this->calendar->schedule->id;
         if ($this->current_view == 'event') {
@@ -725,7 +725,7 @@ class Calendar_User {
     /**
      * Pathing for which view to display
      */
-    function view()
+    public function view()
     {
         $key = new Key($this->calendar->schedule->key_id);
         if (!$key->allowView()) {
@@ -767,7 +767,7 @@ class Calendar_User {
         case 'day':
             $this->content = $this->day();
             break;
-            
+
         case 'grid':
             if (ALLOW_CACHE_LITE && Current_User::allow('calendar')) {
                 $this->resetCacheLink('grid', $this->calendar->int_month, $this->calendar->int_year, $this->calendar->schedule->id);
@@ -808,7 +808,7 @@ class Calendar_User {
                 $this->content = $this->event();
             }
             break;
-            
+
         default:
             $this->content = dgettext('calendar', 'Incorrect option');
             break;
@@ -828,7 +828,7 @@ class Calendar_User {
      * @param string current_view   Name of the current view
      * @return string
      */
-    function viewLinks($current_view)
+    public function viewLinks($current_view)
     {
         if (!$this->calendar->schedule->id) {
             return null;
@@ -842,7 +842,7 @@ class Calendar_User {
         }
 
         if (isset($_REQUEST['m']) &&
-            isset($_REQUEST['y']) && 
+            isset($_REQUEST['y']) &&
             isset($_REQUEST['d'])) {
             $vars['date'] = mktime(0,0,0, $_REQUEST['m'], $_REQUEST['d'], $_REQUEST['y']);
             unset($vars['m']);
@@ -892,7 +892,7 @@ class Calendar_User {
             $right_arrow_time = $oWeek->nextWeek('timestamp');
             $left_link_title = dgettext('calendar', 'Previous week');
             $right_link_title = dgettext('calendar', 'Next week');
-            
+
             $links[] = dgettext('calendar', 'Week');
         } else {
             $vars['view'] = 'week';
@@ -930,7 +930,7 @@ class Calendar_User {
     }
 
 
-    function week()
+    public function week()
     {
         strftime('%c', $this->calendar->current_date);
         if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
@@ -1010,7 +1010,7 @@ class Calendar_User {
     /**
      * Fills in the header weekdays on the grid layout
      */
-    function _weekday(&$oMonth, &$oTpl)
+    public function _weekday($oMonth, PHPWS_Template $oTpl)
     {
         $day_count = 0;
 
@@ -1029,7 +1029,7 @@ class Calendar_User {
         }
     }
 
-    function upcomingEvents()
+    public function upcomingEvents()
     {
         $db = new PHPWS_DB('calendar_schedule');
         $db->addWhere('show_upcoming', 0, '>');

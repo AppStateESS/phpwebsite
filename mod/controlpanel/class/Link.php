@@ -7,18 +7,18 @@
  */
 
 class PHPWS_Panel_Link {
-    var $id          = 0;
-    var $label       = null;
-    var $active      = 1;
-    var $itemname    = null;
-    var $restricted  = true;
-    var $tab         = null;
-    var $url         = null;
-    var $description = null;
-    var $image       = null;
-    var $link_order  = null;
+    public $id          = 0;
+    public $label       = null;
+    public $active      = 1;
+    public $itemname    = null;
+    public $restricted  = true;
+    public $tab         = null;
+    public $url         = null;
+    public $description = null;
+    public $image       = null;
+    public $link_order  = null;
 
-    function PHPWS_Panel_Link($id=null)
+    public function __construct($id=null)
     {
         if (!isset($id))
             return;
@@ -29,7 +29,7 @@ class PHPWS_Panel_Link {
             PHPWS_Error::log($result);
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('controlpanel_link');
         $result = $db->loadObject($this);
@@ -38,54 +38,54 @@ class PHPWS_Panel_Link {
         }
     }
 
-    function setId($id)
+    public function setId($id)
     {
         $this->id = (int)$id;
     }
 
-    function setTab($tab)
+    public function setTab($tab)
     {
         $this->tab = $tab;
     }
 
-    function setActive($active)
+    public function setActive($active)
     {
         $this->active = (bool)$active;
     }
 
-    function getActive()
+    public function getActive()
     {
         return $this->active;
     }
 
-    function setLabel($label)
+    public function setLabel($label)
     {
         $this->label = strip_tags($label);
     }
 
-    function getLabel()
+    public function getLabel()
     {
         return $this->label;
     }
 
 
-    function getDescription()
+    public function getDescription()
     {
         return $this->description;
     }
 
-    function setDescription($description)
+    public function setDescription($description)
     {
         $this->description = strip_tags($description);
     }
 
 
-    function setImage($image)
+    public function setImage($image)
     {
         $this->image = $image;
     }
 
-    function getImage($tag=false, $linkable=false)
+    public function getImage($tag=false, $linkable=false)
     {
         if ($tag == false) {
             return $this->image;
@@ -112,12 +112,12 @@ class PHPWS_Panel_Link {
         return $image;
     }
 
-    function setUrl($url)
+    public function setUrl($url)
     {
         $this->url = $url;
     }
-  
-    function getUrl($tag=false)
+
+    public function getUrl($tag=false)
     {
         if ($this->restricted) {
             $authkey = '&amp;authkey=' . Current_User::getAuthKey();
@@ -133,12 +133,12 @@ class PHPWS_Panel_Link {
             return $this->url;
     }
 
-    function setLinkOrder($order)
+    public function setLinkOrder($order)
     {
         $this->link_order = (int)$order;
     }
 
-    function getLinkOrder()
+    public function getLinkOrder()
     {
         if (isset($this->link_order)) {
             return $this->link_order;
@@ -148,7 +148,7 @@ class PHPWS_Panel_Link {
         $db->addWhere('tab', $this->tab);
         $db->addColumn('link_order', 'max');
         $max = $db->select('one');
-    
+
         if (PEAR::isError($max)) {
             return $max;
         }
@@ -161,27 +161,27 @@ class PHPWS_Panel_Link {
         }
     }
 
-    function setItemName($itemname)
+    public function setItemName($itemname)
     {
         $this->itemname = $itemname;
     }
 
-    function getItemName()
+    public function getItemName()
     {
         return $this->itemname;
     }
 
-    function isRestricted()
+    public function isRestricted()
     {
         return (bool)$this->restricted;
     }
 
-    function setRestricted($restrict)
+    public function setRestricted($restrict)
     {
         $this->restricted = $restrict;
     }
 
-    function save()
+    public function save()
     {
         $db = new PHPWS_DB('controlpanel_link');
         $this->link_order = $this->getLinkOrder();
@@ -189,7 +189,7 @@ class PHPWS_Panel_Link {
         return $result;
     }
 
-    function view()
+    public function view()
     {
         $tpl['IMAGE']       = $this->getImage(true, true);
         $tpl['NAME']        = $this->getUrl(true);
@@ -201,8 +201,8 @@ class PHPWS_Panel_Link {
     /**
      * Moves the tab 'up' the order, which is actually a lower
      * order number
-     */ 
-    function moveUp()
+     */
+    public function moveUp()
     {
         $db = new PHPWS_DB('controlpanel_link');
         $db->setIndexBy('link_order');
@@ -229,7 +229,7 @@ class PHPWS_Panel_Link {
         }
     }
 
-    function moveDown()
+    public function moveDown()
     {
         $db = new PHPWS_DB('controlpanel_link');
         $db->setIndexBy('link_order');
@@ -257,9 +257,7 @@ class PHPWS_Panel_Link {
         }
     }
 
-  
-
-    function kill()
+    public function kill()
     {
         $db = new PHPWS_DB('controlpanel_link');
         $db->addWhere('id', $this->id);

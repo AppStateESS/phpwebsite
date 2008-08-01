@@ -6,17 +6,17 @@
 
 class Comment_Forms {
 
-    function form($thread, $c_item)
+    function form(Comment_Thread $thread, $c_item)
     {
         $form = new PHPWS_Form;
-    
+
         if (isset($_REQUEST['cm_parent'])) {
             $c_parent = new Comment_Item($_REQUEST['cm_parent']);
             $form->addHidden('cm_parent', $c_parent->id);
             $form->addTplTag('PARENT_SUBJECT', $c_parent->subject);
             $form->addTplTag('PARENT_ENTRY', $c_parent->getEntry());
         }
-    
+
         if (!empty($c_item->id)) {
             $form->addHidden('cm_id', $c_item->id);
             $form->addText('edit_reason', $c_item->getEditReason());
@@ -94,7 +94,7 @@ class Comment_Forms {
         $form->addCheck('allow_signatures', 1);
         $form->setLabel('allow_signatures', dgettext('comments', 'Allow user signatures'));
         $form->setMatch('allow_signatures', $settings['allow_signatures']);
-                        
+
 
         $form->addCheck('allow_image_signatures', 1);
         $form->setLabel('allow_image_signatures', dgettext('comments', 'Allow images in signatures'));
@@ -111,7 +111,7 @@ class Comment_Forms {
         $form->addCheck('anonymous_naming', 1);
         $form->setLabel('anonymous_naming', dgettext('comments', 'Allow anonymous naming'));
         $form->setMatch('anonymous_naming', $settings['anonymous_naming']);
-        
+
         $default_approval[0] = dgettext('comments', 'All comments preapproved');
         $default_approval[1] = dgettext('comments', 'Anonymous comments require approval');
         $default_approval[2] = dgettext('comments', 'All comments require approval');
@@ -229,21 +229,21 @@ class Comment_Forms {
 
             }
         }
-        
+
         if (Current_User::allow('access') && $comment->author_ip != '127.0.0.1') {
             if (!isset($user) || !$user->allow('access')) {
                 PHPWS_Core::initModClass('access', 'Access.php');
                 if (!Access::isDenied($comment->author_ip)) {
                     $links[] = sprintf('<a href="#" onclick="punish_user(\'%s\', this, \'deny_ip\'); return false;">%s</a>',
                                        $comment->author_ip, dgettext('comments', 'Deny IP address'));
-                    
+
                 } else {
                     $links[] = sprintf('<a href="#" onclick="punish_user(\'%s\', this, \'remove_deny_ip\'); return false;">%s</a>',
                                        $comment->author_ip, dgettext('comments', 'Remove IP denial'));
-                    
+
                 }
             }
-        } 
+        }
 
         if (isset($links)) {
             $tpl['LINKS'] = implode('<br />', $links);
@@ -270,7 +270,7 @@ class Comment_Forms {
 
         $tpl = $form->getTemplate();
         $tpl['CHECK_ALL'] = javascript('check_all', array('checkbox_name'=>'cm_id', 'type'=>'checkbox'));
-        
+
 
         $pager = new DBPager('comments_items', 'Comment_Item');
         $pager->setModule('comments');

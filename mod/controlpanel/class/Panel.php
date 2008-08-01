@@ -9,31 +9,31 @@ PHPWS_Core::requireConfig('controlpanel');
 PHPWS_Core::initModClass('controlpanel', 'Tab.php');
 
 class PHPWS_Panel{
-    var $itemname     = null;
-    var $tabs         = null;
-    var $content      = null;
-    var $module       = null;
-    var $panel        = null;
-    var $_secure      = false;
+    public $itemname     = null;
+    public $tabs         = null;
+    public $content      = null;
+    public $module       = null;
+    public $panel        = null;
+    public $_secure      = false;
 
-    function PHPWS_Panel($itemname=null)
+    public function __construct($itemname=null)
     {
         if (isset($itemname)) {
             $this->setItemname($itemname);
         }
     }
 
-    function disableSecure()
+    public function disableSecure()
     {
         $this->_secure = false;
     }
 
-    function enableSecure()
+    public function enableSecure()
     {
         $this->_secure = true;
     }
 
-    function quickSetTabs($tabs)
+    public function quickSetTabs($tabs)
     {
         $count = 1;
         foreach ($tabs as $id=>$info){
@@ -59,11 +59,11 @@ class PHPWS_Panel{
             if (isset($info['strict'])) {
                 $tab->isStrict();
             }
-            
+
             if (isset($info['link_title'])) {
-                $tab->setLinkTitle($info['link_title']); 
+                $tab->setLinkTitle($info['link_title']);
             }
-            
+
             $tab->setOrder($count);
             $count++;
             $this->tabs[$id] = $tab;
@@ -73,77 +73,77 @@ class PHPWS_Panel{
     }
 
 
-    function setTabs($tabs)
+    public function setTabs($tabs)
     {
         if (!is_array($tabs)) {
             return PHPWS_Error::get(CP_BAD_TABS, 'controlpanel', 'setTabs');
         }
-      
+
         $this->tabs = $tabs;
     }
 
-    function getTabs()
+    public function getTabs()
     {
         return $this->tabs;
     }
 
-    function dropTab($id)
+    public function dropTab($id)
     {
         unset($this->tabs[$id]);
     }
 
-    function setContent($content)
+    public function setContent($content)
     {
         $this->content = $content;
     }
 
-    function getContent()
+    public function getContent()
     {
         return $this->content;
     }
 
-    function setItemname($itemname)
+    public function setItemname($itemname)
     {
         $this->itemname = $itemname;
     }
 
-    function getItemname()
+    public function getItemname()
     {
         return $this->itemname;
     }
 
 
-    function setModule($module)
+    public function setModule($module)
     {
         $this->module = $module;
     }
 
-    function getModule()
+    public function getModule()
     {
         return $this->module;
     }
 
-    function setPanel($panel)
+    public function setPanel($panel)
     {
         $this->panel = $panel;
     }
 
-    function getPanel()
+    public function getPanel()
     {
         return $this->panel;
     }
 
-    function setCurrentTab($tab)
+    public function setCurrentTab($tab)
     {
         $itemname = $this->getItemname();
         $_SESSION['Panel_Current_Tab'][$itemname] = $tab;
     }
 
-    function getCurrentTab()
+    public function getCurrentTab()
     {
         $itemname = $this->getItemname();
 
-        if (isset($_REQUEST['tab']) && 
+        if (isset($_REQUEST['tab']) &&
             isset($this->tabs[$_REQUEST['tab']]) &&
             $itemname == $this->tabs[$_REQUEST['tab']]->itemname)
             $this->setCurrentTab($_REQUEST['tab']);
@@ -153,12 +153,12 @@ class PHPWS_Panel{
             return $_SESSION['Panel_Current_Tab'][$itemname];
         else {
             $currentTab = $this->getFirstTab();
-            $this->setCurrentTab($currentTab);       
+            $this->setCurrentTab($currentTab);
             return $currentTab;
         }
     }
 
-    function getFirstTab()
+    public function getFirstTab()
     {
         PHPWS_Core::initModClass('controlpanel', 'Tab.php');
         $result = null;
@@ -172,7 +172,7 @@ class PHPWS_Panel{
         return $result;
     }
 
-    function display($content=null, $title=null, $message=null)
+    public function display($content=null, $title=null, $message=null)
     {
         $itemname   = $this->getItemname();
         $currentTab = $this->getCurrentTab();

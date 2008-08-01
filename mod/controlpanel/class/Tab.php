@@ -7,18 +7,18 @@
  */
 
 class PHPWS_Panel_Tab {
-    var $id           = null;
-    var $title        = null;
-    var $link         = null;
-    var $tab_order    = null;
-    var $itemname     = null;
-    var $link_title   = null;
-    var $_secure      = true;
+    public $id           = null;
+    public $title        = null;
+    public $link         = null;
+    public $tab_order    = null;
+    public $itemname     = null;
+    public $link_title   = null;
+    public $_secure      = true;
 
     // If strict == true, tab links are returned as is and not appended.
-    var $_strict      = false;
+    public $_strict      = false;
 
-    function PHPWS_Panel_Tab($id=null)
+    public function __construct($id=null)
     {
         if(isset($id)) {
             $this->setId($id);
@@ -26,12 +26,12 @@ class PHPWS_Panel_Tab {
         }
     }
 
-    function setId($id)
+    public function setId($id)
     {
         $this->id = $id;
     }
 
-    function init()
+    public function init()
     {
         $DB = new PHPWS_DB('controlpanel_tab');
         $result = $DB->loadObject($this);
@@ -40,22 +40,22 @@ class PHPWS_Panel_Tab {
         }
     }
 
-    function isStrict()
+    public function isStrict()
     {
         $this->_strict = true;
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = strip_tags($title);
     }
 
-    function setLinkTitle($link_title)
+    public function setLinkTitle($link_title)
     {
         $this->link_title = strip_tags($link_title);
     }
 
-    function getTitle($noBreak=true)
+    public function getTitle($noBreak=true)
     {
         if ($noBreak)
             return str_replace(' ', '&nbsp;', $this->title);
@@ -63,13 +63,12 @@ class PHPWS_Panel_Tab {
             return $this->title;
     }
 
-    function setLink($link)
+    public function setLink($link)
     {
         $this->link = $link;
     }
 
-
-    function getLinkTitle()
+    public function getLinkTitle()
     {
         if (!$this->link_title) {
             return null;
@@ -77,9 +76,8 @@ class PHPWS_Panel_Tab {
             return " title=\"$this->link_title\"";
         }
     }
-    
 
-    function getLink($addTitle=true)
+    public function getLink($addTitle=true)
     {
         if ($addTitle){
             $title = $this->getTitle();
@@ -101,13 +99,12 @@ class PHPWS_Panel_Tab {
         }
     }
 
-
-    function setOrder($order)
+    public function setOrder($order)
     {
         $this->tab_order = $order;
     }
 
-    function getOrder()
+    public function getOrder()
     {
         if (isset($this->tab_order))
             return $this->tab_order;
@@ -115,7 +112,7 @@ class PHPWS_Panel_Tab {
         $DB = new PHPWS_DB('controlpanel_tab');
         $DB->addColumn('tab_order', 'max');
         $max = $DB->select('one');
-    
+
         if (PEAR::isError($max))
             exit($max->getMessage());
 
@@ -125,27 +122,27 @@ class PHPWS_Panel_Tab {
             return 1;
     }
 
-    function setItemname($itemname)
+    public function setItemname($itemname)
     {
         $this->itemname = $itemname;
     }
 
-    function getItemname()
+    public function getItemname()
     {
         return $this->itemname;
     }
 
-    function disableSecure()
+    public function disableSecure()
     {
         $this->_secure = false;
     }
 
-    function enableSecure()
+    public function enableSecure()
     {
         $this->_secure = true;
     }
 
-    function save()
+    public function save()
     {
         $db = new PHPWS_DB('controlpanel_tab');
         $db->addWhere('id', $this->id);
@@ -155,7 +152,7 @@ class PHPWS_Panel_Tab {
         return $db->saveObject($this, false, false);
     }
 
-    function nextBox()
+    public function nextBox()
     {
         $db = new PHPWS_DB('controlpanel_tab');
         $db->addWhere('theme', $this->getTheme());
@@ -173,8 +170,8 @@ class PHPWS_Panel_Tab {
     /**
      * Moves the tab 'up' the order, which is actually a lower
      * order number
-     */ 
-    function moveUp()
+     */
+    public function moveUp()
     {
         $db = new PHPWS_DB('controlpanel_tab');
         $db->setIndexBy('tab_order');
@@ -200,7 +197,7 @@ class PHPWS_Panel_Tab {
         }
     }
 
-    function moveDown()
+    public function moveDown()
     {
         $db = new PHPWS_DB('controlpanel_tab');
         $db->setIndexBy('tab_order');

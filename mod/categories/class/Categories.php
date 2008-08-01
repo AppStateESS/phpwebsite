@@ -53,7 +53,7 @@ class Categories {
     }
 
 
-    function showForm(&$key, $popup=FALSE)
+    function showForm(Key $key, $popup=FALSE)
     {
         Layout::addStyle('categories');
         $full_list = $add_list = Categories::getCategories('list');
@@ -88,7 +88,7 @@ class Categories {
         } else {
             $form->addTplTag('ADD_CATEGORY', dgettext('categories', 'No categories available.'));
         }
-        
+
         if (empty($remove_list)) {
             $form->addTplTag('REMOVE_CATEGORY', dgettext('categories', 'No categories assigned.'));
         } else {
@@ -103,7 +103,7 @@ class Categories {
         $form->addSubmit('quick_add', dgettext('categories', 'Quick add'));
 
         $template = $form->getTemplate();
-        
+
         $template['CAT_TITLE'] = dgettext('categories', 'Categorize');
         $template['ITEM_TITLE'] = $key->title;
 
@@ -222,13 +222,13 @@ class Categories {
         } elseif (is_numeric($key)) {
             $key = new Key($key);
         }
-        
+
         if (!Key::checkKey($key, FALSE)) {
             return NULL;
         }
-        
+
         $cat_result = Categories::_getItemsCategories($key);
-        
+
         if (empty($cat_result)) {
             return NULL;
         } else {
@@ -400,7 +400,7 @@ class Categories {
                         $tpl->parseCurrentBlock();
                     }
                 }
-        
+
                 $tpl->setCurrentBlock('parent-row');
                 $tpl->setData(array('PARENT' => $parent->getViewLink($module)));
                 $tpl->parseCurrentBlock();
@@ -418,12 +418,12 @@ class Categories {
         if (isset($cat_id)) {
             $db->addWhere('cat_id' , (int)$cat_id);
         }
-        
+
         $db->addColumn('key_id');
         $db->addColumn('module');
 
         Key::restrictView($db);
-        
+
         $result = $db->select();
 
         if (empty($result)) {
@@ -451,7 +451,7 @@ class Categories {
         }
     }
 
-    function listModuleItems(&$category)
+    function listModuleItems(Category $category)
     {
         $module_list = Categories::getModuleListing($category->getId());
 
@@ -518,7 +518,7 @@ class Categories {
             }
             return $form->get($select_name);
         }
-        
+
     }
 
 }

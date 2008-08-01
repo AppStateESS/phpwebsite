@@ -5,18 +5,18 @@
  */
 
 class Checkin_Visitor {
-    var $id            = 0;
-    var $firstname     = null;
-    var $lastname      = null;
-    var $reason        = 0;
-    var $arrival_time  = 0;
-    var $start_meeting = 0;
-    var $end_meeting   = 0;
-    var $assigned      = 0;
-    var $note          = null;
-    var $finished      = false;
+    public $id            = 0;
+    public $firstname     = null;
+    public $lastname      = null;
+    public $reason        = 0;
+    public $arrival_time  = 0;
+    public $start_meeting = 0;
+    public $end_meeting   = 0;
+    public $assigned      = 0;
+    public $note          = null;
+    public $finished      = false;
 
-    function Checkin_Visitor($id=0)
+    public function __construct($id=0)
     {
         if (!$id) {
             return;
@@ -29,7 +29,7 @@ class Checkin_Visitor {
         }
     }
 
-    function save()
+    public function save()
     {
         $db = new PHPWS_DB('checkin_visitor');
         if (empty($this->arrival_time)) {
@@ -39,7 +39,7 @@ class Checkin_Visitor {
     }
 
 
-    function assign()
+    public function assign()
     {
         if (!$this->reason) {
             return;
@@ -80,7 +80,7 @@ class Checkin_Visitor {
 
 
 
-    function removeLink()
+    public function removeLink()
     {
         $js['question'] = sprintf(dgettext('checkin', 'Are you sure you want to remove %s from the waiting list?'),
                                   addslashes($this->getName()));
@@ -91,7 +91,7 @@ class Checkin_Visitor {
         return javascript('confirm', $js);
     }
 
-    function noteLink()
+    public function noteLink()
     {
         static $form_id = 0;
         $form_id++;
@@ -109,7 +109,7 @@ class Checkin_Visitor {
         return PHPWS_Template::process($tpl, 'checkin', 'note.tpl');
     }
 
-    function row($staff_list=null, &$staff)
+    public function row($staff_list=null, &$staff)
     {
         static $meeting = 0;
 
@@ -138,12 +138,12 @@ class Checkin_Visitor {
         return $tpl;
     }
 
-    function getName()
+    public function getName()
     {
         return sprintf('%s %s', $this->firstname, $this->lastname);
     }
 
-    function getReason()
+    public function getReason()
     {
         static $reasons = null;
 
@@ -158,7 +158,7 @@ class Checkin_Visitor {
         }
     }
 
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('checkin_visitor');
         $db->addWhere('id', $this->id);

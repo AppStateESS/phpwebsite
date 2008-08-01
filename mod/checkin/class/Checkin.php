@@ -5,21 +5,21 @@
  */
 
 class Checkin {
-    var $title         = null;
-    var $message       = null;
-    var $content       = null;
-    var $staff         = null;
-    var $visitor       = null;
-    var $reason        = null;
-    var $visitor_list  = null;
-    var $staff_list    = null;
+    public $title         = null;
+    public $message       = null;
+    public $content       = null;
+    public $staff         = null;
+    public $visitor       = null;
+    public $reason        = null;
+    public $visitor_list  = null;
+    public $staff_list    = null;
 
 
     /**
      * staff_id = 0
      * would load the unassigned visitors
      */
-    function loadVisitorList($staff_id=null, $index=false)
+    public function loadVisitorList($staff_id=null, $index=false)
     {
         PHPWS_Core::initModClass('checkin', 'Visitors.php');
         $db = new PHPWS_DB('checkin_visitor');
@@ -39,7 +39,7 @@ class Checkin {
     }
 
 
-    function loadStaffList()
+    public function loadStaffList()
     {
         PHPWS_Core::initModClass('checkin', 'Staff.php');
         $db = new PHPWS_DB('checkin_staff');
@@ -53,7 +53,7 @@ class Checkin {
         }
      }
 
-    function loadStaff($id=0, $load_reasons=false)
+    public function loadStaff($id=0, $load_reasons=false)
     {
         PHPWS_Core::initModClass('checkin', 'Staff.php');
 
@@ -70,7 +70,7 @@ class Checkin {
         }
     }
 
-    function loadReason($id=0)
+    public function loadReason($id=0)
     {
         PHPWS_Core::initModClass('checkin', 'Reasons.php');
 
@@ -85,7 +85,7 @@ class Checkin {
         }
     }
 
-    function getReasons($all=false)
+    public function getReasons($all=false)
     {
         $db = new PHPWS_DB('checkin_reasons');
         $db->addOrder('summary');
@@ -98,7 +98,7 @@ class Checkin {
         return $db->select();
     }
 
-    function loadVisitor($id=0)
+    public function loadVisitor($id=0)
     {
         PHPWS_Core::initModClass('checkin', 'Visitors.php');
 
@@ -113,7 +113,7 @@ class Checkin {
         }
     }
 
-    function getStaffList($as_object=false)
+    public function getStaffList($as_object=false)
     {
         $db = new PHPWS_DB('checkin_staff');
         $db->addWhere('user_id', 'users.id');
@@ -129,7 +129,7 @@ class Checkin {
         }
     }
 
-    function getStatusColors()
+    public function getStatusColors()
     {
         $list[0] = '#39f15a';
         $list[1] = '#f9f95b';
@@ -138,7 +138,7 @@ class Checkin {
         return $list;
     }
 
-    function getStatusList()
+    public function getStatusList()
     {
         $list[0] = dgettext('checkin', 'Available');
         $list[1] = dgettext('checkin', 'Unavailable');
@@ -148,7 +148,7 @@ class Checkin {
     }
 
 
-    function parseFilter($filter)
+    public function parseFilter($filter)
     {
         $filter = strtolower(str_replace(' ', '', $filter));
         $farray = explode(',', $filter);
@@ -228,7 +228,7 @@ class Checkin {
         return sprintf('/^%s/i', implode('|', $final));
     }
 
-    function timeWaiting($rel)
+    public function timeWaiting($rel)
     {
         $hours = floor( $rel / 3600);
         if ($hours) {

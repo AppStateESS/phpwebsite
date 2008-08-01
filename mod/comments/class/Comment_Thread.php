@@ -6,32 +6,32 @@
  *
  * @author Matt McNaney <matt at tux dot appstate dot edu>
  * @version $Id$
- */ 
+ */
 
 PHPWS_Core::initModClass('comments', 'Comment_Item.php');
 
 define('NO_COMMENTS_FOUND', 'none');
 
 class Comment_Thread {
-    var $id             = 0;
-    var $key_id         = null;
-    var $total_comments = 0;
-    var $last_poster    = null;
-    var $allow_anon     = 0;
+    public $id             = 0;
+    public $key_id         = null;
+    public $total_comments = 0;
+    public $last_poster    = null;
+    public $allow_anon     = 0;
     /**
      * Default approval type:
      * 0 - no approval necessary
      * 1 - anonymous must approve
      * 2 - all user comments must be approved
-     */ 
-    var $approval       = 0;
-    var $_key           = null;
-    var $_comments      = null;
-    var $_error         = null;
-    var $_return_url    = null;
+     */
+    public $approval       = 0;
+    public $_key           = null;
+    public $_comments      = null;
+    public $_error         = null;
+    public $_return_url    = null;
 
 
-    function Comment_Thread($id=0)
+    public function __construct($id=0)
     {
         if (empty($id)) {
             return;
@@ -41,7 +41,7 @@ class Comment_Thread {
         $this->init();
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('comments_threads');
         $db->addWhere('id', $this->id);
@@ -54,7 +54,7 @@ class Comment_Thread {
         $this->loadKey();
     }
 
-    function setApproval($approval)
+    public function setApproval($approval)
     {
         $this->approval = (int)$approval;
         if ($this->approval < 0 || $this->approval > 2) {
@@ -62,12 +62,12 @@ class Comment_Thread {
         }
     }
 
-    function allowAnonymous($anon)
+    public function allowAnonymous($anon)
     {
         $this->allow_anon = (int)(bool)$anon;
     }
 
-    function countComments($formatted=FALSE)
+    public function countComments($formatted=FALSE)
     {
         if ($formatted) {
             if (empty($this->total_comments)) {
@@ -80,12 +80,12 @@ class Comment_Thread {
         }
     }
 
-    function loadKey()
+    public function loadKey()
     {
         $this->_key = new Key($this->key_id);
     }
 
-    function getLastPoster()
+    public function getLastPoster()
     {
         return $this->last_poster;
     }
@@ -96,7 +96,7 @@ class Comment_Thread {
      * If there is a thread in the database, it is loaded.
      * If there is NOT then one is created.
      */
-    function buildThread()
+    public function buildThread()
     {
         $db = new PHPWS_DB('comments_threads');
         $db->addWhere('key_id', $this->key_id);
@@ -109,9 +109,9 @@ class Comment_Thread {
             $result = $this->save();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                
+
                 $this->_error = dgettext('comments', 'Error occurred trying to create new thread.');
-                
+
             }
             return TRUE;
         } else {
@@ -120,20 +120,20 @@ class Comment_Thread {
     }
 
 
-    function setId($id)
+    public function setId($id)
     {
         $this->id = (int)$id;
     }
 
-    function setSourceUrl($link)
+    public function setSourceUrl($link)
     {
         $link = str_replace('&amp;', '&', $link);
         $this->source_url = stristr($link, 'index.php?');
     }
 
-    function getSourceUrl($full=FALSE, $comment_id=0)
+    public function getSourceUrl($full=FALSE, $comment_id=0)
     {
-        
+
         PHPWS_Core::initCoreClass('DBPager.php');
         $url = DBPager::getLastView('comments_items');
 
@@ -145,29 +145,29 @@ class Comment_Thread {
             $url = sprintf('<a href="%s">%s</a>', $url, dgettext('comments', 'Go back'));
         }
 
-        
+
         return $url;
     }
 
-    function setKey($key)
+    public function setKey($key)
     {
         $this->_key = $key;
     }
 
-    function postLink()
+    public function postLink()
     {
         $vars['uop']   = 'post_comment';
         $vars['thread_id']     = $this->id;
         return PHPWS_Text::moduleLink(dgettext('comments', 'Post New Comment'), 'comments', $vars);
     }
 
-    function save()
+    public function save()
     {
         $db = new PHPWS_DB('comments_threads');
         return $db->saveObject($this);
     }
 
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('comments_items');
         $db->addWhere('thread_id', $this->id);
@@ -188,7 +188,7 @@ class Comment_Thread {
         return TRUE;
     }
 
-    function _getTimePeriod()
+    public function _getTimePeriod()
     {
         switch ($_GET['time_period']) {
         case 'today':
@@ -210,12 +210,12 @@ class Comment_Thread {
 
     }
 
-    function setReturnUrl($url)
+    public function setReturnUrl($url)
     {
         $this->_return_url = $url;
     }
 
-    function view($parent_id=0)
+    public function view($parent_id=0)
     {
         Layout::addStyle('comments');
 
@@ -225,7 +225,7 @@ class Comment_Thread {
         }
 
         PHPWS_Core::initCoreClass('DBPager.php');
-        
+
         $time_period = array('all'    => dgettext('comments', 'All'),
                              'today'  => dgettext('comments', 'Today'),
                              'yd'     => dgettext('comments', 'Since yesterday'),
@@ -292,7 +292,7 @@ class Comment_Thread {
         case 'new_all':
             $pager->setOrder('create_time', 'desc');
             break;
-            
+
         case 'old_all':
             $pager->setOrder('create_time', 'asc');
             break;
@@ -330,7 +330,7 @@ class Comment_Thread {
         return $content;
     }
 
-    function canComment()
+    public function canComment()
     {
         if (Current_User::isLogged() && !isset($_SESSION['Comment_User_Lock'])) {
             $cu = new Comment_User(Current_User::getId());
@@ -348,11 +348,11 @@ class Comment_Thread {
         return ( $this->allow_anon || Current_User::isLogged() ) ? TRUE : FALSE;
     }
 
-    function _createUserList($comment_list)
+    public function _createUserList($comment_list)
     {
         $author_list = array();
         foreach ($comment_list as $comment) {
-            $author_id = &$comment->author_id;
+            $author_id = & $comment->author_id;
             if ($author_id == 0 || in_array($author_id, $author_list)) {
                 continue;
             }
@@ -371,19 +371,19 @@ class Comment_Thread {
         return TRUE;
     }
 
-    function increaseCount()
+    public function increaseCount()
     {
         $this->total_comments++;
     }
 
-    function decreaseCount()
+    public function decreaseCount()
     {
         if ($this->total_comments > 0) {
             $this->total_comments--;
         }
     }
 
-    function postLastUser($author_id)
+    public function postLastUser($author_id)
     {
         if ($author_id) {
             $author = new Comment_User($author_id);
@@ -393,7 +393,7 @@ class Comment_Thread {
         }
     }
 
-    function miniAdmin()
+    public function miniAdmin()
     {
         $vars['thread_id'] = $this->id;
         if ($this->allow_anon) {

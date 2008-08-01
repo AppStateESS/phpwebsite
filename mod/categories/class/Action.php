@@ -162,7 +162,7 @@ class Categories_Action {
         Layout::add($content);
     }
 
-    function postCategory(&$category)
+    function postCategory(Category $category)
     {
         PHPWS_Core::initCoreClass('File.php');
 
@@ -200,7 +200,7 @@ class Categories_Action {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $newLink = 'index.php?module=categories&amp;action=admin';
         $newCommand = array ('title'=>dgettext('categories', 'New'), 'link'=> $newLink);
-        
+
         $listLink = 'index.php?module=categories&amp;action=admin';
         $listCommand = array ('title'=>dgettext('categories', 'List'), 'link'=> $listLink);
 
@@ -214,16 +214,16 @@ class Categories_Action {
         $panel->setPanel('panel.tpl');
         return $panel;
     }
-  
 
-    function edit(&$category, $errors=NULL)
+
+    function edit(Category $category, $errors=NULL)
     {
         $template = NULL;
         PHPWS_Core::initCoreClass('Editor.php');
 
         $form = new PHPWS_Form('edit_form');
         $form->add('module', 'hidden', 'categories');
-        $form->add('action', 'hidden', 'admin');                     
+        $form->add('action', 'hidden', 'admin');
         $form->add('subaction', 'hidden', 'postCategory');
 
         $cat_id = $category->getId();
@@ -312,14 +312,14 @@ class Categories_Action {
     /**
      * The main view page for categories
      */
-    function viewCategory($id=NULL, $module=NULL) 
+    function viewCategory($id=NULL, $module=NULL)
     {
         $oMod = $category = NULL;
 
         if (!empty($module)) {
             PHPWS_Core::initCoreClass('Module.php');
             $oMod = new PHPWS_Module($module);
-        } 
+        }
 
         if (!isset($id)) {
             $content = Categories::getCategoryList($module);
@@ -353,7 +353,7 @@ class Categories_Action {
         $family_list = Categories::cookieCrumb($category, $module);
 
         $template['FAMILY'] = $family_list;
-        $template['CONTENT'] = &$content;
+        $template['CONTENT'] = & $content;
 
         return PHPWS_Template::process($template, 'categories', 'view_categories.tpl');
     }
@@ -403,7 +403,7 @@ class Categories_Action {
     /**
      * Listing of all items within a category
      */
-    function getAllItems(&$category, $module) 
+    function getAllItems(Category $category, $module)
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -413,7 +413,7 @@ class Categories_Action {
         $pager = new DBPager('phpws_key', 'Key');
         $pager->addWhere('category_items.cat_id', $category->id);
         $pager->addWhere('category_items.module', $module);
-        
+
         Key::restrictView($pager->db, $module);
         $pager->setModule('categories');
         $pager->setLimitList(array(10, 25, 50));
@@ -432,7 +432,7 @@ class Categories_Action {
 
         return $content;
     }
-    
+
     function addCategoryItem($cat_id, $key_id)
     {
         $db = new PHPWS_DB('category_items');
@@ -498,7 +498,7 @@ class Categories_Action {
     }
 
     /**
-     * Returns the category popup form for assigning items to 
+     * Returns the category popup form for assigning items to
      * categories
      */
     function categoryPopup()

@@ -5,29 +5,29 @@
  */
 
 class Checkin_Reasons {
-    var $id = 0;
-    var $summary = null;
-    var $message = null;
+    public $id = 0;
+    public $summary = null;
+    public $message = null;
 
-    function Checkin_Reasons($id=0)
+    function __construct($id=0)
     {
         if (empty($id)) {
             return true;
         }
-        
+
         $this->id = (int)$id;
         if (!$this->init()) {
             $this->id = 0;
         }
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('checkin_reasons');
         return $db->loadObject($this);
     }
 
-    function rowTags()
+    public function rowTags()
     {
         $vars['reason_id'] = $this->id;
 
@@ -45,7 +45,7 @@ class Checkin_Reasons {
         return $tpl;
     }
 
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('checkin_reasons');
         $db->addWhere('id', $this->id);
@@ -58,7 +58,7 @@ class Checkin_Reasons {
         return false;
     }
 
-    function save()
+    public function save()
     {
         $db = new PHPWS_DB('checkin_reasons');
         return !PHPWS_Error::logIfError($db->saveObject($this));

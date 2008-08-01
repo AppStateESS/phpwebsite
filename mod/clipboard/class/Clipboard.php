@@ -9,9 +9,9 @@
 
 class Clipboard
 {
-    var $components = NULL;
+    public $components = NULL;
 
-    function action()
+    public function action()
     {
         if (!isset($_REQUEST['action']))
             return;
@@ -36,22 +36,22 @@ class Clipboard
 
     }
 
-    function view()
+    public function view()
     {
         $clip = $_SESSION['Clipboard']->components[$_REQUEST['key']]->content;
         $clip =  sprintf('<textarea cols="35" rows="4">%s</textarea>', $clip);
-   
+
         $template['TITLE'] = dgettext('clipboard', 'Clipboard');
         $template['DIRECTIONS'] = dgettext('clipboard', 'Copy the text below and paste it into the text box.');
         $template['CONTENT'] = $clip;
-    
+
         $button = dgettext('clipboard', 'Close Window');
         $template['BUTTON'] = sprintf('<input type="button" onclick="window.close()" value="%s" />', $button);
         Layout::nakedDisplay(PHPWS_Template::process($template, 'clipboard', 'clipboard.tpl'));
     }
 
 
-    function show()
+    public function show()
     {
         PHPWS_Core::configRequireOnce('clipboard', 'config.php');
 
@@ -93,12 +93,12 @@ class Clipboard
         Layout::set($layout, 'clipboard', 'clipboard');
     }
 
-    function init()
+    public function init()
     {
         $_SESSION['Clipboard'] = new Clipboard;
     }
 
-    function copy($title, $content)
+    public function copy($title, $content)
     {
         if (empty($title) || empty($content)) {
             return false;
@@ -115,7 +115,7 @@ class Clipboard
         Clipboard::show();
     }
 
-    function clear()
+    public function clear()
     {
         unset($_SESSION['Clipboard']);
     }
@@ -124,10 +124,10 @@ class Clipboard
 
 
 class Clipboard_Component {
-    var $title;
-    var $content;
+    public $title;
+    public $content;
 
-    function Clipboard_Component($title, $content){
+    public function Clipboard_Component($title, $content){
         $this->title = strip_tags($title);
         $this->content = htmlspecialchars($content);
     }

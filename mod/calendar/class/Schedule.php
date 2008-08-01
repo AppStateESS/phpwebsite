@@ -15,82 +15,82 @@ class Calendar_Schedule {
     /**
      * @var integer
      */
-    var $id          = 0;
+    public $id          = 0;
 
     /**
      * Key id for associations
      * @var integer
      */
-    var $key_id      = 0;
+    public $key_id      = 0;
 
     /**
      * @var integer
      */
-    var $title       = null;
+    public $title       = null;
 
     /**
      * information about the schedule
      * @var string
-     */ 
-    var $summary     = null;
+     */
+    public $summary     = null;
 
     /**
      * User's id associated to this schedule. If zero
      * no association exists
      * @var integer
      */
-    var $user_id     = 0;
-    
+    public $user_id     = 0;
+
     /**
      * Determines if anonymous users can see this schedule or
      * if they must be registered
      * @var boolean
      */
-    var $public = true;
+    public $public = true;
 
     /**
      * Name of contact for schedule
-     * 
+     *
      * @var string
      */
-    var $contact_name = null;
+    public $contact_name = null;
 
     /**
      * Email address of contact for schedule
-     * 
+     *
      * @var string
      */
-    var $contact_email = null;
+    public $contact_email = null;
 
 
     /**
      * Phone number of contact for schedule
-     * 
+     *
      * @var string
      */
-    var $contact_number = null;
+    public $contact_number = null;
 
     /**
      * if > 0, show upcoming events under mini calendar
-     * 
+     *
      * @var integer
      */
-    var $show_upcoming = 0;
+    public $show_upcoming = 0;
 
     /**
      * Last error recorded by the class
      * @var object
      */
-    var $_error         = null;
+    public $_error         = null;
 
     /**
      * Key object for this schedule
      * @var object
      */
-    var $_key           = null;
+    public $_key           = null;
 
 
-    function Calendar_Schedule($id=0)
+    public function __construct($id=0)
     {
         if (!$id) {
             return;
@@ -101,7 +101,7 @@ class Calendar_Schedule {
     }
 
 
-    function addEventLink($default_date=NULL)
+    public function addEventLink($default_date=NULL)
     {
         if (!isset($default_date)) {
             $default_date = PHPWS_Time::getUserTime();
@@ -123,7 +123,7 @@ class Calendar_Schedule {
         }
     }
 
-    function addSuggestLink($default_date=NULL)
+    public function addSuggestLink($default_date=NULL)
     {
         if (!isset($default_date)) {
             $default_date = PHPWS_Time::getUserTime();
@@ -151,7 +151,7 @@ class Calendar_Schedule {
     /**
      * Creates an event and repeat table for the schedule
      */
-    function createEventTable()
+    public function createEventTable()
     {
         $table = $this->getEventTable();
         $recurr = $this->getRecurrenceTable();
@@ -159,7 +159,7 @@ class Calendar_Schedule {
             return PHPWS_Error::get(CAL_CANNOT_MAKE_EVENT_TABLE, 'calendar',
                                     'Calendar_Schedule::createEventTable');
         }
-        
+
         $template['TABLE'] = $table;
         $template['RECURR_TABLE'] = $recurr;
         $template['INDEX_NAME'] = str_replace('_', '', $table) . '_idx';
@@ -179,7 +179,7 @@ class Calendar_Schedule {
     /**
      * Deletes a schedule from the database
      */
-    function delete()
+    public function delete()
     {
         if (empty($this->id)) {
             return false;
@@ -205,7 +205,7 @@ class Calendar_Schedule {
     /**
      * Edit form for a schedule
      */
-    function form()
+    public function form()
     {
         $key = $this->getKey();
         $form = new PHPWS_Form('schedule_form');
@@ -251,18 +251,18 @@ class Calendar_Schedule {
         $form->setMatch('show_upcoming', $this->show_upcoming);
 
         $form->addSubmit(dgettext('calendar', 'Save'));
-        
+
         $template = $form->getTemplate();
-        
+
         if (isset($_REQUEST['js'])) {
             $template['CLOSE'] = javascript('close_window', array('value' => dgettext('calendar', 'Cancel')));
         }
-        
+
         $template['PUBLIC_LABEL'] = dgettext('calendar', 'Availability');
         return PHPWS_Template::process($template, 'calendar', 'admin/forms/edit_schedule.tpl');
     }
 
-    function getCurrentUserSchedule()
+    public function getCurrentUserSchedule()
     {
         $user_id = Current_User::getId();
 
@@ -279,12 +279,12 @@ class Calendar_Schedule {
     }
 
 
-    function getDB() {
+    public function getDB() {
         $db = new PHPWS_DB('calendar_schedule');
         return $db;
     }
 
-    function getEventTable()
+    public function getEventTable()
     {
         if (!$this->id) {
             return NULL;
@@ -292,8 +292,8 @@ class Calendar_Schedule {
             return sprintf('calendar_event_%s', $this->id);
         }
     }
-    
-    function getKey()
+
+    public function getKey()
     {
         if (!$this->_key) {
             $this->_key = new Key($this->key_id);
@@ -303,7 +303,7 @@ class Calendar_Schedule {
     }
 
 
-    function getRecurrenceTable()
+    public function getRecurrenceTable()
     {
         if (!$this->id) {
             return NULL;
@@ -313,7 +313,7 @@ class Calendar_Schedule {
     }
 
 
-    function getViewLink($formatted=true)
+    public function getViewLink($formatted=true)
     {
         $vars['sch_id'] = $this->id;
 
@@ -324,7 +324,7 @@ class Calendar_Schedule {
         }
     }
 
-    function init()
+    public function init()
     {
         $db = $this->getDB();
         $result = $db->loadObject($this);
@@ -337,7 +337,7 @@ class Calendar_Schedule {
         }
     }
 
-    function loadEvent()
+    public function loadEvent()
     {
         PHPWS_Core::initModClass('calendar', 'Event.php');
 
@@ -354,7 +354,7 @@ class Calendar_Schedule {
     /**
      * Apply the results from the scheduler form
      */
-    function post()
+    public function post()
     {
         if (empty($_POST['title'])) {
             $this->_error = dgettext('calendar', 'Missing title.');
@@ -375,7 +375,7 @@ class Calendar_Schedule {
         return true;
     }
 
-    function checkPermissions($authorized=false)
+    public function checkPermissions($authorized=false)
     {
         if ($this->public) {
             if ($authorized) {
@@ -402,7 +402,7 @@ class Calendar_Schedule {
     }
 
 
-    function rowTags()
+    public function rowTags()
     {
         if ($this->checkPermissions()) {
             $links[] = $this->addEventLink();
@@ -420,7 +420,7 @@ class Calendar_Schedule {
                 $links[] = PHPWS_Text::secureLink(dgettext('calendar', 'Edit'), 'calendar',
                                                   array('aop'=>'edit_schedule', 'sch_id'=>$this->id));
             }
-        } 
+        }
 
         if (Current_User::allow('calendar', 'delete_schedule') && Current_User::isUnrestricted('calendar')) {
             $js['QUESTION'] = dgettext('calendar', 'Are you sure you want to delete this schedule?');
@@ -448,7 +448,7 @@ class Calendar_Schedule {
         }
 
         $tags['TITLE'] = $this->getViewLink();
-        
+
         if ($this->public) {
             $tags['AVAILABILITY'] = dgettext('calendar', 'Public');
         } else {
@@ -460,7 +460,7 @@ class Calendar_Schedule {
     /**
      * Saves a schedule and creates a new event table if needed
      */
-    function save()
+    public function save()
     {
         $db = $this->getDB();
         if (empty($this->id)) {
@@ -480,13 +480,13 @@ class Calendar_Schedule {
                     return $result;
                 }
             }
-            
+
             $result = $this->saveKey();
             if (PEAR::isError($result)) {
                 $this->delete();
                 return $result;
             }
-            
+
             if ($new_key) {
                 $db->saveObject($this);
             }
@@ -495,7 +495,7 @@ class Calendar_Schedule {
         }
     }
 
-    function getEvents($start_search, $end_search)
+    public function getEvents($start_search, $end_search)
     {
         $event_table = $this->getEventTable();
         if (!$event_table) {
@@ -521,7 +521,7 @@ class Calendar_Schedule {
         $db->addOrder('start_time');
         $db->addOrder('end_time desc');
         $db->setIndexBy('id');
-        
+
         $result = $db->getObjects('Calendar_Event', $this);
         if (PHPWS_Error::logIfError($result)) {
             return null;
@@ -530,7 +530,7 @@ class Calendar_Schedule {
         return $result;
     }
 
-    function saveKey()
+    public function saveKey()
     {
         if (empty($this->key_id)) {
             $key = new Key;
@@ -562,17 +562,17 @@ class Calendar_Schedule {
 
 
 
-    function setPublic($public)
+    public function setPublic($public)
     {
         $this->public = (bool)$public;
     }
 
-    function setSummary($summary)
+    public function setSummary($summary)
     {
         $this->summary = PHPWS_Text::parseInput($summary);
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = strip_tags($title);
     }

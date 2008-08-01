@@ -2,7 +2,7 @@
 /**
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @version $Id$ 
+ * @version $Id$
  */
 
 PHPWS_Core::initModClass('controlpanel', 'Panel.php');
@@ -33,7 +33,7 @@ class PHPWS_ControlPanel {
             PHPWS_ControlPanel::reset();
             PHPWS_Core::errorPage();
             exit();
-        } 
+        }
 
         $defaultTabs = PHPWS_ControlPanel::getDefaultTabs();
 
@@ -95,7 +95,7 @@ class PHPWS_ControlPanel {
         $current_link = ereg_replace($_SERVER['PHP_SELF'] . '\?', '', $_SERVER['REQUEST_URI']);
 
         // Headers to the tab's link if it is not a control panel
-        // link tab. 
+        // link tab.
         if (isset($_REQUEST['command']) &&
             $_REQUEST['command'] == 'panel_view' &&
             !preg_match('/controlpanel/', $link) &&
@@ -108,7 +108,7 @@ class PHPWS_ControlPanel {
         return $panel->display();
     }
 
-    function loadTabs(&$panel)
+    function loadTabs(PHPWS_Panel $panel)
     {
         $DB = new PHPWS_DB('controlpanel_tab');
         $DB->addOrder('tab_order');
@@ -186,7 +186,7 @@ class PHPWS_ControlPanel {
         if (is_dir($modSource) && !is_dir($modImage)) {
             PHPWS_Core::initCoreClass('File.php');
             $content[] = dgettext('controlpanel', 'Copying source image directory for module.');
-            
+
             $result = PHPWS_File::recursiveFileCopy($modSource, $modImage);
             if ($result) {
                 $content[] = dgettext('controlpanel', 'Source image directory copied successfully.');
@@ -197,7 +197,7 @@ class PHPWS_ControlPanel {
 
         include $cpFile;
         // insure cp file does not change translation directory
-        
+
         if (isset($tabs) && is_array($tabs)) {
             foreach ($tabs as $info){
                 $tab = new PHPWS_Panel_Tab;
@@ -211,13 +211,13 @@ class PHPWS_ControlPanel {
                 if (!isset($info['title'])) {
                     $content[] = dgettext('controlpanel', 'Unable to create tab.') . ' ' . dgettext('controlpanel', 'Missing title.');
                     continue;
-                }   
+                }
                 $tab->setTitle($info['title']);
 
                 if (!isset($info['link'])) {
                     $content[] = dgettext('controlpanel', 'Unable to create tab.') . ' ' . dgettext('controlpanel', 'Missing link.');
                     continue;
-                }   
+                }
 
                 $tab->setLink($info['link']);
 
@@ -239,7 +239,7 @@ class PHPWS_ControlPanel {
         } else {
             PHPWS_Boost::addLog($module, dgettext('controlpanel', 'Control Panel tabs not implemented.'));
         }
-        
+
         if (isset($link) && is_array($link)) {
             $db = new PHPWS_DB('controlpanel_tab');
             foreach ($link as $info){

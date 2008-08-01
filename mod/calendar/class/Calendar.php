@@ -20,54 +20,54 @@ class PHPWS_Calendar {
      * unix timestamp of today
      * @var integer
      */
-    var $today = 0;
+    public $today = 0;
 
     /**
      * unix timestamp according to passed variables
      * @var integer
      */
-    var $current_date = 0;
+    public $current_date = 0;
 
     /**
      * month number based on current_date
      * @var integer
      */
-    var $int_month = null;
+    public $int_month = null;
 
     /**
      * day number based on current_date
      * @var integer
      */
-    var $int_day   = null;
+    public $int_day   = null;
 
     /**
      * year number based on current_date
      * @var integer
      */
-    var $int_year  = null;
+    public $int_year  = null;
 
     /**
      * Contains the administrative object
      */
-    var $admin = null;
+    public $admin = null;
 
     /**
      * Contains the user object
      */
-    var $user = null;
+    public $user = null;
 
-    var $schedule = null;
+    public $schedule = null;
 
     /**
      * Array of events loaded into the object
      * @var array
      */
-    var $event_list = null;
+    public $event_list = null;
 
-    var $sorted_list = null;
+    public $sorted_list = null;
 
 
-    function PHPWS_Calendar()
+    public function __construct()
     {
         $this->loadToday();
         $this->loadRequestDate();
@@ -77,7 +77,7 @@ class PHPWS_Calendar {
     /**
      * Directs the administrative functions for calendar
      */
-    function admin()
+    public function admin()
     {
         PHPWS_Core::initModClass('calendar', 'Admin.php');
         $this->admin = new Calendar_Admin;
@@ -85,7 +85,7 @@ class PHPWS_Calendar {
         $this->admin->main();
     }
 
-    function getDay()
+    public function getDay()
     {
         require_once 'Calendar/Day.php';
         $oDay = new Calendar_Day($this->int_year, $this->int_month, $this->int_day);
@@ -94,11 +94,11 @@ class PHPWS_Calendar {
     }
 
 
-    function getEvents($start_search=null, $end_search=null) {
+    public function getEvents($start_search=null, $end_search=null) {
         PHPWS_Core::initModClass('calendar', 'Event.php');
         if (!isset($start_search)) {
             $start_search = mktime(0,0,0,1,1,1970);
-        } 
+        }
 
         if (!isset($end_search)) {
             // if this line is a problem, you need to upgrade
@@ -109,8 +109,8 @@ class PHPWS_Calendar {
     }
 
 
-        
-    function getMonth($month=0, $year=0)
+
+    public function getMonth($month=0, $year=0)
     {
         if (!$month) {
             $month = &$this->int_month;
@@ -129,7 +129,7 @@ class PHPWS_Calendar {
     /**
      * Returns a list of schedules according to the user's permissions
      */
-    function getScheduleList($mode='object')
+    public function getScheduleList($mode='object')
     {
         $db = new PHPWS_DB('calendar_schedule');
         Key::restrictView($db);
@@ -141,12 +141,12 @@ class PHPWS_Calendar {
         }
 
         $db->addOrder('title');
-        
+
         switch ($mode) {
         case 'object':
             return $db->getObjects('Calendar_Schedule');
             break;
-            
+
         case 'brief':
             $db->addColumn('id');
             $db->addColumn('title');
@@ -157,7 +157,7 @@ class PHPWS_Calendar {
     }
 
 
-    function getWeek()
+    public function getWeek()
     {
         require_once 'Calendar/Week.php';
         $start_day = (int)PHPWS_Settings::get('calendar', 'starting_day');
@@ -167,13 +167,13 @@ class PHPWS_Calendar {
     }
 
 
-    function isJS()
+    public function isJS()
     {
         return isset($_REQUEST['js']);
     }
 
 
-    function loadDefaultSchedule()
+    public function loadDefaultSchedule()
     {
         $sch_id = PHPWS_Settings::get('calendar', 'public_schedule');
 
@@ -202,7 +202,7 @@ class PHPWS_Calendar {
     }
 
 
-    function loadEventList($start_search=null, $end_search=null)
+    public function loadEventList($start_search=null, $end_search=null)
     {
         $result = $this->getEvents($start_search, $end_search);
         $this->event_list = & $result;
@@ -214,7 +214,7 @@ class PHPWS_Calendar {
     /**
      * Loads the date requested by user
      */
-    function loadRequestDate()
+    public function loadRequestDate()
     {
         $change = false;
 
@@ -270,7 +270,7 @@ class PHPWS_Calendar {
      * Loads either the requested schedule, the default public schedule
      * (if use_default is true) or an empty schedule object
      */
-    function loadSchedule()
+    public function loadSchedule()
     {
         PHPWS_Core::initModClass('calendar', 'Schedule.php');
 
@@ -286,27 +286,27 @@ class PHPWS_Calendar {
     }
 
     /**
-     * Loads todays unix time and date info 
+     * Loads todays unix time and date info
      */
-    function loadToday()
+    public function loadToday()
     {
         $atime = PHPWS_Time::getTimeArray();
-        $this->today        = &$atime['u'];
-        $this->current_date = $this->today;
+        $this->today            = &$atime['u'];
+        $this->current_date     = $this->today;
         $this->int_month        = &$atime['m'];
         $this->int_day          = &$atime['d'];
         $this->int_year         = &$atime['y'];
     }
 
-    function loadUser()
+    public function loadUser()
     {
         PHPWS_Core::initModClass('calendar', 'User.php');
         $this->user = new Calendar_User;
         $this->user->calendar = & $this;
     }
-    
 
-    function sortEvents()
+
+    public function sortEvents()
     {
         if (empty($this->event_list)) {
             return;
@@ -341,7 +341,7 @@ class PHPWS_Calendar {
         }
     }
 
-    function user()
+    public function user()
     {
         $this->loadUser();
         if (!$this->schedule->id) {

@@ -8,7 +8,7 @@
  */
 
 
-function comments_unregister_key(&$key)
+function comments_unregister_key(Key $key)
 {
     if (empty($key) || empty($key->id)) {
         return FALSE;

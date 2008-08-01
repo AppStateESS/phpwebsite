@@ -12,15 +12,15 @@
 
 
 class Demographics_User {
-    var $user_id        = 0;
-    var $_error         = null;
-    var $_base_id       = 0;
-    var $_extend_id     = 0;
+    public $user_id        = 0;
+    public $_error         = null;
+    public $_base_id       = 0;
+    public $_extend_id     = 0;
     // indicates a new demographics user
-    var $_new_user      = true;
-    var $_table         = null;
+    public $_new_user      = true;
+    public $_table         = null;
 
-    function load()
+    public function load()
     {
         if (!$this->user_id) {
             return;
@@ -56,7 +56,7 @@ class Demographics_User {
      * the extended is removed, the original remains but is not considered
      * "new"
      */
-    function isNew()
+    public function isNew()
     {
         return $this->_new_user;
     }
@@ -64,7 +64,7 @@ class Demographics_User {
     /**
      * Updates a current user demographic
      */
-    function save()
+    public function save()
     {
         if (!$this->user_id) {
             return false;
@@ -103,7 +103,7 @@ class Demographics_User {
      * Delete a demographics user and, if the table is set,
      * the information that extends it.
      */
-    function delete($all_user_info=false)
+    public function delete($all_user_info=false)
     {
         if (!$this->user_id) {
             return false;

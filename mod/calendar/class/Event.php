@@ -20,106 +20,106 @@ class Calendar_Event {
     /**
      * @var integer
      */
-    var $id      = 0;
+    public $id      = 0;
 
     /**
      * @var integer
      */
-    var $key_id  = 0;
+    public $key_id  = 0;
 
     /**
      * Summary of event
      * @var string
      */
-    var $summary  = null;
+    public $summary  = null;
 
     /**
      * location of event
      * @var string
      */
-    var $location = null;
+    public $location = null;
 
     /**
      * link to location
      */
-    var $loc_link = null;
+    public $loc_link = null;
 
     /**
      * @var string
      */
-    var $description = null;
+    public $description = null;
 
     /**
      * If true (1) then this is an all day event
      * @var int
      */
-    var $all_day     = 0;
+    public $all_day     = 0;
 
-   
+
     /**
      * Start time of event
      * @var integer
      */
-    var $start_time = 0;
+    public $start_time = 0;
 
 
     /**
      * End time of event
      * @var integer
      */
-    var $end_time = 0;
+    public $end_time = 0;
 
     /**
      * If true (1), then display as "Busy"
      * @var integer
      */
-    var $show_busy   = 0;
+    public $show_busy   = 0;
 
     /**
      * contains the repeat type of the event
      * @var string
-     */ 
-    var $repeat_type = null;
+     */
+    public $repeat_type = null;
 
-    var $end_repeat = 0;
+    public $end_repeat = 0;
 
     /**
      * Parent id of a repeating event
      * @var integer
      */
-    var $pid = 0;
+    public $pid = 0;
 
     /**
      * pointer to the parent schedule object
      * @var object
      */
-    var $_schedule = null;
+    public $_schedule = null;
 
     /**
      * Current error if exists
      * @var object
      */
-    var $_error = null;
+    public $_error = null;
 
     /**
      * Key object for this schedule
      * @var object
      */
-    var $_key           = null;
+    public $_key           = null;
 
     /**
      * Set to true if event was a repeat on load
      */
-    var $_previous_repeat = false;
+    public $_previous_repeat = false;
 
     /**
      * A hash of settings that determines if an event
      * has changed enough from the last setting to warrant
      * new repeat copies.
      */
-    var $_previous_settings = null;
+    public $_previous_settings = null;
 
-    function Calendar_Event($schedule=null, $event_id=0)
+    public function __construct($schedule=null, $event_id=0)
     {
         if ($schedule) {
             $this->_schedule = & $schedule;
@@ -143,7 +143,7 @@ class Calendar_Event {
         }
     }
 
-    function clearRepeats()
+    public function clearRepeats()
     {
         $table = $this->_schedule->getEventTable();
         $db = new PHPWS_DB($table);
@@ -156,7 +156,7 @@ class Calendar_Event {
     /**
      * Returns true if the event time span is over one day in length
      */
-    function dayDiff()
+    public function dayDiff()
     {
         if (date('Ymd', $this->start_time) != date('Ymd', $this->end_time)) {
             return true;
@@ -165,7 +165,7 @@ class Calendar_Event {
         }
     }
 
-    function delete()
+    public function delete()
     {
         $table = $this->_schedule->getEventTable();
 
@@ -173,14 +173,14 @@ class Calendar_Event {
 
         $db = new PHPWS_DB($table);
         $db->addWhere('id', $this->id);
-        
+
         // Remove any possible children
         $db->addWhere('pid', $this->id, null, 'or');
         PHPWS_Cache::clearCache();
         return $db->delete();
     }
 
-    function deleteLink()
+    public function deleteLink()
     {
         if (javascriptEnabled()) {
             $vars['QUESTION'] = dgettext('calendar', 'Are you sure you want to permanently delete this event?');
@@ -200,7 +200,7 @@ class Calendar_Event {
     }
 
 
-    function blogLink()
+    public function blogLink()
     {
         $var['aop']      = 'blog_event';
         $var['sch_id']   = $this->_schedule->id;
@@ -215,12 +215,12 @@ class Calendar_Event {
     }
 
 
-    function editLink($full=false)
+    public function editLink($full=false)
     {
         $linkvar['aop']      = 'edit_event';
         $linkvar['sch_id']   = $this->_schedule->id;
         $linkvar['event_id'] = $this->id;
-        
+
         if ($full) {
             $link_label = dgettext('calendar', 'Edit event');
         } else {
@@ -240,7 +240,7 @@ class Calendar_Event {
     }
 
 
-    function flagKey()
+    public function flagKey()
     {
         if (!isset($this->_key)) {
             $this->_key = new Key($this->key_id);
@@ -252,7 +252,7 @@ class Calendar_Event {
      * The variables hashed determine if an event needs to have its copies
      * recreated
      */
-    function getCurrentHash()
+    public function getCurrentHash()
     {
         $hash[] = $this->repeat_type;
         $hash[] = $this->end_repeat;
@@ -261,7 +261,7 @@ class Calendar_Event {
         return md5(implode('', $hash));
     }
 
-    function getEndRepeat($format='%c', $mode=null)
+    public function getEndRepeat($format='%c', $mode=null)
     {
         $time = &$this->end_repeat;
 
@@ -279,7 +279,7 @@ class Calendar_Event {
     }
 
 
-    function getEndTime($format='%c', $mode=null)
+    public function getEndTime($format='%c', $mode=null)
     {
         $time = &$this->end_time;
 
@@ -293,7 +293,7 @@ class Calendar_Event {
     }
 
 
-    function getKey()
+    public function getKey()
     {
         if (!$this->_key) {
             $this->_key = new Key($this->key_id);
@@ -302,7 +302,7 @@ class Calendar_Event {
         return $this->_key;
     }
 
-    function getStartTime($format='%c', $mode=null)
+    public function getStartTime($format='%c', $mode=null)
     {
         $time = &$this->start_time;
 
@@ -316,7 +316,7 @@ class Calendar_Event {
     }
 
 
-    function getDescription()
+    public function getDescription()
     {
         return PHPWS_Text::parseOutput($this->description);
     }
@@ -324,7 +324,7 @@ class Calendar_Event {
     /**
      * Returns a linkable summary (if linked is true)
      */
-    function getSummary($linked=true)
+    public function getSummary($linked=true)
     {
         if ($linked) {
             $url = $this->getViewLink();
@@ -334,7 +334,7 @@ class Calendar_Event {
         }
     }
 
-    function tplFormatTime()
+    public function tplFormatTime()
     {
         static $tpl = null;
 
@@ -412,7 +412,7 @@ class Calendar_Event {
     }
 
 
-    function getLocation()
+    public function getLocation()
     {
         if (!empty($this->loc_link)) {
             return sprintf('<a href="%s" title="%s">%s</a>',
@@ -424,7 +424,7 @@ class Calendar_Event {
         }
     }
 
-    function getTpl()
+    public function getTpl()
     {
         $tpl = $this->tplFormatTime();
 
@@ -447,30 +447,30 @@ class Calendar_Event {
             $tpl['LINKS'] = implode(' | ', $link);
         }
 
-        
+
         if (!empty($this->location)) {
             $tpl['LOCATION_LABEL'] = dgettext('calendar', 'Location');
             $tpl['LOCATION'] = $this->getLocation();
         }
 
         $tpl['BACK_LINK'] = PHPWS_Text::backLink();
-        
+
         return $tpl;
     }
 
-    function getViewLink()
+    public function getViewLink()
     {
         $vars['view']     = 'event';
         $vars['event_id'] = $this->id;
         $vars['sch_id']   = $this->_schedule->id;
         return PHPWS_Text::linkAddress('calendar', $vars);
     }
-    
 
-    function init()
+
+    public function init()
     {
         $table = $this->_schedule->getEventTable();
-        
+
         if (empty($table)) {
             return PHPWS_Error::get(CAL_EVENT_TABLE_MISSING, 'calendar', 'Calendar::init', $table);
         }
@@ -480,7 +480,7 @@ class Calendar_Event {
     }
 
 
-    function loadPrevious()
+    public function loadPrevious()
     {
         if (isset($this->repeat_type)) {
             $this->_previous_repeat = true;
@@ -489,7 +489,7 @@ class Calendar_Event {
     }
 
 
-    function loadSchedule($id)
+    public function loadSchedule($id)
     {
         $this->_schedule = new Calendar_Schedule($id);
         if ($this->_schedule->id) {
@@ -502,7 +502,7 @@ class Calendar_Event {
     /**
      * Returns true if this event is copy of another event
      */
-    function monthDiff()
+    public function monthDiff()
     {
         if (date('Ym', $this->start_time) != date('Ym', $this->end_time)) {
             return true;
@@ -515,7 +515,7 @@ class Calendar_Event {
     /**
      * Posts the event information from the form into the object
      */
-    function post($suggested=false)
+    public function post($suggested=false)
     {
         if (empty($_POST['summary'])) {
             $errors[] = dgettext('calendar', 'You must give your event a summary.');
@@ -617,7 +617,7 @@ class Calendar_Event {
                         $errors[] = dgettext('calendar', 'Please pick a proper monthly repeat method.');
                     }
                     break;
-                    
+
                 case 'every':
                     if ( empty($_POST['every_repeat_number']) ||
                          empty($_POST['every_repeat_weekday']) ||
@@ -625,7 +625,7 @@ class Calendar_Event {
                         $errors[] = dgettext('calendar', 'Please choose options for the "Every" repeat method.');
                         break;
                     }
-                    
+
                     $this->repeat_type = sprintf('every:%s;%s;%s',
                                                  $_POST['every_repeat_number'],
                                                  $_POST['every_repeat_weekday'],
@@ -653,7 +653,7 @@ class Calendar_Event {
     /**
      * Makes a clone event
      */
-    function repeatClone()
+    public function repeatClone()
     {
         $clone = clone($this);
         $clone->pid         = $this->id;
@@ -664,7 +664,7 @@ class Calendar_Event {
     }
 
 
-    function save()
+    public function save()
     {
         PHPWS_Core::initModClass('search', 'Search.php');
 
@@ -673,7 +673,7 @@ class Calendar_Event {
         if (!PHPWS_DB::isTable($table)) {
             return PHPWS_Error::get(CAL_EVENT_TABLE_MISSING, 'calendar', 'Calendar_Event::save');
         }
-        
+
         $db = new PHPWS_DB($table);
         $result = $db->saveObject($this);
         if (PEAR::isError($result)) {
@@ -695,7 +695,7 @@ class Calendar_Event {
             if ($save_key) {
                 $db->saveObject($this);
             }
-            
+
             /* save search settings */
             $search = new Search($this->key_id);
             $search->addKeywords($this->summary);
@@ -703,10 +703,10 @@ class Calendar_Event {
             $search->addKeywords($this->description);
             $search->save();
             return true;
-        } 
+        }
     }
 
-    function saveKey()
+    public function saveKey()
     {
         if (empty($this->key_id)) {
             $key = new Key;
@@ -736,7 +736,7 @@ class Calendar_Event {
     }
 
 
-    function setDescription($description, $suggested=false)
+    public function setDescription($description, $suggested=false)
     {
         if ($suggested) {
             $description = strip_tags($description);
@@ -745,7 +745,7 @@ class Calendar_Event {
         $this->description = PHPWS_Text::parseInput($description);
     }
 
-    function setLocation($location)
+    public function setLocation($location)
     {
         if (empty($location)) {
             return;
@@ -753,7 +753,7 @@ class Calendar_Event {
         $this->location = strip_tags($location);
     }
 
-    function setLocLink($link)
+    public function setLocLink($link)
     {
         if (empty($link)) {
             return;
@@ -762,12 +762,12 @@ class Calendar_Event {
         $this->loc_link = strip_tags($link);
     }
 
-    function setSummary($summary)
+    public function setSummary($summary)
     {
         $this->summary = strip_tags($summary);
     }
 
-    function timeForm($name, $match, &$form)
+    public function timeForm($name, $match, PHPWS_Form $form)
     {
         static $hours = NULL;
         static $minutes = NULL;
@@ -793,7 +793,7 @@ class Calendar_Event {
         $form->setMatch($name . '_minute', $minute_match);
     }
 
-    function updateRepeats()
+    public function updateRepeats()
     {
 
         // this is a repeated copy of an event, no need to update

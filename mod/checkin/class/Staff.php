@@ -5,22 +5,22 @@
  */
 
 class Checkin_Staff {
-    var $id            = 0;
-    var $user_id       = 0;
-    var $filter        = null;
+    public $id            = 0;
+    public $user_id       = 0;
+    public $filter        = null;
     /**
      * 0 = none
      * CO_FT_LAST_NAME = last name regexp
      * CO_FT_REASON    = by reason id
      */
-    var $f_regexp      = null;
-    var $filter_type   = 0;
-    var $status        = 0;
-    var $visitor_id    = 0;
-    var $display_name  = null;
-    var $_reasons      = null;
+    public $f_regexp      = null;
+    public $filter_type   = 0;
+    public $status        = 0;
+    public $visitor_id    = 0;
+    public $display_name  = null;
+    public $_reasons      = null;
 
-    function Checkin_Staff($id=0)
+    public function construct($id=0)
     {
         if (empty($id)) {
             return true;
@@ -32,7 +32,7 @@ class Checkin_Staff {
         }
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('checkin_staff');
         $db->addJoin('left', 'checkin_staff', 'users', 'user_id', 'id');
@@ -41,7 +41,7 @@ class Checkin_Staff {
         return $db->loadObject($this);
     }
 
-    function loadReasons($include_summary=false)
+    public function loadReasons($include_summary=false)
     {
         $db = new PHPWS_DB('checkin_reasons');
         $db->addWhere('checkin_rtos.staff_id', $this->id);
@@ -57,7 +57,7 @@ class Checkin_Staff {
         }
     }
 
-    function parseFilter($filter)
+    public function parseFilter($filter)
     {
         if (!$this->filter_type || $this->filter_type == CO_FT_REASON) {
             $this->filter   = null;
@@ -68,7 +68,7 @@ class Checkin_Staff {
         }
     }
 
-    function decodeFilter($filter)
+    public function decodeFilter($filter)
     {
         $filter = strtolower(str_replace(' ', '', $filter));
         $farray = explode(',', $filter);
@@ -149,7 +149,7 @@ class Checkin_Staff {
     }
 
 
-    function row_tags()
+    public function row_tags()
     {
         switch ($this->filter_type) {
         case 0 :
@@ -172,7 +172,7 @@ class Checkin_Staff {
         return $tpl;
     }
 
-    function save($new=false)
+    public function save($new=false)
     {
         $db = new PHPWS_DB('checkin_staff');
         $result = !PHPWS_Error::logIfError($db->saveObject($this));

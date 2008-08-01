@@ -11,21 +11,21 @@ PHPWS_Core::initModClass('demographics', 'Demographics.php');
 
 class Comment_User extends Demographics_User {
 
-    var $display_name  = NULL;
-    var $signature     = NULL;
-    var $comments_made = 0;
-    var $joined_date   = 0;
-    var $avatar        = NULL;
-    var $contact_email = NULL;
-    var $website       = NULL;
-    var $location      = NULL;
-    var $locked        = 0;
+    public $display_name  = NULL;
+    public $signature     = NULL;
+    public $comments_made = 0;
+    public $joined_date   = 0;
+    public $avatar        = NULL;
+    public $contact_email = NULL;
+    public $website       = NULL;
+    public $location      = NULL;
+    public $locked        = 0;
 
     // using a second table with demographics
-    var $_table        = 'comments_users';
+    public $_table        = 'comments_users';
 
 
-    function Comment_User($user_id=NULL)
+    public function __construct($user_id=NULL)
     {
         if ($user_id == 0) {
             $this->loadAnonymous();
@@ -36,13 +36,13 @@ class Comment_User extends Demographics_User {
     }
 
 
-    function loadAnonymous()
+    public function loadAnonymous()
     {
         $this->display_name = DEFAULT_ANONYMOUS_TITLE;
     }
 
 
-    function setSignature($sig)
+    public function setSignature($sig)
     {
         if (empty($sig)) {
             $this->signature = NULL;
@@ -59,12 +59,12 @@ class Comment_User extends Demographics_User {
         return true;
     }
 
-    function getSignature()
+    public function getSignature()
     {
         return $this->signature;
     }
 
-    function bumpCommentsMade()
+    public function bumpCommentsMade()
     {
         if (!$this->user_id) {
             return;
@@ -75,7 +75,7 @@ class Comment_User extends Demographics_User {
     }
 
 
-    function loadJoinedDate($date=NULL)
+    public function loadJoinedDate($date=NULL)
     {
         if (!isset($date)) {
             $this->joined_date = Current_User::getCreatedDate();
@@ -84,22 +84,22 @@ class Comment_User extends Demographics_User {
         }
     }
 
-    function getJoinedDate($format=false)
+    public function getJoinedDate($format=false)
     {
         if ($format) {
             return strftime(COMMENT_DATE_FORMAT, $this->joined_date);
         } else {
             return $this->joined_date;
         }
-    
+
     }
 
-    function setAvatar($avatar_url)
+    public function setAvatar($avatar_url)
     {
         $this->avatar = $avatar_url;
     }
 
-    function getAvatar($format=true)
+    public function getAvatar($format=true)
     {
         if (empty($this->avatar)) {
             return NULL;
@@ -111,7 +111,7 @@ class Comment_User extends Demographics_User {
         }
     }
 
-    function setContactEmail($email_address)
+    public function setContactEmail($email_address)
     {
         if (PHPWS_Text::isValidInput($email_address, 'email')) {
             $this->contact_email = $email_address;
@@ -121,7 +121,7 @@ class Comment_User extends Demographics_User {
         }
     }
 
-    function getContactEmail($format=false)
+    public function getContactEmail($format=false)
     {
         if ($format) {
             return '<a href="mailto:' . $this->contact_email . '" />' . $this->display_name . '</a>';
@@ -130,12 +130,12 @@ class Comment_User extends Demographics_User {
         }
     }
 
-    function setWebsite($website)
+    public function setWebsite($website)
     {
         $this->website = strip_tags($website);
     }
 
-    function getWebsite($format=false)
+    public function getWebsite($format=false)
     {
         if ($format && isset($this->website)) {
             return sprintf('<a href="%s" title="%s">%s</a>',
@@ -147,23 +147,23 @@ class Comment_User extends Demographics_User {
         }
     }
 
-    function setLocation($location)
+    public function setLocation($location)
     {
         $this->location = strip_tags($location);
     }
 
-    function lock()
+    public function lock()
     {
         $this->locked = 1;
     }
 
-    function unlock()
+    public function unlock()
     {
         $this->locked = 0;
     }
 
 
-    function kill()
+    public function kill()
     {
         if (preg_match('/^images\/comments/', $this->avatar)) {
             @unlink($this->avatar);
@@ -177,24 +177,24 @@ class Comment_User extends Demographics_User {
         return $this->delete();
     }
 
-    function hasError()
+    public function hasError()
     {
         return isset($this->_error);
     }
 
-    function getError()
+    public function getError()
     {
         return $this->_error;
     }
 
-    function logError()
+    public function logError()
     {
         if (PEAR::isError($this->_error)) {
             PHPWS_Error::log($this->_error);
         }
     }
 
-    function getTpl()
+    public function getTpl()
     {
         $template['AUTHOR_NAME']   = $this->display_name;
         $template['COMMENTS_MADE'] = $this->comments_made;
@@ -222,7 +222,7 @@ class Comment_User extends Demographics_User {
         if (isset($this->contact_email)) {
             $template['CONTACT_EMAIL'] = $this->getContactEmail(true);
         }
-    
+
         if (isset($this->website)) {
             $template['WEBSITE'] = $this->getWebsite(true);
         }
@@ -237,7 +237,7 @@ class Comment_User extends Demographics_User {
     /**
      * Saves user's options from the My Page Form
      */
-    function saveOptions()
+    public function saveOptions()
     {
         $errors = array();
 
@@ -251,7 +251,7 @@ class Comment_User extends Demographics_User {
             $this->signature = NULL;
         }
 
-        if (!PHPWS_Settings::get('comments', 'allow_avatars') || 
+        if (!PHPWS_Settings::get('comments', 'allow_avatars') ||
             (!$local_avatar && empty($_POST['avatar']))) {
             if (!empty($current_avatar)) {
                 @unlink($current_avatar);
@@ -263,7 +263,7 @@ class Comment_User extends Demographics_User {
                 $image->setDirectory('images/comments/');
                 $image->setMaxWidth(COMMENT_MAX_AVATAR_WIDTH);
                 $image->setMaxHeight(COMMENT_MAX_AVATAR_HEIGHT);
-                
+
                 $prefix = sprintf('%s_%s_', Current_User::getId(), mktime());
                 if (!$image->importPost('avatar', false, true, $prefix)) {
                     if (isset($image->_errors)) {
@@ -313,7 +313,7 @@ class Comment_User extends Demographics_User {
         }
     }
 
-    function saveUser()
+    public function saveUser()
     {
         if ($this->isNew()) {
             $user = new PHPWS_User($this->user_id);
@@ -327,7 +327,7 @@ class Comment_User extends Demographics_User {
      * Tests an image's url to see if it is the correct file type,
      * dimensions, etc.
      */
-    function testAvatar($url, &$errors)
+    public function testAvatar($url, &$errors)
     {
         if (!preg_match('@^http:@', $url)) {
             $errors[] = dgettext('comments', 'Avatar graphics must be from offsite.');
@@ -352,9 +352,9 @@ class Comment_User extends Demographics_User {
             return false;
         }
 
-        
+
         if (COMMENT_MAX_AVATAR_WIDTH < $test[0] || COMMENT_MAX_AVATAR_HEIGHT < $test[1]) {
-            $errors[] = sprintf(dgettext('comments', 'Your avatar must be smaller than %sx%spx.'), 
+            $errors[] = sprintf(dgettext('comments', 'Your avatar must be smaller than %sx%spx.'),
                                 COMMENT_MAX_AVATAR_WIDTH, COMMENT_MAX_AVATAR_HEIGHT);
             return false;
         }

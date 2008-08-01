@@ -8,22 +8,22 @@
 PHPWS_Core::requireConfig('breadcrumb');
 
 class Breadcrumb {
-    var $sticky_home   = BC_STICKY_HOME;
-    var $view_limit    = BC_VIEW_LIMIT;
-    var $queue_limit   = BC_QUEUE_LIMIT;
-    var $bc_list       = null;
-    var $current_count = 0;
-    var $key_list      = null;
-    var $position      = false;
-    var $previous      = false;
+    public $sticky_home   = BC_STICKY_HOME;
+    public $view_limit    = BC_VIEW_LIMIT;
+    public $queue_limit   = BC_QUEUE_LIMIT;
+    public $bc_list       = null;
+    public $current_count = 0;
+    public $key_list      = null;
+    public $position      = false;
+    public $previous      = false;
 
-    function Breadcrumb()
+    public function Breadcrumb()
     {
         $this->bc_list  = array();
         $this->key_list = array();
     }
 
-    function display() {
+    public function display() {
         $this->view_limit = 4;
 
         if (!isset($_REQUEST['authkey'])) {
@@ -52,7 +52,7 @@ class Breadcrumb {
                 $left++;
             }
         }
-       
+
         while ($left < 0) {
             $left++;
             $right++;
@@ -98,7 +98,7 @@ class Breadcrumb {
         }
     }
 
-    function recordView()
+    public function recordView()
     {
         $key = Key::getCurrent();
         if (!Key::checkKey($key, TRUE)) {
