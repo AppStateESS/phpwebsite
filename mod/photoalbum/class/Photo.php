@@ -14,17 +14,17 @@ require_once(PHPWS_SOURCE_DIR . 'core/class/File.php');
 
 class PHPWS_Photo extends PHPWS_Item {
 
-    var $_album = NULL;
-    var $_name = NULL;
-    var $_width = NULL;
-    var $_height = NULL;
-    var $_type = NULL;
-    var $_tnname = NULL;
-    var $_tnwidth = NULL;
-    var $_tnheight = NULL;
-    var $_blurb = NULL;
+    public $_album = NULL;
+    public $_name = NULL;
+    public $_width = NULL;
+    public $_height = NULL;
+    public $_type = NULL;
+    public $_tnname = NULL;
+    public $_tnwidth = NULL;
+    public $_tnheight = NULL;
+    public $_blurb = NULL;
 
-    function PHPWS_Photo($id=NULL) {
+    public function PHPWS_Photo($id=NULL) {
         $this->setTable('mod_photoalbum_photos');
 
         if(isset($id)) {
@@ -37,7 +37,7 @@ class PHPWS_Photo extends PHPWS_Item {
         }
     }
 
-    function _view($showLinks=TRUE) {
+    public function _view($showLinks=TRUE) {
         $tags = array();
 
         $tags['PHOTO_ALBUM'] = $this->_album;
@@ -127,7 +127,7 @@ class PHPWS_Photo extends PHPWS_Item {
         return PHPWS_Template::processTemplate($tags, 'photoalbum', 'viewPhoto.tpl');
     }
 
-    function _edit() {
+    public function _edit() {
         /*
         if (empty($_SESSION['PHPWS_AlbumManager']->album->pager)) {
             return null;
@@ -232,7 +232,7 @@ class PHPWS_Photo extends PHPWS_Item {
     /**
      * @modified Verdon Vaillancourt
      */
-    function _save() {
+    public function _save() {
         $allowedImageTypes = unserialize(ALLOWED_IMAGE_TYPES);
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $id = $this->getId();
@@ -390,7 +390,7 @@ class PHPWS_Photo extends PHPWS_Item {
         $_SESSION['PHPWS_AlbumManager']->album->action();
     }
 
-    function _unlink() {
+    public function _unlink() {
         if(isset($this->_name)) {
             @unlink(PHOTOALBUM_DIR . $this->_album . '/' . $this->_name);
         }
@@ -417,7 +417,7 @@ class PHPWS_Photo extends PHPWS_Item {
         return TRUE;
     }
 
-    function _delete() {
+    public function _delete() {
         /*
         $pagerSection= (int)$_SESSION['PHPWS_AlbumManager']->album->pager->section;
         $pagerLimit  = (int)$_SESSION['PHPWS_AlbumManager']->album->pager->limit;
@@ -491,11 +491,11 @@ class PHPWS_Photo extends PHPWS_Item {
         }
     }
 
-    function _print() {
+    public function _print() {
         Layout::nakedDisplay($this->_view(FALSE));
     }
 
-    function getThumbnail() {
+    public function getThumbnail() {
         $label = htmlentities($this->getLabel());
 
         $image = array();
@@ -510,11 +510,11 @@ class PHPWS_Photo extends PHPWS_Item {
         return implode('', $image);
     }
 
-    function getAlbum() {
+    public function getAlbum() {
         return $this->_album;
     }
 
-    function action() {
+    public function action() {
         if(isset($_SESSION['PHPWS_AlbumManager']->message)) {
             javascript('alert', array('content'=>trim($_SESSION['PHPWS_AlbumManager']->message)));
             unset($_SESSION['PHPWS_AlbumManager']->message);
@@ -561,7 +561,7 @@ class PHPWS_Photo extends PHPWS_Item {
         }
     }
 
-    function rowTpl($value)
+    public function rowTpl($value)
     {
         $directory = './images/photoalbum/' . $value['album'];
         $vars['PHPWS_Album_id'] = $value['album'];

@@ -7,18 +7,18 @@
    * @modified Matthew McNaney <mcnaney at gmail dot com>
    */
 class NoJSSlideShow {
-    var $index;
-    var $max_images;
-    var $widths = array();
-    var $heights = array();
-    var $names = array();
-    var $filenames = array();
-    var $descriptions = array();
-    var $largest_height;
-    var $album_id;
-    var $mode;
+    public $index;
+    public $max_images;
+    public $widths = array();
+    public $heights = array();
+    public $names = array();
+    public $filenames = array();
+    public $descriptions = array();
+    public $largest_height;
+    public $album_id;
+    public $mode;
 
-    function NoJSSlideShow($photos, $albumID) {
+    public function NoJSSlideShow($photos, $albumID) {
         $this->mode = 'normal';
         $this->index = 0;
         $this->max_images = count($photos);
@@ -62,36 +62,36 @@ class NoJSSlideShow {
         }
     }
 
-    function getCount() {
+    public function getCount() {
         return $this->max_images;
     }
 
-    function indexNotAtStart() {
+    public function indexNotAtStart() {
         if($this->index != 0)
             return true;
         else
             return false;
     }
 
-    function indexNotAtEnd() {
+    public function indexNotAtEnd() {
         if($this->index < $this->max_images - 1 )
             return true;
         else
             return false;
     }
 
-    function advanceIndex() {
+    public function advanceIndex() {
         if($this->index < $this->max_images - 1 ) {
             $this->index++;
         }
     }
 
-    function decrementIndex() {
+    public function decrementIndex() {
         if($this->index != 0)
             $this->index--;
     }
 
-    function play() {
+    public function play() {
         if(isset($_REQUEST['SS_mode']) && $_REQUEST['SS_mode'] == 'nojsmode')
             $this->mode = 'switched';
         else
@@ -139,7 +139,7 @@ class NoJSSlideShow {
 
             if($this->mode == 'switched')
                 $get_var['SS_mode'] = 'nojsmode';
-      
+
             $tags['NEXT'] =
                 PHPWS_Text::moduleLink($linkText, 'photoalbum', $get_var) . '&nbsp;' .
                 PHPWS_Text::moduleLink($linkImage, 'photoalbum', $get_var);

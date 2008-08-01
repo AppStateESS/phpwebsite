@@ -16,7 +16,7 @@ class PHPWS_AlbumManager {
      * @var    PHPWS_Album
      * @access public
      */
-    var $album = NULL;
+    public $album = NULL;
 
     /**
      * Stores the current error that has occured in the photoalbum
@@ -24,7 +24,7 @@ class PHPWS_AlbumManager {
      * @var    Old_Error
      * @access public
      */
-    var $error = NULL;
+    public $error = NULL;
 
     /**
      * Stores the current message to display for the photoalbum
@@ -32,9 +32,9 @@ class PHPWS_AlbumManager {
      * @var    PHPWS_Message
      * @access public
      */
-    var $message = NULL;
+    public $message = NULL;
 
-    function _list() {
+    public function _list() {
         if(!function_exists('imagecreate')) {
             $content = "<div style=\"color:#ff0000;\">Error!</div>The photoalbum module requires the GD library functions.
                     If you are getting this error then your GD libs are missing.
@@ -82,12 +82,12 @@ class PHPWS_AlbumManager {
         Layout::add($content);
     }
 
-    function _new() {
+    public function _new() {
         $this->album = new PHPWS_Album;
         $_REQUEST['PHPWS_Album_op'] = 'edit';
     }
 
-    function _accessDenied() {
+    public function _accessDenied() {
         if(PHPWS_Error::isError($this->error)) {
             $this->error->message('CNT_photoalbum', dgettext('photoalbum', 'Access Denied!'));
             $this->error = NULL;
@@ -98,7 +98,7 @@ class PHPWS_AlbumManager {
         }
     }
 
-    function updateAlbumList($albumId) {
+    public function updateAlbumList($albumId) {
         $sql = "SELECT label, tnname, tnwidth, tnheight FROM mod_photoalbum_photos WHERE album='$albumId' ORDER BY updated DESC LIMIT 1";
         $result = PHPWS_DB::getAll($sql);
 
@@ -119,7 +119,7 @@ class PHPWS_AlbumManager {
         }
     }
 
-    function action() {
+    public function action() {
         if (isset($this->message)) {
             javascipt('alert', array('content' => $this->message));
             unset($this->message);

@@ -16,7 +16,7 @@ require_once(PHPWS_SOURCE_DIR . 'mod/photoalbum/class/Photo.php');
 define('PHOTOALBUM_NO_DIRECTORY', 1);
 
 class PHPWS_Album extends PHPWS_Item {
-    var $_key_id = 0;
+    public $_key_id = 0;
 
     /**
      * The short description of the photo album
@@ -24,7 +24,7 @@ class PHPWS_Album extends PHPWS_Item {
      * @var    string
      * @access private
      */
-    var $_blurb0 = NULL;
+    public $_blurb0 = NULL;
 
     /**
      * The extended description of the photo album
@@ -32,7 +32,7 @@ class PHPWS_Album extends PHPWS_Item {
      * @var    string
      * @access private
      */
-    var $_blurb1 = NULL;
+    public $_blurb1 = NULL;
 
     /**
      * The image to be shown in the album list
@@ -40,7 +40,7 @@ class PHPWS_Album extends PHPWS_Item {
      * @var    string
      * @access private
      */
-    var $image = NULL;
+    public $image = NULL;
 
     /**
      * The ids of all the photos for the current album
@@ -48,7 +48,7 @@ class PHPWS_Album extends PHPWS_Item {
      * @var    array
      * @access public
      */
-    var $photos = array();
+    public $photos = array();
 
     /**
      * The current photo being edited or viewed
@@ -56,9 +56,9 @@ class PHPWS_Album extends PHPWS_Item {
      * @var    PHPWS_Photo
      * @access public
      */
-    var $photo = NULL;
+    public $photo = NULL;
 
-    var $page_limit = 9;
+    public $page_limit = 9;
 
     /**
      * An array of the file information for files being batch added
@@ -66,7 +66,7 @@ class PHPWS_Album extends PHPWS_Item {
      * @var    array
      * @access private
      */
-    var $_batch = array();
+    public $_batch = array();
 
     /**
      * Stores the order in which the photos in the album are being shown
@@ -74,9 +74,9 @@ class PHPWS_Album extends PHPWS_Item {
      * @var    integer
      * @access public
      */
-    var $order = NULL;
+    public $order = NULL;
 
-    function PHPWS_Album($id=NULL) {
+    public function PHPWS_Album($id=NULL) {
         $this->setTable('mod_photoalbum_albums');
         $this->addExclude(array('photos', 'photo', 'pager', '_batch', 'order'));
 
@@ -90,7 +90,7 @@ class PHPWS_Album extends PHPWS_Item {
         }
     }
 
-    function _orderIds() {
+    public function _orderIds() {
         $sql = array();
         $sql[] = 'SELECT id FROM ';
         $sql[] = 'mod_photoalbum_photos WHERE album=\'';
@@ -113,7 +113,7 @@ class PHPWS_Album extends PHPWS_Item {
     }
 
 
-    function _edit() {
+    public function _edit() {
         $id = $this->getId();
         $authorize = TRUE;
         if(isset($id)) {
@@ -186,7 +186,7 @@ class PHPWS_Album extends PHPWS_Item {
         return PHPWS_Template::processTemplate($tags, 'photoalbum', 'editAlbum.tpl');
     }
 
-    function _save() {
+    public function _save() {
         $id = $this->getId();
         $authorize = TRUE;
         if(isset($id)) {
@@ -262,7 +262,7 @@ class PHPWS_Album extends PHPWS_Item {
         }
     }
 
-    function _delete() {
+    public function _delete() {
         if(!Current_User::allow('photoalbum', 'delete_album')) {
             Current_User::disallow();
             return;
@@ -316,7 +316,7 @@ class PHPWS_Album extends PHPWS_Item {
         }
     }
 
-    function _view() {
+    public function _view() {
         PHPWS_Core::initCoreClass('DBPager.php');
 
         $columns = NULL;
@@ -387,12 +387,12 @@ class PHPWS_Album extends PHPWS_Item {
         return $content;
     }
 
-    function _new() {
+    public function _new() {
         $this->photo = new PHPWS_Photo;
         $_REQUEST['PHPWS_Photo_op'] = 'edit';
     }
 
-    function _batchAdd($numForms=5) {
+    public function _batchAdd($numForms=5) {
         $id = $this->getId();
         $authorize = TRUE;
         if(!Current_User::allow('photoalbum', 'add_photo')) {
@@ -492,7 +492,7 @@ class PHPWS_Album extends PHPWS_Item {
         return PHPWS_Template::processTemplate($formTags, 'photoalbum', 'albums/batchAdd.tpl');
     }
 
-    function _batchSave() {
+    public function _batchSave() {
 
         if(isset($_REQUEST['Photos_update'])) {
             $_REQUEST['PHPWS_Album_op'] = 'batch';
@@ -635,7 +635,7 @@ class PHPWS_Album extends PHPWS_Item {
         }
     }
 
-    function _slideShow() {
+    public function _slideShow() {
         if(javascriptEnabled() && (!isset($_REQUEST['SS_mode']) ||
                                             (isset($_REQUEST['SS_mode']) &&
                                              $_REQUEST['SS_mode'] != 'nojsmode'))) {
@@ -649,7 +649,7 @@ class PHPWS_Album extends PHPWS_Item {
         }
     }
 
-    function saveKey()
+    public function saveKey()
     {
         $update_album = FALSE;
 
@@ -684,7 +684,7 @@ class PHPWS_Album extends PHPWS_Item {
     }
 
 
-    function action() {
+    public function action() {
         if (isset($_SESSION['PHPWS_AlbumManager']->message)) {
             javascript('alert', array('content'=>$_SESSION['PHPWS_AlbumManager']->message));
             unset($_SESSION['PHPWS_AlbumManager']->message);
@@ -749,7 +749,7 @@ class PHPWS_Album extends PHPWS_Item {
         }
     }
 
-    function AlbumRow($value)
+    public function AlbumRow($value)
     {
         $vars['PHPWS_Album_op'] = 'view';
         $vars['PHPWS_Album_id'] = $value['id'];
@@ -759,7 +759,7 @@ class PHPWS_Album extends PHPWS_Item {
         return $tpl;
     }
 
-    function getAlbumLinks()
+    public function getAlbumLinks()
     {
         if(Current_User::allow('photoalbum', 'add_photo')) {
             $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=new">' . dgettext('photoalbum', 'New Photo') . '</a>';
