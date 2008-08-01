@@ -20,8 +20,8 @@ define('PHPWS_ALLOWED_TAGS', '<pre>
 <table><tr><td><tbody><dd><dt><dl>
 <p><br><div><span><blockquote>
 <th><tt><img><pre><hr><h1><h2><h3><h4>
-<fieldset><legend><code><em>
-');
+<fieldset><legend><code><em><iframe><embed>
+<object>');
 
 /***************** HTML ENCODING ********************************
  * Before any user text passed into parseInput and out of
@@ -30,7 +30,7 @@ define('PHPWS_ALLOWED_TAGS', '<pre>
  * differences. If this is disabled (set to false) , most text
  * will be saved in an undecoded state.
  * Warning! Changing this at any time other than right after
- * installation could adversely affect your site.  Don't 
+ * installation could adversely affect your site.  Don't
  * change it unless you are sure of the consequences.
  */
 
@@ -40,7 +40,7 @@ define('ENCODE_PARSED_TEXT', true);
 /*********************** FILTERS *******************************
  * phpWebSite filters outgoing text with a BB filter by default.
  * You can decide which filters, if any, phpWebSite uses.
- * If you use more than one filter, separate them with commas 
+ * If you use more than one filter, separate them with commas
  * (e.g. 'bb,wiki') in the TEXT_FILTERS define. Be aware that order
  * is important!
  */
