@@ -24,45 +24,45 @@ if (!defined('ALLOW_TABLE_LOCKS')) {
 }
 
 class PHPWS_DB {
-    var $tables      = null;
-    var $where       = array();
-    var $order       = array();
-    var $values      = array();
-    var $mode        = DEFAULT_MODE;
-    var $limit       = null;
-    var $index       = null;
-    var $columns     = null;
-    var $qwhere      = null;
-    var $indexby     = null;
-    var $force_array = false;
-    var $group_by    = null;
-    var $locked      = null;
+    public $tables      = null;
+    public $where       = array();
+    public $order       = array();
+    public $values      = array();
+    public $mode        = DEFAULT_MODE;
+    public $limit       = null;
+    public $index       = null;
+    public $columns     = null;
+    public $qwhere      = null;
+    public $indexby     = null;
+    public $force_array = false;
+    public $group_by    = null;
+    public $locked      = null;
 
     /**
      * Holds module and class file names to be loaded on
      * the success of a loadObject or getObjects select query.
      */
-    var $load_class  = null;
+    public $load_class  = null;
 
     /**
      * allows you to group together where queries
      */
-    var $group_in    = array();
+    public $group_in    = array();
     // This variable holds a sql query string
-    var $sql         = null;
-    var $_allColumns = null;
-    var $_columnInfo = null;
-    var $_lock       = false;
+    public $sql         = null;
+    private $_allColumns = null;
+    private $_columnInfo = null;
+    private $_lock       = false;
 
     // contains the database specific factory class
-    var $_distinct   = false;
-    var $_test_mode  = false;
-    var $_join       = null;
-    var $_join_tables = null;
-    var $table_as     = array();
+    private $_distinct   = false;
+    private $_test_mode  = false;
+    private $_join       = null;
+    private $_join_tables = null;
+    public $table_as     = array();
 
 
-    function PHPWS_DB($table=null)
+    public function __construct($table=null)
     {
         PHPWS_DB::touchDB();
         if (isset($table)) {
@@ -78,23 +78,23 @@ class PHPWS_DB {
     /**
      * Lets you enter a raw select query
      */
-    function setSQLQuery($sql)
+    public function setSQLQuery($sql)
     {
         $this->sql = $sql;
     }
-    function touchDB()
+    public function touchDB()
     {
         if (!PHPWS_DB::isConnected()) {
             return PHPWS_DB::loadDB();
         }
     }
 
-    function setTestMode($mode=true)
+    public function setTestMode($mode=true)
     {
         $this->_test_mode = (bool)$mode;
     }
 
-    function isConnected()
+    public function isConnected()
     {
         if (!empty($GLOBALS['PHPWS_DB']['connection'])) {
             return true;
@@ -103,12 +103,12 @@ class PHPWS_DB {
         }
     }
 
-    function getDbName($dsn) {
+    public function getDbName($dsn) {
         $aDSN = explode('/', $dsn);
         return array_pop($aDSN);
     }
 
-    function _updateCurrent($key)
+    public function _updateCurrent($key)
     {
         $GLOBALS['PHPWS_DB']['lib']        = & $GLOBALS['PHPWS_DB']['dbs'][$key]['lib'];
         $GLOBALS['PHPWS_DB']['dsn']        = & $GLOBALS['PHPWS_DB']['dbs'][$key]['dsn'];
@@ -117,7 +117,7 @@ class PHPWS_DB {
         $GLOBALS['PHPWS_DB']['type']       = & $GLOBALS['PHPWS_DB']['dbs'][$key]['type'];
     }
 
-    function loadDB($dsn=null, $tbl_prefix=null, $force_reconnect=false, $show_error=true)
+    public function loadDB($dsn=null, $tbl_prefix=null, $force_reconnect=false, $show_error=true)
     {
         if (!isset($dsn)) {
             $dsn = PHPWS_DSN;
@@ -174,7 +174,7 @@ class PHPWS_DB {
         return true;
     }
 
-    function logDB($sql)
+    public function logDB($sql)
     {
         if (!defined('LOG_DB') || LOG_DB != true) {
             return;
@@ -183,7 +183,7 @@ class PHPWS_DB {
         PHPWS_Core::log($sql, 'db.log');
     }
 
-    function query($sql, $prefix=true)
+    public function query($sql, $prefix=true)
     {
         if (isset($this) && !empty($this->_test_mode)) {
             exit($sql);
@@ -199,7 +199,7 @@ class PHPWS_DB {
         return $GLOBALS['PHPWS_DB']['connection']->query($sql);
     }
 
-    function getColumnInfo($col_name, $parsed=false)
+    public function getColumnInfo($col_name, $parsed=false)
     {
         if (!isset($this->_columnInfo)) {
             $this->getTableColumns();
@@ -217,7 +217,7 @@ class PHPWS_DB {
         }
     }
 
-    function inDatabase($table, $column=null)
+    public function inDatabase($table, $column=null)
     {
         $table = PHPWS_DB::addPrefix(strip_tags($table));
 
@@ -264,7 +264,7 @@ class PHPWS_DB {
     /**
      * Gets information on all the columns in the current table
      */
-    function getTableColumns($fullInfo=false)
+    public function getTableColumns($fullInfo=false)
     {
         static $table_check = null;
 
@@ -310,7 +310,7 @@ class PHPWS_DB {
      * Returns true is the columnName is contained in the
      * current table
      */
-    function isTableColumn($column_name)
+    public function isTableColumn($column_name)
     {
         $columns = $this->getTableColumns();
         if (PEAR::isError($columns)) {
@@ -324,7 +324,7 @@ class PHPWS_DB {
         return in_array($column_name, $columns);
     }
 
-    function setMode($mode)
+    public function setMode($mode)
     {
         switch (strtolower($mode)){
         case 'ordered':
@@ -342,12 +342,12 @@ class PHPWS_DB {
 
     }
 
-    function getMode()
+    public function getMode()
     {
         return $this->mode;
     }
 
-    function isTable($table)
+    public function isTable($table)
     {
         PHPWS_DB::touchDB();
         $tables = PHPWS_DB::listTables();
@@ -356,19 +356,19 @@ class PHPWS_DB {
         return in_array($table, $tables);
     }
 
-    function listTables()
+    public function listTables()
     {
         PHPWS_DB::touchDB();
         return $GLOBALS['PHPWS_DB']['connection']->getlistOf('tables');
     }
 
-    function listDatabases()
+    public function listDatabases()
     {
         PHPWS_DB::touchDB();
         return $GLOBALS['PHPWS_DB']['connection']->getlistOf('databases');
     }
 
-    function addJoin($join_type, $join_from, $join_to, $join_on_1=null, $join_on_2=null)
+    public function addJoin($join_type, $join_from, $join_to, $join_on_1=null, $join_on_2=null)
     {
         if (!preg_match('/left|right/i', $join_type)) {
             return false;
@@ -380,7 +380,7 @@ class PHPWS_DB {
                                       'join_on_2' => $join_on_2);
     }
 
-    function addTable($table, $as=null)
+    public function addTable($table, $as=null)
     {
         if (is_array($table)) {
             foreach ($table as $tbl_name) {
@@ -400,7 +400,7 @@ class PHPWS_DB {
         return true;
     }
 
-    function setTable($table)
+    public function setTable($table)
     {
         $this->tables = array();
         $this->_join_tables = null;
@@ -409,12 +409,12 @@ class PHPWS_DB {
         return $this->addTable($table);
     }
 
-    function setIndex($index)
+    public function setIndex($index)
     {
         $this->index = $index;
     }
 
-    function getIndex($table=null)
+    public function getIndex($table=null)
     {
         if (isset($this->index)) {
             return $this->index;
@@ -441,7 +441,7 @@ class PHPWS_DB {
         return null;
     }
 
-    function _getJoinOn($join_on_1, $join_on_2, $table1, $table2) {
+    public function _getJoinOn($join_on_1, $join_on_2, $table1, $table2) {
         if (empty($join_on_1) || empty($join_on_2)) {
             return null;
         }
@@ -460,7 +460,7 @@ class PHPWS_DB {
         }
     }
 
-    function getJoin()
+    public function getJoin()
     {
         if (empty($this->_join_tables)) {
             return null;
@@ -509,7 +509,7 @@ class PHPWS_DB {
      * is used for select queries. If false, the first table is popped
      * off and returned
      */
-    function getTable($format=true)
+    public function getTable($format=true)
     {
         if (empty($this->tables)) {
             return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::getTable');
@@ -540,12 +540,12 @@ class PHPWS_DB {
         }
     }
 
-    function resetTable()
+    public function resetTable()
     {
         $this->tables = array();
     }
 
-    function setGroupConj($group, $conj)
+    public function setGroupConj($group, $conj)
     {
         $conj = strtoupper($conj);
         if (empty($conj) || ($conj != 'OR' &&  $conj != 'AND')) {
@@ -555,7 +555,7 @@ class PHPWS_DB {
         $this->where[$group]['conj'] = $conj;
     }
 
-    function addGroupBy($group_by)
+    public function addGroupBy($group_by)
     {
         if (PHPWS_DB::allowed($group_by)) {
             if (!strpos($group_by, '.')) {
@@ -569,7 +569,7 @@ class PHPWS_DB {
         return true;
     }
 
-    function getGroupBy($dbReady=false)
+    public function getGroupBy($dbReady=false)
     {
         if ((bool)$dbReady == true) {
             if (empty($this->group_by)) {
@@ -584,7 +584,7 @@ class PHPWS_DB {
     /**
      * Puts the first group label into the second
      */
-    function groupIn($sub, $main)
+    public function groupIn($sub, $main)
     {
         $group_names = array_keys($this->where);
         if (!in_array($sub, $group_names) || !in_array($main, $group_names)) {
@@ -595,7 +595,7 @@ class PHPWS_DB {
     }
 
 
-    function addWhere($column, $value=null, $operator=null, $conj=null, $group=null, $join=false)
+    public function addWhere($column, $value=null, $operator=null, $conj=null, $group=null, $join=false)
     {
         PHPWS_DB::touchDB();
         $where = new PHPWS_DB_Where;
@@ -703,7 +703,7 @@ class PHPWS_DB {
     }
 
 
-    function checkOperator($operator)
+    public function checkOperator($operator)
     {
         $allowed = array('>',
                          '>=',
@@ -730,7 +730,7 @@ class PHPWS_DB {
         return in_array(strtoupper($operator), $allowed);
     }
 
-    function setQWhere($where, $conj='AND')
+    public function setQWhere($where, $conj='AND')
     {
         $conj = strtoupper($conj);
         if (empty($conj) || ($conj != 'OR' &&  $conj != 'AND')) {
@@ -746,7 +746,7 @@ class PHPWS_DB {
     /**
      * Grabs the where variables from the object and creates a sql query
      */
-    function getWhere($dbReady=false)
+    public function getWhere($dbReady=false)
     {
         $sql = array();
         $ignore_list = $where = null;
@@ -812,7 +812,7 @@ class PHPWS_DB {
     /**
      * Handles the imbedding of where groups
      */
-    function _buildGroup($where_list, &$ignore_list, $first=false) {
+    public function _buildGroup($where_list, &$ignore_list, $first=false) {
         if (!$ignore_list) {
             $ignore_list = array();
         }
@@ -846,22 +846,22 @@ class PHPWS_DB {
         }
     }
 
-    function resetWhere()
+    public function resetWhere()
     {
         $this->where = array();
     }
 
-    function isDistinct()
+    public function isDistinct()
     {
         return (bool)$this->_distinct;
     }
 
-    function setDistinct($distinct=true)
+    public function setDistinct($distinct=true)
     {
         $this->_distinct = (bool)$distinct;
     }
 
-    function addColumn($column, $max_min=null, $as=null, $count=false, $distinct=false)
+    public function addColumn($column, $max_min=null, $as=null, $count=false, $distinct=false)
     {
         if (!in_array(strtolower($max_min), array('max', 'min'))) {
             $max_min = null;
@@ -901,13 +901,13 @@ class PHPWS_DB {
         $this->columns[] = $col;
     }
 
-    function getAllColumns()
+    public function getAllColumns()
     {
         $columns[] = $this->getColumn(true);
         return $columns;
     }
 
-    function getColumn($format=false)
+    public function getColumn($format=false)
     {
         if ($format) {
             if (empty($this->columns)) {
@@ -931,7 +931,7 @@ class PHPWS_DB {
                     }
                     if ($max_min) {
                         $table_name = strtoupper($max_min) . "($table_name)";
-                    } 
+                    }
                     if (!empty($as)) {
                         $columns[] = "$table_name AS $as";
                     } else {
@@ -966,13 +966,13 @@ class PHPWS_DB {
      * 'dog' => 0 => 'Rover'
      *
      */
-    function setIndexBy($indexby, $force_array=false)
+    public function setIndexBy($indexby, $force_array=false)
     {
         $this->indexby = $indexby;
         $this->force_array = (bool)$force_array;
     }
 
-    function getIndexBy()
+    public function getIndexBy()
     {
         return $this->indexby;
     }
@@ -985,7 +985,7 @@ class PHPWS_DB {
      * element
      */
 
-    function addOrder($order)
+    public function addOrder($order)
     {
         if (is_array($order)) {
             foreach ($order as $value) {
@@ -1007,7 +1007,7 @@ class PHPWS_DB {
         }
     }
 
-    function getOrder($dbReady=false)
+    public function getOrder($dbReady=false)
     {
         if (empty($this->order)) {
             return null;
@@ -1028,12 +1028,12 @@ class PHPWS_DB {
         }
     }
 
-    function resetOrder()
+    public function resetOrder()
     {
         $this->order = array();
     }
 
-    function addValue($column, $value=null)
+    public function addValue($column, $value=null)
     {
         if (is_array($column)) {
             foreach ($column as $colKey=>$colVal){
@@ -1051,7 +1051,7 @@ class PHPWS_DB {
         }
     }
 
-    function getValue($column)
+    public function getValue($column)
     {
         if (empty($this->values) || !isset($this->values[$column])) {
             return null;
@@ -1060,12 +1060,12 @@ class PHPWS_DB {
         return $this->values[$column];
     }
 
-    function resetValues()
+    public function resetValues()
     {
         $this->values = array();
     }
 
-    function getAllValues()
+    public function getAllValues()
     {
         if (!isset($this->values) || empty($this->values)) {
             return null;
@@ -1075,7 +1075,7 @@ class PHPWS_DB {
     }
 
 
-    function setLimit($limit, $offset=null)
+    public function setLimit($limit, $offset=null)
     {
         unset($this->limit);
 
@@ -1089,8 +1089,8 @@ class PHPWS_DB {
             $_offset = trim($split[1]);
         }
         else {
-            $_limit = & $limit;
-            $_offset = & $offset;
+            $_limit = $limit;
+            $_offset = $offset;
         }
 
         $this->limit['total'] = preg_replace('/[^\d\s]/', '', $_limit);
@@ -1102,7 +1102,7 @@ class PHPWS_DB {
         return true;
     }
 
-    function getLimit($dbReady=false)
+    public function getLimit($dbReady=false)
     {
         if (empty($this->limit)) {
             return null;
@@ -1116,18 +1116,18 @@ class PHPWS_DB {
         }
     }
 
-    function resetLimit()
+    public function resetLimit()
     {
         $this->limit = '';
     }
 
-    function resetColumns()
+    public function resetColumns()
     {
         $this->columns = null;
     }
 
 
-    function affectedRows()
+    public function affectedRows()
     {
         $query =  PHPWS_DB::lastQuery();
         $process = strtolower(substr($query, 0, strpos($query, ' ')));
@@ -1144,7 +1144,7 @@ class PHPWS_DB {
      * Does NOT reset locked tables but does remove any tables beyond the
      * initiating one
      */
-    function reset()
+    public function reset()
     {
         $this->resetWhere();
         $this->resetValues();
@@ -1158,12 +1158,12 @@ class PHPWS_DB {
         $this->tables = array($tmp_table);
     }
 
-    function lastQuery()
+    public function lastQuery()
     {
         return $GLOBALS['PHPWS_DB']['connection']->last_query;
     }
 
-    function insert($auto_index=true)
+    public function insert($auto_index=true)
     {
         PHPWS_DB::touchDB();
         $maxID = true;
@@ -1206,7 +1206,7 @@ class PHPWS_DB {
         }
     }
 
-    function update($return_affected=false)
+    public function update($return_affected=false)
     {
         PHPWS_DB::touchDB();
 
@@ -1247,12 +1247,12 @@ class PHPWS_DB {
         }
     }
 
-    function count()
+    public function count()
     {
         return $this->select('count');
     }
 
-    function getSelectSQL($type)
+    public function getSelectSQL($type)
     {
         if ($type == 'count' && empty($this->columns)) {
             $columns = null;
@@ -1292,7 +1292,7 @@ class PHPWS_DB {
      * All returns an associate array containing the requested information.
      *
      */
-    function select($type=null, $sql=null)
+    public function select($type=null, $sql=null)
     {
         if (empty($sql)) {
             if (!empty($this->sql)) {
@@ -1430,37 +1430,37 @@ class PHPWS_DB {
         }
     }
 
-    function getRow($sql)
+    public function getRow($sql)
     {
         $db = new PHPWS_DB;
         return $db->select('row', $sql);
     }
 
-    function getCol($sql)
+    public function getCol($sql)
     {
         $db = new PHPWS_DB;
         return $db->select('col', $sql);
     }
 
-    function getAll($sql)
+    public function getAll($sql)
     {
         $db = new PHPWS_DB;
         return $db->select('all', $sql);
     }
 
-    function getOne($sql)
+    public function getOne($sql)
     {
         $db = new PHPWS_DB;
         return $db->select('one', $sql);
     }
 
-    function getAssoc($sql)
+    public function getAssoc($sql)
     {
         $db = new PHPWS_DB;
         return $db->select('assoc', $sql);
     }
 
-    function _indexBy($sql, $indexby, $colMode=false){
+    public function _indexBy($sql, $indexby, $colMode=false){
         $rows = array();
 
         if (!is_array($sql)) {
@@ -1495,7 +1495,7 @@ class PHPWS_DB {
         return $rows;
     }
 
-    function _expandIndex(&$rows, $index, $item, &$stacked)
+    public function _expandIndex(&$rows, $index, $item, &$stacked)
     {
         if ($this->force_array) {
             $rows[$index][] = $item;
@@ -1526,7 +1526,7 @@ class PHPWS_DB {
     /**
      * increases the value of a table column
      */
-    function incrementColumn($column_name, $amount=1)
+    public function incrementColumn($column_name, $amount=1)
     {
         $amount = (int)$amount;
 
@@ -1564,12 +1564,12 @@ class PHPWS_DB {
      * reduces the value of a table column
      */
 
-    function reduceColumn($column_name, $amount=1)
+    public function reduceColumn($column_name, $amount=1)
     {
         return $this->incrementColumn($column_name, ($amount * -1));
     }
 
-    function delete($return_affected=false)
+    public function delete($return_affected=false)
     {
         $table = $this->getTable(false);
         if (!$table) {
@@ -1603,7 +1603,7 @@ class PHPWS_DB {
      * check_existence - of table
      * sequence_table  - if true, drop sequence table as well
      */
-    function dropTable($table, $check_existence=true, $sequence_table=true)
+    public function dropTable($table, $check_existence=true, $sequence_table=true)
     {
         PHPWS_DB::touchDB();
 
@@ -1628,13 +1628,13 @@ class PHPWS_DB {
         return true;
     }
 
-    function isSequence($table)
+    public function isSequence($table)
     {
         $table = PHPWS_DB::addPrefix($table);
         return is_numeric($GLOBALS['PHPWS_DB']['connection']->nextId($table));
     }
 
-    function truncateTable()
+    public function truncateTable()
     {
         $table = $this->getTable(false);
         if(!$table) {
@@ -1646,7 +1646,7 @@ class PHPWS_DB {
         return PHPWS_DB::query($sql);
     }
 
-    function dropTableIndex($name=null)
+    public function dropTableIndex($name=null)
     {
         $table = $this->getTable(false);
         if (!$table) {
@@ -1667,7 +1667,7 @@ class PHPWS_DB {
      * on the table name. Setting your index name might be a smart thing to do
      * in case you ever need to DROP it.
      */
-    function createTableIndex($column, $name=null, $unique=false)
+    public function createTableIndex($column, $name=null, $unique=false)
     {
         if(!DB_ALLOW_TABLE_INDEX) {
             return false;
@@ -1706,7 +1706,7 @@ class PHPWS_DB {
         return $this->query($sql);
     }
 
-    function createPrimaryKey($column='id')
+    public function createPrimaryKey($column='id')
     {
         $table = $this->getTable(false);
         if (!$table) {
@@ -1716,7 +1716,7 @@ class PHPWS_DB {
         return $this->query($sql);
     }
 
-    function createTable()
+    public function createTable()
     {
         $table = $this->getTable(false);
         if (!$table) {
@@ -1740,7 +1740,7 @@ class PHPWS_DB {
      * names, this function requires different factory files.
      * Factory files must handle the prefixing.
      */
-    function renameTableColumn($old_name, $new_name)
+    public function renameTableColumn($old_name, $new_name)
     {
         $table = $this->getTable(false);
         if (!$table) {
@@ -1769,7 +1769,7 @@ class PHPWS_DB {
      * @param boolean indexed   Create an index on the column if true
      * @returns mixed
      */
-    function addTableColumn($column, $parameter, $after=null, $indexed=false)
+    public function addTableColumn($column, $parameter, $after=null, $indexed=false)
     {
         $table = $this->getTable(false);
         if (!$table) {
@@ -1803,7 +1803,7 @@ class PHPWS_DB {
         return true;
     }
 
-    function alterColumnType($column, $parameter)
+    public function alterColumnType($column, $parameter)
     {
         $table = $this->getTable(false);
         if (!$table) {
@@ -1833,7 +1833,7 @@ class PHPWS_DB {
 
 
 
-    function dropTableColumn($column)
+    public function dropTableColumn($column)
     {
         $table = $this->getTable(false);
         if (!$table) {
@@ -1853,13 +1853,13 @@ class PHPWS_DB {
     }
 
 
-    function getDBType()
+    public function getDBType()
     {
         return $GLOBALS['PHPWS_DB']['connection']->phptype;
     }
 
 
-    function disconnect()
+    public function disconnect()
     {
         if (empty($GLOBALS['PHPWS_DB']['dbs'])) {
             return;
@@ -1878,7 +1878,7 @@ class PHPWS_DB {
      * This function can not be called statically.
      */
 
-    function importFile($filename, $report_errors=true)
+    public function importFile($filename, $report_errors=true)
     {
         if (!is_file($filename)) {
             return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::importFile');
@@ -1893,7 +1893,7 @@ class PHPWS_DB {
      * @returns True if successful, false if not successful and report_errors = false or
      *               Error object if report_errors = true
      */
-    function import($text, $report_errors=true)
+    public function import($text, $report_errors=true)
     {
         PHPWS_DB::touchDB();
 
@@ -1953,7 +1953,7 @@ class PHPWS_DB {
     }
 
 
-    function homogenize(&$query)
+    public function homogenize(&$query)
     {
         $query_list = explode(',', $query);
 
@@ -1993,7 +1993,7 @@ class PHPWS_DB {
     }
 
 
-    function parsePearCol($info, $strip_name=false)
+    public function parsePearCol($info, $strip_name=false)
     {
         $setting = $GLOBALS['PHPWS_DB']['lib']->export($info);
         if (isset($info['flags'])) {
@@ -2024,7 +2024,7 @@ class PHPWS_DB {
         return $column_info;
     }
 
-    function parseColumns($columns)
+    public function parseColumns($columns)
     {
         static $primary_keys = array();
         $table = $this->tables[0];
@@ -2052,7 +2052,7 @@ class PHPWS_DB {
         return $column_info;
     }
 
-    function export($structure=true, $contents=true)
+    public function export($structure=true, $contents=true)
     {
         PHPWS_DB::touchDB();
         $table = $this->addPrefix($this->tables[0]);
@@ -2092,12 +2092,12 @@ class PHPWS_DB {
         }
     }
 
-    function quote($text)
+    public function quote($text)
     {
         return $GLOBALS['PHPWS_DB']['connection']->quote($text);
     }
 
-    function extractTableName($sql_value)
+    public function extractTableName($sql_value)
     {
         $temp = explode(' ', trim($sql_value));
 
@@ -2153,7 +2153,7 @@ class PHPWS_DB {
      * @return mixed $value The prepared value
      * @access public
      */
-    function dbReady($value=null)
+    public function dbReady($value=null)
     {
         if (is_array($value) || is_object($value)) {
             return PHPWS_DB::dbReady(serialize($value));
@@ -2174,7 +2174,7 @@ class PHPWS_DB {
      * getObjects. The list of files is erased as the files would not
      * need to be required again.
      */
-    function loadClass($module, $file)
+    public function loadClass($module, $file)
     {
         $this->load_class[] = array($module, $file);
     }
@@ -2182,7 +2182,7 @@ class PHPWS_DB {
     /**
      * Requires the classes, if any, in the load_class variable
      */
-    function requireClasses()
+    public function requireClasses()
     {
         if ($this->load_class && is_array($this->load_class)) {
             foreach ($this->load_class as $files) {
@@ -2204,7 +2204,7 @@ class PHPWS_DB {
      *                               Returns error object if something goes wrong
      * @access public
      */
-    function loadObject(&$object, $require_where=true)
+    public function loadObject($object, $require_where=true)
     {
         if (!is_object($object)) {
             return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, 'core', 'PHPWS_DB::loadObject');
@@ -2251,7 +2251,7 @@ class PHPWS_DB {
      * @return array $items      Array of objects
      * @access public
      */
-    function getObjects($class_name)
+    public function getObjects($class_name)
     {
         $items = null;
         $result = $this->select();
@@ -2275,7 +2275,7 @@ class PHPWS_DB {
 
             if ($num_args > 1) {
                 // reference is necessary for genClass in php 4
-                call_user_func_array(array(&$genClass, $class_name), $args);
+                call_user_func_array(array($genClass, $class_name), $args);
             }
 
             if (isset($itemResult[0]) && is_array($itemResult[0])) {
@@ -2293,7 +2293,7 @@ class PHPWS_DB {
         return $items;
     }
 
-    function saveObject(&$object, $stripChar=false, $autodetect_id=true)
+    public function saveObject($object, $stripChar=false, $autodetect_id=true)
     {
         if (!is_object($object)) {
             return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', 'PHPWS_DB::saveObject', _('Type') . ': ' . gettype($object));
@@ -2341,7 +2341,7 @@ class PHPWS_DB {
     }
 
 
-    function allowed($value)
+    public function allowed($value)
     {
         if (!is_string($value)) {
             return false;
@@ -2384,7 +2384,7 @@ class PHPWS_DB {
     /**
      * Crutch function from old database
      */
-    function sqlFriendlyName($name) {
+    public function sqlFriendlyName($name) {
         if (!PHPWS_DB::allowed($name)) {
             return false;
         }
@@ -2392,7 +2392,7 @@ class PHPWS_DB {
         return preg_replace('/\W/', '', $name);
     }
 
-    function updateSequenceTable()
+    public function updateSequenceTable()
     {
         $this->addColumn('id', 'max');
 
@@ -2426,7 +2426,7 @@ class PHPWS_DB {
         return true;
     }
 
-    function addPrefix($table)
+    public function addPrefix($table)
     {
         if (isset($GLOBALS['PHPWS_DB']['tbl_prefix'])) {
             return $GLOBALS['PHPWS_DB']['tbl_prefix'] . $table;
@@ -2434,7 +2434,7 @@ class PHPWS_DB {
         return $table;
     }
 
-    function getPrefix()
+    public function getPrefix()
     {
         if (isset($GLOBALS['PHPWS_DB']['tbl_prefix'])) {
             return $GLOBALS['PHPWS_DB']['tbl_prefix'];
@@ -2447,7 +2447,7 @@ class PHPWS_DB {
      * @author Matthew McNaney
      * @author Hilmar
      */
-    function prefixQuery($sql)
+    public function prefixQuery($sql)
     {
         if (!$GLOBALS['PHPWS_DB']['tbl_prefix']) {
             return $sql;
@@ -2469,7 +2469,7 @@ class PHPWS_DB {
      * Prefix tablenames, but not within 'quoted values', called from prefixQuery
      * @author Hilmar
      */
-    function prefixVary($sql, $tbl)
+    public function prefixVary($sql, $tbl)
     {
         $repl = true;
         $ar = explode("'", $sql);
@@ -2490,7 +2490,7 @@ class PHPWS_DB {
         return $sql;
     }
 
-    function pullTables($sql)
+    public function pullTables($sql)
     {
         $sql = preg_replace('/ {2,}/', ' ', trim($sql));
         $sql = preg_replace('/[\n\r]/', ' ', $sql);
@@ -2604,7 +2604,7 @@ class PHPWS_DB {
         return $tables;
     }
 
-    function setLock($table, $status='write')
+    public function setLock($table, $status='write')
     {
         if (!is_string($table) || !is_string($status)) {
             return false;
@@ -2622,7 +2622,7 @@ class PHPWS_DB {
         }
     }
 
-    function lockTables()
+    public function lockTables()
     {
         if (!ALLOW_TABLE_LOCKS) {
             return true;
@@ -2636,7 +2636,7 @@ class PHPWS_DB {
         return $this->query($query);
     }
 
-    function unlockTables()
+    public function unlockTables()
     {
         if (!ALLOW_TABLE_LOCKS) {
             return true;
@@ -2647,7 +2647,7 @@ class PHPWS_DB {
     }
 
 
-    function begin()
+    public function begin()
     {
         // If transaction started already, return false.
         if (isset($GLOBALS['DB_Transaction']) && $GLOBALS['DB_Transaction']) {
@@ -2657,7 +2657,7 @@ class PHPWS_DB {
         return PHPWS_DB::query('BEGIN');
     }
 
-    function commit()
+    public function commit()
     {
         // if transaction not started, return false.
         if (!$GLOBALS['DB_Transaction']) {
@@ -2667,7 +2667,7 @@ class PHPWS_DB {
         return PHPWS_DB::query('COMMIT');
     }
 
-    function rollback()
+    public function rollback()
     {
         // if transaction not started, return false.
         if (!$GLOBALS['DB_Transaction']) {
@@ -2680,24 +2680,24 @@ class PHPWS_DB {
 }
 
 class PHPWS_DB_Where {
-    var $table      = null;
-    var $column     = null;
-    var $value      = null;
-    var $operator   = '=';
-    var $conj       = 'AND';
-    var $join       = false;
+    public $table      = null;
+    public $column     = null;
+    public $value      = null;
+    public $operator   = '=';
+    public $conj       = 'AND';
+    public $join       = false;
 
-    function setJoinTable($table)
+    public function setJoinTable($table)
     {
         $this->join_table = $table;
     }
 
-    function setColumn($column)
+    public function setColumn($column)
     {
         $this->column = $column;
     }
 
-    function setOperator($operator)
+    public function setOperator($operator)
     {
         if (empty($operator)) {
             return false;
@@ -2718,23 +2718,23 @@ class PHPWS_DB_Where {
         $this->operator = $operator;
     }
 
-    function setJoin($join)
+    public function setJoin($join)
     {
         $this->join = (bool)$join;
     }
 
-    function setValue($value)
+    public function setValue($value)
     {
         $this->value = $value;
     }
 
-    function setTable($table)
+    public function setTable($table)
     {
         $this->table = $table;
     }
 
 
-    function setConj($conj)
+    public function setConj($conj)
     {
         $conj = strtoupper($conj);
         if (empty($conj) || ($conj != 'OR' &&  $conj != 'AND')) {
@@ -2744,7 +2744,7 @@ class PHPWS_DB_Where {
         $this->conj = $conj;
     }
 
-    function getValue()
+    public function getValue()
     {
         $value = $this->value;
 
@@ -2781,7 +2781,7 @@ class PHPWS_DB_Where {
 
     }
 
-    function get()
+    public function get()
     {
         $column = $this->table . '.' . $this->column;
         $value = $this->getValue();
