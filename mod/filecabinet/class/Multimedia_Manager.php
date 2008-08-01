@@ -6,20 +6,20 @@
 PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
 
 class FC_Multimedia_Manager {
-    var $multimedia = null;
-    var $max_size   = 0;
-    var $folder     = null;
-    var $content    = null;
-    var $message    = null;
+    public $multimedia = null;
+    public $max_size   = 0;
+    public $folder     = null;
+    public $content    = null;
+    public $message    = null;
 
-    function FC_Multimedia_Manager($multimedia_id=0)
+    public function __construct($multimedia_id=0)
     {
         $this->loadMultimedia($multimedia_id);
         $this->loadSettings();
         $this->loadFolder();
     }
 
-    function admin()
+    public function admin()
     {
         switch ($_REQUEST['mop']) {
         case 'delete_multimedia':
@@ -56,12 +56,12 @@ class FC_Multimedia_Manager {
                 javascript('close_refresh');
             }
             break;
-            
+
         }
         return $this->content;
     }
 
-    function postEmbed()
+    public function postEmbed()
     {
         //        require 'config/filecabinet/allow_embed.php';
 
@@ -84,7 +84,7 @@ class FC_Multimedia_Manager {
         return !PHPWS_Error::logIfError($this->multimedia->save(false, false));
     }
 
-    function editEmbed()
+    public function editEmbed()
     {
         $form = new PHPWS_Form('embedd');
         $form->addHidden('module', 'filecabinet');
@@ -105,14 +105,14 @@ class FC_Multimedia_Manager {
             include $file;
             $embed_type[$dir] = $embed_name;
         }
-        
+
         $form->addSelect('embed_type', $embed_type);
         $form->setLabel('embed_type', dgettext('filecabinet', 'Embedded filter'));
 
-        $form->addSubmit(dgettext('filecabinet', 'Submit video'));
+        $form->addSubmit(dgettext('filecabinet', 'Submit media'));
         $tpl = $form->getTemplate();
 
-        $tpl['FORM_TITLE'] = dgettext('filecabinet', 'Add embedded video');
+        $tpl['FORM_TITLE'] = dgettext('filecabinet', 'Add embedded media');
         $tpl['CANCEL'] = javascript('close_window');
 
         if ($this->message) {
@@ -123,7 +123,7 @@ class FC_Multimedia_Manager {
     }
 
 
-    function loadMultimedia($multimedia_id=0)
+    public function loadMultimedia($multimedia_id=0)
     {
         if (!$multimedia_id && isset($_REQUEST['multimedia_id'])) {
             $multimedia_id = $_REQUEST['multimedia_id'];
@@ -132,7 +132,7 @@ class FC_Multimedia_Manager {
         $this->multimedia = new PHPWS_Multimedia($multimedia_id);
     }
 
-    function loadSettings()
+    public function loadSettings()
     {
         if (isset($_REQUEST['ms']) && $_REQUEST['ms'] > 1000) {
             $this->setMaxSize($_REQUEST['ms']);
@@ -141,7 +141,7 @@ class FC_Multimedia_Manager {
         }
     }
 
-    function edit()
+    public function edit()
     {
         if (empty($this->multimedia)) {
             $this->loadMultimedia();
@@ -174,7 +174,7 @@ class FC_Multimedia_Manager {
             $form->addText('width', $this->multimedia->width);
             $form->setSize('width', 5, 5);
             $form->setLabel('width', dgettext('filecabinet', 'Width'));
-            
+
             $form->addText('height', $this->multimedia->height);
             $form->setSize('height', 5, 5);
             $form->setLabel('height', dgettext('filecabinet', 'Height'));
@@ -236,12 +236,12 @@ class FC_Multimedia_Manager {
         $this->content = PHPWS_Template::process($template, 'filecabinet', 'multimedia_edit.tpl');
     }
 
-    function setMaxSize($size)
+    public function setMaxSize($size)
     {
         $this->max_size = (int)$size;
     }
 
-    function postMultimediaUpload()
+    public function postMultimediaUpload()
     {
         $this->loadMultimedia();
 
@@ -261,7 +261,7 @@ class FC_Multimedia_Manager {
             } else {
                 $result = $this->multimedia->save();
             }
-            
+
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 $this->content = dgettext('filecabinet', 'An error occurred when trying to save your multimedia file.');
@@ -278,7 +278,7 @@ class FC_Multimedia_Manager {
         }
     }
 
-    function loadFolder($folder_id=0)
+    public function loadFolder($folder_id=0)
     {
         if (!$folder_id && isset($_REQUEST['folder_id'])) {
             $folder_id = &$_REQUEST['folder_id'];

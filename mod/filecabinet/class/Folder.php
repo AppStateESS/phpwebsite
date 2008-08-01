@@ -6,21 +6,21 @@
    */
 
 class Folder {
-    var $id                  = 0;
-    var $key_id              = 0;
-    var $title               = null;
-    var $description         = null;
-    var $ftype               = IMAGE_FOLDER;
-    var $public_folder       = 0;
-    var $icon                = null;
-    var $module_created      = null;
-    var $max_image_dimension = 0;
+    public $id                  = 0;
+    public $key_id              = 0;
+    public $title               = null;
+    public $description         = null;
+    public $ftype               = IMAGE_FOLDER;
+    public $public_folder       = 0;
+    public $icon                = null;
+    public $module_created      = null;
+    public $max_image_dimension = 0;
     // An array of file objects
-    var $_files              = 0;
-    var $_error              = 0;
-    var $_base_directory     = null;
+    public $_files              = 0;
+    public $_error              = 0;
+    public $_base_directory     = null;
 
-    function Folder($id=0)
+    public function __construct($id=0)
     {
         if (!$id) {
             return;
@@ -34,7 +34,7 @@ class Folder {
         }
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('folders');
         $result = $db->loadObject($this);
@@ -43,7 +43,7 @@ class Folder {
         }
     }
 
-    function getPublic()
+    public function getPublic()
     {
         if ($this->public_folder) {
             return dgettext('filecabinet', 'Public');
@@ -52,7 +52,7 @@ class Folder {
         }
     }
 
-    function deleteLink()
+    public function deleteLink()
     {
         $vars['QUESTION'] = dgettext('filecabinet', 'Are you certain you want to delete this folder and all its contents?');
         $vars['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', array('aop'=>'delete_folder', 'folder_id'=>$this->id),
@@ -64,7 +64,7 @@ class Folder {
     /**
      * Creates javascript pop up for creating a new folder
      */
-    function editLink($mode=null, $module_created=null)
+    public function editLink($mode=null, $module_created=null)
     {
         if ($this->id) {
             $vars['aop']    = 'edit_folder';
@@ -98,7 +98,7 @@ class Folder {
         return javascript('open_window', $js);
     }
 
-    function deleteImageLink()
+    public function deleteImageLink()
     {
         $vars['action'] = 'delete_image';
         $vars['image_id'] = $this->id;
@@ -109,7 +109,7 @@ class Folder {
     }
 
 
-    function getFullDirectory()
+    public function getFullDirectory()
     {
         if (!$this->id) {
             return null;
@@ -120,7 +120,7 @@ class Folder {
         return sprintf('%sfolder%s/', $this->_base_directory, $this->id);
     }
 
-    function loadDirectory()
+    public function loadDirectory()
     {
         if ($this->ftype == DOCUMENT_FOLDER) {
             $this->_base_directory = PHPWS_Settings::get('filecabinet', 'base_doc_directory');
@@ -131,14 +131,14 @@ class Folder {
         }
     }
 
-    function unpinLink()
+    public function unpinLink()
     {
         $img = '<img style="float : right" src="images/mod/filecabinet/remove.png" />';
         $key = Key::getCurrent();
         return PHPWS_Text::secureLink($img, 'filecabinet', array('aop'=>'unpin', 'folder_id'=>$this->id, 'key_id'=>$key->id));
     }
 
-    function uploadLink($button=true)
+    public function uploadLink($button=true)
     {
         if ($this->ftype == DOCUMENT_FOLDER) {
             return $this->documentUploadLink($button);
@@ -149,7 +149,7 @@ class Folder {
         }
     }
 
-    function imageUploadLink($button=false)
+    public function imageUploadLink($button=false)
     {
         $vars['address'] = PHPWS_Text::linkAddress('filecabinet',
                                                    array('iop'      =>'upload_image_form',
@@ -165,7 +165,7 @@ class Folder {
     }
 
 
-    function documentUploadLink($button=false)
+    public function documentUploadLink($button=false)
     {
         $vars['address'] = PHPWS_Text::linkAddress('filecabinet',
                                                    array('dop'      =>'upload_document_form',
@@ -180,7 +180,7 @@ class Folder {
         return javascript('open_window', $vars);
     }
 
-    function multimediaUploadLink($button=false)
+    public function multimediaUploadLink($button=false)
     {
         $vars['address'] = PHPWS_Text::linkAddress('filecabinet',
                                                    array('mop'      =>'upload_multimedia_form',
@@ -195,7 +195,7 @@ class Folder {
         return javascript('open_window', $vars);
     }
 
-    function embedLink($button=false)
+    public function embedLink($button=false)
     {
         $vars['address'] = PHPWS_Text::linkAddress('filecabinet',
                                                    array('mop'      =>'edit_embed',
@@ -210,17 +210,17 @@ class Folder {
         return javascript('open_window', $vars);
     }
 
-    function logError()
+    public function logError()
     {
         PHPWS_Error::log($this->_error);
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = strip_tags($title);
     }
 
-    function viewLink($formatted=true)
+    public function viewLink($formatted=true)
     {
         $link = sprintf('index.php?module=filecabinet&amp;uop=view_folder&amp;folder_id=%s', $this->id);
 
@@ -232,12 +232,12 @@ class Folder {
         }
     }
 
-    function setDescription($description)
+    public function setDescription($description)
     {
         $this->description = PHPWS_Text::parseInput($description);
     }
 
-    function post()
+    public function post()
     {
         if (empty($_POST['title'])) {
             $this->_error = dgettext('filecabinet', 'You must entitle your folder.');
@@ -260,7 +260,7 @@ class Folder {
         return true;
     }
 
-    function save()
+    public function save()
     {
         if (empty($this->icon)) {
             $this->icon = 'images/mod/filecabinet/folder.png';
@@ -309,7 +309,7 @@ class Folder {
     }
 
 
-    function saveKey($new_folder=true)
+    public function saveKey($new_folder=true)
     {
         if (empty($this->key_id)) {
             $key = new Key;
@@ -346,7 +346,7 @@ class Folder {
     }
 
 
-    function allow()
+    public function allow()
     {
         if (!$this->public_folder && !Current_User::isLogged()) {
             return false;
@@ -359,7 +359,7 @@ class Folder {
         return $key->allowView();
     }
 
-    function delete()
+    public function delete()
     {
         if ($this->ftype = IMAGE_FOLDER) {
             $table = 'images';
@@ -417,7 +417,7 @@ class Folder {
         return true;
     }
 
-    function rowTags()
+    public function rowTags()
     {
         $icon = sprintf('<img src="%s" />', $this->icon);
         $vars['aop'] = 'view_folder';
@@ -464,7 +464,7 @@ class Folder {
      * Loads the files in the current folder into the _files variable
      * $original_only applies to images
      */
-    function loadFiles($original_only=false)
+    public function loadFiles($original_only=false)
     {
         if ($this->ftype == IMAGE_FOLDER) {
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
@@ -495,7 +495,7 @@ class Folder {
         }
     }
 
-    function tallyItems()
+    public function tallyItems()
     {
         if ($this->ftype == IMAGE_FOLDER) {
             $db = new PHPWS_DB('images');
@@ -509,7 +509,7 @@ class Folder {
         return $db->count();
     }
 
-    function getPinned($key_id)
+    public function getPinned($key_id)
     {
         $db = new PHPWS_DB('folders');
         $db->addWhere('filecabinet_pins.key_id', $key_id);
@@ -528,7 +528,7 @@ class Folder {
         }
     }
 
-    function showPinned($single=true)
+    public function showPinned($single=true)
     {
         $tpl['FOLDER_TITLE'] = $this->viewLink();
 

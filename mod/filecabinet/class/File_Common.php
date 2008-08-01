@@ -8,25 +8,25 @@
  */
 
 class File_Common {
-    var $id              = 0;
-    var $file_name       = null;
-    var $file_directory  = null;
-    var $folder_id       = 0;
-    var $file_type       = null;
-    var $title           = null;
-    var $description     = null;
-    var $size            = 0;
+    public $id              = 0;
+    public $file_name       = null;
+    public $file_directory  = null;
+    public $folder_id       = 0;
+    public $file_type       = null;
+    public $title           = null;
+    public $description     = null;
+    public $size            = 0;
 
     /**
      * PEAR upload object
      */
-    var $_upload         = null;
-    var $_errors         = array();
-    var $_allowed_types  = null;
-    var $_max_size       = 0;
-    var $_ext            = null;
+    public $_upload         = null;
+    public $_errors         = array();
+    public $_allowed_types  = null;
+    public $_max_size       = 0;
+    public $_ext            = null;
 
-    function allowSize($size=null)
+    public function allowSize($size=null)
     {
         if (!isset($size)) {
             $size = $this->getSize();
@@ -40,7 +40,7 @@ class File_Common {
      * used alone as it is specific to File Cabinet. It is assumed you
      * have run PHPWS_File::checkMimeType first.
      */
-    function allowType($ext=null)
+    public function allowType($ext=null)
     {
         if (!isset($ext)) {
             $ext = $this->_ext;
@@ -49,7 +49,7 @@ class File_Common {
         return in_array($ext, $this->_allowed_types);
     }
 
-    function formatSize($size)
+    public function formatSize($size)
     {
         if ($size >= 1000000) {
             return round($size / 1000000, 2) . 'MB';
@@ -58,13 +58,13 @@ class File_Common {
         }
     }
 
-    function setMaxSize($max_size)
+    public function setMaxSize($max_size)
     {
         $this->_max_size = (int)$max_size;
     }
 
 
-    function getSize($format=false)
+    public function getSize($format=false)
     {
         if ($format) {
             return $this->formatSize($this->size);
@@ -80,7 +80,7 @@ class File_Common {
      * Called from Image_Manager's postImageUpload function and Cabinet_Action's
      * postDocument function.
      */
-    function importPost($var_name, $use_folder=true, $ignore_missing_file=false, $file_prefix=null)
+    public function importPost($var_name, $use_folder=true, $ignore_missing_file=false, $file_prefix=null)
     {
         require 'HTTP/Upload.php';
 
@@ -113,7 +113,7 @@ class File_Common {
                     $this->width = & $width;
                 }
             }
-            
+
             if (isset($_POST['height'])) {
                 $height = (int)$_POST['height'];
                 if ($height > 20) {
@@ -181,7 +181,7 @@ class File_Common {
             }
 
             if (!PHPWS_File::checkMimeType($file_vars['tmp_name'], $file_vars['ext'])) {
-                $this->_errors[] = PHPWS_Error::get(FC_FILE_TYPE_MISMATCH, 'filecabinet', 'File_Common::importPost', 
+                $this->_errors[] = PHPWS_Error::get(FC_FILE_TYPE_MISMATCH, 'filecabinet', 'File_Common::importPost',
                                                     $file_vars['ext'] . ':' . PHPWS_File::getMimeType($file_vars['tmp_name']));
                 return false;
             }
@@ -210,13 +210,13 @@ class File_Common {
 
             if ($this->_classtype == 'image') {
                 list($this->width, $this->height, $image_type, $image_attr) = getimagesize($this->_upload->upload['tmp_name']);
-                
+
                 $result = $this->prewriteResize();
                 if (PEAR::isError($result)) {
                     $this->errors[] = $result;
                     return false;
                 }
-                
+
                 $result = $this->prewriteRotate();
                 if (PEAR::isError($result)) {
                     $this->errors[] = $result;
@@ -236,17 +236,17 @@ class File_Common {
     }
 
 
-    function setDescription($description)
+    public function setDescription($description)
     {
         $this->description = PHPWS_Text::parseInput(strip_tags($description, '<em><strong><b><i><u>'));
     }
 
-    function getDescription()
+    public function getDescription()
     {
         return PHPWS_Text::parseOutput($this->description);
     }
 
-    function setDirectory($directory)
+    public function setDirectory($directory)
     {
         if (!preg_match('@/$@', $directory)) {
             $directory .= '/';
@@ -255,17 +255,17 @@ class File_Common {
         $this->file_directory = $directory;
     }
 
-    function setFilename($filename)
+    public function setFilename($filename)
     {
         $this->file_name = preg_replace('/[^\w\.]/', '_', $filename);
     }
 
-    function setSize($size)
+    public function setSize($size)
     {
         $this->size = (int)$size;
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = strip_tags($title);
     }
@@ -273,12 +273,12 @@ class File_Common {
     /**
      * Writes the file to the server
      */
-    function write($public=true)
+    public function write($public=true)
     {
         if (!is_writable($this->file_directory)) {
             return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'File_Common::write', $this->file_directory);
         }
-        
+
         if (!$this->id && is_file($this->getPath())) {
             $this->file_name = mktime() . $this->file_name;
             PHPWS_Error::log(FC_DUPLICATE_FILE, 'filecabinet', 'File_Common::write', $this->getPath());
@@ -306,12 +306,12 @@ class File_Common {
         return true;
     }
 
-    function getPath()
+    public function getPath()
     {
         return $this->file_directory . $this->file_name;
     }
 
-    function logErrors()
+    public function logErrors()
     {
         if ( !empty($this->_errors) && is_array($this->_errors) ) {
             foreach ($this->_errors as $error) {
@@ -320,7 +320,7 @@ class File_Common {
         }
     }
 
-    function getErrors()
+    public function getErrors()
     {
         $foo = array();
         if ( !empty($this->_errors) && is_array($this->_errors) ) {
@@ -331,13 +331,13 @@ class File_Common {
         return $foo;
     }
 
-    function printErrors()
+    public function printErrors()
     {
         $foo = $this->getErrors();
         return implode('<br />', $foo);
     }
 
-    function loadFileSize()
+    public function loadFileSize()
     {
         if (empty($this->file_directory) ||
             empty($this->file_name) ||
@@ -348,7 +348,7 @@ class File_Common {
         $this->size = filesize($this->getPath());
     }
 
-    function getVideoTypes()
+    public function getVideoTypes()
     {
         static $video_types = null;
 
@@ -362,7 +362,7 @@ class File_Common {
     /**
      * Checks if a file is a known video file type
      */
-    function isVideo()
+    public function isVideo()
     {
         if ($this->_classtype != 'multimedia') {
             return false;
@@ -372,15 +372,15 @@ class File_Common {
         $ext = $this->getExtension();
 
         return in_array($ext, $videos);
-    } 
+    }
 
-    function dropExtension()
+    public function dropExtension()
     {
         $last_dot = strrpos($this->file_name, '.');
         return substr($this->file_name, 0, $last_dot);
     }
 
-    function getExtension()
+    public function getExtension()
     {
         if (!$this->_ext) {
             $this->loadExtension();
@@ -389,7 +389,7 @@ class File_Common {
         return $this->_ext;
     }
 
-    function loadExtension()
+    public function loadExtension()
     {
         if (!$this->_ext && $this->file_name) {
             $this->_ext = PHPWS_File::getFileExtension($this->file_name);
@@ -400,7 +400,7 @@ class File_Common {
      * Deletes a file database entry, its directory, and its file association
      * Requires each to have a deleteAssoc function.
      */
-    function commonDelete()
+    public function commonDelete()
     {
         if (!$this->id) {
             return false;
@@ -437,7 +437,7 @@ class File_Common {
         return true;
     }
 
-    function moveToFolder()
+    public function moveToFolder()
     {
         if (empty($_POST['move_to_folder']) || $_POST['move_to_folder'] == $this->folder_id) {
             return false;
@@ -481,7 +481,7 @@ class File_Common {
         if (is_file($dest)) {
             return false;
         }
-        
+
         // copy the source file to the new destination
         if (@copy($source, $dest)) {
             $this->folder_id      = $new_folder->id;

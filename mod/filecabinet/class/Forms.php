@@ -11,7 +11,7 @@ PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
 class Cabinet_Form {
 
-    function getFolders($type)
+    public function getFolders($type)
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         $folder = new Folder;
@@ -24,11 +24,11 @@ class Cabinet_Form {
                 case IMAGE_FOLDER:
                     $this->cabinet->message = dgettext('filecabinet', 'Your images directory is not writable.');
                     break;
-                    
+
                 case DOCUMENT_FOLDER:
                     $this->cabinet->message = dgettext('filecabinet', 'Your documents directory is not writable.');
                     break;
-                    
+
                 case MULTIMEDIA_FOLDER:
                     $this->cabinet->message = dgettext('filecabinet', 'Your multimedia directory is not writable.');
                     break;
@@ -65,14 +65,14 @@ class Cabinet_Form {
     /**
      * This forms lets admins pick files uploaded to the server for sorting on the site.
      */
-    function classifyFileList()
+    public function classifyFileList()
     {
         $this->cabinet->title = dgettext('filecabinet', 'Classify files');
 
         $classify_dir = $this->cabinet->getClassifyDir();
-        
+
         if (empty($classify_dir) || !is_dir($classify_dir)) {
-            $this->cabinet->content = dgettext('filecabinet', 
+            $this->cabinet->content = dgettext('filecabinet',
                                                'Unable to locate the classify directory. Please check your File Cabinet settings, configuration file and directory permissions.');
             return;
         }
@@ -150,7 +150,7 @@ class Cabinet_Form {
 
     }
 
-    function editFolder($folder, $select_module=true)
+    public function editFolder($folder, $select_module=true)
     {
         $form = new PHPWS_Form('folder');
         $form->addHidden('module', 'filecabinet');
@@ -172,7 +172,7 @@ class Cabinet_Form {
             }
             $form->addSelect('module_created', $modlist);
             if (!empty($folder->module_created)) {
-                $form->setMatch('module_created', $folder->module_created);                
+                $form->setMatch('module_created', $folder->module_created);
             }
             $form->setLabel('module_created', dgettext('filecabinet', 'Module reservation'));
         } else {
@@ -210,7 +210,7 @@ class Cabinet_Form {
         return PHPWS_Template::process($tpl, 'filecabinet', 'edit_folder.tpl');
     }
 
-    function folderContents($folder, $pick_image=false)
+    public function folderContents($folder, $pick_image=false)
     {
         PHPWS_Core::bookmark();
         Layout::addStyle('filecabinet');
@@ -277,7 +277,7 @@ class Cabinet_Form {
         $this->cabinet->content = $pager->get();
     }
 
-    function pinFolder($key_id)
+    public function pinFolder($key_id)
     {
         $key = new Key($key_id);
 
@@ -309,7 +309,7 @@ class Cabinet_Form {
         $this->cabinet->content = PHPWS_Template::process($tpl, 'filecabinet', 'pin_folder.tpl');
     }
 
-    function settings()
+    public function settings()
     {
         $sizes = Cabinet::getMaxSizes();
 
@@ -381,7 +381,7 @@ class Cabinet_Form {
         $form->setLabel('ffmpeg_directory', dgettext('filecabinet', 'FFMpeg directory'));
         $form->setSize('ffmpeg_directory', 40);
 
-        if (FC_ALLOW_CLASSIFY_DIR_SETTING) {            
+        if (FC_ALLOW_CLASSIFY_DIR_SETTING) {
             $form->addText('classify_directory', PHPWS_Settings::get('filecabinet', 'classify_directory'));
             $form->setLabel('classify_directory', dgettext('filecabinet', 'Incoming classify directory'));
             $form->setSize('classify_directory', 50, 255);
@@ -412,7 +412,7 @@ class Cabinet_Form {
         return PHPWS_Template::process($tpl, 'filecabinet', 'settings.tpl');
     }
 
-    function classifyFile($files) 
+    public function classifyFile($files)
     {
         $this->cabinet->title = dgettext('filecabinet', 'Classify Files');
         $classify_dir = $this->cabinet->getClassifyDir();
@@ -466,7 +466,7 @@ class Cabinet_Form {
             } elseif (in_array($ext, $media_types)) {
                 $folders = & $multimedia_folders;
             } else {
-                
+
             }
 
             $form->addSelect("folder[$count]", $folders);
@@ -508,7 +508,7 @@ class Cabinet_Form {
         }
     }
 
-    function fileTypes()
+    public function fileTypes()
     {
         include PHPWS_SOURCE_DIR . 'mod/filecabinet/inc/known_types.php';
 
@@ -551,7 +551,7 @@ class Cabinet_Form {
         return PHPWS_Template::process($tpl, 'filecabinet', 'allowed_types.tpl');
     }
 
-    function sortType($known, &$all_file_types) {
+    public function sortType($known, &$all_file_types) {
         foreach ($known as $type) {
             @$file_info = $all_file_types[$type];
 
@@ -563,8 +563,8 @@ class Cabinet_Form {
         asort($checks);
         return $checks;
     }
-    
-    function saveSettings()
+
+    public function saveSettings()
     {
         if (empty($_POST['base_doc_directory'])) {
             $errors[] = dgettext('filecabinet', 'Default document directory may not be blank');
@@ -727,7 +727,7 @@ class Cabinet_Form {
         }
     }
 
-    function postAllowedFiles()
+    public function postAllowedFiles()
     {
         if (empty($_POST['allowed_images'])) {
             PHPWS_Settings::set('filecabinet', 'image_files', '');

@@ -22,14 +22,14 @@ function youtube_import($media)
     $thumbnail          = $info['FEED']['ENTRY'][0]['MEDIA:GROUP'][0]['MEDIA:THUMBNAIL'][0]['ATTRIBUTES']['URL'];
 
     if (!empty($thumbnail)) {
-        $thumb_name = $media->file_name . '.jpg';
+        $thumb_name = 'youtube_' . $media->file_name . '.jpg';
         $thumb_dir  = $media->thumbnailDirectory();
         if (!is_dir($thumb_dir)) {
             PHPWS_Error::log(FC_THUMBNAIL_NOT_WRITABLE, 'filecabinet', 'youtube_import', $thumb_dir);
             $media->genericTN($thumb_name);
         } else {
             $thumb_path = $thumb_dir . $thumb_name;
-            
+
             if (@copy($thumbnail, $thumb_path)) {
                 $media->thumbnail = $thumb_name;
             } else {

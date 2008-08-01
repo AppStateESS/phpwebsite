@@ -13,19 +13,19 @@ if (!defined('RESIZE_IMAGE_USE_DUPLICATE')) {
 }
 
 class FC_Image_Manager {
-    var $folder      = null;
-    var $image       = null;
-    var $cabinet     = null;
-    var $current     = 0;
-    var $max_width   = 0;
-    var $max_height  = 0;
-    var $max_size    = 0;
-    var $content     = null;
+    public $folder      = null;
+    public $image       = null;
+    public $cabinet     = null;
+    public $current     = 0;
+    public $max_width   = 0;
+    public $max_height  = 0;
+    public $max_size    = 0;
+    public $content     = null;
     /**
      * If true, manager will only show image folders for the current module
      */
 
-    function FC_Image_Manager($image_id=0)
+    public function __construct($image_id=0)
     {
         $this->loadImage($image_id);
         $this->loadSettings();
@@ -35,7 +35,7 @@ class FC_Image_Manager {
     /*
      * Expects 'dop' command to direct action.
      */
-    function admin()
+    public function admin()
     {
         switch ($_REQUEST['iop']) {
         case 'delete_image':
@@ -68,17 +68,17 @@ class FC_Image_Manager {
         return $this->content;
     }
 
-    function setMaxSize($size)
+    public function setMaxSize($size)
     {
         $this->max_size = (int)$size;
     }
 
-    function setMaxWidth($width)
+    public function setMaxWidth($width)
     {
         $this->max_width = (int)$width;
     }
 
-    function setMaxHeight($height)
+    public function setMaxHeight($height)
     {
         $this->max_height = (int)$height;
     }
@@ -86,7 +86,7 @@ class FC_Image_Manager {
     /**
      * Upload image form
      */
-    function edit()
+    public function edit()
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'filecabinet');
@@ -142,7 +142,7 @@ class FC_Image_Manager {
                 $link_choice['folder'] = dgettext('filecabinet', 'Link to image folder');
             }
         }
-       
+
         $form->addSelect('link', $link_choice);
         $form->setLabel('link', dgettext('filecabinet', 'Link image'));
         $form->setExtra('link', 'onchange=voila(this)');
@@ -151,7 +151,7 @@ class FC_Image_Manager {
         $form->setSize('url', 40, 255);
         $form->setLabel('url', dgettext('filecabinet', 'Image link url'));
 
-        if ($this->folder->max_image_dimension && 
+        if ($this->folder->max_image_dimension &&
             ($this->folder->max_image_dimension < $this->max_width) ) {
             $max_width = $this->folder->max_image_dimension;
         } else {
@@ -245,7 +245,7 @@ class FC_Image_Manager {
     }
 
 
-    function loadImage($image_id=0)
+    public function loadImage($image_id=0)
     {
         if (!$image_id && isset($_REQUEST['image_id'])) {
             $image_id = $_REQUEST['image_id'];
@@ -258,7 +258,7 @@ class FC_Image_Manager {
      * From Cabinet::admin.
      * Error checks and posts the image upload
      */
-    function postImageUpload()
+    public function postImageUpload()
     {
         // importPost in File_Common
         $result = $this->image->importPost('file_name');
@@ -315,7 +315,7 @@ class FC_Image_Manager {
     }
 
 
-    function getSettings()
+    public function getSettings()
     {
         $vars['ms']        = $this->max_size;
         $vars['mw']        = $this->max_width;
@@ -324,7 +324,7 @@ class FC_Image_Manager {
         return $vars;
     }
 
-    function loadSettings()
+    public function loadSettings()
     {
         if (isset($_REQUEST['ms']) && $_REQUEST['ms'] > 1000) {
             $this->setMaxSize($_REQUEST['ms']);
@@ -345,7 +345,7 @@ class FC_Image_Manager {
         }
     }
 
-    function loadFolder($folder_id=0)
+    public function loadFolder($folder_id=0)
     {
         if (!$folder_id && isset($_REQUEST['folder_id'])) {
             $folder_id = &$_REQUEST['folder_id'];
@@ -357,7 +357,7 @@ class FC_Image_Manager {
         }
     }
 
-    function updateResizes($image)
+    public function updateResizes($image)
     {
         $dir = $image->getResizePath();
         if (!is_dir($dir)) {
@@ -368,7 +368,7 @@ class FC_Image_Manager {
         if (empty($images)) {
             return;
         }
-        
+
         foreach ($images as $file_name) {
             if (!preg_match('/\d+x\d+\.\w{1,4}$/', $file_name)) {
                 continue;

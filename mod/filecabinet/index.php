@@ -11,13 +11,6 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 
 PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
 
-if (isset($_GET['var1'])) {
-    $_GET['id'] = & $_GET['var1'];
-    if (isset($_GET['var2'])) {
-        $_GET['mtype'] = & $_GET['var2'];
-    }
-}
-
 $cabinet = new Cabinet;
 if (isset($_REQUEST['uop'])) {
     $cabinet->user();

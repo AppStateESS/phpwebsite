@@ -6,28 +6,28 @@
 
 PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
 class FC_File_Manager {
-    var $module         = null;
-    var $file_assoc     = null;
-    var $itemname       = null;
-    var $folder_type    = 0;
-    var $current_folder = 0;
-    var $max_width      = 0;
-    var $max_height     = 0;
-    var $max_size       = 0;
-    var $lock_type      = null;
-    var $mod_limit      = false;
+    public $module         = null;
+    public $file_assoc     = null;
+    public $itemname       = null;
+    public $folder_type    = 0;
+    public $current_folder = 0;
+    public $max_width      = 0;
+    public $max_height     = 0;
+    public $max_size       = 0;
+    public $lock_type      = null;
+    public $mod_limit      = false;
     /**
      * If true, user must resize to fit image limits
      */
-    var $force_resize   = false;
+    public $force_resize   = false;
     /**
      * id to session holding manager information
      */
-    var $session_id  = null;
-    var $_placeholder_max_width = null;
-    var $_placeholder_max_height = null;
+    public $session_id  = null;
+    public $_placeholder_max_width = null;
+    public $_placeholder_max_height = null;
 
-    function FC_File_Manager($module, $itemname, $file_id=0)
+    public function __construct($module, $itemname, $file_id=0)
     {
         $this->max_width = $this->max_height = PHPWS_Settings::get('filecabinet', 'max_image_dimension');
         $this->module     = & $module;
@@ -40,7 +40,7 @@ class FC_File_Manager {
     /*
      * Expects 'fop' command to direct action.
      */
-    function admin()
+    public function admin()
     {
         /**
          * Folder permissions needed
@@ -68,7 +68,7 @@ class FC_File_Manager {
         }
     }
 
-    function imageOnly($folder=true, $random=true)
+    public function imageOnly($folder=true, $random=true)
     {
         $locks = array(FC_IMAGE);
 
@@ -84,7 +84,7 @@ class FC_File_Manager {
         $_SESSION['FM_Type_Lock'][$this->session_id] = $this->lock_type;
     }
 
-    function documentOnly($folder=true)
+    public function documentOnly($folder=true)
     {
         $locks = array(FC_DOCUMENT);
         if ($folder) {
@@ -95,25 +95,25 @@ class FC_File_Manager {
         $_SESSION['FM_Type_Lock'][$this->session_id] = $this->lock_type;
     }
 
-    function mediaOnly()
+    public function mediaOnly()
     {
         $this->lock_type = array(FC_MEDIA);
         $_SESSION['FM_Type_Lock'][$this->session_id] = $this->lock_type;
     }
 
-    function allFiles()
+    public function allFiles()
     {
         $this->lock_type = null;
         $_SESSION['FM_Type_Lock'][$this->session_id] = null;
         unset($_SESSION['FM_Type_Lock'][$this->session_id]);
     }
 
-    function forceResize($force=true)
+    public function forceResize($force=true)
     {
         $this->force_resize = (bool)$force;
     }
 
-    function clearLock()
+    public function clearLock()
     {
         if (!isset($_SESSION['FM_Type_Lock'])) {
             return;
@@ -121,28 +121,28 @@ class FC_File_Manager {
         unset($_SESSION['FM_Type_Lock'][$this->session_id]);
     }
 
-    function loadFileAssoc($file_id)
+    public function loadFileAssoc($file_id)
     {
         PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
         $this->file_assoc = new FC_File_Assoc($file_id);
     }
 
-    function setItemName($itemname)
+    public function setItemName($itemname)
     {
         $this->itemname = $itemname;
     }
 
-    function setMaxSize($size)
+    public function setMaxSize($size)
     {
         $this->max_size = (int)$size;
     }
 
-    function setMaxWidth($width)
+    public function setMaxWidth($width)
     {
         $this->max_width = (int)$width;
     }
 
-    function setMaxHeight($height)
+    public function setMaxHeight($height)
     {
         $this->max_height = (int)$height;
     }
@@ -150,7 +150,7 @@ class FC_File_Manager {
     /**
      * 20080715 Patch #1939146 by Eloi George
      */
-    function placeHolder()
+    public function placeHolder()
     {
         if (!Current_User::allow('filecabinet')) {
             $placeholder_file = FC_NO_RIGHTS;
@@ -185,7 +185,7 @@ class FC_File_Manager {
         return sprintf('<img src="%s" title="%s" %s/>', $placeholder_file, $title, $size_tag);
     }
 
-    function get()
+    public function get()
     {
         Layout::addStyle('filecabinet', 'file_view.css');
         Layout::addStyle('filecabinet');
@@ -221,7 +221,7 @@ class FC_File_Manager {
     }
 
     // Copy of image manager's getClearLink
-    function clearLink()
+    public function clearLink()
     {
         $js_vars['label']    = dgettext('filecabinet', 'Clear file');
         $js_vars['id']       = $this->session_id;
@@ -229,7 +229,7 @@ class FC_File_Manager {
         return javascript('modules/filecabinet/clear_file', $js_vars);
     }
 
-    function linkInfo($dimensions=true)
+    public function linkInfo($dimensions=true)
     {
         $info['cm']   = $this->module;
         $info['itn']  = $this->itemname;
@@ -256,7 +256,7 @@ class FC_File_Manager {
     /**
      * Returns a javascript pop-up link to pick a file
      */
-    function editLink($label=null)
+    public function editLink($label=null)
     {
         $js['width']   = 800;
         $js['height']  = 600;
@@ -275,12 +275,12 @@ class FC_File_Manager {
         return javascript('open_window', $js);
     }
 
-    function maxImageWidth($width)
+    public function maxImageWidth($width)
     {
         $this->max_width = (int)$width;
     }
 
-    function maxImageHeight($height)
+    public function maxImageHeight($height)
     {
         $this->max_height = (int)$height;
     }
@@ -288,7 +288,7 @@ class FC_File_Manager {
     /**
      * Introduction view with three types of files
      */
-    function startView()
+    public function startView()
     {
         Layout::addStyle('filecabinet');
         $document_img = sprintf('<img src="images/mod/filecabinet/file_manager/file_type/document200.png" title="%s"/>',
@@ -326,7 +326,7 @@ class FC_File_Manager {
     }
 
 
-    function folderIcons(&$tpl)
+    public function folderIcons(&$tpl)
     {
         $vars = $this->linkInfo();
         $vars['fop']   = 'fm_folders';
@@ -380,7 +380,7 @@ class FC_File_Manager {
     /**
      * View of folders per media
      */
-    function folderView()
+    public function folderView()
     {
         Layout::addStyle('filecabinet');
 
@@ -429,7 +429,7 @@ class FC_File_Manager {
     /**
      * View of files in current folder
      */
-    function folderContentView()
+    public function folderContentView()
     {
         javascript('jquery');
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
@@ -648,7 +648,7 @@ class FC_File_Manager {
         return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/folder_content_view.tpl');
     }
 
-    function openFileManager()
+    public function openFileManager()
     {
         /**
          * File has an id, show file
@@ -681,7 +681,7 @@ class FC_File_Manager {
         }
     }
 
-    function pickFile()
+    public function pickFile()
     {
         $file = $this->getFileAssoc($_REQUEST['file_type'], $_REQUEST['id'], true);
 
@@ -697,7 +697,7 @@ class FC_File_Manager {
         }
     }
 
-    function jsReady($data)
+    public function jsReady($data)
     {
         $data = htmlentities($data, ENT_QUOTES, 'UTF-8');
         $data = preg_replace("/\n/", '\\n', $data);
@@ -705,7 +705,7 @@ class FC_File_Manager {
     }
 
 
-    function getFileAssoc($file_type, $id, $update=true)
+    public function getFileAssoc($file_type, $id, $update=true)
     {
         $file_assoc = new FC_File_Assoc;
         $cropped = (int)$file_type == FC_IMAGE_CROP;
@@ -793,17 +793,17 @@ class FC_File_Manager {
     /**
      * Limits folder selection by module.
      */
-    function moduleLimit($limit=true)
+    public function moduleLimit($limit=true)
     {
         $this->mod_limit = (bool)$limit;
     }
 
-    function setPlaceholderMaxWidth($width)
+    public function setPlaceholderMaxWidth($width)
     {
         $this->_placeholder_max_width = (int)$width;
     }
 
-    function setPlaceholderMaxHeight($height)
+    public function setPlaceholderMaxHeight($height)
     {
         $this->_placeholder_max_height = (int)$height;
     }

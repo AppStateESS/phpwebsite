@@ -6,6 +6,11 @@
 
 function flickr_ss_import($media)
 {
+    if (preg_match('@^http://@', $media->file_name) &&
+        !preg_match('/flikr\.com/', $media->file_name)) {
+        return false;
+    }
+
     PHPWS_Core::initCoreClass('XMLParser.php');
     $feed_url = "http://api.flickr.com/services/feeds/photos_public.gne?id=";
     $parse = new XMLParser($feed_url . $media->file_name, false);

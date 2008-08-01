@@ -5,35 +5,35 @@
  */
 
 class FC_File_Assoc {
-    var $id         = 0;
-    var $file_type  = 0;
-    var $file_id    = 0;
-    var $resize     = null;
-    var $width      = 0;
-    var $height     = 0;
+    public $id         = 0;
+    public $file_type  = 0;
+    public $file_id    = 0;
+    public $resize     = null;
+    public $width      = 0;
+    public $height     = 0;
 
     /**
      * Used with carousel, determines direction
      */
-    var $vertical   = 0; 
+    public $vertical   = 0;
 
     /**
      * Used with carousel, determines number images seen
      */
-    var $num_visible = 3;
+    public $num_visible = 3;
 
-    var $_use_style = true;
+    public $_use_style = true;
     /**
      * If the file assoc is an image and no_link is true,
      * the image's default link (if any) will be supressed
      */
-    var $_source        = null;
-    var $_resize_parent = null;
-    var $_link_image    = true;
-    var $_allow_caption = true;
-    var $_file_path     = null;
+    public $_source        = null;
+    public $_resize_parent = null;
+    public $_link_image    = true;
+    public $_allow_caption = true;
+    public $_file_path     = null;
 
-    function FC_File_Assoc($id=0)
+    public function __construct($id=0)
     {
         if (!$id) {
             return;
@@ -53,12 +53,12 @@ class FC_File_Assoc {
         }
     }
 
-    function getSource()
+    public function getSource()
     {
         return $this->_source;
     }
 
-    function loadSource()
+    public function loadSource()
     {
         switch ($this->file_type) {
         case FC_IMAGE:
@@ -109,7 +109,7 @@ class FC_File_Assoc {
         $this->_file_path = $this->_source->getPath();
     }
 
-    function parentLinked($thumbnail=false)
+    public function parentLinked($thumbnail=false)
     {
         if ( ($this->file_type != FC_IMAGE_RESIZE && $this->file_type != FC_IMAGE_CROP) || !$this->_resize_parent) {
             $this->_link_image = true;
@@ -131,12 +131,12 @@ class FC_File_Assoc {
         return $this->_resize_parent->getJSView(false, $img);
     }
 
-    function allowImageLink($link=true)
+    public function allowImageLink($link=true)
     {
         $this->_link_image = (bool)$link;
     }
 
-    function isImage($include_resize=true)
+    public function isImage($include_resize=true)
     {
         if ($include_resize) {
             return ($this->file_type == FC_IMAGE || $this->file_type == FC_IMAGE_RESIZE ||
@@ -146,32 +146,32 @@ class FC_File_Assoc {
         }
     }
 
-    function isDocument()
+    public function isDocument()
     {
         return ($this->file_type == FC_DOCUMENT);
     }
 
-    function isMedia()
+    public function isMedia()
     {
         return ($this->file_type == FC_MEDIA);
     }
 
-    function isResize()
+    public function isResize()
     {
         return ($this->file_type == FC_IMAGE_RESIZE);
     }
 
-    function isCrop()
+    public function isCrop()
     {
         return ($this->file_type == FC_IMAGE_CROP);
     }
 
-    function allowCaption($allow=true)
+    public function allowCaption($allow=true)
     {
         $this->_allow_caption = (bool)$allow;
     }
 
-    function deadAssoc()
+    public function deadAssoc()
     {
         $this->delete();
         $this->id        = 0;
@@ -180,7 +180,7 @@ class FC_File_Assoc {
         $this->resize    = null;
     }
 
-    function getFolderType()
+    public function getFolderType()
     {
         switch ($this->file_type) {
         case FC_IMAGE:
@@ -204,12 +204,12 @@ class FC_File_Assoc {
      * Returns an image, media, or document path.
      * Does not work with random images or folder listing
      */
-    function getPath()
+    public function getPath()
     {
         return $this->_file_path;
     }
 
-    function getThumbnail()
+    public function getThumbnail()
     {
         PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
@@ -235,7 +235,7 @@ class FC_File_Assoc {
         }
     }
 
-    function getTag($embed=false)
+    public function getTag($embed=false)
     {
         PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
@@ -292,7 +292,7 @@ class FC_File_Assoc {
         return null;
     }
 
-    function documentFolder()
+    public function documentFolder()
     {
         $folder = new Folder($this->file_id);
         $folder->loadFiles();
@@ -304,7 +304,7 @@ class FC_File_Assoc {
         return PHPWS_Template::process($tpl, 'filecabinet', 'multi_doc_download.tpl');
     }
 
-    function randomImage()
+    public function randomImage()
     {
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $image = new PHPWS_Image;
@@ -320,7 +320,7 @@ class FC_File_Assoc {
         }
     }
 
-    function slideshow()
+    public function slideshow()
     {
         Layout::addStyle('filecabinet');
         $message = null;
@@ -358,7 +358,7 @@ class FC_File_Assoc {
         }
     }
 
-    function loadCarousel()
+    public function loadCarousel()
     {
         javascript('jquery');
         $vars['vertical'] = $this->vertical;
@@ -366,7 +366,7 @@ class FC_File_Assoc {
         javascript('modules/filecabinet/jcaro_lite/', $vars);
     }
 
-    function getTable()
+    public function getTable()
     {
         switch ($this->file_type) {
         case FC_IMAGE:
@@ -387,7 +387,7 @@ class FC_File_Assoc {
 
     }
 
-    function getFolder()
+    public function getFolder()
     {
         $db = new PHPWS_DB('folders');
         if ($this->file_type == FC_IMAGE_RANDOM || $this->file_type == FC_IMAGE_FOLDER
@@ -414,13 +414,13 @@ class FC_File_Assoc {
         }
     }
 
-    function save()
+    public function save()
     {
         $db = new PHPWS_DB('fc_file_assoc');
         return $db->saveObject($this);
     }
 
-    function updateTag($file_type, $id, $tag)
+    public function updateTag($file_type, $id, $tag)
     {
         $db = new PHPWS_DB('fc_file_assoc');
         $db->addWhere('ftype', (int)$file_type);
@@ -429,7 +429,7 @@ class FC_File_Assoc {
         $db->update();
     }
 
-    function imageFolderView()
+    public function imageFolderView()
     {
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $db = new PHPWS_DB('images');
@@ -437,14 +437,14 @@ class FC_File_Assoc {
         $result = $db->getObjects('PHPWS_Image');
     }
 
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('fc_file_assoc');
         $db->addWhere('id', $this->id);
         return $db->delete();
     }
 
-    function setMediaDimensions()
+    public function setMediaDimensions()
     {
         $max_width = $this->width;
         $max_height = $this->height;

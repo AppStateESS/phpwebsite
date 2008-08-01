@@ -7,11 +7,11 @@
 PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
 class FC_Document_Manager {
-    var $folder   = null;
-    var $document = null;
-    var $max_size = 0;
+    public $folder   = null;
+    public $document = null;
+    public $max_size = 0;
 
-    function FC_Document_Manager($document_id=0)
+    public function __construct($document_id=0)
     {
         $this->loadDocument($document_id);
         $this->loadSettings();
@@ -21,7 +21,7 @@ class FC_Document_Manager {
     /*
      * Expects 'dop' command to direct action.
      */
-    function admin()
+    public function admin()
     {
         switch ($_REQUEST['dop']) {
         case 'delete_document':
@@ -48,7 +48,7 @@ class FC_Document_Manager {
 
     }
 
-    function authenticate()
+    public function authenticate()
     {
         if (empty($this->module)) {
             return false;
@@ -57,12 +57,12 @@ class FC_Document_Manager {
     }
 
     /**
-    function authenticate()
+    public function authenticate()
     {
         return Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder');
     }
     */
-    function edit()
+    public function edit()
     {
         if (empty($this->document)) {
             $this->loadDocument();
@@ -131,7 +131,7 @@ class FC_Document_Manager {
         return PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
     }
 
-    function loadDocument($document_id=0)
+    public function loadDocument($document_id=0)
     {
         if (!$document_id && isset($_REQUEST['document_id'])) {
             $document_id = $_REQUEST['document_id'];
@@ -139,7 +139,7 @@ class FC_Document_Manager {
         $this->document = new PHPWS_Document($document_id);
     }
 
-    function loadSettings()
+    public function loadSettings()
     {
         if (isset($_REQUEST['ms']) && $_REQUEST['ms'] > 1000) {
             $this->setMaxSize($_REQUEST['ms']);
@@ -148,7 +148,7 @@ class FC_Document_Manager {
         }
     }
 
-    function postDocumentUpload()
+    public function postDocumentUpload()
     {
         // importPost in File_Common
         $result = $this->document->importPost('file_name');
@@ -179,12 +179,12 @@ class FC_Document_Manager {
         }
     }
 
-    function setMaxSize($size)
+    public function setMaxSize($size)
     {
         $this->max_size = (int)$size;
     }
 
-    function loadFolder($folder_id=0)
+    public function loadFolder($folder_id=0)
     {
         if (!$folder_id && isset($_REQUEST['folder_id'])) {
             $folder_id = &$_REQUEST['folder_id'];
