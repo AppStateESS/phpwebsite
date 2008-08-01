@@ -2,7 +2,7 @@
 
   /**
    * Separates work into batches to prevent memory caps or timeouts
-   * 
+   *
    * @version $Id$
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
@@ -13,34 +13,34 @@ if (!defined('GRAPH_MULTIPLIER')) {
 }
 
 class Batches {
-    var $total_items        = 1; // Total items to run
-    var $batch_set          = 0; // number of items to compute per batch
-    var $total_batches      = 1; // Total number of batches expected $total_items / $batch_set
-    var $items_done         = 0; // 
-    var $current_batch      = 1;
-    var $finished           = FALSE;
+    public $total_items        = 1; // Total items to run
+    public $batch_set          = 0; // number of items to compute per batch
+    public $total_batches      = 1; // Total number of batches expected $total_items / $batch_set
+    public $items_done         = 0; //
+    public $current_batch      = 1;
+    public $finished           = FALSE;
 
-    var $last_batch_time    = 0; // Time it took to run the last batch
-    var $batches_so_far     = 0; // Batches run so far
-    var $average_batch_time = 0; // Average time per batch
-    var $percentage_done    = 0; // Percentage of total batch done $total_batches / $batches_so_far
+    public $last_batch_time    = 0; // Time it took to run the last batch
+    public $batches_so_far     = 0; // Batches run so far
+    public $average_batch_time = 0; // Average time per batch
+    public $percentage_done    = 0; // Percentage of total batch done $total_batches / $batches_so_far
 
-    var $title              = NULL; // Name of the batch process
-    var $error              = NULL; // Contains error objects
+    public $title              = NULL; // Name of the batch process
+    public $error              = NULL; // Contains error objects
 
 
-    function Batches($title)
+    public function __constructor($title)
     {
         $this->title = $title;
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title;
     }
 
 
-    function setTotalItems($total)
+    public function setTotalItems($total)
     {
         if (!is_numeric($total)) {
             return false;
@@ -49,7 +49,7 @@ class Batches {
         return true;
     }
 
-    function completeBatch()
+    public function completeBatch()
     {
         @$last_batch = $_SESSION['Batches'][$this->title]['last_batch'];
 
@@ -65,7 +65,7 @@ class Batches {
         $this->current_batch++;
     }
 
-    function setBatchSet($set_no)
+    public function setBatchSet($set_no)
     {
         if (!is_numeric($set_no)) {
             return false;
@@ -76,17 +76,17 @@ class Batches {
         return true;
     }
 
-    function getLimit()
+    public function getLimit()
     {
         return $this->batch_set;
     }
 
-    function getStart()
+    public function getStart()
     {
         return $this->batch_set * ($this->current_batch - 1);
     }
 
-    function load()
+    public function load()
     {
         if (isset($_REQUEST['batch'])) {
             if ($_REQUEST['batch'] > 1) {
@@ -105,17 +105,17 @@ class Batches {
         return TRUE;
     }
 
-    function clear()
+    public function clear()
     {
         unset($_SESSION['Batches']);
     }
 
-    function isFinished()
+    public function isFinished()
     {
         return $this->finished;
     }
 
-    function percentDone()
+    public function percentDone()
     {
         $done = round( ($this->current_batch / $this->total_batches) * 100, 2);
         if ($done > 100) {
@@ -124,7 +124,7 @@ class Batches {
         return $done;
     }
 
-    function getAddress()
+    public function getAddress()
     {
         $url = PHPWS_Core::getCurrentUrl();
         $url = preg_replace('/&batch=\d+$/Ui', '', $url);
@@ -133,12 +133,12 @@ class Batches {
         return $new_url;
     }
 
-    function nextPage()
+    public function nextPage()
     {
         Layout::metaRoute($this->getAddress(), 0);
     }
 
-    function continueLink($continue_link=NULL)
+    public function continueLink($continue_link=NULL)
     {
         if (empty($continue_link)) {
             $continue_link = _('Continue');
@@ -149,7 +149,7 @@ class Batches {
         return sprintf('<a href="%s">%s</a>', $url, $continue_link);
     }
 
-    function getGraph()
+    public function getGraph()
     {
         $show_wait = true;
 

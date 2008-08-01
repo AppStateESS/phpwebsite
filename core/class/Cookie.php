@@ -10,7 +10,7 @@ define('COOKIE_HASH', md5(SITE_HASH . $_SERVER['HTTP_HOST']));
 
 class PHPWS_Cookie {
 
-    function write($name, $value, $time=0)
+    public function write($name, $value, $time=0)
     {
         if (empty($time)) {
             $time = time() + 31536000;
@@ -23,7 +23,7 @@ class PHPWS_Cookie {
         }
     }
 
-    function read($name)
+    public function read($name)
     {
         if (isset($_COOKIE[COOKIE_HASH][$name])) {
             return $_COOKIE[COOKIE_HASH][$name];
@@ -32,7 +32,7 @@ class PHPWS_Cookie {
         }
     }
 
-    function delete($name)
+    public function delete($name)
     {
         $cookie_index = sprintf('%s[%s]', COOKIE_HASH, $name);
         setcookie($cookie_index, '', time() - 3600);

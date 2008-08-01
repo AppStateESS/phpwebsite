@@ -12,7 +12,7 @@ if (!defined('CAPTCHA_NAME')) {
 
 class Captcha {
 
-    function get()
+    public function get()
     {
         if (!Captcha::isGD()) {
             return null;
@@ -27,7 +27,7 @@ class Captcha {
         }
     }
 
-    function verify($answer)
+    public function verify($answer)
     {
         if (!Captcha::isGD()) {
             return true;
@@ -48,7 +48,7 @@ class Captcha {
         return verify($answer);
     }
 
-    function isGD()
+    public function isGD()
     {
         return extension_loaded('gd');
     }
