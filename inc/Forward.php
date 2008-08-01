@@ -28,7 +28,7 @@ function forwardInfo()
 
     $aUrl = explode('/', $url);
     $module = array_shift($aUrl);
-   
+
     $mods = PHPWS_Core::getModules(true, true);
 
     if (!in_array($module, $mods)) {
@@ -43,16 +43,28 @@ function forwardInfo()
     $_REQUEST['module'] = $_GET['module'] = & $module;
 
     $count = 1;
-    foreach ($aUrl as $var) {
-        if (!empty($var) && !preg_match($preg, $var)) {
-            $varname = 'var' . $count;
-            $_GET[$varname] = $var;
-            $count++;
+    $continue = 1;
+    $i = 0;
+    while(isset($aUrl[$i])) {
+        $key = $aUrl[$i];
+        $i++;
+        if (isset($aUrl[$i])) {
+            $value = $aUrl[$i];
+            if (preg_match('/&/', $value)) {
+                $remain = explode('&', $value);
+                $j = 1;
+                $value = $remain[0];
+                while (isset($remain[$j])) {
+                    $sub = explode('=', $remain[$j]);
+                    $_REQUEST[$sub[0]] = $_GET[$sub[0]] = $sub[1];
+                    $j++;
+                }
+            }
+
+            $_GET[$key] = $_REQUEST[$key] = $value;
         }
+        $i++;
     }
-
 }
-
-
 
 ?>
