@@ -14,36 +14,36 @@ PHPWS_Core::initModClass('branch', 'Branch.php');
 
 class Branch_Admin {
     // Contains the panel object
-    var $panel   = null;
+    public $panel   = null;
 
-    var $title   = null;
+    public $title   = null;
 
-    var $message = null;
+    public $message = null;
 
     // contains the current content. piped into panel
-    var $content = null;
+    public $content = null;
 
-    // currently 
-    var $branch  = null;
+    // currently
+    public $branch  = null;
 
-    var $error   = null;
+    public $error   = null;
 
     // database creation form variables
-    var $createdb    = 0;
-    var $dbname      = null;
-    var $dbuser      = null;
-    var $dbpass      = null;
-    var $dbhost      = 'localhost';
-    var $dbport      = null;
-    var $dbtype      = null;
-    var $dbprefix    = null;
-    var $dsn         = null; // full dsn
+    public $createdb    = 0;
+    public $dbname      = null;
+    public $dbuser      = null;
+    public $dbpass      = null;
+    public $dbhost      = 'localhost';
+    public $dbport      = null;
+    public $dbtype      = null;
+    public $dbprefix    = null;
+    public $dsn         = null; // full dsn
 
-    var $create_step = 1;
+    public $create_step = 1;
 
-    var $db_list    = null;
+    public $db_list    = null;
 
-    function Branch_Admin()
+    public function __construct()
     {
         $this->db_list = array ('mysql' =>'MySQL',
                                 'ibase' =>'InterBase',
@@ -79,7 +79,7 @@ class Branch_Admin {
     }
 
 
-    function main()
+    public function main()
     {
         $content = null;
         // Create the admin panel
@@ -96,7 +96,7 @@ class Branch_Admin {
      * Directs the administrative choices
      * Content is displayed in main
      */
-    function direct()
+    public function direct()
     {
         if (!@$command = $_REQUEST['command']) {
             $command = $this->panel->getCurrentTab();
@@ -176,7 +176,7 @@ class Branch_Admin {
                         $this->message[] = dgettext('branch', 'Branch created successfully.');
                         $vars['command'] = 'install_branch_core';
                         $vars['branch_id'] = $this->branch->id;
-                        $this->content = PHPWS_Text::secureLink(dgettext('branch', 'Continue to install branch core'), 'branch', $vars); 
+                        $this->content = PHPWS_Text::secureLink(dgettext('branch', 'Continue to install branch core'), 'branch', $vars);
                     } else {
                         $this->title = dgettext('branch', 'Unable to create branch directories.');
                         $this->content = dgettext('branch', 'Sorry, but Branch failed to make the proper directories.');
@@ -216,7 +216,7 @@ class Branch_Admin {
         }// end of the command switch
     }
 
-    function install_branch_core()
+    public function install_branch_core()
     {
         PHPWS_Core::initCoreClass('File.php');
         $content = array();
@@ -273,12 +273,12 @@ class Branch_Admin {
                 $this->content[] = dgettext('branch', 'Unable to copy .htaccess file.');
             }
         }
-        
+
         $stats = sprintf('<?php include \'%sphpws_stats.php\' ?>', PHPWS_SOURCE_DIR);
         $index_file = sprintf('<?php include \'%sindex.php\'; ?>', PHPWS_SOURCE_DIR);
         file_put_contents($this->branch->directory . 'phpws_stats.php', $stats);
         file_put_contents($this->branch->directory . 'index.php', $index_file);
-        
+
         if (!$this->copy_config()) {
             $this->content[] = dgettext('branch', 'Failed to create config.php file in the branch.');
             return false;
@@ -303,7 +303,7 @@ class Branch_Admin {
         return true;
     }
 
-    function create_core()
+    public function create_core()
     {
         $db = new PHPWS_DB;
         $loaddb = $db->loadDB($this->getDSN(), $this->dbprefix);
@@ -330,7 +330,7 @@ class Branch_Admin {
         }
     }
 
-    function copy_config()
+    public function copy_config()
     {
         $template['source_dir']      = PHPWS_SOURCE_DIR;
         $template['home_dir']        = $this->branch->directory;
@@ -351,11 +351,11 @@ class Branch_Admin {
         $file_content = PHPWS_Template::process($template, 'branch', 'core/inc/config.tpl', true);
 
         $file_directory = $this->branch->directory . 'config/core/config.php';
-        
+
         return @file_put_contents($file_directory, $file_content);
     }
 
-    function post_basic()
+    public function post_basic()
     {
         PHPWS_Core::initCoreClass('File.php');
         $result = true;
@@ -425,7 +425,7 @@ class Branch_Admin {
     }
 
 
-    function core_module_installation()
+    public function core_module_installation()
     {
         if (!isset($_SESSION['Boost'])){
             $modules = PHPWS_Core::coreModList();
@@ -435,14 +435,14 @@ class Branch_Admin {
 
         PHPWS_DB::loadDB($this->getDSN(), $this->dbprefix);
 
-        
+
         $this->title = dgettext('branch', 'Installing core modules');
 
         $result = $_SESSION['Boost']->install(false, true, $this->branch->directory);
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $this->content[] = dgettext('branch', 'An error occurred while trying to install your modules.') 
+            $this->content[] = dgettext('branch', 'An error occurred while trying to install your modules.')
                 . ' ' . dgettext('branch', 'Please check your error logs and try again.');
             return true;
         } else {
@@ -457,7 +457,7 @@ class Branch_Admin {
      * sets the current 'step' the user is in for the creation
      * of a new branch
      */
-    function setCreateStep($step)
+    public function setCreateStep($step)
     {
         $_SESSION['branch_create_step'] = $step;
         $this->create_step = $step;
@@ -466,7 +466,7 @@ class Branch_Admin {
     /**
      * saves a workable dsn line for use in the creation of the branch
      */
-    function saveDSN()
+    public function saveDSN()
     {
         $_SESSION['branch_dsn'] = array('dbtype'   => $this->dbtype,
                                         'dbuser'   => $this->dbuser,
@@ -482,7 +482,7 @@ class Branch_Admin {
      * the dsn line from variables in the object. If the variables are not
      * set, it returns null
      */
-    function getDSN($dbname=true)
+    public function getDSN($dbname=true)
         {
             if (isset($this->dbuser)) {
                 $dsn =  sprintf('%s://%s:%s@%s',
@@ -490,7 +490,7 @@ class Branch_Admin {
                                 $this->dbuser,
                                 $this->dbpass,
                                 $this->dbhost);
-            
+
                 if ($this->dbport) {
                     $dsn .= ':' . $this->dbport;
                 }
@@ -506,29 +506,28 @@ class Branch_Admin {
 
         }
 
-    function cpanel()
+    public function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $newLink = 'index.php?module=branch&amp;command=new';
         $newCommand = array ('title'=>dgettext('branch', 'New'), 'link'=> $newLink);
-        
+
         $listLink = 'index.php?module=branch&amp;command=list';
         $listCommand = array ('title'=>dgettext('branch', 'List'), 'link'=> $listLink);
 
         $tabs['new'] = &$newCommand;
         $tabs['list'] = &$listCommand;
 
-        $panel = new PHPWS_Panel('branch');
-        $panel->quickSetTabs($tabs);
-        $panel->enableSecure();
-        $panel->setModule('branch');
-        $this->panel = &$panel;
+        $this->panel = new PHPWS_Panel('branch');
+        $this->panel->quickSetTabs($tabs);
+        $this->panel->enableSecure();
+        $this->panel->setModule('branch');
     }
-    
+
     /**
      * Displays the content variable in the control panel
      */
-    function displayPanel()
+    public function displayPanel()
     {
         $template['TITLE']   = $this->title;
         if ($this->message) {
@@ -545,7 +544,7 @@ class Branch_Admin {
             $template['CONTENT'] = $this->content;
         }
         $content = PHPWS_Template::process($template, 'branch', 'main.tpl');
-        
+
         $this->panel->setContent($content);
         Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
     }
@@ -553,7 +552,7 @@ class Branch_Admin {
     /**
      * resets the branch creation process
      */
-    function resetAdmin()
+    public function resetAdmin()
     {
         unset($_SESSION['branch_create_step']);
         unset($_SESSION['branch_dsn']);
@@ -568,7 +567,7 @@ class Branch_Admin {
      * if so, if there a database to which to connect. If not, then
      * it creates the database (if specified)
      */
-    function testDB()
+    public function testDB()
     {
         $connection = $this->checkConnection();
         PHPWS_DB::loadDB();
@@ -618,7 +617,7 @@ class Branch_Admin {
         }
     }
 
-    function edit_basic()
+    public function edit_basic()
     {
         $branch = & $this->branch;
 
@@ -657,7 +656,7 @@ class Branch_Admin {
     /**
      * Form to create or edit a branch
      */
-    function edit_db()
+    public function edit_db()
     {
         $this->title = dgettext('branch', 'Setup branch database');
         $form = new PHPWS_Form('branch-form');
@@ -666,17 +665,17 @@ class Branch_Admin {
 
         $form->addCheck('createdb', $this->createdb);
         $form->setLabel('createdb', dgettext('branch', 'Create new database'));
-        
+
         $form->addSelect('dbtype', $this->db_list);
         $form->setMatch('dbtype', $this->dbtype);
         $form->setLabel('dbtype', dgettext('branch', 'Database syntax'));
-        
+
         $form->addText('dbname', $this->dbname);
         $form->setLabel('dbname', dgettext('branch', 'Database name'));
-        
+
         $form->addText('dbuser', $this->dbuser);
         $form->setLabel('dbuser', dgettext('branch', 'Permission user'));
-        
+
         $form->addPassword('dbpass', $this->dbpass);
         $form->allowValue('dbpass');
         $form->setLabel('dbpass', dgettext('branch', 'User password'));
@@ -684,32 +683,32 @@ class Branch_Admin {
         $form->addText('dbprefix', $this->dbprefix);
         $form->setLabel('dbprefix', dgettext('branch', 'Table prefix'));
         $form->setSize('dbprefix', 5, 5);
-        
+
         $form->addText('dbhost', $this->dbhost);
         $form->setLabel('dbhost', dgettext('branch', 'Database Host'));
         $form->setSize('dbhost', 40);
-        
+
         $form->addText('dbport', $this->dbport);
         $form->setLabel('dbport', dgettext('branch', 'Connection Port'));
-        
+
         $form->addTplTag('DB_LEGEND', dgettext('branch', 'Database information'));
-        
+
         $form->addSubmit('plug', dgettext('branch', 'Use hub values'));
         $form->addSubmit('submit', dgettext('branch', 'Continue...'));
-        
+
         $template = $form->getTemplate();
 
         $this->content = PHPWS_Template::process($template, 'branch', 'edit_db.tpl');
     }
 
-    function checkConnection()
+    public function checkConnection()
     {
         $dsn1 =  sprintf('%s://%s:%s@%s',
                          $this->dbtype,
                          $this->dbuser,
                          $this->dbpass,
                          $this->dbhost);
-        
+
         if ($this->dbport) {
             $dsn1 .= ':' . $this->dbport;
         }
@@ -717,7 +716,7 @@ class Branch_Admin {
         $dsn2 = $dsn1 . '/' . $this->dbname;
 
         $connection = DB::connect($dsn1);
-        
+
         if (PEAR::isError($connection)) {
             // basic connection failed
             PHPWS_Error::log($connection);
@@ -754,7 +753,7 @@ class Branch_Admin {
     /**
      * copies the db form settings into the object
      */
-    function post_db()
+    public function post_db()
     {
         $result = true;
         $this->dbuser   = $_POST['dbuser'];
@@ -791,7 +790,7 @@ class Branch_Admin {
     /**
      * Grabs the current database values from the hub installation
      */
-    function plugHubValues()
+    public function plugHubValues()
     {
         $dsn = & $GLOBALS['PHPWS_DB']['connection']->dsn;
 
@@ -812,7 +811,7 @@ class Branch_Admin {
     /**
      * Creates a new database with the dsn information
      */
-    function createDB()
+    public function createDB()
     {
         $dsn = $this->getDSN(false);
         if (empty($dsn)) {
@@ -835,10 +834,10 @@ class Branch_Admin {
     }
 
     /**
-     * Form that allows the hub admin determine which modules a 
+     * Form that allows the hub admin determine which modules a
      * branch can install.
      */
-    function edit_modules()
+    public function edit_modules()
     {
         PHPWS_Core::initCoreClass('File.php');
         $this->title = sprintf(dgettext('branch', 'Module access for "%s"'), $this->branch->branch_name);
@@ -890,7 +889,7 @@ class Branch_Admin {
     /**
      * Lists the branches on the system
      */
-    function listBranches()
+    public function listBranches()
     {
         $page_tags['BRANCH_NAME_LABEL'] = dgettext('branch', 'Branch name');
         $page_tags['DIRECTORY_LABEL']   = dgettext('branch', 'Directory');
@@ -908,7 +907,7 @@ class Branch_Admin {
         $this->content = $pager->get();
     }
 
-    function saveBranchModules()
+    public function saveBranchModules()
     {
         $db = new PHPWS_DB('branch_mod_limit');
         $db->addWhere('branch_id', (int)$_POST['branch_id']);
@@ -918,7 +917,7 @@ class Branch_Admin {
         if (empty($_POST['module_name']) || !is_array($_POST['module_name'])) {
             return;
         }
-        
+
         foreach ($_POST['module_name'] as $module) {
             $db->addValue('branch_id', (int)$_POST['branch_id']);
             $db->addValue('module_name', $module);
@@ -932,7 +931,7 @@ class Branch_Admin {
         return true;
     }
 
-    function getBranches($load_db_info=false)
+    public function getBranches($load_db_info=false)
     {
         $db = new PHPWS_DB('branch_sites');
         $result = $db->getObjects('Branch');

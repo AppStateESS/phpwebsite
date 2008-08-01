@@ -5,15 +5,15 @@
    */
 
 class Branch {
-    var $id          = null;
-    var $branch_name = null;
-    var $directory   = null; 
-    var $url         = null;
-    var $site_hash   = null;
-    var $dsn         = null;
-    var $prefix      = null;
+    public $id          = null;
+    public $branch_name = null;
+    public $directory   = null;
+    public $url         = null;
+    public $site_hash   = null;
+    public $dsn         = null;
+    public $prefix      = null;
 
-    function Branch($id=0, $load_dsn=false)
+    public function __construct($id=0, $load_dsn=false)
     {
         $this->site_hash = md5(rand());
         if (!$id) {
@@ -25,7 +25,7 @@ class Branch {
     }
 
 
-    function loadDSN()
+    public function loadDSN()
     {
 
         $config_contents = file_get_contents($this->directory . 'config/core/config.php');
@@ -59,7 +59,7 @@ class Branch {
         }
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('branch_sites');
         $result = $db->loadObject($this);
@@ -69,7 +69,7 @@ class Branch {
         }
     }
 
-    function setBranchName($branch_name)
+    public function setBranchName($branch_name)
     {
         $this->branch_name = $branch_name;
         $db = new PHPWS_DB('branch_sites');
@@ -85,8 +85,8 @@ class Branch {
             return TRUE;
         }
     }
-    
-    function save()
+
+    public function save()
     {
         if (!preg_match('/\/$/', $this->directory)) {
             $this->directory .= '/';
@@ -96,7 +96,7 @@ class Branch {
         return $db->saveObject($this);
     }
 
-    function getUrl()
+    public function getUrl()
     {
         if (!preg_match('/^(http(s){0,1}:\/\/)/', $this->url)) {
             $http = 'http://' . $this->url;
@@ -106,7 +106,7 @@ class Branch {
         return sprintf('<a href="%s">%s</a>', $http, PHPWS_Text::shortenUrl($http));
     }
 
-    function createDirectories()
+    public function createDirectories()
     {
         if (!mkdir($this->directory . 'config/')) {
             return FALSE;
@@ -115,7 +115,7 @@ class Branch {
         if (!mkdir($this->directory . 'config/core/')) {
             return FALSE;
         }
-        
+
         if (!mkdir($this->directory . 'files/')) {
             return FALSE;
         }
@@ -162,12 +162,12 @@ class Branch {
     /**
      * Returns an associative array for the branch list page
      */
-    function getTpl()
+    public function getTpl()
     {
-        
+
         $tpl['URL'] = $this->getUrl();
 
-        $links[] = PHPWS_Text::secureLink(dgettext('branch', 'Edit'), 'branch', 
+        $links[] = PHPWS_Text::secureLink(dgettext('branch', 'Edit'), 'branch',
                                           array('command'=>'edit_branch', 'branch_id'=>$this->id));
 
         $js['question'] = dgettext('branch', 'Removing this branch will make it inaccessible.\nThe database and files will remain behind.\nIf you are sure you want to remove the branch, type the branch name:');
@@ -185,7 +185,7 @@ class Branch {
         return $tpl;
     }
 
-    function getHubPrefix() {
+    public function getHubPrefix() {
         $handle = @fopen(PHPWS_SOURCE_DIR . 'config/core/config.php', 'r');
         if ($handle) {
             $search_for = '^define\(\'PHPWS_TABLE_PREFIX\',';
@@ -204,7 +204,7 @@ class Branch {
         }
     }
 
-    function getHubDSN()
+    public function getHubDSN()
     {
         $handle = @fopen(PHPWS_SOURCE_DIR . 'config/core/config.php', 'r');
         if ($handle) {
@@ -228,7 +228,7 @@ class Branch {
      * Makes a connection to the hub database. Used when currently using a
      * branch connection.
      */
-    function loadHubDB()
+    public function loadHubDB()
     {
         $dsn = Branch::getHubDSN();
         if (empty($dsn)) {
@@ -246,7 +246,7 @@ class Branch {
      * Connects currently constructed branch to its database
      * Not called statically.
      */
-    function loadBranchDB()
+    public function loadBranchDB()
     {
         if (empty($this->dsn)) {
             return false;
@@ -258,14 +258,14 @@ class Branch {
     /**
      * Restores the branch connection after calling the loadHubDB
      */
-    function restoreBranchDB()
+    public function restoreBranchDB()
     {
         $prefix = $dsn = null;
         extract($GLOBALS['Branch_Temp']);
         PHPWS_DB::loadDB($dsn, $prefix);
     }
 
-    function checkCurrentBranch()
+    public function checkCurrentBranch()
     {
         if (isset($_SESSION['Approved_Branch'])) {
             return (bool)$_SESSION['Approved_Branch'];
@@ -298,7 +298,7 @@ class Branch {
         }
     }
 
-    function getHubDB()
+    public function getHubDB()
     {
         $dsn = Branch::getHubDSN();
         if (empty($dsn)) {
@@ -320,7 +320,7 @@ class Branch {
         return $connection;
     }
 
-    function getCurrent()
+    public function getCurrent()
     {
         if (!isset($_SESSION['Approved_Branch'])) {
             return FALSE;
@@ -329,7 +329,7 @@ class Branch {
         }
     }
 
-    function getBranchMods()
+    public function getBranchMods()
     {
         $branch_id = Branch::getCurrent();
         if (!$branch_id) {
@@ -351,13 +351,13 @@ class Branch {
         } else {
             return $result;
         }
-        
+
     }
 
     /**
      * Deletes a branch from the hub's database
      */
-    function delete()
+    public function delete()
     {
         $db = new PHPWS_DB('branch_sites');
         $db->addWhere('id', $this->id);
