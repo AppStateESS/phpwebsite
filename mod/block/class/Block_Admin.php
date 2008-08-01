@@ -194,7 +194,7 @@ class Block_Admin {
 
     }
 
-    function edit(&$block, $js=FALSE)
+    function edit(Block_Item $block, $js=FALSE)
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         PHPWS_Core::initCoreClass('Editor.php');
@@ -246,7 +246,7 @@ class Block_Admin {
         return $content;
     }
 
-    function postBlock(&$block)
+    function postBlock(Block_Item $block)
     {
         $block->setTitle($_POST['title']);
         $block->setContent($_POST['block_content']);
@@ -263,7 +263,7 @@ class Block_Admin {
     function blockList()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
-    
+
         $pageTags['CONTENT'] = dgettext('block', 'Content');
         $pageTags['ACTION']  = dgettext('block', 'Action');
         $pager = new DBPager('block', 'Block_Item');
@@ -273,18 +273,18 @@ class Block_Admin {
         $pager->addPageTags($pageTags);
         $pager->addRowTags('getTpl');
         $pager->addSortHeader('title', dgettext('block', 'Title'));
-        
+
         $content = $pager->get();
         return $content;
     }
 
-  
-    function pinBlock(&$block)
+
+    function pinBlock(Block_Item $block)
     {
         $_SESSION['Pinned_Blocks'][$block->getID()] = $block;
     }
-  
-    function pinBlockAll(&$block)
+
+    function pinBlockAll(Block_Item $block)
     {
         $values['block_id'] = $block->id;
         $db = & new PHPWS_DB('block_pinned');
@@ -315,8 +315,8 @@ class Block_Admin {
         $db->addValue($values);
         return $db->insert();
     }
-  
-    function copyBlock(&$block)
+
+    function copyBlock(Block_Item $block)
     {
         Clipboard::copy($block->getTitle(), $block->getTag());
     }
