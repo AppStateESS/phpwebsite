@@ -81,21 +81,21 @@ function initializei18n()
     } else {
         define('PHPWS_TRANSLATION', TRUE);
         initLanguage();
-        $core_locale = PHPWS_SOURCE_DIR . 'locale'; 
+        $core_locale = PHPWS_SOURCE_DIR . 'locale';
 
-        bindtextdomain('core', $core_locale); 
+        bindtextdomain('core', $core_locale);
         textdomain('core');
- 
-        $handle = opendir(PHPWS_SOURCE_DIR . "mod/"); 
- 
+
+        $handle = opendir(PHPWS_SOURCE_DIR . "mod/");
+
         while ($mod_name = readdir($handle)) {
-            $localedir = sprintf('%smod/%s/locale/', PHPWS_SOURCE_DIR, $mod_name); 
-        
+            $localedir = sprintf('%smod/%s/locale/', PHPWS_SOURCE_DIR, $mod_name);
+
             if (is_dir(PHPWS_SOURCE_DIR . 'mod/' . $mod_name)) {
                 if (file_exists($localedir) && $mod_name != "..") {
-                    bindtextdomain($mod_name, $localedir); 
+                    bindtextdomain($mod_name, $localedir);
                 }
-            } 
+            }
         }
         closedir($handle);
     }
@@ -114,7 +114,7 @@ function setLanguage($language)
 }
 
 /**
- * Initializes language 
+ * Initializes language
  * Be aware this is called BEFORE the Core class
  * is established.
  */
@@ -148,7 +148,7 @@ function initLanguage()
                     $testslash =  explode('-', $language);
                     $test[0] = $testslash[0] . '_' . strtoupper($testslash[1]);
                 }
-            
+
                 $test[1] = $language;
                 $test[2] = substr($language, 0, 2);
                 $test[3] = $test[2] . '_' . strtoupper($test[2]);
@@ -161,7 +161,7 @@ function initLanguage()
                         break;
                     }
                 }
-            
+
                 if ($locale_found) {
                     break;
                 }
@@ -370,7 +370,7 @@ function translateFile($filename)
  * browser_version
  * engine
  * engine_version
- * locale 
+ * locale
  */
 function &getBrowserInfo($parameter=NULL)
 {
@@ -382,6 +382,13 @@ function &getBrowserInfo($parameter=NULL)
         } else {
             return $GLOBALS['browser_info'][$parameter];
         }
+    }
+}
+
+function __autoload($class_name)
+{
+    if (!PHPWS_Core::initCoreClass(str_replace('PHPWS_', '', $class_name) . '.php')) {
+        PHPWS_Core::initCoreClass($class_name . '.php');
     }
 }
 
