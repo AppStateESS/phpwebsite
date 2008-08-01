@@ -66,7 +66,7 @@ class PHPWS_Album extends PHPWS_Item {
      * @var    array
      * @access private
      */
-    var $_batch = array();  
+    var $_batch = array();
 
     /**
      * Stores the order in which the photos in the album are being shown
@@ -96,7 +96,7 @@ class PHPWS_Album extends PHPWS_Item {
         $sql[] = 'mod_photoalbum_photos WHERE album=\'';
         $sql[] = $this->getId();
         $sql[] = '\'';
-    
+
         if(!Current_User::allow('photoalbum', 'edit_photo')) {
             $sql[] = ' AND hidden=\'0\'';
         }
@@ -106,7 +106,7 @@ class PHPWS_Album extends PHPWS_Item {
         } else {
             $sql[] = ' order by created desc';
         }
-        
+
         $sql = implode(' ', $sql);
 
         $this->photos = PHPWS_DB::getCol($sql);
@@ -128,7 +128,7 @@ class PHPWS_Album extends PHPWS_Item {
             }
         }
 
-   
+
         $options = array(0=>dgettext('photoalbum', 'Visible'),
                          1=>dgettext('photoalbum', 'Hidden'));
 
@@ -158,10 +158,10 @@ class PHPWS_Album extends PHPWS_Item {
 
         $form->add('Album_save', 'submit', dgettext('photoalbum', 'Save'));
         $form->setTab('Album_save', 5);
- 
+
         $form->add('module', 'hidden', 'photoalbum');
         $form->add('PHPWS_Album_op', 'hidden', 'save');
-     
+
         $tags = array();
         $tags = $form->getTemplate();
 
@@ -200,12 +200,12 @@ class PHPWS_Album extends PHPWS_Item {
         }
 
         if(!$authorize) {
-            $_SESSION['PHPWS_AlbumManager']->error = new PHPWS_Error('photoalbum', 'PHPWS_Album::_save()', $message);
+            $_SESSION['PHPWS_AlbumManager']->error = new Old_Error('photoalbum', 'PHPWS_Album::_save()', 'Problem saving album.');
             $_REQUEST['PHPWS_AlbumManager_op'] = 'accessDenied';
             $_SESSION['PHPWS_AlbumManager']->action();
             return;
         }
-    
+
         if(isset($_REQUEST['Album_ext'])) {
             $this->_blurb1 = PHPWS_Text::parseInput($_REQUEST['Album_ext']);
         }
@@ -236,7 +236,7 @@ class PHPWS_Album extends PHPWS_Item {
         if(PHPWS_Error::isError($error)) {
             $message = dgettext('photoalbum', 'The Photo Album could not be updated to the database.');
             javascript('alert', array('content' => $message));
-     
+
             $_REQUEST['PHPWS_Album_op'] = 'edit';
             $this->action();
             return;
@@ -300,22 +300,22 @@ class PHPWS_Album extends PHPWS_Item {
 
             $form->add('Album_yes', 'submit', dgettext('photoalbum', 'Yes'));
             $form->add('Album_no', 'submit', dgettext('photoalbum', 'No'));
-      
+
             $tags = array();
             $tags = $form->getTemplate();
             $tags['MESSAGE'] = dgettext('photoalbum', 'Are you sure you want to delete this album and all the photos associated with it?');
-      
+
             $content = PHPWS_Template::processTemplate($tags, 'photoalbum', 'deleteAlbum.tpl');
 
             $newLayout['TITLE']   = dgettext('photoalbum', 'Photo Album') . ':&#160;' . $_SESSION['PHPWS_AlbumManager']->album->getLabel();
             $newLayout['CONTENT'] = "<h3>$title</h3>$content";
             $newLayout['CONTENT'] .= $this->_view();
-      
+
             $finalContent = PHPWS_Template::process($newLayout, 'layout', 'box.tpl');
             Layout::add($finalContent);
         }
     }
-    
+
     function _view() {
         PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -401,7 +401,7 @@ class PHPWS_Album extends PHPWS_Item {
         }
 
         if(!$authorize) {
-            $_SESSION['PHPWS_AlbumManager']->error = new PHPWS_Error('photoalbum', 'PHPWS_Photo::_edit()', $message, 'continue', PHOTOALBUM_DEBUG_MODE);
+            $_SESSION['PHPWS_AlbumManager']->error = new Old_Error('photoalbum', 'PHPWS_Photo::_edit()', $message, 'continue', PHOTOALBUM_DEBUG_MODE);
             $_REQUEST['PHPWS_AlbumManager_op'] = 'accessDenied';
             $_SESSION['PHPWS_AlbumManager']->action();
             return;
@@ -416,7 +416,7 @@ class PHPWS_Album extends PHPWS_Item {
                     unset($this->_batch[$i]);
             }
         }
-   
+
         $form = new PHPWS_Form('PHPWS_Batch_add');
 
         for($i = 1; $i <= PHOTOALBUM_MAX_UPLOADS; $i++) {
@@ -430,7 +430,7 @@ class PHPWS_Album extends PHPWS_Item {
         $form->add('module', 'hidden', 'photoalbum');
         $form->add('PHPWS_Album_op', 'hidden', 'batchSave');
         $form->setEncode(TRUE);
-     
+
         $formTags = array();
         $formTags = $form->getTemplate();
 
@@ -447,11 +447,11 @@ class PHPWS_Album extends PHPWS_Item {
         $tags['HIDDEN_TEXT'] = dgettext('photoalbum', 'Activity');
         $tags['PHOTO_NUMBER_TEXT'] = dgettext('photoalbum', 'Photo Number');
 
-        for($i = 0; $i < $numForms; $i++) {      
+        for($i = 0; $i < $numForms; $i++) {
             if(isset($this->_batch[$i]['error'])) {
                 $tags['ERROR'] = $this->_batch[$i]['error'];
                 $this->_batch[$i]['error'] = NULL;
-                unset($this->_batch[$i]['error']); 
+                unset($this->_batch[$i]['error']);
             } else {
                 $tags['ERROR'] = NULL;
             }
@@ -553,7 +553,7 @@ class PHPWS_Album extends PHPWS_Item {
                         $this->_batch[$key]['type'] = $_FILES['Photo']['type'][$key];
                         $this->_batch[$key]['width'] = $info[0];
                         $this->_batch[$key]['height'] = $info[1];
-            
+
                         if($info[2] == 2 || $info[2] == 3) {
                             $dir = PHOTOALBUM_DIR . $this->getId() . '/';
                             $thumbnail = PHPWS_File::makeThumbnail($this->_batch[$key]['name'], $dir, $dir, PHOTOALBUM_TN_WIDTH, PHOTOALBUM_TN_HEIGHT);
@@ -621,7 +621,7 @@ class PHPWS_Album extends PHPWS_Item {
                     $db = new PHPWS_DB('mod_photoalbum_photos');
                     $db->addValue($value);
                     $db->insert();
-                    
+
                     $count ++;
                 }
             }
@@ -642,7 +642,7 @@ class PHPWS_Album extends PHPWS_Item {
             $this->_orderIds();
             return SlideShow::play($this->photos);
         } else {
-            if(!isset($_SESSION['NO_JS_SLIDESHOW']) || $_SESSION['NO_JS_SLIDESHOW']->getCount() != count($this->photos) || 
+            if(!isset($_SESSION['NO_JS_SLIDESHOW']) || $_SESSION['NO_JS_SLIDESHOW']->getCount() != count($this->photos) ||
                $_SESSION['NO_JS_SLIDESHOW']->album_id != $this->_id)
                 $_SESSION['NO_JS_SLIDESHOW'] = new NoJSSlideShow($this->photos, $this->_id);
             return $_SESSION['NO_JS_SLIDESHOW']->play();
@@ -694,7 +694,7 @@ class PHPWS_Album extends PHPWS_Item {
             if(!isset($this->photo) || ($this->photo->getId() != $_REQUEST['PHPWS_Photo_id'])) {
                 $this->photo = new PHPWS_Photo($_REQUEST['PHPWS_Photo_id']);
             }
-        } 
+        }
 
         // all permissions checked in function
 
@@ -703,25 +703,25 @@ class PHPWS_Album extends PHPWS_Item {
             case 'new':
                 $this->_new();
                 break;
-        
+
             case 'edit':
                 $title = dgettext('photoalbum', 'Edit Album');
                 $content = $this->_edit();
                 break;
-        
+
             case 'save':
                 $this->_save();
                 break;
-        
+
             case 'delete':
                   $this->_delete();
                 break;
-        
+
             case 'view':
                 $title = dgettext('photoalbum', 'Photo Album') . ': ' . $this->getLabel();
                 $content = $this->_view();
                 break;
-        
+
             case 'batch':
                 if (!Current_User::allow('photoalbum', 'add_photo')) {
                     Current_User::disallow();
@@ -730,11 +730,11 @@ class PHPWS_Album extends PHPWS_Item {
                 $title = dgettext('photoalbum', 'Batch Add Photos');
                 $content = $this->_batchAdd();
                 break;
-        
+
             case 'batchSave':
                 $this->_batchSave();
                 break;
-        
+
             case 'slideShow':
                 $title = dgettext('photoalbum', 'Slide Show');
                 $content = $this->_slideShow();
@@ -765,12 +765,12 @@ class PHPWS_Album extends PHPWS_Item {
             $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=new">' . dgettext('photoalbum', 'New Photo') . '</a>';
             $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=batch">' . dgettext('photoalbum', 'Batch Add') . '</a>';
         }
-        
+
         $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_AlbumManager_op=list">' . dgettext('photoalbum', 'List Albums') . '</a>';
-        
-        $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=slideShow">' . 
+
+        $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=slideShow">' .
             dgettext('photoalbum', 'Slide Show') . '</a>';
-        
+
         if(Current_User::allow('photoalbum', 'edit_album')) {
             if (!isset($_REQUEST['missing_desc'])) {
                 $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=view&amp;missing_desc=1">' . dgettext('photoalbum', 'Missing Descriptions') . '</a>';

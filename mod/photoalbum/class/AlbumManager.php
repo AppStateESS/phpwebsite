@@ -7,7 +7,7 @@
    */
 
 require_once(PHPWS_SOURCE_DIR . 'mod/photoalbum/class/Album.php');
-
+PHPWS_Core::initModClass('photoalbum', 'Message.php');
 class PHPWS_AlbumManager {
 
     /**
@@ -21,7 +21,7 @@ class PHPWS_AlbumManager {
     /**
      * Stores the current error that has occured in the photoalbum
      *
-     * @var    PHPWS_Error
+     * @var    Old_Error
      * @access public
      */
     var $error = NULL;
@@ -93,7 +93,7 @@ class PHPWS_AlbumManager {
             $this->error = NULL;
         } else {
             $message = dgettext('photoalbum', 'Access denied function was called without a proper error initialized.');
-            $error = new PHPWS_Error('photoalbum', 'PHPWS_AlbumManager::_accessDenied()', $message, 'exit', 1);
+            $error = new Old_Error('photoalbum', 'PHPWS_AlbumManager::_accessDenied()', $message, 'exit', 1);
             $error->message();
         }
     }
@@ -112,7 +112,7 @@ class PHPWS_AlbumManager {
             $image[] = 'title="' . $result[0]['label'] . '" ';
             $image[] = 'border="0" />';
             $image = implode('', $image);
-      
+
             $time = time();
             $sql = "UPDATE mod_photoalbum_albums SET image='$image', updated='$time' WHERE id='$albumId'";
             PHPWS_DB::query($sql);
@@ -130,7 +130,7 @@ class PHPWS_AlbumManager {
             if(!isset($this->album) || ($this->album->getId() != $_REQUEST['PHPWS_Album_id'])) {
                 $this->album = new PHPWS_Album($_REQUEST['PHPWS_Album_id']);
             }
-        } 
+        }
 
         if(isset($_REQUEST['PHPWS_AlbumManager_op'])) {
             switch($_REQUEST['PHPWS_AlbumManager_op']) {
@@ -144,7 +144,7 @@ class PHPWS_AlbumManager {
                 }
                 $this->_new();
                 break;
-        
+
             case 'accessDenied':
                 $this->_accessDenied();
                 break;

@@ -1,5 +1,9 @@
 Note: this log is only for work done since the conversion for 1.x
 
+1 August 2008
++ Removed some compatibility functions from Core. Redistributed to
+this module.
+
 Version 1.4.6
 -----------------------------------------------------------------
 29 April 2008
@@ -24,7 +28,7 @@ Version 1.4.4
 13 December 2007
 + Removed html tags and newline calls causing javascript errors.
 + Fixed: photoalbum was calling hub config file instead of local
-  version 
+  version
 
 Version 1.4.3 - 4 Dec 2007
 ----------------------------------------------------------------
