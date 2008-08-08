@@ -2,6 +2,28 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+Version 1.8.3
+---------------------------------------------------------------------
+8 August 2008
++ Updated pick date functionality of js_calendar. Wasn't forwarding
+properly.
++ Updated js calendar script ot most recent version.
++ DBPager - added method to disable auto creation of sort icons.
++ Database - getObjects calls __construct instead of the class named
+  function to conform with php 5.
++ Removed auto_load from Init.php. Pear created some goofy errors with
+  it.\
++ Text - parseInput has a third parameter that allows you to avoid
+  relative url changes.
++ sub and sup added to allowed tags
++ Release version changed to 2.0.0
+
++ Updated files:
+javascript/js_calendar/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js
+javascript/js_calendar/phpws_addon.js
+conf/text_settings.php
+conf/version.php
+
 1 August 2008
 + Added iframe, embed, and object to allowed tags in text_settings.php
 + Deleted Crutch_Form.php. Not used.
