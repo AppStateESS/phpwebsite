@@ -1,6 +1,6 @@
 CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
-its own separate CHANGELOG file.
+its own separate CHANGELOG file..
 
 Version 1.8.3
 ---------------------------------------------------------------------
@@ -12,7 +12,7 @@ properly.
 + Database - getObjects calls __construct instead of the class named
   function to conform with php 5.
 + Removed auto_load from Init.php. Pear created some goofy errors with
-  it.\
+  it.
 + Text - parseInput has a third parameter that allows you to avoid
   relative url changes.
 + sub and sup added to allowed tags
