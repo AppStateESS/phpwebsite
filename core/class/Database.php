@@ -2274,8 +2274,7 @@ class PHPWS_DB {
             $genClass = new $class_name;
 
             if ($num_args > 1) {
-                // reference is necessary for genClass in php 4
-                call_user_func_array(array($genClass, $class_name), $args);
+                call_user_func_array(array($genClass, '__construct'), $args);
             }
 
             if (isset($itemResult[0]) && is_array($itemResult[0])) {

@@ -175,6 +175,11 @@ class DBPager {
      */
     public $cache_identifier = null;
 
+    /**
+     * If true, automatically create sort icons
+     */
+    public $auto_sort = true;
+
     public function __construct($table, $class=NULL)
     {
         if (empty($table)) {
@@ -899,7 +904,13 @@ class DBPager {
             return NULL;
         }
 
-        foreach ($this->table_columns as $varname) {
+        if ($this->auto_sort) {
+            $sort_columns = & $this->table_columns;
+        } else {
+            $sort_columns = array_keys($this->sort_headers);
+        }
+
+        foreach ($sort_columns as $varname) {
             $vars = array();
             $values = $this->getLinkValues();
 
@@ -1294,8 +1305,7 @@ class DBPager {
         }
 
         DBPager::plugPageTags($template);
-        $this->final_template = &$template;
-
+        $this->final_template = & $template;
         return PHPWS_Template::process($template, $this->module, $this->template);
     }
 
@@ -1332,7 +1342,9 @@ class DBPager {
 
     public function clearQuery()
     {
-        unset($_SESSION['DB_Cache'][$this->module][$this->template]);
+        if (isset($_SESSION['DB_Cache'])) {
+            unset($_SESSION['DB_Cache'][$this->module][$this->template]);
+        }
     }
 
     public function cacheQueries($cache=true)
@@ -1343,6 +1355,11 @@ class DBPager {
     public function setCacheIdentifier($str)
     {
         $this->cache_identifier = $str;
+    }
+
+    public function setAutoSort($auto)
+    {
+        $this->auto_sort = (bool)$auto;
     }
 }
 

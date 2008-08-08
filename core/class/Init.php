@@ -372,7 +372,7 @@ function translateFile($filename)
  * engine_version
  * locale
  */
-function &getBrowserInfo($parameter=NULL)
+function getBrowserInfo($parameter=NULL)
 {
     if (!isset($GLOBALS['browser_info'])) {
         return NULL;
@@ -382,13 +382,6 @@ function &getBrowserInfo($parameter=NULL)
         } else {
             return $GLOBALS['browser_info'][$parameter];
         }
-    }
-}
-
-function __autoload($class_name)
-{
-    if (!PHPWS_Core::initCoreClass(str_replace('PHPWS_', '', $class_name) . '.php')) {
-        PHPWS_Core::initCoreClass($class_name . '.php');
     }
 }
 

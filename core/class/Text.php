@@ -350,11 +350,11 @@ class PHPWS_Text {
         return $text;
     }
 
-    public function parseInput($text, $encode=ENCODE_PARSED_TEXT)
+    public function parseInput($text, $encode=ENCODE_PARSED_TEXT, $relative_links=MAKE_ADDRESSES_RELATIVE)
     {
         // Moved over from getPrint/parseOutput
         $text = PHPWS_Text::encodeXHTML(trim($text));
-        if (MAKE_ADDRESSES_RELATIVE) {
+        if ((bool)$relative_links) {
             PHPWS_Text::makeRelative($text, true, true);
         }
 

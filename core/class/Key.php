@@ -60,7 +60,7 @@ class Key {
     // groups allowed to edit
     private $_edit_groups    = null;
 
-    private $_error          = null;
+    public  $_error          = null;
 
     function __construct($id=null)
     {
@@ -863,6 +863,10 @@ class Key {
         }
     }
 
+    function getError()
+    {
+        return $this->_error;
+    }
 }
 
 ?>

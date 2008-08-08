@@ -499,7 +499,7 @@ class PHPWS_Form {
                     $element->isArray = true;
                 }
 
-                $element->_form = &$this;
+                $element->_form = $this;
 
                 $this->_elements[$name][$element->value] = $element;
                 $this->_elements[$name][$element->value]->key = $element->value;
@@ -510,7 +510,7 @@ class PHPWS_Form {
                 $this->_elements[$name][0]->isArray = true;
                 $result->isArray = true;
             }
-            $result->_form = &$this;
+            $result->_form = $this;
             $this->_elements[$name][] = $result;
 
             $current_key = $this->getKey($name);
@@ -1543,7 +1543,7 @@ class Form_Submit extends Form_Element {
 
     public function get()
     {
-        if ($this->_form->required_field) {
+        if (isset($this->_form) && $this->_form->required_field) {
             $extra = 'onclick="check(this);"';
             if (!empty($this->extra)) {
                 $extra = $this->extra . ' ' . $extra;

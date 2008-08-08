@@ -7,7 +7,7 @@
 
 function core_update(&$content, $version) {
     $home_directory = PHPWS_Boost::getHomeDir();
-    
+
     $boost_module = new PHPWS_Module('boost');
     if (version_compare($boost_module->version, '2.0.0', '<')) {
         $content[] = '<h1>Important!</h1>
@@ -43,7 +43,7 @@ function core_update(&$content, $version) {
         if (isset($GLOBALS['boost_branch_dir'])) {
             $fck_destination = $home_directory . 'javascript/editors/fckeditor';
             $fck_source = PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor';
-            
+
             if (!is_dir($fck_destination)) {
                 if (!is_writable($home_directory . 'javascript/editors/')) {
                     $content[] = '<pre>The following must be writable for the core update to continue:';
@@ -59,7 +59,7 @@ function core_update(&$content, $version) {
 
             $cal_destination = $home_directory . 'javascript/js_calendar';
             $cal_source = PHPWS_SOURCE_DIR . 'javascript/js_calendar';
-            
+
             if (!is_dir($cal_destination)) {
                 if (!is_writable($home_directory . 'javascript/')) {
                     $content[] = '<pre>The following must be writable for the core update to continue:';
@@ -84,7 +84,7 @@ function core_update(&$content, $version) {
         $files = array('conf/formConfig.php', 'conf/version.php',
                        'conf/file_types.php', 'javascript/select_confirm/README.txt',
                        'javascript/open_window/default.php', 'javascript/open_window/body2.js',
-                       'javascript/ajax/requester.js', 'javascript/ajax/default.php', 
+                       'javascript/ajax/requester.js', 'javascript/ajax/default.php',
                        'javascript/ajax/readme.txt', 'javascript/ajax/head.js',
                        'javascript/editors/tinymce/default.php', 'javascript/editors/tinymce/body.js');
         $content[] = '<pre>';
@@ -100,7 +100,7 @@ function core_update(&$content, $version) {
         if (PHPWS_Boost::inBranch() || PHPWS_Core::isBranch()) {
             $yui_destination = $home_directory . 'javascript/editors/yui';
             $yui_source = PHPWS_SOURCE_DIR . 'javascript/editors/yui';
-            
+
             if (!is_dir($fck_destination)) {
                 if (!is_writable($home_directory . 'javascript/editors/')) {
                     $content[] = 'The following must be writable for the core update to continue:';
@@ -118,7 +118,7 @@ function core_update(&$content, $version) {
 
         @copy(PHPWS_SOURCE_DIR . 'core/conf/version.php', 'config/core/version.php');
 
-        $files = array('conf/error.php', 'javascript/editors/fckeditor/default.php', 
+        $files = array('conf/error.php', 'javascript/editors/fckeditor/default.php',
                        'javascript/editors/fckeditor/editor/custom.js');
         coreUpdateFiles($files, $content);
 
@@ -136,7 +136,7 @@ function core_update(&$content, $version) {
                        'javascript/js_calendar/head.js', 'javascript/js_calendar/phpws_addon.js');
 
         coreUpdateFiles($files, $content);
-        
+
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_6_2.txt');
         }
@@ -157,7 +157,7 @@ function core_update(&$content, $version) {
 
         $files = array('templates/graph.tpl', 'img/ajax-loader.gif', 'conf/error.php', 'conf/version.php');
         coreUpdateFiles($files, $content);
-        
+
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_6_3.txt');
         }
@@ -193,7 +193,7 @@ function core_update(&$content, $version) {
         $htaccess = $home_directory . '.htaccess';
         $new_htaccess = PHPWS_SOURCE_DIR . 'core/inc/htaccess';
         $backup_loc = $home_directory . 'files/.backup_htaccess';
-        
+
         if (!isset($_GET['ignore_htaccess'])) {
             $ignore = sprintf('<p>You will need to replace your current .htaccess file with the new copy stored at %s<br />
 <a href="index.php?module=boost&opmod=core&action=update_core&authkey=%s&ignore_htaccess=1">You can skip the .htaccess copy process by clicking here.</a></p>',
@@ -236,10 +236,10 @@ You will need to make your hub/branch home directory writable if the file doesn\
 
         if (PHPWS_Core::isBranch() || PHPWS_Boost::inBranch()) {
             $files = array('javascript/ajax/requester.js', 'javascript/captcha/freecap/freecap.php', 'javascript/check_all/head.js',
-                           'javascript/confirm/default.php', 'javascript/jquery/head.js', 'javascript/jquery/jquery.js', 
-                           'javascript/jquery/jquery.selectboxes.js', 'javascript/multiple_select/body.js', 
+                           'javascript/confirm/default.php', 'javascript/jquery/head.js', 'javascript/jquery/jquery.js',
+                           'javascript/jquery/jquery.selectboxes.js', 'javascript/multiple_select/body.js',
                            'javascript/multiple_select/head.js', 'javascript/multiple_select/default.php');
-            
+
             coreUpdateFiles($files, $content);
 
             if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor/', $home_directory . 'javascript/editors/fckeditor/')) {
@@ -282,7 +282,7 @@ You will need to make your hub/branch home directory writable if the file doesn\
                        'javascript/open_window/default.php', 'javascript/editors/tinymce/default.php',
                        'javascript/editors/tinymce/head.js', 'javascript/editors/tinymce/limited.js',
                        'javascript/editors/tinymce/custom.js', 'javascript/editors/tinymce/default.php',
-                       'conf/smiles.pak', 'img/smilies/banana.gif', 'conf/version.php', 
+                       'conf/smiles.pak', 'img/smilies/banana.gif', 'conf/version.php',
                        'javascript/js_calendar/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css',
                        'javascript/js_calendar/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js',
                        'javascript/js_calendar/body5.js', 'javascript/js_calendar/default.php', 'javascript/js_calendar/readme.txt');
@@ -299,6 +299,21 @@ You will need to make your hub/branch home directory writable if the file doesn\
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_8_2.txt');
         }
 
+        $content[] = '</pre>';
+
+    case version_compare($version, '1.8.3', '<'):
+        $content[] = '<pre>';
+        $files = array('conf/text_settings.php', 'javascript/js_calendar/default.php',
+                       'javascript/required_input/', 'conf/file_types.php',
+                       'javascript/jquery/jcarousellite.js', 'conf/version.php',
+                       'javascript/js_calendar/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js',
+                       'javascript/js_calendar/phpws_addon.js');
+
+        coreUpdateFiles($files, $content);
+
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_8_3.txt');
+        }
         $content[] = '</pre>';
     }
     return true;

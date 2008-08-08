@@ -1,0 +1,120 @@
+Core Classes
+
++ Core.php
+  o Removed plugForward
+
+
++ Database.php
+  o Removed test function (thanks Hilmar)
+  o Applied patch #2027299 from Eloi George. Fixed getColumn not
+    returning 'as' parameter if max_min was set.
+  o Patch #2014480, Database exports multiple part primary
+    keys. Thanks Hilmar
+  o Added a force_array parameter. Allows symmetry of repeat results
+    on an index.
+  o Added longtext to homogenize function
+  o Added parameter to update and delete that returns the affected
+    rows on success
+  o getObjects with setIndexBy now works better if you have identical
+    indices.
+  o inDatabase function was still checking for column existance if not
+    set. Fixed. Thanks Hilmar.
+  o Added function alterColumnType
+
+
++ DBPager
+  o Changed various links to use Text methods instead of raw
+    sprintf calls
+  o Applied patch #2029054 from Eloi George. Puts DBPager's sort headers
+    in the correct direction.
+  o Added better description of sort status
+  o Added title to link itself and not just sort icon
+  o Added patch #2017069 by Eloi George. Adds a cache identifier to
+    DBPager.
+  o Current page is now bracketed and unlinked
+  o cacheQueries works better now especially with setDefaultOrder.
+
+
++ Init: Added autoload function.
+
++ Key: Trimming the summary result.
+
++ PHPWS_Error: Removed crutch function.
+
++ PHPWS_Form: Removed underscore from some public member names
+
++ Settings: Removed append function documentation from Settings. Added
+    comment note.
+
++ Template: getTemplateDirectory checks if in branch to determine
+    returned module directory. Helps with hub development.
+
+
++ PHPWS_Text
+  o moduleLink, secureLink, and linkAddress all use new Link
+    class.
+  o new/rewritten functions: rewriteLink. secureRewriteLink,
+    rewriteAddress
+  o rewrite parameter added to linkAddress
+  o getGetValues rewritten to work with new mod_rewrite scheme
+  o Bug #1988949 added tilde as allowable url character.
+  o setRequired will post a javascript alert if the required input it
+    left blank.
+
++ XMLParser: Bug fixes to assure proper array stacking.
+
+
+New class
++ Link.php:  Allows link creation. Used by Text for its link functions.
+
+
+Documentation
++ Updated Mod_Rewrite.txt documentation
++ Added information in Database documentation concerning force_array.
++ Added cacheQueries information to DBPager documentation.
+
+
+Conversion
++ Pagesmith conversion
+  o Text only is used instead of Simple. Abandoned trying to port
+    images to filecabinet.
+  o Fixed section ordering.
+  o Section ordering was fixed.
+  o Calling encodeXHTML before utf8 encoding to fix Word characters
+  o Calling breaker on converted content. Without it, text would
+    collapse when pulled up in the wysiwyg editor.
++ Filecabinet conversion - wasn't saving convert status when done.
++ Convert - Bug #2006026 by Tom Diesel. Database load needed a reset
+  in order to use the table prefix.
++ Fixed problems with the categories conversion.
++ Error message added to block conversion.
+
+
+Javascript
++ Prompt - fixed the encode function
++ Confirm - Added patch #1997460 by Eloi George. Class and title added
++ Pick_color - new script using farbtastic by Steven Wittens
++ required_input - helps Form with required fields
++ slider - quick and dirty content window slider using jquery
++ js_calendar : fixed error notice
++ Updated jquery to 1.2.6
++ Added jcarousel lite by Ganeshji Marwaha from filecabinet
+
+
+Miscellaneous
++ Added iframe, embed, and object to allowed tags in text_settings.php
++ Deleted Crutch_Form.php. Not used.
++ Started using php 5 for method and member definition
++ Forward.php - new mod_rewrite format, matches pairs of slash
+  separated values
++ Change to url retrieval function. Some servers return a different
+  value for redirect_url than the request_uri. Switching them.
++ Removed unsigned calls in the core update.
++ Added microsoft office document as identifier to file types.
+
+Updated files
++ conf/text_settings.php
++ javascript/js_calendar/default.php
++ javascript/required_input
++ conf/file_types.php
++ javascript/jquery/jcarousellite.js

@@ -40,7 +40,7 @@ Version 2.1	 July, 2nd - 2006	  - Added support for more date formats(example: d
 // Modifications by Gregg Buntin
 Version 2.1.1 8/9/2007  gfb   - Add switch to turn off Year Span Selection
                                 This allows me to only have this year & next year in the drop down
-                                     
+
 Version 2.1.2 8/30/2007 gfb  - Add switch to start week on Sunday
                                Add switch to turn off week number display
                                Fix bug when using on an HTTPS page
@@ -162,7 +162,7 @@ switch(languageCode){
 		var dayArray = ['Pon','&#218;t','St','&#268;t','P&#225;','So','Ne'];
 		var weekString = 't&#253;den';
 		var todayString = '';
-		break;	
+		break;
 }
 
 if (weekStartsOnSunday) {
@@ -1061,6 +1061,7 @@ function pickDate(e,inputDay)
 		returnFormat = returnFormat.replace('m',month/1);
 
 		returnDateTo.value = returnFormat;
+
 		try{
 			returnDateTo.onchange();
 		}catch(e){
@@ -1352,7 +1353,7 @@ function calendarSortItems(a,b)
 function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
 {
 	if(displayTime)calendarDisplayTime=true; else calendarDisplayTime = false;
-	
+
 	if(inputField.value.length>6){ //dates must have at least 6 digits...
        if(!inputField.value.match(/^[0-9]*?$/gi)){
  			var items = inputField.value.split(/[^0-9]/gi);

@@ -6,12 +6,9 @@
 var pickroute = 0;
 var phpws_url = '';
 
-function forwardit(month,day)
+function forwardit()
 {
-    month = month - 0;
-    day = day - 0;
-    currentYear = currentYear - 0;
-    url = phpws_url + '&m=' + month + '&d=' + day + '&y=' + currentYear;
+    url = phpws_url + '&jdate=' + returnDateTo.value;
     window.location.href = url;
 }
 
@@ -23,15 +20,17 @@ function displayCalendarPick(month, day, year, url, buttonObj)
     currentYear = inputYear = year;
     currentDay = inputDay = day;
     currentMonth = inputMonth = month - 1;
-  	 
+
     if(!calendarDiv){
         initCalendar();
     }else{
         writeCalendarContent();
     }
-    //      returnFormat = format;
+    returnFormat = 'yyyymmdd'
+
     returnDateTo = new Object();
     returnDateTo.value = '';
+    returnDateTo.onchange = forwardit;
     positionCalendar(buttonObj);
     calendarDiv.style.visibility = 'visible';
     calendarDiv.style.display = 'block';
@@ -40,8 +39,8 @@ function displayCalendarPick(month, day, year, url, buttonObj)
         iframeObj.style.height = '140px';
         iframeObj.style.width = '195px';
     }
+    setTimeProperties();
     updateYearDiv();
     updateMonthDiv();
     calendarDisplayTime = false;
-    setTimeProperties();
 }
