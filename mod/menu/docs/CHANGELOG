@@ -1,3 +1,7 @@
+12 August 2008
++ Fixed current link problem with unkeyed items.
+
+
 19 June 2008
 + Changed admin link wording.
 
@@ -28,7 +32,7 @@ Version 1.4.4
   o quickKeyLink - same as above but passed key_id
   o updateKeyLink - causes a link to reset its url, title, and active
                     status based on the condition of the current key
-                    it is based on. 
+                    it is based on.
 
 Version 1.4.3
 ----------------------------------------------------------------
@@ -43,8 +47,8 @@ Version 1.4.3
 
 18 October 2007
 + Bug #1814628 : Menu will only add a home link on new menus, not
-  updated ones. 
-  
+  updated ones.
+
 10 October 2007
 + All links without parents were opening when on the home page.
   Changed code to prevent it.
