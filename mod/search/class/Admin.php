@@ -36,7 +36,7 @@ class Search_Admin {
             }
             break;
         }
-        
+
         switch ($command) {
         case 'keyword':
             $template = Search_Admin::keyword();
@@ -183,7 +183,7 @@ class Search_Admin {
     {
         $key = Key::getCurrent();
 
-        if (empty($key) || $key->isDummy() || isset($key->_error)) {
+        if (empty($key) || $key->isDummy() || isset($key->getError())) {
             $on_page = FALSE;
         } else {
             $on_page = TRUE;
@@ -210,7 +210,7 @@ class Search_Admin {
                 $link['WORD'] = $vars['kw'] = $keyword;
                 $vars['command'] = 'drop_keyword';
                 $link['DROP_LINK'] = PHPWS_Text::secureLink(dgettext('search', 'Drop'), 'search', $vars);
-                
+
                 if ($on_page) {
                     if (!in_array($keyword, $search->keywords)) {
                         $vars['key_id'] = $key->id;
@@ -218,7 +218,7 @@ class Search_Admin {
                         $link['ADD_LINK'] = PHPWS_Text::secureLink(dgettext('search', 'Add'), 'search', $vars);
                     }
                 }
-                
+
                 $tpl['add-words'][] = $link;
             }
             $tpl['BANK_TITLE'] = dgettext('search', 'Clipped words');
@@ -287,7 +287,7 @@ class Search_Admin {
         $js_vars['action_match'] = 'delete_keyword';
         $js_vars['message'] = dgettext('search', 'Are you sure you want to delete the checked item(s)?');
         $template['SUBMIT'] = javascript('select_confirm', $js_vars);
-        
+
         $template['CHECK_ALL'] = javascript('check_all', array('checkbox_name' => 'keyword[]'));
         $template['KEYWORD_LABEL'] = dgettext('search', 'Keyword');
         $template['SUCCESS_LABEL'] = dgettext('search', 'Success');
@@ -299,9 +299,9 @@ class Search_Admin {
         $pager->addToggle('class="bgcolor1"');
         $pager->setSearch('keyword');
         $pager->addWhere('ignored', 0);
-        
+
         $tpl['CONTENT'] = $pager->get();
-        
+
         return $tpl;
     }
 
@@ -338,7 +338,7 @@ class Search_Admin {
         $js_vars['message'] = dgettext('search', 'Are you sure you want to delete the checked item(s)?');
 
         $template['SUBMIT'] = javascript('select_confirm', $js_vars);
-        
+
         $template['CHECK_ALL'] = javascript('check_all', array('checkbox_name' => 'keyword[]'));
         $template['KEYWORD_LABEL'] = dgettext('search', 'Keyword');
         $template['TOTAL_QUERY_LABEL'] = dgettext('search', 'Total queries');
@@ -352,7 +352,7 @@ class Search_Admin {
         return $tpl;
 
     }
-  
+
     function setIgnore($kw_list, $ignore)
     {
         if (!is_array($kw_list)) {
@@ -363,7 +363,7 @@ class Search_Admin {
         $db->addValue('ignored', (int)$ignore);
         return $db->update();
     }
-    
+
     function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
