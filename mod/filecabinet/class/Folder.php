@@ -52,12 +52,17 @@ class Folder {
         }
     }
 
-    public function deleteLink()
+    public function deleteLink($mode='link')
     {
         $vars['QUESTION'] = dgettext('filecabinet', 'Are you certain you want to delete this folder and all its contents?');
         $vars['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', array('aop'=>'delete_folder', 'folder_id'=>$this->id),
                                                     true);
-        $vars['LINK'] = dgettext('filecabinet', 'Delete');
+        $label = dgettext('filecabinet', 'Delete');
+        if ($mode == 'image') {
+            $vars['LINK'] = sprintf('<img src="images/mod/filecabinet/delete.png" alt="%s" title="%s" />', $label, $label);
+        } else {
+            $vars['LINK'] = $label;
+        }
         return javascript('confirm', $vars);
     }
 
@@ -70,17 +75,19 @@ class Folder {
             $vars['aop']    = 'edit_folder';
             $vars['folder_id'] = $this->id;
             if ($mode == 'title') {
-                $js['label'] = $this->title;
+                $label = $this->title;
             } else {
-                $js['label'] = dgettext('filecabinet', 'Edit');
+                $label = dgettext('filecabinet', 'Edit');
             }
         } else {
-            $js['label'] = dgettext('filecabinet', 'Add folder');
+            $label = dgettext('filecabinet', 'Add folder');
             $vars['aop'] = 'add_folder';
         }
 
         if ($mode == 'image') {
-            $js['label'] = '<img src="images/mod/filecabinet/edit.png" />';
+            $js['label'] = sprintf ('<img src="images/mod/filecabinet/edit.png" alt="%s" title="%s"  />', $label, $label);
+        } else {
+            $js['label'] = & $label;
         }
 
         $vars['ftype'] = $this->ftype;
@@ -138,18 +145,18 @@ class Folder {
         return PHPWS_Text::secureLink($img, 'filecabinet', array('aop'=>'unpin', 'folder_id'=>$this->id, 'key_id'=>$key->id));
     }
 
-    public function uploadLink($button=true)
+    public function uploadLink($mode=null)
     {
         if ($this->ftype == DOCUMENT_FOLDER) {
-            return $this->documentUploadLink($button);
+            return $this->addLink('document', $mode);
         } elseif ($this->ftype == IMAGE_FOLDER) {
-            return $this->imageUploadLink($button);
+            return $this->addLink('image', $mode);
         } else {
-            return $this->multimediaUploadLink($button);
+            return $this->addLink('media', $mode);
         }
     }
 
-    public function imageUploadLink($button=false)
+    public function imageUploadLink($mode=null)
     {
         $vars['address'] = PHPWS_Text::linkAddress('filecabinet',
                                                    array('iop'      =>'upload_image_form',
@@ -157,15 +164,28 @@ class Folder {
                                                    true);
         $vars['width']   = 600;
         $vars['height']  = 600;
-        $vars['title']   = $vars['label']   = dgettext('filecabinet', 'Add image');
-        if ($button) {
+        $label = dgettext('filecabinet', 'Add image');
+        $vars['title'] = & $label;
+
+        switch ($mode) {
+        case 'button':
+            $vars['label']   = $label;
             $vars['type']    = 'button';
+            break;
+
+        case 'image':
+            $vars['label'] = sprintf('<img src="images/mod/filecabinet/add.png" alt="%s" title="%s" />', $label, $label);
+            break;
+
+        default:
+            $vars['label']   = $label;
         }
+
         return javascript('open_window', $vars);
     }
 
 
-    public function documentUploadLink($button=false)
+    public function documentUploadLink($mode=null)
     {
         $vars['address'] = PHPWS_Text::linkAddress('filecabinet',
                                                    array('dop'      =>'upload_document_form',
@@ -173,25 +193,72 @@ class Folder {
                                                    true);
         $vars['width']   = 600;
         $vars['height']  = 600;
-        $vars['title']   = $vars['label']   = dgettext('filecabinet', 'Add document');
-        if ($button) {
+
+        $label = dgettext('filecabinet', 'Add document');
+        $vars['title'] = & $label;
+
+        switch ($mode) {
+        case 'button':
+            $vars['label']   = $label;
             $vars['type']    = 'button';
+            break;
+
+        case 'image':
+            $vars['label'] = sprintf('<img src="images/mod/filecabinet/add.png" alt="%s" title="%s" />', $label, $label);
+            break;
+
+        default:
+            $vars['label']   = $label;
         }
+
         return javascript('open_window', $vars);
     }
 
-    public function multimediaUploadLink($button=false)
+    public function multimediaUploadLink($mode=null)
     {
-        $vars['address'] = PHPWS_Text::linkAddress('filecabinet',
-                                                   array('mop'      =>'upload_multimedia_form',
-                                                         'folder_id'=>$this->id),
-                                                   true);
+        return $this->addLink('media', $mode);
+    }
+
+    private function addLink($type, $mode=null)
+    {
         $vars['width']   = 600;
         $vars['height']  = 600;
-        $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add file');
-        if ($button) {
-            $vars['type']    = 'button';
+
+        $link_var['folder_id'] = $this->id;
+        switch ($type) {
+        case 'image':
+            $link_var['iop'] = 'upload_image_form';
+            $label = dgettext('filecabinet', 'Add image');
+            break;
+
+        case 'document':
+            $link_var['dop'] = 'upload_document_form';
+            $label = dgettext('filecabinet', 'Add document');
+            break;
+
+        case 'media':
+            $link_var['mop'] = 'upload_multimedia_form';
+            $label = dgettext('filecabinet', 'Add media');
+            break;
         }
+
+        $vars['address'] = PHPWS_Text::linkAddress('filecabinet', $link_var, true);
+        $vars['title'] = & $label;
+
+        switch ($mode) {
+        case 'button':
+            $vars['label']   = $label;
+            $vars['type']    = 'button';
+            break;
+
+        case 'icon':
+            $vars['label'] = sprintf('<img src="images/mod/filecabinet/add.png" alt="%s" title="%s" />', $label, $label);
+            break;
+
+        default:
+            $vars['label']   = $label;
+        }
+
         return javascript('open_window', $vars);
     }
 
@@ -315,7 +382,7 @@ class Folder {
             $key = new Key;
         } else {
             $key = new Key($this->key_id);
-            if (PEAR::isError($key->_error)) {
+            if (PEAR::isError($key->getError())) {
                 $key = new Key;
             }
         }
@@ -406,6 +473,12 @@ class Folder {
         PHPWS_Error::logIfError($db->delete());
 
         /**
+         * Delete the key
+         */
+        $key = new Key($this->key_id);
+        $key->delete();
+
+        /**
          * Delete the physical directory the folder occupies
          */
         $directory = $this->getFullDirectory();
@@ -419,27 +492,35 @@ class Folder {
 
     public function rowTags()
     {
-        $icon = sprintf('<img src="%s" />', $this->icon);
+        if (FC_ICON_PAGER_LINKS) {
+            $mode = 'icon';
+            $spacer = '&#160;';
+        } else {
+            $mode = null;
+            $spacer = ' | ';
+        }
+
+        //$icon = sprintf('<img src="%s" />', $this->icon);
         $vars['aop'] = 'view_folder';
         $vars['folder_id'] = $this->id;
-        $tpl['ICON'] = PHPWS_Text::moduleLink($icon, 'filecabinet', $vars);
+        //        $tpl['ICON'] = PHPWS_Text::moduleLink($icon, 'filecabinet', $vars);
         $tpl['TITLE'] = PHPWS_Text::moduleLink($this->title, 'filecabinet', $vars);
         $tpl['ITEMS'] = $this->tallyItems();
 
         if (Current_User::allow('filecabinet', 'edit_folders', $this->id, 'folder')) {
-            $links[] = $this->editLink();
+            $links[] = $this->editLink('image');
         }
 
-        $links[] = $this->uploadLink(false);
+        $links[] = $this->uploadLink('icon');
 
         if (Current_User::allow('filecabinet', 'edit_folders', $this->id, 'folder', true)) {
             if ($this->key_id) {
-                $links[] =  Current_User::popupPermission($this->key_id);
+                $links[] =  Current_User::popupPermission($this->key_id, null, $mode);
             }
         }
 
         if (Current_User::allow('filecabinet', 'delete_folders', null, null, true)) {
-            $links[] = $this->deleteLink();
+            $links[] = $this->deleteLink('image');
         }
 
         $mods = PHPWS_Core::getModuleNames();
@@ -454,7 +535,7 @@ class Folder {
         $tpl['PUBLIC'] = $this->getPublic();
 
         if (@$links) {
-            $tpl['LINKS'] = implode(' | ', $links);
+            $tpl['LINKS'] = implode($spacer, $links);
         }
 
         return $tpl;

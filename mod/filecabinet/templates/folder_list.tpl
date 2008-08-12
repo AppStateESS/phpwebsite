@@ -1,21 +1,19 @@
 {ADMIN_LINKS}
-<table cellpadding="6" cellspacing="1" width="100%">
+<table cellpadding="6" cellspacing="2" width="100%">
   <tr>
-    <th width="5%">&nbsp;</th>
-    <th width="20%">{TITLE_SORT} {TITLE_LABEL}</th>
-    <th>{PUBLIC_FOLDER_SORT} {PUBLIC_LABEL}</th>
-    <th>{ITEM_LABEL}</th>
-    <!-- BEGIN modcreated --><th>{MODULE_CREATED_SORT} {MODULE_CREATED_LABEL}</th><!-- END modcreated -->
-    <th>&nbsp;</th>
+    <th>{TITLE_SORT}</th>
+    <th width="20%">{PUBLIC_FOLDER_SORT}</th>
+    <th width="10%">{ITEM_LABEL}</th>
+    <!-- BEGIN modcreated --><th>{MODULE_CREATED_SORT}</th><!-- END modcreated -->
+    <th width="20%">&#160;</th>
   </tr>
 <!-- BEGIN listrows -->
-  <tr {TOGGLE}>
-    <td>{ICON}</td>
+  <tr class="{TOGGLE}">
     <td>{TITLE}</td>
     <td>{PUBLIC}</td>
     <td>{ITEMS}</td>
     <!-- BEGIN mod --><td>{MODULE_CREATED}</td><!-- END mod -->
-    <td>{LINKS}</td>
+    <td><ul id="fc-fldr-nav">{LINKS}</ul></td>
   </tr>
 <!-- END listrows -->
 </table>

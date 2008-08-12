@@ -1,6 +1,6 @@
 div#fc-folder-list {
      overflow : auto;
-     min-height : 600px;
+/*     min-height : 600px; */
 }
 
 div.pin-list {
@@ -157,7 +157,7 @@ div#folder-title {
     position : absolute;
     background-color : white;
     max-width : 180px;
-    display : none;   
+    display : none;
 }
 
 .image-panel ul {

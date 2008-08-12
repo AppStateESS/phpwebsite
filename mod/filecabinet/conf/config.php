@@ -68,4 +68,6 @@ define('FC_NO_RIGHTS', 'images/mod/filecabinet/no_file_select.png');
  */
 define('FC_VIDEO_TYPES', 'flv,swf,avi,mov,mpeg,mpg,mpe,asf,wmv');
 
+define('FC_ICON_PAGER_LINKS', true);
+
 ?>

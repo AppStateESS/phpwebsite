@@ -36,28 +36,27 @@ class Cabinet_Form {
 
             } else {
                 if (Current_User::allow('filecabinet', 'edit_folders')) {
-                    $links[] = $folder->editLink();
-                    $pagetags['ADMIN_LINKS'] = implode(' | ', $links);
+                    $pagetags['ADMIN_LINKS'] = $folder->editLink();
                 }
             }
         }
 
-        if ($folder->ftype == IMAGE_FOLDER) {
-            $pagetags['MODULE_CREATED_LABEL'] = dgettext('filecabinet', 'Created in');
-        }
-
-        $pagetags['TITLE_LABEL'] = dgettext('filecabinet', 'Title');
         $pagetags['ITEM_LABEL']  = dgettext('filecabinet', 'Items');
-        $pagetags['PUBLIC_LABEL'] = dgettext('filecabinet', 'Public');
 
         $pager = new DBPager('folders', 'Folder');
+        if ($folder->ftype == IMAGE_FOLDER) {
+            $pager->addSortHeader('module_created',dgettext('filecabinet', 'Created in'));
+        }
+        $pager->addSortHeader('title', dgettext('filecabinet', 'Title'));
+        $pager->addSortHeader('public_folder', dgettext('filecabinet', 'Public'));
         $pager->setModule('filecabinet');
         $pager->setTemplate('folder_list.tpl');
         $pager->addPageTags($pagetags);
         $pager->addRowTags('rowTags');
         $pager->setEmptyMessage(dgettext('filecabinet', 'No folders found.'));
         $pager->addWhere('ftype', $type);
-
+        $pager->setAutoSort(false);
+        $pager->addToggle('bgcolor2');
         $this->cabinet->content = $pager->get();
     }
 
@@ -242,10 +241,11 @@ class Cabinet_Form {
         }
 
         if (Current_User::allow('filecabinet', 'edit_folders', $folder->id, 'folder')) {
-            $links[] = $folder->uploadLink(false);
+            $links[] = $folder->uploadLink();
             if ($folder->ftype == MULTIMEDIA_FOLDER) {
                 $links[] = $folder->embedLink();
             }
+
             $links[] = $folder->editLink();
         }
 

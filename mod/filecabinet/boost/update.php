@@ -72,11 +72,11 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             }
         }
 
-        $files = array('templates/manager/pick.tpl', 'templates/classify_file.tpl', 
-                       'templates/classify_list.tpl', 'templates/image_edit.tpl', 
+        $files = array('templates/manager/pick.tpl', 'templates/classify_file.tpl',
+                       'templates/classify_list.tpl', 'templates/image_edit.tpl',
                        'templates/multimedia_edit.tpl', 'templates/multimedia_grid.tpl',
                        'templates/style.css', 'templates/settings.tpl', 'conf/config.php');
-        
+
         if (PHPWS_Boost::updateFiles($files, 'filecabinet')) {
             $content[] = '--- Copied the following files:';
         } else {
@@ -109,7 +109,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                 return false;
             }
         }
-        
+
         $content[] = '
 1.1.0 changes
 --------------
@@ -185,7 +185,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
     case version_compare($version, '1.3.0', '<'):
         $content[] = '<pre>';
-  
+
         $db = new PHPWS_DB('folders');
         if (!$db->isTableColumn('module_created')) {
             if (PHPWS_Error::logIfError($db->addTableColumn('module_created', 'varchar(40) default null'))) {
@@ -281,7 +281,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
     case version_compare($version, '2.0.0', '<'):
         $content[] = '<pre>';
-        
+
         if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/templates/', $home_dir . 'templates/filecabinet/')) {
             $content[] = '--- Copied complete templates directory.';
         } else {
@@ -325,7 +325,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                 return false;
             }
         }
-        
+
         $db = new PHPWS_DB('multimedia');
         if (!$db->isTableColumn('duration')) {
             if (PHPWS_Error::logIfError($db->addTableColumn('duration', 'int not null default 0'))) {
@@ -377,7 +377,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
     case version_compare($version, '2.1.0', '<'):
         $content[] = '<pre>';
-        $files = array('templates/image_view.tpl', 'templates/settings.tpl', 
+        $files = array('templates/image_view.tpl', 'templates/settings.tpl',
                        'javascript/pick_file/head.js', 'javascript/pick_file/scripts.js',
                        'javascript/update_file/head.js', 'templates/file_manager/placeholder.tpl',
                        'templates/document_edit.tpl', 'templates/image_edit.tpl', 'templates/multimedia_edit.tpl',
@@ -394,7 +394,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         } else {
             $content[] = '--- Added max_image_dimension column to folders table.';
         }
-  
+
         $db = new PHPWS_DB('fc_file_assoc');
         if (PHPWS_Error::logIfError($db->addTableColumn('width', 'smallint NOT NULL default 0'))) {
             $content[] = '--- Unable to add width column to fc_file_assoc.';
@@ -426,7 +426,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         }
         $content[] = '</pre>';
 
-    case version_compare($version, '2.1.1', '<'):
+    case version_compare($version, '2.2.0', '<'):
         $db = new PHPWS_DB('fc_file_assoc');
         $db->addTableColumn('vertical', 'smallint not null default 0');
         $db->addTableColumn('num_visible', 'smallint not null default 3');

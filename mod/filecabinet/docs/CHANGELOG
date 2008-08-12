@@ -1,3 +1,12 @@
+12 August 2008
++ Removed cropped from install.sql and added vertical and num_visible
+  columns.
++ Changed admin links to icons.
++ Key is now deleted with folder.
++ mod_rewrite format changed over.
++ Update: templates/folder_list.tpl, templates/style.css, img/add.png
+
+
 1 August 2008
 + added metacafe as embed type
 + Changed 'video' to 'media' in wording

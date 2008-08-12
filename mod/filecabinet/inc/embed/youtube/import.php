@@ -1,4 +1,9 @@
 <?php
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
+
 function youtube_import($media)
 {
     PHPWS_Core::initCoreClass('XMLParser.php');

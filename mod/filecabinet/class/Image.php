@@ -170,7 +170,7 @@ class PHPWS_Image extends File_Common {
     public function popupAddress()
     {
         if (MOD_REWRITE_ENABLED) {
-            return sprintf('filecabinet/%s/image', $this->id);
+            return sprintf('filecabinet/mtype/image/id/%s', $this->id);
         } else {
             return sprintf('index.php?module=filecabinet&amp;mtype=image&amp;id=%s', $this->id);
         }
