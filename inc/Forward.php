@@ -45,6 +45,13 @@ function forwardInfo()
     $count = 1;
     $continue = 1;
     $i = 0;
+
+    // Try and save some old links references
+    if (count($aUrl) == 1) {
+        $_GET['id'] = $_REQUEST['id'] = $aUrl[0];
+        return;
+    }
+
     while(isset($aUrl[$i])) {
         $key = $aUrl[$i];
         $i++;
