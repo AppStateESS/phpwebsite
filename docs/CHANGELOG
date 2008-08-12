@@ -10,7 +10,7 @@ Version 1.8.3
   o Added new setNoFollow function
   o Added setRewrite and setAnchor functions.
 + Time - changed getDTTime to return gmtime
-+ Updated: conf/smiles.pak
++ Updated: conf/smiles.pak, images/core/smilies/rofl.gif
 
 8 August 2008
 + Updated pick date functionality of js_calendar. Wasn't forwarding
