@@ -86,7 +86,7 @@ div.cal-events {
 }
 
 .calendar-event-hour {
-     border-bottom : 1px solid black;    
+     border-bottom : 1px solid black;
 }
 
 .full {
@@ -188,8 +188,8 @@ div.event-tabs {
 
 
 .cal-tab li.inactive a:link,
-.cal-tab li.inactive a:visited { 
-    text-decoration: none; 
+.cal-tab li.inactive a:visited {
+    text-decoration: none;
     color: black;
 }
 
@@ -199,7 +199,7 @@ div.event-tabs {
 }
 
 div.upcoming {
-   font-size : .9em;                         
+   font-size : .9em;
 }
 
 div.upcoming div.title {
@@ -225,4 +225,14 @@ ul.event-listing {
 ul.event-listing li {
    margin : 0px;
    padding : 0px;
+}
+
+.vevent h1.summary {
+   margin : 0;
+}
+
+.vevent h2.timestamp {
+   margin : 0px;
+   padding : 0px;
+   margin-bottom : 1em;
 }

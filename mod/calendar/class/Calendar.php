@@ -219,10 +219,16 @@ class PHPWS_Calendar {
         $change = false;
 
         if (!empty($_REQUEST['date'])) {
-            $this->int_year  =    (int)date('Y', (int)$_REQUEST['date']);
-            $this->int_month =    (int)date('m', (int)$_REQUEST['date']);
-            $this->int_day   =    (int)date('j', (int)$_REQUEST['date']);
             $this->current_date = (int)$_REQUEST['date'];
+            $this->int_year  =    (int)date('Y', $this->current_date);
+            $this->int_month =    (int)date('m', $this->current_date);
+            $this->int_day   =    (int)date('j', $this->current_date);
+            return;
+        } elseif (!empty($_REQUEST['jdate'])) {
+            $this->current_date = (int)strtotime($_REQUEST['jdate']);
+            $this->int_year  =    (int)date('Y', $this->current_date);
+            $this->int_month =    (int)date('m', $this->current_date);
+            $this->int_day   =    (int)date('j', $this->current_date);
             return;
         } else {
             if (!empty($_REQUEST['y'])) {
@@ -241,7 +247,6 @@ class PHPWS_Calendar {
                 $change = true;
             }
 
-
             if (!empty($_REQUEST['d'])) {
                 $this->int_day = (int)$_REQUEST['d'];
                 $change = true;
@@ -250,7 +255,6 @@ class PHPWS_Calendar {
                 $change = true;
             }
         }
-
 
         if ($change) {
             $this->current_date = mktime(0,0,0, $this->int_month, $this->int_day, $this->int_year);
@@ -275,13 +279,15 @@ class PHPWS_Calendar {
         PHPWS_Core::initModClass('calendar', 'Schedule.php');
 
         if (!empty($_REQUEST['sch_id'])) {
-            $this->schedule = new Calendar_Schedule((int)$_REQUEST['sch_id']);
+            $this->schedule = new Calendar_Schedule($_REQUEST['sch_id']);
         } elseif (isset($_REQUEST['id'])) {
-            $this->schedule = new Calendar_Schedule((int)$_REQUEST['id']);
+            $this->schedule = new Calendar_Schedule($_REQUEST['id']);
         }
 
         if (empty($this->schedule) || !$this->schedule->id) {
             $this->schedule = new Calendar_Schedule;
+        } else {
+            $_SESSION['Current_Schedule'] = $this->schedule->id;
         }
     }
 

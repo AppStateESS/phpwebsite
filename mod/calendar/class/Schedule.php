@@ -100,17 +100,63 @@ class Calendar_Schedule {
         }
     }
 
+    function downloadEventsLink($label=null, $icon=false)
+    {
+        $vars['aop']    = 'download_event';
+        $vars['sch_id'] = $this->id;
+        $vars['js'] = 1;
 
-    public function addEventLink($default_date=NULL)
+        if (empty($label)) {
+            $label = dgettext('calendar', 'Download iCal events');
+        }
+
+        if ($icon) {
+            $label = sprintf('<img src="images/mod/calendar/download.png" title="%s" alt="%s" />',
+                             $label, $label);
+        }
+
+        return PHPWS_Text::secureLink($label, 'calendar', $vars);
+    }
+
+
+    function uploadEventsLink($label=null, $icon=false)
+    {
+        $vars['aop']    = 'upload_event';
+        $vars['sch_id'] = $this->id;
+        $vars['js'] = 1;
+
+        if (empty($label)) {
+            $label = dgettext('calendar', 'Upload iCal events');
+        }
+        if ($icon) {
+            $label = sprintf('<img src="images/mod/calendar/upload.png" title="%s" alt="%s" />',
+                             $label, $label);
+        }
+
+        $js['address'] = PHPWS_Text::linkAddress('calendar', $vars, 1);
+        $js['width'] = 400;
+        $js['height'] = 210;
+        $js['label'] = $label;
+        return javascript('open_window', $js);
+    }
+
+    public function addEventLink($default_date=NULL, $icon=false)
     {
         if (!isset($default_date)) {
             $default_date = PHPWS_Time::getUserTime();
         }
         $add_label = dgettext('calendar', 'Add event');
+
+        if ($icon) {
+            $add_label = sprintf('<img src="images/mod/calendar/add.png" title="%s" alt="%s" />',
+                                 $add_label, $add_label);
+        }
+
         if (javascriptEnabled()) {
             $vars['address'] = sprintf('index.php?module=calendar&amp;aop=create_event&amp;js=1&amp;sch_id=%s&amp;date=%s',
                                        $this->id, $default_date);
-            $vars['link_title'] = $vars['label'] = $add_label;
+            $vars['link_title'] = dgettext('calendar', 'Add event');
+            $vars['label'] = $add_label;
             $vars['width'] = CALENDAR_EVENT_WIDTH;
             $vars['height'] = CALENDAR_EVENT_HEIGHT;
             return javascript('open_window', $vars);
@@ -191,6 +237,10 @@ class Calendar_Schedule {
         $result = $db->delete();
 
         if (!PEAR::isError($result)) {
+            $db2 = new PHPWS_DB('phpws_key');
+            $db2->addWhere('module', 'calendar');
+            $db2->addWhere('item_name', 'event' . $this->id);
+            PHPWS_Error::logIfError($db2->delete());
             return PHPWS_DB::dropTable($this->getEventTable());
         } else {
             if (PHPWS_Settings::get('calendar', 'public_schedule') == $this->id) {
@@ -405,19 +455,23 @@ class Calendar_Schedule {
     public function rowTags()
     {
         if ($this->checkPermissions()) {
-            $links[] = $this->addEventLink();
+            $links[] = $this->addEventLink(null, true);
+            $links[] = $this->uploadEventsLink(null, true);
+            $links[] = $this->downloadEventsLink(null, true);
 
             $vars = array('aop'=>'edit_schedule', 'sch_id' => $this->id);
 
+            $label = sprintf('<img src="images/mod/calendar/edit.png" title="%s" alt="%s" />',
+                                              dgettext('calendar', 'Edit'), dgettext('calendar', 'Edit'));
             if (javascriptEnabled()) {
                 $vars['js'] = 1;
                 $js_vars['address'] = PHPWS_Text::linkAddress('calendar', $vars);
-                $js_vars['label']   = dgettext('calendar', 'Edit');
+                $js_vars['label']   = & $label;
                 $js_vars['width']   = 640;
                 $js_vars['height']  = 600;
                 $links[] = javascript('open_window', $js_vars);
             } else {
-                $links[] = PHPWS_Text::secureLink(dgettext('calendar', 'Edit'), 'calendar',
+                $links[] = PHPWS_Text::secureLink($label, 'calendar',
                                                   array('aop'=>'edit_schedule', 'sch_id'=>$this->id));
             }
         }
@@ -426,7 +480,8 @@ class Calendar_Schedule {
             $js['QUESTION'] = dgettext('calendar', 'Are you sure you want to delete this schedule?');
             $js['ADDRESS']  = sprintf('index.php?module=calendar&amp;aop=delete_schedule&amp;sch_id=%s&amp;authkey=%s',
                                       $this->id, Current_User::getAuthKey());
-            $js['LINK']     = dgettext('calendar', 'Delete');
+            $js['LINK']     = sprintf('<img src="images/mod/calendar/delete.png" title="%s" alt="%s" />',
+                                      dgettext('calendar', 'Delete'), dgettext('calendar', 'Delete'));
             $links[] = javascript('confirm', $js);
         }
 
@@ -442,7 +497,7 @@ class Calendar_Schedule {
         }
 
         if (!empty($links)) {
-            $tags['ADMIN'] = implode(' | ', $links);
+            $tags['ADMIN'] = implode(' ', $links);
         } else {
             $tags['ADMIN'] = dgettext('calendar', 'None');
         }
@@ -497,6 +552,10 @@ class Calendar_Schedule {
 
     public function getEvents($start_search, $end_search)
     {
+        if (empty($start_search) || empty($end_search)) {
+            return null;
+        }
+
         $event_table = $this->getEventTable();
         if (!$event_table) {
             return null;
@@ -536,7 +595,7 @@ class Calendar_Schedule {
             $key = new Key;
         } else {
             $key = new Key($this->key_id);
-            if (PEAR::isError($key->_error)) {
+            if (PEAR::isError($key->getError())) {
                 $key = new Key;
             }
         }
@@ -560,8 +619,6 @@ class Calendar_Schedule {
         return $result;
     }
 
-
-
     public function setPublic($public)
     {
         $this->public = (bool)$public;
@@ -575,6 +632,51 @@ class Calendar_Schedule {
     public function setTitle($title)
     {
         $this->title = strip_tags($title);
+    }
+
+    function exportEvent($event_id)
+    {
+        PHPWS_Core::initModClass('calendar', 'Event.php');
+        $event = new Calendar_Event($this, $event_id);
+        if ($event->id) {
+            $tpl = $event->icalTags();
+        } else {
+            $tpl['EMPTY'] = ' ';
+        }
+
+       $content = PHPWS_Template::process($tpl, 'calendar', 'ical.tpl');
+       header("Content-type: text/calendar");
+       header('Content-Disposition: attachment; filename="icalexport.ics"');
+       echo $content;
+       exit();
+    }
+
+    function exportEvents($start_time, $end_time)
+    {
+        $start_time = (int)$start_time;
+        $end_time = (int)$end_time;
+
+        if (empty($start_time) || empty($end_time) ||
+            $start_time > $end_time) {
+            $events = null;
+        } else {
+            $events = $this->getEvents((int)$start_time, (int)$end_time);
+        }
+
+        if (!empty($events)) {
+            foreach ($events as $event) {
+                $tpl = $event->icalTags();
+                $master_tpl['event'][] = $tpl;
+            }
+        } else {
+            $master_tpl['EMPTY'] = ' ';
+        }
+
+       $content = PHPWS_Template::process($master_tpl, 'calendar', 'ical.tpl');
+       header("Content-type: text/calendar");
+       header('Content-Disposition: attachment; filename="icalexport.ics"');
+       echo $content;
+       exit();
     }
 
 }

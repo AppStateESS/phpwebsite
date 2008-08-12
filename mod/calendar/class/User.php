@@ -172,6 +172,7 @@ class Calendar_User {
         $template['SCHEDULE_PICK']  = $this->schedulePick();
         $template['PICK']           = $this->getDatePick();
         $template['SUGGEST']        = $this->suggestLink();
+        $template['DOWNLOAD']       = $this->downloadLink($startdate, $enddate);
 
         if ($this->calendar->schedule->id && $this->calendar->schedule->checkPermissions()) {
             $template['ADD_EVENT'] = $this->calendar->schedule->addEventLink($this->calendar->current_date);
@@ -212,6 +213,7 @@ class Calendar_User {
             $template['BACK_LINK'] = PHPWS_Text::backLink(dgettext('calendar', 'Back'));
         }
 
+        $template['DOWNLOAD']   = $this->eventDownloadLink($this->event->id);
         $template['VIEW_LINKS'] = $this->viewLinks('event');
         return PHPWS_Template::process($template, 'calendar', 'view/event.tpl');
     }
@@ -236,6 +238,7 @@ class Calendar_User {
         }
         $address[] = 'index.php?';
         unset($getVars['date']);
+        unset($getVars['jdate']);
         foreach ($getVars as $key=>$value) {
             $newvars[] = "$key=$value";
         }
@@ -298,8 +301,30 @@ class Calendar_User {
                 $this->content = Calendar_Admin::event_form($this->event, true);
             }
             break;
-        }
 
+        case 'ical_dl':
+            if (!$this->calendar->schedule->checkPermissions() ||
+                empty($_GET['sdate']) || empty($_GET['edate']) ||
+                !$this->calendar->schedule->id) {
+                $this->title = dgettext('calendar', 'Sorry');
+                $this->content = dgettext('calendar', 'Schedule unavailable.');
+            } else {
+                $this->calendar->schedule->exportEvents($_GET['sdate'], $_GET['edate']);
+            }
+            break;
+
+        case 'ical_event_dl':
+            if (!$this->calendar->schedule->checkPermissions() ||
+                empty($_GET['event_id']) ||
+                !$this->calendar->schedule->id) {
+                $this->title = dgettext('calendar', 'Sorry');
+                $this->content = dgettext('calendar', 'Schedule unavailable.');
+            } else {
+                $this->calendar->schedule->exportEvent($_GET['event_id']);
+            }
+
+            break;
+        }
 
         $tpl['CONTENT'] = $this->content;
         $tpl['TITLE']   = $this->title;
@@ -369,6 +394,9 @@ class Calendar_User {
         reset($oMonth->children);
         $this->_month_days($oMonth, $oTpl, $link);
 
+        if (isset($_SESSION['Current_Schedule'])) {
+            $vars['sch_id'] = $_SESSION['Current_Schedule'];
+        }
         $vars['date'] = mktime(0,0,0, $month, 1, $year);
         $template['FULL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
         $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
@@ -498,11 +526,20 @@ class Calendar_User {
 
         // create day cells in grid
         $this->_month_days($oMonth, $oTpl, true, !PHPWS_Settings::get('calendar', 'brief_grid'));
+        /*
+        if (!empty($this->calendar->schedule->id)) {
+            $vars['sch_id'] = $this->calendar->schedule->id;
+        }
 
         $vars['date'] = mktime(0,0,0,$month, 1, $year);
         $vars['view'] = 'grid';
+
         $template['FULL_MONTH_NAME']    = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
         $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
+        */
+
+        $template['FULL_MONTH_NAME']    = strftime('%B', $date);
+        $template['PARTIAL_MONTH_NAME'] = strftime('%b', $date);
 
         $template['TITLE']         = $this->calendar->schedule->title;
         $template['PICK']          = $date_pick;
@@ -511,6 +548,7 @@ class Calendar_User {
         $template['VIEW_LINKS']    = $this->viewLinks('grid');
         $template['SCHEDULE_PICK'] = $this->schedulePick();
         $template['SUGGEST']       = $this->suggestLink();
+        $template['DOWNLOAD']      = $this->downloadLink($startdate, $enddate);
 
         $oTpl->setData($template);
         $content = $oTpl->get();
@@ -587,6 +625,8 @@ class Calendar_User {
         $main_tpl['ABRV_YEAR']       = strftime('%y', mktime(0,0,0, $month, $day, $year));
         $main_tpl['SCHEDULE_PICK']   = $this->schedulePick();
         $main_tpl['PICK']            = $date_pick;
+        $main_tpl['DOWNLOAD'] = $this->downloadLink($startdate, $enddate);
+
         $main_tpl['SUGGEST']         = $this->suggestLink();
         if ($this->calendar->schedule->checkPermissions()) {
             $main_tpl['ADD_EVENT'] = $this->calendar->schedule->addEventLink($this->calendar->current_date);
@@ -736,6 +776,7 @@ class Calendar_User {
             if ($this->calendar->schedule->id) {
                 $allowed = true;
                 MiniAdmin::add('calendar', $this->calendar->schedule->addEventLink($this->calendar->current_date));
+                MiniAdmin::add('calendar', $this->calendar->schedule->uploadEventsLink());
             } else {
                 $vars = array('aop'=>'create_schedule');
                 $label = dgettext('calendar', 'Create schedule');
@@ -849,7 +890,6 @@ class Calendar_User {
             unset($vars['d']);
             unset($vars['y']);
         }
-
 
         $links[] = $this->todayLink($current_view);
 
@@ -997,6 +1037,7 @@ class Calendar_User {
         $main_tpl['SCHEDULE_PICK']  = $this->schedulePick();
         $main_tpl['PICK']           = $this->getDatePick();
         $main_tpl['SUGGEST']        = $this->suggestLink();
+        $main_tpl['DOWNLOAD']       = $this->downloadLink($startdate, $enddate);
         if ($this->calendar->schedule->checkPermissions()) {
             $main_tpl['ADD_EVENT']      = $this->calendar->schedule->addEventLink($this->calendar->current_date);
         }
@@ -1098,6 +1139,29 @@ class Calendar_User {
         } else {
             return null;
         }
+    }
+
+    function eventDownloadLink($event_id)
+    {
+        $dl['uop'] = 'ical_event_dl';
+        $dl['sch_id'] = $this->calendar->schedule->id;
+        $dl['event_id'] = $event_id;
+        $icon = sprintf('<img src="images/mod/calendar/download.png" title="%s" alt="%s" />', dgettext('calendar', 'Download'), dgettext('calendar', 'Download'));
+        $download = new PHPWS_Link($icon, 'calendar', $dl);
+        $download->setNoFollow();
+        return $download->get();
+    }
+
+    function downloadLink($startdate, $enddate)
+    {
+        $dl['uop'] = 'ical_dl';
+        $dl['sch_id'] = $this->calendar->schedule->id;
+        $dl['sdate'] = $startdate;
+        $dl['edate'] = $enddate;
+        $icon = sprintf('<img src="images/mod/calendar/download.png" title="%s" alt="%s" />', dgettext('calendar', 'Download'), dgettext('calendar', 'Download'));
+        $download = new PHPWS_Link($icon, 'calendar', $dl);
+        $download->setNoFollow();
+        return $download->get();
     }
 }
 

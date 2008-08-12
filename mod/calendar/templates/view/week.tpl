@@ -1,6 +1,6 @@
 <div class="box">
     <div class="box-title">
-        <h1 class="align-center">{SCHEDULE_TITLE} - {DAY_RANGE} {PICK}</h1>
+        <h1 class="align-center">{SCHEDULE_TITLE} - {DAY_RANGE} {PICK} {DOWNLOAD}</h1>
         <div class="view-links">{VIEW_LINKS}<br />{SUGGEST}</div>
         <div class="align-center smaller">{SCHEDULE_PICK}</div>
     </div>
@@ -13,7 +13,7 @@
             <!-- BEGIN calendar-events -->
             <!-- BEGIN hour --><div class="hour bgcolor2">{HOUR}</div><!-- END hour -->
             <div class="vevent">
-                <h2 class="summary">{SUMMARY}</h2> 
+                <h2 class="summary">{SUMMARY}</h2>
                 <abbr class="dtstart" title="{DTSTART}">{START_TIME}</abbr>
                 <!-- BEGIN end-time --> {TO} <abbr class="dtend" title="{DTEND}">{END_TIME}</abbr><!-- END end-time -->
                 <!-- BEGIN day-number -->({DAY_NUMBER})<!-- END day-number -->

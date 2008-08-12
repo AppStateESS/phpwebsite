@@ -122,7 +122,7 @@ class Calendar_Event {
     public function __construct($schedule=null, $event_id=0)
     {
         if ($schedule) {
-            $this->_schedule = & $schedule;
+            $this->_schedule = $schedule;
             if (empty($event_id)) {
                 if (!$this->_schedule->public) {
                     $this->show_busy = 1;
@@ -712,13 +712,13 @@ class Calendar_Event {
             $key = new Key;
         } else {
             $key = new Key($this->key_id);
-            if (PEAR::isError($key->_error)) {
+            if (PEAR::isError($key->getError())) {
                 $key = new Key;
             }
         }
 
         $key->setModule('calendar');
-        $key->setItemName('event');
+        $key->setItemName('event' . $this->_schedule->id);
         $key->setItemId($this->id);
 
         $key->setUrl($this->getViewLink());
@@ -795,7 +795,6 @@ class Calendar_Event {
 
     public function updateRepeats()
     {
-
         // this is a repeated copy of an event, no need to update
         // likewise if repeat type is null
         if ($this->pid || empty($this->repeat_type)) {
@@ -815,6 +814,43 @@ class Calendar_Event {
         $db->addValue($saveVals);
 
         return $db->update();
+    }
+
+    public function icalTags()
+    {
+        static $today = 0;
+        static $contact = null;
+
+        if (empty($today)) {
+            $today = mktime();
+            $contact = PHPWS_Settings::get('users', 'site_contact');
+        }
+
+        $tpl['TODAY']   = PHPWS_Time::getDTTime($today);
+        $tpl['EMAIL']   = $contact;
+        $tpl['UID']     = sprintf('%s-%s.%s', $this->_schedule->title, $this->_schedule->id, $this->id);
+        $tpl['SUMMARY'] = $this->summary;
+
+        if (!empty($this->location)) {
+            if (!empty($this->loc_link)) {
+                $tpl['LOCATION'] = $this->loc_link . "\n" . $this->location;
+            } else {
+                $tpl['LOCATION'] = $this->location;
+            }
+        }
+
+        $description = strip_tags(str_ireplace('<br />', '\n', $this->getDescription()));
+        if (!empty($description)) {
+            $tpl['DESCRIPTION'] = & $description;
+        }
+        if ($this->all_day) {
+            $tpl['DTSTART_AD'] = PHPWS_Time::getDTTime($this->start_time, 'all_day');
+            $tpl['DTEND_AD'] = PHPWS_Time::getDTTime($this->end_time, 'all_day');
+        } else {
+            $tpl['DTSTART'] = PHPWS_Time::getDTTime($this->start_time);
+            $tpl['DTEND'] = PHPWS_Time::getDTTime($this->end_time);
+        }
+        return $tpl;
     }
 
 }

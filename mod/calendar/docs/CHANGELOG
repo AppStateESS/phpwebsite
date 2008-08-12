@@ -1,3 +1,17 @@
+12 August 2008
++ Moved some frequent functions closer to top of switch
++ Added ability to upload and download events using iCal format
++ Calendar was saving all events from all schedules using the same
+  item name.
++ Deleting a schedule will remove event keys as well.
++ Updated: img/*, templates/admin/schedules.tpl,
+  templates/view/month/grid.tpl
+  templates/view/month/list.tpl
+  templates/view/day.tpl
+  templates/view/event.tpl
+  templates/view/week.tpl
+
+
 18 June 2008
 + Deleting an event clears the cache to prevent ghosts in grid view.
 + If a non existing event is accessed, calendar forwards to day view
@@ -198,7 +212,7 @@ Version 1.2.2
 + Added caching to mini calendar
 + Opened caching on grid regardless of log status
 + Events now appear on previous and next months in grid view
-  (Bug #1596780) 
+  (Bug #1596780)
 
 Version 1.2.1
 ------------------------------------------------------------------

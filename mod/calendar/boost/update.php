@@ -11,7 +11,7 @@ function calendar_update(&$content, $version)
     case version_compare($version, '1.2.2', '<'):
         $content[] = 'This package will not update any versions prior to 1.2.2.';
         return false;
-        
+
     case version_compare($version, '1.3.0', '<'):
         $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/calendar/boost/sql_update_130.sql');
         if (PEAR::isError($result)) {
@@ -34,7 +34,7 @@ function calendar_update(&$content, $version)
                 $content[] = '+ Unable to copy template files locally.';
                 $content[] = '<pre>' . implode("\n", $files) . '</pre>';
             }
-            
+
             $content[] = '+ Suggestion table import successful';
             $content[] = '<pre>
 1.3.0 Changes
@@ -44,7 +44,7 @@ function calendar_update(&$content, $version)
 + First public schedule is made the default on creation.
 </pre>';
         }
-            
+
     case version_compare($version, '1.4.0', '<'):
         $content[] = "<pre>1.4.0 Changes\n-------------";
         $files = array('templates/admin/settings.tpl', 'conf/config.php');
@@ -99,7 +99,7 @@ function calendar_update(&$content, $version)
             return false;
         }
         $content[] = '<pre>';
-        $files = array('img/calendar.png', 'conf/config.php', 
+        $files = array('img/calendar.png', 'conf/config.php',
                        'templates/admin/forms/edit_schedule.tpl',
                        'templates/style.css', 'templates/view/upcoming.tpl');
 
@@ -214,6 +214,30 @@ function calendar_update(&$content, $version)
         $content[] = '1.6.4 changes
 -------------
 + Added missing pager navigation tags to schedule listing.</pre>';
+
+    case version_compare($version, '1.7.0', '<'):
+        $db = new PHPWS_DB('calendar_schedule');
+        $db->addColumn('id');
+        $schedules = $db->select('col');
+        if (!empty($schedules)) {
+            foreach ($schedules as $id) {
+                $event_db = new PHPWS_DB('calendar_event_' . $id);
+                $event_db->addColumn('key_id');
+                $keys = $event_db->select('col');
+                if (!empty($keys)) {
+                    $key_db = new PHPWS_DB('phpws_key');
+                    $key_db->addWhere('id', $keys);
+                    $key_db->addValue('item_name', 'event' . $id);
+                    PHPWS_Error::logIfError($key_db->update());
+                }
+            }
+        }
+
+        $content[] = '<pre>';
+        $content[] = '1.7.0 changes
+-------------
+</pre>';
+
 
 
     } // end of switch

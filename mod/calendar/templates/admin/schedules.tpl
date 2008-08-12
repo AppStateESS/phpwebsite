@@ -1,12 +1,12 @@
 <div class="align-right padded">{ADD_CALENDAR}</div>
-<table width="99%">
+<table width="99%" cellpadding="4">
   <tr>
-    <th>{TITLE_LABEL} {TITLE_SORT}</th>
-    <th>{AVAILABILITY_LABEL} {PUBLIC_SORT}</th>
-    <th>{ADMIN_LABEL}</th>
+    <th>{TITLE_SORT}</th>
+    <th>{PUBLIC_SORT}</th>
+    <th width="25%">{ADMIN_LABEL}</th>
   </tr>
   <!-- BEGIN listrows -->
-  <tr>
+  <tr {TOGGLE}>
     <td>{TITLE}</td>
     <td>{AVAILABILITY}</td>
     <td>{ADMIN}</td>

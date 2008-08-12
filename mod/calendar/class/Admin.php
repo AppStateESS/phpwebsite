@@ -1,13 +1,13 @@
 <?php
 
-  /**
-   * Contains administrative functionality
-   *
-   * main : controls administrative routing
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Contains administrative functionality
+ *
+ * main : controls administrative routing
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 class Calendar_Admin {
     /**
@@ -447,6 +447,13 @@ class Calendar_Admin {
         }
 
         switch ($command) {
+        case 'post_event':
+            if (!$this->calendar->schedule->checkPermissions(true)) {
+                Current_User::disallow();
+            }
+            $this->postEvent();
+            break;
+
         case 'approval':
             $this->approval();
             break;
@@ -467,9 +474,9 @@ class Calendar_Admin {
                                             $this->calendar->int_year);
 
                 $event->end_time = mktime(12, 0, 0,
-                                            $this->calendar->int_month,
-                                            $this->calendar->int_day,
-                                            $this->calendar->int_year);
+                                          $this->calendar->int_month,
+                                          $this->calendar->int_day,
+                                          $this->calendar->int_year);
             }
 
             $this->editEvent($event);
@@ -505,6 +512,15 @@ class Calendar_Admin {
             Layout::nakedDisplay();
             break;
 
+        case 'edit_event':
+            $panel->setCurrentTab('schedules');
+            if (!$this->calendar->schedule->checkPermissions()) {
+                Current_User::disallow();
+            }
+            $event = $this->calendar->schedule->loadEvent();
+            $this->editEvent($event);
+            break;
+
         case 'delete_event':
             if ($this->calendar->schedule->checkPermissions(true)) {
                 $event = $this->calendar->schedule->loadEvent();
@@ -530,15 +546,6 @@ class Calendar_Admin {
             PHPWS_Core::goBack();
             break;
 
-        case 'edit_event':
-            $panel->setCurrentTab('schedules');
-            if (!$this->calendar->schedule->checkPermissions()) {
-                Current_User::disallow();
-            }
-            $event = $this->calendar->schedule->loadEvent();
-            $this->editEvent($event);
-            break;
-
         case 'edit_schedule':
             if (empty($_REQUEST['sch_id'])) {
                 PHPWS_Core::errorPage('404');
@@ -558,13 +565,6 @@ class Calendar_Admin {
                 $this->message =dgettext('calendar', 'Default public schedule set.');
             }
             $this->scheduleListing();
-            break;
-
-        case 'post_event':
-            if (!$this->calendar->schedule->checkPermissions(true)) {
-                Current_User::disallow();
-            }
-            $this->postEvent();
             break;
 
         case 'post_schedule':
@@ -602,6 +602,21 @@ class Calendar_Admin {
         case 'settings':
             $this->settings();
             break;
+
+        case 'upload_event':
+            if (!$this->calendar->schedule->checkPermissions()) {
+                Current_User::disallow();
+            }
+
+            $this->uploadEvent();
+            break;
+
+        case 'post_upload':
+            if (!$this->calendar->schedule->checkPermissions(true)) {
+                Current_User::disallow();
+            }
+            $this->postUpload();
+            break;
         }
 
         $tpl['CONTENT'] = $this->content;
@@ -624,6 +639,176 @@ class Calendar_Admin {
             $panel->setContent($final);
             Layout::add(PHPWS_ControlPanel::display($panel->display()));
         }
+    }
+
+    private function postUpload()
+    {
+        $error = false;
+        if (empty($_FILES['upload_file']['tmp_name'])) {
+            $error = true;
+            $content[] = dgettext('calendar', 'Missing filename.');
+        } elseif ($_FILES['upload_file']['type'] != 'text/calendar') {
+            $error = true;
+            $content[] = dgettext('calendar', 'Improper file format.');
+        }
+
+        if (!$error) {
+            $result = file($_FILES['upload_file']['tmp_name']);
+
+            if (!is_array($result)) {
+                $error = true;
+                $content[] = dgettext('calendar', 'Unable to parse file for events.');
+            } elseif (trim($result[0]) != 'BEGIN:VCALENDAR') {
+                $error = true;
+                $content[] = dgettext('calendar', 'File does not appear to be in iCal/vCal format.');
+            }
+        }
+
+        if ($error) {
+            $content[] = $this->calendar->schedule->uploadEventsLink(false, dgettext('calendar', 'Return to upload form...'));
+            $this->title = dgettext('calendar', 'Error');
+            $this->content = implode('<br />', $content);
+            return;
+        }
+
+        PHPWS_Core::initModClass('calendar', 'Event.php');
+
+        $table = $this->calendar->schedule->getEventTable();
+
+        $db = new PHPWS_DB($table);
+
+        $success = 0;
+        $duplicates = 0;
+
+        foreach ($result as $cal) {
+            $cal = trim($cal);
+            $colon = strpos($cal, ':');
+            if (!$colon) {
+                continue;
+            }
+            $command = substr($cal, 0, $colon);
+            $value = substr($cal, $colon+1, strlen($cal));
+
+            if (empty($value)) {
+                continue;
+            }
+            switch ($command) {
+            case 'BEGIN':
+                if ($value == 'VEVENT' && !isset($event)) {
+                    $event = new Calendar_Event($this->calendar->schedule);
+                    $event->start_time = 0;
+                    $event->end_time = 0;
+                }
+                break;
+
+            case 'DTSTART':
+                if (isset($event)) {
+                    $event->start_time = strtotime($value);
+                }
+                break;
+
+            case 'DTSTART;VALUE=DATE':
+                if (isset($event)) {
+                    $event->start_time = strtotime($value);
+                }
+                break;
+
+            case 'DTEND':
+                if (isset($event)) {
+                    $event->end_time = strtotime($value);
+                }
+                break;
+
+            case 'DTEND;VALUE=DATE':
+                if (isset($event)) {
+                    $event->end_time = strtotime($value);
+                }
+                break;
+
+
+            case 'SUMMARY':
+                if (isset($event)) {
+                    $event->setSummary($value);
+                }
+                break;
+
+            case 'LOCATION':
+                if (isset($event)) {
+                    $event->setLocation($value);
+                }
+                break;
+
+            case 'DESCRIPTION':
+                if (isset($event)) {
+                    $event->setDescription($value);
+                }
+                break;
+
+            case 'END':
+                if ($value == 'VEVENT' && isset($event)) {
+                    if (empty($event->end_time)) {
+                        //start time should be midnight so add 23h 23min 59 sec
+                        $event->end_time = $event->start_time + 86399;
+                        $event->all_day = 1;
+                    }
+
+                    $db->reset();
+                    $db->addWhere('start_time', $event->start_time);
+                    $db->addWhere('end_time', $event->end_time);
+                    $db->addWhere('summary', $event->summary);
+                    $db->addColumn('id');
+                    $result = $db->select('one');
+
+                    if (!empty($result)) {
+                        if (PHPWS_Error::logIfError($result)) {
+                            $parse_errors[] = dgettext('calendar', 'Error accessing event table.');
+                        } else {
+                            $duplicates++;
+                        }
+                    } else {
+                        $save = $event->save();
+
+                        if (PHPWS_Error::logIfError($save) || !$save) {
+                            $parse_errors[] = dgettext('calendar', 'Error saving new event.');
+                        } else {
+                            $success++;
+                        }
+
+                    }
+
+                    unset($event);
+                }
+                break;
+            }
+
+        }
+        $this->title = dgettext('calendar', 'Import complete!');
+
+        if (isset($parse_errors)) {
+            $content[] = dgettext('calendar', 'The following errors occurred when trying to import your events:');
+                $content[] = '<ul><li>' . implode('</li><li>', $parse_errors) . '</li></ul>';
+        }
+
+        $content[] = sprintf(dgettext('calendar', '%s event(s) were successfully imported.'), $success);
+        $content[] = sprintf(dgettext('calendar', '%s duplicate event(s) were ignored.'), $duplicates);
+        $content[] = javascript('close_window');
+        $this->content = implode('<br />', $content);
+    }
+
+    private function uploadEvent()
+    {
+        $form = new PHPWS_Form('upload-event');
+        $form->addHidden('module', 'calendar');
+        $form->addHidden('aop', 'post_upload');
+        $form->addHidden('js', 1);
+        $form->addHidden('sch_id', $this->calendar->schedule->id);
+        $form->addFile('upload_file');
+        $form->setLabel('upload_file', dgettext('calendar', 'File location'));
+        $form->addSubmit('go', dgettext('calendar', 'Send file'));
+        $tpl = $form->getTemplate();
+        $tpl['CLOSE'] = javascript('close_window');
+        $this->content = PHPWS_Template::process($tpl, 'calendar', 'upload.tpl');
+        $this->title = dgettext('calendar', 'Import iCal/vCal file');
     }
 
     /**
@@ -670,8 +855,8 @@ class Calendar_Admin {
                 }
 
                 PHPWS_Cache::remove(sprintf('grid_%s_%s_%s',
-                                     date('n', $event->start_time),
-                                     date('Y', $event->start_time),
+                                            date('n', $event->start_time),
+                                            date('Y', $event->start_time),
                                             $this->calendar->schedule->id));
 
                 PHPWS_Cache::remove(sprintf('list_%s_%s_%s',
@@ -1161,7 +1346,6 @@ class Calendar_Admin {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('calendar', 'Schedule.php');
 
-        $page_tags['TITLE_LABEL']        = dgettext('calendar', 'Title');
         $page_tags['DESCRIPTION_LABEL']  = dgettext('calendar', 'Description');
         $page_tags['PUBLIC_LABEL']       = dgettext('calendar', 'Public');
         $page_tags['DISPLAY_NAME_LABEL'] = dgettext('calendar', 'User');
@@ -1188,7 +1372,10 @@ class Calendar_Admin {
         $pager->setTemplate('admin/schedules.tpl');
         $pager->addPageTags($page_tags);
         $pager->addRowTags('rowTags');
+        $pager->addToggle('class="bgcolor1"');
         $pager->setEmptyMessage(dgettext('calendar', 'No schedules have been created.'));
+        $pager->addSortHeader('title', dgettext('calendar', 'Title'));
+        $pager->addSortHeader('public', dgettext('calendar', 'Availability'));
 
         $pager->db->addWhere('user_id', 0);
         $pager->db->addWhere('user_id', 'users.id', '=', 'or');
