@@ -274,6 +274,9 @@ class PHPWS_Album extends PHPWS_Item {
             $db->addWhere('album', $this->getId());
             $db->delete();
 
+            $key = new Key($this->_key_id);
+            $key->delete();
+
             PHPWS_File::rmdir('images/photoalbum/' . $this->getId() . '/');
 
             $message = sprintf(dgettext('photoalbum', 'The album %s and all its photos were successfully deleted from the database.'), $this->getLabel());
@@ -658,7 +661,7 @@ class PHPWS_Album extends PHPWS_Item {
             $update_album = TRUE;
         } else {
             $key = new Key($this->_key_id);
-            if (PEAR::isError($key->_error)) {
+            if (PEAR::isError($key->getError())) {
                 $key = new Key;
                 $update_album = TRUE;
             }

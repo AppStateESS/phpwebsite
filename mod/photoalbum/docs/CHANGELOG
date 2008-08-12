@@ -1,5 +1,8 @@
 Note: this log is only for work done since the conversion for 1.x
 
+12 August 2008
++ Deleted album removes key as well now.
+
 1 August 2008
 + Removed some compatibility functions from Core. Redistributed to
 this module.
