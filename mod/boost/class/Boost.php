@@ -601,11 +601,13 @@ class PHPWS_Boost {
 
     }
 
-    public function registerMyModule($mod_to_register, $mod_to_register_to, &$content)
+    public function registerMyModule($mod_to_register, $mod_to_register_to, &$content, $unregister_first=true)
     {
         $register_mod = new PHPWS_Module($mod_to_register);
         $register_to_mod = new PHPWS_Module($mod_to_register_to);
-        $result = PHPWS_Boost::unregisterModToMod($register_to_mod, $register_mod, $content);
+        if ($unregister_first) {
+            $result = PHPWS_Boost::unregisterModToMod($register_to_mod, $register_mod, $content);
+        }
         $result = PHPWS_Boost::registerModToMod($register_to_mod, $register_mod, $content);
         return $result;
     }

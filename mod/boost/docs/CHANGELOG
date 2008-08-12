@@ -1,3 +1,10 @@
+12 August 2008
++ Boost's revert was copying core's images to the config directory.
++ Added fourth parameter to registerMyModule. If set to false (true is
+  default), then the module won't be unregistered before registered
+  again.
++ Second Close Window button added to top of update window.
+
 13 June 2008
 + updateFiles will return true on complete success and and array of
   error messages should a file fail.

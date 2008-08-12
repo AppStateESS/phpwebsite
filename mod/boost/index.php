@@ -88,6 +88,9 @@ switch ($_REQUEST['action']){
      $js = javascriptEnabled();
      if (!$js) {
          $content[] =  $backToBoost . '<br />';
+     } else {
+         $content[] = sprintf('<p style="text-align : center"><input type="button" onclick="closeWindow(); return false" value="%s" /></p>',
+                              dgettext('boost', 'Close window'));
      }
      $content[] = Boost_Action::updateModule($_REQUEST['opmod']);
      break;

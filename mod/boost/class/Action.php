@@ -298,7 +298,7 @@ class Boost_Action {
 
         $content[] = dgettext('boost', 'Copying image files.');
         $image_source = PHPWS_SOURCE_DIR . 'core/img/';
-        $image_dest = $local_dir . 'config/core/';
+        $image_dest = $local_dir . 'images/core/';
         $boost->addLog('core', sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $image_source, $image_dest));
         PHPWS_File::recursiveFileCopy($image_source, $image_dest);
 
