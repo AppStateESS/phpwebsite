@@ -3,7 +3,7 @@
   /**
    * The PHPWS_Time class is mainly for the parsing of timestamps
    * into and out of UTC time.
-   * 
+   *
    * @author Matthew McNaney <mcnaney at gmail dot com>
    * @version $Id$
    */
@@ -12,7 +12,7 @@ class PHPWS_Time {
 
     function convertServerTime($time)
     {
-        $admin_offset = 3600 * PHPWS_Time::getServerTZ(); 
+        $admin_offset = 3600 * PHPWS_Time::getServerTZ();
         $server_offset = date('Z');
         $time += $server_offset;
         $time -= $admin_offset;
@@ -21,7 +21,7 @@ class PHPWS_Time {
 
     function convertUserTime($time)
     {
-        $user_offset = 3600 * PHPWS_Time::getUserTZ(); 
+        $user_offset = 3600 * PHPWS_Time::getUserTZ();
         $server_offset = date('Z');
         $time += $server_offset;
         $time -= $user_offset;
@@ -56,10 +56,10 @@ class PHPWS_Time {
 
 
         if ($mode == 'all_day') {
-            return strftime('%Y%m%d', $new_time);
+            return gmstrftime('%Y%m%d', $new_time);
         }
 
-        $dttime = strftime('%Y%m%dT%H%M00', $new_time);
+        $dttime = gmstrftime('%Y%m%dT%H%M00', $new_time);
         if ($tz != 0) {
             if ($tz > 0) {
                 $sign = '+';
@@ -89,7 +89,7 @@ class PHPWS_Time {
             $time = mktime();
         }
 
-        $admin_offset = 3600 * PHPWS_Time::getServerTZ(); 
+        $admin_offset = 3600 * PHPWS_Time::getServerTZ();
         $server_offset = date('Z');
         $time -= $server_offset;
         $time += $admin_offset;
@@ -102,7 +102,7 @@ class PHPWS_Time {
             $time = mktime();
         }
 
-        $user_offset = 3600 * PHPWS_Time::getUserTZ(); 
+        $user_offset = 3600 * PHPWS_Time::getUserTZ();
         $server_offset = date('Z');
         $time -= $server_offset;
         $time += $user_offset;
@@ -131,7 +131,7 @@ class PHPWS_Time {
 
             $server_tz = $tz + $dst;
         }
-        
+
         return $server_tz;
     }
 
@@ -197,7 +197,7 @@ class PHPWS_Time {
         $hours = floor($mins / 60);
         $days  = floor($hours / 24);
         $weeks = floor($days/ 7);
-      
+
         if ($mins < 2) {
             return _('a heartbeat ago');
         }

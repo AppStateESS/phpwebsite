@@ -1659,7 +1659,7 @@ class Form_TextArea extends Form_Element {
     public $use_editor   = false;
     public $limit_editor = false;
     public $_editor_dm   = null;
-    private $_force_name = null;
+    public $_force_name  = null;
 
     public function setRows($rows)
     {

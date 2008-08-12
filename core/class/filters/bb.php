@@ -6,20 +6,26 @@
    * This is a copy of corzblog's (http://corz.org/) bb parsing
    * code. Compared to Pear's bbcode parser, it is easier to use and
    * edit. It has been altered to work specifically with phpWebSite.
-   * 
+   *
    * @author (or at corz.org
    * @modified Matt McNaney <matt at tux dot appstate dot edu>
    */
 
 
 // If TRUE, then 'smilies' will be parsed.
-define('ALLOW_BB_SMILIES', true);
+if (!defined('ALLOW_BB_SMILIES')) {
+    define('ALLOW_BB_SMILIES', true);
+}
 
 // If TRUE, users can post with the [img] tag
-define('ALLOW_BB_IMAGES', true);
+if (!defined('ALLOW_BB_IMAGES')) {
+    define('ALLOW_BB_IMAGES', true);
+}
 
 // Either "fieldset" or "blockquote"
-define('BBCODE_QUOTE_TYPE', 'fieldset');
+if (!defined('BBCODE_QUOTE_TYPE')) {
+    define('BBCODE_QUOTE_TYPE', 'fieldset');
+}
 
 function bb_filter($bb2html)
 {
@@ -35,16 +41,16 @@ function bb_filter($bb2html)
     }
 
     // now the bbcode proper..
-        
+
     // grab any *real* square brackets first, store em
     $bb2html = str_replace('[[', '**$@$**', $bb2html);
     $bb2html = str_replace(']]', '**@^@**', $bb2html);
-        
+
     // news headline block
-    $bb2html = str_ireplace('[news]', 
+    $bb2html = str_ireplace('[news]',
                             '<table width="20%" border="0" align="right"><tr><td align="center"><span class="news">', $bb2html);
     $bb2html = str_ireplace('[/news]', '</span></td></tr></table>', $bb2html);
-        
+
     // references - we need to create the whole string first, for the str_replace
     $r1 = '<a href="#refs-'.$title.'" title="'.$title.'"><font class="ref"><sup>';
     $bb2html = str_ireplace('[ref]', $r1 , $bb2html);
@@ -57,7 +63,7 @@ function bb_filter($bb2html)
     $bb2html = str_ireplace('[reftxt5]', '<font class="ref"><b>5: </b></font><font class="reftext">', $bb2html);
     $bb2html = str_ireplace('[/ref]', '</sup></font></a>', $bb2html);
     $bb2html = str_ireplace('[/reftxt]', '</font>', $bb2html);
-        
+
     // ordinary transformations..
     // we rely on the browser producing \r\n (DOS) carriage returns, as per spec
     //    $bb2html = str_ireplace("\r",'<br />', $bb2html);  // the \n remains, makes the raw html readable
@@ -71,23 +77,23 @@ function bb_filter($bb2html)
     $bb2html = str_ireplace('[/big]', '</span>', $bb2html);
     $bb2html = str_ireplace('[sm]', '<span class="smaller">', $bb2html);
     $bb2html = str_ireplace('[/sm]', '</span>', $bb2html);
-        
-        
+
+
     // tables (couldn't resist this, too handy)
-    $bb2html = str_ireplace('[t]', '<table width="100%" border="0" cellspacing="0" cellpadding="0">', $bb2html);     
+    $bb2html = str_ireplace('[t]', '<table width="100%" border="0" cellspacing="0" cellpadding="0">', $bb2html);
     $bb2html = str_ireplace('[bt]', '<table width="100%" border="1" cellspacing="0" cellpadding="3">', $bb2html);
-    $bb2html = str_ireplace('[st]', '<table width="100%" border="0" cellspacing="3" cellpadding="3">', $bb2html);    
+    $bb2html = str_ireplace('[st]', '<table width="100%" border="0" cellspacing="3" cellpadding="3">', $bb2html);
     $bb2html = str_ireplace('[/t]', '</table>', $bb2html);
     $bb2html = str_ireplace('[c]', '<td valign=top>', $bb2html);     // cell data
     $bb2html = str_ireplace('[/c]', '</td>', $bb2html);
     $bb2html = str_ireplace('[r]', '<tr>', $bb2html);        // a row
     $bb2html = str_ireplace('[/r]', '</tr>', $bb2html);
-        
+
     // a simple list
     $bb2html = str_replace('[*]', '<li>', $bb2html);
     $bb2html = str_ireplace('[list]', '<ul>', $bb2html);
     $bb2html = str_ireplace('[/list]', '</ul>', $bb2html);
-        
+
     if (ALLOW_BB_SMILIES) {
         $bb2html = getSmilie($bb2html);
     }
@@ -102,8 +108,8 @@ function bb_filter($bb2html)
     }
 
     $bb2html = preg_replace('/\[color=(#\w{6})\](.*)\[\/color\]/Ui', '<span style="color : \\1">\\2</span>', $bb2html);
-    $bb2html = preg_replace('/\[url=([\w:\/\.\-&=\s\?#]+)\](.*)\[\/url\]/Ui', '<a target="_blank" href="\\1">\\2</a>', $bb2html);
-        
+    $bb2html = preg_replace('/\[url=([\w:\/\.\-&=\s\?#]+)\](.*)\[\/url\]/Ui', '<a rel="nofollow" target="_blank" href="\\1">\\2</a>', $bb2html);
+
     if (BBCODE_QUOTE_TYPE == 'fieldset') {
         $bb2html = preg_replace(array('/\[quote="(.*)"\]/isU', '/\[quote(?!=".*").*\]/isU', '/\[\/quote\]/isU'),
                                 array('<fieldset class="quote">&#013;<legend>' . _('\1 wrote') . ':</legend>&#013;\2', '<fieldset>&#013;', '</fieldset>&#013;'), $bb2html);
@@ -112,7 +118,7 @@ function bb_filter($bb2html)
         $bb2html = str_ireplace('[quote]', '<blockquote class="quote">', $bb2html);
         $bb2html = str_ireplace('[/quote]', '</blockquote>', $bb2html);
     }
- 
+
     // code
     $bb2html = preg_replace('/\[code\](.*)\[\/code\]/Uies', "'<code>' . stripslashes(htmlentities('\\1')) . '</code>'", $bb2html);
 
@@ -120,7 +126,7 @@ function bb_filter($bb2html)
     $bb2html = str_ireplace('[hr]', '<hr />', $bb2html);
     $bb2html = str_ireplace('[block]', '<blockquote>', $bb2html);
     $bb2html = str_ireplace('[/block]', '</blockquote>', $bb2html);
-        
+
     // dropcaps. five flavours, small up to large.. [dc1]I[/dc] >> [dc5]W[/dc]
     $bb2html = str_ireplace('[dc1]', '<span class="dropcap1">', $bb2html);
     $bb2html = str_ireplace('[dc2]', '<span class="dropcap2">', $bb2html);
@@ -128,7 +134,7 @@ function bb_filter($bb2html)
     $bb2html = str_ireplace('[dc4]', '<span class="dropcap4">', $bb2html);
     $bb2html = str_ireplace('[dc5]', '<span class="dropcap5">', $bb2html);
     $bb2html = str_ireplace('[/dc]', '<dc></span>', $bb2html);
-        
+
     // special characters (html entity encoding) ..
     $bb2html = str_ireplace('[sp]', '&nbsp;', $bb2html);
     $bb2html = str_replace('[<]', '&lt;', $bb2html);
@@ -139,13 +145,13 @@ function bb_filter($bb2html)
     // get back those square brackets..
     $bb2html = str_replace('**$@$**', '[', $bb2html);
     $bb2html = str_replace('**@^@**', ']', $bb2html);
-        
+
     // re-insert the preformatted text blocks..
     $cp = count($pre)-1;
     for($i=0;$i <= $cp;$i++) {
         $bb2html = str_replace("***pre_string***$i", '<pre>'.substr($pre[$i],5,-6).'</pre>', $bb2html);
     }
-        
+
     return $bb2html;
 }
 
@@ -167,7 +173,7 @@ function getSmilie($bbcode)
         $smiles = explode("\n", $results);
         foreach ($smiles as $row) {
             $icon = explode('=+:', $row);
-                
+
             if (count($icon) < 3) {
                 continue;
             }

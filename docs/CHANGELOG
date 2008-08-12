@@ -4,9 +4,17 @@ its own separate CHANGELOG file..
 
 Version 1.8.3
 ---------------------------------------------------------------------
+12 August 2008
++ Added rel="nofollow" to bb encoding [url] tag
++ Link
+  o Added new setNoFollow function
+  o Added setRewrite and setAnchor functions.
++ Time - changed getDTTime to return gmtime
++ Updated: conf/smiles.pak
+
 8 August 2008
 + Updated pick date functionality of js_calendar. Wasn't forwarding
-properly.
+  properly.
 + Updated js calendar script ot most recent version.
 + DBPager - added method to disable auto creation of sort icons.
 + Database - getObjects calls __construct instead of the class named

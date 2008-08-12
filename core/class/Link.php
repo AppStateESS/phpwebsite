@@ -22,6 +22,7 @@ class PHPWS_Link {
     public  $secure      = false;
     public  $full_url    = false;
     public  $convert_amp = true;
+    public  $no_follow   = false;
 
     public function __construct($label=null, $module=null, $values=null)
     {
@@ -40,7 +41,7 @@ class PHPWS_Link {
         }
 
         $params = array('title', 'onclick', 'onmouseover', 'onmouseout',
-                        'target', 'class_name', 'style', 'id');
+                        'target', 'class_name', 'style', 'id', 'no_follow');
 
         foreach ($params as $pr) {
             if (isset($this->$pr)) {
@@ -110,6 +111,11 @@ class PHPWS_Link {
         }
     }
 
+    public function setNoFollow($no_follow=true)
+    {
+        $this->no_follow = (bool)$no_follow;
+    }
+
     public function setTarget($target)
     {
         $target = strtolower($target);
@@ -158,6 +164,8 @@ class PHPWS_Link {
         case 'id':
             return sprintf('id="%s"', $this->id);
 
+        case 'no_follow':
+            return 'rel="nofollow"';
         }
     }
 
@@ -285,7 +293,16 @@ class PHPWS_Link {
         } else {
             return $final_link;
         }
+    }
 
+    public function setRewrite($rewrite=MOD_REWRITE_ENABLED)
+    {
+        $this->rewrite = (bool)$rewrite;
+    }
+
+    public function setAnchor($anchor)
+    {
+        $this->anchor = preg_replace('/^#/', '', $anchor);
     }
 }
 
