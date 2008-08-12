@@ -49,7 +49,7 @@ function layout_update(&$content, $currentVersion)
 2.4.0 changes
 -------------
 + Layout now checks and forces a user to enable cookies on their
-  browser. 
+  browser.
 + Rewrote Javascript detection. Was buggy before as session
   destruction could disrupt it.
 + Added German translations
@@ -115,6 +115,18 @@ function layout_update(&$content, $currentVersion)
 + Changed method of checking for javascript status. Less chance for
   error.
 + Fixed notice.</pre>';
+
+    case version_compare($currentVersion, '2.4.5', '<'):
+        $content[] = '<pre>';
+        layoutUpdateFiles(array('templates/metatags.tpl'), $content);
+        $content[] = '2.4.5 changes
+--------------------
++ Added option to use a Key\'s summary or title to fill in the meta
+  description.
++ Added new cacheHeader function to retain javascript and css
+  information should a module return cached content before the above
+  can be established.';
+
     }
     return true;
 }

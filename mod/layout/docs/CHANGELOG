@@ -1,3 +1,5 @@
+Version 2.4.5
+------------------------------------------------------------------
 13 June 2008
 + Added option to use a Key's summary or title to fill in the meta
   description.
@@ -66,7 +68,7 @@ Version 2.4.0
 -------------------------------------------------------------------
 16 April 2007
 + Layout now checks and forces a user to enable cookies on their
-  browser. 
+  browser.
 + Rewrote Javascript detection. Was buggy before as session
   destruction could disrupt it.
 + Updated files: templates/no_cookie.tpl
