@@ -282,12 +282,21 @@ final class Current_User {
         }
     }
 
-    function popupPermission($key_id, $label=null)
+    function popupPermission($key_id, $label=null, $mode=null)
     {
         if (empty($label)) {
-            $js_vars['label'] = dgettext('users', 'Permission');
+            $label = dgettext('users', 'Permission');
         } else {
-            $js_vars['label'] = strip_tags($label);
+            $label = strip_tags($label);
+        }
+
+        switch($mode) {
+        case 'icon':
+            $js_vars['label'] = sprintf('<img src="images/mod/users/permission.png" alt="%s" title="%s" />', $label, $label);
+            break;
+
+        default:
+            $js_vars['label'] = & $label;
         }
 
         $js_vars['width'] = 350;

@@ -891,9 +891,9 @@ class PHPWS_User {
         return $template;
     }
 
-    public function registerPermissions($module)
+    public function registerPermissions($module, &$content)
     {
-        return Users_Permission::registerPermissions($module);
+        return Users_Permission::registerPermissions($module, $content);
     }
 }
 
