@@ -4,12 +4,16 @@
 + Calendar was saving all events from all schedules using the same
   item name.
 + Deleting a schedule will remove event keys as well.
-+ Updated: img/*, templates/admin/schedules.tpl,
++ Updated: img/*,
+  templates/admin/schedules.tpl,
   templates/view/month/grid.tpl
   templates/view/month/list.tpl
   templates/view/day.tpl
   templates/view/event.tpl
   templates/view/week.tpl
+  templates/ical.tpl
+  templates/style.css
+  templates/upload.tpl
 
 
 18 June 2008
