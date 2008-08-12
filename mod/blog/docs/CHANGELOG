@@ -2,7 +2,7 @@
 + Pager date format separated from blog view date format
 + Made some adjustments for new mod_rewrite format.
 + Changed over admin links to icons.
-+ Updated: conf/config.php
++ Updated: conf/config.php, img/*
 
 
 1 August 2008
