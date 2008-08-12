@@ -1,3 +1,8 @@
+12 August 2008
++ Icons substituted from admin links.
++ Fixed registerpermissions function. Was missing content parameter.
++ Updated: img/permission.png
+
 27 June 2008
 + Removed call to help module. Using new slider javascript instead.
 
@@ -35,7 +40,7 @@ Version 2.5.0
 + Changed redundant static method call in Permission.
 + Added dash to allowed display name characters.
 + Added \pL to display name characters.
-+ Updated: 
++ Updated:
   templates/forms/memberlist.tpl, templates/forms/userForm.tpl,
   javascript/generate/head.js
 
@@ -117,7 +122,7 @@ Version 2.4.5
 + Deities cannot be deactivated.
 + Fixed Vietnamese language abbreviation.
 + Updated: conf/error.php, conf/languages.php,
-  templates/forms/settings.tpl 
+  templates/forms/settings.tpl
 
 Version 2.4.4
 --------------------------------------------------------------------
@@ -133,7 +138,7 @@ Version 2.4.4
 
 20 September 2007
 + Session timeout on permission popup refreshes parent to login
-  screen. 
+  screen.
 
 19 September 2007
 + Increase popup permission height.
@@ -200,7 +205,7 @@ Version 2.4.0
 + Started password reset and user name reminder options.
 + Added comments to user menu template to prevent extra characters
 + Updated files: conf/config.php, templates/usermenus/top.tpl,
-  templates/forms/forgot.tpl 
+  templates/forms/forgot.tpl
 
 
 16 April 2007
@@ -369,4 +374,4 @@ RC3 and under
 14 July 2006
 + Fixed a problem with the permissions form made from the last Form
   class update.
-+ Added a getPermissionGroups function 
++ Added a getPermissionGroups function
