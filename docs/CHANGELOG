@@ -5,6 +5,7 @@ its own separate CHANGELOG file..
 Version 1.8.3
 ---------------------------------------------------------------------
 12 August 2008
++ Commented out Function.php inclusion since php 5 is standard.
 + Added rel="nofollow" to bb encoding [url] tag
 + Link
   o Added new setNoFollow function

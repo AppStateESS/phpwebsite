@@ -31,7 +31,8 @@ if (is_file('config/core/config.php')) {
     }
  }
 
-require_once PHPWS_SOURCE_DIR . 'inc/Functions.php';
+// Commented out in phpWebSite 2.0. If missing functions, uncomment
+// require_once PHPWS_SOURCE_DIR . 'inc/Functions.php';
 
 ob_start();
 
