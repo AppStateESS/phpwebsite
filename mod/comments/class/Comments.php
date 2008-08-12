@@ -32,8 +32,8 @@ class Comments {
             }
         }
 
-        if ( empty($key) || $key->isDummy() || PEAR::isError($key->_error) ) {
-            return NULL;
+        if ( empty($key) || $key->isDummy() || PEAR::isError($key->getError()) ) {
+            return null;
         }
 
         $thread = new Comment_Thread;
