@@ -25,12 +25,14 @@ class Blog_User {
     {
         if (isset($_REQUEST['blog_id'])) {
             $blog = new Blog((int)$_REQUEST['blog_id']);
+        } elseif (isset($_REQUEST['id'])) {
+            $blog = new Blog((int)$_REQUEST['id']);
         } else {
             $blog = new Blog();
         }
 
         if (!isset($_REQUEST['action'])) {
-            $action = 'view';
+            $action = 'view_comments';
         } else {
             $action = $_REQUEST['action'];
         }

@@ -6,6 +6,10 @@
    * $Id$
    */
 
+if (!defined('BLOG_PAGER_DATE_FORMAT')) {
+    define('BLOG_PAGER_DATE_FORMAT', '%c');
+}
+
 class Blog {
     public $id             = 0;
     public $key_id         = 0;
@@ -283,7 +287,7 @@ class Blog {
             $key = new Key;
         } else {
             $key = new Key($this->key_id);
-            if (PEAR::isError($key->_error)) {
+            if (PEAR::isError($key->getError())) {
                 $key = new Key;
             }
         }
@@ -306,15 +310,15 @@ class Blog {
         return $key;
     }
 
-    public function getViewLink($bare=false){
+    public function getViewLink($bare=false)
+    {
+        $link = new PHPWS_Link(dgettext('blog', 'View'), 'blog', array('id'=>$this->id));
+        $link->rewrite = MOD_REWRITE_ENABLED;
+
         if ($bare) {
-            if (MOD_REWRITE_ENABLED) {
-                return 'blog/' . $this->id;
-            } else {
-                return 'index.php?module=blog&amp;action=view_comments&amp;blog_id=' . $this->id;
-            }
+            return $link->getAddress();
         } else {
-            return PHPWS_Text::rewriteLink(dgettext('blog', 'View'), 'blog', $this->id);
+            return $link->get();
         }
     }
 
@@ -377,7 +381,7 @@ class Blog {
             if (empty($summary)) {
                 $template['SUMMARY'] = PHPWS_Text::parseTag($entry);
             } else {
-                $template['READ_MORE'] = PHPWS_Text::rewriteLink(dgettext('blog', 'Read more'), 'blog', $this->id);
+                $template['READ_MORE'] = PHPWS_Text::rewriteLink(dgettext('blog', 'Read more'), 'blog', array('id'=>$this->id));
                 $template['SUMMARY'] =  PHPWS_Text::parseTag($summary);
             }
         } else {
@@ -407,11 +411,10 @@ class Blog {
 
             if ($summarized && !empty($comments)) {
                 $link = $comments->countComments(true);
-                if (MOD_REWRITE_ENABLED) {
-                    $template['COMMENT_LINK'] = sprintf('<a href="blog/%d#comments">%s</a>', $this->id, $link);
-                } else {
-                    $template['COMMENT_LINK'] = sprintf('<a href="index.php?module=blog&amp;id=%d#comments">%s</a>', $this->id, $link);
-                }
+                $comment_link = new PHPWS_Link($link, 'blog', array('id'=>$this->id));
+                $comment_link->setRewrite();
+                $comment_link->setAnchor('comments');
+                $template['COMMENT_LINK'] = $comment_link->get();
 
                 if (isset($template['READ_MORE'])) {
                     $template['SEPARATOR'] = '|';
@@ -467,9 +470,9 @@ class Blog {
     public function getPagerTags()
     {
         $template['TITLE'] = sprintf('<a href="%s">%s</a>', $this->getViewLink(true), $this->title);
-        $template['CREATE_DATE'] = $this->relativeCreateDate();
-        $template['PUBLISH_DATE'] = $this->relativePublishDate();
-        $template['EXPIRE_DATE'] = $this->relativeExpireDate();
+        $template['CREATE_DATE'] = $this->relativeCreateDate(BLOG_PAGER_DATE_FORMAT);
+        $template['PUBLISH_DATE'] = $this->relativePublishDate(BLOG_PAGER_DATE_FORMAT);
+        $template['EXPIRE_DATE'] = $this->relativeExpireDate(BLOG_PAGER_DATE_FORMAT);
         $template['SUMMARY'] = $this->getListSummary();
         $template['ACTION'] = $this->getListAction();
         return $template;
@@ -480,34 +483,48 @@ class Blog {
         $link['blog_id'] = $this->id;
 
         if ( ( Current_User::allow('blog', 'edit_blog') && Current_User::getId() == $this->author_id )
-            || Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ){
+            || Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ) {
 
             $link['command'] = 'edit';
-            $list[] = PHPWS_Text::secureLink(dgettext('blog', 'Edit'), 'blog', $link);
+            $icon = sprintf('<img src="images/mod/blog/edit.png" alt="%s" title="%s" />',
+                            dgettext('blog', 'Edit'), dgettext('blog', 'Edit'));
+            $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
         }
 
         if (Current_User::allow('blog', 'delete_blog')){
             $link['command'] = 'delete';
             $confirm_vars['QUESTION'] = dgettext('blog', 'Are you sure you want to permanently delete this blog entry?');
             $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('blog', $link, true);
-            $confirm_vars['LINK'] = dgettext('blog', 'Delete');
+            $confirm_vars['LINK'] = sprintf('<img src="images/mod/blog/delete.png" alt="%s" title="%s" />',
+                                            dgettext('blog', 'Delete'), dgettext('blog', 'Delete'));
             $list[] = Layout::getJavascript('confirm', $confirm_vars);
         }
 
         if (Current_User::isUnrestricted('blog')){
             $link['command'] = 'restore';
-            $list[] = PHPWS_Text::secureLink(dgettext('blog', 'Restore'), 'blog', $link);
+            $icon = sprintf('<img src="images/mod/blog/restore.png" alt="%s" title="%s" />',
+                            dgettext('blog', 'Restore'), dgettext('blog', 'Restore'));
+
+            $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
+
+
             if ($this->sticky) {
                 $link['command'] = 'unsticky';
-                $list[] = PHPWS_Text::secureLink(dgettext('blog', 'Unsticky'), 'blog', $link);
+                $icon = sprintf('<img src="images/mod/blog/unsticky.png" alt="%s" title="%s" />',
+                                dgettext('blog', 'Unsticky'), dgettext('blog', 'Unsticky'));
+
+                $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
             } else {
                 $link['command'] = 'sticky';
-                $list[] = PHPWS_Text::secureLink(dgettext('blog', 'Sticky'), 'blog', $link);
+                $icon = sprintf('<img src="images/mod/blog/sticky.png" alt="%s" title="%s" />',
+                                dgettext('blog', 'Sticky'), dgettext('blog', 'Sticky'));
+
+                $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
             }
         }
 
         if (isset($list)) {
-            $response = implode(' | ', $list);
+            $response = implode(' ', $list);
         }
         else {
             $response = dgettext('blog', 'No action');
