@@ -518,7 +518,7 @@ class Users_Permission {
                 $key->_edit_groups[] = $group_id;
             }
         }
-        return $key->save();
+        return $key->savePermissions();
     }
 }
 
