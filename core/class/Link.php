@@ -304,6 +304,11 @@ class PHPWS_Link {
     {
         $this->anchor = preg_replace('/^#/', '', $anchor);
     }
+
+    public function setOnClick($onclick)
+    {
+        $this->onclick = $onclick;
+    }
 }
 
 ?>

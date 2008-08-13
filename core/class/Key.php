@@ -56,11 +56,11 @@ class Key {
     public $hide_after      = HIDE_CEILING;
 
     // groups allowed to view
-    private $_view_groups    = null;
+    public $_view_groups    = null;
     // groups allowed to edit
-    private $_edit_groups    = null;
+    public $_edit_groups    = null;
 
-    public  $_error          = null;
+    public  $_error         = null;
 
     function __construct($id=null)
     {
@@ -429,7 +429,7 @@ class Key {
         return ($this->module == 'home' ? true : false);
     }
 
-    function &getHomeKey()
+    function getHomeKey()
     {
         if (!isset($GLOBALS['Home_Key'])) {
             $key = new Key;
