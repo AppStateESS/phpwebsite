@@ -230,6 +230,7 @@ class Cabinet_Form {
             $limits[10]  = 10;
             $limits[25] =  25;
             $limits[50] =  50;
+            $pager->addSortHeader('downloaded', sprintf('<abbr title="%s">%s</abbr>', dgettext('filecabinet', 'Downloaded'), dgettext('filecabinet', 'DL')));
         } elseif ($folder->ftype = MULTIMEDIA_FOLDER) {
             PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
             $pager = new DBPager('multimedia', 'PHPWS_Multimedia');
@@ -259,10 +260,6 @@ class Cabinet_Form {
         }
 
         $pagetags['ACTION_LABEL']    = dgettext('filecabinet', 'Action');
-        $pagetags['SIZE_LABEL']      = dgettext('filecabinet', 'Size');
-        $pagetags['FILE_NAME_LABEL'] = dgettext('filecabinet', 'File name');
-        $pagetags['FILE_TYPE_LABEL'] = dgettext('filecabinet', 'File type');
-        $pagetags['TITLE_LABEL']     = dgettext('filecabinet', 'Title');
 
         $pager->setLimitList($limits);
         $pager->setDefaultLimit(16);
@@ -273,6 +270,11 @@ class Cabinet_Form {
         $pager->setModule('filecabinet');
         $pager->addPageTags($pagetags);
         $pager->addRowTags('rowTags', $pick_image);
+        $pager->addSortHeader('title', dgettext('filecabinet', 'Title'));
+        $pager->addSortHeader('file_name', dgettext('filecabinet', 'File name'));
+        $pager->addSortHeader('file_type', dgettext('filecabinet', 'File type'));
+        $pager->addSortHeader('size', dgettext('filecabinet', 'Size'));
+
         $pager->setEmptyMessage(dgettext('filecabinet', 'Folder is empty.'));
         $this->cabinet->content = $pager->get();
     }

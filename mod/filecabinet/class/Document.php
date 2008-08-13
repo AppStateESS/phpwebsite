@@ -15,6 +15,7 @@ PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 
 class PHPWS_Document extends File_Common {
+    public $downloaded = 0;
     public $_classtype = 'document';
 
     function __construct($id=NULL)
@@ -164,6 +165,8 @@ class PHPWS_Document extends File_Common {
         } else {
             $tpl['ACTION'] = $this->getViewLink(true, 'download');
         }
+
+        $tpl['DOWNLOADED'] = $this->downloaded;
 
         $tpl['TITLE'] = $this->getViewLink(true, true);
         return $tpl;

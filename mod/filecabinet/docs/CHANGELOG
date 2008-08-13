@@ -1,3 +1,10 @@
+13 August 2008
++ Downloaded documents now increment download count.
++ Document folder view shows how many times a document has been
+  downloaded.
++ Switched sort headers over to new pager format.
++ Updated: templates/file_list.tpl
+
 12 August 2008
 + Removed cropped from install.sql and added vertical and num_visible
   columns.

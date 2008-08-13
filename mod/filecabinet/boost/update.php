@@ -428,9 +428,21 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
     case version_compare($version, '2.2.0', '<'):
         $db = new PHPWS_DB('fc_file_assoc');
-        $db->addTableColumn('vertical', 'smallint not null default 0');
-        $db->addTableColumn('num_visible', 'smallint not null default 3');
+        if (PHPWS_Error::logIfError($db->addTableColumn('vertical', 'smallint not null default 0'))) {
+            $content[] = 'Unable to create vertical column in fc_file_assoc table.';
+        }
+
+        if (PHPWS_Error::logIfError($db->addTableColumn('num_visible', 'smallint not null default 3'))) {
+            $content[] = 'Unable to create num_visible column in fc_file_assoc table.';
+        }
+
         $db->dropTableColumn('cropped');
+
+        $db = new PHPWS_DB('modules');
+        $db->addWhere('title', 'filecabinet');
+        $db->addValue('unregister', 1);
+        PHPWS_Error::logIfError($db->update());
+        $content[] = 'Unregister flag set in modules table.';
         break;
     }
 

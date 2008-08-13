@@ -7,7 +7,7 @@
 $proper_name  = 'File Cabinet';
 $version      = '2.2.0';
 $register     = false;
-$unregister   = false;
+$unregister   = true;
 $import_sql   = true;
 $image_dir    = true;
 $file_dir     = true;

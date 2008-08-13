@@ -412,7 +412,8 @@ class Cabinet {
             Layout::add(dgettext('filecabinet', 'Sorry but this file is inaccessible at this time.'));
             return;
         }
-
+        $document->downloaded++;
+        $document->save();
         $dl = new HTTP_Download;
         $dl->setFile($file_path);
         $dl->setContentDisposition(HTTP_DOWNLOAD_ATTACHMENT, $document->filename);
