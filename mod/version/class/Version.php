@@ -481,7 +481,7 @@ class Version {
         return $db->select('one');
     }
 
-    public function authorizeCreator(PHPWS_Key $key)
+    public function authorizeCreator(Key $key)
     {
         return Users_Permission::giveItemPermission($this->getCreator(), $key);
     }
