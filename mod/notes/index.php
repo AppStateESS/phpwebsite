@@ -24,7 +24,7 @@ switch ($_REQUEST['command']) {
      if (PEAR::isError($result)) {
          PHPWS_Error::log($result);
      }
-     
+
      Layout::nakedDisplay(javascript('close_refresh'));
      exit();
      break;
@@ -51,7 +51,6 @@ switch ($_REQUEST['command']) {
          }
          echo implode("\n", $output);
      }
-     
      exit();
      break;
 }

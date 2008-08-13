@@ -1,3 +1,8 @@
+13 August 2008
++ Checks username if the user id is zero.
++ Removed improper css code
++ Updated: templates/style.css
+
 Version 1.0.0
 --------------------------------------------------------------------
 3 June 2008
@@ -7,7 +12,7 @@ Version 1.0.0
 + User name passed by id
 + Unread notes italicized
 + Updated: javascript/search_user/head.js, templates/note.tpl,
-   templates/note_style.css, ,templates/send_note.tpl, 
+   templates/note_style.css, ,templates/send_note.tpl,
    templates/style.css
 
 11 April 2008

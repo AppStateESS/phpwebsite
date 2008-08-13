@@ -1,5 +1,5 @@
 /*
- * User popup styles 
+ * User popup styles
  */
 ac_results {
         color : black;
@@ -22,7 +22,6 @@ ac_results {
 	top:0;
 	left:0;
 	z-index:-1;
-	filter:mask();
 	width:3000px;
 	height:3000px;
 }
