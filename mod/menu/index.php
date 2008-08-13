@@ -11,10 +11,10 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 
 if (isset($_REQUEST['site_map'])) {
     Menu::siteMap();
- } elseif(Current_User::allow('menu')) {
-     Menu::admin();
- } else {
+} elseif(Current_User::allow('menu')) {
+    Menu::admin();
+} else {
     PHPWS_Core::errorPage('404');
- }
+}
 
 ?>

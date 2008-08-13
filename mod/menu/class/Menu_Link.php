@@ -227,7 +227,6 @@ class Menu_Link {
                 $current_parent[] = $this->id;
                 $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
             }
-
         }
 
         if ($this->childIsCurrentUrl()) {
@@ -327,21 +326,28 @@ class Menu_Link {
                     $template['EDIT_LINK']     = $this->editLink($popup);
                     $template['DELETE_LINK']   = $this->deleteLink($popup);
 
+
                     $vars['command'] = 'move_link_up';
                     $up_link = MENU_LINK_UP;
                     if ($popup) {
                         $up_link .= ' ' . dgettext('menu', 'Move link up');
                         $vars['pu'] = 1;
+                        $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink($up_link, 'menu', $vars);
+                    } else {
+                        $template['MOVE_LINK_UP'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
+                                                            $this->menu_id, $this->id, $key->id, 'up', $up_link);
                     }
-                    $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink($up_link, 'menu', $vars);
 
                     $down_link = MENU_LINK_DOWN;
+                    $vars['command'] = 'move_link_down';
                     if ($popup) {
                         $down_link .= ' ' . dgettext('menu', 'Move link down');
                         $vars['pu'] = 1;
+                        $template['MOVE_LINK_DOWN'] = PHPWS_Text::secureLink($down_link, 'menu', $vars);
+                    } else {
+                        $template['MOVE_LINK_DOWN'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
+                                                              $this->menu_id, $this->id, $key->id, 'down', $down_link);
                     }
-                    $vars['command'] = 'move_link_down';
-                    $template['MOVE_LINK_DOWN'] = PHPWS_Text::secureLink($down_link, 'menu', $vars);
                 }
 
                 $vars['command'] = 'popup_admin';
@@ -383,8 +389,8 @@ class Menu_Link {
             $vars['command'] = 'edit_link';
             $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
             $prompt_js['label']   = $link;
-            $prompt_js['width']   = 425;
-            $prompt_js['height']  = 225;
+            $prompt_js['width']   = 500;
+            $prompt_js['height']  = 300;
             return javascript('open_window', $prompt_js);
         }
     }

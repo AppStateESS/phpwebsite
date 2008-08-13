@@ -1,4 +1,4 @@
-<div class="menu">
+<div class="menu" id="{MENU_ID}">
     <div class="box">
         <div class="box-title">{CLIP}
         <h1>

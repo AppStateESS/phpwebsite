@@ -93,6 +93,23 @@ class Menu_Admin {
             $content = Menu_Admin::settings();
             break;
 
+        case 'move_link':
+            if (empty($_GET['key_id'])) {
+                $key = Key::getHomeKey();
+            } else {
+                $key = new Key($_GET['key_id']);
+            }
+            $key->flag();
+
+            $link = new Menu_Link($_GET['link_id']);
+            if ($_GET['dir'] == 'up') {
+                $link->moveUp();
+            } else {
+                $link->moveDown();
+            }
+            echo $menu->view(false, true, $key);
+            exit();
+
         case 'move_link_up':
             $link = new Menu_Link($_REQUEST['link_id']);
             $link->moveUp();
@@ -171,7 +188,7 @@ class Menu_Admin {
             break;
 
         case 'add_site_link':
-            $script = '<script type="text/javascript">window.resizeTo(500,250);</script>';
+            $script = '<script type="text/javascript">window.resizeTo(500,300);</script>';
             Layout::addJSHeader($script,'resize');
             $link = new Menu_Link;
             $link->parent = $_REQUEST['parent_id'];
@@ -617,7 +634,7 @@ class Menu_Admin {
         }
 
         $content = PHPWS_Template::process($template, 'menu', 'admin/offsite.tpl');
-        Layout::addJSHeader('<script type="text/javascript">self.resizeTo(425,225);</script>');
+        Layout::addJSHeader('<script type="text/javascript">self.resizeTo(500,300);</script>');
         Layout::nakedDisplay($content);
     }
 

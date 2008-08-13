@@ -152,6 +152,9 @@ class Menu_Item {
      */
     public function displayLinks($edit=FALSE)
     {
+        javascript('jquery');
+        javascript('modules/menu/move_link', array('authkey'=>Current_User::getAuthKey()));
+
         $all_links = $this->getLinks();
         if (empty($all_links)) {
             return NULL;
@@ -349,7 +352,7 @@ class Menu_Item {
     /**
      * Returns a menu and its links for display
      */
-    public function view($pin_mode=FALSE)
+    public function view($pin_mode=FALSE, $return_content=false)
     {
         $key = Key::getCurrent();
 
@@ -426,6 +429,7 @@ class Menu_Item {
 
         $tpl['TITLE'] = $this->getTitle();
         $tpl['LINKS'] = $this->displayLinks($edit);
+        $tpl['MENU_ID'] = sprintf('menu_%s', $this->id);
 
         if ($pin_mode &&
             Current_User::allow('menu') &&
@@ -440,7 +444,11 @@ class Menu_Item {
 
         $content = PHPWS_Template::process($tpl, 'menu', $file);
 
-        Layout::set($content, 'menu', $content_var);
+        if ($return_content) {
+            return $content;
+        } else {
+            Layout::set($content, 'menu', $content_var);
+        }
     }
 
     public function reorderLinks()

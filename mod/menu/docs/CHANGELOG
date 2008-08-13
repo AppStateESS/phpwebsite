@@ -1,6 +1,13 @@
+13 August 2008
++ Increased some popup window sizes
++ Move link changed into Ajax call
++ Updated: javascript/move_link/
+templates/style.css
+templates/menu_layout/basic/menu.tpl
+templates/menu_layout/horizontal/menu.tpl
+
 12 August 2008
 + Fixed current link problem with unkeyed items.
-
 
 19 June 2008
 + Changed admin link wording.

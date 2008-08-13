@@ -63,7 +63,6 @@ class Menu {
             $vars['return'] = 1;
             MiniAdmin::add('menu', PHPWS_Text::moduleLink(MENU_ADMIN_ON, 'menu', $vars));
         }
-
     }
 
 
@@ -136,7 +135,7 @@ class Menu {
             $js['label'] .= ' ' . dgettext('menu', 'Add other link');
         }
         $js['width'] = 500;
-        $js['height'] = 250;
+        $js['height'] = 300;
 
         return javascript('open_window', $js);
     }
