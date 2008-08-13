@@ -226,9 +226,9 @@ class Blog_User {
         }
 
         if ($page == 0) {
-            $key = BLOG_CACHE_KEY . '1';
+            $cache_key = BLOG_CACHE_KEY . '1';
         } else {
-            $key = BLOG_CACHE_KEY . $page;
+            $cache_key = BLOG_CACHE_KEY . $page;
         }
 
         // we are only caching the first three pages
@@ -236,8 +236,8 @@ class Blog_User {
             !Current_User::isLogged() &&
             !Current_User::allow('blog') &&
             PHPWS_Settings::get('blog', 'cache_view') &&
-            $content = PHPWS_Cache::get($key)) {
-            Layout::getCacheHeaders($key);
+            $content = PHPWS_Cache::get($cache_key)) {
+            Layout::getCacheHeaders($cache_key);
             return $content;
         }
 
@@ -272,7 +272,16 @@ class Blog_User {
             }
         }
 
+        $rss = false;
         foreach ($result as $blog) {
+            if (!$rss) {
+                if (PHPWS_Core::moduleExists('rss')) {
+                    PHPWS_Core::initModClass('rss', 'RSS.php');
+                    $key = new Key($blog->key_id);
+                    RSS::showIcon($key);
+                    $rss = true;
+                }
+            }
             $view = $blog->view();
             if (!empty($view)) {
                 $list[] = $view;
@@ -300,8 +309,8 @@ class Blog_User {
         if ($page <= MAX_BLOG_CACHE_PAGES &&
             !Current_User::isLogged() && !Current_User::allow('blog') &&
             PHPWS_Settings::get('blog', 'cache_view')) {
-            PHPWS_Cache::save($key, $content);
-            Layout::cacheHeaders($key);
+            PHPWS_Cache::save($cache_key, $content);
+            Layout::cacheHeaders($cache_key);
         } elseif (Current_User::allow('blog', 'edit_blog')) {
             Blog_User::miniAdminList();
             $vars['action'] = 'admin';
