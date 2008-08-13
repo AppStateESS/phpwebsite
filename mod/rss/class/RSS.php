@@ -92,7 +92,7 @@ class RSS {
         exit();
     }
 
-    function showIcon(&$key)
+    function showIcon($key)
     {
         PHPWS_Core::initModClass('rss', 'Channel.php');
         $channel = new RSS_Channel;
@@ -106,7 +106,6 @@ class RSS {
 
         Layout::addLink(sprintf('<link rel="alternate" type="application/rss+xml" title="%s" href="%s" />',
                                 $channel->title, $channel->getAddress(FALSE)));
-
     }
 
 }

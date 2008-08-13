@@ -94,19 +94,12 @@ class RSS_Channel {
 
     public function getAddress($include_http=TRUE)
     {
-        if ($include_http) {
-            if (MOD_REWRITE_ENABLED) {
-                return PHPWS_Core::getHomeHttp() . 'rss/' . $this->module;
-            } else {
-                return PHPWS_Core::getHomeHttp() . 'index.php?module=rss&amp;mod_title=' . $this->module;
-            }
-        } else {
-            if (MOD_REWRITE_ENABLED) {
-                return 'rss/' . $this->module;
-            } else {
-                return 'index.php?module=rss&amp;mod_title=' . $this->module;
-            }
-        }
+        $link = new PHPWS_Link;
+        $link->full_url = $include_http;
+        $link->setRewrite();
+        $link->setModule('rss');
+        $link->addValues(array('mod_title'=>$this->module));
+        return $link->getAddress();
     }
 
     public function loadFeeds()
