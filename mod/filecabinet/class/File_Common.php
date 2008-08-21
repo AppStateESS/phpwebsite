@@ -7,6 +7,8 @@
  * @version $Id$
  */
 
+PHPWS_Core::initCoreClass('File.php');
+
 class File_Common {
     public $id              = 0;
     public $file_name       = null;

@@ -242,6 +242,7 @@ class FC_File_Assoc {
         PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
         if ($this->_use_style) {
+            PHPWS_Core::initModClass('layout', 'Layout.php');
             Layout::addStyle('filecabinet', 'file_view.css');
         }
 
