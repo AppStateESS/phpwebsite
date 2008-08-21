@@ -1,23 +1,23 @@
 <?php
 
 /**
- * This is the listing of file types known by phpwebsite. It is 
+ * This is the listing of file types known by phpwebsite. It is
  * not complete but sufficient for basic use.
  * File Cabinet uses this file to determine a file's mime type. Without
  * it, File Cabinet will refuse a file's inclusion to the system.
- * 
- * If you want to add a file you need to know how fileinfo and 
+ *
+ * If you want to add a file you need to know how fileinfo and
  * mime_content_type identify it.
  *
  * The key for each info array is a file's extension. Some extensions
  * are repeated and pointed to (e.g. qt is a copy of mov).
  *
  * mct : array of types that mime_content_type may return on a file
- * fi  : an sample of the text fileinfo returns on a file. These 
+ * fi  : an sample of the text fileinfo returns on a file. These
  *       text snippets are run through a preg_match to compare.
  * vb  : Verbose description of the file.
  * bl  : Sometimes mime_content_type will return null on a file.
- *       (Microsoft files in unix for example). If bl is set, the 
+ *       (Microsoft files in unix for example). If bl is set, the
  *       file can get by.
  * base: If a file can be uploaded with an alternate extension, the base
  *       indicates the parent extension.
@@ -27,7 +27,7 @@
  * could get through. Know your users. Substitute your file extension
  * for the 'ext' in the array.
  *
- * // a very common type 
+ * // a very common type
  * $all_file_types['ext']['mct'] = 'text/plain';
  *
  * // If mime_content_type is not working at all and file -iL
@@ -199,6 +199,10 @@ $all_file_types['tgz']['mct'][] = 'application/x-gzip';
 $all_file_types['tgz']['fi'][]  = 'gzip compressed';
 $all_file_types['tgz']['vb']    = 'Compressed Tarball Archive';
 
+$all_file_types['tpl']['mct'][] = 'text/plain';
+$all_file_types['tpl']['fi'][]  = 'text/plain';
+$all_file_types['tpl']['vb']    = 'phpWebSite Template file';
+
 $all_file_types['txt']['mct'][] = 'text/plain';
 $all_file_types['txt']['fi'][]  = 'text/plain';
 $all_file_types['txt']['vb']    = 'Text';
@@ -223,7 +227,7 @@ $all_file_types['xlsx']['fi'][]  = 'zip archive data';
 $all_file_types['xlsx']['vb']    = 'Microsoft Excel 2007 Spreadsheet';
 
 $all_file_types['xml']['mct'][] = 'text/xml';
-$all_file_types['xml']['fi'][]  = 'xml ';
+$all_file_types['xml']['fi'][]  = 'xml';
 $all_file_types['xml']['vb']    = 'XML Document';
 
 

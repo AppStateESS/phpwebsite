@@ -14,6 +14,8 @@ Version 1.8.3
 + Setup
   o Added server check to beginning of installation
   o Switched off the general config step.
++ Added phpwebsite template file to file_types.php
++ Updated files: conf/file_types.php
 
 
 13 August 2008

@@ -176,6 +176,11 @@ function checkServer(&$content)
     $test['config_dir']['name'] = _('Config directory ready');
     $test['config_dir']['crit'] = true;
 
+    $test['log_dir']['pass'] = is_dir('log/') && is_writable('log/');
+    $test['log_dir']['fail'] = sprintf(_('%s directory does not exist or is not writable.'), 'SITENAME/log');
+    $test['log_dir']['name'] = _('Log directory ready');
+    $test['log_dir']['crit'] = true;
+
     $test['ffmpeg']['pass'] = is_file('/usr/bin/ffmpeg');
     $test['ffmpeg']['fail'] = _('You do not appear to have ffmpeg installed. File Cabinet will not be able to create thumbnail images from uploaded videos');
     $test['ffmpeg']['name'] = _('FFMPEG installed');
