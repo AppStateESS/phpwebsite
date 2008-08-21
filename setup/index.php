@@ -186,7 +186,11 @@ function checkServer(&$content)
     $test['mime_type']['name'] = _('MIME file type detection');
     $test['mime_type']['crit'] = true;
 
-    $phpversion = substr(PHP_VERSION,0,strpos(PHP_VERSION, '-'));
+    if (preg_match('/-/', PHP_VERSION)) {
+        $phpversion = substr(PHP_VERSION,0,strpos(PHP_VERSION, '-'));
+    } else {
+        $phpversion = PHP_VERSION;
+    }
 
     $test['php_version']['pass'] = version_compare($phpversion, '5.1.0', '>=');
     $test['php_version']['fail'] = sprintf(_('Your server must run PHP version 5.1.0 or higher. You are running version %s.'), $phpversion);
