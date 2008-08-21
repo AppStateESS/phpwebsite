@@ -181,7 +181,7 @@ function checkServer(&$content)
     $test['ffmpeg']['name'] = _('FFMPEG installed');
     $test['ffmpeg']['crit'] = false;
 
-    $test['mime_type']['pass'] = function_exists('finfo_open') || function_exists('mime_content_type');
+    $test['mime_type']['pass'] = function_exists('finfo_open') || function_exists('mime_content_type') || !ini_get('safe_mode');
     $test['mime_type']['fail'] = _('Unable to detect MIME file type. You will need to compile finfo_open into PHP.');
     $test['mime_type']['name'] = _('MIME file type detection');
     $test['mime_type']['crit'] = true;
