@@ -145,8 +145,7 @@ class XMLParser {
                         $temp = $content[$key];
                         $content[$key] = array();
                         if (is_array($temp)) {
-                            foreach ($temp as $tmp_key=>$tmp_value);
-                            if (isset($value[$tmp_key])) {
+                            if (!isset($temp[0])) {
                                 $content[$key][] = $temp;
                                 $content[$key][] = $value;
                             } else {
@@ -164,7 +163,7 @@ class XMLParser {
             }
 
             return array($foo['name']=>$content);
-        } elseif ($this->content_only) {
+        } elseif ($this->content_only && isset($foo['content'])) {
             return array($foo['name']=>$foo['content']);
         } else {
             if (isset($foo['attributes'])) {
