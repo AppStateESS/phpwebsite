@@ -50,12 +50,23 @@ class PageSmith {
                 $this->loadPage();
                 $this->forms->editPage();
                 break;
+
             case 'list':
                 $this->forms->pageList();
                 break;
 
             case 'settings':
+                if (!Current_User::allow('pagesmith', null, null, null, true)) {
+                    Current_User::disallow();
+                }
                 $this->forms->settings();
+                break;
+
+            case 'upload':
+                if (!Current_User::allow('pagesmith', 'upload_templates', null, null, true)) {
+                    Current_User::disallow();
+                }
+                $this->forms->uploadTemplates();
                 break;
             }
             break;
@@ -141,6 +152,19 @@ class PageSmith {
             $this->forms->settings();
             break;
 
+        case 'post_templates':
+            if (!Current_User::allow('pagesmith', 'upload_templates', null, null, true)) {
+                Current_User::disallow();
+            }
+
+            if ($this->postTemplate()) {
+                $this->content = dgettext('pagesmith', 'Template posted.');
+            } else {
+                $this->loadForms();
+                $this->forms->uploadTemplates();
+            }
+            break;
+
         default:
             PHPWS_Core::errorPage('404');
             break;
@@ -187,6 +211,10 @@ class PageSmith {
         $tabs['list'] = array('title'=>dgettext('pagesmith', 'List'), 'link'=>$link);
         if (Current_User::isUnrestricted('pagesmith')) {
             $tabs['settings'] = array('title'=>dgettext('pagesmith', 'Settings'), 'link'=>$link);
+        }
+
+        if (Current_User::allow('pagesmith', 'upload_templates') && Current_User::isUnrestricted('pagesmith')) {
+            $tabs['upload'] = array('title'=>dgettext('pagesmith', 'Upload'), 'link'=>$link);
         }
 
         $this->panel->quickSetTabs($tabs);
@@ -355,6 +383,79 @@ class PageSmith {
         }
 
         PHPWS_Settings::save('pagesmith');
+    }
+
+    private function postTemplate()
+    {
+        if (preg_match('/\W/', $_POST['template_name'])) {
+            $this->message = dgettext('pagesmith', 'The template name must contain alphanumeric characters only.');
+            return false;
+        } else {
+            $template_name = $_POST['template_name'];
+            $directory = 'templates/pagesmith/page_templates/' . $template_name . '/';
+            if (is_dir($directory)) {
+                $this->message = dgettext('pagesmith', 'There is already a template with this name.');
+                return false;
+            }
+        }
+
+        if (empty($_FILES['template_file'])) {
+            $this->message = dgettext('pagesmith', 'Missing template file.');
+            return false;
+        } else {
+            $ext = PHPWS_File::getFileExtension($_FILES['template_file']['name']);
+            if ($ext != 'tpl' || !PHPWS_File::checkMimeType($_FILES['template_file']['tmp_name'], $ext)) {
+                $this->message = dgettext('pagesmith', 'Wrong file type for template file.');
+                return false;
+            }
+        }
+
+        if (empty($_FILES['style_sheet'])) {
+            $this->message = dgettext('pagesmith', 'Missing style sheet.');
+            return false;
+        } else {
+            $ext = PHPWS_File::getFileExtension($_FILES['style_sheet']['name']);
+            if ($ext != 'css' || !PHPWS_File::checkMimeType($_FILES['style_sheet']['tmp_name'], $ext)) {
+                $this->message = dgettext('pagesmith', 'Wrong file type for style sheet.');
+                return false;
+            }
+        }
+
+        if (empty($_FILES['icon'])) {
+            $this->message = dgettext('pagesmith', 'Missing icon file.');
+            return false;
+        } else {
+            $ext = PHPWS_File::getFileExtension($_FILES['icon']['name']);
+
+            if ( ($ext != 'png' && $ext != 'jpg' && $ext != 'gif') || !PHPWS_File::checkMimeType($_FILES['icon']['tmp_name'], $ext)) {
+                $this->message = dgettext('pagesmith', 'Wrong file type for icon file.');
+                return false;
+            }
+        }
+
+        if (empty($_FILES['structure_file'])) {
+            $this->message = dgettext('pagesmith', 'Missing structure file.');
+            return false;
+        } else {
+            $ext = PHPWS_File::getFileExtension($_FILES['structure_file']['name']);
+
+            if ($ext != 'xml' || !PHPWS_File::checkMimeType($_FILES['structure_file']['tmp_name'], $ext)) {
+                $this->message = dgettext('pagesmith', 'Wrong file type for structure file.');
+                return false;
+            }
+        }
+
+        if (mkdir($directory)) {
+            $this->content = dgettext('pagesmith', 'Template directory created.');
+            copy($_FILES['template_file']['tmp_name'], $directory . $_FILES['template_file']['name']);
+            copy($_FILES['style_sheet']['tmp_name'], $directory . $_FILES['style_sheet']['name']);
+            copy($_FILES['icon']['tmp_name'], $directory . $_FILES['icon']['name']);
+            copy($_FILES['structure_file']['tmp_name'], $directory . $_FILES['structure_file']['name']);
+            return true;
+        } else {
+            $this->message = dgettext('pagesmith', 'Unable to create page template directory.');
+            return false;
+        }
     }
 
 }

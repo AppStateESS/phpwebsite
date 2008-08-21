@@ -24,7 +24,6 @@ class PS_Forms {
         }
     }
 
-
     public function loadTemplates()
     {
         PHPWS_Core::initModClass('pagesmith', 'PS_Template.php');
@@ -51,7 +50,7 @@ class PS_Forms {
 
     public function pageLayout()
     {
-        $page = & $this->ps->page;
+        $page = $this->ps->page;
 
         $pg_tpl_name = & $page->_tpl->name;
         $this->ps->killSaved();
@@ -297,6 +296,36 @@ class PS_Forms {
         $this->ps->content = PHPWS_Template::process($form->getTemplate(), 'pagesmith', 'settings.tpl');
     }
 
+    public function uploadTemplates()
+    {
+        $this->ps->title = dgettext('pagesmith', 'Upload template');
+
+        if (!is_writable('templates/pagesmith/page_templates/')) {
+            $this->ps->content = dgettext('pagesmith', 'Page template directory must be writable to upload templates.');
+            return;
+        }
+        $form = new PHPWS_Form('upload-templates');
+        $form->addHidden('module', 'pagesmith');
+        $form->addHidden('aop', 'post_templates');
+        $form->addText('template_name', @$_POST['template_name']);
+        $form->setLabel('template_name', dgettext('pagesmith', 'Template name'));
+
+        $form->addFile('template_file');
+        $form->setLabel('template_file', dgettext('pagesmith', 'Template file (e.g., filename.tpl)'));
+
+        $form->addFile('style_sheet');
+        $form->setLabel('style_sheet', dgettext('pagesmith', 'Style sheet (e.g., filename.css)'));
+
+        $form->addFile('icon');
+        $form->setLabel('icon', dgettext('pagesmith', 'Template icon (e.g., filename.png)'));
+
+        $form->addFile('structure_file');
+        $form->setLabel('structure_file', _('Structure file (e.g., structure.xml)'));
+
+        $form->addSubmit('upload', dgettext('pagesmith', 'Upload file'));
+
+        $this->ps->content = PHPWS_Template::process($form->getTemplate(), 'pagesmith', 'upload_template.tpl');
+    }
 }
 
 ?>

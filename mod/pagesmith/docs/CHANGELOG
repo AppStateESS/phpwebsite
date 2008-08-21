@@ -1,3 +1,7 @@
+21 August 2008
++ Added ability to upload page templates to module.
++ Updated: templates/upload_template.tpl
+
 23 June 2008
 + Page templates can now control block type. The type can be image,
   document, media, or block. Block allows all three.
@@ -62,7 +66,7 @@ Version 1.1.0
 + Added threesec template
 + Updated: templates/page_templates/threesec/page.css
            "/page.tpl, "/structure.xml, "/threesec.png
-                                             
+
 
 6 February 2008
 + Pagesmith works with new File Cabinet
@@ -134,7 +138,7 @@ Version 1.0.1
 + Was using nbsp to fill blank content. This gave false positives in
   the layout. nbsp are only used now for form layout.
 + Javascript changed to add nbsp on blank entry to prevent collapsing
-  forms. 
+  forms.
 + Added box-title and box-content divs to page templates to help with
   styling.
 + Added an error check for bad template directories.
