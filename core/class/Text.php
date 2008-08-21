@@ -53,11 +53,7 @@ class PHPWS_Text {
 
     public function decodeText($text)
     {
-        if (version_compare(phpversion(), '5.0.0', '>=')) {
-            return html_entity_decode($text, ENT_QUOTES, 'UTF-8');
-        } else {
-            return PHPWS_Text::decode_entities($text);
-        }
+        return html_entity_decode($text, ENT_QUOTES, 'UTF-8');
     }
 
     public function useFilters($filter)
@@ -77,29 +73,6 @@ class PHPWS_Text {
         } else {
             $this->text = $text;
         }
-    }
-
-    /**
-     * This is a modified copy of a function from 'derernst at gmx dot ch' at php.net
-     * I added the utf8_convert. His work was based on others. Please see notes under
-     * html_entity_decode
-     * @author derernst at gmx dot ch
-     * @author Matthew McNaney <mcnaney at gmail dot com>
-     */
-
-    public function decode_entities($text, $quote_style = ENT_COMPAT)
-    {
-        if (!function_exists('html_entity_decode')) {
-            $text = html_entity_decode($text, $quote_style, 'ISO-8859-1'); // NOTE: UTF-8 does not work!
-        }
-        else {
-            $trans_tbl = get_html_translation_table(HTML_ENTITIES, $quote_style);
-            $trans_tbl = array_flip($trans_tbl);
-            $text = strtr($text, $trans_tbl);
-        }
-        $text = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $text);
-        $text = preg_replace('~&#([0-9]+);~e', 'chr("\\1")', $text);
-        return utf8_encode($text);
     }
 
 

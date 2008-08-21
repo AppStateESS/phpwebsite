@@ -120,6 +120,10 @@ class PHPWS_DB {
     public function loadDB($dsn=null, $tbl_prefix=null, $force_reconnect=false, $show_error=true)
     {
         if (!isset($dsn)) {
+            if (!defined('PHPWS_DSN')) {
+                exit(_('Cannot load database. DSN not defined.'));
+            }
+
             $dsn = PHPWS_DSN;
             if (defined('PHPWS_TABLE_PREFIX')) {
                 $tbl_prefix = PHPWS_TABLE_PREFIX;

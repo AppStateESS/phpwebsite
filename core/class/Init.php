@@ -28,7 +28,6 @@ loadBrowserInformation();
 
 /* Load the Core class */
 require_once PHPWS_SOURCE_DIR . 'core/class/Core.php';
-require_once PHPWS_SOURCE_DIR . 'core/inc/errorDefines.php';
 
 
 /***** PHPWS Classes ****/
@@ -349,10 +348,6 @@ function doubleLanguage($language)
     return $language . '_' . strtoupper($language);
 }
 
-function translate($module=NULL)
-{
-    // kept to prevent breakage
-}
 
 /**
  * adds a locale prefix to a title name

@@ -4,10 +4,21 @@ its own separate CHANGELOG file..
 
 Version 1.8.3
 ---------------------------------------------------------------------
+21 August 2008
++ XMLParser fixes.
++ Moved errorDefines from Init to Core.
++ Removed crutch function from Init.
++ Small error check added to Database.
++ Error - added error check to prevent endless loop
++ Text - Removed php 4 function
++ Setup
+  o Added server check to beginning of installation
+  o Switched off the general config step.
+
+
 13 August 2008
 + Key - Changed private variables to public
 + Link - added setOnClick
-
 
 12 August 2008
 + Commented out Function.php inclusion since php 5 is standard.

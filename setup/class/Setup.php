@@ -46,7 +46,7 @@ class Setup{
         $messages = array();
 
         if (isset($_POST['action'])) {
-            if ($_POST['action'] == 'postGeneralConfig') {
+            if ($_POST['action'] == 'postGeneralConfig' && !SKIP_STEP_1) {
                 if (Setup::postGeneralConfig($content, $messages)) {
                     $_SESSION['configSettings']['general'] = TRUE;
                 }
@@ -55,6 +55,21 @@ class Setup{
                     $_SESSION['configSettings']['database'] = TRUE;
                 }
             }
+        }
+
+        if (SKIP_STEP_1) {
+            $dir = getcwd() . '/';
+            Setup::setConfigSet('source_dir', $dir);
+            Setup::setConfigSet('home_dir', $dir);
+            Setup::setConfigSet('LINUX_PEAR', '//');
+            Setup::setConfigSet('WINDOWS_PEAR', '//');
+            if (PHPWS_Core::isWindows()) {
+                Setup::setConfigSet('WINDOWS_PEAR', NULL);
+            } else {
+                Setup::setConfigSet('LINUX_PEAR', NULL);
+            }
+            Setup::setConfigSet('site_hash', md5(rand()));
+            $_SESSION['configSettings']['general'] = true;
         }
 
         if ($_SESSION['configSettings']['general'] == FALSE) {
@@ -313,7 +328,7 @@ class Setup{
             if (count($tables)) {
                 return 2;
             }
-            
+
             Setup::setConfigSet('dsn', $dsn);
             return 1;
         }
@@ -368,7 +383,7 @@ class Setup{
         $form->setSize('source_dir', 50);
         $form->add('step',   'hidden', '1');
         $form->add('action', 'hidden', 'postGeneralConfig');
-        $form->setLabel('source_dir', _('Source Directory')); 
+        $form->setLabel('source_dir', _('Source Directory'));
 
         $form->add('site_hash', 'textfield', $site_hash);
         $form->setSize('site_hash', 40);
@@ -396,18 +411,10 @@ class Setup{
         $form->add('action', 'hidden', 'postDatabaseConfig');
 
         $databases = array ('mysql' =>'MySQL',
-                            'ibase' =>'InterBase',
-                            'mssql' =>'Microsoft SQL Server',
-                            'msql'  =>'Mini SQL',
-                            'oci8'  =>'Oracle 7/8/8i',
-                            'odbc'  =>'ODBC',
-                            'pgsql' =>'PostgreSQL',
-                            'sybase'=>'SyBase',
-                            'fbsql' =>'FrontBase',
-                            'ifx'   =>'Informix');
+                            'pgsql' =>'PostgreSQL');
 
         $formTpl['DBTYPE_LBL'] = _('Database Type');
-        $formTpl['DBTYPE_DEF'] = _('phpWebSite supports several databases. Choose the type your server currently is running.');
+        $formTpl['DBTYPE_DEF'] = _('phpWebSite supports MySQL and PostgreSQL. Choose the type your server currently is running.');
 
         $formTpl['DBUSER_LBL'] = _('Database User');
         $formTpl['DBUSER_DEF'] = _('This is the user name that phpWebSite will use to access its database.')
@@ -443,7 +450,7 @@ class Setup{
         if (isset($messages['dbname'])) {
             $formTpl['DBNAME_ERR'] = $messages['dbname'];
         }
-        
+
 
         $form->addSelect('dbtype', $databases);
         $form->setMatch('dbtype', Setup::getConfigSet('dbtype'));
@@ -488,7 +495,7 @@ class Setup{
 
         if (empty($directory)) {
             $dir = explode(DIRECTORY_SLASH, $_SERVER['SCRIPT_FILENAME']);
-		
+
             for ($i=0; $i < 2; $i++) {
                 array_pop($dir);
             }
@@ -522,7 +529,7 @@ class Setup{
             $content[] = '<pre>' . implode("\n", $dirExist) . '</pre>';
             $errorDir = FALSE;
         }
-      
+
         if (isset($writableDir)) {
             $content[] = _('The following directories are not writable:');
             $content[] = '<pre>' . implode("\n", $writableDir) . '</pre>';
@@ -628,7 +635,7 @@ class Setup{
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $content[] = _('An error occurred while trying to install your modules.') 
+            $content[] = _('An error occurred while trying to install your modules.')
                 . ' ' . _('Please check your error logs and try again.');
             return TRUE;
         } else {
@@ -656,6 +663,7 @@ class Setup{
         $content[] = '<a href="../index.php">' . _('Go to my new website!') . '</a>' . '<br />';
 
     }
+
 
 }
 

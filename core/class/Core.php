@@ -10,8 +10,11 @@
  */
 
 if (!defined('FORCE_MOD_CONFIG')) {
-    define('FORCE_MOD_CONFIG', TRUE);
- }
+    define('FORCE_MOD_CONFIG', true);
+}
+
+require_once PHPWS_SOURCE_DIR . 'core/inc/errorDefines.php';
+PHPWS_Core::initCoreClass('Error.php');
 
 class PHPWS_Core {
 
@@ -64,15 +67,15 @@ class PHPWS_Core {
     /**
      * Gets all the modules from the module table
      */
-    function getModules($active=TRUE, $just_title=FALSE)
+    function getModules($active=true, $just_title=false)
     {
         $DB = new PHPWS_DB('modules');
-        if ($active == TRUE) {
+        if ($active == true) {
             $DB->addWhere('active', 1);
         }
         $DB->addOrder('priority asc');
 
-        if ($just_title==TRUE) {
+        if ($just_title==true) {
             $DB->addColumn('title');
             return $DB->select('col');
         } else {
@@ -157,36 +160,37 @@ class PHPWS_Core {
 
     /**
      * Requires a module's class file once
-     * Returns TRUE is successful, FALSE otherwise
+     * Returns true is successful, false otherwise
      */
     function initModClass($module, $file)
     {
         $classFile = PHPWS_SOURCE_DIR . 'mod/' . $module . '/class/' . $file;
         if (is_file($classFile)) {
             require_once $classFile;
-            return TRUE;
+            return true;
         }
         else {
             PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', __CLASS__ . '::' .__FUNCTION__, "File: $classFile");
-            return FALSE;
+            return false;
         }
     }
 
 
     /**
      * Requires a core class file once
-     * Returns TRUE is successful, FALSE otherwise
+     * Returns true is successful, false otherwise
      */
     function initCoreClass($file)
     {
         $classFile = PHPWS_SOURCE_DIR . 'core/class/' . $file;
+
         if (is_file($classFile)) {
             require_once $classFile;
-            return TRUE;
+            return true;
         }
         else {
             PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'initCoreClass', "File: $classFile");
-            return FALSE;
+            return false;
         }
     }
 
@@ -232,7 +236,7 @@ class PHPWS_Core {
 
     /**
      * Checks to see if the currently post is in the LastPost
-     * session. If so, it returns TRUE. Function can be used to
+     * session. If so, it returns true. Function can be used to
      * prevent double posts.
      * If return_count is true, it returns the number of attempts
      * made with the same post.
@@ -379,7 +383,7 @@ class PHPWS_Core {
     }// END FUNC killAllSessions()
 
     /**
-     * Returns TRUE is a module is installed, FALSE otherwise
+     * Returns true is a module is installed, false otherwise
      */
     function moduleExists($module)
     {
@@ -404,7 +408,7 @@ class PHPWS_Core {
 
     /**
      * Retrieves a module's config file path. If the file
-     * does not exist, it returns FALSE instead.
+     * does not exist, it returns false instead.
      */
     function getConfigFile($module, $file=NULL)
     {
@@ -426,7 +430,7 @@ class PHPWS_Core {
 
         if (!is_file($file) || FORCE_MOD_CONFIG) {
             if (!is_file($altfile)) {
-                return FALSE;
+                return false;
             }
             else {
                 $file = $altfile;
@@ -440,7 +444,7 @@ class PHPWS_Core {
     /**
      * Pseudoname of configRequireOnce
      */
-    function requireConfig($module, $file=NULL, $exitOnError=TRUE)
+    function requireConfig($module, $file=NULL, $exitOnError=true)
     {
         return PHPWS_Core::configRequireOnce($module, $file, $exitOnError);
     }
@@ -449,7 +453,7 @@ class PHPWS_Core {
     /**
      * Like requireConfig but for files in the inc directory
      */
-    function requireInc($module, $file, $exitOnError=TRUE)
+    function requireInc($module, $file, $exitOnError=true)
     {
         $inc_file = sprintf('%smod/%s/inc/%s', PHPWS_SOURCE_DIR, $module, $file);
 
@@ -459,13 +463,13 @@ class PHPWS_Core {
                 PHPWS_Core::errorPage();
             }
             else {
-                return FALSE;
+                return false;
             }
         } else {
             require_once $inc_file;
         }
 
-        return TRUE;
+        return true;
     }
 
 
@@ -473,7 +477,7 @@ class PHPWS_Core {
      * Loads a config file via a require. If missing, shows error page.
      * If file is NULL, function assumes 'config.php'
      */
-    function configRequireOnce($module, $file=NULL, $exitOnError=TRUE)
+    function configRequireOnce($module, $file=NULL, $exitOnError=true)
     {
         if (empty($file)) {
             $file = 'config.php';
@@ -492,7 +496,7 @@ class PHPWS_Core {
             require_once $config_file;
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -563,9 +567,9 @@ class PHPWS_Core {
     {
         if (isset($_SERVER['WINDIR']) ||
             preg_match('/(microsoft|win32)/i', $_SERVER['SERVER_SOFTWARE'])) {
-            return TRUE;
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
 
@@ -577,13 +581,13 @@ class PHPWS_Core {
     function checkOverPost()
     {
         if (!isset($_GET['check_overpost'])) {
-            return TRUE;
+            return true;
         } elseif (empty($_POST) && isset($_SERVER['CONTENT_LENGTH'])) {
             Security::log(_('User tried to post a file beyond server limits.'));
             PHPWS_Core::errorPage('overpost');
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -593,7 +597,7 @@ class PHPWS_Core {
      */
     function checkSecurity()
     {
-        if (CHECK_DIRECTORY_PERMISSIONS == TRUE) {
+        if (CHECK_DIRECTORY_PERMISSIONS == true) {
             if (is_writable('./config/') || is_writable('./templates/') || is_writable('./javascript/modules/')) {
                 PHPWS_Error::log(PHPWS_DIR_NOT_SECURE, 'core');
                 PHPWS_Core::errorPage();
@@ -688,7 +692,7 @@ class PHPWS_Core {
                 }
             }
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -704,7 +708,7 @@ class PHPWS_Core {
     /**
      * Returns the installations url address
      */
-    function getHomeHttp($with_http=TRUE, $with_directory=TRUE, $with_slash=TRUE)
+    function getHomeHttp($with_http=true, $with_directory=true, $with_slash=true)
     {
         if ($with_http) {
             $address[] = PHPWS_Core::getHttp();
@@ -738,13 +742,13 @@ class PHPWS_Core {
     function isClass(&$object, $class_name)
     {
         if (!is_object($object)) {
-            return FALSE;
+            return false;
         }
 
         if (strtolower(get_class($object)) == strtolower($class_name)) {
-            return TRUE;
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
 
@@ -763,7 +767,7 @@ class PHPWS_Core {
      * @param boolean get_file  If true, uses the boost.php file, if false
      *                          uses the database version.
      */
-    function getVersionInfo($get_file=TRUE)
+    function getVersionInfo($get_file=true)
     {
 
         $file = PHPWS_SOURCE_DIR . 'core/boost/boost.php';
@@ -824,29 +828,29 @@ class PHPWS_Core {
     }
 
     /**
-     * Returns TRUE if the site is a hub or if the site is
-     * an allowed branch. If FALSE is returned, the index file
+     * Returns true if the site is a hub or if the site is
+     * an allowed branch. If false is returned, the index file
      * drops the user to an error page. Also sets the Is_Branch GLOBAL
      */
     function checkBranch()
     {
         if (php_sapi_name() == 'cgi' && PHPWS_SOURCE_DIR == getcwd() . '/') {
-            $GLOBALS['Is_Branch'] = FALSE;
-            return TRUE;
+            $GLOBALS['Is_Branch'] = false;
+            return true;
         } elseif(str_ireplace('index.php', '', $_SERVER['SCRIPT_FILENAME']) == PHPWS_SOURCE_DIR) {
-            $GLOBALS['Is_Branch'] = FALSE;
-            return TRUE;
+            $GLOBALS['Is_Branch'] = false;
+            return true;
         } else {
             if (!PHPWS_Core::initModClass('branch', 'Branch.php')) {
                 PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'PHPWS_Core::checkBranch');
-                return FALSE;
+                return false;
             }
             if (Branch::checkCurrentBranch()) {
-                $GLOBALS['Is_Branch'] = TRUE;
-                return TRUE;
+                $GLOBALS['Is_Branch'] = true;
+                return true;
             } else {
                 PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'PHPWS_Core::checkBranch');
-                return FALSE;
+                return false;
             }
         }
     }
@@ -859,6 +863,9 @@ class PHPWS_Core {
      */
     function isBranch()
     {
+        if (!isset($GLOBALS['Is_Branch'])) {
+            return false;
+        }
         return $GLOBALS['Is_Branch'];
     }
 

@@ -1,7 +1,4 @@
 <?php
-require_once 'HTML/Template/Sigma.php';
-require_once PHPWS_HOME_DIR . 'config/core/template.php';
-
 /**
  * Controls templates
  *
@@ -12,6 +9,9 @@ require_once PHPWS_HOME_DIR . 'config/core/template.php';
  * @author  Matt McNaney <matt at tux dot appstate dot edu>
  * @package Core
  */
+
+require_once 'HTML/Template/Sigma.php';
+require_once 'config/core/template.php';
 
 if (!defined('CACHE_TPL_LOCALLY')) {
     define('CACHE_TPL_LOCALLY', false);
