@@ -121,11 +121,10 @@ class XMLParser {
     }
 
 
-    public function subformat($foo, $hold=null)
+    public function subformat($foo)
     {
         if (isset($foo['child'])) {
             $content = array();
-            $used_keys = array();
             foreach ($foo['child'] as $bar) {
                 $result = $this->subformat($bar);
 
@@ -162,7 +161,6 @@ class XMLParser {
                         $content = array_merge($content, $result);
                     }
                 }
-                $used_keys[] = $key;
             }
 
             return array($foo['name']=>$content);
