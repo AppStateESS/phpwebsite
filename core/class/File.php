@@ -1,50 +1,34 @@
 <?php
 
 /**
- * Returns the contents of a directory in an array
- * 
- * If directoriesOnly is TRUE, then only directories will be listed.
- * If filesOnly is TRUE, then only files will be listed.
- * Function returns directory names and file names by default.
- * Special directories '.', '..', and 'CVS' are not returned.
- *
- * @author                            Matt McNaney <matt@NOSPAM.tux.appstate.edu>
- * @modified                          Adam Morton <adam@NOSPAM.tux.appstate.edu>
- * @param    string   path            The path to directory to be read
- * @param    boolean  directoriesOnly If TRUE, return directory names only
- * @param    boolean  filesOnly       If TRUE, return file names only
- * @param    boolean  recursive       If TRUE, readDirectory will recurse through the given directory and all directories 'beneath' it.
- * @param    array    extensions      An array containing file extensions of files you wish to have returned.
- * @param    boolean  appendPath      Whether or not to append the full path to all entries returned
- * @return   array    directory       An array containing the names of directories and/or files in the specified directory.
- * @access   public
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 
 class PHPWS_File {
     /**
      * Returns an array of directories
-     * 
-     * Is called recursively is recursive is TRUE.
+     *
+     * Is called recursively is recursive is true.
      *
      * @param boolean with_root If true, return results prefixed with the root dir
      * @author Matthew McNaney <mcnaney at gmail dot com>
      * @return array directories Array of directories if successful, NULL if nothing found
      */
-    public function listDirectories($root_dir, $with_root=FALSE, $recursive=FALSE)
+    public function listDirectories($root_dir, $with_root=false, $recursive=false)
     {
         $directories = NULL;
 
         PHPWS_File::appendSlash($root_dir);
 
         if (!is_dir($root_dir) || !is_readable($root_dir)) {
-            return FALSE;
+            return false;
         }
 
         $listing = scandir($root_dir);
 
         if (empty($listing)) {
-            return FALSE;
+            return false;
         }
 
         foreach ($listing as $directory) {
@@ -60,7 +44,7 @@ class PHPWS_File {
             }
 
             if ($with_root && $recursive) {
-                $subdir = PHPWS_File::listDirectories($full_dir,TRUE,TRUE);
+                $subdir = PHPWS_File::listDirectories($full_dir,true,true);
                 if ($with_root) {
                     if (!empty($subdir)) {
                         $directories = array_merge($directories, $subdir);
@@ -158,19 +142,19 @@ class PHPWS_File {
         if (!is_dir($dest_directory)) {
             if(!@mkdir($dest_directory)) {
                 PHPWS_Error::log(PHPWS_DIR_CANT_CREATE, 'core', 'PHPWS_File::copy_directory', $dest_directory);
-                return FALSE;
+                return false;
             }
             @chmod($dest_directory, 0755);
         }
 
         if (!is_writable($dest_directory)) {
             PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::copy_directory', $dest_directory);
-            return FALSE;
+            return false;
         }
 
         $source_files = scandir($source_directory);
         if (empty($source_files)) {
-            return TRUE;
+            return true;
         }
 
         foreach ($source_files as $file_name) {
@@ -203,23 +187,23 @@ class PHPWS_File {
                 }
             }  elseif (is_dir($src_file)) {
                 if(!PHPWS_File::copy_directory($source_directory . $file_name . '/', $dest_file . '/')) {
-                    return FALSE;
+                    return false;
                 }
             }
         }
 
-        return TRUE;
+        return true;
     }
 
     public function recursiveFileCopy($source_dir, $dest_dir) {
         return PHPWS_File::copy_directory($source_dir, $dest_dir);
     }
 
-    public function writeFile($filename, $text, $allowOverwrite=FALSE, $errorReport=FALSE)
+    public function writeFile($filename, $text, $allowOverwrite=false, $errorReport=false)
     {
         if (!$allowOverwrite) {
             if (@is_writable($filename)) {
-                return FALSE;
+                return false;
             }
         }
 
@@ -245,12 +229,12 @@ class PHPWS_File {
      * @param    string  $file_origin           Path to file to be copied
      * @param    string  $destination_directory Directory to copy to
      * @param    string  $file_destination      Name to be given to copied file
-     * @param    boolean $overwrite             If TRUE overwrite any file in the destination directory
-     * @param    boolean $fatal                 If TRUE echo an error if the file does not exist.
-     * @return   boolean TRUE on success, FALSE on failure
+     * @param    boolean $overwrite             If true overwrite any file in the destination directory
+     * @param    boolean $fatal                 If true echo an error if the file does not exist.
+     * @return   boolean true on success, false on failure
      * @access   public
      */
-    public function fileCopy($file_origin, $destination_directory, $file_destination, $overwrite, $fatal) 
+    public function fileCopy($file_origin, $destination_directory, $file_destination, $overwrite, $fatal)
     {
         if ($fatal) {
             $fp = @fopen($file_origin, 'rb');
@@ -258,15 +242,15 @@ class PHPWS_File {
             if (!$fp) {
                 return PHPWS_Error::get(PHPWS_FILE_CANT_READ, 'core', 'PHPWS_File::fileCopy', $file_origin);
             }
-      
+
             $dir_check = @is_writable($destination_directory);
             if (!$dir_check) {
                 return PHPWS_Error::get(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::fileCopy', $destination_directory);
             }
-      
+
             $dest_file_exists = file_exists($destination_directory . $file_destination);
-      
-            if ($dest_file_exists) { 
+
+            if ($dest_file_exists) {
                 if ($overwrite) {
                     $fp = @is_writable($destination_directory . $file_destination);
                     if (!$fp) {
@@ -274,23 +258,23 @@ class PHPWS_File {
                     }
 
                     if ($copy_file = @copy($file_origin, $destination_directory . $file_destination)) {
-                        return TRUE;
+                        return true;
                     } else {
-                        return FALSE;
+                        return false;
                     }
-                }                                       
+                }
             } else {
                 if ($copy_file = @copy($file_origin, $destination_directory . $file_destination)) {
-                    return TRUE;
+                    return true;
                 } else {
-                    return FALSE;
+                    return false;
                 }
             }
         } else {
             if($copy_file = @copy($file_origin, $destination_directory . $file_destination))
-                return TRUE;
+                return true;
             else
-                return FALSE;
+                return false;
         }
     }// END FUNC fileCopy()
 
@@ -303,7 +287,7 @@ class PHPWS_File {
      * @return   boolean $dirCreated   true if directory was created
      * @access   public
      */
-    public function makeDir($pathname, $permissions=NULL) 
+    public function makeDir($pathname, $permissions=NULL)
     {
         if(is_dir($pathname)) {
             return true;
@@ -311,15 +295,15 @@ class PHPWS_File {
 
         $dirCreated = false;
         $oldMask = umask();
-        
+
         if ($permissions != NULL) {
             $dirCreated = @mkdir($pathname, $permissions);
         } else {
             $dirCreated = @mkdir($pathname, PHPWS_DIR_PERMISSIONS);
         }
-        
+
         umask($oldMask);
-        
+
         return $dirCreated;
     }
 
@@ -385,7 +369,7 @@ class PHPWS_File {
         if ($degrees > 360) {
             $degrees = $degrees % 360;
         }
-        
+
         $source = PHPWS_File::_imageCopy($source_dir, $file_type);
         $rotate = imagerotate($source, $degrees, 0);
 
@@ -397,7 +381,7 @@ class PHPWS_File {
         }
 
         chmod($dest_dir, 0644);
-        imagedestroy($rotate);        
+        imagedestroy($rotate);
         return $result;
     }
 
@@ -417,10 +401,10 @@ class PHPWS_File {
         $height    = & $size[1];
         $new_width = round($width * ((int)$percentage / 100));
         $new_height = round($height * ((int)$percentage / 100));
-        
+
         return PHPWS_File::cropImage($source_dir, $dest_dir, $new_width, $new_height, $origin);
     }
-    
+
     /**
      * origins : top-left      = 1
      *           top-center    = 2
@@ -457,7 +441,7 @@ class PHPWS_File {
         if ($new_height > $height) {
             $new_height = $height;
         }
-        
+
         $source_image = PHPWS_File::_imageCopy($source_dir, $file_type);
         $resampled_image = PHPWS_File::_resampleImage($new_width, $new_height);
 
@@ -488,7 +472,7 @@ class PHPWS_File {
             $sx = round(($width - $new_width) / 2);
             $sy = round(($height - $new_height) / 2);
             break;
-        
+
         case 6:
             $sx = ($width - $new_width);
             $sy = round(($height - $new_height) / 2);
@@ -532,7 +516,7 @@ class PHPWS_File {
     /**
      * Scales an image down to smaller than the max_width and max_height.
      * You cannot scale an image to a higher resolution.
-     */ 
+     */
     public function scaleImage($source_dir, $dest_dir, $max_width, $max_height)
     {
         if (empty($max_width) || empty($max_height)) {
@@ -567,7 +551,7 @@ class PHPWS_File {
             $diff = $max_width / $width;
             $new_width = $max_width;
             $new_height = round($height * $diff);
-        } 
+        }
 
         if ($width < $height || $new_height > $max_height) {
             $diff = $max_height / $height;
@@ -590,7 +574,7 @@ class PHPWS_File {
 
         imagedestroy($source_image);
 
-    
+
         $result = PHPWS_File::_writeImageCopy($resampled_image, $dest_dir, $file_type);
 
         if (!$result) {
@@ -613,9 +597,9 @@ class PHPWS_File {
     /**
      * Backward compatibility
      */
-    public function makeThumbnail($fileName, $directory, $tndirectory, $maxWidth=125, $maxHeight=125, $replaceFile=FALSE) {
+    public function makeThumbnail($fileName, $directory, $tndirectory, $maxWidth=125, $maxHeight=125, $replaceFile=false) {
         $source_dir = $directory . $fileName;
-        $new_file   = preg_replace('/\.(jpg|jpeg|gif|png)$/i', '_tn.\\1', $fileName); 
+        $new_file   = preg_replace('/\.(jpg|jpeg|gif|png)$/i', '_tn.\\1', $fileName);
         $dest_dir   = $tndirectory . $new_file;
         if (!PHPWS_File::scaleImage($source_dir, $dest_dir, $maxWidth, $maxHeight)) {
             return false;
@@ -625,7 +609,7 @@ class PHPWS_File {
         }
     }
 
-    public function rmdir($dir) 
+    public function rmdir($dir)
     {
         PHPWS_File::appendSlash($dir);
 
@@ -640,7 +624,7 @@ class PHPWS_File {
                     $result = @unlink($dir . $file);
                     if (!$result) {
                         PHPWS_Error::log(PHPWS_FILE_DELETE_DENIED, 'core', 'PHPWS_File::rmdir', $dir . $file);
-                        return FALSE;
+                        return false;
                     }
                 }
             }
@@ -649,12 +633,12 @@ class PHPWS_File {
             $result = @rmdir($dir);
             if (!$result) {
                 PHPWS_Error::log(PHPWS_DIR_DELETE_DENIED, 'core', 'PHPWS_File::rmdir', $dir);
-                return FALSE;
+                return false;
             }
 
-            return TRUE;
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }// END FUNC rmdir()
 
@@ -663,10 +647,10 @@ class PHPWS_File {
     {
         if(function_exists('gd_info')) {
             $gdver = gd_info();
-            if(strpos($gdver['GD Version'], '1.') != FALSE) {
-                return FALSE;
+            if(strpos($gdver['GD Version'], '1.') != false) {
+                return false;
             } else {
-                return TRUE;
+                return true;
             }
         } else {
             ob_start();
@@ -680,10 +664,10 @@ class PHPWS_File {
             $phpinfo=substr($phpinfo,0,$end);
             $phpinfo=substr($phpinfo,7);
             if(version_compare('2.0', $phpinfo) == 1) {
-                return FALSE;
+                return false;
             }
             else {
-                return TRUE;
+                return true;
             }
         }
     }// END FUNC chkgd2()
@@ -758,12 +742,14 @@ class PHPWS_File {
 
         if (@$file_info = $all_file_type[$ext]) {
             $mime_type = PHPWS_File::getMimeType($file_path);
+
             if (function_exists('finfo_open')) {
                 foreach ($file_info['fi'] as $fi) {
                     if (preg_match("@$fi@i", $mime_type)) {
                         return true;
                     }
                 }
+
                 return false;
             } else {
                 if (empty($mime_type) && $mct['bl']) {
@@ -810,7 +796,7 @@ class PHPWS_File {
  */
 if (!function_exists('imagerotate')) {
     function imagerotate($image, $degrees) {
-        
+
         $src_x = imagesx($image);
         $src_y = imagesy($image);
         if ($degrees == 180) {
@@ -833,7 +819,7 @@ if (!function_exists('imagerotate')) {
 
         $rotate=imagecreatetruecolor($dest_x,$dest_y);
         imagealphablending($rotate, false);
-               
+
         switch ($degrees) {
         case 270:
             for ($y = 0; $y < ($src_y); $y++) {
