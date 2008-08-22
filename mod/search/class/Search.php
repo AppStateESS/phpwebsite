@@ -17,7 +17,7 @@ class Search {
     public $created  = 0;
     public $_error   = NULL;
 
-    public function _construct($key=NULL)
+    public function __construct($key=NULL)
     {
         if (empty($key)) {
             return;
