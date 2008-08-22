@@ -14,6 +14,7 @@ $settings = array('allow_signatures'       => 0,
                   'captcha'                => 0,
                   'anonymous_naming'       => 0,
                   'recent_comments'        => 0,
-                  'default_approval'       => 0);
+                  'default_approval'       => 0,
+                  'use_editor'             => 0);
 
 ?>

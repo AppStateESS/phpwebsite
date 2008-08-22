@@ -6,18 +6,18 @@
 PHPWS_Core::initModClass('comments', 'Comment_User.php');
 
 class Comments_My_Page {
-  
-    function main()
+
+    public function main()
     {
-        
+
         if (isset($_REQUEST['my_page_op'])) {
             $command = &$_REQUEST['my_page_op'];
         } else {
             $command = 'main';
         }
-   
+
         $message = Comments_My_Page::getMessage();
- 
+
         switch ($command) {
         case 'main':
             $title = dgettext('comments', 'Comment Settings');
@@ -43,17 +43,17 @@ class Comments_My_Page {
         if (isset($message)) {
             $box['MESSAGE'] = &$message;
         }
-        
+
         return PHPWS_Template::process($box, 'comments', 'my_page.tpl');
     }
 
-    function sendMessage($message, $command=NULL)
+    public function sendMessage($message, $command=NULL)
     {
         $_SESSION['Comment_Message'] = $message;
         PHPWS_Core::reroute('index.php?module=users&action=user&tab=comments');
     }
 
-    function getMessage()
+    public function getMessage()
     {
         if (!isset($_SESSION['Comment_Message'])) {
             return NULL;
@@ -63,7 +63,7 @@ class Comments_My_Page {
         return $message;
     }
 
-    function editOptions($user)
+    public function editOptions($user)
     {
         $form = new PHPWS_Form;
         $hidden['module'] = 'users';
@@ -90,7 +90,7 @@ class Comments_My_Page {
             }
             $form->setLabel('avatar', dgettext('comments', 'Avatar'));
         }
-            
+
         $form->addText('contact_email', $user->getContactEmail());
         $form->setLabel('contact_email', dgettext('comments', 'Contact Email'));
         $form->setSize('contact_email', 40);

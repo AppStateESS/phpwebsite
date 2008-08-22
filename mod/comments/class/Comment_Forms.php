@@ -6,7 +6,7 @@
 
 class Comment_Forms {
 
-    function form(Comment_Thread $thread, $c_item)
+    public function form(Comment_Thread $thread, $c_item)
     {
         $form = new PHPWS_Form;
 
@@ -52,7 +52,9 @@ class Comment_Forms {
         }
 
         $form->addTextArea('cm_entry', $entry_text);
-        $form->useEditor('cm_entry', true, true, 0, 0, 'tinymce');
+        if (PHPWS_Settings::get('comments', 'use_editor')) {
+            $form->useEditor('cm_entry', true, true, 0, 0, 'tinymce');
+        }
         $form->setLabel('cm_entry', dgettext('comments', 'Comment'));
         $form->setCols('cm_entry', 50);
         $form->setRows('cm_entry', 10);
@@ -82,7 +84,7 @@ class Comment_Forms {
         return $content;
     }
 
-    function settingsForm()
+    public function settingsForm()
     {
         $settings = PHPWS_Settings::get('comments');
 
@@ -155,7 +157,7 @@ class Comment_Forms {
         return PHPWS_Template::process($tpl, 'comments', 'settings_form.tpl');
     }
 
-    function reported()
+    public function reported()
     {
         javascript('jsquery');
         javascript('modules/comments/admin');
@@ -191,7 +193,7 @@ class Comment_Forms {
         return $pager->get();
     }
 
-    function punishForm($comment)
+    public function punishForm($comment)
     {
         javascript('modules/comments/admin', array('authkey'=>Current_User::getAuthKey()));
 
@@ -256,7 +258,7 @@ class Comment_Forms {
         return PHPWS_Template::process($tpl, 'comments', 'punish_pop.tpl');
     }
 
-    function approvalForm()
+    public function approvalForm()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         Layout::addStyle('comments', 'admin.css');

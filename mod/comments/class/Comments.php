@@ -18,7 +18,7 @@ class Comments {
     /**
      * Returns the comment thread object associated with a specific key
      */
-    function getThread($key=NULL)
+    public function getThread($key=NULL)
     {
         if (empty($key)) {
             $key = Key::getCurrent();
@@ -45,7 +45,7 @@ class Comments {
         return $thread;
     }
 
-    function getCommentUser($user_id)
+    public function getCommentUser($user_id)
     {
         if (isset($GLOBALS['Comment_Users'][$user_id])) {
             return $GLOBALS['Comment_Users'][$user_id];
@@ -60,7 +60,7 @@ class Comments {
         return $GLOBALS['Comment_Users'][$user_id];
     }
 
-    function updateCommentUser($user_id)
+    public function updateCommentUser($user_id)
     {
         if (empty($user_id)) {
             return;
@@ -74,7 +74,7 @@ class Comments {
     }
 
 
-    function panel()
+    public function panel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
@@ -121,7 +121,7 @@ class Comments {
     /**
      * Authorization checked in index.php
      */
-    function adminAction($command)
+    public function adminAction($command)
     {
         $panel = Comments::panel();
         $content = NULL;
@@ -329,7 +329,7 @@ class Comments {
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
     }
 
-    function userAction($command)
+    public function userAction($command)
     {
         $title = NULL;
         if (isset($_REQUEST['thread_id'])) {
@@ -436,7 +436,7 @@ class Comments {
         Layout::add(PHPWS_Template::process($template, 'comments', 'main.tpl'));
     }
 
-    function changeView()
+    public function changeView()
     {
         $getValues = PHPWS_Text::getGetValues();
 
@@ -458,7 +458,7 @@ class Comments {
         return;
     }
 
-    function postComment($thread, Comment_Item $cm_item)
+    public function postComment($thread, Comment_Item $cm_item)
     {
         if (empty($_POST['cm_subject']) && empty($_POST['cm_entry'])) {
             $cm_item->_error = dgettext('comments', 'You must include a subject or comment.');
@@ -521,7 +521,7 @@ class Comments {
     /**
      * Determines if captcha should be used
      */
-    function useCaptcha()
+    public function useCaptcha()
     {
         if (!extension_loaded('gd')) {
             return false;
@@ -545,7 +545,7 @@ class Comments {
     }
 
 
-    function unregister($module)
+    public function unregister($module)
     {
         $ids = Key::getAllIds($module);
         if (PEAR::isError($ids)) {
@@ -586,7 +586,7 @@ class Comments {
         }
     }
 
-    function viewComment($comment)
+    public function viewComment($comment)
     {
         $thread = new Comment_Thread($comment->getThreadId());
         $tpl = $comment->getTpl($thread->allow_anon);
@@ -596,7 +596,7 @@ class Comments {
         return $content;
     }
 
-    function postSettings()
+    public function postSettings()
     {
         $settings['default_order'] = $_POST['order'];
         $settings['captcha'] = (int)$_POST['captcha'];
@@ -644,7 +644,7 @@ class Comments {
         return implode('<br /><br />', $content);
     }
 
-    function form(Comment_Thread $thread, $c_item)
+    public function form(Comment_Thread $thread, $c_item)
     {
         PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
         return Comment_Forms::form($thread, $c_item);
@@ -654,7 +654,7 @@ class Comments {
     /**
      * Shows a box with recent comments listed within
      */
-    function showRecentComments($limit)
+    public function showRecentComments($limit)
     {
         $db = new PHPWS_DB('comments_items');
         $db->setLimit($limit);
@@ -705,7 +705,7 @@ class Comments {
         Layout::add($content, 'comments', 'recent');
     }
 
-    function multipleApprove($comment_ids)
+    public function multipleApprove($comment_ids)
     {
         $all_approved = false;
         foreach ($comment_ids as $id) {
@@ -718,7 +718,7 @@ class Comments {
         return $all_approved;
     }
 
-    function multipleRemove($comment_ids)
+    public function multipleRemove($comment_ids)
     {
         $all_removed = false;
         foreach ($comment_ids as $id) {
