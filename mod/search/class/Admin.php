@@ -183,7 +183,7 @@ class Search_Admin {
     {
         $key = Key::getCurrent();
 
-        if (empty($key) || $key->isDummy() || isset($key->getError())) {
+        if (empty($key) || $key->isDummy() || isset($key->_error)) {
             $on_page = FALSE;
         } else {
             $on_page = TRUE;
