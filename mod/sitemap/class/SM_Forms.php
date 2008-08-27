@@ -18,7 +18,7 @@
     * along with this program; if not, write to the Free Software
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     *
-    * @version $Id: SM_Forms.php,v 1.4 2008/07/16 19:07:11 verdonv Exp $
+    * @version $Id$
     * @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
 */
 
