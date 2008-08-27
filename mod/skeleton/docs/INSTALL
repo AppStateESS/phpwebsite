@@ -1,0 +1,33 @@
+# skeleton - phpwebsite module
+# @version $Id: $
+# @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
+
+INSTALL steps for skeleton
+
+IMPORTANT: skeleton is a module for phpWebSite 1.6.0 or better.
+ You HAVE to install phpWebSite >= 1.6.0 first, skeleton will
+not work with earlier versions of phpWebSite.
+
+If you don't have phpWebSite installed, first get the latest code here: 
+https://sourceforge.net/project/showfiles.php?group_id=15539
+
+Then follow the install instructions found in the INSTALL.txt included
+in the docs directory of that download.
+
+Once this is done then you can start installing skeleton:
+
+1. Download the .tar.gz from a sourceforge mirror.  (There is also a
+   .zip file for windows users.)
+
+2. Unpack the tarball with:
+    tar -xvzf module-skeleton-*.tar.gz
+
+3. Move the new directory into your phpwebsite mod directory
+
+    Example: If you are installing skeleton and your
+    phpwebsite doc root is /home/username/public_html, you could run
+    
+    mv skeleton /home/username/public_html/mod/skeleton
+
+4. Go to your phpwebsite control panel and install skeleton from Boost.
+
