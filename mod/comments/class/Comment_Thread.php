@@ -29,6 +29,9 @@ class Comment_Thread {
     public $_comments      = null;
     public $_error         = null;
     public $_return_url    = null;
+    public $locked         = 0;
+    public $monitored      = 0;
+    public $send_notice    = 1;
 
 
     public function __construct($id=0)
@@ -44,6 +47,11 @@ class Comment_Thread {
     public function init()
     {
         $db = new PHPWS_DB('comments_threads');
+        $db->addColumn('comments_threads.*');
+        $db->addColumn('comments_monitors.thread_id', null, 'monitored');
+        $db->addColumn('comments_monitors.send_notice', null, 'send_notice');
+        $join_on_2 = 'thread_id  AND comments_monitors.user_id = '.Current_User::getId();
+        $db->addJoin('left', 'comments_threads', 'comments_monitors', 'id', $join_on_2);
         $db->addWhere('id', $this->id);
         $result = $db->loadObject($this);
         if (PEAR::isError($result)) {
@@ -52,6 +60,7 @@ class Comment_Thread {
         }
 
         $this->loadKey();
+        $this->loadTopic();
     }
 
     public function setApproval($approval)
@@ -99,6 +108,11 @@ class Comment_Thread {
     public function buildThread()
     {
         $db = new PHPWS_DB('comments_threads');
+        $db->addColumn('comments_threads.*');
+        $db->addColumn('comments_monitors.thread_id', null, 'monitored');
+        $db->addColumn('comments_monitors.send_notice', null, 'send_notice');
+        $join_on_2 = 'thread_id  AND comments_monitors.user_id = '.Current_User::getId();
+        $db->addJoin('left', 'comments_threads', 'comments_monitors', 'id', $join_on_2);
         $db->addWhere('key_id', $this->key_id);
         $result = $db->loadObject($this);
 
@@ -115,6 +129,7 @@ class Comment_Thread {
             }
             return TRUE;
         } else {
+            $this->loadTopic();
             return TRUE;
         }
     }
@@ -158,7 +173,8 @@ class Comment_Thread {
     {
         $vars['uop']   = 'post_comment';
         $vars['thread_id']     = $this->id;
-        return PHPWS_Text::moduleLink(dgettext('comments', 'Post New Comment'), 'comments', $vars);
+        $str = dgettext('comments', 'Post New Comment');
+        return PHPWS_Text::moduleLink('<span>'.$str.'</span>', 'comments', $vars, null, $str, 'comment_postnew_link');
     }
 
     public function save()
@@ -184,7 +200,6 @@ class Comment_Thread {
         if (PEAR::isError($thread_result)) {
             return $thread_result;
         }
-
         return TRUE;
     }
 
@@ -220,7 +235,7 @@ class Comment_Thread {
         Layout::addStyle('comments');
 
         javascript('modules/comments/report/', array('reported'=>dgettext('comments', 'Reported!')));
-        if (Current_User::allow('comments')) {
+        if (Current_User::isLogged()) {
             $this->miniAdmin();
         }
 
@@ -298,22 +313,48 @@ class Comment_Thread {
             break;
         }
         $form->setMatch('order', $default_order);
-
-        $form->noAuthKey();
         $form->addSubmit(dgettext('comments', 'Go'));
         $form->setMethod('get');
 
         $page_tags = $form->getTemplate();
 
-        if ($this->canComment()) {
-            $page_tags['NEW_POST_LINK'] = $this->postLink();
+        // BULK_ACTIONS
+        $actions = '';
+        // If we can delete comments
+        if ($this->total_comments && $this->userCan('delete_comments')) {
+            $actions .= '<option value="">'.dgettext('comments', 'Choose an action')."</option>\n";
+            $actions .= '<option value="delete_comment">'.dgettext('comments', 'Delete')."</option>\n";
+            $js_vars = array();
+            $js_vars['value']        = dgettext('comments', 'Go');
+            $js_vars['select_id']    = 'list_actions_edit'; // the name of your select input
+            $js_vars['action_match'] = 'delete_comment';
+            $js_vars['message']      = dgettext('comments', 'Are you sure you want to delete the checked items?');
+            $page_tags['BULK_ACTION_BUTTON'] = javascript('select_confirm', $js_vars);
         }
+        // If phpwsbb is installed && we have moderation & forking privileges
+        if (isset($GLOBALS['Modules']['phpwsbb']) && $this->userCan('fork_messages', 'phpwsbb')) {
+            $actions .= '<option value="move_comments">'.dgettext('comments', 'Move to another Topic')."</option>\n";
+            $actions .= '<option value="split_comments">'.dgettext('comments', 'Split to a new topic')."</option>\n";
+        }
+        if (!empty($actions)) {
+            $page_tags['BULK_ACTION'] = '<select id="list_actions_edit" name="aop" title="'
+                . dgettext('comments', 'Select the desired action for the checked comments').'">'
+                . $actions."</select>\n ";
+            $page_tags['MOD_FORM_START'] = '<form class="phpws-form" id="phpws_form" action="index.php?module=comments" method="post">'
+                . '<input type="hidden" name="authkey" value="'.Current_User::getAuthKey().'">';
+            $page_tags['MOD_FORM_END'] = '</form>';
+        }
+
+        if ($this->canComment())
+            $page_tags['NEW_POST_LINK'] = $this->postLink();
+        elseif ($this->locked)
+            $page_tags['NEW_POST_LINK'] = dgettext('comments', 'This topic is locked.  No more comments');
 
         $pager->setModule('comments');
         $pager->setTemplate(COMMENT_VIEW_TEMPLATE);
-        $pager->addPageTags($page_tags);
-        $pager->addRowTags('getTpl', $this->allow_anon, $this->canComment());
-        $pager->setLimitList(array(10, 20, 50));
+        $pager->addPageTags(array_merge($this->getStatusTags(), $page_tags));
+        $pager->addRowTags('getTpl', $this);
+        $pager->setLimitList(array(25,50,100));
         $pager->setDefaultLimit(COMMENT_DEFAULT_LIMIT);
         $pager->setEmptyMessage(dgettext('comments', 'No comments'));
         $pager->initialize();
@@ -327,28 +368,46 @@ class Comment_Thread {
             return null;
         }
         $GLOBALS['comments_viewed'] = true;
+
+        // If phpwsbb is installed...
+        if (isset($GLOBALS['Modules']['phpwsbb'])) {
+            PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
+            // If this is already in a forum, offer to disassociate it
+            if (!empty($this->phpwsbb_topic) && !$this->phpwsbb_topic->is_phpwsbb)
+                PHPWSBB_Data::drop_item_link($this->id, $this->_key->module, $this->_key->item_name);
+            elseif (empty($this->phpwsbb_topic))
+                // otherwise, add an "Attach to Forum" link to the MiniAdmin
+                PHPWSBB_Data::move_item_link($this->_key);
+        }
+        // If this thread is being monitored and the "send_notice" flag is not set, set it
+        if ($this->monitored && !$this->send_notice) {
+            $db = new PHPWS_DB('comments_monitors');
+            $db->addWhere('thread_id', $this->id);
+            $db->addWhere('user_id', Current_User::getId());
+            $db->addValue('send_notice', 1);
+            $result = $db->update();
+        }
+
         return $content;
     }
 
     public function canComment()
     {
-        if (Current_User::isLogged() && !isset($_SESSION['Comment_User_Lock'])) {
-            $cu = new Comment_User(Current_User::getId());
-            if ($cu->user_id) {
-                $_SESSION['Comment_User_Lock'] = (bool)$cu->locked;
-            } else {
-                $_SESSION['Comment_User_Lock'] = false;
-            }
-        }
+        if (isset($GLOBALS['Perms']['canComment'][$this->id]))
+            return $GLOBALS['Perms']['canComment'][$this->id];
 
-        if (isset($_SESSION['Comment_User_Lock'])) {
-            return !$_SESSION['Comment_User_Lock'];
-        }
-
-        return ( $this->allow_anon || Current_User::isLogged() ) ? TRUE : FALSE;
+        $user = Comments::getCommentUser(Current_User::getId());
+        $result =  (!$this->locked || $this->userCan()) && !$user->locked && (Current_User::isLogged() || $this->allow_anon);
+        $GLOBALS['Perms']['canComment'][$this->id] = $result;
+        return $GLOBALS['Perms']['canComment'][$this->id];
     }
 
-    public function _createUserList($comment_list)
+    /**
+     * Creates $GLOBAL lists of comment author information
+     *   $GLOBALS['Comment_Users'] is a list of all relevant Comment_User objects
+     *   $GLOBALS['Comment_UsersGroups'] is a list of group memberships (for user ranking)
+     */
+    public function _createUserList(&$comment_list)
     {
         $author_list = array();
         foreach ($comment_list as $comment) {
@@ -360,13 +419,23 @@ class Comment_Thread {
             $author_list[] = $author_id;
         }
 
+        // Load  all relevant Comment_User objects
         $result = Demographics::getList($author_list, 'comments_users', 'Comment_User');
-
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
+        if (PHPWS_Error::logIfError($result)) {
             return;
         }
         $GLOBALS['Comment_Users'] = $result;
+
+        // Load all groups that these authors belong to (kept separate to save query time)
+        $db = new PHPWS_DB('users_members');
+        $db->addWhere('member_id', $author_list);
+        $db->addColumn('group_id');
+        $db->addColumn('member_id');
+        $result = $db->select('col');
+        if (!PHPWS_Error::logIfError($result) && !empty($result)) {
+            foreach ($result AS $value)
+                $GLOBALS['Comment_UsersGroups'][$value['member_id']][] = $value['group_id'];
+        }
 
         return TRUE;
     }
@@ -386,7 +455,7 @@ class Comment_Thread {
     public function postLastUser($author_id)
     {
         if ($author_id) {
-            $author = new Comment_User($author_id);
+            $author = Comments::getCommentUser($author_id);
             $this->last_poster = $author->display_name;
         } else {
             $this->last_poster = DEFAULT_ANONYMOUS_TITLE;
@@ -396,15 +465,149 @@ class Comment_Thread {
     public function miniAdmin()
     {
         $vars['thread_id'] = $this->id;
-        if ($this->allow_anon) {
-            $vars['aop'] = 'disable_anon_posting';
-            $link = PHPWS_Text::secureLink(dgettext('comments', 'Disable anonymous posting'), 'comments', $vars);
+        if ($this->monitored) {
+            $vars['user_action'] = 'unset_monitor';
+            $link[] = PHPWS_Text::secureLink(dgettext('comments', 'Stop Monitoring'), 'comments', $vars);
         } else {
-            $vars['aop'] = 'enable_anon_posting';
-            $link = PHPWS_Text::secureLink(dgettext('comments', 'Enable anonymous posting'), 'comments', $vars);
+            $vars['user_action'] = 'set_monitor';
+            $link[] = PHPWS_Text::secureLink(dgettext('comments', 'Monitor this Thread'), 'comments', $vars);
+        }
+        unset($vars['user_action']);
+        if ($this->userCan()) {
+            $vars['aop'] = 'set_anon_posting';
+            if ($this->allow_anon) {
+                $vars['allow'] = '0';
+                $link[] = PHPWS_Text::secureLink(dgettext('comments', 'Disable anonymous posting'), 'comments', $vars);
+            } else {
+                $vars['allow'] = '1';
+                $link[] = PHPWS_Text::secureLink(dgettext('comments', 'Enable anonymous posting'), 'comments', $vars);
+            }
+            unset($vars['allow']);
+            $vars['aop'] = 'lock_thread';
+            if ($this->locked) {
+                $vars['lock'] = '0';
+                $link[] = PHPWS_Text::secureLink(dgettext('comments', 'Unlock this Thread'), 'comments', $vars);
+            } else {
+                $vars['lock'] = '1';
+                $link[] = PHPWS_Text::secureLink(dgettext('comments', 'Lock this Thread'), 'comments', $vars);
+            }
+            unset($vars['lock']);
         }
 
         MiniAdmin::add('comments', $link);
+    }
+
+    public function setLock($status)
+    {
+        $this->locked = (int) (bool) $status;
+        // If the changes were saved & phpwsbb is installed...
+        if ($this->save() && !empty($this->phpwsbb_topic)) {
+            $this->phpwsbb_topic->locked = $this->locked;
+            $this->phpwsbb_topic->commit();
+        }
+    }
+
+    /**
+     * Extension of Current_User::allow() that also checks to see if this thread
+     * belongs to a phpwsbb forum to be sure the user is a moderator.
+     *
+     * @param string $function : subpermission that we're checking for
+     * @param string $module : permission module that we're checking for. Defaults to 'comments'
+     * @return bool : Success or faliure
+     */
+    public function userCan($function = null, $module = 'comments')
+    {
+        if (isset($GLOBALS['Perms'][$module][$this->id][$function]))
+            return $GLOBALS['Perms'][$module][$this->id][$function];
+        $is_moderator = empty($this->phpwsbb_topic) || PHPWSBB_Forum::canModerate(Current_User::getId(), $this->phpwsbb_topic->fid);
+        $GLOBALS['Perms'][$module][$this->id][$function] = $this->id && $is_moderator && Current_User::allow($module, $function);
+        return $GLOBALS['Perms'][$module][$this->id][$function];
+    }
+
+    /**
+     * If phpwsbb is installed this will load any associated topic into $this->phpwsbb_topic
+     *
+     * @param none
+     * @return none
+     */
+    public function loadTopic()
+    {
+        if (!isset($GLOBALS['Modules']['phpwsbb']))
+            return;
+        PHPWS_Core::initModClass('phpwsbb', 'Topic.php');
+        PHPWS_Core::initModClass('phpwsbb', 'Forum.php');
+        $topic = & new PHPWSBB_Topic($this->id);
+        if ($topic->id)
+            $this->phpwsbb_topic = $topic;
+    }
+
+    /**
+     * Sets the 'Allow Anonymous Posting' status for this thread
+     *
+     * @param int $status : 0 off or 1 on
+     * @return mixed : success or error object
+     */
+    public function setAnonPosting($status)
+    {
+        $db = new PHPWS_DB('comments_threads');
+        $db->addWhere('id', $this->id);
+        $db->addValue('allow_anon', (int) $status);
+        $result = $db->update();
+        if (!PHPWS_Error::logIfError($result))
+            return true;
+    }
+
+    /**
+     * Shows the current user's authorizations
+     *
+     * It's pretty much just here for testing purposes.
+     * You can get rid of it if you want to.
+     *
+     * @param none
+     * @return string : success or error object
+     */
+    public function getStatusTags()
+    {
+        if (!empty($this->phpwsbb_topic)) {
+            $forum = $this->phpwsbb_topic->get_forum();
+            if ($forum->active)
+                $tags = $forum->getStatusTags();
+        }
+
+        PHPWS_Text::filterText('some text');
+        $filters = explode(',', TEXT_FILTERS);
+        if (ALLOW_TEXT_FILTERS && in_array('bb', $filters)) {
+            $list[] = dgettext('comments', 'cbparser BB code is <b>on</b>');
+            if (ALLOW_BB_SMILIES)
+                $list[] = dgettext('comments', 'Smilies are <b>on</b>');
+            else
+                $list[] = dgettext('comments', 'Smilies are <b>off</b>');
+            if (ALLOW_BB_IMAGES)
+                $list[] = dgettext('comments', '[IMG] is <b>allowed</b>');
+            else
+                $list[] = dgettext('comments', '[IMG] is <b>not allowed</b>');
+        }
+
+        if (ALLOW_TEXT_FILTERS && in_array('pear', $filters)) {
+            $list[] = dgettext('comments', 'Pear BB code is <b>on</b>');
+            $list[] = dgettext('comments', 'The following filters are <b>on</b>');
+            $list[] = '&nbsp;&nbsp;&nbsp;'.PEAR_BB_FILTERS;
+        }
+
+        if (PHPWS_ALLOWED_TAGS)
+            $list[] = dgettext('comments', 'HTML tags are <b>on</b>');
+        else
+            $list[] = dgettext('comments', 'HTML tags are <b>off</b>');
+
+        if (ALLOW_PROFANITY)
+            $list[] = dgettext('comments', 'Profanity is <b>allowed</b>');
+        else
+            $list[] = dgettext('comments', 'Profanity is <b>not allowed</b>');
+
+        $tags['STATUS_FLAGS'] = implode("<br />\n", $list);
+        $tags['STATUS_TITLE'] = dgettext('comments', 'Feature Summary');
+
+        return $tags;
     }
 
 }

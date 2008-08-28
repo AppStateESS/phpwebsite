@@ -45,7 +45,7 @@ class Comment_Forms {
         }
 
 
-        if (!$c_item->id && isset($c_parent)) {
+        if (!$c_item->id && isset($c_parent) && isset($_REQUEST['type']) && $_REQUEST['type']=='quote') {
             $entry_text = $c_parent->getEntry(FALSE, TRUE) . "\n\n" . $c_item->getEntry(FALSE);
         } else {
             $entry_text = $c_item->getEntry(FALSE);
@@ -111,7 +111,7 @@ class Comment_Forms {
         $form->setMatch('local_avatars', $settings['local_avatars']);
 
         $form->addCheck('anonymous_naming', 1);
-        $form->setLabel('anonymous_naming', dgettext('comments', 'Allow anonymous naming'));
+        $form->setLabel('anonymous_naming', dgettext('comments', "Get anonymous posters' names"));
         $form->setMatch('anonymous_naming', $settings['anonymous_naming']);
 
         $default_approval[0] = dgettext('comments', 'All comments preapproved');
@@ -119,7 +119,7 @@ class Comment_Forms {
         $default_approval[2] = dgettext('comments', 'All comments require approval');
 
         $form->addSelect('default_approval', $default_approval);
-        $form->setMatch('default_approval', PHPWS_Settings::get('comments', 'default_approval'));
+        $form->setMatch('default_approval', $settings['default_approval']);
         $form->setLabel('default_approval', dgettext('comments', 'Default approval'));
 
         $cmt_count[0]  = dgettext('comments', 'Do not show');
@@ -135,7 +135,7 @@ class Comment_Forms {
                             'new_all'  => dgettext('comments', 'Newest first'));
 
         $form->addSelect('order', $order_list);
-        $form->setMatch('order', PHPWS_Settings::get('comments', 'default_order'));
+        $form->setMatch('order', $settings['default_order']);
         $form->setLabel('order', dgettext('comments', 'Default order'));
 
         $captcha[0] = dgettext('comments', 'Don\'t use');
@@ -144,17 +144,256 @@ class Comment_Forms {
 
         if (extension_loaded('gd')) {
             $form->addSelect('captcha', $captcha);
-            $form->setMatch('captcha', PHPWS_Settings::get('comments', 'captcha'));
+            $form->setMatch('captcha', $settings['captcha']);
             $form->setLabel('captcha', dgettext('comments', 'CAPTCHA use'));
         }
+
+        // email_subject
+        $form->addText('email_subject', $settings['email_subject']);
+        $form->setMaxSize('email_subject', '60');
+        $form->setWidth('email_subject', '95%');
+        $form->setLabel('email_subject', dgettext('comments', 'Subject line of email notifying users of a new comment'));
+
+        // email_text
+        $form->addTextArea('email_text', $settings['email_text']);
+        $form->setWidth('email_text', '95%');
+        $form->setRows('email_text', '5');
+        $form->useEditor('email_text');
+        $form->setLabel('email_text', dgettext('comments', 'Text of email notifying users of a new comment'));
+
+        // monitor_posts
+        $form->addCheckBox('monitor_posts');
+        $form->setMatch('monitor_posts', $settings['monitor_posts']);
+        $form->setLabel('monitor_posts', dgettext('comments', 'Send a copy of each new comment to the Forum Moderator(s)'));
+
+        // allow_user_monitors
+        $form->addCheckBox('allow_user_monitors');
+        $form->setMatch('allow_user_monitors', $settings['allow_user_monitors']);
+        $form->setLabel('allow_user_monitors', dgettext('comments', 'Allow users to monitor threads via email'));
 
         $form->addSubmit(dgettext('comments', 'Save'));
 
         $tpl = $form->getTemplate();
+		// user ranking system
+        $user_ranking = &$settings['user_ranking'];
 
+		$groupname = array(0=>dgettext('comments', 'All Members')) + PHPWS_User::getAllGroups();
+		$tpl['rank_usergroups'] = array();
+		$i = 1;
+		// Start constructing the output
+		Layout::getModuleJavascript('comments', 'expandCollapse');
+		$template = & new PHPWS_Template('comments');
+		$status = $template->setFile('settings_form.tpl');
 
+		// Loop through all usergroups in the ranking array
+		foreach ($user_ranking as $gkey => $group) {
+		    // Loop through all ranks in this usergroup
+			foreach ($group['user_ranks'] as $rank) {
+				// Create form to edit this rank's information
+			    $template->setCurrentBlock('rank_rows');
+			    $template->setData(Comment_Forms::editUserRank($i++, $rank));
+			    $template->parseCurrentBlock();
+			}
+		    $template->setCurrentBlock('rank_usergroups');
+
+            $form1 = new PHPWS_Form('comment-group-settings');
+            // allow_local_custom_avatars
+            $element = 'user_groups['.$gkey.'][allow_local_custom_avatars]';
+            $form1->addCheck($element, 1);
+            $form1->setLabel($element, dgettext('comments', "Allow this group's users to upload custom avatars after"));
+            $form1->setMatch($element, (int) @$group['allow_local_custom_avatars']);
+            $form1->setTag($element, 'ALLOW_LOCAL_CUSTOM_AVATARS');
+            // minimum_local_custom_posts
+            $element = 'user_groups['.$gkey.'][minimum_local_custom_posts]';
+            $form1->addText($element, (int) @$group['minimum_local_custom_posts']);
+            $form1->setMaxSize($element, '4');
+            $form1->setSize($element, '3');
+            $form1->setLabel($element, dgettext('comments', 'posts'));
+            $form1->setTag($element, 'MINIMUM_LOCAL_CUSTOM_POSTS');
+            // allow_remote_custom_avatars
+            $element = 'user_groups['.$gkey.'][allow_remote_custom_avatars]';
+            $form1->addCheck($element, 1);
+            $form1->setLabel($element, dgettext('comments', "Allow this group's users to use remote custom avatars after"));
+            $form1->setMatch($element, (int) @$group['allow_remote_custom_avatars']);
+            $form1->setTag($element, 'ALLOW_REMOTE_CUSTOM_AVATARS');
+            // minimum_remote_custom_posts
+            $element = 'user_groups['.$gkey.'][minimum_remote_custom_posts]';
+            $form1->addText($element, (int) @$group['minimum_remote_custom_posts']);
+            $form1->setMaxSize($element, '4');
+            $form1->setSize($element, '3');
+            $form1->setLabel($element, dgettext('comments', 'posts'));
+            $form1->setTag($element, 'MINIMUM_REMOTE_CUSTOM_POSTS');
+
+            $group_tpl = $form1->getTemplate();
+            $group_tpl['USERGROUP_NAME'] = $groupname[$gkey];
+            $group_tpl['GROUP_AVATAR_SETTINGS'] = dgettext('comments', 'Avatar Settings');
+            $template->setData($group_tpl);
+            $template->parseCurrentBlock();
+            unset($form1,$group_tpl);
+        }
+        // Show form to add a new rank
+        $template->setCurrentBlock('add_new_rank');
+        $template->setData(Comment_Forms::editUserRank($i++));
+        $template->parseCurrentBlock();
+        // Rank table text
+        $tpl['RANK_TABLE_TEXT']    = dgettext('comments', 'Member Ranks');
+        $tpl['RANK_TABLE_HELP']    = dgettext('comments', 'This is the current member ranking system.<br />Don\'t worry about the order - the Rank types will re-order themselves by posting level.<br />To delete a Rank, just leave the name blank.');
+        $tpl['RANK_NEW_TITLE']     = dgettext('comments', 'Add a new rank by entering its information here.');
         $tpl['TITLE'] = dgettext('comments', 'Comment settings');
-        return PHPWS_Template::process($tpl, 'comments', 'settings_form.tpl');
+
+        $template->setData($tpl);
+        return $template->get();
+    }
+
+    /**
+     * Shows a box with an User Rank editing dialog listed within
+     */
+    public function editUserRank($index, $rank = null)
+    {
+        $textwidth = '60';
+        $form = & new PHPWS_Form('rank_edit');
+    	if (empty($rank))
+            $rank = array('title'=>'', 'min_posts'=>0, 'usergroup'=>0, 'image'=>'', 'stack'=>1, 'repeat_image'=>0);
+        else {
+            $form->addTplTag('EDIT_ICON', '[+]');
+            $form->addTplTag('EDIT_HELP', dgettext('comments', 'Click here to edit this Rank'));
+        }
+        // title
+        $element = 'user_ranks['.$index.'][title]';
+        $form->addText($element, $rank['title']);
+        $form->setMaxSize($element, '255');
+        $form->setSize($element, $textwidth);
+        $form->setLabel($element, dgettext('comments', 'Rank Name'));
+        $form->setTag($element, 'RANK_TITLE');
+        // min_posts
+        $element = 'user_ranks['.$index.'][min_posts]';
+        $form->addText($element, $rank['min_posts']);
+        $form->setMaxSize($element, '4');
+        $form->setSize($element, '3');
+        $form->setLabel($element, dgettext('comments', 'Minimum Posts'));
+        $form->setTag($element, 'RANK_MIN');
+        // usergroup
+        $groups = array(0=>dgettext('comments', 'All Members')) + PHPWS_User::getAllGroups();
+        $element = 'user_ranks['.$index.'][usergroup]';
+        $form->addSelect($element, $groups);
+        $form->setMatch($element, $rank['usergroup']);
+        $form->setLabel($element, dgettext('article', 'User Group'));
+        $form->setTag($element, 'RANK_USERGROUP');
+        // image
+        $element = 'user_ranks['.$index.'][image]';
+        $form->addText($element, $rank['image']);
+        $form->setMaxSize($element, '255');
+        $form->setSize($element, $textwidth);
+        $form->setLabel($element, dgettext('comments', 'Rank Image'));
+        $form->setTag($element, 'RANK_IMAGE');
+        $form->addTplTag('RANK_IMAGE_HELP', dgettext('comments', 'ex.: images/comments/Member.gif'));
+        // stack
+        $element = 'user_ranks['.$index.'][stack]';
+        $yes_no = array(1,0);
+        $yes_no_labels = array(dgettext('comments', 'no'), dgettext('comments', 'yes'));
+        $form->addRadio($element, $yes_no);
+        $form->setMatch($element, $rank['stack']);
+        $form->setLabel($element, $yes_no_labels);
+        $form->setTag($element, 'RANK_STACK');
+        $form->addTplTag('RANK_STACK_LABEL', dgettext('comments', 'Stack this Rank?'));
+        // repeat_image
+        $arr = range(0,20);
+        $element = 'user_ranks['.$index.'][repeat_image]';
+        $form->addSelect($element, $arr);
+        $form->setMatch($element, $rank['repeat_image']);
+        $form->setLabel($element, dgettext('comments', 'Repeat Image'));
+        $form->setTag($element, 'RANK_REPEAT_IMAGE');
+        $form->addTplTag('RANK_REPEAT_TIMES', dgettext('comments', 'Times'));
+        // extras
+        $form->addTplTag('RANK_ID', $index);
+        $form->addTplTag('RANK_MIN_TXT_LABEL', dgettext('comments', 'Postlevel'));
+        $form->addTplTag('RANK_MIN_TXT', $rank['min_posts']);
+        $form->addTplTag('RANK_TITLE_TXT', $rank['title']);
+    	if (!empty($rank['image'])) {
+            $rank['stack'] = 0;
+            $images = $titles = $composites = array();
+            Comment_User::getRankImg($rank, $images, $composites, $titles);
+            $form->addTplTag('RANK_IMAGE_PIC', $images[0]);
+        }
+        return $form->getTemplate();
+    }
+
+    public function postSettings()
+    {
+        $settings['default_order'] = $_POST['order'];
+        $settings['captcha'] = (int)$_POST['captcha'];
+        $settings['allow_signatures'] = (int) !empty($_POST['allow_signatures']);
+        $settings['allow_image_signatures'] = (int) !empty($_POST['allow_image_signatures']);
+        $settings['allow_avatars'] = (int) !empty($_POST['allow_avatars']);
+        $settings['local_avatars'] = (int) !empty($_POST['local_avatars']);
+        $settings['anonymous_naming'] = (int) !empty($_POST['anonymous_naming']);
+
+        if (!empty($_POST['email_subject'])) {
+            $settings['email_subject'] = PHPWS_Text::parseInput($_POST['email_subject']);
+        } else {
+            PHPWS_Settings::reset('comments', 'email_subject');
+        }
+
+        if (!empty($_POST['email_text'])) {
+            $settings['email_text'] = PHPWS_Text::parseInput($_POST['email_text']);
+        } else {
+            PHPWS_Settings::reset('comments', 'email_text');
+        }
+
+        $settings['monitor_posts'] = (int) !empty($_POST['monitor_posts']);
+        $settings['allow_user_monitors'] = (int) !empty($_POST['allow_user_monitors']);
+        $settings['default_approval'] = (int)$_POST['default_approval'];
+        $settings['recent_comments'] = (int)$_POST['recent_comments'];
+
+        // If changes to the user ranking system were posted, save them now.
+        if(isset($_POST['user_groups'])) {
+            $grouplist = array(0=>dgettext('comments', 'All Members')) + PHPWS_User::getAllGroups();
+            foreach($grouplist as $gkey => $group) {
+                // Collect all posted user ranks for this group
+                $g_arr = $sourcearr = $sortarr = array();
+                $i = 0;
+                foreach($_POST['user_ranks'] as $rkey => $rankpost) {
+                    if (empty($rankpost['title']) || (int) $rankpost['usergroup'] != $gkey)
+                        continue;
+                    $rank = array('title'=>'', 'min_posts'=>0, 'usergroup'=>0, 'image'=>'', 'stack'=>1, 'repeat_image'=>0);
+                    $rank['title'] = PHPWS_Text::parseInput($rankpost['title']);
+                    if (!empty($rankpost['min_posts']))
+                        $rank['min_posts'] = (int) $rankpost['min_posts'];
+                    if (!empty($rankpost['usergroup']))
+                        $rank['usergroup'] = (int) $rankpost['usergroup'];
+                    if (!empty($rankpost['image']))
+                        $rank['image'] = $rankpost['image'];
+                    $rank['stack'] = (!empty($rank['stack'])) ? 1 : 0 ;
+                    if (!empty($rankpost['repeat_image']))
+                        $rank['repeat_image'] = (int) $rankpost['repeat_image'];
+
+                    $sourcearr[$i] = $rank;
+                    $sortarr[$i++] = $rank['min_posts'];
+                    unset($_POST['user_ranks'][$rkey]);
+                }
+                $g_arr['user_ranks'] = array();
+                if (!empty($sourcearr)) {
+                    // Re-sort user ranks in order "min_posts asc"
+                    asort($sortarr, SORT_NUMERIC);
+                    foreach ($sortarr as $key => $value) {
+                        $g_arr['user_ranks'][$value] = $sourcearr[$key];
+                        unset($_POST['user_ranks'][$indexarr[$key]]);
+                    }
+                }
+                // Collect all posted settings for this group
+                if (isset($_POST['user_groups'][$gkey])) {
+                    $g_arr['allow_local_custom_avatars'] = (int) !empty($_POST['user_groups'][$gkey]['allow_local_custom_avatars']);
+                    $g_arr['minimum_local_custom_posts'] = (int) $_POST['user_groups'][$gkey]['minimum_local_custom_posts'];
+                    $g_arr['allow_remote_custom_avatars'] = (int) !empty($_POST['user_groups'][$gkey]['allow_remote_custom_avatars']);
+                    $g_arr['minimum_remote_custom_posts'] = (int) $_POST['user_groups'][$gkey]['minimum_remote_custom_posts'];
+                }
+
+                $settings['user_ranking'][$gkey] = $g_arr;
+            }
+        }
+
+        PHPWS_Settings::set('comments', $settings);
+        return PHPWS_Settings::save('comments');
     }
 
     public function reported()
@@ -171,6 +410,20 @@ class Comment_Forms {
         $pager->addWhere('reported', 0, '>');
         $pager->addRowTags('reportTags');
         $pager->setEmptyMessage(dgettext('comments', 'No comments reported'));
+
+        // If phpwsbb is installed && user is not a SuperModerator...
+        if (isset($GLOBALS['Modules']['phpwsbb']) && !Current_User::allow('phpwsbb', 'manage_forums')) {
+        //left join to phpwsbb parent topic ON phpwsbb_topics.id = comments_items.thread_id
+            $pager->db->addJoin('left', 'comments_items', 'phpwsbb_topics', 'thread_id', 'id');
+            PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
+            PHPWSBB_Data::load_moderators();
+            // What forums can user moderate?
+            if (!empty($GLOBALS['Moderators_byUser'][Current_User::getId()])) {
+                $forums = array_keys($GLOBALS['Moderators_byUser'][Current_User::getId()]);
+                $pager->db->addWhere('phpwsbb_topics.fid', $forums, null, null, 'fidgroup');
+            }
+            $pager->db->addWhere('phpwsbb_topics.fid', null, null, 'or', 'fidgroup');
+        }
 
         $form = new PHPWS_Form('reported');
         $form->addHidden('module', 'comments');
@@ -198,7 +451,7 @@ class Comment_Forms {
         javascript('modules/comments/admin', array('authkey'=>Current_User::getAuthKey()));
 
         if ($comment->author_id) {
-            $author = new Comment_User($comment->author_id);
+            $author = Comments::getCommentUser($comment->author_id);
             $user = new PHPWS_User($comment->author_id);
 
             if ($user->id && $user->allow('comments')) {
@@ -220,7 +473,7 @@ class Comment_Forms {
                     if (Current_User::allow('users', 'ban_users') && !$user->allow('users')) {
                         if ($user->active) {
                             $links[] = sprintf('<a href="#" onclick="punish_user(%s, this, \'ban_user\'); return false;">%s</a>',
-                                               $author->user_id, dgettext('comments', 'Ban user'));
+                                               $author->user_id, dgettext('comments', 'Ban user from this website'));
                         } else {
                             $links[] = sprintf('<a href="#" onclick="punish_user(%s, this, \'unban_user\'); return false;">%s</a>',
                                                $author->user_id, dgettext('comments', 'Remove ban'));
@@ -267,7 +520,7 @@ class Comment_Forms {
         $form = new PHPWS_Form('approval');
         $form->addHidden('module', 'comments');
         $form->addSelect('aop', array('approval'=>'', 'approve_all'=>dgettext('comments', 'Approve checked'),
-                                          'remove_all'=>dgettext('comments', 'Remove checked')));
+                                      'remove_all'=>dgettext('comments', 'Remove checked')));
         $form->addSubmit(dgettext('comments', 'Go'));
 
         $tpl = $form->getTemplate();
@@ -285,6 +538,21 @@ class Comment_Forms {
         $pager->addSortHeader('author', dgettext('comments', 'Author'));
         $pager->addSortHeader('create_time', dgettext('comments', 'Created on'));
         $pager->convertDate('create_time');
+
+        // If phpwsbb is installed && user is not a SuperModerator...
+        if (isset($GLOBALS['Modules']['phpwsbb']) && !Current_User::allow('phpwsbb', 'manage_forums')) {
+        //left join to phpwsbb parent topic ON phpwsbb_topics.id = comments_items.thread_id
+            $pager->db->addJoin('left', 'comments_items', 'phpwsbb_topics', 'thread_id', 'id');
+            PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
+            PHPWSBB_Data::load_moderators();
+            // What forums can user moderate?
+            if (!empty($GLOBALS['Moderators_byUser'][Current_User::getId()])) {
+                $forums = array_keys($GLOBALS['Moderators_byUser'][Current_User::getId()]);
+                $pager->db->addWhere('phpwsbb_topics.fid', $forums, null, null, 'fidgroup');
+            }
+            $pager->db->addWhere('phpwsbb_topics.fid', null, null, 'or', 'fidgroup');
+        }
+
         return $pager->get();
     }
 }

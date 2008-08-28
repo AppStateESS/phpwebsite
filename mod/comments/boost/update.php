@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 function comments_update(&$content, $currentVersion)
 {
@@ -54,8 +54,8 @@ Please download 0.6.3.</pre>';
             $content[] = 'Warning: A problems occurred when trying to create a unique index on the comments_users table.';
         }
 
-        $files = array('javascript/report/head.js', 'javascript/report/default.php', 'javascript/admin/head.js', 
-                       'templates/alt_view.tpl', 'templates/alt_view_one.tpl', 'templates/view.tpl', 
+        $files = array('javascript/report/head.js', 'javascript/report/default.php', 'javascript/admin/head.js',
+                       'templates/alt_view.tpl', 'templates/alt_view_one.tpl', 'templates/view.tpl',
                        'templates/view_one.tpl', 'templates/punish_pop.tpl', 'templates/reported.tpl',
                        'templates/style.css', 'img/lock.png');
 
@@ -117,8 +117,157 @@ Please download 0.6.3.</pre>';
 + User can set order preference.
 + Avatar graphic code tightened up.
 </pre>';
+
+    case version_compare($currentVersion, '1.2.0', '<'):
+        PHPWS_Core::initModClass('demographics', 'Demographics.php');
+        Demographics::registerField('avatar_id', array('type'=>'integer'));
+        $content[] = 'Created "avatar_id" column in user demographics table.';
+
+        Demographics::registerField('location', array('limit'=>'50'));
+        $content[] = 'Created "location" column in demographics table.';
+
+        $db = new PHPWS_DB('comments_threads');
+        $sql = 'CREATE TABLE comments_monitors (
+    thread_id   int NOT NULL,
+    user_id     int NOT NULL,
+  	send_notice smallint NOT NULL default 1
+);
+CREATE INDEX comments_monitors_user_id_idx ON comments_monitors (user_id, thread_id);
+CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, send_notice);
+';
+        $result = $db->import($sql,true);
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Unable to add "comments_monitors" table.</pre>';
+            return false;
+        }
+        $content[] = 'Created "comments_monitors" table.';
+
+        $db = new PHPWS_DB('comments_items');
+        $result = $db->addTableColumn('anon_name', 'varchar(50) default NULL');
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Unable to add "anon_name" column to comments_items table.</pre>';
+            return false;
+        }
+        $content[] = 'Created "parent_author_id" column in comments_items table.';
+
+        $db = new PHPWS_DB('comments_items');
+        $result = $db->addTableColumn('parent_author_id', 'smallint NOT NULL default 0');
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Unable to add "parent_author_id" column to comments_items table.</pre>';
+            return false;
+        }
+        $content[] = 'Created "parent_author_id" column in comments_items table.';
+
+        $db = new PHPWS_DB('comments_items');
+        $result = $db->addTableColumn('parent_anon_name', 'varchar(50) default NULL');
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Unable to add "parent_anon_name" column to comments_items table.</pre>';
+            return false;
+        }
+        $content[] = 'Created "parent_anon_name" column in comments_items table.';
+
+        $db = new PHPWS_DB('comments_items');
+        $result = $db->addTableColumn('protected', 'smallint NOT NULL default 0');
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Unable to add "protected" column to comments_items table.</pre>';
+            return false;
+        }
+        $content[] = 'Created "protected" column in comments_items table.';
+
+        $db = new PHPWS_DB('comments_threads');
+        $result = $db->addTableColumn('locked', 'smallint NOT NULL default 0');
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Unable to add "locked" column to comments_threads table.</pre>';
+            return false;
+        }
+        $content[] = 'Created "locked" column in comments_threads table.';
+
+        $db = new PHPWS_DB('comments_users');
+        $result = $db->addTableColumn('suspendmonitors', 'smallint NOT NULL default 0');
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Unable to add "suspendmonitors" column to comments_users table.</pre>';
+            return false;
+        }
+        $content[] = 'Created "suspendmonitors" column in comments_users table.';
+
+        $result = $db->addTableColumn('monitordefault', 'smallint NOT NULL default 1');
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Unable to add "monitordefault" column to comments_users table.</pre>';
+            return false;
+        }
+        $content[] = 'Created "monitordefault" column in comments_users table.';
+
+        $result = $db->addTableColumn('securitylevel', 'smallint NOT NULL default -1');
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Unable to add "securitylevel" column to comments_users table.</pre>';
+            return false;
+        }
+        $content[] = 'Created "securitylevel" column in comments_users table.';
+
+        $result = $db->addTableColumn('groups', 'varchar(50) NOT NULL');
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Unable to add "groups" column to comments_users table.</pre>';
+            return false;
+        }
+        $content[] = 'Created "groups" column in comments_users table.';
+
+        PHPWS_Settings::load('comments');
+        PHPWS_Settings::save('comments');
+        PHPWS_Settings::reset('comments', 'email_subject');
+        PHPWS_Settings::reset('comments', 'email_text');
+        $content[] = 'Added new module settings.';
+
+        $files = array('templates/alt_view.tpl'
+                       , 'templates/alt_view_one.tpl'
+                       , 'templates/edit.tpl'
+                       , 'templates/list_posts.tpl'
+                       , 'templates/main.tpl'
+                       , 'templates/my_page.tpl'
+                       , 'templates/settings_form.tpl'
+                       , 'templates/style.css'
+                       , 'templates/user_settings.tpl'
+                       , 'templates/view.tpl'
+                       , 'javascript/expandCollapse/head.js'
+                       , 'img/cancel.png'
+                       , 'img/edit.png'
+                       , 'img/fork.png'
+                       , 'img/Global-Mod.gif'
+                       , 'img/green-left.png'
+                       , 'img/green-right.png'
+                       , 'img/Moderator.gif'
+                       , 'img/noentry.png'
+                       , 'img/red-left.png'
+                       , 'img/red-right.png'
+                       , 'img/report.png'
+                       , 'img/Support-staff.gif'
+                       );
+        if (PHPWS_Boost::updateFiles($files, 'comments'))
+            $content[] = 'Updated the following files:';
+        else
+            $content[] = 'Unable to update the following files:';
+        $content[] = "     " . implode("\n     ", $files);
+
+        $content[] = '<pre>
+1.2.0 Changes
+-------------
++ Added database table: comments_monitors.
++ Added User demographics: suspendmonitors, monitordefault, securitylevel, and groups.
++ Added module settings: email_text, monitor_posts, allow_user_monitors.
++ Updated template files.
++ Fixed "My Page" settings entries.
++ Avatar management now works.
++ Added user ranking system.
++ Added thread monitoring.
++ Added a few image links.
++ Created a template image directory.  Images can now be customized per theme.
++ Added comment selection for bulk operations.
++ Changed default avatar size to 80x80 pixels.
++ New permission setting to allow admins to ban users from posting
++ Added data caching columns parent_author_id and parent_anon_name comments_items table
+</pre>';
+
     }
-            
+
     return true;
 }
 

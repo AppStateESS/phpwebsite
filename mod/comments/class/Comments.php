@@ -32,8 +32,8 @@ class Comments {
             }
         }
 
-        if ( empty($key) || $key->isDummy() || PEAR::isError($key->getError()) ) {
-            return null;
+        if ( empty($key) || $key->isDummy() || PEAR::isError($key->_error) ) {
+            return NULL;
         }
 
         $thread = new Comment_Thread;
@@ -52,9 +52,16 @@ class Comments {
         }
 
         $user = new Comment_User($user_id);
-        if ($user->isNew()) {
+        if (!$user_id)
+            return $user;
+
+        // If we're loading the current user, make sure that the cached userdata is up to date
+        if ($user_id = Current_User::getId()) {
+            $user->setCachedItems();
+        } elseif ($user->isNew()) {
             $result = $user->saveUser();
         }
+
 
         $GLOBALS['Comment_Users'][$user_id] = & $user;
         return $GLOBALS['Comment_Users'][$user_id];
@@ -79,7 +86,7 @@ class Comments {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
         $tabs['settings'] = array('title'=>dgettext('comments', 'Settings'), 'link'=>'index.php?module=comments');
-
+        /*
         $db = new PHPWS_DB('comments_items');
         $db->addColumn('id', null, null, true);
         $db->addWhere('reported', 0, '>');
@@ -90,12 +97,16 @@ class Comments {
 
         if ($count) {
             $tabs['report'] = array('title'=> sprintf(dgettext('comments', 'Reported (%s)'), $count),
-                                      'link'=>'index.php?module=comments');
+                                    'link'=>'index.php?module=comments');
         } else {
             $tabs['report'] = array('title'=> dgettext('comments', 'Reported'),
-                                      'link'=>'index.php?module=comments');
+                                    'link'=>'index.php?module=comments');
         }
-
+        */
+                        $count = PHPWS_Settings::get('comments', 'reported_comments');
+                        $tabs['report'] = array('title'=> sprintf(dgettext('comments', 'Reported (%s)'), $count),
+                                                'link'=>'index.php?module=comments');
+                        /*
         $db = new PHPWS_DB('comments_items');
         $db->addColumn('id', null, null, true);
         $db->addWhere('approved', 0);
@@ -111,11 +122,15 @@ class Comments {
             $tabs['approval'] = array('title'=> dgettext('comments', 'Approval'),
                                       'link'=>'index.php?module=comments');
         }
+                        */
+                        $count = PHPWS_Settings::get('comments', 'unapproved_comments');
+                        $tabs['approval'] = array('title'=> sprintf(dgettext('comments', 'Approval (%s)'), $count),
+                                                  'link'=>'index.php?module=comments');
 
-        $panel = new PHPWS_Panel('comments');
-        $panel->quickSetTabs($tabs);
-        $panel->enableSecure();
-        return $panel;
+                        $panel = new PHPWS_Panel('comments');
+                        $panel->quickSetTabs($tabs);
+                        $panel->enableSecure();
+                        return $panel;
     }
 
     /**
@@ -125,21 +140,18 @@ class Comments {
     {
         $panel = Comments::panel();
         $content = NULL;
+        if (!empty($_REQUEST['cm_id'])) {
+            if (is_array($_REQUEST['cm_id']))
+                $comments = $_REQUEST['cm_id'];
+            else
+                $comments = array($_REQUEST['cm_id']);
+        }
         switch ($command) {
         case 'delete_comment':
-            if (Current_User::authorized('comments', 'delete_comments')) {
-                if (!is_array($_REQUEST['cm_id'])) {
-                    $cm_list = array($_REQUEST['cm_id']);
-                } else {
-                    $cm_list = & $_REQUEST['cm_id'];
-                }
-
-                foreach  ($cm_list as $cm_id) {
-                    $comment = new Comment_Item($cm_id);
-                    $comment->delete();
-                }
+            foreach ($comments AS $cm_id) {
+                $comment = new Comment_Item((int) $cm_id);
+                $comment->delete();
             }
-
             PHPWS_Core::goBack();
             return;
             break;
@@ -161,6 +173,24 @@ class Comments {
             $panel->setCurrentTab('report');
             PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
             $content = Comment_Forms::reported();
+            break;
+
+        case 'move_comments':
+            // If phpwsbb is installed...
+            if (isset($GLOBALS['Modules']['phpwsbb'])) {
+                PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
+                $content = PHPWSBB_Forms::move_comments($comments);
+            } else
+                $content = dgettext('comments', 'Sorry, module phpwsBB is not installed.');
+            break;
+
+        case 'split_comments':
+            // If phpwsbb is installed...
+            if (isset($GLOBALS['Modules']['phpwsbb'])) {
+                PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
+                $content = PHPWSBB_Forms::split_comments($comments);
+            } else
+                $content = dgettext('comments', 'Sorry, module phpwsBB is not installed.');
             break;
 
         case 'settings':
@@ -195,28 +225,17 @@ class Comments {
             break;
 
         case 'post_settings':
-            $content = Comments::postSettings();
-            break;
-
-        case 'disable_anon_posting':
-            $db = new PHPWS_DB('comments_threads');
-            $db->addWhere('id', (int)$_REQUEST['thread_id']);
-            $db->addValue('allow_anon', 0);
-            $result = $db->update();
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Current_User::allow('comments', 'settings')) {
+                PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                Comment_Forms::postSettings();
             }
-            PHPWS_Core::goBack();
-            break;
+            else
+                $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
 
-        case 'enable_anon_posting':
-            $db = new PHPWS_DB('comments_threads');
-            $db->addWhere('id', (int)$_REQUEST['thread_id']);
-            $db->addValue('allow_anon', 1);
-            $result = $db->update();
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-            }
+        case 'set_anon_posting':
+            $thread = & new Comment_Thread((int) @$_REQUEST['thread_id']);
+            if ($thread->userCan())
+                $thread->setAnonPosting((int) @$_REQUEST['allow']);
             PHPWS_Core::goBack();
             break;
 
@@ -228,14 +247,13 @@ class Comments {
                     exit();
                 }
 
-                $cuser = new Comment_User($_GET['id']);
+                $cuser = Comments::getCommentUser($_GET['id']);
 
                 if ($cuser->user_id) {
                     if ($_GET['aop'] == 'lock_user') {
                         $cuser->locked = 1;
                         printf('<a href="#" onclick="punish_user(%s, this, \'unlock_user\'); return false;">%s</a>',
                                $cuser->user_id, dgettext('comments', 'Unlock user'));
-
                     } else {
                         $cuser->locked = 0;
                         printf('<a href="#" onclick="punish_user(%s, this, \'lock_user\'); return false;">%s</a>',
@@ -249,14 +267,8 @@ class Comments {
 
         case 'clear_report':
             if (Current_User::authorized('comments', 'punish_users')) {
-                if (!is_array($_REQUEST['cm_id'])) {
-                    $cm_list = array($_REQUEST['cm_id']);
-                } else {
-                    $cm_list = & $_REQUEST['cm_id'];
-                }
-
-                foreach  ($cm_list as $cm_id) {
-                    $comment = new Comment_Item($cm_id);
+                foreach  ($comments as $cm_id) {
+                    $comment = new Comment_Item((int) $cm_id);
                     $comment->reported = 0;
                     PHPWS_Error::logIfError($comment->save());
                 }
@@ -322,6 +334,24 @@ class Comments {
             Layout::nakedDisplay($content);
             break;
 
+        case 'lock_thread':
+            $thread = & new Comment_Thread((int) @$_REQUEST['thread_id']);
+            if ($thread->userCan())
+                $thread->setLock((int) @$_REQUEST['lock']);
+            PHPWS_Core::reroute($thread->_key->url);
+            break;
+
+        case 'recalc_userposts':
+            $where = '';
+            if (!empty($_REQUEST['user']))
+                $where = ' WHERE user_id = '. (int) $_REQUEST['user'];
+            $db = new PHPWS_DB('comments_threads');
+            $sql = 'UPDATE comments_users SET comments_made = (SELECT COUNT(ID) FROM comments_items WHERE comments_items.author_id = comments_users.user_id)'.$where;
+            $result = $db->query($sql);
+            PHPWS_Error::logIfError($result);
+            $content = dgettext('comments', 'All user postcounts have been recalculated');
+            break;
+
         default:
             PHPWS_Core::errorPage('404');
         }
@@ -347,24 +377,32 @@ class Comments {
         switch ($command) {
         case 'post_comment':
             if ($thread->canComment()) {
+                PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
                 $title = dgettext('comments', 'Post Comment');
-                $content[] = Comments::form($thread, $c_item);
+                $content[] = Comment_Forms::form($thread, $c_item);
             } else {
                 PHPWS_Core::errorPage('404');
             }
             break;
 
         case 'report_comment':
-            if (isset($_GET['cm_id'])) {
-                $cm_id = (int)$_GET['cm_id'];
+            if (isset($_REQUEST['cm_id'])) {
+                $cm_id = (int)$_REQUEST['cm_id'];
                 if (!$_SESSION['Users_Reported_Comments'][$cm_id]) {
                     $db = new PHPWS_DB('comments_items');
                     $db->addWhere('id', $cm_id);
                     $db->incrementColumn('reported');
                     $_SESSION['Users_Reported_Comments'][$cm_id] = true;
                 }
+                Comments::update_reported_comments();
             }
             exit();
+            break;
+
+        case 'cm_history':
+            $comment_user = new Comment_User($_GET['uid']);
+            $title = sprintf(dgettext('comment', 'Comment history for %s'), $comment_user->display_name);
+            $content[] = Comments::showHistory($comment_user);
             break;
 
         case 'change_view':
@@ -406,29 +444,49 @@ class Comments {
                 }
 
             } else {
+                PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
                 $title = dgettext('comments', 'Post Comment');
-                $content[] = Comments::form($thread, $c_item);
+                $content[] = Comment_Forms::form($thread, $c_item);
             }
 
             break;
 
         case 'view_comment':
             $thread = new Comment_Thread($c_item->thread_id);
-            $key = new Key($thread->key_id);
-
-            if (!$key->allowView()) {
+            if (!$thread->_key->allowView())
                 Current_User::requireLogin();
-            }
 
             if ($c_item->approved || Current_User::allow('comments')) {
-                $title = sprintf(dgettext('comments', 'Comment from: %s'), $key->getUrl());
-                $content[] = Comments::viewComment($c_item);
+                $title = sprintf(dgettext('comments', 'Comment from: %s'), $thread->_key->getUrl());
+                $content[] = Comments::viewComment($c_item, $thread);
             } else {
                 PHPWS_Core::errorPage('404');
             }
             break;
+
+        case 'user_posts':
+            $userid = Current_User::getId();
+            if (!empty($_REQUEST['userid']))
+                $userid = (int) $_REQUEST['userid'];
+            $user = Comments::getCommentUser($userid);
+            $title = sprintf(dgettext('comments', 'Comments Made by %s'), $user->display_name);
+            $content[] = $user->list_posts();
+            break;
+
+        case 'set_monitor':
+            Comment_User::subscribe(Current_User::getId(), $thread->id);
+            PHPWS_Core::reroute($thread->_key->url);
+            break;
+
+        case 'unset_monitor':
+            Comment_User::unsubscribe(Current_User::getId(), $thread->id);
+            PHPWS_Core::reroute($thread->_key->url);
+            break;
         }
 
+        if (empty($content)) {
+            PHPWS_Core::errorPage('404');
+        }
 
         $template['TITLE'] = $title;
         $template['CONTENT'] = implode('<br />', $content);
@@ -483,7 +541,7 @@ class Comments {
              !$cm_item->id                    &&
              ( $thread->approval == 2 ||
                ( $thread->approval == 1 && !Current_User::isLogged() ) )
-        ) {
+             ) {
             $cm_item->approved = 0;
         }
 
@@ -501,7 +559,12 @@ class Comments {
 
         if (!Current_User::isLogged() &&
             PHPWS_Settings::get('comments', 'anonymous_naming')) {
-            if (!$cm_item->setAnonName($_POST['anon_name'])) {
+            $name = trim(strip_tags($_POST['anon_name']));
+            if (empty($name) || strlen($name) < 2) {
+                $cm_item->_error = dgettext('comments', 'Your name cannot be shorter than 2 characters.');
+                return false;
+            }
+            if (!$cm_item->setAnonName($name)) {
                 $cm_item->_error = dgettext('comments', 'That name is not allowed. Try another.');
                 return false;
             }
@@ -586,10 +649,10 @@ class Comments {
         }
     }
 
-    public function viewComment($comment)
+    public function viewComment(& $comment, & $thread)
     {
-        $thread = new Comment_Thread($comment->getThreadId());
-        $tpl = $comment->getTpl($thread->allow_anon);
+        $tpl = $comment->getTpl($thread);
+        $tpl['RESPONSES'] = dgettext('comments', 'Replies to this comment');
         $tpl['CHILDREN'] = $thread->view($comment->id);
         $content = PHPWS_Template::process($tpl, 'comments', COMMENT_VIEW_ONE_TPL);
 
@@ -729,6 +792,108 @@ class Comments {
             }
         }
         return $all_removed;
+    }
+
+    /*
+     * Sends "New Post" notices to all users monitoring the topic
+     */
+    public function sendUpdateNotice(&$thread, &$cm_item)
+    {
+        if(!PHPWS_Settings::get('comments', 'allow_user_monitors'))
+            return;
+
+        // look for all users that are monitoring this thread
+        $db = & new PHPWS_DB('comments_monitors');
+        $db->addColumn('comments_monitors.user_id');
+        $db->addColumn('users.id');
+        $db->addColumn('users.username');
+        $db->addColumn('users.email');
+        $db->addWhere('thread_id', $thread->id);
+        $db->addWhere('send_notice', 1);
+        $db->addWhere('suspended', 0);
+        $db->addWhere('users.id', 'comments_monitors.user_id');
+        $db->addWhere('users.active', 1);
+        $result = $db->select();
+        if (PHPWS_Error::logIfError($result) || empty($result))
+            return;
+
+        // Send all email notices (not current user)
+        //xxxxNOTE: Need to create a core_based Mail_Queue to pop these into for Comments & Newsletter modules
+        PHPWS_Core::initCoreClass('Mail.php');
+        $mail = new PHPWS_Mail;
+        foreach ($result AS $to) {
+            if ($to['id'] != Current_User::getId())
+                $mail->addSendTo($to['email']);
+        }
+        $find = array('::username::', '::postername::'
+                      , '::thread_title::', '::thread_url::'
+                      , '::reply_msg::', '::unsubscribeall_url::');
+        $replace = array($to['username']
+                         , $cm_item->getAuthorName()
+                         , $thread->_key->title
+                         , PHPWS_Core::getHomeHttp().$thread->_key->url
+                         , $cm_item->getEntry()
+                         , PHPWS_Core::getHomeHttp().'index.php?module=users&action=user&tab=comments'
+                         );
+        $body = str_replace($find, $replace, PHPWS_Settings::get('comments', 'email_text'));
+        $mail->setSubject(str_replace($find, $replace, PHPWS_Settings::get('comments', 'email_subject')));
+        $mail->setFrom(PHPWS_User::getUserSetting('site_contact'));
+        $mail->setMessageBody($body);
+        $mail->sendIndividually();
+        $mail->send();
+    }
+
+    /*
+     * Update the 'reported_comments' count cache to make admin screens load faster
+     */
+    public function update_reported_comments()
+    {
+        PHPWS_Settings::get('comments', 'reported_comments');
+        $db = new PHPWS_DB('comments_items');
+        $db->addColumn('id', null, null, true);
+        $db->addWhere('reported', 0, '>');
+        $count = $db->select('one');
+        if (PHPWS_Error::logIfError($count))
+            $count = 0;
+        PHPWS_Settings::set('comments', 'reported_comments', $count);
+        PHPWS_Settings::save('comments');
+    }
+
+    /*
+     * Update the 'unapproved_comments' count cache to make admin screens load faster
+     */
+    public function update_unapproved_comments()
+    {
+        PHPWS_Settings::get('comments', 'unapproved_comments');
+        $db = new PHPWS_DB('comments_items');
+        $db->addColumn('id', null, null, true);
+        $db->addWhere('approved', 0);
+        $count = $db->select('one');
+        if (PHPWS_Error::logIfError($count))
+            $count = 0;
+        PHPWS_Settings::set('comments', 'unapproved_comments', $count);
+        PHPWS_Settings::save('comments');
+    }
+
+
+    public function showHistory($comment_user)
+    {
+        Layout::addStyle('comments', 'admin.css');
+        javascript('jsquery');
+        javascript('modules/comments/admin');
+        javascript('modules/comments/quick_view');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        if (empty($comment_user->user_id)) {
+            return dgettext('comments', 'No comments made');
+        }
+        $pager = new DBPager('comments_items', 'Comment_Item');
+        $pager->setModule('comments');
+        $pager->setTemplate('history.tpl');
+        $pager->addWhere('author_id', $comment_user->user_id);
+        $pager->addRowTags('historyTags');
+        $pager->setEmptyMessage(dgettext('comments', 'No comments made'));
+
+        return $pager->get();
     }
 }
 

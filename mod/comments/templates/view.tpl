@@ -33,6 +33,8 @@
     </div>
     <!-- END listrows -->
 </div>
+{NEW_POST_LINK}
+
 <!-- BEGIN page-select2 -->
 <div class="align-center">
     <strong>{PAGE_LABEL}:</strong>
@@ -40,3 +42,12 @@
     {LIMITS}
 </div>
 <!-- END page-select2 -->
+
+<br />
+<br />
+
+<!-- BEGIN statuslist -->
+    {FORUM_LABEL} :: {HOME_LINK} :: {FORUM_TITLE_LINK}<br />
+    {FORUM_FLAGS}<br />
+<!-- END statuslist -->
+    {STATUS_FLAGS}

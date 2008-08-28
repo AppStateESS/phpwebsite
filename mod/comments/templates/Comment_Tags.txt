@@ -36,7 +36,7 @@ EDIT_LABEL         - "Edited"
 EDIT_AUTHOR_LABEL  - "Edited by"
 EDIT_TIME_LABEL    - "Edited on"
 EDIT_REASON_LABEL  - "Reason"
-
+COMMENTS_MADE_LABEL- "Posts"
 
 Information tags:
 ----------------------------------------------------------------------
