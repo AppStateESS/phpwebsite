@@ -154,7 +154,7 @@ class PHAT_Form extends PHPWS_Item {
 
     /**
      * List of admin emails to email the submitted data to
-     * 
+     *
      * @var     array
      * @example $this->_adminEmails = array('steven@res1.appstate.edu', 'bob@test.com')
      * @access  private
@@ -162,10 +162,10 @@ class PHAT_Form extends PHPWS_Item {
     var $_adminEmails = array();
 
     /**
-     * Contains PHP code to be executed after submission of form. If no code is set 
-     * then nothing happens. The code is executed as a lambda function. The code is 
+     * Contains PHP code to be executed after submission of form. If no code is set
+     * then nothing happens. The code is executed as a lambda function. The code is
      * passed an array, $form_details, of the the form elements set in the form submission.
-     * It is up to the user to process this array. The function *should likely* 
+     * It is up to the user to process this array. The function *should likely*
      * return a string to be displayed to the user. However it is up to the user.
      *
      * @var     text
@@ -223,7 +223,7 @@ class PHAT_Form extends PHPWS_Item {
 
             if(!$this->_editData)
                 $sql .= " AND position!='-1'";
-      
+
             $result = PHPWS_DB::getAll($sql);
 
             if (PEAR::isError($result)) {
@@ -339,7 +339,7 @@ class PHAT_Form extends PHPWS_Item {
         $template = $form->getTemplate();
 
         $content = PHPWS_Template::process($template, 'phatform', 'form/settings.tpl');
-    
+
         return $content;
     }// END FUNC editSettings()
 
@@ -678,7 +678,7 @@ class PHAT_Form extends PHPWS_Item {
 
         /* Build sql statement based on the current user */
 
-        $sql = 'SELECT id FROM ' . $this->getTableName() . 
+        $sql = 'SELECT id FROM ' . $this->getTableName() .
             ' WHERE user=\'' . Current_User::getUsername() . "'";
 
         if($finished)
@@ -863,7 +863,7 @@ class PHAT_Form extends PHPWS_Item {
             if(isset($_REQUEST["go_$key"])) {
                 $elementInfo = explode(':', $elementInfo);
                 $this->element = new $elementInfo[0]($elementInfo[1]);
-                
+
                 switch($_REQUEST["PHAT_Action_$key"]) {
                 case 'edit':
                     $content = $this->element->edit();
@@ -1003,14 +1003,14 @@ class PHAT_Form extends PHPWS_Item {
 
             if(isset($_REQUEST['PHAT_' . $this->element->getLabel()])) {
                 require_once(PHPWS_SOURCE_DIR . '/mod/phatform/conf/phatform.php');
-                
+
                 if(is_string($_REQUEST['PHAT_' . $this->element->getLabel()]) &&
                    strlen($_REQUEST['PHAT_' . $this->element->getLabel()]) > PHAT_MAX_CHARS_TEXT_ENTRY) {
-                    $error = PHPWS_Error::get(PHATFORM_TEXT_MAXSIZE_PASSED, 'phatform', 
-                                              'PHAT_Form::_saveFormData', 
+                    $error = PHPWS_Error::get(PHATFORM_TEXT_MAXSIZE_PASSED, 'phatform',
+                                              'PHAT_Form::_saveFormData',
                                               array($this->element->getLabel()));
                 }
-          
+
                 $queryData[$this->element->getLabel()] = $_REQUEST['PHAT_' . $this->element->getLabel()];
             }
         }
@@ -1068,17 +1068,18 @@ class PHAT_Form extends PHPWS_Item {
             /* Is there a better way to do this? I just want the data elements of the form, not the rest of the row. Perhaps
              we should write a better SQL statement. */
             foreach($this->_userData as $key=>$value) {
-                if (($key != 'id') && ($key != 'user') && ($key != 'updated') && ($key != 'position'))
+                if (PHPWS_DB::allowed($key) && ($key != 'id') && ($key != 'user') && ($key != 'updated') && ($key != 'position')) {
                     $form_details[$key] = $value;
+                }
             }
 
             /* Now create a lambda function to execute the form submission data. As mentioned before no checking is done
              on code validity! You're on your own. */
             $newfunc = create_function('$form_details', $this->_postProcessCode);
-        
+
             /* Store any output from the function to be displayed on the screen */
             $thanksTags['RETURN'] = $newfunc($form_details);
-        } 
+        }
 
         if(isset($this->report)) {
             PHAT_Form($this->getId());
@@ -1101,7 +1102,7 @@ class PHAT_Form extends PHPWS_Item {
     function checkLabel($label) {
         $restricted = array('id', 'user', 'updated', 'position');
 
-        if (in_array(strtolower($label), $restricted)) {
+        if (!PHPWS_DB::allowed($label) || in_array(strtolower($label), $restricted)) {
             return false;
         }
 
@@ -1162,21 +1163,21 @@ class PHAT_Form extends PHPWS_Item {
               user varchar(20) NOT NULL,
               updated int(11) NOT NULL default '0',
               position int(11) NOT NULL default '0',");
-      
+
             /* Flag used to check if we need to add a comma in the sql statement */
             $flag = FALSE;
             /* Step through this form's elements and add the sql for those columns */
             foreach($this->_elements as $value) {
                 if($flag)
                     $sql .= ', ';
-        
+
                 $elementInfo = explode(':', $value);
                 $this->element = new $elementInfo[0]($elementInfo[1]);
                 $sql .= $this->element->getLabel() . ' longtext';
                 $flag = TRUE;
             }
             $sql .= ')';
-      
+
             PHPWS_DB::query($sql);
             $this->setSaved();
 
@@ -1468,7 +1469,7 @@ class PHAT_Form extends PHPWS_Item {
     /**
      * Returns whether or not this form is set for anonymous submissions.
      *
-     * @return boolean TRUE if anonymous or FALSE if not. 
+     * @return boolean TRUE if anonymous or FALSE if not.
      * @access public
      */
     function isAnonymous() {
@@ -1590,17 +1591,17 @@ class PHAT_Form extends PHPWS_Item {
             if (!(strlen($to) > 0)) {
                 return;
             }
-            
+
             require_once 'Mail.php';
             require_once 'Mail/mime.php';
-                
+
             $this->loadUserData();
 
-            $mime    = new Mail_mime();        
+            $mime    = new Mail_mime();
             $headers = array('From' => "forms@{$_SERVER['SERVER_NAME']}", 'Subject' => $this->getLabel() .' (Form Submission)');
 
             if (PHAT_MAIL_CONTENT_TYPE == 'text/html') {
-                $message = $this->emailBodyHtml($this->_userData);       
+                $message = $this->emailBodyHtml($this->_userData);
                 $mime->setHTMLBody($message);
 
             } else {
@@ -1612,7 +1613,7 @@ class PHAT_Form extends PHPWS_Item {
 
             $body    = $mime->get();
             $headers = $mime->headers($headers);
-        
+
             $mail =& Mail::factory('mail');
             $mail->send($to, $headers, $body);
         }
@@ -1626,7 +1627,7 @@ class PHAT_Form extends PHPWS_Item {
             } elseif($key == 'updated') {
                 $value = date(PHPWS_DATE_FORMAT . ' ' . PHPWS_TIME_FORMAT, $value);
             }
-        
+
             $message .= $key . ':  ';
 
             if(preg_match("/a:.:{/", $value)) {
@@ -1635,10 +1636,10 @@ class PHAT_Form extends PHPWS_Item {
                 $message .= PHPWS_Text::parseOutput($value);
             }
 
-            $message = $message . 
+            $message = $message .
                 "\r\n-------------------------------------------------\r\n";
         }
-    
+
         return $message;
     }
 
@@ -1656,7 +1657,7 @@ class PHAT_Form extends PHPWS_Item {
             } elseif($key == 'updated') {
                 $value = date(PHPWS_DATE_FORMAT . ' ' . PHPWS_TIME_FORMAT, $value);
             }
-        
+
             /* Toggle the row colors for better visability */
             if ($tog%2) {
                 $rowClass = PHAT_SECTION_HEX;
@@ -1664,32 +1665,32 @@ class PHAT_Form extends PHPWS_Item {
                 $rowClass = null;
             }
             $tog++;
-            
+
             if(isset($rowClass)) {
                 $rowTags['ROW_CLASS'] = " bgcolor=\"$rowClass\"";
             }
             $rowTags['ENTRY_LABEL'] = $key;
-        
+
             if(preg_match('/a:.:{/', $value)) {
                 $rowTags['ENTRY_VALUE'] = implode(', ', unserialize(stripslashes($value)));
             } else {
                 $rowTags['ENTRY_VALUE'] = PHPWS_Text::parseOutput($value);
             }
-        
+
             $entryTags['ENTRY_DATA'][] = PHPWS_Template::processTemplate($rowTags, 'phatform', 'report/entryRow.tpl');
         }
-    
+
         $entryTags['ENTRY_DATA'] = implode('', $entryTags['ENTRY_DATA']);
         $message = PHPWS_Template::processTemplate($entryTags, 'phatform', 'report/entry.tpl');
-    
+
         return $message;
-    
+
     }
 
     /**
      * The action function for this PHAT_Form.
      *
-     * 
+     *
      * @return mixed  $content Returns the contents handed to it from functions called within.
      * @access public
      */
