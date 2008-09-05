@@ -14,7 +14,7 @@ body {
 /* ---------- Headers ----------- */
 
 h1, h2, h3 {
-    font-family: "Trebuchet MS", Verdana, serif;    
+    font-family: "Trebuchet MS", Verdana, serif;
     margin: 0;
     padding : 0;
 }
@@ -251,7 +251,7 @@ abbr {
 div.webpage-image, div.entry-image{
    float : right;
    display : inline;
-   margin : 0 0 10px 10px;                  
+   margin : 0 0 10px 10px;
 }
 
 .move-popup {
@@ -266,4 +266,19 @@ div.webpage-image, div.entry-image{
 
 .layout-variable legend {
    font-size : .9em;
+}
+
+
+#css-user-login div.box-title h1 {
+   display : none;
+}
+
+span#home-link, span#panel-link {
+padding-left : 5px;
+padding-right : 5px;
+border-right : 1px solid black;
+}
+
+span#logout-link {
+padding-left : 5px;
 }

@@ -2,8 +2,27 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file..
 
-Version 1.8.3
+Version 1.9.0
 ---------------------------------------------------------------------
+5 September 2008
++ PageSmith convert rewrite fixed.
++ bb filter pulls out newlines before translating. Replaced when done.
++ Fixed compatibility bug in DBPager's setLimit function.
++ Form.php
+  o Added setId, setStyle functions
+  o Removed redundant getclass function from elements.
+  o Fixed spacing issues for element creation
++ Added application/word to try and mime type powerpoint properly
++ Bumped up version.
++ open_window can now have its id set.
++ Setup was checking log/ directory instead of logs/ directory.
++ Default theme altered to work with css user menu template
++ Updated: conf/file_types.php, conf/version.php,
+javascript/open_window/body.js,
+javascript/open_window/body2.js,
+javascript/open_window/example.txt
+themes/default/*
+
 21 August 2008
 + XMLParser fixes.
 + Moved errorDefines from Init to Core.

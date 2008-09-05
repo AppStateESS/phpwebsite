@@ -225,16 +225,18 @@ function saveSections($sections, $id, $title, $key_id)
                     }
             }
         }
-
         if ($top && $image_content) {
-            $content = $image_content . $content;
+            $content = $image_content . $sec['text'];
+        } else {
+            $content = $sec['text'];
         }
 
-        $content = preg_replace('/module=pagemaster(&|&amp;)page_user_op=view_page(&|&amp;)page_id=/i', 'module=pagesmith&id=', $sec['text']);
+        $content = preg_replace('/module=pagemaster(&|&amp;)page_user_op=view_page(&|&amp;)page_id=/i', 'module=pagesmith&id=', $content);
         $content = preg_replace('/&MMN_position=\d+:\d+/', '', $content);
         if (!$top && $image_content) {
             $content .= '<br /><p style="text-align : center">' . $image_content . '</p>';
         }
+
         $page_content[] = PHPWS_Text::parseInput(utf8_encode(PHPWS_Text::breaker(PHPWS_Text::encodeXHTML($content))));
     }
 
