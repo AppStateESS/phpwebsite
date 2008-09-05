@@ -523,7 +523,7 @@ class DBPager {
     public function getLimit()
     {
         if (empty($this->limit) || !in_array($this->limit, $this->limitList)) {
-            list($this->limit) = each($this->limitList);
+            foreach($this->limitList as $this->limit);
         }
 
         $start = ($this->current_page - 1) * $this->limit;
@@ -698,10 +698,12 @@ class DBPager {
         }
 
         if (empty($this->limit)) {
-            if ($this->default_limit)
+            if ($this->default_limit) {
                 $this->limit = $this->default_limit;
-            else
+            }
+            else {
                 $this->limit = DBPAGER_DEFAULT_LIMIT;
+            }
         }
 
         if ($this->limit > 0) {

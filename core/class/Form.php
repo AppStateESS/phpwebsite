@@ -1030,11 +1030,40 @@ class PHPWS_Form {
     public function setClass($name, $class_name)
     {
         if (!$this->testName($name)) {
-            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setMatch', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setClass', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setClass($class_name);
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+        }
+    }
+
+    public function setId($name, $id_name)
+    {
+        if (!$this->testName($name)) {
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setId', array($name));
+        }
+
+        foreach ($this->_elements[$name] as $key=>$element){
+            $result = $this->_elements[$name][$key]->setId($id_name);
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+        }
+    }
+
+
+    public function setStyle($name, $style_name)
+    {
+        if (!$this->testName($name)) {
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setStyle', array($name));
+        }
+
+        foreach ($this->_elements[$name] as $key=>$element){
+            $result = $this->_elements[$name][$key]->setStyle($style_name);
             if (PEAR::isError($result)) {
                 return $result;
             }
@@ -1532,7 +1561,6 @@ class Form_TextField extends Form_Element {
             . $this->getReadOnly()
             . $this->getValue(true)
             . $this->getWidth(true)
-            . $this->getClass(true)
             . $this->getData() . ' />';
     }
 
@@ -1556,7 +1584,6 @@ class Form_Submit extends Form_Element {
             . $this->getDisabled()
             . $this->getReadOnly()
             . $this->getWidth(true)
-            . $this->getClass(true)
             . $this->getData() . ' />';
     }
 
@@ -1573,7 +1600,6 @@ class Form_Button extends Form_Element {
             . $this->getDisabled()
             . $this->getReadOnly()
             . $this->getWidth(true)
-            . $this->getClass(true)
             . $this->getData() . ' />';
     }
 }
@@ -1590,7 +1616,6 @@ class Form_Reset extends Form_Element {
             . $this->getDisabled()
             . $this->getReadOnly()
             . $this->getWidth(true)
-            . $this->getClass(true)
             . $this->getData() . ' />';
     }
 }
@@ -1619,7 +1644,6 @@ class Form_File extends Form_Element {
             . $this->getDisabled()
             . $this->getReadOnly()
             . $this->getWidth(true)
-            . $this->getClass(true)
             . $this->getData()
             . ' />';
     }
@@ -1645,7 +1669,6 @@ class Form_Password extends Form_Element {
             . $this->getReadOnly()
             . $this->getValue(true)
             . $this->getWidth(true)
-            . $this->getClass(true)
             . $this->getData()
             . ' />';
     }
@@ -1759,7 +1782,6 @@ class Form_TextArea extends Form_Element {
             . $this->getTitle(true)
             . $this->getDisabled()
             . $this->getReadOnly()
-            . $this->getClass(true)
             . implode(' ', $dimensions) . ' '
             . $this->getData()
             . sprintf('>%s</textarea>', $value);
@@ -1777,7 +1799,6 @@ class Form_Select extends Form_Element {
 
         $content[] = '<select '
             . $this->getName(true)
-            . $this->getClass(true)
             . $this->getDisabled()
             . $this->getData() . '>';
 
@@ -1847,7 +1868,6 @@ class Form_Multiple extends Form_Element {
             . $this->getData()
             . $this->getWidth(true)
             . $this->getDisabled()
-            . $this->getClass(true)
             . '>';
         foreach($this->value as $value=>$label) {
             if (!is_string($value) && !is_numeric($value)) {
@@ -1937,7 +1957,6 @@ class Form_Checkbox extends Form_Element {
             . $this->getValue(true)
             . $this->getDisabled()
             . $this->getReadOnly()
-            . $this->getClass(true)
             . $this->getMatch()
             . $this->getData()
             . ' />';
@@ -1972,7 +1991,6 @@ class Form_RadioButton extends Form_Element {
             . $this->getValue(true)
             . $this->getDisabled()
             . $this->getReadOnly()
-            . $this->getClass(true)
             . $this->getMatch()
             . $this->getData()
             . ' />';
@@ -2125,19 +2143,23 @@ class Form_Element {
         $this->name = preg_replace('/[^\[\]\w]/', '', $name);
     }
 
-    public function setId()
+    public function setId($id=null)
     {
-        $id = $this->getName();
-        // changed 20070312
-        // Square brackets are not allowed as id names.
-        $id = preg_replace('/\[(\w+)\]/', '_\\1', $id);
+        if (empty($id)) {
+            $id = $this->getName();
+            // changed 20070312
+            // Square brackets are not allowed as id names.
+            $id = preg_replace('/\[(\w+)\]/', '_\\1', $id);
 
-        // changed 6/14/06
-        if ($this->type == 'radio') {
-            $id .= '_' . $this->key;
+            // changed 6/14/06
+            if ($this->type == 'radio') {
+                $id .= '_' . $this->key;
+            }
+
+            $this->id = $this->_form->id . '_' . $id;
+        } else {
+            $this->id = $id;
         }
-
-        $this->id = $this->_form->id . '_' . $id;
     }
 
     public function getName($formMode=false, $show_id=true)
@@ -2312,7 +2334,7 @@ class Form_Element {
             $extra[] = $this->getStyle(true);
         }
 
-        if (isset($this->class)) {
+        if (isset($this->css_class)) {
             $extra[] = $this->getClass(true);
         }
 
@@ -2333,7 +2355,7 @@ class Form_Element {
         }
 
         if (isset($extra)) {
-            return implode('', $extra);
+            return implode(' ', $extra);
         } else {
             return null;
         }

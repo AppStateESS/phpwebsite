@@ -40,6 +40,8 @@ function bb_filter($bb2html)
         $i++;
     }
 
+    $bb2html = str_replace("\n", ':newline:', $bb2html);
+
     // now the bbcode proper..
 
     // grab any *real* square brackets first, store em
@@ -152,6 +154,7 @@ function bb_filter($bb2html)
         $bb2html = str_replace("***pre_string***$i", '<pre>'.substr($pre[$i],5,-6).'</pre>', $bb2html);
     }
 
+    $bb2html = str_replace(':newline:', "\n", $bb2html);
     return $bb2html;
 }
 

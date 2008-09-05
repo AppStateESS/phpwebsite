@@ -301,7 +301,7 @@ You will need to make your hub/branch home directory writable if the file doesn\
 
         $content[] = '</pre>';
 
-    case version_compare($version, '1.8.3', '<'):
+    case version_compare($version, '1.9.0', '<'):
         $content[] = '<pre>';
         $files = array('conf/text_settings.php', 'javascript/js_calendar/default.php',
                        'javascript/required_input/', 'conf/file_types.php',
