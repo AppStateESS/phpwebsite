@@ -1,0 +1,22 @@
+#clipboard-view {
+   text-align : center;
+}
+
+#clip {
+   border : 1px solid black;
+   background-color : white;
+   text-align : center;
+}
+
+#clip textarea {
+   width : 95%;
+   min-height : 200px;
+}
+
+ul#view-pick li {
+   display : inline;
+   background-color :#E1E1E1;
+   padding : 4px;
+   margin : 2px;
+   border : 1px solid black;
+}

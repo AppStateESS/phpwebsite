@@ -24,7 +24,7 @@ class Clipboard
         case 'drop':
             if (isset($_REQUEST['key'])) {
                 unset($_SESSION['Clipboard']->components[$_REQUEST['key']]);
-                PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);
+                exit();
             }
             break;
 
@@ -38,12 +38,15 @@ class Clipboard
 
     public function view()
     {
+        Layout::addStyle('clipboard');
+        javascript('jquery');
+        javascript('modules/clipboard/pick_view');
         $clip = $_SESSION['Clipboard']->components[$_REQUEST['key']]->content;
-        $clip =  sprintf('<textarea cols="35" rows="4">%s</textarea>', $clip);
 
         $template['TITLE'] = dgettext('clipboard', 'Clipboard');
-        $template['DIRECTIONS'] = dgettext('clipboard', 'Copy the text below and paste it into the text box.');
         $template['CONTENT'] = $clip;
+        $template['VIEW_LINK'] = '<a href="#" id="view-link" onclick="return false">View</a>';
+        $template['SOURCE_LINK'] = '<a href="#" id="source-link" onclick="return false">Source</a>';
 
         $button = dgettext('clipboard', 'Close Window');
         $template['BUTTON'] = sprintf('<input type="button" onclick="window.close()" value="%s" />', $button);
@@ -53,6 +56,7 @@ class Clipboard
 
     public function show()
     {
+        javascript('jquery');
         PHPWS_Core::configRequireOnce('clipboard', 'config.php');
 
         if (!isset($_SESSION['Clipboard'])) {
@@ -64,26 +68,28 @@ class Clipboard
             return NULL;
         }
 
-        $data['width'] = '280';
-        $data['height'] = '150';
+        $data['width'] = '340';
+        $data['height'] = '410';
 
         $clipVars['action'] = 'drop';
 
         foreach ($_SESSION['Clipboard']->components as $key => $component){
             $clipVars['key'] = $key;
-            $drop = PHPWS_Text::moduleLink(CLIPBOARD_DROP_LINK, 'clipboard', $clipVars);
+            $drop = javascript('modules/clipboard/drop_clip', array('link'=>CLIPBOARD_DROP_LINK,
+                                                                    'id'=>$key));
+
             $data['address']     = 'index.php?module=clipboard&action=showclip&key=' . $key;
             $data['label']       = $component->title;
-            $data['width']       = 300;
-            $data['height']      = 200;
             $data['window_name'] = 'clipboard-' . $component->title;
-            $content[] = Layout::getJavascript('open_window', $data) . ' ' . $drop;
+            $content[] = sprintf('<div id="%s">%s</div>',
+                                 'clip-' . $key,
+                                 Layout::getJavascript('open_window', $data) . ' ' . $drop);
         }
 
         unset($clipVars['key']);
         $clipVars['action'] = 'clear';
         $template['CLEAR'] = PHPWS_Text::moduleLink(dgettext('clipboard', 'Clear'), 'clipboard', $clipVars);
-        $template['LINKS'] = implode('<br />', $content);
+        $template['LINKS'] = implode('', $content);
 
         $vars['CONTENT'] = PHPWS_Template::process($template, 'clipboard', 'list.tpl');
         $vars['TITLE'] = dgettext('clipboard', 'Clipboard');
@@ -129,7 +135,7 @@ class Clipboard_Component {
 
     public function Clipboard_Component($title, $content){
         $this->title = strip_tags($title);
-        $this->content = htmlspecialchars($content);
+        $this->content = trim($content);
     }
 
 }
