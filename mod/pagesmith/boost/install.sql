@@ -1,7 +1,6 @@
 CREATE TABLE ps_block (
   id int NOT NULL default 0,
   pid int NOT NULL default 0,
-  btype varchar(10) NOT NULL,
   type_id int NOT NULL default 0,
   secname varchar(30) NOT NULL,
   sectype varchar(20) NOT NULL,
@@ -20,6 +19,8 @@ CREATE TABLE ps_page (
   create_date int not null default 0,
   last_updated int not null default 0,
   front_page smallint NOT NULL default 0,
+  parent_page int NOT NULL default 0,
+  page_order smallint NOT NULL default 0,
   PRIMARY KEY  (id)
 );
 

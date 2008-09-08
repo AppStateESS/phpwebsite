@@ -1,5 +1,5 @@
 {TOTAL_ROWS}
-<table cellpadding="5">
+<table cellpadding="5" width="95%">
   <tr>
     <th width="5%">{ID_SORT} {ID_LABEL}</th>
     <th>{TITLE_SORT}</th>
@@ -10,7 +10,9 @@
 <!-- BEGIN listrows -->
   <tr>
     <td>{ID}</td>
-    <td>{TITLE}</td>
+    <td>{TITLE}
+    <!-- BEGIN subpages --><div class="subpage">{SUBPAGES}</div><!-- END subpages -->
+    </td>
     <td>{CREATE_DATE}<br />{LAST_UPDATED}</td>
     <td class="smaller">{ACTION}</td>
   </tr>

@@ -26,3 +26,39 @@ div.tpl-folder {
     width : 130px;
     text-align : center;
 }
+
+div.orphans {
+    border : 1px solid black;
+    padding : 8px;
+    margin-bottom : 1em;
+}
+
+div.options {
+    border-top : 1px dotted gray;
+    padding : 3px;
+    margin-top : 5px;
+}
+
+a.pointer {
+    cursor : pointer;
+}
+
+div.subpage {
+    font-size : 90%;
+}
+
+div.subpage td.page-number {
+    text-align : center;
+}
+
+table.pagesmith-page-links {
+    width : 100%;
+}
+
+table.pagesmith-page-links td {
+    width : 50%;
+}
+
+table.pagesmith-page-links td.next-link{
+    text-align : right;
+}

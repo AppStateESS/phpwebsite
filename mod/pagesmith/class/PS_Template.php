@@ -96,18 +96,19 @@ class PS_Template {
     }
 
 
-    public function pickTpl()
+    public function pickTpl($parent_page=0)
     {
-        $tpl['THUMBNAIL'] = $this->getPickLink();
+        $tpl['THUMBNAIL'] = $this->getPickLink($parent_page);
         $tpl['TITLE']     = $this->title;
         $tpl['SUMMARY']   = $this->summary;
         return $tpl;
     }
 
-    public function getPickLink()
+    public function getPickLink($parent_page=0)
     {
         $vars['aop'] = 'pick_template';
         $vars['tpl'] = $this->name;
+        $vars['pid'] = $parent_page;
         return PHPWS_Text::secureLink($this->getThumbnail(), 'pagesmith', $vars);
     }
 

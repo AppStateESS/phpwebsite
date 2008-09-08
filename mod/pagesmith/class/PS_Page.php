@@ -12,9 +12,15 @@ class PS_Page {
     public $create_date   = 0;
     public $last_updated  = 0;
     public $front_page    = 0;
+    public $parent_page   = 0;
+    public $page_order    = 0;
 
     public $_tpl          = null;
     public $_sections     = array();
+    /**
+     * Contains content left over after change the template
+     */
+    public $_orphans       = array();
     public $_content      = null;
     public $_error        = null;
     public $_key          = null;
@@ -114,19 +120,27 @@ class PS_Page {
 
             if (!empty($text_sections)) {
                 foreach ($text_sections as $secname=>$section) {
-                    PHPWS_Core::plugObject($this->_sections[$secname], $section);
-                    $this->_content[$secname] = $this->_sections[$secname]->getContent();
+                    if (isset($this->_sections[$secname])) {
+                        PHPWS_Core::plugObject($this->_sections[$secname], $section);
+                        $this->_content[$secname] = $this->_sections[$secname]->getContent();
+                    } else {
+                        $this->_orphans[$secname] = $section;
+                    }
                 }
             }
 
             if (!empty($block_sections)) {
                 foreach ($block_sections as $secname=>$section) {
-                    PHPWS_Core::plugObject($this->_sections[$secname], $section);
-                    if ($form_mode && $this->_sections[$secname]->type_id) {
-                        //reload the image form if the image is set
-                        $this->_sections[$secname]->loadFiller();
+                    if (isset($this->_sections[$secname])) {
+                        PHPWS_Core::plugObject($this->_sections[$secname], $section);
+                        if ($form_mode && $this->_sections[$secname]->type_id) {
+                            //reload the image form if the image is set
+                            $this->_sections[$secname]->loadFiller();
+                        }
+                        $this->_content[$secname] = $this->_sections[$secname]->getContent();
+                    } else {
+                        $this->_orphans[$secname] = $section;
                     }
-                    $this->_content[$secname] = $this->_sections[$secname]->getContent();
                 }
             }
         }
@@ -135,10 +149,12 @@ class PS_Page {
     /**
      * Loads a single template into the page object from the file
      */
-    public function loadTemplate()
+    public function loadTemplate($tpl=null)
     {
         PHPWS_Core::initModClass('pagesmith', 'PS_Template.php');
-        if (!empty($this->template)) {
+        if (!empty($tpl)) {
+            $this->_tpl = new PS_Template($tpl);
+        } elseif (!empty($this->template)) {
             $this->_tpl = new PS_Template($this->template);
         } elseif (isset($_REQUEST['tpl'])) {
             $this->_tpl = new PS_Template($_REQUEST['tpl']);
@@ -147,23 +163,60 @@ class PS_Page {
         }
     }
 
-    public function row_tags()
+    public function row_tags($subpage=false)
     {
         $vars['uop'] = 'view_page';
-        $vars['id'] = $this->id;
+        $tpl['ID'] = $vars['id'] = $this->id;
         $tpl['TITLE'] = PHPWS_Text::moduleLink($this->title, 'pagesmith', $vars);
 
         $links[] = $this->editLink();
+        if (!$subpage) {
+            $links[] = $this->addPageLink();
+        }
         $links[] = $this->deleteLink();
-        $links[] = $this->frontPageToggle();
-
+        if (!$subpage) {
+            $links[] = $this->frontPageToggle();
+        }
 
         $tpl['ACTION'] = implode(' | ', $links);
         $tpl['CREATE_DATE'] = strftime('%d %b %y, %X', $this->create_date);
         $tpl['LAST_UPDATED'] = strftime('%d %b %y, %X', $this->last_updated);
 
+        if ($subpage) {
+            $tpl['PAGE_NO'] = $this->page_order + 1;
+        }
+
+        if (!$this->parent_page) {
+            $db = new PHPWS_DB('ps_page');
+            $db->addWhere('parent_page', $this->id);
+            $db->addOrder('page_order');
+            $children = $db->getObjects('PS_Page');
+            $subtpl['ID_LABEL'] = dgettext('pagesmith', 'Id');
+            $subtpl['TITLE_LABEL'] = dgettext('pagesmith', 'Title');
+            $subtpl['PAGE_LABEL'] = sprintf('<abbr title="%s">%s</a>', dgettext('pagesmith', 'Page number'),
+                                            dgettext('pagesmith', 'Pg. No.'));
+            if (!empty($children)) {
+                foreach ($children as $subpage) {
+                    $subtpl['subpages'][] = $subpage->row_tags(true);
+                }
+                $tpl['SUBPAGES'] = PHPWS_Template::process($subtpl, 'pagesmith', 'sublist.tpl');
+            }
+        }
+
         return $tpl;
     }
+
+    public function addPageLink($label=null)
+    {
+        if (empty($label)) {
+            $label = dgettext('pagesmith', 'Add page');
+        }
+        $vars['pid']  = $this->id;
+        $vars['aop'] = 'menu';
+        $vars['tab'] = 'new';
+        return PHPWS_Text::secureLink($label, 'pagesmith', $vars);
+    }
+
 
     public function deleteLink()
     {
@@ -211,6 +264,18 @@ class PS_Page {
         }
 
         $this->last_updated = mktime();
+
+        // If this page has a parent and the order is not set
+        // then increment
+        if (!$this->page_order && $this->parent_page) {
+            $page_order = $this->getLastPage();
+
+            if (!PHPWS_Error::logIfError($page_order)) {
+                $this->page_order = $page_order + 1;
+            } else {
+                $this->page_order = 1;
+            }
+        }
 
         $db = new PHPWS_DB('ps_page');
         if (PHPWS_Error::logIfError($db->saveObject($this))) {
@@ -298,21 +363,22 @@ class PS_Page {
 
     public function view()
     {
+        Layout::addStyle('pagesmith');
         if (Current_User::allow('pagesmith', 'edit_page', $this->id)) {
             MiniAdmin::add('pagesmith', $this->editLink(sprintf(dgettext('pagesmith', 'Edit %s'), $this->title)));
             MiniAdmin::add('pagesmith', $this->frontPageToggle());
         }
         Layout::getCacheHeaders($this->cacheKey());
-        $content = PHPWS_Cache::get($this->cacheKey());
+        $cache = PHPWS_Cache::get($this->cacheKey());
 
         $this->loadTemplate();
         $this->_tpl->loadStyle();
         $this->flag();
 
-        if (!empty($content)) {
+        if (!empty($cache)) {
             // needed for filecabinet
             javascript('open_window');
-            return $content;
+            return $cache;
         }
 
         $this->loadSections();
@@ -321,7 +387,14 @@ class PS_Page {
         }
 
         $this->_content['page_title'] = & $this->title;
-        $content = PHPWS_Template::process($this->_content, 'pagesmith', $this->_tpl->page_path . 'page.tpl');
+
+        $anchor_title = $tpl['ANCHOR'] = preg_replace('/\W/', '-', $this->title);
+
+        $tpl['CONTENT'] = PHPWS_Template::process($this->_content, 'pagesmith', $this->_tpl->page_path . 'page.tpl');
+        $this->pageLinks($tpl);
+        $tpl['BACK_TO_TOP'] = sprintf('<a href="%s#%s">%s</a>', PHPWS_Core::getCurrentUrl(), $anchor_title, dgettext('pagesmith', 'Back to top'));
+        $content = PHPWS_Template::process($tpl, 'pagesmith', 'page_frame.tpl');
+
         Layout::cacheHeaders($this->cacheKey());
         PHPWS_Cache::save($this->cacheKey(), $content);
         return $content;
@@ -348,6 +421,52 @@ class PS_Page {
         return true;
     }
 
+    private function pageLinks(&$tpl)
+    {
+        $next_link = $prev_link = null;
+
+        $db = new PHPWS_DB('ps_page');
+        $db->addColumn('id');
+
+        switch($this->page_order) {
+        case 0:
+            $prev_id = 0;
+            $db->addWhere('parent_page', $this->id);
+            $db->addWhere('page_order', 1);
+            $next_id = $db->select('one');
+            break;
+
+        case 1:
+            $prev_id = $this->parent_page;
+            $db->addWhere('parent_page', $this->parent_page);
+            $db->addWhere('page_order', 2);
+            $next_id = $db->select('one');
+            break;
+
+        default:
+            $db->addWhere('parent_page', $this->parent_page);
+            $db->addWhere('page_order', $this->page_order - 1);
+            $prev_id = $db->select('one');
+            $db->resetWhere();
+            $db->addWhere('parent_page', $this->parent_page);
+            $db->addWhere('page_order', $this->page_order + 1);
+            $next_id = $db->select('one');
+            break;
+        }
+
+        if ($prev_id) {
+            $prev = new PHPWS_Link(dgettext('pagesmith', 'Previous page'), 'pagesmith', array('id'=>$prev_id));
+            $prev->setRewrite();
+            $tpl['PREV_LINK'] = $prev->get();
+        }
+
+        if ($next_id) {
+            $next = new PHPWS_Link(dgettext('pagesmith', 'Next page'), 'pagesmith', array('id'=>$next_id));
+            $next->setRewrite();
+            $tpl['NEXT_LINK'] = $next->get();
+        }
+    }
+
     public function url()
     {
         $vars['uop'] = 'view_page';
@@ -357,6 +476,26 @@ class PS_Page {
             return 'pagesmith/' . $vars['id'];
         } else {
             return PHPWS_Text::linkAddress('pagesmith', $vars);
+        }
+    }
+
+    public function getLastPage()
+    {
+        $db = new PHPWS_DB('ps_page');
+        if (!$this->parent_page) {
+            $db->addWhere('parent_page', $this->id);
+        } else {
+            $db->addWhere('parent_page', $this->parent_page);
+        }
+
+        $db->addColumn('page_order', 'max');
+
+        $result = $db->select('one');
+
+        if (empty($result)) {
+            return 0;
+        } else {
+            return $result;
         }
     }
 }

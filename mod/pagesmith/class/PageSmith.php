@@ -73,8 +73,13 @@ class PageSmith {
 
         case 'edit_page':
             $this->killSaved();
-            $this->loadForms();
             $this->loadPage();
+            if (!$this->page->id) {
+                $this->title = dgettext('pagesmith', 'Sorry');
+                $this->content = dgettext('pagesmith', 'Page not found');
+                break;
+            }
+            $this->loadForms();
             if (!Current_User::allow('pagesmith', 'edit_page', $this->page->id)) {
                 Current_User::disallow();
             }
@@ -108,6 +113,11 @@ class PageSmith {
             $javascript = true;
             break;
 
+        case 'delete_section':
+            $this->deleteSection($_GET['sec_id']);
+            exit();
+            break;
+
         case 'edit_page_text':
             $this->loadForms();
             $this->forms->editPageText();
@@ -123,14 +133,26 @@ class PageSmith {
             break;
 
         case 'post_page':
-            if (!$this->postPage()) {
+            $result = $this->postPage();
+
+            switch ($result) {
+            case -1:
+                $this->loadForms();
+                $this->page->loadSections(true);
+                $this->forms->editPage();
+                break;
+
+            case 0:
                 $this->message = dgettext('pagesmith', 'Not enough content to create a page.');
                 $this->loadForms();
                 $this->page->loadSections(true);
                 $this->forms->editPage();
-            } else {
+                break;
+
+            case 1:
                 PHPWS_Cache::clearCache();
                 PHPWS_Core::reroute($this->page->url());
+                break;
             }
             break;
 
@@ -163,6 +185,19 @@ class PageSmith {
                 $this->loadForms();
                 $this->forms->uploadTemplates();
             }
+            break;
+
+        case 'delete_template':
+            if (!Current_User::allow('pagesmith', 'upload_templates', null, null, true)) {
+                Current_User::disallow();
+            }
+            if (!$this->deleteTemplate($_GET['tpl'])) {
+                $this->content = dgettext('pagesmith', 'Could not delete page template.');
+            } else {
+                $this->loadForms();
+                $this->forms->uploadTemplates();
+            }
+
             break;
 
         default:
@@ -199,6 +234,14 @@ class PageSmith {
                 $this->page->template = $_REQUEST['tpl'];
             }
         }
+        if (isset($_REQUEST['pid'])) {
+            $this->page->parent_page = (int)$_REQUEST['pid'];
+        }
+
+        if (isset($_REQUEST['porder'])) {
+            $this->page->page_order = (int)$_REQUEST['porder'];
+        }
+
     }
 
     public function loadPanel()
@@ -227,11 +270,21 @@ class PageSmith {
     }
 
 
+    /**
+     * Triggered from aop = post_page
+     */
     public function postPage()
     {
+        $tpl_set = isset($_POST['change_tpl']);
         $this->loadPage();
 
-        $this->page->loadTemplate();
+        if ($this->page->template != $_POST['template_list']) {
+            $this->page->loadTemplate($_POST['template_list']);
+            $this->page->template = $this->page->_tpl->name;
+        } else {
+            $this->page->loadTemplate();
+        }
+
         $this->page->loadSections(false);
 
         $post_title = strip_tags($_POST['title']);
@@ -251,18 +304,19 @@ class PageSmith {
         }
 
         foreach ($section_list as $section_name) {
-            $section = & $this->page->_sections[$section_name];
-            if ($section->sectype == 'header' || $section->sectype == 'text') {
-                $section->content = $_POST[$section_name];
-            } else {
-                // set content to trigger test below
-                $section->type_id = $_POST[$section_name];
-                $section->content = $section->sectype;
+            if (isset($this->page->_sections[$section_name])) {
+                $section = & $this->page->_sections[$section_name];
+                if ($section->sectype == 'header' || $section->sectype == 'text') {
+                    $section->content = $_POST[$section_name];
+                } else {
+                    // set content to trigger test below
+                    $section->type_id = $_POST[$section_name];
+                    $section->content = $section->sectype;
+                }
             }
 
             // If this page is an update, or the section has some content
             // put it in the section list.
-
 
             if ($this->page->id || (!empty($section->content) && !(in_array($section->content, array('image', 'document', 'media', 'block')) && !$section->type_id)) ) {
                 $sections[$section_name] = & $section;
@@ -271,16 +325,18 @@ class PageSmith {
 
         if (!isset($sections)) {
             // All sections were empty, return false
-            return false;
+            return 0;
         }
 
-        if  (!$this->page->id && PHPWS_Settings::get('pagesmith', 'auto_link')) {
+        if  (!$this->page->id && !$this->page->parent_page && PHPWS_Settings::get('pagesmith', 'auto_link')) {
             $menu_link = true;
         } else {
             $menu_link = false;
         }
 
-        $this->page->save();
+        if (!$tpl_set) {
+            $this->page->save();
+        }
 
         if ($menu_link && PHPWS_Core::moduleExists('menu')) {
             if (PHPWS_Core::initModClass('menu', 'Menu.php')) {
@@ -288,13 +344,18 @@ class PageSmith {
             }
         }
 
-        return true;
+        if ($tpl_set) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 
     public function user()
     {
         switch ($_GET['uop']) {
         case 'view_page':
+            Layout::addStyle('pagesmith');
             $this->viewPage();
             break;
         }
@@ -358,7 +419,7 @@ class PageSmith {
         $section = new PS_Text;
         $section->secname = $_POST['section_name'];
         $section->content =  preg_replace("@\r\n|\r|\n@", '', $text);
-        if (PS_CHECK_CHAR_LENGTH && strlen($section->content) > 65535) {
+        if (PS_CHECK_CHAR_LENGTH && strlen(PHPWS_Text::parseInput($section->content)) > 65535) {
             $warning = dgettext('pagesmith', "You have exceeded the allowed character limit. The page will not save correctly. Click ok to save the text anyway, cancel to return to previous version.");
         }
         $section->setSaved();
@@ -371,6 +432,7 @@ class PageSmith {
         if ($warning) {
             $vars['warning'] = addslashes($warning);
         }
+
         Layout::nakedDisplay( javascript('modules/pagesmith/update', $vars));
     }
 
@@ -456,6 +518,40 @@ class PageSmith {
             $this->message = dgettext('pagesmith', 'Unable to create page template directory.');
             return false;
         }
+    }
+
+    public function deleteTemplate($tpl)
+    {
+        if (preg_match('/\W/', $tpl)) {
+            return false;
+        }
+        $template_dir = 'templates/pagesmith/page_templates/' . $tpl;
+        return PHPWS_File::rmdir($template_dir);
+    }
+
+    public function getTemplateList()
+    {
+        $tpl_list = PHPWS_File::listDirectories('templates/pagesmith/page_templates/');
+
+        foreach ($tpl_list as $name) {
+            $tpl = new PS_Template($name);
+            $flist[$name] = $tpl->title;
+        }
+        return $flist;
+    }
+
+    private function deleteSection($sec_id)
+    {
+        $id = explode('-', $sec_id);
+        if ($id[0] == 'text') {
+            $db = new PHPWS_DB('ps_text');
+        } elseif ($id[0] == 'block') {
+            $db = new PHPWS_DB('ps_block');
+        } else {
+            return;
+        }
+        $db->addWhere('id', (int)$id[1]);
+        PHPWS_Error::logIfError($db->delete());
     }
 
 }

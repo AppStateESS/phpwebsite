@@ -1,3 +1,26 @@
+8 September 2008
++ Added ability to add pages to parent page.
++ Added ability to change page template.
++ Blank content will load Lorum upsum text instead of just
+  non-breaking space.
++ Can delete uploaded templates now.
++ Added a "back to top" anchor.
++ Error message added for bad id on edit.
++ Checking character length after parseInput now.
++ Lorum text has hidden comment to help with parsing it out.
++ Comments added to update javascript
++ Added threesec-tbl for a more concrete layout structure.
++ Updated: javascript/delete_orphan/
+  templates/page_templates/threesec-tbl/
+  templates/orphans.tpl
+  templates/page_form.tpl
+  templates/page_frame.tpl
+  templates/page_list.tpl
+  templates/style.css
+  templates/sublist.tpl
+  templates/upload_template.tpl
+
+
 21 August 2008
 + Added ability to upload page templates to module.
 + Updated: templates/upload_template.tpl

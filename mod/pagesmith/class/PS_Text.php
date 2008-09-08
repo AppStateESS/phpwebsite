@@ -43,7 +43,7 @@ class PS_Text extends PS_Section {
         static $lorum = null;
 
         if ($this->sectype == 'header') {
-            $this->content = 'Lorem ipsum dolor';
+            $this->content = '<!-- lorem -->Lorem ipsum dolor';
         } else {
             if (empty($lorum)) {
                 $lorum = file_get_contents(PHPWS_SOURCE_DIR . 'mod/pagesmith/inc/lorum.txt');

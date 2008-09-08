@@ -21,6 +21,8 @@ class PS_Forms {
                 $this->pickFolder();
             }
             return;
+        } else {
+            $this->pageLayout();
         }
     }
 
@@ -48,8 +50,12 @@ class PS_Forms {
         return true;
     }
 
+    /**
+     * Displays the page layout and lets user enter text fields, blocks, etc.
+     */
     public function pageLayout()
     {
+        Layout::addStyle('pagesmith');
         $page = $this->ps->page;
 
         $pg_tpl_name = & $page->_tpl->name;
@@ -59,11 +65,18 @@ class PS_Forms {
         $form->addHidden('module', 'pagesmith');
         $form->addHidden('aop', 'post_page');
         $form->addHidden('tpl', $page->template);
+        $form->addHidden('pid', $page->parent_page);
 
         $form->addText('title', $page->title);
-        $form->setSize('title', 40, 255);
+        $form->setSize('title', 30, 255);
         $form->setExtra('title', 'onchange="update_title()"');
         $form->setLabel('title', dgettext('pagesmith', 'Page title'));
+
+        $template_list = $this->ps->getTemplateList();
+
+        $form->addSelect('template_list', $template_list);
+        $form->setMatch('template_list', $page->template);
+        $form->addSubmit('change_tpl', dgettext('pagesmith', 'Change template'));
 
         if ($page->id) {
             $this->ps->title = dgettext('pagesmith', 'Update page');
@@ -78,14 +91,60 @@ class PS_Forms {
         }
         $form->addSubmit('submit', dgettext('pagesmith', 'Save page'));
         $this->pageTemplateForm($form);
+
         $tpl = $form->getTemplate();
         $jsvars['page_title_input'] = 'pagesmith_title';
         $jsvars['page_title_id'] = sprintf('%s-page-title', $pg_tpl_name);
         javascript('modules/pagesmith/pagetitle', $jsvars);
 
+        if (!empty($page->_orphans)) {
+            $tpl['ORPHAN_LINK'] = sprintf('<a href="%s#orphans">%s</a>', PHPWS_Core::getCurrentUrl(), dgettext('pagesmith', 'Orphans'));
+            $tpl['ORPHANS'] = $this->listOrphans($page->_orphans);
+        }
+
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'page_form.tpl');
     }
 
+    private function listOrphans($orphans)
+    {
+        javascript('jquery');
+        javascript('modules/pagesmith/delete_orphan');
+        $tpl['TITLE'] = dgettext('pagesmith', 'Orphaned content');
+
+        foreach ($orphans as $orf) {
+            switch ($orf['sectype']) {
+            case 'text':
+            case 'header':
+                $row['ID'] = 'text-' . $orf['id'];
+                $sec = new PS_Text;
+                $empty_content = empty($orf['content']);
+                break;
+
+            case 'image':
+            case 'document':
+            case 'media':
+            case 'block':
+                $row['ID'] = 'block-' . $orf['id'];
+                $sec = new PS_Block;
+                $empty_content = empty($orf['type_id']);
+                break;
+            }
+            PHPWS_Core::plugObject($sec, $orf);
+
+            if ($empty_content) {
+                $row['CONTENT'] = sprintf('<em>%s</em>', dgettext('pagesmith', 'Empty content. Consider deletion.'));
+            } else {
+                $row['CONTENT'] = $sec->getContent();
+            }
+
+            $row['OPTIONS'] = sprintf('<a href="#" onclick="delete_orphan(\'%s\'); return false">%s</a>',
+                                      $row['ID'],
+                                      dgettext('pagesmith', 'Delete orphan'));
+            $tpl['orphan-list'][] = $row;
+        }
+
+        return PHPWS_Template::process($tpl, 'pagesmith', 'orphans.tpl');
+    }
 
     public function editPageHeader()
     {
@@ -138,6 +197,7 @@ class PS_Forms {
 
     public function pageList()
     {
+        Layout::addStyle('pagesmith');
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
 
@@ -154,6 +214,7 @@ class PS_Forms {
         $pager->addSortHeader('title', dgettext('pagesmith', 'Title'));
         $pager->addSortHeader('create_date', dgettext('pagesmith', 'Created'));
         $pager->addSortHeader('last_updated', dgettext('pagesmith', 'Updated'));
+        $pager->addWhere('parent_page', 0);
 
         $this->ps->title   = dgettext('pagesmith', 'Pages');
         $this->ps->content = $pager->get();
@@ -162,7 +223,7 @@ class PS_Forms {
 
     public function pageTemplateForm(PHPWS_Form $form)
     {
-        $page = & $this->ps->page;
+        $page = $this->ps->page;
 
         $page->_tpl->loadStyle();
         $vars['id'] = $page->id;
@@ -171,8 +232,10 @@ class PS_Forms {
         foreach ($page->_sections as $name=>$section) {
             $form->addHidden('sections', $name);
             $content = $section->getContent();
-            if (empty($content)) {
-                $tpl[$name] = '&nbsp;';
+            if (empty($content) && ($section->sectype == 'text' || $section->sectype == 'header')) {
+                $section->loadFiller();
+                //                $tpl[$name] = '&nbsp;';
+                $tpl[$name] = $section->getContent();
             } else {
                 $tpl[$name] = $content;
             }
@@ -184,6 +247,7 @@ class PS_Forms {
                 $vars['aop'] = 'edit_page_header';
                 $js['width'] = 400;
                 $js['height'] = 200;
+                $js['id'] = 'change-link';
                 $edit_button = true;
                 break;
 
@@ -193,6 +257,7 @@ class PS_Forms {
                 $vars['aop'] = 'edit_page_text';
                 $js['width'] = 800;
                 $js['height'] = 600;
+                $js['id'] = 'change-link';
                 $edit_button = true;
                 break;
             }
@@ -202,10 +267,12 @@ class PS_Forms {
                 //                $js['type'] = 'button';
                 $js['label']   = PS_EDIT;
                 $js['address'] = PHPWS_Text::linkAddress('pagesmith', $vars, 1);
+
                 $tpl[$name . '_edit'] = javascript('open_window', $js);
 
                 // section session?
-                if ($page->id) {
+                if ($page->id && ($section->sectype == 'text' || $section->sectype == 'header') &&
+                    !preg_match('/^<!-- lorem -->/', $section->content)) {
                     $form->addHidden($name, htmlspecialchars($section->content));
                 } else {
                     $form->addHidden($name, '');
@@ -242,7 +309,7 @@ class PS_Forms {
             if ($fname && !empty($pgtpl->folders) && !in_array($fname, $pgtpl->folders)) {
                 continue;
             }
-            $tpl['page-templates'][] = $pgtpl->pickTpl();
+            $tpl['page-templates'][] = $pgtpl->pickTpl($this->ps->page->parent_page);
         }
 
         $tpl['BACK'] = PHPWS_Text::secureLink(dgettext('pagesmith', 'Back to style selection'), 'pagesmith', array('aop'=>'menu', 'tab'=>'new'));
@@ -265,6 +332,7 @@ class PS_Forms {
         }
 
         $vars['aop'] = 'menu';
+        $vars['pid'] = $this->ps->page->parent_page;
         foreach ($folder_list as $name=>$count) {
             $vars['fname'] = $name;
             $image = @$folder_icon[$name];
@@ -298,12 +366,33 @@ class PS_Forms {
 
     public function uploadTemplates()
     {
+        javascript('jquery');
+        javascript('modules/pagesmith/confirm_delete',
+                   array('address'=>PHPWS_Text::linkAddress('pagesmith', array('aop'=>'delete_template'), true, false, false)));
+
         $this->ps->title = dgettext('pagesmith', 'Upload template');
 
-        if (!is_writable('templates/pagesmith/page_templates/')) {
+        $template_dir = 'templates/pagesmith/page_templates/';
+        $source_dir = PHPWS_SOURCE_DIR . 'mod/pagesmith/templates/page_templates/';
+
+        if (!is_writable($template_dir)) {
             $this->ps->content = dgettext('pagesmith', 'Page template directory must be writable to upload templates.');
             return;
         }
+
+        $dirs = PHPWS_File::listDirectories($template_dir);
+        $sdirs = PHPWS_File::listDirectories($source_dir);
+
+        $fdirs = array_diff($dirs, $sdirs);
+
+        if (!empty($fdirs)) {
+            $fdirs = array_flip($fdirs);
+            foreach ($fdirs as $key=>$value) {
+                $fdirs[$key] = $key;
+            }
+        }
+
+
         $form = new PHPWS_Form('upload-templates');
         $form->addHidden('module', 'pagesmith');
         $form->addHidden('aop', 'post_templates');
@@ -324,7 +413,16 @@ class PS_Forms {
 
         $form->addSubmit('upload', dgettext('pagesmith', 'Upload file'));
 
-        $this->ps->content = PHPWS_Template::process($form->getTemplate(), 'pagesmith', 'upload_template.tpl');
+        if (!empty($fdirs)) {
+            $form->addSelect('page_templates', $fdirs);
+            $form->setLabel('page_templates', dgettext('pagesmith', 'Extra templates'));
+            $form->addButton('delete', dgettext('pagesmith', 'Delete'));
+            $form->setExtra('delete', 'onclick="confirm_delete()"');
+        }
+
+        $template = $form->getTemplate();
+
+        $this->ps->content = PHPWS_Template::process($template, 'pagesmith', 'upload_template.tpl');
     }
 }
 

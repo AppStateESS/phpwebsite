@@ -20,10 +20,8 @@
     <td>{STRUCTURE_FILE_LABEL}</td>
     <td>{STRUCTURE_FILE}</td>
   </tr>
-  <tr>
-    <td></td>
-    <td></td>
-  </tr>
 </table>
 {UPLOAD}
+<!-- BEGIN page-templates --><hr />
+{PAGE_TEMPLATES_LABEL} {PAGE_TEMPLATES} {DELETE}<!-- END page-templates -->
 {END_FORM}
