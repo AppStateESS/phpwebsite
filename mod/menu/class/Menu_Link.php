@@ -314,6 +314,7 @@ class Menu_Link {
                 if (Key::checkKey($key)) {
                     $keyed = true;
                 } else {
+                    $key = new Key;
                     $keyed = false;
                 }
 

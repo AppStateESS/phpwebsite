@@ -1,3 +1,6 @@
+8 September 2008
++ Fixed bug introduced with ajax deletion
+
 13 August 2008
 + Increased some popup window sizes
 + Move link changed into Ajax call
