@@ -1099,7 +1099,8 @@ class Layout {
         $layout_data['Layout_JS']   = @$GLOBALS['Layout_JS'];
         $layout_data['Style']       = @$GLOBALS['Style'];
         $layout_data['Extra_Style'] = @$GLOBALS['Extra_Style'];
-        $layout_data['Layout_Page_Title_Add'] = @$GLOBALS['Layout_Page_Title_Add'];
+        //array is causing problems
+        //$layout_data['Layout_Page_Title_Add'] = @$GLOBALS['Layout_Page_Title_Add'];
 
         PHPWS_Cache::save($cache_key, serialize($layout_data));
     }
