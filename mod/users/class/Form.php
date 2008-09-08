@@ -42,7 +42,7 @@ class User_Form {
         $template['GREETING'] = dgettext('users', 'Hello');
         $template['USERNAME'] = Current_User::getUsername();
         $template['DISPLAY_NAME'] = Current_User::getDisplayName();
-        $template['MODULES'] = PHPWS_Text::moduleLink(dgettext('users', 'Control Panel'),
+        $template['PANEL'] = $template['MODULES'] = PHPWS_Text::moduleLink(dgettext('users', 'Control Panel'),
                                                       'controlpanel',
                                                       array('command'=>'panel_view'));
         $template['LOGOUT'] = PHPWS_Text::moduleLink(dgettext('users', 'Log Out'),
@@ -778,6 +778,7 @@ class User_Form {
 
         // Replace below with a directory read
         $menu_options['none']        = dgettext('users', 'None');
+        $menu_options['css.tpl']     = 'css.tpl';
         $menu_options['Default.tpl'] = 'Default.tpl';
         $menu_options['top.tpl']     = 'top.tpl';
 

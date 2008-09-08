@@ -1,3 +1,9 @@
+8 September 2008
++ Template tag named PANEL added. More descriptive than MODULES
++ Added user panel named css.tpl and made it default. The template
+  can be completely styled within css.
++ Updated: templates/usermenus/css.tpl
+
 13 August 2008
 + Fixed  giveItemPermission function. Wasn't saving group permissions
   properly.
