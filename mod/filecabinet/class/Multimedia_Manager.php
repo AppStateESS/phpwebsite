@@ -40,7 +40,7 @@ class FC_Multimedia_Manager {
 
         case 'clip_multimedia':
             if ($this->multimedia->id) {
-                Clipboard::copy($this->multimedia->title, '[filecabinet:mm:' . $this->multimedia->id . ']');
+                Clipboard::copy($this->multimedia->title, $this->multimedia->getTag());
             }
             PHPWS_Core::goBack();
             break;

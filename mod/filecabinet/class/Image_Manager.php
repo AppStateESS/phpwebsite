@@ -60,7 +60,7 @@ class FC_Image_Manager {
 
         case 'clip_image':
             if ($this->image->id) {
-                Clipboard::copy($this->image->title, '[filecabinet:image:' . $this->image->id . ']');
+                Clipboard::copy($this->image->title, $this->image->getTag());
             }
             PHPWS_Core::goBack();
             break;

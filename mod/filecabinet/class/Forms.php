@@ -463,12 +463,12 @@ class Cabinet_Form {
             $ext = PHPWS_File::getFileExtension($file);
             if (in_array($ext, $image_types)) {
                 $folders = & $image_folders;
-            } elseif (in_array($ext, $document_types)) {
-                $folders = & $document_folders;
             } elseif (in_array($ext, $media_types)) {
                 $folders = & $multimedia_folders;
+            } elseif (in_array($ext, $document_types)) {
+                $folders = & $document_folders;
             } else {
-
+                continue;
             }
 
             $form->addSelect("folder[$count]", $folders);

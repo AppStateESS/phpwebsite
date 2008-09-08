@@ -1,3 +1,9 @@
+8 September 2008
++ Trying alternate clipboard option.
++ Classify looks in media types prior to documents now.
++ Different javascript link format in clear_file.
++ Updated: javascript/clear_file/body.js
+
 13 August 2008
 + Downloaded documents now increment download count.
 + Document folder view shows how many times a document has been

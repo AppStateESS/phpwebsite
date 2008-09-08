@@ -260,6 +260,7 @@ class FC_File_Manager {
     {
         $js['width']   = 800;
         $js['height']  = 600;
+        $js['id'] = 'edit-file';
         if (empty($label)) {
             $js['label']   = dgettext('filecabinet', 'Edit file');
         } else {

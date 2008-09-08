@@ -1,1 +1,1 @@
-<a href="javascript:clear_file('{id}');">{label}</a>
+<a id="clear-file" href="#" onclick="clear_file('{id}'); return false">{label}</a>
