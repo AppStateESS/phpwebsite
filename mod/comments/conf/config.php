@@ -39,8 +39,8 @@ define('COMMENT_VIEW_ONE_TPL', 'alt_view_one.tpl');
 // for their comment.
 define('COMMENT_NO_SUBJECT', dgettext('comments', 'No subject'));
 
-// 10, 20, or 50 comments per page.
-define('COMMENT_DEFAULT_LIMIT', 20);
+// 25, 50, or 100 comments per page.
+define('COMMENT_DEFAULT_LIMIT', 25);
 
 define('CM_LOCK_IMAGE', '<img src="images/mod/comments/lock.png" width="50" height="50" />');
 
