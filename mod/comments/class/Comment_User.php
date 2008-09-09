@@ -269,13 +269,6 @@ class Comment_User extends Demographics_User {
         return $this->_error;
     }
 
-    public function logError()
-    {
-        if (PEAR::isError($this->_error)) {
-            PHPWS_Error::log($this->_error);
-        }
-    }
-
     /**
      * Generates a user's template display tags.
      *
@@ -566,7 +559,7 @@ class Comment_User extends Demographics_User {
     public function getRank($isModerator)
     {
         $images = $titles = $composites = array();
-        $user_ranks = unserialize(PHPWS_Settings::get('comments', 'user_ranking'));
+        $user_ranks = PHPWS_Settings::get('comments', 'user_ranking');
         if (empty($user_ranks))
             return;
 
