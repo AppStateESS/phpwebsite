@@ -36,9 +36,8 @@
 }
 
 .comment-table {
-    border : 2px solid white;
     margin-bottom : 20px;
-    width : 98%;
+    width : 95%;
 }
 
 .comments .signature {
@@ -51,9 +50,10 @@
     margin-right : 5px
 }
 
-.comment_edit_link, .comment_delete_link, .comment_report_link, 
-.comment_fork_link, .comment_reply_link, .comment_quote_link, .comment_postnew_link, 
-.comment_punish_link, 
+
+.comment_edit_link, .comment_delete_link, .comment_report_link,
+.comment_fork_link, .comment_reply_link, .comment_quote_link, .comment_postnew_link,
+.comment_punish_link,
 .comment_supermod_icon, .comment_activemod_icon, .comment_inactivemod_icon
 {
     display: block;
@@ -61,34 +61,42 @@
     background-position: 100%;
 }
 
-a.comment_edit_link {
+
+
+
+a.comment_postnew_link, .comment-body .admin-links a {
     display:block;
     float:left;
-    background-image: url(../../images/mod/comments/green-right.png);
-    padding-right:8px;
     margin: 0 .5em;
-}
-a.comment_edit_link:hover span {
-    color : yellow;
-    text-decoration : none;
-}
-a.comment_edit_link span { 
-    display:block;
-    padding:0 10px 0 18px;
-    background:transparent url(../../images/mod/comments/green-left.png);
-    line-height:30px;
+    border : 1px solid black;
+    text-align : center;
+    padding : 2px 5px;
+    min-width : 60px;
+    background-color : #bbb;
     color : white;
+    text-decoration : none;
+    font-weight : bold;
+    font-size : 10px;
+}
+
+
+.comment_postnew_link:hover, .comment-body .admin-links a:hover {
+    position : relative;
+    left : 1px;
+    top : 1px;
+    background-color : #cacaca;
+    text-decoration : none;
 }
 
 a.comment_delete_link {
     float :left;
     width: 20px;
     height: 20px;
-    background-image: url(../../images/mod/comments/cancel.png);
+    background-image: url(../../../images/mod/comments/cancel.png);
     margin: 0 .5em;
 }
 a.comment_delete_link:hover {
-/*    background-color: #00ff00;*/
+    background-color: #00ff00;
 }
 a.comment_delete_link span { display: none; }
 
@@ -96,11 +104,11 @@ a.comment_report_link {
     float :left;
     width: 16px;
     height: 16px;
-    background-image: url(../../images/mod/comments/report.png);
+    background-image: url(../../../images/mod/comments/report.png);
     margin: 0 .5em;
 }
 a.comment_report_link:hover {
-/*    background-color: #00ff00;*/
+   background-color: #00ff00;
 }
 a.comment_report_link span { display: none; }
 
@@ -108,86 +116,30 @@ a.comment_fork_link {
     float :left;
     width: 16px;
     height: 16px;
-    background-image: url(../../images/mod/comments/fork.png);
+    background-image: url(../../../images/mod/comments/fork.png);
     margin: 0 .5em;
 }
 a.comment_fork_link:hover {
-/*    background-color: #00ff00;*/
+    background-color: #00ff00;
 }
 a.comment_fork_link span { display: none; }
-
-a.comment_reply_link {
-    display:block;
-    float:left;
-    background-image: url(../../images/mod/comments/green-right.png);
-    padding-right:8px;
-    margin: 0 .5em;
-}
-a.comment_reply_link:hover span {
-    color : yellow;
-    text-decoration : none;
-}
-a.comment_reply_link span { 
-    display:block;
-    padding:0 10px 0 18px;
-    background:transparent url(../../images/mod/comments/green-left.png);
-    line-height:30px;
-    color : white;
-}
-
-a.comment_quote_link {
-    display:block;
-    float:left;
-    background-image: url(../../images/mod/comments/green-right.png);
-    padding-right:8px;
-    margin: 0 .5em;
-}
-a.comment_quote_link:hover span {
-    color : yellow;
-    text-decoration : none;
-}
-a.comment_quote_link span {
-    display:block;
-    padding:0 10px 0 18px;
-    background:transparent url(../../images/mod/comments/green-left.png);
-    line-height:30px;
-    color : white;
-}
-
-a.comment_postnew_link {
-    display:block;
-    float:left;
-    background-image: url(../../images/mod/comments/green-right.png);
-    padding-right:8px;
-}
-a.comment_postnew_link:hover span {
-    color : yellow;
-    text-decoration : none;
-}
-a.comment_postnew_link span { 
-    display:block;
-    padding:0 10px 0 18px;
-    background:transparent url(../../images/mod/comments/green-left.png);
-    line-height:30px;
-    color : white;
-}
 
 a.comment_punish_link {
     float :left;
     width: 20px;
     height: 20px;
-    background-image: url(../../images/mod/comments/noentry.png);
+    background-image: url(../../../images/mod/comments/noentry.png);
     margin: 0 .5em;
 }
 a.comment_punish_link:hover {
-/*    background-color: #00ff00;*/
+ background-color: #00ff00;
 }
 a.comment_punish_link span { display: none; }
 
 .comment_supermod_icon {
     width: 105px;
     height: 21px;
-    background-image: url(../../images/mod/comments/Global-Mod.gif);
+    background-image: url(../../../images/mod/comments/Global-Mod.gif);
     margin : 0;
 }
 .comment_supermod_icon span { display: none; }
@@ -195,7 +147,7 @@ a.comment_punish_link span { display: none; }
 .comment_activemod_icon {
     width: 105px;
     height: 21px;
-    background-image: url(../../images/mod/comments/Moderator.gif);
+    background-image: url(../../../images/mod/comments/Moderator.gif);
     margin : 0;
 }
 .comment_activemod_icon span { display: none; }
@@ -203,7 +155,7 @@ a.comment_punish_link span { display: none; }
 .comment_inactivemod_icon {
     width: 105px;
     height: 21px;
-    background-image: url(../../images/mod/comments/Support-staff.gif);
+    background-image: url(../../../images/mod/comments/Support-staff.gif);
     margin : 0;
 }
 .comment_inactivemod_icon span { display: none; }

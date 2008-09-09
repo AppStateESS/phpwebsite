@@ -7,7 +7,6 @@
      </th>
      <th width="60px"><!-- action --></th>
   </tr>
-  </tr>
 <!-- BEGIN listrows -->  <tr class="highlight">
     <td>{CHECKBOX}</td>
     <td><b>{SUBJECT}</b><br />{ENTRY}{FULL}</td>
