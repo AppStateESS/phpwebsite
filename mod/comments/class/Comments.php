@@ -659,61 +659,6 @@ class Comments {
         return $content;
     }
 
-    public function postSettings()
-    {
-        $settings['default_order'] = $_POST['order'];
-        $settings['captcha'] = (int)$_POST['captcha'];
-
-        if (@$_POST['allow_signatures']) {
-            $settings['allow_signatures'] = 1;
-        } else {
-            $settings['allow_signatures'] = 0;
-        }
-
-        if (@$_POST['allow_image_signatures']) {
-            $settings['allow_image_signatures'] = 1;
-        } else {
-            $settings['allow_image_signatures'] = 0;
-        }
-
-        if (@$_POST['allow_avatars']) {
-            $settings['allow_avatars'] = 1;
-        } else {
-            $settings['allow_avatars'] = 0;
-        }
-
-        if (@$_POST['local_avatars']) {
-            $settings['local_avatars'] = 1;
-        } else {
-            $settings['local_avatars'] = 0;
-        }
-
-        if (@$_POST['anonymous_naming']) {
-            $settings['anonymous_naming'] = 1;
-        } else {
-            $settings['anonymous_naming'] = 0;
-        }
-
-        $settings['default_approval'] = (int)$_POST['default_approval'];
-
-        $settings['recent_comments'] = (int)$_POST['recent_comments'];
-
-        PHPWS_Settings::set('comments', $settings);
-        PHPWS_Settings::save('comments');
-
-        $content[] = dgettext('comments', 'Settings saved.');
-        $vars['aop'] = 'settings';
-        $content[] = PHPWS_Text::secureLink(dgettext('comments', 'Go back to settings...'), 'comments', $vars);
-        return implode('<br /><br />', $content);
-    }
-
-    public function form(Comment_Thread $thread, $c_item)
-    {
-        PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
-        return Comment_Forms::form($thread, $c_item);
-    }
-
-
     /**
      * Shows a box with recent comments listed within
      */
