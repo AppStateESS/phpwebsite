@@ -4,7 +4,7 @@
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
 $proper_name  = 'Search';
-$version      = '0.3.2';
+$version      = '0.3.3';
 $register     = FALSE;
 $unregister   = TRUE;
 $import_sql   = TRUE;

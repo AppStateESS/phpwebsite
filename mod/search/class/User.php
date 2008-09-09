@@ -75,6 +75,7 @@ class Search_User {
         $db = new PHPWS_DB('search');
         $db->addColumn('module', null, null, false, true);
         $db->addColumn('modules.proper_name');
+        $db->addGroupBy('modules.proper_name');
         $db->addWhere('search.module', 'modules.title');
         $db->setIndexBy('module');
         $result = $db->select('col');
