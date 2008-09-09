@@ -145,7 +145,9 @@ class Comment_User extends Demographics_User {
             return array('local' => 1, 'remote' => 1);
 
         $local = $remote = 0;
-        $user_ranks = unserialize(PHPWS_Settings::get('comments', 'user_ranking'));
+
+        $user_ranks = Comments::getUserRanking();
+
         if (!empty($user_ranks)) {
             $relevant = array_intersect(array_keys($user_ranks), explode(',', $this->groups));
             $relevant[] = 0;
@@ -559,7 +561,8 @@ class Comment_User extends Demographics_User {
     public function getRank($isModerator)
     {
         $images = $titles = $composites = array();
-        $user_ranks = PHPWS_Settings::get('comments', 'user_ranking');
+        $user_ranks = Comments::getUserRanking();
+
         if (empty($user_ranks))
             return;
 
@@ -580,10 +583,11 @@ class Comment_User extends Demographics_User {
         elseif ($this->securitylevel == 1) {
             $titles[] = $str = dgettext('comments', 'Moderator');
             // if user is a moderator of this specific forum or unattached thread...
-            if ($isModerator)
+            if ($isModerator) {
                 $images[] = $composites[] = '<div class="comment_activemod_icon"><span>'.$str."</span></div>\n";
-            else
+            } else {
                 $images[] = $composites[] = '<div class="comment_inactivemod_icon"><span>'.$str."</span></div>\n";
+            }
             //		    $a['image'] = COMMENT_ACTIVE_MODERATOR_ICON;
             //			$a['title'] = dgettext('comments', 'Moderator');
             //			$a['stack'] = true;
@@ -592,6 +596,7 @@ class Comment_User extends Demographics_User {
             //				$a['image'] = COMMENT_INACTIVE_MODERATOR_ICON;
             //			Comment_User::getRankImg($a, $images, $composites, $titles);
         }
+
         $relevant = array_intersect(array_keys($user_ranks), explode(',', $this->groups));
         $relevant[] = 0;
         // Loop through all relevant usergroups to generate rank tags

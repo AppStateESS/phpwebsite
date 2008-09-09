@@ -840,6 +840,16 @@ class Comments {
 
         return $pager->get();
     }
+
+    function getUserRanking()
+    {
+        $user_rank = PHPWS_Settings::get('comments', 'user_ranking');
+        if (!is_array($user_rank)) {
+            return unserialize($user_rank);
+        } else {
+            return $user_rank;
+        }
+    }
 }
 
 ?>

@@ -174,27 +174,27 @@ class Comment_Forms {
         $form->addSubmit(dgettext('comments', 'Save'));
 
         $tpl = $form->getTemplate();
-		// user ranking system
-        $user_ranking = &$settings['user_ranking'];
+        // user ranking system
+        $user_ranking = Comments::getUserRanking();
 
-		$groupname = array(0=>dgettext('comments', 'All Members')) + PHPWS_User::getAllGroups();
-		$tpl['rank_usergroups'] = array();
-		$i = 1;
-		// Start constructing the output
-		Layout::getModuleJavascript('comments', 'expandCollapse');
-		$template = & new PHPWS_Template('comments');
-		$status = $template->setFile('settings_form.tpl');
+        $groupname = array(0=>dgettext('comments', 'All Members')) + PHPWS_User::getAllGroups();
+        $tpl['rank_usergroups'] = array();
+        $i = 1;
+        // Start constructing the output
+        Layout::getModuleJavascript('comments', 'expandCollapse');
+        $template = & new PHPWS_Template('comments');
+        $status = $template->setFile('settings_form.tpl');
 
-		// Loop through all usergroups in the ranking array
-		foreach ($user_ranking as $gkey => $group) {
-		    // Loop through all ranks in this usergroup
-			foreach ($group['user_ranks'] as $rank) {
-				// Create form to edit this rank's information
-			    $template->setCurrentBlock('rank_rows');
-			    $template->setData(Comment_Forms::editUserRank($i++, $rank));
-			    $template->parseCurrentBlock();
-			}
-		    $template->setCurrentBlock('rank_usergroups');
+        // Loop through all usergroups in the ranking array
+        foreach ($user_ranking as $gkey => $group) {
+            // Loop through all ranks in this usergroup
+            foreach ($group['user_ranks'] as $rank) {
+                // Create form to edit this rank's information
+                $template->setCurrentBlock('rank_rows');
+                $template->setData(Comment_Forms::editUserRank($i++, $rank));
+                $template->parseCurrentBlock();
+            }
+            $template->setCurrentBlock('rank_usergroups');
 
             $form1 = new PHPWS_Form('comment-group-settings');
             // allow_local_custom_avatars
@@ -413,7 +413,7 @@ class Comment_Forms {
 
         // If phpwsbb is installed && user is not a SuperModerator...
         if (isset($GLOBALS['Modules']['phpwsbb']) && !Current_User::allow('phpwsbb', 'manage_forums')) {
-        //left join to phpwsbb parent topic ON phpwsbb_topics.id = comments_items.thread_id
+            //left join to phpwsbb parent topic ON phpwsbb_topics.id = comments_items.thread_id
             $pager->db->addJoin('left', 'comments_items', 'phpwsbb_topics', 'thread_id', 'id');
             PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
             PHPWSBB_Data::load_moderators();
@@ -541,7 +541,7 @@ class Comment_Forms {
 
         // If phpwsbb is installed && user is not a SuperModerator...
         if (isset($GLOBALS['Modules']['phpwsbb']) && !Current_User::allow('phpwsbb', 'manage_forums')) {
-        //left join to phpwsbb parent topic ON phpwsbb_topics.id = comments_items.thread_id
+            //left join to phpwsbb parent topic ON phpwsbb_topics.id = comments_items.thread_id
             $pager->db->addJoin('left', 'comments_items', 'phpwsbb_topics', 'thread_id', 'id');
             PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
             PHPWSBB_Data::load_moderators();
