@@ -321,7 +321,7 @@ class Comment_Item {
         }
         $template['VIEW_LINK']       = $this->viewLink();
         if ($thread->userCan('punish_users'))
-            $template['PUNISH_LINK']     = $this->punishUserLink();
+            $template['PUNISH_LINK']     = $this->punishUserLink(true);
 
         if ($this->parent) {
             $template['RESPONSE_LABEL']  = dgettext('comments', 'In response to');
@@ -450,13 +450,12 @@ class Comment_Item {
         $vars['address'] = PHPWS_Text::linkAddress('comments', array('aop'=>'punish_user',
                                                                      'cm_id'=>$this->id, 'authkey'=>Current_User::getAuthKey()), true);
         $vars['link_title'] = dgettext('comments', 'Punish this user');
-        $vars['class'] = 'comment_punish_link';
-            if ($graphic) {
-                $vars['label'] = sprintf('<img src="images/mod/comments/noentry.png" width="20" height="20" title="%s" alt="%s"/>',
-                                         dgettext('comments', 'Punish poster'), dgettext('comments', 'Punish icon'));
-            } else {
-                $vars['label'] = dgettext('comments', 'Punish this user');
-            }
+        if ($graphic) {
+            $vars['class'] = 'comment_punish_link';
+            $vars['label'] = '<span>' . dgettext('comments', 'Punish this user') . '</span>';
+        } else {
+            $vars['label'] = dgettext('comments', 'Punish this user');
+        }
 
         $vars['width'] = 240;
         $vars['height'] = 180;
