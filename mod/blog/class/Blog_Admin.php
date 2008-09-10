@@ -267,6 +267,13 @@ class Blog_Admin {
                 Current_User::disallow();
                 return;
             }
+
+            if (Current_User::isDeity() && isset($_POST['purge_confirm'])) {
+                $title = dgettext('blog', 'Purge Blog Entries');
+                $content = Blog_Admin::confirmPurge($_POST['purge_date']);
+                break;
+            }
+
             Blog_Admin::postSettings();
             $message = dgettext('blog', 'Blog settings saved.');
         case 'settings':
@@ -283,6 +290,13 @@ class Blog_Admin {
             $title = dgettext('blog', 'View version');
             $content = Blog_Admin::viewVersion($_REQUEST['version_id']);
             break;
+
+        case 'purge_entries':
+            if (Current_User::authorized('blog') && Current_User::isDeity()) {
+                Blog_Admin::purgeEntries($_GET['pd']);
+                $message = dgettext('blog', 'Blog entries purged.');
+            }
+            $content = Blog_Form::settings();
         }
 
         Layout::add(PHPWS_ControlPanel::display($panel->display($content, $title, $message)));
@@ -596,6 +610,41 @@ class Blog_Admin {
         for ($i=1; $i <= MAX_BLOG_CACHE_PAGES; $i++) {
             PHPWS_Cache::remove(BLOG_CACHE_KEY . $i);
         }
+    }
+
+    public function confirmPurge($purge_date)
+    {
+        $unix_purge_date = strtotime($purge_date);
+        $purge_date = strftime('%c', $unix_purge_date);
+        $tpl['CONFIRM'] = PHPWS_Text::secureLink(sprintf(dgettext('blog', 'I am sure that I want to delete all blog entries prior to %s'),
+                                                         $purge_date),
+                                                 'blog', array('action'=>'admin', 'command'=>'purge_entries', 'pd'=>$unix_purge_date));
+        $tpl['DENY'] = PHPWS_Text::secureLink(dgettext('blog', 'Nevermind, go back to settings'),
+                                              'blog', array('action'=>'admin', 'command'=>'settings'));
+        $tpl['INSTRUCTIONS'] = dgettext('blog', 'You have chosen to purge old blog entries from your web site. Be aware they will be deleted permanently.');
+
+        return PHPWS_Template::process($tpl, 'blog', 'purge_confirm.tpl');
+    }
+
+    public function purgeEntries($date)
+    {
+        PHPWS_Core::initModClass('blog', 'Blog.php');
+        if (empty($date)) {
+            return;
+        }
+
+        $db = new PHPWS_DB('blog_entries');
+        $db->addWhere('create_date', $date, '<');
+        $entries = $db->getObjects('Blog');
+
+        if (empty($entries) || PHPWS_Error::logIfError($entries)) {
+            return;
+        }
+
+        foreach ($entries as $blog) {
+            PHPWS_Error::logIfError($blog->delete());
+        }
+
     }
 }
 

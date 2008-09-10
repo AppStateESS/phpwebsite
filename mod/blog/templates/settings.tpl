@@ -42,5 +42,12 @@
 <p>{MAX_WIDTH_LABEL} {MAX_WIDTH}</p>
 <p>{MAX_HEIGHT_LABEL} {MAX_HEIGHT}</p>
 </fieldset>
+
+<!-- BEGIN purge -->
+<fieldset><legend><strong>Purge</strong></legend>
+{PURGE_DATE_LABEL} {PURGE_DATE} {PURGE_CONFIRM}
+</fieldset>
+<!-- END purge -->
+
 {SUBMIT}
 {END_FORM}

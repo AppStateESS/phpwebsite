@@ -215,7 +215,6 @@ class Blog_Form {
         $form->setLabel('single_cat_icon', dgettext('blog', 'Only show one category icon'));
         $form->setMatch('single_cat_icon', PHPWS_Settings::get('blog', 'single_cat_icon'));
 
-
         $show[0] = dgettext('blog', 'Do not show');
         $show[1] = dgettext('blog', 'Only on home page');
         $show[2] = dgettext('blog', 'Always');
@@ -252,7 +251,17 @@ class Blog_Form {
 
         $form->addSubmit(dgettext('blog', 'Save settings'));
 
+        if (Current_User::isDeity()) {
+            javascript('datepicker');
+            $form->addText('purge_date', date('m/d/Y', mktime() - 31536000));
+            $form->setLabel('purge_date', dgettext('blog', 'Purge all entries before this date'));
+            $form->setClass('purge_date', 'datepicker');
+
+            $form->addSubmit('purge_confirm', dgettext('blog', 'Confirm purge'));
+        }
+
         $template = $form->getTemplate();
+
 
         if (PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
             $template['MENU_LINK'] = PHPWS_Text::secureLink(dgettext('blog', 'Clip for menu'), 'blog',

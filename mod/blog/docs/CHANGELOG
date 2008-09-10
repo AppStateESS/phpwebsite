@@ -1,3 +1,7 @@
+10 September 2008
++ Added ability to purge old blog entries.
++ Updated: templates/purge_confirm.tpl
+
 13 August 2008
 + RSS feed now appears when all blog entries are shown not just one.
 
