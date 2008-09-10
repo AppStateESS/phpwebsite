@@ -121,6 +121,11 @@ Steven Wittens
 Farbtastic jQuery plugin
 http://www.acko.net/dev/farbtastic
 
+Marc Grabanski
+Keith Wood
+datepicker - jquery plugin
+http://docs.jquery.com/UI/Datepicker
+
 --------------------------------------------------------------------------
 To those who translate, we salute you.
 --------------------------------------------------------------------------
@@ -146,7 +151,7 @@ Thomas de Jesus - SF bugs and RFE, irc assistance
 Bobby Kennedy/fatman - phpwebsitemanual host
 Rene Kiesler/rck - kiesler.at, phpws advocate and developer
 Kevin McElligott/XiRoCCo - phpwsforums host
-Greg Meiste/blindman1344 - module developer, bug/RFE patch & report  
+Greg Meiste/blindman1344 - module developer, bug/RFE patch & report
 Greg Morgan/dr_kludge
 Shaun Murray/singletrack - Developer, user help, bugs, UI RFE
 Ken Nordquist/kenphused - mod developer
