@@ -109,7 +109,7 @@ class Menu_Link {
 
     public function getTitle()
     {
-        return PHPWS_Text::decodeText($this->title);
+        return $this->title;
     }
 
     public function setUrl($url)
