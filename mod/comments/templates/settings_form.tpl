@@ -4,8 +4,8 @@
 {SUBMIT}
 <table class="form-table">
   <tr>
-    <td style="width:50%">{ORDER_LABEL}</td>
-    <td style="width:50%">{ORDER}</td>
+    <td style="width:30%">{ORDER_LABEL}</td>
+    <td style="width:70%">{ORDER}</td>
   </tr>
   <tr>
     <td>{CAPTCHA_LABEL}</td>
@@ -34,7 +34,7 @@
   <tr>
     <td>{RECENT_COMMENTS_LABEL}</td>
     <td>{RECENT_COMMENTS}</td>
-  </tr> 
+  </tr>
   <tr>
     <td>{DEFAULT_APPROVAL_LABEL}</td>
     <td>{DEFAULT_APPROVAL}</td>
@@ -42,19 +42,19 @@
   <tr>
     <td>{MONITOR_POSTS_LABEL}</td>
     <td>{MONITOR_POSTS}</td>
-  </tr> 
+  </tr>
   <tr>
     <td>{ALLOW_USER_MONITORS_LABEL}</td>
     <td>{ALLOW_USER_MONITORS}</td>
-  </tr> 
+  </tr>
   <tr>
     <td>{EMAIL_SUBJECT_LABEL}</td>
     <td>{EMAIL_SUBJECT}</td>
-  </tr> 
+  </tr>
   <tr>
     <td>{EMAIL_TEXT_LABEL}</td>
     <td>{EMAIL_TEXT}</td>
-  </tr> 
+  </tr>
 </table>
 
 <br />
@@ -76,9 +76,9 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;
 	{RANK_MIN_TXT_LABEL}: {RANK_MIN_TXT}
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	{RANK_TITLE_LABEL}: {RANK_TITLE_TXT} 
+	{RANK_TITLE_LABEL}: {RANK_TITLE_TXT}
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	{RANK_IMAGE_PIC} 
+	{RANK_IMAGE_PIC}
 
 	<table id="editrank_{RANK_ID}" style="margin-left:5%; border: 1px solid rgb(144, 238, 144); padding: 5px; text-align: left; width: 95%; display: none" cellpadding="2" cellspacing="2">
 	  <tbody>
@@ -112,8 +112,8 @@
 	  </tbody>
 	</table>
 <br />
-<!-- END rank_rows --> 
-<!-- END rank_usergroups --> 
+<!-- END rank_rows -->
+<!-- END rank_usergroups -->
 
 <br />
 <br />
@@ -122,7 +122,7 @@
 
 <!-- BEGIN add_new_rank -->
 	<span style="display: none">
-		{RANK_MIN_TXT_LABEL}{RANK_MIN_TXT}{RANK_TITLE_LABEL}{RANK_TITLE_TXT}{RANK_IMAGE_PIC} 
+		{RANK_MIN_TXT_LABEL}{RANK_MIN_TXT}{RANK_TITLE_LABEL}{RANK_TITLE_TXT}{RANK_IMAGE_PIC}
 	</span>
 	<table id="editrank_{RANK_ID}" style="margin-left:5%; border: 1px solid rgb(144, 238, 144); padding: 5px; text-align: left; width: 95%" cellpadding="2" cellspacing="2">
 	  <tbody>
@@ -155,7 +155,7 @@
 	    </tr>
 	  </tbody>
 	</table>
-<!-- END add_new_rank --> 
+<!-- END add_new_rank -->
 
 <br />
 <br />
