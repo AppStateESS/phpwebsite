@@ -4,6 +4,10 @@ its own separate CHANGELOG file..
 
 Version 1.9.0
 ---------------------------------------------------------------------
+10 September 2008
++ Changed 400 message for sensitive types and those who don't know who
+  Ponch is.
+
 5 September 2008
 + PageSmith convert rewrite fixed.
 + bb filter pulls out newlines before translating. Replaced when done.
