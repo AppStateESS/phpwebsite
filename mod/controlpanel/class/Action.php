@@ -1,12 +1,12 @@
 <?php
   /**
-   * 
+   *
    * @author Matthew McNaney <matt at tux dot appstate dot edu>
    * @version $Id$
    */
 
 class CP_Action {
-    function adminAction()
+    public function adminAction()
     {
         if (isset($_REQUEST['command'])) {
             $command = $_REQUEST['command'];
@@ -96,7 +96,7 @@ class CP_Action {
     }
 
 
-    function adminMenu()
+    public function adminMenu()
     {
         $tabs = PHPWS_ControlPanel::getAllTabs();
         $links = PHPWS_ControlPanel::getAllLinks();
@@ -136,7 +136,7 @@ class CP_Action {
                         $lvalues['link_id'] = $link_obj->id;
                         $lvalues['command'] = 'link_up';
                         $laction[] = PHPWS_Text::moduleLink($up_link, 'controlpanel', $lvalues);
-          
+
                         $lvalues['command'] = 'link_down';
                         $laction[] = PHPWS_Text::moduleLink($down_link, 'controlpanel', $lvalues);
                     }
@@ -159,7 +159,7 @@ class CP_Action {
                 $tvalues['tab_id'] = $tab_obj->id;
                 $tvalues['command'] = 'tab_up';
                 $taction[] = PHPWS_Text::secureLink($up_tab, 'controlpanel', $tvalues);
-        
+
                 $tvalues['command'] = 'tab_down';
                 $taction[] = PHPWS_Text::secureLink($down_tab, 'controlpanel', $tvalues);
             }
@@ -175,12 +175,12 @@ class CP_Action {
             $tpl->setData(array('TAB'=>$tab_obj->getTitle(), 'TACTION'=>implode('', $taction), 'EDIT_TAB' => $edit_tab));
             $tpl->parseCurrentBlock();
         }
-        
+
         $content = $tpl->get();
         return $content;
     }
 
-    function editTabTitle($tab)
+    public function editTabTitle($tab)
     {
         if (!$tab->id) {
             return false;
@@ -202,7 +202,7 @@ class CP_Action {
         return PHPWS_Template::process($tpl, 'controlpanel', 'tab_form.tpl');
     }
 
-    function editLink($link)
+    public function editLink($link)
     {
         if (!$link->id) {
             return false;

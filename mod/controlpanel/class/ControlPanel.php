@@ -9,7 +9,7 @@ PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
 class PHPWS_ControlPanel {
 
-    function display($content=null, $current_tab=null)
+    public function display($content=null, $current_tab=null)
     {
         Layout::addStyle('controlpanel');
 
@@ -108,7 +108,7 @@ class PHPWS_ControlPanel {
         return $panel->display();
     }
 
-    function loadTabs(PHPWS_Panel $panel)
+    public function loadTabs(PHPWS_Panel $panel)
     {
         $DB = new PHPWS_DB('controlpanel_tab');
         $DB->addOrder('tab_order');
@@ -123,7 +123,7 @@ class PHPWS_ControlPanel {
         $panel->setTabs($result);
     }
 
-    function getAllTabs()
+    public function getAllTabs()
     {
         $db = new PHPWS_DB('controlpanel_tab');
         $db->setIndexBy('id');
@@ -131,7 +131,7 @@ class PHPWS_ControlPanel {
         return $db->getObjects('PHPWS_Panel_Tab');
     }
 
-    function getAllLinks()
+    public function getAllLinks()
     {
         PHPWS_Core::initModClass('controlpanel', 'Link.php');
         $allLinks = null;
@@ -163,13 +163,106 @@ class PHPWS_ControlPanel {
         return $_SESSION['CP_All_links'];
     }
 
-    function reset()
+    public function reset()
     {
         unset($_SESSION['Control_Panel_Tabs']);
         unset($_SESSION['CP_All_links']);
     }
 
-    function registerModule($module, &$content)
+    public function unregisterModule($module, &$content)
+    {
+        PHPWS_Core::initModClass('controlpanel', 'Tab.php');
+        PHPWS_Core::initModClass('controlpanel', 'Link.php');
+
+        $itemnameList = array();
+        $cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
+
+        if (!is_file($cpFile)){
+            PHPWS_Boost::addLog($module, dgettext('controlpanel', 'Control Panel unregisteration file not implemented.'));
+
+            return FALSE;
+        }
+
+        include $cpFile;
+
+        /*** Get all the links associated with a module ***/
+        if (isset($link) && is_array($link)) {
+            foreach ($link as $info) {
+                if (isset($info['itemname'])) {
+                    $itemname = $info['itemname'];
+                }
+                else {
+                    $itemname = $module;
+                }
+
+                if (!in_array($itemname, $itemnameList)) {
+                    $itemnameList[] = $itemname;
+                }
+            }
+
+            $db = new PHPWS_DB('controlpanel_link');
+            foreach ($itemnameList as $itemname) {
+                $db->addWhere('itemname', $itemname);
+                $result = $db->getObjects('PHPWS_Panel_Link');
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+
+                    return $result;
+                } elseif (!$result) {
+                    continue;
+                }
+
+                foreach ($result as $link) {
+                    $link->kill();
+                }
+            }
+        }
+
+        $itemname = $info = NULL;
+        $labelList = array();
+
+        /** Get all the tabs associated with a module **/
+        if (isset($tabs) && is_array($tabs)) {
+            foreach ($tabs as $info) {
+                if (isset($info['label'])) {
+                    $label = $info['label'];
+                }
+                else {
+                    $label = strtolower(preg_replace('/\W/', '_', $info['title']));
+                }
+
+                if (!in_array($label, $labelList)) {
+                    $labelList[] = $label;
+                }
+            }
+
+            $db = new PHPWS_DB('controlpanel_tab');
+            foreach ($labelList as $label){
+                $db->addWhere('label', $label);
+                $result = $db->getObjects('PHPWS_Panel_Tab');
+
+                if (PEAR::isError($result)) {
+
+                    PHPWS_Error::log($result);
+                    return $result;
+                } elseif (empty($result)) {
+                    continue;
+                }
+
+                foreach ($result as $tab) {
+                    $tab->kill();
+                }
+            }
+        }
+
+        $content[] = dgettext('controlpanel', 'Control Panel links and tabs have been removed.');
+
+        PHPWS_ControlPanel::reset();
+        return true;
+
+    }
+
+    public function registerModule($module, &$content)
     {
         PHPWS_Core::initModClass('controlpanel', 'Tab.php');
         PHPWS_Core::initModClass('controlpanel', 'Link.php');
@@ -305,7 +398,7 @@ class PHPWS_ControlPanel {
         return true;
     }
 
-    function makeDefaultTabs()
+    public function makeDefaultTabs()
     {
         $tabs = PHPWS_ControlPanel::getDefaultTabs();
 
@@ -338,7 +431,7 @@ class PHPWS_ControlPanel {
         }
     }
 
-    function getDefaultTabs()
+    public function getDefaultTabs()
     {
         include PHPWS_SOURCE_DIR . 'mod/controlpanel/boost/controlpanel.php';
         return $tabs;
