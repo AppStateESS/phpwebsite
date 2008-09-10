@@ -275,6 +275,10 @@ class Boost_Action {
 
         $boost = new PHPWS_Boost;
         $boost->createDirectories($module, $content, null, true);
+        $content[] = dgettext('boost', 'Registering Control Panel information.');
+        PHPWS_ControlPanel::unregisterModule($_REQUEST['opmod'], $content);
+        PHPWS_ControlPanel::registerModule($_REQUEST['opmod'], $content);
+
         $content[] = '';
         $content[] = dgettext('boost', 'Module revert finished!');
         $content[] = PHPWS_Text::secureLink(dgettext('boost', 'Return to Boost listing'),
