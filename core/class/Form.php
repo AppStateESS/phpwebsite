@@ -1559,7 +1559,7 @@ class Form_TextField extends Form_Element {
             . $this->getTitle(true)
             . $this->getDisabled()
             . $this->getReadOnly()
-            . $this->getValue(true)
+            . $this->getValue()
             . $this->getWidth(true)
             . $this->getData() . ' />';
     }
@@ -1580,7 +1580,7 @@ class Form_Submit extends Form_Element {
         }
         return '<input type="submit" '
             . $this->getName(true)
-            . $this->getValue(true)
+            . $this->getValue()
             . $this->getDisabled()
             . $this->getReadOnly()
             . $this->getWidth(true)
@@ -1596,7 +1596,7 @@ class Form_Button extends Form_Element {
     {
         return '<input type="button" '
             . $this->getName(true)
-            . $this->getValue(true)
+            . $this->getValue()
             . $this->getDisabled()
             . $this->getReadOnly()
             . $this->getWidth(true)
@@ -1612,7 +1612,7 @@ class Form_Reset extends Form_Element {
 
         return '<input type="reset" '
             . $this->getName(true)
-            . $this->getValue(true)
+            . $this->getValue()
             . $this->getDisabled()
             . $this->getReadOnly()
             . $this->getWidth(true)
@@ -1627,7 +1627,7 @@ class Form_Hidden extends Form_Element {
     {
         return '<input type="hidden" '
             . $this->getName(true)
-            . $this->getValue(true)
+            . $this->getValue()
             . '/>';
     }
 }
@@ -1667,7 +1667,7 @@ class Form_Password extends Form_Element {
             . $this->getTitle(true)
             . $this->getDisabled()
             . $this->getReadOnly()
-            . $this->getValue(true)
+            . $this->getValue()
             . $this->getWidth(true)
             . $this->getData()
             . ' />';
@@ -1753,9 +1753,7 @@ class Form_TextArea extends Form_Element {
             }
         }
 
-        $value = $this->getValue();
-
-        $value = preg_replace('/<br\s?\/?>(\r\n)?/', "\n", $value);
+        $value = preg_replace('/<br\s?\/?>(\r\n)?/', "\n", $this->value);
 
         if (ord(substr($value, 0, 1)) == 13) {
             $value = "\n" . $value;
@@ -1954,7 +1952,7 @@ class Form_Checkbox extends Form_Element {
     {
         return '<input type="checkbox" ' . $this->getName(true)
             . $this->getTitle(true)
-            . $this->getValue(true)
+            . $this->getValue()
             . $this->getDisabled()
             . $this->getReadOnly()
             . $this->getMatch()
@@ -1988,7 +1986,7 @@ class Form_RadioButton extends Form_Element {
     {
         return '<input type="radio" ' . $this->getName(true)
             . $this->getTitle(true)
-            . $this->getValue(true)
+            . $this->getValue()
             . $this->getDisabled()
             . $this->getReadOnly()
             . $this->getMatch()
@@ -2189,17 +2187,13 @@ class Form_Element {
         $this->value = $value;
     }
 
-    public function getValue($formMode=false)
+    public function getValue()
     {
-        if ($formMode) {
-            if ($this->allowValue) {
-                return 'value="' . $this->value . '" ';
-            } else {
-                return null;
-            }
-        }
-        else {
-            return $this->value;
+        if ($this->allowValue) {
+            $value = str_replace('"', '&quot;', $this->value);
+            return 'value="' . $value . '" ';
+        } else {
+            return null;
         }
     }
 

@@ -5,6 +5,12 @@ its own separate CHANGELOG file..
 Version 1.9.0
 ---------------------------------------------------------------------
 10 September 2008
++ Form.php
+  o changed getValue function to change " to &quot;
+  o simplified getValue to only return form mode and change textarea
+  to accommodate.
++ Added JQUERY_LATEST define to config file. If true, it includes from
+  the home site.
 + Changed 400 message for sensitive types and those who don't know who
   Ponch is.
 + Added datepicker

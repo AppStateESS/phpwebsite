@@ -18,7 +18,7 @@ define('SITE_HASH', '{site_hash}');
  * This is you database information. The format is as follows:
  * 'db_type://dbuser:dbpassword@dbhost/dbname'
  * This format must be exact.
- */ 
+ */
 //define('PHPWS_DSN', 'dbtype://dbuser:dbpass@localhost/dbname');
 define('PHPWS_DSN', '{dsn}');
 
@@ -33,7 +33,7 @@ define('PHPWS_TABLE_PREFIX', '{dbprefix}');
 
 /**
  * Added 11/16/2006
- * If your provider does not allow you to create indexes then 
+ * If your provider does not allow you to create indexes then
  * change this value to 'false' while you look for a new provider.
  */
 define('DB_ALLOW_TABLE_INDEX', true);
@@ -61,7 +61,7 @@ define('CORE_COOKIE_TIMEOUT', 2592000);
  * memory than is alloted in your php.ini file. If ini_set
  * is allowed, you can uncomment and set the line before to
  * expand the memory capacity.
- * 
+ *
  */
 //ini_set('memory_limit', '10M');
 
@@ -73,7 +73,7 @@ define('CORE_COOKIE_TIMEOUT', 2592000);
  * made non writable.
  * config/
  * templates/
- * 
+ *
  * These directories are made writable during installations and
  * updates but need not be at any other time.
  *
@@ -99,7 +99,7 @@ define('CAPTCHA_NAME', 'freecap');
 /**
  * If SERVER_TIME_ZONE is commented out, phpWebSite will use the
  * server's default time zone (recommended). If you wish to force
- * a server timezone, uncomment the line and add the appropriate 
+ * a server timezone, uncomment the line and add the appropriate
  * setting -12 to 14. Half hours should be set with decimals (e.g.
  * 3:30 = 3.5
  *
@@ -187,7 +187,7 @@ define('PHPWS_LIST_TOGGLE_CLASS', ' class="bgcolor1"');
  * choose which editor you want to use as the default.
  *
  * Example: define('DEFAULT_EDITOR_TOOL', 'fckeditor');
- * 
+ *
  * Force editor is true by default to assure all choices. Changing
  * it to false will cause phpws to check your browser against the
  * editors supported.php file.
@@ -202,7 +202,7 @@ define('FORCE_EDITOR', true);
  * module says the user can upload, this amount, if checked, will trump
  * it.
  * This should be set reasonably high. The default is ~5mb
- */ 
+ */
 define('ABSOLUTE_UPLOAD_LIMIT', '5000000');
 
 
@@ -221,7 +221,7 @@ define('ABSOLUTE_UPLOAD_LIMIT', '5000000');
  * updates. You will need to decide what is the optimal number.
  * The default is 3600 seconds (1 hour)
  *
- * If CACHE_TPL_LOCALLY is true (the default), template caching 
+ * If CACHE_TPL_LOCALLY is true (the default), template caching
  * will be stored in the installation's templates/cache directory.
  * If false, the caching will be stored in the CACHE_DIRECTORY
  * setting.
@@ -250,7 +250,7 @@ define('MOD_REWRITE_ENABLED', TRUE);
 /******************* UTF8 Mode *********************************/
 /**
  * Some core functions perform regular expressions matches using the \pL
- * parameter. Some versions of php don't support this. If you are getting 
+ * parameter. Some versions of php don't support this. If you are getting
  * error messages with preg functions or dbpager search is not functioning,
  * try changing this value to FALSE. Some accent character support -may-
  * be lost as a result. You may also change this to false if your site
@@ -259,4 +259,11 @@ define('MOD_REWRITE_ENABLED', TRUE);
 
 define ('UTF8_MODE', false);
 
+
+/********************** JQuery latest ***************************/
+/**
+ * If true, the jquery call will use the script directly from the
+ * home site. Otherwise, a local copy will be used.
+ */
+define('JQUERY_LATEST', false);
 ?>
