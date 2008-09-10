@@ -1,3 +1,10 @@
+10 September 2008
++ Changed admin links to icons to save room.
++ Deleting a child page reorders the remainder
++ Added permissions to the link in the admin menu.
++ Changed the created update date formats to something more compact
+
+
 8 September 2008
 + Added ability to add pages to parent page.
 + Added ability to change page template.

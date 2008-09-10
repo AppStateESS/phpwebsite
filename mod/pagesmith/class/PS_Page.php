@@ -169,18 +169,28 @@ class PS_Page {
         $tpl['ID'] = $vars['id'] = $this->id;
         $tpl['TITLE'] = PHPWS_Text::moduleLink($this->title, 'pagesmith', $vars);
 
-        $links[] = $this->editLink();
-        if (!$subpage) {
-            $links[] = $this->addPageLink();
-        }
-        $links[] = $this->deleteLink();
-        if (!$subpage) {
-            $links[] = $this->frontPageToggle();
+        if (Current_User::allow('pagesmith', 'edit_page', $this->id)) {
+            $links[] = $this->editLink(null, true);
+            if (!$subpage) {
+                $links[] = $this->addPageLink(null, true);
+            }
         }
 
-        $tpl['ACTION'] = implode(' | ', $links);
-        $tpl['CREATE_DATE'] = strftime('%d %b %y, %X', $this->create_date);
-        $tpl['LAST_UPDATED'] = strftime('%d %b %y, %X', $this->last_updated);
+        if (Current_User::allow('pagesmith', 'delete_page')) {
+            $links[] = $this->deleteLink(true);
+        }
+
+        if (Current_User::allow('pagesmith', 'edit_page', $this->id)) {
+            if (!$subpage) {
+                $links[] = $this->frontPageToggle(true);
+            }
+        }
+
+        if (isset($links)) {
+            $tpl['ACTION'] = implode(' ', $links);
+        }
+        $tpl['CREATE_DATE'] = strftime('%d %b %y, %H:%M', $this->create_date);
+        $tpl['LAST_UPDATED'] = strftime('%d %b %y, %H:%M', $this->last_updated);
 
         if ($subpage) {
             $tpl['PAGE_NO'] = $this->page_order + 1;
@@ -206,11 +216,17 @@ class PS_Page {
         return $tpl;
     }
 
-    public function addPageLink($label=null)
+    public function addPageLink($label=null, $icon=false)
     {
         if (empty($label)) {
             $label = dgettext('pagesmith', 'Add page');
         }
+
+        if ($icon) {
+            $label = sprintf('<img src="images/mod/pagesmith/add.png" title="%s" alt="%s" />',
+                             $label, $label);
+        }
+
         $vars['pid']  = $this->id;
         $vars['aop'] = 'menu';
         $vars['tab'] = 'new';
@@ -218,37 +234,54 @@ class PS_Page {
     }
 
 
-    public function deleteLink()
+    public function deleteLink($icon=false)
     {
         $vars['id']  = $this->id;
         $vars['aop'] = 'delete_page';
         $js['ADDRESS'] = PHPWS_Text::linkAddress('pagesmith', $vars,true);
         $js['QUESTION'] = dgettext('pagesmith', 'Are you sure you want to delete this page?');
-        $js['LINK'] = dgettext('pagesmith', 'Delete');
+        if ($icon) {
+            $js['LINK'] = sprintf('<img src="images/mod/pagesmith/delete.png" title="%s" alt="%s" />',
+                                  dgettext('pagesmith', 'Delete'), dgettext('pagesmith', 'Delete'));
+        } else {
+            $js['LINK'] = dgettext('pagesmith', 'Delete');
+        }
         return javascript('confirm', $js);
     }
 
-    public function editLink($label=null)
+    public function editLink($label=null, $icon=false)
     {
-        if (empty($label)) {
-            $label = dgettext('pagesmith', 'Edit');
+
+        if ($icon) {
+            $label = sprintf('<img src="images/mod/pagesmith/edit.png" title="%s" alt="%s" >',
+                             dgettext('pagesmith', 'Edit page'), dgettext('pagesmith', 'Edit page'));
+        } elseif (empty($label)) {
+                $label = dgettext('pagesmith', 'Edit');
         }
+
         $vars['id']  = $this->id;
         $vars['aop'] = 'edit_page';
         return PHPWS_Text::secureLink($label, 'pagesmith', $vars);
     }
 
-    public function frontPageToggle()
+    public function frontPageToggle($icon=false)
     {
         if ($this->front_page) {
             $label = dgettext('pagesmith', 'Remove from front');
+            if ($icon) {
+                $label = sprintf('<img src="images/mod/pagesmith/back.png" title="%s" alt="%s" />',
+                                 $label, $label);
+            }
             $title = dgettext('pagesmith', 'Click to remove from front page');
             $vars['fp'] = 0;
         } else {
             $label = dgettext('pagesmith', 'Add to front');
+            if ($icon) {
+                $label = sprintf('<img src="images/mod/pagesmith/front.png" title="%s" alt="%s" />',
+                                 $label, $label);
+            }
             $title = dgettext('pagesmith', 'Click to display on front page');
             $vars['fp'] = 1;
-
         }
 
         $vars['aop'] = 'front_page_toggle';
@@ -417,6 +450,13 @@ class PS_Page {
         $db = new PHPWS_DB('ps_block');
         $db->addWhere('pid', $this->id);
         $db->delete();
+
+        if ($this->parent_page) {
+            $db = new PHPWS_DB('ps_page');
+            $db->addWhere('parent_page', $this->parent_page);
+            $db->addWhere('page_order', $this->page_order, '>');
+            PHPWS_Error::logIfError($db->reduceColumn('page_order'));
+        }
 
         return true;
     }
