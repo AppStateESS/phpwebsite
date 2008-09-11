@@ -463,48 +463,62 @@ class PS_Page {
 
     private function pageLinks(&$tpl)
     {
-        $next_link = $prev_link = null;
-
         $db = new PHPWS_DB('ps_page');
         $db->addColumn('id');
-
-        switch($this->page_order) {
-        case 0:
-            $prev_id = 0;
+        $db->addColumn('page_order');
+        $db->setIndexBy('page_order');
+        $db->addOrder('page_order asc');
+        if ($this->parent_page) {
+            $db->addWhere('id', $this->parent_page);
+            $db->addWhere('parent_page', $this->parent_page, null, 'or');
+        } else {
             $db->addWhere('parent_page', $this->id);
-            $db->addWhere('page_order', 1);
-            $next_id = $db->select('one');
-            break;
-
-        case 1:
-            $prev_id = $this->parent_page;
-            $db->addWhere('parent_page', $this->parent_page);
-            $db->addWhere('page_order', 2);
-            $next_id = $db->select('one');
-            break;
-
-        default:
-            $db->addWhere('parent_page', $this->parent_page);
-            $db->addWhere('page_order', $this->page_order - 1);
-            $prev_id = $db->select('one');
-            $db->resetWhere();
-            $db->addWhere('parent_page', $this->parent_page);
-            $db->addWhere('page_order', $this->page_order + 1);
-            $next_id = $db->select('one');
-            break;
         }
 
-        if ($prev_id) {
-            $prev = new PHPWS_Link(dgettext('pagesmith', 'Previous page'), 'pagesmith', array('id'=>$prev_id));
-            $prev->setRewrite();
-            $tpl['PREV_LINK'] = $prev->get();
+        $pages = $db->select('col');
+
+        if (empty($pages)) {
+            return;
         }
 
-        if ($next_id) {
-            $next = new PHPWS_Link(dgettext('pagesmith', 'Next page'), 'pagesmith', array('id'=>$next_id));
-            $next->setRewrite();
-            $tpl['NEXT_LINK'] = $next->get();
+        if (!$this->parent_page) {
+            array_unshift($pages, $this->id);
         }
+
+        if ($this->page_order) {
+            $prev_page = $pages[$this->page_order - 1];
+        } else {
+            $prev_page = 0;
+        }
+
+        foreach ($pages as $page_no=>$id) {
+            if ($page_no == 0 && $prev_page) {
+                $link = new PHPWS_Link('<span>&lt;&lt;</span>&#160;' . dgettext('pagesmith', 'Previous'),
+                                       'pagesmith', array('id'=>$prev_page));
+                $links[] = $link->get();
+            }
+
+            if ($id == $this->id) {
+                $links[] = $page_no + 1;
+                if (isset($pages[$page_no + 1])) {
+                    $next_page = $pages[$page_no + 1];
+                } else {
+                    $next_page = null;
+                }
+            } else {
+                $link = new PHPWS_Link($page_no + 1, 'pagesmith', array('id'=>$id));
+                $link->setRewrite();
+                $links[] = $link->get();
+            }
+        }
+
+        if ($next_page) {
+            $link->setLabel(dgettext('pagesmith', 'Next') . '&#160;<span>&gt;&gt;</span>');
+            $link->setValue('id', $next_page);
+            $links[] = $link->get();
+        }
+
+        $tpl['PAGE_LINKS'] = implode('&#160;|&#160;', $links);
     }
 
     public function url()

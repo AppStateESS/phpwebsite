@@ -51,14 +51,6 @@ div.subpage td.page-number {
     text-align : center;
 }
 
-table.pagesmith-page-links {
-    width : 100%;
-}
-
-table.pagesmith-page-links td {
-    width : 50%;
-}
-
-table.pagesmith-page-links td.next-link{
+div.pagesmith-page-links { 
     text-align : right;
 }
