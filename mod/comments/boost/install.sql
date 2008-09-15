@@ -51,7 +51,7 @@ CREATE UNIQUE INDEX userid_idx on comments_users(user_id);
 CREATE TABLE comments_monitors (
     thread_id   int NOT NULL,
     user_id     int NOT NULL,
-  	send_notice smallint NOT NULL default 1,
+    send_notice smallint NOT NULL default 1,
     suspended smallint NOT NULL default 0
 );
 CREATE INDEX comments_monitors_user_id_idx ON comments_monitors (user_id, thread_id);
