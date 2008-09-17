@@ -1,6 +1,11 @@
 17 September 2008
++ php 5 formatting added.
++ Session checks added to allow and authorized functions.
 + Fixed bug: activating and deactivating a user was not affecting the
-group (Thanks Verdon).
+  group (Thanks Verdon).
++ Script tag permission added (will require update)
++ Current_User's init function will create a blank user object if no
+  id is sent to it.
 
 8 September 2008
 + Template tag named PANEL added. More descriptive than MODULES

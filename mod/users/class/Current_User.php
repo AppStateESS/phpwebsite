@@ -16,19 +16,22 @@ if (!defined('ALLOW_DEITY_REMEMBER_ME')) {
  }
 
 final class Current_User {
-
     /**
      * Initializes the User session
      */
-    function init($id)
+    public function init($id=0)
     {
-        $_SESSION['User'] = new PHPWS_User($id);
-        $_SESSION['User']->setLogged(true);
-        Current_User::updateLastLogged();
-        Current_User::getLogin();
+        if ($id) {
+            $_SESSION['User'] = new PHPWS_User($id);
+            $_SESSION['User']->setLogged(true);
+            Current_User::updateLastLogged();
+            Current_User::getLogin();
+        } else {
+            $_SESSION['User'] = new PHPWS_User;
+        }
     }
 
-    function getUserObj()
+    public function getUserObj()
     {
         return $_SESSION['User'];
     }
@@ -44,11 +47,16 @@ final class Current_User {
      *                                     priviledges for that module regardless of
      *                                     module, subpermission, or item id
      */
-    function allow($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
+    public function allow($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
     {
         if ($unrestricted_only && Current_User::isRestricted($module)) {
                 return false;
         }
+
+        if (!isset($_SESSION['User'])) {
+            return false;
+        }
+
         return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, false);
     }
 
@@ -63,16 +71,20 @@ final class Current_User {
      *                                     priviledges for that module regardless of
      *                                     module, subpermission, or item id
      */
-    function authorized($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
+    public function authorized($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
     {
         if ($unrestricted_only && Current_User::isRestricted($module)) {
                 return false;
         }
 
+        if (!isset($_SESSION['User'])) {
+            return false;
+        }
+
         return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, true);
     }
 
-    function allowedItem($module, $item_id, $itemname=null)
+    public function allowedItem($module, $item_id, $itemname=null)
     {
         return $_SESSION['User']->allowedItem($module, $item_id, $itemname);
     }
@@ -80,7 +92,7 @@ final class Current_User {
     /**
      * Verifies the user is a deity and their authorization code is permitted
      */
-    function deityAllow()
+    public function deityAllow()
     {
         return $_SESSION['User']->deityAllow();
     }
@@ -91,7 +103,7 @@ final class Current_User {
      * @param string  message  Message sent to log
      * @param boolean login    If true, then allow change to login
      */
-    function disallow($message=null, $login=true)
+    public function disallow($message=null, $login=true)
     {
         if ($login && Current_User::requireLogin()) {
             return;
@@ -100,7 +112,7 @@ final class Current_User {
         }
     }
 
-    function getLogin()
+    public function getLogin()
     {
         PHPWS_Core::initModClass('users', 'Form.php');
         $login = User_Form::logBox();
@@ -112,17 +124,17 @@ final class Current_User {
     /**
      * returns true is currently logged user is a deity
      */
-    function isDeity()
+    public function isDeity()
     {
         return $_SESSION['User']->isDeity();
     }
 
-    function getId()
+    public function getId()
     {
         return $_SESSION['User']->getId();
     }
 
-    function getAuthKey()
+    public function getAuthKey()
     {
         if (!isset($_SESSION['User'])) {
             return null;
@@ -130,12 +142,12 @@ final class Current_User {
         return $_SESSION['User']->getAuthKey();
     }
 
-    function verifyAuthKey()
+    public function verifyAuthKey()
     {
         return $_SESSION['User']->verifyAuthKey();
     }
 
-    function getUnrestrictedLevels()
+    public function getUnrestrictedLevels()
     {
         return $_SESSION['User']->getUnrestrictedLevels();
     }
@@ -146,7 +158,7 @@ final class Current_User {
      * permission. User permission must be checked separately.
      * You may want to use !isUnrestricted instead.
      */
-    function isRestricted($module)
+    public function isRestricted($module)
     {
         if (Current_User::isDeity()) {
             return false;
@@ -162,7 +174,7 @@ final class Current_User {
      * @param integer id
      * @return True, if current user's id equals the parameter
      */
-    function isUser($id)
+    public function isUser($id)
     {
         if (!$id) {
             return false;
@@ -174,7 +186,7 @@ final class Current_User {
      * Returns true is the user has unrestricted access to a module.
      * Unlike isRestricted, user must be logged in and have module access
      */
-    function isUnrestricted($module)
+    public function isUnrestricted($module)
     {
         if (Current_User::isDeity()) {
             return true;
@@ -192,7 +204,7 @@ final class Current_User {
         return $level == UNRESTRICTED_PERMISSION ? true : false;
     }
 
-    function updateLastLogged()
+    public function updateLastLogged()
     {
         $db = new PHPWS_DB('users');
         $db->addWhere('id', $_SESSION['User']->getId());
@@ -200,22 +212,22 @@ final class Current_User {
         return $db->update();
     }
 
-    function getUsername()
+    public function getUsername()
     {
         return $_SESSION['User']->getUsername();
     }
 
-    function getDisplayName()
+    public function getDisplayName()
     {
         return $_SESSION['User']->getDisplayName();
     }
 
-    function getEmail($html=false,$showAddress=false)
+    public function getEmail($html=false,$showAddress=false)
     {
         return $_SESSION['User']->getEmail($html,$showAddress);
     }
 
-    function isLogged()
+    public function isLogged()
     {
         if (!isset($_SESSION['User'])) {
             $_SESSION['User'] = new PHPWS_User;
@@ -224,12 +236,12 @@ final class Current_User {
         return $_SESSION['User']->isLogged();
     }
 
-    function save()
+    public function save()
     {
         return $_SESSION['User']->save();
     }
 
-    function getPermissionLevel($module)
+    public function getPermissionLevel($module)
     {
         if ($_SESSION['User']->isDeity())
             return UNRESTRICTED_PERMISSION;
@@ -237,22 +249,22 @@ final class Current_User {
         return $_SESSION['User']->_permission->getPermissionLevel($module);
     }
 
-    function giveItemPermission($key)
+    public function giveItemPermission($key)
     {
         return Users_Permission::giveItemPermission(Current_User::getId(), $key);
     }
 
-    function getCreatedDate()
+    public function getCreatedDate()
     {
         return $_SESSION['User']->created;
     }
 
-    function getIP()
+    public function getIP()
     {
         return $_SERVER['REMOTE_ADDR'];
     }
 
-    function getGroups()
+    public function getGroups()
     {
         if (empty($_SESSION['User']->_groups)) {
             return null;
@@ -260,7 +272,7 @@ final class Current_User {
         return $_SESSION['User']->_groups;
     }
 
-    function permissionMenu()
+    public function permissionMenu()
     {
         $key = Key::getCurrent();
 
@@ -282,7 +294,7 @@ final class Current_User {
         }
     }
 
-    function popupPermission($key_id, $label=null, $mode=null)
+    public function popupPermission($key_id, $label=null, $mode=null)
     {
         if (empty($label)) {
             $label = dgettext('users', 'Permission');
@@ -311,7 +323,7 @@ final class Current_User {
      * Returns true if the supplied username only contains characters defined
      * by the ALLOWED_USERNAME_CHARACTERS variable.
      */
-    function allowUsername($username)
+    public function allowUsername($username)
     {
         if (preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/i', $username)) {
             return false;
@@ -323,7 +335,7 @@ final class Current_User {
     /**
      * Logs in a user dependant on their authorization setting
      */
-    function loginUser($username, $password)
+    public function loginUser($username, $password)
     {
         if (!Current_User::allowUsername($username)) {
             return PHPWS_Error::get(USER_BAD_CHARACTERS, 'users', 'Current_User::loginUser');
@@ -393,7 +405,7 @@ final class Current_User {
         }
     }
 
-    function authorize($authorize, PHPWS_User $user, $password)
+    public function authorize($authorize, PHPWS_User $user, $password)
     {
         $db = new PHPWS_DB('users_auth_scripts');
         $db->setIndexBy('id');
@@ -428,7 +440,7 @@ final class Current_User {
         return $result;
     }
 
-    function requireLogin()
+    public function requireLogin()
     {
         if (Current_User::isLogged()) {
             return false;
@@ -438,7 +450,7 @@ final class Current_User {
         PHPWS_Core::reroute($url);
     }
 
-    function rememberLogin()
+    public function rememberLogin()
     {
         if (!isset($_SESSION['User'])) {
             return false;
@@ -500,7 +512,7 @@ final class Current_User {
         return true;
     }
 
-    function allowRememberMe()
+    public function allowRememberMe()
     {
         if ( PHPWS_Settings::get('users', 'allow_remember') &&
              ( !Current_User::isDeity() || ALLOW_DEITY_REMEMBER_ME ) ) {
