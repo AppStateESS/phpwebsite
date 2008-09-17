@@ -1,3 +1,7 @@
+17 September 2008
++ Fixed bug: activating and deactivating a user was not affecting the
+group (Thanks Verdon).
+
 8 September 2008
 + Template tag named PANEL added. More descriptive than MODULES
 + Added user panel named css.tpl and made it default. The template

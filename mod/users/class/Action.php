@@ -1451,7 +1451,12 @@ class User_Action {
         $db->addWhere('id', (int)$user_id);
         $db->addWhere('deity', 0);
         $db->addValue('active', $value ? 1 : 0);
-        PHPWS_Error::logIfError($db->update());
+        if (!PHPWS_Error::logIfError($db->update())) {
+            $db = new PHPWS_DB('users_groups');
+            $db->addWhere('user_id', $user_id);
+            $db->addValue('active',  $value ? 1 : 0);
+            return PHPWS_Error::logIfError($db->update());
+        }
     }
 
     function testForbidden($user)
