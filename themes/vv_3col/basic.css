@@ -353,3 +353,111 @@ code {
    margin-bottom: 2em;
 }
 
+
+#css-user-login div.box-title h1 {
+   display : none;
+}
+
+span#home-link, span#panel-link {
+padding-left : 5px;
+padding-right : 5px;
+border-right : 1px solid black;
+}
+
+span#logout-link {
+padding-left : 5px;
+}
+
+/******** comments ***********/
+.comment_edit_link, .comment_delete_link, .comment_report_link,
+.comment_fork_link, .comment_reply_link, .comment_quote_link, .comment_postnew_link,
+.comment_punish_link,
+.comment_supermod_icon, .comment_activemod_icon, .comment_inactivemod_icon
+{
+    display: block;
+    background-repeat: no-repeat;
+    background-position: 100%;
+}
+
+.comment-body .admin-links a {
+    display:block;
+    float:left;
+    background-image: url(img/green-right.png);
+    padding-right:8px;
+    margin: 0 .5em;
+}
+
+.comment-body .admin-links a span {
+    display:block;
+    padding:0 10px 0 18px;
+    background:transparent url(img/green-left.png);
+    line-height:30px;
+    color : white;
+}
+
+.comment-body .admin-links a:hover {
+    text-decoration : none;
+    color : yellow;
+}
+
+
+a.comment_delete_link {
+    float :left;
+    width: 20px;
+    height: 20px;
+    background-image: url(../../images/mod/comments/cancel.png);
+    margin: 0 .5em;
+}
+
+a.comment_delete_link span { display: none; }
+
+a.comment_report_link {
+    float :left;
+    width: 16px;
+    height: 16px;
+    background-image: url(../../images/mod/comments/report.png);
+    margin: 0 .5em;
+}
+
+a.comment_report_link span { display: none; }
+
+a.comment_fork_link {
+    float :left;
+    width: 16px;
+    height: 16px;
+    background-image: url(../../images/mod/comments/fork.png);
+    margin: 0 .5em;
+}
+
+a.comment_fork_link span { display: none; }
+
+
+a.comment_postnew_link {
+    display:block;
+    float:left;
+    background-image: url(../../images/mod/comments/green-right.png);
+    padding-right:8px;
+}
+a.comment_postnew_link:hover span {
+    color : yellow;
+    text-decoration : none;
+}
+a.comment_postnew_link span {
+    display:block;
+    padding:0 10px 0 18px;
+    background:transparent url(../../images/mod/comments/green-left.png);
+    line-height:30px;
+    color : white;
+}
+
+a.comment_punish_link {
+    float :left;
+    width: 20px;
+    height: 20px;
+    background-image: url(../../images/mod/comments/noentry.png);
+    margin: 0 .5em;
+}
+a.comment_punish_link:hover {
+/* background-color: #00ff00; */
+}
+a.comment_punish_link span { display: none; }
