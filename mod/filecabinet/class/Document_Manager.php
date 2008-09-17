@@ -40,7 +40,9 @@ class FC_Document_Manager {
 
         case 'clip_document':
             if ($this->document->id) {
-                Clipboard::copy($this->document->title, $this->document->getViewLink(true));
+                $st = sprintf('[filecabinet:%s:doc]', $this->document->id);
+                Clipboard::copy($this->document->title, $this->document->getViewLink(true), true,
+                                sprintf('[filecabinet:document:%s]', $this->document->id));
             }
             PHPWS_Core::goBack();
             break;

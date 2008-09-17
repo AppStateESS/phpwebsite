@@ -1,3 +1,8 @@
+17 September 2008
++ Added commercial use message to readme for media player
++ Error check added to parse function.
++ Rewrote clip code for new clipboard functionality.
+
 8 September 2008
 + Trying alternate clipboard option.
 + Classify looks in media types prior to documents now.
