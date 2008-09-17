@@ -1,16 +1,13 @@
-#clipboard-view {
-   text-align : center;
-}
 
-#clip {
-   border : 1px solid black;
-   background-color : white;
-   text-align : center;
-}
 
-#clip textarea {
+#clipboard-view textarea {
    width : 95%;
-   min-height : 200px;
+   min-height : 370px;
+}
+
+ul#view-pick {
+   margin : 0px 0px 10px 0px;
+   padding : 0px;
 }
 
 ul#view-pick li {

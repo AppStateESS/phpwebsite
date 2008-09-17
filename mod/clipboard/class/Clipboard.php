@@ -40,13 +40,29 @@ class Clipboard
     {
         Layout::addStyle('clipboard');
         javascript('jquery');
-        javascript('modules/clipboard/pick_view');
-        $clip = $_SESSION['Clipboard']->components[$_REQUEST['key']]->content;
+        $js = array();
 
-        $template['TITLE'] = dgettext('clipboard', 'Clipboard');
-        $template['CONTENT'] = $clip;
-        $template['VIEW_LINK'] = '<a href="#" id="view-link" onclick="return false">View</a>';
-        $template['SOURCE_LINK'] = '<a href="#" id="source-link" onclick="return false">Source</a>';
+        $clip = $_SESSION['Clipboard']->components[$_REQUEST['key']];
+
+        if (!empty($clip->smarttag)) {
+            $template['SMART_TAG'] = strip_tags($clip->smarttag);
+            $template['SMART_TAG_LINK'] = sprintf('<a href="#" id="smart-link" onclick="return false">%s</a>',
+                                              dgettext('clipboard', 'Smart Tag'));
+        }
+
+        javascript('modules/clipboard/pick_view', $js);
+
+        $template['TITLE']   = dgettext('clipboard', 'Clipboard');
+        $template['CONTENT'] = $clip->content;
+        $template['SOURCE']  = htmlentities($clip->source, ENT_QUOTES, 'UTF-8');
+
+
+        $template['VIEW_LINK'] = sprintf('<a href="#" id="view-link" onclick="return false">%s</a>',
+                                         dgettext('clipboard', 'View'));
+        if (!empty($clip->source)) {
+            $template['SOURCE_LINK'] = sprintf('<a href="#" id="source-link" onclick="return false">%s</a>',
+                                               dgettext('clipboard', 'Source'));
+        }
 
         $button = dgettext('clipboard', 'Close Window');
         $template['BUTTON'] = sprintf('<input type="button" onclick="window.close()" value="%s" />', $button);
@@ -68,8 +84,9 @@ class Clipboard
             return NULL;
         }
 
-        $data['width'] = '340';
-        $data['height'] = '410';
+        $data['width'] = '640';
+        $data['height'] = '480';
+        $data['center'] = false;
 
         $clipVars['action'] = 'drop';
 
@@ -104,11 +121,12 @@ class Clipboard
         $_SESSION['Clipboard'] = new Clipboard;
     }
 
-    public function copy($title, $content)
+    public function copy($title, $content=null, $source=null, $smarttag=null, $show_source=true)
     {
         if (empty($title) || empty($content)) {
             return false;
         }
+
         if (!isset($_SESSION['Clipboard'])) {
             Clipboard::init();
         }
@@ -116,7 +134,7 @@ class Clipboard
         $key = md5($title . $content);
 
         if (!isset($_SESSION['Clipboard']->components[$key])) {
-            $_SESSION['Clipboard']->components[$key] = new Clipboard_Component($title, $content);
+            $_SESSION['Clipboard']->components[$key] = new Clipboard_Component($title, $content, $source, $smarttag);
         }
         Clipboard::show();
     }
@@ -130,12 +148,22 @@ class Clipboard
 
 
 class Clipboard_Component {
-    public $title;
-    public $content;
+    public $title       = null;
+    public $content     = null;
+    public $source      = null;
+    public $smarttag    = null;
 
-    public function Clipboard_Component($title, $content){
+    public function Clipboard_Component($title, $content=null, $source=null, $smarttag=null)
+    {
+        if (empty($content) && empty($source) && empty($smarttag)) {
+            return;
+        }
         $this->title = strip_tags($title);
         $this->content = trim($content);
+        $this->smarttag = trim($smarttag);
+        if ($source === true) {
+            $this->source = trim($content);
+        }
     }
 
 }

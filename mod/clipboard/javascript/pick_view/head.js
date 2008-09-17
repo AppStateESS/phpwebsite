@@ -1,27 +1,29 @@
 <script type="text/javascript">
 //<![CDATA[
 
-var html_view = false;
+
 $(document).ready(function() {
+    $('#clip-content').show();
+    $('#clip-source').hide();
+    $('#clip-smarttag').hide();
+
     $('#view-link').click(function() {
-        if (html_view) {
-            $('#clip').html();
-            var htmlStr = $('#clip').text();
-            $('#clip').html(htmlStr);
-            $('#clip textarea').remove();
-            html_view = false;
-        }
+        $('#clip-content').show();
+        $('#clip-source').hide();
+        $('#clip-smarttag').hide();
     });
 
     $('#source-link').click(function() {
-        if (!html_view) {
-            var htmlStr = $('#clip').html();
-            $('#clip').text(htmlStr);
-            $('#clip').wrapInner('<textarea></textarea>');
-            html_view = true;
-        }
+        $('#clip-content').hide();
+        $('#clip-source').show();
+        $('#clip-smarttag').hide();
     });
 
+    $('#smart-link').click(function() {
+        $('#clip-content').hide();
+        $('#clip-source').hide();
+        $('#clip-smarttag').show();
+    });
 });
 
 //]]>

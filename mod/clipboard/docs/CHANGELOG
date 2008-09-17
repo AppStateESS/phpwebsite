@@ -1,3 +1,10 @@
+18 September 2008
++ Clipboard changed to allow submission of content, source, and
+  smarttags.
++ Updated: javascript/pick_view/head.js, templates/style.css,
+  templates/clipboard.tpl 
+
+
 5 September 2008
 + Trying new format to clipboard. Still need to add tab for smarttags.
 + Updated: javascript/*, templates/clipboard.tpl, templates/style.css
