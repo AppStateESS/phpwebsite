@@ -204,6 +204,7 @@ class PS_Forms {
         $pgtags['ACTION_LABEL']  = dgettext('pagesmith', 'Action');
 
         $pager = new DBPager('ps_page', 'PS_Page');
+        $pager->cacheQueries();
         $pager->addPageTags($pgtags);
         $pager->setModule('pagesmith');
         $pager->setTemplate('page_list.tpl');
