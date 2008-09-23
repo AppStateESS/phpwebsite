@@ -1,6 +1,6 @@
 <?php
 
-define ('DBPAGER_DEFAULT_LIMIT', 10);
+define ('DBPAGER_DEFAULT_LIMIT', 25);
 define ('DBPAGER_PAGE_LIMIT', 12);
 define ('DBPAGER_DEFAULT_EMPTY_MESSAGE', _('No rows found.'));
 
@@ -23,28 +23,28 @@ class DBPager {
     /**
      * Name of the class used
      */
-    public $class = NULL;
+    public $class = null;
 
     /**
      * Object rows pulled from DB
      */
-    public $display_rows = NULL;
+    public $display_rows = null;
 
     /**
      * Name of the module using list
      * Needed for template purposes
      */
-    public $module = NULL;
+    public $module = null;
 
-    public $toggles = NULL;
+    public $toggles = null;
 
     /**
      * Methods the developer wants to run prior to
      * using the object
      */
-    public $run_methods = NULL;
+    public $run_methods = null;
 
-    public $run_function = NULL;
+    public $run_function = null;
 
     public $toggle_function = null;
 
@@ -53,18 +53,18 @@ class DBPager {
     /**
      * List of methods in class
      */
-    private $_methods = NULL;
+    private $_methods = null;
 
-    private $_class_vars = NULL;
+    private $_class_vars = null;
 
     public $table_columns = null;
 
-    public $page_tags = NULL;
+    public $page_tags = null;
 
     /**
      * Tags set per row by the object
      */
-    public $row_tags = NULL;
+    public $row_tags = null;
 
     public $page_turner_left = '&lt;';
 
@@ -73,31 +73,31 @@ class DBPager {
     /**
      * Template file name and directory
      */
-    public $template = NULL;
+    public $template = null;
 
     /**
      * Limit of rows to pull from db
      */
-    public $limit = NULL;
+    public $limit = null;
 
     public $default_limit = 0;
 
-    public $limitList = array(5, 10, 25);
+    public $limitList = array(10, 25, 50);
 
-    public $searchColumn = NULL;
+    public $searchColumn = null;
 
     /**
      * Which column to order by
      */
-    public $orderby = NULL;
+    public $orderby = null;
 
-    public $orderby_dir = NULL;
+    public $orderby_dir = null;
 
     /**
      * If set, then this order will be used if no other
      * orders are selected
      */
-    public $default_order = NULL;
+    public $default_order = null;
 
     public $default_order_dir = 'asc';
 
@@ -106,24 +106,24 @@ class DBPager {
      * If it has problems or you just want to force the link,
      * then you can set the link
      */
-    public $link = NULL;
+    public $link = null;
 
-    public $search = NULL;
+    public $search = null;
 
     /**
      * Total number of rows in database
      */
-    public $total_rows = NULL;
+    public $total_rows = null;
 
     /**
      * Total number of pages needed to display data
      */
-    public $total_pages = NULL;
+    public $total_pages = null;
 
     /**
      * Database object
      */
-    public $db = NULL;
+    public $db = null;
 
     public $current_page = 1;
 
@@ -135,7 +135,7 @@ class DBPager {
     /**
      * Template made before processed
      */
-    public $final_template = NULL;
+    public $final_template = null;
 
     public $error = null;
 
@@ -165,13 +165,16 @@ class DBPager {
     public $convert_date = array();
 
     /**
-     * If true, DBPager will cache last user request
+     * If true, DBPager will cache last user request. This is not defaulted to
+     * true because cache_identifier defaults to the template name. If a module
+     * developer uses the same template for different processes, it could get
+     * confusing. It is up to the dev to enable and set a custom cache identifier.
      */
     public $cache_queries = false;
 
     /**
      * If set, DBPager will use a custom identifier for this object's
-     * cache instance
+     * cache instance.
      */
     public $cache_identifier = null;
 
@@ -180,7 +183,7 @@ class DBPager {
      */
     public $auto_sort = true;
 
-    public function __construct($table, $class=NULL)
+    public function __construct($table, $class=null)
     {
         if (empty($table)) {
             $this->error = PHPWS_Error::get(DBPAGER_NO_TABLE, 'core', 'DB_Pager::DBPager');
@@ -197,7 +200,7 @@ class DBPager {
 
         if (PEAR::isError($this->db)){
             $this->error = $this->db;
-            $this->db = NULL;
+            $this->db = null;
         }
 
         if (class_exists($class)) {
@@ -247,7 +250,7 @@ class DBPager {
                 $this->loadSearch($_REQUEST['pager_c_search']);
                 $this->current_page = 1;
             } else {
-                $this->search = NULL;
+                $this->search = null;
             }
         } elseif (isset($_REQUEST['pager_search'])) {
             $this->loadSearch($_REQUEST['pager_search']);
@@ -293,7 +296,7 @@ class DBPager {
 
     public function loadLink()
     {
-        $this->link = PHPWS_Core::getCurrentUrl(TRUE, FALSE);
+        $this->link = PHPWS_Core::getCurrentUrl(true, false);
     }
 
     public function setAnchor($anchor)
@@ -311,7 +314,7 @@ class DBPager {
     }
 
     /**
-     * Sets the default order for the pager. If only_if_empty is TRUE
+     * Sets the default order for the pager. If only_if_empty is true
      * then a sort can overwrite the direction.
      */
     public function setOrder($column, $direction='asc', $only_if_empty=false)
@@ -329,14 +332,14 @@ class DBPager {
     public function setDefaultOrder($default_order, $direction='asc')
     {
         if (preg_match('/\W/', $default_order)) {
-            return FALSE;
+            return false;
         }
         $this->default_order = $default_order;
         if ($direction != 'asc' && $direction != 'desc') {
-            return FALSE;
+            return false;
         }
         $this->default_order_dir = $direction;
-        return TRUE;
+        return true;
     }
 
     public function setDefaultLimit($limit)
@@ -374,7 +377,7 @@ class DBPager {
     public function setLimitList($list)
     {
         if (!is_array($list)) {
-            return FALSE;
+            return false;
         }
 
         $this->limitList = $list;
@@ -419,11 +422,11 @@ class DBPager {
         $method = func_get_arg(0);
 
         if (empty($this->class)) {
-            return FALSE;
+            return false;
         }
 
         if (func_num_args() < 1) {
-            return FALSE;
+            return false;
         }
 
         if (version_compare(phpversion(), '5.0.0',  '<')) {
@@ -435,7 +438,7 @@ class DBPager {
             //strip the method
             array_shift($variables);
         } else {
-            $variables = NULL;
+            $variables = null;
         }
 
         $this->row_tags = array('method'=>$method, 'variable'=>$variables);
@@ -510,7 +513,7 @@ class DBPager {
         $this->run_methods[] = $method;
     }
 
-    public function addWhere($column, $value, $operator=NULL, $conj=NULL, $group=NULL)
+    public function addWhere($column, $value, $operator=null, $conj=null, $group=null)
     {
         return $this->db->addWhere($column, $value, $operator, $conj, $group);
     }
@@ -614,7 +617,7 @@ class DBPager {
      */
     public function fullRowCount()
     {
-        $this->db->setDistinct(TRUE);
+        $this->db->setDistinct(true);
         $order    = $this->db->order;
         $columns  = $this->db->columns;
         $group_by = $this->db->group_by;
@@ -685,7 +688,7 @@ class DBPager {
 
         $count = $this->getTotalRows();
 
-        $this->db->setDistinct(TRUE);
+        $this->db->setDistinct(true);
         if (!empty($this->sub_result)) {
             $this->db->addColumn('*');
             foreach ($this->sub_result as $sub_table => $sub) {
@@ -759,7 +762,7 @@ class DBPager {
         } else {
             $this->clearQuery();
         }
-        return TRUE;
+        return true;
     }
 
     public function getPageLinks()
@@ -903,7 +906,7 @@ class DBPager {
     public function getSortButtons(&$template)
     {
         if (empty($this->table_columns)) {
-            return NULL;
+            return null;
         }
 
         if ($this->auto_sort) {
@@ -915,6 +918,17 @@ class DBPager {
         foreach ($sort_columns as $varname) {
             $vars = array();
             $values = $this->getLinkValues();
+
+            if (isset($this->sort_headers[$varname])) {
+                if (!empty($this->sort_headers[$varname]['hover'])) {
+                    $alt = $this->sort_headers[$varname]['hover'] . ' - ';
+                } else {
+                    $alt = $this->sort_headers[$varname]['title'] . ' - ';
+                }
+            } else {
+                $alt = '';
+            }
+
 
             $module = $values['module'];
             unset($values['module']);
@@ -931,27 +945,28 @@ class DBPager {
             if ($this->orderby == $varname){
                 if ($this->orderby_dir == 'desc'){
                     unset($values['orderby_dir']);
-                    $alt = _('Sorted in descending order');
-                    $button = sprintf('<img src="images/core/list/down_pointer.png" border="0" alt="%s" title="%s" />', $alt, $alt);
+                    $alt .= _('Sorted in descending order');
+                    $button = sprintf('<img src="images/core/list/down_pointer.png" border="0" alt="%s" title="%s" style="margin-right : 5px;" />', $alt, $alt);
                 } elseif ($this->orderby_dir =="asc") {
-                    $alt = _('Sorted in ascending order');
+                    $alt .= _('Sorted in ascending order');
                     $values['orderby_dir'] = 'desc';
-                    $button = sprintf('<img src="images/core/list/up_pointer.png" border="0" alt="%s" title="%s" />', $alt, $alt);
+                    $button = sprintf('<img src="images/core/list/up_pointer.png" border="0" alt="%s" title="%s" style="margin-right : 5px;" />', $alt, $alt);
                 } else {
-                    $alt = _('Unsorted');
-                    $button = sprintf('<img src="images/core/list/sort_none.png" border="0"  alt="%s" title="%s" />', $alt, $alt);
+                    $alt .= _('Unsorted');
+                    $button = sprintf('<img src="images/core/list/sort_none.png" border="0"  alt="%s" title="%s" style="margin-right : 5px;" />', $alt, $alt);
                     $values['orderby_dir'] = 'asc';
                 }
 
             } else {
-                $alt = _('Unsorted');
-                $button = sprintf('<img src="images/core/list/sort_none.png" border="0"  alt="%s" title="%s" />', $alt, $alt);
+                $alt .= _('Unsorted');
+                $button = sprintf('<img src="images/core/list/sort_none.png" border="0"  alt="%s" title="%s" style="margin-right : 5px;" />', $alt, $alt);
                 $values['orderby_dir'] = 'asc';
             }
 
             if (isset($this->sort_headers[$varname])) {
-                $button .= '&nbsp;' . $this->sort_headers[$varname];
+                $button .= $this->sort_headers[$varname]['title'];
             }
+
             $link = PHPWS_Text::moduleLink($button, $module, $values, null, $alt);
 
             $template[strtoupper($buttonname)] = $link;
@@ -960,14 +975,15 @@ class DBPager {
         return $template;
     }
 
-    public function addSortHeader($header, $title)
+    public function addSortHeader($header, $title, $hover=null)
     {
-        $this->sort_headers[$header] = $title;
+        $this->sort_headers[$header]['title'] = $title;
+        $this->sort_headers[$header]['hover'] = $hover;
     }
 
     public function getLinkValues()
     {
-        $output = NULL;
+        $output = null;
         if (isset($GLOBALS['DBPager_Link_Values'])) {
             return $GLOBALS['DBPager_Link_Values'];
         }
@@ -1075,7 +1091,7 @@ class DBPager {
         $count = 0;
 
         if (!isset($this->display_rows)) {
-            return NULL;
+            return null;
         }
 
         foreach ($this->display_rows as $disp_row) {
@@ -1169,7 +1185,7 @@ class DBPager {
 
         if (PEAR::isError($template)) {
             PHPWS_Error::log($template);
-            return NULL;
+            return null;
         }
 
         return implode("\n", $template);
@@ -1202,7 +1218,7 @@ class DBPager {
         $template = $form->getTemplate();
         if (PEAR::isError($template)) {
             PHPWS_Error::log($template);
-            return NULL;
+            return null;
         }
 
         return implode("\n", $template);
@@ -1241,7 +1257,7 @@ class DBPager {
     /**
      * Returns the content of the the pager object
      */
-    public function get($return_blank_results=TRUE)
+    public function get($return_blank_results=true)
     {
         $template = array();
 
@@ -1281,7 +1297,7 @@ class DBPager {
                         if ($count % 2) {
                             $rowitem['TOGGLE'] = $this->toggles[0];
                         } else {
-                            $rowitem['TOGGLE'] = NULL;
+                            $rowitem['TOGGLE'] = null;
                         }
                         $count++;
                     } else {
@@ -1293,7 +1309,7 @@ class DBPager {
                         }
                     }
                 } else {
-                    $rowitem['TOGGLE'] = NULL;
+                    $rowitem['TOGGLE'] = null;
                 }
 
                 $template['listrows'][] = $rowitem;
@@ -1301,7 +1317,7 @@ class DBPager {
 
 
         } elseif(!$return_blank_results) {
-            return NULL;
+            return null;
         } else {
             $template['EMPTY_MESSAGE'] = $this->empty_message;
         }
