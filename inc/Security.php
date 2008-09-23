@@ -3,11 +3,14 @@
 /**
  * This file should contain any security measures made
  * against user submissions.
+
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
 if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
- }
+}
 
 /**
  * stripslashes_deep is from aderyn (gmail.com) on php.net
@@ -15,16 +18,16 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 if (get_magic_quotes_gpc())
 {
     if (!empty($_REQUEST)) {
-        $_REQUEST  = array_map('stripslashes_deep', $_REQUEST);
+        $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
         if (!empty($_GET)) {
-            $_GET      = array_map('stripslashes_deep', $_GET);
+            $_GET = array_map('stripslashes_deep', $_GET);
         }
         
         if (!empty($_POST)) {
-            $_POST     = array_map('stripslashes_deep', $_POST);
+            $_POST = array_map('stripslashes_deep', $_POST);
         }
     }
-    $_COOKIE   = array_map('stripslashes_deep', $_COOKIE);
+    $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
 }
 
 
@@ -43,15 +46,17 @@ if (ini_get('session.use_trans_sid')) {
     ini_set('url_rewriter.tags', '');
 }
 
-define('SESSION_NAME', md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
-
 // Attempt to clean out the xss tags
 
-if (!checkUserInput($_SERVER['REQUEST_URI']) || !checkUserInput($_REQUEST)) {
+if (!(PHPWS_Core::allowScriptTags()) && 
+    (!checkUserInput($_SERVER['REQUEST_URI']) || !checkUserInput($_REQUEST))) {
     Security::log(_('Attempted cross-site scripting attack.'));
     PHPWS_Core::errorPage('400');
 }
 
+/**
+ * Checks for <script> embedding
+ */
 function checkUserInput($check)
 {
     $scripting = '/(%3C|<|&lt;|&#60;)\s*(script|\?)/iU';
