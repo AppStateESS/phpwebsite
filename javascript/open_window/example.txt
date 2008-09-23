@@ -18,3 +18,5 @@ titlebar   = no/yes
 link_title = ''
 type       = link/button (default link)
 id         = id given to link
+center     = if 1, center the window to the parent (the default)
+             if 0, put in the top left corner

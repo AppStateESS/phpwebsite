@@ -17,11 +17,16 @@ $default['titlebar']    = 'no';
 $default['link_title']  = '';
 $default['window_name'] = 'default' . rand();
 $default['class']       = 'js-open-window';
+$default['center']      = 1;
 
 if (isset($data['type'])) {
     if ($data['type'] == 'button') {
         $bodyfile = $base . 'javascript/open_window/body2.js';
     }
+}
+
+if (isset($data['center'])) {
+    $data['center'] = (bool)$data['center'] ? 1 : 0;
 }
 
 $site_address = PHPWS_Core::getHomeHttp();
