@@ -4,6 +4,34 @@ its own separate CHANGELOG file..
 
 Version 1.9.0
 ---------------------------------------------------------------------
+23 September 2008
++ DBPager - can set title of header sort tags now using third
+  parameter of addSortHeaders.
++ Captcha - if a problem exists, captcha fails instead of allowing
+  them to continue;
++ USE_BREAKER added to text_settings.php
++ ALLOW_SCRIPT_TAGS added to default config.tpl template
++ Converts had breaker added to them to prevent need for breaker in
+  text class.
++ Security - allows script tags if user is permitted.
++ Javascript - open_window allows dev to set whether the window opens
+  in the center or not
++ Updated: conf/text_settings.php
+
+18 September 2008
++ Core - added allowScriptTags function
++ DBPager - added note about why cache is not on by default.
++ Key - added ability to set the source_table in the restrictView
+  function. 
++ Link - Fixed bug by changing an "isset" to a "!empty"
++ Text
+  o breaker is no longer the default condition. Leaning on wysiwyg
+    now.
+  o Removed single quote from encodeXHTML
+  o allowed tags altered to allow script tags if ALLOW_SCRIPT_TAGS is
+    true.
+
+
 10 September 2008
 + Form.php
   o changed getValue function to change " to &quot;
