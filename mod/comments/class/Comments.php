@@ -103,9 +103,9 @@ class Comments {
                                     'link'=>'index.php?module=comments');
         }
         */
-                        $count = PHPWS_Settings::get('comments', 'reported_comments');
-                        $tabs['report'] = array('title'=> sprintf(dgettext('comments', 'Reported (%s)'), $count),
-                                                'link'=>'index.php?module=comments');
+        $count = PHPWS_Settings::get('comments', 'reported_comments');
+        $tabs['report'] = array('title'=> sprintf(dgettext('comments', 'Reported (%s)'), $count),
+                                'link'=>'index.php?module=comments');
                         /*
         $db = new PHPWS_DB('comments_items');
         $db->addColumn('id', null, null, true);
@@ -123,14 +123,14 @@ class Comments {
                                       'link'=>'index.php?module=comments');
         }
                         */
-                        $count = PHPWS_Settings::get('comments', 'unapproved_comments');
-                        $tabs['approval'] = array('title'=> sprintf(dgettext('comments', 'Approval (%s)'), $count),
-                                                  'link'=>'index.php?module=comments');
+        $count = PHPWS_Settings::get('comments', 'unapproved_comments');
+        $tabs['approval'] = array('title'=> sprintf(dgettext('comments', 'Approval (%s)'), $count),
+                                  'link'=>'index.php?module=comments');
 
-                        $panel = new PHPWS_Panel('comments');
-                        $panel->quickSetTabs($tabs);
-                        $panel->enableSecure();
-                        return $panel;
+        $panel = new PHPWS_Panel('comments');
+        $panel->quickSetTabs($tabs);
+        $panel->enableSecure();
+        return $panel;
     }
 
     /**
@@ -824,21 +824,61 @@ class Comments {
     public function showHistory($comment_user)
     {
         Layout::addStyle('comments', 'admin.css');
+
         javascript('jsquery');
         javascript('modules/comments/admin');
         javascript('modules/comments/quick_view');
+
         PHPWS_Core::initCoreClass('DBPager.php');
         if (empty($comment_user->user_id)) {
             return dgettext('comments', 'No comments made');
         }
-        $pager = new DBPager('comments_items', 'Comment_Item');
+        $pager = new DBPager('comments_items');
         $pager->setModule('comments');
         $pager->setTemplate('history.tpl');
         $pager->addWhere('author_id', $comment_user->user_id);
+        $pager->addRowFunction(array('Comments', 'getCommentTpl'));
         $pager->addRowTags('historyTags');
         $pager->setEmptyMessage(dgettext('comments', 'No comments made'));
+        $pager->setDefaultOrder('create_time', 'desc');
+        $pager->setDefaultLimit(30);
+        $pager->setLimitList(array(30,60,90));
+        $pager->addToggle(' toggle1"');
+        $pager->addToggle(' toggle2"');
+        $pager->setSearch('title');
+
+        $pager->db->addColumn('comments_items.*');
+        $pager->db->addColumn('comments_threads.total_comments', null, 'total_comments');
+        $pager->db->addColumn('phpws_key.module', null, 'topic_module');
+        $pager->db->addColumn('phpws_key.item_name', null, 'topic_item_name');
+        $pager->db->addColumn('phpws_key.item_id', null, 'topic_item_id');
+        $pager->db->addColumn('phpws_key.title', null, 'topic_title');
+        $pager->db->addColumn('phpws_key.url', null, 'topic_url');
+        $pager->db->addWhere('comments_threads.id', 'comments_items.thread_id');
+        $pager->db->addWhere('phpws_key.id', 'comments_threads.key_id');
+
+        $pager->addWhere('approved', 1);
+
+        if(!Current_User::isDeity()) {
+            Key::restrictView($pager->db, 'comments', false, 'comments_threads');
+        }
 
         return $pager->get();
+    }
+
+    public function getCommentTpl($data) {
+        $thread = new Comment_Thread;
+        $comment = new Comment_Item;
+        PHPWS_Core::plugObject($comment, $data);
+        $tpl = $comment->historyTags();
+
+        $tpl['TOPIC_ID'] = $data['thread_id'];
+        $tpl['TOPIC_TITLE'] = $data['topic_title'];
+        $tpl['TOPIC_LBL'] = sprintf(dgettext('phpwsbb', 'In %s'), $data['topic_item_name']);
+        $tpl['TOPIC_LINK'] = '<a href="'.$data['topic_url'].'">'.$data['topic_title'].'</a>';
+        $tpl['REPLY_LBL'] = sprintf(dgettext('comments', 'Total comments in %s'), $data['topic_item_name']);
+        $tpl['REPLIES'] = $data['total_comments'];
+        return $tpl;
     }
 
     function getUserRanking()

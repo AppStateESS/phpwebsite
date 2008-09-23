@@ -130,7 +130,8 @@ Please download 0.6.3.</pre>';
         $sql = 'CREATE TABLE comments_monitors (
     thread_id   int NOT NULL,
     user_id     int NOT NULL,
-  	send_notice smallint NOT NULL default 1
+    send_notice smallint NOT NULL default 1,
+    suspended smallint NOT NULL default 0
 );
 CREATE INDEX comments_monitors_user_id_idx ON comments_monitors (user_id, thread_id);
 CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, send_notice);
@@ -217,30 +218,7 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
         PHPWS_Settings::reset('comments', 'email_text');
         $content[] = 'Added new module settings.';
 
-        $files = array('templates/alt_view.tpl'
-                       , 'templates/alt_view_one.tpl'
-                       , 'templates/edit.tpl'
-                       , 'templates/list_posts.tpl'
-                       , 'templates/main.tpl'
-                       , 'templates/my_page.tpl'
-                       , 'templates/settings_form.tpl'
-                       , 'templates/style.css'
-                       , 'templates/user_settings.tpl'
-                       , 'templates/view.tpl'
-                       , 'javascript/expandCollapse/head.js'
-                       , 'img/cancel.png'
-                       , 'img/edit.png'
-                       , 'img/fork.png'
-                       , 'img/Global-Mod.gif'
-                       , 'img/green-left.png'
-                       , 'img/green-right.png'
-                       , 'img/Moderator.gif'
-                       , 'img/noentry.png'
-                       , 'img/red-left.png'
-                       , 'img/red-right.png'
-                       , 'img/report.png'
-                       , 'img/Support-staff.gif'
-                       );
+        $files = array('templates/', 'img/');
         if (PHPWS_Boost::updateFiles($files, 'comments'))
             $content[] = 'Updated the following files:';
         else

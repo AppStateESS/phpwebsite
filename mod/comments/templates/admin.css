@@ -11,3 +11,15 @@
 .pointer:hover {
    cursor : pointer;
 }
+
+table.comment-history td {
+   padding : 5px;
+}
+
+table.comment-history td.comment-body h2 {
+   margin-bottom : 0;
+}
+
+table.comment-history td.author-info {
+   font-size : .9em;
+}

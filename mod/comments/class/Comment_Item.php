@@ -611,7 +611,7 @@ class Comment_Item {
 
     public function historyTags()
     {
-        $tpl['SUBJECT'] = $this->viewLink();
+        $tpl['VIEW_LINK'] =  $this->viewLink();
 
         $tpl['ENTRY']   = sprintf('<span class="pointer" onmouseout="quick_view(\'#cm%s\'); return false" onmouseover="quick_view(\'#cm%s\'); return false">%s</span>',
                                   $this->id, $this->id,
@@ -623,7 +623,6 @@ class Comment_Item {
 
         if (Current_User::allow('comments')) {
             $tpl['CHECK'] = sprintf('<input type="checkbox" name="cm_id[]" value="%s" />', $this->id);
-            $links[] = $this->clearReportLink();
             $links[] = $this->deleteLink();
             $links[] = $this->punishUserLink();
             $tpl['ACTION']  = implode(' | ', $links);
