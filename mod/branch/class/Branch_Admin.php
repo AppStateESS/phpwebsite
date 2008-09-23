@@ -265,7 +265,7 @@ class Branch_Admin {
             $this->content[] = dgettext('branch', 'Copied javascript files to branch.');
         }
 
-        if (is_file(PHPWS_SOURCE_DIR . '.htaccess')) {
+        if (is_file(PHPWS_SOURCE_DIR . 'core/inc/htaccess')) {
             $this->content[] = dgettext('branch', '.htaccess detected on hub. Attempting to create default file on branch.');
             if (@copy(PHPWS_SOURCE_DIR . 'core/inc/htaccess', $this->branch->directory . '.htaccess')) {
                 $this->content[] = dgettext('branch', 'Copied successfully.');
