@@ -862,8 +862,8 @@ class User_Action {
     {
         $hash = $_GET['hash'];
         if (preg_match('/\W/', $hash)) {
-            PHPWS_Core::errorPage('400');
             Security::log(sprintf(dgettext('users', 'User tried to send bad hash (%s) to confirm user.'), $hash));
+            PHPWS_Core::errorPage('400');
         }
         $db = new PHPWS_DB('users_signup');
         $db->addWhere('authkey', $hash);

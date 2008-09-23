@@ -1,3 +1,6 @@
+23 September 2008
++ Moved security log before error page call.
+
 17 September 2008
 + php 5 formatting added.
 + Session checks added to allow and authorized functions.
