@@ -37,6 +37,14 @@ define('PHPWS_ALLOWED_TAGS', '<pre>
 define('ENCODE_PARSED_TEXT', true);
 
 
+/**
+ * The output text parsers will attempt to substitute breaks for newlines
+ * in your content. This is a hold-over from the previous version
+ * of phpWebSite which did not have wysiwyg. You can turn this feature
+ * off by changing the below to FALSE.
+ */
+define('USE_BREAKER', false);
+
 /*********************** FILTERS *******************************
  * phpWebSite filters outgoing text with a BB filter by default.
  * You can decide which filters, if any, phpWebSite uses.
