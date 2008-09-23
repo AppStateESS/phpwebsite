@@ -13,6 +13,10 @@ if (!defined('FORCE_MOD_CONFIG')) {
     define('FORCE_MOD_CONFIG', true);
 }
 
+if (!defined('ALLOW_SCRIPT_TAGS')) {
+    define('ALLOW_SCRIPT_TAGS', false);
+}
+
 require_once PHPWS_SOURCE_DIR . 'core/inc/errorDefines.php';
 PHPWS_Core::initCoreClass('Error.php');
 
@@ -535,26 +539,26 @@ class PHPWS_Core {
         switch ($code) {
         case '400':
             header('HTTP/1.0 400 Bad Request');
-            include PHPWS_HOME_DIR . 'config/core/400.html';
+            include 'config/core/400.html';
             break;
 
         case '403':
             header('HTTP/1.0 403 Forbidden');
-            include PHPWS_HOME_DIR . 'config/core/403.html';
+            include 'config/core/403.html';
             break;
 
         case '404':
             header('HTTP/1.0 404 Not Found');
-            include PHPWS_HOME_DIR . 'config/core/404.html';
+            include 'config/core/404.html';
             break;
 
         case 'overpost':
-            include PHPWS_HOME_DIR . 'config/core/overpost.html';
+            include 'config/core/overpost.html';
             break;
 
         default:
             header('HTTP/1.1 503 Service Unavailable');
-            include PHPWS_HOME_DIR . 'config/core/error_page.html';
+            include 'config/core/error_page.html';
             break;
         }
         exit();
@@ -867,6 +871,16 @@ class PHPWS_Core {
             return false;
         }
         return $GLOBALS['Is_Branch'];
+    }
+
+    function allowScriptTags()
+    {
+        if (ALLOW_SCRIPT_TAGS && class_exists('Current_User') &&
+            Current_User::allow('users', 'scripting')) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }// End of core class

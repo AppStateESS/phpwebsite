@@ -35,9 +35,17 @@ if (!defined('TEXT_FILTERS')) {
     define('TEXT_FILTERS', 'pear');
 }
 
+if (!defined('USE_BREAKER')) {
+    define('USE_BREAKER', true);
+}
+
+if (!defined('ALLOW_SCRIPT_TAGS')) {
+    define('ALLOW_SCRIPT_TAGS', false);
+}
+
 class PHPWS_Text {
     public $use_profanity  = ALLOW_PROFANITY;
-    public $use_breaker    = true;
+    public $use_breaker    = USE_BREAKER;
     public $use_strip_tags = true;
     public $use_filters    = false;
     public $fix_anchors    = FIX_ANCHORS;
@@ -111,7 +119,17 @@ class PHPWS_Text {
 
     public function resetAllowedTags()
     {
-        $this->_allowed_tags = preg_replace('/\s/','',  PHPWS_ALLOWED_TAGS);
+        static $default_tags = null;
+
+        if (empty($default_tags)) {
+            $default_tags = preg_replace('/\s/', '',  PHPWS_ALLOWED_TAGS);
+            if (ALLOW_SCRIPT_TAGS) {
+                $default_tags .= '<script>';
+            } else {
+                $default_tags = str_replace('<script>', '', $this->_allowed_tags);
+            }
+        }
+        $this->_allowed_tags = $default_tags;
     }
 
     public function clearAllowedTags()
@@ -138,9 +156,6 @@ class PHPWS_Text {
         if ($this->use_strip_tags) {
             $text = strip_tags($text, $this->_allowed_tags);
         }
-
-        // Moved to parseInput
-        //$text = PHPWS_Text::encodeXHTML($text);
 
         if ($this->use_breaker) {
             $text = PHPWS_Text::breaker($text);
@@ -216,7 +231,6 @@ class PHPWS_Text {
 
         $xhtml['\$']   = '&#x24;';
         $xhtml['<br>'] = '<br />';
-        $xhtml['\'']    = '&#39;';
 
         $xhtml[chr(226).chr(128).chr(153)] = '&rsquo;';
         $xhtml[chr(226).chr(128).chr(156)] = '&ldquo;';
@@ -840,6 +854,9 @@ function getXMLLevel($xml, $level)
 
 }
 
+/**
+ * Function names and parameter values cannot be the same
+ */
 function getEmbedded($stuff)
 {
     unset($stuff[0]);
@@ -863,7 +880,6 @@ function getEmbedded($stuff)
             unset($parameters[0]);
         }
     }
-
 
     if (!in_array($function_name, $GLOBALS['embedded_tags'][$module])) {
         return null;

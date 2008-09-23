@@ -44,7 +44,7 @@ class PHPWS_Link {
                         'target', 'class_name', 'style', 'id', 'no_follow');
 
         foreach ($params as $pr) {
-            if (isset($this->$pr)) {
+            if (!empty($this->$pr)) {
                 $url_params[] = $this->getParameter($pr);
             }
         }

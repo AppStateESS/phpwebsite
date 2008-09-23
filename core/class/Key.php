@@ -542,10 +542,12 @@ class Key {
      * to your db object.
      *
      */
-    function restrictView($db, $module=null, $check_dates=true)
+    function restrictView($db, $module=null, $check_dates=true, $source_table=null)
     {
         $now = mktime();
-        $source_table = $db->tables[0];
+        if (empty($source_table)) {
+            $source_table = $db->tables[0];
+        }
 
         if ($source_table == 'phpws_key') {
             if (!isset($db->tables[1])) {
@@ -557,11 +559,7 @@ class Key {
             $key_table = false;
         }
 
-        if (!$key_table) {
-            $db->addWhere('key_id', 0, null, null, 'empty_key');
-        } else {
-            $db->addWhere($source_table . '.key_id', '0', null, null, 'empty_key');
-        }
+        $db->addWhere("$source_table.key_id", '0', null, null, 'empty_key');
 
         $db->addWhere('phpws_key.active', 1, null, null, 'active');
 
@@ -639,7 +637,7 @@ class Key {
      * will be added (i.e. where 1 = 0);
      */
 
-    function restrictEdit($db, $module, $edit_permission)
+    function restrictEdit($db, $module, $edit_permission, $source_table=null)
     {
         if (Current_User::isDeity()) {
             return;
@@ -658,7 +656,9 @@ class Key {
             return;
         } else {
             $db->setDistinct(1);
-            $source_table = $db->tables[0];
+            if (empty($source_table)) {
+                $source_table = $db->tables[0];
+            }
 
             $groups = Current_User::getGroups();
             // if the current user is not in any groups (unlikely)
@@ -669,7 +669,7 @@ class Key {
             }
 
             $db->addJoin('left', $source_table, 'phpws_key', 'key_id', 'id');
-            $db->addWhere('key_id', 0);
+            $db->addWhere("$source_table.key_id", 0);
             $db->addWhere('phpws_key.id', 'phpws_key_edit.key_id', null, null, 'key_1');
             $db->addWhere('phpws_key_edit.group_id', $groups, 'in', null, 'key_1');
             $db->setGroupConj('key_1', 'or');

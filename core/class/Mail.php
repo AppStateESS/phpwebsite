@@ -34,8 +34,8 @@
  * $mail->setMessageBody($message);
  * $result = $mail->send();
  *
- * result will either be TRUE or a Pear error object
- * 
+ * result will either be true or a Pear error object
+ *
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
@@ -74,9 +74,9 @@ class PHPWS_Mail {
     {
         if ($this->checkAddress($from_address)) {
             $this->from_address = $from_address;
-            return TRUE;
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
 
@@ -84,9 +84,9 @@ class PHPWS_Mail {
     {
         if ($this->checkAddress($reply_to_address)) {
             $this->reply_to_address = $reply_to_address;
-            return TRUE;
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
 
@@ -100,7 +100,7 @@ class PHPWS_Mail {
         return $this->_addAddress('blind_copy', $address);
     }
 
-    public function _addAddress($variable_name, $address)
+    private function _addAddress($variable_name, $address)
     {
         $failures = array();
 
@@ -112,17 +112,17 @@ class PHPWS_Mail {
             }
         } else {
             if (!$this->checkAddress($address)) {
-                return FALSE;
+                return false;
             } else {
                 $this->{$variable_name}[] = $address;
-                return TRUE;
+                return true;
             }
         }
 
         if (!empty($failures)) {
             return $failures;
         } else {
-            return TRUE;
+            return true;
         }
     }
 
@@ -140,15 +140,15 @@ class PHPWS_Mail {
     {
         if ($backend == 'sendmail' || $backend == 'mail' || $backend == 'smtp') {
             $this->backend_type = $backend;
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 
 
     /**
-     * Check the validity of the an email address. 
+     * Check the validity of the an email address.
      * Must contain only word characters, spaces, less than,
      * more then, periods, at symbol and dashes
      * If address contains a newline character, it will be refused
@@ -156,18 +156,18 @@ class PHPWS_Mail {
     public function checkAddress($email_address)
     {
         if ( preg_match('/\n|\r/', $email_address) ) {
-            return FALSE;
+            return false;
         }
-        
+
         if ( substr_count($email_address, '@') != 1 ) {
-            return FALSE;
+            return false;
         }
-        
+
         return !preg_match('/[^\w\s<>\.@\-\'"]/', $email_address);
     }
-    
+
     /**
-     * @returns If sent individually and an error occurs, a false statement 
+     * @returns If sent individually and an error occurs, a false statement
      *          is returned and the error is logged after the mailing is complete.
      *          If sent altogether, the error itself is returned. If all goes well,
      *          true is returned.
@@ -179,9 +179,9 @@ class PHPWS_Mail {
         require_once 'Mail.php';
         require_once 'Mail/mime.php';
 
-        if (empty($this->send_to) || empty($this->from_address) || 
+        if (empty($this->send_to) || empty($this->from_address) ||
             ( empty($this->message_body) && empty($this->html_body) ) ) {
-            return FALSE;
+            return false;
         }
 
         $message = new Mail_mime();
@@ -223,12 +223,12 @@ class PHPWS_Mail {
 
         case 'smtp':
             if (!defined('SMTP_HOST') || !defined('SMTP_PORT')) {
-                return FALSE;
+                return false;
             }
-            
-            if ( !defined('SMTP_AUTH') || 
+
+            if ( !defined('SMTP_AUTH') ||
                  ( SMTP_AUTH && (!defined('SMTP_USER') || !defined('SMTP_PASS')) ) ) {
-                return FALSE;
+                return false;
             }
 
             $param['host'] = SMTP_HOST;

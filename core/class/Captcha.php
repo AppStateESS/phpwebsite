@@ -42,7 +42,7 @@ class Captcha {
         include $file;
         
         if (!function_exists('verify')) {
-            return true;
+            return false;
         }
 
         return verify($answer);
