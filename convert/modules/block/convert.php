@@ -42,7 +42,7 @@ function convert()
     foreach ($all_blocks as $old_block) {
         $new_block = & new Block_Item;
         $new_block->setTitle(utf8_encode($old_block['block_title']));
-        $new_block->setContent(utf8_encode($old_block['block_content'] . $old_block['block_footer']));
+        $new_block->setContent(PHPWS_Text::breaker(utf8_encode($old_block['block_content'] . $old_block['block_footer'])));
         $result = $new_block->save();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($all_blocks);

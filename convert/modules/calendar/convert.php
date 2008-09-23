@@ -182,7 +182,7 @@ function convertEvent($event, &$schedule, &$admin)
     $new_event = & new Calendar_Event;
     $new_event->_schedule = $schedule;
 
-    $new_event->summary = utf8_encode($event['title']);
+    $new_event->summary = PHPWS_Text::breaker(utf8_encode($event['title']));
 
     if (!empty($event['image'])) {
         $image = explode(':', $event['image']);
