@@ -266,4 +266,12 @@ define ('UTF8_MODE', false);
  * home site. Otherwise, a local copy will be used.
  */
 define('JQUERY_LATEST', false);
+
+/**
+ * If ALLOW_SCRIPT_TAGS is true, than users with scripting permission may
+ * submit content with <script> tags. If false, the permissions are ignored
+ * and no script tags are allowed.
+ */
+define('ALLOW_SCRIPT_TAGS', false);
+
 ?>
