@@ -15,7 +15,7 @@
                 {END_FORM}
             </div>
             {CONTENT}
-        <div>         
+        </div>         
     </div>
 </div>
 
