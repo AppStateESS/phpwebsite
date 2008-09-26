@@ -324,8 +324,8 @@ class Menu_Link {
                     $template['PIN_LINK']      = Menu_Item::getPinLink($this->menu_id, $this->id, $popup);
                     $template['ADD_LINK']      = Menu::getAddLink($this->menu_id, $this->id, $popup);
                     $template['ADD_SITE_LINK'] = Menu::getSiteLink($this->menu_id, $this->id, $keyed, $popup);
-                    $template['EDIT_LINK']     = $this->editLink($popup);
                     $template['DELETE_LINK']   = $this->deleteLink($popup);
+                    $template['EDIT_LINK']     = $this->editLink($popup);
 
 
                     $vars['command'] = 'move_link_up';
@@ -335,8 +335,8 @@ class Menu_Link {
                         $vars['pu'] = 1;
                         $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink($up_link, 'menu', $vars);
                     } else {
-                        $template['MOVE_LINK_UP'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
-                                                            $this->menu_id, $this->id, $key->id, 'up', $up_link);
+                        $template['MOVE_LINK_UP'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>',
+                                                            $this->menu_id, $this->id, 'up', $up_link);
                     }
 
                     $down_link = MENU_LINK_DOWN;
@@ -346,8 +346,8 @@ class Menu_Link {
                         $vars['pu'] = 1;
                         $template['MOVE_LINK_DOWN'] = PHPWS_Text::secureLink($down_link, 'menu', $vars);
                     } else {
-                        $template['MOVE_LINK_DOWN'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
-                                                              $this->menu_id, $this->id, $key->id, 'down', $down_link);
+                        $template['MOVE_LINK_DOWN'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>',
+                                                              $this->menu_id, $this->id, 'down', $down_link);
                     }
                 }
 
@@ -399,11 +399,17 @@ class Menu_Link {
 
     public function deleteLink($popup=false)
     {
-        $js['LINK'] = MENU_LINK_DELETE;
-        if ($popup) {
-            $js['LINK'] .= ' ' . dgettext('menu', 'Delete link');
+        $link = MENU_LINK_DELETE;
+
+        if (!$popup) {
+            return sprintf('<a style="cursor : pointer" onclick="delete_link(\'%s\', \'%s\', \'%s\')">%s</a>',
+                           $this->menu_id, $this->id, htmlentities($this->getTitle(), ENT_QUOTES, 'UTF-8'), $link);
+        } else {
+            $link .= ' ' . dgettext('menu', 'Delete link');
             $vars['pu'] = 1;
         }
+
+        $js['LINK'] = & $link;
 
         $vars['link_id'] = $this->id;
         $vars['command'] = 'delete_link';

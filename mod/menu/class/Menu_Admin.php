@@ -145,7 +145,20 @@ class Menu_Admin {
 
         case 'delete_link':
             Menu::deleteLink($_REQUEST['link_id']);
-            Menu_Admin::finish();
+
+            if (isset($_GET['ajax'])) {
+                if (empty($_GET['key_id'])) {
+                    $key = Key::getHomeKey();
+                } else {
+                    $key = new Key($_GET['key_id']);
+                }
+                $key->flag();
+
+                echo $menu->view(false, true, $key);
+                exit();
+            } else {
+                Menu_Admin::finish();
+            }
             break;
 
         case 'list':
@@ -162,6 +175,30 @@ class Menu_Admin {
         case 'clip':
             $_SESSION['Menu_Clip'][$_GET['menu_id']] = $_GET['menu_id'];
             PHPWS_Core::goBack();
+            break;
+
+        case 'ajax_add_link':
+            $parent_id = (int)$_GET['parent'];
+
+            if (empty($_GET['key_id']) && empty($_GET['ref_key'])) {
+                $key = Key::getHomeKey();
+            } elseif (isset($_GET['key_id'])) {
+                $key = new Key($_GET['key_id']);
+            } else {
+                $key = new Key($_GET['ref_key']);
+            }
+            $key->flag();
+            
+
+            if (isset($_GET['key_id'])) {
+                $result = Menu_Admin::addLink($menu, $_GET['key_id'], $parent_id);
+            } elseif (isset($_REQUEST['url'])) {
+                $key = Key::getHomeKey();
+                $result = Menu_Admin::addRawLink($menu, $_GET['link_title'], $_GET['url'], $parent_id);
+            }
+            echo $menu->view(false, true, $key);
+            exit();
+
             break;
 
         case 'add_link':

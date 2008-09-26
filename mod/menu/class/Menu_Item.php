@@ -152,8 +152,10 @@ class Menu_Item {
      */
     public function displayLinks($edit=FALSE)
     {
-        javascript('jquery');
-        javascript('modules/menu/move_link', array('authkey'=>Current_User::getAuthKey()));
+        if (PHPWS_Settings::get('menu', 'float_mode')) {
+            javascript('jquery');
+            javascript('modules/menu/admin_link', array('authkey'=>Current_User::getAuthKey()));
+        }
 
         $all_links = $this->getLinks();
         if (empty($all_links)) {
@@ -304,7 +306,7 @@ class Menu_Item {
     /**
      * This link lets you add a stored link to the menu
      */
-    public function getPinLink($menu_id, $link_id=0, $title=false)
+    public function getPinLink($menu_id, $link_id=0, $popup=false)
     {
         if (!isset($_SESSION['Menu_Pin_Links'])) {
             return null;
@@ -320,7 +322,7 @@ class Menu_Item {
         $js['height']  = '100';
 
         $js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
-        if ($title) {
+        if ($popup) {
             $js['label'] = sprintf('%s %s', MENU_PIN_LINK, dgettext('menu', 'Add stored page'));
         } else {
             $js['label'] = MENU_PIN_LINK;

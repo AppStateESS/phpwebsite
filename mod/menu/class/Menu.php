@@ -153,11 +153,11 @@ class Menu {
 
         $vars['command'] = 'add_link';
         $vars['menu_id'] = $menu_id;
-        if (!empty($parent_id)) {
-            $vars['parent'] = $parent_id;
-        } else {
-            $vars['parent'] = 0;
+        if (empty($parent_id)) {
+            $parent_id = 0;
         }
+
+        $vars['parent'] = (int)$parent_id;
 
         $link = MENU_LINK_ADD;
         if ($popup) {
@@ -165,10 +165,14 @@ class Menu {
             $vars['pu'] = 1;
         }
 
-
         if ($key->id) {
-            $vars['key_id'] = $key->id;
-            return PHPWS_Text::secureLink($link, 'menu', $vars);
+            if (!$popup) {
+                return sprintf('<a style="cursor : pointer" onclick="add_keyed_link(\'%s\', \'%s\')">%s</a>',
+                               $menu_id, $parent_id, $link);
+            } else {
+                $vars['key_id'] = $key->id;
+                return PHPWS_Text::secureLink($link, 'menu', $vars);
+            }
         } else {
             // for dummy keys
             if (empty($key->title)) {
@@ -182,10 +186,15 @@ class Menu {
                 $vars['link_title'] = urlencode($key->title);
                 $vars['url']        = urlencode($key->url);
 
-                return PHPWS_Text::secureLink($link, 'menu', $vars);
+                if ($popup) {
+                    return PHPWS_Text::secureLink($link, 'menu', $vars);
+                } else {
+                    return sprintf('<a style="cursor : pointer" onclick="add_unkeyed_link(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
+                                   $menu_id, $parent_id, $vars['url'], $vars['link_title'], $link);
+                }
+
             }
         }
-
     }
 
     public function pinLink($title, $url, $key_id=0)
@@ -219,7 +228,9 @@ class Menu {
     public function deleteLink($link_id)
     {
         $link = new Menu_Link($link_id);
-        return $link->delete();
+        if ($link->id) {
+            return $link->delete();
+        }
     }
 
 
