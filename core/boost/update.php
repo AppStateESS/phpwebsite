@@ -303,16 +303,27 @@ You will need to make your hub/branch home directory writable if the file doesn\
 
     case version_compare($version, '1.9.0', '<'):
         $content[] = '<pre>';
-        $files = array('conf/text_settings.php', 'javascript/js_calendar/default.php',
-                       'javascript/required_input/', 'conf/file_types.php',
-                       'javascript/jquery/jcarousellite.js', 'conf/version.php',
+        $files = array('javascript/js_calendar/default.php',
                        'javascript/js_calendar/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js',
-                       'javascript/js_calendar/phpws_addon.js');
+                       'javascript/js_calendar/phpws_addon.js',
+                       'javascript/open_window/body.js',
+                       'javascript/open_window/body2.js',
+                       'javascript/open_window/example.txt',
+                       'javascript/required_input/', 
+                       'javascript/jquery/jcarousellite.js',
+                       'javascript/datepicker/',
+                       'javascript/pick_color/',
+                       'javascript/required_input/',
+                       'conf/text_settings.php',
+                       'conf/version.php',
+                       'conf/file_types.php',
+                       'conf/smiles.pak',
+                       'img/core/smilies/rofl.gif');
 
         coreUpdateFiles($files, $content);
 
         if (!PHPWS_Boost::inBranch()) {
-            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_8_3.txt');
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_9_0.txt');
         }
         $content[] = '</pre>';
     }
