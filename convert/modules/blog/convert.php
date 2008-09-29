@@ -143,7 +143,7 @@ function convertAnnouncement($entry)
 
     $val['id']      = $entry['id'];
     $val['title']   = PHPWS_Text::parseInput(strip_tags(utf8_encode($entry['subject'])));
-    $val['summary'] = PHPWS_Text::parseInput(PHPWS_Text::breaker(utf8_encode($entry['summary']));
+    $val['summary'] = PHPWS_Text::parseInput(PHPWS_Text::breaker(utf8_encode($entry['summary'])));
 
     if (!empty($entry['body'])) {
         $val['entry'] = PHPWS_Text::parseInput(PHPWS_Text::breaker(utf8_encode($entry['body'])));
