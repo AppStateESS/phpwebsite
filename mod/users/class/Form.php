@@ -836,17 +836,11 @@ class User_Form {
         $form->setLabel('email', dgettext('users', 'Email Address'));
         $form->setSize('email', 40);
 
-        $form->addText('confirm_phrase');
-        $form->setLabel('confirm_phrase', dgettext('users', 'Confirm text'));
-
-        if (PHPWS_User::getUserSetting('graphic_confirm') && extension_loaded('gd')) {
+        if (PHPWS_User::getUserSetting('graphic_confirm')) {
             $result = User_Form::confirmGraphic();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
             } else {
-                $form->addTplTag('CONFIRM_INSTRUCTIONS', dgettext('users', 'Please type the word seen in the image.'));
-                $form->addText('confirm_graphic');
-                $form->setLabel('confirm_graphic', dgettext('users', 'Confirm Graphic'));
                 $form->addTplTag('GRAPHIC', $result);
             }
         }
