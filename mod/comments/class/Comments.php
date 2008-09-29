@@ -572,7 +572,7 @@ class Comments {
 
         if ( Comments::useCaptcha() ) {
             PHPWS_Core::initCoreClass('Captcha.php');
-            if (!Captcha::verify($_POST['captcha'])) {
+            if (!Captcha::verify()) {
                 $cm_item->_error =  dgettext('comments', 'You failed verification. Try again.');
                 return false;
             }

@@ -63,8 +63,6 @@ class Comment_Forms {
 
         if (Comments::useCaptcha()) {
             PHPWS_Core::initCoreClass('Captcha.php');
-            $form->addText('captcha');
-            $form->setLabel('captcha', dgettext('comments', 'Please copy the word in the above image.'));
             $form->addTplTag('CAPTCHA_IMAGE', Captcha::get());
         }
 
