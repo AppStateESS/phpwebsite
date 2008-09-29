@@ -14,10 +14,6 @@ class Captcha {
 
     public function get()
     {
-        if (!Captcha::isGD()) {
-            return null;
-        }
-
         $dirname = 'captcha/' . CAPTCHA_NAME . '/';
 
         if (is_dir('javascript/' . $dirname)) {
@@ -27,12 +23,8 @@ class Captcha {
         }
     }
 
-    public function verify($answer)
+    public function verify()
     {
-        if (!Captcha::isGD()) {
-            return true;
-        }
-
         $file = 'javascript/captcha/' . CAPTCHA_NAME . '/verify.php';
 
         if (!is_file($file)) {
@@ -45,7 +37,7 @@ class Captcha {
             return false;
         }
 
-        return verify($answer);
+        return verify();
     }
 
     public function isGD()

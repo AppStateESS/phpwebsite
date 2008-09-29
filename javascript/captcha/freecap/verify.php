@@ -10,8 +10,13 @@
    * @author Howard Yeend
    * @modified Matthew McNaney <mcnaney at gmail dot com>
    */
-function verify($answer) 
+function verify() 
 {
+    if (!Captcha::isGD()) {
+        return false;
+    }
+
+    $answer = trim($_POST['captcha']);
     if(!empty($_SESSION['freecap_word_hash'])) {
         // all freeCap words are lowercase.
         // font #4 looks uppercase, but trust me, it's not...
