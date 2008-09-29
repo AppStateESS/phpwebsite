@@ -30,10 +30,8 @@
   <tr>
     <td>{CONFIRM_GRAPHIC_LABEL}
     </td>
-    <td>{GRAPHIC}<br />{CONFIRM_GRAPHIC} {CONFIRM_INSTRUCTIONS}
-    <!-- BEGIN graphic-error -->
-    <div class="error">{CONFIRM_ERROR}</div>
-    <!-- END graphic-error -->
+    <td>{GRAPHIC}<!-- BEGIN graphic-error -->
+    <div class="error">{CONFIRM_ERROR}</div><!-- END graphic-error -->
     </td>
   </tr>
 </table>
