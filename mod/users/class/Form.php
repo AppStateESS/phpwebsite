@@ -1045,10 +1045,7 @@ class User_Form {
         $form->setLabel('fg_email', dgettext('users', 'Forgotten your user name? Enter your email address instead.'));
 
         if (ALLOW_CAPTCHA) {
-            $captcha = Captcha::get();
-            $form->addText('captcha');
-            $form->setLabel('captcha', dgettext('users', 'Enter the word from the image above.'));
-            $form->addTplTag('CAPTCHA_IMAGE', $captcha);
+            $form->addTplTag('CAPTCHA_IMAGE', Captcha::get());
         }
 
         $form->addSubmit(dgettext('users', 'Send reminder'));

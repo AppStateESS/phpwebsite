@@ -580,7 +580,7 @@ class User_Action {
         }
 
         PHPWS_Core::initCoreClass('Captcha.php');
-        return Captcha::verify($_POST['confirm_graphic']);
+        return Captcha::verify();
     }
 
     function postUser(PHPWS_User $user, $set_username=true)
@@ -802,7 +802,7 @@ class User_Action {
             $title = dgettext('users', 'Forgot Password');
             if (ALLOW_CAPTCHA) {
                 PHPWS_Core::initCoreClass('Captcha.php');
-                if (!Captcha::verify($_POST['captcha'])) {
+                if (!Captcha::verify()) {
                     $content = dgettext('users', 'Captcha information was incorrect.');
                     $content .= User_Form::forgotForm();
                 } else if (!User_Action::postForgot($content)) {
