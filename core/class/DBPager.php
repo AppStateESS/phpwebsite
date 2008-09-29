@@ -165,6 +165,11 @@ class DBPager {
     public $convert_date = array();
 
     /**
+     * Method name of function to call for xml/csv report
+     */
+    public $report_row = null;
+
+    /**
      * If true, DBPager will cache last user request. This is not defaulted to
      * true because cache_identifier defaults to the template name. If a module
      * developer uses the same template for different processes, it could get
@@ -256,6 +261,11 @@ class DBPager {
             $this->loadSearch($_REQUEST['pager_search']);
         }
 
+    }
+
+    public function disableSearchLabel()
+    {
+        $this->search_label = false;
     }
 
     public function joinResult($source_column, $join_table, $join_column, $content_column, $new_name=null, $searchable=false)
@@ -443,6 +453,12 @@ class DBPager {
 
         $this->row_tags = array('method'=>$method, 'variable'=>$variables);
     }
+
+    public function setReportRow($report_row)
+    {
+        $this->report_row = $report_row;
+    }
+
 
     public function setEmptyMessage($message)
     {
@@ -643,8 +659,30 @@ class DBPager {
      */
     public function initialize($load_rows=true)
     {
-        if (empty($this->cache_identifier))
+        // if false, prevents 
+        $full_report = false;
+        $report = false;
+
+        if (isset($_GET['dbprt'])) {
+            $report = true;
+            switch ($_GET['dbprt']) {
+            case 'xml_p':
+            case 'csv_p':
+
+                break;
+
+            case 'xml_a':
+            case 'csv_a':
+                $full_report = true;
+                break;
+            }
+        }
+
+
+        if (empty($this->cache_identifier)) {
             $this->cache_identifier = $this->template;
+        }
+
         if (empty($this->limit) && empty($this->orderby) &&
             empty($this->search) && empty($this->orderby) &&
             isset($_SESSION['DB_Cache'][$this->module][$this->cache_identifier])) {
@@ -680,13 +718,18 @@ class DBPager {
             }
         }
 
-        if (!empty($search) && isset($this->searchColumn)) {
+        if (!$full_report && !empty($search) && isset($this->searchColumn)) {
             foreach ($this->searchColumn as $column_name) {
                 $this->db->addWhere($column_name, $search, 'regexp', 'or', 1);
             }
         }
 
-        $count = $this->getTotalRows();
+        if (!$report) {
+            $count = $this->getTotalRows();
+            if (PEAR::isError($count)) {
+                return $count;
+            }
+        }
 
         $this->db->setDistinct(true);
         if (!empty($this->sub_result)) {
@@ -696,9 +739,6 @@ class DBPager {
             }
         }
 
-        if (PEAR::isError($count)) {
-            return $count;
-        }
 
         if (empty($this->limit)) {
             if ($this->default_limit) {
@@ -709,16 +749,18 @@ class DBPager {
             }
         }
 
-        if ($this->limit > 0) {
+        if (!$full_report && $this->limit > 0) {
             $this->db->setLimit($this->getLimit());
         }
 
-        $this->total_rows = &$count;
-        $this->total_pages = ceil($this->total_rows / $this->limit);
+        if (!$full_report) {
+            $this->total_rows = & $count;
+            $this->total_pages = ceil($this->total_rows / $this->limit);
 
-        if ($this->current_page > $this->total_pages || $this->current_page == 'last') {
-            $this->current_page = $this->total_pages;
-            $this->db->setLimit($this->getLimit());
+            if ($this->current_page > $this->total_pages || $this->current_page == 'last') {
+                $this->current_page = $this->total_pages;
+                $this->db->setLimit($this->getLimit());
+            }
         }
 
         if (isset($this->orderby)) {
@@ -1169,7 +1211,7 @@ class DBPager {
             }
         }
 
-        $form = & new PHPWS_Form('page_list');
+        $form = new PHPWS_Form('page_list');
         $form->setMethod('get');
         $values = $this->getLinkValues();
         $form->addHidden($values);
@@ -1194,7 +1236,16 @@ class DBPager {
 
     public function getSearchBox()
     {
-        $form = new PHPWS_Form('search_list');
+        static $id_count = 0;
+
+        if ($id_count) {
+            $id = 'search_list_' . $id_count;
+        } else {
+            $id = 'search_list';
+            $id_count++;
+        }
+        
+        $form = new PHPWS_Form($id);
         $form->setMethod('get');
         $values = $this->getLinkValues();
         unset($values['pager_search']);
@@ -1379,6 +1430,7 @@ class DBPager {
     {
         $this->auto_sort = (bool)$auto;
     }
+
 }
 
 ?>

@@ -4,6 +4,14 @@ its own separate CHANGELOG file..
 
 Version 1.9.0
 ---------------------------------------------------------------------
+29 September 2008
++ Freecap changed to fit new captcha class changes
++ Recaptcha added. Thanks Jeremy.
++ Gave ids to form wrapping tags.
++ Text - added use_breaker parameter to parseOutput
++ Form - fixed setRequired
++ update Captcha instructions
+
 23 September 2008
 + DBPager - can set title of header sort tags now using third
   parameter of addSortHeaders.
@@ -89,7 +97,7 @@ themes/default/*
   o Added setRewrite and setAnchor functions.
 + Time - changed getDTTime to return gmtime
 + Forward - a single variable after the module is considered to be an 'id'
-+ Updated: conf/smiles.pak, images/core/smilies/rofl.gif
++ Updated: conf/smiles.pak, img/core/smilies/rofl.gif
 
 8 August 2008
 + Updated pick date functionality of js_calendar. Wasn't forwarding

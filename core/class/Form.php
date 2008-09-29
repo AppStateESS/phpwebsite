@@ -1331,10 +1331,10 @@ class PHPWS_Form {
         if ($helperTags) {
             $template['START_FORM'] = $this->getStart() . "\n";
             if ($this->use_fieldset) {
-                $template['START_FORM'] .= "<fieldset>\n";
+                $template['START_FORM'] .= "<fieldset class=\"phpws-form-container\">\n";
                 $template['START_FORM'] .= '<legend>' . $this->legend . "</legend>\n";
             } else {
-                $template['START_FORM'] .= "<div>\n";
+                $template['START_FORM'] .= "<div class=\"phpws-form-container\">\n";
             }
 
             if (FORM_USE_FILE_RESTRICTIONS && $this->_multipart) {
@@ -2328,9 +2328,9 @@ class Form_Element {
             $extra[] = $this->getStyle(true);
         }
 
-        if (isset($this->css_class)) {
-            $extra[] = $this->getClass(true);
-        }
+        // Don't check isset here. Required needs to be checked in 
+        // the getClass function.
+        $extra[] = $this->getClass(true);
 
         if (isset($this->extra)) {
             $extra[] = $this->getExtra();

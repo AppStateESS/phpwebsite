@@ -364,7 +364,7 @@ class PHPWS_Text {
      *                               run against the output text.
      * @return  string  text         Stripped text
      */
-    public function parseOutput($text, $decode=ENCODE_PARSED_TEXT, $use_filters=false)
+    public function parseOutput($text, $decode=ENCODE_PARSED_TEXT, $use_filters=false, $use_breaker=USE_BREAKER)
     {
         $t = new PHPWS_Text;
         $t->setText($text, $decode);

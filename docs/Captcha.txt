@@ -12,35 +12,22 @@ This document instructs the reader in applying a CAPTCHA
 PHPWS_Core::initCoreClass('Captcha.php');
 
 
-2. Create a text field to store for the user to type in the answer:
-
-$form = new Form;
-$form->addText('message');
-$form->setLabel('message', 'Enter your message');
-
-$form->addText('captcha');
-$form->setLabel('captcha', 'Copy the word seen in the above image');
-
-
-3. Create an area to echo the CAPTCHA graphic on your page and use
+2. Create an area to echo the CAPTCHA graphic on your page and use
    Captcha's "get" method.
 
 $tpl = $form->getTemplate();
 
 $tpl['CAPTCHA_IMAGE'] = Captcha::get();
 
+3. Now you need to verify the submission.
 
-4. Now you need to verify the submission.
-
-if (!Captcha::verify($_POST['captcha'])) {
+if (!Captcha::verify()) {
    echo 'You failed the CAPTCHA test!';
 } else {
   postRestofForm();
 }
 
-
 This completes the developer application of the Captcha class.
-
 
 
 Settings
