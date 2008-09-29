@@ -647,6 +647,11 @@ class Blog {
         $key->delete();
         return $all_is_well;
     }
+
+    public function report_rows()
+    {
+        
+    }
 }
 
 ?>

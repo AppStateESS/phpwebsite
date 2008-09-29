@@ -501,6 +501,8 @@ class Blog_Admin {
         $pager->setSearch('title');
         $pager->setDefaultOrder('create_date', 'desc');
         $pager->cacheQueries();
+        $pager->setReportRow('report_rows');
+
         $content = $pager->get();
         return $content;
     }
