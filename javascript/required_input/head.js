@@ -7,6 +7,7 @@ function check(form_button)
 
     $(':input', form).each(function() {
         var class = $(this).attr('class');
+
         if (class == 'input-required' && $(this).val() == '') {
             var type = this.type;
             switch(type) {
@@ -15,7 +16,7 @@ function check(form_button)
                 element_id = $(this).attr('id');
                 label_id = '#' + element_id + '-label';
                 label_value = $(label_id).html();
-                alert('Please fill out the field: ' + label_value);
+                alert('{message} ' + label_value);
                 form_ok = false;
                 break;
 
