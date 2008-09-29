@@ -7,8 +7,9 @@
 $use_permissions = true;
 $item_permissions = false;
 
-$permissions['delete_offers']  = dgettext('blog', 'Delete ride offers');
-$permissions['delete_looking'] = dgettext('blog', 'Delete ');
-$permissions['settings']       = dgettext('blog', 'Change settings');
+$permissions['delete_offers']   = dgettext('rideboard', 'Delete ride offers');
+$permissions['delete_looking']  = dgettext('rideboard', 'Delete ');
+$permissions['settings']        = dgettext('rideboard', 'Change settings');
+$permissions['delete_carpools'] = dgettext('rideboard', 'Delete carpools')
 
 ?>

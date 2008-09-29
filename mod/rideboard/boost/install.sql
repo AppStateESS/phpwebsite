@@ -20,3 +20,14 @@ id INT NOT NULL default 0,
 city_state VARCHAR( 255 ) NOT NULL,
 PRIMARY KEY  (id)
 );
+
+CREATE TABLE rb_carpool (
+id INT NOT NULL,
+user_id INT NOT NULL default 0,
+email VARCHAR( 255 ) NOT NULL,
+created INT NOT NULL default 0,
+start_address VARCHAR( 255 ) NOT NULL,
+dest_address VARCHAR( 255 ) NOT NULL,
+comment TEXT,
+PRIMARY KEY ( id )
+);

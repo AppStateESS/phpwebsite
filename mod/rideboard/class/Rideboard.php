@@ -12,6 +12,7 @@ class Rideboard {
     public $content  = null;
     public $title    = null;
     public $message  = array();
+    public $carpool  = null;
 
     public function admin()
     {
@@ -71,6 +72,15 @@ class Rideboard {
             }
             PHPWS_Settings::set('rideboard', 'default_slocation', (int)$_POST['default_slocation']);
             PHPWS_Settings::set('rideboard', 'miles_or_kilometers', (int)$_POST['miles_or_kilometers']);
+            PHPWS_Settings::set('rideboard', 'carpool', (int)isset($_POST['carpool']));
+
+            $dest = preg_replace('/[^\w,\-\.\:\s]/', '', strip_tags($_POST['default_destination']));
+            
+            if (!empty($dest)) {
+                PHPWS_Settings::set('rideboard', 'default_destination', $dest);
+            } else {
+                PHPWS_Settings::set('rideboard', 'default_destination', null);
+            }
             PHPWS_Settings::save('rideboard');
             $this->settings();
             break;
@@ -133,6 +143,26 @@ class Rideboard {
             $this->viewRide();
             break;
 
+        case 'carpool_form':
+            $js = true;
+            $this->loadCarpool();
+            $this->carpoolForm();
+            break;
+
+        case 'carpool':
+            $this->carpool();
+            break;
+
+        case 'post_carpool':
+            $js = true;
+            $this->loadCarpool();
+            if ($this->postCarpool()) {
+                javascript('close_refresh');
+            } else {
+                $this->carpoolForm();
+            }
+            break;
+
         case 'search_rides':
             $this->searchRides();
             break;
@@ -174,6 +204,21 @@ class Rideboard {
                 }
             }
             PHPWS_Core::goBack();
+            break;
+
+        case 'delete_carpool':
+            $this->loadCarpool();
+            if (Current_User::verifyAuthKey() && $this->carpool->allowDelete()) {
+                PHPWS_Error::logIfError($this->carpool->delete());
+            }
+            PHPWS_Core::goBack();
+            break;
+
+        case 'cpinfo':
+            $js = true;
+            $this->loadCarpool();
+            $this->title = dgettext('rideboard', 'Carpool info');
+            $this->content = $this->carpool->view();
             break;
 
         default:
@@ -328,6 +373,14 @@ class Rideboard {
                                                      1=>dgettext('rideboard', 'Kilometers')));
         $form->setMatch('miles_or_kilometers', PHPWS_Settings::get('rideboard', 'miles_or_kilometers'));
 
+        $form->addCheck('carpool', 1);
+        $form->setMatch('carpool', PHPWS_Settings::get('rideboard', 'carpool'));
+        $form->setLabel('carpool', dgettext('pulse', 'Enable carpooling'));
+
+        $form->addText('default_destination', PHPWS_Settings::get('rideboard', 'default_destination'));
+        $form->setLabel('default_destination', dgettext('rideboard', 'Default destination'));
+        $form->setSize('default_destination', 40);
+
         $tpl = $form->getTemplate();
 
         $db = new PHPWS_DB('rb_ride');
@@ -339,8 +392,7 @@ class Rideboard {
             $tpl['PURGE'] = PHPWS_Text::secureLink(sprintf(dngettext('rideboard', 'You have %s ride that has expired. Click here to purge it.',
                                                                      'You have %s rides that have expired. Click here to purge them.', $old_rides),
                                                            $old_rides),
-                                                   'rideboard',
-                                                   array('aop'=>'purge_rides')
+                                                   'rideboard', array('aop'=>'purge_rides')
                                                    );
         } else {
             $tpl['PURGE'] = dgettext('rideboard', 'No rides need purging.');
@@ -416,6 +468,12 @@ class Rideboard {
 
         $links[] = PHPWS_Text::moduleLink(dgettext('rideboard', 'View my rides'), 'rideboard',
                                           array('uop' => 'view_my_rides'));
+
+        if (PHPWS_Settings::get('rideboard', 'carpool')) {
+            $links[] = PHPWS_Text::moduleLink(dgettext('rideboard', 'Carpool'), 'rideboard',
+                                              array('uop' => 'carpool'));
+        }
+
 
         $tpl['LINKS'] = implode(' | ', $links);
         $this->content = PHPWS_Template::process($tpl, 'rideboard', 'ride_form.tpl');
@@ -699,7 +757,111 @@ class Rideboard {
         return !PHPWS_Error::logIfError($db->delete());
     }
 
+    public function carpool()
+    {
+        PHPWS_Core::initCoreClass('DBPager.php');   
+        PHPWS_Core::initModClass('rideboard', 'Carpool.php');
+
+        $tpl['LINK'] = javascript('open_window', 
+                                  array('address' => PHPWS_Text::linkAddress('rideboard', 
+                                                                             array('uop'=>'carpool_form')),
+                                        'label'=> dgettext('rideboard', 'Create a carpool'),
+                                        'width'=>640, 'height'=>480));
+
+        $pager = new DBPager('rb_carpool', 'RB_Carpool');
+        $pager->setModule('rideboard');
+        $pager->setTemplate('carpools.tpl');
+        $pager->addRowTags('row_tags', false);
+        $pager->addPageTags($tpl);
+        $pager->setEmptyMessage(dgettext('rideboard', 'No carpool offers found.'));
+        $pager->addSortHeader('created', dgettext('rideboard', 'Date created'));
+        $pager->addSortHeader('start_address', dgettext('rideboard', 'Start'));
+        $pager->addSortHeader('dest_address', dgettext('rideboard', 'Destination'));
+        $pager->setSearch('start_address', 'dest_address');
+        $pager->addToggle('toggle1');
+        $pager->disableSearchLabel();
+
+
+        $this->title = dgettext('rideboard', 'Carpools');
+        $this->content = $pager->get();
+    }
+
+    public function carpoolForm()
+    {
+        $form = new PHPWS_Form('carpool');
+        $form->addHidden('module', 'rideboard');
+        $form->addHidden('uop', 'post_carpool');
+        if ($this->carpool->id) {
+            $form->addHidden('cid', $this->carpool->id);
+        }
+
+        $form->addText('start_address', $this->carpool->start_address);
+        $form->setRequired('start_address');
+        $form->setLabel('start_address', dgettext('rideboard', 'Starting area'));
+        $form->setSize('start_address', 50);
+
+        $form->addText('dest_address', $this->carpool->dest_address);
+        $form->setRequired('dest_address');
+        $form->setSize('dest_address', 50);
+        $form->setLabel('dest_address', dgettext('rideboard', 'Destination'));
+
+        $form->addTextArea('comment', $this->carpool->comment);
+        $form->setCols('comment', 60);
+        $form->setLabel('comment', dgettext('rideboard', 'Comments'));
+
+        $form->addSubmit(dgettext('rideboard', 'Save carpool'));
+
+        $tpl = $form->getTemplate();
+
+        $tpl['DIRECTIONS'] = dgettext('rideboard', '');
+
+        if ($this->carpool->id) {
+            $this->title = dgettext('rideboard', 'Update carpool');
+        } else {
+            $this->title = dgettext('rideboard', 'Create a new carpool');
+        }
+        $this->content = PHPWS_Template::process($tpl, 'rideboard', 'edit_carpool.tpl');
+    }
+
+    public function loadCarpool()
+    {
+        PHPWS_Core::initModClass('rideboard', 'Carpool.php');
+        if (isset($_REQUEST['cid'])) {
+            $this->carpool = new RB_Carpool((int)$_REQUEST['cid']);
+        } else {
+            $this->carpool = new RB_Carpool;
+        }
+    }
+
+    public function postCarpool($admin=false)
+    {
+        if (!$this->id) {
+            $this->carpool->user_id = Current_User::getId();
+            $this->carpool->email   = Current_User::getEmail();
+        }
+        $this->carpool->setAddress('start', $_POST['start_address']);
+        $this->carpool->setAddress('dest', $_POST['dest_address']);
+        $this->carpool->setComment($_POST['comment']);
+        if (empty($this->carpool->start_address)) {
+            $this->message = dgettext('rideboard', 'Starting location needs to be entered.');
+            return false;
+        }
+
+        if (empty($this->carpool->dest_address)) {
+            $this->message = dgettext('rideboard', 'Destination location needs to be entered.');
+            return false;
+        }
+
+        if (empty($this->carpool->created)) {
+            $this->carpool->created = mktime();
+        }
+
+        if (PHPWS_Error::logIfError($this->carpool->save())) {
+            $this->message = dgettext('rideboard', 'A problem occurred when trying to save your carpool information. Try again later.');
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
-
-
 ?>
