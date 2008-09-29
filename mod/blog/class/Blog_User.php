@@ -145,7 +145,7 @@ class Blog_User {
 
         if (PHPWS_Settings::get('blog', 'captcha_submissions')) {
             PHPWS_Core::initCoreClass('Captcha.php');
-            if (!Captcha::verify($_POST['captcha'])) {
+            if (!Captcha::verify()) {
                 $blog->_error[] = dgettext('blog', 'Please enter word in image correctly.');
             }
         }  elseif (PHPWS_Core::isPosted() && empty($blog->_error)) {

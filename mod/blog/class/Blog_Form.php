@@ -24,8 +24,6 @@ class Blog_Form {
             $form->addSubmit('submit', dgettext('blog', 'Suggest entry'));
 
             if (PHPWS_Settings::get('blog', 'captcha_submissions')) {
-                $form->addText('captcha');
-                $form->setLabel('captcha', dgettext('blog', 'Type the word seen in the image.'));
                 $form->addTplTag('CAPTCHA_IMAGE', Captcha::get());
             }
         } else {
