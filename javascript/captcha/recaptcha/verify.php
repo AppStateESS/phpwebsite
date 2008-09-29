@@ -8,7 +8,7 @@
 require_once('recaptcha_settings.php');
 require_once('recaptchalib.php');
 
-function verify($answer)
+function verify()
 {
     if ($_POST["recaptcha_response_field"]) {
         $resp = recaptcha_check_answer (RECAPTCHA_PRIVATE_KEY,
