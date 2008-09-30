@@ -12,9 +12,10 @@ if ($mini_cal_display == MINI_CAL_SHOW_ALWAYS ||
     
     $Calendar = new PHPWS_Calendar;
     $Calendar->loadUser();
-    $lil_calendar = $Calendar->user->mini_month();
-    
-    Layout::add($lil_calendar, 'calendar', 'minimonth');
+    if (PHPWS_Settings::get('calendar', 'mini_grid')) {
+        $lil_calendar = $Calendar->user->mini_month();
+        Layout::add($lil_calendar, 'calendar', 'minimonth');
+    }
     
     $upcoming = $Calendar->user->upcomingEvents();
     

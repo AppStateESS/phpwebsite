@@ -880,29 +880,12 @@ class Calendar_Admin {
 
     public function postSettings()
     {
-        if (isset($_POST['personal_schedules'])) {
-            PHPWS_Settings::set('calendar', 'personal_schedules', 1);
-        } else {
-            PHPWS_Settings::set('calendar', 'personal_schedules', 0);
-        }
 
-        if (isset($_POST['allow_submissions'])) {
-            PHPWS_Settings::set('calendar', 'allow_submissions', 1);
-        } else {
-            PHPWS_Settings::set('calendar', 'allow_submissions', 0);
-        }
-
-        if (isset($_POST['mini_event_link'])) {
-            PHPWS_Settings::set('calendar', 'mini_event_link', 1);
-        } else {
-            PHPWS_Settings::set('calendar', 'mini_event_link', 0);
-        }
-
-        if (isset($_POST['cache_month_views'])) {
-            PHPWS_Settings::set('calendar', 'cache_month_views', 1);
-        } else {
-            PHPWS_Settings::set('calendar', 'cache_month_views', 0);
-        }
+        PHPWS_Settings::set('calendar', 'personal_schedules', (int)isset($_POST['personal_schedules']));        
+        PHPWS_Settings::set('calendar', 'allow_submissions', (int)isset($_POST['allow_submissions']));
+        PHPWS_Settings::set('calendar', 'mini_event_link', (int)isset($_POST['mini_event_link']));
+        PHPWS_Settings::set('calendar', 'cache_month_views', (int)isset($_POST['cache_month_views']));
+        PHPWS_Settings::set('calendar', 'mini_grid', (int)isset($_POST['mini_grid']));
 
         PHPWS_Settings::set('calendar', 'display_mini', (int)$_POST['display_mini']);
         PHPWS_Settings::set('calendar', 'starting_day', (int)$_POST['starting_day']);
@@ -1360,7 +1343,7 @@ class Calendar_Admin {
             $js_vars['label']   = $label;
             $js_vars['width']   = 640;
             $js_vars['height']  = 640;
-            $page_tags['ADD_CALENDAR']       = javascript('open_window', $js_vars);
+            $page_tags['ADD_CALENDAR'] = javascript('open_window', $js_vars);
         } else {
             $page_tags['ADD_CALENDAR'] = PHPWS_Text::secureLink($label, 'calendar', $vars);
         }
@@ -1429,6 +1412,10 @@ class Calendar_Admin {
         $form->addCheck('cache_month_views', 1);
         $form->setLabel('cache_month_views', dgettext('calendar', 'Cache month views (public only)'));
         $form->setMatch('cache_month_views', PHPWS_Settings::get('calendar', 'cache_month_views'));
+
+        $form->addCheck('mini_grid', 1);
+        $form->setLabel('mini_grid', dgettext('calendar', 'Show mini grid'));
+        $form->setMatch('mini_grid', PHPWS_Settings::get('calendar', 'mini_grid'));
 
         $form->addRadio('display_mini', array(0,1,2));
         $form->setLabel('display_mini', array(dgettext('calendar', 'Don\'t show'), dgettext('calendar', 'Only on front page'), dgettext('calendar', 'On all pages')));

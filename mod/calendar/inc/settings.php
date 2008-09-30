@@ -23,6 +23,7 @@ $settings = array('use_calendar_style' => 1,
                   'mini_event_link'    => 0,
                   'cache_month_views'  => 0,
                   'brief_grid'         => 0,
-                  'allow_public_ical'  => 1);
+                  'allow_public_ical'  => 1,
+                  'mini_grid'          => 1);
 
 ?>
