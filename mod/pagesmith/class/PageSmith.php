@@ -151,7 +151,11 @@ class PageSmith {
 
             case 1:
                 PHPWS_Cache::clearCache();
-                PHPWS_Core::reroute($this->page->url());
+                if (isset($_POST['save_so_far'])) {
+                    PHPWS_Core::reroute(PHPWS_Text::linkAddress('pagesmith', array('id'=>$this->page->id, 'aop'=>'edit_page'), true));
+                } else {
+                    PHPWS_Core::reroute($this->page->url());
+                }
                 break;
             }
             break;

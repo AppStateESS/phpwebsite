@@ -89,7 +89,8 @@ class PS_Forms {
             $this->ps->content = dgettext('pagesmith', 'Unable to load page template.');
             return;
         }
-        $form->addSubmit('submit', dgettext('pagesmith', 'Save page'));
+        $form->addSubmit('save_so_far', dgettext('pagesmith', 'Save and continue'));
+        $form->addSubmit('submit', dgettext('pagesmith', 'Save and view'));
         $this->pageTemplateForm($form);
 
         $tpl = $form->getTemplate();
