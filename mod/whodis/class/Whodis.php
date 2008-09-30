@@ -24,7 +24,7 @@ class Whodis {
         }
     }
 
-    function passFilters(Whodis_Referrer $referrer)
+    function passFilters($referrer)
     {
         $home_url = PHPWS_Core::getHomeHttp();
         $preg_match = str_replace('/', '\/', ($home_url));
