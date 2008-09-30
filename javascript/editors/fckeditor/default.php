@@ -33,6 +33,11 @@ if ($data['LIMITED']) {
     $data['config'] = 'custom.js';
  }
 
+$current_theme = Layout::getCurrentTheme();
+if (is_file("themes/$current_theme/fckeditor.css")) {
+    $data['current_theme'] = $current_theme;
+}
+
 if (isset($_REQUEST['module'])) {
     $data['module'] = preg_replace('/\W/', '', $_REQUEST['module']);
 }

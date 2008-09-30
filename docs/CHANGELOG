@@ -9,6 +9,8 @@ Version 1.9.0
 + Added csv reports into DBPager.
 + Removed unused parameter.
 + Added randomString function to Text.
++ FCKeditor will now look for fckeditor.css in the current
+theme. Thanks again Verdon
 
 29 September 2008
 + Freecap changed to fit new captcha class changes
