@@ -484,7 +484,7 @@ class Blog_Admin {
         $db->addColumn('blog_id');
         $GLOBALS['blog_stickies'] = $db->select('col');
 
-        $pageTags['SUMMARY']        = dgettext('blog', 'Summary');
+        $pageTags['SUMMARY'] = dgettext('blog', 'Summary');
         $pageTags['ACTION']  = dgettext('blog', 'Action');
 
         $pager = new DBPager('blog_entries', 'Blog');
@@ -502,7 +502,6 @@ class Blog_Admin {
         $pager->setDefaultOrder('create_date', 'desc');
         $pager->cacheQueries();
         $pager->setReportRow('report_rows');
-
         $content = $pager->get();
         return $content;
     }

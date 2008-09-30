@@ -648,9 +648,29 @@ class Blog {
         return $all_is_well;
     }
 
+    private function reportClean($text)
+    {
+        $text = str_replace("\r", '', strip_tags($text));
+        $text = str_replace('&#160;', ' ', $text);
+        return $text;
+    }
+
     public function report_rows()
     {
-        
+        $row['id'] = $this->id;
+        $row['title'] = $this->title;
+
+        $row['summary'] = $this->reportClean($this->getSummary(true));
+        $row['entry'] = $this->reportClean($this->getEntry(true));
+        $row['author'] = $this->author;
+        $row['creation date'] = strftime('%c', $this->create_date);
+        $row['publish date'] = strftime('%c', $this->publish_date);
+        if ($this->expire_date) {
+            $row['expiration date'] = strftime('%c', $this->expire_date);
+        } else {
+            $row['expiration date'] = dgettext('blog', 'None');
+        }
+        return $row;
     }
 }
 

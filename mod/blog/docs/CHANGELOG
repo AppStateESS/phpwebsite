@@ -1,3 +1,7 @@
+30 September 2008
++ Added csv to blog
++ Updated: templates/list.tpl
+
 10 September 2008
 + Added ability to purge old blog entries.
 + Updated: templates/purge_confirm.tpl

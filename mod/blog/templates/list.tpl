@@ -26,3 +26,4 @@
 <div class="align-right">
 {SEARCH}
 </div>
+{CSV_REPORT}
