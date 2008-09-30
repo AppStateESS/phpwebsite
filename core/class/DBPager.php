@@ -4,6 +4,12 @@ define ('DBPAGER_DEFAULT_LIMIT', 25);
 define ('DBPAGER_PAGE_LIMIT', 12);
 define ('DBPAGER_DEFAULT_EMPTY_MESSAGE', _('No rows found.'));
 
+// Note: XML reports are not operational
+define('XML_PARTIAL', 1);
+define('CSV_PARTIAL', 2);
+define('XML_FULL', 3);
+define('CSV_FULL', 4);
+
 if (!defined('UTF8_MODE')) {
     define ('UTF8_MODE', false);
 }
@@ -169,6 +175,8 @@ class DBPager {
      */
     public $report_row = null;
 
+    public $report_type = 0;
+
     /**
      * If true, DBPager will cache last user request. This is not defaulted to
      * true because cache_identifier defaults to the template name. If a module
@@ -199,7 +207,20 @@ class DBPager {
             unset($_SESSION['DBPager_Last_View'][$table]);
         }
 
-        $this->table = &$table;
+        // XML creation not written yet
+        if (isset($_GET['dbprt'])) {
+            switch ($_GET['dbprt']) {
+            case 'csvp':
+                $this->report_type = CSV_PARTIAL;
+                break;
+
+            case 'csva':
+                $this->report_type = CSV_FULL;
+                break;
+            }
+        }
+
+        $this->table = & $table;
         $this->db = & new PHPWS_DB($table);
         $this->table_columns = $this->db->getTableColumns();
 
@@ -660,32 +681,23 @@ class DBPager {
     public function initialize($load_rows=true)
     {
         // if false, prevents 
-        $full_report = false;
-        $report = false;
-
-        if (isset($_GET['dbprt'])) {
+        if ($this->report_type) {
             $report = true;
-            switch ($_GET['dbprt']) {
-            case 'xml_p':
-            case 'csv_p':
-
-                break;
-
-            case 'xml_a':
-            case 'csv_a':
+            if ($this->report_type == XML_FULL || $this->report_type == CSV_FULL) {
                 $full_report = true;
-                break;
+            } else {
+                $full_report = false;
             }
+        } else {
+            $full_report = $report = false;
         }
-
 
         if (empty($this->cache_identifier)) {
             $this->cache_identifier = $this->template;
         }
 
         if (empty($this->limit) && empty($this->orderby) &&
-            empty($this->search) && empty($this->orderby) &&
-            isset($_SESSION['DB_Cache'][$this->module][$this->cache_identifier])) {
+            empty($this->search) && isset($_SESSION['DB_Cache'][$this->module][$this->cache_identifier])) {
             extract($_SESSION['DB_Cache'][$this->module][$this->cache_identifier]);
             $this->limit        = $limit;
             $this->orderby      = $orderby;
@@ -724,11 +736,9 @@ class DBPager {
             }
         }
 
-        if (!$report) {
-            $count = $this->getTotalRows();
-            if (PEAR::isError($count)) {
-                return $count;
-            }
+        $count = $this->getTotalRows();
+        if (PEAR::isError($count)) {
+            return $count;
         }
 
         $this->db->setDistinct(true);
@@ -791,7 +801,7 @@ class DBPager {
             return $result;
         }
 
-        $this->display_rows = &$result;
+        $this->display_rows = & $result;
 
         if ($this->cache_queries) {
             $cache['limit']        = $this->limit;
@@ -804,6 +814,7 @@ class DBPager {
         } else {
             $this->clearQuery();
         }
+
         return true;
     }
 
@@ -1096,6 +1107,21 @@ class DBPager {
         return $values;
     }
 
+    function getReportLink()
+    {
+        $values = $this->getLinkValues();
+        $module = $values['module'];
+        unset($values['module']);
+
+        $values['dbprt'] = 'csva';
+        $all = PHPWS_Text::moduleLink(_('All'), $module, $values, null, _('Download a complete CSV file'));
+        
+        $values['dbprt'] = 'csvp';
+        $part = PHPWS_Text::moduleLink(_('Partial'), $module, $values, null, _('Download a partial CSV file'));
+
+        return sprintf(_('CSV Report - %s | %s'), $all, $part);
+    }
+
 
     public function getLimitList()
     {
@@ -1275,7 +1301,7 @@ class DBPager {
         return implode("\n", $template);
     }
 
-    public function _getNavigation(&$template)
+    private function getNavigation(&$template)
     {
         if ($this->total_rows < 1) {
             $total_row = $start_row = $end_row = 1;
@@ -1303,6 +1329,68 @@ class DBPager {
         if (isset($this->searchColumn) || $this->sub_search) {
             $template['SEARCH'] = $this->getSearchBox();
         }
+
+        if (!empty($this->report_row)) {
+            $template['CSV_REPORT'] = $this->getReportLink();
+        }
+    }
+
+    function createReport()
+    {
+        if ($this->class) {
+            $methods = get_class_methods($this->class);
+            if (in_array($this->report_row, $methods)) {
+                $func_type = 'method';
+            }
+        }
+        
+        if (!isset($func_type)) {
+            if (function_exists($this->report_row)) {
+                $func_type = 'function';
+            } else {
+                $func_type = 'none';
+            }
+        }
+
+        $index_set = false;
+        $tmp_file = PHPWS_Text::randomString(10) . mktime();
+        $directory = CACHE_DIRECTORY;
+        $file_path = sprintf('%s/%s', $directory, $tmp_file);;
+        $fp = fopen($file_path, 'w');
+
+        foreach ($this->display_rows as $foo) {
+            if ($func_type == 'method') {
+                $result = call_user_func(array($foo, $this->report_row));
+            } elseif ($func_type == 'function') {
+                $result = call_user_func($this->report_row, $foo);
+            } else {
+                if (is_object($foo)) {
+                    $result = PHPWS_Core::stripObjValues($foo);
+                } else {
+                    $result = & $foo;
+                }
+            }
+
+            if (!$index_set) {
+                $index_keys = array_keys($result);
+                $row = '"' . implode('","', $index_keys) . "\"\n";
+                fwrite($fp, $row);
+                $index_set = true;
+            }
+            $row = '"' . implode('","', $result) . "\"\n";
+
+            fwrite($fp, $row);
+        }
+        fclose($fp);
+        $new_file = mktime() . '_pager.csv';
+
+        require_once 'HTTP/Download.php';
+        $dl = new HTTP_Download;
+        $dl->setFile($file_path);
+        $dl->setContentDisposition(HTTP_DOWNLOAD_ATTACHMENT, $new_file);
+        $dl->setContentType('text/csv');
+        $dl->send();
+        exit();
     }
 
     /**
@@ -1317,6 +1405,12 @@ class DBPager {
             if (PEAR::isError($result)) {
                 return $result;
             }
+        }
+
+        // Report ends the function call
+        if ($this->report_type && $this->report_row) {
+            $this->createReport();
+            exit();
         }
 
         if (!isset($this->module)) {
@@ -1338,7 +1432,7 @@ class DBPager {
         }
 
         $count = 0;
-        $this->_getNavigation($template);
+        $this->getNavigation($template);
         $this->getSortButtons($template);
 
         if (isset($rows)) {

@@ -59,7 +59,7 @@ DBPager
 + Added patch #2017069 by Eloi George. Adds a cache identifier.
 + Current page is now bracketed and unlinked
 + cacheQueries works better now especially with setDefaultOrder.
-
++ CSV reports can be called on any output.
 
 
 Error
@@ -121,6 +121,7 @@ Text
 + getGetValues rewritten to work with new mod_rewrite scheme
 + Fixed bug #1988949 - added tilde as allowable url character.
 + Added use_breaker parameter to parseOutput
++ Added randomString function.
 
 
 Time
@@ -162,6 +163,9 @@ Slider
 
 jCarousel lite
 + Added jcarousel lite by Ganeshji Marwaha
+
+jsCalendar
++ Fixed calendar images. Thanks Verdon.
 
 Captcha
 + Added recaptcha

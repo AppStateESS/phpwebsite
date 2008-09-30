@@ -5,6 +5,8 @@
 
 var pickroute = 0;
 var phpws_url = '';
+var pathToImages = 'javascript/js_calendar/images/';
+
 
 function forwardit()
 {

@@ -70,10 +70,9 @@ class PHPWS_Cache {
      * Saves the cache content
      * @param string key     Name of cache key.
      * @param string content Content stored in the cache
-     * @param int    ignore  Used to be lifetime but not used anymore.
      * @returns boolean TRUE on success, FALSE otherwise
      */
-    function save($key, $content, $ignore=null)
+    function save($key, $content)
     {
         $key .= SITE_HASH . CURRENT_LANGUAGE;
         if (!PHPWS_Cache::isEnabled()) {

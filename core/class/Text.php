@@ -838,6 +838,23 @@ class PHPWS_Text {
         return substr($url, 0, $url_length) . '...' . substr($url, -1 * $pickup, $pickup);
     }
 
+    /**
+     * Returns a string composed of characters
+     * @param integer characters Number of characters in string
+     * @return string
+     */
+    function randomString($characters=8)
+    {
+        $characters = (int)$characters;
+        $alpha = '023456789abcdefghijkmnopqrstuvwxyz';
+        srand((double)microtime()*1000000);
+        
+        for ($i = 0; $i < $characters; $i++) {
+            $char = rand() % 34;
+            $str[] = substr($alpha, $char, 1);
+        }
+        return implode('', $str);
+    }
 
 }//END CLASS PHPWS_Text
 
