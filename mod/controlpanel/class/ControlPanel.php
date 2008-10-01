@@ -131,7 +131,7 @@ class PHPWS_ControlPanel {
         return $db->getObjects('PHPWS_Panel_Tab');
     }
 
-    public function getAllLinks()
+    public function getAllLinks($alpha_order=false)
     {
         PHPWS_Core::initModClass('controlpanel', 'Link.php');
         $allLinks = null;
@@ -139,13 +139,20 @@ class PHPWS_ControlPanel {
         // This session prevents the DB query and link
         // creation from being repeated.
 
-        if (isset($_SESSION['CP_All_links'])) {
-            return $_SESSION['CP_All_links'];
+        $idx = $alpha_order ? 'normal' : 'alpha';
+
+        if (isset($_SESSION['CP_All_links'][$idx])) {
+            return $_SESSION['CP_All_links'][$idx];
         }
 
         $DB = new PHPWS_DB('controlpanel_link');
-        $DB->addOrder('tab');
-        $DB->addOrder('link_order');
+
+        if ($alpha_order) {
+            $DB->addOrder('label');
+        } else {
+            $DB->addOrder('tab');
+            $DB->addOrder('link_order');
+        }
         $DB->setIndexBy('id');
         $result = $DB->getObjects('PHPWS_Panel_Link');
 
@@ -159,8 +166,8 @@ class PHPWS_ControlPanel {
             }
         }
 
-        $_SESSION['CP_All_links'] = $allLinks;
-        return $_SESSION['CP_All_links'];
+        $_SESSION['CP_All_links'][$idx] = $allLinks;
+        return $_SESSION['CP_All_links'][$idx];
     }
 
     public function reset()
@@ -435,6 +442,49 @@ class PHPWS_ControlPanel {
     {
         include PHPWS_SOURCE_DIR . 'mod/controlpanel/boost/controlpanel.php';
         return $tabs;
+    }
+
+    public function panelLink($fly_out=false)
+    {
+        $reg_link = PHPWS_Text::quickLink(dgettext('users', 'Control Panel'), 'controlpanel',
+                                          array('command'=>'panel_view'));
+        
+        if (!$fly_out) {
+            return $reg_link->get();
+        }
+        
+        javascript('jquery');
+        javascript('modules/controlpanel/subpanel');
+
+        $reg_link->setId('cp-panel-link');
+
+        if (!isset($_SESSION['Control_Panel_Tabs'])) {
+            PHPWS_ControlPanel::loadTabs($panel);
+        }
+
+        $all_links = PHPWS_ControlPanel::getAllLinks(true);
+
+        $tpl = new PHPWS_Template('controlpanel');
+        $tpl->setFile('subpanel.tpl');
+
+        $authkey = Current_User::getAuthKey();
+        foreach ($all_links as $tab => $links) {
+            foreach($links as $link) {
+                $tpl->setCurrentBlock('links');
+                $tpl->setData(array('LINK'=> sprintf('<a href="%s&amp;authkey=%s">%s</a>',
+                                                     $link->url, $authkey, $link->label)));
+                $tpl->parseCurrentBlock();
+            }
+            $tpl->setCurrentBlock('tab');
+            $tpl->setData(array('TAB_TITLE'=> $_SESSION['Control_Panel_Tabs'][$tab]->title));
+            $tpl->parseCurrentBlock();
+        }
+
+        $tpl->setCurrentBlock();
+        $tpl->setData(array('LINK' => $reg_link->get()));
+        $tpl->parseCurrentBlock();
+        $submenu = $tpl->get();
+        return $submenu;
     }
 
 }
