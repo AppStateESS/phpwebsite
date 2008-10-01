@@ -54,7 +54,7 @@
     				{LOCATION_LABEL}: {LOCATION}<br />
     				<!-- END LOC -->
     				<!-- BEGIN SITE -->
-    				{WEBSITE}<br />
+    				{WEBSITE_LINK}<br />
     				<!-- END SITE -->
     				<br />
     				<!-- BEGIN ip -->

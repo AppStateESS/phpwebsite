@@ -349,6 +349,7 @@ class Comment_User extends Demographics_User {
         //avatar
     	// Get current Avatar permissions
     	$perm = $this->getAvatarLevel();
+
     	// If user wants to upload an image...
     	if (!empty($_FILES['local_avatar']['name']) && $perm['local']) {
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
@@ -378,9 +379,7 @@ class Comment_User extends Demographics_User {
         elseif (!empty($_POST['remote_avatar']) && $perm['remote']
                 && strlen($_POST['remote_avatar']) > 10 && substr(trim($_POST['remote_avatar']),0,7) == 'http://'
                 && $this->testAvatar($_POST['remote_avatar'], $errors)) {
-            $dim = @getimagesize($url);
-            $this->setAvatar(trim($_POST['remote_avatar']).'" width="'.$dim[0].'" height="'.$dim[1]);
-            unset($dim);
+            $this->setAvatar(trim($_POST['remote_avatar']));
         }
         // otherwise, use the selected gallery image...
         elseif (!empty($_POST['avatar_id'])) {
@@ -396,7 +395,7 @@ class Comment_User extends Demographics_User {
             $this->monitordefault == (int) (bool) $_POST['monitordefault'];
         //suspendmonitors
         $this->suspendmonitors == (int) empty($_POST['suspendmonitors']);
-        $db = & new PHPWS_DB('comments_monitors');
+        $db = new PHPWS_DB('comments_monitors');
         $db->addValue('suspended', $this->suspendmonitors);
         $db->addWhere('user_id', Current_User::getId());
         $db->update();

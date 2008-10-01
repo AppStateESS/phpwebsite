@@ -9,7 +9,6 @@ class Comments_My_Page {
 
     public function main()
     {
-
         if (isset($_REQUEST['my_page_op'])) {
             $command = &$_REQUEST['my_page_op'];
         } else {
@@ -116,10 +115,12 @@ class Comments_My_Page {
             }
             // If remote Custom Avatars are allowed, show URL text field
             if ($perm['remote']) {
-            	if (substr($user->avatar,0,7) == 'http://')
+                if (substr($user->avatar,0,7) == 'http://') {
                     $url = $user->getAvatar(false);
-            	else
+                } else {
                     $url = 'http://';
+                }
+
                 $form->addText('remote_avatar', $url);
                 $form->setSize('remote_avatar', 60);
                 $form->setLabel('remote_avatar', dgettext('comments', 'OR enter a URL to an online image. (ex: `http://othersite.com/avatar.png`)'));
