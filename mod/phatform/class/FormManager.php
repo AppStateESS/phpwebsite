@@ -370,6 +370,7 @@ class PHAT_FormManager extends PHPWS_Manager {
      * @access private
      */
     function action() {
+
         switch($_REQUEST['PHAT_MAN_OP']) {
         case 'View':
             if(isset($_REQUEST['PHAT_FORM_ID'])) {

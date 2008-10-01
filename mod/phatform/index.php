@@ -28,6 +28,8 @@ if(isset($_REQUEST['PHAT_MAN_OP'])) {
     $_SESSION['PHAT_FormManager']->action();
  }
 
+
+
 if(isset($_REQUEST['EXPORT_OP'])) {
     $_SESSION['PHAT_advViews']->exportActions();
  } else if(isset($_REQUEST['ARCHIVE_OP'])) {

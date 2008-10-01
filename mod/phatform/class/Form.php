@@ -612,6 +612,10 @@ class PHAT_Form extends PHPWS_Item {
                     if($this->_editData && $this->currentPage() > 1) {
                         $formTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_Back');
                     }
+                    if ($this->_anonymous && !Current_User::isLogged()) {
+                        PHPWS_Core::initCoreClass('Captcha.php');
+                        $formTags['CAPTCHA'] = Captcha::get();
+                    }
                     $formTags['SUBMIT_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Finish'), 'PHAT_Submit');
                 } else {
                     if($this->_editData && $this->currentPage() > 1) {
@@ -925,6 +929,7 @@ class PHAT_Form extends PHPWS_Item {
     }// END FUNC _editAction()
 
     function _formAction() {
+        PHPWS_Core::initCoreClass('Captcha.php');
         if(isset($_REQUEST['PHAT_Next'])) {
             if($this->isSaved()) {
                 $error = $this->_saveFormData();
@@ -950,8 +955,15 @@ class PHAT_Form extends PHPWS_Item {
             }
             return $content;
         } elseif($_REQUEST['PHAT_Submit']) {
+            test($this);
+            if (!Captcha::verify()) {
+                javascript('alert', array('content'=>dgettext('phatform', 'CAPTCHA word was not correct.')));
+                return $this->view(false);
+            }
+
             if($this->isSaved()) {
                 $error = $this->_saveFormData();
+                
                 if(PHPWS_Error::isError($error)) {
                     javascript('alert', array('content' => PHPWS_Error::printError($error)));
                     if(Current_User::allow('phatform')) {
@@ -1695,7 +1707,6 @@ class PHAT_Form extends PHPWS_Item {
      * @access public
      */
     function action() {
-
         if(isset($_SESSION['PHAT_Message'])) {
             $content = $_SESSION['PHAT_Message'];
             $GLOBALS['CNT_phatform']['content'] .= $content;

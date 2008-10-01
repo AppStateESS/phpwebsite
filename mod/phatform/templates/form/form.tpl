@@ -3,6 +3,7 @@
 {ELEMENTS}<br />
 </table>
 <!-- END ELEMENTS -->
+{CAPTCHA}
 <div align="center">
 <!-- BEGIN BACK_BUTTON -->
 {BACK_BUTTON}
