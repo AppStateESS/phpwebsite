@@ -583,6 +583,23 @@ class PHPWS_Form {
         }
     }
 
+    public function setAutoComplete($name, $value=false)
+    {
+        if (!$this->testName($name)) {
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setAutoComplete', array($name));
+        }
+
+        foreach ($this->_elements[$name] as $key=>$element){
+            if($this->_elements[$name][$key]->type == 'password') {
+                $result = $this->_elements[$name][$key]->setAutoComplete($value);
+                if (PEAR::isError($result)) {
+                    return $result;
+                }
+            }
+        }
+    }
+
+
     /**
      * Sets an element's readonly status
      */
@@ -1650,7 +1667,8 @@ class Form_File extends Form_Element {
 }
 
 class Form_Password extends Form_Element {
-    public $type = 'password';
+    public $type         = 'password';
+    public $autocomplete = false;
 
     public function Form_Password($name, $value=null)
     {
@@ -1659,9 +1677,21 @@ class Form_Password extends Form_Element {
         $this->allowValue = false;
     }
 
+    public function setAutoComplete($bool)
+    {
+        $this->autocomplete = (bool)$bool;
+    }
+
+    public function getAutoComplete()
+    {
+        if (!$this->autocomplete) {
+            return 'autocomplete="off"';
+        }
+        return null;
+    }
+
     public function get()
     {
-
         return '<input type="password" '
             . $this->getName(true)
             . $this->getTitle(true)
@@ -1670,6 +1700,7 @@ class Form_Password extends Form_Element {
             . $this->getValue()
             . $this->getWidth(true)
             . $this->getData()
+            . $this->getAutoComplete()
             . ' />';
     }
 }

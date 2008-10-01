@@ -77,6 +77,7 @@ Form
 + Removed underscore from some public member names
 + setRequired will post a javascript alert if the required input it
   left blank. Works with text fields only at this point.
++ Added setAutoComplete for password elements.
 
 
 Forward

@@ -4,6 +4,9 @@ its own separate CHANGELOG file..
 
 Version 1.9.0
 ---------------------------------------------------------------------
+1 October 2008
++ Added setAutoComplete to password element.
+
 30 September 2008
 + Fixed js_calendar image. Thanks Verdon.
 + Added csv reports into DBPager.
