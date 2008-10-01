@@ -1,3 +1,8 @@
+1 October 2008
++ Fixed multimedia popup
++ Added faster classify options
++ Updated: templates/classify_list.tpl
+
 17 September 2008
 + Added commercial use message to readme for media player
 + Error check added to parse function.

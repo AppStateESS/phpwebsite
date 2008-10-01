@@ -141,7 +141,7 @@ class PHPWS_Multimedia extends File_Common {
     public function popupAddress()
     {
         if (MOD_REWRITE_ENABLED) {
-            return sprintf('filecabinet/%s/multimedia', $this->id);
+            return sprintf('filecabinet/id/%s/mtype/multimedia', $this->id);
         } else {
             return sprintf('index.php?module=filecabinet&amp;mtype=multimedia&amp;id=%s', $this->id);
         }

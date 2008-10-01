@@ -93,13 +93,33 @@ class Cabinet_Form {
         }
 
         $form = new PHPWS_Form('classify_file_list');
+        $form->addHidden('aop', 'classify_action');
         $form->addHidden('module', 'filecabinet');
+
+        $image_folders = Cabinet::listFolders(IMAGE_FOLDER, true);
+        if (!empty($image_folders)) {
+            $form->addSelect('image_folders', $image_folders);
+            $form->addSubmit('image_force', dgettext('filecabinet', 'Put all checked images here'));
+        }
+
+        $document_folders = Cabinet::listFolders(DOCUMENT_FOLDER, true);
+        if (!empty($document_folders)) {
+            $form->addSelect('document_folders', $document_folders);
+            $form->addSubmit('document_force', dgettext('filecabinet', 'Put all checked documents here'));
+        }
+
+        $media_folders = Cabinet::listFolders(MULTIMEDIA_FOLDER, true);
+        if (!empty($media_folders)) {
+            $form->addSelect('media_folders', $media_folders);
+            $form->addSubmit('media_force', dgettext('filecabinet', 'Put all checked media here'));
+        }
+
 
         $options['classify']        = dgettext('filecabinet', '-- Pick option --');
         $options['classify_file']   = dgettext('filecabinet', 'Classify checked');
         $options['delete_incoming'] = dgettext('filecabinet', 'Delete checked');
 
-        $form->addSelect('aop', $options);
+        $form->addSelect('process_checked', $options);
         $tpl = $form->getTemplate();
 
         $js_vars['value']        = dgettext('filecabinet', 'Go');
@@ -112,8 +132,9 @@ class Cabinet_Form {
 
         foreach ($result as $file) {
             $links = array();
-            $rowtpl['CHECK'] = sprintf('<input type="checkbox" name="file_list[]" value="%s" />', $file);
-            $rowtpl['FILE_NAME'] = $file;
+            $id = preg_replace('/\W/', '-', $file);
+
+            $rowtpl['FILE_NAME'] = sprintf('<label for="%s">%s</label>', $id, $file);
             $rowtpl['FILE_TYPE'] = PHPWS_File::getVbType($file);
 
             $vars['file'] = urlencode($file);
@@ -122,9 +143,15 @@ class Cabinet_Form {
                 $rowtpl['ERROR'] = ' class="error"';
                 $rowtpl['MESSAGE'] = dgettext('filecabinet', 'File type not allowed');
             } elseif (!PHPWS_File::checkMimeType($classify_dir . $file)) {
-                $rowtpl['ERROR'] = ' class="error"';
-                $rowtpl['MESSAGE'] = dgettext('filecabinet', 'Unknown or mismatched mime type');
+                if (!is_readable($classify_dir . $file)) {
+                    $rowtpl['ERROR'] = ' class="error"';
+                    $rowtpl['MESSAGE'] = dgettext('filecabinet', 'File is unreadable');
+                } else {
+                    $rowtpl['ERROR'] = ' class="error"';
+                    $rowtpl['MESSAGE'] = dgettext('filecabinet', 'Unknown or mismatched mime type');
+                }
             } else {
+                $rowtpl['CHECK'] = sprintf('<input type="checkbox" id="%s" name="file_list[]" value="%s" />', $id, $file);
                 $rowtpl['ERROR'] = $rowtpl['MESSAGE'] = null;
                 $vars['aop'] = 'classify_file';
                 $links[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Classify'), 'filecabinet', $vars);
@@ -146,7 +173,6 @@ class Cabinet_Form {
         $tpl['ACTION_LABEL']   = dgettext('filecabinet', 'Action');
 
         $this->cabinet->content = PHPWS_Template::process($tpl, 'filecabinet', 'classify_list.tpl');
-
     }
 
     public function editFolder($folder, $select_module=true)
@@ -431,21 +457,13 @@ class Cabinet_Form {
 
         $db = new PHPWS_DB('folders');
         // image folders
-        $db->addWhere('ftype', IMAGE_FOLDER);
-        $db->addColumn('id');
-        $db->addColumn('title');
-        $db->setIndexBy('id');
-        $image_folders = $db->select('col');
+        $image_folders = Cabinet::listFolders(IMAGE_FOLDER, true);
 
         // document folders
-        $db->resetWhere();
-        $db->addWhere('ftype', DOCUMENT_FOLDER);
-        $document_folders = $db->select('col');
+        $document_folders = Cabinet::listFolders(DOCUMENT_FOLDER, true);
 
         // multimedia folders
-        $db->resetWhere();
-        $db->addWhere('ftype', MULTIMEDIA_FOLDER);
-        $multimedia_folders = $db->select('col');
+        $multimedia_folders = Cabinet::listFolders(MULTIMEDIA_FOLDER, true);
 
         $count = 0;
 
