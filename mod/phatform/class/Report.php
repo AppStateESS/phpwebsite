@@ -405,8 +405,9 @@ class PHAT_Report {
         $hiddens['PHAT_REPORT_OP'] = 'delete';
         $hiddens['PHAT_ENTRY_ID'] = $_REQUEST['PHAT_ENTRY_ID'];
         foreach ($hiddens as $key => $value) {
-            $eles = PHPWS_Form::formHidden($key, $value);
+            $eles[] = PHPWS_Form::formHidden($key, $value);
         }
+
         $elements[0] = implode("\n", $eles);
     
         $confirmTags['MESSAGE'] = dgettext('phatform', 'Are you sure you want to delete this entry?');

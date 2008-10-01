@@ -955,7 +955,6 @@ class PHAT_Form extends PHPWS_Item {
             }
             return $content;
         } elseif($_REQUEST['PHAT_Submit']) {
-            test($this);
             if (!Captcha::verify()) {
                 javascript('alert', array('content'=>dgettext('phatform', 'CAPTCHA word was not correct.')));
                 return $this->view(false);
