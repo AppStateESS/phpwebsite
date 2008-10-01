@@ -3,13 +3,13 @@
 
 var url  = '{url}';
 
-window.onload = function() {
-    parent_input = opener.document.getElementById('{parent_section}');
-    new_form = document.getElementById('{edit_input}');
-    new_data = html_entity_decode(parent_input.value);
+$(document).ready(function() {
+    parent_input = $('#{parent_section}', opener.document);
+    new_form = $('#{edit_input}');
+    new_data = html_entity_decode($(parent_input).val());
     new_data = new_data.replace(/src="(\.\/|)images/gi, 'src="' + url + 'images');
-    new_form.value = new_data;
-}
+    new_form.val(new_data);
+});
 
 /**
  * From: http://javascript.internet.com/

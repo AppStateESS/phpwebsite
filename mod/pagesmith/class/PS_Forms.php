@@ -174,6 +174,7 @@ class PS_Forms {
 
     public function editPageText()
     {
+        javascript('jquery');
         $section_name = $_GET['section'];
 
         $vars['parent_section'] = 'pagesmith_' . $section_name;
