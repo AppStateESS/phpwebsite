@@ -42,9 +42,7 @@ class User_Form {
         $template['GREETING'] = dgettext('users', 'Hello');
         $template['USERNAME'] = Current_User::getUsername();
         $template['DISPLAY_NAME'] = Current_User::getDisplayName();
-        $template['PANEL'] = $template['MODULES'] = PHPWS_Text::moduleLink(dgettext('users', 'Control Panel'),
-                                                      'controlpanel',
-                                                      array('command'=>'panel_view'));
+        $template['PANEL'] = $template['MODULES'] = PHPWS_ControlPanel::panelLink((bool)PHPWS_Cookie::read('user_cp'));
         $template['LOGOUT'] = PHPWS_Text::moduleLink(dgettext('users', 'Log Out'),
                                                      'users',
                                                      array('action'=>'user', 'command'=>'logout'));

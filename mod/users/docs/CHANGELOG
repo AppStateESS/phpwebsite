@@ -1,3 +1,9 @@
+1 October 2008
++ Added option to use control panel fly out menu.
++ Dependency on new controlpanel.
++ Updated : templates/my_page/user_setting.tpl
+
+
 23 September 2008
 + Moved security log before error page call.
 

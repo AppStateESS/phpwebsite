@@ -38,6 +38,7 @@ function my_page()
         User_Settings::setTZ();
         User_Settings::setEditor();
         User_Settings::rememberMe();
+        User_Settings::setCP();
         $result = User_Action::postUser($user, FALSE);
 
         if (is_array($result)) {
@@ -82,7 +83,9 @@ class User_Settings {
 
         if ($user->canChangePassword()){
             $form->addPassword('password1');
+            $form->setAutoComplete('password1');
             $form->addPassword('password2');
+            $form->setAutoComplete('password2');
             $form->setTitle('password2', dgettext('users', 'Password confirm'));
             $form->setLabel('password1', dgettext('users', 'Password'));
         } else {
@@ -133,6 +136,16 @@ class User_Settings {
         $form->addCheckbox('dst', 1);
         $form->setMatch('dst', $dst);
         $form->setLabel('dst', dgettext('users', 'Use Daylight Savings Time'));
+
+        if (isset($_POST['cp'])) {
+            $cp = (int)$_POST['cp'];
+        } else {
+            $cp = (int)PHPWS_Cookie::read('user_cp');
+        }
+
+        $form->addCheckbox('cp', 1);
+        $form->setMatch('cp', $cp);
+        $form->setLabel('cp', dgettext('users', 'Control Panel flyout menu'));
 
         if (Current_User::allowRememberMe()) {
             // User must authorize locally
@@ -186,6 +199,11 @@ class User_Settings {
                 $template[$tag] = $error;
             }
         }
+
+        $template['ACCT_INFO'] = dgettext('users', 'Account Information');
+        $template['LOCAL_INFO'] = dgettext('users', 'Localization');
+        $template['PREF'] = dgettext('users', 'Preferences');
+
         return PHPWS_Template::process($template, 'users', 'my_page/user_setting.tpl');
     }
 
@@ -208,6 +226,15 @@ class User_Settings {
             PHPWS_Cookie::write('user_dst', 1);
         } else {
             PHPWS_Cookie::delete('user_dst');
+        }
+    }
+
+    function setCP()
+    {
+        if (isset($_POST['cp'])) {
+            PHPWS_Cookie::write('user_cp', 1);
+        } else {
+            PHPWS_Cookie::delete('user_cp');
         }
     }
 
