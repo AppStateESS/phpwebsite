@@ -17,15 +17,11 @@ class PHPWS_ControlPanel {
         $panel->disableSecure();
         $current_mod = PHPWS_Core::getCurrentModule();
 
-        if (!isset($_SESSION['Control_Panel_Tabs'])){
-            PHPWS_ControlPanel::loadTabs($panel);
-        }
-        else {
-            $panel->setTabs($_SESSION['Control_Panel_Tabs']);
-        }
+        $checkTabs = PHPWS_ControlPanel::loadTabs();
+
+        $panel->setTabs($checkTabs);
 
         $allLinks = PHPWS_ControlPanel::getAllLinks();
-        $checkTabs = $panel->getTabs();
 
         if (empty($checkTabs)){
             PHPWS_Error::log(CP_NO_TABS, 'controlpanel', 'display');
@@ -55,7 +51,6 @@ class PHPWS_ControlPanel {
                 }
             }
         }
-
 
         foreach ($checkTabs as $tab) {
             if ($tab->getItemname() == 'controlpanel' &&
@@ -104,23 +99,18 @@ class PHPWS_ControlPanel {
             PHPWS_Core::reroute($link);
         }
 
-        $_SESSION['Control_Panel_Tabs'] = $panel->getTabs();
         return $panel->display();
     }
 
-    public function loadTabs(PHPWS_Panel $panel)
+    public function loadTabs()
     {
-        $DB = new PHPWS_DB('controlpanel_tab');
-        $DB->addOrder('tab_order');
-        $DB->setIndexBy('id');
-        $result = $DB->getObjects('PHPWS_Panel_Tab');
-
-        if (PEAR::isError($result)){
-            PHPWS_Error::log($result);
+        $tabs = PHPWS_ControlPanel::getAllTabs();
+        if (PEAR::isError($tabs)){
+            PHPWS_Error::log($tabs);
             PHPWS_Core::errorPage();
         }
 
-        $panel->setTabs($result);
+        return $tabs;
     }
 
     public function getAllTabs()
@@ -172,7 +162,6 @@ class PHPWS_ControlPanel {
 
     public function reset()
     {
-        unset($_SESSION['Control_Panel_Tabs']);
         unset($_SESSION['CP_All_links']);
     }
 
@@ -263,7 +252,6 @@ class PHPWS_ControlPanel {
         }
 
         $content[] = dgettext('controlpanel', 'Control Panel links and tabs have been removed.');
-
         PHPWS_ControlPanel::reset();
         return true;
 
@@ -458,9 +446,7 @@ class PHPWS_ControlPanel {
 
         $reg_link->setId('cp-panel-link');
 
-        if (!isset($_SESSION['Control_Panel_Tabs'])) {
-            PHPWS_ControlPanel::loadTabs($panel);
-        }
+        $all_tabs = PHPWS_ControlPanel::loadTabs();
 
         $all_links = PHPWS_ControlPanel::getAllLinks(true);
 
@@ -472,11 +458,13 @@ class PHPWS_ControlPanel {
             foreach($links as $link) {
                 $tpl->setCurrentBlock('links');
                 $tpl->setData(array('LINK'=> sprintf('<a href="%s&amp;authkey=%s">%s</a>',
-                                                     $link->url, $authkey, $link->label)));
+                                                     $link->url, $authkey, str_replace(' ', '&#160;', $link->label))));
                 $tpl->parseCurrentBlock();
             }
+
+            $tab_link = $all_tabs[$tab]->link . '&amp;tab=' . $all_tabs[$tab]->id;
             $tpl->setCurrentBlock('tab');
-            $tpl->setData(array('TAB_TITLE'=> $_SESSION['Control_Panel_Tabs'][$tab]->title));
+            $tpl->setData(array('TAB_TITLE'=> sprintf('<a href="%s">%s</a>', $tab_link, $all_tabs[$tab]->title)));
             $tpl->parseCurrentBlock();
         }
 

@@ -79,7 +79,7 @@ class PHPWS_Panel{
             return PHPWS_Error::get(CP_BAD_TABS, 'controlpanel', 'setTabs');
         }
 
-        $this->tabs = $tabs;
+        $this->tabs = & $tabs;
     }
 
     public function getTabs()

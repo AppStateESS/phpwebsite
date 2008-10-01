@@ -21,7 +21,6 @@ class CP_Action {
                 $tab = new PHPWS_Panel_Tab($_POST['tab_id']);
                 $tab->setTitle($_POST['title']);
                 PHPWS_Error::logIfError($tab->save());
-                unset($_SESSION['Control_Panel_Tabs']);
                 $content = javascript('close_refresh');
                 break;
             }
