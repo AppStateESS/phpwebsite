@@ -383,7 +383,7 @@ class Comment_User extends Demographics_User {
             unset($dim);
         }
         // otherwise, use the selected gallery image...
-        else {
+        elseif (!empty($_POST['avatar_id'])) {
             $this->setAvatar((int) $_POST['avatar_id']);
         }
 
@@ -418,7 +418,8 @@ class Comment_User extends Demographics_User {
             }
         }
         */
-        if (isset($errors)) {
+
+        if (!empty($errors)) {
             return $errors;
         } else {
             return $this->saveUser();

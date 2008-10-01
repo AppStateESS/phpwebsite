@@ -42,7 +42,8 @@
 
 .comments .signature {
     padding-top : 6px;
-    border-top : 1px white solid;
+    border-top : 1px gray solid;
+    margin-top : 1em;
 }
 
 .comments .avatar {
