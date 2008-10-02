@@ -23,7 +23,7 @@ class Captcha {
         }
     }
 
-    public function verify()
+    public function verify($return_value=false)
     {
         $file = 'javascript/captcha/' . CAPTCHA_NAME . '/verify.php';
 
@@ -37,7 +37,7 @@ class Captcha {
             return false;
         }
 
-        return verify();
+        return verify($return_value);
     }
 
     public function isGD()

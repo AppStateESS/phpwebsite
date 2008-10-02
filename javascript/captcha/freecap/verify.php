@@ -10,7 +10,7 @@
    * @author Howard Yeend
    * @modified Matthew McNaney <mcnaney at gmail dot com>
    */
-function verify() 
+function verify($return_value=false) 
 {
     if (!Captcha::isGD()) {
         return false;
@@ -32,7 +32,11 @@ function verify()
             
             // now go somewhere else
             // header("Location: somewhere.php");
-            return true;
+            if ($return_value) {
+                return $_POST['captcha'];
+            } else {
+                return true;
+            }
         } else {
             return false;
         }
