@@ -22,6 +22,14 @@ function alert_update(&$content, $version)
         $content[] = '1.1.0 Changes
 --------------
 + Updated to work with File Cabinet 2.0</pre>';
+
+    case version_compare($version, '1.2.0', '<'):
+        $content[] = '<pre>1.2.0 Changes
+--------------
++ Updated to PHP 5 standard.
++ </pre>';
+
+
     }
     return true;
 }
