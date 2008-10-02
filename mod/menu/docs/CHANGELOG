@@ -1,3 +1,7 @@
+2 October 2008
++ Fixed bug #2079194. Deleting menu now removes links as well. Thanks
+  Tommy.
+
 26 September 2008
 + Added more ajax controls (add and delete) to the admin menu.
 + Updated: javascript/admin_link/

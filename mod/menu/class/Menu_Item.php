@@ -261,14 +261,15 @@ class Menu_Item {
         $db->addWhere('menu_id', $this->id);
         $db->delete();
 
+        $db->reset();
         $db->setTable('menu_links');
+        $db->addWhere('menu_id', $this->id);
         $db->delete();
 
-        $db->setTable('menus');
         $db->reset();
+        $db->setTable('menus');
         $db->addWhere('id', $this->id);
         $db->delete();
-
         Layout::purgeBox('menu_' . $this->id);
     }
 
