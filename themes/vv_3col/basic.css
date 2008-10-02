@@ -5,7 +5,7 @@ body {
     padding: 0;
     width: 100%;
     border: 0;           /* This removes the border around the viewport in old versions of IE */
-    min-width: 600px;    /* Minimum width of layout - remove line if not required */
+    /* min-width: 600px;    /* Minimum width of layout - remove line if not required */
                         /* The min-width property does not work in old versions of Internet Explorer */
 }
 

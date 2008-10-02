@@ -19,7 +19,7 @@
 <!-- Mast start -->
 <div id="mast">
     <div id="banners">{BANNERS}</div>
-    <a href="/"><img src="/themes/vv_3col/img/logo.gif" alt="Logo Mast Image" width="500" height="100" border="0" /></a>
+    <a href="./"><img src="themes/vv_3col/img/logo.gif" alt="Logo Mast Image" width="500" height="100" border="0" /></a>
 </div>
 <!-- Mast end -->
 <!-- BEGIN layout_header --><div id="header"><div class="padding">{LAYOUT_HEADER}</div></div><!-- END layout_header -->
