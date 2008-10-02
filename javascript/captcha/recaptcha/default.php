@@ -10,6 +10,7 @@ require_once('recaptchalib.php');
 
 $error = '';
 
-$default['content'] = recaptcha_get_html(RECAPTCHA_PUBLIC_KEY, $error);
+$default['content']	= recaptcha_get_html(RECAPTCHA_PUBLIC_KEY, $error);
+$default['theme']	= RECAPTCHA_THEME;
 
 ?>

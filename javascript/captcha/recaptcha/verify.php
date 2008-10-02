@@ -17,7 +17,8 @@ function verify()
                                         $_POST["recaptcha_response_field"]);
 
         if ($resp->is_valid) {
-                return TRUE;
+        		// return the words entered
+                return $_POST['recaptcha_response_field'];
         } else {
                 # set the error code so that we can display it
                 $_SESSION['recaptcha_error'] = $resp->error;
