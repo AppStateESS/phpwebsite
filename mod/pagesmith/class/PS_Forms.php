@@ -412,7 +412,7 @@ class PS_Forms {
         $form->setLabel('icon', dgettext('pagesmith', 'Template icon (e.g., filename.png)'));
 
         $form->addFile('structure_file');
-        $form->setLabel('structure_file', _('Structure file (e.g., structure.xml)'));
+        $form->setLabel('structure_file', dgettext('pagesmith', 'Structure file (e.g., structure.xml)'));
 
         $form->addSubmit('upload', dgettext('pagesmith', 'Upload file'));
 
