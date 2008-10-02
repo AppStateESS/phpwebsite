@@ -5,6 +5,7 @@
    * @version $Id$
    */
 
+/*
 $languages['aa_AA'] = 'Afar';
 $languages['ab_AB'] = 'Abkhazian';
 $languages['af_AF'] = 'Afrikaans';
@@ -25,12 +26,16 @@ $languages['ca_CA'] = 'Catalan';
 $languages['co_CO'] = 'Corsican';
 $languages['cs_CS'] = 'Czech';
 $languages['cy_CY'] = 'Welsh';
+*/
 $languages['da_DK'] = 'Danish';
 $languages['de_DE'] = 'German';
+/*
 $languages['dz_DZ'] = 'Bhutani';
 $languages['el_EL'] = 'Greek';
 $languages['en_EN'] = 'English/UK';
+*/
 $languages['en_US'] = 'English/American';
+/*
 $languages['eo_EO'] = 'Esperanto';
 $languages['es_ES'] = 'Spanish';
 $languages['et_ET'] = 'Estonian';
@@ -56,7 +61,9 @@ $languages['ie_IE'] = 'Interlingue';
 $languages['ik_IK'] = 'Inupiak';
 $languages['in_IN'] = 'Indonesian';
 $languages['is_IS'] = 'Icelandic';
+*/
 $languages['it_IT'] = 'Italian';
+/*
 $languages['iw_IW'] = 'Hebrew';
 $languages['ja_JA'] = 'Japanese';
 $languages['ji_JI'] = 'Yiddish';
@@ -88,7 +95,9 @@ $languages['my_MY'] = 'Burmese';
 $languages['na_NA'] = 'Nauru';
 $languages['ne_NE'] = 'Nepali';
 $languages['nl_NL'] = 'Dutch';
+*/
 $languages['no_NO'] = 'Norwegian';
+/*
 $languages['oc_OC'] = 'Occitan';
 $languages['om_OM'] = 'Oromo/Afan';
 $languages['or_OR'] = 'Oriya';
@@ -135,12 +144,14 @@ $languages['tw_TW'] = 'Twi';
 $languages['uk_UK'] = 'Ukrainian';
 $languages['ur_UR'] = 'Urdu';
 $languages['uz_UZ'] = 'Uzbek';
+*/
 $languages['vi_VN'] = 'Vietnamese';
+/*
 $languages['vo_VO'] = 'Volapuk';
 $languages['wo_WO'] = 'Wolof';
 $languages['xh_XH'] = 'Xhosa';
 $languages['yo_YO'] = 'Yoruba';
 $languages['zh_ZH'] = 'Chinese';
 $languages['zu_ZU'] = 'Zulu';
-
+*/
 ?>
