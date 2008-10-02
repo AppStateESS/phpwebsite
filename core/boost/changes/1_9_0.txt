@@ -141,12 +141,10 @@ Javascript
 FCKeditor
 + Will now look for fckeditor.css for styling edit area.
 
-
 Open window
 + Now allows dev to set whether the window opens in the
   center or not 
 + Can now have its id set.
-
 
 JS Calendar
 + Updated pick date functionality. Wasn't forwarding properly.
