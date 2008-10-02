@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-02 12:12-0400\n"
+"POT-Creation-Date: 2008-10-02 12:44-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,6 +94,9 @@ msgid "Check"
 msgstr ""
 
 msgid "Check all"
+msgstr ""
+
+msgid "Check disabled"
 msgstr ""
 
 msgid "Check your logs for more information."
@@ -393,6 +396,9 @@ msgid "Reverting %s module's local files"
 msgstr ""
 
 msgid "Reverting the core's local files"
+msgstr ""
+
+msgid "Server configuration prevents version checking."
 msgstr ""
 
 msgid "Skipping javascript files."
