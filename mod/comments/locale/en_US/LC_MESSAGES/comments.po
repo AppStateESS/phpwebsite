@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-05 14:09-0400\n"
+"POT-Creation-Date: 2008-10-02 12:12-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,13 +33,25 @@ msgstr ""
 msgid "(Anon)"
 msgstr ""
 
+msgid "--OR use a private local image"
+msgstr ""
+
+msgid "--OR use a remotely-hosted image"
+msgstr ""
+
 msgid "A problem occurred when trying to save your comment."
 msgstr ""
 
 msgid "A site admin wrote this comment and may not be punished."
 msgstr ""
 
+msgid "Add a new rank by entering its information here."
+msgstr ""
+
 msgid "All"
+msgstr ""
+
+msgid "All Members"
 msgstr ""
 
 msgid "All comments preapproved"
@@ -48,19 +60,28 @@ msgstr ""
 msgid "All comments require approval"
 msgstr ""
 
+msgid "All user postcounts have been recalculated"
+msgstr ""
+
 msgid "All users"
 msgstr ""
 
-msgid "Allow anonymous naming"
+msgid "Allow images in signatures"
 msgstr ""
 
-msgid "Allow images in signatures"
+msgid "Allow this group's users to upload custom avatars after"
+msgstr ""
+
+msgid "Allow this group's users to use remote custom avatars after"
 msgstr ""
 
 msgid "Allow user avatars"
 msgstr ""
 
 msgid "Allow user signatures"
+msgstr ""
+
+msgid "Allow users to monitor threads via email"
 msgstr ""
 
 msgid "An error occurred when trying to remove comments."
@@ -73,9 +94,6 @@ msgid "Anonymous comments require approval"
 msgstr ""
 
 msgid "Anonymous users only"
-msgstr ""
-
-msgid "Approval"
 msgstr ""
 
 #, php-format
@@ -91,19 +109,39 @@ msgstr ""
 msgid "Approve this comment"
 msgstr ""
 
+msgid "Are you sure you want to delete the checked items?"
+msgstr ""
+
 msgid "Are you sure you want to delete this comment?"
 msgstr ""
 
 msgid "Author"
 msgstr ""
 
+msgid "Automatically monitor topics that I post in"
+msgstr ""
+
 msgid "Avatar"
+msgstr ""
+
+msgid "Avatar Settings"
 msgstr ""
 
 msgid "Avatar graphics must be from offsite."
 msgstr ""
 
+msgid "Back to Top"
+msgstr ""
+
 msgid "Ban user"
+msgstr ""
+
+msgid "Ban user from this website"
+msgstr ""
+
+msgid ""
+"Be particularly careful with this next option.  If you select it, the only "
+"way that you can restore your monitors is to manually re-select each topic!"
 msgstr ""
 
 msgid "CAPTCHA use"
@@ -112,10 +150,19 @@ msgstr ""
 msgid "Change settings"
 msgstr ""
 
+msgid "Choose an action"
+msgstr ""
+
 msgid "Clear"
 msgstr ""
 
 msgid "Clear checked"
+msgstr ""
+
+msgid "Clear this report"
+msgstr ""
+
+msgid "Click here to edit this Rank"
 msgstr ""
 
 msgid "Comment"
@@ -126,6 +173,10 @@ msgstr ""
 
 #, php-format
 msgid "Comment from: %s"
+msgstr ""
+
+#, php-format
+msgid "Comment history for %s"
 msgstr ""
 
 msgid "Comment missing thread information."
@@ -143,7 +194,8 @@ msgstr ""
 msgid "Comments (if any) removed successfully"
 msgstr ""
 
-msgid "Contact Email"
+#, php-format
+msgid "Comments Made by %s"
 msgstr ""
 
 msgid "Control administrative options for comments."
@@ -153,6 +205,9 @@ msgid "Could not verify file dimensions."
 msgstr ""
 
 msgid "Created on"
+msgstr ""
+
+msgid "Current Avatar"
 msgstr ""
 
 msgid "Default approval"
@@ -168,6 +223,9 @@ msgid "Delete checked"
 msgstr ""
 
 msgid "Delete comments"
+msgstr ""
+
+msgid "Delete this comment"
 msgstr ""
 
 msgid "Deny IP address"
@@ -188,6 +246,9 @@ msgstr ""
 msgid "Edit comments"
 msgstr ""
 
+msgid "Edit this comment"
+msgstr ""
+
 msgid "Edited"
 msgstr ""
 
@@ -202,6 +263,9 @@ msgid ""
 "from an unblockable IP address."
 msgstr ""
 
+msgid "Email"
+msgstr ""
+
 msgid "Enable anonymous posting"
 msgstr ""
 
@@ -214,16 +278,38 @@ msgstr ""
 msgid "Error occurred trying to create new thread."
 msgstr ""
 
+msgid "Feature Summary"
+msgstr ""
+
+msgid "From"
+msgstr ""
+
+msgid "Get anonymous posters' names"
+msgstr ""
+
 msgid "Go"
 msgstr ""
 
 msgid "Go back"
 msgstr ""
 
-msgid "Go back to settings..."
+msgid "HTML tags are <b>off</b>"
+msgstr ""
+
+msgid "HTML tags are <b>on</b>"
+msgstr ""
+
+msgid "IP"
 msgstr ""
 
 msgid "Image signatures not allowed."
+msgstr ""
+
+msgid "In"
+msgstr ""
+
+#, php-format
+msgid "In %s"
 msgstr ""
 
 msgid "In response to"
@@ -232,7 +318,7 @@ msgstr ""
 msgid "Joined"
 msgstr ""
 
-msgid "Location"
+msgid "Lock this Thread"
 msgstr ""
 
 msgid "Lock user"
@@ -241,7 +327,25 @@ msgstr ""
 msgid "Locked"
 msgstr ""
 
+msgid "Member Ranks"
+msgstr ""
+
+msgid "Minimum Posts"
+msgstr ""
+
 msgid "Missing thread information."
+msgstr ""
+
+msgid "Moderator"
+msgstr ""
+
+msgid "Monitor this Thread"
+msgstr ""
+
+msgid "Monitoring Topics"
+msgstr ""
+
+msgid "Move to another Topic"
 msgstr ""
 
 msgid "Name"
@@ -253,16 +357,41 @@ msgstr ""
 msgid "No comments"
 msgstr ""
 
+msgid "No comments made"
+msgstr ""
+
 msgid "No comments reported"
 msgstr ""
 
 msgid "No subject"
 msgstr ""
 
+msgid "None"
+msgstr ""
+
+#, php-format
+msgid ""
+"Note: Avatar images must be no greater than %1$s pixels high by %2$s pixels "
+"wide, and its filesize can be no greater than %3$sKb."
+msgstr ""
+
+msgid ""
+"OR enter a URL to an online image. (ex: `http://othersite.com/avatar.png`)"
+msgstr ""
+
+msgid "OR upload an image from your computer"
+msgstr ""
+
 msgid "Oldest first"
 msgstr ""
 
-msgid "Please copy the word in the above image."
+msgid "Pear BB code is <b>on</b>"
+msgstr ""
+
+msgid "Permanently stop monitoring all topics"
+msgstr ""
+
+msgid "Personal Information"
 msgstr ""
 
 msgid "Please try again later."
@@ -280,19 +409,34 @@ msgstr ""
 msgid "Posted on"
 msgstr ""
 
-msgid "Punish"
+msgid "Postlevel"
 msgstr ""
 
-msgid "Punish icon"
+msgid "Posts"
 msgstr ""
 
-msgid "Punish poster"
+msgid "Profanity is <b>allowed</b>"
+msgstr ""
+
+msgid "Profanity is <b>not allowed</b>"
+msgstr ""
+
+msgid "Punish this user"
 msgstr ""
 
 msgid "Punish users"
 msgstr ""
 
 msgid "Quote"
+msgstr ""
+
+msgid "Quote this comment"
+msgstr ""
+
+msgid "Rank Image"
+msgstr ""
+
+msgid "Rank Name"
 msgstr ""
 
 msgid "Re:"
@@ -331,13 +475,22 @@ msgstr ""
 msgid "Removing module's comments."
 msgstr ""
 
+msgid "Repeat Image"
+msgstr ""
+
+msgid "Replies to this comment"
+msgstr ""
+
 msgid "Reply"
+msgstr ""
+
+msgid "Reply to this comment"
 msgstr ""
 
 msgid "Report"
 msgstr ""
 
-msgid "Reported"
+msgid "Report this comment to an administrator"
 msgstr ""
 
 #, php-format
@@ -356,6 +509,22 @@ msgstr ""
 msgid "Save avatars locally"
 msgstr ""
 
+#, php-format
+msgid "See all comments by %s"
+msgstr ""
+
+msgid "Select an avatar from the gallery"
+msgstr ""
+
+msgid "Select the desired action for the checked comments"
+msgstr ""
+
+msgid "Select this Comment"
+msgstr ""
+
+msgid "Send a copy of each new comment to the Forum Moderator(s)"
+msgstr ""
+
 msgid "Settings"
 msgstr ""
 
@@ -372,37 +541,97 @@ msgstr ""
 msgid "Since yesterday"
 msgstr ""
 
+msgid "Smilies are <b>off</b>"
+msgstr ""
+
+msgid "Smilies are <b>on</b>"
+msgstr ""
+
 msgid "Sorry"
 msgstr ""
 
 msgid "Sorry, but you do not have rights to alter settings."
 msgstr ""
 
+msgid "Sorry, module phpwsBB is not installed."
+msgstr ""
+
+msgid "Split Topic"
+msgstr ""
+
+msgid "Split to a new topic"
+msgstr ""
+
+msgid "Split topic from this position"
+msgstr ""
+
+msgid "Stack this Rank?"
+msgstr ""
+
+msgid "Stop Monitoring"
+msgstr ""
+
 msgid "Subject"
+msgstr ""
+
+msgid "Subject line of email notifying users of a new comment"
 msgstr ""
 
 msgid "Subject/Comment"
 msgstr ""
 
+msgid "Super Moderator"
+msgstr ""
+
 msgid "T.R."
+msgstr ""
+
+msgid "Temporarily stop monitoring all topics"
+msgstr ""
+
+msgid "Text of email notifying users of a new comment"
 msgstr ""
 
 msgid "That name is not allowed. Try another."
 msgstr ""
 
+msgid "The following filters are <b>on</b>"
+msgstr ""
+
 msgid "There was a problem saving your image."
+msgstr ""
+
+msgid ""
+"This is the current member ranking system.<br />Don't worry about the order "
+"- the Rank types will re-order themselves by posting level.<br />To delete a "
+"Rank, just leave the name blank."
 msgstr ""
 
 msgid "This month"
 msgstr ""
 
+msgid ""
+"This signature appears at the bottom of your comments.  It must be less than "
+"255 characters, not annoying and compliant with site rules."
+msgstr ""
+
+msgid "This topic is locked.  No more comments"
+msgstr ""
+
 msgid "This week"
+msgstr ""
+
+msgid "Times"
 msgstr ""
 
 msgid "Times reported"
 msgstr ""
 
 msgid "Today"
+msgstr ""
+
+#, php-format
+msgid "Total comments in %s"
 msgstr ""
 
 msgid "Unacceptable file type."
@@ -414,10 +643,16 @@ msgstr ""
 msgid "Unban user"
 msgstr ""
 
+msgid "Unlock this Thread"
+msgstr ""
+
 msgid "Unlock user"
 msgstr ""
 
 msgid "Update"
+msgstr ""
+
+msgid "User Group"
 msgstr ""
 
 msgid "We are holding your comment for approval"
@@ -426,15 +661,47 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
+msgid ""
+"When you create a new topic or post a comment, you can choose to "
+"automatically receive email notification of new replies to that topic."
+msgstr ""
+
+msgid "Where are you?"
+msgstr ""
+
 msgid "You failed verification. Try again."
 msgstr ""
 
 msgid "You must include a subject or comment."
 msgstr ""
 
+msgid "Your Signature"
+msgstr ""
+
 #, php-format
 msgid "Your avatar must be smaller than %sx%spx."
 msgstr ""
 
-msgid "Your contact email is formatted improperly."
+msgid "Your name cannot be shorter than 2 characters."
+msgstr ""
+
+msgid "[IMG] is <b>allowed</b>"
+msgstr ""
+
+msgid "[IMG] is <b>not allowed</b>"
+msgstr ""
+
+msgid "cbparser BB code is <b>on</b>"
+msgstr ""
+
+msgid "ex.: images/comments/Member.gif"
+msgstr ""
+
+msgid "no"
+msgstr ""
+
+msgid "posts"
+msgstr ""
+
+msgid "yes"
 msgstr ""
