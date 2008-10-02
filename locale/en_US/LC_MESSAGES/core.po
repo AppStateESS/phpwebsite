@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-05 14:07-0400\n"
+"POT-Creation-Date: 2008-10-02 12:11-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #, php-format
+msgid "%s - %s of %s"
+msgstr ""
+
+#, php-format
 msgid "%s days ago"
+msgstr ""
+
+#, php-format
+msgid "%s directory does not exist or is not writable."
 msgstr ""
 
 #, php-format
@@ -129,6 +137,24 @@ msgstr ""
 msgid "Approved"
 msgstr ""
 
+msgid "Archive file was not found."
+msgstr ""
+
+msgid "Archived Form"
+msgstr ""
+
+#, php-format
+msgid ""
+"Are you sure you wish to delete the archive with filename \"<b>%s</b>\"?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you wish to delete the export with filename \"<b>%s</b>\"?"
+msgstr ""
+
+msgid "Are you sure you wish to view this archive?"
+msgstr ""
+
 msgid "Array contained no values."
 msgstr ""
 
@@ -175,6 +201,10 @@ msgstr ""
 msgid "Branch : %s"
 msgstr ""
 
+#, php-format
+msgid "CSV Report - %s | %s"
+msgstr ""
+
 msgid "Cache Lite is disabled."
 msgstr ""
 
@@ -191,6 +221,9 @@ msgid "Calendar is not installed."
 msgstr ""
 
 msgid "Can not change name. Already in use."
+msgstr ""
+
+msgid "Cannot load database. DSN not defined."
 msgstr ""
 
 msgid "Cannot read file."
@@ -219,6 +252,9 @@ msgstr ""
 msgid "Check your configuration settings."
 msgstr ""
 
+msgid "Checking your server's compatibility with phpWebSite..."
+msgstr ""
+
 msgid "Class Name"
 msgstr ""
 
@@ -232,6 +268,9 @@ msgid "Class not found."
 msgstr ""
 
 msgid "Class not set."
+msgstr ""
+
+msgid "Clean-Up"
 msgstr ""
 
 msgid "Clear"
@@ -251,6 +290,9 @@ msgstr ""
 
 #, php-format
 msgid "Coming from: %s"
+msgstr ""
+
+msgid "Config directory ready"
 msgstr ""
 
 msgid "Connect"
@@ -273,6 +315,9 @@ msgid "Continue to convert category elements."
 msgstr ""
 
 msgid "Continue to convert menu links."
+msgstr ""
+
+msgid "Continue..."
 msgstr ""
 
 msgid "Continue: Convert everyone."
@@ -312,11 +357,35 @@ msgstr ""
 msgid "Copy all the files you need converted into your %s directory."
 msgstr ""
 
+msgid "Copying core directories."
+msgstr ""
+
+msgid "Core configuration directory successfully copied."
+msgstr ""
+
+msgid "Core could not locate its errorDefines.php file."
+msgstr ""
+
+msgid "Core directories created."
+msgstr ""
+
+msgid "Core image directory successfully copied."
+msgstr ""
+
 msgid "Core installation successful."
+msgstr ""
+
+msgid "Core templates directory successfully copied."
 msgstr ""
 
 #, php-format
 msgid "Could not copy file %s to %s."
+msgstr ""
+
+msgid ""
+"Could not find Pear library files. You will need to download the pear "
+"package from our site at http://phpwebsite.appstate.edu/downloads/pear.zip "
+"and unzip it in your installation directory."
 msgstr ""
 
 #, php-format
@@ -376,7 +445,13 @@ msgid ""
 "Database password may contain alphanumeric characters or underscores only."
 msgstr ""
 
+msgid "Date Created"
+msgstr ""
+
 msgid "Declared classes:"
+msgstr ""
+
+msgid "Delete"
 msgstr ""
 
 msgid "Description"
@@ -403,6 +478,15 @@ msgstr ""
 msgid "Documents module not installed or empty."
 msgstr ""
 
+msgid "Download"
+msgstr ""
+
+msgid "Download a complete CSV file"
+msgstr ""
+
+msgid "Download a partial CSV file"
+msgstr ""
+
 msgid "Drop box table failed to copy successfully."
 msgstr ""
 
@@ -418,6 +502,9 @@ msgstr ""
 msgid "Enter the database's user password here."
 msgstr ""
 
+msgid "Entries"
+msgstr ""
+
 msgid "Error"
 msgstr ""
 
@@ -431,10 +518,24 @@ msgstr ""
 msgid "Execution time: %s seconds."
 msgstr ""
 
+msgid "Existing Archives"
+msgstr ""
+
+msgid "Existing Exports"
+msgstr ""
+
 msgid "Expecting an object variable."
 msgstr ""
 
+msgid "FFMPEG installed"
+msgstr ""
+
 msgid "Failed to connect."
+msgstr ""
+
+msgid ""
+"Failed to create core directories. Please check your directory permissions "
+"in images, templates, and config."
 msgstr ""
 
 msgid "Failed to make connection with the requested branch site."
@@ -452,6 +553,15 @@ msgstr ""
 msgid "File Cabinet has already converted Documents files."
 msgstr ""
 
+msgid "File contained no archive to view."
+msgstr ""
+
+msgid "File contained no content."
+msgstr ""
+
+msgid "File directory ready"
+msgstr ""
+
 msgid "File not found in _FILES array."
 msgstr ""
 
@@ -459,6 +569,9 @@ msgid "File not found."
 msgstr ""
 
 msgid "File not writable."
+msgstr ""
+
+msgid "Filename"
 msgstr ""
 
 msgid "Finished converting Photo Album."
@@ -471,6 +584,9 @@ msgid "Finished converting category items!"
 msgstr ""
 
 msgid "Finished converting links."
+msgstr ""
+
+msgid "First page"
 msgstr ""
 
 msgid "Form"
@@ -486,6 +602,9 @@ msgid "Form Generator is not installed in the supplied database."
 msgstr ""
 
 msgid "Form Generator is not installed locally."
+msgstr ""
+
+msgid "Form Name"
 msgstr ""
 
 msgid "Form generator forms converted and keyed!"
@@ -509,6 +628,9 @@ msgstr ""
 msgid "Function was expecting a \"where\" parameter."
 msgstr ""
 
+msgid "GD graphic libraries installed"
+msgstr ""
+
 msgid "GD image libraries do not support this image type."
 msgstr ""
 
@@ -519,6 +641,10 @@ msgid "Go back to main menu."
 msgstr ""
 
 msgid "Go to my new website!"
+msgstr ""
+
+#, php-format
+msgid "Go to page %s"
 msgstr ""
 
 msgid "Help option not found in help configuration file."
@@ -582,6 +708,9 @@ msgid ""
 "here."
 msgstr ""
 
+msgid "Image directory ready"
+msgstr ""
+
 msgid "Images copied during a 0.10.x conversion."
 msgstr ""
 
@@ -597,6 +726,11 @@ msgstr ""
 msgid "Improperly formated text."
 msgstr ""
 
+msgid ""
+"In order to view this archive a new table will need to added to your "
+"database."
+msgstr ""
+
 msgid "Input type not set."
 msgstr ""
 
@@ -609,7 +743,13 @@ msgstr ""
 msgid "Installed modules"
 msgstr ""
 
+msgid "Invalid Filename Given"
+msgstr ""
+
 msgid "Invalid value."
+msgstr ""
+
+msgid "Javascript directory ready"
 msgstr ""
 
 msgid "Join database does not exist."
@@ -624,10 +764,20 @@ msgstr ""
 msgid "Key not found."
 msgstr ""
 
+msgid "Last page"
+msgstr ""
+
 msgid "Limit"
 msgstr ""
 
+#, php-format
+msgid "Limit results to %s rows"
+msgstr ""
+
 msgid "List columns not set."
+msgstr ""
+
+msgid "Log directory ready"
 msgstr ""
 
 msgid "Log in"
@@ -640,6 +790,15 @@ msgid "Login page"
 msgstr ""
 
 msgid "Login to Site Manager"
+msgstr ""
+
+msgid "MIME file type detection"
+msgstr ""
+
+msgid "Magic quotes disabled"
+msgstr ""
+
+msgid "Magic quotes is enabled. Please disable it in your php.ini file."
 msgstr ""
 
 msgid "Main Menu"
@@ -665,6 +824,9 @@ msgid "Manual mode requires you to click through the conversion process."
 msgstr ""
 
 msgid "Match for must be an array for a multiple input."
+msgstr ""
+
+msgid "Memory limit exceeded"
 msgstr ""
 
 msgid "Menu conversion finished."
@@ -721,6 +883,9 @@ msgstr ""
 msgid "Name not set."
 msgstr ""
 
+msgid "No"
+msgstr ""
+
 msgid "No Images"
 msgstr ""
 
@@ -737,6 +902,9 @@ msgid "No announcements to convert."
 msgstr ""
 
 msgid "No blocks found."
+msgstr ""
+
+msgid "No entries were found matching your search query."
 msgstr ""
 
 msgid "No error message file found."
@@ -831,6 +999,9 @@ msgstr ""
 msgid "Otherwise, enter the ip or dns to the database server."
 msgstr ""
 
+msgid "PHP 5 version check"
+msgstr ""
+
 #, php-format
 msgid "PHPWS_Debug: testObject received a/an %s variable, not an object."
 msgstr ""
@@ -839,9 +1010,6 @@ msgid "PHPWS_File received an unknown construct."
 msgstr ""
 
 msgid "Page"
-msgstr ""
-
-msgid "PageSmith conversion"
 msgstr ""
 
 msgid "PageSmith has already been converted."
@@ -855,10 +1023,19 @@ msgstr ""
 msgid "PageSmith is not installed."
 msgstr ""
 
+msgid "Partial"
+msgstr ""
+
+msgid "Passed!"
+msgstr ""
+
 msgid "Password"
 msgstr ""
 
 msgid "Pear Configuration"
+msgstr ""
+
+msgid "Pear library installed"
 msgstr ""
 
 msgid "Permission Help"
@@ -901,6 +1078,9 @@ msgstr ""
 msgid "Please check your error logs and try again."
 msgstr ""
 
+msgid "Please copy the word in the above image."
+msgstr ""
+
 #, php-format
 msgid ""
 "Please create a directory in %simages/ named \"pagemaster\". Copy all images "
@@ -910,6 +1090,9 @@ msgstr ""
 msgid ""
 "Please enter the connect information for the database you wish to convert "
 "from."
+msgstr ""
+
+msgid "Please fill out the field:"
 msgstr ""
 
 msgid "Please login"
@@ -937,10 +1120,16 @@ msgstr ""
 msgid "Recursive object:"
 msgstr ""
 
+msgid "Register globals disabled"
+msgstr ""
+
 msgid "Remove"
 msgstr ""
 
 msgid "Remove the following file and refresh to continue:"
+msgstr ""
+
+msgid "Report View"
 msgstr ""
 
 msgid "Request"
@@ -964,6 +1153,15 @@ msgid "Search"
 msgstr ""
 
 msgid "Select returned an empty result."
+msgstr ""
+
+msgid "Server failed crucial tests. You may not install phpWebSite."
+msgstr ""
+
+msgid "Server passed enough tests to allow installation."
+msgstr ""
+
+msgid "Session auto start disabled"
 msgstr ""
 
 msgid "Sessions Help"
@@ -995,16 +1193,19 @@ msgstr ""
 msgid "Some users caused conversion errors."
 msgstr ""
 
-msgid "Sort ascending"
+msgid "Sorted in ascending order"
 msgstr ""
 
-msgid "Sort descending"
+msgid "Sorted in descending order"
 msgstr ""
 
 msgid "Source Directory"
 msgstr ""
 
 msgid "Spoiler"
+msgstr ""
+
+msgid "Successfully deleted table associated with the archive with filename "
 msgstr ""
 
 msgid "Table does not exist."
@@ -1023,6 +1224,9 @@ msgid "Table prefix"
 msgstr ""
 
 msgid "Table prefix must be alphanumeric characters or underscores only"
+msgstr ""
+
+msgid "Template directory ready"
 msgstr ""
 
 msgid "Template error."
@@ -1077,6 +1281,12 @@ msgstr ""
 msgid "The following directories need to be created:"
 msgstr ""
 
+msgid "The phatform archive was successfully <b>deleted</b>."
+msgstr ""
+
+msgid "The phatform export was successfully <b>deleted</b>."
+msgstr ""
+
 msgid "The submitted template is not an array."
 msgstr ""
 
@@ -1087,6 +1297,16 @@ msgid "There aren't any conversion files in the convert/modules directory."
 msgstr ""
 
 msgid "There is a problem with your sessions."
+msgstr ""
+
+msgid "There was a problem deleting the archive."
+msgstr ""
+
+msgid "There was a problem deleting the export."
+msgstr ""
+
+msgid ""
+"There was a problem deleting viewing archive table associated for filename "
 msgstr ""
 
 msgid ""
@@ -1115,6 +1335,10 @@ msgstr ""
 msgid "Unable to copy file."
 msgstr ""
 
+#, php-format
+msgid "Unable to copy the %s directory to %s. Installation halted."
+msgstr ""
+
 msgid "Unable to create file directory."
 msgstr ""
 
@@ -1128,6 +1352,11 @@ msgid "Unable to delete file."
 msgstr ""
 
 msgid "Unable to derive class variables."
+msgstr ""
+
+msgid ""
+"Unable to detect MIME file type. You will need to compile finfo_open into "
+"PHP."
 msgstr ""
 
 #, php-format
@@ -1251,6 +1480,12 @@ msgstr ""
 msgid "Variable name not found in_FILES array."
 msgstr ""
 
+msgid "View"
+msgstr ""
+
+msgid "Viewing of archive has been canceled."
+msgstr ""
+
 msgid "Visible"
 msgstr ""
 
@@ -1278,7 +1513,28 @@ msgstr ""
 msgid "Wrong variable type."
 msgstr ""
 
+msgid "Yes"
+msgstr ""
+
 msgid "You can now finish the creation of your config file."
+msgstr ""
+
+msgid ""
+"You do not appear to have ffmpeg installed. File Cabinet will not be able to "
+"create thumbnail images from uploaded videos"
+msgstr ""
+
+#, php-format
+msgid ""
+"You have chosen <b>not</b> to delete the archive with the filename \"%s\"."
+msgstr ""
+
+#, php-format
+msgid ""
+"You have chosen <b>not</b> to delete the export with the filename \"%s\"."
+msgstr ""
+
+msgid "You have register_globals enabled. You should disable it."
 msgstr ""
 
 msgid "You may change it if you wish."
@@ -1290,9 +1546,6 @@ msgstr ""
 msgid "You may convert two different ways."
 msgstr ""
 
-msgid "You may delete your images/pagemaster/ directory if you wish."
-msgstr ""
-
 #, php-format
 msgid "You may not use \"%s\" as a form element name."
 msgstr ""
@@ -1300,10 +1553,24 @@ msgstr ""
 msgid "You must be a deity to run Site Manager."
 msgstr ""
 
+#, php-format
+msgid "You need to compile the %sGD image library%s into PHP."
+msgstr ""
+
 msgid "You will need to change the permissions."
 msgstr ""
 
 msgid "You will need to create it manually and rerun the setup."
+msgstr ""
+
+msgid "Your GD graphic library is not loaded. Captcha will not function."
+msgstr ""
+
+msgid ""
+"Your PHP memory limit is less than 8MB. You may encounter problems with the "
+"script at this level. We suggest raising the limit in your php.ini file or "
+"uncommenting the \"ini_set('memory_limit', '10M');\" line in your config/"
+"core/config.php file after installation."
 msgstr ""
 
 msgid "Your configuration file already exists."
@@ -1317,6 +1584,15 @@ msgid "Your configuration file was written successfully!"
 msgstr ""
 
 msgid "Your core config.php file is missing. Please create one and return."
+msgstr ""
+
+msgid ""
+"Your pages are using the images/pagemaster/ directory so do not delete it."
+msgstr ""
+
+#, php-format
+msgid ""
+"Your server must run PHP version 5.1.0 or higher. You are running version %s."
 msgstr ""
 
 msgid "\\1 wrote"
@@ -1342,9 +1618,14 @@ msgid "phpWebSite depends on sessions to move data between pages."
 msgstr ""
 
 msgid ""
-"phpWebSite supports several databases. Choose the type your server currently "
-"is running."
+"phpWebSite supports MySQL and PostgreSQL. Choose the type your server "
+"currently is running."
 msgstr ""
 
 msgid "phpWebSite uses the Pear library extensively."
+msgstr ""
+
+msgid ""
+"session.auto_start must be set to 0 for phpWebSite to work. Please review "
+"your php.ini file."
 msgstr ""
