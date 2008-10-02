@@ -8,13 +8,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-05 14:09-0400\n"
+"POT-Creation-Date: 2008-10-02 12:12-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "%s duplicate event(s) were ignored."
+msgstr ""
+
+#, php-format
+msgid "%s event(s) were successfully imported."
+msgstr ""
 
 msgid "1st"
 msgstr ""
@@ -187,6 +195,12 @@ msgstr ""
 msgid "Don't show"
 msgstr ""
 
+msgid "Download"
+msgstr ""
+
+msgid "Download iCal events"
+msgstr ""
+
 msgid "Duplicate suggestion."
 msgstr ""
 
@@ -203,6 +217,15 @@ msgid "End of each month"
 msgstr ""
 
 msgid "End time"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Error accessing event table."
+msgstr ""
+
+msgid "Error saving new event."
 msgstr ""
 
 msgid "Event"
@@ -226,6 +249,12 @@ msgstr ""
 msgid "Every month on start date"
 msgstr ""
 
+msgid "File does not appear to be in iCal/vCal format."
+msgstr ""
+
+msgid "File location"
+msgstr ""
+
 #, php-format
 msgid "First day"
 msgstr ""
@@ -241,6 +270,15 @@ msgid "Grid"
 msgstr ""
 
 msgid "Grid event display"
+msgstr ""
+
+msgid "Import complete!"
+msgstr ""
+
+msgid "Import iCal/vCal file"
+msgstr ""
+
+msgid "Improper file format."
 msgstr ""
 
 msgid "Incorrect option"
@@ -266,6 +304,9 @@ msgid "Make default public"
 msgstr ""
 
 msgid "Maximum allowed repeats reached."
+msgstr ""
+
+msgid "Missing filename."
 msgstr ""
 
 msgid "Missing title."
@@ -374,6 +415,9 @@ msgstr ""
 msgid "Reset cache"
 msgstr ""
 
+msgid "Return to upload form..."
+msgstr ""
+
 msgid "Save"
 msgstr ""
 
@@ -398,7 +442,13 @@ msgstr ""
 msgid "Schedule saved."
 msgstr ""
 
+msgid "Schedule unavailable."
+msgstr ""
+
 msgid "Schedules"
+msgstr ""
+
+msgid "Send file"
 msgstr ""
 
 msgid "Settings"
@@ -411,6 +461,9 @@ msgid "Show busy"
 msgstr ""
 
 msgid "Show event titles"
+msgstr ""
+
+msgid "Show mini grid"
 msgstr ""
 
 msgid "Show next two weeks"
@@ -455,6 +508,9 @@ msgstr ""
 msgid "The end time must be after the start time."
 msgstr ""
 
+msgid "The following errors occurred when trying to import your events:"
+msgstr ""
+
 msgid "This event does not exist."
 msgstr ""
 
@@ -485,6 +541,9 @@ msgstr ""
 msgid "Two weeks prior"
 msgstr ""
 
+msgid "Unable to parse file for events."
+msgstr ""
+
 msgid "Unable to save your event suggestion."
 msgstr ""
 
@@ -495,6 +554,9 @@ msgid "Update event"
 msgstr ""
 
 msgid "Update schedule"
+msgstr ""
+
+msgid "Upload iCal events"
 msgstr ""
 
 msgid "User"
