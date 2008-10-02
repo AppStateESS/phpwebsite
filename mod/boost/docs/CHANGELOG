@@ -1,3 +1,6 @@
+2 October 2008
++ Checking allow_url_fopen before allowing version checking.
+
 10 September 2008
 + Revert reinstalls control panel links and tabs.
 + Requires control panel update.

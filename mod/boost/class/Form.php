@@ -78,7 +78,7 @@ class Boost_Form {
                     $link_title = sprintf(dgettext('boost', '%s - New'), $link_title);
                 }
             } else {
-                $link_title = dgettext('boost', 'Check');
+                  $link_title = dgettext('boost', 'Check');
             }
 
             if ($core_file->isAbout()) {
@@ -92,7 +92,11 @@ class Boost_Form {
 
             $link_command['opmod'] = 'core';
             $link_command['action'] = 'check';
-            $template['LATEST'] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
+            if (ini_get('allow_url_fopen')) {
+                $template['LATEST'] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
+            } else {
+                $template['LATEST'] = dgettext('boost', 'Check disabled');
+            }
 
             if (version_compare($core_db->version, $core_file->version, '<')) {
                 if ($core_file->checkDependency()) {
@@ -172,11 +176,15 @@ class Boost_Form {
                         $link_title = sprintf(dgettext('boost', '%s - New'), $link_title);
                     }
                 } else {
-                    $link_title = dgettext('boost', 'Check');
+                        $link_title = dgettext('boost', 'Check');
                 }
 
                 $link_command['action'] = 'check';
-                $template['LATEST'] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
+                if (ini_get('allow_url_fopen')) {
+                    $template['LATEST'] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
+                } else {
+                    $template['LATEST'] = dgettext('boost', 'Check disabled');
+                }
             }
 
             if (!$mod->isInstalled()) {
@@ -272,8 +280,15 @@ class Boost_Form {
         }
 
         $tpl['OLD_MODS'] = Boost_Form::oldModList();
-        $tpl['CHECK_FOR_UPDATES'] = PHPWS_Text::secureLink(dgettext('boost', 'Check all'), 'boost',
-                                                           array('action' => 'check_all', 'tab' => $type));
+
+        if (ini_get('allow_url_fopen')) {
+            $tpl['CHECK_FOR_UPDATES'] = PHPWS_Text::secureLink(dgettext('boost', 'Check all'), 'boost',
+                                                               array('action' => 'check_all', 'tab' => $type));
+        } else {
+            $tpl['CHECK_FOR_UPDATES'] = dgettext('boost', 'Server configuration prevents version checking.');
+        }
+
+        
         $tpl['LATEST_LABEL'] = dgettext('boost', 'Latest version');
 
         $release_version = PHPWS_Core::releaseVersion();

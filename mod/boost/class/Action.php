@@ -238,6 +238,10 @@ class Boost_Action {
 
         $all_mods[] = 'core';
 
+        if (!ini_get('allow_url_fopen')) {
+            return false;
+        }
+
         foreach ($all_mods as $mod_title) {
             $module = new PHPWS_Module($mod_title);
             $file = $module->getVersionHttp();
