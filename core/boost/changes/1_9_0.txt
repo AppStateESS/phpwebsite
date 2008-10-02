@@ -62,6 +62,7 @@ DBPager
 + cacheQueries works better now especially with setDefaultOrder.
 + CSV reports can be called on any output.
 + setSearch to accept an array of columns. Thanks Micah.
++ Fixed some notices with older modules.
 
 Error
 + Added recursion check to prevent endless loop

@@ -5,6 +5,7 @@ its own separate CHANGELOG file..
 Version 1.9.0
 ---------------------------------------------------------------------
 2 October 2008
++ Fixed some notices appearing in old modules with dbpager.
 + Fixed fckeditor.css in default. Thanks Verdon.
 + Menu convert ignores inactive links
 + Added Micah's code to allow setSearch to accept an array of columns.

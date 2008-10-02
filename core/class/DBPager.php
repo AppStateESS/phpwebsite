@@ -988,9 +988,12 @@ class DBPager {
                 $alt = '';
             }
 
-
-            $module = $values['module'];
-            unset($values['module']);
+            if (isset($values['module'])) {
+                $module = $values['module'];
+                unset($values['module']);
+            } else {
+                $module = & $this->module;
+            }
 
             $anchor = $this->getAnchor();
             if ($anchor) {
@@ -1134,8 +1137,12 @@ class DBPager {
         $values = $this->getLinkValues();
         unset($values['limit']);
 
-        $module = $values['module'];
-        unset($values['module']);
+        if (isset($values['module'])) {
+            $module = $values['module'];
+            unset($values['module']);
+        } else {
+            $module = & $this->module;
+        }
 
         $anchor = $this->getAnchor();
         if ($anchor) {
