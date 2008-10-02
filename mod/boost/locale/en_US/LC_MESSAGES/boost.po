@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-05 14:09-0400\n"
+"POT-Creation-Date: 2008-10-02 12:12-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -124,6 +124,10 @@ msgstr ""
 msgid "Continue installation..."
 msgstr ""
 
+#, php-format
+msgid "Copy file failure: %s to %s"
+msgstr ""
+
 msgid "Copying configuration files."
 msgstr ""
 
@@ -196,6 +200,14 @@ msgstr ""
 msgid "Failed"
 msgstr ""
 
+#, php-format
+msgid "Failed directory backup: %s to %s"
+msgstr ""
+
+#, php-format
+msgid "Failed directory copy: %s to %s"
+msgstr ""
+
 msgid "Failed installation of module."
 msgstr ""
 
@@ -218,6 +230,10 @@ msgid "Importing SQL install file."
 msgstr ""
 
 msgid "Importing SQL uninstall file."
+msgstr ""
+
+#, php-format
+msgid "Inaccessible: %s"
 msgstr ""
 
 msgid "Install"
@@ -295,6 +311,10 @@ msgstr ""
 msgid "Needs upgrading"
 msgstr ""
 
+#, php-format
+msgid "No backup: %s"
+msgstr ""
+
 msgid "No modules available."
 msgstr ""
 
@@ -338,6 +358,9 @@ msgid "Processing update file."
 msgstr ""
 
 msgid "Registered to Key."
+msgstr ""
+
+msgid "Registering Control Panel information."
 msgstr ""
 
 msgid "Registering module to core."
