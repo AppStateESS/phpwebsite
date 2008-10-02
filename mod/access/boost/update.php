@@ -130,6 +130,11 @@ function access_update(&$content, $version)
 + Removed htaccess file. Now expect core/inc/htaccess.
 </pre>';
 
+    case version_compare($version, '1.1.0', '<'):
+        $content[] = '<pre>1.1.0 changes
+---------------
++ Updated to PHP 5 standards.
+</pre>';
     }
 
     return true;
