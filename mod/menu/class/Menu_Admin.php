@@ -625,6 +625,10 @@ class Menu_Admin {
         $form->setLabel('max_link_characters', dgettext('menu', 'Maximum link characters'));
         $form->setSize('max_link_characters', 3, 3);
 
+        $form->addCheck('show_all_admin', 1);
+        $form->setLabel('show_all_admin', dgettext('menu', 'Expand menu during admin mode'));
+        $form->setMatch('show_all_admin', PHPWS_Settings::get('menu', 'show_all_admin'));
+
         $form->addSubmit('submit', dgettext('menu', 'Save settings'));
 
         $tpl = $form->getTemplate();
@@ -778,26 +782,11 @@ class Menu_Admin {
             }
         }
 
-        if (isset($_POST['float_mode'])) {
-            PHPWS_Settings::set('menu', 'float_mode', 1);
-        } else {
-            PHPWS_Settings::set('menu', 'float_mode', 0);
-        }
-
-        if (isset($_POST['miniadmin'])) {
-            PHPWS_Settings::set('menu', 'miniadmin', 1);
-        } else {
-            PHPWS_Settings::set('menu', 'miniadmin', 0);
-        }
-
-        if (isset($_POST['home_link'])) {
-            PHPWS_Settings::set('menu', 'home_link', 1);
-        } else {
-            PHPWS_Settings::set('menu', 'home_link', 0);
-        }
-
+        PHPWS_Settings::set('menu', 'float_mode', (int)isset($_POST['float_mode']));
+        PHPWS_Settings::set('menu', 'miniadmin', (int)isset($_POST['miniadmin']));
+        PHPWS_Settings::set('menu', 'home_link', (int)isset($_POST['home_link']));
+        PHPWS_Settings::set('menu', 'show_all_admin', (int)isset($_POST['show_all_admin']));
         PHPWS_Settings::save('menu');
-
     }
 }
 

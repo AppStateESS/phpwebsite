@@ -233,7 +233,8 @@ class Menu_Link {
             $current_parent[] = $this->id;
         }
 
-        if ($this->_menu->_show_all || $current_link || $this->parent == 0 ||
+        if ((Menu::isAdminMode() && PHPWS_Settings::get('menu', 'show_all_admin')) ||
+            $this->_menu->_show_all || $current_link || $this->parent == 0 ||
             in_array($this->parent, $current_parent)) {
 
             $link = $this->getUrl();

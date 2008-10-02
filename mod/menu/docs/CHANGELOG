@@ -3,6 +3,9 @@
   set to appear there.
 + Fixed bug #2079194. Deleting menu now removes links as well. Thanks
   Tommy.
++ Added option to expand menus when admin mode is enabled
++ Reworded menu admin link.
++ Updated: templates/admin/settings.tpl, conf/config.php
 
 26 September 2008
 + Added more ajax controls (add and delete) to the admin menu.

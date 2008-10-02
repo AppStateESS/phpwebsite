@@ -23,6 +23,10 @@
     <td><strong>{HOME_LINK_LABEL}</strong></td>
     <td>{HOME_LINK}</td>
   </tr>
+  <tr>
+    <td><strong>{SHOW_ALL_ADMIN_LABEL}</strong></td>
+    <td>{SHOW_ALL_ADMIN}</td>
+  </tr>
 </table>
 {SUBMIT}
 {END_FORM}
