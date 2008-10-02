@@ -2720,7 +2720,7 @@ class PHPWS_DB_Where {
             $operator = 'NOT ' . $GLOBALS['PHPWS_DB']['lib']->getLike();
         } elseif ($operator == '~' || $operator == '~*' || $operator == 'REGEXP' || $operator == 'RLIKE') {
             $operator = $GLOBALS['PHPWS_DB']['lib']->getRegexp();
-        } elseif ($operator == '!~' || $operator '!~*' || $operator == 'NOT REGEXP' || $operator == 'NOT RLIKE') {
+        } elseif ($operator == '!~' || $operator == '!~*' || $operator == 'NOT REGEXP' || $operator == 'NOT RLIKE') {
             $operator = $GLOBALS['PHPWS_DB']['lib']->getNotRegexp();
         }
 
