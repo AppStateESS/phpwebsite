@@ -178,9 +178,11 @@ function linkBatch($db, $batch)
         return NULL;
     } else {
         foreach ($result as $link) {
-            $link_result = convertLink($link);
-            if (PEAR::isError($link_result)) {
-                PHPWS_Error::log($link_result);
+            if ($link['menu_item_active']) {
+                $link_result = convertLink($link);
+                if (PEAR::isError($link_result)) {
+                    PHPWS_Error::log($link_result);
+                }
             }
         }
     }

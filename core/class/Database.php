@@ -2700,6 +2700,10 @@ class PHPWS_DB_Where {
         $this->column = $column;
     }
 
+    /**
+     * Set operator after checking for compatibility
+     * addWhere strtouppers the operator
+     */
     public function setOperator($operator)
     {
         if (empty($operator)) {
@@ -2714,8 +2718,10 @@ class PHPWS_DB_Where {
             $operator = $GLOBALS['PHPWS_DB']['lib']->getLike();
         } elseif ($operator == 'NOT LIKE' || $operator == 'NOT ILIKE') {
             $operator = 'NOT ' . $GLOBALS['PHPWS_DB']['lib']->getLike();
-        } elseif ($operator == '~' || $operator == 'REGEXP' || $operator == 'RLIKE') {
+        } elseif ($operator == '~' || $operator == '~*' || $operator == 'REGEXP' || $operator == 'RLIKE') {
             $operator = $GLOBALS['PHPWS_DB']['lib']->getRegexp();
+        } elseif ($operator == '!~' || $operator '!~*' || $operator == 'NOT REGEXP' || $operator == 'NOT RLIKE') {
+            $operator = $GLOBALS['PHPWS_DB']['lib']->getNotRegexp();
         }
 
         $this->operator = $operator;

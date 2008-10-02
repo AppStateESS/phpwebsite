@@ -42,6 +42,7 @@ Database
 + inDatabase function was still checking for column existance if not
   set. Fixed. Thanks Hilmar. 
 + Added function alterColumnType.
++ Postgresql regexp was changed to case insensitive.
 
 
 DBPager
@@ -60,7 +61,7 @@ DBPager
 + Current page is now bracketed and unlinked
 + cacheQueries works better now especially with setDefaultOrder.
 + CSV reports can be called on any output.
-
++ setSearch to accept an array of columns. Thanks Micah.
 
 Error
 + Added recursion check to prevent endless loop
@@ -229,3 +230,4 @@ Other
 + Error message added to block conversion.
 + Added cacheQueries information to DBPager documentation.
 + Updated jquery to 1.2.6
++ Menu convert ignores inactive links

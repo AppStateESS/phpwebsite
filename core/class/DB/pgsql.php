@@ -140,7 +140,12 @@ class pgsql_PHPWS_SQL {
 
     public function getRegexp()
     {
-        return '~';
+        return '~*';
+    }
+    
+    public function getNotRegexp()
+    {
+        return '!~*';
     }
 
 

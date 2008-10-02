@@ -4,6 +4,13 @@ its own separate CHANGELOG file..
 
 Version 1.9.0
 ---------------------------------------------------------------------
+2 October 2008
++ Fixed fckeditor.css in default. Thanks Verdon.
++ Menu convert ignores inactive links
++ Added Micah's code to allow setSearch to accept an array of columns.
++ Added not regexp operator parsing.
++ Postgresql regexp was made case insensitive.
+
 1 October 2008
 + Added setAutoComplete to password element.
 

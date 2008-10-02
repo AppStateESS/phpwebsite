@@ -271,6 +271,8 @@ $pager->setSearch('filename', 'first_name');
 The search form will be visable after you add the SEARCH tag into your
 template.
 
+You may also send an array of column names to setSearch instead of
+breaking them into separate parameters.
 
 Setting up your template
 --------------------------------------------------------------------

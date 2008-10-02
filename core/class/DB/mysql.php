@@ -112,6 +112,11 @@ class mysql_PHPWS_SQL {
         return 'REGEXP';
     }
 
+    public function getNotRegexp()
+    {
+        return 'NOT REGEXP';
+    }
+
     public function addColumn($table, $column, $parameter, $after=null)
     {
         if (!empty($after)) {

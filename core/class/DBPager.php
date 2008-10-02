@@ -380,7 +380,13 @@ class DBPager {
 
     public function setSearch()
     {
-        $col_list = func_get_args();
+        $args = func_get_args();
+
+        if (sizeof($args) == 1 && is_array($args[0])) {
+            $col_list = $args[0];
+        } else {
+            $col_list = $args;
+        }
 
         foreach ($col_list as $column) {
             if (UTF8_MODE) {
