@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-02 12:44-0400\n"
+"POT-Creation-Date: 2008-10-02 13:56-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,9 +104,6 @@ msgstr ""
 
 #, php-format
 msgid "Checking branch \"%s\""
-msgstr ""
-
-msgid "Click here to force an uninstall."
 msgstr ""
 
 msgid ""
@@ -528,6 +525,10 @@ msgstr ""
 
 #, php-format
 msgid "Your logs/%s file must be readable and writable."
+msgstr ""
+
+#, php-format
+msgid "\\nIf sure, please type the name of the module below: %s"
 msgstr ""
 
 msgid "index.php?module=boost&amp;action=admin"

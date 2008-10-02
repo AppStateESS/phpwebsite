@@ -243,13 +243,8 @@ class Boost_Form {
                         $depend_warning = sprintf(dgettext('boost', 'This module is depended upon by: %s'), implode(', ', $dependents));
                         $links[] = PHPWS_Text::secureLink(dgettext('boost', 'Depended upon'), 'boost', $link_command, NULL, $depend_warning);
                     } else {
-                        $uninstallVars = array('opmod'=>$title, 'action'=>'uninstall');
-                        $js['QUESTION'] = dgettext('boost', 'Are you sure you want to uninstall this module? All data will be deleted.');
-                        $js['ADDRESS'] = PHPWS_Text::linkAddress('boost', $uninstallVars, true);
-                        $js['LINK'] = dgettext('boost', 'Uninstall');
-                        $links[] = javascript('confirm', $js);
+                        $links[] = PHPWS_Boost::uninstallLink($title);
                     }
-
                 }
                 if ($allow_update) {
                     $js_file['QUESTION'] = dgettext('boost', 'Clicking OK will copy this module\\\'s configuration, image, templates, and javascript folders locally.\nNo backups will occur and all local files will be overwritten.\nAre you certain you want to do this?');

@@ -166,12 +166,7 @@ class Boost_Action {
             $content[] = $dep_module->getProperName();
         }
 
-        $uninstallVars = array('opmod'=>$base_mod, 'action'=>'uninstall');
-        $js['QUESTION'] = dgettext('boost', 'Are you sure you want to uninstall this module? All data will be deleted.');
-        $js['ADDRESS'] = PHPWS_Text::linkAddress('boost', $uninstallVars, TRUE);
-        $js['LINK'] = dgettext('boost', 'Click here to force an uninstall.');
-        $content[] = javascript('confirm', $js);
-
+        $content[] = PHPWS_Boost::uninstallLink($base_mod);
         $template['CONTENT'] = implode('<br />', $content);
 
         return PHPWS_Template::process($template, 'boost', 'main.tpl');

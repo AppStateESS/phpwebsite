@@ -1,5 +1,8 @@
 2 October 2008
-+ Bug #2076972: Checking allow_url_fopen before allowing version checking.
++ Bug #2076972: Checking allow_url_fopen before allowing version
+  checking.
++ RFE #1945965: Added prompt instead of confirm for module
+  uninstallation. 
 
 10 September 2008
 + Revert reinstalls control panel links and tabs.

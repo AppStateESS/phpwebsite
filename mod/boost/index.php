@@ -76,7 +76,11 @@ switch ($_REQUEST['action']){
  case 'uninstall':
      $content[] =  $backToBoost . '<br />';
      $content[] = '<br />';
-     $content[] = Boost_Action::uninstallModule($_REQUEST['opmod']);
+     if (@$_GET['confirm'] == $_GET['opmod']) {
+         $content[] = Boost_Action::uninstallModule($_GET['opmod']);
+     } else {
+         PHPWS_Core::goBack();
+     }
      break;
 
  case 'update_core':
