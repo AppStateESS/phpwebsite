@@ -402,7 +402,11 @@ class Menu_Item {
                     $js['label']   = dgettext('menu', 'Pin page');
                     $js['width']   = 300;
                     $js['height']  = 180;
-                    $tpl['PIN_PAGE'] = javascript('open_window', $js);
+                    if (!PHPWS_Settings::get('menu', 'miniadmin')) {
+                        $tpl['PIN_PAGE'] = javascript('open_window', $js);
+                    } else {
+                        MiniAdmin::add('menu', javascript('open_window', $js));
+                    }
                 }
 
                 $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
