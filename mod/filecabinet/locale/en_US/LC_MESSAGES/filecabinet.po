@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-05 14:09-0400\n"
+"POT-Creation-Date: 2008-10-02 12:12-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,16 +86,16 @@ msgstr ""
 msgid "Add embedded"
 msgstr ""
 
-msgid "Add embedded video"
-msgstr ""
-
-msgid "Add file"
+msgid "Add embedded media"
 msgstr ""
 
 msgid "Add folder"
 msgstr ""
 
 msgid "Add image"
+msgstr ""
+
+msgid "Add media"
 msgstr ""
 
 msgid "All files icon"
@@ -150,6 +150,12 @@ msgid "Cancel"
 msgstr ""
 
 msgid "Caption images"
+msgstr ""
+
+msgid "Carousel defaults"
+msgstr ""
+
+msgid "Carousel direction"
 msgstr ""
 
 msgid "Choose the type of file you wish to add"
@@ -231,6 +237,9 @@ msgstr ""
 msgid "Current multimedia"
 msgstr ""
 
+msgid "DL"
+msgstr ""
+
 msgid "Decription"
 msgstr ""
 
@@ -291,6 +300,9 @@ msgstr ""
 msgid "Download from %s"
 msgstr ""
 
+msgid "Downloaded"
+msgstr ""
+
 msgid "Duplicate file found."
 msgstr ""
 
@@ -345,6 +357,9 @@ msgstr ""
 msgid "File Cabinet"
 msgstr ""
 
+msgid "File is unreadable"
+msgstr ""
+
 msgid "File name"
 msgstr ""
 
@@ -376,6 +391,9 @@ msgstr ""
 msgid "Folder is empty."
 msgstr ""
 
+msgid "Folder is private. Slideshow not available"
+msgstr ""
+
 msgid "Folder missing image files."
 msgstr ""
 
@@ -389,6 +407,9 @@ msgid "Go"
 msgstr ""
 
 msgid "Height"
+msgstr ""
+
+msgid "Horizontal"
 msgstr ""
 
 msgid "Image folders"
@@ -477,6 +498,9 @@ msgstr ""
 msgid "Maximum pinned images shown (0 for all)"
 msgstr ""
 
+msgid "Maximum thumbnail pixel dimension"
+msgstr ""
+
 msgid "Media"
 msgstr ""
 
@@ -529,6 +553,12 @@ msgstr ""
 msgid "None"
 msgstr ""
 
+msgid "Number of thumbnails visible"
+msgstr ""
+
+msgid "Number shown"
+msgstr ""
+
 msgid "Pin folder"
 msgstr ""
 
@@ -549,6 +579,15 @@ msgid "Problem with opening browser page. Closing File Manager window."
 msgstr ""
 
 msgid "Public"
+msgstr ""
+
+msgid "Put all checked documents here"
+msgstr ""
+
+msgid "Put all checked images here"
+msgstr ""
+
+msgid "Put all checked media here"
 msgstr ""
 
 msgid "Random image icon"
@@ -605,7 +644,7 @@ msgstr ""
 msgid "Sorry.."
 msgstr ""
 
-msgid "Submit video"
+msgid "Submit media"
 msgstr ""
 
 msgid "System upload limits"
@@ -658,6 +697,12 @@ msgstr ""
 msgid "Thumbnail icon"
 msgstr ""
 
+msgid "Thumbnail size is too large."
+msgstr ""
+
+msgid "Thumbnails must be over 30px in size."
+msgstr ""
+
 msgid "Title"
 msgstr ""
 
@@ -702,6 +747,9 @@ msgstr ""
 msgid "Unknown or mismatched mime type"
 msgstr ""
 
+msgid "Unregistered from File Cabinet."
+msgstr ""
+
 msgid "Update"
 msgstr ""
 
@@ -742,6 +790,9 @@ msgid "Url or id"
 msgstr ""
 
 msgid "Use original image"
+msgstr ""
+
+msgid "Vertical"
 msgstr ""
 
 msgid "View all images in folder"

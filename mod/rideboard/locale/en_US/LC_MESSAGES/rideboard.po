@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-05 14:09-0400\n"
+"POT-Creation-Date: 2008-10-02 12:12-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,15 @@ msgstr ""
 msgid "- Locations in comments -"
 msgstr ""
 
+msgid ""
+"A problem occurred when trying to save your carpool information. Try again "
+"later."
+msgstr ""
+
 msgid "Add menu link"
+msgstr ""
+
+msgid "Additional information"
 msgstr ""
 
 msgid "An error occurred when pulling your rides."
@@ -42,7 +50,25 @@ msgstr ""
 msgid "Are you sure you want to delete this ride?"
 msgstr ""
 
+msgid "Are you sure you want to remove this carpool?"
+msgstr ""
+
 msgid "Back to search"
+msgstr ""
+
+msgid "Carpool"
+msgstr ""
+
+msgid "Carpool destination"
+msgstr ""
+
+msgid "Carpool info"
+msgstr ""
+
+msgid "Carpool start"
+msgstr ""
+
+msgid "Carpools"
 msgstr ""
 
 msgid "Change settings"
@@ -51,7 +77,22 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
+msgid "Contact poster"
+msgstr ""
+
+msgid "Create a carpool"
+msgstr ""
+
+msgid "Create a new carpool"
+msgstr ""
+
 msgid "D/R"
+msgstr ""
+
+msgid "Date created"
+msgstr ""
+
+msgid "Default destination"
 msgstr ""
 
 msgid "Default starting location"
@@ -63,10 +104,19 @@ msgstr ""
 msgid "Delete "
 msgstr ""
 
+msgid "Delete carpools"
+msgstr ""
+
 msgid "Delete ride offers"
 msgstr ""
 
+msgid "Delete this carpool"
+msgstr ""
+
 msgid "Destination"
+msgstr ""
+
+msgid "Destination location needs to be entered."
 msgstr ""
 
 msgid "Distance format"
@@ -125,6 +175,9 @@ msgid "Either gender"
 msgstr ""
 
 msgid "Email user"
+msgstr ""
+
+msgid "Enable carpooling"
 msgstr ""
 
 msgid "Expired"
@@ -186,6 +239,9 @@ msgstr ""
 msgid "Miles"
 msgstr ""
 
+msgid "More information"
+msgstr ""
+
 #, php-format
 msgid ""
 "Need a ride from <strong>%s</strong> on or around <strong>%s</strong> to "
@@ -207,6 +263,9 @@ msgstr ""
 msgid "New location"
 msgstr ""
 
+msgid "No carpool offers found."
+msgstr ""
+
 msgid "No default"
 msgstr ""
 
@@ -217,6 +276,9 @@ msgid "No rides need purging."
 msgstr ""
 
 msgid "Non-smokers only"
+msgstr ""
+
+msgid "None"
 msgstr ""
 
 msgid "Not indicated"
@@ -256,6 +318,9 @@ msgid "Rideboard Settings"
 msgstr ""
 
 msgid "Rider"
+msgstr ""
+
+msgid "Save carpool"
 msgstr ""
 
 msgid "Save settings"
@@ -313,6 +378,15 @@ msgstr ""
 msgid "Sorry"
 msgstr ""
 
+msgid "Start"
+msgstr ""
+
+msgid "Starting area"
+msgstr ""
+
+msgid "Starting location needs to be entered."
+msgstr ""
+
 msgid "The ride has expired."
 msgstr ""
 
@@ -320,6 +394,9 @@ msgid "This ride could not be found."
 msgstr ""
 
 msgid "Trip title"
+msgstr ""
+
+msgid "Update carpool"
 msgstr ""
 
 msgid "View my Rides"

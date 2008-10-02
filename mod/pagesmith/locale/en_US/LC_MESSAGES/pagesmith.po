@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-05 14:09-0400\n"
+"POT-Creation-Date: 2008-10-02 12:12-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,6 +32,9 @@ msgstr ""
 msgid "Add menu link for new pages."
 msgstr ""
 
+msgid "Add page"
+msgstr ""
+
 msgid "Add to front"
 msgstr ""
 
@@ -44,10 +47,16 @@ msgstr ""
 msgid "Back to style selection"
 msgstr ""
 
+msgid "Back to top"
+msgstr ""
+
 msgid "Change header"
 msgstr ""
 
 msgid "Change settings (Unrestricted only)"
+msgstr ""
+
+msgid "Change template"
 msgstr ""
 
 msgid "Change text"
@@ -60,6 +69,9 @@ msgid "Click to display on front page"
 msgstr ""
 
 msgid "Click to remove from front page"
+msgstr ""
+
+msgid "Could not delete page template."
 msgstr ""
 
 msgid "Could not find any page templates."
@@ -75,6 +87,9 @@ msgid "Created"
 msgstr ""
 
 msgid "Delete"
+msgstr ""
+
+msgid "Delete orphan"
 msgstr ""
 
 msgid "Delete page"
@@ -96,6 +111,12 @@ msgstr ""
 msgid "Edit text"
 msgstr ""
 
+msgid "Empty content. Consider deletion."
+msgstr ""
+
+msgid "Extra templates"
+msgstr ""
+
 msgid "Header"
 msgstr ""
 
@@ -105,7 +126,22 @@ msgstr ""
 msgid "List"
 msgstr ""
 
+msgid "Missing icon file."
+msgstr ""
+
+msgid "Missing structure file."
+msgstr ""
+
+msgid "Missing style sheet."
+msgstr ""
+
+msgid "Missing template file."
+msgstr ""
+
 msgid "New"
+msgstr ""
+
+msgid "Next"
 msgstr ""
 
 msgid "No pages have been created."
@@ -114,10 +150,25 @@ msgstr ""
 msgid "Not enough content to create a page."
 msgstr ""
 
+msgid "Orphaned content"
+msgstr ""
+
+msgid "Orphans"
+msgstr ""
+
 msgid "Page Title (edit above)"
 msgstr ""
 
+msgid "Page not found"
+msgstr ""
+
+msgid "Page number"
+msgstr ""
+
 msgid "Page template did not contain any sections."
+msgstr ""
+
+msgid "Page template directory must be writable to upload templates."
 msgstr ""
 
 msgid "Page template is missing a thumbnail."
@@ -135,7 +186,13 @@ msgstr ""
 msgid "Pages"
 msgstr ""
 
+msgid "Pg. No."
+msgstr ""
+
 msgid "Pick a template"
+msgstr ""
+
+msgid "Previous"
 msgstr ""
 
 msgid "Remove from front"
@@ -147,7 +204,10 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-msgid "Save page"
+msgid "Save and continue"
+msgstr ""
+
+msgid "Save and view"
 msgstr ""
 
 msgid "Settings"
@@ -156,10 +216,43 @@ msgstr ""
 msgid "Settings saved"
 msgstr ""
 
+msgid "Sorry"
+msgstr ""
+
 msgid "Sorry, but your page could not be found. You may wish to search for it."
 msgstr ""
 
+msgid "Structure file (e.g., structure.xml)"
+msgstr ""
+
+msgid "Style sheet (e.g., filename.css)"
+msgstr ""
+
+msgid "Template directory created."
+msgstr ""
+
+msgid "Template file (e.g., filename.tpl)"
+msgstr ""
+
+msgid "Template icon (e.g., filename.png)"
+msgstr ""
+
+msgid "Template name"
+msgstr ""
+
+msgid "Template posted."
+msgstr ""
+
+msgid "The template name must contain alphanumeric characters only."
+msgstr ""
+
+msgid "There is already a template with this name."
+msgstr ""
+
 msgid "Title"
+msgstr ""
+
+msgid "Unable to create page template directory."
 msgstr ""
 
 msgid "Unable to load page template."
@@ -172,6 +265,27 @@ msgid "Update page"
 msgstr ""
 
 msgid "Updated"
+msgstr ""
+
+msgid "Upload"
+msgstr ""
+
+msgid "Upload file"
+msgstr ""
+
+msgid "Upload template"
+msgstr ""
+
+msgid "Wrong file type for icon file."
+msgstr ""
+
+msgid "Wrong file type for structure file."
+msgstr ""
+
+msgid "Wrong file type for style sheet."
+msgstr ""
+
+msgid "Wrong file type for template file."
 msgstr ""
 
 msgid ""

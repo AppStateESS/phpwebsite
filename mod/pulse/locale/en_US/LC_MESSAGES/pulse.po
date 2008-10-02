@@ -16,61 +16,62 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Add item"
+msgid "Active"
 msgstr ""
 
-msgid "Bank not created."
+msgid "Click to activate"
 msgstr ""
 
-msgid "Build Related"
+msgid "Click to deactivate"
 msgstr ""
 
-msgid "Change Related Title"
+msgid "Completed"
 msgstr ""
 
-msgid "Currently, nothing is associated with this item."
+msgid "Last"
 msgstr ""
 
-msgid "Edit"
-msgstr ""
-
-msgid "Friend not created."
-msgstr ""
-
-msgid ""
-"If you want to add related information to this item, click the \"Build "
-"Related\" link."
-msgstr ""
-
-msgid "Missing position."
+msgid "Last pulse time"
 msgstr ""
 
 msgid "Module"
 msgstr ""
 
-msgid "Quit"
+msgid "Never run"
 msgstr ""
 
-msgid "Related Topics"
+msgid "Next"
 msgstr ""
 
-msgid "Related tables removed."
+msgid "Next pulse time"
 msgstr ""
 
-msgid "Save"
+msgid "Number of repeats"
 msgstr ""
 
-msgid "The Related module encountered a database error."
+msgid "Pulse Schedules"
 msgstr ""
 
-msgid "This item is related to the following:"
+msgid "Pulse type"
 msgstr ""
 
-msgid "Title"
+msgid "Pulses completed"
 msgstr ""
 
-msgid "View other items to add them to the list."
+msgid "Repeats"
 msgstr ""
 
-msgid "What do you want the title to be?"
+msgid "Schedules"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Used by other modules to schedule processes."
+msgstr ""
+
+msgid "Yes"
 msgstr ""

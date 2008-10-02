@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-05 14:09-0400\n"
+"POT-Creation-Date: 2008-10-02 12:12-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,6 +50,9 @@ msgstr ""
 msgid ""
 "A problem occurred when trying to update your password. Please try again "
 "later."
+msgstr ""
+
+msgid "Account Information"
 msgstr ""
 
 msgid "Account created successfully!"
@@ -95,6 +98,9 @@ msgid "All visitors"
 msgstr ""
 
 msgid "Allow Remember Me"
+msgstr ""
+
+msgid "Allow script tag input"
 msgstr ""
 
 msgid ""
@@ -167,12 +173,6 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-msgid "Confirm Graphic"
-msgstr ""
-
-msgid "Confirm text"
-msgstr ""
-
 msgid "Confirmation email"
 msgstr ""
 
@@ -182,7 +182,7 @@ msgstr ""
 msgid "Contact the site administrator"
 msgstr ""
 
-msgid "Control Panel"
+msgid "Control Panel flyout menu"
 msgstr ""
 
 msgid "Could not access hub database."
@@ -294,9 +294,6 @@ msgstr ""
 msgid "Email address not found. Please try again."
 msgstr ""
 
-msgid "Enter the word from the image above."
-msgstr ""
-
 msgid "Enter your new password"
 msgstr ""
 
@@ -383,6 +380,9 @@ msgid "Lets you create and edit users and groups."
 msgstr ""
 
 msgid "Local"
+msgstr ""
+
+msgid "Localization"
 msgstr ""
 
 msgid "Log Out"
@@ -526,6 +526,11 @@ msgstr ""
 msgid "Notify user"
 msgstr ""
 
+msgid ""
+"Once you change your display name, you may not change it again until reset "
+"by the site administrator."
+msgstr ""
+
 msgid "Only another deity can create a deity."
 msgstr ""
 
@@ -606,7 +611,7 @@ msgstr ""
 msgid "Please try another user name."
 msgstr ""
 
-msgid "Please type the word seen in the image."
+msgid "Preferences"
 msgstr ""
 
 msgid "Preferred editor (admins only)"
@@ -940,6 +945,11 @@ msgid ""
 msgstr ""
 
 msgid "Your account has been successfully activated. Please log in."
+msgstr ""
+
+msgid ""
+"Your account is authorized external to this site. You will need to update it "
+"at the source."
 msgstr ""
 
 msgid ""

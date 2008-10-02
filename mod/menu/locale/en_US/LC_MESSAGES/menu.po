@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-05 14:09-0400\n"
+"POT-Creation-Date: 2008-10-02 12:12-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,13 +43,10 @@ msgstr ""
 msgid "Admin"
 msgstr ""
 
-msgid "Admin mode off"
-msgstr ""
-
-msgid "Admin mode on"
-msgstr ""
-
 msgid "Admin mode status"
+msgstr ""
+
+msgid "Are you sure you want to delete this link:"
 msgstr ""
 
 msgid "Are you sure you want to delete this link: "
@@ -143,6 +140,12 @@ msgid "Menu"
 msgstr ""
 
 msgid "Menu Settings"
+msgstr ""
+
+msgid "Menu admin is off"
+msgstr ""
+
+msgid "Menu admin is on"
 msgstr ""
 
 msgid "Menu deleted."
