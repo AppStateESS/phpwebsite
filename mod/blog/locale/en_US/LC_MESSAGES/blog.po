@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-05 14:09-0400\n"
+"POT-Creation-Date: 2008-10-02 12:12-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,6 +93,9 @@ msgstr ""
 msgid "Blog Settings"
 msgstr ""
 
+msgid "Blog entries purged."
+msgstr ""
+
 msgid "Blog entry approved."
 msgstr ""
 
@@ -144,6 +147,9 @@ msgstr ""
 msgid "Comments preapproved"
 msgstr ""
 
+msgid "Confirm purge"
+msgstr ""
+
 msgid "Create first blog entry!"
 msgstr ""
 
@@ -186,6 +192,10 @@ msgstr ""
 msgid "Hide general image folders"
 msgstr ""
 
+#, php-format
+msgid "I am sure that I want to delete all blog entries prior to %s"
+msgstr ""
+
 msgid "Image url"
 msgstr ""
 
@@ -216,6 +226,9 @@ msgstr ""
 msgid "Missing title."
 msgstr ""
 
+msgid "Nevermind, go back to settings"
+msgstr ""
+
 msgid "New"
 msgstr ""
 
@@ -238,6 +251,9 @@ msgid "No link but allow image link setting"
 msgstr ""
 
 msgid "No title"
+msgstr ""
+
+msgid "None"
 msgstr ""
 
 msgid "Number of past entries"
@@ -271,6 +287,12 @@ msgid "Publish"
 msgstr ""
 
 msgid "Publish date/time"
+msgstr ""
+
+msgid "Purge Blog Entries"
+msgstr ""
+
+msgid "Purge all entries before this date"
 msgstr ""
 
 msgid "Read more"
@@ -354,9 +376,6 @@ msgstr ""
 msgid "Tried to edit an unapproved item."
 msgstr ""
 
-msgid "Type the word seen in the image."
-msgstr ""
-
 msgid "Unpublished"
 msgstr ""
 
@@ -385,6 +404,11 @@ msgid "View"
 msgstr ""
 
 msgid "View version"
+msgstr ""
+
+msgid ""
+"You have chosen to purge old blog entries from your web site. Be aware they "
+"will be deleted permanently."
 msgstr ""
 
 msgid "Your entry has been submitted for review."
