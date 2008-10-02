@@ -1,6 +1,4 @@
-{content}
-
-<script language="javascript">
+<script>
 //<![CDATA[
 //Custom settings for ReCaptcha
 var RecaptchaOptions = {
@@ -8,3 +6,5 @@ var RecaptchaOptions = {
 };
 //]>
 </script>
+
+{content}
