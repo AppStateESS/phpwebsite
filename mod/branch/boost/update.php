@@ -100,6 +100,13 @@ function branch_update(&$content, $version)
 -------------
 + Uses core\'s default htaccess file.</pre>';
 
+    case version_compare($version, '1.2.0', '<'):
+        $content[] = '<pre>1.2.0 Changes
+-------------
++ php 5 formatted.
++ Copying the correct htaccess file.</pre>';
+
+
     }
     return true;
 }
