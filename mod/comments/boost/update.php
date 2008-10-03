@@ -218,7 +218,7 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
         PHPWS_Settings::reset('comments', 'email_text');
         $content[] = 'Added new module settings.';
 
-        $files = array('templates/', 'img/');
+        $files = array('templates/', 'img/', 'javascript/');
         if (PHPWS_Boost::updateFiles($files, 'comments'))
             $content[] = 'Updated the following files:';
         else
