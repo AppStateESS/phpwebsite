@@ -1111,9 +1111,9 @@ class PHPWS_Boost {
                         PHPWS_Error::log(BOOST_FAILED_BACKUP, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
                     }
                 }
-
+                clearstatcache();
                 if (!PHPWS_File::copy_directory($source_file, $local_file)) {
-                    PHPWS_Error::log(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
+                    PHPWS_Error::log(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', "$source_file to \n$local_file");
                     $failures[] = sprintf(dgettext('boost', 'Failed directory copy: %s to %s'), $source_file, $local_file);
                 }
 

@@ -18,3 +18,5 @@
   destination directory will be backed up and the source directory
   copied over.
 + updateFiles creates timestamped backup files now.
++ Clearing PHP stat cache when updating directories. Prevents false
+  positive on copy directory.

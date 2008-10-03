@@ -2,6 +2,7 @@ Version 2.3.0
 -----------------------------------------------------
 3 October 2008
 + Error check added for directory copy.
++ Clearing statcache after rename
 
 2 October 2008
 + Bug #2076972: Checking allow_url_fopen before allowing version
