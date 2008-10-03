@@ -9,7 +9,7 @@ PHPWS_Core::initModClass('checkin', 'Checkin.php');
 
 class Checkin_User extends Checkin {
 
-    function checkinForm() {
+    public function checkinForm() {
         $form = new PHPWS_Form('checkin');
         $form->addHidden('module', 'checkin');
         $form->addHidden('uop', 'post_checkin');
@@ -38,7 +38,7 @@ class Checkin_User extends Checkin {
         }
     }
 
-    function main()
+    public function main()
     {
         $tpl['TITLE'] = & $this->title;
         if (is_array($this->message)) {
@@ -52,7 +52,7 @@ class Checkin_User extends Checkin {
         return PHPWS_Template::process($tpl, 'checkin', 'main.tpl');
     }
 
-    function process($command=null)
+    public function process($command=null)
     {
         if (empty($command)) {
             @$command = $_REQUEST['uop'];
@@ -86,7 +86,7 @@ class Checkin_User extends Checkin {
     }
 
 
-    function postCheckin()
+    public function postCheckin()
     {
         $this->loadVisitor();
 

@@ -9,7 +9,7 @@ class Checkin_Reasons {
     public $summary = null;
     public $message = null;
 
-    function __construct($id=0)
+    public function __construct($id=0)
     {
         if (empty($id)) {
             return true;
