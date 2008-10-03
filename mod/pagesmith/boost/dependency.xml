@@ -24,4 +24,11 @@
     <version>0.3.2</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/search/</url>
   </module>
+  <module>
+    <title>miniadmin</title>
+    <properName>MiniAdmin</properName>
+    <version>1.2.0</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/miniadmin/</url>
+  </module>
+
 </dependency>

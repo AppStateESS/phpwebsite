@@ -1,0 +1,31 @@
+1.3.0 Changes
+---------------------------------------------------------
++ Miniadmin title setting used
++ Switched some javascript out to jquery
++ Added button to save changes and continue.
++ Caching page list
++ Changed page links to page numbering.
++ Changed admin links to icons to save room.
++ Deleting a child page reorders the remainder
++ Added permissions to the link in the admin menu.
++ Changed the created update date formats to something more compact
++ Added ability to add pages to parent page.
++ Added ability to change page template.
++ Blank content will load Lorum upsum text instead of just
+  non-breaking space.
++ Added a "back to top" anchor.
++ Error message added for bad id on edit.
++ Checking character length after parseInput now.
++ Lorum text has hidden comment to help with parsing it out.
++ Comments added to update javascript
++ Added threesec-tbl for a more concrete layout structure.
++ Added ability to upload page templates to module.
++ Page templates can now control block type. The type can be image,
+  document, media, or block. Block allows all three.
++ Dropping btype from the block. Not used.
++ Fixed bug if template only had one folder.
++ Added some new page templates.
++ Added some colorful pics to page template samples
++ Made single column different from text only icon.
++ Added Layout::cacheHeader functions to prevent document css from
+  breaking on page caches.

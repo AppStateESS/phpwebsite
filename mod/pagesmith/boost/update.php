@@ -204,9 +204,28 @@ function pagesmith_update(&$content, $currentVersion)
 + Fixed some notices and a caching bug.
 + Changed wording on edit text windows.</pre>';
 
-    case version_compare($currentVersion, '1.2.3', '<'):
+    case version_compare($currentVersion, '1.3.0', '<'):
         $db = new PHPWS_DB('ps_block');
         $db->dropTableColumn('btype');
+
+        $content[] = '<pre>';
+        $files = array('javascript/passinfo/head.js', 'templates/page_form.tpl',
+                       'javascript/delete_orphan/',
+                       'templates/page_templates/threesec-tbl/',
+                       'templates/orphans.tpl',
+                       'templates/page_form.tpl',
+                       'templates/page_frame.tpl',
+                       'templates/page_list.tpl',
+                       'templates/style.css',
+                       'templates/sublist.tpl',
+                       'templates/upload_template.tpl',
+                       );
+        pagesmithUpdateFiles($files, $content);
+
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/pagesmith/boost/changes/1_3_0.txt');
+        }
+        $content[] = '</pre>';
         
     } // end switch
 
@@ -215,12 +234,16 @@ function pagesmith_update(&$content, $currentVersion)
 
 function pagesmithUpdateFiles($files, &$content)
 {
-    if (PHPWS_Boost::updateFiles($files, 'pagesmith')) {
-        $content[] = '--- Updated the following files:';
-    } else {
-        $content[] = '--- Unable to update the following files:';
-    }
+    $result = PHPWS_Boost::updateFiles($files, 'pagesmith', true);
+
+    $content[] = '--- Updated the following files:';
     $content[] = "    " . implode("\n    ", $files);
+
+    if (is_array($result)) {
+        $content[] = '--- Unable to update the following files:';
+        $content[] = "    " . implode("\n    ", $result);
+    }
+
     $content[] = '';
 }
 
