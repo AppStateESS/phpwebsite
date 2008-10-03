@@ -121,6 +121,14 @@ function categories_update(&$content, $currentVersion)
 + Bug #1777242 - Shared bug with default themes. Made more
   presentable.
 + Altered default category tabs to fix some listing problems</pre>';
+
+    case version_compare($currentVersion, '2.3.0', '<'):
+        $content[] = '<pre>2.3.0 changes
+-----------------
++ php 5 formatted.
++ Error notice fixed.
+</pre>';
+
     }
     return true;
 }
