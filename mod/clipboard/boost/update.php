@@ -35,10 +35,31 @@ function clipboard_update(&$content, $currentVersion)
 -------------
 + Clipboard won\'t allow clipping of items without a title and content.</pre>';
 
+    case version_compare($currentVersion, '1.1.0', '<'):
+        $files = array('javascript/', 'templates/style.css', 'templates/clipboard.tpl');
+        $content[] = '<pre>';
+        clipboardUpdateFiles($files, $content);
+
+        $content[] = '1.1.0 changes
+-------------
++ Clipboard changed to allow submission of content, source, and
+  smarttags.
+</pre>';
 
     }
 
     return true;
 }
+
+function clipboardUpdateFiles($files, &$content)
+{
+    if (PHPWS_Boost::updateFiles($files, 'clipboard')) {
+        $content[] = '--- Updated the following files:';
+    } else {
+        $content[] = '--- Unable to update the following files:';
+    }
+    $content[] = "     " . implode("\n     ", $files);
+}
+
 
 ?>
