@@ -1,0 +1,16 @@
+1.8.0 changes
+-----------------------------------------------
++ Added csv reporting to blog
++ Added ability to purge old blog entries.
++ RSS feed now appears when all blog entries are shown not just one.
++ Pager date format separated from blog view date format
++ Made some adjustments for new mod_rewrite format.
++ Changed over admin links to icons.
++ Removed old mod_rewrite code.
++ Fixed create date display bug
++ The "Posted on" date is now the publish date, not the created date
++ Added setRequired to title of blog
++ Added cacheQueries to blog listing.
++ Using new Layout cacheHeaders function
++ Dropping addStyle for filecabinet
++ PHP 5 formatted

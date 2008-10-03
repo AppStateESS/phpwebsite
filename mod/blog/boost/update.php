@@ -252,6 +252,18 @@ function blog_update(&$content, $currentVersion)
 + js_calendar added to edit form.
 </pre>';
 
+    case version_compare($currentVersion, '1.8.0', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/list.tpl', 'templates/purge_confirm.tpl', 'conf/config.php',
+                       'img/');
+        
+        blogUpdateFiles($files, $content);
+        
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/blog/boost/changes/1_8_0.txt');
+        }
+        $content[] = '</pre>';
+
     } // end of switch
     return true;
 }
