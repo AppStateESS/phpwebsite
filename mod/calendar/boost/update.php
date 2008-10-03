@@ -234,12 +234,23 @@ function calendar_update(&$content, $version)
         }
 
         $content[] = '<pre>';
+        $files = array('img/', 'templates/admin/schedules.tpl', 'templates/view/month/grid.tpl',
+                       'templates/view/month/list.tpl', 'templates/view/day.tpl', 'templates/view/event.tpl',
+                       'templates/view/week.tpl', 'templates/ical.tpl', 'templates/style.css',
+                       'templates/upload.tpl', 'templates/admin/settings.tpl');
+        calendarUpdateFiles($files, $content);
         $content[] = '1.7.0 changes
 -------------
++ Added ability to hide the mini grid calendar.
++ Increased edit event popup default size.
++ Moved some frequent functions closer to top of switch
++ Added ability to upload and download events using iCal format
++ Fixed: Calendar was saving all events from all schedules using the same item name.
++ Deleting a schedule will remove event keys as well.
++ Deleting an event clears the cache to prevent ghosts in grid view.
++ If a non existing event is accessed, calendar forwards to day view instead of 404.
++ php 5 formatted.
 </pre>';
-
-
-
     } // end of switch
 
     return true;
