@@ -152,18 +152,47 @@ Please download 1.2.1.</pre>';
 --------------
 + Update to addSortHeaders.
 + Adding missing paging navigation.</pre>';
+
+    case version_compare($currentVersion, '1.5.0', '<'):
+        $files = array('templates/style.css',
+                       'templates/menu_layout/basic/menu.tpl',
+                       'templates/menu_layout/horizontal/menu.tpl',
+                       'templates/admin/settings.tpl',
+                       'javascript/admin_link/',
+                       'conf/config.php'                    
+                       );
+
+        $content[] = '<pre>';
+        menuUpdateFiles($files, $content);
+        $content[] = '1.5.0 Changes
+--------------
++ RFE #2060159: Pin page link appears in miniadmin if admin mode is
+  set to appear there.
++ Fixed bug #2079194. Deleting menu now removes links as well. Thanks
+  Tommy.
++ Added option to expand menus when admin mode is enabled
++ Reworded menu admin link.
++ Added more ajax controls (add, delete, move) to the admin menu.
++ getTitle returns link without decoding it. Needed to prevent
+  breakage with quotation marks.
++ Increased some popup window sizes
++ Fixed current link problem with unkeyed items.
+</pre>';
+
     }
     return true;
 }
 
 function menuUpdateFiles($files, &$content)
 {
-    if (PHPWS_Boost::updateFiles($files, 'menu')) {
+    $result = PHPWS_Boost::updateFiles($files, 'menu', true);
+    if ($result === true) {
         $content[] = '--- Updated the following files:';
-    } else {
+        $content[] = "     " . implode("\n     ", $files);
+    } elseif (is_array($result)) {
         $content[] = '--- Unable to update the following files:';
+        $content[] = "     " . implode("\n     ", $result);
     }
-    $content[] = "     " . implode("\n     ", $files);
 }
 
 

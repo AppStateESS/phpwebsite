@@ -1,3 +1,5 @@
+Version 1.5.0
+------------------------------------------------------------
 2 October 2008
 + RFE #2060159: Pin page link appears in miniadmin if admin mode is
   set to appear there.
