@@ -5,14 +5,15 @@
  */
 
 class Checkin {
-    public $title         = null;
-    public $message       = null;
-    public $content       = null;
-    public $staff         = null;
-    public $visitor       = null;
-    public $reason        = null;
-    public $visitor_list  = null;
-    public $staff_list    = null;
+    public $title           = null;
+    public $message         = null;
+    public $content         = null;
+    public $staff           = null;
+    public $visitor         = null;
+    public $reason          = null;
+    public $visitor_list    = null;
+    public $staff_list      = null;
+    public $unassigned_only = false;
 
 
     /**
@@ -246,7 +247,7 @@ class Checkin {
         }
 
         if (!isset($waiting)) {
-            $waiting[] = dgettext('checkin', 'Just arrived');
+            $waiting[] = dgettext('checkin', 'Under a minute');
         }
 
         return implode(', ', $waiting);

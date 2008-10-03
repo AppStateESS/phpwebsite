@@ -406,17 +406,22 @@ class Checkin_Admin extends Checkin {
     {
         Layout::addStyle('checkin');
         javascript('modules/checkin/send_note/');
+        $this->title = dgettext('checkin', 'Waiting list');
+
         if (!$this->current_staff) {
             $this->content = dgettext('checkin', 'You are not a staff member.');
+            return;
         }
+
+        // Load all visitors for this staff member
         $this->loadVisitorList($this->current_staff->id);
 
-
-        $this->title = dgettext('checkin', 'Waiting list');
+        // No visitors found, load all the visitors that are unassigned.
         if (empty($this->visitor_list)) {
             $tpl['MESSAGE'] = dgettext('checkin', 'You currently do not have any visitors.');
             $this->loadVisitorList(0);
             if (!empty($this->visitor_list)) {
+                $this->unassigned_only = true;
                 $tpl['MESSAGE'] .= '<br />' . sprintf(dgettext('checkin', 'There are %s unassigned visitors.'), count($this->visitor_list));
             }
         } else {
@@ -469,6 +474,7 @@ class Checkin_Admin extends Checkin {
         switch ($this->current_staff->status) {
         case 0:
             // Available
+
             if (!empty($this->visitor_list) && $this->current_visitor) {
                 $tpl['MEET'] = $this->startMeetingLink();
             }
@@ -521,7 +527,11 @@ class Checkin_Admin extends Checkin {
         $vars['aop'] = 'start_meeting';
         $vars['staff_id'] = $this->current_staff->id;
         $vars['visitor_id'] = $this->current_visitor->id;
-        $title = sprintf(dgettext('checkin', 'Start meeting w/ %s'), $this->current_visitor->getName());
+        if ($this->unassigned_only) {
+            $title = sprintf(dgettext('checkin', 'Start meeting w/ %s (Unassigned)'), $this->current_visitor->getName());
+        } else {
+            $title = sprintf(dgettext('checkin', 'Start meeting w/ %s'), $this->current_visitor->getName());
+        }
         return PHPWS_Text::secureLink($title, 'checkin', $vars, null, $title, 'meet-button action-button');
     }
 
@@ -880,6 +890,7 @@ class Checkin_Admin extends Checkin {
         $this->staff->save();
 
         $this->visitor->start_meeting = mktime();
+        $this->visitor->assigned = $this->staff->id;
         $this->visitor->save();
     }
 
@@ -963,20 +974,24 @@ class Checkin_Admin extends Checkin {
 
         $row['NAME_LABEL'] = dgettext('checkin', 'Name, Reason, & Note');
         $row['WAITED_LABEL'] = dgettext('checkin', 'Time waited');
+        $row['SPENT_LABEL'] = dgettext('checkin', 'Total meeting time');
 
         foreach ($this->staff_list as $staff) {
-            $total_wait = $count = 0;
+            $total_wait = $count = $total_spent = 0;
             if (isset($visitors[$staff->id])) {
                 foreach ($visitors[$staff->id] as $vis) {
                     $wait = $vis->start_meeting - $vis->arrival_time;
+                    $spent = $vis->end_meeting - $vis->start_meeting;
                     $tObj->setCurrentBlock('subrow');
                     $tObj->setData(array('VIS_NAME' => $vis->getName(),
                                          'REASON'   => $reasons[$vis->reason],
                                          'NOTE'     => $vis->note,
-                                         'WAITED'   => Checkin::timeWaiting($wait)));
+                                         'WAITED'   => Checkin::timeWaiting($wait),
+                                         'SPENT'    => Checkin::timeWaiting($spent)));
                     $tObj->parseCurrentBlock();
                     $count++;
                     $total_wait += $wait;
+                    $total_spent += $spent;
                 }
             } else {
                 $tObj->setCurrentBlock('message');
@@ -986,7 +1001,9 @@ class Checkin_Admin extends Checkin {
             $tObj->setCurrentBlock('row');
             $row['DISPLAY_NAME'] = & $staff->display_name;
             $row['VISITORS_SEEN'] = sprintf(dgettext('checkin', 'Visitors seen: %s'), $count);
+            $row['TOTAL_SPENT'] = sprintf(dgettext('checkin', 'Total time in meeting: %s'), Checkin::timeWaiting($total_spent));
             $row['TOTAL_WAIT'] = sprintf(dgettext('checkin', 'Total wait time: %s'), Checkin::timeWaiting($total_wait));
+
             $tObj->setData($row);
             $tObj->parseCurrentBlock();
         }

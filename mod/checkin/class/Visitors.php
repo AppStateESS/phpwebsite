@@ -60,6 +60,7 @@ class Checkin_Visitor {
 
             $filters = $db->select('col');
             if (empty($filters)) {
+                $this->assigned = 0;
                 return;
             }
 
@@ -74,6 +75,7 @@ class Checkin_Visitor {
                     return;
                 }
             }
+
             $this->assigned = 0;
         }
     }

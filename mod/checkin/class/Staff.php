@@ -20,7 +20,7 @@ class Checkin_Staff {
     public $display_name  = null;
     public $_reasons      = null;
 
-    public function construct($id=0)
+    public function __construct($id=0)
     {
         if (empty($id)) {
             return true;

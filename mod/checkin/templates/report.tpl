@@ -11,11 +11,13 @@
         <tr>
           <th>{NAME_LABEL}</th>
           <th>{WAITED_LABEL}</th>
+          <th>{SPENT_LABEL}</th>
         </tr>
         <!-- BEGIN message --><tr><td colspan="2">{NOBODY}</td></tr><!-- END message -->
         <!-- BEGIN subrow --><tr>
           <td><strong>{VIS_NAME}</strong><br />{REASON}<br /><em>{NOTE}</em></td>
           <td>{WAITED}</td>
+          <td>{SPENT}</td>
         </tr><!-- END subrow -->
       </table>
     </td>
