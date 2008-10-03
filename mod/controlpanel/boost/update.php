@@ -96,6 +96,16 @@ function controlpanel_update(&$content, $currentVersion)
 + Changed tab formatting. The a tag is padded to make clickable area
   larger.</pre>';
 
+    case version_compare($currentVersion, '2.2.0', '<'):
+        $content[] = '<pre>';
+        cpFileUpdate(array('javascript/subpanel/', 'templates/subpanel.tpl'), $content);
+        $content[] = '2.2.0 changes
+----------------
++ Flyout menu added to control panel link.
++ Added function to return control panel link.
++ Moved controlpanel unregisteration to control panel class.
++ php 5 format changes</pre>';
+
 
     }
     return true;

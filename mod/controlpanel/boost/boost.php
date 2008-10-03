@@ -5,7 +5,7 @@
    */
 
 $proper_name = 'Control Panel';
-$version     = '2.1.6';
+$version     = '2.2.0';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/controlpanel/check.xml';
 $register    = true;
 $unregister  = true;

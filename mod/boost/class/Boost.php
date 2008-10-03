@@ -1038,7 +1038,7 @@ class PHPWS_Boost {
             $aFiles = explode('/', $filename);
             $source_root = array_shift($aFiles);
             $source_filename = implode('/', $aFiles);
-
+            
             switch ($source_root) {
             case 'templates':
                 $local_root = sprintf('%stemplates/%s/', $home_dir, $module);
@@ -1094,9 +1094,9 @@ class PHPWS_Boost {
 
             // if file is a directory, back up the whole directory
             if (is_dir($source_file)) {
-
+                
                 // if directory exists, make a backup
-                if (is_dir($local_file)) {
+                if (is_dir($local_file) && !empty($source_filename)) {
                     $local_array = explode('/', $local_file);
 
                     $last_dir = array_pop($local_array);
@@ -1108,6 +1108,7 @@ class PHPWS_Boost {
                         PHPWS_Error::log(BOOST_FAILED_BACKUP, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
                     }
                 }
+
 
                 if (!PHPWS_File::copy_directory($source_file, $local_file)) {
                     PHPWS_Error::log(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
@@ -1151,6 +1152,7 @@ class PHPWS_Boost {
                 $failures[] = sprintf(dgettext('boost', 'Copy file failure: %s to %s'), $source_file, $local_file);
             }
         }
+
         if (isset($failures)) {
             if ($return_failures) {
                 return $failures;

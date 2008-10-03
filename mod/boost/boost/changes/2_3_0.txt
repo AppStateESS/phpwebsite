@@ -1,0 +1,20 @@
+2.3.0 changes
+----------------
++ Error check added for directory copy.
++ Bug #2076972: Checking allow_url_fopen before allowing version
+  checking.
++ RFE #1945965: Added prompt instead of confirm for module
+  uninstallation. 
++ Revert reinstalls control panel links and tabs.
++ Fixed: Boost's revert was copying core's images to the config directory.
++ Added fourth parameter to registerMyModule. If set to false (true is
+  default), then the module won't be unregistered before registered
+  again.
++ Second Close Window button added to top of update window.
++ updateFiles will return true on complete success and and array of
+  error messages should a file fail.
++ updateFiles will no longer stop if a single file fails
++ updateFiles now accepts a directory instead of a single file. The
+  destination directory will be backed up and the source directory
+  copied over.
++ updateFiles creates timestamped backup files now.

@@ -67,6 +67,12 @@ Please download update 2.1.1.</pre>';
 ----------------
 + Added error log to copy directory command.</pre>';
 
+    case version_compare($currentVersion, '2.3.0', '<'):
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = '<pre>';
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/boost/boost/changes/2_3_0.txt');
+            $content[] = '</pre>';
+        }
     }
 
     return TRUE;
