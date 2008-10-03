@@ -427,13 +427,16 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         $content[] = '</pre>';
 
     case version_compare($version, '2.2.0', '<'):
+        $content[] = '<pre>';
         $db = new PHPWS_DB('fc_file_assoc');
         if (PHPWS_Error::logIfError($db->addTableColumn('vertical', 'smallint not null default 0'))) {
             $content[] = 'Unable to create vertical column in fc_file_assoc table.';
+            return false;
         }
 
         if (PHPWS_Error::logIfError($db->addTableColumn('num_visible', 'smallint not null default 3'))) {
             $content[] = 'Unable to create num_visible column in fc_file_assoc table.';
+            return false;
         }
 
         $db->dropTableColumn('cropped');
@@ -443,6 +446,30 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         $db->addValue('unregister', 1);
         PHPWS_Error::logIfError($db->update());
         $content[] = 'Unregister flag set in modules table.';
+
+        $files = array('javascript/jcaro_lite/',
+                       'javascript/shutter/',
+                       'javascript/pick_file/',
+                       'javascript/update_file/head.js',
+                       'javascript/clear_file/body.js',
+                       'templates/image_view.tpl',
+                       'templates/carousel_horz.tpl',
+                       'templates/carousel_vert.tpl',
+                       'templates/classify_list.tpl',
+                       'templates/ss_box.tpl',
+                       'templates/file_manager/carousel_pick.tpl',
+                       'templates/settings.tpl',
+                       'templates/style.css',
+                       'templates/file_list.tpl',
+                       'templates/folder_list.tpl',
+                       'img/add.png',
+                       'conf/icons.php'
+                       );
+
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/2_2_0.txt');
+        }
+
         break;
     }
 
