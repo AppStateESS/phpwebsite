@@ -1098,7 +1098,7 @@ class PHPWS_Boost {
                 // if directory exists, make a backup
                 if (is_dir($local_file) && !empty($source_filename)) {
                     $local_array = explode('/', $local_file);
-                    test($local_array);
+
                     $last_dir = array_pop($local_array);
                     if (empty($last_dir)) {
                         $last_dir = array_pop($local_array);
@@ -1111,7 +1111,6 @@ class PHPWS_Boost {
                         PHPWS_Error::log(BOOST_FAILED_BACKUP, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
                     }
                 }
-
 
                 if (!PHPWS_File::copy_directory($source_file, $local_file)) {
                     PHPWS_Error::log(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
