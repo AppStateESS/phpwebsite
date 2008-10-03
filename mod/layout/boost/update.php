@@ -125,7 +125,8 @@ function layout_update(&$content, $currentVersion)
   description.
 + Added new cacheHeader function to retain javascript and css
   information should a module return cached content before the above
-  can be established.';
+  can be established.
++ PHP 5 formatted';
 
     }
     return true;

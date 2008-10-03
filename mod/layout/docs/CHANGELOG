@@ -1,12 +1,12 @@
+Version 2.4.5
+------------------------------------------------------------------
 8 September 2008
 + Not caching frontpage title because of array repeat problem.
 
-Version 2.4.5
-------------------------------------------------------------------
 13 June 2008
 + Added option to use a Key's summary or title to fill in the meta
   description.
-+ Updated: tempaltes/metatags.tpl
++ Updated: templates/metatags.tpl
 
 11 June 2008
 + Added new cacheHeader function to retain javascript and css
