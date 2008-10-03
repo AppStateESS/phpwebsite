@@ -34,7 +34,7 @@ function notes_update(&$content, $version) {
         $files = array('javascript/search_user/head.js', 'templates/note.tpl',
                        'templates/note_style.css', 'templates/send_note.tpl', 
                        'templates/style.css');
-        if (PHPWS_Boost::updateFiles($files, $content)) {
+        if (PHPWS_Boost::updateFiles($files, 'notes')) {
             $content[] = '--- Files updated:';
         } else {
             $content[] = '--- Unable to update files:';
@@ -51,10 +51,37 @@ function notes_update(&$content, $version) {
 </pre>
 ';
 
+    case version_compare($version, '1.1.0', '<'):
+        $files = array('javascript/search_user/head.js', 'templates/style.css',
+                      'templates/note.tpl', 'templates/note_style.css',
+                      'templates/send_note.tpl');
 
+        $content[] = '<pre>';
+        notesUpdateFiles($files, $content);
+        $content[] = '
+1.1.0 changes
+--------------
++ Checks username if the user id is zero.
++ Removed improper css code
++ PHP 5 format.
+</pre>
+';
     }
 
     return true;
+}
+
+function notesUpdateFiles($files, &$content)
+{
+    $content[] = 'Updating the following files:';
+    $content[] = implode('<br>', $files);
+
+    $result = PHPWS_Boost::updateFiles($files, 'notes', true);
+    
+    if (is_array($result)) {
+        $content[] = 'Could not copy the following files:';
+        $content[] = implode('<br>', $result);
+    }
 }
 
 ?>
