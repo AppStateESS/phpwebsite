@@ -1098,8 +1098,11 @@ class PHPWS_Boost {
                 // if directory exists, make a backup
                 if (is_dir($local_file) && !empty($source_filename)) {
                     $local_array = explode('/', $local_file);
-
+                    test($local_array);
                     $last_dir = array_pop($local_array);
+                    if (empty($last_dir)) {
+                        $last_dir = array_pop($local_array);
+                    }
                     $local_array[] = sprintf('%s_%s', mktime(), $last_dir);
                     $new_dir_name = implode('/', $local_array);
 
