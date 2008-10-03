@@ -43,6 +43,13 @@ function miniadmin_update(&$content, $version)
 ------------------
 +  Miniadmin was sending its content using "users" as the module.</pre>';
 
+    case version_compare($version, '1.2.0', '<'):
+        $content[] = '<pre>
+1.2.0 changes
+------------------
++ Added option to set the module title to a specific link.
++ PHP 5 formatted.</pre>';
+
     }
     return true;
 }

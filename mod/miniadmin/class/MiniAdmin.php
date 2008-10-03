@@ -14,7 +14,7 @@ if (!defined('MINIADMIN_TEMPLATE')) {
  }
 
 class MiniAdmin {
-    function add($module, $links)
+    public function add($module, $links)
     {
         if (is_array($links)) {
             foreach ($links as $link) {
@@ -27,7 +27,7 @@ class MiniAdmin {
         return true;
     }
 
-    function get()
+    public function get()
     {
         $modlist = PHPWS_Core::getModuleNames();
 
@@ -70,7 +70,7 @@ class MiniAdmin {
         Layout::set($content, 'miniadmin', 'mini_admin');
     }
 
-    function setTitle($module, $link, $add_authkey=false)
+    public function setTitle($module, $link, $add_authkey=false)
     {
         if ($add_authkey) {
             $link = sprintf('%s&amp;authkey=%s', $link, Current_User::getAuthKey());

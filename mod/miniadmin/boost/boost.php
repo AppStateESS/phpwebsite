@@ -6,7 +6,7 @@
    */
 
 $proper_name  = 'MiniAdmin';
-$version      = '1.1.1';
+$version      = '1.2.0';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/miniadmin/check.xml';
 $about        = TRUE;
 $priority     = 99;
