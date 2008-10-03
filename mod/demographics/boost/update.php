@@ -47,6 +47,17 @@ function demographics_update(&$content, $version)
 + Removed deadend getUser function.
 + Removed some passed-by-reference ampersands.
 + Support for remove_users added.</pre>';
+
+    case version_compare($version, '1.2.0', '<'):
+        $content[] = '<pre>1.2.0 changes
+--------------
++ Applied patch #2028130 from Eloi George. Fixed Demographics_User
+  object not updating extend_id and base_id.
++ Added patch #1939132 from Eloi George. Changes new_user variable to
+  false on successful getList call.
++ php 5 formatted.
+</pre>';
+
     }
     return true;
 }
