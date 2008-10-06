@@ -228,6 +228,7 @@ timeout INT NOT NULL default 0,
                        'javascript/generate/head.js', 'templates/manager/groups.tpl',
                        'templates/manager/users.tpl');
         userUpdateFiles($files, $content);
+
         $content[] = '2.5.0 changes
 -------------------
 + Members\' names alphabetized
@@ -245,6 +246,16 @@ timeout INT NOT NULL default 0,
 + Using pager\'s addSortHeaders in user and group listing
 </pre>';
 
+    case version_compare($currentVersion, '2.6.0', '<'):
+        $content[] = '<pre>';
+        $files = array('conf/languages.php', 'templates/my_page/user_setting.tpl',
+                       'templates/usermenus/css.tpl', 'img/permission.png', 'templates/forms/userForm.tpl');
+        userUpdateFiles($files, $content);
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/users/boost/changes/2_6_0.txt');
+        }
+        $content[] = '</pre>';
+
     } // End of switch statement
 
     return TRUE;
@@ -253,14 +264,16 @@ timeout INT NOT NULL default 0,
 
 function userUpdateFiles($files, &$content)
 {
-    if (PHPWS_Boost::updateFiles($files, 'users')) {
+    $result = PHPWS_Boost::updateFiles($files, 'users', true);
+    
+    if (!is_array($result)) {
         $content[] = '--- Successfully updated the following files:';
+        $content[] = '     ' . implode("\n     ", $files);
     } else {
         $content[] = '--- Was unable to copy the following files:';
+        $content[] = '     ' . implode("\n     ", $result);
     }
-    $content[] = '     ' . implode("\n     ", $files);
     $content[] = '';
-    
 }
 
 ?>

@@ -1,0 +1,24 @@
+2.6.0 changes
+-------------------
++ Reduced language list
++ Added option to use control panel fly out menu.
++ Dependency on new controlpanel.
++ Moved security log before error page call.
++ php 5 formatting added.
++ Session checks added to allow and authorized functions.
++ Fixed bug: activating and deactivating a user was not affecting the
+  group (Thanks Verdon).
++ Script tag permission added (will require update)
++ Current_User's init function will create a blank user object if no
+  id is sent to it.
++ Template tag named PANEL added. More descriptive than MODULES
++ Added user panel named css.tpl and made it default. The template
+  can be completely styled within css.
++ Fixed  giveItemPermission function. Wasn't saving group permissions
+  properly.
++ Icons substituted from admin links.
++ Fixed registerpermissions function. Was missing content parameter.
++ Removed call to help module. Using new slider javascript instead.
++ Added cacheQueries to the user pager. Delete was dropping preferences.
++ Added setRequired to username and email in user form.
++ Changed user template submit button
