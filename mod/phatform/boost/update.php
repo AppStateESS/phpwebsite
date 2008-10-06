@@ -67,6 +67,17 @@ function phatform_update(&$content, $version)
 + Element now prohibits element names matching preexisting column names.
 </pre>';
 
+    case version_compare($version, '3.1.3', '<'):
+        if (!PHPWS_Boost::updateFiles(array('templates/form/form.tpl'), 'phatform')) {
+            $content[] = 'Failed copying templates/form/form.tpl';
+        }
+        $content[] = '<pre>
+3.1.3 changes
+-------------
++ added Captcha to anonymous user forms
++ Checking elements against database restricted names.
+</pre>';
+
 
     }
     return true;
