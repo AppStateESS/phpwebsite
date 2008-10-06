@@ -97,6 +97,15 @@ function photoalbum_update(&$content, $version) {
 + Some edits to try and make sorting work better.
 </pre>';
 
+    case version_compare($version, '1.4.7', '<'):
+        $content[] = '<pre>
+1.4.7 changes
+-------------
++ Deleted album removes key as well now.
++ Removed some compatibility functions from Core. Redistributed to
+this module.
+</pre>';
+
     }
 
     return true;
