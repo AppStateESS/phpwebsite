@@ -12,7 +12,7 @@ define('PR_MAX_FILE_SIZE', 60000);
 
 class Profile_Forms {
 
-    function default_form()
+    public function default_form()
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'profiler');
@@ -20,7 +20,7 @@ class Profile_Forms {
         return $form;
     }
 
-    function edit($profile)
+    public function edit($profile)
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $div = new PHPWS_DB('profiler_division');
@@ -102,7 +102,7 @@ class Profile_Forms {
         return PHPWS_Template::process($template, 'profiler', 'forms/edit.tpl');
     }
 
-    function profileList()
+    public function profileList()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         $pageTags['LASTNAME']     = dgettext('profiler', 'Last Name');
@@ -125,7 +125,7 @@ class Profile_Forms {
         return $pager->get();
     }
 
-    function settings()
+    public function settings()
     {
         $form = Profile_Forms::default_form();
         $form->addHidden('command', 'save_settings');
@@ -145,7 +145,7 @@ class Profile_Forms {
         return PHPWS_Template::process($template, 'profiler', 'forms/settings.tpl');
     }
 
-    function divisionList()
+    public function divisionList()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('profiler', 'Division.php');
@@ -167,7 +167,7 @@ class Profile_Forms {
         return $pager->get();
     }
 
-    function editDivision(Profiler_Division $division, $error=FALSE)
+    public function editDivision(Profiler_Division $division, $error=FALSE)
     {
         $form = new PHPWS_Form('division');
         $form->addHidden('module', 'profiler');

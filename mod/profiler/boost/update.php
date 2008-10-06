@@ -49,6 +49,12 @@ function profiler_update(&$content, $currentVersion)
 + Change made to allow accented characters for division names.
 </pre>';
 
+    case version_compare($currentVersion, '0.5.0', '<'):
+        $content[] = '<pre>0.5.0 changes
+---------------
++ PHP 5 format.</pre>';
+
+
     }     
     
     return true;

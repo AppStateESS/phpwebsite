@@ -12,7 +12,7 @@ PHPWS_Core::initModClass('profiler', 'Division.php');
 PHPWS_Core::requireConfig('profiler');
 
 class Profiler {
-    function user()
+    public function user()
     {
         $content = NULL;
 
@@ -61,7 +61,7 @@ class Profiler {
 
     }
 
-    function pullRandomProfile($type, $template)
+    public function pullRandomProfile($type, $template)
     {
         if (!is_numeric($type)) {
             PHPWS_Core::errorPage('404');
@@ -84,7 +84,7 @@ class Profiler {
     }
 
 
-    function admin()
+    public function admin()
     {
         $title = $content = $message = NULL;
 
@@ -267,7 +267,7 @@ class Profiler {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
-    function cpanel()
+    public function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=profiler';
@@ -284,7 +284,7 @@ class Profiler {
         return $panel;
     }
 
-    function saveSettings()
+    public function saveSettings()
     {
         if (isset($_POST['profile_homepage'])) {
             PHPWS_Settings::set('profiler', 'profile_homepage', 1);
@@ -304,7 +304,7 @@ class Profiler {
      * I have hardcoded display numbers here for now but if/when categories
      * are added, this will change.
      */
-    function view($div_id=0)
+    public function view($div_id=0)
     {
         if (!PHPWS_Settings::get('profiler', 'profile_homepage')) {
             return;
