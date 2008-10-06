@@ -434,6 +434,7 @@ class PHPWS_ControlPanel {
 
     public function panelLink($fly_out=false)
     {
+        Layout::addStyle('controlpanel', 'panel_link.css');
         $reg_link = PHPWS_Text::quickLink(dgettext('users', 'Control Panel'), 'controlpanel',
                                           array('command'=>'panel_view'));
         
@@ -469,7 +470,7 @@ class PHPWS_ControlPanel {
         }
 
         $tpl->setCurrentBlock();
-        $tpl->setData(array('LINK' => $reg_link->get()));
+        $tpl->setData(array('CP_LINK' => $reg_link->get()));
         $tpl->parseCurrentBlock();
         $submenu = $tpl->get();
         return $submenu;
