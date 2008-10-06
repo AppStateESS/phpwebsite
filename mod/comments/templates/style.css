@@ -63,8 +63,6 @@
 }
 
 
-
-
 a.comment_postnew_link, .comment-body .admin-links a {
     display:block;
     float:left;
@@ -82,9 +80,6 @@ a.comment_postnew_link, .comment-body .admin-links a {
 
 
 .comment_postnew_link:hover, .comment-body .admin-links a:hover {
-    position : relative;
-    left : 1px;
-    top : 1px;
     background-color : #cacaca;
     text-decoration : none;
 }
