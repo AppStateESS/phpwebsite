@@ -84,6 +84,14 @@ function search_update(&$content, $currentVersion)
 + Changed REQUEST references to GET.
 + More parsing of words added.
 + Search modules available shows only modules currently containing data.</pre>';        
+
+    case version_compare($currentVersion, '0.4.0', '<'):
+        $content[] = '<pre>0.4.0 changes
+-------------
++ Added a group by to prevent errors in postgresql.
++ Fixed: wrong class name to key registration
++ PHP 5 formatted.
+</pre>';        
     }
 
     return TRUE;
