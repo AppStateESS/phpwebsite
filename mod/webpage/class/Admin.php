@@ -19,7 +19,7 @@ class Webpage_Admin {
      * If the action is based on use input, the action is transferred
      * to adminForms
      */
-    function main()
+    public function main()
     {
         $title = NULL;
         $content = NULL;
@@ -617,7 +617,7 @@ class Webpage_Admin {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
-    function restorePage(Webpage_Volume $volume, Webpage_Page $page)
+    public function restorePage(Webpage_Volume $volume, Webpage_Page $page)
     {
         PHPWS_Core::initModClass('version', 'Restore.php');
 
@@ -638,7 +638,7 @@ class Webpage_Admin {
         return $restore->getList();
     }
 
-    function restoreVolume(Webpage_Volume $volume)
+    public function restoreVolume(Webpage_Volume $volume)
     {
         PHPWS_Core::initModClass('version', 'Restore.php');
 
@@ -658,7 +658,7 @@ class Webpage_Admin {
         return $restore->getList();
     }
 
-    function sendMessage($message, $command)
+    public function sendMessage($message, $command)
     {
         $_SESSION['Webpage_Message'] = $message;
         $url = sprintf('index.php?module=webpage&wp_admin=%s&authkey=%s',
@@ -666,7 +666,7 @@ class Webpage_Admin {
         PHPWS_Core::reroute($url);
     }
 
-    function getMessage()
+    public function getMessage()
     {
         if (!isset($_SESSION['Webpage_Message'])) {
             return NULL;
@@ -677,7 +677,7 @@ class Webpage_Admin {
         return $message;
     }
 
-    function template($title, $content, $message=NULL)
+    public function template($title, $content, $message=NULL)
     {
         $template['TITLE']   = $title;
         $template['CONTENT'] = $content;
@@ -685,7 +685,7 @@ class Webpage_Admin {
         return $template;
     }
 
-    function cpanel()
+    public function cpanel()
     {
         PHPWS_Core::initModClass('version', 'Version.php');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
@@ -715,7 +715,7 @@ class Webpage_Admin {
         return $panel;
     }
 
-    function setFrontPage($pages, $move_val)
+    public function setFrontPage($pages, $move_val)
     {
         if (!is_array($pages)) {
             return;
@@ -727,7 +727,7 @@ class Webpage_Admin {
         return $db->update();
     }
 
-    function setActive($pages, $active)
+    public function setActive($pages, $active)
     {
         foreach ($pages as $id) {
             $volume = new Webpage_Volume((int)$id);
@@ -736,7 +736,7 @@ class Webpage_Admin {
         }
     }
 
-    function setFeatured($pages, $featured=1)
+    public function setFeatured($pages, $featured=1)
     {
         $db = new PHPWS_DB('webpage_featured');
         $db->addColumn('vol_order');
@@ -767,7 +767,7 @@ class Webpage_Admin {
         }
     }
 
-    function approvalView(Webpage_Volume $volume, Version $version)
+    public function approvalView(Webpage_Volume $volume, Version $version)
     {
         $template['PAGE_TITLE'] = $volume->title;
         $template['SUMMARY']    = $volume->getSummary();
@@ -806,7 +806,7 @@ class Webpage_Admin {
         return PHPWS_Template::process($template, 'webpage', 'approval_view.tpl');
     }
 
-    function deleteWebpages()
+    public function deleteWebpages()
     {
         @$webpage = $_REQUEST['webpage'];
 
@@ -828,7 +828,7 @@ class Webpage_Admin {
         return TRUE;
     }
 
-    function disapproveWebpage()
+    public function disapproveWebpage()
     {
         $version = new Version('webpage_volume', $_GET['version_id']);
         if (PHPWS_Error::logIfError($version->delete())) {
@@ -841,7 +841,7 @@ class Webpage_Admin {
         return !PHPWS_Error::logIfError($db->delete());
     }
 
-    function approveWebpage()
+    public function approveWebpage()
     {
         $version = new Version('webpage_volume', $_GET['version_id']);
         $volume = new Webpage_Volume;
@@ -897,7 +897,7 @@ class Webpage_Admin {
         return TRUE;
     }
 
-    function postSettings()
+    public function postSettings()
     {
         if (isset($_POST['add_images'])) {
             PHPWS_Settings::set('webpage', 'add_images', 1);
@@ -908,7 +908,7 @@ class Webpage_Admin {
         PHPWS_Settings::save('webpage');
     }
 
-    function settings()
+    public function settings()
     {
         $form = new PHPWS_Form('webpage_settings');
         $form->addHidden('module', 'webpage');
@@ -923,12 +923,12 @@ class Webpage_Admin {
         return PHPWS_Template::process($tpl, 'webpage', 'forms/settings.tpl');
     }
 
-    function goBack()
+    public function goBack()
     {
         PHPWS_Core::reroute('index.php?module=webpage&tab=list');
     }
 
-    function dropFeature($volume)
+    public function dropFeature($volume)
     {
         if (!$volume->id) {
             return;
@@ -948,7 +948,7 @@ class Webpage_Admin {
         $db->reduceColumn('vol_order');
     }
 
-    function moveFeature($volume, $direction)
+    public function moveFeature($volume, $direction)
     {
         if (!$volume->id) {
             return;

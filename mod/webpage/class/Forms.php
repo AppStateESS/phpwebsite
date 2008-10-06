@@ -8,7 +8,7 @@
 
 class Webpage_Forms {
 
-    function pagePanel($volume, $version_id=0)
+    public function pagePanel($volume, $version_id=0)
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link['link'] = 'index.php?module=webpage&wp_admin=edit_webpage&volume_id=' . $volume->id;
@@ -57,7 +57,7 @@ class Webpage_Forms {
         return $panel;
     }
 
-    function editHeader(Webpage_Volume $volume, Version $version)
+    public function editHeader(Webpage_Volume $volume, Version $version)
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'webpage');
@@ -87,7 +87,7 @@ class Webpage_Forms {
     }
 
 
-    function editPage(Webpage_Page $page, Version $version)
+    public function editPage(Webpage_Page $page, Version $version)
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'webpage');
@@ -142,7 +142,7 @@ class Webpage_Forms {
         return PHPWS_Template::process($template, 'webpage', 'forms/edit_page.tpl');
     }
 
-    function wp_list()
+    public function wp_list()
     {
         $select_op['list'] = dgettext('webpage', '- Select option -');
 
@@ -209,7 +209,7 @@ class Webpage_Forms {
         return $content;
     }
 
-    function approval()
+    public function approval()
     {
         PHPWS_Core::initModClass('version', 'Version.php');
 

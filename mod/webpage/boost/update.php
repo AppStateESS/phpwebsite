@@ -98,6 +98,12 @@ Please download version 0.5.3</pre>';
 + Added missing page option to plugForward function.
 </pre>';
 
+    case version_compare($currentVersion, '1.2.0', '<'):
+        $content[] = '<pre>1.2.0 changes
+---------------
++ PHP 5 formatted.
+</pre>';
+
     }
 
     return TRUE;

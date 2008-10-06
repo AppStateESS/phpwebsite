@@ -11,7 +11,7 @@ PHPWS_Core::requireInc('webpage', 'error_defines.php');
 PHPWS_Core::initModClass('webpage', 'Volume.php');
 
 class Webpage_User {
-    function main($command=NULL)
+    public function main($command=NULL)
     {
         if (empty($command)) {
             if (isset($_REQUEST['wp_user'])) {
@@ -46,7 +46,7 @@ class Webpage_User {
 
     }
 
-    function showFeatured()
+    public function showFeatured()
     {
         if (isset($_REQUEST['module'])) {
             return NULL;
@@ -92,7 +92,7 @@ class Webpage_User {
         Layout::add($content, 'webpage', 'featured');
     }
 
-    function showFrontPage()
+    public function showFrontPage()
     {
         if (isset($_REQUEST['module'])) {
             return NULL;
