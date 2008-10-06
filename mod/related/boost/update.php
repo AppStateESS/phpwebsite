@@ -45,6 +45,14 @@ function related_update(&$content, $version)
 + Updated English translation.
 </pre>';
 
+    case version_compare($version, '0.2.0', '<'):
+        $content[] = '<pre>
+0.2.0 changes
+--------------
++ PHP 5 formatted.
+</pre>';
+
+
     }
 
     return true;

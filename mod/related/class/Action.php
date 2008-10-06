@@ -9,7 +9,7 @@
 
 class Related_Action {
 
-    function create(Related $related)
+    public function create(Related $related)
     {
         $template['TITLE_LBL'] = dgettext('related', 'Title');
         $template['MODULE_LBL'] = dgettext('related', 'Module');
@@ -30,7 +30,7 @@ class Related_Action {
         return PHPWS_Template::process($template, 'related', 'create.tpl');
     }
 
-    function edit(Related $current)
+    public function edit(Related $current)
     {
         PHPWS_Core::initCoreClass('Module.php');
         $related = & Related_Action::getBank();
@@ -101,7 +101,7 @@ class Related_Action {
     }
 
 
-    function view(Related $related)
+    public function view(Related $related)
     {
         $friends = $related->listFriends();
 
@@ -131,31 +131,31 @@ class Related_Action {
         return $tpl->get();
     }
 
-    function newBank(Related $related)
+    public function newBank(Related $related)
     {
         unset($_SESSION['Related__Bank']);
         $_SESSION['Related_Bank'] = $related;
     }
 
 
-    function setCurrent(Related $friend)
+    public function setCurrent(Related $friend)
     {
         unset($_SESSION['Current__Friend']);
         $_SESSION['Current_Friend'] = $friend;
     }
 
-    function setBank($related)
+    public function setBank($related)
     {
         $_SESSION['Related_Bank'] = $related;
     }
 
-    function getBank()
+    public function getBank()
     {
         return $_SESSION['Related_Bank'];
     }
 
 
-    function isBanked()
+    public function isBanked()
     {
         if (isset($_SESSION['Related_Bank']) && $_SESSION['Related_Bank']->isBanked()) {
             return TRUE;
@@ -165,7 +165,7 @@ class Related_Action {
     }
 
 
-    function start()
+    public function start()
     {
         $related = new Related;
         $related->setKey($_REQUEST['key']);
@@ -174,14 +174,14 @@ class Related_Action {
         PHPWS_Core::reroute($related->getUrl());
     }
 
-    function quit()
+    public function quit()
     {
         $location = $_SESSION['Related_Bank']->getUrl();
         unset($_SESSION['Related_Bank']);
         PHPWS_Core::reroute($location);
     }
 
-    function add()
+    public function add()
     {
         if (!isset($_SESSION['Related_Bank'])) {
             return dgettext('related', 'Bank not created.');
@@ -205,7 +205,7 @@ class Related_Action {
         PHPWS_Core::reroute($friend->getUrl());
     }
 
-    function up()
+    public function up()
     {
         if (!isset($_SESSION['Related_Bank'])) {
             return dgettext('related', 'Bank not created.');
@@ -219,7 +219,7 @@ class Related_Action {
         PHPWS_Core::reroute($_SESSION['Current_Friend']->getUrl());
     }
 
-    function down()
+    public function down()
     {
         if (!isset($_SESSION['Related_Bank'])) {
             return dgettext('related', 'Bank not created.');
@@ -233,7 +233,7 @@ class Related_Action {
         PHPWS_Core::reroute($_SESSION['Current_Friend']->getUrl());
     }
 
-    function remove()
+    public function remove()
     {
         if (!isset($_SESSION['Related_Bank'])) {
             return dgettext('related', 'Bank not created.');
@@ -247,7 +247,7 @@ class Related_Action {
         PHPWS_Core::reroute($_SESSION['Current_Friend']->getUrl());
     }
 
-    function save()
+    public function save()
     {
         if (!isset($_SESSION['Related_Bank'])) {
             return dgettext('related', 'Bank not created.');
@@ -264,7 +264,7 @@ class Related_Action {
         Related_Action::quit();
     }
 
-    function changeForm()
+    public function changeForm()
     {
         $template['PAGE_TITLE'] = dgettext('related', 'Change Related Title');
 
@@ -285,7 +285,7 @@ class Related_Action {
         exit();
     }
 
-    function postTitle()
+    public function postTitle()
     {
         if ($_REQUEST['new_title'] != 'null') {
             $related = & $_SESSION['Related_Bank'];
