@@ -296,7 +296,7 @@ class Sitemap {
             }
         }
 
-        if ($items) {
+        if (isset($items)) {
             if ($multiple) {
                 $form = new PHPWS_Form;
                 $form->addMultiple($select_name, $items);
