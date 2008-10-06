@@ -94,6 +94,19 @@ function signup_update(&$content, $currentVersion)
 + Removed the phone number parsing. Got in the way of extensions and
   the like.
 </pre>';
+
+    case version_compare($currentVersion, '1.2.0', '<'):
+        $content[] = '<pre>1.2.0 changes
+----------------
++ Fixed: signup errors reseting slot pick
++ Removed redundant error message
++ previous register fix would not list empty slots.
++ Removed string length on phone number
++ Only pulling registered users for slots open.
++ PHP 5 formatted.
+</pre>';
+
+        
     }
     return true;
 }
