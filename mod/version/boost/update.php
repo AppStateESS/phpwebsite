@@ -69,7 +69,7 @@ function version_update(&$content, $currentVersion)
 + New translations
 </pre>';
 
-    case version_compare($currentVersion, '0.1.6', '<'):
+    case version_compare($currentVersion, '0.2.0', '<'):
         $content[] = '<pre>
 0.2.0 changes
 -------------

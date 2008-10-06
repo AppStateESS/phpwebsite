@@ -110,6 +110,18 @@ CREATE TABLE whodis_filters (
 + Installs made after 0.0.5 were missing the filters table.
 </pre>';
 
+    case version_compare($version, '0.2.0', '<'):
+        $db = new PHPWS_DB('whodis');
+        if (PHPWS_Error::logIfError($db->alterColumnType('url', 'text'))) {
+            $content[] = 'Could not change whodis.url to text.';
+            return false;
+        }
+
+        $content[] = '<pre>0.2.0 changes
+---------------
++ Changed url to a text field from a varchar.
+</pre>';
+
     }
     return true;
 }
