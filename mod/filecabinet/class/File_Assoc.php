@@ -4,6 +4,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
+PHPWS_Core::requireInc('filecabinet', 'defines.php');
+
 class FC_File_Assoc {
     public $id         = 0;
     public $file_type  = 0;
