@@ -269,7 +269,7 @@ div.webpage-image, div.entry-image{
 }
 
 
-#css-user-login div.box-title h1 {
+#css-user-login div.box-title {
    display : none;
 }
 
@@ -346,13 +346,24 @@ a.comment_fork_link {
 
 a.comment_fork_link span { display: none; }
 
-
 a.comment_postnew_link {
-    display:block;
-    float:left;
-    background-image: url(../../images/mod/comments/green-right.png);
+    background-color : none;
+    display : block;
+    float : left;
+    border : none;
+    background-image: url(img/green-right.png);
     padding-right:8px;
 }
+
+a.comment_postnew_link:hover {
+    background-color : none;
+}
+
+.comment_postnew_link:hover, .comment-body .admin-links a:hover {
+    background-color : inherit;
+    text-decoration : none;
+}
+
 a.comment_postnew_link:hover span {
     color : yellow;
     text-decoration : none;
@@ -360,7 +371,7 @@ a.comment_postnew_link:hover span {
 a.comment_postnew_link span {
     display:block;
     padding:0 10px 0 18px;
-    background:transparent url(../../images/mod/comments/green-left.png);
+    background:transparent url(img/green-left.png);
     line-height:30px;
     color : white;
 }
@@ -372,7 +383,9 @@ a.comment_punish_link {
     background-image: url(../../images/mod/comments/noentry.png);
     margin: 0 .5em;
 }
-a.comment_punish_link:hover {
-/* background-color: #00ff00; */
-}
+
 a.comment_punish_link span { display: none; }
+
+#cp-subpanel {
+left : -140px;
+}
