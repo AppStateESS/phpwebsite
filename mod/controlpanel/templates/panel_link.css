@@ -1,0 +1,15 @@
+#cp-panel-link {
+   position : relative;
+}
+
+#cp-subpanel {
+position : absolute;
+margin: 0px;
+padding: 5px;
+background-color : white;
+border : 1px solid black;
+width : 280px;
+top : 0px;
+left : 0px;
+z-index : 999;
+}
