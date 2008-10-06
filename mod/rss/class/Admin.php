@@ -7,7 +7,7 @@
 
 class RSS_Admin {
 
-    function main()
+    public function main()
     {
         $tpl['MESSAGE'] = NULL;
         $message = RSS_Admin::getMessage();
@@ -144,7 +144,7 @@ class RSS_Admin {
     }
 
 
-    function sendMessage($message, $command)
+    public function sendMessage($message, $command)
     {
         $_SESSION['RSS_Message'] = $message;
 
@@ -153,7 +153,7 @@ class RSS_Admin {
 
     }
 
-    function getMessage()
+    public function getMessage()
     {
         if (!isset($_SESSION['RSS_Message'])) {
             return NULL;
@@ -164,7 +164,7 @@ class RSS_Admin {
         return $message;
     }
 
-    function adminPanel()
+    public function adminPanel()
     {
         $opt['link'] = 'index.php?module=rss';
 
@@ -182,7 +182,7 @@ class RSS_Admin {
         return $panel;
     }
 
-    function editChannel(RSS_Channel $channel)
+    public function editChannel(RSS_Channel $channel)
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'rss');
@@ -209,7 +209,7 @@ class RSS_Admin {
 
     }
 
-    function settings()
+    public function settings()
     {
         $form = new PHPWS_Form('rss-settings');
         $form->addHidden('module', 'rss');
@@ -243,7 +243,7 @@ class RSS_Admin {
         return $fc;
     }
 
-    function save_settings()
+    public function save_settings()
     {
         $message = null;
         PHPWS_Settings::set('rss', 'rssfeed', (int)$_POST['rssfeed']);
@@ -275,7 +275,7 @@ class RSS_Admin {
         return $message;
     }
 
-    function channels()
+    public function channels()
     {
         PHPWS_Core::initModClass('rss', 'Channel.php');
         $final_tpl['TITLE'] = dgettext('rss', 'Administrate RSS Feeds');
@@ -314,7 +314,7 @@ class RSS_Admin {
         return $final_tpl;
     }
 
-    function editFeed(RSS_Feed $feed)
+    public function editFeed(RSS_Feed $feed)
     {
         $form = new PHPWS_Form;
         if ($feed->id) {
@@ -356,7 +356,7 @@ class RSS_Admin {
         return $tpl;
     }
 
-    function import()
+    public function import()
     {
         PHPWS_Core::requireConfig('rss');
 

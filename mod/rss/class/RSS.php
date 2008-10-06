@@ -7,7 +7,7 @@
 
 class RSS {
 
-    function registerModule($module, &$content)
+    public function registerModule($module, &$content)
     {
         $reg_file = PHPWS_Core::getConfigFile($module, 'rss.php');
 
@@ -57,7 +57,7 @@ class RSS {
         }
     }
 
-    function showFeeds()
+    public function showFeeds()
     {
         PHPWS_Core::initModClass('rss', 'Feed.php');
         $db = new PHPWS_DB('rss_feeds');
@@ -75,7 +75,7 @@ class RSS {
         Layout::add(implode('', $listing), 'rss', 'feeds');
     }
 
-    function viewChannel($module)
+    public function viewChannel($module)
     {
         PHPWS_Core::initModClass('rss', 'Channel.php');
         $channel = new RSS_Channel;
@@ -92,7 +92,7 @@ class RSS {
         exit();
     }
 
-    function showIcon($key)
+    public function showIcon($key)
     {
         PHPWS_Core::initModClass('rss', 'Channel.php');
         $channel = new RSS_Channel;
