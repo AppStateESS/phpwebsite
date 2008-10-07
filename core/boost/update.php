@@ -305,7 +305,7 @@ You will need to make your hub/branch home directory writable if the file doesn\
         if (@copy(PHPWS_SOURCE_DIR . 'core/inc/htaccess', $home_directory . '.htaccess')) {
             $content[] = 'Copied standard .htaccess file to root directory.';
         } else {
-            $content[] = 'Failed to copy standard .htaccess file to root directory. You will find it in core/inc/htaccess.';
+            $content[] = 'Failed to copy standard .htaccess file to root directory. YOU MUST COPY IT TO YOUR ROOT INSTALLATION DIRECTORY!';
         }
 
         $content[] = '<pre>';
