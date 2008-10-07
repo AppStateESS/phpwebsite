@@ -1481,7 +1481,7 @@ class PHPWS_Form {
         } else {
             $autocomplete = null;
         }
-        if (function_exists('javascript')) {
+        if (function_exists('javascript') && $this->required_field) {
             javascript('jquery');
             javascript('required_input');
         }
