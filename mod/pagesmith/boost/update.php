@@ -208,6 +208,17 @@ function pagesmith_update(&$content, $currentVersion)
         $db = new PHPWS_DB('ps_block');
         $db->dropTableColumn('btype');
 
+        $db = new PHPWS_DB('ps_page');
+        if (PHPWS_Error::logIfError($db->addTableColumn('parent_page', 'int NOT NULL default 0'))) {
+            $content[] = 'Could not create ps_page.parent_page column.';
+            return false;
+        }
+
+        IF (PHPWS_Error::logIfError($db->addTableColumn('page_order', 'smallint NOT NULL default 0'))) {
+            $content[] = 'Could not create ps_page.page_order column.';
+            return false;
+        }
+
         $content[] = '<pre>';
         $files = array('javascript/passinfo/head.js', 'templates/page_form.tpl',
                        'javascript/delete_orphan/',
