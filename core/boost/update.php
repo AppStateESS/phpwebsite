@@ -302,6 +302,12 @@ You will need to make your hub/branch home directory writable if the file doesn\
         $content[] = '</pre>';
 
     case version_compare($version, '1.9.0', '<'):
+        if (@copy(PHPWS_SOURCE_DIR . 'core/inc/htaccess', $home_directory . '.htaccess')) {
+            $content[] = 'Copied standard .htaccess file to root directory.';
+        } else {
+            $content[] = 'Failed to copy standard .htaccess file to root directory. You will find it in core/inc/htaccess.';
+        }
+
         $content[] = '<pre>';
         $files = array('javascript/js_calendar/default.php',
                        'javascript/js_calendar/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js',
