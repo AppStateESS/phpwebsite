@@ -536,17 +536,6 @@ class FC_File_Manager {
                                               $image2);
                     $subtpl['CANCEL'] = dgettext('filecabinet', 'Cancel');
                     $tpl['ALT2'] = PHPWS_Template::process($subtpl, 'filecabinet', 'file_manager/carousel_pick.tpl');
-                    /** end new **/
-                    /*
-                    $altvars['file_type'] = FC_IMAGE_FOLDER;
-                    if ($this->file_assoc->file_type == FC_IMAGE_FOLDER) {
-                        $tpl['ALT_HIGH2'] = ' alt-high';
-                    }
-
-                    $img2_title = dgettext('filecabinet', 'Show block of thumbnails');
-                    $image2 = sprintf($image_string, $img_dir . $img2, $img2_title, $img2_alt);
-                    $tpl['ALT2'] = PHPWS_Text::secureLink($image2, 'filecabinet', $altvars);
-                    */
                 } else {
                     $image2 = sprintf($image_string, $img_dir . $img2, $not_allowed, $img2_alt);
                     $tpl['ALT2'] = $image2;

@@ -1,3 +1,4 @@
+<style type="text/css">@import url("javascript/modules/filecabinet/jcaro_lite/caro.css");</style>
 <script type="text/javascript" src="javascript/jquery/jcarousellite.js"></script>
 <script type="text/javascript">
 
@@ -7,7 +8,6 @@ var visible_set = {visible};
 $(document).ready(function() {
 initSlides(vertical_set, visible_set);
 });
-
 
 function initSlides(vert, vis)
 {
