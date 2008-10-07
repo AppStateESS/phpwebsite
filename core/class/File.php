@@ -699,7 +699,7 @@ class PHPWS_File {
             return null;
         }
         $aFile = explode('.', $filename);
-        return array_pop($aFile);
+        return strtolower(array_pop($aFile));
     }
 
     public function appendSlash(&$directory)
@@ -769,11 +769,17 @@ class PHPWS_File {
 
     public function getVbType($ext)
     {
+        $ext = trim(strtolower($ext));
         if (strpos($ext, '.')) {
             $ext = PHPWS_File::getFileExtension($ext);
         }
         $all_types = PHPWS_File::getAllFileTypes();
-        return $all_types[$ext]['vb'];
+
+        if (!isset($all_types[$ext])) {
+            return _('Unknown type');
+        } else {
+            return $all_types[$ext]['vb'];
+        }
     }
 
     public function getAllFileTypes()
