@@ -248,6 +248,7 @@ timeout INT NOT NULL default 0,
 
     case version_compare($currentVersion, '2.6.0', '<'):
         $content[] = '<pre>';
+        Users_Permission::registerPermissions('users', $content);
         $files = array('conf/languages.php', 'templates/my_page/user_setting.tpl',
                        'templates/usermenus/css.tpl', 'img/permission.png', 'templates/forms/userForm.tpl');
         userUpdateFiles($files, $content);
