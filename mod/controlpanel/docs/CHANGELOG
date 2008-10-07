@@ -1,5 +1,8 @@
 Version 2.2.0
 --------------------------------------------------------------
+7 October 2008
++ Moved javascript into separate file.
+
 1 October 2008
 + Flyout menu added to control panel link.
 + Added function to return control panel link.
