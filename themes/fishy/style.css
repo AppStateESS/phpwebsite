@@ -35,27 +35,17 @@ body {
         z-index : 0;
 }
 
-#top-menu {
-       text-align : right;
-       font-size : .9em;
-       position : absolute;
-       z-index : 1;
-}
-
 
 #search-box {
-       position : absolute;
-       left : 0px;
-       top : 10px;
-       z-index : 2;
 }
 
 
 #container #top-menu {
-       position: absolute;
-       left : 200px;
-       top : 10px;
+       float : right;
        color : white;
+       text-align : right;
+       font-size : .9em;
+       z-index : 1;
 }
 
 
@@ -184,7 +174,7 @@ div.month-view-mini {
 }
 
 div.month-view-mini table {
-      collapse : collapse;
+      border-collapse : collapse;
 }
 
 div.month-view-mini table td {
@@ -261,4 +251,17 @@ div.menu-link a:hover {
 
 .align-center {
     text-align : center;
+}
+
+#cp-subpanel {
+    left : -150px;
+    width : 200px;
+}
+
+#container #top-menu #cp-subpanel a {
+    color : black;
+}
+
+#home-link, #panel-link { 
+    margin-right : 1em;
 }
