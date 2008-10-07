@@ -16,7 +16,6 @@
     clear: both;
     float: left;
     width: 100%;
-    overflow: hidden;
 }
 
 /* column container */
@@ -114,4 +113,8 @@ div.block-embedded {
 
 div.horizonal-menu {
    position: absolute;
+}
+
+#cp-subpanel {
+left : -140px;
 }
