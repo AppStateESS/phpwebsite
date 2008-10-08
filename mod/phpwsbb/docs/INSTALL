@@ -1,0 +1,50 @@
+# INSTALL for phpwsbb
+# $Id: INSTALL,v 1.1 2008/08/23 04:19:21 adarkling Exp $
+
+INSTALL steps for phpwsbb
+
+IMPORTANT: phpwsbb is a module for phpWebSite 1.3.0 or higher.  You have to
+install phpWebSite >= 1.3.0 first, phpwsbb will not work with
+earlier versions of phpWebSite.  If you don't have phpWebSite installed,
+first get the latest code here:
+
+https://sourceforge.net/project/showfiles.php?group_id=15539
+
+Then follow the install instructions found in the INSTALL.txt included in the
+docs directory of that download.
+
+1. Download the .tar.gz from a sourceforge mirror.
+
+2. Unpack the tarball with:
+    tar -xvzf phpwsbb-*.tar.gz
+
+   This will create a directory named "phpwsbb-<version>".
+
+3. Move the directory into your phpwebsite mod directory and rename it
+   to "phpwsbb".
+
+   Example: If you are installing phpwsbb 0.8.0 and your
+   phpwebsite directory is /home/httpd/htdocs, you would run
+    
+   mv phpwsbb-0.8.0 /home/httpd/htdocs/mod/phpwsbb
+
+   If you are upgrading an existing install, simply copy the contents of the
+   phpwsbb-0.8.0 directory into /home/httpd/htdocs/mod/phpwsbb.
+
+   cp -R phpwsbb-0.8.0/* /home/httpd/htdocs/mod/phpwsbb
+
+4. BACKUP YOUR DATABASE.  If you use mysql, mysqldump is recommended.
+
+5. Go to your phpWS website and install or upgrade "Bulletin Board"  from the
+   Boost module.
+
+   You are golden.  The bulletin board is now installed.  You can get there
+   by going to "Control Panel" and click on "Site Content".  However this
+   means anonymous users won't be able to post.  So you'll need to make a
+   menu link.
+
+
+If you are having trouble with these procedures please file a Support
+Request at our sourceforge.net project site:
+
+http://sourceforge.net/tracker/?func=add&group_id=81260&atid=562403
