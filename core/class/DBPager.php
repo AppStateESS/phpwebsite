@@ -1133,6 +1133,7 @@ class DBPager {
 
             return sprintf(_('CSV Report - %s | %s'), $all, $part);
         } else {
+            $values['dbprt'] = 'csva';
             return PHPWS_Text::moduleLink(_('CSV Report'), $module, $values, null, _('Download a complete CSV file'));
         }
     }
