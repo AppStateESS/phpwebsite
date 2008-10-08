@@ -508,6 +508,15 @@ In order for the user to have access to the report, create a
 The csv report will be temporarily stored in the CACHE_DIRECTORY
 defined in your config.php file, so make sure it is writable.
 
+Normally, the viewer is offered the choice to download a partial
+report based on their current criteria. They can also opt to download
+a full report containing all data on one report. If you wish to
+prevent partial reporting call the following:
+
+$pager->allowPartialReport(false);
+
+Setting this to true would allow partial reports again.
+
 Note: the csv format separates with commas and delimits with
 quotes. It is recommended that your report row function add slashes to
 quotes contained within. 
