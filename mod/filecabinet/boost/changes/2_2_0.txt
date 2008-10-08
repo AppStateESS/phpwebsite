@@ -26,10 +26,7 @@
 + confirm message restored to pick_file script.
 + Removed cropped column from file_assoc; not needed, file_type covers
   it
-+ Storing carousel settings in file_assoc
-+ Carousel settings can be made on file manager post
 + Image crop association deletes added to image delete
-+ jCarousel is default view in File Manager
 + Not making image title required
 + Made placeholder image clickable.
 + Fixed bug introduced with placeholder link.
@@ -43,11 +40,6 @@
   slideshow is created.
 + application/msword loads the document.png now instead of the
   text.png
-+ Move the jcaro javascript into its own function so it could be
-  called by the update script in File Manager.
-+ Removed width from the horizontal carousel
 + Can now set thumbnail dimensions from settings
 + All thumbnail setting are derived from settings page
 + Viewing images in a folder can now be viewed using jcarousel lite.
-+ Added settings to control jcarousel lite
-+ Adding dimensions to thumbnails
