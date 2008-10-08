@@ -465,6 +465,50 @@ You could then apply that url to a link or header location to return
 the user to the pager.
 
 
+CSV reporting
+--------------------------------------------------------------------
+DBPager can allow a CSV file export. Setting this up in your current
+pager view is pretty simple.
+
+First, set a report row
+$pager->setReportRow('report_row_function');
+
+The "report_row_function" needs to be the name of a method in your
+pager's assigned class or a stand alone function.
+
+The function specified should return an associative array of variables
+like so:
+
+// this is class method
+public function report_row_function()
+{
+    $row['name']          = $this->name;
+    $row['date_of_entry'] = strftime('%c', $this->date_of_entry);
+
+    return $row;
+}
+
+or as a stand alone function:
+
+function report_row_function($data)
+{
+    $row['name']          = $data['name']
+    $row['date_of_entry'] = strftime('%c', $data['date_of_entry']);
+
+    return $row;
+}
+
+Unlike addRowTags, the report will only contain rows returned by the
+function. The pager ignores the other table columns.
+
+
+In order for the user to have access to the report, create a 
+{CSV_REPORT} tag somewhere in your pager template.
+
+The csv report will be temporarily stored in the CACHE_DIRECTORY
+defined in your config.php file, so make sure it is writable.
+
+
 Conclusion
 --------------------------------------------------------------------
 I hope you find the DB Pager class useful. If you have questions,
