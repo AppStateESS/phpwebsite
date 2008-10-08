@@ -116,9 +116,16 @@ class FC_File_Assoc {
         if ( ($this->file_type != FC_IMAGE_RESIZE && $this->file_type != FC_IMAGE_CROP) || !$this->_resize_parent) {
             $this->_link_image = true;
             if ($thumbnail) {
-                return $this->_resize_parent->getThumbnail();
+                if ($this->_resize_parent) {
+                    $img = $this->_resize_parent->getThumbnail();
+                    return $this->_resize_parent->getJSView(false, $img);
+                } else {
+                    $img = $this->_source->getThumbnail();
+                    return $this->_source->getJSView(false, $img);
+                }
             } else {
-                return $this->getTag();
+                $img = $this->getTag();
+                return $this->_source->getJSView(false, $img);
             }
         }
 

@@ -464,7 +464,7 @@ class Cabinet {
         return $manager;
     }
 
-    public function viewImage($id)
+    public function viewImage($id, $view_folder=true)
     {
         Layout::addStyle('filecabinet');
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
@@ -496,7 +496,7 @@ class Cabinet {
 
         $tpl['DESCRIPTION'] = $image->getDescription();
         $tpl['CLOSE'] = javascript('close_window');
-        if ($folder->public_folder) {
+        if ($view_folder && $folder->public_folder) {
             $db = new PHPWS_DB('images');
             $db->setLimit(1);
             $db->addWhere('folder_id', $image->folder_id);
