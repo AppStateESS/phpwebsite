@@ -222,6 +222,7 @@ function pagesmith_update(&$content, $currentVersion)
         $content[] = '<pre>';
         $files = array('javascript/passinfo/head.js', 'templates/page_form.tpl',
                        'javascript/delete_orphan/',
+                       'javascript/confirm_delete/',
                        'templates/page_templates/threesec-tbl/',
                        'templates/orphans.tpl',
                        'templates/page_form.tpl',
