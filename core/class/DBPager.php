@@ -177,6 +177,8 @@ class DBPager {
 
     public $report_type = 0;
 
+    public $allow_partial_report = true;
+
     /**
      * If true, DBPager will cache last user request. This is not defaulted to
      * true because cache_identifier defaults to the template name. If a module
@@ -1122,13 +1124,17 @@ class DBPager {
         $module = $values['module'];
         unset($values['module']);
 
-        $values['dbprt'] = 'csva';
-        $all = PHPWS_Text::moduleLink(_('All'), $module, $values, null, _('Download a complete CSV file'));
-        
-        $values['dbprt'] = 'csvp';
-        $part = PHPWS_Text::moduleLink(_('Partial'), $module, $values, null, _('Download a partial CSV file'));
+        if ($this->allow_partial_report) {
+            $values['dbprt'] = 'csva';
+            $all = PHPWS_Text::moduleLink(_('All'), $module, $values, null, _('Download a complete CSV file'));
 
-        return sprintf(_('CSV Report - %s | %s'), $all, $part);
+            $values['dbprt'] = 'csvp';
+            $part = PHPWS_Text::moduleLink(_('Partial'), $module, $values, null, _('Download a partial CSV file'));
+
+            return sprintf(_('CSV Report - %s | %s'), $all, $part);
+        } else {
+            return PHPWS_Text::moduleLink(_('CSV Report'), $module, $values, null, _('Download a complete CSV file'));
+        }
     }
 
 
@@ -1536,6 +1542,11 @@ class DBPager {
     public function setAutoSort($auto)
     {
         $this->auto_sort = (bool)$auto;
+    }
+
+    public function allowPartialReport($val)
+    {
+        $this->allow_partial_report = (bool)$val;
     }
 
 }
