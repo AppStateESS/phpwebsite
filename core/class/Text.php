@@ -17,7 +17,7 @@ if (!defined('UTF8_MODE')) {
     define ('UTF8_MODE', false);
 }
 
-PHPWS_Core::configRequireOnce('core', 'text_settings.php');
+PHPWS_Core::requireConfig('core', 'text_settings.php');
 
 if (!defined('PHPWS_HOME_HTTP')) {
     define('PHPWS_HOME_HTTP', './');
@@ -43,14 +43,22 @@ if (!defined('ALLOW_SCRIPT_TAGS')) {
     define('ALLOW_SCRIPT_TAGS', false);
 }
 
+/**
+ * Changing this to FALSE will _ALLOW SCRIPT TAGS_!
+ * Change at your own risk.
+ */
+if (!defined('USE_STRIP_TAGS')) {
+    define('USE_STRIP_TAGS', true);
+}
+
 class PHPWS_Text {
     public $use_profanity  = ALLOW_PROFANITY;
     public $use_breaker    = USE_BREAKER;
-    public $use_strip_tags = true;
+    public $use_strip_tags = USE_STRIP_TAGS;
     public $use_filters    = false;
     public $fix_anchors    = FIX_ANCHORS;
     public $collapse_urls  = COLLAPSE_URLS;
-    private $_allowed_tags  = null;
+    public $allowed_tags  = null;
 
 
     public function __construct($text=null, $encoded=false)
@@ -102,18 +110,18 @@ class PHPWS_Text {
     public function addAllowedTags($tags)
     {
         if (is_array($tags)) {
-            $this->_allowed_tags .= implode('', $tags);
+            $this->allowed_tags .= implode('', $tags);
         } else {
-            $this->_allowed_tags .= $tags;
+            $this->allowed_tags .= $tags;
         }
     }
 
     public function setAllowedTags($tags)
     {
         if (is_array($tags)) {
-            $this->_allowed_tags = implode('', $tags);
+            $this->allowed_tags = implode('', $tags);
         } else {
-            $this->_allowed_tags = $tags;
+            $this->allowed_tags = $tags;
         }
     }
 
@@ -122,19 +130,21 @@ class PHPWS_Text {
         static $default_tags = null;
 
         if (empty($default_tags)) {
-            $default_tags = preg_replace('/\s/', '',  PHPWS_ALLOWED_TAGS);
-            if (ALLOW_SCRIPT_TAGS) {
+            $default_tags = preg_replace('/\s/', '',  strtolower(PHPWS_ALLOWED_TAGS));
+
+            if (PHPWS_Core::allowScriptTags()) {
                 $default_tags .= '<script>';
             } else {
-                $default_tags = str_replace('<script>', '', $this->_allowed_tags);
+                $default_tags = str_replace('<script>', '', $default_tags);
             }
         }
-        $this->_allowed_tags = $default_tags;
+
+        $this->allowed_tags = $default_tags;
     }
 
     public function clearAllowedTags()
     {
-        $this->_allowed_tags = null;
+        $this->allowed_tags = null;
     }
 
     public function getPrint()
@@ -144,7 +154,6 @@ class PHPWS_Text {
         }
 
         $text = $this->text;
-
         if (ALLOW_TEXT_FILTERS && $this->use_filters) {
             $text = PHPWS_Text::filterText($text);
         }
@@ -154,7 +163,7 @@ class PHPWS_Text {
         }
 
         if ($this->use_strip_tags) {
-            $text = strip_tags($text, $this->_allowed_tags);
+            $text = strip_tags($text, $this->allowed_tags);
         }
 
         if ($this->use_breaker) {

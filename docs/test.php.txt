@@ -10,8 +10,6 @@ PHPWS_Core::initCoreClass('Database.php');
 PHPWS_Core::initCoreClass('Form.php');
 PHPWS_Core::initCoreClass('Template.php');
 
-require_once 'inc/Functions.php';
-
 /****************************************************/
 
 echo 'Hi! I\'m a test file!';

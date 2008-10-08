@@ -4,6 +4,14 @@ its own separate CHANGELOG file..
 
 Version 1.9.0
 ---------------------------------------------------------------------
+8 October 2008
++ Fixed bug with parseOutput stripping all tags
++ Added option in Text to disable tag stripping entirely. Included
+  warning to not do so.
++ Changed strip tags check to use the allowScriptTags core function.
++ .htaccess warning added to update.
++ Removed Function.php call in test.
+
 7 October 2008
 + Form doesn't call javascript required_input unless it is in use.
 + Moved some javascript to separate file to clean up header.
