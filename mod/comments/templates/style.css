@@ -88,7 +88,7 @@ a.comment_delete_link {
     float :left;
     width: 20px;
     height: 20px;
-    background-image: url(../../../images/mod/comments/cancel.png);
+    background-image: url(../../images/mod/comments/cancel.png);
     margin: 0 .5em;
 }
 a.comment_delete_link:hover {
@@ -100,7 +100,7 @@ a.comment_report_link {
     float :left;
     width: 16px;
     height: 16px;
-    background-image: url(../../../images/mod/comments/report.png);
+    background-image: url(images/mod/comments/report.png);
     margin: 0 .5em;
 }
 a.comment_report_link:hover {
@@ -112,7 +112,7 @@ a.comment_fork_link {
     float :left;
     width: 16px;
     height: 16px;
-    background-image: url(../../../images/mod/comments/fork.png);
+    background-image: url(../../images/mod/comments/fork.png);
     margin: 0 .5em;
 }
 a.comment_fork_link:hover {
@@ -124,7 +124,7 @@ a.comment_punish_link {
     float :left;
     width: 20px;
     height: 20px;
-    background-image: url(../../../images/mod/comments/noentry.png);
+    background-image: url(../../images/mod/comments/noentry.png);
     margin: 0 .5em;
 }
 a.comment_punish_link:hover {
@@ -135,7 +135,7 @@ a.comment_punish_link span { display: none; }
 .comment_supermod_icon {
     width: 105px;
     height: 21px;
-    background-image: url(../../../images/mod/comments/Global-Mod.gif);
+    background-image: url(../../images/mod/comments/Global-Mod.gif);
     margin : 0;
 }
 .comment_supermod_icon span { display: none; }
@@ -143,7 +143,7 @@ a.comment_punish_link span { display: none; }
 .comment_activemod_icon {
     width: 105px;
     height: 21px;
-    background-image: url(../../../images/mod/comments/Moderator.gif);
+    background-image: url(../../images/mod/comments/Moderator.gif);
     margin : 0;
 }
 .comment_activemod_icon span { display: none; }
@@ -151,7 +151,7 @@ a.comment_punish_link span { display: none; }
 .comment_inactivemod_icon {
     width: 105px;
     height: 21px;
-    background-image: url(../../../images/mod/comments/Support-staff.gif);
+    background-image: url(../../images/mod/comments/Support-staff.gif);
     margin : 0;
 }
 .comment_inactivemod_icon span { display: none; }
