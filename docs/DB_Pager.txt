@@ -508,6 +508,10 @@ In order for the user to have access to the report, create a
 The csv report will be temporarily stored in the CACHE_DIRECTORY
 defined in your config.php file, so make sure it is writable.
 
+Note: the csv format separates with commas and delimits with
+quotes. It is recommended that your report row function add slashes to
+quotes contained within. 
+
 
 Conclusion
 --------------------------------------------------------------------
