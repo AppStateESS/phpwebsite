@@ -197,8 +197,8 @@ class Menu_Link {
             $redirect_url = preg_quote(PHPWS_Core::getCurrentUrl());
         }
 
-        if ( preg_match("@$current_url$@", preg_quote($this->url)) ||
-             preg_match("@$redirect_url$@", preg_quote($this->url)) ) {
+        if ( preg_match("@$current_url$@", $this->url) ||
+             preg_match("@$redirect_url$@", $this->url) ) {
             return true;
         } else {
             return false;
