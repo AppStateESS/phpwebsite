@@ -383,7 +383,7 @@ class Menu_Link {
             $vars['command'] = 'edit_link_title';
             $prompt_js['question']   = dgettext('menu', 'Type the new title for this link.');
             $prompt_js['address']    = PHPWS_Text::linkAddress('menu', $vars, true);
-            $prompt_js['answer']     = addslashes($this->getTitle());
+            $prompt_js['answer']     = $this->title;
             $prompt_js['value_name'] = 'link_title';
             $prompt_js['link']       = $link;
             return javascript('prompt', $prompt_js);
