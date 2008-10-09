@@ -492,6 +492,11 @@ class PHPWS_DB {
                                      strtoupper($join_type) . ' JOIN',
                                      $join_to,
                                      $join_on);
+            } elseif (in_array($join_to, $join_info['tables'])) {
+                $allJoin[] = sprintf('%s %s %s',
+                                     strtoupper($join_type) . ' JOIN',
+                                     $join_from,
+                                     $join_on);
             } else {
                 $allJoin[] = sprintf('%s %s %s %s',
                                      $join_from,
@@ -499,6 +504,7 @@ class PHPWS_DB {
                                      $join_to,
                                      $join_on);
             }
+
             $join_info['tables'][] = $join_from;
             $join_info['tables'][] = $join_to;
         }
