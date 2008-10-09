@@ -4,6 +4,9 @@ its own separate CHANGELOG file..
 
 Version 1.9.0
 ---------------------------------------------------------------------
+9 October 2008
++ Database - Added another check for same table name in join to function.
+
 8 October 2008
 + Fixed bug with parseOutput stripping all tags
 + Added option in Text to disable tag stripping entirely. Included
