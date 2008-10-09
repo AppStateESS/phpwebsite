@@ -320,6 +320,7 @@ You will need to make your hub/branch home directory writable if the file doesn\
                        'javascript/captcha/',
                        'javascript/jquery/jcarousellite.js',
                        'javascript/datepicker/',
+                       'javascript/prompt/default.php',
                        'javascript/pick_color/',
                        'javascript/required_input/',
                        'conf/text_settings.php',
