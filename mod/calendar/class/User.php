@@ -303,24 +303,34 @@ class Calendar_User {
             break;
 
         case 'ical_dl':
-            if (!$this->calendar->schedule->checkPermissions() ||
+            if (!empty($_GET['sdate']) && !empty($_GET['edate']) && 
+                $this->calendar->schedule->allowICalDownload()) {
+                $this->calendar->schedule->exportEvents($_GET['sdate'], $_GET['edate']);
+            } else {
+                $this->title = dgettext('calendar', 'Sorry');
+                $this->content = dgettext('calendar', 'Schedule unavailable.');
+            }
+
+            break;
+
+            if ( ( !$this->calendar->schedule->public && !$this->calendar->schedule->checkPermissions() ) ||
+                 ( $this->calendar->schedule->public && (PHPWS_Settings::get('calendar', 'anon_ical') && Current_User::isLogged()) ) ||
                 empty($_GET['sdate']) || empty($_GET['edate']) ||
                 !$this->calendar->schedule->id) {
                 $this->title = dgettext('calendar', 'Sorry');
                 $this->content = dgettext('calendar', 'Schedule unavailable.');
             } else {
-                $this->calendar->schedule->exportEvents($_GET['sdate'], $_GET['edate']);
+
             }
             break;
 
         case 'ical_event_dl':
-            if (!$this->calendar->schedule->checkPermissions() ||
-                empty($_GET['event_id']) ||
-                !$this->calendar->schedule->id) {
+            if (!empty($_GET['sdate']) && !empty($_GET['edate']) && 
+                $this->calendar->schedule->allowICalDownload()) {
+                $this->calendar->schedule->exportEvent($_GET['event_id']);
+            } else {
                 $this->title = dgettext('calendar', 'Sorry');
                 $this->content = dgettext('calendar', 'Schedule unavailable.');
-            } else {
-                $this->calendar->schedule->exportEvent($_GET['event_id']);
             }
 
             break;
@@ -1143,25 +1153,33 @@ class Calendar_User {
 
     function eventDownloadLink($event_id)
     {
-        $dl['uop'] = 'ical_event_dl';
-        $dl['sch_id'] = $this->calendar->schedule->id;
-        $dl['event_id'] = $event_id;
-        $icon = sprintf('<img src="images/mod/calendar/download.png" title="%s" alt="%s" />', dgettext('calendar', 'Download'), dgettext('calendar', 'Download'));
-        $download = new PHPWS_Link($icon, 'calendar', $dl);
-        $download->setNoFollow();
-        return $download->get();
+        if ($this->calendar->schedule->allowICalDownload()) {
+            $dl['uop'] = 'ical_event_dl';
+            $dl['sch_id'] = $this->calendar->schedule->id;
+            $dl['event_id'] = $event_id;
+            $icon = sprintf('<img src="images/mod/calendar/download.png" title="%s" alt="%s" />', dgettext('calendar', 'Download'), dgettext('calendar', 'Download'));
+            $download = new PHPWS_Link($icon, 'calendar', $dl);
+            $download->setNoFollow();
+            return $download->get();
+        } else {
+            return null;
+        }
     }
 
     function downloadLink($startdate, $enddate)
     {
-        $dl['uop'] = 'ical_dl';
-        $dl['sch_id'] = $this->calendar->schedule->id;
-        $dl['sdate'] = $startdate;
-        $dl['edate'] = $enddate;
-        $icon = sprintf('<img src="images/mod/calendar/download.png" title="%s" alt="%s" />', dgettext('calendar', 'Download'), dgettext('calendar', 'Download'));
-        $download = new PHPWS_Link($icon, 'calendar', $dl);
-        $download->setNoFollow();
-        return $download->get();
+        if ($this->calendar->schedule->allowICalDownload()) {
+            $dl['uop'] = 'ical_dl';
+            $dl['sch_id'] = $this->calendar->schedule->id;
+            $dl['sdate'] = $startdate;
+            $dl['edate'] = $enddate;
+            $icon = sprintf('<img src="images/mod/calendar/download.png" title="%s" alt="%s" />', dgettext('calendar', 'Download'), dgettext('calendar', 'Download'));
+            $download = new PHPWS_Link($icon, 'calendar', $dl);
+            $download->setNoFollow();
+            return $download->get();
+        } else {
+            return null;
+        }
     }
 }
 

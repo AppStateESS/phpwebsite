@@ -1,5 +1,10 @@
 Version 1.7.0
 -------------------------------------------------------------
+9 October 2008
++ Added conditionals to iCal export.
++ Added check that removes the default public calendar if it is
+  changed to private.
+
 30 September 2008
 + Added ability to hide the mini grid calendar.
 + Increased edit event popup default size.

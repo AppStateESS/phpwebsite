@@ -679,6 +679,19 @@ class Calendar_Schedule {
        exit();
     }
 
+    function allowICalDownload()
+    {
+        if ($this->id &&
+             ( ( $this->public && ( Current_User::isLogged() || PHPWS_Settings::get('calendar', 'anon_ical') ) ) ||
+               $this->checkPermissions() )
+             ) {
+            return true;
+        } else {
+            return false;
+        }
+            
+    }
+
 }
 
 ?>

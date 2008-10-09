@@ -886,6 +886,7 @@ class Calendar_Admin {
         PHPWS_Settings::set('calendar', 'mini_event_link', (int)isset($_POST['mini_event_link']));
         PHPWS_Settings::set('calendar', 'cache_month_views', (int)isset($_POST['cache_month_views']));
         PHPWS_Settings::set('calendar', 'mini_grid', (int)isset($_POST['mini_grid']));
+        PHPWS_Settings::set('calendar', 'anon_ical', (int)isset($_POST['anon_ical']));
 
         PHPWS_Settings::set('calendar', 'display_mini', (int)$_POST['display_mini']);
         PHPWS_Settings::set('calendar', 'starting_day', (int)$_POST['starting_day']);
@@ -975,6 +976,7 @@ class Calendar_Admin {
 
     public function postSchedule()
     {
+        $default_public = PHPWS_Settings::get('calendar', 'public_schedule');
         if ($this->calendar->schedule->post()) {
             if (!$this->allowSchedulePost()) {
                 Current_User::disallow();
@@ -993,8 +995,13 @@ class Calendar_Admin {
                     $this->sendMessage(dgettext('calendar', 'An error occurred when saving your schedule.'), 'schedules');
                 }
             } else {
-                if ( $this->calendar->schedule->public && (PHPWS_Settings::get('calendar', 'public_schedule') < 1)) {
+                if ( $this->calendar->schedule->public && ($default_public < 1)) {
                     PHPWS_Settings::set('calendar', 'public_schedule', $this->calendar->schedule->id);
+                    PHPWS_Settings::save('calendar');
+                }
+
+                if (!$this->calendar->schedule->public && $this->calendar->schedule->id == $default_public) {
+                    PHPWS_Settings::set('calendar', 'public_schedule', 0);
                     PHPWS_Settings::save('calendar');
                 }
 
@@ -1392,6 +1399,10 @@ class Calendar_Admin {
         $form->addCheckbox('mini_event_link', 1);
         $form->setMatch('mini_event_link', PHPWS_Settings::get('calendar', 'mini_event_link'));
         $form->setLabel('mini_event_link', dgettext('calendar', 'Only link days with events in mini calendar'));
+
+        $form->addCheckbox('anon_ical', 1);
+        $form->setMatch('anon_ical', PHPWS_Settings::get('calendar', 'anon_ical'));
+        $form->setLabel('anon_ical', dgettext('calendar', 'Allow anonymous iCal exports of public schedules'));
 
         $start_days = array(0,1);
         $start_days_label[0] = strftime('%A', mktime(0,0,0,1,4,1970));

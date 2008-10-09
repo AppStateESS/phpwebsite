@@ -24,6 +24,7 @@ $settings = array('use_calendar_style' => 1,
                   'cache_month_views'  => 0,
                   'brief_grid'         => 0,
                   'allow_public_ical'  => 1,
-                  'mini_grid'          => 1);
+                  'mini_grid'          => 1,
+                  'anon_ical'          => 1);
 
 ?>

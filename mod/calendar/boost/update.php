@@ -249,6 +249,8 @@ function calendar_update(&$content, $version)
 + Deleting a schedule will remove event keys as well.
 + Deleting an event clears the cache to prevent ghosts in grid view.
 + If a non existing event is accessed, calendar forwards to day view instead of 404.
++ Added check that removes the default public calendar if it is
+  changed to private.
 + php 5 formatted.
 </pre>';
     } // end of switch
