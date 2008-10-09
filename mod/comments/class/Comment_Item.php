@@ -268,7 +268,7 @@ class Comment_Item {
 	return $this->_error;
     }
 
-    public function getTpl(&$thread)
+    public function getTpl($thread)
     {
         $author = $this->getAuthor();
 

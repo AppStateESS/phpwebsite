@@ -11,7 +11,6 @@ PHPWS_Core::initModClass('demographics', 'Demographics.php');
 
 class Comment_User extends Demographics_User {
 
-    public $display_name  = NULL;
     public $signature     = NULL;
     public $comments_made = 0;
     public $joined_date   = 0;

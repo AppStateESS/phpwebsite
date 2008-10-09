@@ -126,6 +126,9 @@ Please download 0.6.3.</pre>';
         Demographics::registerField('location', array('limit'=>'50'));
         $content[] = 'Created "location" column in demographics table.';
 
+        $db = new PHPWS_DB('comments_users');
+        PHPWS_Error::logIfError($db->dropTableColumn('display_name'));
+
         $db = new PHPWS_DB('comments_threads');
         $sql = 'CREATE TABLE comments_monitors (
     thread_id   int NOT NULL,

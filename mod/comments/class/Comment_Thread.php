@@ -421,9 +421,11 @@ class Comment_Thread {
 
         // Load  all relevant Comment_User objects
         $result = Demographics::getList($author_list, 'comments_users', 'Comment_User');
+
         if (PHPWS_Error::logIfError($result)) {
             return;
         }
+        
         $GLOBALS['Comment_Users'] = $result;
 
         // Load all groups that these authors belong to (kept separate to save query time)
@@ -433,8 +435,9 @@ class Comment_Thread {
         $db->addColumn('member_id');
         $result = $db->select('col');
         if (!PHPWS_Error::logIfError($result) && !empty($result)) {
-            foreach ($result AS $value)
+            foreach ($result as $value) {
                 $GLOBALS['Comment_UsersGroups'][$value['member_id']][] = $value['group_id'];
+            }
         }
 
         return TRUE;

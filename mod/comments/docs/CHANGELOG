@@ -1,5 +1,9 @@
 Version 1.2.0
 ------------------------------------------------------------------------
+9 October 2008
++ Comment users are now leaning on new demographics changes. Dropped
+  display_name field.
+
 1 October 2008
 + Fixed some user setting bugs.
 

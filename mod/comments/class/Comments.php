@@ -52,8 +52,10 @@ class Comments {
         }
 
         $user = new Comment_User($user_id);
-        if (!$user_id)
+
+        if (!$user_id) {
             return $user;
+        }
 
         // If we're loading the current user, make sure that the cached userdata is up to date
         if ($user_id = Current_User::getId()) {
