@@ -217,9 +217,15 @@ class Demographics {
             $db = new PHPWS_DB($table);
             $db->setDistinct(true);
             $db->addJoin('left', $table, 'demographics', 'user_id', 'user_id');
+            $db->addJoin('left', 'demographics', 'users', 'user_id', 'id');
             $db->addColumn($table . '.*');
             $db->addColumn($table . '.user_id', null, '_extend_id');
             $db->addColumn('demographics.*');
+            $db->addColumn('users.display_name');
+            $db->addColumn('users.last_logged');
+            $db->addColumn('users.created');
+            $db->addColumn('users.email');
+            $db->addColumn('users.active', null, 'active_user');
             $db->addColumn('demographics.user_id', null, '_base_id');
         } else {
             $db = new PHPWS_DB('demographics');
@@ -230,9 +236,9 @@ class Demographics {
 
         if ($class_name) {
             $list = $db->getObjects($class_name);
-            if (PHPWS_Error::logIfError($list) || !is_array($list))
+            if (PHPWS_Error::logIfError($list) || !is_array($list)) {
                 $list = array();
-            else {
+            } else {
                 foreach ($list as $key=>$value) {
                     $list[$key]->_new_user = false;
                 }

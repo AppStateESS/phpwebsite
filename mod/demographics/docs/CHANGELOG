@@ -1,5 +1,8 @@
 Version 1.2.0
 -------------------------------------
+9 October 2008
++ Demographics now pulls some data from the users table directly.
+
 28 July 2008
 + Applied patch #2028130 from Eloi George. Fixed Demographics_User
   object not updating extend_id and base_id.

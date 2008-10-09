@@ -13,6 +13,11 @@
 
 class Demographics_User {
     public $user_id        = 0;
+    public $display_name   = null;
+    public $last_logged    = 0;
+    public $created        = 0;
+    public $email          = null;
+    public $active_user    = 1;
     public $_error         = null;
     public $_base_id       = 0;
     public $_extend_id     = 0;
@@ -28,10 +33,17 @@ class Demographics_User {
 
         if (isset($this->_table)) {
             $db = new PHPWS_DB($this->_table);
-            $db->addJoin('left', 'demographics', $this->_table, 'user_id', 'user_id');
+            $db->addWhere('users.id', $this->user_id);
+            $db->addWhere('demographics.user_id', $this->user_id);
+            $db->addWhere($this->_table . '.user_id', $this->user_id);
             $db->addColumn($this->_table . '.*');
             $db->addColumn($this->_table . '.user_id', null, '_extend_id');
             $db->addColumn('demographics.*');
+            $db->addColumn('users.display_name');
+            $db->addColumn('users.last_logged');
+            $db->addColumn('users.created');
+            $db->addColumn('users.email');
+            $db->addColumn('users.active', null, 'active_user');
             $db->addColumn('demographics.user_id', null, '_base_id');
         } else {
             $db = new PHPWS_DB('demographics');
