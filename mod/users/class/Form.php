@@ -244,7 +244,7 @@ class User_Form {
         $pager->addSortHeader('display_name', dgettext('users', 'Display'));
         $pager->addSortHeader('email', dgettext('users', 'Email'));
         $pager->addSortHeader('last_logged', dgettext('users', 'Last Logged'));
-        $pager->setSearch('username', 'email');
+        $pager->setSearch('username', 'email', 'display_name');
         $pager->cacheQueries();
         return $pager->get();
     }

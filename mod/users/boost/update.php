@@ -244,6 +244,7 @@ timeout INT NOT NULL default 0,
 + Users will now look for remove_user.php in all modules\' inc/
   directory in order to run the remove_user function.
 + Using pager\'s addSortHeaders in user and group listing
++ Added display name to pager search.
 </pre>';
 
     case version_compare($currentVersion, '2.6.0', '<'):
