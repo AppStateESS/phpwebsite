@@ -156,7 +156,7 @@ class Comment_Forms {
         $form->addTextArea('email_text', $settings['email_text']);
         $form->setWidth('email_text', '95%');
         $form->setRows('email_text', '5');
-        $form->useEditor('email_text');
+        $form->useEditor('email_text', true, true, 0, 0, 'tinymce');
         $form->setLabel('email_text', dgettext('comments', 'Text of email notifying users of a new comment'));
 
         // monitor_posts
