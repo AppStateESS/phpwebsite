@@ -56,6 +56,7 @@ class Version_Admin {
         $form->addHidden('command', 'post_setting');
         $form->addSelect('saved_versions', $versions);
         $form->setMatch('saved_versions', $version_number);
+        $form->setLabel('saved_versions', dgettext('version', 'Versions saved'));
 
         $form->addSubmit(dgettext('version', 'Save'));
         $template = $form->getTemplate();

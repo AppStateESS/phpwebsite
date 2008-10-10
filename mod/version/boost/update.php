@@ -70,6 +70,7 @@ function version_update(&$content, $currentVersion)
 </pre>';
 
     case version_compare($currentVersion, '0.2.0', '<'):
+        PHPWS_Boost::updateFiles(array('templates/settings.tpl'), 'version');
         $content[] = '<pre>
 0.2.0 changes
 -------------
