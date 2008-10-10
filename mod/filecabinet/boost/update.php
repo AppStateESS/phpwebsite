@@ -463,8 +463,11 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                        'templates/file_list.tpl',
                        'templates/folder_list.tpl',
                        'img/add.png',
-                       'conf/icons.php'
+                       'conf/icons.php',
+                       'conf/config.php'
                        );
+
+        fc_updatefiles($files, $content);
 
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/2_2_0.txt');
@@ -478,13 +481,15 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
 function fc_updatefiles($files, &$content)
 {
-    if (PHPWS_Boost::updateFiles($files, 'filecabinet')) {
+    $result = PHPWS_Boost::updateFiles($files, 'filecabinet', true);
+    if (!is_array($result)) {
         $content[] = '--- Copied the following files:';
+        $content[] = '    ' . implode("\n    ", $files);
     } else {
         $content[] = '--- FAILED copying the following files:';
+        $content[] = '    ' . implode("\n    ", $result);
     }
 
-    $content[] = '    ' . implode("\n    ", $files);
     $content[] = '';
 }
 
