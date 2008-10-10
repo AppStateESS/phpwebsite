@@ -231,6 +231,8 @@ function pagesmith_update(&$content, $currentVersion)
                        'templates/style.css',
                        'templates/sublist.tpl',
                        'templates/upload_template.tpl',
+                       'img/add.png', 'img/delete.png', 
+                       'img/back.png'
                        );
         pagesmithUpdateFiles($files, $content);
 
