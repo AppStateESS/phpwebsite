@@ -1113,6 +1113,10 @@ class DBPager {
         // Don't need the Go button from search to be carried along
         unset($values['go']);
 
+        if (empty($values['module'])) {
+            $values['module'] = $this->module;
+        }
+
         $GLOBALS['DBPager_Link_Values'] = $values;
 
         return $values;
