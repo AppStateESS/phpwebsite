@@ -8,6 +8,7 @@
  * @package Core
  */
 
+
 PHPWS_Core::requireConfig('layout');
 
 /********** Errors ****************/
@@ -27,6 +28,10 @@ if (!defined('LAYOUT_THEME_EXEC')) {
 
 if (!defined('XML_MODE')) {
     define('XML_MODE', false);
+ }
+
+if (!defined('LAYOUT_FORCE_MOD_JS')) {
+    define('LAYOUT_FORCE_MOD_JS', true);
  }
 
 PHPWS_Core::initModClass('layout', 'Layout_Settings.php');
@@ -491,6 +496,7 @@ class Layout {
         return PHPWS_Text::parseOutput($_SESSION['Layout_Settings']->header);
     }
 
+
     public function getJavascript($directory, $data=NULL, $base=NULL)
     {
         if (isset($data) && !is_array($data)) {
@@ -503,10 +509,29 @@ class Layout {
             }
         }
 
+        if(empty($base) && LAYOUT_FORCE_MOD_JS && preg_match('/^modules\//', $directory)) {
+            // modules/filecabinet/clear_file
+            // mod/filecabinet/javascript/clear_file
+            $directory = preg_replace('@^\./@', '', $directory);
+            $js_dir = explode('/', $directory);
+            foreach ($js_dir as $key => $dir) {
+                if ($dir == 'modules') {
+                    $start_key = $key + 1;
+                    break;
+                }
+            }
+            
+            $directory = sprintf('mod/%s/javascript/%s', $js_dir[$start_key++], $js_dir[$start_key]);
+        } else {
+            $base .= 'javascript/';
+        }
+        
+       
+
         PHPWS_CORE::initCoreClass('File.php');
-        $headfile    = $base . 'javascript/' . $directory . '/head.js';
-        $bodyfile    = $base . 'javascript/' . $directory . '/body.js';
-        $defaultfile = $base . 'javascript/' . $directory . '/default.php';
+        $headfile    = $base . $directory . '/head.js';
+        $bodyfile    = $base . $directory . '/body.js';
+        $defaultfile = $base . $directory . '/default.php';
 
         if (is_file($defaultfile)) {
             require $defaultfile;
