@@ -119,26 +119,28 @@ class Calendar_Event {
      */
     public $_previous_settings = null;
 
-    public function __construct($schedule=null, $event_id=0)
+    public function __construct($id=0, $schedule=null)
     {
-        if ($schedule) {
-            $this->_schedule = $schedule;
-            if (empty($event_id)) {
-                if (!$this->_schedule->public) {
-                    $this->show_busy = 1;
-                }
-                $this->start_time = PHPWS_Time::getUserTime();
-                $this->end_time   = PHPWS_Time::getUserTime();
-                return;
-            } else {
-                $this->id = (int)$event_id;
-                $result = $this->init();
-                if (PEAR::isError($result)) {
-                    PHPWS_Error::log($result);
-                    $this->id = 0;
-                } elseif (!$result) {
-                    $this->id = 0;
-                }
+        if (empty($schedule)) {
+            return;
+        }
+
+        $this->_schedule = $schedule;
+        if (empty($id)) {
+            if (!$this->_schedule->public) {
+                $this->show_busy = 1;
+            }
+            $this->start_time = PHPWS_Time::getUserTime();
+            $this->end_time   = PHPWS_Time::getUserTime();
+            return;
+        } else {
+            $this->id = (int)$id;
+            $result = $this->init();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $this->id = 0;
+            } elseif (!$result) {
+                $this->id = 0;
             }
         }
     }
@@ -511,6 +513,10 @@ class Calendar_Event {
         }
     }
 
+    public function postPlug($schedule)
+    {
+        $this->_schedule = array_pop($schedule);
+    }
 
     /**
      * Posts the event information from the form into the object

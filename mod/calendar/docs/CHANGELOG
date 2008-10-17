@@ -1,5 +1,8 @@
 Version 1.7.0
 -------------------------------------------------------------
+17 October 2008
++ Changed to observe changes to getObjects
+
 9 October 2008
 + Added conditionals to iCal export.
 + Added check that removes the default public calendar if it is

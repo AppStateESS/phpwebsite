@@ -259,7 +259,7 @@ class Calendar_User {
     public function loadEvent($event_id)
     {
         PHPWS_Core::initModClass('calendar', 'Event.php');
-        $this->event = new Calendar_Event($this->calendar->schedule, $event_id);
+        $this->event = new Calendar_Event($event_id, $this->calendar->schedule);
         return true;
     }
 

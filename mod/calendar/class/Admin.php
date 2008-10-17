@@ -695,7 +695,7 @@ class Calendar_Admin {
             switch ($command) {
             case 'BEGIN':
                 if ($value == 'VEVENT' && !isset($event)) {
-                    $event = new Calendar_Event($this->calendar->schedule);
+                    $event = new Calendar_Event(0, $this->calendar->schedule);
                     $event->start_time = 0;
                     $event->end_time = 0;
                 }

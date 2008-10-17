@@ -392,9 +392,9 @@ class Calendar_Schedule {
         PHPWS_Core::initModClass('calendar', 'Event.php');
 
         if (!empty($_REQUEST['event_id'])) {
-            $event = new Calendar_Event($this, (int)$_REQUEST['event_id']);
+            $event = new Calendar_Event((int)$_REQUEST['event_id'], $this);
         } else {
-            $event = new Calendar_Event($this);
+            $event = new Calendar_Event(0, $this);
         }
 
         return $event;
@@ -637,7 +637,7 @@ class Calendar_Schedule {
     function exportEvent($event_id)
     {
         PHPWS_Core::initModClass('calendar', 'Event.php');
-        $event = new Calendar_Event($this, $event_id);
+        $event = new Calendar_Event($event_id, $this);
         if ($event->id) {
             $tpl = $event->icalTags();
         } else {
