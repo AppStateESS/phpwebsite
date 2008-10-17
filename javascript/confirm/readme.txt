@@ -16,6 +16,9 @@ $js_variables['TITLE'] = 'Delete link';
 // class for link
 $js_variables['CLASS'] = 'confirm-link';
 
+// If you want a button instead of a link.
+//$js_variables['type'] = 'button';
+
 $link = Layout::getJavascript('confirm', $js_variables);
 
 

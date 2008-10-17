@@ -671,9 +671,14 @@ class PHPWS_Core {
      * keys must be identical to the object's variable names.
      *
      * 5/17/06 Removed the code that prevent private variables from loading.
+     * Added 10/15/2008:
+     * If arguments are sent in the third parameter, plugObject will call 
+     * the object's postPlug function and send those arguments to it.
      */
-    function plugObject(&$object, $variables)
+    function plugObject($object, $variables, $args=null)
     {
+        $post_plug = isset($args) && method_exists($object, 'postPlug');
+
         $className = get_class($object);
         $classVars = get_class_vars($className);
 
@@ -685,16 +690,18 @@ class PHPWS_Core {
             return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', __CLASS__ . '::' . __FUNCTION__, gettype($variables));
         }
 
-
         foreach($classVars as $key => $value) {
-            $column = $key;
-            if(isset($variables[$column])) {
-                if (preg_match('/^[aO]:\d+:/', $variables[$column])) {
-                    $object->$key = unserialize($variables[$column]);
+            if(isset($variables[$key])) {
+                if (preg_match('/^[aO]:\d+:/', $variables[$key])) {
+                    $object->$key = unserialize($variables[$key]);
                 } else {
-                    $object->$key = $variables[$column];
+                    $object->$key = $variables[$key];
                 }
             }
+        }
+
+        if ($post_plug) {
+            $object->postPlug($args);
         }
         return true;
     }

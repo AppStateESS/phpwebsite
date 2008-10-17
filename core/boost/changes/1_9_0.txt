@@ -7,7 +7,6 @@ Major Core Changes
 + Script tags are now allowed in some situations.
 + New class - Link
 
-
 -----------------------------------------------------
 Core Classes
 -----------------------------------------------------
@@ -43,6 +42,10 @@ Database
   set. Fixed. Thanks Hilmar. 
 + Added function alterColumnType.
 + Postgresql regexp was changed to case insensitive.
++ getObject's third parameter and on were previously sent to that
+  object's constuctor prior to loading the object's variables. The
+  object is loaded prior to sending the arguments to the object's
+  postPlug function.
 
 
 DBPager
@@ -156,6 +159,7 @@ Prompt
 
 Confirm
 + Added patch #1997460 by Eloi George. Class and title added.
++ Can use a button instead of link now.
 
 Color Picker
 + Added farbtastic color picker by Steven Wittens.

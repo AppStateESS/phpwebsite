@@ -16,6 +16,12 @@ if (isset($data['address'])) {
     $data['ADDRESS'] = $data['address'];
 }
 
+if (isset($data['type'])) {
+    if ($data['type'] == 'button') {
+        $bodyfile = $base . 'javascript/confirm/body2.js';
+    }
+}
+
 $data['QUESTION'] = preg_replace("/(?<!\\\)'/", "\'", $data['QUESTION']);
 $data['QUESTION'] = str_replace('"', '&quot;', $data['QUESTION']);
 

@@ -1825,7 +1825,6 @@ class Form_Select extends Form_Element {
 
     public function get()
     {
-
         $content[] = '<select '
             . $this->getName(true)
             . $this->getDisabled()
@@ -1847,7 +1846,6 @@ class Form_Select extends Form_Element {
                 $current_opt = $value;
                 $content[] = sprintf('<optgroup label="%s">', $this->optgroup[$value]);
             }
-
 
             if ($this->isMatch($value)) {
                 $content[] = sprintf('<option value="%s" selected="selected">%s</option>', $value, $label);

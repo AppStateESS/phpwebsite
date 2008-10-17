@@ -1383,10 +1383,10 @@ class PHPWS_DB {
             if (isset($indexby)) {
                 PHPWS_DB::logDB($sql);
                 $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
+
                 if (PEAR::isError($result)) {
                     return $result;
                 }
-
                 return PHPWS_DB::_indexBy($result, $indexby, true);
             }
             PHPWS_DB::logDB($sql);
@@ -1473,21 +1473,21 @@ class PHPWS_DB {
     public function _indexBy($sql, $indexby, $colMode=false){
         $rows = array();
 
-        if (!is_array($sql)) {
+        if (!is_array($sql) || empty($sql)) {
             return $sql;
         }
         $stacked = false;
 
-        foreach ($sql as $item){
+        foreach ($sql as $item) {
             if (!isset($item[(string)$indexby])) {
                 return $sql;
             }
 
             if ($colMode) {
                 $col = $this->getColumn();
-
                 $value = $item[$indexby];
                 unset($item[$indexby]);
+
                 foreach ($col as $key=>$col_test) {
                     if ($col_test['name'] == $indexby) {
                         unset($col[$key]);
@@ -1496,7 +1496,15 @@ class PHPWS_DB {
                 }
 
                 $column = array_pop($col);
-                PHPWS_DB::_expandIndex($rows, $value, $item[$column['name']], $stacked);
+                if (isset($column['as'])) {
+                    $col_check = $column['as'];
+                } else {
+                    $col_check = $column['name'];
+                }
+
+                if (isset($item[$col_check]) || $item[$col_check] === null ) {
+                    PHPWS_DB::_expandIndex($rows, $value, $item[$col_check], $stacked);
+                }
             } else {
                 PHPWS_DB::_expandIndex($rows, $item[$indexby], $item, $stacked);
             }
@@ -2248,11 +2256,13 @@ class PHPWS_DB {
      * Unmatched pairs will be ignored.
      *
      * --- Any extra parameters after class_name are piped into ---
-     * ---          the object constructor.                     ---
+     * --- a class method called postPlug. If the function    ---
+     * --- does not exist, nothing happens. Previously, the     ---
+     * --- the variables were put into the constructor.         ---
      * Example:
-     * $db->getObject('Class_Name', 'foo');
-     * class Class_Nane {
-     * function Class_Name($extra_param) {
+     * $db->getObjects('Class_Name', 'foo');
+     * class Class_Name {
+     * function postPlug($extra_param) {
      * } // end constuctor
      * } //end class
      *
@@ -2278,25 +2288,24 @@ class PHPWS_DB {
 
         $num_args = func_num_args();
         $args = func_get_args();
+        $post_plug = $num_args > 1;
+
         array_shift($args);
 
         foreach ($result as $indexby => $itemResult) {
             $genClass = new $class_name;
 
-            if ($num_args > 1) {
-                call_user_func_array(array($genClass, '__construct'), $args);
-            }
-
             if (isset($itemResult[0]) && is_array($itemResult[0])) {
                 foreach ($itemResult as $key=>$sub) {
                     $genClass = new $class_name;
-                    PHPWS_Core::plugObject($genClass, $sub);
+                    PHPWS_Core::plugObject($genClass, $sub, $args);
                     $items[$indexby][] = $genClass;
                 }
             } else {
-                PHPWS_Core::plugObject($genClass, $itemResult);
+                PHPWS_Core::plugObject($genClass, $itemResult, $args);
                 $items[$indexby] = $genClass;
             }
+
         }
 
         return $items;

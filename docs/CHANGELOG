@@ -2,8 +2,26 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file..
 
-Version 1.9.0
+Version 1.9.0x
 ---------------------------------------------------------------------
+17 October 2008
++ Database
+  o Using addColumn with the "as" parameter was causing problems with the
+    getObjects function.
+  o getObjects passes extra arguments to the plugObject function instead
+    of passing them to the object's construct function. Developers will
+    need to add a postPlug function their object's class.
+  o Database was passing over variables set to null when performing a
+    post result indexing.
+  o getObjects now runs the postPlug function after loading.
+
++ Core
+  o plugObject now allows you to send arguments as the third parameter
+    and have them used in the object's postPlug function.
+  o Removed redundant variable copy in plugObject.
+
++ confirm javascript can be sent a "button" type now.
+
 9 October 2008
 + Database - Added another check for same table name in join to
   function.
