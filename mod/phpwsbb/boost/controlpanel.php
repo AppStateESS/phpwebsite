@@ -1,10 +1,9 @@
 <?php
-$link[] = array ('label'    => dgettext('phpwsbb', 'phpWs Bulletin Board'),
-         'restricted'       => FALSE,
-         'url'              => 'index.php?module=phpwsbb',
-         'description'      => 'A bulletin board module.',
-         'image'            => 'phpwsbb.png',
-         'tab'              => 'content');
+
+/**
+ * @version $Id$
+ * @author Eloi George
+ */
 
 $link[] = array ('label'    => dgettext('phpwsbb', 'phpWs Bulletin Board'),
          'restricted'       => TRUE,
