@@ -6,7 +6,7 @@
  */
 
 $edit_img = sprintf('<img src="images/mod/pagesmith/edit.png" title="%s" alt="%s" 
-style="float : left; margin-right : 5px;" width="16px" height="16px" />',
+style="float : left; margin-right : 5px;" width="20px" height="20px" />',
                     dgettext('pagesmith', 'Edit'), dgettext('pagesmith', 'Edit'));
 
 define('PS_EDIT', $edit_img);
