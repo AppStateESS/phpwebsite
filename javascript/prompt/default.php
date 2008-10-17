@@ -15,6 +15,8 @@ if (isset($data['type'])) {
     }
 }
 
-$data['answer'] = str_replace("&#039;", "\\'", $data['answer']);
+if (isset($data['answer'])) {
+    $data['answer'] = str_replace("&#039;", "\\'", $data['answer']);
+}
 
 ?>
