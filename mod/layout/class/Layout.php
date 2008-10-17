@@ -509,7 +509,7 @@ class Layout {
             }
         }
 
-        if(empty($base) && LAYOUT_FORCE_MOD_JS && preg_match('/^modules\//', $directory)) {
+        if(LAYOUT_FORCE_MOD_JS && empty($base) && preg_match('/^modules\//', $directory)) {
             // modules/filecabinet/clear_file
             // mod/filecabinet/javascript/clear_file
             $directory = preg_replace('@^\./@', '', $directory);
@@ -520,18 +520,17 @@ class Layout {
                     break;
                 }
             }
-            
+            $js = null;
             $directory = sprintf('mod/%s/javascript/%s', $js_dir[$start_key++], $js_dir[$start_key]);
         } else {
-            $base .= 'javascript/';
+            $js = 'javascript/';
         }
         
-       
 
         PHPWS_CORE::initCoreClass('File.php');
-        $headfile    = $base . $directory . '/head.js';
-        $bodyfile    = $base . $directory . '/body.js';
-        $defaultfile = $base . $directory . '/default.php';
+        $headfile    = $base . $js . $directory . '/head.js';
+        $bodyfile    = $base . $js . $directory . '/body.js';
+        $defaultfile = $base . $js . $directory . '/default.php';
 
         if (is_file($defaultfile)) {
             require $defaultfile;

@@ -1,5 +1,9 @@
 Version 2.4.5
 ------------------------------------------------------------------
+17 October 2008
++ Tweaked the javascript mod force code. Previously would break core
+  javascript.
+
 16 October 2008
 + Added LAYOUT_FORCE_MOD_JS define. Forces module javascript usage.
 
