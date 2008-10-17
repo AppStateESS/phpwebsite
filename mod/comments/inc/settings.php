@@ -45,18 +45,5 @@ To unsubscribe from ALL topics, please login and visit this page:
                   'allow_user_monitors'    => 1,
                   'reported_comments'      => 0,
                   'unapproved_comments'    => 0,
-                  'user_ranking' => array(0 => array(
-                                        'allow_local_custom_avatars'  => 0,
-                                        'minimum_local_custom_posts'  => 100,
-                                        'allow_remote_custom_avatars' => 0,
-                                        'minimum_remote_custom_posts' => 1000,
-                                        'user_ranks' => array(array('title'        => 'Member',
-                                                                  'min_posts'    => 1,
-                                                                  'usergroup'    => 0,
-                                                                  'image'        => '',
-                                                                  'stack'        => 1,
-                                                                  'repeat_image' => 0))))
-
-);
-
+                  'default_rank'           => 1);
 ?>

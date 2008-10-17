@@ -84,7 +84,7 @@ class Comments_My_Page {
         }
 
         //avatar
-        if (PHPWS_Settings::get('comments', 'allow_avatars') && Current_User::allow('filecabinet')) {
+        if (PHPWS_Settings::get('comments', 'allow_avatars')) {
             $form->setEncode();
             $form->addTplTag('AVATAR_LABEL', dgettext('comments', 'Avatar'));
             $form->addTplTag('AVATAR_NOTE', sprintf(dgettext('comments', 'Note: Avatar images must be no greater than %1$s pixels high by %2$s pixels wide, and its filesize can be no greater than %3$sKb.'), COMMENT_MAX_AVATAR_HEIGHT, COMMENT_MAX_AVATAR_WIDTH, 20));
@@ -95,24 +95,28 @@ class Comments_My_Page {
             // Get current Avatar permissions
             $perm = $user->getAvatarLevel();
             // Show Avatar Gallery selection script
-            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
-            $manager = Cabinet::fileManager('avatar_id', $user->avatar_id);
-            $manager->setMaxWidth(COMMENT_MAX_AVATAR_WIDTH);
-            $manager->setMaxHeight(COMMENT_MAX_AVATAR_HEIGHT);
-            $manager->setMaxSize(22000);
-            $manager->moduleLimit();
-            $manager->forceResize();
-            $manager->imageOnly(false, false);
-            $manager->setPlaceholderMaxWidth(COMMENT_MAX_AVATAR_WIDTH);
-            $manager->setPlaceholderMaxHeight(COMMENT_MAX_AVATAR_HEIGHT);
-            $form->addTplTag('GALLERY_AVATAR', $manager->get());
-            $form->addTplTag('GALLERY_AVATAR_LABEL', dgettext('comments', 'Select an avatar from the gallery'));
+
+            if (PHPWS_Settings::get('comments', 'avatar_folder_id')) {
+                $manager = Cabinet::fileManager('avatar_id', $user->avatar_id);
+                $manager->setMaxWidth(COMMENT_MAX_AVATAR_WIDTH);
+                $manager->setMaxHeight(COMMENT_MAX_AVATAR_HEIGHT);
+                $manager->setMaxSize(22000);
+                $manager->moduleLimit();
+                $manager->forceResize();
+                $manager->imageOnly(false, false);
+                $manager->setPlaceholderMaxWidth(COMMENT_MAX_AVATAR_WIDTH);
+                $manager->setPlaceholderMaxHeight(COMMENT_MAX_AVATAR_HEIGHT);
+                $form->addTplTag('GALLERY_AVATAR', $manager->get());
+                $form->addTplTag('GALLERY_AVATAR_LABEL', dgettext('comments', 'Select an avatar from the gallery'));
+            }
+            
             // If local Custom Avatars are allowed, show file field
             if ($perm['local']) {
                 $form->addFile('local_avatar');
-                $form->setLabel('local_avatar', dgettext('comments', 'OR upload an image from your computer'));
-                $form->addTplTag('LOCAL_CHOICE', dgettext('comments', '--OR use a private local image'));
+                $form->setLabel('local_avatar', dgettext('comments', 'Upload an avatar image from your computer'));
+                $form->addTplTag('LOCAL_CHOICE', dgettext('comments', 'Use a private local image'));
             }
+
             // If remote Custom Avatars are allowed, show URL text field
             if ($perm['remote']) {
                 if (substr($user->avatar,0,7) == 'http://') {
@@ -123,11 +127,12 @@ class Comments_My_Page {
 
                 $form->addText('remote_avatar', $url);
                 $form->setSize('remote_avatar', 60);
-                $form->setLabel('remote_avatar', dgettext('comments', 'OR enter a URL to an online image. (ex: `http://othersite.com/avatar.png`)'));
-                $form->addTplTag('REMOTE_CHOICE', dgettext('comments', '--OR use a remotely-hosted image'));
+                $form->setLabel('remote_avatar', dgettext('comments', 'Enter a URL to an online image. (ex: `http://othersite.com/avatar.png`)'));
+                $form->addTplTag('REMOTE_CHOICE', dgettext('comments', 'Use a remotely-hosted image'));
             }
+            $form->addTplTag('AVATAR_MESSAGE', dgettext('comments', 'You may add an avatar using ONE of the methods below.'));
         }
-        /*        //contact-email
+        /*    //contact-email
         $form->addText('contact_email', $user->getContactEmail());
         $form->setLabel('contact_email', dgettext('comments', 'Contact Email'));
         $form->setSize('contact_email', 40);
@@ -169,6 +174,7 @@ class Comments_My_Page {
 
         $form->addSubmit(dgettext('comments', 'Update'));
         $template = $form->getTemplate();
+        
         return PHPWS_Template::process($template, 'comments', 'user_settings.tpl');
     }
 

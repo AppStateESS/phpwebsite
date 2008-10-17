@@ -10,6 +10,8 @@
 // This will be set by config and cookie later
 define('CURRENT_VIEW_MODE', 3);
 
+define('COMMENTS_MISSING_DEFAULT_RANK', 2);
+
 PHPWS_Core::initModClass('comments', 'Comment_Thread.php');
 PHPWS_Core::initModClass('comments', 'Comment_User.php');
 
@@ -88,46 +90,16 @@ class Comments {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
         $tabs['settings'] = array('title'=>dgettext('comments', 'Settings'), 'link'=>'index.php?module=comments');
-        /*
-        $db = new PHPWS_DB('comments_items');
-        $db->addColumn('id', null, null, true);
-        $db->addWhere('reported', 0, '>');
-        $count = $db->select('one');
-        if (PHPWS_Error::logIfError($count)) {
-            $count = 0;
-        }
 
-        if ($count) {
-            $tabs['report'] = array('title'=> sprintf(dgettext('comments', 'Reported (%s)'), $count),
-                                    'link'=>'index.php?module=comments');
-        } else {
-            $tabs['report'] = array('title'=> dgettext('comments', 'Reported'),
-                                    'link'=>'index.php?module=comments');
-        }
-        */
+        $tabs['ranks'] = array('title'=>dgettext('comments', 'Member ranks'), 'link'=>'index.php?module=comments');
+
         $count = PHPWS_Settings::get('comments', 'reported_comments');
         $tabs['report'] = array('title'=> sprintf(dgettext('comments', 'Reported (%s)'), $count),
                                 'link'=>'index.php?module=comments');
-                        /*
-        $db = new PHPWS_DB('comments_items');
-        $db->addColumn('id', null, null, true);
-        $db->addWhere('approved', 0);
-        $count = $db->select('one');
-        if (PHPWS_Error::logIfError($count)) {
-            $count = 0;
-        }
-
-        if ($count) {
-            $tabs['approval'] = array('title'=> sprintf(dgettext('comments', 'Approval (%s)'), $count),
-                                      'link'=>'index.php?module=comments');
-        } else {
-            $tabs['approval'] = array('title'=> dgettext('comments', 'Approval'),
-                                      'link'=>'index.php?module=comments');
-        }
-                        */
         $count = PHPWS_Settings::get('comments', 'unapproved_comments');
         $tabs['approval'] = array('title'=> sprintf(dgettext('comments', 'Approval (%s)'), $count),
                                   'link'=>'index.php?module=comments');
+
 
         $panel = new PHPWS_Panel('comments');
         $panel->quickSetTabs($tabs);
@@ -148,6 +120,7 @@ class Comments {
             else
                 $comments = array($_REQUEST['cm_id']);
         }
+
         switch ($command) {
         case 'delete_comment':
             foreach ($comments AS $cm_id) {
@@ -184,6 +157,17 @@ class Comments {
                 $content = PHPWSBB_Forms::move_comments($comments);
             } else
                 $content = dgettext('comments', 'Sorry, module phpwsBB is not installed.');
+            break;
+
+        case 'ranks':
+            $panel->setCurrentTab('ranks');
+            if (Current_User::allow('comments', 'settings')) {
+                PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                $content = Comment_Forms::ranksForm();
+            } else {
+                $content = dgettext('comments', 'Sorry, but you do not have rights to alter ranks.');
+            }
+
             break;
 
         case 'split_comments':
@@ -226,18 +210,74 @@ class Comments {
             $content = Comment_Forms::approvalForm();
             break;
 
+        case 'post_rank':
+            if (Current_User::authorized('comments', 'settings')) {
+                PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                Comment_Forms::postRank(Comments::loadRank());
+                PHPWS_Core::goBack();
+            } else {
+                $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
+            }
+            break;
+
+        case 'delete_rank':
+            if (Current_User::authorized('comments', 'settings')) {
+                PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                $rank = Comments::loadRank();
+                if ($rank->group_id) {
+                    $rank->delete();
+                }
+                PHPWS_Core::goBack();
+            } else {
+                $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
+            }
+            break;
+
+        case 'create_rank':
+            if (Current_User::authorized('comments', 'settings')) {
+                PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                Comment_Forms::postRank(Comments::loadRank(), true);
+                PHPWS_Core::goBack();
+            } else {
+                $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
+            }
+            break;
+
+        case 'post_user_rank':
+            if (Current_User::authorized('comments', 'settings')) {
+                PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                Comment_Forms::postUserRank();
+                PHPWS_Core::goBack();
+            } else {
+                $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
+            }
+            break;
+
+        case 'drop_user_rank':
+            if (Current_User::authorized('comments', 'settings')) {
+                PHPWS_Core::initModClass('comments', 'User_Rank.php');
+                $user_rank = new Comment_User_Rank($_GET['user_rank_id']);
+                $user_rank->delete();
+                PHPWS_Core::goBack();
+            } else {
+                Current_User::disallow();
+            }
+            break;
+
         case 'post_settings':
-            if (Current_User::allow('comments', 'settings')) {
+            if (Current_User::authorized('comments', 'settings')) {
                 PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
                 Comment_Forms::postSettings();
-            }
-            else
+            } else {
                 $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
+            }
+            break;
 
         case 'set_anon_posting':
-            $thread = & new Comment_Thread((int) @$_REQUEST['thread_id']);
-            if ($thread->userCan())
+            $thread =  new Comment_Thread((int) @$_REQUEST['thread_id']);
+            if ($thread->userCan()) {
                 $thread->setAnonPosting((int) @$_REQUEST['allow']);
+            }
             PHPWS_Core::goBack();
             break;
 
@@ -319,10 +359,10 @@ class Comments {
                 Access::removeIp($_GET['id'], false);
                 echo sprintf('<a href="#" onclick="punish_user(\'%s\', this, \'deny_ip\'); return false;">%s</a>',
                              $_GET['id'], dgettext('comments', 'Deny IP address'));
-
             }
             exit();
             break;
+
 
         case 'punish_user':
             if (!Current_User::authorized('comments', 'punish_users')) {
@@ -883,14 +923,52 @@ class Comments {
         return $tpl;
     }
 
-    function getUserRanking()
+    public function getUserRanking($simple=false)
     {
-        $user_rank = PHPWS_Settings::get('comments', 'user_ranking');
-        if (!is_array($user_rank)) {
-            return unserialize($user_rank);
+        $db = new PHPWS_DB('comments_ranks');
+        $db->addColumn('users_groups.name', null, 'group_name');
+        $db->addJoin('left', 'comments_ranks', 'users_groups', 'group_id', 'id');
+        $db->addOrder('users_groups.name');
+        $db->setIndexBy('id');
+        $default_rank = PHPWS_Settings::get('comments', 'default_rank');
+
+        if ($simple) {
+            $db->addColumn('id');
+            $result = $db->select('col');
+
+            if (PHPWS_Error::logIfError($result)) {
+                return null;
+            }
+            $result[$default_rank] = dgettext('comments', 'All Members');
         } else {
-            return $user_rank;
+            PHPWS_Core::initModClass('comments', 'Rank.php');
+            $db->addColumn('comments_ranks.*');
+            $result = $db->getObjects('Comment_Rank', true);
+
+            if (PHPWS_Error::logIfError($result)) {
+                return null;
+            }
+            $result[$default_rank]->group_name = dgettext('comments', 'All Members');
         }
+
+        return $result;
+    }
+
+    public function getDefaultRank()
+    {
+        $rank = new Comment_Rank(PHPWS_Settings::get('comments', 'default_rank'));
+        return $rank;
+    }
+
+    public function loadRank()
+    {
+        PHPWS_Core::initModClass('comments', 'Rank.php');
+        if (isset($_REQUEST['rank_id'])) {
+            $rank = new Comment_Rank($_REQUEST['rank_id']);
+        } else {
+            $rank = new Comment_Rank;
+        }
+        return $rank;
     }
 }
 

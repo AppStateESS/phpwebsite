@@ -172,149 +172,188 @@ class Comment_Forms {
         $form->addSubmit(dgettext('comments', 'Save'));
 
         $tpl = $form->getTemplate();
-        // user ranking system
-        $user_ranking = Comments::getUserRanking();
-
-        $groupname = array(0=>dgettext('comments', 'All Members')) + PHPWS_User::getAllGroups();
-        $tpl['rank_usergroups'] = array();
-        $i = 1;
-        // Start constructing the output
-        Layout::getModuleJavascript('comments', 'expandCollapse');
-        $template = & new PHPWS_Template('comments');
-        $status = $template->setFile('settings_form.tpl');
-
-        // Loop through all usergroups in the ranking array
-        foreach ($user_ranking as $gkey => $group) {
-            // Loop through all ranks in this usergroup
-            foreach ($group['user_ranks'] as $rank) {
-                // Create form to edit this rank's information
-                $template->setCurrentBlock('rank_rows');
-                $template->setData(Comment_Forms::editUserRank($i++, $rank));
-                $template->parseCurrentBlock();
-            }
-            $template->setCurrentBlock('rank_usergroups');
-
-            $form1 = new PHPWS_Form('comment-group-settings');
-            // allow_local_custom_avatars
-            $element = 'user_groups['.$gkey.'][allow_local_custom_avatars]';
-            $form1->addCheck($element, 1);
-            $form1->setLabel($element, dgettext('comments', "Allow this group's users to upload custom avatars after"));
-            $form1->setMatch($element, (int) @$group['allow_local_custom_avatars']);
-            $form1->setTag($element, 'ALLOW_LOCAL_CUSTOM_AVATARS');
-            // minimum_local_custom_posts
-            $element = 'user_groups['.$gkey.'][minimum_local_custom_posts]';
-            $form1->addText($element, (int) @$group['minimum_local_custom_posts']);
-            $form1->setMaxSize($element, '4');
-            $form1->setSize($element, '3');
-            $form1->setLabel($element, dgettext('comments', 'posts'));
-            $form1->setTag($element, 'MINIMUM_LOCAL_CUSTOM_POSTS');
-            // allow_remote_custom_avatars
-            $element = 'user_groups['.$gkey.'][allow_remote_custom_avatars]';
-            $form1->addCheck($element, 1);
-            $form1->setLabel($element, dgettext('comments', "Allow this group's users to use remote custom avatars after"));
-            $form1->setMatch($element, (int) @$group['allow_remote_custom_avatars']);
-            $form1->setTag($element, 'ALLOW_REMOTE_CUSTOM_AVATARS');
-            // minimum_remote_custom_posts
-            $element = 'user_groups['.$gkey.'][minimum_remote_custom_posts]';
-            $form1->addText($element, (int) @$group['minimum_remote_custom_posts']);
-            $form1->setMaxSize($element, '4');
-            $form1->setSize($element, '3');
-            $form1->setLabel($element, dgettext('comments', 'posts'));
-            $form1->setTag($element, 'MINIMUM_REMOTE_CUSTOM_POSTS');
-
-            $group_tpl = $form1->getTemplate();
-            $group_tpl['USERGROUP_NAME'] = $groupname[$gkey];
-            $group_tpl['GROUP_AVATAR_SETTINGS'] = dgettext('comments', 'Avatar Settings');
-            $template->setData($group_tpl);
-            $template->parseCurrentBlock();
-            unset($form1,$group_tpl);
-        }
-        // Show form to add a new rank
-        $template->setCurrentBlock('add_new_rank');
-        $template->setData(Comment_Forms::editUserRank($i++));
-        $template->parseCurrentBlock();
-        // Rank table text
-        $tpl['RANK_TABLE_TEXT']    = dgettext('comments', 'Member Ranks');
-        $tpl['RANK_TABLE_HELP']    = dgettext('comments', 'This is the current member ranking system.<br />Don\'t worry about the order - the Rank types will re-order themselves by posting level.<br />To delete a Rank, just leave the name blank.');
-        $tpl['RANK_NEW_TITLE']     = dgettext('comments', 'Add a new rank by entering its information here.');
         $tpl['TITLE'] = dgettext('comments', 'Comment settings');
 
-        $template->setData($tpl);
-        return $template->get();
+        return PHPWS_Template::process($tpl, 'comments', 'settings_form.tpl');
     }
 
-    /**
-     * Shows a box with an User Rank editing dialog listed within
-     */
-    public function editUserRank($index, $rank = null)
+
+    public function ranksForm()
     {
-        $textwidth = '60';
-        $form = & new PHPWS_Form('rank_edit');
-    	if (empty($rank))
-            $rank = array('title'=>'', 'min_posts'=>0, 'usergroup'=>0, 'image'=>'', 'stack'=>1, 'repeat_image'=>0);
-        else {
-            $form->addTplTag('EDIT_ICON', '[+]');
-            $form->addTplTag('EDIT_HELP', dgettext('comments', 'Click here to edit this Rank'));
+        // user ranking system
+        $user_ranking = Comments::getUserRanking();
+        $default_rank = Comments::getDefaultRank();
+        $all_groups   = PHPWS_User::getAllGroups();
+
+        // Start constructing the output
+        javascript('jquery');
+        javascript('modules/comments/expandCollapse');
+
+        $template = new PHPWS_Template('comments');
+        $status = $template->setFile('ranks.tpl');
+
+        // Loop through all usergroups in the ranking array
+        foreach ($user_ranking as $id => $rank) {
+            unset($all_groups[$rank->group_id]);
+            $form = new PHPWS_Form('form_' . $id);
+            $form->addHidden('module', 'comments');
+            $form->addHidden('aop', 'post_rank');
+            $form->addHidden('rank_id', $id);
+
+            // allow_local_avatars
+            $form->addCheck('allow_local_avatars', 1);
+            $form->setMatch('allow_local_avatars', $rank->allow_local_avatars);
+            $form->setLabel('allow_local_avatars', dgettext('comments', 'Allow this groups\'s users to upload custom avatars after'));
+
+            // minimum_local_posts
+            $form->addText('minimum_local_posts', (int) $rank->minimum_local_posts);
+            $form->setMaxSize('minimum_local_posts', '4');
+            $form->setSize('minimum_local_posts', '3');
+            $form->setLabel('minimum_local_posts', dgettext('comments', 'posts'));
+
+            // allow_remote_avatars
+            $form->addCheck('allow_remote_avatars', 1);
+            $form->setLabel('allow_remote_avatars', dgettext('comments', 'Allow this group\'s users to use remote custom avatars after'));
+            $form->setMatch('allow_remote_avatars', (int) $rank->allow_remote_avatars);
+
+            // minimum_remote_posts
+            $form->addText('minimum_remote_posts', (int) $rank->minimum_remote_posts);
+            $form->setMaxSize('minimum_remote_posts', '4');
+            $form->setSize('minimum_remote_posts', '3');
+            $form->setLabel('minimum_remote_posts', dgettext('comments', 'posts'));
+
+            $form->addSubmit('save_rank', dgettext('comments', 'Save member'));
+
+            $rank_tpl = $form->getTemplate();
+
+            $rank_tpl['GROUP_NAME'] = $rank->group_name;
+            $rank_tpl['GROUP_AVATAR_SETTINGS'] = dgettext('comments', 'Avatar Settings');
+            if ($rank->group_id) {
+                $rank_tpl['DELETE'] = javascript('confirm', array('question'=>dgettext('comments', 'Are you sure you want to remove this rank?'),
+                                                                  'address'=>PHPWS_Text::linkAddress('comments', array('aop'=>'delete_rank',
+                                                                                                                       'rank_id'=>$id), true),
+                                                                  'link'=>dgettext('comments', 'Delete rank'),
+                                                                  'title'=>dgettext('comments', 'Delete rank'),
+                                                                  'type'=>'button'));
+            }
+                                                              
+            if (!empty($rank->user_ranks)) {
+                $rows = array();
+                foreach  ($rank->user_ranks as $rank) {
+                    $rows[] = Comment_Forms::editUserRank($rank, $rank->id);
+                }
+                $rank_tpl['USER_RANKS'] = implode('', $rows);
+            }
+
+            $tpl['rank_rows'][] = $rank_tpl;
+            unset($rank_tpl, $form);
         }
-        // title
-        $element = 'user_ranks['.$index.'][title]';
-        $form->addText($element, $rank['title']);
-        $form->setMaxSize($element, '255');
-        $form->setSize($element, $textwidth);
-        $form->setLabel($element, dgettext('comments', 'Rank Name'));
-        $form->setTag($element, 'RANK_TITLE');
+
+        $new_user_rank = new Comment_User_Rank;
+        $tpl['NEW_USER_RANK']   = Comment_Forms::editUserRank($new_user_rank);
+
+        if (!empty($all_groups)) {
+            $quick = new PHPWS_Form('add_group');
+            $quick->addHidden('module', 'comments');
+            $quick->addHidden('aop', 'create_rank');
+            $quick->addSelect('group_id', $all_groups);
+            $quick->addSubmit('submit', dgettext('comments', 'Create member'));
+            $quick_rank = $quick->getTemplate();
+            $tpl['NEW_RANK'] = implode('', $quick_rank);
+        }
+
+        $tpl['RANK_TABLE_TEXT'] = dgettext('comments', 'Member Ranks');
+        $tpl['RANK_TABLE_HELP'] = dgettext('comments', 'This is the current member ranking system.<br />Don\'t worry about the order - the Rank types will re-order themselves by posting level.');
+        $tpl['RANK_NEW_TITLE']  = dgettext('comments', 'Create new member rank');
+        return PHPWS_Template::process($tpl, 'comments', 'ranks.tpl');
+    }
+
+    public function editUserRank($user_rank)
+    {
+        $default_rank = Comments::getDefaultRank();
+        $all_ranks = Comments::getUserRanking(true);
+
+        $textwidth = 60;
+
+        $form = new PHPWS_Form('user-rank-' . $user_rank->id);
+        $form->addHidden('module', 'comments');
+        $form->addHidden('aop', 'post_user_rank');
+
+        if ($user_rank->id) {
+            $form->addHidden('user_rank_id', $user_rank->id);
+            $js['question'] = dgettext('comments', 'Are you sure you want to delete this user rank?');
+            $js['address']  = PHPWS_Text::linkAddress('comments', array('aop'=>'drop_user_rank', 'user_rank_id'=>$user_rank->id), true);
+            $js['link']     = dgettext('comments', 'Delete user rank');
+            $js['title']    = dgettext('comments', 'Delete user rank');
+            $form->addTplTag('DELETE', javascript('confirm', $js));
+        }
+
+        $form->addSubmit('submit', dgettext('comments', 'Save rank'));
+
+        $form->addText('title', $user_rank->title);
+        $form->setMaxSize('title', '255');
+        $form->setSize('title', $textwidth);
+        $form->setLabel('title', dgettext('comments', 'Rank Name'));
+
         // min_posts
-        $element = 'user_ranks['.$index.'][min_posts]';
-        $form->addText($element, $rank['min_posts']);
-        $form->setMaxSize($element, '4');
-        $form->setSize($element, '3');
-        $form->setLabel($element, dgettext('comments', 'Minimum Posts'));
-        $form->setTag($element, 'RANK_MIN');
-        // usergroup
-        $groups = array(0=>dgettext('comments', 'All Members')) + PHPWS_User::getAllGroups();
-        $element = 'user_ranks['.$index.'][usergroup]';
-        $form->addSelect($element, $groups);
-        $form->setMatch($element, $rank['usergroup']);
-        $form->setLabel($element, dgettext('article', 'User Group'));
-        $form->setTag($element, 'RANK_USERGROUP');
+        $form->addText('min_posts', $user_rank->min_posts);
+        $form->setMaxSize('min_posts', '4');
+        $form->setSize('min_posts', '3');
+        $form->setLabel('min_posts', dgettext('comments', 'Minimum Posts'));
+
+        // rank id
+
+        $form->addSelect('rank_id', $all_ranks);
+        $form->setMatch('rank_id', $user_rank->rank_id);
+        $form->setLabel('rank_id', dgettext('article', 'User Group'));
+
         // image
-        $element = 'user_ranks['.$index.'][image]';
-        $form->addText($element, $rank['image']);
-        $form->setMaxSize($element, '255');
-        $form->setSize($element, $textwidth);
-        $form->setLabel($element, dgettext('comments', 'Rank Image'));
-        $form->setTag($element, 'RANK_IMAGE');
-        $form->addTplTag('RANK_IMAGE_HELP', dgettext('comments', 'ex.: images/comments/Member.gif'));
+        $form->addText('image', $user_rank->image);
+        $form->setMaxSize('image', '255');
+        $form->setSize('image', $textwidth);
+        $form->setLabel('image', dgettext('comments', 'Rank Image'));
+        $form->addTplTag('IMAGE_HELP', dgettext('comments', 'ex.: images/comments/Member.gif'));
+
         // stack
-        $element = 'user_ranks['.$index.'][stack]';
         $yes_no = array(1,0);
-        $yes_no_labels = array(dgettext('comments', 'no'), dgettext('comments', 'yes'));
-        $form->addRadio($element, $yes_no);
-        $form->setMatch($element, $rank['stack']);
-        $form->setLabel($element, $yes_no_labels);
-        $form->setTag($element, 'RANK_STACK');
-        $form->addTplTag('RANK_STACK_LABEL', dgettext('comments', 'Stack this Rank?'));
+        $yes_no_labels = array(dgettext('comments', 'No'), dgettext('comments', 'Yes'));
+        $form->addRadio('stack', $yes_no);
+        $form->setMatch('stack', $user_rank->stack);
+        $form->setLabel('stack', $yes_no_labels);
+        $form->addTplTag('STACK_LABEL', dgettext('comments', 'Stack this Rank?'));
+
         // repeat_image
         $arr = range(0,20);
-        $element = 'user_ranks['.$index.'][repeat_image]';
-        $form->addSelect($element, $arr);
-        $form->setMatch($element, $rank['repeat_image']);
-        $form->setLabel($element, dgettext('comments', 'Repeat Image'));
-        $form->setTag($element, 'RANK_REPEAT_IMAGE');
-        $form->addTplTag('RANK_REPEAT_TIMES', dgettext('comments', 'Times'));
-        // extras
-        $form->addTplTag('RANK_ID', $index);
-        $form->addTplTag('RANK_MIN_TXT_LABEL', dgettext('comments', 'Postlevel'));
-        $form->addTplTag('RANK_MIN_TXT', $rank['min_posts']);
-        $form->addTplTag('RANK_TITLE_TXT', $rank['title']);
-    	if (!empty($rank['image'])) {
-            $rank['stack'] = 0;
+        $form->addSelect('repeat_image', $arr);
+        $form->setMatch('repeat_image', $user_rank->repeat_image);
+        $form->setLabel('repeat_image', dgettext('comments', 'Repeat Image'));
+        $form->addTplTag('RANK_REPEAT_IMAGE', dgettext('comments', 'Image'));
+
+        $ftpl = $form->getTemplate();
+        if (!empty($user_rank->image)) {
+            $ftpl['RANK_IMAGE_PIC'] = $user_rank->getImage();
+            /*
+            $user_rank->stack = 0;
             $images = $titles = $composites = array();
-            Comment_User::getRankImg($rank, $images, $composites, $titles);
-            $form->addTplTag('RANK_IMAGE_PIC', $images[0]);
+            Comment_User::getRankImg($user_rank, $images, $composites, $titles);
+            $ftpl['RANK_IMAGE_PIC'] = $images[0];
+            */
         }
-        return $form->getTemplate();
+
+        if ($user_rank->id) {
+            $ftpl['EDIT_ICON'] = sprintf('<a style="cursor : pointer" class="expander" id="t-%s">[+]</a>', $user_rank->id);
+            $ftpl['RANK_MIN_TXT_LABEL'] = dgettext('comments', 'Post level');
+            $ftpl['RANK_MIN_TXT']       = $user_rank->min_posts;
+            $ftpl['RANK_TITLE_LABEL']   = dgettext('comments', 'Rank title');
+            $ftpl['RANK_TITLE_TXT']     = $user_rank->title;
+            $ftpl['HIDE']               = 'display : none;';
+        }
+
+        $ftpl['TAG_RANK_ID'] = $user_rank->id;
+
+        return PHPWS_Template::process($ftpl, 'comments', 'user_rank.tpl');
     }
+
 
     public function postSettings()
     {
@@ -343,55 +382,56 @@ class Comment_Forms {
         $settings['default_approval'] = (int)$_POST['default_approval'];
         $settings['recent_comments'] = (int)$_POST['recent_comments'];
 
-        // If changes to the user ranking system were posted, save them now.
-        if(isset($_POST['user_groups'])) {
-            $grouplist = array(0=>dgettext('comments', 'All Members')) + PHPWS_User::getAllGroups();
-            foreach($grouplist as $gkey => $group) {
-                // Collect all posted user ranks for this group
-                $g_arr = $sourcearr = $sortarr = array();
-                $i = 0;
-                foreach($_POST['user_ranks'] as $rkey => $rankpost) {
-                    if (empty($rankpost['title']) || (int) $rankpost['usergroup'] != $gkey)
-                        continue;
-                    $rank = array('title'=>'', 'min_posts'=>0, 'usergroup'=>0, 'image'=>'', 'stack'=>1, 'repeat_image'=>0);
-                    $rank['title'] = PHPWS_Text::parseInput($rankpost['title']);
-                    if (!empty($rankpost['min_posts']))
-                        $rank['min_posts'] = (int) $rankpost['min_posts'];
-                    if (!empty($rankpost['usergroup']))
-                        $rank['usergroup'] = (int) $rankpost['usergroup'];
-                    if (!empty($rankpost['image']))
-                        $rank['image'] = $rankpost['image'];
-                    $rank['stack'] = (!empty($rank['stack'])) ? 1 : 0 ;
-                    if (!empty($rankpost['repeat_image']))
-                        $rank['repeat_image'] = (int) $rankpost['repeat_image'];
-
-                    $sourcearr[$i] = $rank;
-                    $sortarr[$i++] = $rank['min_posts'];
-                    unset($_POST['user_ranks'][$rkey]);
-                }
-                $g_arr['user_ranks'] = array();
-                if (!empty($sourcearr)) {
-                    // Re-sort user ranks in order "min_posts asc"
-                    asort($sortarr, SORT_NUMERIC);
-                    foreach ($sortarr as $key => $value) {
-                        $g_arr['user_ranks'][$value] = $sourcearr[$key];
-                        unset($_POST['user_ranks'][$indexarr[$key]]);
-                    }
-                }
-                // Collect all posted settings for this group
-                if (isset($_POST['user_groups'][$gkey])) {
-                    $g_arr['allow_local_custom_avatars'] = (int) !empty($_POST['user_groups'][$gkey]['allow_local_custom_avatars']);
-                    $g_arr['minimum_local_custom_posts'] = (int) $_POST['user_groups'][$gkey]['minimum_local_custom_posts'];
-                    $g_arr['allow_remote_custom_avatars'] = (int) !empty($_POST['user_groups'][$gkey]['allow_remote_custom_avatars']);
-                    $g_arr['minimum_remote_custom_posts'] = (int) $_POST['user_groups'][$gkey]['minimum_remote_custom_posts'];
-                }
-
-                $settings['user_ranking'][$gkey] = $g_arr;
-            }
-        }
-
         PHPWS_Settings::set('comments', $settings);
         return PHPWS_Settings::save('comments');
+    }
+
+    public function postUserRank()
+    {
+        $default_rank_id = PHPWS_Settings::get('comments', 'default_rank');
+        PHPWS_Core::initModClass('comments', 'User_Rank.php');
+
+        if (isset($_POST['user_rank_id'])) {
+            $user_rank = new Comment_User_Rank($_POST['user_rank_id']);            
+        } else {
+            $user_rank = new Comment_User_Rank;
+        }
+
+        $user_rank->setTitle($_POST['title']);
+        if (empty($user_rank->title)) {
+            return false;
+        }
+
+        $user_rank->setImage($_POST['image']);
+        $user_rank->setMinPosts($_POST['min_posts']);
+        $user_rank->setRepeatImage($_POST['repeat_image']);
+        $user_rank->rank_id = (int)$_POST['rank_id'];
+        /*
+        $all_groups = PHPWS_User::getAllGroups();
+        test($user_rank,1);        
+        if ($user_rank->id && $user_rank->rank_id != $default_rank_id &&
+            !isset($all_groups[$user_rank->rank_id])) {
+            return false;
+        }
+        */
+        $user_rank->stack = (bool)$_POST['stack'];
+
+        $user_rank->save();
+    }
+
+
+    public function postRank($rank)
+    {
+        if ($rank->id) {
+            $rank->allow_local_avatars = isset($_POST['allow_local_avatars']);
+            $rank->minimum_local_posts = (int)$_POST['minimum_local_posts'];
+            
+            $rank->allow_remote_avatars = isset($_POST['allow_remote_avatars']);
+            $rank->minimum_remote_posts = (int)$_POST['minimum_remote_posts'];
+        } else {
+            $rank->group_id = (int)$_POST['group_id'];
+        }
+        return $rank->save();
     }
 
     public function reported()

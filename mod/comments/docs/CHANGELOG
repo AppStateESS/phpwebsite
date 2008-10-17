@@ -1,5 +1,14 @@
 Version 1.2.0
 ------------------------------------------------------------------------
+17 October 2008
++ Removed ranking material out of the settings tab and created ranking
+  classes and database tables.
++ Rewrote expandCollapse
++ Updated: templates/new_rank.tpl, templates/ranks.tpl,
+  templates/settings_form.tpl, templates/user_rank.tpl,
+  templates/user_settings.tpl, javascript/expandCollapse/head.js,
+  conf/error.php
+
 9 October 2008
 + Comment users are now leaning on new demographics changes. Dropped
   display_name field.

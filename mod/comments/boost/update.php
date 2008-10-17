@@ -146,6 +146,43 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
         }
         $content[] = 'Created "comments_monitors" table.';
 
+
+        $sql = 'CREATE TABLE comments_ranks (
+  id int NOT NULL default 0,
+  group_id int NOT NULL default 0,
+  allow_local_avatars smallint NOT NULL,
+  minimum_local_posts smallint NOT NULL,
+  allow_remote_avatars smallint NOT NULL,
+  minimum_remote_posts smallint NOT NULL,
+  PRIMARY KEY  (id)
+);
+CREATE INDEX commentsrankidx ON comments_ranks (group_id);';
+        $result = $db->import($sql,true);
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Unable to add "comments_ranks" table.</pre>';
+            return false;
+        }
+        $content[] = 'Created "comments_ranks" table.';
+
+        $sql = 'CREATE TABLE comments_user_ranks (
+  id int NOT NULL default 0,
+  rank_id int NOT NULL default 0,
+  title varchar(255) NOT NULL,
+  min_posts smallint NOT NULL default 0,
+  image varchar(255) default NULL,
+  stack smallint NOT NULL default 0,
+  repeat_image smallint NOT NULL default 0,
+  PRIMARY KEY  (id)
+);
+
+CREATE INDEX comments_usr_idx ON comments_subranks (rank_id);';
+        $result = $db->import($sql,true);
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Unable to add "comments_user_ranks" table.</pre>';
+            return false;
+        }
+        $content[] = 'Created "comments_user_ranks" table.';
+
         $db = new PHPWS_DB('comments_items');
         $result = $db->addTableColumn('anon_name', 'varchar(50) default NULL');
         if (PHPWS_Error::logIfError($result)) {
@@ -221,12 +258,21 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
         PHPWS_Settings::reset('comments', 'email_text');
         $content[] = 'Added new module settings.';
 
-        $files = array('templates/', 'img/', 'javascript/');
-        if (PHPWS_Boost::updateFiles($files, 'comments'))
+        $files = array('templates/', 'img/', 'javascript/', 'conf/');
+        if (PHPWS_Boost::updateFiles($files, 'comments')) {
             $content[] = 'Updated the following files:';
-        else
+        } else {
             $content[] = 'Unable to update the following files:';
+        }
         $content[] = "     " . implode("\n     ", $files);
+
+        PHPWS_Core::initModClass('comments', 'Rank.php');
+        $rank = new Comment_Rank;
+        $rank->group_name = 'All members';
+        $rank->save();
+
+        PHPWS_Settings::set('comments', 'default_rank', $rank->id);
+        PHPWS_Settings::save('comments');
 
         $content[] = '<pre>
 1.2.0 Changes
@@ -246,6 +292,8 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
 + New permission setting to allow admins to ban users from posting
 + Added data caching columns parent_author_id and parent_anon_name comments_items table
 </pre>';
+
+        
 
     }
 

@@ -1,16 +1,20 @@
 <script type="text/javascript">
+var status = new Array();
 
-/***********************************************
-* Used for expanding and collapsing block elements.
-* Used with permission from "My Favorite Javascripts for Designers"
-* Visit http://www.blakems.com/archives/000087.html
-***********************************************/
+$(document).ready(function() {
+    $('a.expander').click( function() {
+        attr_id = $(this).attr('id');
+        trig_id = '#user-rank-' + attr_id;
 
-function expandCollapse() {
-	for (var i=0; i<expandCollapse.arguments.length; i++) {
-		var element = document.getElementById(expandCollapse.arguments[i]);
-		element.style.display = (element.style.display == "none") ? "block" : "none";
-	}
-}
-
+        if (status[attr_id] == '' || status[attr_id] == 0) {
+            $(trig_id).hide();
+            $(this).html('[+]');
+            status[attr_id] = 1;
+        } else {
+            $(trig_id).show();
+            $(this).html('[-]');
+            status[attr_id] = 0;
+        }
+    });
+});
 </script>

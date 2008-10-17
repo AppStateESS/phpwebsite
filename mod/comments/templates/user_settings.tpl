@@ -26,6 +26,7 @@
 <!-- BEGIN PERS_IMG -->
 <fieldset>
 	<legend>{AVATAR_LABEL}:</legend>
+        <p>{AVATAR_MESSAGE}</p>
 <!-- BEGIN CURRAVATAR -->
     {CURRENT_AVATAR_LABEL}
     <br />
@@ -50,7 +51,7 @@
     	{REMOTE_AVATAR}
     </div>
 <!-- END AVATAR2 -->
-	{AVATAR_NOTE}
+	<span class="smaller">{AVATAR_NOTE}</span>
 </fieldset>
 <!-- END PERS_IMG -->
 

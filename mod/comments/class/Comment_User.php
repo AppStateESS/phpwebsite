@@ -7,6 +7,7 @@
  * @version $Id$
  */
 PHPWS_Core::requireConfig('comments');
+PHPWS_Core::initModClass('comments', 'Comments.php');
 PHPWS_Core::initModClass('demographics', 'Demographics.php');
 
 class Comment_User extends Demographics_User {
@@ -23,7 +24,7 @@ class Comment_User extends Demographics_User {
     public $suspendmonitors = 0;
     public $monitordefault  = 1;
     public $securitylevel   = -1;
-    public $groups          = '';
+    public $groups          = null;
 
     // using a second table with demographics
     public $_table        = 'comments_users';
@@ -432,7 +433,7 @@ class Comment_User extends Demographics_User {
         }
         $result = $this->save();
         // Not sure why Demographics doesn't set this...
-        $this->_new_user = false;
+        //        $this->_new_user = false;
         $this->_base_id = $this->_extend_id = $this->user_id;
         if (PHPWS_Error::logIfError($result) || !$result) {
             $this->_error = null;
@@ -562,23 +563,20 @@ class Comment_User extends Demographics_User {
         $images = $titles = $composites = array();
         $user_ranks = Comments::getUserRanking();
 
-        if (empty($user_ranks))
+        if (empty($user_ranks)) {
             return;
+        }
 
         // If user's securitylevel is not set, set it
         if ($this->securitylevel < 0) {
             $this->setCachedItems();
         }
+
         // If user is a supermoderator, show that rank
         if ($this->securitylevel == 2) {
             $titles[] = $str = dgettext('comments', 'Super Moderator');
             $images[] = $composites[] = '<div class="comment_supermod_icon"><span>'.$str."</span></div>\n";
-            //			$a['image'] = COMMENT_SUPERMODERATOR_ICON;
-            //			$a['title'] = dgettext('comments', 'Super Moderator');
-            //			$a['stack'] = true;
-            //			Comment_User::getRankImg($a, $images, $composites, $titles);
-        }
-        // otherwise, check for admin status
+        }     // otherwise, check for admin status
         elseif ($this->securitylevel == 1) {
             $titles[] = $str = dgettext('comments', 'Moderator');
             // if user is a moderator of this specific forum or unattached thread...
@@ -587,31 +585,27 @@ class Comment_User extends Demographics_User {
             } else {
                 $images[] = $composites[] = '<div class="comment_inactivemod_icon"><span>'.$str."</span></div>\n";
             }
-            //		    $a['image'] = COMMENT_ACTIVE_MODERATOR_ICON;
-            //			$a['title'] = dgettext('comments', 'Moderator');
-            //			$a['stack'] = true;
-            // if user is not a moderator of this forum or unattached thread...
-            //			if (!$isModerator)
-            //				$a['image'] = COMMENT_INACTIVE_MODERATOR_ICON;
-            //			Comment_User::getRankImg($a, $images, $composites, $titles);
         }
 
         $relevant = array_intersect(array_keys($user_ranks), explode(',', $this->groups));
-        $relevant[] = 0;
+
         // Loop through all relevant usergroups to generate rank tags
-        foreach ($relevant AS $gid) {
-            foreach ($user_ranks[$gid]['user_ranks'] as $rank)
-                if ($rank['min_posts'] <= $this->comments_made) {
+        foreach ($relevant as $gid) {
+            foreach ($user_ranks[$gid]->user_ranks as $rank)
+                if ($rank->min_posts <= $this->comments_made) {
                     Comment_User::getRankImg($rank, $images, $composites, $titles);
                     break;
                 }
         }
         $images = implode('', $images);
-        if (substr($images, -7, 7) == "<br />\n")
+        if (substr($images, -7, 7) == "<br />\n") {
             $images = substr($images, 0, -7);
+        }
+
         $composites = implode('', $composites);
-        if (substr($composites, -7, 7) == "<br />\n")
+        if (substr($composites, -7, 7) == "<br />\n") {
             $composites = substr($composites, 0, -7);
+        }
         return array('titles' => implode("<br />\n", $titles), 'images' => $images, 'composites' => $composites);
     }
 
@@ -626,19 +620,23 @@ class Comment_User extends Demographics_User {
      */
     public function getRankImg($rank, &$images, &$composites, &$titles)
     {
-    	extract($rank);
-        $titles[] = $title;
-    	if (!empty($image)) {
-            $tag = '<img src="'.$image.'" class="user_rank" alt="'.$title.'" title="'.$title.'" />';
-            if (!empty($stack))
+        $titles[] = $rank->title;
+    	if (!empty($rank->image)) {
+            $tag = sprintf('<img src="%s" class="user_rank" alt="%s" title="%s" />',
+                           $rank->image,
+                           $rank->title,
+                           $rank->title);
+            if (!empty($rank->stack)) {
                 $tag .= "<br />\n";
-            if (!empty($repeat_image))
-                $tag = implode('', array_fill(0, $repeat_image, $tag));
+            }
+            if (!empty($rank->repeat_image)) {
+                $tag = implode('', array_fill(0, $rank->repeat_image, $tag));
+            }
             $composites[] = $tag;
             $images[] = $tag;
+        } else {
+            $composites[] = $rank->title . "<br />\n";
         }
-        else
-            $composites[] = $title . "<br />\n";
     }
 
     /*
@@ -650,23 +648,34 @@ class Comment_User extends Demographics_User {
     public function setCachedItems()
     {
         // If this is the current user the object is already loaded
-        if ($this->user_id == Current_User::getId())
-            $user = & $_SESSION['User'];
-        else
-            $user = & new PHPWS_User($this->user_id);
+        if ($this->user_id == Current_User::getId()) {
+            $user = $_SESSION['User'];
+        } else {
+            $user = new PHPWS_User($this->user_id);
+        }
+
         // If user is a supermoderator...
-        if (isset($GLOBALS['Modules']['phpwsbb']) && $user->allow('phpwsbb', 'manage_forums'))
+        if (isset($GLOBALS['Modules']['phpwsbb']) && $user->allow('phpwsbb', 'manage_forums')) {
             $securitylevel = 2;
+        }
         // otherwise, check for admin status
-        elseif ($user->allow('comments'))
+        elseif ($user->allow('comments')) {
             $securitylevel = 1;
+        }
         // otherwise, this is a regular user
-        else
+        else {
             $securitylevel = 0;
+        }
+
         // Update this user's group membership cache
-        $groups = '';
-        if ($grouplist = $user->getGroups())
+        $groups = null;
+        if ($grouplist = $user->getGroups()) {
             $groups = implode(',', $grouplist);
+        }
+        /*
+        test($this);
+        test($groups,1);
+        */
         if ($this->securitylevel != $securitylevel || $this->groups != $groups) {
             $this->securitylevel = $securitylevel;
             $this->groups = $groups;

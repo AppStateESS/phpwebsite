@@ -56,3 +56,28 @@ CREATE TABLE comments_monitors (
 );
 CREATE INDEX comments_monitors_user_id_idx ON comments_monitors (user_id, thread_id);
 CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, send_notice, suspended);
+
+CREATE TABLE comments_ranks (
+  id int NOT NULL default 0,
+  group_id int NOT NULL default 0,
+  allow_local_avatars smallint NOT NULL,
+  minimum_local_posts smallint NOT NULL,
+  allow_remote_avatars smallint NOT NULL,
+  minimum_remote_posts smallint NOT NULL,
+  PRIMARY KEY  (id)
+);
+
+CREATE INDEX commentsrankidx ON comments_ranks (group_id);
+
+CREATE TABLE comments_user_ranks (
+  id int NOT NULL default 0,
+  rank_id int NOT NULL default 0,
+  title varchar(255) NOT NULL,
+  min_posts smallint NOT NULL default 0,
+  image varchar(255) default NULL,
+  stack smallint NOT NULL default 0,
+  repeat_image smallint NOT NULL default 0,
+  PRIMARY KEY  (id)
+);
+
+CREATE INDEX comments_usr_idx ON comments_subranks (rank_id);
