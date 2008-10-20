@@ -430,13 +430,7 @@ class Comment_User extends Demographics_User {
 
     public function saveUser()
     {
-        if ($this->isNew()) {
-            $user = new PHPWS_User($this->user_id);
-            $this->display_name = $user->getDisplayName();
-        }
         $result = $this->save();
-        // Not sure why Demographics doesn't set this...
-        //        $this->_new_user = false;
         $this->_base_id = $this->_extend_id = $this->user_id;
         if (PHPWS_Error::logIfError($result) || !$result) {
             $this->_error = null;
@@ -596,9 +590,11 @@ class Comment_User extends Demographics_User {
         // Loop through all relevant usergroups to generate rank tags
         if (!empty($user_ranks)) {
             foreach ($user_ranks as $rank) {
-                if ($rank->group_id == 0 or in_array($rank->group_id, $user_groups)) {
+                if ($rank->group_id == 0 || in_array($rank->group_id, $user_groups)) {
                     foreach ($rank->user_ranks as $user_rank) {
-                        $user_rank->loadInfo($images, $composites, $titles);
+                        if ($user_rank->min_posts <= $this->comments_made) {
+                            $user_rank->loadInfo($images, $composites, $titles);
+                        }
                     }
                 }
             }
@@ -649,10 +645,7 @@ class Comment_User extends Demographics_User {
         if ($grouplist = $user->getGroups()) {
             $groups = implode(',', $grouplist);
         }
-        /*
-        test($this);
-        test($groups,1);
-        */
+
         if ($this->securitylevel != $securitylevel || $this->groups != $groups) {
             $this->securitylevel = $securitylevel;
             $this->groups = $groups;

@@ -90,7 +90,8 @@ class Comments_My_Page {
         if (PHPWS_Settings::get('comments', 'allow_avatars') && ($perm['local'] || $perm['remote'])) {
             $form->setEncode();
             $form->addTplTag('AVATAR_LABEL', dgettext('comments', 'Avatar'));
-            $form->addTplTag('AVATAR_NOTE', sprintf(dgettext('comments', 'Note: Avatar images must be no greater than %1$s pixels high by %2$s pixels wide, and its filesize can be no greater than %3$sKb.'), COMMENT_MAX_AVATAR_HEIGHT, COMMENT_MAX_AVATAR_WIDTH, 20));
+            $form->addTplTag('AVATAR_NOTE', sprintf(dgettext('comments', 'Note: Avatar images must be no greater than %1$s pixels high by %2$s pixels wide, and its filesize can be no greater than %3$sKb.'),
+                                                    COMMENT_MAX_AVATAR_HEIGHT, COMMENT_MAX_AVATAR_WIDTH, 20));
             if (!empty($user->avatar) || !empty($user->avatar_id)) {
                 $form->addTplTag('CURRENT_AVATAR_LABEL', dgettext('comments', 'Current Avatar'));
                 $form->addTplTag('CURRENT_AVATAR_IMG', $user->getAvatar());

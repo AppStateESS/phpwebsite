@@ -332,12 +332,6 @@ class Comment_Forms {
         $ftpl = $form->getTemplate();
         if (!empty($user_rank->image)) {
             $ftpl['RANK_IMAGE_PIC'] = $user_rank->getImage();
-            /*
-            $user_rank->stack = 0;
-            $images = $titles = $composites = array();
-            Comment_User::getRankImg($user_rank, $images, $composites, $titles);
-            $ftpl['RANK_IMAGE_PIC'] = $images[0];
-            */
         }
 
         if ($user_rank->id) {
@@ -406,14 +400,6 @@ class Comment_Forms {
         $user_rank->setMinPosts($_POST['min_posts']);
         $user_rank->setRepeatImage($_POST['repeat_image']);
         $user_rank->rank_id = (int)$_POST['rank_id'];
-        /*
-        $all_groups = PHPWS_User::getAllGroups();
-        test($user_rank,1);        
-        if ($user_rank->id && $user_rank->rank_id != $default_rank_id &&
-            !isset($all_groups[$user_rank->rank_id])) {
-            return false;
-        }
-        */
         $user_rank->stack = (bool)$_POST['stack'];
 
         $user_rank->save();
