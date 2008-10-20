@@ -2,16 +2,16 @@
 {JAVASCRIPT}
 <div class="box">
   <div id="related-bank">
-    <strong>{TITLE_LBL}:</strong><br />
-    {TITLE}&nbsp;{EDIT}<br />
+    <div class="box-title"><h1>{TITLE_LBL}: {TITLE}&nbsp;</h1>{EDIT}
     <strong>{MODULE_LBL}:</strong>
-    {MODULE}<br />
+    {MODULE}
+    </div>
+    <div class="box-content">
     <!-- BEGIN link -->
-    <div class="link">
+    <div class="link" style="border-bottom : 1px solid black; margin-bottom : 1em">
       {ADD_LINK}
     </div>
     <!-- END link -->
-    <hr />
     <!-- BEGIN friend_list -->
     {FRIEND_NAME}&nbsp;{UP}{DOWN}{REMOVE}<br />
     <!-- END friend_list -->
@@ -30,6 +30,7 @@
     <!-- END save-link -->
     <div class="link">
       {QUIT_LINK}
+    </div>
     </div>
   </div>
 </div>
