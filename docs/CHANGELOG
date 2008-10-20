@@ -4,6 +4,14 @@ its own separate CHANGELOG file..
 
 Version 1.9.0x
 ---------------------------------------------------------------------
+20 October 2008
++ Blog summary added to key in conversion.
++ Init.php - setlocale tries different utf8 configurations
++ FCKeditor - changed option in custom.js to prevent blank paragraph
+  tags.
++ Updated: javascript/editors/fckeditor/editor/custom.js      
+
+
 17 October 2008
 + Database
   o Using addColumn with the "as" parameter was causing problems with the
