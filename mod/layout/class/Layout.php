@@ -31,7 +31,7 @@ if (!defined('XML_MODE')) {
  }
 
 if (!defined('LAYOUT_FORCE_MOD_JS')) {
-    define('LAYOUT_FORCE_MOD_JS', true);
+    define('LAYOUT_FORCE_MOD_JS', false);
  }
 
 PHPWS_Core::initModClass('layout', 'Layout_Settings.php');
