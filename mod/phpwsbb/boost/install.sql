@@ -42,8 +42,8 @@ CREATE TABLE phpwsbb_users (
 );
 
 CREATE TABLE phpwsbb_moderators (
- forum_id int(11) NOT NULL,
- user_id int(11) NOT NULL,
+ forum_id int NOT NULL default 0,
+ user_id int NOT NULL default 0,
  username varchar(255) NOT NULL
 );
 CREATE INDEX phpwsbb_moderators_forum_id_idx ON phpwsbb_moderators (forum_id);
