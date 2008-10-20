@@ -1,5 +1,9 @@
 Version 1.8.0
 -------------------------------------------------------------
+20 October 2008
++ Read more link does not appear if there is nothing to read.
++ Sticky blog entries do not appear in the past blog list
+
 30 September 2008
 + Added csv to blog
 + Updated: templates/list.tpl

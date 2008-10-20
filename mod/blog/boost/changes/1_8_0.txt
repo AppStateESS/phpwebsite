@@ -5,12 +5,14 @@
 + RSS feed now appears when all blog entries are shown not just one.
 + Pager date format separated from blog view date format
 + Made some adjustments for new mod_rewrite format.
-+ Changed over admin links to icons.
-+ Removed old mod_rewrite code.
++ Changed over admin links to icons
++ Removed old mod_rewrite code
 + Fixed create date display bug
 + The "Posted on" date is now the publish date, not the created date
 + Added setRequired to title of blog
-+ Added cacheQueries to blog listing.
++ Added cacheQueries to blog listing
 + Using new Layout cacheHeaders function
 + Dropping addStyle for filecabinet
++ Read more does not appear if entry hasn't been filled in
++ Sticky blog entries do not appear in the past blog list
 + PHP 5 formatted

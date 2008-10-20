@@ -363,6 +363,7 @@ class Blog_User {
         }
 
         $db = new PHPWS_DB('blog_entries');
+        $db->addWhere('sticky', 0);
         $limit = PHPWS_Settings::get('blog', 'blog_limit');
         $result = Blog_User::getEntries($db, $limit);
 

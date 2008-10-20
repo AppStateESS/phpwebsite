@@ -381,7 +381,9 @@ class Blog {
             if (empty($summary)) {
                 $template['SUMMARY'] = PHPWS_Text::parseTag($entry);
             } else {
-                $template['READ_MORE'] = PHPWS_Text::rewriteLink(dgettext('blog', 'Read more'), 'blog', array('id'=>$this->id));
+                if (!empty($entry)) {
+                    $template['READ_MORE'] = PHPWS_Text::rewriteLink(dgettext('blog', 'Read more'), 'blog', array('id'=>$this->id));
+                }
                 $template['SUMMARY'] =  PHPWS_Text::parseTag($summary);
             }
         } else {
