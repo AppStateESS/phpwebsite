@@ -32,24 +32,24 @@ class Demographics_User {
         }
 
         if (isset($this->_table)) {
-            $db = new PHPWS_DB($this->_table);
+            $db = new PHPWS_DB('users');
+            $db->addJoin('left', 'demographics', 'users', 'user_id', 'id');
+            $db->addJoin('left', $this->_table, 'users', 'user_id', 'id');
             $db->addWhere('users.id', $this->user_id);
-            $db->addWhere('demographics.user_id', $this->user_id);
-            $db->addWhere($this->_table . '.user_id', $this->user_id);
             $db->addColumn($this->_table . '.*');
-            $db->addColumn($this->_table . '.user_id', null, '_extend_id');
             $db->addColumn('demographics.*');
             $db->addColumn('users.display_name');
             $db->addColumn('users.last_logged');
             $db->addColumn('users.created');
             $db->addColumn('users.email');
             $db->addColumn('users.active', null, 'active_user');
+            $db->addColumn($this->_table . '.user_id', null, '_extend_id');
             $db->addColumn('demographics.user_id', null, '_base_id');
         } else {
             $db = new PHPWS_DB('demographics');
+            $db->addWhere('demographics.user_id', (int)$this->user_id);
         }
 
-        $db->addWhere('demographics.user_id', (int)$this->user_id);
         $result = $db->loadObject($this);
 
         if (PEAR::isError($result)) {
