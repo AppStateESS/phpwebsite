@@ -79,6 +79,16 @@ class Comment_Rank {
         $db->addWhere('rank_id', $this->id);
         return !PHPWS_Error::logIfError($db->delete());
     }
+
+    public function allowLocal($comments_made)
+    {
+        return $this->allow_local_avatars && (int)$comments_made >= $this->minimum_local_posts;
+    }
+
+    public function allowRemote($comments_made)
+    {
+        return $this->allow_remote_avatars && (int)$comments_made >= $this->minimum_remote_posts;
+    }
 }
 
 ?>

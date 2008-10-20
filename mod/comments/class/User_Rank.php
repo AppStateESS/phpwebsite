@@ -83,5 +83,27 @@ class Comment_User_Rank {
                        $this->image, $this->title, $this->title);
         return $tag;
     }
+
+    function loadInfo(&$images, &$composites, &$titles) {
+        $titles[] = $this->title;
+    	if (!empty($this->image)) {
+            $tag = sprintf('<img src="%s" class="user_rank" alt="%s" title="%s" />',
+                           $this->image,
+                           $this->title,
+                           $this->title);
+            if (!empty($this->stack)) {
+                $tag .= "<br />\n";
+            }
+
+            if (!empty($this->repeat_image)) {
+                $tag = implode('', array_fill(0, $this->repeat_image, $tag));
+            }
+
+            $composites[] = $tag;
+            $images[] = $tag;
+        } else {
+            $composites[] = $this->title . "<br />\n";
+        }
+    }
 }
 ?>

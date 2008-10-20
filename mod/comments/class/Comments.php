@@ -268,6 +268,7 @@ class Comments {
             if (Current_User::authorized('comments', 'settings')) {
                 PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
                 Comment_Forms::postSettings();
+                PHPWS_Core::goBack();
             } else {
                 $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
             }

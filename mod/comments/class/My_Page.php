@@ -83,8 +83,11 @@ class Comments_My_Page {
             $form->addTplTag('SIGNATURE_HELP', dgettext('comments', 'This signature appears at the bottom of your comments.  It must be less than 255 characters, not annoying and compliant with site rules.'));
         }
 
+        // Get current Avatar permissions
+        $perm = $user->getAvatarLevel();
+
         //avatar
-        if (PHPWS_Settings::get('comments', 'allow_avatars')) {
+        if (PHPWS_Settings::get('comments', 'allow_avatars') && ($perm['local'] || $perm['remote'])) {
             $form->setEncode();
             $form->addTplTag('AVATAR_LABEL', dgettext('comments', 'Avatar'));
             $form->addTplTag('AVATAR_NOTE', sprintf(dgettext('comments', 'Note: Avatar images must be no greater than %1$s pixels high by %2$s pixels wide, and its filesize can be no greater than %3$sKb.'), COMMENT_MAX_AVATAR_HEIGHT, COMMENT_MAX_AVATAR_WIDTH, 20));
@@ -92,11 +95,10 @@ class Comments_My_Page {
                 $form->addTplTag('CURRENT_AVATAR_LABEL', dgettext('comments', 'Current Avatar'));
                 $form->addTplTag('CURRENT_AVATAR_IMG', $user->getAvatar());
             }
-            // Get current Avatar permissions
-            $perm = $user->getAvatarLevel();
-            // Show Avatar Gallery selection script
 
+            // Show Avatar Gallery selection script
             if (PHPWS_Settings::get('comments', 'avatar_folder_id')) {
+                echo 'avatar folder needed in My_Page.php';
                 $manager = Cabinet::fileManager('avatar_id', $user->avatar_id);
                 $manager->setMaxWidth(COMMENT_MAX_AVATAR_WIDTH);
                 $manager->setMaxHeight(COMMENT_MAX_AVATAR_HEIGHT);

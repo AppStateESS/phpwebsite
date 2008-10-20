@@ -138,23 +138,25 @@ class Comment_User extends Demographics_User {
     public function getAvatarLevel()
     {
         // If user's securitylevel is not set, set it
-        if ($this->securitylevel < 0)
+        if ($this->securitylevel < 0) {
             $this->setCachedItems();
-        // admins get to use both
-        if ($this->securitylevel > 0)
-            return array('local' => 1, 'remote' => 1);
+        }
 
-        $local = $remote = 0;
+        // admins get to use both
+        if ($this->securitylevel > 0) {
+            return array('local' => 1, 'remote' => 1);
+        }
+
+        $local = $remote = false;
 
         $user_ranks = Comments::getUserRanking();
-
+        $user_groups = explode(',', $this->groups);
         if (!empty($user_ranks)) {
-            $relevant = array_intersect(array_keys($user_ranks), explode(',', $this->groups));
-            $relevant[] = 0;
-            // Loop through all relevant usergroups to generate rank images
-            foreach ($relevant AS $gid) {
-                $local = $local || ($user_ranks[$gid]['allow_local_custom_avatars'] && $this->comments_made >= $user_ranks[$gid]['minimum_local_custom_posts']);
-                $remote = $remote || ($user_ranks[$gid]['allow_remote_custom_avatars'] && $this->comments_made >= $user_ranks[$gid]['minimum_remote_custom_posts']);
+            foreach ($user_ranks as $rank) {
+                if ($rank->group_id == 0 or in_array($rank->group_id, $user_groups)) {
+                    $local = $local || $rank->allowLocal($this->comments_made);
+                    $remote = $remote || $rank->allowRemote($this->comments_made);
+                }
             }
         }
         return array('local' => $local, 'remote' => $remote);
@@ -325,6 +327,7 @@ class Comment_User extends Demographics_User {
 
         // Determine user's rank
         $rank = $this->getRank($isModerator);
+
         $template['RANK_TITLE'] = $rank['titles'];
         $template['RANK_IMG'] = $rank['images'];
         $template['RANK_LIST'] = $rank['composites'];
@@ -587,16 +590,20 @@ class Comment_User extends Demographics_User {
             }
         }
 
-        $relevant = array_intersect(array_keys($user_ranks), explode(',', $this->groups));
+        $user_ranks = Comments::getUserRanking();
+        $user_groups = explode(',', $this->groups);
 
         // Loop through all relevant usergroups to generate rank tags
-        foreach ($relevant as $gid) {
-            foreach ($user_ranks[$gid]->user_ranks as $rank)
-                if ($rank->min_posts <= $this->comments_made) {
-                    Comment_User::getRankImg($rank, $images, $composites, $titles);
-                    break;
+        if (!empty($user_ranks)) {
+            foreach ($user_ranks as $rank) {
+                if ($rank->group_id == 0 or in_array($rank->group_id, $user_groups)) {
+                    foreach ($rank->user_ranks as $user_rank) {
+                        $user_rank->loadInfo($images, $composites, $titles);
+                    }
                 }
+            }
         }
+
         $images = implode('', $images);
         if (substr($images, -7, 7) == "<br />\n") {
             $images = substr($images, 0, -7);
@@ -607,36 +614,6 @@ class Comment_User extends Demographics_User {
             $composites = substr($composites, 0, -7);
         }
         return array('titles' => implode("<br />\n", $titles), 'images' => $images, 'composites' => $composites);
-    }
-
-    /**
-     * Generates an user rank's HTML tag.
-     *
-     * @param string $rank  : User Rank array structure
-     * @param array $images  : referenced array to hold list of image HTML
-     * @param array $composites  : referenced array to hold list of image HTML (when available) or text
-     * @param array $titles  : referenced array to hold list of rank titles
-     * @return string : HTML code of the rank's image
-     */
-    public function getRankImg($rank, &$images, &$composites, &$titles)
-    {
-        $titles[] = $rank->title;
-    	if (!empty($rank->image)) {
-            $tag = sprintf('<img src="%s" class="user_rank" alt="%s" title="%s" />',
-                           $rank->image,
-                           $rank->title,
-                           $rank->title);
-            if (!empty($rank->stack)) {
-                $tag .= "<br />\n";
-            }
-            if (!empty($rank->repeat_image)) {
-                $tag = implode('', array_fill(0, $rank->repeat_image, $tag));
-            }
-            $composites[] = $tag;
-            $images[] = $tag;
-        } else {
-            $composites[] = $rank->title . "<br />\n";
-        }
     }
 
     /*

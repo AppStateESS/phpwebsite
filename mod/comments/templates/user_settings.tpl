@@ -1,31 +1,21 @@
 {START_FORM}
 
 <fieldset>
-	<legend>{PERSONAL_HEADER}:</legend>
-	<h2>{LOCATION_LABEL}</h2>
-	{LOCATION}
-	<br />
-	<br />
-	<h2>{WEBSITE_LABEL}</h2>
-	{WEBSITE}
+        <legend>{PERSONAL_HEADER}:</legend>
+        <p><strong>{LOCATION_LABEL}</strong><br />
+        {LOCATION}</p>
+        <p><strong>{WEBSITE_LABEL}</strong><br />
+        {WEBSITE}</p>
 <!-- BEGIN SIG -->
-	<br />
-	<br />
-	<h2>{SIGNATURE_LABEL}</h2>
-	{SIGNATURE_HELP}
-	<br />
-	{SIGNATURE}
-	<br />
-	<br />
-	{ORDER_PREF_LABEL}
-	<br />
-	{ORDER_PREF}
+        <p><strong>{SIGNATURE_LABEL}</strong>{SIGNATURE_HELP}<br />
+        {SIGNATURE}</p>
 <!-- END SIG -->
+        <p><strong>{ORDER_PREF_LABEL}</strong><br />{ORDER_PREF}</p>
 </fieldset>
 
 <!-- BEGIN PERS_IMG -->
 <fieldset>
-	<legend>{AVATAR_LABEL}:</legend>
+        <legend>{AVATAR_LABEL}:</legend>
         <p>{AVATAR_MESSAGE}</p>
 <!-- BEGIN CURRAVATAR -->
     {CURRENT_AVATAR_LABEL}
@@ -39,35 +29,35 @@
         {GALLERY_AVATAR}
     </div>
 <!-- BEGIN AVATAR1 -->
-	{LOCAL_AVATAR_LABEL}
+        {LOCAL_AVATAR_LABEL}
     <div style="margin-left:5em">
-    	{LOCAL_AVATAR}
+        {LOCAL_AVATAR}
     </div>
 <!-- END AVATAR1 -->
 <!-- BEGIN AVATAR2 -->
-	<br />
-	{REMOTE_AVATAR_LABEL}
+        <br />
+        {REMOTE_AVATAR_LABEL}
     <div style="margin-left:5em">
-    	{REMOTE_AVATAR}
+        {REMOTE_AVATAR}
     </div>
 <!-- END AVATAR2 -->
-	<span class="smaller">{AVATAR_NOTE}</span>
+        <span class="smaller">{AVATAR_NOTE}</span>
 </fieldset>
 <!-- END PERS_IMG -->
 
 <fieldset>
-	<legend>{MONITOR_HEADER}:</legend>
-	{MONITORDEFAULT_HELP}
-	<br />
-	<br />
-	{MONITORDEFAULT}{MONITORDEFAULT_LABEL}
-	<br />
-	{SUSPENDMONITORS} {SUSPENDMONITORS_LABEL}
-	<br />
-	<br />
-	<b>{REMOVE_ALL_MONITORS_HELP}</b>
-	<br />
-	{REMOVE_ALL_MONITORS} {REMOVE_ALL_MONITORS_LABEL}
+        <legend>{MONITOR_HEADER}:</legend>
+        {MONITORDEFAULT_HELP}
+        <br />
+        <br />
+        {MONITORDEFAULT}{MONITORDEFAULT_LABEL}
+        <br />
+        {SUSPENDMONITORS} {SUSPENDMONITORS_LABEL}
+        <br />
+        <br />
+        <b>{REMOVE_ALL_MONITORS_HELP}</b>
+        <br />
+        {REMOVE_ALL_MONITORS} {REMOVE_ALL_MONITORS_LABEL}
 </fieldset>
 
  {SUBMIT}
