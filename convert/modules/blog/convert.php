@@ -168,7 +168,7 @@ function convertAnnouncement($entry)
         }
     }
 
-    $key = & new Key;
+    $key = new Key;
     $key->create_date = $val['create_date'];
     $key->setItemId($val['id']);
     $key->setModule('blog');
@@ -176,6 +176,7 @@ function convertAnnouncement($entry)
     $key->setEditPermission('edit_blog');
     $key->setUrl('index.php?module=blog&action=view_comments&id=' . $val['id']);
     $key->setTitle($val['title']);
+    $key->setSummary($val['summary']);
     $key->save();
     $val['key_id'] = $key->id;
 

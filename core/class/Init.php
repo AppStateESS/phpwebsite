@@ -109,7 +109,11 @@ function setLanguage($language)
         putenv("LANGUAGE=$language");
     }
 
-    return setlocale(LC_ALL, $language . '.UTF-8');
+    $versions[] = $language . '.UTF-8';
+    $versions[] = $language . '.UTF8';
+    $versions[] = $language;
+
+    return setlocale(LC_ALL, $versions);
 }
 
 /**
@@ -136,7 +140,7 @@ function initLanguage()
         if ($locale == FALSE) {
             $locale = setLanguage(DEFAULT_LANGUAGE);
         }
-        $locale = str_replace('.UTF-8', '', $locale);
+        $locale = preg_replace('/\.utf8|\.utf-8/i', '', $locale);
     } else {
         $locale_found = FALSE;
 
