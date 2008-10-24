@@ -461,3 +461,7 @@ a.comment_punish_link:hover {
 /* background-color: #00ff00; */
 }
 a.comment_punish_link span { display: none; }
+
+#cp-subpanel {
+left : -140px;
+}
