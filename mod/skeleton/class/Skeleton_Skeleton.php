@@ -327,13 +327,7 @@ class Skeleton_Skeleton {
         $key->setModule('skeleton');
         $key->setItemName('skeleton');
         $key->setItemId($this->id);
-
-        if (MOD_REWRITE_ENABLED) {
-            $key->setUrl('skeleton/' . $this->id);
-        } else {
-            $key->setUrl('index.php?module=skeleton&amp;skeleton=' . $this->id);
-        }
-
+        $key->setUrl($this->viewLink(true));
         $key->active = 1;
         $key->setTitle($this->title);
         $key->setSummary($this->description);
