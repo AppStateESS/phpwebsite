@@ -172,7 +172,7 @@ class RSS_Channel {
                 $itemTpl['ITEM_AUTHOR']       = utf8_encode($key->creator);
                 $itemTpl['ITEM_PUBDATE']      = utf8_encode($key->getCreateDate('%a, %d %b %Y %T GMT'));
 
-                $itemTpl['ITEM_DC_DATE']      = utf8_encode($key->getCreateDate('%Y-%m-%dT%H:%M:%S-%Z'));
+                $itemTpl['ITEM_DC_DATE']      = utf8_encode($key->getCreateDate('%Y-%m-%dT%H:%M:%S-%z'));
                 $itemTpl['ITEM_DC_TYPE']      = 'Text'; //pull from db later
                 $itemTpl['ITEM_DC_CREATOR']   = utf8_encode($key->creator);
 
