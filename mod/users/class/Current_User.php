@@ -134,18 +134,31 @@ final class Current_User {
         return $_SESSION['User']->getId();
     }
 
-    public function getAuthKey()
+    public function getAuthKey($salt_value=null)
     {
         if (!isset($_SESSION['User'])) {
             return null;
         }
-        return $_SESSION['User']->getAuthKey();
+
+        return $_SESSION['User']->getAuthKey($salt_value);
     }
 
-    public function verifyAuthKey()
+    public function verifyAuthKey($check_salted=false)
     {
-        return $_SESSION['User']->verifyAuthKey();
+        return $_SESSION['User']->verifyAuthKey($check_salted);
     }
+
+    public function verifySaltedUrl()
+    {
+        $val = PHPWS_Text::getGetValues();
+        unset($val['module']);
+        unset($val['authkey']);
+        unset($val['owpop']);
+
+        $serial_url = str_replace(' ', '+', serialize($val));
+        return Current_User::verifyAuthKey($serial_url);
+    }
+   
 
     public function getUnrestrictedLevels()
     {

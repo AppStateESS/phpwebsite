@@ -35,7 +35,8 @@ class PHPWS_User {
     public $_groups        = null;
     public $_permission    = null;
     public $_user_group    = null;
-    public $_auth_key      = null;
+    public $auth_key      = null;
+    private $salt_base     = null;
     // Indicates whether this is a logged in user
     public $_logged        = false;
     public $_prev_username = null;
@@ -430,10 +431,15 @@ class PHPWS_User {
         return ($this->authorize == LOCAL_AUTHORIZATION) ? true : false;
     }
 
-    public function verifyAuthKey()
+    public function verifyAuthKey($salt_value=null)
     {
-        if (!isset($_REQUEST['authkey']) || $_REQUEST['authkey'] !== $this->getAuthKey())
+        if ($salt_value && !is_string($salt_value)) {
+            trigger_error('Salt value must be a string', E_USER_ERROR);
+        }
+
+        if (!isset($_REQUEST['authkey']) || $_REQUEST['authkey'] !== $this->getAuthKey($salt_value)) {
             return false;
+        }
 
         return true;
     }
@@ -584,12 +590,22 @@ class PHPWS_User {
     public function makeAuthKey()
     {
         $key = rand();
-        $this->_auth_key = md5($this->username . $key . mktime());
+        $this->salt_base = $key . mktime();
+        $this->auth_key = md5($this->username . $this->salt_base);
     }
 
-    public function getAuthKey()
+
+    public function getAuthKey($salt_value=null)
     {
-        return $this->_auth_key;
+        if ($salt_value && !is_string($salt_value)) {
+            trigger_error('Salt value must be a string', E_USER_ERROR);
+        }
+
+        if (empty($salt_value)) {
+            return $this->auth_key;
+        } else {
+            return md5($salt_value . $this->salt_base);
+        }
     }
 
     public function saveLocalAuthorization()
@@ -868,7 +884,7 @@ class PHPWS_User {
         $jsvar['QUESTION'] = sprintf(dgettext('users', 'Are you certain you want to delete the user &quot;%s&quot; permanently?'),
                                      $this->getUsername());
         $jsvar['ADDRESS']  = 'index.php?module=users&amp;action=admin&amp;command=deleteUser&amp;user_id='
-            . $this->id . '&amp;authkey=' . Current_User::getAuthKey();
+            . $this->id . '&amp;authkey=' . $this->getAuthKey();
         $jsvar['LINK']     = dgettext('users', 'Delete');
 
 
