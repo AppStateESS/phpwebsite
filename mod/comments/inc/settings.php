@@ -45,5 +45,6 @@ To unsubscribe from ALL topics, please login and visit this page:
                   'allow_user_monitors'    => 1,
                   'reported_comments'      => 0,
                   'unapproved_comments'    => 0,
-                  'default_rank'           => 1);
+                  'default_rank'           => 1,
+                  'avatar_folder_id'       => 0);
 ?>

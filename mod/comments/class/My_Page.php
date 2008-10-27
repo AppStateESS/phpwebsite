@@ -87,7 +87,7 @@ class Comments_My_Page {
         $perm = $user->getAvatarLevel();
 
         //avatar
-        if (PHPWS_Settings::get('comments', 'allow_avatars') && ($perm['local'] || $perm['remote'])) {
+        if (PHPWS_Settings::get('comments', 'allow_avatars')) {
             $form->setEncode();
             $form->addTplTag('AVATAR_LABEL', dgettext('comments', 'Avatar'));
             $form->addTplTag('AVATAR_NOTE', sprintf(dgettext('comments', 'Note: Avatar images must be no greater than %1$s pixels high by %2$s pixels wide, and its filesize can be no greater than %3$sKb.'),
@@ -98,21 +98,22 @@ class Comments_My_Page {
             }
 
             // Show Avatar Gallery selection script
-            if (PHPWS_Settings::get('comments', 'avatar_folder_id')) {
-                echo 'avatar folder needed in My_Page.php';
-                $manager = Cabinet::fileManager('avatar_id', $user->avatar_id);
+            $avatar_folder = PHPWS_Settings::get('comments', 'avatar_folder_id');
+            if ($avatar_folder) {
+                $manager = Cabinet::fileManager('avatar_id', $user->avatar_id, 'comments');
+                $manager->reservedFolder($avatar_folder);
                 $manager->setMaxWidth(COMMENT_MAX_AVATAR_WIDTH);
                 $manager->setMaxHeight(COMMENT_MAX_AVATAR_HEIGHT);
+                $manager->forceUploadDimensions();
                 $manager->setMaxSize(22000);
                 $manager->moduleLimit();
                 $manager->forceResize();
-                $manager->imageOnly(false, false);
                 $manager->setPlaceholderMaxWidth(COMMENT_MAX_AVATAR_WIDTH);
                 $manager->setPlaceholderMaxHeight(COMMENT_MAX_AVATAR_HEIGHT);
                 $form->addTplTag('GALLERY_AVATAR', $manager->get());
                 $form->addTplTag('GALLERY_AVATAR_LABEL', dgettext('comments', 'Select an avatar from the gallery'));
             }
-            
+
             // If local Custom Avatars are allowed, show file field
             if ($perm['local']) {
                 $form->addFile('local_avatar');

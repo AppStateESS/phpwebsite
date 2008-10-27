@@ -385,7 +385,7 @@ class Comment_User extends Demographics_User {
             $this->setAvatar(trim($_POST['remote_avatar']));
         }
         // otherwise, use the selected gallery image...
-        elseif (!empty($_POST['avatar_id'])) {
+        elseif (isset($_POST['avatar_id'])) {
             $this->setAvatar((int) $_POST['avatar_id']);
         }
 

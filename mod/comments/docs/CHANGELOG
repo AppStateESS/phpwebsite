@@ -1,5 +1,9 @@
 Version 1.2.0
 ------------------------------------------------------------------------
+27 October 2008
++ Added filecabinet selection of avatars
++ Updated: templates/settings_form.tpl
+
 20 October 2008
 + More work on ranking and proper display of rank images.
 + Updated: templates/user_settings.php

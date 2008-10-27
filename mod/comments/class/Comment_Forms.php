@@ -126,7 +126,7 @@ class Comment_Forms {
         $cmt_count[15] = sprintf(dgettext('comments', 'Show last %d'), 15);
 
         $form->addSelect('recent_comments', $cmt_count);
-        $form->setLabel('recent_comments', dgettext('comments', 'Recent comment'));
+        $form->setLabel('recent_comments', dgettext('comments', 'Recent comments'));
         $form->setMatch ('recent_comments', $settings['recent_comments']);
 
         $order_list = array('old_all'  => dgettext('comments', 'Oldest first'),
@@ -169,11 +169,29 @@ class Comment_Forms {
         $form->setMatch('allow_user_monitors', $settings['allow_user_monitors']);
         $form->setLabel('allow_user_monitors', dgettext('comments', 'Allow users to monitor threads via email'));
 
+
+        //avatar selection
+        $folders = Cabinet::listFolders(IMAGE_FOLDER, true);
+        if (empty($folders)) {
+            $folders[0] = dgettext('comments', 'No image folders found');
+        } else {
+            $folders = array_reverse($folders, true);
+            $folders[0] = dgettext('comments', '-- Choose a folder --');
+            $folders = array_reverse($folders, true);
+        }
+        $form->addSelect('avatar_folder_id', $folders);
+        $form->setLabel('avatar_folder_id', dgettext('comments', 'Enable avatar selection'));
+        $form->setMatch('avatar_folder_id', PHPWS_Settings::get('comments', 'avatar_folder_id'));
+
         $form->addSubmit(dgettext('comments', 'Save'));
 
         $tpl = $form->getTemplate();
-        $tpl['TITLE'] = dgettext('comments', 'Comment settings');
-
+        $tpl['TITLE']        = dgettext('comments', 'Comment settings');
+        $tpl['USER_PROFILE'] = dgettext('comments', 'User profile');
+        $tpl['DISPLAY']      = dgettext('comments', 'Display');
+        $tpl['MODERATE']     = dgettext('comments', 'Moderation');
+        $tpl['MONITOR']      = dgettext('comments', 'Thread Monitor');
+        
         return PHPWS_Template::process($tpl, 'comments', 'settings_form.tpl');
     }
 
@@ -351,13 +369,14 @@ class Comment_Forms {
 
     public function postSettings()
     {
-        $settings['default_order'] = $_POST['order'];
-        $settings['captcha'] = (int)$_POST['captcha'];
-        $settings['allow_signatures'] = (int) !empty($_POST['allow_signatures']);
+        $settings['default_order']          = $_POST['order'];
+        $settings['captcha']                = (int)$_POST['captcha'];
+        $settings['allow_signatures']       = (int) !empty($_POST['allow_signatures']);
         $settings['allow_image_signatures'] = (int) !empty($_POST['allow_image_signatures']);
-        $settings['allow_avatars'] = (int) !empty($_POST['allow_avatars']);
-        $settings['local_avatars'] = (int) !empty($_POST['local_avatars']);
-        $settings['anonymous_naming'] = (int) !empty($_POST['anonymous_naming']);
+        $settings['allow_avatars']          = (int) !empty($_POST['allow_avatars']);
+        $settings['local_avatars']          = (int) !empty($_POST['local_avatars']);
+        $settings['anonymous_naming']       = (int) !empty($_POST['anonymous_naming']);
+        $settings['avatar_folder_id']       = (int) $_POST['avatar_folder_id'];
 
         if (!empty($_POST['email_subject'])) {
             $settings['email_subject'] = PHPWS_Text::parseInput($_POST['email_subject']);
@@ -375,7 +394,7 @@ class Comment_Forms {
         $settings['allow_user_monitors'] = (int) !empty($_POST['allow_user_monitors']);
         $settings['default_approval'] = (int)$_POST['default_approval'];
         $settings['recent_comments'] = (int)$_POST['recent_comments'];
-
+        
         PHPWS_Settings::set('comments', $settings);
         return PHPWS_Settings::save('comments');
     }

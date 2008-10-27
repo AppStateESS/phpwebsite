@@ -292,10 +292,7 @@ CREATE INDEX comments_usr_idx ON comments_subranks (rank_id);';
 + New permission setting to allow admins to ban users from posting
 + Added data caching columns parent_author_id and parent_anon_name comments_items table
 </pre>';
-
-        
-
-    }
+}
 
     return true;
 }
