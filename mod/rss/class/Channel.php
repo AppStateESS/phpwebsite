@@ -158,21 +158,25 @@ class RSS_Channel {
 
         $template['LAST_BUILD_DATE'] = $this->_last_build_date;
 
+        $timezone = strftime('%z');
+        $timezone = substr($timezone, 0, 3) . ':' . substr($timezone, 3, 2);
+
         if ($this->_feeds) {
             foreach ($this->_feeds as $key) {
                 $itemTpl = NULL;
                 $url = preg_replace('/^\.\//', '', $key->url);
-                $itemTpl['ITEM_LINK']         = $home_http .  preg_replace('/&(?!amp;)/', '&amp;', $url);
-                $itemTpl['ITEM_TITLE']        = utf8_encode($key->title);
-                $itemTpl['ITEM_GUID']         = $home_http . preg_replace('/&(?!amp;)/', '&amp;', $key->url);
-                $itemTpl['ITEM_LINK']         = $home_http . preg_replace('/&(?!amp;)/', '&amp;', $key->url);
+                $url = $home_http . preg_replace('/&(?!amp;)/', '&amp;', $url);
+                $itemTpl['ITEM_LINK']         = $url;
+                $itemTpl['ITEM_TITLE']        = utf8_encode(preg_replace('/&(?!amp;)/', '&amp;', $key->title));
+                $itemTpl['ITEM_GUID']         = $url;
+                $itemTpl['ITEM_LINK']         = $url;
                 $itemTpl['ITEM_SOURCE']       = sprintf('%sindex.php?module=rss&amp;mod_title=%s', $home_http, $this->module);
 
                 $itemTpl['ITEM_DESCRIPTION']  = utf8_encode(strip_tags(trim(preg_replace('/&(?!amp;)/', '&amp;', $key->summary))));
                 $itemTpl['ITEM_AUTHOR']       = utf8_encode($key->creator);
                 $itemTpl['ITEM_PUBDATE']      = utf8_encode($key->getCreateDate('%a, %d %b %Y %T GMT'));
 
-                $itemTpl['ITEM_DC_DATE']      = utf8_encode($key->getCreateDate('%Y-%m-%dT%H:%M:%S-%z'));
+                $itemTpl['ITEM_DC_DATE']      = utf8_encode($key->getCreateDate('%Y-%m-%dT%H:%M:%S') . $timezone);
                 $itemTpl['ITEM_DC_TYPE']      = 'Text'; //pull from db later
                 $itemTpl['ITEM_DC_CREATOR']   = utf8_encode($key->creator);
 
