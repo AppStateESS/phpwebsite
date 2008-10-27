@@ -620,7 +620,12 @@ class Layout_Admin{
         $vars['box_dest'] = 'move_box_bottom';
         $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move to bottom'), 'layout', $vars);
 
+        if (Current_User::isDeity() && !$_SESSION['Layout_Settings']->deity_reload) {
+            $_SESSION['Layout_Settings']->loadSettings();
+        }
+
         $themeVars = $_SESSION['Layout_Settings']->getAllowedVariables();
+
         foreach ($themeVars as $var){
             if ($box->theme_var == $var) {
                 continue;

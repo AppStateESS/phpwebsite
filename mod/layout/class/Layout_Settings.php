@@ -22,6 +22,7 @@ class Layout_Settings {
     public $header           = null;
     public $footer           = null;
     public $cache            = true;
+    public $deity_reload     = false;
 
     // !!! Make sure to update your saveSettings function !!!
     // Remove all hidden variables from the update
@@ -190,6 +191,9 @@ class Layout_Settings {
             PHPWS_Error::log(LAYOUT_INI_FILE, 'layout', 'Layout_Settings::loadSettings', $themeInit);
             PHPWS_Core::errorPage();
         }
+        if (Current_User::isDeity()) {
+            $this->deity_reload = true;
+        }
     }
 
     public function loadStyleSheets($themeVars)
@@ -239,7 +243,8 @@ class Layout_Settings {
 
         $this->_theme_variables = $theme_variables;
 
-        if (isset($themeVars['locked']['ignore'])) {
+        // If a user is a deity, they can move the box where ever they want.
+        if (!Current_User::isDeity() && isset($themeVars['locked']['ignore'])) {
             $sLocked = str_replace(' ', '', $themeVars['locked']['ignore']);
             $locked = explode(',', $sLocked);
 
@@ -253,8 +258,6 @@ class Layout_Settings {
         } else {
             $this->_allowed_move = &$this->_theme_variables;
         }
-
-
     }
 
     public function saveSettings()

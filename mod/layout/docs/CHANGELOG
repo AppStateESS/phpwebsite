@@ -1,5 +1,8 @@
 Version 2.4.5
 ------------------------------------------------------------------
+27 October 2008
++ Added code that lets deities move boxes whereever they wish.
+
 17 October 2008
 + Tweaked the javascript mod force code. Previously would break core
   javascript.

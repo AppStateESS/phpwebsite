@@ -126,6 +126,7 @@ function layout_update(&$content, $currentVersion)
 + Added new cacheHeader function to retain javascript and css
   information should a module return cached content before the above
   can be established.
++ Deities can now move a box to a theme locked area.
 + PHP 5 formatted';
 
     }
