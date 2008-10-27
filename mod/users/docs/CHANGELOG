@@ -1,5 +1,10 @@
 Version 2.6.0
 -----------------------------------------------------------------------
+27 October 2008
++ Authkeys can be salted with special keys.
++ Added function verifySaltedUrl which verifies the authkey in the
+  current url.
+
 10 October 2008
 + Added display name to pager search
 
