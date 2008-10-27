@@ -22,6 +22,7 @@ Captcha
 Core
 + Added allowScriptTags function.
 + Removed plugForward
++ securePopup function tests validity of popup window.
 
 Database
 + Small error check added to Database.
@@ -97,6 +98,8 @@ Key
 
 Link
 + New class to help in link creation.
++ New salted authkey options allows greater link security between
+  pages.
 
 
 Settings
@@ -148,6 +151,7 @@ Open window
 + Now allows dev to set whether the window opens in the
   center or not 
 + Can now have its id set.
++ Secure option can be set to validate child window.
 
 JS Calendar
 + Updated pick date functionality. Wasn't forwarding properly.
@@ -234,3 +238,4 @@ Other
 + Added cacheQueries information to DBPager documentation.
 + Updated jquery to 1.2.6
 + Menu convert ignores inactive links
++ Init tries variations of utf8 when setting the language.

@@ -890,6 +890,27 @@ class PHPWS_Core {
         }
     }
 
+    
+    function securePopup()
+    {
+        if (!class_exists('Layout')) {
+            exit(_('Unable to display contents.'));
+        }
+
+        // no session has been created, return false
+        if (!isset($_SESSION['secure_open_window']) ||
+            !isset($_GET['owpop']) ||
+            !in_array($_GET['owpop'], $_SESSION['secure_open_window'])) {
+            
+            javascript('close_refresh');
+            Layout::metaRoute('index.php');
+            Layout::nakedDisplay(_('Unable to display contents.'));
+            return false;
+        }
+
+        javascript('secure_pop', array('id'=>$_GET['owpop']));
+        return true;
+    }
 }// End of core class
 
 ?>

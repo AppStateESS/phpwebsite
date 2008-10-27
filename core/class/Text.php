@@ -865,6 +865,18 @@ class PHPWS_Text {
         return implode('', $str);
     }
 
+    /**
+     * Changes an array into a serialized string for salting
+     * a link's values
+     */
+    function saltArray($values)
+    {
+        foreach ($values as $key=>$val) {
+            $values[$key] = (string)$val;
+        }
+        return serialize($values);
+    }
+
 }//END CLASS PHPWS_Text
 
 

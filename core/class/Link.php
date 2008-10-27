@@ -23,14 +23,16 @@ class PHPWS_Link {
     public  $full_url    = false;
     public  $convert_amp = true;
     public  $no_follow   = false;
+    public  $salted      = false;
 
-    public function __construct($label=null, $module=null, $values=null)
+    public function __construct($label=null, $module=null, $values=null, $secure=false)
     {
         $this->label = $label;
         $this->module = $module;
         if (is_array($values)) {
             $this->addValues($values);
         }
+        $this->secure = (bool)$secure;
     }
 
     public function get()
@@ -116,6 +118,11 @@ class PHPWS_Link {
         $this->no_follow = (bool)$no_follow;
     }
 
+    public function setSalted($salt=true)
+    {
+        $this->salted = (bool)$salt;
+    }
+
     public function setTarget($target)
     {
         $target = strtolower($target);
@@ -177,18 +184,19 @@ class PHPWS_Link {
 
     public function getAuthKey()
     {
-        static $authkey = null;
-
         // if not secure, authkey irrelevant
-        if (!$this->secure || !class_exists('Current_User') || !Current_User::isLogged() ) {
+        if (!$this->secure || !class_exists('Current_User')) {
             return null;
         }
 
-        if (!$authkey) {
-            $authkey = Current_User::getAuthKey();
+        if ($this->salted) {
+            // Have to make them strings because GET will change them on the
+            // other side.
+            return Current_User::getAuthKey(PHPWS_Text::saltArray($this->values));
+        } else {
+            $result = Current_User::getAuthKey();
+            return $result;
         }
-
-        return $authkey;
     }
 
 
@@ -222,7 +230,11 @@ class PHPWS_Link {
             }
         }
 
-        $authkey = $this->getAuthKey();
+        if ($this->secure) {
+            $authkey = $this->getAuthKey();
+        } else {
+            $authkey = null;
+        }
 
         if ($this->full_url == true) {
             $link[] = PHPWS_HOME_HTTP;
@@ -309,6 +321,10 @@ class PHPWS_Link {
     {
         $this->onclick = $onclick;
     }
-}
 
+    public function convertAmp($con=true)
+    {
+        $this->convert_amp = (bool)$con;
+    }
+}
 ?>

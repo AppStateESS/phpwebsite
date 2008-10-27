@@ -34,4 +34,16 @@ $site_address = PHPWS_Core::getHomeHttp();
 if (!stristr($data['address'], $site_address)) {
     $data['address'] = $site_address .  $data['address'];
 }
+
+if (!empty($data['secure'])) {
+    if (!isset($_GLOBALS['open_window_reset'])) {
+        unset($_SESSION['secure_open_window']);
+        $_GLOBALS['open_window_reset'] = true;
+    }
+    $rand = PHPWS_Text::randomString();
+    $data['address'] .= '&amp;owpop=' . $rand;
+    $_SESSION['secure_open_window'][] = $rand;
+    $data['id'] = $rand;
+}
+
 ?>

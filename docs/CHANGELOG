@@ -4,6 +4,19 @@ its own separate CHANGELOG file..
 
 Version 1.9.0x
 ---------------------------------------------------------------------
+27 October 2008
++ Open window javascript has a secure option that a child window can
+  use to test the validity of the parent.
++ Core : securePopup function tests the validity of the opener window
+  dependant on the use of the secure option in open_window
++ New javascript secure_pop : used by Core to assure a parent called
+  the child window.
++ Link
+  o Can now salt the authkey with its values.
+  o convertAmp function added
++ Text : added saltArray function to help with salts from arrays
++ Added missing fckeditor improvements to update script.
+
 20 October 2008
 + Blog summary added to key in conversion.
 + Init.php - setlocale tries different utf8 configurations
@@ -66,7 +79,7 @@ Version 1.9.0x
 + Removed unused parameter.
 + Added randomString function to Text.
 + FCKeditor will now look for fckeditor.css in the current
-theme. Thanks again Verdon
+  theme. Thanks again Verdon
 
 29 September 2008
 + Freecap changed to fit new captcha class changes

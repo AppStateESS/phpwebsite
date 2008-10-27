@@ -64,7 +64,6 @@ class my_object extends Demographics_User {
 
 Here is what Comment's class looks like:
 class Comment_User extends Demographics_User {
-    var $display_name  = NULL; // this is copied from the user class
     var $signature     = NULL; // newly created field
     var $comments_made = 0;    // not part of demographics
     var $joined_date   = 0;    // copied from user class
