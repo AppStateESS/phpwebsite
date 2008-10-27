@@ -108,10 +108,12 @@ function rss_update(&$content, $version)
 + RSS will not pull expired or unpublished keys any longer.
 </pre>';
 
-    case version_compare($version, '0.2.6', '<'):
+    case version_compare($version, '0.3.0', '<'):
         $content[] = '<pre>
 0.3.0 changes
 -------------
++ Fixed feed date formats.
++ Sub ampersand code for straight &
 + PHP 5 formatted.
 </pre>';
 
