@@ -1,5 +1,17 @@
 Version 2.2.0
 ---------------------------------------------------------------------------------
+27 October 2008
++ File Cabinet permissions not required to pick items from menu.
++ File manager windows verify salted authkeys.
++ File manager allows dev to designate a reserved folder. Users will
+  be able to access that folder only.
++ Developer can force an upload width and height. Images will be
+  resized to those dimensions before saving them.
++ Fixed force resize option.
++ Updated: 
+  javascript/clear_file/body.js, default.php, head.js
+  javascript/update_file/head.js, default.php
+
 8 October 2008
 + Made File_Assoc::parentLinked function a little more robust.
 

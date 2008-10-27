@@ -10,7 +10,10 @@ class FC_File_Manager {
     public $file_assoc     = null;
     public $itemname       = null;
     public $folder_type    = 0;
-    public $current_folder = 0;
+    /**
+     * Contains current folder object
+     */
+    public $current_folder = null;
     public $max_width      = 0;
     public $max_height     = 0;
     public $max_size       = 0;
@@ -24,17 +27,24 @@ class FC_File_Manager {
      * id to session holding manager information
      */
     public $session_id  = null;
+    /**
+     * Reserved folders are called singularly by a module. 
+     * A selection of folders is not allowed
+     */
+    public $reserved_folder = 0;
+    public $force_upload_dimensions = false;
     public $_placeholder_max_width = null;
     public $_placeholder_max_height = null;
 
     public function __construct($module, $itemname, $file_id=0)
     {
-        $this->max_width = $this->max_height = PHPWS_Settings::get('filecabinet', 'max_image_dimension');
+        $this->max_width  = $this->max_height = PHPWS_Settings::get('filecabinet', 'max_image_dimension');
         $this->module     = & $module;
         $this->itemname   = & $itemname;
         $this->session_id = md5($this->module . $this->itemname);
         $this->loadFileAssoc($file_id);
         $this->lock_type = @$_SESSION['FM_Type_Lock'][$this->session_id];
+        $this->loadCurrentFolder();
     }
 
     /*
@@ -47,6 +57,10 @@ class FC_File_Manager {
          */
         switch($_REQUEST['fop']) {
         case 'open_file_manager':
+            if (!Current_User::verifySaltedUrl()) {
+                javascript('close_refresh');
+                Layout::nakedDisplay();
+            }
             return $this->openFileManager();
             break;
 
@@ -152,11 +166,22 @@ class FC_File_Manager {
      */
     public function placeHolder()
     {
+        /**
+         * A reserved folder will overwrite the lock_type
+         */
+        if ($this->reserved_folder) {
+            $reserved = new Folder($this->reserved_folder);
+            $this->lock_type = array($reserved->ftype);
+        }
+
+        /**
+         * Changed to allow anyone basic access
         if (!Current_User::allow('filecabinet')) {
             $placeholder_file = FC_NO_RIGHTS;
             $title = dgettext('filecabinet', 'Add an image, media, or document file.');
         }
-        elseif (!$this->lock_type) {
+        **/
+        if (!$this->lock_type) {
             $placeholder_file = FC_PLACEHOLDER;
             $title = dgettext('filecabinet', 'Add an image, media, or document file.');
         }
@@ -210,11 +235,11 @@ class FC_File_Manager {
         // Copy of image manager's getClearLink
         $tpl['PLACEHOLDER'] = 'pl_' . $this->session_id;
         $tpl['HIDDEN_ID']   = 'h_' . $this->session_id;
-        if (Current_User::allow('filecabinet')) {
-            $tpl['CLEAR_LINK']  = $this->clearLink();
-            $tpl['EDIT_LINK']   = $this->editLink();
-            $tpl['LINK_ID']     = 'l_' . $this->session_id;
-        }
+
+        $tpl['CLEAR_LINK']  = $this->clearLink();
+        $tpl['EDIT_LINK']   = $this->editLink();
+        $tpl['LINK_ID']     = 'l_' . $this->session_id;
+
         $tpl['ITEMNAME']    = $this->itemname;
         $this->file_assoc->loadCarousel();
         return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/placeholder.tpl');
@@ -223,9 +248,15 @@ class FC_File_Manager {
     // Copy of image manager's getClearLink
     public function clearLink()
     {
-        $js_vars['label']    = dgettext('filecabinet', 'Clear file');
-        $js_vars['id']       = $this->session_id;
-        $js_vars['img']      = str_replace("'", "\'", $this->placeHolder());
+        $js_vars['label'] = dgettext('filecabinet', 'Clear file');
+        $js_vars['id']    = $this->session_id;
+        $js_vars['img']   = str_replace("'", "\'", $this->placeHolder());
+
+        $add_vars = $this->linkInfo();
+        $add_vars['fop']  = 'open_file_manager';
+        $add_vars['fid'] = 0;
+        $js_vars['authkey'] = Current_User::getAuthKey(PHPWS_Text::saltArray($add_vars));
+
         return javascript('modules/filecabinet/clear_file', $js_vars);
     }
 
@@ -233,6 +264,8 @@ class FC_File_Manager {
     {
         $info['cm']   = $this->module;
         $info['itn']  = $this->itemname;
+        $info['rf'] = $this->reserved_folder;
+
         $info['fid']  = $this->file_assoc->id;
         $info['fr']   = $this->force_resize ? 1 : 0;
         $info['ml']   = $this->mod_limit ? 1 : 0;
@@ -247,10 +280,25 @@ class FC_File_Manager {
             }
         }
 
+        $info['fud'] = (int)$this->force_upload_dimensions;
+
         if ($this->folder_type) {
             $info['ftype'] = $this->folder_type;
         }
         return $info;
+    }
+
+    public function editAddress($fid=null)
+    {
+        $add_vars = $this->linkInfo();
+        $add_vars['fop']  = 'open_file_manager';
+        if (isset($fid)) {
+            $add_vars['fid'] = $fid;
+        }
+        $link = new PHPWS_Link(null, 'filecabinet', $add_vars, true);
+        $link->convertAmp(false);
+        $link->setSalted();
+        return $link->getAddress();
     }
 
     /**
@@ -267,12 +315,8 @@ class FC_File_Manager {
             $js['label'] = $label;
         }
         $js['title']   = dgettext('filecabinet', 'Edit the current file');
-
-        $add_vars = $this->linkInfo();
-        $add_vars['fop']  = 'open_file_manager';
-
-        $js['address'] = PHPWS_Text::linkAddress('filecabinet', $add_vars, true);
-        $js['window_name'] = $this->session_id;
+        $js['address'] = $this->editAddress();
+        $js['window_name'] = 'edit_file';
         return javascript('open_window', $js);
     }
 
@@ -332,8 +376,15 @@ class FC_File_Manager {
         $vars = $this->linkInfo();
         $vars['fop']   = 'fm_folders';
 
-        if (!$this->lock_type || in_array(FC_DOCUMENT, $this->lock_type)) {
-            if ($this->folder_type == DOCUMENT_FOLDER) {
+        if ($this->reserved_folder) {
+            $force_type = $this->current_folder->ftype;
+        } else {
+            $force_type = 0;
+        }
+
+        if ( (!$force_type || $force_type == DOCUMENT_FOLDER) &&
+             (!$this->lock_type || in_array(FC_DOCUMENT, $this->lock_type))) {
+            if ($this->folder_type == DOCUMENT_FOLDER  && !$force_type) {
                 $icon_name = 'document80.png';
             } else {
                 $icon_name = 'document80_bw.png';
@@ -342,13 +393,18 @@ class FC_File_Manager {
                                     $icon_name,
                                     dgettext('filecabinet', 'View document folders'));
 
-            $vars['ftype'] = DOCUMENT_FOLDER;
-            $document = PHPWS_Text::secureLink($document_img, 'filecabinet', $vars);
-            $tpl['DOCUMENT_ICON'] = & $document;
+            if ($force_type) {
+                $tpl['DOCUMENT_ICON'] = & $document_img;
+            } else {
+                $vars['ftype'] = DOCUMENT_FOLDER;
+                $document = PHPWS_Text::secureLink($document_img, 'filecabinet', $vars);
+                $tpl['DOCUMENT_ICON'] = & $document;
+            }
         }
 
-        if (!$this->lock_type || in_array(FC_IMAGE, $this->lock_type)) {
-            if ($this->folder_type == IMAGE_FOLDER) {
+        if ((!$force_type || $force_type == IMAGE_FOLDER) &&
+            (!$this->lock_type || in_array(FC_IMAGE, $this->lock_type))) {
+            if ($this->folder_type == IMAGE_FOLDER && !$force_type) {
                 $icon_name = 'image80.png';
             } else {
                 $icon_name = 'image80_bw.png';
@@ -357,13 +413,18 @@ class FC_File_Manager {
                                     $icon_name,
                                     dgettext('filecabinet', 'View image folders'));
 
-            $vars['ftype'] = IMAGE_FOLDER;
-            $image    = PHPWS_Text::secureLink($image_img, 'filecabinet', $vars);
-            $tpl['IMAGE_ICON']    = & $image;
+            if ($force_type) {
+                $tpl['IMAGE_ICON'] = & $image_img;
+            } else {
+                $vars['ftype'] = IMAGE_FOLDER;
+                $image = PHPWS_Text::secureLink($image_img, 'filecabinet', $vars);
+                $tpl['IMAGE_ICON']    = & $image;
+            }
         }
 
-        if (!$this->lock_type || in_array(FC_MEDIA, $this->lock_type)) {
-            if ($this->folder_type == MULTIMEDIA_FOLDER) {
+        if ((!$force_type || $force_type == MULTIMEDIA_FOLDER) &&
+            (!$this->lock_type || in_array(FC_MEDIA, $this->lock_type))) {
+            if ($this->folder_type == MULTIMEDIA_FOLDER  && !$force_type) {
                 $icon_name = 'media80.png';
             } else {
                 $icon_name = 'media80_bw.png';
@@ -372,9 +433,13 @@ class FC_File_Manager {
                                     $icon_name,
                                     dgettext('filecabinet', 'View media folders'));
 
-            $vars['ftype'] = MULTIMEDIA_FOLDER;
-            $media    = PHPWS_Text::secureLink($media_img, 'filecabinet', $vars);
-            $tpl['MEDIA_ICON']    = & $media;
+            if ($force_type) {
+                $tpl['MEDIA_ICON'] = & $media_img;
+            } else {
+                $vars['ftype'] = MULTIMEDIA_FOLDER;
+                $media    = PHPWS_Text::secureLink($media_img, 'filecabinet', $vars);
+                $tpl['MEDIA_ICON']    = & $media;
+            }
         }
     }
 
@@ -386,7 +451,6 @@ class FC_File_Manager {
         Layout::addStyle('filecabinet');
 
         $tpl = array();
-
         $this->folderIcons($tpl);
 
         $tpl['CLOSE'] = javascript('close_window');
@@ -437,9 +501,6 @@ class FC_File_Manager {
         javascript('confirm'); // needed for deletion
 
         Layout::addStyle('filecabinet');
-        if (isset($_GET['folder_id'])) {
-            $this->current_folder = new Folder($_GET['folder_id']);
-        }
 
         if (empty($this->current_folder) || empty($this->folder_type)) {
             javascript('alert', array('content' => dgettext('filecabinet', 'Problem with opening browser page. Closing File Manager window.')));
@@ -449,7 +510,7 @@ class FC_File_Manager {
 
         $tpl = array();
         $this->folderIcons($tpl);
-
+            
         if (Current_User::allow('filecabinet', 'edit_folders')) {
             $tpl['FOLDER_TITLE'] = $this->current_folder->editLink('title', $this->current_folder->module_created);
         } else {
@@ -484,71 +545,73 @@ class FC_File_Manager {
             $img1_alt   = dgettext('filecabinet', 'Random image icon');
             $img2_alt   = dgettext('filecabinet', 'Thumbnail icon');
 
-            if ($this->current_folder->public_folder) {
-                $altvars['id']        = $this->current_folder->id;
-                $altvars['fop']       = 'pick_file';
-                $altvars['file_type'] = FC_IMAGE_RANDOM;
-                $not_allowed = dgettext('filecabinet', 'Action not allowed');
+            if (!$this->reserved_folder) {
+                if ($this->current_folder->public_folder) {
+                    $altvars['id']        = $this->current_folder->id;
+                    $altvars['fop']       = 'pick_file';
+                    $altvars['file_type'] = FC_IMAGE_RANDOM;
+                    $not_allowed = dgettext('filecabinet', 'Action not allowed');
 
-                if (!$this->lock_type || in_array(FC_IMAGE_RANDOM, $this->lock_type)) {
-                    $img1_title = dgettext('filecabinet', 'Show a random image from this folder');
-                    $image1 = sprintf($image_string, $img_dir . $img1, $img1_title, $img1_alt);
-                    $tpl['ALT1'] = PHPWS_Text::secureLink($image1, 'filecabinet', $altvars);
+                    if (!$this->lock_type || in_array(FC_IMAGE_RANDOM, $this->lock_type)) {
+                        $img1_title = dgettext('filecabinet', 'Show a random image from this folder');
+                        $image1 = sprintf($image_string, $img_dir . $img1, $img1_title, $img1_alt);
+                        $tpl['ALT1'] = PHPWS_Text::secureLink($image1, 'filecabinet', $altvars);
 
-                    if ($this->file_assoc->file_type == FC_IMAGE_RANDOM && $this->current_folder->id == $this->file_assoc->file_id) {
-                        $tpl['ALT_HIGH1'] = ' alt-high';
+                        if ($this->file_assoc->file_type == FC_IMAGE_RANDOM && $this->current_folder->id == $this->file_assoc->file_id) {
+                            $tpl['ALT_HIGH1'] = ' alt-high';
+                        }
+                    } else {
+                        $image1 = sprintf($image_string, $img_dir . $img1, $not_allowed, $img1_alt);
+                        $tpl['ALT1'] = $image1;
+                        $tpl['ALT_HIGH1'] = ' no-use';
+                    }
+
+                    if (!$this->lock_type || in_array(FC_IMAGE_FOLDER, $this->lock_type)) {
+                        /** start new **/
+
+                        if ($this->file_assoc->file_type == FC_IMAGE_FOLDER) {
+                            $tpl['ALT_HIGH2'] = ' alt-high';
+                        }
+
+                        $img2_title = dgettext('filecabinet', 'Show block of thumbnails');
+                        $image2 = sprintf($image_string, $img_dir . $img2, $img2_title, $img2_alt);
+
+                        $form = new PHPWS_Form('carousel-options');
+                        $form->setMethod('get');
+                        $altvars['file_type'] = FC_IMAGE_FOLDER;
+                        $form->addHidden($altvars);
+                        $form->addHidden('module', 'filecabinet');
+
+                        $form->addRadioAssoc('direction', array(0=>dgettext('filecabinet', 'Horizontal'), 1=>dgettext('filecabinet', 'Vertical')));
+                        $match = $this->file_assoc->vertical;
+                        $form->setMatch('direction', $match);
+
+                        $num = array(1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8);
+                        $form->addSelect('num_visible', $num);
+                        $form->setLabel('num_visible', dgettext('filecabinet', 'Number shown'));
+                        $form->setMatch('num_visible', $this->file_assoc->num_visible);
+
+                        $form->addSubmit('go', dgettext('filecabinet', 'Go'));
+                        $subtpl = $form->getTemplate();
+                        $subtpl['DIRECTION_DESC'] = dgettext('filecabinet', 'Carousel direction');
+                        $subtpl['LINK'] = sprintf('<a href="#" onclick="return carousel_pick();">%s</a>',
+                                                  $image2);
+                        $subtpl['CANCEL'] = dgettext('filecabinet', 'Cancel');
+                        $tpl['ALT2'] = PHPWS_Template::process($subtpl, 'filecabinet', 'file_manager/carousel_pick.tpl');
+                    } else {
+                        $image2 = sprintf($image_string, $img_dir . $img2, $not_allowed, $img2_alt);
+                        $tpl['ALT2'] = $image2;
+                        $tpl['ALT_HIGH2'] = ' no-use';
                     }
                 } else {
+                    $not_allowed = dgettext('filecabinet', 'Action not allowed - private folder');
                     $image1 = sprintf($image_string, $img_dir . $img1, $not_allowed, $img1_alt);
+                    $image2 = sprintf($image_string, $img_dir . $img2, $not_allowed, $img2_alt);
                     $tpl['ALT1'] = $image1;
                     $tpl['ALT_HIGH1'] = ' no-use';
-                }
-
-                if (!$this->lock_type || in_array(FC_IMAGE_FOLDER, $this->lock_type)) {
-                    /** start new **/
-
-                    if ($this->file_assoc->file_type == FC_IMAGE_FOLDER) {
-                        $tpl['ALT_HIGH2'] = ' alt-high';
-                    }
-
-                    $img2_title = dgettext('filecabinet', 'Show block of thumbnails');
-                    $image2 = sprintf($image_string, $img_dir . $img2, $img2_title, $img2_alt);
-
-                    $form = new PHPWS_Form('carousel-options');
-                    $form->setMethod('get');
-                    $altvars['file_type'] = FC_IMAGE_FOLDER;
-                    $form->addHidden($altvars);
-                    $form->addHidden('module', 'filecabinet');
-
-                    $form->addRadioAssoc('direction', array(0=>dgettext('filecabinet', 'Horizontal'), 1=>dgettext('filecabinet', 'Vertical')));
-                    $match = $this->file_assoc->vertical;
-                    $form->setMatch('direction', $match);
-
-                    $num = array(1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8);
-                    $form->addSelect('num_visible', $num);
-                    $form->setLabel('num_visible', dgettext('filecabinet', 'Number shown'));
-                    $form->setMatch('num_visible', $this->file_assoc->num_visible);
-
-                    $form->addSubmit('go', dgettext('filecabinet', 'Go'));
-                    $subtpl = $form->getTemplate();
-                    $subtpl['DIRECTION_DESC'] = dgettext('filecabinet', 'Carousel direction');
-                    $subtpl['LINK'] = sprintf('<a href="#" onclick="return carousel_pick();">%s</a>',
-                                              $image2);
-                    $subtpl['CANCEL'] = dgettext('filecabinet', 'Cancel');
-                    $tpl['ALT2'] = PHPWS_Template::process($subtpl, 'filecabinet', 'file_manager/carousel_pick.tpl');
-                } else {
-                    $image2 = sprintf($image_string, $img_dir . $img2, $not_allowed, $img2_alt);
                     $tpl['ALT2'] = $image2;
                     $tpl['ALT_HIGH2'] = ' no-use';
                 }
-            } else {
-                $not_allowed = dgettext('filecabinet', 'Action not allowed - private folder');
-                $image1 = sprintf($image_string, $img_dir . $img1, $not_allowed, $img1_alt);
-                $image2 = sprintf($image_string, $img_dir . $img2, $not_allowed, $img2_alt);
-                $tpl['ALT1'] = $image1;
-                $tpl['ALT_HIGH1'] = ' no-use';
-                $tpl['ALT2'] = $image2;
-                $tpl['ALT_HIGH2'] = ' no-use';
             }
             break;
 
@@ -582,7 +645,7 @@ class FC_File_Manager {
                     $tpl['ALT1'] = $image1;
                     $tpl['ALT_HIGH1'] = ' no-use';
                 }
-            } else {
+            } elseif (!$this->current_folder->reserved) {
                 $not_allowed = dgettext('filecabinet', 'Action not allowed - private folder');
                 $image1 = sprintf($image_string, $img_dir . $img1, $not_allowed, $img1_alt);
                 $tpl['ALT1'] = $image1;
@@ -631,13 +694,23 @@ class FC_File_Manager {
                 $tpl['ALT_HIGH2'] = ' no-use';
             }
         }
+
         if (Current_User::allow('filecabinet', 'edit_folders', $this->current_folder->id, 'folder')) {
-            $tpl['ADD_FILE'] = $this->current_folder->uploadLink(true);
+            if ($this->force_upload_dimensions) {
+                $tpl['ADD_FILE'] = $this->current_folder->uploadLink(true, $this->max_width, $this->max_height);
+            } else {
+                $tpl['ADD_FILE'] = $this->current_folder->uploadLink(true);
+            }
         }
         $tpl['CLOSE'] = javascript('close_window');
         return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/folder_content_view.tpl');
     }
 
+    /**
+     * This is the popup window given as a result of clicking the edit file
+     * link from the manager. It is also used in subsequent requests within
+     * that window
+     */
     public function openFileManager()
     {
         /**
@@ -651,6 +724,10 @@ class FC_File_Manager {
                 $this->file_assoc = new FC_File_Assoc;
                 return $this->startView();
             }
+
+            return $this->folderContentView();
+        } elseif ($this->reserved_folder) {
+            $this->file_assoc = new FC_File_Assoc;
             return $this->folderContentView();
         } elseif ($this->lock_type) {
             switch (1) {
@@ -681,6 +758,8 @@ class FC_File_Manager {
             $vars['new_id']  = $file->id;
             $vars['vert']    = $file->vertical;
             $vars['vis']     = $file->num_visible;
+            $vars['url']     = $this->editAddress($file->id);
+
             javascript('modules/filecabinet/update_file', $vars);
         } else {
             exit(dgettext('filecabinet', 'An error occurred. Please check your logs.'));
@@ -798,6 +877,30 @@ class FC_File_Manager {
         $this->_placeholder_max_height = (int)$height;
     }
 
+    public function reservedFolder($folder_id)
+    {
+        $this->reserved_folder = (int)$folder_id;
+    }
+
+    public function setModule($module)
+    {
+        $this->module = $module;
+    }
+
+    public function loadCurrentFolder($folder_id=0)
+    {
+        if (!$folder_id && !empty($_GET['folder_id'])) {
+            $folder_id = (int)$_GET['folder_id'];
+        }
+
+        $this->current_folder = new Folder($folder_id);
+        $this->folder_type = $this->current_folder->ftype;
+    }
+
+    public function forceUploadDimensions($force=true)
+    {
+        $this->force_upload_dimensions = (bool)$force;
+    }
 }
 
 ?>

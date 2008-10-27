@@ -31,10 +31,6 @@ class Cabinet {
      */
     public function fmAdmin()
     {
-        if (!$this->authenticate()) {
-            Current_User::disallow();
-        }
-
         Layout::cacheOff();
         if ($this->loadFileManager()) {
             Layout::nakedDisplay($this->file_manager->admin(), null, false);
@@ -118,6 +114,15 @@ class Cabinet {
 
         if (isset($_GET['ml'])) {
             $this->file_manager->mod_limit = (bool)$_GET['ml'];
+        }
+
+        if (isset($_GET['fud'])) {
+            $this->file_manager->force_upload_dimensions = (bool)$_GET['fud'];
+        }
+
+        if (!empty($_GET['rf'])) {
+            $this->file_manager->reserved_folder = (int)$_GET['rf'];
+            $this->file_manager->loadCurrentFolder($this->file_manager->reserved_folder);
         }
 
         return true;
@@ -205,7 +210,7 @@ class Cabinet {
             break;
 
         case 'classify_action':
-            if (!Current_User::isDeity()) {
+            if (!Current_User::isDeity() || !Current_User::verifyAuthKey()) {
                 Current_User::errorPage();
             }
 
@@ -213,8 +218,8 @@ class Cabinet {
             break;
 
         case 'classify_file':
-            if (!Current_User::isDeity()) {
-                Current_User::errorPage();
+            if (!Current_User::isDeity() || !Current_User::verifyAuthKey()) {
+                Current_User::disallow();
             }
 
             $this->loadForms();
@@ -451,11 +456,13 @@ class Cabinet {
         Layout::add($main);
     }
 
-    public function fileManager($itemname, $file_id=0)
+    public function fileManager($itemname, $file_id=0, $module=null)
     {
         Layout::addStyle('filecabinet');
         PHPWS_Core::initModClass('filecabinet', 'File_Manager.php');
-        $module = $_REQUEST['module'];
+        if (empty($module)) {
+            $module = $_REQUEST['module'];
+        }
         if (!is_numeric($file_id)) {
             return false;
         }
@@ -992,15 +999,19 @@ class Cabinet {
         }
     }
 
-    public function authenticate()
+    public function authenticate($admin_only=true)
     {
         if (!Current_User::isLogged()) {
             javascript('close_refresh');
-            Layout::nakedDisplay();
+            Layout::nakedDisplay(dgettext('filecabinet', 'Cannot access this page.'));
             exit();
         }
 
-        return Current_User::allow('filecabinet');
+        if ($admin_only) {
+            return Current_User::allow('filecabinet');
+        } else {
+            return true;
+        }
     }
 
     public function convertToFileAssoc($table, $column, $type)

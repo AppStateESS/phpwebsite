@@ -145,81 +145,18 @@ class Folder {
         return PHPWS_Text::secureLink($img, 'filecabinet', array('aop'=>'unpin', 'folder_id'=>$this->id, 'key_id'=>$key->id));
     }
 
-    public function uploadLink($mode=null)
+    public function uploadLink($mode=null, $force_width=null, $force_height=null)
     {
         if ($this->ftype == DOCUMENT_FOLDER) {
             return $this->addLink('document', $mode);
         } elseif ($this->ftype == IMAGE_FOLDER) {
-            return $this->addLink('image', $mode);
+            return $this->addLink('image', $mode, $force_width, $force_height);
         } else {
             return $this->addLink('media', $mode);
         }
     }
 
-    public function imageUploadLink($mode=null)
-    {
-        $vars['address'] = PHPWS_Text::linkAddress('filecabinet',
-                                                   array('iop'      =>'upload_image_form',
-                                                         'folder_id'=>$this->id),
-                                                   true);
-        $vars['width']   = 600;
-        $vars['height']  = 600;
-        $label = dgettext('filecabinet', 'Add image');
-        $vars['title'] = & $label;
-
-        switch ($mode) {
-        case 'button':
-            $vars['label']   = $label;
-            $vars['type']    = 'button';
-            break;
-
-        case 'image':
-            $vars['label'] = sprintf('<img src="images/mod/filecabinet/add.png" alt="%s" title="%s" />', $label, $label);
-            break;
-
-        default:
-            $vars['label']   = $label;
-        }
-
-        return javascript('open_window', $vars);
-    }
-
-
-    public function documentUploadLink($mode=null)
-    {
-        $vars['address'] = PHPWS_Text::linkAddress('filecabinet',
-                                                   array('dop'      =>'upload_document_form',
-                                                         'folder_id'=>$this->id),
-                                                   true);
-        $vars['width']   = 600;
-        $vars['height']  = 600;
-
-        $label = dgettext('filecabinet', 'Add document');
-        $vars['title'] = & $label;
-
-        switch ($mode) {
-        case 'button':
-            $vars['label']   = $label;
-            $vars['type']    = 'button';
-            break;
-
-        case 'image':
-            $vars['label'] = sprintf('<img src="images/mod/filecabinet/add.png" alt="%s" title="%s" />', $label, $label);
-            break;
-
-        default:
-            $vars['label']   = $label;
-        }
-
-        return javascript('open_window', $vars);
-    }
-
-    public function multimediaUploadLink($mode=null)
-    {
-        return $this->addLink('media', $mode);
-    }
-
-    private function addLink($type, $mode=null)
+    private function addLink($type, $mode=null, $force_width=0, $force_height=0)
     {
         $vars['width']   = 600;
         $vars['height']  = 600;
@@ -228,6 +165,8 @@ class Folder {
         switch ($type) {
         case 'image':
             $link_var['iop'] = 'upload_image_form';
+            $link_var['fw'] = $force_width;
+            $link_var['fh'] = $force_height;
             $label = dgettext('filecabinet', 'Add image');
             break;
 
@@ -242,7 +181,10 @@ class Folder {
             break;
         }
 
-        $vars['address'] = PHPWS_Text::linkAddress('filecabinet', $link_var, true);
+        $link = new PHPWS_Link(null, 'filecabinet', $link_var, true);
+        $link->convertAmp(false);
+        $link->setSalted();
+        $vars['address'] = $link->getAddress();
         $vars['title'] = & $label;
 
         switch ($mode) {

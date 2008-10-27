@@ -21,6 +21,7 @@ class FC_Image_Manager {
     public $max_height  = 0;
     public $max_size    = 0;
     public $content     = null;
+    public $force_upload_dimenstion = false;
     /**
      * If true, manager will only show image folders for the current module
      */
@@ -55,7 +56,11 @@ class FC_Image_Manager {
             break;
 
         case 'upload_image_form':
-            $this->edit();
+            if (!empty($_GET['fw']) && !empty($_GET['fh'])) {
+                $this->edit((int)$_GET['fw'], (int)$_GET['fh']);
+            } else {
+                $this->edit();
+            }
             break;
 
         case 'clip_image':
@@ -87,7 +92,7 @@ class FC_Image_Manager {
     /**
      * Upload image form
      */
-    public function edit()
+    public function edit($force_width=0, $force_height=0)
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'filecabinet');
@@ -159,13 +164,19 @@ class FC_Image_Manager {
             $max_width = $this->max_width;
         }
 
-        $resizes = Cabinet::getResizes($max_width);
-
-        if (!empty($resizes)) {
-            $form->addSelect('resize', $resizes);
-            $form->setLabel('resize', dgettext('filecabinet', 'Resize image if over'));
+        if ($force_width && $force_height) {
+            $form->addHidden('fw', $force_width);
+            $form->addHidden('fh', $force_height);
+            $form->addTplTag('RESIZE_LABEL', dgettext('filecabinet', 'Images resized to:'));
+            $form->addTplTag('RESIZE', sprintf('%s x %spx', $force_width, $force_height));
+        } else {
+            $resizes = Cabinet::getResizes($max_width);
+            
+            if (!empty($resizes)) {
+                $form->addSelect('resize', $resizes);
+                $form->setLabel('resize', dgettext('filecabinet', 'Resize image if over'));
+            }
         }
-
         $rotate['none']  = dgettext('filecabinet', 'None');
         $rotate['90cw']  = dgettext('filecabinet', '90 degrees clockwise');
         $rotate['90ccw'] = dgettext('filecabinet', '90 degrees counter clockwise');

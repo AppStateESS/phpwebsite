@@ -17,16 +17,16 @@ if (!defined('FC_MIN_POPUP_SIZE')) {
 }
 
 class PHPWS_Image extends File_Common {
-    public $width            = NULL;
-    public $height           = NULL;
-    public $alt              = NULL;
+    public $width            = null;
+    public $height           = null;
+    public $alt              = null;
     public $url              = null;
 
     public $_classtype       = 'image';
     public $_max_width       = 0;
     public $_max_height      = 0;
 
-    public function __construct($id=NULL)
+    public function __construct($id=null)
     {
         $this->loadAllowedTypes();
         $this->setMaxWidth(PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
@@ -95,7 +95,7 @@ class PHPWS_Image extends File_Common {
     }
 
 
-    public function allowHeight($imageheight=NULL)
+    public function allowHeight($imageheight=null)
     {
         if (!isset($imageheight)) {
             $imageheight = &$this->height;
@@ -105,7 +105,7 @@ class PHPWS_Image extends File_Common {
     }
 
 
-    public function allowWidth($imagewidth=NULL)
+    public function allowWidth($imagewidth=null)
     {
         if (!isset($imagewidth)) {
             $imagewidth = &$this->width;
@@ -422,7 +422,6 @@ class PHPWS_Image extends File_Common {
 
     public function getManagerIcon($fmanager)
     {
-        $force = $fmanager->force_resize ? 'true' : 'false';
         if ( ($fmanager->max_width < $this->width) || ($fmanager->max_height < $this->height) ) {
             return sprintf('<a href="#" onclick="slider(%s); return false">%s</a>',
                            $this->id, $this->getThumbnail());
@@ -477,7 +476,9 @@ class PHPWS_Image extends File_Common {
         $vars['id'] = $this->id;
         $vars['file_type'] = 1;
 
-        $choices[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Use original image'), 'filecabinet', $vars);
+        if (!$fmanager->force_resize) {
+            $choices[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Use original image'), 'filecabinet', $vars);
+        }
 
         $vars['file_type'] = 7;
         $choices[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Resize image maintaining aspect'), 'filecabinet', $vars);
@@ -633,7 +634,10 @@ class PHPWS_Image extends File_Common {
 
     public function prewriteResize()
     {
-        if (isset($_POST['resize'])) {
+        if (!empty($_POST['fw']) && !empty($_POST['fh'])) {
+            $req_width  = $_POST['fw'];
+            $req_height = $_POST['fh'];
+        } elseif (isset($_POST['resize'])) {
             $req_height = $req_width  = $_POST['resize'];
         } else {
             $req_width = $this->_max_width;
