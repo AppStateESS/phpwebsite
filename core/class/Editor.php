@@ -25,7 +25,7 @@ class Editor {
     public $width      = 0;
     public $height     = 0;
 
-    function __construct($name=NULL, $data=NULL, $id=NULL, $type=NULL)
+    public function __construct($name=NULL, $data=NULL, $id=NULL, $type=NULL)
     {
         $editorList = $this->getEditorList();
 
@@ -65,7 +65,7 @@ class Editor {
         }
     }
 
-    function get()
+    public function get()
     {
         if (empty($this->type)) {
             return null;
@@ -84,22 +84,22 @@ class Editor {
         return Layout::getJavascript('editors/' . $this->type, $formData);
     }
 
-    function getEditorList()
+    public function getEditorList()
     {
         return PHPWS_File::readDirectory('javascript/editors/', TRUE);
     }
 
-    function getError()
+    public function getError()
     {
         return $this->error;
     }
 
-    function getName()
+    public function getName()
     {
         return $this->name;
     }
 
-    function getUserType()
+    public function getUserType()
     {
         if ($user_type = PHPWS_Cookie::read('phpws_editor')) {
             if ($user_type == 'none') {
@@ -120,27 +120,27 @@ class Editor {
         return DEFAULT_EDITOR_TOOL;
     }
 
-    function getType()
+    public function getType()
     {
         return $this->type;
     }
 
-    function isType($type_name)
+    public function isType($type_name)
     {
         return in_array($type_name, Editor::getEditorList());
     }
 
-    function setData($data)
+    public function setData($data)
     {
         $this->data = $data;
     }
 
-    function setName($name)
+    public function setName($name)
     {
         $this->name = $name;
     }
 
-    function setType($type)
+    public function setType($type)
     {
         if ($this->isType($type)) {
             $this->type = $type;
@@ -150,13 +150,13 @@ class Editor {
         }
     }
 
-    function useLimited($value=true)
+    public function useLimited($value=true)
     {
         $this->limited = (bool)$value;
     }
 
 
-    function willWork($type=null)
+    public function willWork($type=null)
     {
         if (FORCE_EDITOR) {
             return true;

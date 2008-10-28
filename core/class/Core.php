@@ -25,7 +25,7 @@ class PHPWS_Core {
     /**
      * Loads each module's /inc/init.php file
      */
-    function initializeModules()
+    public function initializeModules()
     {
         if (!$moduleList = PHPWS_Core::getModules()) {
             PHPWS_Error::log(PHPWS_NO_MODULES, 'core', 'initializeModules');
@@ -53,7 +53,7 @@ class PHPWS_Core {
     /**
      * Loads each module's inc/close.php file
      */
-    function closeModules()
+    public function closeModules()
     {
         if (!isset($GLOBALS['Modules'])) {
             PHPWS_Error::log(PHPWS_NO_MODULES, 'core', 'runtimeModules');
@@ -71,7 +71,7 @@ class PHPWS_Core {
     /**
      * Gets all the modules from the module table
      */
-    function getModules($active=true, $just_title=false)
+    public function getModules($active=true, $just_title=false)
     {
         $DB = new PHPWS_DB('modules');
         if ($active == true) {
@@ -93,7 +93,7 @@ class PHPWS_Core {
      * Array is indexed with the module title. The value of each
      * row is the module's proper name
      */
-    function getModuleNames()
+    public function getModuleNames()
     {
         if (isset($GLOBALS['Core_Module_Names'])) {
             return $GLOBALS['Core_Module_Names'];
@@ -117,7 +117,7 @@ class PHPWS_Core {
     /**
      * Returns a module object based on core
      */
-    function &loadAsMod($use_file=true)
+    public function &loadAsMod($use_file=true)
     {
         PHPWS_Core::initCoreClass('Module.php');
         $core_mod = new PHPWS_Module('core', $use_file);
@@ -128,7 +128,7 @@ class PHPWS_Core {
     /**
      * Loads each module's inc/runtime.php file
      */
-    function runtimeModules()
+    public function runtimeModules()
     {
         if (!isset($GLOBALS['Modules'])) {
             PHPWS_Error::log(PHPWS_NO_MODULES, 'core', 'runtimeModules');
@@ -145,7 +145,7 @@ class PHPWS_Core {
     /**
      * Loads the index.php file of the currently selected module
      */
-    function runCurrentModule()
+    public function runCurrentModule()
     {
         if (isset($_REQUEST['module'])) {
             $mods = PHPWS_Core::getModules(true, true);
@@ -166,7 +166,7 @@ class PHPWS_Core {
      * Requires a module's class file once
      * Returns true is successful, false otherwise
      */
-    function initModClass($module, $file)
+    public function initModClass($module, $file)
     {
         $classFile = PHPWS_SOURCE_DIR . 'mod/' . $module . '/class/' . $file;
         if (is_file($classFile)) {
@@ -184,7 +184,7 @@ class PHPWS_Core {
      * Requires a core class file once
      * Returns true is successful, false otherwise
      */
-    function initCoreClass($file)
+    public function initCoreClass($file)
     {
         $classFile = PHPWS_SOURCE_DIR . 'core/class/' . $file;
 
@@ -203,7 +203,7 @@ class PHPWS_Core {
      * Sets the last form post made to the website.
      * Works with isPosted
      */
-    function setLastPost()
+    public function setLastPost()
     {
         $key = PHPWS_Core::_getPostKey();
         if (!PHPWS_Core::isPosted()) {
@@ -224,7 +224,7 @@ class PHPWS_Core {
      * Makes a post key to track past posts
      * Works with setLastPost and isPosted
      */
-    function _getPostKey()
+    public function _getPostKey()
     {
         $key = serialize($_POST);
 
@@ -245,7 +245,7 @@ class PHPWS_Core {
      * If return_count is true, it returns the number of attempts
      * made with the same post.
      */
-    function isPosted($return_count=false)
+    public function isPosted($return_count=false)
     {
         if (!isset($_SESSION['PHPWS_LastPost']) || !isset($_POST)) {
             return false;
@@ -266,7 +266,7 @@ class PHPWS_Core {
         }
     }
 
-    function atHome()
+    public function atHome()
     {
         if (isset($_REQUEST['module']) || isset($_POST['module']) || isset($_GET['module'])) {
             return false;
@@ -275,7 +275,7 @@ class PHPWS_Core {
         }
     }
 
-    function bookmark($allow_authkey=true)
+    public function bookmark($allow_authkey=true)
     {
         $url = PHPWS_Core::getCurrentUrl();
 
@@ -286,7 +286,7 @@ class PHPWS_Core {
         $_SESSION['PHPWS_Bookmark'] = $url;
     }
 
-    function returnToBookmark($clear_bm=true)
+    public function returnToBookmark($clear_bm=true)
     {
         if (isset($_SESSION['PHPWS_Bookmark'])) {
             $bm = $_SESSION['PHPWS_Bookmark'];
@@ -303,7 +303,7 @@ class PHPWS_Core {
     /**
      * Returns the user browser to the referer (last web page)
      */
-    function goBack()
+    public function goBack()
     {
         if (isset($_SERVER['HTTP_REFERER'])) {
             // prevent an endless loop
@@ -321,7 +321,7 @@ class PHPWS_Core {
     /**
      * Sends the user to the home page (index.php)
      */
-    function home()
+    public function home()
     {
         PHPWS_Core::reroute();
     }
@@ -329,7 +329,7 @@ class PHPWS_Core {
     /**
      * Returns a url prefix dependent on the security
      */
-    function getHttp()
+    public function getHttp()
     {
         if ( isset($_SERVER['HTTPS']) &&
              strtolower($_SERVER['HTTPS']) == 'on' ) {
@@ -343,7 +343,7 @@ class PHPWS_Core {
      * Sends a location header based on the relative link passed
      * to the function.
      */
-    function reroute($address=NULL)
+    public function reroute($address=NULL)
     {
         // Set last post since we will be skipping it
         PHPWS_Core::setLastPost();
@@ -370,7 +370,7 @@ class PHPWS_Core {
     /**
      * Kills a current page session
      */
-    function killSession($sess_name)
+    public function killSession($sess_name)
     {
         $_SESSION[$sess_name] = NULL;
         unset($_SESSION[$sess_name]);
@@ -379,7 +379,7 @@ class PHPWS_Core {
     /**
      * Kills all sessions currently loaded
      */
-    function killAllSessions()
+    public function killAllSessions()
     {
         $_SESSION = array();
         unset($_SESSION);
@@ -389,7 +389,7 @@ class PHPWS_Core {
     /**
      * Returns true is a module is installed, false otherwise
      */
-    function moduleExists($module)
+    public function moduleExists($module)
     {
         return isset($GLOBALS['Modules'][$module]);
     }
@@ -397,7 +397,7 @@ class PHPWS_Core {
     /**
      * Returns the currently active module
      */
-    function getCurrentModule()
+    public function getCurrentModule()
     {
         return $GLOBALS['PHPWS_Current_Mod'];
     }
@@ -405,7 +405,7 @@ class PHPWS_Core {
     /**
      * Sets the currently active module
      */
-    function setCurrentModule($module)
+    public function setCurrentModule($module)
     {
         $GLOBALS['PHPWS_Current_Mod'] = $module;
     }
@@ -414,7 +414,7 @@ class PHPWS_Core {
      * Retrieves a module's config file path. If the file
      * does not exist, it returns false instead.
      */
-    function getConfigFile($module, $file=NULL)
+    public function getConfigFile($module, $file=NULL)
     {
         if (empty($file)) {
             $file = 'config.php';
@@ -448,7 +448,7 @@ class PHPWS_Core {
     /**
      * Pseudoname of configRequireOnce
      */
-    function requireConfig($module, $file=NULL, $exitOnError=true)
+    public function requireConfig($module, $file=NULL, $exitOnError=true)
     {
         return PHPWS_Core::configRequireOnce($module, $file, $exitOnError);
     }
@@ -457,7 +457,7 @@ class PHPWS_Core {
     /**
      * Like requireConfig but for files in the inc directory
      */
-    function requireInc($module, $file, $exitOnError=true)
+    public function requireInc($module, $file, $exitOnError=true)
     {
         $inc_file = sprintf('%smod/%s/inc/%s', PHPWS_SOURCE_DIR, $module, $file);
 
@@ -481,7 +481,7 @@ class PHPWS_Core {
      * Loads a config file via a require. If missing, shows error page.
      * If file is NULL, function assumes 'config.php'
      */
-    function configRequireOnce($module, $file=NULL, $exitOnError=true)
+    public function configRequireOnce($module, $file=NULL, $exitOnError=true)
     {
         if (empty($file)) {
             $file = 'config.php';
@@ -506,7 +506,7 @@ class PHPWS_Core {
     /**
      * Uses the Pear log class to write a log file to the logs directory
      */
-    function log($message, $filename, $type=NULL)
+    public function log($message, $filename, $type=NULL)
     {
         require_once 'Log.php';
 
@@ -534,7 +534,7 @@ class PHPWS_Core {
     /**
      * Routes the user to a HTML file. File depends on code passed to it.
      */
-    function errorPage($code=NULL)
+    public function errorPage($code=NULL)
     {
         switch ($code) {
         case '400':
@@ -567,7 +567,7 @@ class PHPWS_Core {
     /**
      * Returns true if server OS is Windows
      */
-    function isWindows()
+    public function isWindows()
     {
         if (isset($_SERVER['WINDIR']) ||
             preg_match('/(microsoft|win32)/i', $_SERVER['SERVER_SOFTWARE'])) {
@@ -582,7 +582,7 @@ class PHPWS_Core {
      * POST without an error message. checkOverPost sends the user to an
      * overpost error page.
      */
-    function checkOverPost()
+    public function checkOverPost()
     {
         if (!isset($_GET['check_overpost'])) {
             return true;
@@ -599,7 +599,7 @@ class PHPWS_Core {
      * to make sure they are not writable. These directories are often made writable
      * when a module is updated or installed
      */
-    function checkSecurity()
+    public function checkSecurity()
     {
         if (CHECK_DIRECTORY_PERMISSIONS == true) {
             if (is_writable('./config/') || is_writable('./templates/') || is_writable('./javascript/modules/')) {
@@ -612,7 +612,7 @@ class PHPWS_Core {
     /**
      * Returns an array of the core modules. Set from the core_modules.php file.
      */
-    function coreModList()
+    public function coreModList()
     {
         static $core_modules = NULL;
 
@@ -632,7 +632,7 @@ class PHPWS_Core {
     /**
      * Returns an array of all installed modules
      */
-    function installModList($active_only=false)
+    public function installModList($active_only=false)
     {
         $db = new PHPWS_DB('modules');
         if ($active_only) {
@@ -646,7 +646,7 @@ class PHPWS_Core {
      * Returns an array with containing all the values of
      * the passed object.
      */
-    function stripObjValues($object)
+    public function stripObjValues($object)
     {
         $className = get_class($object);
         $classVars = get_class_vars($className);
@@ -675,7 +675,7 @@ class PHPWS_Core {
      * If arguments are sent in the third parameter, plugObject will call 
      * the object's postPlug function and send those arguments to it.
      */
-    function plugObject($object, $variables, $args=null)
+    public function plugObject($object, $variables, $args=null)
     {
         $post_plug = isset($args) && method_exists($object, 'postPlug');
 
@@ -709,7 +709,7 @@ class PHPWS_Core {
     /**
      * Returns the installation's home directory
      */
-    function getHomeDir()
+    public function getHomeDir()
     {
         $address[] = $_SERVER['DOCUMENT_ROOT'];
         $address[] = dirname($_SERVER['PHP_SELF']);
@@ -719,7 +719,7 @@ class PHPWS_Core {
     /**
      * Returns the installations url address
      */
-    function getHomeHttp($with_http=true, $with_directory=true, $with_slash=true)
+    public function getHomeHttp($with_http=true, $with_directory=true, $with_slash=true)
     {
         if ($with_http) {
             $address[] = PHPWS_Core::getHttp();
@@ -750,7 +750,7 @@ class PHPWS_Core {
      * the same as far as this function is concerned.
      * Mix up your class names.
      */
-    function isClass(&$object, $class_name)
+    public function isClass(&$object, $class_name)
     {
         if (!is_object($object)) {
             return false;
@@ -766,7 +766,7 @@ class PHPWS_Core {
     /**
      * returns the full phpwebsite release version
      */
-    function releaseVersion()
+    public function releaseVersion()
     {
         include 'config/core/version.php';
         return $version;
@@ -778,7 +778,7 @@ class PHPWS_Core {
      * @param boolean get_file  If true, uses the boost.php file, if false
      *                          uses the database version.
      */
-    function getVersionInfo($get_file=true)
+    public function getVersionInfo($get_file=true)
     {
 
         $file = PHPWS_SOURCE_DIR . 'core/boost/boost.php';
@@ -805,7 +805,7 @@ class PHPWS_Core {
      * If redirect is true and a redirect occurs at the root level,
      * index.php is returned.
      */
-    function getCurrentUrl($relative=true, $use_redirect=true)
+    public function getCurrentUrl($relative=true, $use_redirect=true)
     {
         if (!$relative) {
             $address[] = PHPWS_Core::getHomeHttp();
@@ -843,7 +843,7 @@ class PHPWS_Core {
      * an allowed branch. If false is returned, the index file
      * drops the user to an error page. Also sets the Is_Branch GLOBAL
      */
-    function checkBranch()
+    public function checkBranch()
     {
         if (php_sapi_name() == 'cgi' && PHPWS_SOURCE_DIR == getcwd() . '/') {
             $GLOBALS['Is_Branch'] = false;
@@ -872,7 +872,7 @@ class PHPWS_Core {
      * If a module needs to check if it is in the hub working on a branch, PHPWS_Boost::inBranch
      * should be used instead.
      */
-    function isBranch()
+    public function isBranch()
     {
         if (!isset($GLOBALS['Is_Branch'])) {
             return false;
@@ -880,7 +880,7 @@ class PHPWS_Core {
         return $GLOBALS['Is_Branch'];
     }
 
-    function allowScriptTags()
+    public function allowScriptTags()
     {
         if (ALLOW_SCRIPT_TAGS && class_exists('Current_User') &&
             Current_User::allow('users', 'scripting')) {
@@ -891,7 +891,7 @@ class PHPWS_Core {
     }
 
     
-    function securePopup()
+    public function securePopup()
     {
         if (!class_exists('Layout')) {
             exit(_('Unable to display contents.'));

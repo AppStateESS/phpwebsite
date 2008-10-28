@@ -852,7 +852,7 @@ class PHPWS_Text {
      * @param integer characters Number of characters in string
      * @return string
      */
-    function randomString($characters=8)
+    public function randomString($characters=8)
     {
         $characters = (int)$characters;
         $alpha = '023456789abcdefghijkmnopqrstuvwxyz';
@@ -869,7 +869,7 @@ class PHPWS_Text {
      * Changes an array into a serialized string for salting
      * a link's values
      */
-    function saltArray($values)
+    public function saltArray($values)
     {
         foreach ($values as $key=>$val) {
             $values[$key] = (string)$val;

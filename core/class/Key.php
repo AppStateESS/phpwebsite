@@ -62,7 +62,7 @@ class Key {
 
     public  $_error         = null;
 
-    function __construct($id=null)
+    public function __construct($id=null)
     {
         if (empty($id)) {
             return null;
@@ -72,7 +72,7 @@ class Key {
         $this->init();
     }
 
-    function isKey($key)
+    public function isKey($key)
     {
         if (is_object($key) && strtolower(get_class($key)) == 'key') {
             return true;
@@ -84,7 +84,7 @@ class Key {
     /**
      * returns the url in a link
      */
-    function getUrl($full_path=false)
+    public function getUrl($full_path=false)
     {
         if ($full_path) {
             return sprintf('<a href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(), $this->url, $this->title);
@@ -93,22 +93,22 @@ class Key {
         }
     }
 
-    function getCreateDate($format = '%c')
+    public function getCreateDate($format = '%c')
     {
         return strftime($format, PHPWS_Time::getServerTime($this->create_date));
     }
 
-    function getUpdateDate($format = '%c')
+    public function getUpdateDate($format = '%c')
     {
         return strftime($format, PHPWS_Time::getServerTime($this->update_date));
     }
 
-    function restrictToLogged()
+    public function restrictToLogged()
     {
         $this->restricted = KEY_LOGGED_RESTRICTED;
     }
 
-    function restrictToGroups($groups=null)
+    public function restrictToGroups($groups=null)
     {
         if (!is_array($groups)) {
             return false;
@@ -119,7 +119,7 @@ class Key {
         }
     }
 
-    function setViewGroups($groups)
+    public function setViewGroups($groups)
     {
         foreach ($groups as $group_id) {
             if (is_numeric($group_id)) {
@@ -129,12 +129,12 @@ class Key {
     }
 
     // restricted means that only logged users can access
-    function isRestricted()
+    public function isRestricted()
     {
         return (bool)$this->restricted;
     }
 
-    function setEditPermission($permission)
+    public function setEditPermission($permission)
     {
         if (empty($permission)) {
             $this->edit_permission = null;
@@ -143,12 +143,12 @@ class Key {
         }
     }
 
-    function setShowAfter($date)
+    public function setShowAfter($date)
     {
         $this->show_after = (int)$date;
     }
 
-    function setHideAfter($date)
+    public function setHideAfter($date)
     {
         $date = (int)$date;
         if (!$date) {
@@ -158,7 +158,7 @@ class Key {
         }
     }
 
-    function loadViewGroups()
+    public function loadViewGroups()
     {
         $db = new PHPWS_DB('phpws_key_view');
         $db->addWhere('key_id', $this->id);
@@ -172,7 +172,7 @@ class Key {
         $this->_view_groups = $result;
     }
 
-    function getViewGroups()
+    public function getViewGroups()
     {
         if (!isset($this->_view_groups)) {
             $this->loadViewGroups();
@@ -180,7 +180,7 @@ class Key {
         return $this->_view_groups;
     }
 
-    function loadEditGroups()
+    public function loadEditGroups()
     {
         $db = new PHPWS_DB('phpws_key_edit');
         $db->addWhere('key_id', $this->id);
@@ -193,7 +193,7 @@ class Key {
         $this->_edit_groups = $result;
     }
 
-    function getEditGroups()
+    public function getEditGroups()
     {
         if (!isset($this->_edit_groups)) {
             $this->loadEditGroups();
@@ -201,7 +201,7 @@ class Key {
         return $this->_edit_groups;
     }
 
-    function allowView($check_dates=true)
+    public function allowView($check_dates=true)
     {
         if (Current_User::allow($this->module, $this->edit_permission,
                                       $this->item_id, $this->item_name)) {
@@ -238,7 +238,7 @@ class Key {
         return true;
     }
 
-    function allowEdit()
+    public function allowEdit()
     {
         if (empty($this->edit_permission)) {
             return true;
@@ -248,7 +248,7 @@ class Key {
                                    $this->item_id, $this->item_name);
     }
 
-    function init()
+    public function init()
     {
         $db = new PHPWS_DB('phpws_key');
 
@@ -264,7 +264,7 @@ class Key {
         return $result;
     }
 
-    function save()
+    public function save()
     {
         // No need to save dummy keys
         if ($this->id === 0) {
@@ -319,7 +319,7 @@ class Key {
         return true;
     }
 
-    function savePermissions()
+    public function savePermissions()
     {
         if (!$this->id) {
             return false;
@@ -376,34 +376,34 @@ class Key {
         return true;
     }
 
-    function setModule($module)
+    public function setModule($module)
     {
         $this->module = $module;
     }
 
-    function setItemName($item_name)
+    public function setItemName($item_name)
     {
         $this->item_name = $item_name;
     }
 
-    function setItemId($item_id)
+    public function setItemId($item_id)
     {
         $this->item_id = $item_id;
 
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = PHPWS_Text::condense($title);
     }
 
-    function setSummary($summary)
+    public function setSummary($summary)
     {
         $summary = preg_replace('/(<|&lt;|\[).*(>|&gt;|\])/sUi', ' ', $summary);
         $this->summary = trim(PHPWS_Text::condense($summary, 255));
     }
 
-    function setUrl($url, $local=true)
+    public function setUrl($url, $local=true)
     {
         if (preg_match('/^<a/', trim($url))) {
             $url = preg_replace('/<a href="(.*)".*<\/a>/iU', '\\1', $url);
@@ -416,7 +416,7 @@ class Key {
         $this->url = preg_replace('/&?authkey=\w{32}/', '', $this->url);
     }
 
-    function isActive()
+    public function isActive()
     {
         return (bool)$this->active;
     }
@@ -424,12 +424,12 @@ class Key {
     /**
      * Returns true, if the key is from the home page
      */
-    function isHomeKey()
+    public function isHomeKey()
     {
         return ($this->module == 'home' ? true : false);
     }
 
-    function getHomeKey()
+    public function getHomeKey()
     {
         if (!isset($GLOBALS['Home_Key'])) {
             $key = new Key;
@@ -444,7 +444,7 @@ class Key {
         return $GLOBALS['Home_Key'];
     }
 
-    function flag()
+    public function flag()
     {
         if (!isset($this->id)) {
             $this->id = 0;
@@ -453,13 +453,13 @@ class Key {
         $GLOBALS['Current_Flag'] = $this;
     }
 
-    function drop($key_id)
+    public function drop($key_id)
     {
         $key = new Key($key_id);
         return $key->delete();
     }
 
-    function getTplTags()
+    public function getTplTags()
     {
         $module_names = PHPWS_Core::getModuleNames();
 
@@ -476,7 +476,7 @@ class Key {
         return $tpl;
     }
 
-    function delete()
+    public function delete()
     {
         $all_is_well = true;
         $db = new PHPWS_DB('phpws_key');
@@ -516,7 +516,7 @@ class Key {
      * Retrieves the current flagged key. Will return the home key if
      * on the home page and allow_home is true.
      */
-    function getCurrent($allow_home=true)
+    public function getCurrent($allow_home=true)
     {
         if (!isset($GLOBALS['Current_Flag'])) {
             if (isset($_REQUEST['module']) || !$allow_home) {
@@ -542,7 +542,7 @@ class Key {
      * to your db object.
      *
      */
-    function restrictView($db, $module=null, $check_dates=true, $source_table=null)
+    public function restrictView($db, $module=null, $check_dates=true, $source_table=null)
     {
         $now = mktime();
         if (empty($source_table)) {
@@ -637,7 +637,7 @@ class Key {
      * will be added (i.e. where 1 = 0);
      */
 
-    function restrictEdit($db, $module, $edit_permission, $source_table=null)
+    public function restrictEdit($db, $module, $edit_permission, $source_table=null)
     {
         if (Current_User::isDeity()) {
             return;
@@ -678,7 +678,7 @@ class Key {
 
     }
 
-    function modulesInUse()
+    public function modulesInUse()
     {
         $db = new PHPWS_DB('phpws_key');
         $db->addColumn('module');
@@ -690,7 +690,7 @@ class Key {
         return $db->select('col');
     }
 
-    function viewed()
+    public function viewed()
     {
         if (!$this->id || $this->isHomeKey()) {
             return;
@@ -710,7 +710,7 @@ class Key {
     /**
      * A set of checks on a key to see if it is usable for content indexing
      */
-    function checkKey($key, $allow_home_key=true) {
+    public function checkKey($key, $allow_home_key=true) {
         if ( empty($key) || isset($key->_error) ) {
             return false;
         }
@@ -728,7 +728,7 @@ class Key {
         return true;
     }
 
-    function isDummy($allow_home=false)
+    public function isDummy($allow_home=false)
     {
         if ($this->id === 0) {
             if ($this->isHomeKey() && $allow_home) {
@@ -741,12 +741,12 @@ class Key {
         }
     }
 
-    function blockPopup($module)
+    public function blockPopup($module)
     {
         $GLOBALS['Key_Blocked_Popups'][] = $module;
     }
 
-    function isBlocked($module)
+    public function isBlocked($module)
     {
         if (empty($module) ||
             !is_string($module) ||
@@ -758,7 +758,7 @@ class Key {
         return in_array($module, $GLOBALS['Key_Blocked_Popups']);
     }
 
-    function unregister()
+    public function unregister()
     {
         $success = true;
         $db = new PHPWS_DB('phpws_key_register');
@@ -793,7 +793,7 @@ class Key {
         return $success;
     }
 
-    function registerModule($module)
+    public function registerModule($module)
     {
         $db = new PHPWS_DB('phpws_key_register');
         $db->addValue('module', $module);
@@ -808,7 +808,7 @@ class Key {
      * Returns true is all is well, false if there was a problem cleaning
      * up the associations, and an error object if a major problem occurred.
      */
-    function unregisterModule($module)
+    public function unregisterModule($module)
     {
         $error_free = true;
 
@@ -838,7 +838,7 @@ class Key {
         return $error_free;
     }
 
-    function getAllIds($module)
+    public function getAllIds($module)
     {
         $db = new PHPWS_DB('phpws_key');
         $db->addColumn('id');
@@ -846,7 +846,7 @@ class Key {
         return $db->select('col');
     }
 
-    function getKey($module, $item_id, $item_name=null)
+    public function getKey($module, $item_id, $item_name=null)
     {
         $key = new Key;
         if (empty($item_name)) {
@@ -863,7 +863,7 @@ class Key {
         }
     }
 
-    function getError()
+    public function getError()
     {
         return $this->_error;
     }

@@ -10,7 +10,7 @@
 
 class PHPWS_Time {
 
-    function convertServerTime($time)
+    public function convertServerTime($time)
     {
         $admin_offset = 3600 * PHPWS_Time::getServerTZ();
         $server_offset = date('Z');
@@ -19,7 +19,7 @@ class PHPWS_Time {
         return $time;
     }
 
-    function convertUserTime($time)
+    public function convertUserTime($time)
     {
         $user_offset = 3600 * PHPWS_Time::getUserTZ();
         $server_offset = date('Z');
@@ -31,7 +31,7 @@ class PHPWS_Time {
     /**
      * Returns a time in iCal format
      */
-    function getDTTime($time=0, $mode='utc')
+    public function getDTTime($time=0, $mode='utc')
     {
         if (!$time) {
             $time = mktime();
@@ -83,7 +83,7 @@ class PHPWS_Time {
     }
 
 
-    function getServerTime($time=0)
+    public function getServerTime($time=0)
     {
         if (!$time) {
             $time = mktime();
@@ -96,7 +96,7 @@ class PHPWS_Time {
         return $time;
     }
 
-    function getUserTime($time=0)
+    public function getUserTime($time=0)
     {
         if (!$time) {
             $time = mktime();
@@ -110,7 +110,7 @@ class PHPWS_Time {
     }
 
 
-    function getServerTZ()
+    public function getServerTZ()
     {
         static $server_tz = NULL;
 
@@ -140,7 +140,7 @@ class PHPWS_Time {
      * Get user's timezone or the server time zone if none is
      * set
      */
-    function getUserTZ()
+    public function getUserTZ()
     {
         $user_tz = PHPWS_Cookie::read('user_tz');
 
@@ -157,7 +157,7 @@ class PHPWS_Time {
     }
 
 
-    function getTimeArray($time=0)
+    public function getTimeArray($time=0)
     {
         if (!$time) {
             $time = PHPWS_Time::getServerTime();
@@ -174,7 +174,7 @@ class PHPWS_Time {
     }
 
 
-    function getTZList()
+    public function getTZList()
     {
         $file = PHPWS_Core::getConfigFile('core', 'timezone.php');
         include $file;
@@ -190,7 +190,7 @@ class PHPWS_Time {
      * @date   2006-02-03
      *
      */
-    function relativeTime($timestamp, $format='%c')
+    public function relativeTime($timestamp, $format='%c')
     {
         $rel   = time() - $timestamp;
         $mins  = floor($rel / 60);
