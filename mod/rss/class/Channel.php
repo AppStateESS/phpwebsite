@@ -142,10 +142,10 @@ class RSS_Channel {
         $this->loadFeeds();
 
         $home_http = PHPWS_Core::getHomeHttp();
-        $template['CHANNEL_TITLE']       = utf8_encode(preg_replace('/&(?!amp;)/', '&amp;', $this->title));
+        $template['CHANNEL_TITLE']       = preg_replace('/&(?!amp;)/', '&amp;', $this->title);
         $template['CHANNEL_ADDRESS']     = $this->getAddress();
         $template['HOME_ADDRESS']        = $home_http;
-        $template['CHANNEL_DESCRIPTION'] = utf8_encode(preg_replace('/&(?!amp;)/', '&amp;', $this->description));
+        $template['CHANNEL_DESCRIPTION'] = preg_replace('/&(?!amp;)/', '&amp;', $this->description);
         $template['LANGUAGE']            = CURRENT_LANGUAGE; // change later
         $template['SEARCH_LINK'] = sprintf('%sindex.php?module=search&amp;mod_title=%s&amp;user=search',
                                            $home_http, $this->module);
@@ -167,20 +167,20 @@ class RSS_Channel {
                 $url = preg_replace('/^\.\//', '', $key->url);
                 $url = $home_http . preg_replace('/&(?!amp;)/', '&amp;', $url);
                 $itemTpl['ITEM_LINK']         = $url;
-                $itemTpl['ITEM_TITLE']        = utf8_encode(preg_replace('/&(?!amp;)/', '&amp;', $key->title));
+                $itemTpl['ITEM_TITLE']        = preg_replace('/&(?!amp;)/', '&amp;', $key->title);
                 $itemTpl['ITEM_GUID']         = $url;
                 $itemTpl['ITEM_LINK']         = $url;
                 $itemTpl['ITEM_SOURCE']       = sprintf('%sindex.php?module=rss&amp;mod_title=%s', $home_http, $this->module);
 
-                $itemTpl['ITEM_DESCRIPTION']  = utf8_encode(strip_tags(trim(preg_replace('/&(?!amp;)/', '&amp;', $key->summary))));
-                $itemTpl['ITEM_AUTHOR']       = utf8_encode($key->creator);
-                $itemTpl['ITEM_PUBDATE']      = utf8_encode($key->getCreateDate('%a, %d %b %Y %T GMT'));
+                $itemTpl['ITEM_DESCRIPTION']  = strip_tags(trim(preg_replace('/&(?!amp;)/', '&amp;', $key->summary)));
+                $itemTpl['ITEM_AUTHOR']       = $key->creator;
+                $itemTpl['ITEM_PUBDATE']      = $key->getCreateDate('%a, %d %b %Y %T GMT');
 
-                $itemTpl['ITEM_DC_DATE']      = utf8_encode($key->getCreateDate('%Y-%m-%dT%H:%M:%S') . $timezone);
+                $itemTpl['ITEM_DC_DATE']      = $key->getCreateDate('%Y-%m-%dT%H:%M:%S') . $timezone;
                 $itemTpl['ITEM_DC_TYPE']      = 'Text'; //pull from db later
-                $itemTpl['ITEM_DC_CREATOR']   = utf8_encode($key->creator);
+                $itemTpl['ITEM_DC_CREATOR']   = $key->creator;
 
-                $itemTpl['ITEM_SOURCE_TITLE'] = utf8_encode(preg_replace('/&(?!amp;)/', '&amp;', $this->title));
+                $itemTpl['ITEM_SOURCE_TITLE'] = preg_replace('/&(?!amp;)/', '&amp;', $this->title);
 
                 $template['item-listing'][] = $itemTpl;
             }
@@ -193,6 +193,7 @@ class RSS_Channel {
         }
 
         $content = PHPWS_Template::process($template, 'rss', $tpl_file);
+        $content = utf8_encode($content);
         PHPWS_Cache::save($cache_key, $content);
         return $content;
     }
