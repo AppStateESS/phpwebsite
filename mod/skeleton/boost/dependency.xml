@@ -15,7 +15,7 @@
   <module>
     <title>search</title>
     <properName>Search</properName>
-    <version>0.3.3</version>
+    <version>0.4.0</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/search/</url>
   </module>
 </dependency>

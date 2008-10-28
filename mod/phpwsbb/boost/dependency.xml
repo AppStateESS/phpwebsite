@@ -3,7 +3,7 @@
   <module>
     <title>comments</title>
     <properName>Comments</properName>
-    <version>0.6.3</version>
+    <version>1.2.0</version>
     <url>http://phpwebsite.appstate.edu/comments</url>
   </module>
 </dependency>
