@@ -131,8 +131,10 @@ function access_update(&$content, $version)
 </pre>';
 
     case version_compare($version, '1.1.0', '<'):
+        PHPWS_Boost::updateFiles(array('templates/htaccess.tpl'), 'access');
         $content[] = '<pre>1.1.0 changes
 ---------------
++ New ability to added a RewriteBase to a .htaccess file.
 + Updated to PHP 5 standards.
 </pre>';
     }

@@ -1,5 +1,8 @@
 Version 1.0.2
 ---------------------------------------------------------------------------
+28 October 2008
++ Added ability to add a RewriteBase to .htaccess file.
+
 30 May 2008
 + Removed htaccess file. Now expect core/inc/htaccess.
 

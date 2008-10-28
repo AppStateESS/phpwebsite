@@ -148,6 +148,16 @@ class Access {
 
                 Layout::nakedDisplay(PHPWS_Template::process($tpl, 'access', 'main.tpl'));
                 break;
+
+            case 'htaccess':
+                $title = dgettext('access', 'htaccess');
+                $content = Access::htaccess();
+                break;
+
+            case 'add_rewritebase':
+                Access::addRewriteBase();
+                PHPWS_Core::goBack();
+                break;
             }
         }
 
@@ -303,6 +313,9 @@ class Access {
         if (Current_User::allow('access', 'admin_options')) {
             $link['title'] = dgettext('access', 'Allow/Deny');
             $tabs['deny_allow'] = $link;
+
+            $link['title'] = dgettext('access', '.htaccess');
+            $tabs['htaccess'] = $link;
         }
 
         $panel = new PHPWS_Panel('access_panel');
@@ -635,7 +648,77 @@ class Access {
         $db = new PHPWS_DB('access_allow_deny');
         $db->addWhere('ip_address', $ad->ip_address);
         $db->addWhere('allow_or_deny', $allow_or_deny);
-        //        $db->setTestMode();
         return $db->delete();
+    }
+
+    public function htaccess()
+    {
+        $current_directory = dirname($_SERVER['PHP_SELF']);
+        $base_needed = false;
+
+        if (!is_file('.htaccess')) {
+            $tpl['CURRENT_HTACCESS'] = dgettext('access', 'Your .htaccess file does not exist or is not readable.');
+        } else {
+            $htaccess_contents = file('.htaccess');
+            $tpl['CURRENT_HTACCESS'] = implode('', $htaccess_contents);
+            $base = null;
+
+            foreach ($htaccess_contents as $val) {
+                if (preg_match('/^rewritebase/i', trim($val))) {
+                    $base = trim(str_ireplace('rewritebase', '', $val));
+                    break;
+                }
+            }
+
+            if (!$base) {
+                if ($current_directory == '' || $current_directory == '/') {
+                    $tpl['BASE_FOUND'] = dgettext('access', 'RewriteBase is not set or needed.');
+                } else {
+                    $base_needed = true;
+                    $tpl['BASE_FOUND'] = dgettext('access', 'Your RewriteBase is not set but may be needed.');
+                }
+            } elseif ($base == $current_directory) {
+                $tpl['BASE_FOUND'] = dgettext('access', 'Current RewriteBase matches installation directory.');
+            } else {
+                $base_needed = true;
+                $tpl['BASE_FOUND'] = dgettext('access', 'Current RewriteBase does not match the installation directory.');
+            }
+        }
+
+        if ($base_needed) {
+            if (is_writable('.htaccess')) {
+                $vars['command'] = 'add_rewritebase';
+                $tpl['OPTION'] = PHPWS_Text::secureLink(dgettext('access', 'Add RewriteBase'), 'access', $vars);
+            } else {
+                $tpl['OPTION'] = dgettext('access', 'Your .htaccess file is not writable. A RewriteBase cannot be added.');
+            }
+        }
+
+        $content = PHPWS_Template::process($tpl, 'access', 'forms/htaccess.tpl');
+        return $content;
+    }
+
+    public function addRewriteBase()
+    {
+        $current_directory = dirname($_SERVER['PHP_SELF']);
+        if (!is_file('.htaccess') || !is_readable('.htaccess') || !is_writable('.htaccess')) {
+            return;
+        }
+
+        $htaccess = file('.htaccess');
+        $base_found = false;
+        foreach ($htaccess as $key=>$val) {
+            if (preg_match('/^rewritebase/i', trim($val))) {
+                $htaccess[$key] = "RewriteBase $current_directory";
+                $base_found = true;
+                break;
+            }
+        }
+        if (!$base_found) {
+            $htaccess[] = "RewriteBase $current_directory";
+        }
+        if (!empty($htaccess)) {
+            file_put_contents('.htaccess', implode('', $htaccess));
+        }
     }
 }
