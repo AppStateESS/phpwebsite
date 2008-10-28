@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-02 12:12-0400\n"
+"POT-Creation-Date: 2008-10-28 13:33-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,6 +39,9 @@ msgid "Add to front"
 msgstr ""
 
 msgid "An error occurred when trying to load the page template."
+msgstr ""
+
+msgid "Are you sure you want to delete this page template?"
 msgstr ""
 
 msgid "Are you sure you want to delete this page?"

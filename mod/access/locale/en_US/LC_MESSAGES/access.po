@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-05 14:09-0400\n"
+"POT-Creation-Date: 2008-10-28 13:33-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "-- Choose option --"
+msgstr ""
+
+msgid ".htaccess"
 msgstr ""
 
 msgid ".htaccess file is missing."
@@ -44,6 +47,9 @@ msgid "Activate"
 msgstr ""
 
 msgid "Active?"
+msgstr ""
+
+msgid "Add RewriteBase"
 msgstr ""
 
 msgid "Add allowed IP"
@@ -97,6 +103,12 @@ msgid "Close window"
 msgstr ""
 
 msgid "Controls the .htaccess file for Apache and creates shortcuts."
+msgstr ""
+
+msgid "Current RewriteBase does not match the installation directory."
+msgstr ""
+
+msgid "Current RewriteBase matches installation directory."
 msgstr ""
 
 msgid "Deactivate"
@@ -166,6 +178,9 @@ msgstr ""
 msgid "Return to previous page."
 msgstr ""
 
+msgid "RewriteBase is not set or needed."
+msgstr ""
+
 msgid "Settings saved."
 msgstr ""
 
@@ -206,4 +221,16 @@ msgid "You have \"Allow all\" enabled. All rows below will be ignored."
 msgstr ""
 
 msgid "You have \"Deny all\" enabled. All rows below will be ignored."
+msgstr ""
+
+msgid "Your .htaccess file does not exist or is not readable."
+msgstr ""
+
+msgid "Your .htaccess file is not writable. A RewriteBase cannot be added."
+msgstr ""
+
+msgid "Your RewriteBase is not set but may be needed."
+msgstr ""
+
+msgid "htaccess"
 msgstr ""
