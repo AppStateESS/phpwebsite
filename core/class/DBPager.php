@@ -982,9 +982,9 @@ class DBPager {
 
             if (isset($this->sort_headers[$varname])) {
                 if (!empty($this->sort_headers[$varname]['hover'])) {
-                    $alt = $this->sort_headers[$varname]['hover'] . ' - ';
+                    $alt = strip_tags($this->sort_headers[$varname]['hover']) . ' - ';
                 } else {
-                    $alt = $this->sort_headers[$varname]['title'] . ' - ';
+                    $alt = strip_tags($this->sort_headers[$varname]['title']) . ' - ';
                 }
             } else {
                 $alt = '';

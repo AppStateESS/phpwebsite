@@ -4,6 +4,9 @@ its own separate CHANGELOG file..
 
 Version 1.9.0x
 ---------------------------------------------------------------------
+28 October 2008
++ DBPager - stripping tags from alt sort image parameter
+
 27 October 2008
 + Open window javascript has a secure option that a child window can
   use to test the validity of the parent.
