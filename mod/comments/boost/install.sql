@@ -79,5 +79,3 @@ CREATE TABLE comments_user_ranks (
   repeat_image smallint NOT NULL default 0,
   PRIMARY KEY  (id)
 );
-
-CREATE INDEX comments_usr_idx ON comments_subranks (rank_id);
