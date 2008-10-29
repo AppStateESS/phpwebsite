@@ -6,6 +6,7 @@ Version 1.9.0x
 ---------------------------------------------------------------------
 28 October 2008
 + DBPager - stripping tags from alt sort image parameter
++ File - getMimeType goes to a final test if mime_content_type fails.
 
 27 October 2008
 + Open window javascript has a secure option that a child window can
