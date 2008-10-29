@@ -711,6 +711,7 @@ class PHPWS_File {
 
     public function getMimeType($file_path)
     {
+        $mime_type = null;
         if (function_exists('finfo_open')) {
             if (!$finfo = finfo_open(FILEINFO_MIME)) {
                 return false;
@@ -723,10 +724,13 @@ class PHPWS_File {
         } else {
             if (function_exists('mime_content_type')) {
                 $mime_type = mime_content_type($file_path);
-            } else {
+            }
+
+            if (empty($mime_type)) {
                 require_once 'Compat/Function/mime_content_type.php';
                 $mime_type = php_compat_mime_content_type($file_path);
             }
+
             return $mime_type;
         }
     }

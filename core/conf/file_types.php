@@ -218,8 +218,10 @@ $all_file_types['wmv']['fi'][]  = 'Microsoft ASF';
 $all_file_types['wmv']['vb']    = 'WMV Video';
 
 $all_file_types['xls']['mct'][] = 'application/vnd.ms-excel';
+$all_file_types['xls']['mct'][] = 'application/msword';
 $all_file_types['xls']['bl']    = true;
 $all_file_types['xls']['fi'][]  = 'microsoft installer';
+$all_file_types['xls']['fi'][]  = 'microsoft office document';
 $all_file_types['xls']['vb']    = 'Microsoft Excel Spreadsheet';
 
 $all_file_types['xlsx']['mct'][] = 'application/x-zip';
