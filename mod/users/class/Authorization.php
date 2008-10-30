@@ -9,6 +9,7 @@ abstract class User_Authorization
     abstract protected function authenticate();
     abstract protected function verify();
     abstract protected function createUser();
+    abstract protected function logout();
 
     /**
      * The user object

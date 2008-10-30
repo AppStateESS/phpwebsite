@@ -767,6 +767,8 @@ class User_Action {
             break;
 
         case 'logout':
+            $auth = Current_User::getAuthorization();
+            $auth->logout();
             PHPWS_Core::killAllSessions();
             PHPWS_Core::reroute('index.php?module=users&action=reset');
             break;

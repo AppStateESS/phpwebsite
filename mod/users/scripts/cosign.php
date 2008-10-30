@@ -43,8 +43,8 @@ class cosign_authorization extends User_Authorization {
     }
 
     // Run before a new user is created.
-    public function createUser()
-    {
-    }
+    public function createUser(){}
+
+    public function logout(){}
 }
 ?>

@@ -15,7 +15,7 @@ class local_authorization extends User_Authorization {
         public $login_link      = 'index.php?module=users&action=user&command=login_page';
         public $logout_link     = 'index.php?module=users&action=user&command=logout';
 
-    function authenticate()
+    public function authenticate()
     {
         $db = new PHPWS_DB('user_authorization');
         if (!Current_User::allowUsername($this->user->username)) {
@@ -31,11 +31,12 @@ class local_authorization extends User_Authorization {
         return (!PHPWS_Error::logIfError($result) && (bool)$result);
     }
 
-    function verify()
+    public function verify()
     {
         return ($this->user->id && $this->user->_logged);
     }
 
-    function createUser(){}
+    public function createUser(){}
+    public function logout(){}
 }
 ?>
