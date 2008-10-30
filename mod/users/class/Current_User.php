@@ -9,11 +9,12 @@
    * @version $Id$
    */
 
+PHPWS_Core::initModClass('users', 'Authorization.php');
 PHPWS_Core::initModClass('users', 'Users.php');
 
 if (!defined('ALLOW_DEITY_REMEMBER_ME')) {
     define('ALLOW_DEITY_REMEMBER_ME', false);
- }
+}
 
 final class Current_User {
     /**
@@ -114,6 +115,23 @@ final class Current_User {
 
     public function getLogin()
     {
+        $user = $_SESSION['User'];
+        $auth = Current_User::getAuthorization();
+        
+        // If the current user is not verified then
+        // either force to authentication page or clear the user session
+        if (!$auth->verify()) {
+            // reset user session is set
+            if ($user->id) {
+                Current_User::init();
+            }
+            
+            // if they are force login, the below will send them there
+            // and we will end getLogin
+            // if not forced, then we just continue;
+            $auth->forceLogin();
+        } 
+
         PHPWS_Core::initModClass('users', 'Form.php');
         $login = User_Form::logBox();
         if (!empty($login)) {
@@ -338,23 +356,18 @@ final class Current_User {
      */
     public function allowUsername($username)
     {
-        if (preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/i', $username)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/i', $username);
     }
 
     /**
      * Logs in a user dependant on their authorization setting
      */
-    public function loginUser($username, $password)
+    public function loginUser($username, $password=null)
     {
         if (!Current_User::allowUsername($username)) {
             return PHPWS_Error::get(USER_BAD_CHARACTERS, 'users', 'Current_User::loginUser');
         }
 
-        $createUser = false;
         // First check if they are currently a user
         $user = new PHPWS_User;
         $db = new PHPWS_DB('users');
@@ -365,44 +378,34 @@ final class Current_User {
             return $result;
         }
 
-        // if result is blank then check against the default authorization
-        if ($result == false){
-            $authorize = PHPWS_User::getUserSetting('default_authorization');
-            $createUser = true;
-            $user->setUsername($username);
+        if ($result == false) {
+            if (PHPWS_Error::logIfError($user->setUsername($username))) {
+                return false;
+            }
         } else {
+            // This user is in the local database
             if (!$user->approved) {
                 return PHPWS_Error::get(USER_NOT_APPROVED, 'users', 'Current_User::loginUser');
             }
-            $authorize = $user->getAuthorize();
+            $user->loadScript();
         }
 
-        if (empty($authorize)) {
-            return PHPWS_Error::get(USER_AUTH_MISSING, 'users', 'Current_User::loginUser');
-        }
-
-        $result = Current_User::authorize($authorize, $user, $password);
+        Current_User::loadAuthorization($user);
+        $auth = Current_User::getAuthorization();
+        $auth->setPassword($password);
+        $result = $auth->authenticate();
 
         if (PEAR::isError($result)){
             return $result;
         }
 
-        if ($result == true){
-            if ($createUser == true){
-                $result = $user->setUsername($username);
-
-                if (PEAR::isError($result)){
-                    return $result;
-                }
-
-                $user->setAuthorize($authorize);
+        if ($result == true) {
+            // If the user id is zero and the authorization wants a new
+            // user created
+            if (!$user->id && $auth->create_new_user) {
                 $user->setActive(true);
                 $user->setApproved(true);
-
-                if (function_exists('post_authorize')) {
-                    post_authorize($user);
-                }
-
+                $auth->createUser();
                 $user->save();
             }
 
@@ -412,45 +415,11 @@ final class Current_User {
 
             $user->login();
             $_SESSION['User'] = $user;
+
             return true;
         } else {
             return false;
         }
-    }
-
-    public function authorize($authorize, PHPWS_User $user, $password)
-    {
-        $db = new PHPWS_DB('users_auth_scripts');
-        $db->setIndexBy('id');
-        $result = $db->select();
-
-        if (empty($result)) {
-            return false;
-        }
-
-        if (isset($result[$authorize])) {
-            extract($result[$authorize]);
-            $file = PHPWS_SOURCE_DIR . 'mod/users/scripts/' . $filename;
-
-            if(!is_file($file)){
-                PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'authorize', $file);
-                return false;
-            }
-
-            require_once $file;
-
-            if (function_exists('authorize')) {
-                $result = authorize($user, $password);
-                return $result;
-            } else {
-                PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'authorize');
-                return false;
-            }
-        } else {
-            return false;
-        }
-
-        return $result;
     }
 
     public function requireLogin()
@@ -533,6 +502,27 @@ final class Current_User {
         } else {
             return false;
         }
+    }
+
+    private function createNewUser($user)
+    {
+        
+    }
+
+    public function loadAuthorization(PHPWS_User $user)
+    {
+        require_once $user->auth_path;
+        $class_name = $user->auth_name . '_authorization';
+        if (!class_exists($class_name)) {
+            PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'Current_User::loadAuthorization', $user->auth_path);
+            PHPWS_Core::errorPage();
+        }
+        $GLOBALS['User_Authorization'] = new $class_name($user);
+    }
+
+    public function getAuthorization()
+    {
+        return $GLOBALS['User_Authorization'];
     }
 }
 

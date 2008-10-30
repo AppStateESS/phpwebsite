@@ -11,7 +11,7 @@ if (!class_exists('PHPWS_User')) {
 
 if (@$_REQUEST['module'] == 'users' && @$_REQUEST['action'] == 'reset') {
     $_SESSION['User'] = new PHPWS_User;
-} else if (!isset($_SESSION['User'])) {
+} elseif (!isset($_SESSION['User'])) {
     Current_User::init();
     if (Current_User::allowRememberMe()) {
         if (PHPWS_Settings::get('users', 'allow_remember')) {
@@ -20,6 +20,6 @@ if (@$_REQUEST['module'] == 'users' && @$_REQUEST['action'] == 'reset') {
     }
 }
 
+Current_User::loadAuthorization($_SESSION['User']);
 Current_User::getLogin();
-
 ?>

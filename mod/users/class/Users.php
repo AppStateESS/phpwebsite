@@ -8,6 +8,7 @@
  */
 
 PHPWS_Core::initModClass('users', 'Permission.php');
+PHPWS_Core::initModClass('users', 'Authorization.php');
 PHPWS_Core::requireConfig('users');
 require_once PHPWS_SOURCE_DIR . 'mod/users/inc/errorDefines.php';
 
@@ -31,21 +32,24 @@ class PHPWS_User {
     public $email          = null;
     public $display_name   = null;
 
-    public $_password      = null;
-    public $_groups        = null;
-    public $_permission    = null;
-    public $_user_group    = null;
-    public $auth_key      = null;
-    private $salt_base     = null;
+    public $_password        = null;
+    public $_groups          = null;
+    public $_permission      = null;
+    public $_user_group      = null;
+    public $auth_key         = null;
+    private $salt_base       = null;
     // Indicates whether this is a logged in user
-    public $_logged        = false;
-    public $_prev_username = null;
+    public $_logged          = false;
+    public $_prev_username   = null;
+    public $auth_script      = null;
+    public $auth_path        = null;
+    public $auth_name        = null;
 
     public function __construct($id=0)
     {
-        if(!$id){
-            $auth = PHPWS_User::getUserSetting('default_authorization');
-            $this->setAuthorize($auth);
+        if(!$id) {
+            $this->authorize = PHPWS_User::getUserSetting('default_authorization');
+            $this->loadScript();
             return;
         }
         $this->setId($id);
@@ -54,6 +58,7 @@ class PHPWS_User {
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
         }
+        $this->loadScript();
     }
 
     public function init()
@@ -74,6 +79,7 @@ class PHPWS_User {
         $this->loadUserGroups();
         $this->loadPermissions();
     }
+
 
     public function setId($id)
     {
@@ -169,7 +175,7 @@ class PHPWS_User {
     public function setUsername($username)
     {
         $username = strtolower($username);
-        if (empty($username) || preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', $username)) {
+        if (empty($username) || !Current_User::allowUsername($username)) {
             return PHPWS_Error::get(USER_ERR_BAD_USERNAME, 'users',
                                     'setUsername', $username);
         }
@@ -910,6 +916,30 @@ class PHPWS_User {
     public function registerPermissions($module, &$content)
     {
         return Users_Permission::registerPermissions($module, $content);
+    }
+
+    /**
+     * Loads the script file for authorization
+     */
+    public function loadScript()
+    {
+        $db = new PHPWS_DB('users_auth_scripts');
+        $db->addWhere('id', $this->authorize);
+        $db->addColumn('filename');
+        $filename = $db->select('one');
+        if (PHPWS_Error::logIfError($filename)) {
+            return;
+        }
+
+        $this->auth_script = $filename;
+        $this->auth_path   = PHPWS_SOURCE_DIR . 'mod/users/scripts/' . $filename;
+        $this->auth_name   = preg_replace('/\.php$/i', '', $filename);
+
+        if (!is_file($this->auth_path)) {
+            PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'User_Authorization', $this->auth_path);
+            PHPWS_Core::errorPage();
+            return;
+        }
     }
 }
 

@@ -15,8 +15,11 @@ define('CONFIRM_SIGNUP', 2);
 PHPWS_Core::initCoreClass('Form.php');
 
 class User_Form {
+
     function logBox($logged=TRUE)
     {
+        $auth = Current_User::getAuthorization();
+
         if (PHPWS_Settings::get('users', 'user_menu') == 'none') {
             return null;
         }
@@ -28,11 +31,13 @@ class User_Form {
             if (PHPWS_Settings::get('users', 'hide_login')) {
                 return NULL;
             } else {
-                return User_Form::loggedOut();
+                if ($auth->showLoginForm()) {
+                    return User_Form::loggedOut();
+                } else {
+                    return $auth->getLoginLink();
+                }
             }
         }
-
-        return $form;
     }
 
 

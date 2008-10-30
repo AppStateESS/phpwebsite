@@ -9,6 +9,9 @@
 
 require_once PHPWS_SOURCE_DIR . 'mod/users/inc/errorDefines.php';
 PHPWS_Core::requireConfig('users');
+PHPWS_Core::initModClass('users', 'Form.php');
+//PHPWS_Core::initCoreClass('Form.php');
+
 
 if (!defined('ALLOW_DEITY_FORGET')) {
     define('ALLOW_DEITY_FORGET', false);
@@ -687,6 +690,7 @@ class User_Action {
             if ( !Current_User::isLogged() && isset($_POST['phpws_username']) &&
                  isset($_POST['phpws_password']) ) {
                 $result = Current_User::loginUser($_POST['phpws_username'], $_POST['phpws_password']);
+                // here
 
                 if (!$result) {
                     $title = dgettext('users', 'Login page');

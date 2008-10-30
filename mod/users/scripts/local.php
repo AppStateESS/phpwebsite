@@ -6,21 +6,35 @@
  * @version $Id$
  */
 
-function authorize($user, $password)
-{
-    $db = new PHPWS_DB('user_authorization');
-    if (preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', $user->username)) {
-        return FALSE;
-    }
-    $db->addWhere('username', strtolower($user->username));
-    $db->addWhere('password', md5($user->username . $password));
-    $result = $db->select('one');
+class local_authorization extends User_Authorization {
+        public $create_new_user = true;
+        public $show_login_form = true;
+        // Authorize on local database just once
+        public $always_verify   = false;
+        public $force_login     = false;
+        public $login_link      = 'index.php?module=users&action=user&command=login_page';
 
-    if (PEAR::isError($result)) {
-        return $result;
-    } else {
-        return isset($result);
+    function authenticate()
+    {
+        $db = new PHPWS_DB('user_authorization');
+        if (!Current_User::allowUsername($this->user->username)) {
+            return false;
+        }
+
+        $password_hash = md5($this->user->username . $this->password);
+        $db->addColumn('username');
+        $db->addWhere('username', strtolower($this->user->username));
+        $db->addWhere('password', $password_hash);
+        $result = $db->select('one');
+
+        return (!PHPWS_Error::logIfError($result) && (bool)$result);
     }
+
+    function verify()
+    {
+        return ($this->user->id && $this->user->_logged);
+    }
+
+    function createUser(){}
 }
-
 ?>
