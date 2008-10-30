@@ -43,14 +43,22 @@ class User_Form {
 
     function loggedIn()
     {
+        $auth = Current_User::getAuthorization();
+
         PHPWS_Core::initCoreClass('Text.php');
         $template['GREETING'] = dgettext('users', 'Hello');
         $template['USERNAME'] = Current_User::getUsername();
         $template['DISPLAY_NAME'] = Current_User::getDisplayName();
         $template['PANEL'] = $template['MODULES'] = PHPWS_ControlPanel::panelLink((bool)PHPWS_Cookie::read('user_cp'));
-        $template['LOGOUT'] = PHPWS_Text::moduleLink(dgettext('users', 'Log Out'),
-                                                     'users',
-                                                     array('action'=>'user', 'command'=>'logout'));
+        $logout_link = $auth->getLogoutLink();
+
+        if ($logout_link) {
+            $template['LOGOUT'] = & $logout_link;
+        } else {
+            $template['LOGOUT'] = PHPWS_Text::moduleLink(dgettext('users', 'Log Out'),
+                                                         'users',
+                                                         array('action'=>'user', 'command'=>'logout'));
+        }
         $template['HOME_USER_PANEL'] = $template['HOME'] = PHPWS_Text::moduleLink(dgettext('users', 'Home'));
 
         $usermenu = PHPWS_User::getUserSetting('user_menu');

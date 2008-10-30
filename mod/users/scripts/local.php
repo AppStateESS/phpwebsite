@@ -13,6 +13,7 @@ class local_authorization extends User_Authorization {
         public $always_verify   = false;
         public $force_login     = false;
         public $login_link      = 'index.php?module=users&action=user&command=login_page';
+        public $logout_link     = 'index.php?module=users&action=user&command=logout';
 
     function authenticate()
     {

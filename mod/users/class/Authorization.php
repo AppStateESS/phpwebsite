@@ -42,6 +42,8 @@ abstract class User_Authorization
 
     public $login_link_label = null;
 
+    public $logout_link = null;
+
 
     public function __construct(PHPWS_User $user)
     {
@@ -75,6 +77,15 @@ abstract class User_Authorization
     public function setPassword($password)
     {
         $this->password = $password;
+    }
+
+    public function getLogoutLink()
+    {
+        if ($this->logout_link) {
+            return sprintf('<a href="%s">%s</a>', $this->logout_link, dgettext('users', 'Log Out'));
+        } else {
+            return null;
+        }
     }
 
 }

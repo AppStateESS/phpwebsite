@@ -16,6 +16,9 @@ class cosign_authorization extends User_Authorization {
     public $login_label     = 'Cosign log in';
     public $force_redirect  =  false;
 
+    // Link to the cosign logout
+    public $logout_link     = '';
+
     public function authenticate()
     {
         return $_SERVER['REMOTE_USER'] == $this->user->username;
@@ -32,10 +35,16 @@ class cosign_authorization extends User_Authorization {
    
     public function verify()
     {
-        return $this->user->username == @$_SERVER['REMOTE_USER'];
+        if (empty($this->user->username) || empty($_SERVER['REMOTE_USER'])) {
+            return false;
+        }
+
+        return $this->user->username == $_SERVER['REMOTE_USER'];
     }
 
     // Run before a new user is created.
-    public function createUser() {}
+    public function createUser()
+    {
+    }
 }
 ?>
