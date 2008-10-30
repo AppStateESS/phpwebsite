@@ -129,8 +129,9 @@ Please download 0.6.3.</pre>';
         $db = new PHPWS_DB('comments_users');
         PHPWS_Error::logIfError($db->dropTableColumn('display_name'));
 
-        $db = new PHPWS_DB('comments_threads');
-        $sql = 'CREATE TABLE comments_monitors (
+        if (!PHPWS_DB::isTable('comments_threads')) {
+            $db = new PHPWS_DB('comments_threads');
+            $sql = 'CREATE TABLE comments_monitors (
     thread_id   int NOT NULL,
     user_id     int NOT NULL,
     send_notice smallint NOT NULL default 1,
@@ -139,15 +140,17 @@ Please download 0.6.3.</pre>';
 CREATE INDEX comments_monitors_user_id_idx ON comments_monitors (user_id, thread_id);
 CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, send_notice);
 ';
-        $result = $db->import($sql,true);
-        if (PHPWS_Error::logIfError($result)) {
-            $content[] = 'Unable to add "comments_monitors" table.</pre>';
-            return false;
+            $result = $db->import($sql,true);
+            if (PHPWS_Error::logIfError($result)) {
+                $content[] = 'Unable to add "comments_monitors" table.</pre>';
+                PHPWS_DB::rollback();
+                return false;
+            }
+            $content[] = 'Created "comments_monitors" table.';
         }
-        $content[] = 'Created "comments_monitors" table.';
 
-
-        $sql = 'CREATE TABLE comments_ranks (
+        if (!PHPWS_DB::isTable('comments_ranks')) {
+            $sql = 'CREATE TABLE comments_ranks (
   id int NOT NULL default 0,
   group_id int NOT NULL default 0,
   allow_local_avatars smallint NOT NULL,
@@ -157,14 +160,17 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
   PRIMARY KEY  (id)
 );
 CREATE INDEX commentsrankidx ON comments_ranks (group_id);';
-        $result = $db->import($sql,true);
-        if (PHPWS_Error::logIfError($result)) {
-            $content[] = 'Unable to add "comments_ranks" table.</pre>';
-            return false;
+            $result = $db->import($sql,true);
+            if (PHPWS_Error::logIfError($result)) {
+                $content[] = 'Unable to add "comments_ranks" table.</pre>';
+                PHPWS_DB::rollback();
+                return false;
+            }
+            $content[] = 'Created "comments_ranks" table.';
         }
-        $content[] = 'Created "comments_ranks" table.';
 
-        $sql = 'CREATE TABLE comments_user_ranks (
+        if (!PHPWS_DB::isTable('comments_user_ranks')) {
+            $sql = 'CREATE TABLE comments_user_ranks (
   id int NOT NULL default 0,
   rank_id int NOT NULL default 0,
   title varchar(255) NOT NULL,
@@ -175,18 +181,21 @@ CREATE INDEX commentsrankidx ON comments_ranks (group_id);';
   PRIMARY KEY  (id)
 );
 
-CREATE INDEX comments_usr_idx ON comments_subranks (rank_id);';
-        $result = $db->import($sql,true);
-        if (PHPWS_Error::logIfError($result)) {
-            $content[] = 'Unable to add "comments_user_ranks" table.</pre>';
-            return false;
+CREATE INDEX comments_usr_idx ON comments_user_ranks (rank_id);';
+            $result = $db->import($sql,true);
+            if (PHPWS_Error::logIfError($result)) {
+                $content[] = 'Unable to add "comments_user_ranks" table.</pre>';
+                PHPWS_DB::rollback();
+                return false;
+            }
+            $content[] = 'Created "comments_user_ranks" table.';
         }
-        $content[] = 'Created "comments_user_ranks" table.';
 
         $db = new PHPWS_DB('comments_items');
         $result = $db->addTableColumn('anon_name', 'varchar(50) default NULL');
         if (PHPWS_Error::logIfError($result)) {
             $content[] = 'Unable to add "anon_name" column to comments_items table.</pre>';
+            PHPWS_DB::rollback();
             return false;
         }
         $content[] = 'Created "parent_author_id" column in comments_items table.';
@@ -195,6 +204,7 @@ CREATE INDEX comments_usr_idx ON comments_subranks (rank_id);';
         $result = $db->addTableColumn('parent_author_id', 'smallint NOT NULL default 0');
         if (PHPWS_Error::logIfError($result)) {
             $content[] = 'Unable to add "parent_author_id" column to comments_items table.</pre>';
+            PHPWS_DB::rollback();
             return false;
         }
         $content[] = 'Created "parent_author_id" column in comments_items table.';
@@ -203,6 +213,7 @@ CREATE INDEX comments_usr_idx ON comments_subranks (rank_id);';
         $result = $db->addTableColumn('parent_anon_name', 'varchar(50) default NULL');
         if (PHPWS_Error::logIfError($result)) {
             $content[] = 'Unable to add "parent_anon_name" column to comments_items table.</pre>';
+            PHPWS_DB::rollback();
             return false;
         }
         $content[] = 'Created "parent_anon_name" column in comments_items table.';
@@ -211,6 +222,7 @@ CREATE INDEX comments_usr_idx ON comments_subranks (rank_id);';
         $result = $db->addTableColumn('protected', 'smallint NOT NULL default 0');
         if (PHPWS_Error::logIfError($result)) {
             $content[] = 'Unable to add "protected" column to comments_items table.</pre>';
+            PHPWS_DB::rollback();
             return false;
         }
         $content[] = 'Created "protected" column in comments_items table.';
@@ -219,6 +231,7 @@ CREATE INDEX comments_usr_idx ON comments_subranks (rank_id);';
         $result = $db->addTableColumn('locked', 'smallint NOT NULL default 0');
         if (PHPWS_Error::logIfError($result)) {
             $content[] = 'Unable to add "locked" column to comments_threads table.</pre>';
+            PHPWS_DB::rollback();
             return false;
         }
         $content[] = 'Created "locked" column in comments_threads table.';
@@ -227,6 +240,7 @@ CREATE INDEX comments_usr_idx ON comments_subranks (rank_id);';
         $result = $db->addTableColumn('suspendmonitors', 'smallint NOT NULL default 0');
         if (PHPWS_Error::logIfError($result)) {
             $content[] = 'Unable to add "suspendmonitors" column to comments_users table.</pre>';
+            PHPWS_DB::rollback();
             return false;
         }
         $content[] = 'Created "suspendmonitors" column in comments_users table.';
@@ -234,6 +248,7 @@ CREATE INDEX comments_usr_idx ON comments_subranks (rank_id);';
         $result = $db->addTableColumn('monitordefault', 'smallint NOT NULL default 1');
         if (PHPWS_Error::logIfError($result)) {
             $content[] = 'Unable to add "monitordefault" column to comments_users table.</pre>';
+            PHPWS_DB::rollback();
             return false;
         }
         $content[] = 'Created "monitordefault" column in comments_users table.';
@@ -241,6 +256,7 @@ CREATE INDEX comments_usr_idx ON comments_subranks (rank_id);';
         $result = $db->addTableColumn('securitylevel', 'smallint NOT NULL default -1');
         if (PHPWS_Error::logIfError($result)) {
             $content[] = 'Unable to add "securitylevel" column to comments_users table.</pre>';
+            PHPWS_DB::rollback();
             return false;
         }
         $content[] = 'Created "securitylevel" column in comments_users table.';
@@ -248,6 +264,7 @@ CREATE INDEX comments_usr_idx ON comments_subranks (rank_id);';
         $result = $db->addTableColumn('groups', 'varchar(50) NOT NULL');
         if (PHPWS_Error::logIfError($result)) {
             $content[] = 'Unable to add "groups" column to comments_users table.</pre>';
+            PHPWS_DB::rollback();
             return false;
         }
         $content[] = 'Created "groups" column in comments_users table.';
@@ -292,7 +309,7 @@ CREATE INDEX comments_usr_idx ON comments_subranks (rank_id);';
 + New permission setting to allow admins to ban users from posting
 + Added data caching columns parent_author_id and parent_anon_name comments_items table
 </pre>';
-}
+    }
 
     return true;
 }

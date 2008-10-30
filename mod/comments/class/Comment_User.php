@@ -590,7 +590,8 @@ class Comment_User extends Demographics_User {
         // Loop through all relevant usergroups to generate rank tags
         if (!empty($user_ranks)) {
             foreach ($user_ranks as $rank) {
-                if ($rank->group_id == 0 || in_array($rank->group_id, $user_groups)) {
+               if ( ($rank->group_id == 0 || in_array($rank->group_id, $user_groups)) &&
+                     !empty($rank->user_ranks) ) {
                     foreach ($rank->user_ranks as $user_rank) {
                         if ($user_rank->min_posts <= $this->comments_made) {
                             $user_rank->loadInfo($images, $composites, $titles);
