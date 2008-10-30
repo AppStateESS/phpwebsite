@@ -10,6 +10,7 @@ PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
 
 class Cabinet_Form {
+    public $cabinet = null;
 
     public function getFolders($type)
     {
@@ -199,6 +200,7 @@ class Cabinet_Form {
             if (!empty($folder->module_created)) {
                 $form->setMatch('module_created', $folder->module_created);
             }
+
             $form->setLabel('module_created', dgettext('filecabinet', 'Module reservation'));
         } else {
             $form->addHidden('module_created', $folder->module_created);
