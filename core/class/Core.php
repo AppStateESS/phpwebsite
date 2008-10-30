@@ -345,6 +345,12 @@ class PHPWS_Core {
      */
     public function reroute($address=NULL)
     {
+        $current_url = PHPWS_Core::getCurrentUrl();
+
+        if ($current_url == $address) {
+            return;
+        }
+
         // Set last post since we will be skipping it
         PHPWS_Core::setLastPost();
 

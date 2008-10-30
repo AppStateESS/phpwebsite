@@ -4,6 +4,9 @@ its own separate CHANGELOG file..
 
 Version 1.9.0x
 ---------------------------------------------------------------------
+30 October 2008
++ Added error check for reroute function in Core
+
 28 October 2008
 + DBPager - stripping tags from alt sort image parameter
 + File - getMimeType goes to a final test if mime_content_type fails.
