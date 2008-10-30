@@ -455,18 +455,20 @@ class PHPWS_ControlPanel {
         $tpl->setFile('subpanel.tpl');
 
         $authkey = Current_User::getAuthKey();
-        foreach ($all_links as $tab => $links) {
-            foreach($links as $link) {
-                $tpl->setCurrentBlock('links');
-                $tpl->setData(array('LINK'=> sprintf('<a href="%s&amp;authkey=%s">%s</a>',
-                                                     $link->url, $authkey, str_replace(' ', '&#160;', $link->label))));
+        if (!empty($all_links)) {
+            foreach ($all_links as $tab => $links) {
+                foreach($links as $link) {
+                    $tpl->setCurrentBlock('links');
+                    $tpl->setData(array('LINK'=> sprintf('<a href="%s&amp;authkey=%s">%s</a>',
+                                                         $link->url, $authkey, str_replace(' ', '&#160;', $link->label))));
+                    $tpl->parseCurrentBlock();
+                }
+                
+                $tab_link = $all_tabs[$tab]->link . '&amp;tab=' . $all_tabs[$tab]->id;
+                $tpl->setCurrentBlock('tab');
+                $tpl->setData(array('TAB_TITLE'=> sprintf('<a href="%s">%s</a>', $tab_link, $all_tabs[$tab]->title)));
                 $tpl->parseCurrentBlock();
             }
-
-            $tab_link = $all_tabs[$tab]->link . '&amp;tab=' . $all_tabs[$tab]->id;
-            $tpl->setCurrentBlock('tab');
-            $tpl->setData(array('TAB_TITLE'=> sprintf('<a href="%s">%s</a>', $tab_link, $all_tabs[$tab]->title)));
-            $tpl->parseCurrentBlock();
         }
 
         $tpl->setCurrentBlock();
