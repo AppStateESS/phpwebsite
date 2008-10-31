@@ -926,6 +926,10 @@ class Checkin_Admin extends Checkin {
 
     public function report($print=false)
     {
+        if (empty($this->staff_list)) {
+            $this->content = dgettext('checkin', 'No staff have been created.');
+            return;
+        }
         $tpl = array();
 
         if (isset($_GET['udate'])) {
