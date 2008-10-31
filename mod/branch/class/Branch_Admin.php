@@ -557,7 +557,7 @@ class Branch_Admin {
         unset($_SESSION['branch_create_step']);
         unset($_SESSION['branch_dsn']);
         unset($_SESSION['Boost']);
-        $this->Branch_Admin();
+        $this->__construct();
     }
 
 
