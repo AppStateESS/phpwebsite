@@ -1,5 +1,9 @@
 Version 2.6.0
 -----------------------------------------------------------------------
+31 October 2008
++ Put in a local_user setting in authorization. My Page disabled if
+  local_user is false.
+
 27 October 2008
 + Authkeys can be salted with special keys.
 + Added function verifySaltedUrl which verifies the authkey in the

@@ -413,9 +413,12 @@ final class Current_User {
                 return PHPWS_Error::get(USER_DEACTIVATED, 'users', 'Current_User:loginUser', $user->username);
             }
 
-            $user->login();
-            $_SESSION['User'] = $user;
+            if ($auth->localUser()) {
+                $user->login();
+            }
 
+            unset($_SESSION['User']);
+            $_SESSION['User'] = $user;
             return true;
         } else {
             return false;
@@ -504,11 +507,6 @@ final class Current_User {
         }
     }
 
-    private function createNewUser($user)
-    {
-        
-    }
-
     public function loadAuthorization(PHPWS_User $user)
     {
         require_once $user->auth_path;
@@ -523,6 +521,12 @@ final class Current_User {
     public function getAuthorization()
     {
         return $GLOBALS['User_Authorization'];
+    }
+
+    public function isLocalUser()
+    {
+        $auth = Current_User::getAuthorization();
+        return $auth->local_user;
     }
 }
 

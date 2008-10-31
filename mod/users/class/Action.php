@@ -677,6 +677,7 @@ class User_Action {
      */
     function userAction()
     {
+        $auth = Current_User::getAuthorization();
         $content = $title = null;
         if (isset($_REQUEST['command'])) {
             $command = $_REQUEST['command'];
@@ -725,13 +726,16 @@ class User_Action {
                 $title = dgettext('users', 'Sorry');
                 $content = dgettext('users', 'Your password request was not found or timed out. Please apply again.');
             }
-
             break;
 
         case 'my_page':
-            PHPWS_Core::initModClass('users', 'My_Page.php');
-            $my_page = new My_Page;
-            $my_page->main();
+            if ($auth->local_user) {
+                PHPWS_Core::initModClass('users', 'My_Page.php');
+                $my_page = new My_Page;
+                $my_page->main();
+            } else {
+                Layout::add(PHPWS_ControlPanel::display(dgettext('users', 'My Page unavailable to remote users.'), 'my_page'));
+            }
             break;
 
         case 'signup_user':

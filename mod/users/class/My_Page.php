@@ -9,7 +9,9 @@ class My_Page {
 
     public function main()
     {
-        if (!Current_User::isLogged()) {
+        $auth = Current_User::getAuthorization();
+
+        if (!Current_User::isLogged() || !$auth->local_user ) {
             PHPWS_Core::errorPage('403');
         }
 

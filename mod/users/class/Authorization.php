@@ -45,6 +45,7 @@ abstract class User_Authorization
 
     public $logout_link = null;
 
+    public $local_user = true;
 
     public function __construct(PHPWS_User $user)
     {
@@ -89,6 +90,10 @@ abstract class User_Authorization
         }
     }
 
+    public function localUser()
+    {
+        return $this->local_user;
+    }
 }
 
 ?>

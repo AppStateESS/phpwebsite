@@ -634,11 +634,6 @@ class PHPWS_User {
         return $db->insert();
     }
 
-    public function saveGlobalAuthorization()
-    {
-
-    }
-
     public function createGroup()
     {
         $group = new PHPWS_Group;
