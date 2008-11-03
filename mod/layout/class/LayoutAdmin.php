@@ -11,7 +11,7 @@
 
 define('DEFAULT_LAYOUT_TAB', 'boxes');
 
-class Layout_Admin{
+class Layout_Admin {
     public function admin()
     {
         if (!Current_User::allow('layout')) {

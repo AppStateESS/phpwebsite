@@ -136,6 +136,7 @@ class Layout {
             PHPWS_Error::log($result);
             PHPWS_Core::errorPage();
         }
+
         Layout::resetBoxes();
     }
 
@@ -764,6 +765,7 @@ class Layout {
 
     public function resetBoxes()
     {
+        $_SESSION['Layout_Settings']->loadContentVars();
         $_SESSION['Layout_Settings']->loadBoxes();
     }
 

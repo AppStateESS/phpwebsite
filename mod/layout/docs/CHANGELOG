@@ -3,6 +3,7 @@ Version 2.4.5
 3 November 2008
 + Added missing deity_reload column to layout_config table. Thanks
   Micah. 
++ Reduced some db calls.
 
 27 October 2008
 + Added code that lets deities move boxes whereever they wish.

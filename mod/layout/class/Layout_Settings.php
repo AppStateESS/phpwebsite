@@ -136,7 +136,7 @@ class Layout_Settings {
             $final[$box->module][$box->content_var] = $box;
         }
 
-        $this->_boxes = $final;
+        $this->_boxes = & $final;
     }
 
 
