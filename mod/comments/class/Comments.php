@@ -926,6 +926,15 @@ class Comments {
 
     public function getUserRanking($simple=false)
     {
+        static $all_ranks = null;
+        static $simple_ranks = null;
+
+        if ($simple && !empty($simple_ranks)) {
+            return $simple_ranks;
+        } elseif (!$simple && !empty($all_ranks)) {
+            return $all_ranks;
+        }
+
         $db = new PHPWS_DB('comments_ranks');
         $db->addColumn('users_groups.name', null, 'group_name');
         $db->addJoin('left', 'comments_ranks', 'users_groups', 'group_id', 'id');
@@ -933,26 +942,25 @@ class Comments {
         $db->setIndexBy('id');
         $default_rank = PHPWS_Settings::get('comments', 'default_rank');
 
-        if ($simple) {
-            $db->addColumn('id');
-            $result = $db->select('col');
+        PHPWS_Core::initModClass('comments', 'Rank.php');
+        $db->addColumn('comments_ranks.*');
+        $result = $db->getObjects('Comment_Rank', true);
+        
+        if (PHPWS_Error::logIfError($result)) {
+            return null;
+        }
+        $result[$default_rank]->group_name = dgettext('comments', 'All Members');
+        $all_ranks = $result;
 
-            if (PHPWS_Error::logIfError($result)) {
-                return null;
-            }
-            $result[$default_rank] = dgettext('comments', 'All Members');
-        } else {
-            PHPWS_Core::initModClass('comments', 'Rank.php');
-            $db->addColumn('comments_ranks.*');
-            $result = $db->getObjects('Comment_Rank', true);
-
-            if (PHPWS_Error::logIfError($result)) {
-                return null;
-            }
-            $result[$default_rank]->group_name = dgettext('comments', 'All Members');
+        foreach ($all_ranks as $rank) {
+            $simple_ranks[$rank->id] = $rank->group_name;
         }
 
-        return $result;
+        if ($simple) {
+            return $simple_ranks;
+        } else {
+            return $all_ranks;
+        }
     }
 
     public function getDefaultRank()

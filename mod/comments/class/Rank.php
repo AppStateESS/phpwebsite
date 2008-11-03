@@ -16,8 +16,10 @@ class Comment_Rank {
 
     public function __construct($id=0, $load_user_ranks=true)
     {
-        $this->id = (int)$id;
-        $this->init($load_user_ranks);
+        if ($id) {
+            $this->id = (int)$id;
+            $this->init($load_user_ranks);
+        }
     }
 
     private function init($load_user_ranks=true)

@@ -35,7 +35,6 @@ CREATE TABLE comments_threads (
 
 CREATE TABLE comments_users (
   user_id int NOT NULL default 0,
-  display_name varchar(50) NOT NULL,
   comments_made int NOT NULL default 0,
   joined_date int NOT NULL default 0,
   locked smallint NOT NULL default 0,

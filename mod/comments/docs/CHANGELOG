@@ -1,5 +1,11 @@
 Version 1.2.0
 ------------------------------------------------------------------------
+3 November 2008
++ Added install.php to create default rank
++ Removed display_name column from install.sql
++ Added some static values to lessen database access for ranks.
++ Rank doesn't try to load user ranks when it doesn't have an id.
+
 27 October 2008
 + Added filecabinet selection of avatars
 + Updated: templates/settings_form.tpl
