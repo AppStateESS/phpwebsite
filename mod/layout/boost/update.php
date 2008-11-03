@@ -118,6 +118,14 @@ function layout_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '2.4.5', '<'):
         $content[] = '<pre>';
+        $db = new PHPWS_DB('layout_config');
+        if (PHPWS_Error::logIfError($db->addTableColumn('deity_reload', 'smallint not null default 0'))) {
+            $content[] = 'Could not create layout_config.deity_reload column.';
+            return false;
+        } else {
+            $content[] = 'Added layout_config.deity_reload column.';
+        }
+
         layoutUpdateFiles(array('templates/metatags.tpl'), $content);
         $content[] = '2.4.5 changes
 --------------------

@@ -21,7 +21,8 @@ CREATE TABLE layout_config (
   meta_content varchar(40) NOT NULL,
   header text default NULL,
   footer text default NULL,
-  cache smallint NOT NULL default 0
+  cache smallint NOT NULL default 0,
+  deity_reload smallint NOT NULL default 0
 );
 
 INSERT INTO layout_config VALUES ('default', 'phpWebSite', 'phpwebsite', NULL, '11', NULL, NULL, 'utf-8', NULL, NULL, 1);
