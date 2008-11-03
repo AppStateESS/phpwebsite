@@ -165,8 +165,8 @@ class Setup{
         }
 
         if (!empty($_POST['dbpass'])) {
-            if (preg_match('/\W/', $_POST['dbpass'])) {
-                $messages['dbpass'] = _('Database password may contain alphanumeric characters or underscores only.');
+            if (preg_match('/[^\w\s]/', $_POST['dbpass'])) {
+                $messages['dbpass'] = _('Database password may contain alphanumeric characters, spaces or underscores only.');
                 $check = false;
             } else {
                 Setup::setConfigSet('dbpass', $_POST['dbpass']);
