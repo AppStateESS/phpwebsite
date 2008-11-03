@@ -4,6 +4,11 @@ its own separate CHANGELOG file..
 
 Version 1.9.0x
 ---------------------------------------------------------------------
+3 November 2008
++ loadObject stops with a blank result instead of trying to plug
+  results.
++ Default theme - fixed comment buttons
+
 30 October 2008
 + Added error check for reroute function in Core
 
