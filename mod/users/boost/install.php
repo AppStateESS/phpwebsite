@@ -12,6 +12,21 @@ function users_install(&$content)
     PHPWS_Core::initModClass('users', 'Action.php');
     PHPWS_Core::configRequireOnce('users', 'config.php');
 
+    $authorize_id = PHPWS_Settings::get('users', 'default_authorization');
+
+    if (!$authorize_id) {
+        $db = new PHPWS_DB('users_auth_scripts');
+        $db->addValue('display_name', dgettext('users', 'Local'));
+        $db->addValue('filename', 'local.php');
+        $authorize_id = $db->insert();
+        if (PHPWS_Error::logIfError($authorize_id)) {
+            $content[] = 'Error creating authorization script.';
+            return false;
+        }
+        PHPWS_Settings::set('users', 'default_authorization', $authorize_id);
+        PHPWS_Settings::save('users');
+    }
+    
     if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'branch') {
         Branch::loadHubDB();
         $db = new PHPWS_DB('users');
@@ -67,33 +82,15 @@ function users_install(&$content)
             }
             $content[] = dgettext('users', 'Deity users copied to branch.');
         }
-
-        $db = new PHPWS_DB('users_auth_scripts');
-        $db->addValue('display_name', dgettext('users', 'Local'));
-        $db->addValue('filename', 'local.php');
-        $authorize_id = $db->insert();
-        if (PEAR::isError($authorize_id)) {
-            PHPWS_Error::log($authorize_id);
-            $content[] = dgettext('users', 'Unable to create authorization script.');
-
-            return FALSE;
-        }
-
         return TRUE;
     }
 
     $user = new PHPWS_User;
     $content[] = '<hr />';
 
-
     if (isset($_POST['mod_title']) && $_POST['mod_title']=='users'){
         $result = User_Action::postUser($user);
         if (!is_array($result)) {
-            $db = new PHPWS_DB('users_auth_scripts');
-            $db->addValue('display_name', dgettext('users', 'Local'));
-            $db->addValue('filename', 'local.php');
-            $authorize_id = $db->insert();
-
             $user->setDeity(TRUE);
             $user->setActive(TRUE);
             $user->setApproved(TRUE);
