@@ -251,6 +251,7 @@ function calendar_update(&$content, $version)
 + If a non existing event is accessed, calendar forwards to day view instead of 404.
 + Added check that removes the default public calendar if it is
   changed to private.
++ Fixed events showing on multiple schedules.
 + php 5 formatted.
 </pre>';
     } // end of switch

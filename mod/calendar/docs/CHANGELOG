@@ -1,5 +1,8 @@
 Version 1.7.0
 -------------------------------------------------------------
+3 November 2008
++ Fixed events appearing on multiple calendar in Upcoming list.
+
 17 October 2008
 + Changed to observe changes to getObjects
 

@@ -1095,6 +1095,7 @@ class Calendar_User {
         $startdate = mktime();
 
         foreach ($result as $schedule) {
+            $tpl = array();
             switch ($schedule->show_upcoming) {
             case 1:
                 // one week
@@ -1113,7 +1114,7 @@ class Calendar_User {
             }
 
             $enddate = $startdate + (86400 * $days_ahead);
-            $result = $schedule->getEvents($startdate, $enddate);
+            $event_list = $schedule->getEvents($startdate, $enddate);
             if (!$result) {
                 continue;
             }
@@ -1123,7 +1124,8 @@ class Calendar_User {
             $current_day = null;
 
             $count = 0;
-            foreach ($result as $event) {
+
+            foreach ($event_list as $event) {
                 $vars = array('view'   => 'day',
                               'date'   => $event->start_time,
                               'sch_id' => $schedule->id);
