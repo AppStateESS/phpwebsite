@@ -2276,6 +2276,10 @@ class PHPWS_DB {
         $items = null;
         $result = $this->select();
 
+        if (empty($result)) {
+            return null;
+        }
+
         if (PEAR::isError($result) || !isset($result)) {
             return $result;
         }
@@ -2287,10 +2291,12 @@ class PHPWS_DB {
         }
 
         $num_args = func_num_args();
-        $args = func_get_args();
-        $post_plug = $num_args > 1;
-
-        array_shift($args);
+        if ($num_args > 1) {
+            $args = func_get_args();
+            array_shift($args);
+        } else {
+            $args = null;
+        }
 
         foreach ($result as $indexby => $itemResult) {
             $genClass = new $class_name;

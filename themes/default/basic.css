@@ -386,6 +386,11 @@ a.comment_punish_link {
 
 a.comment_punish_link span { display: none; }
 
+a.comment_postnew_link, .comment-body .admin-links a { 
+background-color : inherit;
+border : none;
+}
+
 #cp-subpanel {
 left : -140px;
 }
