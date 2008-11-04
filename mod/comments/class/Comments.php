@@ -561,6 +561,10 @@ class Comments {
 
     public function postComment($thread, Comment_Item $cm_item)
     {
+        if (!$thread->id) {
+            $cm_item->_error = dgettext('comments', 'Unable to post to this thread.');
+            return false;
+        }
         if (empty($_POST['cm_subject']) && empty($_POST['cm_entry'])) {
             $cm_item->_error = dgettext('comments', 'You must include a subject or comment.');
             return false;
