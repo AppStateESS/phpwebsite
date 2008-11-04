@@ -303,13 +303,13 @@ class Webpage_Page {
             $address = $this->page_number;
         }
 
-        return PHPWS_Text::rewriteLink($address, 'webpage', $id, $page);
+        return PHPWS_Text::rewriteLink($address, 'webpage', array('id'=>$id, 'page'=> $page));
     }
 
     public function getPageUrl()
     {
         if (MOD_REWRITE_ENABLED) {
-            return sprintf('webpage/%s/%s', $this->volume_id, $this->page_number);
+            return sprintf('webpage/id/%s/page/%s', $this->volume_id, $this->page_number);
         } else {
             return sprintf('index.php?module=webpage&amp;id=%s&amp;page=%s', $this->volume_id, $this->page_number);
         }

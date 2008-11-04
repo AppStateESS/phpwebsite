@@ -184,12 +184,12 @@ class Webpage_Volume {
     {
         if ($base) {
             if (MOD_REWRITE_ENABLED) {
-                return sprintf('webpage/%s', $this->id);
+                return sprintf('webpage/id/%s', $this->id);
             } else {
                 return 'index.php?module=webpage&amp;id=' . $this->id;
             }
         } else {
-            return PHPWS_Text::rewriteLink(dgettext('webpage', 'View'), 'webpage', $this->id);
+            return PHPWS_Text::rewriteLink(dgettext('webpage', 'View'), 'webpage', array('id'=>$this->id));
         }
     }
 
@@ -487,14 +487,14 @@ class Webpage_Volume {
 
             if ($this->_current_page > 1) {
                 $page = $this->_current_page - 1;
-                $template['PAGE_LEFT'] = PHPWS_Text::rewriteLink(WP_PAGE_LEFT, 'webpage', $this->id, $page);
-                $template['PREVIOUS_PAGE']  = PHPWS_Text::rewriteLink(WP_PREVIOUS_PAGE, 'webpage', $this->id, $page);
+                $template['PAGE_LEFT'] = PHPWS_Text::rewriteLink(WP_PAGE_LEFT, 'webpage', array('id'=>$this->id, 'page'=>$page));
+                $template['PREVIOUS_PAGE']  = PHPWS_Text::rewriteLink(WP_PREVIOUS_PAGE, 'webpage', array('id'=>$this->id, 'page'=>$page));
             }
 
             if ($this->_current_page < count($this->_pages)) {
                 $page = $this->_current_page + 1;
-                $template['PAGE_RIGHT'] = PHPWS_Text::rewriteLink(WP_PAGE_RIGHT, 'webpage', $this->id, $page);
-                $template['NEXT_PAGE']  = PHPWS_Text::rewriteLink(WP_NEXT_PAGE, 'webpage', $this->id, $page);
+                $template['PAGE_RIGHT'] = PHPWS_Text::rewriteLink(WP_PAGE_RIGHT, 'webpage', array('id'=>$this->id, 'page'=>$page));
+                $template['NEXT_PAGE']  = PHPWS_Text::rewriteLink(WP_NEXT_PAGE, 'webpage', array('id'=>$this->id, 'page'=>$page));
             }
 
 
