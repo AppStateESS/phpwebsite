@@ -154,6 +154,8 @@ Please download 1.2.1.</pre>';
 + Adding missing paging navigation.</pre>';
 
     case version_compare($currentVersion, '1.5.0', '<'):
+        $db = new PHPWS_DB('menu_links');
+        PHPWS_Error::logIfError($db->alterColumnType('title', 'varchar(255) not null'));
         $files = array('templates/style.css',
                        'templates/menu_layout/basic/menu.tpl',
                        'templates/menu_layout/horizontal/menu.tpl',
@@ -177,6 +179,7 @@ Please download 1.2.1.</pre>';
   breakage with quotation marks.
 + Increased some popup window sizes
 + Fixed current link problem with unkeyed items.
++ Increased link title length in database.
 </pre>';
 
     }

@@ -5,7 +5,7 @@ CREATE TABLE menu_links (
   id int NOT NULL default 0,
   menu_id int NOT NULL default 0,
   key_id int NOT NULL default 0,
-  title varchar(50) NOT NULL,
+  title varchar(255) NOT NULL,
   url varchar(255) NOT NULL,
   parent int NOT NULL default 0,
   link_order smallint NOT NULL default 0,
