@@ -12,7 +12,7 @@ PHPWS_Core::initModClass('categories', 'Category.php');
 
 class Categories_Action {
 
-    function admin()
+    public function admin()
     {
         if (!Current_User::authorized('categories')) {
             Current_User::disallow(dgettext('categories', 'You are not authorized to administrate categories.'));
@@ -118,14 +118,14 @@ class Categories_Action {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
-    function sendMessage($message, $command)
+    public function sendMessage($message, $command)
     {
         $_SESSION['Category_message'] = $message;
         PHPWS_Core::reroute(sprintf('index.php?module=categories&action=admin&subaction=%s&authkey=%s', $command, Current_User::getAuthKey()));
         exit();
     }
 
-    function getMessage()
+    public function getMessage()
     {
         $message = NULL;
         if (isset($_SESSION['Category_message'])) {
@@ -136,7 +136,7 @@ class Categories_Action {
     }
 
 
-    function user()
+    public function user()
     {
         $mod = $id = NULL;
         if (isset($_REQUEST['action'])) {
@@ -148,11 +148,11 @@ class Categories_Action {
         switch ($action) {
         case 'view':
             if (isset($_REQUEST['id'])) {
-                $id = &$_REQUEST['id'];
+                $id = & $_REQUEST['id'];
             }
 
             if (isset($_REQUEST['ref_mod'])) {
-                $mod = $_REQUEST['ref_mod'];
+                $mod = & $_REQUEST['ref_mod'];
             }
 
             $content = Categories_Action::viewCategory($id, $mod);
@@ -162,7 +162,7 @@ class Categories_Action {
         Layout::add($content);
     }
 
-    function postCategory(Category $category)
+    public function postCategory(Category $category)
     {
         PHPWS_Core::initCoreClass('File.php');
 
@@ -193,7 +193,7 @@ class Categories_Action {
     }
 
 
-    function cpanel()
+    public function cpanel()
     {
         Layout::addStyle('categories');
 
@@ -216,7 +216,7 @@ class Categories_Action {
     }
 
 
-    function edit(Category $category, $errors=NULL)
+    public function edit(Category $category, $errors=NULL)
     {
         $template = NULL;
         PHPWS_Core::initCoreClass('Editor.php');
@@ -274,7 +274,7 @@ class Categories_Action {
         return PHPWS_Template::process($final_template, 'categories', 'forms/edit.tpl');
     }
 
-    function getManager($image_id, $image_name)
+    public function getManager($image_id, $image_name)
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager($image_name, $image_id);
@@ -282,11 +282,12 @@ class Categories_Action {
         $manager->maxImageHeight(CAT_MAX_ICON_HEIGHT);
         $manager->imageOnly(false, false);
         $manager->forceResize();
+        $manager->moduleLimit(true);
         return $manager->get();
     }
 
 
-    function category_list()
+    public function category_list()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -312,7 +313,7 @@ class Categories_Action {
     /**
      * The main view page for categories
      */
-    function viewCategory($id=NULL, $module=NULL)
+    public function viewCategory($id=NULL, $module=NULL)
     {
         $oMod = $category = NULL;
 
@@ -352,14 +353,14 @@ class Categories_Action {
 
         $family_list = Categories::cookieCrumb($category, $module);
 
-        $template['FAMILY'] = $family_list;
+        $template['FAMILY'] = & $family_list;
         $template['CONTENT'] = & $content;
 
         return PHPWS_Template::process($template, 'categories', 'view_categories.tpl');
     }
 
 
-    function moduleSelect($category=NULL)
+    public function moduleSelect($category=NULL)
     {
         $db = new PHPWS_DB('category_items');
 
@@ -403,7 +404,7 @@ class Categories_Action {
     /**
      * Listing of all items within a category
      */
-    function getAllItems(Category $category, $module)
+    public function getAllItems(Category $category, $module)
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -433,7 +434,7 @@ class Categories_Action {
         return $content;
     }
 
-    function addCategoryItem($cat_id, $key_id)
+    public function addCategoryItem($cat_id, $key_id)
     {
         $db = new PHPWS_DB('category_items');
         $db->addValue('cat_id', (int)$cat_id);
@@ -443,7 +444,7 @@ class Categories_Action {
         return $db->insert();
     }
 
-    function removeCategoryItem($cat_id, $key_id)
+    public function removeCategoryItem($cat_id, $key_id)
     {
         $db = new PHPWS_DB('category_items');
         $db->addWhere('cat_id', (int)$cat_id);
@@ -451,7 +452,7 @@ class Categories_Action {
         return $db->delete();
     }
 
-    function quickAdd($title, $key_id)
+    public function quickAdd($title, $key_id)
     {
         $title = strip_tags($title);
 
@@ -488,7 +489,7 @@ class Categories_Action {
         return true;
     }
 
-    function postItem()
+    public function postItem()
     {
         if (isset($_POST['add']) && isset($_POST['add_category'])) {
             Categories_Action::addCategoryItem($_POST['add_category'], $_POST['key_id']);
@@ -501,7 +502,7 @@ class Categories_Action {
      * Returns the category popup form for assigning items to
      * categories
      */
-    function categoryPopup()
+    public function categoryPopup()
     {
         $key = new Key((int)$_REQUEST['key_id']);
         $content = Categories::showForm($key, TRUE);
