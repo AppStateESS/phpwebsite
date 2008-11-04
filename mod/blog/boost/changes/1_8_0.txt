@@ -15,4 +15,5 @@
 + Dropping addStyle for filecabinet
 + Read more does not appear if entry hasn't been filled in
 + Sticky blog entries do not appear in the past blog list
++ Comments won't appear on unapproved blog entries.
 + PHP 5 formatted
