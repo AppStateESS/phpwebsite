@@ -646,7 +646,7 @@ class Key {
      * @param  string   key_id_column : (optional) Usually "key_id".  Only use this if you allow edits where "key_id=0"
      * @param  string   owner_id_column : (optional) Only use this if you allow edits on content created by the user
      */
-    public function restrictEdit($db, $module, $edit_permission, $source_table=null, $key_id_column=null, $owner_id_column=null)
+    public function restrictEdit($db, $module, $edit_permission=null, $source_table=null, $key_id_column=null, $owner_id_column=null)
     {
         if (Current_User::isDeity()) {
             return;
