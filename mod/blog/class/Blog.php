@@ -408,7 +408,7 @@ class Blog {
             }
         }
 
-        if ($this->allow_comments) {
+        if ($this->allow_comments && $this->approved) {
             $comments = Comments::getThread($key);
 
             if ($summarized && !empty($comments)) {

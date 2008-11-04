@@ -59,7 +59,7 @@ class Blog_Form {
             $form->addSelect('comment_approval', $default_approval);
             $form->setLabel('comment_approval', dgettext('blog', 'Comment approval'));
 
-            if ($blog->id) {
+            if ($blog->id && $blog->approved) {
                 PHPWS_Core::initModClass('comments', 'Comments.php');
                 $thread = Comments::getThread($blog->key_id);
                 $form->setMatch('allow_anon', $thread->allow_anon);

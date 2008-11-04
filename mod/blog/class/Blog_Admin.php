@@ -136,6 +136,7 @@ class Blog_Admin {
             $version->setSource($blog);
             $version->setApproved(TRUE);
             $result = $version->save();
+            Blog_Admin::resetCache();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 Blog_Admin::setForward(dgettext('blog', 'An error occurred when saving your version.'), 'approval');

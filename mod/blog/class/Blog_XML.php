@@ -9,11 +9,6 @@ PHPWS_Core::initCoreClass('xmlrpc.php');
 class Blog_XML extends MyServer {
     public $image_directory = 'images/blog/';
 
-    public function Blog_XML()
-    {
-        $this->MyServer();
-    }
-
     public function delete($id)
     {
         $blog = new Blog($id);
