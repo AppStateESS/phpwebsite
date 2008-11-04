@@ -635,9 +635,18 @@ class Key {
      * In other words, if Current_User::allow('module', 'edit_permission') == false
      * then they shouldn't even use this function. If it is used anyway, a forced negative
      * will be added (i.e. where 1 = 0);
+     * If you wish to add other qualifications, use the $db->addWhere() group 'key_id'
+     * in your module code.
+     *
+     * @modified Eloi George
+     * @param  object   db : Database object to modify
+     * @param  string   module : Calling module
+     * @param  string   edit_permission : Name of the editing permission
+     * @param  string   source_table : (optional) Name of the main table being searched
+     * @param  string   key_id_column : (optional) Usually "key_id".  Only use this if you allow edits where "key_id=0"
+     * @param  string   owner_id_column : (optional) Only use this if you allow edits on content created by the user
      */
-
-    public function restrictEdit($db, $module, $edit_permission, $source_table=null)
+    public function restrictEdit($db, $module, $edit_permission, $source_table=null, $key_id_column=null, $owner_id_column=null)
     {
         if (Current_User::isDeity()) {
             return;
@@ -660,22 +669,21 @@ class Key {
                 $source_table = $db->tables[0];
             }
 
-            $groups = Current_User::getGroups();
-            // if the current user is not in any groups (unlikely)
-            // then fail
-            if (empty($groups)) {
-                $db->setQWhere('1=0');
-                return;
+            if (!empty($key_id_column)) {
+                $db->addWhere($source_table.'.'.$key_id_column, 0, null, 'or', 'key_1');
             }
 
-            $db->addJoin('left', $source_table, 'phpws_key', 'key_id', 'id');
-            $db->addWhere("$source_table.key_id", 0);
-            $db->addWhere('phpws_key.id', 'phpws_key_edit.key_id', null, null, 'key_1');
-            $db->addWhere('phpws_key_edit.group_id', $groups, 'in', null, 'key_1');
-            $db->setGroupConj('key_1', 'or');
+            if (!empty($owner_id_column)) {
+                $db->addWhere($source_table.'.'.$owner_id_column, Current_User::getId(), null, 'or','key_1');
+            }
+
+            $groups = Current_User::getGroups();
+            if (!empty($groups)) {
+                $db->addJoin('left', $source_table, 'phpws_key_edit', 'key_id', 'key_id');
+                $db->addWhere('phpws_key_edit.group_id', $groups, 'in', 'or', 'key_1');
+            }
             return;
         }
-
     }
 
     public function modulesInUse()
