@@ -23,8 +23,6 @@ define('XMLRPC_BAD_RESULT', 'Unexpected results.');
  */
 define('ALLOW_OCTET_STREAM', true);
 
-
-
 /**
  * Until I work out all the kinks, I am leaving in my testing
  */
@@ -609,7 +607,7 @@ function record($file, $info, $append=true) {
         $info = 'empty';
     }
 
-    if (is_array($info)) {
+    if (is_array($info) || is_object($info)) {
         ob_start();
         var_dump($info);
         $info = ob_get_contents();
