@@ -607,6 +607,7 @@ class PHAT_Form extends PHPWS_Item {
             }
 
             /* If we are on last page...show the submit button */
+
             if(!$edit) {
                 if($this->currentPage() == $this->numPages()) {
                     if($this->_editData && $this->currentPage() > 1) {
@@ -955,7 +956,7 @@ class PHAT_Form extends PHPWS_Item {
             }
             return $content;
         } elseif($_REQUEST['PHAT_Submit']) {
-            if (!Captcha::verify()) {
+            if ($this->_anonymous && !Current_User::isLogged() && !Captcha::verify()) {
                 javascript('alert', array('content'=>dgettext('phatform', 'CAPTCHA word was not correct.')));
                 return $this->view(false);
             }
