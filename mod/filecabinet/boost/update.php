@@ -465,6 +465,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                        'templates/style.css',
                        'templates/file_list.tpl',
                        'templates/folder_list.tpl',
+                       'templates/pinned.tpl',
                        'img/add.png',
                        'conf/icons.php',
                        'conf/config.php'

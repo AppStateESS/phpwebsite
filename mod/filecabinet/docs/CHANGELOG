@@ -2,6 +2,7 @@ Version 2.2.0
 ---------------------------------------------------------------------------------
 5 November 2008
 + Checking for image existence prior to display in file manager.
++ Patch #2067859 - titles added to pinned folders. Thanks Tommy.
 
 27 October 2008
 + File Cabinet permissions not required to pick items from menu.

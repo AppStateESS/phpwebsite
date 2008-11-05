@@ -548,7 +548,9 @@ class PHPWS_Multimedia extends File_Common {
 
     public function pinTags()
     {
-        return array('TN'=>$this->getJSView(true));
+        $tpl['TN'] = $this->getJSView(true);
+        $tpl['TITLE'] = $this->title;
+        return $tpl;
     }
 
     public function getManagerIcon($fmanager)

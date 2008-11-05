@@ -4,7 +4,7 @@
       <div class="box-content">
          <div class="pin-list">
             <!-- BEGIN files -->
-            <div class="fc-file">{TN}{TITLE}</div>
+            <div class="fc-file">{TN}<br /><span class="fc-file-title">{TITLE}</span></div>
             <!-- END files -->
          </div>
          {MORE}

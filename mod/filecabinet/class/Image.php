@@ -360,6 +360,7 @@ class PHPWS_Image extends File_Common {
     public function pinTags()
     {
         $tpl['TN'] = $this->getJSView(true);
+        $tpl['TITLE'] = $this->title;
         return $tpl;
     }
 
