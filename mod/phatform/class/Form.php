@@ -14,6 +14,11 @@ require_once(PHPWS_SOURCE_DIR . 'core/class/Item.php');
  * @modified Matthew McNaney <mcnaney at gmail dot com>
  * @package Phat Form
  */
+
+if (!defined('PHATFORM_CAPTCHA')) {
+    define('PHATFORM_CAPTCHA', true);
+}
+
 class PHAT_Form extends PHPWS_Item {
     var $_key_id = 0;
 
@@ -613,7 +618,7 @@ class PHAT_Form extends PHPWS_Item {
                     if($this->_editData && $this->currentPage() > 1) {
                         $formTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_Back');
                     }
-                    if ($this->_anonymous && !Current_User::isLogged()) {
+                    if (PHATFORM_CAPTCHA && $this->_anonymous && !Current_User::isLogged()) {
                         PHPWS_Core::initCoreClass('Captcha.php');
                         $formTags['CAPTCHA'] = Captcha::get();
                     }
@@ -930,7 +935,10 @@ class PHAT_Form extends PHPWS_Item {
     }// END FUNC _editAction()
 
     function _formAction() {
-        PHPWS_Core::initCoreClass('Captcha.php');
+        if (PHATFORM_CAPTCHA) {
+            PHPWS_Core::initCoreClass('Captcha.php');
+        }
+
         if(isset($_REQUEST['PHAT_Next'])) {
             if($this->isSaved()) {
                 $error = $this->_saveFormData();
@@ -956,7 +964,7 @@ class PHAT_Form extends PHPWS_Item {
             }
             return $content;
         } elseif($_REQUEST['PHAT_Submit']) {
-            if ($this->_anonymous && !Current_User::isLogged() && !Captcha::verify()) {
+            if (PHATFORM_CAPTCHA && $this->_anonymous && !Current_User::isLogged() && !Captcha::verify()) {
                 javascript('alert', array('content'=>dgettext('phatform', 'CAPTCHA word was not correct.')));
                 return $this->view(false);
             }
