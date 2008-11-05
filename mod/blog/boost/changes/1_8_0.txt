@@ -16,4 +16,5 @@
 + Read more does not appear if entry hasn't been filled in
 + Sticky blog entries do not appear in the past blog list
 + Comments won't appear on unapproved blog entries.
++ Fixed: Blog overwriting image_link with wrong setting name.
 + PHP 5 formatted

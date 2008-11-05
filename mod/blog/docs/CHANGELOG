@@ -1,5 +1,9 @@
 Version 1.8.0
 -------------------------------------------------------------
+5 November 2008
++ Blog was overwriting image_link with wrong setting name. This left
+  it null breaking the save.
+
 4 November 2008
 + Comments won't appear on unapproved blog entries now.
 + Blog cache is reset after approving a blog entry.

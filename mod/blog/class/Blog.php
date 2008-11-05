@@ -47,7 +47,7 @@ class Blog {
 
         if (empty($id)) {
             $this->allow_comments = PHPWS_Settings::get('blog', 'allow_comments');
-            $this->image_link = PHPWS_Settings::get('blog', 'default_link');
+            $this->image_link = PHPWS_Settings::get('blog', 'image_link');
             return;
         }
 
