@@ -1,5 +1,8 @@
 Version 2.2.0
 ---------------------------------------------------------------------------------
+5 November 2008
++ Checking for image existence prior to display in file manager.
+
 27 October 2008
 + File Cabinet permissions not required to pick items from menu.
 + File manager windows verify salted authkeys.

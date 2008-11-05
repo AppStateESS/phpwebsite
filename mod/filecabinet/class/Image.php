@@ -240,6 +240,9 @@ class PHPWS_Image extends File_Common {
             $css_id = $this->id;
         }
         $thumbpath = $this->thumbnailPath();
+        if (!is_file($thumbpath)) {
+            return dgettext('filecabinet', 'No image found');
+        }
         $dimensions = getimagesize($thumbpath);
 
         $image_tag = sprintf('<img src="%s" title="%s" id="image-thumbnail-%s" alt="%s" width="%s" height="%s" />',
@@ -443,12 +446,17 @@ class PHPWS_Image extends File_Common {
         }
 
         $tpl['ID'] = $this->id;
-        $tpl['ICON']  = $this->getManagerIcon($fmanager);
         $tpl['TITLE'] = $this->title;
         $tpl['INFO']  = sprintf('%s x %s - %s', $this->width, $this->height,
                                 $this->getSize(true));
 
-        $links[] = $this->getJSView(false);
+        if (is_file($this->getPath())) {
+            $tpl['ICON']  = $this->getManagerIcon($fmanager);
+            $links[] = $this->getJSView(false);
+        } else {
+            $tpl['ICON'] = dgettext('filecabinet', 'Image missing');
+        }
+
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
             $links[] = $this->editLink(true);
             $links[] = $this->deleteLink(true);
