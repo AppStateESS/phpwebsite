@@ -1,5 +1,10 @@
 Version 2.6.0
 -----------------------------------------------------------------------
+5 November 2008
++ Fixed delete link.
++ Current_User - Added "secured" function to Current_User. Works like
+  authorized but uses salted urls.
+
 31 October 2008
 + Put in a local_user setting in authorization. My Page disabled if
   local_user is false.

@@ -62,6 +62,24 @@ final class Current_User {
     }
 
     /**
+     * Works like authorized, but checks for a salted authkey
+     * Won't work on posts yet.
+     */
+    public function secured($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
+    {
+        if ($unrestricted_only && Current_User::isRestricted($module)) {
+                return false;
+        }
+
+        if (!isset($_SESSION['User'])) {
+            return false;
+        }
+
+        return Current_User::verifySaltedUrl() && $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname);
+    }
+
+
+    /**
      * Works the same as the allow function but confirms the user's authorization code
      *
      * @param  string   module             Name of the module checking

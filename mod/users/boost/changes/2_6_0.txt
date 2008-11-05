@@ -25,3 +25,4 @@
 + Authkeys can be salted with special keys.
 + Added function verifySaltedUrl which verifies the authkey in the
   current url.
++ Added secured function in Current_User. Uses salted links for auth key.

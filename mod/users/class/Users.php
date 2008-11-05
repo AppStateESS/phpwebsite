@@ -563,14 +563,7 @@ class PHPWS_User {
                     PHPWS_Error::log($result);
                 }
             }
-            elseif ($this->authorize == GLOBAL_AUTHORIZATION) {
-                $result = $this->saveGlobalAuthorization();
-                if (PEAR::isError($result)) {
-                    PHPWS_Error::log($result);
-                }
-            }
         }
-
 
         if ($newUser) {
             return $this->createGroup();
@@ -884,8 +877,15 @@ class PHPWS_User {
 
         $jsvar['QUESTION'] = sprintf(dgettext('users', 'Are you certain you want to delete the user &quot;%s&quot; permanently?'),
                                      $this->getUsername());
+        $link = new PHPWS_Link(null, 'users', array('action'=>'admin',
+                                                    'command'=>'deleteUser',
+                                                    'user_id'=> $this->id), true);
+        $link->setSalted();
+        $jsvar['ADDRESS'] = $link->getAddress();
+        /*
         $jsvar['ADDRESS']  = 'index.php?module=users&amp;action=admin&amp;command=deleteUser&amp;user_id='
-            . $this->id . '&amp;authkey=' . $this->getAuthKey();
+            . $this->id . '&amp;authkey=' . Current_User::getAuthKey();
+        */
         $jsvar['LINK']     = dgettext('users', 'Delete');
 
 

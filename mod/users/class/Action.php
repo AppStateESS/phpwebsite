@@ -89,7 +89,7 @@ class User_Action {
             break;
 
         case 'deleteUser':
-            if (!Current_User::authorized('users', 'delete_users')) {
+            if (!Current_User::secured('users', 'delete_users')) {
                 Current_User::disallow();
                 return;
             }
