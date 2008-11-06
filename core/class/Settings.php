@@ -283,6 +283,14 @@ class PHPWS_Settings {
         return $db->delete();
     }
 
+    /**
+     * Clears the settings global
+     */
+    public function clear()
+    {
+        unset($GLOBALS['PHPWS_Settings']);
+    }
+
 }
 
 ?>
