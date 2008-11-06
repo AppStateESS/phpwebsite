@@ -542,8 +542,7 @@ class PHPWS_User {
 
         if ($newUser == true) {
             $this->created = mktime();
-        }
-        else {
+        } else {
             $this->updated = mktime();
         }
 
@@ -555,9 +554,8 @@ class PHPWS_User {
             return PHPWS_Error::get(USER_ERR_USER_NOT_SAVED, 'users', 'save');
         }
 
-
         if ($this->authorize > 0) {
-            if ($this->authorize == LOCAL_AUTHORIZATION) {
+            if ($this->authorize == PHPWS_Settings::get('users', 'local_script')) {
                 $result = $this->saveLocalAuthorization();
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);

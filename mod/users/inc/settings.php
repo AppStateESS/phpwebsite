@@ -8,6 +8,7 @@ $settings = array('default_authorization' => 0,
                   'user_menu'             => 'css.tpl',
                   'graphic_confirm'       => 0,
                   'allow_remember'        => 1,
-                  'forbidden_usernames'   => "admin\nroot\nwebmaster\nadministrator\neditor"
+                  'forbidden_usernames'   => "admin\nroot\nwebmaster\nadministrator\neditor",
+                  'local_script'          => 0
                   );
 ?>

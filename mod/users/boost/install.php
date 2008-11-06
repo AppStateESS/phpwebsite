@@ -11,20 +11,14 @@ function users_install(&$content)
     PHPWS_Core::initModClass('users', 'Users.php');
     PHPWS_Core::initModClass('users', 'Action.php');
     PHPWS_Core::configRequireOnce('users', 'config.php');
-    
-    $db = new PHPWS_DB('users_auth_scripts');
-    $db->addValue('display_name', dgettext('users', 'Local'));
-    $db->addValue('filename', 'local.php');
-    $authorize_id = $db->insert();
-
-    if (PHPWS_Error::logIfError($authorize_id)) {
-        $content[] = 'Error creating authorization script.';
-        return false;
-    }
-    PHPWS_Settings::set('users', 'default_authorization', $authorize_id);
-    PHPWS_Settings::save('users');
 
     if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'branch') {
+        $db = new PHPWS_DB;
+        PHPWS_Settings::clear();
+        if (!createLocalAuthScript()) {
+            $content[] = 'Could not create authorization script.';
+            return false;
+        }
         Branch::loadHubDB();
         $db = new PHPWS_DB('users');
         $sql = 'select a.password, b.* from user_authorization as a, users as b where b.deity = 1 and a.username = b.username';
@@ -37,7 +31,6 @@ function users_install(&$content)
         }
         elseif (empty($deities)) {
             $content[] = dgettext('users', 'Could not find any hub deities.');
-
             return FALSE;
         } else {
             Branch::restoreBranchDB();
@@ -82,10 +75,16 @@ function users_install(&$content)
         return TRUE;
     }
 
+    if (!createLocalAuthScript()) {
+        $content[] = 'Could not create local authorization script.';
+        return false;
+    }
+
+    $authorize_id = PHPWS_Settings::get('users', 'local_script');
     $user = new PHPWS_User;
     $content[] = '<hr />';
 
-    if (isset($_POST['mod_title']) && $_POST['mod_title']=='users'){
+    if (isset($_POST['mod_title']) && $_POST['mod_title']=='users') {
         $result = User_Action::postUser($user);
         if (!is_array($result)) {
             $user->setDeity(TRUE);
@@ -155,5 +154,23 @@ function userForm(&$user, $errors=NULL){
     return implode("\n", $content);
 }
 
+function createLocalAuthScript()
+{
+    if (PHPWS_Settings::get('users', 'local_script')) {
+        return true;
+    }
+    $db = new PHPWS_DB('users_auth_scripts');
+    $db->addValue('display_name', dgettext('users', 'Local'));
+    $db->addValue('filename', 'local.php');
+    $authorize_id = $db->insert();
+
+    if (PHPWS_Error::logIfError($authorize_id)) {
+        return false;
+    }
+    PHPWS_Settings::set('users', 'default_authorization', $authorize_id);
+    PHPWS_Settings::set('users', 'local_script', $authorize_id);
+    PHPWS_Settings::save('users');
+    return true;
+}
 
 ?>
