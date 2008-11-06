@@ -57,7 +57,7 @@ class Webpage_Forms {
         return $panel;
     }
 
-    public function editHeader(Webpage_Volume $volume, Version $version)
+    public function editHeader(Webpage_Volume $volume, $version)
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'webpage');
@@ -87,7 +87,7 @@ class Webpage_Forms {
     }
 
 
-    public function editPage(Webpage_Page $page, Version $version)
+    public function editPage(Webpage_Page $page, $version)
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'webpage');
