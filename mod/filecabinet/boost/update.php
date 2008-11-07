@@ -461,6 +461,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                        'templates/classify_list.tpl',
                        'templates/ss_box.tpl',
                        'templates/file_manager/carousel_pick.tpl',
+                       'templates/file_manager/folder_content_view.tpl',
                        'templates/settings.tpl',
                        'templates/style.css',
                        'templates/file_list.tpl',
