@@ -24,7 +24,7 @@ function add_unkeyed_link(menu_id, parent_id, url, link_title)
 
 function delete_link(menu_id, link_id, title)
 {
-    if (confirm('{delete_question} ' + title)) {
+    if (confirm(delete_question + ' ' + title)) {
         forward = 'index.php?module=menu&command=delete_link&link_id=' + link_id
             + '&menu_id=' + menu_id + '&key_id=' + ref_key + '&ajax=1&authkey=' + authkey;
         forward_url(forward, menu_id);
