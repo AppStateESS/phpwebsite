@@ -478,7 +478,7 @@ class PS_Page {
 
         $pages = $db->select('col');
 
-        if (empty($pages)) {
+        if (PHPWS_Error::logIfError($pages) || empty($pages)) {
             return;
         }
 
