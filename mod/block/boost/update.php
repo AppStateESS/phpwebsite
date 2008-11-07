@@ -60,7 +60,7 @@ Please download version 1.1.2.</pre>';
 + Blocks can now contain File Cabinet elements.</pre>';
 
     case version_compare($currentVersion, '1.3.0', '<'):
-        if (PHPWS_Boost::updateFiles(array('templates/list.tpl'), 'block')) {
+        if (PHPWS_Boost::updateFiles(array('templates/list.tpl', 'templates/sample.tpl'), 'block')) {
             $content[] = '--- Successfully copied templates/list.tpl';
         } else {
             $content[] = '--- Unable to copy templates/list.tpl';
@@ -69,6 +69,7 @@ Please download version 1.1.2.</pre>';
         $content[] = '<pre>1.3.0 changes
 -----------------
 + PHP 5 updated
++ Wrapped block-file class around file display.
 + Changed pager view to use addSortHeaders</pre>';
     }
     return TRUE;
