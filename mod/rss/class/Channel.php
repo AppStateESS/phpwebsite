@@ -94,6 +94,7 @@ class RSS_Channel {
 
     public function getAddress($include_http=TRUE)
     {
+        PHPWS_Core::initCoreClass('Link.php');
         $link = new PHPWS_Link;
         $link->full_url = $include_http;
         $link->setRewrite();
