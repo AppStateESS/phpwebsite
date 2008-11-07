@@ -1124,23 +1124,26 @@ class Calendar_User {
             $current_day = null;
 
             $count = 0;
-
+            if (empty($event_list)) {
+                continue;
+            }
             foreach ($event_list as $event) {
                 $vars = array('view'   => 'day',
                               'date'   => $event->start_time,
                               'sch_id' => $schedule->id);
-
+                    
                 $tpl['events'][$count] = $event->getTpl();
-
+                    
                 if ($current_day != strftime(CALENDAR_UPCOMING_FORMAT, $event->start_time)) {
                     $current_day = strftime(CALENDAR_UPCOMING_FORMAT, $event->start_time);
                     $tpl['events'][$count]['DAY'] = PHPWS_Text::moduleLink($current_day, 'calendar', $vars);
                 } else {
                     $tpl['events'][$count]['DAY'] = null;
                 }
-
+                    
                 $count++;
             }
+            
             $upcoming[] = PHPWS_Template::process($tpl, 'calendar', 'view/upcoming.tpl');
         }
 
