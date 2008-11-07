@@ -44,3 +44,7 @@
 + All thumbnail setting are derived from settings page
 + Viewing images in a folder can now be viewed using jcarousel lite.
 + Titles appear under pinned folder items.
++ Folder item view watches title length and abbreviates when
+  necessary.
++ Added setting to force thumbnail dimensions on all previously saved
+  thumbnails.

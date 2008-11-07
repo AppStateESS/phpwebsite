@@ -1,5 +1,14 @@
 Version 2.2.0
 ---------------------------------------------------------------------------------
+7 November 2008
++ Folder item view watches title length and abbreviates when
+  necessary. 
++ Added style component to item title in folder view.
++ Style added to reduce font size for item title.
++ Added setting to force thumbnail dimensions on all previously saved
+  thumbnails.
++ Added getTitle function to File_Common with size reduction option.
+
 5 November 2008
 + Checking for image existence prior to display in file manager.
 + Patch #2067859 - titles added to pinned folders. Thanks Tommy.

@@ -22,6 +22,8 @@
     {MAX_PINNED_IMAGES}</p>
     <p style="margin-bottom : 1em"><strong>{CROP_THRESHOLD_LABEL}</strong> 
     {CROP_THRESHOLD}</p>
+    <p style="margin-bottom : 1em">{FORCE_THUMBNAIL_DIMENSIONS} <strong>{FORCE_THUMBNAIL_DIMENSIONS_LABEL}</strong> 
+    </p>
     <p style="margin-bottom : 1em"><strong>{MAX_THUMBNAIL_SIZE_LABEL}</strong> 
     {MAX_THUMBNAIL_SIZE}</p>
     <fieldset><legend>{CAROUSEL}</legend>

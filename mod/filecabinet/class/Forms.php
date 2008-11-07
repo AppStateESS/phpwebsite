@@ -390,6 +390,10 @@ class Cabinet_Form {
         $form->setMatch('caption_images', PHPWS_Settings::get('filecabinet', 'caption_images'));
         $form->setLabel('caption_images', dgettext('filecabinet', 'Caption images'));
 
+        $form->addCheck('force_thumbnail_dimensions', 1);
+        $form->setMatch('force_thumbnail_dimensions', PHPWS_Settings::get('filecabinet', 'force_thumbnail_dimensions'));
+        $form->setLabel('force_thumbnail_dimensions', dgettext('filecabinet', 'Force thumbnail dimensions on display'));
+
         $form->addCheck('popup_image_navigation', 1);
         $form->setMatch('popup_image_navigation', PHPWS_Settings::get('filecabinet', 'popup_image_navigation'));
         $form->setLabel('popup_image_navigation', dgettext('filecabinet', 'Popup images allow folder navigation'));
@@ -610,11 +614,7 @@ class Cabinet_Form {
             PHPWS_Settings::set('filecabinet', 'max_image_dimension', $_POST['max_image_dimension']);
         }
 
-        if (isset($_POST['classify_file_type'])) {
-            PHPWS_Settings::set('filecabinet', 'classify_file_type', 1);
-        } else {
-            PHPWS_Settings::set('filecabinet', 'classify_file_type', 0);
-        }
+        PHPWS_Settings::set('filecabinet', 'classify_file_type', (int)isset($_POST['classify_file_type']));
 
         $max_file_upload = preg_replace('/\D/', '', ini_get('upload_max_filesize'));
 
@@ -664,35 +664,18 @@ class Cabinet_Form {
             PHPWS_Settings::set('filecabinet', 'crop_threshold', $threshold);
         }
 
+        PHPWS_Settings::set('filecabinet', 'force_thumbnail_dimensions', (int)isset($_POST['force_thumbnail_dimensions']));
+
         if (empty($_POST['max_pinned_documents'])) {
             PHPWS_Settings::set('filecabinet', 'max_pinned_documents', 0);
         } else {
             PHPWS_Settings::set('filecabinet', 'max_pinned_documents', (int)$_POST['max_pinned_documents']);
         }
 
-        if (isset($_POST['use_ffmpeg'])) {
-            PHPWS_Settings::set('filecabinet', 'use_ffmpeg', 1);
-        } else {
-            PHPWS_Settings::set('filecabinet', 'use_ffmpeg', 0);
-        }
-
-        if (isset($_POST['auto_link_parent'])) {
-            PHPWS_Settings::set('filecabinet', 'auto_link_parent', 1);
-        } else {
-            PHPWS_Settings::set('filecabinet', 'auto_link_parent', 0);
-        }
-
-        if (isset($_POST['caption_images'])) {
-            PHPWS_Settings::set('filecabinet', 'caption_images', 1);
-        } else {
-            PHPWS_Settings::set('filecabinet', 'caption_images', 0);
-        }
-
-        if (isset($_POST['popup_image_navigation'])) {
-            PHPWS_Settings::set('filecabinet', 'popup_image_navigation', 1);
-        } else {
-            PHPWS_Settings::set('filecabinet', 'popup_image_navigation', 0);
-        }
+        PHPWS_Settings::set('filecabinet', 'use_ffmpeg', (int)isset($_POST['use_ffmpeg']));
+        PHPWS_Settings::set('filecabinet', 'auto_link_parent', (int)isset($_POST['auto_link_parent']));
+        PHPWS_Settings::set('filecabinet', 'caption_images', (int)isset($_POST['caption_images']));
+        PHPWS_Settings::set('filecabinet', 'popup_image_navigation', (int)isset($_POST['popup_image_navigation']));
 
         if (empty($_POST['max_thumbnail_size'])) {
             PHPWS_Settings::set('filecabinet', 'max_thumbnail_size', 100);

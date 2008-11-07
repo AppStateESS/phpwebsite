@@ -182,3 +182,7 @@ div#carousel-pick {
     top : 100px;
     padding : 8px;
 }
+
+span.item-title, span.item-info { 
+   font-size : 10px;
+}

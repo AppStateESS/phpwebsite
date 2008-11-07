@@ -243,7 +243,22 @@ class PHPWS_Image extends File_Common {
         if (!is_file($thumbpath)) {
             return dgettext('filecabinet', 'No image found');
         }
+
         $dimensions = getimagesize($thumbpath);
+
+        if (PHPWS_Settings::get('filecabinet', 'force_thumbnail_dimensions')) {
+            $max_size = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
+            $ratio = $dimensions[0] / $dimensions[1];
+            if ($ratio == 1) {
+                $dimensions = array($max_size, $max_size);
+            } elseif ($ratio > 1) {
+                $dimensions[0] = $max_size;
+                $dimensions[1] = floor($max_size / $ratio);
+            } else {
+                $dimensions[0] = floor($max_size / $ratio);
+                $dimensions[1] = $max_size;
+            }
+        }
 
         $image_tag = sprintf('<img src="%s" title="%s" id="image-thumbnail-%s" alt="%s" width="%s" height="%s" />',
                              $thumbpath,
@@ -447,7 +462,8 @@ class PHPWS_Image extends File_Common {
         }
 
         $tpl['ID'] = $this->id;
-        $tpl['TITLE'] = $this->title;
+        $tpl['TITLE'] = $this->getTitle(true);
+                        
         $tpl['INFO']  = sprintf('%s x %s - %s', $this->width, $this->height,
                                 $this->getSize(true));
 
@@ -580,7 +596,7 @@ class PHPWS_Image extends File_Common {
 
         if (empty($this->alt)) {
             if (empty($this->title)) {
-                $this->title = $this->file_name;
+                $this->loadTitleFromFilename();
             }
             $this->alt = $this->title;
         }

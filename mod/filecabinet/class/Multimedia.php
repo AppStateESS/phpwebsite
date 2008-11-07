@@ -523,7 +523,7 @@ class PHPWS_Multimedia extends File_Common {
         } else {
             $file_name = & $this->file_name;
         }
-        $tpl['TITLE'] = PHPWS_Text::shortenUrl($this->title, 30);
+        $tpl['TITLE'] = $this->getTitle(true);
 
         $filename_len = strlen($this->file_name);
 

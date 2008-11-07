@@ -9,6 +9,8 @@
 
 PHPWS_Core::initCoreClass('File.php');
 
+define('FILE_TITLE_CUTOFF', 24);
+
 class File_Common {
     public $id              = 0;
     public $file_name       = null;
@@ -542,6 +544,25 @@ class File_Common {
                 break;
 
             }
+        }
+    }
+    
+    public function getTitle($shorten=false)
+    {
+        if ($shorten && (strlen($this->title) > FILE_TITLE_CUTOFF)) {
+            //return sprintf('<abbr title="%s">%s</abbr>', $this->title, substr($this->title, 0, FILE_TITLE_CUTOFF));
+            return sprintf('<abbr title="%s">%s</abbr>', $this->title, PHPWS_Text::shortenUrl($this->title, FILE_TITLE_CUTOFF));
+        } else {
+            return $this->title;
+        }
+    }
+
+    public function loadTitleFromFilename()
+    {
+        $ext = PHPWS_File::getFileExtension($this->file_name);
+        $this->title = str_replace('.' . $ext, '', $this->file_name);
+        if (preg_match('/_/', $this->title) && !preg_match('/\s/', $this->title)) {
+            $this->title = str_replace('_', ' ', $this->title);
         }
     }
 }

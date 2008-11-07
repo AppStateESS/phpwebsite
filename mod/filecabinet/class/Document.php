@@ -214,14 +214,7 @@ class PHPWS_Document extends File_Common {
     public function managerTpl($fmanager)
     {
         $tpl['ICON'] = $this->getManagerIcon($fmanager);
-        $title_len = strlen($this->title);
-        if ($title_len > 20) {
-            $file_name = sprintf('<abbr title="%s">%s</abbr>', $this->file_name,
-                                 PHPWS_Text::shortenUrl($this->file_name, 20));
-        } else {
-            $file_name = & $this->file_name;
-        }
-        $tpl['TITLE'] = PHPWS_Text::shortenUrl($this->title, 30);
+        $tpl['TITLE'] = $this->getTitle(true);
 
         $filename_len = strlen($this->file_name);
 

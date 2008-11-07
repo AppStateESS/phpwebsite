@@ -646,7 +646,7 @@ class FC_File_Manager {
                     $tpl['ALT1'] = $image1;
                     $tpl['ALT_HIGH1'] = ' no-use';
                 }
-            } elseif (!$this->current_folder->reserved) {
+            } else {
                 $not_allowed = dgettext('filecabinet', 'Action not allowed - private folder');
                 $image1 = sprintf($image_string, $img_dir . $img1, $not_allowed, $img1_alt);
                 $tpl['ALT1'] = $image1;
