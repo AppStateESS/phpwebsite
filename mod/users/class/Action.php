@@ -76,10 +76,14 @@ class User_Action {
             break;
 
         case 'notify_user':
-            User_Action::notifyUser();
+            if (!User_Action::notifyUser()) {
+                $message = dgettext('users', 'Failed to send notification email.');
+            } else {
+                $message = dgettext('users', 'User created and notified.');
+            }
             $user_id = $_SESSION['New_User']['user_id'];
             unset($_SESSION['New_User']);
-            User_Action::sendMessage(dgettext('users', 'User created and notified.'), 'setUserPermissions&user_id=' . $user_id);
+            User_Action::sendMessage($message, 'setUserPermissions&user_id=' . $user_id);
             break;
 
         case 'do_not_notify':
@@ -1535,7 +1539,7 @@ class User_Action {
         $mail->setFrom(PHPWS_User::getUserSetting('site_contact'));
         $mail->setReplyTo(PHPWS_User::getUserSetting('site_contact'));
         $mail->setMessageBody(implode("\n\n", $body));
-        $result = !PHPWS_Error::logIfError($mail->send());
+        $result = $mail->send();
         return $result;
     }
 }

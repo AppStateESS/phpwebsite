@@ -20,6 +20,12 @@ function users_install(&$content)
             return false;
         }
         Branch::loadHubDB();
+        $db = new PHPWS_DB('mod_settings');
+        $db->addWhere('module', 'users');
+        $db->addWhere('setting_name', 'site_contact');
+        $db->addColumn('small_char');
+        $site_contact = $db->select('one');
+
         $db = new PHPWS_DB('users');
         $sql = 'select a.password, b.* from user_authorization as a, users as b where b.deity = 1 and a.username = b.username';
         $deities = $db->getAll($sql);
@@ -34,6 +40,8 @@ function users_install(&$content)
             return FALSE;
         } else {
             Branch::restoreBranchDB();
+            PHPWS_Settings::set('users', 'site_contact', $site_contact);
+            PHPWS_Settings::save('users');
             $auth_db = new PHPWS_DB('user_authorization');
             $user_db = new PHPWS_DB('users');
             $group_db = new PHPWS_DB('users_groups');
