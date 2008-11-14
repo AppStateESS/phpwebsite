@@ -331,6 +331,8 @@ You will need to make your hub/branch home directory writable if the file doesn\
                        'javascript/editors/fckeditor/editor/custom.js',
                        'javascript/editors/fckeditor/default.php',
                        'javascript/editors/fckeditor/body.js',
+                       'javascript/jquery/ui.core.js',
+                       'javascript/jquery/ui.sortable.js',
                        'conf/text_settings.php',
                        'conf/version.php',
                        'conf/file_types.php',
