@@ -16,6 +16,8 @@ define('MENU_LINK_ADD_SITE', sprintf('<img src="./images/mod/menu/offsite.png" t
 
 define('MENU_LINK_EDIT', sprintf('<img src="./images/mod/menu/gnome-stock-edit.png" title="%s" alt="%s" />', dgettext('menu', 'Edit link title'), dgettext('menu', 'Edit link title')));
 
+define('MENU_LINK_INDENT', sprintf('<img src="./images/mod/menu/icon_indent.png" title="%s" alt="%s" />', dgettext('menu', 'Indent menu link'), dgettext('menu', 'Indent menu link')));
+
 define('MENU_LINK_DELETE', sprintf('<img src="./images/mod/menu/gtk-delete.png" title="%s" alt="%s" />', dgettext('menu', 'Delete link'), dgettext('menu', 'Delete link')));
 
 define('MENU_LINK_UP', sprintf('<img src="./images/mod/menu/gtk-go-up.png" title="%s" alt="%s" />', dgettext('menu', 'Move up'), dgettext('menu', 'Move up')));

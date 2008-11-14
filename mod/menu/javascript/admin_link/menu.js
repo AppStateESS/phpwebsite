@@ -33,6 +33,77 @@ function delete_link(menu_id, link_id, title)
 
 function forward_url(forward_address, menu_id) {
     $.get(forward_address, function(data) {
-        $('#menu_' + menu_id).html(data);
+        $('#menu-' + menu_id).html(data);
+        sort_links();
+        indent();
     });
 }
+
+$(document).ready(
+    function(){
+        sort_links();
+        indent();
+    }
+);
+
+function indent()
+{
+    $(".menu-indent").bind("click", function(){
+        info = $(this).attr('id');
+        info = info.replace(/menu-indent-/, '');
+        ids = info.split('-');
+        menu_id = ids[0];
+        link_id = ids[1];
+        forward = 'index.php?module=menu&command=indent_link&link_id=' + link_id 
+                      + '&menu_id=' + menu_id + '&key_id=' + ref_key + '&authkey=' + authkey;
+        forward_url(forward, menu_id);
+        }
+    );
+}
+
+function sort_links()
+{
+    if (!drag_sort) {
+        return;
+    }
+
+    $(".menu-links").sortable({
+        opacity : .40,
+        update : show,
+        items : "li",
+        revert : true,
+        tree : true
+    });
+
+}
+
+function show(e, ui)
+{
+    new_parent = ui.item.parent().attr('id');
+    if (new_parent.match('menu-parent-')) {
+        new_parent = new_parent.replace(/menu-parent-/, '');
+    } else {
+        new_parent = 0;
+    }
+
+    prev_link = ui.item.prev().attr('id');
+    if (prev_link) {
+        prev_link = prev_link.replace(/menu-link-/, '');
+    } else {
+        prev_link = 0;
+    }
+    
+
+    menu_id_raw = $(this).attr('id');
+    menu_id = menu_id_raw.replace(/sort-menu-/, '');
+
+    moved = ui.item.attr('id').replace(/menu-link-/, '');
+
+    forward = 'index.php?module=menu&command=sort_menu_links&menu_id=' + menu_id + '&parent=' + new_parent
+        + '&key_id=' + ref_key + '&authkey=' + authkey + '&moved=' + moved + '&under=' + prev_link;
+
+    forward_url(forward, menu_id);
+}
+
+
+

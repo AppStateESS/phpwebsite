@@ -152,9 +152,11 @@ class Menu_Item {
      */
     public function displayLinks($edit=FALSE)
     {
-        if (PHPWS_Settings::get('menu', 'float_mode')) {
+        if (Menu::isAdminMode() && PHPWS_Settings::get('menu', 'float_mode')) {
             javascript('jquery');
-            javascript('modules/menu/admin_link', array('authkey'=>Current_User::getAuthKey()));
+            $vars['authkey'] = Current_User::getAuthKey();
+            $vars['drag_sort'] = PHPWS_Settings::get('menu', 'drag_sort');
+            javascript('modules/menu/admin_link', $vars);
         }
 
         $all_links = $this->getLinks();
@@ -436,7 +438,7 @@ class Menu_Item {
 
         $tpl['TITLE'] = $this->getTitle();
         $tpl['LINKS'] = $this->displayLinks($edit);
-        $tpl['MENU_ID'] = sprintf('menu_%s', $this->id);
+        $tpl['MENU_ID'] = sprintf('menu-%s', $this->id);
 
         if ($pin_mode &&
             Current_User::allow('menu') &&
@@ -467,22 +469,34 @@ class Menu_Item {
         $db->addWhere('menu_id', $this->id);
         $db->addColumn('id');
         $db->addColumn('parent');
+        $db->addColumn('link_order');
         $db->addOrder('link_order');
         $db->setIndexBy('parent');
 
         $result = $db->select();
+
         if (empty($result)) {
             return;
         }
 
         foreach ($result as $parent_id => $links) {
+            if (empty($links)) {
+                continue;
+            }
             $count = 1;
-            foreach ($links as $link) {
-                $db->reset();
-                $db->addWhere('id', $link['id']);
-                $db->addValue('link_order', $count);
-                $db->update();
-                $count++;
+            if (isset($links[0])) {
+                foreach ($links as $link) {
+                    $db->reset();
+                    $db->addWhere('id', $link['id']);
+                    $db->addValue('link_order', $count);
+                    PHPWS_Error::logIfError($db->update());
+                    $count++;
+                }
+            } else {
+                    $db->reset();
+                    $db->addWhere('id', $links['id']);
+                    $db->addValue('link_order', $count);
+                    PHPWS_Error::logIfError($db->update());
             }
         }
         return true;

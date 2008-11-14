@@ -9,5 +9,5 @@ $settings['max_link_characters'] = 30;
 $settings['miniadmin']           = 0;
 $settings['home_link']           = 1;
 $settings['show_all_admin']      = 1;
-
+$settings['drag_sort']           = 1;
 ?>

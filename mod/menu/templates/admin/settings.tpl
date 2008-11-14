@@ -16,6 +16,10 @@
     <td>{FLOAT_MODE}</td>
   </tr>
   <tr>
+    <td><strong>{DRAG_SORT_LABEL}</strong></td>
+    <td>{DRAG_SORT}</td>
+  </tr>
+  <tr>
     <td><strong>{MINIADMIN_LABEL}</strong></td>
     <td>{MINIADMIN}</td>
   </tr>

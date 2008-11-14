@@ -2,7 +2,14 @@
 //<![CDATA[
 var ref_key = '{reference_key}';
 var authkey = '{authkey}';
+var drag_sort = {drag_sort};
 var delete_question = '{delete_question}';
 //]]>
 </script>
+<!-- BEGIN sort -->
+{show_drag_sort}
+<script src="javascript/jquery/ui.core.js"></script>
+<script src="javascript/jquery/ui.sortable.js"></script>
+<!-- END sort -->
+
 <script type="text/javascript" src="javascript/modules/menu/admin_link/menu.js"></script>

@@ -4,7 +4,9 @@
 
 .menu-admin {
     position : relative;
+    float : left;
 }
+
 
 .menu-admin:hover .menu-link-pop {
     padding : 3px 1px 2px 1px;
@@ -37,4 +39,8 @@
 a.move-popup {
     background-color : black;
     color : white;
+}
+
+.menu-sort-placeholder { 
+    border : 2px gray dotted;
 }

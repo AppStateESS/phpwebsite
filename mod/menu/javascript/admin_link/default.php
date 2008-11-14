@@ -11,6 +11,8 @@ if (!Key::checkKey($key)) {
 
 $data['delete_question'] = dgettext('menu', 'Are you sure you want to delete this link:');
 $data['reference_key']   = $key->id;
-
+if ($data['drag_sort']) {
+    $data['show_drag_sort'] = ' ';
+}
 
 ?>

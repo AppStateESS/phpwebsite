@@ -158,10 +158,12 @@ Please download 1.2.1.</pre>';
         PHPWS_Error::logIfError($db->alterColumnType('title', 'varchar(255) not null'));
         $files = array('templates/style.css',
                        'templates/menu_layout/basic/menu.tpl',
+                       'templates/menu_layout/basic/link.tpl',
                        'templates/menu_layout/horizontal/menu.tpl',
                        'templates/admin/settings.tpl',
+                       'img/icon_indent.png',
                        'javascript/admin_link/',
-                       'conf/config.php'                    
+                       'conf/config.php'
                        );
 
         $content[] = '<pre>';

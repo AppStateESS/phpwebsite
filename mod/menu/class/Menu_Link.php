@@ -124,7 +124,8 @@ class Menu_Link {
 
     public function getUrl()
     {
-        return sprintf('<a href="%s" title="%s">%s</a>', str_replace('&', '&amp;', $this->url), $this->title, $this->title);
+        return sprintf('<a href="%s" class="menu-link-href" id="menu-link-href-%s" title="%s">%s</a>', 
+                       str_replace('&', '&amp;', $this->url), $this->id, $this->title, $this->title);
     }
 
 
@@ -238,6 +239,7 @@ class Menu_Link {
             in_array($this->parent, $current_parent)) {
 
             $link = $this->getUrl();
+
             $this->_loadAdminLinks($template);
 
             $template['LINK'] = $link;
@@ -255,6 +257,8 @@ class Menu_Link {
             }
 
             $template['LEVEL'] = $level;
+            $template['ID'] = sprintf('menu-link-%s', $this->id);
+            $template['PARENT_ID'] = sprintf('menu-parent-%s', $this->id);
             $tpl_file = 'menu_layout/' . $this->_menu->template . '/link.tpl';
             return PHPWS_Template::process($template, 'menu', $tpl_file);
         } else {
@@ -328,42 +332,48 @@ class Menu_Link {
                     $template['DELETE_LINK']   = $this->deleteLink($popup);
                     $template['EDIT_LINK']     = $this->editLink($popup);
 
-
-                    $vars['command'] = 'move_link_up';
-                    $up_link = MENU_LINK_UP;
-                    if ($popup) {
-                        $up_link .= ' ' . dgettext('menu', 'Move link up');
-                        $vars['pu'] = 1;
-                        $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink($up_link, 'menu', $vars);
-                    } else {
-                        $template['MOVE_LINK_UP'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>',
-                                                            $this->menu_id, $this->id, 'up', $up_link);
+                    if (!PHPWS_Settings::get('menu', 'drag_sort')) {
+                        $vars['command'] = 'move_link_up';
+                        $up_link = MENU_LINK_UP;
+                        if ($popup) {
+                            $up_link .= ' ' . dgettext('menu', 'Move link up');
+                            $vars['pu'] = 1;
+                            $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink($up_link, 'menu', $vars);
+                        } else {
+                            $template['MOVE_LINK_UP'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>',
+                                                                $this->menu_id, $this->id, 'up', $up_link);
+                        }
+                        
+                        $down_link = MENU_LINK_DOWN;
+                        $vars['command'] = 'move_link_down';
+                        if ($popup) {
+                            $down_link .= ' ' . dgettext('menu', 'Move link down');
+                            $vars['pu'] = 1;
+                            $template['MOVE_LINK_DOWN'] = PHPWS_Text::secureLink($down_link, 'menu', $vars);
+                        } else {
+                            $template['MOVE_LINK_DOWN'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>',
+                                                                  $this->menu_id, $this->id, 'down', $down_link);
+                        }
+                    } elseif ($this->link_order != 1) {
+                        $template['MOVE_LINK_UP'] = sprintf('<a style="cursor : pointer" id="menu-indent-%s-%s" class="menu-indent">%s</a>',
+                                                            $this->menu_id, $this->id, MENU_LINK_INDENT);
                     }
+                    $template['ADMIN'] = MENU_LINK_ADMIN;
+                } else {
 
-                    $down_link = MENU_LINK_DOWN;
-                    $vars['command'] = 'move_link_down';
-                    if ($popup) {
-                        $down_link .= ' ' . dgettext('menu', 'Move link down');
-                        $vars['pu'] = 1;
-                        $template['MOVE_LINK_DOWN'] = PHPWS_Text::secureLink($down_link, 'menu', $vars);
-                    } else {
-                        $template['MOVE_LINK_DOWN'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>',
-                                                              $this->menu_id, $this->id, 'down', $down_link);
+                    $vars['command'] = 'popup_admin';
+                    $vars['curl'] = urlencode(PHPWS_Core::getCurrentUrl(false));
+                    if ($keyed) {
+                        $vars['key_id'] = $key->id;
                     }
+                    
+                    $js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
+                    $js['label'] = MENU_LINK_ADMIN;
+                    $js['width'] = 200;
+                    $js['height'] = 300;
+                    
+                    $template['ADMIN'] = javascript('open_window', $js);
                 }
-
-                $vars['command'] = 'popup_admin';
-                $vars['curl'] = urlencode(PHPWS_Core::getCurrentUrl(false));
-                if ($keyed) {
-                    $vars['key_id'] = $key->id;
-                }
-
-                $js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
-                $js['label'] = MENU_LINK_ADMIN;
-                $js['width'] = 200;
-                $js['height'] = 300;
-
-                $template['ADMIN'] = javascript('open_window', $js);
             } else {
                 $template['ADMIN'] = NO_POST;
             }

@@ -179,16 +179,8 @@ class Menu_Admin {
 
         case 'ajax_add_link':
             $parent_id = (int)$_GET['parent'];
-
-            if (empty($_GET['key_id']) && empty($_GET['ref_key'])) {
-                $key = Key::getHomeKey();
-            } elseif (isset($_GET['key_id'])) {
-                $key = new Key($_GET['key_id']);
-            } else {
-                $key = new Key($_GET['ref_key']);
-            }
+            $key = Menu_Admin::JSFlagKey();
             $key->flag();
-            
 
             if (isset($_GET['key_id'])) {
                 $result = Menu_Admin::addLink($menu, $_GET['key_id'], $parent_id);
@@ -198,7 +190,22 @@ class Menu_Admin {
             }
             echo $menu->view(false, true, $key);
             exit();
+            break;
 
+        case 'sort_menu_links':
+            $key = Menu_Admin::JSFlagKey();
+            $menu = new Menu_Item($_GET['menu_id']);
+            Menu_Admin::sortMenuLinks($_GET['moved'], $_GET['parent'], $_GET['under'], $menu);
+            echo $menu->view(false, true, $key);
+            exit();
+            break;
+
+        case 'indent_link':
+            $key = Menu_Admin::JSFlagKey();
+            $menu = new Menu_Item($_GET['menu_id']);
+            Menu_Admin::indentLink($_GET['link_id'], $menu);
+            echo $menu->view(false, true, $key);
+            exit();
             break;
 
         case 'add_link':
@@ -306,6 +313,7 @@ class Menu_Admin {
             }
             PHPWS_Core::goBack();
             break;
+
         } // end command switch
 
         $tpl['TITLE']   = $title;
@@ -613,6 +621,10 @@ class Menu_Admin {
         $form->setLabel('float_mode', dgettext('menu', 'Use floating admin links'));
         $form->setMatch('float_mode', PHPWS_Settings::get('menu', 'float_mode'));
 
+        $form->addCheck('drag_sort', 1);
+        $form->setLabel('drag_sort', dgettext('menu', 'Use drag and sort'));
+        $form->setMatch('drag_sort', PHPWS_Settings::get('menu', 'drag_sort'));
+
         $form->addCheck('miniadmin', 1);
         $form->setLabel('miniadmin', dgettext('menu', 'Use MiniAdmin instead of Admin mode link'));
         $form->setMatch('miniadmin', PHPWS_Settings::get('menu', 'miniadmin'));
@@ -783,10 +795,78 @@ class Menu_Admin {
         }
 
         PHPWS_Settings::set('menu', 'float_mode', (int)isset($_POST['float_mode']));
+        PHPWS_Settings::set('menu', 'drag_sort', (int)isset($_POST['drag_sort']));
         PHPWS_Settings::set('menu', 'miniadmin', (int)isset($_POST['miniadmin']));
         PHPWS_Settings::set('menu', 'home_link', (int)isset($_POST['home_link']));
         PHPWS_Settings::set('menu', 'show_all_admin', (int)isset($_POST['show_all_admin']));
         PHPWS_Settings::save('menu');
+    }
+
+    private function JSFlagKey()
+    {
+        if (empty($_GET['key_id']) && empty($_GET['ref_key'])) {
+            $key = Key::getHomeKey();
+        } elseif (isset($_GET['key_id'])) {
+            $key = new Key($_GET['key_id']);
+        } else {
+            $key = new Key($_GET['ref_key']);
+        }
+        $key->flag();
+        return $key;
+    }
+
+
+    private function sortMenuLinks($moved, $parent_id, $under, $menu)
+    {
+        if ($under) {
+            $under_link = new Menu_Link($under);
+            $link_order = $under_link->link_order + 1;
+        } else {
+            $link_order = 1;
+        }
+
+        $db = new PHPWS_DB('menu_links');
+        $db->addWhere('parent', $parent_id);
+        $db->addWhere('link_order', $link_order, '>=');
+        $db->incrementColumn('link_order');
+
+        $moved_link = new Menu_Link($moved);
+        $moved_link->parent = $parent_id;
+        $moved_link->link_order = $link_order;
+        $moved_link->save();
+        $menu->reorderLinks();
+    }
+
+    private function buildMenuOrder(&$current_list, $link)
+    {
+        if ($link->view()) {
+            $current_list[] = array('id'=>$link->id,
+                                    'parent'=>$link->parent);
+        }
+        if (!empty($link->_children)) {
+            foreach ($link->_children as $sub) {
+                Menu_Admin::buildMenuOrder($current_list, $sub);
+            }
+        }
+    }
+
+    private function indentLink($link_id, $menu)
+    {
+        
+        $link = new Menu_Link($link_id);
+        if ($link->link_order == 1) {
+            return;
+        }
+        $db = new PHPWS_DB('menu_links');
+        $db->addWhere('parent', $link->parent);
+        $db->addWhere('link_order', $link->link_order - 1);
+        $db->addColumn('id');
+        $parent_id = $db->select('one');
+        if ($parent_id) {
+            $link->parent = & $parent_id;
+            $link->save();
+        }
+        $menu->reorderLinks();
     }
 }
 
