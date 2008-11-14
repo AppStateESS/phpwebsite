@@ -216,58 +216,41 @@ ul.tabmenu li.inactive:hover {
 
 /*--------------- End Control Panel ---------------*/
 
-div.menu-link {
+/*--------------- Menu ---------------*/
+ul.menu-links {
     border-top : white 2px solid;
     margin : 0;
     padding : 0;
     font-size : .9em;
+    list-style-type : none;
 }
 
-div.menu-link a {
+
+ul.menu-links li {
+    list-style-type : none;
+}
+
+
+ul.menu-links ul
+{
+    padding-left : 1em;
+}
+
+ul.menu-links li a.menu-link-href { 
+    display : block;
+    padding : 6px 5px;
     font-weight : bold;
     text-decoration : none;
 }
 
-div.menu-link a:hover {
+ul.menu-links li a.menu-link-href:hover {
     text-decoration : underline;
-}
-
-div.menu-link:hover {
     background-color : #ADB583;
     color : black;
 }
 
-div.link-level-1 {
-    padding : 5px;
-    background-color : #CBCEAC;
-    color : black;
-}
 
-div.link-level-2 {
-    padding : 5px;
-    padding-left : 1em;
-    background-color : #E2E5BF;
-    color : black;
-}
-
-div.link-level-3 {
-    padding : 5px;
-    padding-left : 2em;
-    background-color : #F1F4CC;
-    color : black;
-}
-
-div.link-level-1:hover,
-div.link-level-2:hover,
-div.link-level-3:hover {
-    background-color : inherit;
-    color : black;
-}
-
-div.current-link {
-    background-color : #ADB583;
-    color : black;
-}
+/*--------------- End Menu ---------------*/
 
 div.category-menu-bar {
     background-color : #DEE2BD;

@@ -347,7 +347,7 @@ a.comment_fork_link {
 a.comment_fork_link span { display: none; }
 
 a.comment_postnew_link {
-    background-color : none;
+    background-color : inherit;
     display : block;
     float : left;
     border : none;
@@ -356,7 +356,7 @@ a.comment_postnew_link {
 }
 
 a.comment_postnew_link:hover {
-    background-color : none;
+    background-color : inherit;
 }
 
 .comment_postnew_link:hover, .comment-body .admin-links a:hover {
