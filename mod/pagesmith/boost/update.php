@@ -232,7 +232,7 @@ function pagesmith_update(&$content, $currentVersion)
                        'templates/sublist.tpl',
                        'templates/upload_template.tpl',
                        'img/add.png', 'img/delete.png', 
-                       'img/back.png'
+                       'img/back.png', 'img/front.png'
                        );
         pagesmithUpdateFiles($files, $content);
 
