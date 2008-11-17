@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-02 12:11-0400\n"
+"POT-Creation-Date: 2008-11-17 10:32-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -137,24 +137,6 @@ msgstr ""
 msgid "Approved"
 msgstr ""
 
-msgid "Archive file was not found."
-msgstr ""
-
-msgid "Archived Form"
-msgstr ""
-
-#, php-format
-msgid ""
-"Are you sure you wish to delete the archive with filename \"<b>%s</b>\"?"
-msgstr ""
-
-#, php-format
-msgid "Are you sure you wish to delete the export with filename \"<b>%s</b>\"?"
-msgstr ""
-
-msgid "Are you sure you wish to view this archive?"
-msgstr ""
-
 msgid "Array contained no values."
 msgstr ""
 
@@ -199,6 +181,9 @@ msgstr ""
 
 #, php-format
 msgid "Branch : %s"
+msgstr ""
+
+msgid "CSV Report"
 msgstr ""
 
 #, php-format
@@ -268,9 +253,6 @@ msgid "Class not found."
 msgstr ""
 
 msgid "Class not set."
-msgstr ""
-
-msgid "Clean-Up"
 msgstr ""
 
 msgid "Clear"
@@ -442,16 +424,11 @@ msgid "Database name"
 msgstr ""
 
 msgid ""
-"Database password may contain alphanumeric characters or underscores only."
-msgstr ""
-
-msgid "Date Created"
+"Database password may contain alphanumeric characters, spaces or underscores "
+"only."
 msgstr ""
 
 msgid "Declared classes:"
-msgstr ""
-
-msgid "Delete"
 msgstr ""
 
 msgid "Description"
@@ -478,9 +455,6 @@ msgstr ""
 msgid "Documents module not installed or empty."
 msgstr ""
 
-msgid "Download"
-msgstr ""
-
 msgid "Download a complete CSV file"
 msgstr ""
 
@@ -502,9 +476,6 @@ msgstr ""
 msgid "Enter the database's user password here."
 msgstr ""
 
-msgid "Entries"
-msgstr ""
-
 msgid "Error"
 msgstr ""
 
@@ -516,12 +487,6 @@ msgstr ""
 
 #, php-format
 msgid "Execution time: %s seconds."
-msgstr ""
-
-msgid "Existing Archives"
-msgstr ""
-
-msgid "Existing Exports"
 msgstr ""
 
 msgid "Expecting an object variable."
@@ -553,12 +518,6 @@ msgstr ""
 msgid "File Cabinet has already converted Documents files."
 msgstr ""
 
-msgid "File contained no archive to view."
-msgstr ""
-
-msgid "File contained no content."
-msgstr ""
-
 msgid "File directory ready"
 msgstr ""
 
@@ -569,9 +528,6 @@ msgid "File not found."
 msgstr ""
 
 msgid "File not writable."
-msgstr ""
-
-msgid "Filename"
 msgstr ""
 
 msgid "Finished converting Photo Album."
@@ -602,9 +558,6 @@ msgid "Form Generator is not installed in the supplied database."
 msgstr ""
 
 msgid "Form Generator is not installed locally."
-msgstr ""
-
-msgid "Form Name"
 msgstr ""
 
 msgid "Form generator forms converted and keyed!"
@@ -726,11 +679,6 @@ msgstr ""
 msgid "Improperly formated text."
 msgstr ""
 
-msgid ""
-"In order to view this archive a new table will need to added to your "
-"database."
-msgstr ""
-
 msgid "Input type not set."
 msgstr ""
 
@@ -741,9 +689,6 @@ msgid "Installation of phpWebSite is complete."
 msgstr ""
 
 msgid "Installed modules"
-msgstr ""
-
-msgid "Invalid Filename Given"
 msgstr ""
 
 msgid "Invalid value."
@@ -883,9 +828,6 @@ msgstr ""
 msgid "Name not set."
 msgstr ""
 
-msgid "No"
-msgstr ""
-
 msgid "No Images"
 msgstr ""
 
@@ -902,9 +844,6 @@ msgid "No announcements to convert."
 msgstr ""
 
 msgid "No blocks found."
-msgstr ""
-
-msgid "No entries were found matching your search query."
 msgstr ""
 
 msgid "No error message file found."
@@ -1129,9 +1068,6 @@ msgstr ""
 msgid "Remove the following file and refresh to continue:"
 msgstr ""
 
-msgid "Report View"
-msgstr ""
-
 msgid "Request"
 msgstr ""
 
@@ -1203,9 +1139,6 @@ msgid "Source Directory"
 msgstr ""
 
 msgid "Spoiler"
-msgstr ""
-
-msgid "Successfully deleted table associated with the archive with filename "
 msgstr ""
 
 msgid "Table does not exist."
@@ -1281,12 +1214,6 @@ msgstr ""
 msgid "The following directories need to be created:"
 msgstr ""
 
-msgid "The phatform archive was successfully <b>deleted</b>."
-msgstr ""
-
-msgid "The phatform export was successfully <b>deleted</b>."
-msgstr ""
-
 msgid "The submitted template is not an array."
 msgstr ""
 
@@ -1297,16 +1224,6 @@ msgid "There aren't any conversion files in the convert/modules directory."
 msgstr ""
 
 msgid "There is a problem with your sessions."
-msgstr ""
-
-msgid "There was a problem deleting the archive."
-msgstr ""
-
-msgid "There was a problem deleting the export."
-msgstr ""
-
-msgid ""
-"There was a problem deleting viewing archive table associated for filename "
 msgstr ""
 
 msgid ""
@@ -1357,6 +1274,9 @@ msgstr ""
 msgid ""
 "Unable to detect MIME file type. You will need to compile finfo_open into "
 "PHP."
+msgstr ""
+
+msgid "Unable to display contents."
 msgstr ""
 
 #, php-format
@@ -1421,6 +1341,9 @@ msgstr ""
 msgid "Unknown source"
 msgstr ""
 
+msgid "Unknown type"
+msgstr ""
+
 msgid "Unknown user"
 msgstr ""
 
@@ -1480,12 +1403,6 @@ msgstr ""
 msgid "Variable name not found in_FILES array."
 msgstr ""
 
-msgid "View"
-msgstr ""
-
-msgid "Viewing of archive has been canceled."
-msgstr ""
-
 msgid "Visible"
 msgstr ""
 
@@ -1513,25 +1430,12 @@ msgstr ""
 msgid "Wrong variable type."
 msgstr ""
 
-msgid "Yes"
-msgstr ""
-
 msgid "You can now finish the creation of your config file."
 msgstr ""
 
 msgid ""
 "You do not appear to have ffmpeg installed. File Cabinet will not be able to "
 "create thumbnail images from uploaded videos"
-msgstr ""
-
-#, php-format
-msgid ""
-"You have chosen <b>not</b> to delete the archive with the filename \"%s\"."
-msgstr ""
-
-#, php-format
-msgid ""
-"You have chosen <b>not</b> to delete the export with the filename \"%s\"."
 msgstr ""
 
 msgid "You have register_globals enabled. You should disable it."
@@ -1602,9 +1506,6 @@ msgid "a heartbeat ago"
 msgstr ""
 
 msgid "loadObject expected the object to have an id or where clause."
-msgstr ""
-
-msgid "of"
 msgstr ""
 
 #, php-format
