@@ -468,6 +468,8 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                        'templates/folder_list.tpl',
                        'templates/pinned.tpl',
                        'img/add.png',
+                       'img/arrow_left.png',
+                       'img/arrow_right.png',
                        'conf/icons.php',
                        'conf/config.php'
                        );
