@@ -354,56 +354,66 @@ ul.tabmenu li.inactive:hover {
 
 /*--------------- Menus ---------------*/
 
-div.menu-link {
+ul.menu-links {
     border-top: #fff 2px solid;
     margin: 0;
     padding: 0;
     font-size: .9em;
+    list-style-type : none;
 }
 
-div.menu-link a {
+ul.menu-links li {
+    list-style-type : none;
+}
+
+ul.menu-links ul
+{
+    padding-left : 1em;
+}
+
+ul.menu-links li a {
     font-weight: bold;
     text-decoration: none;
     display: block;
 }
 
-div.menu-link a:hover {
+ul.menu-links li a:hover {
     text-decoration: none;
 }
 
-div.menu-link:hover {
+ul.menu-links li:hover {
     background-color: #F1F4CC;
     color: black;
 }
 
-div.link-level-1 {
+li.link-level-1 {
     padding: 5px;
     background-color: #D3E3BA;
     color: black;
 }
 
-div.link-level-2 {
+li.link-level-2 {
     padding: 5px;
     padding-left: 1em;
     background-color: #E6EDD9;
     color: black;
 }
 
-div.link-level-3 {
+li.link-level-3 {
     padding: 5px;
     padding-left: 2em;
     background-color: #F2F6EA;
     color: black;
 }
 
-div.link-level-1:hover,
-div.link-level-2:hover,
-div.link-level-3:hover {
+li.link-level-1:hover,
+li.link-level-2:hover,
+li.link-level-3:hover {
     background-color: inherit;
     color: black;
 }
 
-div.current-link {
+li.current-link {
     background-color: #fff;
     color: black;
 }
