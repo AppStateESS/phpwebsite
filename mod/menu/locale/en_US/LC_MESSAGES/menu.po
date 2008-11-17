@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-28 13:33-0400\n"
+"POT-Creation-Date: 2008-11-17 10:34-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,6 +125,9 @@ msgid "Expand menu during admin mode"
 msgstr ""
 
 msgid "Home"
+msgstr ""
+
+msgid "Indent menu link"
 msgstr ""
 
 msgid "Link is missing a title, url, or menu id."
@@ -278,6 +281,9 @@ msgid "Url"
 msgstr ""
 
 msgid "Use MiniAdmin instead of Admin mode link"
+msgstr ""
+
+msgid "Use drag and sort"
 msgstr ""
 
 msgid "Use floating admin links"

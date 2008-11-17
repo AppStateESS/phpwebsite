@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-28 13:33-0400\n"
+"POT-Creation-Date: 2008-11-17 10:34-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -167,6 +167,9 @@ msgstr ""
 msgid "Click here if you are not redirected."
 msgstr ""
 
+msgid "Click here to log in"
+msgstr ""
+
 msgid "Closest matches below."
 msgstr ""
 
@@ -298,6 +301,9 @@ msgid "Enter your new password"
 msgstr ""
 
 msgid "Enter your user name."
+msgstr ""
+
+msgid "Failed to send notification email."
 msgstr ""
 
 msgid "Forbidden usernames (one per line)"
@@ -458,6 +464,9 @@ msgid "My Page"
 msgstr ""
 
 msgid "My Page registered to Users module."
+msgstr ""
+
+msgid "My Page unavailable to remote users."
 msgstr ""
 
 msgid "My Page unregistered from Users module."
@@ -734,9 +743,6 @@ msgid "Unable to copy deity user group to branch."
 msgstr ""
 
 msgid "Unable to copy deity users to branch."
-msgstr ""
-
-msgid "Unable to create authorization script."
 msgstr ""
 
 msgid "Unable to find font file for graphic confirmation."

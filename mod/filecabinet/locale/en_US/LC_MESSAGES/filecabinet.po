@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-28 13:33-0400\n"
+"POT-Creation-Date: 2008-11-17 10:34-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -400,6 +400,9 @@ msgstr ""
 msgid "Folder missing image files."
 msgstr ""
 
+msgid "Force thumbnail dimensions on display"
+msgstr ""
+
 msgid "Form upload limit"
 msgstr ""
 
@@ -430,6 +433,9 @@ msgid "Image link url"
 msgstr ""
 
 msgid "Image location"
+msgstr ""
+
+msgid "Image missing"
 msgstr ""
 
 msgid "Image must be a jpeg file."
@@ -551,6 +557,9 @@ msgid "No files in folder"
 msgstr ""
 
 msgid "No folders found."
+msgstr ""
+
+msgid "No image found"
 msgstr ""
 
 msgid "No public folders are available."
