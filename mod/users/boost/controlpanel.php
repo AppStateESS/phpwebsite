@@ -4,8 +4,8 @@
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
 
-$tabs[] = array('title' => dgettext('users', 'My Page'),
-		'label' => 'my_page',
+$tabs[] = array('id' => 'my_page',
+                'title' => dgettext('users', 'My Page'),
 		'link'  => 'index.php?module=users&amp;action=user',
 		);
 
