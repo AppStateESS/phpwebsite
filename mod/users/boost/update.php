@@ -249,7 +249,13 @@ timeout INT NOT NULL default 0,
 
     case version_compare($currentVersion, '2.6.0', '<'):
         $content[] = '<pre>';
-        Users_Permission::registerPermissions('users', $content);
+        Users_Permission::registerPermissions('users', $content);\
+        $db = new PHPWS_DB('users_auth_scripts');
+        $db->addWhere('filename', 'local.php');
+        $db->addColumn('id');
+        $auth_id = $db->select('one');
+        PHPWS_Settings::set('users', 'local_script', $auth_id);
+        PHPWS_Settings::save('users');
         $files = array('conf/languages.php', 'templates/my_page/user_setting.tpl',
                        'templates/usermenus/css.tpl', 'img/permission.png', 'templates/forms/userForm.tpl');
         userUpdateFiles($files, $content);
