@@ -371,20 +371,20 @@ ul.menu-links ul
     padding-left : 0px;
 }
 
-ul.menu-links li a {
+ul.menu-links li a.menu-link-href {
     font-weight: bold;
     text-decoration: none;
     display: block;
 }
 
 
-div.box ul.menu-links li a:hover {
+div.box ul.menu-links li a.menu-link-href:hover {
     text-decoration: none;
     background-color: #F1F4CC;
     color: black;
 }
 
-ul.menu-links li a {
+ul.menu-links li a.menu-link-href {
    padding : 5px;
    background-color: #D3E3BA;
    color: black;
