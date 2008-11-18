@@ -228,19 +228,30 @@ ul.no-bullet li {
      margin-left : 5px;
 }
 
-div.menu-link {
+ul.menu-links li {
+     list-style-type : none;
      background-image: url(bullet.png);
      background-repeat : no-repeat;
-     background-position : center left;
+     background-position : top left;
+     min-height : 25px;
+     line-height : 2em;
 }
 
-div.menu-link a {
+ul.menu-links li ul {
+     padding-left : 1em;
+}
+
+ul.menu-links li ul li {
+     background : none;
+}
+
+ul.menu-links li a {
      margin-left : 15px;
      color : #1D93D3;
      text-decoration : none;
 }
 
-div.menu-link a:hover {
+ul.menu-links li a:hover {
      text-decoration : underline;
 }
 
