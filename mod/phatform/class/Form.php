@@ -1102,7 +1102,8 @@ class PHAT_Form extends PHPWS_Item {
         }
 
         if(isset($this->report)) {
-            PHAT_Form($this->getId());
+            // No clue what this is supposed to do but it has been here since the first version
+            //PHAT_Form($this->getId());
             $this->report = new PHAT_Report;
             $this->setDataId($dataId);
 
