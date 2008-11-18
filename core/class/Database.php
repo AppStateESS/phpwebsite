@@ -1939,7 +1939,7 @@ class PHPWS_DB {
                 }
 
                 PHPWS_DB::homogenize($query);
-                test($query,1);
+
                 $result = PHPWS_DB::query($query);
 
                 if (DB::isError($result)) {
