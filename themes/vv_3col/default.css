@@ -390,9 +390,14 @@ ul.menu-links li a.menu-link-href {
    color: black;
 }
 
-ul.menu-links li ul li a.menu-link-href {
+ul.menu-links li ul li.link-level-2 a.menu-link-href {
     padding-left: 1em;
     background-color: #E6EDD9;
+    color: black;
+} 
+
+ul.menu-links li ul li.current-link a.menu-link-href {
+    background-color: #fff;
     color: black;
 } 
 
