@@ -19,7 +19,7 @@ body {
 
 #container {
         margin-right : 70px;
-        overflow : auto;
+        overflow : hidden;
 }
 
 #container #sidepanel {
