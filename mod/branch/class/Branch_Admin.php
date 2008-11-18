@@ -639,7 +639,7 @@ class Branch_Admin {
 
         $form->addText('directory', $branch->directory);
         $form->setSize('directory', 50);
-        $form->setLabel('directory', dgettext('branch', 'Directory'));
+        $form->setLabel('directory', dgettext('branch', 'Full directory path'));
 
         $form->addText('url', $branch->url);
         $form->setSize('url', 50);
