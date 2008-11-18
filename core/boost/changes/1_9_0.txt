@@ -47,6 +47,7 @@ Database
   object's constuctor prior to loading the object's variables. The
   object is loaded prior to sending the arguments to the object's
   postPlug function.
++ Will allow longtext columns on mysql databases.
 
 
 DBPager

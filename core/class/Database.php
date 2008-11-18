@@ -1939,7 +1939,7 @@ class PHPWS_DB {
                 }
 
                 PHPWS_DB::homogenize($query);
-
+                test($query,1);
                 $result = PHPWS_DB::query($query);
 
                 if (DB::isError($result)) {
@@ -1975,11 +1975,14 @@ class PHPWS_DB {
     {
         $query_list = explode(',', $query);
 
-        $from = array('/int\(\d+\)/iU',
-                      '/mediumtext|longtext/i'
-                      );
-        $to = array('int',
-                    'text');
+        $from[] = '/int\(\d+\)/iU';
+        $to[]   = 'int';
+
+        if (PHPWS_DB::getDBType() != 'mysql' && 
+            PHPWS_DB::getDBType() != 'mysqli') {
+            $from[] = '/mediumtext|longtext/i';
+            $to[]   = 'text';
+        }
 
         foreach ($query_list as $command) {
             // Remove mysql specific call
