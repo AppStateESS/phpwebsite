@@ -214,11 +214,20 @@ function pagesmith_update(&$content, $currentVersion)
             return false;
         }
 
-        IF (PHPWS_Error::logIfError($db->addTableColumn('page_order', 'smallint NOT NULL default 0'))) {
+        if (PHPWS_Error::logIfError($db->addTableColumn('page_order', 'smallint NOT NULL default 0'))) {
             $content[] = 'Could not create ps_page.page_order column.';
             return false;
         }
 
+        $db = new PHPWS_DB('ps_text');
+
+        if (PHPWS_DB::getDBType() == 'mysql' || 
+            PHPWS_DB::getDBType() == 'mysqli') {
+            if (PHPWS_Error::logIfError($db->alterColumnType('content', 'longtext NOT NULL'))) {
+                $content[] = 'Could not alter ps_text.content column.';
+            }
+        }
+      
         $content[] = '<pre>';
         $files = array('javascript/passinfo/head.js', 'templates/page_form.tpl',
                        'javascript/delete_orphan/',
