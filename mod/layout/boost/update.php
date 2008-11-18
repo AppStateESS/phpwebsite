@@ -126,7 +126,7 @@ function layout_update(&$content, $currentVersion)
             $content[] = 'Added layout_config.deity_reload column.';
         }
 
-        layoutUpdateFiles(array('templates/metatags.tpl'), $content);
+        layoutUpdateFiles(array('templates/metatags.tpl', 'conf/config.php'), $content);
         $content[] = '2.4.5 changes
 --------------------
 + Added option to use a Key\'s summary or title to fill in the meta
@@ -135,6 +135,7 @@ function layout_update(&$content, $currentVersion)
   information should a module return cached content before the above
   can be established.
 + Deities can now move a box to a theme locked area.
++ Added LAYOUT_IGNORE_JS_CHECK to force javascript use.
 + PHP 5 formatted';
 
     }

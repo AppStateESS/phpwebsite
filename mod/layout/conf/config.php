@@ -1,10 +1,8 @@
 <?php
-
   /**
    * @version $Id$
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
-
 
 define('LAYOUT_THEME_EXEC', false);
 
@@ -38,5 +36,11 @@ define('LAYOUT_CHECK_COOKIE', false);
  * and use the copy from the module directory. This will NOT WORK branch sites.
  */
 define('LAYOUT_FORCE_MOD_JS', false);
+
+/**
+ * If true, layout doesn't bother with a javascript check, it just
+ * assumes the user has it activated.
+ */
+define('LAYOUT_IGNORE_JS_CHECK', false);
 
 ?>

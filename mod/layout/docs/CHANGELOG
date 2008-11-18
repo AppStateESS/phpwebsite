@@ -1,5 +1,8 @@
 Version 2.4.5
 ------------------------------------------------------------------
+18 November 2008
++ Added LAYOUT_IGNORE_JS_CHECK to force javascript use.
+
 3 November 2008
 + Added missing deity_reload column to layout_config table. Thanks
   Micah. 

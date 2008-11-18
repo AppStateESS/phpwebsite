@@ -7,9 +7,11 @@
  * @author  Matt McNaney <matt at tux dot appstate dot edu>
  * @package Core
  */
-
-
 PHPWS_Core::requireConfig('layout');
+
+if (!defined('LAYOUT_IGNORE_JS_CHECK')) {
+    define('LAYOUT_IGNORE_JS_CHECK');
+}
 
 /********** Errors ****************/
 
@@ -1185,6 +1187,9 @@ class Layout {
  */
 function javascriptEnabled()
 {
+    if (LAYOUT_IGNORE_JS_CHECK) {
+        return true;
+    }
     $js = PHPWS_Cookie::read('js_enabled');
 
     if (!$js) {
