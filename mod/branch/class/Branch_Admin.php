@@ -739,11 +739,9 @@ class Branch_Admin {
                 $tables = $connection2->getlistOf('tables');
                 if (!empty($tables)) {
                     // connect was successful but database already contains tables
-                    $connection2->disconnect();
                     return BRANCH_CONNECT_WITH_TABLES;
                 } else {
                     // connection successful, table exists and is empty
-                    $connection2->disconnect();
                     return BRANCH_CONNECT_SUCCESS;
                 }
             }
