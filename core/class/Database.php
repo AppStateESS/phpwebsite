@@ -110,9 +110,9 @@ class PHPWS_DB {
 
     public function _updateCurrent($key)
     {
-        $GLOBALS['PHPWS_DB']['lib']        = & $GLOBALS['PHPWS_DB']['dbs'][$key]['lib'];
+        $GLOBALS['PHPWS_DB']['lib']        = $GLOBALS['PHPWS_DB']['dbs'][$key]['lib'];
         $GLOBALS['PHPWS_DB']['dsn']        = & $GLOBALS['PHPWS_DB']['dbs'][$key]['dsn'];
-        $GLOBALS['PHPWS_DB']['connection'] = & $GLOBALS['PHPWS_DB']['dbs'][$key]['connection'];
+        $GLOBALS['PHPWS_DB']['connection'] = $GLOBALS['PHPWS_DB']['dbs'][$key]['connection'];
         $GLOBALS['PHPWS_DB']['tbl_prefix'] = & $GLOBALS['PHPWS_DB']['dbs'][$key]['tbl_prefix'];
         $GLOBALS['PHPWS_DB']['type']       = & $GLOBALS['PHPWS_DB']['dbs'][$key]['type'];
     }
