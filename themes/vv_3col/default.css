@@ -401,6 +401,17 @@ ul.menu-links li ul li.current-link a.menu-link-href {
     color: black;
 } 
 
+ul.menu-links li ul li ul li.link-level-3 a.menu-link-href {
+    padding-left: 2em;
+    background-color: #CDDBB2;
+    color: black;
+} 
+
+ul.menu-links li ul li ul li.current-link a.menu-link-href {
+    background-color: #fff;
+    color: black;
+} 
+
 ul.menu-links li.current-link a.menu-link-href {
     background-color: #fff;
     color: black;
