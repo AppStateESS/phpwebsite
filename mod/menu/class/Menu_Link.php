@@ -254,11 +254,12 @@ class Menu_Link {
                 if (!empty($sublinks)) {
                     $template['SUBLINK'] = implode("\n", $sublinks);
                 }
+                $template['PARENT_ID'] = sprintf('menu-parent-%s', $this->id);
             }
 
             $template['LEVEL'] = $level;
             $template['ID'] = sprintf('menu-link-%s', $this->id);
-            $template['PARENT_ID'] = sprintf('menu-parent-%s', $this->id);
+
             $tpl_file = 'menu_layout/' . $this->_menu->template . '/link.tpl';
             return PHPWS_Template::process($template, 'menu', $tpl_file);
         } else {
