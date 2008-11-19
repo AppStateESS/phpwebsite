@@ -63,7 +63,8 @@ class PHAT_Dropbox extends PHAT_Element {
 
         $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb());
         $element = new Form_Select('PHAT_' . $label, $options);
-        $element->setMatch('PHAT_' . $label, $this->getValue());
+        $element->setMatch($this->getValue());
+
         $viewTags['DROPBOX'] = $element->get();
 
         return PHPWS_Template::process($viewTags, 'phatform', 'dropbox/view.tpl');
