@@ -192,16 +192,34 @@ function loadBrowserInformation()
 {
     $allowed_platforms = array('linux', 'mac', 'windows');
     if (!isset($_SERVER['HTTP_USER_AGENT'])) {
-        $GLOBALS['browser_info'] = NULL;
+        $GLOBALS['browser'] = NULL;
         return;
     }
 
-    $agent = $_SERVER['HTTP_USER_AGENT'];
+    $agent = & $_SERVER['HTTP_USER_AGENT'];
+
+    if (preg_match('/msie/i', $agent)) {
+        $browser['browser'] = 'MSIE';
+    } elseif (preg_match('/firefox/i', $agent)) {
+        $browser['browser'] = 'Firefox';
+    } elseif (preg_match('/opera/i', $agent)) {
+        $browser['browser'] = 'Opera';
+    } elseif (preg_match('/safari/i', $agent)) {
+        $browser['browser'] = 'Safari';
+    }
+
+    $GLOBALS['browser'] = & $browser;
+
+    /*
     $agentVars = explode(' ', $agent);
 
     foreach ($agentVars as $agent){
         $newVars[] = preg_replace('/[^\w\.\/]/', '', $agent);
     }
+    echo $agent;
+    echo '<hr>';x
+    echo '<pre>' . var_dump($newVars) . '</pre>';
+    exit();
 
     list($engine, $engine_version) = explode('/', $newVars[0]);
     $browser['engine'] = $engine;
@@ -318,6 +336,7 @@ function loadBrowserInformation()
         $browser['browser_version'] = $program[1];
         $GLOBALS['browser_info'] = &$browser;
     }
+    */
 }
 
 
@@ -371,16 +390,12 @@ function translateFile($filename)
  * engine_version
  * locale
  */
-function getBrowserInfo($parameter=NULL)
+function getBrowser()
 {
-    if (!isset($GLOBALS['browser_info'])) {
+    if (!isset($GLOBALS['browser'])) {
         return NULL;
     } else {
-        if (empty($parameter)) {
-            return $GLOBALS['browser_info'];
-        } else {
-            return $GLOBALS['browser_info'][$parameter];
-        }
+        return $GLOBALS['browser'];
     }
 }
 

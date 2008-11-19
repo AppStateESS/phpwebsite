@@ -845,11 +845,10 @@ class Layout {
 
     public function styleLink($link, $header=FALSE)
     {
-        $browser = getBrowserInfo('browser');
-        $version = getBrowserInfo('browser_version');
+        $browser = getBrowser();
 
         // *sigh* not worth the hassle to conform to IE
-        if ($browser == 'MSIE' && (int)$version <= 7) {
+        if ($browser == 'MSIE') {
             $can_import = FALSE;
         } else {
             $can_import = TRUE;
