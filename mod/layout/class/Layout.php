@@ -10,7 +10,7 @@
 PHPWS_Core::requireConfig('layout');
 
 if (!defined('LAYOUT_IGNORE_JS_CHECK')) {
-    define('LAYOUT_IGNORE_JS_CHECK');
+    define('LAYOUT_IGNORE_JS_CHECK', false);
 }
 
 /********** Errors ****************/
