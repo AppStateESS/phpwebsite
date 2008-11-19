@@ -261,7 +261,7 @@ class PHAT_Element extends PHPWS_Item {
             $this->_optionValues = unserialize(stripslashes($optionResult[0]['valueSet']));
         }
 
-        if(isset($_REQUEST['PHAT_ElementNumOptions']) && is_numeric($_REQUEST['PHAT_ElementNumOptions'])) {
+        if(!empty($_REQUEST['PHAT_ElementNumOptions']) && is_numeric($_REQUEST['PHAT_ElementNumOptions'])) {
             $loops = $_REQUEST['PHAT_ElementNumOptions'];
       
             /* must reset these arrays for when a new number of options is entered */
@@ -488,6 +488,7 @@ class PHAT_Element extends PHPWS_Item {
                         $GLOBALS['CNT_phatform']['message'] =  $result->getMessage();
                         $content .= $this->edit();
                     } elseif($this->hasOptions()) {
+
                         $content = $result;
                     } else {
                         $content = $_SESSION['PHAT_FormManager']->menu();
