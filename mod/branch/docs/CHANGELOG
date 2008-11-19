@@ -1,5 +1,9 @@
 Version 1.2.0
 ----------------------------------------------------------------
+19 November 2008
++ Fixed bug with database disconnect. Thanks Hilmar and Verdon.
++ Added ability to install on populated databases.
+
 23 September 2008
 + Copying the correct htaccess file source now.
 

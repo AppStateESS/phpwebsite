@@ -130,7 +130,7 @@ class Branch_Admin {
                 if (!$this->post_db()) {
                     $this->edit_db();
                 } else {
-                    $this->testDB();
+                    $this->testDB(isset($_POST['force']));
                 }
             }
             break;
@@ -213,6 +213,13 @@ class Branch_Admin {
 
             $this->listBranches();
             break;
+
+        case 'force_install':
+            $this->setCreateStep(2);
+            $this->saveDSN();
+            $this->message[] = dgettext('branch', 'Connection successful. Database available.');
+            $this->edit_basic();
+            break;
         }// end of the command switch
     }
 
@@ -222,6 +229,7 @@ class Branch_Admin {
         $content = array();
 
         $this->title = dgettext('branch', 'Install branch core');
+
         $dsn = $this->getDSN();
         if (empty($dsn)) {
             $this->content[] = dgettext('branch', 'Unable to get database connect information. Please try again.');
@@ -567,7 +575,7 @@ class Branch_Admin {
      * if so, if there a database to which to connect. If not, then
      * it creates the database (if specified)
      */
-    public function testDB()
+    public function testDB($force_on_populated=false)
     {
         $connection = $this->checkConnection();
         PHPWS_DB::loadDB();
@@ -611,8 +619,23 @@ class Branch_Admin {
             break;
 
         case BRANCH_CONNECT_WITH_TABLES:
-            $this->message[] = dgettext('branch', 'Connected successfully, but this database already contains tables.');
-            $this->edit_db();
+            if ($force_on_populated) {
+                $this->setCreateStep(2);
+                $this->saveDSN();
+                $this->message[] = dgettext('branch', 'Connection successful. Database available.');
+                $this->edit_basic();
+            } else {
+                $this->message[] = dgettext('branch', 'Connected successfully, but this database already contains tables.');
+                
+                if (!empty($this->dbprefix)) {
+                    $this->message[] = dgettext('branch', 'Though not recommended, you can force installation by clicking Continue below.');
+                    $force = true;
+                } else {
+                    $this->message[] = dgettext('branch', 'Though not recommended, prefixing will allow you to install to this database.');
+                    $force = false;
+                }
+                $this->edit_db($force);
+            }
             break;
         }
     }
@@ -656,12 +679,13 @@ class Branch_Admin {
     /**
      * Form to create or edit a branch
      */
-    public function edit_db()
+    public function edit_db($force=false)
     {
         $this->title = dgettext('branch', 'Setup branch database');
         $form = new PHPWS_Form('branch-form');
         $form->addHidden('module', 'branch');
         $form->addHidden('command', 'post_db');
+        $form->addHidden('force', (int)$force);
 
         $form->addCheck('createdb', $this->createdb);
         $form->setLabel('createdb', dgettext('branch', 'Create new database'));

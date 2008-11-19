@@ -104,6 +104,8 @@ function branch_update(&$content, $version)
         $content[] = '<pre>1.2.0 Changes
 -------------
 + php 5 formatted.
++ Fixed bug with database disconnect. Thanks Hilmar and Verdon.
++ Added ability to install on populated databases.
 + Copying the correct htaccess file.</pre>';
 
 
