@@ -199,144 +199,16 @@ function loadBrowserInformation()
     $agent = & $_SERVER['HTTP_USER_AGENT'];
 
     if (preg_match('/msie/i', $agent)) {
-        $browser['browser'] = 'MSIE';
+        $browser = 'MSIE';
     } elseif (preg_match('/firefox/i', $agent)) {
-        $browser['browser'] = 'Firefox';
+        $browser = 'Firefox';
     } elseif (preg_match('/opera/i', $agent)) {
-        $browser['browser'] = 'Opera';
+        $browser = 'Opera';
     } elseif (preg_match('/safari/i', $agent)) {
-        $browser['browser'] = 'Safari';
+        $browser = 'Safari';
     }
 
     $GLOBALS['browser'] = & $browser;
-
-    /*
-    $agentVars = explode(' ', $agent);
-
-    foreach ($agentVars as $agent){
-        $newVars[] = preg_replace('/[^\w\.\/]/', '', $agent);
-    }
-    echo $agent;
-    echo '<hr>';x
-    echo '<pre>' . var_dump($newVars) . '</pre>';
-    exit();
-
-    list($engine, $engine_version) = explode('/', $newVars[0]);
-    $browser['engine'] = $engine;
-    $browser['engine_version'] = $engine_version;
-
-    switch ($engine){
-    case 'Opera':
-        $platform = $newVars[1];
-
-        $program = explode('/', $newVars[0]);
-
-        if ($platform == 'Windows'){
-            if ($newVars[2] == 'NT' && $newVars[3] == '5.0')
-                $platform = 'Windows 2000';
-            else
-                $platform .= ' ' . $newVars[2] . ' ' . $newVars[3];
-        } elseif (!in_array(strtolower($platform), $allowed_platforms)) {
-            $platform = $newVars[2];
-        }
-
-
-        $browser['locale'] = $newVars[5];
-        break;
-
-    case 'Mozilla':
-        switch ($engine_version){
-        case '4.0':
-            $program[0] = $newVars[2];
-            $program[1] = $newVars[3];
-            $platform = $newVars[4];
-            break;
-
-        case '4.74':
-            $platform = $newVars[2];
-            if ($platform == 'Windows'){
-                if ($newVars[3] == 'NT' && $newVars[4] == '5.0')
-                    $platform = 'Windows 2000';
-                else
-                    $platform .= ' ' . $newVars[3] . ' ' . $newVars[4];
-
-                $program = explode('/', $newVars[9]);
-            }
-            $program[0] = 'Netscape';
-            $program[1] = '4.74';
-            break;
-
-        case '5.0':
-            if (!isset($newVars[5])) {
-                break;
-            }
-            if ($newVars[5] == 'Opera'){
-                $platformCheck = 1;
-                $program[0] = 'Opera';
-                $program[1] = $newVars[6];
-            } elseif($newVars[1] == 'Macintosh') {
-                $browser['locale'] = $newVars[7];
-                $platformCheck = 4;
-            } else {
-                $browser['locale'] = $newVars[5];
-                $platformCheck = 3;
-            }
-
-            $platform = $newVars[$platformCheck];
-
-            if ($platform == 'Windows') {
-                if (isset($newVars[9])) {
-                    $program = explode('/', $newVars[9]);
-                }
-                elseif(isset($newVars[8])) {
-                    $program = explode('/', $newVars[8]);
-                }
-                else {
-                    $program = _('Unknown');
-                }
-            } elseif($platform == 'Mac') {
-                if (preg_match('/^applewebkit/i', $newVars['8'])) {
-                    $program = explode('/', $newVars['12']);
-                } else {
-                    $program = explode('/', $newVars[10]);
-                }
-            } else {
-                if (isset($newVars[8])){
-                    if ($newVars[8] == 'Red') {
-                        $program[0] = 'Red Hat';
-                        $program[1] = str_replace('Hat/', '', $newVars[9]);
-                    } elseif (strpos($newVars[8], '/')) {
-                        $program = explode('/', $newVars[8]);
-                    } else {
-                        $program[0] = $program[1] = 'Unknown';
-                    }
-                }
-                elseif (isset($newVars[7])) {
-                    $program = explode('/', $newVars[7]);
-                }
-                else {
-                    $program = _('Unknown');
-                }
-            }
-
-            break;
-        }
-        break;
-
-    default:
-        $program[0] = $program[1] = $platform = $browser['engine_version'] = $browser['engine'] = _('Unknown');
-    }// End engine switch
-
-    if (isset($platform)) {
-        $browser['platform'] = $platform;
-    }
-
-    if (isset($program)) {
-        $browser['browser'] = $program[0];
-        $browser['browser_version'] = $program[1];
-        $GLOBALS['browser_info'] = &$browser;
-    }
-    */
 }
 
 
