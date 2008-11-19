@@ -14,7 +14,6 @@ img.float-left, img.float-right {
 
 input[type="submit"] {
     color: #000;
-    background-color: red;
     border: 1px #000 outset;
     cursor : default;
     cursor : pointer;
@@ -22,5 +21,5 @@ input[type="submit"] {
 
 /* IE7 sometimes stretches buttons out. not sure why */
 input[type="submit"], input[type="button"]{
-  width : 150px;
+  overflow : visible;
 }
