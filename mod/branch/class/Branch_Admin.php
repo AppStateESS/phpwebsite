@@ -130,7 +130,7 @@ class Branch_Admin {
                 if (!$this->post_db()) {
                     $this->edit_db();
                 } else {
-                    $this->testDB(isset($_POST['force']));
+                    $this->testDB(!empty($_POST['force']));
                 }
             }
             break;
@@ -619,7 +619,7 @@ class Branch_Admin {
             break;
 
         case BRANCH_CONNECT_WITH_TABLES:
-            if ($force_on_populated) {
+            if ($force_on_populated && !empty($this->dbprefix)) {
                 $this->setCreateStep(2);
                 $this->saveDSN();
                 $this->message[] = dgettext('branch', 'Connection successful. Database available.');
