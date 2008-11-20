@@ -130,7 +130,7 @@ class PHPWS_DB {
             }
         }
 
-        $key = substr(md5($dsn), 0, 10);
+        $key = substr(md5($dsn . $tbl_prefix), 0, 10);
         $dbname = PHPWS_DB::getDbName($dsn);
         $GLOBALS['PHPWS_DB']['key'] = $key;
 
@@ -173,6 +173,7 @@ class PHPWS_DB {
         $GLOBALS['PHPWS_DB']['dbs'][$key]['connection'] = $connect;
         $GLOBALS['PHPWS_DB']['dbs'][$key]['tbl_prefix'] = $tbl_prefix;
         $GLOBALS['PHPWS_DB']['dbs'][$key]['type']       = $type;
+
         PHPWS_DB::_updateCurrent($key);
 
         return true;

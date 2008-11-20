@@ -4,6 +4,10 @@ its own separate CHANGELOG file..
 
 Version 1.9.0x
 ---------------------------------------------------------------------
+20 November 2008
++ Fixed bug with database connection tracking. The table prefix was
+  not taken into consideration.
+
 18 November 2008
 + Database will not parse out longtext on mysql databases.
 
