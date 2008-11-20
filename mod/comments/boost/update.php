@@ -129,8 +129,8 @@ Please download 0.6.3.</pre>';
         $db = new PHPWS_DB('comments_users');
         PHPWS_Error::logIfError($db->dropTableColumn('display_name'));
 
-        if (!PHPWS_DB::isTable('comments_threads')) {
-            $db = new PHPWS_DB('comments_threads');
+        if (!PHPWS_DB::isTable('comments_monitors')) {
+            $db = new PHPWS_DB('comments_monitors');
             $sql = 'CREATE TABLE comments_monitors (
     thread_id   int NOT NULL,
     user_id     int NOT NULL,
