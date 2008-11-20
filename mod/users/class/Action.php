@@ -98,9 +98,7 @@ class User_Action {
                 return;
             }
             $user->kill();
-            $title = dgettext('users', 'Manage Users');
-            $content = User_Form::manageUsers();
-            $message = dgettext('users', 'User deleted.');
+            PHPWS_Core::goBack();
             break;
 
         case 'deify_user':
