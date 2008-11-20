@@ -228,6 +228,7 @@ ul.menu-links {
 
 ul.menu-links li {
     list-style-type : none;
+    width : 100%;
 }
 
 
