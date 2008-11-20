@@ -105,6 +105,8 @@ function branch_update(&$content, $version)
 -------------
 + php 5 formatted.
 + Fixed bug with database disconnect. Thanks Hilmar and Verdon.
++ Fixed bug that didn\'t allow hub and branch to both have table
+  prefixing.
 + Added ability to install on populated databases.
 + Copying the correct htaccess file.</pre>';
 

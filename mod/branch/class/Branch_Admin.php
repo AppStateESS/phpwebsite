@@ -443,7 +443,6 @@ class Branch_Admin {
 
         PHPWS_DB::loadDB($this->getDSN(), $this->dbprefix);
 
-
         $this->title = dgettext('branch', 'Installing core modules');
 
         $result = $_SESSION['Boost']->install(false, true, $this->branch->directory);
@@ -642,7 +641,7 @@ class Branch_Admin {
 
     public function edit_basic()
     {
-        $branch = & $this->branch;
+        $branch = $this->branch;
 
         $form = new PHPWS_Form('branch-form');
         $form->addHidden('module', 'branch');
