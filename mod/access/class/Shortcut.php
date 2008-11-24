@@ -40,11 +40,20 @@ class Access_Shortcut {
     {
         $url = explode(':', $this->url);
         $_REQUEST['module'] = $_GET['module'] = array_shift($url);
-        if (!empty($url)) {
-            $count = 1;
-            foreach ($url as $var) {
-                $_GET['var' . $count] = $var;
-                $count++;
+
+        $url_count = count($url);
+
+        if ($url_count == 1) {
+            $_REQUEST['id'] = $_GET['id'] = $url[0];
+        } else {
+            for($i = 0; $i < $url_count; $i++) {
+                $key = $url[$i];
+                $i++;
+                if (!isset($url[$i])) {
+                    break;
+                }
+                $val = $url[$i];
+                $_REQUEST[$key] = $_GET[$key] = $val;
             }
         }
     }
