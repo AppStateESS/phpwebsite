@@ -1199,7 +1199,11 @@ class PHAT_Form extends PHPWS_Item {
             }
             $sql .= ')';
 
-            PHPWS_DB::query($sql);
+            if (PHPWS_Error::logIfError(PHPWS_DB::query($sql))) {
+                $GLOBALS['CNT_phatform']['message'] = dgettext('phatform', 'Could not save the form. Check error log.');
+                return false;
+            }
+
             $this->setSaved();
 
             $this->commit();
