@@ -312,6 +312,7 @@ class Blog {
 
     public function getViewLink($bare=false)
     {
+        PHPWS_Core::initCoreClass('Link.php');
         $link = new PHPWS_Link(dgettext('blog', 'View'), 'blog', array('id'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
