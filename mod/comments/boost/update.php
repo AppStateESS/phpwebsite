@@ -309,6 +309,45 @@ CREATE INDEX comments_usr_idx ON comments_user_ranks (rank_id);';
 + New permission setting to allow admins to ban users from posting
 + Added data caching columns parent_author_id and parent_anon_name comments_items table
 </pre>';
+
+    case version_compare($currentVersion, '1.2.1', '<'):
+        $db = new PHPWS_DB('comments_users');
+        if (PHPWS_Error::logIfError($db->alterColumnType('groups', 'text null'))) {
+            $content[] = '-- Unable to alter groups column.';
+            return false;
+        } else {
+            $content[] = '-- Successfully altered comments_users.groups column.';
+        }
+
+        if (!PHPWS_DB::isTable('comments_monitors')) {
+            $db = new PHPWS_DB('comments_monitors');
+            $sql = 'CREATE TABLE comments_monitors (
+    thread_id   int NOT NULL,
+    user_id     int NOT NULL,
+    send_notice smallint NOT NULL default 1,
+    suspended smallint NOT NULL default 0
+);
+CREATE INDEX comments_monitors_user_id_idx ON comments_monitors (user_id, thread_id);
+CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, send_notice);
+';
+            $result = $db->import($sql,true);
+            if (PHPWS_Error::logIfError($result)) {
+                $content[] = 'Unable to add "comments_monitors" table.</pre>';
+                PHPWS_DB::rollback();
+                return false;
+            }
+            $content[] = 'Created "comments_monitors" table.';
+        }
+
+        commentsUpdateFiles(array('templates/user_settings.tpl'), $content); 
+
+        $content[] = '<pre>
+1.2.1 changes
+---------------------------
++ Catching error if comment user fails.
++ Bug Fix: New comment user is created on first comment.
++ Bug Fix: Display name error</pre>
+';
     }
 
     return true;

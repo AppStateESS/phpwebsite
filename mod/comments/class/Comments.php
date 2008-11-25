@@ -60,14 +60,15 @@ class Comments {
         }
 
         // If we're loading the current user, make sure that the cached userdata is up to date
-        if ($user_id = Current_User::getId()) {
+        if ($user_id == Current_User::getId()) {
             $user->setCachedItems();
-        } elseif ($user->isNew()) {
+        } 
+
+        if ($user->isNew()) {
             $result = $user->saveUser();
         }
 
-
-        $GLOBALS['Comment_Users'][$user_id] = & $user;
+        $GLOBALS['Comment_Users'][$user_id] = $user;
         return $GLOBALS['Comment_Users'][$user_id];
     }
 
@@ -453,7 +454,7 @@ class Comments {
             break;
 
         case 'save_comment':
-            if (empty($_REQUEST['cm_subject']) && empty($_REQUEST['cm_entry'])) {
+            if (empty($_POST['cm_subject']) && empty($_POST['cm_entry'])) {
                 PHPWS_Core::reroute($thread->_key->url);
             }
 
@@ -715,10 +716,10 @@ class Comments {
         $db->setLimit($limit);
         $db->addOrder('create_time desc');
         $db->addColumn('comments_items.id');
-        $db->addColumn('comments_users.display_name');
         $db->addColumn('comments_items.subject');
         $db->addColumn('comments_items.create_time');
         $db->addColumn('comments_threads.key_id');
+        $db->addColumn('users.display_name', 'comments_items.author_id');
         $db->addColumn('phpws_key.url');
         $db->addWhere('comments_items.author_id', 'comments_users.user_id');
         $db->addWhere('comments_items.thread_id', 'comments_threads.id');
@@ -728,13 +729,12 @@ class Comments {
         if (!Current_User::isLogged()) {
             $db->addWhere('phpws_key.restricted', 0);
         }
-
+        
         $result = $db->select();
 
         if (empty($result)) {
             return;
         }
-
 
         foreach ($result as $comment) {
             $date = PHPWS_Time::relativeTime($comment['create_time'], '%e %b');

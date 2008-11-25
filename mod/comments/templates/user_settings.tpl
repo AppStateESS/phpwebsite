@@ -7,7 +7,8 @@
         <p><strong>{WEBSITE_LABEL}</strong><br />
         {WEBSITE}</p>
 <!-- BEGIN SIG -->
-        <p><strong>{SIGNATURE_LABEL}</strong>{SIGNATURE_HELP}<br />
+        <p><strong>{SIGNATURE_LABEL}</strong><br />
+        {SIGNATURE_HELP}<br />
         {SIGNATURE}</p>
 <!-- END SIG -->
         <p><strong>{ORDER_PREF_LABEL}</strong><br />{ORDER_PREF}</p>

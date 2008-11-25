@@ -431,6 +431,10 @@ class Comment_User extends Demographics_User {
     public function saveUser()
     {
         $result = $this->save();
+        if (PHPWS_Error::logIfError($result)) {
+            return false;
+        }
+
         $this->_base_id = $this->_extend_id = $this->user_id;
         if (PHPWS_Error::logIfError($result) || !$result) {
             $this->_error = null;

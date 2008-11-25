@@ -41,7 +41,7 @@ CREATE TABLE comments_users (
   suspendmonitors smallint NOT NULL default 0,
   monitordefault smallint NOT NULL default 1,
   securitylevel smallint NOT NULL default -1,
-  groups varchar(50) NOT NULL,
+  groups text NULL,
   PRIMARY KEY  (user_id)
 );
 
