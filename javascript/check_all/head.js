@@ -9,7 +9,7 @@ var checked_status = false;
 
 function CheckAll(input, shortcut) {
     for (i=0; checkbox = input.form.elements[i]; i++) {
-        if (checkbox.type=='checkbox' && checkbox.name.match(shortcut)) {
+        if (checkbox.type=='checkbox' && (checkbox.name.match(shortcut) || checkbox.name == shortcut)) {
             if (checked_status) {
                 checkbox.checked = '';
             } else {

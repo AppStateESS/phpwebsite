@@ -6,6 +6,9 @@ its own separate CHANGELOG file..
 25 November 2008
 + Added plugIn function to form class.
 + Removed pass by reference call in Core.
++ Added extra match check to checkall javascript because match
+  function is failing now for some reason.
++ Updated: javascript/check_all/head.js
 
 Version 1.9.0
 ---------------------------------------------------------------------
