@@ -137,6 +137,12 @@ function access_update(&$content, $version)
 + New ability to added a RewriteBase to a .htaccess file.
 + Updated to PHP 5 standards.
 </pre>';
+
+    case version_compare($version, '1.1.1', '<'):
+        $content[] = '<pre>1.1.1 changes
+---------------
++ Reformated shortcut creation method. Should work with old version
+  as well as any new longer links.</pre>';
     }
 
     return true;

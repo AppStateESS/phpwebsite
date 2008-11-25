@@ -1,6 +1,12 @@
+Version 1.1.1
+---------------------------------------------------------------------------
 25 November 2008
 + Reformated shortcut creation method. Should work with old version
   as well as any new longer links.
+
+Version 1.1.0
+---------------------------------------------------------------------------
++ New ability to added a RewriteBase to a .htaccess file.
 
 Version 1.0.2
 ---------------------------------------------------------------------------
