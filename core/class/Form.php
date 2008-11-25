@@ -1563,6 +1563,46 @@ class PHPWS_Form {
                        $name, $method, $action, implode("\n", $elements));
     }
 
+    /**
+     * Accepts an associative array or object. Looks for form elements with the 
+     * same names as the variables in the object or the keys in the array. If 
+     * matching elements are found, their value, match, or checked parameters
+     * are set based upon the element type.
+     */
+    public function plugIn($values)
+    {
+        if (is_object($values)) {
+            $aVal = PHPWS_Core::stripObjValues($values);
+        } else {
+            $aVal = & $values;
+        }
+        if (empty($aVal) || !is_array($aVal)) {
+            return false;
+        }
+
+        foreach ($aVal as $name=>$element) {
+            $element_type = @$this->types[$name];
+            if (!empty($element_type)) {
+                switch ($element_type) {
+                case 'hidden':
+                case 'text':
+                case 'textarea':
+                case 'submit':
+                case 'button':
+                    $this->setValue($name, $element);
+                    break;
+
+                case 'select':
+                case 'multiple':
+                case 'radio':
+                case 'check':
+                    $this->setMatch($name, $element);
+                    break;
+                }
+            }
+        }
+    }
+
 }// End of PHPWS_Form Class
 
 
@@ -2022,7 +2062,6 @@ class Form_RadioButton extends Form_Element {
             . $this->getData()
             . ' />';
     }
-
 }
 
 
@@ -2402,7 +2441,6 @@ class Form_Element {
             return strtoupper($name);
         }
     }
-
 }
 
 ?>

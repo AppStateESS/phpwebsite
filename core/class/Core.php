@@ -117,7 +117,7 @@ class PHPWS_Core {
     /**
      * Returns a module object based on core
      */
-    public function &loadAsMod($use_file=true)
+    public function loadAsMod($use_file=true)
     {
         PHPWS_Core::initCoreClass('Module.php');
         $core_mod = new PHPWS_Module('core', $use_file);

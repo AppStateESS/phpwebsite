@@ -894,6 +894,25 @@ if (!PHPWS_Form::testDate('event_date')) {
 }
 
 
+Plugging in values
+---------------------------------------------------
+Normally you would use construct new form elements with default
+values. You would also set matching and checked parameters using
+setMatch. There may be times when you need to have multiple iterations
+of the same form with different values. Or maybe you don't feel like
+performing multiple setMatches. Whatever the case, you can use the
+plugIn function.
+
+$form->plugIn($values);
+
+$values can be an associative array or an object. plugIn will match
+the value names to form elements and set their value, match, or
+checked status based on their type.
+
+plugIn will overwrite values or match settings so be sure any special
+form considerations are run after it is called.
+
+
 Conclusion
 --------------------------------------------------
 Hopefully you will find the PHPWS_Form class helpful. Remember: you
