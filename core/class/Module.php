@@ -22,7 +22,7 @@ class PHPWS_Module {
     public $fullMod       = true;
     private $_dependency   = false;
     private $_dep_list     = null;
-    private $_error        = null;
+    public $_error        = null;
 
     public function __construct($title=null, $file=true)
     {
