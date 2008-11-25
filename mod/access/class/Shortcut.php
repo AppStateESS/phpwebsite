@@ -69,7 +69,7 @@ class Access_Shortcut {
                 return PHPWS_Error::get(SHORTCUT_MISSING_KEY, 'access', 'Shortcut::postShortcut');
             } else {
                 $key = new Key((int)$_POST['key_id']);
-                $this->setUrl($key->module, $key->item_id);
+                $this->setUrl($key->module, $key->url);
             }
         }
 
@@ -81,9 +81,16 @@ class Access_Shortcut {
         return TRUE;
     }
 
-    public function setUrl($module, $id)
+    public function setUrl($module, $url)
     {
-        $this->url = sprintf('%s:%s', $module, $id);
+        // mod_rewrite link
+        if (preg_match('@/@', $url)) {
+            $aUrl = explode('/', $url);
+            $this->url = implode(':', $aUrl);
+        } else {
+            $url = preg_replace('/index.php\??|module=/i', '', $url);
+            $this->url = preg_replace('/&amp;|[&=]/', ':', $url);
+        }
     }
 
     public function getUrl()
