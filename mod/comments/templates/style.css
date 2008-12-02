@@ -100,7 +100,7 @@ a.comment_report_link {
     float :left;
     width: 16px;
     height: 16px;
-    background-image: url(images/mod/comments/report.png);
+    background-image: url(../../images/mod/comments/report.png);
     margin: 0 .5em;
 }
 a.comment_report_link:hover {
