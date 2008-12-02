@@ -180,7 +180,7 @@ class Folder {
             $label = dgettext('filecabinet', 'Add media');
             break;
         }
-
+        PHPWS_Core::initCoreClass('Link.php');
         $link = new PHPWS_Link(null, 'filecabinet', $link_var, true);
         $link->convertAmp(false);
         $link->setSalted();
