@@ -428,7 +428,7 @@ class Menu_Admin {
 
     public function unpinMenu(Menu_Item $menu)
     {
-        if (!isset($_REQUEST['key_id']) || !isset($_REQUEST['pin_all'])) {
+        if (!isset($_REQUEST['key_id']) && !isset($_REQUEST['pin_all'])) {
             return;
         }
 
