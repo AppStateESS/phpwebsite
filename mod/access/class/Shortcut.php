@@ -53,7 +53,12 @@ class Access_Shortcut {
                     break;
                 }
                 $val = $url[$i];
-                $_REQUEST[$key] = $_GET[$key] = $val;
+                if (preg_match('/\[\]/', $key)) {
+                    $key = preg_replace('/[\[\]]/', '', $key);
+                    $_REQUEST[$key][] = $_GET[$key][] = $val;
+                } else {
+                    $_REQUEST[$key] = $_GET[$key] = $val;
+                }
             }
         }
     }
