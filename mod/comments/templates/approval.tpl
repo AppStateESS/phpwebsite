@@ -5,7 +5,7 @@
      <th>{SUBJECT_SORT}</th>
      <th>{AUTHOR_SORT} / {CREATE_TIME_SORT}
      </th>
-     <th width="60px"><!-- action --></th>
+     <th><!-- action --></th>
   </tr>
 <!-- BEGIN listrows -->  <tr class="highlight">
     <td>{CHECKBOX}</td>
