@@ -444,6 +444,7 @@ class Comment_Forms {
         javascript('jsquery');
         javascript('modules/comments/admin');
         javascript('modules/comments/quick_view');
+        Layout::addStyle('comments');
         Layout::addStyle('comments', 'admin.css');
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('comments', 'Comment_Item.php');
@@ -557,6 +558,7 @@ class Comment_Forms {
     public function approvalForm()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
+        Layout::addStyle('comments');
         Layout::addStyle('comments', 'admin.css');
         javascript('jquery');
         javascript('modules/comments/quick_view');
