@@ -79,7 +79,6 @@ class PHPWS_Text {
 
     public function setText($text, $decode=ENCODE_PARSED_TEXT)
     {
-
         if (empty($text) || !is_string($text)) {
             return;
         }
@@ -91,6 +90,11 @@ class PHPWS_Text {
         }
     }
 
+    public function breakPost($name)
+    {
+        $check_name = sprintf('%s_breaker', $name);
+        return isset($_POST[$check_name]);
+    }
 
     public function useProfanity($use = true)
     {
@@ -343,6 +347,7 @@ class PHPWS_Text {
         $text = str_replace('[newline]', "\n", $text);
         // removes extra breaks stuck in code tags by editors
         $text = preg_replace('/<code>(.*)<\/code>/Uies', "'<code>' . str_replace('<br />', '', '\\1') . '</code>'", $text);
+        $text = preg_replace("/<br \/>([^\n])/", "<br />\n\\1", $text);
         return $text;
     }
 
@@ -355,9 +360,9 @@ class PHPWS_Text {
         }
 
         if ($encode) {
+            $text = utf8_encode($text);
             $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
         }
-
         return trim($text);
     }
 
