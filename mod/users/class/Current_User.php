@@ -449,7 +449,12 @@ final class Current_User {
             return false;
         }
         PHPWS_Core::bookmark(false);
-        $url = 'index.php?module=users&action=user&command=login_page';
+        $auth = Current_User::getAuthorization();
+        if (!empty($auth->login_url)) {
+            $url = $auth->login_url;
+        } else {
+            $url = 'index.php?module=users&action=user&command=login_page';
+        }
         PHPWS_Core::reroute($url);
     }
 

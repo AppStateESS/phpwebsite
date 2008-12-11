@@ -1,3 +1,10 @@
+11 December 2008
++ requireLogin now reroutes dependant on the user authorization
++ If the user's group is missing when they are updated, a new one is
+  properly created. Prior to the fix, a new group was created without an
+  assigned user id.
++ Added error message to my page if update goes bad.
+
 Version 2.6.0
 -----------------------------------------------------------------------
 17 November 2008

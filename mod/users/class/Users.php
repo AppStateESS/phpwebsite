@@ -654,7 +654,12 @@ class PHPWS_User {
             return PHPWS_Error::get(USER_ERROR, 'users', 'updateGroup');
         }
 
-        $group = new PHPWS_Group($result);
+        if (empty($result)) {
+            $group = new PHPWS_Group;
+            $group->setUserId($this->id);
+        } else {
+            $group = new PHPWS_Group($result);
+        }
 
         $group->setName($this->getUsername());
         $group->setActive($this->isActive());

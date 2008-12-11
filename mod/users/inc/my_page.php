@@ -43,11 +43,13 @@ function my_page()
 
         if (is_array($result)) {
             $content = User_Settings::userForm($user, $result);
-        }
-        else {
-            $user->save();
-            $_SESSION['User'] = $user;
-            PHPWS_Core::reroute('index.php?module=users&action=user&tab=users&save=1');
+        } else {
+            if (PHPWS_Error::logIfError($user->save())) {
+                $content = dgettext('users', 'An error occurred while updating your user account.');
+            } else {
+                $_SESSION['User'] = $user;
+                PHPWS_Core::reroute('index.php?module=users&action=user&tab=users&save=1');
+            }
         }
         break;
     }
