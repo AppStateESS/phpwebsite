@@ -15,6 +15,7 @@ class Blog_Form {
     public function edit(Blog $blog, $version_id=NULL, $limited=false)
     {
         $form = new PHPWS_Form('edit-blog');
+        $form->useBreaker();
         $form->addHidden('module', 'blog');
 
         if ($limited) {

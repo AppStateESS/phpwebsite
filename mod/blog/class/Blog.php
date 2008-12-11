@@ -121,6 +121,10 @@ class Blog {
 
     public function setEntry($entry)
     {
+        if (PHPWS_Text::breakPost('entry')) {
+            $entry = PHPWS_Text::breaker($entry);
+        }
+
         $this->entry = PHPWS_Text::parseInput($entry);
     }
 
@@ -140,9 +144,12 @@ class Blog {
 
     public function setSummary($summary)
     {
+        if (PHPWS_Text::breakPost('summary')) {
+            $summary = PHPWS_Text::breaker($summary);
+        }
         $this->summary = PHPWS_Text::parseInput($summary);
     }
-
+    
 
     public function getSummary($print=false)
     {
@@ -312,7 +319,6 @@ class Blog {
 
     public function getViewLink($bare=false)
     {
-        PHPWS_Core::initCoreClass('Link.php');
         $link = new PHPWS_Link(dgettext('blog', 'View'), 'blog', array('id'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
