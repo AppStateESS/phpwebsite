@@ -189,6 +189,8 @@ class PS_Forms {
         $form->addHidden('section_name', $section_name);
         $form->addTextArea('text');
         $form->useEditor('text', true, false, 720, 480);
+        $form->setCols('text', 90);
+        $form->setRows('text', 30);
         $form->addSubmit(dgettext('pagesmith', 'Update'));
         $tpl = $form->getTemplate();
         $tpl['CANCEL'] = javascript('close_window');
