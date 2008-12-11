@@ -289,7 +289,6 @@ class Skeleton_Bone {
 
     public function viewLink($bare=false)
     {
-        PHPWS_Core::initCoreClass('Link.php');
         $link = new PHPWS_Link($this->title, 'skeleton', array('skeleton'=>$this->skeleton_id, 'bone'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
@@ -299,9 +298,6 @@ class Skeleton_Bone {
             return $link->get();
         }
     }
-
-
-
 }
 
 ?>
