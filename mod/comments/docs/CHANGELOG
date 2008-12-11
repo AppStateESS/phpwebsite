@@ -1,3 +1,19 @@
+11 December 2008
++ Changed wording on some punishment.
++ Punish menu is drop down float now
++ Option to delete all user comments added for both ip and id based.
++ New icons for reported status.
++ Yanked background image and made icons just plain old images.
++ Replaced delete icons with trashcan icon.
++ Added new functions to update a thread's comment count and last
+poster.
++ Updated: img/delete.png, img/erase.png, img/report.png,
+           img/reported.png, javascript/admin/default.php,
+           javascript/admin/head.js, templates/style.css
+
+2 December 2008
++ Added comment style on report page to support punish icon
+
 Version 1.2.1
 ------------------------------------------------------------------------
 25 November 2008

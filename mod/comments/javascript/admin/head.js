@@ -1,4 +1,3 @@
-<script type="text/javascript" src="javascript/jquery/jquery.js"></script>
 <script type="text/javascript">
 
 function punish_user(user_id, link, type)
@@ -15,6 +14,15 @@ function punish_user(user_id, link, type)
 
 $(document).ready(function() {
     $(".full-view").hide();
+
+    $('.comment-punish').hover(
+        function() {
+            $(this).children('.comment-punish-list').show();
+        },
+        function() {
+            $(this).children('.comment-punish-list').hide();
+        }
+    );
 });
 
 function quick_view(id)

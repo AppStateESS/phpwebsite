@@ -225,6 +225,11 @@ class Comment_Thread {
 
     }
 
+    public function priorReport()
+    {
+        return sprintf('<img src="images/mod/comments/reported.png" title="%s" />', dgettext('comments', 'Reported!'));
+    }
+
     public function setReturnUrl($url)
     {
         $this->_return_url = $url;
@@ -234,7 +239,8 @@ class Comment_Thread {
     {
         Layout::addStyle('comments');
 
-        javascript('modules/comments/report/', array('reported'=>dgettext('comments', 'Reported!')));
+        javascript('modules/comments/report', array('reported'=>$this->priorReport()));
+
         if (Current_User::isLogged()) {
             $this->miniAdmin();
         }
@@ -455,13 +461,43 @@ class Comment_Thread {
         }
     }
 
+    public function updateLastPoster()
+    {
+        $db = new PHPWS_DB('comments_items');
+        $db->addWhere('thread_id', $this->id);
+        $db->addOrder('create_time desc');
+        $db->setLimit(1);
+        $db->addColumn('author_id');
+        $last_poster = $db->select('one');
+        if (PHPWS_Error::logIfError($last_poster)) {
+            $last_author = 0;
+        }
+        $this->postLastUser($last_poster);
+        return $this->save();
+    }
+
+    public function updateCount()
+    {
+        $db = new PHPWS_DB('comments_items');
+        $db->addWhere('thread_id', $this->id);
+        $db->addColumn('id', null, null, true);
+        $comment_count = $db->select('one');
+        if (PHPWS_Error::logIfError($comment_count)) {
+            return false;
+        }
+        $this->total_comments = $comment_count;
+        return $this->save();
+    }
+
     public function postLastUser($author_id)
     {
         if ($author_id) {
             $author = Comments::getCommentUser($author_id);
             $this->last_poster = $author->display_name;
-        } else {
+        } elseif ($author_id == 0) {
             $this->last_poster = DEFAULT_ANONYMOUS_TITLE;
+        } else {
+            $this->last_poster = null;
         }
     }
 

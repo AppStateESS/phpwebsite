@@ -298,10 +298,11 @@ class Comment_Item {
             $template['QUOTE_LINK']  = $this->quoteLink();
             $template['REPLY_LINK']  = $this->replyLink();
             if (Current_User::isLogged()) {
-                if (empty($_SESSION['Users_Reported_Comments'][$this->id]))
+                if (empty($_SESSION['Users_Reported_Comments'][$this->id])) {
                     $template['REPORT_LINK'] = $this->reportLink();
-                else
-                    $template['REPORT_LINK'] = dgettext('comments', 'Reported!');
+                } else {
+                    $template['REPORT_LINK'] = $thread->priorReport();
+                }
             }
             if ($thread->userCan() || ($this->author_id > 0 && $this->author_id == Current_User::getId()))
                 $template['EDIT_LINK']       = $this->editLink();
@@ -432,7 +433,7 @@ class Comment_Item {
         $vars['QUESTION'] = dgettext('comments', 'Are you sure you want to delete this comment?');
         $vars['ADDRESS'] = 'index.php?module=comments&amp;cm_id=' . $this->id . '&amp;aop=delete_comment&amp;authkey='
             . Current_User::getAuthKey();
-        $vars['LINK'] = '<span>' . dgettext('comments', 'Delete') . '</span>';
+        $vars['LINK'] = sprintf('<img src="images/mod/comments/delete.png" title="%s" />', dgettext('comments', 'Delete'));
         $vars['CLASS'] = 'comment_delete_link';
         $vars['TITLE'] = dgettext('comments', 'Delete this comment');
         return Layout::getJavascript('confirm', $vars);
@@ -440,26 +441,22 @@ class Comment_Item {
 
     public function clearReportLink()
     {
-        return PHPWS_Text::secureLink(dgettext('comments', 'Clear'), 'comments',
+        $link = sprintf('<img src="images/mod/comments/erase.png" title="%s" />', dgettext('comments', 'Clear'));
+        return PHPWS_Text::secureLink($link, 'comments',
                                       array('aop'=>'clear_report', 'cm_id'=>$this->id),
                                       NULL, dgettext('comments', 'Clear this report'));
     }
 
     public function punishUserLink($graphic=false)
     {
-        $vars['address'] = PHPWS_Text::linkAddress('comments', array('aop'=>'punish_user',
-                                                                     'cm_id'=>$this->id, 'authkey'=>Current_User::getAuthKey()), true);
-        $vars['link_title'] = dgettext('comments', 'Punish this user');
-        if ($graphic) {
-            $vars['class'] = 'comment_punish_link';
-            $vars['label'] = '<span>' . dgettext('comments', 'Punish this user') . '</span>';
+        PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+        $punish_form = Comment_Forms::punishForm($this);
+        if ($punish_form) {
+            return sprintf('<span class="comment-punish"><img src="images/mod/comments/noentry.png" title="%s" /><div class="comment-punish-list">%s</div></span>',
+                           dgettext('comments', 'Punish this user'), $punish_form);
         } else {
-            $vars['label'] = dgettext('comments', 'Punish this user');
+            return null;
         }
-
-        $vars['width'] = 240;
-        $vars['height'] = 180;
-        return javascript('open_window', $vars);
     }
 
     public function quoteLink()
@@ -485,7 +482,7 @@ class Comment_Item {
 
     public function reportLink()
     {
-        $str = '<span>' . dgettext('comments', 'Report') . '</span>';
+        $str = sprintf('<img src="images/mod/comments/report.png" title="%s" />', dgettext('comments', 'Report'));
         $title = dgettext('comments', 'Report this comment to an administrator');
         return sprintf('<a href="#" class="%s" onclick="report(%s, this); return false" title="%s">%s</a>',
                        'comment_report_link', $this->id, $title, $str);
@@ -604,8 +601,8 @@ class Comment_Item {
 
         $links[] = $this->clearReportLink();
         $links[] = $this->deleteLink();
-        $links[] = $this->punishUserLink();
-        $tpl['ACTION']  = implode(' | ', $links);
+        $links[] = $this->punishUserLink(true);
+        $tpl['ACTION']  = implode('', $links);
         return $tpl;
     }
 

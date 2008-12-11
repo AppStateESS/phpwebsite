@@ -94,10 +94,16 @@ class Comments {
 
         $tabs['ranks'] = array('title'=>dgettext('comments', 'Member ranks'), 'link'=>'index.php?module=comments');
 
-        $count = PHPWS_Settings::get('comments', 'reported_comments');
+        $db = new PHPWS_DB('comments_items');
+        $db->addColumn('id');
+        $db->addWhere('reported', 0, '>');
+        $count = $db->count();
+
         $tabs['report'] = array('title'=> sprintf(dgettext('comments', 'Reported (%s)'), $count),
                                 'link'=>'index.php?module=comments');
-        $count = PHPWS_Settings::get('comments', 'unapproved_comments');
+        $db->resetWhere();
+        $db->addWhere('approved', 0);
+        $count = $db->count();
         $tabs['approval'] = array('title'=> sprintf(dgettext('comments', 'Approval (%s)'), $count),
                                   'link'=>'index.php?module=comments');
 
@@ -396,6 +402,21 @@ class Comments {
             $content = dgettext('comments', 'All user postcounts have been recalculated');
             break;
 
+        case 'delete_all_user_comments':
+            if (Current_User::authorized('comments', 'delete_comments') && !empty($_GET['aid'])) {
+                Comments::deleteAllUserComments($_GET['aid']);
+            }
+            PHPWS_Core::goBack();
+            break;
+
+        case 'delete_all_ip_comments':
+            if (Current_User::authorized('comments', 'delete_comments') && !empty($_GET['aip'])) {
+                Comments::deleteAllUserComments(0, $_GET['aip']);
+            }
+            PHPWS_Core::goBack();
+            break;
+            
+
         default:
             PHPWS_Core::errorPage('404');
         }
@@ -497,8 +518,14 @@ class Comments {
 
         case 'view_comment':
             $thread = new Comment_Thread($c_item->thread_id);
-            if (!$thread->_key->allowView())
+            if (!$thread->id) {
+                PHPWS_Core::errorPage('404');
+                break;
+            }
+
+            if (!$thread->_key->allowView()) {
                 Current_User::requireLogin();
+            }
 
             if ($c_item->approved || Current_User::allow('comments')) {
                 $title = sprintf(dgettext('comments', 'Comment from: %s'), $thread->_key->getUrl());
@@ -982,6 +1009,48 @@ class Comments {
             $rank = new Comment_Rank;
         }
         return $rank;
+    }
+
+    public function deleteAllUserComments($author_id=0, $author_ip=null)
+    {
+        $author_id = (int)$author_id;
+        if (!$author_id && empty($author_ip)) {
+            return;
+        }
+
+        $db = new PHPWS_DB('comments_items');
+        if ($author_id) {
+            $db->addWhere('author_id', $author_id);
+        } else {
+            $db->addWhere('author_ip', $author_ip);
+        }
+
+        // first get threads so we can update them
+        $db->addColumn('thread_id', null, null, false, true);
+
+        $threads = $db->select('col');
+        if (PHPWS_Error::logIfError($threads) || empty($threads)) {
+            return;
+        }
+
+        // now delete all the comments
+        $db->resetColumns();
+        PHPWS_Error::logIfError($db->delete());
+
+        // go through threads and update their comment count
+        foreach ($threads as $thread_id) {
+            $thread = new Comment_Thread($thread_id);
+            $thread->updateCount();
+            $thread->updateLastPoster();
+        }
+
+        if ($author_id) {
+            $db = new PHPWS_DB('comments_users');
+            $db->addWhere('user_id', $author_id);
+            $db->setValue('comments_made', 0);
+            PHPWS_Error::logIfError($db->update());
+        }
+
     }
 }
 

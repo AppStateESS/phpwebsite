@@ -499,8 +499,7 @@ class Comment_Forms {
             $user = new PHPWS_User($comment->author_id);
 
             if ($user->id && $user->allow('comments')) {
-                $links[] = dgettext('comments', 'A site admin wrote this comment and may not be punished.');
-                $links[] = dgettext('comments', 'Remove their admin privileges and return.');
+                return null;
             } else {
                 if ($author->user_id) {
                     if ($author->locked) {
@@ -517,15 +516,13 @@ class Comment_Forms {
                     if (Current_User::allow('users', 'ban_users') && !$user->allow('users')) {
                         if ($user->active) {
                             $links[] = sprintf('<a href="#" onclick="punish_user(%s, this, \'ban_user\'); return false;">%s</a>',
-                                               $author->user_id, dgettext('comments', 'Ban user from this website'));
+                                               $author->user_id, dgettext('comments', 'Ban user account'));
                         } else {
                             $links[] = sprintf('<a href="#" onclick="punish_user(%s, this, \'unban_user\'); return false;">%s</a>',
                                                $author->user_id, dgettext('comments', 'Remove ban'));
                         }
                     }
                 }
-
-
             }
         }
 
@@ -544,15 +541,30 @@ class Comment_Forms {
             }
         }
 
-        if (isset($links)) {
-            $tpl['LINKS'] = implode('<br />', $links);
-        } else {
-            $tpl['LINKS'] = dgettext('comments', 'Either your permissions do not allow you to punish users or this user posted from an unblockable IP address.');
+        if (Current_User::allow('comments', 'delete_comments') && $comment->author_ip != '127.0.0.1') {
+            $confvars['title'] = $confvars['link'] = dgettext('comments', 'Delete all comments');
+
+            if ($comment->author_id) {
+                $confvars['question'] = sprintf(dgettext('comments', 'Are you sure you want to delete every comment ever written by %s?'),
+                                                $user->display_name);
+                $linkvars['aop'] = 'delete_all_user_comments';
+                $linkvars['aid'] = $comment->author_id;
+            } else {
+                $confvars['question'] = sprintf(dgettext('comments', 'Are you sure you want to delete every comment ever written from this ip address: %s?'),
+                                                $comment->author_ip);
+                $linkvars['aop'] = 'delete_all_ip_comments';
+                $linkvars['aip'] = $comment->author_ip;
+            }
+            $qlink = new PHPWS_Link(null, 'comments', $linkvars, true);
+            $confvars['address'] = $qlink->getAddress();
+            $links[] = javascript('confirm', $confvars);
         }
 
-
-        $tpl['CLOSE'] = javascript('close_window');
-        return PHPWS_Template::process($tpl, 'comments', 'punish_pop.tpl');
+        if (isset($links)) {
+            return implode('<hr />', $links);
+        } else {
+            return null;
+        }
     }
 
     public function approvalForm()
