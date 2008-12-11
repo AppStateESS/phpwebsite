@@ -104,6 +104,8 @@ class PHPWS_Form {
      */
     public $required_field = false;
 
+    public $use_breaker = false;
+
     /**
      * Constructor for class
      */
@@ -165,6 +167,11 @@ class PHPWS_Form {
     public function turnOffAutocomplete()
     {
         $this->_autocomplete = false;
+    }
+
+    public function useBreaker($use_it=true)
+    {
+        $this->use_breaker = (bool)$use_it;
     }
 
     public function turnOnAutocomplete()
@@ -1848,7 +1855,7 @@ class Form_TextArea extends Form_Element {
             $dimensions[] = 'style="' . implode('; ', $style) . '"';
         }
 
-        if (!USE_BREAKER) {
+        if (!USE_BREAKER && $this->_form->use_breaker) {
             $check_name = sprintf('%s_breaker', $this->name);
             $checkbox = new Form_Checkbox($check_name);
             $checkbox->setLabel(_('Break newlines'));
