@@ -290,7 +290,6 @@ class FC_File_Manager {
 
     public function editAddress($fid=null)
     {
-        PHPWS_Core::initCoreClass('Link.php');
         $add_vars = $this->linkInfo();
         $add_vars['fop']  = 'open_file_manager';
         if (isset($fid)) {
