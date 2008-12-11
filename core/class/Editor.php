@@ -86,7 +86,7 @@ class Editor {
 
     public function getEditorList()
     {
-        return PHPWS_File::readDirectory('javascript/editors/', TRUE);
+        return PHPWS_File::readDirectory('javascript/editors/', true);
     }
 
     public function getError()
@@ -158,18 +158,6 @@ class Editor {
 
     public function willWork($type=null)
     {
-        if (FORCE_EDITOR) {
-            return true;
-        }
-
-        if (USE_WYSIWYG_EDITOR == FALSE) {
-            return FALSE;
-        }
-
-        if (!javascriptEnabled()) {
-            return FALSE;
-        }
-
         if (empty($type)) {
             $type = Editor::getUserType();
         }
@@ -178,6 +166,20 @@ class Editor {
         if (empty($type)) {
             return false;
         }
+
+
+        if (FORCE_EDITOR) {
+            return true;
+        }
+
+        if (USE_WYSIWYG_EDITOR == false) {
+            return false;
+        }
+
+        if (!javascriptEnabled()) {
+            return false;
+        }
+
 
         if (isset($_SESSION['Editor_Works'][$type])) {
             return $_SESSION['Editor_Works'][$type];

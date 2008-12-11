@@ -25,7 +25,7 @@ class PHPWS_Link {
     public  $no_follow   = false;
     public  $salted      = false;
 
-    public function __construct($label=null, $module=null, $values=null, $secure=false)
+    public function __construct($label=null, $module=null, $values=null, $secure=false, $salted=false)
     {
         $this->label = $label;
         $this->module = $module;
@@ -33,6 +33,7 @@ class PHPWS_Link {
             $this->addValues($values);
         }
         $this->secure = (bool)$secure;
+        $this->salted = (bool)$salted;
     }
 
     public function get()

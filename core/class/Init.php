@@ -35,6 +35,7 @@ require_once PHPWS_SOURCE_DIR . 'core/class/Core.php';
 PHPWS_Core::initCoreClass('Database.php');
 PHPWS_Core::initCoreClass('Time.php');
 PHPWS_Core::initCoreClass('Settings.php');
+PHPWS_Core::initCoreClass('Link.php');
 PHPWS_Core::initCoreClass('Text.php');
 PHPWS_Core::initCoreClass('Debug.php');
 PHPWS_Core::initCoreClass('Error.php');

@@ -18,6 +18,7 @@ if (!defined('UTF8_MODE')) {
 }
 
 PHPWS_Core::requireConfig('core', 'text_settings.php');
+PHPWS_Core::initCoreClass('Link.php');
 
 if (!defined('PHPWS_HOME_HTTP')) {
     define('PHPWS_HOME_HTTP', './');
@@ -484,7 +485,6 @@ class PHPWS_Text {
 
     public function quickLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
     {
-        PHPWS_Core::initCoreClass('Link.php');
         $link = new PHPWS_Link($subject, $module, $getVars);
         $link->setTarget($target);
 
@@ -524,7 +524,6 @@ class PHPWS_Text {
      */
     public function linkAddress($module=null, $getVars=null, $secure=false, $add_base=false, $convert_amp=true, $rewrite=false)
     {
-        PHPWS_Core::initCoreClass('Link.php');
         $link = new PHPWS_Link(null, $module, $getVars);
         $link->secure      = $secure;
         $link->full_url    = $add_base;

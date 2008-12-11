@@ -2,6 +2,16 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file..
 
+11 December 2008
++ Editor - moved user option above force editor define. Define was
+  forcing a user who didn't want an editor to do so.
++ Form - if USE_BREAKER is false, text areas will get a use breaks
+  checkbox. Modules can check if it is enabled and run breaker if they
+  wish.
++ Init - Link.php included by default
++ Link - salted added to the constructor
++ Text - Link required moved to head of file
+
 5 December 2008
 + Text
   o Added utf8 encoding before htmlentities call in parseInput to

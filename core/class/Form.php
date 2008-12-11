@@ -1807,6 +1807,8 @@ class Form_TextArea extends Form_Element {
 
     public function get()
     {
+        $breaker = null;
+
         if ($this->use_editor && Editor::willWork()) {
             $text = PHPWS_Text::decodeText($this->value);
             $text = PHPWS_Text::encodeXHTML($text);
@@ -1846,7 +1848,16 @@ class Form_TextArea extends Form_Element {
             $dimensions[] = 'style="' . implode('; ', $style) . '"';
         }
 
-        return '<textarea '
+        if (!USE_BREAKER) {
+            $check_name = sprintf('%s_breaker', $this->name);
+            $checkbox = new Form_Checkbox($check_name);
+            $checkbox->setLabel(_('Break newlines'));
+            $checkbox->setId($check_name);
+            $breaker = sprintf('<div class="textarea-breaker">%s %s</div>', $checkbox->get(), $checkbox->getLabel(true, true));
+        }
+
+        return $breaker .
+            '<textarea '
             . $this->getName(true)
             . $this->getTitle(true)
             . $this->getDisabled()
@@ -2005,6 +2016,10 @@ class Form_Checkbox extends Form_Element {
 
     public function getMatch()
     {
+        if ($this->match === false) {
+            return null;
+        }
+
         if (is_array($this->match) && in_array($this->value, $this->match)) {
             return 'checked="checked" ';
         }
