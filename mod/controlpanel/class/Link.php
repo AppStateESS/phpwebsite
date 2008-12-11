@@ -65,13 +65,13 @@ class PHPWS_Panel_Link {
 
     public function getLabel()
     {
-        return $this->label;
+        return dgettext($this->itemname, $this->label);
     }
 
 
     public function getDescription()
     {
-        return $this->description;
+        return dgettext($this->itemname, $this->description);
     }
 
     public function setDescription($description)
