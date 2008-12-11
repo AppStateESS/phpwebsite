@@ -32,7 +32,11 @@ class Blog_User {
         }
 
         if (!isset($_REQUEST['action'])) {
-            $action = 'view_comments';
+            if ($blog->id) {
+                $action = 'view_comments';
+            } else {
+                $action = 'view';
+            }
         } else {
             $action = $_REQUEST['action'];
         }
