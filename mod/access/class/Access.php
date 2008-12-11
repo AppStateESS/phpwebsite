@@ -542,12 +542,12 @@ class Access {
         $db->setIndexBy('allow_or_deny');
         $perms = $db->select('col');
 
-        if ($allow_all || (!empty($perms[1]) && Access::comparePermissions($perms[1], $address))) {
-             $_SESSION['Access_Allow_Deny'] = true;
+        if (isset($perms[1]) && ($allow_all || (!empty($perms[1]) && Access::comparePermissions($perms[1], $address)))) {
+            $_SESSION['Access_Allow_Deny'] = true;
         }
 
-        if ($deny_all || (!empty($perms[0]) && Access::comparePermissions($perms[0], $address))) {
-             $_SESSION['Access_Allow_Deny'] = false;
+        if (isset($perms[0]) && ($deny_all || (!empty($perms[0]) && Access::comparePermissions($perms[0], $address)))) {
+            $_SESSION['Access_Allow_Deny'] = false;
             return;
         }
 
@@ -557,6 +557,14 @@ class Access {
 
     public function comparePermissions($permission_array, $ip)
     {
+        if (empty($permission_array)) {
+            return false;
+        }
+
+        if (is_string($permission_array)) {
+            $permission_array = array($permission_array);
+        }
+
         foreach ($permission_array as $ip_compare) {
             $ip_compare = Access::inflateIp($ip_compare);
             $ip_compare = str_replace('.', '\.', $ip_compare);
