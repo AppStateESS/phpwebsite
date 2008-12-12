@@ -21,6 +21,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
     public $module           = NULL;
     public $error            = NULL;
     public $lastTemplatefile = NULL;
+    public $ignore_cache     = false;
 
     public function __construct($module=NULL, $file=NULL)
     {
@@ -56,9 +57,14 @@ class PHPWS_Template extends HTML_Template_Sigma {
         return sprintf('%stemplates/%s/', $theme, $module);
     }
 
+    public function setIgnoreCache($ignore=true)
+    {
+        $this->ignore_cache = (bool)$ignore;
+    }
+
     public function setCache()
     {
-        if (!PHPWS_Template::allowSigmaCache()) {
+        if ($this->ignore_cache || !PHPWS_Template::allowSigmaCache()) {
             return;
         }
 
@@ -90,7 +96,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         if (defined('ALLOW_SIGMA_CACHE')) {
             return ALLOW_SIGMA_CACHE;
         } else {
-            return FALSE;
+            return false;
         }
     }
 
@@ -144,11 +150,11 @@ class PHPWS_Template extends HTML_Template_Sigma {
      * Sets the template file specified. Function decides which file to use based
      * on template.php settings and file availability
      */
-    public function setFile($file, $strict=FALSE)
+    public function setFile($file, $strict=false)
     {
         $module = $this->getModule();
         $this->setCache();
-        if ($strict == TRUE) {
+        if ($strict == true) {
             $result = $this->loadTemplateFile($file);
             $used_tpl = &$file;
         } else {
@@ -210,7 +216,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
     }
 
 
-    public function process($template, $module, $file, $strict=FALSE)
+    public function process($template, $module, $file, $strict=false, $ignore_cache=false)
     {
         if (!is_array($template)) {
             return PHPWS_Error::log(PHPWS_VAR_TYPE, 'core',
@@ -226,10 +232,12 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
         if ($strict) {
             $tpl = new PHPWS_Template;
-            $tpl->setFile($file, TRUE);
+            $tpl->setFile($file, true);
         } else {
             $tpl = new PHPWS_Template($module, $file);
         }
+
+        $tpl->ignore_cache = (bool)$ignore_cache;
 
         if (PEAR::isError($tpl->error)) {
             PHPWS_Error::log($tpl->error);
@@ -257,7 +265,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
             return $result;
         }
 
-        if (LABEL_TEMPLATES == TRUE){
+        if (LABEL_TEMPLATES == true){
             $start = "\n<!-- START TPL: " . $tpl->lastTemplatefile . " -->\n";
             $end = "\n<!-- END TPL: " . $tpl->lastTemplatefile . " -->\n";
         } else {
@@ -271,13 +279,13 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
     }
 
-    public function processTemplate($template, $module, $file, $defaultTpl=TRUE)
+    public function processTemplate($template, $module, $file, $defaultTpl=true)
     {
         if ($defaultTpl)
             return PHPWS_Template::process($template, $module, $file);
         else {
             $tpl = new PHPWS_Template($module);
-            $tpl->setFile($file, TRUE);
+            $tpl->setFile($file, true);
             $tpl->setData($template);
             return $tpl->get();
         }

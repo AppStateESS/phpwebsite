@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file..
 
+12 December 2008
++ Template - Added option to prevent Sigma cache use.
+
 11 December 2008
 + Editor - moved user option above force editor define. Define was
   forcing a user who didn't want an editor to do so.
