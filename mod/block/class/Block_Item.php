@@ -91,7 +91,7 @@ class Block_Item {
             return FALSE;
         }
 
-        $db = & new PHPWS_DB('block');
+        $db = new PHPWS_DB('block');
         return $db->loadObject($this);
     }
 
@@ -111,11 +111,11 @@ class Block_Item {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = & new Key;
+            $key = new Key;
             $key->module = $key->item_name = 'block';
             $key->item_id = $this->id;
         } else {
-            $key = & new Key($this->key_id);
+            $key = new Key($this->key_id);
         }
 
         $key->edit_permission = 'edit_block';
@@ -134,7 +134,7 @@ class Block_Item {
 
     public function clearPins()
     {
-        $db = & new PHPWS_DB('block_pinned');
+        $db = new PHPWS_DB('block_pinned');
         $db->addWhere('block_id', $this->id);
         $db->delete();
     }
@@ -142,7 +142,7 @@ class Block_Item {
     public function kill()
     {
         $this->clearPins();
-        $db = & new PHPWS_DB('block');
+        $db = new PHPWS_DB('block');
         $db->addWhere('id', $this->id);
 
         $result = $db->delete();
@@ -151,7 +151,7 @@ class Block_Item {
             PHPWS_Error::log($result);
         }
 
-        $key = & new Key($this->key_id);
+        $key = new Key($this->key_id);
         $result = $key->delete();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);

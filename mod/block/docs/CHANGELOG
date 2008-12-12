@@ -1,3 +1,8 @@
+12 December 2008
++ RFE #2236544 - Image size limits set in settings tab instead of in
+  config file.
++ Updated: templates/settings.tpl
+
 Version 1.3.0
 ---------------------------------------------------------------
 7 November 2008

@@ -65,7 +65,7 @@ class Block {
 
     public function showBlocks($key)
     {
-        $db = & new PHPWS_DB('block');
+        $db = new PHPWS_DB('block');
         $db->addWhere('block_pinned.key_id', $key->id);
         $db->addWhere('id', 'block_pinned.block_id');
         Key::restrictView($db, 'block');

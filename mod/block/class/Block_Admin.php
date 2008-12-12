@@ -18,7 +18,7 @@ class Block_Admin {
             return;
         }
 
-        $panel = & Block_Admin::cpanel();
+        $panel = Block_Admin::cpanel();
         if (isset($_REQUEST['action'])) {
             $action = $_REQUEST['action'];
         }
@@ -44,8 +44,9 @@ class Block_Admin {
         $linkBase = 'index.php?module=block';
         $tabs['new']  = array ('title'=>dgettext('block', 'New'),  'link'=> $linkBase);
         $tabs['list'] = array ('title'=>dgettext('block', 'List'), 'link'=> $linkBase);
+        $tabs['settings'] = array ('title'=>dgettext('block', 'Settings'), 'link'=> $linkBase);
 
-        $panel = & new PHPWS_Panel('categories');
+        $panel = new PHPWS_Panel('categories');
         $panel->enableSecure();
         $panel->quickSetTabs($tabs);
 
@@ -59,9 +60,9 @@ class Block_Admin {
         $message = Block_Admin::getMessage();
 
         if (isset($_REQUEST['block_id'])) {
-            $block = & new Block_Item($_REQUEST['block_id']);
+            $block = new Block_Item($_REQUEST['block_id']);
         } else {
-            $block = & new Block_Item();
+            $block = new Block_Item();
         }
 
         switch ($action) {
@@ -112,6 +113,22 @@ class Block_Admin {
                 $result = $block->save();
             }
             Block_Admin::sendMessage(dgettext('block', 'Block saved'), 'list');
+            break;
+
+        case 'settings':
+            $title = dgettext('block', 'Settings');
+            $content = Block_Admin::settings();
+            break;
+
+        case 'post_settings':
+            $result = Block_Admin::postSettings();
+            if (is_array($result)) {
+                $message = implode('<br />', $result);
+                $title = dgettext('block', 'Settings');
+                $content = Block_Admin::settings();
+            } else {
+                Block_Admin::sendMessage(dgettext('block', 'Settings saved'), 'settings');
+            }
             break;
 
         case 'postJSBlock':
@@ -181,7 +198,7 @@ class Block_Admin {
             return;
         }
 
-        $db = & new PHPWS_DB('block_pinned');
+        $db = new PHPWS_DB('block_pinned');
         $db->addWhere('block_id', $_GET['block_id']);
         if (isset($_GET['key_id'])) {
             $db->addWhere('key_id', $_GET['key_id']);
@@ -198,7 +215,7 @@ class Block_Admin {
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         PHPWS_Core::initCoreClass('Editor.php');
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'block');
 
         $form->addCheck('hide_title', 1);
@@ -235,10 +252,8 @@ class Block_Admin {
         $template = $form->getTemplate();
 
         $manager = Cabinet::fileManager('file_id', $block->file_id);
-        if (defined('MAX_BLOCK_FILE_WIDTH') && defined('MAX_BLOCK_FILE_HEIGHT')) {
-            $manager->maxImageWidth(MAX_BLOCK_FILE_WIDTH);
-            $manager->maxImageHeight(MAX_BLOCK_FILE_HEIGHT);
-        }
+        $manager->maxImageWidth(PHPWS_Settings::get('block', 'max_image_width'));
+        $manager->maxImageHeight(PHPWS_Settings::get('block', 'max_image_height'));
 
         $template['FILE_ID'] = $manager->get();
 
@@ -287,7 +302,7 @@ class Block_Admin {
     public function pinBlockAll(Block_Item $block)
     {
         $values['block_id'] = $block->id;
-        $db = & new PHPWS_DB('block_pinned');
+        $db = new PHPWS_DB('block_pinned');
         $db->addWhere($values);
         $result = $db->delete();
         $db->resetWhere();
@@ -309,7 +324,7 @@ class Block_Admin {
         $values['block_id'] = $block_id;
         $values['key_id']   = $key_id;
 
-        $db = & new PHPWS_DB('block_pinned');
+        $db = new PHPWS_DB('block_pinned');
         $db->addWhere($values);
         $result = $db->delete();
         $db->addValue($values);
@@ -319,6 +334,54 @@ class Block_Admin {
     public function copyBlock(Block_Item $block)
     {
         Clipboard::copy($block->getTitle(), $block->getTag());
+    }
+
+    public function settings()
+    {
+        $form = new PHPWS_Form('block-form');
+        $form->addHidden('module', 'block');
+        $form->addHidden('action', 'post_settings');
+
+        $form->addText('max_image_width', PHPWS_Settings::get('block', 'max_image_width'));
+        $form->setLabel('max_image_width', dgettext('block', 'Max image width (50 - 1024)'));
+        $form->setSize('max_image_width', 4, 4);
+
+        $form->addText('max_image_height', PHPWS_Settings::get('block', 'max_image_height'));
+        $form->setLabel('max_image_height', dgettext('block', 'Max image height (50 - 3000)'));
+        $form->setSize('max_image_height', 4, 4);
+
+        $form->addSubmit(dgettext('block', 'Save settings'));
+
+        $tpl = $form->getTemplate();
+
+        return PHPWS_Template::process($tpl, 'block', 'settings.tpl');
+    }
+
+    public function postSettings()
+    {
+        if (empty($_POST['max_image_width']) || $_POST['max_image_width'] < 50) {
+            $error[] = dgettext('block', 'Max image width must be greater than 50px');
+        } elseif ($_POST['max_image_width'] > 1024) {
+            $error[] = dgettext('block', 'Max image width must be smaller than 1024px');
+        } else {
+            PHPWS_Settings::set('block', 'max_image_width', (int)$_POST['max_image_width']);
+        }
+
+        if (empty($_POST['max_image_height']) || $_POST['max_image_height'] < 50) {
+            $error[] = dgettext('block', 'Max image height must be greater than 50px');
+        } elseif ($_POST['max_image_height'] > 3000) {
+            $error[] = dgettext('block', 'Max image height must be smaller than 3000px');
+        } else {
+            PHPWS_Settings::set('block', 'max_image_height', (int)$_POST['max_image_height']);
+        }
+
+        PHPWS_Settings::save('block');
+
+        if (isset($error)) {
+            return $error;
+        } else {
+            return true;
+        }
     }
 }
 ?>
