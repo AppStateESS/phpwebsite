@@ -377,7 +377,7 @@ class Signup {
     {
         PHPWS_Core::initModClass('signup', 'Forms.php');
         $this->forms = new Signup_Forms;
-        $this->forms->signup = & $this;
+        $this->forms->signup = $this;
         $this->forms->get($type);
     }
 

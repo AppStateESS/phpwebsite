@@ -376,8 +376,8 @@ class Signup_Forms {
             PHPWS_Core::errorPage('404');
         }
 
-        $sheet = & $this->signup->sheet;
-        $peep  = & $this->signup->peep;
+        $sheet = $this->signup->sheet;
+        $peep  = $this->signup->peep;
 
         if ($sheet->end_time < mktime()) {
             $this->signup->title = dgettext('signup', 'Sorry');
@@ -409,7 +409,7 @@ class Signup_Forms {
                 $openings_left = & $slot->openings;
             }
 
-            $options[$slot->id] = sprintf('%s (%s openings)', $slot->title, $openings_left);
+            $options[$slot->id] = sprintf(dngettext('signup', '%s (%s opening)', '%s (%s openings)', $openings_left), $slot->title, $openings_left);
         }
 
         if (!isset($options)) {

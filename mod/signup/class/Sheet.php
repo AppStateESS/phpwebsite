@@ -127,17 +127,36 @@ class Signup_Sheet {
             $db->setIndexBy('id');
             return $db->select('col');
         } else {
+            // This caused some problems. Seemed to work earlier. Check back later.
+            /*
             $db->addColumn('signup_slots.*');
             $db->addColumn('signup_peeps.id', false, '_filled', true);
             $db->addJoin('left', 'signup_slots', 'signup_peeps', 'id', 'slot_id');
 
             $db->addWhere('signup_peeps.registered', 1, null, null, 1);
-
             $db->addWhere('signup_peeps.slot_id', null, null, 'or', 1);
+
             $db->setGroupConj(1, 'and');
 
             $db->addGroupBy('signup_slots.id');
+            */
+
             $result = $db->getObjects('Signup_Slot');
+            if (empty($result) || PHPWS_Error::logIfError($result)) {
+                return null;
+            }
+
+            $db = new PHPWS_DB('signup_peeps');
+            $db->addColumn('id');
+            foreach ($result as $slot) {
+                $db->addWhere('slot_id', $slot->id);
+                $db->addWhere('registered', 1);
+                $sub = $db->count();
+
+                if (!PHPWS_Error::logIfError($sub)) {
+                    $slot->_filled = $sub;
+                }
+            }
         }
         return $result;
     }
@@ -254,7 +273,7 @@ class Signup_Sheet {
 
     public function viewLink()
     {
-        return PHPWS_Text::rewriteLink($this->title, 'signup', $this->id);
+        return PHPWS_Text::rewriteLink($this->title, 'signup', array('sheet_id'=> $this->id));
     }
 
     public function flag()

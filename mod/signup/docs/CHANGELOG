@@ -1,3 +1,10 @@
+12 December 2008
++ Removed reference symbols
++ Added dngettext for "openings(s)" translation
++ Rewrote getAllSlots. The slots filled number wasn't joining
+  properly.
++ Fixed sheet view link.
+
 Version 1.2.0
 -----------------------------------------------------------------
 14 July 2008
