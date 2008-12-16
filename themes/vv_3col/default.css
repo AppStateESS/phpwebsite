@@ -362,8 +362,10 @@ ul.menu-links {
     list-style-type : none;
 }
 
-ul.menu-links li {
-    list-style-type : none;
+ul.menu-links li
+{
+	list-style-type: none;
+	width: 100%;
 }
 
 ul.menu-links ul
