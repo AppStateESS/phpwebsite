@@ -781,7 +781,7 @@ class DBPager {
             }
         }
 
-        if (isset($this->orderby)) {
+        if (isset($this->orderby) && in_array($this->orderby, $this->table_columns)) {
             $sub_order = @$this->sub_order[$this->orderby];
             if (!empty($sub_order)) {
                 $orderby = implode('.', $sub_order);
