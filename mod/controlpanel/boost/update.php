@@ -106,6 +106,12 @@ function controlpanel_update(&$content, $currentVersion)
 + Moved controlpanel unregisteration to control panel class.
 + php 5 format changes</pre>';
 
+    case version_compare($currentVersion, '2.2.1', '<'):
+        $content[] = '<pre>
+2.2.1 changes
+-------------------------
++ Added a little hack suggested by Hilmar to allow controlpanel translation.
+</pre>';
 
     }
     return true;
