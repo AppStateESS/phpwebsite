@@ -55,6 +55,14 @@ class PHPWSBB_Data
     public function MiniAdmin()
     {
         $link = array();
+        $link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'List Forums'), 'phpwsbb', array());
+        $link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'New Posts'), 'phpwsbb', array('op'=>'getnew'));
+        $link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'Today\'s Posts'), 'phpwsbb', array('op'=>'viewtoday'));
+        $link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'This Week\'s Posts'), 'phpwsbb', array('op'=>'viewweek'));
+        $link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'Locked Topics'), 'phpwsbb', array('op'=>'viewlockedthreads'));
+        $link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'Empty Topics'), 'phpwsbb', array('op'=>'viewzerothreads'));
+        if (Current_User::isLogged()) 
+            $link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'My Topics'), 'phpwsbb', array('op'=>'viewuserthreads')); 
         if (Current_User::allow('phpwsbb', 'manage_forums')) {
             $link[] = PHPWS_Text::secureLink(dgettext('phpwsbb', 'Add a New Forum'), 'phpwsbb', array('op'=>'create_forum'));
             $link[] = PHPWS_Text::secureLink(dgettext('phpwsbb', 'Admin Settings'), 'phpwsbb', array('op'=>'config'));

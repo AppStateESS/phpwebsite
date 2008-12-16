@@ -9,34 +9,34 @@
 * @author Eloi George <eloi@NOSPAM.bygeorgeware.com>
 * @module phpwsBB
 */
-if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'controlpanel') 
+if (isset($_REQUEST['module'])) 
 	return;
 
 /**
 * Display block with all active forums
 */
-$content = '';
+$list = array();
 if (PHPWS_Settings::get('phpwsbb', 'showforumsblock')) {
 	if (!Current_User::isLogged()) {
 		$cachekey = 'bb_forumsblock';
-		$content = PHPWS_Cache::get($cachekey);
+		$list = PHPWS_Cache::get($cachekey);
+        if (!empty($list))
+            $list = unserialize($list);
 	}
-	if (empty($content))  {
-		PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
+	if (empty($list))  {
+	    PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
 		$forums = PHPWSBB_Data::get_forum_list();
 	    if (!empty($forums)) {
-		    $s = '';
+		    $list = array();
 		    foreach($forums as $rowid => $row) 
-		        $s .= '<li>' . PHPWS_Text::rewriteLink(PHPWS_Text::parseOutput($row), 'phpwsbb', array('view'=>'forum', 'id'=>$rowid)) . "</li>\n";
-			if (!empty($s))  
-		    	$content = '<ul >'.$s.'</ul>';
+		        $list[]['ITEM'] = PHPWS_Text::rewriteLink(PHPWS_Text::parseOutput($row), 'phpwsbb', array('view'=>'forum', 'id'=>$rowid));
 		}
 		if (!Current_User::isLogged()) 
-			PHPWS_Cache::save($cachekey, $content, 86400);
+			PHPWS_Cache::save($cachekey, serialize($list), 86400);
 	}
-	if (!empty($content))  {
+	if (!empty($list))  {
 		$title = dgettext('phpwsbb', 'Message Boards');
-		$finalContent = PHPWS_Template::process(array('TITLE'=>$title, 'CONTENT'=>$content), 'layout', 'box.tpl');
+		$finalContent = PHPWS_Template::process(array('TITLE'=>$title, 'listrows'=>$list), 'phpwsbb', 'forum_links.tpl');
 		Layout::add($finalContent, 'phpwsbb', 'forumsblock');
 	}
 }
@@ -45,14 +45,16 @@ if (PHPWS_Settings::get('phpwsbb', 'showforumsblock')) {
 /**
 * Display block with recently changed threads in it
 */
-$content = '';
+$list = array();
 if (PHPWS_Settings::get('phpwsbb', 'showlatestpostsblock')) {
 	// Load all forum records
-	if (!Current_User::isLogged()) {
+	if (!Current_User::isLogged()) { 
 		$cachekey = 'bb_latestpostsblock';
-		$content = PHPWS_Cache::get($cachekey);
+		$list = PHPWS_Cache::get($cachekey);
+		if (!empty($list))
+            $list = unserialize($list);
 	}
-	if (empty($content))  {
+	if (empty($list))  {
 		PHPWS_Core::initModClass('phpwsbb', 'Topic.php');
 		$db = & new PHPWS_DB('phpwsbb_topics');
 		PHPWSBB_Topic::addColumns($db);
@@ -63,41 +65,20 @@ if (PHPWS_Settings::get('phpwsbb', 'showlatestpostsblock')) {
 	    if (PHPWS_Error::logIfError($result))
 	    	return;
 	    if (!empty($result)) {
-	        $s = '';
+	        $list = array();
 	        foreach($result as $row) {
 				$topic = new PHPWSBB_Topic($row);
-				$s .= '<li>' . $topic->get_title_link() . "</li>\n";
+				$list[]['ITEM'] = $topic->get_title_link();
 	        }
-			if (!empty($s))  
-		    	$content = '<ul>'.$s.'</ul>';
 	    }
 		if (!Current_User::isLogged()) 
-			PHPWS_Cache::save($cachekey, $content, 86400);
+			PHPWS_Cache::save($cachekey, serialize($list), 86400);
 	}
-	if (!empty($content))  {
+	if (!empty($list))  {
 		$title = dgettext('phpwsbb', 'Latest Forum Posts');
-		$finalContent = PHPWS_Template::process(array('TITLE'=>$title, 'CONTENT'=>$content), 'layout', 'box.tpl');
+		$finalContent = PHPWS_Template::process(array('TITLE'=>$title, 'listrows'=>$list), 'phpwsbb', 'latest_posts.tpl');
 		Layout::add($finalContent, 'phpwsbb', 'latestpostsblock');
 	}
-}
-
-/**
-* Display block with phpwsbb links in it
-*/
-if (PHPWS_Settings::get('phpwsbb', 'showlinksblock')) {
-	$link = array();
-    $link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'List Forums'), 'phpwsbb', array());
-    $link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'New Posts'), 'phpwsbb', array('op'=>'getnew'));
-    $link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'Today\'s Posts'), 'phpwsbb', array('op'=>'viewtoday'));
-    $link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'This Week\'s Posts'), 'phpwsbb', array('op'=>'viewweek'));
-    $link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'Locked Topics'), 'phpwsbb', array('op'=>'viewlockedthreads'));
-    $link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'Empty Topics'), 'phpwsbb', array('op'=>'viewzerothreads'));
-    if (Current_User::isLogged()) 
-    	$link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'My Topics'), 'phpwsbb', array('op'=>'viewuserthreads')); 
-	$content = '<ul class="no-bullet"><li>'.implode('</li><li>', $link).'</li></ul>';
-	$title = dgettext('phpwsbb', 'Forum Links');
-	$finalContent = PHPWS_Template::process(array('TITLE'=>$title, 'CONTENT'=>$content), 'layout', 'box.tpl');
-	Layout::add($finalContent, 'phpwsbb', 'linkblock');
 }
 
 
