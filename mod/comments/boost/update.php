@@ -348,6 +348,29 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
 + Bug Fix: New comment user is created on first comment.
 + Bug Fix: Display name error</pre>
 ';
+
+    case version_compare($currentVersion, '1.2.2', '<'):
+        $content[] = '<pre>';
+
+        commentsUpdateFiles(array('img/delete.png', 'img/erase.png', 'img/report.png',
+                                  'img/reported.png', 'javascript/admin/default.php',
+                                  'javascript/admin/head.js', 'templates/style.css'),
+                            $content); 
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = '1.2.2 changes
+-----------------------
++ Changed join in thread initialization. Hard coded method was not
+  working with table prefixing.
++ Changed wording on some punishment.
++ Punish menu is drop down float now
++ Option to delete all user comments added for both ip and id based.
++ New icons for reported status.
++ Yanked background image and made icons just plain old images.
++ Replaced delete icons with trashcan icon.
++ Added new functions to update a thread\'s comment count and last
+  poster.
+</pre>';
+        }
     }
 
     return true;
