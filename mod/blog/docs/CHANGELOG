@@ -1,4 +1,5 @@
 16 December 2008
++ Added ability to limit blog view to logged users only.
 + Added ability to lock view of all blog entries down to specific groups.
 + Updated: templates/settings.tpl
 

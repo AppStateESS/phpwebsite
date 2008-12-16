@@ -199,10 +199,16 @@ class Blog_User {
         return $db->getObjects('Blog');
     }
 
-    public function allowViewGroups()
+    public function allowView()
     {
         if (Current_User::allow('blog')) {
             return true;
+        }
+
+        // Only logged users may view and user is not logged in
+        if (PHPWS_Settings::get('blog', 'logged_users_only') &&
+            !Current_User::isLogged()) {
+            return false;
         }
 
         $view_groups = PHPWS_Settings::get('blog', 'view_only');
@@ -234,7 +240,7 @@ class Blog_User {
 
     public function show($start_date=null, $end_date=null)
     {
-        if (!Blog_User::allowViewGroups()) {
+        if (!Blog_User::allowView()) {
             return null;
         }
 

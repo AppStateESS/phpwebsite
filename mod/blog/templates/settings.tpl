@@ -16,6 +16,8 @@
 {SHOW_RECENT}
 </p>
 
+<p>{LOGGED_USERS_ONLY} {LOGGED_USERS_ONLY_LABEL}</p>
+
 <p>{VIEW_ONLY_LABEL} 
 {VIEW_ONLY}</p>
 </fieldset>

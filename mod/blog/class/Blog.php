@@ -366,7 +366,7 @@ class Blog {
 
         $key = new Key($this->key_id);
 
-        if (!$key->allowView() || !Blog_User::allowViewGroups()) {
+        if (!$key->allowView() || !Blog_User::allowView()) {
             Current_User::requireLogin();
             return dgettext('blog', 'You do not have permission to view this entry.');
         }

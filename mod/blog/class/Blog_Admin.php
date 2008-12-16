@@ -348,6 +348,11 @@ class Blog_Admin {
             PHPWS_Settings::set('blog', 'single_cat_icon', 1) :
             PHPWS_Settings::set('blog', 'single_cat_icon', 0);
 
+        isset($_POST['logged_users_only']) ?
+            PHPWS_Settings::set('blog', 'logged_users_only', 1) :
+            PHPWS_Settings::set('blog', 'logged_users_only', 0);
+
+
         if (isset($_POST['view_only']) && is_array($_POST['view_only'])) {
             $view_only = implode(':', $_POST['view_only']);
         } else {

@@ -214,6 +214,10 @@ class Blog_Form {
         $form->setLabel('single_cat_icon', dgettext('blog', 'Only show one category icon'));
         $form->setMatch('single_cat_icon', PHPWS_Settings::get('blog', 'single_cat_icon'));
 
+        $form->addCheck('logged_users_only', 1);
+        $form->setLabel('logged_users_only', dgettext('blog', 'Logged user view only'));
+        $form->setMatch('logged_users_only', PHPWS_Settings::get('blog', 'logged_users_only'));
+
         PHPWS_Core::initModClass('users', 'Action.php');
         $groups = User_Action::getGroups('group');
 
