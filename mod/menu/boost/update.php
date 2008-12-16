@@ -184,6 +184,12 @@ Please download 1.2.1.</pre>';
 + Increased link title length in database.
 </pre>';
 
+    case version_compare($currentVersion, '1.5.1', '<'):
+        $content[] = '<pre>1.5.1 changes
+-------------------
++ Fixed menu preventing unpinning.
++ Default is now false for menu expansion in admin mode.</pre>';
+        
     }
     return true;
 }
