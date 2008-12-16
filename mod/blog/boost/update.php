@@ -264,6 +264,21 @@ function blog_update(&$content, $currentVersion)
         }
         $content[] = '</pre>';
 
+    case version_compare($currentVersion, '1.8.1', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/settings.tpl');
+        
+        blogUpdateFiles($files, $content);
+        
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = '1.8.1 changes
+---------------------
++ Added ability to limit blog view to logged users only.
++ Added ability to lock view of all blog entries down to specific groups.
++ Blog uses break post.
++ /blog works again.';
+        }
+        $content[] = '</pre>';
     } // end of switch
     return true;
 }
