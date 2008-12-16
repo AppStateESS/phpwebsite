@@ -8,13 +8,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-17 10:34-0500\n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "%s (%s opening)"
+msgid_plural "%s (%s openings)"
+msgstr[0] ""
+msgstr[1] ""
 
 #, php-format
 msgid "%s Participants"

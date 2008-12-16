@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-17 10:34-0500\n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,9 +37,6 @@ msgid "-- Choose a folder --"
 msgstr ""
 
 msgid "A problem occurred when trying to save your comment."
-msgstr ""
-
-msgid "A site admin wrote this comment and may not be punished."
 msgstr ""
 
 msgid "All"
@@ -103,6 +100,16 @@ msgstr ""
 msgid "Approve this comment"
 msgstr ""
 
+#, php-format
+msgid "Are you sure you want to delete every comment ever written by %s?"
+msgstr ""
+
+#, php-format
+msgid ""
+"Are you sure you want to delete every comment ever written from this ip "
+"address: %s?"
+msgstr ""
+
 msgid "Are you sure you want to delete the checked items?"
 msgstr ""
 
@@ -136,7 +143,7 @@ msgstr ""
 msgid "Ban user"
 msgstr ""
 
-msgid "Ban user from this website"
+msgid "Ban user account"
 msgstr ""
 
 msgid ""
@@ -222,6 +229,9 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
+msgid "Delete all comments"
+msgstr ""
+
 msgid "Delete checked"
 msgstr ""
 
@@ -268,11 +278,6 @@ msgid "Edited by"
 msgstr ""
 
 msgid "Edited on"
-msgstr ""
-
-msgid ""
-"Either your permissions do not allow you to punish users or this user posted "
-"from an unblockable IP address."
 msgstr ""
 
 msgid "Email"
@@ -493,9 +498,6 @@ msgid "Remove ban"
 msgstr ""
 
 msgid "Remove checked"
-msgstr ""
-
-msgid "Remove their admin privileges and return."
 msgstr ""
 
 msgid "Remove this comment"

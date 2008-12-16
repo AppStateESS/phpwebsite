@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-17 10:34-0500\n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -202,6 +202,9 @@ msgstr ""
 msgid "Last poster"
 msgstr ""
 
+msgid "Limit blog to specific groups"
+msgstr ""
+
 msgid "Link resized image to parent"
 msgstr ""
 
@@ -215,6 +218,9 @@ msgid "Link to read more"
 msgstr ""
 
 msgid "List"
+msgstr ""
+
+msgid "Logged user view only"
 msgstr ""
 
 msgid "Maximum image height (50-2048)"
@@ -404,6 +410,9 @@ msgid "View"
 msgstr ""
 
 msgid "View version"
+msgstr ""
+
+msgid "You do not have permission to view this entry."
 msgstr ""
 
 msgid ""
