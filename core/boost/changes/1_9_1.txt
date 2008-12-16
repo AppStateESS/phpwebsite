@@ -1,0 +1,23 @@
+1.9.1 Changes
+----------------------------------------------------------------------
++ session_name got lost on conversion. Fixed.
++ Template - Added option to prevent Sigma cache use.
++ Editor - moved user option above force editor define. Define was
+  forcing a user who didn't want an editor to do so.
++ Form 
+  o if USE_BREAKER is false, text areas will get a use breaks
+    checkbox. Modules can check if it is enabled and run breaker if they
+    wish.
+  o Added plugIn function to form class.
++ Init - Link.php included by default
++ Link - salted added to the constructor
++ Text
+  o Added utf8 encoding before htmlentities call in parseInput to
+    prevent blank text return.
+  o Fixed breaker adding extra newlines.
+  o Link required moved to head of file
+
++ Added extra match check to checkall javascript because match
+  function is failing now for some reason.
++ Module : error variable made public to prevent error. Thanks Greg.
+
