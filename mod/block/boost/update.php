@@ -71,6 +71,20 @@ Please download version 1.1.2.</pre>';
 + PHP 5 updated
 + Wrapped block-file class around file display.
 + Changed pager view to use addSortHeaders</pre>';
+
+    case version_compare($currentVersion, '1.3.1', '<'):
+        if (PHPWS_Boost::updateFiles(array('templates/settings.tpl'), 'block')) {
+            $content[] = '--- Successfully copied templates/settings.tpl';
+        } else {
+            $content[] = '--- Unable to copy templates/settings.tpl';
+        }
+
+        $content[] = '<pre>1.3.1 changes
+-----------------
++ RFE #2236544 - Image size limits set in settings tab instead of in
+  config file.
+</pre>';
+
     }
     return TRUE;
 }
