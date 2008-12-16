@@ -143,6 +143,12 @@ function access_update(&$content, $version)
 ---------------
 + Reformated shortcut creation method. Should work with old version
   as well as any new longer links.</pre>';
+
+    case version_compare($version, '1.1.2', '<'):
+        $content[] = '<pre>1.1.2 changes
+---------------
++ Fixed some error notices
++ Fixed access shortcuts to work with GET arrays</pre>';
     }
 
     return true;
