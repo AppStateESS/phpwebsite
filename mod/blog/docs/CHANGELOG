@@ -1,3 +1,7 @@
+16 December 2008
++ Added ability to lock view of all blog entries down to specific groups.
++ Updated: templates/settings.tpl
+
 11 December 2008
 + Blog uses break post.
 + /blog works again.

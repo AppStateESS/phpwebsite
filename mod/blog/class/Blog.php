@@ -366,8 +366,9 @@ class Blog {
 
         $key = new Key($this->key_id);
 
-        if (!$key->allowView()) {
+        if (!$key->allowView() || !Blog_User::allowViewGroups()) {
             Current_User::requireLogin();
+            return dgettext('blog', 'You do not have permission to view this entry.');
         }
 
         $template['TITLE'] = sprintf('<a href="%s" rel="bookmark">%s</a>',

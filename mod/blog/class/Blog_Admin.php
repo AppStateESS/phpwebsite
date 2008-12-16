@@ -348,7 +348,13 @@ class Blog_Admin {
             PHPWS_Settings::set('blog', 'single_cat_icon', 1) :
             PHPWS_Settings::set('blog', 'single_cat_icon', 0);
 
+        if (isset($_POST['view_only']) && is_array($_POST['view_only'])) {
+            $view_only = implode(':', $_POST['view_only']);
+        } else {
+            $view_only = null;
+        }
 
+        PHPWS_Settings::set('blog', 'view_only', $view_only);
 
         if (isset($_POST['simple_image'])) {
             PHPWS_Settings::set('blog', 'simple_image', 1);

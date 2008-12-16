@@ -16,6 +16,8 @@
 {SHOW_RECENT}
 </p>
 
+<p>{VIEW_ONLY_LABEL} 
+{VIEW_ONLY}</p>
 </fieldset>
 
 <fieldset><legend><strong>{CATEGORY_LABEL}</strong></legend>

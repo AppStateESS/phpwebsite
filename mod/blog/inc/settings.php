@@ -23,5 +23,6 @@ $settings['show_category_links']     = false;
 $settings['single_cat_icon']         = true;
 $settings['show_category_icons']     = true;
 $settings['image_link']              = 'readmore';
+$settings['view_only']               = '';
 
 ?>

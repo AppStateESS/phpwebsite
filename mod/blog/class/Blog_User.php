@@ -199,8 +199,45 @@ class Blog_User {
         return $db->getObjects('Blog');
     }
 
+    public function allowViewGroups()
+    {
+        if (Current_User::allow('blog')) {
+            return true;
+        }
+
+        $view_groups = PHPWS_Settings::get('blog', 'view_only');
+        if (!empty($view_groups)) {
+            $allowed_groups = explode(':', $view_groups);
+        } else {
+            $allowed_groups = null;
+        }
+
+        // Allowed groups is set, check the user
+        if ($allowed_groups) {
+            // User isn't even logged in. Don't show blog
+            if (!Current_User::isLogged()) {
+                return false;
+            }
+
+            // get logged user's groups
+            $user_groups = Current_User::getGroups();
+            // check intersection
+            $intersect = array_intersect($user_groups, $allowed_groups);
+
+            //no intersection found, deny
+            if (empty($intersect)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public function show($start_date=null, $end_date=null)
     {
+        if (!Blog_User::allowViewGroups()) {
+            return null;
+        }
+
         $db = new PHPWS_DB('blog_entries');
 
         if ($start_date) {

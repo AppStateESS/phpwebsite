@@ -214,6 +214,22 @@ class Blog_Form {
         $form->setLabel('single_cat_icon', dgettext('blog', 'Only show one category icon'));
         $form->setMatch('single_cat_icon', PHPWS_Settings::get('blog', 'single_cat_icon'));
 
+        PHPWS_Core::initModClass('users', 'Action.php');
+        $groups = User_Action::getGroups('group');
+
+        if (!empty($groups)) {
+            $group_match = array();
+            $group_match_str = PHPWS_Settings::get('blog', 'view_only');
+
+            if (!empty($group_match_str)) {
+                $group_match = explode(':', $group_match_str);
+            }
+
+            $form->addMultiple('view_only', $groups);
+            $form->setLabel('view_only', dgettext('blog', 'Limit blog to specific groups'));
+            $form->setMatch('view_only', $group_match);
+        } 
+
         $show[0] = dgettext('blog', 'Do not show');
         $show[1] = dgettext('blog', 'Only on home page');
         $show[2] = dgettext('blog', 'Always');
@@ -267,13 +283,12 @@ class Blog_Form {
                                                             array('action'=>'admin', 'command'=>'menu_submit_link'));
         }
 
-        $template['VIEW_LABEL']     = dgettext('blog', 'View');
-        $template['CATEGORY_LABEL'] = dgettext('blog', 'Category');
-        $template['COMMENT_LABEL']  = dgettext('blog', 'Comment');
+        $template['VIEW_LABEL']       = dgettext('blog', 'View');
+        $template['CATEGORY_LABEL']   = dgettext('blog', 'Category');
+        $template['COMMENT_LABEL']    = dgettext('blog', 'Comment');
         $template['SUBMISSION_LABEL'] = dgettext('blog', 'Submission');
+        $template['PAST_NOTE']        = dgettext('blog', 'Set to zero to prevent display');
 
-
-        $template['PAST_NOTE'] = dgettext('blog', 'Set to zero to prevent display');
         return PHPWS_Template::process($template, 'blog', 'settings.tpl');
     }
 }
