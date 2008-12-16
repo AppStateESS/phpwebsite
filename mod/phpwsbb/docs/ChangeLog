@@ -1,8 +1,18 @@
 # ChangeLog for phpwsbb
 # $Id: ChangeLog,v 1.1 2008/08/23 04:19:22 adarkling Exp $
 
-*phpwsbb-2.0.0 (sometime soon)
-	Rewritten Version for phpWebsite 1.x
+
+========================
+Changes in version 2.0.1
+========================
++ Fixed a bug that was preventing the first Forum from being created.  Thanks, jmullan99!
++ Message Boards & Latest Forum Posts blocks now only appear on the home page.
++ Message Boards & Latest Forum Posts blocks now have their own template files.
+
+========================
+Changes in version 2.0.0
+========================
++ Rewritten Version for phpWebsite 1.x
 
 *phpwsbb-1.0.4 (sometime soon)
     Bug Fixes:
