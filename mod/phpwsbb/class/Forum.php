@@ -30,7 +30,7 @@ class PHPWSBB_Forum
     public $description     = '';
     public $active          = true;
     public $topics          = 0;
-    public $sortorder       = '';
+    public $sortorder       = 0;
     public $posts           = 0;
     public $allow_anon      = 0;
     public $default_approval = 0;
@@ -433,8 +433,7 @@ class PHPWSBB_Forum
             else
                 $error['description'] = dgettext('phpwsbb', 'I need a short description of this forum.');
 	
-            $this->sortorder = PHPWS_Text::parseInput($_REQUEST['Forum_sortorder']);
-	
+            $this->sortorder = (int) $_REQUEST['Forum_sortorder'];
             $this->allow_anon = (int) !empty($_REQUEST['Forum_allow_anon']);
             $this->default_approval = (int) $_POST['Forum_default_approval'];
             $this->locked = (int) !empty($_REQUEST['Forum_lock']);
