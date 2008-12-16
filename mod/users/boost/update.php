@@ -264,6 +264,16 @@ timeout INT NOT NULL default 0,
         }
         $content[] = '</pre>';
 
+    case version_compare($currentVersion, '2.6.1', '<'):
+        $content[] = '<pre>2.6.1 changes
+------------------
++ requireLogin now reroutes dependant on the user authorization
++ If the user\'s group is missing when they are updated, a new one is
+  properly created. Prior to the fix, a new group was created without an
+  assigned user id.
++ Added error message to my page if update goes bad.
+</pre>';
+
     } // End of switch statement
 
     return TRUE;

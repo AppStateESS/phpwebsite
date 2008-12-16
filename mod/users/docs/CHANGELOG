@@ -1,3 +1,5 @@
+Version 2.6.1
+-----------------------------------------------------------------------
 11 December 2008
 + requireLogin now reroutes dependant on the user authorization
 + If the user's group is missing when they are updated, a new one is
