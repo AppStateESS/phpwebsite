@@ -480,7 +480,12 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/2_2_0.txt');
         }
 
-        break;
+    case version_compare($version, '2.2.1', '<'):
+        $content[] = '<pre>
+2.2.1 change
+-----------------------
++ Fixed document smarttag</pre>';
+
     }
 
     return true;
