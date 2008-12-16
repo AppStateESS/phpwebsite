@@ -106,6 +106,14 @@ function signup_update(&$content, $currentVersion)
 + PHP 5 formatted.
 </pre>';
 
+    case version_compare($currentVersion, '1.2.1', '<'):
+        $content[] = '<pre>1.2.1 changes
+----------------
++ Removed reference symbols
++ Added dngettext for "openings(s)" translation
++ Rewrote getAllSlots. The slots filled number wasn\'t joining
+  properly.
++ Fixed sheet view link.</pre>';
         
     }
     return true;
