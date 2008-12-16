@@ -1,3 +1,7 @@
+16 December 2008
++ Changed join in thread initialization. Hard coded method was not
+  working with table prefixing.
+
 11 December 2008
 + Changed wording on some punishment.
 + Punish menu is drop down float now
