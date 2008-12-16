@@ -18,7 +18,7 @@ PHPWS_Core::initCoreClass('Form.php');
 PHPWS_Core::initCoreClass('Template.php');
 
 require_once 'mod/users/inc/init.php';
-
+define('SESSION_NAME', md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
 session_name(SESSION_NAME);
 session_start();
 

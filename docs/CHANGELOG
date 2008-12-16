@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file..
 
+16 December 2008
++ session_name got lost on conversion. Fixed.
+
 12 December 2008
 + Template - Added option to prevent Sigma cache use.
 
