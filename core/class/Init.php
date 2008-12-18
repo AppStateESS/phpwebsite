@@ -29,6 +29,7 @@ loadBrowserInformation();
 /* Load the Core class */
 require_once PHPWS_SOURCE_DIR . 'core/class/Core.php';
 
+define('PHPWS_HOME_HTTP', PHPWS_Core::getHomeHttp());
 
 /***** PHPWS Classes ****/
 

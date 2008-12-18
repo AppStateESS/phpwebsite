@@ -4,6 +4,10 @@ its own separate CHANGELOG file..
 
 Version 1.9.1
 ---------------------------------------------------------------------
+18 December 2008
++ Init - defines PHPWS_HOME_HTTP using Core's getCurrentUrl
++ Core - users PHPWS_HOME_HTTP if all parameters are true.
+
 16 December 2008
 + session_name got lost on conversion. Fixed.
 

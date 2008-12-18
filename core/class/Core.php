@@ -727,6 +727,10 @@ class PHPWS_Core {
      */
     public function getHomeHttp($with_http=true, $with_directory=true, $with_slash=true)
     {
+        if ($with_http && $with_directory && $with_slash && defined('PHPWS_HOME_HTTP')) {
+            return PHPWS_HOME_HTTP;
+        }
+
         if ($with_http) {
             $address[] = PHPWS_Core::getHttp();
         }
