@@ -138,6 +138,12 @@ function layout_update(&$content, $currentVersion)
 + Added LAYOUT_IGNORE_JS_CHECK to force javascript use.
 + PHP 5 formatted';
 
+    case version_compare($currentVersion, '2.4.6', '<'):
+        $content[] = '<pre>2.4.6 changes
+---------------------
++ Fix to cache headers
+</pre>';
+
     }
     return true;
 }
