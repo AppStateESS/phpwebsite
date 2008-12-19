@@ -484,6 +484,8 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         $content[] = '<pre>
 2.2.1 change
 -----------------------
++ Fixed folder deletion.
++ Clipped documents and images now have full pathing.
 + Fixed document smarttag</pre>';
 
     }

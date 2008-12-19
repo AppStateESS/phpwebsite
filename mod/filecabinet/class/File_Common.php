@@ -550,7 +550,6 @@ class File_Common {
     public function getTitle($shorten=false)
     {
         if ($shorten && (strlen($this->title) > FILE_TITLE_CUTOFF)) {
-            //return sprintf('<abbr title="%s">%s</abbr>', $this->title, substr($this->title, 0, FILE_TITLE_CUTOFF));
             return sprintf('<abbr title="%s">%s</abbr>', $this->title, PHPWS_Text::shortenUrl($this->title, FILE_TITLE_CUTOFF));
         } else {
             return $this->title;

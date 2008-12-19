@@ -1,5 +1,11 @@
 Version 2.2.1
 ---------------------------------------------------------------------------
+19 December 2008
++ Fixed folder deletion.
+
+17 December 2008
++ Clipped documents and images will now have full pathing.
+
 11 December 2008
 + Fixed document smarttag
 

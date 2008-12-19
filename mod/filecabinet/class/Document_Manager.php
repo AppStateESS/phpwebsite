@@ -40,7 +40,7 @@ class FC_Document_Manager {
 
         case 'clip_document':
             if ($this->document->id) {
-                Clipboard::copy($this->document->title, $this->document->getViewLink(true), true,
+                Clipboard::copy($this->document->title, $this->document->getViewLink(true, null, true), true,
                                 sprintf('[filecabinet:doc:%s]', $this->document->id));
             }
             PHPWS_Core::goBack();
@@ -57,12 +57,6 @@ class FC_Document_Manager {
         return Current_User::allow($this->module);
     }
 
-    /**
-    public function authenticate()
-    {
-        return Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder');
-    }
-    */
     public function edit()
     {
         if (empty($this->document)) {

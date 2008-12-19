@@ -87,7 +87,7 @@ class PHPWS_Document extends File_Common {
         }
     }
 
-    public function getViewLink($format=FALSE, $type='title')
+    public function getViewLink($format=false, $type='title', $base=false)
     {
         if (MOD_REWRITE_ENABLED) {
             $link = 'filecabinet/' . $this->id;
@@ -95,16 +95,22 @@ class PHPWS_Document extends File_Common {
             $link = sprintf('index.php?module=filecabinet&amp;id=' . $this->id);
         }
 
+        if ($base) {
+            $link = PHPWS_HOME_HTTP . $link;
+        }
+
         if ($format) {
             switch ($type) {
-            case 'title':
-                return sprintf('<a href="%s">%s</a>', $link, $this->title);
-
             case 'icon':
                 return sprintf('<a href="%s">%s</a>', $link, $this->getIconView());
 
+            case 'download':
             case 'filename':
                 return sprintf('<a href="%s">%s</a>', $link, $this->file_name);
+
+            default:
+            case 'title':
+                return sprintf('<a href="%s">%s</a>', $link, $this->title);
             }
         } else {
             return $link;
@@ -126,7 +132,7 @@ class PHPWS_Document extends File_Common {
     public function pinTags()
     {
         $tpl['TN'] = $this->getViewLink(true, 'icon');
-        $tpl['TITLE'] = $this->getViewLink(true, 'title');
+        $tpl['TITLE'] = $this->getViewLink(true);
 
         return $tpl;
     }
@@ -163,12 +169,12 @@ class PHPWS_Document extends File_Common {
         if ($links) {
             $tpl['ACTION'] = implode('', $links);
         } else {
-            $tpl['ACTION'] = $this->getViewLink(true, 'download');
+            $tpl['ACTION'] = $this->getViewLink(true);
         }
 
         $tpl['DOWNLOADED'] = $this->downloaded;
 
-        $tpl['TITLE'] = $this->getViewLink(true, true);
+        $tpl['TITLE'] = $this->getViewLink(true);
         return $tpl;
     }
 

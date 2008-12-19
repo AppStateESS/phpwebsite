@@ -206,10 +206,14 @@ class PHPWS_Image extends File_Common {
         return PHPWS_Template::process($tpl, 'filecabinet', 'captioned_image.tpl');
     }
 
-    public function getTag($id=null, $linked=true)
+    public function getTag($id=null, $linked=true, $base=false)
     {
         $tag[] = '<img';
-        $tag[] = 'src="'    . $this->getPath() . '"';
+        if ($base) {
+            $tag[] = 'src="' . PHPWS_HOME_HTTP . $this->getPath() . '"';
+        } else {
+            $tag[] = 'src="' . $this->getPath() . '"';
+        }
         $tag[] = 'alt="'    . $this->getAlt(TRUE)   . '"';
         $tag[] = 'title="'  . $this->title . '"';
         $tag[] = 'width="'  . $this->width     . 'px"';
