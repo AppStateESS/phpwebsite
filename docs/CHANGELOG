@@ -5,7 +5,8 @@ its own separate CHANGELOG file..
 Version 1.9.1
 ---------------------------------------------------------------------
 19 December 2008
-+ Added some code to try and fix drag and drop images in FCKEditor.
++ Added some code to try and fix drag and drop images and links in
+  FCKEditor. 
 
 18 December 2008
 + Init - defines PHPWS_HOME_HTTP using Core's getCurrentUrl
