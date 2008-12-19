@@ -9,15 +9,16 @@
     checkbox. Modules can check if it is enabled and run breaker if they
     wish.
   o Added plugIn function to form class.
-+ Init - Link.php included by default
++ Init
+  o Link.php included by default
+  o defines PHPWS_HOME_HTTP using Core's getCurrentUrl
 + Link - salted added to the constructor
 + Text
   o Added utf8 encoding before htmlentities call in parseInput to
     prevent blank text return.
   o Fixed breaker adding extra newlines.
   o Link required moved to head of file
-
++ Core - users PHPWS_HOME_HTTP if all parameters are true.
 + Added extra match check to checkall javascript because match
   function is failing now for some reason.
 + Module : error variable made public to prevent error. Thanks Greg.
-
