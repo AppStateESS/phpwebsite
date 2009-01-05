@@ -119,6 +119,7 @@ class PageSmith {
             break;
 
         case 'edit_page_text':
+            $this->loadPage();
             $this->loadForms();
             $this->forms->editPageText();
             $javascript = true;
@@ -150,6 +151,7 @@ class PageSmith {
                 break;
 
             case 1:
+                $this->killSaved();
                 PHPWS_Cache::clearCache();
                 if (isset($_POST['save_so_far'])) {
                     PHPWS_Core::reroute(PHPWS_Text::linkAddress('pagesmith', array('id'=>$this->page->id, 'aop'=>'edit_page'), true));
@@ -290,7 +292,6 @@ class PageSmith {
         }
 
         $this->page->loadSections(false);
-
         $post_title = strip_tags($_POST['title']);
         if ($post_title != $this->page->title) {
             $this->page->_title_change = true;
@@ -311,7 +312,10 @@ class PageSmith {
             if (isset($this->page->_sections[$section_name])) {
                 $section = & $this->page->_sections[$section_name];
                 if ($section->sectype == 'header' || $section->sectype == 'text') {
-                    $section->content = $_POST[$section_name];
+                    if (isset($_SESSION['PS_Page'][$this->page->id][$section->secname])) {
+                        $section->content = PHPWS_Text::parseInput($_SESSION['PS_Page'][$this->page->id][$section->secname]);
+                    }
+                    //$section->content = $_POST[$section_name];
                 } else {
                     // set content to trigger test below
                     $section->type_id = $_POST[$section_name];
@@ -421,6 +425,7 @@ class PageSmith {
         $text = & $_POST['text'];
 
         $section = new PS_Text;
+        $section->pid = $_POST['pid'];
         $section->secname = $_POST['section_name'];
         $section->content =  preg_replace("@\r\n|\r|\n@", '', $text);
         if (PS_CHECK_CHAR_LENGTH && strlen(PHPWS_Text::parseInput($section->content)) > 65535) {
@@ -429,7 +434,7 @@ class PageSmith {
         $section->setSaved();
 
         $vars['cnt_section_name'] = $_POST['tpl'] . '-' . $_POST['section_name'];
-        $vars['hdn_section_name'] = sprintf('pagesmith_%s', $_POST['section_name']);
+        //$vars['hdn_section_name'] = sprintf('pagesmith_%s', $_POST['section_name']);
         $vars['content'] = addslashes($section->content);
         $vars['hidden_value'] = PHPWS_Text::parseInput($section->content);
 

@@ -183,6 +183,7 @@ class PS_Forms {
         javascript('modules/pagesmith/passinfo', $vars);
 
         $form = new PHPWS_Form('edit');
+        $form->addHidden('pid', $this->ps->page->id);
         $form->addHidden('tpl', $_GET['tpl']);
         $form->addHidden('module', 'pagesmith');
         $form->addHidden('aop', 'post_text');

@@ -29,3 +29,5 @@
 + Made single column different from text only icon.
 + Added Layout::cacheHeader functions to prevent document css from
   breaking on page caches.
++ Changed method of committing changes. Should prevent blank page
+  submission errors.
