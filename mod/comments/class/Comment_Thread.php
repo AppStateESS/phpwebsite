@@ -50,8 +50,10 @@ class Comment_Thread {
         $db->addColumn('comments_threads.*');
         $db->addColumn('comments_monitors.thread_id', null, 'monitored');
         $db->addColumn('comments_monitors.send_notice', null, 'send_notice');
-        $db->addJoin('left', 'comments_threads', 'comments_monitors', 'id', 'thread_id');
-        $db->addWhere('comments_monitors.user_id', Current_User::getId());
+        $db->addJoin('left', 'comments_threads', 'comments_monitors', 
+                     array('comments_threads.id', 'comments_monitors.user_id'), 
+                     array('comments_monitors.thread_id', Current_User::getId()),
+                     true);
         $db->addWhere('id', $this->id);
 
         $result = $db->loadObject($this);
@@ -112,8 +114,11 @@ class Comment_Thread {
         $db->addColumn('comments_threads.*');
         $db->addColumn('comments_monitors.thread_id', null, 'monitored');
         $db->addColumn('comments_monitors.send_notice', null, 'send_notice');
-        $db->addJoin('left', 'comments_threads', 'comments_monitors', 'id', 'thread_id');
-        $db->addWhere('comments_monitors.user_id', Current_User::getId());
+
+        $db->addJoin('left', 'comments_threads', 'comments_monitors', 
+                     array('comments_threads.id', 'comments_monitors.user_id'), 
+                     array('comments_monitors.thread_id', Current_User::getId()),
+                     true);
         $db->addWhere('key_id', $this->key_id);
         $result = $db->loadObject($this);
 

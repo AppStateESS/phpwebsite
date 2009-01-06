@@ -1,5 +1,9 @@
 Version 1.2.2
 ------------------------------------------------------------------------
+6 January 2008
++ Using new database changes, Comment threads should now work properly
+  with table prefixing. Previous "fixes" didn't function correctly.
+
 16 December 2008
 + Changed join in thread initialization. Hard coded method was not
   working with table prefixing.
