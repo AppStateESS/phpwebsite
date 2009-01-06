@@ -21,4 +21,6 @@
 + Core - users PHPWS_HOME_HTTP if all parameters are true.
 + Added extra match check to checkall javascript because match
   function is failing now for some reason.
-+ Module : error variable made public to prevent error. Thanks Greg.
++ Module - error variable made public to prevent error. Thanks Greg.
++ Database -  Added extra filters to prevent values other than tables getting
+  prefixed in a select statement. Thanks Olivier Sannier.

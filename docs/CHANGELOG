@@ -4,6 +4,10 @@ its own separate CHANGELOG file..
 
 Version 1.9.1
 ---------------------------------------------------------------------
+6 January 2008
++ Added extra filters to prevent values other than tables getting
+prefixed in a select statement. Thanks
+
 19 December 2008
 + Added some code to try and fix drag and drop images and links in
   FCKEditor. 

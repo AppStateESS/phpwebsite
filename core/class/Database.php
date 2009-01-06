@@ -2579,6 +2579,7 @@ class PHPWS_DB {
         case 'select':
             $start = stripos($sql, 'from') + 4;
             $table = substr($sql, $start, strlen($sql) - $start);
+
             if ($where = stripos($table, ' where ')) {
                 $table = substr($table, 0, $where);
             }
@@ -2605,12 +2606,18 @@ class PHPWS_DB {
             $table = str_ireplace(' inner ', ' ', $table);
             $table = str_ireplace(' outer ', ' ', $table);
             $table = str_ireplace(' on ', ' ', $table);
+            $table = str_ireplace(' and ', ' ', $table);
+            $table = str_ireplace(' or ', ' ', $table);
+            $table = str_ireplace(' not ', ' ', $table);
             $table = str_ireplace('=', ' ', $table);
             $table = str_ireplace(',', ' ', $table);
             $table = preg_replace('/\w+\.\w+/', ' ', $table);
             $table = preg_replace('/(as \w+)/i', '', $table);
+            $table = preg_replace('/ \d+$| \d+ /', ' ', $table);
+            $table = preg_replace('/\'.*\'/', ' ', trim($table));
             $table = preg_replace('/ {2,}/', ' ', trim($table));
             $tables = explode(' ', $table);
+            test($tables);
             return $tables;
             break;
 
