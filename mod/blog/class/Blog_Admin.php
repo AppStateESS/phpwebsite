@@ -310,11 +310,9 @@ class Blog_Admin {
             PHPWS_Settings::set('blog', 'show_recent', $_POST['show_recent']);
         }
 
-
         isset($_POST['allow_comments']) ?
             PHPWS_Settings::set('blog', 'allow_comments', 1) :
             PHPWS_Settings::set('blog', 'allow_comments', 0);
-
 
         isset($_POST['anonymous_comments']) ?
             PHPWS_Settings::set('blog', 'anonymous_comments', 1) :
