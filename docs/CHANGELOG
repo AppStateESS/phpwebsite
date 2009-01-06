@@ -6,7 +6,10 @@ Version 1.9.1
 ---------------------------------------------------------------------
 6 January 2008
 + Added extra filters to prevent values other than tables getting
-prefixed in a select statement. Thanks
+  prefixed in a select statement. Thanks Olivier Sannier.
++ Added an ignore_table parameter to the addJoin function. Doesn't
+  force table added to the join. Allows multiple conditional arrays to
+  be added to join_on_1 and join_on_2
 
 19 December 2008
 + Added some code to try and fix drag and drop images and links in

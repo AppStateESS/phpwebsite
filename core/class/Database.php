@@ -373,7 +373,7 @@ class PHPWS_DB {
         return $GLOBALS['PHPWS_DB']['connection']->getlistOf('databases');
     }
 
-    public function addJoin($join_type, $join_from, $join_to, $join_on_1=null, $join_on_2=null)
+    public function addJoin($join_type, $join_from, $join_to, $join_on_1=null, $join_on_2=null, $ignore_tables=false)
     {
         if (!preg_match('/left|right/i', $join_type)) {
             return false;
@@ -382,7 +382,8 @@ class PHPWS_DB {
                                       'join_from' => $join_from,
                                       'join_to'   => $join_to,
                                       'join_on_1' => $join_on_1,
-                                      'join_on_2' => $join_on_2);
+                                      'join_on_2' => $join_on_2,
+                                      'ignore_tables' => $ignore_tables);
     }
 
     public function addTable($table, $as=null)
@@ -446,16 +447,26 @@ class PHPWS_DB {
         return null;
     }
 
-    public function _getJoinOn($join_on_1, $join_on_2, $table1, $table2) {
+    public function _getJoinOn($join_on_1, $join_on_2, $table1, $table2, $ignore_tables=false) {
         if (empty($join_on_1) || empty($join_on_2)) {
             return null;
         }
 
         if (is_array($join_on_1) && is_array($join_on_2)) {
             foreach ($join_on_1 as $key => $value) {
-                $retVal[] = sprintf('%s.%s = %s.%s',
-                                    $table1, $value,
-                                    $table2, $join_on_2[$key]);
+                if ($ignore_tables || preg_match('/\w\.\w/', $value)) {
+                    $value1 = & $value;
+                } else {
+                    $value1 = $table1 . '.' . $value;
+                }
+
+                if ($ignore_tables || preg_match('/\w\.\w/', $join_on_2[$key])) {
+                    $value2 = & $join_on_2[$key];
+                } else {
+                    $value2 = $table2 . '.' . $join_on_2[$key];
+                }
+
+                $retVal[] = sprintf('%s = %s', $value1, $value2);
             }
             return implode(' AND ', $retVal);
         } else {
@@ -476,7 +487,7 @@ class PHPWS_DB {
         foreach ($this->_join_tables as $join_array) {
             extract($join_array);
 
-            if ($result = $this->_getJoinOn($join_on_1, $join_on_2, $join_from, $join_to)) {
+            if ($result = $this->_getJoinOn($join_on_1, $join_on_2, $join_from, $join_to, $ignore_tables)) {
                 $join_on = 'ON ' . $result;
             }
 

@@ -22,5 +22,8 @@
 + Added extra match check to checkall javascript because match
   function is failing now for some reason.
 + Module - error variable made public to prevent error. Thanks Greg.
-+ Database -  Added extra filters to prevent values other than tables getting
-  prefixed in a select statement. Thanks Olivier Sannier.
++ Database
+  o Added extra filters to prevent values other than tables getting
+    prefixed in a select statement. Thanks Olivier Sannier.
+  o Added extra parameter (ignore_tables) to addJoin to allow join_on_1 and join_on_2
+    to be sent arrays of parameters.
