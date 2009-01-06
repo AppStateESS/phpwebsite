@@ -112,8 +112,8 @@ class Comment_Thread {
         $db->addColumn('comments_threads.*');
         $db->addColumn('comments_monitors.thread_id', null, 'monitored');
         $db->addColumn('comments_monitors.send_notice', null, 'send_notice');
-        $join_on_2 = 'thread_id  AND comments_monitors.user_id = '.Current_User::getId();
-        $db->addJoin('left', 'comments_threads', 'comments_monitors', 'id', $join_on_2);
+        $db->addJoin('left', 'comments_threads', 'comments_monitors', 'id', 'thread_id');
+        $db->addWhere('comments_monitors.user_id', Current_User::getId());
         $db->addWhere('key_id', $this->key_id);
         $result = $db->loadObject($this);
 
