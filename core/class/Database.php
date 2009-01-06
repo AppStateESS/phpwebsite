@@ -2617,7 +2617,7 @@ class PHPWS_DB {
             $table = preg_replace('/\'.*\'/', ' ', trim($table));
             $table = preg_replace('/ {2,}/', ' ', trim($table));
             $tables = explode(' ', $table);
-            test($tables);
+
             return $tables;
             break;
 
