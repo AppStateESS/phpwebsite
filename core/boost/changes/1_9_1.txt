@@ -9,6 +9,7 @@
     checkbox. Modules can check if it is enabled and run breaker if they
     wish.
   o Added plugIn function to form class.
+  o Fix for some characters in editors.
 + Init
   o Link.php included by default
   o defines PHPWS_HOME_HTTP using Core's getCurrentUrl
@@ -18,6 +19,8 @@
     prevent blank text return.
   o Fixed breaker adding extra newlines.
   o Link required moved to head of file
+  o Big change to character parsing. Should prevent certain characters
+    from getting mangled in posting. Huge thanks to Verdon.
 + Core - users PHPWS_HOME_HTTP if all parameters are true.
 + Added extra match check to checkall javascript because match
   function is failing now for some reason.

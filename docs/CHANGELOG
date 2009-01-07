@@ -4,7 +4,11 @@ its own separate CHANGELOG file..
 
 Version 1.9.1
 ---------------------------------------------------------------------
-6 January 2008
+7 January 2009
++ Big change to character parsing. Should prevent certain characters
+  from getting mangled in posting. Huge thanks to Verdon.
+
+6 January 2009
 + Added extra filters to prevent values other than tables getting
   prefixed in a select statement. Thanks Olivier Sannier.
 + Added an ignore_table parameter to the addJoin function. Doesn't
