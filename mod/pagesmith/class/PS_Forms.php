@@ -61,6 +61,8 @@ class PS_Forms {
         $pg_tpl_name = & $page->_tpl->name;
         $this->ps->killSaved();
 
+        $_SESSION['PS_Page'][$page->id] = $page->_content;
+
         $form = new PHPWS_Form('pagesmith');
         $form->addHidden('module', 'pagesmith');
         $form->addHidden('aop', 'post_page');
@@ -150,18 +152,23 @@ class PS_Forms {
     public function editPageHeader()
     {
         $section_name = $_GET['section'];
+        $pid = $_GET['id'];
 
+        /*
         $vars['parent_section'] = 'pagesmith_' . $section_name;
         $vars['edit_input']     = 'edit_header';
         $vars['url']            = PHPWS_Core::getHomeHttp();
         javascript('modules/pagesmith/passinfo', $vars);
+        */
 
+        $content = @$_SESSION['PS_Page'][$pid][$section_name];
         $form = new PHPWS_Form('edit');
+        $form->addHidden('pid', $pid);
         $form->addHidden('tpl', $_GET['tpl']);
         $form->addHidden('module', 'pagesmith');
         $form->addHidden('aop', 'post_header');
         $form->addHidden('section_name', $section_name);
-        $form->addText('header');
+        $form->addText('header', $content);
         $form->setLabel('header', dgettext('pagesmith', 'Header'));
         $form->setSize('header', 40);
         $form->addSubmit(dgettext('pagesmith', 'Update'));
@@ -174,21 +181,24 @@ class PS_Forms {
 
     public function editPageText()
     {
-        javascript('jquery');
         $section_name = $_GET['section'];
-
+        $pid = $_GET['id'];
+        /*
+        javascript('jquery');
         $vars['parent_section'] = 'pagesmith_' . $section_name;
         $vars['edit_input']     = 'edit_text';
         $vars['url']            = PHPWS_Core::getHomeHttp();
         javascript('modules/pagesmith/passinfo', $vars);
+        */
+        $content = @$_SESSION['PS_Page'][$pid][$section_name];
 
         $form = new PHPWS_Form('edit');
-        $form->addHidden('pid', $this->ps->page->id);
+        $form->addHidden('pid', $pid);
         $form->addHidden('tpl', $_GET['tpl']);
         $form->addHidden('module', 'pagesmith');
         $form->addHidden('aop', 'post_text');
         $form->addHidden('section_name', $section_name);
-        $form->addTextArea('text');
+        $form->addTextArea('text', $content);
         $form->useEditor('text', true, false, 720, 480);
         $form->setCols('text', 90);
         $form->setRows('text', 30);

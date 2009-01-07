@@ -108,6 +108,7 @@ class PageSmith {
             break;
 
         case 'edit_page_header':
+            $this->loadPage();
             $this->loadForms();
             $this->forms->editPageHeader();
             $javascript = true;
@@ -311,9 +312,12 @@ class PageSmith {
         foreach ($section_list as $section_name) {
             if (isset($this->page->_sections[$section_name])) {
                 $section = & $this->page->_sections[$section_name];
+
                 if ($section->sectype == 'header' || $section->sectype == 'text') {
                     if (isset($_SESSION['PS_Page'][$this->page->id][$section->secname])) {
                         $section->content = PHPWS_Text::parseInput($_SESSION['PS_Page'][$this->page->id][$section->secname]);
+                    } else {
+                        $section->content = $_POST[$section_name];
                     }
                     //$section->content = $_POST[$section_name];
                 } else {
@@ -406,16 +410,16 @@ class PageSmith {
         $header = strip_tags($_POST['header'], PS_ALLOWED_HEADER_TAGS);
 
         $section = new PS_Text;
+        $section->pid = $_POST['pid'];
         $section->secname = $_POST['section_name'];
         $section->content = PHPWS_Text::parseInput($header);
         $section->setSaved();
-
         $vars['cnt_section_name'] = $_POST['tpl'] . '-' . $_POST['section_name'];
-        $vars['hdn_section_name'] = sprintf('pagesmith_%s', $_POST['section_name']);
+        //$vars['hdn_section_name'] = sprintf('pagesmith_%s', $_POST['section_name']);
         $vars['content'] = addslashes(PHPWS_Text::parseOutput($section->content));
         $vars['hidden_value'] = $section->content;
-
         Layout::nakedDisplay(javascript('modules/pagesmith/update', $vars));
+
     }
 
     public function postText()

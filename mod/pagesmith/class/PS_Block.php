@@ -71,8 +71,8 @@ class PS_Block extends PS_Section {
     public function getContent()
     {
         if (empty($this->content)) {
-                PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
-                $this->content = Cabinet::getTag($this->type_id);
+            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+            $this->content = Cabinet::getTag($this->type_id);
         }
         return $this->content;
     }
