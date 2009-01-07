@@ -1,5 +1,8 @@
 Version 1.3.0
 --------------------------------------------------------------------
+7 January 2009
++ Fixed: Pages and their headers not updating correctly.
+
 5 January 2009
 + Changed text submission method. Using a session that was already in
   use to post instead of relying on javascript.
