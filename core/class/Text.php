@@ -361,7 +361,7 @@ class PHPWS_Text {
         }
 
         if ($encode) {
-            $text = utf8_encode($text);
+            $text = iconv('utf-8', 'utf-8', $text);
             $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
         }
         return trim($text);
