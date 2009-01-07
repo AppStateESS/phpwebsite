@@ -235,7 +235,6 @@ class PS_Forms {
             $content = $section->getContent();
             if (empty($content) && ($section->sectype == 'text' || $section->sectype == 'header')) {
                 $section->loadFiller();
-                //                $tpl[$name] = '&nbsp;';
                 $tpl[$name] = $section->getContent();
             } else {
                 $tpl[$name] = $content;
@@ -265,19 +264,9 @@ class PS_Forms {
 
             if ($edit_button) {
                 $vars['section'] = $name;
-                //                $js['type'] = 'button';
                 $js['label']   = PS_EDIT;
                 $js['address'] = PHPWS_Text::linkAddress('pagesmith', $vars, 1);
-
                 $tpl[$name . '_edit'] = javascript('open_window', $js);
-
-                // section session?
-                if ($page->id && ($section->sectype == 'text' || $section->sectype == 'header') &&
-                    !preg_match('/^<!-- lorem -->/', $section->content)) {
-                    $form->addHidden($name, htmlspecialchars($section->content));
-                } else {
-                    $form->addHidden($name, '');
-                }
             }
         }
 
