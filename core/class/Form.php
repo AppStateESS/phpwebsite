@@ -1818,7 +1818,7 @@ class Form_TextArea extends Form_Element {
 
         if ($this->use_editor && Editor::willWork()) {
             $text = PHPWS_Text::decodeText($this->value);
-            $text = PHPWS_Text::encodeXHTML($text);
+            //$text = PHPWS_Text::encodeXHTML($text);
 
             $editor = new Editor($this->name, $text, $this->id, $this->_force_name);
 
