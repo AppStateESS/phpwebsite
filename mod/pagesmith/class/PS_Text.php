@@ -35,7 +35,9 @@ class PS_Text extends PS_Section {
 
     public function setSaved()
     {
-        $_SESSION['PS_Page'][$this->pid][$this->secname] = & $this->content;
+        if (!preg_match('/^<!-- lorem -->/', $this->content)) {
+            $_SESSION['PS_Page'][$this->pid][$this->secname] = & $this->content;
+        }
     }
 
     public function loadFiller()

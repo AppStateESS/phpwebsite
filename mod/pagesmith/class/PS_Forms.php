@@ -154,13 +154,6 @@ class PS_Forms {
         $section_name = $_GET['section'];
         $pid = $_GET['id'];
 
-        /*
-        $vars['parent_section'] = 'pagesmith_' . $section_name;
-        $vars['edit_input']     = 'edit_header';
-        $vars['url']            = PHPWS_Core::getHomeHttp();
-        javascript('modules/pagesmith/passinfo', $vars);
-        */
-
         $content = @$_SESSION['PS_Page'][$pid][$section_name];
         $form = new PHPWS_Form('edit');
         $form->addHidden('pid', $pid);
@@ -183,15 +176,7 @@ class PS_Forms {
     {
         $section_name = $_GET['section'];
         $pid = $_GET['id'];
-        /*
-        javascript('jquery');
-        $vars['parent_section'] = 'pagesmith_' . $section_name;
-        $vars['edit_input']     = 'edit_text';
-        $vars['url']            = PHPWS_Core::getHomeHttp();
-        javascript('modules/pagesmith/passinfo', $vars);
-        */
         $content = @$_SESSION['PS_Page'][$pid][$section_name];
-
         $form = new PHPWS_Form('edit');
         $form->addHidden('pid', $pid);
         $form->addHidden('tpl', $_GET['tpl']);
