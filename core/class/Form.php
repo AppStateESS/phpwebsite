@@ -1854,7 +1854,7 @@ class Form_TextArea extends Form_Element {
             $dimensions[] = 'style="' . implode('; ', $style) . '"';
         }
 
-        if (!USE_BREAKER && $this->_form->use_breaker) {
+        if (!USE_BREAKER && !empty($this->_form->use_breaker)) {
             $check_name = sprintf('%s_breaker', $this->name);
             $checkbox = new Form_Checkbox($check_name);
             $checkbox->setLabel(_('Break newlines'));

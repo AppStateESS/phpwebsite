@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file..
 
+9 January 2009
++ Added 'RELEASE' to do-no-allow database list
++ Added error check to Form_Element
+
 Version 1.9.1
 ---------------------------------------------------------------------
 7 January 2009
