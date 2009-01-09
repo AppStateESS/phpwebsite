@@ -1,5 +1,5 @@
 <div<!-- BEGIN small-view -->{REDUCE}id="small-view"<!-- END small-view -->>
-<!-- BEGIN options --><p>{HIDE_PANEL} | {HIDE_SIDEBAR} | {SMALL_VIEW}</p><!-- END options -->
+<!-- BEGIN options --><p>{HIDE_PANEL} | {HIDE_SIDEBAR} | {SMALL_VIEW} | {REFRESH}</p><!-- END options -->
 <div id="action-buttons">{MEET} {AVAILABLE} {UNAVAILABLE} {FINISH}</div>
 <div id="current-meeting" class="{CURRENT_CLASS}">{CURRENT_MEETING}</div>
 <table width="100%" cellpadding="6" style="clear : both">

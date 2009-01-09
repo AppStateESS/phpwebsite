@@ -1,2 +1,10 @@
+9 January 2009
++ Fixed bug with pulling current staff member
++ Added refresh link to waiting and assignment page
++ Updated: templates/visitors.tpl, templates/waiting.tpl
+
+
+Version 1.0.0
+--------------------------
 18 July 2008
 + Finalized for download.

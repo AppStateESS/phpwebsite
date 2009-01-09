@@ -359,6 +359,7 @@ class Checkin_Admin extends Checkin {
 
         $tpl['HIDE_PANEL'] = $this->hidePanelLink();
         $tpl['HIDE_SIDEBAR'] = $this->hideSidebarLink();
+	$tpl['REFRESH'] = sprintf('<a href="index.php?module=checkin&tab=assign">%s</a>', dgettext('checkin', 'Refresh'));
 
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'visitors.tpl');
         Layout::metaRoute('index.php?module=checkin&aop=assign', PHPWS_Settings::get('checkin', 'assign_refresh'));
@@ -450,6 +451,7 @@ class Checkin_Admin extends Checkin {
             $tpl['HIDE_PANEL'] = $this->hidePanelLink();
             $tpl['HIDE_SIDEBAR'] = $this->hideSidebarLink();
             $tpl['SMALL_VIEW'] = $this->smallViewLink();
+	    $tpl['REFRESH'] = sprintf('<a href="index.php?module=checkin&tab=waiting">%s</a>', dgettext('checkin', 'Refresh'));
             Layout::metaRoute('index.php?module=checkin&aop=waiting', PHPWS_Settings::get('checkin', 'waiting_refresh'));
         }
 
@@ -866,7 +868,12 @@ class Checkin_Admin extends Checkin {
     {
         PHPWS_Core::initModClass('checkin', 'Staff.php');
         if (empty($this->current_staff)) {
-            $staff = new Checkin_Staff(Current_User::getId());
+            $db = new PHPWS_DB('checkin_staff');
+            $db->addWhere('user_id', Current_User::getId());
+            $db->addColumn('id');
+            $id = $db->select('one');
+            
+            $staff = new Checkin_Staff($id);
             if ($staff->id) {
                 $this->current_staff = & $staff;
             }
