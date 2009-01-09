@@ -933,6 +933,7 @@ class Checkin_Admin extends Checkin {
 
     public function report($print=false)
     {
+        $this->loadStaffList();
         if (empty($this->staff_list)) {
             $this->content = dgettext('checkin', 'No staff have been created.');
             return;
