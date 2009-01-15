@@ -6,6 +6,7 @@ CREATE TABLE checkin_staff (
   status int NOT NULL default 0,
   visitor_id int NOT NULL default 0,
   filter_type smallint NOT NULL default 0,
+  view_order smallint NOT NULL default 0,
   PRIMARY KEY (id),
   UNIQUE KEY user_id (user_id)
 );

@@ -3,6 +3,9 @@ Version 1.0.1
 15 January 2009
 + Added time arrived to assignment listing
 + Added ability to sort staff for assignment list.
++ Added switch for whether staff see unassigned visitors.
++ Visitors will not be set to staff that are unavailable.
++ Reasons saved separately from staff save. Prevents reasons getting cleared.
 
 9 January 2009
 + Fixed bug with pulling current staff member

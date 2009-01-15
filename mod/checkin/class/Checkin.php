@@ -118,7 +118,7 @@ class Checkin {
     {
         $db = new PHPWS_DB('checkin_staff');
         if ($available_only) {
-            $db->addWhere('status', 0);
+            $db->addWhere('status', 1, '!=');
         }
         $db->addWhere('user_id', 'users.id');
         $db->addColumn('users.display_name');
