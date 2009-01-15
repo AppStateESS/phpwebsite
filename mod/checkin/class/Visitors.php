@@ -47,6 +47,8 @@ class Checkin_Visitor {
 
         $db = new PHPWS_DB('checkin_rtos');
         $db->addWhere('reason_id', $this->reason);
+        $db->addWhere('staff_id', 'checkin_staff.id', null, null, 'staff');
+        $db->addWhere('checkin_staff.status', 1, '!=', null, 'staff');
         $db->addColumn('staff_id');
         // currently only grabbing one staff member
         $this->assigned = $db->select('one');

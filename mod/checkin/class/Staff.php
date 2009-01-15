@@ -185,13 +185,20 @@ class Checkin_Staff {
     public function save($new=false)
     {
         $db = new PHPWS_DB('checkin_staff');
-        $result = !PHPWS_Error::logIfError($db->saveObject($this));
 
-        if (!$result) {
-            return false;
+        if (!$this->id) {
+            $db->addColumn('view_order', 'max');
+            $max_order = $db->select('one');
+            $this->view_order = $max_order + 1;
+            $db->reset();
         }
-        // Save reason assignments
+        
+        return !PHPWS_Error::logIfError($db->saveObject($this));
+    }
 
+    public function saveReasons()
+    {
+        // Save reason assignments
         $db = new PHPWS_DB('checkin_rtos');
         $db->addWhere('staff_id', $this->id);
         $db->delete();
@@ -203,8 +210,6 @@ class Checkin_Staff {
                 PHPWS_Error::logIfError($db->insert());
             }
         }
-
-        return true;
     }
 }
 

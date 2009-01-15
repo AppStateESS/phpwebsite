@@ -227,6 +227,7 @@ class Checkin_Admin extends Checkin {
             if ($this->postStaff()) {
                 // save post
                 $this->staff->save();
+                $this->staff->saveReasons();
                 PHPWS_Core::reroute('index.php?module=checkin&tab=staff');
             } else {
                 // post failed
@@ -330,7 +331,7 @@ class Checkin_Admin extends Checkin {
         $this->loadStaffList();
 
         // id and name only for drop down menu
-        $staff_list = $this->getStaffList();
+        $staff_list = $this->getStaffList(false,true);
         $staff_list = array_reverse($staff_list, true);
         $staff_list[0] = dgettext('checkin', 'Unassigned');
         $staff_list[-1] = dgettext('checkin', '-- Move visitor --');
@@ -436,10 +437,12 @@ class Checkin_Admin extends Checkin {
         // No visitors found, load all the visitors that are unassigned.
         if (empty($this->visitor_list)) {
             $tpl['MESSAGE'] = dgettext('checkin', 'You currently do not have any visitors.');
-            $this->loadVisitorList(0);
-            if (!empty($this->visitor_list)) {
-                $this->unassigned_only = true;
-                $tpl['MESSAGE'] .= '<br />' . sprintf(dgettext('checkin', 'There are %s unassigned visitors.'), count($this->visitor_list));
+            if (PHPWS_Settings::get('checkin', 'unassigned_seen')) {
+                $this->loadVisitorList(0);
+                if (!empty($this->visitor_list)) {
+                    $this->unassigned_only = true;
+                    $tpl['MESSAGE'] .= '<br />' . sprintf(dgettext('checkin', 'There are %s unassigned visitors.'), count($this->visitor_list));
+                }
             }
         } else {
             foreach ($this->visitor_list as $vis) {
@@ -701,6 +704,10 @@ class Checkin_Admin extends Checkin {
         $form->setLabel('collapse_signin', dgettext('checkin', 'Hide sidebar for visitors'));
         $form->setMatch('collapse_signin', PHPWS_Settings::get('checkin', 'collapse_signin'));
 
+        $form->addCheck('unassigned_seen', 1);
+        $form->setLabel('unassigned_seen', dgettext('checkin', 'Staff see unassigned visitors'));
+        $form->setMatch('unassigned_seen', PHPWS_Settings::get('checkin', 'unassigned_seen'));
+
         $form->addSubmit(dgettext('checkin', 'Save settings'));
         $tpl = $form->getTemplate();
 
@@ -716,6 +723,7 @@ class Checkin_Admin extends Checkin {
             }
         }
 
+        PHPWS_Settings::set('checkin', 'unassigned_seen', (int)isset($_POST['unassigned_seen']));
         PHPWS_Settings::set('checkin', 'front_page', (int)isset($_POST['front_page']));
         PHPWS_Settings::set('checkin', 'collapse_signin', (int)isset($_POST['collapse_signin']));
 

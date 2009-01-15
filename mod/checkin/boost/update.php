@@ -33,7 +33,7 @@ function checkin_update(&$content, $current_version) {
 
         checkinUpdateFiles(array('templates/visitors.tpl',
                                  'templates/waiting.tpl',
-                                 'templates/queue.tpl'), $content);
+                                 'templates/queue.tpl', 'templates/settings.tpl'), $content);
 
         $content[] = '1.0.1 changes
 ------------------
