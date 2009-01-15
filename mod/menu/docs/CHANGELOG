@@ -1,3 +1,7 @@
+15 January 2009
++ Commented out pin page link in template
++ Updated: templates/menu_layout/horizontal/menu.tpl
+
 Version 1.5.1
 ------------------------------------------------------------
 2 December 2008
