@@ -632,7 +632,7 @@ class PHPWS_DB {
             }
             return true;
         } else {
-            if (!PHPWS_DB::allowed($column)) {
+            if (!PHPWS_DB::allowed($column) || preg_match('[^\w\.]', $column)) {
                 return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core',
                                         'PHPWS_DB::addWhere', $column);
             }
@@ -885,6 +885,11 @@ class PHPWS_DB {
 
     public function addColumn($column, $max_min=null, $as=null, $count=false, $distinct=false)
     {
+        
+        if (preg_match('/[^\w\.*]/', $column)) {
+            return false;
+        }
+        
         if (!in_array(strtolower($max_min), array('max', 'min'))) {
             $max_min = null;
         }
@@ -1293,12 +1298,12 @@ class PHPWS_DB {
         $limit   = $this->getLimit(true);
         $group_by = $this->getGroupBy(true);
 
-        $sql_array['columns'] = &$columns;
-        $sql_array['table']   = &$table;
-        $sql_array['where']   = &$where;
-        $sql_array['group_by'] = &$group_by;
-        $sql_array['order']   = &$order;
-        $sql_array['limit']   = &$limit;
+        $sql_array['columns']  = & $columns;
+        $sql_array['table']    = & $table;
+        $sql_array['where']    = & $where;
+        $sql_array['group_by'] = & $group_by;
+        $sql_array['order']    = & $order;
+        $sql_array['limit']    = & $limit;
 
         return $sql_array;
     }
@@ -2723,6 +2728,96 @@ class PHPWS_DB {
         return PHPWS_DB::query('ROLLBACK');
     }
 
+    /**
+     * Move row in a table based on a column designating the current order
+     * direction == 1 means INCREASE order by one
+     * direction == -1 means DECREASE order by one
+     * @param string  order_column Table column that contains the order of the entries
+     * @param string  id_column    Name of the id_column
+     * @param integer id           Id of current row
+     * @param integer direction    Direction to move the row
+     */
+    public function moveRow($order_column, $id_column, $id, $direction=1)
+    {
+        if ( !($direction == 1 || $direction == -1) ) {
+            if (strtolower($direction) == 'down') {
+                $direction = 1;
+            } elseif (strtolower($direction) == 'up') {
+                $direction = -1;
+            } else {
+                return false;
+            }
+        }
+
+        $total_rows = $this->count();
+        if ($total_rows < 2) {
+            return;
+        }
+
+        $db = clone($this);
+        $db->reset();
+        $db->addWhere($id_column, $id);
+        $db->addColumn($order_column);
+        $current_order = $db->select('one');
+
+        if ($current_order == 1 && $direction == -1) {
+            // moving up when current item is at top of list
+            // need to shift all other items down and pop this on the end
+            PHPWS_DB::begin();
+            
+            if (PHPWS_Error::logIfError($this->reduceColumn($order_column))) {
+                PHPWS_DB::rollback();
+                return false;
+            }
+            $db->reset();
+            $db->addWhere($id_column, $id);
+            $db->addValue($order_column, $total_rows);
+            if (PHPWS_Error::logIfError($db->update())) {
+                PHPWS_DB::rollback();
+                return false;
+            }
+            PHPWS_DB::commit();
+            unset($db);
+            return true;
+        } elseif ($current_order == $total_rows && $direction == 1) {
+            // moving down when current item is at bottom/end of list
+            // need to shift all other items up and shift this on the beginning
+            PHPWS_DB::begin();
+            if (PHPWS_Error::logIfError($this->incrementColumn($order_column))) {
+                PHPWS_DB::rollback();
+                return false;
+            }
+            $db->reset();
+            $db->addWhere($id_column, $id);
+            $db->addValue($order_column, 1);
+            if (PHPWS_Error::logIfError($db->update())) {
+                PHPWS_DB::rollback();
+                return false;
+            }
+            PHPWS_DB::commit();
+            unset($db);
+            return true;
+        } else {
+            PHPWS_DB::begin();
+            $db = clone($this);
+            $db->addWhere($order_column, $current_order + $direction);
+            $db->addValue($order_column, $current_order);
+            if (PHPWS_Error::logIfError($db->update())) {
+                PHPWS_DB::rollback();
+                return false;
+            }
+
+            $db = clone($this);
+            $db->addWhere($id_column, $id);
+            $db->addValue($order_column, $current_order + $direction);
+            if (PHPWS_Error::logIfError($db->update())) {
+                PHPWS_DB::rollback();
+                return false;
+            }
+            unset($db);
+            return true;
+        }
+    }
 }
 
 class PHPWS_DB_Where {

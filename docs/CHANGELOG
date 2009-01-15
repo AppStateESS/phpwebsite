@@ -2,9 +2,17 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file..
 
+15 January 2009
++ Database
+  o Added moveRow function
+  o Added column formatting check on addColumn and addWhere
++ DBPager - if a sort column is reset, indexby is no longer included
+  on the link
+
 9 January 2009
 + Added 'RELEASE' to do-no-allow database list
 + Added error check to Form_Element
++ Fixed naughty word parsing
 
 Version 1.9.1
 ---------------------------------------------------------------------

@@ -1009,6 +1009,7 @@ class DBPager {
             if ($this->orderby == $varname){
                 if ($this->orderby_dir == 'desc'){
                     unset($values['orderby_dir']);
+                    unset($values['orderby']);
                     $alt .= _('Sorted in descending order');
                     $button = sprintf('<img src="images/core/list/down_pointer.png" border="0" alt="%s" title="%s" style="margin-right : 5px;" />', $alt, $alt);
                 } elseif ($this->orderby_dir =="asc") {
