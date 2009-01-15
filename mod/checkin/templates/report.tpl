@@ -5,8 +5,13 @@
 <!-- END form -->
 <table border="1" width="99%" cellpadding="4">
   <!-- BEGIN row --><tr>
-    <td><strong>{DISPLAY_NAME}</strong><br />{VISITORS_SEEN}<br />{TOTAL_WAIT}</td>
     <td>
+       <strong>{DISPLAY_NAME}</strong><br />
+       {VISITORS_SEEN}<br />
+       {TOTAL_WAIT}<br />
+       {AVERAGE_WAIT}
+    </td>
+    <td width="75%">
       <table cellpadding="5" width="100%">
         <tr>
           <th>{NAME_LABEL}</th>
@@ -15,7 +20,7 @@
         </tr>
         <!-- BEGIN message --><tr><td colspan="2">{NOBODY}</td></tr><!-- END message -->
         <!-- BEGIN subrow --><tr>
-          <td><strong>{VIS_NAME}</strong><br />{REASON}<br /><em>{NOTE}</em></td>
+          <td width="75%"><strong>{VIS_NAME}</strong><br />{REASON}<br /><em>{NOTE}</em></td>
           <td>{WAITED}</td>
           <td>{SPENT}</td>
         </tr><!-- END subrow -->

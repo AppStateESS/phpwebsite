@@ -117,6 +117,7 @@ class Checkin_Visitor {
 
         $form = new PHPWS_Form('form' . $this->id);
         $tpl['NAME'] = sprintf('%s %s', $this->firstname, $this->lastname);
+        $tpl['ARRIVED'] = strftime(PHPWS_Settings::get('checkin', 'time_format'),$this->arrival_time);
         $tpl['WAITING'] = Checkin::timeWaiting(time() - $this->arrival_time);
         if ($staff_list && $staff->visitor_id != $this->id) {
             $select = sprintf('visitor_%s', $this->id);

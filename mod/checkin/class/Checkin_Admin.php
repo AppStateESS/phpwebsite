@@ -92,6 +92,22 @@ class Checkin_Admin extends Checkin {
             exit();
             break;
 
+        case 'move_up':
+            if (Current_User::allow('checkin', 'assign_visitors')) {
+                $db = new PHPWS_DB('checkin_staff');
+                $db->moveRow('view_order', 'id', $_GET['staff_id'], 'up');
+            }
+            PHPWS_Core::goBack();
+            break;
+
+        case 'move_down':
+            if (Current_User::allow('checkin', 'assign_visitors')) {
+                $db = new PHPWS_DB('checkin_staff');
+                $db->moveRow('view_order', 'id', $_GET['staff_id'], 'down');
+            }
+            PHPWS_Core::goBack();
+            break;
+
         case 'assign':
             if (Current_User::allow('checkin', 'assign_visitors')) {
                 $this->panel->setCurrentTab('assign');
@@ -398,7 +414,7 @@ class Checkin_Admin extends Checkin {
         }
 
         $row['NAME_LABEL'] = dgettext('checkin', 'Name / Reason / Note');
-        $row['WAITING_LABEL'] = dgettext('checkin', 'Time waiting');
+        $row['WAITING_LABEL'] = dgettext('checkin', 'Time arrived/waiting');
         $row['ACTION_LABEL'] = dgettext('checkin', 'Action');
         return PHPWS_Template::process($row, 'checkin', 'queue.tpl');
     }
@@ -552,8 +568,9 @@ class Checkin_Admin extends Checkin {
         $pager->setEmptyMessage(dgettext('checkin', 'No staff found.'));
         $pager->addPageTags($page_tags);
         $pager->joinResult('user_id', 'users', 'id', 'display_name');
-        $pager->addSortHeader('filter', 'Filter');
-        $pager->addSortHeader('display_name', 'Staff name');
+        $pager->addSortHeader('filter', dgettext('checkin', 'Filter'));
+        $pager->addSortHeader('display_name', dgettext('checkin', 'Staff name'));
+        $pager->addSortHeader('view_order', dgettext('checkin', 'Order'));
 
         $this->title = dgettext('checkin', 'Staff');
         $this->content = $pager->get();
@@ -989,11 +1006,13 @@ class Checkin_Admin extends Checkin {
         $row['SPENT_LABEL'] = dgettext('checkin', 'Total meeting time');
 
         foreach ($this->staff_list as $staff) {
-            $total_wait = $count = $total_spent = 0;
+            $average_wait = $total_wait = $count = $total_spent = 0;
             if (isset($visitors[$staff->id])) {
                 foreach ($visitors[$staff->id] as $vis) {
                     $wait = $vis->start_meeting - $vis->arrival_time;
                     $spent = $vis->end_meeting - $vis->start_meeting;
+
+
                     $tObj->setCurrentBlock('subrow');
                     $tObj->setData(array('VIS_NAME' => $vis->getName(),
                                          'REASON'   => $reasons[$vis->reason],
@@ -1001,9 +1020,17 @@ class Checkin_Admin extends Checkin {
                                          'WAITED'   => Checkin::timeWaiting($wait),
                                          'SPENT'    => Checkin::timeWaiting($spent)));
                     $tObj->parseCurrentBlock();
-                    $count++;
-                    $total_wait += $wait;
-                    $total_spent += $spent;
+                    if ($spent >= 0) {
+                        $count++;
+                        $total_wait += $wait;
+                        $total_spent += $spent;
+                    }
+                }
+                //prevent divide by zero
+                if ($count >= 1) {
+                    $average_wait = floor($total_wait / $count);
+                } else {
+                    $average_wait = 0;
                 }
             } else {
                 $tObj->setCurrentBlock('message');
@@ -1013,8 +1040,10 @@ class Checkin_Admin extends Checkin {
             $tObj->setCurrentBlock('row');
             $row['DISPLAY_NAME'] = & $staff->display_name;
             $row['VISITORS_SEEN'] = sprintf(dgettext('checkin', 'Visitors seen: %s'), $count);
+
             $row['TOTAL_SPENT'] = sprintf(dgettext('checkin', 'Total time in meeting: %s'), Checkin::timeWaiting($total_spent));
             $row['TOTAL_WAIT'] = sprintf(dgettext('checkin', 'Total wait time: %s'), Checkin::timeWaiting($total_wait));
+            $row['AVERAGE_WAIT'] = sprintf(dgettext('checkin', 'Average wait time: %s'), Checkin::timeWaiting($average_wait));
 
             $tObj->setData($row);
             $tObj->parseCurrentBlock();

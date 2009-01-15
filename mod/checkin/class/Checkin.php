@@ -47,7 +47,7 @@ class Checkin {
         $db->addColumn('users.display_name');
         $db->addColumn('checkin_staff.*');
         $db->addWhere('user_id', 'users.id');
-        $db->addOrder('users.display_name');
+        $db->addOrder('checkin_staff.view_order');
         $result = $db->getObjects('Checkin_Staff');
         if (!PHPWS_Error::logIfError($result)) {
             $this->staff_list = & $result;
@@ -231,6 +231,10 @@ class Checkin {
 
     public function timeWaiting($rel)
     {
+        if ($rel < 0) {
+            return dgettext('checkin', 'Time error');
+        }
+
         $hours = floor( $rel / 3600);
         if ($hours) {
             $rel = $rel % 3600;
@@ -239,15 +243,19 @@ class Checkin {
         $mins = floor( $rel / 60);
 
         if ($hours) {
-            $waiting[] = sprintf(dgettext('checkin', '%s hr'), $hours);
+            $waiting[] = sprintf(dgettext('checkin', '%s hour'), $hours);
         }
 
         if ($mins) {
-            $waiting[] = sprintf(dgettext('checkin', '%s min'), $mins);
+            $waiting[] = sprintf(dgettext('checkin', '%s min.'), $mins);
         }
 
         if (!isset($waiting)) {
-            $waiting[] = dgettext('checkin', 'Under a minute');
+            if (!$rel) {
+                $waiting[] = dgettext('checkin', 'No meeting');
+            } else {
+                $waiting[] = dgettext('checkin', '< 1 min.');
+            }
         }
 
         return implode(', ', $waiting);

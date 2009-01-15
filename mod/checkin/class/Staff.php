@@ -18,6 +18,7 @@ class Checkin_Staff {
     public $status        = 0;
     public $visitor_id    = 0;
     public $display_name  = null;
+    public $view_order    = 0;
     public $_reasons      = null;
 
     public function __construct($id=0)
@@ -51,7 +52,9 @@ class Checkin_Staff {
             $db->addColumn('summary');
             $db->setIndexBy('id');
         }
+
         $result = $db->select('col');
+        
         if (!PHPWS_Error::logIfError($result)) {
             $this->_reasons = & $result;
         }
@@ -168,6 +171,13 @@ class Checkin_Staff {
         $vars['staff_id'] = $this->id;
         $vars['aop'] = 'edit_staff';
         $links[] = PHPWS_Text::secureLink(dgettext('checkin', 'Edit'), 'checkin', $vars);
+
+        $vars['aop'] = 'move_up';
+        $links[] = PHPWS_Text::secureLink(dgettext('checkin', 'Up'), 'checkin', $vars);
+        $vars['aop'] = 'move_down';
+        $links[] = PHPWS_Text::secureLink(dgettext('checkin', 'Down'), 'checkin', $vars);
+
+        $tpl['VIEW_ORDER'] = $this->view_order;
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
