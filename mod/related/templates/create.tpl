@@ -1,10 +1,8 @@
 <div class="related">
   <div class="box">
     <div class="box-title">
-      <strong>{TITLE_LBL}:</strong>
-      {TITLE}<br />
-      <strong>{MODULE_LBL}:</strong>
-      {MODULE}
+      <h1>{TITLE_LBL}: {TITLE}</h1>
+      <strong>{MODULE_LBL}:</strong>{MODULE}
     </div>
     <div class="box-content">
       <div class="bgcolor1 padded align-center">{LINK}</div>

@@ -2,7 +2,7 @@
 {JAVASCRIPT}
 <div class="box">
   <div id="related-bank">
-    <div class="box-title"><h1>{TITLE_LBL}: {TITLE}&nbsp;</h1>{EDIT}
+    <div class="box-title"><h1>{EDIT} {TITLE_LBL}: {TITLE}</h1>
     <strong>{MODULE_LBL}:</strong>
     {MODULE}
     </div>

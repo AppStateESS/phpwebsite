@@ -1,3 +1,9 @@
+16 January 2009
++ Patch #2501401 from Olivier Sannier - Some h1 tags added.
++ Updated: templates/bank.tpl, templates/create.tpl,
+  templates/edit.tpl
+
+
 Version 0.1.5
 ------------------------------------------------------------------
 8 June 2007
