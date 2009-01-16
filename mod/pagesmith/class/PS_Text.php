@@ -36,6 +36,7 @@ class PS_Text extends PS_Section {
     public function setSaved()
     {
         if (!preg_match('/^<!-- lorem -->/', $this->content)) {
+            echo 2;
             $_SESSION['PS_Page'][$this->pid][$this->secname] = & $this->content;
         }
     }
@@ -65,12 +66,16 @@ class PS_Text extends PS_Section {
         }
     }
 
-    public function getContent()
+    public function getContent($parse_tags=true)
     {
         if (empty($this->content)) {
             return null;
         }
-        return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content));
+        if ($parse_tags) {
+            return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content));
+        } else {
+            return PHPWS_Text::parseOutput($this->content);
+        }
     }
 
 

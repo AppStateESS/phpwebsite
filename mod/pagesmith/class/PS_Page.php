@@ -122,7 +122,8 @@ class PS_Page {
                 foreach ($text_sections as $secname=>$section) {
                     if (isset($this->_sections[$secname])) {
                         PHPWS_Core::plugObject($this->_sections[$secname], $section);
-                        $this->_content[$secname] = $this->_sections[$secname]->getContent();
+                        // we don't want smarttags parsed
+                        $this->_content[$secname] = $this->_sections[$secname]->getContent(!$form_mode);
                     } else {
                         $this->_orphans[$secname] = $section;
                     }
