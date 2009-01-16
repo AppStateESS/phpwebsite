@@ -1,3 +1,8 @@
+16 January 2009
++ Patch #2501402 by Olivier Sannier - add new div around extra header
+  information
++ Updated: templates/page/*
+
 Version 1.1.1
 -------------------------------------------------------------------------
 31 March 2008
