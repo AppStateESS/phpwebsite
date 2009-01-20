@@ -217,17 +217,18 @@ class Menu_Link {
             if ($this->childIsCurrent($current_key)) {
                 $current_parent[] = $this->id;
             }
+
             if ( (!$current_key->isDummy() && $current_key->id == $this->key_id) || ($current_key->url == $this->url) ) {
                 $current_link = true;
                 $current_parent[] = $this->id;
                 $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
             }
-        } else {
-            if ($this->isCurrentUrl()) {
-                $current_link = true;
-                $current_parent[] = $this->id;
-                $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
-            }
+        }
+
+        if (!isset($template['CURRENT_LINK']) && $this->isCurrentUrl()) {
+            $current_link = true;
+            $current_parent[] = $this->id;
+            $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
         }
 
         if ($this->childIsCurrentUrl()) {

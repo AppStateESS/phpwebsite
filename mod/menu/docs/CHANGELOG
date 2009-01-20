@@ -1,3 +1,6 @@
+20 January 2009
++ Local links created on key pages were not made current.
+
 15 January 2009
 + Commented out pin page link in template
 + Updated: templates/menu_layout/horizontal/menu.tpl
