@@ -225,7 +225,7 @@ class Menu_Link {
             }
         }
 
-        if (!isset($template['CURRENT_LINK']) && $this->isCurrentUrl()) {
+        if (!isset($template['CURRENT_LINK']) && $this->isCurrentUrl() && $this->url != 'index.php') {
             $current_link = true;
             $current_parent[] = $this->id;
             $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
