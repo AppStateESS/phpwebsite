@@ -36,7 +36,6 @@ class PS_Text extends PS_Section {
     public function setSaved()
     {
         if (!preg_match('/^<!-- lorem -->/', $this->content)) {
-            echo 2;
             $_SESSION['PS_Page'][$this->pid][$this->secname] = & $this->content;
         }
     }
