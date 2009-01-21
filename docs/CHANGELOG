@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file..
 
+21 January 2009
++ Checking user session in security
++ DBPager - was missing column names when prefixed by table name
+
 15 January 2009
 + Database
   o Added moveRow function

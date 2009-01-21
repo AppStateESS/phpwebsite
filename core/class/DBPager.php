@@ -65,6 +65,10 @@ class DBPager {
 
     public $table_columns = null;
 
+    // columns returned AS are placed here to allow sorting
+    // later
+    public $needed_columns = null;
+
     public $page_tags = null;
 
     /**
@@ -223,8 +227,10 @@ class DBPager {
         }
 
         $this->table = & $table;
-        $this->db = & new PHPWS_DB($table);
-        $this->table_columns = $this->db->getTableColumns();
+        $this->db = new PHPWS_DB($table);
+
+        // Moved to initialize
+        //        $this->table_columns = $this->db->getTableColumns();
 
         if (PEAR::isError($this->db)){
             $this->error = $this->db;
@@ -311,7 +317,7 @@ class DBPager {
                                                   'srch' => (bool)$searchable);
 
         $this->sub_order[$new_name] = array('dbp' . $index, $content_column);
-        $this->table_columns[$new_name] = $new_name;
+        $this->needed_columns[$new_name] = $new_name;
         $index++;
     }
 
@@ -688,6 +694,10 @@ class DBPager {
      */
     public function initialize($load_rows=true)
     {
+        $this->table_columns = $this->db->getTableColumns();
+        if (!empty($this->needed_columns)) {
+            $this->table_columns = array_merge($this->table_columns, $this->needed_columns);
+        }
         // if false, prevents 
         if ($this->report_type) {
             $report = true;
@@ -781,15 +791,28 @@ class DBPager {
             }
         }
 
-        if (isset($this->orderby) && in_array($this->orderby, $this->table_columns)) {
-            $sub_order = @$this->sub_order[$this->orderby];
-            if (!empty($sub_order)) {
-                $orderby = implode('.', $sub_order);
+        $order_set = false;
+        if (isset($this->orderby)) {
+            if ($pos = strpos($this->orderby, '.')) {
+                $col_name = substr($this->orderby, $pos + 1);
             } else {
-                $orderby = $this->orderby;
+                $col_name = $this->orderby;
             }
-            $this->db->addOrder($orderby . ' ' . $this->orderby_dir);
-        } elseif (isset($this->default_order)) {
+        
+            if (in_array($col_name, $this->table_columns)) {
+                $sub_order = @$this->sub_order[$col_name];
+                if (!empty($sub_order)) {
+                    $orderby = implode('.', $sub_order);
+                } else {
+                    $orderby = $this->orderby;
+                }
+
+                $this->db->addOrder($orderby . ' ' . $this->orderby_dir);
+                $order_set = true;
+            }
+        }
+
+        if (!$order_set && isset($this->default_order)) {
             $this->db->addOrder($this->default_order . ' ' . $this->default_order_dir);
         }
 
