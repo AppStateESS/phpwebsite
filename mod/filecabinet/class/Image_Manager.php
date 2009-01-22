@@ -55,7 +55,7 @@ class FC_Image_Manager {
             break;
 
         case 'upload_image_form':
-            if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+            if (!$this->folder->id || !Current_User::secured('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
                 Current_User::disallow();
             }
             if (!empty($_GET['fw']) && !empty($_GET['fh'])) {

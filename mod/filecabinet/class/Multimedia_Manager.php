@@ -38,7 +38,7 @@ class FC_Multimedia_Manager {
             break;
 
         case 'upload_multimedia_form':
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
+            if (!Current_User::secured('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
                 Current_User::disallow();
             }
             $this->edit();
