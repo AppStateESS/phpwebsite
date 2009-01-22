@@ -169,7 +169,7 @@ class PHPWS_Document extends File_Common {
         if ($links) {
             $tpl['ACTION'] = implode('', $links);
         } else {
-            $tpl['ACTION'] = $this->getViewLink(true);
+            $tpl['ACTION'] = null;
         }
 
         $tpl['DOWNLOADED'] = $this->downloaded;
