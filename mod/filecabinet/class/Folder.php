@@ -451,9 +451,8 @@ class Folder {
 
         if (Current_User::allow('filecabinet', 'edit_folders', $this->id, 'folder')) {
             $links[] = $this->editLink('image');
+            $links[] = $this->uploadLink('icon');
         }
-
-        $links[] = $this->uploadLink('icon');
 
         if (Current_User::allow('filecabinet', 'edit_folders', $this->id, 'folder', true)) {
             if ($this->key_id) {

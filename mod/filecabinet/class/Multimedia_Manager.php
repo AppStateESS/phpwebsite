@@ -23,18 +23,24 @@ class FC_Multimedia_Manager {
     {
         switch ($_REQUEST['mop']) {
         case 'delete_multimedia':
+            if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+                Current_User::disallow();
+            }
             $this->multimedia->delete();
             PHPWS_Core::goBack();
             break;
 
         case 'post_multimedia_upload':
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
+            if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
                 Current_User::disallow();
             }
             $this->postMultimediaUpload();
             break;
 
         case 'upload_multimedia_form':
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
+                Current_User::disallow();
+            }
             $this->edit();
             break;
 
@@ -47,10 +53,18 @@ class FC_Multimedia_Manager {
             break;
 
         case 'edit_embed':
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
+                Current_User::disallow();
+            }
+
             $this->editEmbed();
             break;
 
         case 'post_embed':
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
+                Current_User::disallow();
+            }
+
             if (!$this->postEmbed()) {
                 $this->editEmbed();
             } else {

@@ -25,16 +25,23 @@ class FC_Document_Manager {
     {
         switch ($_REQUEST['dop']) {
         case 'delete_document':
+            if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+                Current_User::disallow();
+            }
             $this->document->delete();
             PHPWS_Core::returnToBookmark();
             break;
         case 'post_document_upload':
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->document->folder_id, 'folder')) {
+            if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
                 Current_User::disallow();
             }
             return $this->postDocumentUpload();
             break;
         case 'upload_document_form':
+            if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+                Current_User::disallow();
+            }
+
             return $this->edit();
             break;
 

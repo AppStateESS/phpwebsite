@@ -40,7 +40,7 @@ class FC_Image_Manager {
     {
         switch ($_REQUEST['iop']) {
         case 'delete_image':
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image->folder_id, 'folder')) {
+            if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
                 Current_User::disallow();
             }
             $this->image->delete();
@@ -48,14 +48,16 @@ class FC_Image_Manager {
             break;
 
         case 'post_image_upload':
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image->folder_id, 'folder')) {
+            if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
                 Current_User::disallow();
             }
-
             $this->postImageUpload();
             break;
 
         case 'upload_image_form':
+            if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+                Current_User::disallow();
+            }
             if (!empty($_GET['fw']) && !empty($_GET['fh'])) {
                 $this->edit((int)$_GET['fw'], (int)$_GET['fh']);
             } else {
