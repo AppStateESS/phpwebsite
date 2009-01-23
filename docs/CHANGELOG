@@ -2,6 +2,13 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file..
 
+23 January 2009
++ Extra apostrophe check added to prompt script
++ Dropped unneeded array declaration from Init.php
++ Added Format selection to fckeditor, moved buttons around,
++ Updated: javascript/prompt/default.php, javascript/editor/fckeditor/custom.js
+  javascript/editor/fckeditor/phpwsstyles.xml
+
 21 January 2009
 + Checking user session in security
 + DBPager - was missing column names when prefixed by table name
