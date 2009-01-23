@@ -192,7 +192,6 @@ function initLanguage()
 
 function loadBrowserInformation()
 {
-    $allowed_platforms = array('linux', 'mac', 'windows');
     if (!isset($_SERVER['HTTP_USER_AGENT'])) {
         $GLOBALS['browser'] = NULL;
         return;
