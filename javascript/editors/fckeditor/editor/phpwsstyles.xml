@@ -8,7 +8,7 @@
  * 		Matthew McNaney <mcnaney at gmail dot com>
 -->
 <Styles>
-	<Style name="Remove CSS formatting" element="p">
+	<Style name="Remove formatting" element="p">
 		<Attribute name="style" value="" />
 		<Attribute name="class" value="" />
 	</Style>
@@ -30,8 +30,4 @@
 	<Style name="Larger" element="span">
 		<Attribute name="class" value="larger" />
 	</Style>
-	<Style name="Heading 1" element="h1" />
-	<Style name="Heading 2" element="h2" />
-	<Style name="Heading 3" element="h3" />
-	<Style name="Heading 4" element="h4" />
 </Styles>

@@ -4,16 +4,17 @@
 
 
 FCKConfig.ToolbarSets["phpws"] = [
-	['FitWindow', 'NewPage','Preview'],
+	['FitWindow', 'NewPage','Preview', 'Source'],
 	['Cut','Copy','Paste','PasteText','PasteWord'],
 	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
 	'/',
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
-	['OrderedList','UnorderedList','-','Outdent','Indent'],
+	['OrderedList','UnorderedList','-', 'Blockquote', 'Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
 	'/',
 	['Image', 'Flash', 'Table', 'Link','Unlink','Anchor'],
-	['SpellCheck', 'Rule','Smiley','SpecialChar', '-', 'Source', 'Style']
+	['SpellCheck', 'Rule','Smiley','SpecialChar', '-', 
+	'Style', 'FontFormat']
 ] ;
 
 /**
@@ -21,7 +22,7 @@ FCKConfig.ToolbarSets["phpws"] = [
  *
 
 , '/',
-['FontFormat','FontName','FontSize', 'TextColor','BGColor', 'Style']
+['FontName','FontSize', 'TextColor','BGColor']
 
 *
 **/
@@ -53,7 +54,8 @@ FCKConfig.FlashUploadURL = FCKConfig.BasePath + 'filemanager/upload/phpws/upload
 FCKConfig.FlashUploadAllowedExtensions	= ".(swf|fla)$" ;
 FCKConfig.FlashUploadDeniedExtensions	= "" ; // empty for all
 
-FCKConfig.SpellChecker = 'SpellerPages' ;
+FCKConfig.SpellChecker = 'WSC' ; //'WSC' | 'SpellerPages' | 'ieSpell'
+FCKConfig.IeSpellDownloadUrl	= 'http://www.iespell.com/download.php' ;
 FCKConfig.StylesXmlPath		= 'phpwsstyles.xml' ;
 FCKConfig.ProcessHTMLEntities	= false ;
 FCKConfig.Plugins.Add( 'autogrow' ) ;
