@@ -23,7 +23,7 @@
 
 <table class="box phpwsbb" cellspacing="1" cellpadding="6">
 <tr class="box-title">
-    <th scope="col" colspan="2">
+    <th scope="col" colspan="2" style="min-width:50%">
         {PHPWS_KEY_TITLE_SORT}
         <br />
         {PHPWS_KEY_CREATOR_SORT}
@@ -32,7 +32,7 @@
 <!-- BEGIN VIEWS_LABEL -->
     <th valign="middle" style="text-align:center" scope="col">{PHPWS_KEY_TIMES_VIEWED_SORT}</th>
 <!-- END VIEWS_LABEL -->
-    <th valign="middle" style="text-align:center;white-space:nowrap" scope="col">{LASTPOST_DATE_SORT}</th>
+    <th valign="middle" style="text-align:center;white-space:nowrap; min-width:20%" scope="col">{LASTPOST_DATE_SORT}</th>
 </tr>
 
 
@@ -50,7 +50,7 @@
 <!-- BEGIN listrows -->
 <tr{TOGGLE}>
     <td style="vertical-align:middle">{TOPIC_HAS_NEW}</td>
-    <td width="60%">
+    <td>
         {THREAD_TITLE_LINK} 
         
         <br />
@@ -64,7 +64,7 @@
 <!-- BEGIN VIEWS -->
     <td style="text-align:center">{THREAD_VIEWS}</td>
 <!-- END VIEWS -->
-    <td class="smaller" style="text-align:left; margin-right:2em; width:25%; white-space:nowrap">{THREAD_LASTPOST_INFO}</td>
+    <td class="smaller" style="text-align:left; white-space:nowrap">{THREAD_LASTPOST_INFO}</td>
 </tr>
 <!-- END listrows -->
 
