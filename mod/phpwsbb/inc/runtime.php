@@ -16,7 +16,7 @@ if (isset($_REQUEST['module']))
 * Display block with all active forums
 */
 $list = array();
-if (PHPWS_Settings::get('phpwsbb', 'showforumsblock')) {
+if (!isset($_REQUEST['module']) && PHPWS_Settings::get('phpwsbb', 'showforumsblock')) {
 	if (!Current_User::isLogged()) {
 		$cachekey = 'bb_forumsblock';
 		$list = PHPWS_Cache::get($cachekey);
