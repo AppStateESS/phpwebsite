@@ -33,7 +33,7 @@
 			<span style="float: right;">
 				{FORUM_LOCKED}
 			</span>
-			{FORUM_TITLE_LINK}<br />
+			<span style="white-space:nowrap">{FORUM_TITLE_LINK}</span><br />
 			<span class="smaller">{FORUM_DESCRIPTION}</span>
 		</td>
 		<td style="text-align:center;vertical-align:middle">{FORUM_TOPICS}</td>
