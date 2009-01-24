@@ -1,6 +1,10 @@
 # ChangeLog for phpwsbb
 # $Id: ChangeLog,v 1.1 2008/08/23 04:19:22 adarkling Exp $
 
+========================
+Changes in version 2.0.2
+========================
++ Fixed "Fatal error: Class 'PHPWSBB_Forms' not found" bug
 
 ========================
 Changes in version 2.0.1
