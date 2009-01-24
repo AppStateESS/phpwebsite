@@ -179,12 +179,12 @@ class PHPWSBB_Data
     	    return;
         // add an "Attatch to Forum" link to the MiniAdmin
         if (javascriptEnabled()) {
-            if ($object_class == 'key') {
+            if (strtolower($object_class) == 'key') {
                 $js_vars['label'] = dgettext('phpwsbb', 'Assign to a Forum');
                 $js_vars['link_title'] = dgettext('phpwsbb', "Add this item's discussion to the phpwsbb Bulletin Board module");
                 $vars['key_id'] = $object->id;
             }
-            elseif ($object_class == 'phpwsbb_topic') {
+            elseif (strtolower($object_class) == 'phpwsbb_topic') {
                 $js_vars['label'] = dgettext('phpwsbb', 'Move Topic');
                 $js_vars['link_title'] = dgettext('phpwsbb', 'Move this topic to another Forum');
                 $vars['topic'] = $object->id;

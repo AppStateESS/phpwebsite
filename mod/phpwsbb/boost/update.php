@@ -35,6 +35,7 @@ Changes in version 2.0.2
 ========================
 + Fixed "Fatal error: Class `PHPWSBB_Forms` not found" bug
 + Adjusted formatting of forum.tpl
++ Minor php5 compatibility change
 </pre>';
         
         
