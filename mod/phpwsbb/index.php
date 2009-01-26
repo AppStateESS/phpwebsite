@@ -74,7 +74,7 @@ if (isset($_REQUEST['BB_vars']))
         $req = explode(':', $value);
         $_REQUEST[$req[0]] = $req[1];
     }
-    unset($_REQUEST['ARTICLE_vars']);
+    unset($_REQUEST['BB_vars']);
 }
 
 // Basic view public function request
@@ -88,7 +88,6 @@ if (!empty($_GET['view'])) {
         }
         else {
             $message = dgettext('phpwsbb', "This topic doesn't exist.  Please check the address you entered.");
-            unset($topic);
         }
         break;
 
@@ -100,7 +99,6 @@ if (!empty($_GET['view'])) {
         }
         else {
             $message = dgettext('phpwsbb', "This forum doesn't exist.  Please check the address you entered.");
-            unset($forum);
         }
         break;
     }
@@ -120,7 +118,7 @@ elseif (!empty($_REQUEST['op'])) {
         $GLOBALS['BBForums'][(int) $_REQUEST['forum']] = new PHPWSBB_Forum((int) $_REQUEST['forum']);
         $forum = & $GLOBALS['BBForums'][(int) $_REQUEST['forum']];
     }
-
+    
     switch ($_REQUEST['op']) {
     case 'create_topic': 
         $topic = & new PHPWSBB_Topic();
@@ -256,19 +254,25 @@ if (empty($content)) {
 /* Show the MiniAdmin */
 PHPWSBB_Data::MiniAdmin();
 if (!empty($topic))
-     $topic->MiniAdmin();
-     if (!empty($forum))
-     $forum->MiniAdmin();
+ $topic->MiniAdmin();
+ if (!empty($forum))
+ $forum->MiniAdmin();
+ 
+ /* Show generated content */
+if (!empty($title))
+    $template['TITLE']   = $title;
+if (!empty($message))
+    $template['MESSAGE'] = $message;
+if (!empty($content))
+    $template['CONTENT'] = $content;
+$content = PHPWS_Template::process($template, 'phpwsbb', 'main.tpl');
+// Release module vars
+unset($topic, $forum, $title, $message, $template,$GLOBALS['Moderators_byForum'], $GLOBALS['Moderators_byUser'],
+$GLOBALS['BBForumTags'], $GLOBALS['BB_errors'], $GLOBALS['BB_message'], $GLOBALS['BBForums']);
+// Release Comment-based GLOBALS
+unset($thread,$GLOBALS['Comment_Users'],$GLOBALS['Comment_UsersGroups'],$GLOBALS['cm_threads']);
 
-     /* Show generated content */
-     if (!empty($title))
-     $template['TITLE']   = $title;
-     if (!empty($message))
-     $template['MESSAGE'] = $message;
-     if (!empty($content))
-     $template['CONTENT'] = $content;
-     $content = PHPWS_Template::process($template, 'phpwsbb', 'main.tpl');
-	
-     Layout::add($content);
-     unset($topic, $forum, $title, $message, $content);
-     ?>
+Layout::add($content);
+unset($content);
+
+ ?>

@@ -5,6 +5,7 @@
 Changes in version 2.0.2
 ========================
 + Forms use "break post" now.
++ Memory usage optimization
 
 ========================
 Changes in version 2.0.2
