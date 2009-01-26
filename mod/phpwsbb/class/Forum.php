@@ -288,7 +288,8 @@ class PHPWSBB_Forum
         /* Variable to set tab order */
         $tabs = 1;
         /* Create form */
-        $form = & new PHPWS_Form('bb_edit');
+        $form = new PHPWS_Form('bb_edit');
+        $form->useBreaker();
         if ($this->id)
             $forum_arg = '&amp;forum='.$this->id;
         $form->setAction('index.php?module=phpwsbb&amp;op=edit_forum'.@$forum_arg);

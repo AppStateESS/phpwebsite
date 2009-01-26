@@ -306,6 +306,7 @@ class PHPWSBB_Topic
 
 		/* Construct editform tags */
         $form = new PHPWS_Form;
+        $form->useBreaker();
         $form->setAction('index.php?module=phpwsbb');
         if ($this->id)
         	$form->addHidden('topic', $this->id); 
