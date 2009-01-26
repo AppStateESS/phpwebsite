@@ -800,12 +800,14 @@ class Layout {
 
     public function miniLinks()
     {
+        $vars['action']  = 'admin';
         if (Layout::isMoveBox()) {
-            $vars['action']  = 'admin';
             $vars['command'] = 'turn_off_box_move';
             $links[] = PHPWS_Text::moduleLink(dgettext('layout', 'Box move off'), 'layout', $vars);
+        } else {
+            $vars['command'] = 'move_boxes_on';
+            $links[] = PHPWS_Text::secureLink(dgettext('layout', 'Box move on'), 'layout', $vars);
         }
-
 
         $key = Key::getCurrent();
         if (javascriptEnabled() && Layout::getExtraStyles() &&
