@@ -481,7 +481,7 @@ class PHPWSBB_Topic
         $this->_key->setModule('phpwsbb');
         $this->_key->setItemName('topic');
         $this->_key->setItemId($this->id);
-        //$key->setEditPermission('edit_threads');
+        $this->_key->setEditPermission('edit_threads');
         $this->_key->setUrl('index.php?module=phpwsbb&amp;view=topic&amp;id='.$this->id);
         $this->_key->setTitle($this->title);
         $this->_key->setSummary(strip_tags($this->summary));

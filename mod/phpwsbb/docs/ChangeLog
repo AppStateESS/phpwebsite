@@ -2,10 +2,11 @@
 # $Id: ChangeLog,v 1.1 2008/08/23 04:19:22 adarkling Exp $
 
 ========================
-Changes in version 2.0.2
+Changes in version 2.0.3
 ========================
 + Forms use "break post" now.
 + Memory usage optimization
++ Fixed approval bug reported by Verdon http://www.phpwsforums.com/showthread.php?p=30447#post30447
 
 ========================
 Changes in version 2.0.2
