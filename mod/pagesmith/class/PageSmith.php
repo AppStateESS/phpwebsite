@@ -171,8 +171,24 @@ class PageSmith {
             $this->forms->pageList();
             break;
 
+        case 'shorten_links':
+            if (!Current_User::authorized('pagesmith', 'settings', null, null, true)) {
+                Current_User::disallow();
+            }
+            $this->shortenLinks();
+            PHPWS_Core::goBack();
+            break;
+
+        case 'lengthen_links':
+            if (!Current_User::authorized('pagesmith', 'settings', null, null, true)) {
+                Current_User::disallow();
+            }
+            $this->lengthenLinks();
+            PHPWS_Core::goBack();
+            break;
+
         case 'post_settings':
-            if (!Current_User::authorized('pagesmith',null,null,null,true)) {
+            if (!Current_User::authorized('pagesmith', 'settings', null, null, true)) {
                 Current_User::disallow();
             }
             $this->postSettings();
@@ -259,7 +275,7 @@ class PageSmith {
         $link = 'index.php?module=pagesmith&amp;aop=menu';
         $tabs['new']  = array('title'=>dgettext('pagesmith', 'New'), 'link'=>$link);
         $tabs['list'] = array('title'=>dgettext('pagesmith', 'List'), 'link'=>$link);
-        if (Current_User::isUnrestricted('pagesmith')) {
+        if (Current_User::isUnrestricted('pagesmith') && Current_User::allow('pagesmith', 'change_settings')) {
             $tabs['settings'] = array('title'=>dgettext('pagesmith', 'Settings'), 'link'=>$link);
         }
 
@@ -567,6 +583,70 @@ class PageSmith {
         PHPWS_Error::logIfError($db->delete());
     }
 
+    private function shortenLinks()
+    {
+        $db = new PHPWS_DB('menu_links');
+        $db->addColumn('id');
+        $db->addColumn('url');
+        $db->addColumn('key_id');
+        $db->addWhere('url', '%index.php?module=pagesmith&uop=view_page%', 'like');
+        $result = $db->select();
+
+        if (empty($result)) {
+            return true;
+        } elseif (PHPWS_Error::logIfError($result)) {
+            return false;
+        }
+
+        $db->reset();
+
+        $db2 = new PHPWS_DB('phpws_key');
+
+        foreach ($result as $link) {
+            $link['url'] = preg_replace('@index.php\?module=pagesmith&uop=view_page&id=(\d+)$@', 'pagesmith/\\1', $link['url']);
+            $db->addValue($link);
+            $db->addWhere('id', $link['id']);
+            if (!PHPWS_Error::logIfError($db->update()) && $link['key_id']) {
+                $db2->addValue('url', $link['url']);
+                $db2->addWhere('id', $link['key_id']);
+                PHPWS_Error::logIfError($db2->update());
+                $db2->reset();
+            }
+            $db->reset();
+        }
+    }
+
+    private function lengthenLinks()
+    {
+        $db = new PHPWS_DB('menu_links');
+        $db->addColumn('id');
+        $db->addColumn('url');
+        $db->addColumn('key_id');
+        $db->addWhere('url', 'pagesmith/[0-9]+$', 'regexp');
+        $result = $db->select();
+        if (empty($result)) {
+            return true;
+        } elseif (PHPWS_Error::logIfError($result)) {
+            return false;
+        }
+
+        $db->reset();
+
+        $db2 = new PHPWS_DB('phpws_key');
+
+        foreach ($result as $link) {
+            $link['url'] = preg_replace('@pagesmith/(\d+)$@', 'index.php?module=pagesmith&uop=view_page&id=\\1', $link['url']);
+            $db->addValue($link);
+            $db->addWhere('id', $link['id']);
+            if (!PHPWS_Error::logIfError($db->update()) && $link['key_id']) {
+                $db2->addValue('url', $link['url']);
+                $db2->addWhere('id', $link['key_id']);
+                PHPWS_Error::logIfError($db2->update());
+                $db2->reset();
+            }
+            $db->reset();
+        }
+    }
 }
 
 ?>

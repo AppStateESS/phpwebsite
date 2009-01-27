@@ -1,8 +1,10 @@
 27 January 2009
 + updated threesec templates to conform with norm box-title,
   box-content layout
++ Added ability to lengthen or shorten pagesmith links.
 + Updated: templates/page_templates/threesec/page.tpl,
-  templates/page_templates/threesec-tbl/page.tpl
+  templates/page_templates/threesec-tbl/page.tpl,
+  templates/settings.tpl
 
 16 January 2009
 + Added fix so edit mode does not parse smarttags.

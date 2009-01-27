@@ -350,6 +350,15 @@ class PS_Forms {
         $form->setMatch('auto_link', PHPWS_Settings::get('pagesmith', 'auto_link'));
         $form->setLabel('auto_link', dgettext('pagesmith', 'Add menu link for new pages.'));
 
+        $vars['aop'] = 'shorten_links';
+        $form->addTplTag('SHORTEN_MENU_LINKS', PHPWS_Text::secureLink(dgettext('pagesmith', 'Shorten all menu links'), 'pagesmith', $vars));
+        $form->addTplTag('SHORT_EXAMPLE', 'index.php?module=pagesmith&uop=view_page&id=2 => pagesmith/2');
+
+        $vars['aop'] = 'lengthen_links';
+        $form->addTplTag('LENGTHEN_MENU_LINKS',  PHPWS_Text::secureLink(dgettext('pagesmith', 'Lengthen all menu links'), 'pagesmith', $vars));
+        $form->addTplTag('LENGTH_EXAMPLE', 'pagesmith/2 => index.php?module=pagesmith&uop=view_page&id=2');
+
+
         $this->ps->title = dgettext('pagesmith', 'PageSmith Settings');
         $this->ps->content = PHPWS_Template::process($form->getTemplate(), 'pagesmith', 'settings.tpl');
     }
