@@ -239,18 +239,22 @@ class PHPWSBB_Topic
 	{
 		Layout::addPageTitle(dgettext('phpwsbb', 'Topic').': '.strip_tags($this->title));
         Layout::addStyle('phpwsbb');
-	    /* Now test to see if thread is viewable */
-		if($this->is_phpwsbb && !$this->total_posts > 0)
-            return dgettext('phpwsbb', 'The thread you requested is awaiting approval by an administrator.');
 
-  		/* Get Thread Info */
-		$tags = $this->_get_tags();
-        /* Raise the Key flag (also updates view count)*/
-        $this->_key->flag();
-        /* Get Comment Thread */
-        PHPWS_Core::initModClass('comments', 'Comments.php');
-        $thread = Comments::getThread($this->_key); 
-		return PHPWS_Template::processTemplate($tags, 'phpwsbb', 'topic.tpl') . $thread->view();
+        /* Get Thread Info */
+        $tags = $this->_get_tags();
+
+        /* Now test to see if thread is viewable */
+		if($this->is_phpwsbb && !$this->total_posts > 0)
+            $content = dgettext('phpwsbb', 'The thread you requested is awaiting approval by an administrator.');
+        else {
+            /* Raise the Key flag (also updates view count)*/
+            $this->_key->flag();
+            /* Get Comment Thread */
+            PHPWS_Core::initModClass('comments', 'Comments.php');
+            $thread = Comments::getThread($this->_key); 
+            $content = $thread->view();
+        }
+		return PHPWS_Template::processTemplate($tags, 'phpwsbb', 'topic.tpl') . $content;
 	}
 
 	/**
