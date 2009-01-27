@@ -1,3 +1,9 @@
+27 January 2009
++ updated threesec templates to conform with norm box-title,
+  box-content layout
++ Updated: templates/page_templates/threesec/page.tpl,
+  templates/page_templates/threesec-tbl/page.tpl
+
 16 January 2009
 + Added fix so edit mode does not parse smarttags.
 

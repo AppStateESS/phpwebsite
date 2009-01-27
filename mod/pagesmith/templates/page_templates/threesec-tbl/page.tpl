@@ -1,5 +1,6 @@
 <div id="threesec_tbl-page">
-   <div class="ps-title"><h1 id="threesec-tbl-page-title">{page_title}</h1></div>
+   <div class="box-title"><h1 id="threesec-tbl-page-title">{page_title}</h1></div>
+   <div class="box-content">
    <table>
    <tr class="section">
    <td>
@@ -26,4 +27,5 @@
    </td>
    </tr>
    </table>
+   </div>
 </div>

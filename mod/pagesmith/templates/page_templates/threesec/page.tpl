@@ -1,5 +1,6 @@
 <div id="threesec-page">
-   <h1 id="threesec-page-title">{page_title}</h1>
+   <div class="box-title"><h1 id="threesec-page-title">{page_title}</h1></div>
+   <div class="box-content">
    <div class="section">
       <div class="content">
       <!-- BEGIN block1 --><div id="threesec-block1">{block1}</div><!-- BEGIN block1 -->
@@ -17,5 +18,6 @@
       <!-- BEGIN block3 --><div id="threesec-block3">{block3}</div><!-- BEGIN block3 -->
       {text3_edit}<div id="threesec-text3">{text3}</div>
       </div>
+   </div>
    </div>
 </div>
