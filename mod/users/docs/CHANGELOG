@@ -1,3 +1,12 @@
+27 January 2009
++ php fiveasized the classes.
++ Added some needed error logging to user creation problems
++ Added ability for default user groups to be set for admin created
+  and newly joined users.
++ Fixed testing on addMembers. Previous code was nonsensical.
++ _user_group id gets set upon a user object save.
++ Updated: templates/forms/settings.tpl
+
 Version 2.6.1
 -----------------------------------------------------------------------
 11 December 2008

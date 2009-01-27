@@ -169,17 +169,15 @@ class PHPWS_Group {
             $db = new PHPWS_DB('users_groups');
             $db->addWhere('id', $member);
             $result = $db->select('one');
-            if (isset($result)){
-                if(PEAR::isError($result))
-                    return $result;
-                else
-                    return PHPWS_Error::get(USER_ERR_GROUP_DNE, 'users', 'addMember');
+            if (PHPWS_Error::logIfError($result)) {
+                return false;
+            } elseif (!$result) {
+                PHPWS_Error::log(USER_ERR_GROUP_DNE, 'users', 'addMember');
+                return false;
             } else {
                 $this->_members[] = $member;
-                return TRUE;
+                return true;
             }
-
-            $result = $db->select('one');
         } else {
             $this->_members[] = $member;
         }
@@ -203,7 +201,7 @@ class PHPWS_Group {
             foreach($members as $member){
                 $db->addValue('group_id', $this->getId());
                 $db->addValue('member_id', $member);
-                $db->insert();
+                PHPWS_Error::logIfError($db->insert());
                 $db->resetValues();
             }
         }

@@ -19,7 +19,7 @@ if (!defined('ALLOW_DEITY_FORGET')) {
 
 class User_Action {
 
-    function adminAction()
+    public function adminAction()
     {
         PHPWS_Core::initModClass('users', 'Group.php');
         $message = $content = null;
@@ -312,9 +312,20 @@ class User_Action {
             $result = User_Action::postUser($user);
 
             if ($result === true){
+                $new_user = !(bool)$user->id;
+
                 $user->setActive(true);
                 $user->setApproved(true);
-                $user->save();
+                if (PHPWS_Error::logIfError($user->save())) {
+                    $title = dgettext('users', 'Sorry');
+                    $content = dgettext('users', 'An error occurred when trying to save the user. Check your logs.');
+                    break;
+                }
+
+                if ($new_user) {
+                    User_Action::assignDefaultGroup($user, 'admin');
+                }
+
                 $panel->setCurrentTab('manage_users');
 
                 if (isset($_POST['user_id'])) {
@@ -441,7 +452,7 @@ class User_Action {
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
     }
 
-    function popupPermission()
+    public function popupPermission()
     {
         if (!isset($_GET['key_id'])) {
             echo dgettext('users', 'Missing key information.');
@@ -464,7 +475,7 @@ class User_Action {
         Layout::nakedDisplay($content);
     }
 
-    function getPermissionForm(Key $key)
+    public function getPermissionForm(Key $key)
     {
         if (Current_User::isUnrestricted($key->module) &&
             Current_User::allow($key->module, $key->edit_permission)) {
@@ -474,7 +485,7 @@ class User_Action {
         }
     }
 
-    function permission()
+    public function permission()
     {
         if (!isset($_REQUEST['key_id'])) {
             return;
@@ -511,7 +522,7 @@ class User_Action {
     }
 
 
-    function getMessage()
+    public function getMessage()
     {
         if (!isset($_SESSION['User_Admin_Message'])) {
             return null;
@@ -521,7 +532,7 @@ class User_Action {
         return $message;
     }
 
-    function sendMessage($message, $command)
+    public function sendMessage($message, $command)
     {
         $_SESSION['User_Admin_Message'] = $message;
         PHPWS_Core::reroute('index.php?module=users&action=admin&command='
@@ -531,7 +542,7 @@ class User_Action {
     /**
      * Checks a new user's form for errors
      */
-    function postNewUser(PHPWS_User $user)
+    public function postNewUser(PHPWS_User $user)
     {
         $new_user_method = PHPWS_User::getUserSetting('new_user_method');
 
@@ -577,7 +588,7 @@ class User_Action {
     }
 
 
-    function confirm()
+    public function confirm()
     {
         if (!PHPWS_User::getUserSetting('graphic_confirm') ||
             !extension_loaded('gd')) {
@@ -588,7 +599,7 @@ class User_Action {
         return Captcha::verify();
     }
 
-    function postUser(PHPWS_User $user, $set_username=true)
+    public function postUser(PHPWS_User $user, $set_username=true)
     {
         if ($set_username){
             $user->_prev_username = $user->username;
@@ -645,7 +656,7 @@ class User_Action {
         }
     }
 
-    function cpanel()
+    public function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = PHPWS_Text::linkAddress('users', array('action'=>'admin'),false,false,true,false);
@@ -677,7 +688,7 @@ class User_Action {
      * Controller of user requests. Based on the command request variable
      * defaults to my_page
      */
-    function userAction()
+    public function userAction()
     {
         $auth = Current_User::getAuthorization();
         $content = $title = null;
@@ -870,7 +881,7 @@ class User_Action {
         }
     }
 
-    function confirmUser()
+    public function confirmUser()
     {
         $hash = $_GET['hash'];
         if (preg_match('/\W/', $hash)) {
@@ -893,8 +904,12 @@ class User_Action {
             if ($row['deadline'] > mktime()) {
                 $db->delete();
                 $user->approved = 1;
-                $user->save();
-                return true;
+                if (PHPWS_Error::logIfError($user->save())) {
+                    return false;
+                } else {
+                    User_Action::assignDefaultGroup($user, 'signup');
+                    return true;
+                }
             } else {
                 // If the deadline has passed, delete the user and return false.
                 $user->delete();
@@ -903,7 +918,7 @@ class User_Action {
         }
     }
 
-    function cleanUpConfirm()
+    public function cleanUpConfirm()
     {
         $db = new PHPWS_DB('users_signup');
         $db->addWhere('deadline', mktime(), '<');
@@ -911,12 +926,13 @@ class User_Action {
         PHPWS_Error::logIfError($result);
     }
 
-    function successfulSignup($user)
+    public function successfulSignup($user)
     {
         switch (PHPWS_User::getUserSetting('new_user_method')) {
         case AUTO_SIGNUP:
             $result = User_Action::saveNewUser($user, true);
             if ($result) {
+                User_Action::assignDefaultGroup($user, 'signup');
                 $content[] = dgettext('users', 'Account created successfully!');
                 $content[] = dgettext('users', 'You will return to the home page in five seconds.');
                 $content[] = PHPWS_Text::moduleLink(dgettext('users', 'Click here if you are not redirected.'));
@@ -943,7 +959,7 @@ class User_Action {
         return implode('<br />', $content);
     }
 
-    function confirmEmail($user)
+    public function confirmEmail($user)
     {
         $site_contact = PHPWS_User::getUserSetting('site_contact');
         $authkey = User_Action::_createSignupConfirmation($user->id);
@@ -963,7 +979,7 @@ class User_Action {
         return $mail->send();
     }
 
-    function _getSignupMessage($authkey)
+    public function _getSignupMessage($authkey)
     {
         $http = PHPWS_Core::getHomeHttp();
 
@@ -976,7 +992,7 @@ class User_Action {
         return PHPWS_Template::process($template, 'users', 'confirm/confirm.en-us.tpl');
     }
 
-    function _createSignupConfirmation($user_id)
+    public function _createSignupConfirmation($user_id)
     {
         $deadline = mktime() + (3600 * NEW_SIGNUP_WINDOW);
         $authkey = md5($deadline . $user_id);
@@ -993,7 +1009,7 @@ class User_Action {
         }
     }
 
-    function saveNewUser(PHPWS_User $user, $approved)
+    public function saveNewUser(PHPWS_User $user, $approved)
     {
         $user->setPassword($user->_password);
         $user->setApproved($approved);
@@ -1008,7 +1024,7 @@ class User_Action {
         return true;
     }
 
-    function postPermission()
+    public function postPermission()
     {
         PHPWS_Core::initModClass('users', 'Permission.php');
 
@@ -1026,13 +1042,13 @@ class User_Action {
     }
 
     // Moved to Current User
-    function loginUser($username, $password)
+    public function loginUser($username, $password)
     {
         return Current_User::loginUser($username, $password);
     }
 
 
-    function postGroup(PHPWS_Group $group, $showLikeGroups=false)
+    public function postGroup(PHPWS_Group $group, $showLikeGroups=false)
     {
         $result = $group->setName($_POST['groupname'], true);
         if (PEAR::isError($result))
@@ -1042,18 +1058,18 @@ class User_Action {
     }
 
     // Moved ot Current User
-    function authorize($authorize, $username, $password)
+    public function authorize($authorize, $username, $password)
     {
         return Current_User::authorize($authorize, $username, $password);
     }
 
 
-    function badLogin()
+    public function badLogin()
     {
         Layout::add(dgettext('users', 'Username and password refused.'));
     }
 
-    function getGroups($mode=null)
+    public function getGroups($mode=null)
     {
         if (isset($GLOBALS['User_Group_List'])) {
             return $GLOBALS['User_Group_List'];
@@ -1083,7 +1099,7 @@ class User_Action {
         return $result;
     }
 
-    function update_settings()
+    public function update_settings()
     {
         $error = null;
 
@@ -1121,6 +1137,9 @@ class User_Action {
             $settings['graphic_confirm'] = 0;
         }
 
+        $settings['default_join_group'] = (int)$_POST['default_join_group'];
+        $settings['default_admin_group'] = (int)$_POST['default_admin_group'];
+
         $settings['user_menu'] = $_POST['user_menu'];
         $settings['forbidden_usernames'] = str_replace(' ', "\n", strtolower(strip_tags($_POST['forbidden_usernames'])));
 
@@ -1133,7 +1152,7 @@ class User_Action {
         }
     }
 
-    function getAuthorizationList()
+    public function getAuthorizationList()
     {
         $db = new PHPWS_DB('users_auth_scripts');
         $db->addOrder('display_name');
@@ -1146,7 +1165,7 @@ class User_Action {
         return $result;
     }
 
-    function postAuthorization()
+    public function postAuthorization()
     {
         if (isset($_POST['add_script'])){
             if (!isset($_POST['file_list'])) {
@@ -1179,14 +1198,14 @@ class User_Action {
         return true;
     }
 
-    function dropAuthorization($script_id)
+    public function dropAuthorization($script_id)
     {
         $db = new PHPWS_DB('users_auth_scripts');
         $db->addWhere('id', (int)$script_id);
         return $db->delete();
     }
 
-    function postForgot(&$content)
+    public function postForgot(&$content)
     {
         if (empty($_POST['fg_username']) && empty($_POST['fg_email'])) {
             $content = dgettext('users', 'You must enter either a username or email address.');
@@ -1285,7 +1304,7 @@ class User_Action {
         }
     }
 
-    function emailPasswordReset($user_id, $email)
+    public function emailPasswordReset($user_id, $email)
     {
         $db = new PHPWS_DB('users_pw_reset');
 
@@ -1344,7 +1363,7 @@ class User_Action {
         }
     }
 
-    function emailUsernameReminder($username, $email)
+    public function emailUsernameReminder($username, $email)
     {
         $page_title = $_SESSION['Layout_Settings']->getPageTitle(true);
         $url = PHPWS_Core::getHomeHttp();
@@ -1371,7 +1390,7 @@ class User_Action {
     /**
      * Returns user id is successful, zero otherwise
      */
-    function checkResetPassword()
+    public function checkResetPassword()
     {
         @$auth = $_GET['auth'];
         if (empty($auth) || preg_match('/\W/', $auth)) {
@@ -1393,7 +1412,7 @@ class User_Action {
         }
     }
 
-    function finishResetPW()
+    public function finishResetPW()
     {
         $result = PHPWS_User::checkPassword($_POST['password1'], $_POST['password2']);
         if (PEAR::isError($result)) {
@@ -1435,7 +1454,7 @@ class User_Action {
 
     }
 
-    function checkPermissionTables()
+    public function checkPermissionTables()
     {
         PHPWS_Core::initModClass('users', 'Permission.php');
         $db = new PHPWS_DB('modules');
@@ -1457,7 +1476,7 @@ class User_Action {
         return implode('<br />', $content);
     }
 
-    function activateUser($user_id, $value)
+    public function activateUser($user_id, $value)
     {
         $db = new PHPWS_DB('users');
         $db->addWhere('id', (int)$user_id);
@@ -1471,7 +1490,7 @@ class User_Action {
         }
     }
 
-    function testForbidden($user)
+    public function testForbidden($user)
     {
         $forbidden = PHPWS_Settings::get('users', 'forbidden_usernames');
         if (empty($forbidden)) {
@@ -1495,7 +1514,7 @@ class User_Action {
         return true;
     }
 
-    function askNotify($user)
+    public function askNotify($user)
     {
         $content[] = dgettext('users', 'Do you wish to notify the new user?');
         $_SESSION['New_User']['user_id']  = $user->id;
@@ -1513,7 +1532,7 @@ class User_Action {
         return implode('<br />', $content);
     }
 
-    function notifyUser()
+    public function notifyUser()
     {
         PHPWS_Core::initCoreClass('Mail.php');
         setLanguage(DEFAULT_LANGUAGE);
@@ -1539,6 +1558,31 @@ class User_Action {
         $mail->setMessageBody(implode("\n\n", $body));
         $result = $mail->send();
         return $result;
+    }
+
+    public function assignDefaultGroup(PHPWS_User $user, $mode)
+    {
+        if ($mode == 'admin') {
+            $default_group = PHPWS_Settings::get('users', 'default_admin_group');
+        } elseif ($mode == 'signup') {
+            $default_group = PHPWS_Settings::get('users', 'default_join_group');
+        } else {
+            return false;
+        }
+
+        if (!$default_group) {
+            return false;
+        }
+
+        $group = new PHPWS_Group($default_group);
+
+        if (!$group->id) {
+            return false;
+        }
+
+        $group->addMember($user->_user_group);
+        $group->save();
+        return true;
     }
 }
 

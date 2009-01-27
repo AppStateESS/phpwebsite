@@ -16,7 +16,7 @@ PHPWS_Core::initCoreClass('Form.php');
 
 class User_Form {
 
-    function logBox($logged=TRUE)
+    public function logBox($logged=TRUE)
     {
         $auth = Current_User::getAuthorization();
 
@@ -41,7 +41,7 @@ class User_Form {
     }
 
 
-    function loggedIn()
+    public function loggedIn()
     {
         $auth = Current_User::getAuthorization();
 
@@ -65,7 +65,7 @@ class User_Form {
         return PHPWS_Template::process($template, 'users', 'usermenus/' . $usermenu);
     }
 
-    function loggedOut()
+    public function loggedOut()
     {
         if (isset($_REQUEST['phpws_username'])) {
             $username = $_REQUEST['phpws_username'];
@@ -105,7 +105,7 @@ class User_Form {
         return PHPWS_Template::process($template, 'users', 'usermenus/' . $usermenu);
     }
 
-    function setPermissions($id)
+    public function setPermissions($id)
     {
         $group = new PHPWS_Group($id, FALSE);
 
@@ -167,7 +167,7 @@ class User_Form {
     }
 
 
-    function modulePermission($mod, PHPWS_Group $group)
+    public function modulePermission($mod, PHPWS_Group $group)
     {
         $file = PHPWS_SOURCE_DIR . 'mod/' . $mod['title'] . '/boost/permission.php';
         if (!is_file($file)) {
@@ -237,7 +237,7 @@ class User_Form {
         return $template;
     }
 
-    function manageUsers()
+    public function manageUsers()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -263,7 +263,7 @@ class User_Form {
     }
 
 
-    function manageGroups()
+    public function manageGroups()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -285,7 +285,7 @@ class User_Form {
         return $pager->get();
     }
 
-    function manageMembers(PHPWS_Group $group)
+    public function manageMembers(PHPWS_Group $group)
     {
         $form = new PHPWS_Form('memberList');
         $form->addHidden('module', 'users');
@@ -351,7 +351,7 @@ class User_Form {
     }
 
 
-    function getMemberList(PHPWS_Group $group)
+    public function getMemberList(PHPWS_Group $group)
     {
         $col_limit = 30;
         $content = NULL;
@@ -403,7 +403,7 @@ class User_Form {
         return $content;
     }
 
-    function userForm(PHPWS_User $user, $message=NULL)
+    public function userForm(PHPWS_User $user, $message=NULL)
     {
         javascript('jquery');
         javascript('modules/users/generate');
@@ -481,7 +481,7 @@ class User_Form {
         return PHPWS_Template::process($template, 'users', 'forms/userForm.tpl');
     }
 
-    function deify(PHPWS_User $user)
+    public function deify(PHPWS_User $user)
     {
         if (!$_SESSION['User']->isDeity() || ($user->getId() == $_SESSION['User']->getId())) {
             $content[] = dgettext('users', 'Only another deity can create a deity.');
@@ -500,7 +500,7 @@ class User_Form {
         return implode('<br />', $content);
     }
 
-    function mortalize(PHPWS_User $user)
+    public function mortalize(PHPWS_User $user)
     {
         if (!$_SESSION['User']->isDeity()) {
             $content[] = dgettext('users', 'Only another deity can create a mortal.');
@@ -521,7 +521,7 @@ class User_Form {
         return implode('<br />', $content);
     }
 
-    function groupForm(PHPWS_Group $group)
+    public function groupForm(PHPWS_Group $group)
     {
         $form = new PHPWS_Form('groupForm');
         $members = $group->getMembers();
@@ -555,7 +555,7 @@ class User_Form {
         return $content;
     }
 
-    function memberForm()
+    public function memberForm()
     {
         $form->add('add_member', 'textfield');
         $form->add('new_member_submit', 'submit', dgettext('users', 'Add'));
@@ -574,7 +574,7 @@ class User_Form {
         }
     }
 
-    function memberListForm($group)
+    public function memberListForm($group)
     {
         $members = $group->getMembers();
 
@@ -610,7 +610,7 @@ class User_Form {
     }
 
 
-    function getLikeGroups($name, PHPWS_Group $group)
+    public function getLikeGroups($name, PHPWS_Group $group)
     {
         $db = new PHPWS_DB('users_groups');
         $name = preg_replace('/[^\w]/', '', $name);
@@ -669,7 +669,7 @@ class User_Form {
     /**
      *  Form for adding and choosing default authorization scripts
      */
-    function authorizationSetup()
+    public function authorizationSetup()
     {
         $template = array();
         PHPWS_Core::initCoreClass('File.php');
@@ -754,7 +754,7 @@ class User_Form {
         return PHPWS_Template::process($template, 'users', 'forms/authorization.tpl');
     }
 
-    function settings()
+    public function settings()
     {
         PHPWS_Core::initModClass('help', 'Help.php');
 
@@ -809,6 +809,21 @@ class User_Form {
         $form->addTextArea('forbidden_usernames', PHPWS_Settings::get('users', 'forbidden_usernames'));
         $form->setLabel('forbidden_usernames', dgettext('users', 'Forbidden usernames (one per line)'));
 
+        $groups = User_Action::getGroups('group');
+        if (is_array($groups)) {
+            $groups = array(0=> dgettext('users', '-- None --')) + $groups;
+        } else {
+            $groups = array(0=> dgettext('users', '-- None --'));
+        }
+
+        $form->addSelect('default_join_group', $groups);
+        $form->setLabel('default_join_group', dgettext('users', 'Joined user default group'));
+        $form->setMatch('default_join_group', PHPWS_Settings::get('users', 'default_join_group'));
+
+        $form->addSelect('default_admin_group', $groups);
+        $form->setLabel('default_admin_group', dgettext('users', 'Admin created user default group'));
+        $form->setMatch('default_admin_group', PHPWS_Settings::get('users', 'default_admin_group'));
+
         $template = $form->getTemplate();
 
         $vars['action'] = 'admin';
@@ -823,7 +838,7 @@ class User_Form {
     /**
      * Signup form for new users
      */
-    function signup_form($user, $message=NULL)
+    public function signup_form($user, $message=NULL)
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'users');
@@ -869,13 +884,13 @@ class User_Form {
         return $result;
     }
 
-    function confirmGraphic()
+    public function confirmGraphic()
     {
         PHPWS_Core::initCoreClass('Captcha.php');
         return Captcha::get();
     }
 
-    function loginPage()
+    public function loginPage()
     {
         if (isset($_REQUEST['phpws_username'])) {
             $username = $_REQUEST['phpws_username'];
@@ -902,7 +917,7 @@ class User_Form {
     }
 
 
-    function _getNonUserGroups()
+    public function _getNonUserGroups()
     {
         $db = new PHPWS_DB('users_groups');
         $db->addOrder('name');
@@ -914,7 +929,7 @@ class User_Form {
     /**
      * Creates the permission menu template
      */
-    function permissionMenu(Key $key, $popbox=FALSE)
+    public function permissionMenu(Key $key, $popbox=FALSE)
     {
         $edit_groups = Users_Permission::getRestrictedGroups($key, TRUE);
         if (PEAR::isError($edit_groups)) {
@@ -987,7 +1002,7 @@ class User_Form {
         return $tpl;
     }
 
-    function _createMultiple($group_list, $name, $matches)
+    public function _createMultiple($group_list, $name, $matches)
     {
         if (empty($group_list)) {
             return NULL;
@@ -1034,7 +1049,7 @@ class User_Form {
         }
     }
 
-    function forgotForm()
+    public function forgotForm()
     {
         PHPWS_Core::initCoreClass('Captcha.php');
         $form = new PHPWS_Form('forgot-password');
@@ -1060,7 +1075,7 @@ class User_Form {
         return PHPWS_Template::process($tpl, 'users', 'forms/forgot.tpl');
     }
 
-    function resetPassword($user_id, $authhash)
+    public function resetPassword($user_id, $authhash)
     {
         $user = new PHPWS_User((int)$user_id);
 

@@ -638,6 +638,7 @@ class PHPWS_User {
             $this->kill();
             return PHPWS_Error::get(USER_ERR_USER_NOT_SAVED, 'users', 'save');
         } else {
+            $this->_user_group = $group->id;
             return true;
         }
     }

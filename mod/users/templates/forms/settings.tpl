@@ -5,6 +5,14 @@
     <td>{VERIFY_EXPLAIN}</td>
   </tr>
   <tr>
+    <td>{DEFAULT_JOIN_GROUP_LABEL}</td>
+    <td>{DEFAULT_JOIN_GROUP}</td>
+  </tr>
+  <tr>
+    <td>{DEFAULT_ADMIN_GROUP_LABEL}</td>
+    <td>{DEFAULT_ADMIN_GROUP}</td>
+  </tr>
+  <tr>
     <td>{SITE_CONTACT_LABEL}</td>
     <td>{SITE_CONTACT}</td>
   </tr>
