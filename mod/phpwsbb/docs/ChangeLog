@@ -4,10 +4,11 @@
 ========================
 Changes in version 2.0.3
 ========================
-+ Forms use "break post" now.
++ Forms use `break post` now.
 + Memory usage optimization
 + Fixed approval bug reported by Verdon http://www.phpwsforums.com/showthread.php?p=30447#post30447
-+ Fixed display of unapproved topics
++ Improved display of unapproved topics
++ Forum List `Topics` counter was including unapproved articles.  Fixed.
 
 ========================
 Changes in version 2.0.2

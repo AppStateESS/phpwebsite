@@ -497,7 +497,7 @@ class PHPWSBB_Forum
     public function update_forum ($commit = false) {
         // Get topic counts
         $db = & new PHPWS_DB('phpwsbb_topics');
-        $sql = 'SELECT COUNT(total_posts), SUM(total_posts) FROM phpwsbb_topics WHERE fid = '.$this->id;
+        $sql = 'SELECT COUNT(total_posts), SUM(total_posts) FROM phpwsbb_topics WHERE total_posts >0 AND fid = '.$this->id;
         $row = $db->select('row', $sql);
         $this->topics = (int) $row['COUNT(total_posts)'];
         $this->posts = (int) $row['SUM(total_posts)'];
