@@ -195,6 +195,9 @@ class Layout_Admin {
                 Layout::reset($_POST['default_theme']);
                 PHPWS_Core::reroute('index.php?module=layout&action=admin&command=demo_theme&authkey=' . Current_User::getAuthKey());
             } else {
+                PHPWS_Settings::set('layout', 'include_css_order', (int)$_POST['include_css_order']);
+                PHPWS_Settings::save('layout');
+
                 $title = dgettext('layout', 'Themes');
                 $content[] = Layout_Admin::adminThemes();
             }
@@ -314,6 +317,14 @@ class Layout_Admin {
         $form->reindexValue('default_theme');
         $form->setMatch('default_theme', Layout::getDefaultTheme());
         $form->setLabel('default_theme', dgettext('layout', 'Default Theme'));
+
+        $include_order[0] = dgettext('layout', 'Do not include module style sheets');
+        $include_order[1] = dgettext('layout', 'Modules before theme');
+        $include_order[2] = dgettext('layout', 'Theme before modules');
+
+        $form->addSelect('include_css_order', $include_order);
+        $form->setMatch('include_css_order', PHPWS_Settings::get('layout', 'include_css_order'));
+        $form->setLabel('include_css_order', dgettext('layout', 'CSS inclusion order'));
 
         $template = $form->getTemplate();
         return PHPWS_Template::process($template, 'layout', 'themes.tpl');

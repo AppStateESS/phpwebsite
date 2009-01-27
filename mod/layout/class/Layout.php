@@ -179,7 +179,11 @@ class Layout {
     public function addStyle($module, $filename=NULL)
     {
         if (!LAYOUT_ALLOW_STYLE_LINKS) {
-            return NULL;
+            return;
+        }
+
+        if (!PHPWS_Settings::get('layout', 'include_css_order')) {
+            return;
         }
 
         if (!isset($filename)) {
@@ -645,18 +649,38 @@ class Layout {
     }
 
 
+    /**
+     * 0 : don't include module css
+     * 1 : modules first
+     * 2 : theme first
+     */
     public function getStyleLinks($header=FALSE)
     {
         if (!isset($GLOBALS['Style'])) {
             return TRUE;
         }
 
-        foreach ($GLOBALS['Style'] as $link) {
-            $links[] = Layout::styleLink($link, $header);
+        if (PHPWS_Settings::get('layout', 'include_css_order') == 2) {
+            $hold = true;
+        } else {
+            $hold = false;
+        }
+
+        foreach ($GLOBALS['Style'] as $key => $link) {
+            // lazy test BUT module style sheets will be a 32 character hash
+            if ($hold && strlen((string)$key) < 4) {
+                $hold_css[] = Layout::styleLink($link, $header);
+            } else {
+                $links[] = Layout::styleLink($link, $header);
+            }
         }
 
         if (isset($GLOBALS['Extra_Style'])) {
             $links[] = Layout::styleLink($GLOBALS['Extra_Style'], $header);
+        }
+
+        if (!empty($hold_css)) {
+            $links = array_merge($hold_css, $links);
         }
 
         return implode("\n", $links);

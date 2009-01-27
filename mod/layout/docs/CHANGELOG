@@ -1,4 +1,9 @@
-26 Layout 2009
+27 January 2009
++ Added option to layout theme tab to disable or order module style
+  sheet inclusion.
++ Updated: templates/themes.tpl
+
+26 January 2009
 + Can enable box move from mini admin
 
 Version 2.4.6
