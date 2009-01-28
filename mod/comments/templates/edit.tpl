@@ -1,4 +1,4 @@
-<div class="box">
+<div>
 <!-- BEGIN error --><div class="error">{ERROR}</div><!-- END error -->
   {BACK_LINK}
   {START_FORM}
