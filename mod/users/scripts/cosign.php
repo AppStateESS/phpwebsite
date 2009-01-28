@@ -21,6 +21,9 @@ class cosign_authorization extends User_Authorization {
 
     public function authenticate()
     {
+        if (!isset($_SERVER['REMOTE_USER'])) {
+            return false;
+        }
         return $_SERVER['REMOTE_USER'] == $this->user->username;
     }
 

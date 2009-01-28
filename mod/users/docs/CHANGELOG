@@ -1,3 +1,6 @@
+28 January 2009
++ Error check added to cosign authorization.
+
 27 January 2009
 + php fiveasized the classes.
 + Added some needed error logging to user creation problems
