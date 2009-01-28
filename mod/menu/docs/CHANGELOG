@@ -1,3 +1,9 @@
+28 January 2009
++ Added Verdon's edit full menu sitemap
++ Removed duplicate pin page link in miniadmin
++ Wrapped default menu template in box-content div per patch by Obones
++ Updated: templates/site_map.tpl, templates/menu_layout/basic/menu.tpl
+
 20 January 2009
 + Local links created on key pages were not made current.
 

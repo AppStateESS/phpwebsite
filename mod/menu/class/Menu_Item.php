@@ -359,6 +359,8 @@ class Menu_Item {
      */
     public function view($pin_mode=FALSE, $return_content=false)
     {
+        static $pin_page = true;
+
         $key = Key::getCurrent();
 
         if ($pin_mode && $key->isDummy(true)) {
@@ -406,8 +408,9 @@ class Menu_Item {
                     $js['height']  = 180;
                     if (!PHPWS_Settings::get('menu', 'miniadmin')) {
                         $tpl['PIN_PAGE'] = javascript('open_window', $js);
-                    } else {
+                    } elseif ($pin_page) {
                         MiniAdmin::add('menu', javascript('open_window', $js));
+                        $pin_page = false;
                     }
                 }
 

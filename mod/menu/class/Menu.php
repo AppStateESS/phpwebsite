@@ -249,28 +249,58 @@ class Menu {
         }
     }
 
+    /**
+     * @modified Verdon Vaillancourt
+     */
     public function siteMap()
     {
         if (!isset($_GET['site_map'])) {
             PHPWS_Core::errorPage('404');
         }
         PHPWS_Core::initModClass('menu', 'Menu_Item.php');
-        $menu = new Menu_Item((int)$_GET['site_map']);
-        if (empty($menu->title)) {
-            PHPWS_Core::errorPage('404');
-        }
 
-        $result = $menu->getLinks();
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            PHPWS_Core::errorPage();
+        if ($_GET['site_map'] == 'all') {
+            $db = new PHPWS_DB('menus');
+            $result = $db->getObjects('Menu_Item');
+            if ($result) {
+                foreach($result as $menu) {
+                    if (empty($menu->title)) {
+                        PHPWS_Core::errorPage('404');
+                    }
+                    $result = $menu->getLinks();
+                    if (PHPWS_Error::logIfError($result)) {
+                        PHPWS_Core::errorPage();
+                    }
+                    $content = array();
+                    if (!empty($result)) {
+                        Menu::walkLinks($result, $content);
+                    }
+                    $site['TITLE'] = $menu->getTitle() . ' - ' . dgettext('menu', 'Site map');
+                    $site['CONTENT'] = implode('', $content);
+                    $tpl['site-map'][] = $site;
+                }
+            } else {
+                $tpl['TITLE'] = $menu->getTitle() . ' - ' . dgettext('menu', 'Site map');
+                $tpl['CONTENT'] = dgettext('menu', 'Sorry, no menus have been created');
+            }
+        } else {
+            $menu = new Menu_Item((int)$_GET['site_map']);
+            if (empty($menu->title)) {
+                PHPWS_Core::errorPage('404');
+            }
+
+            $result = $menu->getLinks();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                PHPWS_Core::errorPage();
+            }
+            $content = array();
+            if (!empty($result)) {
+                Menu::walkLinks($result, $content);
+            }
+            $tpl['TITLE'] = $menu->getTitle() . ' - ' . dgettext('menu', 'Site map');
+            $tpl['CONTENT'] = implode('', $content);
         }
-        $content = array();
-        if (!empty($result)) {
-            Menu::walkLinks($result, $content);
-        }
-        $tpl['TITLE'] = $menu->getTitle() . ' - ' . dgettext('menu', 'Site map');
-        $tpl['CONTENT'] = implode('', $content);
         Layout::add(PHPWS_Template::process($tpl, 'menu', 'site_map.tpl'));
     }
 
