@@ -47,6 +47,13 @@ Changes in version 2.0.2
 ========================
 Changes in version 2.0.3
 ========================
++ Forms use `break post` now.
++ Memory usage optimization
++ Fixed approval bug reported by Verdon http://www.phpwsforums.com/showpost.php?p=30440
++ Improved display of unapproved topics
++ Forum List `Topics` counter was including unapproved articles.  Fixed.
++ Fixed homepage filter bug reported by Verdon http://www.phpwsforums.com/showpost.php?p=30460
++ Fixed topic permissions bug reported by Verdon http://www.phpwsforums.com/showpost.php?p=30460
 </pre>';
         
         
