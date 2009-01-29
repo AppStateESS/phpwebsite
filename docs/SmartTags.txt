@@ -49,21 +49,25 @@ variable to be sent to the function.
 When I registered block above, I set one default function. I could
 also set a default function with:
 
-PHPWS_Text::addTag('block', array('viewBlock'));
-
-Since I am only calling "viewBlock" there is no need to add it to every
-SmartTag. However, if I had different SmartTag functions in a module,
-I would need to register them all like so:
-
-PHPWS_Text::addTag('block', array('viewBlock', 'hide_block', 'something_else');
-
-and my actual tag would look like this:
-
-[block:viewBlock:1]
+PHPWS_Text::addTag('block', array('view'));
 
 or
 
-[block:hide_block:3]
+PHPWS_Text::addTag('block', 'view');
+
+Since I am only calling "view" there is no need to add it to every
+SmartTag. However, if I had different SmartTag functions in a module,
+I would need to register them all like so:
+
+PHPWS_Text::addTag('block', array('view', 'hide', 'something_else');
+
+and my actual tag would look like this:
+
+[block:view:1]
+
+or
+
+[block:hide:3]
 
 If you don't set a default function, the second variable must be the
 name of your function. SmartTags will also ignore any function call

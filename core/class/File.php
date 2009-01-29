@@ -790,7 +790,7 @@ class PHPWS_File {
     {
         static $all_file_types = null;
         if (empty($all_file_types)) {
-            include 'config/core/file_types.php';
+            include 'core/inc/file_types.php';
         }
 
         return $all_file_types;

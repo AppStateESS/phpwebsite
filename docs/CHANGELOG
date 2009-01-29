@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file..
 
+29 January 2009
++ Getting file types from inc/ directory instead of config directory.
++ Using utf8 with completion check as a backup to iconv if not
+  compiled.
+
+
 23 January 2009
 + Extra apostrophe check added to prompt script
 + Dropped unneeded array declaration from Init.php

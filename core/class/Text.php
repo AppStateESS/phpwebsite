@@ -360,7 +360,14 @@ class PHPWS_Text {
         }
 
         if ($encode) {
-            $text = iconv('utf-8', 'utf-8', $text);
+            if (function_exists('iconv')) {
+                $text = iconv('utf-8', 'utf-8', $text);
+            } else {
+                $text_tmp = utf8_encode($text);
+                if (!empty($text_tmp)) {
+                    $text = $text_tmp;
+                }
+            }
             $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
         }
         return trim($text);
