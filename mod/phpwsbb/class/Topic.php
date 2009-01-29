@@ -137,6 +137,8 @@ class PHPWSBB_Topic
 	{
 	    // Get parent Forum Info 
 		$forum = $this->get_forum();
+		if (!$forum->id) 
+            return array();
 		$tags = $forum->_get_tags();
 		/* Develop this thread's tags */
 		$tags['THREAD_ID'] = $this->id;
@@ -246,6 +248,8 @@ class PHPWSBB_Topic
         /* Now test to see if thread is viewable */
 		if($this->is_phpwsbb && !$this->total_posts > 0)
             $content = dgettext('phpwsbb', 'The thread you requested is awaiting approval by an administrator.');
+        elseif(empty($tags))
+            $content = dgettext('phpwsbb', 'The thread you requested is not available. Please check the security logs.');
         else {
             /* Raise the Key flag (also updates view count)*/
             $this->_key->flag();

@@ -10,7 +10,7 @@ Changes in version 2.0.3
 + Improved display of unapproved topics
 + Forum List `Topics` counter was including unapproved articles.  Fixed.
 + Fixed homepage filter bug reported by Verdon http://www.phpwsforums.com/showpost.php?p=30460
-
++ Fixed topic permissions bug reported by Verdon http://www.phpwsforums.com/showpost.php?p=30460
 
 ========================
 Changes in version 2.0.2

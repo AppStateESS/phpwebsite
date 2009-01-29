@@ -55,8 +55,10 @@ class PHPWSBB_Forum
             $db = & new PHPWS_DB('phpwsbb_forums');
             $this->addColumns($db);
             $db->addWhere('id', (int) $id);
+            if(!Current_User::allow('phpwsbb', 'manage_forums')) 
+                Key::restrictView($db, 'phpwsbb', false);
             $result = $db->loadObject($this);
-            if (PEAR::isError($result) || $result==null) {
+            if (PEAR::isError($result)) {
                 $this->id = 0;
                 return PHPWS_Error::get('Forum not loaded', 'phpwsbb', 'PHPWSBB_Forum::new');
             }
