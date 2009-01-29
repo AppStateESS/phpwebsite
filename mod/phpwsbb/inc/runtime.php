@@ -11,6 +11,9 @@
 */
 if (isset($_REQUEST['module'])) 
 	return;
+PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
+$forums = PHPWSBB_Data::get_forum_list();
+$forum_ids = array_keys($forums);
 
 /**
 * Display block with all active forums
@@ -24,13 +27,9 @@ if (!isset($_REQUEST['module']) && PHPWS_Settings::get('phpwsbb', 'showforumsblo
             $list = unserialize($list);
 	}
 	if (empty($list))  {
-	    PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
-		$forums = PHPWSBB_Data::get_forum_list();
-	    if (!empty($forums)) {
-		    $list = array();
-		    foreach($forums as $rowid => $row) 
-		        $list[]['ITEM'] = PHPWS_Text::rewriteLink(PHPWS_Text::parseOutput($row), 'phpwsbb', array('view'=>'forum', 'id'=>$rowid));
-		}
+	    $list = array();
+	    foreach($forums as $rowid => $row) 
+	        $list[]['ITEM'] = PHPWS_Text::rewriteLink(PHPWS_Text::parseOutput($row), 'phpwsbb', array('view'=>'forum', 'id'=>$rowid));
 		if (!Current_User::isLogged()) 
 			PHPWS_Cache::save($cachekey, serialize($list), 86400);
 	}
@@ -55,12 +54,14 @@ if (PHPWS_Settings::get('phpwsbb', 'showlatestpostsblock')) {
             $list = unserialize($list);
 	}
 	if (empty($list))  {
-		PHPWS_Core::initModClass('phpwsbb', 'Topic.php');
+	    PHPWS_Core::initModClass('phpwsbb', 'Topic.php');
 		$db = & new PHPWS_DB('phpwsbb_topics');
 		PHPWSBB_Topic::addColumns($db);
 		Key::restrictView($db, 'phpwsbb');
 		$db->addOrder('lastpost_date desc');
 		$db->setLimit(PHPWS_Settings::get('phpwsbb', 'maxlatesttopics'));
+        // What forums can we search in?
+        $db->addWhere('fid', $forum_ids, 'IN');
 		$result = $db->select();
 	    if (PHPWS_Error::logIfError($result))
 	    	return;

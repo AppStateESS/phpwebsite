@@ -38,6 +38,17 @@ Changes in version 2.0.2
 + Minor php5 compatibility change
 </pre>';
         
+    case version_compare($currentVersion, '2.0.3', '<'):
+        PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
+        PHPWSBB_Data::clearCaches();
+        $content[] = 'Cleared all phpwsbb caches';
+        
+        $content[] = '<pre>
+========================
+Changes in version 2.0.3
+========================
+</pre>';
+        
         
     } // end of switch
     return true;
