@@ -55,19 +55,17 @@ class PHPWSBB_Forum
             $db = & new PHPWS_DB('phpwsbb_forums');
             $this->addColumns($db);
             $db->addWhere('id', (int) $id);
-            if(!Current_User::allow('phpwsbb', 'manage_forums')) 
-                Key::restrictView($db, 'phpwsbb', false);
             $result = $db->loadObject($this);
-            if (PEAR::isError($result)) {
+            if (PHPWS_ERROR::logIfError($result)) {
                 $this->id = 0;
-                return PHPWS_Error::get('Forum not loaded', 'phpwsbb', 'PHPWSBB_Forum::new');
+                exit( PHPWS_Error::get('Forum not loaded', 'phpwsbb', 'PHPWSBB_Forum::new'));
             }
         }
         /* otherwise, $id is an array of object data */
         else {
             PHPWS_Core::plugObject($this, $id);
         }
-    }
+}
 
     /**
      * Adds all column names necessary for loading a forum.
