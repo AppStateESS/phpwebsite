@@ -331,7 +331,7 @@ class PHPWSBB_Topic
         else
 			$form->addTplTag('BACK_LINK', sprintf(dgettext('phpwsbb', 'Back to Topic "%s"'), PHPWS_Text::rewriteLink($this->title, 'phpwsbb', array('view'=>'topic', 'id'=>$this->id)))); 
         /* Anonymous Poster Info */
-        if (!Current_User::isLogged() && $forum->allow_anon) {
+        if (!Current_User::isLogged() && $forum->allow_anon && PHPWS_Settings::get('comments', 'anonymous_naming')) {
             $form->addText('anon_name', @$_POST['anon_name']);
             $form->setLabel('anon_name', dgettext('comments', 'Name'));
             $form->setSize('anon_name', 20, 20);
@@ -489,7 +489,7 @@ class PHPWSBB_Topic
         $this->_key->setModule('phpwsbb');
         $this->_key->setItemName('topic');
         $this->_key->setItemId($this->id);
-        $this->_key->setEditPermission('edit_threads');
+        $this->_key->setEditPermission('manage_forums');
         $this->_key->setUrl('index.php?module=phpwsbb&amp;view=topic&amp;id='.$this->id);
         $this->_key->setTitle($this->title);
         $this->_key->setSummary(strip_tags($this->summary));
