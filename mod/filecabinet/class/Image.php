@@ -391,7 +391,11 @@ class PHPWS_Image extends File_Common {
 
         $jsvars['width'] = 550;
         $jsvars['height'] = 600 + PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
-        $jsvars['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+        $link = new PHPWS_Link(null, 'filecabinet', $vars);
+        $link->setSecure();
+        $link->setSalted();
+        $jsvars['address'] = $link->getAddress();
+
         $jsvars['window_name'] = 'edit_link';
 
         if ($icon) {
