@@ -2,6 +2,12 @@
 # $Id: ChangeLog,v 1.1 2008/08/23 04:19:22 adarkling Exp $
 
 ========================
+Changes in version 2.0.4
+========================
++ Changed topics' edit permission to `manage forums` SuperModerators' comments will always be approved no matter what.
++ `Create Topic` form now only asks for an anonymous name if both Comments & the Forum settings allow it.
+
+========================
 Changes in version 2.0.3
 ========================
 + Forms use `break post` now.

@@ -39,10 +39,6 @@ Changes in version 2.0.2
 </pre>';
         
     case version_compare($currentVersion, '2.0.3', '<'):
-        PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
-        PHPWSBB_Data::clearCaches();
-        $content[] = 'Cleared all phpwsbb caches';
-        
         $content[] = '<pre>
 ========================
 Changes in version 2.0.3
@@ -56,8 +52,22 @@ Changes in version 2.0.3
 + Fixed topic permissions bug reported by Verdon http://www.phpwsforums.com/showpost.php?p=30460
 </pre>';
         
+    case version_compare($currentVersion, '2.0.4', '<'):
+        $content[] = '<pre>
+========================
+Changes in version 2.0.4
+========================
++ Changed topics` edit permission to `manage forums` SuperModerators` comments will always be approved no matter what.
++ `Create Topic` form now only asks for an anonymous name if both Comments & the Forum settings allow it.
+</pre>';
+        
         
     } // end of switch
+
+    PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
+    PHPWSBB_Data::clearCaches();
+    $content[] = 'Cleared all phpwsbb caches';
+
     return true;
 }
 
