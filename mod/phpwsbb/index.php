@@ -99,6 +99,7 @@ if (!empty($_GET['view'])) {
         }
         else {
             $message = dgettext('phpwsbb', "This forum doesn't exist.  Please check the address you entered.");
+            $content = '<br />';
         }
         break;
     }
