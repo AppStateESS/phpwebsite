@@ -223,9 +223,9 @@ class Signup_Sheet {
         $key->setEditPermission('edit_sheet');
 
         if (MOD_REWRITE_ENABLED) {
-            $key->setUrl('signup/' . $this->id);
+            $key->setUrl('signup/sheet_id/' . $this->id);
         } else {
-            $key->setUrl('index.php?module=signup&amp;id=' . $this->id);
+            $key->setUrl('index.php?module=signup&amp;sheet_id=' . $this->id);
         }
 
         $key->setTitle($this->title);
