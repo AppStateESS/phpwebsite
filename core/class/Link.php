@@ -79,6 +79,11 @@ class PHPWS_Link {
         $this->id = strip_tags($id);
     }
 
+    public function setSecure($secure=true)
+    {
+        $this->secure = (bool)$secure;
+    }
+
     public function setStyle($style)
     {
         if (is_array($style)) {
