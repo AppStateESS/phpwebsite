@@ -1,5 +1,9 @@
 <?php
 /**
+ * This script was modified from a working script. You will need
+ * to play with the settings to get to operate. 
+ * Check this site for LDAP binding information:
+ * http://www.rlmueller.net/LDAP_Binding.htm
  * @author Tommy De Jesus
  * @modified Matthew McNaney
  */
