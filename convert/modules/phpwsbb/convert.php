@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -73,12 +74,8 @@ function convert()
 
     if (!Convert::isConverted('phpwsbb_avatars')) {
         $lib = new PHPWS_IMGLib();
-        //    test($lib->_galleries,0,1);
         foreach ($lib->_galleries AS $gallery => $title) {
             $lib->convertGallery($gallery, $title);
-            //        echo 'This Gallery is called ""'.$title.'"<br />';
-            //        $filelist = $lib->get_files($gallery);
-            //        test($filelist,0,1);
         }
 
         Convert::addConvert('phpwsbb_avatars');
@@ -102,6 +99,9 @@ function convert()
 
     if (!Convert::isConverted('phpwsbb')) {
         $content = convert_phpwsbb_topics();
+        $content[] = _('All phpwsbb Topics have been converted');
+        $content[] = _('phpwsbb conversion complete!');
+        Convert::addConvert('phpwsbb');
         return implode('<br />', $content);
     }
 }
@@ -172,10 +172,10 @@ function convert_phpwsbb_forums()
 
 class PHPWS_IMGLib {
     function PHPWS_IMGLib () {
-        include(PHPWS_HOME_DIR . 'convert/images/phpwsbb/library/config.php');
+        include(Convert::getHomeDir() . 'convert/images/phpwsbb/library/config.php');
     }
     function get_files ($gallery) {
-        $path = PHPWS_HOME_DIR . 'convert/images/phpwsbb/library/'.$gallery.'/';
+        $path = Convert::getHomeDir() . 'convert/images/phpwsbb/library/'.$gallery.'/';
         PHPWS_File::appendSlash($path);
         if (!is_dir($path)) {
             echo 'Bad Directory!!!"<br />';
@@ -194,11 +194,14 @@ class PHPWS_IMGLib {
         return $filelist;
     }
     function convertGallery ($galleryid, $gallerytitle) {
+        $home_dir = Convert::getHomeDir();
+
         // Create the gallery folder
         $folder = new Folder;
         $folder->setTitle($gallerytitle);
         $folder->module_created = 'users';
         $folder->setDescription('User Avatar Images');
+        $folder->_base_directory = $home_dir . 'images/filecabinet/';
         $folder->public_folder = 1;
         $folder->max_image_dimension = COMMENT_MAX_AVATAR_WIDTH;
         if (!$folder->save())
@@ -211,8 +214,8 @@ class PHPWS_IMGLib {
         if (empty($filelist))
             return;
         foreach ($filelist AS $image_name) {
-            $src = PHPWS_HOME_DIR . 'convert/images/phpwsbb/library/'.$galleryid.'/' . $image_name;
-            $dst = PHPWS_HOME_DIR . $folder->getFullDirectory() . $image_name;
+            $src = $home_dir . 'convert/images/phpwsbb/library/'.$galleryid.'/' . $image_name;
+            $dst = $folder->getFullDirectory() . $image_name;
             $err = PHPWS_File::scaleImage($src, $dst, COMMENT_MAX_AVATAR_WIDTH, COMMENT_MAX_AVATAR_HEIGHT);
             if (PHPWS_Error::logIfError($err))
                 exit(PHPWS_Error::printError($err));
@@ -252,8 +255,18 @@ class PHPWS_IMGLib {
             }
             
             // add to the reference table
-            $_SESSION['phpwsbb_img_ref']['/library/'.$galleryid.'/'.$image_name] = array($file_assoc->id, $img->getPath());
+            $fixeddir = str_replace($home_dir, '', $folder->getFullDirectory());
+            $_SESSION['phpwsbb_img_ref']['/library/'.$galleryid.'/'.$image_name] = array($file_assoc->id, $fixeddir . $img->file_name);
         }
+
+        // Fix the FileCabinet URL column
+        Convert::siteDB();
+        $home_dir = Convert::getHomeDir();
+        $db = new PHPWS_DB('images');
+        $db->addWhere('file_directory', $folder->getFullDirectory());
+        $db->addValue('file_directory', $fixeddir);
+        $db->update();
+
     }
 }
 
@@ -467,7 +480,7 @@ function convert_phpwsbb_topics()
     } else { // This was the last batch...
         // Save the topicId cross-reference array to file
         if (!empty($_SESSION['phpwsbb_conversion_map']) 
-                && !file_put_contents(PHPWS_HOME_DIR . 'config/phpwsbb/cross-reference.inc', serialize($_SESSION['phpwsbb_conversion_map'])))
+                && !file_put_contents(Convert::getHomeDir() . 'config/phpwsbb/cross-reference.inc', serialize($_SESSION['phpwsbb_conversion_map'])))
             exit('Could not save TopicId cross-reference array to file');
         // Make sure that the _seq table is correct
         $db = new PHPWS_DB('comments_threads');
@@ -527,7 +540,7 @@ function convert_phpwsbb_topic($entry)
     $topic->sticky = $entry['sticky'];
     $topic->locked = $entry['locked'];
     $topic->title = $entry['label'];
-    $topic->summary = $old_comments[0]['body'];
+    $topic->summary = PHPWS_Text::parseInput(PHPWS_Text::breaker($old_comments[0]['body']));
     $topic->active = !(bool) $entry['hidden'];
     $topic->create_date = $entry['created'];
     $topic->creator = $entry['owner'];
@@ -584,7 +597,7 @@ function importComments(&$replies, $thread_id)
         $val = array();
         $val['thread_id']   = $thread_id;
         $val['subject']     = $reply['label'];
-        $val['entry']       = $reply['body'];
+        $val['entry']       = PHPWS_Text::parseInput(PHPWS_Text::breaker($reply['body']));
         $val['anon_name']   = $reply['guestname'];
         $val['author_id']   = $reply['owner_id'];
         $val['author_ip']   = $reply['ip'];
@@ -600,4 +613,5 @@ function importComments(&$replies, $thread_id)
     }
 }
 
+?>
 ?>
