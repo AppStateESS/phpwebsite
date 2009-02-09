@@ -46,7 +46,7 @@ class convert_authorization extends User_Authorization {
             return false;
         }
 
-        $this->user->setPassword($password);
+        $this->user->setPassword($this->password);
         $this->user->authorize = LOCAL_AUTHORIZATION;
         $result = $this->user->save();
         if (PEAR::isError($result)) {

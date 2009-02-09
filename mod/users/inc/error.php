@@ -2,7 +2,7 @@
 
   /**
    * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
+   * @version $Id: error.php 5472 2007-12-11 16:13:40Z jtickle $
    */
 
 $errors = array(
@@ -38,6 +38,7 @@ $errors = array(
                 USER_NOT_ACTIVE           => dgettext('users', 'Your account has been deactivated. You will need to contact a site administrator to have it reactivated.'),
                 USER_BAD_KEY              => dgettext('users', 'Unable to load key.'),
                 USER_NOT_FOUND            => dgettext('users', 'Could not find user.'),
-                USER_DEACTIVATED          => dgettext('users', 'User account deactivated.')
+                USER_DEACTIVATED          => dgettext('users', 'User account deactivated.'),
+                USER_PASSWORD_BLANK       => dgettext('users', 'Password was blank')
 		);
 ?>

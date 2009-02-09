@@ -17,6 +17,9 @@ class local_authorization extends User_Authorization {
 
     public function authenticate()
     {
+        if (empty($this->password)) {
+            return false;
+        }
         $db = new PHPWS_DB('user_authorization');
         if (!Current_User::allowUsername($this->user->username)) {
             return false;

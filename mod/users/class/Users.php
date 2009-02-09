@@ -201,11 +201,17 @@ class PHPWS_User {
         return true;
     }
 
-    public function getUsername(){
+    public function getUsername()
+    {
         return $this->username;
     }
 
-    public function setPassword($password, $hashPass=true){
+    public function setPassword($password, $hashPass=true)
+    {
+        if (empty($password)) {
+            PHPWS_Error::log(USER_PASSWORD_BLANK, 'users', 'PHPWS_User::setPassword');
+        }
+        
         if ($hashPass) {
             $this->_password = md5($this->username . $password);
         } else {
@@ -213,7 +219,8 @@ class PHPWS_User {
         }
     }
 
-    public function checkPassword($pass1, $pass2){
+    public function checkPassword($pass1, $pass2)
+    {
         if (empty($pass1) || empty($pass2)) {
             return PHPWS_Error::get(USER_ERR_PASSWORD_LENGTH, 'users', 'checkPassword');
         }

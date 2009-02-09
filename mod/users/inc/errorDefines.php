@@ -25,6 +25,7 @@ define('USER_ERR_ITEM_PERM_FILE',  -16);
 define('USER_ERR_FONT_MISSING',    -17);
 define('USER_ERR_WRITE_CONFIRM',   -18);
 define('USER_ERR_BAD_DISPLAY_NAME',-19);
+define('USER_PASSWORD_BLANK',      -20);
 
 
 /* User Variable Errors */

@@ -1,3 +1,7 @@
+9 February 2009
++ Moved error file to inc/
++ Blank passwords forbidden.
+
 28 January 2009
 + Error check added to cosign authorization.
 
