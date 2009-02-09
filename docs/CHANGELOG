@@ -15,6 +15,7 @@ its own separate CHANGELOG file..
 + Some edits to make datepicker color neutral (i.e. gray)
 + Patch #2580629 - Eloi George : Fixed bbcode problem with smilies and
   newlines
++ Calling breaker at the end of the bbencode.
 + Link - constructor uses setLabel, setLabel allows numeric
 + Updated: javascript/jquery/jquery.js, javascript/datepicker/ui.datepicker.css
 
