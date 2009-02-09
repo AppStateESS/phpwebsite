@@ -31,6 +31,9 @@ function convert()
     }
 }
 
+/**
+ * @modifier Eloi George
+ */
 function convertCategories()
 {
     $db = Convert::getSourceDB('mod_fatcat_categories');
@@ -58,6 +61,16 @@ function convertCategories()
     } else {
         $batch->clear();
         createSeqTable();
+
+        // Fix the FileCabinet URL column
+        Convert::siteDB();
+        $home_dir = Convert::getHomeDir();
+        $fixdir = $_SESSION['Category Folder_Dir'];
+        $db = new PHPWS_DB('images');
+        $db->addWhere('file_directory', $fixdir);
+        $db->addValue('file_directory', str_replace($home_dir, './', $_SESSION['Category Folder_Dir']));
+        $db->update();
+
         Convert::addConvert('categories');
         $content[] =  _('Finished converting categories!');
         $content[] = '<a href="index.php?command=convert&amp;package=categories">' . _('Continue to convert category elements.') . '</a>';
@@ -145,7 +158,7 @@ function runCatBatch(&$db, &$batch)
                 $val['id']          = $oldCat['cat_id'];
             }
             $val['title']       = utf8_encode($oldCat['title']);
-            $val['description'] = utf8_encode($oldCat['description']);
+            $val['description'] = PHPWS_Text::breaker(utf8_encode($oldCat['description']));
             $val['parent']      = $oldCat['parent'];
             $val['icon'] = convertImage($oldCat['image'], 'Category: ' . $oldCat['title']);
             $newdb->addValue($val);

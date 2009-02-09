@@ -3,6 +3,11 @@ This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file..
 
 9 February 2009
++ Conversion
+  o Categories Patch #2571605 - Eloi George : After upgrade, the
+  category images were not showing. The given URL was the entire
+  absolute filepath. Also ran breaker on description.
+
 + DBPager
   o class availability check added to constructor
   o getError method added
