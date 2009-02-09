@@ -5,8 +5,15 @@ its own separate CHANGELOG file..
 9 February 2009
 + Conversion
   o Categories Patch #2571605 - Eloi George : After upgrade, the
-  category images were not showing. The given URL was the entire
-  absolute filepath. Also ran breaker on description.
+    category images were not showing. The given URL was the entire
+    absolute filepath. Also ran breaker on description.
+  o Photoalbum Patch #2571583 - Eloi George : convertAlbum() was not
+    working because the resulting SQL query was trying to write values
+    to the "comments" & "anonymous" columns, which do not exist in the
+    new table. 
+
+convertPics() was not working because $tbl_prefix was not defined.
+The included patch fixes both problems
 
 + DBPager
   o class availability check added to constructor

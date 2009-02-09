@@ -53,14 +53,14 @@ function convertAlbum()
         $key->setSummary($row['blurb0']);
         $result = $key->save();
         $row['key_id'] = $key->id;
+        unset($row['comments'], $row['anonymous']);
 
         $savedb->addValue($row);
         $result = $savedb->insert(false);
-
-        $savedb->reset();
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
+        if (PHPWS_Error::logIfError($result)) {
+            return 'An error occurred when trying to convert your Albums.';
         }
+        $savedb->reset();
     }
 
     Convert::addConvert('photoalbum_albums');
@@ -83,8 +83,8 @@ function convertPics()
             return _('An error occurred when trying to copy your mod_photoalbum_photos table.');
         }
 
-        if (!empty($tbl_prefix)) {
-            $photos = str_replace($tbl_prefix . 'mod_photoalbum', 'mod_photoalbum', $photos);
+        if (!empty($_SESSION['Convert_Tbl_Prefix'])) {
+            $photos = str_replace($_SESSION['Convert_Tbl_Prefix'] . 'mod_photoalbum_photos', 'mod_photoalbum_photos', $photos);        
         }
         $db->disconnect();
         Convert::siteDB();
