@@ -285,6 +285,12 @@ class Comment_User extends Demographics_User {
         if ($this->user_id) {
             $template['COMMENTS_MADE'] = $this->getCommentsMade();
             $template['COMMENTS_MADE_LABEL'] = dgettext('comments', 'Posts');
+
+            // Determine user's rank
+            $rank = $this->getRank($isModerator);
+            $template['RANK_TITLE'] = $rank['titles'];
+            $template['RANK_IMG'] = $rank['images'];
+            $template['RANK_LIST'] = $rank['composites'];
         }
 
         $str = sprintf(dgettext('comments', 'See all comments by %s'), $this->display_name);
@@ -324,13 +330,6 @@ class Comment_User extends Demographics_User {
             $template['LOCATION'] = $this->location;
             $template['LOCATION_LABEL'] = dgettext('comments', 'From');
         }
-
-        // Determine user's rank
-        $rank = $this->getRank($isModerator);
-
-        $template['RANK_TITLE'] = $rank['titles'];
-        $template['RANK_IMG'] = $rank['images'];
-        $template['RANK_LIST'] = $rank['composites'];
 
         return $template;
     }
@@ -596,11 +595,21 @@ class Comment_User extends Demographics_User {
             foreach ($user_ranks as $rank) {
                if ( ($rank->group_id == 0 || in_array($rank->group_id, $user_groups)) &&
                      !empty($rank->user_ranks) ) {
+                   /*
                     foreach ($rank->user_ranks as $user_rank) {
                         if ($user_rank->min_posts <= $this->comments_made) {
                             $user_rank->loadInfo($images, $composites, $titles);
                         }
                     }
+                   */
+                    foreach ($rank->user_ranks as $key => $user_rank) {
+                        if ($user_rank->min_posts <= $this->comments_made) {
+                            $pick = $key;
+                        } else {
+                            break;
+                        }
+                    }
+                    $rank->user_ranks[$pick]->loadInfo($images, $composites, $titles);
                 }
             }
         }
