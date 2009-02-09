@@ -167,6 +167,7 @@ class PageSmith {
             $this->loadPage();
             $this->page->front_page = (bool)$_GET['fp'];
             $this->page->save();
+            PHPWS_Cache::clearCache();
             $this->loadForms();
             $this->forms->pageList();
             break;
@@ -332,10 +333,9 @@ class PageSmith {
                 if ($section->sectype == 'header' || $section->sectype == 'text') {
                     if (isset($_SESSION['PS_Page'][$this->page->id][$section->secname])) {
                         $section->content = PHPWS_Text::parseInput($_SESSION['PS_Page'][$this->page->id][$section->secname]);
-                    } else {
+                    } elseif (isset($_POST[$section_name])) {
                         $section->content = $_POST[$section_name];
                     }
-                    //$section->content = $_POST[$section_name];
                 } else {
                     // set content to trigger test below
                     $section->type_id = $_POST[$section_name];
@@ -364,6 +364,7 @@ class PageSmith {
 
         if (!$tpl_set) {
             $this->page->save();
+            PHPWS_Cache::clearCache();
         }
 
         if ($menu_link && PHPWS_Core::moduleExists('menu')) {
