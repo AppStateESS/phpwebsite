@@ -11,9 +11,8 @@ its own separate CHANGELOG file..
     working because the resulting SQL query was trying to write values
     to the "comments" & "anonymous" columns, which do not exist in the
     new table. 
-
-convertPics() was not working because $tbl_prefix was not defined.
-The included patch fixes both problems
+    convertPics() was not working because $tbl_prefix was not defined.
+    The included patch fixes both problems
 
 + DBPager
   o class availability check added to constructor
@@ -29,7 +28,11 @@ The included patch fixes both problems
   newlines
 + Calling breaker at the end of the bbencode.
 + Link - constructor uses setLabel, setLabel allows numeric
-+ Updated: javascript/jquery/jquery.js, javascript/datepicker/ui.datepicker.css
++ Text - Patch #2571528 Eloi George - fix to getGetValues. Some
+  servers returning php_self as / were fouling up directory parsing.
++ Updated: javascript/jquery/jquery.js,
+  javascript/datepicker/ui.datepicker.css
+
 
 4 February 2009
 + Added setSecure function to Link

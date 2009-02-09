@@ -694,7 +694,11 @@ class PHPWS_Text {
             if (isset($_SERVER['REDIRECT_QUERY_STRING'])) {
                 $query = $_SERVER['REDIRECT_QUERY_STRING'];
             } elseif(isset($_SERVER['REDIRECT_URL'])) {
-                $rewrite = str_ireplace(dirname($_SERVER['PHP_SELF']) .'/', '', $_SERVER['REDIRECT_URL']);
+                if (dirname($_SERVER['PHP_SELF']) == '/') {
+                    $rewrite = substr($_SERVER['REDIRECT_URL'], 1);
+                } else {
+                    $rewrite = str_ireplace(dirname($_SERVER['PHP_SELF']) .'/', '', $_SERVER['REDIRECT_URL']);
+                }
                 if (!empty($rewrite)) {
                     $re_array = explode('/', $rewrite);
                     $output['module'] = array_shift($re_array);
