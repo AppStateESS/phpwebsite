@@ -1,3 +1,7 @@
+9 February 2009
++ Added option to enable rel="nofollow" on date links
++ Updated: templates/admin/settings.tpl
+
 Version 1.7.0
 -------------------------------------------------------------
 3 November 2008

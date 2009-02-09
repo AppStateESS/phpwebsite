@@ -25,6 +25,7 @@ $settings = array('use_calendar_style' => 1,
                   'brief_grid'         => 0,
                   'allow_public_ical'  => 1,
                   'mini_grid'          => 1,
+                  'no_follow'          => 1,
                   'anon_ical'          => 1);
 
 ?>

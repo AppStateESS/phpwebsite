@@ -880,13 +880,13 @@ class Calendar_Admin {
 
     public function postSettings()
     {
-
         PHPWS_Settings::set('calendar', 'personal_schedules', (int)isset($_POST['personal_schedules']));        
         PHPWS_Settings::set('calendar', 'allow_submissions', (int)isset($_POST['allow_submissions']));
         PHPWS_Settings::set('calendar', 'mini_event_link', (int)isset($_POST['mini_event_link']));
         PHPWS_Settings::set('calendar', 'cache_month_views', (int)isset($_POST['cache_month_views']));
         PHPWS_Settings::set('calendar', 'mini_grid', (int)isset($_POST['mini_grid']));
         PHPWS_Settings::set('calendar', 'anon_ical', (int)isset($_POST['anon_ical']));
+        PHPWS_Settings::set('calendar', 'no_follow', (int)isset($_POST['no_follow']));
 
         PHPWS_Settings::set('calendar', 'display_mini', (int)$_POST['display_mini']);
         PHPWS_Settings::set('calendar', 'starting_day', (int)$_POST['starting_day']);
@@ -1403,6 +1403,10 @@ class Calendar_Admin {
         $form->addCheckbox('anon_ical', 1);
         $form->setMatch('anon_ical', PHPWS_Settings::get('calendar', 'anon_ical'));
         $form->setLabel('anon_ical', dgettext('calendar', 'Allow anonymous iCal exports of public schedules'));
+
+        $form->addCheckbox('no_follow', 1);
+        $form->setMatch('no_follow', PHPWS_Settings::get('calendar', 'no_follow'));
+        $form->setLabel('no_follow', dgettext('calendar', 'No follow directives added to navigation links'));
 
         $start_days = array(0,1);
         $start_days_label[0] = strftime('%A', mktime(0,0,0,1,4,1970));

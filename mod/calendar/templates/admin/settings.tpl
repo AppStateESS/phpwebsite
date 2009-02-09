@@ -5,6 +5,8 @@
 <div>{MINI_EVENT_LINK} {MINI_EVENT_LINK_LABEL}</div>
 <div>{CACHE_MONTH_VIEWS} {CACHE_MONTH_VIEWS_LABEL}</div>
 <div>{MINI_GRID} {MINI_GRID_LABEL}</div>
+<div>{NO_FOLLOW} {NO_FOLLOW_LABEL}</div>
+
 <table style="margin-top : 20px" cellpadding="4" width="98%">
     <tr>
         <td width="20%"><strong>{START_LABEL}</strong></td>

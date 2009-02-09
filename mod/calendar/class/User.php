@@ -195,7 +195,9 @@ class Calendar_User {
             $vars['sch_id'] = $this->calendar->schedule->id;
         }
 
-        return PHPWS_Text::moduleLink($label, 'calendar', $vars);
+        $dlink = new PHPWS_Link($label, 'calendar', $vars);
+        $dlink->setNoFollow(PHPWS_Settings::get('calendar', 'no_follow'));
+        return $dlink->get();
     }
 
 
@@ -359,6 +361,8 @@ class Calendar_User {
 
     public function mini_month()
     {
+        $no_follow = PHPWS_Settings::get('calendar', 'no_follow');
+
         $month = (int)date('m');
         $year  = (int)date('Y');
 
@@ -408,8 +412,11 @@ class Calendar_User {
             $vars['sch_id'] = $_SESSION['Current_Schedule'];
         }
         $vars['date'] = mktime(0,0,0, $month, 1, $year);
-        $template['FULL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
-        $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
+        $slink = new PHPWS_Link(strftime('%B', $date), 'calendar', $vars);
+        $slink->setNoFollow($no_follow);
+        $template['FULL_MONTH_NAME'] = $slink->get();
+        $slink->setLabel(strftime('%b', $date));
+        $template['PARTIAL_MONTH_NAME'] = $slink->get();
         $template['FULL_YEAR'] = strftime('%Y', $date);
         $template['PARTIAL_YEAR'] = strftime('%y', $date);
 
@@ -427,6 +434,7 @@ class Calendar_User {
      */
     public function _month_days($oMonth, $oTpl, $link_days=true, $list_events=false)
     {
+        $no_follow = PHPWS_Settings::get('calendar', 'no_follow');
         while($day = $oMonth->fetch()) {
             $data = array();
             $data['COUNT'] = null;
@@ -462,13 +470,13 @@ class Calendar_User {
                         $oTpl->setData($event_tpl);
                         $oTpl->parseCurrentBlock();
                     }
-
-                    //                    $data['EVENTS'] = implode('<br />', $listing);
                 } else {
-                    $data['COUNT'] = PHPWS_Text::moduleLink(sprintf('%s event(s)', $no_of_events),
+                    $dlink = new PHPWS_Link(sprintf('%s event(s)', $no_of_events),
                                                             'calendar', array('view'=>'day',
                                                                               'date'=>$day->thisDay(true),
                                                                               'sch_id'=>$this->calendar->schedule->id));
+                    $dlink->setNoFollow($no_follow);
+                    $data['COUNT'] = $dlink->get();
                 }
             }
 
@@ -536,17 +544,6 @@ class Calendar_User {
 
         // create day cells in grid
         $this->_month_days($oMonth, $oTpl, true, !PHPWS_Settings::get('calendar', 'brief_grid'));
-        /*
-        if (!empty($this->calendar->schedule->id)) {
-            $vars['sch_id'] = $this->calendar->schedule->id;
-        }
-
-        $vars['date'] = mktime(0,0,0,$month, 1, $year);
-        $vars['view'] = 'grid';
-
-        $template['FULL_MONTH_NAME']    = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
-        $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
-        */
 
         $template['FULL_MONTH_NAME']    = strftime('%B', $date);
         $template['PARTIAL_MONTH_NAME'] = strftime('%b', $date);
@@ -606,17 +603,24 @@ class Calendar_User {
         $tpl->setFile('view/month/list.tpl');
 
         $events_found = false;
+
+        $lvars = array('view' => 'day', 'schedule_id'=>$this->calendar->schedule->id);
+        $slink = new PHPWS_Link(null, 'calendar');
+        $slink->setNoFollow(PHPWS_Settings::get('calendar', 'no_follow'));
+
         for ($i = $startdate; $i <= $enddate; $i += 86400) {
             $day_result = $this->getDaysEvents($i, $tpl);
-
+            $lvars['date'] = $i;
+            $slink->clearValues();
+            $slink->addValues($lvars);
             if ($day_result) {
                 $events_found = true;
-                $day_tpl['FULL_WEEKDAY'] = PHPWS_Text::moduleLink(strftime('%A', $i), 'calendar',
-                                                                 array('view' => 'day', 'date'=>$i, 'schedule_id'=>$this->calendar->schedule->id));
-                $day_tpl['ABBR_WEEKDAY'] = PHPWS_Text::moduleLink(strftime('%a', $i), 'calendar',
-                                                                 array('view' => 'day', 'date'=>$i, 'schedule_id'=>$this->calendar->schedule->id));
-                $day_tpl['DAY_NUMBER']   = PHPWS_Text::moduleLink(strftime('%e', $i), 'calendar',
-                                                                 array('view' => 'day', 'date'=>$i, 'schedule_id'=>$this->calendar->schedule->id));
+                $slink->setLabel(strftime('%A', $i));
+                $day_tpl['FULL_WEEKDAY'] = $slink->get();
+                $slink->setLabel(strftime('%a', $i));
+                $day_tpl['ABBR_WEEKDAY'] = $slink->get();
+                $slink->setLabel(strftime('%e', $i));
+                $day_tpl['DAY_NUMBER'] = $slink->get();
                 $tpl->setCurrentBlock('days');
                 $tpl->setData($day_tpl);
                 $tpl->parseCurrentBlock();
@@ -884,7 +888,7 @@ class Calendar_User {
         if (!$this->calendar->schedule->id) {
             return null;
         }
-
+        $no_follow = PHPWS_Settings::get('calendar', 'no_follow');
         $vars = PHPWS_Text::getGetValues();
         unset($vars['module']);
 
@@ -924,14 +928,18 @@ class Calendar_User {
             $links[] = dgettext('calendar', 'Grid');
         } else {
             $vars['view'] = 'grid';
-            $links[] = PHPWS_Text::moduleLink(dgettext('calendar', 'Grid'), 'calendar', $vars);
+            $glink = new PHPWS_Link(dgettext('calendar', 'Grid'), 'calendar', $vars);
+            $glink->setNoFollow($no_follow);
+            $links[] = $glink->get();
         }
 
         if ($current_view == 'list') {
             $links[] = dgettext('calendar', 'Month');
         } else {
             $vars['view'] = 'list';
-            $links[] = PHPWS_Text::moduleLink(dgettext('calendar', 'Month'), 'calendar', $vars);
+            $glink = new PHPWS_Link(dgettext('calendar', 'Month'), 'calendar', $vars);
+            $glink->setNoFollow($no_follow);
+            $links[] = $glink->get();
         }
 
 
@@ -946,7 +954,9 @@ class Calendar_User {
             $links[] = dgettext('calendar', 'Week');
         } else {
             $vars['view'] = 'week';
-            $links[] = PHPWS_Text::moduleLink(dgettext('calendar', 'Week'), 'calendar', $vars);
+            $wlink = new PHPWS_Link(dgettext('calendar', 'Week'), 'calendar', $vars);
+            $wlink->setNoFollow($no_follow);
+            $links[] = $wlink->get();
         }
 
         if ($current_view == 'day') {
@@ -961,19 +971,27 @@ class Calendar_User {
             $links[] = dgettext('calendar', 'Day');
         } else {
             $vars['view'] = 'day';
-            $links[] = PHPWS_Text::moduleLink(dgettext('calendar', 'Day'), 'calendar', $vars);
+            $dlink = new PHPWS_Link(dgettext('calendar', 'Day'), 'calendar', $vars);
+            $dlink->setNoFollow($no_follow);
+            $links[] = $dlink->get();
         }
 
         $vars['view'] = $current_view;
 
         if (!empty($left_arrow_time)) {
             $vars['date'] = $left_arrow_time;
-            array_unshift($links, PHPWS_Text::moduleLink('&lt;&lt;', 'calendar', $vars, null, $left_link_title));
+            $larrow = new PHPWS_Link('&lt;&lt;', 'calendar', $vars);
+            $larrow->setTitle($left_link_title);
+            $larrow->setNoFollow($no_follow);
+            array_unshift($links, $larrow->get());
         }
 
         if (!empty($right_arrow_time)) {
             $vars['date'] = $right_arrow_time;
-            $links[] = PHPWS_Text::moduleLink('&gt;&gt;', 'calendar', $vars, null, $right_link_title);
+            $rarrow = new PHPWS_Link('&gt;&gt;', 'calendar', $vars);
+            $rarrow->setTitle($right_link_title);
+            $rarrow->setNoFollow($no_follow);
+            $links[] = $rarrow->get();
         }
 
         return implode(' | ', $links);
@@ -1127,6 +1145,7 @@ class Calendar_User {
             if (empty($event_list)) {
                 continue;
             }
+
             foreach ($event_list as $event) {
                 $vars = array('view'   => 'day',
                               'date'   => $event->start_time,
