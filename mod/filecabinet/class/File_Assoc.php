@@ -307,9 +307,9 @@ class FC_File_Assoc {
         $folder = new Folder($this->file_id);
         $folder->loadFiles();
         foreach ($folder->_files as $document) {
-            $tpl['files'][] = array('TITLE'=>$document->getViewLink(true), 'SIZE'=>$document->getSize(true));
+            $tpl['files'][] = $document->getTag(true, true);
         }
-        $tpl['ICON'] = '<img src="images/mod/filecabinet/file_manager/folder_contents.png" />';
+
         $tpl['DOWNLOAD'] = sprintf(dgettext('filecabinet', 'Download from %s'), $folder->title);
         return PHPWS_Template::process($tpl, 'filecabinet', 'multi_doc_download.tpl');
     }

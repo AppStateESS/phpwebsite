@@ -1,5 +1,11 @@
 9 February 2009
 + Added error check to prevent possible divide by zero error.
++ Resized mime type icons
++ Changed the document download windows. Simplified.
++ Updated: img/mime_types/*
+templates/document_download.tpl, templates/file_view.css,
+templates/multi_doc_download.tpl
+
 
 30 January 2009
 + Fixed image edit link.

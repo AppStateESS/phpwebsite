@@ -754,7 +754,7 @@ class FC_File_Manager {
 
         if ($file) {
             $vars['id']      = $this->session_id;
-            $vars['data']    = $this->jsReady($file->getTag(true));
+            $vars['data']    = $this->jsReady($file->getTag());
             $vars['new_id']  = $file->id;
             $vars['vert']    = $file->vertical;
             $vars['vis']     = $file->num_visible;

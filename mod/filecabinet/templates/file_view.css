@@ -1,38 +1,22 @@
-div.fc-info ul {
-   padding-top : 10px;
-   line-height : 1.2em;
-}
-
 div.fc-dl-icon {
    float : left;
-   width : 120px;
-   height : 150px;
-   background-image : url('download.png');
-   background-repeat : no-repeat;
+   margin-right : 5px;
 }
 
 div.fc-download-document {
-   border : 2px solid #87b48c;
+   border : 1px solid black;
    font-family : arial;
-   width : 250px;
-   min-height : 150px;
+   min-width : 200px;
+   min-height : 80px;
    font-size : 13px;
 }
 
-div.fc-download-document ul li{
-   padding : 0px;
-   margin-left : 10px;
-}
-
-span.fc-download-label {
-   font-family : arial;
+div.fc-download-label {
+   background-color : #e1e1e1;
+   border-bottom : 1px solid black;
    font-weight : bold;
-   font-style : italic;
-   text-align : center;   
-}
-
-.fc-download-document .fc-mime-icon {
-   float : none;
+   padding : 3px;
+   margin-bottom : 4px;
 }
 
 .fc-captioned-image div.caption {
@@ -41,6 +25,6 @@ span.fc-download-label {
    font-size : 10px;
 }
 
-.fc-one-file {
-   font-size : 1.2em;
+div.fc-info { 
+   padding : 3px;
 }

@@ -50,7 +50,7 @@ class PHPWS_Document extends File_Common {
     }
 
 
-    public function getIconView()
+    public function getIconView($mode='icon')
     {
         static $icon_list = NULL;
 
@@ -64,8 +64,15 @@ class PHPWS_Document extends File_Common {
         }
 
         if (!@$graphic = $icon_list[$this->file_type]) {
-            return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/text.png" title="%s" alt="%s" />', $this->title, $this->title);
+            if ($mode == 'small_icon') {
+                return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/s_text.png" title="%s" alt="%s" />', $this->title, $this->title);
+            } else {
+                return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/text.png" title="%s" alt="%s" />', $this->title, $this->title);
+            }
         } else {
+            if ($mode == 'small_icon') {
+                $graphic = 's_' . $graphic;
+            }
             return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/%s" title="%s" alt="%s" />', $graphic, $this->title, $this->title);
         }
     }
@@ -101,8 +108,9 @@ class PHPWS_Document extends File_Common {
 
         if ($format) {
             switch ($type) {
+            case 'small_icon':
             case 'icon':
-                return sprintf('<a href="%s">%s</a>', $link, $this->getIconView());
+                return sprintf('<a href="%s">%s</a>', $link, $this->getIconView($type));
 
             case 'download':
             case 'filename':
@@ -285,13 +293,23 @@ class PHPWS_Document extends File_Common {
         return sprintf('<a href="%s">%s</a>', $link, $this->getIconView());
     }
 
-    public function getTag()
+    public function getTag($return_tpl=false, $small_icon=false)
     {
         $tpl['TITLE']    = $this->getViewLink(true);
         $tpl['SIZE']     = $this->getSize(true);
-        $tpl['ICON']     = $this->getViewLink(true, 'icon');
+        if ($small_icon) {
+            $tpl['ICON']     = $this->getViewLink(true, 'small_icon');
+        } else {
+            $tpl['ICON']     = $this->getViewLink(true, 'icon');
+        }
+        $tpl['TYPE']     = $this->file_type;
+        $tpl['DESCRIPTION'] = $this->getDescription();
         $tpl['DOWNLOAD'] = dgettext('filecabinet', 'Download file');
-        return PHPWS_Template::process($tpl, 'filecabinet', 'document_download.tpl');
+        if ($return_tpl) {
+            return $tpl;
+        } else {
+            return PHPWS_Template::process($tpl, 'filecabinet', 'document_download.tpl');
+        }
     }
 
     public function deleteAssoc()
