@@ -302,7 +302,7 @@ class PHPWS_Form {
         }
 
         $this->add($name, 'radio', array_keys($assoc));
-        $this->setLabel($name, array_values($assoc));
+        $this->setLabel($name, $assoc);
     }
 
     public function addCheck($name, $value=1)
@@ -660,11 +660,10 @@ class PHPWS_Form {
             $label = $name;
         }
 
-        foreach ($this->_elements[$name] as $key => $element){
+        foreach ($this->_elements[$name] as $key => $element) {
             if (is_array($label) && isset($label[$element->key])) {
                 $result = $this->_elements[$name][$key]->setLabel($label[$element->key]);
-            }
-            else {
+            } else {
                 $result = $this->_elements[$name][$key]->setLabel($label);
             }
 

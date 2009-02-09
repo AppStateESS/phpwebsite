@@ -99,6 +99,7 @@ $errors[DBPAGER_MODULE_NOT_SET]       = _('Module was not set.');
 $errors[DBPAGER_TEMPLATE_NOT_SET]     = _('Template was not set.');
 $errors[DBPAGER_NO_TABLE]             = _('Table is blank');
 $errors[DBPAGER_NO_METHOD]            = _('Method does not exist in specified class.');
+$errors[DBPAGER_NO_CLASS]             = _('Class does not exist.');
 
 // Editor.php 1200 - 1299
 $errors[EDITOR_MISSING_FILE]          = _('Unable to find the specified editor type.');

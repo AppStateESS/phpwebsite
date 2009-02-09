@@ -205,7 +205,7 @@ class DBPager {
     public function __construct($table, $class=null)
     {
         if (empty($table)) {
-            $this->error = PHPWS_Error::get(DBPAGER_NO_TABLE, 'core', 'DB_Pager::DBPager');
+            $this->error = PHPWS_Error::get(DBPAGER_NO_TABLE, 'core', 'DB_Pager::__construct');
             return;
         }
 
@@ -249,10 +249,12 @@ class DBPager {
                 }
             }
             $this->_class_vars = $class_var_list;
+        } elseif ($class) {
+            $this->error = PHPWS_Error::get(DBPAGER_NO_CLASS, 'core', 'DBPager::__construct', $class);
         }
-
+        
         $this->loadLink();
-
+        
         if (isset($_REQUEST['change_page'])) {
             $this->current_page = (int)$_REQUEST['change_page'];
         } elseif (isset($_REQUEST['pg'])) {
@@ -289,7 +291,11 @@ class DBPager {
         } elseif (isset($_REQUEST['pager_search'])) {
             $this->loadSearch($_REQUEST['pager_search']);
         }
+    }
 
+    public function getError()
+    {
+        return $this->error;
     }
 
     public function disableSearchLabel()

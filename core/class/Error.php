@@ -26,7 +26,9 @@ class PHPWS_Error {
 
         $errorFile = PHPWS_Core::getConfigFile($module, 'error.php');
         if (empty($module)) {
-            return PHPWS_Error::get(PHPWS_NO_MODULE, 'core', 'PHPWS_Error::get', 'Value: ' . $value . ', Function: ' . $funcName);
+            if (!PHPWS_Core::requireInc($module, 'error.php', false)) {
+                return PHPWS_Error::get(PHPWS_NO_MODULE, 'core', 'PHPWS_Error::get', 'Value: ' . $value . ', Function: ' . $funcName);
+            }
         }
 
         if (!($errorFile)) {

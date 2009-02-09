@@ -2,6 +2,19 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file..
 
+9 February 2009
++ DBPager
+  o class availability check added to constructor
+  o getError method added
++ Form - fixed addRadioAssoc putting correct labels
++ Database - added conditional define to remove dsn from log message
+  if the db connection fails.
++ Error - if error.php is not found in local config directory, it
+  looks in the module's inc directory.
++ Moved conf/error.php to inc/
++ Some edits to make datepicker color neutral (i.e. gray)
++ Updated: javascript/jquery/jquery.js, javascript/datepicker/ui.datepicker.css
+
 4 February 2009
 + Added setSecure function to Link
 

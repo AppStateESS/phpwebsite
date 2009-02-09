@@ -11,9 +11,12 @@ require_once 'DB.php';
 // Changing LOG_DB to true will cause ALL DB traffic to get logged
 // This can log can get very large, very fast. DO NOT enable it
 // on a live server. It is for development purposes only.
-define ('LOG_DB', false);
+define('LOG_DB', false);
 
-define ('DEFAULT_MODE', DB_FETCHMODE_ASSOC);
+define('DEFAULT_MODE', DB_FETCHMODE_ASSOC);
+
+// Removes dsn from log after failed database connection 
+define('CLEAR_DSN', true);
 
 if (!defined('DB_ALLOW_TABLE_INDEX')) {
     define ('DB_ALLOW_TABLE_INDEX', true);
@@ -141,7 +144,10 @@ class PHPWS_DB {
 
         $connect = DB::connect($dsn);
 
-        if (PEAR::isError($connect)){
+        if (PEAR::isError($connect)) {
+            if (CLEAR_DSN) {
+                $connect->userinfo = str_replace($dsn, '-- DSN removed --', $connect->userinfo);
+            }
             PHPWS_Error::log($connect);
             if ($show_error) {
                 PHPWS_Core::errorPage();

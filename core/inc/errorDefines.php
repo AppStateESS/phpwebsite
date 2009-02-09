@@ -103,6 +103,7 @@ define('DBPAGER_MODULE_NOT_SET',      -1101);
 define('DBPAGER_TEMPLATE_NOT_SET',    -1102);
 define('DBPAGER_NO_TABLE',            -1103);
 define('DBPAGER_NO_METHOD',           -1104);
+define('DBPAGER_NO_CLASS',            -1105);
 
 /************** Editor.php ****************/
 define('EDITOR_MISSING_FILE',         -1200);

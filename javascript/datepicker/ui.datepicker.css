@@ -53,7 +53,7 @@ img.ui-datepicker-trigger {
 	color: #fff;
 }
 .ui-datepicker-control {
-	background: #400;
+	background: #8a8a8a;
 	padding: 2px 0px;
 }
 .ui-datepicker-links {
@@ -101,7 +101,7 @@ img.ui-datepicker-trigger {
 	background: #333;
 	color: #fff;
 	border: 0px;
-	font-weight: bold;
+	font-weight: normal;
 }
 .ui-datepicker {
 	background: #ccc;
@@ -144,7 +144,7 @@ img.ui-datepicker-trigger {
 	color: #888;
 }
 .ui-datepicker-today {
-	background: #fcc !important;
+	background: white !important;
 }
 .ui-datepicker-current-day {
 	background: #999 !important;
@@ -177,7 +177,7 @@ img.ui-datepicker-trigger {
 	color: #eee !important;
 }
 .ui-datepicker-control a:hover {
-	background: #fdd !important;
+	background: white !important;
 	color: #333 !important;
 }
 .ui-datepicker-links a:hover, .ui-datepicker-title-row a:hover {
