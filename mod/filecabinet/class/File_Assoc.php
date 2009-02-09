@@ -466,12 +466,15 @@ class FC_File_Assoc {
             return;
         }
 
-        if ($max_width < $width || !$max_height) {
+        if (($width && $max_width) && ($max_width < $width || !$max_height)) {
             $new_width = $max_width;
             $new_height = floor($height / ($width / $new_width));
-        } else {
+        } elseif ($height && $max_height) {
             $new_height = $max_height;
             $new_width = floor($width / ($height / $new_height));
+        } else {
+            // prevents a possible divide by zero
+            return;
         }
 
         $this->_source->width = $new_width;
