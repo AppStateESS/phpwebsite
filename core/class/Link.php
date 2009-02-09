@@ -27,7 +27,7 @@ class PHPWS_Link {
 
     public function __construct($label=null, $module=null, $values=null, $secure=false, $salted=false)
     {
-        $this->label = $label;
+        $this->setLabel($label);
         $this->module = $module;
         if (is_array($values)) {
             $this->addValues($values);
@@ -64,7 +64,7 @@ class PHPWS_Link {
 
     public function setLabel($label)
     {
-        if (is_string($label)) {
+        if (is_string($label) || is_numeric($label)) {
             $this->label = $label;
         }
     }
@@ -117,6 +117,11 @@ class PHPWS_Link {
                 }
             }
         }
+    }
+
+    public function clearValues()
+    {
+        $this->values = null;
     }
 
     public function setNoFollow($no_follow=true)

@@ -13,6 +13,9 @@ its own separate CHANGELOG file..
   looks in the module's inc directory.
 + Moved conf/error.php to inc/
 + Some edits to make datepicker color neutral (i.e. gray)
++ Patch #2580629 - Eloi George : Fixed bbcode problem with smilies and
+  newlines
++ Link - constructor uses setLabel, setLabel allows numeric
 + Updated: javascript/jquery/jquery.js, javascript/datepicker/ui.datepicker.css
 
 4 February 2009
