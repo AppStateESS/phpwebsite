@@ -1,3 +1,8 @@
+9 February 2009
++ Blog templates now have have single view and multiple view
+  templates.
++ Updated: templates/view_full.tpl, templates/view_list.tpl
+
 Version 1.8.1
 ------------------------------------------------------------
 16 December 2008

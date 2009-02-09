@@ -346,7 +346,7 @@ class Blog {
             $template['AUTHOR'] = dgettext('blog', 'Anonymous');
         }
 
-        return PHPWS_Template::process($template, 'blog', 'view.tpl');
+        return PHPWS_Template::process($template, 'blog', 'view_full.tpl');
     }
 
 
@@ -472,7 +472,12 @@ class Blog {
         $template['POSTED_ON'] = dgettext('blog', 'Posted on');
         $template['AUTHOR'] = $this->author;
 
-        return PHPWS_Template::process($template, 'blog', 'view.tpl');
+        if ($summarized) {
+            $view_tpl = 'view_list.tpl';
+        } else {
+            $view_tpl = 'view_full.tpl';
+        }
+        return PHPWS_Template::process($template, 'blog', $view_tpl);
     }
 
 
