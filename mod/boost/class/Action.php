@@ -39,7 +39,7 @@ class Boost_Action {
 
         if (version_compare($version_info['VERSION'], $module->getVersion(), '>')) {
             $template['CHANGES_LABEL'] = dgettext('boost', 'Changes');
-            $template['CHANGES'] = PHPWS_Text::parseOutput($version_info['CHANGES']);
+            $template['CHANGES'] = '<pre>' . htmlspecialchars($version_info['CHANGES']) . '</pre>';
             $template['UPDATE_AVAILABLE'] = dgettext('boost', 'An update is available!') . '<br />';
             $template['UPDATE_PATH_LABEL'] = dgettext('boost', 'Download here');
             $template['UPDATE_PATH'] = '<a href="' . $version_info['DOWNLOAD'] . '">' . $version_info['DOWNLOAD'] . '</a>';
