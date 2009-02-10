@@ -15,14 +15,18 @@ define('BLOG_BATCH', 10);
 
 // Must be in YYYY-MM-DD format.
 // If you want to convert all your announcements, leave this line commented out.
-define('IGNORE_BEFORE', '2006-01-01');
+//define('IGNORE_BEFORE', '2006-01-01');
 
 
 // If you do not want to convert comments, set this to false
-define('CONVERT_COMMENTS', false);
-
+define('CONVERT_COMMENTS', true);
 
 PHPWS_Core::initModClass('search', 'Search.php');
+
+function htmlallspecialchars_decode($string)
+{
+    return html_entity_decode(preg_replace("/&#([0-9]+);/e", "chr($1)", $string));
+}
 
 function convert()
 {
@@ -136,17 +140,17 @@ function runBatch(&$db, &$batch)
 
 function convertAnnouncement($entry)
 {
-    $db = & new PHPWS_DB('blog_entries');
+    $db = new PHPWS_DB('blog_entries');
     if (!$entry['approved']) {
         continue;
     }
 
     $val['id']      = $entry['id'];
-    $val['title']   = PHPWS_Text::parseInput(strip_tags(utf8_encode($entry['subject'])));
-    $val['summary'] = PHPWS_Text::parseInput(PHPWS_Text::breaker(utf8_encode($entry['summary'])));
+    $val['title']   = PHPWS_Text::parseInput(utf8_encode(htmlallspecialchars_decode(strip_tags($entry['subject']))));
+    $val['summary'] = PHPWS_Text::parseInput(PHPWS_Text::breaker(utf8_encode(htmlallspecialchars_decode($entry['summary']))));
 
     if (!empty($entry['body'])) {
-        $val['entry'] = PHPWS_Text::parseInput(PHPWS_Text::breaker(utf8_encode($entry['body'])));
+        $val['entry'] = PHPWS_Text::parseInput(PHPWS_Text::breaker(utf8_encode(htmlallspecialchars_decode($entry['body']))));
     }
 
     $val['author']  = $entry['userCreated'];
@@ -168,13 +172,19 @@ function convertAnnouncement($entry)
         }
     }
 
+    if (MOD_REWRITE_ENABLED) {
+        $url = 'blog/' . $val['id'];
+    } else {
+        $url = 'index.php?module=blog&id=' . $val['id'];
+    }
+
     $key = new Key;
     $key->create_date = $val['create_date'];
     $key->setItemId($val['id']);
     $key->setModule('blog');
     $key->setItemName('entry');
     $key->setEditPermission('edit_blog');
-    $key->setUrl('index.php?module=blog&action=view_comments&id=' . $val['id']);
+    $key->setUrl($url);
     $key->setTitle($val['title']);
     $key->setSummary($val['summary']);
     $key->save();

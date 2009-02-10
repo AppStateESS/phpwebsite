@@ -1,11 +1,13 @@
 CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
-its own separate CHANGELOG file..
+its own separate CHANGELOG file.
 
 10 February 2009
 + Patch #2501064 - Olivier Sannier: Menu conversion now encodes
   characters better, uses short urls, and detects module possession of
   link 
++ Patch #2501057 - Olivier Sannier: Blog conversion encodes
+  characters, uses short urls
 
 9 February 2009
 + Conversion
