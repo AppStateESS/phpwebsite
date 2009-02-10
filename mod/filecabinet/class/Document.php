@@ -267,11 +267,14 @@ class PHPWS_Document extends File_Common {
 
     public function editLink($icon=false)
     {
+
         $vars['document_id'] = $this->id;
         $vars['folder_id']   = $this->folder_id;
         $vars['dop'] = 'upload_document_form';
-        $js['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+        $link = new PHPWS_Link(null, 'filecabinet', $vars, true);
+        $link->setSalted(1);
 
+        $js['address'] = $link->getAddress();
         $js['width'] = 550;
         $js['height'] = 500;
 

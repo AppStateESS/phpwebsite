@@ -3,10 +3,12 @@ div.fc-dl-icon {
    margin-right : 5px;
 }
 
-div.fc-download-document {
+div.fc-download-single-document,
+div.fc-download-multiple-document {
    border : 1px solid black;
    font-family : arial;
    min-width : 200px;
+   max-width : 300px;
    min-height : 80px;
    font-size : 13px;
 }
@@ -27,4 +29,9 @@ div.fc-download-label {
 
 div.fc-info { 
    padding : 3px;
+}
+
+.fc-file-specs { 
+   font-size : 80%;
+   white-space: nowrap;
 }
