@@ -2,6 +2,11 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file..
 
+10 February 2009
++ Patch #2501064 - Olivier Sannier: Menu conversion now encodes
+  characters better, uses short urls, and detects module possession of
+  link 
+
 9 February 2009
 + Conversion
   o Categories Patch #2571605 - Eloi George : After upgrade, the
@@ -24,7 +29,8 @@ its own separate CHANGELOG file..
   looks in the module's inc directory.
 + Moved conf/error.php to inc/
 + Some edits to make datepicker color neutral (i.e. gray)
-+ Patch #2580629 - Eloi George : Fixed bbcode problem with smilies and
++ Patch #2501181 - Olivier Sannier,
+  Patch #2580629 - Eloi George : Fixed bbcode problem with smilies and
   newlines
 + Calling breaker at the end of the bbencode.
 + Link - constructor uses setLabel, setLabel allows numeric

@@ -4,6 +4,7 @@
    * Conversion file for Menu module
    *
    * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @modified Olivier Sannier 
    * @version $Id$
    */
 
@@ -92,6 +93,11 @@ function convertMenu()
     }
 
     return implode('<br />', $content);
+}
+
+function htmlallspecialchars_decode($string)
+{
+    return html_entity_decode(preg_replace("/&#([0-9]+);/e", "chr($1)", $string));
 }
 
 function convertLinks()
@@ -199,14 +205,21 @@ function convertLink($link) {
     } else {
         $val['parent'] = 0;
     }
-    $val['title']      = $link['menu_item_title'];
-    $val['url']        = processUrl($link['menu_item_url']);
+
+    $original_url = $link['menu_item_url'];
+    $val['title']      = htmlentities(htmlallspecialchars_decode($link['menu_item_title']));
+    $val['url']        = processUrl($original_url);
 
     if (isset($GLOBALS['Convert_mod'])) {
         $key_id = 0;
-        $mod = $GLOBALS['Convert_mod'];
-        $page_id = (int)preg_replace('/.*=(\d+)$/', '\\1', $val['url']);
 
+        $mod = preg_replace('/.*module=([^&]+)&.*$/', '\\1', $original_url);
+        if ($mod == 'pagemaster') {
+            $mod = $GLOBALS['Convert_mod'];
+        }
+        
+        $page_id = (int)preg_replace('/.*=(\d+).*$/', '\\1', $original_url);
+        
         if ($page_id) {
             $db = new PHPWS_DB('phpws_key');
             $db->addColumn('id');
@@ -244,7 +257,13 @@ function processUrl($link)
 
     $link = str_replace('&amp;', '&', $link);
     if ($mod) {
-        $link = preg_replace('/index.php\?module=pagemaster&page_user_op=view_page&page_id=(\d+).*/i', 'index.php?module=' . $mod . '&id=\\1', $link);
+        if (MOD_REWRITE_ENABLED) {
+            $link = preg_replace('/index.php\?module=pagemaster&page_user_op=view_page&page_id=(\d+).*/i',
+                                 $mod . '/\\1', $link);
+        } else {
+            $link = preg_replace('/index.php\?module=pagemaster&page_user_op=view_page&page_id=(\d+).*/i', 'index.php?module=' . $mod . '&id=\\1',
+                                 $link);
+        }
     }
 
     return $link;
