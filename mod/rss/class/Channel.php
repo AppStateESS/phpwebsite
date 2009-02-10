@@ -2,6 +2,7 @@
 
 /**
  * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @modified Olivier Sannier
  * @version $Id$
  */
 
@@ -129,6 +130,23 @@ class RSS_Channel {
     }
 
     /**
+     * @author Olivier Sannier
+     */
+    function EncodeString($str)
+    {
+      // decode all UTF8 to avoid having it reencoded later on
+      $str = utf8_decode($str);
+     
+      // decode all HTML entities, they are not supported by RSS readers. This might create accented characters 
+      $str = html_entity_decode($str, ENT_QUOTES);
+      
+      // restore the line breaks, ensuring they are escaped for XML
+      $str = htmlspecialchars(nl2br($str));
+
+      return $str;
+    }
+
+    /**
      * Returns a RSS feed. Cached result is returned if exists.
      */
     public function view()
@@ -143,10 +161,10 @@ class RSS_Channel {
         $this->loadFeeds();
 
         $home_http = PHPWS_Core::getHomeHttp();
-        $template['CHANNEL_TITLE']       = preg_replace('/&(?!amp;)/', '&amp;', $this->title);
+        $template['CHANNEL_TITLE']       = $this->EncodeString($this->title);
         $template['CHANNEL_ADDRESS']     = $this->getAddress();
         $template['HOME_ADDRESS']        = $home_http;
-        $template['CHANNEL_DESCRIPTION'] = preg_replace('/&(?!amp;)/', '&amp;', $this->description);
+        $template['CHANNEL_DESCRIPTION'] = $this->EncodeString($this->description);
         $template['LANGUAGE']            = CURRENT_LANGUAGE; // change later
         $template['SEARCH_LINK'] = sprintf('%sindex.php?module=search&amp;mod_title=%s&amp;user=search',
                                            $home_http, $this->module);
@@ -168,20 +186,20 @@ class RSS_Channel {
                 $url = preg_replace('/^\.\//', '', $key->url);
                 $url = $home_http . preg_replace('/&(?!amp;)/', '&amp;', $url);
                 $itemTpl['ITEM_LINK']         = $url;
-                $itemTpl['ITEM_TITLE']        = preg_replace('/&(?!amp;)/', '&amp;', $key->title);
+                $itemTpl['ITEM_TITLE']        = $this->EncodeString($key->title);
                 $itemTpl['ITEM_GUID']         = $url;
                 $itemTpl['ITEM_LINK']         = $url;
                 $itemTpl['ITEM_SOURCE']       = sprintf('%sindex.php?module=rss&amp;mod_title=%s', $home_http, $this->module);
 
-                $itemTpl['ITEM_DESCRIPTION']  = strip_tags(trim(preg_replace('/&(?!amp;)/', '&amp;', $key->summary)));
+                $itemTpl['ITEM_DESCRIPTION']  = strip_tags(trim($this->EncodeString($key->summary)));
                 $itemTpl['ITEM_AUTHOR']       = $key->creator;
-                $itemTpl['ITEM_PUBDATE']      = $key->getCreateDate('%a, %d %b %Y %T GMT');
+                $itemTpl['ITEM_PUBDATE']      = $key->getCreateDate('%Y-%m-%dT%H:%M');
 
                 $itemTpl['ITEM_DC_DATE']      = $key->getCreateDate('%Y-%m-%dT%H:%M:%S') . $timezone;
                 $itemTpl['ITEM_DC_TYPE']      = 'Text'; //pull from db later
                 $itemTpl['ITEM_DC_CREATOR']   = $key->creator;
 
-                $itemTpl['ITEM_SOURCE_TITLE'] = preg_replace('/&(?!amp;)/', '&amp;', $this->title);
+                $itemTpl['ITEM_SOURCE_TITLE'] = $this->EncodeString($this->title);
 
                 $template['item-listing'][] = $itemTpl;
             }
