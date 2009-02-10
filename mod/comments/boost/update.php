@@ -351,7 +351,6 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
 
     case version_compare($currentVersion, '1.2.2', '<'):
         $content[] = '<pre>';
-
         commentsUpdateFiles(array('img/delete.png', 'img/erase.png', 'img/report.png',
                                   'img/reported.png', 'javascript/admin/default.php',
                                   'javascript/admin/head.js', 'templates/style.css'),
@@ -368,11 +367,19 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
 + Yanked background image and made icons just plain old images.
 + Replaced delete icons with trashcan icon.
 + Added new functions to update a thread\'s comment count and last
-  poster.
-</pre>';
+  poster.';
         }
-    }
+        $content[] = '</pre>';
 
+    case version_compare($currentVersion, '1.2.3', '<'):
+        $content[] = '<pre>';
+        commentsUpdateFiles(array('templates/edit.tpl'), $content);
+        $content[] = '1.2.3 changes
+-----------------------
++ Patch #2580634 - Eloi George : Comments only shows highest rank now.
++ Added template changes from Obones SF patch</pre>';
+    }
+       
     return true;
 }
 
