@@ -2,7 +2,11 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+Version 1.9.2
+---------------------------------------------------------------------
 10 February 2009
++ Mail - Fix for Bug #2550244 - Rewrote checkAddress. More robust
+  address checking. Allows "something <foo@bar.com>" format.
 + Patch #2501064 - Olivier Sannier: Menu conversion now encodes
   characters better, uses short urls, and detects module possession of
   link 

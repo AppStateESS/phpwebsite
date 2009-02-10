@@ -355,6 +355,17 @@ You will need to make your hub/branch home directory writable if the file doesn\
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_9_1.txt');
         }
         $content[] = '</pre>';
+
+    case version_compare($version, '1.9.2', '<'):
+        $files = array('javascript/jquery/jquery.js', 'javascript/datepicker/ui.datepicker.css',
+                       'javascript/prompt/default.php', 'javascript/editor/fckeditor/custom.js',
+                       'javascript/editor/fckeditor/phpwsstyles.xml');
+        $content[] = '<pre>';
+        coreUpdateFiles($files, $content);
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_9_2.txt');
+        }
+        $content[] = '</pre>';
     }
     return true;
 }

@@ -163,7 +163,12 @@ class PHPWS_Mail {
             return false;
         }
 
-        return !preg_match('/[^\w\s<>\.@\-\'"]/', $email_address);
+        // If the email address is inside <>, test that
+        if (preg_match('/.*<.+>$/', $email_address)) {
+            $email_address = preg_replace('/.*<([^>]+)>/', '\\1', $email_address);
+        }
+
+        return preg_match('/^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i', $email_address);
     }
 
     /**
