@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"POT-Creation-Date: 2009-02-10 15:57-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -221,9 +221,6 @@ msgid "Forum Contains New Posts"
 msgstr ""
 
 msgid "Forum Contains No New Posts"
-msgstr ""
-
-msgid "Forum Links"
 msgstr ""
 
 msgid "Guest"
@@ -470,6 +467,10 @@ msgid "The requested operation did not work"
 msgstr ""
 
 msgid "The thread you requested is awaiting approval by an administrator."
+msgstr ""
+
+msgid ""
+"The thread you requested is not available. Please check the security logs."
 msgstr ""
 
 msgid "The topic could not be deleted."

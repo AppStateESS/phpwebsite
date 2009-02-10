@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"POT-Creation-Date: 2009-02-10 15:57-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #, php-format
-msgid "%s hr"
+msgid "%s hour"
 msgstr ""
 
 #, php-format
-msgid "%s min"
+msgid "%s min."
 msgstr ""
 
 msgid "-- Move visitor --"
+msgstr ""
+
+msgid "< 1 min."
 msgstr ""
 
 msgid "Action"
@@ -76,6 +79,10 @@ msgstr ""
 msgid "Available for meeting"
 msgstr ""
 
+#, php-format
+msgid "Average wait time: %s"
+msgstr ""
+
 msgid "Check in"
 msgstr ""
 
@@ -98,6 +105,9 @@ msgid "Date"
 msgstr ""
 
 msgid "Delete"
+msgstr ""
+
+msgid "Down"
 msgstr ""
 
 msgid "Edit"
@@ -153,6 +163,9 @@ msgstr ""
 msgid "Name, Reason, & Note"
 msgstr ""
 
+msgid "No meeting"
+msgstr ""
+
 msgid "No reasons found."
 msgstr ""
 
@@ -172,6 +185,9 @@ msgid "None"
 msgstr ""
 
 msgid "Note"
+msgstr ""
+
+msgid "Order"
 msgstr ""
 
 msgid "Please check in using the form below"
@@ -211,6 +227,9 @@ msgid "Reason unknown"
 msgstr ""
 
 msgid "Reasons"
+msgstr ""
+
+msgid "Refresh"
 msgstr ""
 
 msgid "Remove"
@@ -259,6 +278,9 @@ msgstr ""
 msgid "Staff name"
 msgstr ""
 
+msgid "Staff see unassigned visitors"
+msgstr ""
+
 msgid "Staff user name"
 msgstr ""
 
@@ -281,6 +303,12 @@ msgstr ""
 
 #, php-format
 msgid "There are %s unassigned visitors."
+msgstr ""
+
+msgid "Time arrived/waiting"
+msgstr ""
+
+msgid "Time error"
 msgstr ""
 
 msgid "Time waited"
@@ -309,7 +337,7 @@ msgstr ""
 msgid "Unavailable for meeting"
 msgstr ""
 
-msgid "Under a minute"
+msgid "Up"
 msgstr ""
 
 msgid "Update"

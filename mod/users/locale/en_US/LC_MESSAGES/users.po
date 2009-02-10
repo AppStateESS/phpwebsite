@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"POT-Creation-Date: 2009-02-10 15:57-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,6 +26,9 @@ msgstr ""
 
 #, php-format
 msgid "%s created an user account for you."
+msgstr ""
+
+msgid "-- None --"
 msgstr ""
 
 msgid "-- Use server's time zone --"
@@ -94,6 +97,9 @@ msgstr ""
 msgid "Add this user to this group."
 msgstr ""
 
+msgid "Admin created user default group"
+msgstr ""
+
 msgid "All visitors"
 msgstr ""
 
@@ -108,6 +114,9 @@ msgid ""
 msgstr ""
 
 msgid "An error occurred when trying to save the group."
+msgstr ""
+
+msgid "An error occurred when trying to save the user. Check your logs."
 msgstr ""
 
 msgid "An error occurred while updating your user account."
@@ -192,6 +201,10 @@ msgid "Control Panel flyout menu"
 msgstr ""
 
 msgid "Could not access hub database."
+msgstr ""
+
+#, php-format
+msgid "Could not connect to %s"
 msgstr ""
 
 #, php-format
@@ -379,6 +392,9 @@ msgstr ""
 msgid "Invalid variable name."
 msgstr ""
 
+msgid "Joined user default group"
+msgstr ""
+
 msgid "Language preference"
 msgstr ""
 
@@ -560,6 +576,9 @@ msgstr ""
 
 #, php-format
 msgid "Password must be at least %s characters in length."
+msgstr ""
+
+msgid "Password was blank"
 msgstr ""
 
 #, php-format

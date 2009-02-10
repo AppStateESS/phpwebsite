@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"POT-Creation-Date: 2009-02-10 15:57-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -126,6 +126,9 @@ msgstr ""
 msgid "Id"
 msgstr ""
 
+msgid "Lengthen all menu links"
+msgstr ""
+
 msgid "List"
 msgstr ""
 
@@ -219,6 +222,9 @@ msgstr ""
 msgid "Settings saved"
 msgstr ""
 
+msgid "Shorten all menu links"
+msgstr ""
+
 msgid "Sorry"
 msgstr ""
 
@@ -277,6 +283,9 @@ msgid "Upload file"
 msgstr ""
 
 msgid "Upload template"
+msgstr ""
+
+msgid "Upload templates (Unrestricted only)"
 msgstr ""
 
 msgid "Wrong file type for icon file."
