@@ -254,6 +254,15 @@ function calendar_update(&$content, $version)
 + Fixed events showing on multiple schedules.
 + php 5 formatted.
 </pre>';
+
+    case version_compare($version, '1.7.1', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/admin/settings.tpl');
+        calendarUpdateFiles($files, $content);
+        $content[] = '1.7.1 changes
+------------------
++ Added option to enable rel="nofollow" on date links</pre>';
+
     } // end of switch
 
     return true;
