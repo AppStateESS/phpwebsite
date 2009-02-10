@@ -279,6 +279,18 @@ function blog_update(&$content, $currentVersion)
 + /blog works again.';
         }
         $content[] = '</pre>';
+
+    case version_compare($currentVersion, '1.8.2', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/view_full.tpl', 'templates/view_list.tpl');
+        blogUpdateFiles($files, $content);
+        
+            $content[] = '1.8.2 changes
+---------------------
++ Blog templates now have have single view and multiple view
+  templates.';
+        $content[] = '</pre>';
+
     } // end of switch
     return true;
 }
