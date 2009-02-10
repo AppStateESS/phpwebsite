@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-17 10:32-0500\n"
+"POT-Creation-Date: 2009-02-10 14:44-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,6 +67,21 @@ msgid "All"
 msgstr ""
 
 msgid "All done!"
+msgstr ""
+
+msgid "All phpwsbb Avatar Images have been converted"
+msgstr ""
+
+msgid "All phpwsbb Banned Users have been converted"
+msgstr ""
+
+msgid "All phpwsbb Extended User Information has been converted"
+msgstr ""
+
+msgid "All phpwsbb Forums have been converted"
+msgstr ""
+
+msgid "All phpwsbb Topics have been converted"
 msgstr ""
 
 msgid "An error occurred when accessing the conversion database."
@@ -181,6 +196,9 @@ msgstr ""
 
 #, php-format
 msgid "Branch : %s"
+msgstr ""
+
+msgid "Break newlines"
 msgstr ""
 
 msgid "CSV Report"
@@ -335,6 +353,12 @@ msgstr ""
 msgid "Converted"
 msgstr ""
 
+msgid "Converting phpwsbb Extended User Information..."
+msgstr ""
+
+msgid "Converting phpwsbb Topics"
+msgstr ""
+
 #, php-format
 msgid "Copy all the files you need converted into your %s directory."
 msgstr ""
@@ -345,7 +369,7 @@ msgstr ""
 msgid "Core configuration directory successfully copied."
 msgstr ""
 
-msgid "Core could not locate its errorDefines.php file."
+msgid "Core could not locate its error.php file."
 msgstr ""
 
 msgid "Core directories created."
@@ -424,8 +448,8 @@ msgid "Database name"
 msgstr ""
 
 msgid ""
-"Database password may contain alphanumeric characters, spaces or underscores "
-"only."
+"Database password may contain alphanumeric characters, punctuation, spaces "
+"and underscores only."
 msgstr ""
 
 msgid "Declared classes:"
@@ -1320,9 +1344,6 @@ msgstr ""
 msgid "Uninstall"
 msgstr ""
 
-msgid "Unknown"
-msgstr ""
-
 msgid "Unknown Error."
 msgstr ""
 
@@ -1508,6 +1529,12 @@ msgstr ""
 msgid "loadObject expected the object to have an id or where clause."
 msgstr ""
 
+msgid "phpWS Bulletin Board has already been converted."
+msgstr ""
+
+msgid "phpWS Bulletin Board is not installed."
+msgstr ""
+
 #, php-format
 msgid "phpWebSite %s Setup"
 msgstr ""
@@ -1524,6 +1551,9 @@ msgid ""
 msgstr ""
 
 msgid "phpWebSite uses the Pear library extensively."
+msgstr ""
+
+msgid "phpwsbb conversion complete!"
 msgstr ""
 
 msgid ""
