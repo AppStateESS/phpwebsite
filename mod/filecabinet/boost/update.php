@@ -482,12 +482,26 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
     case version_compare($version, '2.2.1', '<'):
         $content[] = '<pre>
-2.2.1 change
+2.2.1 changes
 -----------------------
 + Fixed folder deletion.
 + Clipped documents and images now have full pathing.
 + Fixed document smarttag</pre>';
 
+    case version_compare($version, '2.2.2', '<'):
+        $content[] = '<pre>';
+        $files = array('img/mime_types/', 'templates/document_download.tpl', 'templates/file_view.css',
+                       'templates/multi_doc_download.tpl');
+        fc_updatefiles($files, $content);
+        $content[] = '2.2.2 changes
+-----------------------
++ Fixed edit icon in document view. Needed to be salted.
++ Added error check to prevent possible divide by zero error.
++ Resized mime type icons
++ Changed the document download windows. Simplified.
++ Fixed image edit link.
++ Added pptm to known types.
++ Fixed permission checks on folders.</pre>';
     }
 
     return true;
