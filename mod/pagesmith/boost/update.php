@@ -250,7 +250,21 @@ function pagesmith_update(&$content, $currentVersion)
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/pagesmith/boost/changes/1_3_0.txt');
         }
         $content[] = '</pre>';
-        
+
+    case version_compare($currentVersion, '1.3.1', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/page_templates/threesec/page.tpl',
+                       'templates/page_templates/threesec-tbl/page.tpl',
+                       'templates/settings.tpl');
+        pagesmithUpdateFiles($files, $content);
+        $content[] = '1.3.1 changes
+---------------
++ Page cache refreshed on page save.
++ Updated threesec templates to conform with norm box-title,
+  box-content layout
++ Added ability to lengthen or shorten pagesmith links.
++ Added fix so edit mode does not parse smarttags.</pre>';
+       
     } // end switch
 
     return true;
