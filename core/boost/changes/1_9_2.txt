@@ -70,4 +70,3 @@ Miscellaneous
 + Extra apostrophe check added to prompt script
 + Added Format selection to fckeditor, moved buttons around,
 + Checking user session in security
-+ Forward sends bad urls to 404 page instead of index.php

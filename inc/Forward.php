@@ -33,7 +33,6 @@ function forwardInfo()
 
     if (!in_array($module, $mods)) {
         $GLOBALS['Forward'] = $module;
-        PHPWS_Core::errorPage('404');
         return;
     }
 
