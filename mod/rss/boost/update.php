@@ -117,6 +117,15 @@ function rss_update(&$content, $version)
 + PHP 5 formatted.
 </pre>';
 
+    case version_compare($version, '0.3.1', '<'):
+        $content[] = '<pre>
+0.3.1 changes
+-------------
++ Patch #2500049 - Olivier Sannier : prepares a string for output in
+  the resulting XML stream. It ensures it does not contain any XML
+  entities and that the line breaks are output correctly.
+</pre>';
+
     }
 
     return true;

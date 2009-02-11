@@ -1,3 +1,5 @@
+Version 0.3.1
+-----------------------------------------------------------------------------
 10 February 2009
 + Patch #2500049 - Olivier Sannier : prepares a string for output in
   the resulting XML stream. It ensures it does not contain any XML
