@@ -2,8 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+
 Version 1.9.2
 ---------------------------------------------------------------------
+11 February 2009
++ Forward sends bad links to the 404 page instead of index.php
+
 10 February 2009
 + Mail - Fix for Bug #2550244 - Rewrote checkAddress. More robust
   address checking. Allows "something <foo@bar.com>" format.
