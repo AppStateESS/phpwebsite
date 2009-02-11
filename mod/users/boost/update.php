@@ -274,6 +274,23 @@ timeout INT NOT NULL default 0,
 + Added error message to my page if update goes bad.
 </pre>';
 
+    case version_compare($currentVersion, '2.6.2', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/forms/settings.tpl');
+        userUpdateFiles($files, $content);
+        $content[] = '2.6.2 changes
+------------------
++ Moved error file to inc/
++ Blank passwords forbidden.
++ Error check added to cosign authorization.
++ php fiveasized the classes.
++ Added some needed error logging to user creation problems
++ Added ability for default user groups to be set for admin created
+  and newly joined users.
++ Fixed testing on addMembers. Previous code was nonsensical.
++ _user_group id gets set upon a user object save.
+</pre>';
+
     } // End of switch statement
 
     return TRUE;
