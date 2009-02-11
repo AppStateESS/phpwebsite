@@ -144,6 +144,16 @@ function layout_update(&$content, $currentVersion)
 + Fix to cache headers
 </pre>';
 
+  case version_compare($currentVersion, '2.4.7', '<'):
+        $content[] = '<pre>';
+        layoutUpdateFiles(array('templates/themes.tpl'), $content);
+        $content[] = '2.4.7 changes
+---------------------
++ Added option to layout theme tab to disable or order module style
+  sheet inclusion.
++ Can enable box move from mini admin
+</pre>';
+
     }
     return true;
 }
