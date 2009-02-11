@@ -149,6 +149,13 @@ function access_update(&$content, $version)
 ---------------
 + Fixed some error notices
 + Fixed access shortcuts to work with GET arrays</pre>';
+
+    case version_compare($version, '1.1.3', '<'):
+        $content[] = '<pre>1.1.3 changes
+---------------
++ Access forces bad urls to 404 error
+</pre>';
+
     }
 
     return true;
