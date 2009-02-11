@@ -50,8 +50,29 @@ function miniadmin_update(&$content, $version)
 + Added option to set the module title to a specific link.
 + PHP 5 formatted.</pre>';
 
+    case version_compare($version, '1.2.1', '<'):
+        $content[] = '<pre>';
+        miniadminUpdateFiles(array('templates/alt_mini_admin.tpl',
+                                   'templates/mini_admin.tpl'),
+                             $content);
+        $content[] = '1.2.1 changes
+------------------
++ Wrapped div box-content around links per Obones patch submission
+</pre>';
+
     }
     return true;
 }
+
+function miniadminUpdateFiles($files, &$content) {
+    if (PHPWS_Boost::updateFiles($files, 'miniadmin')) {
+        $content[] = '-- Successfully updated the following files:';
+    } else {
+        $content[] = '-- Unable to update the following files:';
+    }
+    $content[] = '    ' . implode("\n    ", $files);
+    $content[] = '';
+}
+
 
 ?>

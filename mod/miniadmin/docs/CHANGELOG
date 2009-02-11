@@ -1,3 +1,5 @@
+Version 1.2.1
+---------------------------------------------------
 + Wrapped div box-content around links per Obones patch submission
 + Updated: templates/alt_mini_admin.tpl, templates/mini_admin.tpl
 
