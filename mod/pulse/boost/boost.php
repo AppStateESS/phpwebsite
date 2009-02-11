@@ -13,6 +13,6 @@ $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/pulse/check.xm
 $about        = true;
 $priority     = 50;
 $dependency   = true;
-$image_dir    = true;
+$image_dir    = false;
 
 ?>
