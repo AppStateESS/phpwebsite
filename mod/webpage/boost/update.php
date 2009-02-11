@@ -104,6 +104,16 @@ Please download version 0.5.3</pre>';
 + PHP 5 formatted.
 </pre>';
 
+    case version_compare($currentVersion, '1.2.1', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/page/');
+        webpageUpdateFiles($files, $content);
+        $content[] = '1.2.1 changes
+---------------
++ Patch #2501402 by Olivier Sannier - add new div around extra header
+  information
+</pre>';
+
     }
 
     return TRUE;

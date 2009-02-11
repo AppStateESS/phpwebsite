@@ -4,7 +4,7 @@
    * @version $Id$
    */
 $proper_name  = 'Web Pages';
-$version      = '1.2.0';
+$version      = '1.2.1';
 $import_sql   = true;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/webpage/check.xml';
 $about        = true;
