@@ -73,6 +73,13 @@ Please download update 2.1.1.</pre>';
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/boost/boost/changes/2_3_0.txt');
             $content[] = '</pre>';
         }
+
+    case version_compare($currentVersion, '2.3.1', '<'):
+        $content[] = '<pre>
+2.3.1 changes
+----------------
++ Changes section in check now shown with pre tag.</pre>';
+
     }
 
     return TRUE;
