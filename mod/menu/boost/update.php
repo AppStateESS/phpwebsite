@@ -189,6 +189,19 @@ Please download 1.2.1.</pre>';
 -------------------
 + Fixed menu preventing unpinning.
 + Default is now false for menu expansion in admin mode.</pre>';
+
+    case version_compare($currentVersion, '1.5.2', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/site_map.tpl', 'templates/menu_layout/basic/menu.tpl',
+                       'templates/menu_layout/horizontal/menu.tpl');
+        menuUpdateFiles($files, $content);
+        $content[] = '1.5.2 changes
+---------------
++ Added Verdon\'s edit full menu sitemap
++ Removed duplicate pin page link in miniadmin
++ Wrapped default menu template in box-content div per patch by Obones
++ Local links created on key pages were not made current.
++ Commented out pin page link in template</pre>';
         
     }
     return true;
