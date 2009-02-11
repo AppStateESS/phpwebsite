@@ -114,6 +114,11 @@ function signup_update(&$content, $currentVersion)
 + Rewrote getAllSlots. The slots filled number wasn\'t joining
   properly.
 + Fixed sheet view link.</pre>';
+
+    case version_compare($currentVersion, '1.2.2', '<'):
+        $content[] = '<pre>1.2.2 changes
+----------------
++ Fixed url sent to key.</pre>';
         
     }
     return true;
