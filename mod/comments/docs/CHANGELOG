@@ -1,5 +1,7 @@
 13 February 2009
 + Patch #2591377 - Eloi George : User comment totals not updating.
++ Patch #2590994 - Eloi George : send notice flag was not set on
+  update notice. Changed address from last username in list to 'Member'
 
 Version 1.2.3
 ----------------------------------------------------------------------

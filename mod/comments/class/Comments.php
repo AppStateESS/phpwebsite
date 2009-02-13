@@ -847,7 +847,7 @@ class Comments {
         $find = array('::username::', '::postername::'
                       , '::thread_title::', '::thread_url::'
                       , '::reply_msg::', '::unsubscribeall_url::');
-        $replace = array($to['username']
+        $replace = array(dgettext('comments', 'Member')
                          , $cm_item->getAuthorName()
                          , $thread->_key->title
                          , PHPWS_Core::getHomeHttp().$thread->_key->url
@@ -860,6 +860,13 @@ class Comments {
         $mail->setMessageBody($body);
         $mail->sendIndividually();
         $mail->send();
+
+        // Unset the "send notice" flag so that only one notice is sent
+        $db = new PHPWS_DB('comments_monitors');
+        $db->addWhere('thread_id', $this->id);
+        $db->addWhere('suspended', 0);
+        $db->addValue('send_notice', 0);
+        PHPWS_Error::logIfError($db->update());
     }
 
     /*
