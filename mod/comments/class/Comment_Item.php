@@ -410,8 +410,10 @@ class Comment_Item {
             }
             // Start subscription?
             $user = Comments::getCommentUser(Current_User::getId());
-            if (!$thread->monitored && $user->monitordefault)
+            $user->bumpCommentsMade();
+            if (!$thread->monitored && $user->monitordefault) {
                 Comment_User::subscribe(Current_User::getId(), $thread->id);
+            }
             // Send notices to all subscribed users
             Comments::sendUpdateNotice($thread, $this);
         }
