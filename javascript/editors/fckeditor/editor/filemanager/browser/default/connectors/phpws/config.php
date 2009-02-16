@@ -20,8 +20,7 @@
 
 global $Config ;
 
-// SECURITY: You must explicitly enable this "connector". (Set it to "true").
-$Config['Enabled'] = true ;
+
 
 // Path to user files relative to the document root.
 if ( isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' ) {
@@ -41,6 +40,19 @@ $Config['UserFilesPath'] = $home_url ;	// Set to / if you want filebrowsing acro
 // Attention: The above 'UserFilesPath' must point to the same directory.
 $current_dir = getcwd();
 $Config['UserFilesAbsolutePath'] = substr($current_dir, 0, strpos($current_dir, 'javascript/editors/'));
+
+require_once $Config['UserFilesAbsolutePath'] . 'config/core/config.php';
+define('SESSION_NAME', md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
+session_name(SESSION_NAME);
+session_start();
+
+    // SECURITY: You must explicitly enable this "connector". (Set it to "true").
+if (@$_SESSION['FCK_Allow']) {
+    $Config['Enabled'] = true;
+} else {
+    $Config['Enabled'] = false;
+}
+
 
 // Set to $_SERVER['DOCUMENT_ROOT'] if you want filebrowsing across the whole site
 

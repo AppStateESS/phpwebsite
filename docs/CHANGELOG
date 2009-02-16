@@ -2,6 +2,13 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+16 February 2009
++ Updated FCKeditor file connector code
++ Added security measure to prevent non-users from using upload
+  function.
++ Updated : javascript/editors/fckeditor/default.php
+  javascript/editors/fckeditor/editor/filemanager/browser/default/connectors/phpws/*
+
 
 Version 1.9.2
 ---------------------------------------------------------------------

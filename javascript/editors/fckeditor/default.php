@@ -42,4 +42,10 @@ if (isset($_REQUEST['module'])) {
     $data['module'] = preg_replace('/\W/', '', $_REQUEST['module']);
 }
 
+if ($_SESSION['User']->id) {
+    $_SESSION['FCK_Allow'] = true;
+} else {
+    $_SESSION['FCK_Allow'] = false;
+}
+
 ?>
