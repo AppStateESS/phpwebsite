@@ -26,89 +26,90 @@ include('io.php') ;
 include('basexml.php') ;
 include('commands.php') ;
 
-if ( !$Config['Enabled'] )
+
+DoResponse($Config) ;
+
+function DoResponse($Config)
+{
+    if ( !$Config['Enabled'] )
 	SendError( 1, 'This connector is disabled. Please check the "editor/filemanager/browser/default/connectors/php/config.php" file' ) ;
 
-// Get the "UserFiles" path.
-$GLOBALS["UserFilesPath"] = '' ;
+    // Get the "UserFiles" path.
+    $GLOBALS["UserFilesPath"] = '' ;
 
-// Global the subdirectories for the media types
-if (isSet ($Config['Subdirectory'])) {
+    // Global the subdirectories for the media types
+    if (isSet ($Config['Subdirectory'])) {
 	$GLOBALS['Subdirectory'] = $Config['Subdirectory'] ;
-}
+    }
 
-if ( isset( $Config['UserFilesPath'] ) )
+    if ( isset( $Config['UserFilesPath'] ) )
 	$GLOBALS["UserFilesPath"] = $Config['UserFilesPath'] ;
-else if ( isset( $_GET['ServerPath'] ) )
+    else if ( isset( $_GET['ServerPath'] ) )
 	$GLOBALS["UserFilesPath"] = $_GET['ServerPath'] ;
-else
+    else
 	$GLOBALS["UserFilesPath"] = '/UserFiles/' ;
 
-if ( ! ereg( '/$', $GLOBALS["UserFilesPath"] ) )
+    if ( ! ereg( '/$', $GLOBALS["UserFilesPath"] ) )
 	$GLOBALS["UserFilesPath"] .= '/' ;
 
-if ( strlen( $Config['UserFilesAbsolutePath'] ) > 0 ) 
-{
-	$GLOBALS["UserFilesDirectory"] = $Config['UserFilesAbsolutePath'] ;
+    if ( strlen( $Config['UserFilesAbsolutePath'] ) > 0 ) 
+        {
+            $GLOBALS["UserFilesDirectory"] = $Config['UserFilesAbsolutePath'] ;
 
-	if ( ! ereg( '/$', $GLOBALS["UserFilesDirectory"] ) )
+            if ( ! ereg( '/$', $GLOBALS["UserFilesDirectory"] ) )
 		$GLOBALS["UserFilesDirectory"] .= '/' ;
-}
-else
-{
-	// Map the "UserFiles" path to a local directory.
-	$GLOBALS["UserFilesDirectory"] = GetRootPath() . $GLOBALS["UserFilesPath"] ;
-}
+        }
+    else
+        {
+            // Map the "UserFiles" path to a local directory.
+            $GLOBALS["UserFilesDirectory"] = GetRootPath() . $GLOBALS["UserFilesPath"] ;
+        }
 
-DoResponse() ;
+    if (!isset($_GET)) {
+        global $_GET;
+    }
+    if ( !isset( $_GET['Command'] ) || !isset( $_GET['Type'] ) || !isset( $_GET['CurrentFolder'] ) )
+        return ;
 
-function DoResponse()
-{
-	if ( !isset( $_GET['Command'] ) || !isset( $_GET['Type'] ) || !isset( $_GET['CurrentFolder'] ) )
-		return ;
+    // Get the main request informaiton.
+    $sCommand		= $_GET['Command'] ;
+    $sResourceType	= $_GET['Type'] ;
+    $sCurrentFolder	= GetCurrentFolder() ;
 
-	// Get the main request informaiton.
-	$sCommand		= $_GET['Command'] ;
-	$sResourceType	= $_GET['Type'] ;
-	$sCurrentFolder	= $_GET['CurrentFolder'] ;
+    // Check if it is an allowed command
+    if ( ! IsAllowedCommand( $sCommand ) )
+        SendError( 1, 'The "' . $sCommand . '" command isn\'t allowed' ) ;
 
-	// Check if it is an allowed type.
-	if ( !in_array( $sResourceType, array('File','Image','Flash','Media') ) )
-		return ;
+    // Check if it is an allowed type.
+    if ( !IsAllowedType( $sResourceType ) )
+        SendError( 1, 'Invalid type specified' ) ;
 
-	// Check the current folder syntax (must begin and start with a slash).
-	if ( ! ereg( '/$', $sCurrentFolder ) ) $sCurrentFolder .= '/' ;
-	if ( strpos( $sCurrentFolder, '/' ) !== 0 ) $sCurrentFolder = '/' . $sCurrentFolder ;
-	
-	// Check for invalid folder paths (..)
-	if ( strpos( $sCurrentFolder, '..' ) )
-		SendError( 102, "" ) ;
-
-	// File Upload doesn't have to Return XML, so it must be intercepted before anything.
-	if ( $sCommand == 'FileUpload' )
+    // File Upload doesn't have to Return XML, so it must be intercepted before anything.
+    if ( $sCommand == 'FileUpload' )
 	{
-		FileUpload( $sResourceType, $sCurrentFolder ) ;
-		return ;
+            FileUpload( $sResourceType, $sCurrentFolder, $sCommand ) ;
+            return ;
 	}
 
-	CreateXmlHeader( $sCommand, $sResourceType, $sCurrentFolder ) ;
+    CreateXmlHeader( $sCommand, $sResourceType, $sCurrentFolder ) ;
 
-	// Execute the required command.
-	switch ( $sCommand )
+    // Execute the required command.
+    switch ( $sCommand )
 	{
-		case 'GetFolders' :
-			GetFolders( $sResourceType, $sCurrentFolder ) ;
-			break ;
-		case 'GetFoldersAndFiles' :
-			GetFoldersAndFiles( $sResourceType, $sCurrentFolder ) ;
-			break ;
-		case 'CreateFolder' :
-			CreateFolder( $sResourceType, $sCurrentFolder ) ;
-			break ;
+        case 'GetFolders' :
+            GetFolders( $sResourceType, $sCurrentFolder ) ;
+            break ;
+        case 'GetFoldersAndFiles' :
+            GetFoldersAndFiles( $sResourceType, $sCurrentFolder ) ;
+            break ;
+        case 'CreateFolder' :
+            CreateFolder( $sResourceType, $sCurrentFolder ) ;
+            break ;
 	}
 
-	CreateXmlFooter() ;
+    CreateXmlFooter() ;
 
-	exit ;
+    exit ;
+
 }
 ?>
