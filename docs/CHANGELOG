@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+17 February 2009
++ Started to add a little subselect code. No finished.
+
 16 February 2009
 + Updated FCKeditor file connector code
 + Added security measure to prevent non-users from using upload

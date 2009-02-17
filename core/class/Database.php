@@ -63,7 +63,8 @@ class PHPWS_DB {
     private $_join       = null;
     private $_join_tables = null;
     public $table_as     = array();
-
+    public $return_query = false;
+    public $subselect_as = null;
 
     public function __construct($table=null)
     {
@@ -458,6 +459,25 @@ class PHPWS_DB {
             return null;
         }
 
+        if (is_object($table1) && get_class($table1) == 'PHPWS_DB') {
+            if (empty($table1->subselect_as)) {
+                return null;
+            }
+            $table1->return_query = true;
+            $this->table_as[$table1->subselect_as] = sprintf('(%s)', $table1->select());
+            $table1 = $table1->subselect_as;
+        }
+
+        if (is_object($table2) && get_class($table2) == 'PHPWS_DB') {
+            if (empty($table2->subselect_as)) {
+                return null;
+            }
+
+            $table2->return_query = true;
+            $this->table_as[$table2->subselect_as] = sprintf('(%s)', $table2->select());
+            $table2 = $table2->subselect_as;
+        }
+
         if (is_array($join_on_1) && is_array($join_on_2)) {
             foreach ($join_on_1 as $key => $value) {
                 if ($ignore_tables || preg_match('/\w\.\w/', $value)) {
@@ -497,6 +517,20 @@ class PHPWS_DB {
                 $join_on = 'ON ' . $result;
             }
 
+            if (is_object($join_to) && get_class($join_to) == 'PHPWS_DB') {
+                if (empty($join_to->subselect_as)) {
+                    return null;
+                }
+                $join_to = $join_to->subselect_as;
+            }
+
+            if (is_object($join_from) && get_class($join_from) == 'PHPWS_DB') {
+                if (empty($join_from->subselect_as)) {
+                    return null;
+                }
+                $join_from = $join_from->subselect_as;
+            }
+            
             if (isset($this->table_as[$join_to])) {
                 $join_to = sprintf('%s as %s', $this->table_as[$join_to], $join_to);
             }
@@ -504,7 +538,7 @@ class PHPWS_DB {
             if (isset($this->table_as[$join_from])) {
                 $join_from = sprintf('%s as %s', $this->table_as[$join_from], $join_from);
             }
-
+            
             if (in_array($join_from, $join_info['tables'])) {
                 $allJoin[] = sprintf('%s %s %s',
                                      strtoupper($join_type) . ' JOIN',
@@ -1387,6 +1421,10 @@ class PHPWS_DB {
 
         if ($this->_test_mode) {
             exit($sql);
+        }
+
+        if ($this->return_query) {
+            return trim($sql);
         }
 
         // assoc does odd things if the resultant return is two items or less
@@ -2822,6 +2860,13 @@ class PHPWS_DB {
             }
             unset($db);
             return true;
+        }
+    }
+
+    public function setSubselectAs($ssa)
+    {
+        if ($this->allowed($ssa)) {
+            $this->subselect_as = $ssa;
         }
     }
 }
