@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+18 February 2009
++ Fixed problem with PHPWS_File::readDirectory not clearing first path
+  after recursion
+
 17 February 2009
 + Started to add a little subselect code. No finished.
 

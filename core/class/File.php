@@ -60,7 +60,7 @@ class PHPWS_File {
     /**
      * Cannot set files_only and recursive to true
      */
-    public function readDirectory($path, $directories_only=false, $files_only=false, $recursive=false, $extensions=null)
+    public function readDirectory($path, $directories_only=false, $files_only=false, $recursive=false, $extensions=null, $indeep=false)
     {
         static $first_path = null;
         $listing = null;
@@ -100,7 +100,7 @@ class PHPWS_File {
                 }
 
                 if ($recursive) {
-                    $subdir = PHPWS_File::readDirectory($fullpath, $directories_only, false, true, $extensions);
+                    $subdir = PHPWS_File::readDirectory($fullpath, $directories_only, false, true, $extensions, true);
 
                     if (!empty($subdir)) {
                         if (!empty($listing)) {
@@ -125,6 +125,11 @@ class PHPWS_File {
             }
         }
         $dir->close();
+
+        if (!$indeep) {
+            $first_path = null;
+        }
+
         return $listing;
     }
 
