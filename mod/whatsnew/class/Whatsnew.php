@@ -18,7 +18,7 @@
     * along with this program; if not, write to the Free Software
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     *
-    * @version $Id:$
+    * @version $Id$
     * @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
 */
 
@@ -346,7 +346,7 @@ class Whatsnew {
         }
         
         $content = PHPWS_Template::process($tpl, 'whatsnew', 'block.tpl');
-        if (PHPWS_Settings::get('whatsnew', 'cache_timeout') > 0) {
+        if (PHPWS_Settings::get('whatsnew', 'cache_timeout') > 0 && !Current_User::isLogged() && !Current_User::allow('whatsnew')) {
             PHPWS_Cache::save($cache_key, $content);
         }
 
