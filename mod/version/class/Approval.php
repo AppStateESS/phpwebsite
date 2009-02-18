@@ -32,7 +32,7 @@ class Version_Approval {
         if (class_exists($class_name)) {
             $methods = get_class_methods($class_name);
             $this->setClass($class_name);
-            if (in_array(strtolower($view_method), $methods)) {
+            if (in_array($view_method, $methods)) {
                 $this->setViewMethod($view_method);
             }
         }

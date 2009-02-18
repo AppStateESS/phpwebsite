@@ -1,3 +1,7 @@
+18 February 2009
++ Approval was strtolower method name to conform with php 4
+problem. Removed it. Thanks Micah.
+
 Version 0.1.6
 --------------------------------------------------------------------
 20 September 2007
