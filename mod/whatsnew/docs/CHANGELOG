@@ -25,3 +25,8 @@ Version 1.0.0 -- Feb 2009
 + Bumped version to 1.0.0 as mod is being added to core distro
   and it feels at that stage.
 + Moved Read Me information to the README file in docs/
+
+Version 1.0.1 -- Feb 2009
+------------------------------------------------------------------
++ Moved into core svn at appstate
++ Fixed cache in sideblock so it is not saved for logged in users
