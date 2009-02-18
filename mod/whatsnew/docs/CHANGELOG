@@ -1,0 +1,27 @@
+Version 0.0.1 -- July 2008
+------------------------------------------------------------------
+July 21 -22
++ Initial rough-in of mod
+
+Version 0.1.0 -- July 2008
+------------------------------------------------------------------
++ Added caching to the whatsnew list
+
+Version 0.2.0 -- July 2008
+------------------------------------------------------------------
++ Added sidebox title to settings
++ Implimented text parsing to title and text settings
++ Added English language file
+
+Version 0.3.0 -- July 2008
+------------------------------------------------------------------
++ Added cache_reset to post_settings function (thanks Greg)
++ Added link and function to manually flush cache at will
+
+Version 1.0.0 -- Feb 2009
+------------------------------------------------------------------
++ Added option to display item summaries (thanks obones)
++ Added option to display item update dates (thanks obones)
++ Bumped version to 1.0.0 as mod is being added to core distro
+  and it feels at that stage.
++ Moved Read Me information to the README file in docs/
