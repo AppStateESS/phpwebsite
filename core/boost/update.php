@@ -366,6 +366,30 @@ You will need to make your hub/branch home directory writable if the file doesn\
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_9_2.txt');
         }
         $content[] = '</pre>';
+
+    case version_compare($version, '1.9.3', '<'):
+        $files = array('javascript/editors/fckeditor/default.php',
+                       'javascript/editors/fckeditor/editor/filemanager/browser/default/connectors/phpws/');
+        $content[] = '<pre>';
+        coreUpdateFiles($files, $content);
+        $content[] = '1.9.3 changes
+----------------------
++ File
+  o Fixed bug with getAllFileTypes. Wouldn\'t grab file_types from
+    hub. 
+  o Fixed problem with PHPWS_File::readDirectory not clearing first path
+    after recursion
++ Form
+  o Can send an array of names to setRequired now
+  o Added REQUIRED_LEGEND to so explain the asterisks
+  o Cut down reindexing function by using array_combine
++ Text - Updated isValidInput\'s email check
++ Database - addJoin contains a subselect ability.
+
+Editors
++ Updated FCKeditor file connector code
++ Added security measure to prevent non-users from using upload
+  function.</pre>';
     }
     return true;
 }

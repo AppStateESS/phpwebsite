@@ -439,7 +439,7 @@ class PHPWS_Text {
             break;
 
         case 'email':
-            if (preg_match('/^[\w]+([\.\w\-]+)*@[\w\-]+([\.\w\-]+)+$/i', $userEntry)) return true;
+            if (preg_match('/^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i', $userEntry)) return true;
             else return false;
             break;
 

@@ -2,6 +2,17 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+Version 1.9.3
+---------------------------------------------------------------------
+20 February 2009
++ File - Fixed bug with getAllFileTypes. Wouldn't grab file_types from
+  hub. 
++ Form
+  o Can send an array of names to setRequired now
+  o Added REQUIRED_LEGEND to so explain the asterisks
+  o Cut down reindexing function by using array_combine
++ Text - Updated isValidInput's email check
+
 18 February 2009
 + Fixed problem with PHPWS_File::readDirectory not clearing first path
   after recursion

@@ -676,14 +676,21 @@ class PHPWS_Form {
     /**
      * Adds a prefix to a label to indicate it is a required field
      */
-    public function setRequired($name)
+    public function setRequired($name, $required=true)
     {
+        if (is_array($name)) {
+            foreach ($name as $sub) {
+                PHPWS_Error::logIfError($this->setRequired($sub, $required));
+            }
+            return true;
+        }
+
         if (!$this->testName($name)) {
             return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setLabel', array($name));
         }
 
         foreach ($this->_elements[$name] as $key => $element){
-            $result = $this->_elements[$name][$key]->setRequired();
+            $result = $this->_elements[$name][$key]->setRequired($required);
 
             if (PEAR::isError($result)) {
                 return $result;
@@ -1002,11 +1009,8 @@ class PHPWS_Form {
             if (empty($element->value)) {
                 continue;
             }
-            $oldValueArray = $element->value;
 
-            foreach ($oldValueArray as $value)
-                $newValueArray[(string)$value] = $value;
-
+            $newValueArray = array_combine($element->value, $element->value);
             $this->_elements[$name][$key]->setValue($newValueArray);
         }
     }
@@ -1379,6 +1383,10 @@ class PHPWS_Form {
 
             if (count($element) > 1) {
                 $multiple = true;
+            }
+
+            if ($this->required_field) {
+                $template['REQUIRED_LEGEND'] = '<span class="required-input">*</span> ' . _('Required field');
             }
 
             foreach ($element as $subElement){
