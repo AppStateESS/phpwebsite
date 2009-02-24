@@ -159,7 +159,7 @@ Mike Noyes/mhnoyes - Black belt in standards & accessibility
 Paivi/spiggy
 Andrew Patterson/inuitart
 Ortwin Pinke
-Kenneth Poulsen/KennethP - User assistance, help maintain home site
+Kenneth Poulsen/KennethP - User assistance
 Michael Rasmussen/TechElephant - bug fixes and developer
 Sharon Renshaw/Sharondippity - Theme developer and advice
 Don Seiler/rizzo
@@ -170,6 +170,7 @@ Paul Van Voorst
 Pete Wachs
 Cindy Wallace - Vice Chancellor of Student Development @ AppState
 Kevin Wilcox
+Tommy de Jesus/trf000 - Windows survivor, tester
 
 
 And all those who have contributed to phpWebSite. Thanks for your

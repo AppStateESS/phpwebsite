@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+24 February 2009
++ FCKeditor - found problem with full screen edit. Disabling autogroup
+  plugin inclusion until fixed.
++ Added Tommy to credits
++ Updated : javascript/editors/fckeditor/editor/custom.js
+
 Version 1.9.3
 ---------------------------------------------------------------------
 20 February 2009

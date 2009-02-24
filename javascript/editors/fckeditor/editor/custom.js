@@ -58,5 +58,6 @@ FCKConfig.SpellChecker = 'WSC' ; //'WSC' | 'SpellerPages' | 'ieSpell'
 FCKConfig.IeSpellDownloadUrl	= 'http://www.iespell.com/download.php' ;
 FCKConfig.StylesXmlPath		= 'phpwsstyles.xml' ;
 FCKConfig.ProcessHTMLEntities	= false ;
-FCKConfig.Plugins.Add( 'autogrow' ) ;
+// Not working properly in current versions. Disabled for now.
+//FCKConfig.Plugins.Add( 'autogrow' ) ;
 FCKConfig.FillEmptyBlocks	= false;
