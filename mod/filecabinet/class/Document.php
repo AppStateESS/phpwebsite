@@ -166,12 +166,7 @@ class PHPWS_Document extends File_Common {
             $vars['dop']      = 'clip_document';
             $clip = sprintf('<img src="images/mod/filecabinet/clip.png" title="%s" />', dgettext('filecabinet', 'Clip document'));
             $links[] = PHPWS_Text::moduleLink($clip, 'filecabinet', $vars);
-
-            $vars['dop'] = 'delete_document';
-            $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this document?');
-            $js['LINK'] = sprintf('<img src="images/mod/filecabinet/delete.png" title="%s" />', dgettext('filecabinet', 'Delete document'));
-            $js['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
-            $links[] = javascript('confirm', $js);
+            $links[] = $this->deleteLink(true);
         }
 
         if ($links) {
@@ -250,24 +245,26 @@ class PHPWS_Document extends File_Common {
 
     public function deleteLink($icon=false)
     {
-        $vars['dop']         = 'delete_document';
         $vars['document_id'] = $this->id;
         $vars['folder_id']   = $this->folder_id;
-
+        $vars['dop'] = 'delete_document';
+        $link = new PHPWS_Link(null, 'filecabinet', $vars, true);
+        $link->setSalted(1);
         $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this document?');
-        $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+
+        $js['ADDRESS'] = $link->getAddress();
 
         if ($icon) {
-            $js['LINK'] = '<img src="images/mod/filecabinet/delete.png" />';
+            $js['LINK'] = sprintf('<img src="images/mod/filecabinet/delete.png" title="%s" />', dgettext('filecabinet', 'Delete document'));
         } else {
             $js['LINK'] = dgettext('filecabinet', 'Delete');
         }
+
         return javascript('confirm', $js);
     }
 
     public function editLink($icon=false)
     {
-
         $vars['document_id'] = $this->id;
         $vars['folder_id']   = $this->folder_id;
         $vars['dop'] = 'upload_document_form';
@@ -285,6 +282,7 @@ class PHPWS_Document extends File_Common {
         }
         return javascript('open_window', $js);
     }
+
 
     public function getManagerIcon($fmanager)
     {
