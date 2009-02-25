@@ -152,7 +152,7 @@ class Menu_Item {
      */
     public function displayLinks($edit=FALSE)
     {
-        if (Menu::isAdminMode() && PHPWS_Settings::get('menu', 'float_mode')) {
+        if (Menu::isAdminMode()) {
             javascript('jquery');
             $vars['authkey'] = Current_User::getAuthKey();
             $vars['drag_sort'] = PHPWS_Settings::get('menu', 'drag_sort');
