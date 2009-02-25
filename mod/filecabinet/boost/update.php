@@ -502,6 +502,11 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Fixed image edit link.
 + Added pptm to known types.
 + Fixed permission checks on folders.</pre>';
+
+    case version_compare($version, '2.2.3', '<'):
+        $content[] = '<pre>2.2.3 changes
+-----------------------
++ Fixed document delete link</pre>';
     }
 
     return true;
