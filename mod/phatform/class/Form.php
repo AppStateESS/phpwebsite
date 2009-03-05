@@ -1123,6 +1123,10 @@ class PHAT_Form extends PHPWS_Item {
     function checkLabel($label) {
         $restricted = array('id', 'user', 'updated', 'position');
 
+        if (is_numeric($label) || preg_match('/^\d/', $label)) {
+            return false;
+        }
+
         if (!PHPWS_DB::allowed($label) || in_array(strtolower($label), $restricted)) {
             return false;
         }

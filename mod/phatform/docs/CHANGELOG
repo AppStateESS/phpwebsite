@@ -1,5 +1,8 @@
 Note: this log is only for notes post-1.0-conversion
 
+5 March 2009
++ Preventing numbers from being element names.
+
 Version 3.1.3
 -----------------------------------------------------------------
 19 November 2008
