@@ -7,7 +7,6 @@ div#simple-block1 {
 div#simple-page {
    background-color : white;
    color : inherit;
-   padding : 10px;
    overflow : hidden;
 }
 

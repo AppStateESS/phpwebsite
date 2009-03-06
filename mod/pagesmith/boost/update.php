@@ -264,6 +264,19 @@ function pagesmith_update(&$content, $currentVersion)
   box-content layout
 + Added ability to lengthen or shorten pagesmith links.
 + Added fix so edit mode does not parse smarttags.</pre>';
+
+    case version_compare($currentVersion, '1.3.2', '<'):
+        $content[] = '<pre>';
+        Users_Permission::registerPermissions('pagesmith', $content);
+        pagesmithUpdateFiles(array('templates/page_templates/'), $content);
+
+        $content[] = '1.3.2 changes
+----------------
++ Update was missing a permission update
++ Wrong permission getting called on settings
++ All page templates now have a class called pagesmith-page
++ Removed padding from page templates</pre>';
+
        
     } // end switch
 

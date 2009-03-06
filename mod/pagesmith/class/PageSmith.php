@@ -276,7 +276,7 @@ class PageSmith {
         $link = 'index.php?module=pagesmith&amp;aop=menu';
         $tabs['new']  = array('title'=>dgettext('pagesmith', 'New'), 'link'=>$link);
         $tabs['list'] = array('title'=>dgettext('pagesmith', 'List'), 'link'=>$link);
-        if (Current_User::isUnrestricted('pagesmith') && Current_User::allow('pagesmith', 'change_settings')) {
+        if (Current_User::isUnrestricted('pagesmith') && Current_User::allow('pagesmith', 'settings')) {
             $tabs['settings'] = array('title'=>dgettext('pagesmith', 'Settings'), 'link'=>$link);
         }
 

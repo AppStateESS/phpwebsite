@@ -5,7 +5,6 @@ div#document-document {
 div#document-page {
    background-color : white;
    color : inherit;
-   padding : 10px;
    overflow : hidden;
 }
 

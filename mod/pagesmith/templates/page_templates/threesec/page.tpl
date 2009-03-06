@@ -1,4 +1,4 @@
-<div id="threesec-page">
+<div id="threesec-page"  class="pagesmith-page">
    <div class="box-title"><h1 id="threesec-page-title">{page_title}</h1></div>
    <div class="box-content">
    <div class="section">
