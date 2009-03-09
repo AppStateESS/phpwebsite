@@ -229,9 +229,6 @@ class DBPager {
         $this->table = & $table;
         $this->db = new PHPWS_DB($table);
 
-        // Moved to initialize
-        //        $this->table_columns = $this->db->getTableColumns();
-
         if (PEAR::isError($this->db)){
             $this->error = $this->db;
             $this->db = null;
@@ -303,14 +300,45 @@ class DBPager {
         $this->search_label = false;
     }
 
+
+    /**
+     * This function allows you to join the results of two tables in db pager. 
+     * Example: I want to join the title in table2 to the results of table_1. I also want
+     * the column to be named 't1_title'.
+     *
+     * table_1             table2
+     *---------------      ----------------
+     * t2_id               id    title
+     *
+     * $pager->joinResult('t2_id', 'table2', 'id', 'title', 't2_title');
+     *
+     * You do not need to give a new name or make it searchable. You DO need to make sure
+     * your source object contains the variable your are joining. (e.g. $this->t2_title must exist)
+     *
+     */
     public function joinResult($source_column, $join_table, $join_column, $content_column, $new_name=null, $searchable=false)
     {
+        static $join_match = null;
         static $index = 1;
+        $copy = null;
+        
+        // If this join was done previously, don't repeat it. We store the last table
+        // used from the copy
+        if (isset($join_match[$join_table])) {
+            $join_array = & $join_match[$join_table];
 
+            if ($join_array['jt'] == $join_table &&
+                $join_array['sc'] == $source_column &&
+                $join_array['jc'] == $join_column) {
+
+                $copy = 'dbp' . $join_array['idx'];
+            }
+        }
+        
         if ($searchable) {
             $this->sub_search = true;
         }
-
+        
         if (empty($new_name)) {
             $new_name = $content_column;
         }
@@ -320,10 +348,16 @@ class DBPager {
                                                   'jc' => $join_column,
                                                   'cc' => $content_column,
                                                   'nn' => $new_name,
-                                                  'srch' => (bool)$searchable);
+                                                  'srch' => (bool)$searchable,
+                                                  'tbl'  => $copy);
 
         $this->sub_order[$new_name] = array('dbp' . $index, $content_column);
         $this->needed_columns[$new_name] = $new_name;
+
+        $join_match[$join_table] = array('jt' => $join_table,
+                                         'sc' => $source_column,
+                                         'jc' => $join_column,
+                                         'idx' => $index);
         $index++;
     }
 
@@ -742,9 +776,11 @@ class DBPager {
 
         if (!empty($this->sub_result)) {
             foreach ($this->sub_result as $sub_table => $sub) {
-                $this->db->addTable($sub['jt'], $sub_table);
-                $this->db->addJoin('left', $this->table, $sub_table, $sub['sc'], $sub['jc']);
-
+                if (!$sub['tbl']) {
+                    $this->db->addTable($sub['jt'], $sub_table);
+                    $this->db->addJoin('left', $this->table, $sub_table, $sub['sc'], $sub['jc']);
+                }
+                    
                 if (!empty($search)) {
                     if ($sub['srch']) {
                         $col = $sub_table . '.' . $sub['cc'];
@@ -769,7 +805,11 @@ class DBPager {
         if (!empty($this->sub_result)) {
             $this->db->addColumn('*');
             foreach ($this->sub_result as $sub_table => $sub) {
-                $this->db->addColumn($sub_table . '.' . $sub['cc'], null, $sub['nn']);
+                if ($sub['tbl']) {
+                    $this->db->addColumn($sub['tbl'] . '.' . $sub['cc'], null, $sub['nn']);
+                } else {
+                    $this->db->addColumn($sub_table . '.' . $sub['cc'], null, $sub['nn']);
+                }
             }
         }
 
@@ -1008,7 +1048,7 @@ class DBPager {
         foreach ($sort_columns as $varname) {
             $vars = array();
             $values = $this->getLinkValues();
-
+            
             if (isset($this->sort_headers[$varname])) {
                 if (!empty($this->sort_headers[$varname]['hover'])) {
                     $alt = strip_tags($this->sort_headers[$varname]['hover']) . ' - ';
@@ -1452,6 +1492,7 @@ class DBPager {
      */
     public function get($return_blank_results=true)
     {
+
         $template = array();
 
         if (empty($this->display_rows)) {
@@ -1513,8 +1554,6 @@ class DBPager {
 
                 $template['listrows'][] = $rowitem;
             }
-
-
         } elseif(!$return_blank_results) {
             return null;
         } else {

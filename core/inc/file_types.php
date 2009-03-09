@@ -62,10 +62,20 @@ $all_file_types['doc']['fi'][]  = 'microsoft installer';
 $all_file_types['doc']['fi'][]  = 'microsoft office document';
 $all_file_types['doc']['vb']    = 'Microsoft Word Document';
 
+$all_file_types['dot']['mct'][] = 'application/msword';
+$all_file_types['dot']['fi'][]  = 'microsoft installer';
+$all_file_types['dot']['fi'][]  = 'microsoft office document';
+$all_file_types['dot']['vb']    = 'Microsoft Word Template';
+
 $all_file_types['docx']['mct'][] = 'application/x-zip';
 $all_file_types['docx']['mct'][] = 'application/vnd.openxmlformats';
 $all_file_types['docx']['fi'][]  = 'zip archive data';
 $all_file_types['docx']['vb']    = 'Microsoft Word 2007 Document';
+
+$all_file_types['dotx']['mct'][] = 'application/x-zip';
+$all_file_types['dotx']['mct'][] = 'application/vnd.openxmlformats';
+$all_file_types['dotx']['fi'][]  = 'zip archive data';
+$all_file_types['dotx']['vb']    = 'Microsoft Word 2007 Template';
 
 $all_file_types['flv']['mct'][] = 'text/plain';
 $all_file_types['flv']['mct'][] = 'application/x-flash-video';

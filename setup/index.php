@@ -244,7 +244,7 @@ function checkServer(&$content)
 
 function create_core_directories(&$content)
 {
-    require_once 'core/class/File.php';
+    require_once './core/class/File.php';
     $content[] = '<b>' . _('Copying core directories.') . '</b>';
     if (PHPWS_File::copy_directory('core/conf/', 'config/core')) {
         $content[] = _('Core configuration directory successfully copied.');

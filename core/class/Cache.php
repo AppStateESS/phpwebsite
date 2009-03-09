@@ -33,7 +33,7 @@ class PHPWS_Cache {
      * Saves the cache content
      * @param string key      Name of cache key.
      * @param int    lifetime Seconds to retain cache
-     * @returns boolean TRUE on success, FALSE otherwise
+     * @returns string on success, FALSE otherwise
      */
     public function get($key, $lifetime=CACHE_LIFETIME)
     {
