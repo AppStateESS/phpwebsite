@@ -10,9 +10,23 @@ $(document).ready(function() {
                 matchSubset:1,
                 matchContains:1,
                 cacheLength:10,
+                onItemSelect:selectItem,
+		onFindValue:findValue,
                 autoFill:true
             }
                                           );
 });
+
+
+
+function selectItem(li)
+{        
+         findValue(li);
+}
+
+function findValue(li)
+{
+     $('#send_note_uid').val(li.extra);
+}
 
 </script>

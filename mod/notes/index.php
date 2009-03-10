@@ -13,9 +13,9 @@ if (!isset($_REQUEST['command'])) {
 
 switch ($_REQUEST['command']) {
  case 'close_notes':
-   $_SESSION['No_Notes'] = 1;
-   PHPWS_Core::goBack();
-   break;
+     $_SESSION['No_Notes'] = 1;
+     PHPWS_Core::goBack();
+     break;
 
  case 'delete_note':
      PHPWS_Core::initModClass('notes', 'Note_Item.php');

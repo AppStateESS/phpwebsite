@@ -131,15 +131,24 @@ class Notes_My_Page {
         if (empty($_POST['title'])) {
             $this->errors['missing_title'] = dgettext('notes', 'Your note needs a title.');
         }
-        if (!$_POST['uid'] && !preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', $_POST['username'])) {
+
+        if (!$_POST['uid'] && !preg_match('/[^\w\s\.]/', $_POST['username'])) {
             $db = new PHPWS_DB('users');
             $db->addWhere('username', $_POST['username']);
             $db->addColumn('id');
 
-            if ($user_id = $db->select('one')) {
+            $user_id = $db->select('one');
+
+            if ($user_id) {
                 $note->setUserId($user_id);
             } else {
-                $note->setUserId(0);
+                $db->resetWhere();
+                $db->addWhere('display_name', $_POST['username']);
+                if ($user_id = $db->select('one')) {
+                    $note->setUserId($user_id);
+                } else {
+                    $note->setUserId(0);
+                }
             }
         } else {
             $note->setUserId($_POST['uid']);

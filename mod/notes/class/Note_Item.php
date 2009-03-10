@@ -239,8 +239,8 @@ class Note_Item {
             $js_vars['address'] = PHPWS_Text::linkAddress('users', $vars);
             $js_vars['label'] = $label;
             $js_vars['link_title'] = $title;
-            $js_vars['width'] = 640;
-            $js_vars['height'] = 480;
+            $js_vars['width'] = 650;
+            $js_vars['height'] = 600;
             return javascript('open_window', $js_vars);
         } else {
             return PHPWS_Text::moduleLink($label, 'users', $vars, null, $title);
