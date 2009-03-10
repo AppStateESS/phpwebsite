@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+10 March 2009
++ Setup now checking for pass-call by reference default.
+
 9 March 2009
 + DBPager - put in some code to prevent multiple joins using the same
   column table matching
@@ -11,7 +14,6 @@ its own separate CHANGELOG file.
   from breaking the prompt
 + Setup - some people experiencing problems with the File.php
   require. Added the ./
-
 + Updated: javascript/prompt/default.php
 
 24 February 2009
