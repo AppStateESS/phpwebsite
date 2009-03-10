@@ -1,6 +1,7 @@
 10 March 2009
 + Changes to notes to allow sending to username or display name
-
++ Increased note send window size
++ Updated: javascript/search_user/head.js
 
 Version 1.1.0
 --------------------------------------------------------------------
