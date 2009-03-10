@@ -1,3 +1,8 @@
+10 March 2009
++ Display name may now not be the same as a user name
++ Extended user name error to include display name
++ Added password check to ldap script
+
 Version 2.6.2
 -----------------------------------------------------------------------
 9 February 2009

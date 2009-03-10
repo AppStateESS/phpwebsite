@@ -107,10 +107,12 @@ class PHPWS_User {
         if (empty($display_name)) {
             return false;
         }
+
         $DB = new PHPWS_DB('users');
-        $DB->addWhere('display_name', $display_name);
+        $DB->addWhere('display_name', $display_name, '=', null, '1');
+        $DB->addWhere('username', $display_name, '=', 'or', '1');
         if ($id) {
-            $DB->addWhere('id', $id, '!=');
+            $DB->addWhere('id', $id, '!=', 'and');
         }
 
         $result = $DB->select('one');
@@ -130,6 +132,7 @@ class PHPWS_User {
         }
 
         $result = $DB->select('one');
+
         if (PEAR::isError($result)) {
             return $result;
         } else {
@@ -165,10 +168,11 @@ class PHPWS_User {
         }
 
         $result = $DB->select('one');
-        if (PEAR::isError($result))
+        if (PEAR::isError($result)) {
             return $result;
-        else
+        } else {
             return (bool)$result;
+        }
     }
 
 

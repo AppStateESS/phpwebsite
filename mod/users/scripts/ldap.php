@@ -27,6 +27,9 @@ class ldap_authorization extends User_Authorization {
 
     public function authenticate()
     {
+        if (empty($this->password)) {
+            return false;
+        }
         $connection = ldap_connect($this->host, $this->port)
             or die(sprintf(dgettext('users', 'Could not connect to %s'), $this->host));
 
