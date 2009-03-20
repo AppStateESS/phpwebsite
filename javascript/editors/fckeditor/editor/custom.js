@@ -14,7 +14,7 @@ FCKConfig.ToolbarSets["phpws"] = [
 	'/',
 	['Image', 'Flash', 'Table', 'Link','Unlink','Anchor'],
 	['SpellCheck', 'Rule','Smiley','SpecialChar', '-', 
-	'Style', 'FontFormat']
+	'Style', 'FontFormat', 'filecabinet']
 ] ;
 
 /**
@@ -61,3 +61,6 @@ FCKConfig.ProcessHTMLEntities	= false ;
 // Not working properly in current versions. Disabled for now.
 //FCKConfig.Plugins.Add( 'autogrow' ) ;
 FCKConfig.FillEmptyBlocks	= false;
+
+
+FCKConfig.Plugins.Add( 'filecabinet' ) ;

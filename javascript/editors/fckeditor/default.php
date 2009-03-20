@@ -12,6 +12,9 @@
  * FCKConfig.Plugins.Add( 'autogrow' ) ;
  *
  */
+
+javascript('jquery');
+
 $autogrow = true;
 
 $data['VALUE'] = preg_replace('@src="(./)?images/@', 'src="' . PHPWS_Core::getHomeHttp() . 'images/', $data['VALUE']);
