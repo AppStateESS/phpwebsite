@@ -1,0 +1,26 @@
+.oc { 
+   cursor : pointer;
+}
+
+ul { 
+   margin : 0px;
+   padding : 0px;
+   padding-left : 10px;
+}
+
+
+ul li {
+   list-style-image : none;
+   list-style-type : none;
+}
+
+.thumbnail { 
+   display : none;
+   position : absolute;
+}
+
+p.other-size { 
+   font-size : 90%;
+   margin : 0px;
+   padding-left : 20px;
+}

@@ -10,8 +10,8 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 }
 
 PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
-
 $cabinet = new Cabinet;
+
 if (isset($_REQUEST['uop'])) {
     $cabinet->user();
 } elseif (isset($_REQUEST['fop'])) {

@@ -192,7 +192,7 @@ class PHPWS_Image extends File_Common {
         return $this->file_name;
     }
 
-    public function captioned($id=null, $linked=true)
+    public function captioned($id=null, $linked=true, $base=false)
     {
         if (empty($this->description)) {
             return $this->getTag(null, $linked);
@@ -200,7 +200,7 @@ class PHPWS_Image extends File_Common {
 
         $width = $this->width - 6;
 
-        $tpl['IMAGE']   = $this->getTag($id, $linked);
+        $tpl['IMAGE']   = $this->getTag($id, $linked, $base);
         $tpl['CAPTION'] = $this->getDescription();
         $tpl['WIDTH']   = $width . 'px';
         return PHPWS_Template::process($tpl, 'filecabinet', 'captioned_image.tpl');

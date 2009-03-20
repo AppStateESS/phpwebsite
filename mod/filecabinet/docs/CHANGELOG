@@ -1,3 +1,10 @@
+20 March 2009
++ Started building FCKeditor interaction
++ Updated:
+img/folder.gif, javascript/fckeditor/*
+templates/fck.css, templates/fckeditor.tpl, templates/fckfolders.tpl,
+templates/fckimages.tpl
+
 Version 2.2.3
 ---------------------------------------------------------------------------
 25 February 2009

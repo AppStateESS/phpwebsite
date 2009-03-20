@@ -35,6 +35,7 @@ class Cabinet {
         if ($this->loadFileManager()) {
             Layout::nakedDisplay($this->file_manager->admin(), null, false);
         } else {
+            exit('no do not');
             Layout::nakedDisplay(javascript('close_refresh'), null, false);
         }
     }
@@ -167,6 +168,18 @@ class Cabinet {
         switch ($aop) {
             /** File manager functions **/
             /** end file manager functions **/
+
+        case 'fckeditor':
+            $this->fckEditor();
+            break;
+
+        case 'fck_img_folders':
+            $this->fckImageFolders();
+            break;
+
+        case 'fck_images':
+            $this->fckImages();
+            break;
 
         case 'image':
             $this->panel->setCurrentTab('image');
@@ -1296,6 +1309,102 @@ class Cabinet {
                 }
             }
         }
+    }
+
+    public function fckEditor()
+    {
+        Layout::addStyle('filecabinet', 'fck.css');
+        javascript('jquery');
+        javascript('modules/filecabinet/fckeditor', array('instance'=>$_GET['instance']));
+        
+        $tpl['IMAGES'] = '<a class="oc" id="image-nav">Images</a>';
+        $tpl['DOCUMENTS'] = 'Documents';
+        $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckeditor.tpl');
+
+            //        $content = '<a onclick="ok();">insert text</a>';
+        Layout::nakedDisplay($content);
+    }
+
+    public function fckImageFolders()
+    {
+        $db = new PHPWS_DB('folders');
+        $db->addWhere('ftype', IMAGE_FOLDER);
+        $db->addColumn('id');
+        $db->addColumn('title');
+        $db->addOrder('title');
+        $result = $db->select();
+        if (PHPWS_Error::logIfError($result)) {
+            echo dgettext('filecabinet', 'Could not pull image folders.');
+            exit();
+        }
+
+        foreach ($result as $fldr) {
+            $img = '<img src="images/mod/filecabinet/folder.gif" />';
+            $sub['FOLDER_NAME'] = sprintf('<a class="oc open-folder" onclick="pull_folder(%s)">%s %s</a>', $fldr['id'], $img, $fldr['title']);
+            $sub['ID'] = $fldr['id'];
+            $tpl['folders'][] = $sub;
+        }
+
+        $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckfolders.tpl');
+        echo $content;
+        exit();
+    }
+
+    /**
+     * This function is linked with the fckeditor javascript files
+     * editing variables here will affect the script
+     */
+    public function fckImages()
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+
+        $db = new PHPWS_DB('images');
+        $db->addWhere('folder_id', $_GET['fid']);
+        $result = $db->getObjects('PHPWS_Image');
+
+        if (PHPWS_Error::logIfError($result)) {
+            echo dgettext('filecabinet', 'Could not pull images.');
+            exit();
+        }
+
+        $mouseover = '<img src="images/mod/filecabinet/viewmag+.png" width="12" height="12" />';
+
+        foreach ($result as $image) {
+            $resizes = $this->getResizeIds($image);
+            $sub['OTHER'] = null;
+            if (!PHPWS_Error::logIfError($resizes) && !empty($resizes)) {
+                $smaller = array();
+                foreach ($resizes as $fc_id) {
+                    $res = new FC_File_Assoc($fc_id);
+                    $title = sprintf(dgettext('filecabinet', 'Alternate size %sx%s'), $res->width, $res->height) . '<br />';
+                    $smaller[] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a>', htmlspecialchars($res->getTag(false, true)), $title);
+                }
+                $sub['OTHER'] = implode('<br />', $smaller);
+            }
+            $link = htmlspecialchars($image->getTag(null, true, true));
+            $sub['TN'] = $image->getThumbnail();
+            $sub['PIC'] = sprintf('<a class="oc show-thumb">%s</a>', $mouseover);
+            $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a> <span class="smaller">(%s x %s)</span>',
+                                    $link, $image->title, $image->width, $image->height);
+            $tpl['images'][] = $sub;
+        }
+
+        $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckimages.tpl');
+        echo $content;
+        exit();
+    }
+
+    public function getResizeIds($image)
+    {
+        $db = new PHPWS_DB('fc_file_assoc');
+        $db->addOrder('width');
+        $db->addWhere('file_id', $image->id);
+        $db->addWhere('file_type', 7, null, null, 'x');
+        $db->addWhere('file_type', 9, null, 'or', 'x');
+        $db->addColumn('id');
+        
+        return $db->select('col');
     }
 }
 
