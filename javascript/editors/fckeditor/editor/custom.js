@@ -12,9 +12,9 @@ FCKConfig.ToolbarSets["phpws"] = [
 	['OrderedList','UnorderedList','-', 'Blockquote', 'Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
 	'/',
-	['Image', 'Flash', 'Table', 'Link','Unlink','Anchor'],
+	['filecabinet', 'Image', 'Flash', 'Table', 'Link','Unlink','Anchor'],
 	['SpellCheck', 'Rule','Smiley','SpecialChar', '-', 
-	'Style', 'FontFormat', 'filecabinet']
+	'Style', 'FontFormat']
 ] ;
 
 /**
