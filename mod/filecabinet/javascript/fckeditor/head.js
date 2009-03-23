@@ -8,6 +8,7 @@ function insertHTML(data) {
 
 $(document).ready(function() {
     initFolders();
+    $('#folders-listing').html('{pick}');
 });
 
 function initFolders()

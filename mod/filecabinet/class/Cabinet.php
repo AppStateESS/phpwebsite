@@ -1323,7 +1323,7 @@ class Cabinet {
     {
         Layout::addStyle('filecabinet', 'fck.css');
         javascript('jquery');
-        javascript('modules/filecabinet/fckeditor', array('instance'=>$_GET['instance']));
+        javascript('modules/filecabinet/fckeditor', array('instance'=>$_GET['instance'], 'pick'=>dgettext('filecabinet', 'Pick a media type above.')));
 
         $tpl['IMAGES'] = sprintf('<a class="oc" id="image-nav"><img id="fck-img-type" src="./images/mod/filecabinet/file_manager/file_type/image80.png" width="50" height="50" title="%s" /></a>', dgettext('filecabinet', 'Images'));
         $tpl['DOCUMENTS'] = sprintf('<a class="oc" id="doc-nav"><img id="fck-doc-type" src="./images/mod/filecabinet/file_manager/file_type/document80.png" title="%s" width="50" height="50" /></a>', dgettext('filecabinet', 'Documents'));
@@ -1342,6 +1342,7 @@ class Cabinet {
         $db->addWhere('ftype', $ftype);
         $db->addColumn('id');
         $db->addColumn('title');
+        $db->addColumn('public_folder');
         $db->addOrder('title');
         $result = $db->select();
         if (PHPWS_Error::logIfError($result)) {
@@ -1356,6 +1357,9 @@ class Cabinet {
         foreach ($result as $fldr) {
             $img = '<img src="images/mod/filecabinet/folder.gif" />';
             $sub['FOLDER_NAME'] = sprintf('<a class="oc open-folder" onclick="pull_folder(%s, %s)">%s %s</a>', $fldr['id'], $ftype, $img, $fldr['title']);
+            if ($ftype == DOCUMENT_FOLDER) {
+                $sub['PUBLIC'] = $fldr['public_folder'] ? dgettext('filecabinet', 'Public') : dgettext('filecabinet', 'Private');
+            }
             $sub['ID'] = $fldr['id'];
             $tpl['folders'][] = $sub;
         }
@@ -1400,7 +1404,7 @@ class Cabinet {
             $link = htmlspecialchars($image->getTag(null, true, true));
             $sub['TN'] = $image->getThumbnail();
             $sub['PIC'] = sprintf('<a class="oc show-thumb">%s</a>', $mouseover);
-            $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a> <span class="smaller">(%s x %s)</span>',
+            $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a> <span class="smaller">(%sx%s)</span>',
                                     $link, $image->title, $image->width, $image->height);
             $tpl['images'][] = $sub;
         }
@@ -1429,7 +1433,8 @@ class Cabinet {
                 $link = htmlspecialchars($doc->getViewLink(true, null, true));
                 $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a>',
                                         $link, $doc->title);
-                $sub['ICON'] = $doc->getIconView('small_icon');
+                $sub['ICON'] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a>',
+                                        $link, $doc->getIconView('small_icon'));
 
                 $tpl['documents'][] = $sub;
             }
