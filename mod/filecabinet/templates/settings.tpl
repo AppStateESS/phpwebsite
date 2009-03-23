@@ -4,6 +4,8 @@
     <p style="margin-bottom : 1em">
     <strong>{BASE_DOC_DIRECTORY_LABEL}</strong><br />
     {BASE_DOC_DIRECTORY}
+    <br />
+    {FIX_DIRECTORIES}
     </p>
     <p style="margin-bottom : 1em"><strong>{MAX_DOCUMENT_SIZE_LABEL}</strong> 
     {MAX_DOCUMENT_SIZE}</p>

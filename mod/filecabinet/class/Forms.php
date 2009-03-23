@@ -481,6 +481,18 @@ class Cabinet_Form {
         $tpl['MAX_FORM_SIZE']   = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['form']);
         $tpl['ABSOLUTE_SIZE']   = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['absolute']);
 
+        if (Current_User::isDeity()) {
+            $link = new PHPWS_Link(null, 'filecabinet', array('aop'=>'fix_document_dir'), true);
+            $js = array('question'   => dgettext('filecabinet', 'This process will update all of your document files with the current base directory.
+Do not run this process unless you are sure it will fix download problems.
+If you are sure, type Y-E-S below.'),
+                        'address'    => $link->getAddress(),
+                        'value_name' => 'confirm',
+                        'link'       => dgettext('filecabinet', 'Reindex document directories')
+                        );
+            $tpl['FIX_DIRECTORIES'] = javascript('prompt', $js);
+        }
+
         return PHPWS_Template::process($tpl, 'filecabinet', 'settings.tpl');
     }
 

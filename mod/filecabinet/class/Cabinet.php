@@ -401,6 +401,16 @@ class Cabinet {
             $this->content = $this->forms->fileTypes();
             break;
 
+        case 'fix_document_dir':
+            if (!Current_User::isDeity() || !Current_User::verifyAuthKey()) {
+                Current_User::disallow();
+            }
+
+            if (strtolower($_GET['confirm']) == 'yes') {
+                $this->fixDocumentDirectories();
+            }
+
+            PHPWS_Core::reroute('index.php?module=filecabinet&tab=settings');
         }
 
         $template['TITLE']   = &$this->title;
@@ -1454,6 +1464,41 @@ class Cabinet {
         $db->addColumn('id');
         
         return $db->select('col');
+    }
+
+    public function fixDocumentDirectories()
+    {
+
+        $directory = PHPWS_Settings::get('filecabinet', 'base_doc_directory');
+        $db = new PHPWS_DB('documents');
+        $db->addColumn('id');
+        $db->addColumn('file_directory');
+        $result = $db->select();
+
+        if (empty($result) || PHPWS_Error::logIfError($result)) {
+            return;
+        }
+
+        foreach ($result as $doc) {
+            $db->reset();
+            $db->addWhere('id', $doc['id']);
+            $old_dir = $doc['file_directory'];
+            $old_dir_array = explode('/', $old_dir);
+            // space usually at end of array, but just in case
+            $last_dir = array_pop($old_dir_array);
+            if (empty($last_dir)) {
+                $last_dir = array_pop($old_dir_array);
+            }
+
+            $new_dir = $directory . $last_dir . '/';
+
+            if (!empty($last_dir)) {
+                $db->addWhere('id', $doc['id']);
+                $db->addValue('file_directory', $new_dir);
+                PHPWS_Error::logIfError($db->update());
+            }
+        }
+
     }
 }
 
