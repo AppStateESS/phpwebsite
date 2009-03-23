@@ -2,6 +2,19 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+23 March 2009
++ Cleaning up fckeditor filecabinet plugin
++ Updated: javascript/editors/fckeditor/editor/plugins/filecabinet/fckplugin.js
+
+20 March 2009
++ Foundation of file cabinet integration with FCKEditor
++ Updated: 
+javascript/editors/fckeditor/body.js
+javascript/editors/fckeditor/default.js
+javascript/editors/fckeditor/editor/custom.js
+javascript/editors/fckeditor/editor/plugins/filecabinet/*
+
+
 10 March 2009
 + Setup now checking for pass-call by reference default.
 
