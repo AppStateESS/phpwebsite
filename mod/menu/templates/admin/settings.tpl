@@ -31,6 +31,10 @@
     <td><strong>{SHOW_ALL_ADMIN_LABEL}</strong></td>
     <td>{SHOW_ALL_ADMIN}</td>
   </tr>
+  <tr>
+    <td><strong>{ALWAYS_ADD_LABEL}</strong></td>
+    <td>{ALWAYS_ADD}</td>
+  </tr>
 </table>
 {SUBMIT}
 {END_FORM}

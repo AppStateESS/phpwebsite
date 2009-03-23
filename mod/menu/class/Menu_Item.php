@@ -153,10 +153,7 @@ class Menu_Item {
     public function displayLinks($edit=FALSE)
     {
         if (Menu::isAdminMode()) {
-            javascript('jquery');
-            $vars['authkey'] = Current_User::getAuthKey();
-            $vars['drag_sort'] = PHPWS_Settings::get('menu', 'drag_sort');
-            javascript('modules/menu/admin_link', $vars);
+            $this->loadJS();
         }
 
         $all_links = $this->getLinks();
@@ -171,6 +168,20 @@ class Menu_Item {
         }
 
         return implode("\n", $link_list);
+    }
+
+    public function loadJS()
+    {
+        static $loaded = false;
+
+        if ($loaded) {
+            return;
+        }
+        javascript('jquery');
+        $vars['authkey'] = Current_User::getAuthKey();
+        $vars['drag_sort'] = PHPWS_Settings::get('menu', 'drag_sort');
+        javascript('modules/menu/admin_link', $vars);
+        $loaded = true;
     }
 
     /**
@@ -437,7 +448,14 @@ class Menu_Item {
                 $vars['return'] = 1;
                 $tpl['ADMIN_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_ON, 'menu', $vars);
             }
+
+            if (empty($tpl['ADD_LINK']) && PHPWS_Settings::get('menu', 'always_add') && Key::checkKey($key)) {
+                $this->loadJS();
+                $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
+                $tpl['ADD_SITE_LINK'] = Menu::getSiteLink($this->id, 0, isset($key));
+            }
         }
+
 
         $tpl['TITLE'] = $this->getTitle();
         $tpl['LINKS'] = $this->displayLinks($edit);

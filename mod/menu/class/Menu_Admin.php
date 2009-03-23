@@ -641,6 +641,10 @@ class Menu_Admin {
         $form->setLabel('show_all_admin', dgettext('menu', 'Expand menu during admin mode'));
         $form->setMatch('show_all_admin', PHPWS_Settings::get('menu', 'show_all_admin'));
 
+        $form->addCheck('always_add', 1);
+        $form->setLabel('always_add', dgettext('menu', 'Always show add links'));
+        $form->setMatch('always_add', PHPWS_Settings::get('menu', 'always_add'));
+
         $form->addSubmit('submit', dgettext('menu', 'Save settings'));
 
         $tpl = $form->getTemplate();
@@ -799,6 +803,7 @@ class Menu_Admin {
         PHPWS_Settings::set('menu', 'miniadmin', (int)isset($_POST['miniadmin']));
         PHPWS_Settings::set('menu', 'home_link', (int)isset($_POST['home_link']));
         PHPWS_Settings::set('menu', 'show_all_admin', (int)isset($_POST['show_all_admin']));
+        PHPWS_Settings::set('menu', 'always_add', (int)isset($_POST['always_add']));
         PHPWS_Settings::save('menu');
     }
 
