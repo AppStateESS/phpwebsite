@@ -4,7 +4,9 @@ its own separate CHANGELOG file.
 
 23 March 2009
 + Cleaning up fckeditor filecabinet plugin
-+ Updated: javascript/editors/fckeditor/editor/plugins/filecabinet/fckplugin.js
++ Updated:
+javascript/editors/fckeditor/editor/plugins/filecabinet/fckplugin.js
+img/ajax-loader-big.gif
 
 20 March 2009
 + Foundation of file cabinet integration with FCKEditor
