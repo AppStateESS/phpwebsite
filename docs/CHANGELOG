@@ -4,6 +4,7 @@ its own separate CHANGELOG file.
 
 23 March 2009
 + Cleaning up fckeditor filecabinet plugin
++ Updated Norwegian translation from Anders. THANKS ANDERS!
 + Updated:
 javascript/editors/fckeditor/editor/plugins/filecabinet/fckplugin.js
 img/ajax-loader-big.gif
