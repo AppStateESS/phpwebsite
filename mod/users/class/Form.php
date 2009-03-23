@@ -281,6 +281,7 @@ class User_Form {
         $pager->addSortHeader('name',  dgettext('users', 'Group Name'));
         $pager->addWhere('user_id', 0);
         $pager->setSearch('name');
+        $pager->cacheQueries();
 
         return $pager->get();
     }

@@ -1,3 +1,6 @@
+23 March 2009
++ Added pager caching to group listing
+
 10 March 2009
 + Display name may now not be the same as a user name
 + Extended user name error to include display name
