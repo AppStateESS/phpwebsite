@@ -174,11 +174,19 @@ class Cabinet {
             break;
 
         case 'fck_img_folders':
-            $this->fckImageFolders();
+            $this->fckFolders(IMAGE_FOLDER);
+            break;
+
+        case 'fck_doc_folders':
+            $this->fckFolders(DOCUMENT_FOLDER);
             break;
 
         case 'fck_images':
             $this->fckImages();
+            break;
+
+        case 'fck_documents':
+            $this->fckDocuments();
             break;
 
         case 'image':
@@ -1317,30 +1325,35 @@ class Cabinet {
         javascript('jquery');
         javascript('modules/filecabinet/fckeditor', array('instance'=>$_GET['instance']));
         
-        $tpl['IMAGES'] = '<a class="oc" id="image-nav">Images</a>';
-        $tpl['DOCUMENTS'] = 'Documents';
+        $tpl['IMAGES'] = sprintf('<a class="oc" id="image-nav">%s</a>', dgettext('filecabinet', 'Images'));
+        $tpl['DOCUMENTS'] = sprintf('<a class="oc" id="doc-nav">%s</a>', dgettext('filecabinet', 'Documents'));
+
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckeditor.tpl');
 
-            //        $content = '<a onclick="ok();">insert text</a>';
         Layout::nakedDisplay($content);
     }
 
-    public function fckImageFolders()
+    public function fckFolders($ftype=IMAGE_FOLDER)
     {
+        
         $db = new PHPWS_DB('folders');
-        $db->addWhere('ftype', IMAGE_FOLDER);
+        $db->addWhere('ftype', $ftype);
         $db->addColumn('id');
         $db->addColumn('title');
         $db->addOrder('title');
         $result = $db->select();
         if (PHPWS_Error::logIfError($result)) {
-            echo dgettext('filecabinet', 'Could not pull image folders.');
+            if ($ftype == IMAGE_FOLDER) {
+                echo dgettext('filecabinet', 'Could not pull image folders.');
+            } elseif ($ftype == DOCUMENT_FOLDER) {
+                echo dgettext('filecabinet', 'Could not pull document folders.');
+            }
             exit();
         }
 
         foreach ($result as $fldr) {
             $img = '<img src="images/mod/filecabinet/folder.gif" />';
-            $sub['FOLDER_NAME'] = sprintf('<a class="oc open-folder" onclick="pull_folder(%s)">%s %s</a>', $fldr['id'], $img, $fldr['title']);
+            $sub['FOLDER_NAME'] = sprintf('<a class="oc open-folder" onclick="pull_folder(%s, %s)">%s %s</a>', $fldr['id'], $ftype, $img, $fldr['title']);
             $sub['ID'] = $fldr['id'];
             $tpl['folders'][] = $sub;
         }
@@ -1391,6 +1404,35 @@ class Cabinet {
         }
 
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckimages.tpl');
+        echo $content;
+        exit();
+    }
+
+    public function fckDocuments()
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Document.php');
+        $db = new PHPWS_DB('documents');
+        $db->addWhere('folder_id', $_GET['fid']);
+        $result = $db->getObjects('PHPWS_Document');
+
+        if (PHPWS_Error::logIfError($result)) {
+            echo dgettext('filecabinet', 'Could not pull documents.');
+            exit();
+        }
+
+        if (empty($result)) {
+            $tpl['documents'][] = array('TITLE'=>dgettext('filecabinet', 'Folder empty'));
+        } else {
+            foreach ($result as $doc) {
+                $link = htmlspecialchars($doc->getViewLink(true, null, true));
+                $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a>',
+                                        $link, $doc->title);
+                $sub['ICON'] = $doc->getIconView('small_icon');
+
+                $tpl['documents'][] = $sub;
+            }
+        }
+        $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckdocuments.tpl');
         echo $content;
         exit();
     }

@@ -13,16 +13,31 @@ $(document).ready(function() {
 function initFolders()
 {
     $('#image-nav').click(function() {
-        getFolders();
+        $('#document-folders').html('');
+        getImgFolders();
+    });
+
+    $('#doc-nav').click(function() {
+        $('#image-folders').html('');
+        getDocFolders();
     });
 }
 
-function getFolders()
+function getImgFolders()
 {
     $.get('index.php?module=filecabinet&aop=fck_img_folders', function(data) {
         $('#image-folders').html(data);
     });
 }
+
+
+function getDocFolders()
+{
+    $.get('index.php?module=filecabinet&aop=fck_doc_folders', function(data) {
+        $('#document-folders').html(data);
+    });
+}
+
 
 function initFiles()
 {
@@ -36,9 +51,17 @@ function initFiles()
 
 }
 
-function pull_folder(id) {
-    getFolders();
-    $.get('index.php?module=filecabinet&aop=fck_images&fid=' + id, function(data) {
+function pull_folder(id, ftype) {
+
+    if (ftype == 1) {
+        getImgFolders();
+        aop = 'fck_images';
+    } else if (ftype == 2) {
+        getDocFolders();
+        aop = 'fck_documents';
+    }
+
+    $.get('index.php?module=filecabinet&aop=' + aop + '&fid=' + id, function(data) {
         $('#folder-' + id).html(data);
         initFiles();
     });
