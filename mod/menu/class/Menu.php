@@ -54,13 +54,6 @@ class Menu {
             return;
         }
 
-        $key = Key::getCurrent();
-        if (Key::checkKey($key)) {
-            $vars['command'] = 'disable_admin_mode';
-            $vars['return'] = 1;
-            MiniAdmin::add('menu', PHPWS_Text::secureLink(MENU_ADMIN_OFF, 'menu', $vars));
-        }
-
         if (Menu::isAdminMode()) {
             $vars['command'] = 'disable_admin_mode';
             $vars['return'] = 1;
