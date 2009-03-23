@@ -1324,9 +1324,11 @@ class Cabinet {
         Layout::addStyle('filecabinet', 'fck.css');
         javascript('jquery');
         javascript('modules/filecabinet/fckeditor', array('instance'=>$_GET['instance']));
-        
-        $tpl['IMAGES'] = sprintf('<a class="oc" id="image-nav">%s</a>', dgettext('filecabinet', 'Images'));
-        $tpl['DOCUMENTS'] = sprintf('<a class="oc" id="doc-nav">%s</a>', dgettext('filecabinet', 'Documents'));
+
+        $tpl['IMAGES'] = sprintf('<a class="oc" id="image-nav"><img id="fck-img-type" src="./images/mod/filecabinet/file_manager/file_type/image80.png" width="50" height="50" title="%s" /></a>', dgettext('filecabinet', 'Images'));
+        $tpl['DOCUMENTS'] = sprintf('<a class="oc" id="doc-nav"><img id="fck-doc-type" src="./images/mod/filecabinet/file_manager/file_type/document80.png" title="%s" width="50" height="50" /></a>', dgettext('filecabinet', 'Documents'));
+
+        $tpl['CLOSE'] = dgettext('filecabinet', 'Cancel');
 
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckeditor.tpl');
 

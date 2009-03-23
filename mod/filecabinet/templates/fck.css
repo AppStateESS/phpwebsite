@@ -24,3 +24,30 @@ p.other-size {
    margin : 0px;
    padding-left : 20px;
 }
+
+div#type-choice { 
+   padding : 10px;
+   border-bottom : 1px solid black;
+}
+
+div#folders-listing { 
+   padding : 10px;
+}
+
+li.selection:hover { 
+   background-color : #e3e3e3;
+}
+
+#fck-close {
+   position : absolute;
+   left : 0px;
+   bottom : 2px;
+   text-align : center;
+   width : 100%;
+   background-color : #e3e3e3;
+}
+
+#fck-close input { 
+   margin : 5px 0px;
+}
+

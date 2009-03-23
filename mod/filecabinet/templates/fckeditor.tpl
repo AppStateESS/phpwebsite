@@ -1,4 +1,3 @@
-<p>{IMAGES}</p>
-<div id="image-folders"> </div>
-<p>{DOCUMENTS}</p>
-<div id="document-folders"> </div>
+<div id="type-choice">{IMAGES} {DOCUMENTS}</div>
+<div id="folders-listing"> </div>
+<div id="fck-close"><input type="button" onclick="window.close()" value="{CLOSE}" /></div>

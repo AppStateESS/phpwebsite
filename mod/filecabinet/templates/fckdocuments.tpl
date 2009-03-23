@@ -1,5 +1,5 @@
 <ul>
 <!-- BEGIN documents -->
-<li>{ICON} {TITLE}</li>
+<li class="selection">{ICON} <div style="display : inline; vertical-align : top">{TITLE}</div></li>
 <!-- END documents -->
 </ul>

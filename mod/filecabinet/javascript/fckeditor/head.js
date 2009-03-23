@@ -13,20 +13,28 @@ $(document).ready(function() {
 function initFolders()
 {
     $('#image-nav').click(function() {
-        $('#document-folders').html('');
+        $('#folders-listing').html('');
+        $('#fck-doc-type').attr('src', './images/mod/filecabinet/file_manager/file_type/document80_bw.png');
+        $('#fck-img-type').attr('src', './images/mod/filecabinet/file_manager/file_type/image80.png');
         getImgFolders();
     });
 
     $('#doc-nav').click(function() {
-        $('#image-folders').html('');
+        $('#folders-listing').html('');
+        $('#fck-img-type').attr('src', './images/mod/filecabinet/file_manager/file_type/image80_bw.png');
+        $('#fck-doc-type').attr('src', './images/mod/filecabinet/file_manager/file_type/document80.png');
         getDocFolders();
     });
 }
 
 function getImgFolders()
 {
+    $('#folders-listing').ajaxSend(function() {
+        $(this).html('<div style="margin-top : 150px; text-align : center"><img src="./images/core/ajax-loader-big.gif" /></div>');
+    });
+
     $.get('index.php?module=filecabinet&aop=fck_img_folders', function(data) {
-        $('#image-folders').html(data);
+        $('#folders-listing').html(data);
     });
 }
 
@@ -34,7 +42,7 @@ function getImgFolders()
 function getDocFolders()
 {
     $.get('index.php?module=filecabinet&aop=fck_doc_folders', function(data) {
-        $('#document-folders').html(data);
+        $('#folders-listing').html(data);
     });
 }
 
