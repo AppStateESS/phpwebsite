@@ -1,8 +1,13 @@
 23 March 2009
 + Added document FCKeditor interaction
-+ Updated: javascript/fckeditor/head.js
++ Cleaned up interface
++ Updated:
+javascript/fckeditor/head.js
 templates/fckeditor.tpl
 templates/fckdocuments.tpl
+templates/fck.css
+templates/fckimages.tpl
+
 
 20 March 2009
 + Started building FCKeditor interaction
