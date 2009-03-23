@@ -5,21 +5,22 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PHPWS_1_6_1,PAGESMITH1_3_1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-20 10:16-0400\n"
-"PO-Revision-Date: 2008-04-06 21:28+0100\n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"PO-Revision-Date: 2009-02-19 14:57+0100\n"
 "Last-Translator: \n"
-"Language-Team: \n"
+"Language-Team: NORWEGIAN <LL@Li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #, php-format
 msgid "%s template"
-msgid_plural "%s templates"
-msgstr[0] ""
-msgstr[1] ""
+msgstr "%s templates"
 
 msgid "(Untitled)"
 msgstr "(Ingen tittel)"
@@ -30,11 +31,17 @@ msgstr "Handling"
 msgid "Add menu link for new pages."
 msgstr "Legg til meny link for nye sider"
 
+msgid "Add page"
+msgstr "Legg til side"
+
 msgid "Add to front"
 msgstr "Legg til front"
 
 msgid "An error occurred when trying to load the page template."
 msgstr "En feil oppstod ved forsøk på å laste side template"
+
+msgid "Are you sure you want to delete this page template?"
+msgstr "Er du sikker på at du ønsker å slette denne side template?"
 
 msgid "Are you sure you want to delete this page?"
 msgstr "Er du sikker på at du ønsker å slette denne siden?"
@@ -42,11 +49,17 @@ msgstr "Er du sikker på at du ønsker å slette denne siden?"
 msgid "Back to style selection"
 msgstr "Tilbake til style valg"
 
+msgid "Back to top"
+msgstr "Tilbake til toppen"
+
 msgid "Change header"
 msgstr "Endre header"
 
 msgid "Change settings (Unrestricted only)"
 msgstr "Endre innstillinger (Bare for ubegrenset)"
+
+msgid "Change template"
+msgstr "Endre tekst"
 
 msgid "Change text"
 msgstr "Endre tekst"
@@ -59,6 +72,9 @@ msgstr "Klikk for å vise på hovedsiden"
 
 msgid "Click to remove from front page"
 msgstr "Klikk for å fjerne fra hoved siden"
+
+msgid "Could not delete page template."
+msgstr "Kunne ikke slette side template"
 
 msgid "Could not find any page templates."
 msgstr "Kunne ikke finne noen side templates."
@@ -74,6 +90,9 @@ msgstr "Opprettet"
 
 msgid "Delete"
 msgstr "Slett"
+
+msgid "Delete orphan"
+msgstr "Slett enslig"
 
 msgid "Delete page"
 msgstr "Slett side"
@@ -94,6 +113,12 @@ msgstr "Endre side"
 msgid "Edit text"
 msgstr "Endre tekst"
 
+msgid "Empty content. Consider deletion."
+msgstr "Tøm innhold. Overvei sletting."
+
+msgid "Extra templates"
+msgstr "Ekstra template"
+
 msgid "Header"
 msgstr "Header"
 
@@ -103,20 +128,50 @@ msgstr "Id"
 msgid "List"
 msgstr "Liste"
 
+msgid "Missing icon file."
+msgstr "Mangler ikon fil."
+
+msgid "Missing structure file."
+msgstr "Mangler struktur fil."
+
+msgid "Missing style sheet."
+msgstr "Mangler slyle sheet."
+
+msgid "Missing template file."
+msgstr "Mangler template fil."
+
 msgid "New"
 msgstr "Ny"
 
+msgid "Next"
+msgstr "Neste"
+
 msgid "No pages have been created."
-msgstr "Ingen sider har blitt opprettet."
+msgstr "Ny"
 
 msgid "Not enough content to create a page."
 msgstr "Ikke nok innhold til å opprette side."
 
+msgid "Orphaned content"
+msgstr "Enslig innhold"
+
+msgid "Orphans"
+msgstr "Enslige"
+
 msgid "Page Title (edit above)"
 msgstr "Side Tittel (endre over)"
 
+msgid "Page not found"
+msgstr "Sid eikke funnet"
+
+msgid "Page number"
+msgstr "Side nummer"
+
 msgid "Page template did not contain any sections."
 msgstr "Side template inneholder ingen seksjoner."
+
+msgid "Page template directory must be writable to upload templates."
+msgstr "Side template katalog må ikke være skrivebeskyttet for å laste opp templater."
 
 msgid "Page template is missing a thumbnail."
 msgstr "Side template manler ett miniatyrbilde."
@@ -133,17 +188,29 @@ msgstr "PageSmith Innstillinger"
 msgid "Pages"
 msgstr "Sider"
 
+msgid "Pg. No."
+msgstr "Side Nr."
+
 msgid "Pick a template"
 msgstr "Velg en template"
+
+msgid "Previous"
+msgstr "Forrige"
 
 msgid "Remove from front"
 msgstr "Fjern fra front"
 
+msgid "Restricted page."
+msgstr "Begrenset side."
+
 msgid "Save"
 msgstr "Lagre"
 
-msgid "Save page"
-msgstr "Lagre side"
+msgid "Save and continue"
+msgstr "Lagre og fortsett"
+
+msgid "Save and view"
+msgstr "Lagre og se"
 
 msgid "Settings"
 msgstr "Innstillinger"
@@ -151,11 +218,44 @@ msgstr "Innstillinger"
 msgid "Settings saved"
 msgstr "Innstillinger lagret"
 
+msgid "Sorry"
+msgstr "Beklager"
+
 msgid "Sorry, but your page could not be found. You may wish to search for it."
 msgstr "Beklager,men din side kunne ikke bli funnet. Du kan kanskje søke etter den."
 
+msgid "Structure file (e.g., structure.xml)"
+msgstr "Struktur fil (e.g. structure.xml)"
+
+msgid "Style sheet (e.g., filename.css)"
+msgstr "Style sheet (e.g., filename.css)"
+
+msgid "Template directory created."
+msgstr "Template katalog opprettet."
+
+msgid "Template file (e.g., filename.tpl)"
+msgstr "Template fil  (e.g., filename.tpl)"
+
+msgid "Template icon (e.g., filename.png)"
+msgstr "Template ikon (e.g., filename.png)"
+
+msgid "Template name"
+msgstr "Template navn"
+
+msgid "Template posted."
+msgstr "Template sendt inn"
+
+msgid "The template name must contain alphanumeric characters only."
+msgstr "Templatens navn må bare inneholde alfabetiske tegn eller nummer."
+
+msgid "There is already a template with this name."
+msgstr "Der er alt en template med dette navnet."
+
 msgid "Title"
 msgstr "Tittel"
+
+msgid "Unable to create page template directory."
+msgstr "Ikke mulig å opprette side template katalog."
 
 msgid "Unable to load page template."
 msgstr "Ikke mulig å laste side template."
@@ -168,6 +268,27 @@ msgstr "Oppdater side"
 
 msgid "Updated"
 msgstr "Oppdatert"
+
+msgid "Upload"
+msgstr "Last opp"
+
+msgid "Upload file"
+msgstr "Last opp fil"
+
+msgid "Upload template"
+msgstr "Last opp template"
+
+msgid "Wrong file type for icon file."
+msgstr "Feil filtype for ikon fil."
+
+msgid "Wrong file type for structure file."
+msgstr "Feil filtype for struktur fil."
+
+msgid "Wrong file type for style sheet."
+msgstr "Feil filtype for style sheet."
+
+msgid "Wrong file type for template file."
+msgstr "Feil filtype for template fil."
 
 msgid "You have exceeded the allowed character limit. The page will not save correctly. Click ok to save the text anyway, cancel to return to previous version."
 msgstr "Du har overskredet den tillatte tegn begrensningen. Siden vil ikke lagres korrekt. Klikk for å lagre teksen allikevel, avbryt for å gå tilbake til forrige versjon."

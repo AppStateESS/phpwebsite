@@ -5,24 +5,20 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PHPWS_1_6_1,NOTES1_1_0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:21-0500\n"
-"PO-Revision-Date: 2008-04-06 21:27+0100\n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"PO-Revision-Date: 2009-02-19 14:47+0100\n"
 "Last-Translator: \n"
-"Language-Team: \n"
+"Language-Team: NORWEGIAN <LL@Li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "- Search again -"
-msgstr "- Søk igjen -"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
 
 msgid "Allow user name searching"
 msgstr "Tillat søking på brukernavn"
-
-msgid "An error occurred when accessing the database."
-msgstr "En feil oppstod ved forsøk på å koble til databasen."
 
 msgid "Associate note"
 msgstr "Tilknyttet notis"
@@ -36,9 +32,6 @@ msgstr "Tilnyttet Notiser"
 
 msgid "Cancel"
 msgstr "Avbryt"
-
-msgid "Could not find match."
-msgstr "Kunne ikke finne noen match."
 
 msgid "Date sent"
 msgstr "Dato sendt"
@@ -107,12 +100,6 @@ msgstr "Tittel"
 msgid "Unable to resolve user name."
 msgstr "Ikke mulig å bestemme brukernavn."
 
-msgid "Unknown user."
-msgstr "Ukjendt bruker."
-
-msgid "Unsuitable user name characters."
-msgstr "Upassende brukernavn tegen."
-
 msgid "Yes"
 msgstr "Ja"
 
@@ -120,9 +107,9 @@ msgstr "Ja"
 msgid "You have %d unread notes."
 msgstr "Du har %d uleste notiser."
 
-msgid "You must enter a username."
-msgstr "Du må legge inn et brukernavn."
-
 msgid "You need to enter a title or some content."
 msgstr "Du må legge inn en tittel eller noe innhold."
+
+msgid "Your note needs a title."
+msgstr "Din notis trenger en tittel."
 

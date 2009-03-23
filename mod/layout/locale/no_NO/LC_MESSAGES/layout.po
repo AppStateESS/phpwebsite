@@ -5,15 +5,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PHPWS_1_6_1,LAYOUT2_4_7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-05 09:53-0400\n"
-"PO-Revision-Date: 2008-04-06 21:26+0100\n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"PO-Revision-Date: 2009-02-19 14:50+0100\n"
 "Last-Translator: \n"
-"Language-Team: \n"
+"Language-Team: NORWEGIAN <LL@Li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
 
 msgid "-- Use default style --"
 msgstr "-- Bruk standard Style --"
@@ -52,13 +54,13 @@ msgid "Change style"
 msgstr "Forandre style"
 
 msgid "Clear cache"
-msgstr "Fjern cache"
+msgstr "Rens cache"
 
 msgid "Clear templates"
-msgstr "fjern templates"
+msgstr "Rens templates"
 
 msgid "Clears all Cache Lite files. Good to try if module updates do not display."
-msgstr "fjerner alle Cache Lite filer. Verdt å forsøke hvis din module oppdatering ikke vises."
+msgstr "Fjerner alle Cache Lite filer. Verdt å forsøke hvis din module oppdatering ikke vises."
 
 msgid "Click to move"
 msgstr "Klikk for å flytte"
@@ -265,6 +267,9 @@ msgstr "Oppdater Header"
 
 msgid "Update Theme Settings"
 msgstr "Oppdater Theme Innstillinger"
+
+msgid "Use Key summaries for meta description"
+msgstr "Benytt Nøkkel sammendrag for meta forklaring"
 
 msgid "When enabled, this allows you to shift content to other area of your layout. Movement options depend on the current theme."
 msgstr "Når aktivisert, denne tillater deg å skifte innhold til andre områder av din layout. Bevegelser valg er forbeholdt det gjeldemde theme."

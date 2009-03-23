@@ -5,15 +5,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PHPWS_1_6_1,BOOST2_3_1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-04 09:45-0500\n"
-"PO-Revision-Date: 2008-04-06 21:23+0100\n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"PO-Revision-Date: 2009-02-19 15:09+0100\n"
 "Last-Translator: \n"
-"Language-Team: \n"
+"Language-Team: NORWEGIAN <LL@Li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
 
 #, php-format
 msgid "%1$s successfully registered to %2$s."
@@ -68,7 +70,7 @@ msgid "An update is available!"
 msgstr "En oppdatering er tilgjengelig"
 
 msgid "Are you sure you want to uninstall this module? All data will be deleted."
-msgstr "ER du sikker på du ønsker å avinstallere denne modulen? alle data vil bli slettet."
+msgstr "Er du sikker på du ønsker å avinstallere denne modulen? alle data vil bli slettet."
 
 msgid "Boost"
 msgstr "Boost"
@@ -94,15 +96,15 @@ msgstr "Sjekk"
 msgid "Check all"
 msgstr "Sjekk alle"
 
+msgid "Check disabled"
+msgstr "Merk deaktivisert"
+
 msgid "Check your logs for more information."
 msgstr "Sjekk dine logger for mer informasjon"
 
 #, php-format
 msgid "Checking branch \"%s\""
 msgstr "Sjekker bransje \"%s\""
-
-msgid "Click here to force an uninstall."
-msgstr "Klikk her for å tvinge frem avinstallering."
 
 msgid ""
 "Clicking OK will copy the core\\'s configuration, image and (if on a branch site) javascript directories locally.\\n"
@@ -127,6 +129,10 @@ msgstr "Steng vindu"
 
 msgid "Continue installation..."
 msgstr "Fortsett installasjon"
+
+#, php-format
+msgid "Copy file failure: %s to %s"
+msgstr "Kopiering feilet av fil: %s til %s "
 
 msgid "Copying configuration files."
 msgstr "Kopierer konfigurasjons filer."
@@ -169,7 +175,7 @@ msgid "Creating image directory for module."
 msgstr "Oppfører bilde mappe for modul."
 
 msgid "Creating module image directory."
-msgstr "Oppfører modil bilde mappe."
+msgstr "Oppfører modul bilde mappe."
 
 msgid "Current Version"
 msgstr "Gjeldende Versjon"
@@ -198,11 +204,19 @@ msgstr "Last ned her"
 msgid "Failed"
 msgstr "Feilet"
 
+#, php-format
+msgid "Failed directory backup: %s to %s"
+msgstr "Backup feilet katalog: %s til %s"
+
+#, php-format
+msgid "Failed directory copy: %s to %s"
+msgstr "Feilet katalog kopieriung: %s til %s"
+
 msgid "Failed installation of module."
 msgstr "Feilet installasjon av modul"
 
 msgid "Failed to copy file to local directory."
-msgstr "Feilet å kopiere fil tillokal mappe."
+msgstr "Feilet å kopiere fil til lokal mappe."
 
 msgid "Failed upgrade of module."
 msgstr "Feilet å oppgradere modul."
@@ -222,6 +236,10 @@ msgstr "Importerer SQL installasjons fil."
 msgid "Importing SQL uninstall file."
 msgstr "Importerer SQL avinstallasjons fil."
 
+#, php-format
+msgid "Inaccessible: %s"
+msgstr "Utilgjengelig: %s"
+
 msgid "Install"
 msgstr "Installer"
 
@@ -229,7 +247,7 @@ msgid "Installation complete!"
 msgstr "Installasjon ferdig!"
 
 msgid "Installation file not implemented."
-msgstr "Installasjons fil ikkeimplementert."
+msgstr "Installasjons fil ikke implementert."
 
 msgid "Installing"
 msgstr "Installering"
@@ -297,6 +315,10 @@ msgstr "Mer informasjon"
 msgid "Needs upgrading"
 msgstr "Trenger oppgradering"
 
+#, php-format
+msgid "No backup: %s"
+msgstr "Ingen backup: %s"
+
 msgid "No modules available."
 msgstr "Ingen moduler tilgjengelig."
 
@@ -307,7 +329,7 @@ msgid "No update file found."
 msgstr "Ingen oppdatering fil funnet."
 
 msgid "No update required."
-msgstr "Inge oppdatering nødvendig."
+msgstr "Ingen oppdatering nødvendig."
 
 msgid "None"
 msgstr "Ingen"
@@ -342,8 +364,11 @@ msgstr "Utfører oppdatering fil."
 msgid "Registered to Key."
 msgstr "Registrert til nøkkel."
 
+msgid "Registering Control Panel information."
+msgstr "Registrerer Kontrollpanel informasjon."
+
 msgid "Registering module to core."
-msgstr "Registrerer core til modul."
+msgstr "Registrerer modul til kjerne."
 
 msgid "Registering other modules to this module."
 msgstr "Registrerer andre moduler til denne modul."
@@ -374,6 +399,9 @@ msgstr "Tilbakevender %s modulen lokale filer"
 msgid "Reverting the core's local files"
 msgstr "Tilbakevender core lokale filer"
 
+msgid "Server configuration prevents version checking."
+msgstr "Server innstillinger hindrer versjon sjekk."
+
 msgid "Skipping javascript files."
 msgstr "Hopper over javascript filer."
 
@@ -396,7 +424,7 @@ msgid "The About file is missing for this module."
 msgstr "Om filen for denne modulen mangler."
 
 msgid "The Core requires updating! You should do so before any modules."
-msgstr "Core trnger oppdatering! Du bør gjøre dette før du fortsetter med noen andre moduler."
+msgstr "Core trenger oppdatering! Du bør gjøre dette før du fortsetter med noen andre moduler."
 
 msgid "The following directories are not writable:"
 msgstr "Følgende mapper er skrivebeskyttet:"
@@ -498,6 +526,14 @@ msgstr "ADVARSEL: Bare administratorer kan avinstallere core moduler. Ved å gj�
 #, php-format
 msgid "Your logs/%s file must be readable and writable."
 msgstr "Dine logger/%s file må være skrivbare og lesbare."
+
+#, php-format
+msgid ""
+"\\n"
+"If sure, please type the name of the module below: %s"
+msgstr ""
+"\\n"
+"Hvis sikker, vennligst tast inn navnet på modulen under: %s"
 
 msgid "index.php?module=boost&amp;action=admin"
 msgstr "index.php?module=boost&amp;action=admin"

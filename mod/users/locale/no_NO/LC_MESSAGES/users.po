@@ -5,19 +5,29 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PHPWS_1_6_1,USERS2_6_2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-07 12:13-0500\n"
-"PO-Revision-Date: 2008-04-06 21:31+0100\n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"PO-Revision-Date: 2009-02-19 14:26+0100\n"
 "Last-Translator: \n"
-"Language-Team: \n"
+"Language-Team: NORWEGIAN <LL@Li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
 
 #, php-format
 msgid "\"%s\" permission column created."
 msgstr "\"%s\" tillatelse kolonne opprettet."
+
+#, php-format
+msgid "%s account created"
+msgstr "%s konto opprettet"
+
+#, php-format
+msgid "%s created an user account for you."
+msgstr "%s opprettet en bruker konto for deg."
 
 msgid "-- Use server's time zone --"
 msgstr "-- Benytt serverens tids sone --"
@@ -34,8 +44,14 @@ msgstr "Et problem oppstod ved tilkobling til bruker informasjon. Vennligst prø
 msgid "A problem occurred when trying to register this module to My Page."
 msgstr "Et problem oppstod ved forsøk på å registrere denne modulen til Min Side."
 
+msgid "A problem occurred when trying to unregister this module from My Page."
+msgstr "Et problem oppstod ved forsøk på å avregistrere denne modulen fa Min Side."
+
 msgid "A problem occurred when trying to update your password. Please try again later."
 msgstr "Et problem oppstod ved forsøk på å oppdatere ditt passord. Vennligst prøv igjen senere."
+
+msgid "Account Information"
+msgstr "Konto Informasjon"
 
 msgid "Account created successfully!"
 msgstr "Kontoen opprettet med godt resultat!"
@@ -50,7 +66,7 @@ msgid "Activate"
 msgstr "Aktiver"
 
 msgid "Activate this user"
-msgstr "Aktiver denne bruker"
+msgstr "Aktiver denne brukeren"
 
 msgid "Active"
 msgstr "Aktiv"
@@ -82,14 +98,20 @@ msgstr "Alle besøkende"
 msgid "Allow Remember Me"
 msgstr "Tillat Husk Meg"
 
+msgid "Allow script tag input"
+msgstr "Tillat script tag input"
+
 msgid "An error occurred when trying to create your account. Please try again later."
 msgstr "Et problem oppstod ved forsøk på å opprette din konto. Vennligst prøv igjen senere."
 
 msgid "An error occurred when trying to save the group."
 msgstr "Et problem oppstod ved forsøk på å lagre denne gruppen."
 
-msgid "An error occurred."
+msgid "An error occurred while updating your user account."
 msgstr "Et problem oppstod."
+
+msgid "An error occurred."
+msgstr "En feil oppstod."
 
 msgid "Are you SURE you want to remove this group?"
 msgstr "ER du SIKKER på at du ønsker å fjerne denne gruppen?"
@@ -122,9 +144,6 @@ msgstr "Autorisasjon oppdatert."
 msgid "Authorization/Settings"
 msgstr "Autorisasjon/Innstillinger"
 
-msgid "Ban users"
-msgstr "Utesteng brukere"
-
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -147,17 +166,14 @@ msgstr "Sjekker %s modul"
 msgid "Click here if you are not redirected."
 msgstr "Klikk her hvis du ikke blir videresendt."
 
+msgid "Click here to log in"
+msgstr "Klikk her for å logge inn"
+
 msgid "Closest matches below."
 msgstr "Nærmeste treff under."
 
 msgid "Confirm"
 msgstr "Bekreft"
-
-msgid "Confirm Graphic"
-msgstr "Bekreft Grafikk"
-
-msgid "Confirm text"
-msgstr "Bekreft tekst"
 
 msgid "Confirmation email"
 msgstr "Bekreftelse email"
@@ -168,7 +184,7 @@ msgstr "Bekreftelse setning er ikke korrekt."
 msgid "Contact the site administrator"
 msgstr "Kontakt webside administratoren."
 
-msgid "Control Panel"
+msgid "Control Panel flyout menu"
 msgstr "Kontrollpanel"
 
 msgid "Could not access hub database."
@@ -206,7 +222,7 @@ msgid "Deity"
 msgstr "Guddom"
 
 msgid "Deity users copied to branch."
-msgstr "Guddom rukere kopiert til bransje."
+msgstr "Guddom brukere kopiert til bransje."
 
 msgid "Delete"
 msgstr "Slett"
@@ -223,14 +239,20 @@ msgstr "Glemte du ditt passord til vår webside?"
 msgid "Did you forget your user name at our site?"
 msgstr "Glemte du ditt brukernavn til vår webside?"
 
+msgid "Display"
+msgstr "Vis"
+
 msgid "Display Name"
-msgstr "Fremvisnings Navn"
+msgstr "Visning Navn"
 
 msgid "Display name"
-msgstr "Fremvisnings navn"
+msgstr "Visning navn"
 
 msgid "Display name is improperly formatted."
 msgstr "Fremvisnings navn er ukorrekt formatert."
+
+msgid "Do you wish to notify the new user?"
+msgstr "Ønsker du å gi beskjed til den nye brukeren?"
 
 msgid "Drop"
 msgstr "Dropp"
@@ -274,14 +296,14 @@ msgstr "Email adresse alt i bruk."
 msgid "Email address not found. Please try again."
 msgstr "Email adresse ikke funnet. Vennligst prøv igjen."
 
-msgid "Enter the word from the image above."
-msgstr "Legg inn ordet fra bildet over."
-
 msgid "Enter your new password"
 msgstr "Legg inn ditt nye passord"
 
 msgid "Enter your user name."
 msgstr "Legg inn ditt brukernavn."
+
+msgid "Failed to send notification email."
+msgstr "Feilet å sende notifikasjon email."
 
 msgid "Forbidden usernames (one per line)"
 msgstr "Utilgjengelige brukernavn (ett per linje)"
@@ -304,6 +326,9 @@ msgstr "Glemt passord forsøkt på en guddom konto."
 msgid "Forgotten your user name? Enter your email address instead."
 msgstr "Glemt ditt brukernavn? Legg inn din email adresse i stedet."
 
+msgid "Generate password"
+msgstr "Generer passord"
+
 msgid "Group Name"
 msgstr "Gruppe Navn"
 
@@ -320,10 +345,10 @@ msgid "Groups"
 msgstr "Grupper"
 
 msgid "Hello"
-msgstr "Hallo"
+msgstr "Hei"
 
 msgid "Here is the address to return to our site:"
-msgstr "Her er adressen til å returnere til vår side:"
+msgstr "Her er adressen for å returnere til vår side:"
 
 msgid "Hide login box"
 msgstr "Gjem innloggings boks"
@@ -335,7 +360,7 @@ msgid "If so, you may click the link below to reset it."
 msgstr "Hvis så, kan du klikke på linken under for å resette den."
 
 msgid "If you did not wish to reset your password, you may ignore this message."
-msgstr "Hvis du ikke ønsket å resette ditt passord, kan du ignorere denne meldingen."
+msgstr "Hvis så, kan du klikke på linken under for å resette den."
 
 msgid "Immediate"
 msgstr "Øyeblikkelig"
@@ -361,6 +386,9 @@ msgstr "Lar deg opprette og endre brukere og grupper."
 msgid "Local"
 msgstr "Lokal"
 
+msgid "Localization"
+msgstr "Plassering"
+
 msgid "Log Out"
 msgstr "Logg Ut"
 
@@ -374,7 +402,7 @@ msgid "Login Page"
 msgstr "Logg Inn Side"
 
 msgid "Login page"
-msgstr "Logg Inn Side"
+msgstr "Logg Inn side"
 
 msgid "Manage Groups"
 msgstr "Administrere Grupper"
@@ -436,6 +464,12 @@ msgstr "Min Side"
 msgid "My Page registered to Users module."
 msgstr "Min Side registrert til Bruker modul."
 
+msgid "My Page unavailable to remote users."
+msgstr "Min Side utilgjengelig for fjerntliggende brukere."
+
+msgid "My Page unregistered from Users module."
+msgstr "Min Side uregistrert fra Bruker modul."
+
 msgid "Never"
 msgstr "Aldri"
 
@@ -478,6 +512,9 @@ msgstr "Ingen begrenset endre grupper funnet."
 msgid "No view groups found."
 msgstr "Ingen se grupper funnet."
 
+msgid "No, do not notify"
+msgstr "Nei, ikke gi beskjed"
+
 msgid "No, leave them as a deity."
 msgstr "Nei, la dem være guddommelige."
 
@@ -492,6 +529,12 @@ msgstr "Ingen funnet"
 
 msgid "Not allowed"
 msgstr "Ikke tillatt"
+
+msgid "Notify user"
+msgstr "Gi beskjed til brruker"
+
+msgid "Once you change your display name, you may not change it again until reset by the site administrator."
+msgstr "Når du endrer ditt brukernavn, kan du ikke endre det igjen før det har blitt resatt av en administrator."
 
 msgid "Only another deity can create a deity."
 msgstr "Bare andre guddommer kan opprette guddommer."
@@ -511,6 +554,10 @@ msgstr "Passordet er for enkelt å gjette."
 #, php-format
 msgid "Password must be at least %s characters in length."
 msgstr "Passordet må være minst %s tegn langt."
+
+#, php-format
+msgid "Password: %s"
+msgstr "Passord: %s"
 
 msgid "Passwords do not match."
 msgstr "Passordene er ikke like."
@@ -554,6 +601,9 @@ msgstr "Tillatelser oppdatert"
 msgid "Permissions updated."
 msgstr "Tillatelser oppdatert."
 
+msgid "Please change your password immediately after logging in."
+msgstr "Vennligst sjekk ditt passord øyeblikkelig etter at logger inn."
+
 msgid "Please check your email for a response."
 msgstr "Vennligst sjekk din email for respons."
 
@@ -566,8 +616,8 @@ msgstr "Vennligst legg inn en gyldig email adresse som nettside kontakt."
 msgid "Please try another user name."
 msgstr "Vennligst prøv ett annet brukernavn."
 
-msgid "Please type the word seen in the image."
-msgstr "Vennligst tast inn ordet som vises i bildet."
+msgid "Preferences"
+msgstr "Innstillinger"
 
 msgid "Preferred editor (admins only)"
 msgstr "Foretrukket editor (kun for admin)"
@@ -588,7 +638,7 @@ msgid "Repeat it here please"
 msgstr "Vennligst gjenta det her"
 
 msgid "Reset my password"
-msgstr "Reset mitt passord"
+msgstr "Resett mitt passord"
 
 msgid "Restricted"
 msgstr "Begrenset"
@@ -600,7 +650,7 @@ msgid "Script Filename"
 msgstr "Script Filnavn"
 
 msgid "Send reminder"
-msgstr "Send påminder"
+msgstr "Send påminnelser"
 
 msgid "Set Group Permissions"
 msgstr "Sett Gruppe Tillatelser"
@@ -618,6 +668,10 @@ msgstr "Innstillinger"
 msgid "Sign up"
 msgstr "Registrer"
 
+#, php-format
+msgid "Site address: %s"
+msgstr "Side adresse: %s"
+
 msgid "Site contact email"
 msgstr "Nettside kontakt email"
 
@@ -625,14 +679,14 @@ msgid "Sorry"
 msgstr "Beklager"
 
 msgid "Sorry but you do not authorize from this site."
-msgstr "Beklager men du autoriserer ikke fra denne iden."
+msgstr "Beklager men du autoriserer ikke fra denne siden."
 
 #, php-format
 msgid "Sorry but your authorization is not checked on this site. Please contact %s for information on reseting your password."
 msgstr "Beklager men autorisasjonen din er ikke sjekket på denne siden. Vennligst kontakt %s for informasjon for resetting av ditt passord."
 
 msgid "Sorry there is a problem with your account."
-msgstr "Beklager det er ett problem med din side."
+msgstr "Beklager det er ett problem med din konto."
 
 msgid "Sorry, we are not accepting new users at this time."
 msgstr "Beklager, vi aksepterer ikke nye brukere for øyeblikket."
@@ -678,10 +732,10 @@ msgstr "Forsøkte å utføre en admin funksjon i Brukere."
 msgid "Unable to copy deity login to branch."
 msgstr "Ikke mulig å kopiere guddom til bransje."
 
-msgid "Unable to copy deity users to branch."
+msgid "Unable to copy deity user group to branch."
 msgstr "Ikke mulig å kopiere guddommelige brukere til bransje."
 
-msgid "Unable to create authorization script."
+msgid "Unable to copy deity users to branch."
 msgstr "Ikke mulig å opprette autorisasjon script"
 
 msgid "Unable to find font file for graphic confirmation."
@@ -750,20 +804,20 @@ msgstr "Bruker Registrering Modus"
 msgid "User account deactivated."
 msgstr "Bruker konto deaktivisert"
 
-msgid "User created successfully."
+msgid "User created and notified."
 msgstr "Bruker opprettet med godt resultat."
 
-msgid "User created successfully. Check your email for your login information."
+msgid "User created successfully."
 msgstr "Bruker opprettet med godt resultat. Sjekk din email for å finne din innloggings informasjon."
+
+msgid "User created successfully. Check your email for your login information."
+msgstr "Bruker opprettet OK. Vennligst sjekk din email for din logg inn informasjon."
 
 msgid "User created."
 msgstr "Bruker opprettet"
 
 msgid "User deified."
 msgstr "Bruker gjort guddommelig."
-
-msgid "User deleted."
-msgstr "Bruker slettet."
 
 msgid "User is missing their permission group"
 msgstr "Bruker mangler deres tillatelse gruppe"
@@ -817,6 +871,10 @@ msgstr "Brukernavn og passord avvist."
 msgid "Username is improperly formatted."
 msgstr "Brukernavn er ukorrekt formatert."
 
+#, php-format
+msgid "Username: %s"
+msgstr "Brukernavn: %s"
+
 msgid "Users"
 msgstr "Brukere"
 
@@ -827,7 +885,7 @@ msgid "View restrictions"
 msgstr "Se begrensninger"
 
 msgid "Want to join?"
-msgstr "Vil du være med?"
+msgstr "Ny bruker?"
 
 msgid "We are currently unable to send out email reminders. Try again later."
 msgstr "Vi er for tiden ikke i stand til å sende ut påmindelser. Prøv igjen senere."
@@ -853,11 +911,17 @@ msgstr "Ja, gjør dem til guddommer."
 msgid "Yes, make them a mortal."
 msgstr "Ja, gjør dem til dødlige."
 
+msgid "Yes, send them an email"
+msgstr "Ja, send demen  email"
+
 msgid "You already have an account."
 msgstr "Du har allerede en konto."
 
 msgid "You have one hour to respond."
 msgstr "Du har en time på deg til å svare."
+
+msgid "You may log-in using the following information:"
+msgstr "Du kan logge inn ved bruk av følgende informasjon:"
 
 msgid "You must enter either a username or email address."
 msgstr "Du må legge inn enten ett brukernavn eller en email adresse."
@@ -873,6 +937,9 @@ msgstr "Din konto har blitt deaktivisert. Du må kontakte en administrator for �
 
 msgid "Your account has been successfully activated. Please log in."
 msgstr "Din konto er blitt aktivert. Vennligst logg inn."
+
+msgid "Your account is authorized external to this site. You will need to update it at the source."
+msgstr "Din konto er autorisert eksternt av denne siden. Du må oppdatere den ved kilden."
 
 msgid "Your email address is missing from your account. Please contact the site administrators."
 msgstr "Din email adresse mangler fra din konto. Vennligst kontakt nettsteds administratoren."

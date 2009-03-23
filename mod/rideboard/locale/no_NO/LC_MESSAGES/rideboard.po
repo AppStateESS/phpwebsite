@@ -5,15 +5,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PHPWS_1_6_1,RIDEBOARD1_1_1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-07 12:13-0500\n"
-"PO-Revision-Date: 2008-04-06 21:30+0100\n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"PO-Revision-Date: 2009-02-19 14:33+0100\n"
 "Last-Translator: \n"
-"Language-Team: \n"
+"Language-Team: NORWEGIAN <LL@Li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
 
 msgid "- Do not limit -"
 msgstr "- Ikke begrens -"
@@ -24,8 +26,14 @@ msgstr "- Plassering i kommentarer -"
 msgid "- Locations in comments -"
 msgstr "- Plasseringer i kommentarer -"
 
+msgid "A problem occurred when trying to save your carpool information. Try again later."
+msgstr "Et problem oppstod ved forsøk på å lagre din bilpark informasjon. Prøv igjen senere."
+
 msgid "Add menu link"
 msgstr "Legg til meny link"
+
+msgid "Additional information"
+msgstr "Tilleggs informasjon"
 
 msgid "An error occurred when pulling your rides."
 msgstr "En feil oppstod ved trekking av dine kjøreturer."
@@ -39,8 +47,26 @@ msgstr "Noen"
 msgid "Are you sure you want to delete this ride?"
 msgstr "Er du sikker på at du ønsker å slette denne kjøreturen?"
 
+msgid "Are you sure you want to remove this carpool?"
+msgstr "Er du  sikker på at du ønsker å fjerne denne bilparken?"
+
 msgid "Back to search"
 msgstr "Tilbake til søk"
+
+msgid "Carpool"
+msgstr "Bilpark"
+
+msgid "Carpool destination"
+msgstr "Bilpark destinasjon"
+
+msgid "Carpool info"
+msgstr "Bilpark info"
+
+msgid "Carpool start"
+msgstr "Bilpark start"
+
+msgid "Carpools"
+msgstr "Bilparker"
 
 msgid "Change settings"
 msgstr "Foandre innstillinger"
@@ -48,8 +74,23 @@ msgstr "Foandre innstillinger"
 msgid "Comments"
 msgstr "Kommentarer"
 
+msgid "Contact poster"
+msgstr "Kontakt innsender"
+
+msgid "Create a carpool"
+msgstr "Opprett bilpark"
+
+msgid "Create a new carpool"
+msgstr "Opprett en ny bilpark"
+
 msgid "D/R"
 msgstr "D/R"
+
+msgid "Date created"
+msgstr "Dat opprettet"
+
+msgid "Default destination"
+msgstr "Standard destinsjon"
 
 msgid "Default starting location"
 msgstr "Standard start plassering"
@@ -60,11 +101,20 @@ msgstr "Slett"
 msgid "Delete "
 msgstr "Slett"
 
+msgid "Delete carpools"
+msgstr "Slett kjøretur tilbuder"
+
 msgid "Delete ride offers"
 msgstr "Slett kjøretur tilbuder"
 
+msgid "Delete this carpool"
+msgstr "Slett denne bilparken"
+
 msgid "Destination"
 msgstr "Destinasjon"
+
+msgid "Destination location needs to be entered."
+msgstr "Destinasjons sted må legges inn"
 
 msgid "Distance format"
 msgstr "Distanse format"
@@ -121,6 +171,9 @@ msgstr "Ene eller andre kjønn"
 
 msgid "Email user"
 msgstr "Email bruker"
+
+msgid "Enable carpooling"
+msgstr "Aktiviser bilparking"
 
 msgid "Expired"
 msgstr "Utgått"
@@ -179,6 +232,9 @@ msgstr "Mann"
 msgid "Miles"
 msgstr "Mil"
 
+msgid "More information"
+msgstr "Mer informasjon"
+
 #, php-format
 msgid "Need a ride from <strong>%s</strong> on or around <strong>%s</strong> to <strong>%s</strong>."
 msgstr "Trenger tur fra <strong>%s</strong> den eller rundt den <strong>%s</strong> til <strong>%s</strong>."
@@ -198,6 +254,9 @@ msgstr "Trenger tur til <strong>%s</strong> den eller rundt den <strong>%s</stro
 msgid "New location"
 msgstr "Ny plassering"
 
+msgid "No carpool offers found."
+msgstr "Ingen bilpark tilbud funnet"
+
 msgid "No default"
 msgstr "Ingen standard"
 
@@ -205,10 +264,13 @@ msgid "No rides found fitting your criteria."
 msgstr "Ingen turer funnet som passer dine kriterier."
 
 msgid "No rides need purging."
-msgstr "Ingen turer trenger trekking."
+msgstr "Ingen turer trenger rensing."
 
 msgid "Non-smokers only"
 msgstr "Kun ikke røyk"
+
+msgid "None"
+msgstr "Ingen"
 
 msgid "Not indicated"
 msgstr "Ikke indikert"
@@ -248,6 +310,9 @@ msgstr "Rideboard innstillinger"
 
 msgid "Rider"
 msgstr "Kjører"
+
+msgid "Save carpool"
+msgstr "Lagre bilpark"
 
 msgid "Save settings"
 msgstr "Lagre innstillinger"
@@ -298,6 +363,15 @@ msgstr "Røyking preferanse"
 msgid "Sorry"
 msgstr "Beklager"
 
+msgid "Start"
+msgstr "Start"
+
+msgid "Starting area"
+msgstr "Start område"
+
+msgid "Starting location needs to be entered."
+msgstr "Starter sted må legges inn"
+
 msgid "The ride has expired."
 msgstr "Kjøreturen er utgått."
 
@@ -306,6 +380,9 @@ msgstr "Kjøreturen ble ikke funnet."
 
 msgid "Trip title"
 msgstr "Tur tittel"
+
+msgid "Update carpool"
+msgstr "Oppdater bilpark"
 
 msgid "View my Rides"
 msgstr "Se mine Kjøreturer"
@@ -322,9 +399,7 @@ msgstr "Du har ingen kjøreturer."
 
 #, php-format
 msgid "You have %s ride that has expired. Click here to purge it."
-msgid_plural "You have %s rides that have expired. Click here to purge them."
-msgstr[0] ""
-msgstr[1] ""
+msgstr "You have %s rides that have expired. Click here to purge them."
 
 msgid "Your leaving and arriving locations must be different."
 msgstr "Din avgangs dato og ankomst dato må være forskjellige."

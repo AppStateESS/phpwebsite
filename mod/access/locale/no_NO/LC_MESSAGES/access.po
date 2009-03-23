@@ -5,24 +5,29 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PHPWS_1_6_1,ACCESS1_1_3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-07 12:13-0500\n"
-"PO-Revision-Date: 2008-04-06 21:21+0100\n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"PO-Revision-Date: 2009-02-19 14:12+0100\n"
 "Last-Translator: \n"
-"Language-Team: \n"
+"Language-Team: NORWEGIAN <LL@Li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
 
 msgid "-- Choose option --"
 msgstr "-- Velg Alternativ --"
+
+msgid ".htaccess"
+msgstr ".htaccess"
 
 msgid ".htaccess file is missing."
 msgstr ".htaccess fil mangler."
 
 msgid "A serious error occurred. Please check your error.log."
-msgstr "En alvorlig feil oppstod. Vennligst sjekk din error.log."
+msgstr "En seriøs feil oppstod. Vennligst sjekk dine error.log."
 
 msgid "Access"
 msgstr "Tilgang"
@@ -44,6 +49,9 @@ msgstr "Aktiver"
 
 msgid "Active?"
 msgstr "Aktiv?"
+
+msgid "Add RewriteBase"
+msgstr "Legg til RewriteBase"
 
 msgid "Add allowed IP"
 msgstr "Legg til tillatt IP"
@@ -96,8 +104,14 @@ msgstr "Steng vindu"
 msgid "Controls the .htaccess file for Apache and creates shortcuts."
 msgstr "Kontrollerer .htaccess filen for Apache og oppretter snarveier."
 
-msgid "Deactivate"
+msgid "Current RewriteBase does not match the installation directory."
 msgstr "Deaktiviser."
+
+msgid "Current RewriteBase matches installation directory."
+msgstr "Gjeldende RewriteBase passer installasjons mappe."
+
+msgid "Deactivate"
+msgstr "Deaktiviser"
 
 msgid "Default .htaccess file restored."
 msgstr "Standard .htaccess fil gjenopprettet."
@@ -162,6 +176,9 @@ msgstr "Husk å  \"Oppdater\" din tilgang fil når ferdig å forandre IP regler.
 msgid "Return to previous page."
 msgstr "Gå tilbake til forrige side."
 
+msgid "RewriteBase is not set or needed."
+msgstr "RewriteBase er ikke satt eller er ikke nødvendig."
+
 msgid "Settings saved."
 msgstr "Innstillinger lagret."
 
@@ -203,4 +220,16 @@ msgstr "Du har  \"Tillat alle\" aktivisert. Alle rader under vil bli ignorert."
 
 msgid "You have \"Deny all\" enabled. All rows below will be ignored."
 msgstr "Du har  \"Nekt alle\" aktivisert. Alle rader under vil bli ignorert."
+
+msgid "Your .htaccess file does not exist or is not readable."
+msgstr "Din .htaccess fil eksisterer ikke eller er ikke lesbar."
+
+msgid "Your .htaccess file is not writable. A RewriteBase cannot be added."
+msgstr "Din .htaccess fil er skrivebeskyttet. En RewriteBase kan ikke legges til."
+
+msgid "Your RewriteBase is not set but may be needed."
+msgstr "Din RewriteBase er ikke satt men kan være nødvendig."
+
+msgid "htaccess"
+msgstr "htaccess"
 

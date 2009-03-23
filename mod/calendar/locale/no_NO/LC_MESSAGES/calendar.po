@@ -5,15 +5,25 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PHPWS_1_6_1,CALENDAR1_7_1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-04 09:45-0500\n"
-"PO-Revision-Date: 2008-04-06 21:23+0100\n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"PO-Revision-Date: 2009-02-19 15:07+0100\n"
 "Last-Translator: \n"
-"Language-Team: \n"
+"Language-Team: NORWEGIAN <LL@Li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
+
+#, php-format
+msgid "%s duplicate event(s) were ignored."
+msgstr "%s duplikat begivenhet(er) ble ignorert."
+
+#, php-format
+msgid "%s event(s) were successfully imported."
+msgstr "%s begivenhet(er) ble importert OK."
 
 msgid "1st"
 msgstr "1."
@@ -48,6 +58,9 @@ msgstr "Hele dagen begivenhet"
 #, php-format
 msgid "All day event, %s"
 msgstr "Hele dagen begivenhet, %s"
+
+msgid "Allow anonymous iCal exports of public schedules"
+msgstr "Tillat anonyme iCal eksporter av offentlige timeplaner"
 
 msgid "Allow personal schedules"
 msgstr "Tillat personlig tidsplanlegging"
@@ -186,6 +199,12 @@ msgstr "Ikke vis kommende begivenheter"
 msgid "Don't show"
 msgstr "Ikke vis"
 
+msgid "Download"
+msgstr "Last ned"
+
+msgid "Download iCal events"
+msgstr "Last ned iCal begivenheter"
+
 msgid "Duplicate suggestion."
 msgstr "Dupliser forslag."
 
@@ -203,6 +222,15 @@ msgstr "Slutten av hver måned"
 
 msgid "End time"
 msgstr "Slutt tid"
+
+msgid "Error"
+msgstr "Feil"
+
+msgid "Error accessing event table."
+msgstr "Feil ved tilkobling til begivenhet tabell."
+
+msgid "Error saving new event."
+msgstr "Feil ved lagring av ny begivenhet."
 
 msgid "Event"
 msgstr "Begivenhet"
@@ -225,6 +253,12 @@ msgstr "Hver måned"
 msgid "Every month on start date"
 msgstr "Hver måned på start dato"
 
+msgid "File does not appear to be in iCal/vCal format."
+msgstr "Fil fremstår ikke som iCal/vCal format."
+
+msgid "File location"
+msgstr "Fil plassering"
+
 #, php-format
 msgid "First day"
 msgstr "Første dag"
@@ -241,6 +275,15 @@ msgstr "Rutenett"
 
 msgid "Grid event display"
 msgstr "Rutenett begivenhet visning"
+
+msgid "Import complete!"
+msgstr "importering ferdig!"
+
+msgid "Import iCal/vCal file"
+msgstr "Importer iCal/vCal fil"
+
+msgid "Improper file format."
+msgstr "Ugyldig fil format."
 
 msgid "Incorrect option"
 msgstr "Ukorrekt valg"
@@ -266,6 +309,9 @@ msgstr "Opprett standard offentlig"
 
 msgid "Maximum allowed repeats reached."
 msgstr "Maksimum tillatt gjentagelser oppnådd."
+
+msgid "Missing filename."
+msgstr "Mangler filnavn"
 
 msgid "Missing title."
 msgstr "Mangler tittel."
@@ -373,6 +419,9 @@ msgstr "Gjenta begivenhet til:"
 msgid "Reset cache"
 msgstr "Reset cache"
 
+msgid "Return to upload form..."
+msgstr "Returner til opplastning skjema..."
+
 msgid "Save"
 msgstr "Lagre"
 
@@ -397,8 +446,14 @@ msgstr "Tidsplan begivenhet tabell mangler."
 msgid "Schedule saved."
 msgstr "Tidsplan lagret."
 
+msgid "Schedule unavailable."
+msgstr "Tidsplan utilgjengelig."
+
 msgid "Schedules"
 msgstr "Tidsplaner"
+
+msgid "Send file"
+msgstr "Send fil"
 
 msgid "Settings"
 msgstr "Innstillinger"
@@ -411,6 +466,9 @@ msgstr "Vis opptatt"
 
 msgid "Show event titles"
 msgstr "Vis begivenhet tittler"
+
+msgid "Show mini grid"
+msgstr "Vis mini rutenett"
 
 msgid "Show next two weeks"
 msgstr "Vis neste to uker"
@@ -440,7 +498,7 @@ msgid "Suggest event"
 msgstr "Foreslå begivenhet"
 
 msgid "Suggested events"
-msgstr "Foreslått e begivenheter"
+msgstr "Foreslåtte begivenheter"
 
 msgid "Summary"
 msgstr "Sammendrag"
@@ -453,6 +511,9 @@ msgstr "Datoen til gjentagelse til må være større en begivenhetens stert dato
 
 msgid "The end time must be after the start time."
 msgstr "Slutt tiden må være større enn start tiden."
+
+msgid "The following errors occurred when trying to import your events:"
+msgstr "Følgende feil oppstod ved forsøk på å importere dine begivenheter:"
 
 msgid "This event does not exist."
 msgstr "Denne begivenheten eksisterer ikke."
@@ -476,13 +537,16 @@ msgid "Title / Time / Description"
 msgstr "Tittel / Tidspunkt / Sammendrag"
 
 msgid "Today"
-msgstr "Idag"
+msgstr "I dag"
 
 msgid "Two days prior"
 msgstr "To dager tidligere"
 
 msgid "Two weeks prior"
 msgstr "To uker tidligere"
+
+msgid "Unable to parse file for events."
+msgstr "Ikke mulig å analysere filen for begivenheter."
 
 msgid "Unable to save your event suggestion."
 msgstr "Ikke mulig å lagre din begivenhets sammendrag."
@@ -495,6 +559,9 @@ msgstr "Oppdater begivenhet"
 
 msgid "Update schedule"
 msgstr "Oppdater tidsplan"
+
+msgid "Upload iCal events"
+msgstr "Last opp iCal begivenheter"
 
 msgid "User"
 msgstr "Bruker"

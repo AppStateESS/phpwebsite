@@ -5,19 +5,29 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PHPWS_1_6_1,CORE1_9_2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-07 12:14-0500\n"
-"PO-Revision-Date: 2008-04-06 21:35+0100\n"
+"POT-Creation-Date: 2008-11-17 10:32-0500\n"
+"PO-Revision-Date: 2009-02-19 14:05+0100\n"
 "Last-Translator: \n"
-"Language-Team: \n"
+"Language-Team: NORWEGIAN <LL@Li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
+
+#, php-format
+msgid "%s - %s of %s"
+msgstr "%s - %s av %s"
 
 #, php-format
 msgid "%s days ago"
 msgstr "%s dager siden"
+
+#, php-format
+msgid "%s directory does not exist or is not writable."
+msgstr "%s mappen eksisterer ikke eller er skrivebeskyttet."
 
 #, php-format
 msgid "%s hours ago"
@@ -47,10 +57,10 @@ msgid "Add"
 msgstr "Legg til"
 
 msgid "After you finish installing your modules in Boost, you should make your config and template directories non-writable."
-msgstr "Etter at du er ferdig med å installere dine moduler i Boost, bør du skrivebeskytte din config og template mapper."
+msgstr "Etter at du har installert dine moduler i Boost, bør du gjøre din config og template mappe skrivebeskyttet."
 
 msgid "Albums converted and keyed."
-msgstr "Albumer forandret og fastkilt."
+msgstr "Albummer er konvertert og kilt."
 
 msgid "All"
 msgstr "Alle"
@@ -167,6 +177,13 @@ msgstr "Blog er ikke installert."
 msgid "Branch : %s"
 msgstr "Branch : %s"
 
+msgid "CSV Report"
+msgstr "CSV Report"
+
+#, php-format
+msgid "CSV Report - %s | %s"
+msgstr "CSV Report - %s | %s"
+
 msgid "Cache Lite is disabled."
 msgstr "Cache Lite er deaktivert."
 
@@ -185,6 +202,9 @@ msgstr "Calendar er ikke installert."
 msgid "Can not change name. Already in use."
 msgstr "Kan ikke endre navn. Alt i bruk."
 
+msgid "Cannot load database. DSN not defined."
+msgstr "Kan ikke laste database. DSN ikke definert."
+
 msgid "Cannot read file."
 msgstr "Kan ikke lese fil."
 
@@ -192,7 +212,7 @@ msgid "Categories has already been converted."
 msgstr "Categories har alt blitt  konvertert."
 
 msgid "Change to"
-msgstr "Forandre til"
+msgstr "Endre til"
 
 msgid "Check Directory Permissions is enabled so be sure to secure your config and templates directories!"
 msgstr "Sjekk Mappe Tillatelser er aktivisert for å være sikker på at dine config og template mappene er sikret!"
@@ -208,6 +228,9 @@ msgstr "Check box tabell ble importert OK."
 
 msgid "Check your configuration settings."
 msgstr "Sjekk dine konfigurasjons instillinger."
+
+msgid "Checking your server's compatibility with phpWebSite..."
+msgstr "Sjekker din database's kompatibilitet med PHPWebSite..."
 
 msgid "Class Name"
 msgstr "Class navn"
@@ -243,8 +266,11 @@ msgstr "Steng"
 msgid "Coming from: %s"
 msgstr "Kommer fra: %s"
 
+msgid "Config directory ready"
+msgstr "Config mappe klar"
+
 msgid "Connect"
-msgstr "Tilkoble"
+msgstr "Koble til"
 
 #, php-format
 msgid "Connected to database \"%s\""
@@ -265,8 +291,11 @@ msgstr "Fortsett for å konvertere category elementer."
 msgid "Continue to convert menu links."
 msgstr "Fortsett for å konvertere meny linker."
 
+msgid "Continue..."
+msgstr "Fortsett..."
+
 msgid "Continue: Convert everyone."
-msgstr "Fortsett: Konverter enhver."
+msgstr "Fortsett: Konverter aller."
 
 msgid "Continue: Only those logged on within 6 months."
 msgstr "Continue: Bare de innlogget innen de siste 6 måneder."
@@ -284,7 +313,7 @@ msgid "Conversion will begin as soon as you make your choice."
 msgstr "Konvertering vil startes så snart du har gjort dine valg."
 
 msgid "Convert everyone."
-msgstr "Konverter enhver."
+msgstr "Konverter alle."
 
 msgid "Convert menu links"
 msgstr "Konverter meny linker"
@@ -293,7 +322,7 @@ msgid "Convert menus"
 msgstr "Konverter menyer"
 
 msgid "Convert!"
-msgstr "Konvnter!"
+msgstr "Konventer!"
 
 msgid "Converted"
 msgstr "Konvertert"
@@ -302,12 +331,33 @@ msgstr "Konvertert"
 msgid "Copy all the files you need converted into your %s directory."
 msgstr "Kopier alle filene du ønsker konvertert til din %s mappe."
 
+msgid "Copying core directories."
+msgstr "Kopierer core mapper."
+
+msgid "Core configuration directory successfully copied."
+msgstr "Core innstilling mappe kopiert OK."
+
+msgid "Core could not locate its errorDefines.php file."
+msgstr "Kjernen kunne ikke lokalisere dens errorDefines.php fil."
+
+msgid "Core directories created."
+msgstr "Core mapper opprettet."
+
+msgid "Core image directory successfully copied."
+msgstr "Core image mappe kopiert OK."
+
 msgid "Core installation successful."
 msgstr "Core installasjon OK."
+
+msgid "Core templates directory successfully copied."
+msgstr "Core templates mappe kopiert OK."
 
 #, php-format
 msgid "Could not copy file %s to %s."
 msgstr "Kunne ikke kopiere filen %s til %s."
+
+msgid "Could not find Pear library files. You will need to download the pear package from our site at http://phpwebsite.appstate.edu/downloads/pear.zip and unzip it in your installation directory."
+msgstr "Kunne ikke finne Pear bibliotek filer. Du må laste ned pear pakken fra vår side host http://phpwebsite.appstate.edu/downloads/pear.zip og åpne den i din installasjons mappe."
 
 #, php-format
 msgid "Could not find info file. File : %s"
@@ -327,7 +377,7 @@ msgid "Create Config File"
 msgstr "Opprett Config Fil"
 
 msgid "Create Core"
-msgstr "Opprett Core"
+msgstr "Opprett Kjerne"
 
 msgid "Create Database"
 msgstr "Opprett Database"
@@ -362,7 +412,7 @@ msgstr "Database import feilet."
 msgid "Database name"
 msgstr "Database navn"
 
-msgid "Database password may contain alphanumeric characters or underscores only."
+msgid "Database password may contain alphanumeric characters, spaces or underscores only."
 msgstr "Database passord kan bare inneholde alfanumerisk tegn eller understrek."
 
 msgid "Declared classes:"
@@ -391,6 +441,12 @@ msgstr "Document module inneholder ingen filer."
 
 msgid "Documents module not installed or empty."
 msgstr "Dokument modul er ikke installert, eller er tom."
+
+msgid "Download a complete CSV file"
+msgstr "Last ned en komplett CSV fil"
+
+msgid "Download a partial CSV file"
+msgstr "Last ned en delvis CSV fil"
 
 msgid "Drop box table failed to copy successfully."
 msgstr "Drop box tabell feilet i å kopiere."
@@ -423,8 +479,14 @@ msgstr "Utførelses tid: %s sekunder."
 msgid "Expecting an object variable."
 msgstr "Forventet en objekt variabel."
 
+msgid "FFMPEG installed"
+msgstr "FFMPEG installert"
+
 msgid "Failed to connect."
 msgstr "Tilkobling feilet."
+
+msgid "Failed to create core directories. Please check your directory permissions in images, templates, and config."
+msgstr "Kunne ikke opprette core mappe. Vennligst sjekk dine mappe tillatelser i images, templates, og config."
 
 msgid "Failed to make connection with the requested branch site."
 msgstr "Feilet i å opprette tilkobling til forespurte branch side."
@@ -441,6 +503,9 @@ msgstr "File Cabinet konvertert."
 msgid "File Cabinet has already converted Documents files."
 msgstr "File Cabinet har alt konvertert Document filer."
 
+msgid "File directory ready"
+msgstr "File mappe klar"
+
 msgid "File not found in _FILES array."
 msgstr "Fil ikke funnet i _FILES tabell."
 
@@ -451,7 +516,7 @@ msgid "File not writable."
 msgstr "Fil er skrivebeskyttet."
 
 msgid "Finished converting Photo Album."
-msgstr "Ferdig konvertering av Photo Album"
+msgstr "Ferdig konvertering av Photo Album."
 
 msgid "Finished converting categories!"
 msgstr "Ferdig konvertering av categories!"
@@ -461,6 +526,9 @@ msgstr "Ferdig konvertering av category objekter"
 
 msgid "Finished converting links."
 msgstr "Ferdig konvertering av linker"
+
+msgid "First page"
+msgstr "Første side"
 
 msgid "Form"
 msgstr "Skjema"
@@ -498,6 +566,9 @@ msgstr "Funksjons navn ikke funnet"
 msgid "Function was expecting a \"where\" parameter."
 msgstr "funksjon forventet en \"where\" parameter."
 
+msgid "GD graphic libraries installed"
+msgstr "GD graphic libraries installert"
+
 msgid "GD image libraries do not support this image type."
 msgstr "GD image bibliotek støtter ikke dette bilde typen."
 
@@ -509,6 +580,10 @@ msgstr "Gå tilbake til hoved meny."
 
 msgid "Go to my new website!"
 msgstr "Gå til min nye hjemmeside!"
+
+#, php-format
+msgid "Go to page %s"
+msgstr "Gå til side %s"
 
 msgid "Help option not found in help configuration file."
 msgstr "Hjelp valg ikke funnet i hjelp konfigursjons fil."
@@ -541,7 +616,7 @@ msgid "If not, you will need to create the database yourself and return to the s
 msgstr "Hvis ikke, må du opprette databasen og selv og returnere til oppsett."
 
 msgid "If the first user on your old site is not you, then you will need to recreate them."
-msgstr "Hvis brukeren på din gamle side ikke er, må du gjenopprette dem."
+msgstr "Hvis første bruker på din gamle side ikke er deg, må du gjenopprette dem."
 
 msgid "If you are installing phpWebSite in a shared environment, you may assign a prefix to tables.<br />We recommend you run without one."
 msgstr "Hvis du innstallerer phpWebSite i en delt omgivelse, kan du benytte prefix til tabeller.<br />Vi anbefaler at du kjører uten."
@@ -561,11 +636,14 @@ msgstr "Hvis din databases ligger på samme server som din phpWebSite installasj
 msgid "If your host specification requires access via a specific port, enter it here."
 msgstr "Hvis din vert spesifikasjon påkrever tilgang via en spesifikk port, legg den inn her."
 
+msgid "Image directory ready"
+msgstr "Image mappe klar"
+
 msgid "Images copied during a 0.10.x conversion."
 msgstr "Bilder kopiert under 0.10.x konversjon."
 
 msgid "Importing core database file."
-msgstr "Importer core database fil."
+msgstr "Importer kjerne database fil."
 
 msgid "Improper column name."
 msgstr "Ugyldig kolonne navn"
@@ -591,6 +669,9 @@ msgstr "Innstallerte moduler"
 msgid "Invalid value."
 msgstr "Ugyldig verdi."
 
+msgid "Javascript directory ready"
+msgstr "Javascript mappe klar"
+
 msgid "Join database does not exist."
 msgstr "Sammenføyning database eksisterer ikke."
 
@@ -603,11 +684,21 @@ msgstr "Nøkkel kan ikke alene begrense objekter på _phpws_key tabell."
 msgid "Key not found."
 msgstr "Nøkkel ikke funnet."
 
+msgid "Last page"
+msgstr "Siste side"
+
 msgid "Limit"
 msgstr "Begrensning"
 
+#, php-format
+msgid "Limit results to %s rows"
+msgstr "Grense resulterer i %s rader"
+
 msgid "List columns not set."
 msgstr "Liste kolonner ikke angitt."
+
+msgid "Log directory ready"
+msgstr "Log mappe klar"
 
 msgid "Log in"
 msgstr "Logg inn"
@@ -620,6 +711,15 @@ msgstr "Logg inn side"
 
 msgid "Login to Site Manager"
 msgstr "log inn til Side Manager"
+
+msgid "MIME file type detection"
+msgstr "MIME fil type oppdagelse"
+
+msgid "Magic quotes disabled"
+msgstr "Magic quotes er deaktivisert."
+
+msgid "Magic quotes is enabled. Please disable it in your php.ini file."
+msgstr "Magic quotes er aktivisert. Vennligst deaktiviser det i din php.ini fil."
 
 msgid "Main Menu"
 msgstr "Hoved Meny"
@@ -645,6 +745,9 @@ msgstr "Manuell modus krever at du har klikket deg igjennom konfigurasjons prose
 
 msgid "Match for must be an array for a multiple input."
 msgstr "Jevnbyrdig som må være en tabell for flere innlegg."
+
+msgid "Memory limit exceeded"
+msgstr "Minne begrensning overskredet"
 
 msgid "Menu conversion finished."
 msgstr "Meny konvertering ferdig."
@@ -725,7 +828,7 @@ msgid "No events to convert."
 msgstr "Ingen begivenheter å konvertere."
 
 msgid "No form elements have been created."
-msgstr "Ingen skjema elementer å konvertere."
+msgstr "Ingen skjema elementer har blitt opprettet."
 
 msgid "No forms to convert."
 msgstr "Ingen skjema å konvertere."
@@ -770,7 +873,7 @@ msgid "No variables in object."
 msgstr "Ingen variabler i objekt."
 
 msgid "Not a convert file."
-msgstr "Ikke en konvertert fil."
+msgstr "Ikke en konverter fil."
 
 msgid "Not an acceptable operator."
 msgstr "Ikke en akseptabel operatør."
@@ -805,6 +908,9 @@ msgstr "Ellers, klikk på  \"Main page\" linken over."
 msgid "Otherwise, enter the ip or dns to the database server."
 msgstr "Ellers, tast inn ip eller dns til database serveren."
 
+msgid "PHP 5 version check"
+msgstr "PHP 5 versjon sjekk"
+
 #, php-format
 msgid "PHPWS_Debug: testObject received a/an %s variable, not an object."
 msgstr "PHPWS_Debug: testObject mottok a/an %s variabel, ikke et objekt."
@@ -815,9 +921,6 @@ msgstr "PHPWS_File mottok et ukjent begrep."
 msgid "Page"
 msgstr "Side"
 
-msgid "PageSmith conversion"
-msgstr "PageSmith konversjon"
-
 msgid "PageSmith has already been converted."
 msgstr "PageSmith har alt blitt konvertert."
 
@@ -827,11 +930,20 @@ msgstr "PageSmith er også konvertert. Vær sikker på å sjekke forklaringene i
 msgid "PageSmith is not installed."
 msgstr "PageSmith er ikke installert."
 
+msgid "Partial"
+msgstr "Delvis"
+
+msgid "Passed!"
+msgstr "Bestod!"
+
 msgid "Password"
 msgstr "Passord"
 
 msgid "Pear Configuration"
 msgstr "Pear Konfigurasjon"
+
+msgid "Pear library installed"
+msgstr "Pear library installert"
 
 msgid "Permission Help"
 msgstr "Tillatelser Hjelp"
@@ -872,12 +984,18 @@ msgstr "Vennligst sjekk dine feilmelding log fil."
 msgid "Please check your error logs and try again."
 msgstr "Vennligst sjekk dine feilmelding log fil og prøv igjen."
 
+msgid "Please copy the word in the above image."
+msgstr "Vennligst gjengi ordet i bildet over."
+
 #, php-format
 msgid "Please create a directory in %simages/ named \"pagemaster\". Copy all images from the old Web Pages image directory into it."
 msgstr "Vennligst opprett en mappe i %simages/ named \"pagemaster\". Kopier alle bilder fra den gamle Web Pages bilde mapper inn i den."
 
 msgid "Please enter the connect information for the database you wish to convert from."
 msgstr "Vennligst tast inn tilkoblings informasjon til databasen du ønsker å konvertere fra."
+
+msgid "Please fill out the field:"
+msgstr "Vennligst fyll ut feltet:"
 
 msgid "Please login"
 msgstr "Vennlisgt logg inn"
@@ -902,6 +1020,9 @@ msgstr "Gjentakende tabell"
 
 msgid "Recursive object:"
 msgstr "Gjentakende objekt:"
+
+msgid "Register globals disabled"
+msgstr "Register globals deaktivisert"
 
 msgid "Remove"
 msgstr "Fjern"
@@ -930,6 +1051,15 @@ msgstr "Søk"
 msgid "Select returned an empty result."
 msgstr "Velg returnert ett tomt resultat."
 
+msgid "Server failed crucial tests. You may not install phpWebSite."
+msgstr "Server feilet viktige tester. Du kan ikke installere phpWebSite."
+
+msgid "Server passed enough tests to allow installation."
+msgstr "Server bestod nok tester til å tillate installasjon."
+
+msgid "Session auto start disabled"
+msgstr "Session auto start deaktivisert"
+
 msgid "Sessions Help"
 msgstr "Session Hjelp."
 
@@ -957,10 +1087,10 @@ msgstr "Noen menyer konverterte ikke skikkelig. Vennligst se logger."
 msgid "Some users caused conversion errors."
 msgstr "Noen brukere forårsaket konvertering feil."
 
-msgid "Sort ascending"
+msgid "Sorted in ascending order"
 msgstr "Sortere oppstigende"
 
-msgid "Sort descending"
+msgid "Sorted in descending order"
 msgstr "Sorter nedstigende"
 
 msgid "Source Directory"
@@ -987,6 +1117,9 @@ msgstr "Tabell prefix"
 msgid "Table prefix must be alphanumeric characters or underscores only"
 msgstr "Tabell prefix må bare være alfanumetrisk tegn eller understrek."
 
+msgid "Template directory ready"
+msgstr "Template mappe klar"
+
 msgid "Template error."
 msgstr "Template feil."
 
@@ -1000,10 +1133,10 @@ msgid "Text area table imported successfully."
 msgstr "Tekst område tabell importert OK."
 
 msgid "Text field table failed to copy successfully."
-msgstr "Tekst feldt tabell feilet i å kopiereOK."
+msgstr "Tekst feldt tabell feilet i å kopiere."
 
 msgid "Text field table imported successfully."
-msgstr "Tekst feldt område tabell imortert OK."
+msgstr "Tekst feldt område tabell importert OK."
 
 msgid "The File Cabinet module is not installed."
 msgstr "File Cabinet modulen er ikke installert."
@@ -1011,11 +1144,22 @@ msgstr "File Cabinet modulen er ikke installert."
 msgid "The character string below differentiates your site from others on the same server."
 msgstr "Tegn snoren under differensierer din side fra andre sider på samme server."
 
+#, php-format
+msgid "The current language is %s."
+msgstr "gjeldende språk er %s."
+
 msgid "The database creation succeeded!"
 msgstr "Database opprettingen OK!"
 
 msgid "The database's name into which you are installing phpWebSite."
 msgstr "Database navnet somdu installerer phpWebSite til."
+
+#, php-format
+msgid "The default language is %s."
+msgstr "Standard språk er %s."
+
+msgid "The default language is being forced."
+msgstr "Standard språk tvunget."
 
 msgid "The example is randomly generated."
 msgstr "Eksempelet er tilfeldig generert."
@@ -1062,6 +1206,10 @@ msgstr "Ikke mulig å koble til."
 msgid "Unable to copy file."
 msgstr "Ikke mulig å kopiere fil."
 
+#, php-format
+msgid "Unable to copy the %s directory to %s. Installation halted."
+msgstr "Ikke mulig å kopiere %s mappe til %s. Installasjonen stoppet."
+
 msgid "Unable to create file directory."
 msgstr "Ikke mulig å opprette fil mappe."
 
@@ -1069,7 +1217,7 @@ msgid "Unable to create the database."
 msgstr "Ikke mulig å opprette databassen."
 
 msgid "Unable to delete directory."
-msgstr "Ikke mulig å slette mapp."
+msgstr "Ikke mulig å slette mappe."
 
 msgid "Unable to delete file."
 msgstr "Ikke mulig å slette fil."
@@ -1077,9 +1225,18 @@ msgstr "Ikke mulig å slette fil."
 msgid "Unable to derive class variables."
 msgstr "Ikke mulig å utlede class variabel"
 
+msgid "Unable to detect MIME file type. You will need to compile finfo_open into PHP."
+msgstr "Ikke mulig å oppdage MIME fil type. Du må kompilere finfo_open inni PHP."
+
+msgid "Unable to display contents."
+msgstr "Ikke mulig å vise innhold."
+
 #, php-format
 msgid "Unable to find element \"%s\"."
 msgstr "Ikke mulig å finne element \"%s\"."
+
+msgid "Unable to find mod_pagemaster_pages table in source database."
+msgstr "Ikke mulig å finne mod_pagemaster_pages tabell i source databasen."
 
 msgid "Unable to find the specified editor type."
 msgstr "Ikke mulig å finne den spesifiserte editor type."
@@ -1094,7 +1251,7 @@ msgid "Unable to log in to the database. Please check your settings."
 msgstr "Ikke mulig å logge inn i databasen. Vennligst sjekk dine innstillinger."
 
 msgid "Unable to save file in selected directory."
-msgstr "Ikke mulig å lager fili valgt mappe."
+msgstr "Ikke mulig å lager fil i valgt mappe."
 
 msgid "Unable to verify source directory. Check PHPWS_SOURCE_DIR."
 msgstr "Ikke mulig å verifisere kilde mappe. Sjekk PHPWS_SOURCE_DIR."
@@ -1110,7 +1267,7 @@ msgid "Unapproved"
 msgstr "Ikke godkjendt"
 
 msgid "Uncheck all"
-msgstr "Fjern alle"
+msgstr "Fjern alle merker"
 
 msgid "Uninstall"
 msgstr "Avinstallere"
@@ -1135,6 +1292,9 @@ msgstr "Ukjent eller ikke korrekt class."
 
 msgid "Unknown source"
 msgstr "Ukjent kilde"
+
+msgid "Unknown type"
+msgstr "Ukjent type"
 
 msgid "Unknown user"
 msgstr "Ukjent bruker"
@@ -1225,6 +1385,12 @@ msgstr "Feil variabel type."
 msgid "You can now finish the creation of your config file."
 msgstr "Du kan nå fullføre opprettingen av din config fil."
 
+msgid "You do not appear to have ffmpeg installed. File Cabinet will not be able to create thumbnail images from uploaded videos"
+msgstr "Det virker som om du ikke har ffmpeg installert. File Cabinet vil ikke kunne opprette thumbnail bilder fra opplastede videoer."
+
+msgid "You have register_globals enabled. You should disable it."
+msgstr "Du har register_globals aktivert. Du bør deaktivere det."
+
 msgid "You may change it if you wish."
 msgstr "Du kan endre det hvis du ønsker."
 
@@ -1234,9 +1400,6 @@ msgstr "Du kan velge å ignorere brukere som ikke har logget inn på en stund."
 msgid "You may convert two different ways."
 msgstr "Du kan konventere på to forskjellige måter."
 
-msgid "You may delete your images/pagemaster/ directory if you wish."
-msgstr "Du kan slette din images/pagemaster/ mappe hvis du ønsker."
-
 #, php-format
 msgid "You may not use \"%s\" as a form element name."
 msgstr "Du kan ikke bruke\"%s\" som et skjema element navn."
@@ -1244,11 +1407,21 @@ msgstr "Du kan ikke bruke\"%s\" som et skjema element navn."
 msgid "You must be a deity to run Site Manager."
 msgstr "Du må være en guddommelighet for å kjøre Site Manager."
 
+#, php-format
+msgid "You need to compile the %sGD image library%s into PHP."
+msgstr "Du må kompilere %sGD image library%s inni PHP."
+
 msgid "You will need to change the permissions."
 msgstr "Du vil være nødt til å endre tilgangen."
 
 msgid "You will need to create it manually and rerun the setup."
 msgstr "Du vil være nødt til å opprette den manuelt, og gjenkjøre oppsett."
+
+msgid "Your GD graphic library is not loaded. Captcha will not function."
+msgstr "Din GD graphic library er ikke lastet. Captcha vil ikke fungere."
+
+msgid "Your PHP memory limit is less than 8MB. You may encounter problems with the script at this level. We suggest raising the limit in your php.ini file or uncommenting the \"ini_set('memory_limit', '10M');\" line in your config/core/config.php file after installation."
+msgstr "Din PHP minne begrensning er mindre enn 8MB. Du kan få problemer med scriptet på dette nivået. Vi anbefaler at du øker begrensningen i din php.ini fil eller aktiviserer \"ini_set('memory_limit', '10M');\" linjen i din config/core/config.php fil etter installasjonen."
 
 msgid "Your configuration file already exists."
 msgstr "Din konfigurasjons fil eksisterer allerede."
@@ -1262,6 +1435,13 @@ msgstr "Din konfigurasjons fil ble skrevet OK!"
 msgid "Your core config.php file is missing. Please create one and return."
 msgstr "Din kilde config.php fil mangler. Vennligst opprett en og returner."
 
+msgid "Your pages are using the images/pagemaster/ directory so do not delete it."
+msgstr "Dine sider benytter images/pagemaster/ mappe så ikke fjern denne."
+
+#, php-format
+msgid "Your server must run PHP version 5.1.0 or higher. You are running version %s."
+msgstr "Din server må kjøre PHP versjon 5.1 eller høyere. Du benytter nå versjon %s."
+
 msgid "\\1 wrote"
 msgstr "\\1 skrev"
 
@@ -1270,9 +1450,6 @@ msgstr "et øyeblikk siden"
 
 msgid "loadObject expected the object to have an id or where clause."
 msgstr "loadObject forventet objektet å ha en id eller hvor setning."
-
-msgid "of"
-msgstr "av"
 
 #, php-format
 msgid "phpWebSite %s Setup"
@@ -1284,9 +1461,12 @@ msgstr "phpWebSite 1.x.x Konverter"
 msgid "phpWebSite depends on sessions to move data between pages."
 msgstr "phpWebSite kommer an på sessions for å flytte data mellom sider."
 
-msgid "phpWebSite supports several databases. Choose the type your server currently is running."
-msgstr "phpWebSite støtter flere databaser. Velg den typen som din server kjører."
+msgid "phpWebSite supports MySQL and PostgreSQL. Choose the type your server currently is running."
+msgstr "phpWebSite støtter MySQL og PostgreSQL. Velg den typen som din server benytter."
 
 msgid "phpWebSite uses the Pear library extensively."
 msgstr "phpWebSite benytter Pear bibliotek i stor utstrekning."
+
+msgid "session.auto_start must be set to 0 for phpWebSite to work. Please review your php.ini file."
+msgstr "session.auto_start må være satt til 0 for at phpWebSite skal fungere. Vennligst sjekk din php.ini fil."
 

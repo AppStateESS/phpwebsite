@@ -5,15 +5,19 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PHPWS_1_6_1,FILECABINET2_2_2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-07 12:13-0500\n"
-"PO-Revision-Date: 2008-04-06 21:26+0100\n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"PO-Revision-Date: 2009-02-19 14:56+0100\n"
 "Last-Translator: \n"
-"Language-Team: \n"
+"Language-Team: NORWEGIAN <LL@Li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #, php-format
 msgid "%d bytes"
@@ -32,8 +36,15 @@ msgid "%dMB (%d bytes)"
 msgstr "%dMB (%d bytes)"
 
 #, php-format
+msgid "%s Slide Show"
+msgstr "%s Slide Show"
+
+#, php-format
 msgid "%s bytes"
 msgstr "%s bytes"
+
+msgid "-- General --"
+msgstr "-- Generell --"
 
 msgid "-- Pick option --"
 msgstr "-- Velg oppsett --"
@@ -77,17 +88,17 @@ msgstr "Legg til dokument"
 msgid "Add embedded"
 msgstr "Legg til integrert"
 
-msgid "Add embedded video"
-msgstr "Legg til integrert video"
-
-msgid "Add file"
-msgstr "Legg til fil"
+msgid "Add embedded media"
+msgstr "Legg til integrert media"
 
 msgid "Add folder"
 msgstr "Legg til mappe"
 
 msgid "Add image"
 msgstr "Legg til bilde"
+
+msgid "Add media"
+msgstr "Legg til media"
 
 msgid "All files icon"
 msgstr "Alle filer ikon"
@@ -131,23 +142,29 @@ msgstr "Er du sikker på at du ønsker å slette denne multimedia filen?"
 msgid "Are you sure you wish to delete these files?"
 msgstr "Er du sikker på at du ønsker å slette disse filene?"
 
-msgid "Automatically link child images to parent"
-msgstr "Automatisk link små bilder til hovedbilde"
-
 msgid "Back to folder list"
 msgstr "Tilbake til mappe liste"
 
 msgid "Base document directory"
-msgstr "Basis dokument mappe"
+msgstr "Basis dokument katalog"
 
 msgid "Cancel"
 msgstr "Avbryt"
 
+msgid "Cannot access this page."
+msgstr "Kan ikke oppnå tilgang til denne siden"
+
 msgid "Caption images"
 msgstr "Tittel bilder"
 
+msgid "Carousel defaults"
+msgstr "Karusell standarder"
+
+msgid "Carousel direction"
+msgstr "Karusell retning"
+
 msgid "Choose the type of file you wish to add"
-msgstr "Velg hvile filtyper du ønsker å legge til"
+msgstr "Velg hvile filtype du ønsker å legge til"
 
 msgid "Classify"
 msgstr "Klassifisere"
@@ -177,7 +194,7 @@ msgid "Clip image"
 msgstr "Spenne fast bilde"
 
 msgid "Clip media"
-msgstr "Spenne fast  media"
+msgstr "Spenne fast media"
 
 msgid "Close this window"
 msgstr "Lukk dette vinduet"
@@ -225,8 +242,15 @@ msgstr "Gjeldende bilde"
 msgid "Current multimedia"
 msgstr "Gjeldende multimedia"
 
+msgid "DL"
+msgstr "DL"
+
 msgid "Decription"
 msgstr "Dekoding"
+
+#, php-format
+msgid "Default (%spx)"
+msgstr "Standard (%spx)"
 
 msgid "Default document directory may not be blank"
 msgstr "Standard dokument mappe er kanskje ikke tom"
@@ -241,7 +265,7 @@ msgid "Delete document"
 msgstr "Slett dokument"
 
 msgid "Delete folders (Unrestricted only)"
-msgstr "Slett mapper"
+msgstr "Slett mapper (Kun ubegrenset)"
 
 msgid "Description"
 msgstr "Beskrivelse"
@@ -281,6 +305,9 @@ msgstr "Last ned fil"
 msgid "Download from %s"
 msgstr "Last ned fra %s"
 
+msgid "Downloaded"
+msgstr "Nedlastet"
+
 msgid "Duplicate file found."
 msgstr "Duplisert fil funnet."
 
@@ -304,6 +331,9 @@ msgstr "Endre multimedia fil"
 
 msgid "Edit the current file"
 msgstr "Endre gjeldende fil"
+
+msgid "Embedded filter"
+msgstr "Innesluttet filter"
 
 msgid "Enable FFMpeg thumbnails"
 msgstr "Aktiviser FFMpeg miniatyrbilder"
@@ -332,11 +362,14 @@ msgstr "Feilet å opprette mappe. Vennligst sjekk dine logger."
 msgid "File Cabinet"
 msgstr "File Cabinet"
 
+msgid "File is unreadable"
+msgstr "Fil er ikke lesbar"
+
 msgid "File name"
 msgstr "Fil navn"
 
 msgid "File not uploaded."
-msgstr "Fil ikke opplastet"
+msgstr "Fil ikke opplastet."
 
 msgid "File type"
 msgstr "Fil Type"
@@ -363,8 +396,14 @@ msgstr "Mappe"
 msgid "Folder is empty."
 msgstr "Mappen er tom."
 
+msgid "Folder is private. Slideshow not available"
+msgstr "Mappen er privat. Slideshow er ikke tilgjengelig"
+
 msgid "Folder missing image files."
 msgstr "Mappe mangler bilde filer."
+
+msgid "Force thumbnail dimensions on display"
+msgstr "Tving miniatyrbilde på visning"
 
 msgid "Form upload limit"
 msgstr "Skjema opplasting begrensning"
@@ -377,6 +416,9 @@ msgstr "Gå"
 
 msgid "Height"
 msgstr "Høyde"
+
+msgid "Horizontal"
+msgstr "Horisontalt"
 
 msgid "Image folders"
 msgstr "Bilde mapper"
@@ -394,6 +436,9 @@ msgstr "Bilde link url"
 
 msgid "Image location"
 msgstr "Bilde plassering"
+
+msgid "Image missing"
+msgstr "Bilde mangler"
 
 msgid "Image must be a jpeg file."
 msgstr "Bilde må være en jpeg fil."
@@ -415,6 +460,9 @@ msgstr "Bilde bredden var %spx, som gjorde det større enn %d pixel begrensninge
 msgid "Images"
 msgstr "Bilder"
 
+msgid "Images resized to:"
+msgstr "Bilde endret størrelse til:"
+
 msgid "Incoming classify directory"
 msgstr "Innkommende klassifisering mappe"
 
@@ -423,9 +471,6 @@ msgstr "Elementer"
 
 msgid "Link image"
 msgstr "Link bilde"
-
-msgid "Link image to original, full sized image"
-msgstr "Link bilde tiloriginal full størrelse"
 
 msgid "Link image to web site"
 msgstr "Link bilde til hjemmeside"
@@ -455,6 +500,9 @@ msgstr "Maksimum fil størrelse (i bytes)"
 msgid "Maximum image pixel dimension"
 msgstr "Maksimum pixel dimmensjoner"
 
+msgid "Maximum image upload dimension"
+msgstr "Maksimalt bilde opplastning dimmensjoner"
+
 msgid "Maximum multimedia file size (in bytes)"
 msgstr "Maksimum multimedia fil størrelse (i bytes)"
 
@@ -463,6 +511,9 @@ msgstr "Maksimum festet dokumenter vist (0 for alle)"
 
 msgid "Maximum pinned images shown (0 for all)"
 msgstr "Maksimum festet bilder vist (0 for alle)"
+
+msgid "Maximum thumbnail pixel dimension"
+msgstr "Maksimum miniatyrbilde pixel dimmensjoner"
 
 msgid "Media"
 msgstr "Media"
@@ -476,8 +527,14 @@ msgstr "Mangler midlertidig opplastnings mappe."
 msgid "Missing title."
 msgstr "Mangler tittel"
 
+msgid "Module reservation"
+msgstr "Module reservsjon"
+
 msgid "More..."
 msgstr "Mer..."
+
+msgid "Move to folder"
+msgstr "Flytt tol mappe"
 
 msgid "Multimedia file not found."
 msgstr "Multimedia fil ikke funnet."
@@ -495,11 +552,17 @@ msgstr "Multimedia plassering"
 msgid "Multimedia settings"
 msgstr "Multimedia innstilling"
 
+msgid "Next image"
+msgstr "Neste bilde"
+
 msgid "No files in folder"
 msgstr "Ingen filer i mappe"
 
 msgid "No folders found."
 msgstr "Ingen mapper funnet."
+
+msgid "No image found"
+msgstr "Ingen bilder funnet"
 
 msgid "No public folders are available."
 msgstr "Ingen offentlige mapper er tilgjengelig."
@@ -507,12 +570,24 @@ msgstr "Ingen offentlige mapper er tilgjengelig."
 msgid "None"
 msgstr "Ingen"
 
+msgid "Number of thumbnails visible"
+msgstr "Antall av miniatyrbilder synlige"
+
+msgid "Number shown"
+msgstr "Antall vist"
+
 msgid "Pin folder"
 msgstr "Fest mappe"
 
 #, php-format
 msgid "Pin folder to \"%s\""
 msgstr "Fest mappe til \"%s\""
+
+msgid "Popup images allow folder navigation"
+msgstr "Popup bilder tillater mappe navigasjon"
+
+msgid "Previous image"
+msgstr "Forrige bilde"
 
 msgid "Private"
 msgstr "Privat"
@@ -523,11 +598,26 @@ msgstr "Problem med å åpne nettleser side. Stenger Fil Administrator vindu."
 msgid "Public"
 msgstr "Offentlig"
 
+msgid "Put all checked documents here"
+msgstr "Legg alle merkede dokumenter her"
+
+msgid "Put all checked images here"
+msgstr "Legg alle merkede bilder her"
+
+msgid "Put all checked media here"
+msgstr "Legg alle merkede media her"
+
 msgid "Random image icon"
 msgstr "Tilfeldig bilde ikon"
 
+msgid "Resize and crop excess"
+msgstr "Endre størrelse og klipp ut det overflædige"
+
 msgid "Resize image if over"
 msgstr "Endre bilde størrelse hvis over"
+
+msgid "Resize image maintaining aspect"
+msgstr "Endre størrelse på bilde og behold aspekt"
 
 msgid "Rotate image"
 msgstr "Roter bilde"
@@ -545,7 +635,7 @@ msgid "Settings"
 msgstr "Innstillinger"
 
 msgid "Settings saved."
-msgstr "Innstillinger lagret"
+msgstr "Innstillinger lagret."
 
 msgid "Show a random image from this folder"
 msgstr "Vis et tilfeldig bilde fra denne mappen"
@@ -571,8 +661,8 @@ msgstr "Beklager, filen du spør etter er utenfor fastsatt grense."
 msgid "Sorry.."
 msgstr "Beklager.."
 
-msgid "Submit video"
-msgstr "Send inn video"
+msgid "Submit media"
+msgstr "Send inn media"
 
 msgid "System upload limits"
 msgstr "System opplastnings begrensninger"
@@ -599,8 +689,16 @@ msgstr "Det oppstod et problem ved å laste bilde filen."
 msgid "This image is larger than the %s x %s limit. Do you want to resize the image to fit?"
 msgstr "Dette bildet er større enn %s x %s begrensningen. Ønsker du å endre størrelsen til det passer?"
 
+#, php-format
+msgid "This image is larger than the %sx%s limit. What do you wish to do?"
+msgstr "Dette bildet er større enn %sx%s begrensningen. Hva ønsker du å gjøre?"
+
 msgid "This is a private folder."
 msgstr "Dette er en privat mappe."
+
+#, php-format
+msgid "This media is larger than the %s x %s limit. Do you want to resize the media to fit?"
+msgstr "Dette media er større enn %sx%s begrensningen. Hva ønsker du å gjøre?"
 
 msgid "Thumbnail directory not writable."
 msgstr "Miniatyrbilde mappen er skrivebeskyttet."
@@ -608,14 +706,17 @@ msgstr "Miniatyrbilde mappen er skrivebeskyttet."
 msgid "Thumbnail icon"
 msgstr "Miniatyrbilde ikon"
 
+msgid "Thumbnail size is too large."
+msgstr "Miniatyrbilde er for stort."
+
+msgid "Thumbnails must be over 30px in size."
+msgstr "Miniatyrbilde må være mer enn 30px i størrelse."
+
 msgid "Title"
 msgstr "Tittel"
 
 msgid "Unable to classify files."
 msgstr "Ikke mulig å klassifisere filer"
-
-msgid "Unable to find video id from url"
-msgstr "Ikke mulig å finne video id fra url"
 
 msgid "Unable to locate the classify directory. Please check your File Cabinet settings, configuration file and directory permissions."
 msgstr "Ikke mulig å finne klassifisert mappe. Vennligst sjekk din File Cabinet innstillinger, konfigurasjons fil og mappe rettigheter."
@@ -623,14 +724,17 @@ msgstr "Ikke mulig å finne klassifisert mappe. Vennligst sjekk din File Cabinet
 msgid "Unable to move the file to its new directory."
 msgstr "Ikke mulig å flytte filen til dens nye mappe."
 
-msgid "Unable to parse video info from host site."
-msgstr "Ikke mulig å analysere video fra dens host side."
+msgid "Unable to process embedded information."
+msgstr "Ikke mulig å behandle innesluttet informasjon."
 
 msgid "Unable to read document directory."
 msgstr "Ikke mulig å lese dokument mappe."
 
 msgid "Unable to resize image."
 msgstr "Ikke mulig å endre størrelse på bildet."
+
+msgid "Unable to resize media."
+msgstr "Ikke mulig å endre størrelse på media."
 
 msgid "Unable to write to document directory."
 msgstr "Ikke mulig å skrive til dokument mappe."
@@ -649,6 +753,9 @@ msgstr "Uakseptabel multimedia fil type."
 
 msgid "Unknown or mismatched mime type"
 msgstr "Ukjendt eller feiltilpasset mime type"
+
+msgid "Unregistered from File Cabinet."
+msgstr "Uregistrert fra File Cabinet."
 
 msgid "Update"
 msgstr "Oppdater"
@@ -686,11 +793,14 @@ msgstr "Last opp nytt miniatyrbilde"
 msgid "Upload thumbnail"
 msgstr "Last opp miniatyrbilde"
 
-msgid "Video site"
-msgstr "Video side"
+msgid "Url or id"
+msgstr "URL eller id"
 
-msgid "Video url or id"
-msgstr "Video url eller id"
+msgid "Use original image"
+msgstr "Benytt orginalt bilde"
+
+msgid "Vertical"
+msgstr "Vertikalt"
 
 msgid "View all images in folder"
 msgstr "Se alle bilder i mappe"

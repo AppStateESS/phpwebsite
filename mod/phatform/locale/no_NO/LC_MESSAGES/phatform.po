@@ -5,15 +5,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PHPWS_1_6_1,PHATFORM3_1_3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-07 12:13-0500\n"
-"PO-Revision-Date: 2008-04-06 21:28+0100\n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"PO-Revision-Date: 2009-02-19 14:43+0100\n"
 "Last-Translator: \n"
-"Language-Team: \n"
+"Language-Team: NORWEGIAN <LL@Li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
 
 msgid "\"Thank you\" message is not formatted correctly."
 msgstr "\"Takk skal du ha\" beskjeden er ikke formatert korrekt."
@@ -22,7 +24,7 @@ msgid "Action"
 msgstr "Handling"
 
 msgid "Actions"
-msgstr "Handling"
+msgstr "Handlinger"
 
 msgid "Add"
 msgstr "Legg til"
@@ -99,6 +101,9 @@ msgstr "Assossiert Tekst"
 msgid "Back"
 msgstr "Tilbake"
 
+msgid "CAPTCHA word was not correct."
+msgstr "CAPTCHA ord er ikke korrekt"
+
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -115,7 +120,7 @@ msgid "Columns"
 msgstr "Kolonner"
 
 msgid "Complete"
-msgstr "Fullføre"
+msgstr "Fullført"
 
 msgid "Completed"
 msgstr "Fullført"
@@ -124,7 +129,10 @@ msgid "Confirm"
 msgstr "Bekreft"
 
 msgid "Could not delete the element."
-msgstr "Kune ikke slette elementet."
+msgstr "Kunne ikke slette elementet."
+
+msgid "Could not save the form. Check error log."
+msgstr "Kunne ikke lagre skjema. Sjekk feilmeldings logger."
 
 msgid "Create/Edit forms"
 msgstr "Opprett/Endre skjema"
@@ -223,7 +231,7 @@ msgid "Filename"
 msgstr "Filnavn"
 
 msgid "Finish"
-msgstr "FErdig"
+msgstr "Ferdig"
 
 msgid "Form"
 msgstr "Skjema"
@@ -316,7 +324,7 @@ msgid "Move Down"
 msgstr "Flytt ned"
 
 msgid "Move Up"
-msgstr "FLytt opp"
+msgstr "Flytt opp"
 
 msgid "Multiple Select"
 msgstr "Velg flere"
@@ -367,7 +375,7 @@ msgid "Option Instructions"
 msgstr "Valg Instruksjoner"
 
 msgid "Option Sets"
-msgstr "Valg setter"
+msgstr "Valg Setter"
 
 msgid "Owner"
 msgstr "Eiger"
@@ -377,7 +385,7 @@ msgstr "Side"
 
 #, php-format
 msgid "Page %1$s of %2$s"
-msgstr "SIde %1$s av %2$s"
+msgstr "Side %1$s av %2$s"
 
 msgid "Position must be an integer value."
 msgstr "Posisjon må være en helhetlig verdi."
@@ -401,7 +409,7 @@ msgid "Radio Button"
 msgstr "Radio Button"
 
 msgid "Radiobutton Element Instructions"
-msgstr "RadioButton Element Instruksjoner"
+msgstr "Radiobutton Element Instruksjoner"
 
 msgid "Refuse"
 msgstr "Nekt"

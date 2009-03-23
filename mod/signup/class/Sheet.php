@@ -13,6 +13,9 @@ class Signup_Sheet {
     public $end_time      = 0;
     public $contact_email = null;
     public $multiple      = 0;
+    public $extra1        = null;
+    public $extra2        = null;
+    public $extra3        = null;
     public $_error        = null;
 
     public function __construct($id=0)

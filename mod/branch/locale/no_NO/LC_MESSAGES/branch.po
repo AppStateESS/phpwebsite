@@ -5,15 +5,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PHPWS_1_6_1,BRANCH1_2_0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-07 12:32-0500\n"
-"PO-Revision-Date: 2008-04-06 21:23+0100\n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"PO-Revision-Date: 2009-02-19 15:08+0100\n"
 "Last-Translator: \n"
-"Language-Team: \n"
+"Language-Team: NORWEGIAN <LL@Li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
 
 msgid ".htaccess detected on hub. Attempting to create default file on branch."
 msgstr ".htaccess funnet på nettnav. Forsøker å opprette standard fil på bransje."
@@ -168,6 +170,9 @@ msgstr "Feilet i å kopiere theme filer til bransje."
 msgid "Failed to create config.php file in the branch."
 msgstr "Feilet i å opprette confir.php fil i bransjen."
 
+msgid "Full directory path"
+msgstr "Full katalog sti"
+
 msgid "ID hash"
 msgstr "ID hash"
 
@@ -238,11 +243,17 @@ msgstr "Tabell prefix må bare være alfanumetriske tegn eller understrek."
 msgid "This database name is not allowed."
 msgstr "Dette database navnet er ikke tillatt."
 
+msgid "Though not recommended, prefixing will allow you to install to this database."
+msgstr "Selv om ikke anbefalt, prefix vil la deg installere til denne databasen"
+
+msgid "Though not recommended, you can force installation by clicking Continue below."
+msgstr "Selv om ikke anbefalt, kan du tvinge installasjonen ved å klikke Fortsett under."
+
 msgid "URL"
 msgstr "URL"
 
 msgid "Unable to copy .htaccess file."
-msgstr "Ikke mulig å kopiere .thaccess fil."
+msgstr "Ikke mulig å kopiere .htaccess fil."
 
 msgid "Unable to create branch directories."
 msgstr "Ikke mulig å opprette bransje mapper."
@@ -257,7 +268,7 @@ msgid "Unable to get database connect information. Please try again."
 msgstr "Ikke mulig å skaffe database tilkobling informasjon. Vennligst prøv igjen."
 
 msgid "Unchecked modules cannot be installed on this branch."
-msgstr "ikke merkede moduler kan ikke installeres i denne bransjen"
+msgstr "ikke merkede moduler kan ikke installeres i denne bransjen."
 
 msgid "Update"
 msgstr "Oppdater"

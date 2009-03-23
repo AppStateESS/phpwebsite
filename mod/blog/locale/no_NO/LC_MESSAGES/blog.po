@@ -5,15 +5,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PHPWS_1_6_1,BLOG1_8_2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-07 12:13-0500\n"
-"PO-Revision-Date: 2008-04-06 21:22+0100\n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"PO-Revision-Date: 2009-02-19 14:23+0100\n"
 "Last-Translator: \n"
-"Language-Team: \n"
+"Language-Team: NORWEGIAN <LL@Li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
 
 msgid "A problem occured with your submission. Please try again later."
 msgstr "Et problem oppstod med ditt innlegg. Vennligst prøv igjen senere."
@@ -32,6 +34,9 @@ msgstr "Legg til innlegg"
 
 msgid "Add new blog"
 msgstr "Leg til ny blog"
+
+msgid "All comments require approval"
+msgstr "Alle kommentarer krever godkjenning"
 
 msgid "Allow anonymous comments"
 msgstr "Tillat anonyme kommentarer"
@@ -60,6 +65,9 @@ msgstr "En feil oppstod ved forsøk på å lagre ditt innlegg. Vennligst sjekk d
 msgid "Anonymous"
 msgstr "Anonyme"
 
+msgid "Anonymous comments require approval"
+msgstr "Anonyme kommentarer krever godkjenning"
+
 #, php-format
 msgid "Approval (%s)"
 msgstr "Godkjenning  (%s)"
@@ -71,7 +79,7 @@ msgid "Approve"
 msgstr "Godkjenn"
 
 msgid "Are you sure you want to permanently delete this blog entry?"
-msgstr "Er du sikker på aat du ønsker å slette dette blog innlegget?"
+msgstr "Er du sikker på at du ønsker å slette dette blog innlegget?"
 
 msgid "Blog Archive"
 msgstr "Blog arkiv"
@@ -85,11 +93,14 @@ msgstr "Blog Gjenopprett"
 msgid "Blog Settings"
 msgstr "Blog Innstillinger"
 
+msgid "Blog entries purged."
+msgstr "Blog innlegg renset"
+
 msgid "Blog entry approved."
 msgstr "Blog innlegg godkjendt."
 
 msgid "Blog entry deleted."
-msgstr "Blog innleggslettet."
+msgstr "Blog innlegg slettet."
 
 msgid "Blog entry disapproved."
 msgstr "Blog innlegg ikke godkjendt."
@@ -130,6 +141,15 @@ msgstr "Hekt på meny"
 msgid "Comment"
 msgstr "Kommentar"
 
+msgid "Comment approval"
+msgstr "Kommentar godkjenning"
+
+msgid "Comments preapproved"
+msgstr "Kommentarer forhånds godkjent"
+
+msgid "Confirm purge"
+msgstr "Konfirmer rensing"
+
 msgid "Create first blog entry!"
 msgstr "Opprett ditt første blog innlegg!"
 
@@ -166,8 +186,15 @@ msgstr "Utgår"
 msgid "Expire date/time"
 msgstr "Utgår dato/tid"
 
+msgid "Expired"
+msgstr "Utgått"
+
 msgid "Hide general image folders"
 msgstr "Gjem generel bilde mappe"
+
+#, php-format
+msgid "I am sure that I want to delete all blog entries prior to %s"
+msgstr "Eg er sikker på at eg vil slette alle blog innlegg før den %s"
 
 msgid "Image url"
 msgstr "Bilde url"
@@ -175,11 +202,14 @@ msgstr "Bilde url"
 msgid "Last poster"
 msgstr "Siste "
 
+msgid "Limit blog to specific groups"
+msgstr "Begrens blog til spesifikke grupper"
+
 msgid "Link resized image to parent"
 msgstr "Link endret størrelse på bilde til overordnet"
 
 msgid "Link setting (if image)"
-msgstr "Link instilling (hvis bilde)"
+msgstr "Link innstilling (hvis bilde)"
 
 msgid "Link the url below"
 msgstr "Link url under"
@@ -190,6 +220,9 @@ msgstr "Link til les mer"
 msgid "List"
 msgstr "Liste"
 
+msgid "Logged user view only"
+msgstr "Bare logget bruker visning"
+
 msgid "Maximum image height (50-2048)"
 msgstr "Maksimum bilde høyde (50-2048)"
 
@@ -198,6 +231,9 @@ msgstr "Maksibum bilde bredde (50-2048)"
 
 msgid "Missing title."
 msgstr "Mangler tittel"
+
+msgid "Nevermind, go back to settings"
+msgstr "Avbryt, gå tilbake til innstillinger"
 
 msgid "New"
 msgstr "Ny"
@@ -223,6 +259,9 @@ msgstr "Ingen link men tillat bilde link innstilling"
 msgid "No title"
 msgstr "Ingen tittel"
 
+msgid "None"
+msgstr "Ingen"
+
 msgid "Number of past entries"
 msgstr "Antall tidligere innlegg"
 
@@ -233,10 +272,10 @@ msgid "Only show one category icon"
 msgstr "Vis kun ett kategori ikon"
 
 msgid "Please enter word in image correctly."
-msgstr "Vennligst legg til ord i bilde kategori."
+msgstr "Vennligst legg til ord i bilde korrekt."
 
 msgid "Post current thoughts, happenings, and discussions."
-msgstr "Post gjeldende tanker, hendelser, og diskusjoner."
+msgstr "Send inn gjeldende tanker, begivenheter, og diskusjoner."
 
 msgid "Posted by"
 msgstr "Lagt inn av"
@@ -255,6 +294,12 @@ msgstr "Offentliggjøre"
 
 msgid "Publish date/time"
 msgstr "Offentliggjort dato/tid"
+
+msgid "Purge Blog Entries"
+msgstr "Rens Blog Innlegg"
+
+msgid "Purge all entries before this date"
+msgstr "Rens alle innlegg før denne datoen"
 
 msgid "Read more"
 msgstr "Les mer"
@@ -292,6 +337,9 @@ msgstr "Vis kategori ikoner"
 msgid "Show category links"
 msgstr "Vis kategori linker"
 
+msgid "Show image or media thumbnail in list view"
+msgstr "Vis bilde eller media thumbnail i liste visning."
+
 msgid "Show recent entries"
 msgstr "Vis nylige innlegg"
 
@@ -303,6 +351,9 @@ msgstr "Beklager"
 
 msgid "Sticky"
 msgstr "Klebrig"
+
+msgid "Submission"
+msgstr "Innsending"
 
 msgid "Submit Entry"
 msgstr "Send inn Innlegg"
@@ -331,8 +382,8 @@ msgstr "Tittel"
 msgid "Tried to edit an unapproved item."
 msgstr "Forsøkte å endre et ikke godkjendt objekt."
 
-msgid "Type the word seen in the image."
-msgstr "Tast inn ordet som avbildet"
+msgid "Unpublished"
+msgstr "Ikke publisert"
 
 msgid "Unsticky"
 msgstr "Uklebrig"
@@ -361,8 +412,14 @@ msgstr "Se"
 msgid "View version"
 msgstr "Se versjon"
 
-msgid "Your entry has been submitted for review."
+msgid "You do not have permission to view this entry."
 msgstr "Ditt innlegg har blitt sendt for anmeldelse."
+
+msgid "You have chosen to purge old blog entries from your web site. Be aware they will be deleted permanently."
+msgstr "Du har valgt å rense gamle blog innlegg fra din hjemmeside. Vær oppmerksom på at dei vil bli permanent slettet."
+
+msgid "Your entry has been submitted for review."
+msgstr "Ditt innlegg har blitt sendt inn for gjennomgang."
 
 msgid "Your entry is being held for approval."
 msgstr "Ditt innlegg er holdt tilbake for godkjenning"

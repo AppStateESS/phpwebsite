@@ -99,12 +99,11 @@ class Signup_Forms {
 
     public function editPeep()
     {
-        $peep = & $this->signup->peep;
+        $peep = $this->signup->peep;
 
         $form = new PHPWS_Form;
         $form->addHidden('module', 'signup');
         $form->addHidden('aop', 'post_peep');
-
         if ($peep->id) {
             $form->addSubmit(dgettext('signup', 'Update'));
             $form->addHidden('peep_id', $peep->id);
@@ -378,6 +377,10 @@ class Signup_Forms {
 
         $sheet = $this->signup->sheet;
         $peep  = $this->signup->peep;
+
+        if (Current_User::isLogged() && empty($peep->email)) {
+            $peep->email = Current_User::getEmail();
+        }
 
         if ($sheet->end_time < mktime()) {
             $this->signup->title = dgettext('signup', 'Sorry');
