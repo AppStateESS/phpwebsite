@@ -9,6 +9,7 @@ templates/fckdocuments.tpl
 templates/fck.css
 templates/fckimages.tpl
 templates/fckfolders.tpl
+templates/folder_list.tpl
 
 
 20 March 2009
