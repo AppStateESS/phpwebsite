@@ -24,5 +24,5 @@
 {LIMIT_LABEL} {LIMITS}
 </div>
 <div class="align-right">
-{SEARCH}
+{FILE_SEARCH}
 </div>

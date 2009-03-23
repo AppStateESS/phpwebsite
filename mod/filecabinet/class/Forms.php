@@ -42,12 +42,50 @@ class Cabinet_Form {
             }
         }
 
+        switch ($folder->ftype) {
+        case IMAGE_FOLDER:
+            $aop = 'image';
+            $table = 'images';
+            break;
+            
+        case DOCUMENT_FOLDER:
+            $aop = 'document';
+            $table = 'documents';
+            break;
+
+        case MULTIMEDIA_FOLDER:
+            $table = $aop = 'multimedia';
+            break;
+        }
+
         $pagetags['ITEM_LABEL']  = dgettext('filecabinet', 'Items');
 
+        $form = new PHPWS_Form('folder-search');
+        $form->setMethod('get');
+        $form->addHidden('module', 'filecabinet');
+        $form->addHidden('aop', $aop);
+        $form->addHidden('ftype', $folder->ftype);
+        $form->addText('folder_search', @$_GET['folder_search']);
+        $form->addSubmit(dgettext('filecabinet', 'Search folders for file'));
+
+        $pagetags['FILE_SEARCH'] = implode(' ', $form->getTemplate());
+
         $pager = new DBPager('folders', 'Folder');
+
+        if (!empty($_GET['folder_search'])) {
+            $pl = UTF8_MODE ? '\pL' : null;
+            $search = preg_replace("/[^\w\s\-$pl]/", '', $_GET['folder_search']);
+            if (!empty($search)) {
+                $pager->addWhere("$table.file_name", $search, 'REGEXP', 'or', 'g1');
+                $pager->addWhere("$table.title", $search, 'REGEXP', 'or', 'g1');
+                $pager->addWhere('folders.id', "$table.folder_id");
+            }
+        }
+
         if ($folder->ftype == IMAGE_FOLDER) {
             $pager->addSortHeader('module_created',dgettext('filecabinet', 'Created in'));
         }
+
         $pager->addSortHeader('title', dgettext('filecabinet', 'Title'));
         $pager->addSortHeader('public_folder', dgettext('filecabinet', 'Public'));
         $pager->setModule('filecabinet');
