@@ -107,6 +107,7 @@ class Access_Shortcut {
     {
         $keyword = preg_replace('/[^\w\s\-]/', '', strtolower($keyword));
         $keyword = preg_replace('/\s/', '-', $keyword);
+        $keyword = trim($keyword);
 
         if (empty($keyword)) {
             return PHPWS_Error::get(SHORTCUT_BAD_KEYWORD, 'access', 'Shortcut::setKeyword');

@@ -204,8 +204,7 @@ class Access_Forms {
                     javascript('close_window');
                     return;
                 }
-
-                $shortcut->keyword = preg_replace('/[^\w\s\-]/', '', $key->title);
+                $shortcut->keyword = trim(preg_replace('/[^\w\s\-]/', '', $key->title));
             }
         } else {
             $shortcut = new Access_Shortcut($sc_id);
