@@ -221,6 +221,12 @@ class PHPWS_Text {
 
     /**
      * Fixes plain anchors. Makes them relative to the current page.
+     * If false, then anchors will not be relative to the url that called them.
+     * Example: This is how an anchor is normally saved:
+     * <a href="anchor">Anchor</a>
+     * This would work fine IF the page was the home page. But once you get into
+     * modules with mod_rewrites or index.php?something=1, then this same
+     * anchor would not take you where you expect.
      */
     public function fixAnchors($text)
     {
