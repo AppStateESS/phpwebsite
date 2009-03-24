@@ -6,6 +6,7 @@
          content = '&nbsp;';
      }
      text.innerHTML = content;
+     opener.disable_links();
      window.close();
 //]]>
 </script>

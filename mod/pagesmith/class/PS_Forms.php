@@ -55,6 +55,7 @@ class PS_Forms {
      */
     public function pageLayout()
     {
+        javascript('modules/pagesmith/disable_links/');
         Layout::addStyle('pagesmith');
         $page = $this->ps->page;
 
@@ -247,7 +248,7 @@ class PS_Forms {
                 $vars['aop'] = 'edit_page_header';
                 $js['width'] = 400;
                 $js['height'] = 200;
-                $js['id'] = 'change-link';
+                $js['class'] = 'change-link';
                 $edit_button = true;
                 break;
 

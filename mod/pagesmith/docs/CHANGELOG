@@ -7,6 +7,11 @@
   the text IS processed. This fixed the filters. Anchors will be
   busted AFTER the edit post but I don't think they really need to
   work in edit mode.
++ Added javascript to prevent accidental link clicks in edit mode.
++ change_link was an id, changed to a class since there were several
+  on a page.
++ Updated: javascript/disable_links
+  javascript/update/head.js
 
 Version 1.3.2
 --------------------------------------------------------------------
