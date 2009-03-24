@@ -455,8 +455,7 @@ class PageSmith {
         $section->setSaved();
 
         $vars['cnt_section_name'] = $_POST['tpl'] . '-' . $_POST['section_name'];
-        //$vars['hdn_section_name'] = sprintf('pagesmith_%s', $_POST['section_name']);
-        $vars['content'] = addslashes($section->content);
+        $vars['content'] = addslashes(PHPWS_Text::parseOutput($section->content));
         $vars['hidden_value'] = PHPWS_Text::parseInput($section->content);
 
         if ($warning) {

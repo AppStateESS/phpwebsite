@@ -36,6 +36,7 @@ class PS_Text extends PS_Section {
     public function setSaved()
     {
         if (!preg_match('/^<!-- lorem -->/', $this->content)) {
+            echo 'set saved';
             $_SESSION['PS_Page'][$this->pid][$this->secname] = & $this->content;
         }
     }
@@ -65,15 +66,22 @@ class PS_Text extends PS_Section {
         }
     }
 
-    public function getContent($parse_tags=true)
+    public function getContent($view_mode=true)
     {
         if (empty($this->content)) {
             return null;
         }
-        if ($parse_tags) {
+
+        if ($view_mode) {
             return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content));
         } else {
-            return PHPWS_Text::parseOutput($this->content);
+            return $this->content;
+            /**
+             * Prior to 24 Mar 09, this was what it returned. This prevented anchors
+             * and filtered words in edit mode. Although testing the change does not
+             * indicate side effects, I am leaving this in just case. -Matt
+             */
+            //return PHPWS_Text::parseOutput($this->content);
         }
     }
 

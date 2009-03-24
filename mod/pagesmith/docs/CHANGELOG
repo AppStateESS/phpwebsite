@@ -1,3 +1,13 @@
+24 March 2009
++ Made a change in page editing. Text spaces receive text without
+  formatting. Prior to this change the parseOutput was run before
+  sending the data to the editor. This stripped data that may need
+  editing.
+  Now the text is sent to the editor without processing. After post
+  the text IS processed. This fixed the filters. Anchors will be
+  busted AFTER the edit post but I don't think they really need to
+  work in edit mode.
+
 Version 1.3.2
 --------------------------------------------------------------------
 6 March 2009
