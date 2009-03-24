@@ -36,7 +36,6 @@ class PS_Text extends PS_Section {
     public function setSaved()
     {
         if (!preg_match('/^<!-- lorem -->/', $this->content)) {
-            echo 'set saved';
             $_SESSION['PS_Page'][$this->pid][$this->secname] = & $this->content;
         }
     }
@@ -75,7 +74,7 @@ class PS_Text extends PS_Section {
         if ($view_mode) {
             return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content));
         } else {
-            return $this->content;
+            return PHPWS_Text::decodeText($this->content);
             /**
              * Prior to 24 Mar 09, this was what it returned. This prevented anchors
              * and filtered words in edit mode. Although testing the change does not
