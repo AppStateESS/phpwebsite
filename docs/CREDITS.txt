@@ -76,6 +76,9 @@ http://freshmeat.net/
 FCKeditor
 http://www.fckeditor.net/
 
+YouTube Plugin for FCKEditor
+http://youtubepluginfo.sourceforge.net/
+
 TinyMCE
 http://tinymce.moxiecode.com/
 
