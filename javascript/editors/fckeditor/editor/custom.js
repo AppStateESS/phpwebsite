@@ -12,7 +12,7 @@ FCKConfig.ToolbarSets["phpws"] = [
 	['OrderedList','UnorderedList','-', 'Blockquote', 'Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
 	'/',
-	['filecabinet', 'Image', 'Flash', 'Table', 'Link','Unlink','Anchor'],
+	['filecabinet', 'Image', 'YouTube', 'Table', 'Link','Unlink','Anchor'],
 	['SpellCheck', 'Rule','Smiley','SpecialChar', '-', 
 	'Style', 'FontFormat']
 ] ;
@@ -58,9 +58,9 @@ FCKConfig.SpellChecker = 'WSC' ; //'WSC' | 'SpellerPages' | 'ieSpell'
 FCKConfig.IeSpellDownloadUrl	= 'http://www.iespell.com/download.php' ;
 FCKConfig.StylesXmlPath		= 'phpwsstyles.xml' ;
 FCKConfig.ProcessHTMLEntities	= false ;
-// Not working properly in current versions. Disabled for now.
-//FCKConfig.Plugins.Add( 'autogrow' ) ;
 FCKConfig.FillEmptyBlocks	= false;
 
-
+// Not working properly in current versions. Disabled for now.
+//FCKConfig.Plugins.Add( 'autogrow' ) ;
 FCKConfig.Plugins.Add( 'filecabinet' ) ;
+FCKConfig.Plugins.Add( 'youtube', 'en,ja') ;
