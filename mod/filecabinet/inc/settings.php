@@ -28,6 +28,10 @@ $settings = array('base_doc_directory'   => PHPWS_HOME_DIR . 'files/filecabinet/
                   'max_thumbnail_size'   => 100,
                   'vertical_folder'      => false,
                   'number_visible'       => 3,
-                  'force_thumbnail_dimensions' => 0
+                  'force_thumbnail_dimensions' => 0,
+                  'fck_all_folders'      => 1,
+                  'fck_allow_images'     => 1,
+                  'fck_allow_documents'  => 1,
+                  'fck_allow_media'      => 1
                   );
 ?>
