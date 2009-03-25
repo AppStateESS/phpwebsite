@@ -181,12 +181,20 @@ class Cabinet {
             $this->fckFolders(DOCUMENT_FOLDER);
             break;
 
+        case 'fck_mm_folders':
+            $this->fckFolders(MULTIMEDIA_FOLDER);
+            break;
+
         case 'fck_images':
             $this->fckImages();
             break;
 
         case 'fck_documents':
             $this->fckDocuments();
+            break;
+
+        case 'fck_multimedia':
+            $this->fckMultimedia();
             break;
 
         case 'image':
@@ -1332,11 +1340,13 @@ class Cabinet {
     public function fckEditor()
     {
         Layout::addStyle('filecabinet', 'fck.css');
+
         javascript('jquery');
         javascript('modules/filecabinet/fckeditor', array('instance'=>$_GET['instance'], 'pick'=>dgettext('filecabinet', 'Pick a media type above.')));
 
         $tpl['IMAGES'] = sprintf('<a class="oc" id="image-nav"><img id="fck-img-type" src="./images/mod/filecabinet/file_manager/file_type/image80.png" width="50" height="50" title="%s" /></a>', dgettext('filecabinet', 'Images'));
         $tpl['DOCUMENTS'] = sprintf('<a class="oc" id="doc-nav"><img id="fck-doc-type" src="./images/mod/filecabinet/file_manager/file_type/document80.png" title="%s" width="50" height="50" /></a>', dgettext('filecabinet', 'Documents'));
+        $tpl['MULTIMEDIA'] = sprintf('<a class="oc" id="media-nav"><img id="fck-mm-type" src="./images/mod/filecabinet/file_manager/file_type/media80.png" title="%s" width="50" height="50" /></a>', dgettext('filecabinet', 'Multimedia'));
 
         $tpl['CLOSE'] = dgettext('filecabinet', 'Cancel');
 
@@ -1360,7 +1370,14 @@ class Cabinet {
                 echo dgettext('filecabinet', 'Could not pull image folders.');
             } elseif ($ftype == DOCUMENT_FOLDER) {
                 echo dgettext('filecabinet', 'Could not pull document folders.');
-            }
+            } else {
+                echo dgettext('filecabinet', 'Could not pull multimedia folders.');
+            } 
+            exit();
+        }
+
+        if (empty($result)) {
+            echo dgettext('filecabinet', 'No folders found.');
             exit();
         }
 
@@ -1407,11 +1424,11 @@ class Cabinet {
                 foreach ($resizes as $fc_id) {
                     $res = new FC_File_Assoc($fc_id);
                     $title = sprintf(dgettext('filecabinet', 'Alternate size %sx%s'), $res->width, $res->height) . '<br />';
-                    $smaller[] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a>', htmlspecialchars($res->getTag(false, true)), $title);
+                    $smaller[] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a>', htmlspecialchars($res->getTag(false, true), ENT_QUOTES), $title);
                 }
                 $sub['OTHER'] = implode('<br />', $smaller);
             }
-            $link = htmlspecialchars($image->getTag(null, true, true));
+            $link = htmlspecialchars($image->getTag(null, true, true), ENT_QUOTES);
             $sub['TN'] = $image->getThumbnail();
             $sub['PIC'] = sprintf('<a class="oc show-thumb">%s</a>', $mouseover);
             $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a> <span class="smaller">(%sx%s)</span>',
@@ -1440,7 +1457,7 @@ class Cabinet {
             $tpl['documents'][] = array('TITLE'=>dgettext('filecabinet', 'Folder empty'));
         } else {
             foreach ($result as $doc) {
-                $link = htmlspecialchars($doc->getViewLink(true, null, true));
+                $link = htmlspecialchars($doc->getViewLink(true, null, true), ENT_QUOTES);
                 $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a>',
                                         $link, $doc->title);
                 $sub['ICON'] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a>',
@@ -1450,6 +1467,33 @@ class Cabinet {
             }
         }
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckdocuments.tpl');
+        echo $content;
+        exit();
+    }
+
+    public function fckMultimedia()
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+        $db = new PHPWS_DB('multimedia');
+        $db->addWhere('folder_id', $_GET['fid']);
+        $result = $db->getObjects('PHPWS_Multimedia');
+
+        if (PHPWS_Error::logIfError($result)) {
+            echo dgettext('filecabinet', 'Could not pull multimedia.');
+            exit();
+        }
+
+        if (empty($result)) {
+            $tpl['multimedia'][] = array('TITLE'=>dgettext('filecabinet', 'Folder empty'));
+        } else {
+            foreach ($result as $mm) {
+                $link = str_replace("\n", '\n', htmlspecialchars($mm->getTag(),ENT_QUOTES));
+                $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a>',
+                                        $link, $mm->title);
+                $tpl['multimedia'][] = $sub;
+            }
+        }
+        $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckmultimedia.tpl');
         echo $content;
         exit();
     }
