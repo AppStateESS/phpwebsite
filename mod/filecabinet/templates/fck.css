@@ -19,9 +19,10 @@ ul li {
    position : absolute;
 }
 
-p.other-size { 
+#layout-naked p.other-size { 
    font-size : 90%;
    margin : 0px;
+   padding : 0px;
    padding-left : 20px;
 }
 
@@ -31,7 +32,7 @@ div#type-choice {
 }
 
 div#folders-listing { 
-   padding : 10px;
+   padding : 5px;
 }
 
 li.selection:hover { 
@@ -51,3 +52,7 @@ li.selection:hover {
    margin : 5px 0px;
 }
 
+ul.folders { 
+   margin : 0px;
+   padding : 0px;
+}
