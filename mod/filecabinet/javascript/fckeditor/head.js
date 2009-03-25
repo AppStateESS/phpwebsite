@@ -45,24 +45,18 @@ function initFolders()
 
 function getImgFolders()
 {
-    $.get('index.php?module=filecabinet&aop=fck_img_folders', function(data) {
-        $('#folders-listing').html(data);
-    });
+    $('#folders-listing').load('index.php?module=filecabinet&aop=fck_img_folders');
 }
 
 
 function getDocFolders()
 {
-    $.get('index.php?module=filecabinet&aop=fck_doc_folders', function(data) {
-        $('#folders-listing').html(data);
-    });
+    $('#folders-listing').load('index.php?module=filecabinet&aop=fck_doc_folders');
 }
 
 function getMediaFolders()
 {
-    $.get('index.php?module=filecabinet&aop=fck_mm_folders', function(data) {
-        $('#folders-listing').html(data);
-    });
+    $('#folders-listing').load('index.php?module=filecabinet&aop=fck_mm_folders');
 }
 
 

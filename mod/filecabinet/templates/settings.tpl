@@ -38,13 +38,10 @@
 
 <fieldset>
 <legend><strong>{FCK_SETTINGS}</strong></legend>
-<p>{FCK_ALL_FOLDERS} <strong>{FCK_ALL_FOLDERS_LABEL}</strong></p>
 <p>{FCK_ALLOW_IMAGES} <strong>{FCK_ALLOW_IMAGES_LABEL}</strong></p>
 <p>{FCK_ALLOW_DOCUMENTS} <strong>{FCK_ALLOW_DOCUMENTS_LABEL}</strong></p>
 <p>{FCK_ALLOW_MEDIA} <strong>{FCK_ALLOW_MEDIA_LABEL}</strong></p>
 </fieldset>
-
-
 
 <fieldset>
     <legend><strong>{MULTIMEDIA_SETTINGS}</strong></legend>

@@ -1344,9 +1344,27 @@ class Cabinet {
         javascript('jquery');
         javascript('modules/filecabinet/fckeditor', array('instance'=>$_GET['instance'], 'pick'=>dgettext('filecabinet', 'Pick a media type above.')));
 
-        $tpl['IMAGES'] = sprintf('<a class="oc" id="image-nav"><img id="fck-img-type" src="./images/mod/filecabinet/file_manager/file_type/image80.png" width="50" height="50" title="%s" /></a>', dgettext('filecabinet', 'Images'));
-        $tpl['DOCUMENTS'] = sprintf('<a class="oc" id="doc-nav"><img id="fck-doc-type" src="./images/mod/filecabinet/file_manager/file_type/document80.png" title="%s" width="50" height="50" /></a>', dgettext('filecabinet', 'Documents'));
-        $tpl['MULTIMEDIA'] = sprintf('<a class="oc" id="media-nav"><img id="fck-mm-type" src="./images/mod/filecabinet/file_manager/file_type/media80.png" title="%s" width="50" height="50" /></a>', dgettext('filecabinet', 'Multimedia'));
+        $active = false;
+
+        if (PHPWS_Settings::get('filecabinet', 'fck_allow_images')) {
+            $active = true;
+            $tpl['IMAGES'] = sprintf('<a class="oc" id="image-nav"><img id="fck-img-type" src="./images/mod/filecabinet/file_manager/file_type/image80.png" width="50" height="50" title="%s" /></a>', dgettext('filecabinet', 'Images'));
+        }
+
+        if (PHPWS_Settings::get('filecabinet', 'fck_allow_documents')) {
+            $active = true;
+            $tpl['DOCUMENTS'] = sprintf('<a class="oc" id="doc-nav"><img id="fck-doc-type" src="./images/mod/filecabinet/file_manager/file_type/document80.png" title="%s" width="50" height="50" /></a>', dgettext('filecabinet', 'Documents'));
+        }
+
+        if (PHPWS_Settings::get('filecabinet', 'fck_allow_media')) {
+            $active = true;
+            $tpl['MULTIMEDIA'] = sprintf('<a class="oc" id="media-nav"><img id="fck-mm-type" src="./images/mod/filecabinet/file_manager/file_type/media80.png" title="%s" width="50" height="50" /></a>', dgettext('filecabinet', 'Multimedia'));
+        }
+
+        if (!$active) {
+            Layout::nakedDisplay(dgettext('filecabinet', 'No File Cabinet file types are enabled.'));
+            exit();
+        }
 
         $tpl['CLOSE'] = dgettext('filecabinet', 'Cancel');
 
@@ -1357,7 +1375,6 @@ class Cabinet {
 
     public function fckFolders($ftype=IMAGE_FOLDER)
     {
-        
         $db = new PHPWS_DB('folders');
         $db->addWhere('ftype', $ftype);
         $db->addColumn('id');

@@ -469,11 +469,6 @@ class Cabinet_Form {
         $form->setLabel('number_visible', dgettext('filecabinet', 'Number of thumbnails visible'));
 
         /******** FCKeditor settings **************/
-        $form->addCheck('fck_all_folders', 1);
-        $form->setMatch('fck_all_folders', PHPWS_Settings::get('filecabinet', 'fck_all_folders'));
-        $form->setLabel('fck_all_folders', dgettext('filecabinet', 'Allow access to all folders, not module only'));
-
-
         $form->addCheck('fck_allow_images', 1);
         $form->setMatch('fck_allow_images', PHPWS_Settings::get('filecabinet', 'fck_allow_images'));
         $form->setLabel('fck_allow_images', dgettext('filecabinet', 'Allow image selection'));
@@ -794,7 +789,6 @@ If you are sure, type Y-E-S below.'),
         PHPWS_Settings::set('filecabinet', 'vertical_folder', (int) $_POST['jcaro_type']);
         PHPWS_Settings::set('filecabinet', 'number_visible', (int) $_POST['number_visible']);
 
-        PHPWS_Settings::set('filecabinet', 'fck_all_folders', (int)isset($_POST['fck_all_folders']));
         PHPWS_Settings::set('filecabinet', 'fck_allow_images', (int)isset($_POST['fck_allow_images']));
         PHPWS_Settings::set('filecabinet', 'fck_allow_documents', (int)isset($_POST['fck_allow_documents']));
         PHPWS_Settings::set('filecabinet', 'fck_allow_media', (int)isset($_POST['fck_allow_media']));
