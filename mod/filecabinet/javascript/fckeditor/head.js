@@ -9,6 +9,10 @@ function insertHTML(data) {
 $(document).ready(function() {
     initFolders();
     $('#folders-listing').html('{pick}');
+    $('#folders-listing').ajaxSend(function() {
+        $(this).html('<div style="margin-top : 150px; text-align : center"><img src="./images/core/ajax-loader-big.gif" /></div>');
+    });
+
 });
 
 function initFolders()
@@ -17,6 +21,7 @@ function initFolders()
         $('#folders-listing').html('');
         $('#fck-doc-type').attr('src', './images/mod/filecabinet/file_manager/file_type/document80_bw.png');
         $('#fck-img-type').attr('src', './images/mod/filecabinet/file_manager/file_type/image80.png');
+        $('#fck-mm-type').attr('src', './images/mod/filecabinet/file_manager/file_type/media80_bw.png');
         getImgFolders();
     });
 
@@ -24,16 +29,22 @@ function initFolders()
         $('#folders-listing').html('');
         $('#fck-img-type').attr('src', './images/mod/filecabinet/file_manager/file_type/image80_bw.png');
         $('#fck-doc-type').attr('src', './images/mod/filecabinet/file_manager/file_type/document80.png');
+        $('#fck-mm-type').attr('src', './images/mod/filecabinet/file_manager/file_type/media80_bw.png');
         getDocFolders();
     });
+
+    $('#media-nav').click(function() {
+        $('#folders-listing').html('');
+        $('#fck-img-type').attr('src', './images/mod/filecabinet/file_manager/file_type/image80_bw.png');
+        $('#fck-doc-type').attr('src', './images/mod/filecabinet/file_manager/file_type/document80_bw.png');
+        $('#fck-mm-type').attr('src', './images/mod/filecabinet/file_manager/file_type/media80.png');
+        getMediaFolders();
+    });
+
 }
 
 function getImgFolders()
 {
-    $('#folders-listing').ajaxSend(function() {
-        $(this).html('<div style="margin-top : 150px; text-align : center"><img src="./images/core/ajax-loader-big.gif" /></div>');
-    });
-
     $.get('index.php?module=filecabinet&aop=fck_img_folders', function(data) {
         $('#folders-listing').html(data);
     });
@@ -43,6 +54,13 @@ function getImgFolders()
 function getDocFolders()
 {
     $.get('index.php?module=filecabinet&aop=fck_doc_folders', function(data) {
+        $('#folders-listing').html(data);
+    });
+}
+
+function getMediaFolders()
+{
+    $.get('index.php?module=filecabinet&aop=fck_mm_folders', function(data) {
         $('#folders-listing').html(data);
     });
 }
@@ -68,6 +86,9 @@ function pull_folder(id, ftype) {
     } else if (ftype == 2) {
         getDocFolders();
         aop = 'fck_documents';
+    } else if (ftype == 3) {
+        getMediaFolders();
+        aop = 'fck_multimedia';
     }
 
     $.get('index.php?module=filecabinet&aop=' + aop + '&fid=' + id, function(data) {
