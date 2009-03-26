@@ -32,6 +32,7 @@ CREATE TABLE users (
 CREATE TABLE user_authorization (
   username varchar(30) NOT NULL,
   password CHAR(32) NOT NULL,
+  default_group int not null default 0,
   PRIMARY KEY (username)
 );
 

@@ -291,6 +291,12 @@ timeout INT NOT NULL default 0,
 + _user_group id gets set upon a user object save.
 </pre>';
 
+    case version_compare($currentVersion, '2.6.3', '<'):
+        $content[] = '<pre>';
+        $db = new PHPWS_DB('users_auth_scripts');
+        PHPWS_Error::logIfError($db->addTableColumn('default_group', 'int not null default 0'));
+        $content[] = '</pre>';
+
     } // End of switch statement
 
     return TRUE;

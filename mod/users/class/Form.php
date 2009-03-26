@@ -241,6 +241,38 @@ class User_Form {
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
+        $form = new PHPWS_Form('group-search');
+        $form->setMethod('get');
+        $form->addHidden('module', 'users');
+        $form->addHidden('action', 'admin');
+        $form->addHidden('tab', 'manage_users');
+        $form->addRadioAssoc('qgroup', array(dgettext('users', 'Not in group'), dgettext('users', 'In group')));
+        if (isset($_GET['qgroup'])) {
+            $qg = & $_GET['qgroup'];
+        } else {
+            $qg = 1;
+        }
+        $form->setMatch('qgroup', $qg);
+
+        $db = new PHPWS_DB('users_groups');
+        $db->addWhere('user_id', 0);
+        $db->addColumn('id');
+        $db->addColumn('name');
+        $db->setIndexBy('id');
+        $groups = $db->select('col');
+
+        if (empty($groups)) {
+            $groups[] = dgettext('users', '-- All --');
+        } else {
+            $groups = array(dgettext('users', '-- All --')) + $groups;
+        }
+
+        $form->addSelect('search_group', $groups);
+        $form->setMatch('search_group', @$_GET['search_group']);
+        $form->addSubmit('group_sub', dgettext('users', 'Limit users by group'));
+
+        $pageTags = $form->getTemplate();
+
         $pageTags['ACTIVE_LABEL'] = dgettext('users', 'Active');
         $pageTags['ACTIONS_LABEL'] = dgettext('users', 'Actions');
 
@@ -259,7 +291,23 @@ class User_Form {
         $pager->addSortHeader('last_logged', dgettext('users', 'Last Logged'));
         $pager->setSearch('username', 'email', 'display_name');
         $pager->cacheQueries();
-        return $pager->get();
+
+        if (!empty($_GET['search_group'])) {
+            if (@$_GET['qgroup']) {
+                $pager->addWhere('users_members.group_id', $_GET['search_group'], '=', 'and', 'g1');
+                $pager->addWhere('users_groups.id', 'users_members.member_id', '=', 'and', 'g1');
+                $pager->addWhere('users.id', 'users_groups.user_id', '=', 'and', 'g1');
+            } else {
+                $pager->db->addJoin('left', 'users', 'users_groups', 'id', 'user_id');
+                $pager->db->addJoin('left', 'users_groups', 'users_members', 'id', 'member_id');
+                $pager->db->addWhere('users_members.group_id', null, 'is null', null, 'g1');
+                $pager->db->addWhere('users_members.group_id', $_GET['search_group'], '!=', 'or', 'g1');
+            }
+        }
+
+        $result = $pager->get();
+
+        return $result;
     }
 
 
@@ -677,6 +725,20 @@ class User_Form {
 
         $auth_list = User_Action::getAuthorizationList();
 
+        $db = new PHPWS_DB('users_groups');
+        $db->addOrder('name');
+        $db->addColumn('name');
+        $db->addColumn('id');
+        $db->setIndexBy('id');
+        $db->addWhere('user_id', 0);
+
+        $groups = $db->select('col');
+        if (PHPWS_Error::logIfError($groups)) {
+            $groups = array(0=>dgettext('users', '- None -'));
+        } else {
+            $groups = array("0"=>dgettext('users', '- None -')) + $groups;
+        }
+
         foreach ($auth_list as $auth){
             $file_compare[] = $auth['filename'];
         }
@@ -705,13 +767,14 @@ class User_Form {
         }
 
         $form->mergeTemplate($template);
-        $form->addSubmit('submit', dgettext('users', 'Update Default'));
+        $form->addSubmit('submit', dgettext('users', 'Update authorization scripts'));
         $template = $form->getTemplate();
 
         $template['AUTH_LIST_LABEL'] = dgettext('users', 'Authorization Scripts');
         $template['DEFAULT_LABEL']   = dgettext('users', 'Default');
         $template['DISPLAY_LABEL']   = dgettext('users', 'Display Name');
         $template['FILENAME_LABEL']  = dgettext('users', 'Script Filename');
+        $template['DEFAULT_GROUP_LABEL']  = dgettext('users', 'Default group');
         $template['ACTION_LABEL']    = dgettext('users', 'Action');
 
         $default_authorization = PHPWS_User::getUserSetting('default_authorization');
@@ -742,6 +805,11 @@ class User_Form {
             //            $links[2] = PHPWS_Text::secureLink(dgettext('users', 'Edit'), 'users', $getVars);
 
             $row['CHECK'] = sprintf('<input type="radio" name="default_authorization" value="%s" %s />', $id, $checked);
+            $form = new PHPWS_Form();
+            $form->addSelect("default_group[$id]", $groups);
+            $form->setMatch("default_group[$id]", $default_group);
+            $row['DEFAULT_GROUP'] = $form->get("default_group[$id]");
+
             $row['DISPLAY_NAME'] = $display_name;
             $row['FILENAME'] = $filename;
             if (!empty($links)) {
@@ -809,21 +877,6 @@ class User_Form {
 
         $form->addTextArea('forbidden_usernames', PHPWS_Settings::get('users', 'forbidden_usernames'));
         $form->setLabel('forbidden_usernames', dgettext('users', 'Forbidden usernames (one per line)'));
-
-        $groups = User_Action::getGroups('group');
-        if (is_array($groups)) {
-            $groups = array(0=> dgettext('users', '-- None --')) + $groups;
-        } else {
-            $groups = array(0=> dgettext('users', '-- None --'));
-        }
-
-        $form->addSelect('default_join_group', $groups);
-        $form->setLabel('default_join_group', dgettext('users', 'Joined user default group'));
-        $form->setMatch('default_join_group', PHPWS_Settings::get('users', 'default_join_group'));
-
-        $form->addSelect('default_admin_group', $groups);
-        $form->setLabel('default_admin_group', dgettext('users', 'Admin created user default group'));
-        $form->setMatch('default_admin_group', PHPWS_Settings::get('users', 'default_admin_group'));
 
         $template = $form->getTemplate();
 

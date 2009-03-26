@@ -323,7 +323,7 @@ class User_Action {
                 }
 
                 if ($new_user) {
-                    User_Action::assignDefaultGroup($user, 'admin');
+                    User_Action::assignDefaultGroup($user);
                 }
 
                 $panel->setCurrentTab('manage_users');
@@ -907,7 +907,7 @@ class User_Action {
                 if (PHPWS_Error::logIfError($user->save())) {
                     return false;
                 } else {
-                    User_Action::assignDefaultGroup($user, 'signup');
+                    User_Action::assignDefaultGroup($user);
                     return true;
                 }
             } else {
@@ -932,7 +932,7 @@ class User_Action {
         case AUTO_SIGNUP:
             $result = User_Action::saveNewUser($user, true);
             if ($result) {
-                User_Action::assignDefaultGroup($user, 'signup');
+                User_Action::assignDefaultGroup($user);
                 $content[] = dgettext('users', 'Account created successfully!');
                 $content[] = dgettext('users', 'You will return to the home page in five seconds.');
                 $content[] = PHPWS_Text::moduleLink(dgettext('users', 'Click here if you are not redirected.'));
@@ -1137,9 +1137,6 @@ class User_Action {
             $settings['graphic_confirm'] = 0;
         }
 
-        $settings['default_join_group'] = (int)$_POST['default_join_group'];
-        $settings['default_admin_group'] = (int)$_POST['default_admin_group'];
-
         $settings['user_menu'] = $_POST['user_menu'];
         $settings['forbidden_usernames'] = str_replace(' ', "\n", strtolower(strip_tags($_POST['forbidden_usernames'])));
 
@@ -1167,6 +1164,7 @@ class User_Action {
 
     public function postAuthorization()
     {
+
         if (isset($_POST['add_script'])){
             if (!isset($_POST['file_list'])) {
                 return false;
@@ -1189,11 +1187,21 @@ class User_Action {
             if (PEAR::isError($result)) {
                 return $result;
             }
-        }
+        } else {
+            if (isset($_POST['default_authorization'])) {
+                PHPWS_Settings::set('users', 'default_authorization', (int)$_POST['default_authorization']);
+                PHPWS_Settings::save('users');
+            }
 
-        if (isset($_POST['default_authorization'])) {
-            PHPWS_Settings::set('users', 'default_authorization', (int)$_POST['default_authorization']);
-            PHPWS_Settings::save('users');
+            if (!empty($_POST['default_group'])) {
+                $db = new PHPWS_DB('users_auth_scripts');
+                foreach ($_POST['default_group'] as $auth_id => $group_id) {
+                    $db->reset();
+                    $db->addWhere('id', $auth_id);
+                    $db->addValue('default_group', $group_id);
+                    PHPWS_Error::logIfError($db->update());
+                }
+            }
         }
         return true;
     }
@@ -1560,19 +1568,15 @@ class User_Action {
         return $result;
     }
 
-    public function assignDefaultGroup(PHPWS_User $user, $mode)
+    public function assignDefaultGroup(PHPWS_User $user)
     {
-        if ($mode == 'admin') {
-            $default_group = PHPWS_Settings::get('users', 'default_admin_group');
-        } elseif ($mode == 'signup') {
-            $default_group = PHPWS_Settings::get('users', 'default_join_group');
-        } else {
-            return false;
-        }
+        $db = new PHPWS_DB('users_auth_scripts');
+        $db->addColumn('default_group');
+        $db->addColumn('id');
+        $db->setIndexBy('id');
+        $scripts = $db->select('col');
 
-        if (!$default_group) {
-            return false;
-        }
+        $default_group = $scripts[$user->authorize]['default_group'];
 
         $group = new PHPWS_Group($default_group);
 

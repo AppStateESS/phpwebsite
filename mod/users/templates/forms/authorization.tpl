@@ -8,6 +8,7 @@
     <th>{DEFAULT_LABEL}</th>
     <th>{DISPLAY_LABEL}</th>
     <th>{FILENAME_LABEL}</th>
+    <th>{DEFAULT_GROUP_LABEL}</th>
     <th>{ACTION_LABEL}</th>
   </tr>
 <!-- BEGIN auth-rows -->
@@ -15,6 +16,7 @@
     <td class="align-center">{CHECK}</td>
     <td>{DISPLAY_NAME}</td>
     <td>{FILENAME}</td>
+    <td>{DEFAULT_GROUP}</td>
     <td>{ACTION}</td>
   </tr>
 <!-- END auth-rows -->

@@ -1,3 +1,4 @@
+{TOTAL_ROWS}
 <table border="0" cellspacing="1" cellpadding="4" width="100%" id="user-manager">
 <tr>
 <th>{USERNAME_SORT}<br />
@@ -28,10 +29,14 @@
 {EMPTY_MESSAGE}
 <br />
 <div class="align-center">
-{TOTAL_ROWS}<br />
-{PAGE_LABEL} {PAGES}{PAGE_DROP}<br />
+{PAGE_LABEL} {PAGES}{PAGE_DROP}
 {LIMIT_LABEL} {LIMITS}
 </div>
-<div class="align-right">
-{SEARCH}
-</div>
+<div style="float : right" class="align-right">{SEARCH}</div>
+{START_FORM}
+<table cellpadding="5"><tr><td>
+{QGROUP_1} {QGROUP_1_LABEL}<br />
+{QGROUP_2} {QGROUP_2_LABEL}<br />
+</td><td style="vertical-align : middle">{GROUP_SUB}<br />{SEARCH_GROUP}</td></tr></table>
+{END_FORM}
+
