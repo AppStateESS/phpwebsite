@@ -82,7 +82,7 @@ class Cabinet_Form {
             }
         }
 
-        if ($folder->ftype == IMAGE_FOLDER) {
+        if ($folder->ftype != DOCUMENT_FOLDER) {
             $pager->addSortHeader('module_created',dgettext('filecabinet', 'Created in'));
         }
 

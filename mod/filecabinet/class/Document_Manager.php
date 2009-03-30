@@ -170,11 +170,17 @@ class FC_Document_Manager {
             PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
             FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
 
-            $this->document->moveToFolder();
-            if (!isset($_POST['im'])) {
-                javascript('close_refresh');
+            if ($this->document->moveToFolder()) {
+                if (!isset($_POST['im'])) {
+                    javascript('close_refresh');
+                } else {
+                    javascript('modules/filecabinet/refresh_manager', array('document_id'=>$this->document->id));
+                }
             } else {
-                javascript('modules/filecabinet/refresh_manager', array('document_id'=>$this->document->id));
+                $content = dgettext('filecabinet', '<p>Could not upload file to folder. Please check your directory permissions.</p>');
+                $content .= sprintf('<a href="#" onclick="window.close(); return false">%s</a>', dgettext('filecabinet', 'Close this window'));
+                Layout::nakedDisplay($content);
+                exit();
             }
         } else {
             return $this->edit();
