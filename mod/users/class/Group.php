@@ -288,29 +288,31 @@ class PHPWS_Group {
         $linkVar['group_id'] = $id;
 
         $linkVar['command'] = 'edit_group';
-        $links[] = PHPWS_Text::secureLink(dgettext('users', 'Edit'), 'users', $linkVar, NULL, dgettext('users', 'Edit Group'));
+        $links[] = PHPWS_Text::secureLink(sprintf('<img src="images/mod/users/edit.png" title="%s" />', dgettext('users', 'Edit')), 'users', $linkVar, NULL, dgettext('users', 'Edit Group'));
 
         $linkVar['command'] = 'setGroupPermissions';
-        $links[] = PHPWS_Text::secureLink(dgettext('users', 'Permissions'), 'users', $linkVar);
-
+        $links[] = PHPWS_Text::secureLink(sprintf('<img src="images/mod/users/key.png" title="%s" />', dgettext('users', 'Permissions')), 'users', $linkVar);
         $linkVar['command'] = 'manageMembers';
-        $links[] = PHPWS_Text::secureLink(dgettext('users', 'Members'), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(sprintf('<img src="images/mod/users/members.png" title="%s" />', dgettext('users', 'Members')), 'users', $linkVar);
 
+        // Active status for groups doesn't do anything nor were admin functions written for the choices below
+        /*
         if ($this->active){
             $linkVar['command'] = 'deactivateGroup';
-            $links[] = PHPWS_Text::moduleLink(dgettext('users', 'Deactivate'), 'groups', $linkVar);
+            $links[] = PHPWS_Text::moduleLink(dgettext('users', 'Deactivate'), 'users', $linkVar);
         } else {
             $linkVar['command'] = 'activateGroup';
-            $links[] = PHPWS_Text::moduleLink(dgettext('users', 'Activate'), 'groups', $linkVar);
+            $links[] = PHPWS_Text::moduleLink(dgettext('users', 'Activate'), 'users', $linkVar);
         }
+        */
 
         $linkVar['command'] = 'remove_group';
         $removelink['ADDRESS'] = PHPWS_Text::linkAddress('users', $linkVar, TRUE);
         $removelink['QUESTION'] = dgettext('users', 'Are you SURE you want to remove this group?');
-        $removelink['LINK'] = dgettext('users', 'Remove');
+        $removelink['LINK'] = sprintf('<img src="images/mod/users/delete.png" title="%s" />', dgettext('users', 'Remove'));
         $links[] = Layout::getJavascript('confirm', $removelink);
 
-        $template['ACTIONS'] = implode(' | ', $links);
+        $template['ACTIONS'] = implode('', $links);
 
         $members = $this->getMembers();
 

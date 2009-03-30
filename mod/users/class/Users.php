@@ -903,7 +903,7 @@ class PHPWS_User {
         $links[] = PHPWS_Text::secureLink(sprintf('<img src="images/mod/users/edit.png" title="%s" />', dgettext('users', 'Edit')), 'users', $linkVar);
 
         $linkVar['command'] = 'setUserPermissions';
-        $links[] = PHPWS_Text::secureLink(sprintf('<img src="images/mod/users/permission.png" title="%s" />', dgettext('users', 'Permissions')), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(sprintf('<img src="images/mod/users/key.png" title="%s" />', dgettext('users', 'Permissions')), 'users', $linkVar);
 
         if (!$this->isDeity() && ($this->id != Current_User::getId())) {
             $links[] = Layout::getJavascript('confirm', $jsvar);

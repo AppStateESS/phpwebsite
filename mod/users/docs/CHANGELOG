@@ -1,3 +1,9 @@
+30 March 2009
++ Added icons for admin options under manage users and groups
++ Disabled active link in groups listing
++ Updated: img/deity.gif, img/delete.png, img/edit.png, man.gif
+img/key.png, img/members.png
+
 26 March 2009
 + Authorization scripts now have default group assignments. New
   members will assigned to a group based on their authorization
