@@ -5,6 +5,10 @@
 + Removed default group by user or admin from settings.
 + Added ability to view users by whether or not they are in a
   particular group.
++ Updated:
+  templates/forms/authorization.tpl
+  templates/forms/settings.tpl
+  templates/manager/users.tpl
 
 23 March 2009
 + Added pager caching to group listing

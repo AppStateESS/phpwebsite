@@ -849,12 +849,12 @@ class PHPWS_User {
             if ($this->isDeity()) {
                 $dvars['QUESTION'] = dgettext('users', 'Are you sure you want to remove deity status?');
                 $dvars['ADDRESS']  = PHPWS_Text::linkAddress('users', array('action'=>'admin', 'command'=>'mortalize_user', 'user_id'=>$this->id), 1);
-                $dvars['LINK']     = dgettext('users', 'Deity');
+                $dvars['LINK']     = sprintf('<img src="images/mod/users/deity.gif" title="%s" />', dgettext('users', 'Deity'));
                 $links[] = javascript('confirm', $dvars);
             } else {
                 $dvars['QUESTION'] = dgettext('users', 'Are you sure you want to deify this user?');
                 $dvars['ADDRESS']  = PHPWS_Text::linkAddress('users', array('action'=>'admin', 'command'=>'deify_user', 'user_id'=>$this->id), 1);
-                $dvars['LINK']     = dgettext('users', 'Mortal');
+                $dvars['LINK']     = sprintf('<img src="images/mod/users/man.gif" title="%s" />', dgettext('users', 'Mortal'));
                 $links[] = javascript('confirm', $dvars);
             }
         }
@@ -897,24 +897,19 @@ class PHPWS_User {
                                                     'user_id'=> $this->id), true);
         $link->setSalted();
         $jsvar['ADDRESS'] = $link->getAddress();
-        /*
-        $jsvar['ADDRESS']  = 'index.php?module=users&amp;action=admin&amp;command=deleteUser&amp;user_id='
-            . $this->id . '&amp;authkey=' . Current_User::getAuthKey();
-        */
-        $jsvar['LINK']     = dgettext('users', 'Delete');
-
+        $jsvar['LINK']    = sprintf('<img src="images/mod/users/delete.png" title="%s" />', dgettext('users', 'Delete'));
 
         $linkVar['command'] = 'editUser';
-        $links[] = PHPWS_Text::secureLink(dgettext('users', 'Edit'), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(sprintf('<img src="images/mod/users/edit.png" title="%s" />', dgettext('users', 'Edit')), 'users', $linkVar);
 
         $linkVar['command'] = 'setUserPermissions';
-        $links[] = PHPWS_Text::secureLink(dgettext('users', 'Permissions'), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(sprintf('<img src="images/mod/users/permission.png" title="%s" />', dgettext('users', 'Permissions')), 'users', $linkVar);
 
         if (!$this->isDeity() && ($this->id != Current_User::getId())) {
             $links[] = Layout::getJavascript('confirm', $jsvar);
         }
 
-        $template['ACTIONS'] = implode(' | ', $links);
+        $template['ACTIONS'] = implode('', $links);
 
         if ($this->deity && !Current_User::isDeity()) {
             unset($template['ACTIONS']);
