@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+31 March 2009
++ Changed freecap file names to allow copying to branches.
++ Updated: javascript/captcha/freecap/*
+
 23 March 2009
 + Cleaning up fckeditor filecabinet plugin
 + Updated Norwegian translation from Anders. THANKS ANDERS!
