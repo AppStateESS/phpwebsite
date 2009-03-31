@@ -30,7 +30,7 @@ CREATE INDEX pspage_idx on ps_page(key_id);
 CREATE TABLE ps_text (
   id int NOT NULL default 0,
   pid int NOT NULL default 0,
-  content longtext NOT NULL,
+  content longtext NULL,
   secname varchar(30) NOT NULL,
   sectype varchar(20) NOT NULL,
   PRIMARY KEY  (id)

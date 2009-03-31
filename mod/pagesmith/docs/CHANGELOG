@@ -1,3 +1,6 @@
+31 March 2009
++ Made ps_text.content null instead of not null
+
 24 March 2009
 + Made a change in page editing. Text spaces receive text without
   formatting. Prior to this change the parseOutput was run before
