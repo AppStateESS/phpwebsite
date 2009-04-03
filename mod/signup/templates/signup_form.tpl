@@ -23,10 +23,18 @@
        <td><strong>{PHONE_LABEL}</strong></td>
        <td>{PHONE}</td>
      </tr>
-     <tr>
-       <td><strong>{ORGANIZATION_LABEL}</strong></td>
-       <td>{ORGANIZATION}</td>
+     <!-- BEGIN extra1 --><tr>
+       <td><strong>{EXTRA1_LABEL}</strong></td>
+       <td>{EXTRA1}</td><!-- END extra1 -->
      </tr>
+     <!-- BEGIN extra2 --><tr>
+       <td><strong>{EXTRA2_LABEL}</strong></td>
+       <td>{EXTRA2}</td>
+     </tr><!-- END extra2 -->
+     <!-- BEGIN extra3 --><tr>
+       <td><strong>{EXTRA3_LABEL}</strong></td>
+       <td>{EXTRA3}</td>
+     </tr><!-- END extra3 -->
    </table>
    <p class="align-center" style="margin-top : 1em">{SUBMIT}</p>
    {END_FORM}

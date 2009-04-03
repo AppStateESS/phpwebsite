@@ -130,20 +130,6 @@ class Signup_Sheet {
             $db->setIndexBy('id');
             return $db->select('col');
         } else {
-            // This caused some problems. Seemed to work earlier. Check back later.
-            /*
-            $db->addColumn('signup_slots.*');
-            $db->addColumn('signup_peeps.id', false, '_filled', true);
-            $db->addJoin('left', 'signup_slots', 'signup_peeps', 'id', 'slot_id');
-
-            $db->addWhere('signup_peeps.registered', 1, null, null, 1);
-            $db->addWhere('signup_peeps.slot_id', null, null, 'or', 1);
-
-            $db->setGroupConj(1, 'and');
-
-            $db->addGroupBy('signup_slots.id');
-            */
-
             $result = $db->getObjects('Signup_Slot');
             if (empty($result) || PHPWS_Error::logIfError($result)) {
                 return null;
@@ -283,6 +269,27 @@ class Signup_Sheet {
     {
         $key = new Key($this->key_id);
         $key->flag();
+    }
+
+
+    public function setExtra1($extra)
+    {
+        $this->setExtraX($extra, $this->extra1);
+    }
+
+    public function setExtra2($extra)
+    {
+        $this->setExtraX($extra, $this->extra2);
+    }
+
+    public function setExtra3($extra)
+    {
+        $this->setExtraX($extra, $this->extra3);
+    }
+
+    public function setExtraX($extra, &$key)
+    {
+        $key = trim(strip_tags(str_replace('"', '', $extra)));
     }
 
 }

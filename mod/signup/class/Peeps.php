@@ -12,10 +12,15 @@ class Signup_Peep {
     public $last_name    = null;
     public $email        = null;
     public $phone        = null;
-    public $organization = null;
+    /**
+     * No longer used
+     */
     public $hashcheck    = null;
     public $timeout      = 0;
     public $registered   = 0;
+    public $extra1       = null;
+    public $extra2       = null;
+    public $extra3       = null;
 
     public $_error       = null;
 
@@ -74,11 +79,6 @@ class Signup_Peep {
 
     }
 
-    public function setOrganization($organization)
-    {
-        $this->organization = $this->clean($organization);
-    }
-
     public function save()
     {
         $db = new PHPWS_DB('signup_peeps');
@@ -96,9 +96,47 @@ class Signup_Peep {
     {
         $tpl['PHONE'] = $this->getPhone();
         $tpl['EMAIL'] = $this->getEmail();
+        $tpl['EXTRA1'] = $this->getExtra1();
+        $tpl['EXTRA2'] = $this->getExtra2();
+        $tpl['EXTRA3'] = $this->getExtra3();
         return $tpl;
     }
 
+
+    public function getExtra1()
+    {
+        return PHPWS_Text::parseOutput($this->extra1);
+    }
+
+    public function getExtra2()
+    {
+        return PHPWS_Text::parseOutput($this->extra2);
+    }
+
+    public function getExtra3()
+    {
+        return PHPWS_Text::parseOutput($this->extra3);
+    }
+
+    public function setExtra1($extra)
+    {
+        $this->setExtraX($extra, $this->extra1);
+    }
+
+    public function setExtra2($extra)
+    {
+        $this->setExtraX($extra, $this->extra2);
+    }
+
+    public function setExtra3($extra)
+    {
+        $this->setExtraX($extra, $this->extra3);
+    }
+
+    public function setExtraX($extra, &$key)
+    {
+        $key = PHPWS_Text::parseInput(trim(strip_tags($extra)));
+    }
 }
 
 ?>

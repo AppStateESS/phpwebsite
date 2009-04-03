@@ -6,7 +6,7 @@
    */
 
 $proper_name  = 'Signup';
-$version      = '1.2.2';
+$version      = '1.3.0';
 $import_sql   = true;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/signup/check.xml';
 $about        = true;

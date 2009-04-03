@@ -128,8 +128,21 @@ class Signup_Forms {
         $form->addText('phone', $peep->getPhone());
         $form->setLabel('phone', dgettext('signup', 'Phone number'));
 
-        $form->addText('organization', $peep->organization);
-        $form->setLabel('organization', dgettext('signup', 'Organization'));
+        if (!empty($this->signup->sheet->extra1)) {
+            $form->addText('extra1', $peep->extra1);
+            $form->setLabel('extra1', $this->signup->sheet->extra1);
+        }
+
+        if (!empty($this->signup->sheet->extra2)) {
+            $form->addText('extra2', $peep->extra2);
+            $form->setLabel('extra2', $this->signup->sheet->extra2);
+        }
+
+        if (!empty($this->signup->sheet->extra3)) {
+            $form->addText('extra3', $peep->extra3);
+            $form->setLabel('extra3', $this->signup->sheet->extra3);
+        }
+
 
         $tpl = $form->getTemplate();
 
@@ -267,21 +280,34 @@ class Signup_Forms {
         $form->setLabel('start_time', dgettext('signup', 'Start signup'));
         */
 
+        $form->addText('extra1', $sheet->extra1);
+        $form->setSize('extra1', 40);
+        $form->setLabel('extra1', dgettext('signup', 'Extra information 1'));
+
+        $form->addText('extra2', $sheet->extra2);
+        $form->setSize('extra2', 40);
+        $form->setLabel('extra2', dgettext('signup', 'Extra information 2'));
+
+        $form->addText('extra3', $sheet->extra3);
+        $form->setSize('extra3', 40);
+        $form->setLabel('extra3', dgettext('signup', 'Extra information 3'));
+
         $form->addText('end_time', $sheet->getEndTime());
+        $form->setClass('end_time', 'datepicker');
         $form->setLabel('end_time', dgettext('signup', 'Close signup'));
 
         $js_vars['type'] = 'text_clock';
         $js_vars['form_name'] = 'signup_sheet';
 
-        /*
         $js_vars['date_name'] = 'start_time';
         $form->addTplTag('ST_JS', javascript('js_calendar', $js_vars));
-        */
 
         $js_vars['date_name'] = 'end_time';
         $form->addTplTag('ET_JS', javascript('js_calendar', $js_vars));
 
         $tpl = $form->getTemplate();
+
+        $tpl['EXTRA_NOTE'] = dgettext('signup', 'Blank extra fields will not appear on signup.');
 
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_sheet.tpl');
     }
@@ -297,6 +323,10 @@ class Signup_Forms {
         $pager->setModule('signup');
         $pager->setTemplate('applicants.tpl');
         $pager->addRowTags('rowtags');
+        $pager->addSortHeader('phone', dgettext('signup', 'Phone'));
+        $pager->addSortHeader('last_name', dgettext('signup', 'Last name'));
+        $pager->addSortHeader('first_name', dgettext('signup', 'First name'));
+        $pager->addSortHeader('email', dgettext('signup', 'Email'));
 
         $vars['sheet_id'] = $this->signup->sheet->id;
         $vars['aop'] = 'csv_applicants';
@@ -333,11 +363,7 @@ class Signup_Forms {
         $vars['aop'] = 'email_applicants';
         $page_tags['EMAIL'] = PHPWS_Text::secureLink(dgettext('signup', 'Email'), 'signup', $vars);
 
-        $page_tags['LAST_NAME_LABEL'] = dgettext('signup', 'Last name');
-        $page_tags['FIRST_NAME_LABEL'] = dgettext('signup', 'First name');
-        $page_tags['EMAIL_LABEL'] = dgettext('signup', 'Email');
-        $page_tags['PHONE_LABEL'] = dgettext('signup', 'Phone');
-        $page_tags['ORGANIZATION_LABEL'] = dgettext('signup', 'Organization');
+        $page_tags['EXTRA_LABEL'] = dgettext('signup', 'Extra details');
 
         $pager->addPageTags($page_tags);
         $pager->setSearch('last_name', 'first_name', 'organization');
@@ -444,8 +470,20 @@ class Signup_Forms {
             $form->setSize('phone', 15);
             $form->setLabel('phone', dgettext('signup', 'Phone number'));
 
-            $form->addText('organization', $peep->organization);
-            $form->setLabel('organization', dgettext('signup', 'Organization'));
+            if (!empty($this->signup->sheet->extra1)) {
+                $form->addText('extra1', $peep->extra1);
+                $form->setLabel('extra1', $this->signup->sheet->extra1);
+            }
+            
+            if (!empty($this->signup->sheet->extra2)) {
+                $form->addText('extra2', $peep->extra2);
+                $form->setLabel('extra2', $this->signup->sheet->extra2);
+            }
+            
+            if (!empty($this->signup->sheet->extra3)) {
+                $form->addText('extra3', $peep->extra3);
+                $form->setLabel('extra3', $this->signup->sheet->extra3);
+            }
 
             $form->addSubmit(dgettext('signup', 'Submit'));
 

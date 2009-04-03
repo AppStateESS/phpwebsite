@@ -157,6 +157,10 @@ class Signup_Slot {
             }
         }
 
+        $ex1 = sprintf('<abbr title="%s"><strong>1:</strong></abbr> ', $sheet->extra1);
+        $ex2 = sprintf('<abbr title="%s"><strong>2:</strong></abbr> ', $sheet->extra2);
+        $ex3 = sprintf('<abbr title="%s"><strong>3:</strong></abbr> ', $sheet->extra3);
+
         if ($this->_peeps) {
             $jsconf['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this person from their signup slot?');
             $jsconf['LINK'] = sprintf('<img src="images/mod/signup/delete.png" title="%s" />', dgettext('signup', 'Delete'));
@@ -164,17 +168,28 @@ class Signup_Slot {
 
             foreach ($this->_peeps as $peep) {
                 $links = array();
-                $subtpl['FIRST_NAME']   = $peep->first_name;
-                $subtpl['LAST_NAME']    = $peep->last_name;
-                $subtpl['EMAIL']        = $peep->getEmail();
-                $subtpl['PHONE']        = $peep->getPhone();
-                $subtpl['ORGANIZATION'] = $peep->organization;
+                $subtpl = array();
+                $subtpl['FIRST_NAME'] = $peep->first_name;
+                $subtpl['LAST_NAME']  = $peep->last_name;
+                $subtpl['EMAIL']      = $peep->getEmail();
+                $subtpl['PHONE']      = $peep->getPhone();
+                if (!empty($sheet->extra1)) {
+                    $subtpl['EXTRA1']     = $ex1 . $peep->getExtra1();
+                }
+
+                if (!empty($sheet->extra2)) {
+                    $subtpl['EXTRA2']     = $ex2 . $peep->getExtra2();
+                }
+
+                if (!empty($sheet->extra3)) {
+                    $subtpl['EXTRA3']     = $ex3 . $peep->getExtra3();
+                }
 
                 $vars['peep_id'] = $peep->id;
                 $vars['aop']     = 'edit_slot_peep';
                 $jspop['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
-                $jspop['width']  = 260;
-                $jspop['height'] = 425;
+                $jspop['width']  = 300;
+                $jspop['height'] = 600;
                 $links[] = javascript('open_window', $jspop);
 
                 $vars['aop']     = 'delete_slot_peep';

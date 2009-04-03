@@ -659,7 +659,6 @@ class Signup {
             foreach ($search as $s) {
                 $db->addWhere('first_name', "%$s%", 'like', 'or', 1);
                 $db->addWhere('last_name',  "%$s%", 'like', 'or', 1);
-                $db->addWhere('organization',  "%$s%", 'like', 'or', 1);
             }
         }
 
@@ -732,10 +731,22 @@ class Signup {
             $errors[] = dgettext('signup', 'Please enter a contact phone number.');
         }
 
-        if (empty($_POST['organization'])) {
-            $this->organization = null;
+        if (!empty($_POST['extra1'])) {
+            $this->peep->setExtra1($_POST['extra1']);
         } else {
-            $this->peep->setOrganization($_POST['organization']);
+            $this->peep->extra1 = null;
+        }
+
+        if (!empty($_POST['extra2'])) {
+            $this->peep->setExtra2($_POST['extra2']);
+        } else {
+            $this->peep->extra2 = null;
+        }
+
+        if (!empty($_POST['extra3'])) {
+            $this->peep->setExtra3($_POST['extra3']);
+        } else {
+            $this->peep->extra3 = null;
         }
 
         if (isset($errors)) {
@@ -839,6 +850,11 @@ class Signup {
         } else {
             $this->sheet->multiple = 0;
         }
+
+        $this->sheet->setExtra1($_POST['extra1']);
+        $this->sheet->setExtra2($_POST['extra2']);
+        $this->sheet->setExtra3($_POST['extra3']);
+
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
@@ -953,16 +969,45 @@ class Signup {
         $db->addWhere('registered', 1);
 
         $result = $db->getObjects('Signup_Peep');
-        $data[] = sprintf('"%s","%s","%s","%s","%s"',
-                          dgettext('signup', 'firstname'), dgettext('signup', 'lastname'),
-                          dgettext('signup', 'phone'), dgettext('signup', 'email'),
-                          dgettext('signup', 'organization'));
+
+        $sub1[] = dgettext('signup', 'firstname');
+        $sub1[] = dgettext('signup', 'lastname');
+        $sub1[] = dgettext('signup', 'phone');
+        $sub1[] = dgettext('signup', 'email');
+
+        if (!empty($this->sheet->extra1)) {
+            $sub1[] = $this->sheet->extra1;
+        }
+
+        if (!empty($this->sheet->extra2)) {
+            $sub1[] = $this->sheet->extra2;
+        }
+
+        if (!empty($this->sheet->extra3)) {
+            $sub1[] = $this->sheet->extra3;
+        }
+
+        $data[] = sprintf('"%s"', implode('","', $sub1));
+
         if (!empty($result)) {
             foreach ($result as $peep) {
-                $data[] = sprintf('"%s","%s","%s","%s","%s"',
-                                  $peep->first_name, $peep->last_name,
-                                  $peep->getPhone(), $peep->email,
-                                  $peep->organization);
+                $sub2 = array();
+                $sub2[] = $peep->first_name;
+                $sub2[] = $peep->last_name;
+                $sub2[] = $peep->getPhone();
+                $sub2[] = $peep->email;
+                if (!empty($this->sheet->extra1)) {
+                    $sub2[] = str_replace('"', "'", $peep->getExtra1());
+                }
+                
+                if (!empty($this->sheet->extra2)) {
+                    $sub2[] = str_replace('"', "'", $peep->getExtra2());
+                }
+                
+                if (!empty($this->sheet->extra3)) {
+                    $sub2[] = str_replace('"', "'", $peep->getExtra3());
+                }
+                $data[] = sprintf('"%s"', implode('","', $sub2));
             }
         }
 

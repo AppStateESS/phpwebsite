@@ -123,10 +123,20 @@ function signup_update(&$content, $currentVersion)
     case version_compare($currentVersion, '1.3.0', '<'):
         $content[] = '<pre>';
         $db = new PHPWS_DB('signup_peeps');
-        $db->addTableColumn('extra1', 'text');
-        $db->addTableColumn('extra2', 'text');
-        $db->addTableColumn('extra3', 'text');
-        $content[] = '1.3.0 changes';
+        $db->addTableColumn('extra1', 'varchar(255) null');
+        $db->addTableColumn('extra2', 'varchar(255) null');
+        $db->addTableColumn('extra3', 'varchar(255) null');
+        $db->query('update signup_peeps set extra1 = organization');
+        $db = new PHPWS_DB('signup_sheet');
+        $db->addTableColumn('extra1', 'varchar(255) null');
+        $db->addTableColumn('extra2', 'varchar(255) null');
+        $db->addTableColumn('extra3', 'varchar(255) null');
+        $db->addValue('extra1', 'Organization');
+        $db->update();
+        $content[] = '1.3.0 changes
+--------------
+</pre>';
+
     }
     return true;
 }
