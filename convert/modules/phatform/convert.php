@@ -210,6 +210,7 @@ function convertElements()
     if ($error) {
         $content[] = _('One or more errors occurred while copying over Form Generator tables. Please check your logs, clear your database tables, and try again.');
     } else {
+        Convert::siteDB();
         Convert::addConvert('phatform_elements');
         $content[] = sprintf('<a href="index.php?command=convert&package=phatform">%s</a>',
                              _('Continue conversion. . .'));
