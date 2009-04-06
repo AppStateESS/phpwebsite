@@ -10,7 +10,6 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireConfig('core', 'file_types.php');
 PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 
