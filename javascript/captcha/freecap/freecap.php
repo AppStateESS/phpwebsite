@@ -81,7 +81,7 @@ $use_dict = 1;
 // test your server's config by trying to access the dictionary through a web browser
 // you should NOT be able to view the contents.
 // can leave this blank if not using dictionary
-$dict_location = "./.ht_freecap_words";
+$dict_location = "./ht_freecap_words";
 
 // used to calculate image width, and for non-dictionary word generation
 $max_word_length = 6;
@@ -110,7 +110,7 @@ $max_attempts = 10;
 // the fonts included with freeCap *only* include lowercase alphabetic characters
 // so are not suitable for most other uses
 // to increase security, you really should add other fonts
-$font_locations = Array("./.ht_freecap_font1.gdf","./.ht_freecap_font2.gdf","./.ht_freecap_font3.gdf","./.ht_freecap_font4.gdf","./.ht_freecap_font5.gdf");
+$font_locations = Array("./ht_freecap_font1.gdf","./ht_freecap_font2.gdf","./ht_freecap_font3.gdf","./ht_freecap_font4.gdf","./ht_freecap_font5.gdf");
 
 // background:
 // 0=transparent (if jpg, white)
@@ -125,7 +125,7 @@ $bg_type = 3;
 $blur_bg = false;
 // for bg_type 3, which images should we use?
 // if you add your own, make sure they're fairly 'busy' images (ie a lot of shapes in them)
-$bg_images = Array("./.ht_freecap_im1.jpg","./.ht_freecap_im2.jpg","./.ht_freecap_im3.jpg","./.ht_freecap_im4.jpg","./.ht_freecap_im5.jpg");
+$bg_images = Array("./ht_freecap_im1.jpg","./ht_freecap_im2.jpg","./ht_freecap_im3.jpg","./ht_freecap_im4.jpg","./ht_freecap_im5.jpg");
 // for non-transparent backgrounds only:
 	// if 0, merges CAPTCHA with bg
 	// if 1, write CAPTCHA over bg
