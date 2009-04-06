@@ -163,8 +163,6 @@ class Layout {
         }
 
         $link['file'] = Layout::getThemeDir() . $filename;
-        $link['import'] = FALSE;
-
         $GLOBALS['Extra_Style'] = $link;
     }
 
@@ -197,8 +195,6 @@ class Layout {
         }
 
         $cssFile['tag'] = & $tag;
-        $cssFile['import'] = TRUE;
-
         $templateLoc = "templates/$module/$filename";
         $moduleLoc   = sprintf('mod/%s/templates/%s', $module, $filename);
 
@@ -211,8 +207,6 @@ class Layout {
         Layout::addToStyleList($cssFile);
 
         $themeFile['file']   = PHPWS_Template::getTplDir($module) . $filename;
-        $themeFile['import'] = TRUE;
-
         if (is_file($themeFile['file'])) {
             Layout::addToStyleList($themeFile);
             return;
@@ -226,7 +220,6 @@ class Layout {
     {
         $alternate = FALSE;
         $title     = NULL;
-        $import    = FALSE;
         $tag       = NULL;
         $media     = NULL;
 
@@ -237,7 +230,6 @@ class Layout {
         }
 
         $style = array('file'      => $file,
-                       'import'    => $import,
                        'alternate' => $alternate,
                        'title'     => $title,
                        'media'     => $media
@@ -871,15 +863,6 @@ class Layout {
 
     public function styleLink($link, $header=FALSE)
     {
-        $browser = getBrowser();
-
-        // *sigh* not worth the hassle to conform to IE
-        if ($browser == 'MSIE') {
-            $can_import = FALSE;
-        } else {
-            $can_import = TRUE;
-        }
-
         // NEED TO CHECK if using xml-stylesheet
         extract($link);
 
@@ -903,9 +886,7 @@ class Layout {
                 return sprintf('<?xml-stylesheet %s href="%s" type="text/css"%s?>', $cssTitle, $file, $media_tag);
             }
         } else {
-            if ($import == TRUE && $can_import) {
-                return sprintf('<style type="text/css"> @import url("%s")%s;</style>', $file, $media);
-            } elseif (isset($alternate) && $alternate == TRUE) {
+            if (isset($alternate) && $alternate == TRUE) {
                 return sprintf('<link rel="alternate stylesheet" %s href="%s" type="text/css"%s />', $cssTitle, $file, $media_tag);
             } else {
                 return sprintf('<link rel="stylesheet" %s href="%s" type="text/css"%s />', $cssTitle, $file, $media_tag);
