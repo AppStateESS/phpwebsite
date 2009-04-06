@@ -1,5 +1,8 @@
 Note: this log is only for notes post-1.0-conversion
 
+6 April 2009
++ RFE # 2609260 - PHATFORM_CAPTCHA now definable in configuration file.
+
 5 March 2009
 + Preventing numbers from being element names.
 

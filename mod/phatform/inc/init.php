@@ -6,6 +6,7 @@
    */
 
 if(isset($_REQUEST['module']) && $_REQUEST['module'] == 'phatform') {
+    PHPWS_Core::requireConfig('phatform', 'phatform.php');
     PHPWS_Core::initModClass('phatform', 'Form.php');
     PHPWS_Core::initModClass('phatform', 'FormManager.php');
     PHPWS_Core::initModClass('phatform', 'Report.php');

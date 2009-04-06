@@ -54,4 +54,8 @@ define('PHAT_MAX_CHARS_TEXT_ENTRY', 3000);
 */
 define('PHAT_MAIL_CONTENT_TYPE', 'text/html');
 
+/* Set to false disables captcha on anonymous pages
+ */
+define('PHATFORM_CAPTCHA', true);
+
 ?>

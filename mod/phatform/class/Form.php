@@ -1022,8 +1022,6 @@ class PHAT_Form extends PHPWS_Item {
                 $this->_userData[$this->element->getLabel()] =  $_REQUEST['PHAT_' . $this->element->getLabel()];
 
             if(isset($_REQUEST['PHAT_' . $this->element->getLabel()])) {
-                require_once(PHPWS_SOURCE_DIR . '/mod/phatform/conf/phatform.php');
-
                 if(is_string($_REQUEST['PHAT_' . $this->element->getLabel()]) &&
                    strlen($_REQUEST['PHAT_' . $this->element->getLabel()]) > PHAT_MAX_CHARS_TEXT_ENTRY) {
                     $error = PHPWS_Error::get(PHATFORM_TEXT_MAXSIZE_PASSED, 'phatform',
@@ -1613,8 +1611,6 @@ class PHAT_Form extends PHPWS_Item {
     }
 
     function _emailData() {
-        require_once PHPWS_SOURCE_DIR .'mod/phatform/conf/phatform.php';
-
         if (is_array($this->_adminEmails) && (sizeof($this->_adminEmails) > 0)) {
             $to = $this->getAdminEmails();
             if (!(strlen($to) > 0)) {

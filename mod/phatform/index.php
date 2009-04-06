@@ -18,7 +18,6 @@ if (!isset($_SESSION['PHAT_FormManager'])) {
  }
 
 /* Include the phatform config file */
-include(PHPWS_SOURCE_DIR . 'mod/phatform/conf/phatform.php');
 require_once(PHPWS_SOURCE_DIR . 'mod/phatform/class/advViews.php');
 
 
