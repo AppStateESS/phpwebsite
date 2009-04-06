@@ -465,7 +465,11 @@ class PHPWS_Core {
      */
     public function requireInc($module, $file, $exitOnError=true)
     {
-        $inc_file = sprintf('%smod/%s/inc/%s', PHPWS_SOURCE_DIR, $module, $file);
+        if ($module == 'core') {
+            $inc_file = sprintf('%score/inc/%s', PHPWS_SOURCE_DIR, $file);
+        } else {
+            $inc_file = sprintf('%smod/%s/inc/%s', PHPWS_SOURCE_DIR, $module, $file);
+        }
 
         if (!is_file($inc_file)) {
             PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'requireInc', $inc_file);

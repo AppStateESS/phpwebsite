@@ -2,6 +2,11 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+6 April 2009
++ Core - requireInc now recognizes 'core' as a first parameter
++ Added notes to datepicker readme.
++ Patch #2500039 by Olivier Sannier - cleaned up blog conversion. 
+
 3 Apr 2009
 + Fixed phatform convert. Wasn't flipping convert flag when done.
 

@@ -149,7 +149,13 @@ function convertAnnouncement($entry)
     $val['title']   = PHPWS_Text::parseInput(utf8_encode(htmlallspecialchars_decode(strip_tags($entry['subject']))));
     $val['summary'] = PHPWS_Text::parseInput(PHPWS_Text::breaker(utf8_encode(htmlallspecialchars_decode($entry['summary']))));
 
-    if (!empty($entry['body'])) {
+    $tmp_entry = $entry['body']; 
+    $tmp_entry = PHPWS_Text::parseTag($tmp_entry);
+    $tmp_entry = strip_tags($tmp_entry);
+    $tmp_entry = html_entity_decode($tmp_entry);
+    $tmp_entry = trim($tmp_entry, "\x00\x09\x0A\x0B\x0D\x20\xA0");
+    
+    if (!empty($tmp_entry)) {
         $val['entry'] = PHPWS_Text::parseInput(PHPWS_Text::breaker(utf8_encode(htmlallspecialchars_decode($entry['body']))));
     }
 
