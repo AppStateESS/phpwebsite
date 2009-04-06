@@ -19,6 +19,7 @@ class Menu {
         $db = new PHPWS_DB('menus');
         $db->addWhere('pin_all', 1);
         $db->loadClass('menu', 'Menu_Item.php');
+        Key::restrictView($db, 'menu');
         return $db->getObjects('Menu_Item');
     }
 

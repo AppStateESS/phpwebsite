@@ -14,6 +14,7 @@ CREATE TABLE menu_links (
 
 CREATE TABLE menus (
   id int NOT NULL default 0,
+  key_id int NOT NULL default 0,
   title varchar(30) NOT NULL,
   template varchar(50) NOT NULL,
   restricted smallint NOT NULL default 0,

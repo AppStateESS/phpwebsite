@@ -202,7 +202,19 @@ Please download 1.2.1.</pre>';
 + Wrapped default menu template in box-content div per patch by Obones
 + Local links created on key pages were not made current.
 + Commented out pin page link in template</pre>';
-        
+  
+    case version_compare($currentVersion, '1.6.0', '<'):
+        $db = new PHPWS_DB('menus');
+        if (PHPWS_Error::logIfError($db->addTableColumn('key_id', 'int not null default 0'))) {
+            return false;
+        }
+        PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+        $menus = $db->getObjects('Menu_Item');
+        if (!empty($menus) && !PHPWS_Error::logIfError($menus)) {
+            foreach ($menus as $m) {
+                $m->save();
+            }
+        }
     }
     return true;
 }

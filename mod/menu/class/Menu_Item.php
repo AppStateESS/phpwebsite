@@ -11,6 +11,7 @@ define('MENU_MISSING_TPL', -2);
 
 class Menu_Item {
     public $id         = 0;
+    public $key_id     = 0;
     public $title      = NULL;
     public $template   = NULL;
     public $pin_all    = 0;
@@ -121,7 +122,7 @@ class Menu_Item {
         }
     }
 
-    public function save()
+    public function save($save_key=true)
     {
         if (empty($this->title)) {
             return FALSE;
@@ -135,6 +136,10 @@ class Menu_Item {
             return $result;
         }
 
+        if ($save_key) {
+            $this->saveKey();
+        }
+
         if ($new_menu && PHPWS_Settings::get('menu', 'home_link')) {
             $link = new Menu_Link;
             $link->menu_id = $this->id;
@@ -145,6 +150,28 @@ class Menu_Item {
         }
 
         return true;
+    }
+
+    public function saveKey()
+    {
+        if (empty($this->key_id)) {
+            $key = new Key;
+            $key->module = $key->item_name = 'menu';
+            $key->item_id = $this->id;
+        } else {
+            $key = new Key($this->key_id);
+        }
+
+        $key->title = $this->title;
+        $result = $key->save();
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        if (empty($this->key_id)) {
+            $this->key_id = $key->id;
+            $this->save(false);
+        }
     }
 
     /**
@@ -263,7 +290,7 @@ class Menu_Item {
         $links[] = PHPWS_Text::secureLink(dgettext('menu', 'Reorder links'), 'menu',
                                           array('command'=>'reorder_links',
                                                 'menu_id'=>$this->id));
-
+        $links[] = Current_User::popupPermission($this->key_id);
 
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;

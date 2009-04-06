@@ -1,6 +1,7 @@
 6 April 2009
 + Fixed bugs with popup menu.
 + Added "outdent" ability
++ Added ability to set view permissions on menus.
 + Updated: img/icon_outdent.gif, 
   javascript/admin_link/default.php
   javascript/admin_link/menu.js
