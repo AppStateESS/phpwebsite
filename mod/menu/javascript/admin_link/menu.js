@@ -59,6 +59,19 @@ function indent()
         forward_url(forward, menu_id);
         }
     );
+
+    $(".menu-outdent").bind("click", function(){
+        info = $(this).attr('id');
+        info = info.replace(/menu-outdent-/, '');
+        ids = info.split('-');
+        menu_id = ids[0];
+        link_id = ids[1];
+        forward = 'index.php?module=menu&command=outdent_link&link_id=' + link_id 
+                      + '&menu_id=' + menu_id + '&key_id=' + ref_key + '&authkey=' + authkey;
+        forward_url(forward, menu_id);
+        }
+    );
+
 }
 
 function sort_links()

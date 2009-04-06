@@ -180,6 +180,7 @@ class Menu_Item {
         javascript('jquery');
         $vars['authkey'] = Current_User::getAuthKey();
         $vars['drag_sort'] = PHPWS_Settings::get('menu', 'drag_sort');
+                   
         javascript('modules/menu/admin_link', $vars);
         $loaded = true;
     }

@@ -204,9 +204,28 @@ class Menu_Admin {
             $key = Menu_Admin::JSFlagKey();
             $menu = new Menu_Item($_GET['menu_id']);
             Menu_Admin::indentLink($_GET['link_id'], $menu);
-            echo $menu->view(false, true, $key);
-            exit();
+            if (isset($_GET['po'])) {
+                javascript('close_refresh');
+                Layout::nakedDisplay();
+            } else {
+                echo $menu->view(false, true, $key);
+                exit();
+            }
             break;
+
+        case 'outdent_link':
+            $key = Menu_Admin::JSFlagKey();
+            $menu = new Menu_Item($_GET['menu_id']);
+            Menu_Admin::outdentLink($_GET['link_id'], $menu);
+            if (isset($_GET['po'])) {
+                javascript('close_refresh');
+                Layout::nakedDisplay();
+            } else {
+                echo $menu->view(false, true, $key);
+                exit();
+            }
+            break;
+
 
         case 'add_link':
             if (!isset($_REQUEST['parent'])) {
@@ -857,7 +876,6 @@ class Menu_Admin {
 
     private function indentLink($link_id, $menu)
     {
-        
         $link = new Menu_Link($link_id);
         if ($link->link_order == 1) {
             return;
@@ -873,6 +891,31 @@ class Menu_Admin {
         }
         $menu->reorderLinks();
     }
+
+    private function outdentLink($link_id, $menu)
+    {
+        $link = new Menu_Link($link_id);
+
+        // link is already in leftmost indention
+        if (!$link->parent) {
+            return;
+        }
+        // Grab the parent link to this link
+        $db = new PHPWS_DB('menu_links');
+        $db->addWhere('id', $link->parent);
+        $db->addColumn('parent');
+        $db->addColumn('link_order');
+
+        $parent = $db->select();
+
+        if (!empty($parent[0])) {
+            $link->parent = & $parent[0]['parent'];
+            $link->link_order = & $parent[0]['link_order'];
+            $link->save();
+            $menu->reorderLinks();
+        }
+    }
+
 }
 
 ?>

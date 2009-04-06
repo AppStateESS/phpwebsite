@@ -358,11 +358,26 @@ class Menu_Link {
                         }
                     } elseif ($this->link_order != 1) {
                         $template['MOVE_LINK_UP'] = sprintf('<a style="cursor : pointer" id="menu-indent-%s-%s" class="menu-indent">%s</a>',
-                                                            $this->menu_id, $this->id, MENU_LINK_INDENT);
+                                                            $this->menu_id, $this->id, MENU_LINK_INDENT_INCREASE);
                     }
+
+                    if ($this->parent) {
+                        $template['MOVE_LINK_UP'] = sprintf('<a style="cursor : pointer" id="menu-outdent-%s-%s" class="menu-outdent">%s</a>',
+                                                            $this->menu_id, $this->id, MENU_LINK_INDENT_DECREASE);
+                    }
+
+                    if ($popup) {
+                        $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink(sprintf('%s %s', MENU_LINK_INDENT_INCREASE, dgettext('menu', 'Increase indent')),
+                                                                           'menu', array('command'=>'indent_link', 'menu_id'=>$this->menu_id,
+                                                                                         'link_id'=>$this->id, 'po'=>1));
+                        $template['MOVE_LINK_DOWN'] = PHPWS_Text::secureLink(sprintf('%s %s', MENU_LINK_INDENT_DECREASE, dgettext('menu', 'Decrease indent')),
+                                                                           'menu', array('command'=>'outdent_link', 'menu_id'=>$this->menu_id,
+                                                                                         'link_id'=>$this->id, 'po'=>1));
+                    }
+
+
                     $template['ADMIN'] = MENU_LINK_ADMIN;
                 } else {
-
                     $vars['command'] = 'popup_admin';
                     $vars['curl'] = urlencode(PHPWS_Core::getCurrentUrl(false));
                     if ($keyed) {
