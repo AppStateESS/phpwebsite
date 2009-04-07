@@ -405,7 +405,8 @@ Editors
                        'javascript/jquery/head.js',
                        'javascript/jquery/jquery.js',
                        'javascript/datepicker/default.php',
-                       'javascript/datepicker/head.js');
+                       'javascript/datepicker/head.js',
+                       'conf/version.php');
         $content[] = '<pre>';
         coreUpdateFiles($files, $content);
         $content[] = '1.9.4 changes
