@@ -136,7 +136,7 @@ function checkServer(&$content)
 {
     $allow_install = true;
 
-    $test['pass_reference']['pass'] = (ini_get('allow_call_time_pass_reference') == 'On') ? true : false; // need On
+    $test['pass_reference']['pass'] = ((bool)ini_get('allow_call_time_pass_reference')) ? true : false; // need true
     $test['pass_reference']['fail'] = _('allow_call_time_pass_reference must be "On" for phpWebSite to work. Please review your php.ini file.');
     $test['pass_reference']['name'] = _('Call-time pass reference enabled');
     $test['pass_reference']['crit'] = true;
