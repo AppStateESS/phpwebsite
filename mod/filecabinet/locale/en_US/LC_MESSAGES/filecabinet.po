@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-10 15:57-0500\n"
+"POT-Creation-Date: 2009-04-07 08:19-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,6 +56,11 @@ msgstr ""
 msgid "90 degrees counter clockwise"
 msgstr ""
 
+msgid ""
+"<p>Could not upload file to folder. Please check your directory permissions."
+"</p>"
+msgstr ""
+
 msgid "Absolute upload limit"
 msgstr ""
 
@@ -101,7 +106,20 @@ msgstr ""
 msgid "All files icon"
 msgstr ""
 
+msgid "Allow document selection"
+msgstr ""
+
+msgid "Allow image selection"
+msgstr ""
+
+msgid "Allow media selection"
+msgstr ""
+
 msgid "Allowed file types"
+msgstr ""
+
+#, php-format
+msgid "Alternate size %sx%s"
 msgstr ""
 
 msgid "Alternate text"
@@ -205,6 +223,24 @@ msgstr ""
 
 #, php-format
 msgid "Could not move file \"%s\" to \"%s\" folder directory."
+msgstr ""
+
+msgid "Could not pull document folders."
+msgstr ""
+
+msgid "Could not pull documents."
+msgstr ""
+
+msgid "Could not pull image folders."
+msgstr ""
+
+msgid "Could not pull images."
+msgstr ""
+
+msgid "Could not pull multimedia folders."
+msgstr ""
+
+msgid "Could not pull multimedia."
 msgstr ""
 
 msgid "Could not save thumbnail image."
@@ -339,6 +375,9 @@ msgstr ""
 msgid "Enable FFMpeg thumbnails (enabled on ffmpeg confirmation)"
 msgstr ""
 
+msgid "FCKeditor plug-in settings"
+msgstr ""
+
 msgid "FFMpeg directory"
 msgstr ""
 
@@ -389,6 +428,9 @@ msgid "Filename not set."
 msgstr ""
 
 msgid "Folder"
+msgstr ""
+
+msgid "Folder empty"
 msgstr ""
 
 msgid "Folder is empty."
@@ -534,6 +576,9 @@ msgstr ""
 msgid "Move to folder"
 msgstr ""
 
+msgid "Multimedia"
+msgstr ""
+
 msgid "Multimedia file not found."
 msgstr ""
 
@@ -551,6 +596,9 @@ msgid "Multimedia settings"
 msgstr ""
 
 msgid "Next image"
+msgstr ""
+
+msgid "No File Cabinet file types are enabled."
 msgstr ""
 
 msgid "No files in folder"
@@ -572,6 +620,9 @@ msgid "Number of thumbnails visible"
 msgstr ""
 
 msgid "Number shown"
+msgstr ""
+
+msgid "Pick a media type above."
 msgstr ""
 
 msgid "Pin folder"
@@ -608,6 +659,9 @@ msgstr ""
 msgid "Random image icon"
 msgstr ""
 
+msgid "Reindex document directories"
+msgstr ""
+
 msgid "Resize and crop excess"
 msgstr ""
 
@@ -624,6 +678,9 @@ msgid "Save allowed files"
 msgstr ""
 
 msgid "Save settings"
+msgstr ""
+
+msgid "Search folders for file"
 msgstr ""
 
 msgid "Server upload limit"
@@ -704,6 +761,13 @@ msgstr ""
 msgid ""
 "This media is larger than the %s x %s limit. Do you want to resize the media "
 "to fit?"
+msgstr ""
+
+msgid ""
+"This process will update all of your document files with the current base "
+"directory.\n"
+"Do not run this process unless you are sure it will fix download problems.\n"
+"If you are sure, type Y-E-S below."
 msgstr ""
 
 msgid "Thumbnail directory not writable."

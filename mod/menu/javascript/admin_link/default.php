@@ -4,6 +4,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
+javascript('jquery_ui');
+
 $key = Key::getCurrent();
 if (!Key::checkKey($key)) {
     $key = new Key;

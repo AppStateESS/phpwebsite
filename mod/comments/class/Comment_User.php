@@ -715,6 +715,8 @@ class Comment_User extends Demographics_User {
 
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $ext = PHPWS_File::getFileExtension($url);
+        echo $ext;
+
         if (!PHPWS_Image::allowImageType($ext)) {
             $errors[] = dgettext('comments', 'Unacceptable image file.');
             return false;

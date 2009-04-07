@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-10 15:57-0500\n"
+"POT-Creation-Date: 2009-04-07 08:19-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,6 +80,9 @@ msgid ""
 msgstr ""
 
 msgid "Available slots"
+msgstr ""
+
+msgid "Blank extra fields will not appear on signup."
 msgstr ""
 
 msgid "CSV file"
@@ -162,6 +165,18 @@ msgid "Error occurred when saving sheet."
 msgstr ""
 
 msgid "Error occurred when saving slot."
+msgstr ""
+
+msgid "Extra details"
+msgstr ""
+
+msgid "Extra information 1"
+msgstr ""
+
+msgid "Extra information 2"
+msgstr ""
+
+msgid "Extra information 3"
 msgstr ""
 
 msgid "Fatal error: Cannot create slot. Missing sheet id."
@@ -452,9 +467,6 @@ msgid "firstname"
 msgstr ""
 
 msgid "lastname"
-msgstr ""
-
-msgid "organization"
 msgstr ""
 
 msgid "phone"

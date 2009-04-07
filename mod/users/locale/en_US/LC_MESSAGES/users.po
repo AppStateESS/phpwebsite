@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-10 15:57-0500\n"
+"POT-Creation-Date: 2009-04-07 08:19-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,10 @@ msgstr ""
 msgid "%s created an user account for you."
 msgstr ""
 
-msgid "-- None --"
+msgid "- None -"
+msgstr ""
+
+msgid "-- All --"
 msgstr ""
 
 msgid "-- Use server's time zone --"
@@ -67,9 +70,6 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-msgid "Activate"
-msgstr ""
-
 msgid "Activate this user"
 msgstr ""
 
@@ -95,9 +95,6 @@ msgid "Add User"
 msgstr ""
 
 msgid "Add this user to this group."
-msgstr ""
-
-msgid "Admin created user default group"
 msgstr ""
 
 msgid "All visitors"
@@ -226,13 +223,13 @@ msgstr ""
 msgid "Current Members"
 msgstr ""
 
-msgid "Deactivate"
-msgstr ""
-
 msgid "Deactivate this user"
 msgstr ""
 
 msgid "Default"
+msgstr ""
+
+msgid "Default group"
 msgstr ""
 
 msgid "Deity"
@@ -389,10 +386,10 @@ msgstr ""
 msgid "Improperly formatted group name."
 msgstr ""
 
-msgid "Invalid variable name."
+msgid "In group"
 msgstr ""
 
-msgid "Joined user default group"
+msgid "Invalid variable name."
 msgstr ""
 
 msgid "Language preference"
@@ -402,6 +399,9 @@ msgid "Last Logged"
 msgstr ""
 
 msgid "Lets you create and edit users and groups."
+msgstr ""
+
+msgid "Limit users by group"
 msgstr ""
 
 msgid "Local"
@@ -549,6 +549,9 @@ msgid "None found"
 msgstr ""
 
 msgid "Not allowed"
+msgstr ""
+
+msgid "Not in group"
 msgstr ""
 
 msgid "Notify user"
@@ -797,9 +800,6 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-msgid "Update Default"
-msgstr ""
-
 msgid "Update Group"
 msgstr ""
 
@@ -807,6 +807,9 @@ msgid "Update Settings"
 msgstr ""
 
 msgid "Update User"
+msgstr ""
+
+msgid "Update authorization scripts"
 msgstr ""
 
 msgid "Update my information"
@@ -851,11 +854,11 @@ msgstr ""
 msgid "User is missing their permission group"
 msgstr ""
 
-msgid "User name already in use."
-msgstr ""
-
 msgid ""
 "User name not found. Check your spelling or enter an email address instead."
+msgstr ""
+
+msgid "User or display name off limits. Please try another."
 msgstr ""
 
 msgid "User remains a deity."
