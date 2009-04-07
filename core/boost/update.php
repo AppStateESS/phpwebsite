@@ -397,15 +397,15 @@ Editors
                        'javascript/editors/fckeditor/body.js',
                        'javascript/editors/fckeditor/default.js',
                        'javascript/editors/fckeditor/editor/custom.js',
-                       'javascript/editors/fckeditor/editor/plugins/filecabinet/*',
-                       'javascript/editors/fckeditor/editor/plugins/filecabinet/fckplugin.js',
+                       'javascript/editors/fckeditor/editor/plugins/filecabinet/',
                        'img/ajax-loader-big.gif',
-                       'javascript/captcha/freecap/*',
-                       'javascript/jquery_ui/*',
+                       'javascript/captcha/freecap/',
+                       'javascript/jquery_ui/',
                        'javascript/jquery/head.js',
                        'javascript/jquery/jquery.js',
                        'javascript/datepicker/default.php',
                        'javascript/datepicker/head.js',
+                       'javascript/editors/fckeditor/editor/plugins/youtube/',
                        'conf/version.php');
         $content[] = '<pre>';
         coreUpdateFiles($files, $content);
