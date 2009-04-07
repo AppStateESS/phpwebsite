@@ -40,9 +40,9 @@ li.selection:hover {
 }
 
 #fck-close {
-   position : absolute;
+   position : fixed;
    left : 0px;
-   bottom : 2px;
+   bottom : 0px;
    text-align : center;
    width : 100%;
    background-color : #e3e3e3;
