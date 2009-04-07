@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-10 14:44-0500\n"
+"POT-Creation-Date: 2009-04-07 09:02-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -223,6 +223,9 @@ msgstr ""
 msgid "Calendar is not installed."
 msgstr ""
 
+msgid "Call-time pass reference enabled"
+msgstr ""
+
 msgid "Can not change name. Already in use."
 msgstr ""
 
@@ -274,6 +277,9 @@ msgid "Class not set."
 msgstr ""
 
 msgid "Clear"
+msgstr ""
+
+msgid "Click continue to refresh."
 msgstr ""
 
 msgid "Click on the method you wish to use."
@@ -1095,6 +1101,9 @@ msgstr ""
 msgid "Request"
 msgstr ""
 
+msgid "Required field"
+msgstr ""
+
 msgid ""
 "Return to main page if you change your mind. Click the above link to "
 "continue."
@@ -1511,6 +1520,9 @@ msgstr ""
 msgid "Your core config.php file is missing. Please create one and return."
 msgstr ""
 
+msgid "Your login session will expire in less than two minutes."
+msgstr ""
+
 msgid ""
 "Your pages are using the images/pagemaster/ directory so do not delete it."
 msgstr ""
@@ -1524,6 +1536,11 @@ msgid "\\1 wrote"
 msgstr ""
 
 msgid "a heartbeat ago"
+msgstr ""
+
+msgid ""
+"allow_call_time_pass_reference must be \"On\" for phpWebSite to work. Please "
+"review your php.ini file."
 msgstr ""
 
 msgid "loadObject expected the object to have an id or where clause."
