@@ -16,6 +16,14 @@ define('BOOST_START',    1);
 define('BOOST_PENDING',  2);
 define('BOOST_DONE',     3);
 
+if (!defined('BOOST_BACKUP_DIRECTORIES')) {
+    define('BOOST_BACKUP_DIRECTORIES', true);
+}
+
+if (!defined('BOOST_BACKUP_FILES')) {
+    define('BOOST_BACKUP_FILES', true);
+}
+
 class PHPWS_Boost {
     public $modules       = NULL;
     public $status        = NULL;
@@ -1096,7 +1104,7 @@ class PHPWS_Boost {
             if (is_dir($source_file)) {
                 
                 // if directory exists, make a backup
-                if (is_dir($local_file) && !empty($source_filename)) {
+                if (is_dir($local_file) && !empty($source_filename) && BOOST_BACKUP_DIRECTORIES) {
                     $local_array = explode('/', $local_file);
 
                     $last_dir = array_pop($local_array);
@@ -1138,7 +1146,7 @@ class PHPWS_Boost {
                 }
             }
 
-            if (is_file($local_file)) {
+            if (is_file($local_file) && BOOST_BACKUP_FILES) {
                 if (md5_file($local_file) == md5_file($source_file)) {
                     continue;
                 }
