@@ -6,5 +6,5 @@
  */
 javascript('jquery');
 
-$data['disable_message'] = dgettext('pagesmith', 'You have clicked a link that take you off this page. You will lose all unsaved changes.\nClick OK to go to the link destination, Cancel to remain.');
+$data['disable_message'] = dgettext('pagesmith', 'Clicking this link may take you from this page. You could lose all unsaved changes.\nClick OK to go to the link destination, Cancel to remain.');
 ?>
