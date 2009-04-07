@@ -327,8 +327,7 @@ class Calendar_User {
             break;
 
         case 'ical_event_dl':
-            if (!empty($_GET['sdate']) && !empty($_GET['edate']) && 
-                $this->calendar->schedule->allowICalDownload()) {
+            if ($this->calendar->schedule->allowICalDownload()) {
                 $this->calendar->schedule->exportEvent($_GET['event_id']);
             } else {
                 $this->title = dgettext('calendar', 'Sorry');

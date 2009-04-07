@@ -263,6 +263,10 @@ function calendar_update(&$content, $version)
 ------------------
 + Added option to enable rel="nofollow" on date links</pre>';
 
+    case version_compare($version, '1.7.2', '<'):
+        $content[] = '<pre>1.7.2 changes
+------------------
++ Fixed event ical download</pre>';
     } // end of switch
 
     return true;
