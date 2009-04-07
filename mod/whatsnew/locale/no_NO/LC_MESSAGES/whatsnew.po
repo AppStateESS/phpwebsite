@@ -1,0 +1,108 @@
+# whatsnew - phpwebsite module
+#
+# See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# @version $Id: whatsnew.po,v 1.4 2009/02/11 15:54:28 verdonv Exp $
+# @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS_1_6_1,WHATSNEW0_1_0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-02-11 10:49-0500\n"
+"PO-Revision-Date: 2009-02-19 15:12+0100\n"
+"Last-Translator: \n"
+"Language-Team: NORWEGIAN <LL@Li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
+
+msgid "Cache duration for whatsnew list (in seconds, 0-7200)"
+msgstr "Cache varighet for whatsnew liste (i sekunder, 0-7200)"
+
+msgid "Cache flushed."
+msgstr "Cache renset."
+
+msgid "Enable whatsnew"
+msgstr "Aktiviser whatsnew"
+
+msgid "Flush cache"
+msgstr "Rens cache"
+
+msgid "General Settings"
+msgstr "Generelle Innstillinger"
+
+#, php-format
+msgid "If you would like to help out with the ongoing development of whatsnew, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window)."
+msgstr "Hvis du ønsker å hjelpe til med det pågående utviklingen av whatsnew, eller andre moduler av Verdon Vaillancourt, %s klikk her for å donere %s (åpnes i nytt vindu)."
+
+msgid "Important Information"
+msgstr "Viktig Informasjon"
+
+msgid "No keyed items."
+msgstr "Ingen fastkilt elementer."
+
+msgid "Number of recent items to display (0-50)"
+msgstr "Antall av nylig elementer å vise (0-50)"
+
+msgid "Read me"
+msgstr "Les meg"
+
+msgid "Save settings"
+msgstr "Lagre innstillinger"
+
+msgid "Select any modules you wish to exclude from your whatsnew box."
+msgstr "Velg hvilke moduler du ikke ønsker å benytte i whatsnew boksen."
+
+msgid "Settings"
+msgstr "Innstillinger"
+
+msgid "Show item summaries"
+msgstr "Vis element sammendrag"
+
+msgid "Show item update dates"
+msgstr "Vis element oppdatert datoer"
+
+msgid "Show whatsnew sidebox on home page only"
+msgstr "Vis whatsnew sidebox bare på forsiden"
+
+msgid "Sidebox text"
+msgstr "Sidebox tekst"
+
+msgid "Sidebox title"
+msgstr "Sidebox tittel"
+
+msgid "Sorry, no results"
+msgstr "Beklager, ingen resultater"
+
+msgid "Sorry, the readme file does not exist."
+msgstr "Beklager, readme filen eksisterer ikke."
+
+msgid "What's New"
+msgstr "Hva er Nytt"
+
+msgid "Whatsnew settings saved."
+msgstr "Whatsnew innstillinger er lagret."
+
+msgid "item"
+msgstr "element"
+
+msgid "items"
+msgstr "elementer"
+

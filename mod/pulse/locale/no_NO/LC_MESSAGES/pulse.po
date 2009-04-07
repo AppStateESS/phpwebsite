@@ -1,0 +1,79 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS_1_6_1,PULSE1_0_0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-12-16 10:31-0500\n"
+"PO-Revision-Date: 2009-02-19 14:35+0100\n"
+"Last-Translator: \n"
+"Language-Team: NORWEGIAN <LL@Li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Click to activate"
+msgstr "Klikk for å aktivere"
+
+msgid "Click to deactivate"
+msgstr "Klikk for å deaktivere"
+
+msgid "Completed"
+msgstr "Ferdig"
+
+msgid "Last"
+msgstr "Siste"
+
+msgid "Last pulse time"
+msgstr "Siste puls tid"
+
+msgid "Module"
+msgstr "Modul"
+
+msgid "Never run"
+msgstr "Aldri kjør"
+
+msgid "Next"
+msgstr "Neste"
+
+msgid "Next pulse time"
+msgstr "Neste puls tid"
+
+msgid "Number of repeats"
+msgstr "Antall gjentakelser"
+
+msgid "Pulse Schedules"
+msgstr "Puls tidsplan"
+
+msgid "Pulse type"
+msgstr "Puls type"
+
+msgid "Pulses completed"
+msgstr "Pulser ferdig"
+
+msgid "Repeats"
+msgstr "Gjentakelser"
+
+msgid "Schedules"
+msgstr "Tidsplaner"
+
+msgid "Settings"
+msgstr "Innstillinger"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Used by other modules to schedule processes."
+msgstr "Bruker av andre moduler til tidsplan prosess."
+
+msgid "Yes"
+msgstr "Ja"
+
