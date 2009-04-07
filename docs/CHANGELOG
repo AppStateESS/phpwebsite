@@ -2,6 +2,20 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+Version 1.9.4
+---------------------------------------------------------------------
+7 Apr 2009
++ Updated jquery and added jquery_ui
++ Datepicker uses new jquery_ui
+
++ Updated: javascript/jquery_ui/*
+           javascript/jquery/head.js
+           javascript/jquery/jquery.js
+           javascript/datepicker/default.php
+           javascript/datepicker/head.js
++ Removed: javascript/jquery/ui.core.js
+           javascript/jquery/ui.sortable.js
+
 6 April 2009
 + Freecap - fixed file names in code
 + Core - requireInc now recognizes 'core' as a first parameter

@@ -390,6 +390,48 @@ Editors
 + Updated FCKeditor file connector code
 + Added security measure to prevent non-users from using upload
   function.</pre>';
+
+    case version_compare($version, '1.9.4', '<'):
+        $files = array('javascript/editors/fckeditor/editor/custom.js',
+                       'javascript/prompt/default.php',
+                       'javascript/editors/fckeditor/body.js',
+                       'javascript/editors/fckeditor/default.js',
+                       'javascript/editors/fckeditor/editor/custom.js',
+                       'javascript/editors/fckeditor/editor/plugins/filecabinet/*',
+                       'javascript/editors/fckeditor/editor/plugins/filecabinet/fckplugin.js',
+                       'img/ajax-loader-big.gif',
+                       'javascript/captcha/freecap/*',
+                       'javascript/jquery_ui/*',
+                       'javascript/jquery/head.js',
+                       'javascript/jquery/jquery.js',
+                       'javascript/datepicker/default.php',
+                       'javascript/datepicker/head.js');
+        $content[] = '<pre>';
+        coreUpdateFiles($files, $content);
+        $content[] = '1.9.4 changes
+----------------
++ Updated jquery and added jquery_ui
++ Datepicker uses new jquery_ui
++ Freecap - fixed file names in code
++ Core - requireInc now recognizes "core" as a first parameter
++ Added notes to datepicker readme.
++ Patch #2500039 by Olivier Sannier - cleaned up blog conversion.
++ Fixed phatform convert. Wasn\'t flipping convert flag when done.
++ Changed freecap file names to allow copying to branches.
++ Updated Norwegian translation from Anders. THANKS ANDERS!
++ Foundation of file cabinet integration with FCKeditor
++ Setup now checking for pass-call by reference default.
++ DBPager - put in some code to prevent multiple joins using the same
+  column table matching
++ Fixed comment in Cache
++ Added dot files to file_types.php
++ Javascript:prompt - added code to try and prevent tags and new lines
+  from breaking the prompt
++ Setup - some people experiencing problems with the File.php
+  require. Added the ./
++ FCKeditor - found problem with full screen edit. Disabling autogroup
+  plugin inclusion until fixed.
++ Added Tommy to credits</pre>';
     }
     return true;
 }
