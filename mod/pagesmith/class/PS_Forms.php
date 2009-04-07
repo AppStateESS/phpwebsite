@@ -258,7 +258,7 @@ class PS_Forms {
                 $vars['aop'] = 'edit_page_text';
                 $js['width'] = 800;
                 $js['height'] = 600;
-                $js['id'] = 'change-link';
+                $js['class'] = 'change-link';
                 $edit_button = true;
                 break;
             }
