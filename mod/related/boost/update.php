@@ -52,6 +52,16 @@ function related_update(&$content, $version)
 + PHP 5 formatted.
 </pre>';
 
+    case version_compare($version, '0.2.1', '<'):
+        $files = array('templates/bank.tpl',
+                       'templates/create.tpl',
+                       'templates/edit.tpl');
+        PHPWS_Boost::updateFiles($files, 'related');
+        $content[] = '<pre>
+0.2.1 changes
+--------------
++ Patch #2501401 from Olivier Sannier - Some h1 tags added.
+</pre>';
 
     }
 

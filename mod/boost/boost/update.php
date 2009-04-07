@@ -80,6 +80,14 @@ Please download update 2.1.1.</pre>';
 ----------------
 + Changes section in check now shown with pre tag.</pre>';
 
+    case version_compare($currentVersion, '2.3.2', '<'):
+        $content[] = '<pre>';
+        update_boost_files(array('conf/config.php'), $content);
+        $content[] = '2.3.2 changes
+----------------
++ Added two defines to allow admins to disable file and directory
+  backups</pre>';
+
     }
 
     return TRUE;

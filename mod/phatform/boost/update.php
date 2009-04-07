@@ -78,6 +78,14 @@ function phatform_update(&$content, $version)
 + Checking elements against database restricted names.
 </pre>';
 
+    case version_compare($version, '3.1.4', '<'):
+        PHPWS_Boost::updateFiles(array('conf/phatform.php'), 'phatform');
+        $content[] = '<pre>
+3.1.4 changes
+-------------
++ RFE # 2609260 - PHATFORM_CAPTCHA now definable in configuration file.
++ Preventing numbers from being element names.
+</pre>';
 
     }
     return true;

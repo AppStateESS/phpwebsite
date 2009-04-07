@@ -378,6 +378,14 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
 -----------------------
 + Patch #2580634 - Eloi George : Comments only shows highest rank now.
 + Added template changes from Obones SF patch</pre>';
+
+    case version_compare($currentVersion, '1.2.4', '<'):
+        $content[] = '<pre>1.2.4 changes
+-----------------------
++ Patch #2591377 - Eloi George : User comment totals not updating.
++ Patch #2590994 - Eloi George : send notice flag was not set on
+  update notice. Changed address from last username in list to \'Member\'
+</pre>';
     }
        
     return true;

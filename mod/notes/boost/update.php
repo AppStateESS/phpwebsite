@@ -66,6 +66,19 @@ function notes_update(&$content, $version) {
 + PHP 5 format.
 </pre>
 ';
+
+    case version_compare($version, '1.1.1', '<'):
+        $files = array('javascript/search_user/head.js');
+        $content[] = '<pre>';
+        notesUpdateFiles($files, $content);
+        $content[] = '
+1.1.1 changes
+--------------
++ Changes to notes to allow sending to username or display name.
++ Increased note send window size.
+</pre>
+';
+
     }
 
     return true;

@@ -4,7 +4,7 @@
    * @version $Id$
    */
 $proper_name  = 'Related';
-$version      = '0.2.0';
+$version      = '0.2.1';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/related/check.xml';
 $register     = FALSE;
 $unregister   = FALSE;

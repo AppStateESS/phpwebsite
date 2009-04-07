@@ -1,3 +1,5 @@
+Version 1.2.4
+----------------------------------------------------------------------
 13 February 2009
 + Patch #2591377 - Eloi George : User comment totals not updating.
 + Patch #2590994 - Eloi George : send notice flag was not set on

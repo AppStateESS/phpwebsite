@@ -133,8 +133,13 @@ function signup_update(&$content, $currentVersion)
         $db->addTableColumn('extra3', 'varchar(255) null');
         $db->addValue('extra1', 'Organization');
         $db->update();
+
+        $files = array('templates/applicants.tpl', 'templates/edit_peep.tpl',
+'templates/peeps.tpl', 'templates/signup_form.tpl');
+        signupUpdateFiles($files, $content);
         $content[] = '1.3.0 changes
 --------------
++ Added extra 1 thru 3 to sheet and peeps for extra questions.
 </pre>';
 
     }

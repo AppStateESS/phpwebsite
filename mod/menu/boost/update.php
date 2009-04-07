@@ -215,6 +215,19 @@ Please download 1.2.1.</pre>';
                 $m->save();
             }
         }
+        $content[] = '<pre>';
+        $files = array('img/icon_outdent.gif',
+                       'javascript/admin_link/default.php',
+                       'javascript/admin_link/menu.js',
+                       'templates/admin/settings.tpl');
+        menuUpdateFiles($files, $content);
+        $content[] = '1.6.0 changes
+---------------
++ Fixed bugs with popup menu.
++ Added "outdent" ability
++ Added ability to set view permissions on menus.
++ Added option to have add links always on.
+</pre>';        
     }
     return true;
 }

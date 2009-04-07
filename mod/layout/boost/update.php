@@ -154,6 +154,12 @@ function layout_update(&$content, $currentVersion)
 + Can enable box move from mini admin
 </pre>';
 
+  case version_compare($currentVersion, '2.4.8', '<'):
+        $content[] = '<pre>2.4.8 changes
+---------------------
++ Bug#2424256 - Removed browser check to use @import on style sheets.
+</pre>';
+
     }
     return true;
 }

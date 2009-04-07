@@ -85,6 +85,11 @@ Please download version 1.1.2.</pre>';
   config file.
 </pre>';
 
+    case version_compare($currentVersion, '1.3.2', '<'):
+        $content[] = '<pre>1.3.2 changes
+-------------
++ Removed isPosted check on block save.
+</pre>';
     }
     return TRUE;
 }

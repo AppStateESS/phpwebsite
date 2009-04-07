@@ -507,6 +507,29 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         $content[] = '<pre>2.2.3 changes
 -----------------------
 + Fixed document delete link</pre>';
+
+    case version_compare($version, '2.2.4', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/fckeditor.tpl',
+                       'templates/fckdocuments.tpl',
+                       'templates/fck.css',
+                       'templates/fckimages.tpl',
+                       'templates/fckfolders.tpl',
+                       'templates/folder_list.tpl',
+                       'templates/settings.tpl',
+                       'img/folder.gif',
+                       'javascript/fckeditor/');
+        fc_updatefiles($files, $content);
+        $content[] = '2.2.4 changes
+-----------------------
++ Error checking added to document upload.
++ Fixed multimedia folder pager.
++ Added method for fixing document directories.
++ Added file search to folder pager.
++ Added File Cabinet FCKeditor interaction.
++ Cleaned up so interface issues.
+</pre>';
+
     }
 
     return true;

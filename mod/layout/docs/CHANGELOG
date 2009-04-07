@@ -1,6 +1,8 @@
+Version 2.4.8
+------------------------------------------------------------------
 6 April 2009
-+ Bug#2424256 - Removed browser check to use @import on style sheets. There is no
-need for import over linking.
++ Bug#2424256 - Removed browser check to use @import on style sheets.
+  There is no need for import over linking.
 
 Version 2.4.7
 ------------------------------------------------------------------

@@ -293,9 +293,33 @@ timeout INT NOT NULL default 0,
 
     case version_compare($currentVersion, '2.6.3', '<'):
         $content[] = '<pre>';
+        $files = array('img/deity.gif',
+                       'img/delete.png',
+                       'img/edit.png',
+                       'img/man.gif',
+                       'img/key.png',
+                       'img/members.png',
+                       'templates/forms/authorization.tpl',
+                       'templates/forms/settings.tpl',
+                       'templates/manager/users.tpl');
+        userUpdateFiles($files, $content);
         $db = new PHPWS_DB('users_auth_scripts');
         PHPWS_Error::logIfError($db->addTableColumn('default_group', 'int not null default 0'));
-        $content[] = '</pre>';
+        $content[] = '2.6.3 changes
+------------------
++ Added icons for admin options under manage users and groups
++ Disabled active link in groups listing
++ Authorization scripts now have default group assignments. New
+  members will assigned to a group based on their authorization
+  method.
++ Removed default group by user or admin from settings.
++ Added ability to view users by whether or not they are in a
+  particular group.
++ Added pager caching to group listing
++ Display name may now not be the same as another user\'s username
++ Extended user name error to include display name
++ Added empty password check to ldap script
+</pre>';
 
     } // End of switch statement
 

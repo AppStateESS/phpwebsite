@@ -277,7 +277,32 @@ function pagesmith_update(&$content, $currentVersion)
 + All page templates now have a class called pagesmith-page
 + Removed padding from page templates</pre>';
 
-       
+    case version_compare($currentVersion, '1.3.3', '<'):
+        $db = new PHPWS_DB('ps_text');
+        if (PHPWS_Error::logIfError($db->alterColumnType('content', 'longtext'))) {
+            $content[] = 'Could not alter ps_text.content column.';
+            return false;
+        } else {
+            $content[] = 'Updated ps_text.content column';
+        }
+        $content[] = '<pre>';
+        pagesmithUpdateFiles(array('javascript/disable_links/',
+                                   'javascript/update/head.js'), $content);
+        $content[] = 'Version 1.3.3
+--------------------------------------------------------------------
++ Made ps_text.content null instead of not null
++ Made a change in page editing. Text spaces receive text without
+  formatting. Prior to this change the parseOutput was run before
+  sending the data to the editor. This stripped data that may need
+  editing.
+  Now the text is sent to the editor without processing. After post
+  the text IS processed. This fixed the filters. Anchors will be
+  busted AFTER the edit post but I don\'t think they really need to
+  work in edit mode.
++ Added javascript to prevent accidental link clicks in edit mode.
++ change_link was an id, changed to a class since there were several
+  on a page.</pre>';
+        
     } // end switch
 
     return true;

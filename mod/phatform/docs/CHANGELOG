@@ -1,5 +1,7 @@
 Note: this log is only for notes post-1.0-conversion
 
+Version 3.1.4
+-----------------------------------------------------------------
 6 April 2009
 + RFE # 2609260 - PHATFORM_CAPTCHA now definable in configuration file.
 

@@ -156,6 +156,12 @@ function access_update(&$content, $version)
 + Access forces bad urls to 404 error
 </pre>';
 
+    case version_compare($version, '1.1.4', '<'):
+        $content[] = '<pre>1.1.4 changes
+---------------
++ Trimming the title to prevent extra spaces in shortcuts
+</pre>';
+
     }
 
     return true;
