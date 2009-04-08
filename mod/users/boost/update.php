@@ -322,6 +322,7 @@ timeout INT NOT NULL default 0,
 </pre>';
 
     case version_compare($currentVersion, '2.6.4', '<'):
+        PHPWS_Error::logIfError($db->addTableColumn('default_group', 'int not null default 0'));
         $content[] = '<pre>2.6.4 changes
 -------------------------
 + Added missing column to install.sql</pre>';
