@@ -321,6 +321,11 @@ timeout INT NOT NULL default 0,
 + Added empty password check to ldap script
 </pre>';
 
+    case version_compare($currentVersion, '2.6.4', '<'):
+        $content[] = '<pre>2.6.4 changes
+-------------------------
++ Added missing column to install.sql</pre>';
+
     } // End of switch statement
 
     return TRUE;

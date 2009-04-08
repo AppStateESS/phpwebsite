@@ -41,6 +41,7 @@ CREATE TABLE users_auth_scripts (
   id smallint NOT NULL default 0,
   display_name varchar(40) NOT NULL,
   filename varchar(40) NOT NULL,
+  default_group int not null default 0, 
   PRIMARY KEY (id)
 );
 
