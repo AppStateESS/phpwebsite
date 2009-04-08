@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+8 April 2009
++ deity only check in test function makes sure user session exists.
+
 Version 1.9.4
 ---------------------------------------------------------------------
 7 Apr 2009
