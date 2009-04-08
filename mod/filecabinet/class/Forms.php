@@ -281,6 +281,12 @@ class Cabinet_Form {
         Layout::addStyle('filecabinet');
         PHPWS_Core::initCoreClass('DBPager.php');
 
+        $dir_write = true;
+        if (!is_writable($folder->getFullDirectory())) {
+            $this->cabinet->message .= dgettext('filecabinet', 'Warning: this folder\'s directory is not writable.');
+            $dir_write = false;
+        }
+        
         if ($folder->ftype == IMAGE_FOLDER) {
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $pager = new DBPager('images', 'PHPWS_Image');
@@ -308,7 +314,9 @@ class Cabinet_Form {
         }
 
         if (Current_User::allow('filecabinet', 'edit_folders', $folder->id, 'folder')) {
-            $links[] = $folder->uploadLink();
+            if ($dir_write) {
+                $links[] = $folder->uploadLink();
+            }
             if ($folder->ftype == MULTIMEDIA_FOLDER) {
                 $links[] = $folder->embedLink();
             }

@@ -530,6 +530,13 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Cleaned up so interface issues.
 </pre>';
 
+    case version_compare($version, '2.2.5', '<'):
+        $content[] = '<pre>2.2.5 changes
+-----------------------
++ Fixed bug that displayed error message on document upload.
++ Proper error message now on document uploaded to unwritable
+  directory
++ Directory check on unwritable directory prevents upload link</pre>';
     }
 
     return true;

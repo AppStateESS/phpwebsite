@@ -164,24 +164,22 @@ class FC_Document_Manager {
         } elseif ($result) {
             $result = $this->document->save();
 
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-            }
-            PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
-            FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
-
-            if ($this->document->moveToFolder()) {
-                if (!isset($_POST['im'])) {
-                    javascript('close_refresh');
-                } else {
-                    javascript('modules/filecabinet/refresh_manager', array('document_id'=>$this->document->id));
-                }
-            } else {
+            if (PHPWS_Error::logIfError($result)) {
                 $content = dgettext('filecabinet', '<p>Could not upload file to folder. Please check your directory permissions.</p>');
                 $content .= sprintf('<a href="#" onclick="window.close(); return false">%s</a>', dgettext('filecabinet', 'Close this window'));
                 Layout::nakedDisplay($content);
                 exit();
             }
+            PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+            FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
+
+            $this->document->moveToFolder();
+            if (!isset($_POST['im'])) {
+                javascript('close_refresh');
+            } else {
+                javascript('modules/filecabinet/refresh_manager', array('document_id'=>$this->document->id));
+            }
+            
         } else {
             return $this->edit();
         }

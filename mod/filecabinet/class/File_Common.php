@@ -545,6 +545,7 @@ class File_Common {
 
             }
         }
+        return true;
     }
     
     public function getTitle($shorten=false)
