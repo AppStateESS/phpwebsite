@@ -298,41 +298,40 @@ class Setup{
         }
     }
 
-    function testDBConnect()
+    function testDBConnect($dsn=null)
     {
-        $dsn = Setup::getDSN(1);
-        $connection = DB::connect($dsn);
+        if (empty($dsn)) {
+            $dsn = Setup::getDSN(1);
+            $connection = DB::connect($dsn);
 
-        if (PEAR::isError($connection)) {
-            PHPWS_Error::log($connection);
-            return 0;
-        }
-        else {
+            if (PEAR::isError($connection)) {
+                PHPWS_Error::log($connection);
+                return 0;
+            }
             $connection->disconnect();
-
             $dsn = Setup::getDSN(2);
-            $result = DB::connect($dsn);
-
-            if (PEAR::isError($result)) {
-                // mysql delivers the first error, postgres the second
-                if ($result->getCode() == DB_ERROR_NOSUCHDB ||
-                    $result->getCode() == DB_ERROR_CONNECT_FAILED) {
-                    return -1;
-                } else {
-                    PHPWS_Error::log($connection);
-                    return 0;
-                }
-            }
-
-            $tables = $result->getlistOf('tables');
-            if (count($tables)) {
-                return 2;
-            }
-
-            Setup::setConfigSet('dsn', $dsn);
-            return 1;
         }
 
+        $result = DB::connect($dsn);
+        
+        if (PEAR::isError($result)) {
+            // mysql delivers the first error, postgres the second
+            if ($result->getCode() == DB_ERROR_NOSUCHDB ||
+                $result->getCode() == DB_ERROR_CONNECT_FAILED) {
+                return -1;
+            } else {
+                PHPWS_Error::log($connection);
+                return 0;
+            }
+        }
+        
+        $tables = $result->getlistOf('tables');
+        if (count($tables)) {
+            return 2;
+        }
+        
+        Setup::setConfigSet('dsn', $dsn);
+        return 1;
     }
 
     function setConfigSet($setting, $value)
@@ -581,11 +580,29 @@ class Setup{
     {
         unset($_SESSION['Boost']);
         $step = 1;
-        if (Setup::configExists()) {
-            $step = 2;
+        if (CONFIG_CREATED) {
+            switch (Setup::testDBConnect(PHPWS_DSN)) {
+            case '2':
+                echo _('phpWebSite configuration file and database have been found. Assuming installation is complete. You should move or delete the setup directory.');
+                echo '<br />';
+                echo _('If you are returning here from a previous incomplete installation, you will need to clear the database of all tables and try again.');
+                exit();
+
+            case '-1':
+                echo _('phpWebSite configuration file exists but database does not. Create the database set in the config file or delete the config file.');
+                exit();
+
+            case '0':
+                echo _('phpWebSite configuration file exists but could not connect to database. Check your dsn settings or delete the config file.');
+                exit();
+
+            case '1':
+                $step = 2;
+                break;
+            }
         }
 
-        include 'setup/welcome.php';
+        include './setup/welcome.php';
 
         $content[] = "<a href=\"index.php?step=$step\">" . _('Begin Installation') . '</a>';
         return;

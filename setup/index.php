@@ -8,14 +8,19 @@ chdir('../');
 
 define('SKIP_STEP_1', true);
 
+define('CONFIG_CREATED', is_file('./config/core/config.php'));
+
 $content = array();
 if (!isset($_COOKIE['check_server']) || !$_COOKIE['check_server']) {
     if (checkServer($content)) {
         $content[] = _('Server passed enough tests to allow installation.');
-        if (create_core_directories($content)) {
-            $content[] = _('Core directories created.');
-        } else {
-            $content[] = _('Failed to create core directories. Please check your directory permissions in images, templates, and config.');
+        // assuming if the config file is set, the files are in place
+        if (!CONFIG_CREATED) {
+            if (create_core_directories($content)) {
+                $content[] = _('Core directories created.');
+            } else {
+                $content[] = _('Failed to create core directories. Please check your directory permissions in images, templates, and config.');
+            }
         }
 
         $content[] = sprintf('<p><a href="index.php">%s</a></p>', _('Continue...'));
@@ -35,17 +40,17 @@ if (isWindows()) {
     ini_set('include_path', '.:./lib/pear/');
  }
 
-
 if (isset($_REQUEST['step']) && $_REQUEST['step'] > 1) {
-    if (!is_file('./config/core/config.php')) {
+    if (!CONFIG_CREATED) {
         header('location: index.php');
         exit();
     } else {
         require_once './config/core/config.php';
     }
- }
- else {
+ } elseif (!CONFIG_CREATED) {
      require_once './setup/preconfig.php';
+ } else {
+     require_once './config/core/config.php';
  }
 
 require_once './core/class/Init.php';
@@ -63,7 +68,7 @@ session_start();
 $forward = false;
 $setup = new Setup;
 
-include 'core/conf/version.php';
+include './core/conf/version.php';
 $title = "phpWebSite $version - ";
 
 if (!$setup->checkSession($content) || !isset($_REQUEST['step'])) {
@@ -244,7 +249,7 @@ function checkServer(&$content)
 
 function create_core_directories(&$content)
 {
-    require_once './core/class/File.php';
+    fakeCore();
     $content[] = '<b>' . _('Copying core directories.') . '</b>';
     if (PHPWS_File::copy_directory('core/conf/', 'config/core')) {
         $content[] = _('Core configuration directory successfully copied.');
@@ -271,6 +276,25 @@ function create_core_directories(&$content)
     }
 
     return true;
+}
+
+function fakeCore()
+{
+    if (!function_exists('setLanguage')) {
+        function setLanguage(){}
+    }
+
+    set_include_path('./lib/pear/');
+    define('PHPWS_LOG_DIRECTORY', './logs/');
+    define('DEFAULT_LANGUAGE', 'en_US');
+    define('CURRENT_LANGUAGE', 'en_US');
+    define('PHPWS_SOURCE_DIR', getcwd() . '/');
+    define('LOG_PERMISSION', 0600);
+    define('PHPWS_LOG_ERRORS', true);
+    define('LOG_TIME_FORMAT', '%X %x');
+    require_once './core/class/Core.php';
+    require_once './core/class/Error.php';
+    require_once './core/class/File.php';
 }
 
 

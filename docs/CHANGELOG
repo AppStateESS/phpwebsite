@@ -4,6 +4,7 @@ its own separate CHANGELOG file.
 
 9 April 2009
 + Removed pass-by reference check from Setup.
++ Added some status checks to setup.
 
 
 8 April 2009
