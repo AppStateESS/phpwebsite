@@ -136,11 +136,6 @@ function checkServer(&$content)
 {
     $allow_install = true;
 
-    $test['pass_reference']['pass'] = ((bool)ini_get('allow_call_time_pass_reference')) ? true : false; // need true
-    $test['pass_reference']['fail'] = _('allow_call_time_pass_reference must be "On" for phpWebSite to work. Please review your php.ini file.');
-    $test['pass_reference']['name'] = _('Call-time pass reference enabled');
-    $test['pass_reference']['crit'] = true;
-
     $test['session_auto_start']['pass'] = !(bool)ini_get('session.auto_start'); // need 0
     $test['session_auto_start']['fail'] = _('session.auto_start must be set to 0 for phpWebSite to work. Please review your php.ini file.');
     $test['session_auto_start']['name'] = _('Session auto start disabled');
