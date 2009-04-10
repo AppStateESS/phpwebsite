@@ -43,6 +43,8 @@ class PS_Block extends PS_Section {
         $manager = Cabinet::fileManager($this->secname, $this->type_id);
         $manager->maxImageWidth($this->width);
         $manager->maxImageHeight($this->height);
+        $manager->setPlaceholderMaxWidth($this->width);
+        $manager->setPlaceholderMaxHeight($this->height);
         switch ($this->sectype) {
         case 'image':
             $manager->imageOnly();
