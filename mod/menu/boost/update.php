@@ -217,6 +217,7 @@ Please download 1.2.1.</pre>';
         }
         $content[] = '<pre>';
         $files = array('img/icon_outdent.gif',
+                       'conf/config.php',
                        'javascript/admin_link/default.php',
                        'javascript/admin_link/menu.js',
                        'templates/admin/settings.tpl');
