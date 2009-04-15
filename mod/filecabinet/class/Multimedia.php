@@ -224,7 +224,11 @@ class PHPWS_Multimedia extends File_Common {
 
         $jsvars['width'] = 550;
         $jsvars['height'] = 620;
-        $jsvars['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+
+        $link = new PHPWS_Link(null, 'filecabinet', $vars);
+        $link->setSecure();
+        $link->setSalted();
+        $jsvars['address'] = $link->getAddress();
         $jsvars['window_name'] = 'edit_link';
 
         if ($icon) {
