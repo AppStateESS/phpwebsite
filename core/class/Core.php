@@ -656,7 +656,7 @@ class PHPWS_Core {
      * Returns an array with containing all the values of
      * the passed object.
      */
-    public function stripObjValues($object)
+    public function stripObjValues($object, $strip_null=true)
     {
         $className = get_class($object);
         $classVars = get_class_vars($className);
@@ -668,9 +668,10 @@ class PHPWS_Core {
         }
 
         foreach ($classVars as $key => $value) {
-            if (isset($object->$key)) {
-                $var_array[$key] = $object->$key;
+            if ($strip_null && !isset($object->$key)) {
+                continue;
             }
+            $var_array[$key] = $object->$key;
         }
 
         return $var_array;
