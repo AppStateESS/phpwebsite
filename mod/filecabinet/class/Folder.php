@@ -445,7 +445,7 @@ class Folder {
         //$icon = sprintf('<img src="%s" />', $this->icon);
         $vars['aop'] = 'view_folder';
         $vars['folder_id'] = $this->id;
-        //        $tpl['ICON'] = PHPWS_Text::moduleLink($icon, 'filecabinet', $vars);
+
         $tpl['TITLE'] = PHPWS_Text::moduleLink($this->title, 'filecabinet', $vars);
         $tpl['ITEMS'] = $this->tallyItems();
 
@@ -465,12 +465,10 @@ class Folder {
         }
 
         $mods = PHPWS_Core::getModuleNames();
-        if ($this->ftype == IMAGE_FOLDER) {
-            if ($this->module_created && isset($mods[$this->module_created])) {
-                $tpl['MODULE_CREATED'] = $mods[$this->module_created];
-            } else {
-                $tpl['MODULE_CREATED'] = dgettext('filecabinet', 'General');
-            }
+        if ($this->module_created && isset($mods[$this->module_created])) {
+            $tpl['MODULE_CREATED'] = $mods[$this->module_created];
+        } else {
+            $tpl['MODULE_CREATED'] = dgettext('filecabinet', 'General');
         }
 
         $tpl['PUBLIC'] = $this->getPublic();

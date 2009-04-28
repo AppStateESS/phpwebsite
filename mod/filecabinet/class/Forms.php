@@ -82,9 +82,7 @@ class Cabinet_Form {
             }
         }
 
-        if ($folder->ftype != DOCUMENT_FOLDER) {
-            $pager->addSortHeader('module_created',dgettext('filecabinet', 'Created in'));
-        }
+        $pager->addSortHeader('module_created',dgettext('filecabinet', 'Created in'));
 
         $pager->addSortHeader('title', dgettext('filecabinet', 'Title'));
         $pager->addSortHeader('public_folder', dgettext('filecabinet', 'Public'));
