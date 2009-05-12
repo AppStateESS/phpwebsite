@@ -19,7 +19,7 @@
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     *
     * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net> test
+    * @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
 */
 
 if (!defined('PHPWS_SOURCE_DIR')) {
