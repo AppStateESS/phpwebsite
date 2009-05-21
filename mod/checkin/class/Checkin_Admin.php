@@ -87,11 +87,18 @@ class Checkin_Admin extends Checkin {
             // Called via ajax
             if (Current_User::authorized('checkin', 'assign_visitors')) {
                 if (isset($_GET['staff_id']) && $_GET['staff_id'] >= 0  && isset($_GET['visitor_id'])) {
+                    $this->loadVisitor($_GET['visitor_id']);
+                    $staff_id = $this->visitor->assigned;
                     $db = new PHPWS_DB('checkin_visitor');
                     $db->addValue('assigned', (int)$_GET['staff_id']);
                     $db->addWhere('id', (int)$_GET['visitor_id']);
                     PHPWS_Error::logIfError($db->update());
                     printf('staff_id %s, visitor_id %s', $_GET['staff_id'], $_GET['visitor_id']);
+                    $this->loadStaff($staff_id);
+                    if ($this->staff->status == 3) {
+                        $this->staff->status = 0;
+                        $this->staff->save();
+                    }
                 }
             }
             exit();
@@ -358,8 +365,11 @@ class Checkin_Admin extends Checkin {
         $row['DISPLAY_NAME'] = $staff->display_name;
         $tpl['rows'][] = $row;
 
+        $count = 1;
+        $backcount = -1;
         // Go through staff and list assignments
         foreach ($this->staff_list as $staff) {
+
             $row = array();
             $this->current_staff = & $staff;
             $row['VISITORS'] = $this->listVisitors($staff, $staff_list);
@@ -373,8 +383,17 @@ class Checkin_Admin extends Checkin {
             }
 
             $this->statusButtons($row);
-            $tpl['rows'][] = $row;
+            if ($staff->status == 3) {
+                $tpl['rows'][$backcount] = $row;
+                $backcount--;
+            } else {
+                $tpl['rows'][$count] = $row;
+                $count++;
+            }
         }
+
+        ksort($tpl['rows']);
+
         $tpl['VISITORS_LABEL'] = dgettext('checkin', 'Visitors');
         $tpl['DISPLAY_NAME_LABEL'] = dgettext('checkin', 'Staff name');
         $tpl['TIME_WAITING_LABEL'] = dgettext('checkin', 'Time waiting');
@@ -505,8 +524,8 @@ class Checkin_Admin extends Checkin {
 
             if (!empty($this->visitor_list) && $this->current_visitor) {
                 $tpl['MEET'] = $this->startMeetingLink();
+                $tpl['SENDBACK'] = $this->sendBackLink();
             }
-            $tpl['SENDBACK'] = $this->sendBackLink();
             $tpl['UNAVAILABLE'] = $this->unavailableLink();
             $tpl['CURRENT_MEETING'] = dgettext('checkin', 'You are currently available for meeting.');
             $tpl['CURRENT_CLASS'] = 'available';
@@ -520,7 +539,6 @@ class Checkin_Admin extends Checkin {
             break;
 
         case 2:
-            $tpl['SENDBACK'] = $this->sendBackLink();
             $tpl['FINISH'] = $this->finishLink();
             $this->loadVisitor($this->current_staff->visitor_id);
 
