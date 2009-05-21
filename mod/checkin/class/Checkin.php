@@ -138,6 +138,7 @@ class Checkin {
         $list[0] = '#39f15a';
         $list[1] = '#f9f95b';
         $list[2] = '#f96567';
+        $list[3] = '#519FF9';
 
         return $list;
     }
@@ -147,6 +148,7 @@ class Checkin {
         $list[0] = dgettext('checkin', 'Available');
         $list[1] = dgettext('checkin', 'Unavailable');
         $list[2] = dgettext('checkin', 'Meeting with visitor');
+        $list[3] = dgettext('checkin', 'Send back');
 
         return $list;
     }

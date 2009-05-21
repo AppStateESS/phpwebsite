@@ -62,6 +62,11 @@ class Checkin_Admin extends Checkin {
             PHPWS_Core::goBack();
             break;
 
+        case 'sendback':
+            $this->sendBack();
+            PHPWS_Core::goBack();
+            break;
+
         case 'unavailable':
             $this->unavailable();
             PHPWS_Core::goBack();
@@ -477,7 +482,9 @@ class Checkin_Admin extends Checkin {
 
         $tpl['NAME_LABEL'] = dgettext('checkin', 'Name / Notes');
         $tpl['WAITING_LABEL'] = dgettext('checkin', 'Time waiting');
+        $tpl['SENDBANK'] = 'what what';
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'waiting.tpl');
+
     }
 
     public function smallViewLink()
@@ -499,24 +506,39 @@ class Checkin_Admin extends Checkin {
             if (!empty($this->visitor_list) && $this->current_visitor) {
                 $tpl['MEET'] = $this->startMeetingLink();
             }
+            $tpl['SENDBACK'] = $this->sendBackLink();
             $tpl['UNAVAILABLE'] = $this->unavailableLink();
             $tpl['CURRENT_MEETING'] = dgettext('checkin', 'You are currently available for meeting.');
             $tpl['CURRENT_CLASS'] = 'available';
             break;
 
         case 1:
+            $tpl['SENDBACK'] = $this->sendBackLink();
             $tpl['AVAILABLE'] = $this->availableLink();
             $tpl['CURRENT_MEETING'] = dgettext('checkin', 'You are currently unavailable.');
             $tpl['CURRENT_CLASS'] = 'unavailable';
             break;
 
         case 2:
+            $tpl['SENDBACK'] = $this->sendBackLink();
             $tpl['FINISH'] = $this->finishLink();
             $this->loadVisitor($this->current_staff->visitor_id);
 
             $tpl['CURRENT_MEETING'] = sprintf(dgettext('checkin', 'You are currently meeting with %s.'), $this->visitor->getName());
             $tpl['CURRENT_CLASS'] = 'meeting';
             break;
+
+        case 3:
+            // Send back
+            if (!empty($this->visitor_list) && $this->current_visitor) {
+                $tpl['MEET'] = $this->startMeetingLink();
+            }
+            $tpl['AVAILABLE'] = $this->availableLink();
+            $tpl['UNAVAILABLE'] = $this->unavailableLink();
+            $tpl['CURRENT_MEETING'] = dgettext('checkin', sprintf('Waiting on %s to visit.', $this->current_visitor->firstname));
+            $tpl['CURRENT_CLASS'] = 'sendback';
+            break;
+
         }
     }
 
@@ -534,6 +556,13 @@ class Checkin_Admin extends Checkin {
         $vars['aop'] = 'unavailable';
         $vars['staff_id'] = $this->current_staff->id;
         return PHPWS_Text::secureLink(dgettext('checkin', 'Unavailable'), 'checkin', $vars, null, dgettext('checkin', 'Unavailable for meeting'), 'unavailable-button action-button');
+    }
+
+    public function sendBackLink()
+    {
+        $vars['aop'] = 'sendback';
+        $vars['staff_id'] = $this->current_staff->id;
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Send back'), 'checkin', $vars, null, dgettext('checkin', sprintf('Send back %s for meeting', $this->current_visitor->firstname)), 'sendback-button action-button');
     }
 
     public function availableLink()
@@ -952,6 +981,13 @@ class Checkin_Admin extends Checkin {
     {
         $this->loadStaff();
         $this->staff->status = 0;
+        $this->staff->save();
+    }
+
+    public function sendback()
+    {
+        $this->loadStaff();
+        $this->staff->status = 3;
         $this->staff->save();
     }
 

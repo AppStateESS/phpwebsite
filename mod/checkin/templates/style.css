@@ -42,6 +42,10 @@ a.unavailable-button {
    background-color : #f9f95b;
 }
 
+a.sendback-button { 
+   background-color : #519FF9;
+}
+
 a.available-button {
    background-color : #39f15a;
 }
@@ -67,6 +71,10 @@ div#current-meeting {
 
 div.available {
    background-color :  #39f15a;
+}
+
+div.sendback { 
+   background-color : #519FF9;
 }
 
 div.meeting {

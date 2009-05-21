@@ -5,7 +5,7 @@
 <th>{VISITORS_LABEL}</th>
 </tr>
 <!-- BEGIN rows --><tr style="background-color : {COLOR}">
-<td><strong>{DISPLAY_NAME}</strong><p>{MEET} {AVAILABLE} {UNAVAILABLE} {FINISH}</p></td>
+<td><strong>{DISPLAY_NAME}</strong><p>{SENDBACK} {MEET} {AVAILABLE} {UNAVAILABLE} {FINISH}</p></td>
 <td>{VISITORS}</td></tr><!-- END rows -->
 </table>
 </div>

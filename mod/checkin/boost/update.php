@@ -41,6 +41,16 @@ function checkin_update(&$content, $current_version) {
 + Added refresh link to waiting and assignment page
 + Fixed report
 </pre>';
+
+    case version_compare($current_version, '1.0.2', '<'):
+        $content[] = '<pre>';
+        checkinUpdateFiles(array('templates/visitors.tpl',
+                                 'templates/waiting.tpl',
+                                 'templates/style.css'), $content);
+        $content[] = '1.0.2 changes
+--------------------
++ Added "Send back" condition</pre>';
+        
     }
     return true;
 }
