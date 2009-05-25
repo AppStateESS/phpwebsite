@@ -106,13 +106,19 @@ class PHPWS_Link {
         $this->module = !empty($module) ? $module : null;
     }
 
+    /**
+     * Receives values to build GET string
+     */
     public function addValues($values)
     {
         if (is_array($values)) {
-            if (empty($this->values)) {
-                $this->values = $values;
-            } else {
-                foreach($values as $key=>$val) {
+            foreach($values as $key=>$val) {
+                if (is_array($val)) {
+                    foreach ($val as $skey=>$sval) {
+                        $subindex = sprintf('%s[%s]', $key, $skey);
+                        $this->values[$subindex] = $sval;
+                    }
+                } else {
                     $this->values[$key] = $val;
                 }
             }
