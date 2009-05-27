@@ -404,7 +404,7 @@ class MyServer extends IXR_IntrospectionServer {
      * a trim call on the currentTagContents variable.
      */
     public function metaWeblog_newMediaObject($args) {
-        PHPWS_Core::requireConfig('core', 'file_types.php');
+        PHPWS_Core::requireInc('core', 'file_types.php');
         PHPWS_Core::initCoreClass('File.php');
         $allowed_images = unserialize(ALLOWED_IMAGE_TYPES);
 
