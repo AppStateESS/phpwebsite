@@ -357,20 +357,20 @@ class Menu_Link {
                                                                   $this->menu_id, $this->id, 'down', $down_link);
                         }
                     } elseif ($this->link_order != 1) {
-                        $template['MOVE_LINK_UP'] = sprintf('<a style="cursor : pointer" id="menu-indent-%s-%s" class="menu-indent">%s</a>',
+                        $template['LINK_INDENT'] = sprintf('<a style="cursor : pointer" id="menu-indent-%s-%s" class="menu-indent">%s</a>',
                                                             $this->menu_id, $this->id, MENU_LINK_INDENT_INCREASE);
                     }
 
                     if ($this->parent) {
-                        $template['MOVE_LINK_UP'] = sprintf('<a style="cursor : pointer" id="menu-outdent-%s-%s" class="menu-outdent">%s</a>',
+                        $template['LINK_OUTDENT'] = sprintf('<a style="cursor : pointer" id="menu-outdent-%s-%s" class="menu-outdent">%s</a>',
                                                             $this->menu_id, $this->id, MENU_LINK_INDENT_DECREASE);
                     }
 
                     if ($popup) {
-                        $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink(sprintf('%s %s', MENU_LINK_INDENT_INCREASE, dgettext('menu', 'Increase indent')),
+                        $template['LINK_INDENT'] = PHPWS_Text::secureLink(sprintf('%s %s', MENU_LINK_INDENT_INCREASE, dgettext('menu', 'Increase indent')),
                                                                            'menu', array('command'=>'indent_link', 'menu_id'=>$this->menu_id,
                                                                                          'link_id'=>$this->id, 'po'=>1));
-                        $template['MOVE_LINK_DOWN'] = PHPWS_Text::secureLink(sprintf('%s %s', MENU_LINK_INDENT_DECREASE, dgettext('menu', 'Decrease indent')),
+                        $template['LINK_OUTDENT'] = PHPWS_Text::secureLink(sprintf('%s %s', MENU_LINK_INDENT_DECREASE, dgettext('menu', 'Decrease indent')),
                                                                            'menu', array('command'=>'outdent_link', 'menu_id'=>$this->menu_id,
                                                                                          'link_id'=>$this->id, 'po'=>1));
                     }

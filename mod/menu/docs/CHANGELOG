@@ -1,3 +1,9 @@
++ Fixed up arrows not appearing. Thanks Verdon.
++ Updated:
+  templates/menu_layout/basic/link.tpl
+  templates/menu_layout/horizontal/link.tpl
+  templates/style.css
+
 Version 1.6.0
 ------------------------------------------------------------
 6 April 2009

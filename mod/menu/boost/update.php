@@ -162,6 +162,7 @@ Please download 1.2.1.</pre>';
                        'templates/menu_layout/horizontal/menu.tpl',
                        'templates/admin/settings.tpl',
                        'img/icon_indent.png',
+                       'img/icon_outdent.gif',
                        'javascript/admin_link/',
                        'conf/config.php'
                        );

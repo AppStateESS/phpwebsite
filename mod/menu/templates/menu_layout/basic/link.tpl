@@ -9,6 +9,8 @@
                 {ADD_SITE_LINK}
                 {EDIT_LINK}
                 {DELETE_LINK}
+                {LINK_INDENT}
+                {LINK_OUTDENT}
                 {MOVE_LINK_UP}
                 {MOVE_LINK_DOWN}
             </span>
