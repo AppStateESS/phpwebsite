@@ -356,7 +356,9 @@ class Menu_Link {
                             $template['MOVE_LINK_DOWN'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>',
                                                                   $this->menu_id, $this->id, 'down', $down_link);
                         }
-                    } elseif ($this->link_order != 1) {
+                    }
+
+                    if ($this->link_order != 1) {
                         $template['LINK_INDENT'] = sprintf('<a style="cursor : pointer" id="menu-indent-%s-%s" class="menu-indent">%s</a>',
                                                             $this->menu_id, $this->id, MENU_LINK_INDENT_INCREASE);
                     }
