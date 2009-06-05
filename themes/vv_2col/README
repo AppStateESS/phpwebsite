@@ -1,0 +1,84 @@
+This theme is meant to be a clean framework for a 2 column layout. It is
+not meant to be used as is and the colours are a little quirky on
+purpose. They should help you get a sense of the structure quickly
+though. I have tried to comment the css with enough information to get
+you started. Most people will only ever need to edit default.css to
+achieve many different looks and feels.
+
+Please don't re-order the main layout divs in theme.tpl. Moving these
+out of order will break the layout. This layout is search engine
+friendly in that it renders main content first, followed by left/right 
+column; without the css. I have also added a new content are to the 
+default set. I have added {BANNERS}.
+
+CSS Most of your work will be in default.css.
+
+position.css is where the main elements of the layout are defined. Go
+here to change the column widths and padding. Otherwise, you likely
+won't need to edit anything there.
+
+basic.css is where a lot of sizes and margins and stuff are defined. Go
+here to change font sizes and padding within boxes and so on.
+
+default.css is where all the colours and backgrounds and font styles and
+so on are defined. You can do most of your theme within this one file.
+
+You could easily add other alternate stylesheets, either for
+content-specific design, or just to provide options to visitors. To do
+that, refer to /docs/Theme_Creation.txt or to the default phpws theme
+for inspiration.
+
+CSS layout concept by..
+http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm
+
+Adapted for phpwebsite by verdonv
+Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
+
+
+NOTE ON CHANGING THIS TO A RIGHT COLUMN LAYOUT
+You only need to make a couple changes. 
+
+1) in position.css around lines 50-70 replace with the following
+
+/* 2 Column (right menu) settings */
+.rightmenu {
+    /*background:#eee;		/* right column background colour */
+}
+.rightmenu .colleft {
+    right:25%;			    /* right column width */
+    /*background:#fff;		/* left column background colour */
+}
+.rightmenu .col1 {
+    width:71%;			    /* left column content width (left column width minus left and right padding) */
+    left:27%;			    /* (right column width) plus (left column left padding) */
+}
+.rightmenu .col2 {
+    width:21%;			    /* right column content width (right column width minus left and right padding) */
+    left:31%;			    /* (right column width) plus (left column left and right padding) plus (right column left padding) */
+}
+
+
+2) in default.css around lines 49-65 replace with the following
+
+/* right column background colour */
+.rightmenu {
+    background: #CF9;
+}
+
+/* left column background */
+.rightmenu .colleft
+{
+	background-color: #fff;
+}
+
+/* right column contents background */
+.col2
+{
+	background-color: transparent;
+}
+
+
+3) In theme.tpl around line 36 replace with the following
+
+<div class="colmask rightmenu">
+
