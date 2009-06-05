@@ -1,0 +1,17 @@
+can I add extra fields to search, when saving listing
+
+should I add extras to unset vars area of listListings 
+improve readme
+improve about.html
+write checkfile
+do lang file
+check permissions again edit vs delete etc
+what about users delete/edit their own listings
+
+** TEST ** ADD NEW TYPES TO POST EXTRAS (FOR LISTINGS) vList class
+** TEST ** NEW TYPES TO GET EXTRAS (FOR VIEW LISTING) - Listing class
+** TEST ** ADD NEW TYPES TO ROW TAG (FOR LISTING) - Listing class
+
+** TEST ** test various user and anon submissions
+DONE - notice to admin on submission
+** TEST ** notice to admin on change

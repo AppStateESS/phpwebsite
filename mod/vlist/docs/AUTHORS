@@ -1,0 +1,16 @@
+# vlist - phpwebsite module
+# @version $Id: $
+# @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
+
+People who have made vlist possible (in alphabetical order):
+
+    Matt McNaney <mcnaney at gmail dot com>
+    - Help with advanced search result function
+
+	Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
+     - Lead developer
+
+vlist contains works from the following projects:
+
+    PHPWebSite
+    http://phpwebsite.appstate.edu

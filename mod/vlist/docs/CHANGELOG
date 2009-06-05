@@ -1,0 +1,13 @@
+Version 1.0.0 -- May 2009
+------------------------------------------------------------------
++ Initial writing of mod
+
+
+Version 1.0.1 -- May 2009
+------------------------------------------------------------------
++ Added setting for default sort order
++ Fixed false error when submiting with no custom fields defined
++ Removed option to enable 'text' types in advanced search as
+  it isn't necessary, and was misleading
++ Tweaked the date format in lists and views
++ Replaced a couple hard-coded Groups label with the one in settings
