@@ -1,5 +1,5 @@
 -- vlist - phpwebsite module
--- @version $Id: $
+-- @version $Id$
 -- @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
 
 CREATE TABLE vlist_listing (
