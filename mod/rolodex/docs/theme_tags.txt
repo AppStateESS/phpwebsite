@@ -1,0 +1,9 @@
+Rolodex only uses one theme tag.
+
+Name: sidebox
+Tag : RDX_SIDEBOX
+---------------
+Rolodex will put this content into the DEFAULT tag if the theme does not
+assign it. It contains a random featured member, if enabled in rolodex's
+settings.
+

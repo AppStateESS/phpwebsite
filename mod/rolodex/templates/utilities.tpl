@@ -1,0 +1,21 @@
+<fieldset>
+    <legend><strong>{MISC_GROUP_LABEL}</strong></legend>
+    <p>{EXPORT_CSV}</p>
+</fieldset>
+<fieldset>
+    <legend><strong>{EXPIRATION_GROUP_LABEL}</strong></legend>
+    <p>{RESET_EXPIRED}</p>
+    <p>{DELETE_EXPIRED}</p>
+</fieldset>
+<fieldset>
+    <legend><strong>{SEARCH_GROUP_LABEL}</strong></legend>
+    <p>{SEARCH_INDEX_ALL}</p>
+    <p>{SEARCH_REMOVE_ALL}</p>
+</fieldset>
+<fieldset>
+    <legend><strong>{COMMENTS_GROUP_LABEL}</strong></legend>
+    <p>{ALL_COMMENTS_YES}</p>
+    <p>{ALL_COMMENTS_NO}</p>
+    <p>{ALL_ANON_YES}</p>
+    <p>{ALL_ANON_NO}</p>
+</fieldset>

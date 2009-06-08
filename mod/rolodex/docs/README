@@ -1,0 +1,13 @@
+<p>Rolodex is a new module for phpwebsite 1.5 or better. It is a
+complete rewrite of my earlier module phpwsbusinesses, for the earlier
+series of phpws. If you were familiar with that module, you will be
+familiar with many of Rolodex's features.</p>
+
+<p>Roldex brings many new features and is even more configurable than
+phpwsbusinesses. Rolodex also takes full advantage of the new phpws core
+Demographics module. That module allows the sharing of user demographic
+information across all modules in a phpws.</p>
+
+<p>Please report any bugs or observations of this module in <a
+href="http://phpwsforums.com/showthread.php?t=5969" target="new">this
+post at phpwsforums.com</a></p>

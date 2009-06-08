@@ -1,0 +1,1042 @@
+# rolodex - phpwebsite module
+#
+# See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# @version $Id: $
+# @author Verdon Vaillancourt <verdonv at gmail dot com>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-11-22 15:57-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid " - %s"
+msgstr ""
+
+#, php-format
+msgid "%s Advanced Search"
+msgstr ""
+
+#, php-format
+msgid "%s Categories"
+msgstr ""
+
+#, php-format
+msgid "%s Features"
+msgstr ""
+
+#, php-format
+msgid "%s Locations"
+msgstr ""
+
+#, php-format
+msgid "%s Members"
+msgstr ""
+
+#, php-format
+msgid "%s Utilities"
+msgstr ""
+
+#, php-format
+msgid "%s expired member(s) were deleted."
+msgstr ""
+
+#, php-format
+msgid "%s's Website"
+msgstr ""
+
+msgid "Activate"
+msgstr ""
+
+#, php-format
+msgid "Activate user %s (%s)"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Add Feature"
+msgstr ""
+
+msgid "Add Location"
+msgstr ""
+
+msgid "Add my profile"
+msgstr ""
+
+msgid "Add/Edit member"
+msgstr ""
+
+msgid "Address to display on browse list views"
+msgstr ""
+
+msgid "Advanced"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "All current member records have been indexed with the search module."
+msgstr ""
+
+msgid "All current member records have been removed from the search module."
+msgstr ""
+
+#, php-format
+msgid "All expiry dates set to %s days from now."
+msgstr ""
+
+msgid "All fields are required."
+msgstr ""
+
+msgid "Allow anonymous comments"
+msgstr ""
+
+msgid "Allow anonymous comments has been set to no on all members."
+msgstr ""
+
+msgid "Allow anonymous comments has been set to yes on all members."
+msgstr ""
+
+msgid "Allow anonymous viewing"
+msgstr ""
+
+msgid "Allow comments has been set to no on all members."
+msgstr ""
+
+msgid "Allow comments has been set to yes on all members."
+msgstr ""
+
+msgid ""
+"Are you sure you want to delete all expired members?\\nEach user's "
+"demographic information will be retained for other modules, but all Rolodex "
+"information will be permanently removed."
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the feature %s?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the location %s?"
+msgstr ""
+
+#, php-format
+msgid ""
+"Are you sure you want to delete the member %s?\\nDemographic information "
+"will be retained for other modules, but all Rolodex member information will "
+"be permanently removed."
+msgstr ""
+
+msgid "Available users"
+msgstr ""
+
+msgid "Both"
+msgstr ""
+
+msgid "Browse all members"
+msgstr ""
+
+msgid "Browse members"
+msgstr ""
+
+msgid "Business"
+msgstr ""
+
+msgid "Business Address 1"
+msgstr ""
+
+msgid "Business Address 2"
+msgstr ""
+
+msgid "Business City"
+msgstr ""
+
+msgid "Business Country"
+msgstr ""
+
+msgid "Business Postal/Zip"
+msgstr ""
+
+msgid "Business Province/State"
+msgstr ""
+
+msgid "Business address"
+msgstr ""
+
+msgid "Business address 1"
+msgstr ""
+
+msgid "Business address 2"
+msgstr ""
+
+msgid "Business name"
+msgstr ""
+
+msgid "Business phone"
+msgstr ""
+
+msgid "Business phone numbers"
+msgstr ""
+
+msgid "Business/Organization"
+msgstr ""
+
+msgid "CSV Export"
+msgstr ""
+
+msgid "Categories"
+msgstr ""
+
+msgid "Category(s)"
+msgstr ""
+
+msgid "Check to clear image"
+msgstr ""
+
+#, php-format
+msgid "Check your %s then create a %s to begin"
+msgstr ""
+
+msgid "Check your admin contact e-mail address for formatting errors."
+msgstr ""
+
+msgid "Check your contact e-mail address for formatting errors."
+msgstr ""
+
+msgid "Check your website address for formatting errors."
+msgstr ""
+
+msgid "City"
+msgstr ""
+
+msgid "Clears filters and searches all records."
+msgstr ""
+
+msgid "Comments Settings"
+msgstr ""
+
+msgid "Comments utilities"
+msgstr ""
+
+msgid "Compose message"
+msgstr ""
+
+msgid "Confirm Graphic"
+msgstr ""
+
+msgid "Confirm text"
+msgstr ""
+
+msgid "Contact"
+msgstr ""
+
+#, php-format
+msgid "Contact e-mail (or leave empty to use %s)"
+msgstr ""
+
+msgid "Contact information"
+msgstr ""
+
+msgid "Contact link"
+msgstr ""
+
+msgid "Contact link type"
+msgstr ""
+
+msgid "Continue"
+msgstr ""
+
+msgid "Country"
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+#, php-format
+msgid "Create %s feature"
+msgstr ""
+
+#, php-format
+msgid "Create %s location"
+msgstr ""
+
+msgid "Create member profile"
+msgstr ""
+
+msgid "Creation date"
+msgstr ""
+
+msgid "Criteria"
+msgstr ""
+
+msgid "Custom Fields"
+msgstr ""
+
+msgid "Custom field eight name (internal use only)"
+msgstr ""
+
+msgid "Custom field five name (internal use only)"
+msgstr ""
+
+msgid "Custom field four name"
+msgstr ""
+
+msgid "Custom field one name"
+msgstr ""
+
+msgid "Custom field seven name (internal use only)"
+msgstr ""
+
+msgid "Custom field six name (internal use only)"
+msgstr ""
+
+msgid "Custom field three name"
+msgstr ""
+
+msgid "Custom field two name"
+msgstr ""
+
+msgid "Deactivate"
+msgstr ""
+
+#, php-format
+msgid "Deactivate user %s (%s)"
+msgstr ""
+
+msgid "Default expiry interval (in days), if expiry is enabled"
+msgstr ""
+
+msgid "Default sort lists by"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete all expired members"
+msgstr ""
+
+msgid "Delete member"
+msgstr ""
+
+msgid "Department"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Details"
+msgstr ""
+
+msgid "Display categories"
+msgstr ""
+
+msgid "Display features"
+msgstr ""
+
+msgid "Display locations"
+msgstr ""
+
+msgid "Display phone numbers"
+msgstr ""
+
+msgid "E-Mail"
+msgstr ""
+
+msgid "E-mail"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+#, php-format
+msgid "Edit email and password for %s (%s)"
+msgstr ""
+
+msgid "Edit feature"
+msgstr ""
+
+msgid "Edit location"
+msgstr ""
+
+msgid "Edit member"
+msgstr ""
+
+msgid "Edit my profile"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Email link"
+msgstr ""
+
+msgid "Enable Categories (uses core Categories)"
+msgstr ""
+
+msgid "Enable Features"
+msgstr ""
+
+msgid "Enable Locations"
+msgstr ""
+
+msgid ""
+"Enable anonymous comment settings on profiles (required for the next Force "
+"anonymous setting)"
+msgstr ""
+
+msgid ""
+"Enable comment settings on profiles (required for the rest of the Comments "
+"Settings)"
+msgstr ""
+
+msgid "Enable comments"
+msgstr ""
+
+msgid "Enable expiry on member profiles"
+msgstr ""
+
+msgid "Error occurred when saving feature."
+msgstr ""
+
+msgid "Error occurred when saving location."
+msgstr ""
+
+msgid "Error occurred when saving member profile."
+msgstr ""
+
+msgid "Error occurred when submitting member profile."
+msgstr ""
+
+msgid "Expiration utilities"
+msgstr ""
+
+#, php-format
+msgid "Expired %s Members"
+msgstr ""
+
+#, php-format
+msgid "Expired (%s)"
+msgstr ""
+
+msgid "Expiry date"
+msgstr ""
+
+msgid "Export records to csv"
+msgstr ""
+
+msgid "Ext"
+msgstr ""
+
+msgid "Extension"
+msgstr ""
+
+msgid "Extra"
+msgstr ""
+
+msgid "Fax"
+msgstr ""
+
+msgid "Feature deleted."
+msgstr ""
+
+msgid "Feature saved successfully."
+msgstr ""
+
+msgid "Feature(s)"
+msgstr ""
+
+msgid "Featured Member"
+msgstr ""
+
+msgid "Features"
+msgstr ""
+
+msgid "First Name"
+msgstr ""
+
+msgid "First name"
+msgstr ""
+
+msgid "Force anonymous comments enabled, on all profiles"
+msgstr ""
+
+msgid "Force comments enabled, on all profiles"
+msgstr ""
+
+msgid "General Settings"
+msgstr ""
+
+msgid "Get Google Map"
+msgstr ""
+
+msgid "Go"
+msgstr ""
+
+msgid "Hide Email/Contact link from public"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "Home Address 1"
+msgstr ""
+
+msgid "Home Address 2"
+msgstr ""
+
+msgid "Home City"
+msgstr ""
+
+msgid "Home Country"
+msgstr ""
+
+msgid "Home Postal/Zip"
+msgstr ""
+
+msgid "Home Province/State"
+msgstr ""
+
+msgid "Home address"
+msgstr ""
+
+msgid "Home phone"
+msgstr ""
+
+msgid "Home phone numbers"
+msgstr ""
+
+msgid "Honorific"
+msgstr ""
+
+msgid "I"
+msgstr ""
+
+#, php-format
+msgid ""
+"If you would like to help out with the ongoing development of Rolodex, or "
+"other modules by Verdon Vaillancourt, %s click here to donate %s (opens in "
+"new browser window)."
+msgstr ""
+
+msgid "Image Settings"
+msgstr ""
+
+msgid "Important Information"
+msgstr ""
+
+msgid "Last Name"
+msgstr ""
+
+msgid "Last name"
+msgstr ""
+
+msgid "List Members"
+msgstr ""
+
+msgid "List Options"
+msgstr ""
+
+msgid "Location deleted."
+msgstr ""
+
+msgid "Location saved successfully."
+msgstr ""
+
+msgid "Location(s)"
+msgstr ""
+
+msgid "Locations"
+msgstr ""
+
+msgid "Mailing address 1"
+msgstr ""
+
+msgid "Mailing address 2"
+msgstr ""
+
+msgid "Manage a member directory of any sort."
+msgstr ""
+
+#, php-format
+msgid "Manage my %s profile"
+msgstr ""
+
+msgid "Maximum image height (50-600)"
+msgstr ""
+
+msgid "Maximum image height for locations/features (20-400)"
+msgstr ""
+
+msgid "Maximum image width (50-600)"
+msgstr ""
+
+msgid "Maximum image width for locations/features (20-400)"
+msgstr ""
+
+msgid "Maximum thumbnail height (40-200)"
+msgstr ""
+
+msgid "Maximum thumbnail width (40-200)"
+msgstr ""
+
+msgid "Member profile saved successfully."
+msgstr ""
+
+msgid "Member profile submitted successfully. An admin will review."
+msgstr ""
+
+msgid "Members only"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Message sent succesfully."
+msgstr ""
+
+msgid "Miscellaneous"
+msgstr ""
+
+#, php-format
+msgid "Modified %s Profile"
+msgstr ""
+
+msgid "Most Recent Member"
+msgstr ""
+
+msgid "Most recent"
+msgstr ""
+
+msgid "New Feature"
+msgstr ""
+
+msgid "New Image (Clears current image)"
+msgstr ""
+
+msgid "New Location"
+msgstr ""
+
+msgid "New Member"
+msgstr ""
+
+msgid "New member step one"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No choices configured."
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Not Active"
+msgstr ""
+
+msgid "Organizing/Classifying Options"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+#, php-format
+msgid "Pending %s Application"
+msgstr ""
+
+msgid "Please provide a message."
+msgstr ""
+
+msgid "Please provide a module title."
+msgstr ""
+
+msgid "Please provide a subject."
+msgstr ""
+
+msgid "Please provide your email address."
+msgstr ""
+
+msgid "Please provide your name."
+msgstr ""
+
+msgid "Please type the word seen in the image."
+msgstr ""
+
+msgid "Position title"
+msgstr ""
+
+msgid "Postal/Zip code"
+msgstr ""
+
+msgid "Privacy Settings"
+msgstr ""
+
+msgid "Privacy level"
+msgstr ""
+
+msgid "Private"
+msgstr ""
+
+msgid "Profile"
+msgstr ""
+
+msgid "Province/State"
+msgstr ""
+
+msgid "Public"
+msgstr ""
+
+msgid "Random"
+msgstr ""
+
+msgid "Read me"
+msgstr ""
+
+msgid "Register all current rolodex records to the search module"
+msgstr ""
+
+msgid "Register records in search module"
+msgstr ""
+
+msgid "Remove all current rolodex records from the search module"
+msgstr ""
+
+msgid "Require approval for new profiles"
+msgstr ""
+
+msgid "Reset \"Allow anonymous comments\" on all records to no"
+msgstr ""
+
+msgid "Reset \"Allow anonymous comments\" on all records to yes"
+msgstr ""
+
+msgid "Reset \"Allow comments\" on all records to no"
+msgstr ""
+
+msgid "Reset \"Allow comments\" on all records to yes"
+msgstr ""
+
+#, php-format
+msgid "Reset all expiry dates to %s days from now"
+msgstr ""
+
+msgid "Restricted users"
+msgstr ""
+
+msgid "Rolodex"
+msgstr ""
+
+msgid "Rolodex images removed."
+msgstr ""
+
+msgid "Rolodex member activated."
+msgstr ""
+
+msgid "Rolodex member deactivated."
+msgstr ""
+
+msgid "Rolodex member deleted."
+msgstr ""
+
+msgid "Rolodex member is missing user id."
+msgstr ""
+
+msgid "Rolodex settings saved."
+msgstr ""
+
+msgid "Rolodex tables dropped."
+msgstr ""
+
+msgid "Save settings"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+#, php-format
+msgid "Search %s"
+msgstr ""
+
+msgid ""
+"Search indexing is disabled in Rolodex settings. You must enable it there "
+"before you may perform this action."
+msgstr ""
+
+msgid ""
+"Search indexing is enabled in Rolodex settings. You must disable it there "
+"before you may perform this action."
+msgstr ""
+
+msgid "Search utilities"
+msgstr ""
+
+#, php-format
+msgid "Search within %s."
+msgstr ""
+
+msgid "Select checkbox to also include field in list view"
+msgstr ""
+
+msgid ""
+"Select one or more of the available options below to filter a list of "
+"members. It is possible to get too specific. If your search returns an empty "
+"list, try selecting fewer criteria."
+msgstr ""
+
+msgid "Semi-private"
+msgstr ""
+
+msgid "Send Message"
+msgstr ""
+
+#, php-format
+msgid "Send a message to %s"
+msgstr ""
+
+msgid "Send notification of pending applications"
+msgstr ""
+
+msgid "Send notification upon all member edits (not those done by an admin)"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Settings & Utilities"
+msgstr ""
+
+msgid "Show on home only"
+msgstr ""
+
+msgid "Show rolodex block"
+msgstr ""
+
+msgid ""
+"Sorry, anonymous member viewing is not allowed. You will need to login to "
+"view this directory."
+msgstr ""
+
+msgid ""
+"Sorry, anonymous member viewing is not allowed. You will need to login to "
+"view this member."
+msgstr ""
+
+msgid "Sorry, no features are available at this time."
+msgstr ""
+
+msgid "Sorry, no locations are available at this time."
+msgstr ""
+
+msgid ""
+"Sorry, no members are available at this time. Try broadening your search or "
+"returning later."
+msgstr ""
+
+msgid "Sorry, the readme file does not exist."
+msgstr ""
+
+msgid ""
+"Sorry, there are no users available. You will have to create a user account "
+"first."
+msgstr ""
+
+msgid "Sorry, this membership has expired."
+msgstr ""
+
+msgid "Sorry, this user has restricted privacy settings."
+msgstr ""
+
+msgid "Sorry, your access does not allow CSV exporting."
+msgstr ""
+
+msgid "Subject"
+msgstr ""
+
+msgid "Submit"
+msgstr ""
+
+msgid "Submit member profile"
+msgstr ""
+
+msgid "Submit my profile"
+msgstr ""
+
+#, php-format
+msgid "The %s profile for %s has been modified at %s."
+msgstr ""
+
+msgid "The admin contact email address for this module"
+msgstr ""
+
+msgid ""
+"The display title for this module, eg. Members, or Businesses, or Contacts"
+msgstr ""
+
+msgid ""
+"The following settings respect the privacy settings above and do not over-"
+"ride them."
+msgstr ""
+
+msgid "There was a problem deleting the image."
+msgstr ""
+
+msgid ""
+"There was a problem deleting the rolodex images. You may want to do it "
+"manually."
+msgstr ""
+
+msgid "There was a problem saving your image."
+msgstr ""
+
+msgid "There was a problem saving your thumbnail image."
+msgstr ""
+
+msgid "There was a problem sending the message."
+msgstr ""
+
+msgid "There were no expired records to delete."
+msgstr ""
+
+#, php-format
+msgid "This message from %s was sent via %s."
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid ""
+"To select more than one itme from any given list, click on the first item "
+"then hold your control key and click on the next. Use shift-click to select "
+"a range of items. Mac users, use command-click and shift-click."
+msgstr ""
+
+msgid ""
+"To use the category, location, or feature lists, select an item from the "
+"list and click on the \"+\" symbool to add the selection to this profile. To "
+"remove a selection, click on the name of the item in the box below the "
+"select menu."
+msgstr ""
+
+msgid "Toll-free phone"
+msgstr ""
+
+msgid "Tollfree"
+msgstr ""
+
+#, php-format
+msgid "Unapproved %s Members"
+msgstr ""
+
+#, php-format
+msgid "Unapproved (%s)"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+#, php-format
+msgid "Update %s feature"
+msgstr ""
+
+#, php-format
+msgid "Update %s location"
+msgstr ""
+
+msgid "Update member profile"
+msgstr ""
+
+msgid "Updated"
+msgstr ""
+
+msgid "Updated date"
+msgstr ""
+
+msgid "Use graphical confirmation on contact form (CAPTCHA)"
+msgstr ""
+
+msgid "User options"
+msgstr ""
+
+msgid "Utilities"
+msgstr ""
+
+msgid "Utilities, Locations, Features & Change settings (Unrestricted only)"
+msgstr ""
+
+msgid "View Details"
+msgstr ""
+
+msgid "View private members"
+msgstr ""
+
+msgid "Web"
+msgstr ""
+
+msgid "Web form"
+msgstr ""
+
+msgid "Web site"
+msgstr ""
+
+msgid "Website"
+msgstr ""
+
+msgid "Website link"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+#, php-format
+msgid "You have a new %s application from %s waiting for your review at %s."
+msgstr ""
+
+msgid "You may only edit your own profile."
+msgstr ""
+
+msgid ""
+"You may use up to 8 custom fields. To add a field to your member profile "
+"template, enter a title for it here. Fields 1-4 follow whatever other "
+"security/privacy settings are in place. Fields 5-8 are only visible to "
+"Rolodex admins. Leave these fields empty if you do not wish to add custom "
+"fields to your profiles."
+msgstr ""
+
+msgid "You must give this feature a title."
+msgstr ""
+
+msgid "You must give this location a title."
+msgstr ""
+
+msgid "Your email"
+msgstr ""
+
+msgid "Your email address is improperly formatted."
+msgstr ""
+
+msgid "Your name"
+msgstr ""
