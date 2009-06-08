@@ -1,0 +1,29 @@
+* maybe ok now * improve the item and dept lists
+* done * add weight field to items, even if I don't use it yet
+* done * add dates to orders
+* done * add support for currency symbol
+* done * add status (pending/shipped/etc) to orders
+* done * need a 'completed' flag on orders to indicate payment step completed and not abandonned
+* done * inventory control functions
+    switch to allow back-ordering?
+* done * reorganize settings form
+* done * something for shipping
+* done * admin notices are not getting mailed
+* done * payment methods
+* done * view_order screen
+* done * think about a cancel order as opposed to a delete order function
+* done * security audit
+* done * improve notification messages
+* done * add IP address to order
+* done * thanks screen after succesful checkout process
+* done * PROBLEMS WITH ID AND OPTION_NAME_ID BEING THE SAME WHEN MAKING OPTION VALUES
+
+should I set default texts in settings file?
+reports
+another security audit ;) - check view_order
+further improve notification messages
+improve thanks screen after succesful checkout process
+
+CLEAN UP ORPHANS WHEN DELETING OPTION SETS, VALUES, ITEMS, ???
+
+WHAT TO DO ABOUT ADDING MULTIPLE ITEMS TO CART WITH DIFFERENT OPTIONS?
