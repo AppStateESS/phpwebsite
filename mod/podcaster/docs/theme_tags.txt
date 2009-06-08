@@ -1,0 +1,9 @@
+Podcaster only uses one theme tag.
+
+Name: sidebox
+Tag : PCR_SIDEBOX
+---------------
+Podcaster will put this content into the DEFAULT tag if the theme does
+not assign it. It contains either the most recent or a random episode,
+in a sidebox, if enabled in podcaster's settings.
+
