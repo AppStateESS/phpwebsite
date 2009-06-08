@@ -1,0 +1,18 @@
+<p>This is the first release of elections for the new 1.x series
+phpwebsite. </p>
+
+<p>Elections is a module that allows you to run one or more elections
+(ballots). A ballot may have a title, a description, an image, and any
+number of candidates. Ballots may be set to be public viewable (or not),
+public may vote (or not), min and max selections settings, and many
+other options. Ballots may also be set to allow ranking of candidates
+(assign points to candidates).</p>
+
+<p>Candidates may have a title, description and image, as well as up to
+four optional custom fields.</p>
+
+<p>Although voting is logged, only the fact that a vote was cast is
+logged. All voting is secret. At this time, a recorded vote is not
+supported.<p>
+
+<p>There are many options, settings and reports. Please explore.</p>

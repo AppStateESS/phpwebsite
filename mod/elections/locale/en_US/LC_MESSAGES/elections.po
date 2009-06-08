@@ -1,0 +1,507 @@
+# elections - phpwebsite module
+#
+# See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# @version $Id: $
+# @author Verdon Vaillancourt <verdonv at gmail dot com>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-03-03 10:19-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid " choice(s)."
+msgstr ""
+
+msgid " of "
+msgstr ""
+
+msgid ""
+" possible votes. Click OK to post your vote(s) or cancel to make a change."
+msgstr ""
+
+msgid " to proceed."
+msgstr ""
+
+#, php-format
+msgid "%s Ballots"
+msgstr ""
+
+#, php-format
+msgid "%s Candidates"
+msgstr ""
+
+#, php-format
+msgid "%s Voting Log"
+msgstr ""
+
+msgid "- All -"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Add Candidate"
+msgstr ""
+
+#, php-format
+msgid "Add candidate to %s"
+msgstr ""
+
+msgid "Allow public to view this ballot"
+msgstr ""
+
+msgid "Allow public to vote in this election"
+msgstr ""
+
+msgid "An error occurred when accessing this ballot's candidates."
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the ballot %s?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the candidate %s?"
+msgstr ""
+
+#, php-format
+msgid ""
+"Are you sure you want to delete the vote %s? This will not take back the "
+"votes, just remove this record from the log."
+msgstr ""
+
+msgid "Are you sure you wish to purge the selected logs"
+msgstr ""
+
+msgid "Available ballots"
+msgstr ""
+
+msgid "Ballot"
+msgstr ""
+
+msgid "Ballot ID"
+msgstr ""
+
+msgid "Ballot deleted."
+msgstr ""
+
+msgid "Ballot saved successfully."
+msgstr ""
+
+msgid "Browse all ballots"
+msgstr ""
+
+msgid "Candidate deleted."
+msgstr ""
+
+msgid "Candidate saved successfully."
+msgstr ""
+
+msgid "Candidates"
+msgstr ""
+
+#, php-format
+msgid "Check your %s then create a %s to begin"
+msgstr ""
+
+msgid ""
+"Choose ALL candidates, or by ballot. Nummber in parenthesis represents "
+"number of candidates in ballot."
+msgstr ""
+
+msgid ""
+"Choose ALL records, or by ballot. Nummber in parenthesis represents ballots "
+"cast."
+msgstr ""
+
+msgid ""
+"Choose ALL results, or by ballot. Nummber in parenthesis represents ballots "
+"cast."
+msgstr ""
+
+msgid "Click on \"New candidate\" to start."
+msgstr ""
+
+msgid "Closes"
+msgstr ""
+
+msgid "Closing date/time"
+msgstr ""
+
+msgid "Continue"
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+msgid "Create elections ballot"
+msgstr ""
+
+msgid "Custom Field 1 Label"
+msgstr ""
+
+msgid "Custom Field 2 Label"
+msgstr ""
+
+msgid "Custom Field 3 Label"
+msgstr ""
+
+msgid "Custom Field 4 Label"
+msgstr ""
+
+msgid "Custom Fields"
+msgstr ""
+
+msgid "Default open time of election (in days, 1-365)"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Details"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edit ballot"
+msgstr ""
+
+msgid "Edit candidate"
+msgstr ""
+
+msgid "Election settings saved."
+msgstr ""
+
+msgid "Elections"
+msgstr ""
+
+msgid "Elections tables dropped."
+msgstr ""
+
+msgid "Enable candidate ranking instead of simple selection"
+msgstr ""
+
+msgid "Enable elections"
+msgstr ""
+
+msgid "Enable elections sidebox"
+msgstr ""
+
+msgid "Enable images on candidate profiles"
+msgstr ""
+
+msgid "Error occurred when purging logs."
+msgstr ""
+
+msgid "Error occurred when registering vote."
+msgstr ""
+
+msgid "Error occurred when saving ballot."
+msgstr ""
+
+msgid "Error occurred when saving candidate."
+msgstr ""
+
+msgid "Export voting log"
+msgstr ""
+
+msgid "Export voting results"
+msgstr ""
+
+msgid "Fatal error: Cannot create candidate. Missing ballot id."
+msgstr ""
+
+msgid "General Settings"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "IP Address"
+msgstr ""
+
+msgid ""
+"If you wish to restrict voting on this ballot to a particular group of "
+"members, choose the group(s) you wish to restrict access to. Press CTRL and "
+"Click to select multiple groups, press CTRL and Click again to deselect an "
+"option."
+msgstr ""
+
+#, php-format
+msgid ""
+"If you would like to help out with the ongoing development of elections, or "
+"other modules by Verdon Vaillancourt, %s click here to donate %s (opens in "
+"new browser window)."
+msgstr ""
+
+msgid "Important Information"
+msgstr ""
+
+msgid "Include is missing file id."
+msgstr ""
+
+msgid "List Ballots"
+msgstr ""
+
+msgid "List ballots"
+msgstr ""
+
+msgid "List candidates by ballot"
+msgstr ""
+
+msgid "List in side-box"
+msgstr ""
+
+msgid "List in sidebox (if sidebox is set to visible in Elections settings)."
+msgstr ""
+
+msgid "List voting log"
+msgstr ""
+
+msgid "List voting results"
+msgstr ""
+
+msgid "Logs successfully purged."
+msgstr ""
+
+msgid "Maximum # of selections a voter may mark on this ballot"
+msgstr ""
+
+msgid "Maximum choices allowed"
+msgstr ""
+
+msgid "Maximum image height (50-600)"
+msgstr ""
+
+msgid "Maximum image width (50-600)"
+msgstr ""
+
+msgid "Minimum # of selections a voter may mark on this ballot"
+msgstr ""
+
+msgid "Minimum choices allowed"
+msgstr ""
+
+msgid "Module title"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "New Ballot"
+msgstr ""
+
+msgid "New Candidate"
+msgstr ""
+
+msgid "New candidate step one"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No ballots created."
+msgstr ""
+
+msgid "No groups configured."
+msgstr ""
+
+msgid "Opening date/time"
+msgstr ""
+
+msgid "Opens"
+msgstr ""
+
+msgid "Profile"
+msgstr ""
+
+msgid "Public may view"
+msgstr ""
+
+msgid "Public may vote"
+msgstr ""
+
+msgid "Public voting is not allowed for this ballot. You must log in first."
+msgstr ""
+
+msgid "Purge voting log"
+msgstr ""
+
+msgid "Read me"
+msgstr ""
+
+msgid "Reports"
+msgstr ""
+
+msgid "Results"
+msgstr ""
+
+msgid "Save settings"
+msgstr ""
+
+msgid "Select ballot"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Show sidebox on home page only"
+msgstr ""
+
+msgid "Sidebox text"
+msgstr ""
+
+msgid "Sorry, the readme file does not exist."
+msgstr ""
+
+msgid ""
+"Sorry, there are no ballots available. You will have to create a ballot "
+"first."
+msgstr ""
+
+msgid "Submit"
+msgstr ""
+
+msgid ""
+"Thank you for your interest. However, all elections are currently closed."
+msgstr ""
+
+msgid "This ballot is not available to the general public."
+msgstr ""
+
+msgid "This is a restricted area."
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+#, php-format
+msgid "Update %s candidate"
+msgstr ""
+
+msgid "Update elections ballot"
+msgstr ""
+
+msgid "Username"
+msgstr ""
+
+msgid ""
+"Using these will add fields to the candidate template for this election."
+msgstr ""
+
+#, php-format
+msgid ""
+"VOTING ERROR: You are only allowed to make %s selections. Please try again."
+msgstr ""
+
+#, php-format
+msgid "VOTING ERROR: You must make at least %s selection(s). Please try again."
+msgstr ""
+
+msgid "Vote"
+msgstr ""
+
+msgid "Vote Date"
+msgstr ""
+
+msgid "Vote date"
+msgstr ""
+
+msgid "Vote registered successfully."
+msgstr ""
+
+msgid "Votes"
+msgstr ""
+
+msgid "Voting Groups"
+msgstr ""
+
+msgid "Voting closes"
+msgstr ""
+
+msgid "Voting has closed for this ballot."
+msgstr ""
+
+msgid "Voting has not opened yet for this ballot."
+msgstr ""
+
+msgid "Voting is open for this election."
+msgstr ""
+
+msgid "Voting log"
+msgstr ""
+
+msgid "Voting opens"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "You are not a member of an authorized voting group for this ballot."
+msgstr ""
+
+msgid "You have already voted in this ballot."
+msgstr ""
+
+msgid "You have cast "
+msgstr ""
+
+msgid "You have made too many choices and must reduce your number by "
+msgstr ""
+
+#, php-format
+msgid "You may cast %s vote on this ballot."
+msgstr ""
+
+#, php-format
+msgid "You may cast from %s to %s votes on this ballot."
+msgstr ""
+
+msgid "You must give this ballot a description."
+msgstr ""
+
+msgid "You must give this ballot a title."
+msgstr ""
+
+msgid "You must give this candidate a description."
+msgstr ""
+
+msgid "You must give this candidate a title."
+msgstr ""
+
+msgid "You must make at least "
+msgstr ""
+
+#, php-format
+msgid "Your vote has been cast for candidate %s"
+msgstr ""

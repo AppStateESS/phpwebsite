@@ -1,0 +1,15 @@
+Version 2.0.0 -- Feb 2009
+------------------------------------------------------------------
++ Initial rough-in of mod
+
+Version 2.0.1 -- Mar 2009
+------------------------------------------------------------------
++ Fixed duplicate error when editing candidates
++ Fixed saving image/file with candidate and ballot
++ Added image/file to views for ballots and candidates
++ Some tweaks to language
++ Added javascriptEnabled() checks around js checking in cast 
+  ballot form and provided non-js alternatives
++ Some optimizing of code
++ Some code tidy up
+
