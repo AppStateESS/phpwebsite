@@ -1,0 +1,286 @@
+# vmail - phpwebsite module
+#
+# See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# @version $Id: $
+# @author Verdon Vaillancourt <verdonv at gmail dot com>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-03-22 22:52-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "%s Recipients"
+msgstr ""
+
+#, php-format
+msgid "%s inactive"
+msgstr ""
+
+#, php-format
+msgid "%s message sent"
+msgstr ""
+
+msgid "Activate"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Add new recipient"
+msgstr ""
+
+msgid "Add/Edit recipient"
+msgstr ""
+
+msgid "Address"
+msgstr ""
+
+msgid "All fields are required."
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the recipient %s?"
+msgstr ""
+
+msgid "Available recipients"
+msgstr ""
+
+msgid "Change settings (Unrestricted only)"
+msgstr ""
+
+msgid "Check the e-mail address for formatting errors."
+msgstr ""
+
+#, php-format
+msgid "Check your %s then create a %s to begin"
+msgstr ""
+
+msgid "Compose message"
+msgstr ""
+
+msgid "Confirm text"
+msgstr ""
+
+msgid "Confirmation phrase is not correct."
+msgstr ""
+
+msgid "Contact"
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+msgid "Create recipient"
+msgstr ""
+
+msgid "Deactivate"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete recipient"
+msgstr ""
+
+msgid "Details"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edit recipient"
+msgstr ""
+
+msgid "Enable vmail sidebox"
+msgstr ""
+
+msgid "Error occurred when saving recipient."
+msgstr ""
+
+msgid "General Settings"
+msgstr ""
+
+#, php-format
+msgid ""
+"If you would like to help out with the ongoing development of vmail, or "
+"other modules by Verdon Vaillancourt, %s click here to donate %s (opens in "
+"new browser window)."
+msgstr ""
+
+msgid "Important Information"
+msgstr ""
+
+msgid "Label"
+msgstr ""
+
+msgid "List Recipients"
+msgstr ""
+
+msgid "List all recipients"
+msgstr ""
+
+msgid "Lock subject"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Message sent succesfully."
+msgstr ""
+
+msgid "Message subject"
+msgstr ""
+
+msgid "New Recipient"
+msgstr ""
+
+msgid "Please provide a message."
+msgstr ""
+
+msgid "Please provide a module title."
+msgstr ""
+
+msgid "Please provide a subject."
+msgstr ""
+
+msgid "Please provide your email address."
+msgstr ""
+
+msgid "Please provide your name."
+msgstr ""
+
+msgid "Post submission message to sender"
+msgstr ""
+
+msgid "Read me"
+msgstr ""
+
+#, php-format
+msgid "Recipient %s activated."
+msgstr ""
+
+#, php-format
+msgid "Recipient %s deactivated."
+msgstr ""
+
+#, php-format
+msgid "Recipient %s deleted."
+msgstr ""
+
+msgid "Recipient email address"
+msgstr ""
+
+msgid "Recipient label/name"
+msgstr ""
+
+msgid "Recipient saved successfully."
+msgstr ""
+
+msgid "Save settings"
+msgstr ""
+
+msgid "Send Message"
+msgstr ""
+
+#, php-format
+msgid "Send a message to %s"
+msgstr ""
+
+#, php-format
+msgid "Sent from IP Address: %s"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Show sidebox on home page only"
+msgstr ""
+
+msgid "Sidebox text"
+msgstr ""
+
+msgid "Sorry, the readme file does not exist."
+msgstr ""
+
+msgid "Sorry, there are no recipients available at the moment."
+msgstr ""
+
+msgid "Sorry, there was a problem sending the message."
+msgstr ""
+
+msgid "Subject"
+msgstr ""
+
+msgid "Subject prefix (not seen by sender)"
+msgstr ""
+
+msgid "The display title for this module, eg. vMail, Contacts, etc."
+msgstr ""
+
+#, php-format
+msgid "This message from %s was sent via %s."
+msgstr ""
+
+msgid "This recipient is currently not active."
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+#, php-format
+msgid "Update recipient %s"
+msgstr ""
+
+msgid "Use graphical confirmation on vmail form (CAPTCHA)"
+msgstr ""
+
+msgid "You must give this recipient a label."
+msgstr ""
+
+msgid "You must give this recipient a subject."
+msgstr ""
+
+msgid "You must give this recipient a valid email address."
+msgstr ""
+
+msgid "Your email"
+msgstr ""
+
+msgid "Your email address is improperly formatted."
+msgstr ""
+
+msgid "Your message was sent to"
+msgstr ""
+
+msgid "Your name"
+msgstr ""
+
+msgid "vMail settings saved."
+msgstr ""
+
+msgid "vMail tables dropped."
+msgstr ""

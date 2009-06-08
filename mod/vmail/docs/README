@@ -1,0 +1,7 @@
+<p>This is the first version of vMail for phpWebsite 1.x. It was
+inspired by the mailto module for 0.x but goes a bit further</p>
+
+<p>vMail allows you to create spam-proof mailto forms. Forms are keyed
+items and may be easily added to menus or other content. A list of all
+vMail recipients is provided, as well as an optional sidebox for a quick
+contacts list.</p>
