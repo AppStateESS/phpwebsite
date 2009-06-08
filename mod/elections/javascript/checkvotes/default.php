@@ -1,6 +1,6 @@
 <?php
 /**
-    * @version $Id: $
+    * @version $Id$
     * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
