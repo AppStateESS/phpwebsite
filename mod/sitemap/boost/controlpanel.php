@@ -19,7 +19,7 @@
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     *
     * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
+    * @author Verdon Vaillancourt <verdonv at gmail dot com>
 */
 
 $link[] = array('label' => dgettext('menu', 'Sitemap'),

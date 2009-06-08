@@ -17,7 +17,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 # @version $Id: sitemap.po,v 1.2 2008/07/16 19:07:15 verdonv Exp $
-# @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
+# @author Verdon Vaillancourt <verdonv at gmail dot com>
 #
 msgid ""
 msgstr ""

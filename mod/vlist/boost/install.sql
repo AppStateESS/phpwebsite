@@ -1,6 +1,6 @@
 -- vlist - phpwebsite module
 -- @version $Id$
--- @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
+-- @author Verdon Vaillancourt <verdonv at gmail dot com>
 
 CREATE TABLE vlist_listing (
     id              int not null default 0,

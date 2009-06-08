@@ -17,7 +17,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 # @version $Id: whatsnew.po,v 1.4 2009/02/11 15:54:28 verdonv Exp $
-# @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
+# @author Verdon Vaillancourt <verdonv at gmail dot com>
 #
 msgid ""
 msgstr ""

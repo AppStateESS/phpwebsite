@@ -1,6 +1,6 @@
 -- skeleton - phpwebsite module
 -- @version $Id: $
--- @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
+-- @author Verdon Vaillancourt <verdonv at gmail dot com>
 
 CREATE TABLE skeleton_skeletons (
     id              int not null default 0,
