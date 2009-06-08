@@ -590,6 +590,7 @@ class PageSmith {
         $db->addColumn('url');
         $db->addColumn('key_id');
         $db->addWhere('url', '%index.php?module=pagesmith&uop=view_page%', 'like');
+        $db->addWhere('url', '%index.php?module=pagesmith&id=%', 'like', 'or');
         $result = $db->select();
 
         if (empty($result)) {
@@ -603,7 +604,7 @@ class PageSmith {
         $db2 = new PHPWS_DB('phpws_key');
 
         foreach ($result as $link) {
-            $link['url'] = preg_replace('@index.php\?module=pagesmith&uop=view_page&id=(\d+)$@', 'pagesmith/\\1', $link['url']);
+            $link['url'] = preg_replace('@index.php\?module=pagesmith(&uop=view_page)?&id=(\d+)$@', 'pagesmith/\\2', $link['url']);
             $db->addValue($link);
             $db->addWhere('id', $link['id']);
             if (!PHPWS_Error::logIfError($db->update()) && $link['key_id']) {
