@@ -1,0 +1,672 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: phpws 1.6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-02-10 15:57-0500\n"
+"PO-Revision-Date: 2009-04-12 16:55+0100\n"
+"Last-Translator: Youpla <Youpla@boum.fr>\n"
+"Language-Team: fr <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+
+msgid "\"Stick\" this Topic"
+msgstr "\"Coller\" ce sujet"
+
+msgid "\"Unstick\" this Topic"
+msgstr "\"Décoller\" ce sujet"
+
+#, php-format
+msgid "%1$s %2$s<br />by %3$s"
+msgstr "%1$s %2$s<br />par %3$s"
+
+msgid "Add"
+msgstr "Ajouter"
+
+msgid "Add a Forum Moderator"
+msgstr "Ajouter un modérateur de forum"
+
+msgid "Add a New Forum"
+msgstr "Ajouter un nouveau forum"
+
+msgid "Add this item's discussion to the phpwsbb Bulletin Board module"
+msgstr "Ajouter la discussion de cet élément dans le module phpwsbb"
+
+msgid "Admin Settings"
+msgstr "Paramètres d'administration"
+
+msgid "All comments preapproved"
+msgstr "Tous les commentaires sont préapprouvés"
+
+msgid "All comments require approval"
+msgstr "Tous les commentaires nécessitent une approbation"
+
+msgid "All forums have been updated"
+msgstr "Tous les forums ont été mis à jour"
+
+msgid "All threads have been updated"
+msgstr "Tous les fils ont été mis à jour"
+
+msgid "Allow Anonymous Posts"
+msgstr "Autoriser les envois anonymes"
+
+msgid "Allow unregistered users to post messages"
+msgstr "Autoriser les utilisateurs non enregistrés à envoyer des messages"
+
+msgid "Anonymous Users"
+msgstr "Utilisateurs anonymes"
+
+msgid "Anonymous comments require approval"
+msgstr "Les commentaires anonymes nécessitent une approbation"
+
+msgid "Assign"
+msgstr "Affecter"
+
+#, php-format
+msgid "Assign %1$s \"%2$s\" to a Forum"
+msgstr "Affecter %1$s \"%2$s\" à un forum"
+
+msgid "Assign to a Forum"
+msgstr "Affecter à un forum"
+
+msgid "Assigned to Category"
+msgstr "Affecté à la catégorie"
+
+#, php-format
+msgid "Back to \"%s\""
+msgstr "Retour vers \"%s\""
+
+#, php-format
+msgid "Back to Forum \"%s\""
+msgstr "Retour au forum \"%s\""
+
+msgid "Back to Forum Listing"
+msgstr "Retour à la liste des forums"
+
+msgid "Back to Main Listing"
+msgstr "Retour à la liste principale"
+
+#, php-format
+msgid "Back to Topic \"%s\""
+msgstr "Retour au sujet \"%s\""
+
+msgid "Blocks"
+msgstr "Blocs"
+
+msgid "Bulletin Board Forums"
+msgstr "Forums de discussion"
+
+msgid "Bulletin Board tables removed."
+msgstr "Les tables de phpwsBB ont été retirées."
+
+msgid "Bulletin Boards"
+msgstr "Discussions"
+
+msgid "Category"
+msgstr "Catégorie"
+
+msgid "Close Window"
+msgstr "Fermer la fenêtre"
+
+msgid "Closed Forum"
+msgstr "Forum fermé"
+
+msgid "Closed topic"
+msgstr "Sujet fermé"
+
+msgid "Closest matches below."
+msgstr "Correspondances les plus proches ci-dessous."
+
+msgid "Comment"
+msgstr "Commentaire"
+
+msgid "Could not move comments to the new topic"
+msgstr "Impossible de déplacer les commentaires vers le nouveau sujet"
+
+msgid "Could not update comment count in table \"comments_threads\""
+msgstr "Impossible de mettre à jour le nombre de commentaires dans la table \"comments_threads\""
+
+msgid "Create a New Forum"
+msgstr "Créer un nouveau forum"
+
+#, php-format
+msgid "Create a New Topic in Forum \"%s\""
+msgstr "Créer un nouveau sujet dans le forum \"%s\""
+
+msgid "Create a new Topic in"
+msgstr "Créer un nouveau sujet dans"
+
+msgid "Current Forum"
+msgstr "Forum actuel"
+
+msgid "Default approval"
+msgstr "Approbation par défaut"
+
+msgid "Delete Confirmation"
+msgstr "Confirmez la suppression"
+
+msgid "Delete Threads"
+msgstr "Supprimer les fils"
+
+msgid "Delete this Forum"
+msgstr "Supprimer ce forum"
+
+msgid "Delete this Topic"
+msgstr "Supprimer ce sujet"
+
+msgid "Drop"
+msgstr "Retirer"
+
+msgid "Drop from phpwsbb"
+msgstr "Retirer de phpwsbb"
+
+msgid "Drop this moderator from the forum."
+msgstr "Retirer ce modérateur de ce forum."
+
+msgid "ERROR: Could not save comment.  Please alert the site administrator."
+msgstr "ERREUR : Impossible d'enregistrer le commentaire. Veuillez alerter l'administrateur du site."
+
+msgid "ERROR: Could not save comment_thread.  Please alert the site administrator."
+msgstr "ERREUR : Impossible d'enregistrer le fil de commentaires. Veuillez alerter l'administrateur du site."
+
+msgid "ERROR: Thread not found"
+msgstr "ERREUR : Fil non trouvé"
+
+msgid "Edit this Forum"
+msgstr "Editer ce forum"
+
+#, php-format
+msgid "Editing Forum \"%s\""
+msgstr "Edition du forum \"%s\" en cours"
+
+#, php-format
+msgid "Editing Topic \"%s\""
+msgstr "Edition du sujet \"%s\" en cours"
+
+msgid "Empty Topics"
+msgstr "Sujets vides"
+
+msgid "Enter the Id of the topic you are moving these comments to"
+msgstr "Indiquez l'Id du sujet vers lequel vous allez déplacer ces commentaires"
+
+msgid "Fork"
+msgstr "Bifurquer"
+
+msgid "Fork Messages Into New Threads"
+msgstr "Bifurquer les messages dans des nouveaux fils"
+
+msgid "Forum"
+msgstr "Forum"
+
+#, php-format
+msgid "Forum \"%s\" is now hidden"
+msgstr "Le forum \"%s\" est maintenant caché"
+
+#, php-format
+msgid "Forum \"%s\" is now visible"
+msgstr "Le forum \"%s\" est maintenant visible"
+
+#, php-format
+msgid "Forum %s and all attatched topics have been deleted"
+msgstr "Le forum %s et tous les sujets attachés ont été supprimés"
+
+msgid "Forum Contains New Posts"
+msgstr "Le forum contient des nouveaux messages"
+
+msgid "Forum Contains No New Posts"
+msgstr "Le forum ne contient pas de nouveaux messages"
+
+msgid "Guest"
+msgstr "Invité"
+
+msgid "Hidden"
+msgstr "Caché"
+
+msgid "Hide this Forum"
+msgstr "Cacher ce forum"
+
+msgid "Hide this Topic"
+msgstr "Cacher ce sujet"
+
+msgid "Hide/Show Threads"
+msgstr "Cacher/Afficher les fils"
+
+msgid "I need a short description of this forum."
+msgstr "J'ai besoin d'un courte description pour ce forum."
+
+msgid "Import Complete"
+msgstr "Import terminé"
+
+msgid "In Forum"
+msgstr "Dans le forum"
+
+msgid "In Topic"
+msgstr "Dans le sujet"
+
+msgid "Last Post"
+msgstr "Dernier message"
+
+msgid "Latest Forum Posts"
+msgstr "Derniers messages du forum"
+
+msgid "Leave a notice in the old thread"
+msgstr "Laissez un message dans l'ancien fil"
+
+msgid "List Forums"
+msgstr "Lister les forums"
+
+msgid "Lock this Forum.  Only Moderators can post."
+msgstr "Vérouiller ce forum. Seuls les modérateurs peuvent publier."
+
+msgid "Locked"
+msgstr "Vérouillé"
+
+msgid "Locked Threads"
+msgstr "Fils vérouillés"
+
+msgid "Locked Topics"
+msgstr "Sujets vérouillés"
+
+msgid "Long Date Format"
+msgstr "Format de date long"
+
+msgid "Make this a Topic in"
+msgstr "Faire de ceci un sujet dans"
+
+msgid "Make this user a moderator of this forum."
+msgstr "Faire de cet utilisateur un modérateur de ce forum."
+
+msgid "Manage Forums (Super Moderator)"
+msgstr "Gérer les forums (Super modérateur)"
+
+msgid "Mark Threads Sticky"
+msgstr "Marque les fils comme collants"
+
+msgid "Maximum Number of Topics to Show in Latest Posts Block"
+msgstr "Nombre maximal de sujets à afficher dans le bloc \"Derniers messages\""
+
+msgid "Message Boards"
+msgstr "Discussions"
+
+msgid "Moderator added."
+msgstr "Modérateur ajouté."
+
+msgid "Moderators assigned to this forum"
+msgstr "Modérateurs affectés à ce forum"
+
+msgid "Move Comments"
+msgstr "Déplacer les commentaires"
+
+msgid "Move Threads between Forums"
+msgstr "Déplacer les fils entre les forums"
+
+msgid "Move Topic"
+msgstr "Déplacer le sujet"
+
+msgid "Move this Topic to"
+msgstr "Déplacer ce sujet vers"
+
+msgid "Move this topic to another Forum"
+msgstr "Déplacer ce sujet vers un autre forum"
+
+#, php-format
+msgid "Moving %1$s Comments From \"%2$s\" To another Topic"
+msgstr "Déplacement de %1$s commentaires depuis \"%2$s\" vers un autre sujet en cours"
+
+#, php-format
+msgid "Moving phpwsBB Topic \"%s\""
+msgstr "Déplacement du sujet phpwsBB \"%s\" en cours"
+
+msgid "My Topics"
+msgstr "Mes sujets"
+
+msgid "Name"
+msgstr "Nom"
+
+msgid "New Posts"
+msgstr "Nouveaux messages"
+
+#, php-format
+msgid "New Posts Since My Last Visit (%s)"
+msgstr "Nouveaux messages depuis ma dernière visite (%s)"
+
+msgid "No New Posts"
+msgstr "Pas de nouveaux messages"
+
+msgid "No Topics found."
+msgstr "Aucun sujet trouvé."
+
+msgid "No forums have been created yet"
+msgstr "Aucun forum n'a encore été créé"
+
+msgid "No matches found."
+msgstr "Aucune correspondance trouvée."
+
+msgid "No threads were found!"
+msgstr "Aucun fil trouvé !"
+
+msgid "None"
+msgstr "Aucun"
+
+msgid "Not all thread summary information was found!"
+msgstr "L'information de résumé des fils n'a pas été totalement trouvée !"
+
+msgid "Note: For information on how to format dates, please refer to <a href=\"http://www.w3schools.com/PHP/func_date_strftime.asp\">this page at w3schools.com</a>"
+msgstr "Remarque : Pour des détails sur les formats de dates, veuillez vous référer à <a href=\"http://www.w3schools.com/PHP/func_date_strftime.asp\">cette page sur w3schools.com</a>"
+
+msgid "PHPWSBB Settings"
+msgstr "Paramètres PHPWSBB"
+
+msgid "Performance"
+msgstr "Performance"
+
+msgid "Please copy the word in the above image."
+msgstr "Veuillez recopier le mot présent dans l'image ci-dessus."
+
+msgid "Popular topic"
+msgstr "Sujets populaires"
+
+msgid "Posts"
+msgstr "Messages"
+
+msgid "Posts will not be seen until approved"
+msgstr "Les mesasges ne seront pas visibiles tant qu'ils ne seront pas approuvés"
+
+msgid "Read This!"
+msgstr "Lisez ceci !"
+
+msgid "Record and show number of times a thread is viewed"
+msgstr "Enregistre et affiche le nombre de fois qu'un fil a été vu"
+
+msgid "Reset Settings"
+msgstr "Réinitialiser les paramètres"
+
+msgid "Save"
+msgstr "Enregistrer"
+
+msgid "Save Settings"
+msgstr "Enregistrer les paramètres"
+
+#, php-format
+msgid "Searching for Member \"%s\"..."
+msgstr "Recherche du membre \"%s\" en cours..."
+
+msgid "Section"
+msgstr "Section"
+
+msgid "Short Date Format"
+msgstr "Format de date court"
+
+msgid "Show Forums Block"
+msgstr "Afficher le bloc \"Forums\""
+
+msgid "Show Latest Posts Block"
+msgstr "Afficher le bloc \"Derniers messages\""
+
+msgid "Show this Forum"
+msgstr "Afficher ce forum"
+
+msgid "Show this Topic"
+msgstr "Afficher ce sujet"
+
+msgid "Some comments have been moved to a related topic.  You can view it by <a href=\"./index.php?module=phpwsbb&amp;view=topic&amp;id="
+msgstr "Certains commentaires ont été déplacés dans un autre sujet. Vous pouvez le voir à <a href=\"./index.php?module=phpwsbb&amp;view=topic&amp;id="
+
+msgid "Some required information is missing."
+msgstr "Certaines informations requises sont manquantes."
+
+msgid "Sort Order"
+msgstr "Ordre de tri"
+
+msgid "Split Comments"
+msgstr "Séparer les commentaires"
+
+#, php-format
+msgid "Splitting %1$s Comments From \"%2$s\" To a New Topic"
+msgstr "Sépération de %1$s commentaires depuis \"%2$s\" vers un nouveau sujet"
+
+msgid "Start Date"
+msgstr "Date de début"
+
+msgid "Sticky"
+msgstr "Collant"
+
+msgid "Submit a new topic"
+msgstr "Envoyer un nouveau sujet"
+
+msgid "Summary"
+msgstr "Résumé"
+
+msgid "Text Format"
+msgstr "Format de texte"
+
+#, php-format
+msgid "The current long date format is %1$s, which looks like \"%2$s\""
+msgstr "Le format de date longue actuel est %1$s, ce qui donne \"%2$s\""
+
+#, php-format
+msgid "The current short date format is %1$s, which looks like \"%2$s\""
+msgstr "Le format de date courte actuel est %1$s, ce qui donne \"%2$s\""
+
+msgid "The forum you requested is not viewable."
+msgstr "Le forum que vous avez demandé n'est pas visible."
+
+msgid "The requested operation did not work"
+msgstr "L'opération requise n'a pas fonctionné"
+
+msgid "The thread you requested is awaiting approval by an administrator."
+msgstr "Le fil que vous avez demandé est en attente d'approbation par un administrateur."
+
+msgid "The thread you requested is not available. Please check the security logs."
+msgstr "Le fil que vous avez demandé n'est pas disponible. Veuillez vérifier les logs de sécurité."
+
+msgid "The topic could not be deleted."
+msgstr "Le sujet n'a pas pû être supprimé."
+
+msgid "The topic has been dropped from this forum"
+msgstr "Le sujet a été retiré de ce forum"
+
+msgid "The topic is now unstuck from the top of lists"
+msgstr "Le sujet est maintenant décollé du haut des listes"
+
+msgid "The topic was sucessfully deleted."
+msgstr "Le sujet a été supprimé avec succès."
+
+msgid "The topic will now stick to the top of lists"
+msgstr "Le sujet va maintenant coller en haut des listes"
+
+msgid "There are no available Forums"
+msgstr "Il n'y a pas de forum disponible"
+
+msgid "There was an error when saving this forum to the database!"
+msgstr "Une erreur est survenue en enregistrant ce forum dans la base de données !"
+
+msgid "There was an error when saving this topic to the database!"
+msgstr "Une erreur est survenue en enregistrant ce sujet dans la base de données !"
+
+msgid "These users are moderators of this forum"
+msgstr "Ces utilisatuers sont des modérateurs de ce forum"
+
+msgid "This Week's Posts"
+msgstr "Les messages de cette semaine"
+
+msgid "This forum doesn't exist.  Please check the address you entered."
+msgstr "Ce forum n'existe pas. Veuillez vérifier l'adresse que vous avez indiquée."
+
+msgid "This forum is locked"
+msgstr "Ce forum est verrouillé"
+
+#, php-format
+msgid "This is the discussion thread for the %1$s \"%2$s\"."
+msgstr "Ceci est fil de discussion pour le %1$s \"%2$s\"."
+
+msgid "This topic doesn't exist.  Please check the address you entered."
+msgstr "Ce sujet n'existe pas. Veuillez vérifier l'adresse que vous avez indiquée."
+
+msgid "This user is not allowed to edit messages.  Moderator not added."
+msgstr "Cet utilisateur n'est pas autorisé à éditer des messages. Modérateur non ajouté."
+
+msgid "This will delete the forum and all topics under it!  Are you sure you want to delete this?"
+msgstr "Ceci va supprimer le forum et tous les sujets sous lui ! Êtes-vous sûr(e) de vouloir le supprimer ?"
+
+msgid "This will delete the topic and all messages under it!  Are you sure you want to delete this?"
+msgstr "Ceci va supprimer le sujet et tous les messages sous lui ! Êtes-vous sûr(e) de vouloir le supprimer ?"
+
+#, php-format
+msgid "This will erase the topic from the Bulletin Board, but the comments will still be seen when you view the %1$s %2$s!  Are you sure you want to drop this from phpwsBB?"
+msgstr "Ceci va effacer le sujet de la liste des discussions mais les commentaires seront toujours visibles quand vous afficherez %1$s %2$s ! Êtes-vous sûr(e) de vouloir le retirer de phpwsBB ?"
+
+msgid "Threads with no replies"
+msgstr "Fils sans réponses"
+
+msgid "Title"
+msgstr "Titre"
+
+#, php-format
+msgid "To see the full %1$s, <a href=\"%2$s\">click on this link</a>."
+msgstr "Pour voir le %1$s complet, <a href=\"%2$s\">cliquez sur ce lien</a>."
+
+msgid "Today's Posts"
+msgstr "Messages du jour"
+
+msgid "Topic"
+msgstr "Sujet"
+
+#, php-format
+msgid "Topic \"%s\" is now hidden"
+msgstr "Le sujet \"%s\" est maintenant caché"
+
+#, php-format
+msgid "Topic \"%s\" is now visible"
+msgstr "Le sujet \"%s\" est maintenant visible"
+
+msgid "Topic Starter"
+msgstr "Initiateur du sujet"
+
+msgid "Topic Title (the tag [Split] will be added to its front)"
+msgstr "Titre du sujet (le marqueur [Split] sera ajouté au début)"
+
+msgid "Topics"
+msgstr "Sujets"
+
+#, php-format
+msgid "Topics started by %s"
+msgstr "Sujets démarrés par %s"
+
+msgid "Unregistered visitors <b>can</b> post in this forum"
+msgstr "Les visiteurs non enregistrés <b>peuvent</b> publier dans ce forum"
+
+msgid "Unregistered visitors <b>cannot</b> post in this forum"
+msgstr "Les visiteurs non enregistrés <b>ne peuvent pas</b> publier dans ce forum"
+
+msgid "Updating All Forums"
+msgstr "Mise à jour de tous les forums"
+
+msgid "Updating All Topics"
+msgstr "Mise à jour de tous les sujets"
+
+msgid "View the last post"
+msgstr "Voir le dernier message"
+
+msgid "Views"
+msgstr "Lectures"
+
+msgid "Visitor posts will not be seen until approved"
+msgstr "Les messages des visiteurs ne seront pas vus avant d'être approuvés"
+
+msgid "You <b>are not</b> a listed moderator of any forums"
+msgstr "Vous <b>n'êtes</b> dans la liste des modérateurs d'aucun forum"
+
+msgid "You <b>can</b> create new topics in this forum"
+msgstr "Vous <b>pouvez</b> créer de nouveaux sujets dans ce forum"
+
+msgid "You <b>can</b> post comments in this forum"
+msgstr "Vous <b>pouvez</b> publier des commentaires dans ce forum"
+
+msgid "You <b>cannot</b> create new topics in this forum"
+msgstr "Vous <b>ne pouvez pas</b> créer de nouveaux sujets dans ce forum"
+
+msgid "You <b>cannot</b> post comments in this forum"
+msgstr "Vous <b>ne pouvez pas</b> publier de commentaires dans ce forum"
+
+msgid "You are a <b>Supermoderator</b>"
+msgstr "Vous êtes un <b>Super modérateur</b>"
+
+msgid "You are a listed moderator of the following forums:"
+msgstr "Vous êtes dans la liste des modérateurs des forums suivants :"
+
+msgid "You are not authorized to create topics here."
+msgstr "Vous n'êtes pas autorisé à créer des sujets ici."
+
+#, php-format
+msgid "You are not authorized to edit forum %s."
+msgstr "Vous n'est pas autorisé à éditer le forum %s."
+
+msgid "You are not authorized to edit forums."
+msgstr "Vous n'êtes pas autorisé à éditer les forums."
+
+msgid "You are not authorized to save this topic."
+msgstr "Vous n'êtes pas autorisé à enregistrer ce sujet."
+
+msgid "You are not authorized to save topics in this forum."
+msgstr "Vous n'êtes pas autorisé à enregistrer les sujets de ce forum."
+
+msgid "You can't create a topic in a forum that you don't have access to!"
+msgstr "Vous ne pouvez pas créer un sujet dans un forum auquel vous n'avez pas accès !"
+
+msgid "You can't move a topic to a forum that you don't have access to!"
+msgstr "Vous ne pouvez pas déplacer un sujet vers un forum auquel vous n'avez pas accès !"
+
+msgid "You cannot erase all comments in this topic."
+msgstr "Vous ne pouvez pas effacer tous les commentaires de ce sujet."
+
+msgid "You don't have permission to post to this topic!"
+msgstr "Vous n'avez pas la permission de publier dans ce sujet !"
+
+#, php-format
+msgid "You have just moved the topic to forum \"%s\""
+msgstr "Vous venez just de déplacer le sujet vers le forum \"%s\""
+
+msgid "You must have a name for your forum."
+msgstr "Vous devez donner un nom à votre forum."
+
+msgid "You're not allowed to do this!"
+msgstr "Vous n'avez pas le droit de faire ça !"
+
+msgid "You're not authorized to do this!"
+msgstr "Vous n'êtes pas autorisé à faire ça !"
+
+msgid "Your settings have been reset to the factory defaults."
+msgstr "Vos paramètres ont été réinitalisés aux valeurs par défaut."
+
+msgid "Your settings have been saved."
+msgstr "Vos paramètres ont été enregistrés."
+
+msgid "by"
+msgstr "par"
+
+msgid "in"
+msgstr "dans"
+
+msgid "move_comments: Some required information is missing."
+msgstr "move_comments : Certaines informations requises sont manquantes."
+
+msgid "phpWs Bulletin Board"
+msgstr "Discussions phpWs"
+
+msgid "phpwsBB::assign_forum is missing some required parameters"
+msgstr "phpwsBB::assign_forum a besoin de certaines informations qui sont manquantes"
+
+msgid "split_comments: Some required information is missing."
+msgstr "split_comments : Certaines informations requises sont manquantes."
+
+#~ msgid "Forum Links"
+#~ msgstr "Liens du forum"
+

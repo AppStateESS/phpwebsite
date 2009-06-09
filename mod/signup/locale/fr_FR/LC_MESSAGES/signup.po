@@ -1,0 +1,470 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: phpWebSite 1.5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-04-07 08:19-0400\n"
+"PO-Revision-Date: 2009-04-12 16:56+0100\n"
+"Last-Translator: Youpla <Youpla@boum.fr>\n"
+"Language-Team: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+"Plural-Forms: nplurals=2;plural=(n>1);\n"
+
+#, php-format
+msgid "%s (%s opening)"
+msgid_plural "%s (%s openings)"
+msgstr[0] "%s (%s ouverture)"
+msgstr[1] "%s (%s ouvertures)"
+
+#, php-format
+msgid "%s Participants"
+msgstr "%s participants"
+
+msgid "A problem occurred when trying to register your application. If you continue to receive this message, please contact the site admistrator."
+msgstr "Une erreur est survenue en tentant d'inscrire votre demande. Si vous continuez à recevoir ce message, veuillez contacter l'administrateur du site."
+
+msgid "Action"
+msgstr "Action"
+
+msgid "Add"
+msgstr "Ajouter"
+
+msgid "Add applicant"
+msgstr "Ajouter un demandeur"
+
+msgid "Add slot"
+msgstr "Ajouter un créneau"
+
+#, php-format
+msgid "Add slot to %s"
+msgstr "Ajouter un créneau à %s"
+
+msgid "Allow multiple signups"
+msgstr "Autoriser les inscritions multiples"
+
+msgid "Alphabetic order"
+msgstr "Ordre alphabétique"
+
+msgid "An error occurred when accessing this sheet's slots."
+msgstr "Une erreur est survenue en accédant aux créneaux de cette feuille."
+
+msgid "An error occurred when pulling applicants."
+msgstr "Une erreur est survenue en récupérant les demandeurs."
+
+msgid "An error occurred when trying to save your application."
+msgstr "Une erreur est survenue en tentant d'enregistrer votre demande."
+
+msgid "Applicant Listing"
+msgstr "Liste des demandeurs"
+
+msgid "Applicant saved successfully."
+msgstr "Demandeur enregistré avec succès."
+
+msgid "Are you certain you want to delete this slot?"
+msgstr "Êtes-vous sûr(e) de vouloir supprimer ce créneau ?"
+
+msgid "Are you sure you want to delete this person from their signup slot?"
+msgstr "Êtes-vous sûr(e) de vouloir supprimer cette personne de son créneau d'inscription ?"
+
+msgid ""
+"Are you sure you want to delete this sheet?\\n"
+"All slots and signup information will be permanently removed."
+msgstr ""
+"Êtes-vous sûr(e) de vouloir supprimer cette feuille ?\\n"
+"Toutes les informations de créneau et d'inscription seront retirées définitivement."
+
+msgid "Available slots"
+msgstr "Créneaux disponibles"
+
+msgid "Blank extra fields will not appear on signup."
+msgstr "Les champs en plus vides n'apparaitront pas à l'inscription."
+
+msgid "CSV file"
+msgstr "Fichier CSV"
+
+msgid "Click the link below to confirm your participation in the following:"
+msgstr "Cliquez sur le lien ci-dessous pour confirmer votre participation à :"
+
+msgid "Click to view and edit signups for this slot."
+msgstr "Cliquez pour voir et éditer les inscriptions pour ce créneau."
+
+msgid "Close"
+msgstr "Fermer"
+
+msgid "Close signup"
+msgstr "Fermer l'inscription"
+
+msgid "Congratulations!"
+msgstr "Félicitations !"
+
+msgid "Contact email"
+msgstr "Email de contact"
+
+msgid "Contact email improperly formatted."
+msgstr "Email de contact mal formaté."
+
+msgid "Create"
+msgstr "Créer"
+
+msgid "Create signup sheet"
+msgstr "Créer une feuille d'inscription"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Delete slot"
+msgstr "Supprimer le créneau"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Down"
+msgstr "Vers le bas"
+
+msgid "Edit"
+msgstr "Editer"
+
+msgid "Edit Slot"
+msgstr "Editer le créneau"
+
+msgid "Edit sheets"
+msgstr "Editer les feuilles"
+
+msgid "Edit slots"
+msgstr "Editer les créneaux"
+
+msgid "Email"
+msgstr "Email"
+
+#, php-format
+msgid "Email %s applicants"
+msgstr "Envoyer un email aux %s demandeurs"
+
+msgid "Email address"
+msgstr "Adresse email"
+
+msgid "Emails not sent"
+msgstr "Emails non envoyés"
+
+msgid "Emails sent"
+msgstr "Emails envoyés"
+
+msgid "Error occurred when moving applicant. Slot may be full."
+msgstr "Une erreur est survenue en déplaçant un demandeur. Le créneau est peut-être plein."
+
+msgid "Error occurred when saving applicant."
+msgstr "Une erreur est survenue en enregistrant le demandeur."
+
+msgid "Error occurred when saving sheet."
+msgstr "Une erreur est survenue en enregistrant la feuille."
+
+msgid "Error occurred when saving slot."
+msgstr "Une erreur est survenue en enregistrant le créneau."
+
+msgid "Extra details"
+msgstr "Détails supplémentaires"
+
+msgid "Extra information 1"
+msgstr "Informations supplémentaire 1"
+
+msgid "Extra information 2"
+msgstr "Informations supplémentaire 2"
+
+msgid "Extra information 3"
+msgstr "Informations supplémentaire 3"
+
+msgid "Fatal error: Cannot create slot. Missing sheet id."
+msgstr "Erreur fatale : Impossible de créer le créneau. Id de feuille manquant."
+
+msgid "First name"
+msgstr "Prénom"
+
+msgid "From"
+msgstr "De"
+
+msgid "Go"
+msgstr "Aller"
+
+#, php-format
+msgid "Greetings from %s,"
+msgstr "%s vous salue,"
+
+msgid "Invalid reply address."
+msgstr "Adresse de réponse invalide."
+
+msgid "Last name"
+msgstr "Nom"
+
+msgid "List"
+msgstr "Liste"
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Missing internal information."
+msgstr "Informations internes manquantes."
+
+msgid "Move"
+msgstr "Déplacer"
+
+msgid "Name"
+msgstr "Nom"
+
+msgid "New"
+msgstr "Nouveau"
+
+msgid "No slots found."
+msgstr "Aucun créneau trouvé."
+
+msgid "Number of openings"
+msgstr "Nombre d'ouvertures"
+
+msgid "Organization"
+msgstr "Organisation"
+
+msgid "Other slots full"
+msgstr "Les autres créneaux sont pleins"
+
+msgid "Phone"
+msgstr "Téléphone"
+
+msgid "Phone number"
+msgstr "Numéro de téléphone"
+
+msgid "Please check if there are any more available slots by clicking the link below."
+msgstr "Veuillez vérifier s'il y a d'autre créneaux disponibles en cliquant sur le lien ci-dessous."
+
+msgid "Please enter a contact phone number."
+msgstr "Veuillez un numéro de téléphone où vous contacter."
+
+msgid "Please enter a first name."
+msgstr "Veuillez entrer un prénom."
+
+msgid "Please enter a last name."
+msgstr "Veuillez entrer un nom."
+
+msgid "Please enter a message."
+msgstr "Veuillez entrer un message."
+
+msgid "Please enter a subject."
+msgstr "Veuillez entrer un sujet."
+
+msgid "Please specify an openings amount."
+msgstr "Veuillez un nombre d'ouverture."
+
+msgid "Please wait"
+msgstr "Veuillez patiener"
+
+msgid "Print"
+msgstr "Imprimer"
+
+msgid "Print list"
+msgstr "Imprimer la liste"
+
+msgid "Print page"
+msgstr "Imprimer la page"
+
+msgid "Report"
+msgstr "Rapport"
+
+msgid "Reset order"
+msgstr "Réinitialiser l'ordre"
+
+msgid "Return to slot page"
+msgstr "Retourner à la page des créneaux"
+
+msgid "Returning to applicant listing."
+msgstr "Retourner à la liste des demandeurs."
+
+msgid "Search slots"
+msgstr "Rechercher des créneaux"
+
+msgid "Send emails"
+msgstr "Envoyer des emails"
+
+msgid "Sending emails"
+msgstr "Envoi des emails en cours"
+
+msgid "Sheet previously posted."
+msgstr "Feuille déjà publiée."
+
+msgid "Sheet saved successfully."
+msgstr "Feuille enregistrée avec succès."
+
+msgid "Signup"
+msgstr "Inscription"
+
+msgid "Signup Sheets"
+msgstr "Feuilles d'inscription"
+
+msgid "Signup confirmation"
+msgstr "Confirmation d'inscription"
+
+#, php-format
+msgid "Signup event : %s"
+msgstr "Evénement d'inscription : %s"
+
+msgid "Signup form"
+msgstr "Formulaire d'inscription"
+
+msgid "Signup sheet deleted."
+msgstr "Feuille d'inscription supprimée."
+
+msgid "Signup sheet did not contain any applicants."
+msgstr "La feuille d'inscription ne contenait aucun demandeur."
+
+msgid "Signup tables dropped."
+msgstr "Tables d'Inscription supprimées."
+
+#, php-format
+msgid "Slot : %s"
+msgstr "Créneau : %s"
+
+msgid "Slot can not be deleted until cleared of applicants."
+msgstr "Le créneau ne peut pas être supprimée tant qu'il n'a pas été vidé de ses demandeurs."
+
+msgid "Slot could not be deleted successfully."
+msgstr "Le créneau n'a pas pû être supprimé avec succès."
+
+msgid "Slot deleted successfully."
+msgstr "Créneau supprimé avec succès"
+
+msgid "Slot is missing sheet id."
+msgstr "Le créneau n'a pas d'id de feuille."
+
+msgid "Slot listing"
+msgstr "Liste des créneaux"
+
+msgid "Slot order reset."
+msgstr "Ordre des créneaux réinitialisé."
+
+msgid "Slot saved successfully."
+msgstr "Créneau enregistré avec succès."
+
+#, php-format
+msgid "Slot setup for %s"
+msgstr "Créneau configuré pour %s"
+
+msgid "Slots"
+msgstr "Créneaux"
+
+#, php-format
+msgid "Slots left: %s"
+msgstr "Créneaux restants : %s"
+
+msgid "Sorry"
+msgstr "Désolé"
+
+msgid "Sorry, but all available slots are full. Please check back later for possible cancellations."
+msgstr "Désolé, mais tous les créneaux disponibles sont pleins. Merci de revérifier plus tard pour de possibles annulations."
+
+msgid "Sorry, the slot you chose is no longer available."
+msgstr "Désolé, le créneau que vous avez choisi n'est plus disponible."
+
+msgid "Subject"
+msgstr "Sujet"
+
+msgid "Submit"
+msgstr "Envoyer"
+
+msgid "Thank you"
+msgstr "Merci"
+
+msgid "The name you searched for is in these slots."
+msgstr "Le nom que vous avez cherché est dans ces créneaux."
+
+msgid "The total signups may not exceed the slots offered."
+msgstr "Le total d'inscriptions ne peut pas dépasser le nombre de créneaux proposés."
+
+msgid "There is a problem with our email server. Please try again later."
+msgstr "Un problème est survenu avec notre serveur d'email. Veuillez réessayer plus tard."
+
+msgid "There is a problem with this signup sheet. Please check back later."
+msgstr "Un problèm est survenu avec la feuille d'inscription. Veuillez réessayer plus tard."
+
+msgid "This slot filled up before you could confirm your application."
+msgstr "Ce créneau s'est rempli avant que vous puissez confirmer votre demande."
+
+msgid "Title"
+msgstr "Titre"
+
+#, php-format
+msgid "Total openings: %s"
+msgstr "Nombre total d'ouvertures : %s"
+
+msgid "Unable to send emails. Signup sheet does not exist."
+msgstr "Impossible d'envoyer les emails. La feuille d'inscription n'existe pas."
+
+msgid "Unsuitable email address."
+msgstr "Adresse email innappropriée."
+
+msgid "Up"
+msgstr "Vers le haut"
+
+msgid "Update"
+msgstr "Mettre à jour"
+
+#, php-format
+msgid "Update %s slot"
+msgstr "Mettre à jour %s créneau"
+
+msgid "Update applicant"
+msgstr "Mettre à jour le demandeur"
+
+msgid "Update signup sheet"
+msgstr "Mettre à jour la feuille d'inscription"
+
+msgid "We are no longer accepting applications."
+msgstr "Nous n'acceptons plus de demandes."
+
+msgid "You are already registered. There isn't any need to return to this page."
+msgstr "Vous être déjà inscrit. Il n'y a aucun besoin de retourner sur cette page."
+
+#, php-format
+msgid "You are registered for the following event: %s"
+msgstr "Vous êtes inscrit pour l'événement suivant : %s"
+
+msgid "You cannot signup for more than one slot."
+msgstr "Vous ne pouvez pas vous inscrire à plus d'un créneau."
+
+msgid "You do not have permission for this action."
+msgstr "Vous n'avez pas les droits pour cette action."
+
+msgid "You have one hour to confirm your application."
+msgstr "Vous avez une heure pour confirmer votre demande."
+
+msgid "You must give this signup sheet a title."
+msgstr "Vous dever donner un titre à cette feuille d'inscription."
+
+msgid "You must give your slot a title."
+msgstr "Vous devez donner un titre à votre créneau."
+
+msgid "You should receive an email allowing you to verify your application.<br />You have one hour to confirm your application."
+msgstr "Vous devriez recevoir un email permettant de vérifier votre demande.<br />Vous avez une heure pour confirmer votre demande."
+
+msgid "Your application could not be verified. If over a hour has passed since you applied, you may want to try again."
+msgstr "Votre demande n'a pas pû être vérifiée. Si plus d'une heure s'est écoulée depuis que vous l'avez effectuée, vous pouvez en refaire une."
+
+msgid "email"
+msgstr "email"
+
+msgid "firstname"
+msgstr "prénom"
+
+msgid "lastname"
+msgstr "nom"
+
+msgid "phone"
+msgstr "téléphone"
+
+#~ msgid "organization"
+#~ msgstr "organisation"
+

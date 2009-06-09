@@ -1,0 +1,330 @@
+# skeleton - phpwebsite module
+#
+# See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# @version $Id: $
+# @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: phpws 1.6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-02-10 15:57-0500\n"
+"PO-Revision-Date: 2009-01-13 16:27+0100\n"
+"Last-Translator: Olivier Sannier <obones att altern dott org>\n"
+"Language-Team:  <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+
+msgid "About this module:"
+msgstr "A propos de ce module :"
+
+msgid "Add"
+msgstr "Ajouter"
+
+msgid "Add Bone"
+msgstr "Ajouter un Os"
+
+#, php-format
+msgid "Add bone to %s"
+msgstr "Ajouter un os à %s"
+
+msgid "Add new skeleton"
+msgstr "Ajouter un nouveau squelette"
+
+msgid "Add/Edit bone"
+msgstr "Ajouter/Editer un os"
+
+msgid "Add/Edit skeleton"
+msgstr "Ajouter/Editer un squelette"
+
+msgid ""
+"Although the skeleton mod demonstrates a lot of basic core functionality, "
+"and a reasonable way to construct a module, the phpwebsite core is really "
+"very sophisticated and flexible. If I were to attempt to show everything "
+"possible in this one module, it would just get confusing :) Please spend "
+"some time reading the stuff in /docs/ as well as look through the skeleton "
+"mod code. Also, skim through the code in some of the other mods, such as "
+"blog and calendar and so on."
+msgstr ""
+"Bien que le module Squelette démontre une grande partie des fonctionnalités "
+"de base du coeur, et une façon raisonnable de construire un module, le coeur "
+"de phpwebsite est vraiment très sophistiqué et flexible. Si je devais tenter "
+"de montrer toutes les possibilités dans un seul module, ça en deviendrait "
+"déroutant :) Veuillez donc passer du temps à lire les éléments dans /docs/ "
+"ainsi que dans le code du module Squelette. Pensez aussi à parcourir le code "
+"d'autres modules, comme blog et calendrier par exemple."
+
+msgid "An error occurred when accessing this skeleton's bones."
+msgstr "Une erreur est survenue en accédant aux os de ce squelette."
+
+#, php-format
+msgid "Are you sure you want to delete the bone %s?"
+msgstr "Êtes-vous sûr(e) de vouloir supprimer l'os %s ?"
+
+#, php-format
+msgid "Are you sure you want to delete the skeleton %s?"
+msgstr "Êtes-vous sûr(e) de vouloir supprimer le squelette %s ?"
+
+msgid "Available skeletons"
+msgstr "Squelettes disponibles"
+
+#, php-format
+msgid "Belongs to: %s"
+msgstr "Appartient à : %s"
+
+msgid "Bone deleted."
+msgstr "Os supprimé."
+
+msgid "Bone details"
+msgstr "Détails de l'os"
+
+msgid "Bone saved successfully."
+msgstr "Os enregistré avec succès."
+
+msgid "Bones"
+msgstr "Os"
+
+msgid "Change settings (Unrestricted only)"
+msgstr "Changer les paramètres (Non restreint uniquement)"
+
+#, php-format
+msgid "Check your %s then create a %s to begin"
+msgstr "Vérifiez votre %s puis créez un %s pour commencer"
+
+msgid "Click on \"New bone\" to start."
+msgstr "Cliquez sur \"Nouvel os\" pour démarrer."
+
+msgid "Continue"
+msgstr "Continuer"
+
+msgid "Create"
+msgstr "Créer"
+
+msgid "Create skeleton skeleton"
+msgstr "Créer un squelette"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Delete bone"
+msgstr "Supprimer l'os"
+
+msgid "Delete skeleton"
+msgstr "Supprimer le squelette"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Details"
+msgstr "Détails"
+
+msgid "Died"
+msgstr "Mort"
+
+msgid "Died, date/time"
+msgstr "Mort, date/heure"
+
+msgid "Edit"
+msgstr "Editer"
+
+msgid "Edit bone"
+msgstr "Editer l'os"
+
+msgid "Edit skeleton"
+msgstr "Editer le squelette"
+
+msgid "Enable images and files on skeleton and bone profiles"
+msgstr ""
+"Activer les images et les fichiers sur les profils de squelette et d'os"
+
+msgid "Enable skeleton sidebox"
+msgstr "Activer la boite latérale de squelette"
+
+msgid "Error occurred when saving bone."
+msgstr "Une erreur est survenue en enregistrant l'os."
+
+msgid "Error occurred when saving skeleton."
+msgstr "Une erreur est survenue en enregistrant le squelette."
+
+msgid "Fatal error: Cannot create bone. Missing skeleton id."
+msgstr "Erreur fatale : Impossible de créer l'os. Id de squelette manquant."
+
+msgid "Features"
+msgstr "Fonctionalités"
+
+msgid "Final Words"
+msgstr "Mots de la fin"
+
+msgid "General Settings"
+msgstr "Paramètres généraux"
+
+msgid ""
+"I have tried to demonstrate simple and basic uses of many of the methods for "
+"developing a phpwebsite module. Skeletons and bones are pretty straight "
+"forward item classes. Bones relate to skeletons. Skeletons use the core Key "
+"class. This enables lots of things like being able to use the Search class "
+"as well as Categories and easy Menu tools. The list views show the basics of "
+"using the DBPager class. Skeletons and bones demonstrate how to integrate a "
+"File Cabinet file manager. Skeletons are restricted to images and Bones are "
+"wide open. Be sure to check out the ease of use of the Link, Text, Form, "
+"Settings, Permissions and Layout classes for building intelligent and rich "
+"user experiences."
+msgstr ""
+"J'ai essayé de démontrer des utilisations simples et de base de nombreuses "
+"méthodes pour développer un module phpwebsite. Les squelettes et les os sont "
+"des classes d'éléments assez simples. Les Os sont reliés aux squelttes. Les "
+"squelettes utilisent la classe coeur \"Key\". Ceci permet un grand nombre de "
+"choses comme pouvoir utiliser la classe Search ansi que les catégories et "
+"les outils Menus. La vue liste montre les bases de l'utilisation de la "
+"classe DBPager. Les squelettes et les os montrent l'intégration dans le "
+"gestionnaire de fichier. Les squelttes sont restreints aux images alors que "
+"les os n'ont aucune restriction. Assurez-vous de constater la facilité "
+"d'utilisation des classes Link, Text, Form, Settings, Permissions et Layout "
+"pour construire des expériences utilisateur riches et intelligentes."
+
+#, php-format
+msgid ""
+"If you would like to help out with the ongoing development of skeleton, or "
+"other modules by Verdon Vaillancourt, %s click here to donate %s (opens in "
+"new browser window)."
+msgstr ""
+"Si vous voulez aider au développement continu de Squelette, ou d'autres "
+"modules par Verdon Vaillancourt, %s cliquez ici pour faire un don %s "
+"(s'ouvre dans une nouvelle fenêtre)."
+
+msgid "Important Information"
+msgstr "Informations importantes"
+
+msgid "List Bones"
+msgstr "Lister les Os"
+
+msgid "List Skeletons"
+msgstr "Lister les Squelettes"
+
+msgid "List all skeletons"
+msgstr "Lister tous les squelettes"
+
+msgid "Maximum image height (50-600)"
+msgstr "Hauteur maximale de l'image (50-600)"
+
+msgid "Maximum image width (50-600)"
+msgstr "Largeur maximale de l'image (50-600)"
+
+msgid "Name"
+msgstr "Nom"
+
+msgid "New Bone"
+msgstr "Nouvel os"
+
+msgid "New Skeleton"
+msgstr "Nouveau squelette"
+
+msgid "New bone step one"
+msgstr "Nouvel os, étape 1"
+
+msgid "Random Skeleton"
+msgstr "Squelette au hasard"
+
+msgid "Read me"
+msgstr "Lisez moi"
+
+msgid "Save settings"
+msgstr "Enregistrer les paramètres"
+
+msgid "Select skeleton"
+msgstr "Sélectionnez un squelette"
+
+msgid "Settings"
+msgstr "Paramètres"
+
+msgid "Show sidebox on home page only"
+msgstr "Afficher la boite latérale sur la page d'accueil uniquement"
+
+msgid "Sidebox text"
+msgstr "Texte de la barre latérale"
+
+msgid "Skeleton"
+msgstr "Squelette"
+
+msgid "Skeleton Bones"
+msgstr "Os de Squelette"
+
+msgid "Skeleton Skeletons"
+msgstr "Squelettes de Squelette"
+
+msgid "Skeleton deleted."
+msgstr "Squelette supprimé."
+
+msgid "Skeleton is missing the id."
+msgstr "Le squelette n'a pas d'id."
+
+msgid "Skeleton saved successfully."
+msgstr "Le squelette a été enregistré avec succès."
+
+msgid "Skeleton settings saved."
+msgstr "Les paramètres de squelette ont été enregistrés."
+
+msgid "Skeleton tables dropped."
+msgstr "Tables de Squelette retirées."
+
+msgid "Skeletons"
+msgstr "Squelettes"
+
+msgid ""
+"Sorry, there are no skeletons available. You will have to create a skeleton "
+"first."
+msgstr ""
+"Désolé, il n'y a aucun squelette disponible. Vous devez créer un squelette "
+"d'abord."
+
+msgid ""
+"This is the first release of skeleton for the new 1.x series phpwebsite. "
+"This module is a simple demonstration module for people wishing to develop "
+"their own phpwebsite modules."
+msgstr ""
+"Ceci est la première version de Squelette pour la nouvelle série 1.x de "
+"phpwebsite. Ce module est un simple module de démonstration pour ceux qui "
+"veulent développer leurs propres modules phpwebsite."
+
+msgid "Title"
+msgstr "Titre"
+
+msgid "Update"
+msgstr "Mettre à jour"
+
+#, php-format
+msgid "Update %s bone"
+msgstr "Mettre à jour l'os %s"
+
+msgid "Update skeleton skeleton"
+msgstr "Mettre à jour le squelette"
+
+msgid "You must give this bone a description."
+msgstr "Vous devez donner une description à cet os."
+
+msgid "You must give this bone a title."
+msgstr "Vous devez donner un titre à cet os."
+
+msgid "You must give this skeleton a description."
+msgstr "Vous devez donner une description à ce squelette."
+
+msgid "You must give this skeleton a title."
+msgstr "Vous devez donner un titre à ce squelette."

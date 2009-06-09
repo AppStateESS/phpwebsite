@@ -1,0 +1,313 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: phpWebSite 1.5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-04-07 13:41-0400\n"
+"PO-Revision-Date: 2009-04-12 16:46+0100\n"
+"Last-Translator: Youpla <Youpla@boum.fr>\n"
+"Language-Team: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+"Plural-Forms: nplurals=2;plural=(n>1);\n"
+
+#, php-format
+msgid "%s template"
+msgid_plural "%s templates"
+msgstr[0] "%s modèle"
+msgstr[1] "%s modèles"
+
+msgid "(Untitled)"
+msgstr "(Sans titre)"
+
+msgid "Action"
+msgstr "Action"
+
+msgid "Add menu link for new pages."
+msgstr "Ajouter un lien de menu pour les nouvelles pages."
+
+msgid "Add page"
+msgstr "Ajouter une page"
+
+msgid "Add to front"
+msgstr "Ajouter à la page d'accueil"
+
+msgid "An error occurred when trying to load the page template."
+msgstr "Une erreur est survenue en tentant de charger le modèle de page."
+
+msgid "Are you sure you want to delete this page template?"
+msgstr "Êtes-vous sûr(e) de vouloir supprimer ce modèle de page ?"
+
+msgid "Are you sure you want to delete this page?"
+msgstr "Êtes-vous sûr(e) de vouloir supprimer cette page ?"
+
+msgid "Back to style selection"
+msgstr "Retour à la sélection de style"
+
+msgid "Back to top"
+msgstr "Retour en haut"
+
+msgid "Change header"
+msgstr "Changer l'en-tête"
+
+msgid "Change settings (Unrestricted only)"
+msgstr "Changer les paramètres (non restreint uniquement)"
+
+msgid "Change template"
+msgstr "Changer le modèle"
+
+msgid "Change text"
+msgstr "Changer le texte"
+
+msgid "Choose a style"
+msgstr "Choisissez un style"
+
+msgid "Click to display on front page"
+msgstr "Cliquez pour afficher sur la page d'accueil"
+
+msgid "Click to remove from front page"
+msgstr "Cliquer pour retirer de la page d'accueil"
+
+msgid ""
+"Clicking this link may take you from this page. You could lose all unsaved changes.\\n"
+"Click OK to go to the link destination, Cancel to remain."
+msgstr ""
+"Cliquer sur ce lien peut vous sortir de cette page. Vous pourriez perdre tous vos changements non enregistrés.\n"
+"Cliquez sur Ok pour suivre le lien, Annuler pour rester ici."
+
+msgid "Could not delete page template."
+msgstr "Impossible de supprimer le modèle de page."
+
+msgid "Could not find any page templates."
+msgstr "Aucun modèle de page trouvé."
+
+msgid "Could not find any page templates. Please check your error log."
+msgstr "Aucun modèle de page trouvé. Veuillez vérifier votre log d'erreur."
+
+msgid "Create page"
+msgstr "Créer une page"
+
+msgid "Created"
+msgstr "Créé"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Delete orphan"
+msgstr "Supprimer l'orphelin"
+
+msgid "Delete page"
+msgstr "Supprimer la page"
+
+msgid "Edit"
+msgstr "Editer"
+
+#, php-format
+msgid "Edit %s"
+msgstr "Editer %s"
+
+msgid "Edit header"
+msgstr "Editer l'en-tête"
+
+msgid "Edit page"
+msgstr "Editer la page"
+
+msgid "Edit text"
+msgstr "Editer le texte"
+
+msgid "Empty content. Consider deletion."
+msgstr "Contenu vide. Pensez à le supprimer."
+
+msgid "Extra templates"
+msgstr "Modèles supplémentaires"
+
+msgid "Header"
+msgstr "En-tête"
+
+msgid "Id"
+msgstr "Id"
+
+msgid "Lengthen all menu links"
+msgstr "Agrandir tous les liens de menu"
+
+msgid "List"
+msgstr "Liste"
+
+msgid "Missing icon file."
+msgstr "Fichier d'icône manquant."
+
+msgid "Missing structure file."
+msgstr "Fichier de structure manquant."
+
+msgid "Missing style sheet."
+msgstr "Feuille de style manquante."
+
+msgid "Missing template file."
+msgstr "Fichier de modèle manquant."
+
+msgid "New"
+msgstr "Nouveau"
+
+msgid "Next"
+msgstr "Suivante"
+
+msgid "No pages have been created."
+msgstr "Aucune page n'a été créée."
+
+msgid "Not enough content to create a page."
+msgstr "Pas assez de contenu pour créer une page."
+
+msgid "Orphaned content"
+msgstr "Contenu orphelin"
+
+msgid "Orphans"
+msgstr "Orphelins"
+
+msgid "Page Title (edit above)"
+msgstr "Titre de la page (éditer ci-dessus)"
+
+msgid "Page not found"
+msgstr "Page non trouvée"
+
+msgid "Page number"
+msgstr "Numéro de page"
+
+msgid "Page template did not contain any sections."
+msgstr "Le modèle de page ne contenait aucune section."
+
+msgid "Page template directory must be writable to upload templates."
+msgstr "Le répertoire des modèles de page doit être modifiable pour envoyer des modèles."
+
+msgid "Page template is missing a thumbnail."
+msgstr "Le modèle de page n'a pas de vignette."
+
+msgid "Page template is missing a title."
+msgstr "Le modèle de page n'a pas de titre."
+
+msgid "Page title"
+msgstr "Titre de la page"
+
+msgid "PageSmith Settings"
+msgstr "Paramètres de PageSmith"
+
+msgid "Pages"
+msgstr "Pages"
+
+msgid "Pg. No."
+msgstr "Pg. N°."
+
+msgid "Pick a template"
+msgstr "Choisissez un modèle"
+
+msgid "Previous"
+msgstr "Précédente"
+
+msgid "Remove from front"
+msgstr "Retirer de la page d'accueil"
+
+msgid "Restricted page."
+msgstr "Page restreinte."
+
+msgid "Save"
+msgstr "Enregistrer"
+
+msgid "Save and continue"
+msgstr "Enregistrer et continuer"
+
+msgid "Save and view"
+msgstr "Enregistrer et afficher"
+
+msgid "Settings"
+msgstr "Paramètres"
+
+msgid "Settings saved"
+msgstr "Paramètres enregistrés"
+
+msgid "Shorten all menu links"
+msgstr "Raccourcir tous les liens de menu"
+
+msgid "Sorry"
+msgstr "Désolé"
+
+msgid "Sorry, but your page could not be found. You may wish to search for it."
+msgstr "Désolé, mais votre page n'a pas pû être trouvée. Vous voudrez donc peut être utiliser la recherche."
+
+msgid "Structure file (e.g., structure.xml)"
+msgstr "Fichier de structure (ie, structure.xml)"
+
+msgid "Style sheet (e.g., filename.css)"
+msgstr "Feuille de style (ie, filename.css)"
+
+msgid "Template directory created."
+msgstr "Répertoire de modèle créé."
+
+msgid "Template file (e.g., filename.tpl)"
+msgstr "Fichier de modèle (ie, filename.tpl)"
+
+msgid "Template icon (e.g., filename.png)"
+msgstr "Icône de modèle (ie, filename.png)"
+
+msgid "Template name"
+msgstr "Nom du modèle"
+
+msgid "Template posted."
+msgstr "Modèle envoyé."
+
+msgid "The template name must contain alphanumeric characters only."
+msgstr "Le nom du modèle doit contenir des caractères alphanumériques uniquement."
+
+msgid "There is already a template with this name."
+msgstr "Il y a déjà un modèle avec ce nom."
+
+msgid "Title"
+msgstr "Titre"
+
+msgid "Unable to create page template directory."
+msgstr "Impossible de créer le répertoire de modèles de page."
+
+msgid "Unable to load page template."
+msgstr "Impossible de charger le modèle de page."
+
+msgid "Update"
+msgstr "Mettre à jour"
+
+msgid "Update page"
+msgstr "Mettre à jour la page"
+
+msgid "Updated"
+msgstr "Mis à jour"
+
+msgid "Upload"
+msgstr "Envoyer"
+
+msgid "Upload file"
+msgstr "Envoyer le fichier"
+
+msgid "Upload template"
+msgstr "Envoyer le modèle"
+
+msgid "Upload templates (Unrestricted only)"
+msgstr "Envoyer les modèles (non restreint uniquement)"
+
+msgid "Wrong file type for icon file."
+msgstr "Mauvais type de fichier pour le fichier d'icône."
+
+msgid "Wrong file type for structure file."
+msgstr "Mauvais type de fichier pour le fichier de structure."
+
+msgid "Wrong file type for style sheet."
+msgstr "Mauvais type de fichier pour la feuille de style."
+
+msgid "Wrong file type for template file."
+msgstr "Mauvais type de fichier pour le fichier de modèle."
+
+msgid "You have exceeded the allowed character limit. The page will not save correctly. Click ok to save the text anyway, cancel to return to previous version."
+msgstr "Vous avez dépassé la limite de caractères. Cette page ne s'enregistrera pas correctement. Cliquez sur ok pour enregistrer le texte malgré tout, sur Annuler pour retourner à votre version précédente."
+

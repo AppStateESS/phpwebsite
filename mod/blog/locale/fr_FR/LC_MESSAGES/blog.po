@@ -1,0 +1,445 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: phpWebSite 1.5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-02-10 15:57-0500\n"
+"PO-Revision-Date: 2009-01-13 10:05+0100\n"
+"Last-Translator: Olivier Sannier <obones att altern dott org>\n"
+"Language-Team: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+"Plural-Forms: nplurals=2;plural=(n>1);\n"
+
+msgid "A problem occured with your submission. Please try again later."
+msgstr ""
+"Un problème est survenu avec votre soumission. Merci de réessayer plus tard."
+
+msgid "A problem occurred when trying to disapprove this entry."
+msgstr "Un problème est survenu en tentant de désapprouver ce message."
+
+msgid "A version of this entry is awaiting approval."
+msgstr "Une version de ce message est en attente d'approbation."
+
+msgid "Action"
+msgstr "Action"
+
+msgid "Add entry"
+msgstr "Ajouter un message"
+
+msgid "Add new blog"
+msgstr "Ajouter un nouveau blog"
+
+msgid "All comments require approval"
+msgstr "Tous les commentaires nécessitent une approbation"
+
+msgid "Allow anonymous comments"
+msgstr "Autoriser les commentaires anonymes"
+
+msgid "Allow anonymous comments by default"
+msgstr "Autoriser les commentaires anonymes par défaut"
+
+msgid "Allow anonymous submissions"
+msgstr "Autoriser les soumissions anonymes"
+
+msgid "Allow comments"
+msgstr "Autoriser les commentaires"
+
+msgid "Allow comments by default"
+msgstr "Autoriser les commentaires par défaut"
+
+msgid "Always"
+msgstr "Toujours"
+
+msgid "An error occurred when saving your version."
+msgstr "Une erreur est survenue en enregistrant votre version"
+
+msgid ""
+"An error occurred when trying to save your entry. Please check your logs."
+msgstr ""
+"Une erreur est survenue en tentant d'enregistrer votre message. Veuillez "
+"vérifier vos logs."
+
+msgid "Anonymous"
+msgstr "Anonyme"
+
+msgid "Anonymous comments require approval"
+msgstr "Les commentaires anonymes nécessitent une approbation"
+
+#, php-format
+msgid "Approval (%s)"
+msgstr "Approbation (%s)"
+
+msgid "Approval list"
+msgstr "Liste d'approbations"
+
+msgid "Approve"
+msgstr "Approuver"
+
+msgid "Are you sure you want to permanently delete this blog entry?"
+msgstr ""
+"Êtes-vous sûr(e) de vouloir supprimer définitivement ce message du blog ?"
+
+msgid "Blog Archive"
+msgstr "Archive du blog"
+
+msgid "Blog Entries Awaiting Approval"
+msgstr "Messages de blog en attente d'approbation"
+
+msgid "Blog Restore"
+msgstr "Restauration du blog"
+
+msgid "Blog Settings"
+msgstr "Paramètes du blog"
+
+msgid "Blog entries purged."
+msgstr "Messages de blog purgés."
+
+msgid "Blog entry approved."
+msgstr "Message de blog approuvé."
+
+msgid "Blog entry deleted."
+msgstr "Message de blog supprimé."
+
+msgid "Blog entry disapproved."
+msgstr "Message de blog désapprouvé."
+
+msgid "Blog entry removed."
+msgstr "Message de blog retiré."
+
+msgid "Blog entry restored."
+msgstr "Message de blog restauré."
+
+msgid "Blog list"
+msgstr "Liste de blog"
+
+msgid "Blog settings saved."
+msgstr "Paramètres de blog sauvegardés"
+
+msgid "Blog tables removed."
+msgstr "Tables de blog supprimées."
+
+msgid "Blog view limit"
+msgstr "Limite de visibilité de blog"
+
+msgid "CAPTCHA submissions"
+msgstr "Soumissions par CAPTCHA"
+
+msgid "Cache anonymous view"
+msgstr "Mettre en cache les visualisations anonymes"
+
+msgid "Category"
+msgstr "Catégorie"
+
+msgid "Change settings (Unrestricted only)"
+msgstr "Changer les paramètres (Uniquement les non restreints)"
+
+msgid "Clip for menu"
+msgstr "Clipper pour le menu"
+
+msgid "Comment"
+msgstr "Commentaire"
+
+msgid "Comment approval"
+msgstr "Approbation du commentaire"
+
+msgid "Comments preapproved"
+msgstr "Commentaires préapprouvés"
+
+msgid "Confirm purge"
+msgstr "Confirmez la purge"
+
+msgid "Create first blog entry!"
+msgstr "Créez la première entrée de blog !"
+
+msgid "Creation"
+msgstr "Création"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Delete blog"
+msgstr "Supprimer le blog"
+
+msgid "Disapprove"
+msgstr "Désapprouver"
+
+msgid "Do not show"
+msgstr "Ne pas afficher"
+
+msgid "Edit"
+msgstr "Editer"
+
+msgid "Edit blog"
+msgstr "Editer le blog"
+
+msgid "Entry"
+msgstr "Message"
+
+msgid "Entry saved successfully."
+msgstr "Message enregistré avec succès."
+
+msgid "Expire"
+msgstr "Expire"
+
+msgid "Expire date/time"
+msgstr "Date/heure d'expiration"
+
+msgid "Expired"
+msgstr "Expiré"
+
+msgid "Hide general image folders"
+msgstr "Cacher les dossiers d'images généraux"
+
+#, php-format
+msgid "I am sure that I want to delete all blog entries prior to %s"
+msgstr ""
+"Je suis sûr que je veux supprimer tous les messages de blog avant le %s"
+
+msgid "Image url"
+msgstr "Url de l'image"
+
+msgid "Last poster"
+msgstr "Dernier messager"
+
+msgid "Limit blog to specific groups"
+msgstr "Limiter le blog à des groupes spécifiques"
+
+msgid "Link resized image to parent"
+msgstr "Lier l'image retaillée au parent"
+
+msgid "Link setting (if image)"
+msgstr "Paramètre de lien (en cas d'image)"
+
+msgid "Link the url below"
+msgstr "Lier l'URL ci-dessous"
+
+msgid "Link to read more"
+msgstr "Lier pour lire plus"
+
+msgid "List"
+msgstr "Liste"
+
+msgid "Logged user view only"
+msgstr "Visible uniquement pour les utilisateurs connectés"
+
+msgid "Maximum image height (50-2048)"
+msgstr "Hauteur maximal de l'image (50-2048)"
+
+msgid "Maximum image width (50-2048)"
+msgstr "Largeur maximale de l'image (50-2048)"
+
+msgid "Missing title."
+msgstr "Titre manquant."
+
+msgid "Nevermind, go back to settings"
+msgstr "Laissez tomber, retour aux paramètres"
+
+msgid "New"
+msgstr "Nouveau"
+
+msgid "New Blog Entry"
+msgstr "Nouveau message de blog"
+
+msgid "Next page"
+msgstr "Page suivante"
+
+msgid "No action"
+msgstr "Pas d'action"
+
+msgid "No expiration"
+msgstr "Pas d'expiration"
+
+msgid "No link and ignore image link setting"
+msgstr "Pas de lien et ignore les paramètres de lien d'image"
+
+msgid "No link but allow image link setting"
+msgstr "Pas de lien mais autorise les paramètres de lien d'image"
+
+msgid "No title"
+msgstr "Pas de titre"
+
+msgid "None"
+msgstr "Aucun"
+
+msgid "Number of past entries"
+msgstr "Nombre d'entrées anciennes"
+
+msgid "Only on home page"
+msgstr "Seulement sur la page principale"
+
+msgid "Only show one category icon"
+msgstr "N'afficher qu'une seule icône de catégorie"
+
+msgid "Please enter word in image correctly."
+msgstr "Merci d'entrer correctement le mot dans l'image."
+
+msgid "Post current thoughts, happenings, and discussions."
+msgstr "Publier les idées, événements et discussions."
+
+msgid "Posted by"
+msgstr "Publié par"
+
+msgid "Posted on"
+msgstr "Publié à"
+
+msgid "Previous blog entries"
+msgstr "Messages de blogs précédents"
+
+msgid "Previous page"
+msgstr "Page précédente"
+
+msgid "Publish"
+msgstr "Publier"
+
+msgid "Publish date/time"
+msgstr "Date/heure de publication"
+
+msgid "Purge Blog Entries"
+msgstr "Purger les messages de blogs"
+
+msgid "Purge all entries before this date"
+msgstr "Purger tous les mesasges avant cette date"
+
+msgid "Read more"
+msgstr "Lire plus"
+
+msgid "Recent blog entries"
+msgstr "Messages récents dans le blog"
+
+msgid "Repeat submission"
+msgstr "Répéter la soumission"
+
+msgid "Reset cache"
+msgstr "Réinitialiser le cache"
+
+msgid "Restore"
+msgstr "Restaurer"
+
+msgid "Save Changes and Approve"
+msgstr "Enregistrer les changements et approuver"
+
+msgid "Save settings"
+msgstr "Enregistrer les paramètres"
+
+msgid "Set to zero to prevent display"
+msgstr "Indiquez zéro pour empêcher l'affichage"
+
+msgid "Settings"
+msgstr "Paramètres"
+
+msgid "Show blog on home page"
+msgstr "Afficher le blog sur la page d'accueil"
+
+msgid "Show category icons"
+msgstr "Afficher les icônes de catégorie"
+
+msgid "Show category links"
+msgstr "Afficher les liens de catégorie"
+
+msgid "Show image or media thumbnail in list view"
+msgstr "Afficher l'image ou la vignette du média dans la vue liste"
+
+msgid "Show recent entries"
+msgstr "Afficher les messages récents"
+
+msgid "Site is not accepting anonymous submissions."
+msgstr "Ce site n'accepte pas les soumissions anonymes."
+
+msgid "Sorry"
+msgstr "Désolé"
+
+msgid "Sticky"
+msgstr "Collant"
+
+msgid "Submission"
+msgstr "Soumission"
+
+msgid "Submit Entry"
+msgstr "Soumettre le message"
+
+msgid "Submit entry"
+msgstr "Soumettre le message"
+
+msgid "Suggest entry"
+msgstr "Suggérer un message"
+
+msgid "Summary"
+msgstr "Résumé"
+
+msgid "System caching disabled."
+msgstr "Cache système désactivé."
+
+msgid "Thank you"
+msgstr "Merci"
+
+msgid "This version has not been approved."
+msgstr "Cette version n'a pas été approuvée."
+
+msgid "Title"
+msgstr "Titre"
+
+msgid "Tried to edit an unapproved item."
+msgstr "Tentative d'éditer un élément non approuvé."
+
+msgid "Unpublished"
+msgstr "Non publié"
+
+msgid "Unsticky"
+msgstr "Décoller"
+
+msgid "Update Blog Entry"
+msgstr "Mettre à jour le message de blog"
+
+msgid "Update Unapproved Blog Entry"
+msgstr "Mettre à jour le message de blog non approuvé"
+
+msgid "Update entry"
+msgstr "Mettre à jour le message"
+
+msgid "Use Image Manager"
+msgstr "Utiliser Image Manager"
+
+msgid "User attempted access to Blog administration."
+msgstr "L'utilisateur a tenté d'accéder à l'administration du blog"
+
+msgid "User tried to edit a blog."
+msgstr "L'utilisateur a tenté d'éditer un blog."
+
+msgid "View"
+msgstr "Voir"
+
+msgid "View version"
+msgstr "Voir la version"
+
+msgid "You do not have permission to view this entry."
+msgstr "Vous n'avez pas la permission de voir ce message."
+
+msgid ""
+"You have chosen to purge old blog entries from your web site. Be aware they "
+"will be deleted permanently."
+msgstr ""
+"Vous avez choisi de purger les vieux messages de blog de votre site web. "
+"Gardez à l'esprit qu'ils seront supprimés définitivement."
+
+msgid "Your entry has been submitted for review."
+msgstr "Votre message a été soumis pour analyse."
+
+msgid "Your entry is being held for approval."
+msgstr "Votre message est en attente d'approbation."
+
+msgid "Your submission is still awaiting approval."
+msgstr "Votre soumission est toujours en attente d'approbation."
+
+msgid "Your submission must have a summary."
+msgstr "Votre soumission doit avoir un résumé."
+
+#~ msgid "Type the word seen in the image."
+#~ msgstr "Entrez le mot visible dans l'image."

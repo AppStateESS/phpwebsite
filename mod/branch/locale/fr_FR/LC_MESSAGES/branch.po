@@ -1,0 +1,318 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: phpWebSite 1.5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-02-10 15:57-0500\n"
+"PO-Revision-Date: 2009-01-13 10:11+0100\n"
+"Last-Translator: Olivier Sannier <obones att altern dott org>\n"
+"Language-Team: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+"Plural-Forms: nplurals=2;plural=(n>1);\n"
+
+msgid ".htaccess detected on hub. Attempting to create default file on branch."
+msgstr ""
+".htaccess détecté sur le hub. Tentative de création du fichier par défaut "
+"sur la branche."
+
+msgid "Action"
+msgstr "Action"
+
+msgid "All done!"
+msgstr "Tout fait !"
+
+msgid "An error occurred when trying to connect to the database."
+msgstr ""
+"Une erreur est survenue en tentant de se connecter à la base de données."
+
+msgid "An error occurred when trying to save the module list."
+msgstr "Une erreur est survenue en tentant d'enregistrer la liste des modules."
+
+msgid "An error occurred while saving your branch."
+msgstr "Une erreur est survenue en tant de sauvegarder votre branche."
+
+msgid "An error occurred while trying to install your modules."
+msgstr "Une erreur est survenue en tentant d'installer vos modules."
+
+msgid "Branch"
+msgstr "Branche"
+
+msgid "Branch List"
+msgstr "Liste des branches"
+
+msgid "Branch created successfully."
+msgstr "Branche créée avec succès."
+
+msgid "Branch directory does not exist."
+msgstr "Le répertoire de la branche n'existe pas."
+
+msgid "Branch name"
+msgstr "Nom de la branche"
+
+msgid "Branch specifications"
+msgstr "Spécifications de la branche"
+
+msgid "Config file created successfully."
+msgstr "Fichier de configuration créé avec succès."
+
+msgid "Connected successfully, but the database does not exist."
+msgstr "Connecté avec succès, mais la base de données n'existe pas."
+
+msgid "Connected successfully, but this database already contains tables."
+msgstr ""
+"Connecté avec succès, mais cette base de données contient déjà des tables."
+
+msgid "Connection Port"
+msgstr "Port de connexion"
+
+msgid "Connection successful. Database available."
+msgstr "Connexion réussie. Base de données disponible."
+
+msgid "Continue to install branch core"
+msgstr "Continuer à installer le coeur de la branche"
+
+msgid "Continue..."
+msgstr "Continuer..."
+
+msgid "Copied admin file to branch."
+msgstr "Fichier d'admin copié dans la branche."
+
+msgid "Copied config files to branch."
+msgstr "Fichiers de config copiés dans la branche."
+
+msgid "Copied core images."
+msgstr "Images core copiées dans la branche."
+
+msgid "Copied javascript files to branch."
+msgstr "Fichiers javascript copiés dans la branche."
+
+msgid "Copied successfully."
+msgstr "Copié avec succès."
+
+msgid "Copied themes to branch."
+msgstr "Thèmes copiés dans la branche."
+
+msgid "Core SQL import failed."
+msgstr "L'import SQL du coeur a échoué."
+
+msgid "Core SQL import successful."
+msgstr "Import du SQL du coeur réussi."
+
+msgid "Core installed successfully. Continue to core module installation."
+msgstr ""
+"Coeur installé avec succès. Continuez vers l'installation des modules du "
+"coeur."
+
+msgid "Could not connect to the database."
+msgstr "Impossible de se connecter à la base de données."
+
+msgid "Create branch directories"
+msgstr "Créer les répertoires de la branche"
+
+msgid "Create branch information"
+msgstr "Créer les information de la branche"
+
+msgid "Create new database"
+msgstr "Créer une nouvelle base de données"
+
+msgid "Database Host"
+msgstr "Hôte de la base de données"
+
+msgid "Database created successfully."
+msgstr "Base de données créée avec succès."
+
+msgid "Database information"
+msgstr "Informations sur la base de données"
+
+msgid "Database name"
+msgstr "Nom de la base de données"
+
+msgid "Database syntax"
+msgstr "Syntaxe de la base de données"
+
+msgid "Directory"
+msgstr "Répertoire"
+
+msgid "Directory creation successful."
+msgstr "Création du répertoire avec succès."
+
+msgid "Directory exists but already contains files."
+msgstr "Le répertoire existe mais contient déjà des fichiers."
+
+msgid "Directory exists but is not writable."
+msgstr "Le répertoire existe mais n'est pas modifiable."
+
+msgid "Edit"
+msgstr "Editer"
+
+msgid "Edit branch"
+msgstr "Editer la branche"
+
+msgid "Enter your site's url address."
+msgstr "Entrez l'URL de votre site."
+
+msgid "Failed to copy admin file to branch."
+msgstr "Echec de la copie du fichier d'admin dans la branche."
+
+msgid "Failed to copy core config files to branch."
+msgstr "Echec de la copie des fichiers de config du coeur dans la branche."
+
+msgid "Failed to copy core images to branch."
+msgstr "Echec de la copie des images du coeur dans la branche."
+
+msgid "Failed to copy javascript files to branch."
+msgstr "Echec de la copie des fichiers javascript dans la branche."
+
+msgid "Failed to copy theme files to branch."
+msgstr "Echec de la copie des fichiers de thèmes dans la branche."
+
+msgid "Failed to create config.php file in the branch."
+msgstr "Echec de la création du fichier config.php dans la branche."
+
+msgid "Full directory path"
+msgstr "Chemin complet du répertoire"
+
+msgid "ID hash"
+msgstr "Hash de l'ID"
+
+msgid "Incorrect or missing branch id."
+msgstr "ID de branche incorrect ou manquant."
+
+msgid "Install and update branch sites."
+msgstr "Installe et met à jour les sites branches"
+
+msgid "Install branch core"
+msgstr "Installer le coeur de la branche"
+
+msgid "Installing core modules"
+msgstr "Installation des modules du coeur"
+
+msgid "List"
+msgstr "Liste"
+
+#, php-format
+msgid "Module access for \"%s\""
+msgstr "Accès au module pour \"%s\""
+
+msgid "Module list saved successfully."
+msgstr "Liste des modules enregistrée avec succès."
+
+msgid "Modules"
+msgstr "Modules"
+
+msgid "New"
+msgstr "Nouveau"
+
+msgid "Permission user"
+msgstr "Utilisateur de permission"
+
+msgid "Please check your error logs and try again."
+msgstr "Veuillez vérifier vos logs d'erreur et réessayer."
+
+msgid "Remove"
+msgstr "Retirer"
+
+msgid ""
+"Removing this branch will make it inaccessible.\\nThe database and files "
+"will remain behind.\\nIf you are sure you want to remove the branch, type "
+"the branch name:"
+msgstr ""
+"Retirer cette branche la rendra inaccessible.\\nLa base de données et les "
+"fichiers resteront en place.\\nSi vous êtes sûr(e) que vous voulez retirer "
+"la branche, tapez son nom :"
+
+msgid "Save"
+msgstr "Enregistrer"
+
+msgid "Set up allowed modules"
+msgstr "Configurer les modules autorisés"
+
+msgid "Setup branch database"
+msgstr "Configurer la base de données de la branche"
+
+msgid "Sorry, but Branch failed to make the proper directories."
+msgstr "Désolé mais Branch n'a pas réussi à créer les répertoire appropriés."
+
+msgid "Table prefix"
+msgstr "Préfix de table"
+
+msgid "Table prefix must be alphanumeric characters or underscores only"
+msgstr ""
+"Le préfix de table doit contenir uniquement des underscore ou des caractères "
+"alphanumériques"
+
+msgid "This database name is not allowed."
+msgstr "Ce nom de base de données n'est pas autorisé."
+
+msgid ""
+"Though not recommended, prefixing will allow you to install to this database."
+msgstr ""
+"Bien que ça ne soit pas recommandé, l'utilisation d'un préfixe vous "
+"permettra d'installer dans cette base de données."
+
+msgid ""
+"Though not recommended, you can force installation by clicking Continue "
+"below."
+msgstr ""
+"Bien que ça ne soit pas recommandé, vous pouvez forcer l'installation en "
+"cliquant sur Continuer ci-dessous."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to copy .htaccess file."
+msgstr "Impossible de copier le fichier .htaccess"
+
+msgid "Unable to create branch directories."
+msgstr "Impossible de créer les répertoires de la branche."
+
+msgid "Unable to create the database. You will need to create it manually."
+msgstr ""
+"Impossible de créer la base de données. Vous devrez la créer à la main."
+
+msgid "Unable to create the directory. You will need to create it manually."
+msgstr "Impossible de créer le répertoire. Vous devrez le créer à la main."
+
+msgid "Unable to get database connect information. Please try again."
+msgstr ""
+"Impossible de récupérer les informations de connexion à la base de données. "
+"Veuillez réessayer."
+
+msgid "Unchecked modules cannot be installed on this branch."
+msgstr ""
+"Les modules non cochés ne peuvent pas être installés sur cette branche."
+
+msgid "Update"
+msgstr "Mettre à jour"
+
+msgid "Url"
+msgstr "Url"
+
+msgid "Use hub values"
+msgstr "Utiliser les valeurs du hub"
+
+msgid "User password"
+msgstr "Mot de passe utilisateur"
+
+msgid "You may not use that branch name."
+msgstr "Vous ne pouvez pas utiliser ce nom de branche."
+
+msgid "You must name your branch."
+msgstr "Vous devez nommer votre branche."
+
+msgid "You must type a database name."
+msgstr "Vous devez entrer un nom de base de données."
+
+msgid "You must type a database user."
+msgstr "Vous devez entrer un utilisateur de la base de données."
+
+msgid "Your branch site must have a site_hash."
+msgstr "Vous site branche doit avoir un site_hash."

@@ -1,0 +1,393 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: phpWebSite 1.5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-02-10 15:57-0500\n"
+"PO-Revision-Date: 2008-09-25 18:41+0100\n"
+"Last-Translator: OBones <obones@free.fr>\n"
+"Language-Team: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+"Plural-Forms: nplurals=2;plural=(n>1);\n"
+
+#, php-format
+msgid "%d. (Untitled)"
+msgstr "%d. (Sans titre)"
+
+msgid "- Select option -"
+msgstr "- Sélectionnez une option -"
+
+msgid "A problem occurred when trying to approve a web page."
+msgstr "Un problème est survenu en tentant d'approuver une page web."
+
+msgid "A problem occurred when trying to delete your webpage."
+msgstr "Un problème est survenu en tentant de supprimer votre page web."
+
+msgid "A problem occurred when trying to disapprove a web page."
+msgstr "Un problème est survenu en tentant de désapprouver une page web."
+
+msgid "Action"
+msgstr "Action"
+
+msgid "Activate"
+msgstr "Activer"
+
+msgid "Active"
+msgstr "Active"
+
+msgid "Add Page"
+msgstr "Ajouter une page"
+
+msgid "Add new page"
+msgstr "Ajouter une nouvelle page"
+
+#, php-format
+msgid "Add page: %s"
+msgstr "Ajouter une page : %s"
+
+#, php-format
+msgid "Administrate page: %s"
+msgstr "Administrer la page : %s"
+
+msgid "An error occurred while saving your page. Please check the error log."
+msgstr ""
+"Une erreur est survenue en enregistrant votre page. Veuillez vérifier le log "
+"d'erreur."
+
+msgid "An error occurred. Please check your logs."
+msgstr "Une erreur est survenue. Veuillez vérifier vos logs."
+
+msgid "Approval list"
+msgstr "Liste d'approbation"
+
+msgid "Approval view"
+msgstr "Vue des approbations"
+
+#, php-format
+msgid "Approval(%s)"
+msgstr "Approbation (%s)"
+
+msgid "Approve"
+msgstr "Approuver"
+
+#, php-format
+msgid "Are you sure you want to delete &quot;%s&quot and all its pages?"
+msgstr ""
+"Êtes-vous sûr(e) de vouloir supprimer &quot;%s&quot; et toutes ses pages ?"
+
+msgid "Are you sure you want to delete the checked web pages?"
+msgstr "Êtes-vous sûr(e) de vouloir supprimer les pages web cochées ?"
+
+msgid ""
+"Are you sure you want to join ALL the pages into just one page? Warning: You "
+"will lose all page backups!"
+msgstr ""
+"Êtes-vous sûr(e) de vouloir coller toutes les pages en juste une seule "
+"page ? Attention, vous perdrez toutes vos sauvegardes de page !"
+
+msgid "Are you sure you want to join this page to the next?"
+msgstr "Êtes-vous sûr(e) de vouloir coller cette page à la suivante ?"
+
+msgid "Are you sure you want to remove this page?"
+msgstr "Êtes-vous sûr(e) de vouloir retirer cette page ?"
+
+msgid "Attempted to approve a webpage."
+msgstr "Tentative d'approbation d'un page web."
+
+msgid "Attempted to disapprove a webpage."
+msgstr "Tentative de désapprobation d'une page web."
+
+msgid "Cannot find template file."
+msgstr "Impossible de trouver le fichier modèle."
+
+msgid "Content"
+msgstr "Contenu"
+
+msgid "Create header"
+msgstr "Créer l'en-tête"
+
+msgid "Created by"
+msgstr "Créé par"
+
+msgid "Created on"
+msgstr "Créé à"
+
+msgid "Creates web pages, articles, and the like."
+msgstr "Crée des pages webs, articles et ce qui y ressemble."
+
+msgid "Deactivate"
+msgstr "Désactiver"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Delete page (Unrestricted only)"
+msgstr "Supprimer la page (Non restreint uniquement)"
+
+msgid "Disapprove"
+msgstr "Désapprouver"
+
+msgid "Down"
+msgstr "Vers le bas"
+
+msgid "Drop"
+msgstr "Lâcher"
+
+msgid "Edit"
+msgstr "Editer"
+
+#, php-format
+msgid "Edit Page %s"
+msgstr "Editer la page %s"
+
+msgid "Edit header"
+msgstr "Editer l'en-tête"
+
+#, php-format
+msgid "Edit header page: %s"
+msgstr "Editer la page d'en-tête : %s"
+
+#, php-format
+msgid "Edit header: %s"
+msgstr "Editer l'en-tête : %s"
+
+msgid "Edit page"
+msgstr "Editer la page"
+
+msgid "Edit page header"
+msgstr "Editer l'en-tête de la page"
+
+msgid "Edit web page"
+msgstr "Editer la page web"
+
+msgid "Error"
+msgstr "Erreur"
+
+msgid "Error occurred when trying to pull a page from the volume."
+msgstr "Une erreur est survenue en tentant de prendre une page dans le volume."
+
+msgid "Error: Unable to force template."
+msgstr "Erreur : Impossible de forcer le modèle."
+
+msgid "Feature"
+msgstr "Fonctionnalité"
+
+msgid "Feature page"
+msgstr "Page à l'affiche"
+
+msgid "Featured pages"
+msgstr "Articles à l'affiche"
+
+msgid "Force all pages to use this template"
+msgstr "Forcer toutes les pages à utiliser ce modèle"
+
+msgid "Front page"
+msgstr "Page d'accueil"
+
+msgid "Go"
+msgstr "Aller"
+
+msgid "Go!"
+msgstr "Aller !"
+
+msgid "Header"
+msgstr "En-tête"
+
+msgid "Header restored."
+msgstr "En-tête restauré."
+
+msgid "Header saved successfully."
+msgstr "En-tête enregistré avec succès."
+
+msgid "Header version deleted."
+msgstr "Version de l'en-tête supprimée."
+
+msgid "Ignoring repeat post."
+msgstr "Envoi répété ignoré."
+
+msgid "Image"
+msgstr "Image"
+
+msgid "List"
+msgstr "Liste"
+
+msgid "List Web Pages"
+msgstr "Lister les pages web"
+
+msgid "Missing page content."
+msgstr "Contenu de la page manquant."
+
+msgid "Missing page title"
+msgstr "Titre de la page manquant."
+
+msgid "Missing template file."
+msgstr "Fichier modèle manquant."
+
+msgid "Missing volume id."
+msgstr "Id de volume manquant."
+
+msgid "Move down"
+msgstr "Déplacer vers le bas"
+
+msgid "Move off frontpage"
+msgstr "Déplacer en dehors de la page d'accueil"
+
+msgid "Move to end"
+msgstr "Déplacer à la fin"
+
+msgid "Move to front"
+msgstr "Déplacer à l'avant"
+
+msgid "Move to frontpage"
+msgstr "Déplacer vers la page d'accueil"
+
+msgid "Move up"
+msgstr "Déplacer vers le haut"
+
+msgid "New"
+msgstr "Nouveau"
+
+msgid "Next page"
+msgstr "Page suivante"
+
+msgid "No"
+msgstr "Non"
+
+msgid "No pages have been created."
+msgstr "Aucune page n'a été créée."
+
+msgid "Page"
+msgstr "Page"
+
+msgid "Page held for approval."
+msgstr "Page retenue pour approbation"
+
+msgid "Page is missing content."
+msgstr "La page n'a pas de contenu."
+
+msgid "Page is not complete."
+msgstr "La page n'est pas complète."
+
+msgid "Page joined."
+msgstr "Page collée."
+
+msgid "Page moved."
+msgstr "Page déplacée."
+
+msgid "Page removed."
+msgstr "Page retirée."
+
+msgid "Page restored."
+msgstr "Page restorée."
+
+msgid "Page saved successfully."
+msgstr "Page enregistrée avec succès."
+
+msgid "Page template"
+msgstr "Modèle de page"
+
+msgid "Pages joined."
+msgstr "Pages collées."
+
+msgid "Previous page"
+msgstr "Page précédente"
+
+msgid "Restore"
+msgstr "Restaurer"
+
+#, php-format
+msgid "Restore Page %s"
+msgstr "Restaurer la page %s"
+
+msgid "Restore Web Page Header"
+msgstr "Restaurer l'en-tête de la page web"
+
+msgid "Save settings"
+msgstr "Enregistrer les paramètres"
+
+msgid "Set featured pages  (Unrestricted only)"
+msgstr "Renseigner les pages à l'affiche (non restreint uniquement)"
+
+msgid "Settings"
+msgstr "Paramètres"
+
+msgid "Settings saved."
+msgstr "Paramètres enregistrés."
+
+msgid "Simple image forms"
+msgstr "Formulaires d'image simples"
+
+msgid "Sorry, this web page is restricted."
+msgstr "Désolé, cette page est restreinte."
+
+msgid "Sort"
+msgstr "Trier"
+
+msgid "Summary"
+msgstr "Résumé"
+
+msgid "There is a problem with your page templates. Check your error log."
+msgstr ""
+"Il y a un problème avec vos modèles de page. Vérifiez votre log d'erreur."
+
+msgid "Title"
+msgstr "Titre"
+
+msgid "Unable to locate page template directory."
+msgstr "Impossible de localiser le répertoire de modèle de page."
+
+msgid "Up"
+msgstr "Vers le haut"
+
+msgid "Update header"
+msgstr "Mettre à jour l'en-tête"
+
+msgid "Update page"
+msgstr "Mettre à jour la page"
+
+msgid "Updated by"
+msgstr "Mis à jour par"
+
+msgid "Updated on"
+msgstr "Mis à jour à"
+
+msgid "View"
+msgstr "Voir"
+
+msgid "View page list"
+msgstr "Voir la liste des pages"
+
+msgid "Volume is missing a title."
+msgstr "Le volume n'a pas de titre."
+
+msgid "Web Page Approval"
+msgstr "Approbation de page web"
+
+msgid "Web Page tables removed."
+msgstr "Tables de Page Web retirées."
+
+msgid "Web Pages"
+msgstr "Pages Web"
+
+msgid "Web page approved."
+msgstr "Page web approuvée."
+
+msgid "Web page disapproved."
+msgstr "Page web désapprouvée."
+
+msgid "Webpage title"
+msgstr "Titre de page web"
+
+msgid "Yes"
+msgstr "Oui"
+
+msgid "[Unapproved]"
+msgstr "[Non approuvée]"

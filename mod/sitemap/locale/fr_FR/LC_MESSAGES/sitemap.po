@@ -1,0 +1,237 @@
+# sitemap - phpwebsite module
+#
+# See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# @version $Id: sitemap.po,v 1.2 2008/07/16 19:07:15 verdonv Exp $
+# @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: phpwebsite 1.6.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-02-10 15:57-0500\n"
+"PO-Revision-Date: 2009-01-13 12:19+0100\n"
+"Last-Translator: Olivier Sannier <obones att altern dott org>\n"
+"Language-Team: fr_FR <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+
+#, php-format
+msgid "* More information on the Sitemap protocal is available %s"
+msgstr "* Plus de détails sur le protocole Sitemap sont disponibles sur %s"
+
+msgid ""
+"** I do a rough calculation to achieve this. Everything starts as the "
+"average 0.5. I add 0.5 to top-level itmes. I then subtract 0.1 for each step "
+"down the menu order. Nothing is scored above 1.0 or below 0.1."
+msgstr ""
+"** J'effectue un calcul approximatif pour réaliser ceci. Tout commence à la "
+"moyenne de 0,5. J'ajoute 0,5 pour les éléments du niveau maximal. Puis je "
+"soustrait 0,1 à chaque descente de niveau dans l'ordre du menu. Rien "
+"n'obtient de score supérieur à 1,0 ou inférieur à 0,1."
+
+msgid ""
+"*** The feed respects the settings above. Lastmod date of non-keyed items "
+"will be null."
+msgstr ""
+"*** Le flux respecte les paramètres ci-dessus. La date de dernière modif "
+"pour les éléments sans clés sera nulle."
+
+msgid "About this module:"
+msgstr "A propos de ce module :"
+
+msgid "Add optional* change frequency to sitemap"
+msgstr "Ajouter les fréquences de changement optionnelles* à sitemap"
+
+msgid "Add optional* lastmod date to sitemap"
+msgstr "Ajouter la date de dernier changement optionnelle* à sitemap"
+
+msgid "Add optional* priority** to sitemap"
+msgstr "Ajouter les priorités** optionnelles* à sitemap"
+
+msgid "Allow live xml feed*** of all non-restricted menus"
+msgstr "Autoriser un flux*** xml en direct pour les menus non restreints"
+
+msgid "Build"
+msgstr "Construire"
+
+msgid ""
+"Cache duration in seconds for xml feed (0-7200, set to 0 to disable cache)"
+msgstr ""
+"Durée du cache en secondes pour le flux xml (0-7200, indiquez 0 pour "
+"désactiver le cache)"
+
+msgid "Change frequency"
+msgstr "Fréquence de changement"
+
+msgid "Create sitemap file"
+msgstr "Créer le fichier sitemap"
+
+msgid "Download"
+msgstr "Télécharger"
+
+msgid "Error occurred when creating file."
+msgstr "Une erreur est survenue lors de la création du fichier."
+
+msgid "Exclude remote URLs"
+msgstr "Exclure les URLs distantes"
+
+msgid "File created successfully."
+msgstr "Fichier créé avec succès."
+
+#, php-format
+msgid ""
+"First, review the settings. Then, you can either download a sitemap file for "
+"using later, save a sitemap file to the server at %s, or allow a live and "
+"dynamic sitemap feed at %s"
+msgstr ""
+"Pour commencer, vérifiez les paramètres. Puis, vous pouvez télécharger le "
+"fichier sitemap pour une utilisation ultérieure, enregistrer le fichier "
+"sitemap sur le serveur dans %s, ou autoriser un flux sitemap direct et "
+"dynamique sur %s"
+
+msgid "General Settings"
+msgstr "Paramètres généraux"
+
+msgid "Generate Map"
+msgstr "Générer la carte"
+
+msgid "Generates sitemap.xml files for search engines."
+msgstr "Génère le fichier sitemap.xml pour les moteurs de recherche."
+
+msgid "How to use it:"
+msgstr "Comment l'utiliser :"
+
+#, php-format
+msgid ""
+"If you would like to help out with the ongoing development of sitemap, or "
+"other modules by Verdon Vaillancourt, %s click here to donate %s (opens in "
+"new browser window)."
+msgstr ""
+"Si vous voulez aider au développement continu de sitemap, ou d'autres "
+"modules par Verdon Vaillancourt, %s cliquez ici pour faire un don %s "
+"(s'ouvre dans une nouvelle fenêtre)."
+
+msgid "Important Information"
+msgstr "Informations importantes"
+
+msgid "Include keyed items not in menus in your sitemap"
+msgstr ""
+"Inclure dans votre sitemap les éléments à clé non présents dans les menus"
+
+msgid "Include keyed module items not in menus in your sitemap"
+msgstr ""
+"Inclure dans votre sitemap les éléments de module à clé non présents dans "
+"les menus"
+
+msgid "Lastmod date for non-keyed items (YYYY-MM-DD) or leave empty"
+msgstr ""
+"Date de dernière modif pour les éléments sans clé (YYYY-MM-DD) ou laisser "
+"vide"
+
+msgid "No keyed items."
+msgstr "Pas d'éléments à clé."
+
+msgid "No menus created."
+msgstr "Pas de menus créés."
+
+msgid "No menus."
+msgstr "Pas de menus."
+
+msgid "Options"
+msgstr "Options"
+
+msgid "Read me"
+msgstr "Lisez moi"
+
+msgid "Respect keyed menu item permissions"
+msgstr "Respecter les permissions des éléments de menus à clé"
+
+msgid "Save settings"
+msgstr "Enregistrer les paramètres"
+
+#, php-format
+msgid "Save to server (%s)"
+msgstr "Enregistrer sur le serveur (%s)"
+
+msgid "Select any modules you wish to exclude by default from your sitemap."
+msgstr ""
+"Sélectionnez tous les modules que vous voulez exclure par défaut de votre "
+"sitemap."
+
+msgid "Select any modules you wish to exclude from your sitemap."
+msgstr ""
+"Sélectionnez tous les modules que vous voulez exclure de votre sitemap."
+
+msgid "Select one or more menus to include in your sitemap."
+msgstr "Sélectionnez un ou plusieurs menus à inclure dans votre sitemap."
+
+msgid "Settings"
+msgstr "Paramètres"
+
+msgid "Sitemap"
+msgstr "Sitemap"
+
+#, php-format
+msgid ""
+"Sitemap is used to generate a sitmap.xml file, following the standards at %"
+"s. These sitemap files are used by google and other popular search engines "
+"to help them index your website. Sitemap does this by gathering all the "
+"links from one or more of your menus, as well as other keyed module items "
+"(such as blog posts) that may not be in a menu, filtering and preparing "
+"according to your settings, and then writing the xml for you."
+msgstr ""
+"Sitemap est utilisé pour créer un fichier sitmap.xml, respectant les "
+"standards définis sur %s. Ces fichiers sitempa sont utilisés par google et "
+"d'autres moteurs de recherche populaires pour les aider à indexer votre site "
+"web. Sitemap effectue ceci en collectant tous les liens d'un ou plusieurs "
+"menus, ainsi que les autres éléments de modules à clé (tels que les messages "
+"de blogs) qui ne sont pas forcément dans un menu, en filtrant et préparant "
+"selon vos paramètres, puis en écrivant le fichier xml pour vous."
+
+msgid "Sitemap settings saved."
+msgstr "Paramètres de Sitemap sauvegardés."
+
+msgid ""
+"This is the third release of sitemap for the new 1.x series phpwebsite. I "
+"wrote this for a specific need I had and thought it may be of use to others "
+"also."
+msgstr ""
+"C'est la troisième version de sitemap pour la nouvelle série 1.x de "
+"phpwebsite. J'ai écrit ce module pour un besoin spécifique que j'avais et ai "
+"pensé que ça pourrait aussi être utile à d'autres."
+
+msgid "What it does:"
+msgstr "Ce que ça fait :"
+
+msgid "here"
+msgstr "ici"
+
+msgid "item"
+msgstr "élément"
+
+msgid "items"
+msgstr "éléments"
+
+msgid "link"
+msgstr "lien"
+
+msgid "links"
+msgstr "liens"

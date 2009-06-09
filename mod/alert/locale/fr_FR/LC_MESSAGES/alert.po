@@ -1,0 +1,376 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: phpWebSite 1.5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-02-10 15:57-0500\n"
+"PO-Revision-Date: 2008-09-22 15:03+0100\n"
+"Last-Translator: Olivier Sannier <obones att altern dott org>\n"
+"Language-Team: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+"Plural-Forms: nplurals=2;plural=(n>1);\n"
+
+msgid "Action"
+msgstr "Action"
+
+msgid "Active"
+msgstr "Actif"
+
+msgid "Add"
+msgstr "Ajouter"
+
+msgid "Add Multiple Participants"
+msgstr "Ajouter plusieurs participants"
+
+msgid "Add alert"
+msgstr "Ajouter une alerte"
+
+msgid "Add alert type"
+msgstr "Ajouter un type d'alerte"
+
+#, php-format
+msgid "Add all participants to %s"
+msgstr "Ajouter tous les participants à %s"
+
+msgid "Add multiple"
+msgstr "Ajouter plusieurs"
+
+msgid "Add/Remove Alert participants."
+msgstr "Ajouter/Supprimer des participants à une alerte."
+
+msgid "Added checked"
+msgstr "Ajouter les éléments cochés"
+
+msgid "Alert Settings"
+msgstr "Paramètres d'alerte"
+
+msgid "Alert Types"
+msgstr "Types d'alertes"
+
+msgid "Alert could not be located."
+msgstr "L'alerte n'a pas pû être localisé"
+
+msgid "Alert saved."
+msgstr "Alerte sauvegardée"
+
+msgid "Alert type"
+msgstr "Type d'alerte"
+
+msgid "Alert your community to important happenings."
+msgstr "Alertez votre communautée des événements importants"
+
+msgid "Alerts"
+msgstr "Alertes"
+
+msgid "All participants contacted."
+msgstr "Tous les participants ont été contactés."
+
+msgid "Allow email contact"
+msgstr "Autoriser le contact par email"
+
+msgid "An error occurred when trying to copy participants to the contact list."
+msgstr ""
+"Une erreur est survenue en tentant de copier les participants dans la liste "
+"de contact."
+
+msgid ""
+"An error occurred when trying to determine the total number of participants."
+msgstr ""
+"Une erreur est survenue en tentant de déterminer le nombre total de "
+"participants."
+
+msgid "An error occurred when trying to load alert types. Check your logs."
+msgstr ""
+"Une erreur est survenue en tentant de charger les types d'alerte. Vérifiez "
+"vos logs."
+
+msgid "An error occurred while checking contact status."
+msgstr "Une erreur est survenue en vérifiant les statuts des contacts"
+
+msgid "An error occurred within the alert type."
+msgstr "Une erreur est survenue au sein du type d'alerte."
+
+msgid "An error occurred. Could not save alert type."
+msgstr "Une erreur est survenue. Impossible d'enregistrer le type d'alerte."
+
+msgid "An error occurred. Could not save alert."
+msgstr "Une erreur est survenue. Impossible d'enregistrer l'alerte."
+
+msgid "Are you sure you want to delete this alert type?"
+msgstr "Êtes-vous sûr(e) de vouloir supprimer ce type d'alerte ?"
+
+msgid "Are you sure you want to delete this alert?"
+msgstr "Êtes-vous sûr(e) de vouloir supprimer cette alerte ?"
+
+msgid "Are you sure you want to reset this alert\\'s contact status?"
+msgstr ""
+"Êtes-vous sûr(e) de vouloir réinitialiser le statut de contact de cette "
+"alerte ?"
+
+msgid "Cannot continue processing batches. The batch has been set to zero."
+msgstr ""
+"Impossible de continuer à traiter les lots. Le lot a été configuré à zéro."
+
+msgid "Change settings"
+msgstr "Modifier les paramètres"
+
+msgid "Close this window"
+msgstr "Fermer cette fenêtre"
+
+msgid "Contact participants via email when new alerts created"
+msgstr ""
+"Contacter les participants par email quand de nouvelles alertes sont créées"
+
+msgid "Copying participant list. Please wait."
+msgstr "Copie de la liste des participants. Veuillez patienter."
+
+msgid "Could not delete alert type."
+msgstr "Impossible de supprimer le type d'alerte."
+
+msgid "Could not delete alert."
+msgstr "Impossible de supprimer l'alerte."
+
+msgid "Could not locate alert item."
+msgstr "Impossible de localiser l'élément d'alerte."
+
+msgid "Could not locate alert type."
+msgstr "Impossible de localiser le type d'alerte."
+
+msgid "Could not reset alert."
+msgstr "Impossible de réinitialiser l'alerte."
+
+msgid "Create Alert"
+msgstr "Créer une alerte"
+
+msgid "Create RSS feed"
+msgstr "Créer un flux RSS"
+
+msgid "Create alert type"
+msgstr "Créer un type d'alerte"
+
+msgid "Create, update and define alert types."
+msgstr "Créer, mettre à jour et définir les types d'alertes."
+
+msgid "Created"
+msgstr "Créé"
+
+msgid "Daily listing"
+msgstr "Liste quotidienne"
+
+msgid "Date format"
+msgstr "Format de date"
+
+msgid "Date format can not be empty."
+msgstr "Le format de date ne peut pas être vide."
+
+msgid "Default message"
+msgstr "Message par défaut"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Delete alerts"
+msgstr "Supprimer les alertes"
+
+msgid "Delete types"
+msgstr "Supprimer les types"
+
+msgid "Deleted alert type."
+msgstr "Type d'alerte supprimé."
+
+msgid "Deleted alert."
+msgstr "Alerte supprimée."
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Display settings for Alert module."
+msgstr "Afficher les paramètres pour le module Alerte."
+
+msgid "Do not post on front page"
+msgstr "Ne pas afficher sur la page principale"
+
+msgid "Edit"
+msgstr "Editer"
+
+msgid "Edit levels"
+msgstr "Editer les niveaux"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Email address"
+msgstr "Adresse email"
+
+msgid "Email batch"
+msgstr "Lot d'email"
+
+msgid "Email contact"
+msgstr "Contact email"
+
+msgid "Email in progress. Do not close this window."
+msgstr "Email en cours. Ne fermez pas cette fenêtre."
+
+msgid "Email participants"
+msgstr "Envoyer un email aux participants"
+
+msgid ""
+"Enter the email addresses for each participant. Separate them with new lines."
+msgstr ""
+"Entrez les adresses emails pour chaque participant. Séparez les avec des "
+"retour ligne."
+
+msgid "Error: Missing alert type id."
+msgstr "Erreur : Identifiant de type d'alerte manquant."
+
+msgid "Feed name"
+msgstr "Nom du flux"
+
+msgid "Finish incomplete mailing"
+msgstr "Terminer un mailing incomplet"
+
+msgid "High alert!"
+msgstr "Alerte haute !"
+
+msgid "Image"
+msgstr "Image"
+
+msgid "List all alerts in the system."
+msgstr "Liste toutes les alertes dans le système."
+
+msgid "Manage Alert Types"
+msgstr "Gérer les types d'alertes"
+
+msgid "Manage Alerts"
+msgstr "Gérer les alertes"
+
+msgid "No"
+msgstr "Non"
+
+msgid "No alert types found"
+msgstr "Pas de types d'alertes trouvés"
+
+msgid ""
+"No participants have been assigned to this alert type. No emails were sent."
+msgstr ""
+"Aucun participant n'a été affecté à ce type d'alerte. Aucun email envoyé."
+
+msgid "Notice!!! An error occurred in the last batch. Check your logs."
+msgstr ""
+"Attention !!!! Une erreur est survenue dans le dernier lot. Vérifiez vos "
+"logs."
+
+msgid "Participant list created. Starting to send emails."
+msgstr "Liste des participants créée. Début de l'envoi des emails."
+
+msgid "Participants"
+msgstr "Participants"
+
+msgid "Please create a new alert type."
+msgstr "Merci de créer un nouveau type d'alerte"
+
+msgid "Please enter an acceptable contact email address."
+msgstr "Merci d'entrer une adresse email de contact acceptable."
+
+msgid "Please give your alert a description."
+msgstr "Merci de donner une description à votre alerte."
+
+msgid "Please give your alert a title."
+msgstr "Merci de donner un titre à votre alerte."
+
+msgid "Please give your alert type a title."
+msgstr "Merci de donner un titre à votre type d'alerte."
+
+msgid "Please give your rss feed an access name."
+msgstr "Merci de donner un nom d'accès à votre flux RSS."
+
+msgid "Post type"
+msgstr "Type de message"
+
+msgid "RSS"
+msgstr "RSS"
+
+msgid "RSS feed available"
+msgstr "Flux RSS disponible"
+
+msgid "Remove"
+msgstr "Supprimer"
+
+#, php-format
+msgid "Remove all participants from %s"
+msgstr "Supprimer tous les participants de %s"
+
+msgid "Remove checked"
+msgstr "Supprimer les éléments cochés"
+
+msgid "Reset"
+msgstr "Réinitialiser"
+
+msgid "Reset alert."
+msgstr "Réinitialiser l'alerte."
+
+msgid "Reset email contact"
+msgstr "Réinitialiser les emails de contact"
+
+msgid "Save"
+msgstr "Enregistrer"
+
+msgid "Save settings"
+msgstr "Enregistrer les paramètres"
+
+#, php-format
+msgid "Send Notices for %s"
+msgstr "Envoyer les notifications pour %s"
+
+msgid "Settings"
+msgstr "Paramètres"
+
+msgid "Sorry"
+msgstr "Désolé"
+
+msgid "Start mailing"
+msgstr "Démarrer le mailing"
+
+msgid "Subtract multiple"
+msgstr "Soustraire plusieurs"
+
+msgid "The following alerts need to send email notices."
+msgstr "Les alertes suivantes doivent envoyer des notifications par email."
+
+msgid "Title"
+msgstr "Titre"
+
+msgid "Type saved."
+msgstr "Type enregistré."
+
+msgid "Update Alert"
+msgstr "Mettre à jour l'alerte"
+
+msgid "Update alert type"
+msgstr "Mettre à jour le type d'alerte"
+
+msgid "Updated"
+msgstr "Mis à jour"
+
+msgid "Weekly listing"
+msgstr "Liste hebdomadaire"
+
+msgid "Yes"
+msgstr "Oui"
+
+msgid "You may safely close this window now."
+msgstr "Vous pouvez maintenant fermer cette fenêtre en toute sécurité."
+
+msgid "Your email batch must be greater than 10."
+msgstr "Votre lot d'email doit être plus gand que 10."
+
+msgid "by"
+msgstr "par"

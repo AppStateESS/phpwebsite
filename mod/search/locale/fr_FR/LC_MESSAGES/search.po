@@ -1,0 +1,148 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: phpWebSite 1.5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-02-10 15:57-0500\n"
+"PO-Revision-Date: 2008-09-24 10:10+0100\n"
+"Last-Translator: Olivier Sannier <obones att altern dott org>\n"
+"Language-Team: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+"Plural-Forms: nplurals=2;plural=(n>1);\n"
+
+msgid "A problem occurred during your search."
+msgstr "Un problème est survenu pendant votre recherche."
+
+msgid "Add"
+msgstr "Ajouter"
+
+msgid "Administrate and see information on searches."
+msgstr "Administrer et voir les informations sur les recherches."
+
+msgid "Advanced Search"
+msgstr "Recherche avancée"
+
+msgid "All modules"
+msgstr "Tous les modules"
+
+msgid "Allow"
+msgstr "Autoriser"
+
+msgid "Are you sure you want to delete the checked item(s)?"
+msgstr "Êtes-vous sûr(e) de vouloir supprimer le(s) élément(s) coché(s) ?"
+
+msgid "Clip word"
+msgstr "Couper le mot"
+
+msgid "Clipped words"
+msgstr "Mot coupés"
+
+msgid "Close"
+msgstr "Fermer"
+
+msgid "Current keywords"
+msgstr "Mots clé actuels"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Drop"
+msgstr "Déposer"
+
+msgid "Exact matches only"
+msgstr "Correspondances exactes uniquement"
+
+msgid "Failure"
+msgstr "Echec"
+
+msgid "Go"
+msgstr "Aller"
+
+msgid "Highest result"
+msgstr "Résultat le plus haut"
+
+msgid "Ignore"
+msgstr "Ignorer"
+
+msgid "Ignored"
+msgstr "Ignoré"
+
+msgid "Keyword"
+msgstr "Mot clé"
+
+msgid "Keywords"
+msgstr "Mots clés"
+
+msgid "Keywords added to admin menu."
+msgstr "Mots clés ajoutés au menu admin."
+
+msgid "Last called"
+msgstr "Dernier appelé"
+
+msgid "Local"
+msgstr "Local"
+
+msgid "Mixed"
+msgstr "Mélangé"
+
+msgid "Module"
+msgstr "Module"
+
+msgid "Module list"
+msgstr "Liste de module"
+
+msgid "No results found."
+msgstr "Aucun résultat trouvé."
+
+msgid "Nothing found"
+msgstr "Rien trouvé"
+
+msgid "Save settings"
+msgstr "Enregistrer les paramètres"
+
+msgid "Search"
+msgstr "Rechercher"
+
+msgid "Search Admin"
+msgstr "Admin de recherche"
+
+msgid "Search Results"
+msgstr "Résultats de recherche"
+
+msgid "Search Settings"
+msgstr "Paramètres de recherche"
+
+msgid "Search for:"
+msgstr "Chercher :"
+
+msgid "Search location"
+msgstr "Emplacement de recherche"
+
+msgid "Settings"
+msgstr "Paramètres"
+
+msgid "Settings saved"
+msgstr "Paramètres enregistrés"
+
+msgid "Show alternate options"
+msgstr "Afficher les options alternatives"
+
+msgid "Success"
+msgstr "Succès"
+
+msgid "The following search words were ignored"
+msgstr "Les mots suivants ont été ignorés dans la recherche"
+
+msgid "Title"
+msgstr "Titre"
+
+msgid "Total queries"
+msgstr "Nombre total de requêtes"
