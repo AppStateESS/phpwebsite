@@ -133,7 +133,7 @@ class Boost_Form {
         }
 
         $tpl['TITLE_LABEL']   = dgettext('boost', 'Module Title');
-        $tpl['COMMAND_LABEL'] = ('Commands');
+        $tpl['COMMAND_LABEL'] = dgettext('boost', 'Commands');
         $tpl['ABOUT_LABEL']   = dgettext('boost', 'More information');
         $tpl['VERSION_LABEL'] = dgettext('boost', 'Current version');
 
