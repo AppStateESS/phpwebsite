@@ -44,7 +44,9 @@ $languages['fa_FA'] = 'Persian';
 $languages['fi_FI'] = 'Finnish';
 $languages['fj_FJ'] = 'Fiji';
 $languages['fo_FO'] = 'Faeroese';
+*/
 $languages['fr_FR'] = 'French';
+/*
 $languages['fy_FY'] = 'Frisian';
 $languages['ga_GA'] = 'Irish';
 $languages['gd_GD'] = 'Gaelic';
@@ -94,8 +96,8 @@ $languages['mt_MT'] = 'Maltese';
 $languages['my_MY'] = 'Burmese';
 $languages['na_NA'] = 'Nauru';
 $languages['ne_NE'] = 'Nepali';
-$languages['nl_NL'] = 'Dutch';
 */
+$languages['nl_NL'] = 'Dutch';
 $languages['no_NO'] = 'Norwegian';
 /*
 $languages['oc_OC'] = 'Occitan';
