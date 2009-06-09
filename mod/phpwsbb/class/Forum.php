@@ -318,7 +318,7 @@ class PHPWSBB_Forum
         /* Anonymous Posting? */
         $form->addCheckbox('Forum_allow_anon');
         $form->setMatch('Forum_allow_anon', $this->allow_anon);
-        $form->setLabel('Forum_allow_anon', dgettext('article', 'Allow unregistered users to post messages'));
+        $form->setLabel('Forum_allow_anon', dgettext('phpwsbb', 'Allow unregistered users to post messages'));
         $form->setTag('Forum_allow_anon', 'ALLOW_ANON');
         /* default_approval */
         $default_approval[0] = dgettext('comments', 'All comments preapproved');
@@ -331,7 +331,7 @@ class PHPWSBB_Forum
         /* Lock Forum */
         $form->addCheckbox('Forum_lock');
         $form->setMatch('Forum_lock', $this->locked);
-        $form->setLabel('Forum_lock', dgettext('article', 'Lock this Forum.  Only Moderators can post.'));
+        $form->setLabel('Forum_lock', dgettext('phpwsbb', 'Lock this Forum.  Only Moderators can post.'));
         $form->setTag('Forum_lock', 'LOCK');
         /* Save Button */
         $form->addSubmit(dgettext('phpwsbb', 'Save'));
@@ -402,10 +402,10 @@ class PHPWSBB_Forum
                     $list[] = $template;
                 }
                 $form->addTplTag('suggestion_list', $list);
-                $form->addTplTag('SUGGESTION_MESSAGE', sprintf(dgettext('phpwsbb', 'Searching for Member "%s"...'), $_SESSION['BBLast_Member_Search']) . ' ' . dgettext('users', 'Closest matches below.'));
+                $form->addTplTag('SUGGESTION_MESSAGE', sprintf(dgettext('phpwsbb', 'Searching for Member "%s"...'), $_SESSION['BBLast_Member_Search']) . ' ' . dgettext('phpwsbb', 'Closest matches below.'));
             } 
             else
-                $form->addTplTag('SUGGESTION_MESSAGE', sprintf(dgettext('phpwsbb', 'Searching for Member "%s"...'), $_SESSION['BBLast_Member_Search']) . ' ' . dgettext('users', 'No matches found.'));
+                $form->addTplTag('SUGGESTION_MESSAGE', sprintf(dgettext('phpwsbb', 'Searching for Member "%s"...'), $_SESSION['BBLast_Member_Search']) . ' ' . dgettext('phpwsbb', 'No matches found.'));
         }
 
         $tags = $form->getTemplate();
@@ -474,10 +474,10 @@ class PHPWSBB_Forum
                 $db->addValue('user_id', $id);
                 $result = $db->insert();
                 if ($result && !PHPWS_Error::logIfError($result));
-                $GLOBALS['BB_message'] = dgettext('users', 'Moderator added.');
+                $GLOBALS['BB_message'] = dgettext('phpwsbb', 'Moderator added.');
             }
             else 
-                $GLOBALS['BB_message'] = dgettext('users', 'This user is not allowed to edit messages.  Moderator not added.');
+                $GLOBALS['BB_message'] = dgettext('phpwsbb', 'This user is not allowed to edit messages.  Moderator not added.');
         }
         // Generate a new list of moderator names
         PHPWSBB_Data::load_moderators(true);
