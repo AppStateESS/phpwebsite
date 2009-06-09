@@ -323,7 +323,7 @@ class Comment_Forms {
 
         $form->addSelect('rank_id', $all_ranks);
         $form->setMatch('rank_id', $user_rank->rank_id);
-        $form->setLabel('rank_id', dgettext('article', 'User Group'));
+        $form->setLabel('rank_id', dgettext('comments', 'User Group'));
 
         // image
         $form->addText('image', $user_rank->image);
