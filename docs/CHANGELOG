@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+9 June 2009
++ Patch# 2800703 - fixed checkBranch for newer php5. Thanks Andrew Patterson.
+
 25 May 2009
 + addValues in Link.php accepts arrays of values now
 

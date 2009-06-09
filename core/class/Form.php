@@ -2250,7 +2250,11 @@ class Form_Element {
                 $id .= '_' . $this->key;
             }
 
-            $this->id = $this->_form->id . '_' . $id;
+            if ($this->_form) {
+                $this->id = $this->_form->id . '_' . $id;
+            } else {
+                $this->id = $id;
+            }
         } else {
             $this->id = $id;
         }
