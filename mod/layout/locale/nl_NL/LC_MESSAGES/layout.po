@@ -1,0 +1,293 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR HanV <hanv@users.sourceforge.net>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_6_2,Layout2_4_8\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-26 15:18-0500\n"
+"PO-Revision-Date: 2009-05-25 10:06+0100\n"
+"Last-Translator: HanV <hanv@users.sourceforge.net>\n"
+"Language-Team: HanV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "-- Use default style --"
+msgstr "-- Gebruik standaard stijl --"
+
+msgid "Allow indexing"
+msgstr "Toestaan indexering"
+
+msgid "Allow link following"
+msgstr "Toestaan Volglink"
+
+msgid "An instruction was requested on a missing theme variable."
+msgstr "Er was een verzoek voor een ontbrekend thema variabele."
+
+msgid "Arrange"
+msgstr "Inrichten"
+
+msgid "Arrange Layout"
+msgstr "Lay-out inrichten"
+
+msgid "Available styles"
+msgstr "Beschikbare stijlen"
+
+msgid "Box move off"
+msgstr "Box bewegen uit"
+
+msgid "Box move on"
+msgstr "Box bewegen aan"
+
+msgid "Box order is out of sequence."
+msgstr "Box volgorde verminkt."
+
+msgid "CSS inclusion order"
+msgstr "CSS toevoegen volgorde"
+
+msgid "Cancel"
+msgstr "Afbreken"
+
+msgid "Change CSS"
+msgstr "CSS aanpassen"
+
+msgid "Change style"
+msgstr "Stijl aanpassen"
+
+msgid "Clear cache"
+msgstr "Cache wissen"
+
+msgid "Clear templates"
+msgstr "Templates wissen"
+
+msgid "Clears all Cache Lite files. Good to try if module updates do not display."
+msgstr "Wis alle cache bestanden. Probeer dit als de module wijzigingen niet getoond worden."
+
+msgid "Click to move"
+msgstr "Klik om te verplaatsen"
+
+msgid "Complete the theme change"
+msgstr "Afronden wijziging thema"
+
+msgid "Confirm Theme Change"
+msgstr "Bevestig de thema wijziging"
+
+msgid "Control the layout of your site."
+msgstr "De lay-out van de website beheren."
+
+msgid "Data was not an array."
+msgstr "Data is geen array."
+
+msgid "Default Robot Settings"
+msgstr "Standaard Robot Instellingen"
+
+msgid "Default Theme"
+msgstr "Standaard Thema"
+
+msgid "Description"
+msgstr "Beschrijving"
+
+msgid "Disable"
+msgstr "Uitschakelen"
+
+msgid "Disable box move"
+msgstr "Uitschakelen verplaatsen box"
+
+msgid "Display settings"
+msgstr "Tonen instellingen"
+
+msgid "Do not include module style sheets"
+msgstr "Geen module stylesheets toevoegen"
+
+msgid "Done"
+msgstr "Klaar"
+
+msgid "Edit Footer"
+msgstr "Wijzig voet"
+
+msgid "Edit Header"
+msgstr "Wijzig kop"
+
+msgid "Edit Meta Tags"
+msgstr "Wijzig meta tags"
+
+msgid "Enable box move"
+msgstr "Inschakelen box verplaatsen"
+
+msgid "Error"
+msgstr "Fout"
+
+msgid "Expect an error theme when finished."
+msgstr "Na afronden wordt er een fout thema verwacht."
+
+msgid "Failure to respond in ten seconds, reverts phpWebSite to the default theme."
+msgstr "Zet het standaard thema terug, als er geen reactie is binnen 10 seconden."
+
+msgid "Footer"
+msgstr "Voet"
+
+msgid "Footer updated."
+msgstr "Voet gewijzigd."
+
+msgid "Header"
+msgstr "Kop"
+
+msgid "Header updated."
+msgstr "Kop gewijzigd."
+
+msgid "If you are happy with the change, click the appropiate button."
+msgstr "Indien de wijziging goed is, bevestig dit dan met de knop."
+
+msgid "Javascript file was not found."
+msgstr "Javascript bestand ontbreekt."
+
+msgid "Keywords"
+msgstr "Sleutelwoorden"
+
+msgid "Layout"
+msgstr "Lay-out"
+
+msgid "Layout did not receive any data for display"
+msgstr "Lay-out heeft geen te tonen gegevens."
+
+msgid "Layout session not set"
+msgstr "Lay-out sessie ontbreekt"
+
+msgid "Layout settings updated."
+msgstr "Lay-out instellingen gewijzigd."
+
+msgid "Meta Tags"
+msgstr "Meta Tags"
+
+msgid "Meta Tags updated."
+msgstr "Meta Tags gewijzigd."
+
+msgid "Meta tags"
+msgstr "Meta Tags"
+
+msgid "Modules before theme"
+msgstr "Modules voor thema"
+
+msgid "Move box: %s"
+msgstr "Box verplaatsen: %s"
+
+msgid "Move down"
+msgstr "Naar beneden"
+
+msgid "Move to bottom"
+msgstr "Naar onderaan"
+
+msgid "Move to top"
+msgstr "Naar bovenaan"
+
+msgid "Move up"
+msgstr "Naar boven"
+
+msgid "No alternate style sheets available."
+msgstr "Er zijn geen andere stijlen beschikbaar."
+
+msgid "No themes installed."
+msgstr "Er zijn geen thema's."
+
+msgid "Only show footer on front page"
+msgstr "Alleen op de hoofdpagina de voet tonen"
+
+msgid "Only show header on front page"
+msgstr "Alleen op de hoofdpagina de kop tonen"
+
+msgid "Page Title"
+msgstr "Pagina titel"
+
+msgid "Page Title: Name of your web site"
+msgstr "Pagina titel: Naam van de website"
+
+msgid "Pick a theme"
+msgstr "Kies een thema"
+
+msgid "Please enter a page title."
+msgstr "Geef een pagina titel op."
+
+msgid "Removes all files from the current template cache directory. Good to try if your theme is not displaying properly."
+msgstr "Alle gegevens van de huidige template cache map worden verwijderd. Probeer dit als het thema verminkt wordt getoond."
+
+msgid "Removing old layout components."
+msgstr "Oude lay-out wordt verwijderd."
+
+msgid "Reset boxes"
+msgstr "Wis boxen"
+
+msgid "Resets all content back to its original location. Use if problems with Box Move occurred."
+msgstr "Alle inhoud wordt op de originele plaatsen teruggezet. Probeer dit als er problemen zijn met box verplaatsen."
+
+msgid "Restore the default theme"
+msgstr "Standaard thema terugzetten"
+
+msgid "Restore to default"
+msgstr "Standaard terugzetten"
+
+msgid "Save"
+msgstr "Opslaan"
+
+msgid "Save settings"
+msgstr "Opslaan instellingen"
+
+msgid "Send to %s"
+msgstr "Sturen naar %s"
+
+msgid "Set meta tags"
+msgstr "Zet meta tags"
+
+msgid "Settings saved"
+msgstr "Instellingen opgeslagen"
+
+msgid "Style sheet"
+msgstr "Stylesheet"
+
+msgid "The theme.ini file is missing for the default theme."
+msgstr "Het bestand thema.ini van het standaard thema ontbreekt."
+
+msgid "Themes before modules"
+msgstr "Thema's voor modules"
+
+msgid "Theme settings updated."
+msgstr "Thema instellingen gewijzigd."
+
+msgid "Themes"
+msgstr "Thema's"
+
+msgid "There was a problem reading the theme directories."
+msgstr "Lezen map met thema's mislukt."
+
+msgid "There was a problem updating the settings."
+msgstr "Wijzigen instellingen is mislukt."
+
+msgid "This site requires you to enable cookies on your browser."
+msgstr "Op deze website dient uw browser cookies toe te staan."
+
+msgid "Unable to receive theme information."
+msgstr "Thema informatie niet beschikbaar."
+
+msgid "Update"
+msgstr "Wijzigen"
+
+msgid "Update Footer"
+msgstr "Wijzig voet"
+
+msgid "Update Header"
+msgstr "Wijzig kop"
+
+msgid "Update Theme Settings"
+msgstr "Wijzig thema instellingen"
+
+msgid "Use Key summaries for meta description"
+msgstr "Gebruik sleutel samenvattingen voor meta beschrijving"
+
+msgid "When enabled, this allows you to shift content to other area of your layout. Movement options depend on the current theme."
+msgstr "Indien ingeschakeld, kunt u hiermee de inhoud van de lay-out verplaatsten. De opties zijn afhankelijk van het huidige thema."
+

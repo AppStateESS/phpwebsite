@@ -1,0 +1,281 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR HanV <hanv@users.sourceforge.net>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PWPWS1_6_2,PageSmith1_3_3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-11-27 09:16+0100\n"
+"PO-Revision-Date: 2009-05-25 10:14+0100\n"
+"Last-Translator: HanV <hanv@users.sourceforge.net>\n"
+"Language-Team: HanV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "(Untitled)"
+msgstr "(Zonder titel)"
+
+msgid "Action"
+msgstr "Actie"
+
+msgid "Add menu link for new pages."
+msgstr "Toevoegen menu link bij nieuwe pagina's."
+
+msgid "Add page"
+msgstr "Toevoegen pagina"
+
+msgid "Add to front"
+msgstr "Toevoegen aan voorpagina"
+
+msgid "An error occurred when trying to load the page template."
+msgstr "Het laden van het template is mislukt."
+
+msgid "Are you sure you want to delete this page?"
+msgstr "Wilt u de pagina verwijderen?"
+
+msgid "Back to style selection"
+msgstr "Terug naar kiezen stijl"
+
+msgid "Back to top"
+msgstr "Terug naar bovenaan"
+
+msgid "Change header"
+msgstr "Wijzig kop"
+
+msgid "Change settings (Unrestricted only)"
+msgstr "Wijzig instellingen (Alleen onbeperkte)"
+
+msgid "Change template"
+msgstr "Wijzig template"
+
+msgid "Change text"
+msgstr "Wijzig tekst"
+
+msgid "Choose a style"
+msgstr "Kies een stijl"
+
+msgid "Click to display on front page"
+msgstr "Op voorpagina tonen"
+
+msgid "Click to remove from front page"
+msgstr "Niet meer op voorpagina tonen"
+
+msgid "Could not find any page templates."
+msgstr "Geen pagina templates gevonden."
+
+msgid "Could not find any page templates. Please check your error log."
+msgstr "Geen templates gevonden, Controleer de log."
+
+msgid "Create page"
+msgstr "Nieuwe pagina"
+
+msgid "Created"
+msgstr "Aangemaakt"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Delete orphan"
+msgstr "Verwijder wees"
+
+msgid "Delete page"
+msgstr "Verwijder pagina"
+
+msgid "Edit"
+msgstr "Wijzig"
+
+msgid "Edit %s"
+msgstr "Wijzigen %s"
+
+msgid "Edit header"
+msgstr "Wijzig kop"
+
+msgid "Edit page"
+msgstr "Wijzig pagina"
+
+msgid "Edit text"
+msgstr "Wijzig tekst"
+
+msgid "Empty content. Consider deletion."
+msgstr "Leeg inhoud. Overweeg verwijderen."
+
+msgid "Extra templates"
+msgstr "Meer templates"
+
+msgid "Header"
+msgstr "Kop"
+
+msgid "Id"
+msgstr "ID"
+
+msgid "List"
+msgstr "Lijst"
+
+msgid "Missing icon file."
+msgstr "Icoon ontbreekt."
+
+msgid "Missing style sheet."
+msgstr "Stylesheet ontbreekt."
+
+msgid "Missing template file."
+msgstr "Bestand template ontbreekt."
+
+msgid "New"
+msgstr "Nieuw"
+
+msgid "Next"
+msgstr "Volgende"
+
+msgid "No pages have been created."
+msgstr "Er is geen pagina aangemaakt."
+
+msgid "Not enough content to create a page."
+msgstr "Te weinig inhoud voor het maken van een pagina."
+
+msgid "Orphaned content"
+msgstr "Losse inhoud (wees)"
+
+msgid "Orphans"
+msgstr "Wees"
+
+msgid "Off&nbsp;front"
+msgstr "Van&nbsp;voorpagina"
+
+msgid "On&nbsp;front"
+msgstr "Op&nbsp;voorpagina"
+
+msgid "Page Title (edit above)"
+msgstr "Pagina titel (boven wijzigen)"
+
+msgid "Page not found"
+msgstr "Pagina ontbreekt"
+
+msgid "Page number"
+msgstr "Paginanummer"
+
+msgid "Page template did not contain any sections."
+msgstr "Pagina template heeft geen secties."
+
+msgid "Page template directory must be writable to upload templates."
+msgstr "De map met pagina templates moet schrijfbaar zijn om templates te kunnen uploaden"
+
+msgid "Page template is missing a thumbnail."
+msgstr "Het template van de pagina heeft geen thumb."
+
+msgid "Page template is missing a title."
+msgstr "Het template van de pagina heeft geen titel."
+
+msgid "Page title"
+msgstr "Pagina titel"
+
+msgid "PageSmith Settings"
+msgstr "PageSmith instellingen"
+
+msgid "Pages"
+msgstr "Pagina's"
+
+msgid "Pg. No."
+msgstr "Blz."
+
+msgid "Pick a template"
+msgstr "Kies een template"
+
+msgid "Previous"
+msgstr "Vorige"
+
+msgid "Remove from front"
+msgstr "Verwijder van voorpagina"
+
+msgid "Restricted page."
+msgstr "Beperkte pagina."
+
+msgid "Save page"
+msgstr "Pagina opslaan"
+
+msgid "Save and continue"
+msgstr "Opslaan en doorgaan"
+
+msgid "Save and view"
+msgstr "Opslaan en tonen"
+
+msgid "Settings saved"
+msgstr "Instellingen opgeslagen."
+
+msgid "Shorten all menu links"
+msgstr "verkort alle menu links"
+
+msgid "Sorry"
+msgstr "Sorry"
+
+msgid "Sorry, but your page could not be found. You may wish to search for it."
+msgstr "Pagina niet gevonden. U wilt er misschien naar zoeken."
+
+msgid "Structure file (e.g., structure.xml)"
+msgstr "Structuur bestand (bijv. structure.xml)"
+
+msgid "Style sheet (e.g., filename.css)"
+msgstr "Stylesheet (bijv. filename.css)"
+
+msgid "Template directory created."
+msgstr "Template map aangemaakt."
+
+msgid "Template file (e.g., filename.tpl)"
+msgstr "Template bestand (bijv. filename.tpl)"
+
+msgid "Template icon (e.g., filename.png)"
+msgstr "Template icoon (bijv. filename.png)"
+
+msgid "Template name"
+msgstr "Template naam"
+
+msgid "Template posted."
+msgstr "Template gepost."
+
+msgid "The template name must contain alphanumeric characters only."
+msgstr "Template naam moet uit alfanumerieke tekens bestaan."
+
+msgid "There is already a template with this name."
+msgstr "Er is al een template met die naam."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Unable to create page template directory."
+msgstr "De template map kan niet aangemaakt worden."
+
+msgid "Unable to load page template."
+msgstr "Het template kan niet geladen worden."
+
+msgid "Update"
+msgstr "Wijzigen"
+
+msgid "Update page"
+msgstr "Wijzig pagina"
+
+msgid "Updated"
+msgstr "Gewijzigd"
+
+msgid "Upload"
+msgstr "Upload"
+
+msgid "Upload file"
+msgstr "Upload bestand"
+
+msgid "Wrong file type for icon file."
+msgstr "Verkeerd bestandstype voor icoon."
+
+msgid "Wrong file type for structure file."
+msgstr "Verkeerd bestandstype voor structuurbestand."
+
+msgid "Wrong file type for style sheet."
+msgstr "Verkeerd bestandstype voor stylesheet."
+
+msgid "Wrong file type for template file."
+msgstr "Verkeerd bestandstype voor template."
+

@@ -1,0 +1,927 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR HanV <hanv@users.sourceforge.net>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_6_2,Filecabinet2_2_5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
+"PO-Revision-Date: 2009-05-25 09:36+0100\n"
+"Last-Translator: HanV <hanv@users.sourceforge.net>\n"
+"Language-Team: HanV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
+
+msgid "%d bytes"
+msgstr "%d Bytes"
+
+msgid "%d bytes (system wide)"
+msgstr "%d Bytes (systeem)"
+
+msgid "%dKB (%d bytes)"
+msgstr "%dKB (%d Bytes)"
+
+msgid "%dMB (%d bytes)"
+msgstr "%dMB (%d Bytes)"
+
+msgid "%s bytes"
+msgstr "%s Bytes"
+
+msgid " -- General --"
+msgstr " -- Algemeen -- "
+
+msgid "-- Pick option --"
+msgstr "-- Kies optie --"
+
+msgid "180 degrees"
+msgstr "180 graden"
+
+msgid "90 degrees clockwise"
+msgstr "90 graden rechts"
+
+msgid "90 degrees counter clockwise"
+msgstr "90 graden links"
+
+msgid "'<p>Could not upload file to folder. Please check your directory permissions.</p>"
+msgstr "'<p>Kan geuploade bestand niet in map zetten. Controleer uw rechten.</p>"
+
+msgid "Absolute upload limit"
+msgstr "Absolute upload limiet"
+
+msgid "Action"
+msgstr "Actie"
+
+msgid "Action not allowed"
+msgstr "Actie niet toegestaan"
+
+msgid "Action not allowed - private folder"
+msgstr "Actie niet toestaan - persoonlijke map"
+
+msgid "Add a document or a document folder"
+msgstr "Een document of documentenmap toevoegen"
+
+msgid "Add a image, an image folder, or a randomly changing image"
+msgstr "Een afbeelding, afbeeldingenmap of een GIF-bestand toevoegen"
+
+msgid "Add an image, media, or document file."
+msgstr "Een afbeelding, media-bestand of document toevoegen"
+
+msgid "Add a video or sound file"
+msgstr "Een video of muziekbestand toevoegen"
+
+msgid "Add document"
+msgstr "Document toevoegen"
+
+msgid "Add embedded"
+msgstr "Toevoegen intern"
+
+msgid "Add embedded media"
+msgstr "Toevoegen interne media"
+
+msgid "Add file"
+msgstr "Bestand toevoegen"
+
+msgid "Add folder"
+msgstr "Map toevoegen"
+
+msgid "Add image"
+msgstr "Afbeelding toevoegen"
+
+msgid "Add media"
+msgstr "Media-bestand toevoegen"
+
+msgid "All files icon"
+msgstr "Icoon alle bestanden"
+
+msgid "Allow document selection"
+msgstr "Toestaan kiezen document"
+
+msgid "Allow image selection"
+msgstr "Toestaan kiezen afbeelding"
+
+msgid "Allow media selection"
+msgstr "Toestaan kiezen media"
+
+msgid "Allowed file types"
+msgstr "Mogelijke bestandstypes"
+
+msgid "Alternate size %sx%s"
+msgstr "Alternatief formaat %sx%s"
+
+msgid "Alternate text"
+msgstr "Alternatieve tekst"
+
+msgid "An error occurred when trying to read your incoming file directory."
+msgstr "Er is een fout opgetreden bij het lezen van de map met invoer."
+
+msgid "An error occurred when trying to save your document."
+msgstr "Er is een fout opgetreden met het opslaan van uw document."
+
+msgid "An error occurred when trying to save your image."
+msgstr "Er is een fout opgetreden bij het opslaan van uw afbeelding."
+
+msgid "An error occurred when trying to save your multimedia file."
+msgstr "Er is een fout opgetreden bij het opslaan van uw media bestand."
+
+msgid "An error occurred. Please check your logs."
+msgstr "Er is een fout opgetreden. Controleer de log."
+
+msgid "Are you certain you want to delete this folder and all its contents?"
+msgstr "Wilt u deze map met alle inhoud verwijderen?"
+
+msgid "Are you sure you want to delete this document?"
+msgstr "Wilt u dit document verwijderen?"
+
+msgid "Are you sure you want to delete this file?"
+msgstr "Wilt u dit bestand verwijderen?"
+
+msgid "Are you sure you want to delete this image?"
+msgstr "Wilt u deze afbeelding verwijderen?"
+
+msgid "Are you sure you want to delete this multimedia file?"
+msgstr "Wilt u dit media bestand verwijderen?"
+
+msgid "Are you sure you wish to delete these files?"
+msgstr "Wilt u deze bestanden verwijderen?"
+
+msgid "Automatically link child images to parent"
+msgstr "Automatisch afbeeldingen linken aan ouder"
+
+msgid "Back to folder list"
+msgstr "Terug naar mappenlijst"
+
+msgid "Base document directory"
+msgstr "Basis map document"
+
+msgid "Cancel"
+msgstr "Afbreken"
+
+msgid "Cannot access this page."
+msgstr "Deze pagina is niet te benaderen."
+
+msgid "Caption images"
+msgstr "Tekst afbeeldingen"
+
+msgid "Carousel defaults"
+msgstr "Standaards draaien"
+
+msgid "Carousel direction"
+msgstr "Richting draaien"
+
+msgid "Choose the type of file you wish to add"
+msgstr "Kies het type bestand dat u wilt toevoegen"
+
+msgid "Classify"
+msgstr "Classificeer"
+
+msgid "Classify Files"
+msgstr "Classificeer Bestanden"
+
+msgid "Classify checked"
+msgstr "Classificeer aangevinkte"
+
+msgid "Classify directory could not be found."
+msgstr "Map classificeer ontbreekt."
+
+msgid "Classify files"
+msgstr "Classificeer bestanden"
+
+msgid "Classify settings"
+msgstr "Classificeer instellingen"
+
+msgid "Clear file"
+msgstr "Bestand legen"
+
+msgid "Clip document"
+msgstr "Klem document"
+
+msgid "Clip image"
+msgstr "Klem afbeelding"
+
+msgid "Clip media"
+msgstr "Klem media"
+
+msgid "Close"
+msgstr "Sluiten"
+
+msgid "Close this window"
+msgstr "Sluit het venster"
+
+msgid "Could not delete file."
+msgstr "Bestand is niet verwijderd."
+
+msgid "Could not find ffmpeg executable."
+msgstr "Executable ffmpeg ontbreekt."
+
+msgid "Could not move file \"%s\" to \"%s\" folder directory."
+msgstr "Verplaatsen bestand \"%s\" naar map \"%s\" mislukt."
+
+msgid "Could not pull document folders."
+msgstr "Kan de mappen met documenten niet pakken."
+
+msgid "Could not pull documents."
+msgstr "Kan de documenten niet pakken."
+
+msgid "Could not pull image folders."
+msgstr "Kan de mappen met afbeeldingen niet pakken."
+
+msgid "Could not pull images."
+msgstr "Kan de afbeeldingen niet pakken."
+
+msgid "Could not pull multimedia folders."
+msgstr "Kan de mappen met media niet pakken."
+
+msgid "Could not pull multimedia."
+msgstr "Kan de media bestanden niet pakken."
+
+msgid "Could not save thumbnail image."
+msgstr "Opslaan thumb mislukt."
+
+msgid "Could not write to directory."
+msgstr "Schrijven in map mislukt."
+
+msgid "Create document folder"
+msgstr "Aanmaken map document"
+
+msgid "Create folder"
+msgstr "Aanmaken map"
+
+msgid "Create image folder"
+msgstr "Aanmaken afbeeldingen map"
+
+msgid "Create multimedia folder"
+msgstr "Aanmaken media map"
+
+msgid "Created in"
+msgstr "Aangemaakt in"
+
+msgid "Crop pixel threshold"
+msgstr "Crop pixel threshold"
+
+msgid "Current document"
+msgstr "Huidige document"
+
+msgid "Current image"
+msgstr "Huidige afbeelding"
+
+msgid "Current multimedia"
+msgstr "Huidige media"
+
+msgid "DL"
+msgstr "DL"
+
+msgid "Decription"
+msgstr "Beschrijving"
+
+msgid "Default (%spx)"
+msgstr "Standaard (%spx)"
+
+msgid "Default document directory may not be blank"
+msgstr "Standaard map document moet ingevuld worden"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Delete checked"
+msgstr "Verwijder aangevinkte"
+
+msgid "Delete document"
+msgstr "Verwijder document"
+
+msgid "Delete folders (Unrestricted only)"
+msgstr "Verwijder mappen (alleen onbeperkte)"
+
+msgid "Description"
+msgstr "Beschrijving"
+
+msgid "Directory not set."
+msgstr "Map niet ingevuld."
+
+msgid "Do not link image"
+msgstr "Afbeelding niet linken"
+
+msgid "Document directory does not exist."
+msgstr "Map document ontbreekt."
+
+msgid "Document folders"
+msgstr "Document mappen"
+
+msgid "Document location"
+msgstr "Document plaats"
+
+msgid "Document not found."
+msgstr "Document niet gevonden."
+
+msgid "Document settings"
+msgstr "Document instellingen"
+
+msgid "Document was %s bytes making it larger than %s byte size limit."
+msgstr "Document was %s Bytes, groter dan de limiet %s Byte."
+
+msgid "Documents"
+msgstr "Documenten"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Download file"
+msgstr "Download bestand"
+
+msgid "Download from %s"
+msgstr "Download vanaf %s"
+
+msgid "Downloaded"
+msgstr "Gedownload"
+
+msgid "Duplicate file found."
+msgstr "Dubbel bestand gevonden."
+
+msgid "Edit"
+msgstr "Wijzigen"
+
+msgid "Edit document"
+msgstr "Wijzig document"
+
+msgid "Edit file"
+msgstr "Wijzig bestand"
+
+msgid "Edit folders"
+msgstr "Wijzig mappen"
+
+msgid "Edit image"
+msgstr "Wijzig afbeelding"
+
+msgid "Edit multimedia file"
+msgstr "Wijzig media bestand"
+
+msgid "Edit the current file"
+msgstr "Wijzig huidig bestand"
+
+msgid "Embedded filter"
+msgstr "Intern filter"
+
+msgid "Enable FFMpeg thumbnails"
+msgstr "Inschakelen FFMPeg thumbs"
+
+msgid "Enable FFMpeg thumbnails (enabled on ffmpeg confirmation)"
+msgstr "Inschakelen FFMPEG thumbs (ingeschakeld bij bevestiging ffmpeg)"
+
+msgid "FCKeditor plug-in settings"
+msgstr "FCKeditor plug-in instelling"
+
+msgid "FFMpeg directory"
+msgstr "Map FFMpeg"
+
+msgid "FFMpeg file not found."
+msgstr "FFMpeg bestand niet gevonden."
+
+msgid "Failed to create files/filecabinet/ directory."
+msgstr "Aanmaken map files/filecabinet mislukt."
+
+msgid "Failed to create files/filecabinet/incoming directory."
+msgstr "Aanmaken map files/filecabinet/incoming mislukt."
+
+msgid "Failed to create files/multimedia directory."
+msgstr "Aanmaken map files/multimedia mislukt."
+
+msgid "Failed to create folder. Please check your logs."
+msgstr "Aanmaken map mislukt. Controleer de log."
+
+msgid "File Cabinet"
+msgstr "File Cabinet"
+
+msgid "File is unreadable"
+msgstr "File is onleesbaar"
+
+msgid "File name"
+msgstr "Bestandsnaam"
+
+msgid "File not uploaded."
+msgstr "Bestand niet geupload."
+
+msgid "File type"
+msgstr "Bestandstype"
+
+msgid "File type not allowed"
+msgstr "Bestandstype niet toegestaan."
+
+msgid "File type saved."
+msgstr "Bestandstypes opgeslagen."
+
+msgid "File uploaded exceeded %sK size limit."
+msgstr "Bestand is te groot, limiet %sK."
+
+msgid "Filename not set."
+msgstr "Bestandsnaam ontbreekt."
+
+msgid "Folder"
+msgstr "Map"
+
+msgid "Folder empty."
+msgstr "Map leeg."
+
+msgid "Folder is empty."
+msgstr "Map is leeg."
+
+msgid "Folder is private. Slideshow not available"
+msgstr "Map is persoonlijk. Diavoorstelling is niet beschikbaar."
+
+msgid "Folder missing image files."
+msgstr "In map ontbreken afbeeldingen."
+
+msgid "Force thumbnail dimensions on display"
+msgstr "Forceer afmetingen thumb bij tonen"
+
+msgid "Form upload limit"
+msgstr "Scherm upload limiet"
+
+msgid "General"
+msgstr "Algemeen"
+
+msgid "Go"
+msgstr "Start"
+
+msgid "Height"
+msgstr "Hoogte"
+
+msgid "Horizontal"
+msgstr "Horizontaal"
+
+msgid "Image folders"
+msgstr "Mappen met afbeeldingen"
+
+msgid "Image height was %spx, making it larger than %d pixel limit."
+msgstr "Hoogte afbeelding is %spx, groter dan de limiet %d pixel."
+
+msgid "Image is %spx by %spx, the maximum dimensions are %spx by %spx."
+msgstr "Afbeelding is %spx bij %spx, maximale formaat is %spx bij %spx."
+
+msgid "Image link url"
+msgstr "URL afbeelding"
+
+msgid "Image location"
+msgstr "Plaats afbeelding"
+
+msgid "Image missing"
+msgstr "Afbeelding ontbreekt"
+
+msgid "Image must be a jpeg file."
+msgstr "Afbeelding moet van het type JPEG zijn."
+
+msgid "Image not found"
+msgstr "Afbeelding ontbreekt"
+
+msgid "Image settings"
+msgstr "Instellingen afbeelding"
+
+msgid "Image was %s bytes making it larger than %s byte size limit."
+msgstr "Afbeelding is %s Bytes, groter dan de limiet %s Byte."
+
+msgid "Image width was %spx, making it larger than %d pixel limit."
+msgstr "Breedte afbeelding is %spx, groter dan de limiet %d pixel."
+
+msgid "Images"
+msgstr "Afbeeldingen"
+
+msgid "Images resized to:"
+msgstr "Formaat afbeelding aangepast naar:"
+
+msgid "Incoming classify directory"
+msgstr "Map met nog te classificeren bestanden"
+
+msgid "Items"
+msgstr "Items"
+
+msgid "Link image"
+msgstr "Link afbeelding"
+
+msgid "Link image to web site"
+msgstr "Link afbeelding aan website"
+
+msgid "Link to image folder"
+msgstr "Link aan map afbeeldingen"
+
+msgid "Manages images and documents uploaded to your site."
+msgstr "Beheren geuploade afbeeldingen en documenten."
+
+msgid "Max thumbnail size : %sx%s."
+msgstr "Maximum formaat thumb : %sx%s."
+
+msgid "Maximum document file size (in bytes)"
+msgstr "Maximum grootte document (in Bytes)"
+
+msgid "Maximum file size"
+msgstr "Maximum bestandsgrootte"
+
+msgid "Maximum image dimension"
+msgstr "Maximale grootte afbeelding"
+
+msgid "Maximum image file size (in bytes)"
+msgstr "Maximale grootte afbeelding (in Bytes)"
+
+msgid "Maximum image pixel dimension"
+msgstr "Maximale grootte afbeelding in pixel"
+
+msgid "Maximum image upload dimension"
+msgstr "Maximaal formaat afbeelding"
+
+msgid "Maximum multimedia file size (in bytes)"
+msgstr "Maximale grootte media bestand (in Bytes)"
+
+msgid "Maximum pinned documents shown (0 for all)"
+msgstr "Maximaal aantal gekoppelde documenten (0 is alle)"
+
+msgid "Maximum pinned images shown (0 for all)"
+msgstr "Maximaal aantal gekoppelde afbeeldingen (0 is alle)"
+
+msgid "Maximum thumbnail pixel dimension"
+msgstr "Maximum formaat thumb in pixel"
+
+msgid "Media"
+msgstr "Media"
+
+msgid "Missing folder information."
+msgstr "Map informatie ontbreekt."
+
+msgid "Missing temporary upload directory."
+msgstr "Tijdelijke uploadmap ontbreekt."
+
+msgid "Missing title."
+msgstr "Titel ontbreekt."
+
+msgid "Module reservation"
+msgstr "Module reservering"
+
+msgid "More..."
+msgstr "Meer..."
+
+msgid "Move to folder"
+msgstr "Verplaats naar map"
+
+msgid "Multimedia"
+msgstr "Multimedia"
+
+msgid "Multimedia file not found."
+msgstr "Multimedia bestand ontbreekt."
+
+msgid "Multimedia file was %s bytes making it larger than %s byte size limit."
+msgstr "Bestand multimedia is %s bytes, limiet is %s bytes."
+
+msgid "Multimedia folders"
+msgstr "Multimedia mappen"
+
+msgid "Multimedia location"
+msgstr "Multimedia plaats"
+
+msgid "Multimedia settings"
+msgstr "Multimedia instellingen"
+
+msgid "Next image"
+msgstr "Volgende afbeelding"
+
+msgid "No File Cabinet file types are enabled."
+msgstr "Er zijn geen File Cabinet bestandstypes."
+
+msgid "No files in folder"
+msgstr "Geen bestand in map"
+
+msgid "No folders found."
+msgstr "Geen mappen."
+
+msgid "No image"
+msgstr "Geen afbeelding"
+
+msgid "No image found"
+msgstr "Geen afbeelding gevonden"
+
+msgid "No public folders are available."
+msgstr "Er zijn geen openbare mappen beschikbaar."
+
+msgid "None"
+msgstr "Geen"
+
+msgid "Number of thumbnails visible"
+msgstr "Aantal zichtbare thumbs"
+
+msgid "Number shown"
+msgstr "Aantal getoond"
+
+msgid "Pick a media type above."
+msgstr "Kies een van de bovenstaande types."
+
+msgid "Pin folder"
+msgstr "Koppel map"
+
+msgid "Pin folder to \"%s\""
+msgstr "Koppel map aan \"%s\""
+
+msgid "Popup images allow folder navigation"
+msgstr "Popup afbeeldingen sta mapnavigatie toe"
+
+msgid "Previous image"
+msgstr "Vorige afbeelding"
+
+msgid "Private"
+msgstr "Persoonlijk"
+
+msgid "Problem with opening browser page. Closing File Manager window."
+msgstr "Kan pagina niet in browser openen. File Manager venster wordt gesloten."
+
+msgid "Public"
+msgstr "Openbaar"
+
+msgid "Put all checked documents here"
+msgstr "Plaats hier alle gecontroleerde documenten"
+
+msgid "Put all checked images here"
+msgstr "Plaats hier alle gecontroleerde afbeeldingen"
+
+msgid "Put all checked media here"
+msgstr "Plaats hier alle gecontroleerde media"
+
+msgid "Random image icon"
+msgstr "Willekeurig icoon afbeelding"
+
+msgid "Reindex document directories"
+msgstr "Mappen documenten opnieuw indexeren"
+
+msgid "Resize and crop excess"
+msgstr "Pas aan, eventueel afkappen"
+
+msgid "Resize image if over"
+msgstr "Verklein afbeelding indien nodig"
+
+msgid "Resize image maintaining aspect"
+msgstr "Pas afbeelding aan, behoud aspect"
+
+msgid "Rotate image"
+msgstr "Draai afbeelding"
+
+msgid "Save allowed files"
+msgstr "Opslaan bestanden die toegestaan zijn"
+
+msgid "Save settings"
+msgstr "Opslaan instellingen"
+
+msgid "Search folders for file"
+msgstr "Zoek bestand in mappen"
+
+msgid "Server upload limit"
+msgstr "Server upload limiet"
+
+msgid "Server upload limits"
+msgstr "Server upload limieten"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Settings saved."
+msgstr "Instellingen opgeslagen."
+
+msgid "Show a random image from this folder"
+msgstr "Toon een willekeurige afbeelding van deze map"
+
+msgid "Show all files in the folder"
+msgstr "Toon alle bestanden in de map"
+
+msgid "Show block of thumbnails"
+msgstr "Toon een groep thumbs"
+
+msgid "Show source images only"
+msgstr "Alleen bron afbeeldingen tonen"
+
+msgid "Size"
+msgstr "Grootte"
+
+msgid "Sorry"
+msgstr "Sorry"
+
+msgid "Sorry but this file is inaccessible at this time."
+msgstr "Het bestand is nu niet toegankelijk."
+
+msgid "Sorry, the file you requested is off limits."
+msgstr "Het gevraagde bestand is te groot."
+
+msgid "Sorry, you are not allowed access to this file."
+msgstr "Sorry, u heeft geen toegang tot dit bestand."
+
+msgid "Sorry.."
+msgstr "Sorry"
+
+msgid "Submit media"
+msgstr "Media invoeren"
+
+msgid "System upload limits"
+msgstr "Systeem upload limieten"
+
+msgid "The incoming file directory is currently empty."
+msgstr "Er zijn geen nieuwe bestanden."
+
+msgid "The max image dimension must be greater than 50 pixels."
+msgstr "Het maximale formaat moet groter zijn dan 50 pixels."
+
+msgid "The web server does not have permission to access files in the classify directory."
+msgstr "De webserver heeft geen toegang tot de te classificeren bestanden."
+
+msgid "The web server does not have permission to delete files from the classify directory."
+msgstr "De webserver mag geen te classificeren bestanden verwijderen."
+
+msgid "The web server does not have permissions for the classify directory."
+msgstr "De webserver heeft geen rechten op de map te classificeren bestanden."
+
+msgid "There was a problem loading the image file."
+msgstr "Er is een fout opgetreden bij het laden van de afbeelding."
+
+msgid "This is a private folder."
+msgstr "Dit is een persoonlijke map."
+
+msgid "This image is larger than the %sx%s limit. What do you wish to do?"
+msgstr "De afbeelding is groter dan de limiet %sx%s. Wat wilt u doen?"
+
+msgid "This image is larger than the %s x %s limit. Do you want to resize the image to fit?'),"
+msgstr "De afbeelding is groter dan de %s x %s limiet. Afbeelding verkleinen?"
+
+msgid "This media is larger than the %s x %s limit. Do you want to resize the media to fit?'),"
+msgstr "De media is groter dan de %s x %s limiet. Media verkleinen?"
+
+msgid "This process will update all of your document files with the current base directory."
+msgstr "Dit proces zal al uw documenten wijzigen met de huidige basismap."
+
+msgid "Thumbnail directory not writable."
+msgstr "Map met thumbs niet schrijfbaar."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Thumbnail icon"
+msgstr "Thumb icoon"
+
+msgid "Thumbnail size is too large."
+msgstr "Thumb is te groot."
+
+msgid "Thumbnails must be over 30px in size."
+msgstr "Thumbs moeten groter zijn dan 30px."
+
+msgid "Unable to classify files."
+msgstr "Kan geen bestanden classificeren."
+
+msgid "Unable to locate the classify directory. Please check your File Cabinet settings, configuration file and directory permissions."
+msgstr "De map met te classificeren bestanden ontbreekt. Controleer de File Cabinet instellingen, het configuratie-bestand en de maprechten."
+
+msgid "Unable to move the file to its new directory."
+msgstr "Kan bestand niet naar nieuwe map verplaatsen."
+
+msgid "Unable to process embedded information."
+msgstr "Verwerken interne informatie mislukt."
+
+msgid "Unable to read document directory."
+msgstr "Kan map documenten niet lezen."
+
+msgid "Unable to resize image."
+msgstr "Aanpassing formaat afbeelding mislukt."
+
+msgid "Unable to resize media."
+msgstr "Aanpassing formaat media mislukt."
+
+msgid "Unable to write to document directory."
+msgstr "Kan niet in map documenten schrijven."
+
+msgid "Unacceptable document type."
+msgstr "Type document niet toegestaan."
+
+msgid "Unacceptable file type."
+msgstr "Type bestand niet toegestaan."
+
+msgid "Unacceptable image type."
+msgstr "Type afbeelding niet toegestaan."
+
+msgid "Unacceptable multimedia file type."
+msgstr "Type media niet toegestaan."
+
+msgid "Unknown or mismatched mime type"
+msgstr "Onbekend of fout mime type"
+
+msgid "Unregistered from File Cabinet."
+msgstr "Niet meer geregistreerd in File Cabinet."
+
+msgid "Update"
+msgstr "Wijzigen"
+
+msgid "Update document folder"
+msgstr "Wijzigen map documenten"
+
+msgid "Update file"
+msgstr "Wijzigen bestand"
+
+msgid "Update folder"
+msgstr "Wijzigen map"
+
+msgid "Update image"
+msgstr "Wijzigen afbeelding"
+
+msgid "Update image folder"
+msgstr "Wijzigen map afbeeldingen"
+
+msgid "Update multimedia folder"
+msgstr "Wijzigen map multimedia"
+
+msgid "Upload"
+msgstr "Upload"
+
+msgid "Upload document"
+msgstr "Upload document"
+
+msgid "Upload image"
+msgstr "Upload afbeelding"
+
+msgid "Upload new file"
+msgstr "Upload nieuw bestand"
+
+msgid "Upload new thumbnail"
+msgstr "Upload nieuwe thumb"
+
+msgid "Upload thumbnail"
+msgstr "Upload thumb"
+
+msgid "Url or id"
+msgstr "URL of id"
+
+msgid "Use original image"
+msgstr "Gebruik originele afbeelding"
+
+msgid "Vertical"
+msgstr "Verticaal"
+
+msgid "View all images in folder"
+msgstr "Toon alle afbeeldingen in map"
+
+msgid "View document folders"
+msgstr "Toon mappen met documenten"
+
+msgid "View folder"
+msgstr "Toon map"
+
+msgid "View full image"
+msgstr "Toon hele afbeelding"
+
+msgid "View image folders"
+msgstr "Toon mappen met afbeeldingen"
+
+msgid "View media folders"
+msgstr "Toon mappen met media"
+
+msgid "Warning: this folder's directory is not writable."
+msgstr "Deze map is niet schrijfbaar."
+
+msgid "Width"
+msgstr "Wijdte"
+
+msgid "You do not have permission to view this folder."
+msgstr "U heeft geen recht om deze map te lezen"
+
+msgid "You must entitle your folder."
+msgstr "U moet uw map een titel geven."
+
+msgid "You must set a maximum document file size."
+msgstr "U moet een maximale bestandsgrootte opgeven voor de documenten."
+
+msgid "You must set a maximum image file size."
+msgstr "U moet een maximale bestandsgrootte opgeven voor de afbeeldingen."
+
+msgid "You must set a maximum multimedia file size."
+msgstr "U moet een maximale bestandsgrootte opgeven voor de media."
+
+msgid "Your documents directory is not writable."
+msgstr "De map voor de documenten is niet schrijfbaar."
+
+msgid "Your images directory is not writable."
+msgstr "De map voor de afbeeldingen is niet schrijfbaar."
+
+msgid "Your maximum image size exceeds the server limit of %sMB."
+msgstr "Uw maximum voor een afbeelding is te groot, server limiet %sMB."
+
+msgid "Your maximum document size exceeds the server limit of %sMB."
+msgstr "Uw maximum voor een document is te groot, server limiet %sMB."
+
+msgid "Your maximum multimedia size exceeds the server limit of %sMB."
+msgstr "Uw maximum voor media is te groot, server limiet %sMB."
+
+msgid "Your multimedia directory is not writable."
+msgstr "De map voor de multimedia is niet schrijfbaar."
+
+msgid "files/filecabinet/ directory created successfully."
+msgstr "Map files/filecabinet/ aangemaakt."
+
+msgid "files/filecabinet/incoming directory created successfully."
+msgstr "Map files/filecabinet/incoming aangemaakt."
+
+msgid "files/multimedia directory created successfully."
+msgstr "Map files/multimedia aangemaakt."
+

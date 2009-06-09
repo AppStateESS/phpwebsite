@@ -1,0 +1,315 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR HanV <hanv@users.sourceforge.net>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_6_2,Menu1_6_0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
+"PO-Revision-Date: 2009-05-22 13:02+0100\n"
+"Last-Translator: HanV <hanv@users.sourceforge.net>\n"
+"Language-Team: HanV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
+
+msgid "A problem occurred when saving your link."
+msgstr "Er is een fout opgetreden bij het bewaren van de link."
+
+msgid "Action"
+msgstr "Actie"
+
+msgid "Add current page"
+msgstr "Voeg huidige pagina toe"
+
+msgid "Add home link on new menus"
+msgstr "Voeg home link toe op nieuwe menu's"
+
+msgid "Add link"
+msgstr "Toevoegen link"
+
+msgid "Add other link"
+msgstr "Nog een link toevoegen"
+
+msgid "Add stored page"
+msgstr "Toevoegen bewaarde pagina"
+
+msgid "Add to menu"
+msgstr "Toevoegen aan menu"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Admin mode status"
+msgstr "Admin mode status"
+
+msgid "Admin mode off"
+msgstr "Admin mode aan"
+
+msgid "Admin mode on"
+msgstr "Admin mode uit"
+
+msgid "Always show add links"
+msgstr "Altijd tonen links toevoegen"
+
+msgid "Are you sure you want to delete this link: "
+msgstr "Wilt u deze link verwijderen: "
+
+msgid "Are you sure you want to delete this menu and all its links."
+msgstr "Wilt u dit menu met alle bijbehorende links verwijderen?"
+
+msgid "Are you sure you want to unpin this menu from all pages?"
+msgstr "Wilt u dit menu loskoppelen van alle pagina's?"
+
+msgid "Are you sure you want to unpin this menu from this page?"
+msgstr "Wilt u het menu loskoppelen van deze pagina?"
+
+msgid "Cancel"
+msgstr "Afbreken"
+
+msgid "Cannot locate any menu templates. Cannot continue."
+msgstr "Er zijn geen menu templates. Kan niet verder gaan."
+
+msgid "Clear from list"
+msgstr "Uit de lijst verwijderen"
+
+msgid "Clip"
+msgstr "Klem"
+
+msgid "Close"
+msgstr "Sluiten"
+
+msgid "Controls the layout and positioning of your menus."
+msgstr "Bepaald de lay-out en de positie van uw menu's."
+
+msgid "Create"
+msgstr "Aanmaken"
+
+msgid "Create Link"
+msgstr "Nieuwe Link"
+
+msgid "Create New Menu"
+msgstr "Nieuw Menu"
+
+msgid "Create New Menus"
+msgstr "Nieuwe Menu's"
+
+msgid "Decrease indent"
+msgstr "Ident verlagen"
+
+msgid "Default menu created successfully."
+msgstr "Standaardmenu aanmaken."
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Delete Menus"
+msgstr "Verwijderen Menu's"
+
+msgid "Delete link"
+msgstr "Verwijderen link"
+
+msgid "Edit"
+msgstr "Wijzigen"
+
+msgid "Edit Link"
+msgstr "Wijzigen Link"
+
+msgid "Edit link"
+msgstr "Wijzigen link"
+
+msgid "Edit link title"
+msgstr "Wijzigen tekst link"
+
+msgid "Enter link title"
+msgstr "Bepaal titel link"
+
+msgid "Error"
+msgstr "Fout"
+
+msgid "Expand menu during admin mode"
+msgstr "Uitgebreid menu (mode admin)"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "Increase indent"
+msgstr "Ident ophogen"
+
+msgid "Link is missing a title, url, or menu id."
+msgstr "De link heeft geen titel, URL of menu-id."
+
+msgid "List"
+msgstr "Lijst"
+
+msgid "Main menu"
+msgstr "Hoofdmenu"
+
+msgid "Maximum link characters"
+msgstr "Maximum aantal tekens link"
+
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Menu Settings"
+msgstr "Menu Instellingen"
+
+msgid "Menu deleted."
+msgstr "Menu verwijderd."
+
+msgid "Menu saved"
+msgstr "Menu bewaard."
+
+msgid "Menu tables removed."
+msgstr "Menu tabellen verwijderd."
+
+msgid "Missing menu title."
+msgstr "Menu titel ontbreekt."
+
+msgid "Missing title."
+msgstr "Titel ontbreekt."
+
+msgid "Missing url."
+msgstr "URL ontbreekt."
+
+msgid "Move down"
+msgstr "Naar beneden verplaatsen"
+
+msgid "Move link down"
+msgstr "Link naar beneden verplaatsen"
+
+msgid "Move link up"
+msgstr "Link naar boven verplaatsen"
+
+msgid "Move up"
+msgstr "Naar boven"
+
+msgid "New"
+msgstr "Nieuw"
+
+msgid "No admin options"
+msgstr "Geen admin opties"
+
+msgid "No links in queue."
+msgstr "Geen links in wachtrij."
+
+msgid "No menus found. Click on \"New\" to create one."
+msgstr "Er is geen menu. Klik op \"Nieuw\" om een toe te voegen."
+
+msgid "Off"
+msgstr "Uit"
+
+msgid "On"
+msgstr "Aan"
+
+msgid "Permission"
+msgstr "Rechten"
+
+msgid "Pin"
+msgstr "Koppelen"
+
+msgid "Pin links"
+msgstr "Koppelen links"
+
+msgid "Pin page"
+msgstr "Koppelen pagina"
+
+msgid "Pin to all pages"
+msgstr "Aan alle pagina's koppelen"
+
+msgid "Pin to item"
+msgstr "Aan item koppelen"
+
+msgid "Pinned links"
+msgstr "Gekoppelde links"
+
+msgid "Reorder links"
+msgstr "Volgorde links"
+
+msgid "Save"
+msgstr "Opslaan"
+
+msgid "Save link"
+msgstr "Opslaan link"
+
+msgid "Save settings"
+msgstr "Instellingen opslaan"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Settings updated."
+msgstr "Instellingen gewijzigd."
+
+msgid "Site map"
+msgstr "Site map"
+
+msgid "Sorry"
+msgstr "Sorry"
+
+msgid "Sorry, no menus have been created"
+msgstr "Sorry, er zijn geen menu's aangemaakt"
+
+msgid "Template"
+msgstr "Template"
+
+msgid "There was a problem saving your link."
+msgstr "Er is een probleem bij het bewaren van de link."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Turn off Menu admin"
+msgstr "Zet Menu admin uit"
+
+msgid "Turn on Menu admin"
+msgstr "Zet Menu admin aan"
+
+msgid "Type the new title for this link."
+msgstr "Nieuwe titel voor de link."
+
+msgid "Unable to locate menu template."
+msgstr "Het menu template is niet gevonden."
+
+msgid "Unable to save menu. Please check error logs."
+msgstr "Bewaren menu mislukt. Controleer de log."
+
+msgid "Unclip"
+msgstr "Ontklem"
+
+msgid "Unpin"
+msgstr "Ontkoppelen"
+
+msgid "Unpin menu"
+msgstr "Menu ontkoppelen"
+
+msgid "Update"
+msgstr "Wijzigen"
+
+msgid "Update Menu"
+msgstr "Wijzigen Menu"
+
+msgid "Url"
+msgstr "URL"
+
+msgid "Use MiniAdmin instead of Admin mode link"
+msgstr "Gebruik MiniAdmin in plaats van Admin mode"
+
+msgid "Use drag and sort"
+msgstr "Gebruik slepen en sorteren"
+
+msgid "Use floating admin links"
+msgstr "Gebruik dynamische admin links"
+
+msgid "User attempted access to Menu administration."
+msgstr "De gebruiker probeert toegang te krijgen tot de menu administratie."
+
+msgid "You must enter a link title."
+msgstr "De link titel is verplicht."
+

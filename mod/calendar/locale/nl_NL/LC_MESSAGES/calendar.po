@@ -1,0 +1,587 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR HanV <hanv@users.sourceforge.net>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_6_2,Calendar1_7_2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-20 14:29-0500\n"
+"PO-Revision-Date: 2009-05-25 08:59+0100\n"
+"Last-Translator: HanV <hanv@users.sourceforge.net>\n"
+"Language-Team: HanV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "%s duplicate event(s) were ignored."
+msgstr "%s dubbele evenementen worden overgeslagen."
+
+msgid "%s event(s) were successfully imported."
+msgstr "%s evenementen zijn geimporteerd."
+
+msgid "1st"
+msgstr "Eerste"
+
+msgid "2nd"
+msgstr "Tweede"
+
+msgid "3rd"
+msgstr "Derde"
+
+msgid "4th"
+msgstr "Vierde"
+
+msgid "A day prior"
+msgstr "Een dag eerder"
+
+msgid "A week prior"
+msgstr "Een week eerder"
+
+msgid "Action"
+msgstr "Actie"
+
+msgid "Add event"
+msgstr "Evenement toevoegen"
+
+msgid "All day"
+msgstr "Hele dag"
+
+msgid "All day event"
+msgstr "Evenement van hele dag"
+
+msgid "All day event, %s"
+msgstr "Evenement van hele dag, %s"
+
+msgid "Allow anonymous iCal exports of public schedules"
+msgstr "Anonieme iCal exports voor openbaar schema toestaan"
+
+msgid "Allow personal schedules"
+msgstr "Persoonlijke planning toestaan"
+
+msgid "Allow public event submissions"
+msgstr "Bijdragen openbare evenementen toestaan"
+
+msgid "An administrator will review your submission. Thank you."
+msgstr "Een beheerder zal uw bijdrage beoordelen. Dank u wel."
+
+msgid "An error occurred when saving your event."
+msgstr "Er is een fout opgetreden bij het bewaren van het evenement."
+
+msgid "An error occurred when saving your schedule."
+msgstr "Er is een fout opgetreden bij het opslaan van uw schema."
+
+msgid "An error occurred when trying to repeat an event."
+msgstr "Er is een fout opgetreden bij het herhalen van het evenement."
+
+msgid "Apply changes to repeats?"
+msgstr "Wijzigingen doorvoeren in herhalingen?"
+
+msgid "Approval (%s)"
+msgstr "Goedkeuring(%s)"
+
+msgid "Approve"
+msgstr "Goedkeuren"
+
+msgid "Are you sure you want to delete this schedule?"
+msgstr "Wilt u dit schema verwijderen?"
+
+msgid "Are you sure you want to permanently delete this event?"
+msgstr "Wilt u dit evenement verwijderen?"
+
+msgid "Availability"
+msgstr "Beschikbaarheid"
+
+msgid "Back"
+msgstr "Terug"
+
+msgid "Beginning of each month"
+msgstr "Begin van de maand"
+
+msgid "Busy"
+msgstr "Bezig"
+
+msgid "Cache month views (public only)"
+msgstr "Cache maandoverzicht (alleen openbare)"
+
+msgid "Calendar"
+msgstr "Agenda"
+
+msgid "Calendar settings"
+msgstr "Agenda instellingen"
+
+msgid "Calendar tables removed."
+msgstr "Calender tabellen verwijderd."
+
+msgid "Cancel"
+msgstr "Afbreken"
+
+msgid "Cannot create event table."
+msgstr "Aanmaken evenement tabel mislukt."
+
+msgid "Change module settings (unrestricted only)"
+msgstr "Wijzig instellingen module (alleen opbeperkte)"
+
+msgid "Change schedule"
+msgstr "Wijzig schema"
+
+msgid "Click here if you would prefer to edit the source event."
+msgstr "Klik hier voor het wijzigen van het basis evenement."
+
+msgid "Close"
+msgstr "Sluiten"
+
+msgid "Create event"
+msgstr "Nieuw evenement"
+
+msgid "Create events and schedules."
+msgstr "Nieuwe evenementen en schema's."
+
+msgid "Create schedule"
+msgstr "Nieuw schema"
+
+msgid "Create/Edit public schedule"
+msgstr "Aanmaken/Wijzigen openbaar schema"
+
+msgid "Daily"
+msgstr "Dagelijks"
+
+msgid "Date of occurence"
+msgstr "Dag van voorkomen"
+
+msgid "Day"
+msgstr "Dag"
+
+msgid "Day %s"
+msgstr "Dag %s"
+
+msgid "Day view"
+msgstr "Dag overzicht"
+
+msgid "Default public"
+msgstr "Standaard openbaar"
+
+msgid "Default public schedule set."
+msgstr "Standaard openbaar schema gemaakt."
+
+msgid "Default view"
+msgstr "Standaard overzicht"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Delete schedules (unrestricted only)"
+msgstr "Verwijderen schema (alleen onbeperkte)"
+
+msgid "Description"
+msgstr "Beschrijving"
+
+msgid "Disapprove"
+msgstr "Afkeuren"
+
+msgid "Display mini calendar"
+msgstr "Tonen kleine agenda"
+
+msgid "Do not show upcoming events"
+msgstr "Toekomstige evenementen niet tonen"
+
+msgid "Don't show"
+msgstr "Niet tonen"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Download iCal events"
+msgstr "Download iCal evenementen"
+
+msgid "Duplicate suggestion."
+msgstr "Voorstel overnemen."
+
+msgid "Edit"
+msgstr "Wijzigen"
+
+msgid "Edit event"
+msgstr "Wijzig evenement"
+
+msgid "Edit private schedule"
+msgstr "Wijzig persoonlijk schema"
+
+msgid "End of each month"
+msgstr "Eind van de maand"
+
+msgid "End time"
+msgstr "Eind tijd"
+
+msgid "Error"
+msgstr "Fout"
+
+msgid "Error accessing event table."
+msgstr "Fout bij benaderen tabel evenement."
+
+msgid "Error saving new event."
+msgstr "Fout bij opslaan nieuw evenement."
+
+msgid "Event"
+msgstr "Evenement"
+
+msgid "Event saved"
+msgstr "Evenement opgeslagen"
+
+msgid "Event saved."
+msgstr "Evenement opgeslagen."
+
+msgid "Event submitted for approval."
+msgstr "Evenement aangemeld voor goedkeuring."
+
+msgid "Every"
+msgstr "Elke"
+
+msgid "Every month"
+msgstr "Elke maand"
+
+msgid "Every month on start date"
+msgstr "Elke maand met startdatum"
+
+msgid "File does not appear to be in iCal/vCal format."
+msgstr "Bestand niet in iCal/vCal formaat"
+
+msgid "File location"
+msgstr "Plaats bestand"
+
+msgid "First day"
+msgstr "Eerste dag"
+
+msgid "From %s to %s"
+msgstr "Van %s tot %s"
+
+msgid "General"
+msgstr "Algemeen"
+
+msgid "Grid"
+msgstr "Grid"
+
+msgid "Grid event display"
+msgstr "Grid toon evenement"
+
+msgid "Import complete!"
+msgstr "Import klaar!"
+
+msgid "Import iCal/vCal file"
+msgstr "Import iCal/vCal bestand"
+
+msgid "Improper file format."
+msgstr "Formaat bestand fout."
+
+msgid "Incorrect option"
+msgstr "Verkeerde optie"
+
+msgid "Last"
+msgstr "Laatste"
+
+msgid "Last day"
+msgstr "Laatste dag"
+
+msgid "Location"
+msgstr "Plaats"
+
+msgid "Location link"
+msgstr "Plaats link"
+
+msgid "Make a repeating event"
+msgstr "Maak een herhalend evenement"
+
+msgid "Make default public"
+msgstr "Maak standaard openbaar"
+
+msgid "Maximum allowed repeats reached."
+msgstr "Maximale aantal herhalingen bereikt."
+
+msgid "Missing filename."
+msgstr "Bestandsnaam ontbreekt."
+
+msgid "Missing title."
+msgstr "Titel ontbreekt."
+
+msgid "Month"
+msgstr "Maand"
+
+msgid "Month grid"
+msgstr "Maand uiterlijk"
+
+msgid "Month list"
+msgstr "Maand lijst"
+
+msgid "Monthly"
+msgstr "Maandelijks"
+
+msgid "Next day"
+msgstr "Volgende dag"
+
+msgid "Next month"
+msgstr "Volgende maand"
+
+msgid "Next week"
+msgstr "Volgende week"
+
+msgid "No events on this day"
+msgstr "Vandaag geen evenementen"
+
+msgid "No events this month."
+msgstr "Deze maand geen evenementen."
+
+msgid "No events this week."
+msgstr "Deze week geen evenementen."
+
+msgid "No follow directives added to navigation links"
+msgstr "Bij navigatie links geen volgmogelijkheid toestaan"
+
+msgid "No schedules have been created."
+msgstr "Er is nog geen schema."
+
+msgid "No suggestions to approve."
+msgstr "Geen voorstel om te keuren."
+
+msgid "None"
+msgstr "Geen"
+
+msgid "On all pages"
+msgstr "Op elke pagina"
+
+msgid "Only link days with events in mini calendar"
+msgstr "Alleen dagen linken met evenementen in de kleine agenda"
+
+msgid "Only on front page"
+msgstr "Alleen op de voorpagina"
+
+msgid "Options"
+msgstr "Opties"
+
+msgid "Please choose options for the \"Every\" repeat method."
+msgstr "Kies opties voor de \"Elke\" manier."
+
+msgid "Please pick a monthly repeat method."
+msgstr "Kies een maandelijks manier van herhalen."
+
+msgid "Please pick a proper monthly repeat method."
+msgstr "Kies een goede manier van maandelijks herhalen."
+
+msgid "Previous day"
+msgstr "Vorige dag"
+
+msgid "Previous month"
+msgstr "Vorige maand"
+
+msgid "Previous week"
+msgstr "Vorige week"
+
+msgid "Private"
+msgstr "Persoonlijk"
+
+msgid "Public"
+msgstr "Openbaar"
+
+msgid "Remove event from repeat list?"
+msgstr "Moet het evenement van de lijst met periodieke evenementen verwijderd worden?"
+
+msgid "Removed convert flag."
+msgstr "Indicatie converteren verwijderd."
+
+msgid "Repeat"
+msgstr "Herhalen"
+
+msgid "Repeat event - %s"
+msgstr "Herhaal evenement - %s"
+
+msgid "Repeat event until:"
+msgstr "Herhaal evenement tot:"
+
+msgid "Reset cache"
+msgstr "Wis cache"
+
+msgid "Save"
+msgstr "Opslaan"
+
+msgid "Save and apply to repeats"
+msgstr "Opslaan en toepassen op herhalingen"
+
+msgid "Save and remove repeat"
+msgstr "Opslaan en herhaling verwijderen"
+
+msgid "Save event"
+msgstr "Evenement opslaan"
+
+msgid "Save settings"
+msgstr "Opslaan instellingen"
+
+msgid "Save this event only"
+msgstr "Alleen dit evenement opslaan"
+
+msgid "Schedule deleted."
+msgstr "Schema verwijderd."
+
+msgid "Schedule event table is missing."
+msgstr "Schema evenement tabel ontbreekt."
+
+msgid "Schedule saved."
+msgstr "Schema opgeslagen."
+
+msgid "Schedule unavailable."
+msgstr "Schema niet beschikbaar."
+
+msgid "Schedules"
+msgstr "Schema's"
+
+msgid "Send file"
+msgstr "Stuur bestand"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Settings saved"
+msgstr "Instellingen opgeslagen"
+
+msgid "Show busy"
+msgstr "Toon lopende"
+
+msgid "Show event titles"
+msgstr "Toon titel evenement"
+
+msgid "Show mini grid"
+msgstr "Toon mini grid"
+
+msgid "Show next two weeks"
+msgstr "Toon de volgende 2 weken"
+
+msgid "Show number of events"
+msgstr "Toon aantal evenementen"
+
+msgid "Show upcoming events"
+msgstr "Toon toekomstige evenementen"
+
+msgid "Show upcoming month"
+msgstr "Toon eerste maand"
+
+msgid "Show upcoming week"
+msgstr "Toon eerste week"
+
+msgid "Some errors occurred when uninstalling Calendar."
+msgstr "Er is een fout opgetreden bij het verwijderen van de agenda."
+
+msgid "Sorry"
+msgstr "Sorry"
+
+msgid "Start time"
+msgstr "Start tijd"
+
+msgid "Suggest event"
+msgstr "Voorstel evenement"
+
+msgid "Suggested events"
+msgstr "Voorgestelde evenementen"
+
+msgid "Summary"
+msgstr "Samenvatting"
+
+msgid "Sync dates"
+msgstr "Datums afstemmen"
+
+msgid "The date to repeat until must be greater than the event's start date."
+msgstr "De herhalingsdatum moet na de startdatum zijn."
+
+msgid "The end time must be after the start time."
+msgstr "De eindtijd moet na de starttijd zijn."
+
+msgid "This event does not exist."
+msgstr "Dit evenement bestaat niet."
+
+msgid "This is a repeat of another event."
+msgstr "Dit is een evenement dat herhaald wordt."
+
+msgid "This month"
+msgstr "Deze Maand"
+
+msgid "This week"
+msgstr "Deze week"
+
+msgid "Three days prior"
+msgstr "Drie dagen eerder"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Title / Time / Description"
+msgstr "Titel / Tijd / Beschrijving"
+
+msgid "Today"
+msgstr "Vandaag"
+
+msgid "Two days prior"
+msgstr "Twee dagen eerder"
+
+msgid "Two weeks prior"
+msgstr "Twee weken eerder"
+
+msgid "Unable to parse file for events."
+msgstr "Bestand voor evenementen kan niet verwerkt worden."
+
+msgid "Unable to save your event suggestion."
+msgstr "Het voorstel is niet bewaard."
+
+msgid "Upcoming events"
+msgstr "Toekomstige evenementen"
+
+msgid "Update event"
+msgstr "Wijzig evenement"
+
+msgid "Update schedule"
+msgstr "Wijzig schema"
+
+msgid "Upload iCal events"
+msgstr "Upload iCal evenementen"
+
+msgid "User"
+msgstr "Gebruiker"
+
+msgid "Visit this location's web site."
+msgstr "Bezoek de website van de plaats."
+
+msgid "Week"
+msgstr "Week"
+
+msgid "Week start day"
+msgstr "Week startdag"
+
+msgid "Week view"
+msgstr "Week overzicht"
+
+msgid "Weekly"
+msgstr "Wekelijks"
+
+msgid "Weekly repeats require you pick one or more days."
+msgstr "Om wekelijks te herhalen moet u een of meer dagen kiezen."
+
+msgid "Yearly"
+msgstr "Jaarlijks"
+
+msgid "You have exceeded your allowed event submissions."
+msgstr "U heeft het maximale aantal bijdragen aan gedaan."
+
+msgid "You may try to suggest a different event."
+msgstr "Stel een andere evenement voor."
+
+msgid "You must choose a repeat mode."
+msgstr "U moet een manier van herhalen kiezen."
+
+msgid "You must choose which weekdays to repeat."
+msgstr "U moet de dagen kiezen die herhaald moeten worden."
+
+msgid "You must give your event a summary."
+msgstr "U moet een samenvatting van uw evenement geven."
+
+msgid "to"
+msgstr "tot"
+

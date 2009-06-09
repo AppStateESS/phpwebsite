@@ -1,0 +1,650 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR HanV <hanv@users.sourceforge.net>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_6_2,Phatform3_1_1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-26 15:18-0500\n"
+"PO-Revision-Date: 2009-05-25 10:22+0100\n"
+"Last-Translator: HanV <hanv@users.sourceforge.net>\n"
+"Language-Team: HanV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "\"Thank you\" message is not formatted correctly."
+msgstr "\"Dank U \" bericht is verkeerd."
+
+msgid "Action"
+msgstr "Actie"
+
+msgid "Actions"
+msgstr "Acties"
+
+msgid "Add"
+msgstr "Toevoegen"
+
+msgid "Admin Email (comma delimited)"
+msgstr "Admin e-mailadres (komma gescheiden)"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "All Form Generator static tables removed."
+msgstr "Alle statische Formgenerator tabellen verwijderd."
+
+msgid "All of the options and values were not set.  Check the box below to use your options as values."
+msgstr "Niet alle opties en waarden zijn gevuld. Vink de box hieronder aan om uw opties te kiezen."
+
+msgid "All of the values were not set. You must fill out all of them."
+msgstr "U moet alle velden invullen."
+
+msgid "Allow anonymous submissions"
+msgstr "Anonieme bijdragen toestaan"
+
+msgid "Allow multiple submissions"
+msgstr "Meerdere bijdragen toestaan"
+
+msgid "Allow users to edit their form data"
+msgstr "Toestaan dat gebruikers hun schermgegevens wijzigen"
+
+msgid "Anonymous submissions with editable form data are not allowed."
+msgstr "Anonieme bijdragen met te wijzigen schermgegevens zijn niet toegestaan."
+
+msgid "Approve"
+msgstr "Goedkeuren"
+
+msgid "Approved"
+msgstr "Goedgekeurd"
+
+msgid "Archive"
+msgstr "Archief"
+
+msgid "Archive file was not found."
+msgstr "Archief bestand ontbreekt."
+
+msgid "Archive forms"
+msgstr "Archiveren formulieren"
+
+msgid "Archived Form"
+msgstr "Archief formulier"
+
+msgid "Are you sure you want to delete this entry?"
+msgstr "Wilt u deze invoer verwijderen?"
+
+msgid "Are you sure you want to remove this %s element?"
+msgstr "Wilt u dit %s element verwijderen?"
+
+msgid "Are you sure you wish to delete the archive with filename \"<b>%s</b>\"?"
+msgstr "Wilt u het archief \"<b>%s</b>\" verwijderen?"
+
+msgid "Are you sure you wish to delete the export with filename \"<b>%s</b>\"?"
+msgstr "Wilt u de export met de bestandsnaam \"<b>%s</b>\" verwijderen?"
+
+msgid "Are you sure you wish to delete the following forms?  All data associated with these forms will be lost!"
+msgstr "Wilt u de volgende formulieren verwijderen? Alle gegevens behorende bij deze formulier gaat dan verloren!"
+
+msgid "Are you sure you wish to view this archive?"
+msgstr "Wilt u dit archief bekijken?"
+
+msgid "Associated Text"
+msgstr "Bijbehorende tekst"
+
+msgid "Back"
+msgstr "Terug"
+
+msgid "CAPTCHA word was not correct."
+msgstr "Captcha woord niet goed!"
+
+msgid "Cancel"
+msgstr "Afbreken"
+
+msgid "Checkbox"
+msgstr "Checkbox"
+
+msgid "Checkbox Element Instructions"
+msgstr "Checkbox Element Instructies"
+
+msgid "Clean-Up"
+msgstr "Schoonmaken"
+
+msgid "Columns"
+msgstr "Kolommen"
+
+msgid "Complete"
+msgstr "Gereed"
+
+msgid "Completed"
+msgstr "Afgerond"
+
+msgid "Confirm"
+msgstr "Bevestig"
+
+msgid "Could not delete the element."
+msgstr "Verwijderen mislukt."
+
+msgid "Could not save the form. Check error log."
+msgstr "Opslaan formulier is mislukt. Controleer de log."
+
+msgid "Create/Edit forms"
+msgstr "Aanmaken/wijzigen formulier"
+
+msgid "Created"
+msgstr "Aangemaakt"
+
+msgid "Date Created"
+msgstr "Datum aangemaakt"
+
+msgid "Default"
+msgstr "Standaard"
+
+msgid "Delete"
+msgstr "verwijderen"
+
+msgid "Delete form confirmation"
+msgstr "Verwijder formulier bevestiging"
+
+msgid "Delete form entries"
+msgstr "Verwijder formulier invoer"
+
+msgid "Delete forms"
+msgstr "verwijder formulieren"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Dropbox"
+msgstr "Dropbox"
+
+msgid "Edit"
+msgstr "Wijzigen"
+
+msgid "Edit Elements"
+msgstr "Wijzig elementen"
+
+msgid "Edit form entries"
+msgstr "Wijzig scherminvoer"
+
+msgid "Edit option set"
+msgstr "Wijzig optie groep"
+
+msgid "Edit option sets"
+msgstr "Wijzig optie groepen"
+
+msgid "Editor"
+msgstr "Editor"
+
+msgid "Element successfully added!"
+msgstr "Element toegevoegd!"
+
+msgid "Element successfully removed!"
+msgstr "Element verwijderd!"
+
+msgid "Elements"
+msgstr "Elementen"
+
+msgid "Entries"
+msgstr "Invoer"
+
+msgid "Existing Archives"
+msgstr "Bestaande archieven"
+
+msgid "Existing Exports"
+msgstr "Bestaande exports"
+
+msgid "Export"
+msgstr "Export"
+
+msgid "Export report data"
+msgstr "Exporteer gegevens rapport"
+
+msgid "Failed to archive."
+msgstr "Archiveren is mislukt."
+
+msgid "Failed to create archive directory."
+msgstr "Aanmaken archieven map is mislukt."
+
+msgid "Failed to create export directory."
+msgstr "Aanmaken export map is mislukt."
+
+msgid "Failed to create files directory."
+msgstr "Aanmaken bestanden map is mislukt."
+
+msgid "Failed to create report directory."
+msgstr "Aanmaken rapporten map is mislukt."
+
+msgid "File contained no archive to view."
+msgstr "Bestand heeft geen archief om te bekijken."
+
+msgid "File contained no content."
+msgstr "Bestand is leeg."
+
+msgid "Filename"
+msgstr "Bestandsnaam"
+
+msgid "Finish"
+msgstr "Afronden"
+
+msgid "Form"
+msgstr "Formulier"
+
+msgid "Form Information"
+msgstr "Formulier Informatie"
+
+msgid "Form Name"
+msgstr "Formulier Naam"
+
+msgid "Form Settings"
+msgstr "Formulier Instellingen"
+
+msgid "Form element is not an object."
+msgstr "Form element is geen object."
+
+msgid "Form settings successfully saved!<br /><br />"
+msgstr "Formulier instellingen opgeslagen!<br /><br />"
+
+msgid "Forms"
+msgstr "Formulieren"
+
+msgid "Forms are pre_approved"
+msgstr "Formulieren zijn vooraf goedgekeurd."
+
+msgid "Full List"
+msgstr "Totaallijst"
+
+msgid "Go"
+msgstr "Start"
+
+msgid "Go!"
+msgstr "Start!"
+
+msgid "Hidden"
+msgstr "Verberg"
+
+msgid "Hide"
+msgstr "Verbergen"
+
+msgid "Hide this form"
+msgstr "Verberg dit formulier"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "In order to view this archive a new table will need to added to your database."
+msgstr "Om dit archief te kunnen tonen moet er een nieuwe tabel in uw database worden aangemaakt."
+
+msgid "Incomplete"
+msgstr "Niet volledig"
+
+msgid "Instructions"
+msgstr "Instructies"
+
+msgid "Instructions are missing or formatted incorrectly."
+msgstr "Instructies ontbreken of zijn verkeerd."
+
+msgid "Invalid Filename Given"
+msgstr "Bestandsnaam niet toegestaan"
+
+msgid "Ip"
+msgstr "IP"
+
+msgid "Item limit per page"
+msgstr "Item limiet per pagina"
+
+msgid "Last Entry"
+msgstr "Laatste invoer"
+
+msgid "List Archives"
+msgstr "Lijst archieven"
+
+msgid "List Exports"
+msgstr "Lijst exports"
+
+msgid "List Forms"
+msgstr "Lijst formulieren"
+
+msgid "Maxsize"
+msgstr "Max. grootte"
+
+msgid "Missing form name."
+msgstr "Formuliernaam ontbreekt."
+
+msgid "Move Down"
+msgstr "Naar beneden"
+
+msgid "Move Up"
+msgstr "Naar boven"
+
+msgid "Multiple Select"
+msgstr "Meerdere kiezen"
+
+msgid "Multiple submissions with editable form data are not allowed."
+msgstr "Meerdere bijdragen met te wijzigen formuliergegevens zijn niet toegestaan."
+
+msgid "Multiselect Element Instructions"
+msgstr "Multiselect Element Instructies"
+
+msgid "Name"
+msgstr "Naam"
+
+msgid "New Form"
+msgstr "Nieuw Formulier"
+
+msgid "Next"
+msgstr "Volgende"
+
+msgid "Next Entry"
+msgstr "Nieuwe invoer"
+
+msgid "No"
+msgstr "Nee"
+
+msgid "No element was removed."
+msgstr "Er is geen element verwijderd."
+
+msgid "No entries were found matching your search query."
+msgstr "Er is niet gevonden met deze zoekcriteria."
+
+msgid "No form ID was passed"
+msgstr "Geen formulier-ID doorgegeven"
+
+msgid "No form entry was deleted from the database."
+msgstr "Er is geen formulierinvoer verwijderd uit de database."
+
+msgid "Number of Options"
+msgstr "Aantal Opties"
+
+msgid "Only edit own forms"
+msgstr "Alleen eigen formulieren wijzigen"
+
+msgid "Option"
+msgstr "Optie"
+
+msgid "Option Instructions"
+msgstr "Optie instructies"
+
+msgid "Option Sets"
+msgstr "Optie groepen"
+
+msgid "Owner"
+msgstr "Eigenaar"
+
+msgid "Page"
+msgstr "Pagina"
+
+msgid "Page %1$s of %2$s"
+msgstr "Pagina %1$s van %2$s"
+
+msgid "Position must be an integer value."
+msgstr "Positie moet een geheel getal zijn."
+
+msgid "Post Process Code"
+msgstr "Post verwerkingscode"
+
+msgid "Predefined Option Set"
+msgstr "Voorgedefineerde optie groep"
+
+msgid "Previous Entry"
+msgstr "Vorige invoer"
+
+msgid "Print"
+msgstr "Afdrukken"
+
+msgid "Print View"
+msgstr "Afdrukken overzicht"
+
+msgid "Radio Button"
+msgstr "Radio Button"
+
+msgid "Radiobutton Element Instructions"
+msgstr "Radiobutton Element instructies"
+
+msgid "Refuse"
+msgstr "Weigeren"
+
+msgid "Remove"
+msgstr "Verwijderen"
+
+msgid "Removed all dynamic Form Generator tables."
+msgstr "Alle dynamische formgenerator tabellen zijn verwijderd."
+
+msgid "Report"
+msgstr "Verslag"
+
+msgid "Report View"
+msgstr "Verslag overzicht"
+
+msgid "Require"
+msgstr "Benodigd"
+
+msgid "Required"
+msgstr "Verplicht"
+
+msgid "Retake Form"
+msgstr "Hergebruik formulier"
+
+msgid "Return to Report"
+msgstr "Terug naar rapport"
+
+msgid "Rows"
+msgstr "Rijen"
+
+msgid "Save"
+msgstr "Opslaan"
+
+msgid "Save "
+msgstr "Opslaan"
+
+msgid "Save Form"
+msgstr "Opslaan formulier"
+
+msgid "Save Settings"
+msgstr "Opslaan instellingen"
+
+msgid "Save Textarea"
+msgstr "Opslaan Textarea"
+
+msgid "Save Textfield"
+msgstr "Opslaan Tekstveld"
+
+msgid "Save option set as"
+msgstr "Opslaan optie groep als"
+
+msgid "Saved Forms"
+msgstr "Opgeslagen formulieren"
+
+msgid "Search"
+msgstr "Zoek"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Show"
+msgstr "Toon"
+
+msgid "Show form page numbers (eg: page 1 of 6)"
+msgstr "Toon paginanummers (bijv. Pag 1 van 6)"
+
+msgid "Show numbers for form elements (eg: 1, 2, 3)"
+msgstr "Toon nummers voor formulier elementen  (bijv. 1, 2, 3)"
+
+msgid "Size"
+msgstr "Grootte"
+
+msgid "Submission Message"
+msgstr "Verstuur bericht"
+
+msgid "Successfully deleted table associated with the archive with filename "
+msgstr "De tabel is verwijderd, die behoorde bij het archief met de bestandsnaam "
+
+msgid "Text"
+msgstr "Tekst"
+
+msgid "Textarea"
+msgstr "Textarea"
+
+msgid "Textarea Element Instructions"
+msgstr "Textarea Element Instructies"
+
+msgid "Textfield"
+msgstr "Tekstveld"
+
+msgid "The %s element could not be saved to the database."
+msgstr "Het %s element is niet opgeslagen."
+
+msgid "The %s element was saved successfully."
+msgstr "Het %s element is opgeslagen."
+
+msgid "The %s was saved successfully."
+msgstr "%s is opgeslagen."
+
+msgid "The archive path is not web server writable."
+msgstr "De webserver heeft geen schrijfrechten op de archiefmap."
+
+msgid "The associated text for this element was not set."
+msgstr "De tekst van dit element ontbreekt."
+
+msgid "The element was successfully removed."
+msgstr "Het element is verwijderd."
+
+msgid "The export path is not web server writable."
+msgstr "De webserver heeft geen schrijfrechten op de exportmap."
+
+msgid "The form %s was successfully archived."
+msgstr "Het formulier %s is gearchiveerd."
+
+msgid "The form entry was successfully deleted from the database."
+msgstr "De formulierinvoer is verwijderd."
+
+msgid "The form must be saved before it is available to the public."
+msgstr "Het formulier moet eerst opgeslagen worden voordat het openbaar beschikbaar is."
+
+msgid "The name you entered for the Checkbox is not valid or is already in use with this form."
+msgstr "De Checkbox naam is niet toegestaan of wordt al gebruikt op dit formulier."
+
+msgid "The name you entered for the Multiselect is not valid or is already in use with this form."
+msgstr "De Multiselect naam is niet toegestaan of wordt al gebruikt op dit formulier."
+
+msgid "The name you entered for the Textfield is not valid or is already in use with this form."
+msgstr "De tekstveld naam is niet toegestaan of wordt al gebruikt op dit formulier."
+
+msgid "The number of options must be a greater than zero."
+msgstr "Het aantal opties moet groter dan nul zijn."
+
+msgid "The option set %s was successfully saved."
+msgstr "De Optie groep %s is opgeslagen."
+
+msgid "The option set %s was unable to be saved."
+msgstr "De optie groep %s is niet opgeslagen."
+
+msgid "The phatform archive was successfully <b>deleted</b>."
+msgstr "Het Phatform Archief is <b>verwijderd</b>."
+
+msgid "The phatform export was successfully <b>deleted</b>."
+msgstr "Het Phatform Export is <b>verwijderd</b>."
+
+msgid "The value for this element was not set."
+msgstr "De waarde van dit element ontbreekt."
+
+msgid "There is a problem with options, contact a system administrator."
+msgstr "De opties zijn niet goed. Meld dit aan de beheerder."
+
+msgid "There was a problem deleting the archive."
+msgstr "Het verwijderen van het archief is mislukt."
+
+msgid "There was a problem deleting the export."
+msgstr "Het verwijderen van de export is mislukt."
+
+msgid "There was a problem deleting viewing archive table associated for filename "
+msgstr "Het verwijderen / tonen van het archief is mislukt. Bestandsnaam "
+
+msgid "This form is not available for viewing at this time."
+msgstr "Dit formulier is nu niet beschikbaar."
+
+msgid "Total"
+msgstr "Totaal"
+
+msgid "Unable to save %s."
+msgstr "Opslaan %s is mislukt."
+
+msgid "Unapproved Forms"
+msgstr "Niet gekeurde formulieren"
+
+msgid "Unknown"
+msgstr "Onbekend"
+
+msgid "Unsaved Forms"
+msgstr "Niet opgeslagen formulieren"
+
+msgid "Updated"
+msgstr "Gewijzigd"
+
+msgid "Use option text as values"
+msgstr "Gebruik optie tekst als waarden"
+
+msgid "User"
+msgstr "Gebruiker"
+
+msgid "Value"
+msgstr "Waarde"
+
+msgid "View"
+msgstr "Toon"
+
+msgid "View reports"
+msgstr "Toon rapporten"
+
+msgid "Viewing of archive has been canceled."
+msgstr "Tonen van archief is afgebroken."
+
+msgid "WARNING!"
+msgstr "Waarschuwing!"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "You have already filled out this form!"
+msgstr "U heeft dit formulier al ingevuld!"
+
+msgid "You have chosen <b>not</b> to delete the archive with the filename \"%s\"."
+msgstr "U wilt het archief met de bestandsnaam \"%s\" <b>niet</b> verwijderen."
+
+msgid "You have chosen <b>not</b> to delete the export with the filename \"%s\"."
+msgstr "U wilt de export met de bestandsnaam \"%s\" <b>niet</b> verwijderen."
+
+msgid "You have chosen to edit a saved form! All current data will be archived and cleared if you chose to continue!  Make sure you export your data from your form before you continue!"
+msgstr "U wilt een opgeslagen formulier wijzigen! Alle huidige gegevens worden gearchiveerd en geschoond als u doorgaat! Exporteer uw data van het huidige formulier voordat u doorgaat!"
+
+msgid "You have passed the maximum allowed characters in the %s text field."
+msgstr "U heeft teveel tekens ingevoerd in %s tekstveld."
+
+msgid "You may not use that name for this form element."
+msgstr "Deze elementsnaam is niet toegestaan."
+
+msgid "You must be logged in to view this form!"
+msgstr "Log eerst in om dit formulier te bekijken!"
+
+msgid "You must fill out all required fields to continue."
+msgstr "Vul voor u verder gaat eerst alle verplichte velden in."
+
+msgid "You must have at least one element to save this form."
+msgstr "Een formulier dient minimaal een element te hebben om opgeslagen te kunnen worden."
+
+msgid "You must provide a submission message."
+msgstr "U moet een verstuurbericht opgeven."
+
+msgid "You only have permission to edit your own forms!"
+msgstr "U mag alleen eigen formulieren wijzigen!"
+
+msgid "of"
+msgstr "van"
+

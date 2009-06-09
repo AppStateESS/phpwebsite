@@ -1,0 +1,428 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR  HanV <hanv@users.sourceforge.net>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_6_2,Blog1_8_2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-15 10:20-0500\n"
+"PO-Revision-Date: 2009-05-24 22:13+0100\n"
+"Last-Translator: HanV <hanv@users.sourceforge.net>\n"
+"Language-Team: HanV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "A problem occured with your submission. Please try again later."
+msgstr "Er is een probleem opgetreden met uw bijdrage. Probeer het later opnieuw."
+
+msgid "A problem occurred when trying to disapprove this entry."
+msgstr "Het afkeuren van deze bijdrage is mislukt."
+
+msgid "A version of this entry is awaiting approval."
+msgstr "Een versie van deze bijdrage wacht op goedkeuring."
+
+msgid "Action"
+msgstr "Actie"
+
+msgid "Add entry"
+msgstr "Bijdrage toevoegen"
+
+msgid "Add new blog"
+msgstr "Blog toevoegen"
+
+msgid "All comments require approval"
+msgstr "Alle bijdragen moeten gekeurd worden"
+
+msgid "Allow anonymous comments"
+msgstr "Anonieme bijdragen toestaan"
+
+msgid "Allow anonymous comments by default"
+msgstr "Anonieme bijdragen standaard toestaan"
+
+msgid "Allow anonymous submissions"
+msgstr "Toestaan anonieme bijdragen"
+
+msgid "Allow comments"
+msgstr "Toestaan bijdragen"
+
+msgid "Allow comments by default"
+msgstr "Standaard bijdragen toestaan"
+
+msgid "Always"
+msgstr "Altijd"
+
+msgid "An error occurred when saving your version."
+msgstr "Het opslaan van uw versie is mislukt."
+
+msgid "An error occurred when trying to save your entry. Please check your logs."
+msgstr "Het opslaan is mislukt. Controleer de log."
+
+msgid "Anonymous"
+msgstr "Anoniem"
+
+msgid "Anonymous comments require approval"
+msgstr "Anonieme bijdragen moeten gekeurd worden"
+
+msgid "Approval (%s)"
+msgstr "Goedgekeurd (%s)"
+
+msgid "Approval list"
+msgstr "Goedkeuringslijst"
+
+msgid "Approve"
+msgstr "Goedkeuren"
+
+msgid "Are you sure you want to permanently delete this blog entry?"
+msgstr "Wilt u deze bijdrage voorgoed verwijderen?"
+
+msgid "Blog Archive"
+msgstr "Blog archief"
+
+msgid "Blog Entries Awaiting Approval"
+msgstr "Blog bijdragen die wachten op goedkeuren"
+
+msgid "Blog Restore"
+msgstr "Blog Terugzetten"
+
+msgid "Blog Settings"
+msgstr "Blog Instellingen"
+
+msgid "Blog entriwes purged."
+msgstr "Blog bijdragen geschoond."
+
+msgid "Blog entry approved."
+msgstr "Blog bijdrage goedgekeurd."
+
+msgid "Blog entry deleted."
+msgstr "Blog bijdrage verwijderd."
+
+msgid "Blog entry disapproved."
+msgstr "Blog bijdrage afgekeurd."
+
+msgid "Blog entry removed."
+msgstr "Blog bijdrage verwijderd."
+
+msgid "Blog entry restored."
+msgstr "Blog bijdrage teruggezet."
+
+msgid "Blog list"
+msgstr "Blog lijst"
+
+msgid "Blog settings saved."
+msgstr "Blog instellingen opgeslagen."
+
+msgid "Blog tables removed."
+msgstr "Blog tabellen verwijderd."
+
+msgid "Blog view limit"
+msgstr "Blog toon limiet"
+
+msgid "CAPTCHA submissions"
+msgstr "CAPTCHA verstuurde"
+
+msgid "Cache anonymous view"
+msgstr "Cache anoniem tonen"
+
+msgid "Category"
+msgstr "Categorie"
+
+msgid "Change settings (Unrestricted only)"
+msgstr "Instellingen wijzigen (Alleen onbeperkte)"
+
+msgid "Clip for menu"
+msgstr "Clip aan menu"
+
+msgid "Comment"
+msgstr "Bijdrage"
+
+msgid "Comment approval"
+msgstr "Bijdrage goedkeuren"
+
+msgid "Comments preapproved"
+msgstr "Bijdragen vooraf goedkeuren"
+
+msgid "Confirm purge"
+msgstr "Bevestig schoning"
+
+msgid "Create first blog entry!"
+msgstr "Eerste Blog bijdrage invoeren!"
+
+msgid "Creation"
+msgstr "Aanmaak"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Delete blog"
+msgstr "Blog verwijderen"
+
+msgid "Disapprove"
+msgstr "Afkeuren"
+
+msgid "Do not show"
+msgstr "Niet tonen"
+
+msgid "Edit"
+msgstr "Wijzigen"
+
+msgid "Edit blog"
+msgstr "Blog wijzigen"
+
+msgid "Edit blogs"
+msgstr "Blogs wijzigen"
+
+msgid "Entry"
+msgstr "Bijdrage"
+
+msgid "Entry saved successfully."
+msgstr "Bijdrage opgeslagen."
+
+msgid "Expire"
+msgstr "Verloop"
+
+msgid "Expire date/time"
+msgstr "Verloopdatum/tijd"
+
+msgid "Expired"
+msgstr "Verlopen"
+
+msgid "Hide general image folders"
+msgstr "Verberg algemene mappen met afbeeldingen"
+
+msgid "I am sure that I want to delete all blog entries prior to %"
+msgstr "Ik wil alle bijdragen voor %s in deze blog verwijderen"
+
+msgid "Image url"
+msgstr "Afbeelding URL"
+
+msgid "Last poster"
+msgstr "Laatste persoon met bijdrage"
+
+msgid "Limit blog to specific groups"
+msgstr "Limiteer blog tot specifieke groepen"
+
+msgid "Link resized image to parent"
+msgstr "Koppel aangepaste afbeelding aan ouder"
+
+msgid "Link setting (if image)"
+msgstr "Koppel instelling (bij afbeelding)"
+
+msgid "Link the url below"
+msgstr "Koppel de onderstaande URL"
+
+msgid "Link to read more"
+msgstr "Koppel aan lees meer"
+
+msgid "List"
+msgstr "Lijst"
+
+msgid "Logged user view only"
+msgstr "Gelogde gebruiker alleen tonen"
+
+msgid "Maximum image height (50-2048)"
+msgstr "Maximale hoogte afbeelding (50-2048)"
+
+msgid "Maximum image width (50-2048)"
+msgstr "Maximale breedte afbeelding (50-2048)"
+
+msgid "Missing title."
+msgstr "Titel ontbreekt."
+
+msgid "Nevermind, go back to settings"
+msgstr "Maakt niet uit, terug naar instellingen"
+
+msgid "New"
+msgstr "Nieuw"
+
+msgid "New Blog Entry"
+msgstr "Nieuwe bijdrage"
+
+msgid "Next page"
+msgstr "Volgende pagina"
+
+msgid "No action"
+msgstr "Geen actie"
+
+msgid "No expiration"
+msgstr "Geen verloop"
+
+msgid "No title"
+msgstr "Geen titel"
+
+msgid "None"
+msgstr "Geen"
+
+msgid "Number of past entries"
+msgstr "Aantal eerdere bijdragen"
+
+msgid "Only on home page"
+msgstr "Alleen op beginpagina"
+
+msgid "Please enter word in image correctly."
+msgstr "Vul het woord in de afbeelding in."
+
+msgid "Post current thoughts, happenings, and discussions."
+msgstr "Toevoegen Gedachten, gebeurtenissen en discussies."
+
+msgid "Posted by"
+msgstr "Gepost door"
+
+msgid "Posted on"
+msgstr "Gepost op"
+
+msgid "Previous blog entries"
+msgstr "Vorige Blog bijdragen"
+
+msgid "Previous page"
+msgstr "Vorige pagina"
+
+msgid "Publish"
+msgstr "Openbaar"
+
+msgid "Publish date/time"
+msgstr "Publiek gemaakt op datum/tijd"
+
+msgid "Purge Blog Entries"
+msgstr "Schoon blog bijdragen"
+
+msgid "Purge all entries before this date"
+msgstr "Schoon alle bijdragen voor deze datum"
+
+msgid "Read more"
+msgstr "Meer..."
+
+msgid "Recent blog entries"
+msgstr "Nieuwste bijdragen"
+
+msgid "Repeat submission"
+msgstr "Opnieuw versturen"
+
+msgid "Reset cache"
+msgstr "Cache legen"
+
+msgid "Restore"
+msgstr "Terugzetten"
+
+msgid "Save Changes and Approve"
+msgstr "Wijzigen opslaan en goedkeuren"
+
+msgid "Save settings"
+msgstr "Instellingen opslaan"
+
+msgid "Set to zero to prevent display"
+msgstr "Tonen voorkomen door op nul te zetten"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Show blog on home page"
+msgstr "Toon blog op hoofdpagina"
+
+msgid "Show category icons"
+msgstr "Toon icoon categorie"
+
+msgid "Show category links"
+msgstr "Toon links categorie"
+
+msgid "Show image or media thumbnail in list view"
+msgstr "Toon afbeelding of media thumb in lijstvorm"
+
+msgid "Show recent entries"
+msgstr "Toon nieuwste bijdragen"
+
+msgid "Site is not accepting anonymous submissions."
+msgstr "De site staat geen anonieme bijdragen toe."
+
+msgid "Sorry"
+msgstr "Sorry"
+
+msgid "Sticky"
+msgstr "Lastig"
+
+msgid "Submission"
+msgstr "Versturen"
+
+msgid "Submit Entry"
+msgstr "Bijdrage Versturen"
+
+msgid "Submit entry"
+msgstr "Bijdrage versturen"
+
+msgid "Suggest entry"
+msgstr "Bijdrage voorstellen"
+
+msgid "Summary"
+msgstr "Samenvatting"
+
+msgid "System caching disabled."
+msgstr "Systeemcache uitschakelen."
+
+msgid "Thank you"
+msgstr "Dank u wel."
+
+msgid "This version has not been approved."
+msgstr "Deze versie is niet goedgekeurd."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Tried to edit an unapproved item."
+msgstr "Poging om een niet goedgekeurd item te wijzigen."
+
+msgid "Unpublished"
+msgstr "Niet gepubliceerd"
+
+msgid "Unsticky"
+msgstr "Gemakkelijk"
+
+msgid "Update Blog Entry"
+msgstr "Wijzig bijdrage"
+
+msgid "Update Unapproved Blog Entry"
+msgstr "Wijzig niet goedgekeurde bijdrage"
+
+msgid "Update entry"
+msgstr "Wijzig bijdrage"
+
+msgid "Use Image Manager"
+msgstr "Gebruik beheer afbeeldingen"
+
+msgid "User attempted access to Blog administration."
+msgstr "Gebruiker probeert de blog administratie te benaderen."
+
+msgid "User tried to edit a blog."
+msgstr "De gebruiker probeerde een blog te wijzigen."
+
+msgid "View"
+msgstr "Tonen"
+
+msgid "View version"
+msgstr "Toon versie"
+
+msgid "You do not have permission to view this entry."
+msgstr "U mag deze bijdrage niet bekijken."
+
+msgid "You have chosen to purge old blog entries from your web site. Be aware they will be deleted permanently."
+msgstr "Let op. Het schonen van oude bijdragen kan niet ongedaan gemaakt worden."
+
+msgid "Your entry has been submitted for review."
+msgstr "Uw bijdrage is verstuurd voor goedkeuring."
+
+msgid "Your entry is being held for approval."
+msgstr "Uw bijdrage wacht op goedkeuring."
+
+msgid "Your submission is still awaiting approval."
+msgstr "Uw bijdrage wacht nog steeds op goedkeuring."
+
+msgid "Your submission must have a summary."
+msgstr "Uw bijdrage moet een samenvatting hebben."
+
+msgid "Alert your community to important happenings."
+msgstr "Wijs uw relaties op belangrijke gebeurtenissen."
+

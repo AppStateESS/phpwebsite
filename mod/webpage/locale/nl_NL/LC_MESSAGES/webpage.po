@@ -1,0 +1,380 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR HanV <hanv@users.sourceforge.net>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_6_2,Webpage1_2_1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-26 15:18-0500\n"
+"PO-Revision-Date: 2009-05-25 11:03+0100\n"
+"Last-Translator: HanV <hanv@users.sourceforge.net>\n"
+"Language-Team: HanV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "%d. (Untitled)"
+msgstr "%d. (Zonder titel))"
+
+msgid "- Select option -"
+msgstr "- Kies optie -"
+
+msgid "A problem occurred when trying to approve a web page."
+msgstr "Het goedkeuren van de webpagina is mislukt."
+
+msgid "A problem occurred when trying to delete your webpage."
+msgstr "Het verwijderen van de webpagine is mislukt."
+
+msgid "A problem occurred when trying to disapprove a web page."
+msgstr "Het afkeuren van de webpagina is mislukt."
+
+msgid "Action"
+msgstr "Actie"
+
+msgid "Activate"
+msgstr "Activeren"
+
+msgid "Active"
+msgstr "Actief"
+
+msgid "Add Page"
+msgstr "Toevoegen pagina"
+
+msgid "Add new page"
+msgstr "Toevoegen nieuwe pagina"
+
+msgid "Add page: %s"
+msgstr "Toevoegen pagina: %s"
+
+msgid "Administrate page: %s"
+msgstr "Beheer pagina: %s"
+
+msgid "An error occurred while saving your page. Please check the error log."
+msgstr "Opslaan pagina is mislukt. Controleer de log."
+
+msgid "An error occurred. Please check your logs."
+msgstr "Er is een fout opgetreden. Controleer de log."
+
+msgid "Approval list"
+msgstr "Goedkeuringslijst"
+
+msgid "Approval view"
+msgstr "Toon goedkeuringen"
+
+msgid "Approval(%s)"
+msgstr "Goedkeuring (%s)"
+
+msgid "Approve"
+msgstr "Goedkeuren"
+
+msgid "Are you sure you want to delete &quot;%s&quot and all its pages?"
+msgstr "Wilt u &quot;%s&quot en alle bijbehorende pagina's verwijderen?"
+
+msgid "Are you sure you want to delete the checked web pages?"
+msgstr "Wilt u de geselecteerde webpagina's verwijderen?"
+
+msgid "Are you sure you want to join ALL the pages into just one page? Warning: You will lose all page backups!"
+msgstr "Wilt u alle pagina's in een pagina zetten? De back-ups gaan verloren!"
+
+msgid "Are you sure you want to join this page to the next?"
+msgstr "Wilt u deze pagina samenvoegen met de volgende pagina?"
+
+msgid "Are you sure you want to remove this page?"
+msgstr "Wilt u deze pagina verwijderen?"
+
+msgid "Attempted to approve a webpage."
+msgstr "Probeerde een webpagina goed te keuren."
+
+msgid "Attempted to disapprove a webpage."
+msgstr "Probeerde een webpagina af te keuren."
+
+msgid "Cannot find template file."
+msgstr "Template bestand ontbreekt."
+
+msgid "Content"
+msgstr "Inhoud"
+
+msgid "Create header"
+msgstr "Aanmaken kop"
+
+msgid "Created by"
+msgstr "Aangemaakt door"
+
+msgid "Created on"
+msgstr "Aangemaakt op"
+
+msgid "Creates web pages, articles, and the like."
+msgstr "Aanmaken pagina's, artikelen en het uiterlijk."
+
+msgid "Deactivate"
+msgstr "Deactiveren"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Delete page"
+msgstr "Verwijder pagina"
+
+msgid "Delete page (Unrestricted only)"
+msgstr "Verwijder pagina (Allen onbeperkt)"
+
+msgid "Disapprove"
+msgstr "Afkeuren"
+
+msgid "Down"
+msgstr "Naar beneden"
+
+msgid "Drop"
+msgstr "Laten vervallen"
+
+msgid "Edit"
+msgstr "Wijzigen"
+
+msgid "Edit Page %s"
+msgstr "Wijzig pagina %s"
+
+msgid "Edit header"
+msgstr "Wijzig kop"
+
+msgid "Edit header page: %s"
+msgstr "wijzig koppagina: %s"
+
+msgid "Edit header: %s"
+msgstr "wijzig kop: %s"
+
+msgid "Edit page"
+msgstr "Wijzig pagina"
+
+msgid "Edit page header"
+msgstr "Wijzig kop pagina"
+
+msgid "Edit web page"
+msgstr "Wijzig webpagina"
+
+msgid "Error"
+msgstr "Fout"
+
+msgid "Error occurred when trying to pull a page from the volume."
+msgstr "Het ophalen van een pagina uit het volume is mislukt."
+
+msgid "Error: Unable to force template."
+msgstr "Fout: Het forceren van het template is niet mogelijk."
+
+msgid "Feature"
+msgstr "Kenmerk"
+
+msgid "Feature page"
+msgstr "Kenmerk pagina"
+
+msgid "Featured pages"
+msgstr "Kenmerk pagina's"
+
+msgid "Force all pages to use this template"
+msgstr "Alle pagina's moeten dit template gebruiken."
+
+msgid "Front page"
+msgstr "Voorpagina"
+
+msgid "Go"
+msgstr "Start"
+
+msgid "Go!"
+msgstr "Start!"
+
+msgid "Header"
+msgstr "Kop"
+
+msgid "Header restored."
+msgstr "Kop teruggezet."
+
+msgid "Header saved successfully."
+msgstr "Kop opgeslagen."
+
+msgid "Header version deleted."
+msgstr "Kop versie verwijderd."
+
+msgid "Ignoring repeat post."
+msgstr "Sla herhaalde post over."
+
+msgid "Image"
+msgstr "Afbeelding"
+
+msgid "List"
+msgstr "Lijst"
+
+msgid "List Web Pages"
+msgstr "Lijst webpagina's"
+
+msgid "Missing page content."
+msgstr "Pagina inhoud ontbreekt."
+
+msgid "Missing page title"
+msgstr "Pagina titel ontbreekt."
+
+msgid "Missing template file."
+msgstr "Bestand template ontbreekt."
+
+msgid "Missing volume id."
+msgstr "Volume ID ontbreekt."
+
+msgid "Move down"
+msgstr "Naar beneden"
+
+msgid "Move off frontpage"
+msgstr "Van voorpagina afhalen"
+
+msgid "Move to end"
+msgstr "Onderaan zetten"
+
+msgid "Move to front"
+msgstr "Vooraan zetten"
+
+msgid "Move to frontpage"
+msgstr "Op voorpagina zetten"
+
+msgid "Move up"
+msgstr "Naar boven"
+
+msgid "New"
+msgstr "Nieuw"
+
+msgid "Next page"
+msgstr "Volgende pagina"
+
+msgid "No"
+msgstr "Nee"
+
+msgid "No pages have been created."
+msgstr "Er zijn geen pagina's aangemaakt."
+
+msgid "Page"
+msgstr "Pagina"
+
+msgid "Page held for approval."
+msgstr "Pagina wacht op goedkeuring."
+
+msgid "Page is missing content."
+msgstr "De inhoud van de pagina ontbreekt."
+
+msgid "Page is not complete."
+msgstr "De pagina is niet compleet."
+
+msgid "Page joined."
+msgstr "Pagina samengevoegd."
+
+msgid "Page moved."
+msgstr "Pagina verplaatst."
+
+msgid "Page removed."
+msgstr "Pagina verwijderd."
+
+msgid "Page restored."
+msgstr "Pagina teruggezet."
+
+msgid "Page saved successfully."
+msgstr "Pagina opgeslagen."
+
+msgid "Page template"
+msgstr "Pagina template"
+
+msgid "Pages joined."
+msgstr "Pagina's samengevoegd."
+
+msgid "Previous page"
+msgstr "Vorige pagina"
+
+msgid "Restore"
+msgstr "Terugzetten"
+
+msgid "Restore Page %s"
+msgstr "Zet pagina %s terug"
+
+msgid "Restore Web Page Header"
+msgstr "Zet webpagina kop terug"
+
+msgid "Save settings"
+msgstr "Opslaan instellingen"
+
+msgid "Set featured pages"
+msgstr "Zet kenmerk pagina's"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Settings saved."
+msgstr "Instellingen opgeslagen."
+
+msgid "Simple image forms"
+msgstr "Eenvoudige afbeeldingsformulieren"
+
+msgid "Sorry, this web page is restricted."
+msgstr "Sorry, u heeft geen rechten voor deze webpagina"
+
+msgid "Sort"
+msgstr "Sorteer"
+
+msgid "Summary"
+msgstr "Samenvatting"
+
+msgid "There is a problem with your page templates. Check your error log."
+msgstr "Fout met de pagina templates. Controleer de log."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Unable to locate page template directory."
+msgstr "Map met pagina templates ontbreekt."
+
+msgid "Up"
+msgstr "Hoger"
+
+msgid "Update header"
+msgstr "Wijzig kop"
+
+msgid "Update page"
+msgstr "Wijzig pagina"
+
+msgid "Updated by"
+msgstr "Gewijzigd door"
+
+msgid "Updated on"
+msgstr "Gewijzigd op"
+
+msgid "View"
+msgstr "Toon"
+
+msgid "View page list"
+msgstr "Toon paginalijst"
+
+msgid "Volume is missing a title."
+msgstr "Volume heeft geen titel."
+
+msgid "Web Page Approval"
+msgstr "Webpagina goedkeuring"
+
+msgid "Web Page tables removed."
+msgstr "Webpagina tabellen verwijderd."
+
+msgid "Web Pages"
+msgstr "Webpagina's"
+
+msgid "Web page approved."
+msgstr "Webpagina goedgekeurd."
+
+msgid "Web page disapproved."
+msgstr "Webpagina afgekeurd."
+
+msgid "Webpage title"
+msgstr "Webpagina titel"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "[Unapproved]"
+msgstr "[Niet goedgekeurd]"
+
