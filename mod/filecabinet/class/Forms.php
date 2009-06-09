@@ -576,7 +576,7 @@ If you are sure, type Y-E-S below.'),
             $form->setSize("file_title[$count]", 40);
 
             $form->addTextarea("file_description[$count]");
-            $form->setLabel("file_description[$count]", dgettext('filecabinet', 'Decription'));
+            $form->setLabel("file_description[$count]", dgettext('filecabinet', 'Description'));
             $form->setTag("file_description[$count]", 'file_description');
 
             $form->addSubmit('submit', dgettext('filecabinet', 'Classify files'));
