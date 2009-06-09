@@ -375,7 +375,7 @@ class Rideboard {
 
         $form->addCheck('carpool', 1);
         $form->setMatch('carpool', PHPWS_Settings::get('rideboard', 'carpool'));
-        $form->setLabel('carpool', dgettext('pulse', 'Enable carpooling'));
+        $form->setLabel('carpool', dgettext('rideboard', 'Enable carpooling'));
 
         $form->addText('default_destination', PHPWS_Settings::get('rideboard', 'default_destination'));
         $form->setLabel('default_destination', dgettext('rideboard', 'Default destination'));
