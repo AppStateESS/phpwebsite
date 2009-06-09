@@ -165,8 +165,8 @@ class PHPWS_Debug {
                 $info[] =  
 '<table cellpadding="3" border="1">
   <tr>
-    <td><b>' . _('KEY') . '</b></td>
-    <td><b>' . _('VALUE') . '</b></td>
+    <td><b>' . 'KEY' . '</b></td>
+    <td><b>' . 'VALUE' . '</b></td>
 ';
 
                 foreach($arrayVar as $key => $value) {

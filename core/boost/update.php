@@ -433,6 +433,18 @@ Editors
 + FCKeditor - found problem with full screen edit. Disabling autogroup
   plugin inclusion until fixed.
 + Added Tommy to credits</pre>';
+
+    case version_compare($version, '1.9.5', '<'):
+        $content[] = '<pre>1.9.5 changes
+------------------
++ addValues in Link.php accepts arrays of values now
++ Added second parameter to PHPWS_Core::stripObjValues - strip_null.
+  If true, then null values will not be added to array. False will
+  include them.
++ Removed pass-by reference check from Setup.
++ Added some status checks to setup.
++ deity only check in test function makes sure user session exists.</pre>';
+
     }
     return true;
 }
