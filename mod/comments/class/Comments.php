@@ -466,7 +466,7 @@ class Comments {
 
         case 'cm_history':
             $comment_user = new Comment_User($_GET['uid']);
-            $title = sprintf(dgettext('comment', 'Comment history for %s'), $comment_user->display_name);
+            $title = sprintf(dgettext('comments', 'Comment history for %s'), $comment_user->display_name);
             $content[] = Comments::showHistory($comment_user);
             break;
 
