@@ -1274,7 +1274,7 @@ class PHPWS_Boost {
     {
         $uninstallVars = array('opmod'=>$module, 'action'=>'uninstall');
         $js['question'] = dgettext('boost', 'Are you sure you want to uninstall this module? All data will be deleted.');
-        $js['question'] .= sprintf(dgettext('boost', '\nIf sure, please type the name of the module below: %s'), $module);
+        $js['question'] .= '\n' . sprintf(dgettext('boost', 'If sure, please type the name of the module below: %s'), $module);
         $js['address'] = PHPWS_Text::linkAddress('boost', $uninstallVars, TRUE);
         $js['value_name'] = 'confirm';
         $js['link'] = dgettext('boost', 'Uninstall');

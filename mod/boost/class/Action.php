@@ -180,7 +180,7 @@ class Boost_Action {
         $template['TITLE'] = sprintf(dgettext('boost', '%s Module Dependencies'), $module->getProperName());
 
         $template['MODULE_NAME_LABEL']     = dgettext('boost', 'Module Needed');
-        $template['VERSION_NEEDED_LABEL']  = dgettext('boost', 'Version Needed');
+        $template['VERSION_NEEDED_LABEL']  = dgettext('boost', 'Version required');
         $template['CURRENT_VERSION_LABEL'] = dgettext('boost', 'Current Version');
         $template['URL_LABEL']             = dgettext('boost', 'Module Web Site');
         $template['STATUS_LABEL']          = dgettext('boost', 'Status');

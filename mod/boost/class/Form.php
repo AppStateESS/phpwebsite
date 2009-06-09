@@ -16,7 +16,7 @@ class Boost_Form {
 
     public function setTabs(PHPWS_Panel $panel)
     {
-        $link = dgettext('boost', 'index.php?module=boost&amp;action=admin');
+        $link = 'index.php?module=boost&amp;action=admin';
 
         $core_links['title'] = dgettext('boost', 'Core Modules');
         $other_links['title'] = dgettext('boost', 'Other Modules');
