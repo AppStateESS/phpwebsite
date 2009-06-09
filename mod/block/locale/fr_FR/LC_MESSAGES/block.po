@@ -1,0 +1,139 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: phpWebSite 1.5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-02-10 15:57-0500\n"
+"PO-Revision-Date: 2009-01-13 10:02+0100\n"
+"Last-Translator: Olivier Sannier <obones att altern dott org>\n"
+"Language-Team: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+"Plural-Forms: nplurals=2;plural=(n>1);\n"
+
+msgid "Action"
+msgstr "Action"
+
+msgid "Add block here"
+msgstr "Ajouter un bloc ici"
+
+msgid "Are you sure you want to permanently delete this block?"
+msgstr "Êtes-vous sûr(e) de vouloir supprimer définitivement ce bloc ?"
+
+msgid "Are you sure you want to remove this block from this page?"
+msgstr "Êtes-vous sûr(e) de vouloir retirer ce bloc de cette page ?"
+
+msgid "Block"
+msgstr "Bloc"
+
+msgid "Block deleted."
+msgstr "Bloc supprimé."
+
+msgid "Block list"
+msgstr "Liste des blocs"
+
+msgid "Block pinned"
+msgstr "Bloc punaisé"
+
+msgid "Block saved"
+msgstr "Block enregistré"
+
+msgid "Block tables removed."
+msgstr "Tables des blocs supprimée."
+
+msgid "Block unpinned"
+msgstr "Bloc dépunaisé"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Content"
+msgstr "Contenu"
+
+msgid "Copy"
+msgstr "Copier"
+
+msgid "Create blocks of content."
+msgstr "Crée des blocs de contenus."
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Delete block"
+msgstr "Supprimer le bloc"
+
+msgid "Edit"
+msgstr "Editer"
+
+msgid "Edit block"
+msgstr "Editer le bloc"
+
+msgid "Entry"
+msgstr "Entrée"
+
+msgid "Hide title"
+msgstr "Cacher le titre"
+
+msgid "List"
+msgstr "Liste"
+
+msgid "Max image height (50 - 3000)"
+msgstr "Hauteur maximale de l'image (50 - 3000)"
+
+msgid "Max image height must be greater than 50px"
+msgstr "La hauteur maximale de l'image doit être supérieure à 50px"
+
+msgid "Max image height must be smaller than 3000px"
+msgstr "La hauteur maximale de l'image doit être inférieure à 3000px"
+
+msgid "Max image width (50 - 1024)"
+msgstr "Largeur maximale de l'image (50 - 1024)"
+
+msgid "Max image width must be greater than 50px"
+msgstr "La largeur maximale de l'image doit être supérieure à 50px"
+
+msgid "Max image width must be smaller than 1024px"
+msgstr "La largeur maximale de l'image doit être inférieure à 1024px"
+
+msgid "New"
+msgstr "Nouveau"
+
+msgid "New Block"
+msgstr "Nouveau bloc"
+
+msgid "Pin"
+msgstr "Punaiser"
+
+msgid "Pin all"
+msgstr "Tout punaiser"
+
+msgid "Save New Block"
+msgstr "Enregistrer le nouveau bloc"
+
+msgid "Save settings"
+msgstr "Enregistrer les paramètres"
+
+msgid "Settings"
+msgstr "Paramètres"
+
+msgid "Settings saved"
+msgstr "Paramètres enregistrés"
+
+msgid "Title"
+msgstr "Titre"
+
+msgid "Unpin"
+msgstr "Dépunaiser"
+
+msgid "Unpin all"
+msgstr "Tout dépunaiser"
+
+msgid "Update Current Block"
+msgstr "Mettre à jour le bloc en cours"
