@@ -25,7 +25,7 @@
 $link[] = array('label' => dgettext('menu', 'Sitemap'),
 		'restricted'    => true,
 		'url'           => 'index.php?module=sitemap&aop=menu',
-		'description'   => dgettext('menu', 'Generates sitemap.xml files for search engines.'),
+		'description'   => dgettext('sitemap', 'Generates sitemap.xml files for search engines.'),
 		'image'         => 'sitemap.png',
 		'tab'           => 'admin'
 		);
