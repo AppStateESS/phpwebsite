@@ -215,6 +215,10 @@ class Whatsnew {
             PHPWS_Settings::set('whatsnew', 'show_dates', 1) :
             PHPWS_Settings::set('whatsnew', 'show_dates', 0);
 
+        isset($_POST['show_source_modules']) ?
+            PHPWS_Settings::set('whatsnew', 'show_source_modules', 1) :
+            PHPWS_Settings::set('whatsnew', 'show_source_modules', 0);
+
         if (isset($_POST['exclude'])) {
             PHPWS_Settings::set('whatsnew', 'exclude', $_POST['exclude']);
         } 
@@ -310,10 +314,12 @@ class Whatsnew {
         $link = null;
         $summary = null;
         $date = null;
+        $module_name = null;
         
         $exclude = unserialize(PHPWS_Settings::get('whatsnew', 'exclude'));
         $db = new PHPWS_DB('phpws_key');
 
+        $db->addJoin('left', 'phpws_key', 'modules', 'module', 'title');
         $db->addWhere('active', 1);
         $db->addWhere('restricted', 0);
         if ($exclude) {
@@ -325,6 +331,12 @@ class Whatsnew {
         $db->addOrder('update_date desc');
         $db->setLimit(PHPWS_Settings::get('whatsnew', 'qty_items'));
         $db->setIndexBy('id');
+        $db->addColumn('phpws_key.url');
+        $db->addColumn('phpws_key.title');
+        $db->addColumn('phpws_key.summary');
+        $db->addColumn('phpws_key.update_date');
+        $db->addColumn('modules.title', null, 'module_title');
+        $db->addColumn('modules.proper_name');
 //        $db->setTestMode();
         $result = $db->select();
 
@@ -339,7 +351,10 @@ class Whatsnew {
                 if (PHPWS_Settings::get('whatsnew', 'show_dates')) {
                     $date = strftime(WHATSNEW_DATE_FORMAT, $item['update_date']);
                 }
-                $tpl['new-items'][] = array('LINK'=>$link, 'SUMMARY'=>$summary, 'DATE'=>$date);
+                if (PHPWS_Settings::get('whatsnew', 'show_source_modules')) {
+                    $module_name = dgettext($item['module_title'], PHPWS_Text::parseOutput($item['proper_name']));
+                }
+                $tpl['new-items'][] = array('LINK'=>$link, 'SUMMARY'=>$summary, 'DATE'=>$date, 'MODULE_NAME'=>$module_name);
             }
         } else {
             $tpl['new-items'][] = array('LINK'=>dgettext('whatsnew', 'Sorry, no results'));

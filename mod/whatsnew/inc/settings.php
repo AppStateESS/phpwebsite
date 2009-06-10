@@ -22,14 +22,15 @@
     * @author Verdon Vaillancourt <verdonv at gmail dot com>
 */
 
-$settings['enable']         = 1;
-$settings['homeonly']       = 1;
-$settings['title']          = dgettext('whatsnew', 'What\'s New');
-$settings['text']           = null;
-$settings['cache_timeout']  = 3600;
-$settings['qty_items']      = 10;
-$settings['show_summaries'] = 0;
-$settings['show_dates']     = 0;
-$settings['exclude']        = serialize(array('filecabinet'));
+$settings['enable']                 = 1;
+$settings['homeonly']               = 1;
+$settings['title']                  = dgettext('whatsnew', 'What\'s New');
+$settings['text']                   = null;
+$settings['cache_timeout']          = 3600;
+$settings['qty_items']              = 10;
+$settings['show_summaries']         = 0;
+$settings['show_dates']             = 0;
+$settings['show_source_modules']    = 0;
+$settings['exclude']                = serialize(array('filecabinet'));
 
 ?>

@@ -84,6 +84,10 @@ class Whatsnew_Forms {
         $form->setMatch('show_dates', PHPWS_Settings::get('whatsnew', 'show_dates'));
         $form->setLabel('show_dates', dgettext('whatsnew', 'Show item update dates'));
 
+        $form->addCheckbox('show_source_modules', 1);
+        $form->setMatch('show_source_modules', PHPWS_Settings::get('whatsnew', 'show_source_modules'));
+        $form->setLabel('show_source_modules', dgettext('whatsnew', 'Show item source module names'));
+
         $form->addSubmit('save', dgettext('whatsnew', 'Save settings'));
         
         $tpl = $form->getTemplate();

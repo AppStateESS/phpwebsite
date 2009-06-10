@@ -82,6 +82,17 @@ function whatsnew_update(&$content, $currentVersion)
 
 </pre>';
 
+        case version_compare($currentVersion, '1.0.2', '<'):
+            $content[] = '<pre>';
+    
+            $files = array('templates/edit_settings.tpl', 'templates/block.tpl');
+            whatsnewUpdateFiles($files, $content);
+            
+            $content[] = '1.0.2 changes
+----------------
++ Added option to display item source modules (thanks obones)
+
+</pre>';
 
 
 

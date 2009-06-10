@@ -9,7 +9,8 @@
     <p>{QTY_ITEMS} {QTY_ITEMS_LABEL}</p>
     <p>
         {SHOW_SUMMARIES} {SHOW_SUMMARIES_LABEL}<br />
-        {SHOW_DATES} {SHOW_DATES_LABEL}
+        {SHOW_DATES} {SHOW_DATES_LABEL}<br />
+        {SHOW_SOURCE_MODULES} {SHOW_SOURCE_MODULES_LABEL}
     </p>
     <p>{EXCLUDE_LABEL}<br />{EXCLUDE}</p>
 </fieldset>

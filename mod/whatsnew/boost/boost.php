@@ -23,7 +23,7 @@
 */
 
 $proper_name  = "What's New";
-$version      = '1.0.1';
+$version      = '1.0.2';
 $import_sql   = false;
 $version_http = 'http://verdon.ca/downloads/modules/whatsnew/check.xml';
 $about        = true;

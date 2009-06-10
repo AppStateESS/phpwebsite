@@ -30,3 +30,7 @@ Version 1.0.1 -- Feb 2009
 ------------------------------------------------------------------
 + Moved into core svn at appstate
 + Fixed cache in sideblock so it is not saved for logged in users
+
+Version 1.0.2 -- June 2009
+------------------------------------------------------------------
++ Added option to display item source modules (thanks obones)
