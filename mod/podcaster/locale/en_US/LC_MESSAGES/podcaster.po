@@ -6,12 +6,12 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-17 15:00-0400\n"
+"POT-Creation-Date: 2009-06-12 08:26-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,18 +33,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "A note on iTunes categories:"
-msgstr ""
-
-msgid "A note on media types:"
-msgstr ""
-
-msgid "A note on permissons:"
-msgstr ""
-
-msgid "A note on restricted users:"
-msgstr ""
-
-msgid "About this module:"
 msgstr ""
 
 msgid "Activate"
@@ -211,19 +199,6 @@ msgstr ""
 msgid "Hide general image folders"
 msgstr ""
 
-msgid ""
-"Honestly, I'm still working on understanding the new system completely. I've "
-"done a basic security audit and although I am sure there is no gross holes, "
-"I'm sure I may have something wrong too ;-) I wanted to get this rewrite out "
-"asap and will do a more thorough permissioning review for the next podcaster "
-"release."
-msgstr ""
-
-msgid ""
-"If you are allowing restricted users to add podcast episodes, you will also "
-"need to allow them to upload to the appropriate folder(s) in File Cabinet."
-msgstr ""
-
 #, php-format
 msgid ""
 "If you would like to help out with the ongoing development of Podcaster, or "
@@ -384,15 +359,10 @@ msgstr ""
 msgid "Sorry, no channels are available at this time."
 msgstr ""
 
-msgid "Subscribe RSS"
+msgid "Sorry, the readme file does not exist."
 msgstr ""
 
-msgid ""
-"This is the second release of podcaster for the new 1.x series phpwebsite. "
-"This release takes advantage of the new File Cabinet 2.0 features, and media "
-"upload/embed tools are now built right in. Support for PDF and other "
-"documents types has also been added. Podcaster is now searchable with the "
-"search module, and new access module and short url features are implimented."
+msgid "Subscribe RSS"
 msgstr ""
 
 msgid "Title"
@@ -421,12 +391,6 @@ msgid "Webmaster email address"
 msgstr ""
 
 msgid "Yes"
-msgstr ""
-
-msgid ""
-"You may specify at a channel level what media type you will allow for all "
-"episodes in that channel. Ideally, you should determine this before adding "
-"episodes to a channel, though it can be changed at any time."
 msgstr ""
 
 msgid "You must give this podcaster channel a description."
