@@ -229,6 +229,7 @@ class Menu_Item {
         }
 
         $db = new PHPWS_DB('menu_links');
+        $db->setDistinct();
         $db->addWhere('menu_id', $this->id, NULL, NULL, 1);
         $db->addWhere('parent', $parent, NULL, NULL, 1);
 

@@ -1,5 +1,7 @@
 Version 1.6.1
 ------------------------------------------------------------
++ Fixed error that could occur with menu links on multiple
+  permissioned users.
 + Fixed up arrows not appearing. Thanks Verdon.
 + Updated:
   templates/menu_layout/basic/link.tpl
