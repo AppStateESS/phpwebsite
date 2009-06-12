@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-29 10:30-0400\n"
+"POT-Creation-Date: 2009-06-12 08:26-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -166,6 +166,9 @@ msgstr ""
 msgid "Create %s listing"
 msgstr ""
 
+msgid "Created"
+msgstr ""
+
 msgid "Created on, "
 msgstr ""
 
@@ -176,6 +179,9 @@ msgid "Deactivate"
 msgstr ""
 
 msgid "Default"
+msgstr ""
+
+msgid "Default sort order for listings"
 msgstr ""
 
 msgid "Default value"
@@ -612,6 +618,9 @@ msgstr ""
 
 #, php-format
 msgid "Update %s listing"
+msgstr ""
+
+msgid "Updated"
 msgstr ""
 
 msgid "Updated on, "
