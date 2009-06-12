@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-07 09:02-0400\n"
+"POT-Creation-Date: 2009-06-12 08:33-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -221,9 +221,6 @@ msgid "Calendar is not installed in other database."
 msgstr ""
 
 msgid "Calendar is not installed."
-msgstr ""
-
-msgid "Call-time pass reference enabled"
 msgstr ""
 
 msgid "Can not change name. Already in use."
@@ -672,6 +669,11 @@ msgid ""
 "prefix to tables.<br />We recommend you run without one."
 msgstr ""
 
+msgid ""
+"If you are returning here from a previous incomplete installation, you will "
+"need to clear the database of all tables and try again."
+msgstr ""
+
 msgid "If you do not change it now, your next page will be an error screen."
 msgstr ""
 
@@ -728,9 +730,6 @@ msgid "Javascript directory ready"
 msgstr ""
 
 msgid "Join database does not exist."
-msgstr ""
-
-msgid "KEY"
 msgstr ""
 
 msgid "Key can not restrict items on phpws_key table alone."
@@ -1423,9 +1422,6 @@ msgstr ""
 msgid "Using module template, not local."
 msgstr ""
 
-msgid "VALUE"
-msgstr ""
-
 #, php-format
 msgid "Variable is a %s, not an object."
 msgstr ""
@@ -1538,11 +1534,6 @@ msgstr ""
 msgid "a heartbeat ago"
 msgstr ""
 
-msgid ""
-"allow_call_time_pass_reference must be \"On\" for phpWebSite to work. Please "
-"review your php.ini file."
-msgstr ""
-
 msgid "loadObject expected the object to have an id or where clause."
 msgstr ""
 
@@ -1557,6 +1548,21 @@ msgid "phpWebSite %s Setup"
 msgstr ""
 
 msgid "phpWebSite 1.x.x Convert"
+msgstr ""
+
+msgid ""
+"phpWebSite configuration file and database have been found. Assuming "
+"installation is complete. You should move or delete the setup directory."
+msgstr ""
+
+msgid ""
+"phpWebSite configuration file exists but could not connect to database. "
+"Check your dsn settings or delete the config file."
+msgstr ""
+
+msgid ""
+"phpWebSite configuration file exists but database does not. Create the "
+"database set in the config file or delete the config file."
 msgstr ""
 
 msgid "phpWebSite depends on sessions to move data between pages."
