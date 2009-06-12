@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-10 15:57-0500\n"
+"POT-Creation-Date: 2009-06-12 08:26-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -121,6 +121,9 @@ msgstr ""
 msgid "Close window"
 msgstr ""
 
+msgid "Commands"
+msgstr ""
+
 msgid "Continue installation..."
 msgstr ""
 
@@ -221,6 +224,10 @@ msgid "Failure to remove directory."
 msgstr ""
 
 msgid "Finished uninstalling module!"
+msgstr ""
+
+#, php-format
+msgid "If sure, please type the name of the module below: %s"
 msgstr ""
 
 msgid "Import successful."
@@ -512,9 +519,6 @@ msgstr ""
 msgid "Updating core"
 msgstr ""
 
-msgid "Version Needed"
-msgstr ""
-
 msgid "Version required"
 msgstr ""
 
@@ -525,11 +529,4 @@ msgstr ""
 
 #, php-format
 msgid "Your logs/%s file must be readable and writable."
-msgstr ""
-
-#, php-format
-msgid "\\nIf sure, please type the name of the module below: %s"
-msgstr ""
-
-msgid "index.php?module=boost&amp;action=admin"
 msgstr ""
