@@ -23,7 +23,7 @@
 */
 
 $proper_name  = 'Sitemap';
-$version      = '0.6.0';
+$version      = '0.6.1';
 $register     = false;
 $import_sql   = false;
 $version_http = 'http://verdon.ca/downloads/modules/sitemap/check.xml';

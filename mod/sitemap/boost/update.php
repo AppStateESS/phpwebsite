@@ -63,7 +63,11 @@ function sitemap_update(&$content, $currentVersion)
 
 </pre>';
 
-
+       case version_compare($currentVersion, '0.6.1', '<'):
+            $content[] = '<pre>0.6.1 changes
+----------------
++ translation typo fixed
+</pre>';
 
     } // end switch
     return true;

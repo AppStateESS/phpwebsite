@@ -60,6 +60,11 @@ PRIMARY KEY ( id )
         $content[] = "1.1.1 Changes
 ------------------------
 + 1.1.0 did not create rb_carpool table on update.</pre>";
+        
+    case version_compare($version, '1.1.2', '<'):
+        $content[] = '<pre>1.1.2 changes
+---------------
++ Translation typo fixed.</pre>';
 
     }
     return true;

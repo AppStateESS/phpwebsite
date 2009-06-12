@@ -49,6 +49,7 @@ function checkin_update(&$content, $current_version) {
                                  'templates/style.css'), $content);
         $content[] = '1.0.2 changes
 --------------------
++ Fixed translation typo.
 + Added "Send back" condition</pre>';
         
     }

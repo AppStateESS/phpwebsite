@@ -235,7 +235,9 @@ Please download 1.2.1.</pre>';
         $content[] = '<pre>';
         $files = array('templates/menu_layout/basic/link.tpl',
                        'templates/menu_layout/horizontal/link.tpl',
-                       'templates/style.css');
+                       'templates/style.css',
+                       'conf/config.php',
+                       'img/icon_outdent.gif');
         menuUpdateFiles($files, $content);
         $content[] = '1.6.1 changes
 ---------------

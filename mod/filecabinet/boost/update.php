@@ -537,6 +537,13 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Proper error message now on document uploaded to unwritable
   directory
 + Directory check on unwritable directory prevents upload link</pre>';
+
+    case version_compare($version, '2.2.6', '<'):
+        $content[] = '<pre>2.2.6 changes
+-----------------------
++ Fixed bug with editing Multimedia.
+</pre>';
+
     }
 
     return true;

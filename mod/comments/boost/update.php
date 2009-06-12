@@ -386,6 +386,11 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
 + Patch #2590994 - Eloi George : send notice flag was not set on
   update notice. Changed address from last username in list to \'Member\'
 </pre>';
+
+  case version_compare($currentVersion, '1.2.5', '<'):
+        $content[] = '<pre>1.2.5 changes
+-----------------------
++ Fixed translation typo</pre>';
     }
        
     return true;

@@ -302,6 +302,13 @@ function pagesmith_update(&$content, $currentVersion)
 + Added javascript to prevent accidental link clicks in edit mode.
 + change_link was an id, changed to a class since there were several
   on a page.</pre>';
+
+    case version_compare($currentVersion, '1.3.4', '<'):
+        $content[] = '<pre>1.3.4 changes
+-------------
++ Fixed link shortening
++ Restored missing placeholder width and height
+</pre>';
         
     } // end switch
 

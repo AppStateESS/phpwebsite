@@ -88,6 +88,12 @@ Please download update 2.1.1.</pre>';
 + Added two defines to allow admins to disable file and directory
   backups</pre>';
 
+    case version_compare($currentVersion, '2.3.3', '<'):
+        $content[] = '<pre>
+2.3.3 changes
+----------------
++ Fixed translation typo</pre>';
+
     }
 
     return TRUE;
