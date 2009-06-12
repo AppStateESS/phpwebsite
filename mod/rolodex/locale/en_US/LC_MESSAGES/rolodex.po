@@ -6,12 +6,12 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-22 15:57-0500\n"
+"POT-Creation-Date: 2009-06-12 08:26-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -245,10 +245,10 @@ msgstr ""
 msgid "Compose message"
 msgstr ""
 
-msgid "Confirm Graphic"
+msgid "Confirm text"
 msgstr ""
 
-msgid "Confirm text"
+msgid "Confirmation phrase is not correct."
 msgstr ""
 
 msgid "Contact"
@@ -496,7 +496,7 @@ msgstr ""
 msgid "Go"
 msgstr ""
 
-msgid "Hide Email/Contact link from public"
+msgid "Hide Email/Contact link from everyone, except admins"
 msgstr ""
 
 msgid "Home"
@@ -681,9 +681,6 @@ msgid "Please provide your email address."
 msgstr ""
 
 msgid "Please provide your name."
-msgstr ""
-
-msgid "Please type the word seen in the image."
 msgstr ""
 
 msgid "Position title"
@@ -1039,4 +1036,7 @@ msgid "Your email address is improperly formatted."
 msgstr ""
 
 msgid "Your name"
+msgstr ""
+
+msgid "private"
 msgstr ""
