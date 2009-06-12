@@ -1,6 +1,7 @@
 Version 2.2.6
 --------------------------------------------------------------------------
 + Fixed bug with editing Multimedia. Reported by alar.
++ Fixed bug with File Cabinet in fckeditor not loading properly.
 
 Version 2.2.5
 ---------------------------------------------------------------------------

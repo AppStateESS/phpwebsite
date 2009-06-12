@@ -32,7 +32,7 @@ div#type-choice {
 }
 
 div#folders-listing { 
-   padding : 5px;
+   padding : 5px 5px 5px 10px;
 }
 
 li.selection:hover { 
