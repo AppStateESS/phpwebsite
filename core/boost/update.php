@@ -435,8 +435,11 @@ Editors
 + Added Tommy to credits</pre>';
 
     case version_compare($version, '1.9.5', '<'):
-        $content[] = '<pre>1.9.5 changes
+        $content[] = '<pre>';
+        coreUpdateFiles(array('conf/version.php'), $content);
+        $content[] = '1.9.5 changes
 ------------------
++ Patch# 2800703 - fixed checkBranch for newer php5. Thanks Andrew Patterson.
 + addValues in Link.php accepts arrays of values now
 + Added second parameter to PHPWS_Core::stripObjValues - strip_null.
   If true, then null values will not be added to array. False will

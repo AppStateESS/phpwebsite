@@ -138,7 +138,7 @@ Dang Hoai Phuc (Vietnamese)
 Doriano Cometto (Italian)
 Anders Haugarvoll (Norwegian)
 Olivier Sannier (French)
-HanV  (Dutch)
+Han Velthuis (Dutch)
 
 --------------------------------------------------------------------------
 The phpWebSite team would also like to thank the following people in
