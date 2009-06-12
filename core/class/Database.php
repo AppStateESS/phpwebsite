@@ -38,6 +38,7 @@ class PHPWS_DB {
     public $qwhere      = null;
     public $indexby     = null;
     public $force_array = false;
+    public $ignore_dups = false;
     public $group_by    = null;
     public $locked      = null;
 
@@ -1033,10 +1034,11 @@ class PHPWS_DB {
      * 'dog' => 0 => 'Rover'
      *
      */
-    public function setIndexBy($indexby, $force_array=false)
+    public function setIndexBy($indexby, $force_array=false, $ignore_dups=false)
     {
         $this->indexby = $indexby;
         $this->force_array = (bool)$force_array;
+        $this->ignore_dups = (bool)$ignore_dups;
     }
 
     public function getIndexBy()
@@ -1578,7 +1580,7 @@ class PHPWS_DB {
     {
         if ($this->force_array) {
             $rows[$index][] = $item;
-        } elseif (isset($rows[$index])) {
+        } elseif (isset($rows[$index]) && !$this->ignore_dups) {
             if (is_array($rows[$index]) && !isset($rows[$index][0])) {
                 $hold = $rows[$index];
                 $rows[$index] = array();

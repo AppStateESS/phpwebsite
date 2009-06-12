@@ -4,6 +4,10 @@ its own separate CHANGELOG file.
 
 Version 1.9.5
 ---------------------------------------------------------------------
+12 June 2009
++ Added ignore_dups parameter to database for indexby. If true,
+multiple entries can not be indexed on the same key.
+
 9 June 2009
 + Patch# 2800703 - fixed checkBranch for newer php5. Thanks Andrew Patterson.
 
