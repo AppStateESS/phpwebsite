@@ -308,6 +308,7 @@ function pagesmith_update(&$content, $currentVersion)
 -------------
 + Fixed link shortening
 + Restored missing placeholder width and height
++ Fixed lost text bug.
 </pre>';
         
     } // end switch

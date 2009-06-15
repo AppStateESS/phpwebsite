@@ -61,8 +61,13 @@ class PS_Forms {
 
         $pg_tpl_name = & $page->_tpl->name;
         $this->ps->killSaved();
-
-        $_SESSION['PS_Page'][$page->id] = $page->_content;
+        if (!empty($page->_content)) {
+            foreach ($page->_content as $key=>$cnt) {
+                if (!PageSmith::checkLorum($cnt)) {
+                    $_SESSION['PS_Page'][$page->id][$key] = $cnt;
+                }
+            }
+        }
 
         $form = new PHPWS_Form('pagesmith');
         $form->addHidden('module', 'pagesmith');

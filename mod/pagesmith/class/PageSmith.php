@@ -332,7 +332,9 @@ class PageSmith {
 
                 if ($section->sectype == 'header' || $section->sectype == 'text') {
                     if (isset($_SESSION['PS_Page'][$this->page->id][$section->secname])) {
-                        $section->content = PHPWS_Text::parseInput($_SESSION['PS_Page'][$this->page->id][$section->secname]);
+                        if (!PageSmith::checkLorum($_SESSION['PS_Page'][$this->page->id][$section->secname])) {
+                            $section->content = PHPWS_Text::parseInput($_SESSION['PS_Page'][$this->page->id][$section->secname]);
+                        }
                     } elseif (isset($_POST[$section_name])) {
                         $section->content = $_POST[$section_name];
                     }
@@ -647,6 +649,11 @@ class PageSmith {
             }
             $db->reset();
         }
+    }
+
+    public function checkLorum($text)
+    {
+        return preg_match('/^<!-- lorem -->/', $text);
     }
 }
 

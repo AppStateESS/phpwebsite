@@ -33,9 +33,10 @@ class PS_Text extends PS_Section {
         }
     }
 
+    
     public function setSaved()
     {
-        if (!preg_match('/^<!-- lorem -->/', $this->content)) {
+        if (!PageSmith::checkLorum($this->content)) {
             $_SESSION['PS_Page'][$this->pid][$this->secname] = & $this->content;
         }
     }
