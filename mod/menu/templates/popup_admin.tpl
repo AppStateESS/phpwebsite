@@ -15,6 +15,12 @@
       <td>{DELETE_LINK}</td>
    </tr>
    <tr>
+      <td>{LINK_INDENT}</td>
+   </tr>
+   <tr>
+      <td>{LINK_OUTDENT}</td>
+   </tr>
+   <tr>
       <td>{MOVE_LINK_UP}</td>
    </tr>
    <tr>
