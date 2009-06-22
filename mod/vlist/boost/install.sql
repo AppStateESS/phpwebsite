@@ -45,6 +45,7 @@ CREATE TABLE vlist_element (
     sort            int not null default 0,
     list            smallint not null default 0,
     search          smallint not null default 0,
+    private         smallint not null default 0,
     PRIMARY KEY     (id)
 );
 

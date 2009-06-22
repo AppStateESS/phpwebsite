@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-12 08:26-0400\n"
+"POT-Creation-Date: 2009-06-22 08:49-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -263,6 +263,14 @@ msgstr ""
 msgid "Element %s enabled in search."
 msgstr ""
 
+#, php-format
+msgid "Element %s is now public."
+msgstr ""
+
+#, php-format
+msgid "Element %s is now restricted."
+msgstr ""
+
 msgid "Element deleted."
 msgstr ""
 
@@ -446,6 +454,12 @@ msgid "Please provide a groups title."
 msgstr ""
 
 msgid "Please provide a module title."
+msgstr ""
+
+msgid "Private"
+msgstr ""
+
+msgid "Private (Internal use only)"
 msgstr ""
 
 msgid "Radio Button"

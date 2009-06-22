@@ -27,6 +27,41 @@ function vlist_update(&$content, $currentVersion)
 //    $home_dir = PHPWS_Boost::getHomeDir();
     switch ($currentVersion) {
 
+        case version_compare($currentVersion, '1.0.2', '<'):
+            $content[] = '<pre>';
+    
+            $db = new PHPWS_DB('vlist_element');
+            if (!$db->isTableColumn('private')) {
+                if (PHPWS_Error::logIfError($db->addTableColumn('private', 'smallint NOT NULL default 0'))) {
+                    $content[] = '--- Could not create column private on vlist_element table.</pre>';
+                    return false;
+                } else {
+                    $content[] = '--- Created private column on vlist_element table.';
+                }
+            }
+    
+            $files = array( 'templates/edit_checkbox.tpl', 
+                            'templates/edit_dropbox.tpl', 
+                            'templates/edit_multiselect.tpl', 
+                            'templates/edit_radiobutton.tpl', 
+                            'templates/edit_textarea.tpl', 
+                            'templates/edit_textfield.tpl', 
+                            'templates/list_elements.tpl', 
+                            'img/locked.png', 
+                            'img/unlocked.png', 
+                            'templates/edit_settings.tpl'
+            );
+            vlistUpdateFiles($files, $content);
+            
+            $content[] = '1.0.2 changes
+----------------
++ Added setting for internal only fields
++ Tweaked edit settings screen a little
++ Tweaked some permissions
+
+</pre>';
+
+
         case version_compare($currentVersion, '1.0.1', '<'):
             $content[] = '<pre>';
     

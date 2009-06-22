@@ -23,11 +23,11 @@
 */
 
 $proper_name  = 'vList';
-$version      = '1.0.1';
+$version      = '1.0.2';
 $register     = false;
 $unregister   = false;
 $import_sql   = true;
-$version_http = 'http://verdon.ca/downloads/modules/vlist/check.xml';
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/vlist/check.xml';
 $about        = true;
 $priority     = 50;
 $dependency   = true;

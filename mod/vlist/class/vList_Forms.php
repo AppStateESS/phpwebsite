@@ -229,6 +229,9 @@ class vList_Forms {
         if (PHPWS_Settings::get('vlist', 'enable_elements')) {
             $db = new PHPWS_DB('vlist_element');
             $db->addWhere('active', 1);
+            if (!Current_User::allow('vlist')) {
+                $db->addWhere('private', 0);
+            }
             $db->addOrder('sort asc');
             $result = $db->select();
 
@@ -398,6 +401,7 @@ class vList_Forms {
         $ptags['SORT_HEADER'] = dgettext('vlist', 'Sort');
         $ptags['LIST_HEADER'] = dgettext('vlist', 'List');
         $ptags['SEARCH_HEADER'] = dgettext('vlist', 'Search');
+        $ptags['PRIVATE_HEADER'] = dgettext('vlist', 'Private');
         $ptags['ADD_FORM'] = $this->addElement();
 
         PHPWS_Core::initModClass('vlist', 'UNI_Element.php');
@@ -808,6 +812,9 @@ class vList_Forms {
             $db = new PHPWS_DB('vlist_element');
             $db->addWhere('active', 1);
             $db->addWhere('search', 1);
+            if (!Current_User::allow('vlist')) {
+                $db->addWhere('private', 0);
+            }
             $db->addOrder('sort asc');
             $result = $db->select();
             if ($result) {

@@ -1,6 +1,8 @@
-Version 1.0.0 -- May 2009
+Version 1.0.2 -- June 2009
 ------------------------------------------------------------------
-+ Initial writing of mod
++ Added setting for internal only fields
++ Tweaked edit settings screen a little
++ Tweaked some permissions
 
 
 Version 1.0.1 -- May 2009
@@ -11,3 +13,8 @@ Version 1.0.1 -- May 2009
   it isn't necessary, and was misleading
 + Tweaked the date format in lists and views
 + Replaced a couple hard-coded Groups label with the one in settings
+
+
+Version 1.0.0 -- May 2009
+------------------------------------------------------------------
++ Initial writing of mod

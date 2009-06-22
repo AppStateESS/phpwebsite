@@ -164,11 +164,17 @@ class vList {
 
             case 'new_group':
             case 'edit_group':
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+                    Current_User::disallow();
+                }
                 $settingsPanel->setCurrentTab('groups');
                 $this->loadForm('edit_group');
                 break;
 
             case 'post_group':
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+                    Current_User::disallow();
+                }
                 $settingsPanel->setCurrentTab('groups');
                 if ($this->postGroup()) {
                     if (PHPWS_Error::logIfError($this->group->save())) {
@@ -184,6 +190,9 @@ class vList {
                 break;
 
             case 'delete_group':
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+                    Current_User::disallow();
+                }
                 $settingsPanel->setCurrentTab('groups');
                 $this->loadGroup();
                 $this->group->delete();
@@ -192,6 +201,9 @@ class vList {
                 break;
             
             case 'new_element':
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+                    Current_User::disallow();
+                }
                 $settingsPanel->setCurrentTab('elements');
                 if(isset($_POST['type']) && ($_POST['type'] != '0' || $_POST['type'] != '00')) {
                     if ($_POST['type'] == 'Link' || $_POST['type'] == 'GPS' || $_POST['type'] == 'Email') {
@@ -212,6 +224,9 @@ class vList {
                 break;
 
             case 'edit_element':
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+                    Current_User::disallow();
+                }
                 $settingsPanel->setCurrentTab('elements');
                 $this->loadElement();
                 $this->element->vlist = & $this;
@@ -220,6 +235,9 @@ class vList {
                 break;
 
             case 'post_element':
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+                    Current_User::disallow();
+                }
                 $settingsPanel->setCurrentTab('elements');
                 $this->loadElement();
                 $this->element->vlist = & $this;
@@ -232,6 +250,9 @@ class vList {
                 break;
 
             case 'delete_element':
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+                    Current_User::disallow();
+                }
                 $settingsPanel->setCurrentTab('elements');
                 $this->loadElement();
                 $this->element->vlist = & $this;
@@ -241,7 +262,7 @@ class vList {
                 break;
             
             case 'activate_element':
-                if (!Current_User::authorized('vlist', 'edit_element')) {
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
                     Current_User::disallow();
                 }
                 $this->loadElement();
@@ -252,7 +273,7 @@ class vList {
                 break;
     
             case 'deactivate_element':
-                if (!Current_User::authorized('vlist', 'edit_element')) {
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
                     Current_User::disallow();
                 }
                 $this->loadElement();
@@ -263,7 +284,7 @@ class vList {
                 break;
     
             case 'list_element':
-                if (!Current_User::authorized('vlist', 'edit_element')) {
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
                     Current_User::disallow();
                 }
                 $this->loadElement();
@@ -274,7 +295,7 @@ class vList {
                 break;
     
             case 'delist_element':
-                if (!Current_User::authorized('vlist', 'edit_element')) {
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
                     Current_User::disallow();
                 }
                 $this->loadElement();
@@ -285,7 +306,7 @@ class vList {
                 break;
     
             case 'search_element':
-                if (!Current_User::authorized('vlist', 'edit_element')) {
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
                     Current_User::disallow();
                 }
                 $this->loadElement();
@@ -296,7 +317,7 @@ class vList {
                 break;
     
             case 'desearch_element':
-                if (!Current_User::authorized('vlist', 'edit_element')) {
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
                     Current_User::disallow();
                 }
                 $this->loadElement();
@@ -306,7 +327,32 @@ class vList {
                 PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
+            case 'private_element':
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+                    Current_User::disallow();
+                }
+                $this->loadElement();
+                $this->element->private = 1;
+                $this->element->saveElement();
+                $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s is now restricted.'), $this->element->getTitle(true)));
+                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                break;
+    
+            case 'deprivate_element':
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+                    Current_User::disallow();
+                }
+                $this->loadElement();
+                $this->element->private = 0;
+                $this->element->saveElement();
+                $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s is now public.'), $this->element->getTitle(true)));
+                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                break;
+
             case 'edit_options':
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+                    Current_User::disallow();
+                }
                 $settingsPanel->setCurrentTab('elements');
                 $this->loadElement();
                 $this->element->vlist = & $this;
@@ -315,6 +361,9 @@ class vList {
                 break;
 
             case 'post_options':
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+                    Current_User::disallow();
+                }
                 $settingsPanel->setCurrentTab('elements');
 //print_r($_POST); exit;
                 $this->loadElement();
@@ -324,6 +373,9 @@ class vList {
                 break;
 
             case 'delete_option':
+                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+                    Current_User::disallow();
+                }
                 $settingsPanel->setCurrentTab('elements');
 //print_r($_REQUEST); exit;
                 $this->loadElement();

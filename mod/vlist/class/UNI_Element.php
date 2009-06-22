@@ -40,6 +40,7 @@ class UNI_Element {
     public $sort           = 0;
     public $list           = 0;
     public $search         = 0;
+    public $private        = 0;
     public $_error         = null;
     private $db_element    = 'vlist_element';
     private $db_item       = 'vlist_element_items';
@@ -279,28 +280,40 @@ class UNI_Element {
             $var_col = $this->list;
             $var_act = 'list_element';
             $var_dis = 'delist_element';
+            $var_act_img = 'images/mod/vlist/active.png';
+            $var_inact_img = 'images/mod/vlist/inactive.png';
         } elseif ($type == 'search') {
             $var_col = $this->search;
             $var_act = 'search_element';
             $var_dis = 'desearch_element';
+            $var_act_img = 'images/mod/vlist/active.png';
+            $var_inact_img = 'images/mod/vlist/inactive.png';
+        } elseif ($type == 'private') {
+            $var_col = $this->private;
+            $var_act = 'private_element';
+            $var_dis = 'deprivate_element';
+            $var_act_img = 'images/mod/vlist/locked.png';
+            $var_inact_img = 'images/mod/vlist/unlocked.png';
         } else {
             $var_col = $this->active;
             $var_act = 'activate_element';
             $var_dis = 'deactivate_element';
+            $var_act_img = 'images/mod/vlist/active.png';
+            $var_inact_img = 'images/mod/vlist/inactive.png';
         }
         if ($var_col) {
             $vars['aop'] = $var_dis;
             if ($icon) {
-                $label = sprintf('<img src="images/mod/vlist/active.png" title="%s" alt="%s" >',
-                                 dgettext('vlist', 'Deactivate'), dgettext('vlist', 'Deactivate'));
+                $label = sprintf('<img src="%s" title="%s" alt="%s" >',
+                                 $var_act_img, dgettext('vlist', 'Deactivate'), dgettext('vlist', 'Deactivate'));
             } elseif (empty($label)) {
                     $label = dgettext('vlist', 'Deactivate');
             }
         } else {
             $vars['aop'] = $var_act;
             if ($icon) {
-                $label = sprintf('<img src="images/mod/vlist/inactive.png" title="%s" alt="%s" >',
-                                 dgettext('vlist', 'Activate'), dgettext('vlist', 'Activate'));
+                $label = sprintf('<img src="%s" title="%s" alt="%s" >',
+                                 $var_inact_img, dgettext('vlist', 'Activate'), dgettext('vlist', 'Activate'));
             } elseif (empty($label)) {
                     $label = dgettext('vlist', 'Activate');
             }
@@ -329,9 +342,11 @@ class UNI_Element {
             } else {
                 $tpl['SEARCH'] = '';
             }
+            $tpl['PRIVATE'] = $this->activeLink('private', null, true);
         } else {
             $tpl['LIST'] = '';
             $tpl['SEARCH'] = '';
+            $tpl['PRIVATE'] = '';
         }
 
         if($links)
@@ -626,6 +641,10 @@ class UNI_Element {
         isset($_POST['search']) ?
             $this->search = 1 :
             $this->search = 0 ;
+
+        isset($_POST['private']) ?
+            $this->private = 1 :
+            $this->private = 0 ;
 
         if (isset($errors)) {
             $this->vlist->message = implode('<br />', $errors);

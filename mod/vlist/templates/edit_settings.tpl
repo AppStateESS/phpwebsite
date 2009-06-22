@@ -1,15 +1,15 @@
 {START_FORM}
 <fieldset>
     <legend><strong>{GENERAL_LABEL}</strong></legend>
-    <p>{MODULE_TITLE}<br />{MODULE_TITLE_LABEL}</p>
+    <p>{MODULE_TITLE_LABEL}<br />{MODULE_TITLE}</p>
     <p>{ENABLE_SIDEBOX} {ENABLE_SIDEBOX_LABEL} - {BLOCK_ORDER_BY_1}{BLOCK_ORDER_BY_1_LABEL} {BLOCK_ORDER_BY_2}{BLOCK_ORDER_BY_2_LABEL}<br />
        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{SIDEBOX_HOMEONLY} {SIDEBOX_HOMEONLY_LABEL}<br />
-       {SIDEBOX_TEXT}<br />
        {SIDEBOX_TEXT_LABEL}<br />
+       {SIDEBOX_TEXT}<br />
     </p>
     <p>{ENABLE_GROUPS} {ENABLE_GROUPS_LABEL}<br />
        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{LIST_GROUPS} {LIST_GROUPS_LABEL}<br />
-       {GROUPS_TITLE}<br />{GROUPS_TITLE_LABEL}
+       {GROUPS_TITLE_LABEL}<br />{GROUPS_TITLE}
     </p>
     <p>{MAIN_SORT_LABEL} - {MAIN_ORDER_BY_1}{MAIN_ORDER_BY_1_LABEL} {MAIN_ORDER_BY_2}{MAIN_ORDER_BY_2_LABEL} {MAIN_ORDER_BY_3}{MAIN_ORDER_BY_3_LABEL} {MAIN_ORDER_BY_4}{MAIN_ORDER_BY_4_LABEL}</p>
 </fieldset>

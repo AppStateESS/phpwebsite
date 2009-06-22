@@ -7,6 +7,7 @@
         <th>{SORT_HEADER} {SORT_SORT}</th>
         <th>{LIST_HEADER} {LIST_SORT}</th>
         <th>{SEARCH_HEADER} {SEARCH_SORT}</th>
+        <th>{PRIVATE_HEADER} {PRIVATE_SORT}</th>
         <th>&nbsp;</th>
     </tr>
 <!-- BEGIN listrows -->
@@ -16,6 +17,7 @@
         <td>{SORT}</td>
         <td>{LIST}</td>
         <td>{SEARCH}</td>
+        <td>{PRIVATE}</td>
         <td>{ACTION}</td>
     </tr>
 <!-- END listrows -->

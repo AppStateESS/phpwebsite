@@ -104,6 +104,8 @@ class UNI_Multiselect extends UNI_Element {
         $tpl['LIST_INPUT'] = PHPWS_Form::formCheckBox('list', 1, $this->list);
         $tpl['SEARCH_LABEL'] = dgettext('vlist', 'Use in advanced search');
         $tpl['SEARCH_INPUT'] = PHPWS_Form::formCheckBox('search', 1, $this->search);
+        $tpl['PRIVATE_LABEL'] = dgettext('vlist', 'Private (Internal use only)');
+        $tpl['PRIVATE_INPUT'] = PHPWS_Form::formCheckBox('private', 1, $this->private);
 
         $tpl['NEXT_BUTTON'] = PHPWS_Form::formSubmit(dgettext('vlist', 'Next'));
 

@@ -222,6 +222,9 @@ class vList_Listing {
         /* get the elements */
         $db = new PHPWS_DB('vlist_element');
         $db->addWhere('active', 1);
+        if (!Current_User::allow('vlist')) {
+            $db->addWhere('private', 0);
+        }
         $db->addOrder('sort asc');
         $result = $db->select();
         if ($result) {
@@ -494,6 +497,9 @@ class vList_Listing {
         if (PHPWS_Settings::get('vlist', 'enable_elements')) {
             $db = new PHPWS_DB('vlist_element');
             $db->addWhere('active', 1);
+            if (!Current_User::allow('vlist')) {
+                $db->addWhere('private', 0);
+            }
             $db->addOrder('sort asc');
             $result = $db->select();
             if ($result) {
