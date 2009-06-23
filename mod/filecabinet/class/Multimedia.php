@@ -145,7 +145,6 @@ class PHPWS_Multimedia extends File_Common {
         } else {
             return sprintf('index.php?module=filecabinet&amp;mtype=multimedia&amp;id=%s', $this->id);
         }
-
     }
 
 
@@ -305,6 +304,7 @@ class PHPWS_Multimedia extends File_Common {
         if ($this->embedded) {
             return $this->file_type;
         }
+        $this->getExtension();
 
         switch ($this->_ext) {
         case 'flv':
