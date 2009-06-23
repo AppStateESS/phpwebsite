@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-22 08:49-0400\n"
+"POT-Creation-Date: 2009-06-23 15:18-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -518,6 +518,10 @@ msgstr ""
 msgid "See listings on google maps."
 msgstr ""
 
+#, php-format
+msgid "See profile for %s"
+msgstr ""
+
 msgid ""
 "Select one or more of the available options below to filter a list of "
 "members. It is possible to get too specific. If your search returns an empty "
@@ -541,6 +545,9 @@ msgid "Settings & Fields"
 msgstr ""
 
 msgid "Show sidebox on home page only"
+msgstr ""
+
+msgid "Show user details"
 msgstr ""
 
 msgid "Sidebox text"

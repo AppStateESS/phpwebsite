@@ -323,7 +323,7 @@ class vList_Listing {
         $tpl['DESCRIPTION'] = PHPWS_Text::parseTag($this->getDescription(true));
         $tpl['FILE'] = $this->getFile();
         $tpl['IMAGE'] = $this->getImage();
-        if (PHPWS_Settings::get('vlist', 'enable_users')) {
+        if (PHPWS_Settings::get('vlist', 'enable_users') && PHPWS_Settings::get('vlist', 'show_users')) {
             $tpl['USER'] = $this->ownerLink();
             $tpl['USER_LABEL'] = dgettext('vlist', 'Listed by, ');
         }

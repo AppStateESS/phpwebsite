@@ -38,6 +38,7 @@ $settings['enable_images']      = 1;
 $settings['max_width']          = 300;
 $settings['max_height']         = 300;
 $settings['enable_users']       = 0;
+$settings['show_users']         = 0;
 $settings['list_users']         = 0;
 $settings['view_created']       = 0;
 $settings['view_updated']       = 0;

@@ -47,6 +47,7 @@ function vlist_update(&$content, $currentVersion)
                             'templates/edit_textarea.tpl', 
                             'templates/edit_textfield.tpl', 
                             'templates/list_elements.tpl', 
+                            'templates/list_listings.tpl', 
                             'img/locked.png', 
                             'img/unlocked.png', 
                             'templates/edit_settings.tpl'
@@ -56,6 +57,7 @@ function vlist_update(&$content, $currentVersion)
             $content[] = '1.0.2 changes
 ----------------
 + Added setting for internal only fields
++ Added setting for user profile privacy
 + Tweaked edit settings screen a little
 + Tweaked some permissions
 

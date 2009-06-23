@@ -1046,6 +1046,10 @@ class vList {
             PHPWS_Settings::set('vlist', 'enable_users', 1) :
             PHPWS_Settings::set('vlist', 'enable_users', 0);
 
+        isset($_POST['show_users']) ?
+            PHPWS_Settings::set('vlist', 'show_users', 1) :
+            PHPWS_Settings::set('vlist', 'show_users', 0);
+
         isset($_POST['list_users']) ?
             PHPWS_Settings::set('vlist', 'list_users', 1) :
             PHPWS_Settings::set('vlist', 'list_users', 0);

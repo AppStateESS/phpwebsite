@@ -23,6 +23,7 @@
        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{MAX_HEIGHT} {MAX_HEIGHT_LABEL}
     </p>
     <p>{ENABLE_USERS} {ENABLE_USERS_LABEL}<br />
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{SHOW_USERS} {SHOW_USERS_LABEL}<br />
        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{LIST_USERS} {LIST_USERS_LABEL}
     </p>
     <p>

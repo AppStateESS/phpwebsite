@@ -157,11 +157,11 @@ class vList_Forms {
         }
 
         /* unset the filters if a search is being done */
-        /* need to add the extras here somehow */
+        /* need to add the extras here somehow maybe */
         if (isset($_REQUEST['search']) && !empty($_REQUEST['search'])) {
             unset($_REQUEST['browseLetter']);
-            unset($_REQUEST['groups']);
-            unset($_REQUEST['owner']);
+//            unset($_REQUEST['groups']);
+//            unset($_REQUEST['owner']);
         }
 
         /* if the alpha click list is being used */
@@ -190,24 +190,27 @@ class vList_Forms {
 
         /* if it's a list by owner */
         if ($owner) {
-            $_REQUEST['owner'] = $owner;
-            if (PHPWS_Core::moduleExists('rolodex')) {
-                PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
-                $user = new Rolodex_Member($owner);
-                if ($user) {
-                    Layout::addPageTitle($user->getDisplay_name());
-                    $ptags['ITEM_TITLE'] = $user->getDisplay_name();
-                    $ptags['ITEM_DESCRIPTION'] = PHPWS_Text::parseTag($user->getDescription(true));
-                    $ptags['ITEM_LINK'] = sprintf(dgettext('vlist', 'Contact %s'), $user->getDisplay_email(true));
-                    if ($user->getImage()) {
-                        $ptags['ITEM_IMAGE'] = $user->getImage(true);
-                        $ptags['ITEM_CLEAR_FLOAT'] = '<br style="clear: right;" />';
+            if (PHPWS_Settings::get('vlist', 'show_users')) {
+                $_REQUEST['owner'] = $owner;
+                if (PHPWS_Core::moduleExists('rolodex')) {
+                    PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
+                    $user = new Rolodex_Member($owner);
+                    if ($user) {
+                        Layout::addPageTitle($user->getDisplay_name());
+                        $ptags['ITEM_TITLE'] = $user->getDisplay_name();
+                        $ptags['ITEM_DESCRIPTION'] = PHPWS_Text::parseTag($user->getDescription(true));
+                        $ptags['ITEM_CONTACT_LINK'] = sprintf(dgettext('vlist', 'Contact %s'), $user->getDisplay_email(true));
+                        $ptags['ITEM_VIEW_LINK'] = sprintf(dgettext('vlist', 'See profile for %s'), $user->viewLink());
+                        if ($user->getImage()) {
+                            $ptags['ITEM_IMAGE'] = $user->getImage(true);
+                            $ptags['ITEM_CLEAR_FLOAT'] = '<br style="clear: right;" />';
+                        }
                     }
+                } else {
+                    $user = new PHPWS_User($owner);
+                    Layout::addPageTitle($user->getDisplayName());
+                    $ptags['ITEM_TITLE'] = $user->getDisplayName();
                 }
-            } else {
-                $user = new PHPWS_User($owner);
-                Layout::addPageTitle($user->getDisplayName());
-                $ptags['ITEM_TITLE'] = $user->getDisplayName();
             }
         }
 
@@ -644,6 +647,10 @@ class vList_Forms {
         $form->addCheckbox('enable_users', 1);
         $form->setMatch('enable_users', PHPWS_Settings::get('vlist', 'enable_users'));
         $form->setLabel('enable_users', dgettext('vlist', 'Enable user profiles (uses Rolodex data if available)'));
+
+        $form->addCheckbox('show_users', 1);
+        $form->setMatch('show_users', PHPWS_Settings::get('vlist', 'show_users'));
+        $form->setLabel('show_users', dgettext('vlist', 'Show user details'));
 
         $form->addCheckbox('list_users', 1);
         $form->setMatch('list_users', PHPWS_Settings::get('vlist', 'list_users'));

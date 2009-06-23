@@ -2,7 +2,7 @@
 <!-- BEGIN item_title --><!--<h2>{ITEM_TITLE}</h2>--><!-- END item_title -->
 <!-- BEGIN item_image --><div style="float: right; margin: 0.5em 0 0.5em 0.5em;">{ITEM_IMAGE}</div><!-- END item_image -->
 <!-- BEGIN item_description --><p>{ITEM_DESCRIPTION}</p><!-- END item_description -->
-<!-- BEGIN item_link --><p>{ITEM_LINK}</p><!-- END item_link -->
+<!-- BEGIN item_link --><p>{ITEM_CONTACT_LINK}<br />{ITEM_VIEW_LINK}</p><!-- END item_link -->
 <!-- BEGIN item_clear_float -->{ITEM_CLEAR_FLOAT}<!-- END item_clear_float -->
 <table width="99%" cellpadding="4">
     <tr>
