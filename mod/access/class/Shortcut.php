@@ -90,6 +90,7 @@ class Access_Shortcut {
     {
         // mod_rewrite link
         if (preg_match('@/@', $url)) {
+            $url = preg_replace('@^./@', '', $url);
             $aUrl = explode('/', $url);
             $this->url = implode(':', $aUrl);
         } else {
