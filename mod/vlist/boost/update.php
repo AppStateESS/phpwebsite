@@ -60,6 +60,7 @@ function vlist_update(&$content, $currentVersion)
 + Added setting for user profile privacy
 + Tweaked edit settings screen a little
 + Tweaked some permissions
++ Fixed bug in posting GPS field type (thanks trf000)
 
 </pre>';
 

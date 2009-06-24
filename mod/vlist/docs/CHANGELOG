@@ -4,7 +4,7 @@ Version 1.0.2 -- June 2009
 + Added setting for user profile privacy
 + Tweaked edit settings screen a little
 + Tweaked some permissions
-
++ Fixed bug in posting GPS field type (thanks trf000)
 
 Version 1.0.1 -- May 2009
 ------------------------------------------------------------------

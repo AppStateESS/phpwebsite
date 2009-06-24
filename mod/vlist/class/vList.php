@@ -837,7 +837,7 @@ class vList {
                             $errors[] = sprintf(dgettext('vlist', 'You must enter a link for %s.'), $element['title']);
                         }
                     } elseif ($element['type'] == 'GPS') {
-                        if (!empty($_POST['UNI_'.$element['gps']])) {
+                        if (!empty($_POST['UNI_'.$element['id']])) {
                             $gps = strip_tags($_POST['UNI_'.$element['id']]);
 //    NEED A REGEX HERE                        if (PHPWS_Text::isValidInput($gps, 'url')) {
                                 $db->addValue('value', $gps);
@@ -895,7 +895,7 @@ class vList {
                             }
                         }
                     } elseif ($element['type'] == 'GPS') {
-                        if (!empty($_POST['UNI_'.$element['gps']])) {
+                        if (!empty($_POST['UNI_'.$element['id']])) {
                             $gps = strip_tags($_POST['UNI_'.$element['id']]);
 //    NEED A REGEX HERE                        if (PHPWS_Text::isValidInput($gps, 'url')) {
                                 $db->addValue('value', $gps);
