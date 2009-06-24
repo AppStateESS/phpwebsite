@@ -127,7 +127,7 @@ class vList_Forms {
         $ptags['COLSPAN'] = 2;
 
         $pager->addSortHeader('title', 'Title');
-        if (PHPWS_Settings::get('vlist', 'enable_users') && PHPWS_Settings::get('vlist', 'list_users')) {
+        if (PHPWS_Settings::get('vlist', 'enable_users') && (PHPWS_Settings::get('vlist', 'list_users') || Current_User::allow('vlist'))) {
             $pager->addSortHeader('owner_id', 'Listed by');
             $ptags['COLSPAN'] = $ptags['COLSPAN'] + 1;
         } else {
@@ -190,7 +190,7 @@ class vList_Forms {
 
         /* if it's a list by owner */
         if ($owner) {
-            if (PHPWS_Settings::get('vlist', 'show_users')) {
+            if (PHPWS_Settings::get('vlist', 'show_users') || Current_User::allow('vlist')) {
                 $_REQUEST['owner'] = $owner;
                 if (PHPWS_Core::moduleExists('rolodex')) {
                     PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
@@ -650,11 +650,11 @@ class vList_Forms {
 
         $form->addCheckbox('show_users', 1);
         $form->setMatch('show_users', PHPWS_Settings::get('vlist', 'show_users'));
-        $form->setLabel('show_users', dgettext('vlist', 'Show user details'));
+        $form->setLabel('show_users', dgettext('vlist', 'Show user details (to non-admins)'));
 
         $form->addCheckbox('list_users', 1);
         $form->setMatch('list_users', PHPWS_Settings::get('vlist', 'list_users'));
-        $form->setLabel('list_users', dgettext('vlist', 'Display users in list view'));
+        $form->setLabel('list_users', dgettext('vlist', 'Display users in list view (to non-admins)'));
 
         $form->addCheckbox('user_submissions', 1);
         $form->setMatch('user_submissions', PHPWS_Settings::get('vlist', 'user_submissions'));
