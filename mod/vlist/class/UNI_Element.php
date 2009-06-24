@@ -337,7 +337,7 @@ class UNI_Element {
         $tpl['SORT'] = $this->sort;
         if ($this->type !== 'Div') {
             $tpl['LIST'] = $this->activeLink('list', null, true);
-            if ($this->type !== 'Textfield' && $this->type !== 'Textarea' && $this->type !== 'Link' && $this->type !== 'Email' && $this->type !== 'GPS') {
+            if ($this->type !== 'Textfield' && $this->type !== 'Textarea' && $this->type !== 'Link' && $this->type !== 'Email' && $this->type !== 'GPS' && $this->type !== 'GMap') {
                 $tpl['SEARCH'] = $this->activeLink('search', null, true);
             } else {
                 $tpl['SEARCH'] = '';

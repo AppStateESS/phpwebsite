@@ -206,7 +206,7 @@ class vList {
                 }
                 $settingsPanel->setCurrentTab('elements');
                 if(isset($_POST['type']) && ($_POST['type'] != '0' || $_POST['type'] != '00')) {
-                    if ($_POST['type'] == 'Link' || $_POST['type'] == 'GPS' || $_POST['type'] == 'Email') {
+                    if ($_POST['type'] == 'Link' || $_POST['type'] == 'GPS' || $_POST['type'] == 'Email' || $_POST['type'] == 'GMap') {
                         $type = 'Textfield';
                     } else {
                         $type = $_POST['type'];
@@ -235,9 +235,9 @@ class vList {
                 break;
 
             case 'post_element':
-                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
-                    Current_User::disallow();
-                }
+//                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+//                    Current_User::disallow();
+//                }
                 $settingsPanel->setCurrentTab('elements');
                 $this->loadElement();
                 $this->element->vlist = & $this;
@@ -665,7 +665,7 @@ class vList {
             $id = $_REQUEST['id'];
         } else {
             if(isset($_REQUEST['type'])) {
-                if ($_REQUEST['type'] == 'Link' || $_REQUEST['type'] == 'GPS' || $_REQUEST['type'] == 'Email') {
+                if ($_REQUEST['type'] == 'Link' || $_REQUEST['type'] == 'GPS' || $_REQUEST['type'] == 'Email' || $_REQUEST['type'] == 'GMap') {
                     $type = 'Textfield';
                 } else {
                     $type = $_REQUEST['type'];
@@ -684,13 +684,13 @@ class vList {
         $db->addColumn('type');
         $result = $db->select('one');
         if ($result) {
-            if ($result == 'Link' || $result == 'GPS' || $result == 'Email') {
+            if ($result == 'Link' || $result == 'GPS' || $result == 'Email' || $result == 'GMap') {
                 $type = 'Textfield';
             } else {
                 $type = $result;
             }
         } else {
-            if ($_REQUEST['type'] == 'Link' || $_REQUEST['type'] == 'GPS' || $_REQUEST['type'] == 'Email') {
+            if ($_REQUEST['type'] == 'Link' || $_REQUEST['type'] == 'GPS' || $_REQUEST['type'] == 'Email' || $_REQUEST['type'] == 'GMap') {
                 $type = 'Textfield';
             } else {
                 $type = $_REQUEST['type'];
@@ -860,6 +860,18 @@ class vList {
                         } else {
                             $errors[] = sprintf(dgettext('vlist', 'You must enter an email address for %s.'), $element['title']);
                         }
+                    } elseif ($element['type'] == 'GMap') {
+                        if (!empty($_POST['UNI_'.$element['id']])) {
+                            $gmap = strip_tags($_POST['UNI_'.$element['id']]);
+//    NEED A REGEX HERE                        if (PHPWS_Text::isValidInput($gmap, 'url')) {
+                                $db->addValue('value', $gmap);
+                                $db->insert();
+//                            } else {
+//                                $errors[] = sprintf(dgettext('vlist', 'Check the value for %s, for formatting errors.'), $element['title']);
+//                            }
+                        } else {
+                            $errors[] = sprintf(dgettext('vlist', 'You must enter a value for %s.'), $element['title']);
+                        }
                     } else {
                         if (!empty($_POST['UNI_'.$element['id']])) {
                             $db->addValue('value', PHPWS_Text::parseInput($_POST['UNI_'.$element['id']]));
@@ -894,16 +906,6 @@ class vList {
                                 $errors[] = sprintf(dgettext('vlist', 'Check the link address for %s, for formatting errors.'), $element['title']);
                             }
                         }
-                    } elseif ($element['type'] == 'GPS') {
-                        if (!empty($_POST['UNI_'.$element['id']])) {
-                            $gps = strip_tags($_POST['UNI_'.$element['id']]);
-//    NEED A REGEX HERE                        if (PHPWS_Text::isValidInput($gps, 'url')) {
-                                $db->addValue('value', $gps);
-                                $db->insert();
-//                            } else {
-//                                $errors[] = sprintf(dgettext('vlist', 'Check the value for %s, for formatting errors.'), $element['title']);
-//                            }
-                        }
                     } elseif ($element['type'] == 'Email') {
                         if (!empty($_POST['UNI_'.$element['id']])) {
                             $email = strip_tags($_POST['UNI_'.$element['id']]);
@@ -913,6 +915,16 @@ class vList {
                             } else {
                                 $errors[] = sprintf(dgettext('vlist', 'Check the email address for %s, for formatting errors.'), $element['title']);
                             }
+                        }
+                    } elseif ($element['type'] == 'GMap') {
+                        if (!empty($_POST['UNI_'.$element['id']])) {
+                            $gmap = strip_tags($_POST['UNI_'.$element['id']]);
+//    NEED A REGEX HERE                        if (PHPWS_Text::isValidInput($gmap, 'url')) {
+                                $db->addValue('value', $gmap);
+                                $db->insert();
+//                            } else {
+//                                $errors[] = sprintf(dgettext('vlist', 'Check the value for %s, for formatting errors.'), $element['title']);
+//                            }
                         }
                     } else {
                         if (!empty($_POST['UNI_'.$element['id']])) {

@@ -727,6 +727,7 @@ class vList_Forms {
         $types['Link'] = dgettext('vlist', 'Link');
         $types['GPS'] = dgettext('vlist', 'GPS');
         $types['Email'] = dgettext('vlist', 'Email');
+        $types['GMap'] = dgettext('vlist', 'Google Map');
         $types['00'] = dgettext('vlist', '----');
         $types['Div'] = dgettext('vlist', 'Divider');
 
@@ -754,7 +755,7 @@ class vList_Forms {
             foreach ($result as $element) {
                 $id = $element['id'];
                 $type = $element['type'];
-                if ($type == 'Link' || $type == 'GPS' || $type == 'Email') {
+                if ($type == 'Link' || $type == 'GPS' || $type == 'Email' || $type == 'GMap') {
                     $type = 'Textfield';
                 } else {
                     $type = $type;

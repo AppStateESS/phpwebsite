@@ -61,6 +61,7 @@ function vlist_update(&$content, $currentVersion)
 + Tweaked edit settings screen a little
 + Tweaked some permissions
 + Fixed bug in posting GPS field type (thanks trf000)
++ Added Google Map special field type
 
 </pre>';
 

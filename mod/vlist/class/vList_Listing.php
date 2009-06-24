@@ -283,6 +283,10 @@ class vList_Listing {
                         foreach ($result as $option) {
                             $tpl['VALUE'] .= PHPWS_Text::parseOutput(sprintf('<a href="%s">%s</a>', 'mailto:' . $option['value'], $option['value']));
                         }
+                    } elseif ($type == 'GMap') {
+                        foreach ($result as $option) {
+                            $tpl['VALUE'] .= PHPWS_Text::parseOutput(sprintf('<a href="%s" title="%s">%s</a>', 'http://maps.google.com/maps?q='.urlencode($option['value']), dgettext('vlist', 'See listings on google maps.'), sprintf(dgettext('vlist', 'See "%s" on Google Maps'), $option['value'])));
+                        }
                     } else {
                         foreach ($result as $option) {
                             $tpl['VALUE'] .= PHPWS_Text::parseOutput($option['value']);
@@ -547,6 +551,10 @@ class vList_Listing {
                             } elseif ($type == 'Email') {
                                 foreach ($result as $option) {
                                     $value[] = PHPWS_Text::parseOutput(sprintf('<a href="%s">%s</a>', 'mailto:' . $option['value'], $option['value'])) . '<br />';
+                                }
+                            } elseif ($type == 'GMap') {
+                                foreach ($result as $option) {
+                                    $value[] = PHPWS_Text::parseOutput(sprintf('<a href="%s" title="%s">%s</a>', 'http://maps.google.com/maps?q='.urlencode($option['value']), dgettext('vlist', 'See listings on google maps.'), sprintf(dgettext('vlist', 'See "%s" on Google Maps'), $option['value'])));
                                 }
                             } else {
                                 foreach ($result as $option) {
