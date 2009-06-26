@@ -1,10 +1,14 @@
 <script type="text/javascript">
 var FCK = window.opener.FCKeditorAPI.GetInstance('{instance}');
 
-function insertHTML(data) {
-    FCK.InsertHtml(data);
-    window.close();
+
+function insertHTML(type, id) {
+    $.get('index.php?module=filecabinet&aop=fck_'+type +'_data&id='+id, function(data) {
+            FCK.InsertHtml(data);
+            window.close();
+        });
 }
+
 
 $(document).ready(function() {
     initFolders();

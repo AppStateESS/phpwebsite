@@ -1,3 +1,11 @@
++ FCKeditor media insertion had problems with any media other than
+  YouTube embeds. New script was written to place a bookmark image for
+  the media which is replaced on page load via jquery ajax.
++ updated files: javascript/fck_video_replace,
+  javascript/fckeditor/head.js,
+  templates/filters/media/mediaplayer.swf
+  templates/filters/media/yt.swf
+
 Version 2.2.6
 --------------------------------------------------------------------------
 + Fixed bug with editing Multimedia. Reported by alar.

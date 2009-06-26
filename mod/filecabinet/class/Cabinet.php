@@ -169,6 +169,23 @@ class Cabinet {
             /** File manager functions **/
             /** end file manager functions **/
 
+        case 'fck_image_data':
+            $this->fckImageResult($_GET['id']);
+            break;
+
+        case 'fck_resize_data':
+            $this->fckResizeResult($_GET['id']);
+            break;
+
+        case 'fck_document_data':
+            $this->fckDocumentResult($_GET['id']);
+            break;
+
+        case 'fck_media_data':
+            $this->fckMediaResult($_GET['id']);
+            break;
+
+
         case 'fckeditor':
             $this->fckEditor();
             break;
@@ -484,6 +501,14 @@ class Cabinet {
         switch($op) {
         case 'view_folder':
             $this->userViewFolder();
+            break;
+
+        case 'fetch_media':
+            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+            $id = str_replace('fckvideo-', '', $_GET['mid']);
+            $media = new PHPWS_Multimedia($id);
+            echo $media->getTag();
+            exit();
             break;
         }
 
@@ -1441,15 +1466,14 @@ class Cabinet {
                 foreach ($resizes as $fc_id) {
                     $res = new FC_File_Assoc($fc_id);
                     $title = sprintf(dgettext('filecabinet', 'Alternate size %sx%s'), $res->width, $res->height) . '<br />';
-                    $smaller[] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a>', htmlspecialchars($res->getTag(false, true), ENT_QUOTES), $title);
+                    $smaller[] = sprintf('<a class="oc" onclick="insertHTML(\'resize\', \'%s\')">%s</a>', $fc_id,  $title);
                 }
                 $sub['OTHER'] = implode('<br />', $smaller);
             }
-            $link = htmlspecialchars($image->getTag(null, true, true), ENT_QUOTES);
             $sub['TN'] = $image->getThumbnail();
             $sub['PIC'] = sprintf('<a class="oc show-thumb">%s</a>', $mouseover);
-            $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a> <span class="smaller">(%sx%s)</span>',
-                                    $link, $image->title, $image->width, $image->height);
+            $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'image\', \'%s\')">%s</a> <span class="smaller">(%sx%s)</span>',
+                                    $image->id, $image->title, $image->width, $image->height);
             $tpl['images'][] = $sub;
         }
 
@@ -1457,6 +1481,53 @@ class Cabinet {
         echo $content;
         exit();
     }
+
+    public function fckImageResult($id)
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+
+        $image = new PHPWS_Image($id);
+        echo $image->getTag(null, false, true);
+        exit();
+    }
+
+    public function fckResizeResult($id)
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+
+        $image = new FC_File_Assoc($id);
+        echo $image->getTag(false, true);
+        exit();
+    }
+
+    public function fckDocumentResult($id)
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Document.php');
+
+        $document = new PHPWS_Document($id);
+        echo $document->getViewLink(true, 'title', true);
+        exit();
+    }
+
+    public function fckMediaResult($id)
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+        
+        $media = new PHPWS_Multimedia($id);
+        /*
+         If the extension exists, we send a tag instead. Otherwise, 
+         FCKeditor will strip object and script tags from the display mode
+         You can protect the object tag but then it won't display in the editor,
+         likely confusing the users.
+        */
+        echo sprintf('<img class="fck-video-insert" src="%s%s" width="%s" height="%s" id="fckvideo-%s" title="%s" />',
+                     PHPWS_Core::getHomeHttp(),
+                     $media->thumbnailPath(),
+                     $media->width, $media->height, $id, $media->getTitle());
+        exit();
+    }
+
 
     public function fckDocuments()
     {
@@ -1474,11 +1545,10 @@ class Cabinet {
             $tpl['documents'][] = array('TITLE'=>dgettext('filecabinet', 'Folder empty'));
         } else {
             foreach ($result as $doc) {
-                $link = htmlspecialchars($doc->getViewLink(true, null, true), ENT_QUOTES);
-                $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a>',
-                                        $link, $doc->title);
-                $sub['ICON'] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a>',
-                                        $link, $doc->getIconView('small_icon'));
+                $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'document\', \'%s\')">%s</a>',
+                                        $doc->id, $doc->title);
+                $sub['ICON'] = sprintf('<a class="oc" onclick="insertHTML(\'document\', \'%s\')">%s</a>',
+                                        $doc->id, $doc->getIconView('small_icon'));
 
                 $tpl['documents'][] = $sub;
             }
@@ -1504,9 +1574,8 @@ class Cabinet {
             $tpl['multimedia'][] = array('TITLE'=>dgettext('filecabinet', 'Folder empty'));
         } else {
             foreach ($result as $mm) {
-                $link = str_replace("\n", '\n', htmlspecialchars($mm->getTag(),ENT_QUOTES));
-                $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'%s\')">%s</a>',
-                                        $link, $mm->title);
+                $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'media\', \'%s\')">%s</a>',
+                                        $mm->id, $mm->title);
                 $tpl['multimedia'][] = $sub;
             }
         }

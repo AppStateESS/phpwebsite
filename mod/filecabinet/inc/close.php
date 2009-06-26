@@ -25,5 +25,5 @@ function pinFolder() {
     }
 }
 
-
+javascript('modules/filecabinet/fck_video_replace');
 ?>
