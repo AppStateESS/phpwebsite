@@ -1477,12 +1477,12 @@ class PHPWS_DB {
                 }
                 return $result[0];
             } else {
-                $result = $GLOBALS['PHPWS_DB']['connection']->getCol($sql);
+                $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
                 if (PEAR::isError($result)) {
                     return $result;
                 }
 
-                return count($result);
+                return $result;
             }
             break;
 
