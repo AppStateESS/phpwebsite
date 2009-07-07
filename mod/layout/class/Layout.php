@@ -672,7 +672,7 @@ class Layout {
         }
 
         if (!empty($hold_css)) {
-            $links = array_merge($hold_css, $links);
+            $links = array_merge((array)$hold_css, (array)$links);
         }
 
         return implode("\n", $links);
