@@ -511,13 +511,13 @@ class Comment_Thread {
     {
         $vars['thread_id'] = $this->id;
         if ($this->monitored) {
-            $vars['user_action'] = 'unset_monitor';
+            $vars['uop'] = 'unset_monitor';
             $link[] = PHPWS_Text::secureLink(dgettext('comments', 'Stop Monitoring'), 'comments', $vars);
         } else {
-            $vars['user_action'] = 'set_monitor';
+            $vars['uop'] = 'set_monitor';
             $link[] = PHPWS_Text::secureLink(dgettext('comments', 'Monitor this Thread'), 'comments', $vars);
         }
-        unset($vars['user_action']);
+        unset($vars['uop']);
         if ($this->userCan()) {
             $vars['aop'] = 'set_anon_posting';
             if ($this->allow_anon) {

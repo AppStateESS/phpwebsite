@@ -494,7 +494,7 @@ class Comment_User extends Demographics_User {
         }
 
         $form->addHidden('module', 'comments');
-        $form->addHidden('user_action', 'user_posts');
+        $form->addHidden('uop', 'user_posts');
         $form->addHidden('user_id', $this->user_id);
         $form->addSelect('time_period', $time_period);
         $form->addSelect('order', $order_list);
