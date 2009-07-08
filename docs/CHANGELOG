@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+8 July 2009
++ Changed confirm body link. href="#" confuses poor IE
++ "param" added to text_settings.php
++ fckeditor default.php changed to fix file relative links
+
+
 Version 1.9.5
 ---------------------------------------------------------------------
 12 June 2009

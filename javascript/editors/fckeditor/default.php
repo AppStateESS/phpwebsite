@@ -17,7 +17,7 @@ javascript('jquery');
 
 $autogrow = true;
 
-$data['VALUE'] = preg_replace('@src="(./)?images/@', 'src="' . PHPWS_Core::getHomeHttp() . 'images/', $data['VALUE']);
+$data['VALUE'] = preg_replace('@src="(./)?(images|files)/@', 'src="' . PHPWS_Core::getHomeHttp() . '\\2/', $data['VALUE']);
 
 
 if (empty($data['WIDTH']) || empty($data['HEIGHT'])) {
