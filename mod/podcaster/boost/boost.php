@@ -23,9 +23,9 @@
 */
 
 $proper_name  = 'Podcaster';
-$version      = '1.2.0';
+$version      = '1.2.1';
 $import_sql   = true;
-$version_http = 'http://verdon.ca/downloads/modules/podcaster/check.xml';
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/podcaster/check.xml';
 $about        = true;
 $priority     = 50;
 $dependency   = true;

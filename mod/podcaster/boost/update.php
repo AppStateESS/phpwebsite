@@ -265,6 +265,15 @@ Please save each episode to force an update of the key file.';
 
 
 
+    case version_compare($currentVersion, '1.2.1', '<'):
+        $content[] = '<pre>';
+
+        $content[] = '1.2.1 changes
+----------------
++ Fixed nasty bug in uninstall (thanks jtickle)
+</pre>';
+
+
     } // end switch
     return true;
 }
