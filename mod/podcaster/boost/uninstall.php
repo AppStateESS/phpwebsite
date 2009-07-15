@@ -78,6 +78,8 @@ function podcaster_uninstall(&$content) {
     $form->addHidden('opmod', 'podcaster');
     $form->addHidden('action', 'uninstall');
     $form->addHidden('authkey', $_REQUEST['authkey']);
+    $form->addHidden('confirm', 'podcaster');
+    $form->setMethod('get');
 
     $form->addHidden('process_uninstall', 1);
     
