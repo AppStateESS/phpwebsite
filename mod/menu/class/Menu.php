@@ -6,6 +6,8 @@
  * @version $Id$
  */
 
+PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+
 class Menu {
 
     public function admin()
