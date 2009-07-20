@@ -108,6 +108,7 @@ class RSS_Channel {
     {
         $db = new PHPWS_DB('phpws_key');
         $db->addWhere('module', $this->module);
+        $db->addWhere('active', 1);
         $db->addWhere('restricted', 0);
         $db->addWhere('show_after', mktime(), '<');
         $db->addWhere('hide_after', mktime(), '>');
