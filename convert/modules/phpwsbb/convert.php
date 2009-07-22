@@ -614,4 +614,3 @@ function importComments(&$replies, $thread_id)
 }
 
 ?>
-?>
