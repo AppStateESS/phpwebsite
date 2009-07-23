@@ -1068,13 +1068,9 @@ class Checkin_Admin extends Checkin {
         $visitors = $db->getObjects('Checkin_Visitor');
 
         $row['NAME_LABEL'] = dgettext('checkin', 'Name, Reason, & Note');
-        $row['WAITED_LABEL'] = sprintf('<abbr title="%s">%s</a>', 
-                                       dgettext('checkin', 'Time waited'), dgettext('checkin', 'TW'));
-        $row['SPENT_LABEL'] = sprintf('<abbr title="%s">%s</a>', 
-                                      dgettext('checkin', 'Total meeting time'),
-                                      dgettext('checkin', 'TMT'));
-        $row['ARRIVAL_LABEL'] = sprintf('<abbr title="%s">%s</a>', dgettext('checkin', 'Arrival time'),
-                                        dgettext('checkin', 'AT'));
+        $row['WAITED_LABEL'] = dgettext('checkin', 'Waited');
+        $row['SPENT_LABEL'] = dgettext('checkin', 'Visited');
+        $row['ARRIVAL_LABEL'] = dgettext('checkin', 'Arrived');
 
         foreach ($this->staff_list as $staff) {
             $average_wait = $total_wait = $count = $total_spent = 0;

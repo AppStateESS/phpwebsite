@@ -60,6 +60,7 @@ function checkin_update(&$content, $current_version) {
 + Removed error message from report if no reasons created
 + Added the time of arrival to the report
 + Changed report date entry interface
++ Upper cased names.
 </pre>';
   
       

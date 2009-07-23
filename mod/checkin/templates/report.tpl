@@ -15,8 +15,8 @@
       <table cellpadding="5" width="100%">
         <tr>
           <th>{NAME_LABEL}</th>
-          <th>{WAITED_LABEL}</th>
           <th>{ARRIVAL_LABEL}</th>
+          <th>{WAITED_LABEL}</th>
           <th>{SPENT_LABEL}</th>
         </tr>
         <!-- BEGIN message --><tr><td colspan="2">{NOBODY}</td></tr><!-- END message -->

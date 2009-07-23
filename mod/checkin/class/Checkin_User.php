@@ -90,8 +90,8 @@ class Checkin_User extends Checkin {
     {
         $this->loadVisitor();
 
-        $this->visitor->firstname = trim($_POST['first_name']);
-        $this->visitor->lastname  = trim($_POST['last_name']);
+        $this->visitor->firstname = ucwords(trim($_POST['first_name']));
+        $this->visitor->lastname  = ucwords(trim($_POST['last_name']));
         if (isset($_POST['reason_id'])) {
             $this->visitor->reason    = (int)$_POST['reason_id'];
         }
