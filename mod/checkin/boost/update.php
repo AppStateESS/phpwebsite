@@ -51,7 +51,18 @@ function checkin_update(&$content, $current_version) {
 --------------------
 + Fixed translation typo.
 + Added "Send back" condition</pre>';
-        
+
+    case version_compare($current_version, '1.0.3', '<'):
+        $content[] = '<pre>';
+        checkinUpdateFiles(array('templates/report.tpl'), $content);
+        $content[] = '1.0.3 changes
+--------------------
++ Removed error message from report if no reasons created
++ Added the time of arrival to the report
++ Changed report date entry interface
+</pre>';
+  
+      
     }
     return true;
 }

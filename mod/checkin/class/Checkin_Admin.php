@@ -1026,7 +1026,7 @@ class Checkin_Admin extends Checkin {
         } else {
             $udate = mktime(0,0,0);
         }
-        $current_date = strftime('%Y/%m/%d', $udate);
+        $current_date = strftime('%m/%d/%Y', $udate);
 
         $this->title = sprintf(dgettext('checkin', 'Report for %s'), strftime('%e %B, %Y', $udate));
 
@@ -1035,14 +1035,15 @@ class Checkin_Admin extends Checkin {
             $form->setMethod('get');
             $form->addHidden('module', 'checkin');
             $form->addText('cdate', $current_date);
+            $form->setExtra('cdate', 'class="datepicker"');
             $form->addHidden('aop', 'report');
             $form->setLabel('cdate', dgettext('checkin', 'Date'));
             $form->addSubmit(dgettext('checkin', 'Go'));
             $tpl = $form->getTemplate();
+            $js['id'] = 'report-date_cdate';
+            javascript('datepicker', $js);
 
-            $js['form_name'] = 'report-date';
-            $js['date_name'] = 'cdate';
-            $tpl['CAL'] = javascript('js_calendar', $js);
+
             $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin',
                                                         array('aop'=>'report',
                                                               'print'=>1,
@@ -1054,6 +1055,9 @@ class Checkin_Admin extends Checkin {
 
         $this->loadStaffList();
         $reasons = $this->getReasons();
+        if (empty($reasons)) {
+            $reasons[0] = dgettext('checkin', 'No reason');
+        }
 
         PHPWS_Core::initModClass('checkin', 'Visitors.php');
         $db = new PHPWS_DB('checkin_visitor');
@@ -1064,8 +1068,13 @@ class Checkin_Admin extends Checkin {
         $visitors = $db->getObjects('Checkin_Visitor');
 
         $row['NAME_LABEL'] = dgettext('checkin', 'Name, Reason, & Note');
-        $row['WAITED_LABEL'] = dgettext('checkin', 'Time waited');
-        $row['SPENT_LABEL'] = dgettext('checkin', 'Total meeting time');
+        $row['WAITED_LABEL'] = sprintf('<abbr title="%s">%s</a>', 
+                                       dgettext('checkin', 'Time waited'), dgettext('checkin', 'TW'));
+        $row['SPENT_LABEL'] = sprintf('<abbr title="%s">%s</a>', 
+                                      dgettext('checkin', 'Total meeting time'),
+                                      dgettext('checkin', 'TMT'));
+        $row['ARRIVAL_LABEL'] = sprintf('<abbr title="%s">%s</a>', dgettext('checkin', 'Arrival time'),
+                                        dgettext('checkin', 'AT'));
 
         foreach ($this->staff_list as $staff) {
             $average_wait = $total_wait = $count = $total_spent = 0;
@@ -1078,6 +1087,7 @@ class Checkin_Admin extends Checkin {
                     $tObj->setCurrentBlock('subrow');
                     $tObj->setData(array('VIS_NAME' => $vis->getName(),
                                          'REASON'   => $reasons[$vis->reason],
+                                         'ARRIVAL'  => strftime('%r', $vis->arrival_time),
                                          'NOTE'     => $vis->note,
                                          'WAITED'   => Checkin::timeWaiting($wait),
                                          'SPENT'    => Checkin::timeWaiting($spent)));
