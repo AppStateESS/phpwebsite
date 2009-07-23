@@ -54,11 +54,14 @@ class PHPWS_User {
         }
         $this->setId($id);
         $result = $this->init();
-
+        
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
         }
-        $this->loadScript();
+
+        if ($result) {
+            $this->loadScript();
+        }
     }
 
     public function init()

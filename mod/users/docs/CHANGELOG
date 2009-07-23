@@ -1,3 +1,7 @@
+23 July 2009
++ The user constructor was trying to load the authorization script on
+  failed users. Thanks Verdon.
+
 Version 2.6.5
 ---------------------------------------------------------------------
 9 June 2009
