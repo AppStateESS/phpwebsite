@@ -1,3 +1,5 @@
++ Fixed waiting time setting
+
 Version 1.0.3
 ---------------------------
 + Removed error message from report if no reasons created

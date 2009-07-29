@@ -780,6 +780,15 @@ class Checkin_Admin extends Checkin {
         }
 
         PHPWS_Settings::set('checkin', 'assign_refresh', $seconds);
+
+        $seconds = (int)$_POST['waiting_refresh'];
+        if ($seconds < 1) {
+            $seconds = 15;
+        }
+
+        PHPWS_Settings::set('checkin', 'waiting_refresh', $seconds);
+
+
         PHPWS_Settings::save('checkin');
     }
 
