@@ -137,6 +137,7 @@ class Comment_User extends Demographics_User {
      */
     public function getAvatarLevel()
     {
+
         // If user's securitylevel is not set, set it
         if ($this->securitylevel < 0) {
             $this->setCachedItems();
@@ -150,10 +151,11 @@ class Comment_User extends Demographics_User {
         $local = $remote = false;
 
         $user_ranks = Comments::getUserRanking();
+
         $user_groups = explode(',', $this->groups);
         if (!empty($user_ranks)) {
             foreach ($user_ranks as $rank) {
-                if ($rank->group_id == 0 or in_array($rank->group_id, $user_groups)) {
+                if ($rank->group_id == 0 || in_array($rank->group_id, $user_groups)) {
                     $local = $local || $rank->allowLocal($this->comments_made);
                     $remote = $remote || $rank->allowRemote($this->comments_made);
                 }
