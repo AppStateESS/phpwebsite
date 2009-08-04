@@ -136,8 +136,7 @@ class PHPWS_Text {
 
         if (empty($default_tags)) {
             $default_tags = preg_replace('/\s/', '',  strtolower(PHPWS_ALLOWED_TAGS));
-
-            if (PHPWS_Core::allowScriptTags()) {
+            if (ALLOW_SCRIPT_TAGS) {
                 $default_tags .= '<script>';
             } else {
                 $default_tags = str_replace('<script>', '', $default_tags);
