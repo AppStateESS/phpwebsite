@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+4 August 2009
++ Script tags should now appear for anon users if config.php allows them.
+
 8 July 2009
 + Changed confirm body link. href="#" confuses poor IE
 + "param" added to text_settings.php
