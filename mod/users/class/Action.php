@@ -1210,7 +1210,14 @@ class User_Action {
     {
         $db = new PHPWS_DB('users_auth_scripts');
         $db->addWhere('id', (int)$script_id);
-        return $db->delete();
+        $result = $db->delete();
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+        $db2 = new PHPWS_DB('users');
+        $db2->addWhere('authorize', $script_id);
+        $db2->addValue('authorize', PHPWS_Settings::get('users', 'local_script'));
+        return $db2->update();
     }
 
     public function postForgot(&$content)
