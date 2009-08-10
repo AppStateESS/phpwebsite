@@ -2,8 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
-10 August
-Time.php - Added a intval to the relativeTime timestamp.
+
+10 August 2009
++ recaptcha script given full path to settings file
++ Time.php - Added a intval to the relativeTime timestamp.
 
 4 August 2009
 + Script tags should now appear for anon users if config.php allows them.
