@@ -284,9 +284,7 @@ padding-left : 5px;
 }
 
 /******** comments ***********/
-.comment_edit_link, .comment_delete_link, .comment_report_link,
-.comment_fork_link, .comment_reply_link, .comment_quote_link, .comment_postnew_link,
-.comment_punish_link,
+.comment_edit_link, .comment_reply_link, .comment_quote_link, .comment_postnew_link,
 .comment_supermod_icon, .comment_activemod_icon, .comment_inactivemod_icon
 {
     display: block;
@@ -317,7 +315,6 @@ padding-left : 5px;
 
 
 a.comment_delete_link {
-    float :left;
     width: 20px;
     height: 20px;
     margin: 0 .5em;
@@ -335,7 +332,6 @@ a.comment_report_link {
 a.comment_report_link span { display: none; }
 
 a.comment_fork_link {
-    float :left;
     width: 16px;
     height: 16px;
     background-image: url(../../images/mod/comments/fork.png);
