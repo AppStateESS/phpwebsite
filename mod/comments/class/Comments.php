@@ -95,15 +95,16 @@ class Comments {
         $tabs['ranks'] = array('title'=>dgettext('comments', 'Member ranks'), 'link'=>'index.php?module=comments');
 
         $db = new PHPWS_DB('comments_items');
-        $db->addColumn('id');
+        $db->addColumn('id', null, null, true);
         $db->addWhere('reported', 0, '>');
-        $count = $db->count();
+        $count = $db->select('one');
 
         $tabs['report'] = array('title'=> sprintf(dgettext('comments', 'Reported (%s)'), $count),
                                 'link'=>'index.php?module=comments');
         $db->resetWhere();
         $db->addWhere('approved', 0);
-        $count = $db->count();
+        $count = $db->select('one');
+
         $tabs['approval'] = array('title'=> sprintf(dgettext('comments', 'Approval (%s)'), $count),
                                   'link'=>'index.php?module=comments');
 
