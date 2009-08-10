@@ -1,3 +1,4 @@
++ Added description to search for files
 + FCKeditor media insertion had problems with any media other than
   YouTube embeds. New script was written to place a bookmark image for
   the media which is replaced on page load via jquery ajax.

@@ -336,7 +336,7 @@ class Cabinet_Form {
         $pager->setLimitList($limits);
         $pager->setDefaultLimit(16);
 
-        $pager->setSearch('file_name', 'title');
+        $pager->setSearch('file_name', 'title', 'description');
         $pager->addWhere('folder_id', $folder->id);
         $pager->setOrder('title', 'asc', true);
         $pager->setModule('filecabinet');
