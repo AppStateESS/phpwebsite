@@ -192,6 +192,7 @@ class PHPWS_Time {
      */
     public function relativeTime($timestamp, $format='%c')
     {
+        $timestamp = intval($timestamp);
         $rel   = time() - $timestamp;
         $mins  = floor($rel / 60);
         $hours = floor($mins / 60);
