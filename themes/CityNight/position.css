@@ -1,0 +1,61 @@
+/* --------- Layout and positioning ------------ */
+
+#container {
+	position: relative;
+	border: none;
+    padding: 0px;
+	width:1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#header {
+	position: relative;
+	height: 97px;
+	width: 1000px;
+	z-index: 100;
+	border-bottom: 2px solid white;
+}
+
+.logo {
+	position:relative;
+	float:left;
+	height:77px;
+	width:140px;
+	margin: 20px 0px 0px 10px;
+}
+
+#image-banner {
+	position: relative;
+	float: left;
+	height:169px;
+	width:1000px;
+	border-bottom: 2px solid white;
+}
+
+#sidepanel-left {
+	position: relative;
+	float: left;
+	width : 280px;
+	padding-left:10px;
+}
+
+#main-content {
+	position: relative;
+	float: left;
+	width:688px;
+	min-height:300px;
+	padding: 0px 10px 0px 10px;
+	border-left:2px solid white;
+}
+
+#footer {
+	position: relative;
+	height: 35px;
+	width: 1000px;
+	border-top:2px solid white;
+	z-index: 100;
+	clear: both;
+}
+
+/

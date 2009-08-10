@@ -1,0 +1,52 @@
+body {
+	color: #000;
+	background-color : #aeaeae;
+}
+
+body#layout-naked {
+	background-image: none;
+	background-color: White;
+}
+
+/* ---------- Layout ----------- */
+
+#container {
+	background-image: url('./img/leftside.png');
+	background-repeat: repeat-y;
+}
+
+#header {
+	background-image: url('./img/header.png');
+	background-repeat: no-repeat;
+}
+
+.logo {
+	font-size:24px;
+	font-weight:bold;
+	color:white;
+}
+
+#image-banner {
+	background-image: url('./img/banner.jpg');
+	background-repeat: no-repeat;
+}
+
+#sidepanel-left a{
+	color:#fff;
+}
+
+#main-content {
+	background-image: url('./img/paper.jpg');
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	text-align: justify;
+}
+
+#footer {
+	background-image: url('./img/footer.png');
+	background-repeat: repeat-x;
+}
+
+ul.menu-links li.menu-link { 
+    list-style : none;
+
+}
