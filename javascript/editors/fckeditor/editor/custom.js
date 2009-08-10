@@ -27,32 +27,30 @@ FCKConfig.ToolbarSets["phpws"] = [
 *
 **/
 
-FCKConfig.LinkBrowser = true;
-FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/phpws/connector.php';
+FCKConfig.LinkBrowser = false ;
 
-FCKConfig.ImageBrowser = true;
-FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Image&Connector=connectors/phpws/connector.php';
+FCKConfig.ImageBrowser = true ;
+FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Image&Connector=' + encodeURIComponent( FCKConfig.BasePath + 'filemanager/connectors/phpws/connector.php' ) ;
+FCKConfig.ImageBrowserWindowWidth  = FCKConfig.ScreenWidth * 0.7 ;	// 70% ;
+FCKConfig.ImageBrowserWindowHeight = FCKConfig.ScreenHeight * 0.7 ;	// 70% ;
 
-FCKConfig.FileBrowser = true;
-FCKConfig.FileBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=File&Connector=connectors/phpws/connector.php';
+FCKConfig.FlashBrowser = true ;
+FCKConfig.FlashBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Flash&Connector=' + encodeURIComponent( FCKConfig.BasePath + 'filemanager/connectors/phpws/connector.php' ) ;
+FCKConfig.FlashBrowserWindowWidth  = FCKConfig.ScreenWidth * 0.7 ;	//70% ;
+FCKConfig.FlashBrowserWindowHeight = FCKConfig.ScreenHeight * 0.7 ;	//70% ;
 
-FCKConfig.FlashBrowser = true;
-FCKConfig.FlashBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Flash&Connector=connectors/phpws/connector.php';
+FCKConfig.LinkUpload = false ;
 
-FCKConfig.ImageUpload = true;
-FCKConfig.ImageUploadURL = FCKConfig.BasePath + 'filemanager/upload/phpws/upload.php?Type=Image';
-FCKConfig.ImageUploadAllowedExtensions	= ".(jpg|gif|jpeg|png)$" ;
-FCKConfig.ImageUploadDeniedExtensions	= "" ;
 
-FCKConfig.LinkUpload = true ;
-FCKConfig.LinkUploadURL = FCKConfig.BasePath + 'filemanager/upload/phpws/upload.php?Type=File' ;
-FCKConfig.LinkUploadAllowedExtensions	= "" ; // empty for all
-FCKConfig.LinkUploadDeniedExtensions	= ".(php|php3|php5|phtml|asp|aspx|ascx|jsp|cfm|cfc|pl|bat|exe|dll|reg|cgi)$" ;	// empty for no one
+FCKConfig.ImageUpload = true ;
+FCKConfig.ImageUploadURL = FCKConfig.BasePath + 'filemanager/connectors/phpws/upload.php?Type=Image' ;
+FCKConfig.ImageUploadAllowedExtensions	= ".(jpg|gif|jpeg|png|bmp)$" ;		// empty for all
+FCKConfig.ImageUploadDeniedExtensions	= "" ;							// empty for no one
 
 FCKConfig.FlashUpload = true ;
-FCKConfig.FlashUploadURL = FCKConfig.BasePath + 'filemanager/upload/phpws/upload.php?Type=Flash' ;
-FCKConfig.FlashUploadAllowedExtensions	= ".(swf|fla)$" ;
-FCKConfig.FlashUploadDeniedExtensions	= "" ; // empty for all
+FCKConfig.FlashUploadURL = FCKConfig.BasePath + 'filemanager/connectors/phpws/upload.php?Type=Flash' ;
+FCKConfig.FlashUploadAllowedExtensions	= ".(swf|flv)$" ;		// empty for all
+FCKConfig.FlashUploadDeniedExtensions	= "" ;
 
 FCKConfig.SpellChecker = 'WSC' ; //'WSC' | 'SpellerPages' | 'ieSpell'
 FCKConfig.IeSpellDownloadUrl	= 'http://www.iespell.com/download.php' ;
