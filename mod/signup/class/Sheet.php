@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 class Signup_Sheet {
     public $id            = 0;
@@ -136,12 +136,12 @@ class Signup_Sheet {
             }
 
             $db = new PHPWS_DB('signup_peeps');
-            $db->addColumn('id');
+            $db->addColumn('id', null, null, true);
             foreach ($result as $slot) {
                 $db->addWhere('slot_id', $slot->id);
                 $db->addWhere('registered', 1);
-                $sub = $db->count();
-
+                $sub = $db->select('one');
+                $db->resetWhere();
                 if (!PHPWS_Error::logIfError($sub)) {
                     $slot->_filled = $sub;
                 }

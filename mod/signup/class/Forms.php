@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 class Signup_Forms {
     public $signup = null;
@@ -10,55 +10,55 @@ class Signup_Forms {
     public function get($type)
     {
         switch ($type) {
-        case 'new':
-            if (Current_User::isRestricted('signup')) {
-                $this->signup->title   = dgettext('signup', 'Sorry');
-                $this->signup->content = dgettext('signup', 'You do not have permission for this action.');
-                return;
-            }
-        case 'edit_sheet':
-            if (empty($this->signup->sheet)) {
-                $this->signup->loadSheet();
-            }
-            if (!Current_User::allow('signup', 'edit_sheet', $this->signup->sheet->id, 'sheet')) {
-                Current_User::disallow();
-            }
+            case 'new':
+                if (Current_User::isRestricted('signup')) {
+                    $this->signup->title   = dgettext('signup', 'Sorry');
+                    $this->signup->content = dgettext('signup', 'You do not have permission for this action.');
+                    return;
+                }
+            case 'edit_sheet':
+                if (empty($this->signup->sheet)) {
+                    $this->signup->loadSheet();
+                }
+                if (!Current_User::allow('signup', 'edit_sheet', $this->signup->sheet->id, 'sheet')) {
+                    Current_User::disallow();
+                }
 
-            $this->editSheet();
-            break;
+                $this->editSheet();
+                break;
 
-        case 'list':
-            $this->signup->panel->setCurrentTab('list');
-            $this->listSignup();
-            break;
+            case 'list':
+                $this->signup->panel->setCurrentTab('list');
+                $this->listSignup();
+                break;
 
-        case 'edit_slots':
-            $this->editSlots();
-            break;
+            case 'edit_slots':
+                $this->editSlots();
+                break;
 
-        case 'edit_peep':
-            $this->editPeep();
-            break;
+            case 'edit_peep':
+                $this->editPeep();
+                break;
 
-        case 'edit_slot_popup':
-            $this->editSlotPopup();
-            break;
+            case 'edit_slot_popup':
+                $this->editSlotPopup();
+                break;
 
-        case 'edit_peep_popup':
-            $this->editPeepPopup();
-            break;
+            case 'edit_peep_popup':
+                $this->editPeepPopup();
+                break;
 
-        case 'user_signup':
-            $this->userSignup();
-            break;
+            case 'user_signup':
+                $this->userSignup();
+                break;
 
-        case 'report':
-            $this->report();
-            break;
+            case 'report':
+                $this->report();
+                break;
 
-        case 'email_applicants':
-            $this->emailApplicants();
-            break;
+            case 'email_applicants':
+                $this->emailApplicants();
+                break;
         }
 
     }
@@ -180,7 +180,7 @@ class Signup_Forms {
 
         javascript('close_refresh', array('use_link'=>1));
         $tpl['CLEAR'] = sprintf('<input type="button" value="%s" onclick="closeWindow(); return false" />',
-                                dgettext('signup', 'Close'));
+        dgettext('signup', 'Close'));
 
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_slot.tpl');
     }
@@ -474,12 +474,12 @@ class Signup_Forms {
                 $form->addText('extra1', $peep->extra1);
                 $form->setLabel('extra1', $this->signup->sheet->extra1);
             }
-            
+
             if (!empty($this->signup->sheet->extra2)) {
                 $form->addText('extra2', $peep->extra2);
                 $form->setLabel('extra2', $this->signup->sheet->extra2);
             }
-            
+
             if (!empty($this->signup->sheet->extra3)) {
                 $form->addText('extra3', $peep->extra3);
                 $form->setLabel('extra3', $this->signup->sheet->extra3);
