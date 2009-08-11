@@ -425,8 +425,11 @@ final class Current_User {
                 $user->setApproved(true);
                 $auth->createUser();
                 $user->save();
+                PHPWS_Core::initModClass('users', 'Action.php');
+                User_Action::assignDefaultGroup($user);
             }
 
+            
             if (!$user->active) {
                 return PHPWS_Error::get(USER_DEACTIVATED, 'users', 'Current_User:loginUser', $user->username);
             }

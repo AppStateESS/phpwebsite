@@ -1,3 +1,6 @@
+11 August 2009
++ Fixed default groups on external authentication
+
 7 August 2009
 + Deleted auth scripts will update users under it to use local instead.
 
