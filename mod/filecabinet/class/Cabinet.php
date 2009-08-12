@@ -157,285 +157,285 @@ class Cabinet {
 
         // Requires an unrestricted user
         switch ($aop) {
-        case 'pin_folder':
-        case 'delete_folder':
-        case 'unpin':
-            if (Current_User::isRestricted('filecabinet')) {
-                Current_User::disallow();
-            }
+            case 'pin_folder':
+            case 'delete_folder':
+            case 'unpin':
+                if (Current_User::isRestricted('filecabinet')) {
+                    Current_User::disallow();
+                }
         }
 
         switch ($aop) {
             /** File manager functions **/
             /** end file manager functions **/
 
-        case 'fck_image_data':
-            $this->fckImageResult($_GET['id']);
-            break;
-
-        case 'fck_resize_data':
-            $this->fckResizeResult($_GET['id']);
-            break;
-
-        case 'fck_document_data':
-            $this->fckDocumentResult($_GET['id']);
-            break;
-
-        case 'fck_media_data':
-            $this->fckMediaResult($_GET['id']);
-            break;
-
-
-        case 'fckeditor':
-            $this->fckEditor();
-            break;
-
-        case 'fck_img_folders':
-            $this->fckFolders(IMAGE_FOLDER);
-            break;
-
-        case 'fck_doc_folders':
-            $this->fckFolders(DOCUMENT_FOLDER);
-            break;
-
-        case 'fck_mm_folders':
-            $this->fckFolders(MULTIMEDIA_FOLDER);
-            break;
-
-        case 'fck_images':
-            $this->fckImages();
-            break;
-
-        case 'fck_documents':
-            $this->fckDocuments();
-            break;
-
-        case 'fck_multimedia':
-            $this->fckMultimedia();
-            break;
-
-        case 'image':
-            $this->panel->setCurrentTab('image');
-            $this->title = dgettext('filecabinet', 'Image folders');
-            $this->loadForms();
-            $this->forms->getFolders(IMAGE_FOLDER);
-            break;
-
-        case 'multimedia':
-            $this->panel->setCurrentTab('multimedia');
-            $this->title = dgettext('filecabinet', 'Multimedia folders');
-            $this->loadForms();
-            $this->forms->getFolders(MULTIMEDIA_FOLDER);
-            break;
-
-        case 'add_folder':
-            if (!Current_User::allow('filecabinet', 'edit_folders',null, null, true)) {
-                Current_User::disallow();
-            }
-            $javascript = true;
-            $this->loadFolder();
-            $this->addFolder();
-            break;
-
-        case 'pin_folder':
-            if (!Current_User::authorized('filecabinet', 'edit_folders')) {
-                Current_User::disallow();
-            }
-
-            $javascript = true;
-            $this->pinFolder();
-            javascript('close_refresh');
-            break;
-
-        case 'classify':
-            if (!Current_User::isDeity()) {
-                Current_User::errorPage();
-            }
-            $this->loadForms();
-            $this->forms->classifyFileList();
-            break;
-
-        case 'classify_action':
-            if (!Current_User::isDeity() || !Current_User::verifyAuthKey()) {
-                Current_User::errorPage();
-            }
-
-            $this->classifyAction();
-            break;
-
-        case 'classify_file':
-            if (!Current_User::isDeity() || !Current_User::verifyAuthKey()) {
-                Current_User::disallow();
-            }
-
-            $this->loadForms();
-            if (!empty($_POST['file_list'])) {
-                $this->forms->classifyFile($_POST['file_list']);
-            } elseif (isset($_GET['file'])) {
-                $this->forms->classifyFile($_GET['file']);
-            } else {
-                $this->forms->classifyFileList();
-            }
-            break;
-
-        case 'post_classifications':
-            if (!Current_User::isDeity()) {
-                Current_User::errorPage();
-            }
-
-            $result = $this->classifyFiles();
-            if (is_array($result)) {
-                $this->message = implode('<br />', $result);
-            }
-            $this->loadForms();
-            $this->forms->classifyFileList();
-            break;
-
-        case 'unpin':
-            if (!Current_User::authorized('filecabinet')) {
-                Current_User::disallow();
-            }
-
-            Cabinet::unpinFolder();
-            PHPWS_Core::goBack();
-            break;
-
-        case 'pin_form':
-            $javascript = true;
-            @$key_id = (int)$_GET['key_id'];
-            if (!$key_id) {
-                javascript('close_refresh', array('refresh'=>0));
+            case 'fck_image_data':
+                $this->fckImageResult($_GET['id']);
                 break;
-            }
 
-            $this->loadForms();
-            $this->forms->pinFolder($key_id);
-            break;
+            case 'fck_resize_data':
+                $this->fckResizeResult($_GET['id']);
+                break;
 
-        case 'delete_folder':
-            if (!Current_User::authorized('filecabinet', 'delete_folders', null, null, true)) {
-                Current_User::disallow();
-            }
-            $this->loadFolder();
-            $this->folder->delete();
-            PHPWS_Core::goBack();
-            break;
+            case 'fck_document_data':
+                $this->fckDocumentResult($_GET['id']);
+                break;
 
-        case 'delete_incoming':
-            if (!Current_User::isDeity()) {
-                Current_User::errorPage();
-            }
+            case 'fck_media_data':
+                $this->fckMediaResult($_GET['id']);
+                break;
 
-            $this->deleteIncoming();
-            $this->loadForms();
-            $this->forms->classifyFileList();
-            break;
 
-        case 'document':
-            $this->panel->setCurrentTab('document');
-            $this->title = dgettext('filecabinet', 'Document folders');
-            $this->loadForms();
-            $this->forms->getFolders(DOCUMENT_FOLDER);
-            break;
+            case 'fckeditor':
+                $this->fckEditor();
+                break;
 
-        case 'edit_folder':
-            $javascript = true;
-            $this->loadFolder();
-            // permission check in function below
-            $this->editFolder();
-            break;
+            case 'fck_img_folders':
+                $this->fckFolders(IMAGE_FOLDER);
+                break;
 
-        case 'change_tn':
-            $javascript = true;
-            $this->changeTN();
-            break;
+            case 'fck_doc_folders':
+                $this->fckFolders(DOCUMENT_FOLDER);
+                break;
 
-        case 'post_thumbnail':
-            $javascript = true;
-            if ($this->postTN()) {
-                javascript('close_refresh');
-            } else {
-                $this->message = dgettext('filecabinet', 'Could not save thumbnail image.');
-                $this->changeTN();
-            }
-            break;
+            case 'fck_mm_folders':
+                $this->fckFolders(MULTIMEDIA_FOLDER);
+                break;
 
-        case 'post_folder':
-            $this->loadFolder();
+            case 'fck_images':
+                $this->fckImages();
+                break;
 
-            if (!Current_User::authorized('filecabinet', 'edit_folders')) {
-                Current_User::disallow();
-            }
+            case 'fck_documents':
+                $this->fckDocuments();
+                break;
 
-            if ($this->folder->post()) {
-                if (!$this->folder->save()) {
-                    Layout::nakedDisplay(dgettext('filecabinet', 'Failed to create folder. Please check your logs.'));
-                } else {
-                    Layout::nakedDisplay(javascript('close_refresh'));
+            case 'fck_multimedia':
+                $this->fckMultimedia();
+                break;
+
+            case 'image':
+                $this->panel->setCurrentTab('image');
+                $this->title = dgettext('filecabinet', 'Image folders');
+                $this->loadForms();
+                $this->forms->getFolders(IMAGE_FOLDER);
+                break;
+
+            case 'multimedia':
+                $this->panel->setCurrentTab('multimedia');
+                $this->title = dgettext('filecabinet', 'Multimedia folders');
+                $this->loadForms();
+                $this->forms->getFolders(MULTIMEDIA_FOLDER);
+                break;
+
+            case 'add_folder':
+                if (!Current_User::allow('filecabinet', 'edit_folders',null, null, true)) {
+                    Current_User::disallow();
                 }
-            } else {
-                $this->message = $this->folder->_error;
+                $javascript = true;
+                $this->loadFolder();
                 $this->addFolder();
-            }
-            break;
+                break;
 
-        case 'post_allowed_files':
-            if (!Current_User::isDeity()) {
-                Current_User::disallow();
-            }
+            case 'pin_folder':
+                if (!Current_User::authorized('filecabinet', 'edit_folders')) {
+                    Current_User::disallow();
+                }
 
-            $this->loadForms();
-            $this->forms->postAllowedFiles();
+                $javascript = true;
+                $this->pinFolder();
+                javascript('close_refresh');
+                break;
 
-            $this->message = dgettext('filecabinet', 'File types saved.');
-            $this->title = dgettext('filecabinet', 'Allowed file types');
-            $this->content = $this->forms->fileTypes();
-            break;
+            case 'classify':
+                if (!Current_User::isDeity()) {
+                    Current_User::errorPage();
+                }
+                $this->loadForms();
+                $this->forms->classifyFileList();
+                break;
 
-        case 'save_settings':
-            if (!Current_User::isDeity()) {
-                Current_User::disallow();
-            }
-            $this->loadForms();
-            $result = $this->forms->saveSettings();
-            if (is_array($result)) {
-                $this->message = implode('<br />', $result);
-            } else {
-                $this->message = dgettext('filecabinet', 'Settings saved.');
-            }
+            case 'classify_action':
+                if (!Current_User::isDeity() || !Current_User::verifyAuthKey()) {
+                    Current_User::errorPage();
+                }
 
-        case 'settings':
-            if (!Current_User::isDeity()) {
-                Current_User::disallow();
-            }
-            $this->loadForms();
-            $this->title = dgettext('filecabinet', 'Settings');
-            $this->content = $this->forms->settings();
-            break;
+                $this->classifyAction();
+                break;
 
-        case 'view_folder':
-            $this->viewFolder();
-            break;
+            case 'classify_file':
+                if (!Current_User::isDeity() || !Current_User::verifyAuthKey()) {
+                    Current_User::disallow();
+                }
 
-        case 'file_types':
-            if (!Current_User::isDeity()) {
-                Current_User::disallow();
-            }
-            $this->loadForms();
-            $this->title = dgettext('filecabinet', 'Allowed file types');
-            $this->content = $this->forms->fileTypes();
-            break;
+                $this->loadForms();
+                if (!empty($_POST['file_list'])) {
+                    $this->forms->classifyFile($_POST['file_list']);
+                } elseif (isset($_GET['file'])) {
+                    $this->forms->classifyFile($_GET['file']);
+                } else {
+                    $this->forms->classifyFileList();
+                }
+                break;
 
-        case 'fix_document_dir':
-            if (!Current_User::isDeity() || !Current_User::verifyAuthKey()) {
-                Current_User::disallow();
-            }
+            case 'post_classifications':
+                if (!Current_User::isDeity()) {
+                    Current_User::errorPage();
+                }
 
-            if (strtolower($_GET['confirm']) == 'yes') {
-                $this->fixDocumentDirectories();
-            }
+                $result = $this->classifyFiles();
+                if (is_array($result)) {
+                    $this->message = implode('<br />', $result);
+                }
+                $this->loadForms();
+                $this->forms->classifyFileList();
+                break;
 
-            PHPWS_Core::reroute('index.php?module=filecabinet&tab=settings');
+            case 'unpin':
+                if (!Current_User::authorized('filecabinet')) {
+                    Current_User::disallow();
+                }
+
+                Cabinet::unpinFolder();
+                PHPWS_Core::goBack();
+                break;
+
+            case 'pin_form':
+                $javascript = true;
+                @$key_id = (int)$_GET['key_id'];
+                if (!$key_id) {
+                    javascript('close_refresh', array('refresh'=>0));
+                    break;
+                }
+
+                $this->loadForms();
+                $this->forms->pinFolder($key_id);
+                break;
+
+            case 'delete_folder':
+                if (!Current_User::authorized('filecabinet', 'delete_folders', null, null, true)) {
+                    Current_User::disallow();
+                }
+                $this->loadFolder();
+                $this->folder->delete();
+                PHPWS_Core::goBack();
+                break;
+
+            case 'delete_incoming':
+                if (!Current_User::isDeity()) {
+                    Current_User::errorPage();
+                }
+
+                $this->deleteIncoming();
+                $this->loadForms();
+                $this->forms->classifyFileList();
+                break;
+
+            case 'document':
+                $this->panel->setCurrentTab('document');
+                $this->title = dgettext('filecabinet', 'Document folders');
+                $this->loadForms();
+                $this->forms->getFolders(DOCUMENT_FOLDER);
+                break;
+
+            case 'edit_folder':
+                $javascript = true;
+                $this->loadFolder();
+                // permission check in function below
+                $this->editFolder();
+                break;
+
+            case 'change_tn':
+                $javascript = true;
+                $this->changeTN();
+                break;
+
+            case 'post_thumbnail':
+                $javascript = true;
+                if ($this->postTN()) {
+                    javascript('close_refresh');
+                } else {
+                    $this->message = dgettext('filecabinet', 'Could not save thumbnail image.');
+                    $this->changeTN();
+                }
+                break;
+
+            case 'post_folder':
+                $this->loadFolder();
+
+                if (!Current_User::authorized('filecabinet', 'edit_folders')) {
+                    Current_User::disallow();
+                }
+
+                if ($this->folder->post()) {
+                    if (!$this->folder->save()) {
+                        Layout::nakedDisplay(dgettext('filecabinet', 'Failed to create folder. Please check your logs.'));
+                    } else {
+                        Layout::nakedDisplay(javascript('close_refresh'));
+                    }
+                } else {
+                    $this->message = $this->folder->_error;
+                    $this->addFolder();
+                }
+                break;
+
+            case 'post_allowed_files':
+                if (!Current_User::isDeity()) {
+                    Current_User::disallow();
+                }
+
+                $this->loadForms();
+                $this->forms->postAllowedFiles();
+
+                $this->message = dgettext('filecabinet', 'File types saved.');
+                $this->title = dgettext('filecabinet', 'Allowed file types');
+                $this->content = $this->forms->fileTypes();
+                break;
+
+            case 'save_settings':
+                if (!Current_User::isDeity()) {
+                    Current_User::disallow();
+                }
+                $this->loadForms();
+                $result = $this->forms->saveSettings();
+                if (is_array($result)) {
+                    $this->message = implode('<br />', $result);
+                } else {
+                    $this->message = dgettext('filecabinet', 'Settings saved.');
+                }
+
+            case 'settings':
+                if (!Current_User::isDeity()) {
+                    Current_User::disallow();
+                }
+                $this->loadForms();
+                $this->title = dgettext('filecabinet', 'Settings');
+                $this->content = $this->forms->settings();
+                break;
+
+            case 'view_folder':
+                $this->viewFolder();
+                break;
+
+            case 'file_types':
+                if (!Current_User::isDeity()) {
+                    Current_User::disallow();
+                }
+                $this->loadForms();
+                $this->title = dgettext('filecabinet', 'Allowed file types');
+                $this->content = $this->forms->fileTypes();
+                break;
+
+            case 'fix_document_dir':
+                if (!Current_User::isDeity() || !Current_User::verifyAuthKey()) {
+                    Current_User::disallow();
+                }
+
+                if (strtolower($_GET['confirm']) == 'yes') {
+                    $this->fixDocumentDirectories();
+                }
+
+                PHPWS_Core::reroute('index.php?module=filecabinet&tab=settings');
         }
 
         $template['TITLE']   = &$this->title;
@@ -499,17 +499,17 @@ class Cabinet {
         }
 
         switch($op) {
-        case 'view_folder':
-            $this->userViewFolder();
-            break;
+            case 'view_folder':
+                $this->userViewFolder();
+                break;
 
-        case 'fetch_media':
-            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
-            $id = str_replace('fckvideo-', '', $_GET['mid']);
-            $media = new PHPWS_Multimedia($id);
-            echo $media->getTag();
-            exit();
-            break;
+            case 'fetch_media':
+                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+                $id = str_replace('fckvideo-', '', $_GET['mid']);
+                $media = new PHPWS_Multimedia($id);
+                echo $media->getTag();
+                exit();
+                break;
         }
 
         $template['TITLE']   = $this->title;
@@ -577,11 +577,11 @@ class Cabinet {
 
             if (!empty($next_img)) {
                 $next_link = sprintf('<img src="images/mod/filecabinet/arrow_right.png" title="%s" alt="%s" />',
-                                     dgettext('filecabinet', 'Next image'),
-                                     dgettext('filecabinet', 'Next image'));
+                dgettext('filecabinet', 'Next image'),
+                dgettext('filecabinet', 'Next image'));
                 $tpl['NEXT'] = sprintf('<a id="next-link" href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(),
-                                       $next_img[0]->popupAddress(),
-                                       $next_link);
+                $next_img[0]->popupAddress(),
+                $next_link);
 
             }
 
@@ -594,12 +594,12 @@ class Cabinet {
 
             if (!empty($prev_img)) {
                 $prev_link = sprintf('<img src="images/mod/filecabinet/arrow_left.png" title="%s" alt="%s" />',
-                                     dgettext('filecabinet', 'Previous image'),
-                                     dgettext('filecabinet', 'Previous image'));
+                dgettext('filecabinet', 'Previous image'),
+                dgettext('filecabinet', 'Previous image'));
 
                 $tpl['PREV'] = sprintf('<a id="prev-link" href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(),
-                                       $prev_img[0]->popupAddress(),
-                                       $prev_link);
+                $prev_img[0]->popupAddress(),
+                $prev_link);
             }
         }
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'image_view.tpl');
@@ -827,17 +827,17 @@ class Cabinet {
 
             // initialize a new file object
             switch ($folder->ftype) {
-            case IMAGE_FOLDER:
-                $file_obj = new PHPWS_Image;
-                break;
+                case IMAGE_FOLDER:
+                    $file_obj = new PHPWS_Image;
+                    break;
 
-            case DOCUMENT_FOLDER:
-                $file_obj = new PHPWS_Document;
-                break;
+                case DOCUMENT_FOLDER:
+                    $file_obj = new PHPWS_Document;
+                    break;
 
-            case MULTIMEDIA_FOLDER:
-                $file_obj = new PHPWS_Multimedia;
-                break;
+                case MULTIMEDIA_FOLDER:
+                    $file_obj = new PHPWS_Multimedia;
+                    break;
             }
 
             // save the folder id and basic information
@@ -1212,39 +1212,39 @@ class Cabinet {
 
         if ($add_default) {
             $resizes[0] = sprintf(dgettext('filecabinet', 'Default (%spx)'),
-                                  PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
+            PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
         }
 
         switch (1) {
-        case $max_width >= 2000:
-            $resizes[2000] = '2000px';
+            case $max_width >= 2000:
+                $resizes[2000] = '2000px';
 
-        case $max_width >= 1750:
-            $resizes[1750] = '1750px';
+            case $max_width >= 1750:
+                $resizes[1750] = '1750px';
 
-        case $max_width >= 1500:
-            $resizes[1500] = '1500px';
+            case $max_width >= 1500:
+                $resizes[1500] = '1500px';
 
-        case $max_width >= 1250:
-            $resizes[1250] = '1250px';
+            case $max_width >= 1250:
+                $resizes[1250] = '1250px';
 
-        case $max_width >= 1000:
-            $resizes[1000] = '1000px';
+            case $max_width >= 1000:
+                $resizes[1000] = '1000px';
 
-        case $max_width >= 800:
-            $resizes[800] = '800px';
+            case $max_width >= 800:
+                $resizes[800] = '800px';
 
-        case $max_width >= 600:
-            $resizes[600] = '600px';
+            case $max_width >= 600:
+                $resizes[600] = '600px';
 
-        case $max_width >= 300:
-            $resizes[300] = '300px';
+            case $max_width >= 300:
+                $resizes[300] = '300px';
 
-        case $max_width >= 100:
-            $resizes[100] = '100px';
+            case $max_width >= 100:
+                $resizes[100] = '100px';
 
-        case $max_width >= 50:
-            $resizes[50] = '50px';
+            case $max_width >= 50:
+                $resizes[50] = '50px';
         }
 
         return $resizes;
@@ -1311,23 +1311,23 @@ class Cabinet {
         }
 
         switch ($folder->ftype) {
-        case IMAGE_FOLDER:
-            $type = 'image';
-            PHPWS_Core::initModClass('filecabinet', 'Image.php');
-            $class_name = 'PHPWS_Image';
-            break;
+            case IMAGE_FOLDER:
+                $type = 'image';
+                PHPWS_Core::initModClass('filecabinet', 'Image.php');
+                $class_name = 'PHPWS_Image';
+                break;
 
-        case DOCUMENT_FOLDER:
-            $type = 'document';
-            PHPWS_Core::initModClass('filecabinet', 'Document.php');
-            $class_name = 'PHPWS_Document';
-            break;
+            case DOCUMENT_FOLDER:
+                $type = 'document';
+                PHPWS_Core::initModClass('filecabinet', 'Document.php');
+                $class_name = 'PHPWS_Document';
+                break;
 
-        case MULTIMEDIA_FOLDER:
-            $type = 'media';
-            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
-            $class_name = 'PHPWS_Multimedia';
-            break;
+            case MULTIMEDIA_FOLDER:
+                $type = 'media';
+                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+                $class_name = 'PHPWS_Multimedia';
+                break;
         }
 
         $allowed_types = $this->getAllowedTypes($type);
@@ -1336,15 +1336,15 @@ class Cabinet {
             $path = $classify_dir . $filename;
             $ext = PHPWS_File::getFileExtension($filename);
             if ($this->fileTypeAllowed($path, $type) &&
-                PHPWS_File::checkMimeType($path) &&
-                in_array($ext, $allowed_types)) {
+            PHPWS_File::checkMimeType($path) &&
+            in_array($ext, $allowed_types)) {
                 $file_obj = new $class_name;
                 $file_obj->folder_id = $folder->id;
                 $file_obj->setFilename($filename);
                 $file_obj->setTitle(str_replace(".$ext", '', $filename));
                 $file_obj->setDirectory($folder->getFullDirectory());
                 $folder_directory = $file_obj->getPath();
-                
+
                 if (!@rename($path, $folder_directory)) {
                     PHPWS_Error::log(FC_FILE_MOVE, 'filecabinet', 'Cabinet::classifyIntoFolder', $folder_directory);
                     continue;
@@ -1414,7 +1414,7 @@ class Cabinet {
                 echo dgettext('filecabinet', 'Could not pull document folders.');
             } else {
                 echo dgettext('filecabinet', 'Could not pull multimedia folders.');
-            } 
+            }
             exit();
         }
 
@@ -1473,7 +1473,7 @@ class Cabinet {
             $sub['TN'] = $image->getThumbnail();
             $sub['PIC'] = sprintf('<a class="oc show-thumb">%s</a>', $mouseover);
             $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'image\', \'%s\')">%s</a> <span class="smaller">(%sx%s)</span>',
-                                    $image->id, $image->title, $image->width, $image->height);
+            $image->id, $image->title, $image->width, $image->height);
             $tpl['images'][] = $sub;
         }
 
@@ -1513,18 +1513,18 @@ class Cabinet {
     public function fckMediaResult($id)
     {
         PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
-        
-        $media = new PHPWS_Multimedia($id);
+
+        //$media = new PHPWS_Multimedia($id);
         /*
-         If the extension exists, we send a tag instead. Otherwise, 
-         FCKeditor will strip object and script tags from the display mode
-         You can protect the object tag but then it won't display in the editor,
-         likely confusing the users.
-        */
-        echo sprintf('<img style="border : 2px solid black" class="fck-video-insert" src="%s%s" id="fckvideo-%s" title="%s" />',
-                     PHPWS_Core::getHomeHttp(),
-                     $media->thumbnailPath(),
-                     $id, sprintf(dgettext('filecabinet', 'Click to view video: %s'), $media->getTitle()));
+        FCKEditor does not play nice with embeds objects etc.
+         */
+        printf('[filecabinet:media:%s]', $id);
+        /*
+         echo sprintf('<img style="border : 2px solid black" class="fck-video-insert" src="%s%s" id="fckvideo-%s" title="%s" />',
+         PHPWS_Core::getHomeHttp(),
+         $media->thumbnailPath(),
+         $id, sprintf(dgettext('filecabinet', 'Click to view video: %s'), $media->getTitle()));
+         */
         exit();
     }
 
@@ -1546,9 +1546,9 @@ class Cabinet {
         } else {
             foreach ($result as $doc) {
                 $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'document\', \'%s\')">%s</a>',
-                                        $doc->id, $doc->title);
+                $doc->id, $doc->title);
                 $sub['ICON'] = sprintf('<a class="oc" onclick="insertHTML(\'document\', \'%s\')">%s</a>',
-                                        $doc->id, $doc->getIconView('small_icon'));
+                $doc->id, $doc->getIconView('small_icon'));
 
                 $tpl['documents'][] = $sub;
             }
@@ -1575,7 +1575,7 @@ class Cabinet {
         } else {
             foreach ($result as $mm) {
                 $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'media\', \'%s\')">%s</a>',
-                                        $mm->id, $mm->title);
+                $mm->id, $mm->title);
                 $tpl['multimedia'][] = $sub;
             }
         }
@@ -1592,7 +1592,7 @@ class Cabinet {
         $db->addWhere('file_type', 7, null, null, 'x');
         $db->addWhere('file_type', 9, null, 'or', 'x');
         $db->addColumn('id');
-        
+
         return $db->select('col');
     }
 
