@@ -1,7 +1,8 @@
++ Added trim to ffmpeg file directory
 + Added description to search for files
 + FCKeditor media insertion had problems with any media other than
   YouTube embeds. New script was written to place a bookmark image for
-  the media which is replaced on page load via jquery ajax.
+  the media which is replaced on a click via jquery ajax.
 + updated files: javascript/fck_video_replace,
   javascript/fckeditor/head.js,
   templates/filters/media/mediaplayer.swf

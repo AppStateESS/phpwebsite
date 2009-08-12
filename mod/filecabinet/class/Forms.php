@@ -761,7 +761,7 @@ If you are sure, type Y-E-S below.'),
             }
         }
 
-        $ffmpeg_dir = strip_tags($_POST['ffmpeg_directory']);
+        $ffmpeg_dir = trim(strip_tags($_POST['ffmpeg_directory']));
         if (empty($ffmpeg_dir)) {
             PHPWS_Settings::set('filecabinet', 'ffmpeg_directory', null);
             PHPWS_Settings::set('filecabinet', 'use_ffmpeg', 0);

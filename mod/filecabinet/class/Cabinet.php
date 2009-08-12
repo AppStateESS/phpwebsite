@@ -1521,10 +1521,10 @@ class Cabinet {
          You can protect the object tag but then it won't display in the editor,
          likely confusing the users.
         */
-        echo sprintf('<img class="fck-video-insert" src="%s%s" width="%s" height="%s" id="fckvideo-%s" title="%s" />',
+        echo sprintf('<img style="border : 2px solid black" class="fck-video-insert" src="%s%s" id="fckvideo-%s" title="%s" />',
                      PHPWS_Core::getHomeHttp(),
                      $media->thumbnailPath(),
-                     $media->width, $media->height, $id, $media->getTitle());
+                     $id, sprintf(dgettext('filecabinet', 'Click to view video: %s'), $media->getTitle()));
         exit();
     }
 
