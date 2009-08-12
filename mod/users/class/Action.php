@@ -15,7 +15,7 @@ PHPWS_Core::initModClass('users', 'Form.php');
 
 if (!defined('ALLOW_DEITY_FORGET')) {
     define('ALLOW_DEITY_FORGET', false);
- }
+}
 
 class User_Action {
 
@@ -54,391 +54,389 @@ class User_Action {
         switch ($command) {
             /** Form cases **/
             /** User Forms **/
-        case 'new_user':
-            $panel->setCurrentTab('new_user');
-            $title = dgettext('users', 'Create User');
-            $content = User_Form::userForm($user);
-            break;
-
-        case 'manage_users':
-            $title = dgettext('users', 'Manage Users');
-            $content = User_Form::manageUsers();
-            break;
-
-        case 'demographics':
-            $content = User_Form::demographics();
-            break;
-
-        case 'editUser':
-            $title = dgettext('users', 'Edit User');
-            $user = new PHPWS_User($_REQUEST['user_id']);
-            $content = User_Form::userForm($user);
-            break;
-
-        case 'notify_user':
-            if (!User_Action::notifyUser()) {
-                $message = dgettext('users', 'Failed to send notification email.');
-            } else {
-                $message = dgettext('users', 'User created and notified.');
-            }
-            $user_id = $_SESSION['New_User']['user_id'];
-            unset($_SESSION['New_User']);
-            User_Action::sendMessage($message, 'setUserPermissions&user_id=' . $user_id);
-            break;
-
-        case 'do_not_notify':
-            $user_id = $_SESSION['New_User']['user_id'];
-            unset($_SESSION['New_User']);
-            User_Action::sendMessage(dgettext('users', 'User created.'), 'setUserPermissions&user_id=' . $user_id);
-            break;
-
-        case 'deleteUser':
-            if (!Current_User::secured('users', 'delete_users')) {
-                Current_User::disallow();
-                return;
-            }
-            $user->kill();
-            PHPWS_Core::goBack();
-            break;
-
-        case 'deify_user':
-            if (!Current_User::authorized('users') ||
-                !Current_User::isDeity()) {
-                Current_User::disallow();
-                return;
-            }
-            $user->deity = 1;
-            $user->save();
-            PHPWS_Core::goBack();
-            break;
-
-        case 'mortalize_user':
-            if (!Current_User::authorized('users') ||
-                !Current_User::isDeity()) {
-                Current_User::disallow();
-                return;
-            }
-            $user->deity = 0;
-            $user->save();
-            PHPWS_Core::goBack();
-            break;
-
-
-        case 'authorization':
-        case 'postAuthorization':
-        case 'dropAuthScript':
-
-            if (!Current_User::authorized('users', 'settings')) {
-                Current_User::disallow();
-                return;
-            }
-
-            if ($command == 'dropAuthScript' && isset($_REQUEST['script_id'])) {
-                User_Action::dropAuthorization($_REQUEST['script_id']);
-            } elseif ($command == 'postAuthorization') {
-                User_Action::postAuthorization();
-                $message = dgettext('users', 'Authorization updated.');
-            }
-            $title = dgettext('users', 'Authorization');
-            $content = User_Form::authorizationSetup();
-            break;
-
-        case 'editScript':
-            $title = dgettext('users', 'Edit Authorization Script');
-            // no reason to edit scripts yet
-            break;
-
-        case 'setUserPermissions':
-            if (!Current_User::authorized('users', 'edit_permissions')){
-                PHPWS_User::disallow();
-                return;
-            }
-
-            if (!$user->id) {
-                PHPWS_Core::errorPage('404');
-            }
-
-            PHPWS_Core::initModClass('users', 'Group.php');
-            $title = dgettext('users', 'Set User Permissions') . ' : ' . $user->getUsername();
-            $content = User_Form::setPermissions($user->getUserGroup());
-            break;
-
-        case 'deactivateUser':
-            if (!Current_User::authorized('users')){
-                PHPWS_User::disallow();
-                return;
-            }
-
-            User_Action::activateUser($_REQUEST['user_id'], false);
-            PHPWS_Core::goBack();
-            break;
-
-        case 'activateUser':
-            if (!Current_User::authorized('users')){
-                PHPWS_User::disallow();
-                return;
-            }
-
-            User_Action::activateUser($_REQUEST['user_id'], true);
-            PHPWS_Core::goBack();
-            break;
-
-            /** End User Forms **/
-
-            /********************** Group Forms ************************/
-
-        case 'setGroupPermissions':
-            if (!Current_User::authorized('users', 'edit_permissions')){
-                PHPWS_User::disallow();
-                return;
-            }
-
-            PHPWS_Core::initModClass('users', 'Group.php');
-            $title = dgettext('users', 'Set Group Permissions') .' : '. $group->getName();
-            $content = User_Form::setPermissions($_REQUEST['group_id'], 'group');
-            break;
-
-
-        case 'new_group':
-            $title = dgettext('users', 'Create Group');
-            $content = User_Form::groupForm($group);
-            break;
-
-        case 'edit_group':
-            $title = dgettext('users', 'Edit Group');
-            $content = User_Form::groupForm($group);
-            break;
-
-        case 'remove_group':
-            $group->kill();
-            $title = dgettext('users', 'Manage Groups');
-            $content = User_Form::manageGroups();
-            break;
-
-        case 'manage_groups':
-            $panel->setCurrentTab('manage_groups');
-            PHPWS_Core::killSession('Last_Member_Search');
-            $title = dgettext('users', 'Manage Groups');
-            $content = User_Form::manageGroups();
-            break;
-
-        case 'manageMembers':
-            PHPWS_Core::initModClass('users', 'Group.php');
-            $title = dgettext('users', 'Manage Members') . ' : ' . $group->getName();
-            $content = User_Form::manageMembers($group);
-            break;
-
-        case 'postMembers':
-            if (!Current_User::authorized('users', 'add_edit_groups')) {
-                Current_User::disallow();
-                return;
-            }
-
-            $title = dgettext('users', 'Manage Members') . ' : ' . $group->getName();
-            $content = User_Form::manageMembers($group);
-            break;
-
-            /************************* End Group Forms *******************/
-
-            /************************* Misc Forms ************************/
-        case 'settings':
-            if (!Current_User::authorized('users', 'settings')) {
-                Current_User::disallow();
-                return;
-            }
-
-            $title = dgettext('users', 'Settings');
-            $content = User_Form::settings();
-            break;
-
-            /** End Misc Forms **/
-
-            /** Action cases **/
-        case 'deify':
-            if (!Current_User::isDeity()) {
-                Current_User::disallow();
-                return;
-            }
-            $user = new PHPWS_User($_REQUEST['user']);
-            if (isset($_GET['authorize'])){
-                if ($_GET['authorize'] == 1 && Current_User::isDeity()){
-                    $user->setDeity(true);
-                    $user->save();
-                    User_Action::sendMessage(dgettext('users', 'User deified.'), 'manage_users');
-                    break;
-                } else {
-                    User_Action::sendMessage(dgettext('users', 'User remains a lowly mortal.'), 'manage_users');
-                    break;
-                }
-            } else
-                $content = User_Form::deify($user);
-            break;
-
-        case 'mortalize':
-            if (!Current_User::isDeity()) {
-                Current_User::disallow();
-                return;
-            }
-
-            $user = new PHPWS_User($_REQUEST['user']);
-            if (isset($_GET['authorize'])){
-                if ($_GET['authorize'] == 1 && Current_User::isDeity()){
-                    $user->setDeity(false);
-                    $user->save();
-                    $content = dgettext('users', 'User transformed into a lowly mortal.') . '<hr />' . User_Form::manageUsers();
-                    break;
-                } else {
-                    $content = dgettext('users', 'User remains a deity.') . '<hr />' . User_Form::manageUsers();
-                    break;
-                }
-            } else
-                $content = User_Form::mortalize($user);
-            break;
-
-        case 'postUser':
-            if (isset($_POST['user_id'])) {
-                if (!Current_User::authorized('users', 'edit_users')) {
-                    PHPWS_User::disallow();
-                    return;
-                }
-            } else {
-                // posting new user
-                if (!Current_User::authorized('users')) {
-                    PHPWS_User::disallow();
-                    return;
-                }
-            }
-
-            $result = User_Action::postUser($user);
-
-            if ($result === true){
-                $new_user = !(bool)$user->id;
-
-                $user->setActive(true);
-                $user->setApproved(true);
-                if (PHPWS_Error::logIfError($user->save())) {
-                    $title = dgettext('users', 'Sorry');
-                    $content = dgettext('users', 'An error occurred when trying to save the user. Check your logs.');
-                    break;
-                }
-
-                if ($new_user) {
-                    User_Action::assignDefaultGroup($user);
-                }
-
-                $panel->setCurrentTab('manage_users');
-
-                if (isset($_POST['user_id'])) {
-                    User_Action::sendMessage(dgettext('users', 'User updated.'), 'manage_users');
-                } elseif (Current_User::allow('users', 'edit_permissions')) {
-                    $title = dgettext('users', 'Notify user');
-                    $content = User_Action::askNotify($user);
-
-                } else {
-                    User_Action::sendMessage(dgettext('users', 'User created.'), 'new_user');
-                }
-            } else {
-                $message = implode('<br />', $result);
-                if (isset($_POST['user_id'])) {
-                    $title = dgettext('users', 'Edit User');
-                }
-                else {
-                    $title = dgettext('users', 'Create User');
-                }
-
+            case 'new_user':
+                $panel->setCurrentTab('new_user');
+                $title = dgettext('users', 'Create User');
                 $content = User_Form::userForm($user);
-            }
-            break;
+                break;
 
-        case 'postPermission':
-            if (!Current_User::authorized('users', 'edit_permissions')) {
-                PHPWS_User::disallow();
-                return;
-            }
-            User_Action::postPermission();
-            User_Action::sendMessage(dgettext('users', 'Permissions updated'), $panel->getCurrentTab());
-            break;
+            case 'manage_users':
+                $title = dgettext('users', 'Manage Users');
+                $content = User_Form::manageUsers();
+                break;
 
-        case 'postGroup':
-            if (!Current_User::authorized('users', 'add_edit_groups')) {
-                PHPWS_User::disallow();
-                return;
-            }
+            case 'demographics':
+                $content = User_Form::demographics();
+                break;
 
-            PHPWS_Core::initModClass('users', 'Group.php');
-            $result = User_Action::postGroup($group);
+            case 'editUser':
+                $title = dgettext('users', 'Edit User');
+                $user = new PHPWS_User($_REQUEST['user_id']);
+                $content = User_Form::userForm($user);
+                break;
 
-            if (PEAR::isError($result)){
-                $message = $result->getMessage();
-                $title = isset($group->id) ? dgettext('users', 'Edit Group') : dgettext('users', 'Create Group');
-                $content = User_form::groupForm($group);
-            } else {
-                $result = $group->save();
-
-                if (PHPWS_Error::logIfError($result)) {
-                    $message = dgettext('users', 'An error occurred when trying to save the group.');
+            case 'notify_user':
+                if (!User_Action::notifyUser()) {
+                    $message = dgettext('users', 'Failed to send notification email.');
                 } else {
-                    $message = dgettext('users', 'Group created.');
+                    $message = dgettext('users', 'User created and notified.');
                 }
-                User_Action::sendMessage($message, 'manage_groups');
-            }
-            break;
+                $user_id = $_SESSION['New_User']['user_id'];
+                unset($_SESSION['New_User']);
+                User_Action::sendMessage($message, 'setUserPermissions&user_id=' . $user_id);
+                break;
+
+            case 'do_not_notify':
+                $user_id = $_SESSION['New_User']['user_id'];
+                unset($_SESSION['New_User']);
+                User_Action::sendMessage(dgettext('users', 'User created.'), 'setUserPermissions&user_id=' . $user_id);
+                break;
+
+            case 'deleteUser':
+                if (!Current_User::secured('users', 'delete_users')) {
+                    Current_User::disallow();
+                    return;
+                }
+                $user->kill();
+                PHPWS_Core::goBack();
+                break;
+
+            case 'deify_user':
+                if (!Current_User::authorized('users') ||
+                !Current_User::isDeity()) {
+                    Current_User::disallow();
+                    return;
+                }
+                $user->deity = 1;
+                $user->save();
+                PHPWS_Core::goBack();
+                break;
+
+            case 'mortalize_user':
+                if (!Current_User::authorized('users') ||
+                !Current_User::isDeity()) {
+                    Current_User::disallow();
+                    return;
+                }
+                $user->deity = 0;
+                $user->save();
+                PHPWS_Core::goBack();
+                break;
 
 
-        case 'addMember':
-            if (!Current_User::authorized('users', 'add_edit_groups')) {
-                PHPWS_User::disallow();
-                return;
-            }
+            case 'authorization':
+            case 'postAuthorization':
+            case 'dropAuthScript':
+                if (!Current_User::isDeity()) {
+                    Current_User::disallow();
+                }
 
-            PHPWS_Core::initModClass('users', 'Group.php');
-            $group->addMember($_REQUEST['member']);
-            $group->save();
-            unset($_SESSION['Last_Member_Search']);
-            User_Action::sendMessage(dgettext('users', 'Member added.'), 'manageMembers&group_id=' . $group->id);
-            break;
+                if ($command == 'dropAuthScript' && isset($_REQUEST['script_id'])) {
+                    User_Action::dropAuthorization($_REQUEST['script_id']);
+                } elseif ($command == 'postAuthorization') {
+                    User_Action::postAuthorization();
+                    $message = dgettext('users', 'Authorization updated.');
+                }
+                $title = dgettext('users', 'Authorization');
+                $content = User_Form::authorizationSetup();
+                break;
 
-        case 'dropMember':
-            if (!Current_User::authorized('users', 'add_edit_groups')) {
-                PHPWS_User::disallow();
-                return;
-            }
+            case 'editScript':
+                $title = dgettext('users', 'Edit Authorization Script');
+                // no reason to edit scripts yet
+                break;
 
-            PHPWS_Core::initModClass('users', 'Group.php');
-            $group->dropMember($_REQUEST['member']);
-            $group->save();
-            unset($_SESSION['Last_Member_Search']);
-            User_Action::sendMessage(dgettext('users', 'Member removed.'), 'manageMembers&group_id=' . $group->id);
-            break;
+            case 'setUserPermissions':
+                if (!Current_User::authorized('users', 'edit_permissions')){
+                    PHPWS_User::disallow();
+                    return;
+                }
 
-        case 'update_settings':
-            if (!Current_User::authorized('users', 'settings')) {
-                PHPWS_User::disallow();
-                return;
-            }
-            $title = dgettext('users', 'Settings');
+                if (!$user->id) {
+                    PHPWS_Core::errorPage('404');
+                }
 
-            $result = User_Action::update_settings();
-            if ($result === true) {
-                $message = dgettext('users', 'User settings updated.');
-            } else {
-                $message = $result;
-            }
-            $content = User_Form::settings();
-            break;
+                PHPWS_Core::initModClass('users', 'Group.php');
+                $title = dgettext('users', 'Set User Permissions') . ' : ' . $user->getUsername();
+                $content = User_Form::setPermissions($user->getUserGroup());
+                break;
 
-        case 'check_permission_tables':
-            if (!Current_User::authorized('users', 'settings')) {
-                PHPWS_User::disallow();
-                return;
-            }
-            $title = dgettext('users', 'Register Module Permissions');
-            $content = User_Action::checkPermissionTables();
-            break;
+            case 'deactivateUser':
+                if (!Current_User::authorized('users')){
+                    PHPWS_User::disallow();
+                    return;
+                }
 
-        default:
-            PHPWS_Core::errorPage('404');
-            break;
+                User_Action::activateUser($_REQUEST['user_id'], false);
+                PHPWS_Core::goBack();
+                break;
+
+            case 'activateUser':
+                if (!Current_User::authorized('users')){
+                    PHPWS_User::disallow();
+                    return;
+                }
+
+                User_Action::activateUser($_REQUEST['user_id'], true);
+                PHPWS_Core::goBack();
+                break;
+
+                /** End User Forms **/
+
+                /********************** Group Forms ************************/
+
+            case 'setGroupPermissions':
+                if (!Current_User::authorized('users', 'edit_permissions')){
+                    PHPWS_User::disallow();
+                    return;
+                }
+
+                PHPWS_Core::initModClass('users', 'Group.php');
+                $title = dgettext('users', 'Set Group Permissions') .' : '. $group->getName();
+                $content = User_Form::setPermissions($_REQUEST['group_id'], 'group');
+                break;
+
+
+            case 'new_group':
+                $title = dgettext('users', 'Create Group');
+                $content = User_Form::groupForm($group);
+                break;
+
+            case 'edit_group':
+                $title = dgettext('users', 'Edit Group');
+                $content = User_Form::groupForm($group);
+                break;
+
+            case 'remove_group':
+                $group->kill();
+                $title = dgettext('users', 'Manage Groups');
+                $content = User_Form::manageGroups();
+                break;
+
+            case 'manage_groups':
+                $panel->setCurrentTab('manage_groups');
+                PHPWS_Core::killSession('Last_Member_Search');
+                $title = dgettext('users', 'Manage Groups');
+                $content = User_Form::manageGroups();
+                break;
+
+            case 'manageMembers':
+                PHPWS_Core::initModClass('users', 'Group.php');
+                $title = dgettext('users', 'Manage Members') . ' : ' . $group->getName();
+                $content = User_Form::manageMembers($group);
+                break;
+
+            case 'postMembers':
+                if (!Current_User::authorized('users', 'add_edit_groups')) {
+                    Current_User::disallow();
+                    return;
+                }
+
+                $title = dgettext('users', 'Manage Members') . ' : ' . $group->getName();
+                $content = User_Form::manageMembers($group);
+                break;
+
+                /************************* End Group Forms *******************/
+
+                /************************* Misc Forms ************************/
+            case 'settings':
+                if (!Current_User::authorized('users', 'settings')) {
+                    Current_User::disallow();
+                    return;
+                }
+
+                $title = dgettext('users', 'Settings');
+                $content = User_Form::settings();
+                break;
+
+                /** End Misc Forms **/
+
+                /** Action cases **/
+            case 'deify':
+                if (!Current_User::isDeity()) {
+                    Current_User::disallow();
+                    return;
+                }
+                $user = new PHPWS_User($_REQUEST['user']);
+                if (isset($_GET['authorize'])){
+                    if ($_GET['authorize'] == 1 && Current_User::isDeity()){
+                        $user->setDeity(true);
+                        $user->save();
+                        User_Action::sendMessage(dgettext('users', 'User deified.'), 'manage_users');
+                        break;
+                    } else {
+                        User_Action::sendMessage(dgettext('users', 'User remains a lowly mortal.'), 'manage_users');
+                        break;
+                    }
+                } else
+                $content = User_Form::deify($user);
+                break;
+
+            case 'mortalize':
+                if (!Current_User::isDeity()) {
+                    Current_User::disallow();
+                    return;
+                }
+
+                $user = new PHPWS_User($_REQUEST['user']);
+                if (isset($_GET['authorize'])){
+                    if ($_GET['authorize'] == 1 && Current_User::isDeity()){
+                        $user->setDeity(false);
+                        $user->save();
+                        $content = dgettext('users', 'User transformed into a lowly mortal.') . '<hr />' . User_Form::manageUsers();
+                        break;
+                    } else {
+                        $content = dgettext('users', 'User remains a deity.') . '<hr />' . User_Form::manageUsers();
+                        break;
+                    }
+                } else
+                $content = User_Form::mortalize($user);
+                break;
+
+            case 'postUser':
+                if (isset($_POST['user_id'])) {
+                    if (!Current_User::authorized('users', 'edit_users')) {
+                        PHPWS_User::disallow();
+                        return;
+                    }
+                } else {
+                    // posting new user
+                    if (!Current_User::authorized('users')) {
+                        PHPWS_User::disallow();
+                        return;
+                    }
+                }
+
+                $result = User_Action::postUser($user);
+
+                if ($result === true){
+                    $new_user = !(bool)$user->id;
+
+                    $user->setActive(true);
+                    $user->setApproved(true);
+                    if (PHPWS_Error::logIfError($user->save())) {
+                        $title = dgettext('users', 'Sorry');
+                        $content = dgettext('users', 'An error occurred when trying to save the user. Check your logs.');
+                        break;
+                    }
+
+                    if ($new_user) {
+                        User_Action::assignDefaultGroup($user);
+                    }
+
+                    $panel->setCurrentTab('manage_users');
+
+                    if (isset($_POST['user_id'])) {
+                        User_Action::sendMessage(dgettext('users', 'User updated.'), 'manage_users');
+                    } elseif (Current_User::allow('users', 'edit_permissions')) {
+                        $title = dgettext('users', 'Notify user');
+                        $content = User_Action::askNotify($user);
+
+                    } else {
+                        User_Action::sendMessage(dgettext('users', 'User created.'), 'new_user');
+                    }
+                } else {
+                    $message = implode('<br />', $result);
+                    if (isset($_POST['user_id'])) {
+                        $title = dgettext('users', 'Edit User');
+                    }
+                    else {
+                        $title = dgettext('users', 'Create User');
+                    }
+
+                    $content = User_Form::userForm($user);
+                }
+                break;
+
+            case 'postPermission':
+                if (!Current_User::authorized('users', 'edit_permissions')) {
+                    PHPWS_User::disallow();
+                    return;
+                }
+                User_Action::postPermission();
+                User_Action::sendMessage(dgettext('users', 'Permissions updated'), $panel->getCurrentTab());
+                break;
+
+            case 'postGroup':
+                if (!Current_User::authorized('users', 'add_edit_groups')) {
+                    PHPWS_User::disallow();
+                    return;
+                }
+
+                PHPWS_Core::initModClass('users', 'Group.php');
+                $result = User_Action::postGroup($group);
+
+                if (PEAR::isError($result)){
+                    $message = $result->getMessage();
+                    $title = isset($group->id) ? dgettext('users', 'Edit Group') : dgettext('users', 'Create Group');
+                    $content = User_form::groupForm($group);
+                } else {
+                    $result = $group->save();
+
+                    if (PHPWS_Error::logIfError($result)) {
+                        $message = dgettext('users', 'An error occurred when trying to save the group.');
+                    } else {
+                        $message = dgettext('users', 'Group created.');
+                    }
+                    User_Action::sendMessage($message, 'manage_groups');
+                }
+                break;
+
+
+            case 'addMember':
+                if (!Current_User::authorized('users', 'add_edit_groups')) {
+                    PHPWS_User::disallow();
+                    return;
+                }
+
+                PHPWS_Core::initModClass('users', 'Group.php');
+                $group->addMember($_REQUEST['member']);
+                $group->save();
+                unset($_SESSION['Last_Member_Search']);
+                User_Action::sendMessage(dgettext('users', 'Member added.'), 'manageMembers&group_id=' . $group->id);
+                break;
+
+            case 'dropMember':
+                if (!Current_User::authorized('users', 'add_edit_groups')) {
+                    PHPWS_User::disallow();
+                    return;
+                }
+
+                PHPWS_Core::initModClass('users', 'Group.php');
+                $group->dropMember($_REQUEST['member']);
+                $group->save();
+                unset($_SESSION['Last_Member_Search']);
+                User_Action::sendMessage(dgettext('users', 'Member removed.'), 'manageMembers&group_id=' . $group->id);
+                break;
+
+            case 'update_settings':
+                if (!Current_User::authorized('users', 'settings')) {
+                    PHPWS_User::disallow();
+                    return;
+                }
+                $title = dgettext('users', 'Settings');
+
+                $result = User_Action::update_settings();
+                if ($result === true) {
+                    $message = dgettext('users', 'User settings updated.');
+                } else {
+                    $message = $result;
+                }
+                $content = User_Form::settings();
+                break;
+
+            case 'check_permission_tables':
+                if (!Current_User::authorized('users', 'settings')) {
+                    PHPWS_User::disallow();
+                    return;
+                }
+                $title = dgettext('users', 'Register Module Permissions');
+                $content = User_Action::checkPermissionTables();
+                break;
+
+            default:
+                PHPWS_Core::errorPage('404');
+                break;
         }
 
         $template['CONTENT'] = $content;
@@ -466,7 +464,7 @@ class User_Action {
         }
 
         if (Current_User::isRestricted($key->module) ||
-            !$key->allowEdit()) {
+        !$key->allowEdit()) {
             javascript('close_refresh', array('location'=>'index.php?module=users&action=user&command=login_page'));
             Layout::nakedDisplay();
         }
@@ -478,7 +476,7 @@ class User_Action {
     public function getPermissionForm(Key $key)
     {
         if (Current_User::isUnrestricted($key->module) &&
-            Current_User::allow($key->module, $key->edit_permission)) {
+        Current_User::allow($key->module, $key->edit_permission)) {
             $tpl = User_Form::permissionMenu($key, true);
 
             return PHPWS_Template::process($tpl, 'users', 'forms/permission_pop.tpl');
@@ -498,7 +496,7 @@ class User_Action {
         }
 
         if (Current_User::isRestricted($key->module) ||
-            !$key->allowEdit()) {
+        !$key->allowEdit()) {
             Current_User::disallow();
         }
 
@@ -536,7 +534,7 @@ class User_Action {
     {
         $_SESSION['User_Admin_Message'] = $message;
         PHPWS_Core::reroute('index.php?module=users&action=admin&command='
-                            . $command . '&authkey=' . Current_User::getAuthKey());
+        . $command . '&authkey=' . Current_User::getAuthKey());
     }
 
     /**
@@ -591,7 +589,7 @@ class User_Action {
     public function confirm()
     {
         if (!PHPWS_User::getUserSetting('graphic_confirm') ||
-            !extension_loaded('gd')) {
+        !extension_loaded('gd')) {
             return true;
         }
 
@@ -609,7 +607,7 @@ class User_Action {
             }
 
             if ( ($user->_prev_username != $user->username) &&
-                 (empty($_POST['password1']) || empty($_POST['password2']))) {
+            (empty($_POST['password1']) || empty($_POST['password2']))) {
                 $error['PASSWORD_ERROR'] = dgettext('users', 'Passwords must be reentered on user name change.');
             }
         }
@@ -638,8 +636,8 @@ class User_Action {
         }
 
         if (Current_User::isLogged() &&
-            Current_User::allow('users', 'settings') &&
-            isset($_POST['authorize'])) {
+        Current_User::allow('users', 'settings') &&
+        isset($_POST['authorize'])) {
             $user->setAuthorize($_POST['authorize']);
         }
 
@@ -664,15 +662,18 @@ class User_Action {
         $tabs['new_user'] = array('title'=>dgettext('users', 'New User'), 'link'=>$link);
 
         if (Current_User::allow('users', 'edit_users') || Current_User::allow('users', 'delete_users'))
-            $tabs['manage_users'] = array('title'=>dgettext('users', 'Manage Users'), 'link'=>$link);
+        $tabs['manage_users'] = array('title'=>dgettext('users', 'Manage Users'), 'link'=>$link);
 
         if (Current_User::allow('users', 'add_edit_groups')){
             $tabs['new_group'] = array('title'=>dgettext('users', 'New Group'), 'link'=>$link);
             $tabs['manage_groups'] = array('title'=>dgettext('users', 'Manage Groups'), 'link'=>$link);
         }
 
-        if (Current_User::allow('users', 'settings')) {
+        if (Current_User::isDeity()) {
             $tabs['authorization'] = array('title'=>dgettext('users', 'Authorization'), 'link'=>$link);
+        }
+
+        if (Current_User::allow('users', 'settings')) {
             $tabs['settings'] = array('title'=>dgettext('users', 'Settings'), 'link'=>$link);
         }
 
@@ -700,167 +701,167 @@ class User_Action {
         }
 
         switch ($command) {
-        case 'login':
-            if ( !Current_User::isLogged() && isset($_POST['phpws_username']) &&
-                 isset($_POST['phpws_password']) ) {
-                $result = Current_User::loginUser($_POST['phpws_username'], $_POST['phpws_password']);
-                // here
+            case 'login':
+                if ( !Current_User::isLogged() && isset($_POST['phpws_username']) &&
+                isset($_POST['phpws_password']) ) {
+                    $result = Current_User::loginUser($_POST['phpws_username'], $_POST['phpws_password']);
+                    // here
 
-                if (!$result) {
-                    $title = dgettext('users', 'Login page');
-                    $message = dgettext('users', 'Username and password combination not found.');
-                    $content = User_Form::loginPage();
-                } elseif(PEAR::isError($result)) {
-                    if (preg_match('/L\d/', $result->code)) {
-                        $title = dgettext('users', 'Sorry');
-                        $content = $result->getMessage();
-                        $content .= ' ' . sprintf('<a href="mailto:%s">%s</a>', PHPWS_User::getUserSetting('site_contact'),
-                                            dgettext('users', 'Contact the site administrator'));
+                    if (!$result) {
+                        $title = dgettext('users', 'Login page');
+                        $message = dgettext('users', 'Username and password combination not found.');
+                        $content = User_Form::loginPage();
+                    } elseif(PEAR::isError($result)) {
+                        if (preg_match('/L\d/', $result->code)) {
+                            $title = dgettext('users', 'Sorry');
+                            $content = $result->getMessage();
+                            $content .= ' ' . sprintf('<a href="mailto:%s">%s</a>', PHPWS_User::getUserSetting('site_contact'),
+                            dgettext('users', 'Contact the site administrator'));
+                        } else {
+                            PHPWS_Error::log($result);
+                            $message = dgettext('users', 'A problem occurred when accessing user information. Please try again later.');
+                        }
                     } else {
-                        PHPWS_Error::log($result);
-                        $message = dgettext('users', 'A problem occurred when accessing user information. Please try again later.');
+                        Current_User::getLogin();
+                        PHPWS_Core::returnToBookmark();
                     }
                 } else {
-                    Current_User::getLogin();
-                    PHPWS_Core::returnToBookmark();
+                    PHPWS_Core::errorPage('403');
                 }
-            } else {
-                PHPWS_Core::errorPage('403');
-            }
-            break;
-
-            // reset user password
-        case 'rp':
-            $user_id = User_Action::checkResetPassword();
-            if ($user_id) {
-                $title = dgettext('users', 'Reset my password');
-                $content = User_Form::resetPassword($user_id, $_GET['auth']);
-            } else {
-                $title = dgettext('users', 'Sorry');
-                $content = dgettext('users', 'Your password request was not found or timed out. Please apply again.');
-            }
-            break;
-
-        case 'my_page':
-            if ($auth->local_user) {
-                PHPWS_Core::initModClass('users', 'My_Page.php');
-                $my_page = new My_Page;
-                $my_page->main();
-            } else {
-                Layout::add(PHPWS_ControlPanel::display(dgettext('users', 'My Page unavailable to remote users.'), 'my_page'));
-            }
-            break;
-
-        case 'signup_user':
-            $title = dgettext('users', 'New Account Sign-up');
-            if (Current_User::isLogged()) {
-                $content = dgettext('users', 'You already have an account.');
                 break;
-            }
-            $user = new PHPWS_User;
-            if (PHPWS_User::getUserSetting('new_user_method') == 0) {
-                $content = dgettext('users', 'Sorry, we are not accepting new users at this time.');
+
+                // reset user password
+            case 'rp':
+                $user_id = User_Action::checkResetPassword();
+                if ($user_id) {
+                    $title = dgettext('users', 'Reset my password');
+                    $content = User_Form::resetPassword($user_id, $_GET['auth']);
+                } else {
+                    $title = dgettext('users', 'Sorry');
+                    $content = dgettext('users', 'Your password request was not found or timed out. Please apply again.');
+                }
                 break;
-            }
-            $content = User_Form::signup_form($user);
-            break;
 
-        case 'submit_new_user':
-            $title = dgettext('users', 'New Account Sign-up');
-            $user_method = PHPWS_User::getUserSetting('new_user_method');
-            if ($user_method == 0) {
-                Current_User::disallow(dgettext('users', 'New user signup not allowed.'));
-                return;
-            }
+            case 'my_page':
+                if ($auth->local_user) {
+                    PHPWS_Core::initModClass('users', 'My_Page.php');
+                    $my_page = new My_Page;
+                    $my_page->main();
+                } else {
+                    Layout::add(PHPWS_ControlPanel::display(dgettext('users', 'My Page unavailable to remote users.'), 'my_page'));
+                }
+                break;
 
-            $user = new PHPWS_User;
-            $result = User_Action::postNewUser($user);
+            case 'signup_user':
+                $title = dgettext('users', 'New Account Sign-up');
+                if (Current_User::isLogged()) {
+                    $content = dgettext('users', 'You already have an account.');
+                    break;
+                }
+                $user = new PHPWS_User;
+                if (PHPWS_User::getUserSetting('new_user_method') == 0) {
+                    $content = dgettext('users', 'Sorry, we are not accepting new users at this time.');
+                    break;
+                }
+                $content = User_Form::signup_form($user);
+                break;
 
-            if (is_array($result)) {
-                $content = User_Form::signup_form($user, $result);
-            } else {
-                $content = User_Action::successfulSignup($user);
-            }
-            break;
+            case 'submit_new_user':
+                $title = dgettext('users', 'New Account Sign-up');
+                $user_method = PHPWS_User::getUserSetting('new_user_method');
+                if ($user_method == 0) {
+                    Current_User::disallow(dgettext('users', 'New user signup not allowed.'));
+                    return;
+                }
 
-        case 'logout':
-            $auth = Current_User::getAuthorization();
-            $auth->logout();
-            PHPWS_Core::killAllSessions();
-            PHPWS_Core::reroute('index.php?module=users&action=reset');
-            break;
+                $user = new PHPWS_User;
+                $result = User_Action::postNewUser($user);
 
-        case 'login_page':
-            if (Current_User::isLogged()) {
-                PHPWS_Core::home();
-            }
-            $title = dgettext('users', 'Login Page');
-            $content = User_Form::loginPage();
-            break;
+                if (is_array($result)) {
+                    $content = User_Form::signup_form($user, $result);
+                } else {
+                    $content = User_Action::successfulSignup($user);
+                }
+                break;
 
-        case 'confirm_user':
-            if (Current_User::isLogged()) {
-                PHPWS_Core::home();
-            }
-            if (User_Action::confirmUser()) {
-                $title = dgettext('users', 'Welcome!');
-                $content = dgettext('users', 'Your account has been successfully activated. Please log in.');
-            } else {
-                $title = dgettext('users', 'Sorry');
-                $content = dgettext('users', 'This authentication does not exist.<br />
+            case 'logout':
+                $auth = Current_User::getAuthorization();
+                $auth->logout();
+                PHPWS_Core::killAllSessions();
+                PHPWS_Core::reroute('index.php?module=users&action=reset');
+                break;
+
+            case 'login_page':
+                if (Current_User::isLogged()) {
+                    PHPWS_Core::home();
+                }
+                $title = dgettext('users', 'Login Page');
+                $content = User_Form::loginPage();
+                break;
+
+            case 'confirm_user':
+                if (Current_User::isLogged()) {
+                    PHPWS_Core::home();
+                }
+                if (User_Action::confirmUser()) {
+                    $title = dgettext('users', 'Welcome!');
+                    $content = dgettext('users', 'Your account has been successfully activated. Please log in.');
+                } else {
+                    $title = dgettext('users', 'Sorry');
+                    $content = dgettext('users', 'This authentication does not exist.<br />
  If you did not log in within the time frame specified in your email, please apply for another account.');
-            }
-            User_Action::cleanUpConfirm();
-            break;
+                }
+                User_Action::cleanUpConfirm();
+                break;
 
-        case 'forgot_password':
-            if (Current_User::isLogged()) {
-                PHPWS_Core::home();
-            }
-            $title = dgettext('users', 'Forgot Password');
-            $content = User_Form::forgotForm();
-            break;
+            case 'forgot_password':
+                if (Current_User::isLogged()) {
+                    PHPWS_Core::home();
+                }
+                $title = dgettext('users', 'Forgot Password');
+                $content = User_Form::forgotForm();
+                break;
 
-        case 'post_forgot':
-            $title = dgettext('users', 'Forgot Password');
-            if (ALLOW_CAPTCHA) {
-                PHPWS_Core::initCoreClass('Captcha.php');
-                if (!Captcha::verify()) {
-                    $content = dgettext('users', 'Captcha information was incorrect.');
-                    $content .= User_Form::forgotForm();
-                } else if (!User_Action::postForgot($content)) {
+            case 'post_forgot':
+                $title = dgettext('users', 'Forgot Password');
+                if (ALLOW_CAPTCHA) {
+                    PHPWS_Core::initCoreClass('Captcha.php');
+                    if (!Captcha::verify()) {
+                        $content = dgettext('users', 'Captcha information was incorrect.');
+                        $content .= User_Form::forgotForm();
+                    } else if (!User_Action::postForgot($content)) {
+                        $content .= User_Form::forgotForm();
+                    }
+                } elseif (!User_Action::postForgot($content)) {
                     $content .= User_Form::forgotForm();
                 }
-            } elseif (!User_Action::postForgot($content)) {
-                    $content .= User_Form::forgotForm();
-            }
 
-            break;
-
-        case 'reset_pw':
-            $pw_result = User_Action::finishResetPW();
-            switch ($pw_result) {
-            case PEAR::isError($pw_result):
-                $title = dgettext('users', 'Reset my password');
-                $content = dgettext('users', 'Passwords were not acceptable for the following reason:');
-                $content .= '<br />' . $pw_result->getmessage() . '<br />';
-                $content .= User_Form::resetPassword($_POST['user_id'], $_POST['authhash']);
                 break;
 
-            case 0:
-                $title = dgettext('users', 'Sorry');
-                $content = dgettext('users', 'A problem occurred when trying to update your password. Please try again later.');
+            case 'reset_pw':
+                $pw_result = User_Action::finishResetPW();
+                switch ($pw_result) {
+                    case PEAR::isError($pw_result):
+                        $title = dgettext('users', 'Reset my password');
+                        $content = dgettext('users', 'Passwords were not acceptable for the following reason:');
+                        $content .= '<br />' . $pw_result->getmessage() . '<br />';
+                        $content .= User_Form::resetPassword($_POST['user_id'], $_POST['authhash']);
+                        break;
+
+                    case 0:
+                        $title = dgettext('users', 'Sorry');
+                        $content = dgettext('users', 'A problem occurred when trying to update your password. Please try again later.');
+                        break;
+
+                    case 1:
+                        PHPWS_Core::home();
+                        break;
+                }
                 break;
 
-            case 1:
-                PHPWS_Core::home();
+            default:
+                PHPWS_Core::errorPage('404');
                 break;
-            }
-            break;
-
-        default:
-            PHPWS_Core::errorPage('404');
-            break;
         }
 
         if (isset($message)) {
@@ -929,31 +930,31 @@ class User_Action {
     public function successfulSignup($user)
     {
         switch (PHPWS_User::getUserSetting('new_user_method')) {
-        case AUTO_SIGNUP:
-            $result = User_Action::saveNewUser($user, true);
-            if ($result) {
-                User_Action::assignDefaultGroup($user);
-                $content[] = dgettext('users', 'Account created successfully!');
-                $content[] = dgettext('users', 'You will return to the home page in five seconds.');
-                $content[] = PHPWS_Text::moduleLink(dgettext('users', 'Click here if you are not redirected.'));
-                Layout::metaRoute();
-            } else {
-                $content[] = dgettext('users', 'An error occurred when trying to create your account. Please try again later.');
-            }
-            break;
-
-        case CONFIRM_SIGNUP:
-            if (User_Action::saveNewUser($user, false)) {
-                if(User_Action::confirmEmail($user)) {
-                    $content[] = dgettext('users', 'User created successfully. Check your email for your login information.');
+            case AUTO_SIGNUP:
+                $result = User_Action::saveNewUser($user, true);
+                if ($result) {
+                    User_Action::assignDefaultGroup($user);
+                    $content[] = dgettext('users', 'Account created successfully!');
+                    $content[] = dgettext('users', 'You will return to the home page in five seconds.');
+                    $content[] = PHPWS_Text::moduleLink(dgettext('users', 'Click here if you are not redirected.'));
+                    Layout::metaRoute();
                 } else {
-                    $result = $user->kill();
-                    PHPWS_Error::logIfError($result);
+                    $content[] = dgettext('users', 'An error occurred when trying to create your account. Please try again later.');
+                }
+                break;
+
+            case CONFIRM_SIGNUP:
+                if (User_Action::saveNewUser($user, false)) {
+                    if(User_Action::confirmEmail($user)) {
+                        $content[] = dgettext('users', 'User created successfully. Check your email for your login information.');
+                    } else {
+                        $result = $user->kill();
+                        PHPWS_Error::logIfError($result);
+                        $content[] = dgettext('users', 'There was problem creating your acccount. Check back later.');
+                    }
+                } else {
                     $content[] = dgettext('users', 'There was problem creating your acccount. Check back later.');
                 }
-            } else {
-                $content[] = dgettext('users', 'There was problem creating your acccount. Check back later.');
-            }
         }
 
         return implode('<br />', $content);
@@ -984,7 +985,7 @@ class User_Action {
         $http = PHPWS_Core::getHomeHttp();
 
         $template['LINK'] = sprintf('%sindex.php?module=users&action=user&command=confirm_user&hash=%s',
-                                    $http, $authkey);
+        $http, $authkey);
 
         $template['HOURS'] = NEW_SIGNUP_WINDOW;
         $template['SITE_NAME'] = Layout::getPageTitle(true);
@@ -1052,7 +1053,7 @@ class User_Action {
     {
         $result = $group->setName($_POST['groupname'], true);
         if (PEAR::isError($result))
-            return $result;
+        return $result;
         $group->setActive(true);
         return true;
     }
@@ -1256,7 +1257,7 @@ class User_Action {
 
                 if ($user_search['authorize'] != 1) {
                     $content = sprintf(dgettext('users', 'Sorry but your authorization is not checked on this site. Please contact %s for information on reseting your password.'),
-                                       PHPWS_User::getUserSetting('site_contact'));
+                    PHPWS_User::getUserSetting('site_contact'));
                     return false;
                 }
 
@@ -1348,7 +1349,7 @@ class User_Action {
         $message[] = dgettext('users', 'If so, you may click the link below to reset it.');
         $message[] = '';
         $message[] = sprintf('%sindex.php?module=users&action=user&command=rp&auth=%s',
-                             $url, $hash);
+        $url, $hash);
         $message[] = '';
         $message[] = dgettext('users', 'If you did not wish to reset your password, you may ignore this message.');
         $message[] = dgettext('users', 'You have one hour to respond.');
