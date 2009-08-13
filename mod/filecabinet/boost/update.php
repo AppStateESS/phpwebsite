@@ -454,7 +454,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                        'javascript/update_file/default.php',
                        'javascript/clear_file/body.js',
                        'javascript/clear_file/head.js',
-                       'javascript/clear_file/default.php',                       
+                       'javascript/clear_file/default.php',
                        'templates/image_view.tpl',
                        'templates/carousel_horz.tpl',
                        'templates/carousel_vert.tpl',
@@ -548,6 +548,17 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Fixed bug with File Cabinet in FCKeditor not loading folders properly.
 </pre>';
 
+    case version_compare($version, '2.2.7', '<'):
+        $content[] = '<pre>';
+        $files = array('javascript/fckeditor/head.js', 'templates/filters/media/mediaplayer.swf', 'templates/filters/media/yt.swf');
+        fc_updatefiles($files, $content);
+        $content[] = '2.2.7 changes
+-----------------------
++ Added trim to ffmpeg file directory
++ Added description to search for files
++ Media player updated to latest version.
++ FCKeditor media insertion had problems with any media other than
+  YouTube embeds. SmartTag for media is displayed instead.</pre>';
     }
 
     return true;

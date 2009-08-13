@@ -1,3 +1,5 @@
+Version 2.2.7
+--------------------------------------------------------------------------
 + Added trim to ffmpeg file directory
 + Added description to search for files
 + FCKeditor media insertion had problems with any media other than
