@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-12 08:33-0400\n"
+"POT-Creation-Date: 2009-08-13 13:37-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -274,9 +274,6 @@ msgid "Class not set."
 msgstr ""
 
 msgid "Clear"
-msgstr ""
-
-msgid "Click continue to refresh."
 msgstr ""
 
 msgid "Click on the method you wish to use."
@@ -1514,9 +1511,6 @@ msgid "Your configuration file was written successfully!"
 msgstr ""
 
 msgid "Your core config.php file is missing. Please create one and return."
-msgstr ""
-
-msgid "Your login session will expire in less than two minutes."
 msgstr ""
 
 msgid ""
