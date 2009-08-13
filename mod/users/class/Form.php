@@ -477,6 +477,9 @@ class User_Form {
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
             } else {
+                if (!isset($result[$user->authorize])) {
+                    $message['AUTHORIZE'] = dgettext('users', 'Warning: this user\'s authorization script is broken. Choose another and update.');
+                }
                 $form->addSelect('authorize', $result);
                 $form->setMatch('authorize', $user->authorize);
                 $form->setLabel('authorize', dgettext('users', 'Authorization'));
@@ -523,10 +526,10 @@ class User_Form {
         }
 
         if (isset($message)) {
-            foreach ($message as $tag=>$error)
+            foreach ($message as $tag=>$error) {
                 $template[strtoupper($tag) . '_ERROR'] = $error;
+            }
         }
-
         return PHPWS_Template::process($template, 'users', 'forms/userForm.tpl');
     }
 

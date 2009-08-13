@@ -54,7 +54,7 @@ class PHPWS_User {
         }
         $this->setId($id);
         $result = $this->init();
-        
+
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
         }
@@ -162,7 +162,7 @@ class PHPWS_User {
     public function isDuplicateEmail()
     {
         if (empty($this->email))
-            return false;
+        return false;
 
         $DB = new PHPWS_DB('users');
         $DB->addWhere('email', $this->email);
@@ -193,7 +193,7 @@ class PHPWS_User {
         }
 
         if ($this->isDuplicateUsername($username, $this->id) ||
-            $this->isDuplicateDisplayName($username, $this->id)) {
+        $this->isDuplicateDisplayName($username, $this->id)) {
             return PHPWS_Error::get(USER_ERR_DUP_USERNAME, 'users',
                                     'setUsername', $username); ;
         }
@@ -218,7 +218,7 @@ class PHPWS_User {
         if (empty($password)) {
             PHPWS_Error::log(USER_PASSWORD_BLANK, 'users', 'PHPWS_User::setPassword');
         }
-        
+
         if ($hashPass) {
             $this->_password = md5($this->username . $password);
         } else {
@@ -268,12 +268,12 @@ class PHPWS_User {
     public function getLastLogged($mode=null)
     {
         if (empty($mode))
-            return $this->last_logged;
+        return $this->last_logged;
         else {
             if ($this->last_logged == 0 || empty($this->last_logged))
-                return null;
+            return null;
             else
-                return strftime($mode, $this->last_logged);
+            return strftime($mode, $this->last_logged);
         }
     }
 
@@ -387,7 +387,7 @@ class PHPWS_User {
         }
 
         if ($this->isDuplicateUsername($name, $this->id) ||
-            $this->isDuplicateDisplayName($name, $this->id)) {
+        $this->isDuplicateDisplayName($name, $this->id)) {
             return PHPWS_Error::get(USER_ERR_DUP_USERNAME, 'users',
                                     'setDisplayName', $name); ;
         }
@@ -429,7 +429,7 @@ class PHPWS_User {
         }
 
         if (is_array($result))
-            $groupList = array_merge($result, $groupList);
+        $groupList = array_merge($result, $groupList);
 
         $this->setGroups($groupList);
         return true;
@@ -517,9 +517,9 @@ class PHPWS_User {
 
 
         $result = ($this->isDuplicateUsername($this->username, $this->id) ||
-                   $this->isDuplicateDisplayName($this->username, $this->id) ||
-                   $this->isDuplicateUsername($this->display_name, $this->id) ||
-                   $this->isDuplicateDisplayName($this->display_name, $this->id)) ? true : false;
+        $this->isDuplicateDisplayName($this->username, $this->id) ||
+        $this->isDuplicateUsername($this->display_name, $this->id) ||
+        $this->isDuplicateDisplayName($this->display_name, $this->id)) ? true : false;
         if (PEAR::isError($result)) {
             return $result;
         }
@@ -894,7 +894,7 @@ class PHPWS_User {
 
 
         $jsvar['QUESTION'] = sprintf(dgettext('users', 'Are you certain you want to delete the user &quot;%s&quot; permanently?'),
-                                     $this->getUsername());
+        $this->getUsername());
         $link = new PHPWS_Link(null, 'users', array('action'=>'admin',
                                                     'command'=>'deleteUser',
                                                     'user_id'=> $this->id), true);
@@ -945,8 +945,9 @@ class PHPWS_User {
 
         if (!is_file($this->auth_path)) {
             PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'User_Authorization', $this->auth_path);
-            PHPWS_Core::errorPage();
-            return;
+            return false;
+        } else {
+            return true;
         }
     }
 }

@@ -8,6 +8,9 @@
   <tr>
     <td>{AUTHORIZE_LABEL}</td><td>{AUTHORIZE}</td>
   </tr>
+  <!-- BEGIN authorize-error -->
+  <tr><td class="error" colspan="2">{AUTHORIZE_ERROR}</td></tr>
+  <!-- END authorize-error -->
   <tr>
     <td>{USERNAME_LABEL}</td><td>{USERNAME}</td>
   </tr>

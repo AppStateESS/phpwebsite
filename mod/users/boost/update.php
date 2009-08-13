@@ -135,7 +135,7 @@ timeout INT NOT NULL default 0,
         } else {
             $content[] = "--- Could not copy $source_dir to $dest_dir";
         }
-        
+
         $files = array('conf/error.php', 'templates/forms/permissions.tpl', 'templates/forms/permission_pop.tpl');
         userUpdateFiles($files, $content);
 
@@ -335,6 +335,17 @@ timeout INT NOT NULL default 0,
 -------------------------
 + Added missing column to install.sql</pre>';
 
+    case version_compare($currentVersion, '2.6.6', '<'):
+        $content[] = '<pre>';
+        userUpdateFiles(array('templates/forms/userForm.tpl'), $content);
+        $content[] = '2.6.6 changes
+        -----------------------
++ Graceful recovery from broken authentication scripts.
++ Authorization script made deity only
++ Fixed default groups on external authentication
++ Deleted auth scripts will update users under it to use local instead.
++ The user constructor was trying to load the authorization script on
+  failed users. Thanks Verdon.</pre>';
 
     } // End of switch statement
 
@@ -345,7 +356,7 @@ timeout INT NOT NULL default 0,
 function userUpdateFiles($files, &$content)
 {
     $result = PHPWS_Boost::updateFiles($files, 'users', true);
-    
+
     if (!is_array($result)) {
         $content[] = '--- Successfully updated the following files:';
         $content[] = '     ' . implode("\n     ", $files);

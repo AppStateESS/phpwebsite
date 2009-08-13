@@ -1,13 +1,13 @@
 <?php
-  /**
-   * The Current_User class is a shortcut to the Users class.
-   * When using the Current_User you are acting on the user currently
-   * logged into the system. Current_User is actually pathing through
-   * the current user session.
-   *
-   * @author  Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * The Current_User class is a shortcut to the Users class.
+ * When using the Current_User you are acting on the user currently
+ * logged into the system. Current_User is actually pathing through
+ * the current user session.
+ *
+ * @author  Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 PHPWS_Core::initModClass('users', 'Authorization.php');
 PHPWS_Core::initModClass('users', 'Users.php');
@@ -51,7 +51,7 @@ final class Current_User {
     public function allow($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
     {
         if ($unrestricted_only && Current_User::isRestricted($module)) {
-                return false;
+            return false;
         }
 
         if (!isset($_SESSION['User'])) {
@@ -68,7 +68,7 @@ final class Current_User {
     public function secured($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
     {
         if ($unrestricted_only && Current_User::isRestricted($module)) {
-                return false;
+            return false;
         }
 
         if (!isset($_SESSION['User'])) {
@@ -135,7 +135,7 @@ final class Current_User {
     {
         $user = $_SESSION['User'];
         $auth = Current_User::getAuthorization();
-        
+
         // If the current user is not verified then
         // either force to authentication page or clear the user session
         if (!$auth->verify()) {
@@ -143,12 +143,12 @@ final class Current_User {
             if ($user->id) {
                 Current_User::init();
             }
-            
+
             // if they are force login, the below will send them there
             // and we will end getLogin
             // if not forced, then we just continue;
             $auth->forceLogin();
-        } 
+        }
 
         PHPWS_Core::initModClass('users', 'Form.php');
         $login = User_Form::logBox();
@@ -194,7 +194,7 @@ final class Current_User {
         $serial_url = str_replace(' ', '+', serialize($val));
         return Current_User::verifyAuthKey($serial_url);
     }
-   
+
 
     public function getUnrestrictedLevels()
     {
@@ -293,7 +293,7 @@ final class Current_User {
     public function getPermissionLevel($module)
     {
         if ($_SESSION['User']->isDeity())
-            return UNRESTRICTED_PERMISSION;
+        return UNRESTRICTED_PERMISSION;
 
         return $_SESSION['User']->_permission->getPermissionLevel($module);
     }
@@ -330,7 +330,7 @@ final class Current_User {
         }
 
         if (Current_User::isUnrestricted($key->module) &&
-            Current_User::allow($key->module, $key->edit_permission)) {
+        Current_User::allow($key->module, $key->edit_permission)) {
 
             if (!javascriptEnabled()) {
                 $tpl = User_Form::permissionMenu($key);
@@ -352,12 +352,12 @@ final class Current_User {
         }
 
         switch($mode) {
-        case 'icon':
-            $js_vars['label'] = sprintf('<img src="images/mod/users/permission.png" alt="%s" title="%s" />', $label, $label);
-            break;
+            case 'icon':
+                $js_vars['label'] = sprintf('<img src="images/mod/users/permission.png" alt="%s" title="%s" />', $label, $label);
+                break;
 
-        default:
-            $js_vars['label'] = & $label;
+            default:
+                $js_vars['label'] = & $label;
         }
 
         $js_vars['width'] = 350;
@@ -405,10 +405,17 @@ final class Current_User {
             if (!$user->approved) {
                 return PHPWS_Error::get(USER_NOT_APPROVED, 'users', 'Current_User::loginUser');
             }
-            $user->loadScript();
+            if (!$user->loadScript()) {
+                Layout::add(dgettext('users', 'Could not load authentication script. Please contact site administrator.'));
+                return false;
+            }
         }
 
-        Current_User::loadAuthorization($user);
+        if (!Current_User::loadAuthorization($user)) {
+            Layout::add(dgettext('users', 'Could not load authentication script. Please contact site administrator.'));
+            return false;
+        }
+
         $auth = Current_User::getAuthorization();
         $auth->setPassword($password);
         $result = $auth->authenticate();
@@ -429,7 +436,7 @@ final class Current_User {
                 User_Action::assignDefaultGroup($user);
             }
 
-            
+
             if (!$user->active) {
                 return PHPWS_Error::get(USER_DEACTIVATED, 'users', 'Current_User:loginUser', $user->username);
             }
@@ -526,7 +533,7 @@ final class Current_User {
     public function allowRememberMe()
     {
         if ( PHPWS_Settings::get('users', 'allow_remember') &&
-             ( !Current_User::isDeity() || ALLOW_DEITY_REMEMBER_ME ) ) {
+        ( !Current_User::isDeity() || ALLOW_DEITY_REMEMBER_ME ) ) {
             return true;
         } else {
             return false;
@@ -535,13 +542,17 @@ final class Current_User {
 
     public function loadAuthorization(PHPWS_User $user)
     {
+        if (!is_file($user->auth_path)) {
+            return false;
+        }
         require_once $user->auth_path;
         $class_name = $user->auth_name . '_authorization';
         if (!class_exists($class_name)) {
             PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'Current_User::loadAuthorization', $user->auth_path);
-            PHPWS_Core::errorPage();
+            return false;
         }
         $GLOBALS['User_Authorization'] = new $class_name($user);
+        return true;
     }
 
     public function getAuthorization()
