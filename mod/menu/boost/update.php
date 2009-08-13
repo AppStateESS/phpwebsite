@@ -80,27 +80,27 @@ Please download 1.2.1.</pre>';
         }
 
         menuUpdateFiles(array('conf/error.php'), $content);
-                        
+
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/menu/boost/changes/1_4_0.txt');
         }
-                        
+
         $content[] = '</pre>';
 
     case version_compare($currentVersion, '1.4.1', '<'):
         $content[] = '<pre>';
-        
+
         $files = array('templates/admin/settings.tpl', 'templates/admin/menu_list.tpl');
         menuUpdateFiles($files, $content);
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/menu/boost/changes/1_4_1.txt');
         }
-                        
+
         $content[] = '</pre>';
 
     case version_compare($currentVersion, '1.4.2', '<'):
         $content[] = '<pre>';
-        
+
         $db = new PHPWS_DB('menus');
         $db->addWhere('template', 'basic.tpl');
         $db->addValue('template', 'basic');
@@ -115,7 +115,7 @@ Please download 1.2.1.</pre>';
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/menu/boost/changes/1_4_2.txt');
         }
-                        
+
         $content[] = '</pre>';
 
     case version_compare($currentVersion, '1.4.3', '<'):
@@ -203,7 +203,7 @@ Please download 1.2.1.</pre>';
 + Wrapped default menu template in box-content div per patch by Obones
 + Local links created on key pages were not made current.
 + Commented out pin page link in template</pre>';
-  
+
     case version_compare($currentVersion, '1.6.0', '<'):
         $db = new PHPWS_DB('menus');
         if (PHPWS_Error::logIfError($db->addTableColumn('key_id', 'int not null default 0'))) {
@@ -244,6 +244,12 @@ Please download 1.2.1.</pre>';
 + Fixed up arrows and indent icons not appearing.
 </pre>';
 
+    case version_compare($currentVersion, '1.6.2', '<'):
+        $content[] = '<pre>1.6.2 changes
+---------------
++ Added file include for missing class.
++ Added missing indent tags to popup_admin.tpl</pre>
+';
     }
     return true;
 }
