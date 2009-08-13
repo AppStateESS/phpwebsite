@@ -126,6 +126,11 @@ function rss_update(&$content, $version)
   entities and that the line breaks are output correctly.
 </pre>';
 
+    case version_compare($version, '0.3.2', '<'):
+        $content[] = '<pre>
+0.3.2 changes
+--------------
++ Changed Channel to only pull active keys.</pre>';
     }
 
     return true;
