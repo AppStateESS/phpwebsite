@@ -376,7 +376,7 @@ You will need to make your hub/branch home directory writable if the file doesn\
 ----------------------
 + File
   o Fixed bug with getAllFileTypes. Wouldn\'t grab file_types from
-    hub. 
+    hub.
   o Fixed problem with PHPWS_File::readDirectory not clearing first path
     after recursion
 + Form
@@ -450,8 +450,7 @@ Editors
 
         case version_compare($version, '1.9.6', '<'):
             $content[] = '<pre>';
-            coreUpdateFiles(array('javascript/editors/fckeditor/editor/filemanager/connectors/phpws/',
-             'javascript/editors/fckeditor/editor/custom.js','javascript/editors/fckeditor/default.php'), $content);
+            coreUpdateFiles(array('javascript/editors/fckeditor/'), $content);
             $content[] = '1.9.6 changes
 -------------------
 + recaptcha script given full path to settings file
