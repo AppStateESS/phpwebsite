@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-12 08:26-0400\n"
+"POT-Creation-Date: 2009-08-13 13:35-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,6 +56,9 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to remove %s from the waiting list?"
+msgstr ""
+
+msgid "Arrived"
 msgstr ""
 
 msgid "Assign visitors"
@@ -164,6 +167,9 @@ msgid "Name, Reason, & Note"
 msgstr ""
 
 msgid "No meeting"
+msgstr ""
+
+msgid "No reason"
 msgstr ""
 
 msgid "No reasons found."
@@ -314,13 +320,7 @@ msgstr ""
 msgid "Time error"
 msgstr ""
 
-msgid "Time waited"
-msgstr ""
-
 msgid "Time waiting"
-msgstr ""
-
-msgid "Total meeting time"
 msgstr ""
 
 #, php-format
@@ -355,6 +355,9 @@ msgstr ""
 msgid "User already is staff member."
 msgstr ""
 
+msgid "Visited"
+msgstr ""
+
 msgid "Visitor filter"
 msgstr ""
 
@@ -363,6 +366,9 @@ msgstr ""
 
 #, php-format
 msgid "Visitors seen: %s"
+msgstr ""
+
+msgid "Waited"
 msgstr ""
 
 msgid "Waiting"

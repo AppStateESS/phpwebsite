@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-07 08:19-0400\n"
+"POT-Creation-Date: 2009-08-13 13:36-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -212,6 +212,10 @@ msgid "Could not find any hub deities."
 msgstr ""
 
 msgid "Could not find user."
+msgstr ""
+
+msgid ""
+"Could not load authentication script. Please contact site administrator."
 msgstr ""
 
 msgid "Create Group"
@@ -918,6 +922,11 @@ msgid "View restrictions"
 msgstr ""
 
 msgid "Want to join?"
+msgstr ""
+
+msgid ""
+"Warning: this user's authorization script is broken. Choose another and "
+"update."
 msgstr ""
 
 msgid "We are currently unable to send out email reminders. Try again later."
