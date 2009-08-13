@@ -9,7 +9,7 @@ function checkin_update(&$content, $current_version) {
     case version_compare($current_version, '1.0.1', '<'):
         $content[] = '<pre>';
         $db = new PHPWS_DB('checkin_staff');
-        
+
         if (PHPWS_Error::logIfError($db->addTableColumn('view_order', 'smallint not null default 0'))) {
             $content[] = 'Unable to create checkin_staff.view_order column.</pre>';
             return false;
@@ -62,8 +62,12 @@ function checkin_update(&$content, $current_version) {
 + Changed report date entry interface
 + Upper cased names.
 </pre>';
-  
-      
+
+    case version_compare($current_version, '1.0.4', '<'):
+        $content[] = '<pre>1.0.4 changes
+---------------------
++ Fixed waiting time setting</pre>';
+
     }
     return true;
 }
