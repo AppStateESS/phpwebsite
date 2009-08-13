@@ -5,7 +5,7 @@
    */
 
 $proper_name  = 'Access';
-$version      = '1.1.5';
+$version      = '1.1.6';
 $import_sql   = TRUE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/access/check.xml';
 $about        = TRUE;

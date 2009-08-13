@@ -169,6 +169,11 @@ function access_update(&$content, $version)
 ---------------
 + Lowered Access priority to assure its init.php is called early.</pre>';
 
+    case version_compare($version, '1.1.6', '<'):
+        $content[] = '<pre>1.1.6 changes
+---------------
++ Added link check on url setting to prevent ./ from suffixing and
+  breaking storage.</pre>';
     }
 
     return true;

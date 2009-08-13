@@ -1,5 +1,7 @@
+Version 1.1.6
+--------------------------------------------------------------------------
 + Added link check on url setting to prevent ./ from suffixing and
-breaking storage.
+  breaking storage.
 
 Version 1.1.5
 --------------------------------------------------------------------------
