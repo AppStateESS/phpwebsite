@@ -2,7 +2,8 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
-
+Version 1.9.6
+---------------------------------------------------------------------
 10 August 2009
 + recaptcha script given full path to settings file
 + Time.php - Added a intval to the relativeTime timestamp.
