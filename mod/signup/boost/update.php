@@ -12,7 +12,7 @@ function signup_update(&$content, $currentVersion)
 
         $files = array('templates/slot_setup.tpl');
         signupUpdateFiles($files, $content);
-        
+
         $content[] = '1.0.1 changes
 ----------------
 + Added ability to reset slot order should it come unraveled.
@@ -142,6 +142,10 @@ function signup_update(&$content, $currentVersion)
 + Added extra 1 thru 3 to sheet and peeps for extra questions.
 </pre>';
 
+    case version_compare($currentVersion, '1.3.1', '<'):
+        $content[] = '<pre>1.3.1 changes
+-------------------
++ Fixed incorrect counting of people in slots.</pre>';
     }
     return true;
 }
