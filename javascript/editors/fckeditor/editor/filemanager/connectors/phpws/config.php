@@ -23,11 +23,39 @@
  */
 
 global $Config ;
+// Path to user files relative to the document root.
+if ( isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' ) {
+    $prefix = 'https://';
+} else {
+    $prefix = 'http://';
+}
+
+$home_url = $prefix . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
+$home_url = substr($home_url, 0, strpos($home_url, 'javascript/editors/'));
+
+$Config['UserFilesPath'] = $home_url ;  // Set to / if you want filebrowsing across the whole site directory
+
+$current_dir = getcwd();
+$Config['UserFilesAbsolutePath'] = substr($current_dir, 0, strpos($current_dir, 'javascript/editors/'));
 
 // SECURITY: You must explicitly enable this "connector". (Set it to "true").
 // WARNING: don't just set "$Config['Enabled'] = true ;", you must be sure that only
 //		authenticated users can access this file or use some kind of session checking.
-$Config['Enabled'] = true ;
+require_once $Config['UserFilesAbsolutePath'] . 'config/core/config.php';
+define('SESSION_NAME', md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
+session_name(SESSION_NAME);
+session_start();
+
+// Fill the following value it you prefer to specify the absolute path for the
+// user files directory. Useful if you are using a virtual directory, symbolic
+// link or alias. Examples: 'C:\\MySite\\UserFiles\\' or '/root/mysite/UserFiles/'.
+// Attention: The above 'UserFilesPath' must point to the same directory.
+if (@$_SESSION['FCK_Allow']) {
+    $Config['Enabled'] = true;
+} else {
+    $Config['Enabled'] = false;
+}
+
 
 if ( isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' ) {
     $prefix = 'https://';
@@ -128,32 +156,33 @@ $Config['ChmodOnFolderCreate'] = 0755 ;
 
 */
 
+
 $Config['AllowedExtensions']['File']	= array('doc', 'txt') ;
 $Config['DeniedExtensions']['File']		= array('php','php2','php3','php4','php5','phtml','pwml','inc','asp','aspx','ascx','jsp','cfm','cfc','pl','bat','exe','com','dll','vbs','js','reg','cgi') ;
-$Config['FileTypesPath']['File']		= $Config['UserFilesPath'] . 'files/' ;
-$Config['FileTypesAbsolutePath']['File']= ($Config['UserFilesAbsolutePath'] == '') ? '' : $Config['UserFilesAbsolutePath'].'files/' ;
-$Config['QuickUploadPath']['File']		= $Config['UserFilesPath'] ;
-$Config['QuickUploadAbsolutePath']['File']= $Config['UserFilesAbsolutePath'] ;
+$Config['FileTypesPath']['File']		= $_SESSION['FCK_FILE_URL'];
+$Config['FileTypesAbsolutePath']['File']= $_SESSION['FCK_FILE_DIRECTORY'];
+$Config['QuickUploadPath']['File']		= $_SESSION['FCK_FILE_URL'];
+$Config['QuickUploadAbsolutePath']['File']= $_SESSION['FCK_FILE_DIRECTORY'];
 
 $Config['AllowedExtensions']['Image']	= array('bmp','gif','jpeg','jpg','png') ;
 $Config['DeniedExtensions']['Image']	= array() ;
-$Config['FileTypesPath']['Image']		= $Config['UserFilesPath'] . 'images/' ;
-$Config['FileTypesAbsolutePath']['Image']= ($Config['UserFilesAbsolutePath'] == '') ? '' : $Config['UserFilesAbsolutePath'].'images/' ;
-$Config['QuickUploadPath']['Image']		= $Config['UserFilesPath'] ;
-$Config['QuickUploadAbsolutePath']['Image']= $Config['UserFilesAbsolutePath'] ;
+$Config['FileTypesPath']['Image']		= $_SESSION['FCK_IMAGE_URL'];
+$Config['FileTypesAbsolutePath']['Image']= $_SESSION['FCK_IMAGE_DIRECTORY'];
+$Config['QuickUploadPath']['Image']		= $_SESSION['FCK_IMAGE_URL'];
+$Config['QuickUploadAbsolutePath']['Image']= $_SESSION['FCK_IMAGE_DIRECTORY'];
 
 $Config['AllowedExtensions']['Flash']	= array('swf','flv') ;
 $Config['DeniedExtensions']['Flash']	= array() ;
-$Config['FileTypesPath']['Flash']		= $Config['UserFilesPath'] . 'files/multimedia/';
-$Config['FileTypesAbsolutePath']['Flash']= ($Config['UserFilesAbsolutePath'] == '') ? '' : $Config['UserFilesAbsolutePath'].'files/multimedia/' ;
-$Config['QuickUploadPath']['Flash']		= $Config['UserFilesPath'] ;
-$Config['QuickUploadAbsolutePath']['Flash']= $Config['UserFilesAbsolutePath'] ;
+$Config['FileTypesPath']['Flash']		= $_SESSION['FCK_MEDIA_URL'];
+$Config['FileTypesAbsolutePath']['Flash']= $_SESSION['FCK_MEDIA_DIRECTORY'];
+$Config['QuickUploadPath']['Flash']		= $_SESSION['FCK_MEDIA_URL'];
+$Config['QuickUploadAbsolutePath']['Flash']= $_SESSION['FCK_MEDIA_DIRECTORY'];
 
 $Config['AllowedExtensions']['Media']	= array('aiff', 'asf', 'avi', 'bmp', 'fla', 'flv', 'gif', 'jpeg', 'jpg', 'mid', 'mov', 'mp3', 'mp4', 'mpc', 'mpeg', 'mpg', 'png', 'qt', 'ram', 'rm', 'rmi', 'rmvb', 'swf', 'tif', 'tiff', 'wav', 'wma', 'wmv') ;
 $Config['DeniedExtensions']['Media']	= array() ;
-$Config['FileTypesPath']['Media']		= $Config['UserFilesPath'] . 'files/multimedia/' ;
-$Config['FileTypesAbsolutePath']['Media']= ($Config['UserFilesAbsolutePath'] == '') ? '' : $Config['UserFilesAbsolutePath'].'files/multimedia/' ;
-$Config['QuickUploadPath']['Media']		= $Config['UserFilesPath'] ;
-$Config['QuickUploadAbsolutePath']['Media']= $Config['UserFilesAbsolutePath'] ;
+$Config['FileTypesPath']['Media']		= $_SESSION['FCK_MEDIA_URL'];
+$Config['FileTypesAbsolutePath']['Media']= $_SESSION['FCK_MEDIA_DIRECTORY'];
+$Config['QuickUploadPath']['Media']		= $_SESSION['FCK_MEDIA_URL'];
+$Config['QuickUploadAbsolutePath']['Media']= $_SESSION['FCK_MEDIA_DIRECTORY'];
 
 ?>

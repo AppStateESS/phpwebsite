@@ -5,6 +5,7 @@ var basepath = './javascript/editors/fckeditor/';
 /* This code only works on a source code submission. Hoping for a
 //change in the editor
 */
+
 $(document).ready(function() {
     $('form').submit(function() {
         $('textarea').map(function(){
