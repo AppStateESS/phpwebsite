@@ -184,19 +184,22 @@ class Editor {
         if (isset($_SESSION['Editor_Works'][$type])) {
             return $_SESSION['Editor_Works'][$type];
         }
-
-        extract($GLOBALS['browser_info']);
+        $browser = strtolower($GLOBALS['browser']);
         $support_file = sprintf('javascript/editors/%s/supported.php', $type);
         if (is_file($support_file)) {
             include $support_file;
             if (isset($supported)) {
                 foreach ($supported as $spt) {
-                    if (!isset($spt['browser']) || !isset($spt['platform']) || !isset($spt['version'])) {
+                    /**
+                     * This used to check three variables for compatibility. We don't pull them all anymore
+                     * because browsers don't have a standard identifier.
+                     */
+
+                    if (!isset($spt['browser'])) {
                         continue;
                     }
-                    if ( strtolower($browser) == $spt['browser']   &&
-                         strtolower($platform) == $spt['platform'] &&
-                         version_compare($browser_version, $spt['version'], '>=') ) {
+
+                    if ( $browser == $spt['browser'] ) {
                         $_SESSION['Editor_Works'][$type] = true;
                         return true;
                     }

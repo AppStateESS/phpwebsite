@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+14 August 2009
++ Fixed browser incompatibility issue with editors.
+
 Version 1.9.6
 ---------------------------------------------------------------------
 10 August 2009
