@@ -460,6 +460,15 @@ Editors
 + Changed confirm body link. href="#" confuses poor IE
 + "param" added to text_settings.php
 + fckeditor default.php changed to fix file relative links</pre>';
+
+        case version_compare($version, '1.9.7', '<'):
+            $content[] = '<pre>';
+            coreUpdateFiles(array('javascript/editors/fckeditor/default.php', 'javascript/editors/fckeditor/editor/filemanager/connectors/phpws/config.php', 'javascript/editors/fckeditor/head.js'), $content);
+            $content[] = '1.9.7 changes
+-------------------
++ Fixed browser incompatibility issue with editors.
++ Added ability to set fckeditor\'s image, media, and files directory in the config.php
+</pre>';
     }
     return true;
 }
@@ -475,8 +484,8 @@ function coreUpdateFiles($files, &$content)
     }
     $content[] = "     " . implode("\n     ", $files);
     $content[] = '';
-    return $good;
-}
+            return $good;
+    }
 
 
-?>
+    ?>
