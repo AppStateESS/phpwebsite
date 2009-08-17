@@ -27,6 +27,28 @@ function vlist_update(&$content, $currentVersion)
 //    $home_dir = PHPWS_Boost::getHomeDir();
     switch ($currentVersion) {
 
+        case version_compare($currentVersion, '1.0.1', '<'):
+            $content[] = '<pre>';
+    
+            $files = array('templates/block.tpl', 
+//                            'templates/set_status.tpl', 
+                            'templates/edit_settings.tpl'
+            );
+            vlistUpdateFiles($files, $content);
+            
+            $content[] = '1.0.1 changes
+----------------
++ Added setting for default sort order
++ Added setting for default sort order
++ Fixed false error when submiting with no custom fields defined
++ Removed option to enable text types in advanced search as
+  it isn\'t necessary, and was misleading
++ Tweaked the date format in lists and views
++ Replaced a couple hard-coded Groups label with the one in settings
+
+</pre>';
+
+
         case version_compare($currentVersion, '1.0.2', '<'):
             $content[] = '<pre>';
     
@@ -62,28 +84,6 @@ function vlist_update(&$content, $currentVersion)
 + Tweaked some permissions
 + Fixed bug in posting GPS field type (thanks trf000)
 + Added Google Map special field type
-
-</pre>';
-
-
-        case version_compare($currentVersion, '1.0.1', '<'):
-            $content[] = '<pre>';
-    
-            $files = array('templates/block.tpl', 
-//                            'templates/set_status.tpl', 
-                            'templates/edit_settings.tpl'
-            );
-            vlistUpdateFiles($files, $content);
-            
-            $content[] = '1.0.1 changes
-----------------
-+ Added setting for default sort order
-+ Added setting for default sort order
-+ Fixed false error when submiting with no custom fields defined
-+ Removed option to enable text types in advanced search as
-  it isn\'t necessary, and was misleading
-+ Tweaked the date format in lists and views
-+ Replaced a couple hard-coded Groups label with the one in settings
 
 </pre>';
 
