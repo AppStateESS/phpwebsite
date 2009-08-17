@@ -40,6 +40,11 @@
     <td>{USER_MENU}
     </td>
   </tr>
+  <tr>
+    <td>{ALLOW_NEW_USERS_LABEL}</td>
+    <td>{ALLOW_NEW_USERS_1} {ALLOW_NEW_USERS_1_LABEL}<br />
+    {ALLOW_NEW_USERS_2} {ALLOW_NEW_USERS_2_LABEL}</td>
+  </tr>
   <!-- END deity-only -->
 </table>
 <br />

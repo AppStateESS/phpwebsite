@@ -468,7 +468,7 @@ class User_Form {
         $form->addHidden('command', 'postUser');
         $form->addHidden('module', 'users');
 
-        if (Current_User::allow('users', 'settings')) {
+        if (Current_User::isDeity()) {
             $db = new PHPWS_DB('users_auth_scripts');
             $db->setIndexBy('id');
             $db->addColumn('id');
@@ -486,21 +486,26 @@ class User_Form {
             }
         }
 
-        $form->addText('username', $user->getUsername());
-        $form->setRequired('username');
+        if ($user->authorize == PHPWS_Settings::get('users', 'local_script')) {
+            $form->addText('username', $user->getUsername());
+            $form->setRequired('username');
+            $form->setLabel('username', dgettext('users', 'Username'));
+            $form->addPassword('password1');
+            $form->addPassword('password2');
+            $form->setLabel('password1', dgettext('users', 'Password'));
+            $form->addButton('create_pw', dgettext('users', 'Generate password'));
+        } else {
+            $form->addTplTag('USERNAME', $user->getUsername());
+            $form->addTplTag('USERNAME_LABEL', '<strong>' . dgettext('users', 'Username') . '</strong>');
+        }
         $form->addText('display_name', $user->display_name);
-        $form->addPassword('password1');
-        $form->addPassword('password2');
         $form->addText('email', $user->getEmail());
         $form->setSize('email', 30);
         $form->setRequired('email');
 
         $form->setLabel('email', dgettext('users', 'Email Address'));
-        $form->setLabel('username', dgettext('users', 'Username'));
         $form->setLabel('display_name', dgettext('users', 'Display name'));
-        $form->setLabel('password1', dgettext('users', 'Password'));
 
-        $form->addButton('create_pw', dgettext('users', 'Generate password'));
 
         if (isset($tpl)) {
             $form->mergeTemplate($tpl);
@@ -878,10 +883,15 @@ class User_Form {
             $form->addCheckBox('allow_remember', 1);
             $form->setMatch('allow_remember', PHPWS_Settings::get('users', 'allow_remember'));
             $form->setLabel('allow_remember', dgettext('users', 'Allow Remember Me'));
+
+            $form->addRadioAssoc('allow_new_users', array(1=>'Yes', 0=>'No'));
+            $form->setMatch('allow_new_users', PHPWS_Settings::get('users', 'allow_new_users'));
+            $form->addTplTag('ALLOW_NEW_USERS_LABEL', dgettext('users', 'Allow new user creation?'));
         }
 
         $form->addTextArea('forbidden_usernames', PHPWS_Settings::get('users', 'forbidden_usernames'));
         $form->setLabel('forbidden_usernames', dgettext('users', 'Forbidden usernames (one per line)'));
+
 
         $template = $form->getTemplate();
 

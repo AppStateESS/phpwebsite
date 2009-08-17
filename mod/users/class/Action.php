@@ -55,9 +55,13 @@ class User_Action {
             /** Form cases **/
             /** User Forms **/
             case 'new_user':
-                $panel->setCurrentTab('new_user');
-                $title = dgettext('users', 'Create User');
-                $content = User_Form::userForm($user);
+                if (PHPWS_Settings::get('users', 'allow_new_users') || Current_User::isDeity()) {
+                    $panel->setCurrentTab('new_user');
+                    $title = dgettext('users', 'Create User');
+                    $content = User_Form::userForm($user);
+                } else {
+                    Current_User::disallow();
+                }
                 break;
 
             case 'manage_users':
@@ -599,7 +603,7 @@ class User_Action {
 
     public function postUser(PHPWS_User $user, $set_username=true)
     {
-        if ($set_username){
+        if ($user->authorize == PHPWS_Settings::get('users', 'local_script') && $set_username) {
             $user->_prev_username = $user->username;
             $result = $user->setUsername($_POST['username']);
             if (PEAR::isError($result)) {
@@ -659,7 +663,9 @@ class User_Action {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = PHPWS_Text::linkAddress('users', array('action'=>'admin'),false,false,true,false);
 
-        $tabs['new_user'] = array('title'=>dgettext('users', 'New User'), 'link'=>$link);
+        if (PHPWS_Settings::get('users', 'allow_new_users') || Current_User::isDeity()) {
+            $tabs['new_user'] = array('title'=>dgettext('users', 'New User'), 'link'=>$link);
+        }
 
         if (Current_User::allow('users', 'edit_users') || Current_User::allow('users', 'delete_users'))
         $tabs['manage_users'] = array('title'=>dgettext('users', 'Manage Users'), 'link'=>$link);
@@ -1138,6 +1144,8 @@ class User_Action {
                 $settings['graphic_confirm'] = 0;
             }
             $settings['user_menu'] = $_POST['user_menu'];
+
+            $settings['allow_new_users'] = (int)$_POST['allow_new_users'];
         }
         $settings['forbidden_usernames'] = str_replace(' ', "\n", strtolower(strip_tags($_POST['forbidden_usernames'])));
 

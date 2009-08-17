@@ -11,18 +11,22 @@
   <!-- BEGIN authorize-error -->
   <tr><td class="error" colspan="2">{AUTHORIZE_ERROR}</td></tr>
   <!-- END authorize-error -->
+  <!-- BEGIN username -->
   <tr>
     <td>{USERNAME_LABEL}</td><td>{USERNAME}</td>
   </tr>
+  <!-- END username -->
   <!-- BEGIN username-error -->
   <tr><td class="user-error" colspan="2">{USERNAME_ERROR}</td></tr>
   <!-- END username-error -->
   <tr>
     <td>{DISPLAY_NAME_LABEL}</td><td>{DISPLAY_NAME}</td>
   </tr>
+  <!-- BEGIN password -->
   <tr>
     <td>{PASSWORD1_LABEL}</td><td>{PASSWORD1}&nbsp;{PASSWORD2}</td>
   </tr>
+  <!-- END password -->
   <!-- BEGIN password-error -->
   <tr><td class="user-error" colspan="2">{PASSWORD_ERROR}</td></tr>
   <!-- END password-error -->
