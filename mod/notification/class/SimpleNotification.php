@@ -10,8 +10,8 @@ PHPWS_Core::initModClass('notification', 'Notification.php');
 
 class SimpleNotification extends Notification
 {
-	protected var $type;
-	protected var $content;
+	protected $type;
+	protected $content;
 	
 	public function __construct($type, $content)
 	{

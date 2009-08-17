@@ -10,7 +10,7 @@
 
 abstract class Notification
 {
-	protected var $timestamp;
+	protected $timestamp;
 	
 	public function __construct()
 	{
