@@ -1,6 +1,11 @@
 {START_FORM}
 <table class="form-table">
   <tr>
+    <td>{FORBIDDEN_USERNAMES_LABEL}</td>
+    <td>{FORBIDDEN_USERNAMES}</td>
+  </tr>
+  <!-- BEGIN deity-only -->
+  <tr>
     <td width="30%">{VERIFY_PERMISSIONS}</td>
     <td>{VERIFY_EXPLAIN}</td>
   </tr>
@@ -35,11 +40,7 @@
     <td>{USER_MENU}
     </td>
   </tr>
-  <tr>
-    <td>{FORBIDDEN_USERNAMES_LABEL}</td>
-    <td>{FORBIDDEN_USERNAMES}
-    </td>
-  </tr>
+  <!-- END deity-only -->
 </table>
 <br />
 {SUBMIT}

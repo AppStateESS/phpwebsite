@@ -1,12 +1,12 @@
 <?php
 
-  /**
-   * Contains forms for users and demographics
-   *
-   * @version $Id$
-   * @author  Matt McNaney <matt at tux dot appstate dot edu>
-   * @package Core
-   */
+/**
+ * Contains forms for users and demographics
+ *
+ * @version $Id$
+ * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @package Core
+ */
 define('AUTO_SIGNUP',    1);
 define('CONFIRM_SIGNUP', 2);
 // Needs addition
@@ -57,7 +57,7 @@ class User_Form {
         } else {
             $template['LOGOUT'] = PHPWS_Text::moduleLink(dgettext('users', 'Log Out'),
                                                          'users',
-                                                         array('action'=>'user', 'command'=>'logout'));
+            array('action'=>'user', 'command'=>'logout'));
         }
         $template['HOME_USER_PANEL'] = $template['HOME'] = PHPWS_Text::moduleLink(dgettext('users', 'Home'));
 
@@ -376,7 +376,7 @@ class User_Form {
                 $template['LIKE_GROUPS'] = $result;
                 $template['LIKE_INSTRUCTION'] = dgettext('users', 'Member not found.') . ' ' . dgettext('users', 'Closest matches below.');
             } else
-                $template['LIKE_INSTRUCTION'] = dgettext('users', 'Member not found.') . ' ' . dgettext('users', 'No matches found.');
+            $template['LIKE_INSTRUCTION'] = dgettext('users', 'Member not found.') . ' ' . dgettext('users', 'No matches found.');
         }
 
         $template = $form->getTemplate(TRUE, TRUE, $template);
@@ -512,9 +512,9 @@ class User_Form {
         $vars['user_id'] = $user->id;
 
         /*
-        $vars['command'] = 'editUser';
-        $links[] = PHPWS_Text::secureLink(dgettext('users', 'Edit'), 'users', $vars);
-        */
+         $vars['command'] = 'editUser';
+         $links[] = PHPWS_Text::secureLink(dgettext('users', 'Edit'), 'users', $vars);
+         */
 
         if ($user->id) {
             $vars['command'] = 'setUserPermissions';
@@ -582,7 +582,7 @@ class User_Form {
             $form->addHidden('group_id', $group->getId());
             $form->addSubmit('submit', dgettext('users', 'Update Group'));
         } else
-            $form->addSubmit('submit', dgettext('users', 'Add Group'));
+        $form->addSubmit('submit', dgettext('users', 'Add Group'));
 
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'admin');
@@ -622,7 +622,7 @@ class User_Form {
                 $template['LIKE_GROUPS'] = $result;
                 $template['LIKE_INSTRUCTION'] = dgettext('users', 'Members found.');
             } else
-                $template['LIKE_INSTRUCTION'] = dgettext('users', 'No matches found.');
+            $template['LIKE_INSTRUCTION'] = dgettext('users', 'No matches found.');
         }
     }
 
@@ -636,7 +636,7 @@ class User_Form {
 
         $db = new PHPWS_DB('users_groups');
         foreach ($members as $id)
-            $db->addWhere('id', $id);
+        $db->addWhere('id', $id);
         $db->addOrder('name');
         $db->setIndexBy('id');
         $result = $db->getObjects('PHPWS_Group');
@@ -675,7 +675,7 @@ class User_Form {
         $members = $group->getMembers();
         if (isset($members)) {
             foreach ($members as $id)
-                $db->addWhere('id', $id, '!=');
+            $db->addWhere('id', $id, '!=');
         }
         $db->setIndexBy('id');
         $result = $db->getObjects('PHPWS_Group');
@@ -684,7 +684,7 @@ class User_Form {
             PHPWS_Error::log($result);
             return NULL;
         } elseif (!isset($result)) {
-              return NULL;
+            return NULL;
         }
 
         $tpl = new PHPWS_Template('users');
@@ -838,57 +838,59 @@ class User_Form {
         $form->addHidden('command', 'update_settings');
         $form->addSubmit('submit',dgettext('users', 'Update Settings'));
 
-        $form->addText('site_contact', PHPWS_User::getUserSetting('site_contact'));
-        $form->setLabel('site_contact', dgettext('users', 'Site contact email'));
-        $form->setSize('site_contact', 40);
+        if (Current_User::isDeity()) {
+            $form->addText('site_contact', PHPWS_User::getUserSetting('site_contact'));
+            $form->setLabel('site_contact', dgettext('users', 'Site contact email'));
+            $form->setSize('site_contact', 40);
 
-        $signup_modes = array(0, AUTO_SIGNUP, CONFIRM_SIGNUP);
+            $signup_modes = array(0, AUTO_SIGNUP, CONFIRM_SIGNUP);
 
-        $signup_labels = array(dgettext('users', 'Not allowed'),
-                               dgettext('users', 'Immediate'),
-                               dgettext('users', 'Email Verification')
-                               );
+            $signup_labels = array(dgettext('users', 'Not allowed'),
+            dgettext('users', 'Immediate'),
+            dgettext('users', 'Email Verification')
+            );
 
-        $form->addRadio('user_signup', $signup_modes);
-        $form->setLabel('user_signup', $signup_labels);
-        $form->addTplTag('USER_SIGNUP_LABEL', dgettext('users', 'User Signup Mode'));
-        $form->setMatch('user_signup', PHPWS_User::getUserSetting('new_user_method'));
-        if (extension_loaded('gd')) {
-            $form->addCheckbox('graphic_confirm');
-            $form->setLabel('graphic_confirm', dgettext('users', 'Use graphic authentication'));
-            $form->setMatch('graphic_confirm', PHPWS_User::getUserSetting('graphic_confirm'));
+            $form->addRadio('user_signup', $signup_modes);
+            $form->setLabel('user_signup', $signup_labels);
+            $form->addTplTag('USER_SIGNUP_LABEL', dgettext('users', 'User Signup Mode'));
+            $form->setMatch('user_signup', PHPWS_User::getUserSetting('new_user_method'));
+            if (extension_loaded('gd')) {
+                $form->addCheckbox('graphic_confirm');
+                $form->setLabel('graphic_confirm', dgettext('users', 'Use graphic authentication'));
+                $form->setMatch('graphic_confirm', PHPWS_User::getUserSetting('graphic_confirm'));
+            }
+
+            // Replace below with a directory read
+            $menu_options['none']        = dgettext('users', 'None');
+            $menu_options['css.tpl']     = 'css.tpl';
+            $menu_options['Default.tpl'] = 'Default.tpl';
+            $menu_options['top.tpl']     = 'top.tpl';
+
+            $form->addSelect('user_menu', $menu_options);
+            $form->setMatch('user_menu', PHPWS_User::getUserSetting('user_menu'));
+            $form->setLabel('user_menu', dgettext('users', 'User Menu'));
+
+            $form->addCheckBox('hide_login', 1);
+            $form->setMatch('hide_login', PHPWS_Settings::get('users', 'hide_login'));
+            $form->setLabel('hide_login', dgettext('users', 'Hide login box'));
+            $form->addTplTag('AFFIRM', dgettext('users', 'Yes'));
+
+            $form->addCheckBox('allow_remember', 1);
+            $form->setMatch('allow_remember', PHPWS_Settings::get('users', 'allow_remember'));
+            $form->setLabel('allow_remember', dgettext('users', 'Allow Remember Me'));
         }
-
-        // Replace below with a directory read
-        $menu_options['none']        = dgettext('users', 'None');
-        $menu_options['css.tpl']     = 'css.tpl';
-        $menu_options['Default.tpl'] = 'Default.tpl';
-        $menu_options['top.tpl']     = 'top.tpl';
-
-        $form->addSelect('user_menu', $menu_options);
-        $form->setMatch('user_menu', PHPWS_User::getUserSetting('user_menu'));
-        $form->setLabel('user_menu', dgettext('users', 'User Menu'));
-
-        $form->addCheckBox('hide_login', 1);
-        $form->setMatch('hide_login', PHPWS_Settings::get('users', 'hide_login'));
-        $form->setLabel('hide_login', dgettext('users', 'Hide login box'));
-        $form->addTplTag('AFFIRM', dgettext('users', 'Yes'));
-
-        $form->addCheckBox('allow_remember', 1);
-        $form->setMatch('allow_remember', PHPWS_Settings::get('users', 'allow_remember'));
-        $form->setLabel('allow_remember', dgettext('users', 'Allow Remember Me'));
 
         $form->addTextArea('forbidden_usernames', PHPWS_Settings::get('users', 'forbidden_usernames'));
         $form->setLabel('forbidden_usernames', dgettext('users', 'Forbidden usernames (one per line)'));
 
         $template = $form->getTemplate();
 
-        $vars['action'] = 'admin';
-        $vars['command'] = 'check_permission_tables';
-        $template['VERIFY_PERMISSIONS'] = PHPWS_Text::secureLink(dgettext('users', 'Register user permissions'), 'users', $vars);
-
-        $template['VERIFY_EXPLAIN'] = dgettext('users', 'Users module will re-register each module\'s permissions.');
-
+        if (Current_User::isDeity()) {
+            $vars['action'] = 'admin';
+            $vars['command'] = 'check_permission_tables';
+            $template['VERIFY_PERMISSIONS'] = PHPWS_Text::secureLink(dgettext('users', 'Register user permissions'), 'users', $vars);
+            $template['VERIFY_EXPLAIN'] = dgettext('users', 'Users module will re-register each module\'s permissions.');
+        }
         return PHPWS_Template::process($template, 'users', 'forms/settings.tpl');
     }
 
@@ -934,7 +936,7 @@ class User_Form {
 
         if (isset($message)) {
             foreach ($message as $tag=>$error)
-                $template[$tag] = $error;
+            $template[$tag] = $error;
         }
 
         $result = PHPWS_Template::process($template, 'users', 'forms/signup_form.tpl');
@@ -1019,8 +1021,8 @@ class User_Form {
         $form->addRadio('view_permission', array(0, 1, 2));
         $form->setExtra('view_permission', 'onclick="hideSelect(this.value)"');
         $form->setLabel('view_permission', array(dgettext('users', 'All visitors'),
-                                                 dgettext('users', 'Logged visitors'),
-                                                 dgettext('users', 'Specific group(s)')));
+        dgettext('users', 'Logged visitors'),
+        dgettext('users', 'Specific group(s)')));
         $form->setMatch('view_permission', $key->restricted);
         $form->addSubmit(dgettext('users', 'Save permissions'));
 
@@ -1100,7 +1102,7 @@ class User_Form {
 
         if (isset($select)) {
             return sprintf('<select size="5" multiple="multiple" id="%s" name="%s[]">%s</select>',
-                           $name, $name, implode("\n", $select));
+            $name, $name, implode("\n", $select));
         } else {
             return NULL;
         }
