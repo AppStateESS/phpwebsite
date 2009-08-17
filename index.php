@@ -1,12 +1,12 @@
 <?php
 
-  /**
-   * Main file for loading phpwebsite. Initializes core,
-   * checks security, loads modules.
-   *
-   * @author Matthew McNaney <matt at tux dot appstate edu>
-   * @version $Id$
-   */
+/**
+ * Main file for loading phpwebsite. Initializes core,
+ * checks security, loads modules.
+ *
+ * @author Matthew McNaney <matt at tux dot appstate edu>
+ * @version $Id$
+ */
 
 ini_set('register_globals', 0);
 include 'phpws_stats.php';
@@ -18,7 +18,7 @@ define('AUTO_ROUTE', TRUE);
 
 if (is_file('config/core/config.php')) {
     require_once 'config/core/config.php';
- } else {
+} else {
     if (AUTO_ROUTE == TRUE) {
         if (is_file('./setup/index.php')) {
             header('Location: ./setup/index.php');
@@ -29,7 +29,7 @@ if (is_file('config/core/config.php')) {
     } else {
         exit('Fatal Error: Could not locate your configuration file.');
     }
- }
+}
 
 // Commented out in phpWebSite 2.0. If missing functions, uncomment
 // require_once PHPWS_SOURCE_DIR . 'inc/Functions.php';
@@ -66,7 +66,7 @@ PHPWS_Core::setLastPost();
 
 if (isset($_REQUEST['reset'])) {
     PHPWS_Core::killAllSessions();
- }
+}
 
 show_stats();
 
