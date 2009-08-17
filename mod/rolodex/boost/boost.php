@@ -23,10 +23,10 @@
 */
 
 $proper_name  = 'Rolodex';
-$version      = '1.3.0';
+$version      = '1.3.1';
 $image_dir    = true;
 $import_sql   = true;
-$version_http = 'http://verdon.ca/downloads/modules/rolodex/check.xml';
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/rolodex/check.xml';
 $about        = true;
 $priority     = 50;
 $dependency   = true;

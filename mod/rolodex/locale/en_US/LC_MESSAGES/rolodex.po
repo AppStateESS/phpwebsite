@@ -933,7 +933,7 @@ msgstr ""
 
 msgid ""
 "To use the category, location, or feature lists, select an item from the "
-"list and click on the \"+\" symbool to add the selection to this profile. To "
+"list and click on the \"+\" symbol to add the selection to this profile. To "
 "remove a selection, click on the name of the item in the box below the "
 "select menu."
 msgstr ""

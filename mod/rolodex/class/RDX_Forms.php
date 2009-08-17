@@ -1139,7 +1139,7 @@ class Rolodex_Forms {
         $tpl['BUSINESS_LABEL'] = dgettext('rolodex', 'Business address');
         $tpl['SETTINGS_GROUP_LABEL'] = dgettext('rolodex', 'Settings');
         if (PHPWS_Settings::get('rolodex', 'use_categories') || PHPWS_Settings::get('rolodex', 'use_locations') || PHPWS_Settings::get('rolodex', 'use_features')) {
-            $tpl['SELECT_LIST_TIP'] = dgettext('rolodex', 'To use the category, location, or feature lists, select an item from the list and click on the "+" symbool to add the selection to this profile. To remove a selection, click on the name of the item in the box below the select menu.');
+            $tpl['SELECT_LIST_TIP'] = dgettext('rolodex', 'To use the category, location, or feature lists, select an item from the list and click on the "+" symbol to add the selection to this profile. To remove a selection, click on the name of the item in the box below the select menu.');
         }
         if (PHPWS_Settings::get('rolodex', 'custom1_name') || 
             PHPWS_Settings::get('rolodex', 'custom2_name') || 

@@ -223,7 +223,22 @@ It has been replaced with mod/rolodex/inc/runtime.php
 </pre>';
 
 
+    case version_compare($currentVersion, '1.3.1', '<'):
+        $content[] = '<pre>';
 
+        $content[] = '1.3.1 changes
+----------------
+
++ Fixed bug in printCVS function
++ Improved privacy in CVS export
++ Changed email hiding to hide from all but admins
++ Fixed a minor display issue with instances of getDisplay_name()
++ Fixed bug in thumbnail linking to 1.6 url rewriting
++ Fixed bug in RDX_Runtime that was usually causing the sideblock 
+  to not show for logged in users (thanks trf000)
++ fixed typo in Category form instruction
+
+</pre>';
 
 
     } // end switch

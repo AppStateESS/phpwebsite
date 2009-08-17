@@ -91,16 +91,13 @@ Version 1.3.0 -- Oct-Nov 2008
 + Moved readme content to docs/readme
 + Updated CAPTCHA support
 
-Version 1.3.1 -- Nov 2008
+Version 1.3.1 -- Nov 08, July 2009
 ------------------------------------------------------------------
 + Fixed bug in printCVS function
 + Improved privacy in CVS export
 + Changed email hiding to hide from all but admins
 + Fixed a minor display issue with instances of getDisplay_name()
-
 + Fixed bug in thumbnail linking to 1.6 url rewriting
 + Fixed bug in RDX_Runtime that was usually causing the sideblock 
   to not show for logged in users (thanks trf000)
-+ 
-
-
++ fixed typo in Category form instruction
