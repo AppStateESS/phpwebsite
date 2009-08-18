@@ -36,7 +36,7 @@ class PHPWS_Cookie {
     {
         $cookie_index = sprintf('%s[%s]', COOKIE_HASH, $name);
         setcookie($cookie_index, '', time() - 3600);
-        if (isset($_COOKIE[COOKIE_HASH][$name])) {
+        if (is_array($_COOKIE[COOKIE_HASH]) && isset($_COOKIE[COOKIE_HASH][$name])) {
             unset($_COOKIE[COOKIE_HASH][$name]);
         }
     }
