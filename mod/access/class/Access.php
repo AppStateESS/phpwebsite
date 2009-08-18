@@ -46,118 +46,126 @@ class Access {
             $content = dgettext('access', 'Access needs a higher administrator\'s attention before you may use it.');
         } else {
             switch ($command) {
-            case 'post_admin':
-                Access::saveAdmin();
-                Access::sendMessage(dgettext('access', 'Settings saved.'), 'admin');
-                break;
+                case 'post_admin':
+                    Access::saveAdmin();
+                    Access::sendMessage(dgettext('access', 'Settings saved.'), 'admin');
+                    break;
 
-            case 'restore_default':
-                $source = PHPWS_SOURCE_DIR . 'core/inc/htaccess';
-                $dest = PHPWS_HOME_DIR . '.htaccess';
-                if (@copy($source, $dest)) {
-                    Access::sendMessage(dgettext('access', 'Default .htaccess file restored.'), 'update');
-                } else {
-                    Access::sendMessage(dgettext('access', 'Unable to restore default .htaccess file.'), 'update');
-                }
-                break;
-
-            case 'post_deny_allow':
-                $result = Access::postDenyAllow();
-                if ($result == false) {
-                    Access::sendMessage(dgettext('access', 'IP address was not formatted correctly or not allowed.'), 'deny_allow');
-                } elseif (PEAR::isError($result)) {
-                    PHPWS_Error::log($result);
-                    Access::sendMessage(dgettext('access', 'An error occurred.') . ' ' . dgettext('access', 'Please check your logs.'), 'deny_allow');
-                }
-                Access::sendMessage(NULL, 'deny_allow');
-                break;
-
-            case 'delete_allow_deny':
-                PHPWS_Core::initModClass('access', 'Allow_Deny.php');
-                $allow_deny = new Access_Allow_Deny($_GET['ad_id']);
-                $allow_deny->delete();
-                Access::sendMessage(dgettext('access', 'IP address deleted.'), 'deny_allow');
-                break;
-
-            case 'deny_allow':
-                PHPWS_Core::initModClass('access', 'Forms.php');
-                $title = dgettext('access', 'Denys and Allows');
-                $content = Access_Forms::denyAllowForm();
-                break;
-
-            case 'delete_shortcut':
-                PHPWS_Core::initModClass('access', 'Shortcut.php');
-                $shortcut = new Access_Shortcut($_REQUEST['shortcut_id']);
-                if (empty($shortcut->_error) && $shortcut->id) {
-                    $result = $shortcut->delete();
-                    if (PEAR::isError($result)) {
-                        Access::sendMessage(dgettext('access', 'An error occurred when deleting your shortcut.'), 'shortcuts');
+                case 'restore_default':
+                    $source = PHPWS_SOURCE_DIR . 'core/inc/htaccess';
+                    $dest = PHPWS_HOME_DIR . '.htaccess';
+                    if (@copy($source, $dest)) {
+                        Access::sendMessage(dgettext('access', 'Default .htaccess file restored.'), 'update');
+                    } else {
+                        Access::sendMessage(dgettext('access', 'Unable to restore default .htaccess file.'), 'update');
                     }
-                }
-                Access::sendMessage(dgettext('access', 'Shortcut deleted'), 'shortcuts');
-                break;
+                    break;
 
-            case 'shortcuts':
-                PHPWS_Core::initModClass('access', 'Forms.php');
-                $title = dgettext('access', 'Shortcuts');
-                $content = Access_Forms::shortcuts();
-                break;
+                case 'post_deny_allow':
+                    $result = Access::postDenyAllow();
+                    if ($result == false) {
+                        Access::sendMessage(dgettext('access', 'IP address was not formatted correctly or not allowed.'), 'deny_allow');
+                    } elseif (PEAR::isError($result)) {
+                        PHPWS_Error::log($result);
+                        Access::sendMessage(dgettext('access', 'An error occurred.') . ' ' . dgettext('access', 'Please check your logs.'), 'deny_allow');
+                    }
+                    Access::sendMessage(NULL, 'deny_allow');
+                    break;
 
+                case 'delete_allow_deny':
+                    PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+                    $allow_deny = new Access_Allow_Deny($_GET['ad_id']);
+                    $allow_deny->delete();
+                    Access::sendMessage(dgettext('access', 'IP address deleted.'), 'deny_allow');
+                    break;
 
-            case 'post_shortcut_list':
-                $message = NULL;
-                $result = Access::postShortcutList();
-                if (PEAR::isError($result)) {
-                    $message = dgettext('access', 'An error occurred.') . ' ' . dgettext('access', 'Please check your logs.');
-                }
-                Access::sendMessage($message, 'shortcuts');
-                break;
-
-            case 'edit_shortcut':
-                PHPWS_Core::initModClass('access', 'Forms.php');
-                $content = Access_Forms::shortcut_menu();
-                Layout::nakedDisplay($content);
-                exit();
-                break;
-
-            case 'post_shortcut':
-                PHPWS_Core::initModClass('access', 'Shortcut.php');
-
-                if (isset($_POST['sc_id'])) {
-                    $shortcut = new Access_Shortcut($_POST['sc_id']);
-                } else {
-                    $shortcut = new Access_Shortcut;
-                }
-
-                $result = $shortcut->postShortcut();
-                $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', dgettext('access', 'Close window'));
-                if (PEAR::isError($result)) {
+                case 'deny_allow':
                     PHPWS_Core::initModClass('access', 'Forms.php');
-                    $message = $result->getMessage();
+                    $title = dgettext('access', 'Denys and Allows');
+                    $content = Access_Forms::denyAllowForm();
+                    break;
+
+                case 'delete_shortcut':
+                    PHPWS_Core::initModClass('access', 'Shortcut.php');
+                    $shortcut = new Access_Shortcut($_REQUEST['shortcut_id']);
+                    if (empty($shortcut->_error) && $shortcut->id) {
+                        $result = $shortcut->delete();
+                        if (PEAR::isError($result)) {
+                            Access::sendMessage(dgettext('access', 'An error occurred when deleting your shortcut.'), 'shortcuts');
+                        }
+                    }
+                    Access::sendMessage(dgettext('access', 'Shortcut deleted'), 'shortcuts');
+                    break;
+
+                case 'shortcuts':
+                    PHPWS_Core::initModClass('access', 'Forms.php');
+                    $title = dgettext('access', 'Shortcuts');
+                    $content = Access_Forms::shortcuts();
+                    break;
+
+
+                case 'post_shortcut_list':
+                    $message = NULL;
+                    $result = Access::postShortcutList();
+                    if (PEAR::isError($result)) {
+                        $message = dgettext('access', 'An error occurred.') . ' ' . dgettext('access', 'Please check your logs.');
+                    }
+                    Access::sendMessage($message, 'shortcuts');
+                    break;
+
+                case 'edit_shortcut':
+                    PHPWS_Core::initModClass('access', 'Forms.php');
                     $content = Access_Forms::shortcut_menu();
-                } elseif ($result == false) {
-                    $tpl['TITLE'] = dgettext('access', 'A serious error occurred. Please check your error.log.') . '<br />';
-                    $tpl['CONTENT'] = sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], dgettext('access', 'Return to previous page.'));
-                    $content = PHPWS_Template::process($tpl, 'access', 'box.tpl');
-                } else {
-                    $content = Access::saveShortcut($shortcut);
-                }
+                    Layout::nakedDisplay($content);
+                    exit();
+                    break;
 
-                $tpl['MESSAGE'] = $message;
-                $tpl['CONTENT'] = $content;
+                case 'post_shortcut':
+                    PHPWS_Core::initModClass('access', 'Shortcut.php');
 
-                Layout::nakedDisplay(PHPWS_Template::process($tpl, 'access', 'main.tpl'));
-                break;
+                    if (isset($_POST['sc_id'])) {
+                        $shortcut = new Access_Shortcut($_POST['sc_id']);
+                    } else {
+                        $shortcut = new Access_Shortcut;
+                    }
 
-            case 'htaccess':
-                $title = dgettext('access', 'htaccess');
-                $content = Access::htaccess();
-                break;
+                    $result = $shortcut->postShortcut();
+                    $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', dgettext('access', 'Close window'));
+                    if (PEAR::isError($result)) {
+                        PHPWS_Core::initModClass('access', 'Forms.php');
+                        $message = $result->getMessage();
+                        $content = Access_Forms::shortcut_menu();
+                    } elseif ($result == false) {
+                        $tpl['TITLE'] = dgettext('access', 'A serious error occurred. Please check your error.log.') . '<br />';
+                        $tpl['CONTENT'] = sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], dgettext('access', 'Return to previous page.'));
+                        $content = PHPWS_Template::process($tpl, 'access', 'box.tpl');
+                    } else {
+                        $content = Access::saveShortcut($shortcut);
+                    }
 
-            case 'add_rewritebase':
-                Access::addRewriteBase();
-                PHPWS_Core::goBack();
-                break;
+                    $tpl['MESSAGE'] = $message;
+                    $tpl['CONTENT'] = $content;
+
+                    Layout::nakedDisplay(PHPWS_Template::process($tpl, 'access', 'main.tpl'));
+                    break;
+
+                case 'htaccess':
+                    if (Current_User::isDeity()) {
+                        $title = dgettext('access', 'htaccess');
+                        $content = Access::htaccess();
+                    } else {
+                        Current_User::disallow();
+                    }
+                    break;
+
+                case 'add_rewritebase':
+                    if (Current_User::isDeity()) {
+                        Access::addRewriteBase();
+                        PHPWS_Core::goBack();
+                    } else {
+                        Current_User::disallow();
+                    }
+                    break;
             }
         }
 
@@ -313,7 +321,9 @@ class Access {
         if (Current_User::allow('access', 'admin_options')) {
             $link['title'] = dgettext('access', 'Allow/Deny');
             $tabs['deny_allow'] = $link;
+        }
 
+        if (Current_User::isDeity()) {
             $link['title'] = dgettext('access', '.htaccess');
             $tabs['htaccess'] = $link;
         }
@@ -381,19 +391,19 @@ class Access {
         $db->addWhere('id', $_POST['shortcut']);
 
         switch ($_POST['list_action']) {
-        case 'active':
-            $db->addValue('active', 1);
-            $result = $db->update();
-            break;
+            case 'active':
+                $db->addValue('active', 1);
+                $result = $db->update();
+                break;
 
-        case 'deactive':
-            $db->addValue('active', 0);
-            $result = $db->update();
-            break;
+            case 'deactive':
+                $db->addValue('active', 0);
+                $result = $db->update();
+                break;
 
-        case 'delete':
-            $result = $db->delete();
-            break;
+            case 'delete':
+                $result = $db->delete();
+                break;
         }
 
         if (PEAR::isError($result)) {
@@ -459,19 +469,19 @@ class Access {
                 $db->addWhere('id', $_POST['allows']);
 
                 switch ($_POST['allow_action']) {
-                case 'active':
-                    $db->addValue('active', 1);
-                    return $db->update();
-                    break;
+                    case 'active':
+                        $db->addValue('active', 1);
+                        return $db->update();
+                        break;
 
-                case 'deactive':
-                    $db->addValue('active', 0);
-                    return $db->update();
-                    break;
+                    case 'deactive':
+                        $db->addValue('active', 0);
+                        return $db->update();
+                        break;
 
-                case 'delete':
-                    return $db->delete();
-                    break;
+                    case 'delete':
+                        return $db->delete();
+                        break;
                 }
             }
         }
@@ -491,19 +501,19 @@ class Access {
             $db->addWhere('id', $_POST['denys']);
 
             switch ($_POST['deny_action']) {
-            case 'active':
-                $db->addValue('active', 1);
-                return $db->update();
-                break;
+                case 'active':
+                    $db->addValue('active', 1);
+                    return $db->update();
+                    break;
 
-            case 'deactive':
-                $db->addValue('active', 0);
-                return $db->update();
-                break;
+                case 'deactive':
+                    $db->addValue('active', 0);
+                    return $db->update();
+                    break;
 
-            case 'delete':
-                return $db->delete();
-                break;
+                case 'delete':
+                    return $db->delete();
+                    break;
             }
         }
 
