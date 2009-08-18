@@ -36,8 +36,8 @@ CREATE INDEX phpwsbb_topics_key_id_idx ON phpwsbb_topics (key_id);
 
 CREATE TABLE phpwsbb_users (
  user_id int NOT NULL,
- last_on int NOT NULL default 0,
- last_activity int NOT NULL default 0,
+ last_on int default 0,
+ last_activity int default 0,
  PRIMARY KEY (user_id)
 );
 
