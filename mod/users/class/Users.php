@@ -448,7 +448,7 @@ class PHPWS_User {
 
     public function canChangePassword()
     {
-        return ($this->authorize == LOCAL_AUTHORIZATION) ? true : false;
+        return ($this->authorize == PHPWS_Settings::get('users', 'local_script'));
     }
 
     public function verifyAuthKey($salt_value=null)

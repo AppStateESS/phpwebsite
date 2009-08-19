@@ -1,3 +1,4 @@
++ Fixed bug with users able to change password on alternate auth.
 + Usernames and passwords can not be changed on non local users
 + Added switch to settings to prevent admins from making new users
 + Most user settings have been made deity only.
