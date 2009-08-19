@@ -843,10 +843,11 @@ class User_Form {
         $form->addHidden('command', 'update_settings');
         $form->addSubmit('submit',dgettext('users', 'Update Settings'));
 
+        $form->addText('site_contact', PHPWS_User::getUserSetting('site_contact'));
+        $form->setLabel('site_contact', dgettext('users', 'Site contact email'));
+        $form->setSize('site_contact', 40);
+
         if (Current_User::isDeity()) {
-            $form->addText('site_contact', PHPWS_User::getUserSetting('site_contact'));
-            $form->setLabel('site_contact', dgettext('users', 'Site contact email'));
-            $form->setSize('site_contact', 40);
 
             $signup_modes = array(0, AUTO_SIGNUP, CONFIRM_SIGNUP);
 

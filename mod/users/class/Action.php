@@ -1114,13 +1114,15 @@ class User_Action {
             Current_User::disallow();
             return;
         }
+
+        if (!isset($_POST['site_contact'])) {
+            $error = dgettext('users', 'You need to set a site contact address.');
+        } elseif (!PHPWS_Text::isValidInput($_POST['site_contact'], 'email')) {
+            $error = dgettext('users', 'Please enter a valid email address as a site contact.');
+        }
+
         if (Current_User::isDeity()) {
             $settings['site_contact'] = $_POST['site_contact'];
-            if (!isset($_POST['site_contact'])) {
-                $error = dgettext('users', 'You need to set a site contact address.');
-            } elseif (!PHPWS_Text::isValidInput($_POST['site_contact'], 'email')) {
-                $error = dgettext('users', 'Please enter a valid email address as a site contact.');
-            }
 
             if (is_numeric($_POST['user_signup'])) {
                 $settings['new_user_method'] = (int)$_POST['user_signup'];

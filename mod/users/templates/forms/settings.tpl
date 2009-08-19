@@ -4,14 +4,14 @@
     <td>{FORBIDDEN_USERNAMES_LABEL}</td>
     <td>{FORBIDDEN_USERNAMES}</td>
   </tr>
+  <tr>
+    <td>{SITE_CONTACT_LABEL}</td>
+    <td>{SITE_CONTACT}</td>
+  </tr>
   <!-- BEGIN deity-only -->
   <tr>
     <td width="30%">{VERIFY_PERMISSIONS}</td>
     <td>{VERIFY_EXPLAIN}</td>
-  </tr>
-  <tr>
-    <td>{SITE_CONTACT_LABEL}</td>
-    <td>{SITE_CONTACT}</td>
   </tr>
   <tr>
     <td>{HIDE_LOGIN_LABEL}</td>
