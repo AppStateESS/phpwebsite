@@ -56,7 +56,7 @@ class Notes_My_Page {
         case 'read_note':
             Layout::addStyle('notes', 'note_style.css');
             $note = new Note_Item((int)$_REQUEST['id']);
-            Layout::nakedDisplay($note->read());
+            Layout::nakedDisplay($note->read(), dgettext('notes', 'Read note'), true);
             break;
 
         case 'send_note':
@@ -93,7 +93,7 @@ class Notes_My_Page {
         $tpl['MESSAGE'] = $this->message;
 
         if ($js) {
-            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'notes', 'main.tpl'));
+            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'notes', 'main.tpl'), null, true);
         } else {
             return PHPWS_Template::process($tpl, 'notes', 'main.tpl');
         }
