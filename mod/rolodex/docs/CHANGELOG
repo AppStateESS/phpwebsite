@@ -1,42 +1,54 @@
-Version 0.0.1 -- Jan 2008
+Version 1.3.2 -- Aug 2009
 ------------------------------------------------------------------
-+ Initial rough-in
++ Reorganized changelog
++ Fixed odd bug that could lead to duplicate tabs when adding the
+  first location or feature (thanks majjhima)
 
-Version 0.5.0 -- Mar 2008
+Version 1.3.1 -- Nov 08, July 2009
 ------------------------------------------------------------------
-+ Beta release
++ Fixed bug in printCVS function
++ Improved privacy in CVS export
++ Changed email hiding to hide from all but admins
++ Fixed a minor display issue with instances of getDisplay_name()
++ Fixed bug in thumbnail linking to 1.6 url rewriting
++ Fixed bug in RDX_Runtime that was usually causing the sideblock 
+  to not show for logged in users (thanks trf000)
++ fixed typo in Category form instruction
 
-Version 0.6.0 -- May 2008
+Version 1.3.0 -- Oct-Nov 2008
 ------------------------------------------------------------------
-+ Fixed all legit bugs reported here
-+ http://phpwsforums.com/showthread.php?t=5655
++ Converted to phpws 1.6 url rewriting method
++ Removed old mod_rewrite code
++ Begin rewriting to php5 standards
++ Moved readme content to docs/readme
++ Updated CAPTCHA support
 
-Version 0.7.0 -- June 2008
+Version 1.2.0 -- Aug-Sep 2008
 ------------------------------------------------------------------
-+ Add support for Location(s) and Feature(s)
-+ Added a bunch of new views to support those
-+ Improved Category views
-+ Improved image handling
-+ Removed avatar support (it's in My Page > Comments anyways)
-+ Improved CSV export
-+ A few security tweaks
-+ Added en_US language file
-+ Added inc/remove_user.php for new user mod features
-+ Added a couple date format examples to config.php
-+ Consolidated various nav links arrays into one function
++ Fixed bug where some list parameters were being cleared when 
+  a search was not being done, when paging a list of users
++ Fixed a session bug in RDX_Runtime
++ Fixed a few php notices
++ Made Read Me tab restricted to deity users
++ Fixed minor bug in save settings
++ Module now defaults to list view instead of home if no arg is set
++ Fixed bug when users were posting their own update and getting a 403
++ Added links in Rolodex edit screen so that admins with sufficient
+  priveledges will be able to edit and/or activate the related user
 
-Version 0.8.0 -- June 2008
+Version 1.1.0 -- July 2008
 ------------------------------------------------------------------
-+ Added new setting to use link or form for contact
-+ Added memnber contact form
-+ Added setting for CAPTCHA on contact form
-
-Version 0.9.0 -- June 2008
-------------------------------------------------------------------
-+ Various text improvements throughout
-+ Added more details to list views
-+ Added new settings for customizing list views
-+ Added options for including custom fields in lists
++ Added support for email/contact link privacy at user level 
++ Minor layout tweaks
++ Fixed bug in post settings that wasn't clearning custom field 
+  labels
++ Added security check so that only users with edit_member
+  perms can edit internal custom field data
++ Added Categories to dependency.xml and check file
++ Re-organized some control panel tabs into sub-tabs
++ Added settings to enable or disable categories, locations,
+  and features
++ Some tweaking of users permissions and security
 
 Version 1.0.0 -- July 2008
 ------------------------------------------------------------------
@@ -56,48 +68,43 @@ Version 1.0.0 -- July 2008
 + Cleaned out a lot of old code from old 'view by' lists
 + Template tweaks
 
-Version 1.1.0 -- July 2008
+Version 0.9.0 -- June 2008
 ------------------------------------------------------------------
-+ Added support for email/contact link privacy at user level 
-+ Minor layout tweaks
-+ Fixed bug in post settings that wasn't clearning custom field 
-  labels
-+ Added security check so that only users with edit_member
-  perms can edit internal custom field data
-+ Added Categories to dependency.xml and check file
-+ Re-organized some control panel tabs into sub-tabs
-+ Added settings to enable or disable categories, locations,
-  and features
-+ Some tweaking of users permissions and security
++ Various text improvements throughout
++ Added more details to list views
++ Added new settings for customizing list views
++ Added options for including custom fields in lists
 
-Version 1.2.0 -- Aug-Sep 2008
+Version 0.8.0 -- June 2008
 ------------------------------------------------------------------
-+ Fixed bug where some list parameters were being cleared when 
-  a search was not being done, when paging a list of users
-+ Fixed a session bug in RDX_Runtime
-+ Fixed a few php notices
-+ Made Read Me tab restricted to deity users
-+ Fixed minor bug in save settings
-+ Module now defaults to list view instead of home if no arg is set
-+ Fixed bug when users were posting their own update and getting a 403
-+ Added links in Rolodex edit screen so that admins with sufficient
-  priveledges will be able to edit and/or activate the related user
++ Added new setting to use link or form for contact
++ Added memnber contact form
++ Added setting for CAPTCHA on contact form
 
-Version 1.3.0 -- Oct-Nov 2008
+Version 0.7.0 -- June 2008
 ------------------------------------------------------------------
-+ Converted to phpws 1.6 url rewriting method
-+ Removed old mod_rewrite code
-+ Begin rewriting to php5 standards
-+ Moved readme content to docs/readme
-+ Updated CAPTCHA support
++ Add support for Location(s) and Feature(s)
++ Added a bunch of new views to support those
++ Improved Category views
++ Improved image handling
++ Removed avatar support (it's in My Page > Comments anyways)
++ Improved CSV export
++ A few security tweaks
++ Added en_US language file
++ Added inc/remove_user.php for new user mod features
++ Added a couple date format examples to config.php
++ Consolidated various nav links arrays into one function
 
-Version 1.3.1 -- Nov 08, July 2009
+Version 0.6.0 -- May 2008
 ------------------------------------------------------------------
-+ Fixed bug in printCVS function
-+ Improved privacy in CVS export
-+ Changed email hiding to hide from all but admins
-+ Fixed a minor display issue with instances of getDisplay_name()
-+ Fixed bug in thumbnail linking to 1.6 url rewriting
-+ Fixed bug in RDX_Runtime that was usually causing the sideblock 
-  to not show for logged in users (thanks trf000)
-+ fixed typo in Category form instruction
++ Fixed all legit bugs reported here
++ http://phpwsforums.com/showthread.php?t=5655
+
+Version 0.5.0 -- Mar 2008
+------------------------------------------------------------------
++ Beta release
+
+Version 0.0.1 -- Jan 2008
+------------------------------------------------------------------
++ Initial rough-in
+
