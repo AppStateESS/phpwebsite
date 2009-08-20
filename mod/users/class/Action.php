@@ -1121,8 +1121,9 @@ class User_Action {
             $error = dgettext('users', 'Please enter a valid email address as a site contact.');
         }
 
+        $settings['site_contact'] = $_POST['site_contact'];
+
         if (Current_User::isDeity()) {
-            $settings['site_contact'] = $_POST['site_contact'];
 
             if (is_numeric($_POST['user_signup'])) {
                 $settings['new_user_method'] = (int)$_POST['user_signup'];
