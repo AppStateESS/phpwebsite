@@ -1,7 +1,31 @@
 <?php
 
+PHPWS_Core::initModClass('notification', 'SimpleNotification.php');
+PHPWS_Core::initModClass('notification', 'NotificationQueue.php');
+PHPWS_Core::initModClass('notification', 'Notification.php');
+
 class NQ
 {
+	private static $queues;
+	
+	public static function init()
+	{
+		if(isset($_SESSION['NotificationQueue'])) {
+		    self::$queues = unserialize($_SESSION['NotificationQueue']);
+		}
+	}
+	
+	public static function close()
+	{
+		if(count(self::$queues) > 0) {
+			$_SESSION['NotificationQueue'] = serialize(self::$queues);
+		} else {
+			if(isset($_SESSION['NotificationQueue'])) {
+				unset($_SESSION['NotificationQueue']);
+			}
+		}
+	}
+	
 	/**
 	 * Get a notification queue from the session.
 	 * 
@@ -10,15 +34,12 @@ class NQ
 	 */
     protected static function getQueue($module)
     {
-        if(!isset($_SESSION['NotificationQueue']))
-            $_SESSION['NotificationQueue'] = array();
-            
-        if(!isset($_SESSION['NotificationQueue'][$module]) ||
-           !is_a($_SESSION['NotificationQueue'][$module], 'NotificationQueue')) {
-            $_SESSION['NotificationQueue'][$module] = new NotificationQueue($module);
-        }
+    	if(!isset(self::$queues[$module]) ||
+    	   !is_a(self::$queues[$module], 'NotificationQueue')) {
+    	   	self::$queues[$module] = new NotificationQueue($module);
+    	}
         
-        return $_SESSION['NotificationQueue'][$module];
+        return self::$queues[$module];
     }
     
     /**
@@ -32,7 +53,6 @@ class NQ
     {
         $queue = self::getQueue($module);
         $queue->push($notification);
-
     }
     
     /**
@@ -68,7 +88,7 @@ class NQ
      */
     public static function simple($module, $type, $content)
     {
-    	$n = new Notification($type, $content);
+    	$n = new SimpleNotification($type, $content);
     	self::push($module, $n);
     }
 }

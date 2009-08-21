@@ -23,7 +23,9 @@ class NotificationQueue
 	
 	public function popAll()
 	{
-		return $this->queue;
+		$q = $this->queue;
+		$this->queue = array();
+		return $q;
 	}
 }
 ?>
