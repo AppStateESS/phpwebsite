@@ -1,13 +1,13 @@
 <?php
 /**
- * This is the PHPWS_BB_Lists class.  
+ * This is the PHPWS_BB_Lists class.
  * It contains  public functions to generate various article listings.
  *
  * @version $Id: BB_Lists.php,v 1.3 2008/10/08 17:11:22 adarkling Exp $
  *
  * @author Eloi George <eloi@NOSPAM.bygeorgeware.com>
  * @module Article Manager
- */ 
+ */
 class PHPWSBB_Lists
 {
     /**
@@ -25,14 +25,14 @@ class PHPWSBB_Lists
             $cachekey = 'phpwsbbForums';
             $s = PHPWS_Cache::get($cachekey);
         }
-        if (!empty($s)) 
+        if (!empty($s))
             $cat_arr = unserialize($s);
         else {
             // Load all forum objects into an indexed array
             $db = & new PHPWS_DB('phpwsbb_forums');
             $db->addOrder('sortorder asc');
             $db->addOrder('title asc');
-            if(!Current_User::allow('phpwsbb', 'manage_forums')) 
+            if(!Current_User::allow('phpwsbb', 'manage_forums'))
                 Key::restrictView($db, 'phpwsbb', false);
             $result = $db->select('col');
             if (PHPWS_Error::logIfError($result) || empty($result))
@@ -42,7 +42,7 @@ class PHPWSBB_Lists
                 $cat_arr[0]['forums'][$value] = new PHPWSBB_Forum($value);
 
             // Load all forum ids belonging to categories
-            $db = & new PHPWS_DB('category_items');
+            $db = new PHPWS_DB('category_items');
             $db->addColumn('phpwsbb_forums.id');
             $db->addColumn('category_items.cat_id');
             $db->addWhere('category_items.module', 'phpwsbb');
@@ -51,7 +51,7 @@ class PHPWSBB_Lists
             $db->addOrder('phpwsbb_forums.sortorder asc');
             $db->addOrder('phpws_key.title asc');
             $result = $db->select();
-            if (PHPWS_Error::logIfError($result)) 
+            if (PHPWS_Error::logIfError($result))
                 return PHPWS_Error::printError($result);
             if (!empty($result))
                 // Loop through all records...
@@ -61,7 +61,7 @@ class PHPWSBB_Lists
                     unset($cat_arr[0]['forums'][$value['id']]);
                     if (!isset($cat_arr[$value['cat_id']]['category'])) {
                         $category = & new Category($value['cat_id']);
-                        $a = array('CATEGORY_NAME' => $category->getTitle(), 
+                        $a = array('CATEGORY_NAME' => $category->getTitle(),
                                    'CATEGORY_DESCRIPTION' => $category->getDescription(),
                                    'SECTION_TITLE' => dgettext('phpwsbb', 'Section'));
                         if ($category->icon) {
@@ -81,10 +81,10 @@ class PHPWSBB_Lists
 
         $tpl = & new PHPWS_Template('phpwsbb');
         $tpl->setFile('forum_list.tpl');
-        // Loop through the category array for the amount of rows 
+        // Loop through the category array for the amount of rows
     	foreach ($cat_arr AS $key => $value) {
             // List all forums in this category
-            // Single category display 
+            // Single category display
             foreach ($value['forums'] AS $forum) {
                 $tpl->setCurrentBlock('cat_forum_list');
                 $tpl->setData($forum->_get_tags(true));
@@ -124,7 +124,7 @@ class PHPWSBB_Lists
         $pager->setCacheIdentifier('search_'.$type);
         $pager->cacheQueries();
         $pager->setDefaultOrder('lastpost_date', 'desc');
-        $pager->setDefaultLimit(30); 
+        $pager->setDefaultLimit(30);
         $pager->setLimitList(array(30,60,90));
         $pager->setEmptyMessage(dgettext('phpwsbb', 'No Topics found.'));
         $pager->addToggle('class="toggle1"');
@@ -135,10 +135,10 @@ class PHPWSBB_Lists
 
         /* Modify WHERE clause to the desired list type */
         switch ($type) {
-        case 'since': 
+        case 'since':
             $pager->db->addWhere('lastpost_date', $var, '>=');
             break;
-					
+
         case 'zerothreads':
             $pager->db->addWhere('total_posts', '2', '<');
             break;

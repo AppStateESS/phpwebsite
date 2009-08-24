@@ -23,14 +23,15 @@
 
 <table class="box phpwsbb" cellspacing="1" cellpadding="6">
 <tr class="box-title">
-    <th scope="col" colspan="2" style="min-width:50%">
-        {PHPWS_KEY_TITLE_SORT}
+    <th>&nbsp;</th>
+    <th>
+        {TITLE_SORT}
         <br />
-        {PHPWS_KEY_CREATOR_SORT}
+        {CREATOR_SORT}
     </th>
     <th valign="middle" style="text-align:center" scope="col">{TOTAL_POSTS_SORT}</th>
 <!-- BEGIN VIEWS_LABEL -->
-    <th valign="middle" style="text-align:center" scope="col">{PHPWS_KEY_TIMES_VIEWED_SORT}</th>
+    <th valign="middle" style="text-align:center" scope="col">{TIMES_VIEWED_SORT}</th>
 <!-- END VIEWS_LABEL -->
     <th valign="middle" style="text-align:center;white-space:nowrap; min-width:20%" scope="col">{LASTPOST_DATE_SORT}</th>
 </tr>
@@ -49,7 +50,7 @@
 
 <!-- BEGIN listrows -->
 <tr{TOGGLE}>
-    <td style="vertical-align:middle">{TOPIC_HAS_NEW}</td>
+    <td style="vertical-align:middle;" width="1%">{TOPIC_HAS_NEW}</td>
     <td>
         {THREAD_TITLE_LINK} 
         
@@ -74,7 +75,7 @@
 
 <!-- BEGIN navigate -->
 <div>
-    <div class="align-center smaller" style="float: right;">
+    <div class="align-center" style="float: right;">
         {TOTAL_ROWS}<br />
         {PAGE_LABEL} {PAGES}<br />
         {LIMIT_LABEL} {LIMITS}<br />

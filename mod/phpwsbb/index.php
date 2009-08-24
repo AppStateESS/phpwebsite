@@ -80,7 +80,7 @@ if (isset($_REQUEST['BB_vars']))
 // Basic view public function request
 if (!empty($_GET['view'])) {
     switch ($_GET['view']) {
-    case 'topic': 
+    case 'topic':
         $topic = & new PHPWSBB_Topic((int) $_GET['id']);
         if ($topic->id) {
             $title = $topic->get_title();
@@ -91,7 +91,7 @@ if (!empty($_GET['view'])) {
         }
         break;
 
-    case 'forum': 
+    case 'forum':
         $forum = new PHPWSBB_Forum((int) $_GET['id']);
         if ($forum->id) {
             $title = $forum->get_title();
@@ -119,16 +119,16 @@ elseif (!empty($_REQUEST['op'])) {
         $GLOBALS['BBForums'][(int) $_REQUEST['forum']] = new PHPWSBB_Forum((int) $_REQUEST['forum']);
         $forum = & $GLOBALS['BBForums'][(int) $_REQUEST['forum']];
     }
-    
+
     switch ($_REQUEST['op']) {
-    case 'create_topic': 
-        $topic = & new PHPWSBB_Topic();
+    case 'create_topic':
+        $topic = new PHPWSBB_Topic();
         $topic->fid = $forum->id;
         $title = sprintf(dgettext('phpwsbb', 'Create a New Topic in Forum "%s"'), $forum->get_title());
         $content = $topic->edit();
     	break;
 
-    case 'save_topic': 
+    case 'save_topic':
         // Make sure that we can save this topic
         if (empty($forum) || !$forum->can_post()) {
             $message = dgettext('phpwsbb', 'You are not authorized to save topics in this forum.');
@@ -148,7 +148,7 @@ elseif (!empty($_REQUEST['op'])) {
         unset($message);
     	break;
 
-    case 'getnew': 
+    case 'getnew':
         if (!empty($_SESSION['phpwsbb_last_on'])) {
             $since = $_SESSION['phpwsbb_last_on'];
         } else {
@@ -161,7 +161,7 @@ elseif (!empty($_REQUEST['op'])) {
         Layout::addPageTitle($title);
     	break;
 
-    case 'viewtoday': 
+    case 'viewtoday':
         $since = strtotime('00:00 today');
         $title = dgettext('phpwsbb', 'Today\'s Posts');
         PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
@@ -169,7 +169,7 @@ elseif (!empty($_REQUEST['op'])) {
         Layout::addPageTitle($title);
     	break;
 
-    case 'viewweek': 
+    case 'viewweek':
         $since = strtotime('last monday');
         $title = dgettext('phpwsbb', 'This Week\'s Posts');
         PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
@@ -226,7 +226,7 @@ elseif (!empty($_REQUEST['op'])) {
             // Create all requested comments
             foreach ($comment_list AS $comment) {
             // If non is specified, pick a random user as author
-                if (!$comment['author_id'] && empty($comment['anon_name'])) 
+                if (!$comment['author_id'] && empty($comment['anon_name']))
                     $comment['author_id'] = $list[rand(0, $listsize)];
                 PHPWSBB_Data::create_comment($topic->id, $comment['subject'], $comment['entry'], $comment['author_id'], $comment['anon_name']);
                 sleep(1);
@@ -239,8 +239,9 @@ elseif (!empty($_REQUEST['op'])) {
         */
     default:
         // If none of these actions were requested & user is an admin..
-        if (Current_User::authorized('comments'))
+        if (Current_User::authorized('comments')) {
             include(PHPWS_SOURCE_DIR . 'mod/phpwsbb/index_admin.php');
+        }
     }
 }
 
@@ -258,7 +259,7 @@ if (!empty($topic))
  $topic->MiniAdmin();
  if (!empty($forum))
  $forum->MiniAdmin();
- 
+
  /* Show generated content */
 if (!empty($title))
     $template['TITLE']   = $title;
