@@ -139,6 +139,28 @@ class vList {
                 $this->loadForm('listings');
                 break;
                 
+            case 'approve_listing':
+                if (!Current_User::authorized('vlist', 'edit_listing')) {
+                    Current_User::disallow();
+                }
+                $this->loadListing();
+                $this->listing->approved = 1;
+                $this->listing->saveListing();
+                $this->forwardMessage(sprintf(dgettext('vlist', 'Listing %s approved.'), $this->listing->getTitle(true)));
+                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
+                break;
+    
+            case 'unapprove_listing':
+                if (!Current_User::authorized('vlist', 'edit_listing')) {
+                    Current_User::disallow();
+                }
+                $this->loadListing();
+                $this->listing->approved = 0;
+                $this->listing->saveListing();
+                $this->forwardMessage(sprintf(dgettext('vlist', 'Listing %s unapproved.'), $this->listing->getTitle(true)));
+                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
+                break;
+    
             case 'activate_listing':
                 if (!Current_User::authorized('vlist', 'edit_listing')) {
                     Current_User::disallow();
@@ -350,9 +372,9 @@ class vList {
                 break;
 
             case 'edit_options':
-                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
-                    Current_User::disallow();
-                }
+//                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+//                    Current_User::disallow();
+//                }
                 $settingsPanel->setCurrentTab('elements');
                 $this->loadElement();
                 $this->element->vlist = & $this;
@@ -361,9 +383,9 @@ class vList {
                 break;
 
             case 'post_options':
-                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
-                    Current_User::disallow();
-                }
+//                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+//                    Current_User::disallow();
+//                }
                 $settingsPanel->setCurrentTab('elements');
 //print_r($_POST); exit;
                 $this->loadElement();
@@ -495,19 +517,19 @@ class vList {
                 PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
-                $this->forms->listListings(1);
+                $this->forms->listListings(1, 1);
                 break;
 
             case 'view_listing':
                 $this->loadListing();
-                if (!Current_User::isUnrestricted('vlist') && !$this->listing->active) {
+                if (!Current_User::isUnrestricted('vlist') && (!$this->listing->approved || !$this->listing->active)) {
                     $this->title = dgettext('vlist', 'Inactive listing');
                     $this->content = dgettext('vlist', 'Sorry, this listing is not currently available.');
                     $this->content .= '<br />' . $this->listing->links();
                 } else {
                     Layout::addPageTitle($this->listing->getTitle());
                     $this->title = $this->listing->getTitle(true);
-                    if (Current_User::isUnrestricted('vlist') && !$this->listing->active) {
+                    if (Current_User::isUnrestricted('vlist') && (!$this->listing->approved || !$this->listing->active)) {
                         $this->title = dgettext('vlist', 'INACTIVE');
                     }
                     $this->content = $this->listing->view();
@@ -532,7 +554,7 @@ class vList {
                 PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
-                $this->forms->listListings(1, $id);
+                $this->forms->listListings(1, 1, $id);
                 break;
 
             case 'view_owner':
@@ -546,7 +568,7 @@ class vList {
                 PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
-                $this->forms->listListings(1, null, $id);
+                $this->forms->listListings(1, 1, null, $id);
                 break;
 
             /* not sure if this is being used */
@@ -568,7 +590,7 @@ class vList {
                 PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
-                $this->forms->listListings(1);
+                $this->forms->listListings(1, 1);
                 break;
     
         }
@@ -718,9 +740,13 @@ class vList {
 
         if (Current_User::isUnrestricted('vlist')) {
             $db = new PHPWS_DB('vlist_listing');
-            $db->addWhere('active', 0);
+            $db->addWhere('approved', 0);
             $unapproved = $db->count();
             $tags['approvals'] = array('title'=>sprintf(dgettext('vlist', 'Unapproved (%s)'), $unapproved), 'link'=>$link);
+            $db = new PHPWS_DB('vlist_listing');
+            $db->addWhere('active', 0);
+            $inactive = $db->count();
+            $tags['inactives'] = array('title'=>sprintf(dgettext('vlist', 'Inactive (%s)'), $inactive), 'link'=>$link);
         }
 
         if (Current_User::allow('vlist', 'settings', null, null, true)) {
@@ -749,6 +775,9 @@ class vList {
             $this->listing->setTitle($_POST['title']);
         }
 
+        isset($_POST['approved']) ?
+            $this->listing->approved = 1 :
+            $this->listing->approved = 0 ;
         isset($_POST['active']) ?
             $this->listing->active = 1 :
             $this->listing->active = 0 ;
@@ -1272,6 +1301,7 @@ class vList {
                         $db->addColumn('vlist_'.$type.'_items.*');
                         $db->addColumn('vlist_listing.id');
                         $db->addWhere('vlist_listing.id', 'vlist_'.$type.'_items.listing_id');
+                        $db->addWhere('vlist_listing.approved', 1);
                         $db->addWhere('vlist_listing.active', 1);
                         $db->addGroupBy('vlist_listing.id'); 
                     }
@@ -1324,6 +1354,7 @@ class vList {
                         $db->addColumn('vlist_element_items.*');
                         $db->addColumn('vlist_listing.id');
                         $db->addWhere('vlist_listing.id', 'vlist_element_items.listing_id');
+                        $db->addWhere('vlist_listing.approved', 1);
                         $db->addWhere('vlist_listing.active', 1);
                         $db->addGroupBy('vlist_listing.id'); 
                     }

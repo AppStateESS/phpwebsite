@@ -30,6 +30,7 @@ class vList_Listing {
     public $updated         = 0;
     public $owner_id        = 0;
     public $editor_id       = 0;
+    public $approved        = 1;
     public $active          = 1;
     public $title           = null;
     public $description     = null;
@@ -319,7 +320,7 @@ class vList_Listing {
 
         Layout::addPageTitle($this->getTitle());
         $tpl['ITEM_LINKS'] = $this->links();
-        $tpl['TITLE'] = $this->getTitle(true);
+        $tpl['TITLE'] = sprintf(dgettext('vlist', '#%s %s'), $this->id, $this->getTitle(true));
         if ($this->get_groups(true) && PHPWS_Settings::get('vlist', 'enable_groups')) {
             $tpl['GROUP_LINKS'] = implode(', ', $this->get_groups(true));
             $tpl['GROUP_LINKS_LABEL'] = PHPWS_Settings::get('vlist', 'groups_title');
@@ -425,6 +426,30 @@ class vList_Listing {
     }
 
 
+    public function approvedLink($label=null, $icon=false)
+    {
+        $vars['id'] = $this->id;
+        if ($this->approved) {
+            $vars['aop'] = 'unapprove_listing';
+            if ($icon) {
+                $label = sprintf('<img src="images/mod/vlist/approved.png" title="%s" alt="%s" >',
+                                 dgettext('vlist', 'Unapprove'), dgettext('vlist', 'Unapprove'));
+            } elseif (empty($label)) {
+                    $label = dgettext('vlist', 'Unapprove');
+            }
+        } else {
+            $vars['aop'] = 'approve_listing';
+            if ($icon) {
+                $label = sprintf('<img src="images/mod/vlist/unapproved.png" title="%s" alt="%s" >',
+                                 dgettext('vlist', 'Approve'), dgettext('vlist', 'Approve'));
+            } elseif (empty($label)) {
+                    $label = dgettext('vlist', 'Approve');
+            }
+        }
+        return PHPWS_Text::secureLink($label, 'vlist', $vars);
+    }
+
+
     public function activeLink($label=null, $icon=false)
     {
         $vars['id'] = $this->id;
@@ -460,9 +485,11 @@ class vList_Listing {
             $links[] = $this->deleteLink(true);
         }
         if (Current_User::allow('vlist', 'edit_listing')) {
+            $links[] = $this->approvedLink(null, true);
             $links[] = $this->activeLink(null, true);
         }
 
+        $tpl['ID'] = $this->id;
         $tpl['TITLE'] = $this->viewLink();
 
         if (PHPWS_Settings::get('vlist', 'enable_users') && (PHPWS_Settings::get('vlist', 'list_users') || Current_User::allow('vlist'))) {
@@ -607,7 +634,8 @@ class vList_Listing {
         if (!$this->id) {
             $this->created = mktime();
             if (!Current_User::allow('vlist', 'edit_listing')) {
-                $this->active = 0;
+                $this->approved = 0;
+                $this->active = 1;
                 if (PHPWS_Settings::get('vlist', 'notify_submit') && PHPWS_Settings::get('vlist', 'admin_contact')) {
                     $this->sendNotification(true);
                 }

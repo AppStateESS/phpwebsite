@@ -6,6 +6,7 @@
 <!-- BEGIN item_clear_float -->{ITEM_CLEAR_FLOAT}<!-- END item_clear_float -->
 <table width="99%" cellpadding="4">
     <tr>
+        <th>{ID_SORT}</th>
         <th>{TITLE_SORT}</th>
         <!-- BEGIN owner_id_sort --><th>{OWNER_ID_SORT}</th><!-- END owner_id_sort -->
         <!-- BEGIN created_sort --><th>{CREATED_SORT}</th><!-- END created_sort -->
@@ -17,6 +18,7 @@
     </tr>
 <!-- BEGIN listrows -->
     <tr {TOGGLE}>
+        <td>{ID}</td>
         <td>{TITLE}</td>
         <!-- BEGIN owner --><td>{OWNER}</td><!-- END owner -->
         <!-- BEGIN created --><td>{CREATED}</td><!-- END created -->

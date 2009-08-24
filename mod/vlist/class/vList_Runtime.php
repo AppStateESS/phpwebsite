@@ -43,6 +43,7 @@ class vList_Runtime
 
         $db = new PHPWS_DB('vlist_listing');
         $db->addColumn('id');
+        $db->addWhere('approved', 1);
         $db->addWhere('active', 1);
         if (PHPWS_Settings::get('vlist', 'block_order_by')) {
             $db->addOrder('rand');

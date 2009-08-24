@@ -23,7 +23,7 @@
 */
 
 $proper_name  = 'vList';
-$version      = '1.0.2';
+$version      = '1.0.3';
 $register     = false;
 $unregister   = false;
 $import_sql   = true;

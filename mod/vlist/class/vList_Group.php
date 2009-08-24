@@ -118,6 +118,7 @@ class vList_Group {
             $db->addColumn('vlist_group_items.*');
             $db->addColumn('vlist_listing.id');
             $db->addWhere('vlist_listing.id', 'vlist_group_items.listing_id');
+            $db->addWhere('vlist_listing.approved', 1);
             $db->addWhere('vlist_listing.active', 1);
             $db->addGroupBy('vlist_listing.id'); 
         }

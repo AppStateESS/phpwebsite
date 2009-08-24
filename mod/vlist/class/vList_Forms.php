@@ -48,12 +48,17 @@ class vList_Forms {
 
         case 'listings':
             $this->vlist->panel->setCurrentTab('listings');
-            $this->listListings(1);
+            $this->listListings(1, 1);
             break;
 
         case 'approvals':
             $this->vlist->panel->setCurrentTab('approvals');
             $this->listListings(0);
+            break;
+
+        case 'inactives':
+            $this->vlist->panel->setCurrentTab('inactives');
+            $this->listListings(null, 0);
             break;
 
         case 'groups':
@@ -106,7 +111,7 @@ class vList_Forms {
     }
 
 
-    public function listListings($approved=null, $group=null, $owner=null)
+    public function listListings($approved=null, $active=null, $group=null, $owner=null)
     {
         if (Current_User::allow('vlist', 'edit_listing') && isset($_REQUEST['uop'])) {
             $link[] = PHPWS_Text::secureLink(dgettext('vlist', 'Add new listing'), 'vlist', array('aop'=>'new_listing'));
@@ -119,13 +124,19 @@ class vList_Forms {
         $pager->setModule('vlist');
         $pager->db->addColumn('vlist_listing.*');
 
-        /* approved/active yes/no */
+        /* approved yes/no */
         if (isset($approved)) {
-            $pager->addWhere('active', $approved);
+            $pager->addWhere('approved', $approved);
         }
 
-        $ptags['COLSPAN'] = 2;
+        /* active yes/no */
+        if (isset($active)) {
+            $pager->addWhere('active', $active);
+        }
 
+        $ptags['COLSPAN'] = 3;
+
+        $pager->addSortHeader('id', 'ID#');
         $pager->addSortHeader('title', 'Title');
         if (PHPWS_Settings::get('vlist', 'enable_users') && (PHPWS_Settings::get('vlist', 'list_users') || Current_User::allow('vlist'))) {
             $pager->addSortHeader('owner_id', 'Listed by');
@@ -153,6 +164,7 @@ class vList_Forms {
         }
 
         if (!Current_User::isUnrestricted('vlist')) {
+            $pager->addWhere('approved', 1);
             $pager->addWhere('active', 1);
         }
 
@@ -473,8 +485,12 @@ class vList_Forms {
         $form->setLabel('title', dgettext('vlist', 'Title'));
 
         if (isset($_REQUEST['uop']) && $_REQUEST['uop'] == 'submit_listing') {
+//            $form->addHidden('approved', null);
 //            $form->addHidden('active', null);
         } else {
+            $form->addCheckbox('approved', 1);
+            $form->setMatch('approved', $listing->approved);
+            $form->setLabel('approved', dgettext('vlist', 'Approved'));
             $form->addCheckbox('active', 1);
             $form->setMatch('active', $listing->active);
             $form->setLabel('active', dgettext('vlist', 'Active'));

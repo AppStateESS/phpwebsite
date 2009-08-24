@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 13:36-0400\n"
+"POT-Creation-Date: 2009-08-24 14:54-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,6 +34,10 @@ msgstr ""
 
 #, php-format
 msgid " - %s"
+msgstr ""
+
+#, php-format
+msgid "#%s %s"
 msgstr ""
 
 #, php-format
@@ -99,6 +103,12 @@ msgid "Allow user img/file access"
 msgstr ""
 
 msgid "Anonymous"
+msgstr ""
+
+msgid "Approve"
+msgstr ""
+
+msgid "Approved"
 msgstr ""
 
 #, php-format
@@ -362,6 +372,10 @@ msgstr ""
 msgid "Important Information"
 msgstr ""
 
+#, php-format
+msgid "Inactive (%s)"
+msgstr ""
+
 msgid "Inactive listing"
 msgstr ""
 
@@ -385,7 +399,15 @@ msgid "Listing %s activated."
 msgstr ""
 
 #, php-format
+msgid "Listing %s approved."
+msgstr ""
+
+#, php-format
 msgid "Listing %s deactivated."
+msgstr ""
+
+#, php-format
+msgid "Listing %s unapproved."
 msgstr ""
 
 msgid "Listing Template"
@@ -623,6 +645,9 @@ msgid ""
 msgstr ""
 
 msgid "Type"
+msgstr ""
+
+msgid "Unapprove"
 msgstr ""
 
 #, php-format

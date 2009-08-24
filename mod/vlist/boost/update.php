@@ -89,6 +89,36 @@ function vlist_update(&$content, $currentVersion)
 
 
 
+        case version_compare($currentVersion, '1.0.3', '<'):
+            $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/vlist/boost/sql_update_103.sql');
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $content[] = '+ Unable to upgrade the database according to mod/vlist/boost/sql_update_103.sql.';
+                return false;
+            } else {
+                $content[] = '<pre>';
+        
+                $files = array('templates/list_listings.tpl', 
+                                'img/approved.png', 
+                                'img/unapproved.png', 
+                                'templates/edit_listing.tpl'
+                );
+                vlistUpdateFiles($files, $content);
+                
+                $content[] = '1.0.3 changes
+----------------
++ Fixed bug I introduced in 1.0.2 that prevented editing values
+  in custom field setup
++ Added ID to item list views
++ Changed active var to approved in list class
++ Added new active var to list class
++ Users may now distiguish between active and approved
+
+
+</pre>';
+            }
+
+
 
     } // end switch
     return true;
