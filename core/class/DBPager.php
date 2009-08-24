@@ -216,13 +216,13 @@ class DBPager {
         // XML creation not written yet
         if (isset($_GET['dbprt'])) {
             switch ($_GET['dbprt']) {
-            case 'csvp':
-                $this->report_type = CSV_PARTIAL;
-                break;
+                case 'csvp':
+                    $this->report_type = CSV_PARTIAL;
+                    break;
 
-            case 'csva':
-                $this->report_type = CSV_FULL;
-                break;
+                case 'csva':
+                    $this->report_type = CSV_FULL;
+                    break;
             }
         }
 
@@ -249,9 +249,9 @@ class DBPager {
         } elseif ($class) {
             $this->error = PHPWS_Error::get(DBPAGER_NO_CLASS, 'core', 'DBPager::__construct', $class);
         }
-        
+
         $this->loadLink();
-        
+
         if (isset($_REQUEST['change_page'])) {
             $this->current_page = (int)$_REQUEST['change_page'];
         } elseif (isset($_REQUEST['pg'])) {
@@ -302,7 +302,7 @@ class DBPager {
 
 
     /**
-     * This function allows you to join the results of two tables in db pager. 
+     * This function allows you to join the results of two tables in db pager.
      * Example: I want to join the title in table2 to the results of table_1. I also want
      * the column to be named 't1_title'.
      *
@@ -321,24 +321,25 @@ class DBPager {
         static $join_match = null;
         static $index = 1;
         $copy = null;
-        
-        // If this join was done previously, don't repeat it. We store the last table
-        // used from the copy
+
+        // If this join was done previously, don't repeat it.
+        // We store the last table used from the copy
         if (isset($join_match[$join_table])) {
             $join_array = & $join_match[$join_table];
 
             if ($join_array['jt'] == $join_table &&
-                $join_array['sc'] == $source_column &&
-                $join_array['jc'] == $join_column) {
-
-                $copy = 'dbp' . $join_array['idx'];
+            $join_array['sc'] == $source_column &&
+            $join_array['jc'] == $join_column) {
+                $tbl_idx = $join_array['tbl_idx'];
             }
+        } else {
+            $tbl_idx = $index;
         }
-        
+
         if ($searchable) {
             $this->sub_search = true;
         }
-        
+
         if (empty($new_name)) {
             $new_name = $content_column;
         }
@@ -351,13 +352,14 @@ class DBPager {
                                                   'srch' => (bool)$searchable,
                                                   'tbl'  => $copy);
 
-        $this->sub_order[$new_name] = array('dbp' . $index, $content_column);
+        $this->sub_order[$new_name] = array('dbp' . $tbl_idx, $content_column);
         $this->needed_columns[$new_name] = $new_name;
 
         $join_match[$join_table] = array('jt' => $join_table,
                                          'sc' => $source_column,
                                          'jc' => $join_column,
-                                         'idx' => $index);
+                                         'idx' => $index,
+                                         'tbl_idx' => $tbl_idx);
         $index++;
     }
 
@@ -734,11 +736,12 @@ class DBPager {
      */
     public function initialize($load_rows=true)
     {
+        $order_set = false;
         $this->table_columns = $this->db->getTableColumns();
         if (!empty($this->needed_columns)) {
             $this->table_columns = array_merge($this->table_columns, $this->needed_columns);
         }
-        // if false, prevents 
+        // if false, prevents
         if ($this->report_type) {
             $report = true;
             if ($this->report_type == XML_FULL || $this->report_type == CSV_FULL) {
@@ -755,7 +758,7 @@ class DBPager {
         }
 
         if (empty($this->limit) && empty($this->orderby) &&
-            empty($this->search) && isset($_SESSION['DB_Cache'][$this->module][$this->cache_identifier])) {
+        empty($this->search) && isset($_SESSION['DB_Cache'][$this->module][$this->cache_identifier])) {
             extract($_SESSION['DB_Cache'][$this->module][$this->cache_identifier]);
             $this->limit        = $limit;
             $this->orderby      = $orderby;
@@ -773,14 +776,13 @@ class DBPager {
         } else {
             $search = null;
         }
-
         if (!empty($this->sub_result)) {
             foreach ($this->sub_result as $sub_table => $sub) {
                 if (!$sub['tbl']) {
                     $this->db->addTable($sub['jt'], $sub_table);
                     $this->db->addJoin('left', $this->table, $sub_table, $sub['sc'], $sub['jc']);
                 }
-                    
+
                 if (!empty($search)) {
                     if ($sub['srch']) {
                         $col = $sub_table . '.' . $sub['cc'];
@@ -837,14 +839,13 @@ class DBPager {
             }
         }
 
-        $order_set = false;
         if (isset($this->orderby)) {
             if ($pos = strpos($this->orderby, '.')) {
                 $col_name = substr($this->orderby, $pos + 1);
             } else {
                 $col_name = $this->orderby;
             }
-        
+
             if (in_array($col_name, $this->table_columns)) {
                 $sub_order = @$this->sub_order[$col_name];
                 if (!empty($sub_order)) {
@@ -1048,7 +1049,7 @@ class DBPager {
         foreach ($sort_columns as $varname) {
             $vars = array();
             $values = $this->getLinkValues();
-            
+
             if (isset($this->sort_headers[$varname])) {
                 if (!empty($this->sort_headers[$varname]['hover'])) {
                     $alt = strip_tags($this->sort_headers[$varname]['hover']) . ' - ';
@@ -1136,7 +1137,7 @@ class DBPager {
         if (isset($this->orderby)) {
             $values['orderby'] = $this->orderby;
             if (isset($this->orderby_dir))
-                $values['orderby_dir'] = $this->orderby_dir;
+            $values['orderby_dir'] = $this->orderby_dir;
         }
 
         // pull get values from link setting
@@ -1364,7 +1365,7 @@ class DBPager {
             $id = 'search_list';
             $id_count++;
         }
-        
+
         $form = new PHPWS_Form($id);
         $form->setMethod('get');
         $values = $this->getLinkValues();
@@ -1404,7 +1405,7 @@ class DBPager {
             $start_row = ( ($this->current_page - 1) * $this->limit ) + 1;
             $end_row   = $this->current_page * $this->limit;
             if ($end_row > $total_row)
-                $end_row = $total_row;
+            $end_row = $total_row;
         }
 
         $pages = $this->getPageLinks();
@@ -1437,7 +1438,7 @@ class DBPager {
                 $func_type = 'method';
             }
         }
-        
+
         if (!isset($func_type)) {
             if (function_exists($this->report_row)) {
                 $func_type = 'function';
@@ -1573,7 +1574,7 @@ class DBPager {
     public function plugPageTags(&$template){
         if (isset($this->page_tags)){
             foreach ($this->page_tags as $key=>$value)
-                $template[$key] = $value;
+            $template[$key] = $value;
         }
     }
 
