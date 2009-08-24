@@ -2,9 +2,11 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+24 August 2009
++ DBPager : fixed a problem with multiple joinResult calls to same table.
+
 Version 1.9.7
 ---------------------------------------------------------------------
-
 14 August 2009
 + Fixed browser incompatibility issue with editors.
 + Added ability to set fckeditor's image, media, and files directory in the config.php
