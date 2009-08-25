@@ -63,28 +63,37 @@ class Checkin_User extends Checkin {
         }
 
         switch ($command) {
-        case 'checkin_form':
-            $this->checkinForm();
-            break;
-
-        case 'post_checkin':
-            if ($this->postCheckin()) {
-                if (PHPWS_Error::logIfError($this->visitor->save())) {
-                    $this->title = dgettext('checkin', 'Sorry');
-                    $this->content = dgettext('checkin', 'An error is preventing your account to save. Please alert the office.');
-                } else {
-                    $this->title = dgettext('checkin', 'Thank you');
-                    $this->loadReason();
-                    $this->content = $this->reason->message;
-                }
-                Layout::metaRoute('index.php', 5);
-            } else {
+            case 'checkin_form':
                 $this->checkinForm();
-            }
-            break;
+                break;
 
-        default:
-            PHPWS_Core::errorPage('404');
+            case 'error':
+                $this->title = dgettext('checkin', 'Sorry');
+                $this->content = dgettext('checkin', 'An error is preventing your account to save. Please alert the office.');
+                Layout::metaRoute('index.php', 5);
+                break;
+
+            case 'thank':
+                $this->title = dgettext('checkin', 'Thank you');
+                $this->loadReason();
+                $this->content = $this->reason->message;
+                Layout::metaRoute('index.php', 5);
+                break;
+
+            case 'post_checkin':
+                if ($this->postCheckin()) {
+                    if (PHPWS_Error::logIfError($this->visitor->save())) {
+                        PHPWS_Core::reroute('index.php?module=checkin&uop=error');
+                    } else {
+                        PHPWS_Core::reroute('index.php?module=checkin&uop=thank&reason_id=' . $_POST['reason_id']);
+                    }
+                } else {
+                    $this->checkinForm();
+                }
+                break;
+
+            default:
+                PHPWS_Core::errorPage('404');
         }
         Layout::add($this->main());
     }

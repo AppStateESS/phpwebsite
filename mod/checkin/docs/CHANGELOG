@@ -1,4 +1,6 @@
++ Added code to prevent refreshed dups
 + Visitor must enter a reason
++ fixed possbile error in admin view
 
 Version 1.0.4
 ---------------------------
