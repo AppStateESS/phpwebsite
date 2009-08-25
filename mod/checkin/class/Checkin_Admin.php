@@ -268,7 +268,6 @@ class Checkin_Admin extends Checkin {
 				$this->reason->delete();
 				PHPWS_Core::goBack();
 				break;
-
 		}
 
 		if (empty($this->content)) {
@@ -1051,9 +1050,7 @@ class Checkin_Admin extends Checkin {
 
 
 			$tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin',
-			array('aop'=>'report',
-                                                              'print'=>1,
-                                                              'udate'=>$udate));
+			                                            array('aop'=>'report', 'print'=>1, 'udate'=>$udate));
 		}
 
 		$tObj = new PHPWS_Template('checkin');
@@ -1112,7 +1109,7 @@ class Checkin_Admin extends Checkin {
 				$tObj->parseCurrentBlock();
 			}
 			$tObj->setCurrentBlock('row');
-			$row['DISPLAY_NAME'] = & $staff->display_name;
+			$row['DISPLAY_NAME'] = $staff->display_name;
 			$row['VISITORS_SEEN'] = sprintf(dgettext('checkin', 'Visitors seen: %s'), $count);
 
 			$row['TOTAL_SPENT'] = sprintf(dgettext('checkin', 'Total time in meeting: %s'), Checkin::timeWaiting($total_spent));

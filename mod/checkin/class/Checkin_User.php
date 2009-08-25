@@ -25,6 +25,10 @@ class Checkin_User extends Checkin {
         $reasons = $this->getReasons();
 
         if (!empty($reasons)) {
+            $reasons = array_reverse($reasons, true);
+            $reasons[0] = dgettext('checkin', '-- Please choose a reason from the list below --');
+            $reasons = array_reverse($reasons, true);
+
             $form->addSelect('reason_id', $reasons);
             $form->setLabel('reason_id', dgettext('checkin', 'Reason for visit'));
         }
@@ -93,8 +97,12 @@ class Checkin_User extends Checkin {
         $this->visitor->firstname = ucwords(trim($_POST['first_name']));
         $this->visitor->lastname  = ucwords(trim($_POST['last_name']));
         if (isset($_POST['reason_id'])) {
+            if ($_POST['reason_id'] == 0) {
+                $this->message[] = dgettext('checkin', 'Please enter the reason for your visit.');
+            }
             $this->visitor->reason    = (int)$_POST['reason_id'];
         }
+
         if (empty($this->visitor->firstname)) {
             $this->message[] = dgettext('checkin', 'Please enter your first name.');
         }
