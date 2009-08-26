@@ -14,11 +14,10 @@ if ($_REQUEST['module'] != 'comments') {
     return;
 }
 
-
 PHPWS_Core::initModClass('comments', 'Comments.php');
 
-if (isset($_GET['user_action'])) {
-    $_GET['uop'] = $_GET['user_action'];
+if (isset($_REQUEST['user_action'])) {
+    $_POST['uop'] = $_GET['uop'] = $_REQUEST['uop'] = $_REQUEST['user_action'];
 }
 
 if (isset($_REQUEST['uop'])) {
