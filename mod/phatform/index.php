@@ -13,6 +13,11 @@ if(!defined('PHPWS_SOURCE_DIR')) {
     exit();
  }
 
+if (isset($_GET['id'])) {
+    $_REQUEST['PHAT_MAN_OP'] = 'view';
+    $_REQUEST['PHPWS_MAN_ITEMS'][] = $_GET['id'];
+}
+
 if (!isset($_SESSION['PHAT_FormManager'])) {
     $_SESSION['PHAT_FormManager'] = new PHAT_FormManager;
  }
@@ -57,7 +62,7 @@ function check_session() {
     if(!isset($_SESSION['PHAT_FormManager']->form)) {
         header('Location: ./admin');
         exit();
-    } 
+    }
 }
 
 $tpl['TITLE'] = $GLOBALS['CNT_phatform']['title'];
