@@ -1,8 +1,8 @@
-#top-menu div.horzontal-menu {
+#top-menu div.horizontal-menu {
    height : 30px;
 }
 
-div.horzontal-menu ul li {
+div.horizontal-menu ul li {
    position : relative;
    display : inline;
    float : left;
@@ -10,26 +10,26 @@ div.horzontal-menu ul li {
    background-color : white;
 }
 
-div.horzontal-menu ul li div {
+div.horizontal-menu ul li div {
 
    border : 1px black solid;
 }
 
 
-div.horzontal-menu ul li div a {
+div.horizontal-menu ul li div a {
    font-size : 13px;
    display : block;
    padding : 5px;
 }
 
-div.horzontal-menu ul li div ul li.link-level-2 {
+div.horizontal-menu ul li div ul li.link-level-2 {
    display : none;
    position : absolute;
    top : 28px;
    left : 0px;
 }
 
-div.horzontal-menu ul li:hover ul li.link-level-2 {
+div.horizontal-menu ul li:hover ul li.link-level-2 {
    display : block;
 }
 
