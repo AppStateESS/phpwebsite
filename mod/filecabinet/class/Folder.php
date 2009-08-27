@@ -11,7 +11,7 @@ class Folder {
     public $title               = null;
     public $description         = null;
     public $ftype               = IMAGE_FOLDER;
-    public $public_folder       = 0;
+    public $public_folder       = 1;
     public $icon                = null;
     public $module_created      = null;
     public $max_image_dimension = 0;
