@@ -15,12 +15,12 @@ define('LOG_DB', false);
 
 define('DEFAULT_MODE', DB_FETCHMODE_ASSOC);
 
-// Removes dsn from log after failed database connection 
+// Removes dsn from log after failed database connection
 define('CLEAR_DSN', true);
 
 if (!defined('DB_ALLOW_TABLE_INDEX')) {
     define ('DB_ALLOW_TABLE_INDEX', true);
- }
+}
 
 if (!defined('ALLOW_TABLE_LOCKS')) {
     define('ALLOW_TABLE_LOCKS', false);
@@ -166,7 +166,7 @@ class PHPWS_DB {
         if ($result == false) {
             PHPWS_DB::logDB(_('Failed to connect.'));
             PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::loadDB',
-                             PHPWS_SOURCE_DIR . 'core/class/DB/' . $type . '.php');
+            PHPWS_SOURCE_DIR . 'core/class/DB/' . $type . '.php');
             PHPWS_Core::errorPage();
         }
 
@@ -340,17 +340,17 @@ class PHPWS_DB {
     public function setMode($mode)
     {
         switch (strtolower($mode)){
-        case 'ordered':
-            $this->mode = DB_FETCHMODE_ORDERED;
-            break;
+            case 'ordered':
+                $this->mode = DB_FETCHMODE_ORDERED;
+                break;
 
-        case 'object':
-            $this->mode = DB_FETCHMODE_OBJECT;
-            break;
+            case 'object':
+                $this->mode = DB_FETCHMODE_OBJECT;
+                break;
 
-        case 'assoc':
-            $this->mode = DB_FETCHMODE_ASSOC;
-            break;
+            case 'assoc':
+                $this->mode = DB_FETCHMODE_ASSOC;
+                break;
         }
 
     }
@@ -498,8 +498,8 @@ class PHPWS_DB {
             return implode(' AND ', $retVal);
         } else {
             return sprintf('%s.%s = %s.%s',
-                           $table1, $join_on_1,
-                           $table2, $join_on_2);
+            $table1, $join_on_1,
+            $table2, $join_on_2);
         }
     }
 
@@ -531,7 +531,7 @@ class PHPWS_DB {
                 }
                 $join_from = $join_from->subselect_as;
             }
-            
+
             if (isset($this->table_as[$join_to])) {
                 $join_to = sprintf('%s as %s', $this->table_as[$join_to], $join_to);
             }
@@ -539,23 +539,23 @@ class PHPWS_DB {
             if (isset($this->table_as[$join_from])) {
                 $join_from = sprintf('%s as %s', $this->table_as[$join_from], $join_from);
             }
-            
+
             if (in_array($join_from, $join_info['tables'])) {
                 $allJoin[] = sprintf('%s %s %s',
-                                     strtoupper($join_type) . ' JOIN',
-                                     $join_to,
-                                     $join_on);
+                strtoupper($join_type) . ' JOIN',
+                $join_to,
+                $join_on);
             } elseif (in_array($join_to, $join_info['tables'])) {
                 $allJoin[] = sprintf('%s %s %s',
-                                     strtoupper($join_type) . ' JOIN',
-                                     $join_from,
-                                     $join_on);
+                strtoupper($join_type) . ' JOIN',
+                $join_from,
+                $join_on);
             } else {
                 $allJoin[] = sprintf('%s %s %s %s',
-                                     $join_from,
-                                     strtoupper($join_type) . ' JOIN',
-                                     $join_to,
-                                     $join_on);
+                $join_from,
+                strtoupper($join_type) . ' JOIN',
+                $join_to,
+                $join_on);
             }
 
             $join_info['tables'][] = $join_from;
@@ -681,7 +681,7 @@ class PHPWS_DB {
 
         if (is_array($value) && !empty($value)) {
             if (!empty($operator) && $operator != 'IN' && $operator != 'NOT IN' &&
-                $operator != 'BETWEEN' && $operator != 'NOT BETWEEN') {
+            $operator != 'BETWEEN' && $operator != 'NOT BETWEEN') {
                 $search_in = true;
             } else {
                 if (empty($operator)) {
@@ -722,7 +722,7 @@ class PHPWS_DB {
 
         $source_table = $this->tables[0];
 
-	if (is_string($column)) {
+        if (is_string($column)) {
             if (substr_count($column, '.') == 1) {
                 list($join_table, $join_column) = explode('.', $column);
 
@@ -735,12 +735,12 @@ class PHPWS_DB {
                     $this->addTable($join_table);
                 }
             }
-	}
+        }
 
         $where->setColumn($column);
         $where->setTable($source_table);
 
-	if (is_string($value)) {
+        if (is_string($value)) {
             if (substr_count($value, '.') == 1) {
                 list($join_table, $join_column) = explode('.', $value);
                 if (isset($this->table_as[$join_table])) {
@@ -750,7 +750,7 @@ class PHPWS_DB {
                     $this->addTable($join_table);
                 }
             }
-	}
+        }
 
         $where->setValue($value);
         $where->setConj($conj);
@@ -926,11 +926,11 @@ class PHPWS_DB {
 
     public function addColumn($column, $max_min=null, $as=null, $count=false, $distinct=false)
     {
-        
+
         if (preg_match('/[^\w\.*]/', $column)) {
             return false;
         }
-        
+
         if (!in_array(strtolower($max_min), array('max', 'min'))) {
             $max_min = null;
         }
@@ -1433,73 +1433,76 @@ class PHPWS_DB {
         // not sure why it is coded that way. Use the default instead
 
         switch ($type){
-        case 'assoc':
-            PHPWS_DB::logDB($sql);
-            return $GLOBALS['PHPWS_DB']['connection']->getAssoc($sql, null,null, $mode);
-            break;
+            case 'assoc':
+                PHPWS_DB::logDB($sql);
+                return $GLOBALS['PHPWS_DB']['connection']->getAssoc($sql, null,null, $mode);
+                break;
 
-        case 'col':
-            if (empty($sql) && empty($this->columns)) {
-                return PHPWS_Error::get(PHPWS_DB_NO_COLUMN_SET, 'core', 'PHPWS_DB::select');
-            }
+            case 'col':
+                if (empty($sql) && empty($this->columns)) {
+                    return PHPWS_Error::get(PHPWS_DB_NO_COLUMN_SET, 'core', 'PHPWS_DB::select');
+                }
 
-            if (isset($indexby)) {
+                if (isset($indexby)) {
+                    PHPWS_DB::logDB($sql);
+                    $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
+
+                    if (PEAR::isError($result)) {
+                        return $result;
+                    }
+                    return PHPWS_DB::_indexBy($result, $indexby, true);
+                }
+                PHPWS_DB::logDB($sql);
+                return $GLOBALS['PHPWS_DB']['connection']->getCol($sql);
+                break;
+
+            case 'min':
+            case 'max':
+            case 'one':
+                PHPWS_DB::logDB($sql);
+                return $GLOBALS['PHPWS_DB']['connection']->getOne($sql, null, $mode);
+                break;
+
+            case 'row':
+                PHPWS_DB::logDB($sql);
+                return $GLOBALS['PHPWS_DB']['connection']->getRow($sql, array(), $mode);
+                break;
+
+            case 'count':
+                PHPWS_DB::logDB($sql);
+                if (empty($this->columns)) {
+                    $result = $GLOBALS['PHPWS_DB']['connection']->getRow($sql);
+                    if (PEAR::isError($result)) {
+                        return $result;
+                    }
+                    return $result[0];
+                } else {
+                    $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
+                    if (PEAR::isError($result)) {
+                        return $result;
+                    }
+                    if ($this->group_by) {
+                        return $result;
+                    } else {
+                        return count($result);
+                    }
+                }
+                break;
+
+            case 'all':
+            default:
                 PHPWS_DB::logDB($sql);
                 $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
-
                 if (PEAR::isError($result)) {
                     return $result;
                 }
-                return PHPWS_DB::_indexBy($result, $indexby, true);
-            }
-            PHPWS_DB::logDB($sql);
-            return $GLOBALS['PHPWS_DB']['connection']->getCol($sql);
-            break;
 
-        case 'min':
-        case 'max':
-        case 'one':
-            PHPWS_DB::logDB($sql);
-            return $GLOBALS['PHPWS_DB']['connection']->getOne($sql, null, $mode);
-            break;
-
-        case 'row':
-            PHPWS_DB::logDB($sql);
-            return $GLOBALS['PHPWS_DB']['connection']->getRow($sql, array(), $mode);
-            break;
-
-        case 'count':
-            PHPWS_DB::logDB($sql);
-            if (empty($this->columns)) {
-                $result = $GLOBALS['PHPWS_DB']['connection']->getRow($sql);
-                if (PEAR::isError($result)) {
-                    return $result;
-                }
-                return $result[0];
-            } else {
-                $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
-                if (PEAR::isError($result)) {
-                    return $result;
+                if (isset($indexby)) {
+                    return PHPWS_DB::_indexBy($result, $indexby);
                 }
 
                 return $result;
-            }
-            break;
-
-        case 'all':
-        default:
-            PHPWS_DB::logDB($sql);
-            $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
-            if (PEAR::isError($result)) {
-                return $result;
-            }
-
-            if (isset($indexby)) {
-                return PHPWS_DB::_indexBy($result, $indexby);
-            }
-
-            return $result;
-            break;
+                break;
         }
     }
 
@@ -1737,7 +1740,7 @@ class PHPWS_DB {
         if (empty($name)) {
             $name = str_replace('_', '', $table) . '_idx';
         }
-	$sql = $GLOBALS['PHPWS_DB']['lib']->dropTableIndex($name, $table);
+        $sql = $GLOBALS['PHPWS_DB']['lib']->dropTableIndex($name, $table);
         return $this->query($sql);
     }
 
@@ -1997,7 +2000,7 @@ class PHPWS_DB {
                 $sqlCommand = array();
 
                 if(!DB_ALLOW_TABLE_INDEX &&
-                   preg_match('/^create index/i', $query)) {
+                preg_match('/^create index/i', $query)) {
                     continue;
                 }
 
@@ -2041,8 +2044,8 @@ class PHPWS_DB {
         $from[] = '/int\(\d+\)/iU';
         $to[]   = 'int';
 
-        if (PHPWS_DB::getDBType() != 'mysql' && 
-            PHPWS_DB::getDBType() != 'mysqli') {
+        if (PHPWS_DB::getDBType() != 'mysql' &&
+        PHPWS_DB::getDBType() != 'mysqli') {
             $from[] = '/mediumtext|longtext/i';
             $to[]   = 'text';
         }
@@ -2059,8 +2062,8 @@ class PHPWS_DB {
                 }
 
                 if(!preg_match('/\sdefault/i', $command)) {
-                        $command = str_ireplace(' int ', ' INT DEFAULT 0 ', $command);
-                        $command = str_ireplace(' smallint ', ' SMALLINT DEFAULT 0 ', $command);
+                    $command = str_ireplace(' int ', ' INT DEFAULT 0 ', $command);
+                    $command = str_ireplace(' smallint ', ' SMALLINT DEFAULT 0 ', $command);
                 }
 
                 $command = preg_replace('/ default \'(\d+)\'/Ui', ' DEFAULT \\1', $command);
@@ -2084,7 +2087,7 @@ class PHPWS_DB {
             if (stristr($info['flags'], 'multiple_key')) {
                 if (DB_ALLOW_TABLE_INDEX) {
                     $column_info['index'] = 'CREATE INDEX ' .  $info['name'] . ' on ' . $info['table']
-                        . '(' . $info['name'] . ');';
+                    . '(' . $info['name'] . ');';
                 }
                 $info['flags'] = str_replace(' multiple_key', '', $info['flags']);
             }
@@ -2200,31 +2203,31 @@ class PHPWS_DB {
         }
 
         switch (trim(strtolower($format[0]))) {
-        case 'insert':
-            if (stristr($format[1], 'into')) {
-                return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[2]));
-            } else {
+            case 'insert':
+                if (stristr($format[1], 'into')) {
+                    return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[2]));
+                } else {
+                    return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[1]));
+                }
+                break;
+
+            case 'update':
                 return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[1]));
-            }
-            break;
+                break;
 
-        case 'update':
-            return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[1]));
-            break;
+            case 'select':
+            case 'show':
+                return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[3]));
+                break;
 
-        case 'select':
-        case 'show':
-            return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[3]));
-            break;
+            case 'drop':
+            case 'alter':
+                return preg_replace('/;/', '', str_replace('`', '', $format[2]));
+                break;
 
-        case 'drop':
-        case 'alter':
-            return preg_replace('/;/', '', str_replace('`', '', $format[2]));
-            break;
-
-        default:
-            return preg_replace('/\W/', '', $format[2]);
-            break;
+            default:
+                return preg_replace('/\W/', '', $format[2]);
+                break;
         }
     }// END FUNC extractTableName
 
@@ -2500,7 +2503,7 @@ class PHPWS_DB {
             }
 
             $seq = new PHPWS_DB($seq_table);
-	    $result = $seq->select('one');
+            $result = $seq->select('one');
             if (PHPWS_Error::logIfError($result)) {
                 return false;
             }
@@ -2587,115 +2590,115 @@ class PHPWS_DB {
         $command = substr($sql, 0,strpos($sql, ' '));
 
         switch(strtolower($command)) {
-        case 'alter':
-            if (!preg_match('/alter table/i', $sql)) {
-                return false;
-            }
-            $aQuery = explode(' ', preg_replace('/[^\w\s]/', '', $sql));
-            $tables[] = $aQuery[2];
-            break;
+            case 'alter':
+                if (!preg_match('/alter table/i', $sql)) {
+                    return false;
+                }
+                $aQuery = explode(' ', preg_replace('/[^\w\s]/', '', $sql));
+                $tables[] = $aQuery[2];
+                break;
 
-        case 'create':
-            if (preg_match('/^create (unique )?index/i', $sql)) {
-                $start = stripos($sql, ' on ') + 4;
-                $para = stripos($sql, '(');
-                $length = $para - $start;
-                $table =  substr($sql, $start, $length);
-            } else {
+            case 'create':
+                if (preg_match('/^create (unique )?index/i', $sql)) {
+                    $start = stripos($sql, ' on ') + 4;
+                    $para = stripos($sql, '(');
+                    $length = $para - $start;
+                    $table =  substr($sql, $start, $length);
+                } else {
+                    $aTable = explode(' ', $sql);
+                    $table = $aTable[2];
+                }
+                $tables[] = trim(preg_replace('/\W/', '', $table));
+                break;
+
+            case 'delete':
+                $start = stripos($sql, 'from') + 4;
+                $end = strlen($sql) - $start;
+                $table = substr($sql, $start, $end);
+                $table = preg_replace('/where.*/i', '', $table);
+                if (preg_match('/using/i', $table)) {
+                    $table = preg_replace('/[^\w\s,]/', '', $table);
+                    $table = preg_replace('/\w+ using/iU', '', $table);
+                    return explode(',', preg_replace('/[^\w,]/', '', $table));
+                }
+                $tables[] = preg_replace('/\W/', '', $table);
+                break;
+
+            case 'drop':
+                $start = stripos($sql, 'on') + 2;
+                $length = strlen($sql) - $start;
+                if (preg_match('/^drop index/i', $sql)) {
+                    $table = substr($sql, $start, $length);
+                    $tables[] = preg_replace('/[^\w,]/', '', $table);
+                } else {
+                    $table = preg_replace('/drop |table |if exists/i', '', $sql);
+                    return explode(',', preg_replace('/[^\w,]/', '', $table));
+                }
+                break;
+
+            case 'insert':
+                $table =  preg_replace('/insert |into | values|\(.*\)/i', '', $sql);
+                $tables[] = preg_replace('/\W/', '', $table);
+                break;
+
+            case 'select':
+                $start = stripos($sql, 'from') + 4;
+                $table = substr($sql, $start, strlen($sql) - $start);
+
+                if ($where = stripos($table, ' where ')) {
+                    $table = substr($table, 0, $where);
+                }
+
+                if ($order = stripos($table, ' order by')) {
+                    $table = substr($table, 0, $order);
+                }
+
+                if ($group = stripos($table, ' group by')) {
+                    $table = substr($table, 0, $group);
+                }
+
+                if ($having = stripos($table, ' having ')) {
+                    $table = substr($table, 0, $having);
+                }
+
+                if ($limit = stripos($table, ' limit ')) {
+                    $table = substr($table, 0, $limit);
+                }
+
+                $table = str_ireplace(' join ', ' ', $table);
+                $table = str_ireplace(' right ', ' ', $table);
+                $table = str_ireplace(' left ', ' ', $table);
+                $table = str_ireplace(' inner ', ' ', $table);
+                $table = str_ireplace(' outer ', ' ', $table);
+                $table = str_ireplace(' on ', ' ', $table);
+                $table = str_ireplace(' and ', ' ', $table);
+                $table = str_ireplace(' or ', ' ', $table);
+                $table = str_ireplace(' not ', ' ', $table);
+                $table = str_ireplace('=', ' ', $table);
+                $table = str_ireplace(',', ' ', $table);
+                $table = preg_replace('/\w+\.\w+/', ' ', $table);
+                $table = preg_replace('/(as \w+)/i', '', $table);
+                $table = preg_replace('/ \d+$| \d+ /', ' ', $table);
+                $table = preg_replace('/\'.*\'/', ' ', trim($table));
+                $table = preg_replace('/ {2,}/', ' ', trim($table));
+                $tables = explode(' ', $table);
+
+                return $tables;
+                break;
+
+            case 'update':
                 $aTable = explode(' ', $sql);
-                $table = $aTable[2];
-            }
-            $tables[] = trim(preg_replace('/\W/', '', $table));
-            break;
+                $tables[] = preg_replace('/\W/', '', $aTable[1]);
+                break;
 
-        case 'delete':
-            $start = stripos($sql, 'from') + 4;
-            $end = strlen($sql) - $start;
-            $table = substr($sql, $start, $end);
-            $table = preg_replace('/where.*/i', '', $table);
-            if (preg_match('/using/i', $table)) {
-                $table = preg_replace('/[^\w\s,]/', '', $table);
-                $table = preg_replace('/\w+ using/iU', '', $table);
-                return explode(',', preg_replace('/[^\w,]/', '', $table));
-            }
-            $tables[] = preg_replace('/\W/', '', $table);
-            break;
+            case 'lock':
+                $sql = preg_replace('/lock tables/i', '', $sql);
+                $aTable = explode(',', $sql);
 
-        case 'drop':
-            $start = stripos($sql, 'on') + 2;
-            $length = strlen($sql) - $start;
-            if (preg_match('/^drop index/i', $sql)) {
-                $table = substr($sql, $start, $length);
-                $tables[] = preg_replace('/[^\w,]/', '', $table);
-            } else {
-                $table = preg_replace('/drop |table |if exists/i', '', $sql);
-                return explode(',', preg_replace('/[^\w,]/', '', $table));
-            }
-            break;
-
-        case 'insert':
-            $table =  preg_replace('/insert |into | values|\(.*\)/i', '', $sql);
-            $tables[] = preg_replace('/\W/', '', $table);
-            break;
-
-        case 'select':
-            $start = stripos($sql, 'from') + 4;
-            $table = substr($sql, $start, strlen($sql) - $start);
-
-            if ($where = stripos($table, ' where ')) {
-                $table = substr($table, 0, $where);
-            }
-
-            if ($order = stripos($table, ' order by')) {
-                $table = substr($table, 0, $order);
-            }
-
-            if ($group = stripos($table, ' group by')) {
-                $table = substr($table, 0, $group);
-            }
-
-            if ($having = stripos($table, ' having ')) {
-                $table = substr($table, 0, $having);
-            }
-
-            if ($limit = stripos($table, ' limit ')) {
-                $table = substr($table, 0, $limit);
-            }
-
-            $table = str_ireplace(' join ', ' ', $table);
-            $table = str_ireplace(' right ', ' ', $table);
-            $table = str_ireplace(' left ', ' ', $table);
-            $table = str_ireplace(' inner ', ' ', $table);
-            $table = str_ireplace(' outer ', ' ', $table);
-            $table = str_ireplace(' on ', ' ', $table);
-            $table = str_ireplace(' and ', ' ', $table);
-            $table = str_ireplace(' or ', ' ', $table);
-            $table = str_ireplace(' not ', ' ', $table);
-            $table = str_ireplace('=', ' ', $table);
-            $table = str_ireplace(',', ' ', $table);
-            $table = preg_replace('/\w+\.\w+/', ' ', $table);
-            $table = preg_replace('/(as \w+)/i', '', $table);
-            $table = preg_replace('/ \d+$| \d+ /', ' ', $table);
-            $table = preg_replace('/\'.*\'/', ' ', trim($table));
-            $table = preg_replace('/ {2,}/', ' ', trim($table));
-            $tables = explode(' ', $table);
-
-            return $tables;
-            break;
-
-        case 'update':
-            $aTable = explode(' ', $sql);
-            $tables[] = preg_replace('/\W/', '', $aTable[1]);
-            break;
-
-        case 'lock':
-            $sql = preg_replace('/lock tables/i', '', $sql);
-            $aTable = explode(',', $sql);
-
-            foreach ($aTable as $tbl) {
-                $tables[] = substr($tbl, 0, strpos(trim($tbl) + 1, ' '));
-            }
-            break;
+                foreach ($aTable as $tbl) {
+                    $tables[] = substr($tbl, 0, strpos(trim($tbl) + 1, ' '));
+                }
+                break;
         }
 
         return $tables;
@@ -2810,7 +2813,7 @@ class PHPWS_DB {
             // moving up when current item is at top of list
             // need to shift all other items down and pop this on the end
             PHPWS_DB::begin();
-            
+
             if (PHPWS_Error::logIfError($this->reduceColumn($order_column))) {
                 PHPWS_DB::rollback();
                 return false;
@@ -2950,23 +2953,23 @@ class PHPWS_DB_Where {
 
         if (is_array($value)) {
             switch ($this->operator){
-            case 'IN':
-            case 'NOT IN':
-                foreach ($value as $temp_val) {
-                    if ($temp_val != 'NULL') {
-                        $temp_val_list[] = "'$temp_val'";
-                    } else {
-                        $temp_val_list[] = $temp_val;
+                case 'IN':
+                case 'NOT IN':
+                    foreach ($value as $temp_val) {
+                        if ($temp_val != 'NULL') {
+                            $temp_val_list[] = "'$temp_val'";
+                        } else {
+                            $temp_val_list[] = $temp_val;
+                        }
                     }
-                }
-                $value = '(' . implode(', ', $temp_val_list) . ')';
+                    $value = '(' . implode(', ', $temp_val_list) . ')';
 
-                break;
+                    break;
 
-            case 'BETWEEN':
-            case 'NOT BETWEEN':
-                $value = sprintf("'{%s}' AND '{%s}'", $this->value[0], $this->value[1]);
-                break;
+                case 'BETWEEN':
+                case 'NOT BETWEEN':
+                    $value = sprintf("'{%s}' AND '{%s}'", $this->value[0], $this->value[1]);
+                    break;
             }
             return $value;
         }

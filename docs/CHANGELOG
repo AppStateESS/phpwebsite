@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+28 August 2009
++ changed count to accommodate group by and single col pulls
+
 24 August 2009
 + DBPager : fixed a problem with multiple joinResult calls to same table.
 
