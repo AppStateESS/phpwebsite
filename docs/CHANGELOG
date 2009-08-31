@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+31 August 2009
++ select('count') back to old result (integer). count_array added to select function
+  e.g. $db->select('count_array');
+
 28 August 2009
 + changed count to accommodate group by and single col pulls
 

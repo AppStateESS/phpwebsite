@@ -1386,7 +1386,7 @@ class PHPWS_DB {
             // $order, and $limit
             extract($sql_array);
 
-            if ($type == 'count') {
+            if ($type == 'count' || $type == 'count_array') {
                 if (empty($columns)) {
                     // order and group_by are not needed if count is
                     // using all rows
@@ -1477,17 +1477,24 @@ class PHPWS_DB {
                     }
                     return $result[0];
                 } else {
-                    $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
+                    $result = $GLOBALS['PHPWS_DB']['connection']->getCol($sql);
                     if (PEAR::isError($result)) {
                         return $result;
                     }
-                    if ($this->group_by) {
-                        return $result;
-                    } else {
-                        return count($result);
-                    }
+
+                    return count($result);
                 }
                 break;
+
+            case 'count_array':
+                PHPWS_DB::logDB($sql);
+                $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
+                if (PEAR::isError($result)) {
+                    return $result;
+                }
+                return $result;
+                break;
+
 
             case 'all':
             default:
