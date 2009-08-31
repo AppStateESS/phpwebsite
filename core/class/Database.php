@@ -512,6 +512,11 @@ class PHPWS_DB {
         $join_info['tables'] = array();
 
         foreach ($this->_join_tables as $join_array) {
+            $dup = md5(serialize($join_array));
+            if (isset($dup_list) && in_array($dup, $dup_list)) {
+                continue;
+            }
+            $dup_list[] = $dup;
             extract($join_array);
 
             if ($result = $this->_getJoinOn($join_on_1, $join_on_2, $join_from, $join_to, $ignore_tables)) {
