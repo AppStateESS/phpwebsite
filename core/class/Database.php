@@ -1041,6 +1041,9 @@ class PHPWS_DB {
      */
     public function setIndexBy($indexby, $force_array=false, $ignore_dups=false)
     {
+        if (strstr($indexby, '.')) {
+            $indexby = substr($indexby, strpos($indexby, '.') + 1);
+        }
         $this->indexby = $indexby;
         $this->force_array = (bool)$force_array;
         $this->ignore_dups = (bool)$ignore_dups;
