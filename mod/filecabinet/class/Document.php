@@ -56,7 +56,7 @@ class PHPWS_Document extends File_Common {
         if (empty($icon_list)) {
             $file = PHPWS_Core::getConfigFile('filecabinet', 'icons.php');
             if (!$file) {
-                return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/text.png" title="%s" alt="%s" />', $this->title, $this->title);
+                return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/text.png" title="%s" alt="%s" />', htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
             } else {
                 include $file;
             }
@@ -64,15 +64,15 @@ class PHPWS_Document extends File_Common {
 
         if (!@$graphic = $icon_list[$this->file_type]) {
             if ($mode == 'small_icon') {
-                return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/s_text.png" title="%s" alt="%s" />', $this->title, $this->title);
+                return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/s_text.png" title="%s" alt="%s" />', htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
             } else {
-                return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/text.png" title="%s" alt="%s" />', $this->title, $this->title);
+                return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/text.png" title="%s" alt="%s" />', htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
             }
         } else {
             if ($mode == 'small_icon') {
                 $graphic = 's_' . $graphic;
             }
-            return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/%s" title="%s" alt="%s" />', $graphic, $this->title, $this->title);
+            return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/%s" title="%s" alt="%s" />', $graphic, htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
         }
     }
 
@@ -117,7 +117,7 @@ class PHPWS_Document extends File_Common {
 
             default:
             case 'title':
-                return sprintf('<a href="%s">%s</a>', $link, $this->title);
+                return sprintf('<a href="%s">%s</a>', $link, htmlspecialchars($this->title, ENT_QUOTES));
             }
         } else {
             return $link;
@@ -157,7 +157,7 @@ class PHPWS_Document extends File_Common {
         }
 
         $tpl['ICON']      = $this->getViewLink(true, 'icon');
-        $tpl['TITLE']     = $this->title;
+        $tpl['TITLE']     = htmlspecialchars($this->title, ENT_QUOTES);
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
             $links[] = $this->editLink(true);
 

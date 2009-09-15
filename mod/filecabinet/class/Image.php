@@ -214,8 +214,8 @@ class PHPWS_Image extends File_Common {
         } else {
             $tag[] = 'src="' . $this->getPath() . '"';
         }
-        $tag[] = 'alt="'    . $this->getAlt(TRUE)   . '"';
-        $tag[] = 'title="'  . $this->title . '"';
+        $tag[] = 'alt="'    . $this->getAlt(TRUE) . '"';
+        $tag[] = 'title="'  . htmlspecialchars($this->title, ENT_QUOTES) . '"';
         $tag[] = 'width="'  . $this->width     . 'px"';
         $tag[] = 'height="' . $this->height    . 'px"';
         if ($id) {
@@ -266,7 +266,7 @@ class PHPWS_Image extends File_Common {
 
         $image_tag = sprintf('<img src="%s" title="%s" id="image-thumbnail-%s" alt="%s" width="%s" height="%s" />',
                              $thumbpath,
-                             $this->title, $css_id, $this->alt,
+                             htmlspecialchars($this->title, ENT_QUOTES), $css_id, $this->alt,
                              $dimensions[0], $dimensions[1]);
 
         if ($linked && !empty($this->url)) {
@@ -379,7 +379,7 @@ class PHPWS_Image extends File_Common {
     public function pinTags()
     {
         $tpl['TN'] = $this->getJSView(true);
-        $tpl['TITLE'] = $this->title;
+        $tpl['TITLE'] = htmlspecialchars($this->title, ENT_QUOTES);
         return $tpl;
     }
 
@@ -441,7 +441,7 @@ class PHPWS_Image extends File_Common {
         $tpl['SIZE'] = $this->getSize(TRUE);
         $tpl['FILE_NAME'] = $this->file_name;
         $tpl['THUMBNAIL'] = $this->getJSView(TRUE);
-        $tpl['TITLE']     = $this->title;
+        $tpl['TITLE']     = htmlspecialchars($this->title, ENT_QUOTES);
         $tpl['DIMENSIONS'] = sprintf('%s x %s', $this->width, $this->height);
 
         return $tpl;
@@ -471,7 +471,7 @@ class PHPWS_Image extends File_Common {
 
         $tpl['ID'] = $this->id;
         $tpl['TITLE'] = $this->getTitle(true);
-                        
+
         $tpl['INFO']  = sprintf('%s x %s - %s', $this->width, $this->height,
                                 $this->getSize(true));
 
@@ -649,7 +649,7 @@ class PHPWS_Image extends File_Common {
     public function getAlt($check=FALSE)
     {
         if ((bool)$check && empty($this->alt) && isset($this->title)) {
-            return $this->title;
+            return htmlspecialchars($this->title, ENT_QUOTES);
         }
 
         return $this->alt;

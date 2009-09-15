@@ -1,3 +1,8 @@
+15 Sept 2009
++ Added htmlspecialchars on titles for docs, images, media. Single quotes can wreck js
++ updated windows media filter
++ Updated templates/filters/windows.tpl
+
 Version 2.2.7
 --------------------------------------------------------------------------
 + Added trim to ffmpeg file directory

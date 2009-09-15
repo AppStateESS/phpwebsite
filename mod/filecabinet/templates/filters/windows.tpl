@@ -4,9 +4,9 @@ codebase='http://activex.microsoft.com/activex/controls/ mplayer/en/nsmp2inf.cab
 standby='Loading Microsoft Windows Media Player components...' type='application/x-oleobject'>
 <param name='fileName' value="{FILE_PATH}">
 <param name='animationatStart' value='1'>
-<param name='transparentatStart' value='1'>
+<param name='transparentatStart' value='0'>
 <param name='autostart' value='false'>
-<param name='ShowControls' value='0'>
+<param name='ShowControls' value='1'>
 <param name='ShowDisplay' value='0'>
 <param name='ShowStatusBar' value='0'>
 <param name='loop' value='0'>
