@@ -929,7 +929,7 @@ class PHPWS_DB {
         $this->_distinct = (bool)$distinct;
     }
 
-    public function addColumn($column, $max_min=null, $as=null, $count=false, $distinct=false)
+    public function addColumn($column, $max_min=null, $as=null, $count=false, $distinct=false, $coalesce=null)
     {
 
         if (preg_match('/[^\w\.*]/', $column)) {
@@ -967,6 +967,7 @@ class PHPWS_DB {
         $col['max_min']  = $max_min;
         $col['count']    = (bool)$count;
         $col['distinct'] = (bool)$distinct;
+        $col['coalesce'] = $coalesce;
         if ($column != '*') {
             $col['as']       = $as;
         }
@@ -995,6 +996,12 @@ class PHPWS_DB {
                         } else {
                             $table_name = sprintf('count(%s.%s)', $table, $name);
                         }
+                    } else if(!is_null($coalesce)) {
+                    	if($distinct) {
+                    		$table_name = sprintf('coalesce(distinct(%s.%s), %s)', $table, $name, $coalesce);
+                    	} else {
+                    		$table_name = sprintf('coalesce(%s.%s, %s)', $table, $name, $coalesce);
+                    	}
                     } else {
                         if ($distinct) {
                             $table_name = sprintf('distinct(%s.%s)', $table, $name);
