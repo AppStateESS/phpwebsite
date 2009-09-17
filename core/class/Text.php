@@ -395,6 +395,7 @@ class PHPWS_Text {
         $t = new PHPWS_Text;
         $t->setText($text, $decode);
         $t->useFilters($use_filters);
+        $t->useBreaker($use_breaker);
         $text = $t->getPrint();
         return $text;
     }
@@ -876,7 +877,7 @@ class PHPWS_Text {
         $characters = (int)$characters;
         $alpha = '023456789abcdefghijkmnopqrstuvwxyz';
         srand((double)microtime()*1000000);
-        
+
         for ($i = 0; $i < $characters; $i++) {
             $char = rand() % 34;
             $str[] = substr($alpha, $char, 1);
