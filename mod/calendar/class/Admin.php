@@ -82,7 +82,7 @@ class Calendar_Admin {
     public function approveSuggestion($id)
     {
         if ( !Current_User::authorized('calendar', 'edit_public') ||
-             Current_User::isRestricted('calendar') ) {
+        Current_User::isRestricted('calendar') ) {
             PHPWS_Core::errorPage('403');
         }
 
@@ -112,7 +112,7 @@ class Calendar_Admin {
     public function disapproveSuggestion($id)
     {
         if ( !Current_User::authorized('calendar', 'edit_public') ||
-             Current_User::isRestricted('calendar') ) {
+        Current_User::isRestricted('calendar') ) {
             PHPWS_Core::errorPage('403');
         }
 
@@ -227,8 +227,8 @@ class Calendar_Admin {
         } else {
             // Suggested events are not allowed repeats
             /**
-             * Repeat form elements
-             */
+            * Repeat form elements
+            */
 
             $form->addCheck('repeat_event', 1);
             $form->setLabel('repeat_event', dgettext('calendar', 'Make a repeating event'));
@@ -244,10 +244,10 @@ class Calendar_Admin {
 
 
             $modes_label = array(dgettext('calendar', 'Daily'),
-                                 dgettext('calendar', 'Weekly'),
-                                 dgettext('calendar', 'Monthly'),
-                                 dgettext('calendar', 'Yearly'),
-                                 dgettext('calendar', 'Every'));
+            dgettext('calendar', 'Weekly'),
+            dgettext('calendar', 'Monthly'),
+            dgettext('calendar', 'Yearly'),
+            dgettext('calendar', 'Every'));
 
             $form->addRadio('repeat_mode', $modes);
             $form->setLabel('repeat_mode', $modes_label);
@@ -255,13 +255,13 @@ class Calendar_Admin {
             $weekdays = array(1=>1,2=>2,3=>3,4=>4,5=>5,6=>6,7=>7);
 
             $weekday_labels = array(1=>strftime('%A', mktime(0,0,0,1,5,1970)),
-                                    2=>strftime('%A', mktime(0,0,0,1,6,1970)),
-                                    3=>strftime('%A', mktime(0,0,0,1,7,1970)),
-                                    4=>strftime('%A', mktime(0,0,0,1,8,1970)),
-                                    5=>strftime('%A', mktime(0,0,0,1,9,1970)),
-                                    6=>strftime('%A', mktime(0,0,0,1,10,1970)),
-                                    7=>strftime('%A', mktime(0,0,0,1,11,1970))
-                                    );
+            2=>strftime('%A', mktime(0,0,0,1,6,1970)),
+            3=>strftime('%A', mktime(0,0,0,1,7,1970)),
+            4=>strftime('%A', mktime(0,0,0,1,8,1970)),
+            5=>strftime('%A', mktime(0,0,0,1,9,1970)),
+            6=>strftime('%A', mktime(0,0,0,1,10,1970)),
+            7=>strftime('%A', mktime(0,0,0,1,11,1970))
+            );
 
             $form->addCheck('weekday_repeat', $weekdays);
             $form->setLabel('weekday_repeat', $weekday_labels);
@@ -269,30 +269,30 @@ class Calendar_Admin {
             $monthly = array('begin' => dgettext('calendar', 'Beginning of each month'),
                              'end'   => dgettext('calendar', 'End of each month'),
                              'start' => dgettext('calendar', 'Every month on start date')
-                             );
+            );
 
             $form->addSelect('monthly_repeat', $monthly);
 
             $every_repeat_week = array(1   => dgettext('calendar', '1st'),
-                                       2   => dgettext('calendar', '2nd'),
-                                       3   => dgettext('calendar', '3rd'),
-                                       4   => dgettext('calendar', '4th'),
-                                       5   => dgettext('calendar', 'Last')
-                                       );
+            2   => dgettext('calendar', '2nd'),
+            3   => dgettext('calendar', '3rd'),
+            4   => dgettext('calendar', '4th'),
+            5   => dgettext('calendar', 'Last')
+            );
 
             $frequency = array('every_month' => dgettext('calendar', 'Every month'),
-                               1 => strftime('%B', mktime(0,0,0,1,1,1970)),
-                               2 => strftime('%B', mktime(0,0,0,2,1,1970)),
-                               3 => strftime('%B', mktime(0,0,0,3,1,1970)),
-                               4 => strftime('%B', mktime(0,0,0,4,1,1970)),
-                               5 => strftime('%B', mktime(0,0,0,5,1,1970)),
-                               6 => strftime('%B', mktime(0,0,0,6,1,1970)),
-                               7 => strftime('%B', mktime(0,0,0,7,1,1970)),
-                               8 => strftime('%B', mktime(0,0,0,8,1,1970)),
-                               9 => strftime('%B', mktime(0,0,0,9,1,1970)),
-                               10 => strftime('%B', mktime(0,0,0,10,1,1970)),
-                               11 => strftime('%B', mktime(0,0,0,11,1,1970)),
-                               12 => strftime('%B', mktime(0,0,0,12,1,1970)));
+            1 => strftime('%B', mktime(0,0,0,1,1,1970)),
+            2 => strftime('%B', mktime(0,0,0,2,1,1970)),
+            3 => strftime('%B', mktime(0,0,0,3,1,1970)),
+            4 => strftime('%B', mktime(0,0,0,4,1,1970)),
+            5 => strftime('%B', mktime(0,0,0,5,1,1970)),
+            6 => strftime('%B', mktime(0,0,0,6,1,1970)),
+            7 => strftime('%B', mktime(0,0,0,7,1,1970)),
+            8 => strftime('%B', mktime(0,0,0,8,1,1970)),
+            9 => strftime('%B', mktime(0,0,0,9,1,1970)),
+            10 => strftime('%B', mktime(0,0,0,10,1,1970)),
+            11 => strftime('%B', mktime(0,0,0,11,1,1970)),
+            12 => strftime('%B', mktime(0,0,0,12,1,1970)));
 
             $form->addSelect('every_repeat_number', $every_repeat_week);
             $form->addSelect('every_repeat_weekday', $weekday_labels);
@@ -310,19 +310,19 @@ class Calendar_Admin {
                 $form->setMatch('repeat_mode', $repeat_mode_match);
 
                 switch($repeat_mode_match) {
-                case 'weekly':
-                    $form->setMatch('weekday_repeat', $repeat_vars);
-                    break;
+                    case 'weekly':
+                        $form->setMatch('weekday_repeat', $repeat_vars);
+                        break;
 
-                case 'monthly':
-                    $form->setMatch('monthly_repeat', $repeat_vars[0]);
-                    break;
+                    case 'monthly':
+                        $form->setMatch('monthly_repeat', $repeat_vars[0]);
+                        break;
 
-                case 'every':
-                    $form->setMatch('every_repeat_number', $repeat_vars[0]);
-                    $form->setMatch('every_repeat_weekday', $repeat_vars[1]);
-                    $form->setMatch('every_repeat_frequency', $repeat_vars[2]);
-                    break;
+                    case 'every':
+                        $form->setMatch('every_repeat_number', $repeat_vars[0]);
+                        $form->setMatch('every_repeat_weekday', $repeat_vars[1]);
+                        $form->setMatch('every_repeat_frequency', $repeat_vars[2]);
+                        break;
                 }
 
                 $form->setMatch('repeat_event', 1);
@@ -334,7 +334,7 @@ class Calendar_Admin {
                 // This is a repeat copy, if saved it removes it from the copy list
                 $form->addSubmit('save', dgettext('calendar', 'Save and remove repeat'));
                 $form->setExtra('save', sprintf('onclick="return confirm(\'%s\')"',
-                                                dgettext('calendar', 'Remove event from repeat list?')) );
+                dgettext('calendar', 'Remove event from repeat list?')) );
             } elseif ($event->id && $event->repeat_type) {
                 // This is event is a source repeating event
 
@@ -343,7 +343,7 @@ class Calendar_Admin {
                 // $form->addSubmit('save_source', dgettext('calendar', 'Save this event only'));
                 $form->addSubmit('save_copy', dgettext('calendar', 'Save and apply to repeats'));
                 $form->setExtra('save_copy', sprintf('onclick="return confirm(\'%s\')"',
-                                                     dgettext('calendar', 'Apply changes to repeats?')) );
+                dgettext('calendar', 'Apply changes to repeats?')) );
             } else {
                 // this is a non-repeating event
                 $form->addSubmit('save', dgettext('calendar', 'Save event'));
@@ -447,176 +447,176 @@ class Calendar_Admin {
         }
 
         switch ($command) {
-        case 'post_event':
-            if (!$this->calendar->schedule->checkPermissions(true)) {
-                Current_User::disallow();
-            }
-            $this->postEvent();
-            break;
-
-        case 'approval':
-            $this->approval();
-            break;
-
-        case 'approve_suggestion':
-            $this->approveSuggestion($_GET['suggestion_id']);
-            PHPWS_Core::goBack();
-            break;
-
-
-        case 'create_event':
-            $panel->setCurrentTab('schedules');
-            $event = $this->calendar->schedule->loadEvent();
-            if ($this->calendar->current_date) {
-                $event->start_time = mktime(12, 0, 0,
-                                            $this->calendar->int_month,
-                                            $this->calendar->int_day,
-                                            $this->calendar->int_year);
-
-                $event->end_time = mktime(12, 0, 0,
-                                          $this->calendar->int_month,
-                                          $this->calendar->int_day,
-                                          $this->calendar->int_year);
-            }
-
-            $this->editEvent($event);
-            break;
-
-        case 'create_schedule':
-            if (!Current_User::allow('calendar') ||
-                (!Current_User::allow('calendar', 'edit_public') &&
-                 !PHPWS_Settings::get('calendar', 'personal_schedules'))) {
-                Current_User::disallow();
-            }
-            $this->calendar->schedule = new Calendar_Schedule;
-            $panel->setCurrentTab('schedules');
-            $this->editSchedule();
-            break;
-
-        case 'blog_event':
-            if (PHPWS_Core::moduleExists('blog') &&
-                Current_User::allow('blog', 'edit_blog') &&
-                $this->calendar->schedule->checkPermissions(true)) {
-                $event = $this->calendar->schedule->loadEvent();
-                $this->blogEvent();
-            }
-            break;
-
-        case 'post_blog':
-            if (PHPWS_Core::moduleExists('blog') &&
-                Current_User::allow('blog', 'edit_blog') &&
-                $this->calendar->schedule->checkPermissions(true)) {
-                $this->postBlog();
-            }
-            javascript('close_refresh');
-            Layout::nakedDisplay();
-            break;
-
-        case 'edit_event':
-            $panel->setCurrentTab('schedules');
-            if (!$this->calendar->schedule->checkPermissions()) {
-                Current_User::disallow();
-            }
-            $event = $this->calendar->schedule->loadEvent();
-            $this->editEvent($event);
-            break;
-
-        case 'delete_event':
-            if ($this->calendar->schedule->checkPermissions(true)) {
-                $event = $this->calendar->schedule->loadEvent();
-                $result = $event->delete();
-                if (PEAR::isError($result)) {
-                    PHPWS_Error::log($result);
+            case 'post_event':
+                if (!$this->calendar->schedule->checkPermissions(true)) {
+                    Current_User::disallow();
                 }
-            }
-            PHPWS_Core::goBack();
-            break;
+                $this->postEvent();
+                break;
 
-        case 'delete_schedule':
-            if (Current_User::authorized('calendar', 'delete_schedule') && Current_User::isUnrestricted('calendar')) {
-                $this->calendar->schedule->delete();
-                $this->sendMessage(dgettext('calendar', 'Schedule deleted.'), 'schedules');
-            } else {
-                Current_User::disallow();
-            }
-            break;
+            case 'approval':
+                $this->approval();
+                break;
 
-        case 'disapprove_suggestion':
-            $this->disapproveSuggestion($_GET['suggestion_id']);
-            PHPWS_Core::goBack();
-            break;
+            case 'approve_suggestion':
+                $this->approveSuggestion($_GET['suggestion_id']);
+                PHPWS_Core::goBack();
+                break;
 
-        case 'edit_schedule':
-            if (empty($_REQUEST['sch_id'])) {
-                PHPWS_Core::errorPage('404');
-            }
 
-            if (!$this->calendar->schedule->checkPermissions()) {
-                Current_User::disallow();
-            }
-            $panel->setCurrentTab('schedules');
-            $this->editSchedule();
-            break;
+            case 'create_event':
+                $panel->setCurrentTab('schedules');
+                $event = $this->calendar->schedule->loadEvent();
+                if ($this->calendar->current_date) {
+                    $event->start_time = mktime(12, 0, 0,
+                    $this->calendar->int_month,
+                    $this->calendar->int_day,
+                    $this->calendar->int_year);
 
-        case 'make_default_public':
-            if (Current_User::isUnrestricted('calendar')) {
-                PHPWS_Settings::set('calendar', 'public_schedule', (int)$_REQUEST['sch_id']);
-                PHPWS_Settings::save('calendar');
-                $this->message =dgettext('calendar', 'Default public schedule set.');
-            }
-            $this->scheduleListing();
-            break;
+                    $event->end_time = mktime(12, 0, 0,
+                    $this->calendar->int_month,
+                    $this->calendar->int_day,
+                    $this->calendar->int_year);
+                }
 
-        case 'post_schedule':
-            $this->postSchedule();
-            break;
+                $this->editEvent($event);
+                break;
 
-        case 'post_settings':
-            if (!Current_User::authorized('calendar', 'settings')) {
-                Current_User::disallow();
-            }
-            $this->postSettings();
-            $this->message = dgettext('calendar', 'Settings saved');
-            $this->settings();
-            break;
+            case 'create_schedule':
+                if (!Current_User::allow('calendar') ||
+                (!Current_User::allow('calendar', 'edit_public') &&
+                !PHPWS_Settings::get('calendar', 'personal_schedules'))) {
+                    Current_User::disallow();
+                }
+                $this->calendar->schedule = new Calendar_Schedule;
+                $panel->setCurrentTab('schedules');
+                $this->editSchedule();
+                break;
 
-        case 'repeat_event':
-            $panel->setCurrentTab('schedules');
-            $event = $this->calendar->schedule->loadEvent();
-            $this->repeatEvent($event);
-            break;
+            case 'blog_event':
+                if (PHPWS_Core::moduleExists('blog') &&
+                Current_User::allow('blog', 'edit_blog') &&
+                $this->calendar->schedule->checkPermissions(true)) {
+                    $event = $this->calendar->schedule->loadEvent();
+                    $this->blogEvent();
+                }
+                break;
 
-        case 'reset_cache':
-            if (!Current_User::allow('calendar')) {
-                Current_User::disallow();
-            }
-            PHPWS_Cache::remove($_REQUEST['key']);
-            PHPWS_Core::goBack();
-            break;
+            case 'post_blog':
+                if (PHPWS_Core::moduleExists('blog') &&
+                Current_User::allow('blog', 'edit_blog') &&
+                $this->calendar->schedule->checkPermissions(true)) {
+                    $this->postBlog();
+                }
+                javascript('close_refresh');
+                Layout::nakedDisplay();
+                break;
 
-        case 'schedules':
-            $panel->setCurrentTab('schedules');
-            $this->scheduleListing();
-            break;
+            case 'edit_event':
+                $panel->setCurrentTab('schedules');
+                if (!$this->calendar->schedule->checkPermissions()) {
+                    Current_User::disallow();
+                }
+                $event = $this->calendar->schedule->loadEvent();
+                $this->editEvent($event);
+                break;
 
-        case 'settings':
-            $this->settings();
-            break;
+            case 'delete_event':
+                if ($this->calendar->schedule->checkPermissions(true)) {
+                    $event = $this->calendar->schedule->loadEvent();
+                    $result = $event->delete();
+                    if (PEAR::isError($result)) {
+                        PHPWS_Error::log($result);
+                    }
+                }
+                PHPWS_Core::goBack();
+                break;
 
-        case 'upload_event':
-            if (!$this->calendar->schedule->checkPermissions()) {
-                Current_User::disallow();
-            }
+            case 'delete_schedule':
+                if (Current_User::authorized('calendar', 'delete_schedule') && Current_User::isUnrestricted('calendar')) {
+                    $this->calendar->schedule->delete();
+                    $this->sendMessage(dgettext('calendar', 'Schedule deleted.'), 'schedules');
+                } else {
+                    Current_User::disallow();
+                }
+                break;
 
-            $this->uploadEvent();
-            break;
+            case 'disapprove_suggestion':
+                $this->disapproveSuggestion($_GET['suggestion_id']);
+                PHPWS_Core::goBack();
+                break;
 
-        case 'post_upload':
-            if (!$this->calendar->schedule->checkPermissions(true)) {
-                Current_User::disallow();
-            }
-            $this->postUpload();
-            break;
+            case 'edit_schedule':
+                if (empty($_REQUEST['sch_id'])) {
+                    PHPWS_Core::errorPage('404');
+                }
+
+                if (!$this->calendar->schedule->checkPermissions()) {
+                    Current_User::disallow();
+                }
+                $panel->setCurrentTab('schedules');
+                $this->editSchedule();
+                break;
+
+            case 'make_default_public':
+                if (Current_User::isUnrestricted('calendar')) {
+                    PHPWS_Settings::set('calendar', 'public_schedule', (int)$_REQUEST['sch_id']);
+                    PHPWS_Settings::save('calendar');
+                    $this->message =dgettext('calendar', 'Default public schedule set.');
+                }
+                $this->scheduleListing();
+                break;
+
+            case 'post_schedule':
+                $this->postSchedule();
+                break;
+
+            case 'post_settings':
+                if (!Current_User::authorized('calendar', 'settings')) {
+                    Current_User::disallow();
+                }
+                $this->postSettings();
+                $this->message = dgettext('calendar', 'Settings saved');
+                $this->settings();
+                break;
+
+            case 'repeat_event':
+                $panel->setCurrentTab('schedules');
+                $event = $this->calendar->schedule->loadEvent();
+                $this->repeatEvent($event);
+                break;
+
+            case 'reset_cache':
+                if (!Current_User::allow('calendar')) {
+                    Current_User::disallow();
+                }
+                PHPWS_Cache::remove($_REQUEST['key']);
+                PHPWS_Core::goBack();
+                break;
+
+            case 'schedules':
+                $panel->setCurrentTab('schedules');
+                $this->scheduleListing();
+                break;
+
+            case 'settings':
+                $this->settings();
+                break;
+
+            case 'upload_event':
+                if (!$this->calendar->schedule->checkPermissions()) {
+                    Current_User::disallow();
+                }
+
+                $this->uploadEvent();
+                break;
+
+            case 'post_upload':
+                if (!$this->calendar->schedule->checkPermissions(true)) {
+                    Current_User::disallow();
+                }
+                $this->postUpload();
+                break;
         }
 
         $tpl['CONTENT'] = $this->content;
@@ -687,106 +687,110 @@ class Calendar_Admin {
                 continue;
             }
             $command = substr($cal, 0, $colon);
+            if ($semicolon = strpos($cal, ';')) {
+                $command = substr($cal, 0, $semicolon);
+            }
             $value = substr($cal, $colon+1, strlen($cal));
 
             if (empty($value)) {
                 continue;
             }
             switch ($command) {
-            case 'BEGIN':
-                if ($value == 'VEVENT' && !isset($event)) {
-                    $event = new Calendar_Event(0, $this->calendar->schedule);
-                    $event->start_time = 0;
-                    $event->end_time = 0;
-                }
-                break;
-
-            case 'DTSTART':
-                if (isset($event)) {
-                    $event->start_time = strtotime($value);
-                }
-                break;
-
-            case 'DTSTART;VALUE=DATE':
-                if (isset($event)) {
-                    $event->start_time = strtotime($value);
-                }
-                break;
-
-            case 'DTEND':
-                if (isset($event)) {
-                    $event->end_time = strtotime($value);
-                }
-                break;
-
-            case 'DTEND;VALUE=DATE':
-                if (isset($event)) {
-                    $event->end_time = strtotime($value);
-                }
-                break;
-
-
-            case 'SUMMARY':
-                if (isset($event)) {
-                    $event->setSummary($value);
-                }
-                break;
-
-            case 'LOCATION':
-                if (isset($event)) {
-                    $event->setLocation($value);
-                }
-                break;
-
-            case 'DESCRIPTION':
-                if (isset($event)) {
-                    $event->setDescription($value);
-                }
-                break;
-
-            case 'END':
-                if ($value == 'VEVENT' && isset($event)) {
-                    if (empty($event->end_time)) {
-                        //start time should be midnight so add 23h 23min 59 sec
-                        $event->end_time = $event->start_time + 86399;
-                        $event->all_day = 1;
+                case 'BEGIN':
+                    if ($value == 'VEVENT' && !isset($event)) {
+                        $event = new Calendar_Event(0, $this->calendar->schedule);
+                        $event->start_time = 0;
+                        $event->end_time = 0;
                     }
+                    break;
 
-                    $db->reset();
-                    $db->addWhere('start_time', $event->start_time);
-                    $db->addWhere('end_time', $event->end_time);
-                    $db->addWhere('summary', $event->summary);
-                    $db->addColumn('id');
-                    $result = $db->select('one');
+                case 'DTSTART':
+                    if (isset($event)) {
+                        $event->start_time = strtotime($value);
+                    }
+                    break;
 
-                    if (!empty($result)) {
-                        if (PHPWS_Error::logIfError($result)) {
-                            $parse_errors[] = dgettext('calendar', 'Error accessing event table.');
-                        } else {
-                            $duplicates++;
-                        }
-                    } else {
-                        $save = $event->save();
+                case 'DTSTART;VALUE=DATE':
+                    if (isset($event)) {
+                        $event->start_time = strtotime($value);
+                    }
+                    break;
 
-                        if (PHPWS_Error::logIfError($save) || !$save) {
-                            $parse_errors[] = dgettext('calendar', 'Error saving new event.');
-                        } else {
-                            $success++;
+                case 'DTEND':
+                    if (isset($event)) {
+                        $event->end_time = strtotime($value);
+                    }
+                    break;
+
+                case 'DTEND;VALUE=DATE':
+                    if (isset($event)) {
+                        $event->end_time = strtotime($value);
+                    }
+                    break;
+
+
+                case 'SUMMARY':
+                    if (isset($event)) {
+                        $event->setSummary($value);
+                    }
+                    break;
+
+                case 'LOCATION':
+                    if (isset($event)) {
+                        $event->setLocation($value);
+                    }
+                    break;
+
+                case 'DESCRIPTION':
+                    if (isset($event)) {
+                        $event->setDescription($value);
+                    }
+                    break;
+
+                case 'END':
+                    if ($value == 'VEVENT' && isset($event)) {
+                        if (empty($event->end_time)) {
+                            //start time should be midnight so add 23h 23min 59 sec
+                            $event->end_time = $event->start_time + 86399;
+                            $event->all_day = 1;
                         }
 
-                    }
+                        $db->reset();
+                        $db->addWhere('start_time', $event->start_time);
+                        $db->addWhere('end_time', $event->end_time);
+                        $db->addWhere('summary', $event->summary);
+                        $db->addColumn('id');
+                        $result = $db->select('one');
 
-                    unset($event);
-                }
-                break;
+                        if (!empty($result)) {
+                            if (PHPWS_Error::logIfError($result)) {
+                                $parse_errors[] = dgettext('calendar', 'Error accessing event table.');
+                            } else {
+                                $duplicates++;
+                            }
+                        } else {
+                            $save = $event->save();
+
+                            if (PHPWS_Error::logIfError($save) || !$save) {
+                                $parse_errors[] = dgettext('calendar', 'Error saving new event.');
+                            } else {
+                                $success++;
+                            }
+
+                        }
+
+                        unset($event);
+                    }
+                    break;
             }
 
         }
+
         $this->title = dgettext('calendar', 'Import complete!');
 
         if (isset($parse_errors)) {
             $content[] = dgettext('calendar', 'The following errors occurred when trying to import your events:');
-                $content[] = '<ul><li>' . implode('</li><li>', $parse_errors) . '</li></ul>';
+            $content[] = '<ul><li>' . implode('</li><li>', $parse_errors) . '</li></ul>';
         }
 
         $content[] = sprintf(dgettext('calendar', '%s event(s) were successfully imported.'), $success);
@@ -855,14 +859,14 @@ class Calendar_Admin {
                 }
 
                 PHPWS_Cache::remove(sprintf('grid_%s_%s_%s',
-                                            date('n', $event->start_time),
-                                            date('Y', $event->start_time),
-                                            $this->calendar->schedule->id));
+                date('n', $event->start_time),
+                date('Y', $event->start_time),
+                $this->calendar->schedule->id));
 
                 PHPWS_Cache::remove(sprintf('list_%s_%s_%s',
-                                            date('n', $event->start_time),
-                                            date('Y', $event->start_time),
-                                            $this->calendar->schedule->id));
+                date('n', $event->start_time),
+                date('Y', $event->start_time),
+                $this->calendar->schedule->id));
 
 
                 if(PHPWS_Calendar::isJS()) {
@@ -880,7 +884,7 @@ class Calendar_Admin {
 
     public function postSettings()
     {
-        PHPWS_Settings::set('calendar', 'personal_schedules', (int)isset($_POST['personal_schedules']));        
+        PHPWS_Settings::set('calendar', 'personal_schedules', (int)isset($_POST['personal_schedules']));
         PHPWS_Settings::set('calendar', 'allow_submissions', (int)isset($_POST['allow_submissions']));
         PHPWS_Settings::set('calendar', 'mini_event_link', (int)isset($_POST['mini_event_link']));
         PHPWS_Settings::set('calendar', 'cache_month_views', (int)isset($_POST['cache_month_views']));
@@ -942,25 +946,25 @@ class Calendar_Admin {
         }
 
         switch ($repeat_mode) {
-        case 'daily':
-            $result = $this->repeatDaily($event);
-            break;
+            case 'daily':
+                $result = $this->repeatDaily($event);
+                break;
 
-        case 'weekly':
-            $result = $this->repeatWeekly($event);
-            break;
+            case 'weekly':
+                $result = $this->repeatWeekly($event);
+                break;
 
-        case 'monthly':
-            $result = $this->repeatMonthly($event);
-            break;
+            case 'monthly':
+                $result = $this->repeatMonthly($event);
+                break;
 
-        case 'yearly':
-            $result = $this->repeatYearly($event);
-            break;
+            case 'yearly':
+                $result = $this->repeatYearly($event);
+                break;
 
-        case 'every':
-            $result = $this->repeatEvery($event);
-            break;
+            case 'every':
+                $result = $this->repeatEvery($event);
+                break;
         }
 
         if (!$result) {
@@ -1133,7 +1137,7 @@ class Calendar_Admin {
                      * and next week would put us over the end of the month, then post this day
                      */
                     if ( $weekday_count == $every_repeat_number ||
-                         ( $every_repeat_number == 5 && $weekday_count == 4 && ( ($current_day + 7) > date('t', $time_unit) ) ) ) {
+                    ( $every_repeat_number == 5 && $weekday_count == 4 && ( ($current_day + 7) > date('t', $time_unit) ) ) ) {
                         $weekday_found = true;
                         $max_count++;
 
@@ -1161,7 +1165,7 @@ class Calendar_Admin {
     {
         $max_count = 0;
         if ( (date('L', $event->start_time) && date('n', $event->start_time) == 2 && date('j', $event->start_time) == 29) &&
-             (date('L', $event->end_time) && date('n', $event->end_time) == 2 && date('j', $event->end_time) == 29) ) {
+        (date('L', $event->end_time) && date('n', $event->end_time) == 2 && date('j', $event->end_time) == 29) ) {
             $leap_year = true;
         } else {
             $leap_year = false;
@@ -1252,14 +1256,14 @@ class Calendar_Admin {
             $c_year   = (int)strftime('%Y', $ts_count);
 
             switch ($_POST['monthly_repeat']) {
-            case 'begin':
-                $ts_day = 1;
-                break;
+                case 'begin':
+                    $ts_day = 1;
+                    break;
 
-            case 'end':
-                $ts_day = 0;
-                $ts_month++;
-                break;
+                case 'end':
+                    $ts_day = 0;
+                    $ts_month++;
+                    break;
             }
 
             $start_time = mktime($c_hour, $c_min, 0, $ts_month, $ts_day, $c_year);
@@ -1418,7 +1422,7 @@ class Calendar_Admin {
         $form->addRadio('brief_grid', array(0,1));
         $form->setMatch('brief_grid', PHPWS_Settings::get('calendar', 'brief_grid'));
         $form->setLabel('brief_grid', array(0 => dgettext('calendar', 'Show event titles'),
-                                            1 => dgettext('calendar', 'Show number of events')));
+        1 => dgettext('calendar', 'Show number of events')));
 
         $form->addCheck('personal_schedules', 1);
         $form->setLabel('personal_schedules', dgettext('calendar', 'Allow personal schedules'));
