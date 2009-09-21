@@ -227,7 +227,7 @@ class PHAT_Form extends PHPWS_Item {
                 ' WHERE user=\'' . Current_User::getUsername() . "'";
 
             if(!$this->_editData)
-                $sql .= " AND position!='-1'";
+            $sql .= " AND position!='-1'";
 
             $result = PHPWS_DB::getAll($sql);
 
@@ -241,9 +241,9 @@ class PHAT_Form extends PHPWS_Item {
                 $this->_dataId = $this->_userData['id'];
 
                 if($this->_editData)
-                    $this->_position = 0;
+                $this->_position = 0;
                 else
-                    $this->_position = $this->_userData['position'];
+                $this->_position = $this->_userData['position'];
             } else {
                 $result = NULL;
             }
@@ -375,18 +375,18 @@ class PHAT_Form extends PHPWS_Item {
         if($_REQUEST['PHAT_FormBlurb0']) {
             $result = $this->setBlurb0($_REQUEST['PHAT_FormBlurb0']);
             if(!PHPWS_Error::isError($error))
-                $error = $result;
+            $error = $result;
         } else {
             $result = $this->setBlurb0(NULL);
             if(!PHPWS_Error::isError($error))
-                $error = $result;
+            $error = $result;
         }
 
         /* Check for a blurb and set it if there is one */
         if($_REQUEST['PHAT_FormBlurb1']) {
             $result = $this->setBlurb1($_REQUEST['PHAT_FormBlurb1']);
             if(!PHPWS_Error::isError($error))
-                $error = $result;
+            $error = $result;
         } else {
             $error = PHPWS_Error::get(PHATFORM_SUBMISSION_MISSING, 'phatform', 'PHAT_Form::_saveSettings()');
         }
@@ -404,11 +404,11 @@ class PHAT_Form extends PHPWS_Item {
         if($_REQUEST['PHAT_FormPageLimit']) {
             $result = $this->setPageLimit($_REQUEST['PHAT_FormPageLimit']);
             if(!PHPWS_Error::isError($error))
-                $error = $result;
+            $error = $result;
         } else {
             $result = $this->setPageLimit();
             if(!PHPWS_Error::isError($error))
-                $error = $result;
+            $error = $result;
         }
 
         /* Check to see if edit data was selected */
@@ -529,12 +529,12 @@ class PHAT_Form extends PHPWS_Item {
         if(!$edit) {
             /* If this form is not anonymous and the user is not logged in, print message and bail */
             if(($this->_editData || !$this->_anonymous) && !Current_User::isLogged())
-                return dgettext('phatform', 'You must be logged in to view this form!');
+            return dgettext('phatform', 'You must be logged in to view this form!');
 
             /* If this form is not multi submit and the user has filled out this for before,
              print message and bail */
             if(!$this->_editData && !$this->_multiSubmit && $this->hasSubmission())
-                return dgettext('phatform', 'You have already filled out this form!');
+            return dgettext('phatform', 'You have already filled out this form!');
 
             if(!Current_User::isDeity() && Current_User::allow('phatform', 'user_forms_only')) {
                 if(Current_User::getUsername() != $this->getOwner()) {
@@ -547,7 +547,6 @@ class PHAT_Form extends PHPWS_Item {
         if(!isset($this->_position)) {
             $this->_position = 0;
         }
-
         /* Setup limit for loop */
         if(($this->_position + $this->_pageLimit) > sizeof($this->_elements)) {
             $limit = $this->_position + (sizeof($this->_elements) - $this->_position);
@@ -596,7 +595,7 @@ class PHAT_Form extends PHPWS_Item {
                 $sectionTags['ELEMENT'] = $this->element->view();
 
                 if($this->_showElementNumbers)
-                    $sectionTags['ELEMENT'] = $i+1 . '. ' . $sectionTags['ELEMENT'];
+                $sectionTags['ELEMENT'] = $i+1 . '. ' . $sectionTags['ELEMENT'];
 
                 /* If in edit mode, show the element editor for the current element */
                 if($edit) {
@@ -684,7 +683,7 @@ class PHAT_Form extends PHPWS_Item {
      */
     function hasSubmission($finished=TRUE) {
         if(!$this->_saved)
-            return FALSE;
+        return FALSE;
 
         /* Build sql statement based on the current user */
 
@@ -692,7 +691,7 @@ class PHAT_Form extends PHPWS_Item {
             ' WHERE user=\'' . Current_User::getUsername() . "'";
 
         if($finished)
-            $sql .= " AND position='-1'";
+        $sql .= " AND position='-1'";
 
         /* Set fetch mode and execute the sql created above */
 
@@ -700,9 +699,9 @@ class PHAT_Form extends PHPWS_Item {
 
         /* If a result comes back return TRUE (current user has a submission) */
         if(sizeof($result) > 0)
-            return TRUE;
+        return TRUE;
         else
-            return FALSE;
+        return FALSE;
     }
 
     /**
@@ -714,7 +713,7 @@ class PHAT_Form extends PHPWS_Item {
     function pushElement() {
         /* Calculate position based on current amount of elements */
         if((sizeof($this->_elements) % $this->_pageLimit) == 0)
-            $this->_position = sizeof($this->_elements);
+        $this->_position = sizeof($this->_elements);
 
         /* If on first page and element added to 'last' page, calculate that position */
         if($this->_position == 0 && sizeof($this->_elements) > $this->_pageLimit) {
@@ -832,7 +831,7 @@ class PHAT_Form extends PHPWS_Item {
                 $this->_save();
             }
         } elseif(isset($_REQUEST['PHAT_Go'])) {
-            $this->_position = $_REQUEST['PHAT_PageNumber'] * $this->_pageLimit;
+            $this->_position = ($_REQUEST['PHAT_PageNumber'] - 1) * $this->_pageLimit;
             $content = $_SESSION['PHAT_FormManager']->menu();
             $content .= $this->view(TRUE);
         }
@@ -875,56 +874,56 @@ class PHAT_Form extends PHPWS_Item {
                 $this->element = new $elementInfo[0]($elementInfo[1]);
 
                 switch($_REQUEST["PHAT_Action_$key"]) {
-                case 'edit':
-                    $content = $this->element->edit();
-                    break;
+                    case 'edit':
+                        $content = $this->element->edit();
+                        break;
 
-                case 'remove':
-                    $content = $this->element->remove();
-                    break;
+                    case 'remove':
+                        $content = $this->element->remove();
+                        break;
 
-                case 'moveUp':
-                    if($key > 0) {
-                        $hold = $this->_elements[$key-1];
-                        $this->_elements[$key-1] = $this->_elements[$key];
-                        $this->_elements[$key] = $hold;
-                    } else {
-                        $temp = array($this->_elements[$key]);
-                        unset($this->_elements[$key]);
-                        $this->_elements = array_merge($this->_elements, $temp);
-                        $this->_position = sizeof($this->_elements) - (sizeof($this->_elements) % $this->_pageLimit);
-                    }
-                    $new_array = array();
-                    foreach ($this->_elements as $j) {
-                        $new_array[] = $j;
-                    }
-                    $this->_elements = $new_array;
+                    case 'moveUp':
+                        if($key > 0) {
+                            $hold = $this->_elements[$key-1];
+                            $this->_elements[$key-1] = $this->_elements[$key];
+                            $this->_elements[$key] = $hold;
+                        } else {
+                            $temp = array($this->_elements[$key]);
+                            unset($this->_elements[$key]);
+                            $this->_elements = array_merge($this->_elements, $temp);
+                            $this->_position = sizeof($this->_elements) - (sizeof($this->_elements) % $this->_pageLimit);
+                        }
+                        $new_array = array();
+                        foreach ($this->_elements as $j) {
+                            $new_array[] = $j;
+                        }
+                        $this->_elements = $new_array;
 
-                    $this->commit();
-                    $content = $_SESSION['PHAT_FormManager']->menu();
-                    $content .= $this->view(TRUE);
-                    break;
+                        $this->commit();
+                        $content = $_SESSION['PHAT_FormManager']->menu();
+                        $content .= $this->view(TRUE);
+                        break;
 
-                case 'moveDown':
-                    if($key < sizeof($this->_elements) - 1) {
-                        $hold = $this->_elements[$key+1];
-                        $this->_elements[$key+1] = $this->_elements[$key];
-                        $this->_elements[$key] = $hold;
-                    } else {
-                        $temp = array($this->_elements[$key]);
-                        unset($this->_elements[$key]);
-                        $this->_elements = array_merge($temp, $this->_elements);
-                        $this->_position = 0;
-                    }
-                    $new_array = array();
-                    foreach ($this->_elements as $j) {
-                        $new_array[] = $j;
-                    }
-                    $this->_elements = $new_array;
-                    $this->commit();
-                    $content = $_SESSION['PHAT_FormManager']->menu();
-                    $content .= $this->view(TRUE);
-                    break;
+                    case 'moveDown':
+                        if($key < sizeof($this->_elements) - 1) {
+                            $hold = $this->_elements[$key+1];
+                            $this->_elements[$key+1] = $this->_elements[$key];
+                            $this->_elements[$key] = $hold;
+                        } else {
+                            $temp = array($this->_elements[$key]);
+                            unset($this->_elements[$key]);
+                            $this->_elements = array_merge($temp, $this->_elements);
+                            $this->_position = 0;
+                        }
+                        $new_array = array();
+                        foreach ($this->_elements as $j) {
+                            $new_array[] = $j;
+                        }
+                        $this->_elements = $new_array;
+                        $this->commit();
+                        $content = $_SESSION['PHAT_FormManager']->menu();
+                        $content .= $this->view(TRUE);
+                        break;
                 }
                 break;
             }
@@ -971,7 +970,7 @@ class PHAT_Form extends PHPWS_Item {
 
             if($this->isSaved()) {
                 $error = $this->_saveFormData();
-                
+
                 if(PHPWS_Error::isError($error)) {
                     javascript('alert', array('content' => PHPWS_Error::printError($error)));
                     if(Current_User::allow('phatform')) {
@@ -1019,14 +1018,14 @@ class PHAT_Form extends PHPWS_Item {
             }
 
             if($this->_editData)
-                $this->_userData[$this->element->getLabel()] =  $_REQUEST['PHAT_' . $this->element->getLabel()];
+            $this->_userData[$this->element->getLabel()] =  $_REQUEST['PHAT_' . $this->element->getLabel()];
 
             if(isset($_REQUEST['PHAT_' . $this->element->getLabel()])) {
                 if(is_string($_REQUEST['PHAT_' . $this->element->getLabel()]) &&
-                   strlen($_REQUEST['PHAT_' . $this->element->getLabel()]) > PHAT_MAX_CHARS_TEXT_ENTRY) {
+                strlen($_REQUEST['PHAT_' . $this->element->getLabel()]) > PHAT_MAX_CHARS_TEXT_ENTRY) {
                     $error = PHPWS_Error::get(PHATFORM_TEXT_MAXSIZE_PASSED, 'phatform',
                                               'PHAT_Form::_saveFormData',
-                                              array($this->element->getLabel()));
+                    array($this->element->getLabel()));
                 }
 
                 $queryData[$this->element->getLabel()] = $_REQUEST['PHAT_' . $this->element->getLabel()];
@@ -1043,9 +1042,9 @@ class PHAT_Form extends PHPWS_Item {
         }
 
         if(!$this->_anonymous)
-            $queryData['user'] = Current_User::getUsername();
+        $queryData['user'] = Current_User::getUsername();
         else
-            $queryData['user'] = 'anonymous';
+        $queryData['user'] = 'anonymous';
 
         $queryData['position'] = $this->_position;
         $queryData['updated'] = time();
@@ -1192,7 +1191,7 @@ class PHAT_Form extends PHPWS_Item {
             /* Step through this form's elements and add the sql for those columns */
             foreach($this->_elements as $value) {
                 if($flag)
-                    $sql .= ', ';
+                $sql .= ', ';
 
                 $elementInfo = explode(':', $value);
                 $this->element = new $elementInfo[0]($elementInfo[1]);
@@ -1286,9 +1285,9 @@ class PHAT_Form extends PHPWS_Item {
 
     function numPages() {
         if(sizeof($this->_elements) > 0)
-            return ceil(sizeof($this->_elements)/$this->_pageLimit);
+        return ceil(sizeof($this->_elements)/$this->_pageLimit);
         else
-            return 1;
+        return 1;
     }// END FUNC numPages()
 
     function numElements() {
@@ -1395,9 +1394,9 @@ class PHAT_Form extends PHPWS_Item {
      */
     function setMultiSubmit($flag=TRUE) {
         if($flag)
-            $this->_multiSubmit = 1;
+        $this->_multiSubmit = 1;
         else
-            $this->_multiSubmit = 0;
+        $this->_multiSubmit = 0;
     }// END FUNC setMultiSubmit()
 
     /**
@@ -1411,9 +1410,9 @@ class PHAT_Form extends PHPWS_Item {
      */
     function setAnonymous($flag=TRUE) {
         if($flag)
-            $this->_anonymous = 1;
+        $this->_anonymous = 1;
         else
-            $this->_anonymous = 0;
+        $this->_anonymous = 0;
     }// END FUNC setAnonymous()
 
     /**
@@ -1427,9 +1426,9 @@ class PHAT_Form extends PHPWS_Item {
      */
     function setEditData($flag=TRUE) {
         if($flag)
-            $this->_editData = 1;
+        $this->_editData = 1;
         else
-            $this->_editData = 0;
+        $this->_editData = 0;
     }// END FUNC setEditData()
 
     /**
@@ -1443,9 +1442,9 @@ class PHAT_Form extends PHPWS_Item {
      */
     function setShowElementNumbers($flag=TRUE) {
         if($flag)
-            $this->_showElementNumbers = 1;
+        $this->_showElementNumbers = 1;
         else
-            $this->_showElementNumbers = 0;
+        $this->_showElementNumbers = 0;
     }// END FUNC setShowElementNumbers()
 
     /**
@@ -1459,9 +1458,9 @@ class PHAT_Form extends PHPWS_Item {
      */
     function setShowPageNumbers($flag=TRUE) {
         if($flag)
-            $this->_showPageNumbers = 1;
+        $this->_showPageNumbers = 1;
         else
-            $this->_showPageNumbers = 0;
+        $this->_showPageNumbers = 0;
     }// END FUNC setShowPageNumbers()
 
     /**
@@ -1475,9 +1474,9 @@ class PHAT_Form extends PHPWS_Item {
      */
     function setSaved($flag=TRUE) {
         if($flag)
-            $this->_saved = 1;
+        $this->_saved = 1;
         else
-            $this->_saved = 0;
+        $this->_saved = 0;
     }// END FUNC setSaved()
 
     /**
@@ -1488,9 +1487,9 @@ class PHAT_Form extends PHPWS_Item {
      */
     function isSaved() {
         if($this->_saved)
-            return TRUE;
+        return TRUE;
         else
-            return FALSE;
+        return FALSE;
     }
 
     /**
@@ -1501,9 +1500,9 @@ class PHAT_Form extends PHPWS_Item {
      */
     function isAnonymous() {
         if($this->_anonymous)
-            return TRUE;
+        return TRUE;
         else
-            return FALSE;
+        return FALSE;
     }
 
     /**
@@ -1727,99 +1726,99 @@ class PHAT_Form extends PHPWS_Item {
         }
 
         switch($_REQUEST['PHAT_FORM_OP']) {
-        case 'SaveFormSettings':
-            if(Current_User::allow('phatform', 'edit_forms')) {
-                if(isset($_REQUEST['PHAT_SaveSettings'])) {
-                    $content = $this->_saveSettings();
-                    $content = $_SESSION['PHAT_FormManager']->menu() . $content;
-                } else if($_REQUEST['PHAT_EditElements']) {
-                    if($this->isSaved()) {
-                        $content = $this->_confirmArchive();
-                    } else {
-                        $content = $_SESSION['PHAT_FormManager']->menu();
-                        $content .= $this->view(TRUE);
+            case 'SaveFormSettings':
+                if(Current_User::allow('phatform', 'edit_forms')) {
+                    if(isset($_REQUEST['PHAT_SaveSettings'])) {
+                        $content = $this->_saveSettings();
+                        $content = $_SESSION['PHAT_FormManager']->menu() . $content;
+                    } else if($_REQUEST['PHAT_EditElements']) {
+                        if($this->isSaved()) {
+                            $content = $this->_confirmArchive();
+                        } else {
+                            $content = $_SESSION['PHAT_FormManager']->menu();
+                            $content .= $this->view(TRUE);
+                        }
                     }
-                }
-            } else {
-                $this->_accessDenied();
-            }
-            break;
-
-        case 'editSettings':
-            if(Current_User::allow('phatform', 'edit_forms')) {
-                $content = $_SESSION['PHAT_FormManager']->menu();
-                $content .= $this->editSettings();
-            } else {
-                $this->_accessDenied();
-            }
-            break;
-
-        case 'editElements':
-            if(Current_User::allow('phatform', 'edit_forms')) {
-                $content = $_SESSION['PHAT_FormManager']->menu();
-                $content .= $this->view(TRUE);
-            } else {
-                $this->_accessDenied();
-            }
-            break;
-
-        case 'report':
-            if(Current_User::allow('phatform', 'report_view')) {
-                $this->report = new PHAT_Report;
-                $content = $this->report->report();
-            } else {
-                $this->_accessDenied();
-            }
-            break;
-
-        case 'archive':
-            if(!Current_User::allow('phatform', 'archive_form')) {
-                $this->_accessDenied();
-            } else {
-                include(PHPWS_SOURCE_DIR . 'mod/phatform/inc/Archive.php');
-                $error = NULL;
-                $error = archive($this->getId());
-
-                if(PHPWS_Error::isError($error)) {
-                    javascript('alert', array('content' => PHPWS_Error::printError($error)));
                 } else {
-                    $_SESSION['PHAT_Message'] = sprintf(dgettext('phatform', 'The form %s was successfully archived.'), '<b><i>' . $this->getLabel() . '</i></b>');
+                    $this->_accessDenied();
                 }
+                break;
 
-                $_REQUEST['PHAT_FORM_OP'] = 'report';
-                $this->action();
-            }
-            break;
+            case 'editSettings':
+                if(Current_User::allow('phatform', 'edit_forms')) {
+                    $content = $_SESSION['PHAT_FormManager']->menu();
+                    $content .= $this->editSettings();
+                } else {
+                    $this->_accessDenied();
+                }
+                break;
 
-        case 'ToolbarAction':
-            if(Current_User::allow('phatform', 'edit_forms')) {
-                $content = $this->_toolbarAction();
-            } else {
-                $this->_accessDenied();
-            }
-            break;
-
-        case 'EditAction':
-
-            if(Current_User::allow('phatform', 'edit_forms')) {
-                if(isset($_REQUEST['PHAT_Submit']) || isset($_REQUEST['PHAT_Next']) || isset($_REQUEST['PHAT_Back'])) {
+            case 'editElements':
+                if(Current_User::allow('phatform', 'edit_forms')) {
                     $content = $_SESSION['PHAT_FormManager']->menu();
                     $content .= $this->view(TRUE);
                 } else {
-                    $content = $this->_editAction();
+                    $this->_accessDenied();
                 }
-            } else {
-                $this->_accessDenied();
-            }
-            break;
+                break;
 
-        case 'Action':
-            $content = $this->_formAction();
-            break;
+            case 'report':
+                if(Current_User::allow('phatform', 'report_view')) {
+                    $this->report = new PHAT_Report;
+                    $content = $this->report->report();
+                } else {
+                    $this->_accessDenied();
+                }
+                break;
 
-        case 'ArchiveConfirm':
-            $this->_confirmArchive();
-            break;
+            case 'archive':
+                if(!Current_User::allow('phatform', 'archive_form')) {
+                    $this->_accessDenied();
+                } else {
+                    include(PHPWS_SOURCE_DIR . 'mod/phatform/inc/Archive.php');
+                    $error = NULL;
+                    $error = archive($this->getId());
+
+                    if(PHPWS_Error::isError($error)) {
+                        javascript('alert', array('content' => PHPWS_Error::printError($error)));
+                    } else {
+                        $_SESSION['PHAT_Message'] = sprintf(dgettext('phatform', 'The form %s was successfully archived.'), '<b><i>' . $this->getLabel() . '</i></b>');
+                    }
+
+                    $_REQUEST['PHAT_FORM_OP'] = 'report';
+                    $this->action();
+                }
+                break;
+
+            case 'ToolbarAction':
+                if(Current_User::allow('phatform', 'edit_forms')) {
+                    $content = $this->_toolbarAction();
+                } else {
+                    $this->_accessDenied();
+                }
+                break;
+
+            case 'EditAction':
+
+                if(Current_User::allow('phatform', 'edit_forms')) {
+                    if(isset($_REQUEST['PHAT_Submit']) || isset($_REQUEST['PHAT_Next']) || isset($_REQUEST['PHAT_Back'])) {
+                        $content = $_SESSION['PHAT_FormManager']->menu();
+                        $content .= $this->view(TRUE);
+                    } else {
+                        $content = $this->_editAction();
+                    }
+                } else {
+                    $this->_accessDenied();
+                }
+                break;
+
+            case 'Action':
+                $content = $this->_formAction();
+                break;
+
+            case 'ArchiveConfirm':
+                $this->_confirmArchive();
+                break;
         }// END PHAT_FORM_OP SWITCH
 
         if(isset($content)) {
