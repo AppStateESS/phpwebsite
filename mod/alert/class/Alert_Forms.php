@@ -158,8 +158,6 @@ class Alert_Forms {
         $form = new PHPWS_Form('participants-form');
         $form->addHidden('module', 'alert');
         $form->addHidden('aop', 'assign_participants');
-        $form->addSubmit('add_checked_participants', dgettext('alert', 'Added checked'));
-        $form->addSubmit('remove_checked_participants', dgettext('alert', 'Remove checked'));
 
         $vars['aop'] = 'add_multiple';
         $js['address'] = PHPWS_Text::linkAddress('alert', $vars, true);
@@ -174,7 +172,6 @@ class Alert_Forms {
         $pagetags['SUBTRACT_MULTIPLE'] = javascript('open_window', $js);
 
         $types = $this->alert->getTypes('obj');
-
         if (!empty($types)) {
             $GLOBALS['Alert_Types'] = & $types;
             $pager->addRowFunction(array('Alert_Forms', '_checkboxTypes'));
@@ -182,11 +179,13 @@ class Alert_Forms {
                 $type_ids[] = $type->id;
                 $link = sprintf('<a href="#" onclick="AlertCheckAll(this, \'%s\'); return false">+</a>', $type->id);
                 $pagetags['th'][]= array('TYPE_LABEL'=>sprintf('%s&nbsp;<abbr title="%s">%s</abbr>',
-                                                               $link, $type->title,
-                                                               substr($type->title, 0, 3)));
+                $link, $type->title,
+                substr($type->title, 0, 3)));
+                $form->addSubmit('add_checked_participants', dgettext('alert', 'Added checked'));
+                $form->addSubmit('remove_checked_participants', dgettext('alert', 'Remove checked'));
             }
             // Requires _checkboxTypes
-            $pagetags['CHECK_ALL'] = javascript('check_all', array('checkbox_name'=>'type_id[]'));
+            $pagetags['CHECK_ALL'] = javascript('check_all', array('checkbox_name'=>'type_id'));
         }
 
         $pagetags['EMAIL_LABEL'] = dgettext('alert', 'Email address');
@@ -214,14 +213,14 @@ class Alert_Forms {
         foreach ($GLOBALS['Alert_Types'] as $type) {
             @$match = $matches[$value['id']];
             if ($match &&
-                (is_array($match) && in_array($type->id, $match)) ||
-                $match == $type->id) {
+            (is_array($match) && in_array($type->id, $match)) ||
+            $match == $type->id) {
                 $member = dgettext('alert', 'Yes');
             } else {
                 $member = dgettext('alert', 'No');
             }
             $cbs[] = sprintf('<input type="checkbox" name="type_id[%s][]" value="%s"/>%s',
-                             $type->id, $value['id'], $member);
+            $type->id, $value['id'], $member);
         }
         return array('TYPES' => '</td><td>' . implode('</td><td>', $cbs));
     }
