@@ -844,7 +844,6 @@ class Alert {
         foreach ($items as $item) {
             $feeds[] = $item->createFeed();
         }
-
         PHPWS_Core::initModClass('rss', 'Channel.php');
         $channel = new RSS_Channel;
         $channel->_feeds = $feeds;
