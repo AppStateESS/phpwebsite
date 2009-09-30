@@ -1,4 +1,6 @@
 30 Sept 2009
++ items returned now for rss feeds if not shown on the home page.
++ Deleting an alert type removes the alerts.
 + Non-post alerts won't post now.
 + Fixed check all button.
 + Add and subtract buttons hidden if no types created

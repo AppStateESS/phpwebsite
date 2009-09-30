@@ -99,6 +99,13 @@ class Alert_Type {
     {
         $db = new PHPWS_DB('alert_type');
         $db->addWhere('id', $this->id);
+        $result = $db->delete();
+        if (PHPWS_Error::logIfError($result)) {
+            return;
+        }
+
+        $db = new PHPWS_DB('alert_item');
+        $db->addWhere('type_id', $this->id);
         return $db->delete();
     }
 
@@ -113,7 +120,7 @@ class Alert_Type {
         $db->addOrder('create_date desc');
         switch($this->post_type) {
         case APST_NONE:
-            return null;
+            break;
 
         case APST_WEEKLY:
             $db->addWhere('create_date', mktime() - (7 * 86400), '>=');
