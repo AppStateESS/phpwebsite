@@ -181,9 +181,9 @@ class Alert_Forms {
                 $pagetags['th'][]= array('TYPE_LABEL'=>sprintf('%s&nbsp;<abbr title="%s">%s</abbr>',
                 $link, $type->title,
                 substr($type->title, 0, 3)));
-                $form->addSubmit('add_checked_participants', dgettext('alert', 'Added checked'));
-                $form->addSubmit('remove_checked_participants', dgettext('alert', 'Remove checked'));
             }
+            $form->addSubmit('add_checked_participants', dgettext('alert', 'Added checked'));
+            $form->addSubmit('remove_checked_participants', dgettext('alert', 'Remove checked'));
             // Requires _checkboxTypes
             $pagetags['CHECK_ALL'] = javascript('check_all', array('checkbox_name'=>'type_id'));
         }
