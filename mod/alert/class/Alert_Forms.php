@@ -49,6 +49,7 @@ class Alert_Forms {
 
         $form->addSelect('type_id', $types);
         $form->setLabel('type_id', dgettext('alert', 'Alert type'));
+        $form->setMatch('type_id', $item->type_id);
 
         $form->addSubmit(dgettext('alert', 'Save'));
 
