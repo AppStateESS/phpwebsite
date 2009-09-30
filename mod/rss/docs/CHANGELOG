@@ -1,3 +1,5 @@
++ Check made on feed array in case it was force fed it won't get overwritten.
+
 Version 0.3.2
 -----------------------------------------------------------------------------
 20 July 2009

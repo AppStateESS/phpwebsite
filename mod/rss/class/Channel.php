@@ -26,7 +26,7 @@ class RSS_Channel {
     public $_error          = NULL;
 
 
-    public function RSS_Channel($id=NULL)
+    public function __construct($id=NULL)
     {
         $this->_last_build_date = gmstrftime('%a, %d %b %Y %R GMT', mktime());
         if (!$id) {
@@ -135,16 +135,16 @@ class RSS_Channel {
      */
     function EncodeString($str)
     {
-      // decode all UTF8 to avoid having it reencoded later on
-      $str = utf8_decode($str);
-     
-      // decode all HTML entities, they are not supported by RSS readers. This might create accented characters 
-      $str = html_entity_decode($str, ENT_QUOTES);
-      
-      // restore the line breaks, ensuring they are escaped for XML
-      $str = htmlspecialchars(nl2br($str));
+        // decode all UTF8 to avoid having it reencoded later on
+        $str = utf8_decode($str);
 
-      return $str;
+        // decode all HTML entities, they are not supported by RSS readers. This might create accented characters
+        $str = html_entity_decode($str, ENT_QUOTES);
+
+        // restore the line breaks, ensuring they are escaped for XML
+        $str = htmlspecialchars(nl2br($str));
+
+        return $str;
     }
 
     /**
@@ -159,7 +159,9 @@ class RSS_Channel {
             return $content;
         }
 
-        $this->loadFeeds();
+        if (empty($this->_feeds)) {
+            $this->loadFeeds();
+        }
 
         $home_http = PHPWS_Core::getHomeHttp();
         $template['CHANNEL_TITLE']       = $this->EncodeString($this->title);
@@ -168,7 +170,7 @@ class RSS_Channel {
         $template['CHANNEL_DESCRIPTION'] = $this->EncodeString($this->description);
         $template['LANGUAGE']            = CURRENT_LANGUAGE; // change later
         $template['SEARCH_LINK'] = sprintf('%sindex.php?module=search&amp;mod_title=%s&amp;user=search',
-                                           $home_http, $this->module);
+        $home_http, $this->module);
         $template['SEARCH_DESCRIPTION'] = sprintf('Search in %s', $this->title);
         $template['SEARCH_NAME'] = 'search';
 
@@ -180,7 +182,6 @@ class RSS_Channel {
 
         $timezone = strftime('%z');
         $timezone = substr($timezone, 0, 3) . ':' . substr($timezone, 3, 2);
-
         if ($this->_feeds) {
             foreach ($this->_feeds as $key) {
                 $itemTpl = NULL;
@@ -211,7 +212,6 @@ class RSS_Channel {
         } else {
             $tpl_file = 'rss10.tpl';
         }
-
         $content = PHPWS_Template::process($template, 'rss', $tpl_file);
         $content = utf8_encode($content);
         PHPWS_Cache::save($cache_key, $content);
