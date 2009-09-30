@@ -51,19 +51,19 @@ class Alert {
         }
 
         switch($command) {
-        case 'rss':
-            $this->showRSS();
-            break;
+            case 'rss':
+                $this->showRSS();
+                break;
 
-        case 'view':
-            $this->loadItem();
-            if ($this->item->id && $this->item->active) {
-                Layout::add($this->item->view());
-            } else {
-                $this->title = dgettext('alert', 'Sorry');
-                $this->content = dgettext('alert', 'Alert could not be located.');
-            }
-            break;
+            case 'view':
+                $this->loadItem();
+                if ($this->item->id && $this->item->active) {
+                    Layout::add($this->item->view());
+                } else {
+                    $this->title = dgettext('alert', 'Sorry');
+                    $this->content = dgettext('alert', 'Alert could not be located.');
+                }
+                break;
         }
         $tpl['TITLE']   = $this->title;
         $tpl['MESSAGE'] = $this->message;
@@ -93,24 +93,30 @@ class Alert {
             $db->resetWhere();
             $db->addWhere('active', 1);
             $db->addWhere('type_id', $type->id);
+            $alert_type = null;
 
-            switch ($type->post_type) {
-            case APST_NONE:
+            switch ((int)$type->post_type) {
+                case APST_DAILY:
+                    $alert_type = 'daily_alerts';
+                    $db->addWhere('create_date', mktime() - 86400, '>');
+                    break;
+
+                case APST_WEEKLY:
+                    $alert_type = 'weekly_alerts';
+                    $db->addWhere('create_date', mktime() - (86400 * 7), '>');
+                    break;
+
+                case APST_PERM:
+                    $alert_type = 'high_alerts';
+                    break;
+
+                default:
+                case APST_NONE:
+                    continue;
+            }
+
+            if (empty($alert_type)) {
                 continue;
-
-            case APST_DAILY:
-                $alert_type = 'daily_alerts';
-                $db->addWhere('create_date', mktime() - 86400, '>');
-                break;
-
-            case APST_WEEKLY:
-                $alert_type = 'weekly_alerts';
-                $db->addWhere('create_date', mktime() - (86400 * 7), '>');
-                break;
-
-            case APST_PERM:
-                $alert_type = 'high_alerts';
-                break;
             }
 
             $result = $db->getObjects('Alert_Item');
@@ -175,150 +181,150 @@ class Alert {
         }
 
         switch ($command) {
-        case 'edit_item':
-            $this->loadItem();
-            $this->loadForms();
-            $this->forms->editItem();
-            break;
-
-        case 'list':
-            $this->panel->setCurrentTab('list');
-            $this->loadForms();
-            $this->forms->manageItems();
-            break;
-
-        case 'post_item':
-            $this->loadItem();
-            if ($this->postItem()) {
-                // need to process after save
-                if (PHPWS_Error::logIfError($this->item->save())) {
-                    $this->sendMessage(dgettext('alert', 'An error occurred. Could not save alert.'), 'list');
-                } else {
-                    $this->sendMessage(dgettext('alert', 'Alert saved.'), 'list');
-                }
-            } else {
+            case 'edit_item':
+                $this->loadItem();
                 $this->loadForms();
                 $this->forms->editItem();
-            }
-            break;
+                break;
 
-        case 'delete_item':
-            $this->loadItem();
-            if ($this->item->delete()) {
-                $this->sendMessage(dgettext('alert', 'Deleted alert.'), 'list');
-            } else {
-                $this->sendMessage(dgettext('alert', 'Could not delete alert.'), 'list');
-            }
-            break;
+            case 'list':
+                $this->panel->setCurrentTab('list');
+                $this->loadForms();
+                $this->forms->manageItems();
+                break;
 
-        case 'reset_item':
-            $this->loadItem();
-            if ($this->item->reset()) {
-                $this->sendMessage(dgettext('alert', 'Reset alert.'), 'list');
-            } else {
-                $this->sendMessage(dgettext('alert', 'Could not reset alert.'), 'list');
-            }
-            break;
-
-        case 'delete_type':
-            $this->loadType();
-            if ($this->type->delete()) {
-                $this->sendMessage(dgettext('alert', 'Deleted alert type.'), 'types');
-            } else {
-                $this->sendMessage(dgettext('alert', 'Could not delete alert type.'), 'types');
-            }
-            break;
-
-        case 'deactivate_item':
-            $this->loadItem();
-            $this->item->active = 0;
-            PHPWS_Error::logIfError($this->item->save());
-            PHPWS_Core::goBack();
-            break;
-
-        case 'activate_item':
-            $this->loadItem();
-            $this->item->active = 1;
-            PHPWS_Error::logIfError($this->item->save());
-            PHPWS_Core::goBack();
-            break;
-
-        case 'types':
-            $this->loadForms();
-            $this->forms->manageTypes();
-            break;
-
-        case 'edit_type':
-            $this->loadType();
-            $this->loadForms();
-            $this->forms->editType();
-            break;
-
-        case 'send_email':
-            if (!Current_User::authorized('alert', 'allow_contact')) {
-                Current_User::disallow();
-            }
-            $this->loadItem();
-            $this->sendContact();
-            $this->js_display();
-            break;
-
-        case 'participants':
-            $this->loadForms();
-            $this->forms->manageParticipants();
-            break;
-
-        case 'settings':
-            $this->loadForms();
-            $this->forms->settings();
-            break;
-
-        case 'post_multiple_adds':
-            $this->postMultipleAdds();
-            javascript('close_refresh');
-            Layout::nakedDisplay();
-            break;
-
-        case 'post_settings':
-            $this->postSettings();
-            $this->loadForms();
-            $this->forms->settings();
-            break;
-
-        case 'assign_participants':
-            $this->assignParticipants();
-            PHPWS_Core::goBack();
-            break;
-
-        case 'remove_all_participants':
-            $this->removeAllParticipants();
-            PHPWS_Core::goBack();
-            break;
-
-        case 'add_all_participants':
-            $this->addAllParticipants();
-            PHPWS_Core::goBack();
-            break;
-
-        case 'add_multiple':
-            $this->loadForms();
-            $this->forms->addMultiple();
-            $this->js_display();
-            break;
-
-        case 'post_type':
-            $this->loadType();
-            if ($this->postType()) {
-                if (PHPWS_Error::logIfError($this->type->save())) {
-                    $this->sendMessage(dgettext('alert', 'An error occurred. Could not save alert type.'), 'types');
+            case 'post_item':
+                $this->loadItem();
+                if ($this->postItem()) {
+                    // need to process after save
+                    if (PHPWS_Error::logIfError($this->item->save())) {
+                        $this->sendMessage(dgettext('alert', 'An error occurred. Could not save alert.'), 'list');
+                    } else {
+                        $this->sendMessage(dgettext('alert', 'Alert saved.'), 'list');
+                    }
                 } else {
-                    $this->sendMessage(dgettext('alert', 'Type saved.'), 'types');
+                    $this->loadForms();
+                    $this->forms->editItem();
                 }
-            } else {
+                break;
+
+            case 'delete_item':
+                $this->loadItem();
+                if ($this->item->delete()) {
+                    $this->sendMessage(dgettext('alert', 'Deleted alert.'), 'list');
+                } else {
+                    $this->sendMessage(dgettext('alert', 'Could not delete alert.'), 'list');
+                }
+                break;
+
+            case 'reset_item':
+                $this->loadItem();
+                if ($this->item->reset()) {
+                    $this->sendMessage(dgettext('alert', 'Reset alert.'), 'list');
+                } else {
+                    $this->sendMessage(dgettext('alert', 'Could not reset alert.'), 'list');
+                }
+                break;
+
+            case 'delete_type':
+                $this->loadType();
+                if ($this->type->delete()) {
+                    $this->sendMessage(dgettext('alert', 'Deleted alert type.'), 'types');
+                } else {
+                    $this->sendMessage(dgettext('alert', 'Could not delete alert type.'), 'types');
+                }
+                break;
+
+            case 'deactivate_item':
+                $this->loadItem();
+                $this->item->active = 0;
+                PHPWS_Error::logIfError($this->item->save());
+                PHPWS_Core::goBack();
+                break;
+
+            case 'activate_item':
+                $this->loadItem();
+                $this->item->active = 1;
+                PHPWS_Error::logIfError($this->item->save());
+                PHPWS_Core::goBack();
+                break;
+
+            case 'types':
+                $this->loadForms();
+                $this->forms->manageTypes();
+                break;
+
+            case 'edit_type':
+                $this->loadType();
                 $this->loadForms();
                 $this->forms->editType();
-            }
-            break;
+                break;
+
+            case 'send_email':
+                if (!Current_User::authorized('alert', 'allow_contact')) {
+                    Current_User::disallow();
+                }
+                $this->loadItem();
+                $this->sendContact();
+                $this->js_display();
+                break;
+
+            case 'participants':
+                $this->loadForms();
+                $this->forms->manageParticipants();
+                break;
+
+            case 'settings':
+                $this->loadForms();
+                $this->forms->settings();
+                break;
+
+            case 'post_multiple_adds':
+                $this->postMultipleAdds();
+                javascript('close_refresh');
+                Layout::nakedDisplay();
+                break;
+
+            case 'post_settings':
+                $this->postSettings();
+                $this->loadForms();
+                $this->forms->settings();
+                break;
+
+            case 'assign_participants':
+                $this->assignParticipants();
+                PHPWS_Core::goBack();
+                break;
+
+            case 'remove_all_participants':
+                $this->removeAllParticipants();
+                PHPWS_Core::goBack();
+                break;
+
+            case 'add_all_participants':
+                $this->addAllParticipants();
+                PHPWS_Core::goBack();
+                break;
+
+            case 'add_multiple':
+                $this->loadForms();
+                $this->forms->addMultiple();
+                $this->js_display();
+                break;
+
+            case 'post_type':
+                $this->loadType();
+                if ($this->postType()) {
+                    if (PHPWS_Error::logIfError($this->type->save())) {
+                        $this->sendMessage(dgettext('alert', 'An error occurred. Could not save alert type.'), 'types');
+                    } else {
+                        $this->sendMessage(dgettext('alert', 'Type saved.'), 'types');
+                    }
+                } else {
+                    $this->loadForms();
+                    $this->forms->editType();
+                }
+                break;
         }
 
         Layout::add(PHPWS_ControlPanel::display($this->panel->display($this->content, $this->title, $this->getMessage())));
@@ -497,17 +503,17 @@ class Alert {
     {
         $db = new PHPWS_DB('alert_type');
         switch ($mode) {
-        case 'form':
-            $db->addColumn('id');
-            $db->addColumn('title');
-            $db->setIndexBy('id');
-            $types = $db->select('col');
-            break;
+            case 'form':
+                $db->addColumn('id');
+                $db->addColumn('title');
+                $db->setIndexBy('id');
+                $types = $db->select('col');
+                break;
 
-        case 'obj':
-        default:
-            $db->loadClass('alert', 'Alert_Type.php');
-            $types = $db->getObjects('Alert_Type');
+            case 'obj':
+            default:
+                $db->loadClass('alert', 'Alert_Type.php');
+                $types = $db->getObjects('Alert_Type');
         }
 
         if (!empty($types) || PHPWS_Error::isError($types)) {
@@ -738,7 +744,7 @@ class Alert {
             $content[] = dgettext('alert', 'All participants contacted.');
             $content[] = dgettext('alert', 'You may safely close this window now.');
             $content[] = sprintf('<p style="text-align : center"><input type="button" onclick="closeWindow()" value="%s" /></p>',
-                                 dgettext('alert', 'Close this window'));
+            dgettext('alert', 'Close this window'));
             $content[] = javascript('close_refresh', array('use_link'=>true));
             $item->contact_complete = 2;
             $this->content = implode('<br />', $content);
