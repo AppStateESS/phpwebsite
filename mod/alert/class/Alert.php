@@ -432,7 +432,6 @@ class Alert {
     public function loadTypeByFeed()
     {
         PHPWS_Core::initModClass('alert', 'Alert_Type.php');
-
         $db = new PHPWS_DB('alert_type');
         $db->addWhere('feedname', $this->rssfeed);
         $db->setLimit(1);
@@ -444,6 +443,7 @@ class Alert {
             } else {
                 $this->type = new Alert_Type;
                 PHPWS_Core::plugObject($this->type, $row);
+                return true;
             }
         }
     }
@@ -834,7 +834,10 @@ class Alert {
 
     public function showRSS()
     {
-        $this->loadTypeByFeed();
+        if (!$this->loadTypeByFeed() || empty($this->type)) {
+            echo dgettext('alert', 'RSS feed does not exist.');
+            exit();
+        }
 
         $items = $this->type->getItems();
         if (PHPWS_Error::logIfError($items) || empty($items)) {
