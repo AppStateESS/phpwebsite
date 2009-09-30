@@ -145,6 +145,7 @@ class Alert_Item {
         $feed = new Key;
         $feed->title = $this->title;
         $feed->url = 'index.php?module=alert&id=' . $this->id;
+        $feed->summary = $this->getDescription();
         return $feed;
     }
 
