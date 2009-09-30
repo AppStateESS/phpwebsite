@@ -68,7 +68,7 @@ class Alert_Type {
         }
 
         $tpl['EMAIL'] = $this->email ? dgettext('alert', 'Yes') : dgettext('alert', 'No');
-        $tpl['RSSFEED'] = $this->rssfeed ? dgettext('alert', 'Yes') : dgettext('alert', 'No');
+        $tpl['RSSFEED'] = $this->rssfeed ? PHPWS_Text::rewriteLink(dgettext('alert', 'Yes'), 'alert', array('rssfeed'=>$this->feedname)) : dgettext('alert', 'No');
 
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
