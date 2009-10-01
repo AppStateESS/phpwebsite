@@ -9,7 +9,7 @@ var checked_status = false;
 
 function AlertCheckAll(link, type_id) {
     form = document.getElementById('participants-form');
-    name_o_checkbox = 'type_id[' + type_id + ']';
+    name_o_checkbox = 'type_id[' + type_id + '][]';
     for (i=0; checkbox = form.elements[i]; i++) {
         if (checkbox.type=='checkbox' && checkbox.name==name_o_checkbox) {
             if (checked_status) {

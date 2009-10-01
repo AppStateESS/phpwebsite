@@ -1,3 +1,7 @@
+1 October 2009
++ Fixed +/- check all links
++ Updated: javascript/check_all/head.js
+
 30 Sept 2009
 + items returned now for rss feeds if not shown on the home page.
 + Deleting an alert type removes the alerts.
