@@ -20,6 +20,11 @@ class SimpleNotification extends Notification
 		$this->content = $content;
 	}
 	
+	public function getType()
+	{
+		return $this->type;
+	}
+	
 	public function toString()
 	{
 		return $this->content;
