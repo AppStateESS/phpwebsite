@@ -1,4 +1,4 @@
-<tr<!-- BEGIN BGCOLOR -->{BGCOLOR}<!-- END BGCOLOR -->>
+<tr {BGCOLOR}>
 <td class="align-left">
 {ELEMENT}
 </td>

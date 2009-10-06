@@ -570,7 +570,6 @@ class PHAT_Form extends PHPWS_Item {
                 $sectionTags = array();
 
                 $elementInfo = explode(':', $this->_elements[$i]);
-
                 $this->element = new $elementInfo[0]($elementInfo[1]);
 
                 /* If user can edit data, populate for element with it */
@@ -743,7 +742,13 @@ class PHAT_Form extends PHPWS_Item {
         /* Create needle to search for index into elements array */
         $needle = get_class($this->element) . ':' . $this->element->getId();
         $key = array_search($needle, $this->_elements);
+        if ($key === false) {
+            $key = array_search(strtolower($needle), $this->_elements);
+        }
 
+        if ($key === false) {
+            return;
+        }
         /* Unset the element in the elements array and in the element class variable */
         unset($this->_elements[$key]);
         unset($this->element);
