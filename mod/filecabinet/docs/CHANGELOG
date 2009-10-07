@@ -1,3 +1,6 @@
+7 October 2009
++ Order fckeditor files on popup
+
 15 Sept 2009
 + Added htmlspecialchars on titles for docs, images, media. Single quotes can wreck js
 + updated windows media filter
