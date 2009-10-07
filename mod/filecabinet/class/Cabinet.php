@@ -1449,6 +1449,7 @@ class Cabinet {
 
         $db = new PHPWS_DB('images');
         $db->addWhere('folder_id', $_GET['fid']);
+        $db->addOrder('title');
         $result = $db->getObjects('PHPWS_Image');
 
         if (PHPWS_Error::logIfError($result)) {
@@ -1534,6 +1535,7 @@ class Cabinet {
         PHPWS_Core::initModClass('filecabinet', 'Document.php');
         $db = new PHPWS_DB('documents');
         $db->addWhere('folder_id', $_GET['fid']);
+        $db->addOrder('title');
         $result = $db->getObjects('PHPWS_Document');
 
         if (PHPWS_Error::logIfError($result)) {
@@ -1563,6 +1565,7 @@ class Cabinet {
         PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
         $db = new PHPWS_DB('multimedia');
         $db->addWhere('folder_id', $_GET['fid']);
+        $db->addOrder('title');
         $result = $db->getObjects('PHPWS_Multimedia');
 
         if (PHPWS_Error::logIfError($result)) {
