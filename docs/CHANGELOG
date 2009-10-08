@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+8 October 2009
++ Fixed bug in fixAnchors that didn't allow it to work with hyphenated ids
+
 31 August 2009
 + Added code to prevent multiple identical joins.
 + select('count') back to old result (integer). count_array added to select function

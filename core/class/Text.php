@@ -231,7 +231,7 @@ class PHPWS_Text {
     {
         $home_http = PHPWS_Core::getCurrentUrl();
 
-        return preg_replace('/href="#(\w+)"/',
+        return preg_replace('/href="#([\w\-]+)"/',
                             sprintf('href="%s#\\1"', $home_http),
                             $text);
     }
