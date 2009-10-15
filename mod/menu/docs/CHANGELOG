@@ -1,3 +1,6 @@
+15 October 2009
++ Added view permission fix. Thanks Verdon.
+
 + Fixed spelling and structure of horizontal menus.
 + Updated: templates/menu_layout/horizontal/link.tpl
 + templates/menu_layout/horizontal/menu.tpl

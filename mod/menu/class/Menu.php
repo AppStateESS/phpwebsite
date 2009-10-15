@@ -88,6 +88,7 @@ class Menu {
         $db->addWhere('menu_assoc.key_id', $key->id);
         $db->addWhere('id', 'menu_assoc.menu_id');
         $db->loadClass('menu', 'Menu_Item.php');
+        Key::restrictView($db, 'menu');
         $result = $db->getObjects('Menu_Item');
 
         if (PEAR::isError($result)) {
