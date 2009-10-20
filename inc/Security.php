@@ -17,11 +17,12 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 // aren't a problem.
 // TODO: Find out why our security code chokes on some Moodle 
 //       cookies and fix it.
-if(isset($_REQUEST['MOODLEID'])){
-        unset($_REQUEST['MOODLEID']);
-}
-if(isset($_REQUEST['MOODLEID_'])){
-        unset($_REQUEST['MOODLEID_']);
+$known_bad = array('MOODLEID', 'MOODLEID_');
+foreach($known_bad as $bad) {
+    if(isset($_REQUEST[$bad]) && !checkUserInput($_REQUEST[$bad])) {
+        Security::log("Apparently butting heads with another web application. $bad='{$_REQUEST[$bad]}'");
+        unset($_REQUEST[$bad]);
+    }
 }
 
 /**
