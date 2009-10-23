@@ -93,6 +93,13 @@ abstract class DB2_Resource extends DB2_Alias {
         return null;
     }
 
+    /**
+     * Adds a field object to the table object's field stack.
+     * @param string|DB2_Field $column_name    If not a DB2_Field object, then the name of the column in the table
+     * @param string           $alias          An alias to be used within the query for this field.
+     * @param boolean          $show_in_select If true, show in a select query. False, otherwise.
+     * @return DB2_Field
+     */
     public function addField($column_name, $alias=null, $show_in_select=true)
     {
         if (is_string($column_name)) {
@@ -114,8 +121,8 @@ abstract class DB2_Resource extends DB2_Alias {
     /**
      * Returns a DB2_Field object. If the column is NOT in the table, a
      * PEAR_Exception is thrown by the DB2_Field constructor
-     * @param string $column_name
-     * @param string $alias
+     * @param string $column_name Name of the column in this table
+     * @param string $alias       Query alias used when referencing this field
      * @return DB2_Field
      */
     public function getField($column_name, $alias=null)

@@ -12,11 +12,21 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
+ * The DB2_Table class is extended by the database OS specific file. For example,
+ * mysql_Table extends this table for the MySQL database OS.
+ *
+ * Many functions used in DB2_Table are contained in DB2_Resource. Please see
+ * the functions and comments there for more information.
+ *
+ *
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @package DB2
  * @license http://opensource.org/licenses/lgpl-3.0.html
+ * @see DB2_Resource
  */
+
+define('DB2_IGNORE_COLUMN_VERIFICATION', true);
 
 abstract class DB2_Table extends DB2_Resource implements Factory_Table {
     /**
@@ -325,7 +335,7 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
 
 
 
-     /**
+    /**
      * Verifies the existence of a specific column in this table. The static table_info
      * contains all previous check data.
      * @param string column_name : Column looked for in the table
@@ -333,8 +343,10 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
      */
     public function verifyColumn($column_name)
     {
-        // @todo remove this!!
-        return true;
+        if (defined('DB2_IGNORE_COLUMN_VERIFICATION') && DB2_IGNORE_COLUMN_VERIFICATION) {
+            return true;
+        }
+
         static $table_info = array();
 
         if (!isset($table_info[$this->db2->mdb2->database_name][$this->full_name])) {

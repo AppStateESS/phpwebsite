@@ -246,6 +246,11 @@ class DB2 extends Data {
         $this->dsn = $dsn;
     }
 
+    /**
+     * Sets the current select type.
+     * @param integer $select_type
+     * @return void
+     */
     public function setSelectType($select_type) {
         $select_type = (int)$select_type;
         if ($select_type == DB2_ONE ||
@@ -259,6 +264,11 @@ class DB2 extends Data {
         }
     }
 
+    /**
+     * Creates new database
+     * @param string $database_name
+     * @return void
+     */
     public function createDatabase($database_name)
     {
         if (!$this->allowedIdentifier($database_name)) {
@@ -383,10 +393,22 @@ class DB2 extends Data {
         static $tbl_prefix = null;
 
         if (empty($dsn)) {
-            if (!@include HUB_DSN_DIRECTORY . 'database.php') {
-                throw new PEAR_Exception(dgettext('core', 'Could not include database.php file for hub.'));
+            /**
+             * Eventually, I'd like to have a simpler method for storing the database
+             * information. For now, I am commenting this out. Down the line hopefully
+             * it can be brought back.
+             * The database DSN is currently in config.php as a define. I'd like to
+             * remove it from there into its own file.
+             */
+            $dsn = PHPWS_DSN;
+            if (defined('PHPWS_TABLE_PREFIX')) {
+                $tbl_prefix = PHPWS_TABLE_PREFIX;
             }
-
+            /*
+             if (!@include HUB_DSN_DIRECTORY . 'database.php') {
+             throw new PEAR_Exception(dgettext('core', 'Could not include database.php file for hub.'));
+             }
+             */
             if (empty($dsn)) {
                 throw new PEAR_Exception(dgettext('core', 'DSN not set in hub database file.'));
             }
@@ -413,11 +435,22 @@ class DB2 extends Data {
     /**
      * Makes a connection to the current phpws branch database.
      * Exception thrown on failure
+     *
      * @param string $branch : Name of the current branch
      * @return void
      */
     private function loadBranchDSN($branch=null)
     {
+        /**
+         * This was written with 2.0 in mind. For now, just going to connect
+         * the same way the hub does. Will come back here after branch conversion.
+         */
+        $this->loadHubDSN();
+        return;
+
+        /**
+         * Keeping below for later
+         */
         static $dsn            = null;
         static $tbl_prefix     = null;
 
@@ -479,10 +512,12 @@ class DB2 extends Data {
     }
 
     /**
-     * Adds a table object to the table array
+     * Adds a table object to the table stack
      * @param string table : Table name
      * @param string as : Table designation/nickname
-     * @return object : reference to the object in the tables array
+     * @param boolean show_all_fields : If true, use table.* in a select query.
+     *                                  False, ignore table in result.
+     * @return object : reference to the object in the tables stack
      */
     public function addTable($table, $alias=null, $show_all_fields=true)
     {
@@ -502,13 +537,20 @@ class DB2 extends Data {
         return $table;
     }
 
+    /**
+     * Indicates if the current table name is already in the table stack.
+     * The stack is indexed by aliases, so the same table may be in the stack
+     * multiple times.
+     * @param $table
+     * @return boolean
+     */
     public function isTable($table)
     {
         return isset($this->tables[$table]);
     }
 
     /**
-     * Grabs the currently named table from the table stack
+     * Pulls the currently named table from the table stack
      * @param string $table_name
      * @return DB2_Table
      */
@@ -519,6 +561,13 @@ class DB2 extends Data {
         }
     }
 
+    /**
+     * Calls the factory method to create a new table object based on the
+     * current database OS.
+     * @param string $table  Name of table
+     * @param string $alias  Alias representation for table in queries
+     * @return object A table object with this class as its parent
+     */
     public function getTable($table, $alias=null)
     {
         return DB2_Table::factory($table, $alias, $this);

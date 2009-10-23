@@ -53,8 +53,8 @@ class DB2_Conditional_Group {
         foreach ($args as $conditional) {
             // If "$conditional" is a conditional group object, remove its position from
             // the database object to prevent repeats
-            if (get_class($conditional) == 'DB2_conditional_Group') {
-                $this->db2->dropConditionalGroup($conditional->position);
+            if (is_a($conditional, 'DB2_Conditional_Group')) {
+                $this->db2->dropWhereGroup($conditional->position);
             } elseif (is_a($conditional, 'DB2_Conditional')) {
                 // If this is a conditional object, remove it from the
                 // general db conditional stack on the table object
