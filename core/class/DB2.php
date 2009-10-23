@@ -1254,20 +1254,39 @@ class DB2 extends Data {
         }
     }
 
+    /**
+     * Removes a where group from the stack. This is used internally when a
+     * new group is added to prevent repeats.
+     * @param boolean $position The position of the where group in the stack
+     * @return void
+     */
     public function dropWhereGroup($position)
     {
         unset($this->where_group_stack[$position]);
     }
 
+    /**
+     * Tests the operator parameter to see if it is valid
+     * @param string $operator
+     * @return boolean  True if valid, false if not.
+     */
     public static function isOperator($operator)
     {
         static $operator_types = array('=', '<', '>', '>=', '<=', '<>', '!=', '!<', '!>');
         return in_array($operator, $operator_types);
     }
 
-
+    /**
+     * Returns true if the table name exists in the entire database. To see if
+     * the table is a DB2 object, use DB2::isTable($table_name)
+     * @param string $table_name Name of table to check
+     * @return boolean
+     */
     public function tableExists($table_name)
     {
+        if ($this->tbl_prefix) {
+            $table_name = $this->tbl_prefix . $table_name;
+        }
         return in_array($table_name, $this->mdb2->listTables());
     }
 
