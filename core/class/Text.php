@@ -556,9 +556,11 @@ class PHPWS_Text {
      * You supply the name of the module and the variables.
      *
      * @author Matthew McNaney <matt at tux dot appstate dot edu>
-     * @param string title String to appear as the 'click on' word(s)
+     * @param string subject String to appear as the 'click on' word(s)
      * @param string module Name of module to access
      * @param array getVars Associative array of GET variable to append to the link
+     * @param string target The target attribute of the link.
+     * @param string title The title attribute (alt-text) of the link.
      * @param string class_name String added to css class
      * @return string The complated link.
      */
