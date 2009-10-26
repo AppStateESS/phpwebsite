@@ -486,7 +486,7 @@ class Checkin_Admin extends Checkin {
         $this->statusButtons($tpl);
 
         if ($small_view) {
-            $tpl['REDUCE'] = ' ';
+            $tpl['REDUCE'] = 'small-view';
             $tpl['CLOSE'] = sprintf('<input type="button" onclick="window.close()" value="%s" />', dgettext('checkin', 'Close'));
             Layout::metaRoute('index.php?module=checkin&aop=small_wait', PHPWS_Settings::get('checkin', 'waiting_refresh'));
         } else {
@@ -1045,7 +1045,8 @@ class Checkin_Admin extends Checkin {
             $form->setExtra('cdate', 'class="datepicker"');
             $form->addHidden('aop', 'report');
             $form->setLabel('cdate', dgettext('checkin', 'Date'));
-            $form->addSubmit(dgettext('checkin', 'Go'));
+            $form->addSubmit('day', dgettext('checkin', 'Day'));
+            $form->addSubmit('month', dgettext('checkin', 'Month'));
             $tpl = $form->getTemplate();
             $js['id'] = 'report-date_cdate';
             javascript('datepicker', $js);

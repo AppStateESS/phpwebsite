@@ -1,4 +1,4 @@
-<div<!-- BEGIN small-view -->{REDUCE}id="small-view"<!-- END small-view -->>
+<div id="{REDUCE}">
 <!-- BEGIN options --><p>{HIDE_PANEL} | {HIDE_SIDEBAR} | {SMALL_VIEW} | {REFRESH}</p><!-- END options -->
 <div id="action-buttons">{SENDBACK} {MEET} {AVAILABLE} {UNAVAILABLE} {FINISH}</div>
 <div id="current-meeting" class="{CURRENT_CLASS}">{CURRENT_MEETING}</div>
