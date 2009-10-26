@@ -1,3 +1,8 @@
+26 October 2009
++ Added monthly and student reports
++ Updated: templates/monthly_report.tpl, templates/visitor_report.tpl,
+templates/report.tpl
+
 + Added code to prevent refreshed dups
 + Visitor must enter a reason
 + fixed possbile error in admin view

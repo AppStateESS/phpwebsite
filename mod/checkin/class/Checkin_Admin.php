@@ -83,6 +83,16 @@ class Checkin_Admin extends Checkin {
                 $js = isset($_GET['print']);
                 break;
 
+            case 'month_report':
+                $this->monthReport(isset($_GET['print']));
+                $js = isset($_GET['print']);
+                break;
+
+            case 'visitor_report':
+                $this->visitorReport(isset($_GET['print']));
+                $js = isset($_GET['print']);
+                break;
+
             case 'reassign':
                 // Called via ajax
                 if (Current_User::authorized('checkin', 'assign_visitors')) {
@@ -1017,8 +1027,150 @@ class Checkin_Admin extends Checkin {
     }
 
 
+    public function visitorReport($print=false)
+    {
+        PHPWS_Core::initModClass('checkin', 'Staff.php');
+        PHPWS_Core::initModClass('checkin', 'Visitors.php');
+        $visitor = new Checkin_Visitor($_GET['vis_id']);
+        if (!$visitor->id) {
+            $this->content = dgettext('checkin', 'Visitor not found');
+            return;
+        }
+
+        $db = new PHPWS_DB('checkin_visitor');
+        $db->addWhere('firstname', strtolower($visitor->firstname) . '%', 'like');
+        $db->addWhere('lastname', strtolower($visitor->lastname), 'like');
+        $db->addOrder('arrival_time');
+        $result = $db->getObjects('Checkin_Visitor');
+        if (empty($result)) {
+            $this->content = dgettext('checkin', 'Visitor not found');
+            return;
+        }
+        $count = $total_wait = $total_spent = 0;
+        $reasons = $this->getReasons();
+        $staff_list = array();
+        foreach ($result as $vis) {
+            if (isset($staff_list[$vis->assigned])) {
+                $staff = $staff_list[$vis->assigned];
+            } else {
+                $staff_list[$vis->assigned] = $staff = new Checkin_Staff($vis->assigned);
+            }
+            $row = array();
+            $wait = $vis->start_meeting - $vis->arrival_time;
+            $spent = $vis->end_meeting - $vis->start_meeting;
+            $day = strftime('%A, %e %b', $vis->arrival_time);
+            $row = (array('REASON'   => $reasons[$vis->reason],
+                          'ARRIVAL'  => strftime('%c', $vis->arrival_time),
+                          'NOTE'     => $vis->note,
+                          'WAITED'   => Checkin::timeWaiting($wait),
+                          'SPENT'    => Checkin::timeWaiting($spent),
+                          'STAFF'=>$staff->display_name));
+            if ($spent >= 0) {
+                $count++;
+                $total_wait += $wait;
+                $total_spent += $spent;
+            }
+            $tpl['visitors'][] = $row;
+        }
+
+        if ($count >= 1) {
+            $average_wait = floor($total_wait / $count);
+        } else {
+            $average_wait = 0;
+        }
+
+        $tpl['STAFF_LABEL'] = dgettext('checkin', 'Staff');
+        $tpl['REASON_LABEL'] = dgettext('checkin', 'Reason/Note');
+        $tpl['WAITED_LABEL'] = dgettext('checkin', 'Waited');
+        $tpl['SPENT_LABEL'] = dgettext('checkin', 'Visited');
+        $tpl['ARRIVAL_LABEL'] = dgettext('checkin', 'Arrived');
+        $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin',
+        array('aop'=>'visitor_report', 'print'=>1, 'vis_id'=>$visitor->id));
+
+        $tpl['NAME_NOTE'] = dgettext('checkin', 'Please note: if a visitor typed in a different or misspelled name, they may not appear on this list. Also, different people may have the same name.');
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'visitor_report.tpl');
+        $this->title = sprintf('Visits from ' . $visitor->getName());
+    }
+
+    public function monthReport($print=false)
+    {
+        PHPWS_Core::initModClass('checkin', 'Staff.php');
+        PHPWS_Core::initModClass('checkin', 'Visitors.php');
+        $staff = new Checkin_Staff((int)$_GET['staff_id']);
+        if (!$staff->id) {
+            $this->content = dgettext('checkin', 'Staff member not found.');
+        }
+
+        $date = (int)$_GET['date'];
+        $db = new PHPWS_DB('checkin_visitor');
+
+        $start_date = mktime(0,0,0, date('m', $date), 1, date('Y', $date));
+        $end_date = mktime(0,-1,0, date('m', $date) + 1, 1, date('Y', $date));
+
+        $db->addWhere('assigned', $staff->id);
+        $db->addWhere('finished', 1);
+        $db->addWhere('start_meeting', $start_date, '>=');
+        $db->addWhere('end_meeting', $end_date, '<=');
+        $db->addOrder('start_meeting');
+        $visitors = $db->getObjects('Checkin_Visitor');
+
+        if (empty($visitors)) {
+            $tpl['EMPTY'] = dgettext('checkin', 'This staff member did not meet with any visitors this month.');
+        } else {
+            $count = $total_wait = $total_spent = 0;
+            $reasons = $this->getReasons();
+            $track_day = null;
+            foreach ($visitors as $vis) {
+                $row = array();
+                $wait = $vis->start_meeting - $vis->arrival_time;
+                $spent = $vis->end_meeting - $vis->start_meeting;
+                $day = strftime('%A, %e %b', $vis->arrival_time);
+
+                $row = (array('VIS_NAME' => PHPWS_Text::moduleLink($vis->getName(), 'checkin', array('aop'=>'visitor_report', 'vis_id'=>$vis->id)),
+                                         'REASON'   => $reasons[$vis->reason],
+                                         'ARRIVAL'  => strftime('%r', $vis->arrival_time),
+                                         'NOTE'     => $vis->note,
+                                         'WAITED'   => Checkin::timeWaiting($wait),
+                                         'SPENT'    => Checkin::timeWaiting($spent)));
+
+                if ($track_day != $day) {
+                    $track_day = $day;
+                    $row['DATE'] = $track_day;
+                }
+                if ($spent >= 0) {
+                    $count++;
+                    $total_wait += $wait;
+                    $total_spent += $spent;
+                }
+                $tpl['visitors'][] = $row;
+            }
+            //prevent divide by zero
+            if ($count >= 1) {
+                $average_wait = floor($total_wait / $count);
+            } else {
+                $average_wait = 0;
+            }
+        }
+
+        $tpl['VISITORS_SEEN'] = sprintf(dgettext('checkin', 'Visitors seen: %s'), $count);
+
+        $tpl['TOTAL_SPENT'] = sprintf(dgettext('checkin', 'Total time in meeting: %s'), Checkin::timeWaiting($total_spent));
+        $tpl['TOTAL_WAIT'] = sprintf(dgettext('checkin', 'Total wait time: %s'), Checkin::timeWaiting($total_wait));
+        $tpl['AVERAGE_WAIT'] = sprintf(dgettext('checkin', 'Average wait time: %s'), Checkin::timeWaiting($average_wait));
+        $tpl['NAME_LABEL'] = dgettext('checkin', 'Name, Reason, & Note');
+        $tpl['WAITED_LABEL'] = dgettext('checkin', 'Waited');
+        $tpl['SPENT_LABEL'] = dgettext('checkin', 'Visited');
+        $tpl['ARRIVAL_LABEL'] = dgettext('checkin', 'Arrived');
+        $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin',
+        array('aop'=>'month_report', 'print'=>'1', 'staff_id'=>$staff->id, 'date'=>$start_date));
+        $this->title = sprintf('%s - Visitors seen in %s', $staff->display_name, strftime('%b, %Y', $start_date));
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'monthly_report.tpl');
+
+    }
+
     public function report($print=false)
     {
+        PHPWS_Core::initCoreClass('Link.php');
         $this->loadStaffList();
         if (empty($this->staff_list)) {
             $this->content = dgettext('checkin', 'No staff have been created.');
@@ -1045,8 +1197,7 @@ class Checkin_Admin extends Checkin {
             $form->setExtra('cdate', 'class="datepicker"');
             $form->addHidden('aop', 'report');
             $form->setLabel('cdate', dgettext('checkin', 'Date'));
-            $form->addSubmit('day', dgettext('checkin', 'Day'));
-            $form->addSubmit('month', dgettext('checkin', 'Month'));
+            $form->addSubmit(dgettext('checkin', 'Go'));
             $tpl = $form->getTemplate();
             $js['id'] = 'report-date_cdate';
             javascript('datepicker', $js);
@@ -1073,13 +1224,14 @@ class Checkin_Admin extends Checkin {
         $db->setIndexBy('assigned', true);
         $visitors = $db->getObjects('Checkin_Visitor');
 
-        $row['NAME_LABEL'] = dgettext('checkin', 'Name, Reason, & Note');
-        $row['WAITED_LABEL'] = dgettext('checkin', 'Waited');
-        $row['SPENT_LABEL'] = dgettext('checkin', 'Visited');
-        $row['ARRIVAL_LABEL'] = dgettext('checkin', 'Arrived');
 
         foreach ($this->staff_list as $staff) {
-            $average_wait = $total_wait = $count = $total_spent = 0;
+            $row = array();
+            $row['NAME_LABEL'] = dgettext('checkin', 'Name, Reason, & Note');
+            $row['WAITED_LABEL'] = dgettext('checkin', 'Waited');
+            $row['SPENT_LABEL'] = dgettext('checkin', 'Visited');
+            $row['ARRIVAL_LABEL'] = dgettext('checkin', 'Arrived');
+            $average_wait = $total_wait = $count = $total_spent = $total_visit = 0;
             if (isset($visitors[$staff->id])) {
                 foreach ($visitors[$staff->id] as $vis) {
                     $wait = $vis->start_meeting - $vis->arrival_time;
@@ -1087,7 +1239,7 @@ class Checkin_Admin extends Checkin {
 
 
                     $tObj->setCurrentBlock('subrow');
-                    $tObj->setData(array('VIS_NAME' => $vis->getName(),
+                    $tObj->setData(array('VIS_NAME' => PHPWS_Text::moduleLink($vis->getName(), 'checkin', array('aop'=>'visitor_report', 'vis_id'=>$vis->id)),
                                          'REASON'   => $reasons[$vis->reason],
                                          'ARRIVAL'  => strftime('%r', $vis->arrival_time),
                                          'NOTE'     => $vis->note,
@@ -1111,13 +1263,17 @@ class Checkin_Admin extends Checkin {
                 $tObj->setData(array('NOBODY' => dgettext('checkin', 'No visitors seen')));
                 $tObj->parseCurrentBlock();
             }
-            $tObj->setCurrentBlock('row');
-            $row['DISPLAY_NAME'] = $staff->display_name;
-            $row['VISITORS_SEEN'] = sprintf(dgettext('checkin', 'Visitors seen: %s'), $count);
 
-            $row['TOTAL_SPENT'] = sprintf(dgettext('checkin', 'Total time in meeting: %s'), Checkin::timeWaiting($total_spent));
-            $row['TOTAL_WAIT'] = sprintf(dgettext('checkin', 'Total wait time: %s'), Checkin::timeWaiting($total_wait));
-            $row['AVERAGE_WAIT'] = sprintf(dgettext('checkin', 'Average wait time: %s'), Checkin::timeWaiting($average_wait));
+            $tObj->setCurrentBlock('row');
+            $link = new PHPWS_Link($staff->display_name, 'checkin', array('aop'=>'month_report', 'staff_id'=>$staff->id, 'date'=>$udate), true);
+            $link->setTitle(dgettext('checkin', 'See monthly totals'));
+            $row['DISPLAY_NAME'] = $link->get();
+            $row['VISITORS_SEEN'] = sprintf(dgettext('checkin', 'Visitors seen: %s'), $count);
+            if ($count) {
+                $row['TOTAL_SPENT'] = sprintf(dgettext('checkin', 'Total time in meeting: %s'), Checkin::timeWaiting($total_spent));
+                $row['TOTAL_WAIT'] = sprintf(dgettext('checkin', 'Total wait time: %s'), Checkin::timeWaiting($total_wait));
+                $row['AVERAGE_WAIT'] = sprintf(dgettext('checkin', 'Average wait time: %s'), Checkin::timeWaiting($average_wait));
+            }
 
             $tObj->setData($row);
             $tObj->parseCurrentBlock();
