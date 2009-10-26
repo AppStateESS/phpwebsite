@@ -11,6 +11,6 @@ function alert_uninstall(&$content)
     PHPWS_DB::dropTable('alert_contact');
     PHPWS_DB::dropTable('alert_item');
     PHPWS_DB::dropTable('alert_type');
+    return true;
 }
-
 ?>
