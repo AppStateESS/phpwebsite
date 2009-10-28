@@ -419,7 +419,9 @@ class DB2 extends Data {
     }
 
     public function addExpression($expression, $alias=null) {
-        $this->expressions[] = $this->getExpression($expression, $alias);
+        $expression = $this->getExpression($expression, $alias);
+        $this->expressions[] = $expression;
+        return $expression;
     }
 
     /**

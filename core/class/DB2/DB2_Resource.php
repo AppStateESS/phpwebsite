@@ -82,7 +82,7 @@ abstract class DB2_Resource extends DB2_Alias {
             }
         } else {
             foreach ($this->fields as $field) {
-                if ($field->showInSelect()) {
+                if (is_a($field, 'DB2_Field') && $field->showInSelect()) {
                     $cols[] = $field;
                 }
             }
@@ -104,16 +104,19 @@ abstract class DB2_Resource extends DB2_Alias {
     {
         if (is_string($column_name)) {
             $field = $this->getField($column_name, $alias, $this);
+            $field->showInSelect($show_in_select);
         } elseif (is_a($column_name, 'DB2_Field')) {
             if (!$column_name->isTable($this)) {
                 throw new PEAR_Exception(dgettext('core', 'Field object referenced different table object'));
                 return false;
             }
             $field = $column_name;
+            $field->showInSelect($show_in_select);
+        } elseif (is_a($column_name, 'DB2_Expression') || is_a($column_name, 'DB2_SubSelect')) {
+            $field = $this->getField($column_name->getAlias(), $alias, $this);
         } else {
             throw new PEAR_Exception(dgettext('core', 'Improper parameter'));
         }
-        $field->showInSelect($show_in_select);
         $this->fields[] = $field;
         return $field;
     }
@@ -170,6 +173,8 @@ abstract class DB2_Resource extends DB2_Alias {
                 return false;
             }
             $where = $column;
+        } elseif (is_a($column, 'DB2_Expression') || is_a($column, 'DB2_SubSelect')) {
+            $where = $this->getConditional($column->getAlias(), $value, $operator, $conjunction);
         } else {
             $where = $this->getConditional($column, $value, $operator, $conjunction);
         }

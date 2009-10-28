@@ -177,10 +177,10 @@ abstract class DB2_Conditional extends Data {
             } else {
                 throw new PEAR_Exception(dgettext('core', 'Unknown column'));
             }
-        } elseif (is_object($column) && is_a($column, 'DB2_Field')) {
+        } elseif (is_object($column) && (is_a($column, 'DB2_Field') || is_a($column, 'DB2_Expression')) ) {
             $this->column = $column;
         } else {
-            throw new PEAR_Exception(dgettext('core', 'Conditional column must be a string or a DB2_Field object'));
+            throw new PEAR_Exception(dgettext('core', 'Conditional column must be a string, DB2_Field, or DB2_Expression object'));
         }
     }
 
