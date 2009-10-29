@@ -49,7 +49,7 @@ class Checkin_Admin extends Checkin {
         }
 
         $js = false;
-
+        $js = isset($_GET['print']);
         switch ($cmd) {
 
             case 'finish_meeting':
@@ -80,17 +80,14 @@ class Checkin_Admin extends Checkin {
 
             case 'report':
                 $this->report(isset($_GET['print']));
-                $js = isset($_GET['print']);
                 break;
 
             case 'month_report':
                 $this->monthReport(isset($_GET['print']));
-                $js = isset($_GET['print']);
                 break;
 
             case 'visitor_report':
                 $this->visitorReport(isset($_GET['print']));
-                $js = isset($_GET['print']);
                 break;
 
             case 'reassign':
@@ -174,6 +171,10 @@ class Checkin_Admin extends Checkin {
                 $this->panel->setCurrentTab('waiting');
                 $this->loadCurrentStaff();
                 $this->waiting();
+                break;
+
+            case 'repeats':
+                $this->repeats();
                 break;
 
             case 'small_wait':
@@ -1205,6 +1206,7 @@ class Checkin_Admin extends Checkin {
 
             $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin',
             array('aop'=>'report', 'print'=>1, 'udate'=>$udate));
+            $tpl['REPEAT_VISITS'] = PHPWS_Text::moduleLink(dgettext('checkin', 'Repeat visits'), 'checkin', array('aop'=>'repeats', 'date'=>$udate));
         }
 
         $tObj = new PHPWS_Template('checkin');
@@ -1237,10 +1239,15 @@ class Checkin_Admin extends Checkin {
                     $wait = $vis->start_meeting - $vis->arrival_time;
                     $spent = $vis->end_meeting - $vis->start_meeting;
 
+                    if (isset($reasons[$vis->reason])) {
+                        $reason = $reasons[$vis->reason];
+                    } else {
+                        $reason = '<em>' . dgettext('checkin', 'System missing reason') . '</em>';
+                    }
 
                     $tObj->setCurrentBlock('subrow');
                     $tObj->setData(array('VIS_NAME' => PHPWS_Text::moduleLink($vis->getName(), 'checkin', array('aop'=>'visitor_report', 'vis_id'=>$vis->id)),
-                                         'REASON'   => $reasons[$vis->reason],
+                                         'REASON'   => $reason,
                                          'ARRIVAL'  => strftime('%r', $vis->arrival_time),
                                          'NOTE'     => $vis->note,
                                          'WAITED'   => Checkin::timeWaiting($wait),
@@ -1279,6 +1286,9 @@ class Checkin_Admin extends Checkin {
             $tObj->parseCurrentBlock();
         }
 
+        $start_date = mktime(0,0,0, date('m', $udate), 1, date('Y', $udate));
+        $end_date = mktime(0,-1,0, date('m', $udate) + 1, 1, date('Y', $udate));
+
         $tObj->setData($tpl);
         $this->content = $tObj->get();
     }
@@ -1287,6 +1297,70 @@ class Checkin_Admin extends Checkin {
     {
         $this->loadVisitor();
         $this->visitor->delete();
+    }
+
+    public function repeats()
+    {
+        PHPWS_Core::initCoreClass('DB2.php');
+        $end_date = (int)$_GET['date'];
+        $start_date = mktime(0,0,0, date('m', $end_date), -1);
+        $this->title = sprintf(dgettext('checkin', 'Multiple visits made between %s and %s'),
+        strftime('%b %e', $start_date), strftime('%b %e', $end_date));
+
+        $limit = 2;
+
+        if (isset($_GET['visit_query'])) {
+            $limit = (int)$_GET['visit_query'];
+        }
+
+        if ($limit > 10 || $limit < 2) {
+            $limit = 2;
+        }
+
+        try {
+            $sub = new DB2;
+            $t1 = $sub->addTable('checkin_visitor', 't1');
+            $t1_id = $t1->addField('id');
+            $exp = $sub->addExpression("COUNT($t1_id)", 'num');
+            $t1_fn = $t1->addField('firstname');
+            $t1_ln = $t1->addField('lastname');
+            $t1->addWhere('arrival_time', $start_date, '>=');
+            $t1->addWhere('arrival_time', $end_date, '<=');
+            $t1->addOrderBy('lastname');
+            $sub->setGroupBy(array($t1_fn, $t1_ln));
+
+            $db2 = new DB2;
+            $t2 = $db2->addSubSelect($sub, 't2');
+            $t2->addWhere($exp, $limit, '>=');
+            $result = $db2->select();
+        } catch (PEAR_Exception $e) {
+            $this->content = dgettext('checkin', 'Sorry an error occurred.');
+            $db2->logError($e);
+            return;
+        }
+        if (empty($result)) {
+            $this->content = dgettext('checkin', 'No repeat visits within the last month.');
+            return;
+        }
+
+        $form = new PHPWS_Form;
+        $form->setMethod('get');
+        $form->addHidden('module', 'checkin');
+        $form->addHidden('aop', 'repeats');
+        $form->addHidden('date', $end_date);
+        $form->addSelect('visit_query', array(2=>2, 4=>4, 6=>6, 8=>8, 10=>10));
+        $form->setMatch('visit_query', $limit);
+        $form->addSubmit('go', dgettext('checkin', 'Visits greater to or equal to'));
+
+        $tpl = $form->getTemplate();
+
+        foreach ($result as $visit) {
+            $rows['NAME'] = PHPWS_Text::moduleLink(sprintf('%s, %s', $visit['lastname'], $visit['firstname']), 'checkin', array('aop'=>'visitor_report', 'vis_id'=>$visit['id']));
+            $rows['VISITS'] = $visit['num'];
+            $tpl['visitors'][] = $rows;
+        }
+
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'repeats.tpl');
     }
 }
 

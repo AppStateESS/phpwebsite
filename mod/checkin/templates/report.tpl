@@ -1,7 +1,7 @@
 <!-- BEGIN form -->{START_FORM}
 <strong>{CDATE_LABEL}</strong> {CDATE} {SUBMIT}
 {END_FORM}
-<p>{PRINT_LINK}</p>
+<!-- BEGIN links --><p>{REPEAT_VISITS} | {PRINT_LINK}</p><!-- END links -->
 <!-- END form -->
 <table border="1" width="99%" cellpadding="4">
   <!-- BEGIN row --><tr>
