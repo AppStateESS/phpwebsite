@@ -343,5 +343,10 @@ class PHPWS_Link {
     {
         $this->convert_amp = (bool)$con;
     }
+
+    public function __toString()
+    {
+        return $this->get();
+    }
 }
 ?>
