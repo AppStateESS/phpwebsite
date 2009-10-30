@@ -969,6 +969,9 @@ class DB2 extends Data {
                         $result[] = $list_row;
                     }
                 }
+                if (!isset($result)) {
+                    $result = null;
+                }
                 break;
 
             case DB2_ONE:
@@ -1074,7 +1077,7 @@ class DB2 extends Data {
                 if ($resource->isRandomOrder()) {
                     $order[] = $resource->getRandomOrder();
                 } elseif ($order_list = $resource->getOrderBy()) {
-                    $order = $order_list;
+                    $order[] = $order_list;
                 }
             }
         }
@@ -1101,7 +1104,8 @@ class DB2 extends Data {
             if (!empty($having)) {
                 $glist[] = 'HAVING ' . implode(', ', $having);
             }
-            $data['groupby'] = implode(' ', $glist);
+            $data['groupby'] = DB2::toStringImplode(' ', $glist);
+            //$data['groupby'] = implode(' ', $glist);
         }
 
         if (!empty($order)) {
@@ -1133,7 +1137,6 @@ class DB2 extends Data {
         }
 
         $query[] = 'SELECT';
-
         if (isset($columns)) {
             $query[] = implode(', ', $columns);
             $fields_present = true;
@@ -1143,7 +1146,8 @@ class DB2 extends Data {
             if ($fields_present) {
                 $query[] = ', ';
             }
-            $query[] = implode(', ', $this->expressions);
+            $query[] = DB2::toStringImplode(', ', $this->expressions);
+            //$query[] = implode(', ', $this->expressions);
             $fields_present = true;
         }
 
@@ -1428,6 +1432,23 @@ class DB2 extends Data {
             return array_map(array($this, 'quote'), $value);
         } else {
             return $value;
+        }
+    }
+
+    /**
+     * Because PHP 5.1 doesn't do __toString like 5.2 (booo!), this function
+     * is a work-around
+     * @param array $objects
+     * @return unknown_type
+     */
+    public static function toStringImplode($glue, array $pieces)
+    {
+        if (version_compare(phpversion(), '5.2.0', '<')) {
+            $callback = create_function('$e', 'return call_user_func(array($e, "__toString"));');
+            $result = array_map($callback, $pieces);
+            return implode($glue, $result);
+        } else {
+            return implode($glue, $pieces);
         }
     }
 

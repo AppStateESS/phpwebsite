@@ -45,7 +45,7 @@ abstract class DB2_Column extends DB2_Alias {
 
     public function getFullName()
     {
-        return $this->resource . '.' . $this->name;
+        return $this->resource->__toString() . '.' . $this->name;
     }
 
     public function getTableName()

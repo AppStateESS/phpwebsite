@@ -35,7 +35,9 @@ class mysql_Group extends DB2_Group {
                 throw new PEAR_Exception(dgettext('core', 'Multidimensional arrays prohibited for the current group by type'));
             }
         }
-        $query = 'GROUP BY ' . implode(', ', $this->fields);
+
+        $query = 'GROUP BY ' . DB2::toStringImplode(', ', $this->fields);
+        //$query = 'GROUP BY ' . implode(', ', $this->fields);
 
         if ($this->type == DB2_GROUP_ROLLUP) {
             $query .= ' WITH ROLLUP';

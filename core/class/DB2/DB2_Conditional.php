@@ -187,7 +187,7 @@ abstract class DB2_Conditional extends Data {
     public function getColumn()
     {
         if (is_string($this->column)) {
-            return $this->resource . '.' . $this->column;
+            return $this->resource->__toString() . '.' . $this->column;
         } else {
             return $this->column;
         }
@@ -235,7 +235,7 @@ abstract class DB2_Conditional extends Data {
 
     public function getValue()
     {
-        return (string)$this->value;
+        return $this->value->__toString();
     }
 
     /**

@@ -87,7 +87,8 @@ abstract class DB2_Resource extends DB2_Alias {
                 }
             }
             if (isset($cols)) {
-                return implode(', ', $cols);
+                return DB2::toStringImplode(', ', $cols);
+                //return implode(', ', $cols);
             }
         }
         return null;
@@ -192,12 +193,12 @@ abstract class DB2_Resource extends DB2_Alias {
                     $w->disableConjunction();
                     $conjunction = true;
                 }
-                $where_list[] = $w;
+                $where_list[] = $w->__toString();
             }
         }
-
         if (isset($where_list)) {
-            return implode(' ', $where_list);
+            return DB2::toStringImplode(' ', $where_list);
+            //return implode(' ', $where_list);
         }
     }
 
@@ -236,7 +237,7 @@ abstract class DB2_Resource extends DB2_Alias {
         }
 
         if ($this->verifyColumn($column)) {
-            $this->orders[] = "$this.$column $direction";
+            $this->orders[] = $this->__toString() . ".$column $direction";
         } else {
             throw new PEAR_Exception(dgettext('core', 'Unknown table column'));
         }
