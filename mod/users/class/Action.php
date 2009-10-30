@@ -44,7 +44,6 @@ class User_Action {
         } else {
             $user = new PHPWS_User;
         }
-
         if (isset($_REQUEST['group_id'])) {
             $group = new PHPWS_Group((int)$_REQUEST['group_id']);
         } else {
@@ -603,7 +602,7 @@ class User_Action {
 
     public function postUser(PHPWS_User $user, $set_username=true)
     {
-        if ($user->authorize == PHPWS_Settings::get('users', 'local_script') && $set_username) {
+        if (!$user->id || ($user->authorize == PHPWS_Settings::get('users', 'local_script') && $set_username)) {
             $user->_prev_username = $user->username;
             $result = $user->setUsername($_POST['username']);
             if (PEAR::isError($result)) {

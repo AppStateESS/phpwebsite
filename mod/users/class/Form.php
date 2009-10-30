@@ -597,15 +597,17 @@ class User_Form {
         $form->setLabel('groupname', dgettext('users', 'Group Name'));
         $template = $form->getTemplate();
 
-        $vars['action']   = 'admin';
-        $vars['group_id'] = $group->id;
-        $vars['command']  = 'manageMembers';
-        $links[] = PHPWS_Text::secureLink(dgettext('users', 'Members'), 'users', $vars);
+        if ($group->id) {
+            $vars['action']   = 'admin';
+            $vars['group_id'] = $group->id;
+            $vars['command']  = 'manageMembers';
+            $links[] = PHPWS_Text::secureLink(dgettext('users', 'Members'), 'users', $vars);
 
-        $vars['command'] = 'setGroupPermissions';
-        $links[] = PHPWS_Text::secureLink(dgettext('users', 'Permissions'), 'users', $vars);
+            $vars['command'] = 'setGroupPermissions';
+            $links[] = PHPWS_Text::secureLink(dgettext('users', 'Permissions'), 'users', $vars);
 
-        $template['LINKS'] = implode(' | ', $links);
+            $template['LINKS'] = implode(' | ', $links);
+        }
 
         $content = PHPWS_Template::process($template, 'users', 'forms/groupForm.tpl');
 
