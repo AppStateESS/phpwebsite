@@ -486,7 +486,7 @@ class User_Form {
             }
         }
 
-        if ($user->canChangePassword()) {
+        if (!$user->id || $user->canChangePassword()) {
             $form->addText('username', $user->getUsername());
             $form->setRequired('username');
             $form->setLabel('username', dgettext('users', 'Username'));
