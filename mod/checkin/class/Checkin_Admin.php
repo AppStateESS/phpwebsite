@@ -1321,7 +1321,7 @@ class Checkin_Admin extends Checkin {
             $sub = new DB2;
             $t1 = $sub->addTable('checkin_visitor', 't1');
             $t1_id = $t1->addField('id');
-            $exp = $sub->addExpression("COUNT($t1_id)", 'num');
+            $exp = $sub->addExpression('COUNT(' . $t1_id->__toString() . ')', 'num');
             $t1_fn = $t1->addField('firstname');
             $t1_ln = $t1->addField('lastname');
             $t1->addWhere('arrival_time', $start_date, '>=');
