@@ -1107,18 +1107,19 @@ class Checkin_Admin extends Checkin {
 
         $start_date = mktime(0,0,0, date('m', $date), 1, date('Y', $date));
         $end_date = mktime(0,-1,0, date('m', $date) + 1, 1, date('Y', $date));
-
+        $this->title = sprintf('%s - Visitors seen in %s', $staff->display_name, strftime('%b, %Y', $start_date));
         $db->addWhere('assigned', $staff->id);
         $db->addWhere('finished', 1);
         $db->addWhere('start_meeting', $start_date, '>=');
         $db->addWhere('end_meeting', $end_date, '<=');
         $db->addOrder('start_meeting');
         $visitors = $db->getObjects('Checkin_Visitor');
-
+        $count = 0;
         if (empty($visitors)) {
-            $tpl['EMPTY'] = dgettext('checkin', 'This staff member did not meet with any visitors this month.');
+            $this->content = dgettext('checkin', 'This staff member did not meet with any visitors this month.');
+            return;
         } else {
-            $count = $total_wait = $total_spent = 0;
+            $total_wait = $total_spent = 0;
             $reasons = $this->getReasons();
             $track_day = null;
             foreach ($visitors as $vis) {
@@ -1145,26 +1146,26 @@ class Checkin_Admin extends Checkin {
                 }
                 $tpl['visitors'][] = $row;
             }
+
             //prevent divide by zero
             if ($count >= 1) {
                 $average_wait = floor($total_wait / $count);
             } else {
                 $average_wait = 0;
             }
+            $tpl['TOTAL_SPENT'] = sprintf(dgettext('checkin', 'Total time in meeting: %s'), Checkin::timeWaiting($total_spent));
+            $tpl['TOTAL_WAIT'] = sprintf(dgettext('checkin', 'Total wait time: %s'), Checkin::timeWaiting($total_wait));
+            $tpl['AVERAGE_WAIT'] = sprintf(dgettext('checkin', 'Average wait time: %s'), Checkin::timeWaiting($average_wait));
         }
 
         $tpl['VISITORS_SEEN'] = sprintf(dgettext('checkin', 'Visitors seen: %s'), $count);
 
-        $tpl['TOTAL_SPENT'] = sprintf(dgettext('checkin', 'Total time in meeting: %s'), Checkin::timeWaiting($total_spent));
-        $tpl['TOTAL_WAIT'] = sprintf(dgettext('checkin', 'Total wait time: %s'), Checkin::timeWaiting($total_wait));
-        $tpl['AVERAGE_WAIT'] = sprintf(dgettext('checkin', 'Average wait time: %s'), Checkin::timeWaiting($average_wait));
         $tpl['NAME_LABEL'] = dgettext('checkin', 'Name, Reason, & Note');
         $tpl['WAITED_LABEL'] = dgettext('checkin', 'Waited');
         $tpl['SPENT_LABEL'] = dgettext('checkin', 'Visited');
         $tpl['ARRIVAL_LABEL'] = dgettext('checkin', 'Arrived');
         $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin',
         array('aop'=>'month_report', 'print'=>'1', 'staff_id'=>$staff->id, 'date'=>$start_date));
-        $this->title = sprintf('%s - Visitors seen in %s', $staff->display_name, strftime('%b, %Y', $start_date));
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'monthly_report.tpl');
 
     }
@@ -1303,7 +1304,7 @@ class Checkin_Admin extends Checkin {
     {
         PHPWS_Core::initCoreClass('DB2.php');
         $end_date = (int)$_GET['date'];
-        $start_date = mktime(0,0,0, date('m', $end_date), -1);
+        $start_date = mktime(0,0,0, date('m', $end_date) - 1, date('d', $end_date));
         $this->title = sprintf(dgettext('checkin', 'Multiple visits made between %s and %s'),
         strftime('%b %e', $start_date), strftime('%b %e', $end_date));
 
