@@ -282,6 +282,13 @@ class DB2 extends Data {
         }
     }
 
+    /**
+     * Creates a new table in the current database. Uses MDB2's createTable function.
+     * See http://pear.php.net/manual/en/package.database.mdb2.intro-manager-module.php
+     * @param string $table_name Name of new table
+     * @param array $definition Column parameters for new table
+     * @return boolean True if successful, exception thrown otherwise.
+     */
     public function createTable($table_name, $definition)
     {
         if (!$this->allowed($table_name)) {
@@ -295,8 +302,30 @@ class DB2 extends Data {
         if ($this->pearError($result)) {
             throw new PEAR_Exception($result->getMessage());
         }
+        return true;
     }
 
+    /**
+     * Alters a table's structure. Uses MDB2's alterTable function.
+     * See http://pear.php.net/manual/en/package.database.mdb2.intro-manager-module.php
+     * From the above page (with some editing):
+     * array( 'name' => 'userlist',
+     *        'add' => array( 'quota' => array( 'type' => 'integer', 'unsigned' => 1 ) ),
+     *        'remove' => array( 'file_limit' => array(), 'time_limit' => array() ),
+     *        'change' => array( 'name' => array( 'length' => '20', 'definition' => array( 'type' => 'text', 'length' => 20 ) ) ),
+     *        'rename' => array( 'sex' => array( 'name' => 'gender', 'definition' => array( 'type' => 'text', 'length' => 1, 'default' => 'M' ) ) ) );
+     *
+     * Name, add, remove, change, and rename are the keys of the parent array.
+     * They tell the method what action to perform. The array under them uses the key as the column name.
+     * The value is another array containing column definitions (or not as in remove).
+     *
+     *
+     * @param string $table_name Name of table to alter
+     * @param array $definition Array with commands and parameters
+     * @param boolean $test If true, the alteration WILL NOT OCCUR.
+     *                      Instead, true or false is returned on the feasibility of the alteration.
+     * @return boolean True if is/will be successful. Exception thrown otherwise.
+     */
     public function alterTable($table_name, $definition, $test=false)
     {
         $this->mdb2->loadModule('Manager');
@@ -311,6 +340,12 @@ class DB2 extends Data {
         return $result;
     }
 
+    /**
+     * Renames a table in the database. This is a shortcut solution to alterTable.
+     * @param string $old_name Name of the table to change
+     * @param string $new_name Name to change the table to.
+     * @return boolean True is successful, thrown exception otherwise.
+     */
     public function renameTable($old_name, $new_name)
     {
         if (!$this->isTable($old_name)) {
@@ -323,6 +358,11 @@ class DB2 extends Data {
         return $this->alterTable($old_name, array('name'=>$new_name));
     }
 
+    /**
+     * Removes a table from the database.
+     * @param string $table_name Name of table to remove
+     * @return boolean True is successful, thrown exception otherwise.
+     */
     public function dropTable($table_name)
     {
         if (!$this->isTable($table_name)) {
@@ -330,9 +370,19 @@ class DB2 extends Data {
         }
 
         $this->mdb2->loadModule('Manager');
-        return $this->mdb2->dropTable($table_name);
+        $result = $this->mdb2->dropTable($table_name);
+        if ($this->pearError($result)) {
+            throw new PEAR_Exception($result->getMessage());
+        }
+        return $result;
     }
 
+    /**
+     * Checks a string against a list of restricted database words.
+     * Used internally.
+     * @param string $name Word to verify.
+     * @return boolean True if allowed, false if restricted.
+     */
     public function allowedIdentifier($name)
     {
         static $reserved = array('add', 'all', 'alter', 'analyze', 'and', 'any', 'array', 'as', 'asc', 'asensitive',
@@ -371,9 +421,10 @@ class DB2 extends Data {
     }
 
     /**
-     *
+     * Sets the database's table prefix. These prefixes are added to the beginning of every
+     * table name.
      * @access public
-     * @param string $tbl_prefix
+     * @param string $tbl_prefix Prefix added to table names.
      * @return void
      */
     public function setTablePrefix($tbl_prefix)
@@ -418,6 +469,14 @@ class DB2 extends Data {
         $this->tbl_prefix = $tbl_prefix;
     }
 
+
+    /**
+     * Adds an expression to the database.
+     * @see DB2_Expression
+     * @param string $expression Expression to add
+     * @param string $alias Alias of expression (e.g. some_function(column) as foo)
+     * @return DB2_Expression
+     */
     public function addExpression($expression, $alias=null) {
         $expression = $this->getExpression($expression, $alias);
         $this->expressions[] = $expression;
