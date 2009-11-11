@@ -84,12 +84,12 @@ abstract class DB2_Group {
         $this->type = $group_type;
 
         if (is_array($fields)) {
-            array_walk_recursive($fields, array($this, 'fieldOrFunction'));
+            array_walk_recursive($fields, array($this, 'fieldOrExpression'));
             $this->fields = $fields;
-        } elseif ($this->fieldOrFunction($fields)) {
+        } elseif ($this->fieldOrExpression($fields)) {
             $this->fields = array($fields);
         } else {
-            throw new PEAR_Exception(dgettext('core', 'Parameter contained a value that was not a DB2_Field or DB2_Function object'));
+            throw new PEAR_Exception(dgettext('core', 'Parameter contained a value that was not a DB2_Field or DB2_Expression object'));
         }
     }
 
@@ -114,13 +114,13 @@ abstract class DB2_Group {
     }
 
     /**
-     * Verifies a parameter is a db2_field or db2_function object
+     * Verifies a parameter is a db2_field or db2_expression object
      * @param object $f_or_f
      * @return boolean
      */
-    public function fieldOrFunction($f_or_f)
+    public function fieldOrExpression($f_or_f)
     {
-        if (!is_a($f_or_f, 'DB2_Field') && !is_a($f_or_f, 'DB2_Function')) {
+        if (!is_a($f_or_f, 'DB2_Field') && !( is_a($f_or_f, 'DB2_Expression') && $f_or_f->hasAlias()) ) {
             return false;
         } else {
             return true;
@@ -129,7 +129,7 @@ abstract class DB2_Group {
 
     public function setGroupType($type)
     {
-        if (!in_array($type, array(DB2_GROUP_BASE, DB2_GROUP_CUBE, DB2_GROUP_ROLLUP, DB2_GROUP_SET))) {
+        if (!in_array((int)$type, array(DB2_GROUP_BASE, DB2_GROUP_CUBE, DB2_GROUP_ROLLUP, DB2_GROUP_SET))) {
             throw new PEAR_Exception(dgettext('core', 'Unknown group by type'));
         }
         $this->type = $type;
