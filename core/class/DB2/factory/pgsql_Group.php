@@ -23,8 +23,7 @@ class pgsql_Group extends DB2_Group {
     public function __toString()
     {
         /**
-         * MySQL does not support grouping sets, so multidimensional arrays
-         * are forbidden. This foreach tests for that.
+         * Postgresql does not support anything besides the base group by clause
          */
         if (empty($this->fields)) {
             return '';
@@ -36,25 +35,17 @@ class pgsql_Group extends DB2_Group {
             }
         }
         $query = 'GROUP BY ' . DB2::toStringImplode(', ', $this->fields);
-        //$query = 'GROUP BY ' . implode(', ', $this->fields);
 
-        if ($this->type == DB2_GROUP_ROLLUP) {
-            $query .= ' WITH ROLLUP';
-        }
         return $query;
     }
 
     /**
-     * MySQL permits standard grouping and rollups. Cube and sets are
-     * not supported.
+     * Postgresql does not  permit rollups, cube, or sets
      * @see core/class/DB2/DB2_Group#allowedType($type)
      */
     public function allowedType($type)
     {
-        if ($type == DB2_GROUP_BASE || $type == DB2_GROUP_ROLLUP) {
-            return true;
-        }
-        return false;
+        return ($type == DB2_GROUP_BASE);
     }
 }
 ?>
