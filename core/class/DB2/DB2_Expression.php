@@ -13,7 +13,7 @@
  * GNU Lesser General Public License for more details.
  *
  * DB2_Expression allows the developer freedom to use any operator or function available.
- * It can be very helpful or very harmful depending on its use.
+ * It can be very helpful (or very harmful) depending on its use.
  * Developers need to be very sure that any user input inserted into an
  * Expression object has been parsed. DB2 does not quote expressions. It also does not
  * check the validity of tables, columns, or database specific function or operator calls.
