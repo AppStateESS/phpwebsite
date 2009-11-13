@@ -331,6 +331,23 @@ class Alert_Forms {
         $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'multiple.tpl');
     }
 
+    public function subtractMultiple()
+    {
+        $form = new PHPWS_Form('subtract-multiple');
+        $form->addHidden('module', 'alert');
+        $form->addHidden('aop', 'post_multiple_subtracts');
+        $form->addTextArea('multiple');
+        $form->addSubmit(dgettext('alert', 'Remove'));
+        $tpl = $form->getTemplate();
+
+        $tpl['INSTRUCTIONS'] = dgettext('alert', 'Enter the email addresses for each participant. Separate them with new lines.');
+        $tpl['CANCEL'] = javascript('close_window');
+
+        $this->alert->title = dgettext('alert', 'Subtract Multiple Participants');
+        $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'multiple.tpl');
+    }
+
+
 }
 
 ?>

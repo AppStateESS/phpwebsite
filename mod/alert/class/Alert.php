@@ -285,6 +285,12 @@ class Alert {
                 Layout::nakedDisplay();
                 break;
 
+            case 'post_multiple_subtracts':
+                $this->postMultipleSubtracts();
+                javascript('close_refresh');
+                Layout::nakedDisplay();
+                break;
+
             case 'post_settings':
                 $this->postSettings();
                 $this->loadForms();
@@ -304,6 +310,12 @@ class Alert {
             case 'add_all_participants':
                 $this->addAllParticipants();
                 PHPWS_Core::goBack();
+                break;
+
+            case 'subtract_multiple':
+                $this->loadForms();
+                $this->forms->subtractMultiple();
+                $this->js_display();
                 break;
 
             case 'add_multiple':
@@ -836,6 +848,28 @@ class Alert {
             PHPWS_Error::logIfError($db->insert());
         }
 
+    }
+
+
+    public function postMultipleSubtracts()
+    {
+        if (empty($_POST['multiple'])) {
+            return;
+        }
+
+        $addresses = explode("\n", $_POST['multiple']);
+
+        if (empty($addresses)) {
+            return;
+        }
+
+        $db = new PHPWS_DB('alert_participant');
+        foreach ($addresses as $email) {
+            $email = trim($email);
+            $db->resetValues();
+            $db->addWhere('email', $email);
+            PHPWS_Error::logIfError($db->delete());
+        }
     }
 
     public function showRSS()
