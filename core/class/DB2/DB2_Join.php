@@ -130,19 +130,24 @@ class DB2_Join {
     public function __toString()
     {
         static $show_left = true;
-        if ($show_left) {
-            $left_side = $this->left_resource->getQuery();
-            $show_left = false;
-        } else {
-            $left_side = null;
-        }
+        try {
+            if ($show_left) {
+                $left_side = $this->left_resource->getQuery();
+                $show_left = false;
+            } else {
+                $left_side = null;
+            }
 
-        $right_side = $this->right_resource->getQuery();
+            $right_side = $this->right_resource->getQuery();
 
-        $query = sprintf('%s %s JOIN %s', $left_side, $this->join_type, $right_side);
+            $query = sprintf('%s %s JOIN %s', $left_side, $this->join_type, $right_side);
 
-        if (!$this->resource_join) {
-            $query .= sprintf(' ON %s %s %s', $this->left, $this->operator, $this->right);
+            if (!$this->resource_join) {
+                $query .= sprintf(' ON %s %s %s', $this->left, $this->operator, $this->right);
+            }
+        } catch (PEAR_Exception $e) {
+            DB2::logError($e);
+            trigger_error($e->getMessage(), E_USER_ERROR);
         }
         return $query;
     }

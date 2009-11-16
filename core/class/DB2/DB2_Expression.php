@@ -22,9 +22,9 @@
  *
  * Example:
  * $db2 = new DB2;
- * $db2->addTable('foo');
- * $expression = new DB2_Expression('sounds like'); //mysql specific operator
- * $db2->addWhere('some_value', 'orange', $expression);
+ * $foo = $db2->addTable('foo');
+ * $expression = $db2->getExpression('sounds like'); //mysql specific operator
+ * $foo->addWhere('some_value', 'orange', $expression);
  * $db2->select();
  *
  *

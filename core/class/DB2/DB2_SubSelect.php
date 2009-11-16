@@ -33,6 +33,7 @@ class DB2_SubSelect extends DB2_Resource {
 
     public function verifyColumn($column_name)
     {
+        return true;
         $all_tables = $this->db2->getAllTables();
         foreach ($all_tables as $table) {
             if ($table->verifyColumn($column_name)) {

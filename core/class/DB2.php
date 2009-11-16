@@ -634,6 +634,10 @@ class DB2 extends Data {
         return DB2_Table::factory($table, $alias, $this);
     }
 
+    /**
+     * Returns the first table object on the DB2 table stack.
+     * @return DB2_Table
+     */
     public function getFirstTable()
     {
         return current($this->tables);
@@ -661,11 +665,23 @@ class DB2 extends Data {
         return $this->group_by;
     }
 
+    /**
+     * Returns the table stack from the DB2 object
+     * @return array
+     */
     public function getAllTables()
     {
         return $this->tables;
     }
 
+
+    /**
+     * Limits a query's results. This function uses MDB2's setLimit function. As a result of this,
+     * printing the query WILL NOT SHOW THE LIMIT INFORMATION.
+     * @param integer $limit Number of rows to return to act upon
+     * @param integer $offset Number of rows to skip before starting the limit count.
+     * @return void
+     */
     public function setLimit($limit, $offset=null)
     {
         $limit = (int)$limit;
@@ -681,8 +697,8 @@ class DB2 extends Data {
 
 
     /**
-     * Returns the group by object. Expected use is for string output
-     * @return unknown_type
+     * Returns the group by object. Expected use is for string output.
+     * @return DB2_Group object
      */
     private function getGroupBy()
     {
@@ -692,9 +708,18 @@ class DB2 extends Data {
         return $this->group_by;
     }
 
+
+    /**
+     * Joins two resources together.
+     * @param mixed $left Will be a table, subselect, or field object
+     * @param mixed $right Same as left
+     * @param string $type The type of join to be performed.
+     * @param string $operator The comparison operator
+     * @return unknown_type
+     */
     public function join($left, $right, $type=null, $operator=null)
     {
-        $type = $type ? $type : 'left';
+        $type = $type ? $type : 'inner';
         $operator = $operator ? $operator : '=';
         $jt = new DB2_Join($left, $right, $type, $operator);
         $this->join_tables[] = $jt;
@@ -1190,7 +1215,9 @@ class DB2 extends Data {
 
         // returns an associate array of values
         // @see pullTableData
+
         $data = $this->pullResourceData();
+
         if (!empty($data)) {
             extract($data);
         }
