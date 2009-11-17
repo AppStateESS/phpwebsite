@@ -323,6 +323,14 @@ abstract class DB2_Resource extends DB2_Alias {
         unset($this->having_stack[$stack_number]);
     }
 
+    public function reset()
+    {
+        $this->fields      = null;
+        $this->joined      = null;
+        $this->where_stack = null;
+    }
+
+
 }
 
 ?>

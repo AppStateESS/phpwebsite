@@ -21,22 +21,182 @@
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
+require_once PHPWS_SOURCE_DIR . 'core/class/Data.php';
+require_once PHPWS_SOURCE_DIR . 'core/class/DB2.php';
+require_once PHPWS_SOURCE_DIR . 'core/class/DB2/DB2_Interfaces.php';
+
 abstract class DB2_Object extends Data implements DB2_Object_Interface {
 
-    public function setObjectVars(array $values) {
-        foreach ($select_row as $key=>$value) {
-            $this->$key = $value;
+    /**
+     * Reference to the parent object's primary key.
+     * @var integer
+     */
+    private $primary_key = null;
+
+    /**
+     * Name of the table column housing the primary id
+     * @var string
+     */
+    private $primary_key_column = null;
+
+    /**
+     * A temporary array of values used in when an object is saved.
+     * @var array
+     */
+    private $object_values = array();
+
+    /**
+     * The table the object uses for information.
+     * @var string
+     */
+    private $table_name = null;
+
+
+    /**
+     * DB2 object created before operating on object
+     * @var object
+     */
+    private $db2 = null;
+
+    /**
+     * DB2_Table object created with database
+     * @var object
+     */
+    private $db2_table = null;
+
+    /**
+     * An array of foreign keys associated to this item. Should this object be deleted, the
+     * corresponding row will as well.
+     * The associative array will use table names as keys and foreign keys as values.
+     *
+     * array ('table2'=>'tb1_id',
+     *        'table3'=>'tbl_id');
+     *
+     * The foreign key will be compared to the primary_id_column.
+     *
+     * @var array
+     */
+    private $foreign_keys = null;
+
+
+    /**
+     * If this value is set with an associate array, the foreign keyed value will
+     * be updated when this object is updated, but not created.
+     *
+     * This value will be a multiple dimensioned array using the table name as the key.
+     * The associative array under it will have the column name on the table that is
+     * to be updated. The key's value will be copied to the column.
+     * @var array
+     */
+    private $foreign_update = null;
+
+    /**
+     * Indicates if the current object is new (to be inserted) or old (to be updated).
+     * Regardless of action taken on object, this status is retained until reloaded.
+     * @var boolean
+     */
+    private $new_object = true;
+
+    /**
+     * Pulls the values from the current object and copies them to the $values.
+     * Parent object will need to create it. The simpliest method would be:
+     *
+     * protected function pullValues()
+     * {
+     *    return get_object_vars($this);
+     * }
+     *
+     */
+    abstract protected function pullValues();
+
+    /**
+     * Sets the table name the object uses.
+     * @param unknown_type $table_name
+     * @return unknown_type
+     */
+    protected function setTable($table_name)
+    {
+        $this->table_name = $table_name;
+    }
+
+    public function isNew()
+    {
+        return $this->new_object;
+    }
+
+    private function loadObjectValues()
+    {
+        $this->object_values = $this->pullValues();
+        //removes the id column to be inserted later or used as a conditional
+        unset($this->object_values['id']);
+    }
+
+    /**
+     * Loads the database object and table object. This is not done at construct because
+     * we want to allow the saveObject function in DB2 to be able to populate those variables
+     * to prevent repeated instantiations.
+     * @return void
+     */
+    private function loadDatabase()
+    {
+        if (isset($this->db2)) {
+            return;
+        }
+
+        $this->db2 = new DB2;
+        if (empty($this->table_name)) {
+            throw new PEAR_Exception(dgettext('core', 'Missing table name'));
+        }
+
+        if (!$this->db2->tableExists($this->table_name)) {
+            throw new PEAR_Exception(sprintf(dgettext('core', 'Table does not exist: %s'), $this->table_name));
+        }
+        $this->db2_table = $this->db2->addTable($this->table_name);
+        $primary_index = $this->db2_table->getPrimaryIndex();
+        if ($primary_index) {
+            $this->primary_key_column = $primary_index;
+            $this->primary_key = & $this->{$this->primary_key_column};
         }
     }
 
-    public function DB2Load(array $select_row)
+
+    /**
+     * Inserts or updates an object according to its table_name setting.
+     * @return void
+     */
+    public function save()
     {
-        $this->setObjectVars($select_row);
+        $this->loadDatabase();
+        $this->loadObjectValues();
+
+        if (empty($this->object_values)) {
+            throw new PEAR_Exception(dgettext('core', 'DB2_Object does not contain any values to save'));
+        }
+
+        foreach ($this->object_values as $col_name=>$val) {
+            $this->db2_table->addValue($col_name, $val);
+        }
+
+        // if id exists, this is an old object
+        if ($this->id) {
+            // old object, update
+            $this->new_object = false;
+            $this->db2_table->addWhere('id', $this->id);
+            $this->db2->update();
+        } else {
+            // new object, insert
+            $this->new_object = true;
+            $this->db2->insert();
+            $this->primary_key = $this->db2_table->getIncrementedIds();
+        }
     }
 
-    public function DB2Save()
+    public function load()
     {
-        return get_object_vars($this);
+    }
+
+    public function delete()
+    {
     }
 }
 

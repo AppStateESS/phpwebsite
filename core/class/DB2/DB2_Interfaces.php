@@ -27,10 +27,8 @@ interface Factory_Table {
 
 
 interface DB2_Object_Interface {
-    public function DB2Save();
-    public function DB2Load(array $select_row);
-
-    // Sets variables in the object as if coming from the database
-    public function setObjectVars(array $values);
+    public function save();
+    public function load();
+    public function delete();
 }
 ?>

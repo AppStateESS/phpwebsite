@@ -33,13 +33,13 @@ class DB2_Value extends DB2_Column {
     public function setValue($value)
     {
         if (is_string($value) || is_integer($value)) {
-            $this->value = $this->table->db2->mdb2->quote($value);
+            $this->value = $this->resource->db2->mdb2->quote($value);
         } elseif (is_a($value, 'DB2_Expression') || is_a($value, 'DB2_Function') || is_a($value, 'DB2_Field')) {
             $this->value = $value;
         } elseif (is_null($value)) {
             $this->value = 'NULL';
         } else {
-            throw new PEAR_Exception(dgettext('core', 'Unacceptable value'));
+            throw new PEAR_Exception(sprintf(dgettext('core', 'Unacceptable value type (%s)'), gettype($value)));
         }
     }
 

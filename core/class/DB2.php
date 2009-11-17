@@ -601,7 +601,8 @@ class DB2 extends Data {
     /**
      * Indicates if the current table name is already in the table stack.
      * The stack is indexed by aliases, so the same table may be in the stack
-     * multiple times.
+     * multiple times. To see if the table exists in the current database, use
+     * tableExists.
      * @param $table
      * @return boolean
      */
@@ -1370,7 +1371,7 @@ class DB2 extends Data {
 
     /**
      * Returns true if the table name exists in the entire database. To see if
-     * the table is a DB2 object, use DB2::isTable($table_name)
+     * the table is currently in the DB2 object stack, use DB2::isTable($table_name)
      * @param string $table_name Name of table to check
      * @return boolean
      */
@@ -1379,14 +1380,13 @@ class DB2 extends Data {
         if ($this->tbl_prefix) {
             $table_name = $this->tbl_prefix . $table_name;
         }
+        $this->mdb2->loadModule('Manager');
         return in_array($table_name, $this->mdb2->listTables());
     }
 
     /**
      * Expecting any DB2 to string will be used for embedding a select query
      * into another query.
-     * An exception will be caught her because php does not like exceptions from
-     * __toString functions
      * @return string
      */
     public function __toString()
@@ -1395,7 +1395,7 @@ class DB2 extends Data {
             return $this->selectQuery();
         } catch (PEAR_Exception $e) {
             $this->logError($e);
-            exit(dgettext('core', 'Database query failure.'));
+            trigger_error($e->getMessage());
         }
     }
 
@@ -1449,7 +1449,10 @@ class DB2 extends Data {
     }
 
     /**
-     * Takes an object, parses its variables, and saves them into the current table or tables
+     * Takes an object, parses its variables, and saves them into the current table or tables.
+     * Function checks to see if the object is an extension of DB2_Object. If so, it pulls the
+     * row values from that function. Otherwise, it depends on get_object_vars (which may skip
+     * private variables)
      * @param object $object
      * @return void
      */
@@ -1461,10 +1464,10 @@ class DB2 extends Data {
             throw new PEAR_Exception(dgettext('core', 'Variable is not an object'));
         }
 
-        if (method_exists($object, 'DB2Save')) {
+        if (is_subclass_of($object, 'DB2_Object')) {
             $values = $object->DB2Save();
         } else {
-            $values = get_object_vars($this);
+            $values = get_object_vars($object);
         }
 
         if (empty($values)) {

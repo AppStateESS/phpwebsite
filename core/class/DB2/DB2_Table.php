@@ -84,6 +84,13 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
      */
     protected $incremented_ids = null;
 
+    /**
+     * Stores the primary index, if exists.
+     * @var string
+     */
+    protected $primary_index = null;
+
+
     static public function factory($name, $alias=null, DB2 $db2_ref)
     {
         $dbtype = $db2_ref->mdb2->dbsyntax;
@@ -101,6 +108,7 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
         parent::__construct($db2, $alias);
         $this->name = $name;
         $this->full_name = $this->db2->getTablePrefix() . $name;
+        $this->primary_index = $this->getPrimaryIndex();
     }
 
     public function getValues()
@@ -242,18 +250,27 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
         $this->values = null;
     }
 
+    public function reset()
+    {
+        parent::reset();
+        $this->values                = null;
+        $this->orders                = null;
+        $this->insert_select         = null;
+        $this->insert_select_columns = null;
+        $this->having_stack          = null;
+        $this->incremented_ids       = null;
+    }
+
+
     public function insert()
     {
         $query = $this->insertQuery();
-        echo $query;
-        exit();
-        $result = $this->mdb2->exec($query);
+        $result = $this->db2->mdb2->exec($query);
         if ($this->db2->pearError($result)) {
             throw new PEAR_Exception($result->getMessage());
         }
         return $result;
     }
-
 
     /**
      * Constructs an insertQuery.
@@ -272,8 +289,6 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
             }
         }
 
-        $primary_key = $this->getPrimaryIndex();
-
         if (empty($this->values)) {
             throw new PEAR_Exception(sprintf(dgettext('core', 'No columns to insert in table: %s'), $this->getFullName()));
         }
@@ -283,20 +298,20 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
 
             if (!isset($set_names)) {
                 $set_names = array_keys($val_listing);
-                if ($primary_key) {
-                    $set_names[] = $primary_key;
+                if ($this->primary_index) {
+                    $set_names[] = $this->primary_index;
                 }
             }
             $primary_key_found = false;
             foreach ($val_listing as $value) {
                 // Don't need to create an associative array but
-                if ($value->getName() == $primary_key) {
+                if ($value->getName() == $this->primary_index) {
                     $primary_key_found = true;
                 }
                 $columns[] = $value->getValue();
             }
 
-            if ($primary_key && !$primary_key_found) {
+            if ($this->primary_index && !$primary_key_found) {
                 // in case the primary key is hard-coded, we check for its existance
                 $this->incremented_ids[] = $columns[] = $this->db2->mdb2->nextID($this->getFullName());
             }
@@ -321,16 +336,27 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
      */
     public function getPrimaryIndex()
     {
+        static $primary_index_checked = false;
+
+        // If the primary index is set for the table, return it
+        if (!empty($this->primary_index)) {
+            return $this->primary_index;
+        } elseif ($primary_index_checked) {
+            // if the primary_index is empty and it was previously checked, return null
+            return null;
+        }
+
         $field_list = $this->listFieldInfo(true);
         if ($this->db2->pearError($field_list)) {
             throw new PEAR_Exception($field_list->getMessage());
         }
         foreach ($field_list as $field) {
             if (strstr($field['flags'], 'primary_key') && $field['type'] == 'int') {
-                return $field['name'];
+                $this->primary_index = $field['name'] ;
+                return $this->primary_index;
             }
         }
-        return false;
+        return null;
     }
 
 
