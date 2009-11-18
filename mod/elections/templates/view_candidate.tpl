@@ -1,4 +1,4 @@
-<div align="right"{CANDIDATE_LINKS}</div>
+<div align="right">{CANDIDATE_LINKS}</div>
 <strong>{TITLE}</strong>
 <!-- BEGIN file --><div style="float: right; margin: 0 0 .2em .5em;">{FILE}</div><!-- END file -->
 <!-- BEGIN description --><p>{DESCRIPTION}</p><!-- END description -->
