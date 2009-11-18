@@ -324,9 +324,17 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
      * Returns incremented primary key ids created from previous inserts
      * @return array
      */
-    public function getIncrementedIds()
+    public function getIncrementedIds($first_only=false)
     {
-        return $this->incremented_ids;
+        if (empty($this->incremented_ids)) {
+            return null;
+        }
+
+        if ($first_only) {
+            return current($this->incremented_ids);
+        } else {
+            return $this->incremented_ids;
+        }
     }
 
     /**

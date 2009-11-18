@@ -805,8 +805,8 @@ class DB2 extends Data {
     }
 
     /**
-     * Unlike other queries, deleteQuery accepts an array parameter. The array
-     * should contain resources the dev wants to delete.
+     * Unlike other execution queries, deleteQuery accepts an array parameter.
+     * The array should contain resources the dev wants to delete.
      * For example:
      *
      * $db2 = new DB2;
@@ -828,12 +828,14 @@ class DB2 extends Data {
         $data = $this->pullResourceData(DB2_DELETE);
         extract($data);
 
-        foreach ($include_on_join as $resource) {
-            if (is_subclass_of($resource, 'DB2_Resource')) {
-                $delete_resources[] = $resource->hasAlias() ? $resource->getAlias() : $resource->getQuery();
+        if (!empty($include_on_join)) {
+            foreach ($include_on_join as $resource) {
+                if (is_subclass_of($resource, 'DB2_Resource')) {
+                    $delete_resources[] = $resource->hasAlias() ? $resource->getAlias() : $resource->getQuery();
+                }
             }
+            $query[] = implode(', ', $delete_resources);
         }
-        $query[] = implode(', ', $delete_resources);
 
         $query[] = 'FROM';
         // from tables, joins, and subselects
@@ -949,7 +951,7 @@ class DB2 extends Data {
         if (is_string($queries)) {
             $queries = array($queries);
         }
-        test($queries,1);
+
         $rows_affected = 0;
         foreach ($queries as $query) {
             $result = $this->mdb2->exec($query);
@@ -1415,7 +1417,7 @@ class DB2 extends Data {
      * Returns the rows affected from a previous query or execution
      * @return integer
      */
-    public function rowsAffected()
+    public function getRowsAffected()
     {
         return $this->rows_affected;
     }
@@ -1436,22 +1438,10 @@ class DB2 extends Data {
         return $this->resource->numCols();
     }
 
-    public function addObject($object)
-    {
-        if (is_object($object)) {
-            if (PEAR::isError($object)) {
-                throw new PEAR_Exception($object->getMesssage());
-            }
-            $this->object_list[] =  $object;
-        } else {
-            throw new PEAR_Exception(dgettext('core', 'Variable is not an object'));
-        }
-    }
-
     /**
      * Takes an object, parses its variables, and saves them into the current table or tables.
-     * Function checks to see if the object is an extension of DB2_Object. If so, it pulls the
-     * row values from that function. Otherwise, it depends on get_object_vars (which may skip
+     * Function checks to see if the object is an extension of DB2_Object. If so, it calls the
+     * object's save function. Otherwise, it depends on get_object_vars (which may skip
      * private variables)
      * @param object $object
      * @return void
@@ -1465,7 +1455,7 @@ class DB2 extends Data {
         }
 
         if (is_subclass_of($object, 'DB2_Object')) {
-            $values = $object->DB2Save();
+            return $object->save();
         } else {
             $values = get_object_vars($object);
         }
@@ -1474,7 +1464,6 @@ class DB2 extends Data {
             throw new PEAR_Exception(dgettext('core', 'No values in object to save'));
         }
 
-        //
         foreach ($this->tables as $tbl) {
             $primary_key = $tbl->getPrimaryIndex();
             foreach ($values as $column=>$value) {
@@ -1540,6 +1529,5 @@ class DB2 extends Data {
             return implode($glue, $pieces);
         }
     }
-
 }
 ?>

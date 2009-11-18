@@ -14,6 +14,11 @@
  *
  * The most basic method for importing and exporting your object to the database.
  *
+ * There are two required functions to create in the parent object: pullValues and pushValues.
+ * See the functions below for more information.
+ *
+ * The parent function also must set the table the construct.
+ *
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @package
@@ -99,7 +104,7 @@ abstract class DB2_Object extends Data implements DB2_Object_Interface {
 
     /**
      * Pulls the values from the current object and copies them to the $values.
-     * Parent object will need to create it. The simpliest method would be:
+     * Parent object will need to create it. The simplest method would be:
      *
      * protected function pullValues()
      * {
@@ -108,6 +113,19 @@ abstract class DB2_Object extends Data implements DB2_Object_Interface {
      *
      */
     abstract protected function pullValues();
+
+    /**
+     * Pushes the values from a database retrieval into the parent object.
+     * The below is a simple example of what is expected.
+     *
+     * protected function pushValues(array $values)
+     * {
+     *     foreach ($values as $key=>$val) {
+     *         $this->$key = $val;
+     *     }
+     * }
+     */
+    abstract protected function pushValues(array $values);
 
     /**
      * Sets the table name the object uses.
@@ -178,25 +196,49 @@ abstract class DB2_Object extends Data implements DB2_Object_Interface {
         }
 
         // if id exists, this is an old object
-        if ($this->id) {
+        if ($this->primary_key) {
             // old object, update
             $this->new_object = false;
-            $this->db2_table->addWhere('id', $this->id);
+            $this->db2_table->addWhere($this->primary_key_column, $this->primary_key);
             $this->db2->update();
         } else {
             // new object, insert
             $this->new_object = true;
             $this->db2->insert();
-            $this->primary_key = $this->db2_table->getIncrementedIds();
+            $this->primary_key = $this->db2_table->getIncrementedIds(true);
         }
     }
 
     public function load()
     {
+        $this->loadDatabase();
+        // primary key is loaded by above function
+        if (!$this->primary_key) {
+            throw new PEAR_Exception(dgettext('core', 'Cannot load object without primary key set'));
+        }
+
+        $this->db2_table->addWhere($this->primary_key_column, $this->primary_key);
+        try {
+            $result = $this->db2->select(DB2_ROW);
+        } catch (PEAR_Exception $e) {
+            $this->db2->logError($e);
+        }
+        if (empty($result)) {
+            return false;
+        } else {
+            $this->pushValues($result);
+        }
     }
 
     public function delete()
     {
+        $this->loadDatabase();
+        // primary key is loaded by above function
+        if (!$this->primary_key) {
+            throw new PEAR_Exception(dgettext('core', 'Cannot load object without primary key set'));
+        }
+        $this->db2_table->addWhere($this->primary_key_column, $this->primary_key);
+        $this->db2->delete();
     }
 }
 
