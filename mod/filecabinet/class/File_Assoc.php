@@ -394,6 +394,10 @@ class FC_File_Assoc {
         }
         $db = new PHPWS_DB('images');
         $db->addWhere('folder_id', $this->file_id);
+        if ($this->num_visible < 99) {
+            $db->addOrder('rand');
+            $db->setLimit($this->num_visible);
+        }
 
         $result = $db->getObjects('PHPWS_Image');
         if (PHPWS_Error::logIfError($result) || !$result) {
@@ -404,10 +408,15 @@ class FC_File_Assoc {
                 $tpl['thumbnails'][] = array('IMAGE' => $img);
             }
             $this->loadLightbox();
+            if ($this->vertical) {
+                $tpl_file = 'lightbox_vert.tpl';
+            } else {
+                $tpl_file = 'lightbox_horz.tpl';
+            }
             if ($message) {
                 $tpl['MESSAGE'] = $message;
             }
-            return PHPWS_Template::process($tpl, 'filecabinet', 'lightbox.tpl');
+            return PHPWS_Template::process($tpl, 'filecabinet', $tpl_file);
         }
     }
 

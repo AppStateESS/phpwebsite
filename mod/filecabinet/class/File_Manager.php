@@ -613,15 +613,36 @@ class FC_File_Manager {
                     if (!$this->lock_type || in_array(FC_IMAGE_LIGHTBOX, $this->lock_type)) {
                         /** start VV **/
 
-                        $altvars['file_type'] = FC_IMAGE_LIGHTBOX;
-
                         if ($this->file_assoc->file_type == FC_IMAGE_LIGHTBOX) {
                             $tpl['ALT_HIGH3'] = ' alt-high';
                         }
 
                         $img3_title = dgettext('filecabinet', 'Show lightbox slideshow');
                         $image3 = sprintf($image_string, $img_dir . $img3, $img3_title, $img3_alt);
-                        $tpl['ALT3'] = PHPWS_Text::secureLink($image3, 'filecabinet', $altvars);
+
+                        $altvars['file_type'] = FC_IMAGE_LIGHTBOX;
+
+                        $form = new PHPWS_Form('lightbox-options');
+                        $form->setMethod('get');
+                        $form->addHidden($altvars);
+                        $form->addHidden('module', 'filecabinet');
+
+                        $form->addRadioAssoc('direction', array(0=>dgettext('filecabinet', 'Horizontal'), 1=>dgettext('filecabinet', 'Vertical')));
+                        $match = $this->file_assoc->vertical;
+                        $form->setMatch('direction', $match);
+
+                        $num = array(3=>3, 6=>6, 9=>9, 12=>12, 15=>15, 18=>18, 21=>21, 99=>'unlimited');
+                        $form->addSelect('num_visible', $num);
+                        $form->setLabel('num_visible', dgettext('filecabinet', 'Number shown'));
+                        $form->setMatch('num_visible', $this->file_assoc->num_visible);
+
+                        $form->addSubmit('go', dgettext('filecabinet', 'Go'));
+                        $subtpl = $form->getTemplate();
+                        $subtpl['DIRECTION_DESC'] = dgettext('filecabinet', 'Thumbnail direction');
+                        $subtpl['LINK'] = sprintf('<a href="#" onclick="return lightbox_pick();">%s</a>', $image3);
+                        $subtpl['CANCEL'] = dgettext('filecabinet', 'Cancel');
+
+                        $tpl['ALT3'] = PHPWS_Template::process($subtpl, 'filecabinet', 'file_manager/lightbox_pick.tpl');
 
                     } else {
                         $image3 = sprintf($image_string, $img_dir . $img3, $not_allowed, $img3_alt);
@@ -816,6 +837,14 @@ class FC_File_Manager {
             }
         }
 
+        if ($file_type == FC_IMAGE_LIGHTBOX) {
+            $vertical = (int)$_GET['direction'];
+            $num_visible = (int)$_GET['num_visible'];
+            if ($num_visible < 0 || $num_visible > 99) {
+                $num_visible = $file_assoc->num_visible;
+            }
+        }
+
         $db = new PHPWS_DB('fc_file_assoc');
         $db->addWhere('file_type', (int)$file_type);
         switch ($file_type) {
@@ -826,6 +855,7 @@ class FC_File_Manager {
             break;
 
         case FC_IMAGE_FOLDER:
+        case FC_IMAGE_LIGHTBOX:
             $db->addWhere('vertical', $vertical);
             $db->addWhere('num_visible', $num_visible);
             break;
@@ -872,6 +902,7 @@ class FC_File_Manager {
             break;
 
         case FC_IMAGE_FOLDER:
+        case FC_IMAGE_LIGHTBOX:
             $file_assoc->vertical = $vertical;
             $file_assoc->num_visible = $num_visible;
             break;

@@ -41,3 +41,10 @@ function carousel_pick()
     return false;
 }
 
+function lightbox_pick()
+{
+    $('#lightbox-pick').toggle('fast');
+
+    return false;
+}
+
