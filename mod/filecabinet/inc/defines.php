@@ -24,6 +24,7 @@ define('FC_IMAGE_RANDOM',    6);
 define('FC_IMAGE_RESIZE',    7);
 define('FC_MEDIA_RESIZE',    8);
 define('FC_IMAGE_CROP',      9);
+define('FC_IMAGE_LIGHTBOX', 10);
 
 /**
  * Error defines

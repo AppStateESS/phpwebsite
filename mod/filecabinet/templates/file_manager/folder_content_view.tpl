@@ -4,7 +4,7 @@
     </div>
      <div id="folder-title">
          <span id="heading">{FOLDER_TITLE}</span>
-         <span class="alt{ALT_HIGH1}">{ALT1}</span><span class="alt{ALT_HIGH2}">{ALT2}</span>
+         <span class="alt{ALT_HIGH1}">{ALT1}</span><span class="alt{ALT_HIGH2}">{ALT2}</span><span class="alt{ALT_HIGH3}">{ALT3}</span>
      </div>
      <div id="selection">
         <div id="item-selection">

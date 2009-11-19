@@ -82,7 +82,7 @@ class FC_File_Manager {
         }
     }
 
-    public function imageOnly($folder=true, $random=true)
+    public function imageOnly($folder=true, $random=true, $lightbox=true)
     {
         $locks = array(FC_IMAGE);
 
@@ -92,6 +92,10 @@ class FC_File_Manager {
 
         if ($random) {
             $locks[] = FC_IMAGE_RANDOM;
+        }
+
+        if ($lightbox) {
+            $locks[] = FC_IMAGE_LIGHTBOX;
         }
 
         $this->lock_type = $locks;
@@ -542,8 +546,10 @@ class FC_File_Manager {
 
             $img1       = 'folder_random.png';
             $img2       = 'thumbnails.png';
+            $img3       = 'lightbox.png';
             $img1_alt   = dgettext('filecabinet', 'Random image icon');
             $img2_alt   = dgettext('filecabinet', 'Thumbnail icon');
+            $img3_alt   = dgettext('filecabinet', 'Lightbox icon');
 
             if (!$this->reserved_folder) {
                 if ($this->current_folder->public_folder) {
@@ -603,14 +609,37 @@ class FC_File_Manager {
                         $tpl['ALT2'] = $image2;
                         $tpl['ALT_HIGH2'] = ' no-use';
                     }
+
+                    if (!$this->lock_type || in_array(FC_IMAGE_LIGHTBOX, $this->lock_type)) {
+                        /** start VV **/
+
+                        $altvars['file_type'] = FC_IMAGE_LIGHTBOX;
+
+                        if ($this->file_assoc->file_type == FC_IMAGE_LIGHTBOX) {
+                            $tpl['ALT_HIGH3'] = ' alt-high';
+                        }
+
+                        $img3_title = dgettext('filecabinet', 'Show lightbox slideshow');
+                        $image3 = sprintf($image_string, $img_dir . $img3, $img3_title, $img3_alt);
+                        $tpl['ALT3'] = PHPWS_Text::secureLink($image3, 'filecabinet', $altvars);
+
+                    } else {
+                        $image3 = sprintf($image_string, $img_dir . $img3, $not_allowed, $img3_alt);
+                        $tpl['ALT3'] = $image3;
+                        $tpl['ALT_HIGH3'] = ' no-use';
+                    }
+
                 } else {
                     $not_allowed = dgettext('filecabinet', 'Action not allowed - private folder');
                     $image1 = sprintf($image_string, $img_dir . $img1, $not_allowed, $img1_alt);
                     $image2 = sprintf($image_string, $img_dir . $img2, $not_allowed, $img2_alt);
+                    $image3 = sprintf($image_string, $img_dir . $img3, $not_allowed, $img3_alt);
                     $tpl['ALT1'] = $image1;
                     $tpl['ALT_HIGH1'] = ' no-use';
                     $tpl['ALT2'] = $image2;
                     $tpl['ALT_HIGH2'] = ' no-use';
+                    $tpl['ALT3'] = $image3;
+                    $tpl['ALT_HIGH3'] = ' no-use';
                 }
             }
             break;

@@ -194,6 +194,7 @@ class FC_File_Assoc {
         switch ($this->file_type) {
         case FC_IMAGE:
         case FC_IMAGE_FOLDER:
+        case FC_IMAGE_LIGHTBOX:
         case FC_IMAGE_RANDOM:
         case FC_IMAGE_RESIZE:
         case FC_IMAGE_CROP:
@@ -284,6 +285,9 @@ class FC_File_Assoc {
 
         case FC_IMAGE_FOLDER:
             return $this->slideshow();
+
+        case FC_IMAGE_LIGHTBOX:
+            return $this->lightbox();
 
         case FC_MEDIA_RESIZE:
             $this->setMediaDimensions();
@@ -376,11 +380,52 @@ class FC_File_Assoc {
         javascript('modules/filecabinet/jcaro_lite/', $vars);
     }
 
+    public function lightbox()
+    {
+        $message = null;
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        $folder = new Folder($this->file_id);
+        if (!$folder->public_folder) {
+            if (!Current_User::allow('filecabinet')) {
+                return null;
+            } else {
+                $message = dgettext('filecabinet', 'Folder is private. Slideshow not available');
+            }
+        }
+        $db = new PHPWS_DB('images');
+        $db->addWhere('folder_id', $this->file_id);
+
+        $result = $db->getObjects('PHPWS_Image');
+        if (PHPWS_Error::logIfError($result) || !$result) {
+            return dgettext('filecabinet', 'Folder missing image files.');
+        } else {
+            foreach ($result as $image) {
+                $img = sprintf('<a href="%s">%s</a>', $image->getPath(), $image->getThumbnail());
+                $tpl['thumbnails'][] = array('IMAGE' => $img);
+            }
+            $this->loadLightbox();
+            if ($message) {
+                $tpl['MESSAGE'] = $message;
+            }
+            return PHPWS_Template::process($tpl, 'filecabinet', 'lightbox.tpl');
+        }
+    }
+
+    public function loadLightbox()
+    {
+        javascript('jquery');
+        $vars = null;
+        $vars['txtImage'] = dgettext('filecabinet', 'Image');
+        $vars['txtOf']  = dgettext('filecabinet', 'of');
+        javascript('modules/filecabinet/lightbox/', $vars);
+    }
+
     public function getTable()
     {
         switch ($this->file_type) {
         case FC_IMAGE:
         case FC_IMAGE_FOLDER:
+        case FC_IMAGE_LIGHTBOX:
         case FC_IMAGE_RANDOM:
         case FC_IMAGE_RESIZE:
         case FC_IMAGE_CROP:
@@ -400,7 +445,7 @@ class FC_File_Assoc {
     public function getFolder()
     {
         $db = new PHPWS_DB('folders');
-        if ($this->file_type == FC_IMAGE_RANDOM || $this->file_type == FC_IMAGE_FOLDER
+        if ($this->file_type == FC_IMAGE_RANDOM || $this->file_type == FC_IMAGE_FOLDER || $this->file_type == FC_IMAGE_LIGHTBOX
             || $this->file_type == FC_DOCUMENT_FOLDER) {
             $folder = new Folder($this->file_id);
             if (PHPWS_Error::logIfError($folder) || !$folder->id) {
