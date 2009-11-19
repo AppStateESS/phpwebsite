@@ -137,6 +137,11 @@ abstract class DB2_Object extends Data implements DB2_Object_Interface {
         $this->table_name = $table_name;
     }
 
+    protected function setPrimaryKeyColumn($column_name)
+    {
+        $this->primary_key_column = $column_name;
+    }
+
     public function isNew()
     {
         return $this->new_object;
@@ -170,11 +175,15 @@ abstract class DB2_Object extends Data implements DB2_Object_Interface {
             throw new PEAR_Exception(sprintf(dgettext('core', 'Table does not exist: %s'), $this->table_name));
         }
         $this->db2_table = $this->db2->addTable($this->table_name);
-        $primary_index = $this->db2_table->getPrimaryIndex();
-        if ($primary_index) {
-            $this->primary_key_column = $primary_index;
-            $this->primary_key = & $this->{$this->primary_key_column};
+        if (empty($this->primary_key_column)) {
+            $primary_index = $this->db2_table->getPrimaryIndex();
+            if ($primary_index) {
+                $this->primary_key_column = $primary_index;
+            } else {
+                throw new PEAR_Exception(dgettext('core', 'DB2_Object could not derive the table primary index'));
+            }
         }
+        $this->primary_key = & $this->{$this->primary_key_column};
     }
 
 
