@@ -175,6 +175,8 @@ class PHPWS_Core {
         }
         else {
             PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', __CLASS__ . '::' .__FUNCTION__, "File: $classFile");
+            require_once 'PEAR/Exception.php';
+            throw new PEAR_Exception(dgettext('core', 'Could not initialize module class ' . $classFile));
             return false;
         }
     }
@@ -194,6 +196,8 @@ class PHPWS_Core {
         }
         else {
             PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'initCoreClass', "File: $classFile");
+            require_once 'PEAR/Exception.php';
+            throw new PEAR_Exception(dgettext('core', 'Could not initialize core class ' . $classFile));
             return false;
         }
     }
