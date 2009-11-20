@@ -679,7 +679,6 @@ class Calendar_Admin {
 
         $success = 0;
         $duplicates = 0;
-
         foreach ($result as $cal) {
             $cal = trim($cal);
             $colon = strpos($cal, ':');
@@ -731,7 +730,8 @@ class Calendar_Admin {
 
                 case 'SUMMARY':
                     if (isset($event)) {
-                        $event->setSummary($value);
+                        $value = str_replace('\,', ',', $value);
+                        $event->setSummary($value, true);
                     }
                     break;
 
@@ -743,7 +743,9 @@ class Calendar_Admin {
 
                 case 'DESCRIPTION':
                     if (isset($event)) {
-                        $event->setDescription($value);
+                        $value = str_replace('\,', ',', $value);
+                        $value = str_replace('\n', "\n", $value);
+                        $event->setDescription($value, null, true);
                     }
                     break;
 
@@ -776,9 +778,7 @@ class Calendar_Admin {
                             } else {
                                 $success++;
                             }
-
                         }
-
                         unset($event);
                     }
                     break;

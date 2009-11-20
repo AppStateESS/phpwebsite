@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 define('CALENDAR_EVENT_TYPE_NORMAL',  1);
 define('CALENDAR_EVENT_TYPE_ALL_DAY', 2);
@@ -14,7 +14,7 @@ PHPWS_Core::requireInc('calendar', 'error_defines.php');
 
 if (!defined('CALENDAR_SAME_DAY_MDY')) {
     define('CALENDAR_SAME_DAY_MDY', true);
- }
+}
 
 class Calendar_Event {
     /**
@@ -193,11 +193,11 @@ class Calendar_Event {
             return javascript('confirm', $vars);
         } else {
             return PHPWS_Text::secureLink(dgettext('calendar', 'Delete'), 'calendar',
-                                          array('aop'         => 'delete_event',
+            array('aop'         => 'delete_event',
                                                 'sch_id' => $this->_schedule->id,
                                                 'event_id'    => $this->id
-                                                )
-                                          );
+            )
+            );
         }
     }
 
@@ -418,9 +418,9 @@ class Calendar_Event {
     {
         if (!empty($this->loc_link)) {
             return sprintf('<a href="%s" title="%s">%s</a>',
-                                       PHPWS_Text::checkLink($this->loc_link),
-                                       dgettext('calendar', 'Visit this location\'s web site.'),
-                                       $this->location);
+            PHPWS_Text::checkLink($this->loc_link),
+            dgettext('calendar', 'Visit this location\'s web site.'),
+            $this->location);
         } else {
             return $this->location;
         }
@@ -559,15 +559,15 @@ class Calendar_Event {
 
         if ($this->all_day) {
             $startTime = mktime(0,0,0, date('m', $start_date), date('d', $start_date),
-                                date('Y', $start_date));
+            date('Y', $start_date));
             $endTime = mktime(23,59,59, date('m', $end_date), (int)date('d', $end_date),
-                                date('Y', $end_date));
+            date('Y', $end_date));
 
         } else {
             $startTime = mktime($start_time_hour, $start_time_minute, 0,
-                                date('m', $start_date), date('d', $start_date), date('Y', $start_date));
+            date('m', $start_date), date('d', $start_date), date('Y', $start_date));
             $endTime   = mktime($end_time_hour, $end_time_minute, 0,
-                                date('m', $end_date), date('d', $end_date), date('Y', $end_date));
+            date('m', $end_date), date('d', $end_date), date('Y', $end_date));
         }
 
         if ($startTime >= $endTime) {
@@ -592,52 +592,52 @@ class Calendar_Event {
             if (isset($_POST['repeat_mode'])) {
 
                 switch ($_POST['repeat_mode']) {
-                case 'daily':
-                case 'yearly':
-                    $this->repeat_type = $_POST['repeat_mode'];
-                    break;
-
-                case 'weekly':
-                    $this->repeat_type = 'weekly';
-                    if (empty($_POST['weekday_repeat'])) {
-                        $errors[] = dgettext('calendar', 'Weekly repeats require you pick one or more days.');
-                    } else {
-                        $this->repeat_type .= ':' . implode(';', $_POST['weekday_repeat']);
-                    }
-                    break;
-
-                case 'monthly':
-                    $this->repeat_type = 'monthly';
-                    if (empty($_POST['monthly_repeat'])) {
-                        $errors[] = dgettext('calendar', 'Please pick a monthly repeat method.');
-                        break;
-                    }
-                    switch ($_POST['monthly_repeat']) {
-                    case 'begin':
-                    case 'end':
-                    case 'start':
-                        $this->repeat_type .= ':' . $_POST['monthly_repeat'];
+                    case 'daily':
+                    case 'yearly':
+                        $this->repeat_type = $_POST['repeat_mode'];
                         break;
 
-                    default:
-                        $errors[] = dgettext('calendar', 'Please pick a proper monthly repeat method.');
-                    }
-                    break;
-
-                case 'every':
-                    if ( empty($_POST['every_repeat_number']) ||
-                         empty($_POST['every_repeat_weekday']) ||
-                         empty($_POST['every_repeat_frequency']) ) {
-                        $errors[] = dgettext('calendar', 'Please choose options for the "Every" repeat method.');
+                    case 'weekly':
+                        $this->repeat_type = 'weekly';
+                        if (empty($_POST['weekday_repeat'])) {
+                            $errors[] = dgettext('calendar', 'Weekly repeats require you pick one or more days.');
+                        } else {
+                            $this->repeat_type .= ':' . implode(';', $_POST['weekday_repeat']);
+                        }
                         break;
-                    }
 
-                    $this->repeat_type = sprintf('every:%s;%s;%s',
-                                                 $_POST['every_repeat_number'],
-                                                 $_POST['every_repeat_weekday'],
-                                                 $_POST['every_repeat_frequency']);
+                    case 'monthly':
+                        $this->repeat_type = 'monthly';
+                        if (empty($_POST['monthly_repeat'])) {
+                            $errors[] = dgettext('calendar', 'Please pick a monthly repeat method.');
+                            break;
+                        }
+                        switch ($_POST['monthly_repeat']) {
+                            case 'begin':
+                            case 'end':
+                            case 'start':
+                                $this->repeat_type .= ':' . $_POST['monthly_repeat'];
+                                break;
 
-                    break;
+                            default:
+                                $errors[] = dgettext('calendar', 'Please pick a proper monthly repeat method.');
+                        }
+                        break;
+
+                    case 'every':
+                        if ( empty($_POST['every_repeat_number']) ||
+                        empty($_POST['every_repeat_weekday']) ||
+                        empty($_POST['every_repeat_frequency']) ) {
+                            $errors[] = dgettext('calendar', 'Please choose options for the "Every" repeat method.');
+                            break;
+                        }
+
+                        $this->repeat_type = sprintf('every:%s;%s;%s',
+                        $_POST['every_repeat_number'],
+                        $_POST['every_repeat_weekday'],
+                        $_POST['every_repeat_frequency']);
+
+                        break;
                 }
             } else {
                 $errors[] = dgettext('calendar', 'You must choose a repeat mode.');
