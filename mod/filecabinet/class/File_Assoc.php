@@ -63,50 +63,50 @@ class FC_File_Assoc {
     public function loadSource()
     {
         switch ($this->file_type) {
-        case FC_IMAGE:
-            PHPWS_Core::initModClass('filecabinet', 'Image.php');
-            $this->_source = new PHPWS_Image($this->file_id);
-            break;
+            case FC_IMAGE:
+                PHPWS_Core::initModClass('filecabinet', 'Image.php');
+                $this->_source = new PHPWS_Image($this->file_id);
+                break;
 
-        case FC_DOCUMENT:
-            PHPWS_Core::initModClass('filecabinet', 'Document.php');
-            $this->_source = new PHPWS_Document($this->file_id);
-            break;
+            case FC_DOCUMENT:
+                PHPWS_Core::initModClass('filecabinet', 'Document.php');
+                $this->_source = new PHPWS_Document($this->file_id);
+                break;
 
-        case FC_MEDIA:
-        case FC_MEDIA_RESIZE:
-            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
-            $this->_source = new PHPWS_Multimedia($this->file_id);
-            break;
+            case FC_MEDIA:
+            case FC_MEDIA_RESIZE:
+                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+                $this->_source = new PHPWS_Multimedia($this->file_id);
+                break;
 
-        case FC_IMAGE_RESIZE:
-        case FC_IMAGE_CROP:
-            PHPWS_Core::initModClass('filecabinet', 'Image.php');
-            $this->_resize_parent = new PHPWS_Image($this->file_id);
-            if (!$this->_resize_parent->id) {
-                $this->_resize_parent = null;
+            case FC_IMAGE_RESIZE:
+            case FC_IMAGE_CROP:
+                PHPWS_Core::initModClass('filecabinet', 'Image.php');
+                $this->_resize_parent = new PHPWS_Image($this->file_id);
+                if (!$this->_resize_parent->id) {
+                    $this->_resize_parent = null;
+                    return;
+                }
+                $this->_source = clone($this->_resize_parent);
+                $this->_source->file_directory = $this->_resize_parent->getResizePath();
+                $this->_source->file_name = $this->resize;
+                $this->_source->loadDimensions();
+                break;
+
+            case FC_IMAGE_RANDOM:
+                PHPWS_Core::initModClass('filecabinet', 'Image.php');
+                $image = new PHPWS_Image;
+                $db = new PHPWS_DB('images');
+                $db->addWhere('folder_id', $this->file_id);
+                $db->addorder('random');
+                $db->setLimit(1);
+                if ($db->loadObject($image)) {
+                    $this->_source = $image;
+                }
+                break;
+
+            default:
                 return;
-            }
-            $this->_source = clone($this->_resize_parent);
-            $this->_source->file_directory = $this->_resize_parent->getResizePath();
-            $this->_source->file_name = $this->resize;
-            $this->_source->loadDimensions();
-            break;
-
-        case FC_IMAGE_RANDOM:
-            PHPWS_Core::initModClass('filecabinet', 'Image.php');
-            $image = new PHPWS_Image;
-            $db = new PHPWS_DB('images');
-            $db->addWhere('folder_id', $this->file_id);
-            $db->addorder('random');
-            $db->setLimit(1);
-            if ($db->loadObject($image)) {
-                $this->_source = $image;
-            }
-            break;
-
-        default:
-            return;
         }
         $this->_file_path = $this->_source->getPath();
     }
@@ -149,7 +149,7 @@ class FC_File_Assoc {
     {
         if ($include_resize) {
             return ($this->file_type == FC_IMAGE || $this->file_type == FC_IMAGE_RESIZE ||
-                    $this->file_type == FC_IMAGE_CROP);
+            $this->file_type == FC_IMAGE_CROP);
         } else {
             return ($this->file_type == FC_IMAGE);
         }
@@ -192,21 +192,21 @@ class FC_File_Assoc {
     public function getFolderType()
     {
         switch ($this->file_type) {
-        case FC_IMAGE:
-        case FC_IMAGE_FOLDER:
-        case FC_IMAGE_LIGHTBOX:
-        case FC_IMAGE_RANDOM:
-        case FC_IMAGE_RESIZE:
-        case FC_IMAGE_CROP:
-            return IMAGE_FOLDER;
+            case FC_IMAGE:
+            case FC_IMAGE_FOLDER:
+            case FC_IMAGE_LIGHTBOX:
+            case FC_IMAGE_RANDOM:
+            case FC_IMAGE_RESIZE:
+            case FC_IMAGE_CROP:
+                return IMAGE_FOLDER;
 
-        case FC_DOCUMENT:
-        case FC_DOCUMENT_FOLDER:
-            return DOCUMENT_FOLDER;
+            case FC_DOCUMENT:
+            case FC_DOCUMENT_FOLDER:
+                return DOCUMENT_FOLDER;
 
-        case FC_MEDIA:
-        case FC_MEDIA_RESIZE:
-            return MULTIMEDIA_FOLDER;
+            case FC_MEDIA:
+            case FC_MEDIA_RESIZE:
+                return MULTIMEDIA_FOLDER;
         }
     }
 
@@ -226,22 +226,22 @@ class FC_File_Assoc {
         PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
         switch ($this->file_type) {
-        case FC_IMAGE:
-        case FC_IMAGE_RANDOM:
-            return $this->_source->getThumbnail(null, $this->_link_image);
+            case FC_IMAGE:
+            case FC_IMAGE_RANDOM:
+                return $this->_source->getThumbnail(null, $this->_link_image);
 
-        case FC_IMAGE_RESIZE:
-        case FC_IMAGE_CROP:
-            return $this->_resize_parent->getThumbnail(null, $this->_link_image);
+            case FC_IMAGE_RESIZE:
+            case FC_IMAGE_CROP:
+                return $this->_resize_parent->getThumbnail(null, $this->_link_image);
 
-        case FC_DOCUMENT:
-            return $this->_source->getIconView();
-            break;
+            case FC_DOCUMENT:
+                return $this->_source->getIconView();
+                break;
 
-        case FC_MEDIA:
-        case FC_MEDIA_RESIZE:
-            return $this->_source->getThumbnail();
-            break;
+            case FC_MEDIA:
+            case FC_MEDIA_RESIZE:
+                return $this->_source->getThumbnail();
+                break;
         }
     }
 
@@ -257,51 +257,51 @@ class FC_File_Assoc {
         }
 
         switch ($this->file_type) {
-        case FC_IMAGE:
-        case FC_IMAGE_RANDOM:
-            if ($this->_source->id) {
-                if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
-                    return $this->_source->captioned(null, $this->_link_image, $base);
+            case FC_IMAGE:
+            case FC_IMAGE_RANDOM:
+                if ($this->_source->id) {
+                    if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
+                        return $this->_source->captioned(null, $this->_link_image, $base);
+                    } else {
+                        return $this->_source->getTag(null, $this->_link_image, $base);
+                    }
                 } else {
-                    return $this->_source->getTag(null, $this->_link_image, $base);
+                    $this->deadAssoc();
                 }
-            } else {
-                $this->deadAssoc();
-            }
-            break;
+                break;
 
-        case FC_IMAGE_RESIZE:
-        case FC_IMAGE_CROP:
-            if ($this->_source->id) {
-                if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
-                    return $this->_source->captioned(null, $this->_link_image, $base);
+            case FC_IMAGE_RESIZE:
+            case FC_IMAGE_CROP:
+                if ($this->_source->id) {
+                    if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
+                        return $this->_source->captioned(null, $this->_link_image, $base);
+                    } else {
+                        return $this->_source->getTag(null, $this->_link_image, $base);
+                    }
                 } else {
-                    return $this->_source->getTag(null, $this->_link_image, $base);
+                    $this->deadAssoc();
                 }
-            } else {
-                $this->deadAssoc();
-            }
-            break;
+                break;
 
-        case FC_IMAGE_FOLDER:
-            return $this->slideshow();
+            case FC_IMAGE_FOLDER:
+                return $this->slideshow();
 
-        case FC_IMAGE_LIGHTBOX:
-            return $this->lightbox();
+            case FC_IMAGE_LIGHTBOX:
+                return $this->lightbox();
 
-        case FC_MEDIA_RESIZE:
-            $this->setMediaDimensions();
-        case FC_DOCUMENT:
-        case FC_MEDIA:
-            if ($this->_source->id) {
-                return $this->_source->getTag($embed);
-            } else {
-                $this->deadAssoc();
-            }
-            break;
+            case FC_MEDIA_RESIZE:
+                $this->setMediaDimensions();
+            case FC_DOCUMENT:
+            case FC_MEDIA:
+                if ($this->_source->id) {
+                    return $this->_source->getTag($embed);
+                } else {
+                    $this->deadAssoc();
+                }
+                break;
 
-        case FC_DOCUMENT_FOLDER:
-            return $this->documentFolder();
+            case FC_DOCUMENT_FOLDER:
+                return $this->documentFolder();
         }
         return null;
     }
@@ -336,6 +336,9 @@ class FC_File_Assoc {
 
     public function slideshow()
     {
+        static $count = 0;
+        static $repeats = array();
+        $count++;
         Layout::addStyle('filecabinet');
         $message = null;
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
@@ -355,19 +358,39 @@ class FC_File_Assoc {
             return dgettext('filecabinet', 'Folder missing image files.');
         } else {
             foreach ($result as $image) {
-                $tpl['thumbnails'][] = array('IMAGE'=> $image->getJSView(true));
+                $tpl['thumbnails'][] = array('IMAGE'=> sprintf('<a href="%s">%s</a>', $image->getPath(), $image->getThumbnail()));
             }
 
-            $this->loadCarousel();
-            if ($this->vertical) {
-                $tpl_file = 'carousel_vert.tpl';
-            } else {
-                $tpl_file = 'carousel_horz.tpl';
-            }
+            javascript('jquery');
+            $this->loadLightBox();
+            $max_size = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
+            $vars['HEIGHT'] = $max_size;
+            $vars['WIDTH'] = $max_size;
+            echo $this->num_visible;
+            $vars['SCROLL'] = $this->num_visible;
+            $vars['VERTICAL'] = $this->vertical ? 'true' : 'false';
 
+            $tpl['CARO_ID'] = $vars['CARO_ID'] = "caro-$count";
+
+            $total_size = ($max_size * $this->num_visible) + ($this->num_visible * 10);
+            $vars['TOTAL_SIZE'] = $total_size;
+
+            $vars['ARROW_POSITION'] = floor($max_size/2) + 5;
+
+            $repeats['repeats'][] = $vars;
+
+            javascript('modules/filecabinet/jcarousel/', $repeats);
+
+            //            if ($this->vertical) {
+            //                $tpl_file = 'carousel_vert.tpl';
+            //            } else {
+            $tpl_file = 'carousel.tpl';
+            //            }
+            /*
             if ($message) {
-                $tpl['MESSAGE'] = $message;
+            $tpl['MESSAGE'] = $message;
             }
+            */
             return PHPWS_Template::process($tpl, 'filecabinet', $tpl_file);
         }
     }
@@ -432,21 +455,21 @@ class FC_File_Assoc {
     public function getTable()
     {
         switch ($this->file_type) {
-        case FC_IMAGE:
-        case FC_IMAGE_FOLDER:
-        case FC_IMAGE_LIGHTBOX:
-        case FC_IMAGE_RANDOM:
-        case FC_IMAGE_RESIZE:
-        case FC_IMAGE_CROP:
-            return 'images';
+            case FC_IMAGE:
+            case FC_IMAGE_FOLDER:
+            case FC_IMAGE_LIGHTBOX:
+            case FC_IMAGE_RANDOM:
+            case FC_IMAGE_RESIZE:
+            case FC_IMAGE_CROP:
+                return 'images';
 
-        case FC_DOCUMENT:
-        case FC_DOCUMENT_FOLDER:
-            return 'documents';
+            case FC_DOCUMENT:
+            case FC_DOCUMENT_FOLDER:
+                return 'documents';
 
-        case FC_MEDIA:
-        case FC_MEDIA_RESIZE:
-            return 'multimedia';
+            case FC_MEDIA:
+            case FC_MEDIA_RESIZE:
+                return 'multimedia';
         }
 
     }
@@ -455,7 +478,7 @@ class FC_File_Assoc {
     {
         $db = new PHPWS_DB('folders');
         if ($this->file_type == FC_IMAGE_RANDOM || $this->file_type == FC_IMAGE_FOLDER || $this->file_type == FC_IMAGE_LIGHTBOX
-            || $this->file_type == FC_DOCUMENT_FOLDER) {
+        || $this->file_type == FC_DOCUMENT_FOLDER) {
             $folder = new Folder($this->file_id);
             if (PHPWS_Error::logIfError($folder) || !$folder->id) {
                 return false;

@@ -5,18 +5,21 @@
 
 
 <style type="text/css">
-.jcarousel-skin-tango .jcarousel-item {
+#body-content .jcarousel-skin-tango .jcarousel-item {
     height:{HEIGHT}px;
     width:{WIDTH}px;
+    margin-left : 0px;
+}
+
+#body-content .jcarousel-list {
+    margin : 0px;
 }
 
 .jcarousel-skin-tango .jcarousel-clip-horizontal {
     height:{HEIGHT}px;
-    width:{TOTAL_SIZE}px;
 }
 
 .jcarousel-skin-tango .jcarousel-container-horizontal {
-    width:{TOTAL_SIZE}px;
 }
 
 .jcarousel-skin-tango .jcarousel-prev-horizontal,
@@ -25,12 +28,10 @@
 }
 
 .jcarousel-skin-tango .jcarousel-clip-vertical {
-    height:{TOTAL_SIZE}px;
     width:{WIDTH}px;
 }
 
 .jcarousel-skin-tango .jcarousel-container-vertical {
-    height:{TOTAL_SIZE}px;
     width:{WIDTH}px;
 }
 
@@ -38,16 +39,26 @@
 .jcarousel-skin-tango .jcarousel-prev-vertical {
     left : {ARROW_POSITION}px;
 }
-
-
-
 </style>
 
+<!-- BEGIN repeats -->
+<style>
+#{CARO_ID} .jcarousel-skin-tango .jcarousel-clip-horizontal,
+#{CARO_ID} .jcarousel-skin-tango .jcarousel-container-horizontal {
+    width:{TOTAL_SIZE}px;
+}
+
+#{CARO_ID} .jcarousel-skin-tango .jcarousel-clip-vertical,
+#{CARO_ID} .jcarousel-skin-tango .jcarousel-container-vertical {
+    height:{TOTAL_SIZE}px;
+}
+</style>
 <script type="text/javascript">
 jQuery(document).ready(function() {
-    jQuery('#mycarousel').jcarousel({
+    jQuery('#{CARO_ID} ul').jcarousel({
     vertical: {VERTICAL},
     scroll: {SCROLL}
     });
 });
 </script>
+<!-- END repeats -->
