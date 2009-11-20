@@ -366,7 +366,6 @@ class FC_File_Assoc {
             $max_size = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
             $vars['HEIGHT'] = $max_size;
             $vars['WIDTH'] = $max_size;
-            echo $this->num_visible;
             $vars['SCROLL'] = $this->num_visible;
             $vars['VERTICAL'] = $this->vertical ? 'true' : 'false';
 
@@ -381,16 +380,7 @@ class FC_File_Assoc {
 
             javascript('modules/filecabinet/jcarousel/', $repeats);
 
-            //            if ($this->vertical) {
-            //                $tpl_file = 'carousel_vert.tpl';
-            //            } else {
             $tpl_file = 'carousel.tpl';
-            //            }
-            /*
-            if ($message) {
-            $tpl['MESSAGE'] = $message;
-            }
-            */
             return PHPWS_Template::process($tpl, 'filecabinet', $tpl_file);
         }
     }
