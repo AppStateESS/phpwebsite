@@ -10,24 +10,7 @@
 }
 
 .jcarousel-skin-tango .jcarousel-container-vertical {
-    width: 75px;
-    height: 245px;
     padding: 40px 20px;
-}
-
-.jcarousel-skin-tango .jcarousel-clip-horizontal {
-    width:  245px;
-    height: 75px;
-}
-
-.jcarousel-skin-tango .jcarousel-clip-vertical {
-    width:  75px;
-    height: 245px;
-}
-
-.jcarousel-skin-tango .jcarousel-item {
-    width: 75px;
-    height: 75px;
 }
 
 .jcarousel-skin-tango .jcarousel-item-horizontal {
@@ -41,6 +24,10 @@
 .jcarousel-skin-tango .jcarousel-item-placeholder {
     background: #fff;
     color: #000;
+}
+
+.jcarousel-list {
+    margin : 0px !important;
 }
 
 /**
@@ -147,11 +134,4 @@
 .jcarousel-skin-tango .jcarousel-prev-disabled-vertical:active {
     cursor: default;
     background-position: 0 -96px;
-}
-
-div#body-content ul#mycarousel {
-	margin : 0px;
-}
-#body-content ul#mycarousel li {
-	margin-left : 0px;
 }

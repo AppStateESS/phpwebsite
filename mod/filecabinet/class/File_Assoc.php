@@ -362,7 +362,6 @@ class FC_File_Assoc {
             }
 
             javascript('jquery');
-            $this->loadLightBox();
             $max_size = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
             $vars['HEIGHT'] = $max_size;
             $vars['WIDTH'] = $max_size;
