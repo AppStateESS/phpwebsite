@@ -22,15 +22,17 @@ Developers:
 --------------------------------------------------------------------------
 
 Matt McNaney (mcnaney at gmail dot com)
-Kevin Wilcox (kevin at tux dot appstate dot edu)
-Jeremy Booker
 Jeff Tickle
+Jeremy Booker
+Verdon Vaillancourt
 
-Prior to 1.x
-----------------
+---------------------
+Previous contributors
+---------------------
 Darren Greene
 Steven Levin
 Adam Morton
+Kevin Wilcox
 Jeremy Agee
 Mike Wilson
 Ryan Cowan
@@ -129,6 +131,10 @@ Keith Wood
 datepicker - jquery plugin
 http://docs.jquery.com/UI/Datepicker
 
+Jan Sorgalla
+jCarousel
+http://sorgalla.com/jcarousel/
+
 --------------------------------------------------------------------------
 To those who translate, we salute you.
 --------------------------------------------------------------------------
@@ -155,6 +161,7 @@ Hilmar - documentation, bugs
 Thomas de Jesus - SF bugs and RFE, irc assistance
 Bobby Kennedy/fatman - phpwebsitemanual host
 Rene Kiesler/rck - kiesler.at, phpws advocate and developer
+Tommy de Jesus/trf000 - Windows survivor, tester
 Kevin McElligott/XiRoCCo - phpwsforums host
 Greg Meiste/blindman1344 - module developer, bug/RFE patch & report
 Greg Morgan/dr_kludge
@@ -175,7 +182,6 @@ Paul Van Voorst
 Pete Wachs
 Cindy Wallace - Vice Chancellor of Student Development @ AppState
 Kevin Wilcox
-Tommy de Jesus/trf000 - Windows survivor, tester
 
 
 And all those who have contributed to phpWebSite. Thanks for your
