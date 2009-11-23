@@ -11,15 +11,11 @@
 .jcarousel-skin-tango .jcarousel-clip-vertical,.jcarousel-skin-tango .jcarousel-container-vertical {width:{WIDTH}px;}
 .jcarousel-skin-tango .jcarousel-next-vertical,.jcarousel-skin-tango .jcarousel-prev-vertical {left:{ARROW_POSITION}px;}
 </style>
-
-<!-- BEGIN repeats -->
-<style>
-#{CARO_ID} .jcarousel-skin-tango .jcarousel-clip-horizontal,#{CARO_ID} .jcarousel-skin-tango .jcarousel-container-horizontal {width:{TOTAL_SIZE}px;}
-#{CARO_ID} .jcarousel-skin-tango .jcarousel-clip-vertical,#{CARO_ID} .jcarousel-skin-tango .jcarousel-container-vertical {height:{TOTAL_SIZE}px;}
-</style>
 <script type="text/javascript">
-jQuery(document).ready(function() {
-    $('div#{CARO_ID} a').lightBox({
+function carousel(caro_id, vertical_var, scroll_var) {
+    id_tag = 'div#' + caro_id + ' a';
+
+    $(id_tag).lightBox({
         imageLoading: 'javascript/modules/filecabinet/lightbox/loading.gif',
         imageBtnClose: 'javascript/modules/filecabinet/lightbox/close.gif',
         imageBtnPrev: 'javascript/modules/filecabinet/lightbox/prev.gif',
@@ -28,7 +24,20 @@ jQuery(document).ready(function() {
         txtImage: '{image}',
         txtOf: '{of}'
     });
-    jQuery('#{CARO_ID} ul').jcarousel({vertical: {VERTICAL},scroll: {SCROLL}});
+    
+    id_tag = 'div#' + caro_id + ' ul';
+    $(id_tag).jcarousel({vertical: vertical_var,scroll: scroll_var});
+}
+</script>
+
+<!-- BEGIN repeats -->
+<style type="text/css">
+#{CARO_ID} .jcarousel-skin-tango .jcarousel-clip-horizontal,#{CARO_ID} .jcarousel-skin-tango .jcarousel-container-horizontal {width:{TOTAL_SIZE}px;}
+#{CARO_ID} .jcarousel-skin-tango .jcarousel-clip-vertical,#{CARO_ID} .jcarousel-skin-tango .jcarousel-container-vertical {height:{TOTAL_SIZE}px;}
+</style>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+    carousel('{CARO_ID}', {VERTICAL}, {SCROLL});
 });
 </script>
 <!-- END repeats -->
