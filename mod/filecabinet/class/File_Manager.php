@@ -28,7 +28,7 @@ class FC_File_Manager {
      */
     public $session_id  = null;
     /**
-     * Reserved folders are called singularly by a module. 
+     * Reserved folders are called singularly by a module.
      * A selection of folders is not allowed
      */
     public $reserved_folder = 0;
@@ -514,7 +514,7 @@ class FC_File_Manager {
 
         $tpl = array();
         $this->folderIcons($tpl);
-            
+
         if (Current_User::allow('filecabinet', 'edit_folders')) {
             $tpl['FOLDER_TITLE'] = $this->current_folder->editLink('title', $this->current_folder->module_created);
         } else {

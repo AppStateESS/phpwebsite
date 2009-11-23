@@ -337,7 +337,7 @@ class FC_File_Assoc {
     public function slideshow()
     {
         static $count = 0;
-        static $repeats = array();
+
         $count++;
         Layout::addStyle('filecabinet');
         $message = null;
@@ -361,35 +361,32 @@ class FC_File_Assoc {
                 $tpl['thumbnails'][] = array('IMAGE'=> sprintf('<a href="%s">%s</a>', $image->getPath(), $image->getThumbnail()));
             }
 
-            javascript('jquery');
-            $max_size = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
-            $vars['HEIGHT'] = $max_size;
-            $vars['WIDTH'] = $max_size;
-            $vars['SCROLL'] = $this->num_visible;
-            $vars['VERTICAL'] = $this->vertical ? 'true' : 'false';
+            $this->loadCarousel($count);
 
-            $tpl['CARO_ID'] = $vars['CARO_ID'] = "caro-$count";
-
-            $total_size = ($max_size * $this->num_visible) + ($this->num_visible * 10);
-            $vars['TOTAL_SIZE'] = $total_size;
-
-            $vars['ARROW_POSITION'] = floor($max_size/2) + 5;
-
-            $repeats['repeats'][] = $vars;
-
-            javascript('modules/filecabinet/jcarousel/', $repeats);
-
+            $tpl['CARO_ID'] = "caro-$count";
             $tpl_file = 'carousel.tpl';
             return PHPWS_Template::process($tpl, 'filecabinet', $tpl_file);
         }
     }
 
-    public function loadCarousel()
+    public function loadCarousel($count=1)
     {
+        static $repeats = array();
         javascript('jquery');
-        $vars['vertical'] = $this->vertical;
-        $vars['visible']  = $this->num_visible;
-        javascript('modules/filecabinet/jcaro_lite/', $vars);
+        $max_size = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
+        $vars['HEIGHT'] = $max_size;
+        $vars['WIDTH'] = $max_size;
+        $vars['SCROLL'] = $this->num_visible;
+        $vars['VERTICAL'] = $this->vertical ? 'true' : 'false';
+
+        $total_size = ($max_size * $this->num_visible) + ($this->num_visible * 10);
+        $vars['TOTAL_SIZE'] = $total_size;
+
+        $vars['ARROW_POSITION'] = floor($max_size/2) + 5;
+        $vars['CARO_ID'] = "caro-$count";
+        $repeats['repeats'][] = $vars;
+
+        javascript('modules/filecabinet/jcarousel/', $repeats);
     }
 
     public function lightbox()
