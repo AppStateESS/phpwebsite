@@ -474,6 +474,7 @@ Editors
             coreUpdateFiles(array('javascript/captcha/freecap/ht_freecap_words'), $content);
             $content[] = '<pre>1.9.8 changes
 -----------------
++ Updated Pear library.
 + Added new class DB2.
 + PHPWS_DB:
   o changed count to accommodate group by and single col pulls
