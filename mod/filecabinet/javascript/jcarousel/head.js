@@ -21,8 +21,8 @@ function carousel(caro_id, vertical_var, scroll_var) {
         imageBtnPrev: 'javascript/modules/filecabinet/lightbox/prev.gif',
         imageBtnNext: 'javascript/modules/filecabinet/lightbox/next.gif',
         imageBlank: 'javascript/modules/filecabinet/lightbox/blank.gif',
-        txtImage: '{image}',
-        txtOf: '{of}'
+        txtImage: '{IMAGE}',
+        txtOf: '{OF}'
     });
     
     id_tag = 'div#' + caro_id + ' ul';

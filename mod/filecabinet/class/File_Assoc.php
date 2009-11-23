@@ -384,6 +384,8 @@ class FC_File_Assoc {
 
         $vars['ARROW_POSITION'] = floor($max_size/2) + 5;
         $vars['CARO_ID'] = "caro-$count";
+        $vars['IMAGE'] = dgettext('filecabinet', 'Image');
+        $vars['OF'] = dgettext('filecabinet', 'of');
         $repeats['repeats'][] = $vars;
 
         javascript('modules/filecabinet/jcarousel/', $repeats);
