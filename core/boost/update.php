@@ -469,6 +469,17 @@ Editors
 + Fixed browser incompatibility issue with editors.
 + Added ability to set fckeditor\'s image, media, and files directory in the config.php
 </pre>';
+
+        case version_compare($version, '1.9.8', '<'):
+            coreUpdateFiles(array('javascript/captcha/freecap/ht_freecap_words'), $content);
+            $content[] = '<pre>1.9.8 changes
+-----------------
++ Added new class DB2.
++ PHPWS_DB:
+  o changed count to accommodate group by and single col pulls
+  o Added code to prevent multiple identical joins.
++ Text : Fixed bug in fixAnchors that didn\'t allow it to work with hyphenated ids
++ DBPager : fixed a problem with multiple joinResult calls to same table.</pre>';
     }
     return true;
 }

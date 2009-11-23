@@ -1493,6 +1493,27 @@ class DB2 extends Data {
     }
 
     /**
+     * Saves an array of objects
+     * @param array $objects
+     * @return void
+     */
+    public function saveAllObjects(array $objects)
+    {
+        foreach ($objects as $obj)
+        {
+            if (!is_object($obj)) {
+                throw new PEAR_Exception(dgettext('core', 'Array must contain object variables only'));
+            }
+
+            if (is_subclass_of($obj, 'DB2_Object')) {
+                $obj->save();
+            } else {
+                $this->saveObject($obj);
+            }
+        }
+    }
+
+    /**
      * Safely quotes a value for entry in the database.
      * Uses the MDB2 quote function but makes assumptions based on the value type
      * @param mixed $value
