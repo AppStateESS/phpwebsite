@@ -363,6 +363,11 @@ class FC_File_Assoc {
 
             $this->loadCarousel($count);
 
+            // Safari skips the final thumbnail
+            if ($GLOBALS['browser'] == 'Safari') {
+                $tpl['STUB'] = '<li></li>';
+            }
+
             $tpl['CARO_ID'] = "caro-$count";
             $tpl_file = 'carousel.tpl';
             return PHPWS_Template::process($tpl, 'filecabinet', $tpl_file);

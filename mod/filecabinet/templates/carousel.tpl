@@ -3,6 +3,6 @@
 <!-- BEGIN thumbnails -->
 <li>{IMAGE}</li>
 <!-- END thumbnails -->
-<li></li>
+{STUB}
 </ul>
 </div>
