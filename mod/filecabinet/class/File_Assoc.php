@@ -369,7 +369,7 @@ class FC_File_Assoc {
         }
     }
 
-    public function loadCarousel($count=1)
+    public function loadCarousel($count)
     {
         static $repeats = array();
         javascript('jquery');
@@ -379,16 +379,21 @@ class FC_File_Assoc {
         $vars['SCROLL'] = $this->num_visible;
         $vars['VERTICAL'] = $this->vertical ? 'true' : 'false';
 
-        $total_size = ($max_size * $this->num_visible) + ($this->num_visible * 10);
+        $total_size = $this->getTotalCarouselSize();
         $vars['TOTAL_SIZE'] = $total_size;
 
         $vars['ARROW_POSITION'] = floor($max_size/2) + 5;
         $vars['CARO_ID'] = "caro-$count";
-        $vars['IMAGE'] = dgettext('filecabinet', 'Image');
-        $vars['OF'] = dgettext('filecabinet', 'of');
         $repeats['repeats'][] = $vars;
 
         javascript('modules/filecabinet/jcarousel/', $repeats);
+    }
+
+
+    public function getTotalCarouselSize()
+    {
+        $max_size = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
+        return ($max_size * $this->num_visible) + ($this->num_visible * 10);
     }
 
     public function lightbox()

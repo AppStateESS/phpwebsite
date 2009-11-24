@@ -12,32 +12,15 @@
 .jcarousel-skin-tango .jcarousel-next-vertical,.jcarousel-skin-tango .jcarousel-prev-vertical {left:{ARROW_POSITION}px;}
 </style>
 <script type="text/javascript">
-function carousel(caro_id, vertical_var, scroll_var) {
-    id_tag = 'div#' + caro_id + ' a';
-
-    $(id_tag).lightBox({
-        imageLoading: 'javascript/modules/filecabinet/lightbox/loading.gif',
-        imageBtnClose: 'javascript/modules/filecabinet/lightbox/close.gif',
-        imageBtnPrev: 'javascript/modules/filecabinet/lightbox/prev.gif',
-        imageBtnNext: 'javascript/modules/filecabinet/lightbox/next.gif',
-        imageBlank: 'javascript/modules/filecabinet/lightbox/blank.gif',
-        txtImage: '{IMAGE}',
-        txtOf: '{OF}'
-    });
-    
-    id_tag = 'div#' + caro_id + ' ul';
-    $(id_tag).jcarousel({vertical: vertical_var,scroll: scroll_var});
-}
+var image = '{IMAGE}';
+var of = '{OF}';
 </script>
+<script type="text/javascript" src="javascript/modules/filecabinet/jcarousel/script.js"></script>
 
 <!-- BEGIN repeats -->
-<style type="text/css">
-#{CARO_ID} .jcarousel-skin-tango .jcarousel-clip-horizontal,#{CARO_ID} .jcarousel-skin-tango .jcarousel-container-horizontal {width:{TOTAL_SIZE}px;}
-#{CARO_ID} .jcarousel-skin-tango .jcarousel-clip-vertical,#{CARO_ID} .jcarousel-skin-tango .jcarousel-container-vertical {height:{TOTAL_SIZE}px;}
-</style>
 <script type="text/javascript">
 jQuery(document).ready(function() {
-    carousel('{CARO_ID}', {VERTICAL}, {SCROLL});
+    carousel('{CARO_ID}', {VERTICAL}, {SCROLL}, {TOTAL_SIZE});
 });
 </script>
 <!-- END repeats -->

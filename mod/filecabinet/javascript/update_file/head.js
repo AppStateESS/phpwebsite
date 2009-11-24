@@ -23,7 +23,7 @@ $('#' + link_id + ' > a').bind("click", function() {
 hidden = opener.document.getElementById(hidden_id);
 hidden.value = new_id;
 
-window.opener.carousel('caro-1', {vert}, {vis});
+window.opener.carousel('caro-1', {vert}, {vis}, {total_size});
 window.close();
 
 //]]>

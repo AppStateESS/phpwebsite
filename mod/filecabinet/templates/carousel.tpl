@@ -1,4 +1,4 @@
-<div id="{CARO_ID}" class="carousel-horz carousel">
+<div id="{CARO_ID}" class="carousel">
 <ul class="jcarousel-skin-tango">
 <!-- BEGIN thumbnails -->
 <li>{IMAGE}</li>
