@@ -1,8 +1,8 @@
-<style type="text/css">@import url("javascript/modules/filecabinet/lightbox/jquery.lightbox-0.5.css");</style>
-<script type="text/javascript" src="javascript/modules/filecabinet/lightbox/jquery.lightbox-0.5.min.js"></script>
-<script type="text/javascript" src="javascript/modules/filecabinet/jcarousel/lib/jquery.jcarousel.pack.js"></script>
+<link rel="stylesheet" type="text/css" href="javascript/modules/filecabinet/lightbox/jquery.lightbox-0.5.css" />
 <link rel="stylesheet" type="text/css" href="javascript/modules/filecabinet/jcarousel/lib/jquery.jcarousel.css" />
 <link rel="stylesheet" type="text/css" href="javascript/modules/filecabinet/jcarousel/skins/tango/skin.css" />
+<script type="text/javascript" src="javascript/modules/filecabinet/lightbox/jquery.lightbox-0.5.min.js"></script>
+<script type="text/javascript" src="javascript/modules/filecabinet/jcarousel/lib/jquery.jcarousel.pack.js"></script>
 
 <style type="text/css">
 .jcarousel-skin-tango .jcarousel-item {height:{HEIGHT}px !important;width:{WIDTH}px !important;margin-left:0px !important;}

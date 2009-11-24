@@ -13,16 +13,18 @@ function carousel(caro_id, vertical_var, scroll_var, total_size) {
     
     id_tag = 'div#' + caro_id + ' ul';
     $(id_tag).jcarousel({vertical: vertical_var,scroll: scroll_var});
-    horz_tag1 = 'div#' + caro_id + ' .jcarousel-skin-tango .jcarousel-clip-horizontal';
-    horz_tag2 = 'div#' + caro_id + ' .jcarousel-skin-tango .jcarousel-container-horizontal';
+    horz_tag1 = 'div#' + caro_id + ' .jcarousel-clip-horizontal';
+    horz_tag2 = 'div#' + caro_id + ' .jcarousel-container-horizontal';
     
-    vert_tag1 = 'div#' + caro_id + ' .jcarousel-skin-tango .jcarousel-clip-vertical';
-    vert_tag2 = 'div#' + caro_id + ' .jcarousel-skin-tango .jcarousel-container-vertical';
+    vert_tag1 = 'div#' + caro_id + ' .jcarousel-clip-vertical';
+    vert_tag2 = 'div#' + caro_id + ' .jcarousel-container-vertical';
     total_size = total_size + 'px';
     
-    
     $(horz_tag1).css('width', total_size);
-    $(horz_tag2).css({'width': total_size});
-    $(vert_tag1).css({'height': total_size});
-    $(vert_tag2).css({'height': total_size});
+    $(horz_tag2).css('width', total_size);
+    $(vert_tag1).css('height', total_size);
+    $(vert_tag2).css('height', total_size);
+    
+    
+    
 }
