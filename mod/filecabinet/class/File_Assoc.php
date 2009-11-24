@@ -374,18 +374,20 @@ class FC_File_Assoc {
         static $repeats = array();
         javascript('jquery');
         $max_size = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
+        $total_size = $this->getTotalCarouselSize();
+
+        $svars['TOTAL_SIZE'] = $total_size;
+        $svars['CARO_ID'] = "caro-$count";
+        $repeats['style-repeat'][] = $svars;
+
+        $vars['TOTAL_SIZE'] = $total_size;
+        $vars['CARO_ID'] = "caro-$count";
         $vars['HEIGHT'] = $max_size;
         $vars['WIDTH'] = $max_size;
         $vars['SCROLL'] = $this->num_visible;
         $vars['VERTICAL'] = $this->vertical ? 'true' : 'false';
-
-        $total_size = $this->getTotalCarouselSize();
-        $vars['TOTAL_SIZE'] = $total_size;
-
         $vars['ARROW_POSITION'] = floor($max_size/2) + 5;
-        $vars['CARO_ID'] = "caro-$count";
-        $repeats['repeats'][] = $vars;
-
+        $repeats['js-repeat'][] = $vars;
         javascript('modules/filecabinet/jcarousel/', $repeats);
     }
 

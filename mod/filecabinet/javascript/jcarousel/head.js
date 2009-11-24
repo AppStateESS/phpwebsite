@@ -17,10 +17,17 @@ var of = '{OF}';
 </script>
 <script type="text/javascript" src="javascript/modules/filecabinet/jcarousel/script.js"></script>
 
-<!-- BEGIN repeats -->
+
+<style type="text/css">
+<!-- BEGIN style-repeat -->
+#{CARO_ID} .jcarousel-skin-tango .jcarousel-clip-horizontal,#{CARO_ID} .jcarousel-skin-tango .jcarousel-container-horizontal {width:{TOTAL_SIZE}px;}
+#{CARO_ID} .jcarousel-skin-tango .jcarousel-clip-vertical,#{CARO_ID} .jcarousel-skin-tango .jcarousel-container-vertical {height:{TOTAL_SIZE}px;}
+<!-- END style-repeat -->
+</style>
 <script type="text/javascript">
+<!-- BEGIN js-repeat -->
 jQuery(document).ready(function() {
     carousel('{CARO_ID}', {VERTICAL}, {SCROLL}, {TOTAL_SIZE});
 });
+<!-- END js-repeat -->
 </script>
-<!-- END repeats -->
