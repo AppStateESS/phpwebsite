@@ -127,13 +127,11 @@ class DB2_Join {
         $this->operator = $operator;
     }
 
-    public function __toString()
+    public function getQuery($show_left=true)
     {
-        static $show_left = true;
         try {
             if ($show_left) {
                 $left_side = $this->left_resource->getQuery();
-                $show_left = false;
             } else {
                 $left_side = null;
             }

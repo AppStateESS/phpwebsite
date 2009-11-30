@@ -975,7 +975,9 @@ class DB2 extends Data {
         }
 
         $this->selectQuery();
-
+        echo '<hr>';
+        echo $this->query;
+        exit();
         /**
          * Preventing method_exists running per row
          */
@@ -1119,8 +1121,10 @@ class DB2 extends Data {
 
 
         if (!empty($this->join_tables)) {
+            $show_left = true;
             foreach ($this->join_tables as $join) {
-                $joined[] = (string)$join;
+                $joined[] = $join->getQuery($show_left);
+                $show_left = false;
             }
             $sources[] = implode(' ', $joined);
         }
