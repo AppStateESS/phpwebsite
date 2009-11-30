@@ -975,9 +975,6 @@ class DB2 extends Data {
         }
 
         $this->selectQuery();
-        echo '<hr>';
-        echo $this->query;
-        exit();
         /**
          * Preventing method_exists running per row
          */
