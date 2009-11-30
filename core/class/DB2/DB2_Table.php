@@ -26,7 +26,7 @@
  * @see DB2_Resource
  */
 
-define('DB2_IGNORE_COLUMN_VERIFICATION', true);
+define('DB2_IGNORE_COLUMN_VERIFICATION', false);
 
 abstract class DB2_Table extends DB2_Resource implements Factory_Table {
     /**
