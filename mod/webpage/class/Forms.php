@@ -196,7 +196,7 @@ class Webpage_Forms {
         $pager->setLink('index.php?module=webpage&amp;tab=list');
         $pager->addPageTags($tags);
         $pager->addRowTags('rowTags');
-        $pager->addToggle(' ');
+        $pager->addToggle('class="bgcolor1"');
         $pager->setSearch('title');
         Key::restrictEdit($pager->db, 'webpage', 'edit_page');
         $pager->db->addWhere('approved', 1);

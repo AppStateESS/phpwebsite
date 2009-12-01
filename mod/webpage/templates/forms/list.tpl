@@ -13,7 +13,7 @@
     <th>{ACTION_LABEL}</th>
   </tr>
 <!-- BEGIN listrows -->
-  <tr <!-- BEGIN tog -->class="bgcolor1"{TOGGLE}<!-- END tog -->>
+  <tr {TOGGLE}>
     <td>{CHECKBOX}</td>
     <td>{TITLE}</td>
     <td>{DATE_CREATED}<br />{DATE_UPDATED}</td>
