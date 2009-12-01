@@ -11,5 +11,4 @@ $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/alert/check.xm
 $about        = TRUE;
 $priority     = 50;
 $dependency   = true;
-$image_dir    = true;
 ?>
