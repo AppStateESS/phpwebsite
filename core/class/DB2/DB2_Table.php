@@ -26,7 +26,7 @@
  * @see DB2_Resource
  */
 
-define('DB2_IGNORE_COLUMN_VERIFICATION', false);
+define('DB2_VERIFY_COLUMNS', true);
 
 abstract class DB2_Table extends DB2_Resource implements Factory_Table {
     /**
@@ -106,9 +106,21 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
     public function __construct($name, $alias=null, DB2 $db2)
     {
         parent::__construct($db2, $alias);
-        $this->name = $name;
-        $this->full_name = $this->db2->getTablePrefix() . $name;
+        $this->setName($name);
         $this->primary_index = $this->getPrimaryIndex();
+    }
+
+    public function setName($name)
+    {
+        if (!$this->db2->allowed($name)) {
+            throw new PEAR_Exception(dgettext('core', 'Improper table name') . ': ' . $name);
+        }
+
+        if (!$this->db2->tableExists($name)) {
+            throw new PEAR_Exception(dgettext('core', 'Table does not exist') . ': ' . $name);
+        }
+        $this->name = $name;
+        $this->full_name = $this->db2->getTablePrefix() . $this->name;
     }
 
     public function getValues()
@@ -377,7 +389,7 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
      */
     public function verifyColumn($column_name)
     {
-        if (defined('DB2_IGNORE_COLUMN_VERIFICATION') && DB2_IGNORE_COLUMN_VERIFICATION) {
+        if (!DB2_VERIFY_COLUMNS) {
             return true;
         }
 

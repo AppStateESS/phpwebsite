@@ -582,10 +582,6 @@ class DB2 extends Data {
      */
     public function addTable($table, $alias=null, $show_all_fields=true)
     {
-        if (!$this->allowed($table)) {
-            throw new PEAR_Exception(dgettext('core', 'Improper table name') . ': ' . $table);
-        }
-
         $index = !empty($alias) ? $alias : $table;
 
         if (isset($this->tables[$index])) {
@@ -1380,11 +1376,17 @@ class DB2 extends Data {
      */
     public function tableExists($table_name)
     {
+        static $table_list = null;
+        if (empty($table_list)) {
+            $this->mdb2->loadModule('Manager');
+            $table_list = $this->mdb2->listTables();
+        }
+
         if ($this->tbl_prefix) {
             $table_name = $this->tbl_prefix . $table_name;
         }
-        $this->mdb2->loadModule('Manager');
-        return in_array($table_name, $this->mdb2->listTables());
+
+        return in_array($table_name, $table_list);
     }
 
     /**
