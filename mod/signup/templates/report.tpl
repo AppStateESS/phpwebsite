@@ -64,5 +64,5 @@ div.print {
      <!-- END spaces -->
 </div>
 <!-- END slot -->
-  </body
+  </body>
 </html>
