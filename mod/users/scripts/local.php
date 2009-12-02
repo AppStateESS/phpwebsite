@@ -12,8 +12,8 @@ class local_authorization extends User_Authorization {
         // Authorize on local database just once
         public $always_verify   = false;
         public $force_login     = false;
-        public $login_link      = 'index.php?module=users&action=user&command=login_page';
-        public $logout_link     = 'index.php?module=users&action=user&command=logout';
+        public $login_link      = 'index.php?module=users&amp;action=user&amp;command=login_page';
+        public $logout_link     = 'index.php?module=users&amp;action=user&amp;command=logout';
 
     public function authenticate()
     {
