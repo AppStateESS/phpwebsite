@@ -1,0 +1,16 @@
+# vpath - phpwebsite module
+# @version $Id: $
+# @author Verdon Vaillancourt <verdonv at gmail dot com>
+
+People who have made vpath possible (in alphabetical order):
+
+    Matt McNaney <mcnaney at gmail dot com>
+    - Help with initial recursive loop function
+
+	Verdon Vaillancourt <verdonv at gmail dot com>
+     - Lead developer
+
+vPath contains works from the following projects:
+
+    PHPWebSite
+    http://phpwebsite.appstate.edu
