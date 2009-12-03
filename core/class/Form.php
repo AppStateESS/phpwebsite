@@ -1153,113 +1153,119 @@ class PHPWS_Form {
     public function createElement($name, $type, $value)
     {
         switch ($type){
-        case 'text':
-        case 'textfield':
-            $obj = new Form_TextField($name, $value);
-            return $obj;
-            break;
-
-        case 'textarea':
-            $obj = new Form_TextArea($name, $value);
-            return $obj;
-            break;
-
-        case 'submit':
-            $obj = new Form_Submit($name, $value);
-            if ($name == 'submit') {
-                // prevents problems with setRequires javascript
-                $obj->name = 'submit_form';
-                $obj->tag = 'SUBMIT';
-            }
-            return $obj;
-            break;
-
-        case 'button':
-            $obj = new Form_Button($name, $value);
-            return $obj;
-            break;
-
-        case 'reset':
-            $obj = new Form_Reset($name, $value);
-            return $obj;
-            break;
-
-        case 'password':
-            $obj = new Form_Password($name, $value);
-            return $obj;
-            break;
-
-        case 'file':
-            $this->_multipart = true;
-            $this->_encode = ' enctype="multipart/form-data"';
-            $obj = new Form_File($name);
-            return $obj;
-            break;
-
-        case 'select':
-        case 'dropbox':
-            $obj = new Form_Select($name, $value);
-            return $obj;
-            break;
-
-        case 'multiple':
-            $obj = new Form_Multiple($name, $value);
-            return $obj;
-            break;
-
-        case 'radio':
-        case 'radiobutton':
-            if (is_array($value)) {
-                foreach ($value as $key=>$sub) {
-                    $radio = new Form_RadioButton($name, $sub);
-                    $radio->key = $sub;
-                    $radio->place = $key;
-                    $allRadio[$sub] = $radio;
-                }
-                return $allRadio;
-            } else {
-                $obj = new Form_RadioButton($name, $value);
+            case 'text':
+            case 'textfield':
+                $obj = new Form_TextField($name, $value);
                 return $obj;
-            }
-            break;
+                break;
 
-        case 'check':
-        case 'checkbox':
-            if (is_array($value)) {
-                $check_count=0;
-                foreach ($value as $sub) {
-                    $check[$check_count] = new Form_Checkbox($name, $sub);
-                    $check[$check_count]->place = $check_count;
-                    $check_count++;
-                }
-                return $check;
-            } else {
-                $obj = new Form_Checkbox($name, $value);
+            case 'textarea':
+                $obj = new Form_TextArea($name, $value);
                 return $obj;
-            }
-            break;
+                break;
 
-        case 'hidden':
-            if (is_array($value)) {
-                foreach ($value as $key=>$sub) {
-                    $hidden = new Form_Hidden($name, $sub);
-                    $hidden->setId();
-                    $hidden->isArray = true;
-                    $hidden->key = $sub;
-                    $hidden->place = $key;
-                    $allHidden[$sub] = $hidden;
+            case 'submit':
+                $obj = new Form_Submit($name, $value);
+                if ($name == 'submit') {
+                    // prevents problems with setRequires javascript
+                    $obj->name = 'submit_form';
+                    $obj->tag = 'SUBMIT';
                 }
-                return $allHidden;
-            } else {
-                $obj = new Form_Hidden($name, $value);
                 return $obj;
-            }
-            break;
+                break;
 
-        default:
-            $error = PHPWS_Error::get(PHPWS_FORM_UNKNOWN_TYPE, 'core', 'PHPWS_Form::createElement');
-            return $error;
-            break;
+            case 'button':
+                $obj = new Form_Button($name, $value);
+                return $obj;
+                break;
+
+            case 'reset':
+                $obj = new Form_Reset($name, $value);
+                return $obj;
+                break;
+
+            case 'password':
+                $obj = new Form_Password($name, $value);
+                return $obj;
+                break;
+
+            case 'file':
+                $this->_multipart = true;
+                $this->_encode = ' enctype="multipart/form-data"';
+                $obj = new Form_File($name);
+                return $obj;
+                break;
+
+            case 'select':
+            case 'dropbox':
+                $obj = new Form_Select($name, $value);
+                return $obj;
+                break;
+
+            case 'multiple':
+                $obj = new Form_Multiple($name, $value);
+                return $obj;
+                break;
+
+            case 'radio':
+            case 'radiobutton':
+                if (is_array($value)) {
+                    foreach ($value as $key=>$sub) {
+                        $radio = new Form_RadioButton($name, $sub);
+                        $radio->key = $sub;
+                        $radio->place = $key;
+                        $allRadio[$sub] = $radio;
+                    }
+                    return $allRadio;
+                } else {
+                    $obj = new Form_RadioButton($name, $value);
+                    return $obj;
+                }
+                break;
+
+            case 'check':
+            case 'checkbox':
+                if (is_array($value)) {
+                    $check_count=0;
+                    foreach ($value as $sub) {
+                        $check[$check_count] = new Form_Checkbox($name, $sub);
+                        $check[$check_count]->place = $check_count;
+                        $check_count++;
+                    }
+                    return $check;
+                } else {
+                    $obj = new Form_Checkbox($name, $value);
+                    return $obj;
+                }
+                break;
+
+            case 'hidden':
+                if (is_array($value)) {
+                    if (empty($value)) {
+                        $value = null;
+                        $obj = new Form_Hidden($name, $value);
+                        return $obj;
+                    } else {
+                        foreach ($value as $key=>$sub) {
+                            $hidden = new Form_Hidden($name, $sub);
+                            $hidden->setId();
+                            $hidden->isArray = true;
+                            $hidden->key = $sub;
+                            $hidden->place = $key;
+                            $allHidden[$sub] = $hidden;
+                        }
+                        return $allHidden;
+                    }
+                } else {
+                    $obj = new Form_Hidden($name, $value);
+                    return $obj;
+                }
+                break;
+
+            default:
+                $error = PHPWS_Error::get(PHPWS_FORM_UNKNOWN_TYPE, 'core', 'PHPWS_Form::createElement');
+                return $error;
+                break;
         }
 
     }
@@ -1574,12 +1580,12 @@ class PHPWS_Form {
     public function makeForm($name, $action, $elements, $method='post', $breaks=false, $file=false)
     {
         return sprintf('<form name="%s" method="%s" action="%s">%s</form>',
-                       $name, $method, $action, implode("\n", $elements));
+        $name, $method, $action, implode("\n", $elements));
     }
 
     /**
-     * Accepts an associative array or object. Looks for form elements with the 
-     * same names as the variables in the object or the keys in the array. If 
+     * Accepts an associative array or object. Looks for form elements with the
+     * same names as the variables in the object or the keys in the array. If
      * matching elements are found, their value, match, or checked parameters
      * are set based upon the element type.
      */
@@ -1598,20 +1604,20 @@ class PHPWS_Form {
             $element_type = @$this->types[$name];
             if (!empty($element_type)) {
                 switch ($element_type) {
-                case 'hidden':
-                case 'text':
-                case 'textarea':
-                case 'submit':
-                case 'button':
-                    $this->setValue($name, $element);
-                    break;
+                    case 'hidden':
+                    case 'text':
+                    case 'textarea':
+                    case 'submit':
+                    case 'button':
+                        $this->setValue($name, $element);
+                        break;
 
-                case 'select':
-                case 'multiple':
-                case 'radio':
-                case 'check':
-                    $this->setMatch($name, $element);
-                    break;
+                    case 'select':
+                    case 'multiple':
+                    case 'radio':
+                    case 'check':
+                        $this->setMatch($name, $element);
+                        break;
                 }
             }
         }
@@ -1626,13 +1632,13 @@ class Form_TextField extends Form_Element {
     public function get()
     {
         return '<input type="text" '
-            . $this->getName(true)
-            . $this->getTitle(true)
-            . $this->getDisabled()
-            . $this->getReadOnly()
-            . $this->getValue()
-            . $this->getWidth(true)
-            . $this->getData() . ' />';
+        . $this->getName(true)
+        . $this->getTitle(true)
+        . $this->getDisabled()
+        . $this->getReadOnly()
+        . $this->getValue()
+        . $this->getWidth(true)
+        . $this->getData() . ' />';
     }
 
 }
@@ -1650,12 +1656,12 @@ class Form_Submit extends Form_Element {
             $this->setExtra($extra);
         }
         return '<input type="submit" '
-            . $this->getName(true)
-            . $this->getValue()
-            . $this->getDisabled()
-            . $this->getReadOnly()
-            . $this->getWidth(true)
-            . $this->getData() . ' />';
+        . $this->getName(true)
+        . $this->getValue()
+        . $this->getDisabled()
+        . $this->getReadOnly()
+        . $this->getWidth(true)
+        . $this->getData() . ' />';
     }
 
 }
@@ -1666,12 +1672,12 @@ class Form_Button extends Form_Element {
     public function get()
     {
         return '<input type="button" '
-            . $this->getName(true)
-            . $this->getValue()
-            . $this->getDisabled()
-            . $this->getReadOnly()
-            . $this->getWidth(true)
-            . $this->getData() . ' />';
+        . $this->getName(true)
+        . $this->getValue()
+        . $this->getDisabled()
+        . $this->getReadOnly()
+        . $this->getWidth(true)
+        . $this->getData() . ' />';
     }
 }
 
@@ -1682,12 +1688,12 @@ class Form_Reset extends Form_Element {
     {
 
         return '<input type="reset" '
-            . $this->getName(true)
-            . $this->getValue()
-            . $this->getDisabled()
-            . $this->getReadOnly()
-            . $this->getWidth(true)
-            . $this->getData() . ' />';
+        . $this->getName(true)
+        . $this->getValue()
+        . $this->getDisabled()
+        . $this->getReadOnly()
+        . $this->getWidth(true)
+        . $this->getData() . ' />';
     }
 }
 
@@ -1697,9 +1703,9 @@ class Form_Hidden extends Form_Element {
     public function get()
     {
         return '<input type="hidden" '
-            . $this->getName(true)
-            . $this->getValue()
-            . '/>';
+        . $this->getName(true)
+        . $this->getValue()
+        . '/>';
     }
 }
 
@@ -1710,13 +1716,13 @@ class Form_File extends Form_Element {
     {
 
         return '<input type="file" '
-            . $this->getName(true)
-            . $this->getTitle(true)
-            . $this->getDisabled()
-            . $this->getReadOnly()
-            . $this->getWidth(true)
-            . $this->getData()
-            . ' />';
+        . $this->getName(true)
+        . $this->getTitle(true)
+        . $this->getDisabled()
+        . $this->getReadOnly()
+        . $this->getWidth(true)
+        . $this->getData()
+        . ' />';
     }
 }
 
@@ -1747,15 +1753,15 @@ class Form_Password extends Form_Element {
     public function get()
     {
         return '<input type="password" '
-            . $this->getName(true)
-            . $this->getTitle(true)
-            . $this->getDisabled()
-            . $this->getReadOnly()
-            . $this->getValue()
-            . $this->getWidth(true)
-            . $this->getData()
-            . $this->getAutoComplete()
-            . ' />';
+        . $this->getName(true)
+        . $this->getTitle(true)
+        . $this->getDisabled()
+        . $this->getReadOnly()
+        . $this->getValue()
+        . $this->getWidth(true)
+        . $this->getData()
+        . $this->getAutoComplete()
+        . ' />';
     }
 }
 
@@ -1890,9 +1896,9 @@ class Form_Select extends Form_Element {
     public function get()
     {
         $content[] = '<select '
-            . $this->getName(true)
-            . $this->getDisabled()
-            . $this->getData() . '>';
+        . $this->getName(true)
+        . $this->getDisabled()
+        . $this->getData() . '>';
 
         if (empty($this->value) || !is_array($this->value)) {
             return null;
@@ -1956,10 +1962,10 @@ class Form_Multiple extends Form_Element {
     public function get()
     {
         $content[] = '<select ' . $this->getName(true) . 'multiple="multiple" '
-            . $this->getData()
-            . $this->getWidth(true)
-            . $this->getDisabled()
-            . '>';
+        . $this->getData()
+        . $this->getWidth(true)
+        . $this->getDisabled()
+        . '>';
         foreach($this->value as $value=>$label) {
             if (!is_string($value) && !is_numeric($value)) {
                 continue;
@@ -2048,13 +2054,13 @@ class Form_Checkbox extends Form_Element {
     public function get()
     {
         return '<input type="checkbox" ' . $this->getName(true)
-            . $this->getTitle(true)
-            . $this->getValue()
-            . $this->getDisabled()
-            . $this->getReadOnly()
-            . $this->getMatch()
-            . $this->getData()
-            . ' />';
+        . $this->getTitle(true)
+        . $this->getValue()
+        . $this->getDisabled()
+        . $this->getReadOnly()
+        . $this->getMatch()
+        . $this->getData()
+        . ' />';
     }
 
 }
@@ -2082,13 +2088,13 @@ class Form_RadioButton extends Form_Element {
     public function get()
     {
         return '<input type="radio" ' . $this->getName(true)
-            . $this->getTitle(true)
-            . $this->getValue()
-            . $this->getDisabled()
-            . $this->getReadOnly()
-            . $this->getMatch()
-            . $this->getData()
-            . ' />';
+        . $this->getTitle(true)
+        . $this->getValue()
+        . $this->getDisabled()
+        . $this->getReadOnly()
+        . $this->getMatch()
+        . $this->getData()
+        . ' />';
     }
 }
 
@@ -2428,7 +2434,7 @@ class Form_Element {
             $extra[] = $this->getStyle(true);
         }
 
-        // Don't check isset here. Required needs to be checked in 
+        // Don't check isset here. Required needs to be checked in
         // the getClass function.
         $extra[] = $this->getClass(true);
 
