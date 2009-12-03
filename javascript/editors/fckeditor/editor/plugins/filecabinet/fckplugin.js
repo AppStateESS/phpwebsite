@@ -23,7 +23,7 @@ Filecabinet.prototype.Execute = function()
         x = (screen.availWidth - fc_width)/2;
     }
     
-    window.open('../../../../index.php?module=filecabinet&instance=' + FCK.Name + '&aop=fckeditor', 'File Cabinet', 'top='+ y +',left='+ x +',screenY='+ y +',screenX='+ x +',toolbar=no,titlebar=no,scrollbars=yes,menubar=no,location=no,resizable=yes,width='+fc_width+',height='+fc_height);
+    window.open('../../../../index.php?module=filecabinet&instance=' + FCK.Name + '&aop=fckeditor', '', 'top='+ y +',left='+ x +',screenY='+ y +',screenX='+ x +',toolbar=no,titlebar=no,scrollbars=yes,menubar=no,location=no,resizable=yes,width='+fc_width+',height='+fc_height);
 }
 
 // Register the command.
