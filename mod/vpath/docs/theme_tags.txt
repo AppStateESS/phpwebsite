@@ -1,8 +1,0 @@
-The vPath module only has one theme tag. 
-
-Name: view
-Tag : VPATH_VIEW
----------------------
-Normally, the vpath view is styled horizontally. It might be best
-to place it near the top of your theme.
-
