@@ -29,5 +29,6 @@ $settings['path_prefix']    = 'You are here:';
 $settings['path_suffix']    = null;
 $settings['divider']        = 1;
 $settings['divider_space']  = 1;
+$settings['link_current']   = 0;
 
 ?>

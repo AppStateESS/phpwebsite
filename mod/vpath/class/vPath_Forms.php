@@ -86,6 +86,10 @@ class vPath_Forms {
         $form->setSize('path_suffix', 30);
         $form->setLabel('path_suffix', dgettext('vpath', 'Text after the path'));
 
+        $form->addCheckbox('link_current', 1);
+        $form->setMatch('link_current', PHPWS_Settings::get('vpath', 'link_current'));
+        $form->setLabel('link_current', dgettext('vpath', 'Make current location (end of path) clickable'));
+
         $form->addSubmit('save', dgettext('vpath', 'Save settings'));
         
         $tpl = $form->getTemplate();

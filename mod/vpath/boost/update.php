@@ -38,6 +38,8 @@ function vpath_update(&$content, $currentVersion)
 1.0.1 changes
 ---------------------
 + Added setting to hide path on Home page
++ Added setting to make current location clickable
++ Added a few more comments in functions
 </pre>';
         
 

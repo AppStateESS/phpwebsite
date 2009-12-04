@@ -2,6 +2,8 @@ Version 1.0.1
 ------------------------------------------------------
 December 3 2009
 + Added setting to hide path on Home page
++ Added setting to make current location clickable
++ Added a few more comments in functions
 
 
 Version 1.0.0

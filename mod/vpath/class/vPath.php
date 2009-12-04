@@ -142,6 +142,10 @@ class vPath {
             PHPWS_Settings::set('vpath', 'divider_space', 1) :
             PHPWS_Settings::set('vpath', 'divider_space', 0);
 
+        isset($_POST['link_current']) ?
+            PHPWS_Settings::set('vpath', 'link_current', 1) :
+            PHPWS_Settings::set('vpath', 'link_current', 0);
+
         if (!empty($_POST['path_prefix'])) {
             PHPWS_Settings::set('vpath', 'path_prefix', PHPWS_Text::parseInput($_POST['path_prefix']));
         } else {
@@ -216,7 +220,11 @@ class vPath {
             /* check for the current link */
             if ((isset($current_key_id) && $link['key_id'] == $current_key_id) || (isset($current_url) && (strpos($link['url'], $current_url) !== false)) || (isset($redirect_url) && (strpos($link['url'], $redirect_url) !== false))) {
                 /* add it's title to the crumb list */
-                $list[] = $link['title'];
+                if (PHPWS_Settings::get('vpath', 'link_current')) {
+                    $list[] = sprintf('<a href="%s">%s</a>', $link['url'], $link['title']);
+                } else {
+                    $list[] = $link['title'];
+                }
                 /* if it has a parent keep going back */
                 if ($link['parent']) {
                     vPath::getCrumbs($links, $list, $link['parent']);
@@ -224,14 +232,24 @@ class vPath {
             }
         }
         
+        /* if the current item is not in the menu */
         if (empty($list)) {
             if (isset($GLOBALS['Layout_Page_Title_Add'])) {
-                $list[0] = $GLOBALS['Layout_Page_Title_Add'];
+                $title = $GLOBALS['Layout_Page_Title_Add'];
             } else {
-                $list[0] = $_SESSION['Layout_Settings']->getPageTitle();
+                $title = $_SESSION['Layout_Settings']->getPageTitle();
+            }
+            if (PHPWS_Settings::get('vpath', 'link_current')) {
+                $list[0] = sprintf('<a href="%s">%s</a>', PHPWS_Core::getCurrentUrl(), $title);
+            } else {
+                $list[0] = $title;
             }
         }
+
+        /* now reverse the order */
         $list = array_reverse($list);
+
+        /* put it all together */
         $tpl['PREFIX'] = PHPWS_Settings::get('vpath', 'path_prefix');
         $tpl['SUFFIX'] = PHPWS_Settings::get('vpath', 'path_suffix');
         require(PHPWS_SOURCE_DIR . 'mod/vpath/inc/dividers.php');
