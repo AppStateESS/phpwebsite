@@ -131,6 +131,10 @@ class vPath {
             PHPWS_Settings::set('vpath', 'enable_path', 1) :
             PHPWS_Settings::set('vpath', 'enable_path', 0);
 
+        isset($_POST['show_on_home']) ?
+            PHPWS_Settings::set('vpath', 'show_on_home', 1) :
+            PHPWS_Settings::set('vpath', 'show_on_home', 0);
+
         PHPWS_Settings::set('vpath', 'menu_id', $_POST['menu_id']);
         PHPWS_Settings::set('vpath', 'divider', $_POST['divider']);
 

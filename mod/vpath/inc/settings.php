@@ -24,6 +24,7 @@
 
 $settings['enable_path']    = 1;
 $settings['menu_id']        = 1;
+$settings['show_on_home']   = 0;
 $settings['path_prefix']    = 'You are here:';
 $settings['path_suffix']    = null;
 $settings['divider']        = 1;

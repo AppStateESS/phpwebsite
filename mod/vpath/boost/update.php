@@ -28,14 +28,33 @@ function vpath_update(&$content, $currentVersion)
 
     switch ($currentVersion) {
         
-    case version_compare($currentVersion, '1.0.0', '<'):
-        $content[] = '<pre>
-1.0.0 changes
----------------------
-+ initial writing.</pre>';
-        
-    }
+    case version_compare($currentVersion, '1.0.1', '<'):
+        $content[] = '<pre>';
 
+        $files = array( 'templates/edit_settings.tpl');
+        vpathUpdateFiles($files, $content);
+    
+        $content[] = '
+1.0.1 changes
+---------------------
++ Added setting to hide path on Home page
+</pre>';
+        
+
+
+    } // end switch
     return true;
 }
+
+
+function vpathUpdateFiles($files, &$content)
+{
+    if (PHPWS_Boost::updateFiles($files, 'vpath')) {
+        $content[] = '--- Updated the following files:';
+    } else {
+        $content[] = '--- Unable to update the following files:';
+    }
+    $content[] = "    " . implode("\n    ", $files);
+}
+
 ?>

@@ -23,7 +23,16 @@
 */
 
 if (PHPWS_Settings::get('vpath', 'enable_path')) {
-    vPath::buildTrail(PHPWS_Settings::get('vpath', 'menu_id'));
+    if (!PHPWS_Settings::get('vpath', 'show_on_home')) {
+        $key = Key::getCurrent();
+        if (!empty($key) && $key->isHomeKey()) {
+            $foobar = null;
+        } else {
+            vPath::buildTrail(PHPWS_Settings::get('vpath', 'menu_id'));
+        }
+    } else {
+        vPath::buildTrail(PHPWS_Settings::get('vpath', 'menu_id'));
+    }
 }
 
 ?>

@@ -55,6 +55,10 @@ class vPath_Forms {
         $form->setMatch('enable_path', PHPWS_Settings::get('vpath', 'enable_path'));
         $form->setLabel('enable_path', dgettext('vpath', 'Enable vpath'));
 
+        $form->addCheckbox('show_on_home', 1);
+        $form->setMatch('show_on_home', PHPWS_Settings::get('vpath', 'show_on_home'));
+        $form->setLabel('show_on_home', dgettext('vpath', 'Display path on home'));
+
         $db = new PHPWS_DB('menus');
         $db->addOrder('title asc');
         $result = $db->select();

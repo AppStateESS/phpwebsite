@@ -41,6 +41,9 @@ msgstr ""
 msgid "Enable vpath"
 msgstr ""
 
+msgid "Display path on home"
+msgstr ""
+
 msgid "General Settings"
 msgstr ""
 
