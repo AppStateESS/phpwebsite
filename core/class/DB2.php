@@ -40,8 +40,7 @@ require_once PHPWS_SOURCE_DIR . 'core/class/DB2/DB2_Join.php';
 define('DB2_ONE', 1);
 define('DB2_ROW', 2);
 define('DB2_COLUMN', 3);
-define('DB2_INDEXED_COLUMN', 4);
-define('DB2_ALL', 5);
+define('DB2_ALL', 4);
 
 define('DB2_SELECT', 1);
 define('DB2_UPDATE', 2);
@@ -256,7 +255,6 @@ class DB2 extends Data {
         if ($select_type == DB2_ONE ||
         $select_type == DB2_ROW ||
         $select_type == DB2_COLUMN ||
-        $select_type == DB2_INDEXED_COLUMN ||
         $select_type == DB2_ALL) {
             $this->select_type = $select_type;
         } else {
@@ -792,12 +790,14 @@ class DB2 extends Data {
     {
         $this->updateQuery();
         $this->execute($this->query);
+        return $this->rows_affected;
     }
 
     public function delete()
     {
         $this->deleteQuery();
         $this->execute($this->query);
+        return $this->rows_affected;
     }
 
     /**
