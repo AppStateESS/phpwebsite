@@ -42,9 +42,9 @@ class Tag {
 
     /**
      * Class definition of tag
-     * @var string
+     * @var array
      */
-    protected $class = null;
+    private $class = array();
 
     /**
      * If true, the tag is open (e.g. <p></p>), closed (e.g. <br />) otherwise)
@@ -74,12 +74,18 @@ class Tag {
 
     public function __toString()
     {
+        if (empty($this->type)) {
+            trigger_error(dgettext('core', 'Tag type not set'));
+            return '';
+        }
         $data[] = "<$this->type";
 
         $tag_parameters = get_object_vars($this);
         unset($tag_parameters['open']);
         unset($tag_parameters['type']);
         unset($tag_parameters['error']);
+        $tag_parameters['class'] = implode(' ', $this->class);
+
         if (!empty($tag_parameters)) {
             foreach ($tag_parameters as $pname=>$param) {
                 if (is_null($param)) {
@@ -109,10 +115,10 @@ class Tag {
 
     public function setClass($class)
     {
-        if (preg_match('/[^\w\-]/', $class)) {
+        if (preg_match('/[^\w\-\s]/', $class)) {
             trigger_error(dgettext('core', 'Improper class name'));
         }
-        $this->class = $class;
+        $this->class[] = $class;
     }
 
     public function setStyle($style)
@@ -121,6 +127,19 @@ class Tag {
             trigger_error(dgettext('core', 'Improperly formatted style settings'));
         }
         $this->style = $style;
+    }
+
+    public function setId($id)
+    {
+        if (preg_match('/[^\w\-]/', $id)) {
+            trigger_error(dgettext('core', 'Improperly id name'));
+        }
+        $this->id = $id;
+    }
+
+    protected function setOpen($open)
+    {
+        $this->open = (bool)$open;
     }
 }
 

@@ -52,17 +52,16 @@ class Image extends Tag {
      */
     protected $title = null;
 
-    protected $open = false;
-
     public function __construct($src)
     {
         $this->setType('img');
         $this->setSrc($src);
+        $this->setOpen(false);
     }
 
     public function setSrc($src)
     {
-        if (preg_match('/[^\w\.\/\s]/', $src)) {
+        if (preg_match('/[^\w\.\/\s:]/', $src)) {
             throw new PEAR_Exception(dgettext('core', 'Improperly formated image src'));
         }
         $this->src = $src;
@@ -114,7 +113,6 @@ class Image extends Tag {
         $this->setHeight($dimen[1]);
         return true;
     }
-
 }
 
 ?>

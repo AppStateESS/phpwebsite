@@ -19,7 +19,9 @@
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
 
-class Icon {
+require_once PHPWS_SOURCE_DIR . 'core/class/Image.php';
+
+class Icon extends Image {
 
     public function __construct($type)
     {
@@ -27,19 +29,51 @@ class Icon {
         static $params = null;
 
         if (empty($params)) {
-            $this->loadParams();
+            $params = $this->pullParams();
         }
+
+        $icon = & $params['icons'][$type];
+        if (empty($icon)) {
+            return;
+        }
+
+        if (isset($icon['map'])) {
+            // if using a map, use a blank png
+            $src = PHPWS_SOURCE_HTTP . 'images/icons/blank.png';
+            $this->setClass($icon['map']);
+            $this->setStyle(sprintf('background-position : %s %s', $icon['x'], $icon['y']));
+            $this->setWidth($icon['width']);
+            $this->setHeight($icon['height']);
+        } elseif (isset($icon['src'])) {
+            $src = PHPWS_SOURCE_HTTP . 'images/icons/' . $params['source'] . $icon['src'];
+        }
+        parent::__construct($src);
     }
 
 
     public function __toString()
     {
-        return sprintf('<img src="%s" />', $thing);
+        return parent::__toString();
     }
 
-    private function loadParams()
+    private function pullParams()
     {
-        $filename = PHPWS_SOURCE_HTTP . 'core/conf/icons.php';
+        $filename = PHPWS_SOURCE_DIR . 'core/conf/icons.php';
+        include $filename;
+
+        if (!isset($source)) {
+            throw new PEAR_Exception(dgettext('core', 'Icon file missing source directory'));
+        }
+
+        if (!empty($maps)) {
+            $params['maps'] = $maps;
+        }
+        $params['source'] = $source;
+        $params['icons'] = $icons;
+        if (isset($default_icon)) {
+            $params['default_icon'] = $default_icon;
+        }
+        return $params;
     }
 }
 
