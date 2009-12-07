@@ -195,7 +195,7 @@ class vPath {
             } else {
                 $current_key_id = null;
             }
-    
+
         /* if there is no key, get the url */
         } else {
     
@@ -203,11 +203,11 @@ class vPath {
             static $redirect_url = null;
     
             if (!$current_url) {
-                $current_url = PHPWS_Core::getCurrentUrl(true,false);
+                $current_url = preg_quote(PHPWS_Core::getCurrentUrl(true,false));
             }
     
             if (!$redirect_url) {
-                $redirect_url = PHPWS_Core::getCurrentUrl();
+                $redirect_url = preg_quote(PHPWS_Core::getCurrentUrl());
             }
         
         }
@@ -218,7 +218,10 @@ class vPath {
         /* now lets go through the menu links */
         foreach ($links as $link) {
             /* check for the current link */
-            if ((isset($current_key_id) && $link['key_id'] == $current_key_id) || (isset($current_url) && (strpos($link['url'], $current_url) !== false)) || (isset($redirect_url) && (strpos($link['url'], $redirect_url) !== false))) {
+            if ( (isset($current_key_id) && $link['key_id'] == $current_key_id) || 
+                 (isset($current_url) && (preg_match("@$current_url\$@", $link['url']))) || 
+                 (isset($redirect_url) && (preg_match("@$redirect_url\$@", $link['url'])))
+          ) {
                 /* add it's title to the crumb list */
                 if (PHPWS_Settings::get('vpath', 'link_current')) {
                     $list[] = sprintf('<a href="%s">%s</a>', $link['url'], $link['title']);

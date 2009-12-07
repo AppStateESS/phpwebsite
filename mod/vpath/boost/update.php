@@ -43,6 +43,15 @@ function vpath_update(&$content, $currentVersion)
 </pre>';
         
 
+    case version_compare($currentVersion, '1.0.2', '<'):
+        $content[] = '<pre>';
+        $content[] = '
+1.0.2 changes
+---------------------
++ Fixed bug in buildTrail() function
+</pre>';
+
+
 
     } // end switch
     return true;
