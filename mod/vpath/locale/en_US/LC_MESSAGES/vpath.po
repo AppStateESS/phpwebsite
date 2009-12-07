@@ -47,6 +47,9 @@ msgstr ""
 msgid "Make current location (end of path) clickable"
 msgstr ""
 
+msgid "Display sub menu for current location"
+msgstr ""
+
 msgid "General Settings"
 msgstr ""
 

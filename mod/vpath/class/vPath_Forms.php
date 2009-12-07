@@ -90,6 +90,10 @@ class vPath_Forms {
         $form->setMatch('link_current', PHPWS_Settings::get('vpath', 'link_current'));
         $form->setLabel('link_current', dgettext('vpath', 'Make current location (end of path) clickable'));
 
+        $form->addCheckbox('show_sub_menu', 1);
+        $form->setMatch('show_sub_menu', PHPWS_Settings::get('vpath', 'show_sub_menu'));
+        $form->setLabel('show_sub_menu', dgettext('vpath', 'Display sub menu for current location'));
+
         $form->addSubmit('save', dgettext('vpath', 'Save settings'));
         
         $tpl = $form->getTemplate();

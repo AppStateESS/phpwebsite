@@ -52,6 +52,21 @@ function vpath_update(&$content, $currentVersion)
 </pre>';
 
 
+    case version_compare($currentVersion, '1.0.3', '<'):
+        $content[] = '<pre>';
+
+        $files = array( 'templates/edit_settings.tpl', 
+                        'templates/sub.tpl'
+        );
+        vpathUpdateFiles($files, $content);
+    
+        $content[] = '
+1.0.3 changes
+---------------------
++ Added option to display sub menu for current location
+</pre>';
+        
+
 
     } // end switch
     return true;

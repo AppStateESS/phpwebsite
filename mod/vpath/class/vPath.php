@@ -146,6 +146,10 @@ class vPath {
             PHPWS_Settings::set('vpath', 'link_current', 1) :
             PHPWS_Settings::set('vpath', 'link_current', 0);
 
+        isset($_POST['show_sub_menu']) ?
+            PHPWS_Settings::set('vpath', 'show_sub_menu', 1) :
+            PHPWS_Settings::set('vpath', 'show_sub_menu', 0);
+
         if (!empty($_POST['path_prefix'])) {
             PHPWS_Settings::set('vpath', 'path_prefix', PHPWS_Text::parseInput($_POST['path_prefix']));
         } else {
@@ -232,6 +236,10 @@ class vPath {
                 if ($link['parent']) {
                     vPath::getCrumbs($links, $list, $link['parent']);
                 }
+                /* print the sub-menu if enabled */
+                if (PHPWS_Settings::get('vpath', 'show_sub_menu')) {
+                    vPath::buildSub($links, $link['id'], $link['title']);
+                }
             }
         }
         
@@ -280,6 +288,22 @@ class vPath {
                     return;
                 }
             }
+        }
+    }
+    
+    
+    function buildSub(&$links, $id, $title) {
+        $tpl['LINKS'] = null;
+        foreach ($links as $l) {
+            if ($l['parent'] == $id) {
+                $link = sprintf('<a class="menu-link-href" href="%s">%s</a>', $l['url'], $l['title']);
+                $tpl['LINKS'][]['LINK'] = $link;
+            }
+        }
+        if ($tpl['LINKS']) {
+            $tpl['TITLE'] = $title;
+            $content = PHPWS_Template::process($tpl, 'vpath', 'sub.tpl');
+            Layout::add($content, 'vpath', 'sub');
         }
     }
 

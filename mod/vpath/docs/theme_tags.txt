@@ -1,8 +1,14 @@
-The vPath module only has one theme tag. 
+The vPath module has two optional theme tags. 
 
 Name: view
 Tag : VPATH_VIEW
 ---------------------
 Normally, the vpath view is styled horizontally. It might be best
 to place it near the top of your theme.
+
+Name: sub
+Tag : VPATH_SUB
+---------------------
+Normally, the vpath sub is styled vertically. It might be best
+to place it near the top of a column in your theme.
 
