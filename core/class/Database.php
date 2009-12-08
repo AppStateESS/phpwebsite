@@ -302,6 +302,8 @@ class PHPWS_DB {
             $columns =  $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
 
             if (PEAR::isError($columns)) {
+                PHPWS_Error::log('Could not get columns in table: ' . $table);
+                PHPWS_Error::log($columns);
                 return $columns;
             }
 
@@ -2419,13 +2421,19 @@ class PHPWS_DB {
         if (!is_array($object_vars)) {
             return PHPWS_Error::get(PHPWS_DB_NO_OBJ_VARS, 'core', 'PHPWS_DB::saveObject');
         }
-
+        
         foreach ($object_vars as $column => $value){
             if ($stripChar == true) {
                 $column = substr($column, 1);
             }
 
-            if (!$this->isTableColumn($column)) {
+            $isTblColumn = $this->isTableColumn($column);
+            
+            if(PEAR::isError($isTblColumn)){
+                throw new Exception('Could not determine if column ' . $column . ' is a valid column in this table. Check table ownership.');
+            }
+            
+            if (!$isTblColumn) {
                 continue;
             }
 
@@ -2435,7 +2443,7 @@ class PHPWS_DB {
 
             $this->addValue($column, $value);
         }
-
+        
         if (isset($this->qwhere) || !empty($this->where)) {
             $result = $this->update();
         } else {
