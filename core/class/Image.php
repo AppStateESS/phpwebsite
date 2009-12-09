@@ -113,6 +113,11 @@ class Image extends Tag {
         $this->setHeight($dimen[1]);
         return true;
     }
+
+    public function setAlt($alt)
+    {
+        $this->alt = htmlentities($alt);
+    }
 }
 
 ?>

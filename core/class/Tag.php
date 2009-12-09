@@ -44,7 +44,7 @@ class Tag {
      * Class definition of tag
      * @var array
      */
-    private $class = array();
+    private $class = null;
 
     /**
      * If true, the tag is open (e.g. <p></p>), closed (e.g. <br />) otherwise)
@@ -84,7 +84,9 @@ class Tag {
         unset($tag_parameters['open']);
         unset($tag_parameters['type']);
         unset($tag_parameters['error']);
-        $tag_parameters['class'] = implode(' ', $this->class);
+        if (!empty($this->class)) {
+            $tag_parameters['class'] = implode(' ', $this->class);
+        }
 
         if (!empty($tag_parameters)) {
             foreach ($tag_parameters as $pname=>$param) {
