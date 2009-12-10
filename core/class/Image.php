@@ -61,7 +61,7 @@ class Image extends Tag {
 
     public function setSrc($src)
     {
-        if (preg_match('/[^\w\.\/\s:]/', $src)) {
+        if (preg_match('/[^\w\.\/\s:\-]/', $src)) {
             throw new PEAR_Exception(dgettext('core', 'Improperly formated image src'));
         }
         $this->src = $src;

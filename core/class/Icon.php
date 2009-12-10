@@ -46,7 +46,12 @@ class Icon extends Image {
     {
         static $params = null;
         if (empty($params)) {
-            $filename = PHPWS_SOURCE_DIR . 'core/conf/icons.php';
+            /*
+             * @todo alternate method for deciding icon set
+             */
+            $source = 'default';
+
+            $filename = PHPWS_SOURCE_DIR . 'images/icons/' . $source . '/icons.php';
             include $filename;
 
             if (!isset($source)) {
@@ -69,7 +74,7 @@ class Icon extends Image {
         }
 
         if (isset($icon['x']) && isset($icon['y'])) {
-            $o->setStyle(sprintf('background-position : %s %s', $icon['x'], $icon['y']));
+            $o->setStyle(sprintf('background-position : %spx %spx', $icon['x'], $icon['y']));
         }
 
         if (isset($icon['width'])) {
@@ -80,9 +85,10 @@ class Icon extends Image {
             $o->setHeight($icon['height']);
         }
 
-        $o->setAlt($icon['label']);
+        if (isset($icon['label'])) {
+            $o->setAlt($icon['label']);
+        }
         $icon_objects[$type] = $o;
     }
 }
-
 ?>
