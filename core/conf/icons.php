@@ -59,6 +59,7 @@ $icons['file'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-481', '
 $icons['forbidden'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-271', 'y'=>'-31', 'label'=>dgettext('core', ''));
 $icons['grin'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-31', 'y'=>'-91', 'label'=>dgettext('core', ''));
 $icons['help'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-511', 'y'=>'-121', 'label'=>dgettext('core', 'Help'));
+$icons['home'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-301', 'y'=>'-121', 'label'=>dgettext('core', 'Help'));
 $icons['image'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-150', 'y'=>'-31', 'label'=>dgettext('core', ''));
 $icons['important'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-361', 'y'=>'-61', 'label'=>dgettext('core', ''));
 $icons['lock'] = array('src'=>'lock.png', 'label'=>dgettext('core', 'Lock'));
@@ -69,6 +70,7 @@ $icons['music'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-31', '
 $icons['new'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-361', 'y'=>'-31', 'label'=>dgettext('core', ''));
 $icons['next'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-391', 'y'=>'-121', 'label'=>dgettext('core', ''));
 $icons['paste'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-211', 'y'=>'-61', 'label'=>dgettext('core', ''));
+$icons['pause'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-1', 'y'=>'-181', 'label'=>dgettext('core', ''));
 $icons['play'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-31', 'y'=>'-181', 'label'=>dgettext('core', ''));
 $icons['plus'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-211', 'y'=>'-150', 'label'=>dgettext('core', ''));
 $icons['preference'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-211', 'y'=>'-211', 'label'=>dgettext('core', ''));
@@ -86,6 +88,8 @@ $icons['sort-down'] = array('src'=>'down.png', 'label'=>dgettext('core', 'Sorted
 $icons['sort-up'] = array('src'=>'up.png', 'label'=>dgettext('core', 'Sorted ascending'));
 $icons['sound'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-599', 'y'=>'-1', 'label'=>dgettext('core', ''));
 $icons['stop-play'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-61', 'y'=>'-181', 'label'=>dgettext('core', ''));
+$icons['time'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-451', 'y'=>'-1', 'label'=>dgettext('core', ''));
+$icons['tools'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-421', 'y'=>'-211', 'label'=>dgettext('core', 'Tools'));
 $icons['trash-empty'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-511', 'y'=>'-241', 'label'=>dgettext('core', ''));
 $icons['trash-full'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-481', 'y'=>'-241', 'label'=>dgettext('core', ''));
 $icons['undo'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-301', 'y'=>'-61', 'label'=>dgettext('core', ''));
