@@ -1,1 +1,0 @@
-{LINK}&nbsp;|&nbsp;
