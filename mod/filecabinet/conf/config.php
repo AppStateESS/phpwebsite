@@ -11,7 +11,7 @@ define('FC_VIEW_MARGIN_HEIGHT', 100);
 define('FC_UPLOAD_WIDTH', 200);
 define('FC_UPLOAD_HEIGHT', 200);
 
-define('FC_NONE_IMAGE_SRC', '' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/no_image.png');
+define('FC_NONE_IMAGE_SRC', PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/no_image.png');
 
 define('FC_MAX_IMAGE_POPUP_WIDTH', 1024);
 define('FC_MAX_IMAGE_POPUP_HEIGHT', 768);
@@ -60,8 +60,8 @@ define('FC_CLASSIFY_DIRECTORY', 'files/filecabinet/incoming/');
 /**
  * Placeholder graphic for File Manager form
  */
-define('FC_PLACEHOLDER', '' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/file_select.png');
-define('FC_NO_RIGHTS', '' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/no_file_select.png');
+define('FC_PLACEHOLDER', PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/file_select.png');
+define('FC_NO_RIGHTS', PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/no_file_select.png');
 
 /**
  * Helps FC determine if a file is a video

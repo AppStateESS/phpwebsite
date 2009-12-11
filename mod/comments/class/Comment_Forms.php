@@ -191,7 +191,7 @@ class Comment_Forms {
         $tpl['DISPLAY']      = dgettext('comments', 'Display');
         $tpl['MODERATE']     = dgettext('comments', 'Moderation');
         $tpl['MONITOR']      = dgettext('comments', 'Thread Monitor');
-        
+
         return PHPWS_Template::process($tpl, 'comments', 'settings_form.tpl');
     }
 
@@ -254,7 +254,7 @@ class Comment_Forms {
                                                                   'title'=>dgettext('comments', 'Delete rank'),
                                                                   'type'=>'button'));
             }
-                                                              
+
             if (!empty($rank->user_ranks)) {
                 $rows = array();
                 foreach  ($rank->user_ranks as $rank) {
@@ -330,7 +330,7 @@ class Comment_Forms {
         $form->setMaxSize('image', '255');
         $form->setSize('image', $textwidth);
         $form->setLabel('image', dgettext('comments', 'Rank Image'));
-        $form->addTplTag('IMAGE_HELP', dgettext('comments', 'ex.: images/comments/Member.gif'));
+        $form->addTplTag('IMAGE_HELP', dgettext('comments', 'ex.: images/comments/Member'));
 
         // stack
         $yes_no = array(1,0);
@@ -394,7 +394,7 @@ class Comment_Forms {
         $settings['allow_user_monitors'] = (int) !empty($_POST['allow_user_monitors']);
         $settings['default_approval'] = (int)$_POST['default_approval'];
         $settings['recent_comments'] = (int)$_POST['recent_comments'];
-        
+
         PHPWS_Settings::set('comments', $settings);
         return PHPWS_Settings::save('comments');
     }
@@ -405,7 +405,7 @@ class Comment_Forms {
         PHPWS_Core::initModClass('comments', 'User_Rank.php');
 
         if (isset($_POST['user_rank_id'])) {
-            $user_rank = new Comment_User_Rank($_POST['user_rank_id']);            
+            $user_rank = new Comment_User_Rank($_POST['user_rank_id']);
         } else {
             $user_rank = new Comment_User_Rank;
         }
@@ -430,7 +430,7 @@ class Comment_Forms {
         if ($rank->id) {
             $rank->allow_local_avatars = isset($_POST['allow_local_avatars']);
             $rank->minimum_local_posts = (int)$_POST['minimum_local_posts'];
-            
+
             $rank->allow_remote_avatars = isset($_POST['allow_remote_avatars']);
             $rank->minimum_remote_posts = (int)$_POST['minimum_remote_posts'];
         } else {

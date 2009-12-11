@@ -115,7 +115,7 @@ class PHPWS_Multimedia extends File_Common {
     public function rowTags()
     {
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
-            $clip = sprintf('<img src="%smod/filecabinet/img/clip.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Clip media'));
+            $clip = Icon::show('clip', dgettext('filecabinet', 'Clip media'));
             $links[] = PHPWS_Text::secureLink($clip, 'filecabinet',
                                               array('mop'=>'clip_multimedia',
                                                     'multimedia_id' => $this->id));
@@ -249,7 +249,7 @@ class PHPWS_Multimedia extends File_Common {
         $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
 
         if ($icon) {
-            $js['LINK'] = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/delete.png" />';
+            $js['LINK'] = Icon::show('delete');
         } else {
             $js['LINK'] = dgettext('filecabinet', 'Delete');
         }
@@ -355,9 +355,9 @@ class PHPWS_Multimedia extends File_Common {
     {
         $this->thumbnail = $file_name . '.jpg';
         if ($this->file_type == 'application/x-shockwave-flash') {
-            return @copy(PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/shockwave.jpg', $this->thumbnailDirectory() . $this->thumbnail);
+            return @copy(PHPWS_SOURCE_DIR . 'mod/filecabinet/img/shockwave.jpg', $this->thumbnailDirectory() . $this->thumbnail);
         } else {
-            return @copy(PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/video_generic.jpg', $this->thumbnailDirectory() . $this->thumbnail);
+            return @copy(PHPWS_SOURCE_DIR . 'mod/filecabinet/img/video_generic.jpg', $this->thumbnailDirectory() . $this->thumbnail);
         }
     }
 
@@ -442,7 +442,7 @@ class PHPWS_Multimedia extends File_Common {
 
         $file_name = $this->dropExtension();
         $this->thumbnail = $file_name . '.png';
-        return @copy(PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/audio.png', $thumbnail_directory . $this->thumbnail);
+        return @copy(PHPWS_SOURCE_DIR . 'mod/filecabinet/img/audio.png', $thumbnail_directory . $this->thumbnail);
     }
 
     public function delete()

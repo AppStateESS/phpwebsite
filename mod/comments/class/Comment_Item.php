@@ -435,7 +435,7 @@ class Comment_Item {
         $vars['QUESTION'] = dgettext('comments', 'Are you sure you want to delete this comment?');
         $vars['ADDRESS'] = 'index.php?module=comments&amp;cm_id=' . $this->id . '&amp;aop=delete_comment&amp;authkey='
             . Current_User::getAuthKey();
-        $vars['LINK'] = sprintf('<img src="%smod/comments/img/delete.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('comments', 'Delete'));
+        $vars['LINK'] = Icon::show('delete');
         $vars['CLASS'] = 'comment_delete_link';
         $vars['TITLE'] = dgettext('comments', 'Delete this comment');
         return Layout::getJavascript('confirm', $vars);
@@ -443,7 +443,7 @@ class Comment_Item {
 
     public function clearReportLink()
     {
-        $link = sprintf('<img src="%smod/comments/img/erase.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('comments', 'Clear'));
+        $link = Icon::show('clear');
         return PHPWS_Text::secureLink($link, 'comments',
                                       array('aop'=>'clear_report', 'cm_id'=>$this->id),
                                       NULL, dgettext('comments', 'Clear this report'));
@@ -641,14 +641,9 @@ class Comment_Item {
 
         $tpl['CHECKBOX'] = sprintf('<input type="checkbox" name="cm_id[]" value="%s" />', $this->id);
 
-        $approve = sprintf('<img src="%smod/comments/img/ok.png" width="20" height="20" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
-                           dgettext('comments', 'Approve this comment'),
-                           dgettext('comments', 'Approval icon'));
+        $approve = Icon::show('check', dgettext('comments', 'Approve this comment'));
 
-        $remove = sprintf('<img src="%smod/comments/img/cancel.png" width="20" height="20" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
-                          dgettext('comments', 'Remove this comment'),
-                          dgettext('comments', 'Removal icon'));
-
+        $remove = Icon::show('cancel', dgettext('comments', 'Remove this comment'));
 
         $links[] = PHPWS_Text::secureLink($approve, 'comments', array('aop'=>'approve',
                                                                       'cm_id'=>$this->id));

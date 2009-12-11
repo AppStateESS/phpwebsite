@@ -576,10 +576,7 @@ class Cabinet {
             $next_img = $db->getObjects('PHPWS_Image');
 
             if (!empty($next_img)) {
-                $next_link = sprintf('<img src="%smod/filecabinet/img/arrow_right.png" title="%s" alt="%s" />',
-                PHPWS_SOURCE_HTTP,
-                dgettext('filecabinet', 'Next image'),
-                dgettext('filecabinet', 'Next image'));
+                $next_link = Icon::show('next', dgettext('filecabinet', 'Next image'));
                 $tpl['NEXT'] = sprintf('<a id="next-link" href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(),
                 $next_img[0]->popupAddress(),
                 $next_link);
@@ -594,10 +591,7 @@ class Cabinet {
             $prev_img = $db->getObjects('PHPWS_Image');
 
             if (!empty($prev_img)) {
-                $prev_link = sprintf('<img src="%smod/filecabinet/img/arrow_left.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
-                dgettext('filecabinet', 'Previous image'),
-                dgettext('filecabinet', 'Previous image'));
-
+                $prev_link = Icon::show('previous', dgettext('filecabinet', 'Previous image'));
                 $tpl['PREV'] = sprintf('<a id="prev-link" href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(),
                 $prev_img[0]->popupAddress(),
                 $prev_link);

@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 class PS_Page {
     public $id            = 0;
@@ -79,15 +79,15 @@ class PS_Page {
 
         foreach ($this->_tpl->structure as $section_xml) {
             switch ($section_xml['TYPE']) {
-            case 'image':
-            case 'document':
-            case 'media':
-            case 'block':
-                $section = new PS_Block;
-                break;
+                case 'image':
+                case 'document':
+                case 'media':
+                case 'block':
+                    $section = new PS_Block;
+                    break;
 
-            default:
-                $section = new PS_Text;
+                default:
+                    $section = new PS_Text;
             }
 
             $section->plugSection($section_xml, $this->id);
@@ -205,7 +205,7 @@ class PS_Page {
             $subtpl['ID_LABEL'] = dgettext('pagesmith', 'Id');
             $subtpl['TITLE_LABEL'] = dgettext('pagesmith', 'Title');
             $subtpl['PAGE_LABEL'] = sprintf('<abbr title="%s">%s</a>', dgettext('pagesmith', 'Page number'),
-                                            dgettext('pagesmith', 'Pg. No.'));
+            dgettext('pagesmith', 'Pg. No.'));
             if (!empty($children)) {
                 foreach ($children as $subpage) {
                     $subtpl['subpages'][] = $subpage->row_tags(true);
@@ -224,8 +224,7 @@ class PS_Page {
         }
 
         if ($icon) {
-            $label = sprintf('<img src="images/mod/pagesmith/add.png" title="%s" alt="%s" />',
-                             $label, $label);
+            $label = Icon::show('add', $label);
         }
 
         $vars['pid']  = $this->id;
@@ -242,8 +241,7 @@ class PS_Page {
         $js['ADDRESS'] = PHPWS_Text::linkAddress('pagesmith', $vars,true);
         $js['QUESTION'] = dgettext('pagesmith', 'Are you sure you want to delete this page?');
         if ($icon) {
-            $js['LINK'] = sprintf('<img src="images/mod/pagesmith/delete.png" title="%s" alt="%s" />',
-                                  dgettext('pagesmith', 'Delete'), dgettext('pagesmith', 'Delete'));
+            $js['LINK'] = Icon::show('delete');
         } else {
             $js['LINK'] = dgettext('pagesmith', 'Delete');
         }
@@ -254,10 +252,9 @@ class PS_Page {
     {
 
         if ($icon) {
-            $label = sprintf('<img src="images/mod/pagesmith/edit.png" title="%s" alt="%s" >',
-                             dgettext('pagesmith', 'Edit page'), dgettext('pagesmith', 'Edit page'));
+            $label = Icon::show('edit', dgettext('pagesmith', 'Edit page'));
         } elseif (empty($label)) {
-                $label = dgettext('pagesmith', 'Edit');
+            $label = dgettext('pagesmith', 'Edit');
         }
 
         $vars['id']  = $this->id;
@@ -270,16 +267,16 @@ class PS_Page {
         if ($this->front_page) {
             $label = dgettext('pagesmith', 'Remove from front');
             if ($icon) {
-                $label = sprintf('<img src="images/mod/pagesmith/back.png" title="%s" alt="%s" />',
-                                 $label, $label);
+                $label = sprintf('<img src="%smod/pagesmith/img/back.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
+                $label, $label);
             }
             $title = dgettext('pagesmith', 'Click to remove from front page');
             $vars['fp'] = 0;
         } else {
             $label = dgettext('pagesmith', 'Add to front');
             if ($icon) {
-                $label = sprintf('<img src="images/mod/pagesmith/front.png" title="%s" alt="%s" />',
-                                 $label, $label);
+                $label = sprintf('<img src="%smod/pagesmith/img/front.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
+                $label, $label);
             }
             $title = dgettext('pagesmith', 'Click to display on front page');
             $vars['fp'] = 1;

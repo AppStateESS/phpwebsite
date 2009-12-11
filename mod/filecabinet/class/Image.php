@@ -399,7 +399,7 @@ class PHPWS_Image extends File_Common {
         $jsvars['window_name'] = 'edit_link';
 
         if ($icon) {
-            $jsvars['label'] =sprintf('<img src="%smod/filecabinet/img/edit.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Edit image'));
+            $jsvars['label'] = Icon::show('edit');
         } else {
             $jsvars['label'] = dgettext('filecabinet', 'Edit');
         }
@@ -417,7 +417,7 @@ class PHPWS_Image extends File_Common {
         $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
 
         if ($icon) {
-            $js['LINK'] = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/delete.png" />';
+            $js['LINK'] = Icon::show('delete');
         } else {
             $js['LINK'] = dgettext('filecabinet', 'Delete');
         }
@@ -427,7 +427,7 @@ class PHPWS_Image extends File_Common {
     public function rowTags()
     {
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
-            $clip = sprintf('<img src="%smod/filecabinet/img/clip.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Clip image'));
+            $clip = Icon::show('clip', dgettext('filecabinet', 'Clip image'));
             $links[] = PHPWS_Text::secureLink($clip, 'filecabinet',
                                               array('iop'      => 'clip_image',
                                                     'image_id' => $this->id));

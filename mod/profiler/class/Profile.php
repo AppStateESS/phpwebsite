@@ -102,8 +102,7 @@ class Profile {
             return null;
         }
 
-
-        return sprintf('<a class="email" href="mailto:%s"><img src="%smod/profiler/img/email.png" alt="%s" title="%s" /></a>', $this->email, PHPWS_SOURCE_HTTP, dgettext('profiler', 'Email'), dgettext('profiler', 'Email'));
+        return sprintf('<a class="email" href="mailto:%s">%s</a>', $this->email, Icon::show('email'));
     }
 
     public function getWebsite()

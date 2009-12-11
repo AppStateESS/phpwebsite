@@ -59,7 +59,7 @@ class Folder {
                                                     true);
         $label = dgettext('filecabinet', 'Delete');
         if ($mode == 'image') {
-            $vars['LINK'] = sprintf('<img src="%smod/filecabinet/img/delete.png" alt="%s" title="%s" />', PHPWS_SOURCE_HTTP, $label, $label);
+            $vars['LINK'] = Icon::show('delete');
         } else {
             $vars['LINK'] = $label;
         }
@@ -85,7 +85,7 @@ class Folder {
         }
 
         if ($mode == 'image') {
-            $js['label'] = sprintf ('<img src="%smod/filecabinet/img/edit.png" alt="%s" title="%s"  />', PHPWS_SOURCE_HTTP, $label, $label);
+            $js['label'] = Icon::show('edit');
         } else {
             $js['label'] = & $label;
         }
@@ -140,7 +140,9 @@ class Folder {
 
     public function unpinLink()
     {
-        $img = '<img style="float : right" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/remove.png" />';
+        $icon = Icon::get('close');
+        $icon->setStyle('float : right');
+        $img = $icon->__toString();
         $key = Key::getCurrent();
         return PHPWS_Text::secureLink($img, 'filecabinet', array('aop'=>'unpin', 'folder_id'=>$this->id, 'key_id'=>$key->id));
     }
@@ -194,7 +196,7 @@ class Folder {
             break;
 
         case 'icon':
-            $vars['label'] = sprintf('<img src="%smod/filecabinet/img/add.png" alt="%s" title="%s" />', PHPWS_SOURCE_HTTP, $label, $label);
+            $vars['label'] = Icon::show('add');
             break;
 
         default:

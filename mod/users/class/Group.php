@@ -288,12 +288,12 @@ class PHPWS_Group {
         $linkVar['group_id'] = $id;
 
         $linkVar['command'] = 'edit_group';
-        $links[] = PHPWS_Text::secureLink(sprintf('<img src="%smod/users/img/edit.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('users', 'Edit')), 'users', $linkVar, NULL, dgettext('users', 'Edit Group'));
+        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'users', $linkVar, NULL, dgettext('users', 'Edit Group'));
 
         $linkVar['command'] = 'setGroupPermissions';
         $links[] = PHPWS_Text::secureLink(sprintf('<img src="%smod/users/img/key.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('users', 'Permissions')), 'users', $linkVar);
         $linkVar['command'] = 'manageMembers';
-        $links[] = PHPWS_Text::secureLink(sprintf('<img src="%smod/users/img/members.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('users', 'Members')), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(Icon::show('users', dgettext('users', 'Members')), 'users', $linkVar);
 
         $linkVar['command'] = 'remove_group';
         $removelink['ADDRESS'] = PHPWS_Text::linkAddress('users', $linkVar, TRUE);

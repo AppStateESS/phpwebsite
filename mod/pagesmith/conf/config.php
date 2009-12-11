@@ -4,12 +4,10 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
+$icon = Icon::get('edit');
+$icon->setStyle('float : left; margin-right : 5px;');
 
-$edit_img = sprintf('<img src="%smod/pagesmith/img/edit.png" title="%s" alt="%s"
-style="float : left; margin-right : 5px;" width="20px" height="20px" />', PHPWS_SOURCE_HTTP,
-                    dgettext('pagesmith', 'Edit'), dgettext('pagesmith', 'Edit'));
-
-define('PS_EDIT', $edit_img);
+define('PS_EDIT', $icon->__toString());
 
 define('PS_ALLOWED_HEADER_TAGS', '<b><strong><i><u><em>');
 

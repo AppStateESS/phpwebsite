@@ -163,8 +163,8 @@ class Signup_Slot {
 
         if ($this->_peeps) {
             $jsconf['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this person from their signup slot?');
-            $jsconf['LINK'] = sprintf('<img src="%smod/signup/img/delete.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('signup', 'Delete'));
-            $jspop['label'] = sprintf('<img src="%smod/signup/img/edit.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('signup', 'Edit'));
+            $jsconf['LINK'] = Icon::show('delete');
+            $jspop['label'] = Icon::show('edit');
 
             foreach ($this->_peeps as $peep) {
                 $links = array();

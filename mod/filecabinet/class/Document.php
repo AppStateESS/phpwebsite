@@ -56,7 +56,7 @@ class PHPWS_Document extends File_Common {
         if (empty($icon_list)) {
             $file = PHPWS_Core::getConfigFile('filecabinet', 'icons.php');
             if (!$file) {
-                return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/text.png" title="%s" alt="%s" />', htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
+                return sprintf('<img class="fc-mime-icon" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/mime_types/text.png" title="%s" alt="%s" />', htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
             } else {
                 include $file;
             }
@@ -64,15 +64,15 @@ class PHPWS_Document extends File_Common {
 
         if (!@$graphic = $icon_list[$this->file_type]) {
             if ($mode == 'small_icon') {
-                return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/s_text.png" title="%s" alt="%s" />', htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
+                return sprintf('<img class="fc-mime-icon" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/mime_types/s_text.png" title="%s" alt="%s" />', htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
             } else {
-                return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/text.png" title="%s" alt="%s" />', htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
+                return sprintf('<img class="fc-mime-icon" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/mime_types/text.png" title="%s" alt="%s" />', htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
             }
         } else {
             if ($mode == 'small_icon') {
                 $graphic = 's_' . $graphic;
             }
-            return sprintf('<img class="fc-mime-icon" src="./images/mod/filecabinet/mime_types/%s" title="%s" alt="%s" />', $graphic, htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
+            return sprintf('<img class="fc-mime-icon" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/mime_types/%s" title="%s" alt="%s" />', $graphic, htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
         }
     }
 
@@ -254,7 +254,7 @@ class PHPWS_Document extends File_Common {
         $js['ADDRESS'] = $link->getAddress();
 
         if ($icon) {
-            $js['LINK'] = sprintf('<img src="%smod/filecabinet/img/delete.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Delete document'));
+            $js['LINK'] = Icon::show('delete', dgettext('filecabinet', 'Delete document'));
         } else {
             $js['LINK'] = dgettext('filecabinet', 'Delete');
         }
@@ -275,7 +275,7 @@ class PHPWS_Document extends File_Common {
         $js['height'] = 500;
 
         if ($icon) {
-            $js['label'] =sprintf('<img src="%smod/filecabinet/img/edit.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Edit document'));
+            $js['label'] = Icon::show('edit', dgettext('filecabinet', 'Edit document'));
         } else {
             $js['label'] = dgettext('filecabinet', 'Edit');
         }

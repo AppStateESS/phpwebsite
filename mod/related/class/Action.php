@@ -44,7 +44,7 @@ class Related_Action {
         $js['address'] = 'index.php?module=related&action=postTitle';
         $js['answer'] = $related->title;
         $js['value_name'] = 'new_title';
-        $js['link'] = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/related/img/edit.png"/>';
+        $js['link'] = Icon::show('edit');
 
         $edit = javascript('prompt', $js);
 

@@ -25,12 +25,12 @@ class SlideShow {
             $filenames .= $photo->_album . '/';
             $filenames .= str_replace("'", "\'", $photo->_name) . "', ";
 
-            $label = str_replace('"', '\"', $photo->getLabel());  
-            $label = str_replace('&#39;', '\'', $label);  
+            $label = str_replace('"', '\"', $photo->getLabel());
+            $label = str_replace('&#39;', '\'', $label);
             $names  .= "'" . str_replace("'", "\'", $label) . "', ";
 
-            $blurb = str_replace('"', '\"', $photo->_blurb);  
-            $blurb = str_replace('&#39;', '\'', $blurb);  
+            $blurb = str_replace('"', '\"', $photo->_blurb);
+            $blurb = str_replace('&#39;', '\'', $blurb);
             $blurbs .= "'" . str_replace("'", "\'", $blurb) . "', ";
 
             if ((($photo->_width >= PHOTOALBUM_MAX_WIDTH ||
@@ -77,7 +77,7 @@ class SlideShow {
         $tags['QUIT_SLIDESHOW'] = sprintf('<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=view&amp;PHPWS_Album_id=%s">%s</a>',
                                           $_SESSION['PHPWS_AlbumManager']->album->_id,
                                           dgettext('photoalbum', 'Back to Album'));
-    
+
         $speedOptions = array('2000'  =>dgettext('photoalbum', 'Two Seconds'),
                               '3000'  =>dgettext('photoalbum', 'Three Seconds'),
                               '5000'  =>dgettext('photoalbum', 'Five Seconds'),
@@ -86,7 +86,7 @@ class SlideShow {
                               '30000' =>dgettext('photoalbum', 'Thirty Seconds'),
                               '60000' =>dgettext('photoalbum', 'One Minute'),
                               '120000'=>dgettext('photoalbum', 'Two Minutes'));
-    
+
         $ieFilters = array('blendTrans(duration=1)' => dgettext('photoalbum', 'Fade'),
                            'revealTrans(duration=1, transition=0)' => dgettext('photoalbum', 'Box In'),
                            'revealTrans( transition=1, duration=1)' => dgettext('photoalbum', 'Box Out'),
@@ -104,7 +104,7 @@ class SlideShow {
                            'progid:DXImageTransform.Microsoft.Iris((duration=3)' => dgettext('photoalbum', 'Iris'),
                            'revealTrans(duration=3, transition=20)' => dgettext('photoalbum', 'Strips'),
                            'revealTrans(duration=3, transition=14)' => dgettext('photoalbum', 'Barn'));
-    
+
         $form = new PHPWS_Form;
         $form->addSelect('adjustSpeedField', $speedOptions);
         $form->setMatch('adjustSpeedField', 5000);
@@ -124,15 +124,15 @@ class SlideShow {
 
         $jsTags["IE_FILTER_LABEL"] =
             dgettext('photoalbum', "Transition Effect: &nbsp;");
-    
+
         $tags["LOOP_LABEL"] = dgettext('photoalbum', "Loop:  ");
         $jsTags["LOADING_NEXT_TXT"] = dgettext('photoalbum', "Loading Next Image...");
         $jsTags["LOADING_TXT"] = dgettext('photoalbum', "Loading Image...");
-    
+
         $tags["LOW_TECH_LINK"] = dgettext('photoalbum', "Not working, try " .
                                    "the ");
-        $jsTags["PRE_FILLER"] = "'images/photoalbum/img/pre_filler.gif'";
-    
+        $jsTags["PRE_FILLER"] = "'" . PHPWS_SOURCE_HTTP . "mod/photoalbum/img/pre_filler.gif'";
+
         $linkText = dgettext('photoalbum', "low tech");
 
         $get_var["PHPWS_Album_op"] = "slideShow";
@@ -140,9 +140,9 @@ class SlideShow {
 
         $tags["LOW_TECH_LINK"] .= PHPWS_Text::moduleLink($linkText, 'photoalbum', $get_var);
         $tags["LOW_TECH_LINK"] .= dgettext('photoalbum', ' mode.');
-    
+
         $jsContent = PHPWS_Template::processTemplate($jsTags, 'photoalbum', 'slideshow/js.tpl');
-    
+
         Layout::addJSHeader($jsContent);
 
         if(count($photos) == 0) {

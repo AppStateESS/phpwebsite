@@ -353,7 +353,7 @@ final class Current_User {
 
         switch($mode) {
             case 'icon':
-                $js_vars['label'] = sprintf('<img src="%smod/users/img/permission.png" alt="%s" title="%s" />', PHPWS_SOURCE_HTTP, $label, $label);
+                $js_vars['label'] = Icon::show('users', $label);
                 break;
 
             default:
