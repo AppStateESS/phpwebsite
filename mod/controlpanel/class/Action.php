@@ -108,13 +108,13 @@ class CP_Action {
 
         $up_tab_command = dgettext('controlpanel', 'Move tab order up');
         $down_tab_command = dgettext('controlpanel', 'Move tab order down');
-        $up_tab = sprintf('<img title="%s" alt="%s" src="./images/core/list/up_pointer.png" border="0" />', $up_tab_command, $up_tab_command);
-        $down_tab = sprintf('<img title="%s" alt="%s" src="images/core/list/down_pointer.png" border="0" />', $down_tab_command, $down_tab_command);
+        $up_tab = Icon::show('sort-up', $up_tab_command);
+        $down_tab = Icon::show('sort-down', $down_tab_command);
 
         $up_link_command = dgettext('controlpanel', 'Move link order up');
         $down_link_command = dgettext('controlpanel', 'Move link order down');
-        $up_link = sprintf ('<img title="%s" alt="%s" src="images/core/list/up_pointer.png" border="0" />', $up_link_command, $up_link_command);
-        $down_link = sprintf('<img title="%s" alt="%s" src="images/core/list/down_pointer.png" border="0" />', $down_link_command, $down_link_command);
+        $up_link = Icon::show('sort-up', $up_link_command);
+        $down_link = Icon::show('sort-down', $down_link_command);
 
         if (count($tabs) > 1)
             $move_tabs = TRUE;

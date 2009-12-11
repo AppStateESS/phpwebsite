@@ -51,8 +51,8 @@ class PHPWS_Boost {
     public function isFinished()
     {
         if (in_array(BOOST_NEW, $this->status)
-            || in_array(BOOST_START, $this->status)
-            || in_array(BOOST_PENDING, $this->status)) {
+        || in_array(BOOST_START, $this->status)
+        || in_array(BOOST_PENDING, $this->status)) {
             return false;
         }
 
@@ -382,8 +382,8 @@ class PHPWS_Boost {
             return $uninstallFunction($uninstallCnt);
         } else {
             $this->addLog($mod->title,
-                          sprintf(dgettext('boost', 'Uninstall function "%s" was not found.'),
-                                  $uninstallFunction));
+            sprintf(dgettext('boost', 'Uninstall function "%s" was not found.'),
+            $uninstallFunction));
             return true;
         }
     }
@@ -500,11 +500,14 @@ class PHPWS_Boost {
             }
         }
 
+        // No longer creating mod directories
+        /*
         if (!is_dir($homeDir . 'images/mod/')) {
-            $content[] = dgettext('boost', 'Creating module image directory.');
-            $this->addLog($mod->title, dgettext('boost', 'Created directory') . ' ' . $homeDir . 'images/mod/');
-            mkdir($homeDir . 'images/mod');
+        $content[] = dgettext('boost', 'Creating module image directory.');
+        $this->addLog($mod->title, dgettext('boost', 'Created directory') . ' ' . $homeDir . 'images/mod/');
+        mkdir($homeDir . 'images/mod');
         }
+        */
 
         if ($mod->isFileDir()) {
             $filesDir = $homeDir . 'files/' . $mod->title;
@@ -524,20 +527,23 @@ class PHPWS_Boost {
             }
         }
 
+        // no longer copying source img directories
+        /*
         $modSource = $mod->getDirectory() . 'img/';
         if (is_dir($modSource)){
-            $modImage = $homeDir . 'images/mod/' . $mod->title . '/';
-            $this->addLog($mod->title, sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $modSource, $modImage));
+        $modImage = $homeDir . 'images/mod/' . $mod->title . '/';
+        $this->addLog($mod->title, sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $modSource, $modImage));
 
-            $content[] = dgettext('boost', 'Copying source image directory for module.');
+        $content[] = dgettext('boost', 'Copying source image directory for module.');
 
-            $result = PHPWS_File::recursiveFileCopy($modSource, $modImage);
-            if ($result) {
-                $content[] = dgettext('boost', 'Source image directory copied successfully.');
-            } else {
-                $content[] = dgettext('boost', 'Source image directory failed to copy.');
-            }
+        $result = PHPWS_File::recursiveFileCopy($modSource, $modImage);
+        if ($result) {
+        $content[] = dgettext('boost', 'Source image directory copied successfully.');
+        } else {
+        $content[] = dgettext('boost', 'Source image directory failed to copy.');
         }
+        }
+        */
     }
 
     public function removeDirectories($mod, &$content, $homeDir = NULL)
@@ -597,16 +603,18 @@ class PHPWS_Boost {
             }
         }
 
-        $imageModDir = $homeDir . 'images/mod/' . $mod->title . '/';
-        if (is_dir($imageModDir)) {
-            $content[] = sprintf(dgettext('boost', 'Removing directory %s'), $imageModDir);
-            $this->addLog($mod->title, sprintf(dgettext('boost', 'Removing directory %s'), $imageModDir));
-            if(!PHPWS_File::rmdir($imageModDir)) {
-                $content[] = dgettext('boost', 'Failure to remove directory.');
-                $this->addLog($mod->title, sprintf(dgettext('boost', 'Unable to remove directory %s'), $imageModDir));
-            }
-        }
-
+        // No longer needed.
+        /*
+         $imageModDir = $homeDir . 'images/mod/' . $mod->title . '/';
+         if (is_dir($imageModDir)) {
+         $content[] = sprintf(dgettext('boost', 'Removing directory %s'), $imageModDir);
+         $this->addLog($mod->title, sprintf(dgettext('boost', 'Removing directory %s'), $imageModDir));
+         if(!PHPWS_File::rmdir($imageModDir)) {
+         $content[] = dgettext('boost', 'Failure to remove directory.');
+         $this->addLog($mod->title, sprintf(dgettext('boost', 'Unable to remove directory %s'), $imageModDir));
+         }
+         }
+         */
     }
 
     public function registerMyModule($mod_to_register, $mod_to_register_to, &$content, $unregister_first=true)
@@ -953,11 +961,8 @@ class PHPWS_Boost {
 
         $directory[] = $home_dir . 'config/';
         $directory[] = $home_dir . 'images/';
-        $directory[] = $home_dir . 'templates/';
         $directory[] = $home_dir . 'files/';
         $directory[] = $home_dir . 'logs/';
-        $directory[] = $home_dir . 'javascript/';
-        $directory[] = $home_dir . 'javascript/modules/';
 
         foreach ($directory as $id=>$check){
             if (!is_dir($check)) {
@@ -1032,6 +1037,7 @@ class PHPWS_Boost {
     /**
      * Receives an array of file locations. Updates
      * the local files and backs up the older version.
+     * @deprecated
      */
     public function updateFiles($file_array, $module, $return_failures=false)
     {
@@ -1046,35 +1052,35 @@ class PHPWS_Boost {
             $aFiles = explode('/', $filename);
             $source_root = array_shift($aFiles);
             $source_filename = implode('/', $aFiles);
-            
+
             switch ($source_root) {
-            case 'templates':
-                $local_root = sprintf('%stemplates/%s/', $home_dir, $module);
-                break;
+                case 'templates':
+                    $local_root = sprintf('%stemplates/%s/', $home_dir, $module);
+                    break;
 
-            case 'conf':
-                $local_root = sprintf('%sconfig/%s/', $home_dir, $module);
-                break;
+                case 'conf':
+                    $local_root = sprintf('%sconfig/%s/', $home_dir, $module);
+                    break;
 
-            case 'img':
-                if ($module == 'core') {
-                    $local_root = sprintf('%simages/core/', $home_dir);
-                } else {
-                    $local_root = sprintf('%simages/mod/%s/', $home_dir, $module);
-                }
-                break;
+                case 'img':
+                    if ($module == 'core') {
+                        $local_root = sprintf('%simages/core/', $home_dir);
+                    } else {
+                        $local_root = sprintf('%simages/mod/%s/', $home_dir, $module);
+                    }
+                    break;
 
-            case 'javascript':
-                if ($module == 'core') {
-                    $local_root = sprintf('%sjavascript/', $home_dir);
-                } else {
-                    $local_root = sprintf('%sjavascript/modules/%s/', $home_dir, $module);
-                }
-                break;
+                case 'javascript':
+                    if ($module == 'core') {
+                        $local_root = sprintf('%sjavascript/', $home_dir);
+                    } else {
+                        $local_root = sprintf('%sjavascript/modules/%s/', $home_dir, $module);
+                    }
+                    break;
 
-            default:
-                continue;
-                break;
+                default:
+                    continue;
+                    break;
             }
 
             if (!isset($local_root) || !PHPWS_Boost::checkLocalRoot($local_root)) {
@@ -1102,7 +1108,7 @@ class PHPWS_Boost {
 
             // if file is a directory, back up the whole directory
             if (is_dir($source_file)) {
-                
+
                 // if directory exists, make a backup
                 if (is_dir($local_file) && !empty($source_filename) && BOOST_BACKUP_DIRECTORIES) {
                     $local_array = explode('/', $local_file);

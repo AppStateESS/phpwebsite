@@ -174,6 +174,7 @@ class PHPWS_Panel{
 
     public function display($content=null, $title=null, $message=null)
     {
+
         $itemname   = $this->getItemname();
         $currentTab = $this->getCurrentTab();
         $tabs       = $this->getTabs();

@@ -50,8 +50,8 @@ class Comment_Thread {
         $db->addColumn('comments_threads.*');
         $db->addColumn('comments_monitors.thread_id', null, 'monitored');
         $db->addColumn('comments_monitors.send_notice', null, 'send_notice');
-        $db->addJoin('left', 'comments_threads', 'comments_monitors', 
-                     array('comments_threads.id', 'comments_monitors.user_id'), 
+        $db->addJoin('left', 'comments_threads', 'comments_monitors',
+                     array('comments_threads.id', 'comments_monitors.user_id'),
                      array('comments_monitors.thread_id', Current_User::getId()),
                      true);
         $db->addWhere('id', $this->id);
@@ -115,8 +115,8 @@ class Comment_Thread {
         $db->addColumn('comments_monitors.thread_id', null, 'monitored');
         $db->addColumn('comments_monitors.send_notice', null, 'send_notice');
 
-        $db->addJoin('left', 'comments_threads', 'comments_monitors', 
-                     array('comments_threads.id', 'comments_monitors.user_id'), 
+        $db->addJoin('left', 'comments_threads', 'comments_monitors',
+                     array('comments_threads.id', 'comments_monitors.user_id'),
                      array('comments_monitors.thread_id', Current_User::getId()),
                      true);
         $db->addWhere('key_id', $this->key_id);
@@ -233,7 +233,7 @@ class Comment_Thread {
 
     public function priorReport()
     {
-        return sprintf('<img src="images/mod/comments/reported.png" title="%s" />', dgettext('comments', 'Reported!'));
+        return sprintf('<img src="%smod/comments/img/reported.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('comments', 'Reported!'));
     }
 
     public function setReturnUrl($url)
@@ -437,7 +437,7 @@ class Comment_Thread {
         if (PHPWS_Error::logIfError($result)) {
             return;
         }
-        
+
         $GLOBALS['Comment_Users'] = $result;
 
         // Load all groups that these authors belong to (kept separate to save query time)

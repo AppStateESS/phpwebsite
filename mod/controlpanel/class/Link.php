@@ -97,9 +97,11 @@ class PHPWS_Panel_Link {
             $authkey = null;
         }
 
-        if (is_file($this->image)) {
+        $image_path = sprintf('mod/%s/img/%s', $this->itemname, $this->image);
+
+        if (is_file($image_path)) {
             $image = sprintf('<img src="%s" title="%s" alt="%s" />',
-                             $this->image, $this->getLabel(),
+                             $image_path, $this->getLabel(),
                              sprintf(dgettext('controlpanel', '%s module icon'), $this->getLabel()));
         } else {
             return null;
@@ -108,7 +110,6 @@ class PHPWS_Panel_Link {
         if ($linkable == true) {
             $image = sprintf('<a href="%s%s">%s</a>', $this->url, $authkey, $image);
         }
-
         return $image;
     }
 

@@ -8,12 +8,12 @@
     * it under the terms of the GNU General Public License as published by
     * the Free Software Foundation; either version 2 of the License, or
     * (at your option) any later version.
-    * 
+    *
     * This program is distributed in the hope that it will be useful,
     * but WITHOUT ANY WARRANTY; without even the implied warranty of
     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     * GNU General Public License for more details.
-    * 
+    *
     * You should have received a copy of the GNU General Public License
     * along with this program; if not, write to the Free Software
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -83,9 +83,9 @@ class Rolodex_Member extends Demographics_User {
     /* using a second table with demographics */
     public $_table             = 'rolodex_member';
 
-    /* I might need this for the advanced join in list but am unsure */    
+    /* I might need this for the advanced join in list but am unsure */
     public $title              = null;
-    
+
     /* to hold the categories */
 //    public $_categories        = null; // I don't think I need this anymore
 
@@ -155,7 +155,7 @@ class Rolodex_Member extends Demographics_User {
                 }
             }
             $result = $link;
-        } 
+        }
         if (!isset($result[0])) {
             $result = null;
         }
@@ -518,9 +518,9 @@ class Rolodex_Member extends Demographics_User {
             }
             if ($icon) {
                 if (PHPWS_Settings::get('rolodex', 'contact_type')) {
-                    return PHPWS_Text::moduleLink(sprintf('<img src="images/mod/rolodex/email.png" alt="%s" title="%s" />', dgettext('rolodex', 'Email'), dgettext('rolodex', 'Email')), "rolodex",  array('uop'=>'message_member', 'id'=>$this->user_id));
+                    return PHPWS_Text::moduleLink(sprintf('<img src="%smod/rolodex/img/email.png" alt="%s" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('rolodex', 'Email'), dgettext('rolodex', 'Email')), "rolodex",  array('uop'=>'message_member', 'id'=>$this->user_id));
                 } else {
-                    return sprintf('<a class="email" href="mailto:%s"><img src="images/mod/rolodex/email.png" alt="%s" title="%s" /></a>', $this->contact_email, dgettext('rolodex', 'Email'), dgettext('rolodex', 'Email'));
+                    return sprintf('<a class="email" href="mailto:%s"><img src="%smod/rolodex/img/email.png" alt="%s" title="%s" /></a>', $this->contact_email, PHPWS_SOURCE_HTTP, dgettext('rolodex', 'Email'), dgettext('rolodex', 'Email'));
                 }
             } else {
                 if (PHPWS_Settings::get('rolodex', 'contact_type')) {
@@ -549,9 +549,9 @@ class Rolodex_Member extends Demographics_User {
         if ($print) {
             if ($icon) {
                 if (PHPWS_Settings::get('rolodex', 'contact_type')) {
-                    return PHPWS_Text::moduleLink(sprintf('<img src="images/mod/rolodex/email.png" alt="%s" title="%s" />', dgettext('rolodex', 'Email'), dgettext('rolodex', 'Email')), "rolodex",  array('uop'=>'message_member', 'id'=>$this->user_id));
+                    return PHPWS_Text::moduleLink(sprintf('<img src="%smod/rolodex/img/email.png" alt="%s" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('rolodex', 'Email'), dgettext('rolodex', 'Email')), "rolodex",  array('uop'=>'message_member', 'id'=>$this->user_id));
                 } else {
-                    return sprintf('<a class="email" href="mailto:%s"><img src="images/mod/rolodex/email.png" alt="%s" title="%s" /></a>', $email, dgettext('rolodex', 'Email'), dgettext('rolodex', 'Email'));
+                    return sprintf('<a class="email" href="mailto:%s"><img src="%smod/rolodex/img/email.png" alt="%s" title="%s" /></a>', $email, PHPWS_SOURCE_HTTP, dgettext('rolodex', 'Email'), dgettext('rolodex', 'Email'));
                 }
             } else {
                 if (PHPWS_Settings::get('rolodex', 'contact_type')) {
@@ -584,7 +584,7 @@ class Rolodex_Member extends Demographics_User {
                 return '';
             }
             if ($icon) {
-                return sprintf('<a class="url" href="%s"><img src="images/mod/rolodex/website.png" alt="%s" title="%s" /></a>', $this->tidyUrl($this->website), dgettext('rolodex', 'Web site'), dgettext('rolodex', 'Web site'));
+                return sprintf('<a class="url" href="%s"><img src="%smod/rolodex/img/website.png" alt="%s" title="%s" /></a>', $this->tidyUrl($this->website), PHPWS_SOURCE_HTTP, dgettext('rolodex', 'Web site'), dgettext('rolodex', 'Web site'));
             } else {
                 return sprintf('<a href="%s" title="%s">%s</a>',
                                $this->tidyUrl($this->website),
@@ -1118,8 +1118,8 @@ class Rolodex_Member extends Demographics_User {
             return $this->custom8;
         }
     }
-    
-    
+
+
     public function memberLinks()
     {
         $links = array();
@@ -1143,7 +1143,7 @@ class Rolodex_Member extends Demographics_User {
         $key = new Key($this->key_id);
 
         if (!$key->allowView()) {
-            Current_User::requireLogin();            
+            Current_User::requireLogin();
         }
 
         if (Current_User::allow('rolodex', 'edit_member') || $this->isMine()) {
@@ -1158,12 +1158,12 @@ class Rolodex_Member extends Demographics_User {
             }
         }
         $tpl['MEMBER_LINKS'] = $this->memberLinks();
-        
+
         Layout::addPageTitle($this->getDisplay_name(true));
         $tpl['TITLE'] = $this->getDisplay_name(true);
         $tpl['DESCRIPTION'] = PHPWS_Text::parseTag($this->getDescription(true));
         $tpl['IMAGE'] = $this->getImage(true);
-        
+
         if ($this->get_categories(true) && PHPWS_Settings::get('rolodex', 'use_categories')) {
             $tpl['CATEGORY_LINKS'] = implode(', ', $this->get_categories(true));
             $tpl['CATEGORY_LINKS_LABEL'] = dgettext('rolodex', 'Category(s)');
@@ -1331,7 +1331,7 @@ class Rolodex_Member extends Demographics_User {
             if ($comments) {
                 $tpl['COMMENTS'] = $comments->view();
             }
-        } 
+        }
         $key->flag();
 
         return PHPWS_Template::process($tpl, 'rolodex', 'view_member.tpl');
@@ -1444,21 +1444,21 @@ class Rolodex_Member extends Demographics_User {
                 }
             }
         }
-        
+
         if (PHPWS_Settings::get('rolodex', 'list_categories') && PHPWS_Settings::get('rolodex', 'use_categories')) {
             if ($this->get_categories(true)) {
                 $tpl['CATEGORY_LINKS'] = implode(', ', $this->get_categories(true));
                 $tpl['CATEGORY_LINKS_LABEL'] = dgettext('rolodex', 'Category(s)');
             }
         }
-        
+
         if (PHPWS_Settings::get('rolodex', 'list_locations') && PHPWS_Settings::get('rolodex', 'use_locations')) {
             if ($this->get_locations(true)) {
                 $tpl['LOCATION_LINKS'] = implode(', ', $this->get_locations(true));
                 $tpl['LOCATION_LINKS_LABEL'] = dgettext('rolodex', 'Location(s)');
             }
         }
-        
+
         if (PHPWS_Settings::get('rolodex', 'list_features') && PHPWS_Settings::get('rolodex', 'use_features')) {
             if ($this->get_features(true)) {
                 $tpl['FEATURE_LINKS'] = implode(', ', $this->get_features(true));
@@ -1549,7 +1549,7 @@ class Rolodex_Member extends Demographics_User {
     {
 
         if ($icon) {
-            $name = $this->getDisplay_name(true) . sprintf('&#160<img src="images/mod/rolodex/view.gif" alt="%s" title="%s" />', dgettext('rolodex', 'View Details'), dgettext('rolodex', 'View Details'));
+            $name = $this->getDisplay_name(true) . sprintf('&#160<img src="%smod/rolodex/img/view.gif" alt="%s" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('rolodex', 'View Details'), dgettext('rolodex', 'View Details'));
         } else {
             $name = $this->getDisplay_name(true);
         }
@@ -1565,8 +1565,8 @@ class Rolodex_Member extends Demographics_User {
         }
 
     }
-    
-    
+
+
     public function editLink()
     {
         $link = null;
@@ -1583,8 +1583,8 @@ class Rolodex_Member extends Demographics_User {
         }
         return $link;
     }
-    
-    
+
+
     public function editUserLink()
     {
         $link = null;
@@ -1597,8 +1597,8 @@ class Rolodex_Member extends Demographics_User {
         }
         return $link;
     }
-    
-    
+
+
     public function activateUserLink()
     {
         $link = null;
@@ -1611,8 +1611,8 @@ class Rolodex_Member extends Demographics_User {
         }
         return $link;
     }
-    
-    
+
+
     public function deactivateUserLink()
     {
         $link = null;
@@ -1625,8 +1625,8 @@ class Rolodex_Member extends Demographics_User {
         }
         return $link;
     }
-    
-    
+
+
     public function activeLink()
     {
         $link = null;
@@ -1643,15 +1643,15 @@ class Rolodex_Member extends Demographics_User {
                 $vars['command']  = 'activateUser';
                 $link = PHPWS_Text::secureLink(sprintf(dgettext('rolodex', 'Activate user %s (%s)'), $user->display_name, $user->username), 'users', $vars);
             }
-        }        
+        }
         return $link;
     }
 
 
     public function getGoogleMap($location='mailing') {
-        
+
         $address = null;
-        
+
         if ($location == 'mailing') {
             if (!empty($this->mailing_address_1))
                 $address[] = $this->mailing_address_1;
@@ -1679,17 +1679,17 @@ class Rolodex_Member extends Demographics_User {
             if (!empty($this->business_zip_code))
                 $address[] = $this->business_zip_code;
         }
-        
+
         if ($address) {
             $string = urlencode(htmlentities(implode(",", $address)));
             $googlemap = sprintf('<a class="url" href="http://maps.google.com/maps?f=q&q=%s">%s</a>', $string, dgettext('rolodex', 'Get Google Map'));
         } else {
             $googlemap = null;
         }
-        
+
         return $googlemap;
     }
-    
+
 
     public function deleteMember()
     {
@@ -1798,8 +1798,8 @@ class Rolodex_Member extends Demographics_User {
                     $thread->allowAnonymous($this->allow_anon);
                     $thread->save();
                 }
-            } 
-        } 
+            }
+        }
 
         if (PHPWS_Settings::get('rolodex', 'privacy_use_search')) {
             $search = new Search($this->key_id);
@@ -1811,7 +1811,7 @@ class Rolodex_Member extends Demographics_User {
                 return $result;
             }
         }
-        
+
         if (isset($_POST['categories']) && $_POST['categories'][0] !== '0') {
             $db = new PHPWS_DB('category_items');
             $db->addWhere('key_id', (int)$this->key_id);
@@ -2106,7 +2106,7 @@ class Rolodex_Member extends Demographics_User {
     }
 
 
-    public function stripLF($str) 
+    public function stripLF($str)
     {
         $str = str_replace("\r\n", '; ', $str);
         $str = str_replace("\n", '; ', $str);
@@ -2114,9 +2114,9 @@ class Rolodex_Member extends Demographics_User {
     }
 
 
-    public function sendNotification($new=true) 
+    public function sendNotification($new=true)
     {
-        
+
         $page_title = $_SESSION['Layout_Settings']->getPageTitle(true);
         $site_contact = PHPWS_User::getUserSetting('site_contact');
         $url = PHPWS_Core::getHomeHttp();
@@ -2136,9 +2136,9 @@ class Rolodex_Member extends Demographics_User {
         $mail->setMessageBody($message);
 
         return $mail->send();
-        
+
     }
-    
+
 
 
 }

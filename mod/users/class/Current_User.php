@@ -353,7 +353,7 @@ final class Current_User {
 
         switch($mode) {
             case 'icon':
-                $js_vars['label'] = sprintf('<img src="images/mod/users/permission.png" alt="%s" title="%s" />', $label, $label);
+                $js_vars['label'] = sprintf('<img src="%smod/users/img/permission.png" alt="%s" title="%s" />', PHPWS_SOURCE_HTTP, $label, $label);
                 break;
 
             default:

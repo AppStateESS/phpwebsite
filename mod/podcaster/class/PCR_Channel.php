@@ -8,12 +8,12 @@
     * it under the terms of the GNU General Public License as published by
     * the Free Software Foundation; either version 2 of the License, or
     * (at your option) any later version.
-    * 
+    *
     * This program is distributed in the hope that it will be useful,
     * but WITHOUT ANY WARRANTY; without even the implied warranty of
     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     * GNU General Public License for more details.
-    * 
+    *
     * You should have received a copy of the GNU General Public License
     * along with this program; if not, write to the Free Software
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -210,9 +210,9 @@ class Podcaster_Channel {
         }
 
         if ($print) {
-            if ($this->media_type == '0') 
+            if ($this->media_type == '0')
                 return dgettext('podcaster', 'Audio/Video');
-            if ($this->media_type == '1') 
+            if ($this->media_type == '1')
                 return dgettext('podcaster', 'Document');
         } else {
             return $this->media_type;
@@ -223,11 +223,11 @@ class Podcaster_Channel {
     function getItunes_explicit($print=false)
     {
         if ($print) {
-            if ($this->itunes_explicit == '0') 
+            if ($this->itunes_explicit == '0')
                 return dgettext('podcaster', 'No');
-            if ($this->itunes_explicit == '1') 
+            if ($this->itunes_explicit == '1')
                 return dgettext('podcaster', 'Yes');
-            if ($this->itunes_explicit == '2') 
+            if ($this->itunes_explicit == '2')
                 return dgettext('podcaster', 'Clean');
         } else {
             if (empty($this->itunes_explicit)) {
@@ -274,7 +274,7 @@ class Podcaster_Channel {
         $key = new Key($this->key_id);
 
         if (!$key->allowView()) {
-            Current_User::requireLogin();            
+            Current_User::requireLogin();
         }
 
         Layout::addPageTitle($this->getTitle());
@@ -288,13 +288,13 @@ class Podcaster_Channel {
             $vars['aop']  = 'new_episode';
             MiniAdmin::add('podcaster', array(PHPWS_Text::secureLink(dgettext('podcaster', 'New episode'), 'podcaster', $vars)));
         }
-        
+
         if (Current_User::allow('podcaster', 'edit_channel')) {
             $vars['id'] = $this->id;
             $vars['aop']  = 'edit_channel';
             MiniAdmin::add('podcaster', array(PHPWS_Text::secureLink(dgettext('podcaster', 'Edit channel'), 'podcaster', $vars)));
         }
-        
+
         if (Current_User::allow('podcaster', 'edit_episode') || Current_User::allow('podcaster', 'edit_channel')) {
             $vars2['aop']  = 'menu';
             $vars2['tab']  = 'list';
@@ -377,7 +377,7 @@ class Podcaster_Channel {
         $vars2['id'] = $this->id;
         $vars2['uop'] = 'view_rss';
 
-        $links[] = '<a href="./index.php?module=podcaster&amp;id=' . $this->id . '&amp;uop=view_rss"><img src="./images/mod/podcaster/rss.gif" width="80" height="15" border="0" alt="' . dgettext('podcaster', 'Subscribe RSS') . '" title="' . dgettext('podcaster', 'Subscribe RSS') . '" /></a>';
+        $links[] = '<a href="./index.php?module=podcaster&amp;id=' . $this->id . '&amp;uop=view_rss"><img src="' . PHPWS_SOURCE_HTTP . 'mod/podcaster/img/rss.gif" width="80" height="15" border="0" alt="' . dgettext('podcaster', 'Subscribe RSS') . '" title="' . dgettext('podcaster', 'Subscribe RSS') . '" /></a>';
 
         if (Current_User::allow('podcaster', 'edit_episode')){
             $vars['aop']  = 'new_episode';
@@ -426,7 +426,7 @@ class Podcaster_Channel {
         $vars2['id'] = $this->id;
 
         $vars2['uop'] = 'view_rss';
-        $links[] = '<a href="./index.php?module=podcaster&amp;id=' . $this->id . '&amp;uop=view_rss"><img src="./images/mod/podcaster/rss.gif" width="80" height="15" border="0" alt="' . dgettext('podcaster', 'Subscribe RSS') . '" title="' . dgettext('podcaster', 'Subscribe RSS') . '" /></a>';
+        $links[] = '<a href="./index.php?module=podcaster&amp;id=' . $this->id . '&amp;uop=view_rss"><img src="' . PHPWS_SOURCE_HTTP . 'mod/podcaster/img/rss.gif" width="80" height="15" border="0" alt="' . dgettext('podcaster', 'Subscribe RSS') . '" title="' . dgettext('podcaster', 'Subscribe RSS') . '" /></a>';
 
         $vars2['uop'] = 'view_archives';
         $links[] = PHPWS_Text::moduleLink(dgettext('podcaster', 'Archives'), 'podcaster', $vars2);
@@ -436,7 +436,7 @@ class Podcaster_Channel {
             $vars['aop']  = 'new_episode';
             $links[] = PHPWS_Text::secureLink(dgettext('podcaster', 'New episode'), 'podcaster', $vars);
         }
-        
+
         if (Current_User::allow('podcaster', 'edit_channel')) {
             $vars['id'] = $this->id;
             $vars['aop']  = 'edit_channel';

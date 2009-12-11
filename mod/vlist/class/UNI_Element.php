@@ -8,12 +8,12 @@
     * it under the terms of the GNU General Public License as published by
     * the Free Software Foundation; either version 2 of the License, or
     * (at your option) any later version.
-    * 
+    *
     * This program is distributed in the hope that it will be useful,
     * but WITHOUT ANY WARRANTY; without even the implied warranty of
     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     * GNU General Public License for more details.
-    * 
+    *
     * You should have received a copy of the GNU General Public License
     * along with this program; if not, write to the Free Software
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -59,7 +59,7 @@ class UNI_Element {
             $this->id = 0;
         }
         if($this->id !== 0 && $this->hasOptions()) {
-            $this->loadOptions(); 
+            $this->loadOptions();
         }
     }
 
@@ -121,8 +121,8 @@ class UNI_Element {
         }
         return $size;
     }
-    
-    
+
+
     public function getMaxsize()
     {
         if ($this->maxsize) {
@@ -132,8 +132,8 @@ class UNI_Element {
         }
         return $maxsize;
     }
-    
-    
+
+
     public function getRows()
     {
         if ($this->rows) {
@@ -143,8 +143,8 @@ class UNI_Element {
         }
         return $rows;
     }
-    
-    
+
+
     public function getCols()
     {
         if ($this->cols) {
@@ -154,8 +154,8 @@ class UNI_Element {
         }
         return $cols;
     }
-    
-    
+
+
     public function getQtyItems()
     {
         $db = new PHPWS_DB($this->db_item);
@@ -196,12 +196,12 @@ class UNI_Element {
         $db = new PHPWS_DB($this->db_item);
         $db->addWhere('element_id', $this->id);
         PHPWS_Error::logIfError($db->delete());
-        
+
         /* delete related element_options */
         $db = new PHPWS_DB($this->db_option);
         $db->addWhere('element_id', $this->id);
         PHPWS_Error::logIfError($db->delete());
-        
+
         /* delete the element */
         $db = new PHPWS_DB($this->db_element);
         $db->addWhere('id', $this->id);
@@ -219,16 +219,16 @@ class UNI_Element {
         /* delete related element_items */
         $db = new PHPWS_DB($this->db_item);
         $db->addWhere('option_id', $id);
-        PHPWS_Error::logIfError($db->delete());        
-        
+        PHPWS_Error::logIfError($db->delete());
+
         /* delete the option */
         $db = new PHPWS_DB($this->db_option);
         $db->addWhere('id', $id);
         PHPWS_Error::logIfError($db->delete());
-        
+
         /* reduce numoptions */
         $this->numoptions = $this->numoptions -1;
-        
+
         /* save the element */
         if (PHPWS_Error::logIfError($this->saveElement(true))) {
             $this->vlist->forwardMessage(dgettext('vlist', 'Error occurred when saving element.'));
@@ -248,7 +248,7 @@ class UNI_Element {
         $js['ADDRESS'] = PHPWS_Text::linkAddress('vlist', $vars,true);
         $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the element %s?'), $this->getTitle());
         if ($icon) {
-            $js['LINK'] = sprintf('<img src="images/mod/vlist/delete.png" title="%s" alt="%s" />',
+            $js['LINK'] = sprintf('<img src="%smod/vlist/img/delete.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
                                   dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
         } else {
             $js['LINK'] = dgettext('vlist', 'Delete');
@@ -261,7 +261,7 @@ class UNI_Element {
     {
 
         if ($icon) {
-            $label = sprintf('<img src="images/mod/vlist/edit.png" title="%s" alt="%s" >',
+            $label = sprintf('<img src="%smod/vlist/img/edit.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
                              dgettext('vlist', 'Edit element'), dgettext('vlist', 'Edit element'));
         } elseif (empty($label)) {
                 $label = dgettext('vlist', 'Edit');
@@ -280,26 +280,26 @@ class UNI_Element {
             $var_col = $this->list;
             $var_act = 'list_element';
             $var_dis = 'delist_element';
-            $var_act_img = 'images/mod/vlist/active.png';
-            $var_inact_img = 'images/mod/vlist/inactive.png';
+            $var_act_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/active.png';
+            $var_inact_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/inactive.png';
         } elseif ($type == 'search') {
             $var_col = $this->search;
             $var_act = 'search_element';
             $var_dis = 'desearch_element';
-            $var_act_img = 'images/mod/vlist/active.png';
-            $var_inact_img = 'images/mod/vlist/inactive.png';
+            $var_act_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/active.png';
+            $var_inact_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/inactive.png';
         } elseif ($type == 'private') {
             $var_col = $this->private;
             $var_act = 'private_element';
             $var_dis = 'deprivate_element';
-            $var_act_img = 'images/mod/vlist/locked.png';
-            $var_inact_img = 'images/mod/vlist/unlocked.png';
+            $var_act_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/locked.png';
+            $var_inact_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/unlocked.png';
         } else {
             $var_col = $this->active;
             $var_act = 'activate_element';
             $var_dis = 'deactivate_element';
-            $var_act_img = 'images/mod/vlist/active.png';
-            $var_inact_img = 'images/mod/vlist/inactive.png';
+            $var_act_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/active.png';
+            $var_inact_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/inactive.png';
         }
         if ($var_col) {
             $vars['aop'] = $var_dis;
@@ -356,7 +356,7 @@ class UNI_Element {
     }
 
 
-    function editOptions() 
+    function editOptions()
     {
         $className = get_class($this);
         $properName = ucfirst(str_ireplace('UNI_', '', $className));
@@ -373,7 +373,7 @@ class UNI_Element {
 
         if($this->numoptions > 0) {
             $loops = $this->numoptions;
-      
+
             /* must reset these arrays for when a new number of options is entered */
             $oldText = $optionText;
             $oldSort = $optionSort;
@@ -431,7 +431,7 @@ class UNI_Element {
             $vars['aop'] = 'delete_option';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('vlist', $vars,true);
             $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the option %s?'), $optionText[$i]);
-            $js['LINK'] = sprintf('<img src="images/mod/vlist/delete.png" title="%s" alt="%s" />',
+            $js['LINK'] = sprintf('<img src="%smod/vlist/img/delete.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
                                   dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
             $optionRow['DELETE'] =  javascript('confirm', $js);
 
@@ -468,16 +468,16 @@ class UNI_Element {
         $elements[0] .= PHPWS_Template::processTemplate($tpl, 'vlist', 'elements/list_options.tpl');
 
         return PHPWS_Form::makeForm('UNI_Options', 'index.php', $elements, 'post', NULL, NULL);
-    } 
+    }
 
 
 
-    function saveOptions() 
+    function saveOptions()
     {
 //print_r($_POST); exit;
         $className = get_class($this);
         $properName = ucfirst(str_ireplace('UNI_', '', $className));
-    
+
         /* for each of the posted options */
         for($i = 0; $i < sizeof($_REQUEST['UNI_OptionId']); $i++) {
             $db = new PHPWS_DB($this->db_option);
@@ -494,13 +494,13 @@ class UNI_Element {
             } else {
                 $save_array['sort']  = 0;
             }
-            
+
             $db->addWhere("id", $_REQUEST['UNI_OptionId'][$i]);
             $db->addValue($save_array);
 
             $result = $db->update();
         }
-  
+
         /* do the defualts */
         if($className == 'UNI_Checkbox' || $className == 'UNI_Multiselect') {
             for($i = 0; $i < sizeof($_REQUEST['UNI_OptionId']); $i++) {
@@ -525,10 +525,10 @@ class UNI_Element {
             PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
         }
 
-    } 
+    }
 
 
-    function save() 
+    function save()
     {
 //print_r($_POST); exit;
         if ($this->post()) {
@@ -553,7 +553,7 @@ class UNI_Element {
             $this->vlist->forwardMessage($this->vlist->message);
             PHPWS_Core::reroute('index.php?module=vlist&aop=edit_element&element=' . $this->id . '&type=' . $this->type);
         }
-    } 
+    }
 
 
     public function saveElement($update=false)
@@ -565,7 +565,7 @@ class UNI_Element {
         }
 
         /* not sure I need this anymore, don;t think so at the moment */
-        /* begin save options 
+        /* begin save options
         $db = new PHPWS_DB($this->db_option);
         foreach($this->options as $option) {
             if($update == false) {
@@ -600,8 +600,8 @@ class UNI_Element {
 
         if (isset($_POST['value'])) {
             $this->setValue($_POST['value']);
-        } 
-        
+        }
+
         isset($_POST['active']) ?
             $this->active = 1 :
             $this->active = 0 ;

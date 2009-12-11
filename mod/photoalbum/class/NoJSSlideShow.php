@@ -132,7 +132,7 @@ class NoJSSlideShow {
         if($this->indexNotAtEnd()) {
             $address = './index.php';
             $linkText = dgettext('photoalbum', 'Next');
-            $linkImage = " <img border='0' src='images/mod/photoalbum/forward_arrow.jpg' />";
+            $linkImage = ' <img border="0" src="' . PHPWS_SOURCE_HTTP . 'mod/photoalbum/img/forward_arrow.jpg" />';
 
             $get_var['PHPWS_Album_op'] = 'slideShow';
             $get_var['SS_op'] = 'adv';

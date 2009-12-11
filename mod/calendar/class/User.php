@@ -305,7 +305,7 @@ class Calendar_User {
             break;
 
         case 'ical_dl':
-            if (!empty($_GET['sdate']) && !empty($_GET['edate']) && 
+            if (!empty($_GET['sdate']) && !empty($_GET['edate']) &&
                 $this->calendar->schedule->allowICalDownload()) {
                 $this->calendar->schedule->exportEvents($_GET['sdate'], $_GET['edate']);
             } else {
@@ -1149,19 +1149,19 @@ class Calendar_User {
                 $vars = array('view'   => 'day',
                               'date'   => $event->start_time,
                               'sch_id' => $schedule->id);
-                    
+
                 $tpl['events'][$count] = $event->getTpl();
-                    
+
                 if ($current_day != strftime(CALENDAR_UPCOMING_FORMAT, $event->start_time)) {
                     $current_day = strftime(CALENDAR_UPCOMING_FORMAT, $event->start_time);
                     $tpl['events'][$count]['DAY'] = PHPWS_Text::moduleLink($current_day, 'calendar', $vars);
                 } else {
                     $tpl['events'][$count]['DAY'] = null;
                 }
-                    
+
                 $count++;
             }
-            
+
             $upcoming[] = PHPWS_Template::process($tpl, 'calendar', 'view/upcoming.tpl');
         }
 
@@ -1180,7 +1180,7 @@ class Calendar_User {
             $dl['uop'] = 'ical_event_dl';
             $dl['sch_id'] = $this->calendar->schedule->id;
             $dl['event_id'] = $event_id;
-            $icon = sprintf('<img src="images/mod/calendar/download.png" title="%s" alt="%s" />', dgettext('calendar', 'Download'), dgettext('calendar', 'Download'));
+            $icon = Icon::show('download');
             $download = new PHPWS_Link($icon, 'calendar', $dl);
             $download->setNoFollow();
             return $download->get();
@@ -1196,7 +1196,7 @@ class Calendar_User {
             $dl['sch_id'] = $this->calendar->schedule->id;
             $dl['sdate'] = $startdate;
             $dl['edate'] = $enddate;
-            $icon = sprintf('<img src="images/mod/calendar/download.png" title="%s" alt="%s" />', dgettext('calendar', 'Download'), dgettext('calendar', 'Download'));
+            $icon = Icon::show('download');
             $download = new PHPWS_Link($icon, 'calendar', $dl);
             $download->setNoFollow();
             return $download->get();

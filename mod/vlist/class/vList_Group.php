@@ -8,12 +8,12 @@
     * it under the terms of the GNU General Public License as published by
     * the Free Software Foundation; either version 2 of the License, or
     * (at your option) any later version.
-    * 
+    *
     * This program is distributed in the hope that it will be useful,
     * but WITHOUT ANY WARRANTY; without even the implied warranty of
     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     * GNU General Public License for more details.
-    * 
+    *
     * You should have received a copy of the GNU General Public License
     * along with this program; if not, write to the Free Software
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -120,7 +120,7 @@ class vList_Group {
             $db->addWhere('vlist_listing.id', 'vlist_group_items.listing_id');
             $db->addWhere('vlist_listing.approved', 1);
             $db->addWhere('vlist_listing.active', 1);
-            $db->addGroupBy('vlist_listing.id'); 
+            $db->addGroupBy('vlist_listing.id');
         }
         $num = $db->count();
         return $num;
@@ -171,7 +171,7 @@ class vList_Group {
         $js['ADDRESS'] = PHPWS_Text::linkAddress('vlist', $vars, true);
         $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the group %s?'), $this->getTitle());
         if ($icon) {
-            $js['LINK'] = sprintf('<img src="images/mod/vlist/delete.png" title="%s" alt="%s" />',
+            $js['LINK'] = sprintf('<img src="%smod/vlist/img/delete.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
                                   dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
         } else {
             $js['LINK'] = dgettext('vlist', 'Delete');
@@ -184,7 +184,7 @@ class vList_Group {
     {
 
         if ($icon) {
-            $label = sprintf('<img src="images/mod/vlist/edit.png" title="%s" alt="%s" >',
+            $label = sprintf('<img src="%smod/vlist/img/edit.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
                              dgettext('vlist', 'Edit group'), dgettext('vlist', 'Edit group'));
         } elseif (empty($label)) {
                 $label = dgettext('vlist', 'Edit');
@@ -208,7 +208,7 @@ class vList_Group {
         $db = new PHPWS_DB('vlist_group_items');
         $db->addWhere('group_id', $this->id);
         PHPWS_Error::logIfError($db->delete());
-        
+
     }
 
 
@@ -238,7 +238,7 @@ class vList_Group {
             $vars['aop']  = 'edit_group';
             $links[] = PHPWS_Text::secureLink(dgettext('vlist', 'Edit group'), 'vlist', $vars);
         }
-        
+
         $links = array_merge($links, vList::navLinks());
 
         if($links)

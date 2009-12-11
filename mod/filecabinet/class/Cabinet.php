@@ -576,7 +576,8 @@ class Cabinet {
             $next_img = $db->getObjects('PHPWS_Image');
 
             if (!empty($next_img)) {
-                $next_link = sprintf('<img src="images/mod/filecabinet/arrow_right.png" title="%s" alt="%s" />',
+                $next_link = sprintf('<img src="%smod/filecabinet/img/arrow_right.png" title="%s" alt="%s" />',
+                PHPWS_SOURCE_HTTP,
                 dgettext('filecabinet', 'Next image'),
                 dgettext('filecabinet', 'Next image'));
                 $tpl['NEXT'] = sprintf('<a id="next-link" href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(),
@@ -593,7 +594,7 @@ class Cabinet {
             $prev_img = $db->getObjects('PHPWS_Image');
 
             if (!empty($prev_img)) {
-                $prev_link = sprintf('<img src="images/mod/filecabinet/arrow_left.png" title="%s" alt="%s" />',
+                $prev_link = sprintf('<img src="%smod/filecabinet/img/arrow_left.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
                 dgettext('filecabinet', 'Previous image'),
                 dgettext('filecabinet', 'Previous image'));
 
@@ -1373,17 +1374,17 @@ class Cabinet {
 
         if (PHPWS_Settings::get('filecabinet', 'fck_allow_images')) {
             $active = true;
-            $tpl['IMAGES'] = sprintf('<a class="oc" id="image-nav"><img id="fck-img-type" src="./images/mod/filecabinet/file_manager/file_type/image80.png" width="50" height="50" title="%s" /></a>', dgettext('filecabinet', 'Images'));
+            $tpl['IMAGES'] = sprintf('<a class="oc" id="image-nav"><img id="fck-img-type" src="%smod/filecabinet/img/file_manager/file_type/image80.png" width="50" height="50" title="%s" /></a>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Images'));
         }
 
         if (PHPWS_Settings::get('filecabinet', 'fck_allow_documents')) {
             $active = true;
-            $tpl['DOCUMENTS'] = sprintf('<a class="oc" id="doc-nav"><img id="fck-doc-type" src="./images/mod/filecabinet/file_manager/file_type/document80.png" title="%s" width="50" height="50" /></a>', dgettext('filecabinet', 'Documents'));
+            $tpl['DOCUMENTS'] = sprintf('<a class="oc" id="doc-nav"><img id="fck-doc-type" src="%smod/filecabinet/img/file_manager/file_type/document80.png" title="%s" width="50" height="50" /></a>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Documents'));
         }
 
         if (PHPWS_Settings::get('filecabinet', 'fck_allow_media')) {
             $active = true;
-            $tpl['MULTIMEDIA'] = sprintf('<a class="oc" id="media-nav"><img id="fck-mm-type" src="./images/mod/filecabinet/file_manager/file_type/media80.png" title="%s" width="50" height="50" /></a>', dgettext('filecabinet', 'Multimedia'));
+            $tpl['MULTIMEDIA'] = sprintf('<a class="oc" id="media-nav"><img id="fck-mm-type" src="%smod/filecabinet/img/file_manager/file_type/media80.png" title="%s" width="50" height="50" /></a>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Multimedia'));
         }
 
         if (!$active) {
@@ -1424,7 +1425,7 @@ class Cabinet {
         }
 
         foreach ($result as $fldr) {
-            $img = '<img src="images/mod/filecabinet/folder.gif" />';
+            $img = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/folder.gif" />';
             $sub['FOLDER_NAME'] = sprintf('<a class="oc open-folder" onclick="pull_folder(%s, %s)">%s %s</a>', $fldr['id'], $ftype, $img, $fldr['title']);
             if ($ftype == DOCUMENT_FOLDER) {
                 $sub['PUBLIC'] = $fldr['public_folder'] ? dgettext('filecabinet', 'Public') : dgettext('filecabinet', 'Private');
@@ -1457,7 +1458,7 @@ class Cabinet {
             exit();
         }
 
-        $mouseover = '<img src="images/mod/filecabinet/viewmag+.png" width="12" height="12" />';
+        $mouseover = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/viewmag+.png" width="12" height="12" />';
 
         foreach ($result as $image) {
             $resizes = $this->getResizeIds($image);

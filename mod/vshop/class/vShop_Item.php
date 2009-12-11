@@ -8,12 +8,12 @@
     * it under the terms of the GNU General Public License as published by
     * the Free Software Foundation; either version 2 of the License, or
     * (at your option) any later version.
-    * 
+    *
     * This program is distributed in the hope that it will be useful,
     * but WITHOUT ANY WARRANTY; without even the implied warranty of
     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     * GNU General Public License for more details.
-    * 
+    *
     * You should have received a copy of the GNU General Public License
     * along with this program; if not, write to the Free Software
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -289,19 +289,19 @@ class vShop_Item {
         if ($this->getQtyAttributes() == 0) {
             return null;
         }
-        
+
         $all_sets = null;
         $choices = null;
         $buttons = null;
         $boxes = null;
         $match = null;
-        
+
         /* get the sets */
         $db = new PHPWS_DB('vshop_attributes');
         $db->addWhere('item_id', $this->id);
         $db->addColumn('set_id', null, null, false, true);
         $set_ids = $db->select();
-        
+
         foreach ($set_ids as $set) {
             $db = new PHPWS_DB('vshop_option_sets');
             $db->addWhere('id', $set['set_id']);
@@ -312,13 +312,13 @@ class vShop_Item {
             $db->addWhere('item_id', $this->id);
             $db->addWhere('set_id', $set['set_id']);
             $value_ids = $db->select();
-            
+
             foreach ($value_ids as $value) {
                 $db = new PHPWS_DB('vshop_option_values');
                 $db->addWhere('id', $value['value_id']);
                 $db->addOrder('sort asc');
                 $s_values = $db->select('row');
-                
+
                 if ($print) { // print
                     // not sure about print yet
                 } elseif ($form) { // form
@@ -376,14 +376,14 @@ class vShop_Item {
                 $all_sets[$set['set_id']]['type'] = $o_set['type'];
                 $all_sets[$set['set_id']]['title'] = $o_set['title'];
             }
-            
+
         }
-        
+
 //        print_r($all_sets); exit;
         return $all_sets;
     }
-    
-    
+
+
     public function getQtyAttributes()
     {
         $db = new PHPWS_DB('vshop_attributes');
@@ -391,7 +391,7 @@ class vShop_Item {
         $qty = $db->count();
         return $qty;
     }
-    
+
 
     public function view()
     {
@@ -408,7 +408,7 @@ class vShop_Item {
         $options = $this->getQtyAttributes();
 
         if (!$key->allowView()) {
-            Current_User::requireLogin();            
+            Current_User::requireLogin();
         }
 
         if ($options > 0) {
@@ -451,7 +451,7 @@ class vShop_Item {
     public function links()
     {
         $links = array();
-        
+
         if ($this->getQtyAttributes() < 1) {
             $links[] = $this->addLink(true) . ' ' . $this->addLink();
         } //else {
@@ -469,7 +469,7 @@ class vShop_Item {
             }
         }
 
-        if (is_array(vShop::navLinks())) { 
+        if (is_array(vShop::navLinks())) {
             $links = array_merge($links, vShop::navLinks());
         }
 
@@ -646,7 +646,7 @@ class vShop_Item {
         if (PHPWS_Settings::get('vshop', 'use_inventory')) {
             if ($this->stock < 1 || !$enabled) {
                 if ($icon) {
-                    $link = '<img src="images/mod/vshop/soldout.gif" width="12" height="12" alt="' . dgettext('vshop', 'Sold out') . '" title="' . dgettext('vshop', 'Sold out') . '" border="0" />';
+                    $link = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/vshop/img/soldout.gif" width="12" height="12" alt="' . dgettext('vshop', 'Sold out') . '" title="' . dgettext('vshop', 'Sold out') . '" border="0" />';
                 } else {
                     $link = dgettext('vshop', 'Sold out');
                 }
@@ -654,7 +654,7 @@ class vShop_Item {
             }
         }
         if ($icon) {
-            $link = '<a href="index.php?module=vshop&amp;dept=' . $this->dept_id . '&amp;item=' . $this->id . '&amp;uop=addto_cart"><img src="images/mod/vshop/plus.gif" width="12" height="12" alt="' . dgettext('vshop', 'Add') . '" title="' . dgettext('vshop', 'Add') . '" border="0" /></a>';
+            $link = '<a href="index.php?module=vshop&amp;dept=' . $this->dept_id . '&amp;item=' . $this->id . '&amp;uop=addto_cart"><img src="' . PHPWS_SOURCE_HTTP . 'mod/vshop/img/plus.gif" width="12" height="12" alt="' . dgettext('vshop', 'Add') . '" title="' . dgettext('vshop', 'Add') . '" border="0" /></a>';
         } else {
             $link = PHPWS_Text::moduleLink(dgettext('vshop', 'Add to cart'), "vshop",  array('dept'=>$this->dept_id, 'item'=>$this->id, 'uop'=>'addto_cart'));
         }
@@ -664,7 +664,7 @@ class vShop_Item {
     public function subtractLink($icon=false)
     {
         if ($icon) {
-            $link = '<a href="index.php?module=vshop&amp;dept=' . $this->dept_id . '&amp;item=' . $this->id . '&amp;uop=subtractfrom_cart"><img src="images/mod/vshop/minus.gif" width="12" height="12" alt="' . dgettext('vshop', 'Subtract') . '" title="' . dgettext('vshop', 'Subtract') . '" border="0" /></a>';
+            $link = '<a href="index.php?module=vshop&amp;dept=' . $this->dept_id . '&amp;item=' . $this->id . '&amp;uop=subtractfrom_cart"><img src="' . PHPWS_SOURCE_HTTP . 'mod/vshop/img/minus.gif" width="12" height="12" alt="' . dgettext('vshop', 'Subtract') . '" title="' . dgettext('vshop', 'Subtract') . '" border="0" /></a>';
         } else {
             $link = PHPWS_Text::moduleLink(dgettext('vshop', 'Subtract from cart'), "vshop",  array('dept'=>$this->dept_id, 'item'=>$this->id, 'uop'=>'subtractfrom_cart'));
         }

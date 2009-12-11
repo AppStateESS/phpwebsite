@@ -190,15 +190,15 @@ class FC_File_Manager {
             $title = dgettext('filecabinet', 'Add an image, media, or document file.');
         }
         elseif (in_array(FC_IMAGE, $this->lock_type)) {
-            $placeholder_file = 'images/mod/filecabinet/file_manager/file_type/image200.png';
+            $placeholder_file = PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/file_manager/file_type/image200.png';
             $title = dgettext('filecabinet', 'Add a image, an image folder, or a randomly changing image');
         }
         elseif (in_array(FC_DOCUMENT, $this->lock_type)) {
-            $placeholder_file = 'images/mod/filecabinet/file_manager/file_type/document200.png';
+            $placeholder_file = PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/file_manager/file_type/document200.png';
             $title = dgettext('filecabinet', 'Add a document or a document folder');
         }
         elseif (in_array(FC_MEDIA, $this->lock_type)) {
-            $placeholder_file = 'images/mod/filecabinet/file_manager/file_type/media200.png';
+            $placeholder_file = PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/file_manager/file_type/media200.png';
             $title = dgettext('filecabinet', 'Add a video or sound file');
         }
 
@@ -340,13 +340,13 @@ class FC_File_Manager {
     public function startView()
     {
         Layout::addStyle('filecabinet');
-        $document_img = sprintf('<img src="images/mod/filecabinet/file_manager/file_type/document200.png" title="%s"/>',
+        $document_img = sprintf('<img src="%smod/filecabinet/img/file_manager/file_type/document200.png" title="%s"/>', PHPWS_SOURCE_HTTP,
         dgettext('filecabinet', 'Add a document or a document folder'));
 
-        $image_img    = sprintf('<img src="images/mod/filecabinet/file_manager/file_type/image200.png" title="%s"/>',
+        $image_img    = sprintf('<img src="%smod/filecabinet/img/file_manager/file_type/image200.png" title="%s"/>', PHPWS_SOURCE_HTTP,
         dgettext('filecabinet', 'Add a image, an image folder, or a randomly changing image'));
 
-        $media_img    = sprintf('<img src="images/mod/filecabinet/file_manager/file_type/media200.png" title="%s"/>',
+        $media_img    = sprintf('<img src="%smod/filecabinet/img/file_manager/file_type/media200.png" title="%s"/>', PHPWS_SOURCE_HTTP,
         dgettext('filecabinet', 'Add a video or sound file'));
 
         $vars = $this->linkInfo();
@@ -486,7 +486,7 @@ class FC_File_Manager {
             foreach ($folders as $folder) {
                 $fvars['folder_id'] = $folder->id;
                 $row['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet', $fvars, true);
-                $row['ICON'] = '<img src="images/mod/filecabinet/file_manager/folder.png" />';
+                $row['ICON'] = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/file_manager/folder.png" />';
                 $row['TITLE'] = &$folder->title;
                 $tpl['folder-list'][] = $row;
             }
@@ -521,7 +521,7 @@ class FC_File_Manager {
             $tpl['FOLDER_TITLE'] = & $this->current_folder->title;
         }
 
-        $img_dir = 'images/mod/filecabinet/file_manager/';
+        $img_dir = PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/file_manager/';
         $image_string = '<img src="%s" title="%s" alt="%s" />';
         $link_info = $this->linkInfo();
 

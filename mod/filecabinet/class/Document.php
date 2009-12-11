@@ -163,7 +163,7 @@ class PHPWS_Document extends File_Common {
 
             $vars['document_id'] = $this->id;
             $vars['dop']      = 'clip_document';
-            $clip = sprintf('<img src="images/mod/filecabinet/clip.png" title="%s" />', dgettext('filecabinet', 'Clip document'));
+            $clip = sprintf('<img src="%smod/filecabinet/img/clip.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Clip document'));
             $links[] = PHPWS_Text::moduleLink($clip, 'filecabinet', $vars);
             $links[] = $this->deleteLink(true);
         }
@@ -254,7 +254,7 @@ class PHPWS_Document extends File_Common {
         $js['ADDRESS'] = $link->getAddress();
 
         if ($icon) {
-            $js['LINK'] = sprintf('<img src="images/mod/filecabinet/delete.png" title="%s" />', dgettext('filecabinet', 'Delete document'));
+            $js['LINK'] = sprintf('<img src="%smod/filecabinet/img/delete.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Delete document'));
         } else {
             $js['LINK'] = dgettext('filecabinet', 'Delete');
         }
@@ -275,7 +275,7 @@ class PHPWS_Document extends File_Common {
         $js['height'] = 500;
 
         if ($icon) {
-            $js['label'] =sprintf('<img src="images/mod/filecabinet/edit.png" title="%s" />', dgettext('filecabinet', 'Edit document'));
+            $js['label'] =sprintf('<img src="%smod/filecabinet/img/edit.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Edit document'));
         } else {
             $js['label'] = dgettext('filecabinet', 'Edit');
         }

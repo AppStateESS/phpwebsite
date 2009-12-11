@@ -26,15 +26,15 @@ define('LAYOUT_BAD_THEME_VAR',      -8);
 
 if (!defined('LAYOUT_THEME_EXEC')) {
     define('LAYOUT_THEME_EXEC', false);
- }
+}
 
 if (!defined('XML_MODE')) {
     define('XML_MODE', false);
- }
+}
 
 if (!defined('LAYOUT_FORCE_MOD_JS')) {
     define('LAYOUT_FORCE_MOD_JS', false);
- }
+}
 
 PHPWS_Core::initModClass('layout', 'Layout_Settings.php');
 PHPWS_Core::initCoreClass('Template.php');
@@ -233,7 +233,7 @@ class Layout {
                        'alternate' => $alternate,
                        'title'     => $title,
                        'media'     => $media
-                       );
+        );
 
         if (isset($tag)) {
             $GLOBALS['Style'][$tag] = $style;
@@ -282,13 +282,13 @@ class Layout {
         }
 
         switch ($GLOBALS['Layout_Robots']){
-        case '01':
-            $GLOBALS['Layout_Robots'] = '00';
-            break;
+            case '01':
+                $GLOBALS['Layout_Robots'] = '00';
+                break;
 
-        case '11':
-            $GLOBALS['Layout_Robots'] = '10';
-            break;
+            case '11':
+                $GLOBALS['Layout_Robots'] = '10';
+                break;
         }
     }
 
@@ -299,13 +299,13 @@ class Layout {
         }
 
         switch ($GLOBALS['Layout_Robots']){
-        case '10':
-            $GLOBALS['Layout_Robots'] = '00';
-            break;
+            case '10':
+                $GLOBALS['Layout_Robots'] = '00';
+                break;
 
-        case '11':
-            $GLOBALS['Layout_Robots'] = '01';
-            break;
+            case '11':
+                $GLOBALS['Layout_Robots'] = '01';
+                break;
         }
     }
 
@@ -410,8 +410,8 @@ class Layout {
                 $content = $finalTheme->get();
                 if (LABEL_TEMPLATES) {
                     $content = "\n<!-- START TPL: " . $finalTheme->lastTemplatefile . " -->\n"
-                        . $content
-                        . "\n<!-- END TPL: " . $finalTheme->lastTemplatefile . " -->\n";
+                    . $content
+                    . "\n<!-- END TPL: " . $finalTheme->lastTemplatefile . " -->\n";
                 }
             }
         } else {
@@ -508,9 +508,9 @@ class Layout {
             }
         }
 
-        if(LAYOUT_FORCE_MOD_JS && empty($base) && preg_match('/^modules\//', $directory)) {
-            // modules/filecabinet/clear_file
-            // mod/filecabinet/javascript/clear_file
+        // previously a choice, now mandated. Leaving this in for backwards
+        // compatibility
+        if(preg_match('/^modules\//', $directory)) {
             $directory = preg_replace('@^\./@', '', $directory);
             $js_dir = explode('/', $directory);
             foreach ($js_dir as $key => $dir) {
@@ -524,7 +524,7 @@ class Layout {
         } else {
             $js = 'javascript/';
         }
-        
+
 
         PHPWS_CORE::initCoreClass('File.php');
         $headfile    = $base . $js . $directory . '/head.js';
@@ -544,6 +544,8 @@ class Layout {
             }
         }
 
+        $data['source_http'] = PHPWS_SOURCE_HTTP;
+
         Layout::loadJavascriptFile($headfile, $directory, $data);
 
         if (is_file($bodyfile)) {
@@ -553,27 +555,26 @@ class Layout {
                 return file_get_contents($bodyfile);
             }
         }
-
     }
 
     public function getMetaRobot($meta_robots)
     {
         switch ((string)$meta_robots){
-        case '11':
-            return 'all';
-            break;
+            case '11':
+                return 'all';
+                break;
 
-        case '10':
-            return 'index, nofollow';
-            break;
+            case '10':
+                return 'index, nofollow';
+                break;
 
-        case '01':
-            return 'noindex, follow';
-            break;
+            case '01':
+                return 'noindex, follow';
+                break;
 
-        case '00':
-            return 'none';
-            break;
+            case '00':
+                return 'none';
+                break;
         }
     }
 
@@ -687,7 +688,7 @@ class Layout {
     {
         Layout::checkSettings();
         $themeDir = Layout::getTheme();
-        return 'themes/' . $themeDir . '/';
+        return PHPWS_SOURCE_DIR . "themes/$themeDir/";
     }
 
     public function isMoveBox()
@@ -761,7 +762,8 @@ class Layout {
             $template['COLLAPSE'] = 'id="layout-collapse"';
         }
 
-        $template['THEME_DIRECTORY'] = 'themes/' . $theme . '/';
+        $template['THEME_DIRECTORY'] = PHPWS_SOURCE_DIR . "themes/$theme/";
+
         $tpl->setData($template);
         return $tpl;
     }
@@ -827,7 +829,7 @@ class Layout {
 
         $key = Key::getCurrent();
         if (javascriptEnabled() && Layout::getExtraStyles() &&
-            Key::checkKey($key)) {
+        Key::checkKey($key)) {
 
 
             $js_vars['width']  = 400;
@@ -938,10 +940,10 @@ class Layout {
     public function getBase()
     {
         return '<base href="'
-            . PHPWS_Core::getHttp()
-            . $_SERVER['HTTP_HOST']
-            . preg_replace("/index.*/", "", $_SERVER['PHP_SELF'])
-            . '" />';
+        . PHPWS_Core::getHttp()
+        . $_SERVER['HTTP_HOST']
+        . preg_replace("/index.*/", "", $_SERVER['PHP_SELF'])
+        . '" />';
     }
 
     public function getPageTitle($only_root=FALSE)
@@ -1005,7 +1007,7 @@ class Layout {
         }
         $template['ONLY_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle(TRUE);
         $template['BASE']       = Layout::getBase();
-   }
+    }
 
     /**
      * Wraps the content with the layout header

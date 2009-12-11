@@ -269,20 +269,6 @@ class PHPWS_ControlPanel {
             return false;
         }
 
-        $modSource = PHPWS_SOURCE_DIR . 'mod/' . $module . '/img';
-        $modImage = PHPWS_HOME_DIR . 'images/mod/' . $module;
-        if (is_dir($modSource) && !is_dir($modImage)) {
-            PHPWS_Core::initCoreClass('File.php');
-            $content[] = dgettext('controlpanel', 'Copying source image directory for module.');
-
-            $result = PHPWS_File::recursiveFileCopy($modSource, $modImage);
-            if ($result) {
-                $content[] = dgettext('controlpanel', 'Source image directory copied successfully.');
-            } else {
-                $content[] = dgettext('controlpanel', 'Source image directory failed to copy.');
-            }
-        }
-
         include $cpFile;
         // insure cp file does not change translation directory
 
@@ -356,9 +342,9 @@ class PHPWS_ControlPanel {
                 $modlink->setDescription($info['description']);
 
                 if (is_string($info['image'])) {
-                    $modlink->setImage(sprintf('images/mod/%s/%s', $module, $info['image']));
+                    $modlink->setImage($info['image']);
                 } elseif(is_array($info['image'])) {
-                    $modlink->setImage(sprintf('images/mod/%s/%s', $module, $info['image']['name']));
+                    $modlink->setImage($info['image']['name']);
                 }
 
                 $db->addWhere('id', $info['tab']);
@@ -437,11 +423,11 @@ class PHPWS_ControlPanel {
         Layout::addStyle('controlpanel', 'panel_link.css');
         $reg_link = PHPWS_Text::quickLink(dgettext('users', 'Control Panel'), 'controlpanel',
                                           array('command'=>'panel_view'));
-        
+
         if (!$fly_out) {
             return $reg_link->get();
         }
-        
+
         javascript('jquery');
         javascript('modules/controlpanel/subpanel');
 
@@ -463,7 +449,7 @@ class PHPWS_ControlPanel {
                                                          $link->url, $authkey, str_replace(' ', '&#160;', $link->label))));
                     $tpl->parseCurrentBlock();
                 }
-                
+
                 $tab_link = $all_tabs[$tab]->link . '&amp;tab=' . $all_tabs[$tab]->id;
                 $tpl->setCurrentBlock('tab');
                 $tpl->setData(array('TAB_TITLE'=> sprintf('<a href="%s">%s</a>', $tab_link, $all_tabs[$tab]->title)));

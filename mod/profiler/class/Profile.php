@@ -103,7 +103,7 @@ class Profile {
         }
 
 
-        return sprintf('<a class="email" href="mailto:%s"><img src="images/mod/profiler/email.png" alt="%s" title="%s" /></a>', $this->email, dgettext('profiler', 'Email'), dgettext('profiler', 'Email'));
+        return sprintf('<a class="email" href="mailto:%s"><img src="%smod/profiler/img/email.png" alt="%s" title="%s" /></a>', $this->email, PHPWS_SOURCE_HTTP, dgettext('profiler', 'Email'), dgettext('profiler', 'Email'));
     }
 
     public function getWebsite()
@@ -112,7 +112,7 @@ class Profile {
             return null;
         }
 
-        return sprintf('<a class="url" href="%s"><img src="images/mod/profiler/website.png" alt="%s" title="%s" /></a>', $this->website, dgettext('profiler', 'Web site'), dgettext('profiler', 'Web site'));
+        return sprintf('<a class="url" href="%s"><img src="%smod/profiler/img/website.png" alt="%s" title="%s" /></a>', $this->website, PHPWS_SOURCE_HTTP, dgettext('profiler', 'Web site'), dgettext('profiler', 'Web site'));
     }
 
     public function loadImages()

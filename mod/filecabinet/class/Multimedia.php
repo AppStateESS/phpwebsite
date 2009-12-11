@@ -8,8 +8,8 @@
 PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 
-define('GENERIC_VIDEO_ICON', 'images/mod/filecabinet/video_generic.jpg');
-define('GENERIC_AUDIO_ICON', 'images/mod/filecabinet/audio.png');
+define('GENERIC_VIDEO_ICON', PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/video_generic.jpg');
+define('GENERIC_AUDIO_ICON', PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/audio.png');
 
 class PHPWS_Multimedia extends File_Common {
     public $width     = 0;
@@ -115,7 +115,7 @@ class PHPWS_Multimedia extends File_Common {
     public function rowTags()
     {
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
-            $clip = sprintf('<img src="images/mod/filecabinet/clip.png" title="%s" />', dgettext('filecabinet', 'Clip media'));
+            $clip = sprintf('<img src="%smod/filecabinet/img/clip.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Clip media'));
             $links[] = PHPWS_Text::secureLink($clip, 'filecabinet',
                                               array('mop'=>'clip_multimedia',
                                                     'multimedia_id' => $this->id));
@@ -201,7 +201,7 @@ class PHPWS_Multimedia extends File_Common {
             if ($thumbnail) {
                 $values['label'] = $this->getThumbnail();
             } else {
-                $values['label'] = sprintf('<img src="images/mod/filecabinet/viewmag+.png" title="%s" />',
+                $values['label'] = sprintf('<img src="%smod/filecabinet/img/viewmag+.png" title="%s" />', PHPWS_SOURCE_HTTP,
                                            dgettext('filecabinet', 'View full image'));
             }
         }
@@ -231,7 +231,7 @@ class PHPWS_Multimedia extends File_Common {
         $jsvars['window_name'] = 'edit_link';
 
         if ($icon) {
-            $jsvars['label'] =sprintf('<img src="images/mod/filecabinet/edit.png" title="%s" />', dgettext('filecabinet', 'Edit multimedia file'));
+            $jsvars['label'] =sprintf('<img src="%smod/filecabinet/img/edit.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Edit multimedia file'));
         } else {
             $jsvars['label'] = dgettext('filecabinet', 'Edit');
         }
@@ -249,7 +249,7 @@ class PHPWS_Multimedia extends File_Common {
         $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
 
         if ($icon) {
-            $js['LINK'] = '<img src="images/mod/filecabinet/delete.png" />';
+            $js['LINK'] = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/delete.png" />';
         } else {
             $js['LINK'] = dgettext('filecabinet', 'Delete');
         }
@@ -355,9 +355,9 @@ class PHPWS_Multimedia extends File_Common {
     {
         $this->thumbnail = $file_name . '.jpg';
         if ($this->file_type == 'application/x-shockwave-flash') {
-            return @copy('images/mod/filecabinet/shockwave.jpg', $this->thumbnailDirectory() . $this->thumbnail);
+            return @copy(PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/shockwave.jpg', $this->thumbnailDirectory() . $this->thumbnail);
         } else {
-            return @copy('images/mod/filecabinet/video_generic.jpg', $this->thumbnailDirectory() . $this->thumbnail);
+            return @copy(PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/video_generic.jpg', $this->thumbnailDirectory() . $this->thumbnail);
         }
     }
 
@@ -442,7 +442,7 @@ class PHPWS_Multimedia extends File_Common {
 
         $file_name = $this->dropExtension();
         $this->thumbnail = $file_name . '.png';
-        return @copy('images/mod/filecabinet/audio.png', $thumbnail_directory . $this->thumbnail);
+        return @copy(PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/audio.png', $thumbnail_directory . $this->thumbnail);
     }
 
     public function delete()

@@ -44,7 +44,7 @@ class Related_Action {
         $js['address'] = 'index.php?module=related&action=postTitle';
         $js['answer'] = $related->title;
         $js['value_name'] = 'new_title';
-        $js['link'] = '<img src="images/mod/related/edit.png"/>';
+        $js['link'] = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/related/img/edit.png"/>';
 
         $edit = javascript('prompt', $js);
 
@@ -83,9 +83,9 @@ class Related_Action {
 
             if (is_array($friends)) {
                 foreach ($friends as $key=>$friend_item){
-                    $up = '<a href="index.php?module=related&amp;action=up&amp;pos=' . $key . '"><img src="images/mod/related/up.png"/></a>';
-                    $down = '<a href="index.php?module=related&amp;action=down&amp;pos=' . $key . '"><img src="images/mod/related/down.png"/></a>';
-                    $remove = '<a href="index.php?module=related&amp;action=remove&amp;pos=' . $key . '"><img src="images/mod/related/remove.png"/></a>';
+                    $up = '<a href="index.php?module=related&amp;action=up&amp;pos=' . $key . '"><img src="' . PHPWS_SOURCE_HTTP . 'mod/related/img/up.png"/></a>';
+                    $down = '<a href="index.php?module=related&amp;action=down&amp;pos=' . $key . '"><img src="' . PHPWS_SOURCE_HTTP . 'mod/related/img/down.png"/></a>';
+                    $remove = '<a href="index.php?module=related&amp;action=remove&amp;pos=' . $key . '"><img src="' . PHPWS_SOURCE_HTTP . 'mod/related/img/remove.png"/></a>';
 
                     $template['friend_list'][] = array('FRIEND_NAME'=>$friend_item,
                                                        'UP'=>$up,

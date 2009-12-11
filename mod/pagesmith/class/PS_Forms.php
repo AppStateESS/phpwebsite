@@ -337,7 +337,7 @@ class PS_Forms {
             }
             $link = PHPWS_Text::linkAddress('pagesmith', $vars, true);
             $tpl['folders'][] = array('TITLE' => ucwords(str_replace('-', '&nbsp;', $name)),
-                                      'IMAGE' => sprintf('<a href="%s"><img src="images/mod/pagesmith/folder_icons/%s" /></a>', $link, $image),
+                                      'IMAGE' => sprintf('<a href="%s"><img src="%smod/pagesmith/img/folder_icons/%s" /></a>', $link, PHPWS_SOURCE_HTTP, $image),
                                       'COUNT' => sprintf(dngettext('pagesmith', '%s template', '%s templates', $count), $count));
         }
 

@@ -350,7 +350,7 @@ class Comment_Item {
 
         $template['ANCHOR'] = sprintf('<a name="cm_%s"></a>', $this->id);
         $str = dgettext('comments', 'Back to Top');
-        $template['TO_TOP'] = sprintf('<a href="%s#comments"><img src="./images/mod/comments/back_to_top.png" title="%s" border="0" height="16" width="16"> %s</a>', $_SERVER['REQUEST_URI'],$str, $str);
+        $template['TO_TOP'] = sprintf('<a href="%s#comments"><img src="%smod/comments/img/back_to_top.png" title="%s" border="0" height="16" width="16"> %s</a>', $_SERVER['REQUEST_URI'], PHPWS_SOURCE_HTTP, $str, $str);
         $template['COMMENT_ID'] = $this->id;
 
         if ($thread->userCan('delete_comments')) {
@@ -435,7 +435,7 @@ class Comment_Item {
         $vars['QUESTION'] = dgettext('comments', 'Are you sure you want to delete this comment?');
         $vars['ADDRESS'] = 'index.php?module=comments&amp;cm_id=' . $this->id . '&amp;aop=delete_comment&amp;authkey='
             . Current_User::getAuthKey();
-        $vars['LINK'] = sprintf('<img src="images/mod/comments/delete.png" title="%s" />', dgettext('comments', 'Delete'));
+        $vars['LINK'] = sprintf('<img src="%smod/comments/img/delete.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('comments', 'Delete'));
         $vars['CLASS'] = 'comment_delete_link';
         $vars['TITLE'] = dgettext('comments', 'Delete this comment');
         return Layout::getJavascript('confirm', $vars);
@@ -443,7 +443,7 @@ class Comment_Item {
 
     public function clearReportLink()
     {
-        $link = sprintf('<img src="images/mod/comments/erase.png" title="%s" />', dgettext('comments', 'Clear'));
+        $link = sprintf('<img src="%smod/comments/img/erase.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('comments', 'Clear'));
         return PHPWS_Text::secureLink($link, 'comments',
                                       array('aop'=>'clear_report', 'cm_id'=>$this->id),
                                       NULL, dgettext('comments', 'Clear this report'));
@@ -454,8 +454,8 @@ class Comment_Item {
         PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
         $punish_form = Comment_Forms::punishForm($this);
         if ($punish_form) {
-            return sprintf('<span class="comment-punish"><img src="images/mod/comments/noentry.png" title="%s" /><div class="comment-punish-list">%s</div></span>',
-                           dgettext('comments', 'Punish this user'), $punish_form);
+            return sprintf('<span class="comment-punish"><img src="%smod/comments/img/noentry.png" title="%s" /><div class="comment-punish-list">%s</div></span>',
+                           PHPWS_SOURCE_HTTP, dgettext('comments', 'Punish this user'), $punish_form);
         } else {
             return null;
         }
@@ -484,7 +484,7 @@ class Comment_Item {
 
     public function reportLink()
     {
-        $str = sprintf('<img src="images/mod/comments/report.png" title="%s" />', dgettext('comments', 'Report'));
+        $str = sprintf('<img src="%smod/comments/img/report.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('comments', 'Report'));
         $title = dgettext('comments', 'Report this comment to an administrator');
         return sprintf('<a href="#" class="%s" onclick="report(%s, this); return false" title="%s">%s</a>',
                        'comment_report_link', $this->id, $title, $str);
@@ -641,11 +641,11 @@ class Comment_Item {
 
         $tpl['CHECKBOX'] = sprintf('<input type="checkbox" name="cm_id[]" value="%s" />', $this->id);
 
-        $approve = sprintf('<img src="images/mod/comments/ok.png" width="20" height="20" title="%s" alt="%s" />',
+        $approve = sprintf('<img src="%smod/comments/img/ok.png" width="20" height="20" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
                            dgettext('comments', 'Approve this comment'),
                            dgettext('comments', 'Approval icon'));
 
-        $remove = sprintf('<img src="images/mod/comments/cancel.png" width="20" height="20" title="%s" alt="%s" />',
+        $remove = sprintf('<img src="%smod/comments/img/cancel.png" width="20" height="20" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
                           dgettext('comments', 'Remove this comment'),
                           dgettext('comments', 'Removal icon'));
 

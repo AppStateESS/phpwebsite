@@ -154,7 +154,7 @@ class PHPWS_Image extends File_Common {
             if ($thumbnail) {
                 $values['label'] = $this->getThumbnail();
             } else {
-                $values['label'] = sprintf('<img src="images/mod/filecabinet/viewmag+.png" title="%s" />',
+                $values['label'] = sprintf('<img src="%smod/filecabinet/img/viewmag+.png" title="%s" />', PHPWS_SOURCE_HTTP,
                                            dgettext('filecabinet', 'View full image'));
             }
         }
@@ -399,7 +399,7 @@ class PHPWS_Image extends File_Common {
         $jsvars['window_name'] = 'edit_link';
 
         if ($icon) {
-            $jsvars['label'] =sprintf('<img src="images/mod/filecabinet/edit.png" title="%s" />', dgettext('filecabinet', 'Edit image'));
+            $jsvars['label'] =sprintf('<img src="%smod/filecabinet/img/edit.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Edit image'));
         } else {
             $jsvars['label'] = dgettext('filecabinet', 'Edit');
         }
@@ -417,7 +417,7 @@ class PHPWS_Image extends File_Common {
         $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
 
         if ($icon) {
-            $js['LINK'] = '<img src="images/mod/filecabinet/delete.png" />';
+            $js['LINK'] = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/delete.png" />';
         } else {
             $js['LINK'] = dgettext('filecabinet', 'Delete');
         }
@@ -427,7 +427,7 @@ class PHPWS_Image extends File_Common {
     public function rowTags()
     {
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
-            $clip = sprintf('<img src="images/mod/filecabinet/clip.png" title="%s" />', dgettext('filecabinet', 'Clip image'));
+            $clip = sprintf('<img src="%smod/filecabinet/img/clip.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Clip image'));
             $links[] = PHPWS_Text::secureLink($clip, 'filecabinet',
                                               array('iop'      => 'clip_image',
                                                     'image_id' => $this->id));

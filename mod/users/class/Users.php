@@ -852,12 +852,12 @@ class PHPWS_User {
             if ($this->isDeity()) {
                 $dvars['QUESTION'] = dgettext('users', 'Are you sure you want to remove deity status?');
                 $dvars['ADDRESS']  = PHPWS_Text::linkAddress('users', array('action'=>'admin', 'command'=>'mortalize_user', 'user_id'=>$this->id), 1);
-                $dvars['LINK']     = sprintf('<img src="images/mod/users/deity.gif" title="%s" />', dgettext('users', 'Deity'));
+                $dvars['LINK']     = sprintf('<img src="%smod/users/img/deity.gif" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('users', 'Deity'));
                 $links[] = javascript('confirm', $dvars);
             } else {
                 $dvars['QUESTION'] = dgettext('users', 'Are you sure you want to deify this user?');
                 $dvars['ADDRESS']  = PHPWS_Text::linkAddress('users', array('action'=>'admin', 'command'=>'deify_user', 'user_id'=>$this->id), 1);
-                $dvars['LINK']     = sprintf('<img src="images/mod/users/man.gif" title="%s" />', dgettext('users', 'Mortal'));
+                $dvars['LINK']     = sprintf('<img src="%smod/users/img/man.gif" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('users', 'Mortal'));
                 $links[] = javascript('confirm', $dvars);
             }
         }
@@ -900,13 +900,13 @@ class PHPWS_User {
                                                     'user_id'=> $this->id), true);
         $link->setSalted();
         $jsvar['ADDRESS'] = $link->getAddress();
-        $jsvar['LINK']    = sprintf('<img src="images/mod/users/delete.png" title="%s" />', dgettext('users', 'Delete'));
+        $jsvar['LINK']    = sprintf('<img src="%smod/users/img/delete.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('users', 'Delete'));
 
         $linkVar['command'] = 'editUser';
-        $links[] = PHPWS_Text::secureLink(sprintf('<img src="images/mod/users/edit.png" title="%s" />', dgettext('users', 'Edit')), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(sprintf('<img src="%smod/users/img/edit.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('users', 'Edit')), 'users', $linkVar);
 
         $linkVar['command'] = 'setUserPermissions';
-        $links[] = PHPWS_Text::secureLink(sprintf('<img src="images/mod/users/key.png" title="%s" />', dgettext('users', 'Permissions')), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(sprintf('<img src="%smod/users/img/key.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('users', 'Permissions')), 'users', $linkVar);
 
         if (!$this->isDeity() && ($this->id != Current_User::getId())) {
             $links[] = Layout::getJavascript('confirm', $jsvar);

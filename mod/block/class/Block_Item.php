@@ -162,7 +162,7 @@ class Block_Item {
     {
         $edit = $opt = null;
         if (Current_User::allow('block')) {
-            $img = sprintf('<img src="./images/mod/block/edit.png" alt="%s" title="%s" />', dgettext('block', 'Edit block'), dgettext('block', 'Edit block'));
+            $img = Icon::show('edit', dgettext('block', 'Edit block'));
             $edit = PHPWS_Text::secureLink($img, 'block', array('block_id'=>$this->id,
                                                                 'action'=>'edit'));
 
@@ -170,7 +170,7 @@ class Block_Item {
                 $link['action']   = 'lock';
                 $link['block_id'] = $this->id;
                 $link['key_id'] = $this->_pin_key->id;
-                $img = '<img src="./images/mod/block/pin.png" />';
+                $img = '<img src="' . PHPWS_SOURCE_HTTP . '/mod/block/img/pin.png" />';
                 $opt = PHPWS_Text::secureLink($img, 'block', $link);
             } elseif (!empty($this->_pin_key) && $admin_icon) {
                 $vars['action'] = 'remove';
@@ -178,7 +178,10 @@ class Block_Item {
                 $vars['key_id'] = $this->_pin_key->id;
                 $js_var['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
                 $js_var['QUESTION'] = dgettext('block', 'Are you sure you want to remove this block from this page?');
-                $js_var['LINK'] = sprintf('<img src="./images/mod/block/remove.png" alt="%s" title="%s" />', dgettext('block', 'Delete block'), ('Delete block'));
+                $icon = Icon::get('close');
+                $icon->setAlt(dgettext('block', 'Delete block'));
+                $icon->setStyle('margin : 3px');
+                $js_var['LINK'] = $icon->__toString();
 
                 $opt = Layout::getJavascript('confirm', $js_var);
             }
@@ -189,7 +192,7 @@ class Block_Item {
                           'FILE'    => Cabinet::getTag($this->file_id),
                           'OPT'     => $opt,
                           'EDIT'    => $edit
-                          );
+        );
         if (!$this->hide_title) {
             $template['TITLE'] = $this->getTitle();
         }

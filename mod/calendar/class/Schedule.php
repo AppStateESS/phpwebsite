@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 define('CAL_VIEW_ALL',         1); // everyone can see this calendar
 define('CAL_VIEW_SOME',        2); // most will see the open and close details only
@@ -111,8 +111,7 @@ class Calendar_Schedule {
         }
 
         if ($icon) {
-            $label = sprintf('<img src="images/mod/calendar/download.png" title="%s" alt="%s" />',
-                             $label, $label);
+            $label = Icon::show('download', $label);
         }
 
         return PHPWS_Text::secureLink($label, 'calendar', $vars);
@@ -129,8 +128,7 @@ class Calendar_Schedule {
             $label = dgettext('calendar', 'Upload iCal events');
         }
         if ($icon) {
-            $label = sprintf('<img src="images/mod/calendar/upload.png" title="%s" alt="%s" />',
-                             $label, $label);
+            $label = Icon::show('upload');
         }
 
         $js['address'] = PHPWS_Text::linkAddress('calendar', $vars, 1);
@@ -148,24 +146,19 @@ class Calendar_Schedule {
         $add_label = dgettext('calendar', 'Add event');
 
         if ($icon) {
-            $add_label = sprintf('<img src="images/mod/calendar/add.png" title="%s" alt="%s" />',
-                                 $add_label, $add_label);
+            $add_label = Icon::show('add', $add_label);
         }
 
         if (javascriptEnabled()) {
             $vars['address'] = sprintf('index.php?module=calendar&amp;aop=create_event&amp;js=1&amp;sch_id=%s&amp;date=%s',
-                                       $this->id, $default_date);
+            $this->id, $default_date);
             $vars['link_title'] = dgettext('calendar', 'Add event');
             $vars['label'] = $add_label;
             $vars['width'] = CALENDAR_EVENT_WIDTH;
             $vars['height'] = CALENDAR_EVENT_HEIGHT;
             return javascript('open_window', $vars);
         } else {
-            return PHPWS_Text::moduleLink($add_label, 'calendar',
-                                          array('aop'    => 'create_event',
-                                                'sch_id' => $this->id,
-                                                'date'   => $default_date)
-                                          );
+            return PHPWS_Text::moduleLink($add_label, 'calendar', array('aop'=>'create_event', 'sch_id' => $this->id, 'date' => $default_date));
         }
     }
 
@@ -179,17 +172,17 @@ class Calendar_Schedule {
 
         if (javascriptEnabled()) {
             $vars['address'] = sprintf('index.php?module=calendar&amp;uop=suggest_event&amp;js=1&amp;sch_id=%s&amp;date=%s',
-                                       $this->id, $default_date);
+            $this->id, $default_date);
             $vars['link_title'] = $vars['label'] = $suggest_label;
             $vars['width'] = CALENDAR_SUGGEST_WIDTH;
             $vars['height'] = CALENDAR_SUGGEST_HEIGHT;
             return javascript('open_window', $vars);
         } else {
             return PHPWS_Text::moduleLink($suggest_label, 'calendar',
-                                          array('uop'    => 'suggest_event',
+            array('uop'    => 'suggest_event',
                                                 'sch_id' => $this->id,
                                                 'date'   => $default_date)
-                                          );
+            );
         }
     }
 
@@ -280,7 +273,7 @@ class Calendar_Schedule {
             if (Current_User::allow('calendar', 'edit_public')) {
                 $form->addRadio('public', array(0,1));
                 $form->setLabel('public', array(dgettext('calendar', 'Private'),
-                                                dgettext('calendar', 'Public')));
+                dgettext('calendar', 'Public')));
                 $form->setMatch('public', (int)$this->public);
             } else {
                 $form->addTplTag('PUBLIC', dgettext('calendar', 'Private'));
@@ -436,7 +429,7 @@ class Calendar_Schedule {
         } else {
             if ($authorized) {
                 if ( Current_User::getAuthKey() == $_REQUEST['authkey'] &&
-                     $this->user_id == Current_User::getId()) {
+                $this->user_id == Current_User::getId()) {
                     return true;
                 } else {
                     return Current_User::authorized('calendar', 'edit_private', $this->id, 'schedule');
@@ -461,8 +454,7 @@ class Calendar_Schedule {
 
             $vars = array('aop'=>'edit_schedule', 'sch_id' => $this->id);
 
-            $label = sprintf('<img src="images/mod/calendar/edit.png" title="%s" alt="%s" />',
-                                              dgettext('calendar', 'Edit'), dgettext('calendar', 'Edit'));
+            $label = Icon::show('edit');
             if (javascriptEnabled()) {
                 $vars['js'] = 1;
                 $js_vars['address'] = PHPWS_Text::linkAddress('calendar', $vars);
@@ -472,16 +464,15 @@ class Calendar_Schedule {
                 $links[] = javascript('open_window', $js_vars);
             } else {
                 $links[] = PHPWS_Text::secureLink($label, 'calendar',
-                                                  array('aop'=>'edit_schedule', 'sch_id'=>$this->id));
+                array('aop'=>'edit_schedule', 'sch_id'=>$this->id));
             }
         }
 
         if (Current_User::allow('calendar', 'delete_schedule') && Current_User::isUnrestricted('calendar')) {
             $js['QUESTION'] = dgettext('calendar', 'Are you sure you want to delete this schedule?');
             $js['ADDRESS']  = sprintf('index.php?module=calendar&amp;aop=delete_schedule&amp;sch_id=%s&amp;authkey=%s',
-                                      $this->id, Current_User::getAuthKey());
-            $js['LINK']     = sprintf('<img src="images/mod/calendar/delete.png" title="%s" alt="%s" />',
-                                      dgettext('calendar', 'Delete'), dgettext('calendar', 'Delete'));
+            $this->id, Current_User::getAuthKey());
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -644,11 +635,11 @@ class Calendar_Schedule {
             $tpl['EMPTY'] = ' ';
         }
 
-       $content = PHPWS_Template::process($tpl, 'calendar', 'ical.tpl');
-       header("Content-type: text/calendar");
-       header('Content-Disposition: attachment; filename="icalexport.ics"');
-       echo $content;
-       exit();
+        $content = PHPWS_Template::process($tpl, 'calendar', 'ical.tpl');
+        header("Content-type: text/calendar");
+        header('Content-Disposition: attachment; filename="icalexport.ics"');
+        echo $content;
+        exit();
     }
 
     function exportEvents($start_time, $end_time)
@@ -657,7 +648,7 @@ class Calendar_Schedule {
         $end_time = (int)$end_time;
 
         if (empty($start_time) || empty($end_time) ||
-            $start_time > $end_time) {
+        $start_time > $end_time) {
             $events = null;
         } else {
             $events = $this->getEvents((int)$start_time, (int)$end_time);
@@ -672,24 +663,24 @@ class Calendar_Schedule {
             $master_tpl['EMPTY'] = ' ';
         }
 
-       $content = PHPWS_Template::process($master_tpl, 'calendar', 'ical.tpl');
-       header("Content-type: text/calendar");
-       header('Content-Disposition: attachment; filename="icalexport.ics"');
-       echo $content;
-       exit();
+        $content = PHPWS_Template::process($master_tpl, 'calendar', 'ical.tpl');
+        header("Content-type: text/calendar");
+        header('Content-Disposition: attachment; filename="icalexport.ics"');
+        echo $content;
+        exit();
     }
 
     function allowICalDownload()
     {
         if ($this->id &&
-             ( ( $this->public && ( Current_User::isLogged() || PHPWS_Settings::get('calendar', 'anon_ical') ) ) ||
-               $this->checkPermissions() )
-             ) {
+        ( ( $this->public && ( Current_User::isLogged() || PHPWS_Settings::get('calendar', 'anon_ical') ) ) ||
+        $this->checkPermissions() )
+        ) {
             return true;
         } else {
             return false;
         }
-            
+
     }
 
 }
