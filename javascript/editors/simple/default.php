@@ -36,9 +36,9 @@ function sscCheckText(id) {
 </script>
 ',$ssc_lang, $ssc_speed);
     Layout::addJSHeader($script);
-    $data['speller'] =  sprintf('<img src="javascript/editors/simple/images/spell.gif" alt="Spell Checker" title="Spell Checker" height="20" width="21" onclick="sscCheckText(\'%s\');" onmouseover="window.status=\'Add break\'; return true;" onmouseout="window.status=\'\';" />', $data['ID']);
+    $data['speller'] =  sprintf('<img src="%sjavascript/editors/simple/images/spell.gif" alt="Spell Checker" title="Spell Checker" height="20" width="21" onclick="sscCheckText(\'%s\');" onmouseover="window.status=\'Add break\'; return true;" onmouseout="window.status=\'\';" />', PHPWS_SOURCE_HTTP, $data['ID']);
  }
-  
+
 
 
 $GLOBALS['wysiwyg']++;
