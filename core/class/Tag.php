@@ -35,6 +35,12 @@ class Tag {
     protected $id = null;
 
     /**
+     * Title of image tag
+     * @var string
+     */
+    protected $title = null;
+
+    /**
      * Inline style definition for tag
      * @var string
      */
@@ -142,6 +148,11 @@ class Tag {
     protected function setOpen($open)
     {
         $this->open = (bool)$open;
+    }
+
+    public function setTitle($title)
+    {
+        $this->title = htmlentities(strip_tags($title));
     }
 }
 
