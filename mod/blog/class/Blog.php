@@ -1,10 +1,10 @@
 <?php
-  /**
-   * The blog object class.
-   *
-   * @author Matthew McNaney <matt at tux dot appstate dot edu>
-   * $Id$
-   */
+/**
+ * The blog object class.
+ *
+ * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * $Id$
+ */
 
 if (!defined('BLOG_PAGER_DATE_FORMAT')) {
     define('BLOG_PAGER_DATE_FORMAT', '%c');
@@ -113,7 +113,7 @@ class Blog {
             }
         } elseif ($thumbnail && ($file->isMedia() && $file->_source->isVideo())) {
             return sprintf('<a href="%s">%s</a>', $this->getViewLink(true),
-                           $file->getThumbnail());
+            $file->getThumbnail());
         } else {
             return $file->getTag();
         }
@@ -149,7 +149,7 @@ class Blog {
         }
         $this->summary = PHPWS_Text::parseInput($summary);
     }
-    
+
 
     public function getSummary($print=false)
     {
@@ -250,14 +250,13 @@ class Blog {
         if (empty($this->entry)) {
             $this->entry = '';
         }
-
         if ($this->approved || !$this->id) {
             $result = $db->saveObject($this);
+            if (PEAR::isError($result)) {
+                return $result;
+            }
         }
 
-        if (PEAR::isError($result)) {
-            return $result;
-        }
 
         if ($this->approved) {
             $update = (!$this->key_id) ? true : false;
@@ -372,7 +371,7 @@ class Blog {
         }
 
         $template['TITLE'] = sprintf('<a href="%s" rel="bookmark">%s</a>',
-                                     $this->getViewLink(true), $this->title);
+        $this->getViewLink(true), $this->title);
 
         if ($this->publish_date > mktime()) {
             $template['UNPUBLISHED'] = dgettext('blog', 'Unpublished');
@@ -402,9 +401,9 @@ class Blog {
         $template['IMAGE'] = $this->getFile($this->thumbnail && $summarized);
 
         if ( $edit &&
-             ( Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ||
-               ( Current_User::allow('blog', 'edit_blog') && $this->author_id == Current_User::getId() )
-               ) ) {
+        ( Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ||
+        ( Current_User::allow('blog', 'edit_blog') && $this->author_id == Current_User::getId() )
+        ) ) {
 
             $vars['blog_id'] = $this->id;
             $vars['action']  = 'admin';
@@ -498,11 +497,10 @@ class Blog {
         $link['blog_id'] = $this->id;
 
         if ( ( Current_User::allow('blog', 'edit_blog') && Current_User::getId() == $this->author_id )
-            || Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ) {
+        || Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ) {
 
             $link['command'] = 'edit';
-            $icon = sprintf('<img src="images/mod/blog/edit.png" alt="%s" title="%s" />',
-                            dgettext('blog', 'Edit'), dgettext('blog', 'Edit'));
+            $icon = Icon::show('edit');
             $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
         }
 
@@ -510,30 +508,24 @@ class Blog {
             $link['command'] = 'delete';
             $confirm_vars['QUESTION'] = dgettext('blog', 'Are you sure you want to permanently delete this blog entry?');
             $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('blog', $link, true);
-            $confirm_vars['LINK'] = sprintf('<img src="images/mod/blog/delete.png" alt="%s" title="%s" />',
-                                            dgettext('blog', 'Delete'), dgettext('blog', 'Delete'));
+
+            $confirm_vars['LINK'] = Icon::show('delete');
             $list[] = Layout::getJavascript('confirm', $confirm_vars);
         }
 
         if (Current_User::isUnrestricted('blog')){
             $link['command'] = 'restore';
-            $icon = sprintf('<img src="images/mod/blog/restore.png" alt="%s" title="%s" />',
-                            dgettext('blog', 'Restore'), dgettext('blog', 'Restore'));
-
+            $icon = Icon::show('redo', dgettext('blog', 'Restore'));
             $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
 
 
             if ($this->sticky) {
                 $link['command'] = 'unsticky';
-                $icon = sprintf('<img src="images/mod/blog/unsticky.png" alt="%s" title="%s" />',
-                                dgettext('blog', 'Unsticky'), dgettext('blog', 'Unsticky'));
-
+                $icon = Icon::show('unsticky');
                 $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
             } else {
                 $link['command'] = 'sticky';
-                $icon = sprintf('<img src="images/mod/blog/sticky.png" alt="%s" title="%s" />',
-                                dgettext('blog', 'Sticky'), dgettext('blog', 'Sticky'));
-
+                $icon = Icon::show('sticky');
                 $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
             }
         }
