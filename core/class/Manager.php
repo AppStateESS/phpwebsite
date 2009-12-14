@@ -20,8 +20,8 @@ require_once(PHPWS_SOURCE_DIR . 'core/class/Pager.php');
  * Note: this file was modified to work under phpWebSite 1.x.
  *
  * @version $Id$
- * @author  Steven Levin 
- * @author  Adam Morton 
+ * @author  Steven Levin
+ * @author  Adam Morton
  * @modified Matthew McNaney <mcnaney at gmail dot com>
  * @package Core
  */
@@ -290,7 +290,7 @@ class PHPWS_Manager {
      * @access public
      */
     function init() {
-        
+
         if(!isset($this->_module)) {
             $message = _('Manager cannot initialize, the module was not set.');
             $error = new PHPWS_Error('core', 'PHPWS_Manager::init()', $message, 'exit', 1);
@@ -343,7 +343,7 @@ class PHPWS_Manager {
                 $error = new PHPWS_Error('core', 'PHPWS_Manager::init()', $message, 'exit', 1);
                 $error->message(NULL);
             }
-      
+
             $this->_listColumns[$listName] = $$columns;
 
             if(isset($$actions)) {
@@ -363,7 +363,7 @@ class PHPWS_Manager {
                 $this->_listPaging[$listName] = $$paging;
             }
         }
-        
+
     }
 
     /**
@@ -375,7 +375,7 @@ class PHPWS_Manager {
      * @access public
      */
     function getList($listName, $title=NULL, $makeForm=TRUE, $overRideOp=NULL) {
-        
+
         $this->listName = $listName;
 
         if(!isset($this->_table) && !isset($this->_request)) {
@@ -387,12 +387,12 @@ class PHPWS_Manager {
         $theme = Layout::getCurrentTheme();
 
         $themeModuleRowTpl = "themes/$theme/templates/" . $this->_module . '/' . $this->_templates[$this->listName] . '/row.tpl';
-        $moduleRowTpl = PHPWS_SOURCE_DIR . 'mod/' . $this->_module . '/templates/' . $this->_templates[$this->listName] . '/row.tpl'; 
+        $moduleRowTpl = PHPWS_SOURCE_DIR . 'mod/' . $this->_module . '/templates/' . $this->_templates[$this->listName] . '/row.tpl';
         $themeCoreRowTpl = 'themes/' . $theme . '/templates/core/defaultRow.tpl';
         $coreRowTpl = PHPWS_SOURCE_DIR . 'templates/defaultRow.tpl';
 
         $themeModuleListTpl = "themes/$theme/templates/" . $this->_module . '/' . $this->_templates[$this->listName] . '/list.tpl';
-        $moduleListTpl = PHPWS_SOURCE_DIR . 'mod/' . $this->_module . '/templates/' . $this->_templates[$this->listName] . '/list.tpl'; 
+        $moduleListTpl = PHPWS_SOURCE_DIR . 'mod/' . $this->_module . '/templates/' . $this->_templates[$this->listName] . '/list.tpl';
         $themeCoreListTpl = "themes/$theme/templates/core/defaultList.tpl";
         $coreListTpl = PHPWS_SOURCE_DIR . 'templates/defaultList.tpl';
 
@@ -448,9 +448,9 @@ class PHPWS_Manager {
                 $this->_pagers[$this->listName]->pageData();
             } else {
                 $this->_pagers[$this->listName]->pageData(FALSE);
-            }      
+            }
 
-            if(isset($this->_class)) { 
+            if(isset($this->_class)) {
                 $items = $this->getItems($this->_pagers[$this->listName]->getData(), FALSE, TRUE);
             } else {
                 $items = $this->getItems($this->_pagers[$this->listName]->getData());
@@ -487,7 +487,7 @@ class PHPWS_Manager {
 
             $listTags[$key0] = NULL;
             $listTags[$key1] = NULL;
-      
+
             $listTags[$key0] = $listLabel;
 
             if(isset($overRideOp)) {
@@ -511,51 +511,51 @@ class PHPWS_Manager {
 
                 if(isset($this->_listPaging[$this->listName]))
                     switch($overRide) {
-                    case 0: 
-                        $listTags[$key1] .= '<a href="./index.php?module=' . $this->_module . '&amp;' . $request . '&amp;PHPWS_MAN_LIST=' . $this->listName . 
-                            '&amp;PHPWS_MAN_COLUMN=' . $listColumn . '&amp;PHPWS_MAN_ORDER=1&amp;' . 
+                    case 0:
+                        $listTags[$key1] .= '<a href="./index.php?module=' . $this->_module . '&amp;' . $request . '&amp;PHPWS_MAN_LIST=' . $this->listName .
+                            '&amp;PHPWS_MAN_COLUMN=' . $listColumn . '&amp;PHPWS_MAN_ORDER=1&amp;' .
                             'PHPWS_MAN_PAGE='. $this->listName . '&amp;' .
                             'PAGER_limit=' . $this->_pagers[$this->listName]->limit . '&amp;' .
                             'PAGER_start=' . $this->_pagers[$this->listName]->start . '&amp;' .
-                            'PAGER_section=' . $this->_pagers[$this->listName]->section .           
+                            'PAGER_section=' . $this->_pagers[$this->listName]->section .
                             $anchor . '">';
-                        $listTags[$key1] .= '<img src="./images/core/list/sort_none.png" border="0" alt="None" /></a>';
+                        $listTags[$key1] .= Icon::show('sort') . '</a>';
                         break;
-          
+
                     case 1:
-                        $listTags[$key1] .= '<a href="./index.php?module=' . $this->_module . '&amp;' . $request . '&amp;PHPWS_MAN_LIST=' . $this->listName . '&amp;PHPWS_MAN_COLUMN=' . $listColumn . '&amp;PHPWS_MAN_ORDER=2&amp;' . 
+                        $listTags[$key1] .= '<a href="./index.php?module=' . $this->_module . '&amp;' . $request . '&amp;PHPWS_MAN_LIST=' . $this->listName . '&amp;PHPWS_MAN_COLUMN=' . $listColumn . '&amp;PHPWS_MAN_ORDER=2&amp;' .
                             'PHPWS_MAN_PAGE='. $this->listName . '&amp;' .
                             'PAGER_limit=' . $this->_pagers[$this->listName]->limit . '&amp;' .
                             'PAGER_start=' . $this->_pagers[$this->listName]->start . '&amp;' .
-                            'PAGER_section=' . $this->_pagers[$this->listName]->section .           
+                            'PAGER_section=' . $this->_pagers[$this->listName]->section .
                             $anchor . '">';
-                        $listTags[$key1] .= '<img src="./images/core/list/up_pointer.png" border="0" alt="Descending" /></a>';
+                        $listTags[$key1] .= Icon::show('sort-up') . '</a>';
                         break;
-            
+
                     case 2:
-                        $listTags[$key1] .= '<a href="./index.php?module=' . $this->_module . '&amp;' . $request . '&amp;PHPWS_MAN_LIST=' . $this->listName . '&amp;PHPWS_MAN_COLUMN=' . $listColumn . '&amp;PHPWS_MAN_ORDER=0&amp;' . 
+                        $listTags[$key1] .= '<a href="./index.php?module=' . $this->_module . '&amp;' . $request . '&amp;PHPWS_MAN_LIST=' . $this->listName . '&amp;PHPWS_MAN_COLUMN=' . $listColumn . '&amp;PHPWS_MAN_ORDER=0&amp;' .
                             'PHPWS_MAN_PAGE=' . $this->listName . '&amp;' .
                             'PAGER_limit=' . $this->_pagers[$this->listName]->limit . '&amp;' .
                             'PAGER_start=' . $this->_pagers[$this->listName]->start . '&amp;' .
-                            'PAGER_section=' . $this->_pagers[$this->listName]->section .           
+                            'PAGER_section=' . $this->_pagers[$this->listName]->section .
                             $anchor . '">';
-                        $listTags[$key1] .= '<img src="./images/core/list/down_pointer.png" border="0" alt="Ascending" /></a>';
+                        $listTags[$key1] .= Icon::show('sort-down') . '</a>';
                         break;
-          
+
                     default:
-                        $listTags[$key1] .= '<a href="./index.php?module=' . $this->_module . '&amp;' . $request . '&amp;PHPWS_MAN_LIST=' . $this->listName . '&amp;PHPWS_MAN_COLUMN=' . $listColumn . '&amp;PHPWS_MAN_ORDER=1&amp;' . 
+                        $listTags[$key1] .= '<a href="./index.php?module=' . $this->_module . '&amp;' . $request . '&amp;PHPWS_MAN_LIST=' . $this->listName . '&amp;PHPWS_MAN_COLUMN=' . $listColumn . '&amp;PHPWS_MAN_ORDER=1&amp;' .
                             'PHPWS_MAN_PAGE=' . $this->listName . '&amp;' .
                             'PAGER_limit=' . $this->_pagers[$this->listName]->limit . '&amp;' .
                             'PAGER_start=' . $this->_pagers[$this->listName]->start . '&amp;' .
-                            'PAGER_section=' . $this->_pagers[$this->listName]->section .           
+                            'PAGER_section=' . $this->_pagers[$this->listName]->section .
                             $anchor . '">';
-                        $listTags[$key1] .= '<img src="./images/core/list/sort_none.png" border="0" alt="None" /></a>';
+                        $listTags[$key1] .= Icon::show('sort') . '</a>';
                     }
             }
 
             $columns++;
         }
-    
+
         /* Build each item's row */
         $listTags['LIST_ITEMS'] = NULL;
         if($totalItems > 0) {
@@ -580,7 +580,7 @@ class PHPWS_Manager {
                         }
                     }
                 }
-                
+
                 if ($tog%2) {
                     $row_class = ' class="bgcolor1"';
                 } else {
@@ -636,7 +636,7 @@ class PHPWS_Manager {
                             foreach($groups as $group) {
                                 if($flag)
                                     $rowTags['GROUPS'] .= ', ';
-                
+
                                 $rowTags['GROUPS'] .= $group;
                                 $flag = TRUE;
                             }
@@ -673,7 +673,7 @@ class PHPWS_Manager {
                 foreach($this->_listActions[$this->listName] as $actionString => $actionLabel) {
                     if (isset($this->_listPermissions[$this->listName][$actionString]))
                         $permission = $this->_listPermissions[$this->listName][$actionString];
-          
+
                     if(isset($permission)) {
                         if(Current_User::allow($this->_module, $permission)) {
                             $actions[$actionString] = $actionLabel;
@@ -683,25 +683,25 @@ class PHPWS_Manager {
                     }
                 }
             }
-      
+
             if($makeForm) {
                 /* Create action select and Go button */
                 $ele = & new Form_Select($this->_request, $actions);
                 $listTags['ACTION_SELECT'] = $ele->get();
                 $listTags['ACTION_BUTTON'] = sprintf('<input type="submit" value="%s" />', _('Go'));
                 $listTags['TOGGLE_ALL'] = javascript('check_all', array('FORM_NAME' => 'PHPWS_MAN_LIST_' . $this->listName));
-        
+
                 /* Add hidden variable to designate the current module */
                 $ele = & new Form_Hidden('module', $this->_module);
                 $elements[0] = $ele->get();
                 $elements[0] .= PHPWS_Template::processTemplate($listTags, 'core', $listTpl, FALSE);
-        
+
                 /* Create final form and dump it into a content variable to be returned */
                 $content = sprintf('<form name="%s" action="index.php" method="post">%s</form>', 'PHPWS_MAN_LIST_' . $this->listName, implode("\n", $elements));
             } else {
                 $content = PHPWS_Template::processTemplate($listTags, 'core', $listTpl, FALSE);
             }
-      
+
         } else {
             $listTags['LIST_ITEMS'] = '<tr><td colspan="' . $columns . '">' . _('No items for the current list.') . '</td></tr>';
             $content = PHPWS_Template::processTemplate($listTags, 'core', $listTpl, FALSE);
@@ -711,7 +711,7 @@ class PHPWS_Manager {
         $this->setSort(NULL);
         $this->setOrder(NULL);
         $this->_class = NULL;
-        
+
         return $content;
     }// END FUNC getList()
 
@@ -722,7 +722,7 @@ class PHPWS_Manager {
      * this object.  The statement is then executed on the current table and it's
      * result is returned as the list of current items.
      *
-     * @param  boolean $filterGroups Flag whether or not to filter items that are not 
+     * @param  boolean $filterGroups Flag whether or not to filter items that are not
      *                 associated with a users group
      * @return mixed   A 2-dimentional array of items or FALSE on failure.
      * @access public
@@ -759,7 +759,7 @@ class PHPWS_Manager {
             $error = new PHPWS_Error('core', 'PHPWS_Manager:getItems()', 'Table not set!', 'exit', 1);
             $error->message(NULL);
         }
- 
+
         $whereFlag = FALSE;
         $sort = $this->getSort();
         if(isset($sort)) {
@@ -773,7 +773,7 @@ class PHPWS_Manager {
             } else {
                 $sql .= ' WHERE (';
             }
-      
+
             foreach($ids as $id) {
                 $sql .= " id='$id' OR ";
             }
@@ -800,7 +800,7 @@ class PHPWS_Manager {
                     }
                 }
             }
-      
+
             $result = PHPWS_Array::reIndex($result);
         }
 
@@ -850,7 +850,7 @@ class PHPWS_Manager {
             } else {
                 $table = $this->_tables[$this->listName];
             }
-      
+
             /* Begin sql update statement */
             $sql = 'UPDATE ' . $table .
                 " SET $column='$value' WHERE id='";
@@ -930,7 +930,7 @@ class PHPWS_Manager {
     }
 
     /**
-     * Set the name of the class to instantiate 
+     * Set the name of the class to instantiate
      *
      * @param  string  $class The name of the class
      * @return boolean TRUE on success and FALSE on failure
@@ -1072,11 +1072,11 @@ class PHPWS_Manager {
         case 0:
             $this->_overrideOrder[$_REQUEST['PHPWS_MAN_LIST']][$_REQUEST['PHPWS_MAN_COLUMN']][1] = NULL;
             break;
-      
+
         case 1:
             $this->_overrideOrder[$_REQUEST['PHPWS_MAN_LIST']][$_REQUEST['PHPWS_MAN_COLUMN']][1] = $_REQUEST['PHPWS_MAN_COLUMN'] . ' DESC';
             break;
-      
+
         case 2:
             $this->_overrideOrder[$_REQUEST['PHPWS_MAN_LIST']][$_REQUEST['PHPWS_MAN_COLUMN']][1] = $_REQUEST['PHPWS_MAN_COLUMN'] . ' ASC';
             break;
@@ -1141,7 +1141,7 @@ class PHPWS_Manager {
             $list = $this->_listFunction;
             $this->$list();
             break;
-      
+
         case 'edit':
             if(isset($_REQUEST['PHPWS_MAN_ITEMS']) &&
                is_array($_REQUEST['PHPWS_MAN_ITEMS']) &&
@@ -1155,7 +1155,7 @@ class PHPWS_Manager {
             break;
 
         case 'view':
-            if(isset($_REQUEST['PHPWS_MAN_ITEMS']) && 
+            if(isset($_REQUEST['PHPWS_MAN_ITEMS']) &&
                is_array($_REQUEST['PHPWS_MAN_ITEMS']) &&
                sizeof($_REQUEST['PHPWS_MAN_ITEMS']) > 0) {
                 $view = $this->_viewFunction;
@@ -1165,25 +1165,25 @@ class PHPWS_Manager {
                 $this->$list();
             }
             break;
-      
+
         case 'hide':
             $this->_doMassUpdate('hidden', 1);
             $list = $this->_listFunction;
             $this->$list();
             break;
-      
+
         case 'show':
             $this->_doMassUpdate('hidden', 0);
             $list = $this->_listFunction;
             $this->$list();
             break;
-        
+
         case 'approve':
             $this->_doMassUpdate('approved', 1);
             $list = $this->_listFunction;
             $this->$list();
             break;
-      
+
         case 'delete':
             if(is_array($_REQUEST['PHPWS_MAN_ITEMS']) && sizeof($_REQUEST['PHPWS_MAN_ITEMS']) > 0) {
                 $delete = $this->_deleteFunction;
