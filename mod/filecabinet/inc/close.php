@@ -24,9 +24,4 @@ function pinFolder() {
         Folder::getPinned($key->id);
     }
 }
-/**
- * This was going to be used to get around problems with fckeditor.
- * Decided to use smarttags instead. Not as "pretty" but less hassle.
- */
-//javascript('modules/filecabinet/fck_video_replace');
 ?>
