@@ -62,7 +62,7 @@ class Comments {
         // If we're loading the current user, make sure that the cached userdata is up to date
         if ($user_id == Current_User::getId()) {
             $user->setCachedItems();
-        } 
+        }
 
         if ($user->isNew()) {
             $result = $user->saveUser();
@@ -416,7 +416,7 @@ class Comments {
             }
             PHPWS_Core::goBack();
             break;
-            
+
 
         default:
             PHPWS_Core::errorPage('404');
@@ -757,7 +757,7 @@ class Comments {
         if (!Current_User::isLogged()) {
             $db->addWhere('phpws_key.restricted', 0);
         }
-        
+
         $result = $db->select();
 
         if (empty($result)) {
@@ -907,9 +907,9 @@ class Comments {
     {
         Layout::addStyle('comments', 'admin.css');
 
-        javascript('jsquery');
-        javascript('modules/comments/admin');
-        javascript('modules/comments/quick_view');
+        javascript('jquery');
+        javascriptMod('comments', 'admin');
+        javascriptMod('comments', 'quick_view');
 
         PHPWS_Core::initCoreClass('DBPager.php');
         if (empty($comment_user->user_id)) {
@@ -984,7 +984,7 @@ class Comments {
         PHPWS_Core::initModClass('comments', 'Rank.php');
         $db->addColumn('comments_ranks.*');
         $result = $db->getObjects('Comment_Rank', true);
-        
+
         if (PHPWS_Error::logIfError($result)) {
             return null;
         }

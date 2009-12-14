@@ -8,12 +8,12 @@
     * it under the terms of the GNU General Public License as published by
     * the Free Software Foundation; either version 2 of the License, or
     * (at your option) any later version.
-    * 
+    *
     * This program is distributed in the hope that it will be useful,
     * but WITHOUT ANY WARRANTY; without even the implied warranty of
     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     * GNU General Public License for more details.
-    * 
+    *
     * You should have received a copy of the GNU General Public License
     * along with this program; if not, write to the Free Software
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -45,7 +45,7 @@ class Elections_Forms {
         case 'new_candidate':
             $this->selectBallot();
             break;
-            
+
         case 'edit_candidate':
             if (empty($this->election->candidate)) {
                 $this->election->loadCandidate();
@@ -88,7 +88,7 @@ class Elections_Forms {
             if (Current_User::isUnrestricted('elections')) {
                 $ptags['VOTES_HEADER'] = dgettext('elections', 'Votes');
             }
-    
+
             PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
             PHPWS_Core::initCoreClass('DBPager.php');
             $pager = new DBPager('elections_ballots', 'Elections_Ballot');
@@ -109,7 +109,7 @@ class Elections_Forms {
             $pager->addPageTags($ptags);
             $pager->addToggle('class="toggle1"');
             $pager->setSearch('title', 'description');
-            
+
             $content = $pager->get();
 		} else {
 			$content = dgettext('elections', 'Thank you for your interest. However, all elections are currently closed.');
@@ -165,7 +165,7 @@ class Elections_Forms {
             $ptags['USER_HEADER'] = dgettext('elections', 'Username');
             $ptags['DATE_HEADER'] = dgettext('elections', 'Vote date');
             $ptags['IP_HEADER'] = dgettext('elections', 'IP Address');
-    
+
             PHPWS_Core::initModClass('elections', 'ELEC_Vote.php');
             PHPWS_Core::initCoreClass('DBPager.php');
             $pager = new DBPager('elections_votes', 'Elections_Vote');
@@ -181,7 +181,7 @@ class Elections_Forms {
             $pager->addPageTags($ptags);
             $pager->addToggle('class="toggle1"');
             $pager->setSearch('username', 'ip');
-            
+
             $content = $pager->get();
 		} else {
 			$content = dgettext('elections', 'This is a restricted area.');
@@ -240,7 +240,7 @@ class Elections_Forms {
         $form->addCheckbox('show_in_block', 1);
         $form->setMatch('show_in_block', $ballot->show_in_block);
         $form->setLabel('show_in_block', dgettext('elections', 'List in sidebox (if sidebox is set to visible in Elections settings).'));
-        
+
         $form->addSelect('minchoice', $choices);
         $form->setMatch('minchoice', $ballot->minchoice);
         $form->setLabel('minchoice', dgettext('elections', 'Minimum # of selections a voter may mark on this ballot'));
@@ -379,13 +379,13 @@ class Elections_Forms {
 
     public function reports()
     {
-        
+
         $form = new PHPWS_Form('elections_reports');
         $form->addHidden('module', 'elections');
         $form->addHidden('aop', 'get_report');
         $form->setMethod('get');
         $tpl = $form->getTemplate();
-        
+
         $tpl['RESULTS_TITLE'] = dgettext('elections', 'Results');
         $tpl['RESULTS_INFO'] = dgettext('elections', 'Choose ALL results, or by ballot. Nummber in parenthesis represents ballots cast.');
         $tpl['RESULTS'] = $this->getBallotsSelect(null, 'results_ballot', false, true, 'elections_votes');
@@ -404,7 +404,7 @@ class Elections_Forms {
         $tpl['LIST_VOTES_BUTTON'] = $this->getSubmitButton('list_votes');
         $tpl['PURGE_VOTES_BUTTON'] = $this->getSubmitButton('purge_votes');
 
-        javascript('modules/elections/utilities');
+        javascriptMod('elections', 'utilities');
 
         $this->election->title = dgettext('elections', 'Reports');
         $this->election->content = PHPWS_Template::process($tpl, 'elections', 'reports.tpl');
@@ -456,7 +456,7 @@ class Elections_Forms {
         $form->setSize('expiry_interval', 4,4);
 
         $form->addSubmit('save', dgettext('elections', 'Save settings'));
-        
+
         $tpl = $form->getTemplate();
         $tpl['SETTINGS_LABEL'] = dgettext('elections', 'General Settings');
 
@@ -467,7 +467,7 @@ class Elections_Forms {
 
     public function showInfo()
     {
-        
+
         $filename = 'mod/elections/docs/README';
         if (@fopen($filename, "rb")) {
             $handle = fopen($filename, "rb");
@@ -505,7 +505,7 @@ class Elections_Forms {
         } else {
             $form->addTplTag('NO_BALLOTS_NOTE', dgettext('elections', 'Sorry, there are no ballots available. You will have to create a ballot first.'));
         }
-        
+
         $tpl = $form->getTemplate();
         $tpl['BALLOT_ID_GROUP_LABEL'] = dgettext('elections', 'Select ballot');
 
@@ -558,7 +558,7 @@ class Elections_Forms {
         } else {
             return dgettext('elections', 'No groups configured.');
         }
-        
+
     }
 
 
@@ -570,7 +570,7 @@ class Elections_Forms {
         $db->addColumn('title');
         $result = $db->getObjects('Elections_Ballot');
 //        print_r($result); exit;
-        
+
         return $result;
     }
 
@@ -613,7 +613,7 @@ class Elections_Forms {
         } else {
             return dgettext('elections', 'No ballots created.');
         }
-        
+
     }
 
 

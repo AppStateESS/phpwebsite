@@ -50,7 +50,7 @@ class Clipboard
                                               dgettext('clipboard', 'Smart Tag'));
         }
 
-        javascript('modules/clipboard/pick_view', $js);
+        javascript('clipboard', 'pick_view', $js);
 
         $template['TITLE']   = dgettext('clipboard', 'Clipboard');
         $template['CONTENT'] = $clip->content;
@@ -92,7 +92,7 @@ class Clipboard
 
         foreach ($_SESSION['Clipboard']->components as $key => $component){
             $clipVars['key'] = $key;
-            $drop = javascript('modules/clipboard/drop_clip', array('link'=>CLIPBOARD_DROP_LINK,
+            $drop = javascriptMod('clipboard', 'drop_clip', array('link'=>CLIPBOARD_DROP_LINK,
                                                                     'id'=>$key));
 
             $data['address']     = 'index.php?module=clipboard&action=showclip&key=' . $key;

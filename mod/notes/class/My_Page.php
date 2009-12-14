@@ -247,7 +247,7 @@ class Notes_My_Page {
         $form->addHidden('js', 1);
         $form->addTplTag('CANCEL', javascript('close_window', array('value' =>dgettext('notes', 'Cancel'))));
         javascript('jquery');
-        javascript('modules/notes/search_user');
+        javascriptMod('notes', 'search_user');
 
         $form->addText('username', $note->username);
         $form->setLabel('username', dgettext('notes', 'Recipient'));

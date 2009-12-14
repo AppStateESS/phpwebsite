@@ -245,7 +245,7 @@ class Comment_Thread {
     {
         Layout::addStyle('comments');
 
-        javascript('modules/comments/report', array('reported'=>$this->priorReport()));
+        javascriptMod('comments', 'report', array('reported'=>$this->priorReport()));
 
         if (Current_User::isLogged()) {
             $this->miniAdmin();

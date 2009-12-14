@@ -437,7 +437,7 @@ class PageSmith {
         //$vars['hdn_section_name'] = sprintf('pagesmith_%s', $_POST['section_name']);
         $vars['content'] = addslashes(PHPWS_Text::parseOutput($section->content));
         $vars['hidden_value'] = $section->content;
-        Layout::nakedDisplay(javascript('modules/pagesmith/update', $vars));
+        Layout::nakedDisplay(javascriptMod('pagesmith', 'update', $vars));
 
     }
 
@@ -464,7 +464,7 @@ class PageSmith {
             $vars['warning'] = addslashes($warning);
         }
 
-        Layout::nakedDisplay( javascript('modules/pagesmith/update', $vars));
+        Layout::nakedDisplay( javascriptMod('pagesmith', 'update', $vars));
     }
 
     public function postSettings()
@@ -556,13 +556,13 @@ class PageSmith {
         if (preg_match('/\W/', $tpl)) {
             return false;
         }
-        $template_dir = 'templates/pagesmith/page_templates/' . $tpl;
+        $template_dir = PHPWS_SOURCE_DIR . 'mod/pagesmith/templates/page_templates/' . $tpl;
         return PHPWS_File::rmdir($template_dir);
     }
 
     public function getTemplateList()
     {
-        $tpl_list = PHPWS_File::listDirectories('templates/pagesmith/page_templates/');
+        $tpl_list = PHPWS_File::listDirectories(PHPWS_SOURCE_DIR . 'mod/pagesmith/templates/page_templates/');
 
         foreach ($tpl_list as $name) {
             $tpl = new PS_Template($name);

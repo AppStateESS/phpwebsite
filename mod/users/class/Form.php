@@ -158,7 +158,7 @@ class User_Form {
 
         $template['LINKS'] = implode(' | ', $links);
 
-        $template['CHECK_ALL'] = javascript('modules/users/check_all', $vars);
+        $template['CHECK_ALL'] = javascriptMod('users', 'check_all', $vars);
 
         $tpl->setData($template);
 
@@ -455,7 +455,7 @@ class User_Form {
     public function userForm(PHPWS_User $user, $message=NULL)
     {
         javascript('jquery');
-        javascript('modules/users/generate');
+        javascriptMod('users', 'generate');
         $form = new PHPWS_Form('edit-user');
         if ($user->getId() > 0) {
             $form->addHidden('user_id', $user->getId());

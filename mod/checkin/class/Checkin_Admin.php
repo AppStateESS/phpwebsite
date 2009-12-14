@@ -457,7 +457,7 @@ class Checkin_Admin extends Checkin {
     public function waiting($small_view=false)
     {
         Layout::addStyle('checkin');
-        javascript('mod/checkin/javascript/send_note/');
+        javascriptMod('checkin', 'send_note');
         $this->title = dgettext('checkin', 'Waiting list');
 
         if (!$this->current_staff) {
@@ -645,7 +645,7 @@ class Checkin_Admin extends Checkin {
         $form->addHidden('aop', 'post_staff');
         if (!$this->staff->id) {
             javascript('jquery');
-            javascript('mod/checkin/javascript/search_user');
+            javascriptMod('checkin', 'search_user');
 
             $this->title = dgettext('checkin', 'Add staff member');
             $form->addText('username');

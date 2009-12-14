@@ -55,7 +55,7 @@ class PS_Forms {
      */
     public function pageLayout()
     {
-        javascript('modules/pagesmith/disable_links/');
+        javascriptMod('pagesmith', 'disable_links/');
         Layout::addStyle('pagesmith');
         $page = $this->ps->page;
 
@@ -104,7 +104,7 @@ class PS_Forms {
         $tpl = $form->getTemplate();
         $jsvars['page_title_input'] = 'pagesmith_title';
         $jsvars['page_title_id'] = sprintf('%s-page-title', $pg_tpl_name);
-        javascript('modules/pagesmith/pagetitle', $jsvars);
+        javascriptMod('pagesmith', 'pagetitle', $jsvars);
 
         if (!empty($page->_orphans)) {
             $tpl['ORPHAN_LINK'] = sprintf('<a href="%s#orphans">%s</a>', PHPWS_Core::getCurrentUrl(), dgettext('pagesmith', 'Orphans'));
@@ -117,7 +117,7 @@ class PS_Forms {
     private function listOrphans($orphans)
     {
         javascript('jquery');
-        javascript('modules/pagesmith/delete_orphan');
+        javascriptMod('pagesmith', 'delete_orphan');
         $tpl['TITLE'] = dgettext('pagesmith', 'Orphaned content');
 
         foreach ($orphans as $orf) {
@@ -372,7 +372,7 @@ class PS_Forms {
     public function uploadTemplates()
     {
         javascript('jquery');
-        javascript('modules/pagesmith/confirm_delete',
+        javascriptMod('pagesmith', 'confirm_delete',
                    array('address'=>PHPWS_Text::linkAddress('pagesmith', array('aop'=>'delete_template'), true, false, false)));
 
         $this->ps->title = dgettext('pagesmith', 'Upload template');

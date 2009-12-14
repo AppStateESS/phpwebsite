@@ -8,12 +8,12 @@
     * it under the terms of the GNU General Public License as published by
     * the Free Software Foundation; either version 2 of the License, or
     * (at your option) any later version.
-    * 
+    *
     * This program is distributed in the hope that it will be useful,
     * but WITHOUT ANY WARRANTY; without even the implied warranty of
     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     * GNU General Public License for more details.
-    * 
+    *
     * You should have received a copy of the GNU General Public License
     * along with this program; if not, write to the Free Software
     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -287,18 +287,18 @@ class Elections_Ballot {
         $key = new Key($this->key_id);
 
         if (!$key->allowView()) {
-            Current_User::requireLogin();            
+            Current_User::requireLogin();
         }
 
         $voteable = $this->can_vote();
 
         if ($voteable == '1') {
             if (javascriptEnabled()) {
-                javascript('modules/elections/utilities');
+                javascriptMod('elections', 'utilities');
 //                javascript('modules/elections/checkvotes');
             }
             $form = new PHPWS_Form('elections_vote');
-    
+
             $form->addHidden('module', 'elections');
             $form->addHidden('uop', 'post_vote');
             $form->addHidden('ballot_id', $this->id);
@@ -314,7 +314,7 @@ class Elections_Ballot {
             }
             if (javascriptEnabled()) {
                 $submit_vars = array("MIN"=>$this->minchoice, 'MAX'=>$this->maxchoice, 'SUBMIT_LABEL'=>dgettext('elections', 'Vote'), 'TYPE'=>$type);
-                $tpl['VOTE_BUTTON'] = javascript('modules/elections/checkvotes', $submit_vars);
+                $tpl['VOTE_BUTTON'] = javascriptMod('elections', 'checkvotes', $submit_vars);
             }
             $tpl['MSG'] = '<b>' . dgettext('elections', 'Voting is open for this election.') . '</b>';
             if ($this->maxchoice > 1) {
@@ -361,14 +361,14 @@ class Elections_Ballot {
             } else {
                 $tpl['PUBVIEW'] = dgettext('elections', 'No');
             }
-    
+
             $tpl['PUBVOTE_TEXT'] = dgettext('elections', 'Public may vote');
             if (!empty($this->pubvote)) {
                 $tpl['PUBVOTE'] = dgettext('elections', 'Yes');
             } else {
                 $tpl['PUBVOTE'] = dgettext('elections', 'No');
             }
-    
+
             if (!empty($this->votegroups)) {
                 $tpl['VOTEGROUPS_TEXT'] = dgettext('elections', 'Voting Groups');
                 $votegroups = explode(":", $this->votegroups);
@@ -380,14 +380,14 @@ class Elections_Ballot {
                 }
                 $tpl['VOTEGROUPS'] = substr($gnames, 0, -2);
             }
-    
+
             $tpl['SHOWIN_BLOCK_TEXT'] = dgettext('elections', 'List in side-box');
             if (!empty($this->show_in_block)) {
                 $tpl['SHOWIN_BLOCK'] = dgettext('elections', 'Yes');
             } else {
                 $tpl['SHOWIN_BLOCK'] = dgettext('elections', 'No');
             }
-        
+
         }
 
 
@@ -438,7 +438,7 @@ class Elections_Ballot {
         $qty = $db->count();
         return $qty;
     }
-    
+
 
     public function getVotes()
     {
@@ -458,14 +458,14 @@ class Elections_Ballot {
             $vars['ballot_id'] = $this->id;
             $links[] = PHPWS_Text::secureLink(dgettext('elections', 'Add Candidate'), 'elections', $vars);
         }
-        
+
         if (Current_User::allow('elections')) {
             $vars['id'] = $this->id;
             $vars['aop']  = 'edit_ballot';
             $links[] = PHPWS_Text::secureLink(dgettext('elections', 'Edit ballot'), 'elections', $vars);
         }
 
-        if (is_array(Election::navLinks())) { 
+        if (is_array(Election::navLinks())) {
             $links = array_merge($links, Election::navLinks());
         }
 
@@ -484,12 +484,12 @@ class Elections_Ballot {
         $db = new PHPWS_DB('elections_candidates');
         $db->addWhere('ballot_id', $this->id);
         PHPWS_Error::logIfError($db->delete());
-        
+
         /* delete the related votes */
         $db = new PHPWS_DB('elections_votes');
         $db->addWhere('ballot_id', $this->id);
         PHPWS_Error::logIfError($db->delete());
-        
+
         /* delete the ballot */
         $db = new PHPWS_DB('elections_ballots');
         $db->addWhere('id', $this->id);
@@ -612,11 +612,11 @@ class Elections_Ballot {
     }
 
 
-    function can_vote() 
+    function can_vote()
     {
         $now = mktime();
         $msg = NULL;
-        
+
         /* check the date */
         if ($now >= $this->opening) {
             if ($now <= $this->closing) {
@@ -658,12 +658,12 @@ class Elections_Ballot {
         } else {
             $msg = dgettext('elections', 'Voting has not opened yet for this ballot.');
         }
-        
+
         return $msg;
     }// END FUNC can_vote
 
 
-    function already_voted() 
+    function already_voted()
     {
     	if ($this->pubvote) {
     		/* check for a cookie */
