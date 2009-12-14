@@ -495,19 +495,15 @@ class Layout {
         return PHPWS_Text::parseOutput($_SESSION['Layout_Settings']->header);
     }
 
-
-    public function getJavascript($directory, $data=NULL, $base=NULL)
+    /**
+     * Loads a javascript file into memory
+     * @param string $directory
+     * @param array $data
+     * @param string $base
+     * @return unknown_type
+     */
+    public function getJavascript($directory, array $data=NULL, $base=NULL)
     {
-        if (isset($data) && !is_array($data)) {
-            return;
-        }
-
-        if (!empty($base)) {
-            if (!preg_match('/\/$/', $base)) {
-                $base .= '/';
-            }
-        }
-
         // previously a choice, now mandated. Leaving this in for backwards
         // compatibility
         if(preg_match('/^modules\//', $directory)) {
@@ -524,7 +520,6 @@ class Layout {
         } else {
             $js = 'javascript/';
         }
-
 
         PHPWS_CORE::initCoreClass('File.php');
         $headfile    = $base . $js . $directory . '/head.js';
@@ -880,6 +875,7 @@ class Layout {
             $media_tag = NULL;
         }
 
+        $file = PHPWS_SOURCE_HTTP . $file;
 
         if ($header == TRUE) {
             if (isset($alternate) && $alternate == TRUE) {
@@ -1215,9 +1211,9 @@ function javascriptEnabled()
 }
 
 
-function javascript($directory, $data=NULL)
+function javascript($directory, $data=NULL, $base=null)
 {
-    return Layout::getJavascript($directory, $data);
+    return Layout::getJavascript($directory, $data, $base);
 }
 
 function check_cookie()
@@ -1233,6 +1229,23 @@ function check_cookie()
             Layout::nakedDisplay($message);
         }
     }
+}
+
+/**
+ * Works like javascript function but uses a module directory instead
+ * @see Layout::getJavascript
+ * @param string $module
+ * @param string $directory
+ * @param array $data
+ * @return string
+ */
+function javascriptMod($module, $directory, $data=null)
+{
+    if (preg_match('/\W/', $module)) {
+        return false;
+    }
+    $root_directory = "mod/$module/";
+    return Layout::getJavascript($directory, $data, $root_directory);
 }
 
 ?>
