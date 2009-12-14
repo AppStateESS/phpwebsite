@@ -342,7 +342,7 @@ class Convert {
         if ($percentage < 100) {
             if ($show_wait) {
                 $template['please_wait'] = _('Please wait...');
-                $template['wait_graphic'] = '<img src="images/ajax-loader.gif" />';
+                $template['wait_graphic'] = '<img src="core/img/ajax-loader.gif" />';
             }
         } else {
             $percentage = 100;
