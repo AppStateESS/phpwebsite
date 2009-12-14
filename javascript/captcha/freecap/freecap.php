@@ -125,7 +125,8 @@ $bg_type = 3;
 $blur_bg = false;
 // for bg_type 3, which images should we use?
 // if you add your own, make sure they're fairly 'busy' images (ie a lot of shapes in them)
-$bg_images = Array("./ht_freecap_im1.jpg","./ht_freecap_im2.jpg","./ht_freecap_im3.jpg","./ht_freecap_im4.jpg","./ht_freecap_im5.jpg");
+$bg_dir = PHPWS_SOURCE_DIR . 'javascript/captcha/freecap/';
+$bg_images = array('ht_freecap_im1.jpg','ht_freecap_im2.jpg','ht_freecap_im3.jpg','ht_freecap_im4.jpg','ht_freecap_im5.jpg');
 // for non-transparent backgrounds only:
 	// if 0, merges CAPTCHA with bg
 	// if 1, write CAPTCHA over bg
@@ -472,10 +473,11 @@ if($bg_type!=0)
 	} else if($bg_type==3) {
 		// take random chunks of $bg_images and paste them onto the background
 
-		for($i=0 ; $i<sizeof($bg_images) ; $i++)
+	    $img_num = sizeof($bg_images);
+		for($i=0 ; $i<$img_num ; $i++)
 		{
 			// read each image and its size
-			$temp_im[$i] = ImageCreateFromJPEG($bg_images[$i]);
+			$temp_im[$i] = ImageCreateFromJPEG($bg_dir . $bg_images[$i]);
 			$temp_width[$i] = imagesx($temp_im[$i]);
 			$temp_height[$i] = imagesy($temp_im[$i]);
 		}
