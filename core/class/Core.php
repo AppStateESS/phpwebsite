@@ -336,7 +336,7 @@ class PHPWS_Core {
     public function getHttp()
     {
         if ( isset($_SERVER['HTTPS']) &&
-             strtolower($_SERVER['HTTPS']) == 'on' ) {
+        strtolower($_SERVER['HTTPS']) == 'on' ) {
             return 'https://';
         } else {
             return 'http://';
@@ -551,29 +551,29 @@ class PHPWS_Core {
     public function errorPage($code=NULL)
     {
         switch ($code) {
-        case '400':
-            header('HTTP/1.0 400 Bad Request');
-            include 'config/core/400.html';
-            break;
+            case '400':
+                header('HTTP/1.0 400 Bad Request');
+                include 'config/core/400.html';
+                break;
 
-        case '403':
-            header('HTTP/1.0 403 Forbidden');
-            include 'config/core/403.html';
-            break;
+            case '403':
+                header('HTTP/1.0 403 Forbidden');
+                include 'config/core/403.html';
+                break;
 
-        case '404':
-            header('HTTP/1.0 404 Not Found');
-            include 'config/core/404.html';
-            break;
+            case '404':
+                header('HTTP/1.0 404 Not Found');
+                include 'config/core/404.html';
+                break;
 
-        case 'overpost':
-            include 'config/core/overpost.html';
-            break;
+            case 'overpost':
+                include 'config/core/overpost.html';
+                break;
 
-        default:
-            header('HTTP/1.1 503 Service Unavailable');
-            include 'config/core/error_page.html';
-            break;
+            default:
+                header('HTTP/1.1 503 Service Unavailable');
+                include 'config/core/error_page.html';
+                break;
         }
         exit();
     }
@@ -584,7 +584,7 @@ class PHPWS_Core {
     public function isWindows()
     {
         if (isset($_SERVER['WINDIR']) ||
-            preg_match('/(microsoft|win32)/i', $_SERVER['SERVER_SOFTWARE'])) {
+        preg_match('/(microsoft|win32)/i', $_SERVER['SERVER_SOFTWARE'])) {
             return true;
         } else {
             return false;
@@ -687,7 +687,7 @@ class PHPWS_Core {
      *
      * 5/17/06 Removed the code that prevent private variables from loading.
      * Added 10/15/2008:
-     * If arguments are sent in the third parameter, plugObject will call 
+     * If arguments are sent in the third parameter, plugObject will call
      * the object's postPlug function and send those arguments to it.
      */
     public function plugObject($object, $variables, $args=null)
@@ -902,14 +902,14 @@ class PHPWS_Core {
     public function allowScriptTags()
     {
         if (ALLOW_SCRIPT_TAGS && class_exists('Current_User') &&
-            Current_User::allow('users', 'scripting')) {
+        Current_User::allow('users', 'scripting')) {
             return true;
         } else {
             return false;
         }
     }
 
-    
+
     public function securePopup()
     {
         if (!class_exists('Layout')) {
@@ -918,9 +918,9 @@ class PHPWS_Core {
 
         // no session has been created, return false
         if (!isset($_SESSION['secure_open_window']) ||
-            !isset($_GET['owpop']) ||
-            !in_array($_GET['owpop'], $_SESSION['secure_open_window'])) {
-            
+        !isset($_GET['owpop']) ||
+        !in_array($_GET['owpop'], $_SESSION['secure_open_window'])) {
+
             javascript('close_refresh');
             Layout::metaRoute('index.php');
             Layout::nakedDisplay(_('Unable to display contents.'));

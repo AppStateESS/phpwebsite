@@ -1081,28 +1081,33 @@ class DBPager {
                     unset($values['orderby_dir']);
                     unset($values['orderby']);
                     $alt .= _('Sorted in descending order');
-                    $button = sprintf('<img src="images/core/list/down_pointer.png" border="0" alt="%s" title="%s" style="margin-right : 5px;" />', $alt, $alt);
+                    $button = Icon::get('sort-down');
                 } elseif ($this->orderby_dir =="asc") {
                     $alt .= _('Sorted in ascending order');
                     $values['orderby_dir'] = 'desc';
-                    $button = sprintf('<img src="images/core/list/up_pointer.png" border="0" alt="%s" title="%s" style="margin-right : 5px;" />', $alt, $alt);
+                    $button = Icon::get('sort-up');
                 } else {
                     $alt .= _('Unsorted');
-                    $button = sprintf('<img src="images/core/list/sort_none.png" border="0"  alt="%s" title="%s" style="margin-right : 5px;" />', $alt, $alt);
+                    $button = Icon::get('sort');
                     $values['orderby_dir'] = 'asc';
                 }
-
+                $button->setStyle('margin-right : 5px');
+                $button->setAlt($alt);
             } else {
                 $alt .= _('Unsorted');
-                $button = sprintf('<img src="images/core/list/sort_none.png" border="0"  alt="%s" title="%s" style="margin-right : 5px;" />', $alt, $alt);
+                $button = Icon::get('sort');
+                $button->setStyle('margin-right : 5px');
+                $button->setAlt($alt);
                 $values['orderby_dir'] = 'asc';
             }
 
+            $button_string = $button->__toString();
+
             if (isset($this->sort_headers[$varname])) {
-                $button .= $this->sort_headers[$varname]['title'];
+                $button_string .= $this->sort_headers[$varname]['title'];
             }
 
-            $link = PHPWS_Text::moduleLink($button, $module, $values, null, $alt);
+            $link = PHPWS_Text::moduleLink($button_string, $module, $values, null, $alt);
 
             $template[strtoupper($buttonname)] = $link;
         }

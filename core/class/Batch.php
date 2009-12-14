@@ -157,7 +157,7 @@ class Batches {
         if ($percentage < 100) {
             if ($show_wait) {
                 $template['please_wait'] = _('Please wait...');
-                $template['wait_graphic'] = '<img src="images/core/ajax-loader.gif" />';
+                $template['wait_graphic'] = Icon::show('wait');
             }
         } else {
             $percentage = 100;
