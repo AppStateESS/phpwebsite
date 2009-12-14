@@ -346,8 +346,8 @@ class Checkin_Admin extends Checkin {
     public function assign()
     {
         Layout::addStyle('checkin');
-        javascript('modules/checkin/send_note');
-        javascript('modules/checkin/reassign', array('authkey'=>Current_User::getAuthKey()));
+        javascriptMod('checkin', 'send_note');
+        javascriptMod('checkin', 'reassign', array('authkey'=>Current_User::getAuthKey()));
         $this->title = dgettext('checkin', 'Assignment');
         $this->loadVisitorList(null, true);
         $this->loadStaffList();
@@ -457,7 +457,7 @@ class Checkin_Admin extends Checkin {
     public function waiting($small_view=false)
     {
         Layout::addStyle('checkin');
-        javascript('modules/checkin/send_note/');
+        javascript('mod/checkin/javascript/send_note/');
         $this->title = dgettext('checkin', 'Waiting list');
 
         if (!$this->current_staff) {
@@ -645,7 +645,7 @@ class Checkin_Admin extends Checkin {
         $form->addHidden('aop', 'post_staff');
         if (!$this->staff->id) {
             javascript('jquery');
-            javascript('modules/checkin/search_user');
+            javascript('mod/checkin/javascript/search_user');
 
             $this->title = dgettext('checkin', 'Add staff member');
             $form->addText('username');
