@@ -135,6 +135,15 @@ Jan Sorgalla
 jCarousel
 http://sorgalla.com/jcarousel/
 
+Yusuke Kamiyamane
+Fugue icons
+http://code.google.com/p/fugue-icons/
+
+
+Tango Desktop Project
+http://tango-project.org/
+
+
 --------------------------------------------------------------------------
 To those who translate, we salute you.
 --------------------------------------------------------------------------
@@ -157,11 +166,11 @@ Christian - hosts phpws.de, German support
 Wendall Cada - SF maintainer, bug reporter
 Eloi George/aDarkling - xmlrpc dev, bug/feature patches, mods
 Darren Greene
-Hilmar - documentation, bugs
+Hilmar - documentation, bugs, functionality
 Thomas de Jesus - SF bugs and RFE, irc assistance
 Bobby Kennedy/fatman - phpwebsitemanual host
 Rene Kiesler/rck - kiesler.at, phpws advocate and developer
-Tommy de Jesus/trf000 - Windows survivor, tester
+Tommy de Jesus/trf000 - Windows survivor, tester, advocate
 Kevin McElligott/XiRoCCo - phpwsforums host
 Greg Meiste/blindman1344 - module developer, bug/RFE patch & report
 Greg Morgan/dr_kludge
