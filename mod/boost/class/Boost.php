@@ -480,26 +480,6 @@ class PHPWS_Boost {
             }
         }
 
-        $javascriptSource = $mod->getDirectory() . 'javascript/';
-        if (is_dir($javascriptSource)) {
-            $javascriptDest   = $homeDir . 'javascript/modules/' . $mod->title . '/';
-            if ($overwrite == true || !is_dir($javascriptDest)) {
-                $content[] = dgettext('boost', 'Copying javascript directories.');
-                $this->addLog($mod->title, sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $javascriptSource, $javascriptDest));
-                PHPWS_File::recursiveFileCopy($javascriptSource, $javascriptDest);
-            }
-        }
-
-        $templateSource = $mod->getDirectory() . 'templates/';
-        if (is_dir($templateSource)) {
-            $templateDest   = $homeDir . 'templates/' . $mod->title . '/';
-            if ($overwrite == true || !is_dir($templateDest)) {
-                $content[] = dgettext('boost', 'Copying template files.');
-                $this->addLog($mod->title, sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $templateSource, $templateDest));
-                PHPWS_File::recursiveFileCopy($templateSource, $templateDest);
-            }
-        }
-
         // No longer creating mod directories
         /*
         if (!is_dir($homeDir . 'images/mod/')) {
@@ -560,26 +540,6 @@ class PHPWS_Boost {
             if(!PHPWS_File::rmdir($configDir)) {
                 $content[] = dgettext('boost', 'Failure to remove directory.');
                 $this->addLog($mod->title, sprintf(dgettext('boost', 'Unable to remove directory %s'), $configDir));
-            }
-        }
-
-        $javascriptDir = $homeDir. 'javascript/modules/' . $mod->title . '/';
-        if (is_dir($javascriptDir)) {
-            $content[] = sprintf(dgettext('boost', 'Removing directory %s'), $javascriptDir);
-            $this->addLog($mod->title, sprintf(dgettext('boost', 'Removing directory %s'), $javascriptDir));
-            if(!PHPWS_File::rmdir($javascriptDir)) {
-                $content[] = dgettext('boost', 'Failure to remove directory.');
-                $this->addLog($mod->title, sprintf(dgettext('boost', 'Unable to remove directory %s'), $javascriptDir));
-            }
-        }
-
-        $templateDir = $homeDir . 'templates/' . $mod->title . '/';
-        if (is_dir($templateDir)) {
-            $content[] = sprintf(dgettext('boost', 'Removing directory %s'), $templateDir);
-            $this->addLog($mod->title, sprintf(dgettext('boost', 'Removing directory %s'), $templateDir));
-            if(!PHPWS_File::rmdir($templateDir)) {
-                $content[] = dgettext('boost', 'Failure to remove directory.');
-                $this->addLog($mod->title, sprintf(dgettext('boost', 'Unable to remove directory %s'), $templateDir));
             }
         }
 
@@ -1060,22 +1020,6 @@ class PHPWS_Boost {
 
                 case 'conf':
                     $local_root = sprintf('%sconfig/%s/', $home_dir, $module);
-                    break;
-
-                case 'img':
-                    if ($module == 'core') {
-                        $local_root = sprintf('%simages/core/', $home_dir);
-                    } else {
-                        $local_root = sprintf('%simages/mod/%s/', $home_dir, $module);
-                    }
-                    break;
-
-                case 'javascript':
-                    if ($module == 'core') {
-                        $local_root = sprintf('%sjavascript/', $home_dir);
-                    } else {
-                        $local_root = sprintf('%sjavascript/modules/%s/', $home_dir, $module);
-                    }
                     break;
 
                 default:
