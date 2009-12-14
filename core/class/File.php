@@ -530,7 +530,7 @@ class PHPWS_File {
 
         if (!extension_loaded('gd')) {
             if (!dl('gd.so')) {
-                @copy('images/core/nogd.png', $dest_dir);
+                @copy(PHPWS_SOURCE_DIR . 'core/img/nogd.png', $dest_dir);
                 return true;
             }
         }
