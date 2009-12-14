@@ -177,9 +177,9 @@ class FC_Document_Manager {
             if (!isset($_POST['im'])) {
                 javascript('close_refresh');
             } else {
-                javascript('modules/filecabinet/refresh_manager', array('document_id'=>$this->document->id));
+                javascriptMod('filecabinet', 'refresh_manager', array('document_id'=>$this->document->id));
             }
-            
+
         } else {
             return $this->edit();
         }

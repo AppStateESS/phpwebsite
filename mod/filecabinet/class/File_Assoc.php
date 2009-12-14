@@ -393,7 +393,7 @@ class FC_File_Assoc {
         $vars['VERTICAL'] = $this->vertical ? 'true' : 'false';
         $vars['ARROW_POSITION'] = floor($max_size/2) + 5;
         $repeats['js-repeat'][] = $vars;
-        javascript('modules/filecabinet/jcarousel/', $repeats);
+        javascriptMod('filecabinet', 'jcarousel', $repeats);
     }
 
 
@@ -405,6 +405,7 @@ class FC_File_Assoc {
 
     public function lightbox()
     {
+        javascript('lightbox');
         $message = null;
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $folder = new Folder($this->file_id);
@@ -430,7 +431,6 @@ class FC_File_Assoc {
                 $img = sprintf('<a href="%s">%s</a>', $image->getPath(), $image->getThumbnail());
                 $tpl['thumbnails'][] = array('IMAGE' => $img);
             }
-            $this->loadLightbox();
             if ($this->vertical) {
                 $tpl_file = 'lightbox_vert.tpl';
             } else {
@@ -441,15 +441,6 @@ class FC_File_Assoc {
             }
             return PHPWS_Template::process($tpl, 'filecabinet', $tpl_file);
         }
-    }
-
-    public function loadLightbox()
-    {
-        javascript('jquery');
-        $vars = null;
-        $vars['txtImage'] = dgettext('filecabinet', 'Image');
-        $vars['txtOf']  = dgettext('filecabinet', 'of');
-        javascript('modules/filecabinet/lightbox/', $vars);
     }
 
     public function getTable()

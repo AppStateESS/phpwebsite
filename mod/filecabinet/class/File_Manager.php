@@ -261,7 +261,7 @@ class FC_File_Manager {
         $add_vars['fid'] = 0;
         $js_vars['authkey'] = Current_User::getAuthKey(PHPWS_Text::saltArray($add_vars));
 
-        return javascript('modules/filecabinet/clear_file', $js_vars);
+        return javascriptMod('filecabinet', 'clear_file', $js_vars);
     }
 
     public function linkInfo($dimensions=true)
@@ -534,7 +534,7 @@ class FC_File_Manager {
                 $this->max_width,
                 $this->max_height);
 
-                javascript('modules/filecabinet/pick_file', $js);
+                javascriptMod('filecabinet', 'pick_file', $js);
                 $db = new PHPWS_DB('images');
                 $class_name = 'PHPWS_Image';
                 $file_type  = FC_IMAGE;
@@ -711,7 +711,7 @@ class FC_File_Manager {
                 $this->max_width,
                 $this->max_height);
 
-                javascript('modules/filecabinet/pick_file', $js);
+                javascriptMod('filecabinet', 'pick_file', $js);
                 PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
                 $db = new PHPWS_DB('multimedia');
                 $class_name = 'PHPWS_Multimedia';
@@ -815,7 +815,7 @@ class FC_File_Manager {
 
             $total_size = $file->getTotalCarouselSize();
             $vars['total_size'] = $total_size;
-            javascript('modules/filecabinet/update_file', $vars);
+            javascriptMod('filecabinet', 'update_file', $vars);
         } else {
             exit(dgettext('filecabinet', 'An error occurred. Please check your logs.'));
         }
