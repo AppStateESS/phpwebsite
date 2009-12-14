@@ -42,12 +42,21 @@ class Icon extends Image {
         return parent::__toString();
     }
 
+    public static function show($type, $alt=null)
+    {
+        $icon = Icon::get($type);
+        if ($alt) {
+            $icon->setAlt($alt);
+        }
+        return $icon->__toString();
+    }
+
     private static function loadIcon($type, $icon_objects)
     {
         static $params = null;
         if (empty($params)) {
             /*
-             * @todo alternate method for deciding icon set
+             * @todo alternate method for deciding icon set, possible theme override
              */
             $source = 'default';
 
@@ -58,15 +67,19 @@ class Icon extends Image {
                 throw new PEAR_Exception(dgettext('core', 'Icon file missing source directory'));
             }
 
-            $params['source'] = $source;
+            $params['source'] = PHPWS_SOURCE_HTTP . 'images/icons/' . $source . '/';
+
             $params['icons'] = & $icons;
             if (isset($default_icon)) {
                 $params['default_icon'] = $default_icon;
             }
+            if (class_exists('Layout')) {
+                Layout::addToStyleList($params['source'] . 'icon.css');
+            }
         }
 
         $icon = & $params['icons'][$type];
-        $src = PHPWS_SOURCE_HTTP . 'images/icons/' . $params['source'] . $icon['src'];
+        $src = $params['source'] . $icon['src'];
         $o = new Icon($src);
 
         if (isset($icon['class'])) {
