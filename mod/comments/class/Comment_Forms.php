@@ -205,7 +205,7 @@ class Comment_Forms {
 
         // Start constructing the output
         javascript('jquery');
-        javascript('modules/comments/expandCollapse');
+        javascriptMod('comments', 'expandCollapse');
 
         $template = new PHPWS_Template('comments');
         $status = $template->setFile('ranks.tpl');
@@ -442,8 +442,8 @@ class Comment_Forms {
     public function reported()
     {
         javascript('jsquery');
-        javascript('modules/comments/admin');
-        javascript('modules/comments/quick_view');
+        javascriptMod('comments', 'admin');
+        javascriptMod('comments', 'quick_view');
         Layout::addStyle('comments');
         Layout::addStyle('comments', 'admin.css');
         PHPWS_Core::initCoreClass('DBPager.php');
@@ -492,7 +492,7 @@ class Comment_Forms {
 
     public function punishForm($comment)
     {
-        javascript('modules/comments/admin', array('authkey'=>Current_User::getAuthKey()));
+        javascriptMod('comments', 'admin', array('authkey'=>Current_User::getAuthKey()));
 
         if ($comment->author_id) {
             $author = Comments::getCommentUser($comment->author_id);
@@ -573,7 +573,7 @@ class Comment_Forms {
         Layout::addStyle('comments');
         Layout::addStyle('comments', 'admin.css');
         javascript('jquery');
-        javascript('modules/comments/quick_view');
+        javascriptMod('comments', 'quick_view');
         $form = new PHPWS_Form('approval');
         $form->addHidden('module', 'comments');
         $form->addSelect('aop', array('approval'=>'', 'approve_all'=>dgettext('comments', 'Approve checked'),
