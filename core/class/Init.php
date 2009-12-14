@@ -44,6 +44,7 @@ PHPWS_Core::initCoreClass('Cache.php');
 PHPWS_Core::initCoreClass('Key.php');
 PHPWS_Core::initCoreClass('Cookie.php');
 PHPWS_Core::initCoreClass('Security.php');
+PHPWS_Core::initCoreClass('Icon.php');
 
 if (!defined('USE_ROOT_CONFIG')) {
     define('USE_ROOT_CONFIG', FALSE);
