@@ -1362,7 +1362,7 @@ class Cabinet {
         Layout::addStyle('filecabinet', 'fck.css');
 
         javascript('jquery');
-        javascript('modules/filecabinet/fckeditor', array('instance'=>$_GET['instance'], 'pick'=>dgettext('filecabinet', 'Pick a media type above.')));
+        javascriptMod('filecabinet', 'fckeditor', array('instance'=>$_GET['instance'], 'pick'=>dgettext('filecabinet', 'Pick a media type above.')));
 
         $active = false;
 
