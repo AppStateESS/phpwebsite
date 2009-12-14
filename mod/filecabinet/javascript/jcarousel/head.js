@@ -1,7 +1,5 @@
-<link rel="stylesheet" type="text/css" href="{source_http}mod/filecabinet/javascript/lightbox/jquery.lightbox-0.5.css" />
 <link rel="stylesheet" type="text/css" href="{source_http}mod/filecabinet/javascript/jcarousel/lib/jquery.jcarousel.css" />
 <link rel="stylesheet" type="text/css" href="{source_http}mod/filecabinet/javascript/jcarousel/skins/tango/skin.css" />
-<script type="text/javascript" src="{source_http}mod/filecabinet/javascript/lightbox/jquery.lightbox-0.5.min.js"></script>
 <script type="text/javascript" src="{source_http}mod/filecabinet/javascript/jcarousel/lib/jquery.jcarousel.pack.js"></script>
 
 <style type="text/css">
@@ -11,12 +9,7 @@
 .jcarousel-skin-tango .jcarousel-clip-vertical,.jcarousel-skin-tango .jcarousel-container-vertical {width:{WIDTH}px;}
 .jcarousel-skin-tango .jcarousel-next-vertical,.jcarousel-skin-tango .jcarousel-prev-vertical {left:{ARROW_POSITION}px;}
 </style>
-<script type="text/javascript">
-var image = '{IMAGE}';
-var of = '{OF}';
-</script>
 <script type="text/javascript" src="{source_http}mod/filecabinet/javascript/jcarousel/script.js"></script>
-
 
 <style type="text/css">
 <!-- BEGIN style-repeat -->

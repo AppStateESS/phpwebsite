@@ -19,7 +19,6 @@
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
 
-$default['IMAGE'] = dgettext('filecabinet', 'Image');
-$default['OF'] = dgettext('filecabinet', 'of');
+javascript('lightbox');
 
 ?>

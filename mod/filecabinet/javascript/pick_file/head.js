@@ -15,5 +15,5 @@ var fid             = '{fid}';
 
 //]]>
 </script>
-<script type="text/javascript" src="./javascript/modules/filecabinet/pick_file/scripts.js"></script>
+<script type="text/javascript" src="{source_http}mod/filecabinet/javascript/pick_file/scripts.js"></script>
 
