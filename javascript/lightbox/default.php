@@ -18,7 +18,7 @@
  * @package
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
-
+javascript('jquery');
 $default['txtImage'] = dgettext('filecabinet', 'Image');
 $default['txtOf']  = dgettext('filecabinet', 'of');
 
