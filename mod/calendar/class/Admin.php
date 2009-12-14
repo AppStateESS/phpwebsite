@@ -387,8 +387,8 @@ class Calendar_Admin {
         $tpl['SYNC'] = sprintf('<input type="button" style="display : none" id="sync-dates" onclick="sync_dates(); return false;" name="sync-dates" value="%s" />', dgettext('calendar', 'Sync dates'));
 
         if (javascriptEnabled()) {
-            javascript('modules/calendar/edit_event');
-            javascript('modules/calendar/check_date');
+            javascriptMod('calendar', 'edit_event');
+            javascriptMod('calendar', 'check_date');
         }
 
         return PHPWS_Template::process($tpl, 'calendar', 'admin/forms/edit_event.tpl');
