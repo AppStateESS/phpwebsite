@@ -169,16 +169,25 @@ class PHPWS_Core {
     public function initModClass($module, $file)
     {
         $classFile = PHPWS_SOURCE_DIR . 'mod/' . $module . '/class/' . $file;
-        if (is_file($classFile)) {
-            require_once $classFile;
-            return true;
-        }
-        else {
+
+        // If the requested file doesn't exist, throw an exception
+        if (!is_file($classFile)) {
             PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', __CLASS__ . '::' .__FUNCTION__, "File: $classFile");
             require_once 'PEAR/Exception.php';
             throw new PEAR_Exception(dgettext('core', 'Could not initialize module class ' . $classFile));
-            return false;
         }
+        
+        // Require the file, and catch any exceptions that might cause
+        try{
+            require_once $classFile;
+        }catch(Exception $e){
+            // Log the exception
+            PHPWS_Error::log($e->getMessage());
+            // Re-throw the exception
+            throw $e;
+        }
+        
+        return true;
     }
 
 
@@ -190,16 +199,24 @@ class PHPWS_Core {
     {
         $classFile = PHPWS_SOURCE_DIR . 'core/class/' . $file;
 
-        if (is_file($classFile)) {
-            require_once $classFile;
-            return true;
-        }
-        else {
+        // If the requested file doesn't exist, throw an exception
+        if (!is_file($classFile)) {
             PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'initCoreClass', "File: $classFile");
             require_once 'PEAR/Exception.php';
             throw new PEAR_Exception(dgettext('core', 'Could not initialize core class ' . $classFile));
-            return false;
         }
+
+        // Require the file, and catch any exceptions that might cause
+        try{
+            require_once $classFile;
+        }catch (Exception $e){
+            // Log the exception
+            PHPWS_Error::log($e->getMessage());
+            // Re-throw the exception
+            throw $e;
+        }
+        
+        return true;
     }
 
 
