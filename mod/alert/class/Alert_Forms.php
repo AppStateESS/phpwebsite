@@ -141,7 +141,7 @@ class Alert_Forms {
 
     public function manageParticipants()
     {
-        javascript('modules/alert/check_all');
+        javascriptMod('check_all', null, 'alert');
         PHPWS_Core::initCoreClass('DBPager.php');
         $pager = new DBPager('alert_participant');
         $pager->initialize(false);
