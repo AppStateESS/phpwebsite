@@ -78,6 +78,10 @@ class Image extends Tag {
             $this->alt = end($path);
         }
 
+        if (empty($this->title)) {
+            $this->title = $this->alt;
+        }
+
         return parent::__toString();
     }
 
@@ -105,7 +109,8 @@ class Image extends Tag {
 
         $dimen = @getimagesize($this->src);
         if (!is_array($dimen)) {
-            trigger_error(dgettext('core', 'Could not find image'));
+            $this->src = PHPWS_SOURCE_HTTP . 'core/img/not_found.gif';
+            trigger_error(sprintf(dgettext('core', '%s not found'), $this->src));
             return false;
         }
 
