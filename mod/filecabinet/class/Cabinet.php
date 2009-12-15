@@ -35,7 +35,6 @@ class Cabinet {
         if ($this->loadFileManager()) {
             Layout::nakedDisplay($this->file_manager->admin(), null, false);
         } else {
-            exit('no do not');
             Layout::nakedDisplay(javascript('close_refresh'), null, false);
         }
     }

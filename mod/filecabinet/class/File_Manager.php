@@ -219,7 +219,7 @@ class FC_File_Manager {
         static $count = 0;
         Layout::addStyle('filecabinet', 'file_view.css');
         Layout::addStyle('filecabinet');
-
+        $this->file_assoc->loadCarousel(3);
         /**
          * No label, show default graphic
          */
