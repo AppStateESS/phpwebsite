@@ -90,9 +90,8 @@ class Tag {
         unset($tag_parameters['open']);
         unset($tag_parameters['type']);
         unset($tag_parameters['error']);
-        if (!empty($this->class)) {
-            $tag_parameters['class'] = implode(' ', $this->class);
-        }
+        $tag_parameters['class'] = $this->getClass();
+        $tag_parameters['style'] = $this->getStyle();
 
         if (!empty($tag_parameters)) {
             foreach ($tag_parameters as $pname=>$param) {
@@ -129,14 +128,34 @@ class Tag {
         $this->class[] = $class;
     }
 
+    public function getClass()
+    {
+        if (!empty($this->class)) {
+            return implode(' ', $this->class);
+        } else {
+            return null;
+        }
+    }
+
     public function setStyle($style)
     {
         if (preg_match('/[^\w\-;\s:!]/', $style)) {
             trigger_error(dgettext('core', 'Improperly formatted style settings'));
         }
-        $this->style = $style;
+        if (!preg_match('/;$/', $style)) {
+            $style .= ';';
+        }
+        $this->style[] = $style;
     }
 
+    public function getStyle()
+    {
+        if (!empty($this->style)) {
+            return implode(' ', $this->style);
+        } else {
+            return null;
+        }
+    }
     public function setId($id)
     {
         if (preg_match('/[^\w\-]/', $id)) {

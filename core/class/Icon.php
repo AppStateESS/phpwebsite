@@ -67,7 +67,7 @@ class Icon extends Image {
                 throw new PEAR_Exception(dgettext('core', 'Icon file missing source directory'));
             }
 
-            $params['source'] = PHPWS_SOURCE_HTTP . 'images/icons/' . $source . '/';
+            $params['source'] = "images/icons/$source/";
 
             $params['icons'] = & $icons;
             if (isset($default_icon)) {
@@ -79,7 +79,7 @@ class Icon extends Image {
         }
 
         $icon = & $params['icons'][$type];
-        $src = $params['source'] . $icon['src'];
+        $src = PHPWS_SOURCE_HTTP . $params['source'] . $icon['src'];
         $o = new Icon($src);
 
         if (isset($icon['class'])) {
