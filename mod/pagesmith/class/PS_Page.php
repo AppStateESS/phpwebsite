@@ -250,7 +250,6 @@ class PS_Page {
 
     public function editLink($label=null, $icon=false)
     {
-
         if ($icon) {
             $label = Icon::show('edit', dgettext('pagesmith', 'Edit page'));
         } elseif (empty($label)) {

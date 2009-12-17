@@ -55,7 +55,7 @@ class PS_Forms {
      */
     public function pageLayout()
     {
-        javascriptMod('pagesmith', 'disable_links/');
+        javascriptMod('pagesmith', 'disable_links');
         Layout::addStyle('pagesmith');
         $page = $this->ps->page;
 
