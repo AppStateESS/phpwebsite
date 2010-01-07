@@ -1473,11 +1473,11 @@ class DBPager {
 
             if (!$index_set) {
                 $index_keys = array_keys($result);
-                $row = '"' . implode('","', $index_keys) . "\"\n";
+                $row = self::formatCSVRow($index_keys);
                 fwrite($fp, $row);
                 $index_set = true;
             }
-            $row = '"' . implode('","', $result) . "\"\n";
+            $row = self::formatCSVRow($result);
 
             fwrite($fp, $row);
         }
@@ -1491,6 +1491,20 @@ class DBPager {
         $dl->setContentType('text/csv');
         $dl->send();
         exit();
+    }
+
+    function formatCSVRow($fields)
+    {
+        $row = '';
+        foreach($fields as $field) {
+            if(strpos($field, ',') !== false || strpos($field, '"') !== false) {
+                $field = '"'.preg_replace('/"/','""',$key).'"';
+            }
+            $row .= "$field,";
+        }
+
+        // Remove trailing comma and add newline
+        return substr($row, 0, strlen($row)-1) . "\n";
     }
 
     /**
