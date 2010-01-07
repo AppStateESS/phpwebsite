@@ -25,8 +25,7 @@ class Tag {
      * Tag type (e.g. p, b, div, etc.)
      * @var string
      */
-    private $type = null;
-
+    private $tag_type = null;
 
     /**
      * Tag identifier
@@ -70,26 +69,32 @@ class Tag {
      */
     private $error = array();
 
-    protected function setType($type)
+    /**
+     * Sets the tag element type (e.g. paragraph tag type is "p")
+     * @param string $tag_type
+     * @return void
+     */
+    protected function setTagType($tag_type)
     {
-        if (preg_match('/[^a-z]/', $type)) {
+        if (preg_match('/[^a-zA-Z]/', $tag_type)) {
             throw new PEAR_Exception(dgettext('core', 'Tag type must be alphabetic characters only'));
         }
-        $this->type = $type;
+        $this->tag_type = $tag_type;
     }
 
     public function __toString()
     {
-        if (empty($this->type)) {
+        if (empty($this->tag_type)) {
             trigger_error(dgettext('core', 'Tag type not set'));
             return '';
         }
-        $data[] = "<$this->type";
+        $data[] = "<$this->tag_type";
 
         $tag_parameters = get_object_vars($this);
         unset($tag_parameters['open']);
-        unset($tag_parameters['type']);
+        unset($tag_parameters['tag_type']);
         unset($tag_parameters['error']);
+        unset($tag_parameters['value']);
         $tag_parameters['class'] = $this->getClass();
         $tag_parameters['style'] = $this->getStyle();
 
@@ -107,9 +112,9 @@ class Tag {
         $result = implode(' ', $data);
 
         if($this->open) {
-            $result .= ">$this->value</$this->type>";
+            $result .= ">{$this->value}</{$this->tag_type}>";
         } else {
-            $result .= " />";
+            $result .= sprintf(' value="%s" />', htmlentities($this->value, ENT_COMPAT, 'UTF-8'));
         }
 
         return $result;
@@ -158,8 +163,8 @@ class Tag {
     }
     public function setId($id)
     {
-        if (preg_match('/[^\w\-]/', $id)) {
-            trigger_error(dgettext('core', 'Improperly id name'));
+        if (!$this->isProper($id)) {
+            trigger_error(dgettext('core', 'Improper id name'));
         }
         $this->id = $id;
     }
@@ -172,6 +177,22 @@ class Tag {
     public function setTitle($title)
     {
         $this->title = htmlentities(strip_tags($title));
+    }
+
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
+
+    /**
+     * Returns true if the passed string is a properly formatted SGML element type.
+     * Name or Id
+     * @var string $string
+     * @see
+     */
+    public function isProper($string)
+    {
+        return preg_match('/^[a-z][\w\-\:\.]*/', $string);
     }
 }
 

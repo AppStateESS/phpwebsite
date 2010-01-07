@@ -54,7 +54,7 @@ class Image extends Tag {
 
     public function __construct($src)
     {
-        $this->setType('img');
+        $this->setTagType('img');
         $this->setSrc($src);
         $this->setOpen(false);
     }
