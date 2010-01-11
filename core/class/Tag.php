@@ -25,7 +25,7 @@ class Tag {
      * Tag type (e.g. p, b, div, etc.)
      * @var string
      */
-    private $tag_type = null;
+    protected $tag_type = null;
 
     /**
      * Tag identifier
@@ -68,6 +68,18 @@ class Tag {
      * @var array
      */
     private $error = array();
+
+    public function __construct($tag_type=null, $value=null, $open=true)
+    {
+        if (isset($tag_type)) {
+            $this->setTagType($tag_type);
+        }
+
+        if (isset($value)) {
+            $this->setValue($value);
+        }
+        $this->open = (bool)$open;
+    }
 
     /**
      * Sets the tag element type (e.g. paragraph tag type is "p")

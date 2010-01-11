@@ -20,6 +20,7 @@
  */
 
 require_once PHPWS_SOURCE_DIR . 'core/class/Form2/Input.php';
+require_once PHPWS_SOURCE_DIR . 'core/class/Form2/Select.php';
 
 class Form2 extends Tag {
     /**
@@ -45,13 +46,19 @@ class Form2 extends Tag {
         if (preg_match('/[^\w\-\[\]]/', $name)) {
             throw new PEAR_Exception(dgettext('core', 'Improperly formatted input name'));
         }
-        $input = new Input($type);
-        $input->setName($name);
-        if (isset($value)) {
-            $input->setValue($value);
-        }
+        $input = new Input($type, $name, $value);
         $this->inputs[$name][] = $input;
         return $input;
+    }
+
+    public function addSelectInput($name, $value=null)
+    {
+        if (preg_match('/[^\w\-\[\]]/', $name)) {
+            throw new PEAR_Exception(dgettext('core', 'Improperly formatted input name'));
+        }
+        $select = new Select($name, $value);
+        $this->inputs[$name][] = $select;
+        return $select;
     }
 
 
@@ -62,7 +69,14 @@ class Form2 extends Tag {
 
     public function addRadio($name, $value)
     {
-        return $this->addInput('radio', $name, $value);
+        if (is_array($value)) {
+            foreach ($value as $radio_value) {
+                $radio[] = $this->addInput('radio', $name, $radio_value);
+            }
+            return $radio;
+        } else {
+            return $this->addInput('radio', $name, $value);
+        }
     }
 
     public function addCheck($name, $value)
@@ -70,14 +84,14 @@ class Form2 extends Tag {
         return $this->addInput('checkbox', $name, $value);
     }
 
-    public function addSelect($name, $value)
+    public function addSelect($name, array $values)
     {
-        return $this->addInput('select', $name, $value);
+        return $this->addSelectInput($name, $values);
     }
 
-    public function addMultiple($name, $value)
+    public function addMultiple($name, array $value)
     {
-        return $this->addInput('multiple', $name, $value);
+        return $this->addSelectInput($name, $value, true);
     }
 
     public function addTextField($name, $value=null)
@@ -141,7 +155,21 @@ class Form2 extends Tag {
      */
     public function getTemplate($capitalize_tags=false)
     {
-
+        foreach ($this->inputs as $name=>$input_list) {
+            if (count($input_list) > 1) {
+                $cnt = 1;
+                foreach ($input_list as $input) {
+                    $name = preg_replace('/\[\]/', '', $name);
+                    $tpl["$name-$cnt"] = $input->__toString();
+                    $cnt++;
+                }
+            } else {
+                foreach ($input_list as $input) {
+                    $tpl[$name] = $input->__toString();
+                }
+            }
+        }
+        return $tpl;
     }
 }
 ?>

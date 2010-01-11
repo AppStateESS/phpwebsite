@@ -33,7 +33,7 @@ class Input extends Tag {
      */
     protected $type = null;
 
-    public function __construct($type, $name=null, $value=null)
+    public function __construct($type, $name, $value=null)
     {
         switch ($type) {
             case 'textarea':
@@ -49,24 +49,16 @@ class Input extends Tag {
             case 'button':
             case 'file':
             case 'password':
-                $this->setTagType('input');
-                $this->setOpen(false);
+                parent::__construct('input', $value, false);
                 $this->setType($type);
                 break;
 
-            case 'select':
-            case 'multiple':
-                $this->setTagType('select');
-                $this->setOpen(true);
+            case 'option':
+                parent::__construct('option', $value, true);
                 break;
         }
-        if ($name) {
-            $this->setName($name);
-        }
+        $this->setName($name);
 
-        if (isset($value)) {
-            $this->setValue($value);
-        }
     }
 
     private function setType($type)
