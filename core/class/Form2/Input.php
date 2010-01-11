@@ -19,12 +19,9 @@
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
 
-class Input extends Tag {
+require_once PHPWS_SOURCE_DIR . 'core/class/Form2/Base.php';
 
-    /**
-     * @var string
-     */
-    protected $name = null;
+class Input extends Base {
 
     /**
      * The input type (textarea, checkbox, etc.) for an input tag. Not
@@ -39,19 +36,6 @@ class Input extends Tag {
      * @var string
      */
     protected $checked = null;
-
-    /**
-     * Indicates if the current option input was previously selected.
-     * Will be changed to the string "selected" if so.
-     * @var string
-     */
-    protected $selected = null;
-
-    /**
-     * Option inputs differ from other inputs. This variable notes it.
-     * @var boolean
-     */
-    private $is_option = false;
 
     public function __construct($type, $name, $value=null)
     {
@@ -72,11 +56,6 @@ class Input extends Tag {
                 parent::__construct('input', $value, false);
                 $this->setType($type);
                 break;
-
-            case 'option':
-                parent::__construct('option', $value, true);
-                $this->is_option = true;
-                break;
         }
         $this->setName($name);
 
@@ -85,28 +64,6 @@ class Input extends Tag {
     private function setType($type)
     {
         $this->type = $type;
-    }
-
-    public function setName($name)
-    {
-        if (!$this->isProper($name)) {
-            throw new PEAR_Exception(dgettext('core', 'Improper input name'));
-        }
-        $this->name = $name;
-    }
-
-    public function setLabel($label)
-    {
-        $this->label = $label;
-    }
-
-    public function get($with_label=false)
-    {
-        if ($with_label && isset($this->id)) {
-            return sprintf('<label for="%s">%s</label> %s', $this->id, $this->label, $this->__toString());
-        } else {
-            return $this->__toString();
-        }
     }
 
     public function setChecked($check=true)
@@ -118,11 +75,7 @@ class Input extends Tag {
                 break;
 
             default:
-                if ($this->is_option) {
-                    $this->selected = 'selected';
-                } else {
-                    throw new PEAR_Exception(sprintf(dgettext('core', 'Cannot setChecked on %s input type'), $this->type));
-                }
+                throw new PEAR_Exception(sprintf(dgettext('core', 'Cannot setChecked on %s input type'), $this->type));
                 break;
         }
     }

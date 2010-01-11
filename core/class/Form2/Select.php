@@ -19,21 +19,18 @@
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
 
-class Select extends Tag {
-    /**
-     * @var string
-     */
-    protected $name = null;
+require_once PHPWS_SOURCE_DIR . 'core/class/Form2/Option.php';
 
+class Select extends Base {
     private $multiple = false;
     private $options = null;
+    private $named_options = false;
 
     protected $selected = null;
 
     public function __construct($name, array $options, $multiple=false)
     {
-        $this->setTagType('select');
-        $this->setOpen(true);
+        parent::__construct('select');
         $this->setName($name);
         $this->setOptions($options);
     }
@@ -46,10 +43,24 @@ class Select extends Tag {
         $this->name = $name;
     }
 
-    public function setOptions($options)
+    public function addOption($value, $name=null)
+    {
+        if (!$this->isProper($name)) {
+            $name = $value;
+        }
+        $option = new Option($value, $name);
+        $this->options[$name] = $option;
+        return $option;
+    }
+
+    public function setOptions(array $options)
     {
         foreach ($options as $key=>$value) {
-            $this->options[$key] = new Input('option', $key, $value);
+            if (is_a($value, 'Option')) {
+                $this->options[$value->name] = $value;
+            } else {
+                $this->addOption($value, $key);
+            }
         }
     }
 
@@ -89,7 +100,10 @@ class Select extends Tag {
 
     public function setSelected($name)
     {
-        $this->options[$name]->setChecked();
+        if (!isset($this->options[$name])) {
+            throw new PEAR_Exception(dgettext('core', 'Option index not found in select'));
+        }
+        $this->options[$name]->setSelected();
     }
 }
 ?>
