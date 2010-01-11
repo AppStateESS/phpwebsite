@@ -24,7 +24,7 @@ class Input extends Tag {
     /**
      * @var string
      */
-    public $name = null;
+    protected $name = null;
 
     /**
      * The input type (textarea, checkbox, etc.) for an input tag. Not
@@ -32,6 +32,26 @@ class Input extends Tag {
      * @var string;
      */
     protected $type = null;
+
+    /**
+     * Indicates if the current radio or checkbox input was previously checked.
+     * Will be changed to the string "checked" if so.
+     * @var string
+     */
+    protected $checked = null;
+
+    /**
+     * Indicates if the current option input was previously selected.
+     * Will be changed to the string "selected" if so.
+     * @var string
+     */
+    protected $selected = null;
+
+    /**
+     * Option inputs differ from other inputs. This variable notes it.
+     * @var boolean
+     */
+    private $is_option = false;
 
     public function __construct($type, $name, $value=null)
     {
@@ -55,6 +75,7 @@ class Input extends Tag {
 
             case 'option':
                 parent::__construct('option', $value, true);
+                $this->is_option = true;
                 break;
         }
         $this->setName($name);
@@ -85,6 +106,24 @@ class Input extends Tag {
             return sprintf('<label for="%s">%s</label> %s', $this->id, $this->label, $this->__toString());
         } else {
             return $this->__toString();
+        }
+    }
+
+    public function setChecked($check=true)
+    {
+        switch ($this->type) {
+            case 'checkbox':
+            case 'radio':
+                $this->checked = 'checked';
+                break;
+
+            default:
+                if ($this->is_option) {
+                    $this->selected = 'selected';
+                } else {
+                    throw new PEAR_Exception(sprintf(dgettext('core', 'Cannot setChecked on %s input type'), $this->type));
+                }
+                break;
         }
     }
 }

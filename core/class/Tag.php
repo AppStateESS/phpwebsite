@@ -19,8 +19,9 @@
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
 require_once 'PEAR/Exception.php';
+require_once PHPWS_SOURCE_DIR . 'core/class/Data.php';
 
-class Tag {
+class Tag extends Data {
     /**
      * Tag type (e.g. p, b, div, etc.)
      * @var string

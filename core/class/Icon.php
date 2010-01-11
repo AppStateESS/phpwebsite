@@ -23,11 +23,6 @@ require_once PHPWS_SOURCE_DIR . 'core/class/Image.php';
 
 class Icon extends Image {
 
-    public function __construct($src)
-    {
-        parent::__construct($src);
-    }
-
     public static function get($type)
     {
         static $icon_objects = null;
@@ -42,7 +37,7 @@ class Icon extends Image {
         return parent::__toString();
     }
 
-    public static function show($type, $alt=null)
+    public function show($type, $alt=null)
     {
         $icon = Icon::get($type);
         if ($alt) {

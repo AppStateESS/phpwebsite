@@ -19,9 +19,16 @@
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
 
-class Select extends Input {
+class Select extends Tag {
+    /**
+     * @var string
+     */
+    protected $name = null;
+
     private $multiple = false;
     private $options = null;
+
+    protected $selected = null;
 
     public function __construct($name, array $options, $multiple=false)
     {
@@ -29,6 +36,14 @@ class Select extends Input {
         $this->setOpen(true);
         $this->setName($name);
         $this->setOptions($options);
+    }
+
+    public function setName($name)
+    {
+        if (!$this->isProper($name)) {
+            throw new PEAR_Exception(dgettext('core', 'Improper input name'));
+        }
+        $this->name = $name;
     }
 
     public function setOptions($options)
@@ -51,6 +66,15 @@ class Select extends Input {
         return isset($this->options[$name]);
     }
 
+    public function get($with_label=false)
+    {
+        if ($with_label && isset($this->id)) {
+            return sprintf('<label for="%s">%s</label> %s', $this->id, $this->label, $this->__toString());
+        } else {
+            return $this->__toString();
+        }
+    }
+
     /**
      * Alternative to the parent function. The value is set right before the
      * toString is called from Tag. This allows the developer time to
@@ -61,6 +85,11 @@ class Select extends Input {
     {
         $this->setValue(implode("\n", $this->options));
         return parent::__toString();
+    }
+
+    public function setSelected($name)
+    {
+        $this->options[$name]->setChecked();
     }
 }
 ?>
