@@ -24,6 +24,7 @@ require_once PHPWS_SOURCE_DIR . 'core/class/Form2/Option.php';
 class Select extends Base {
     private $multiple = false;
     private $options = null;
+    private $optgroup = null;
     private $named_options = false;
 
     protected $selected = null;
@@ -33,6 +34,7 @@ class Select extends Base {
         parent::__construct('select');
         $this->setName($name);
         $this->setOptions($options);
+        $this->setMultiple($multiple);
     }
 
     public function setName($name)
@@ -43,23 +45,32 @@ class Select extends Base {
         $this->name = $name;
     }
 
-    public function addOption($value, $name=null)
+    public function setMultiple($multiple=true)
+    {
+        $this->multiple = (bool)$multiple;
+    }
+
+    public function addOption($value, $name=null, $optgroup=null)
     {
         if (!$this->isProper($name)) {
             $name = $value;
         }
         $option = new Option($value, $name);
-        $this->options[$name] = $option;
+        if (!empty($optgroup)) {
+            $this->optgroup[$optgroup][] = $option;
+        } else {
+            $this->options[$name] = $option;
+        }
         return $option;
     }
 
-    public function setOptions(array $options)
+    public function setOptions(array $options, $optgroup=null)
     {
         foreach ($options as $key=>$value) {
             if (is_a($value, 'Option')) {
                 $this->options[$value->name] = $value;
             } else {
-                $this->addOption($value, $key);
+                $this->addOption($value, $key, $optgroup);
             }
         }
     }
@@ -77,14 +88,6 @@ class Select extends Base {
         return isset($this->options[$name]);
     }
 
-    public function get($with_label=false)
-    {
-        if ($with_label && isset($this->id)) {
-            return sprintf('<label for="%s">%s</label> %s', $this->id, $this->label, $this->__toString());
-        } else {
-            return $this->__toString();
-        }
-    }
 
     /**
      * Alternative to the parent function. The value is set right before the
@@ -94,7 +97,22 @@ class Select extends Base {
      */
     public function __toString()
     {
-        $this->setValue(implode("\n", $this->options));
+        if (!empty($this->optgroup)) {
+            foreach ($this->optgroup as $group=>$opt_list) {
+                $value[] = "<optgroup label=\"$group\">";
+                foreach ($opt_list as $option) {
+                    $value[] = $option->__toString();
+                }
+                $value[] = "</optgroup>";
+            }
+        }
+
+        if (!empty($this->options)) {
+            foreach ($this->options as $option) {
+                $value[] = $option->__toString();
+            }
+        }
+        $this->setValue(implode("\n", $value));
         return parent::__toString();
     }
 

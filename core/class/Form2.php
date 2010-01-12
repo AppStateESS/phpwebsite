@@ -51,12 +51,12 @@ class Form2 extends Tag {
         return $input;
     }
 
-    public function addSelectInput($name, $value=null)
+    public function addSelectInput($name, $value=null, $multiple=false)
     {
         if (preg_match('/[^\w\-\[\]]/', $name)) {
             throw new PEAR_Exception(dgettext('core', 'Improperly formatted input name'));
         }
-        $select = new Select($name, $value);
+        $select = new Select($name, $value, $multiple);
         $this->inputs[$name][] = $select;
         return $select;
     }
@@ -133,7 +133,7 @@ class Form2 extends Tag {
     {
         foreach ($this->inputs as $input_list) {
             foreach ($input_list as $input) {
-                $value[] = $input->get(true);
+                $value[] = $input->__toString();
             }
         }
         $this->setValue('<p>' . implode("</p><p>", $value) . '</p>');

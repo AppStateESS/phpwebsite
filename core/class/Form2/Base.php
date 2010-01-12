@@ -24,7 +24,6 @@ class Base extends Tag {
      * @var string
      */
     protected $name = null;
-
     protected $label = null;
 
 
@@ -41,16 +40,14 @@ class Base extends Tag {
         $this->label = $label;
     }
 
-    public function get($with_label=false)
+    public function __toString($with_label=false)
     {
         if ($with_label && isset($this->id)) {
-            return sprintf('<label for="%s">%s</label> %s', $this->id, $this->label, $this->__toString());
+            return sprintf('<label for="%s">%s</label> %s', $this->id, $this->label, parent::__toString());
         } else {
-            return $this->__toString();
+            return parent::__toString();
         }
     }
-
-
 }
 
 ?>
