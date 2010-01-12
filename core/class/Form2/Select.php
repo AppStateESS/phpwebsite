@@ -24,7 +24,7 @@ require_once PHPWS_SOURCE_DIR . 'core/class/Form2/Option.php';
 class Select extends Base {
     private $multiple = false;
     private $options = null;
-    private $optgroup = null;
+    //private $optgroup = null;
     private $named_options = false;
 
     protected $selected = null;
@@ -33,7 +33,7 @@ class Select extends Base {
     {
         parent::__construct('select');
         $this->setName($name);
-        $this->setOptions($options);
+        $this->addOptionArray($options);
         $this->setMultiple($multiple);
     }
 
@@ -57,18 +57,18 @@ class Select extends Base {
         }
         $option = new Option($value, $name);
         if (!empty($optgroup)) {
-            $this->optgroup[$optgroup][] = $option;
-        } else {
-            $this->options[$name] = $option;
+            $option->setOptgroup($optgroup);
         }
+
+        $this->options[$name] = $option;
         return $option;
     }
 
-    public function setOptions(array $options, $optgroup=null)
+    public function addOptionArray(array $options, $optgroup=null)
     {
         foreach ($options as $key=>$value) {
             if (is_array($value)) {
-                $this->setOptions($value, $key);
+                $this->addOptionArray($value, $key);
             } elseif (is_a($value, 'Option')) {
                 $this->options[$value->name] = $value;
             } else {
@@ -99,19 +99,33 @@ class Select extends Base {
      */
     public function __toString()
     {
-        if (!empty($this->optgroup)) {
-            foreach ($this->optgroup as $group=>$opt_list) {
-                $value[] = "<optgroup label=\"$group\">";
-                foreach ($opt_list as $option) {
-                    $value[] = $option->__toString();
-                }
-                $value[] = "</optgroup>";
-            }
-        }
-
+        /*        if (!empty($this->optgroup)) {
+         foreach ($this->optgroup as $group=>$opt_list) {
+         $value[] = "<optgroup label=\"$group\">";
+         foreach ($opt_list as $option) {
+         $value[] = $option->__toString();
+         }
+         $value[] = "</optgroup>";
+         }
+         }
+         */
+        $optgroups_exist = false;
         if (!empty($this->options)) {
             foreach ($this->options as $option) {
-                $value[] = $option->__toString();
+                if ($option->hasOptgroup()) {
+                    $optgroups[$option->getOptgroup()][] = $option->__toString();
+                    $optgroups_exist = true;
+                } else {
+                    $value[] = $option->__toString();
+                }
+            }
+        }
+        if ($optgroups_exist) {
+            foreach ($optgroups as $name=>$options) {
+                $value[] = "<optgroup label=\"$name\">";
+                $value[] = implode("\n", $options);
+                $value[] = "</optgroup>";
+
             }
         }
         $this->setValue(implode("\n", $value));

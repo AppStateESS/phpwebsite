@@ -21,6 +21,8 @@
 
 class Option extends Base {
     private $key = null;
+    protected $optgroup = null;
+
     public function __construct($value, $name=null)
     {
         static $count = 0;
@@ -41,6 +43,21 @@ class Option extends Base {
         } else {
             unset($this->selected);
         }
+    }
+
+    public function setOptgroup($optgroup)
+    {
+        $this->optgroup = strip_tags($optgroup);
+    }
+
+    public function hasOptgroup()
+    {
+        return !empty($this->optgroup);
+    }
+
+    public function getOptgroup()
+    {
+        return $this->optgroup;
     }
 }
 ?>
