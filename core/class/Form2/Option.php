@@ -21,6 +21,7 @@
 
 class Option extends Base {
     private $key = null;
+    protected
 
     public function __construct($value, $name=null)
     {

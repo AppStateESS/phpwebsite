@@ -67,7 +67,9 @@ class Select extends Base {
     public function setOptions(array $options, $optgroup=null)
     {
         foreach ($options as $key=>$value) {
-            if (is_a($value, 'Option')) {
+            if (is_array($value)) {
+                $this->setOptions($value, $key);
+            } elseif (is_a($value, 'Option')) {
                 $this->options[$value->name] = $value;
             } else {
                 $this->addOption($value, $key, $optgroup);
