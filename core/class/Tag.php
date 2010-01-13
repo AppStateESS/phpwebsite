@@ -123,13 +123,11 @@ class Tag extends Data {
             }
         }
         $result = implode(' ', $data);
-
         if($this->open) {
             $result .= ">{$this->value}</{$this->tag_type}>";
         } else {
             $result .= sprintf(' value="%s" />', htmlentities($this->value, ENT_COMPAT, 'UTF-8'));
         }
-
         return $result;
     }
 
