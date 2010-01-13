@@ -11,11 +11,11 @@
  */
 
 require_once 'HTML/Template/Sigma.php';
-require_once 'config/core/template.php';
+require_once 'core/conf/template.php';
 
 if (!defined('CACHE_TPL_LOCALLY')) {
     define('CACHE_TPL_LOCALLY', false);
- }
+}
 
 class PHPWS_Template extends HTML_Template_Sigma {
     public $module           = NULL;
@@ -27,7 +27,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
     {
         $this->HTML_Template_Sigma();
         if (isset($module))
-            $this->setModule($module);
+        $this->setModule($module);
 
         if (isset($file)){
             $result = $this->setFile($file);
@@ -46,7 +46,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
     public function getTplDir($module)
     {
         if ($module == 'core') {
-            return PHPWS_HOME_DIR . 'templates/core/';
+            return PHPWS_SOURCE_DIR . 'core/templates/';
         }
 
         if (!class_exists('Layout')) {
@@ -107,19 +107,12 @@ class PHPWS_Template extends HTML_Template_Sigma {
     public function getTemplateDirectory($module, $directory=NULL)
     {
         $theme_dir  = PHPWS_Template::getTplDir($module) . $directory;
-        $local_dir  = sprintf('templates/%s/%s', $module, $directory);
-        if (PHPWS_Core::isBranch()) {
-            $module_dir = sprintf('%smod/%s/templates/%s', PHPWS_SOURCE_DIR, $module, $directory);
-        } else {
-            $module_dir = sprintf('./mod/%s/templates/%s', $module, $directory);
-        }
+        $module_dir = sprintf('%smod/%s/templates/%s', PHPWS_SOURCE_DIR, $module, $directory);
 
-        if (FORCE_THEME_TEMPLATES || (!FORCE_MOD_TEMPLATES && is_dir($theme_dir))) {
+        if (FORCE_THEME_TEMPLATES && is_dir($theme_dir)) {
             return $theme_dir;
-        } elseif (FORCE_MOD_TEMPLATES && is_dir($module_dir)) {
+        } elseif (is_dir($module_dir)) {
             return $module_dir;
-        } elseif (is_dir($local_dir)) {
-            return $local_dir;
         } else {
             return NULL;
         }
@@ -209,7 +202,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
         foreach($data as $tag=>$content) {
             if ( (is_string($tag) || is_numeric($tag)) &&
-                 (is_string($content) || is_numeric($content)) ) {
+            (is_string($content) || is_numeric($content)) ) {
                 $this->setVariable($tag, $content);
             }
         }
@@ -282,7 +275,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
     public function processTemplate($template, $module, $file, $defaultTpl=true)
     {
         if ($defaultTpl)
-            return PHPWS_Template::process($template, $module, $file);
+        return PHPWS_Template::process($template, $module, $file);
         else {
             $tpl = new PHPWS_Template($module);
             $tpl->setFile($file, true);
