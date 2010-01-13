@@ -43,9 +43,11 @@ class Form2 extends Tag {
 
     public function addInput($type, $name, $value=null)
     {
+
         if (preg_match('/[^\w\-\[\]]/', $name)) {
             throw new PEAR_Exception(dgettext('core', 'Improperly formatted input name'));
         }
+
         $input = new Input($type, $name, $value);
         $this->inputs[$name][] = $input;
         return $input;
@@ -124,24 +126,17 @@ class Form2 extends Tag {
         return $this->addInput('password', $name, $value);
     }
 
-    /**
-     * Loads the value variable in the Tag class. Variable result will
-     * contain a string derived from all known inputs.
-     * @return unknown_type
-     */
-    private function loadValue()
+    public function __toString($with_label=true)
     {
+        if (empty($this->id)) {
+            $this->loadId();
+        }
         foreach ($this->inputs as $input_list) {
             foreach ($input_list as $input) {
-                $value[] = $input->__toString();
+                $value[] = $input->__toString($with_label);
             }
         }
         $this->setValue('<p>' . implode("</p><p>", $value) . '</p>');
-    }
-
-    public function __toString()
-    {
-        $this->loadValue();
         return parent::__toString();
     }
 

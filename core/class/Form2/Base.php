@@ -24,8 +24,22 @@ class Base extends Tag {
      * @var string
      */
     protected $name = null;
-    protected $label = null;
+    private $label = null;
 
+    public function __construct($tag_type, $input_type=null, $value=null, $open=true)
+    {
+        static $default_ids = array();
+
+        if (empty($input_type)) {
+            $input_type = $tag_type;
+        }
+        if (!isset($default_ids[$input_type])) {
+            $default_ids[$input_type] = 1;
+        }
+        $this->setId("$input_type-" . $default_ids[$input_type]);
+        $default_ids[$input_type]++;
+        parent::__construct($tag_type, $value, $open);
+    }
 
     public function setName($name)
     {
@@ -42,7 +56,7 @@ class Base extends Tag {
 
     public function __toString($with_label=false)
     {
-        if ($with_label && isset($this->id)) {
+        if ($with_label && isset($this->id) && !empty($this->label)) {
             return sprintf('<label for="%s">%s</label> %s', $this->id, $this->label, parent::__toString());
         } else {
             return parent::__toString();

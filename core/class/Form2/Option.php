@@ -21,12 +21,12 @@
 
 class Option extends Base {
     private $key = null;
-    protected $optgroup = null;
+    private $optgroup = null;
 
     public function __construct($value, $name=null)
     {
         static $count = 0;
-        parent::__construct('option', $value);
+        parent::__construct('option', 'option', $value);
         if (isset($name)) {
             $this->key = $name;
             $this->setName($name);

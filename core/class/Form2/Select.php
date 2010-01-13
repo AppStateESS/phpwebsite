@@ -97,18 +97,8 @@ class Select extends Base {
      * alter the options.
      * @return unknown_type
      */
-    public function __toString()
+    public function __toString($with_label=false)
     {
-        /*        if (!empty($this->optgroup)) {
-         foreach ($this->optgroup as $group=>$opt_list) {
-         $value[] = "<optgroup label=\"$group\">";
-         foreach ($opt_list as $option) {
-         $value[] = $option->__toString();
-         }
-         $value[] = "</optgroup>";
-         }
-         }
-         */
         $optgroups_exist = false;
         if (!empty($this->options)) {
             foreach ($this->options as $option) {
@@ -129,7 +119,7 @@ class Select extends Base {
             }
         }
         $this->setValue(implode("\n", $value));
-        return parent::__toString();
+        return parent::__toString($with_label);
     }
 
     public function setSelected($name)

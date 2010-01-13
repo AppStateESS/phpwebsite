@@ -25,7 +25,7 @@ class Input extends Base {
 
     /**
      * The input type (textarea, checkbox, etc.) for an input tag. Not
-     * used in textarea or select
+     * used in textarea
      * @var string;
      */
     protected $type = null;
@@ -41,24 +41,23 @@ class Input extends Base {
     {
         switch ($type) {
             case 'textarea':
-                $this->setTagType('textarea');
-                $this->setOpen(true);
+                parent::__construct('textarea', 'textarea', $value, true);
                 break;
 
             case 'text':
             case 'hidden':
             case 'radio':
             case 'checkbox':
-            case 'submit':
             case 'button':
             case 'file':
             case 'password':
-                parent::__construct('input', $value, false);
+            case 'submit':
+                parent::__construct('input', $type, $value, false);
                 $this->setType($type);
                 break;
         }
-        $this->setName($name);
 
+        $this->setName($name);
     }
 
     private function setType($type)
@@ -78,6 +77,11 @@ class Input extends Base {
                 throw new PEAR_Exception(sprintf(dgettext('core', 'Cannot setChecked on %s input type'), $this->type));
                 break;
         }
+    }
+
+    public function __toString()
+    {
+        return parent::__toString($this->type != 'submit');
     }
 }
 
