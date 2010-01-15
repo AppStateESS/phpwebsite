@@ -43,7 +43,6 @@ class Form2 extends Tag {
 
     public function addInput($type, $name, $value=null)
     {
-
         if (preg_match('/[^\w\-\[\]]/', $name)) {
             throw new PEAR_Exception(dgettext('core', 'Improperly formatted input name'));
         }
@@ -81,27 +80,27 @@ class Form2 extends Tag {
         }
     }
 
-    public function addCheck($name, $value)
+    public function addCheck($name, $value, $label=null)
     {
         return $this->addInput('checkbox', $name, $value);
     }
 
-    public function addSelect($name, array $values)
+    public function addSelect($name, array $values, $label=null)
     {
         return $this->addSelectInput($name, $values);
     }
 
-    public function addMultiple($name, array $value)
+    public function addMultiple($name, array $value, $label=null)
     {
         return $this->addSelectInput($name, $value, true);
     }
 
-    public function addTextField($name, $value=null)
+    public function addTextField($name, $value=null, $label=null)
     {
         return $this->addInput('text', $name, $value);
     }
 
-    public function addTextArea($name, $value=null)
+    public function addTextArea($name, $value=null, $label=null)
     {
         return $this->addInput('textarea', $name, $value);
     }
@@ -116,12 +115,12 @@ class Form2 extends Tag {
         return $this->addInput('button', $name, $value);
     }
 
-    public function addFile($name, $value)
+    public function addFile($name, $value, $label=null)
     {
         return $this->addInput('file', $name, $value);
     }
 
-    public function addPassword($name, $value)
+    public function addPassword($name, $value, $label=null)
     {
         return $this->addInput('password', $name, $value);
     }
@@ -137,7 +136,9 @@ class Form2 extends Tag {
             }
         }
         $this->setValue('<p>' . implode("</p><p>", $value) . '</p>');
-        return parent::__toString();
+        $result = parent::__toString();
+        $this->setValue(null);
+        return $result;
     }
 
     /**
@@ -151,19 +152,36 @@ class Form2 extends Tag {
     public function getTemplate($capitalize_tags=false)
     {
         foreach ($this->inputs as $name=>$input_list) {
+            $name = strtoupper($name);
             if (count($input_list) > 1) {
                 $cnt = 1;
                 foreach ($input_list as $input) {
                     $name = preg_replace('/\[\]/', '', $name);
-                    $tpl["$name-$cnt"] = $input->__toString();
+                    if ($capitalize_tags) {
+                    }
+                    $tpl["{$name}_$cnt"] = $input->__toString();
                     $cnt++;
                 }
             } else {
                 foreach ($input_list as $input) {
-                    $tpl[$name] = $input->__toString();
+                    if ($input->getType() == 'hidden') {
+                        $hiddens[] = $input->__toString();
+                    } else {
+                        $tpl[$name] = $input->__toString();
+                    }
                 }
             }
         }
+        $start = $capitalize_tags ? 'START_FORM' : 'start_form';
+        $end = $capitalize_tags ? 'END_FORM' : 'end_form';
+
+        $tpl[$start] = str_replace('</form>', '', parent::__toString());
+        if (!empty($hiddens)) {
+            $tpl[$start] .= implode("\n", $hiddens);
+        }
+
+        $tpl[$end] = '</form>';
+
         return $tpl;
     }
 }
