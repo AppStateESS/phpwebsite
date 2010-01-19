@@ -313,7 +313,7 @@ class Setup{
         }
 
         $result = DB::connect($dsn);
-        
+
         if (PEAR::isError($result)) {
             // mysql delivers the first error, postgres the second
             if ($result->getCode() == DB_ERROR_NOSUCHDB ||
@@ -324,12 +324,12 @@ class Setup{
                 return 0;
             }
         }
-        
+
         $tables = $result->getlistOf('tables');
         if (count($tables)) {
             return 2;
         }
-        
+
         Setup::setConfigSet('dsn', $dsn);
         return 1;
     }
@@ -509,11 +509,13 @@ class Setup{
         $errorDir = TRUE;
         $directory[] = Setup::getSourceDir() . 'config/';
         $directory[] = Setup::getSourceDir() . 'images/';
+        /*
         $directory[] = Setup::getSourceDir() . 'images/mod/';
         $directory[] = Setup::getSourceDir() . 'templates/';
+        */
         $directory[] = Setup::getSourceDir() . 'files/';
         $directory[] = Setup::getSourceDir() . 'logs/';
-        $directory[] = Setup::getSourceDir() . 'javascript/modules/';
+        // $directory[] = Setup::getSourceDir() . 'javascript/modules/';
 
         foreach ($directory as $id=>$check) {
             if (!is_dir($check)) {
