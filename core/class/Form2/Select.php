@@ -22,7 +22,7 @@
 require_once PHPWS_SOURCE_DIR . 'core/class/Form2/Option.php';
 
 class Select extends Base {
-    private $multiple = false;
+    protected $multiple = null;
     private $options = null;
     //private $optgroup = null;
     private $named_options = false;
@@ -47,7 +47,11 @@ class Select extends Base {
 
     public function setMultiple($multiple=true)
     {
-        $this->multiple = (bool)$multiple;
+        if ($multiple) {
+            $this->multiple = 'multiple';
+        } else {
+            $this->multiple = null;
+        }
     }
 
     public function addOption($value, $name=null, $optgroup=null)

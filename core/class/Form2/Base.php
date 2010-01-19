@@ -26,6 +26,14 @@ class Base extends Tag {
     protected $name = null;
     private $label = null;
 
+    /**
+     * The input type (textarea, checkbox, etc.) for an input tag. Not
+     * used in textarea and select
+     * @var string;
+     */
+    protected $type = null;
+
+
     public function __construct($tag_type, $input_type=null, $value=null, $open=true)
     {
         static $default_ids = array();
@@ -62,6 +70,17 @@ class Base extends Tag {
             return parent::__toString();
         }
     }
+
+    protected function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
 }
 
 ?>

@@ -39,6 +39,11 @@ class Form2 extends Tag {
         $this->setTagType('form');
         $this->setId('pws-form-' . $default_id);
         $default_id++;
+        if (class_exists('Current_User')) {
+            if ($authkey = Current_User::getAuthKey()) {
+                $this->addHidden('authkey', $authkey);
+            }
+        }
     }
 
     public function addInput($type, $name, $value=null)

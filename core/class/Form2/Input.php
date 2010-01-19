@@ -23,12 +23,6 @@ require_once PHPWS_SOURCE_DIR . 'core/class/Form2/Base.php';
 
 class Input extends Base {
 
-    /**
-     * The input type (textarea, checkbox, etc.) for an input tag. Not
-     * used in textarea
-     * @var string;
-     */
-    protected $type = null;
 
     /**
      * Indicates if the current radio or checkbox input was previously checked.
@@ -60,11 +54,6 @@ class Input extends Base {
         $this->setName($name);
     }
 
-    private function setType($type)
-    {
-        $this->type = $type;
-    }
-
     public function setChecked($check=true)
     {
         switch ($this->type) {
@@ -82,6 +71,11 @@ class Input extends Base {
     public function __toString()
     {
         return parent::__toString($this->type != 'submit');
+    }
+
+    public function isHidden()
+    {
+        return $this->type == 'hidden';
     }
 }
 
