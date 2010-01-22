@@ -274,7 +274,7 @@ class Folder {
     public function save()
     {
         if (empty($this->icon)) {
-            $this->icon = PHPWS_SOURCE_HTTP . 'images/mod/filecabinet/folder.png';
+            $this->icon = PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/folder.png';
         }
 
         if (!$this->id) {

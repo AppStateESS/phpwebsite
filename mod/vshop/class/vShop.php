@@ -1686,9 +1686,9 @@ print_r($cart_data[$id]['data']->_itemData); //exit; // TEMP
         }
         if (isset($_SESSION['vShop_cart']) && $_SESSION['vShop_cart'] !== 'N;') { // && !is_null($_SESSION['vShop_cart'])
             if (!PHPWS_Settings::get('vshop', 'secure_checkout')) {
-                $links[] = '<a href="index.php?module=vshop&amp;uop=checkout"><img src="images/mod/vshop/checkout.gif" width="12" height="12" alt="' . dgettext('vshop', 'Checkout') . '" title="' . dgettext('vshop', 'Checkout') . '" border="0" /> ' . dgettext('vshop', 'Checkout') . '</a>';
+                $links[] = '<a href="index.php?module=vshop&amp;uop=checkout"><img src="' . PHPWS_SOURCE_HTTP . 'mod/vshop/img/checkout.gif" width="12" height="12" alt="' . dgettext('vshop', 'Checkout') . '" title="' . dgettext('vshop', 'Checkout') . '" border="0" /> ' . dgettext('vshop', 'Checkout') . '</a>';
             } else {
-                $links[] = '<a href="' . PHPWS_Settings::get('vshop', 'secure_url') . 'index.php?module=vshop&amp;uop=checkout"><img src="images/mod/vshop/checkout.gif" width="12" height="12" alt="' . dgettext('vshop', 'Checkout') . '" title="' . dgettext('vshop', 'Checkout') . '" border="0" /> ' . dgettext('vshop', 'Checkout') . '</a>';
+                $links[] = '<a href="' . PHPWS_Settings::get('vshop', 'secure_url') . 'index.php?module=vshop&amp;uop=checkout"><img src="' . PHPWS_SOURCE_HTTP . 'mod/vshop/img/checkout.gif" width="12" height="12" alt="' . dgettext('vshop', 'Checkout') . '" title="' . dgettext('vshop', 'Checkout') . '" border="0" /> ' . dgettext('vshop', 'Checkout') . '</a>';
             }
         }
         if (Current_User::allow('vshop', 'settings', null, null, true) && !isset($_REQUEST['aop'])){

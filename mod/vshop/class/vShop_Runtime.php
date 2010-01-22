@@ -62,9 +62,9 @@ class vShop_Runtime
             $tpl['TOTAL_LABEL'] = dgettext('vshop', 'Total');
             $tpl['TOTAL'] = number_format($total_items, 2, '.', ',');
             if (!PHPWS_Settings::get('vshop', 'secure_checkout')) {
-                $tpl['CHECKOUT_LINK'] = '<a href="index.php?module=vshop&amp;uop=checkout"><img src="images/mod/vshop/checkout.gif" width="12" height="12" alt="' . dgettext('vshop', 'Checkout') . '" title="' . dgettext('vshop', 'Checkout') . '" border="0" /> ' . dgettext('vshop', 'Checkout') . '</a>';
+                $tpl['CHECKOUT_LINK'] = '<a href="index.php?module=vshop&amp;uop=checkout"><img src="' . PHPWS_SOURCE_HTTP . 'mod/vshop/img/checkout.gif" width="12" height="12" alt="' . dgettext('vshop', 'Checkout') . '" title="' . dgettext('vshop', 'Checkout') . '" border="0" /> ' . dgettext('vshop', 'Checkout') . '</a>';
             } else {
-                $tpl['CHECKOUT_LINK'] = '<a href="' . PHPWS_Settings::get('vshop', 'secure_url') . 'index.php?module=vshop&amp;uop=checkout"><img src="images/mod/vshop/checkout.gif" width="12" height="12" alt="' . dgettext('vshop', 'Checkout') . '" title="' . dgettext('vshop', 'Checkout') . '" border="0" /> ' . dgettext('vshop', 'Checkout') . '</a>';
+                $tpl['CHECKOUT_LINK'] = '<a href="' . PHPWS_Settings::get('vshop', 'secure_url') . 'index.php?module=vshop&amp;uop=checkout"><img src="' . PHPWS_SOURCE_HTTP . 'mod/vshop/img/checkout.gif" width="12" height="12" alt="' . dgettext('vshop', 'Checkout') . '" title="' . dgettext('vshop', 'Checkout') . '" border="0" /> ' . dgettext('vshop', 'Checkout') . '</a>';
             }
             $tpl['BROWSE_LINK'] = PHPWS_Text::moduleLink(dgettext('vshop', 'Browse  all items'), 'vshop', array('uop'=>'list_depts'));
 

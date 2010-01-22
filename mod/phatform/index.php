@@ -9,7 +9,7 @@
 $GLOBALS['CNT_phatform']['title'] = $GLOBALS['CNT_phatform']['content'] = NULL;
 $GLOBALS['CNT_phatform']['message'] = NULL;
 if(!defined('PHPWS_SOURCE_DIR')) {
-    include '../../config/core/404.html';
+    include '../../core/conf/404.html';
     exit();
  }
 

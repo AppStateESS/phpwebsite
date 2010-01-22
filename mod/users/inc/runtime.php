@@ -5,7 +5,7 @@
  */
 
 if (!class_exists('PHPWS_User')) {
-    include '../../config/core/404.html';
+    include '../../core/conf/404.html';
     exit();
 }
 

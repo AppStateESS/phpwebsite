@@ -480,15 +480,6 @@ class PHPWS_Boost {
             }
         }
 
-        // No longer creating mod directories
-        /*
-        if (!is_dir($homeDir . 'images/mod/')) {
-        $content[] = dgettext('boost', 'Creating module image directory.');
-        $this->addLog($mod->title, dgettext('boost', 'Created directory') . ' ' . $homeDir . 'images/mod/');
-        mkdir($homeDir . 'images/mod');
-        }
-        */
-
         if ($mod->isFileDir()) {
             $filesDir = $homeDir . 'files/' . $mod->title;
             if (!is_dir($filesDir)){
@@ -506,24 +497,6 @@ class PHPWS_Boost {
                 mkdir($imageDir);
             }
         }
-
-        // no longer copying source img directories
-        /*
-        $modSource = $mod->getDirectory() . 'img/';
-        if (is_dir($modSource)){
-        $modImage = $homeDir . 'images/mod/' . $mod->title . '/';
-        $this->addLog($mod->title, sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $modSource, $modImage));
-
-        $content[] = dgettext('boost', 'Copying source image directory for module.');
-
-        $result = PHPWS_File::recursiveFileCopy($modSource, $modImage);
-        if ($result) {
-        $content[] = dgettext('boost', 'Source image directory copied successfully.');
-        } else {
-        $content[] = dgettext('boost', 'Source image directory failed to copy.');
-        }
-        }
-        */
     }
 
     public function removeDirectories($mod, &$content, $homeDir = NULL)
@@ -562,19 +535,6 @@ class PHPWS_Boost {
                 $this->addLog($mod->title, sprintf(dgettext('boost', 'Unable to remove directory %s'), $fileDir));
             }
         }
-
-        // No longer needed.
-        /*
-         $imageModDir = $homeDir . 'images/mod/' . $mod->title . '/';
-         if (is_dir($imageModDir)) {
-         $content[] = sprintf(dgettext('boost', 'Removing directory %s'), $imageModDir);
-         $this->addLog($mod->title, sprintf(dgettext('boost', 'Removing directory %s'), $imageModDir));
-         if(!PHPWS_File::rmdir($imageModDir)) {
-         $content[] = dgettext('boost', 'Failure to remove directory.');
-         $this->addLog($mod->title, sprintf(dgettext('boost', 'Unable to remove directory %s'), $imageModDir));
-         }
-         }
-         */
     }
 
     public function registerMyModule($mod_to_register, $mod_to_register_to, &$content, $unregister_first=true)

@@ -352,7 +352,6 @@ class PHPWSBB_Topic
         PHPWS_Core::initModClass('comments', 'Comments.php');
         if (Comments::useCaptcha()) {
             PHPWS_Core::initCoreClass('Captcha.php');
-            $form->addText('captcha');
             $form->setLabel('captcha', dgettext('phpwsbb', 'Please copy the word in the above image.'));
             $form->addTplTag('CAPTCHA_IMAGE', Captcha::get());
         }

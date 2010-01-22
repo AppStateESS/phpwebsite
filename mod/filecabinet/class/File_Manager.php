@@ -393,7 +393,7 @@ class FC_File_Manager {
             } else {
                 $icon_name = 'document80_bw.png';
             }
-            $document_img = sprintf('<img src="images/mod/filecabinet/file_manager/file_type/%s" title="%s"/>',
+            $document_img = sprintf('<img src="%s/mod/filecabinet/img/file_manager/file_type/%s" title="%s"/>',
             $icon_name,
             dgettext('filecabinet', 'View document folders'));
 
@@ -413,7 +413,7 @@ class FC_File_Manager {
             } else {
                 $icon_name = 'image80_bw.png';
             }
-            $image_img    = sprintf('<img src="images/mod/filecabinet/file_manager/file_type/%s" title="%s"/>',
+            $image_img    = sprintf('<img src="%s/mod/filecabinet/img/file_manager/file_type/%s" title="%s"/>',
             $icon_name,
             dgettext('filecabinet', 'View image folders'));
 
@@ -433,7 +433,7 @@ class FC_File_Manager {
             } else {
                 $icon_name = 'media80_bw.png';
             }
-            $media_img    = sprintf('<img src="images/mod/filecabinet/file_manager/file_type/%s" title="%s"/>',
+            $media_img    = sprintf('<img src="%s/mod/filecabinet/img/file_manager/file_type/%s" title="%s"/>',
             $icon_name,
             dgettext('filecabinet', 'View media folders'));
 

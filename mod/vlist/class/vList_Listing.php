@@ -401,7 +401,7 @@ class vList_Listing {
         $js['ADDRESS'] = PHPWS_Text::linkAddress('vlist', $vars, true);
         $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the listing %s?'), $this->getTitle());
         if ($icon) {
-            $js['LINK'] = sprintf('<img src="images/mod/vlist/delete.png" title="%s" alt="%s" />',
+            $js['LINK'] = sprintf('<img src="%s/mod/vlist/img/delete.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
                                   dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
         } else {
             $js['LINK'] = dgettext('vlist', 'Delete');
@@ -414,7 +414,7 @@ class vList_Listing {
     {
 
         if ($icon) {
-            $label = sprintf('<img src="images/mod/vlist/edit.png" title="%s" alt="%s" >',
+            $label = sprintf('<img src="%s/mod/vlist/img/edit.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
                              dgettext('vlist', 'Edit listing'), dgettext('vlist', 'Edit listing'));
         } elseif (empty($label)) {
                 $label = dgettext('vlist', 'Edit');
@@ -432,7 +432,7 @@ class vList_Listing {
         if ($this->approved) {
             $vars['aop'] = 'unapprove_listing';
             if ($icon) {
-                $label = sprintf('<img src="images/mod/vlist/approved.png" title="%s" alt="%s" >',
+                $label = sprintf('<img src="%s/mod/vlist/img/approved.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
                                  dgettext('vlist', 'Unapprove'), dgettext('vlist', 'Unapprove'));
             } elseif (empty($label)) {
                     $label = dgettext('vlist', 'Unapprove');
@@ -440,7 +440,7 @@ class vList_Listing {
         } else {
             $vars['aop'] = 'approve_listing';
             if ($icon) {
-                $label = sprintf('<img src="images/mod/vlist/unapproved.png" title="%s" alt="%s" >',
+                $label = sprintf('<img src="%s/mod/vlist/img/unapproved.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
                                  dgettext('vlist', 'Approve'), dgettext('vlist', 'Approve'));
             } elseif (empty($label)) {
                     $label = dgettext('vlist', 'Approve');
@@ -456,7 +456,7 @@ class vList_Listing {
         if ($this->active) {
             $vars['aop'] = 'deactivate_listing';
             if ($icon) {
-                $label = sprintf('<img src="images/mod/vlist/active.png" title="%s" alt="%s" >',
+                $label = sprintf('<img src="%s/mod/vlist/img/active.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
                                  dgettext('vlist', 'Deactivate'), dgettext('vlist', 'Deactivate'));
             } elseif (empty($label)) {
                     $label = dgettext('vlist', 'Deactivate');
@@ -464,7 +464,7 @@ class vList_Listing {
         } else {
             $vars['aop'] = 'activate_listing';
             if ($icon) {
-                $label = sprintf('<img src="images/mod/vlist/inactive.png" title="%s" alt="%s" >',
+                $label = sprintf('<img src="%s/mod/vlist/img/inactive.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
                                  dgettext('vlist', 'Activate'), dgettext('vlist', 'Activate'));
             } elseif (empty($label)) {
                     $label = dgettext('vlist', 'Activate');
