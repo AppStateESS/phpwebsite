@@ -1,0 +1,23 @@
+.poll-graphic {
+    float: right;
+}
+
+.poll-view {
+    margin: 3em 0;
+    height: 125px;
+    padding: 12px;
+}
+
+.poll-view h3 {
+    margin: 0 0 1em 0;
+}
+
+.poll-responses {
+    text-align: right;
+    margin-right: 150px;
+    bottom: 100%;
+}
+
+.poll-response img {
+    vertical-align: middle;
+}

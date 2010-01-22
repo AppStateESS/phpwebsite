@@ -1,0 +1,7 @@
+<?php
+
+public class IllegalClassException extends PwsException
+{
+}
+
+?>
