@@ -9,12 +9,8 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-if (!Current_User::allow('pulse')) {
-    PHPWS_Core::home();
-}
-
-PHPWS_Core::initModClass('pulse', 'Pulse.php');
-$pulse = new Pulse;
-$pulse->admin();
+PHPWS_Core::initModClass('pulse', 'PulseController.php');
+$p = new PulseController();
+$p->process($_REQUEST);
 
 ?>
