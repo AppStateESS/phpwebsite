@@ -5,7 +5,7 @@
  */
 
 $proper_name  = 'Pulse';
-$version      = '1.9.0';
+$version      = '1.9.1';
 $register     = false;
 $unregister   = false;
 $import_sql   = true;

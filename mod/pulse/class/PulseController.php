@@ -25,8 +25,8 @@ class PulseController
         $exec = time();
 
         $db = new PHPWS_DB('pulse_schedule');
-        $db->addWhere('execute_after', $exec, '<');
-        $db->addWhere('execute_time', NULL);
+        $db->addWhere('execute_at', $exec, '<');
+        $db->addWhere('status', PULSE_STATUS_SCHEDULED);
 
         // I feel the need to explain myself here as this seems like this is entirely done wrong.
         // It does an individual select every time so that if a Scheduled Pulse is designed to run
@@ -54,16 +54,22 @@ class PulseController
 
                 // Try and execute
                 try {
+
+                    // Mark as running
+                    $sp->status = PULSE_STATUS_RUNNING;
+                    $sp->began_execution = time();
+                    $sp->save();
+
                     if($sp->execute() !== TRUE) {
-                        $sp->success = false;
+                        $sp->status = PULSE_STATUS_FAILURE;
                         echo "PULSE RETURNED FALSE\n";
-                    } else $sp->success = true;
+                    } else $sp->status = PULSE_STATUS_SUCCESS;
                 } catch(Exception $e) {
                     echo "EXCEPTION EXECUTING PULSE\n" . $e->__toString();
-                    $sp->success = false;
+                    $sp->status = PULSE_STATUS_FAILURE;
                 }
 
-                $sp->execute_time = $exec;
+                $sp->finished_execution = $exec;
                 $sp->save();
                 $execCount++;
             }

@@ -5,16 +5,22 @@
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
 
+define('PULSE_STATUS_SCHEDULED', 0);
+define('PULSE_STATUS_RUNNING', 1);
+define('PULSE_STATUS_SUCCESS', 2);
+define('PULSE_STATUS_FAILURE' ,3);
+
 abstract class ScheduledPulse
 {
     var $id;
     var $name;
-    var $execute_after;
+    var $execute_at;
     var $module;
     var $class_file;
     var $class;
-    var $execute_time;
-    var $success;
+    var $began_execution;
+    var $finished_execution
+    var $status = PULSE_STATUS_SCHEDULED;
 
     public function __construct($id = NULL)
     {
@@ -30,27 +36,30 @@ abstract class ScheduledPulse
     {
         $sp = clone($this);
         $sp->id = 0;
+        $sp->status = PULSE_STATUS_SCHEDULED;
+        $sp->began_execution = NULL;
+        $sp->finished_execution = NULL;
         return $sp;
     }
 
     protected function newFromNow($seconds)
     {
         $sp = $this->makeClone();
-        $sp->execute_after = time() + $seconds;
+        $sp->execute_at = time() + $seconds;
         $sp->save();
     }
 
     protected function newFromSupposedExecute($seconds)
     {
         $sp = $this->makeClone();
-        $sp->execute_after = $this->execute_after + $seconds;
+        $sp->execute_at = $this->execute_at + $seconds;
         $sp->save();
     }
 
     protected function newExecuteImmediately()
     {
         $sp = $this->makeClone();
-        $sp->execute_after = 0;
+        $sp->execute_at = 0;
         $sp->save();
     }
 
