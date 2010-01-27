@@ -6,7 +6,7 @@ module varchar( 50 ) not null,
 class_file varchar(255) not null,
 class varchar(255) not null,
 began_execution int,
-finished_execution int
+finished_execution int,
 status int,
 PRIMARY KEY ( id )
 );
