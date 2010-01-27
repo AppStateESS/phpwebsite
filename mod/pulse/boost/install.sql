@@ -11,4 +11,4 @@ status int,
 PRIMARY KEY ( id )
 );
 
-CREATE INDEX pulsesch_idx on pulse_schedule(execute_after, execute_time);
+CREATE INDEX pulsesch_idx on pulse_schedule(execute_at, status);
