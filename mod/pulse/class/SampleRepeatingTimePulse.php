@@ -22,10 +22,15 @@ class SampleRepeatingTimePulse extends ScheduledPulse
         $min = date('i', $now);
         $hr = date('H', $now);
         if($min >= 15 && $min < 45) {
-            $then = strtotime("$hr:45:00", $this->execute_at);
+            $then = strtotime("$hr:45:00", $now);
         } else {
             $hr++;
-            $then = strtotime("$hr:15:00", $this->execute_at);
+            $nhr = $hr % 24;
+            if($nhr == $hr) {
+                $then = strtotime("$hr:15:00", $now);
+            } else {
+                $then = strtotime("tomorrow $nhr:15:00", $now);
+            }
         }
         $date = date('m/d/Y H:i:s');
         $newdate = date('m/d/Y H:i:s', $then);

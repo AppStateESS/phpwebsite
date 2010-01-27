@@ -19,7 +19,7 @@ abstract class ScheduledPulse
     var $class_file;
     var $class;
     var $began_execution;
-    var $finished_execution
+    var $finished_execution;
     var $status = PULSE_STATUS_SCHEDULED;
 
     public function __construct($id = NULL)

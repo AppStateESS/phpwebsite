@@ -7,7 +7,7 @@ class_file varchar(255) not null,
 class varchar(255) not null,
 began_execution int,
 finished_execution int,
-status int,
+status int NOT NULL,
 PRIMARY KEY ( id )
 );
 
