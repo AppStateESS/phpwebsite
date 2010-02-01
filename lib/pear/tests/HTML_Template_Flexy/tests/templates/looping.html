@@ -1,0 +1,59 @@
+
+
+<h2>Looping</h2>
+
+
+<p>a loop {foreach:loop,a} {a} {end:}</p>
+<p>a loop with 2 vars {foreach:loop,a,b} 
+    {a} , 
+    {b}
+{end:}</p>
+
+Bug #84
+{foreach:list,i}
+  {method(i)}
+{end:}
+
+{foreach:list,i,j}
+    {i}:{j}
+{end:}
+
+<table>
+    <tr flexy:foreach="xyz,abcd,def">
+        <td>{abcd}, {test(def)}</td>
+    </tr>
+</table>
+
+
+<h2>HTML tags example using foreach=&quot;loop,a,b&quot; or the tr</h2>
+<table width="100%" border="0">
+  <tr flexy:foreach="loop,a,b"> 
+    <td>{a}</td>
+    <td>{b}</td>
+  </tr>
+</table>
+
+<h2>HTML tags example using foreach=&quot;loop,a&quot; or the tr using a highlight class.</h2>
+<table width="100%" border="0">
+  <tr flexy:foreach="loop,a" class="{a.hightlight}"> 
+    <td>a is</td>
+    <td flexy:if="a.showtext">{a.text}</td>
+    <td flexy:if="!a.showtext">{a.price:n}</td>
+  </tr>
+</table>
+
+<h2>HTML tags example using foreach=&quot;loop,a,b&quot; or the tr</h2>
+<table width="100%" border="0">
+  <tr flexy:foreach="loop,a,b"> 
+    <td flexy:foreach="b,c,d">{d}</td>
+  </tr>
+</table>
+
+<h2>Looping in CDATA</h2>
+Dont forget that php strips line breaks!
+<![CDATA[
+{foreach:list,i,j}
+    {i}:{j}
+    
+{end:}
+]]>

@@ -1,0 +1,69 @@
+
+<h2>Methods</H2>
+<p>Calling a method {a.helloWorld()}</p>
+<p>or {includeBody():h}</P>
+<img src="%7bgetImageDir()%7D/someimage.jpg">
+<img src="%7bgetImageDir():h%7D/someimage.jpg">
+<img src="%7bgetImageDir():u%7D/someimage.jpg">
+
+<img src="%7bgetImageDir()}/someimage.jpg">
+<img src="{getImageDir()%7D/someimage.jpg">
+
+
+
+<span class="{t.getBgnd(valueArr[isConfigurable])}"></span>
+
+
+
+<h2>Full Method testing</h2>
+
+{abc(abc,def,hij)}
+{abc(abc,#def#,#hij#)}
+
+{abc(abc,def,#hij#)}
+{abc(#abc#,def,hij)}
+
+{abc(abc,def,hij):h}
+{abc(abc,#def#,#hij#):h}
+{abc(abc,def,#hij#):h}
+{abc(#abc#,def,hij):h}
+
+
+{abc(abc,def,hij):u}
+{abc(abc,#def#,#hij#):u}
+{abc(abc,def,#hij#):u}
+{abc(#abc#,def,hij):u}
+
+{abc(123,def,hij)}
+{abc(abc,#123#,123):u}
+{abc(abc,def,123)}
+{abc(#abc#,123,hij):u}
+
+
+<h2>Real life method testing </h2>
+Invoice number: {t.getelem(t.invoice,#number#)} Place: 
+{t.getelem(t.invoice,#place#)} Date: {t.getelem(t.invoice,#date#)} Payment: 
+{t.getelem(t.invoice,#payment#)} Payment date: 
+{t.getelem(t.invoice,#payment_date#)} Seller: Name 1: 
+{t.getelem(t.seller,#name1#)} Name 2: {t.getelem(t.seller,#name2#)} NIP: 
+{t.getelem(t.seller,#nip#)} Street: {t.getelem(t.seller,#street#)} City: 
+{t.getelem(t.seller,#code#)} {t.getelem(t.seller,#city#)} Buyer: Name 1: 
+{t.getelem(t.buyer,#name1#)} Name 2: {t.getelem(t.buyer,#name2#)} NIP: 
+{t.getelem(t.buyer,#nip#)} Street: {t.getelem(t.buyer,#street#)} City: 
+{t.getelem(t.buyer,#code#)} {t.getelem(t.buyer,#city#)}
+# 	Name {if:t.show_pkwiu}	PKWIU{end:} 	Count 	Netto 	VAT 	Brutto
+{foreach:t.positions,position} {t.getelem(position,#nr#)} 
+{t.getelem(position,#name#)} {if:t.show_pkwiu} 
+{t.getelem(position,#pkwiu#)}{end:} 	{t.getelem(position,#count#)} 
+{t.getelem(position,#netto#)} 	{t.getelem(position,#vat#)} 
+{t.getelem(position,#brutto#)}
+{end:} {if:t.edit_positions} # 	Name {if:t.show_pkwiu}	PKWIU{end:} 	Count 
+{if:t.getelem(position,#netto_mode#)}	Netto{else:}	{end:} 	VAT 
+{if:t.getelem(position,#netto_mode#)}	{else:}	Brutto{end:}
+{foreach:t.edit_positions,k,position} {t.getelem(position,#nr#)} 
+{if:t.show_pkwiu} 	{end:} 	{if:t.getelem(position,#netto_mode#)} 	{else:} 
+{end:} 	{if:t.getelem(position,#netto_mode#)} 	{else:}	{end:}
+{end:} {end:} # 	
+{foreach:t.sum,sum} {t.getelem(sum,#nr#)} 		{t.getelem(sum,#netto#)} 
+{t.getelem(sum,#vat#)} 	{t.getelem(sum,#brutto#)}
+{end:}

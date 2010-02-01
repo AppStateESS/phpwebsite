@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head>
+  
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><title>image_view.html</title></head>
+
+<body flexy:startchildren="yes">
+
+<table cellpadding="2" cellspacing="2" border="0" bgcolor="black" style="text-align: left; width: 100%;">
+
+  <tbody>
+    <tr flexy:foreach="images,row">
+      <td flexy:foreach="row,col" align="center" valign="middle"
+          background="{rootURL}/FlexyWiki/templates/negative.jpg"><a 
+          href="%7Bcol.link%7D"><img 
+          border="0" height="{col.info[1]}" width="{col.info[0]}" src="%7Bcol.url%7D"></a><br>
+            <font color="white">[{col.name}] {col.size}Mb</font>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+</body></html>

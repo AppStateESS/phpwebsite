@@ -1,0 +1,107 @@
+
+<h2>Form Not Parsed</h2>
+
+<form name="test" flexy:ignore>
+    <input name=test123>
+    <select name="aaa">
+        <option>bb</option>
+    </select>
+</form>
+
+<h2>Parsed</h2>
+
+
+<form name="test">
+    Input<input name=test123>
+    Checkbox <input name=test123a id=test123ab type='checkbox' checked>
+    Hidden <input name=test123ab type='hidden' value='123'>
+    <textarea name="fred">some text</textarea>
+    <select name="aaa1">
+        <option>aa</option>
+	<option selected>bb</option>
+        <option>cc</option>
+    </select>
+    <select name="aaa2" flexy:ignore>
+        <option>aa</option>
+	<option selected>bb</option>
+        <option>cc</option>
+
+    </select>
+    <select name="aaa3">
+        <option>aa</option>
+	<option selected>bb</option>
+        <option>cc</option>
+
+    </select>
+    
+    <!-- bug 5267 -->
+    <input id="opt_1" type="checkbox" name="opt[]" value="1" />
+    <label for="opt_1">option 1</label>
+    <input id="opt_2" type="checkbox" name="opt[]" value="2" />
+    <label for="opt_3">option 2</label>
+    <input id="opt_3" type="checkbox" name="opt[]" value="3" />
+    <label for="opt_3">option 3</label>
+
+
+
+    
+    <select name="List">
+        <option value="2000">2000</option>
+        <option value="2001">2001</option>
+        <option value="2002">2002</option>
+    </select>
+    <input type="submit" name="_submit[4]" value="Next >>">
+    <input type="submit" name="_submit[5]" value="Next &gt;&gt;">
+    
+    <input type="file" name="testupload">
+    
+    #bug  bug6058    
+
+    <br /><input type="radio" name="payment_1_type" id="1" value="cc" />
+        Credit card
+    <br /><input type="radio" name="payment_1_type" id="2" value="cq" />
+        Cheque
+
+    <br /><input type="radio" name="payment_2_type" id="3" value="cc" />
+        Credit card
+    <br /><input type="radio" name="payment_2_type" id="4" value="cq" />
+        Cheque
+    
+    
+    
+    
+</form>
+
+<img name="picture" id="picture" flexy:dynamic>
+
+<h2>Bug 1120:</h2>
+<form action="test">
+<input name="testing" value="test">
+<input type="submit" value="x" name="_submit[2]">
+</form>
+
+<form action="{someurl}">
+<input name="testing2" value="{somevalue}">
+<input type="submit" name="_submit[1]">
+</form>
+
+<H2> Bug 1275 XHTML output </H2>
+<input type="checkbox" name="testingxhtml" flexy:xhtml="true" checked>
+<select name="xhtmllisttest" flexy:xhtml="true">
+
+</select>
+
+
+<H2> Bug 4005 Checkboxes </H2>
+<input type="checkbox" name="testingcheckbox" value="123">
+
+
+
+
+
+
+
+<form name="test_mix" action="{someurl}">
+<input name="testing5" value="{somevalue}">
+<input type="submit" name="_submit[3]">
+</form>

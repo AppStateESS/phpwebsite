@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Untitled Document</title>
+ 
+<body>
+<p>Example Template for HTML_Template_Flexy</p>
+ 
+<h2>Variables</H2>
+
+<p>Standard variables 
+{hello} 
+{world:h}
+{test:u}
+{object.var}
+{array[0]}
+{array[entry]}
+{multi[array][0]}
+{object.var[array][1]}
+{object.var[array][1]:r}
+{object.var[array][1]:h}
+{object.var[array][-1]:h}
+{object[array].with[objects]}
+Long string with NL2BR + HTMLSPECIALCHARS
+{longstring:b}
+
+Everything: {t:r}
+an Object: {object:r}
+
+
+<img src="%7bgetImageDir%7D/someimage.jpg">
+<img src="%7bgetImageDir:h%7D/someimage.jpg">
+<img src="%7bgetImageDir:u%7D/someimage.jpg">
+
+<img src="%7bgetImageDir}/someimage.jpg">
+<img src="{getImageDir%7D/someimage.jpg">
+</p>
+</body>
+</html>

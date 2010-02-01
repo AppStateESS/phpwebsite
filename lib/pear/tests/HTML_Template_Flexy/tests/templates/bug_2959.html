@@ -1,0 +1,122 @@
+-------------------------
+Dear Administrator,
+
+     -- Automatically Generated Email from XXXXXXXXXX --
+{if:hasmessage}
+
+*NOTE*: {message:h}.
+{end:}
+
+     O R D E R   A W A I T I N G   A U T H O R I S A T I O N
+_________________________________________________________________
+
+ORDER:
+
+ID:       {order.h}
+
+*Edit*:   http://{host}/admin/sales/orders/edit?id={order}
+
+_________________________________________________________________
+
+CUSTOMER DETAILS:
+
+Name:     {customer.firstname:h} {customer.lastname:h}
+
+Email:    mailto:{customer.email:h}
+
+*Edit*:   http://{host}/admin/sales/customers/edit?id={customer.id}
+
+_________________________________________________________________
+
+SHIPPING TO:                                      
+
+*{deliveryname:h}*
+{deliveryaddress:h}
+
+_________________________________________________________________
+
+XXXXXXXXXXXXXXXXXXX:
+
+*{post.transactionstatus:h}*
+
+{if:post.dubious}
+*WARNING*! - This may not be a bona fide order! - *WARNING*!
+
+*Reason*: {post.dubiousreason:h}
+
+/Contact tech support/ before proceeding with this order!
+
+{end:}
+Total (currency?):            {post.total:h}
+
+Client ID (XXXXXXXX):         {post.clientid:h}
+
+Order ID:                     {post.oid:h}
+
+Charge type:                  {post.chargetype:h}
+
+Timestamp (from XXXXXXXX):    {post.datetime:h}
+
+VbV Status:                   {post.ecistatus:h}
+
+https://XXXXX.XXXXXXXX.XXXXXX.com/XXXXX/XXXXXXX/XXXXXx
+_________________________________________________________________
+
+{foreach:orderlines,i,o}
+{if:i}
+
+  - - -   - - -   - - -   - - -   - - -   - - -   - - -   - - -
+
+{end:}
+*PRODUCT*:{o.productname:h}
+
+          ({o.producttypename:h})
+
+*Edit*:   http://{host}/admin/catalog/products/edit?id={o.product:u}
+
+FABRIC:   {o.fabricname:h}
+
+SIZE:     {o.sizename:h}
+
+Eurostop: {o.altid:h}
+
+QUANTITY: {o.quantity:h}
+
+Price ea: {o.eachprice:h}
+
+Tax each: {o.eachtax:h}
+
+Sub-total:                                       {o.totalinctax:h}
+{if:o.isgift}
+
+*GIFT MESSAGE* FOR THIS ITEM:
+{o.giftmessage}{end:}{end:}
+
+_________________________________________________________________
+
+Item total (ex tax):                             {totals.itemstotal:h}
+
+Item taxes:                                      {totals.itemstax:h}
+
+Shipping:                                       
+{totals.shippingcharges:h}
+
+Tax on shipping:                                 {totals.shippingtax:h}
+
+*GRAND TOTAL*:                                   {totals.grandtotal:h}
+
+_________________________________________________________________
+
+{totals.itemsdiscountinfo:h}
+
+{totals.itemstaxinfo:h}
+
+{totals.shippinginfo:h}
+
+{totals.shippingtaxinfo:h}
+
+_________________________________________________________________
+
+blah blah
+
+--------------------------

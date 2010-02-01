@@ -1,0 +1,45 @@
+How to run tests
+----------------
+
+1) First you need the "run-tests.php" script located at the root
+   directory of the PHP 4 source tar ball.
+
+2) Download the lastest PEAR DB from CVS:
+
+Where you want to place Pear files
+# cd /usr/local/lib
+Log to the repository (use "phpfi" as password):
+# cvs -d :pserver:cvsread@cvs.php.net:/repository login
+# cvs -d :pserver:cvsread@cvs.php.net:/repository co php4/run-tests.php
+# cvs -d :pserver:cvsread@cvs.php.net:/repository co php4/pear
+# cd php4
+# php -f run-tests.php -- <test file or directory>
+
+<test file or directory> can be:
+
+pear/DB/tests:            Common PEAR DB tests
+pear/DB/tests/<backend>:  Specific backend tests
+pear/DB/tests/driver:     Common tests for all the drivers
+
+
+DB tester matrix
+----------------
+                                   B - A - C - K - E - N - D - S
+TESTER                   ibase ifx   msql  mssql mysql mysql4 oci8  odbc  pgsql sybase  fbsql
+John Horton               -     X     -     -     -      -     -     -     -      -       -
+Tim Zickus                -     -     -     -     -      -     X     -     -      -       -
+Tim Parkin                -     -     -     -     -      -     X     -     -      -       -
+Paul Gardiner             -     X     -     -     -      -     -     -     -      -       -
+Daniel, Adam              -     -     -     -     -      -     X     -     -      -       -
+szii@sziisoft.com         -     -     -     -     -      -     -     X¹    -      -       -
+jmh3@linuxfreak.com       -     -     -     -     -      -     -     -     X      -       -
+Kevin Henrikson           -     -     -     -     -      -     X     -     -      -       -
+Stig Bakken               -     -     -     -     X      -     -     -     X      -       -
+Chuck Hagenbuch           -     -     -     X     -      -     -     -     -      -       -
+Ludovico Magnocavallo     X     -     -     -     -      -     -     -     -      -       -
+
+MISSING TESTERS           -     -     X     -     -      X     -     -     -      X       X
+
+Comments:
+
+[1]: ODBC using IBM DB2

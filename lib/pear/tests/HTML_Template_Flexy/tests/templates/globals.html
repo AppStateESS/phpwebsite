@@ -1,0 +1,26 @@
+
+<H2>GLOBALS:</H2>
+{_SESSION[hello]} <BR>
+{_GET[fred]} <BR>
+{GLOBALS[abc]} <BR>
+
+
+<H2>Privates:</H2>
+{_somemethod()} <BR>
+{_somevar} <BR>
+
+
+
+<H2>Global methods </H2>
+
+{GLOBALS.date(#d/m/y#)}   <BR>
+
+{if:GLOBALS.is_array(test)} <BR>
+{end:} <BR>
+<BR>
+
+{foreach:atest,k,v} <BR>
+{if:GLOBALS.is_array(v)} <BR>
+{end:} <BR>
+{end:} <BR>
+

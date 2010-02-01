@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="images/css/test.css" type="text/css"?>
+
+<window id="wndUserResults"
+                title="User Search Results"
+                persist="screenX screenY width height"
+                xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+                xmlns:html="http://www.w3.org/1999/xhtml">
+ 
+        <tree id="userSearchResults" flex="1" height="300" enableColumnDrag="true" ondblclick="parent.parent.userEditPopup();">
+                <treecols>
+                        <treecol flex="2" id="trcName" label="Name" primary="true" persist="width ordinal hidden"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol flex="1" id="trcGroupName" label="Group Name" persist="width ordinal hidden"/>
+                </treecols>
+                <treechildren>
+                        <treeitem flexy:foreach="sresult,id,data">
+                                <treerow>
+                                        <treecell label="{data.name}"/>
+                                        <treecell label="{data.group_name}"/>
+                                        <treecell label="{data.user_id}"/>
+                                </treerow>
+                        </treeitem>
+                </treechildren>
+        </tree>
+        <html:form name="test">
+            <html:input name="test2">
+            <html:table>
+              <html:tr>
+                <html:td>
+                  <label style="text-align: left;" control="listItemSubCat" value="Item Subcategory"/>
+                </html:td>
+             </html:tr>
+            </html:table>
+        </html:form>
+        <html:select name="atest">
+            <html:option flexy:foreach="categories,data" value="{data.value}" 
+                onselect="parent.onSelect_ProdCat();">{data.name}</html:option>
+        </html:select>
+        <!-- example of how to make the above work correctly.. -->
+        <html:select name="atest" flexy:ignore="yes">
+            <html:option flexy:foreach="categories,data" value="{data.value}" 
+                onselect="parent.onSelect_ProdCat();">{data.name}</html:option>
+        </html:select>
+        
+        <!-- test toElement  -->
+         <menulist id="supplier_id">
+            <menupopup>
+                    <menuitem id="itemSubCatAll" label="-- Select --" value="0"/>
+            </menupopup>
+        </menulist>
+        
+        <!-- test using flexy stuff -->
+        <menulist id="supplier_id2">
+            <menupopup>
+                    <menuitem flexy:foreach="x,y" id="itemSubCatAll" label="{y.name}" value="{y.value}"/>
+            </menupopup>
+        </menulist>
+        
+        <!-- test args on menupopup -->
+           <menulist id="product_category">
+            <menupopup onpopuphiding="cTree.categorySelect(this.parentNode.value,1);">
+                <menuitem id="prodCatAll" label="-- All --" value="0" />
+            </menupopup>
+        </menulist>
+        
+</window>
