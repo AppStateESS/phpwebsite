@@ -4,14 +4,13 @@ Sessions
 phpWebSite uses sessions to relay data between pages without having
 to use links or forms. To use phpWebSite, you _must_ have sessions working.
 
-Sessions are not magical. They are just small files of information on your
-webserver. To keep track of which files belong to whom, php will track the
+Sessions are are small files of information on your webserver.
+To keep track of which files belong to whom, php will track the
 id of the file two ways, by saving a cookie to your browser or by embedding
 the session id in your address line. MOST of the time, your server will use
 the cookie method because the id line in your address line is unsightly.
 
-So first of all, please make sure you allow cookies in your browser. No cookies,
-no sessions.
+Please make sure you allow cookies in your browser. No cookies, no sessions.
 
 If that does not help, check your php.ini file and assure the 'session.save_path'
 exists and is writable. It is usually defaulted to '/tmp'.
@@ -20,7 +19,7 @@ This directory will be owned by root but its mode is usually 777.
 If you are running a Windows server, there isn't a '/tmp'. Make a directory on
 your server (e.g. 'sess_dir') and then set the path to this directory like so:
 
-c:\sessions
+c:\sess_dir
    
 Where 'c' is your drive letter and 'sess_dir' is the sessions directory.
 
@@ -28,4 +27,4 @@ We mentioned sending sessions via url address. This has a bad side effect
 of allowing someone to compromise a users sessions by copying their id.
 Though unlikely, we recommend you set:
 
-session.use_only_cookies = 1 
+session.use_only_cookies = 1

@@ -1,98 +1,56 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en_US" lang="en_US">
 <head>
-{META}
-<meta content="text/html; charset=UTF-8"  http-equiv="Content-Type" />
-
-<title>{TITLE}</title>
 <style type="text/css">
 body {
- background-color : #ADB583;
- font-size : 100%;
- font-family: Arial, Helvetica, sans-serif;
- color : #0E1662;
+    background-color: #E0E0E0;
+    font-size: 13px;
+    font-family: arial, sans-serif;
+    margin: 0px;
+    padding: 0px;
+    line-height: 1.5em;
 }
 
-.long input{
- width : 100%;
+#container {
+    background-color: white;
+    width: 768px;
+    margin: 0px auto;
+    border: 1px black solid;
 }
 
-#frame {
-  margin-top : 20px;
-  margin-left : 50px;
-  margin-right : 50px;
-  background-color : #DFE3BA;
-
+#content {
+    padding: 8px;
+    border-top: 1px black solid;
 }
 
-.user-error {
-  background-color : red;
-  color : white;
-  font-weight : bold;
+label {
+    font-weight: bold;
 }
 
-#title {
- font-size : 150%;
- font-weight : bold;
- text-align : center;
- background-color : #A03E19;
- padding : 5px;
- color : white;	
+p {
+    margin-bottom: 2em;
 }
 
-#main {
- padding : 10px;
- margin : 10px;
+img {
+    display: block;
 }
 
-#config-form {
- margin : 3px;
- background-color : white;
- padding : 2px;
+h1 {
+    font-size: 1.3em;
+    border-bottom: 2px dotted black;
 }
 
-#config-form div.config-item {
- margin : 10px;
- background-color : #f2f2f2;
- padding : 10px;
-
+#main-text {
+    background-color: #E0E0E0;
+    padding: 5px;
 }
-
-#config-form div.label {
- font-weight : bold;
-}
-
-#config-form div.definition {
- font-size : 90%;	
-}
-
-#config-form div.form-item {
- margin-top : 5px;
-}
-a:link, a:visited {
-    text-decoration : none;
-    background-color : inherit;
-    color: #A03E19;
-}
-
-a:hover, a:active {
-    text-decoration : underline;
-    background-color : inherit;
-    color: #000;
-}
-
-div.error {
-  background-color : red;
-  color : white;
-  font-weight : bold;
-}
-
 </style>
 </head>
 <body>
-<div id="frame">
-  <div id="title">{TITLE}</div>
-  <div id="main">{MAIN_CONTENT}</div>
+<div id="container"><img src="./images/autumn_leaf_color.jpg" />
+<div id="content">
+<h1>{TITLE}</h1>
+{CONTENT}</div>
 </div>
 </body>
 </html>

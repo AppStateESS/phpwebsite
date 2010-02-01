@@ -7,8 +7,6 @@
 include 'core/conf/version.php';
 
 $content[] = "<b>Welcome to the phpWebSite $version</b><br />
-<p>The 1.x series is an upgrade to the phpWebSite version 0.x software.
-<br />Please note that 0.x modules will not work natively in 1.x. They must be converted specifically for the new core.</p>
 
 <p>If you are having problems with your installation, please refer to the following sources:<br />
 <ul>
@@ -21,7 +19,6 @@ $content[] = "<b>Welcome to the phpWebSite $version</b><br />
 <li><a href=\"http://phpwsforums.com/\">Unofficial Help Forums</a></li>
 <li>Visit our chatroom at irc.freenode.net - #phpwebsite</li>
 </ul>
-
 </p>
 
 <p>You may want to look through the <a href=\"../docs/\">documentation directory</a> as well.</p>

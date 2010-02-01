@@ -15,12 +15,21 @@ if (strstr($_SERVER['SCRIPT_FILENAME'], '\\')) {
 
 class Setup{
 
-    function configExists()
+    public $phpws_version = null;
+
+    public function __construct()
     {
-        return is_file('config/core/config.php');
+        include './core/conf/version.php';
+        $this->phpws_version = $version;
     }
 
-    function initConfigSet()
+
+    public function configExists()
+    {
+        return is_file(PHPWS_SOURCE_DIR . 'core/conf/config.php');
+    }
+
+    public function initConfigSet()
     {
         if (!isset($_SESSION['configSettings'])) {
             $_SESSION['configSettings']['general']  = FALSE;
@@ -39,7 +48,7 @@ class Setup{
     }
 
 
-    function createConfig(&$content)
+    public function createConfig(&$content)
     {
         Setup::initConfigSet();
 
@@ -79,30 +88,30 @@ class Setup{
             Setup::databaseConfig($content, $messages);
         }
         else {
-            $configDir = Setup::getConfigSet('source_dir') . 'config/core/';
+            $configDir = Setup::getConfigSet('source_dir') . PHPWS_SOURCE_DIR . 'core/conf/';
             if (is_file($configDir . 'config.php')) {
-                $content[] = _('Your configuration file already exists.');
-                $content[] = _('Remove the following file and refresh to continue:');
+                $content[] = dgettext('core','Your configuration file already exists.');
+                $content[] = dgettext('core','Remove the following file and refresh to continue:');
                 $content[] = '<pre>' . $configDir . 'config.php</pre>';
             }
             elseif (Setup::writeConfigFile()) {
                 PHPWS_Core::killSession('configSettings');
-                $content[] = _('Your configuration file was written successfully!') . '<br />';
-                $content[] = '<a href="index.php?step=2">' . _('Move on to Step 2') . '</a>';
+                $content[] = dgettext('core','Your configuration file was written successfully!') . '<br />';
+                $content[] = '<a href="index.php?step=2">' . dgettext('core','Move on to Step 2') . '</a>';
             } else {
-                $content[] = _('Your configuration file could not be written into the following directory:');
+                $content[] = dgettext('core','Your configuration file could not be written into the following directory:');
                 $content[] = "<pre>$configDir</pre>";
-                $content[] = _('Please check your directory permissions and try again.');
-                $content[] = '<a href="help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . _('Permission Help') . '</a>';
+                $content[] = dgettext('core','Please check your directory permissions and try again.');
+                $content[] = '<a href="help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . dgettext('core','Permission Help') . '</a>';
             }
         }
     }
 
-    function writeConfigFile()
+    public function writeConfigFile()
     {
         require_once 'File.php';
 
-        $location = Setup::getConfigSet('source_dir') . 'config/core/';
+        $location = PHPWS_SOURCE_DIR . 'core/conf/';
         if (!is_writable($location)) {
             return FALSE;
         }
@@ -114,7 +123,7 @@ class Setup{
         return File::write($location . 'config.php', $configFile, FILE_MODE_WRITE);
     }
 
-    function postGeneralConfig(&$content, &$messages)
+    public function postGeneralConfig(&$content, &$messages)
     {
         $check = TRUE;
         $source_dir = addslashes($_POST['source_dir']);
@@ -124,12 +133,12 @@ class Setup{
         }
 
         if (!is_dir($source_dir)) {
-            $messages['source_dir'] = _('Unable to locate the source directory:') . ' ' . $source_dir;
+            $messages['source_dir'] = dgettext('core','Unable to locate the source directory:') . ' ' . $source_dir;
             $check = FALSE;
         }
         else {
             Setup::setConfigSet('source_dir', $source_dir);
-	    Setup::setConfigSet('home_dir', $source_dir);
+            Setup::setConfigSet('home_dir', $source_dir);
         }
 
         Setup::setConfigSet('LINUX_PEAR', '//');
@@ -144,7 +153,7 @@ class Setup{
         }
 
         if (empty($_POST['site_hash'])) {
-            $messages['site_hash'] = _('Site hash may not be empty.');
+            $messages['site_hash'] = dgettext('core','Site hash may not be empty.');
             $check = false;
         } else {
             Setup::setConfigSet('site_hash', $_POST['site_hash']);
@@ -152,7 +161,7 @@ class Setup{
         return $check;
     }
 
-    function postDatabaseConfig(&$content, &$messages)
+    public function postDatabaseConfig(&$content, &$messages)
     {
         $check = TRUE;
         $currentPW = Setup::getConfigSet('dbpass');
@@ -160,19 +169,19 @@ class Setup{
         if (!empty($_POST['dbuser'])) {
             Setup::setConfigSet('dbuser', $_POST['dbuser']);
         } else {
-            $messages['dbuser'] = _('Missing a database user name.');
+            $messages['dbuser'] = dgettext('core','Missing a database user name.');
             $check = FALSE;
         }
 
         if (!empty($_POST['dbpass'])) {
             if (preg_match('/[^\w\s\.!\?]/', $_POST['dbpass'])) {
-                $messages['dbpass'] = _('Database password may contain alphanumeric characters, punctuation, spaces and underscores only.');
+                $messages['dbpass'] = dgettext('core','Database password may contain alphanumeric characters, punctuation, spaces and underscores only.');
                 $check = false;
             } else {
                 Setup::setConfigSet('dbpass', $_POST['dbpass']);
             }
         } elseif (empty($currentPW)) {
-            $messages['dbpass'] = _('Missing a database password.');
+            $messages['dbpass'] = dgettext('core','Missing a database password.');
             $check = FALSE;
         }
 
@@ -181,13 +190,13 @@ class Setup{
         if (!empty($_POST['dbname'])) {
             Setup::setConfigSet('dbname', $_POST['dbname']);
         } else {
-            $messages['dbname'] = _('Missing a database name.');
+            $messages['dbname'] = dgettext('core','Missing a database name.');
             $check = FALSE;
         }
 
         if (!empty($_POST['dbprefix'])) {
             if (preg_match('/\W/', $_POST['dbprefix'])) {
-                $messages['dbpref'] = _('Table prefix must be alphanumeric characters or underscores only');
+                $messages['dbpref'] = dgettext('core','Table prefix must be alphanumeric characters or underscores only');
                 $check = FALSE;
             } else {
                 Setup::setConfigSet('dbprefix', $_POST['dbprefix']);
@@ -211,11 +220,11 @@ class Setup{
         if ($checkConnection == 1) {
             return TRUE;
         } elseif ($checkConnection == 2) {
-            $sub['main'] = _('PhpWebSite was able to connect, but the database already contained tables.');
+            $sub['main'] = dgettext('core','PhpWebSite was able to connect, but the database already contained tables.');
             if (Setup::getConfigSet('dbprefix')) {
-                $sub[] = _('Since you set a table prefix, you may force an installation into this database.');
-                $sub[] = _('Click the link below to continue or change your connection settings.');
-                $sub[] = sprintf('<a href="index.php?step=1b">%s</a>',_('I want to install phpWebSite in this database.'));
+                $sub[] = dgettext('core','Since you set a table prefix, you may force an installation into this database.');
+                $sub[] = dgettext('core','Click the link below to continue or change your connection settings.');
+                $sub[] = sprintf('<a href="index.php?step=1b">%s</a>',dgettext('core','I want to install phpWebSite in this database.'));
             } else {
                 $_SESSION['configSettings']['database'] = FALSE;
             }
@@ -223,38 +232,38 @@ class Setup{
             return FALSE;
         }
         elseif ($checkConnection == -1) {
-            $sub[] = _('PhpWebSite was able to connect but the database itself does not exist.');
-            $sub[] = '<a href="index.php?step=1a">' . _('Do you want phpWebSite to create the database?') . '</a>';
-            $sub[] = _('If not, you will need to create the database yourself and return to the setup.');
+            $sub[] = dgettext('core','PhpWebSite was able to connect but the database itself does not exist.');
+            $sub[] = '<a href="index.php?step=1a">' . dgettext('core','Do you want phpWebSite to create the database?') . '</a>';
+            $sub[] = dgettext('core','If not, you will need to create the database yourself and return to the setup.');
             $messages['main'] = implode('<br />', $sub);
             return FALSE;
         }
         else {
-            $sub[] = _('Unable to connect to the database with the information provided.');
-            $sub[] = '<a href="help/database.' . DEFAULT_LANGUAGE . '.txt" target="index">' . _('Database Help') . '</a>';
+            $sub[] = dgettext('core','Unable to connect to the database with the information provided.');
+            $sub[] = '<a href="help/database.' . DEFAULT_LANGUAGE . '.txt" target="index">' . dgettext('core','Database Help') . '</a>';
             $messages['main'] = implode('<br />', $sub);
             return FALSE;
         }
     }
 
 
-    function createDatabase(&$content)
+    public function createDatabase(&$content)
     {
         $dsn = Setup::getDSN(1);
         $db = & DB::connect($dsn);
 
         if (PEAR::isError($db)) {
             PHPWS_Error::log($db);
-            $content[] = _('Unable to connect.');
-            $content[] = _('Check your configuration settings.');
+            $content[] = dgettext('core','Unable to connect.');
+            $content[] = dgettext('core','Check your configuration settings.');
             return FALSE;
         }
 
         $result = $db->query('CREATE DATABASE ' . Setup::getConfigSet('dbname'));
         if (PEAR::isError($result)) {
             PHPWS_Error::log($db);
-            $content[] = _('Unable to create the database.');
-            $content[] = _('You will need to create it manually and rerun the setup.');
+            $content[] = dgettext('core','Unable to create the database.');
+            $content[] = dgettext('core','You will need to create it manually and rerun the setup.');
             return FALSE;
         }
 
@@ -262,12 +271,13 @@ class Setup{
         Setup::setConfigSet('dsn', $dsn);
         $_SESSION['configSettings']['database'] = TRUE;
 
-        $content[] = _('The database creation succeeded!');
-        $content[] = '<a href="index.php?step=1">' . _('You can now finish the creation of your config file.') . '</a>';
+        $content[] = dgettext('core','The database creation succeeded!');
+        return true;
+        $content[] = '<a href="index.php?step=1">' . dgettext('core','You can now finish the creation of your config file.') . '</a>';
 
     }
 
-    function getDSN($mode)
+    public function getDSN($mode)
     {
         $dbtype = Setup::getConfigSet('dbtype');
         $dbuser = Setup::getConfigSet('dbuser');
@@ -283,22 +293,22 @@ class Setup{
         }
 
         switch ($mode){
-        case 1:
-            if ($dbtype == 'pgsql') {
-                return $dsn . '/' . $dbname;
-            } else {
-                return $dsn;
-            }
-            break;
+            case 1:
+                if ($dbtype == 'pgsql') {
+                    return $dsn . '/' . $dbname;
+                } else {
+                    return $dsn;
+                }
+                break;
 
-        case 2:
-            $dsn .= '/' . $dbname;
-            return $dsn;
-            break;
+            case 2:
+                $dsn .= '/' . $dbname;
+                return $dsn;
+                break;
         }
     }
 
-    function testDBConnect($dsn=null)
+    public function testDBConnect($dsn=null)
     {
         if (empty($dsn)) {
             $dsn = Setup::getDSN(1);
@@ -317,7 +327,7 @@ class Setup{
         if (PEAR::isError($result)) {
             // mysql delivers the first error, postgres the second
             if ($result->getCode() == DB_ERROR_NOSUCHDB ||
-                $result->getCode() == DB_ERROR_CONNECT_FAILED) {
+            $result->getCode() == DB_ERROR_CONNECT_FAILED) {
                 return -1;
             } else {
                 PHPWS_Error::log($connection);
@@ -334,12 +344,12 @@ class Setup{
         return 1;
     }
 
-    function setConfigSet($setting, $value)
+    public function setConfigSet($setting, $value)
     {
         $_SESSION['configSettings'][$setting] = $value;
     }
 
-    function getConfigSet($setting)
+    public function getConfigSet($setting)
     {
         if (!isset($_SESSION['configSettings']) || !isset($_SESSION['configSettings'][$setting])) {
             return NULL;
@@ -348,59 +358,62 @@ class Setup{
         return $_SESSION['configSettings'][$setting];
     }
 
-    function generalConfig(&$content, $messages)
+    public function generalConfig(&$content, $messages)
     {
+        $form = new Form2;
 
-        $form = new PHPWS_Form('generalConfig');
-        $site_hash  = Setup::getConfigSet('site_hash');
+        /*
+         $form = new PHPWS_Form('generalConfig');
+         $site_hash  = Setup::getConfigSet('site_hash');
 
-        $source_dir = Setup::getConfigSet('source_dir');
-        $pear_select = array('local' =>_('Use Pear files included with phpWebSite (recommended).'),
-                             'system'=>_('Use server\'s Pear library files (not recommended).')
-                             );
+         $source_dir = Setup::getConfigSet('source_dir');
+         $pear_select = array('local' =>dgettext('core','Use Pear files included with phpWebSite (recommended).'),
+         'system'=>dgettext('core','Use server\'s Pear library files (not recommended).')
+         );
 
-        $formTpl['SOURCE_DIR_DEF'] = _('This is the directory where phpWebSite is installed.');
+         $formTpl['SOURCE_DIR_DEF'] = dgettext('core','This is the directory where phpWebSite is installed.');
 
-        $formTpl['SITE_HASH_DEF'] = _('The character string below differentiates your site from others on the same server.') . '<br />'
-            . _('The example is randomly generated.') . ' '
-            . _('You may change it if you wish.');
+         $formTpl['SITE_HASH_DEF'] = dgettext('core','The character string below differentiates your site from others on the same server.') . '<br />'
+         . dgettext('core','The example is randomly generated.') . ' '
+         . dgettext('core','You may change it if you wish.');
 
-        $formTpl['PEAR_DEF'] = _('phpWebSite uses the Pear library extensively.') . '<br />'
-            . _('We suggest you use the library files included with phpWebSite.');
+         $formTpl['PEAR_DEF'] = dgettext('core','phpWebSite uses the Pear library extensively.') . '<br />'
+         . dgettext('core','We suggest you use the library files included with phpWebSite.');
 
-        if (isset($messages['source_dir'])) {
-            $formTpl['SOURCE_DIR_ERR'] = $messages['source_dir'];
-        }
-
-
-        if (isset($messages['site_hash'])) {
-            $formTpl['SITE_HASH_ERR'] = $messages['site_hash'];
-        }
+         if (isset($messages['source_dir'])) {
+         $formTpl['SOURCE_DIR_ERR'] = $messages['source_dir'];
+         }
 
 
-        $form->add('source_dir', 'textfield', $source_dir);
-        $form->setSize('source_dir', 50);
-        $form->add('step',   'hidden', '1');
-        $form->add('action', 'hidden', 'postGeneralConfig');
-        $form->setLabel('source_dir', _('Source Directory'));
+         if (isset($messages['site_hash'])) {
+         $formTpl['SITE_HASH_ERR'] = $messages['site_hash'];
+         }
 
-        $form->add('site_hash', 'textfield', $site_hash);
-        $form->setSize('site_hash', 40);
-        $form->setLabel('site_hash', _('Site Hash'));
 
-        $form->add('pear', 'select', $pear_select);
-        $form->setMatch('pear', 'local');
-        $form->setLabel('pear', _('Pear Configuration'));
+         $form->add('source_dir', 'textfield', $source_dir);
+         $form->setSize('source_dir', 50);
+         $form->add('step',   'hidden', '1');
+         $form->add('action', 'hidden', 'postGeneralConfig');
+         $form->setLabel('source_dir', dgettext('core','Source Directory'));
 
-        $form->addSubmit('submit', _('Continue'));
+         $form->add('site_hash', 'textfield', $site_hash);
+         $form->setSize('site_hash', 40);
+         $form->setLabel('site_hash', dgettext('core','Site Hash'));
 
-        $form->mergeTemplate($formTpl);
+         $form->add('pear', 'select', $pear_select);
+         $form->setMatch('pear', 'local');
+         $form->setLabel('pear', dgettext('core','Pear Configuration'));
 
-        $content[] = Setup::createForm($form, 'generalConfig.tpl');
+         $form->addSubmit('submit', dgettext('core','Continue'));
+
+         $form->mergeTemplate($formTpl);
+
+         $content[] = Setup::createForm($form, 'generalConfig.tpl');
+         */
     }
 
 
-    function databaseConfig(&$content, $messages)
+    public function databaseConfig(&$content, $messages)
     {
         if (isset($messages['main'])) {
             $formTpl['MAIN'] = $messages['main'];
@@ -410,75 +423,75 @@ class Setup{
         $form->add('action', 'hidden', 'postDatabaseConfig');
 
         $databases = array ('mysql' =>'MySQL',
-                            'pgsql' =>'PostgreSQL');
+         'pgsql' =>'PostgreSQL');
 
-        $formTpl['DBTYPE_LBL'] = _('Database Type');
-        $formTpl['DBTYPE_DEF'] = _('phpWebSite supports MySQL and PostgreSQL. Choose the type your server currently is running.');
+        $formTpl['DBTYPE_DEF'] = dgettext('core','phpWebSite supports MySQL and PostgreSQL. Choose the type your server currently is running.');
 
-        $formTpl['DBUSER_LBL'] = _('Database User');
-        $formTpl['DBUSER_DEF'] = _('This is the user name that phpWebSite will use to access its database.')
-            . ' <br /><i>' . _('Note: it is a good idea to give each phpWebSite installation its own user.') . '</i>';
+        $formTpl['DBUSER_DEF'] = dgettext('core','This is the user name that phpWebSite will use to access its database.')
+        . ' <br /><i>' . dgettext('core','Note: it is a good idea to give each phpWebSite installation its own user.') . '</i>';
         if (isset($messages['dbuser'])) {
             $formTpl['DBUSER_ERR'] = $messages['dbuser'];
         }
 
-        $formTpl['DBPASS_LBL'] = _('Database Password');
-        $formTpl['DBPASS_DEF'] = _('Enter the database\'s user password here.');
+        $formTpl['DBPASS_DEF'] = dgettext('core','Enter the database\'s user password here.');
         if (isset($messages['dbpass'])) {
             $formTpl['DBPASS_ERR'] = $messages['dbpass'];
         }
 
 
-        $formTpl['DBPREF_LBL'] = _('Table prefix');
-        $formTpl['DBPREF_DEF'] = _('If you are installing phpWebSite in a shared environment, you may assign a prefix to tables.<br />We recommend you run without one.');
+        $formTpl['DBPREF_DEF'] = dgettext('core','If you are installing phpWebSite in a shared environment, you may assign a prefix to tables.<br />We recommend you run without one.');
         if (isset($messages['dbpref'])) {
             $formTpl['DBPREF_ERR'] = $messages['dbpref'];
         }
 
+        $formTpl['DBHOST_DEF'] = dgettext('core','If your database is on the same server as your phpWebSite installation, leave this as &#x22;localhost&#x22;.')
+        . '<br />' . dgettext('core','Otherwise, enter the ip or dns to the database server.');
 
-        $formTpl['DBHOST_LBL'] = _('Host Specification');
-        $formTpl['DBHOST_DEF'] = _('If your database is on the same server as your phpWebSite installation, leave this as &#x22;localhost&#x22;.')
-            . '<br />' . _('Otherwise, enter the ip or dns to the database server.');
+        $formTpl['DBPORT_DEF'] = dgettext('core','If your host specification requires access via a specific port, enter it here.');
 
-        $formTpl['DBPORT_LBL'] = _('Host Specification Port');
-        $formTpl['DBPORT_DEF'] = _('If your host specification requires access via a specific port, enter it here.');
-
-        $formTpl['DBNAME_LBL'] = _('Database Name');
-        $formTpl['DBNAME_DEF'] = _('The database\'s name into which you are installing phpWebSite.')
-            . '<br /><i>' . _('Note: if you have not made this database yet, you should do so before continuing.') . '</i>';
+        $formTpl['DBNAME_DEF'] = dgettext('core','The database\'s name into which you are installing phpWebSite.')
+        . '<br /><i>' . dgettext('core','Note: if you have not made this database yet, you should do so before continuing.') . '</i>';
         if (isset($messages['dbname'])) {
             $formTpl['DBNAME_ERR'] = $messages['dbname'];
         }
-
+        $formTpl['TITLE'] = dgettext('core', 'Database configuration');
 
         $form->addSelect('dbtype', $databases);
         $form->setMatch('dbtype', Setup::getConfigSet('dbtype'));
+        $form->setLabel('dbtype', dgettext('core','Database Type'));
 
         $form->addText('dbuser', Setup::getConfigSet('dbuser'));
         $form->setSize('dbuser', 20);
+        $form->setLabel('dbuser', dgettext('core','Database User'));
 
         $form->addPassword('dbpass', Setup::getConfigSet('dbpass'));
         $form->allowValue('dbpass');
         $form->setSize('dbpass', 20);
+        $form->setLabel('dbpass', dgettext('core','Database Password'));
 
         $form->addText('dbprefix', Setup::getConfigSet('dbprefix'));
         $form->setSize('dbprefix', 5, 5);
+        $form->setLabel('dbprefix', dgettext('core','Table prefix'));
 
         $form->addText('dbhost', Setup::getConfigSet('dbhost'));
         $form->setSize('dbhost', 20);
+        $form->setLabel('dbhost', dgettext('core','Host Specification'));
 
         $form->addText('dbport', Setup::getConfigSet('dbport'));
         $form->setSize('dbport', 6);
+        $form->setLabel('dbport', dgettext('core','Host Specification Port'));
 
         $form->addText('dbname', Setup::getConfigSet('dbname'));
         $form->setSize('dbname', 20);
+        $form->setLabel('dbname', dgettext('core','Database Name'));
 
         $form->mergeTemplate($formTpl);
-        $form->addSubmit('default_submit', _('Continue'));
+
+        $form->addSubmit('default_submit', dgettext('core','Continue'));
         $content[] = Setup::createForm($form, 'databaseConfig.tpl');
     }
 
-    function createForm($form, $tplFile)
+    public function createForm($form, $tplFile)
     {
         $template = $form->getTemplate();
         $tpl = new PHPWS_Template;
@@ -488,7 +501,7 @@ class Setup{
         return $tpl->get();
     }
 
-    function getSourceDir()
+    public function getSourceDir()
     {
         static $directory;
 
@@ -504,18 +517,12 @@ class Setup{
         return $directory;
     }
 
-    function checkDirectories(&$content)
+    public function checkDirectories(&$content)
     {
         $errorDir = TRUE;
-        $directory[] = Setup::getSourceDir() . 'config/';
         $directory[] = Setup::getSourceDir() . 'images/';
-        /*
-        $directory[] = Setup::getSourceDir() . 'images/mod/';
-        $directory[] = Setup::getSourceDir() . 'templates/';
-        */
         $directory[] = Setup::getSourceDir() . 'files/';
         $directory[] = Setup::getSourceDir() . 'logs/';
-        // $directory[] = Setup::getSourceDir() . 'javascript/modules/';
 
         foreach ($directory as $id=>$check) {
             if (!is_dir($check)) {
@@ -526,29 +533,29 @@ class Setup{
         }
 
         if (isset($dirExist)) {
-            $content[] = _('The following directories need to be created:');
+            $content[] = dgettext('core','The following directories need to be created:');
             $content[] = '<pre>' . implode("\n", $dirExist) . '</pre>';
             $errorDir = FALSE;
         }
 
         if (isset($writableDir)) {
-            $content[] = _('The following directories are not writable:');
+            $content[] = dgettext('core','The following directories are not writable:');
             $content[] = '<pre>' . implode("\n", $writableDir) . '</pre>';
-            $content[] = _('You will need to change the permissions.') . '<br />';
-            $content[] = '<a href="help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . _('Permission Help') . '</a>';
+            $content[] = dgettext('core','You will need to change the permissions.') . '<br />';
+            $content[] = '<a href="help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . dgettext('core','Permission Help') . '</a>';
             $errorDir = FALSE;
         }
 
         return $errorDir;
     }
 
-    function show($content, $title=NULL, $forward=false)
+    public function show($content, $title=NULL, $forward=false)
     {
         include 'core/conf/version.php';
         $tpl = new PHPWS_Template;
         $tpl->setFile('setup/templates/setup.tpl', TRUE);
         if (!isset($title)) {
-            $title = sprintf(_('phpWebSite %s Setup'), $version);
+            $title = sprintf(dgettext('core','phpWebSite %s Setup'), $version);
         }
 
         if ($forward && AUTO_FORWARD) {
@@ -562,66 +569,74 @@ class Setup{
         return $tpl->get();
     }
 
-    function checkSession(&$content)
+    /**
+     * Checks to see if the server is using sessions OR if the user has cookies enabled.
+     * The session is established when the step is not set or 1 (the beginning). Also, starts the
+     * session.
+     * The next visit (step > 1) will determine whether they may continue.
+     * @return void
+     */
+    public function checkSession()
     {
-        if (!isset($_SESSION['sessionCheck'])) {
-            $_SESSION['sessionCheck'] = TRUE;
-
-            if (isset($_REQUEST['check'])) {
-                $content[] = _('There is a problem with your sessions.') . '<br />';
-                $content[] = _('phpWebSite depends on sessions to move data between pages.') . '<br />';
-                $content[] = PHPWS_Text::link('help/sessions.' . DEFAULT_LANGUAGE . '.txt', _('Sessions Help'), NULL, 'index');
-                return;
-            }
-            return FALSE;
+        session_start();
+        if (!isset($_REQUEST['step']) || $_REQUEST['step'] == 1) {
+            $_SESSION['session_check'] = true;
+            return;
         }
-        return TRUE;
+
+        // step > 2; check for session
+        if (!isset($_SESSION['session_check'])) {
+            $content[] = dgettext('core','phpWebSite depends on sessions to move data between pages.') . '<br />';
+            $content[] = sprintf('<a href="help/sessions.%s.txt">%s</a>', DEFAULT_LANGUAGE, dgettext('core','Sessions Help'));
+            $this->display(dgettext('core','There is a problem with your sessions.'),
+            implode('<br />', $content));
+        }
     }
 
-    function welcome(&$content)
+    public function welcome(&$content)
     {
         unset($_SESSION['Boost']);
         $step = 1;
         if (CONFIG_CREATED) {
             switch (Setup::testDBConnect(PHPWS_DSN)) {
-            case '2':
-                echo _('phpWebSite configuration file and database have been found. Assuming installation is complete. You should move or delete the setup directory.');
-                echo '<br />';
-                echo _('If you are returning here from a previous incomplete installation, you will need to clear the database of all tables and try again.');
-                exit();
+                case '2':
+                    echo dgettext('core','phpWebSite configuration file and database have been found. Assuming installation is complete. You should move or delete the setup directory.');
+                    echo '<br />';
+                    echo dgettext('core','If you are returning here from a previous incomplete installation, you will need to clear the database of all tables and try again.');
+                    exit();
 
-            case '-1':
-                echo _('phpWebSite configuration file exists but database does not. Create the database set in the config file or delete the config file.');
-                exit();
+                case '-1':
+                    echo dgettext('core','phpWebSite configuration file exists but database does not. Create the database set in the config file or delete the config file.');
+                    exit();
 
-            case '0':
-                echo _('phpWebSite configuration file exists but could not connect to database. Check your dsn settings or delete the config file.');
-                exit();
+                case '0':
+                    echo dgettext('core','phpWebSite configuration file exists but could not connect to database. Check your dsn settings or delete the config file.');
+                    exit();
 
-            case '1':
-                $step = 2;
-                break;
+                case '1':
+                    $step = 2;
+                    break;
             }
         }
 
         include './setup/welcome.php';
 
-        $content[] = "<a href=\"index.php?step=$step\">" . _('Begin Installation') . '</a>';
+        $content[] = "<a href=\"index.php?step=$step\">" . dgettext('core','Begin Installation') . '</a>';
         return;
     }
 
-    function createCore(&$content)
+    public function createCore(&$content)
     {
         require_once('File.php');
-        $content[] = _('Importing core database file.') . '<br />';
+        $content[] = dgettext('core','Importing core database file.') . '<br />';
 
         $db = new PHPWS_DB;
         $result = $db->importFile('core/boost/install.sql');
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $content[] = _('Some errors occurred while creating the core database tables.') . '<br />';
-            $content[] = _('Please check your error log file.') . '<br />';
+            $content[] = dgettext('core','Some errors occurred while creating the core database tables.') . '<br />';
+            $content[] = dgettext('core','Please check your error log file.') . '<br />';
             return;
         }
 
@@ -633,16 +648,16 @@ class Setup{
 
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                $content[] = _('Some errors occurred while creating the core database tables.') . '<br />';
-                $content[] = _('Please check your error log file.') . '<br />';
+                $content[] = dgettext('core','Some errors occurred while creating the core database tables.') . '<br />';
+                $content[] = dgettext('core','Please check your error log file.') . '<br />';
             } else {
-                $content[] = _('Core installation successful.') . '<br /><br />';
-                $content[] = '<a href="index.php?step=3">' . _('Continue to Module Installation') . '</a>';
+                $content[] = dgettext('core','Core installation successful.') . '<br /><br />';
+                $content[] = '<a href="index.php?step=3">' . dgettext('core','Continue to Module Installation') . '</a>';
             }
         }
     }
 
-    function installModules(&$content)
+    public function installModules(&$content)
     {
         $modules = PHPWS_Core::coreModList();
 
@@ -654,8 +669,8 @@ class Setup{
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $content[] = _('An error occurred while trying to install your modules.')
-                . ' ' . _('Please check your error logs and try again.');
+            $content[] = dgettext('core','An error occurred while trying to install your modules.')
+            . ' ' . dgettext('core','Please check your error logs and try again.');
             return TRUE;
         } else {
             $content[] = $result;
@@ -668,21 +683,132 @@ class Setup{
         }
     }
 
-    function finish(&$content)
+    public function finish(&$content)
     {
         $content[] = '<hr />';
-        $content[] = _('Installation of phpWebSite is complete.') . '<br />';
-        $content[] = _('If you experienced any error messages, check your error.log file.') . '<br />';
+        $content[] = dgettext('core','Installation of phpWebSite is complete.') . '<br />';
+        $content[] = dgettext('core','If you experienced any error messages, check your error.log file.') . '<br />';
         if (CHECK_DIRECTORY_PERMISSIONS) {
-            $content[] = _('Check Directory Permissions is enabled so be sure to secure your config and templates directories!');
-            $content[] = _('If you do not change it now, your next page will be an error screen.');
+            $content[] = dgettext('core','Check Directory Permissions is enabled so be sure to secure your config and templates directories!');
+            $content[] = dgettext('core','If you do not change it now, your next page will be an error screen.');
         } else {
-            $content[] = _('After you finish installing your modules in Boost, you should make your config and template directories non-writable.');
+            $content[] = dgettext('core','After you finish installing your modules in Boost, you should make your config and template directories non-writable.');
         }
-        $content[] = '<a href="../index.php">' . _('Go to my new website!') . '</a>' . '<br />';
+        $content[] = '<a href="../index.php">' . dgettext('core','Go to my new website!') . '</a>' . '<br />';
 
     }
 
+    public function display($title, $content)
+    {
+        $tpl = new PHPWS_Template;
+        $tpl->setFile("setup/templates/setup.tpl", TRUE);
+        $tpl->setData(array('TITLE'=>$title, 'CONTENT'=>$content));
+
+        echo $tpl->get();
+        exit();
+    }
+
+
+    /**
+     * Checks various server settings prior to starting installation. Some end the installation; others
+     * just return notices.
+     * @return void
+     */
+    public function checkServerSettings()
+    {
+        $allow_install = true;
+        
+        // Settings were checked, return without issue.
+        if (isset($_SESSION['server_passed'])) {
+            return;
+        }
+
+        $test['session_auto_start']['pass'] = !(bool)ini_get('session.auto_start'); // need 0
+        $test['session_auto_start']['fail'] = dgettext('core','session.auto_start must be set to 0 for phpWebSite to work. Please review your php.ini file.');
+        $test['session_auto_start']['name'] = dgettext('core','Session auto start disabled');
+        $test['session_auto_start']['crit'] = true;
+
+        $test['pear_files']['pass'] = is_file('lib/pear/DB.php');
+        $test['pear_files']['fail'] = sprintf(dgettext('core','Could not find Pear library files. You will need to %sdownload the pear package from our site%s and unzip it in your installation directory.'),
+         '<a href="http://phpwebsite.appstate.edu/downloads/pear.zip">', '</a>');
+        $test['pear_files']['name'] = dgettext('core','Pear library installed');
+        $test['pear_files']['crit'] = true;
+
+        $test['gd']['pass'] = extension_loaded('gd');
+        $test['gd']['fail'] = sprintf(dgettext('core','You need to compile the %sGD image library%s into PHP.'), '<a href="http://www.libgd.org/Main_Page">', '</a>');
+        $test['gd']['name'] = dgettext('core','GD graphic libraries installed');
+        $test['gd']['crit'] = true;
+
+        $test['image_dir']['pass'] = is_dir('images/') && is_writable('images/');
+        $test['image_dir']['fail'] = sprintf(dgettext('core','%s directory does not exist or is not writable.'), 'SITENAME/images');
+        $test['image_dir']['name'] = dgettext('core','Image directory ready');
+        $test['image_dir']['crit'] = true;
+
+        $test['file_dir']['pass'] = is_dir('files/') && is_writable('files/');
+        $test['file_dir']['fail'] = sprintf(dgettext('core','%s directory does not exist or is not writable.'), 'SITENAME/files');
+        $test['file_dir']['name'] = dgettext('core','File directory ready');
+        $test['file_dir']['crit'] = true;
+
+        $test['log_dir']['pass'] = is_dir('logs/') && is_writable('logs/');
+        $test['log_dir']['fail'] = sprintf(dgettext('core','%s directory does not exist or is not writable.'), 'SITENAME/logs');
+        $test['log_dir']['name'] = dgettext('core','Log directory ready');
+        $test['log_dir']['crit'] = true;
+
+        $test['ffmpeg']['pass'] = is_file('/usr/bin/ffmpeg');
+        $test['ffmpeg']['fail'] = dgettext('core','You do not appear to have ffmpeg installed. File Cabinet will not be able to create thumbnail images from uploaded videos');
+        $test['ffmpeg']['name'] = dgettext('core','FFMPEG installed');
+        $test['ffmpeg']['crit'] = false;
+
+        $test['mime_type']['pass'] = function_exists('finfo_open') || function_exists('mime_content_type') || !ini_get('safe_mode');
+        $test['mime_type']['fail'] = dgettext('core','Unable to detect MIME file type. You will need to compile finfo_open into PHP.');
+        $test['mime_type']['name'] = dgettext('core','MIME file type detection');
+        $test['mime_type']['crit'] = true;
+
+        if (preg_match('/-/', PHP_VERSION)) {
+            $phpversion = substr(PHP_VERSION,0,strpos(PHP_VERSION, '-'));
+        } else {
+            $phpversion = PHP_VERSION;
+        }
+
+        $test['php_version']['pass'] = version_compare($phpversion, '5.1.0', '>=');
+        $test['php_version']['fail'] = sprintf(dgettext('core','Your server must run PHP version 5.1.0 or higher. You are running version %s.'), $phpversion);
+        $test['php_version']['name'] = dgettext('core','PHP 5 version check');
+        $test['php_version']['crit'] = true;
+
+        $memory_limit = (int)ini_get('memory_limit');
+
+        $test['memory']['pass'] = ($memory_limit > 8);
+        $test['memory']['fail'] = dgettext('core','Your PHP memory limit is less than 8MB. You may encounter problems with the script at this level. We suggest raising the limit in your php.ini file or uncommenting the "ini_set(\'memory_limit\', \'10M\');" line in your config/core/config.php file after installation.');
+        $test['memory']['name'] = dgettext('core','Memory limit exceeded');
+        $test['memory']['crit'] = false;
+
+        $test['globals']['pass'] = !(bool)ini_get('register_globals');
+        $test['globals']['fail'] = dgettext('core','You have register_globals enabled. You should disable it.');
+        $test['globals']['name'] = dgettext('core','Register globals disabled');
+        $test['globals']['crit'] = false;
+
+        $test['magic_quotes']['pass'] = !get_magic_quotes_gpc() && !get_magic_quotes_runtime();
+        $test['magic_quotes']['fail'] = dgettext('core','Magic quotes is enabled. Please disable it in your php.ini file.');
+        $test['magic_quotes']['name'] = dgettext('core','Magic quotes disabled');
+        $test['magic_quotes']['crit'] = true;
+
+        foreach  ($test as $test_section=>$val) {
+            if (!$val['pass']) {
+                if ($val['crit']) {
+                    $crit[] = $val['fail'];
+                    $allow_install = false;
+                } else {
+                    $warn[] = $val['fail'];
+                }
+            }
+        }
+
+        if (!$allow_install) {
+            $this->display(dgettext('core', 'Cannot install phpWebSite because of the following reasons:'), '<ul><li>' . implode('</li><li>', $crit) . '</li></ul>');
+        } else {
+            $_SESSION['server_passed'] = true;
+        }
+    }
 
 }
 
