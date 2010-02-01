@@ -310,6 +310,8 @@ class Setup{
 
     public function testDBConnect($dsn=null)
     {
+        return 2;
+        
         if (empty($dsn)) {
             $dsn = Setup::getDSN(1);
             $connection = DB::connect($dsn);
@@ -517,37 +519,6 @@ class Setup{
         return $directory;
     }
 
-    public function checkDirectories(&$content)
-    {
-        $errorDir = TRUE;
-        $directory[] = Setup::getSourceDir() . 'images/';
-        $directory[] = Setup::getSourceDir() . 'files/';
-        $directory[] = Setup::getSourceDir() . 'logs/';
-
-        foreach ($directory as $id=>$check) {
-            if (!is_dir($check)) {
-                $dirExist[] = $check;
-            } elseif (!is_writable($check)) {
-                $writableDir[] = $check;
-            }
-        }
-
-        if (isset($dirExist)) {
-            $content[] = dgettext('core','The following directories need to be created:');
-            $content[] = '<pre>' . implode("\n", $dirExist) . '</pre>';
-            $errorDir = FALSE;
-        }
-
-        if (isset($writableDir)) {
-            $content[] = dgettext('core','The following directories are not writable:');
-            $content[] = '<pre>' . implode("\n", $writableDir) . '</pre>';
-            $content[] = dgettext('core','You will need to change the permissions.') . '<br />';
-            $content[] = '<a href="help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . dgettext('core','Permission Help') . '</a>';
-            $errorDir = FALSE;
-        }
-
-        return $errorDir;
-    }
 
     public function show($content, $title=NULL, $forward=false)
     {
@@ -595,22 +566,28 @@ class Setup{
 
     public function welcome(&$content)
     {
+        define('PHPWS_DSN','asd');
         unset($_SESSION['Boost']);
         $step = 1;
         if (CONFIG_CREATED) {
             switch (Setup::testDBConnect(PHPWS_DSN)) {
                 case '2':
-                    echo dgettext('core','phpWebSite configuration file and database have been found. Assuming installation is complete. You should move or delete the setup directory.');
-                    echo '<br />';
-                    echo dgettext('core','If you are returning here from a previous incomplete installation, you will need to clear the database of all tables and try again.');
+                    $content[] = dgettext('core','phpWebSite configuration file and database have been found. We are assuming your installation is complete.');
+                    $content[] = dgettext('core', 'You should move or delete the setup directory.');
+                    $content[] = dgettext('core','If you are returning here from a previous incomplete installation, you will need to clear the database of all tables and try again.');
+                    $this->display(dgettext('core', 'There is a problem with your database'), PHPWS_Text::tag_implode('p', $content));
                     exit();
 
                 case '-1':
-                    echo dgettext('core','phpWebSite configuration file exists but database does not. Create the database set in the config file or delete the config file.');
+                    $content[] = dgettext('core','The phpWebSite configuration file exists but it\'s specified database does not.');
+                    $content[] = dgettext('core', 'Create the database set in the config file or delete the config file.');
+                    $this->display(dgettext('core', 'There is a problem with your database'), PHPWS_Text::tag_implode('p', $content));
                     exit();
 
                 case '0':
-                    echo dgettext('core','phpWebSite configuration file exists but could not connect to database. Check your dsn settings or delete the config file.');
+                    $content[] = dgettext('core','The phpWebSite configuration file exists but we could not connect to it\'s specified database.');
+                    $content[] = dgettext('core', 'Check your dsn settings or delete the config file.');
+                    $this->display(dgettext('core', 'There is a problem with your database'), PHPWS_Text::tag_implode('p', $content));
                     exit();
 
                 case '1':
@@ -618,7 +595,7 @@ class Setup{
                     break;
             }
         }
-
+exit('stop');
         include './setup/welcome.php';
 
         $content[] = "<a href=\"index.php?step=$step\">" . dgettext('core','Begin Installation') . '</a>';
@@ -717,7 +694,7 @@ class Setup{
     public function checkServerSettings()
     {
         $allow_install = true;
-        
+
         // Settings were checked, return without issue.
         if (isset($_SESSION['server_passed'])) {
             return;
@@ -740,17 +717,17 @@ class Setup{
         $test['gd']['crit'] = true;
 
         $test['image_dir']['pass'] = is_dir('images/') && is_writable('images/');
-        $test['image_dir']['fail'] = sprintf(dgettext('core','%s directory does not exist or is not writable.'), 'SITENAME/images');
+        $test['image_dir']['fail'] = sprintf(dgettext('core','%s directory does not exist or is not writable.'), PHPWS_SOURCE_DIR. 'images/');
         $test['image_dir']['name'] = dgettext('core','Image directory ready');
         $test['image_dir']['crit'] = true;
 
         $test['file_dir']['pass'] = is_dir('files/') && is_writable('files/');
-        $test['file_dir']['fail'] = sprintf(dgettext('core','%s directory does not exist or is not writable.'), 'SITENAME/files');
+        $test['file_dir']['fail'] = sprintf(dgettext('core','%s directory does not exist or is not writable.'), PHPWS_SOURCE_DIR . 'files/');
         $test['file_dir']['name'] = dgettext('core','File directory ready');
         $test['file_dir']['crit'] = true;
 
         $test['log_dir']['pass'] = is_dir('logs/') && is_writable('logs/');
-        $test['log_dir']['fail'] = sprintf(dgettext('core','%s directory does not exist or is not writable.'), 'SITENAME/logs');
+        $test['log_dir']['fail'] = sprintf(dgettext('core','%s directory does not exist or is not writable.'), PHPWS_SOURCE_DIR . 'logs/');
         $test['log_dir']['name'] = dgettext('core','Log directory ready');
         $test['log_dir']['crit'] = true;
 
@@ -803,11 +780,14 @@ class Setup{
             }
         }
 
+        $content = array();
+         
         if (!$allow_install) {
             $this->display(dgettext('core', 'Cannot install phpWebSite because of the following reasons:'), '<ul><li>' . implode('</li><li>', $crit) . '</li></ul>');
         } else {
             $_SESSION['server_passed'] = true;
         }
+
     }
 
 }

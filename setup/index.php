@@ -38,15 +38,14 @@ $setup->checkSession();
  */
 $setup->checkServerSettings();
 
-exit('end of server tests');
+$step = 0;
 
-if (!$setup->checkDirectories($content)){
-    $title .= dgettext('core','Directory Permissions');
-    exit(Setup::show($content, $title));
+if (isset($_REQUEST['step'])) {
+    $step = $_REQUEST['step'];
 }
-switch ($step){
+
+switch ($step) {
     case '0':
-        $title .=  dgettext('core','Site Setup');
         $setup->welcome($content);
         break;
 
@@ -88,8 +87,7 @@ switch ($step){
         }
         break;
 }
-display($title, $content);
-
+exit('end of switch');
 /**
  * Returns true if server OS is Windows
  */

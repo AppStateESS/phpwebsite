@@ -4,7 +4,7 @@
 <style type="text/css">
 body {
     background-color: #E0E0E0;
-    font-size: 13px;
+    font-size: 14px;
     font-family: arial, sans-serif;
     margin: 0px;
     padding: 0px;
@@ -28,7 +28,7 @@ label {
 }
 
 p {
-    margin-bottom: 2em;
+    margin-bottom: 1.2em;
 }
 
 img {
