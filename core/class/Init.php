@@ -9,11 +9,11 @@
  * @version $Id$
  */
 
-require_once 'config/core/language.php';
-
 if (!defined('PHPWS_SOURCE_DIR')) {
-    define('PHPWS_SOURCE_DIR', './');
+    define('PHPWS_SOURCE_DIR', str_replace('core/class', '', dirname(__FILE__)));
 }
+
+require_once PHPWS_SOURCE_DIR . 'core/conf/language.php';
 
 if (!defined('PHPWS_HOME_DIR')) {
     define('PHPWS_HOME_DIR', './');
@@ -22,7 +22,6 @@ if (!defined('PHPWS_HOME_DIR')) {
 if (!defined('IGNORE_BROWSER_LANGUAGE')) {
     define('IGNORE_BROWSER_LANGUAGE', false);
 }
-
 initializei18n();
 loadBrowserInformation();
 
@@ -227,7 +226,7 @@ function getBrowserLanguage()
 
 function loadLanguageDefaults($language)
 {
-    $rootDir = PHPWS_HOME_DIR . 'config/core/i18n/';
+    $rootDir = PHPWS_SOURCE_DIR . 'core/conf/i18n/';
     if (is_file($rootDir . $language . '.php')){
         require_once $rootDir . $language . '.php';
     } else {
