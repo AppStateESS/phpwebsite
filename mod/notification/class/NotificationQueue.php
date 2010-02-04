@@ -27,5 +27,10 @@ class NotificationQueue
 		$this->queue = array();
 		return $q;
 	}
+
+    public function isEmpty()
+    {
+        return empty($this->queue);
+    }
 }
 ?>

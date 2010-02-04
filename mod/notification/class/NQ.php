@@ -91,6 +91,18 @@ class NQ
     	$n = new SimpleNotification($type, $content);
     	self::push($module, $n);
     }
+
+    /**
+     * Determines if a queue is empty.
+     *
+     * @param string $module Which module
+     * @return boolean True if empty
+     */
+    public static function isEmpty($module)
+    {
+        $queue = self::getQueue($module);
+        return $queue->isEmpty();
+    }
 }
 
 ?>
