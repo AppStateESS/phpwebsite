@@ -17,9 +17,12 @@ if (!defined('ALLOW_SCRIPT_TAGS')) {
     define('ALLOW_SCRIPT_TAGS', false);
 }
 
+if (!defined('PHPWS_LOG_DIRECTORY')) {
+    define('PHPWS_LOG_DIRECTORY', PHPWS_SOURCE_DIR . 'logs/');
+}
+
 require_once PHPWS_SOURCE_DIR . 'core/inc/errorDefines.php';
 PHPWS_Core::initCoreClass('Error.php');
-
 class PHPWS_Core {
 
     /**
@@ -176,7 +179,7 @@ class PHPWS_Core {
             require_once 'PEAR/Exception.php';
             throw new PEAR_Exception(dgettext('core', 'Could not initialize module class ' . $classFile));
         }
-        
+
         // Require the file, and catch any exceptions that might cause
         try{
             require_once $classFile;
@@ -186,7 +189,7 @@ class PHPWS_Core {
             // Re-throw the exception
             throw $e;
         }
-        
+
         return true;
     }
 
@@ -215,7 +218,7 @@ class PHPWS_Core {
             // Re-throw the exception
             throw $e;
         }
-        
+
         return true;
     }
 
@@ -439,7 +442,7 @@ class PHPWS_Core {
 
     /**
      * Retrieves a module's config file path. If the file
-     * does not exist, it returns false instead.
+     * does not exist, throws an exception otherwise.
      */
     public function getConfigFile($module, $file=NULL)
     {
@@ -451,21 +454,13 @@ class PHPWS_Core {
         $module = preg_replace('/[^\w\.]/', '', $module);
 
         if ($module == 'core') {
-            $altfile = PHPWS_SOURCE_DIR . 'config/core/' . $file;
-            $file = './config/core/' . $file;
-        }
-        else {
-            $altfile = PHPWS_SOURCE_DIR . 'mod/' . $module . '/conf/' . $file;
-            $file = './config/' . $module . '/' . $file;
+            $file = PHPWS_SOURCE_DIR . 'core/conf/' . $file;
+        } else {
+            $file = PHPWS_SOURCE_DIR . "mod/$module/conf/$file";
         }
 
-        if (!is_file($file) || FORCE_MOD_CONFIG) {
-            if (!is_file($altfile)) {
-                return false;
-            }
-            else {
-                $file = $altfile;
-            }
+        if (!is_file($file)) {
+            throw new PEAR_Exception(dgettext('core', 'Config file missing'));
         }
 
         return $file;
@@ -570,26 +565,26 @@ class PHPWS_Core {
         switch ($code) {
             case '400':
                 header('HTTP/1.0 400 Bad Request');
-                include 'config/core/400.html';
+                include PHPWS_SOURCE_DIR . 'core/conf/400.html';
                 break;
 
             case '403':
                 header('HTTP/1.0 403 Forbidden');
-                include 'config/core/403.html';
+                include PHPWS_SOURCE_DIR . 'core/conf/403.html';
                 break;
 
             case '404':
                 header('HTTP/1.0 404 Not Found');
-                include 'config/core/404.html';
+                include PHPWS_SOURCE_DIR . 'core/conf/404.html';
                 break;
 
             case 'overpost':
-                include 'config/core/overpost.html';
+                include PHPWS_SOURCE_DIR . 'core/conf/overpost.html';
                 break;
 
             default:
                 header('HTTP/1.1 503 Service Unavailable');
-                include 'config/core/error_page.html';
+                include PHPWS_SOURCE_DIR . 'core/conf/error_page.html';
                 break;
         }
         exit();
@@ -804,7 +799,7 @@ class PHPWS_Core {
      */
     public function releaseVersion()
     {
-        include 'config/core/version.php';
+        include PHPWS_SOURCE_DIR . 'core/conf/version.php';
         return $version;
     }
 
