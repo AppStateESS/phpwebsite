@@ -170,7 +170,7 @@ function getSmilie($bbcode)
         $search = &$GLOBALS['Smilie_Search']['code'];
         $replace = &$GLOBALS['Smilie_Search']['img'];
     } else {
-        $results = trim(file_get_contents('config/core/smiles.pak'));
+        $results = trim(file_get_contents(PHPWS_SOURCE_DIR . '/core/conf/smiles.pak'));
         if (empty($results)) {
             return $bbcode;
         }
