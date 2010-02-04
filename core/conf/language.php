@@ -15,7 +15,7 @@
  *
  * This setting used to be in core's config.php file but was moved
  * here. The below will not go into effect if already set. Do not remove
- * the defined check until you remove the define from your config/core/config.php
+ * the defined check until you remove the define from your core/conf/config.php
  * file.
  */
 
