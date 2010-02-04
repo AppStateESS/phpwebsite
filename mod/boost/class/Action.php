@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 PHPWS_Core::initModClass('boost', 'Boost.php');
 
@@ -68,7 +68,7 @@ class Boost_Action {
                     $row['DEP_TITLE'] = $dep_mod['PROPERNAME'];
                     $row['DEP_VERSION'] = $dep_mod['VERSION'];
                     $row['DEP_ADDRESS'] = sprintf('<a href="%s">%s</a>',
-                                                  $dep_mod['URL'], dgettext('boost', 'Download'));
+                    $dep_mod['URL'], dgettext('boost', 'Download'));
                     $row['DEP_STATUS'] = $status;
                     $template['dependent-mods'][] = $row;
                 }
@@ -259,70 +259,18 @@ class Boost_Action {
         }
     }
 
+    /**
+     * deprecated
+     */
     public function copyLocal($module_title)
     {
-        PHPWS_Core::initCoreClass('Module.php');
-
-        if ($module_title == 'core') {
-            return Boost_Action::copyCore();
-        }
-
-        $module = new PHPWS_Module($module_title);
-        $content = array();
-        $tpl['TITLE'] = sprintf(dgettext('boost', 'Reverting %s module\'s local files'),
-                                $module->proper_name);
-
-        $boost = new PHPWS_Boost;
-        $boost->createDirectories($module, $content, null, true);
-        $content[] = dgettext('boost', 'Registering Control Panel information.');
-        PHPWS_ControlPanel::unregisterModule($_REQUEST['opmod'], $content);
-        PHPWS_ControlPanel::registerModule($_REQUEST['opmod'], $content);
-
-        $content[] = '';
-        $content[] = dgettext('boost', 'Module revert finished!');
-        $content[] = PHPWS_Text::secureLink(dgettext('boost', 'Return to Boost listing'),
-                                            'boost', array('action'=>'admin'));
-
-        $tpl['CONTENT'] = implode('<br />', $content);
-        return PHPWS_Template::process($tpl, 'boost', 'main.tpl');
+        return true;
     }
 
+    // deprecated
     public function copyCore()
     {
-        $boost = new PHPWS_Boost;
-        $local_dir = $boost->getHomeDir();
-
-        $content[] = dgettext('boost', 'Copying configuration files.');
-        $config_source = PHPWS_SOURCE_DIR . 'core/conf/';
-        $config_dest = $local_dir . 'config/core/';
-        $boost->addLog('core', sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $config_source, $config_dest));
-        PHPWS_File::recursiveFileCopy($config_source, $config_dest);
-
-
-        $content[] = dgettext('boost', 'Copying image files.');
-        $image_source = PHPWS_SOURCE_DIR . 'core/img/';
-        $image_dest = $local_dir . 'images/core/';
-        $boost->addLog('core', sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $image_source, $image_dest));
-        PHPWS_File::recursiveFileCopy($image_source, $image_dest);
-
-        if (PHPWS_Core::isBranch()) {
-            $content[] = dgettext('boost', 'Copying javascript files. Be aware that module javascript files will be overwritten.');
-            $javascript_source = PHPWS_SOURCE_DIR . 'javascript/';
-            $javascript_dest = $local_dir . 'javascript/';
-            $boost->addLog('core', sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $javascript_source, $javascript_dest));
-            PHPWS_File::recursiveFileCopy($javascript_source, $javascript_dest);
-        } else {
-            $content[] = dgettext('boost', 'Skipping javascript files.');
-        }
-
-        $content[] = dgettext('boost', 'Core revert finished!');
-        $content[] = PHPWS_Text::secureLink(dgettext('boost', 'Return to Boost listing'),
-                                            'boost', array('action'=>'admin'));
-
-        $tpl['TITLE'] = dgettext('boost', 'Reverting the core\'s local files');
-        $tpl['CONTENT'] = implode('<br />', $content);
-        return PHPWS_Template::process($tpl, 'boost', 'main.tpl');
-
+        return true;
     }
 }
 
