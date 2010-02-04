@@ -1,17 +1,17 @@
 <?php
-  /**
-   * Controls the text parsing and profanity controls for phpWebSite
-   * Also contains extra HTML utilities
-   *
-   * See config/core/text_settings.php for configuration options
-   *
-   * @version $Id$
-   * @author  Matthew McNaney <matt at tux dot appstate dot edu>
-   * @author  Adam Morton
-   * @author  Steven Levin
-   * @author  Don Seiler <don@NOSPAM.seiler.us>
-   * @package Core
-   */
+/**
+ * Controls the text parsing and profanity controls for phpWebSite
+ * Also contains extra HTML utilities
+ *
+ * See core/conf/text_settings.php for configuration options
+ *
+ * @version $Id$
+ * @author  Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author  Adam Morton
+ * @author  Steven Levin
+ * @author  Don Seiler <don@NOSPAM.seiler.us>
+ * @package Core
+ */
 
 if (!defined('UTF8_MODE')) {
     define ('UTF8_MODE', false);
@@ -232,8 +232,8 @@ class PHPWS_Text {
         $home_http = PHPWS_Core::getCurrentUrl();
 
         return preg_replace('/href="#([\w\-]+)"/',
-                            sprintf('href="%s#\\1"', $home_http),
-                            $text);
+        sprintf('href="%s#\\1"', $home_http),
+        $text);
     }
 
     /**
@@ -344,7 +344,7 @@ class PHPWS_Text {
                               '/(<\/dt>)\n/iU',
                               '/(<\/h\d>)\n/iU',
                               '/(<blockquote>)\n/iU',
-                              );
+        );
 
         $text = str_replace("\r\n", "\n", $text);
         $text = preg_replace($do_not_break, '\\1', $text);
@@ -425,39 +425,39 @@ class PHPWS_Text {
         if (empty($userEntry) || !is_string($userEntry)) return false;
 
         switch ($type) {
-        case 'chars_space':
-            if (UTF8_MODE) {
-                $preg = '/^[\w\s\pL]+$/ui';
-            } else {
-                $preg = '/^[\w\s]+$/ui';
-            }
-            if (preg_match($preg,$userEntry)) return true;
-            else return false;
-            break;
+            case 'chars_space':
+                if (UTF8_MODE) {
+                    $preg = '/^[\w\s\pL]+$/ui';
+                } else {
+                    $preg = '/^[\w\s]+$/ui';
+                }
+                if (preg_match($preg,$userEntry)) return true;
+                else return false;
+                break;
 
-        case 'number':
-            return is_numeric($userEntry);
-            break;
+            case 'number':
+                return is_numeric($userEntry);
+                break;
 
-        case 'url':
-            if (preg_match('/^(http(s){0,1}:\/\/)\w([\.\w\-\/&?\+=~])+$/i', $userEntry)) return true;
-            else return false;
-            break;
+            case 'url':
+                if (preg_match('/^(http(s){0,1}:\/\/)\w([\.\w\-\/&?\+=~])+$/i', $userEntry)) return true;
+                else return false;
+                break;
 
-        case 'email':
-            if (preg_match('/^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i', $userEntry)) return true;
-            else return false;
-            break;
+            case 'email':
+                if (preg_match('/^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i', $userEntry)) return true;
+                else return false;
+                break;
 
-        case 'file':
-            if (preg_match('/^[\w\.]+$/i',$userEntry)) return true;
-            else return false;
-            break;
+            case 'file':
+                if (preg_match('/^[\w\.]+$/i',$userEntry)) return true;
+                else return false;
+                break;
 
-        default:
-            if (preg_match('/^[\w]+$/i',$userEntry)) return true;
-            else return false;
-            break;
+            default:
+                if (preg_match('/^[\w]+$/i',$userEntry)) return true;
+                else return false;
+                break;
         }
     }// END FUNC isValidInput()
 
@@ -605,9 +605,9 @@ class PHPWS_Text {
     public function checkUnslashed($text)
     {
         if (preg_match("/[^\\\]+[\"']/", $text))
-            return true;
+        return true;
         else
-            return false;
+        return false;
     }// END FUNC checkUnslashed()
 
     /**
@@ -845,7 +845,7 @@ class PHPWS_Text {
 
         return str_replace('\"', '"', preg_replace('/(<a .*?>\s*http(s)?:\/\/)(.*?)(\s*<\/a>)/ie',
                                                    "'\\1' . PHPWS_Text::shortenUrl('\\3', $limit) . '\\4'",
-                                                   $text));
+        $text));
     }
 
     public function shortenUrl($url, $limit=COLLAPSE_LIMIT)
@@ -899,6 +899,10 @@ class PHPWS_Text {
         return serialize($values);
     }
 
+    public function tag_implode($tag, array $content)
+    {
+        return "<$tag>" . implode("</$tag>\n<$tag>", $content) . "</$tag>\n";
+    }
 }//END CLASS PHPWS_Text
 
 
@@ -930,7 +934,7 @@ function getEmbedded($stuff)
     }
 
     if (count($GLOBALS['embedded_tags'][$module]) == 1 &&
-        $parameters[0] != $GLOBALS['embedded_tags'][$module][0]) {
+    $parameters[0] != $GLOBALS['embedded_tags'][$module][0]) {
         $function_name = $GLOBALS['embedded_tags'][$module][0];
     } else {
         if (empty($parameters) || empty($parameters[0])) {
