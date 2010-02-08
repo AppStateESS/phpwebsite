@@ -901,6 +901,7 @@ class PHPWS_Text {
 
     public function tag_implode($tag, array $content)
     {
+        $tag = preg_replace('/[<>]/', '', $tag);
         return "<$tag>" . implode("</$tag>\n<$tag>", $content) . "</$tag>\n";
     }
 }//END CLASS PHPWS_Text
