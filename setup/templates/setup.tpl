@@ -40,10 +40,16 @@ h1 {
     border-bottom: 2px dotted black;
 }
 
+h2 {
+    font-size: 1.2em;
+}
+
 #main-text {
     background-color: #E0E0E0;
     padding: 5px;
 }
+
+
 </style>
 </head>
 <body>

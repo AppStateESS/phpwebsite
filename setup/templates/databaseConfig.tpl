@@ -1,4 +1,4 @@
-<h1>{TITLE}</h1>
+<h2>{TITLE}</h2>
 <!--  BEGIN main --><p id="main-text">{MAIN}</p><!-- END main -->
 {START_FORM}
 <p>{DBTYPE_LABEL} {DBTYPE}<br />

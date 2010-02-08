@@ -37,56 +37,9 @@ $setup->checkSession();
  * of the installation. Will return if successfully or previously passed.
  */
 $setup->checkServerSettings();
+$setup->goToStep();
 
-$step = 0;
 
-if (isset($_REQUEST['step'])) {
-    $step = $_REQUEST['step'];
-}
-
-switch ($step) {
-    case '0':
-        $setup->welcome($content);
-        break;
-
-    case '1':
-        $title .= dgettext('core','Create Config File');
-        $setup->createConfig($content);
-        break;
-
-    case '1a':
-        $title .= dgettext('core','Create Database');
-        if ($setup->createDatabase($content)) {
-             
-        } else {
-             
-        }
-        break;
-
-    case '1b':
-        $_SESSION['configSettings']['database'] = TRUE;
-        $dsn = Setup::getDSN(2);
-        Setup::setConfigSet('dsn', $dsn);
-        $title .= dgettext('core','Create Config File');
-        $setup->createConfig($content);
-        break;
-
-    case '2':
-        $title .= dgettext('core','Create Core');
-        $result = $setup->createCore($content);
-        break;
-
-    case '3':
-        $title .= dgettext('core','Install Modules');
-        $result = $setup->installModules($content);
-        if ($result) {
-            $setup->finish($content);
-        } elseif ($_SESSION['Boost']->currentDone()) {
-            // does nothing
-            $forward = true;
-        }
-        break;
-}
 exit('end of switch');
 /**
  * Returns true if server OS is Windows
