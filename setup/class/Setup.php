@@ -70,50 +70,17 @@ class Setup{
     public function createConfig()
     {
         $this->initConfigSet();
-
-        $this->messages = array();
         $content = array();
          
-        if (isset($_POST['action'])) {
-            if ($_POST['action'] == 'postGeneralConfig' && !SKIP_STEP_1) {
-                if ($this->postGeneralConfig($content, $this->messages)) {
-                    $_SESSION['configSettings']['general'] = true;
-                }
-            } elseif ($_POST['action'] == 'postDatabaseConfig') {
-                if ($this->postDatabaseConfig($content, $this->messages)) {
-                    $_SESSION['configSettings']['database'] = true;
-                }
-            }
-        }
-
-        /*
-         if (SKIP_STEP_1) {
-         $dir = getcwd() . '/';
-         $this->setConfigSet('source_dir', $dir);
-         $this->setConfigSet('home_dir', $dir);
-         $this->setConfigSet('LINUX_PEAR', '//');
-         $this->setConfigSet('WINDOWS_PEAR', '//');
-         if (PHPWS_Core::isWindows()) {
-         $this->setConfigSet('WINDOWS_PEAR', NULL);
-         } else {
-         $this->setConfigSet('LINUX_PEAR', NULL);
-         }
-         $this->setConfigSet('site_hash', md5(rand()));
-         $_SESSION['configSettings']['general'] = true;
-         }
-         */
-
         if ($_SESSION['configSettings']['database'] == false) {
-            $this->databaseConfig($content, $this->messages);
+            $this->databaseConfig($content);
         } else {
             $configDir = PHPWS_SOURCE_DIR . 'core/conf/';
             if (is_file($configDir . 'config.php')) {
                 $content[] = dgettext('core','Your configuration file already exists.');
                 $content[] = dgettext('core','Remove the following file and refresh to continue:');
                 $content[] = '<pre>' . $configDir . 'config.php</pre>';
-            }
-            
-            elseif ($this->writeConfigFile()) {
+            } elseif ($this->writeConfigFile()) {
                 PHPWS_Core::killSession('configSettings');
                 $content[] = dgettext('core','Your configuration file was written successfully!') . '<br />';
                 $content[] = '<a href="index.php?step=2">' . dgettext('core','Move on to Step 2') . '</a>';
@@ -129,6 +96,7 @@ class Setup{
 
     public function writeConfigFile()
     {
+        exit('whoa there config!');
         require_once 'File.php';
 
         $location = PHPWS_SOURCE_DIR . 'core/conf/';
@@ -209,17 +177,14 @@ class Setup{
                 $sub[] = dgettext('core','Click the link below to continue or change your connection settings.');
                 $sub[] = sprintf('<a href="index.php?step=1b">%s</a>',dgettext('core','I want to install phpWebSite in this database.'));
             } else {
+                $sub[] = dgettext('core', 'Create a new database, remove all tables from the database you want to use, or use table prefixing.');
                 $_SESSION['configSettings']['database'] = false;
             }
             $this->messages['main'] = implode('<br />', $sub);
             return false;
         }
         elseif ($checkConnection == -1) {
-            $sub[] = dgettext('core','PhpWebSite was able to connect but the database itself does not exist.');
-            $sub[] = '<a href="index.php?step=1a">' . dgettext('core','Do you want phpWebSite to create the database?') . '</a>';
-            $sub[] = dgettext('core','If not, you will need to create the database yourself and return to the setup.');
-            $this->messages['main'] = implode('<br />', $sub);
-            return false;
+            $this->createDatabase();
         }
         else {
             $sub[] = dgettext('core','Unable to connect to the database with the information provided.');
@@ -237,11 +202,11 @@ class Setup{
 
         if (PEAR::isError($db)) {
             PHPWS_Error::log($db);
-            $content[] = dgettext('core','Unable to connect.');
-            $content[] = dgettext('core','Check your configuration settings.');
+            $this->messages[] = dgettext('core','Unable to connect.');
+            $this->messages[] = dgettext('core','Check your configuration settings.');
             return false;
         }
-
+        exit('whoa create database');
         $result = $db->query('CREATE DATABASE ' . $this->getConfigSet('dbname'));
         if (PEAR::isError($result)) {
             PHPWS_Error::log($db);
@@ -293,8 +258,6 @@ class Setup{
 
     public function testDBConnect($dsn=null)
     {
-        return 2;
-
         if (empty($dsn)) {
             $dsn = $this->getDSN(1);
             $connection = DB::connect($dsn);
@@ -717,6 +680,7 @@ class Setup{
 
     function goToStep()
     {
+        echo "current step is $this->step<br>";
         switch ($this->step) {
             case '0':
                 $this->welcome();
