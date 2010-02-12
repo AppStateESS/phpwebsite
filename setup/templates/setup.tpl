@@ -49,6 +49,10 @@ h2 {
     padding: 5px;
 }
 
+.error {
+font-weight : bold;
+color : red;
+}
 
 </style>
 </head>

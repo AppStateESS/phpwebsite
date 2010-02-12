@@ -23,6 +23,10 @@ class Setup{
      */
     public $messages = null;
 
+    public $title = null;
+    
+    public $content = null;
+    
     /**
      * How far along the setup has progressed
      * @var string
@@ -70,28 +74,28 @@ class Setup{
     public function createConfig()
     {
         $this->initConfigSet();
-        $content = array();
          
         if ($_SESSION['configSettings']['database'] == false) {
             $this->databaseConfig($content);
         } else {
             $configDir = PHPWS_SOURCE_DIR . 'core/conf/';
             if (is_file($configDir . 'config.php')) {
-                $content[] = dgettext('core','Your configuration file already exists.');
-                $content[] = dgettext('core','Remove the following file and refresh to continue:');
-                $content[] = '<pre>' . $configDir . 'config.php</pre>';
+                $this->content[] = dgettext('core','Your configuration file already exists.');
+                $this->content[] = dgettext('core','Remove the following file and refresh to continue:');
+                $this->content[] = '<pre>' . $configDir . 'config.php</pre>';
             } elseif ($this->writeConfigFile()) {
                 PHPWS_Core::killSession('configSettings');
-                $content[] = dgettext('core','Your configuration file was written successfully!') . '<br />';
-                $content[] = '<a href="index.php?step=2">' . dgettext('core','Move on to Step 2') . '</a>';
+                $this->content[] = dgettext('core','Your configuration file was written successfully!') . '<br />';
+                $this->content[] = '<a href="index.php?step=2">' . dgettext('core','Move on to Step 2') . '</a>';
             } else {
-                $content[] = dgettext('core','Your configuration file could not be written into the following directory:');
-                $content[] = "<pre>$configDir</pre>";
-                $content[] = dgettext('core','Please check your directory permissions and try again.');
-                $content[] = '<a href="help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . dgettext('core','Permission Help') . '</a>';
+                $this->content[] = dgettext('core','Your configuration file could not be written into the following directory:');
+                $this->content[] = "<pre>$configDir</pre>";
+                $this->content[] = dgettext('core','Please check your directory permissions and try again.');
+                $this->content[] = '<a href="help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . dgettext('core','Permission Help') . '</a>';
             }
         }
-        $this->display(dgettext('core', 'Create Configuration File'), PHPWS_Text::tag_implode('p', $content));
+        $this->title = dgettext('core', 'Create Configuration File');
+        $this->display();
     }
 
     public function writeConfigFile()
@@ -185,11 +189,9 @@ class Setup{
         }
         elseif ($checkConnection == -1) {
             $this->createDatabase();
-        }
-        else {
-            $sub[] = dgettext('core','Unable to connect to the database with the information provided.');
-            $sub[] = '<a href="help/database.' . DEFAULT_LANGUAGE . '.txt" target="index">' . dgettext('core','Database Help') . '</a>';
-            $this->messages['main'] = implode('<br />', $sub);
+        } else {
+            $this->messages[] = dgettext('core','Unable to connect to the database with the information provided.');
+            $this->messages[] = '<a href="help/database.' . DEFAULT_LANGUAGE . '.txt" target="index">' . dgettext('core','Database Help') . '</a>';
             return false;
         }
     }
@@ -198,7 +200,7 @@ class Setup{
     public function createDatabase()
     {
         $dsn = $this->getDSN(1);
-        $db = & DB::connect($dsn);
+        $db = DB::connect($dsn);
 
         if (PEAR::isError($db)) {
             PHPWS_Error::log($db);
@@ -206,12 +208,12 @@ class Setup{
             $this->messages[] = dgettext('core','Check your configuration settings.');
             return false;
         }
-        exit('whoa create database');
+
         $result = $db->query('CREATE DATABASE ' . $this->getConfigSet('dbname'));
         if (PEAR::isError($result)) {
             PHPWS_Error::log($db);
-            $content[] = dgettext('core','Unable to create the database.');
-            $content[] = dgettext('core','You will need to create it manually and rerun the setup.');
+            $this->messages[] = dgettext('core','Unable to create the database.');
+            $this->messages[] = dgettext('core','You will need to create it manually and rerun the setup.');
             return false;
         }
 
@@ -219,9 +221,7 @@ class Setup{
         $this->setConfigSet('dsn', $dsn);
         $_SESSION['configSettings']['database'] = true;
 
-        $content[] = dgettext('core','The database creation succeeded!');
         return true;
-        $content[] = '<a href="index.php?step=1">' . dgettext('core','You can now finish the creation of your config file.') . '</a>';
 
     }
 
@@ -380,8 +380,9 @@ class Setup{
         $form->mergeTemplate($formTpl);
 
         $form->addSubmit('default_submit', dgettext('core','Continue'));
-        $content[] = $this->createForm($form, 'databaseConfig.tpl');
-        $this->display(dgettext('core', 'Configure phpWebSite'), PHPWS_Text::tag_implode('p', $content));
+        $this->content = $this->createForm($form, 'databaseConfig.tpl');
+        $this->title = dgettext('core', 'Configure phpWebSite');
+        $this->display();
     }
 
     public function createForm($form, $tplFile)
@@ -448,10 +449,10 @@ class Setup{
 
         // step > 2; check for session
         if (!isset($_SESSION['session_check'])) {
-            $content[] = dgettext('core','phpWebSite depends on sessions to move data between pages.') . '<br />';
-            $content[] = sprintf('<a href="help/sessions.%s.txt">%s</a>', DEFAULT_LANGUAGE, dgettext('core','Sessions Help'));
-            $this->display(dgettext('core','There is a problem with your sessions.'),
-            implode('<br />', $content));
+            $this->content[] = dgettext('core','phpWebSite depends on sessions to move data between pages.');
+            $this->content[] = sprintf('<a href="help/sessions.%s.txt">%s</a>', DEFAULT_LANGUAGE, dgettext('core','Sessions Help'));
+            $this->title = dgettext('core','There is a problem with your sessions.');
+            $this->display();
         }
     }
 
@@ -462,22 +463,25 @@ class Setup{
         if (CONFIG_CREATED) {
             switch ($this->testDBConnect(PHPWS_DSN)) {
                 case '2':
-                    $content[] = dgettext('core','phpWebSite configuration file and database have been found. We are assuming your installation is complete.');
-                    $content[] = dgettext('core', 'You should move or delete the setup directory.');
-                    $content[] = dgettext('core','If you are returning here from a previous incomplete installation, you will need to clear the database of all tables and try again.');
-                    $this->display(dgettext('core', 'There is a problem with your database'), PHPWS_Text::tag_implode('p', $content));
+                    $this->content[] = dgettext('core','phpWebSite configuration file and database have been found. We are assuming your installation is complete.');
+                    $this->content[] = dgettext('core', 'You should move or delete the setup directory.');
+                    $this->content[] = dgettext('core','If you are returning here from a previous incomplete installation, you will need to clear the database of all tables and try again.');
+                    $this->title = dgettext('core', 'There is a problem with your database');
+                    $this->display();
                     exit();
 
                 case '-1':
-                    $content[] = dgettext('core','The phpWebSite configuration file exists but it\'s specified database does not.');
-                    $content[] = dgettext('core', 'Create the database set in the config file or delete the config file.');
-                    $this->display(dgettext('core', 'There is a problem with your database'), PHPWS_Text::tag_implode('p', $content));
+                    $this->content[] = dgettext('core','The phpWebSite configuration file exists but it\'s specified database does not.');
+                    $this->content[] = dgettext('core', 'Create the database set in the config file or delete the config file.');
+                    $this->title = dgettext('core', 'There is a problem with your database');
+                    $this->display();
                     exit();
 
                 case '0':
-                    $content[] = dgettext('core','The phpWebSite configuration file exists but we could not connect to it\'s specified database.');
-                    $content[] = dgettext('core', 'Check your dsn settings or delete the config file.');
-                    $this->display(dgettext('core', 'There is a problem with your database'), PHPWS_Text::tag_implode('p', $content));
+                    $this->content[] = dgettext('core','The phpWebSite configuration file exists but we could not connect to it\'s specified database.');
+                    $this->content[] = dgettext('core', 'Check your dsn settings or delete the config file.');
+                    $this->title = dgettext('core', 'There is a problem with your database');
+                    $this->display();
                     exit();
 
                 case '1':
@@ -563,11 +567,16 @@ class Setup{
 
     }
 
-    public function display($title, $content)
+    public function display()
     {
         $tpl = new PHPWS_Template;
         $tpl->setFile("setup/templates/setup.tpl", true);
-        $tpl->setData(array('TITLE'=>$title, 'CONTENT'=>$content));
+        if (is_array($this->content)) {
+            $content = PHPWS_Text::tag_implode('p', $this->content);
+        } else {
+            $content = & $this->content;
+        }
+        $tpl->setData(array('TITLE'=>$this->title, 'CONTENT'=>$content));
 
         echo $tpl->get();
         exit();
@@ -671,7 +680,9 @@ class Setup{
         $content = array();
          
         if (!$allow_install) {
-            $this->display(dgettext('core', 'Cannot install phpWebSite because of the following reasons:'), '<ul><li>' . implode('</li><li>', $crit) . '</li></ul>');
+            $this->title = dgettext('core', 'Cannot install phpWebSite because of the following reasons:');
+            $this->content = '<ul>' . PHPWS_Text::tag_implode('li', $crit) . '</ul>';
+            $this->display();
         } else {
             $_SESSION['server_passed'] = true;
         }
