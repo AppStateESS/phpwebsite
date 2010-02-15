@@ -1,6 +1,4 @@
-
 {START_FORM}
-<div id="message">{MESSAGE}</div>
 <div id="config-form">
   <div class="config-item">
     <div class="label">{SOURCE_DIR_LABEL}</div>

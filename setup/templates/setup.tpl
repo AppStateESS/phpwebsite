@@ -18,6 +18,12 @@ body {
     border: 1px black solid;
 }
 
+#message {
+    background-color : #d1d1d1;
+    font-weight : bold;
+    padding : 1px 4px;
+}
+
 #content {
     padding: 8px;
     border-top: 1px black solid;
@@ -59,6 +65,7 @@ color : red;
 <body>
 <div id="container"><img src="./images/autumn_leaf_color.jpg" />
 <div id="content">
+<!-- BEGIN message --><div id="message">{MESSAGE}</div><!-- END message -->
 <h1>{TITLE}</h1>
 {CONTENT}</div>
 </div>

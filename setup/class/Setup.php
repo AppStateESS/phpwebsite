@@ -16,7 +16,7 @@ if (strstr($_SERVER['SCRIPT_FILENAME'], '\\')) {
 class Setup{
 
     public $phpws_version = null;
-    
+
     /**
      * Array of error messages from form submission
      * @var array
@@ -24,9 +24,9 @@ class Setup{
     public $messages = null;
 
     public $title = null;
-    
+
     public $content = null;
-    
+
     /**
      * How far along the setup has progressed
      * @var string
@@ -59,14 +59,24 @@ class Setup{
             $_SESSION['configSettings']['database'] = false;
             // Could use some windows checking here
             $this->setConfigSet('cache_directory', '/tmp/');
-            $this->setConfigSet('source_dir', $this->getSourceDir());
-            $this->setConfigSet('home_dir', $this->getSourceDir());
             $this->setConfigSet('site_hash', md5(rand()));
             $this->setConfigSet('dbname', DEFAULT_DBNAME);
             $this->setConfigSet('dbuser', DEFAULT_DBUSER);
             $this->setConfigSet('dbport', DEFAULT_DBPORT);
             $this->setConfigSet('dbhost', DEFAULT_DBHOST);
             $this->setConfigSet('dbtype', DEFAULT_DBTYPE);
+        } else {
+
+            $_SESSION['configSettings']['database'] = true;
+            // Could use some windows checking here
+            $this->setConfigSet('cache_directory', '/tmp/');
+            $this->setConfigSet('site_hash', md5(rand()));
+            $this->setConfigSet('dbname', DEFAULT_DBNAME);
+            $this->setConfigSet('dbuser', DEFAULT_DBUSER);
+            $this->setConfigSet('dbport', DEFAULT_DBPORT);
+            $this->setConfigSet('dbhost', DEFAULT_DBHOST);
+            $this->setConfigSet('dbtype', DEFAULT_DBTYPE);
+
         }
     }
 
@@ -74,7 +84,7 @@ class Setup{
     public function createConfig()
     {
         $this->initConfigSet();
-         
+
         if ($_SESSION['configSettings']['database'] == false) {
             $this->databaseConfig($content);
         } else {
@@ -98,9 +108,13 @@ class Setup{
         $this->display();
     }
 
+    /**
+     * Writes the core/conf/config.php file. Assumes one does not already
+     * exist
+     * @return unknown_type
+     */
     public function writeConfigFile()
     {
-        exit('whoa there config!');
         require_once 'File.php';
 
         $location = PHPWS_SOURCE_DIR . 'core/conf/';
@@ -108,11 +122,20 @@ class Setup{
             return false;
         }
 
-        $tpl = new PHPWS_Template;
-        $tpl->setFile('core/inc/config.tpl', true);
-        $tpl->setData($_SESSION['configSettings']);
-        $configFile = $tpl->get();
-        return File::write($location . 'config.php', $configFile, FILE_MODE_WRITE);
+        $filename = $location . 'config.php';
+
+        if (is_file($filename)) {
+            $this->messages[] = dgettext('core', 'Configuration file already exists.');
+            return false;
+        }
+
+        $config_file[] = '<?php';
+        $config_file[] = sprintf("define('PHPWS_SOURCE_DIR', %s);", PHPWS_SOURCE_DIR);
+        $config_file[] = sprintf("define('PHPWS_HOME_DIR', %s);", PHPWS_SOURCE_DIR);
+        $config_file[] = sprintf("define('SITE_HASH', '%s');", md5(rand()));
+        $config_file[] = sprintf("define('PHPWS_DSN', '%s');", $_SESSION['configSettings']['dsn']);
+        $config_file[] = '?>';
+        return file_put_contents($filename, implode("\n", $config_file));
     }
 
     public function postConfig()
@@ -171,8 +194,8 @@ class Setup{
         $checkConnection = $this->testDBConnect();
 
         if ($checkConnection == 1) {
-            echo 'true';
-            exit();
+            // Database already exists and is empty.
+            $this->messages[] = dgettext('core', 'Database found.');
             return true;
         } elseif ($checkConnection == 2) {
             $sub['main'] = dgettext('core','PhpWebSite was able to connect, but the database already contained tables.');
@@ -188,7 +211,13 @@ class Setup{
             return false;
         }
         elseif ($checkConnection == -1) {
-            $this->createDatabase();
+            if ($this->createDatabase()) {
+                //Database created successfully, move on to creating core
+                $this->messages[] = dgettext('core', 'Database created.');
+                return true;
+            } else {
+                $this->databaseConfig();
+            }
         } else {
             $this->messages[] = dgettext('core','Unable to connect to the database with the information provided.');
             $this->messages[] = '<a href="help/database.' . DEFAULT_LANGUAGE . '.txt" target="index">' . dgettext('core','Database Help') . '</a>';
@@ -222,7 +251,6 @@ class Setup{
         $_SESSION['configSettings']['database'] = true;
 
         return true;
-
     }
 
     public function getDSN($mode)
@@ -395,23 +423,6 @@ class Setup{
         return $tpl->get();
     }
 
-    public function getSourceDir()
-    {
-        static $directory;
-
-        if (empty($directory)) {
-            $dir = explode(DIRECTORY_SLASH, $_SERVER['SCRIPT_FILENAME']);
-
-            for ($i=0; $i < 2; $i++) {
-                array_pop($dir);
-            }
-
-            $directory = implode(DIRECTORY_SLASH, $dir) . DIRECTORY_SLASH;
-        }
-        return $directory;
-    }
-
-
     public function show($content, $title=NULL, $forward=false)
     {
         include 'core/conf/version.php';
@@ -497,15 +508,15 @@ class Setup{
     public function createCore()
     {
         require_once('File.php');
-        $content[] = dgettext('core','Importing core database file.') . '<br />';
+        $this->content[] = dgettext('core','Importing core database file.');
 
         $db = new PHPWS_DB;
         $result = $db->importFile('core/boost/install.sql');
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $content[] = dgettext('core','Some errors occurred while creating the core database tables.') . '<br />';
-            $content[] = dgettext('core','Please check your error log file.') . '<br />';
+            $this->content[] = dgettext('core','Some errors occurred while creating the core database tables.');
+            $this->content[] = dgettext('core','Please check your error log file.');
             return;
         }
 
@@ -517,11 +528,11 @@ class Setup{
 
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                $content[] = dgettext('core','Some errors occurred while creating the core database tables.') . '<br />';
-                $content[] = dgettext('core','Please check your error log file.') . '<br />';
+                $this->content[] = dgettext('core','Some errors occurred while creating the core database tables.');
+                $this->content[] = dgettext('core','Please check your error log file.');
             } else {
-                $content[] = dgettext('core','Core installation successful.') . '<br /><br />';
-                $content[] = '<a href="index.php?step=3">' . dgettext('core','Continue to Module Installation') . '</a>';
+                $this->content[] = dgettext('core','Core installation successful.');
+                $this->content[] = 'install core mods now';
             }
         }
     }
@@ -538,11 +549,11 @@ class Setup{
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $content[] = dgettext('core','An error occurred while trying to install your modules.')
+            $this->content[] = dgettext('core','An error occurred while trying to install your modules.')
             . ' ' . dgettext('core','Please check your error logs and try again.');
             return true;
         } else {
-            $content[] = $result;
+            $this->content[] = $result;
         }
 
         if ($_SESSION['Boost']->isFinished()) {
@@ -554,16 +565,16 @@ class Setup{
 
     public function finish()
     {
-        $content[] = '<hr />';
-        $content[] = dgettext('core','Installation of phpWebSite is complete.') . '<br />';
-        $content[] = dgettext('core','If you experienced any error messages, check your error.log file.') . '<br />';
+        $this->content[] = '<hr />';
+        $this->content[] = dgettext('core','Installation of phpWebSite is complete.') . '<br />';
+        $this->content[] = dgettext('core','If you experienced any error messages, check your error.log file.') . '<br />';
         if (CHECK_DIRECTORY_PERMISSIONS) {
-            $content[] = dgettext('core','Check Directory Permissions is enabled so be sure to secure your config and templates directories!');
-            $content[] = dgettext('core','If you do not change it now, your next page will be an error screen.');
+            $this->content[] = dgettext('core','Check Directory Permissions is enabled so be sure to secure your config and templates directories!');
+            $this->content[] = dgettext('core','If you do not change it now, your next page will be an error screen.');
         } else {
-            $content[] = dgettext('core','After you finish installing your modules in Boost, you should make your config and template directories non-writable.');
+            $this->content[] = dgettext('core','After you finish installing your modules in Boost, you should make your config and template directories non-writable.');
         }
-        $content[] = '<a href="../index.php">' . dgettext('core','Go to my new website!') . '</a>' . '<br />';
+        $this->content[] = '<a href="../index.php">' . dgettext('core','Go to my new website!') . '</a>' . '<br />';
 
     }
 
@@ -576,7 +587,19 @@ class Setup{
         } else {
             $content = & $this->content;
         }
-        $tpl->setData(array('TITLE'=>$this->title, 'CONTENT'=>$content));
+
+        if (!empty($this->messages)) {
+            if (is_array($this->messages)) {
+                $message = PHPWS_Text::tag_implode('p', $this->messages);
+            } else {
+                $message = & $this->messages;
+            }
+        } else {
+            $message = null;
+        }
+
+
+        $tpl->setData(array('TITLE'=>$this->title, 'CONTENT'=>$content, 'MESSAGE'=>$message));
 
         echo $tpl->get();
         exit();
@@ -678,7 +701,7 @@ class Setup{
         }
 
         $content = array();
-         
+
         if (!$allow_install) {
             $this->title = dgettext('core', 'Cannot install phpWebSite because of the following reasons:');
             $this->content = '<ul>' . PHPWS_Text::tag_implode('li', $crit) . '</ul>';
@@ -691,7 +714,6 @@ class Setup{
 
     function goToStep()
     {
-        echo "current step is $this->step<br>";
         switch ($this->step) {
             case '0':
                 $this->welcome();
@@ -706,7 +728,12 @@ class Setup{
                     // create config file and database
                     $this->createConfig();
                 } else {
-                    $this->defaultSettings();
+                    if ($this->writeConfigFile()) {
+                        echo 'config written';
+                    } else {
+                        echo 'config failed';
+                    }
+                    exit();
                 }
                 break;
 
