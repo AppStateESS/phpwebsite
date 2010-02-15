@@ -11,9 +11,8 @@ define('CONFIG_CREATED', is_file('core/conf/config.php'));
 if (CONFIG_CREATED) {
     require_once 'core/conf/config.php';
 } else {
-    require_once './setup/preconfig.php';
+    define('SITE_HASH', md5(rand()));
 }
-
 require_once './setup/config.php';
 require_once './core/class/Init.php';
 require_once './core/class/Template.php';
@@ -57,6 +56,7 @@ function isWindows()
 
 function fakeCore()
 {
+    exit('fakecore');
     if (!function_exists('setLanguage')) {
         function setLanguage(){}
     }
@@ -80,6 +80,7 @@ function fakeCore()
  */
 function serverPass($content)
 {
+    exit('serverpass');
     if (!isset($_COOKIE['check_server']) || !$_COOKIE['check_server']) {
         if (checkServer($content)) {
             $content[] = dgettext('core','Server passed enough tests to allow installation.');
