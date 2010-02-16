@@ -90,7 +90,6 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
      */
     protected $primary_index = null;
 
-
     static public function factory($name, $alias=null, DB2 $db2_ref)
     {
         $dbtype = $db2_ref->mdb2->dbsyntax;
@@ -507,6 +506,74 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
         if (is_array($column_names)) {
             $this->insert_select_columns = $column_names;
         }
+    }
+
+    /**
+     * Creates an index on the current table. Sort indexing not used since
+     * MySQL and Postgresql don't support it.
+     * @param array  $columns    Columns to index
+     * @param string $index_name Name of index
+     * @return boolean/exception
+     */
+    public function createIndex(array $columns, $index_name=null)
+    {
+        foreach ($columns as $columns_name) {
+            if (!$this->verifyColumn($column_name)) {
+                throw new PEAR_Exception(dgettext('core', 'Column not found'));
+            } else {
+                // When/if sorting is enabled, the array setting would contain the direction
+                $field_array[$column_name] = array();
+            }
+        }
+        if (empty($index_name)) {
+            $this->db2->allowed($index_name);
+        }
+
+        $definition = array('fields'=>$field_array);
+        $result = $this->db2->mdb2->createIndex($this->full_name, $index_name, $definition);
+        if (PEAR::isError($result)) {
+            throw new PEAR_Exception($result->getMessage());
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Returns DBMS specific table options
+     * @return array
+     */
+    public function getTableOptions()
+    {
+        return $this->table_options;
+    }
+
+    /**
+     * MDB2 array format:
+     * array ( 'primary' => 0/1,
+     *         'unique'  => 0/1,
+     *         'foreign' => 0/1,
+     *         'check'   => 0/1,
+     *         'fields'  => array('column_name'=> array(),
+     *                            'column_name'=> array),
+     *
+     * @param array $columns
+     * @param unknown_type $contraint_name Name of contraint (ignored by MySQL)
+     * @return unknown_type
+     */
+    public function createConstraint(array $columns, $contraint_name=null)
+    {
+    }
+
+    /**
+     * Sets a table option prior to creation. DBMS dependent.
+     * @param $option Name of option to set
+     * @param $value  Value of the option
+     * @example mysql_Table::table_options default value
+     * @return void
+     */
+    public function setOption($option, $value)
+    {
+        $this->table_option[$option] = $value;
     }
 }
 

@@ -178,6 +178,13 @@ class DB2 extends Data {
     private $sub_selects = null;
 
     /**
+     * DBMS specific settings called when a table is created.
+     * @var array
+     */
+    private $table_options = null;
+
+
+    /**
      * The dsn is expected to in PEAR DB format.
      * @link http://pear.php.net/manual/en/package.database.mdb2.intro-dsn.php
      * @param string $dsn : DSN string to connect to database
@@ -221,7 +228,16 @@ class DB2 extends Data {
             return $e;
         }
 
+        $this->loadTableOptions();
+
         $this->logDB(sprintf(dgettext('core', 'Connected to database "%s"'), $this->mdb2->database_name));
+    }
+
+    private function loadTableOptions()
+    {
+        include PHPWS_SOURCE_DIR . 'core/conf/DB2.php';
+        $this->table_options = getTableOptions($this->mdb2->dbsyntax);
+        exit();
     }
 
     /**
@@ -284,24 +300,24 @@ class DB2 extends Data {
      * Creates a new table in the current database. Uses MDB2's createTable function.
      * See http://pear.php.net/manual/en/package.database.mdb2.intro-manager-module.php
      * @param string $table_name Name of new table
-     * @param array $definition Column parameters for new table
+     * @param array $fields Column parameters for new table
      * @return boolean True if successful, exception thrown otherwise.
      */
-    public function createTable($table_name, $definition)
+    public function createTable($table_name, $fields)
     {
         if (!$this->allowed($table_name)) {
             throw new PEAR_Exception(dgettext('core', 'Improper table name'));
         }
+
         $this->mdb2->loadModule('Manager');
 
-        $this->testTableName($table_name);
-
-        $result = $this->mdb2->createTable($table_name, $definition);
+        $result = $this->mdb2->createTable($table_name, $fields, $this->getTableOptions());
         if ($this->pearError($result)) {
             throw new PEAR_Exception($result->getMessage());
         }
         return true;
     }
+
 
     /**
      * Alters a table's structure. Uses MDB2's alterTable function.
