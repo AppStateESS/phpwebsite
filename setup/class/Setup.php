@@ -130,8 +130,8 @@ class Setup{
         }
 
         $config_file[] = '<?php';
-        $config_file[] = sprintf("define('PHPWS_SOURCE_DIR', %s);", PHPWS_SOURCE_DIR);
-        $config_file[] = sprintf("define('PHPWS_HOME_DIR', %s);", PHPWS_SOURCE_DIR);
+        $config_file[] = sprintf("define('PHPWS_SOURCE_DIR', '%s');", PHPWS_SOURCE_DIR);
+        $config_file[] = sprintf("define('PHPWS_HOME_DIR', '%s');", PHPWS_SOURCE_DIR);
         $config_file[] = sprintf("define('SITE_HASH', '%s');", md5(rand()));
         $config_file[] = sprintf("define('PHPWS_DSN', '%s');", $_SESSION['configSettings']['dsn']);
         $config_file[] = '?>';
@@ -729,7 +729,8 @@ class Setup{
                     $this->createConfig();
                 } else {
                     if ($this->writeConfigFile()) {
-                        echo 'config written';
+                        $this->message[] = dgettext('core', 'Your configuration file was written successfully.');
+                        $this->createCore();
                     } else {
                         echo 'config failed';
                     }
