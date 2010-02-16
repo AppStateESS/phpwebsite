@@ -13,6 +13,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     define('PHPWS_SOURCE_DIR', str_replace('core/class', '', dirname(__FILE__)));
 }
 
+require_once PHPWS_SOURCE_DIR . 'core/conf/defines.php';
 require_once PHPWS_SOURCE_DIR . 'core/conf/language.php';
 
 if (!defined('PHPWS_HOME_DIR')) {
@@ -32,13 +33,23 @@ define('PHPWS_HOME_HTTP', PHPWS_Core::getHomeHttp());
 
 /***** PHPWS Classes ****/
 
+function __autoload($class_name)
+{
+    if (preg_match('/\W/', $class_name)) {
+        return;
+    }
+    $class_name = str_replace('PHPWS_', '', $class_name);
+
+    $class_file = PHPWS_SOURCE_DIR . 'core/class/' . $class_name . '.php';
+    if (is_file($class_file)) {
+        require_once $class_file;
+    }
+}
+
 PHPWS_Core::initCoreClass('Database.php');
-PHPWS_Core::initCoreClass('Time.php');
 PHPWS_Core::initCoreClass('Settings.php');
 PHPWS_Core::initCoreClass('Link.php');
 PHPWS_Core::initCoreClass('Text.php');
-PHPWS_Core::initCoreClass('Debug.php');
-PHPWS_Core::initCoreClass('Error.php');
 PHPWS_Core::initCoreClass('Cache.php');
 PHPWS_Core::initCoreClass('Key.php');
 PHPWS_Core::initCoreClass('Cookie.php');
