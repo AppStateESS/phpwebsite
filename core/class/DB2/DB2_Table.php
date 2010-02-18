@@ -515,18 +515,16 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
      * @param string $index_name Name of index
      * @return boolean/exception
      */
-    public function createIndex(array $columns, $index_name=null)
+    public function createIndex($columns, $index_name=null)
     {
-        foreach ($columns as $columns_name) {
-            if (!$this->verifyColumn($column_name)) {
-                throw new PEAR_Exception(dgettext('core', 'Column not found'));
-            } else {
-                // When/if sorting is enabled, the array setting would contain the direction
-                $field_array[$column_name] = array();
+        $field_array = $this->formFieldArray();
+
+        if (!empty($index_name)) {
+            if (!$this->db2->allowed($index_name)) {
+                throw new PEAR_Exception(dgettext('core', 'Forbidden index name'));
             }
-        }
-        if (empty($index_name)) {
-            $this->db2->allowed($index_name);
+        } else {
+            $index_name = $this->formIndexName($field_array);
         }
 
         $definition = array('fields'=>$field_array);
@@ -538,13 +536,38 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
         }
     }
 
-    /**
-     * Returns DBMS specific table options
-     * @return array
-     */
-    public function getTableOptions()
+    private function formFieldArray($columns)
     {
-        return $this->table_options;
+        if (is_string($columns)) {
+            $column_array[] = $columns;
+        } else {
+            $column_array = & $columns;
+        }
+        test($column_array);
+        foreach ($column_array as $column_name) {
+            if (!$this->verifyColumn($column_name)) {
+                throw new PEAR_Exception(dgettext('core', 'Column not found'));
+            } else {
+                // When/if sorting is enabled, the array setting would contain the direction
+                $field_array[$column_name] = array();
+            }
+        }
+        return $field_array;
+    }
+
+    private function formIndexName($field_array)
+    {
+        $fields = array_keys($field_array);
+        if (count($fields) == 1) {
+            foreach ($fields as $name) {
+                return $name  . '_idx';
+            }
+        } else {
+            foreach ($fields as $name) {
+                $idx[] = substr($name, 0, 2);
+            }
+            return implode('_', $idx) . 'idx';
+        }
     }
 
     /**
@@ -560,8 +583,25 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
      * @param unknown_type $contraint_name Name of contraint (ignored by MySQL)
      * @return unknown_type
      */
-    public function createConstraint(array $columns, $contraint_name=null)
+    public function createConstraint($columns, $contraint_name=null)
     {
+        $field_array = $this->formFieldArray($columns);
+        if (!empty($index_name)) {
+            if (!$this->db2->allowed($index_name)) {
+                throw new PEAR_Exception(dgettext('core', 'Forbidden index name'));
+            }
+        } else {
+            $index_name = $this->formIndexName($field_array);
+        }
+
+        $definition = array('fields' => $field_array);
+
+        $result = $this->db2->mdb2->createConstraint($this->getFullName(), $index_name, $definition);
+        if (PEAR::isError($result)) {
+            throw new PEAR_Exception($result->getMessage());
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -574,6 +614,21 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
     public function setOption($option, $value)
     {
         $this->table_option[$option] = $value;
+    }
+
+    /**
+     * Drops the current table from the database.
+     * @return mixed True on success, exception on error
+     */
+    public function drop()
+    {
+        echo 'drop dammit';
+        $result = $this->db2->mdb2->dropTable($this->getFullName());
+        if (PEAR::isError($result)) {
+            throw new PEAR_Exception($result->getMessage());
+        } else {
+            return true;
+        }
     }
 }
 
