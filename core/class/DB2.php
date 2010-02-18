@@ -181,7 +181,9 @@ class DB2 extends Data {
      * DBMS specific settings called when a table is created.
      * @var array
      */
-    private $table_options = null;
+    private $table_options = array();
+
+    private $database_options = array();
 
 
     /**
@@ -227,17 +229,33 @@ class DB2 extends Data {
         } catch (PEAR_Exception $e) {
             return $e;
         }
-
-        $this->loadTableOptions();
-
+        $this->loadOptions();
         $this->logDB(sprintf(dgettext('core', 'Connected to database "%s"'), $this->mdb2->database_name));
     }
 
-    private function loadTableOptions()
+    private function loadOptions()
     {
         include PHPWS_SOURCE_DIR . 'core/conf/DB2.php';
-        $this->table_options = getTableOptions($this->mdb2->dbsyntax);
-        exit();
+        /* looking for a variable named after the current syntax in DB2 config
+         * file
+         * e.g. MySQL looks for $mysql array
+         */
+
+        if (isset($all['table'])) {
+            $this->table_options = $all['table'];
+        }
+
+        if (isset($all['database'])) {
+            $this->database_options = $all['database'];
+        }
+
+        if (isset(${$this->mdb2->dbsyntax}['table'])) {
+            $this->table_options = array_merge($this->table_options, ${$this->mdb2->dbsyntax}['table']);
+        }
+
+        if (isset(${$this->mdb2->dbsyntax}['database'])) {
+            $this->database_options = array_merge($this->database_options, ${$this->mdb2->dbsyntax}['database']);
+        }
     }
 
     /**
@@ -301,7 +319,7 @@ class DB2 extends Data {
      * See http://pear.php.net/manual/en/package.database.mdb2.intro-manager-module.php
      * @param string $table_name Name of new table
      * @param array $fields Column parameters for new table
-     * @return boolean True if successful, exception thrown otherwise.
+     * @return object DB2_Table object if successful, exception thrown otherwise.
      */
     public function createTable($table_name, $fields)
     {
@@ -311,11 +329,11 @@ class DB2 extends Data {
 
         $this->mdb2->loadModule('Manager');
 
-        $result = $this->mdb2->createTable($table_name, $fields, $this->getTableOptions());
+        $result = $this->mdb2->createTable($table_name, $fields, $this->table_options);
         if ($this->pearError($result)) {
             throw new PEAR_Exception($result->getMessage());
         }
-        return true;
+        return $this->getTable($table_name);
     }
 
 
@@ -558,7 +576,7 @@ class DB2 extends Data {
      */
     private function connect()
     {
-        $this->mdb2 = MDB2::singleton($this->dsn, array('result_buffering'=>true, 'seqcol_name'=>'id'));
+        $this->mdb2 = MDB2::singleton($this->dsn, $this->database_options);
 
         if ($this->pearError($this->mdb2)) {
             $this->error = $this->mdb2;
