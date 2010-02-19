@@ -621,21 +621,6 @@ class PHPWS_Core {
     }
 
     /**
-     * If security is enabled, phpwebsite will check the specific directories
-     * to make sure they are not writable. These directories are often made writable
-     * when a module is updated or installed
-     */
-    public function checkSecurity()
-    {
-        if (CHECK_DIRECTORY_PERMISSIONS == true) {
-            if (is_writable('./config/') || is_writable('./templates/') || is_writable('./javascript/modules/')) {
-                PHPWS_Error::log(PHPWS_DIR_NOT_SECURE, 'core');
-                PHPWS_Core::errorPage();
-            }
-        }
-    }
-
-    /**
      * Returns an array of the core modules. Set from the core_modules.php file.
      */
     public function coreModList()
