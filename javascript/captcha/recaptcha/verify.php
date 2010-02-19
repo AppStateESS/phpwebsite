@@ -36,7 +36,7 @@ function verify($return_value=false)
             $_SESSION['recaptcha_error'] = $resp->error;
             return FALSE;
         }
-
+    } else {
         // Just return false if nothing was entered
         return FALSE;
     }
