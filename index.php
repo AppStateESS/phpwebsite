@@ -48,7 +48,6 @@ session_name(SESSION_NAME);
 session_start();
 
 require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
-PHPWS_Core::checkSecurity();
 
 if (!PHPWS_Core::checkBranch()) {
     PHPWS_Core::errorPage();
