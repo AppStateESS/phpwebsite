@@ -36,8 +36,7 @@ $all   = array('database' => array ('result_buffering' => true,
  * For foreign keys and transactions, you will need InnoDB.
  */
 $mysql = array('table' => array('charset' => 'utf8',
-                                'collate' => 'utf8_unicode_ci',
-                                'type'    => null));
+                                'collate' => 'utf8_unicode_ci'));
 
 
 ?>
