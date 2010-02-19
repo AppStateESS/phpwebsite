@@ -4,7 +4,8 @@
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
 define('DEFAULT_DBTYPE', 'mysql');
-define('DEFAULT_DBUSER', 'phpwebsite');
+// CHANGE BACK
+define('DEFAULT_DBUSER', 'matt');
 define('DEFAULT_DBHOST', 'localhost');
 define('DEFAULT_DBPORT', NULL);
 define('DEFAULT_DBNAME', 'phpwebsite');

@@ -6,7 +6,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
+require_once 'core/class/Debug.php';
 if (strstr($_SERVER['SCRIPT_FILENAME'], '\\')) {
     define('DIRECTORY_SLASH', '\\');
 } else {
@@ -66,9 +66,6 @@ class Setup{
             $this->setConfigSet('dbhost', DEFAULT_DBHOST);
             $this->setConfigSet('dbtype', DEFAULT_DBTYPE);
         } else {
-
-            $_SESSION['configSettings']['database'] = true;
-            // Could use some windows checking here
             $this->setConfigSet('cache_directory', '/tmp/');
             $this->setConfigSet('site_hash', md5(rand()));
             $this->setConfigSet('dbname', DEFAULT_DBNAME);
@@ -96,7 +93,7 @@ class Setup{
             } elseif ($this->writeConfigFile()) {
                 PHPWS_Core::killSession('configSettings');
                 $this->content[] = dgettext('core','Your configuration file was written successfully!') . '<br />';
-                $this->content[] = '<a href="index.php?step=2">' . dgettext('core','Move on to Step 2') . '</a>';
+                $this->content[] = '<a href="index.php?step=3">' . dgettext('core','Move on to Step 3') . '</a>';
             } else {
                 $this->content[] = dgettext('core','Your configuration file could not be written into the following directory:');
                 $this->content[] = "<pre>$configDir</pre>";
@@ -132,6 +129,7 @@ class Setup{
         $config_file[] = '<?php';
         $config_file[] = sprintf("define('PHPWS_SOURCE_DIR', '%s');", PHPWS_SOURCE_DIR);
         $config_file[] = sprintf("define('PHPWS_HOME_DIR', '%s');", PHPWS_SOURCE_DIR);
+        $config_file[] = sprintf("define('PHPWS_SOURCE_HTTP', '%s');", str_replace('setup/index.php', '', PHPWS_CORE::getCurrentUrl(false)));
         $config_file[] = sprintf("define('SITE_HASH', '%s');", md5(rand()));
         $config_file[] = sprintf("define('PHPWS_DSN', '%s');", $_SESSION['configSettings']['dsn']);
         $config_file[] = '?>';
@@ -497,6 +495,7 @@ class Setup{
 
                 case '1':
                     $this->step = '2';
+                    $this->goToStep();
                     break;
             }
         }
@@ -517,7 +516,7 @@ class Setup{
             PHPWS_Error::log($result);
             $this->content[] = dgettext('core','Some errors occurred while creating the core database tables.');
             $this->content[] = dgettext('core','Please check your error log file.');
-            return;
+            return false;
         }
 
         if ($result == true) {
@@ -530,17 +529,17 @@ class Setup{
                 PHPWS_Error::log($result);
                 $this->content[] = dgettext('core','Some errors occurred while creating the core database tables.');
                 $this->content[] = dgettext('core','Please check your error log file.');
+                return false;
             } else {
                 $this->content[] = dgettext('core','Core installation successful.');
-                $this->content[] = 'install core mods now';
+                return true;
             }
         }
     }
 
-    public function installModules()
+    public function installCoreModules()
     {
         $modules = PHPWS_Core::coreModList();
-
         if (!isset($_SESSION['Boost'])) {
             $_SESSION['Boost'] = new PHPWS_Boost;
             $_SESSION['Boost']->loadModules($modules);
@@ -729,8 +728,9 @@ class Setup{
                     $this->createConfig();
                 } else {
                     if ($this->writeConfigFile()) {
-                        $this->message[] = dgettext('core', 'Your configuration file was written successfully.');
-                        $this->createCore();
+                        // config written, need to reload page for new defines
+                        header('location: index.php?step=3');
+                        exit();
                     } else {
                         echo 'config failed';
                     }
@@ -738,8 +738,16 @@ class Setup{
                 }
                 break;
 
-
             case '3':
+                if ($this->createCore()) {
+                    $this->installCoreModules();
+                    $this->display();
+                } else {
+                    $this->display();
+                }
+                break;
+
+            case '4':
                 if (!$this->postDefaultSettings()) {
                     $this->defaultSettings();
                 } else {
@@ -749,10 +757,12 @@ class Setup{
                 }
                 break;
 
-            case '4':
+            case '5':
                 $this->installOtherModules();
                 break;
         }
+        echo 'end of goToStep with ' . $this->step;
+        exit();
     }
 
 }
