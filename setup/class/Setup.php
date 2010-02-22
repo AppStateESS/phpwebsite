@@ -13,7 +13,7 @@ if (strstr($_SERVER['SCRIPT_FILENAME'], '\\')) {
     define('DIRECTORY_SLASH', '/');
 }
 
-class Setup{
+class Setup {
 
     public $phpws_version = null;
 
@@ -73,17 +73,15 @@ class Setup{
             $this->setConfigSet('dbport', DEFAULT_DBPORT);
             $this->setConfigSet('dbhost', DEFAULT_DBHOST);
             $this->setConfigSet('dbtype', DEFAULT_DBTYPE);
-
         }
     }
-
 
     public function createConfig()
     {
         $this->initConfigSet();
 
         if ($_SESSION['configSettings']['database'] == false) {
-            $this->databaseConfig($content);
+            $this->databaseConfig();
         } else {
             $configDir = PHPWS_SOURCE_DIR . 'core/conf/';
             if (is_file($configDir . 'config.php')) {
@@ -134,6 +132,39 @@ class Setup{
         $config_file[] = sprintf("define('PHPWS_DSN', '%s');", $_SESSION['configSettings']['dsn']);
         $config_file[] = '?>';
         return file_put_contents($filename, implode("\n", $config_file));
+    }
+
+
+    private function postUser()
+    {
+        $_SESSION['Setup_User']->deity = true;
+        $_SESSION['Setup_User']->authorize = 1;
+        $_SESSION['Setup_User']->approved = 1;
+
+        // all is well
+        $aiw = true;
+        if (empty($_POST['username']) || preg_match('/[^\w\.\-]/', $_POST['username'])) {
+            $aiw = false;
+            $this->messages[] = dgettext('users', 'Username is improperly formatted.');
+        } else {
+            $_SESSION['Setup_User']->username = $_POST['username'];
+        }
+
+        if (empty($_POST['pass1']) || $_POST['pass1'] != $_POST['pass2'] || strlen($_POST['pass1']) < 4 ) {
+            $aiw = false;
+            $this->messages[] = dgettext('core', 'Password is not acceptable.');
+        } else {
+            $_SESSION['Setup_User']->setPassword($_POST['pass1']);
+        }
+
+        if (empty($_POST['email'])) {
+            $aiw = false;
+            $this->messages[] = dgettext('core', 'Please enter an email address.');
+        } else {
+            $_SESSION['Setup_User']->setEmail($_POST['email']);
+        }
+
+        return $aiw;
     }
 
     public function postConfig()
@@ -333,7 +364,7 @@ class Setup{
     }
 
 
-    public function databaseConfig(&$content)
+    public function databaseConfig()
     {
         if (isset($this->messages['main'])) {
             $formTpl['MAIN'] = $this->messages['main'];
@@ -450,6 +481,7 @@ class Setup{
      */
     public function checkSession()
     {
+        session_name('never_ever_name_your_session_this');
         session_start();
         if ($this->step == 0) {
             $_SESSION['session_check'] = true;
@@ -460,6 +492,8 @@ class Setup{
         if (!isset($_SESSION['session_check'])) {
             $this->content[] = dgettext('core','phpWebSite depends on sessions to move data between pages.');
             $this->content[] = sprintf('<a href="help/sessions.%s.txt">%s</a>', DEFAULT_LANGUAGE, dgettext('core','Sessions Help'));
+            $this->content[] = sprintf(dgettext('core', 'If you think your sessions are working properly, %syou can click here return to the beginning%s.'),
+                                       '<a href="index.php">', '</a>');
             $this->title = dgettext('core','There is a problem with your sessions.');
             $this->display();
         }
@@ -494,15 +528,42 @@ class Setup{
                     exit();
 
                 case '1':
-                    $this->step = '2';
+                    // install the core as the config exists and the database is empty
+                    $this->step = '4';
                     $this->goToStep();
                     break;
             }
+        } else {
+            // create config file
+            $this->step = 1;
         }
-        // The config file has not been created.
-        $this->step = '1';
         $this->goToStep();
     }
+
+    public function createUser()
+    {
+        if (!isset($_SESSION['Setup_User'])) {
+            $_SESSION['Setup_User'] = new PHPWS_User;
+        }
+        $form = new PHPWS_Form;
+        $form->addHidden('step', 5);
+        $form->addText('username', $_SESSION['Setup_User']->username);
+        $form->setLabel('username', dgettext('users', 'Username'));
+
+        $form->addText('email', $_SESSION['Setup_User']->email);
+        $form->setLabel('email', dgettext('users', 'Email'));
+
+        $form->addPassword('pass1');
+        $form->setLabel('pass1', dgettext('users', 'Password'));
+
+        $form->addPassword('pass2');
+        $form->setLabel('pass2', dgettext('users', 'Confirm'));
+        $form->addSubmit(dgettext('core', 'Create my account'));
+        $this->title = dgettext('core', 'Please create your new user account');
+        $this->content = $this->createForm($form, 'new_user.html');
+        $this->display();
+    }
+
 
     public function createCore()
     {
@@ -537,9 +598,16 @@ class Setup{
         }
     }
 
+
+    private function installContentModules()
+    {
+
+    }
+
     public function installCoreModules()
     {
         $modules = PHPWS_Core::coreModList();
+
         if (!isset($_SESSION['Boost'])) {
             $_SESSION['Boost'] = new PHPWS_Boost;
             $_SESSION['Boost']->loadModules($modules);
@@ -555,11 +623,7 @@ class Setup{
             $this->content[] = $result;
         }
 
-        if ($_SESSION['Boost']->isFinished()) {
-            return true;
-        } else {
-            return false;
-        }
+        return $_SESSION['Boost']->isFinished();
     }
 
     public function finish()
@@ -740,29 +804,37 @@ class Setup{
 
             case '3':
                 if ($this->createCore()) {
-                    $this->installCoreModules();
-                    $this->display();
-                } else {
-                    $this->display();
+                    if ($this->installCoreModules()) {
+                        $this->content[] = dgettext('core', 'Core modules installed successfully.');
+                        $this->content[] = sprintf('<a href="index.php?step=4">%s</a>', dgettext('core', 'Click to continue'));
+                    }
                 }
                 break;
 
             case '4':
-                if (!$this->postDefaultSettings()) {
-                    $this->defaultSettings();
-                } else {
-                    $this->installCoreModules();
-                    $this->setStep(4);
-                    $this->goToStep();
-                }
+                $this->createUser();
                 break;
 
             case '5':
-                $this->installOtherModules();
+                if ($this->postUser()) {
+                    $db = new PHPWS_DB('users');
+                    $result = $db->select();
+                    if (empty($result)) {
+                        $_SESSION['Setup_User']->save();
+                    } elseif (PEAR::isError($result)) {
+                        PHPWS_Error::log($result);
+                        $this->content[] = dgettext('core', 'Sorry an error occurred. Please check your logs.');
+                    } else {
+                        $this->content[] = dgettext('core', 'Cannot create a new user. Initial user already exists.');
+                        $this->display();
+                    }
+
+                } else {
+                    $this->createUser();
+                }
                 break;
         }
-        echo 'end of goToStep with ' . $this->step;
-        exit();
+        $this->display();
     }
 
 }
