@@ -137,9 +137,9 @@ class Setup {
 
     private function postUser()
     {
-        $_SESSION['Setup_User']->deity = true;
-        $_SESSION['Setup_User']->authorize = 1;
-        $_SESSION['Setup_User']->approved = 1;
+        $_SESSION['User']->deity = true;
+        $_SESSION['User']->authorize = 1;
+        $_SESSION['User']->approved = 1;
 
         // all is well
         $aiw = true;
@@ -147,21 +147,21 @@ class Setup {
             $aiw = false;
             $this->messages[] = dgettext('users', 'Username is improperly formatted.');
         } else {
-            $_SESSION['Setup_User']->username = $_POST['username'];
+            $_SESSION['User']->username = $_POST['username'];
         }
 
         if (empty($_POST['pass1']) || $_POST['pass1'] != $_POST['pass2'] || strlen($_POST['pass1']) < 4 ) {
             $aiw = false;
             $this->messages[] = dgettext('core', 'Password is not acceptable.');
         } else {
-            $_SESSION['Setup_User']->setPassword($_POST['pass1']);
+            $_SESSION['User']->setPassword($_POST['pass1']);
         }
 
         if (empty($_POST['email'])) {
             $aiw = false;
             $this->messages[] = dgettext('core', 'Please enter an email address.');
         } else {
-            $_SESSION['Setup_User']->setEmail($_POST['email']);
+            $_SESSION['User']->setEmail($_POST['email']);
         }
 
         return $aiw;
@@ -542,15 +542,15 @@ class Setup {
 
     public function createUser()
     {
-        if (!isset($_SESSION['Setup_User'])) {
-            $_SESSION['Setup_User'] = new PHPWS_User;
+        if (!isset($_SESSION['User'])) {
+            $_SESSION['User'] = new PHPWS_User;
         }
         $form = new PHPWS_Form;
         $form->addHidden('step', 5);
-        $form->addText('username', $_SESSION['Setup_User']->username);
+        $form->addText('username', $_SESSION['User']->username);
         $form->setLabel('username', dgettext('users', 'Username'));
 
-        $form->addText('email', $_SESSION['Setup_User']->email);
+        $form->addText('email', $_SESSION['User']->email);
         $form->setLabel('email', dgettext('users', 'Email'));
 
         $form->addPassword('pass1');
@@ -560,7 +560,7 @@ class Setup {
         $form->setLabel('pass2', dgettext('users', 'Confirm'));
         $form->addSubmit(dgettext('core', 'Create my account'));
         $this->title = dgettext('core', 'Please create your new user account');
-        $this->content = $this->createForm($form, 'new_user.html');
+        $this->content[] = $this->createForm($form, 'new_user.html');
         $this->display();
     }
 
@@ -599,15 +599,7 @@ class Setup {
     }
 
 
-    private function installContentModules()
-    {
-
-    }
-
-    public function installCoreModules()
-    {
-        $modules = PHPWS_Core::coreModList();
-
+    private function installModules($modules) {
         if (!isset($_SESSION['Boost'])) {
             $_SESSION['Boost'] = new PHPWS_Boost;
             $_SESSION['Boost']->loadModules($modules);
@@ -623,7 +615,23 @@ class Setup {
             $this->content[] = $result;
         }
 
-        return $_SESSION['Boost']->isFinished();
+        $result = $_SESSION['Boost']->isFinished();
+        unset($_SESSION['Boost']);
+        return $result;
+    }
+
+    private function installContentModules()
+    {
+        $modules[] = 'block';
+        $modules[] = 'menu';
+        $modules[] = 'pagesmith';
+        return $this->installModules($modules);
+    }
+
+    public function installCoreModules()
+    {
+        $modules = PHPWS_Core::coreModList();
+        return $this->installModules($modules);
     }
 
     public function finish()
@@ -820,7 +828,11 @@ class Setup {
                     $db = new PHPWS_DB('users');
                     $result = $db->select();
                     if (empty($result)) {
-                        $_SESSION['Setup_User']->save();
+                        $_SESSION['User']->save();
+                        $this->content[] = dgettext('core', 'New user created successfully.');
+                        $this->step = 6;
+                        $this->goToStep();
+                        break;
                     } elseif (PEAR::isError($result)) {
                         PHPWS_Error::log($result);
                         $this->content[] = dgettext('core', 'Sorry an error occurred. Please check your logs.');
@@ -833,6 +845,17 @@ class Setup {
                     $this->createUser();
                 }
                 break;
+
+            case '6':
+                if ($this->installContentModules()) {
+                    $this->content[] = dgettext('core', 'Starting modules installed.');
+                    $this->content[] = dgettext('core', 'The site should be ready for you to use.');
+                    $this->content[] = sprintf('<a href="%s">%s</a>', PHPWS_SOURCE_HTTP, dgettext('core', 'Continue to your new site...'));
+                    unset($_SESSION['configSettings']);
+                    unset($_SESSION['User']);
+                    unset($_SESSION['session_check']);
+                    $this->display();
+                }
         }
         $this->display();
     }
