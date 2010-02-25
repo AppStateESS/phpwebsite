@@ -110,10 +110,18 @@ class PHPWS_Boost {
         return isset($this->modules);
     }
 
+    /**
+     * Updated: 19 Feb 2010
+     * Boost used to allow pausing for entering information. This was removed.
+     * @param $inBoost
+     * @param $inBranch
+     * @param $home_dir
+     * @return unknown_type
+     */
     public function install($inBoost=true, $inBranch=false, $home_dir=NULL)
     {
-        $continue = false;
         $content = array();
+        $mod_content = array();
         $dir_content = array();
 
         if ($inBranch && !empty($home_dir)) {
@@ -143,67 +151,49 @@ class PHPWS_Boost {
 
             $content[] = dgettext('boost', 'Installing') . ' - ' . $mod->getProperName();
 
+
             if ($this->getStatus($title) == BOOST_START && $mod->isImportSQL()) {
-                $content[] = dgettext('boost', 'Importing SQL install file.');
+                $mod_content[] = dgettext('boost', 'Importing SQL install file.');
                 $db = new PHPWS_DB;
                 $result = $db->importFile($mod->getDirectory() . 'boost/install.sql');
 
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
                     $this->addLog($title, dgettext('boost', 'Database import failed.'));
-                    $content[] = dgettext('boost', 'An import error occurred.');
-                    $content[] = dgettext('boost', 'Check your logs for more information.');
-                    return implode('<br />', $content);
+                    $mod_content[] = dgettext('boost', 'An import error occurred.');
+                    $mod_content[] = dgettext('boost', 'Check your logs for more information.');
+                    return implode('<br />', $content) . '<br />' . implode('<br />', $mod_content);
                 } else {
-                    $content[] = dgettext('boost', 'Import successful.');
+                    $mod_content[] = dgettext('boost', 'Import successful.');
                 }
             }
 
-            $result = $this->onInstall($mod, $content);
+            $result = $this->onInstall($mod, $mod_content);
             // in case install changes translate directory
 
             if ($result === true) {
                 $this->setStatus($title, BOOST_DONE);
-                $this->createDirectories($mod, $content, $home_dir);
-                $this->registerModule($mod, $content);
+                $this->createDirectories($mod, $mod_content, $home_dir);
+                $this->registerModule($mod, $mod_content);
                 $continue = true;
-                break;
             } elseif ($result === -1) {
                 // No installation file (install.php) was found.
                 $this->setStatus($title, BOOST_DONE);
-                $this->createDirectories($mod, $content, $home_dir);
-                $this->registerModule($mod, $content);
+                $this->createDirectories($mod, $mod_content, $home_dir);
+                $this->registerModule($mod, $mod_content);
                 $continue = true;
-                break;
-            }
-            elseif ($result === false) {
-                $this->setStatus($title, BOOST_PENDING);
-                $continue = false;
-                break;
-            }
-            elseif (PEAR::isError($result)) {
+            } elseif (PEAR::isError($result)) {
                 $content[] = dgettext('boost', 'There was a problem in the installation file:');
                 $content[] = '<b>' . $result->getMessage() .'</b>';
                 $content[] = '<br />';
+                $content[] = implode('<br />', $mod_content);
                 PHPWS_Error::log($result);
-                $continue = true;
-                break;
+                $continue = false;
             }
         }
 
-        if ($continue && $last_mod->title != $title) {
-            // inBoost checks to see if we are in the Setup program
-
-            if ($inBranch) {
-                $branchvars['command'] = 'core_module_installation';
-                $branchvars['branch_id'] = $_REQUEST['branch_id'];
-                $content[] = PHPWS_Text::secureLink(dgettext('boost', 'Continue installation...'), 'branch', $branchvars);
-            } elseif ($inBoost == false) {
-                $content[] = '<a href="index.php?step=3">' . dgettext('boost', 'Continue installation...') . '</a>';
-            } else {
-                $content[] = dgettext('boost', 'Installation complete!');
-            }
-        } elseif($continue) {
+        if ($last_mod->title == $title) {
+            $this->addLog($title, implode("\n", str_replace('<br />', "\n", $mod_content)));
             $content[] = dgettext('boost', 'Installation complete!');
         }
 
@@ -470,16 +460,6 @@ class PHPWS_Boost {
             $homeDir = $this->getHomeDir();
         }
 
-        $configSource = $mod->getDirectory() . 'conf/';
-        if (is_dir($configSource)) {
-            $configDest   = $homeDir . 'config/' . $mod->title . '/';
-            if ($overwrite == true || !is_dir($configDest)) {
-                $content[] = dgettext('boost', 'Copying configuration files.');
-                $this->addLog($mod->title, sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $configSource, $configDest));
-                PHPWS_File::recursiveFileCopy($configSource, $configDest);
-            }
-        }
-
         if ($mod->isFileDir()) {
             $filesDir = $homeDir . 'files/' . $mod->title;
             if (!is_dir($filesDir)){
@@ -504,16 +484,6 @@ class PHPWS_Boost {
         PHPWS_Core::initCoreClass('File.php');
         if (!isset($homeDir)) {
             $this->getHomeDir();
-        }
-
-        $configDir = $homeDir. 'config/' . $mod->title . '/';
-        if (is_dir($configDir)) {
-            $content[] = sprintf(dgettext('boost', 'Removing directory %s'), $configDir);
-            $this->addLog($mod->title, sprintf(dgettext('boost', 'Removing directory %s'), $configDir));
-            if(!PHPWS_File::rmdir($configDir)) {
-                $content[] = dgettext('boost', 'Failure to remove directory.');
-                $this->addLog($mod->title, sprintf(dgettext('boost', 'Unable to remove directory %s'), $configDir));
-            }
         }
 
         $imageDir = $homeDir . 'images/' . $mod->title . '/';
@@ -879,7 +849,6 @@ class PHPWS_Boost {
             $home_dir = PHPWS_Boost::getHomeDir();
         }
 
-        $directory[] = $home_dir . 'config/';
         $directory[] = $home_dir . 'images/';
         $directory[] = $home_dir . 'files/';
         $directory[] = $home_dir . 'logs/';
