@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 class Branch {
     public $id          = null;
@@ -27,8 +27,10 @@ class Branch {
 
     public function loadDSN()
     {
+        // @todo this needs changing to work with new system
+        $config_file = $this->getBranchConfig();
 
-        $config_contents = file_get_contents($this->directory . 'config/core/config.php');
+        $config_contents = file_get_contents($config_file);
         $config = explode("\n", $config_contents);
 
         if (preg_match('/phpws_table_prefix/i', $config_contents)) {
@@ -86,6 +88,16 @@ class Branch {
         }
     }
 
+    /**
+     * using this method for config file name
+     * @return unknown_type
+     */
+    public function getBranchConfig()
+    {
+        $name = preg_replace('/\W/', '-', $this->branch_name);
+        return PHPWS_SOURCE_DIR . 'config/branches/' . $name . '.php';
+    }
+
     public function save()
     {
         if (!preg_match('/\/$/', $this->directory)) {
@@ -108,39 +120,11 @@ class Branch {
 
     public function createDirectories()
     {
-        if (!mkdir($this->directory . 'config/')) {
-            return FALSE;
-        }
-
-        if (!mkdir($this->directory . 'config/core/')) {
-            return FALSE;
-        }
-
         if (!mkdir($this->directory . 'files/')) {
             return FALSE;
         }
 
         if (!mkdir($this->directory . 'images/')) {
-            return FALSE;
-        }
-
-        if (!mkdir($this->directory . 'images/core/')) {
-            return FALSE;
-        }
-
-        if (!mkdir($this->directory . 'javascript/')) {
-            return FALSE;
-        }
-
-        if (!mkdir($this->directory . 'templates/cache/')) {
-            return FALSE;
-        }
-
-        if (!mkdir($this->directory . 'themes/')) {
-            return FALSE;
-        }
-
-        if (!mkdir($this->directory . 'logs/')) {
             return FALSE;
         }
 
@@ -160,7 +144,7 @@ class Branch {
         $tpl['URL'] = $this->getUrl();
 
         $links[] = PHPWS_Text::secureLink(dgettext('branch', 'Edit'), 'branch',
-                                          array('command'=>'edit_branch', 'branch_id'=>$this->id));
+        array('command'=>'edit_branch', 'branch_id'=>$this->id));
 
         $js['question'] = dgettext('branch', 'Removing this branch will make it inaccessible.\nThe database and files will remain behind.\nIf you are sure you want to remove the branch, type the branch name:');
         $js['address'] = sprintf('index.php?module=branch&command=remove_branch&branch_id=%s&authkey=%s', $this->id, Current_User::getAuthKey());
@@ -170,15 +154,15 @@ class Branch {
         $links[] = javascript('prompt', $js);
 
         $links[] = PHPWS_Text::secureLink(dgettext('branch', 'Modules'), 'branch',
-                                          array('command'=>'branch_modules', 'branch_id'=>$this->id));
-	$tpl['DIRECTORY'] = sprintf('<abbr title="%s">%s</abbr>', $this->directory,
-				    PHPWS_Text::shortenUrl($this->directory));
+        array('command'=>'branch_modules', 'branch_id'=>$this->id));
+        $tpl['DIRECTORY'] = sprintf('<abbr title="%s">%s</abbr>', $this->directory,
+        PHPWS_Text::shortenUrl($this->directory));
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
 
     public function getHubPrefix() {
-        $handle = @fopen(PHPWS_SOURCE_DIR . 'config/core/config.php', 'r');
+        $handle = @fopen(PHPWS_SOURCE_DIR . 'core/conf/branches/config.php', 'r');
         if ($handle) {
             $search_for = '^define\(\'PHPWS_TABLE_PREFIX\',';
             while (!feof($handle)) {
@@ -198,7 +182,7 @@ class Branch {
 
     public function getHubDSN()
     {
-        $handle = @fopen(PHPWS_SOURCE_DIR . 'config/core/config.php', 'r');
+        $handle = @fopen(PHPWS_SOURCE_DIR . 'config/config.php', 'r');
         if ($handle) {
             $search_for = '^define\(\'PHPWS_DSN\',';
             while (!feof($handle)) {
