@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 class PS_Forms {
     public $template = null;
@@ -122,21 +122,21 @@ class PS_Forms {
 
         foreach ($orphans as $orf) {
             switch ($orf['sectype']) {
-            case 'text':
-            case 'header':
-                $row['ID'] = 'text-' . $orf['id'];
-                $sec = new PS_Text;
-                $empty_content = empty($orf['content']);
-                break;
+                case 'text':
+                case 'header':
+                    $row['ID'] = 'text-' . $orf['id'];
+                    $sec = new PS_Text;
+                    $empty_content = empty($orf['content']);
+                    break;
 
-            case 'image':
-            case 'document':
-            case 'media':
-            case 'block':
-                $row['ID'] = 'block-' . $orf['id'];
-                $sec = new PS_Block;
-                $empty_content = empty($orf['type_id']);
-                break;
+                case 'image':
+                case 'document':
+                case 'media':
+                case 'block':
+                    $row['ID'] = 'block-' . $orf['id'];
+                    $sec = new PS_Block;
+                    $empty_content = empty($orf['type_id']);
+                    break;
             }
             PHPWS_Core::plugObject($sec, $orf);
 
@@ -147,8 +147,8 @@ class PS_Forms {
             }
 
             $row['OPTIONS'] = sprintf('<a href="#" onclick="delete_orphan(\'%s\'); return false">%s</a>',
-                                      $row['ID'],
-                                      dgettext('pagesmith', 'Delete orphan'));
+            $row['ID'],
+            dgettext('pagesmith', 'Delete orphan'));
             $tpl['orphan-list'][] = $row;
         }
 
@@ -247,25 +247,25 @@ class PS_Forms {
             }
 
             switch ($section->sectype) {
-            case 'header':
-                $js['label'] = dgettext('pagesmith', 'Edit header');
-                $js['link_title'] = dgettext('pagesmith', 'Change header');
-                $vars['aop'] = 'edit_page_header';
-                $js['width'] = 400;
-                $js['height'] = 200;
-                $js['class'] = 'change-link';
-                $edit_button = true;
-                break;
+                case 'header':
+                    $js['label'] = dgettext('pagesmith', 'Edit header');
+                    $js['link_title'] = dgettext('pagesmith', 'Change header');
+                    $vars['aop'] = 'edit_page_header';
+                    $js['width'] = 400;
+                    $js['height'] = 200;
+                    $js['class'] = 'change-link';
+                    $edit_button = true;
+                    break;
 
-            case 'text':
-                $js['label'] = dgettext('pagesmith', 'Edit text');
-                $js['link_title'] = dgettext('pagesmith', 'Change text');
-                $vars['aop'] = 'edit_page_text';
-                $js['width'] = 800;
-                $js['height'] = 600;
-                $js['class'] = 'change-link';
-                $edit_button = true;
-                break;
+                case 'text':
+                    $js['label'] = dgettext('pagesmith', 'Edit text');
+                    $js['link_title'] = dgettext('pagesmith', 'Change text');
+                    $vars['aop'] = 'edit_page_text';
+                    $js['width'] = 800;
+                    $js['height'] = 600;
+                    $js['class'] = 'change-link';
+                    $edit_button = true;
+                    break;
             }
 
             if ($edit_button) {
@@ -314,7 +314,7 @@ class PS_Forms {
 
     public function pickFolder()
     {
-        @include 'config/pagesmith/folder_icons.php';
+        @include PHPWS_SOURCE_DIR . 'mod/pagesmith/conf/folder_icons.php';
         $folder_list = array();
 
         Layout::addStyle('pagesmith');
@@ -373,7 +373,7 @@ class PS_Forms {
     {
         javascript('jquery');
         javascriptMod('pagesmith', 'confirm_delete',
-                   array('address'=>PHPWS_Text::linkAddress('pagesmith', array('aop'=>'delete_template'), true, false, false)));
+        array('address'=>PHPWS_Text::linkAddress('pagesmith', array('aop'=>'delete_template'), true, false, false)));
 
         $this->ps->title = dgettext('pagesmith', 'Upload template');
 

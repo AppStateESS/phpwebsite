@@ -1,56 +1,56 @@
 div#pick-templates div.ps-tpl {
-    text-align : center;
-    display : inline;
-    float : left;
-    width : 180px;
-    margin : 0px 0px 20px 10px;
-    height : 260px;
-    font-size : .9em;
-    line-height : 1.2em;
-}
-div#pick-templates div.ps-tpl h4 {
-    margin : 0px;
+    text-align: center;
+    display: inline;
+    float: left;
+    width: 180px;
+    margin: 0px 0px 20px 10px;
+    height: 260px;
+    font-size: .9em;
+    line-height: 1.2em;
 }
 
+div#pick-templates div.ps-tpl h4 {
+    margin: 0px;
+}
 
 div#pick-templates img {
-    border : 1px black solid;
-    margin-right : 10px;
-    width : 170px;
-    height : 200px;
+    border: 1px black solid;
+    margin-right: 10px;
+    width: 170px;
+    height: 200px;
 }
 
 div.tpl-folder {
-    float : left;
-    display : inline;
-    width : 130px;
-    text-align : center;
+    float: left;
+    display: inline;
+    width: 130px;
+    text-align: center;
 }
 
 div.orphans {
-    border : 1px solid black;
-    padding : 8px;
-    margin-bottom : 1em;
+    border: 1px solid black;
+    padding: 8px;
+    margin-bottom: 1em;
 }
 
 div.options {
-    border-top : 1px dotted gray;
-    padding : 3px;
-    margin-top : 5px;
+    border-top: 1px dotted gray;
+    padding: 3px;
+    margin-top: 5px;
 }
 
 a.pointer {
-    cursor : pointer;
+    cursor: pointer;
 }
 
 div.subpage {
-    font-size : 90%;
+    font-size: 90%;
 }
 
 div.subpage td.page-number {
-    text-align : center;
+    text-align: center;
 }
 
-div.pagesmith-page-links { 
-    text-align : right;
+div.pagesmith-page-links {
+    text-align: right;
 }

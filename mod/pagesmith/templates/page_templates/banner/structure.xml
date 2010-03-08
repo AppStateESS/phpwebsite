@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <template>
-<title>Banner</title>
-<summary>Wide banner image above text area.</summary>
-<thumbnail>banner.png</thumbnail>
-<style>page.css</style>
-<folders>
-   <name>one-column</name>
-   <name>one-image</name>
-</folders>
-<structure>
-   <section>
-      <name>text1</name>
-      <type>text</type>
-   </section>
-   <section>
-      <name>image1</name>
-      <type>image</type>
-      <width>700</width>
-      <height>200</height>
-   </section>
-</structure>
+	<title>Banner</title>
+	<summary>Wide banner image above text area.</summary>
+	<thumbnail>banner.png</thumbnail>
+	<style>page.css</style>
+	<folders>
+		<name>one-column</name>
+		<name>one-image</name>
+	</folders>
+	<structure>
+		<section>
+			<name>text1</name>
+			<type>text</type>
+		</section>
+		<section>
+			<name>image1</name>
+			<type>image</type>
+			<width>700</width>
+			<height>200</height>
+		</section>
+	</structure>
 </template>

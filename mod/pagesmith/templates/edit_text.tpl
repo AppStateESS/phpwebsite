@@ -1,5 +1,4 @@
-{START_FORM}
-{TEXT}
-<br /><br />
-{SUBMIT} {CANCEL}
-{END_FORM}
+{START_FORM} {TEXT}
+<br />
+<br />
+{SUBMIT} {CANCEL} {END_FORM}

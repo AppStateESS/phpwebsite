@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 class PS_Template {
     public $name = null;
@@ -114,10 +114,10 @@ class PS_Template {
 
     public function getThumbnail()
     {
-        $tpl_dir = PHPWS_Template::getTemplateDirectory('pagesmith');
+        $tpl_dir = PHPWS_Template::getTemplateHttp('pagesmith');
         return sprintf('<img src="%s%s%s" title="%s" />',
-                       $tpl_dir, $this->page_path,
-                       $this->thumbnail, $this->title);
+        $tpl_dir, $this->page_path,
+        $this->thumbnail, $this->title);
     }
 }
 

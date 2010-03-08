@@ -33,7 +33,7 @@ class PS_Text extends PS_Section {
         }
     }
 
-    
+
     public function setSaved()
     {
         if (!PageSmith::checkLorum($this->content)) {

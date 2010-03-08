@@ -1,13 +1,13 @@
 div#threesec-tbl-page {
-   background-color : white;
-   color : inherit;
-   overflow : hidden;
+    background-color: white;
+    color: inherit;
+    overflow: hidden;
 }
 
 div#threesec-tbl-page h1 {
-   margin-bottom : 1em;
+    margin-bottom: 1em;
 }
 
 div#threesec-tbl-page tr.section {
-   margin-bottom : 2em;
+    margin-bottom: 2em;
 }

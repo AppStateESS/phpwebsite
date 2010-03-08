@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 PHPWS_Core::initModClass('pagesmith', 'PS_Section.php');
 
@@ -46,19 +46,19 @@ class PS_Block extends PS_Section {
         $manager->setPlaceholderMaxWidth($this->width);
         $manager->setPlaceholderMaxHeight($this->height);
         switch ($this->sectype) {
-        case 'image':
-            $manager->imageOnly();
-            break;
+            case 'image':
+                $manager->imageOnly();
+                break;
 
-        case 'document':
-            $manager->documentOnly();
-            break;
+            case 'document':
+                $manager->documentOnly();
+                break;
 
-        case 'media':
-            $manager->mediaOnly();
-            break;
+            case 'media':
+                $manager->mediaOnly();
+                break;
 
-        default:
+            default:
         }
 
         $this->content = $manager->get();

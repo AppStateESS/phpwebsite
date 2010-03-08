@@ -1,17 +1,17 @@
 td.twocolumns-col {
-   width : 50%;
+    width: 50%;
 }
 
-td.twocolumns-col div#twocolumns-block1, 
-td.twocolumns-col div#twocolumns-block2{
-   text-align : center;
-} 
+td.twocolumns-col div#twocolumns-block1,td.twocolumns-col div#twocolumns-block2
+    {
+    text-align: center;
+}
 
 div#twocolumns-page {
-   background-color : white;
-   color : inherit;
+    background-color: white;
+    color: inherit;
 }
 
 div#twocolumns-page h2 {
-   margin-bottom : 1em;
+    margin-bottom: 1em;
 }

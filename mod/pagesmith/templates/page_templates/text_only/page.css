@@ -1,9 +1,9 @@
 div#text-only-page {
-   background-color : white;
-   color : inherit;
-   overflow : hidden;
+    background-color: white;
+    color: inherit;
+    overflow: hidden;
 }
 
 div#text-only-page h1 {
-   margin-bottom : 1em;
+    margin-bottom: 1em;
 }
