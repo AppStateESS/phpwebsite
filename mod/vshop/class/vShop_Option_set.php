@@ -1,26 +1,26 @@
 <?php
 /**
-    * vshop - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vshop - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class vShop_Option_set {
 
@@ -115,7 +115,7 @@ class vShop_Option_set {
         $qty = $db->count();
         return $qty;
     }
-    
+
     public function view()
     {
         if (!$this->id) {
@@ -143,7 +143,7 @@ class vShop_Option_set {
             }
         } else {
             if (Current_User::allow('vshop', 'settings'))
-                $tpl['EMPTY'] = dgettext('vshop', 'Click on "New value" to start.');
+            $tpl['EMPTY'] = dgettext('vshop', 'Click on "New value" to start.');
         }
 
         return PHPWS_Template::process($tpl, 'vshop', 'view_option_set.tpl');
@@ -165,10 +165,10 @@ class vShop_Option_set {
             $links[] = PHPWS_Text::secureLink(dgettext('vshop', 'Add Value'), 'vshop', $vars);
         }
 
-//        $links = array_merge($links, vShop::navLinks());
+        //        $links = array_merge($links, vShop::navLinks());
 
         if($links)
-            return implode(' | ', $links);
+        return implode(' | ', $links);
     }
 
     public function delete()
@@ -185,7 +185,7 @@ class vShop_Option_set {
 
     public function rowTag()
     {
-//        $vars['id'] = $this->id;
+        //        $vars['id'] = $this->id;
         $vars['option_set_id'] = $this->id;
         $links = array();
 
@@ -210,7 +210,7 @@ class vShop_Option_set {
         $tpl['VALUES'] = $this->getQtyValues();
 
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }

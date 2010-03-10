@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 PHPWS_Core::initCoreClass('Form.php');
 
@@ -232,7 +232,7 @@ class Blog_Form {
             $form->addMultiple('view_only', $groups);
             $form->setLabel('view_only', dgettext('blog', 'Limit blog to specific groups'));
             $form->setMatch('view_only', $group_match);
-        } 
+        }
 
         $show[0] = dgettext('blog', 'Do not show');
         $show[1] = dgettext('blog', 'Only on home page');
@@ -284,7 +284,7 @@ class Blog_Form {
 
         if (PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
             $template['MENU_LINK'] = PHPWS_Text::secureLink(dgettext('blog', 'Clip for menu'), 'blog',
-                                                            array('action'=>'admin', 'command'=>'menu_submit_link'));
+            array('action'=>'admin', 'command'=>'menu_submit_link'));
         }
 
         $template['VIEW_LABEL']       = dgettext('blog', 'View');

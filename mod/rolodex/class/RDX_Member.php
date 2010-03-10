@@ -1,26 +1,26 @@
 <?php
 /**
-    * rolodex - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    *
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    *
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * rolodex - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 PHPWS_Core::requireConfig('rolodex');
 PHPWS_Core::initModClass('demographics', 'Demographics.php');
@@ -87,7 +87,7 @@ class Rolodex_Member extends Demographics_User {
     public $title              = null;
 
     /* to hold the categories */
-//    public $_categories        = null; // I don't think I need this anymore
+    //    public $_categories        = null; // I don't think I need this anymore
 
 
     public function __construct($user_id=null)
@@ -331,9 +331,9 @@ class Rolodex_Member extends Demographics_User {
             if (!empty($this->last_name)) {
                 $display_name .= $this->last_name;
                 if (!empty($this->first_name))
-                    $display_name .= ', ' . $this->first_name;
+                $display_name .= ', ' . $this->first_name;
                 if (!empty($this->middle_initial))
-                    $display_name .= ' ' . $this->middle_initial;
+                $display_name .= ' ' . $this->middle_initial;
             } elseif (!empty($this->first_name)) {
                 $display_name .= $this->first_name;
             } else {
@@ -347,9 +347,9 @@ class Rolodex_Member extends Demographics_User {
                 if (!empty($this->last_name)) {
                     $display_name .= $this->last_name;
                     if (!empty($this->first_name))
-                        $display_name .= ', ' . $this->first_name;
+                    $display_name .= ', ' . $this->first_name;
                     if (!empty($this->middle_initial))
-                        $display_name .= ' ' . $this->middle_initial;
+                    $display_name .= ' ' . $this->middle_initial;
                 } elseif (!empty($this->first_name)) {
                     $display_name .= $this->first_name;
                 } else {
@@ -587,9 +587,9 @@ class Rolodex_Member extends Demographics_User {
                 return sprintf('<a class="url" href="%s"><img src="%smod/rolodex/img/website.png" alt="%s" title="%s" /></a>', $this->tidyUrl($this->website), PHPWS_SOURCE_HTTP, dgettext('rolodex', 'Web site'), dgettext('rolodex', 'Web site'));
             } else {
                 return sprintf('<a href="%s" title="%s">%s</a>',
-                               $this->tidyUrl($this->website),
-                               sprintf(dgettext('rolodex', '%s\'s Website'), $this->getDisplay_name(true)),
-                               PHPWS_Text::shortenUrl($this->tidyUrl($this->website)));
+                $this->tidyUrl($this->website),
+                sprintf(dgettext('rolodex', '%s\'s Website'), $this->getDisplay_name(true)),
+                PHPWS_Text::shortenUrl($this->tidyUrl($this->website)));
             }
         } else {
             if (empty($this->website)) {
@@ -1130,7 +1130,7 @@ class Rolodex_Member extends Demographics_User {
         $links = array_merge($links, Rolodex::navLinks());
 
         if($links)
-            return implode(' | ', $links);
+        return implode(' | ', $links);
     }
 
 
@@ -1361,7 +1361,7 @@ class Rolodex_Member extends Demographics_User {
             $links[] = $active;
         } else {
             if (Current_User::allow('rolodex'))
-                $links[] = $this->active ? dgettext('rolodex', 'Active') : dgettext('rolodex', 'Not Active');
+            $links[] = $this->active ? dgettext('rolodex', 'Active') : dgettext('rolodex', 'Not Active');
         }
 
         if (Current_User::allow('rolodex', 'delete_member')){
@@ -1379,7 +1379,7 @@ class Rolodex_Member extends Demographics_User {
         }
         $tpl['THUMBNAIL'] = $this->getThumbnail(true, true);
         if ($this->isDataVisible('privacy_contact')) {
-//            if ($this->email_privacy && !Current_User::getId()) {
+            //            if ($this->email_privacy && !Current_User::getId()) {
             if ($this->email_privacy && !Current_User::allow('rolodex', 'view_privates')) {
                 $tpl['CONTACT_EMAIL_LINK'] = '';
             } else {
@@ -1540,7 +1540,7 @@ class Rolodex_Member extends Demographics_User {
         }
 
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
 
@@ -1654,30 +1654,30 @@ class Rolodex_Member extends Demographics_User {
 
         if ($location == 'mailing') {
             if (!empty($this->mailing_address_1))
-                $address[] = $this->mailing_address_1;
+            $address[] = $this->mailing_address_1;
             if (!empty($this->mailing_address_2))
-                $address[] = $this->mailing_address_2;
+            $address[] = $this->mailing_address_2;
             if (!empty($this->mailing_city))
-                $address[] = $this->mailing_city;
+            $address[] = $this->mailing_city;
             if (!empty($this->mailing_state))
-                $address[] = $this->mailing_state;
+            $address[] = $this->mailing_state;
             if (!empty($this->mailing_country))
-                $address[] = $this->mailing_country;
+            $address[] = $this->mailing_country;
             if (!empty($this->mailing_zip_code))
-                $address[] = $this->mailing_zip_code;
+            $address[] = $this->mailing_zip_code;
         } else {
             if (!empty($this->business_address_1))
-                $address[] = $this->business_address_1;
+            $address[] = $this->business_address_1;
             if (!empty($this->business_address_2))
-                $address[] = $this->business_address_2;
+            $address[] = $this->business_address_2;
             if (!empty($this->business_city))
-                $address[] = $this->business_city;
+            $address[] = $this->business_city;
             if (!empty($this->business_state))
-                $address[] = $this->business_state;
+            $address[] = $this->business_state;
             if (!empty($this->business_country))
-                $address[] = $this->business_country;
+            $address[] = $this->business_country;
             if (!empty($this->business_zip_code))
-                $address[] = $this->business_zip_code;
+            $address[] = $this->business_zip_code;
         }
 
         if ($address) {
@@ -1776,11 +1776,11 @@ class Rolodex_Member extends Demographics_User {
 
         if (PHPWS_Settings::get('rolodex', 'comments_enable')) {
             if (PHPWS_Settings::get('rolodex', 'comments_enforce')) {
-                    $this->setAllow_comments(1);
+                $this->setAllow_comments(1);
             } else {
                 isset($_POST['allow_comments']) ?
-                    $this->setAllow_comments(1) :
-                    $this->setAllow_comments(0);
+                $this->setAllow_comments(1) :
+                $this->setAllow_comments(0);
             }
             if (PHPWS_Settings::get('rolodex', 'comments_anon_enable')) {
                 if (PHPWS_Settings::get('rolodex', 'comments_anon_enforce')) {
@@ -1791,8 +1791,8 @@ class Rolodex_Member extends Demographics_User {
                     $thread->save();
                 } else {
                     isset($_POST['allow_anon']) ?
-                        $this->setAllow_anon(1) :
-                        $this->setAllow_anon(0);
+                    $this->setAllow_anon(1) :
+                    $this->setAllow_anon(0);
                     PHPWS_Core::initModClass('comments', 'Comments.php');
                     $thread = Comments::getThread($this->key_id);
                     $thread->allowAnonymous($this->allow_anon);
@@ -2003,23 +2003,23 @@ class Rolodex_Member extends Demographics_User {
         }
 
         if (PHPWS_Settings::get('rolodex', 'custom1_name'))
-            $content .= '"' . PHPWS_Settings::get('rolodex', 'custom1_name') . '",';
+        $content .= '"' . PHPWS_Settings::get('rolodex', 'custom1_name') . '",';
         if (PHPWS_Settings::get('rolodex', 'custom2_name'))
-            $content .= '"' . PHPWS_Settings::get('rolodex', 'custom2_name') . '",';
+        $content .= '"' . PHPWS_Settings::get('rolodex', 'custom2_name') . '",';
         if (PHPWS_Settings::get('rolodex', 'custom3_name'))
-            $content .= '"' . PHPWS_Settings::get('rolodex', 'custom3_name') . '",';
+        $content .= '"' . PHPWS_Settings::get('rolodex', 'custom3_name') . '",';
         if (PHPWS_Settings::get('rolodex', 'custom4_name'))
-            $content .= '"' . PHPWS_Settings::get('rolodex', 'custom4_name') . '",';
+        $content .= '"' . PHPWS_Settings::get('rolodex', 'custom4_name') . '",';
 
         if (Current_User::allow('rolodex', 'view_privates')) {
             if (PHPWS_Settings::get('rolodex', 'custom5_name'))
-                $content .= '"' . PHPWS_Settings::get('rolodex', 'custom5_name') . '",';
+            $content .= '"' . PHPWS_Settings::get('rolodex', 'custom5_name') . '",';
             if (PHPWS_Settings::get('rolodex', 'custom6_name'))
-                $content .= '"' . PHPWS_Settings::get('rolodex', 'custom6_name') . '",';
+            $content .= '"' . PHPWS_Settings::get('rolodex', 'custom6_name') . '",';
             if (PHPWS_Settings::get('rolodex', 'custom7_name'))
-                $content .= '"' . PHPWS_Settings::get('rolodex', 'custom7_name') . '",';
+            $content .= '"' . PHPWS_Settings::get('rolodex', 'custom7_name') . '",';
             if (PHPWS_Settings::get('rolodex', 'custom8_name'))
-                $content .= '"' . PHPWS_Settings::get('rolodex', 'custom8_name') . '",';
+            $content .= '"' . PHPWS_Settings::get('rolodex', 'custom8_name') . '",';
         }
 
         $content .= '"' . dgettext('rolodex', 'Description') . '"';
@@ -2080,23 +2080,23 @@ class Rolodex_Member extends Demographics_User {
         }
 
         if (PHPWS_Settings::get('rolodex', 'custom1_name'))
-            $content .= '"' . $this->getCustom1() . '",';
+        $content .= '"' . $this->getCustom1() . '",';
         if (PHPWS_Settings::get('rolodex', 'custom2_name'))
-            $content .= '"' . $this->getCustom2() . '",';
+        $content .= '"' . $this->getCustom2() . '",';
         if (PHPWS_Settings::get('rolodex', 'custom3_name'))
-            $content .= '"' . $this->getCustom3() . '",';
+        $content .= '"' . $this->getCustom3() . '",';
         if (PHPWS_Settings::get('rolodex', 'custom4_name'))
-            $content .= '"' . $this->getCustom4() . '",';
+        $content .= '"' . $this->getCustom4() . '",';
 
         if (Current_User::allow('rolodex', 'view_privates')) {
             if (PHPWS_Settings::get('rolodex', 'custom5_name'))
-                $content .= '"' . $this->getCustom5() . '",';
+            $content .= '"' . $this->getCustom5() . '",';
             if (PHPWS_Settings::get('rolodex', 'custom6_name'))
-                $content .= '"' . $this->getCustom6() . '",';
+            $content .= '"' . $this->getCustom6() . '",';
             if (PHPWS_Settings::get('rolodex', 'custom7_name'))
-                $content .= '"' . $this->getCustom7() . '",';
+            $content .= '"' . $this->getCustom7() . '",';
             if (PHPWS_Settings::get('rolodex', 'custom8_name'))
-                $content .= '"' . $this->getCustom8() . '",';
+            $content .= '"' . $this->getCustom8() . '",';
         }
 
         $content .= '"' . $this->stripLF($this->getDescription()) . '"';

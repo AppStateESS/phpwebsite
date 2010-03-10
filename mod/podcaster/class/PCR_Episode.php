@@ -1,26 +1,26 @@
 <?php
 /**
-    * podcaster - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    *
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    *
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * podcaster - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class Podcaster_Episode {
 
@@ -332,13 +332,13 @@ class Podcaster_Episode {
         $key->setItemId($this->id);
         $key->setEditPermission('edit_episode');
         $key->setUrl($this->viewLink(true));
-/*
-        if (MOD_REWRITE_ENABLED) {
-            $key->setUrl('podcaster/' . $this->channel_id . '/' . $this->id);
-        } else {
-            $key->setUrl('index.php?module=podcaster&amp;uop=view_episode&amp;episode_id=' . $this->id);
-        }
-*/
+        /*
+         if (MOD_REWRITE_ENABLED) {
+         $key->setUrl('podcaster/' . $this->channel_id . '/' . $this->id);
+         } else {
+         $key->setUrl('index.php?module=podcaster&amp;uop=view_episode&amp;episode_id=' . $this->id);
+         }
+         */
         if ($this->approved) {
             $key->active = (int)$this->active;
         } else {
@@ -385,7 +385,7 @@ class Podcaster_Episode {
             $links[] = $active;
         } else {
             if (Current_User::allow('podcaster'))
-                $links[] = $this->active ? dgettext('podcaster', 'Active') : dgettext('podcaster', 'Not Active');
+            $links[] = $this->active ? dgettext('podcaster', 'Active') : dgettext('podcaster', 'Not Active');
         }
 
         if (Current_User::isUnrestricted('podcaster')) {
@@ -399,7 +399,7 @@ class Podcaster_Episode {
             $links[] = $approved;
         } else {
             if (Current_User::allow('podcaster'))
-                $links[] = $this->approved ? dgettext('podcaster', 'Approved') : dgettext('podcaster', 'Not Approved');
+            $links[] = $this->approved ? dgettext('podcaster', 'Approved') : dgettext('podcaster', 'Not Approved');
         }
 
         if (Current_User::allow('podcaster', 'delete_episode')){
@@ -411,7 +411,7 @@ class Podcaster_Episode {
         }
 
         if($links)
-            return implode(' | ', $links);
+        return implode(' | ', $links);
     }
 
 

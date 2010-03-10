@@ -1,31 +1,31 @@
 <?php
 /**
-    * podcaster - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * podcaster - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 function podcaster_uninstall(&$content) {
 
     if (isset($_REQUEST['process_uninstall'])) {
-        
+
         if ($_REQUEST['rm_media']) {
             PHPWS_Core::initModClass('podcaster', 'PCR_Episode.php');
             $db = new PHPWS_DB('podcaster_episode');
@@ -69,7 +69,7 @@ function podcaster_uninstall(&$content) {
         }
 
         return false;
-    } 
+    }
 
 
     $form = & new PHPWS_Form('rm_media_confirm');
@@ -82,7 +82,7 @@ function podcaster_uninstall(&$content) {
     $form->setMethod('get');
 
     $form->addHidden('process_uninstall', 1);
-    
+
     if (PHPWS_Settings::get('podcaster', 'rm_media')) {
         $match = 1;
     } else {
@@ -94,12 +94,12 @@ function podcaster_uninstall(&$content) {
     $form->setMatch('rm_media', $match);
 
     $form->addSubmit(dgettext('layout', 'Continue'));
-  
+
     $template = $form->getTemplate();
-    
+
     $template['RM_MEDIA'] = dgettext('podcaster', 'Delete related media files from filecabinet?');
     $content[] = PHPWS_Template::process($template, 'podcaster', 'uninstall.tpl');
-    
+
     return false;
 
 }

@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at appstate dot edu>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at appstate dot edu>
+ */
 
 class Whodis_Referrer {
     public $id      = 0;
@@ -55,9 +55,9 @@ class Whodis_Referrer {
     {
         $url = $this->getUrl();
         $tags['CHECKBOX'] = sprintf('<input type="checkbox" name="referrer[]" value="%s" />',
-                                    $this->id);
+        $this->id);
         $tags['URL'] = sprintf('<a href="%s" target="blank" title="%s">%s</a>',
-                       $url, $url, substr($url, 0, 40));
+        $url, $url, substr($url, 0, 40));
         $tags['CREATED'] = strftime('%H:%M %Y/%m/%d', $this->created);
         $tags['UPDATED'] = strftime('%H:%M %Y/%m/%d', $this->updated);
         return $tags;

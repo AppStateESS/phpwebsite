@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @author Matthew McNaney
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney
+ * @version $Id$
+ */
 
 $proper_name  = 'Access';
 $version      = '1.1.6';

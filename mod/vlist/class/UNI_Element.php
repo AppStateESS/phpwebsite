@@ -1,26 +1,26 @@
 <?php
 /**
-    * vlist - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    *
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    *
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vlist - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 PHPWS_Core::requireConfig('vlist');
 
 class UNI_Element {
@@ -249,7 +249,7 @@ class UNI_Element {
         $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the element %s?'), $this->getTitle());
         if ($icon) {
             $js['LINK'] = sprintf('<img src="%smod/vlist/img/delete.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
-                                  dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
+            dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
         } else {
             $js['LINK'] = dgettext('vlist', 'Delete');
         }
@@ -262,9 +262,9 @@ class UNI_Element {
 
         if ($icon) {
             $label = sprintf('<img src="%smod/vlist/img/edit.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
-                             dgettext('vlist', 'Edit element'), dgettext('vlist', 'Edit element'));
+            dgettext('vlist', 'Edit element'), dgettext('vlist', 'Edit element'));
         } elseif (empty($label)) {
-                $label = dgettext('vlist', 'Edit');
+            $label = dgettext('vlist', 'Edit');
         }
 
         $vars['element']  = $this->id;
@@ -305,17 +305,17 @@ class UNI_Element {
             $vars['aop'] = $var_dis;
             if ($icon) {
                 $label = sprintf('<img src="%s" title="%s" alt="%s" >',
-                                 $var_act_img, dgettext('vlist', 'Deactivate'), dgettext('vlist', 'Deactivate'));
+                $var_act_img, dgettext('vlist', 'Deactivate'), dgettext('vlist', 'Deactivate'));
             } elseif (empty($label)) {
-                    $label = dgettext('vlist', 'Deactivate');
+                $label = dgettext('vlist', 'Deactivate');
             }
         } else {
             $vars['aop'] = $var_act;
             if ($icon) {
                 $label = sprintf('<img src="%s" title="%s" alt="%s" >',
-                                 $var_inact_img, dgettext('vlist', 'Activate'), dgettext('vlist', 'Activate'));
+                $var_inact_img, dgettext('vlist', 'Activate'), dgettext('vlist', 'Activate'));
             } elseif (empty($label)) {
-                    $label = dgettext('vlist', 'Activate');
+                $label = dgettext('vlist', 'Activate');
             }
         }
         return PHPWS_Text::secureLink($label, 'vlist', $vars);
@@ -350,7 +350,7 @@ class UNI_Element {
         }
 
         if($links)
-            $tpl['ACTION'] = implode(' ', $links);
+        $tpl['ACTION'] = implode(' ', $links);
 
         return $tpl;
     }
@@ -432,7 +432,7 @@ class UNI_Element {
             $js['ADDRESS'] = PHPWS_Text::linkAddress('vlist', $vars,true);
             $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the option %s?'), $optionText[$i]);
             $js['LINK'] = sprintf('<img src="%smod/vlist/img/delete.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
-                                  dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
+            dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
             $optionRow['DELETE'] =  javascript('confirm', $js);
 
             $check = null;
@@ -474,7 +474,7 @@ class UNI_Element {
 
     function saveOptions()
     {
-//print_r($_POST); exit;
+        //print_r($_POST); exit;
         $className = get_class($this);
         $properName = ucfirst(str_ireplace('UNI_', '', $className));
 
@@ -530,7 +530,7 @@ class UNI_Element {
 
     function save()
     {
-//print_r($_POST); exit;
+        //print_r($_POST); exit;
         if ($this->post()) {
             if (isset($_POST['id'])) {
                 $update = true;
@@ -566,30 +566,30 @@ class UNI_Element {
 
         /* not sure I need this anymore, don;t think so at the moment */
         /* begin save options
-        $db = new PHPWS_DB($this->db_option);
-        foreach($this->options as $option) {
-            if($update == false) {
-                $db->addValue('element_id', $this->id);
-                $result = $db->insert();
-            } else {
-                $db->addWhere('id', $option['id']);
-                $db->addValue('label', $option['label']);
-                $db->addValue('element_id', $this->id);
-                $db->addValue('sort', $option['sort']);
-                $result = $db->update();
-            }
-            if (PEAR::isError($result)) {
-                return $result;
-            }
-        }
-        /* end save options */
+         $db = new PHPWS_DB($this->db_option);
+         foreach($this->options as $option) {
+         if($update == false) {
+         $db->addValue('element_id', $this->id);
+         $result = $db->insert();
+         } else {
+         $db->addWhere('id', $option['id']);
+         $db->addValue('label', $option['label']);
+         $db->addValue('element_id', $this->id);
+         $db->addValue('sort', $option['sort']);
+         $result = $db->update();
+         }
+         if (PEAR::isError($result)) {
+         return $result;
+         }
+         }
+         /* end save options */
 
     }
 
 
     public function post()
     {
-//print_r($_POST); exit;
+        //print_r($_POST); exit;
         if (empty($_POST['label'])) {
             $errors[] = dgettext('vlist', 'You must give this element a label.');
         } else {
@@ -603,12 +603,12 @@ class UNI_Element {
         }
 
         isset($_POST['active']) ?
-            $this->active = 1 :
-            $this->active = 0 ;
+        $this->active = 1 :
+        $this->active = 0 ;
 
         isset($_POST['required']) ?
-            $this->required = 1 :
-            $this->required = 0 ;
+        $this->required = 1 :
+        $this->required = 0 ;
 
         if (isset($_POST['numoptions'])) {
             $this->numoptions = (int)$_POST['numoptions'];
@@ -635,16 +635,16 @@ class UNI_Element {
         }
 
         isset($_POST['list']) ?
-            $this->list = 1 :
-            $this->list = 0 ;
+        $this->list = 1 :
+        $this->list = 0 ;
 
         isset($_POST['search']) ?
-            $this->search = 1 :
-            $this->search = 0 ;
+        $this->search = 1 :
+        $this->search = 0 ;
 
         isset($_POST['private']) ?
-            $this->private = 1 :
-            $this->private = 0 ;
+        $this->private = 1 :
+        $this->private = 0 ;
 
         if (isset($errors)) {
             $this->vlist->message = implode('<br />', $errors);

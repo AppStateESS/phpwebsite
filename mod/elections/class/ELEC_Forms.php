@@ -1,26 +1,26 @@
 <?php
 /**
-    * elections - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    *
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    *
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * elections - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class Elections_Forms {
     public $election = null;
@@ -29,49 +29,49 @@ class Elections_Forms {
     {
         switch ($type) {
 
-        case 'new_ballot':
-        case 'edit_ballot':
-            if (empty($this->election->ballot)) {
-                $this->election->loadBallot();
-            }
-            $this->editBallot();
-            break;
+            case 'new_ballot':
+            case 'edit_ballot':
+                if (empty($this->election->ballot)) {
+                    $this->election->loadBallot();
+                }
+                $this->editBallot();
+                break;
 
-        case 'list_ballots':
-            $this->election->panel->setCurrentTab('list_ballots');
-            $this->listBallots();
-            break;
+            case 'list_ballots':
+                $this->election->panel->setCurrentTab('list_ballots');
+                $this->listBallots();
+                break;
 
-        case 'new_candidate':
-            $this->selectBallot();
-            break;
+            case 'new_candidate':
+                $this->selectBallot();
+                break;
 
-        case 'edit_candidate':
-            if (empty($this->election->candidate)) {
-                $this->election->loadCandidate();
-            }
-            $this->editCandidate();
-            break;
+            case 'edit_candidate':
+                if (empty($this->election->candidate)) {
+                    $this->election->loadCandidate();
+                }
+                $this->editCandidate();
+                break;
 
-        case 'list_candidates':
-            $this->election->panel->setCurrentTab('list_candidates');
-            $this->listCandidates();
-            break;
+            case 'list_candidates':
+                $this->election->panel->setCurrentTab('list_candidates');
+                $this->listCandidates();
+                break;
 
-        case 'reports':
-            $this->election->panel->setCurrentTab('reports');
-            $this->reports();
-            break;
+            case 'reports':
+                $this->election->panel->setCurrentTab('reports');
+                $this->reports();
+                break;
 
-        case 'settings':
-            $this->election->panel->setCurrentTab('settings');
-            $this->editSettings();
-            break;
+            case 'settings':
+                $this->election->panel->setCurrentTab('settings');
+                $this->editSettings();
+                break;
 
-        case 'info':
-            $this->election->panel->setCurrentTab('info');
-            $this->showInfo();
-            break;
+            case 'info':
+                $this->election->panel->setCurrentTab('info');
+                $this->showInfo();
+                break;
 
         }
 
@@ -80,7 +80,7 @@ class Elections_Forms {
 
     public function listBallots()
     {
-		if (PHPWS_Settings::get('elections', 'enable_elections') || Current_User::isUnrestricted('elections')) {
+        if (PHPWS_Settings::get('elections', 'enable_elections') || Current_User::isUnrestricted('elections')) {
             $ptags['TITLE_HEADER'] = dgettext('elections', 'Title');
             $ptags['OPENS_HEADER'] = dgettext('elections', 'Opens');
             $ptags['CLOSES_HEADER'] = dgettext('elections', 'Closes');
@@ -111,9 +111,9 @@ class Elections_Forms {
             $pager->setSearch('title', 'description');
 
             $content = $pager->get();
-		} else {
-			$content = dgettext('elections', 'Thank you for your interest. However, all elections are currently closed.');
-		}
+        } else {
+            $content = dgettext('elections', 'Thank you for your interest. However, all elections are currently closed.');
+        }
 
         $this->election->content = $content;
         $this->election->title = sprintf(dgettext('elections', '%s Ballots'), PHPWS_Text::parseOutput(PHPWS_Settings::get('elections', 'title')));
@@ -160,7 +160,7 @@ class Elections_Forms {
 
     public function listVotes($ballot_id=0)
     {
-		if (Current_User::isUnrestricted('elections')) {
+        if (Current_User::isUnrestricted('elections')) {
             $ptags['BALLOT_HEADER'] = dgettext('elections', 'Ballot');
             $ptags['USER_HEADER'] = dgettext('elections', 'Username');
             $ptags['DATE_HEADER'] = dgettext('elections', 'Vote date');
@@ -183,9 +183,9 @@ class Elections_Forms {
             $pager->setSearch('username', 'ip');
 
             $content = $pager->get();
-		} else {
-			$content = dgettext('elections', 'This is a restricted area.');
-		}
+        } else {
+            $content = dgettext('elections', 'This is a restricted area.');
+        }
 
         $this->election->content = $content;
         $this->election->title = sprintf(dgettext('elections', '%s Voting Log'), PHPWS_Text::parseOutput(PHPWS_Settings::get('elections', 'title')));
@@ -282,7 +282,7 @@ class Elections_Forms {
         $tpl['DETAILS_LABEL'] = dgettext('elections', 'Details');
 
         if ($ballot->votegroups) {
-			$match = explode(":", $ballot->votegroups);
+            $match = explode(":", $ballot->votegroups);
         } else {
             $match = null;
         }
@@ -569,7 +569,7 @@ class Elections_Forms {
         $db->addColumn('id');
         $db->addColumn('title');
         $result = $db->getObjects('Elections_Ballot');
-//        print_r($result); exit;
+        //        print_r($result); exit;
 
         return $result;
     }

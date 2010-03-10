@@ -1,26 +1,26 @@
 <?php
 /**
-    * vmail - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vmail - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 
 class vMail {
@@ -58,7 +58,7 @@ class vMail {
                 }
                 $this->loadForm('edit_recipient');
                 break;
-    
+
             case 'post_recipient':
                 if (!Current_User::authorized('vmail', 'edit_recipient')) {
                     Current_User::disallow();
@@ -75,7 +75,7 @@ class vMail {
                     $this->loadForm('edit_recipient');
                 }
                 break;
-    
+
             case 'activate_recipient':
                 if (!Current_User::authorized('vmail', 'edit_recipient')) {
                     Current_User::disallow();
@@ -86,7 +86,7 @@ class vMail {
                 $this->message = sprintf(dgettext('vmail', 'Recipient %s activated.'), $this->recipient->getLabel(true));
                 $this->loadForm('list_recipients');
                 break;
-    
+
             case 'deactivate_recipient':
                 if (!Current_User::authorized('vmail', 'edit_recipient')) {
                     Current_User::disallow();
@@ -97,7 +97,7 @@ class vMail {
                 $this->message = sprintf(dgettext('vmail', 'Recipient %s deactivated.'), $this->recipient->getLabel(true));
                 $this->loadForm('list_recipients');
                 break;
-    
+
             case 'delete_recipient':
                 if (!Current_User::authorized('vmail', 'delete_recipient')) {
                     Current_User::disallow();
@@ -107,7 +107,7 @@ class vMail {
                 $this->message = sprintf(dgettext('vmail', 'Recipient %s deleted.'), $this->recipient->getLabel(true));
                 $this->loadForm('list_recipients');
                 break;
-                
+
 
             case 'post_settings':
                 if (!Current_User::authorized('vmail', 'settings', null, null, true)) {
@@ -133,8 +133,8 @@ class vMail {
             $this->panel->setContent(PHPWS_Template::process($tpl, 'vmail', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
-        
-   }
+
+    }
 
 
     public function userMenu($action=null)
@@ -180,7 +180,7 @@ class vMail {
                         $this->content = $this->recipient->submitMessage();
                     } else {
                         $this->forwardMessage(dgettext('vmail', 'Sorry, there was a problem sending the message.'));
-//                        PHPWS_Core::reroute('index.php?module=vmail&id=' . $this->recipient->id);
+                        //                        PHPWS_Core::reroute('index.php?module=vmail&id=' . $this->recipient->id);
                         PHPWS_Core::reroute('index.php?module=vmail&uop=list_recipients');
                     }
                 } else {
@@ -199,8 +199,8 @@ class vMail {
         } else {
             Layout::add(PHPWS_Template::process($tpl, 'vmail', 'main_user.tpl'));
         }
-        
-   }
+
+    }
 
 
     public function forwardMessage($message, $title=null)
@@ -210,7 +210,7 @@ class vMail {
             $_SESSION['vMail_Message']['title'] = $title;
         }
     }
-    
+
 
     public function loadMessage()
     {
@@ -256,7 +256,7 @@ class vMail {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('vmail-panel');
         $link = 'index.php?module=vmail&aop=menu';
-        
+
         if (Current_User::allow('vmail', 'edit_recipient')) {
             $tags['new_recipient'] = array('title'=>dgettext('vmail', 'New Recipient'),
                                  'link'=>$link);
@@ -309,12 +309,12 @@ class vMail {
         }
 
         isset($_POST['lock_subject']) ?
-            $this->recipient->lock_subject = 1 :
-            $this->recipient->lock_subject = 0;
+        $this->recipient->lock_subject = 1 :
+        $this->recipient->lock_subject = 0;
 
         isset($_POST['active']) ?
-            $this->recipient->active = 1 :
-            $this->recipient->active = 0;
+        $this->recipient->active = 1 :
+        $this->recipient->active = 0;
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
@@ -335,14 +335,14 @@ class vMail {
         } else {
             $errors[] = dgettext('vmail', 'Please provide a module title.');
         }
-        
+
         isset($_POST['enable_sidebox']) ?
-            PHPWS_Settings::set('vmail', 'enable_sidebox', 1) :
-            PHPWS_Settings::set('vmail', 'enable_sidebox', 0);
+        PHPWS_Settings::set('vmail', 'enable_sidebox', 1) :
+        PHPWS_Settings::set('vmail', 'enable_sidebox', 0);
 
         isset($_POST['sidebox_homeonly']) ?
-            PHPWS_Settings::set('vmail', 'sidebox_homeonly', 1) :
-            PHPWS_Settings::set('vmail', 'sidebox_homeonly', 0);
+        PHPWS_Settings::set('vmail', 'sidebox_homeonly', 1) :
+        PHPWS_Settings::set('vmail', 'sidebox_homeonly', 0);
 
         if (!empty($_POST['sidebox_text'])) {
             PHPWS_Settings::set('vmail', 'sidebox_text', PHPWS_Text::parseInput($_POST['sidebox_text']));
@@ -351,8 +351,8 @@ class vMail {
         }
 
         isset($_POST['use_captcha']) ?
-            PHPWS_Settings::set('vmail', 'use_captcha', 1) :
-            PHPWS_Settings::set('vmail', 'use_captcha', 0);
+        PHPWS_Settings::set('vmail', 'use_captcha', 1) :
+        PHPWS_Settings::set('vmail', 'use_captcha', 0);
 
 
         if (isset($errors)) {
@@ -361,7 +361,7 @@ class vMail {
         } else {
             if (PHPWS_Settings::save('vmail')) {
                 return true;
-            } else { 
+            } else {
                 return falsel;
             }
         }
@@ -379,7 +379,7 @@ class vMail {
         } else {
             $errors[] = dgettext('vmail', 'Please provide your name.');
         }
-        
+
         if (!empty($_POST['email'])) {
             if (PHPWS_Text::isValidInput($_POST['email'], 'email')) {
                 $_POST['email'] = $_POST['email'];
@@ -389,19 +389,19 @@ class vMail {
         } else {
             $errors[] = dgettext('vmail', 'Please provide your email address.');
         }
-        
+
         if (!empty($_POST['subject'])) {
             $_POST['subject'] = strip_tags($_POST['subject']);
         } else {
             $errors[] = dgettext('vmail', 'Please provide a subject.');
         }
-        
+
         if (!empty($_POST['message'])) {
             $_POST['message'] = strip_tags($_POST['message']);
         } else {
             $errors[] = dgettext('vmail', 'Please provide a message.');
         }
-        
+
         if (!vMail::confirm()) {
             $errors['CONFIRM_ERROR'] = dgettext('vmail', 'Confirmation phrase is not correct.');
         }
@@ -413,12 +413,12 @@ class vMail {
             return true;
         }
     }
-    
+
 
     function confirm()
     {
         if (!PHPWS_Settings::get('vmail', 'use_captcha') ||
-            !extension_loaded('gd')) {
+        !extension_loaded('gd')) {
             return true;
         }
 
@@ -427,7 +427,7 @@ class vMail {
     }
 
 
-    public function sendMail() 
+    public function sendMail()
     {
         $this->loadRecipient();
 
@@ -451,9 +451,9 @@ class vMail {
         $mail->setFrom(sprintf('%s<%s>', $from, $sender));
         $mail->setMessageBody($message);
 
-//print_r($mail); exit;
+        //print_r($mail); exit;
         return $mail->send();
-        
+
     }
 
 
@@ -466,7 +466,7 @@ class vMail {
         if (Current_User::allow('vmail', 'settings', null, null, true) && !isset($_REQUEST['aop'])){
             $links[] = PHPWS_Text::moduleLink(dgettext('vmail', 'Settings'), "vmail",  array('aop'=>'menu', 'tab'=>'settings'));
         }
-        
+
         return $links;
     }
 

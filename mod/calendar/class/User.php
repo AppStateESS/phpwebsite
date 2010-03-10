@@ -1,15 +1,15 @@
 <?php
 
-  /**
-   * Contains functions specific to users
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Contains functions specific to users
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 if (!defined('CALENDAR_TOTAL_SUGGESTIONS')) {
     define('CALENDAR_TOTAL_SUGGESTIONS', 5);
- }
+}
 
 if (!defined('CALENDAR_UPCOMING_FORMAT')) {
     define('CALENDAR_UPCOMING_FORMAT', '%A, %e %b');
@@ -62,7 +62,7 @@ class Calendar_User {
     public function allowSuggestion()
     {
         if ( isset($_SESSION['Calendar_Total_Suggestions']) &&
-             $_SESSION['Calendar_Total_Suggestions'] >= CALENDAR_TOTAL_SUGGESTIONS ) {
+        $_SESSION['Calendar_Total_Suggestions'] >= CALENDAR_TOTAL_SUGGESTIONS ) {
             return false;
         } else {
             return true;
@@ -115,17 +115,17 @@ class Calendar_User {
                     $current_day = floor( ($oEvent->end_time - $startdate) / 86400);
                     $day_number = $duration_day - $current_day + 1;
                     switch ($day_number) {
-                    case 1:
-                        $details['DAY_NUMBER'] = sprintf(dgettext('calendar', 'First day'), $day_number);
-                        break;
+                        case 1:
+                            $details['DAY_NUMBER'] = sprintf(dgettext('calendar', 'First day'), $day_number);
+                            break;
 
-                    case ($current_day < 1):
-                        $details['DAY_NUMBER'] = sprintf(dgettext('calendar', 'Last day'), $day_number);
-                        break;
+                        case ($current_day < 1):
+                            $details['DAY_NUMBER'] = sprintf(dgettext('calendar', 'Last day'), $day_number);
+                            break;
 
-                    default:
-                        $details['DAY_NUMBER'] = sprintf(dgettext('calendar', 'Day %s'), $day_number);
-                        break;
+                        default:
+                            $details['DAY_NUMBER'] = sprintf(dgettext('calendar', 'Day %s'), $day_number);
+                            break;
                     }
                 }
 
@@ -275,66 +275,66 @@ class Calendar_User {
         }
 
         switch ($command) {
-        case 'view':
-            $this->view();
-            break;
-
-        case 'suggest_event':
-            if (!PHPWS_Settings::get('calendar', 'allow_submissions')) {
-                PHPWS_Core::errorPage('403');
-            }
-
-            if (!$this->allowSuggestion()) {
-                $this->title = dgettext('calendar', 'Sorry');
-                $this->content = dgettext('calendar', 'You have exceeded your allowed event submissions.');
+            case 'view':
+                $this->view();
                 break;
-            }
 
-            PHPWS_Core::initModClass('calendar', 'Admin.php');
-            $this->loadSuggestion();
-            $this->title = dgettext('calendar', 'Suggest event');
-            $this->content = Calendar_Admin::event_form($this->event, true);
-            break;
+            case 'suggest_event':
+                if (!PHPWS_Settings::get('calendar', 'allow_submissions')) {
+                    PHPWS_Core::errorPage('403');
+                }
 
-        case 'post_suggestion':
-            if (!$this->postSuggestion()) {
+                if (!$this->allowSuggestion()) {
+                    $this->title = dgettext('calendar', 'Sorry');
+                    $this->content = dgettext('calendar', 'You have exceeded your allowed event submissions.');
+                    break;
+                }
+
                 PHPWS_Core::initModClass('calendar', 'Admin.php');
+                $this->loadSuggestion();
                 $this->title = dgettext('calendar', 'Suggest event');
                 $this->content = Calendar_Admin::event_form($this->event, true);
-            }
-            break;
+                break;
 
-        case 'ical_dl':
-            if (!empty($_GET['sdate']) && !empty($_GET['edate']) &&
+            case 'post_suggestion':
+                if (!$this->postSuggestion()) {
+                    PHPWS_Core::initModClass('calendar', 'Admin.php');
+                    $this->title = dgettext('calendar', 'Suggest event');
+                    $this->content = Calendar_Admin::event_form($this->event, true);
+                }
+                break;
+
+            case 'ical_dl':
+                if (!empty($_GET['sdate']) && !empty($_GET['edate']) &&
                 $this->calendar->schedule->allowICalDownload()) {
-                $this->calendar->schedule->exportEvents($_GET['sdate'], $_GET['edate']);
-            } else {
-                $this->title = dgettext('calendar', 'Sorry');
-                $this->content = dgettext('calendar', 'Schedule unavailable.');
-            }
+                    $this->calendar->schedule->exportEvents($_GET['sdate'], $_GET['edate']);
+                } else {
+                    $this->title = dgettext('calendar', 'Sorry');
+                    $this->content = dgettext('calendar', 'Schedule unavailable.');
+                }
 
-            break;
+                break;
 
-            if ( ( !$this->calendar->schedule->public && !$this->calendar->schedule->checkPermissions() ) ||
-                 ( $this->calendar->schedule->public && (PHPWS_Settings::get('calendar', 'anon_ical') && Current_User::isLogged()) ) ||
+                if ( ( !$this->calendar->schedule->public && !$this->calendar->schedule->checkPermissions() ) ||
+                ( $this->calendar->schedule->public && (PHPWS_Settings::get('calendar', 'anon_ical') && Current_User::isLogged()) ) ||
                 empty($_GET['sdate']) || empty($_GET['edate']) ||
                 !$this->calendar->schedule->id) {
-                $this->title = dgettext('calendar', 'Sorry');
-                $this->content = dgettext('calendar', 'Schedule unavailable.');
-            } else {
+                    $this->title = dgettext('calendar', 'Sorry');
+                    $this->content = dgettext('calendar', 'Schedule unavailable.');
+                } else {
 
-            }
-            break;
+                }
+                break;
 
-        case 'ical_event_dl':
-            if ($this->calendar->schedule->allowICalDownload()) {
-                $this->calendar->schedule->exportEvent($_GET['event_id']);
-            } else {
-                $this->title = dgettext('calendar', 'Sorry');
-                $this->content = dgettext('calendar', 'Schedule unavailable.');
-            }
+            case 'ical_event_dl':
+                if ($this->calendar->schedule->allowICalDownload()) {
+                    $this->calendar->schedule->exportEvent($_GET['event_id']);
+                } else {
+                    $this->title = dgettext('calendar', 'Sorry');
+                    $this->content = dgettext('calendar', 'Schedule unavailable.');
+                }
 
-            break;
+                break;
         }
 
         $tpl['CONTENT'] = $this->content;
@@ -454,8 +454,8 @@ class Calendar_User {
             if ($day->empty) {
                 $data['CLASS'] = 'day-empty';
             } elseif ( $day->month == date('m', $this->calendar->today) &&
-                       $day->day == date('d', $this->calendar->today)
-                       ) {
+            $day->day == date('d', $this->calendar->today)
+            ) {
                 $data['CLASS'] = 'day-current';
             } else {
                 $data['CLASS'] = 'day-normal';
@@ -738,9 +738,9 @@ class Calendar_User {
     public function suggestLink()
     {
         if ( !$this->allowSuggestion()                      ||
-             !$this->calendar->schedule->public             ||
-             Current_User::allow('calendar', 'edit_public') ||
-             !PHPWS_Settings::get('calendar', 'allow_submissions') ) {
+        !$this->calendar->schedule->public             ||
+        Current_User::allow('calendar', 'edit_public') ||
+        !PHPWS_Settings::get('calendar', 'allow_submissions') ) {
             return null;
         }
 
@@ -758,18 +758,18 @@ class Calendar_User {
         $vars['date'] = mktime();
 
         switch ($view) {
-        case 'grid':
-        case 'list':
-            $view_name = dgettext('calendar', 'This month');
-            break;
+            case 'grid':
+            case 'list':
+                $view_name = dgettext('calendar', 'This month');
+                break;
 
-        case 'week':
-            $view_name = dgettext('calendar', 'This week');
-            break;
+            case 'week':
+                $view_name = dgettext('calendar', 'This week');
+                break;
 
-        case 'event':
-        case 'day':
-            $view_name = dgettext('calendar', 'Today');
+            case 'event':
+            case 'day':
+                $view_name = dgettext('calendar', 'Today');
         }
 
         return PHPWS_Text::moduleLink($view_name, 'calendar', $vars);
@@ -818,54 +818,54 @@ class Calendar_User {
         }
 
         switch ($this->current_view) {
-        case 'day':
-            $this->content = $this->day();
-            break;
-
-        case 'grid':
-            if (ALLOW_CACHE_LITE && Current_User::allow('calendar')) {
-                $this->resetCacheLink('grid', $this->calendar->int_month, $this->calendar->int_year, $this->calendar->schedule->id);
-            }
-            $this->content = $this->month_grid();
-            break;
-
-        case 'list':
-            if (ALLOW_CACHE_LITE && Current_User::allow('calendar')) {
-                $this->resetCacheLink('list', $this->calendar->int_month, $this->calendar->int_year, $this->calendar->schedule->id);
-            }
-            $this->content = $this->month_list();
-            break;
-
-        case 'week':
-            $this->content = $this->week();
-            break;
-
-        case 'event':
-            if (isset($_REQUEST['page'])) {
-                $event_id = (int)$_REQUEST['page'];
-            } elseif (isset($_REQUEST['event_id'])) {
-                $event_id = $_REQUEST['event_id'];
-            } else {
-                $this->content = $this->day();
-            }
-
-            if (!$this->loadEvent($event_id) || !$this->event->id) {
+            case 'day':
                 $this->content = $this->day();
                 break;
-            }
 
-            if (isset($_REQUEST['js'])) {
-                $this->content = $this->event(true);
-                Layout::nakedDisplay($this->content);
-                return;
-            } else {
-                $this->content = $this->event();
-            }
-            break;
+            case 'grid':
+                if (ALLOW_CACHE_LITE && Current_User::allow('calendar')) {
+                    $this->resetCacheLink('grid', $this->calendar->int_month, $this->calendar->int_year, $this->calendar->schedule->id);
+                }
+                $this->content = $this->month_grid();
+                break;
 
-        default:
-            $this->content = dgettext('calendar', 'Incorrect option');
-            break;
+            case 'list':
+                if (ALLOW_CACHE_LITE && Current_User::allow('calendar')) {
+                    $this->resetCacheLink('list', $this->calendar->int_month, $this->calendar->int_year, $this->calendar->schedule->id);
+                }
+                $this->content = $this->month_list();
+                break;
+
+            case 'week':
+                $this->content = $this->week();
+                break;
+
+            case 'event':
+                if (isset($_REQUEST['page'])) {
+                    $event_id = (int)$_REQUEST['page'];
+                } elseif (isset($_REQUEST['event_id'])) {
+                    $event_id = $_REQUEST['event_id'];
+                } else {
+                    $this->content = $this->day();
+                }
+
+                if (!$this->loadEvent($event_id) || !$this->event->id) {
+                    $this->content = $this->day();
+                    break;
+                }
+
+                if (isset($_REQUEST['js'])) {
+                    $this->content = $this->event(true);
+                    Layout::nakedDisplay($this->content);
+                    return;
+                } else {
+                    $this->content = $this->event();
+                }
+                break;
+
+            default:
+                $this->content = dgettext('calendar', 'Incorrect option');
+                break;
         }
 
         if ($this->current_view == 'event') {
@@ -896,8 +896,8 @@ class Calendar_User {
         }
 
         if (isset($_REQUEST['m']) &&
-            isset($_REQUEST['y']) &&
-            isset($_REQUEST['d'])) {
+        isset($_REQUEST['y']) &&
+        isset($_REQUEST['d'])) {
             $vars['date'] = mktime(0,0,0, $_REQUEST['m'], $_REQUEST['d'], $_REQUEST['y']);
             unset($vars['m']);
             unset($vars['d']);
@@ -961,7 +961,7 @@ class Calendar_User {
         if ($current_view == 'day') {
             require_once 'Calendar/Day.php';
             $oDay = new Calendar_Day($this->calendar->int_year, $this->calendar->int_month,
-                                         $this->calendar->int_day);
+            $this->calendar->int_day);
             $left_arrow_time = $oDay->prevDay('timestamp');
             $right_arrow_time = $oDay->nextDay('timestamp');
             $left_link_title = dgettext('calendar', 'Previous day');
@@ -1114,20 +1114,20 @@ class Calendar_User {
         foreach ($result as $schedule) {
             $tpl = array();
             switch ($schedule->show_upcoming) {
-            case 1:
-                // one week
-                $days_ahead = 7;
-                break;
+                case 1:
+                    // one week
+                    $days_ahead = 7;
+                    break;
 
-            case 2:
-                // two weeks
-                $days_ahead = 14;
-                break;
+                case 2:
+                    // two weeks
+                    $days_ahead = 14;
+                    break;
 
-            case 3:
-                // one month
-                $days_ahead = 30;
-                break;
+                case 3:
+                    // one month
+                    $days_ahead = 30;
+                    break;
             }
 
             $enddate = $startdate + (86400 * $days_ahead);

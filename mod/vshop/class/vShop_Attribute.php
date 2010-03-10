@@ -1,26 +1,26 @@
 <?php
 /**
-    * vshop - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vshop - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class vShop_Attribute {
 
@@ -210,7 +210,7 @@ class vShop_Attribute {
         }
 
         if($links)
-            return implode(' | ', $links);
+        return implode(' | ', $links);
     }
 
     public function delete()
@@ -244,7 +244,7 @@ class vShop_Attribute {
         $tpl['TITLE'] = $this->viewLink();
 
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }
@@ -267,7 +267,7 @@ class vShop_Attribute {
             $links[] = javascript('confirm', $js);
         }
 
-//        $tpl['ATTRIBUTE_TITLE'] = $this->getTitle(true);
+        //        $tpl['ATTRIBUTE_TITLE'] = $this->getTitle(true);
         $tpl['ATTRIBUTE_SET'] = $this->getSet(true);
         $tpl['ATTRIBUTE_VALUE'] = $this->getValue(true);
         $tpl['ATTRIBUTE_PRICE_PREFIX'] = $this->price_prefix;
@@ -276,7 +276,7 @@ class vShop_Attribute {
         $tpl['ATTRIBUTE_WEIGHT_MOD'] = $this->getWeight_mod(true);
 
         if($links)
-            $tpl['ATTRIBUTE_LINKS'] = implode(' | ', $links);
+        $tpl['ATTRIBUTE_LINKS'] = implode(' | ', $links);
 
         return $tpl;
     }

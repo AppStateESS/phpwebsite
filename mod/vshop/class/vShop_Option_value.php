@@ -1,26 +1,26 @@
 <?php
 /**
-    * vshop - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vshop - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class vShop_Option_value {
 
@@ -68,7 +68,7 @@ class vShop_Option_value {
 
     public function setSort($sort)
     {
-//print_r($sort); exit;
+        //print_r($sort); exit;
         $this->sort = (int)$sort;
     }
 
@@ -125,10 +125,10 @@ class vShop_Option_value {
             $links[] = PHPWS_Text::secureLink(dgettext('vshop', 'Edit option value'), 'vshop', $vars);
         }
 
-//        $links = array_merge($links, vShop::navLinks());
+        //        $links = array_merge($links, vShop::navLinks());
 
         if($links)
-            return implode(' | ', $links);
+        return implode(' | ', $links);
     }
 
     public function delete()
@@ -145,7 +145,7 @@ class vShop_Option_value {
 
     public function rowTag()
     {
-//        $vars['id'] = $this->id;
+        //        $vars['id'] = $this->id;
         $vars['option_value_id'] = $this->id;
         $links = array();
 
@@ -165,7 +165,7 @@ class vShop_Option_value {
         $tpl['SORT'] = $this->sort;
 
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }
@@ -177,7 +177,7 @@ class vShop_Option_value {
         $vars['option_set_id'] = $this->set_id;
         $links = array();
 
-//        $links[] = $this->addLink(true) . ' ' . $this->addLink();
+        //        $links[] = $this->addLink(true) . ' ' . $this->addLink();
 
         if (Current_User::allow('vshop', 'settings')) {
             $vars['aop']  = 'edit_option_value';
@@ -194,7 +194,7 @@ class vShop_Option_value {
         $tpl['VALUE_TITLE'] = $this->viewLink();
 
         if($links)
-            $tpl['VALUE_LINKS'] = implode(' | ', $links);
+        $tpl['VALUE_LINKS'] = implode(' | ', $links);
 
         return $tpl;
     }
@@ -202,11 +202,11 @@ class vShop_Option_value {
     public function save()
     {
         $db = new PHPWS_DB('vshop_option_values');
-//print_r($db); exit;
-//        $db->setTestMode();
-//print_r($this); exit;
+        //print_r($db); exit;
+        //        $db->setTestMode();
+        //print_r($this); exit;
         $result = $db->saveObject($this);
-//print_r($result); exit;
+        //print_r($result); exit;
         if (PEAR::isError($result)) {
             return $result;
         }

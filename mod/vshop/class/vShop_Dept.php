@@ -1,26 +1,26 @@
 <?php
 /**
-    * vshop - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vshop - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class vShop_Dept {
 
@@ -157,7 +157,7 @@ class vShop_Dept {
         $key = new Key($this->key_id);
 
         if (!$key->allowView()) {
-            Current_User::requireLogin();            
+            Current_User::requireLogin();
         }
 
         Layout::addPageTitle($this->getTitle());
@@ -179,7 +179,7 @@ class vShop_Dept {
             }
         } else {
             if (Current_User::allow('vshop', 'edit_items'))
-                $tpl['EMPTY'] = dgettext('vshop', 'Click on "New item" to start.');
+            $tpl['EMPTY'] = dgettext('vshop', 'Click on "New item" to start.');
         }
 
         $key->flag();
@@ -209,7 +209,7 @@ class vShop_Dept {
         $qty = $db->count();
         return $qty;
     }
-    
+
 
     public function links()
     {
@@ -220,19 +220,19 @@ class vShop_Dept {
             $vars['dept_id'] = $this->id;
             $links[] = PHPWS_Text::secureLink(dgettext('vshop', 'Add Item'), 'vshop', $vars);
         }
-        
+
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['id'] = $this->id;
             $vars['aop']  = 'edit_dept';
             $links[] = PHPWS_Text::secureLink(dgettext('vshop', 'Edit department'), 'vshop', $vars);
         }
 
-        if (is_array(vShop::navLinks())) { 
+        if (is_array(vShop::navLinks())) {
             $links = array_merge($links, vShop::navLinks());
         }
 
         if($links)
-            return implode(' | ', $links);
+        return implode(' | ', $links);
     }
 
     public function delete()
@@ -245,7 +245,7 @@ class vShop_Dept {
         $db = new PHPWS_DB('vshop_items');
         $db->addWhere('dept_id', $this->id);
         PHPWS_Error::logIfError($db->delete());
-        
+
         /* delete the dept */
         $db = new PHPWS_DB('vshop_depts');
         $db->addWhere('id', $this->id);
@@ -284,7 +284,7 @@ class vShop_Dept {
         $tpl['ITEMS'] = $this->getQtyItems();
 
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }

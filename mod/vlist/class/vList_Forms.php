@@ -1,26 +1,26 @@
 <?php
 /**
-    * vlist - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vlist - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class vList_Forms {
     public $vlist = null;
@@ -29,57 +29,57 @@ class vList_Forms {
     {
         switch ($type) {
 
-        case 'new_listing':
-        case 'edit_listing':
-            if (empty($this->vlist->listing)) {
-                $this->vlist->loadListing();
-            }
-            $this->editListing();
-            break;
+            case 'new_listing':
+            case 'edit_listing':
+                if (empty($this->vlist->listing)) {
+                    $this->vlist->loadListing();
+                }
+                $this->editListing();
+                break;
 
-        case 'new_group':
-        case 'edit_group':
-            if (empty($this->vlist->group)) {
-                $this->vlist->loadGroup();
-            }
-            $this->vlist->panel->setCurrentTab('groups');
-            $this->editGroup();
-            break;
+            case 'new_group':
+            case 'edit_group':
+                if (empty($this->vlist->group)) {
+                    $this->vlist->loadGroup();
+                }
+                $this->vlist->panel->setCurrentTab('groups');
+                $this->editGroup();
+                break;
 
-        case 'listings':
-            $this->vlist->panel->setCurrentTab('listings');
-            $this->listListings(1, 1);
-            break;
+            case 'listings':
+                $this->vlist->panel->setCurrentTab('listings');
+                $this->listListings(1, 1);
+                break;
 
-        case 'approvals':
-            $this->vlist->panel->setCurrentTab('approvals');
-            $this->listListings(0);
-            break;
+            case 'approvals':
+                $this->vlist->panel->setCurrentTab('approvals');
+                $this->listListings(0);
+                break;
 
-        case 'inactives':
-            $this->vlist->panel->setCurrentTab('inactives');
-            $this->listListings(null, 0);
-            break;
+            case 'inactives':
+                $this->vlist->panel->setCurrentTab('inactives');
+                $this->listListings(null, 0);
+                break;
 
-        case 'groups':
-            $this->vlist->panel->setCurrentTab('groups');
-            $this->listGroups();
-            break;
+            case 'groups':
+                $this->vlist->panel->setCurrentTab('groups');
+                $this->listGroups();
+                break;
 
-        case 'elements':
-            $this->vlist->panel->setCurrentTab('elements');
-            $this->listElements();
-            break;
+            case 'elements':
+                $this->vlist->panel->setCurrentTab('elements');
+                $this->listElements();
+                break;
 
-        case 'settings':
-            $this->vlist->panel->setCurrentTab('settings');
-            $this->editSettings();
-            break;
+            case 'settings':
+                $this->vlist->panel->setCurrentTab('settings');
+                $this->editSettings();
+                break;
 
-        case 'info':
-            $this->vlist->panel->setCurrentTab('info');
-            $this->showInfo();
-            break;
+            case 'info':
+                $this->vlist->panel->setCurrentTab('info');
+                $this->showInfo();
+                break;
 
         }
 
@@ -159,7 +159,7 @@ class vList_Forms {
             $ptags['UPDATED_SORT'] = null;
         }
 
-        if (!isset($_REQUEST['aop'])) {        
+        if (!isset($_REQUEST['aop'])) {
             $ptags['ALPHA_CLICK'] = $this->vlist->alpha_click();
         }
 
@@ -172,8 +172,8 @@ class vList_Forms {
         /* need to add the extras here somehow maybe */
         if (isset($_REQUEST['search']) && !empty($_REQUEST['search'])) {
             unset($_REQUEST['browseLetter']);
-//            unset($_REQUEST['groups']);
-//            unset($_REQUEST['owner']);
+            //            unset($_REQUEST['groups']);
+            //            unset($_REQUEST['owner']);
         }
 
         /* if the alpha click list is being used */
@@ -183,8 +183,8 @@ class vList_Forms {
             } else {
                 $pager->db->addWhere('title', $_REQUEST['browseLetter'].'%', 'LIKE');
             }
-        } 
-        
+        }
+
         /* if it's a list by group */
         if ($group) {
             $_REQUEST['groups'] = $group;
@@ -226,7 +226,7 @@ class vList_Forms {
             }
         }
 
-        /* search by group */ 
+        /* search by group */
         if (isset($_REQUEST['groups'])) {
             $pager->db->addColumn('vlist_group_items.*');
             $pager->db->addWhere('vlist_listing.id', 'vlist_group_items.listing_id');
@@ -234,7 +234,7 @@ class vList_Forms {
             $pager->db->addGroupBy('vlist_listing.id'); // was causing probs, incomplete results
         }
 
-        /* search by owner */ 
+        /* search by owner */
         if (isset($_REQUEST['owner'])) {
             $pager->db->addWhere('owner_id', $_REQUEST['owner']);
         }
@@ -261,15 +261,15 @@ class vList_Forms {
                     }
                     /* unset the filters if a search is being done */
                     /* doesn't seem to be working not sure why */
-//                    if (isset($_REQUEST['search']) && !empty($_REQUEST['search'])) {
+                    //                    if (isset($_REQUEST['search']) && !empty($_REQUEST['search'])) {
                     if (isset($_REQUEST['pager_c_search']) && !empty($_REQUEST['pager_c_search'])) {
                         if (isset($_REQUEST['UNI_' . $id])) {
                             unset($_REQUEST['UNI_' . $id . '%5B' . $_REQUEST['UNI_' . $id] . '%5D']);
                         }
                     }
                     if ($type == 'Checkbox' || $type == 'Dropbox' || $type == 'Multiselect' || $type == 'Radiobutton') {
-//print_r($_REQUEST['UNI_' . $id]);
-                        
+                        //print_r($_REQUEST['UNI_' . $id]);
+
                         if (isset($_REQUEST['UNI_' . $id])) {
                             foreach ($_REQUEST['UNI_' . $id] as $option) {
                                 $all_options[$id][] = $option;
@@ -316,7 +316,7 @@ class vList_Forms {
                     }
                 }
 
-            } 
+            }
         }
 
         /* set the default sorts */
@@ -352,9 +352,9 @@ class vList_Forms {
         $pager->addPageTags($ptags);
         $pager->addToggle('class="toggle1"');
         $pager->setSearch('vlist_listing.title', 'vlist_listing.description');
-//        $pager->cacheQueries();
-// $pager->db->setTestMode();
-// print_r($ptags); //exit();
+        //        $pager->cacheQueries();
+        // $pager->db->setTestMode();
+        // print_r($ptags); //exit();
         $this->vlist->content = $pager->get();
 
         /* set the list/page title */
@@ -374,7 +374,7 @@ class vList_Forms {
     {
         $ptags['TITLE_HEADER'] = dgettext('vlist', 'Title');
         $ptags['DESCRIPTION_HEADER'] = dgettext('vlist', 'Description');
-        if (!isset($_REQUEST['aop'])) {        
+        if (!isset($_REQUEST['aop'])) {
             $ptags['ALPHA_CLICK'] = $this->vlist->alpha_click();
         }
 
@@ -485,8 +485,8 @@ class vList_Forms {
         $form->setLabel('title', dgettext('vlist', 'Title'));
 
         if (isset($_REQUEST['uop']) && $_REQUEST['uop'] == 'submit_listing') {
-//            $form->addHidden('approved', null);
-//            $form->addHidden('active', null);
+            //            $form->addHidden('approved', null);
+            //            $form->addHidden('active', null);
         } else {
             $form->addCheckbox('approved', 1);
             $form->setMatch('approved', $listing->approved);
@@ -617,11 +617,11 @@ class vList_Forms {
         $form->addRadio('block_order_by', array(0, 1));
         $form->setLabel('block_order_by', array(dgettext('vlist', 'Most recent'), dgettext('vlist', 'Random')));
         $form->setMatch('block_order_by', PHPWS_Settings::get('vlist', 'block_order_by'));
-    
+
         $form->addRadio('main_order_by', array(0, 1, 2, 3));
         $form->setLabel('main_order_by', array(dgettext('vlist', 'Title'), dgettext('vlist', 'Created'), dgettext('vlist', 'Updated'), dgettext('vlist', 'Random')));
         $form->setMatch('main_order_by', PHPWS_Settings::get('vlist', 'main_order_by'));
-    
+
         $form->addCheckbox('enable_elements', 1);
         $form->setMatch('enable_elements', PHPWS_Settings::get('vlist', 'enable_elements'));
         $form->setLabel('enable_elements', dgettext('vlist', 'Enable extra fields'));
@@ -713,7 +713,7 @@ class vList_Forms {
         $form->setLabel('notify_edit', dgettext('vlist', 'Send admin notice of edits'));
 
         $form->addSubmit('save', dgettext('vlist', 'Save settings'));
-        
+
         $tpl = $form->getTemplate();
         $tpl['GENERAL_LABEL'] = dgettext('vlist', 'General Settings');
         $tpl['MAIN_SORT_LABEL'] = dgettext('vlist', 'Default sort order for listings');
@@ -732,7 +732,7 @@ class vList_Forms {
         } else {
             $match = null;
         }
-        
+
         $types['Dropbox'] = dgettext('vlist', 'Dropbox');
         $types['Textfield'] = dgettext('vlist', 'Textfield');
         $types['Textarea'] = dgettext('vlist', 'Textarea');
@@ -759,7 +759,7 @@ class vList_Forms {
     }
 
 
-    public function getExtrasForm() 
+    public function getExtrasForm()
     {
         $listing = & $this->vlist->listing;
         $form = null;
@@ -780,7 +780,7 @@ class vList_Forms {
                 $db->addWhere('element_id', $id);
                 $db->addWhere('listing_id', $listing->id);
                 $result = $db->select();
-//print_r($result); exit;
+                //print_r($result); exit;
                 if ($result) {
                     $match = array();
                     if ($type == 'Checkbox' || $type == 'Multiselect') {
@@ -796,7 +796,7 @@ class vList_Forms {
                             $match = $option['value'];
                         }
                     }
-                } else { 
+                } else {
                     $match = null;
                 }
                 $class = 'UNI_' . $type;
@@ -830,7 +830,7 @@ class vList_Forms {
             $tpl['GROUP_SELECT'] = $this->vlist->getItemSelect('group', null, 'groups');
             $tpl['GROUP_LABEL'] = PHPWS_Settings::get('vlist', 'groups_title');
         }
-        
+
         if (PHPWS_Settings::get('vlist', 'enable_elements')) {
             $tpl['EXTRAS'] = null;
             $db = new PHPWS_DB('vlist_element');
@@ -858,7 +858,7 @@ class vList_Forms {
                 $tpl['EXTRAS'] = dgettext('vlist', 'Sorry, no custom elements have been setup.');
             }
         }
-        
+
         $tpl['CRITERIA_LABEL'] = dgettext('vlist', 'Criteria');
         $tpl['SEARCH_LABEL'] = dgettext('vlist', 'Search');
         $tpl['TIP_SELECT'] = dgettext('vlist', 'Select one or more of the available options below to filter a list of members. It is possible to get too specific. If your search returns an empty list, try selecting fewer criteria.');
@@ -872,7 +872,7 @@ class vList_Forms {
 
     public function showInfo()
     {
-        
+
         $filename = 'mod/vlist/docs/README';
         if (@fopen($filename, "rb")) {
             $handle = fopen($filename, "rb");

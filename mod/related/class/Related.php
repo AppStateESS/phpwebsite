@@ -168,7 +168,7 @@ class Related {
 
     public function moveFriendUp($position){
         if (empty($this->friends))
-            return FALSE;
+        return FALSE;
 
         $friends = $this->friends;
         $this->friends = array();
@@ -186,12 +186,12 @@ class Related {
         ksort($friends);
 
         foreach ($friends as $friend)
-            $this->friends[] = $friend;
+        $this->friends[] = $friend;
     }
 
     public function moveFriendDown($position){
         if (empty($this->friends))
-            return FALSE;
+        return FALSE;
 
         $friends = $this->friends;
         $this->friends = array();
@@ -211,12 +211,12 @@ class Related {
         ksort($friends);
 
         foreach ($friends as $friend)
-            $this->friends[] = $friend;
+        $this->friends[] = $friend;
     }
 
     public function removeFriend($position){
         if (empty($this->friends))
-            return FALSE;
+        return FALSE;
 
         $friends = $this->friends;
         $this->friends = array();
@@ -230,7 +230,7 @@ class Related {
         unset($friends[$position]);
 
         foreach ($friends as $friend)
-            $this->friends[] = $friend;
+        $this->friends[] = $friend;
     }
 
 
@@ -275,17 +275,17 @@ class Related {
         }
 
         switch ($mode){
-        case 'create':
-            $body = Related_Action::create($related);
-            break;
+            case 'create':
+                $body = Related_Action::create($related);
+                break;
 
-        case 'edit':
-            $body = Related_Action::edit($related);
-            break;
+            case 'edit':
+                $body = Related_Action::edit($related);
+                break;
 
-        case 'view':
-            $body = Related_Action::view($related);
-            break;
+            case 'view':
+                $body = Related_Action::view($related);
+                break;
         }
 
         if (!empty($body)) {
@@ -303,10 +303,10 @@ class Related {
         $result = $db->saveObject($this);
 
         if (PEAR::isError($result))
-            return $result;
+        return $result;
 
         if (!is_array($this->friends))
-            return;
+        return;
 
         $count = 0;
         $this->clearRelated();

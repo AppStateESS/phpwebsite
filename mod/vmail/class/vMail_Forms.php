@@ -1,26 +1,26 @@
 <?php
 /**
-    * vmail - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vmail - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class vMail_Forms {
     public $vmail = null;
@@ -29,35 +29,35 @@ class vMail_Forms {
     {
         switch ($type) {
 
-        case 'new_recipient':
-        case 'edit_recipient':
-            if (empty($this->vmail->recipient)) {
-                $this->vmail->loadRecipient();
-            }
-            $this->editRecipient();
-            break;
+            case 'new_recipient':
+            case 'edit_recipient':
+                if (empty($this->vmail->recipient)) {
+                    $this->vmail->loadRecipient();
+                }
+                $this->editRecipient();
+                break;
 
-        case 'list_recipients':
-            $this->vmail->panel->setCurrentTab('list_recipients');
-            $this->listRecipients();
-            break;
+            case 'list_recipients':
+                $this->vmail->panel->setCurrentTab('list_recipients');
+                $this->listRecipients();
+                break;
 
-        case 'settings':
-            $this->vmail->panel->setCurrentTab('settings');
-            $this->editSettings();
-            break;
+            case 'settings':
+                $this->vmail->panel->setCurrentTab('settings');
+                $this->editSettings();
+                break;
 
-        case 'compose_message':
-            if (empty($this->vmail->recipient)) {
-                $this->vmail->loadRecipient();
-            }
-            $this->composeMessage();
-            break;
+            case 'compose_message':
+                if (empty($this->vmail->recipient)) {
+                    $this->vmail->loadRecipient();
+                }
+                $this->composeMessage();
+                break;
 
-        case 'info':
-            $this->vmail->panel->setCurrentTab('info');
-            $this->showInfo();
-            break;
+            case 'info':
+                $this->vmail->panel->setCurrentTab('info');
+                $this->showInfo();
+                break;
 
         }
 
@@ -197,7 +197,7 @@ class vMail_Forms {
         $form->setLabel('use_captcha', dgettext('vmail', 'Use graphical confirmation on vmail form (CAPTCHA)'));
 
         $form->addSubmit('save', dgettext('vmail', 'Save settings'));
-        
+
         $tpl = $form->getTemplate();
         $tpl['SETTINGS_LABEL'] = dgettext('vmail', 'General Settings');
 
@@ -213,7 +213,7 @@ class vMail_Forms {
         $key = new Key($recipient->key_id);
 
         if (!$key->allowView()) {
-            Current_User::requireLogin();            
+            Current_User::requireLogin();
         }
 
         if (isset($_POST['name'])) {
@@ -269,7 +269,7 @@ class vMail_Forms {
 
         $form->addText('confirm_phrase');
         $form->setLabel('confirm_phrase', dgettext('vmail', 'Confirm text'));
- 
+
         if (PHPWS_Settings::get('vmail', 'use_captcha') && extension_loaded('gd')) {
             $result = $this->confirmGraphic();
             if (PEAR::isError($result)) {
@@ -280,7 +280,7 @@ class vMail_Forms {
         }
 
         $form->addSubmit('submit', dgettext('vmail', 'Send Message'));
- 
+
         $tpl = $form->getTemplate();
         $tpl['FORM_LABEL'] = dgettext('vmail', 'Compose message');
         $tpl['FORM_INSTRUCTION'] = dgettext('vmail', 'All fields are required.');
@@ -290,7 +290,7 @@ class vMail_Forms {
         $this->vmail->title = sprintf(dgettext('vmail', 'Send a message to %s'), $recipient->getLabel(true));
         $this->vmail->content = PHPWS_Template::process($tpl, 'vmail', 'compose_message.tpl');
     }
-    
+
 
     public function confirmGraphic()
     {

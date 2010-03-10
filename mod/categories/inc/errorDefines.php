@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 define('CATEGORY_NOT_FOUND',    -1);
 define('CAT_DB_PROBLEM',        -2);
 define('CAT_NO_MOD_TABLE',      -3);

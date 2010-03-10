@@ -37,74 +37,74 @@ class Categories_Action {
         }
 
         switch ($subaction) {
-        case 'post_item':
-            if (isset($_POST['quick_add'])) {
-                Categories_Action::quickAdd($_POST['category_name'], $_POST['key_id']);
-            } else {
-                Categories_Action::postItem();
-            }
+            case 'post_item':
+                if (isset($_POST['quick_add'])) {
+                    Categories_Action::quickAdd($_POST['category_name'], $_POST['key_id']);
+                } else {
+                    Categories_Action::postItem();
+                }
 
-            PHPWS_Core::goBack();
-            break;
+                PHPWS_Core::goBack();
+                break;
 
-        case 'deleteCategory':
-            if (Current_User::authorized('categories', 'delete_categories')) {
-                Categories::delete($category);
-            } else {
-                Current_User::disallow();
-            }
-            PHPWS_Core::goBack();
-            break;
+            case 'deleteCategory':
+                if (Current_User::authorized('categories', 'delete_categories')) {
+                    Categories::delete($category);
+                } else {
+                    Current_User::disallow();
+                }
+                PHPWS_Core::goBack();
+                break;
 
-        case 'edit':
-            if ($category->id) {
-                $title = dgettext('categories', 'Update Category');
-            } else {
+            case 'edit':
+                if ($category->id) {
+                    $title = dgettext('categories', 'Update Category');
+                } else {
+                    $title = dgettext('categories', 'Add Category');
+                }
+
+                $content[] = Categories_Action::edit($category);
+                break;
+
+            case 'list':
+                $panel->setCurrentTab('list');
+                $title = dgettext('categories', 'Manage Categories');
+                $content[] = Categories_Action::category_list();
+                break;
+
+            case 'new':
                 $title = dgettext('categories', 'Add Category');
-            }
+                $content[] = Categories_Action::edit($category);
+                break;
 
-            $content[] = Categories_Action::edit($category);
-            break;
-
-        case 'list':
-            $panel->setCurrentTab('list');
-            $title = dgettext('categories', 'Manage Categories');
-            $content[] = Categories_Action::category_list();
-            break;
-
-        case 'new':
-            $title = dgettext('categories', 'Add Category');
-            $content[] = Categories_Action::edit($category);
-            break;
-
-        case 'set_item_category':
-            $popup = Categories_Action::categoryPopup();
-            if ($popup) {
-                Layout::nakedDisplay($popup);
-            } else {
-                PHPWS_Core::errorPage('404');
-            }
-            break;
-
-        case 'postCategory':
-            $title = dgettext('categories', 'Manage Categories');
-            $result = Categories_Action::postCategory($category);
-            if (is_array($result)) {
-                $content[] = Categories_Action::edit($category, $result);
-            } else {
-                $result = $category->save();
-                if (PEAR::isError($result)) {
-                    PHPWS_Error::log($result);
-                    $message = dgettext('categories', 'Unable to save category.') . ' ' .  dgettext('categories', 'Please contact your administrator.');
+            case 'set_item_category':
+                $popup = Categories_Action::categoryPopup();
+                if ($popup) {
+                    Layout::nakedDisplay($popup);
+                } else {
+                    PHPWS_Core::errorPage('404');
                 }
-                else {
-                    $message = dgettext('categories', 'Category saved successfully.');
+                break;
+
+            case 'postCategory':
+                $title = dgettext('categories', 'Manage Categories');
+                $result = Categories_Action::postCategory($category);
+                if (is_array($result)) {
+                    $content[] = Categories_Action::edit($category, $result);
+                } else {
+                    $result = $category->save();
+                    if (PEAR::isError($result)) {
+                        PHPWS_Error::log($result);
+                        $message = dgettext('categories', 'Unable to save category.') . ' ' .  dgettext('categories', 'Please contact your administrator.');
+                    }
+                    else {
+                        $message = dgettext('categories', 'Category saved successfully.');
+                    }
+
+                    Categories_Action::sendMessage($message, 'list');
                 }
 
-                Categories_Action::sendMessage($message, 'list');
-            }
-
-            break;
+                break;
         }
 
         $template['TITLE']   = $title;
@@ -146,17 +146,17 @@ class Categories_Action {
         }
 
         switch ($action) {
-        case 'view':
-            if (isset($_REQUEST['id'])) {
-                $id = & $_REQUEST['id'];
-            }
+            case 'view':
+                if (isset($_REQUEST['id'])) {
+                    $id = & $_REQUEST['id'];
+                }
 
-            if (isset($_REQUEST['ref_mod'])) {
-                $mod = & $_REQUEST['ref_mod'];
-            }
+                if (isset($_REQUEST['ref_mod'])) {
+                    $mod = & $_REQUEST['ref_mod'];
+                }
 
-            $content = Categories_Action::viewCategory($id, $mod);
-            break;
+                $content = Categories_Action::viewCategory($id, $mod);
+                break;
         }
 
         Layout::add($content);

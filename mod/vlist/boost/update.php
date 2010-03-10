@@ -1,42 +1,42 @@
 <?php
 /**
-    * vlist - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vlist - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 function vlist_update(&$content, $currentVersion)
 {
-//    $home_dir = PHPWS_Boost::getHomeDir();
+    //    $home_dir = PHPWS_Boost::getHomeDir();
     switch ($currentVersion) {
 
         case version_compare($currentVersion, '1.0.1', '<'):
             $content[] = '<pre>';
-    
-            $files = array('templates/block.tpl', 
-//                            'templates/set_status.tpl', 
+
+            $files = array('templates/block.tpl',
+            //                            'templates/set_status.tpl',
                             'templates/edit_settings.tpl'
-            );
-            vlistUpdateFiles($files, $content);
-            
-            $content[] = '1.0.1 changes
+                            );
+                            vlistUpdateFiles($files, $content);
+
+                            $content[] = '1.0.1 changes
 ----------------
 + Added setting for default sort order
 + Added setting for default sort order
@@ -51,7 +51,7 @@ function vlist_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '1.0.2', '<'):
             $content[] = '<pre>';
-    
+
             $db = new PHPWS_DB('vlist_element');
             if (!$db->isTableColumn('private')) {
                 if (PHPWS_Error::logIfError($db->addTableColumn('private', 'smallint NOT NULL default 0'))) {
@@ -61,8 +61,8 @@ function vlist_update(&$content, $currentVersion)
                     $content[] = '--- Created private column on vlist_element table.';
                 }
             }
-    
-            $files = array( 'templates/edit_checkbox.tpl', 
+
+            $files = array( 'templates/edit_checkbox.tpl',
                             'templates/edit_dropbox.tpl', 
                             'templates/edit_multiselect.tpl', 
                             'templates/edit_radiobutton.tpl', 
@@ -73,10 +73,10 @@ function vlist_update(&$content, $currentVersion)
                             'img/locked.png', 
                             'img/unlocked.png', 
                             'templates/edit_settings.tpl'
-            );
-            vlistUpdateFiles($files, $content);
-            
-            $content[] = '1.0.2 changes
+                            );
+                            vlistUpdateFiles($files, $content);
+
+                            $content[] = '1.0.2 changes
 ----------------
 + Added setting for internal only fields
 + Added setting for user profile privacy
@@ -97,15 +97,15 @@ function vlist_update(&$content, $currentVersion)
                 return false;
             } else {
                 $content[] = '<pre>';
-        
-                $files = array('templates/list_listings.tpl', 
+
+                $files = array('templates/list_listings.tpl',
                                 'img/approved.png', 
                                 'img/unapproved.png', 
                                 'templates/edit_listing.tpl'
-                );
-                vlistUpdateFiles($files, $content);
-                
-                $content[] = '1.0.3 changes
+                                );
+                                vlistUpdateFiles($files, $content);
+
+                                $content[] = '1.0.3 changes
 ----------------
 + Fixed bug I introduced in 1.0.2 that prevented editing values
   in custom field setup

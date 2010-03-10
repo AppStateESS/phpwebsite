@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 define('CATEGORIES_ALLOW_WYSIWYG',    FALSE);
 define('DEFAULT_UNCATEGORIZED_TITLE', dgettext('categories', 'Uncategorized'));

@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 PHPWS_Core::requireConfig('access');
 
@@ -136,8 +136,8 @@ class Access_Shortcut {
     {
         $js['QUESTION'] = dgettext('access', 'Are you sure you want to delete this shortcut?');
         $js['ADDRESS']  = sprintf('index.php?module=access&amp;command=delete_shortcut&amp;shortcut_id=%s&amp;authkey=%s',
-                                  $this->id,
-                                  Current_User::getAuthKey());
+        $this->id,
+        Current_User::getAuthKey());
         $js['LINK'] = dgettext('access', 'Delete');
         $tags[] = javascript('confirm', $js);
 

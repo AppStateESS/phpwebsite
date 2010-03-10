@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 $proper_name  = 'Related';
 $version      = '0.2.1';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/related/check.xml';

@@ -24,8 +24,8 @@ msgstr ""
 "Project-Id-Version: PHPWS_1_6_2,SKELETON1_0_0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-12-16 10:31-0500\n"
-"PO-Revision-Date: 2009-05-25 10:51+0100\n"
-"Last-Translator: HanV <hanv@users.sourceforge.net>\n"
+"PO-Revision-Date: 2010-02-01 11:38+0100\n"
+"Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: HanV\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -55,7 +55,7 @@ msgid "Add/Edit skeleton"
 msgstr "Toevoegen/Wijzigen skelet"
 
 msgid "Although the skeleton mod demonstrates a lot of basic core functionality, and a reasonable way to construct a module, the phpwebsite core is really very sophisticated and flexible. If I were to attempt to show everything possible in this one module, it would just get confusing :) Please spend some time reading the stuff in /docs/ as well as look through the skeleton mod code. Also, skim through the code in some of the other mods, such as blog and calendar and so on."
-msgstr "De skeleton module biedt veel basis functionaliteit en een manier om modules te maken maar phpwebsite is zelf flexibel en mooi opgezet. In de documentatie (/docs) zijn de opties beschreven. Kijk ook naar de opzet van modules als skeleton, blog, calender..."
+msgstr "De skeleton module biedt veel basis functionaliteit en een manier om modules te maken maar phpwebsite is zelf flexibel en mooi opgezet. In de documentatie (/docs) zijn de opties beschreven. Kijk ook naar de opzet van modules als skeleton, blog, calendar..."
 
 msgid "An error occurred when accessing this skeleton's bones."
 msgstr "Het benaderen van de botten van het skelet is mislukt."
@@ -88,7 +88,7 @@ msgid "Change settings (Unrestricted only)"
 msgstr "Wijzig instellingen (Alleen onbeperkte)"
 
 msgid "Check your %s then create a %s to begin"
-msgstr "Controleer uw %s en maak een %s om te beginnen"
+msgstr "Controleer uw %s en maak daarna een %s om te beginnen"
 
 msgid "Click on \"New bone\" to start."
 msgstr "Klik op \"Nieuw bot\" om te beginnen."
@@ -118,10 +118,10 @@ msgid "Details"
 msgstr "Details"
 
 msgid "Died"
-msgstr "Overleden"
+msgstr "Aangemaakt"
 
 msgid "Died, date/time"
-msgstr "Overleden datum/tijd"
+msgstr "Aangemaakt op datum/tijd"
 
 msgid "Edit"
 msgstr "Wijzigen"
@@ -157,10 +157,10 @@ msgid "General Settings"
 msgstr "Algemene Instellingen"
 
 msgid "I have tried to demonstrate simple and basic uses of many of the methods for developing a phpwebsite module. Skeletons and bones are pretty straight forward item classes. Bones relate to skeletons. Skeletons use the core Key class. This enables lots of things like being able to use the Search class as well as Categories and easy Menu tools. The list views show the basics of using the DBPager class. Skeletons and bones demonstrate how to integrate a File Cabinet file manager. Skeletons are restricted to images and Bones are wide open. Be sure to check out the ease of use of the Link, Text, Form, Settings, Permissions and Layout classes for building intelligent and rich user experiences."
-msgstr "Ik heb geprobeerd het basis gebruik van de vele manieren om een phpwebsite module te maken te demonstreren. Skeletten en botten zijn recht-toe-recht-aan classes. een bot hoort bij een skelet. Een skelet gebruikt de class Key. Hierdoor zijn er mogelijkheden als het benutten van de Zoek class en de categorieen en de eenvoudige menu functies. De lijst toont alleen het basis gebruik van de class DBPager. Met skeletten en botten kan ook de bestandsbeheerder File Cabinet gebruikt worden. Een skelet gebruikt alleen afbeeldingen en botten zijn breder toepasbaar. Kijk naar het eenvoudige gebruik van Link, Text, Form, Settings, Permissions en Layout classes voor het maken van een rijke en slimme toepassing."
+msgstr "Ik heb geprobeerd het basis gebruik van de vele manieren om een phpwebsite module te maken te demonstreren. Skeletten en botten zijn recht-toe-recht-aan classes. Een bot hoort bij een skelet. Een skelet gebruikt de class Key. Hierdoor zijn er mogelijkheden als het benutten van de Zoek class en de categorieen en de eenvoudige menu functies. De lijst toont alleen het basisgebruik van de class DBPager. Met skeletten en botten kan ook de bestandsbeheerder File Cabinet gebruikt worden. Een skelet gebruikt alleen afbeeldingen, botten zijn breder toepasbaar. Kijk naar het eenvoudige gebruik van Link, Text, Form, Settings, Permissions en Layout classes voor het maken van een goede toepassing."
 
 msgid "If you would like to help out with the ongoing development of skeleton, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window)."
-msgstr "Wilt u helpen bij de ontwikkeling van skeleton of een andere module van de Verdon Vaillancourt, %s klik hier om te doneren %s (opent een nieuw venster))."
+msgstr "Wilt u helpen bij de ontwikkeling van skeleton of een andere module van de Verdon Vaillancourt, %s klik hier om te doneren %s (opent in een nieuw venster)."
 
 msgid "Important Information"
 msgstr "Belangrijke informatie"
@@ -244,7 +244,7 @@ msgid "Sorry, there are no skeletons available. You will have to create a skelet
 msgstr "Er is geen skelet beschikbaar. U moet er eerst een aanmaken."
 
 msgid "This is the first release of skeleton for the new 1.x series phpwebsite. This module is a simple demonstration module for people wishing to develop their own phpwebsite modules."
-msgstr "Dit is de eerste versie van skeleton voor de 1.x phpwebsite. Deze module is een eenvoudige demonstratie voor mensen die zelf een module in phpwebsite willen gaan maken."
+msgstr "Dit is de eerste versie van skeleton voor de 1.x phpwebsite. Deze module is een voorbeeld voor mensen die zelf een module in phpwebsite willen gaan maken."
 
 msgid "Title"
 msgstr "Titel"
@@ -269,4 +269,7 @@ msgstr "De beschrijving van dit skelet ontbreekt."
 
 msgid "You must give this skeleton a title."
 msgstr "De titel van dit skelet ontbreekt."
+
+msgid "Create your own skeletons."
+msgstr "Aanmaken skelet."
 

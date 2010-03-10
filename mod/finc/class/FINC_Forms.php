@@ -1,26 +1,26 @@
 <?php
 /**
-    * finc - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * finc - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class Finc_Forms {
     var $finc = null;
@@ -29,28 +29,28 @@ class Finc_Forms {
     {
         switch ($type) {
 
-        case 'new':
-        case 'edit_file':
-            if (empty($this->finc->file)) {
-                $this->finc->loadFile();
-            }
-            $this->editFile();
-            break;
+            case 'new':
+            case 'edit_file':
+                if (empty($this->finc->file)) {
+                    $this->finc->loadFile();
+                }
+                $this->editFile();
+                break;
 
-        case 'list':
-            $this->finc->panel->setCurrentTab('list');
-            $this->listFiles();
-            break;
+            case 'list':
+                $this->finc->panel->setCurrentTab('list');
+                $this->listFiles();
+                break;
 
-        case 'settings':
-            $this->finc->panel->setCurrentTab('settings');
-            $this->editSettings();
-            break;
+            case 'settings':
+                $this->finc->panel->setCurrentTab('settings');
+                $this->editSettings();
+                break;
 
-        case 'info':
-            $this->finc->panel->setCurrentTab('info');
-            $this->showInfo();
-            break;
+            case 'info':
+                $this->finc->panel->setCurrentTab('info');
+                $this->showInfo();
+                break;
 
         }
 
@@ -93,7 +93,7 @@ class Finc_Forms {
         $form->addCheck('active', 1);
         $form->setLabel('active', dgettext('finc', 'Active'));
         $form->setMatch('active', $file->active);
-        
+
         $tpl = $form->getTemplate();
         $tpl['DETAILS_LABEL'] = dgettext('finc', 'Details');
 
@@ -152,7 +152,7 @@ class Finc_Forms {
         $form->setLabel('show_description', dgettext('finc', 'Show description'));
 
         $form->addSubmit('save', dgettext('finc', 'Save settings'));
-        
+
         $tpl = $form->getTemplate();
         $tpl['SETTINGS_LABEL'] = dgettext('finc', 'General Settings');
 
@@ -163,7 +163,7 @@ class Finc_Forms {
 
     function showInfo()
     {
-        
+
         $filename = 'mod/finc/docs/README';
         if (@fopen($filename, "rb")) {
             $handle = fopen($filename, "rb");

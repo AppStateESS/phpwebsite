@@ -1,26 +1,26 @@
 <?php
 /**
-    * skeleton - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * skeleton - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class Skeleton_Skeleton {
 
@@ -159,7 +159,7 @@ class Skeleton_Skeleton {
         $key = new Key($this->key_id);
 
         if (!$key->allowView()) {
-            Current_User::requireLogin();            
+            Current_User::requireLogin();
         }
 
         Layout::addPageTitle($this->getTitle());
@@ -181,7 +181,7 @@ class Skeleton_Skeleton {
             }
         } else {
             if (Current_User::allow('skeleton', 'edit_bone'))
-                $tpl['EMPTY'] = dgettext('skeleton', 'Click on "New bone" to start.');
+            $tpl['EMPTY'] = dgettext('skeleton', 'Click on "New bone" to start.');
         }
 
         $key->flag();
@@ -211,7 +211,7 @@ class Skeleton_Skeleton {
         $qty = $db->count();
         return $qty;
     }
-    
+
 
     public function links()
     {
@@ -222,7 +222,7 @@ class Skeleton_Skeleton {
             $vars['skeleton_id'] = $this->id;
             $links[] = PHPWS_Text::secureLink(dgettext('skeleton', 'Add Bone'), 'skeleton', $vars);
         }
-        
+
         if (Current_User::allow('skeleton', 'edit_skeleton')) {
             $vars['id'] = $this->id;
             $vars['aop']  = 'edit_skeleton';
@@ -232,7 +232,7 @@ class Skeleton_Skeleton {
         $links = array_merge($links, Skeleton::navLinks());
 
         if($links)
-            return implode(' | ', $links);
+        return implode(' | ', $links);
     }
 
     public function delete()
@@ -245,7 +245,7 @@ class Skeleton_Skeleton {
         $db = new PHPWS_DB('skeleton_bones');
         $db->addWhere('skeleton_id', $this->id);
         PHPWS_Error::logIfError($db->delete());
-        
+
         /* delete the skeleton */
         $db = new PHPWS_DB('skeleton_skeletons');
         $db->addWhere('id', $this->id);
@@ -284,7 +284,7 @@ class Skeleton_Skeleton {
         $tpl['BONES'] = $this->getQtyBones();
 
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }

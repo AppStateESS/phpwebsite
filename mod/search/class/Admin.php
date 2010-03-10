@@ -1,12 +1,12 @@
 <?php
 
-  /**
-   * Allows administrator to see search results, change settings
-   * etc.
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Allows administrator to see search results, change settings
+ * etc.
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 class Search_Admin {
 
@@ -27,96 +27,96 @@ class Search_Admin {
         }
 
         switch ($command) {
-        case 'delete_keyword':
-        case 'add_keyword':
-        case 'remove_searchword':
-        case 'add_ignore':
-            if (!Current_User::authorized('search')) {
-                Current_User::disallow();
-            }
-            break;
+            case 'delete_keyword':
+            case 'add_keyword':
+            case 'remove_searchword':
+            case 'add_ignore':
+                if (!Current_User::authorized('search')) {
+                    Current_User::disallow();
+                }
+                break;
         }
 
         switch ($command) {
-        case 'keyword':
-            $template = Search_Admin::keyword();
-            break;
+            case 'keyword':
+                $template = Search_Admin::keyword();
+                break;
 
-        case 'ignore':
-            $template = Search_Admin::ignore();
-            break;
+            case 'ignore':
+                $template = Search_Admin::ignore();
+                break;
 
-        case 'settings':
-            $template = Search_Admin::settings();
-            break;
+            case 'settings':
+                $template = Search_Admin::settings();
+                break;
 
-        case 'close_admin':
-            unset($_SESSION['Search_Add_Words']);
-            unset($_SESSION['Search_Admin']);
-            PHPWS_Core::goBack();
-            break;
-
-        case 'delete_keyword':
-            Search_Admin::deleteKeyword();
-            PHPWS_Core::goBack();
-            break;
-
-        case 'add_parse_word':
-            if (!isset($_REQUEST['keyword'])) {
+            case 'close_admin':
+                unset($_SESSION['Search_Add_Words']);
+                unset($_SESSION['Search_Admin']);
                 PHPWS_Core::goBack();
-            }
-            Search_Admin::addParseWord($_REQUEST['keyword']);
-            Search_Admin::sendMessage(dgettext('search', 'Keywords added to admin menu.'), 'keyword');
-            break;
+                break;
 
-        case 'drop_keyword':
-            if (isset($_SESSION['Search_Add_Words'])) {
-                $array_key = array_search($_REQUEST['kw'], $_SESSION['Search_Add_Words']);
-                if ($array_key !==  FALSE) {
-                    unset($_SESSION['Search_Add_Words'][$array_key]);
+            case 'delete_keyword':
+                Search_Admin::deleteKeyword();
+                PHPWS_Core::goBack();
+                break;
+
+            case 'add_parse_word':
+                if (!isset($_REQUEST['keyword'])) {
+                    PHPWS_Core::goBack();
                 }
-            }
-            PHPWS_Core::goBack();
-            break;
+                Search_Admin::addParseWord($_REQUEST['keyword']);
+                Search_Admin::sendMessage(dgettext('search', 'Keywords added to admin menu.'), 'keyword');
+                break;
 
-        case 'add_keyword':
-            if (!isset($_GET['kw']) || !isset($_GET['key_id'])) {
+            case 'drop_keyword':
+                if (isset($_SESSION['Search_Add_Words'])) {
+                    $array_key = array_search($_REQUEST['kw'], $_SESSION['Search_Add_Words']);
+                    if ($array_key !==  FALSE) {
+                        unset($_SESSION['Search_Add_Words'][$array_key]);
+                    }
+                }
                 PHPWS_Core::goBack();
-            }
+                break;
 
-            Search_Admin::addKeyword($_GET['kw'], $_GET['key_id']);
-            PHPWS_Core::goBack();
-            break;
+            case 'add_keyword':
+                if (!isset($_GET['kw']) || !isset($_GET['key_id'])) {
+                    PHPWS_Core::goBack();
+                }
 
-        case 'remove_searchword':
-            if (!isset($_GET['kw']) || !isset($_GET['key_id'])) {
+                Search_Admin::addKeyword($_GET['kw'], $_GET['key_id']);
                 PHPWS_Core::goBack();
-            }
+                break;
 
-            Search_Admin::removeSearchword($_GET['kw'], $_GET['key_id']);
-            PHPWS_Core::goBack();
-            break;
+            case 'remove_searchword':
+                if (!isset($_GET['kw']) || !isset($_GET['key_id'])) {
+                    PHPWS_Core::goBack();
+                }
 
-        case 'add_ignore':
-            if (!isset($_GET['keyword'])) {
+                Search_Admin::removeSearchword($_GET['kw'], $_GET['key_id']);
                 PHPWS_Core::goBack();
-            }
-            Search_Admin::setIgnore($_GET['keyword'], 1);
-            PHPWS_Core::goBack();
-            break;
+                break;
 
-        case 'remove_ignore':
-            if (!isset($_GET['keyword'])) {
+            case 'add_ignore':
+                if (!isset($_GET['keyword'])) {
+                    PHPWS_Core::goBack();
+                }
+                Search_Admin::setIgnore($_GET['keyword'], 1);
                 PHPWS_Core::goBack();
-            }
-            Search_Admin::setIgnore($_GET['keyword'], 0);
-            PHPWS_Core::goBack();
-            break;
+                break;
 
-        case 'save_settings':
-            Search_Admin::saveSettings();
-            Search_Admin::sendMessage(dgettext('search', 'Settings saved'), 'settings');
-            break;
+            case 'remove_ignore':
+                if (!isset($_GET['keyword'])) {
+                    PHPWS_Core::goBack();
+                }
+                Search_Admin::setIgnore($_GET['keyword'], 0);
+                PHPWS_Core::goBack();
+                break;
+
+            case 'save_settings':
+                Search_Admin::saveSettings();
+                Search_Admin::sendMessage(dgettext('search', 'Settings saved'), 'settings');
+                break;
         }
 
         $template['MESSAGE'] = Search_Admin::getMessage();
@@ -266,7 +266,7 @@ class Search_Admin {
         $pager->setTemplate('pager.tpl');
         $pager->addRowTags('getTplTags');
 
-	$options['keyword'] = '';
+        $options['keyword'] = '';
         $options['delete_keyword'] = dgettext('search', 'Delete');
 
         // if entered in search box, remove
@@ -319,7 +319,7 @@ class Search_Admin {
         $pager->setTemplate('ignore.tpl');
         $pager->addRowTags('getTplTags');
 
-	$options['keyword'] = '';
+        $options['keyword'] = '';
         $options['delete_keyword'] = dgettext('search', 'Delete');
 
         // if entered in search box, remove

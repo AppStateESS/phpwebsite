@@ -1,18 +1,18 @@
 body.help-window {
-  	background-color : #CDDEEE;
+    background-color: #CDDEEE;
 }
 
 #help {
-	margin : 10px;
-	background-color : #CDDEEE;
+    margin: 10px;
+    background-color: #CDDEEE;
 }
 
 .help-link a:link {
-  text-decoration : none;
-  color : red;
+    text-decoration: none;
+    color: red;
 }
 
 .help-link a:visited {
-  text-decoration : none;
-  color : red;
+    text-decoration: none;
+    color: red;
 }

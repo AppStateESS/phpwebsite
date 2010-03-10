@@ -1,4 +1,6 @@
-<!-- BEGIN key-association --><strong>{KEY_ASSOCIATION}</strong><!-- END key-assocation -->
+<!-- BEGIN key-association -->
+<strong>{KEY_ASSOCIATION}</strong>
+<!-- END key-assocation -->
 {START_FORM}
 <table class="form-table" width="100%" cellpadding="4">
     <tr>
@@ -14,7 +16,6 @@
         <td>{CONTENT}</td>
     </tr>
 </table>
-<div style="text-align : center">{SUBMIT}</div>
-
-<div style="position : absolute; bottom : 10px; right : 10px">{CANCEL}</div>
+<div style="text-align: center">{SUBMIT}</div>
+<div style="position: absolute; bottom: 10px; right: 10px">{CANCEL}</div>
 {END_FORM}

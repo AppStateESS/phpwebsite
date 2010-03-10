@@ -1,26 +1,26 @@
 <?php
 /**
-    * vshop - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    *
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    *
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vshop - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class vShop_Item {
 
@@ -379,7 +379,7 @@ class vShop_Item {
 
         }
 
-//        print_r($all_sets); exit;
+        //        print_r($all_sets); exit;
         return $all_sets;
     }
 
@@ -399,10 +399,10 @@ class vShop_Item {
             PHPWS_Core::errorPage(404);
         }
 
-// PHPWS_Core::initModClass('vshop', 'vShop_Cart.php');
-// $cart = vShop_Cart::CreateInstance();
-// $cart_data = $cart->GetCart();
-// print_r($cart_data);
+        // PHPWS_Core::initModClass('vshop', 'vShop_Cart.php');
+        // $cart = vShop_Cart::CreateInstance();
+        // $cart_data = $cart->GetCart();
+        // print_r($cart_data);
 
         $key = new Key($this->key_id);
         $options = $this->getQtyAttributes();
@@ -455,8 +455,8 @@ class vShop_Item {
         if ($this->getQtyAttributes() < 1) {
             $links[] = $this->addLink(true) . ' ' . $this->addLink();
         } //else {
-//            $links[] = sprintf('<a href="%s">', $this->viewLink(true)) . dgettext('vshop', 'Choose Options') . '</a>';
-//        }
+        //            $links[] = sprintf('<a href="%s">', $this->viewLink(true)) . dgettext('vshop', 'Choose Options') . '</a>';
+        //        }
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['dept_id'] = $this->dept_id;
             $vars['item_id'] = $this->id;
@@ -474,7 +474,7 @@ class vShop_Item {
         }
 
         if($links)
-            return implode(' | ', $links);
+        return implode(' | ', $links);
     }
 
 
@@ -515,12 +515,12 @@ class vShop_Item {
         $tpl['DESCRIPTION'] = $this->getListDescription(120);
         $tpl['DEPT'] = $this->getDept(true);
         $tpl['ITEM_PRICE'] = $this->getPrice(true);
-//        if (PHPWS_Settings::get('vshop', 'use_inventory')) {
-            $tpl['ITEM_STOCK'] = $this->getStock();
-//        }
+        //        if (PHPWS_Settings::get('vshop', 'use_inventory')) {
+        $tpl['ITEM_STOCK'] = $this->getStock();
+        //        }
 
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }
@@ -564,7 +564,7 @@ class vShop_Item {
         }
 
         if($links)
-            $tpl['ITEM_LINKS'] = implode(' | ', $links);
+        $tpl['ITEM_LINKS'] = implode(' | ', $links);
 
         return $tpl;
     }

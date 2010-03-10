@@ -1,26 +1,26 @@
 <?php
 /**
-    * finc - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * finc - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 PHPWS_Core::requireInc('finc', 'errordefines.php');
 PHPWS_Core::requireConfig('finc');
@@ -57,7 +57,7 @@ class Finc {
             case 'edit_file':
                 $this->loadForm('edit_file');
                 break;
-    
+
             case 'post_file':
                 if (!Current_User::authorized('finc')) {
                     Current_User::disallow();
@@ -74,7 +74,7 @@ class Finc {
                     $this->loadForm('edit');
                 }
                 break;
-    
+
             case 'activate_file':
                 if (!Current_User::authorized('finc')) {
                     Current_User::disallow();
@@ -85,7 +85,7 @@ class Finc {
                 $this->message = dgettext('finc', 'Finc file activated.');
                 $this->loadForm('list');
                 break;
-    
+
             case 'deactivate_file':
                 if (!Current_User::authorized('finc')) {
                     Current_User::disallow();
@@ -96,7 +96,7 @@ class Finc {
                 $this->message = dgettext('finc', 'Finc file deactivated.');
                 $this->loadForm('list');
                 break;
-    
+
             case 'delete_file':
                 if (!Current_User::authorized('finc')) {
                     Current_User::disallow();
@@ -106,7 +106,7 @@ class Finc {
                 $this->message = dgettext('finc', 'Finc file deleted.');
                 $this->loadForm('list');
                 break;
-                
+
             case 'post_settings':
                 if (!Current_User::authorized('finc')) {
                     Current_User::disallow();
@@ -131,8 +131,8 @@ class Finc {
             $this->panel->setContent(PHPWS_Template::process($tpl, 'finc', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
-        
-   }
+
+    }
 
 
     function userMenu($action=null)
@@ -153,11 +153,11 @@ class Finc {
                 $this->loadFile();
                 if ($this->file->active) {
                     if (PHPWS_Settings::get('finc', 'show_title'))
-                        $this->title = $this->file->getTitle(true);
+                    $this->title = $this->file->getTitle(true);
                     if (PHPWS_Settings::get('finc', 'add_title_tag'))
-                        Layout::addPageTitle($this->file->getTitle());
+                    Layout::addPageTitle($this->file->getTitle());
                     if (PHPWS_Settings::get('finc', 'show_description'))
-                        $this->description = $this->file->getDescription(true);
+                    $this->description = $this->file->getDescription(true);
                     $this->content = $this->file->getContents();
                 } else {
                     $this->title = dgettext('finc', 'Inactive File.');
@@ -181,8 +181,8 @@ class Finc {
         } else {
             Layout::add(PHPWS_Template::process($tpl, 'finc', 'main_user.tpl'));
         }
-        
-   }
+
+    }
 
 
     function sendMessage()
@@ -197,7 +197,7 @@ class Finc {
             $_SESSION['FINC_Message']['title'] = $title;
         }
     }
-    
+
 
     function loadMessage()
     {
@@ -241,7 +241,7 @@ class Finc {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('finc-panel');
         $link = 'index.php?module=finc&aop=menu';
-        
+
         if (Current_User::isUnrestricted('finc')) {
             $tags['new'] = array('title'=>dgettext('finc', 'New File'),
                                  'link'=>$link);
@@ -259,7 +259,7 @@ class Finc {
     function postFile()
     {
         $this->loadFile();
-        
+
         if (empty($_POST['title'])) {
             $errors[] = dgettext('finc', 'You must give this finc file a title.');
         } else {
@@ -302,16 +302,16 @@ class Finc {
     {
 
         isset($_POST['show_title']) ?
-            PHPWS_Settings::set('finc', 'show_title', 1) :
-            PHPWS_Settings::set('finc', 'show_title', 0);
+        PHPWS_Settings::set('finc', 'show_title', 1) :
+        PHPWS_Settings::set('finc', 'show_title', 0);
 
         isset($_POST['add_title_tag']) ?
-            PHPWS_Settings::set('finc', 'add_title_tag', 1) :
-            PHPWS_Settings::set('finc', 'add_title_tag', 0);
+        PHPWS_Settings::set('finc', 'add_title_tag', 1) :
+        PHPWS_Settings::set('finc', 'add_title_tag', 0);
 
         isset($_POST['show_description']) ?
-            PHPWS_Settings::set('finc', 'show_description', 1) :
-            PHPWS_Settings::set('finc', 'show_description', 0);
+        PHPWS_Settings::set('finc', 'show_description', 1) :
+        PHPWS_Settings::set('finc', 'show_description', 0);
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
@@ -319,7 +319,7 @@ class Finc {
         } else {
             if (PHPWS_Settings::save('finc')) {
                 return true;
-            } else { 
+            } else {
                 return falsel;
             }
         }

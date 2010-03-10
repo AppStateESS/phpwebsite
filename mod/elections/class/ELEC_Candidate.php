@@ -1,31 +1,31 @@
 <?php
 /**
-    * elections - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * elections - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class Elections_Candidate {
 
     public $id             = 0;
-//    public $key_id         = 0;
+    //    public $key_id         = 0;
     public $ballot_id      = 0;
     public $title          = null;
     public $description    = null;
@@ -274,11 +274,11 @@ class Elections_Candidate {
             PHPWS_Core::errorPage(404);
         }
 
-//        $key = new Key($this->key_id);
+        //        $key = new Key($this->key_id);
 
-//        if (!$key->allowView()) {
-//            Current_User::requireLogin();            
-//        }
+        //        if (!$key->allowView()) {
+        //            Current_User::requireLogin();
+        //        }
 
         $tpl = $this->getCustoms();
         $tpl['CANDIDATE_LINKS'] = $this->candidateLinks();
@@ -290,7 +290,7 @@ class Elections_Candidate {
 
 
 
-//        $key->flag();
+        //        $key->flag();
 
         return PHPWS_Template::process($tpl, 'elections', 'view_candidate.tpl');
     }
@@ -299,7 +299,7 @@ class Elections_Candidate {
     public function candidateLinks($addNav=true)
     {
         $links = array();
-        
+
         if (Current_User::allow('elections')) {
             $vars['ballot_id'] = $this->ballot_id;
             $vars['candidate_id'] = $this->id;
@@ -308,13 +308,13 @@ class Elections_Candidate {
         }
 
         if ($addNav) {
-            if (is_array(Election::navLinks())) { 
+            if (is_array(Election::navLinks())) {
                 $links = array_merge($links, Election::navLinks());
             }
         }
 
         if($links)
-            return implode(' | ', $links);
+        return implode(' | ', $links);
     }
 
 
@@ -329,7 +329,7 @@ class Elections_Candidate {
         $db->addWhere('id', $this->id);
         PHPWS_Error::logIfError($db->delete());
 
-//        Key::drop($this->key_id);
+        //        Key::drop($this->key_id);
 
     }
 
@@ -354,7 +354,7 @@ class Elections_Candidate {
         $tpl['BALLOT'] = $this->getBallot(true);
         $tpl['VOTES'] = $this->getVotes();
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
 
@@ -387,7 +387,7 @@ class Elections_Candidate {
             return $result;
         }
 
-//        $this->saveKey();
+        //        $this->saveKey();
 
     }
 
@@ -468,11 +468,11 @@ class Elections_Candidate {
         } else {
             $tpl = PHPWS_Form::formCheckBox("Candidate_Vote[".$this->id."]", 1, $match, $this->id);
         }
-        
+
         return $tpl;
     }
-    
-    
+
+
     public function getCustoms()
     {
         PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
@@ -497,7 +497,7 @@ class Elections_Candidate {
             $tpl['CUSTOM4_LABEL'] = $ballot->getCustom4label(true);
             $tpl['CUSTOM4'] = $this->getCustom4(true);
         }
-        
+
         return $tpl;
     }
 
@@ -511,22 +511,22 @@ class Elections_Candidate {
         $content .= '"' . dgettext('elections', 'Title') . '",';
         $content .= '"' . dgettext('elections', 'Votes') . '",';
 
-/*  think about this in multi-ballot exports, could be messy
-        PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
-        $ballot = new Elections_Ballot($this->ballot_id);
-        if ($ballot->custom1label) {
-            $content .= '"' . $ballot->getCustom1label(true) . '",';
-        }
-        if ($ballot->custom2label) {
-            $content .= '"' . $ballot->getCustom2label(true) . '",';
-        }
-        if ($ballot->custom3label) {
-            $content .= '"' . $ballot->getCustom3label(true) . '",';
-        }
-        if ($ballot->custom4label) {
-            $content .= '"' . $ballot->getCustom4label(true) . '",';
-        }
-*/
+        /*  think about this in multi-ballot exports, could be messy
+         PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
+         $ballot = new Elections_Ballot($this->ballot_id);
+         if ($ballot->custom1label) {
+         $content .= '"' . $ballot->getCustom1label(true) . '",';
+         }
+         if ($ballot->custom2label) {
+         $content .= '"' . $ballot->getCustom2label(true) . '",';
+         }
+         if ($ballot->custom3label) {
+         $content .= '"' . $ballot->getCustom3label(true) . '",';
+         }
+         if ($ballot->custom4label) {
+         $content .= '"' . $ballot->getCustom4label(true) . '",';
+         }
+         */
 
         $content .= '"' . dgettext('elections', 'Description') . '"';
 
@@ -544,22 +544,22 @@ class Elections_Candidate {
         $content .= '"' . $this->getTitle(true) . '",';
         $content .= '"' . $this->votes . '",';
 
-/*  think about this in multi-ballot exports, could be messy
-        PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
-        $ballot = new Elections_Ballot($this->ballot_id);
-        if ($ballot->custom1label) {
-            $content .= '"' . $this->getCustom1(true) . '",';
-        }
-        if ($ballot->custom2label) {
-            $content .= '"' . $this->getCustom2(true) . '",';
-        }
-        if ($ballot->custom3label) {
-            $content .= '"' . $this->getCustom3(true) . '",';
-        }
-        if ($ballot->custom4label) {
-            $content .= '"' . $this->getCustom4(true) . '",';
-        }
-*/
+        /*  think about this in multi-ballot exports, could be messy
+         PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
+         $ballot = new Elections_Ballot($this->ballot_id);
+         if ($ballot->custom1label) {
+         $content .= '"' . $this->getCustom1(true) . '",';
+         }
+         if ($ballot->custom2label) {
+         $content .= '"' . $this->getCustom2(true) . '",';
+         }
+         if ($ballot->custom3label) {
+         $content .= '"' . $this->getCustom3(true) . '",';
+         }
+         if ($ballot->custom4label) {
+         $content .= '"' . $this->getCustom4(true) . '",';
+         }
+         */
 
         $content .= '"' . $this->stripLF($this->getDescription(true)) . '"';
 
@@ -568,7 +568,7 @@ class Elections_Candidate {
     }
 
 
-    public function stripLF($str) 
+    public function stripLF($str)
     {
         $str = str_replace("\r\n", '; ', $str);
         $str = str_replace("\n", '; ', $str);

@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 class Profiler_Division {
     public $id    = 0;
@@ -36,14 +36,14 @@ class Profiler_Division {
     {
         $js_vars['height']  = '200';
         $js_vars['address'] = sprintf('index.php?module=profiler&amp;command=edit_division&division_id=%s&authkey=%s',
-                                      $this->id, Current_User::getAuthKey());
+        $this->id, Current_User::getAuthKey());
         $js_vars['label']   = dgettext('profiler', 'Edit');
         $links[] = javascript('open_window', $js_vars);
 
         if (Current_User::allow('profiler', 'delete_divisions')) {
             $js_vars = array();
             $js_vars['address']  = sprintf('index.php?module=profiler&amp;command=delete_division&division_id=%s&authkey=%s',
-                                           $this->id, Current_User::getAuthKey());
+            $this->id, Current_User::getAuthKey());
             $js_vars['link']     = dgettext('profiler', 'Delete');
             $js_vars['question'] = dgettext('profiler', 'Deleting this division will remove all the profiles under it.\nAre you sure you want to do this?');
             $links[] = javascript('confirm', $js_vars);

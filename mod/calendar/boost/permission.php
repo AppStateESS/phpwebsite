@@ -1,10 +1,10 @@
 <?php
-  /**
-   * Permissions file for users
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Permissions file for users
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 $use_permissions  = TRUE;
 $item_permissions = TRUE;

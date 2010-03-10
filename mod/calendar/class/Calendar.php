@@ -1,11 +1,11 @@
 <?php
 
-  /**
-   * Main command class for Calendar module
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Main command class for Calendar module
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 PHPWS_Core::requireConfig('calendar');
 PHPWS_Core::requireInc('calendar', 'error_defines.php');
@@ -143,16 +143,16 @@ class PHPWS_Calendar {
         $db->addOrder('title');
 
         switch ($mode) {
-        case 'object':
-            return $db->getObjects('Calendar_Schedule');
-            break;
+            case 'object':
+                return $db->getObjects('Calendar_Schedule');
+                break;
 
-        case 'brief':
-            $db->addColumn('id');
-            $db->addColumn('title');
-            $db->setIndexBy('id');
-            return $db->select('col');
-            break;
+            case 'brief':
+                $db->addColumn('id');
+                $db->addColumn('title');
+                $db->setIndexBy('id');
+                return $db->select('col');
+                break;
         }
     }
 

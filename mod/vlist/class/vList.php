@@ -1,26 +1,26 @@
 <?php
 /**
-    * vlist - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vlist - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 PHPWS_Core::requireConfig('vlist');
 
@@ -81,7 +81,7 @@ class vList {
                         $settingsPanel->enableSecure();
                     }
                 }
-    
+
         }
 
         /* This switch dumps the content in */
@@ -102,7 +102,7 @@ class vList {
                 }
                 $this->loadForm('edit_listing');
                 break;
-    
+
             case 'post_listing':
                 if (!Current_User::authorized('vlist', 'edit_listing')) {
                     Current_User::disallow();
@@ -128,7 +128,7 @@ class vList {
                     $this->loadForm('edit_listing');
                 }
                 break;
-    
+
             case 'delete_listing':
                 if (!Current_User::authorized('vlist', 'delete_listing')) {
                     Current_User::disallow();
@@ -138,7 +138,7 @@ class vList {
                 $this->message = dgettext('vlist', 'Listing deleted.');
                 $this->loadForm('listings');
                 break;
-                
+
             case 'approve_listing':
                 if (!Current_User::authorized('vlist', 'edit_listing')) {
                     Current_User::disallow();
@@ -149,7 +149,7 @@ class vList {
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Listing %s approved.'), $this->listing->getTitle(true)));
                 PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
                 break;
-    
+
             case 'unapprove_listing':
                 if (!Current_User::authorized('vlist', 'edit_listing')) {
                     Current_User::disallow();
@@ -160,7 +160,7 @@ class vList {
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Listing %s unapproved.'), $this->listing->getTitle(true)));
                 PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
                 break;
-    
+
             case 'activate_listing':
                 if (!Current_User::authorized('vlist', 'edit_listing')) {
                     Current_User::disallow();
@@ -171,7 +171,7 @@ class vList {
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Listing %s activated.'), $this->listing->getTitle(true)));
                 PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
                 break;
-    
+
             case 'deactivate_listing':
                 if (!Current_User::authorized('vlist', 'edit_listing')) {
                     Current_User::disallow();
@@ -182,7 +182,7 @@ class vList {
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Listing %s deactivated.'), $this->listing->getTitle(true)));
                 PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
                 break;
-    
+
 
             case 'new_group':
             case 'edit_group':
@@ -221,7 +221,7 @@ class vList {
                 $this->message = dgettext('vlist', 'Group deleted.');
                 $this->loadForm('groups');
                 break;
-            
+
             case 'new_element':
                 if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
                     Current_User::disallow();
@@ -257,9 +257,9 @@ class vList {
                 break;
 
             case 'post_element':
-//                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
-//                    Current_User::disallow();
-//                }
+                //                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+                //                    Current_User::disallow();
+                //                }
                 $settingsPanel->setCurrentTab('elements');
                 $this->loadElement();
                 $this->element->vlist = & $this;
@@ -282,7 +282,7 @@ class vList {
                 $this->message = dgettext('vlist', 'Element deleted.');
                 $this->loadForm('elements');
                 break;
-            
+
             case 'activate_element':
                 if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
                     Current_User::disallow();
@@ -293,7 +293,7 @@ class vList {
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s activated.'), $this->element->getTitle(true)));
                 PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
-    
+
             case 'deactivate_element':
                 if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
                     Current_User::disallow();
@@ -304,7 +304,7 @@ class vList {
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s deactivated.'), $this->element->getTitle(true)));
                 PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
-    
+
             case 'list_element':
                 if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
                     Current_User::disallow();
@@ -315,7 +315,7 @@ class vList {
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s enabled in list.'), $this->element->getTitle(true)));
                 PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
-    
+
             case 'delist_element':
                 if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
                     Current_User::disallow();
@@ -326,7 +326,7 @@ class vList {
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s disabled in list.'), $this->element->getTitle(true)));
                 PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
-    
+
             case 'search_element':
                 if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
                     Current_User::disallow();
@@ -337,7 +337,7 @@ class vList {
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s enabled in search.'), $this->element->getTitle(true)));
                 PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
-    
+
             case 'desearch_element':
                 if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
                     Current_User::disallow();
@@ -359,7 +359,7 @@ class vList {
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s is now restricted.'), $this->element->getTitle(true)));
                 PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
-    
+
             case 'deprivate_element':
                 if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
                     Current_User::disallow();
@@ -372,9 +372,9 @@ class vList {
                 break;
 
             case 'edit_options':
-//                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
-//                    Current_User::disallow();
-//                }
+                //                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+                //                    Current_User::disallow();
+                //                }
                 $settingsPanel->setCurrentTab('elements');
                 $this->loadElement();
                 $this->element->vlist = & $this;
@@ -383,11 +383,11 @@ class vList {
                 break;
 
             case 'post_options':
-//                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
-//                    Current_User::disallow();
-//                }
+                //                if (!Current_User::authorized('vlist', 'settings', null, null, true)) {
+                //                    Current_User::disallow();
+                //                }
                 $settingsPanel->setCurrentTab('elements');
-//print_r($_POST); exit;
+                //print_r($_POST); exit;
                 $this->loadElement();
                 $this->element->vlist = & $this;
                 $this->title = sprintf(dgettext('vlist', 'Save %s options'), $this->element->type);
@@ -399,7 +399,7 @@ class vList {
                     Current_User::disallow();
                 }
                 $settingsPanel->setCurrentTab('elements');
-//print_r($_REQUEST); exit;
+                //print_r($_REQUEST); exit;
                 $this->loadElement();
                 $this->element->vlist = & $this;
                 $this->title = sprintf(dgettext('vlist', 'Delete %s options'), $this->element->type);
@@ -459,8 +459,8 @@ class vList {
             $this->panel->setContent(PHPWS_Template::process($tpl, 'vlist', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
-        
-   }
+
+    }
 
 
     public function userMenu($action=null)
@@ -479,10 +479,10 @@ class vList {
 
             case 'submit_listing':
             case 'edit_listing':
-//print_r($_SESSION['User']); exit;
-//print_r($_SESSION['User']->username); exit;
-//                if (!PHPWS_Settings::get('vlist', 'user_submissions')) {
-//                if (!PHPWS_Settings::get('vlist', 'anon_submissions') && !(PHPWS_Settings::get('vlist', 'user_submissions') && $_SESSION['User']->username == '')) {
+                //print_r($_SESSION['User']); exit;
+                //print_r($_SESSION['User']->username); exit;
+                //                if (!PHPWS_Settings::get('vlist', 'user_submissions')) {
+                //                if (!PHPWS_Settings::get('vlist', 'anon_submissions') && !(PHPWS_Settings::get('vlist', 'user_submissions') && $_SESSION['User']->username == '')) {
                 if (PHPWS_Settings::get('vlist', 'anon_submissions') || (PHPWS_Settings::get('vlist', 'user_submissions') && $_SESSION['User']->username != '')) {
                     $this->loadForm('edit_listing');
                 } else {
@@ -491,7 +491,7 @@ class vList {
                 break;
 
             case 'post_listing':
-//                if (!PHPWS_Settings::get('vlist', 'user_submissions')) {
+                //                if (!PHPWS_Settings::get('vlist', 'user_submissions')) {
                 if (PHPWS_Settings::get('vlist', 'anon_submissions') || (PHPWS_Settings::get('vlist', 'user_submissions') && $_SESSION['User']->username != '')) {
                     if ($this->postListing()) {
                         if (PHPWS_Error::logIfError($this->listing->save())) {
@@ -512,7 +512,7 @@ class vList {
                     Current_User::disallow();
                 }
                 break;
-    
+
             case 'listings':
                 PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
@@ -542,7 +542,7 @@ class vList {
                 $this->forms->vlist = & $this;
                 $this->forms->listGroups();
                 break;
-    
+
             case 'view_group':
                 if (isset($_REQUEST['group_id'])) {
                     $id = $_REQUEST['group_id'];
@@ -550,7 +550,7 @@ class vList {
                     $id = $_REQUEST['group'];
                 } elseif (isset($_REQUEST['id'])) {
                     $id = $_REQUEST['id'];
-                } 
+                }
                 PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
@@ -564,14 +564,14 @@ class vList {
                     $id = $_REQUEST['owner'];
                 } elseif (isset($_REQUEST['id'])) {
                     $id = $_REQUEST['id'];
-                } 
+                }
                 PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
                 $this->forms->listListings(1, 1, null, $id);
                 break;
 
-            /* not sure if this is being used */
+                /* not sure if this is being used */
             case 'view_element':
                 $this->loadElement();
                 Layout::addPageTitle($this->element->getTitle());
@@ -585,14 +585,14 @@ class vList {
                 $this->forms->vlist = & $this;
                 $this->forms->advSearchForm();
                 break;
-    
+
             case 'adv_search':
                 PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
                 $this->forms->listListings(1, 1);
                 break;
-    
+
         }
 
         $tpl['TITLE']   = $this->title;
@@ -604,8 +604,8 @@ class vList {
         } else {
             Layout::add(PHPWS_Template::process($tpl, 'vlist', 'main_user.tpl'));
         }
-        
-   }
+
+    }
 
 
     public function forwardMessage($message, $title=null)
@@ -615,7 +615,7 @@ class vList {
             $_SESSION['vList_Message']['title'] = $title;
         }
     }
-    
+
 
     public function loadMessage()
     {
@@ -700,7 +700,7 @@ class vList {
             PHPWS_Core::initModClass('vlist', 'elements/' . $class . '.php');
             $this->element = new $class;
         }
-        
+
         $db = new PHPWS_DB('vlist_element');
         $db->addWhere('id', $id);
         $db->addColumn('type');
@@ -730,12 +730,12 @@ class vList {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('vlist-panel');
         $link = 'index.php?module=vlist&aop=menu';
-        
+
         if (Current_User::allow('vlist', 'edit_listing')) {
             $tags['new_listing'] = array('title'=>dgettext('vlist', 'New Listing'),
                                  'link'=>$link);
         }
-            $tags['listings'] = array('title'=>dgettext('vlist', 'All Listings'),
+        $tags['listings'] = array('title'=>dgettext('vlist', 'All Listings'),
                                   'link'=>$link);
 
         if (Current_User::isUnrestricted('vlist')) {
@@ -776,11 +776,11 @@ class vList {
         }
 
         isset($_POST['approved']) ?
-            $this->listing->approved = 1 :
-            $this->listing->approved = 0 ;
+        $this->listing->approved = 1 :
+        $this->listing->approved = 0 ;
         isset($_POST['active']) ?
-            $this->listing->active = 1 :
-            $this->listing->active = 0 ;
+        $this->listing->active = 1 :
+        $this->listing->active = 0 ;
 
         if (empty($_POST['description'])) {
             $errors[] = dgettext('vlist', 'You must give this listing a description.');
@@ -868,12 +868,12 @@ class vList {
                     } elseif ($element['type'] == 'GPS') {
                         if (!empty($_POST['UNI_'.$element['id']])) {
                             $gps = strip_tags($_POST['UNI_'.$element['id']]);
-//    NEED A REGEX HERE                        if (PHPWS_Text::isValidInput($gps, 'url')) {
-                                $db->addValue('value', $gps);
-                                $db->insert();
-//                            } else {
-//                                $errors[] = sprintf(dgettext('vlist', 'Check the value for %s, for formatting errors.'), $element['title']);
-//                            }
+                            //    NEED A REGEX HERE                        if (PHPWS_Text::isValidInput($gps, 'url')) {
+                            $db->addValue('value', $gps);
+                            $db->insert();
+                            //                            } else {
+                            //                                $errors[] = sprintf(dgettext('vlist', 'Check the value for %s, for formatting errors.'), $element['title']);
+                            //                            }
                         } else {
                             $errors[] = sprintf(dgettext('vlist', 'You must enter a gps value for %s.'), $element['title']);
                         }
@@ -892,12 +892,12 @@ class vList {
                     } elseif ($element['type'] == 'GMap') {
                         if (!empty($_POST['UNI_'.$element['id']])) {
                             $gmap = strip_tags($_POST['UNI_'.$element['id']]);
-//    NEED A REGEX HERE                        if (PHPWS_Text::isValidInput($gmap, 'url')) {
-                                $db->addValue('value', $gmap);
-                                $db->insert();
-//                            } else {
-//                                $errors[] = sprintf(dgettext('vlist', 'Check the value for %s, for formatting errors.'), $element['title']);
-//                            }
+                            //    NEED A REGEX HERE                        if (PHPWS_Text::isValidInput($gmap, 'url')) {
+                            $db->addValue('value', $gmap);
+                            $db->insert();
+                            //                            } else {
+                            //                                $errors[] = sprintf(dgettext('vlist', 'Check the value for %s, for formatting errors.'), $element['title']);
+                            //                            }
                         } else {
                             $errors[] = sprintf(dgettext('vlist', 'You must enter a value for %s.'), $element['title']);
                         }
@@ -909,7 +909,7 @@ class vList {
                             $errors[] = sprintf(dgettext('vlist', 'You must enter something for %s.'), $element['title']);
                         }
                     }
-                
+
                 } else {
 
                     /* if it's not req, set it or null it */
@@ -924,7 +924,7 @@ class vList {
                         if (isset($_POST['UNI_'.$element['id']])) {
                             $db->addValue('option_id', $_POST['UNI_'.$element['id']]);
                             $db->insert();
-                        } 
+                        }
                     } elseif ($element['type'] == 'Link') {
                         if (!empty($_POST['UNI_'.$element['id']])) {
                             $link = PHPWS_Text::checkLink(strip_tags($_POST['UNI_'.$element['id']]));
@@ -948,18 +948,18 @@ class vList {
                     } elseif ($element['type'] == 'GMap') {
                         if (!empty($_POST['UNI_'.$element['id']])) {
                             $gmap = strip_tags($_POST['UNI_'.$element['id']]);
-//    NEED A REGEX HERE                        if (PHPWS_Text::isValidInput($gmap, 'url')) {
-                                $db->addValue('value', $gmap);
-                                $db->insert();
-//                            } else {
-//                                $errors[] = sprintf(dgettext('vlist', 'Check the value for %s, for formatting errors.'), $element['title']);
-//                            }
+                            //    NEED A REGEX HERE                        if (PHPWS_Text::isValidInput($gmap, 'url')) {
+                            $db->addValue('value', $gmap);
+                            $db->insert();
+                            //                            } else {
+                            //                                $errors[] = sprintf(dgettext('vlist', 'Check the value for %s, for formatting errors.'), $element['title']);
+                            //                            }
                         }
                     } else {
                         if (!empty($_POST['UNI_'.$element['id']])) {
                             $db->addValue('value', PHPWS_Text::parseInput($_POST['UNI_'.$element['id']]));
                             $db->insert();
-                        } 
+                        }
                     }
 
                 }
@@ -982,7 +982,7 @@ class vList {
     public function postGroup()
     {
         $this->loadGroup();
-        
+
         if (empty($_POST['title'])) {
             $errors[] = dgettext('vlist', 'You must give this group a title.');
         } else {
@@ -1015,17 +1015,17 @@ class vList {
         } else {
             $errors[] = dgettext('vlist', 'Please provide a module title.');
         }
-        
+
         isset($_POST['enable_sidebox']) ?
-            PHPWS_Settings::set('vlist', 'enable_sidebox', 1) :
-            PHPWS_Settings::set('vlist', 'enable_sidebox', 0);
+        PHPWS_Settings::set('vlist', 'enable_sidebox', 1) :
+        PHPWS_Settings::set('vlist', 'enable_sidebox', 0);
 
         PHPWS_Settings::set('vlist', 'block_order_by', $_POST['block_order_by']);
         PHPWS_Settings::set('vlist', 'main_order_by', $_POST['main_order_by']);
 
         isset($_POST['sidebox_homeonly']) ?
-            PHPWS_Settings::set('vlist', 'sidebox_homeonly', 1) :
-            PHPWS_Settings::set('vlist', 'sidebox_homeonly', 0);
+        PHPWS_Settings::set('vlist', 'sidebox_homeonly', 1) :
+        PHPWS_Settings::set('vlist', 'sidebox_homeonly', 0);
 
         if (!empty($_POST['sidebox_text'])) {
             PHPWS_Settings::set('vlist', 'sidebox_text', PHPWS_Text::parseInput($_POST['sidebox_text']));
@@ -1034,23 +1034,23 @@ class vList {
         }
 
         isset($_POST['enable_elements']) ?
-            PHPWS_Settings::set('vlist', 'enable_elements', 1) :
-            PHPWS_Settings::set('vlist', 'enable_elements', 0);
+        PHPWS_Settings::set('vlist', 'enable_elements', 1) :
+        PHPWS_Settings::set('vlist', 'enable_elements', 0);
 
         isset($_POST['enable_groups']) ?
-            PHPWS_Settings::set('vlist', 'enable_groups', 1) :
-            PHPWS_Settings::set('vlist', 'enable_groups', 0);
+        PHPWS_Settings::set('vlist', 'enable_groups', 1) :
+        PHPWS_Settings::set('vlist', 'enable_groups', 0);
 
         isset($_POST['list_groups']) ?
-            PHPWS_Settings::set('vlist', 'list_groups', 1) :
-            PHPWS_Settings::set('vlist', 'list_groups', 0);
+        PHPWS_Settings::set('vlist', 'list_groups', 1) :
+        PHPWS_Settings::set('vlist', 'list_groups', 0);
 
         if (!empty($_POST['groups_title'])) {
             PHPWS_Settings::set('vlist', 'groups_title', strip_tags($_POST['groups_title']));
         } else {
             $errors[] = dgettext('vlist', 'Please provide a groups title.');
         }
-        
+
         if (!empty($_POST['admin_contact'])) {
             if (PHPWS_Text::isValidInput($_POST['admin_contact'], 'email')) {
                 PHPWS_Settings::set('vlist', 'admin_contact', strip_tags(PHPWS_Text::parseInput($_POST['admin_contact'])));
@@ -1062,8 +1062,8 @@ class vList {
         }
 
         isset($_POST['enable_files']) ?
-            PHPWS_Settings::set('vlist', 'enable_files', 1) :
-            PHPWS_Settings::set('vlist', 'enable_files', 0);
+        PHPWS_Settings::set('vlist', 'enable_files', 1) :
+        PHPWS_Settings::set('vlist', 'enable_files', 0);
 
         if (isset($_POST['enable_images'])) {
             PHPWS_Settings::set('vlist', 'enable_images', 1);
@@ -1084,56 +1084,56 @@ class vList {
         }
 
         isset($_POST['enable_users']) ?
-            PHPWS_Settings::set('vlist', 'enable_users', 1) :
-            PHPWS_Settings::set('vlist', 'enable_users', 0);
+        PHPWS_Settings::set('vlist', 'enable_users', 1) :
+        PHPWS_Settings::set('vlist', 'enable_users', 0);
 
         isset($_POST['show_users']) ?
-            PHPWS_Settings::set('vlist', 'show_users', 1) :
-            PHPWS_Settings::set('vlist', 'show_users', 0);
+        PHPWS_Settings::set('vlist', 'show_users', 1) :
+        PHPWS_Settings::set('vlist', 'show_users', 0);
 
         isset($_POST['list_users']) ?
-            PHPWS_Settings::set('vlist', 'list_users', 1) :
-            PHPWS_Settings::set('vlist', 'list_users', 0);
+        PHPWS_Settings::set('vlist', 'list_users', 1) :
+        PHPWS_Settings::set('vlist', 'list_users', 0);
 
         isset($_POST['user_submissions']) ?
-            PHPWS_Settings::set('vlist', 'user_submissions', 1) :
-            PHPWS_Settings::set('vlist', 'user_submissions', 0);
+        PHPWS_Settings::set('vlist', 'user_submissions', 1) :
+        PHPWS_Settings::set('vlist', 'user_submissions', 0);
 
         isset($_POST['anon_submissions']) ?
-            PHPWS_Settings::set('vlist', 'anon_submissions', 1) :
-            PHPWS_Settings::set('vlist', 'anon_submissions', 0);
+        PHPWS_Settings::set('vlist', 'anon_submissions', 1) :
+        PHPWS_Settings::set('vlist', 'anon_submissions', 0);
 
         isset($_POST['user_files']) ?
-            PHPWS_Settings::set('vlist', 'user_files', 1) :
-            PHPWS_Settings::set('vlist', 'user_files', 0);
+        PHPWS_Settings::set('vlist', 'user_files', 1) :
+        PHPWS_Settings::set('vlist', 'user_files', 0);
 
         isset($_POST['anon_files']) ?
-            PHPWS_Settings::set('vlist', 'anon_files', 1) :
-            PHPWS_Settings::set('vlist', 'anon_files', 0);
+        PHPWS_Settings::set('vlist', 'anon_files', 1) :
+        PHPWS_Settings::set('vlist', 'anon_files', 0);
 
         isset($_POST['view_created']) ?
-            PHPWS_Settings::set('vlist', 'view_created', 1) :
-            PHPWS_Settings::set('vlist', 'view_created', 0);
+        PHPWS_Settings::set('vlist', 'view_created', 1) :
+        PHPWS_Settings::set('vlist', 'view_created', 0);
 
         isset($_POST['view_updated']) ?
-            PHPWS_Settings::set('vlist', 'view_updated', 1) :
-            PHPWS_Settings::set('vlist', 'view_updated', 0);
+        PHPWS_Settings::set('vlist', 'view_updated', 1) :
+        PHPWS_Settings::set('vlist', 'view_updated', 0);
 
         isset($_POST['list_created']) ?
-            PHPWS_Settings::set('vlist', 'list_created', 1) :
-            PHPWS_Settings::set('vlist', 'list_created', 0);
+        PHPWS_Settings::set('vlist', 'list_created', 1) :
+        PHPWS_Settings::set('vlist', 'list_created', 0);
 
         isset($_POST['list_updated']) ?
-            PHPWS_Settings::set('vlist', 'list_updated', 1) :
-            PHPWS_Settings::set('vlist', 'list_updated', 0);
+        PHPWS_Settings::set('vlist', 'list_updated', 1) :
+        PHPWS_Settings::set('vlist', 'list_updated', 0);
 
         isset($_POST['notify_submit']) ?
-            PHPWS_Settings::set('vlist', 'notify_submit', 1) :
-            PHPWS_Settings::set('vlist', 'notify_submit', 0);
+        PHPWS_Settings::set('vlist', 'notify_submit', 1) :
+        PHPWS_Settings::set('vlist', 'notify_submit', 0);
 
         isset($_POST['notify_edit']) ?
-            PHPWS_Settings::set('vlist', 'notify_edit', 1) :
-            PHPWS_Settings::set('vlist', 'notify_edit', 0);
+        PHPWS_Settings::set('vlist', 'notify_edit', 1) :
+        PHPWS_Settings::set('vlist', 'notify_edit', 0);
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
@@ -1141,7 +1141,7 @@ class vList {
         } else {
             if (PHPWS_Settings::save('vlist')) {
                 return true;
-            } else { 
+            } else {
                 return falsel;
             }
         }
@@ -1149,9 +1149,9 @@ class vList {
     }
 
 
-    public function alpha_click() 
+    public function alpha_click()
     {
-    
+
         $alphabet = $this->alphabet();
         $alpha = array();
         $links = array();
@@ -1193,23 +1193,23 @@ class vList {
         $tpl['LIST'] = implode(' | ', $alpha);
         $tpl['LINKS'] = implode(' | ', $links);
         return PHPWS_Template::process($tpl, 'vlist', 'alpha_click.tpl');
-    
+
     }
-    
+
 
     /**
-        * Creates an array of the English alphabet
-        *
-        * If '$letter_case' is lower then the character set
-        * will be lowercase. If it is NULL, then uppercase.
-        * Needs internationalization
-        *
-        * @author Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
-        * @param  string $letter_case Indicates to return an uppercase or lowercase array
-        * @return array  $ret_array   Numerically indexed array of alphabet
-        * @access public
-    */
-    public function alphabet($letter_case=NULL) 
+     * Creates an array of the English alphabet
+     *
+     * If '$letter_case' is lower then the character set
+     * will be lowercase. If it is NULL, then uppercase.
+     * Needs internationalization
+     *
+     * @author Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+     * @param  string $letter_case Indicates to return an uppercase or lowercase array
+     * @return array  $ret_array   Numerically indexed array of alphabet
+     * @access public
+     */
+    public function alphabet($letter_case=NULL)
     {
         if ($letter_case == "lower") {
             $start = ord("a");
@@ -1218,19 +1218,19 @@ class vList {
             $start = ord("A");
             $end = ord("Z");
         }
-        
+
         for ($i=$start;$i<=$end;$i++)
-            $ret_array[] = chr($i);
-        
+        $ret_array[] = chr($i);
+
         return $ret_array;
     }
 
 
     /**
-        * Returns a form for module inclusion
-        * @author Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
-        * @modified Verdon Vaillancourt 
-        * @access public
+     * Returns a form for module inclusion
+     * @author Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+     * @modified Verdon Vaillancourt
+     * @access public
      */
     public function getItemForm($type='group', $match=null, $select_name='group', $multiple=true)
     {
@@ -1276,7 +1276,7 @@ class vList {
             }
             return $form->get($select_name);
         }
-        
+
     }
 
 
@@ -1303,7 +1303,7 @@ class vList {
                         $db->addWhere('vlist_listing.id', 'vlist_'.$type.'_items.listing_id');
                         $db->addWhere('vlist_listing.approved', 1);
                         $db->addWhere('vlist_listing.active', 1);
-                        $db->addGroupBy('vlist_listing.id'); 
+                        $db->addGroupBy('vlist_listing.id');
                     }
                     $qty = $db->count();
                     $items[$item->id] = $item->title . ' ('.$qty.')';
@@ -1332,7 +1332,7 @@ class vList {
         } else {
             return dgettext('vlist', 'No choices configured.');
         }
-        
+
     }
 
 
@@ -1356,7 +1356,7 @@ class vList {
                         $db->addWhere('vlist_listing.id', 'vlist_element_items.listing_id');
                         $db->addWhere('vlist_listing.approved', 1);
                         $db->addWhere('vlist_listing.active', 1);
-                        $db->addGroupBy('vlist_listing.id'); 
+                        $db->addGroupBy('vlist_listing.id');
                     }
                     $qty = $db->count();
                     $options[$option['id']] = $option['label'] . ' ('.$qty.')';
@@ -1385,7 +1385,7 @@ class vList {
         } else {
             return dgettext('vlist', 'No choices configured.');
         }
-        
+
     }
 
 
@@ -1421,7 +1421,7 @@ class vList {
         if (Current_User::allow('vlist', 'settings', null, null, true) && !isset($_REQUEST['aop'])){
             $links[] = PHPWS_Text::moduleLink(dgettext('vlist', 'Settings'), "vlist",  array('aop'=>'menu', 'tab'=>'settings'));
         }
-        
+
         return $links;
     }
 

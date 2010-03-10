@@ -1,15 +1,15 @@
 <?php
-  /**
-   * User functionality in Blog
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * User functionality in Blog
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 define('BLOG_CACHE_KEY', 'front_blog_page');
 if (!defined('MAX_BLOG_CACHE_PAGES')) {
     define('MAX_BLOG_CACHE_PAGES', 3);
- }
+}
 
 
 class Blog_User {
@@ -42,75 +42,75 @@ class Blog_User {
         }
 
         switch ($action) {
-        case 'view_comments':
-            Layout::addStyle('blog');
-            Layout::addPageTitle($blog->title);
-            if (Current_User::allow('blog', 'edit_blog')) {
-                Blog_User::miniAdminList();
-            }
-            if ($blog->publish_date > mktime() && !Current_User::allow('blog')) {
-                PHPWS_Core::errorPage('404');
-            } else {
-                $content = $blog->view(true, false);
-            }
-            break;
+            case 'view_comments':
+                Layout::addStyle('blog');
+                Layout::addPageTitle($blog->title);
+                if (Current_User::allow('blog', 'edit_blog')) {
+                    Blog_User::miniAdminList();
+                }
+                if ($blog->publish_date > mktime() && !Current_User::allow('blog')) {
+                    PHPWS_Core::errorPage('404');
+                } else {
+                    $content = $blog->view(true, false);
+                }
+                break;
 
-        case 'view':
-            if (@$_GET['y']) {
-                $day   = 1;
-                $month = 1;
-                $year  = $_GET['y'];
-                if (@$_GET['m']) {
-                    $month = $_GET['m'];
+            case 'view':
+                if (@$_GET['y']) {
+                    $day   = 1;
+                    $month = 1;
+                    $year  = $_GET['y'];
+                    if (@$_GET['m']) {
+                        $month = $_GET['m'];
 
-                    if (@$_GET['d']) {
-                        $day = $_GET['d'];
-                        $start_date = mktime(0,0,0, $month, $day, $year);
-                        $end_date   = mktime(23,59,59, $month, $day, $year);
+                        if (@$_GET['d']) {
+                            $day = $_GET['d'];
+                            $start_date = mktime(0,0,0, $month, $day, $year);
+                            $end_date   = mktime(23,59,59, $month, $day, $year);
+                        } else {
+                            $start_day = 1;
+                            $end_day   = (int)date('t', mktime(0,0,0, $month, 1, $year));
+                            $start_date = mktime(0,0,0, $month, 1, $year);
+                            $end_date   = mktime(0,0,0, $month, $end_day, $year);
+                        }
                     } else {
-                        $start_day = 1;
-                        $end_day   = (int)date('t', mktime(0,0,0, $month, 1, $year));
-                        $start_date = mktime(0,0,0, $month, 1, $year);
-                        $end_date   = mktime(0,0,0, $month, $end_day, $year);
+                        $start_date = mktime(0,0,0, 1, 1, $year);
+                        $end_date   = mktime(0,0,0, 12, 31, $year);
                     }
                 } else {
-                    $start_date = mktime(0,0,0, 1, 1, $year);
-                    $end_date   = mktime(0,0,0, 12, 31, $year);
+                    $start_date = null;
+                    $end_date   = null;
                 }
-            } else {
-                $start_date = null;
-                $end_date   = null;
-            }
 
-            $content = Blog_User::show($start_date, $end_date);
-            Layout::add($content, 'blog', 'view', true);
-            return;
-            break;
+                $content = Blog_User::show($start_date, $end_date);
+                Layout::add($content, 'blog', 'view', true);
+                return;
+                break;
 
-        case 'submit':
-            if (Current_User::allow('blog', 'edit_blog')) {
-                PHPWS_Core::reroute(PHPWS_Text::linkAddress('blog', array('action'=>'admin', 'tab'=>'new'), 1));
-            } elseif (PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
+            case 'submit':
+                if (Current_User::allow('blog', 'edit_blog')) {
+                    PHPWS_Core::reroute(PHPWS_Text::linkAddress('blog', array('action'=>'admin', 'tab'=>'new'), 1));
+                } elseif (PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
+                    // Must create a new blog. Don't use above shortcut
+                    $blog = new Blog;
+                    $content = Blog_User::submitAnonymous($blog);
+                } else {
+                    $content = dgettext('blog', 'Site is not accepting anonymous submissions.');
+                }
+                break;
+
+            case 'post_suggestion':
                 // Must create a new blog. Don't use above shortcut
                 $blog = new Blog;
-                $content = Blog_User::submitAnonymous($blog);
-            } else {
-                $content = dgettext('blog', 'Site is not accepting anonymous submissions.');
-            }
-            break;
+                $content = Blog_User::postSuggestion($blog);
+                if (empty($content)) {
+                    $content = Blog_User::submitAnonymous($blog);
+                }
+                break;
 
-        case 'post_suggestion':
-            // Must create a new blog. Don't use above shortcut
-            $blog = new Blog;
-            $content = Blog_User::postSuggestion($blog);
-            if (empty($content)) {
-                $content = Blog_User::submitAnonymous($blog);
-            }
-            break;
-
-        default:
-            PHPWS_Core::errorPage(404);
-            break;
+            default:
+                PHPWS_Core::errorPage(404);
+                break;
         }
 
         Layout::add($content);
@@ -207,7 +207,7 @@ class Blog_User {
 
         // Only logged users may view and user is not logged in
         if (PHPWS_Settings::get('blog', 'logged_users_only') &&
-            !Current_User::isLogged()) {
+        !Current_User::isLogged()) {
             return false;
         }
 
@@ -280,10 +280,10 @@ class Blog_User {
 
         // we are only caching the first three pages
         if ($page <= MAX_BLOG_CACHE_PAGES &&
-            !Current_User::isLogged() &&
-            !Current_User::allow('blog') &&
-            PHPWS_Settings::get('blog', 'cache_view') &&
-            $content = PHPWS_Cache::get($cache_key)) {
+        !Current_User::isLogged() &&
+        !Current_User::allow('blog') &&
+        PHPWS_Settings::get('blog', 'cache_view') &&
+        $content = PHPWS_Cache::get($cache_key)) {
             Layout::getCacheHeaders($cache_key);
             return $content;
         }
@@ -354,8 +354,8 @@ class Blog_User {
 
         // again only caching first pages
         if ($page <= MAX_BLOG_CACHE_PAGES &&
-            !Current_User::isLogged() && !Current_User::allow('blog') &&
-            PHPWS_Settings::get('blog', 'cache_view')) {
+        !Current_User::isLogged() && !Current_User::allow('blog') &&
+        PHPWS_Settings::get('blog', 'cache_view')) {
             PHPWS_Cache::save($cache_key, $content);
             Layout::cacheHeaders($cache_key);
         } elseif (Current_User::allow('blog', 'edit_blog')) {
@@ -393,20 +393,20 @@ class Blog_User {
     public function showSide()
     {
         switch(PHPWS_Settings::get('blog', 'show_recent')) {
-        case 0:
-            // don't show
-            return;
-
-        case 1:
-            // home page only
-            if (!PHPWS_Core::atHome()) {
+            case 0:
+                // don't show
                 return;
-            }
-            break;
 
-        case 2:
-            // everywhere
-            break;
+            case 1:
+                // home page only
+                if (!PHPWS_Core::atHome()) {
+                    return;
+                }
+                break;
+
+            case 2:
+                // everywhere
+                break;
         }
 
         $db = new PHPWS_DB('blog_entries');

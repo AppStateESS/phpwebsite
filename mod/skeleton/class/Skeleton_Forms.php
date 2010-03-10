@@ -1,26 +1,26 @@
 <?php
 /**
-    * skeleton - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * skeleton - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class Skeleton_Forms {
     public $skeleton = null;
@@ -29,44 +29,44 @@ class Skeleton_Forms {
     {
         switch ($type) {
 
-        case 'new_skeleton':
-        case 'edit_skeleton':
-            if (empty($this->skeleton->skeleton)) {
-                $this->skeleton->loadSkeleton();
-            }
-            $this->editSkeleton();
-            break;
+            case 'new_skeleton':
+            case 'edit_skeleton':
+                if (empty($this->skeleton->skeleton)) {
+                    $this->skeleton->loadSkeleton();
+                }
+                $this->editSkeleton();
+                break;
 
-        case 'list_skeletons':
-            $this->skeleton->panel->setCurrentTab('list_skeletons');
-            $this->listSkeletons();
-            break;
+            case 'list_skeletons':
+                $this->skeleton->panel->setCurrentTab('list_skeletons');
+                $this->listSkeletons();
+                break;
 
-        case 'new_bone':
-            $this->selectSkeleton();
-            break;
-            
-        case 'edit_bone':
-            if (empty($this->skeleton->bone)) {
-                $this->skeleton->loadBone();
-            }
-            $this->editBone();
-            break;
+            case 'new_bone':
+                $this->selectSkeleton();
+                break;
 
-        case 'list_bones':
-            $this->skeleton->panel->setCurrentTab('list_bones');
-            $this->listBones();
-            break;
+            case 'edit_bone':
+                if (empty($this->skeleton->bone)) {
+                    $this->skeleton->loadBone();
+                }
+                $this->editBone();
+                break;
 
-        case 'settings':
-            $this->skeleton->panel->setCurrentTab('settings');
-            $this->editSettings();
-            break;
+            case 'list_bones':
+                $this->skeleton->panel->setCurrentTab('list_bones');
+                $this->listBones();
+                break;
 
-        case 'info':
-            $this->skeleton->panel->setCurrentTab('info');
-            $this->showInfo();
-            break;
+            case 'settings':
+                $this->skeleton->panel->setCurrentTab('settings');
+                $this->editSettings();
+                break;
+
+            case 'info':
+                $this->skeleton->panel->setCurrentTab('info');
+                $this->showInfo();
+                break;
 
         }
 
@@ -91,10 +91,10 @@ class Skeleton_Forms {
 
         /* I am not using the next line in this mod, I just leave it
          * as a reminder of addWhere()
-        if (!Current_User::isUnrestricted('skeleton')) {
-            $pager->addWhere('active', 1);
-        }
-        */
+         if (!Current_User::isUnrestricted('skeleton')) {
+         $pager->addWhere('active', 1);
+         }
+         */
 
         $pager->setOrder('title', 'asc', true);
         $pager->setTemplate('list_skeletons.tpl');
@@ -237,7 +237,7 @@ class Skeleton_Forms {
         if (PHPWS_Settings::get('skeleton', 'enable_files')) {
             PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('file_id', $bone->file_id);
-//            $manager->imageOnly();
+            //            $manager->imageOnly();
             $manager->maxImageWidth(PHPWS_Settings::get('skeleton', 'max_width'));
             $manager->maxImageHeight(PHPWS_Settings::get('skeleton', 'max_height'));
             if ($manager) {
@@ -285,7 +285,7 @@ class Skeleton_Forms {
         $form->setSize('max_height', 4,4);
 
         $form->addSubmit('save', dgettext('skeleton', 'Save settings'));
-        
+
         $tpl = $form->getTemplate();
         $tpl['SETTINGS_LABEL'] = dgettext('skeleton', 'General Settings');
 
@@ -296,7 +296,7 @@ class Skeleton_Forms {
 
     public function showInfo()
     {
-        
+
         $tpl['TITLE'] = dgettext('skeleton', 'Important Information');
         $tpl['INFO_1_LABEL'] = dgettext('skeleton', 'About this module:');
         $tpl['INFO_1'] = dgettext('skeleton', 'This is the first release of skeleton for the new 1.x series phpwebsite. This module is a simple demonstration module for people wishing to develop their own phpwebsite modules.');
@@ -338,7 +338,7 @@ class Skeleton_Forms {
         } else {
             $form->addTplTag('NO_SKELETONS_NOTE', dgettext('skeleton', 'Sorry, there are no skeletons available. You will have to create a skeleton first.'));
         }
-        
+
         $tpl = $form->getTemplate();
         $tpl['SKELETON_ID_GROUP_LABEL'] = dgettext('skeleton', 'Select skeleton');
 

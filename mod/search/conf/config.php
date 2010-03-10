@@ -1,12 +1,12 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
-  // search words shorter than this length
-  // will be ignored.
+// search words shorter than this length
+// will be ignored.
 define('SEARCH_MIN_WORD_LENGTH', 3);
 
 /**

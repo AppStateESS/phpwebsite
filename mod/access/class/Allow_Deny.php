@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 class Access_Allow_Deny {
     public $id            = 0;
@@ -82,24 +82,24 @@ class Access_Allow_Deny {
         $compare = explode('.', $in_range);
 
         switch (count($ip_list)) {
-        case 4:
-            if ((int)$ip_list[3] != $compare[3]) {
-                break;
-            }
-        case 3:
-            if ((int)$ip_list[2] != $compare[2]) {
-                break;
-            }
-        case 2:
-            if ((int)$ip_list[1] != $compare[1]) {
-                break;
-            }
-        case 1:
-            if ((int)$ip_list[0] != $compare[0]) {
-                break;
-            }
-        default:
-            return TRUE;
+            case 4:
+                if ((int)$ip_list[3] != $compare[3]) {
+                    break;
+                }
+            case 3:
+                if ((int)$ip_list[2] != $compare[2]) {
+                    break;
+                }
+            case 2:
+                if ((int)$ip_list[1] != $compare[1]) {
+                    break;
+                }
+            case 1:
+                if ((int)$ip_list[0] != $compare[0]) {
+                    break;
+                }
+            default:
+                return TRUE;
         }
 
         return FALSE;

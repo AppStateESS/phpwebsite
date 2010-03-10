@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 PHPWS_Core::initModClass('calendar', 'Event.php');
 
@@ -110,9 +110,9 @@ class Calendar_Suggestion extends Calendar_Event {
         if (!empty($this->location)) {
             if (!empty($this->loc_link)) {
                 $tpl['LOCATION'] = sprintf('<a href="%s" title="%s">%s</a>',
-                                           PHPWS_Text::checkLink($this->loc_link),
-                                           dgettext('calendar', 'Visit this location\'s web site.'),
-                                           $this->location);
+                PHPWS_Text::checkLink($this->loc_link),
+                dgettext('calendar', 'Visit this location\'s web site.'),
+                $this->location);
             } else {
                 $tpl['LOCATION'] = $this->location;
             }

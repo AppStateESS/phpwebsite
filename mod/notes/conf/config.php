@@ -1,11 +1,11 @@
 <?php
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
-  // minutes to check for new notes
+// minutes to check for new notes
 define('NOTE_CHECK_INTERVAL', 5);
 
 

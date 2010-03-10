@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PHPWS1_6_2,sitemap0_6_0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-15 10:20-0500\n"
-"PO-Revision-Date: 2009-05-25 10:48+0100\n"
-"Last-Translator: HanV <hanv@users.sourceforge.net>\n"
+"PO-Revision-Date: 2010-02-01 13:26+0100\n"
+"Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -31,10 +31,10 @@ msgid "About this module:"
 msgstr "Over deze module:"
 
 msgid "Add optional* change frequency to sitemap"
-msgstr "Toevoegen optionele* wijzigingfrequentie aan sitemap"
+msgstr "Toevoegen optionele* frequentie van wijziging aan sitemap"
 
 msgid "Add optional* lastmod date to sitemap"
-msgstr "Toevoegen optionele* laatste wijzigingsdatum aan sitemap"
+msgstr "Toevoegen optionele* datum laatste wijziging aan sitemap"
 
 msgid "Add optional* priority** to sitemap"
 msgstr "Toevoegen optionele* belangrijkheid** aan sitemap"
@@ -43,7 +43,7 @@ msgid "Allow live xml feed*** of all non-restricted menus"
 msgstr "Toestaan live xml feed*** van alle onbeperkte menu's"
 
 msgid "Build"
-msgstr "Gemaakt"
+msgstr "Aanmaken"
 
 msgid "Cache duration in seconds for xml feed (0-7200, set to 0 to disable cache)"
 msgstr "Cache duur in seconden voor xml feed (0-7200), 0 = uitgeschakeld)"
@@ -52,7 +52,7 @@ msgid "Change frequency"
 msgstr "Wijzig frequentie"
 
 msgid "Create sitemap file"
-msgstr "aanmaken bestand sitemap"
+msgstr "Aanmaken bestand sitemap"
 
 msgid "Download"
 msgstr "Download"
@@ -67,7 +67,7 @@ msgid "File created successfully."
 msgstr "Bestand aangemaakt."
 
 msgid "First, review the settings. Then, you can either download a sitemap file for using later, save a sitemap file to the server at %s, or allow a live and dynamic sitemap feed at %s"
-msgstr "Contoleer de instellingen, download daarna een sitemap bestand of sla een sitemap bestand op de server bij %s op, of sta een live en dynamische sitemap feed toe bij %s"
+msgstr "Controleer de instellingen, download daarna een sitemap bestand of sla een sitemap bestand op de server bij %s op, of sta een live en dynamische sitemap feed toe bij %s"
 
 msgid "General Settings"
 msgstr "Algemene Instellingen"
@@ -82,7 +82,7 @@ msgid "How to use it:"
 msgstr "Hoe te gebruiken:"
 
 msgid "If you would like to help out with the ongoing development of sitemap, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window)."
-msgstr "Wilt u helpen bij de ontwikkeling van sitemap of een andere module van de Verdon Vaillancourt, %s klik hier om te doneren %s (opent een nieuw venster))."
+msgstr "Wilt u helpen bij de ontwikkeling van sitemap of een andere module van Verdon Vaillancourt, %s klik hier om te doneren %s (opent in een nieuw venster)."
 
 msgid "Important Information"
 msgstr "Belangrijke informatie"
@@ -94,7 +94,7 @@ msgid "Include keyed module items not in menus in your sitemap"
 msgstr "Gebruik geen sleutel module items in menu's in sitemap"
 
 msgid "Lastmod date for non-keyed items (YYYY-MM-DD) or leave empty"
-msgstr "Laatste wijzigingsdatum voor niet sleutelwoorden (YYYY-MM-DD) of leeg laten"
+msgstr "Laatste datum wijziging voor niet sleutelwoorden (YYYY-MM-DD) of leeg laten"
 
 msgid "No keyed items."
 msgstr "Geen sleutel items."
@@ -127,7 +127,7 @@ msgid "Select any modules you wish to exclude from your sitemap."
 msgstr "Kies modules die u wilt uitsluiten."
 
 msgid "Select one or more menus to include in your sitemap."
-msgstr "Kies een of meerder menu's om mee te nemen."
+msgstr "Kies een of meerdere menu's om mee te nemen."
 
 msgid "Settings"
 msgstr "Instellingen"
@@ -136,7 +136,7 @@ msgid "Sitemap"
 msgstr "Sitemap"
 
 msgid "Sitemap is used to generate a sitmap.xml file, following the standards at %s. These sitemap files are used by google and other popular search engines to help them index your website. Sitemap does this by gathering all the links from one or more of your menus, as well as other keyed module items (such as blog posts) that may not be in a menu, filtering and preparing according to your settings, and then writing the xml for you."
-msgstr "Sitemap maakt een sitemap.xml bestand aan volgens de standaard %s.Deze worden door zoekmachines als Google gebruikt om websites te indexeren. Sitemap zoekt alle links van de menu's op en ook sleutelwoorden (zoals blog posts) die niet in menu's voorkomen, na filteren en gebruik van uw instellingen wordt het xml-bestand aangemaakt."
+msgstr "Sitemap maakt een sitemap.xml bestand aan volgens de standaard %s. Deze worden door zoekmachines als Google gebruikt om websites te indexeren. Sitemap zoekt alle links van de menu's op en ook sleutelwoorden (zoals blog posts) die niet in menu's voorkomen, na filteren en gebruik van uw instellingen wordt het xml-bestand aangemaakt."
 
 msgid "Sitemap settings saved."
 msgstr "Instellingen opgeslagen."

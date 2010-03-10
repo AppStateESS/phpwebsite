@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at appstate dot edu>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at appstate dot edu>
+ */
 
 class Whodis {
 
@@ -92,23 +92,23 @@ class Whodis {
 
         if (isset($_REQUEST['op'])) {
             switch ($_REQUEST['op']) {
-            case 'purge':
-                Whodis::purge();
-                PHPWS_Core::goBack();
-                break;
+                case 'purge':
+                    Whodis::purge();
+                    PHPWS_Core::goBack();
+                    break;
 
-            case 'filters':
-                Whodis::filters();
-                break;
+                case 'filters':
+                    Whodis::filters();
+                    break;
 
-            case 'filters_option':
-                Whodis::filterOption();
-                PHPWS_Core::goBack();
-                break;
+                case 'filters_option':
+                    Whodis::filterOption();
+                    PHPWS_Core::goBack();
+                    break;
 
-            case 'list':
-            default:
-                Whodis::listReferrers();
+                case 'list':
+                default:
+                    Whodis::listReferrers();
             }
         } else {
             Whodis::listReferrers();
@@ -172,7 +172,7 @@ class Whodis {
         $limits[9]  = 25;
         $limits[16] = 50;
         $pager->setLimitList($limits);
-	$pager->setDefaultLimit(25);
+        $pager->setDefaultLimit(25);
         $pager->addRowFunction(array('Whodis', 'checkbox'));
 
         $pager->addPageTags($page_tags);
@@ -197,13 +197,13 @@ class Whodis {
         $form->addHidden('module', 'whodis');
         $form->addHidden('op', 'purge');
         $days = array(0     => dgettext('whodis', '- Referrer age -'),
-                      1     => dgettext('whodis', '1 day old'),
-                      3     => dgettext('whodis', '3 days old'),
-                      7     => dgettext('whodis', '1 week old'),
-                      14    => dgettext('whodis', '2 weeks old'),
-                      30    => dgettext('whodis', '1 month old'),
-                      90    => dgettext('whodis', '3 months old'),
-                      365   => dgettext('whodis', '1 year old'),
+        1     => dgettext('whodis', '1 day old'),
+        3     => dgettext('whodis', '3 days old'),
+        7     => dgettext('whodis', '1 week old'),
+        14    => dgettext('whodis', '2 weeks old'),
+        30    => dgettext('whodis', '1 month old'),
+        90    => dgettext('whodis', '3 months old'),
+        365   => dgettext('whodis', '1 year old'),
                       'all' => dgettext('whodis', 'Everything'));
 
         $form->addSelect('days_old', $days);
@@ -239,7 +239,7 @@ class Whodis {
         $limits[9]  = 25;
         $limits[16] = 50;
         $pager->setLimitList($limits);
-	$pager->setDefaultLimit(25);
+        $pager->setDefaultLimit(25);
 
         $pager->addPageTags($page_tags);
         $pager->addRowTags('getTags');

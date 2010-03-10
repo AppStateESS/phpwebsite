@@ -1,5 +1,4 @@
 {START_FORM}
 <p><strong>{MAX_IMAGE_WIDTH_LABEL}</strong> {MAX_IMAGE_WIDTH}</p>
 <p><strong>{MAX_IMAGE_HEIGHT_LABEL}</strong> {MAX_IMAGE_HEIGHT}</p>
-{SUBMIT}
-{END_FORM}
+{SUBMIT} {END_FORM}

@@ -94,7 +94,7 @@ class Related {
 
     public function loadFriends(){
         if (!isset($this->id))
-            return NULL;
+        return NULL;
 
         $db = new PHPWS_DB("related_friends");
         $db->addWhere("source_id", $this->id);
@@ -103,7 +103,7 @@ class Related {
         $result = $db->select("col");
 
         if (PEAR::isError($result))
-            return $result;
+        return $result;
 
         $this->friends = $result;
     }

@@ -1,26 +1,26 @@
 <?php
 /**
-    * podcaster - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * podcaster - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class Podcaster_Forms {
     var $podcaster = null;
@@ -29,42 +29,42 @@ class Podcaster_Forms {
     {
         switch ($type) {
 
-        case 'new':
-        case 'edit_channel':
-            if (empty($this->podcaster->channel)) {
-                $this->podcaster->loadChannel();
-            }
-            $this->editChannel();
-            break;
+            case 'new':
+            case 'edit_channel':
+                if (empty($this->podcaster->channel)) {
+                    $this->podcaster->loadChannel();
+                }
+                $this->editChannel();
+                break;
 
-        case 'edit_episode':
-            $this->editEpisode();
-            break;
+            case 'edit_episode':
+                $this->editEpisode();
+                break;
 
-        case 'list':
-            $this->podcaster->panel->setCurrentTab('list');
-            $this->listChannels();
-            break;
+            case 'list':
+                $this->podcaster->panel->setCurrentTab('list');
+                $this->listChannels();
+                break;
 
-        case 'episodes':
-            $this->podcaster->panel->setCurrentTab('episodes');
-            $this->listEpisodes(1);
-            break;
+            case 'episodes':
+                $this->podcaster->panel->setCurrentTab('episodes');
+                $this->listEpisodes(1);
+                break;
 
-        case 'approvals':
-            $this->podcaster->panel->setCurrentTab('approvals');
-            $this->listEpisodes(0);
-            break;
+            case 'approvals':
+                $this->podcaster->panel->setCurrentTab('approvals');
+                $this->listEpisodes(0);
+                break;
 
-        case 'settings':
-            $this->podcaster->panel->setCurrentTab('settings');
-            $this->editSettings();
-            break;
+            case 'settings':
+                $this->podcaster->panel->setCurrentTab('settings');
+                $this->editSettings();
+                break;
 
-        case 'info':
-            $this->podcaster->panel->setCurrentTab('info');
-            $this->showInfo();
-            break;
+            case 'info':
+                $this->podcaster->panel->setCurrentTab('info');
+                $this->showInfo();
+                break;
 
         }
 
@@ -111,7 +111,7 @@ class Podcaster_Forms {
             $form->setLabel('active', dgettext('podcaster', 'Active'));
             $form->setMatch('active', $channel->active);
         }
-        
+
         $choices = array ('0' => dgettext('podcaster', 'Audio/Video'), '1' => dgettext('podcaster', 'Document'));
         $form->addSelect('media_type', $choices);
         $form->setLabel('media_type', dgettext('podcaster', 'Media type for this channel'));
@@ -189,12 +189,12 @@ class Podcaster_Forms {
             $form->addCheck('active', 1);
             $form->setLabel('active', dgettext('podcaster', 'Active'));
             $form->setMatch('active', $this->podcaster->episode->active);
-            
+
             $form->addCheck('approved', 1);
             $form->setLabel('approved', dgettext('podcaster', 'Approved'));
             $form->setMatch('approved', $this->podcaster->episode->approved);
         }
-        
+
         $tpl = $form->getTemplate();
         $tpl['INFO_LABEL'] = dgettext('podcaster', 'Information');
         $tpl['MEDIA_LABEL'] = dgettext('podcaster', 'Media');
@@ -279,7 +279,7 @@ class Podcaster_Forms {
             $this->podcaster->title = dgettext('podcaster', 'All Podcaster Episodes');
         }
 
-//        $pager->db->setTestMode();
+        //        $pager->db->setTestMode();
         $this->podcaster->content = $pager->get();
     }
 
@@ -306,7 +306,7 @@ class Podcaster_Forms {
         $form->addRadio('block_order_by_rand', array(0, 1));
         $form->setLabel('block_order_by_rand', array(dgettext('podcaster', 'Most recent'), dgettext('podcaster', 'Random')));
         $form->setMatch('block_order_by_rand', PHPWS_Settings::get('podcaster', 'block_order_by_rand'));
-    
+
         $form->addCheckbox('block_on_home_only', 1);
         $form->setMatch('block_on_home_only', PHPWS_Settings::get('podcaster', 'block_on_home_only'));
         $form->setLabel('block_on_home_only', dgettext('podcaster', 'Show on home only'));
@@ -338,13 +338,13 @@ class Podcaster_Forms {
         $form->addTextField('max_height', PHPWS_Settings::get('podcaster', 'max_height'));
         $form->setLabel('max_height', dgettext('podcaster', 'Maximum image height (50-600)'));
         $form->setSize('max_height', 4,4);
-        
+
         $form->addCheck('mod_folders_only', 1);
         $form->setLabel('mod_folders_only', dgettext('podcaster', 'Hide general image folders'));
         $form->setMatch('mod_folders_only', PHPWS_Settings::get('podcaster', 'mod_folders_only'));
 
         $form->addSubmit('save', dgettext('podcaster', 'Save settings'));
-        
+
         $tpl = $form->getTemplate();
         $tpl['SETTINGS_LABEL'] = dgettext('podcaster', 'General Settings');
         $tpl['IMAGE_LABEL'] = dgettext('podcaster', 'Image Settings');
@@ -356,7 +356,7 @@ class Podcaster_Forms {
 
     function showInfo()
     {
-        
+
         $filename = 'mod/podcaster/docs/README';
         if (@fopen($filename, "rb")) {
             $handle = fopen($filename, "rb");

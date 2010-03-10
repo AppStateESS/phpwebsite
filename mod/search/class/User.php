@@ -1,11 +1,11 @@
 <?php
 
-  /**
-   * User instructions
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * User instructions
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 PHPWS_Core::requireConfig('search');
 class Search_User {
@@ -19,13 +19,13 @@ class Search_User {
         $command = $_GET['user'];
 
         switch ($command) {
-        case 'search':
-            Search_User::searchPost();
-            break;
+            case 'search':
+                Search_User::searchPost();
+                break;
 
-        default:
-            PHPWS_Core::errorPage('404');
-            break;
+            default:
+                PHPWS_Core::errorPage('404');
+                break;
         }
     }
 
@@ -33,7 +33,7 @@ class Search_User {
     {
         if (SEARCH_DEFAULT) {
             $onclick = sprintf('onclick="if(this.value == \'%s\')this.value = \'\';"',
-                               SEARCH_DEFAULT);
+            SEARCH_DEFAULT);
         }
 
         PHPWS_Core::initCoreClass('Form.php');
@@ -106,7 +106,7 @@ class Search_User {
         include($file);
 
         if (!isset($alternate_search_engine) || !is_array($alternate_search_engine) ||
-            !isset($alternate_search_engine[$alternate])) {
+        !isset($alternate_search_engine[$alternate])) {
             PHPWS_Core::errorPage();
             exit();
         }

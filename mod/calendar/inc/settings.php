@@ -1,13 +1,13 @@
 <?php
 
-  /**
-   * starting_day : day of the week to start calendars
-   *                (0 - Sunday, 1 - Monday, etc.)
-   * default_hour_format : uses date() settings (g, G, h, H)
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * starting_day : day of the week to start calendars
+ *                (0 - Sunday, 1 - Monday, etc.)
+ * default_hour_format : uses date() settings (g, G, h, H)
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 $settings = array('use_calendar_style' => 1,
                   'starting_day'       => 0,

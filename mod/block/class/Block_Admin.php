@@ -66,101 +66,101 @@ class Block_Admin {
         }
 
         switch ($action) {
-        case 'new':
-            $title = dgettext('block', 'New Block');
-            $content = Block_Admin::edit($block);
-            break;
+            case 'new':
+                $title = dgettext('block', 'New Block');
+                $content = Block_Admin::edit($block);
+                break;
 
-        case 'delete':
-            $block->kill();
-            Block_Admin::sendMessage(dgettext('block', 'Block deleted.'));
-            PHPWS_Core::goBack();
-            break;
+            case 'delete':
+                $block->kill();
+                Block_Admin::sendMessage(dgettext('block', 'Block deleted.'));
+                PHPWS_Core::goBack();
+                break;
 
-        case 'edit':
-            $title = ('Edit Block');
-            $content = Block_Admin::edit($block);
-            break;
+            case 'edit':
+                $title = ('Edit Block');
+                $content = Block_Admin::edit($block);
+                break;
 
-        case 'pin':
-            Block_Admin::pinBlock($block);
-            Block_Admin::sendMessage(dgettext('block', 'Block pinned'), 'list');
-            break;
+            case 'pin':
+                Block_Admin::pinBlock($block);
+                Block_Admin::sendMessage(dgettext('block', 'Block pinned'), 'list');
+                break;
 
-        case 'pin_all':
-            Block_Admin::pinBlockAll($block);
-            Block_Admin::sendMessage(dgettext('block', 'Block pinned'), 'list');
-            break;
+            case 'pin_all':
+                Block_Admin::pinBlockAll($block);
+                Block_Admin::sendMessage(dgettext('block', 'Block pinned'), 'list');
+                break;
 
-        case 'unpin':
-            unset($_SESSION['Pinned_Blocks']);
-            Block_Admin::sendMessage(dgettext('block', 'Block unpinned'), 'list');
-            break;
+            case 'unpin':
+                unset($_SESSION['Pinned_Blocks']);
+                Block_Admin::sendMessage(dgettext('block', 'Block unpinned'), 'list');
+                break;
 
-        case 'remove':
-            Block_Admin::removeBlock();
-            PHPWS_Core::goBack();
-            break;
+            case 'remove':
+                Block_Admin::removeBlock();
+                PHPWS_Core::goBack();
+                break;
 
-        case 'copy':
-            Block_Admin::copyBlock($block);
-            PHPWS_Core::goBack();
-            break;
+            case 'copy':
+                Block_Admin::copyBlock($block);
+                PHPWS_Core::goBack();
+                break;
 
-        case 'postBlock':
-            Block_Admin::postBlock($block);
-            $result = $block->save();
-            Block_Admin::sendMessage(dgettext('block', 'Block saved'), 'list');
-            break;
-
-        case 'settings':
-            $title = dgettext('block', 'Settings');
-            $content = Block_Admin::settings();
-            break;
-
-        case 'post_settings':
-            $result = Block_Admin::postSettings();
-            if (is_array($result)) {
-                $message = implode('<br />', $result);
-                $title = dgettext('block', 'Settings');
-                $content = Block_Admin::settings();
-            } else {
-                Block_Admin::sendMessage(dgettext('block', 'Settings saved'), 'settings');
-            }
-            break;
-
-        case 'postJSBlock':
-            if (!PHPWS_Core::isPosted()) {
+            case 'postBlock':
                 Block_Admin::postBlock($block);
                 $result = $block->save();
+                Block_Admin::sendMessage(dgettext('block', 'Block saved'), 'list');
+                break;
+
+            case 'settings':
+                $title = dgettext('block', 'Settings');
+                $content = Block_Admin::settings();
+                break;
+
+            case 'post_settings':
+                $result = Block_Admin::postSettings();
+                if (is_array($result)) {
+                    $message = implode('<br />', $result);
+                    $title = dgettext('block', 'Settings');
+                    $content = Block_Admin::settings();
+                } else {
+                    Block_Admin::sendMessage(dgettext('block', 'Settings saved'), 'settings');
+                }
+                break;
+
+            case 'postJSBlock':
+                if (!PHPWS_Core::isPosted()) {
+                    Block_Admin::postBlock($block);
+                    $result = $block->save();
+                    if (PEAR::isError($result)) {
+                        PHPWS_Error::log($result);
+                    } elseif (isset($_REQUEST['key_id'])) {
+                        Block_Admin::lockBlock($block->id, $_REQUEST['key_id']);
+                    }
+                }
+                javascript('close_refresh');
+                break;
+
+            case 'lock':
+                $result = Block_Admin::lockBlock($_GET['block_id'], $_GET['key_id']);
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
-                } elseif (isset($_REQUEST['key_id'])) {
-                    Block_Admin::lockBlock($block->id, $_REQUEST['key_id']);
                 }
-            }
-            javascript('close_refresh');
-            break;
+                PHPWS_Core::goBack();
+                break;
 
-        case 'lock':
-            $result = Block_Admin::lockBlock($_GET['block_id'], $_GET['key_id']);
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-            }
-            PHPWS_Core::goBack();
-            break;
+            case 'list':
+                $title = dgettext('block', 'Block list');
+                $content = Block_Admin::blockList();
+                break;
 
-        case 'list':
-            $title = dgettext('block', 'Block list');
-            $content = Block_Admin::blockList();
-            break;
-
-        case 'js_block_edit':
-            $template['TITLE'] = dgettext('block', 'New Block');
-            $template['CONTENT'] = Block_Admin::edit($block, TRUE);
-            $content = PHPWS_Template::process($template, 'block', 'admin.tpl');
-            Layout::nakedDisplay($content);
-            break;
+            case 'js_block_edit':
+                $template['TITLE'] = dgettext('block', 'New Block');
+                $template['CONTENT'] = Block_Admin::edit($block, TRUE);
+                $content = PHPWS_Template::process($template, 'block', 'admin.tpl');
+                Layout::nakedDisplay($content);
+                break;
         }
 
         $template['TITLE'] = &$title;

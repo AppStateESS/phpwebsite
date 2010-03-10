@@ -171,11 +171,11 @@ class Note_Item {
         }
 
         $link = sprintf('document.location.href=\'index.php?module=notes&command=delete_note&id=%s\'',
-                        $this->id);
+        $this->id);
 
         $tpl['DELETE'] = sprintf('<input type="button" onclick="%s" value="%s" />',
-                                 $link,
-                                 dgettext('notes', 'Delete and close'));
+        $link,
+        dgettext('notes', 'Delete and close'));
 
         return PHPWS_Template::process($tpl, 'notes', 'note.tpl');
     }

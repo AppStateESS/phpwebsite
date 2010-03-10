@@ -14,24 +14,24 @@ class Clipboard
     public function action()
     {
         if (!isset($_REQUEST['action']))
-            return;
+        return;
 
         switch ($_REQUEST['action']){
-        case 'showclip':
-            Clipboard::view();
-            break;
+            case 'showclip':
+                Clipboard::view();
+                break;
 
-        case 'drop':
-            if (isset($_REQUEST['key'])) {
-                unset($_SESSION['Clipboard']->components[$_REQUEST['key']]);
-                exit();
-            }
-            break;
+            case 'drop':
+                if (isset($_REQUEST['key'])) {
+                    unset($_SESSION['Clipboard']->components[$_REQUEST['key']]);
+                    exit();
+                }
+                break;
 
-        case 'clear':
-            unset($_SESSION['Clipboard']);
-            PHPWS_Core::goBack();
-            break;
+            case 'clear':
+                unset($_SESSION['Clipboard']);
+                PHPWS_Core::goBack();
+                break;
         }
 
     }
@@ -47,7 +47,7 @@ class Clipboard
         if (!empty($clip->smarttag)) {
             $template['SMART_TAG'] = strip_tags($clip->smarttag);
             $template['SMART_TAG_LINK'] = sprintf('<a href="#" id="smart-link" onclick="return false">%s</a>',
-                                              dgettext('clipboard', 'Smart Tag'));
+            dgettext('clipboard', 'Smart Tag'));
         }
 
         javascript('clipboard', 'pick_view', $js);
@@ -58,10 +58,10 @@ class Clipboard
 
 
         $template['VIEW_LINK'] = sprintf('<a href="#" id="view-link" onclick="return false">%s</a>',
-                                         dgettext('clipboard', 'View'));
+        dgettext('clipboard', 'View'));
         if (!empty($clip->source)) {
             $template['SOURCE_LINK'] = sprintf('<a href="#" id="source-link" onclick="return false">%s</a>',
-                                               dgettext('clipboard', 'Source'));
+            dgettext('clipboard', 'Source'));
         }
 
         $button = dgettext('clipboard', 'Close Window');
@@ -100,7 +100,7 @@ class Clipboard
             $data['window_name'] = 'clipboard-' . $component->title;
             $content[] = sprintf('<div id="%s">%s</div>',
                                  'clip-' . $key,
-                                 Layout::getJavascript('open_window', $data) . ' ' . $drop);
+            Layout::getJavascript('open_window', $data) . ' ' . $drop);
         }
 
         unset($clipVars['key']);

@@ -1,26 +1,26 @@
 <?php
 /**
-    * whatsnew - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * whatsnew - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 PHPWS_Core::requireConfig('whatsnew');
 
@@ -86,8 +86,8 @@ class Whatsnew {
             $this->panel->setContent(PHPWS_Template::process($tpl, 'whatsnew', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
-        
-   }
+
+    }
 
 
     function userMenu($action=null)
@@ -120,8 +120,8 @@ class Whatsnew {
         } else {
             Layout::add(PHPWS_Template::process($tpl, 'whatsnew', 'main_user.tpl'));
         }
-        
-   }
+
+    }
 
 
     function forwardMessage($message, $title=null)
@@ -131,7 +131,7 @@ class Whatsnew {
             $_SESSION['Whatsnew_Message']['title'] = $title;
         }
     }
-    
+
 
     function loadMessage()
     {
@@ -159,7 +159,7 @@ class Whatsnew {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('whatsnew-panel');
         $link = 'index.php?module=whatsnew&aop=menu';
-        
+
         if (Current_User::isUnrestricted('whatsnew')) {
             $tags['settings'] = array('title'=>dgettext('whatsnew', 'Settings'),
                                   'link'=>$link);
@@ -174,12 +174,12 @@ class Whatsnew {
     {
 
         isset($_POST['enable']) ?
-            PHPWS_Settings::set('whatsnew', 'enable', 1) :
-            PHPWS_Settings::set('whatsnew', 'enable', 0);
+        PHPWS_Settings::set('whatsnew', 'enable', 1) :
+        PHPWS_Settings::set('whatsnew', 'enable', 0);
 
         isset($_POST['homeonly']) ?
-            PHPWS_Settings::set('whatsnew', 'homeonly', 1) :
-            PHPWS_Settings::set('whatsnew', 'homeonly', 0);
+        PHPWS_Settings::set('whatsnew', 'homeonly', 1) :
+        PHPWS_Settings::set('whatsnew', 'homeonly', 0);
 
         if (!empty($_POST['title'])) {
             PHPWS_Settings::set('whatsnew', 'title', strip_tags(PHPWS_Text::parseInput($_POST['title'])));
@@ -208,21 +208,21 @@ class Whatsnew {
         }
 
         isset($_POST['show_summaries']) ?
-            PHPWS_Settings::set('whatsnew', 'show_summaries', 1) :
-            PHPWS_Settings::set('whatsnew', 'show_summaries', 0);
+        PHPWS_Settings::set('whatsnew', 'show_summaries', 1) :
+        PHPWS_Settings::set('whatsnew', 'show_summaries', 0);
 
         isset($_POST['show_dates']) ?
-            PHPWS_Settings::set('whatsnew', 'show_dates', 1) :
-            PHPWS_Settings::set('whatsnew', 'show_dates', 0);
+        PHPWS_Settings::set('whatsnew', 'show_dates', 1) :
+        PHPWS_Settings::set('whatsnew', 'show_dates', 0);
 
         isset($_POST['show_source_modules']) ?
-            PHPWS_Settings::set('whatsnew', 'show_source_modules', 1) :
-            PHPWS_Settings::set('whatsnew', 'show_source_modules', 0);
+        PHPWS_Settings::set('whatsnew', 'show_source_modules', 1) :
+        PHPWS_Settings::set('whatsnew', 'show_source_modules', 0);
 
         if (isset($_POST['exclude'])) {
             PHPWS_Settings::set('whatsnew', 'exclude', $_POST['exclude']);
-        } 
-        
+        }
+
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
             return false;
@@ -230,7 +230,7 @@ class Whatsnew {
             PHPWS_Cache::remove('whatsnew_cache_key');
             if (PHPWS_Settings::save('whatsnew')) {
                 return true;
-            } else { 
+            } else {
                 return false;
             }
         }
@@ -315,7 +315,7 @@ class Whatsnew {
         $summary = null;
         $date = null;
         $module_name = null;
-        
+
         $exclude = unserialize(PHPWS_Settings::get('whatsnew', 'exclude'));
         $db = new PHPWS_DB('phpws_key');
 
@@ -337,7 +337,7 @@ class Whatsnew {
         $db->addColumn('phpws_key.update_date');
         $db->addColumn('modules.title', null, 'module_title');
         $db->addColumn('modules.proper_name');
-//        $db->setTestMode();
+        //        $db->setTestMode();
         $result = $db->select();
 
         $tpl['TITLE'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('whatsnew', 'title'));
@@ -359,7 +359,7 @@ class Whatsnew {
         } else {
             $tpl['new-items'][] = array('LINK'=>dgettext('whatsnew', 'Sorry, no results'));
         }
-        
+
         $content = PHPWS_Template::process($tpl, 'whatsnew', 'block.tpl');
         if (PHPWS_Settings::get('whatsnew', 'cache_timeout') > 0 && !Current_User::isLogged() && !Current_User::allow('whatsnew')) {
             PHPWS_Cache::save($cache_key, $content);

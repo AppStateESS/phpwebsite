@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 $link[] = array('label'       => dgettext('search', 'Search'),
 		'restricted'  => TRUE,
@@ -11,4 +11,4 @@ $link[] = array('label'       => dgettext('search', 'Search'),
 		'image'       => 'search.png',
 		'tab'         => 'admin'
 		);
-?>
+		?>

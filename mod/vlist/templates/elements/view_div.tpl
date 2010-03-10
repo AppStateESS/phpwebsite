@@ -1,3 +1,5 @@
 <!-- BEGIN LABEL -->
-<br /><strong>{LABEL}</strong><hr />
+<br />
+<strong>{LABEL}</strong>
+<hr />
 <!-- END LABEL -->

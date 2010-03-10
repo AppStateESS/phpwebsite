@@ -14,4 +14,4 @@ $link[] = array('label'       => dgettext('categories', 'Categories'),
                 'tab'         => 'content'
                 );
 
-?>
+                ?>

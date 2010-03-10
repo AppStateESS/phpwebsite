@@ -1,184 +1,176 @@
 div.month-view-mini {
-  width : 100%;
+    width: 100%;
 }
 
 div.month-view-full {
-  width : 100%;
+    width: 100%;
 }
 
 div.month-view-full table {
-  width : 100%;
-  border-collapse : collapse;
-  border-width : 1px;
-  border-style : solid;
-  border-color : #888;
+    width: 100%;
+    border-collapse: collapse;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #888;
 }
 
 div.month-view-full table tr {
-  vertical-align : top;
+    vertical-align: top;
 }
 
 div.month-view-full table td {
-  width : 11%;
-  border-collapse : collapse;
-  border-width : 1px;
-  border-style : solid;
-  border-color : #888;
-  text-align : left;
-  padding : 3px;
-  height : 100px;
+    width: 11%;
+    border-collapse: collapse;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #888;
+    text-align: left;
+    padding: 3px;
+    height: 100px;
 }
 
 div.month-view-full table th {
-  background-color : #888;
-  color : white;
-  text-align : center;
+    background-color: #888;
+    color: white;
+    text-align: center;
 }
 
-
 div.month-view-mini table {
-  width : 100%;
-  border-collapse : collapse;
-  border-width : 1px;
-  border-style : solid;
-  border-color : #888;
+    width: 100%;
+    border-collapse: collapse;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #888;
 }
 
 div.month-view-mini table td {
-  width : 11%;
-  border-collapse : collapse;
-  border-width : 1px;
-  border-style : solid;
-  border-color : #888;
-  text-align : center;
+    width: 11%;
+    border-collapse: collapse;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #888;
+    text-align: center;
 }
 
 div.month-view-mini table th {
-  background-color : #888;
-  color : white;
-  text-align : center;
+    background-color: #888;
+    color: white;
+    text-align: center;
 }
 
 td.day-empty {
-  background-color : #a2a2a2;
+    background-color: #a2a2a2;
 }
 
 td.day-current {
-  background-color : #888;
-  color : white;
+    background-color: #888;
+    color: white;
 }
 
 td.day-current a {
-  color : white;
+    color: white;
 }
 
-
 td.day-normal {
-  background-color : #cdcdcd;
+    background-color: #cdcdcd;
 }
 
 div.cal-events {
-  margin-top : 1em;
+    margin-top: 1em;
 }
 
 .vevent {
-  padding : 5px;
+    padding: 5px;
 }
 
 .calendar-event-hour {
-     border-bottom : 1px solid black;
+    border-bottom: 1px solid black;
 }
 
 .full {
-      background-color : red;
+    background-color: red;
 }
 
 .empty {
-      background-color : white;
+    background-color: white;
 }
 
 #calendar-glance {
-      background-color : white;
-      float : right;
-      width : 100px;
-      text-align : center;
-      border : 1px black solid;
+    background-color: white;
+    float: right;
+    width: 100px;
+    text-align: center;
+    border: 1px black solid;
 }
-
 
 div.month {
-     font-size : 1.6em;
-     font-weight : bold;
+    font-size: 1.6em;
+    font-weight: bold;
 }
 
-
 div.day {
-      font-size : 1.4em;
-      font-weight : bold;
-      margin : 5px 0px;
-      padding : 2px 4px;
+    font-size: 1.4em;
+    font-weight: bold;
+    margin: 5px 0px;
+    padding: 2px 4px;
 }
 
 div.hour {
-      font-size : 1.2em;
-      font-weight : bold;
-      margin : 5px 0px;
-      padding : 2px 4px;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 5px 0px;
+    padding: 2px 4px;
 }
 
 div.list-event {
-      padding : 4px;
-      margin : 4px;
+    padding: 4px;
+    margin: 4px;
 }
 
-span.event-title, span.event-time {
-      font-weight : bold;
+span.event-title,span.event-time {
+    font-weight: bold;
 }
 
 div.view-links {
-   margin-bottom : 10px;
-   text-align : center;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
 div.vevent h2.summary {
-   font-size : 1.2em;
-   margin : 0em 0em 0em 0em;
-   padding : 0em 0em 0em 0em;
-
+    font-size: 1.2em;
+    margin: 0em 0em 0em 0em;
+    padding: 0em 0em 0em 0em;
 }
 
-
 div.event-tabs {
-   margin-bottom : 2em;
+    margin-bottom: 2em;
 }
 
 .calendar-admin {
-    text-align : right;
+    text-align: right;
 }
 
 .cal-tab li {
     padding: 5px 5px 4px 5px;
     display: inline;
     list-style-type: none;
-    border : 1px solid black;
-    margin-right : 4px;
+    border: 1px solid black;
+    margin-right: 4px;
 }
-
 
 .cal-tab li.active {
-    color : white;
-    background-color : #BFBFBF;
-    z-index : 2;
+    color: white;
+    background-color: #BFBFBF;
+    z-index: 2;
 }
 
-.cal-tab li.active a:link,
-.cal-tab li.active a:visited  {
+.cal-tab li.active a:link,.cal-tab li.active a:visited {
     text-decoration: none;
-    color : black;
+    color: black;
 }
 
 .cal-tab li.inactive {
-    background-color : #E9E9E9;
+    background-color: #E9E9E9;
 }
 
 .cal-tab li.inactive:hover {
@@ -186,53 +178,50 @@ div.event-tabs {
     color: white;
 }
 
-
-.cal-tab li.inactive a:link,
-.cal-tab li.inactive a:visited {
+.cal-tab li.inactive a:link,.cal-tab li.inactive a:visited {
     text-decoration: none;
     color: black;
 }
 
 .overflow {
-    overflow : auto;
-    max-height : 200px;
+    overflow: auto;
+    max-height: 200px;
 }
 
 div.upcoming {
-   font-size : .9em;
+    font-size: .9em;
 }
 
 div.upcoming div.title {
-   font-size : 1.2em;
-   text-align : center;
+    font-size: 1.2em;
+    text-align: center;
 }
 
 div.upcoming h3.day {
-   margin : 0px;
-   padding : 0px;
-   margin-top : 1em;
-   border-bottom : 1px solid black;
+    margin: 0px;
+    padding: 0px;
+    margin-top: 1em;
+    border-bottom: 1px solid black;
 }
 
-
 ul.event-listing {
-   font-size : 90%;
-   line-height : 1.2em;
-   margin : 0px;
-   padding : 0px;
+    font-size: 90%;
+    line-height: 1.2em;
+    margin: 0px;
+    padding: 0px;
 }
 
 ul.event-listing li {
-   margin : 0px;
-   padding : 0px;
+    margin: 0px;
+    padding: 0px;
 }
 
 .vevent h1.summary {
-   margin : 0;
+    margin: 0;
 }
 
 .vevent h2.timestamp {
-   margin : 0px;
-   padding : 0px;
-   margin-bottom : 1em;
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: 1em;
 }

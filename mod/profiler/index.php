@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../core/conf/404.html';
@@ -16,7 +16,7 @@ if (isset($_REQUEST['user_cmd'])) {
     if (!Current_User::authorized('profiler')) {
         Current_User::disallow();
     }
-    
+
     PHPWS_Core::initModClass('profiler', 'Profiler.php');
     Profiler::admin();
 }

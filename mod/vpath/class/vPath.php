@@ -1,26 +1,26 @@
 <?php
 /**
-    * vpath - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vpath - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class vPath {
     public $forms       = null;
@@ -75,7 +75,7 @@ class vPath {
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
-   }
+    }
 
 
     public function forwardMessage($message, $title=null)
@@ -128,27 +128,27 @@ class vPath {
     {
 
         isset($_POST['enable_path']) ?
-            PHPWS_Settings::set('vpath', 'enable_path', 1) :
-            PHPWS_Settings::set('vpath', 'enable_path', 0);
+        PHPWS_Settings::set('vpath', 'enable_path', 1) :
+        PHPWS_Settings::set('vpath', 'enable_path', 0);
 
         isset($_POST['show_on_home']) ?
-            PHPWS_Settings::set('vpath', 'show_on_home', 1) :
-            PHPWS_Settings::set('vpath', 'show_on_home', 0);
+        PHPWS_Settings::set('vpath', 'show_on_home', 1) :
+        PHPWS_Settings::set('vpath', 'show_on_home', 0);
 
         PHPWS_Settings::set('vpath', 'menu_id', $_POST['menu_id']);
         PHPWS_Settings::set('vpath', 'divider', $_POST['divider']);
 
         isset($_POST['divider_space']) ?
-            PHPWS_Settings::set('vpath', 'divider_space', 1) :
-            PHPWS_Settings::set('vpath', 'divider_space', 0);
+        PHPWS_Settings::set('vpath', 'divider_space', 1) :
+        PHPWS_Settings::set('vpath', 'divider_space', 0);
 
         isset($_POST['link_current']) ?
-            PHPWS_Settings::set('vpath', 'link_current', 1) :
-            PHPWS_Settings::set('vpath', 'link_current', 0);
+        PHPWS_Settings::set('vpath', 'link_current', 1) :
+        PHPWS_Settings::set('vpath', 'link_current', 0);
 
         isset($_POST['show_sub_menu']) ?
-            PHPWS_Settings::set('vpath', 'show_sub_menu', 1) :
-            PHPWS_Settings::set('vpath', 'show_sub_menu', 0);
+        PHPWS_Settings::set('vpath', 'show_sub_menu', 1) :
+        PHPWS_Settings::set('vpath', 'show_sub_menu', 0);
 
         if (!empty($_POST['path_prefix'])) {
             PHPWS_Settings::set('vpath', 'path_prefix', PHPWS_Text::parseInput($_POST['path_prefix']));
@@ -178,7 +178,7 @@ class vPath {
 
     function buildTrail($menu_id)
     {
-    
+
         /* get all links for the menu_id */
         $db = new PHPWS_DB('menu_links');
         $db->addWhere('menu_id', $menu_id);
@@ -186,13 +186,13 @@ class vPath {
         if (empty($links) || PHPWS_Error::logIfError($links)) {
             return NULL;
         }
-    
+
         /* get the current key */
         $current_key = Key::getCurrent();
-    
+
         /* if there is a key */
         if (!empty($current_key)) {
-    
+
             /* make sure it isn't a dummy key */
             if (!$current_key->isDummy()) {
                 $current_key_id = $current_key->id;
@@ -200,32 +200,32 @@ class vPath {
                 $current_key_id = null;
             }
 
-        /* if there is no key, get the url */
+            /* if there is no key, get the url */
         } else {
-    
+
             static $current_url = null;
             static $redirect_url = null;
-    
+
             if (!$current_url) {
                 $current_url = preg_quote(PHPWS_Core::getCurrentUrl(true,false));
             }
-    
+
             if (!$redirect_url) {
                 $redirect_url = preg_quote(PHPWS_Core::getCurrentUrl());
             }
-        
+
         }
-    
+
         /* initialise an array for the crumbs in the trail */
         $list = array();
-    
+
         /* now lets go through the menu links */
         foreach ($links as $link) {
             /* check for the current link */
-            if ( (isset($current_key_id) && $link['key_id'] == $current_key_id) || 
-                 (isset($current_url) && (preg_match("@$current_url\$@", $link['url']))) || 
-                 (isset($redirect_url) && (preg_match("@$redirect_url\$@", $link['url'])))
-          ) {
+            if ( (isset($current_key_id) && $link['key_id'] == $current_key_id) ||
+            (isset($current_url) && (preg_match("@$current_url\$@", $link['url']))) ||
+            (isset($redirect_url) && (preg_match("@$redirect_url\$@", $link['url'])))
+            ) {
                 /* add it's title to the crumb list */
                 if (PHPWS_Settings::get('vpath', 'link_current')) {
                     $list[] = sprintf('<a href="%s">%s</a>', $link['url'], $link['title']);
@@ -242,7 +242,7 @@ class vPath {
                 }
             }
         }
-        
+
         /* if the current item is not in the menu */
         if (empty($list)) {
             if (isset($GLOBALS['Layout_Page_Title_Add'])) {
@@ -267,16 +267,16 @@ class vPath {
         $divider = $vpath_dividers[PHPWS_Settings::get('vpath', 'divider')];
         if (PHPWS_Settings::get('vpath', 'divider_space')) {
             $divider = ' ' . $divider . ' ';
-        } 
+        }
         $tpl['PATH'] = implode($list, $divider);
-    
+
         if (!empty($tpl)) {
             $content = PHPWS_Template::process($tpl, 'vpath', 'path.tpl');
             Layout::add($content, 'vpath', 'view');
         }
-    
+
     }
-    
+
 
     function getCrumbs(&$links, &$list, $id) {
         foreach ($links as $l) {
@@ -290,8 +290,8 @@ class vPath {
             }
         }
     }
-    
-    
+
+
     function buildSub(&$links, $id, $title) {
         $tpl['LINKS'] = null;
         foreach ($links as $l) {

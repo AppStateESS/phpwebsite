@@ -1,26 +1,26 @@
 <?php
 /**
-    * vlist - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vlist - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 require_once(PHPWS_SOURCE_DIR . 'mod/vlist/class/UNI_Element.php');
 
@@ -38,13 +38,13 @@ class UNI_Checkbox extends UNI_Element {
     }
 
 
-    function hasOptions() 
+    function hasOptions()
     {
         return true;
     }
 
 
-    function view($match=null) 
+    function view($match=null)
     {
         if(isset($_REQUEST['UNI_' . $this->id]) && is_array($_REQUEST['UNI_' . $this->id])) {
             $this->setValue($_REQUEST['UNI_' . $this->id]);
@@ -76,17 +76,17 @@ class UNI_Checkbox extends UNI_Element {
         }
 
         return PHPWS_Template::processTemplate($tpl, 'vlist', 'elements/view_checkbox.tpl');
-    } 
+    }
 
 
-    function edit() 
+    function edit()
     {
         $numoptions = $this->numoptions;
-        $elements[0] =  PHPWS_Form::formHidden('module', 'vlist') . 
-                        PHPWS_Form::formHidden('aop', 'post_element') . 
-                        PHPWS_Form::formHidden('type', 'Checkbox') ;
+        $elements[0] =  PHPWS_Form::formHidden('module', 'vlist') .
+        PHPWS_Form::formHidden('aop', 'post_element') .
+        PHPWS_Form::formHidden('type', 'Checkbox') ;
         if ($this->id) {
-            $elements[0] .=  PHPWS_Form::formHidden('id', $this->id) ; 
+            $elements[0] .=  PHPWS_Form::formHidden('id', $this->id) ;
         }
 
         $tpl['LABEL_LABEL'] = dgettext('vlist', 'Label/name');
@@ -111,7 +111,7 @@ class UNI_Checkbox extends UNI_Element {
         $elements[0] .= PHPWS_Template::processTemplate($tpl, 'vlist', 'elements/edit_checkbox.tpl');
 
         return PHPWS_Form::makeForm('UNI_Checkbox_edit', 'index.php', $elements, 'post', null, null);
-    } 
+    }
 
 
 }

@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 if (Current_User::isLogged()) {
     PHPWS_Core::initModClass('notes', 'My_Page.php');
@@ -15,6 +15,6 @@ if (Current_User::isLogged()) {
         Notes_My_Page::miniAdminLink($key);
         Notes_My_Page::showAssociations($key);
     }
- }
+}
 
 ?>

@@ -1,26 +1,26 @@
 <?php
 /**
-    * skeleton - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * skeleton - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 PHPWS_Core::requireInc('skeleton', 'errordefines.php');
 PHPWS_Core::requireConfig('skeleton');
@@ -61,7 +61,7 @@ class Skeleton {
                 }
                 $this->loadForm('edit_skeleton');
                 break;
-    
+
             case 'post_skeleton':
                 if (!Current_User::authorized('skeleton', 'edit_skeleton')) {
                     Current_User::disallow();
@@ -78,7 +78,7 @@ class Skeleton {
                     $this->loadForm('edit_skeleton');
                 }
                 break;
-    
+
             case 'delete_skeleton':
                 if (!Current_User::authorized('skeleton', 'delete_skeleton')) {
                     Current_User::disallow();
@@ -88,7 +88,7 @@ class Skeleton {
                 $this->message = dgettext('skeleton', 'Skeleton deleted.');
                 $this->loadForm('list');
                 break;
-                
+
 
             case 'edit_bone':
                 if (!Current_User::authorized('skeleton', 'edit_bone')) {
@@ -96,7 +96,7 @@ class Skeleton {
                 }
                 $this->loadForm('edit_bone');
                 break;
-    
+
             case 'post_bone':
                 if (!Current_User::authorized('skeleton', 'edit_bone')) {
                     Current_User::disallow();
@@ -113,7 +113,7 @@ class Skeleton {
                     $this->loadForm('edit_bone');
                 }
                 break;
-    
+
             case 'delete_bone':
                 if (!Current_User::authorized('skeleton', 'delete_bone')) {
                     Current_User::disallow();
@@ -149,8 +149,8 @@ class Skeleton {
             $this->panel->setContent(PHPWS_Template::process($tpl, 'skeleton', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
-        
-   }
+
+    }
 
 
     public function userMenu($action=null)
@@ -199,8 +199,8 @@ class Skeleton {
         } else {
             Layout::add(PHPWS_Template::process($tpl, 'skeleton', 'main_user.tpl'));
         }
-        
-   }
+
+    }
 
 
     public function forwardMessage($message, $title=null)
@@ -210,7 +210,7 @@ class Skeleton {
             $_SESSION['Skeleton_Message']['title'] = $title;
         }
     }
-    
+
 
     public function loadMessage()
     {
@@ -281,18 +281,18 @@ class Skeleton {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('skeleton-panel');
         $link = 'index.php?module=skeleton&aop=menu';
-        
+
         if (Current_User::allow('skeleton', 'edit_skeleton')) {
             $tags['new_skeleton'] = array('title'=>dgettext('skeleton', 'New Skeleton'),
                                  'link'=>$link);
         }
-            $tags['list_skeletons'] = array('title'=>dgettext('skeleton', 'List Skeletons'),
+        $tags['list_skeletons'] = array('title'=>dgettext('skeleton', 'List Skeletons'),
                                   'link'=>$link);
         if (Current_User::allow('skeleton', 'edit_bone')) {
             $tags['new_bone'] = array('title'=>dgettext('skeleton', 'New Bone'),
                                  'link'=>$link);
         }
-            $tags['list_bones'] = array('title'=>dgettext('skeleton', 'List Bones'),
+        $tags['list_bones'] = array('title'=>dgettext('skeleton', 'List Bones'),
                                   'link'=>$link);
         if (Current_User::allow('skeleton', 'settings', null, null, true)) {
             $tags['settings'] = array('title'=>dgettext('skeleton', 'Settings'),
@@ -384,12 +384,12 @@ class Skeleton {
     {
 
         isset($_POST['enable_sidebox']) ?
-            PHPWS_Settings::set('skeleton', 'enable_sidebox', 1) :
-            PHPWS_Settings::set('skeleton', 'enable_sidebox', 0);
+        PHPWS_Settings::set('skeleton', 'enable_sidebox', 1) :
+        PHPWS_Settings::set('skeleton', 'enable_sidebox', 0);
 
         isset($_POST['sidebox_homeonly']) ?
-            PHPWS_Settings::set('skeleton', 'sidebox_homeonly', 1) :
-            PHPWS_Settings::set('skeleton', 'sidebox_homeonly', 0);
+        PHPWS_Settings::set('skeleton', 'sidebox_homeonly', 1) :
+        PHPWS_Settings::set('skeleton', 'sidebox_homeonly', 0);
 
         if (!empty($_POST['sidebox_text'])) {
             PHPWS_Settings::set('skeleton', 'sidebox_text', PHPWS_Text::parseInput($_POST['sidebox_text']));
@@ -421,7 +421,7 @@ class Skeleton {
         } else {
             if (PHPWS_Settings::save('skeleton')) {
                 return true;
-            } else { 
+            } else {
                 return falsel;
             }
         }
@@ -436,7 +436,7 @@ class Skeleton {
         if (Current_User::allow('skeleton', 'settings', null, null, true) && !isset($_REQUEST['aop'])){
             $links[] = PHPWS_Text::moduleLink(dgettext('skeleton', 'Settings'), "skeleton",  array('aop'=>'menu', 'tab'=>'settings'));
         }
-        
+
         return $links;
     }
 

@@ -1,26 +1,26 @@
 <?php
 /**
-    * vshop - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vshop - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class vShop_Forms {
     public $vshop = null;
@@ -29,126 +29,126 @@ class vShop_Forms {
     {
         switch ($type) {
 
-        case 'new_dept':
-        case 'edit_dept':
-            if (empty($this->vshop->dept)) {
-                $this->vshop->loadDept();
-            }
-            $this->editDept();
-            break;
+            case 'new_dept':
+            case 'edit_dept':
+                if (empty($this->vshop->dept)) {
+                    $this->vshop->loadDept();
+                }
+                $this->editDept();
+                break;
 
-        case 'list_depts':
-            $this->vshop->panel->setCurrentTab('list_depts');
-            $this->listDepts();
-            break;
+            case 'list_depts':
+                $this->vshop->panel->setCurrentTab('list_depts');
+                $this->listDepts();
+                break;
 
-        case 'new_item':
-            $this->selectDept();
-            break;
-            
-        case 'edit_item':
-            if (empty($this->vshop->item)) {
-                $this->vshop->loadItem();
-            }
-            $this->editItem();
-            break;
+            case 'new_item':
+                $this->selectDept();
+                break;
 
-        case 'list_items':
-            $this->vshop->panel->setCurrentTab('list_items');
-            $this->listItems();
-            break;
+            case 'edit_item':
+                if (empty($this->vshop->item)) {
+                    $this->vshop->loadItem();
+                }
+                $this->editItem();
+                break;
 
-        case 'settings':
-            $this->vshop->panel->setCurrentTab('settings');
-            $this->editSettings();
-            break;
+            case 'list_items':
+                $this->vshop->panel->setCurrentTab('list_items');
+                $this->listItems();
+                break;
 
-        case 'new_tax':
-        case 'edit_tax':
-            if (empty($this->vshop->tax)) {
-                $this->vshop->loadTax();
-            }
-            $this->editTax();
-            break;
+            case 'settings':
+                $this->vshop->panel->setCurrentTab('settings');
+                $this->editSettings();
+                break;
 
-        case 'taxes':
-            $this->vshop->panel->setCurrentTab('taxes');
-            $this->listTaxes();
-            break;
+            case 'new_tax':
+            case 'edit_tax':
+                if (empty($this->vshop->tax)) {
+                    $this->vshop->loadTax();
+                }
+                $this->editTax();
+                break;
 
-        case 'new_option_set':
-        case 'edit_option_set':
-            if (empty($this->vshop->option_set)) {
-                $this->vshop->loadOption_set();
-            }
-            $this->editOptionSet();
-            break;
+            case 'taxes':
+                $this->vshop->panel->setCurrentTab('taxes');
+                $this->listTaxes();
+                break;
 
-        case 'option_sets':
-            $this->vshop->panel->setCurrentTab('option_sets');
-            $this->listOptionSets();
-            break;
+            case 'new_option_set':
+            case 'edit_option_set':
+                if (empty($this->vshop->option_set)) {
+                    $this->vshop->loadOption_set();
+                }
+                $this->editOptionSet();
+                break;
 
-        case 'new_option_value':
-        case 'edit_option_value':
-            if (empty($this->vshop->option_value)) {
-                $this->vshop->loadOption_value();
-            }
-            $this->editOptionValue();
-            break;
+            case 'option_sets':
+                $this->vshop->panel->setCurrentTab('option_sets');
+                $this->listOptionSets();
+                break;
 
-        case 'option_values':
-            $this->vshop->panel->setCurrentTab('option_values');
-            $this->listOptionValues();
-            break;
+            case 'new_option_value':
+            case 'edit_option_value':
+                if (empty($this->vshop->option_value)) {
+                    $this->vshop->loadOption_value();
+                }
+                $this->editOptionValue();
+                break;
 
-        case 'new_attribute':
-        case 'edit_attribute':
-            if (empty($this->vshop->attribute)) {
-                $this->vshop->loadAttribute();
-            }
-            $this->editAttribute();
-            break;
+            case 'option_values':
+                $this->vshop->panel->setCurrentTab('option_values');
+                $this->listOptionValues();
+                break;
 
-        case 'edit_order':
-            if (empty($this->vshop->order)) {
-                $this->vshop->loadOrder();
-            }
-            $this->editOrder();
-            break;
+            case 'new_attribute':
+            case 'edit_attribute':
+                if (empty($this->vshop->attribute)) {
+                    $this->vshop->loadAttribute();
+                }
+                $this->editAttribute();
+                break;
 
-        case 'set_status':
-            if (empty($this->vshop->order)) {
-                $this->vshop->loadOrder();
-            }
-//print_r($this->vshop->order); exit;
-            $this->setStatus();
-            break;
+            case 'edit_order':
+                if (empty($this->vshop->order)) {
+                    $this->vshop->loadOrder();
+                }
+                $this->editOrder();
+                break;
 
-        case 'orders':
-            $this->vshop->panel->setCurrentTab('orders');
-            $this->listOrders(1);
-            break;
+            case 'set_status':
+                if (empty($this->vshop->order)) {
+                    $this->vshop->loadOrder();
+                }
+                //print_r($this->vshop->order); exit;
+                $this->setStatus();
+                break;
 
-        case 'incompleted':
-            $this->vshop->panel->setCurrentTab('incompleted');
-            $this->listOrders(0);
-            break;
+            case 'orders':
+                $this->vshop->panel->setCurrentTab('orders');
+                $this->listOrders(1);
+                break;
 
-        case 'cancelled':
-            $this->vshop->panel->setCurrentTab('cancelled');
-            $this->listOrders(1,1);
-            break;
+            case 'incompleted':
+                $this->vshop->panel->setCurrentTab('incompleted');
+                $this->listOrders(0);
+                break;
 
-        case 'reports':
-            $this->vshop->panel->setCurrentTab('reports');
-            $this->reportsMenu();
-            break;
+            case 'cancelled':
+                $this->vshop->panel->setCurrentTab('cancelled');
+                $this->listOrders(1,1);
+                break;
 
-        case 'info':
-            $this->vshop->panel->setCurrentTab('info');
-            $this->showInfo();
-            break;
+            case 'reports':
+                $this->vshop->panel->setCurrentTab('reports');
+                $this->reportsMenu();
+                break;
+
+            case 'info':
+                $this->vshop->panel->setCurrentTab('info');
+                $this->showInfo();
+                break;
 
         }
 
@@ -213,10 +213,10 @@ class vShop_Forms {
 
         /* I am not using the next line in this mod, I just leave it
          * as a reminder of addWhere()
-        if (!Current_User::isUnrestricted('vshop')) {
-            $pager->addWhere('active', 1);
-        }
-        */
+         if (!Current_User::isUnrestricted('vshop')) {
+         $pager->addWhere('active', 1);
+         }
+         */
 
         $pager->setOrder('title', 'asc', true);
         $pager->setTemplate('list_depts.tpl');
@@ -242,9 +242,9 @@ class vShop_Forms {
     {
         $ptags['TITLE_HEADER'] = dgettext('vshop', 'Name');
         $ptags['PRICE_HEADER'] = dgettext('vshop', 'Price');
-//        if (PHPWS_Settings::get('vshop', 'use_inventory')) {
-            $ptags['STOCK_HEADER'] = dgettext('vshop', 'Stock');
-//        }
+        //        if (PHPWS_Settings::get('vshop', 'use_inventory')) {
+        $ptags['STOCK_HEADER'] = dgettext('vshop', 'Stock');
+        //        }
         $ptags['DEPT_HEADER'] = dgettext('vshop', 'Department');
 
         PHPWS_Core::initModClass('vshop', 'vShop_Item.php');
@@ -422,7 +422,7 @@ class vShop_Forms {
         $form->setLabel('title', dgettext('vshop', 'Title'));
 
         $form->addTextArea('description', $dept->getDescription());
-//        $form->useEditor('description', true, true, 0, 0, 'fckeditor');
+        //        $form->useEditor('description', true, true, 0, 0, 'fckeditor');
         $form->useEditor('description', true, true, 0, 0);
         $form->setRows('description', '6');
         $form->setCols('description', '40');
@@ -496,7 +496,7 @@ class vShop_Forms {
         if (PHPWS_Settings::get('vshop', 'enable_files')) {
             PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('file_id', $item->file_id);
-//            $manager->imageOnly();
+            //            $manager->imageOnly();
             $manager->maxImageWidth(PHPWS_Settings::get('vshop', 'max_width'));
             $manager->maxImageHeight(PHPWS_Settings::get('vshop', 'max_height'));
             if ($manager) {
@@ -518,21 +518,21 @@ class vShop_Forms {
             $form->addText('stock', $item->stock);
             $form->setSize('stock', 5);
             $form->setMaxSize('stock', 5);
-    //        $form->setRequired('stock');
+            //        $form->setRequired('stock');
             $form->setLabel('stock', dgettext('vshop', 'Qty in stock'));
         }
 
         $form->addText('weight', $item->weight);
         $form->setSize('weight', 5);
         $form->setMaxSize('weight', 5);
-//        $form->setRequired('weight');
+        //        $form->setRequired('weight');
         $form->setLabel('weight', dgettext('vshop', 'Weight'));
 
         if (PHPWS_Settings::get('vshop', 'shipping_calculation') == 2) {
             $form->addText('shipping', $item->shipping);
             $form->setSize('shipping', 5);
             $form->setMaxSize('shipping', 5);
-    //        $form->setRequired('shipping');
+            //        $form->setRequired('shipping');
             $form->setLabel('shipping', dgettext('vshop', 'Shipping fee'));
         }
 
@@ -565,7 +565,7 @@ class vShop_Forms {
         } else {
             $tpl['NONE'] = dgettext('vshop', 'This item has no options');
         }
-        
+
 
 
 
@@ -579,7 +579,7 @@ class vShop_Forms {
         $qty = $db->count();
         return $qty;
     }
-    
+
 
     public function editTax()
     {
@@ -658,8 +658,8 @@ class vShop_Forms {
     {
         $form = new PHPWS_Form;
         $option_value = & $this->vshop->option_value;
-//print_r($option_value); exit;
-//        require PHPWS_SOURCE_DIR . 'mod/vshop/inc/zones.php';
+        //print_r($option_value); exit;
+        //        require PHPWS_SOURCE_DIR . 'mod/vshop/inc/zones.php';
 
         $form->addHidden('module', 'vshop');
         $form->addHidden('aop', 'post_option_value');
@@ -708,7 +708,7 @@ class vShop_Forms {
         $form = new PHPWS_Form;
         $attribute = & $this->vshop->attribute;
         $item = & $this->vshop->item;
-//print_r($item); exit;
+        //print_r($item); exit;
 
         $form->addHidden('module', 'vshop');
         $form->addHidden('aop', 'post_attribute');
@@ -733,7 +733,7 @@ class vShop_Forms {
         $db->addOrder('sort asc');
         $db->addOrder('title asc');
         $db->addWhere('vshop_option_sets.id', 'vshop_option_values.set_id');
-//        $db->setTestMode();
+        //        $db->setTestMode();
         $result = $db->select();
         if ($result) {
             foreach ($result as $value) {
@@ -753,7 +753,7 @@ class vShop_Forms {
         $form->addText('price_mod', $attribute->price_mod);
         $form->setSize('price_mod', 10);
         $form->setMaxSize('price_mod', 20);
-//        $form->setRequired('price_mod');
+        //        $form->setRequired('price_mod');
         $form->setLabel('price_mod', dgettext('vshop', 'Price modifier (x.xx)'));
 
         $choices = array('+'=>'+','-'=>'-');
@@ -764,7 +764,7 @@ class vShop_Forms {
         $form->addText('weight_mod', $attribute->weight_mod);
         $form->setSize('weight_mod', 5);
         $form->setMaxSize('weight_mod', 5);
-//        $form->setRequired('weight_mod');
+        //        $form->setRequired('weight_mod');
         $form->setLabel('weight_mod', sprintf(dgettext('vshop', 'Weight modifier (%s)'), PHPWS_Settings::get('vshop', 'weight_unit')));
 
         $tpl = $form->getTemplate();
@@ -806,7 +806,7 @@ class vShop_Forms {
         $form->setLabel('notice', dgettext('vshop', 'Send notification?'));
 
         $form->addSubmit(dgettext('vshop', 'Update'));
-        
+
         $tpl = $form->getTemplate();
         $tpl['TITLE'] = sprintf(dgettext('vshop', 'Order %s Status'), $order->id);
         $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close();" />', dgettext('vshop', 'Cancel'));
@@ -933,7 +933,7 @@ class vShop_Forms {
         $form->setSize('secure_url', 40);
 
         $form->addSubmit('save', dgettext('vshop', 'Save settings'));
-        
+
         $tpl = $form->getTemplate();
         $tpl['GENERAL_GROUP_LABEL'] = dgettext('vshop', 'Shop Behavior');
         $tpl['CURRENCY_GROUP_LABEL'] = dgettext('vshop', 'Currency and Weight');
@@ -949,7 +949,7 @@ class vShop_Forms {
 
     public function reportsMenu()
     {
-        
+
 
         $tpl['TITLE'] = dgettext('vshop', 'Reports');
         $tpl['INFO'] = 'coming soon...';
@@ -961,7 +961,7 @@ class vShop_Forms {
 
     public function showInfo()
     {
-        
+
         $filename = 'mod/vshop/docs/README';
         if (@fopen($filename, "rb")) {
             $handle = fopen($filename, "rb");
@@ -1003,7 +1003,7 @@ class vShop_Forms {
         } else {
             $form->addTplTag('NO_DEPTS_NOTE', sprintf(dgettext('vshop', 'Sorry, there are no departments available. You will have to create a %s first.'), PHPWS_Text::secureLink(dgettext('vshop', 'New Department'), 'vshop', array('aop'=>'new_dept'))));
         }
-        
+
         $tpl = $form->getTemplate();
         $tpl['DEPT_ID_GROUP_LABEL'] = dgettext('vshop', 'Select department');
 
@@ -1060,10 +1060,10 @@ class vShop_Forms {
                                     'NAME'      => $item->viewLink(), 
                                     'PRICE'     => number_format($item->price, 2, '.', ','),
                                     'SUBTOTAL'  => number_format($subtotal, 2, '.', ',')
-                                 );
+                );
             }
             $tpl['TOTAL_LABEL'] = dgettext('vshop', 'Total');
-//            $tpl['TOTAL'] = number_format($total_items, 2, '.', ',');
+            //            $tpl['TOTAL'] = number_format($total_items, 2, '.', ',');
             if (PHPWS_Settings::get('vshop', 'curr_symbol_pos') == 1) {
                 $tpl['TOTAL'] = PHPWS_Settings::get('vshop', 'currency_symbol') . number_format($total_items, 2, '.', ',');
                 if (PHPWS_Settings::get('vshop', 'display_currency')) {
@@ -1209,7 +1209,7 @@ class vShop_Forms {
                                 'NAME'      => $item['name'], 
                                 'PRICE'     => number_format($item['price'], 2, '.', ','),
                                 'SUBTOTAL'  => number_format($item['subtotal'], 2, '.', ',')
-                             );
+            );
         }
 
         $tpl['TOTAL_LABEL'] = dgettext('vshop', 'Product Total');
@@ -1220,7 +1220,7 @@ class vShop_Forms {
                 $tpl['taxes'][] = array (
                                 'TAX_LABEL' => $tax['name'], 
                                 'TAX'       => number_format($tax['tax_total'], 2, '.', ',') 
-                            );
+                );
             }
         }
 
@@ -1230,7 +1230,7 @@ class vShop_Forms {
         }
 
         $tpl['FINAL_LABEL'] = dgettext('vshop', 'Total Due');
-//        $tpl['FINAL'] = number_format($order_data['total_grand'], 2, '.', ',');
+        //        $tpl['FINAL'] = number_format($order_data['total_grand'], 2, '.', ',');
         if (PHPWS_Settings::get('vshop', 'curr_symbol_pos') == 1) {
             $tpl['FINAL'] = PHPWS_Settings::get('vshop', 'currency_symbol') . number_format($order_data['total_grand'], 2, '.', ',');
             if (PHPWS_Settings::get('vshop', 'display_currency')) {
@@ -1242,7 +1242,7 @@ class vShop_Forms {
                 $tpl['FINAL'] .= ' ' . PHPWS_Settings::get('vshop', 'currency');
             }
         }
-        
+
         if ($formatted) {
             return PHPWS_Template::process($tpl, 'vshop', 'order_details.tpl');
         } else {
@@ -1255,7 +1255,7 @@ class vShop_Forms {
     {
 
         /* I should error check here to make sure the class is there */
-        
+
         $payclass = $this->vshop->order->pay_method;
         PHPWS_Core::initModClass('vshop', 'pay_mods/' . $payclass . '.php');
         $payment = new $payclass($this->vshop->order->id);

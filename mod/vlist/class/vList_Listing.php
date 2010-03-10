@@ -1,26 +1,26 @@
 <?php
 /**
-    * vlist - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vlist - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class vList_Listing {
 
@@ -209,7 +209,7 @@ class vList_Listing {
                 }
             }
             $result = $link;
-        } 
+        }
         if (!isset($result[0])) {
             $result = null;
         }
@@ -217,7 +217,7 @@ class vList_Listing {
     }
 
 
-    public function getExtras() 
+    public function getExtras()
     {
         $extras = null;
         /* get the elements */
@@ -257,10 +257,10 @@ class vList_Listing {
                     $db->addWhere('vlist_element_items.option_id', 'vlist_element_option.id');
                     $db->addWhere('vlist_element_option.element_id', $id);
                     $db->addGroupBy('vlist_element_option.id');
-                } 
-                
+                }
+
                 $result = $db->select();
-//print_r($result); //exit;
+                //print_r($result); //exit;
                 /* if there's an item */
                 if ($result) {
                     $tpl['VALUE'] = null;
@@ -293,7 +293,7 @@ class vList_Listing {
                             $tpl['VALUE'] .= PHPWS_Text::parseOutput($option['value']);
                         }
                     }
-                } else { 
+                } else {
                     $tpl['VALUE'] = null;
                 }
                 $extras .= PHPWS_Template::processTemplate($tpl, 'vlist', 'listing_extras_view.tpl');
@@ -315,7 +315,7 @@ class vList_Listing {
         $key = new Key($this->key_id);
 
         if (!$key->allowView()) {
-            Current_User::requireLogin();            
+            Current_User::requireLogin();
         }
 
         Layout::addPageTitle($this->getTitle());
@@ -364,7 +364,7 @@ class vList_Listing {
         $links = array_merge($links, vList::navLinks());
 
         if($links)
-            return implode(' | ', $links);
+        return implode(' | ', $links);
     }
 
 
@@ -402,7 +402,7 @@ class vList_Listing {
         $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the listing %s?'), $this->getTitle());
         if ($icon) {
             $js['LINK'] = sprintf('<img src="%s/mod/vlist/img/delete.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
-                                  dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
+            dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
         } else {
             $js['LINK'] = dgettext('vlist', 'Delete');
         }
@@ -415,9 +415,9 @@ class vList_Listing {
 
         if ($icon) {
             $label = sprintf('<img src="%s/mod/vlist/img/edit.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
-                             dgettext('vlist', 'Edit listing'), dgettext('vlist', 'Edit listing'));
+            dgettext('vlist', 'Edit listing'), dgettext('vlist', 'Edit listing'));
         } elseif (empty($label)) {
-                $label = dgettext('vlist', 'Edit');
+            $label = dgettext('vlist', 'Edit');
         }
 
         $vars['id'] = $this->id;
@@ -433,17 +433,17 @@ class vList_Listing {
             $vars['aop'] = 'unapprove_listing';
             if ($icon) {
                 $label = sprintf('<img src="%s/mod/vlist/img/approved.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
-                                 dgettext('vlist', 'Unapprove'), dgettext('vlist', 'Unapprove'));
+                dgettext('vlist', 'Unapprove'), dgettext('vlist', 'Unapprove'));
             } elseif (empty($label)) {
-                    $label = dgettext('vlist', 'Unapprove');
+                $label = dgettext('vlist', 'Unapprove');
             }
         } else {
             $vars['aop'] = 'approve_listing';
             if ($icon) {
                 $label = sprintf('<img src="%s/mod/vlist/img/unapproved.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
-                                 dgettext('vlist', 'Approve'), dgettext('vlist', 'Approve'));
+                dgettext('vlist', 'Approve'), dgettext('vlist', 'Approve'));
             } elseif (empty($label)) {
-                    $label = dgettext('vlist', 'Approve');
+                $label = dgettext('vlist', 'Approve');
             }
         }
         return PHPWS_Text::secureLink($label, 'vlist', $vars);
@@ -457,17 +457,17 @@ class vList_Listing {
             $vars['aop'] = 'deactivate_listing';
             if ($icon) {
                 $label = sprintf('<img src="%s/mod/vlist/img/active.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
-                                 dgettext('vlist', 'Deactivate'), dgettext('vlist', 'Deactivate'));
+                dgettext('vlist', 'Deactivate'), dgettext('vlist', 'Deactivate'));
             } elseif (empty($label)) {
-                    $label = dgettext('vlist', 'Deactivate');
+                $label = dgettext('vlist', 'Deactivate');
             }
         } else {
             $vars['aop'] = 'activate_listing';
             if ($icon) {
                 $label = sprintf('<img src="%s/mod/vlist/img/inactive.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
-                                 dgettext('vlist', 'Activate'), dgettext('vlist', 'Activate'));
+                dgettext('vlist', 'Activate'), dgettext('vlist', 'Activate'));
             } elseif (empty($label)) {
-                    $label = dgettext('vlist', 'Activate');
+                $label = dgettext('vlist', 'Activate');
             }
         }
         return PHPWS_Text::secureLink($label, 'vlist', $vars);
@@ -522,9 +522,9 @@ class vList_Listing {
             $tpl['FILE'] = $this->getFile(true);
             $tpl['FILE_LABEL'] = dgettext('vlist', 'Download');
         }
-        
+
         $tpl['EXTRA_VALUES'] = null;
-        
+
         if (PHPWS_Settings::get('vlist', 'enable_elements')) {
             $db = new PHPWS_DB('vlist_element');
             $db->addWhere('active', 1);
@@ -555,7 +555,7 @@ class vList_Listing {
                             $db->addWhere('vlist_element_items.option_id', 'vlist_element_option.id');
                             $db->addWhere('vlist_element_option.element_id', $id);
                             $db->addGroupBy('vlist_element_option.id');
-                        } 
+                        }
                         $result = $db->select();
                         if ($result) {
                             $value = null;
@@ -588,12 +588,12 @@ class vList_Listing {
                                     $value[] = PHPWS_Text::parseOutput($option['value']);
                                 }
                             }
-                        } else { 
+                        } else {
                             $value = null;
                         }
 
                         if($value) {
-//                            $tpl['EXTRA_VALUES'][] = implode('<br />', $value);
+                            //                            $tpl['EXTRA_VALUES'][] = implode('<br />', $value);
                             $tpl['EXTRA_VALUES'] .= implode('<br />', $value);
                         }
                         $tpl['EXTRA_VALUES'] .= '</td>';
@@ -603,8 +603,8 @@ class vList_Listing {
         }
 
         if($links)
-            $tpl['ACTION'] = implode('  ', $links);
-//print_r($tpl); //exit;
+        $tpl['ACTION'] = implode('  ', $links);
+        //print_r($tpl); //exit;
         return $tpl;
     }
 
@@ -723,7 +723,7 @@ class vList_Listing {
             $db->addValue('group_id', (int)$item_id);
         }
         $db->addValue('listing_id', (int)$listing_id);
-//print_r($db); exit;
+        //print_r($db); exit;
         return $db->insert();
     }
 
@@ -772,9 +772,9 @@ class vList_Listing {
         }
     }
 
-    public function sendNotification($new=true) 
+    public function sendNotification($new=true)
     {
-        
+
         $page_title = $_SESSION['Layout_Settings']->getPageTitle(true);
         $site_contact = PHPWS_User::getUserSetting('site_contact');
         $url = PHPWS_Core::getHomeHttp();
@@ -794,9 +794,9 @@ class vList_Listing {
         $mail->setMessageBody($message);
 
         return $mail->send();
-        
+
     }
-    
+
 }
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 /**
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
 $data['submit_label'] = dgettext('elections', 'Vote');

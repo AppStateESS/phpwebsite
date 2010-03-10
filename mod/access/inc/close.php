@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 if (!isset($_SESSION['Access_Allow_Deny'])) {
     PHPWS_Core::initModClass('access', 'Access.php');
@@ -22,6 +22,6 @@ if (MOD_REWRITE_ENABLED && Current_User::allow('access')) {
         PHPWS_Core::initModClass('access', 'Access.php');
         Access::shortcut($key);
     }
- }
+}
 
 ?>

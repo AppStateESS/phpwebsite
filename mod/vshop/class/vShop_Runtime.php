@@ -1,26 +1,26 @@
 <?php
 /**
-    * vshop - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vshop - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 
 class vShop_Runtime
@@ -30,7 +30,7 @@ class vShop_Runtime
         PHPWS_Core::initModClass('vshop', 'vShop_Cart.php');
         $cart = vShop_Cart::CreateInstance();
         $cart_data = $cart->GetCart();
-//        print_r($cart_data);
+        //        print_r($cart_data);
         if (!empty($cart_data)) {
             $tpl['TITLE'] = sprintf(dgettext('vshop', '%s Cart'), PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'mod_title')));
             $tpl['LABEL'] = dgettext('vshop', 'Cart contents');
@@ -44,7 +44,7 @@ class vShop_Runtime
                 $subtotal = $item->price * $qty;
                 $total_items = $total_items + $subtotal;
                 $addLink = $item->addLink(true);
-                if (PHPWS_Settings::get('vshop', 'use_inventory')) { 
+                if (PHPWS_Settings::get('vshop', 'use_inventory')) {
                     if ($qty >= $item->stock) {
                         $addLink = $item->addLink(true, false);
                     }
@@ -57,7 +57,7 @@ class vShop_Runtime
                                     'ADD'       => $addLink, 
                                     'SUBTRACT'  => $item->subtractLink(true), 
                                     'SUBTOTAL'  => number_format($subtotal, 2, '.', ',')
-                                 );
+                );
             }
             $tpl['TOTAL_LABEL'] = dgettext('vshop', 'Total');
             $tpl['TOTAL'] = number_format($total_items, 2, '.', ',');

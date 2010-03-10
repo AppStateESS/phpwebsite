@@ -4,7 +4,6 @@
 <div id="add">{ADD_CATEGORY} {ADD}</div>
 <div id="remove">{REMOVE_CATEGORY} {REMOVE}</div>
 <div id="quick-add">{QUICK_PARENT}{CATEGORY_NAME}<br />
-{QUICK_ADD}
-</div>
+{QUICK_ADD}</div>
 </div>
 {END_FORM}

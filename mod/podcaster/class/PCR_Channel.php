@@ -1,26 +1,26 @@
 <?php
 /**
-    * podcaster - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    *
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    *
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * podcaster - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class Podcaster_Channel {
 
@@ -211,9 +211,9 @@ class Podcaster_Channel {
 
         if ($print) {
             if ($this->media_type == '0')
-                return dgettext('podcaster', 'Audio/Video');
+            return dgettext('podcaster', 'Audio/Video');
             if ($this->media_type == '1')
-                return dgettext('podcaster', 'Document');
+            return dgettext('podcaster', 'Document');
         } else {
             return $this->media_type;
         }
@@ -224,11 +224,11 @@ class Podcaster_Channel {
     {
         if ($print) {
             if ($this->itunes_explicit == '0')
-                return dgettext('podcaster', 'No');
+            return dgettext('podcaster', 'No');
             if ($this->itunes_explicit == '1')
-                return dgettext('podcaster', 'Yes');
+            return dgettext('podcaster', 'Yes');
             if ($this->itunes_explicit == '2')
-                return dgettext('podcaster', 'Clean');
+            return dgettext('podcaster', 'Clean');
         } else {
             if (empty($this->itunes_explicit)) {
                 return null;
@@ -280,7 +280,7 @@ class Podcaster_Channel {
         Layout::addPageTitle($this->getTitle());
         $template['TITLE'] = $this->getTitle(true);
         $template['DESCRIPTION'] = PHPWS_Text::parseTag($this->getDescription(true));
-//        $template['IMAGE'] = $this->getImage(true);
+        //        $template['IMAGE'] = $this->getImage(true);
         $template['IMAGE'] = $this->getFile();
 
         if (Current_User::allow('podcaster', 'edit_episode')) {
@@ -316,7 +316,7 @@ class Podcaster_Channel {
             }
         } else {
             if (Current_User::allow('podcaster', 'edit_episode'))
-                $template['EMPTY'] = dgettext('podcaster', 'Click on "New episode" to start.');
+            $template['EMPTY'] = dgettext('podcaster', 'Click on "New episode" to start.');
         }
 
         $key->flag();
@@ -400,7 +400,7 @@ class Podcaster_Channel {
             $links[] = $active;
         } else {
             if (Current_User::allow('podcaster'))
-                $links[] = $this->active ? dgettext('podcaster', 'Active') : dgettext('podcaster', 'Not Active');
+            $links[] = $this->active ? dgettext('podcaster', 'Active') : dgettext('podcaster', 'Not Active');
         }
 
         if (Current_User::allow('podcaster', 'delete_channel')){
@@ -415,7 +415,7 @@ class Podcaster_Channel {
         $tpl['DATE_UPDATED'] = $this->getDateUpdated();
         $tpl['DESCRIPTION'] = $this->getListDescription(120);
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
 
@@ -444,7 +444,7 @@ class Podcaster_Channel {
         }
 
         if($links)
-            return implode(' | ', $links);
+        return implode(' | ', $links);
     }
 
 
@@ -532,7 +532,7 @@ class Podcaster_Channel {
     public function viewLink($bare=false)
     {
         PHPWS_Core::initCoreClass('Link.php');
-//        $link = new PHPWS_Link($this->title, 'podcaster', array('id'=>$this->id));
+        //        $link = new PHPWS_Link($this->title, 'podcaster', array('id'=>$this->id));
         $link = new PHPWS_Link($this->title, 'podcaster', array('channel'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
@@ -616,7 +616,7 @@ class Podcaster_Channel {
                 $itemTpl['ITEM_TITLE']        = $episode->title;
                 $itemTpl['ITEM_LINK']         = $home_http .   'index.php?module=podcaster&amp;uop=view_episode&amp;episode_id=' . $episode->id;
                 $itemTpl['ITEM_GUID']         = $home_http .   'index.php?module=podcaster&amp;uop=view_episode&amp;episode_id=' . $episode->id;
-//vv                $itemTpl['ITEM_SOURCE']       = $home_http . 'index.php?module=podcaster&amp;id=' . $this->id;
+                //vv                $itemTpl['ITEM_SOURCE']       = $home_http . 'index.php?module=podcaster&amp;id=' . $this->id;
                 $itemTpl['ITEM_DESCRIPTION']  = strip_tags(trim($episode->description));
                 $itemTpl['ITEM_DESCRIPTION_PREAMBLE'] = substr(ltrim(strip_tags(str_replace('<br />', ' ', $episode->description))), 0, 60);
                 $itemTpl['ITEM_AUTHOR']       = $episode->created_user;
@@ -624,7 +624,7 @@ class Podcaster_Channel {
                 $itemTpl['ITEM_URL']          = $home_http . $item_media->file_directory . $item_media->file_name;
                 $itemTpl['ITEM_LENGTH']       = $item_media->size;
                 $itemTpl['ITEM_TYPE']         = $item_media->file_type;
-//vv                $itemTpl['ITEM_SOURCE_TITLE'] = $this->title;
+                //vv                $itemTpl['ITEM_SOURCE_TITLE'] = $this->title;
 
                 $template['item-listing'][] = $itemTpl;
             }

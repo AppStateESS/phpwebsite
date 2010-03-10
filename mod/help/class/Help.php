@@ -1,9 +1,9 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Jeremy Agee
-   * @modifed Matthew McNaney
-   */
+/**
+ * @version $Id$
+ * @author Jeremy Agee
+ * @modifed Matthew McNaney
+ */
 
 $config = PHPWS_Core::getConfigFile('help', 'config.php');
 
@@ -11,7 +11,7 @@ if (PEAR::isError($config)){
     PHPWS_Error::log($config);
 } else {
     include_once $config;
-} 
+}
 
 class PHPWS_Help{
 
@@ -31,7 +31,7 @@ class PHPWS_Help{
     function get($module, $help, $label=NULL)
     {
         if (!isset($label))
-            $label = DEFAULT_HELP_LABEL;
+        $label = DEFAULT_HELP_LABEL;
 
         $vars['label'] = $label;
         $vars['address'] = 'index.php?module=help&amp;helpMod=' . $module . '&amp;option=' . $help;
@@ -45,7 +45,7 @@ class PHPWS_Help{
         if (!isset($_REQUEST['helpMod'])){
             exit();
         }
-    
+
         $module = $_REQUEST['helpMod'];
         $option = strtolower($_REQUEST['option']);
 

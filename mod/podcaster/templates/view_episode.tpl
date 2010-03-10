@@ -1,5 +1,4 @@
 <div id="podcaster-episode">
-    <p>{DESCRIPTION}</p>
-    <div>{EPISODE_LINKS}</div>
-    {MEDIA}
-</div>
+<p>{DESCRIPTION}</p>
+<div>{EPISODE_LINKS}</div>
+{MEDIA}</div>

@@ -52,7 +52,7 @@ class Related_Action {
 
         if ($related->key_id != $current->key_id && !$related->isFriend($current)) {
             $template['ADD_LINK'] = '<a href="index.php?module=related&amp;action=add">'
-                . dgettext('related', 'Add item') . '</a>';
+            . dgettext('related', 'Add item') . '</a>';
 
 
             if (!empty($current->friends)) {
@@ -68,7 +68,7 @@ class Related_Action {
         }
 
         $template['QUIT_LINK'] = '<a href="index.php?module=related&amp;action=quit">'
-            . dgettext('related', 'Quit') . '</a>';
+        . dgettext('related', 'Quit') . '</a>';
 
         Related_Action::setCurrent($current);
 
@@ -77,7 +77,7 @@ class Related_Action {
 
         if (!empty($related->friends)) {
             $template['SAVE_LINK'] = '<a href="index.php?module=related&amp;action=save">'
-                . dgettext('related', 'Save') . '</a>';
+            . dgettext('related', 'Save') . '</a>';
 
             $friends = $related->listFriends();
 
@@ -91,7 +91,7 @@ class Related_Action {
                                                        'UP'=>$up,
                                                        'DOWN'=>$down,
                                                        'REMOVE'=>$remove
-                                                       );
+                    );
                 }
             }
         } else {
@@ -117,7 +117,7 @@ class Related_Action {
         if (Current_User::allow('related')) {
             $linkvars = array('action' => 'edit',
                               'id'     => $related->id
-                              );
+            );
             $template['EDIT_LINK'] = PHPWS_Text::moduleLink(dgettext('related', 'Edit'), 'related', $linkvars);
         }
 

@@ -109,9 +109,9 @@ class Categories {
 
         if ($popup) {
             $template['CLOSE'] = sprintf('<input type="button" value="%s" onclick="opener.location.href=\'%s\'; window.close();" />',
-                                         dgettext('categories', 'Save and close'), $key->url);
+            dgettext('categories', 'Save and close'), $key->url);
             $template['CANCEL'] = sprintf('<input type="button" value="%s" onclick="window.close();" />',
-                                         dgettext('categories', 'Cancel'));
+            dgettext('categories', 'Cancel'));
 
             $template['AVAILABLE'] = dgettext('categories', 'Available categories');
             $template['CURRENT'] = dgettext('categories', 'Currently assigned');
@@ -288,30 +288,30 @@ class Categories {
         $db = new PHPWS_DB('categories');
 
         switch ($mode){
-        case 'sorted':
-            $db->addWhere('parent', 0);
-            $db->addOrder('title');
+            case 'sorted':
+                $db->addWhere('parent', 0);
+                $db->addOrder('title');
 
-            $cats = $db->getObjects('Category');
-            if (!empty($cats)) {
-                $result = Categories::initList($cats);
-            } else {
-                return null;
-            }
-            break;
+                $cats = $db->getObjects('Category');
+                if (!empty($cats)) {
+                    $result = Categories::initList($cats);
+                } else {
+                    return null;
+                }
+                break;
 
-        case 'idlist':
-            $db->addColumn('title');
-            $db->setIndexBy('id');
-            $result = $db->select('col');
-            break;
+            case 'idlist':
+                $db->addColumn('title');
+                $db->setIndexBy('id');
+                $result = $db->select('col');
+                break;
 
-        case 'list':
-            $list = Categories::getCategories();
-            $indexed = Categories::_buildList($list, $drop);
+            case 'list':
+                $list = Categories::getCategories();
+                $indexed = Categories::_buildList($list, $drop);
 
-            return $indexed;
-            break;
+                return $indexed;
+                break;
         }
 
         return $result;

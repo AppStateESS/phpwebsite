@@ -1,26 +1,26 @@
 <?php
 /**
-    * vpath - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vpath - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class vPath_Forms {
     public $vpath = null;
@@ -29,15 +29,15 @@ class vPath_Forms {
     {
         switch ($type) {
 
-        case 'settings':
-            $this->vpath->panel->setCurrentTab('settings');
-            $this->editSettings();
-            break;
+            case 'settings':
+                $this->vpath->panel->setCurrentTab('settings');
+                $this->editSettings();
+                break;
 
-        case 'info':
-            $this->vpath->panel->setCurrentTab('info');
-            $this->showInfo();
-            break;
+            case 'info':
+                $this->vpath->panel->setCurrentTab('info');
+                $this->showInfo();
+                break;
 
         }
 
@@ -68,12 +68,12 @@ class vPath_Forms {
         $form->addSelect('menu_id', $menus);
         $form->setMatch('menu_id', PHPWS_Settings::get('vpath', 'menu_id'));
         $form->setLabel('menu_id', dgettext('vpath', 'Menu to follow'));
-    
+
         require(PHPWS_SOURCE_DIR . 'mod/vpath/inc/dividers.php');
         $form->addSelect('divider', $vpath_dividers);
         $form->setMatch('divider', PHPWS_Settings::get('vpath', 'divider'));
         $form->setLabel('divider', dgettext('vpath', 'Divider'));
-    
+
         $form->addCheckbox('divider_space', 1);
         $form->setMatch('divider_space', PHPWS_Settings::get('vpath', 'divider_space'));
         $form->setLabel('divider_space', dgettext('vpath', 'Use space around divider'));
@@ -95,7 +95,7 @@ class vPath_Forms {
         $form->setLabel('show_sub_menu', dgettext('vpath', 'Display sub menu for current location'));
 
         $form->addSubmit('save', dgettext('vpath', 'Save settings'));
-        
+
         $tpl = $form->getTemplate();
         $tpl['GENERAL_LABEL'] = dgettext('vpath', 'General Settings');
 
@@ -106,7 +106,7 @@ class vPath_Forms {
 
     public function showInfo()
     {
-        
+
         $filename = 'mod/vpath/docs/README';
         if (@fopen($filename, "rb")) {
             $handle = fopen($filename, "rb");

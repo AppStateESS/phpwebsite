@@ -1,26 +1,26 @@
 <?php
 /**
-    * whatsnew - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    * 
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    * 
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * whatsnew - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class Whatsnew_Forms {
     var $whatsnew = null;
@@ -29,15 +29,15 @@ class Whatsnew_Forms {
     {
         switch ($type) {
 
-        case 'settings':
-            $this->whatsnew->panel->setCurrentTab('settings');
-            $this->editSettings();
-            break;
+            case 'settings':
+                $this->whatsnew->panel->setCurrentTab('settings');
+                $this->editSettings();
+                break;
 
-        case 'info':
-            $this->whatsnew->panel->setCurrentTab('info');
-            $this->showInfo();
-            break;
+            case 'info':
+                $this->whatsnew->panel->setCurrentTab('info');
+                $this->showInfo();
+                break;
 
         }
 
@@ -89,7 +89,7 @@ class Whatsnew_Forms {
         $form->setLabel('show_source_modules', dgettext('whatsnew', 'Show item source module names'));
 
         $form->addSubmit('save', dgettext('whatsnew', 'Save settings'));
-        
+
         $tpl = $form->getTemplate();
         $tpl['SETTINGS_LABEL'] = dgettext('whatsnew', 'General Settings');
         $tpl['FLUSH_LINK'] = PHPWS_Text::secureLink(dgettext('whatsnew', 'Flush cache'), 'whatsnew', array('aop'=>'flush_cache'));
@@ -103,7 +103,7 @@ class Whatsnew_Forms {
 
     function showInfo()
     {
-        
+
         $filename = 'mod/whatsnew/docs/README';
         if (@fopen($filename, "rb")) {
             $handle = fopen($filename, "rb");

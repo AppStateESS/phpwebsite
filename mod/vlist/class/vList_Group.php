@@ -1,26 +1,26 @@
 <?php
 /**
-    * vlist - phpwebsite module
-    *
-    * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
-    *
-    * This program is free software; you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation; either version 2 of the License, or
-    * (at your option) any later version.
-    *
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    *
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    *
-    * @version $Id$
-    * @author Verdon Vaillancourt <verdonv at gmail dot com>
-*/
+ * vlist - phpwebsite module
+ *
+ * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @version $Id$
+ * @author Verdon Vaillancourt <verdonv at gmail dot com>
+ */
 
 class vList_Group {
 
@@ -105,7 +105,7 @@ class vList_Group {
         if (empty($this->description)) {
             return '';
         }
-//        return substr(ltrim(strip_tags(str_replace('<br />', ' ', $this->getDescription(true)))), 0, $length) . ' ...';
+        //        return substr(ltrim(strip_tags(str_replace('<br />', ' ', $this->getDescription(true)))), 0, $length) . ' ...';
         return substr(ltrim(str_replace('<br />', ' ', $this->getDescription(true))), 0, $length) . ' ...';
     }
 
@@ -172,7 +172,7 @@ class vList_Group {
         $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the group %s?'), $this->getTitle());
         if ($icon) {
             $js['LINK'] = sprintf('<img src="%smod/vlist/img/delete.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
-                                  dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
+            dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
         } else {
             $js['LINK'] = dgettext('vlist', 'Delete');
         }
@@ -185,9 +185,9 @@ class vList_Group {
 
         if ($icon) {
             $label = sprintf('<img src="%smod/vlist/img/edit.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
-                             dgettext('vlist', 'Edit group'), dgettext('vlist', 'Edit group'));
+            dgettext('vlist', 'Edit group'), dgettext('vlist', 'Edit group'));
         } elseif (empty($label)) {
-                $label = dgettext('vlist', 'Edit');
+            $label = dgettext('vlist', 'Edit');
         }
 
         $vars['group'] = $this->id;
@@ -225,7 +225,7 @@ class vList_Group {
         $tpl['DESCRIPTION'] = $this->getListDescription(120);
         $tpl['THUMB'] = $this->getThumbnail(true);
         if($links)
-            $tpl['ACTION'] = implode(' ', $links);
+        $tpl['ACTION'] = implode(' ', $links);
         return $tpl;
     }
 
@@ -242,7 +242,7 @@ class vList_Group {
         $links = array_merge($links, vList::navLinks());
 
         if($links)
-            return implode(' | ', $links);
+        return implode(' | ', $links);
     }
 
 

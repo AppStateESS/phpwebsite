@@ -27,24 +27,24 @@ class Blog_XML extends MyServer {
         }
 
         switch ($permission) {
-        case 'new':
-        case 'list':
-        case 'edit':
-        case 'category':
-        case 'media':
-            if (!Current_User::allow('blog', 'edit_blog')) {
-                return new IXR_Error(4020, 'You do not have permission to edit entries.');
-            }
-            break;
+            case 'new':
+            case 'list':
+            case 'edit':
+            case 'category':
+            case 'media':
+                if (!Current_User::allow('blog', 'edit_blog')) {
+                    return new IXR_Error(4020, 'You do not have permission to edit entries.');
+                }
+                break;
 
-        case 'delete':
-            if (!Current_User::allow('blog', 'delete_blog')) {
-                return new IXR_Error(4030, 'You do not have permission to delete entries.');
-            }
-            break;
+            case 'delete':
+                if (!Current_User::allow('blog', 'delete_blog')) {
+                    return new IXR_Error(4030, 'You do not have permission to delete entries.');
+                }
+                break;
 
-        default:
-            return false;
+            default:
+                return false;
         }
 
         return true;
