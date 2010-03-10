@@ -8,6 +8,6 @@ $data['content'] = strip_tags($data['content']);
 
 if (empty($data['label'])) {
     $headfile = $base . 'javascript/alert/head2.js';
- }
+}
 
 ?>
