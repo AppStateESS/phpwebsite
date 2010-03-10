@@ -15,7 +15,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 // Moodle does not play nice with phpWebSite when installed on the
 // same domain.  Here is a hack to make sure the MOODLEID cookies
 // aren't a problem.
-// TODO: Find out why our security code chokes on some Moodle 
+// TODO: Find out why our security code chokes on some Moodle
 //       cookies and fix it.
 $known_bad = array('MOODLEID', 'MOODLEID_');
 foreach($known_bad as $bad) {
@@ -35,7 +35,7 @@ if (get_magic_quotes_gpc())
         if (!empty($_GET)) {
             $_GET = array_map('stripslashes_deep', $_GET);
         }
-        
+
         if (!empty($_POST)) {
             $_POST = array_map('stripslashes_deep', $_POST);
         }
@@ -61,8 +61,8 @@ if (ini_get('session.use_trans_sid')) {
 
 // Attempt to clean out the xss tags
 
-if (!(PHPWS_Core::allowScriptTags()) && 
-    (!checkUserInput($_SERVER['REQUEST_URI']) || !checkUserInput($_REQUEST))) {
+if (!(PHPWS_Core::allowScriptTags()) &&
+(!checkUserInput($_SERVER['REQUEST_URI']) || !checkUserInput($_REQUEST))) {
     Security::log(_('Attempted cross-site scripting attack.'));
     PHPWS_Core::errorPage('400');
 }
@@ -85,7 +85,7 @@ function checkUserInput($check)
     } else {
 
         if (preg_match($scripting, $check) ||
-            preg_match($ascii_chars, $check)) {
+        preg_match($ascii_chars, $check)) {
             return FALSE;
         }
         return TRUE;
