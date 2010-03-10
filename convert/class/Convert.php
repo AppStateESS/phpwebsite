@@ -1,13 +1,13 @@
 <?php
 
-  /**
-   * Assists developers with converting old modules
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Assists developers with converting old modules
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
-  // Must not be below 1
+// Must not be below 1
 if (!defined('GRAPH_MULTIPLIER')) {
     define('GRAPH_MULTIPLIER', 2);
 }
@@ -27,38 +27,38 @@ class Convert {
         }
 
         switch ($command) {
-        case 'login':
-            PHPWS_Core::initModClass('users', 'Action.php');
-            if ($this->login()) {
-                $this->main();
-            } else {
+            case 'login':
+                PHPWS_Core::initModClass('users', 'Action.php');
+                if ($this->login()) {
+                    $this->main();
+                } else {
+                    PHPWS_Core::killAllSessions();
+                    $this->loginForm();
+                }
+                break;
+
+            case 'logout':
                 PHPWS_Core::killAllSessions();
                 $this->loginForm();
-            }
-            break;
+                break;
 
-        case 'logout':
-            PHPWS_Core::killAllSessions();
-            $this->loginForm();
-            break;
+            case 'convert':
+                $this->siteDB();
+                $this->convertPackage($_REQUEST['package']);
+                break;
 
-        case 'convert':
-            $this->siteDB();
-            $this->convertPackage($_REQUEST['package']);
-            break;
+            case 'make_connection':
+                if ($this->checkConnection()) {
+                    $this->main();
+                } else {
+                    $this->establishConnection(_('Unable to log in to the database. Please check your settings.'));
+                }
 
-        case 'make_connection':
-            if ($this->checkConnection()) {
+                break;
+
+            case 'default':
                 $this->main();
-            } else {
-                $this->establishConnection(_('Unable to log in to the database. Please check your settings.'));
-            }
-
-            break;
-
-        case 'default':
-            $this->main();
-            break;
+                break;
         }
 
     }
