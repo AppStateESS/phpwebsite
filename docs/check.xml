@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <update_information>
-  <module>
-    <title>Mod Title</title>
-    <changes>
-      + Updated module
+<module>
+        <title>Mod Title</title>
+        <changes>
+            + Updated module
     </changes>
-    <version>1.0.1</version>
-    <md5sum>068cdf21b2cac6068cdf21b2cac6</md5sum>
-    <download>http://mysite.com/tarball.tar.gz</download>
-    <dependency>
-      <module>
-        <title>core</title>
-        <properName>phpWebSite Core</properName>
-        <version>1.9.0</version>
-        <url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
-      </module>
-    </dependency>
-  </module>
+        <version>1.0.1</version>
+        <md5sum>068cdf21b2cac6068cdf21b2cac6</md5sum>
+        <download>http://mysite.com/tarball.tar.gz</download>
+        <dependency>
+            <module>
+                <title>core</title>
+                <properName>phpWebSite Core</properName>
+                <version>1.9.0</version>
+                <url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
+            </module>
+        </dependency>
+    </module>
 </update_information>
