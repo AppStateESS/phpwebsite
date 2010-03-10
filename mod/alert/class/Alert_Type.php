@@ -49,16 +49,16 @@ class Alert_Type {
         $links[] = PHPWS_Text::secureLink(dgettext('alert', 'Edit'), 'alert', array('aop'=>'edit_type', 'type_id'=>$this->id));
 
         $links[] = sprintf('%s/%s&nbsp;all',
-                         PHPWS_Text::secureLink(dgettext('alert', 'Add'), 'alert',
-                                                array('aop'=>'add_all_participants', 'type_id'=>$this->id),
-                                                null,
-                                                sprintf(dgettext('alert', 'Add all participants to %s'), $this->title)),
-                         PHPWS_Text::secureLink(dgettext('alert', 'Remove'), 'alert',
-                                                array('aop'=>'remove_all_participants', 'type_id'=>$this->id),
-                                                null,
-                                                sprintf(dgettext('alert', 'Remove all participants from %s'), $this->title))
+        PHPWS_Text::secureLink(dgettext('alert', 'Add'), 'alert',
+        array('aop'=>'add_all_participants', 'type_id'=>$this->id),
+        null,
+        sprintf(dgettext('alert', 'Add all participants to %s'), $this->title)),
+        PHPWS_Text::secureLink(dgettext('alert', 'Remove'), 'alert',
+        array('aop'=>'remove_all_participants', 'type_id'=>$this->id),
+        null,
+        sprintf(dgettext('alert', 'Remove all participants from %s'), $this->title))
 
-                         );
+        );
 
         if (Current_User::allow('alert', 'delete_type')) {
             $js['question'] = dgettext('alert', 'Are you sure you want to delete this alert type?');
@@ -119,19 +119,19 @@ class Alert_Type {
         $db->addWhere('active', 1);
         $db->addOrder('create_date desc');
         switch($this->post_type) {
-        case APST_NONE:
-            break;
+            case APST_NONE:
+                break;
 
-        case APST_WEEKLY:
-            $db->addWhere('create_date', mktime() - (7 * 86400), '>=');
-            break;
+            case APST_WEEKLY:
+                $db->addWhere('create_date', mktime() - (7 * 86400), '>=');
+                break;
 
-        case APST_DAILY:
-            $db->addWhere('create_date', mktime() - 86400, '>=');
-            break;
+            case APST_DAILY:
+                $db->addWhere('create_date', mktime() - 86400, '>=');
+                break;
 
-        case APST_PERM:
-            break;
+            case APST_PERM:
+                break;
 
         }
 

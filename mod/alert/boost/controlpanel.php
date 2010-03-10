@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at appstate dot edu>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at appstate dot edu>
+ */
 
 $link[] = array('label'       => 'Alert!',
 		'restricted'  => true,
@@ -12,4 +12,4 @@ $link[] = array('label'       => 'Alert!',
 		'image'       => 'alert.png',
 		'tab'         => 'content'
 		);
-?>
+		?>

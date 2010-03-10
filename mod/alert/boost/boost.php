@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 $proper_name  = 'Alert!';
 $version      = '1.3.0';
