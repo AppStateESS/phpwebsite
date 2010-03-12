@@ -1,17 +1,17 @@
 <?php
 
-  /**
-   * Calendar conversion file
-   *
-   * Transfers calendar events
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Calendar conversion file
+ *
+ * Transfers calendar events
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 
-  // number of events to convert at a time. lower this number if you are having
-  // memory or timeout errors
+// number of events to convert at a time. lower this number if you are having
+// memory or timeout errors
 define('EVENT_BATCH', 10);
 
 // Must be in YYYYMMDD format.
@@ -46,9 +46,9 @@ function convert()
     if (!isset($_REQUEST['mode'])) {
         $content[] = _('You may convert two different ways.');
         $content[] = sprintf('<a href="%s">%s</a>', 'index.php?command=convert&package=calendar&mode=manual',
-                             _('Manual mode requires you to click through the conversion process.'));
+        _('Manual mode requires you to click through the conversion process.'));
         $content[] = sprintf('<a href="%s">%s</a>', 'index.php?command=convert&package=calendar&mode=auto',
-                             _('Automatic mode converts the data without your interaction.'));
+        _('Automatic mode converts the data without your interaction.'));
 
         $content[] = ' ';
         $content[] = _('If you encounter problems, you should use manual mode.');
@@ -101,10 +101,10 @@ function convert()
         $percent = $batch->percentDone();
         $content[] = Convert::getGraph($percent, $show_wait);
         $batch->completeBatch();
-    
+
         if (!$batch->isFinished()) {
             if ($_REQUEST['mode'] == 'manual') {
-                $content[] =  $batch->continueLink();                
+                $content[] =  $batch->continueLink();
             } else {
                 Convert::forward($batch->getAddress());
             }
@@ -116,7 +116,7 @@ function convert()
             $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
             unset($_SESSION['schedule_id']);
         }
-    
+
         return implode('<br />', $content);
     }
 }
@@ -127,7 +127,7 @@ function runBatch(&$db, &$batch)
     $limit = $batch->getLimit();
     $db->setLimit($limit, $start);
     $result = $db->select();
-    
+
     $db->disconnect();
     Convert::siteDB();
 
@@ -203,7 +203,7 @@ function convertEvent($event, &$schedule, &$admin)
     if ($start_temp >= 0) {
         $hour = floor((int)$start_temp/100);
         $minute = (int)$start_temp % 100;
-        
+
         if ($minute < 10) {
             $minute = '0' . $minute;
         }
@@ -218,7 +218,7 @@ function convertEvent($event, &$schedule, &$admin)
     if ($end_temp >= 0) {
         $hour = floor((int)$end_temp/100);
         $minute = (int)$end_temp % 100;
-        
+
         if ($minute < 10) {
             $minute = '0' . $minute;
         }
@@ -229,37 +229,37 @@ function convertEvent($event, &$schedule, &$admin)
 
         $event['endTime'] = sprintf('%s:%s', $hour, $minute);
     }
-    
+
 
 
     $all_day = 0;
     switch ($event['eventType']) {
-    case 'allday':
-        $start_time = strtotime(sprintf('%sT%s', $event['startDate'], '0000'));
-        $end_time = strtotime(sprintf('%sT%s', $event['endDate'], '2359'));
-        $all_day = 1;
-        break;
+        case 'allday':
+            $start_time = strtotime(sprintf('%sT%s', $event['startDate'], '0000'));
+            $end_time = strtotime(sprintf('%sT%s', $event['endDate'], '2359'));
+            $all_day = 1;
+            break;
 
-    case 'deadline':
-        $start_time = strtotime(sprintf('%sT%s', $event['startDate'], '0000'));
-        $end_time = strtotime(sprintf('%sT%s', $event['endDate'], $event['endTime']));
-        break;
+        case 'deadline':
+            $start_time = strtotime(sprintf('%sT%s', $event['startDate'], '0000'));
+            $end_time = strtotime(sprintf('%sT%s', $event['endDate'], $event['endTime']));
+            break;
 
-    case 'start':
-        if ($event['startTime'] > 1) {
+        case 'start':
+            if ($event['startTime'] > 1) {
+                $start_time = strtotime(sprintf('%sT%s', $event['startDate'], $event['startTime']));
+                $end_time = strtotime(sprintf('%sT%s', $event['endDate'], '0000')) + 86400;
+            } else {
+                $start_time = strtotime(sprintf('%sT%s', $event['endDate'], $event['endTime']));
+                $end_time = strtotime(sprintf('%sT%s', $event['endDate'], '0000')) + 86400;
+            }
+            break;
+
+        case 'interval':
+        default:
             $start_time = strtotime(sprintf('%sT%s', $event['startDate'], $event['startTime']));
-            $end_time = strtotime(sprintf('%sT%s', $event['endDate'], '0000')) + 86400;
-        } else {
-            $start_time = strtotime(sprintf('%sT%s', $event['endDate'], $event['endTime']));
-            $end_time = strtotime(sprintf('%sT%s', $event['endDate'], '0000')) + 86400;
-        }
-        break;
-
-    case 'interval':
-    default:
-        $start_time = strtotime(sprintf('%sT%s', $event['startDate'], $event['startTime']));
-        $end_time = strtotime(sprintf('%sT%s', $event['endDate'], $event['endTime']));
-        break;
+            $end_time = strtotime(sprintf('%sT%s', $event['endDate'], $event['endTime']));
+            break;
     }
 
     if ($event['endRepeat']) {
@@ -283,14 +283,14 @@ function setRepeat(&$new_event, &$event)
     $new_event->end_repeat = strtotime($event['endRepeat']) + 86399;
 
     switch ($event['repeatMode']) {
-    case 'weekly':
-        $weekdays = explode(':', $event['repeatWeekdays']);
-        $sunday = array_shift($weekdays);
-        $weekdays[] = $sunday;
-        $new_event->repeat_type = 'weekly:' . implode(';', $weekdays);
-        break;
-    default:
-        $new_event->repeat_type = $event['repeatMode'];
+        case 'weekly':
+            $weekdays = explode(':', $event['repeatWeekdays']);
+            $sunday = array_shift($weekdays);
+            $weekdays[] = $sunday;
+            $new_event->repeat_type = 'weekly:' . implode(';', $weekdays);
+            break;
+        default:
+            $new_event->repeat_type = $event['repeatMode'];
     }
 
 }

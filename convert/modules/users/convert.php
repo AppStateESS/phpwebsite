@@ -1,15 +1,15 @@
 <?php
 
-  /**
-   * Users conversion file
-   *
-   * Transfers users to new installation
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Users conversion file
+ *
+ * Transfers users to new installation
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
-  // number of users to convert
+// number of users to convert
 define('BATCH_SET', 100);
 
 function convert()
@@ -21,21 +21,21 @@ function convert()
     } else {
         if ($_REQUEST['stage'] == 1) {
             switch ($_POST['convert_who']) {
-            case 'all':
-                $link = _('Continue: Convert everyone.');
-                break;
+                case 'all':
+                    $link = _('Continue: Convert everyone.');
+                    break;
 
-            case 'month':
-                $link = _('Continue: Only those logged on within 6 months.');
-                break;
+                case 'month':
+                    $link = _('Continue: Only those logged on within 6 months.');
+                    break;
 
-            case 'year':
-                $link = _('Continue: Only those logged on within the last year.');
-                break;
+                case 'year':
+                    $link = _('Continue: Only those logged on within the last year.');
+                    break;
             }
 
             $content[] = sprintf('<a href="index.php?command=convert&amp;package=users&amp;stage=2&amp;convert_who=%s">%s</a>',
-                                 $_POST['convert_who'], $link);
+            $_POST['convert_who'], $link);
             $content[] = _('Return to main page if you change your mind. Click the above link to continue.');
         } elseif ($_REQUEST['stage'] == 2) {
             $content[] = beginConverting();
@@ -70,12 +70,12 @@ function beginConverting()
 {
     if (!isset($_REQUEST['mode'])) {
         $content[] = _('You may convert two different ways.');
-        $content[] = sprintf('<a href="%s">%s</a>', 
-                             sprintf('index.php?command=convert&package=users&stage=2&convert_who=%s&mode=manual', $_REQUEST['convert_who']),
-                             _('Manual mode requires you to click through the conversion process.'));
         $content[] = sprintf('<a href="%s">%s</a>',
-                             sprintf('index.php?command=convert&package=users&stage=2&convert_who=%s&mode=auto', $_REQUEST['convert_who']),
-                             _('Automatic mode converts the data without your interaction.'));
+        sprintf('index.php?command=convert&package=users&stage=2&convert_who=%s&mode=manual', $_REQUEST['convert_who']),
+        _('Manual mode requires you to click through the conversion process.'));
+        $content[] = sprintf('<a href="%s">%s</a>',
+        sprintf('index.php?command=convert&package=users&stage=2&convert_who=%s&mode=auto', $_REQUEST['convert_who']),
+        _('Automatic mode converts the data without your interaction.'));
 
         $content[] = ' ';
         $content[] = _('If you encounter problems, you should use manual mode.');
@@ -92,15 +92,15 @@ function beginConverting()
         $db = Convert::getSourceDB('mod_users');
 
         switch ($_REQUEST['convert_who']) {
-        case 'month':
-            $sixmonths = mktime(0,0,0, date('m')-6, date('d'), date('Y')); 
-            $db->addWhere('last_on', $sixmonths, '>=');
-            break;
+            case 'month':
+                $sixmonths = mktime(0,0,0, date('m')-6, date('d'), date('Y'));
+                $db->addWhere('last_on', $sixmonths, '>=');
+                break;
 
-        case 'year':
-            $year = mktime(0,0,0, date('m'), date('d'), date('Y')-1); 
-            $db->addWhere('last_on', $year, '>=');
-            break;
+            case 'year':
+                $year = mktime(0,0,0, date('m'), date('d'), date('Y')-1);
+                $db->addWhere('last_on', $year, '>=');
+                break;
         }
 
         $batch = new Batches('convert_users');
@@ -132,7 +132,7 @@ function beginConverting()
 
         if (!$batch->isFinished()) {
             if ($_REQUEST['mode'] == 'manual') {
-                $content[] =  $batch->continueLink();                
+                $content[] =  $batch->continueLink();
             } else {
                 Convert::forward($batch->getAddress());
             }
@@ -147,7 +147,7 @@ function beginConverting()
             $content[] = _('If the first user on your old site is not you, then you will need to recreate them.');
             $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
         }
-    
+
         return implode('<br />', $content);
     }
 }
@@ -169,7 +169,7 @@ function runBatch(&$db, &$batch)
     } else {
         foreach ($result as $oldUser) {
             if ($oldUser['user_id'] == 1 ||
-                strtolower($oldUser['username']) == $username) {
+            strtolower($oldUser['username']) == $username) {
                 continue;
             }
             $result = convertUser($oldUser);
@@ -202,12 +202,12 @@ function convertUser($oldUser)
     $val['active']       = 1;
     $val['approved']     = 1;
     $db->addValue($val);
-    
+
     $result = $db->insert(FALSE);
     if (PEAR::isError($result)) {
         return $result;
     }
-    
+
     $db->reset();
     $db->setTable('users_groups');
     $db->addValue('active', 1);

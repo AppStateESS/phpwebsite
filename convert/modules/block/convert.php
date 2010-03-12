@@ -1,13 +1,13 @@
 <?php
 
-  /**
-   * Block conversion file
-   *
-   * Converts old blocks to new module
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Block conversion file
+ *
+ * Converts old blocks to new module
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 PHPWS_Core::initModClass('block', 'Block_Item.php');
 
@@ -18,14 +18,14 @@ function convert()
     }
 
     $mod_list = PHPWS_Core::installModList();
-    
+
     if (!in_array('block', $mod_list)) {
         return _('Block is not installed.');
     }
 
     $db = Convert::getSourceDB('mod_blockmaker_data');
     if (!$db) {
-        return _('An error occurred while accessing your mod_blockmaker_data table.'); 
+        return _('An error occurred while accessing your mod_blockmaker_data table.');
     }
     $all_blocks = $db->select();
     $db->disconnect();
@@ -37,7 +37,7 @@ function convert()
         PHPWS_Error::log($all_blocks);
         return _('An error occurred while accessing your mod_blockmaker_data table.');
     }
-   
+
     $values['key_id'] = 0;
     foreach ($all_blocks as $old_block) {
         $new_block = & new Block_Item;

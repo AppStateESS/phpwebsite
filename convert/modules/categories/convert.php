@@ -84,9 +84,9 @@ function convertItems()
     if (!isset($_REQUEST['mode'])) {
         $content[] = _('You may convert two different ways.');
         $content[] = sprintf('<a href="%s">%s</a>', 'index.php?command=convert&package=categories&ignore=1&mode=manual',
-                             _('Manual mode requires you to click through the conversion process.'));
+        _('Manual mode requires you to click through the conversion process.'));
         $content[] = sprintf('<a href="%s">%s</a>', 'index.php?command=convert&package=categories&ignore=1&mode=auto',
-                             _('Automatic mode converts the data without your interaction.'));
+        _('Automatic mode converts the data without your interaction.'));
 
         $content[] = ' ';
         $content[] = _('If you encounter problems, you should use manual mode.');
@@ -192,34 +192,34 @@ function runCatItemBatch(&$db, &$batch)
             $module = $item_name = $item_id = NULL;
 
             switch ($item['module_title']) {
-            case 'announce':
-                $module = 'blog';
-                $item_name = 'entry';
-                break;
+                case 'announce':
+                    $module = 'blog';
+                    $item_name = 'entry';
+                    break;
 
-            case 'calendar':
-                $module = 'calendar';
-                $item_name = 'event';
-                break;
+                case 'calendar':
+                    $module = 'calendar';
+                    $item_name = 'event';
+                    break;
 
-            case 'photoalbum':
+                case 'photoalbum':
 
-                break;
+                    break;
 
-            case 'pagemaster':
-                $module = 'webpage';
-                $item_name = 'volume';
-                break;
+                case 'pagemaster':
+                    $module = 'webpage';
+                    $item_name = 'volume';
+                    break;
 
-            case 'documents':
-                $module = 'filecabinet';
-                $item_name = 'document';
-                break;
+                case 'documents':
+                    $module = 'filecabinet';
+                    $item_name = 'document';
+                    break;
 
-            case 'phatform':
-                $module = 'phatform';
-                $item_name = 'form';
-                break;
+                case 'phatform':
+                    $module = 'phatform';
+                    $item_name = 'form';
+                    break;
             } // end item switch
 
             if (empty($module)) {
@@ -259,7 +259,7 @@ function convertImage ($image_name, $image_alt)
 
     // If there's no image, return
     if (empty($image_name))
-        return 0;
+    return 0;
 
     // Extract the image name out of FatCat's format
     $arr = explode(':', $image_name);
@@ -283,9 +283,9 @@ function convertImage ($image_name, $image_alt)
 
     $err = PHPWS_File::fileCopy($old_file, $new_directory, $image_name, 1, 1);
     if (PEAR::isError($err))
-        exit(PHPWS_Error::printError($err));
+    exit(PHPWS_Error::printError($err));
     if (!$err)
-        exit('Something went wrong with the image transfer');
+    exit('Something went wrong with the image transfer');
 
     // Get image specs
     $image_size = filesize($new_directory . $image_name);

@@ -1,16 +1,16 @@
 <?php
 
-  /**
-   * Blog conversion file
-   *
-   * Transfers announcement modules items to blog
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Blog conversion file
+ *
+ * Transfers announcement modules items to blog
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
-  // number of blogs to convert at a time. lower this number if you are having
-  // memory or timeout errors
+// number of blogs to convert at a time. lower this number if you are having
+// memory or timeout errors
 define('BLOG_BATCH', 10);
 
 // Must be in YYYY-MM-DD format.
@@ -43,9 +43,9 @@ function convert()
     if (!isset($_REQUEST['mode'])) {
         $content[] = _('You may convert two different ways.');
         $content[] = sprintf('<a href="%s">%s</a>', 'index.php?command=convert&package=blog&mode=manual',
-                             _('Manual mode requires you to click through the conversion process.'));
+        _('Manual mode requires you to click through the conversion process.'));
         $content[] = sprintf('<a href="%s">%s</a>', 'index.php?command=convert&package=blog&mode=auto',
-                             _('Automatic mode converts the data without your interaction.'));
+        _('Automatic mode converts the data without your interaction.'));
 
         $content[] = ' ';
         $content[] = _('If you encounter problems, you should use manual mode.');
@@ -91,10 +91,10 @@ function convert()
         $percent = $batch->percentDone();
         $content[] = Convert::getGraph($percent, $show_wait);
         $batch->completeBatch();
-    
+
         if (!$batch->isFinished()) {
             if ($_REQUEST['mode'] == 'manual') {
-                $content[] =  $batch->continueLink();                
+                $content[] =  $batch->continueLink();
             } else {
                 Convert::forward($batch->getAddress());
             }
@@ -106,7 +106,7 @@ function convert()
             $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
             unset($_SESSION['Authors']);
         }
-    
+
         return implode('<br />', $content);
     }
 }
@@ -149,12 +149,12 @@ function convertAnnouncement($entry)
     $val['title']   = PHPWS_Text::parseInput(utf8_encode(htmlallspecialchars_decode(strip_tags($entry['subject']))));
     $val['summary'] = PHPWS_Text::parseInput(PHPWS_Text::breaker(utf8_encode(htmlallspecialchars_decode($entry['summary']))));
 
-    $tmp_entry = $entry['body']; 
+    $tmp_entry = $entry['body'];
     $tmp_entry = PHPWS_Text::parseTag($tmp_entry);
     $tmp_entry = strip_tags($tmp_entry);
     $tmp_entry = html_entity_decode($tmp_entry);
     $tmp_entry = trim($tmp_entry, "\x00\x09\x0A\x0B\x0D\x20\xA0");
-    
+
     if (!empty($tmp_entry)) {
         $val['entry'] = PHPWS_Text::parseInput(PHPWS_Text::breaker(utf8_encode(htmlallspecialchars_decode($entry['body']))));
     }
@@ -170,10 +170,10 @@ function convertAnnouncement($entry)
         if (is_array($image) && isset($image['name'])) {
             $image_link = sprintf('<img src="%s" width="%s" height="%s" alt="%s" title="%s" />',
                                   'images/blog/' . $image['name'],
-                                  $image['width'],
-                                  $image['height'],
-                                  $image['alt'],
-                                  $image['alt']);
+            $image['width'],
+            $image['height'],
+            $image['alt'],
+            $image['alt']);
             $val['entry'] .= $image_link;
         }
     }
@@ -247,7 +247,7 @@ function convertComments($comments, $key_id)
 
     $db2 = & new PHPWS_DB('comments_items');
     $count = 0;
-    
+
     foreach ($comments as $comment) {
         $author_id = buildAuthor($comment['author']);
 

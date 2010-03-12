@@ -1,10 +1,10 @@
 <?php
-  /**
-   * Photoalbum conversion file
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Photoalbum conversion file
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 function convert()
 {
@@ -13,7 +13,7 @@ function convert()
     if (!in_array('photoalbum', $mod_list)) {
         return _('Photo Album is not installed locally.');
     }
-   
+     
     if (!Convert::isConverted('photoalbum_albums')) {
         return convertAlbum();
     } elseif (!Convert::isConverted('photoalbum')) {
@@ -67,9 +67,9 @@ function convertAlbum()
     createSeqTable('mod_photoalbum_albums');
     $content[] = _('Albums converted and keyed.');
     $content[] = sprintf('<a href="index.php?command=convert&package=photoalbum">%s</a>',
-                         _('Continue conversion. . .'));
+    _('Continue conversion. . .'));
     return implode('<br />', $content);
-    
+
 }
 
 
@@ -84,7 +84,7 @@ function convertPics()
         }
 
         if (!empty($_SESSION['Convert_Tbl_Prefix'])) {
-            $photos = str_replace($_SESSION['Convert_Tbl_Prefix'] . 'mod_photoalbum_photos', 'mod_photoalbum_photos', $photos);        
+            $photos = str_replace($_SESSION['Convert_Tbl_Prefix'] . 'mod_photoalbum_photos', 'mod_photoalbum_photos', $photos);
         }
         $db->disconnect();
         Convert::siteDB();

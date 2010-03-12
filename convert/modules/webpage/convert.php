@@ -1,11 +1,11 @@
 <?php
 
-  /**
-   * Convertion file for Webpage module
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Convertion file for Webpage module
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 PHPWS_Core::initModClass('search', 'Search.php');
 PHPWS_Core::initModClass('webpage', 'Volume.php');
@@ -24,7 +24,7 @@ function convert()
 
     if (!is_dir($home_dir . 'images/pagemaster')) {
         return sprintf(_('Please create a directory in %simages/ named "pagemaster". Copy all images from the old Web Pages image directory into it.'),
-                       $home_dir);
+        $home_dir);
     }
 
     $mod_list = PHPWS_Core::installModList();
@@ -43,9 +43,9 @@ function convert()
 
             $content[] = _('There are two methods for converting your webpages:');
             $content[] = sprintf('<a href="index.php?command=convert&amp;package=webpage&amp;webpage_method=sep">%s</a>',
-                                 _('Method 1 - Each section is placed into a separate page.'));
+            _('Method 1 - Each section is placed into a separate page.'));
             $content[] = sprintf('<a href="index.php?command=convert&amp;package=webpage&amp;webpage_method=col">%s</a>',
-                                 _('Method 2 - Each section is collected into ONE page.'));
+            _('Method 2 - Each section is collected into ONE page.'));
             $content[] = _('Click on the method you wish to use.');
             return implode('<br /><br />', $content);
         }
@@ -53,7 +53,7 @@ function convert()
 
 
     $db = Convert::getSourceDB('mod_pagemaster_pages');
-    
+
     $batch = new Batches('convert_pagemaster');
     $total_pages = $db->count();
     if ($total_pages < 1) {
@@ -61,11 +61,11 @@ function convert()
     }
     $batch->setTotalItems($total_pages);
     $batch->setBatchSet(5);
- 
+
     if (isset($_REQUEST['reset_batch'])) {
         $batch->clear();
     }
-   
+     
     if (!$batch->load()) {
         $content[] = _('Batch previously run.');
     } else {
@@ -81,7 +81,7 @@ function convert()
     $content[] = Convert::getGraph($percent);
 
     $batch->completeBatch();
-    
+
     if (!$batch->isFinished()) {
         Convert::forward($batch->getAddress());
     } else {
@@ -93,7 +93,7 @@ function convert()
         $content[] =  _('All done!');
         $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
     }
-    
+
     return implode('<br />', $content);
 }
 
@@ -154,7 +154,7 @@ function convertPage($page)
 
     $db->addValue($val);
     $result = $db->insert(FALSE);
-    
+
     if (PEAR::isError($result)) {
         return FALSE;
     }
@@ -224,14 +224,14 @@ function saveSections($sections, $volume_id, $title, $key_id)
             $image_obj = convertImage($image);
             if ($image_obj && $image_obj->id) {
                 switch ($sec['template']) {
-                case 'image_left.tpl':
-                case 'image_top_left.tpl':
-                case 'image_float_left.tpl':
-                    $page_content[] = sprintf('<div style="float: left; display : inline; margin : 0px 10px 10px 0px">%s</div>', $image_obj->getTag());
-                    break;
-                    
-                default:
-                    $page_content[] = sprintf('<div style="float : right; display : inline; margin : 0px 0px 10px 10px">%s</div>', $image_obj->getTag());
+                    case 'image_left.tpl':
+                    case 'image_top_left.tpl':
+                    case 'image_float_left.tpl':
+                        $page_content[] = sprintf('<div style="float: left; display : inline; margin : 0px 10px 10px 0px">%s</div>', $image_obj->getTag());
+                        break;
+
+                    default:
+                        $page_content[] = sprintf('<div style="float : right; display : inline; margin : 0px 0px 10px 10px">%s</div>', $image_obj->getTag());
                 }
             }
         }

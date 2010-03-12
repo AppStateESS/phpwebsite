@@ -60,10 +60,10 @@ function convert()
 
     // Initialize session reference variables
     if (!isset($_SESSION['phpwsbb_img_ref']))
-        $_SESSION['phpwsbb_img_ref'] = array();
+    $_SESSION['phpwsbb_img_ref'] = array();
     if (!isset($_SESSION['phpwsbb_conversion_map']))
-        $_SESSION['phpwsbb_conversion_map'] = array();
-        
+    $_SESSION['phpwsbb_conversion_map'] = array();
+
     if (!Convert::isConverted('phpwsbb_forums')) {
         convert_phpwsbb_forums();
         Convert::addConvert('phpwsbb_forums');
@@ -143,24 +143,24 @@ function convert_phpwsbb_forums()
         $key->creator = $oldForum['owner'];
         $result = $key->save();
         if (PHPWS_Error::logIfError($result))
-            exit(PHPWS_Error::printError($result));
+        exit(PHPWS_Error::printError($result));
         $forum->key_id = $key->id;
         // Save the new forum info
         $db = new PHPWS_DB('phpwsbb_forums');
         $result = $db->saveObject($forum, false, false);
         if (PHPWS_Error::logIfError($result))
-            exit(PHPWS_Error::printError($result));
+        exit(PHPWS_Error::printError($result));
         // Transfer moderator information
         $mod_arr = explode(',', $oldForum['moderators']);
         if (!empty($mod_arr))
-            foreach($mod_arr AS $value) {
-                $db = new PHPWS_DB('phpwsbb_moderators');
-                $db->addValue('forum_id', $forum->id);
-                $db->addValue('user_id', $value);
-                $result = $db->insert();
-                PHPWS_Error::logIfError($result);
-                unset($db);
-            }
+        foreach($mod_arr AS $value) {
+            $db = new PHPWS_DB('phpwsbb_moderators');
+            $db->addValue('forum_id', $forum->id);
+            $db->addValue('user_id', $value);
+            $result = $db->insert();
+            PHPWS_Error::logIfError($result);
+            unset($db);
+        }
     }
     // Update the sequence table
     $db = new PHPWS_DB('phpwsbb_forums');
@@ -205,22 +205,22 @@ class PHPWS_IMGLib {
         $folder->public_folder = 1;
         $folder->max_image_dimension = COMMENT_MAX_AVATAR_WIDTH;
         if (!$folder->save())
-            exit('Something went wrong with folder creation.  Please restore your database to pre-conversion state & check the error log');
+        exit('Something went wrong with folder creation.  Please restore your database to pre-conversion state & check the error log');
 
         // Get a list of all files in this gallery
         $filelist = $this->get_files($galleryid);
 
         // If there are files, copy them over
         if (empty($filelist))
-            return;
+        return;
         foreach ($filelist AS $image_name) {
             $src = $home_dir . 'convert/images/phpwsbb/library/'.$galleryid.'/' . $image_name;
             $dst = $folder->getFullDirectory() . $image_name;
             $err = PHPWS_File::scaleImage($src, $dst, COMMENT_MAX_AVATAR_WIDTH, COMMENT_MAX_AVATAR_HEIGHT);
             if (PHPWS_Error::logIfError($err))
-                exit(PHPWS_Error::printError($err));
+            exit(PHPWS_Error::printError($err));
             if (!$err)
-                exit('Something went wrong with the image transfer.  Please restore your database to pre-conversion state & check the error log');
+            exit('Something went wrong with the image transfer.  Please restore your database to pre-conversion state & check the error log');
 
             // Get image specs
             $image_size = filesize($dst);
@@ -253,7 +253,7 @@ class PHPWS_IMGLib {
             if(PHPWS_Error::logIfError($result)) {
                 exit(PHPWS_Error::printError($result));
             }
-            
+
             // add to the reference table
             $fixeddir = str_replace($home_dir, '', $folder->getFullDirectory());
             $_SESSION['phpwsbb_img_ref']['/library/'.$galleryid.'/'.$image_name] = array($file_assoc->id, $fixeddir . $img->file_name);
@@ -281,11 +281,11 @@ function convertUsers ()
         $result = $db->select();
         $db->disconnect();
         if (PHPWS_Error::logIfError($result))
-            exit(PHPWS_Error::printError($result));
+        exit(PHPWS_Error::printError($result));
         if (!empty($result))
-            $_SESSION['phpwsbb_convert_firstpostdate'] = $result;
+        $_SESSION['phpwsbb_convert_firstpostdate'] = $result;
         else
-            $_SESSION['phpwsbb_convert_firstpostdate'] = array();
+        $_SESSION['phpwsbb_convert_firstpostdate'] = array();
     }
 
     $db = Convert::getSourceDB('mod_phpwsbb_user_info');
@@ -325,7 +325,7 @@ function convertUsers ()
         if (!empty($result)) {
             foreach ($result as $old_user) {
                 if ($old_user['user_id']==1)
-                    continue;
+                continue;
                 convertUser($old_user);
                 // Save logging information
                 $db->addValue('user_id', $old_user['user_id']);
@@ -362,7 +362,7 @@ function convertUsers ()
 function convertUser ($old_user)
 {
     if ($old_user['user_id']==1)
-        return;
+    return;
     $user = Comments::getCommentUser($old_user['user_id']);
     $user->comments_made = $old_user['posts'];
     $user->location = $old_user['location'];
@@ -370,7 +370,7 @@ function convertUser ($old_user)
     $user->suspendmonitors = $old_user['suspendmonitors'];
     $user->monitordefault = $old_user['monitordefault'];
     if (!empty($_SESSION['phpwsbb_convert_firstpostdate'][$old_user['user_id']]['firstpostdate']))
-        $user->joined_date = $_SESSION['phpwsbb_convert_firstpostdate'][$old_user['user_id']]['firstpostdate'];
+    $user->joined_date = $_SESSION['phpwsbb_convert_firstpostdate'][$old_user['user_id']]['firstpostdate'];
     // Transfer avatar information
     if (!empty($old_user['avatar_file'])) {
         $errors = '';
@@ -472,16 +472,16 @@ function convert_phpwsbb_topics()
     if (!$batch->isFinished()) {
         $content[] = _('Converting phpwsbb Topics');
         if ($_REQUEST['mode'] == 'manual') {
-//if (true) {
+            //if (true) {
             $content[] =  $batch->continueLink();
         } else {
             Convert::forward($batch->getAddress());
         }
     } else { // This was the last batch...
         // Save the topicId cross-reference array to file
-        if (!empty($_SESSION['phpwsbb_conversion_map']) 
-                && !file_put_contents(Convert::getHomeDir() . 'config/phpwsbb/cross-reference.inc', serialize($_SESSION['phpwsbb_conversion_map'])))
-            exit('Could not save TopicId cross-reference array to file');
+        if (!empty($_SESSION['phpwsbb_conversion_map'])
+        && !file_put_contents(Convert::getHomeDir() . 'config/phpwsbb/cross-reference.inc', serialize($_SESSION['phpwsbb_conversion_map'])))
+        exit('Could not save TopicId cross-reference array to file');
         // Make sure that the _seq table is correct
         $db = new PHPWS_DB('comments_threads');
         $db->updateSequenceTable();
@@ -505,7 +505,7 @@ function convert_phpwsbb_topic($entry)
     $db->disconnect();
     Convert::siteDB();
     if (empty($old_comments))
-        return;
+    return;
 
     // If this Comment_Thread id is already taken....
     $db = new PHPWS_DB('comments_threads');
@@ -527,7 +527,7 @@ function convert_phpwsbb_topic($entry)
         $newid = $_SESSION['phpwsbb_conversion_map'][$entry['id']] = ++$max_id;
     }
     else
-        $newid = $entry['id'];
+    $newid = $entry['id'];
 
     // Import replies to this topic
     // this is kinda backwards, but we'll need the lastpost information to save a db query & update
@@ -545,9 +545,9 @@ function convert_phpwsbb_topic($entry)
     $topic->create_date = $entry['created'];
     $topic->creator = $entry['owner'];
     $topic->creator_id = $old_comments[0]['owner_id']; //No need to query. Its the first message author
-//    $topic->times_viewed = $entry['views'];
+    //    $topic->times_viewed = $entry['views'];
     if (!$topic->commit(true))
-        exit('There was an error when saving this topic to the database!  Please restore your database to pre-conversion state & check the error log');
+    exit('There was an error when saving this topic to the database!  Please restore your database to pre-conversion state & check the error log');
     // Create attached Comment_Thread
     $thread = new Comment_Thread;
     $thread->id = $newid;
@@ -560,7 +560,7 @@ function convert_phpwsbb_topic($entry)
     $db = new PHPWS_DB('comments_threads');
     $result = $db->saveObject($thread, false, false);
     if (PHPWS_Error::logIfError($result))
-        exit(PHPWS_Error::printError($result));
+    exit(PHPWS_Error::printError($result));
 
     // Update Lastpost stats
     $topic->update_topic();

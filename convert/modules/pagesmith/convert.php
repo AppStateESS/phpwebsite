@@ -27,7 +27,7 @@ function convert()
 
     if (!is_dir($home_dir . 'images/pagemaster')) {
         return sprintf(_('Please create a directory in %simages/ named "pagemaster". Copy all images from the old Web Pages image directory into it.'),
-                       $home_dir);
+        $home_dir);
     }
 
     $mod_list = PHPWS_Core::installModList();
@@ -202,27 +202,27 @@ function saveSections($sections, $id, $title, $key_id)
             $image = @unserialize($sec['image']);
             if (!empty($image['name'])) {
                 //test if a real image
-                    switch ($sec['template']) {
+                switch ($sec['template']) {
                     case 'default.tpl':
                     case 'image_right.tpl':
                     case 'image_top_right.tpl':
                     case 'image_float_right.tpl':
                         $image_content = sprintf('<img src="images/pagemaster/%s" class="float-right" width="%spx" height="%spx" title="%s" alt="%s" />',
-                                                 $image['name'], $image['width'], $image['height'], $image['alt'], $image['alt']);
+                        $image['name'], $image['width'], $image['height'], $image['alt'], $image['alt']);
                         $top = 1;
                         break;
 
                     case 'image-bottom.tpl':
                         $top = 0;
                         $image_content = sprintf('<img src="images/pagemaster/%s" style="margin : 15px auto" width="%spx" height="%spx" title="%s" alt="%s" />',
-                                                 $image['name'], $image['width'], $image['height'], $image['alt'], $image['alt']);
+                        $image['name'], $image['width'], $image['height'], $image['alt'], $image['alt']);
                         break;
 
                     default:
                         $top = 1;
                         $image_content = sprintf('<img src="images/pagemaster/%s" class="float-left" width="%spx" height="%spx" title="%s" alt="%s" />',
-                                                 $image['name'], $image['width'], $image['height'], $image['alt'], $image['alt']);
-                    }
+                        $image['name'], $image['width'], $image['height'], $image['alt'], $image['alt']);
+                }
             }
         }
         if ($top && $image_content) {

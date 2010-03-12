@@ -1,11 +1,11 @@
 <?php
 
-  /**
-   * Copies documents files into file cabinet module
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Copies documents files into file cabinet module
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 PHPWS_Core::initModClass('filecabinet', 'Folder.php');
 PHPWS_Core::initModClass('filecabinet', 'Document.php');

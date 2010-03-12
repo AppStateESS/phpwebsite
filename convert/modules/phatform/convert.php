@@ -1,10 +1,10 @@
 <?php
-  /**
-   * Phatform conversion file
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Phatform conversion file
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 function convert()
 {
@@ -13,7 +13,7 @@ function convert()
     if (!in_array('phatform', $mod_list)) {
         return _('Form Generator is not installed locally.');
     }
-   
+     
     if (!Convert::isConverted('phatform_elements')) {
         return convertElements();
     } elseif (!Convert::isConverted('phatform')) {
@@ -213,7 +213,7 @@ function convertElements()
         Convert::siteDB();
         Convert::addConvert('phatform_elements');
         $content[] = sprintf('<a href="index.php?command=convert&package=phatform">%s</a>',
-                             _('Continue conversion. . .'));
+        _('Continue conversion. . .'));
     }
 
     return implode('<br />', $content);
@@ -237,7 +237,7 @@ function convertPhatforms()
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             return _('An unrecoverable error occurred. Check your logs.');
-        } 
+        }
         $tbl_prefix = Convert::getTblPrefix();
         foreach ($result as $row) {
             $form_table_name = 'mod_phatform_form_' . $row['id'];
@@ -276,7 +276,7 @@ function convertPhatforms()
             } else {
                 $key->restricted = 1;
             }
-        
+
             $key->setTitle(utf8_encode($row['label']));
             $key->setSummary($row['blurb0']);
             $key->save();
@@ -298,7 +298,7 @@ function convertPhatforms()
     $content[] = _('Form generator forms converted and keyed!');
     $content[] = _('All done!');
     $content[] = sprintf('<a href="index.php">%s</a>',
-                         _('Return to main page.'));
+    _('Return to main page.'));
     return implode('<br />', $content);
 }
 

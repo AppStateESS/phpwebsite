@@ -1,12 +1,12 @@
 <?php
 
-  /**
-   * Conversion file for Menu module
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @modified Olivier Sannier 
-   * @version $Id$
-   */
+/**
+ * Conversion file for Menu module
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @modified Olivier Sannier
+ * @version $Id$
+ */
 
 /**
  * Put your web address here to strip from links
@@ -89,7 +89,7 @@ function convertMenu()
         PHPWS_Core::killSession('');
         $content[] = _('Menu conversion finished.');
         $content[] = sprintf('<a href="index.php?command=convert&amp;package=menu">%s</a>',
-                             _('Continue to convert menu links.'));
+        _('Continue to convert menu links.'));
     }
 
     return implode('<br />', $content);
@@ -127,7 +127,7 @@ function convertLinks()
     $content[] = sprintf('%s&#37; done<br>', $batch->percentDone());
 
     $batch->completeBatch();
-    
+
     if (!$batch->isFinished()) {
         $content[] =  $batch->continueLink();
     } else {
@@ -139,7 +139,7 @@ function convertLinks()
         $content[] =  _('Finished converting links.');
         $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
     }
-    
+
     return implode('<br />', $content);
 }
 
@@ -217,9 +217,9 @@ function convertLink($link) {
         if ($mod == 'pagemaster') {
             $mod = $GLOBALS['Convert_mod'];
         }
-        
+
         $page_id = (int)preg_replace('/.*=(\d+).*$/', '\\1', $original_url);
-        
+
         if ($page_id) {
             $db = new PHPWS_DB('phpws_key');
             $db->addColumn('id');
@@ -243,7 +243,7 @@ function convertLink($link) {
 function processUrl($link)
 {
     if (isset($GLOBALS['Convert_mod'])) {
-        $mod = $GLOBALS['Convert_mod']; 
+        $mod = $GLOBALS['Convert_mod'];
     } else {
         $mod = null;
     }
@@ -259,10 +259,10 @@ function processUrl($link)
     if ($mod) {
         if (MOD_REWRITE_ENABLED) {
             $link = preg_replace('/index.php\?module=pagemaster&page_user_op=view_page&page_id=(\d+).*/i',
-                                 $mod . '/\\1', $link);
+            $mod . '/\\1', $link);
         } else {
             $link = preg_replace('/index.php\?module=pagemaster&page_user_op=view_page&page_id=(\d+).*/i', 'index.php?module=' . $mod . '&id=\\1',
-                                 $link);
+            $link);
         }
     }
 
