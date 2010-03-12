@@ -50,7 +50,7 @@ class Setup {
 
     public function configExists()
     {
-        return is_file(PHPWS_SOURCE_DIR . 'core/conf/config.php');
+        return is_file(PHPWS_SOURCE_DIR . 'config/config.php');
     }
 
     public function initConfigSet()
@@ -83,7 +83,7 @@ class Setup {
         if ($_SESSION['configSettings']['database'] == false) {
             $this->databaseConfig();
         } else {
-            $configDir = PHPWS_SOURCE_DIR . 'core/conf/';
+            $configDir = PHPWS_SOURCE_DIR . 'config/';
             if (is_file($configDir . 'config.php')) {
                 $this->content[] = dgettext('core','Your configuration file already exists.');
                 $this->content[] = dgettext('core','Remove the following file and refresh to continue:');
@@ -104,7 +104,7 @@ class Setup {
     }
 
     /**
-     * Writes the core/conf/config.php file. Assumes one does not already
+     * Writes the config/config.php file. Assumes one does not already
      * exist
      * @return unknown_type
      */
@@ -112,7 +112,7 @@ class Setup {
     {
         require_once 'File.php';
 
-        $location = PHPWS_SOURCE_DIR . 'core/conf/';
+        $location = PHPWS_SOURCE_DIR . 'config/';
         if (!is_writable($location)) {
             return false;
         }
