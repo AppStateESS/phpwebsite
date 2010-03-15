@@ -851,7 +851,7 @@ class PHPWS_Boost {
 
         $directory[] = $home_dir . 'images/';
         $directory[] = $home_dir . 'files/';
-        $directory[] = $home_dir . 'logs/';
+        $directory[] = PHPWS_LOG_DIRECTORY;
 
         foreach ($directory as $id=>$check){
             if (!is_dir($check)) {
@@ -928,131 +928,126 @@ class PHPWS_Boost {
      * the local files and backs up the older version.
      * @deprecated
      */
-    public function updateFiles($file_array, $module, $return_failures=false)
-    {
-        if (!is_array($file_array)) {
-            return false;
-        }
+    /*
+     public function updateFiles($file_array, $module, $return_failures=false)
+     {
+     if (!is_array($file_array)) {
+     return false;
+     }
 
-        $home_dir = PHPWS_Boost::getHomeDir();
+     $home_dir = PHPWS_Boost::getHomeDir();
 
-        foreach ($file_array as $filename) {
-            $filename = preg_replace('/^\/{1}/', '', $filename);
-            $aFiles = explode('/', $filename);
-            $source_root = array_shift($aFiles);
-            $source_filename = implode('/', $aFiles);
+     foreach ($file_array as $filename) {
+     $filename = preg_replace('/^\/{1}/', '', $filename);
+     $aFiles = explode('/', $filename);
+     $source_root = array_shift($aFiles);
+     $source_filename = implode('/', $aFiles);
 
-            switch ($source_root) {
-                case 'templates':
-                    $local_root = sprintf('%stemplates/%s/', $home_dir, $module);
-                    break;
+     switch ($source_root) {
 
-                case 'conf':
-                    $local_root = sprintf('%sconfig/%s/', $home_dir, $module);
-                    break;
+     case 'conf':
+     $local_root = sprintf('%sconfig/%s/', $home_dir, $module);
+     break;
 
-                default:
-                    continue;
-                    break;
-            }
+     default:
+     continue;
+     break;
+     }
 
-            if (!isset($local_root) || !PHPWS_Boost::checkLocalRoot($local_root)) {
-                PHPWS_Error::log(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', $local_root);
-                $failures[] = sprintf(dgettext('boost', 'Inaccessible: %s'), $local_root);
-            }
+     if (!isset($local_root) || !PHPWS_Boost::checkLocalRoot($local_root)) {
+     PHPWS_Error::log(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', $local_root);
+     $failures[] = sprintf(dgettext('boost', 'Inaccessible: %s'), $local_root);
+     }
 
-            if ($module == 'core') {
-                if ($source_root == 'javascript') {
-                    /**
-                     * If not in a branch, don't need to copy javascript files
-                     */
-                    if (!PHPWS_Boost::inBranch()) {
-                        continue;
-                    }
-                    $source_file = sprintf('%s%s', PHPWS_SOURCE_DIR, $filename);
-                } else {
-                    $source_file = sprintf('%score/%s', PHPWS_SOURCE_DIR, $filename);
-                }
-            } else {
-                $source_file = sprintf('%smod/%s/%s', PHPWS_SOURCE_DIR, $module, $filename);
-            }
+     if ($module == 'core') {
+     if ($source_root == 'javascript') {
+     if (!PHPWS_Boost::inBranch()) {
+     continue;
+     }
+     $source_file = sprintf('%s%s', PHPWS_SOURCE_DIR, $filename);
+     } else {
+     $source_file = sprintf('%score/%s', PHPWS_SOURCE_DIR, $filename);
+     }
+     } else {
+     $source_file = sprintf('%smod/%s/%s', PHPWS_SOURCE_DIR, $module, $filename);
+     }
 
-            $local_file = sprintf('%s%s', $local_root, $source_filename);
+     $local_file = sprintf('%s%s', $local_root, $source_filename);
 
-            // if file is a directory, back up the whole directory
-            if (is_dir($source_file)) {
+     // if file is a directory, back up the whole directory
+     if (is_dir($source_file)) {
 
-                // if directory exists, make a backup
-                if (is_dir($local_file) && !empty($source_filename) && BOOST_BACKUP_DIRECTORIES) {
-                    $local_array = explode('/', $local_file);
+     // if directory exists, make a backup
+     if (is_dir($local_file) && !empty($source_filename) && BOOST_BACKUP_DIRECTORIES) {
+     $local_array = explode('/', $local_file);
 
-                    $last_dir = array_pop($local_array);
-                    if (empty($last_dir)) {
-                        $last_dir = array_pop($local_array);
-                    }
-                    $local_array[] = sprintf('%s_%s', mktime(), $last_dir);
-                    $new_dir_name = implode('/', $local_array);
+     $last_dir = array_pop($local_array);
+     if (empty($last_dir)) {
+     $last_dir = array_pop($local_array);
+     }
+     $local_array[] = sprintf('%s_%s', mktime(), $last_dir);
+     $new_dir_name = implode('/', $local_array);
 
-                    if (!@rename($local_file, $new_dir_name)) {
-                        $failures[] = sprintf(dgettext('filecabinet', 'Failed directory backup: %s to %s'), $local_file, $new_dir_name);
-                        PHPWS_Error::log(BOOST_FAILED_BACKUP, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
-                    }
-                }
-                clearstatcache();
-                if (!PHPWS_File::copy_directory($source_file, $local_file)) {
-                    PHPWS_Error::log(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', "$source_file to \n$local_file");
-                    $failures[] = sprintf(dgettext('boost', 'Failed directory copy: %s to %s'), $source_file, $local_file);
-                }
+     if (!@rename($local_file, $new_dir_name)) {
+     $failures[] = sprintf(dgettext('filecabinet', 'Failed directory backup: %s to %s'), $local_file, $new_dir_name);
+     PHPWS_Error::log(BOOST_FAILED_BACKUP, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
+     }
+     }
+     clearstatcache();
+     if (!PHPWS_File::copy_directory($source_file, $local_file)) {
+     PHPWS_Error::log(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', "$source_file to \n$local_file");
+     $failures[] = sprintf(dgettext('boost', 'Failed directory copy: %s to %s'), $source_file, $local_file);
+     }
 
-                continue;
-            } elseif (!is_file($source_file)) {
-                continue;
-            }
+     continue;
+     } elseif (!is_file($source_file)) {
+     continue;
+     }
 
-            if (preg_match('@/@', $source_filename)) {
-                $extra_dir = explode('/', $source_filename);
-                $filename = array_pop($extra_dir);
-                $sofar = null;
-                foreach ($extra_dir as $subdir) {
-                    $subdir .= '/';
-                    $make_dir = $local_root . $sofar . $subdir;
-                    if (!is_dir($make_dir)) {
-                        if (!@mkdir($make_dir)) {
-                            return false;
-                        }
-                    }
-                    $sofar .= $subdir;
-                }
-            }
+     if (preg_match('@/@', $source_filename)) {
+     $extra_dir = explode('/', $source_filename);
+     $filename = array_pop($extra_dir);
+     $sofar = null;
+     foreach ($extra_dir as $subdir) {
+     $subdir .= '/';
+     $make_dir = $local_root . $sofar . $subdir;
+     if (!is_dir($make_dir)) {
+     if (!@mkdir($make_dir)) {
+     return false;
+     }
+     }
+     $sofar .= $subdir;
+     }
+     }
 
-            if (is_file($local_file) && BOOST_BACKUP_FILES) {
-                if (md5_file($local_file) == md5_file($source_file)) {
-                    continue;
-                }
-                if (!PHPWS_Boost::backupFile($local_file)) {
-                    PHPWS_Error::log(BOOST_FAILED_BACKUP, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
-                    $failures[] = sprintf(dgettext('boost', 'No backup: %s'), $local_file);
-                }
-            }
+     if (is_file($local_file) && BOOST_BACKUP_FILES) {
+     if (md5_file($local_file) == md5_file($source_file)) {
+     continue;
+     }
+     if (!PHPWS_Boost::backupFile($local_file)) {
+     PHPWS_Error::log(BOOST_FAILED_BACKUP, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
+     $failures[] = sprintf(dgettext('boost', 'No backup: %s'), $local_file);
+     }
+     }
 
-            $result = @copy($source_file, $local_file);
-            if (!$result) {
-                PHPWS_Error::log(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
-                $failures[] = sprintf(dgettext('boost', 'Copy file failure: %s to %s'), $source_file, $local_file);
-            }
-        }
+     $result = @copy($source_file, $local_file);
+     if (!$result) {
+     PHPWS_Error::log(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
+     $failures[] = sprintf(dgettext('boost', 'Copy file failure: %s to %s'), $source_file, $local_file);
+     }
+     }
 
-        if (isset($failures)) {
-            if ($return_failures) {
-                return $failures;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
-    }
-
+     if (isset($failures)) {
+     if ($return_failures) {
+     return $failures;
+     } else {
+     return false;
+     }
+     } else {
+     return true;
+     }
+     }
+     */
     public function checkLocalRoot($local_root)
     {
         if (is_dir($local_root)) {

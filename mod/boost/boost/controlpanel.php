@@ -14,4 +14,4 @@ $link[] = array('label'       => dgettext('boost', 'Boost'),
 		'tab'         => 'admin'
 		);
 
-?>
+		?>

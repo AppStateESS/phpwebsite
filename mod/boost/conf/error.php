@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 
 $errors[BOOST_ERR_NOT_MODULE]       = dgettext('boost', 'Object sent to boost was not of the PHPWS_Module class.');

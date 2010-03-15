@@ -9,9 +9,9 @@ class Boost_Form {
     public function boostTab(PHPWS_Panel $panel)
     {
         if (!isset($_REQUEST['tab']))
-            return $panel->getCurrentTab();
+        return $panel->getCurrentTab();
         else
-            return $_REQUEST['tab'];
+        return $_REQUEST['tab'];
     }
 
     public function setTabs(PHPWS_Panel $panel)
@@ -78,13 +78,13 @@ class Boost_Form {
                     $link_title = sprintf(dgettext('boost', '%s - New'), $link_title);
                 }
             } else {
-                  $link_title = dgettext('boost', 'Check');
+                $link_title = dgettext('boost', 'Check');
             }
 
             if ($core_file->isAbout()) {
                 $address = PHPWS_Text::linkAddress('boost',
-                                                   array('action' => 'aboutView', 'aboutmod'=> $core_file->title),
-                                                   true);
+                array('action' => 'aboutView', 'aboutmod'=> $core_file->title),
+                true);
                 $aboutView = array('label'=>dgettext('boost', 'About'), 'address'=>$address);
                 $template['ABOUT'] = Layout::getJavascript('open_window', $aboutView);
             }
@@ -176,7 +176,7 @@ class Boost_Form {
                         $link_title = sprintf(dgettext('boost', '%s - New'), $link_title);
                     }
                 } else {
-                        $link_title = dgettext('boost', 'Check');
+                    $link_title = dgettext('boost', 'Check');
                 }
 
                 $link_command['action'] = 'check';
@@ -258,8 +258,8 @@ class Boost_Form {
 
             if ($mod->isAbout()) {
                 $address = PHPWS_Text::linkAddress('boost',
-                                                   array('action' => 'aboutView', 'aboutmod'=> $mod->title),
-                                                   true);
+                array('action' => 'aboutView', 'aboutmod'=> $mod->title),
+                true);
                 $aboutView = array('label'=>dgettext('boost', 'About'), 'address'=>$address);
                 $template['ABOUT'] = Layout::getJavascript('open_window', $aboutView);
             }
@@ -278,12 +278,12 @@ class Boost_Form {
 
         if (ini_get('allow_url_fopen')) {
             $tpl['CHECK_FOR_UPDATES'] = PHPWS_Text::secureLink(dgettext('boost', 'Check all'), 'boost',
-                                                               array('action' => 'check_all', 'tab' => $type));
+            array('action' => 'check_all', 'tab' => $type));
         } else {
             $tpl['CHECK_FOR_UPDATES'] = dgettext('boost', 'Server configuration prevents version checking.');
         }
 
-        
+
         $tpl['LATEST_LABEL'] = dgettext('boost', 'Latest version');
 
         $release_version = PHPWS_Core::releaseVersion();
