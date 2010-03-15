@@ -1,5 +1,7 @@
 <h2>{TITLE}</h2>
-<!--  BEGIN main --><p id="main-text">{MAIN}</p><!-- END main -->
+<!--  BEGIN main -->
+<p id="main-text">{MAIN}</p>
+<!-- END main -->
 {START_FORM}
 <p>{DBTYPE_LABEL} {DBTYPE}<br />
 {DBTYPE_DEF}</p>
@@ -15,5 +17,4 @@
 {DBPORT_DEF}</p>
 <p>{DBHOST_LABEL} {DBHOST} <span class="error">{DBHOST_ERR}</span><br />
 {DBHOST_DEF}</p>
-{DEFAULT_SUBMIT}
-{END_FORM}
+{DEFAULT_SUBMIT} {END_FORM}

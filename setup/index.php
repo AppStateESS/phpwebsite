@@ -6,10 +6,10 @@
 
 chdir('../');
 
-define('CONFIG_CREATED', is_file('core/conf/config.php'));
+define('CONFIG_CREATED', is_file('config/config.php'));
 
 if (CONFIG_CREATED) {
-    require_once 'core/conf/config.php';
+    require_once 'config/config.php';
 } else {
     define('SITE_HASH', md5(rand()));
 }

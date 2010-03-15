@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 define('DEFAULT_DBTYPE', 'mysql');
 // CHANGE BACK
 define('DEFAULT_DBUSER', 'matt');

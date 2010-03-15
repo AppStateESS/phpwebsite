@@ -19,9 +19,9 @@ body {
 }
 
 #message {
-    background-color : #d1d1d1;
-    font-weight : bold;
-    padding : 1px 4px;
+    background-color: #d1d1d1;
+    font-weight: bold;
+    padding: 1px 4px;
 }
 
 #content {
@@ -56,16 +56,16 @@ h2 {
 }
 
 .error {
-font-weight : bold;
-color : red;
+    font-weight: bold;
+    color: red;
 }
-
 </style>
 </head>
 <body>
 <div id="container"><img src="./images/autumn_leaf_color.jpg" />
-<div id="content">
-<!-- BEGIN message --><div id="message">{MESSAGE}</div><!-- END message -->
+<div id="content"><!-- BEGIN message -->
+<div id="message">{MESSAGE}</div>
+<!-- END message -->
 <h1>{TITLE}</h1>
 {CONTENT}</div>
 </div>
