@@ -1,24 +1,24 @@
 <?php
 
-  /**
-   * Shows debugging information. stats_on must be TRUE. Other options
-   * can be toggled according to what you need.
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Shows debugging information. stats_on must be TRUE. Other options
+ * can be toggled according to what you need.
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
-  /**
-   * Line below determines which errors should be shown.
-   * The default is E_ALL. If you are having problems, it is suggested
-   * you uncomment this line.
-   * While running smoothly, this line should be commented out. You
-   * do NOT want users seeing system error messages.
-   * There is also an ini_set for display_errors. Again, this should normally be
-   * kept commented.
-   */
-  // ini_set('display_errors', 'On');
-  // error_reporting (E_ALL);
+/**
+ * Line below determines which errors should be shown.
+ * The default is E_ALL. If you are having problems, it is suggested
+ * you uncomment this line.
+ * While running smoothly, this line should be commented out. You
+ * do NOT want users seeing system error messages.
+ * There is also an ini_set for display_errors. Again, this should normally be
+ * kept commented.
+ */
+// ini_set('display_errors', 'On');
+// error_reporting (E_ALL);
 
 define('stats_on',        false); // Must be true for anything to echo
 define('stats_classes',   false); // Show the classes currently included
@@ -33,7 +33,7 @@ define('language_details',false); // Shows the current and default language opti
 if (stats_on && stats_time) {
     list($usec, $sec) = explode(' ', microtime());
     $GLOBALS['site_start_time'] = ((float)$usec + (float)$sec);
- }
+}
 
 function show_stats()
 {
@@ -93,7 +93,7 @@ function show_stats()
         }
         $content[] = implode('<br />', $subcontent);
     }
-    
+
     if (isset($content)) {
         echo implode('<hr />', $content);
     }
