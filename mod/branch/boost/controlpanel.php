@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 $link[] = array('label'       => dgettext('branch', 'Branch'),
 		'restricted'  => TRUE,
@@ -12,4 +12,4 @@ $link[] = array('label'       => dgettext('branch', 'Branch'),
 		'tab'         => 'admin'
 		);
 
-?>
+		?>
