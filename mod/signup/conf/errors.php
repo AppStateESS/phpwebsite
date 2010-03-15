@@ -6,6 +6,6 @@
  */
 
 $errors = array (SU_NO_SHEET_ID => dgettext('signup', 'Slot is missing sheet id.')
-                 );
+);
 
 ?>

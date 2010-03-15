@@ -1,17 +1,17 @@
 <?php
 
-  /**
-   * Simple class to add a module's administrator commands to a box
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Simple class to add a module's administrator commands to a box
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 PHPWS_Core::requireConfig('miniadmin');
 
 if (!defined('MINIADMIN_TEMPLATE')) {
     define('MINIADMIN_TEMPLATE', 'mini_admin.tpl');
- }
+}
 
 class MiniAdmin {
     public function add($module, $links)
@@ -41,7 +41,7 @@ class MiniAdmin {
         $tpl['MINIADMIN_TITLE'] = dgettext('miniadmin', 'MiniAdmin');
 
         foreach ($GLOBALS['MiniAdmin'] as $module => $links) {
-            
+
             if (!isset($modlist[$module])) {
                 continue;
             }
@@ -58,7 +58,7 @@ class MiniAdmin {
 
             if (isset($GLOBALS['MiniAdmin'][$module]['title_link'])) {
                 $mod_title = sprintf('<a href="%s">%s</a>', $GLOBALS['MiniAdmin'][$module]['title_link'],
-                                     $mod_title);
+                $mod_title);
             }
 
             $oTpl->setData(array('MODULE' => $mod_title));
@@ -66,7 +66,7 @@ class MiniAdmin {
         }
         $oTpl->setData($tpl);
         $content = $oTpl->get();
-        
+
         Layout::set($content, 'miniadmin', 'mini_admin');
     }
 

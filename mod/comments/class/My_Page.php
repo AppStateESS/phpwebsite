@@ -18,25 +18,25 @@ class Comments_My_Page {
         $message = Comments_My_Page::getMessage();
 
         switch ($command) {
-        case 'main':
-            $title = dgettext('comments', 'Comment Settings');
-            $C_User = new Comment_User(Current_User::getId());
-            $content = Comments_My_Page::editOptions($C_User);
-            break;
-
-        case 'save_options':
-            $C_User = new Comment_User(Current_User::getId());
-            $result = $C_User->saveOptions();
-            if (is_array($result)) {
-                $message = implode('<br />', $result);
+            case 'main':
                 $title = dgettext('comments', 'Comment Settings');
+                $C_User = new Comment_User(Current_User::getId());
                 $content = Comments_My_Page::editOptions($C_User);
-            } else {
-                $message = dgettext('comments', 'Settings saved.');
-                $content = Comments_My_Page::editOptions($C_User);
-            }
+                break;
 
-            break;
+            case 'save_options':
+                $C_User = new Comment_User(Current_User::getId());
+                $result = $C_User->saveOptions();
+                if (is_array($result)) {
+                    $message = implode('<br />', $result);
+                    $title = dgettext('comments', 'Comment Settings');
+                    $content = Comments_My_Page::editOptions($C_User);
+                } else {
+                    $message = dgettext('comments', 'Settings saved.');
+                    $content = Comments_My_Page::editOptions($C_User);
+                }
+
+                break;
         }
 
         $box['TITLE'] = &$title;
@@ -91,7 +91,7 @@ class Comments_My_Page {
             $form->setEncode();
             $form->addTplTag('AVATAR_LABEL', dgettext('comments', 'Avatar'));
             $form->addTplTag('AVATAR_NOTE', sprintf(dgettext('comments', 'Note: Avatar images must be no greater than %1$s pixels high by %2$s pixels wide, and its filesize can be no greater than %3$sKb.'),
-                                                    COMMENT_MAX_AVATAR_HEIGHT, COMMENT_MAX_AVATAR_WIDTH, 20));
+            COMMENT_MAX_AVATAR_HEIGHT, COMMENT_MAX_AVATAR_WIDTH, 20));
             if (!empty($user->avatar) || !empty($user->avatar_id)) {
                 $form->addTplTag('CURRENT_AVATAR_LABEL', dgettext('comments', 'Current Avatar'));
                 $form->addTplTag('CURRENT_AVATAR_IMG', $user->getAvatar());
@@ -137,14 +137,14 @@ class Comments_My_Page {
             $form->addTplTag('AVATAR_MESSAGE', dgettext('comments', 'You may add an avatar using ONE of the methods below.'));
         }
         /*    //contact-email
-        $form->addText('contact_email', $user->getContactEmail());
-        $form->setLabel('contact_email', dgettext('comments', 'Contact Email'));
-        $form->setSize('contact_email', 40);
+         $form->addText('contact_email', $user->getContactEmail());
+         $form->setLabel('contact_email', dgettext('comments', 'Contact Email'));
+         $form->setSize('contact_email', 40);
 
-        */
+         */
         //order_pref
         $form->addSelect('order_pref', array(1=>dgettext('comments', 'Oldest first'),
-                                             2=>dgettext('comments', 'Newest first')));
+        2=>dgettext('comments', 'Newest first')));
         $form->setLabel('order_pref', dgettext('comments', 'Comment order preference'));
         $form->setMatch('order_pref', PHPWS_Cookie::read('cm_order_pref'));
         //website
@@ -178,7 +178,7 @@ class Comments_My_Page {
 
         $form->addSubmit(dgettext('comments', 'Update'));
         $template = $form->getTemplate();
-        
+
         return PHPWS_Template::process($template, 'comments', 'user_settings.tpl');
     }
 

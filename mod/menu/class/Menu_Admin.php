@@ -38,115 +38,62 @@ class Menu_Admin {
         // start command switch
         switch ($command) {
 
-        case 'add_pin_link':
-            Menu_Admin::addPinLink();
-            javascript('close_refresh');
-            Layout::nakedDisplay();
-            break;
-
-        case 'popup_admin':
-            Layout::nakedDisplay(Menu_Admin::popupLinkAdmin());
-            break;
-
-        case 'pin_page_post':
-            if (empty($_POST['title'])) {
-                Menu_Admin::pinPageForm($_POST['url'], true);
-            } else {
-                Menu::pinLink($_POST['title'], $_POST['url']);
+            case 'add_pin_link':
+                Menu_Admin::addPinLink();
                 javascript('close_refresh');
                 Layout::nakedDisplay();
-            }
-            break;
+                break;
 
-        case 'pick_link':
-            if (count($_SESSION['Menu_Pin_Links']) < 2) {
-                Menu_Admin::quickPinLink($_GET['menu_id']);
-                Layout::nakedDisplay(javascript('close_refresh'));
-            } else {
-                Layout::nakedDisplay(Menu_Admin::pickLink());
-            }
-            break;
+            case 'popup_admin':
+                Layout::nakedDisplay(Menu_Admin::popupLinkAdmin());
+                break;
 
-        case 'new':
-            $title = dgettext('menu', 'Create New Menu');
-            $content = Menu_Admin::editMenu($menu);
-            break;
+            case 'pin_page_post':
+                if (empty($_POST['title'])) {
+                    Menu_Admin::pinPageForm($_POST['url'], true);
+                } else {
+                    Menu::pinLink($_POST['title'], $_POST['url']);
+                    javascript('close_refresh');
+                    Layout::nakedDisplay();
+                }
+                break;
 
-        case 'delete_menu':
-            $menu->kill();
-            Menu_Admin::sendMessage(dgettext('menu', 'Menu deleted.'), 'list');
-            break;
+            case 'pick_link':
+                if (count($_SESSION['Menu_Pin_Links']) < 2) {
+                    Menu_Admin::quickPinLink($_GET['menu_id']);
+                    Layout::nakedDisplay(javascript('close_refresh'));
+                } else {
+                    Layout::nakedDisplay(Menu_Admin::pickLink());
+                }
+                break;
 
-        case 'enable_admin_mode':
-        case 'disable_admin_mode':
-            if ($command == 'enable_admin_mode') {
-                $_SESSION['Menu_Admin_Mode'] = true;
-            } else {
-                $_SESSION['Menu_Admin_Mode'] = false;
-                unset($_SESSION['Menu_Admin_Mode']);
-            }
-            if (isset($_REQUEST['return'])) {
-                PHPWS_Core::goBack();
-            }
-        case 'settings':
-            $title = dgettext('menu', 'Menu Settings');
-            $content = Menu_Admin::settings();
-            break;
+            case 'new':
+                $title = dgettext('menu', 'Create New Menu');
+                $content = Menu_Admin::editMenu($menu);
+                break;
 
-        case 'move_link':
-            if (empty($_GET['key_id'])) {
-                $key = Key::getHomeKey();
-            } else {
-                $key = new Key($_GET['key_id']);
-            }
-            $key->flag();
+            case 'delete_menu':
+                $menu->kill();
+                Menu_Admin::sendMessage(dgettext('menu', 'Menu deleted.'), 'list');
+                break;
 
-            $link = new Menu_Link($_GET['link_id']);
-            if ($_GET['dir'] == 'up') {
-                $link->moveUp();
-            } else {
-                $link->moveDown();
-            }
-            echo $menu->view(false, true, $key);
-            exit();
+            case 'enable_admin_mode':
+            case 'disable_admin_mode':
+                if ($command == 'enable_admin_mode') {
+                    $_SESSION['Menu_Admin_Mode'] = true;
+                } else {
+                    $_SESSION['Menu_Admin_Mode'] = false;
+                    unset($_SESSION['Menu_Admin_Mode']);
+                }
+                if (isset($_REQUEST['return'])) {
+                    PHPWS_Core::goBack();
+                }
+            case 'settings':
+                $title = dgettext('menu', 'Menu Settings');
+                $content = Menu_Admin::settings();
+                break;
 
-        case 'move_link_up':
-            $link = new Menu_Link($_REQUEST['link_id']);
-            $link->moveUp();
-            Menu_Admin::finish();
-            break;
-
-        case 'move_link_down':
-            $link = new Menu_Link($_REQUEST['link_id']);
-            $link->moveDown();
-            Menu_Admin::finish();
-            break;
-
-        case 'edit_menu':
-            $title = dgettext('menu', 'Update Menu');
-            $content = Menu_Admin::editMenu($menu);
-            break;
-
-        case 'edit_link_title':
-            $result = Menu_Admin::editLinkTitle($_REQUEST['link_id'], $_REQUEST['link_title']);
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-                $title = dgettext('menu', 'Sorry');
-                $content = dgettext('menu', 'A problem occurred when saving your link.');
-            } else {
-                Menu_Admin::finish();
-            }
-            break;
-
-        case 'edit_link':
-            $link = new Menu_Link($_REQUEST['link_id']);
-            Menu_Admin::siteLink($menu, $link);
-            break;
-
-        case 'delete_link':
-            Menu::deleteLink($_REQUEST['link_id']);
-
-            if (isset($_GET['ajax'])) {
+            case 'move_link':
                 if (empty($_GET['key_id'])) {
                     $key = Key::getHomeKey();
                 } else {
@@ -154,184 +101,237 @@ class Menu_Admin {
                 }
                 $key->flag();
 
+                $link = new Menu_Link($_GET['link_id']);
+                if ($_GET['dir'] == 'up') {
+                    $link->moveUp();
+                } else {
+                    $link->moveDown();
+                }
                 echo $menu->view(false, true, $key);
                 exit();
-            } else {
-                Menu_Admin::finish();
-            }
-            break;
 
-        case 'list':
-            $panel->setCurrentTab('list');
-            $title = ('Menu List');
-            $content = Menu_Admin::menuList();
-            break;
-
-        case 'unclip':
-            unset($_SESSION['Menu_Clip'][$_GET['menu_id']]);
-            PHPWS_Core::goBack();
-            break;
-
-        case 'clip':
-            $_SESSION['Menu_Clip'][$_GET['menu_id']] = $_GET['menu_id'];
-            PHPWS_Core::goBack();
-            break;
-
-        case 'ajax_add_link':
-            $parent_id = (int)$_GET['parent'];
-            $key = Menu_Admin::JSFlagKey();
-            $key->flag();
-
-            if (isset($_GET['key_id'])) {
-                $result = Menu_Admin::addLink($menu, $_GET['key_id'], $parent_id);
-            } elseif (isset($_REQUEST['url'])) {
-                $key = Key::getHomeKey();
-                $result = Menu_Admin::addRawLink($menu, $_GET['link_title'], $_GET['url'], $parent_id);
-            }
-            echo $menu->view(false, true, $key);
-            exit();
-            break;
-
-        case 'sort_menu_links':
-            $key = Menu_Admin::JSFlagKey();
-            $menu = new Menu_Item($_GET['menu_id']);
-            Menu_Admin::sortMenuLinks($_GET['moved'], $_GET['parent'], $_GET['under'], $menu);
-            echo $menu->view(false, true, $key);
-            exit();
-            break;
-
-        case 'indent_link':
-            $key = Menu_Admin::JSFlagKey();
-            $menu = new Menu_Item($_GET['menu_id']);
-            Menu_Admin::indentLink($_GET['link_id'], $menu);
-            if (isset($_GET['po'])) {
-                javascript('close_refresh');
-                Layout::nakedDisplay();
-            } else {
-                echo $menu->view(false, true, $key);
-                exit();
-            }
-            break;
-
-        case 'outdent_link':
-            $key = Menu_Admin::JSFlagKey();
-            $menu = new Menu_Item($_GET['menu_id']);
-            Menu_Admin::outdentLink($_GET['link_id'], $menu);
-            if (isset($_GET['po'])) {
-                javascript('close_refresh');
-                Layout::nakedDisplay();
-            } else {
-                echo $menu->view(false, true, $key);
-                exit();
-            }
-            break;
-
-
-        case 'add_link':
-            if (!isset($_REQUEST['parent'])) {
-                $parent_id = 0;
-            } else {
-                $parent_id = $_REQUEST['parent'];
-            }
-
-            if (isset($_REQUEST['key_id'])) {
-                $result = Menu_Admin::addLink($menu, $_REQUEST['key_id'], $parent_id);
-            } elseif (isset($_REQUEST['url'])) {
-                $result = Menu_Admin::addRawLink($menu, $_REQUEST['link_title'], $_REQUEST['url'], $parent_id);
-            } else {
-                Menu_Admin::finish();
-            }
-
-            if ($result) {
-                Menu_Admin::finish();
-            } else {
-                $title = dgettext('menu', 'Error');
-                $content = dgettext('menu', 'There was a problem saving your link.');
-            }
-            break;
-
-        case 'add_site_link':
-            $script = '<script type="text/javascript">window.resizeTo(500,300);</script>';
-            Layout::addJSHeader($script,'resize');
-            $link = new Menu_Link;
-            $link->parent = $_REQUEST['parent_id'];
-            if (isset($_REQUEST['dadd'])) {
-                $link->url = $_REQUEST['dadd'];
-            }
-            Menu_Admin::siteLink($menu, $link);
-            break;
-
-        case 'edit_site_link':
-            $link = new Menu_Link($_REQUEST['link_id']);
-            Menu_Admin::siteLink($menu, $link);
-            break;
-
-        case 'pin_page':
-            Menu_Admin::pinPage();
-            break;
-
-        case 'post_site_link':
-            if (isset($_REQUEST['link_id'])) {
+            case 'move_link_up':
                 $link = new Menu_Link($_REQUEST['link_id']);
-            } else {
-                $link = new Menu_Link;
-            }
+                $link->moveUp();
+                Menu_Admin::finish();
+                break;
 
-            $result = Menu_Admin::postSiteLink($link);
-            if (is_array($result)) {
-                Menu_Admin::siteLink($menu, $link, $result);
-            } else {
-                $link->save();
-                Layout::nakedDisplay(javascript('close_refresh'));
-            }
-            break;
+            case 'move_link_down':
+                $link = new Menu_Link($_REQUEST['link_id']);
+                $link->moveDown();
+                Menu_Admin::finish();
+                break;
 
-        case 'post_menu':
-            if (!Current_User::authorized('menu')) {
-                Current_User::disallow();
-                return;
-            }
-            $updating = (bool)$menu->id;
-            $post_result = $menu->post();
-            if (is_array($post_result)) {
-                $tpl['MESSAGE'] = implode('<br />', $post_result);
-                $title = dgettext('menu', 'Create New Menu');
+            case 'edit_menu':
+                $title = dgettext('menu', 'Update Menu');
                 $content = Menu_Admin::editMenu($menu);
-            } else {
-                Menu_Admin::sendMessage(dgettext('menu', 'Menu saved'), 'list');
-            }
-            break;
+                break;
 
-        case 'unpin_menu':
-            Menu_Admin::unpinMenu($menu);
-            PHPWS_Core::goBack();
-            break;
+            case 'edit_link_title':
+                $result = Menu_Admin::editLinkTitle($_REQUEST['link_id'], $_REQUEST['link_title']);
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                    $title = dgettext('menu', 'Sorry');
+                    $content = dgettext('menu', 'A problem occurred when saving your link.');
+                } else {
+                    Menu_Admin::finish();
+                }
+                break;
 
-        case 'pin_menu':
-            Menu_Admin::pinMenu();
-            PHPWS_Core::goBack();
-            break;
+            case 'edit_link':
+                $link = new Menu_Link($_REQUEST['link_id']);
+                Menu_Admin::siteLink($menu, $link);
+                break;
 
-        case 'pin_all':
-            $menu->pin_all = (int)$_GET['hook'];
-            $menu->save();
-            $title = ('Menu List');
-            $content = Menu_Admin::menuList();
-            break;
+            case 'delete_link':
+                Menu::deleteLink($_REQUEST['link_id']);
 
-        case 'save_settings':
-            Menu_Admin::saveSettings();
-            $message = dgettext('menu', 'Settings updated.');
-            $title = dgettext('menu', 'Menu Settings');
-            $content = Menu_Admin::settings();
-            break;
+                if (isset($_GET['ajax'])) {
+                    if (empty($_GET['key_id'])) {
+                        $key = Key::getHomeKey();
+                    } else {
+                        $key = new Key($_GET['key_id']);
+                    }
+                    $key->flag();
 
-        case 'reorder_links':
-            if (!empty($_GET['menu_id'])) {
-                $menu->reorderLinks();
-            }
-            PHPWS_Core::goBack();
-            break;
+                    echo $menu->view(false, true, $key);
+                    exit();
+                } else {
+                    Menu_Admin::finish();
+                }
+                break;
+
+            case 'list':
+                $panel->setCurrentTab('list');
+                $title = ('Menu List');
+                $content = Menu_Admin::menuList();
+                break;
+
+            case 'unclip':
+                unset($_SESSION['Menu_Clip'][$_GET['menu_id']]);
+                PHPWS_Core::goBack();
+                break;
+
+            case 'clip':
+                $_SESSION['Menu_Clip'][$_GET['menu_id']] = $_GET['menu_id'];
+                PHPWS_Core::goBack();
+                break;
+
+            case 'ajax_add_link':
+                $parent_id = (int)$_GET['parent'];
+                $key = Menu_Admin::JSFlagKey();
+                $key->flag();
+
+                if (isset($_GET['key_id'])) {
+                    $result = Menu_Admin::addLink($menu, $_GET['key_id'], $parent_id);
+                } elseif (isset($_REQUEST['url'])) {
+                    $key = Key::getHomeKey();
+                    $result = Menu_Admin::addRawLink($menu, $_GET['link_title'], $_GET['url'], $parent_id);
+                }
+                echo $menu->view(false, true, $key);
+                exit();
+                break;
+
+            case 'sort_menu_links':
+                $key = Menu_Admin::JSFlagKey();
+                $menu = new Menu_Item($_GET['menu_id']);
+                Menu_Admin::sortMenuLinks($_GET['moved'], $_GET['parent'], $_GET['under'], $menu);
+                echo $menu->view(false, true, $key);
+                exit();
+                break;
+
+            case 'indent_link':
+                $key = Menu_Admin::JSFlagKey();
+                $menu = new Menu_Item($_GET['menu_id']);
+                Menu_Admin::indentLink($_GET['link_id'], $menu);
+                if (isset($_GET['po'])) {
+                    javascript('close_refresh');
+                    Layout::nakedDisplay();
+                } else {
+                    echo $menu->view(false, true, $key);
+                    exit();
+                }
+                break;
+
+            case 'outdent_link':
+                $key = Menu_Admin::JSFlagKey();
+                $menu = new Menu_Item($_GET['menu_id']);
+                Menu_Admin::outdentLink($_GET['link_id'], $menu);
+                if (isset($_GET['po'])) {
+                    javascript('close_refresh');
+                    Layout::nakedDisplay();
+                } else {
+                    echo $menu->view(false, true, $key);
+                    exit();
+                }
+                break;
+
+
+            case 'add_link':
+                if (!isset($_REQUEST['parent'])) {
+                    $parent_id = 0;
+                } else {
+                    $parent_id = $_REQUEST['parent'];
+                }
+
+                if (isset($_REQUEST['key_id'])) {
+                    $result = Menu_Admin::addLink($menu, $_REQUEST['key_id'], $parent_id);
+                } elseif (isset($_REQUEST['url'])) {
+                    $result = Menu_Admin::addRawLink($menu, $_REQUEST['link_title'], $_REQUEST['url'], $parent_id);
+                } else {
+                    Menu_Admin::finish();
+                }
+
+                if ($result) {
+                    Menu_Admin::finish();
+                } else {
+                    $title = dgettext('menu', 'Error');
+                    $content = dgettext('menu', 'There was a problem saving your link.');
+                }
+                break;
+
+            case 'add_site_link':
+                $script = '<script type="text/javascript">window.resizeTo(500,300);</script>';
+                Layout::addJSHeader($script,'resize');
+                $link = new Menu_Link;
+                $link->parent = $_REQUEST['parent_id'];
+                if (isset($_REQUEST['dadd'])) {
+                    $link->url = $_REQUEST['dadd'];
+                }
+                Menu_Admin::siteLink($menu, $link);
+                break;
+
+            case 'edit_site_link':
+                $link = new Menu_Link($_REQUEST['link_id']);
+                Menu_Admin::siteLink($menu, $link);
+                break;
+
+            case 'pin_page':
+                Menu_Admin::pinPage();
+                break;
+
+            case 'post_site_link':
+                if (isset($_REQUEST['link_id'])) {
+                    $link = new Menu_Link($_REQUEST['link_id']);
+                } else {
+                    $link = new Menu_Link;
+                }
+
+                $result = Menu_Admin::postSiteLink($link);
+                if (is_array($result)) {
+                    Menu_Admin::siteLink($menu, $link, $result);
+                } else {
+                    $link->save();
+                    Layout::nakedDisplay(javascript('close_refresh'));
+                }
+                break;
+
+            case 'post_menu':
+                if (!Current_User::authorized('menu')) {
+                    Current_User::disallow();
+                    return;
+                }
+                $updating = (bool)$menu->id;
+                $post_result = $menu->post();
+                if (is_array($post_result)) {
+                    $tpl['MESSAGE'] = implode('<br />', $post_result);
+                    $title = dgettext('menu', 'Create New Menu');
+                    $content = Menu_Admin::editMenu($menu);
+                } else {
+                    Menu_Admin::sendMessage(dgettext('menu', 'Menu saved'), 'list');
+                }
+                break;
+
+            case 'unpin_menu':
+                Menu_Admin::unpinMenu($menu);
+                PHPWS_Core::goBack();
+                break;
+
+            case 'pin_menu':
+                Menu_Admin::pinMenu();
+                PHPWS_Core::goBack();
+                break;
+
+            case 'pin_all':
+                $menu->pin_all = (int)$_GET['hook'];
+                $menu->save();
+                $title = ('Menu List');
+                $content = Menu_Admin::menuList();
+                break;
+
+            case 'save_settings':
+                Menu_Admin::saveSettings();
+                $message = dgettext('menu', 'Settings updated.');
+                $title = dgettext('menu', 'Menu Settings');
+                $content = Menu_Admin::settings();
+                break;
+
+            case 'reorder_links':
+                if (!empty($_GET['menu_id'])) {
+                    $menu->reorderLinks();
+                }
+                PHPWS_Core::goBack();
+                break;
 
         } // end command switch
 

@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 $link[] = array('label'       => dgettext('comments', 'Comments'),
 		'restricted'  => TRUE,
@@ -13,4 +13,4 @@ $link[] = array('label'       => dgettext('comments', 'Comments'),
 		);
 
 
-?>
+		?>

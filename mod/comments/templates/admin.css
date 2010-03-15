@@ -1,25 +1,25 @@
 .full-view {
-   position : absolute;
-   background-color : white;
-   border : 1px solid black;
-   border-right-width : 2px;
-   border-bottom-width : 2px;
-   width : 300px;
-   padding : 5px;
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    width: 300px;
+    padding: 5px;
 }
 
 .pointer:hover {
-   cursor : pointer;
+    cursor: pointer;
 }
 
 table.comment-history td {
-   padding : 5px;
+    padding: 5px;
 }
 
 table.comment-history td.comment-body h2 {
-   margin-bottom : 0;
+    margin-bottom: 0;
 }
 
 table.comment-history td.author-info {
-   font-size : .9em;
+    font-size: .9em;
 }

@@ -1,11 +1,11 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author  Steven Levin
-   * @modified Matthew McNaney <mcnaney at gmail dot com>
-   * @modified Verdon Vaillancourt
-   */
+/**
+ * @version $Id$
+ * @author  Steven Levin
+ * @modified Matthew McNaney <mcnaney at gmail dot com>
+ * @modified Verdon Vaillancourt
+ */
 
 require_once(PHPWS_SOURCE_DIR . 'core/class/Item.php');
 require_once(PHPWS_SOURCE_DIR . 'core/class/File.php');
@@ -130,7 +130,7 @@ class PHPWS_Album extends PHPWS_Item {
 
 
         $options = array(0=>dgettext('photoalbum', 'Visible'),
-                         1=>dgettext('photoalbum', 'Hidden'));
+        1=>dgettext('photoalbum', 'Hidden'));
 
         $hidden = 0;
         if($this->isHidden()) {
@@ -416,7 +416,7 @@ class PHPWS_Album extends PHPWS_Item {
             $orginSize = sizeof($this->_batch) + 1;
             for($i = $numForms; $i <= $orginSize; $i++) {
                 if(isset($this->_batch[$i]))
-                    unset($this->_batch[$i]);
+                unset($this->_batch[$i]);
             }
         }
 
@@ -442,7 +442,7 @@ class PHPWS_Album extends PHPWS_Item {
         $formTags['PHOTO_FORMS'] = '';
 
         $options = array(0=>dgettext('photoalbum', 'Visible'),
-                         1=>dgettext('photoalbum', 'Hidden'));
+        1=>dgettext('photoalbum', 'Hidden'));
 
         $tags = array();
         $tags['PHOTO_TEXT'] = dgettext('photoalbum', 'Upload Image');
@@ -509,7 +509,7 @@ class PHPWS_Album extends PHPWS_Item {
             $orginSize = sizeof($this->_batch) + 1;
             for($i = $numForms; $i <= $orginSize; $i++) {
                 if(isset($this->_batch[$i]))
-                    unset($this->_batch[$i]);
+                unset($this->_batch[$i]);
             }
         }
 
@@ -640,14 +640,14 @@ class PHPWS_Album extends PHPWS_Item {
 
     public function _slideShow() {
         if(javascriptEnabled() && (!isset($_REQUEST['SS_mode']) ||
-                                            (isset($_REQUEST['SS_mode']) &&
-                                             $_REQUEST['SS_mode'] != 'nojsmode'))) {
+        (isset($_REQUEST['SS_mode']) &&
+        $_REQUEST['SS_mode'] != 'nojsmode'))) {
             $this->_orderIds();
             return SlideShow::play($this->photos);
         } else {
             if(!isset($_SESSION['NO_JS_SLIDESHOW']) || $_SESSION['NO_JS_SLIDESHOW']->getCount() != count($this->photos) ||
-               $_SESSION['NO_JS_SLIDESHOW']->album_id != $this->_id)
-                $_SESSION['NO_JS_SLIDESHOW'] = new NoJSSlideShow($this->photos, $this->_id);
+            $_SESSION['NO_JS_SLIDESHOW']->album_id != $this->_id)
+            $_SESSION['NO_JS_SLIDESHOW'] = new NoJSSlideShow($this->photos, $this->_id);
             return $_SESSION['NO_JS_SLIDESHOW']->play();
         }
     }
@@ -703,45 +703,45 @@ class PHPWS_Album extends PHPWS_Item {
 
         if(isset($_REQUEST['PHPWS_Album_op'])) {
             switch($_REQUEST['PHPWS_Album_op']) {
-            case 'new':
-                $this->_new();
-                break;
+                case 'new':
+                    $this->_new();
+                    break;
 
-            case 'edit':
-                $title = dgettext('photoalbum', 'Edit Album');
-                $content = $this->_edit();
-                break;
+                case 'edit':
+                    $title = dgettext('photoalbum', 'Edit Album');
+                    $content = $this->_edit();
+                    break;
 
-            case 'save':
-                $this->_save();
-                break;
+                case 'save':
+                    $this->_save();
+                    break;
 
-            case 'delete':
-                  $this->_delete();
-                break;
+                case 'delete':
+                    $this->_delete();
+                    break;
 
-            case 'view':
-                $title = dgettext('photoalbum', 'Photo Album') . ': ' . $this->getLabel();
-                $content = $this->_view();
-                break;
+                case 'view':
+                    $title = dgettext('photoalbum', 'Photo Album') . ': ' . $this->getLabel();
+                    $content = $this->_view();
+                    break;
 
-            case 'batch':
-                if (!Current_User::allow('photoalbum', 'add_photo')) {
-                    Current_User::disallow();
-                }
+                case 'batch':
+                    if (!Current_User::allow('photoalbum', 'add_photo')) {
+                        Current_User::disallow();
+                    }
 
-                $title = dgettext('photoalbum', 'Batch Add Photos');
-                $content = $this->_batchAdd();
-                break;
+                    $title = dgettext('photoalbum', 'Batch Add Photos');
+                    $content = $this->_batchAdd();
+                    break;
 
-            case 'batchSave':
-                $this->_batchSave();
-                break;
+                case 'batchSave':
+                    $this->_batchSave();
+                    break;
 
-            case 'slideShow':
-                $title = dgettext('photoalbum', 'Slide Show');
-                $content = $this->_slideShow();
-                break;
+                case 'slideShow':
+                    $title = dgettext('photoalbum', 'Slide Show');
+                    $content = $this->_slideShow();
+                    break;
             }
         }
 
@@ -772,7 +772,7 @@ class PHPWS_Album extends PHPWS_Item {
         $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_AlbumManager_op=list">' . dgettext('photoalbum', 'List Albums') . '</a>';
 
         $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=slideShow">' .
-            dgettext('photoalbum', 'Slide Show') . '</a>';
+        dgettext('photoalbum', 'Slide Show') . '</a>';
 
         if(Current_User::allow('photoalbum', 'edit_album')) {
             if (!isset($_REQUEST['missing_desc'])) {

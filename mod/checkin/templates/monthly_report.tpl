@@ -3,7 +3,7 @@
 {TOTAL_WAIT}<br />
 {AVERAGE_WAIT}<br />
 {TOTAL_SPENT}</p>
-<table cellpadding="5" width="100%" style="smaller">
+<table cellpadding="5" width="100%" style="">
     <tr>
         <th>{NAME_LABEL}</th>
         <th>{ARRIVAL_LABEL}</th>

@@ -1,10 +1,10 @@
 <?php
-  /**
-   * captcha : 0 - none, 1 - anonymous only, 2 - all users
-   *
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * captcha : 0 - none, 1 - anonymous only, 2 - all users
+ *
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 $settings = array('allow_signatures'       => 0,
                   'allow_avatars'          => 1,

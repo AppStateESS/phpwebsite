@@ -46,7 +46,7 @@ class PHAT_Radiobutton extends PHAT_Element {
         }
 
         if($this->isRequired())
-            $viewTags['REQUIRED_FLAG'] = '&#42;'; 
+        $viewTags['REQUIRED_FLAG'] = '&#42;';
 
         $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb());
         $viewTags['RADIO_BUTTONS'] = '';
@@ -117,7 +117,7 @@ class PHAT_Radiobutton extends PHAT_Element {
         $error = FALSE;
         $label = $this->getLabel();
         if((!$_SESSION['PHAT_FormManager']->form->checkLabel($_REQUEST['PHAT_ElementName']) && (strcasecmp($label, $_REQUEST['PHAT_ElementName']) != 0))
-           || PHPWS_Error::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
+        || PHPWS_Error::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
             $currentError = PHPWS_Error::get(PHATFORM_INVALID_NAME, 'phatform', 'PHAT_Radiobutton::save()');
             $error = TRUE;
         }

@@ -1,1 +1,3 @@
-<div class="menu" style="text-align:right;">{LINKS}<hr /></div>
+<div class="menu" style="text-align: right;">{LINKS}
+<hr />
+</div>

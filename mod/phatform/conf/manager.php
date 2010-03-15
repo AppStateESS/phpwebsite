@@ -2,7 +2,7 @@
 
 /**
  * Manager Configuration File for PhatForm
- * 
+ *
  * @version $Id$
  * @author  Steven Levin
  * @modified Matthew McNaney <mcnaney at gmail dot com>
@@ -27,7 +27,7 @@ $approve  = dgettext('phatform', 'Approve');
 $refuse   = dgettext('phatform', 'Refuse');
 $actions  = dgettext('phatform', 'Actions');
 
-$lists = array('saved'=>"approved='1' AND saved='1' AND 
+$lists = array('saved'=>"approved='1' AND saved='1' AND
                   (archiveTableName is NULL OR archiveTableName = '')",
 	       'unsaved'=>"approved='1' AND saved='0' AND 
                   (archiveTableName is NULL OR archiveTableName = '')",
@@ -123,7 +123,7 @@ $userPaging = array('op'     =>'PHAT_MAN_OP=list',
 $optionsColumns = array('id'   =>$id,
 			'label'=>$label);
 
-$optionsExtraLabels = array('actions_label'=>$actions, 
+$optionsExtraLabels = array('actions_label'=>$actions,
 			    'delete_label' =>$delete,
 			    'edit_label'   =>$edit);
 

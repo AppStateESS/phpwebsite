@@ -1,36 +1,36 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 function demographics_update(&$content, $version)
 {
     switch (1) {
-    case version_compare($version, '0.0.2', '<'):
-        $content[] = '<pre>0.0.2 changes
+        case version_compare($version, '0.0.2', '<'):
+            $content[] = '<pre>0.0.2 changes
 --------------
 + Added translate functions</pre>';
 
-    case version_compare($version, '0.1.0', '<'):
-        $content[] = '<pre>0.1.0 changes
+        case version_compare($version, '0.1.0', '<'):
+            $content[] = '<pre>0.1.0 changes
 --------------
 + Updated language functions
 + Added German translation</pre>';
 
-    case version_compare($version, '1.0.0', '<'):
-        $content[] = '<pre>1.0.0 changes
+        case version_compare($version, '1.0.0', '<'):
+            $content[] = '<pre>1.0.0 changes
 --------------
 + Implemented patch 1773655 from Eloi George. Fixes column type identification.</pre>
 ';
 
-    case version_compare($version, '1.1.0', '<'):
-        $db = new PHPWS_DB('demographics');
-        if (PHPWS_Error::logIfError($db->createTableIndex('user_id', null, true))) {
-            $content[] = 'Warning: A problems occurred when trying to create a unique index on the demographics table.';
-        }
+        case version_compare($version, '1.1.0', '<'):
+            $db = new PHPWS_DB('demographics');
+            if (PHPWS_Error::logIfError($db->createTableIndex('user_id', null, true))) {
+                $content[] = 'Warning: A problems occurred when trying to create a unique index on the demographics table.';
+            }
 
-        $content[] = '<pre>1.1.0 changes
+            $content[] = '<pre>1.1.0 changes
 --------------
 + Made user_id column unique
 + Added _base_id and _extend_id. Allows demographics and extended
@@ -41,15 +41,15 @@ function demographics_update(&$content, $version)
 </pre>
 ';
 
-    case version_compare($version, '1.1.1', '<'):
-        $content[] = '<pre>1.1.1 changes
+        case version_compare($version, '1.1.1', '<'):
+            $content[] = '<pre>1.1.1 changes
 --------------
 + Removed deadend getUser function.
 + Removed some passed-by-reference ampersands.
 + Support for remove_users added.</pre>';
 
-    case version_compare($version, '1.2.0', '<'):
-        $content[] = '<pre>1.2.0 changes
+        case version_compare($version, '1.2.0', '<'):
+            $content[] = '<pre>1.2.0 changes
 --------------
 + Applied patch #2028130 from Eloi George. Fixed Demographics_User
   object not updating extend_id and base_id.

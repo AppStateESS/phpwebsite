@@ -1,14 +1,14 @@
 <?php
-  /**
-   * Demographics user is a class that you extend to store user
-   * information.
-   * If you set a _table variable, demographics will load information
-   * from that table as well. Not having a _table saves all the information
-   * in demographics
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Demographics user is a class that you extend to store user
+ * information.
+ * If you set a _table variable, demographics will load information
+ * from that table as well. Not having a _table saves all the information
+ * in demographics
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 
 class Demographics_User {

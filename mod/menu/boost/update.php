@@ -1,134 +1,134 @@
 <?php
 
-  /**
-   * update file for menu
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * update file for menu
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 function menu_update(&$content, $currentVersion)
 {
     $home_directory = PHPWS_Boost::getHomeDir();
 
     switch ($currentVersion) {
-    case version_compare($currentVersion, '1.2.0', '<'):
-        $content[] = '<pre>Menu versions prior to 1.2.0 are not supported for update.
+        case version_compare($currentVersion, '1.2.0', '<'):
+            $content[] = '<pre>Menu versions prior to 1.2.0 are not supported for update.
 Please download 1.2.1.</pre>';
-        break;
+            break;
 
-    case version_compare($currentVersion, '1.2.1', '<'):
-        $content[] = '<pre>1.2.1 changes
+        case version_compare($currentVersion, '1.2.1', '<'):
+            $content[] = '<pre>1.2.1 changes
 -----------------
 + Fixed bug with making home link.
 </pre>';
 
-    case version_compare($currentVersion, '1.3.0', '<'):
-        $files = array('conf/config.php', 'templates/admin/settings.tpl',
+        case version_compare($currentVersion, '1.3.0', '<'):
+            $files = array('conf/config.php', 'templates/admin/settings.tpl',
                        'templates/links/link.tpl', 'templates/popup_admin.tpl');
-        $content[] = '<pre>';
-        if (PHPWS_Boost::updateFiles($files, 'menu')) {
-            $content[] = '--- Successfully updated the following files:';
-        } else {
-            $content[] = '--- Was unable to copy the following files:';
-        }
-        $content[] = '     ' . implode("\n     ", $files);
-        $content[] = '
+            $content[] = '<pre>';
+            if (PHPWS_Boost::updateFiles($files, 'menu')) {
+                $content[] = '--- Successfully updated the following files:';
+            } else {
+                $content[] = '--- Was unable to copy the following files:';
+            }
+            $content[] = '     ' . implode("\n     ", $files);
+            $content[] = '
 1.3.0 changes
 -----------------
 + Admin icon for links is now clickable. Pulls up window of options.
 + Added ability to disable floating admin links.
 </pre>';
 
-    case version_compare($currentVersion, '1.3.1', '<'):
-        $files = array('templates/site_map.tpl');
-        $content[] = '<pre>';
-        if (PHPWS_Boost::updateFiles($files, 'menu')) {
-            $content[] = '--- Successfully updated the following files:';
-        } else {
-            $content[] = '--- Was unable to copy the following files:';
-        }
-        $content[] = '     ' . implode("\n     ", $files);
-        $content[] = '
+        case version_compare($currentVersion, '1.3.1', '<'):
+            $files = array('templates/site_map.tpl');
+            $content[] = '<pre>';
+            if (PHPWS_Boost::updateFiles($files, 'menu')) {
+                $content[] = '--- Successfully updated the following files:';
+            } else {
+                $content[] = '--- Was unable to copy the following files:';
+            }
+            $content[] = '     ' . implode("\n     ", $files);
+            $content[] = '
 1.3.1 changes
 -----------------
 + Bug # 1609737. Fixed site_map.tpl file. Thanks Andy.
 </pre>';
 
-    case version_compare($currentVersion, '1.4.0', '<'):
-        $content[] = '<pre>';
+        case version_compare($currentVersion, '1.4.0', '<'):
+            $content[] = '<pre>';
 
-        $basic_dir = $home_directory . 'templates/menu/menu_layout/basic/';
-        $horz_dir  = $home_directory . 'templates/menu/menu_layout/horizontal/';
+            $basic_dir = $home_directory . 'templates/menu/menu_layout/basic/';
+            $horz_dir  = $home_directory . 'templates/menu/menu_layout/horizontal/';
 
-        if (!is_dir($basic_dir)) {
-            if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/basic/', $basic_dir)) {
-                $content[] = "--- Successfully copied directory: $basic_dir";
-            } else {
-                $content[] = "--- Failed to copy directory: $basic_dir</pre>";
-                return false;
+            if (!is_dir($basic_dir)) {
+                if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/basic/', $basic_dir)) {
+                    $content[] = "--- Successfully copied directory: $basic_dir";
+                } else {
+                    $content[] = "--- Failed to copy directory: $basic_dir</pre>";
+                    return false;
+                }
             }
-        }
 
-        if (!is_dir($horz_dir)) {
-            if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/horizontal/', $horz_dir)) {
-                $content[] = "--- Successfully copied directory: $horz_dir";
-            } else {
-                $content[] = "--- Failed to copy directory: $horz_dir</pre>";
-                return false;
+            if (!is_dir($horz_dir)) {
+                if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/horizontal/', $horz_dir)) {
+                    $content[] = "--- Successfully copied directory: $horz_dir";
+                } else {
+                    $content[] = "--- Failed to copy directory: $horz_dir</pre>";
+                    return false;
+                }
             }
-        }
 
-        menuUpdateFiles(array('conf/error.php'), $content);
+            menuUpdateFiles(array('conf/error.php'), $content);
 
-        if (!PHPWS_Boost::inBranch()) {
-            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/menu/boost/changes/1_4_0.txt');
-        }
+            if (!PHPWS_Boost::inBranch()) {
+                $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/menu/boost/changes/1_4_0.txt');
+            }
 
-        $content[] = '</pre>';
+            $content[] = '</pre>';
 
-    case version_compare($currentVersion, '1.4.1', '<'):
-        $content[] = '<pre>';
+        case version_compare($currentVersion, '1.4.1', '<'):
+            $content[] = '<pre>';
 
-        $files = array('templates/admin/settings.tpl', 'templates/admin/menu_list.tpl');
-        menuUpdateFiles($files, $content);
-        if (!PHPWS_Boost::inBranch()) {
-            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/menu/boost/changes/1_4_1.txt');
-        }
+            $files = array('templates/admin/settings.tpl', 'templates/admin/menu_list.tpl');
+            menuUpdateFiles($files, $content);
+            if (!PHPWS_Boost::inBranch()) {
+                $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/menu/boost/changes/1_4_1.txt');
+            }
 
-        $content[] = '</pre>';
+            $content[] = '</pre>';
 
-    case version_compare($currentVersion, '1.4.2', '<'):
-        $content[] = '<pre>';
+        case version_compare($currentVersion, '1.4.2', '<'):
+            $content[] = '<pre>';
 
-        $db = new PHPWS_DB('menus');
-        $db->addWhere('template', 'basic.tpl');
-        $db->addValue('template', 'basic');
-        if (PHPWS_Error::logIfError($db->update())) {
-            $content[] = '--- Failed to update menus table.';
-        } else {
-            $content[] = '--- Updated menu table with correct template directory.';
-        }
+            $db = new PHPWS_DB('menus');
+            $db->addWhere('template', 'basic.tpl');
+            $db->addValue('template', 'basic');
+            if (PHPWS_Error::logIfError($db->update())) {
+                $content[] = '--- Failed to update menus table.';
+            } else {
+                $content[] = '--- Updated menu table with correct template directory.';
+            }
 
-        $files = array('templates/admin/settings.tpl');
-        menuUpdateFiles($files, $content);
-        if (!PHPWS_Boost::inBranch()) {
-            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/menu/boost/changes/1_4_2.txt');
-        }
+            $files = array('templates/admin/settings.tpl');
+            menuUpdateFiles($files, $content);
+            if (!PHPWS_Boost::inBranch()) {
+                $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/menu/boost/changes/1_4_2.txt');
+            }
 
-        $content[] = '</pre>';
+            $content[] = '</pre>';
 
-    case version_compare($currentVersion, '1.4.3', '<'):
-        $content[] = '<pre>';
-        $files = array('templates/admin/settings.tpl');
-        menuUpdateFiles($files, $content);
-        if (!PHPWS_Boost::inBranch()) {
-            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/menu/boost/changes/1_4_3.txt');
-        }
-        $content[] = '</pre>';
+        case version_compare($currentVersion, '1.4.3', '<'):
+            $content[] = '<pre>';
+            $files = array('templates/admin/settings.tpl');
+            menuUpdateFiles($files, $content);
+            if (!PHPWS_Boost::inBranch()) {
+                $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/menu/boost/changes/1_4_3.txt');
+            }
+            $content[] = '</pre>';
 
-    case version_compare($currentVersion, '1.4.4', '<'):
-        $content[] = '<pre>
+        case version_compare($currentVersion, '1.4.4', '<'):
+            $content[] = '<pre>
 1.4.4 Changes
 --------------
 + Added three new menu functions:
@@ -139,24 +139,24 @@ Please download 1.2.1.</pre>';
                     status based on the condition of the current key
                     it is based on.</pre>';
 
-    case version_compare($currentVersion, '1.4.5', '<'):
-        $content[] = '<pre>
+        case version_compare($currentVersion, '1.4.5', '<'):
+            $content[] = '<pre>
 1.4.5 Changes
 --------------
 + Fixed some submenus not appearing when sibling chosen.</pre>';
 
-    case version_compare($currentVersion, '1.4.6', '<'):
-        $content[] = '<pre>';
-        menuUpdateFiles(array('templates/admin/menu_list.tpl'), $content);
-        $content[] = '1.4.6 Changes
+        case version_compare($currentVersion, '1.4.6', '<'):
+            $content[] = '<pre>';
+            menuUpdateFiles(array('templates/admin/menu_list.tpl'), $content);
+            $content[] = '1.4.6 Changes
 --------------
 + Update to addSortHeaders.
 + Adding missing paging navigation.</pre>';
 
-    case version_compare($currentVersion, '1.5.0', '<'):
-        $db = new PHPWS_DB('menu_links');
-        PHPWS_Error::logIfError($db->alterColumnType('title', 'varchar(255) not null'));
-        $files = array('templates/style.css',
+        case version_compare($currentVersion, '1.5.0', '<'):
+            $db = new PHPWS_DB('menu_links');
+            PHPWS_Error::logIfError($db->alterColumnType('title', 'varchar(255) not null'));
+            $files = array('templates/style.css',
                        'templates/menu_layout/basic/menu.tpl',
                        'templates/menu_layout/basic/link.tpl',
                        'templates/menu_layout/horizontal/menu.tpl',
@@ -167,9 +167,9 @@ Please download 1.2.1.</pre>';
                        'conf/config.php'
                        );
 
-        $content[] = '<pre>';
-        menuUpdateFiles($files, $content);
-        $content[] = '1.5.0 Changes
+                       $content[] = '<pre>';
+                       menuUpdateFiles($files, $content);
+                       $content[] = '1.5.0 Changes
 --------------
 + RFE #2060159: Pin page link appears in miniadmin if admin mode is
   set to appear there.
@@ -185,18 +185,18 @@ Please download 1.2.1.</pre>';
 + Increased link title length in database.
 </pre>';
 
-    case version_compare($currentVersion, '1.5.1', '<'):
-        $content[] = '<pre>1.5.1 changes
+        case version_compare($currentVersion, '1.5.1', '<'):
+            $content[] = '<pre>1.5.1 changes
 -------------------
 + Fixed menu preventing unpinning.
 + Default is now false for menu expansion in admin mode.</pre>';
 
-    case version_compare($currentVersion, '1.5.2', '<'):
-        $content[] = '<pre>';
-        $files = array('templates/site_map.tpl', 'templates/menu_layout/basic/menu.tpl',
+        case version_compare($currentVersion, '1.5.2', '<'):
+            $content[] = '<pre>';
+            $files = array('templates/site_map.tpl', 'templates/menu_layout/basic/menu.tpl',
                        'templates/menu_layout/horizontal/menu.tpl');
-        menuUpdateFiles($files, $content);
-        $content[] = '1.5.2 changes
+            menuUpdateFiles($files, $content);
+            $content[] = '1.5.2 changes
 ---------------
 + Added Verdon\'s edit full menu sitemap
 + Removed duplicate pin page link in miniadmin
@@ -204,26 +204,26 @@ Please download 1.2.1.</pre>';
 + Local links created on key pages were not made current.
 + Commented out pin page link in template</pre>';
 
-    case version_compare($currentVersion, '1.6.0', '<'):
-        $db = new PHPWS_DB('menus');
-        if (PHPWS_Error::logIfError($db->addTableColumn('key_id', 'int not null default 0'))) {
-            return false;
-        }
-        PHPWS_Core::initModClass('menu', 'Menu_Item.php');
-        $menus = $db->getObjects('Menu_Item');
-        if (!empty($menus) && !PHPWS_Error::logIfError($menus)) {
-            foreach ($menus as $m) {
-                $m->save();
+        case version_compare($currentVersion, '1.6.0', '<'):
+            $db = new PHPWS_DB('menus');
+            if (PHPWS_Error::logIfError($db->addTableColumn('key_id', 'int not null default 0'))) {
+                return false;
             }
-        }
-        $content[] = '<pre>';
-        $files = array('img/icon_outdent.gif',
+            PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+            $menus = $db->getObjects('Menu_Item');
+            if (!empty($menus) && !PHPWS_Error::logIfError($menus)) {
+                foreach ($menus as $m) {
+                    $m->save();
+                }
+            }
+            $content[] = '<pre>';
+            $files = array('img/icon_outdent.gif',
                        'conf/config.php',
                        'javascript/admin_link/default.php',
                        'javascript/admin_link/menu.js',
                        'templates/admin/settings.tpl');
-        menuUpdateFiles($files, $content);
-        $content[] = '1.6.0 changes
+            menuUpdateFiles($files, $content);
+            $content[] = '1.6.0 changes
 ---------------
 + Fixed bugs with popup menu.
 + Added "outdent" ability
@@ -231,21 +231,21 @@ Please download 1.2.1.</pre>';
 + Added option to have add links always on.
 </pre>';
 
-    case version_compare($currentVersion, '1.6.1', '<'):
-        $content[] = '<pre>';
-        $files = array('templates/menu_layout/basic/link.tpl',
+        case version_compare($currentVersion, '1.6.1', '<'):
+            $content[] = '<pre>';
+            $files = array('templates/menu_layout/basic/link.tpl',
                        'templates/menu_layout/horizontal/link.tpl',
                        'templates/style.css',
                        'conf/config.php',
                        'img/icon_outdent.gif');
-        menuUpdateFiles($files, $content);
-        $content[] = '1.6.1 changes
+            menuUpdateFiles($files, $content);
+            $content[] = '1.6.1 changes
 ---------------
 + Fixed up arrows and indent icons not appearing.
 </pre>';
 
-    case version_compare($currentVersion, '1.6.2', '<'):
-        $content[] = '<pre>1.6.2 changes
+        case version_compare($currentVersion, '1.6.2', '<'):
+            $content[] = '<pre>1.6.2 changes
 ---------------
 + Added file include for missing class.
 + Added missing indent tags to popup_admin.tpl</pre>

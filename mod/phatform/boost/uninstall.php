@@ -7,13 +7,13 @@
  */
 
 function phatform_uninstall(&$content) {
-    
+
     $db = & new PHPWS_DB('mod_phatform_forms');
     $db->addColumn('id');
     $db->addColumn('archiveTableName');
     $db->addWhere('saved', 1);
     $result = $db->select();
-    
+
     if (!empty($result)) {
         foreach ($result as $form) {
             if (empty($form['archiveTableName'])) {
@@ -38,7 +38,7 @@ function phatform_uninstall(&$content) {
     PHPWS_DB::dropTable('mod_phatform_radiobutton');
     PHPWS_DB::dropTable('mod_phatform_checkbox');
     $content[] = dgettext('phatform', 'All Form Generator static tables removed.');
-    
+
     return TRUE;
 }
 

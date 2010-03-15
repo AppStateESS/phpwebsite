@@ -16,7 +16,7 @@ class RB_Carpool {
     public function __construct($id=0)
     {
         if (!$id) {
-            $this->dest_address = PHPWS_Settings::get('rideboard', 'default_destination'); 
+            $this->dest_address = PHPWS_Settings::get('rideboard', 'default_destination');
             return;
         }
 
@@ -79,9 +79,9 @@ class RB_Carpool {
         }
 
         if ($this->allowEdit()) {
-            $links[] = javascript('open_window', 
-                                  array('address' => PHPWS_Text::linkAddress('rideboard', 
-                                                                             array('uop'=>'carpool_form', 'cid'=>$this->id)),
+            $links[] = javascript('open_window',
+            array('address' => PHPWS_Text::linkAddress('rideboard',
+            array('uop'=>'carpool_form', 'cid'=>$this->id)),
                                         'label'=> dgettext('rideboard', 'Edit'),
                                         'width'=>640, 'height'=>480));
 
@@ -122,7 +122,7 @@ class RB_Carpool {
             $this->dest_address = $address;
         }
     }
-    
+
     public function save()
     {
         $db = new PHPWS_DB('rb_carpool');

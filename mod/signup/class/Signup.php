@@ -35,235 +35,235 @@ class Signup {
         $command = $_REQUEST['aop'];
 
         switch($command) {
-        case 'add_slot_peep':
-            $javascript = true;
-            $this->loadPeep();
-            $this->loadForm('edit_peep');
-            break;
-
-        case 'menu':
-            if (!isset($_GET['tab'])) {
-                $this->loadForm('list');
-            } else {
-                $this->loadForm($_GET['tab']);
-            }
-            break;
-
-        case 'delete_sheet':
-            $this->loadSheet();
-            $this->sheet->delete();
-            $this->message = dgettext('signup', 'Signup sheet deleted.');
-            $this->loadForm('list');
-            break;
-
-        case 'edit_sheet':
-            $this->loadForm('edit_sheet');
-            break;
-
-        case 'edit_slot_peep':
-            $javascript = true;
-            $this->loadPeep();
-            $this->loadForm('edit_peep');
-            break;
-
-        case 'edit_slot_popup':
-            $javascript = true;
-            $this->loadSlot();
-            $this->loadForm('edit_slot_popup');
-            break;
-
-        case 'edit_peep_popup':
-            $javascript = true;
-            $this->loadSlot();
-            $this->loadForm('edit_peep_popup');
-            break;
-
-        case 'print_applicants':
-            if (!Current_User::authorized('signup')) {
-                Current_User::disallow();
-            }
-            $this->loadSheet();
-            $this->printApplicants();
-            exit();
-            break;
-
-        case 'email_applicants':
-            if (!Current_User::authorized('signup')) {
-                Current_User::disallow();
-            }
-            $this->loadEmail();
-            $this->loadSheet();
-            $this->loadForm('email_applicants');
-            break;
-
-        case 'post_email':
-            if (!Current_User::authorized('signup')) {
-                Current_User::disallow();
-            }
-            $this->loadEmail();
-            $this->loadSheet();
-            if ($this->postEmail()) {
-                $this->sendEmail();
-            } else {
-                $this->loadForm('email_applicants');
-            }
-            break;
-
-        case 'slot_listing':
-            if (!Current_User::authorized('signup')) {
-                Current_User::disallow();
-            }
-            $this->loadSheet();
-            $this->slotListing();
-            exit();
-            break;
-
-        case 'csv_applicants':
-            if (!Current_User::authorized('signup')) {
-                Current_User::disallow();
-            }
-            $this->loadSheet();
-            $this->csvExport();
-            exit();
-            break;
-
-        case 'send_email':
-            if (!Current_User::authorized('signup')) {
-                Current_User::disallow();
-            }
-            $this->sendEmail();
-            break;
-
-        case 'edit_slots':
-            $this->loadSheet();
-            $this->loadForm('edit_slots');
-            break;
-
-        case 'search_slot':
-            $this->searchSlots();
-            break;
-
-        case 'post_peep':
-            $javascript = true;
-            if (!Current_User::authorized('signup')) {
-                Current_User::disallow();
-            }
-            if ($this->postPeep()) {
-                // Since added by an admin, automatically registered
-                $this->peep->registered = 1;
-                if (PHPWS_Error::logIfError($this->peep->save())) {
-                    $this->forwardMessage(dgettext('signup', 'Error occurred when saving applicant.'));
-                } else {
-                    $this->forwardMessage(dgettext('signup', 'Applicant saved successfully.'));
-                }
-                javascript('close_refresh');
-                Layout::nakedDisplay();
-            } else {
+            case 'add_slot_peep':
+                $javascript = true;
+                $this->loadPeep();
                 $this->loadForm('edit_peep');
-            }
-            break;
+                break;
 
-        case 'post_sheet':
-            $this->loadSheet();
-            if (!Current_User::authorized('signup', 'edit_sheet', $this->sheet->id, 'sheet')) {
-                Current_User::disallow();
-            }
-
-            if ($this->postSheet()) {
-                if (!$this->sheet->id && PHPWS_Core::isPosted()) {
-                    $this->message = dgettext('signup', 'Sheet previously posted.');
-                    $this->loadForm('edit_sheet');
+            case 'menu':
+                if (!isset($_GET['tab'])) {
+                    $this->loadForm('list');
                 } else {
-                    $new_sheet = !$this->sheet->id;
-                    if (PHPWS_Error::logIfError($this->sheet->save())) {
-                        $this->forwardMessage(dgettext('signup', 'Error occurred when saving sheet.'));
-                        PHPWS_Core::reroute('index.php?module=signup&aop=list');
+                    $this->loadForm($_GET['tab']);
+                }
+                break;
+
+            case 'delete_sheet':
+                $this->loadSheet();
+                $this->sheet->delete();
+                $this->message = dgettext('signup', 'Signup sheet deleted.');
+                $this->loadForm('list');
+                break;
+
+            case 'edit_sheet':
+                $this->loadForm('edit_sheet');
+                break;
+
+            case 'edit_slot_peep':
+                $javascript = true;
+                $this->loadPeep();
+                $this->loadForm('edit_peep');
+                break;
+
+            case 'edit_slot_popup':
+                $javascript = true;
+                $this->loadSlot();
+                $this->loadForm('edit_slot_popup');
+                break;
+
+            case 'edit_peep_popup':
+                $javascript = true;
+                $this->loadSlot();
+                $this->loadForm('edit_peep_popup');
+                break;
+
+            case 'print_applicants':
+                if (!Current_User::authorized('signup')) {
+                    Current_User::disallow();
+                }
+                $this->loadSheet();
+                $this->printApplicants();
+                exit();
+                break;
+
+            case 'email_applicants':
+                if (!Current_User::authorized('signup')) {
+                    Current_User::disallow();
+                }
+                $this->loadEmail();
+                $this->loadSheet();
+                $this->loadForm('email_applicants');
+                break;
+
+            case 'post_email':
+                if (!Current_User::authorized('signup')) {
+                    Current_User::disallow();
+                }
+                $this->loadEmail();
+                $this->loadSheet();
+                if ($this->postEmail()) {
+                    $this->sendEmail();
+                } else {
+                    $this->loadForm('email_applicants');
+                }
+                break;
+
+            case 'slot_listing':
+                if (!Current_User::authorized('signup')) {
+                    Current_User::disallow();
+                }
+                $this->loadSheet();
+                $this->slotListing();
+                exit();
+                break;
+
+            case 'csv_applicants':
+                if (!Current_User::authorized('signup')) {
+                    Current_User::disallow();
+                }
+                $this->loadSheet();
+                $this->csvExport();
+                exit();
+                break;
+
+            case 'send_email':
+                if (!Current_User::authorized('signup')) {
+                    Current_User::disallow();
+                }
+                $this->sendEmail();
+                break;
+
+            case 'edit_slots':
+                $this->loadSheet();
+                $this->loadForm('edit_slots');
+                break;
+
+            case 'search_slot':
+                $this->searchSlots();
+                break;
+
+            case 'post_peep':
+                $javascript = true;
+                if (!Current_User::authorized('signup')) {
+                    Current_User::disallow();
+                }
+                if ($this->postPeep()) {
+                    // Since added by an admin, automatically registered
+                    $this->peep->registered = 1;
+                    if (PHPWS_Error::logIfError($this->peep->save())) {
+                        $this->forwardMessage(dgettext('signup', 'Error occurred when saving applicant.'));
                     } else {
-                        $this->forwardMessage(dgettext('signup', 'Sheet saved successfully.'));
-                        if ($new_sheet) {
-                            PHPWS_Core::reroute('index.php?module=signup&aop=edit_slots&sheet_id=' . $this->sheet->id);
+                        $this->forwardMessage(dgettext('signup', 'Applicant saved successfully.'));
+                    }
+                    javascript('close_refresh');
+                    Layout::nakedDisplay();
+                } else {
+                    $this->loadForm('edit_peep');
+                }
+                break;
+
+            case 'post_sheet':
+                $this->loadSheet();
+                if (!Current_User::authorized('signup', 'edit_sheet', $this->sheet->id, 'sheet')) {
+                    Current_User::disallow();
+                }
+
+                if ($this->postSheet()) {
+                    if (!$this->sheet->id && PHPWS_Core::isPosted()) {
+                        $this->message = dgettext('signup', 'Sheet previously posted.');
+                        $this->loadForm('edit_sheet');
+                    } else {
+                        $new_sheet = !$this->sheet->id;
+                        if (PHPWS_Error::logIfError($this->sheet->save())) {
+                            $this->forwardMessage(dgettext('signup', 'Error occurred when saving sheet.'));
+                            PHPWS_Core::reroute('index.php?module=signup&aop=list');
                         } else {
-                            $this->loadForm('list');
+                            $this->forwardMessage(dgettext('signup', 'Sheet saved successfully.'));
+                            if ($new_sheet) {
+                                PHPWS_Core::reroute('index.php?module=signup&aop=edit_slots&sheet_id=' . $this->sheet->id);
+                            } else {
+                                $this->loadForm('list');
+                            }
                         }
                     }
-                }
-            } else {
-                $this->loadForm('edit_sheet');
-            }
-            break;
-
-
-        case 'post_slot':
-            $javascript = true;
-            if (!Current_User::authorized('signup')) {
-                Current_User::disallow();
-            }
-
-            if ($this->postSlot()) {
-                if (PHPWS_Error::logIfError($this->slot->save())) {
-                    $this->forwardMessage(dgettext('signup', 'Error occurred when saving slot.'));
                 } else {
-                    $this->forwardMessage(dgettext('signup', 'Slot saved successfully.'));
+                    $this->loadForm('edit_sheet');
                 }
-                javascript('close_refresh');
-                Layout::nakedDisplay();
-            } else {
-                $this->loadForm('edit_slot_popup');
-            }
-            break;
-
-        case 'move_peep':
-            $this->loadPeep();
-            $result = $this->movePeep();
-            if (PHPWS_Error::logIfError($result) || !$result) {
-                $this->forwardMessage(dgettext('signup', 'Error occurred when moving applicant. Slot may be full.'));
-            }
-            PHPWS_Core::goBack();
-            break;
-
-        case 'move_up':
-            $this->loadSlot();
-            $this->slot->moveUp();
-            PHPWS_Core::goBack();
-            break;
-
-        case 'move_down':
-            $this->loadSlot();
-            $this->slot->moveDown();
-            PHPWS_Core::goBack();
-            break;
+                break;
 
 
-        case 'delete_slot':
-            $this->loadSlot();
-            $this->deleteSlot();
-            break;
+            case 'post_slot':
+                $javascript = true;
+                if (!Current_User::authorized('signup')) {
+                    Current_User::disallow();
+                }
 
-        case 'delete_slot_peep':
-            $this->loadPeep();
-            $this->peep->delete();
-            PHPWS_Core::goBack();
-            break;
+                if ($this->postSlot()) {
+                    if (PHPWS_Error::logIfError($this->slot->save())) {
+                        $this->forwardMessage(dgettext('signup', 'Error occurred when saving slot.'));
+                    } else {
+                        $this->forwardMessage(dgettext('signup', 'Slot saved successfully.'));
+                    }
+                    javascript('close_refresh');
+                    Layout::nakedDisplay();
+                } else {
+                    $this->loadForm('edit_slot_popup');
+                }
+                break;
+
+            case 'move_peep':
+                $this->loadPeep();
+                $result = $this->movePeep();
+                if (PHPWS_Error::logIfError($result) || !$result) {
+                    $this->forwardMessage(dgettext('signup', 'Error occurred when moving applicant. Slot may be full.'));
+                }
+                PHPWS_Core::goBack();
+                break;
+
+            case 'move_up':
+                $this->loadSlot();
+                $this->slot->moveUp();
+                PHPWS_Core::goBack();
+                break;
+
+            case 'move_down':
+                $this->loadSlot();
+                $this->slot->moveDown();
+                PHPWS_Core::goBack();
+                break;
 
 
-        case 'report':
-            if (!Current_User::authorized('signup')) {
-                Current_User::disallow();
-            }
-            $this->loadSheet();
-            $this->loadForm('report');
-            break;
+            case 'delete_slot':
+                $this->loadSlot();
+                $this->deleteSlot();
+                break;
 
-        case 'alpha_order':
-        case 'reset_slot_order':
-            if (!Current_User::authorized('signup')) {
-                Current_User::disallow();
-            }
-            $this->loadSheet();
-            $this->resetSlots($command);
-            $this->forwardMessage(dgettext('signup', 'Slot order reset.'));
-            PHPWS_Core::reroute('index.php?module=signup&sheet_id=' . $this->sheet->id . '&aop=edit_slots&authkey=' . Current_User::getAuthKey());
-            break;
+            case 'delete_slot_peep':
+                $this->loadPeep();
+                $this->peep->delete();
+                PHPWS_Core::goBack();
+                break;
+
+
+            case 'report':
+                if (!Current_User::authorized('signup')) {
+                    Current_User::disallow();
+                }
+                $this->loadSheet();
+                $this->loadForm('report');
+                break;
+
+            case 'alpha_order':
+            case 'reset_slot_order':
+                if (!Current_User::authorized('signup')) {
+                    Current_User::disallow();
+                }
+                $this->loadSheet();
+                $this->resetSlots($command);
+                $this->forwardMessage(dgettext('signup', 'Slot order reset.'));
+                PHPWS_Core::reroute('index.php?module=signup&sheet_id=' . $this->sheet->id . '&aop=edit_slots&authkey=' . Current_User::getAuthKey());
+                break;
 
         }
 
@@ -461,36 +461,36 @@ class Signup {
         }
 
         switch ($action) {
-        case 'message':
-            $this->loadMessage();
-            if (empty($this->message)) {
-                PHPWS_Core::home();
-            }
-            $this->title = dgettext('signup', 'Signup');
-            break;
+            case 'message':
+                $this->loadMessage();
+                if (empty($this->message)) {
+                    PHPWS_Core::home();
+                }
+                $this->title = dgettext('signup', 'Signup');
+                break;
 
-        case 'signup_sheet':
-            $this->loadPeep();
-            $this->loadForm('user_signup');
-            break;
+            case 'signup_sheet':
+                $this->loadPeep();
+                $this->loadForm('user_signup');
+                break;
 
-        case 'slot_signup':
-            if ($this->postPeep()) {
-                if ($this->saveUnregistered()) {
-                    $this->forwardMessage(dgettext('signup', 'You should receive an email allowing you to verify your application.<br />You have one hour to confirm your application.'), dgettext('signup', 'Thank you'));
-                    $this->sendMessage();
+            case 'slot_signup':
+                if ($this->postPeep()) {
+                    if ($this->saveUnregistered()) {
+                        $this->forwardMessage(dgettext('signup', 'You should receive an email allowing you to verify your application.<br />You have one hour to confirm your application.'), dgettext('signup', 'Thank you'));
+                        $this->sendMessage();
+                    } else {
+                        $this->loadForm('user_signup');
+                    }
                 } else {
                     $this->loadForm('user_signup');
                 }
-            } else {
-                $this->loadForm('user_signup');
-            }
-            break;
+                break;
 
-        case 'confirm':
-            $this->confirmPeep();
-            $this->purgeOverdue();
-            break;
+            case 'confirm':
+                $this->confirmPeep();
+                $this->purgeOverdue();
+                break;
 
         }
 
@@ -592,7 +592,7 @@ class Signup {
 
         $site_title = Layout::getPageTitle(true);
         $link = PHPWS_Core::getHomeHttp() . 'index.php?module=signup&uop=confirm&h=' .
-            $peep->hashcheck . '&p=' . $peep->id;
+        $peep->hashcheck . '&p=' . $peep->id;
 
         $message[] = sprintf(dgettext('signup', 'Greetings from %s,'), $site_title);
         $message[] = '';
@@ -881,8 +881,8 @@ class Signup {
         }
 
         if (!$this->peep->id ||
-            $this->peep->hashcheck != $hash ||
-            $this->peep->timeout < mktime()) {
+        $this->peep->hashcheck != $hash ||
+        $this->peep->timeout < mktime()) {
             $this->title = dgettext('signup', 'Sorry');
             $this->content = dgettext('signup', 'Your application could not be verified. If over a hour has passed since you applied, you may want to try again.');
             return;
@@ -999,11 +999,11 @@ class Signup {
                 if (!empty($this->sheet->extra1)) {
                     $sub2[] = str_replace('"', "'", $peep->getExtra1());
                 }
-                
+
                 if (!empty($this->sheet->extra2)) {
                     $sub2[] = str_replace('"', "'", $peep->getExtra2());
                 }
-                
+
                 if (!empty($this->sheet->extra3)) {
                     $sub2[] = str_replace('"', "'", $peep->getExtra3());
                 }
@@ -1097,7 +1097,7 @@ class Signup {
             $this->title = dgettext('signup', 'Slot can not be deleted until cleared of applicants.');
         }
         $this->content = PHPWS_Text::secureLink(dgettext('signup', 'Return to slot page'), 'signup',
-                                                array('sheet_id'=>$this->sheet->id, 'aop'=>'edit_slots'));
+        array('sheet_id'=>$this->sheet->id, 'aop'=>'edit_slots'));
 
     }
 }

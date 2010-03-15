@@ -263,7 +263,7 @@ class Menu_Item {
         $links[] = PHPWS_Text::secureLink(dgettext('menu', 'Edit'), 'menu', $vars);
 
         if (!isset($_SESSION['Menu_Clip']) ||
-            !isset($_SESSION['Menu_Clip'][$this->id])) {
+        !isset($_SESSION['Menu_Clip'][$this->id])) {
             $vars['command'] = 'clip';
             $links[] = PHPWS_Text::secureLink(dgettext('menu', 'Clip'), 'menu', $vars);
         } else {
@@ -289,7 +289,7 @@ class Menu_Item {
         $links[] = javascript('confirm', $js);
 
         $links[] = PHPWS_Text::secureLink(dgettext('menu', 'Reorder links'), 'menu',
-                                          array('command'=>'reorder_links',
+        array('command'=>'reorder_links',
                                                 'menu_id'=>$this->id));
         $links[] = Current_User::popupPermission($this->key_id);
 
@@ -491,9 +491,9 @@ class Menu_Item {
         $tpl['MENU_ID'] = sprintf('menu-%s', $this->id);
 
         if ($pin_mode &&
-            Current_User::allow('menu') &&
-            isset($_SESSION['Menu_Clip']) &&
-            isset($_SESSION['Menu_Clip'][$this->id])) {
+        Current_User::allow('menu') &&
+        isset($_SESSION['Menu_Clip']) &&
+        isset($_SESSION['Menu_Clip'][$this->id])) {
 
             $pinvars['command'] = 'pin_menu';
             $pinvars['key_id'] = $key->id;
@@ -543,10 +543,10 @@ class Menu_Item {
                     $count++;
                 }
             } else {
-                    $db->reset();
-                    $db->addWhere('id', $links['id']);
-                    $db->addValue('link_order', $count);
-                    PHPWS_Error::logIfError($db->update());
+                $db->reset();
+                $db->addWhere('id', $links['id']);
+                $db->addValue('link_order', $count);
+                PHPWS_Error::logIfError($db->update());
             }
         }
         return true;

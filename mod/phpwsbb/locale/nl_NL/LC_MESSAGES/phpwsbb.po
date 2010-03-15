@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PHPWS_1_6_2,PHPWSBB2_0_4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-12-16 10:31-0500\n"
-"PO-Revision-Date: 2009-05-25 10:32+0100\n"
-"Last-Translator: HanV <hanv@users.sourceforge.net>\n"
+"PO-Revision-Date: 2010-02-04 12:44+0100\n"
+"Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: HanV\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -26,6 +26,9 @@ msgstr "\"Demarkeer\" dit topic"
 msgid "%1$s %2$s<br />by %3$s"
 msgstr "%1$s %2$s<br />door %3$s"
 
+msgid "A bulletin board module."
+msgstr "Forum."
+
 msgid "Add"
 msgstr "Toevoegen"
 
@@ -36,7 +39,7 @@ msgid "Add a New Forum"
 msgstr "Toevoegen forum"
 
 msgid "Add this item's discussion to the phpwsbb Bulletin Board module"
-msgstr "Deze discussie toevoegen aan phpwsbb Bulletinbord"
+msgstr "Dit item toevoegen aan Bulletin Board"
 
 msgid "Admin Settings"
 msgstr "Admin Instellingen"
@@ -285,7 +288,7 @@ msgid "Mark Threads Sticky"
 msgstr "Markeer threads"
 
 msgid "Maximum Number of Topics to Show in Latest Posts Block"
-msgstr "Maximum aantal te tonen topics in blok laatste posten"
+msgstr "Maximum aantal te tonen topics in blok laatste posts"
 
 msgid "Message Boards"
 msgstr "Box Berichten"
@@ -315,7 +318,7 @@ msgid "Moving %1$s Comments From \"%2$s\" To another Topic"
 msgstr "Verplaatsen %1$s commentaren van \"%2$s\" naar een ander topic"
 
 msgid "Moving phpwsBB Topic \"%s\""
-msgstr "Verplaatsen phpwsBB topic \"%s\""
+msgstr "Verplaatsen topic \"%s\""
 
 msgid "My Topics"
 msgstr "Mijn topics"
@@ -351,10 +354,10 @@ msgid "Not all thread summary information was found!"
 msgstr "De thread informatie samenvatting is niet volledig!"
 
 msgid "Note: For information on how to format dates, please refer to <a href=\"http://www.w3schools.com/PHP/func_date_strftime.asp\">this page at w3schools.com</a>"
-msgstr "NB: Kijk voor een uitleg over datumformaten op <a href=\"http://www.w3schools.com/PHP/func_date_strftime.asp\">deze pagina op w3schools.com</a>"
+msgstr "NB: Kijk voor een uitleg over datumformaten op <a href=\"http://www.w3schools.com/PHP/func_date_strftime.asp\">w3schools</a>"
 
 msgid "PHPWSBB Settings"
-msgstr "PHPWSBB Instellingen"
+msgstr "Bulletin Board Instellingen"
 
 msgid "Performance"
 msgstr "Prestatie"
@@ -435,13 +438,13 @@ msgid "Summary"
 msgstr "Samenvatting"
 
 msgid "Text Format"
-msgstr "Tekst Formaat"
+msgstr " Formaten"
 
 msgid "The current long date format is %1$s, which looks like \"%2$s\""
-msgstr "Het huidige lange datumformaat is %1$s, wat getoond wordt als \"%2$s\""
+msgstr "Het huidige lange datumformaat is %1$s, voorbeeld:  \"%2$s\""
 
 msgid "The current short date format is %1$s, which looks like \"%2$s\""
-msgstr "Het huidige korte datumformaat is %1$s, wat getoond wordt als \"%2$s\""
+msgstr "Het huidige korte datumformaat is %1$s, voorbeeld:  \"%2$s\""
 
 msgid "The forum you requested is not viewable."
 msgstr "Dit forum is niet toonbaar."
@@ -507,7 +510,7 @@ msgid "This will delete the topic and all messages under it!  Are you sure you w
 msgstr "Wilt u het topic met alle bijbehorende berichten verwijderen?"
 
 msgid "This will erase the topic from the Bulletin Board, but the comments will still be seen when you view the %1$s %2$s!  Are you sure you want to drop this from phpwsBB?"
-msgstr "Wilt u het topic verwijderen van het bulletin? Alle commentaren kunnen gelezen worden door het tonen van %1$s %2$s."
+msgstr "Wilt u het topic verwijderen? Alle commentaren kunnen gelezen worden door het tonen van %1$s %2$s."
 
 msgid "Threads with no replies"
 msgstr "Threads zonder reacties"
@@ -642,7 +645,7 @@ msgid "move_comments: Some required information is missing."
 msgstr "Verplaatsen commentaar: er ontbreekt verplicht informatie."
 
 msgid "phpWs Bulletin Board"
-msgstr "phpWs Bulletin"
+msgstr " Bulletin Board"
 
 msgid "phpwsBB::assign_forum is missing some required parameters"
 msgstr "Toewijzen forum: er ontbreken verplichte parameters"

@@ -66,7 +66,7 @@ class PHAT_Textfield extends PHAT_Element {
         }
 
         if($this->isRequired())
-            $viewTags['REQUIRED_FLAG'] = '&#42;'; 
+        $viewTags['REQUIRED_FLAG'] = '&#42;';
 
         $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb());
         $viewTags['NAME'] = 'PHAT_' . $this->getLabel();
@@ -129,9 +129,9 @@ class PHAT_Textfield extends PHAT_Element {
             $currentError = $result;
             $error = TRUE;
         }
-    
+
         if((!$_SESSION['PHAT_FormManager']->form->checkLabel($_REQUEST['PHAT_ElementName']) && ($this->getLabel() != $_REQUEST['PHAT_ElementName']))
-           || PHPWS_Error::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
+        || PHPWS_Error::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
             $message = dgettext('phatform', 'The name you entered for the Textfield is not valid or is already in use with this form.');
             $currentError = PHPWS_Error::get(PHATFORM_INVALID_NAME, 'phatform', 'PHAT_Checkbox::save()', $_REQUEST['PHAT_ElementName']);
             $error = TRUE;
@@ -150,20 +150,20 @@ class PHAT_Textfield extends PHAT_Element {
         }
 
         $size = PHPWS_Text::parseInput($_REQUEST['PHAT_ElementSize']);
-  
+
         if($size)
-            $this->_size = $size;
+        $this->_size = $size;
         else
-            $this->_size = PHAT_DEFAULT_SIZE;
+        $this->_size = PHAT_DEFAULT_SIZE;
 
         $maxsize = PHPWS_Text::parseInput($_REQUEST['PHAT_ElementMaxsize']);
 
         if($maxsize)
-            $this->_maxsize = $maxsize;
+        $this->_maxsize = $maxsize;
         else
-            $this->_maxsize = PHAT_DEFAULT_MAXSIZE;
+        $this->_maxsize = PHAT_DEFAULT_MAXSIZE;
 
-    
+
         if($error) {
             return $currentError;
         } else {

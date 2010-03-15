@@ -13,9 +13,9 @@ function phpwsbb_unregister_key(&$key)
         return FALSE;
     }
 
-	$db = & new PHPWS_DB('phpwsbb_topics');
-	$db->addWhere('id', $key->item_id);
-	return $db->delete();
+    $db = & new PHPWS_DB('phpwsbb_topics');
+    $db->addWhere('id', $key->item_id);
+    return $db->delete();
 }
 
 ?>

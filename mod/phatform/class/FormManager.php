@@ -1,14 +1,14 @@
 <?php
 
-  /**
-   * Form Manager Class
-   *
-   * @version $Id$
-   * @author Adam Morton
-   * @author Steven Levin
-   * @modified Matthew McNaney <mcnaney at gmail dot com>
-   * @package Phat Form
-   */
+/**
+ * Form Manager Class
+ *
+ * @version $Id$
+ * @author Adam Morton
+ * @author Steven Levin
+ * @modified Matthew McNaney <mcnaney at gmail dot com>
+ * @package Phat Form
+ */
 
 require_once(PHPWS_SOURCE_DIR . "core/class/Manager.php");
 
@@ -52,10 +52,10 @@ class PHAT_FormManager extends PHPWS_Manager {
 
         if(!isset($this->form) || $this->form->isArchiveView()) {
             if(Current_User::allow('phatform', 'archive_form'))
-                $links[] = '<a href="./index.php?module=phatform&amp;PHAT_MAN_OP=viewArchives&amp;PDA_start=0">'.dgettext('phatform', 'List Archives').'</a>';
+            $links[] = '<a href="./index.php?module=phatform&amp;PHAT_MAN_OP=viewArchives&amp;PDA_start=0">'.dgettext('phatform', 'List Archives').'</a>';
 
             if(Current_User::allow('phatform', 'report_export'))
-                $links[] = '<a href="./index.php?module=phatform&amp;PHAT_MAN_OP=viewExports&amp;PDA_start=0">'.dgettext('phatform', 'List Exports').'</a>';
+            $links[] = '<a href="./index.php?module=phatform&amp;PHAT_MAN_OP=viewExports&amp;PDA_start=0">'.dgettext('phatform', 'List Exports').'</a>';
         }
 
         if(isset($this->form) && !$this->form->isArchiveView()) {
@@ -64,7 +64,7 @@ class PHAT_FormManager extends PHPWS_Manager {
                 if(Current_User::allow('phatform', 'edit_forms')) {
                     $links[] = '<a href="./index.php?module=phatform&amp;PHAT_FORM_OP=editSettings">'.dgettext('phatform', 'Settings').'</a>';
                 }
-        
+
                 if(!$this->form->isSaved() && Current_User::allow('phatform', 'edit_forms')) {
                     $links[] = '<a href="./index.php?module=phatform&amp;PHAT_FORM_OP=editElements">'.dgettext('phatform', 'Elements').'</a>';
                 }
@@ -73,7 +73,7 @@ class PHAT_FormManager extends PHPWS_Manager {
                     $links[] = '<a href="./index.php?module=phatform&amp;PHAT_MAN_OP=Options">'.dgettext('phatform', 'Option Sets').'</a>';
                 }
             }
-      
+
             if($this->form->isSaved() && Current_User::allow('phatform', 'report_view')) {
                 $links[] = '<a href="./index.php?module=phatform&amp;PHAT_FORM_OP=report">'.dgettext('phatform', 'Report').'</a>';
             }
@@ -104,18 +104,18 @@ class PHAT_FormManager extends PHPWS_Manager {
             $this->form = new PHAT_Form($ids[0]);
 
             /* Make sure this user owns and can edit the selected form */
-            if(!Current_User::isDeity() && 
-               (Current_User::allow('phatform', 'user_forms_only') &&
-                ($this->form->getOwner() != Current_User::getUsername()))) {
+            if(!Current_User::isDeity() &&
+            (Current_User::allow('phatform', 'user_forms_only') &&
+            ($this->form->getOwner() != Current_User::getUsername()))) {
                 $this->_accessDenied();
             }
 
             $content = array();
             $content[] = $this->menu();
             if($this->form->isSaved())
-                $content[] = $this->form->editSettings();
+            $content[] = $this->form->editSettings();
             else
-                $content[] = $this->form->view(TRUE);
+            $content[] = $this->form->view(TRUE);
         } else {
             $this->_accessDenied();
         }
@@ -179,7 +179,7 @@ class PHAT_FormManager extends PHPWS_Manager {
             /* Not an admin user so only show them a list of available forms */
             $content[] = $this->getList('user', dgettext('phatform', 'Forms'));
         }
-        
+
         $GLOBALS['CNT_phatform']['title'] = PHAT_TITLE;
         $GLOBALS['CNT_phatform']['content'] = implode(chr(10), $content);
     }// END FUNC _list
@@ -225,8 +225,8 @@ class PHAT_FormManager extends PHPWS_Manager {
         $elements = array();
         $elements[0] = '';
         $confirmTags = array();
-        $confirmTags['ITEMS'] = ''; 
-    
+        $confirmTags['ITEMS'] = '';
+
         $confirmTags['MESSAGE'] = dgettext('phatform', 'Are you sure you wish to delete the following forms?  All data associated with these forms will be lost!');
         $confirmTags['YES_BUTTON'] = PHPWS_Form::formSubmit('Yes', 'yes');
         $confirmTags['NO_BUTTON'] = PHPWS_Form::formSubmit('No', 'no');
@@ -261,17 +261,17 @@ class PHAT_FormManager extends PHPWS_Manager {
      *
      * @access private
      */
-   
+     
     function _listOptions() {
         $this->init();
         $GLOBALS['CNT_phatform']['title'] = PHAT_TITLE;
-     
+         
         $content = array();
         $content[] = $this->menu();
         $this->setTable('mod_phatform_options');
         $content[] = $this->getList('options', dgettext('phatform', 'Option Sets'));
         $this->setTable('mod_phatform_forms');
-     
+         
         return implode(chr(10), $content);
     }
 
@@ -285,19 +285,19 @@ class PHAT_FormManager extends PHPWS_Manager {
             } else {
                 $optionSetId = $_REQUEST['PHAT_OptionSetId'];
             }
-       
+             
             if(isset($_REQUEST['PHAT_SaveOptionSet'])) {
                 if(is_array($_REQUEST['PHAT_ElementOptions']) && is_array($_REQUEST['PHAT_ElementValues'])) {
                     for($i = 0; $i < sizeof($_REQUEST['PHAT_ElementOptions']); $i++) {
                         $_REQUEST['PHAT_ElementOptions'][$i] = PHPWS_Text::parseInput($_REQUEST['PHAT_ElementOptions'][$i]);
                         $_REQUEST['PHAT_ElementValues'][$i] = PHPWS_Text::parseInput($_REQUEST['PHAT_ElementValues'][$i]);
                     }
-           
+                     
                     $options = addslashes(serialize($_REQUEST['PHAT_ElementOptions']));
                     $values = addslashes(serialize($_REQUEST['PHAT_ElementValues']));
                     $saveArray = array('optionSet'=>$options,
                                        'valueSet'=>$values
-                                       );
+                    );
                     $db = new PHPWS_DB('mod_phatform_options');
                     $db->addWhere('id', $optionSetId);
                     $db->addValue($saveArray);
@@ -311,31 +311,31 @@ class PHAT_FormManager extends PHPWS_Manager {
                 $this->action();
                 return;
             }
-       
+             
             $GLOBALS['CNT_phatform']['title'] = PHAT_TITLE;
-       
+             
             $sql = "SELECT * FROM mod_phatform_options WHERE id='$optionSetId'";
             $result = PHPWS_DB::getRow($sql);
-       
+             
             if($result) {
                 $elements = array();
                 $elements[] = PHPWS_Form::formHidden('module', $this->_module);
                 $elements[] = PHPWS_Form::formHidden('PHAT_MAN_OP', 'editOptions');
                 $elements[] = PHPWS_Form::formHidden('PHAT_OptionSetId', $optionSetId);
-         
+                 
                 $options = unserialize(stripslashes($result['optionSet']));
                 $values = unserialize(stripslashes($result['valueSet']));
-         
+                 
                 $editTags = array();
                 $editTags['TITLE'] = dgettext('phatform', 'Edit option set')."&#160;{$result['label']}";
                 $editTags['NUMBER_LABEL'] = dgettext('phatform', 'Option');
                 $editTags['INPUT_LABEL'] = dgettext('phatform', 'Text');
                 $editTags['VALUE_LABEL'] = dgettext('phatform', 'Value');
-         
+                 
                 $editTags['OPTIONS'] = '';
                 $rowClass = NULL;
-         
-                
+                 
+
                 for($i = 0; $i < sizeof($options); $i++) {
                     $optionRow['OPTION_NUMBER'] = $i + 1;
                     $optionRow['OPTION_INPUT'] = PHPWS_Form::formTextField("PHAT_ElementOptions[$i]", $options[$i], PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
@@ -346,15 +346,15 @@ class PHAT_FormManager extends PHPWS_Manager {
                     } else {
                         $rowClass = null;
                     }
-           
+                     
                     $editTags['OPTIONS'] .= PHPWS_Template::processTemplate($optionRow, 'phatform', 'options/option.tpl');
                 }
             }
             $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_OptionBack');
             $editTags['SAVE_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Save'), 'PHAT_SaveOptionSet');
-       
+             
             $elements[] = PHPWS_Template::processTemplate($editTags, 'phatform', 'options/optionList.tpl');
-       
+             
             return PHPWS_Form::makeForm('PHAT_Options_edit', 'index.php', $elements);
         } else {
             $this->_list();
@@ -372,81 +372,81 @@ class PHAT_FormManager extends PHPWS_Manager {
     function action() {
 
         switch($_REQUEST['PHAT_MAN_OP']) {
-        case 'View':
-            if(isset($_REQUEST['PHAT_FORM_ID'])) {
-                $this->form = new PHAT_Form($_REQUEST['PHAT_FORM_ID']);
-                if($this->form->isSaved() && !$this->form->isHidden() && $this->form->isApproved())
+            case 'View':
+                if(isset($_REQUEST['PHAT_FORM_ID'])) {
+                    $this->form = new PHAT_Form($_REQUEST['PHAT_FORM_ID']);
+                    if($this->form->isSaved() && !$this->form->isHidden() && $this->form->isApproved())
                     $content = $this->form->view();
-                else {
-                    $GLOBALS['CNT_phatform']['title'] = $this->form->getLabel();
-                    $content = dgettext('phatform', 'This form is not available for viewing at this time.');
+                    else {
+                        $GLOBALS['CNT_phatform']['title'] = $this->form->getLabel();
+                        $content = dgettext('phatform', 'This form is not available for viewing at this time.');
+                    }
                 }
-            } 
-            break;
+                break;
 
-        case 'List':
-            $this->_list();
-            return;
-            break;
+            case 'List':
+                $this->_list();
+                return;
+                break;
 
-        case 'viewExports':
-            if(!isset($_SESSION['PHAT_advViews']))
+            case 'viewExports':
+                if(!isset($_SESSION['PHAT_advViews']))
                 $_SESSION['PHAT_advViews'] = new advViews();
-      
-            if(!isset($_REQUEST['EXPORT_OP'])) {
-                $_SESSION['PHAT_advViews']->intAdvViews();
 
-                if(isset($this->form))
+                if(!isset($_REQUEST['EXPORT_OP'])) {
+                    $_SESSION['PHAT_advViews']->intAdvViews();
+
+                    if(isset($this->form))
                     unset($this->form);
-            }
+                }
 
-            $content  = $this->menu();
-            $content .= $_SESSION['PHAT_advViews']->viewExports();
-            break;
+                $content  = $this->menu();
+                $content .= $_SESSION['PHAT_advViews']->viewExports();
+                break;
 
-        case 'viewArchives':
-            if(!isset($_SESSION['PHAT_advViews']))
+            case 'viewArchives':
+                if(!isset($_SESSION['PHAT_advViews']))
                 $_SESSION['PHAT_advViews'] = new advViews();
-      
-            if(!isset($_REQUEST['ARCHIVE_OP'])) {
-                $_SESSION['PHAT_advViews']->intAdvViews();
 
-                if(isset($this->form))
+                if(!isset($_REQUEST['ARCHIVE_OP'])) {
+                    $_SESSION['PHAT_advViews']->intAdvViews();
+
+                    if(isset($this->form))
                     unset($this->form);
-            }
-       
-            $content  = $this->menu();
-            $content .= $_SESSION['PHAT_advViews']->viewArchives();
-            break;
+                }
+                 
+                $content  = $this->menu();
+                $content .= $_SESSION['PHAT_advViews']->viewArchives();
+                break;
 
-        case 'Options':
-            if(Current_User::allow('phatform', 'edit_options')) {
-                $content = $this->_listOptions();
-            } else {
-                $this->_accessDenied();
-            }
-            break;
-      
-        case 'editOptions':
-            if(Current_User::allow('phatform', 'edit_options')) {
-                $content = $this->_editOptions();
-            } else {
-                $this->_accessDenied();
-            }
-            break;
-      
-        case 'NewForm':
-            if(Current_User::allow('phatform', 'edit_forms')) {
-                $this->form = new PHAT_Form;
-                $content = $this->menu();
-                $content .= $this->form->editSettings();
-            } else {
-                $this->_accessDenied();
-            }
-            break;
-      
+            case 'Options':
+                if(Current_User::allow('phatform', 'edit_options')) {
+                    $content = $this->_listOptions();
+                } else {
+                    $this->_accessDenied();
+                }
+                break;
+
+            case 'editOptions':
+                if(Current_User::allow('phatform', 'edit_options')) {
+                    $content = $this->_editOptions();
+                } else {
+                    $this->_accessDenied();
+                }
+                break;
+
+            case 'NewForm':
+                if(Current_User::allow('phatform', 'edit_forms')) {
+                    $this->form = new PHAT_Form;
+                    $content = $this->menu();
+                    $content .= $this->form->editSettings();
+                } else {
+                    $this->_accessDenied();
+                }
+                break;
+
         }// END PHAT_MAN_OP SWITCH
-    
+
         if(isset($content)) {
             $GLOBALS['CNT_phatform']['content'] .= $content;
         }

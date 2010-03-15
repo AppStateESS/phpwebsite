@@ -1,8 +1,8 @@
 <?php
 /*
-* @author Eloi George <eloi@NOSPAM.bygeorgeware.com>
-* @version $Id: settings.php,v 1.1 2008/08/23 04:19:16 adarkling Exp $
-*/
+ * @author Eloi George <eloi@NOSPAM.bygeorgeware.com>
+ * @version $Id: settings.php,v 1.1 2008/08/23 04:19:16 adarkling Exp $
+ */
 
 $settings = array('allow_anon_posts'       => 1,
                   'showforumsblock'        => 1,

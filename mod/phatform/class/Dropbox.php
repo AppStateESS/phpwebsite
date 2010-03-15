@@ -46,20 +46,20 @@ class PHAT_Dropbox extends PHAT_Element {
      * @return string The HTML to be shown
      */
     function view($value = NULL) {
-        $label = $this->getLabel();  
+        $label = $this->getLabel();
 
         if(isset($_REQUEST['PHAT_' . $label])) {
             $this->setValue($_REQUEST['PHAT_' . $label]);
         }
 
         if($this->isRequired())
-            $viewTags['REQUIRED_FLAG'] = '&#42;'; 
+        $viewTags['REQUIRED_FLAG'] = '&#42;';
 
         $optionText = $this->getOptionText();
         $optionValues = $this->getOptionValues();
 
         for($i = 0; $i < sizeof($optionText); $i++)
-            $options[$optionValues[$i]] = $optionText[$i]; 
+        $options[$optionValues[$i]] = $optionText[$i];
 
         $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb());
         $element = new Form_Select('PHAT_' . $label, $options);
@@ -115,7 +115,7 @@ class PHAT_Dropbox extends PHAT_Element {
 
         $form->addCheck('PHAT_ElementRequired', 1);
         $form->setMatch('PHAT_ElementRequired', $this->isRequired());
-        $form->setLabel('PHAT_ElementRequired', dgettext('phatform', 'Required'));        
+        $form->setLabel('PHAT_ElementRequired', dgettext('phatform', 'Required'));
 
         $form->addSubmit('PHAT_ElementBack', dgettext('phatform', 'Back'));
         $form->addSubmit('NEXT_BUTTON',dgettext('phatform', 'Next'));
@@ -137,7 +137,7 @@ class PHAT_Dropbox extends PHAT_Element {
         $label = $this->getLabel();
 
         if((!$_SESSION['PHAT_FormManager']->form->checkLabel($_REQUEST['PHAT_ElementName']) && (strcasecmp($label, $_REQUEST['PHAT_ElementName']) != 0))
-           || PEAR::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
+        || PEAR::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
             $currentError = PHPWS_Error::get(PHATFORM_INVALID_NAME, 'phatform', 'PHAT_Dropbox::save()', $_REQUEST['PHAT_ElementName']);
             $error = TRUE;
         }

@@ -34,7 +34,7 @@ class PHAT_Element extends PHPWS_Item {
      * @var     mixed
      * @example $this->_value = 'Steven Levin';
      * @example $this->_value = 3;
-     * @access  private 
+     * @access  private
      */
     var $_value = NULL;
 
@@ -123,9 +123,9 @@ class PHAT_Element extends PHPWS_Item {
      */
     function setRequired($flag = TRUE) {
         if($flag)
-            $this->_required = 1;
+        $this->_required = 1;
         else
-            $this->_required = 0;
+        $this->_required = 0;
     }
 
     /**
@@ -136,9 +136,9 @@ class PHAT_Element extends PHPWS_Item {
      */
     function setOptionSet($set = NULL) {
         if(is_numeric($set))
-            $this->_optionSet = $set;
+        $this->_optionSet = $set;
         else
-            $this->_optionSet = 0;
+        $this->_optionSet = 0;
     }
 
     /**
@@ -149,9 +149,9 @@ class PHAT_Element extends PHPWS_Item {
      */
     function getBlurb() {
         if($this->_blurb)
-            return $this->_blurb;
+        return $this->_blurb;
         else
-            return NULL;
+        return NULL;
     }
 
     /**
@@ -162,9 +162,9 @@ class PHAT_Element extends PHPWS_Item {
      */
     function getValue() {
         if($this->_value !== NULL)
-            return $this->_value;
+        return $this->_value;
         else
-            return NULL;
+        return NULL;
     }
 
     /**
@@ -185,9 +185,9 @@ class PHAT_Element extends PHPWS_Item {
      */
     function getOptionText() {
         if($this->_optionText)
-            return $this->_optionText;
+        return $this->_optionText;
         else
-            return NULL;
+        return NULL;
     }
 
     /**
@@ -198,9 +198,9 @@ class PHAT_Element extends PHPWS_Item {
      */
     function getOptionValues() {
         if($this->_optionValues)
-            return $this->_optionValues;
+        return $this->_optionValues;
         else
-            return NULL;
+        return NULL;
     }
 
     /**
@@ -211,9 +211,9 @@ class PHAT_Element extends PHPWS_Item {
      */
     function getOptionSet() {
         if($this->_optionSet)
-            return $this->_optionSet;
+        return $this->_optionSet;
         else
-            return NULL;
+        return NULL;
     }
 
     /**
@@ -263,7 +263,7 @@ class PHAT_Element extends PHPWS_Item {
 
         if(!empty($_REQUEST['PHAT_ElementNumOptions']) && is_numeric($_REQUEST['PHAT_ElementNumOptions'])) {
             $loops = $_REQUEST['PHAT_ElementNumOptions'];
-      
+
             /* must reset these arrays for when a new number of options is entered */
             $oldText = $this->_optionText;
             $oldValues = $this->_optionValues;
@@ -406,7 +406,7 @@ class PHAT_Element extends PHPWS_Item {
                     $saveValues = FALSE;
                 }
             }
-      
+
             if($className == 'PHAT_Checkbox' || $className == 'PHAT_Multiselect') {
                 for($i = 0; $i < sizeof($_REQUEST['PHAT_ElementOptions']); $i++) {
                     if(isset($_REQUEST['PHAT_ElementDefault']) && isset($_REQUEST['PHAT_ElementDefault'][$i])) {
@@ -430,7 +430,7 @@ class PHAT_Element extends PHPWS_Item {
                     $saveArray = array('label'=>$label,
                                        'optionSet'=>$options,
                                        'valueSet'=>$values
-                                       );
+                    );
                     $db = new PHPWS_DB('mod_phatform_options');
                     $db->addValue($saveArray);
                     $id = $db->insert();
@@ -468,7 +468,7 @@ class PHAT_Element extends PHPWS_Item {
      */
     function action() {
         $content = NULL;
-    
+
         if($this->getId()) {
             $new = FALSE;
         } else {
@@ -480,47 +480,16 @@ class PHAT_Element extends PHPWS_Item {
             $content .= $_SESSION['PHAT_FormManager']->form->view(TRUE);
         } else {
             switch($_REQUEST['PHAT_EL_OP']) {
-            case 'SaveElement':
-                if(Current_User::allow('phatform', 'edit_forms')) {
-                    $result = $this->save();
+                case 'SaveElement':
+                    if(Current_User::allow('phatform', 'edit_forms')) {
+                        $result = $this->save();
 
-                    if(PHPWS_Error::isError($result)) {
-                        $GLOBALS['CNT_phatform']['message'] =  $result->getMessage();
-                        $content .= $this->edit();
-                    } elseif($this->hasOptions()) {
-
-                        $content = $result;
-                    } else {
-                        $content = $_SESSION['PHAT_FormManager']->menu();
-                        $content .= $result . '<br />';
-              
-                        if($new) {
-                            $result = $_SESSION['PHAT_FormManager']->form->pushElement();
-                            if(PHPWS_Error::isError($result)) {
-                                $content .= $result->getMessage() .'<br />';
-                                $content .= $this->edit();
-                                return;
-                            } else {
-                                $content .= $result;
-                            }
-                        }
-
-                        $content .= $_SESSION['PHAT_FormManager']->form->view(TRUE);
-                    }       
-                } else {
-                    $this->accessDenied();
-                }
-                break;
-        
-            case 'SaveElementOptions':
-                if(Current_User::allow('phatform', 'edit_forms')) {
-                    if(isset($_REQUEST['PHAT_OptionBack'])) {
-                        $content = $this->edit();
-                    } else {
-                        $result = $this->saveOptions();
                         if(PHPWS_Error::isError($result)) {
-                            $content .= $result->getMessage() .'<br />';
-                            $content .= $this->getOptions();
+                            $GLOBALS['CNT_phatform']['message'] =  $result->getMessage();
+                            $content .= $this->edit();
+                        } elseif($this->hasOptions()) {
+
+                            $content = $result;
                         } else {
                             $content = $_SESSION['PHAT_FormManager']->menu();
                             $content .= $result . '<br />';
@@ -538,28 +507,59 @@ class PHAT_Element extends PHPWS_Item {
 
                             $content .= $_SESSION['PHAT_FormManager']->form->view(TRUE);
                         }
-
-                    }
-                } else {
-                    $this->accessDenied();
-                }
-                break;
-
-            case 'RemoveElement':
-                if(Current_User::allow('phatform', 'edit_forms')) {
-                    $result = $this->remove();
-                    if(PHPWS_Error::isError($result)) {
-                        $content .= $result->getMessage() .'<br />';
                     } else {
-                        $content = $_SESSION['PHAT_FormManager']->menu();
-                        $content .= $result . '<br />';
+                        $this->accessDenied();
                     }
-          
-                    $content .= $_SESSION['PHAT_FormManager']->form->view(TRUE);
-                } else {
-                    $this->accessDenied();
-                }
-                break;
+                    break;
+
+                case 'SaveElementOptions':
+                    if(Current_User::allow('phatform', 'edit_forms')) {
+                        if(isset($_REQUEST['PHAT_OptionBack'])) {
+                            $content = $this->edit();
+                        } else {
+                            $result = $this->saveOptions();
+                            if(PHPWS_Error::isError($result)) {
+                                $content .= $result->getMessage() .'<br />';
+                                $content .= $this->getOptions();
+                            } else {
+                                $content = $_SESSION['PHAT_FormManager']->menu();
+                                $content .= $result . '<br />';
+
+                                if($new) {
+                                    $result = $_SESSION['PHAT_FormManager']->form->pushElement();
+                                    if(PHPWS_Error::isError($result)) {
+                                        $content .= $result->getMessage() .'<br />';
+                                        $content .= $this->edit();
+                                        return;
+                                    } else {
+                                        $content .= $result;
+                                    }
+                                }
+
+                                $content .= $_SESSION['PHAT_FormManager']->form->view(TRUE);
+                            }
+
+                        }
+                    } else {
+                        $this->accessDenied();
+                    }
+                    break;
+
+                case 'RemoveElement':
+                    if(Current_User::allow('phatform', 'edit_forms')) {
+                        $result = $this->remove();
+                        if(PHPWS_Error::isError($result)) {
+                            $content .= $result->getMessage() .'<br />';
+                        } else {
+                            $content = $_SESSION['PHAT_FormManager']->menu();
+                            $content .= $result . '<br />';
+                        }
+
+                        $content .= $_SESSION['PHAT_FormManager']->form->view(TRUE);
+                    } else {
+                        $this->accessDenied();
+                    }
+                    break;
             } // END PHAT_EL_OP SWITCH
         }
 

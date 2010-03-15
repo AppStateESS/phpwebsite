@@ -482,8 +482,8 @@ class Comment_Forms {
         $tags['SUBJECT_LABEL']  = dgettext('comments', 'Subject');
         $tags['ENTRY_LABEL']    = dgettext('comments', 'Entry');
         $tags['REPORTED_LABEL'] = sprintf('<abbr title="%s">%s</abbr>',
-                                          dgettext('comments', 'Times reported'),
-                                          dgettext('comments', 'T.R.'));
+        dgettext('comments', 'Times reported'),
+        dgettext('comments', 'T.R.'));
         $tags['CHECK_ALL']      = javascript('check_all', array('checkbox_name'=>'cm_id', 'type'=>'checkbox'));
 
         $pager->addPageTags($tags);
@@ -504,11 +504,11 @@ class Comment_Forms {
                 if ($author->user_id) {
                     if ($author->locked) {
                         $links[] = sprintf('<a href="#" onclick="punish_user(%s, this, \'unlock_user\'); return false;">%s</a>',
-                                           $author->user_id, dgettext('comments', 'Unlock user'));
+                        $author->user_id, dgettext('comments', 'Unlock user'));
 
                     } else {
                         $links[] = sprintf('<a href="#" onclick="punish_user(%s, this, \'lock_user\'); return false;">%s</a>',
-                                           $author->user_id, dgettext('comments', 'Lock user'));
+                        $author->user_id, dgettext('comments', 'Lock user'));
                     }
 
                     // User may only be banned if admin has user:ban_users permissions and the
@@ -516,10 +516,10 @@ class Comment_Forms {
                     if (Current_User::allow('users', 'ban_users') && !$user->allow('users')) {
                         if ($user->active) {
                             $links[] = sprintf('<a href="#" onclick="punish_user(%s, this, \'ban_user\'); return false;">%s</a>',
-                                               $author->user_id, dgettext('comments', 'Ban user account'));
+                            $author->user_id, dgettext('comments', 'Ban user account'));
                         } else {
                             $links[] = sprintf('<a href="#" onclick="punish_user(%s, this, \'unban_user\'); return false;">%s</a>',
-                                               $author->user_id, dgettext('comments', 'Remove ban'));
+                            $author->user_id, dgettext('comments', 'Remove ban'));
                         }
                     }
                 }
@@ -531,11 +531,11 @@ class Comment_Forms {
                 PHPWS_Core::initModClass('access', 'Access.php');
                 if (!Access::isDenied($comment->author_ip)) {
                     $links[] = sprintf('<a href="#" onclick="punish_user(\'%s\', this, \'deny_ip\'); return false;">%s</a>',
-                                       $comment->author_ip, dgettext('comments', 'Deny IP address'));
+                    $comment->author_ip, dgettext('comments', 'Deny IP address'));
 
                 } else {
                     $links[] = sprintf('<a href="#" onclick="punish_user(\'%s\', this, \'remove_deny_ip\'); return false;">%s</a>',
-                                       $comment->author_ip, dgettext('comments', 'Remove IP denial'));
+                    $comment->author_ip, dgettext('comments', 'Remove IP denial'));
 
                 }
             }
@@ -546,12 +546,12 @@ class Comment_Forms {
 
             if ($comment->author_id) {
                 $confvars['question'] = sprintf(dgettext('comments', 'Are you sure you want to delete every comment ever written by %s?'),
-                                                $user->display_name);
+                $user->display_name);
                 $linkvars['aop'] = 'delete_all_user_comments';
                 $linkvars['aid'] = $comment->author_id;
             } else {
                 $confvars['question'] = sprintf(dgettext('comments', 'Are you sure you want to delete every comment ever written from this ip address: %s?'),
-                                                $comment->author_ip);
+                $comment->author_ip);
                 $linkvars['aop'] = 'delete_all_ip_comments';
                 $linkvars['aip'] = $comment->author_ip;
             }

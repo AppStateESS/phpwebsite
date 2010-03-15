@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 PHPWS_Core::requireInc('demographics', 'errorDefines.php');
 PHPWS_Core::initModClass('demographics', 'Demographics_User.php');
@@ -162,18 +162,18 @@ class Demographics {
         }
 
         switch ($type) {
-        case 'text':
-            $parameter = sprintf('varchar(%s) default NULL', $limit);
-            break;
+            case 'text':
+                $parameter = sprintf('varchar(%s) default NULL', $limit);
+                break;
 
-        case 'boolean':
-        case 'smallint':
-            $parameter = 'smallint NOT NULL default 0';
-            break;
+            case 'boolean':
+            case 'smallint':
+                $parameter = 'smallint NOT NULL default 0';
+                break;
 
-        case 'integer':
-            $parameter = 'int NOT NULL default 0';
-            break;
+            case 'integer':
+                $parameter = 'int NOT NULL default 0';
+                break;
         }
 
         $db = new PHPWS_DB('demographics');

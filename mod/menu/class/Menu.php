@@ -53,7 +53,7 @@ class Menu {
     public function miniadmin()
     {
         if (!PHPWS_Settings::get('menu', 'miniadmin') ||
-            !Current_User::allow('menu')) {
+        !Current_User::allow('menu')) {
             return;
         }
 
@@ -172,7 +172,7 @@ class Menu {
         if ($key->id) {
             if (!$popup) {
                 return sprintf('<a style="cursor : pointer" onclick="add_keyed_link(\'%s\', \'%s\')">%s</a>',
-                               $menu_id, $parent_id, $link);
+                $menu_id, $parent_id, $link);
             } else {
                 $vars['key_id'] = $key->id;
                 return PHPWS_Text::secureLink($link, 'menu', $vars);
@@ -194,7 +194,7 @@ class Menu {
                     return PHPWS_Text::secureLink($link, 'menu', $vars);
                 } else {
                     return sprintf('<a style="cursor : pointer" onclick="add_unkeyed_link(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
-                                   $menu_id, $parent_id, $vars['url'], $vars['link_title'], $link);
+                    $menu_id, $parent_id, $vars['url'], $vars['link_title'], $link);
                 }
 
             }

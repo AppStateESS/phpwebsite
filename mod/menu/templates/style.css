@@ -1,46 +1,45 @@
 .menu-link-pop {
-    display : none;
+    display: none;
 }
 
 .menu-admin {
-    position : relative;
-    float : left;
+    position: relative;
+    float: left;
 }
 
-
 .menu-admin:hover .menu-link-pop {
-    padding : 3px 1px 2px 1px;
-    display : block;
-    position : absolute;
-    border : solid 1px black;
-    background-color : #d7d7d7;
-    color : inherit;
-    top : -2px;
-    left : 0px;
-    width : 170px;
+    padding: 3px 1px 2px 1px;
+    display: block;
+    position: absolute;
+    border: solid 1px black;
+    background-color: #d7d7d7;
+    color: inherit;
+    top: -2px;
+    left: 0px;
+    width: 170px;
 }
 
 #menu-site-map ol {
-    list-style-type : upper-roman;
+    list-style-type: upper-roman;
 }
 
 #menu-site-map ol ol {
-    list-style-type : upper-alpha;
+    list-style-type: upper-alpha;
 }
 
 #menu-site-map ol ol ol {
-    list-style-type : decimal;
+    list-style-type: decimal;
 }
 
 #menu-site-map ol ol ol ol {
-    list-style-type : lower-alpha;
+    list-style-type: lower-alpha;
 }
 
 a.move-popup {
-    background-color : black;
-    color : white;
+    background-color: black;
+    color: white;
 }
 
-.menu-sort-placeholder { 
-    border : 2px gray dotted;
+.menu-sort-placeholder {
+    border: 2px gray dotted;
 }

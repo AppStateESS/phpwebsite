@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at appstate dot edu>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at appstate dot edu>
+ */
 
 $link[] = array('label'       => 'Pulse',
 		'restricted'  => TRUE,
@@ -12,4 +12,4 @@ $link[] = array('label'       => 'Pulse',
 		'image'       => 'pulse.png',
 		'tab'         => 'admin'
 		);
-?>
+		?>

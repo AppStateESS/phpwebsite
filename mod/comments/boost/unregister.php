@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 function comments_unregister($module, &$content)
 {
@@ -14,7 +14,7 @@ function comments_unregister($module, &$content)
     } else {
         $content[] = dgettext('comments', 'An error occurred when trying to remove comments.');
     }
-    
+
     return TRUE;
 }
 

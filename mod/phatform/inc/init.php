@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 if(isset($_REQUEST['module']) && $_REQUEST['module'] == 'phatform') {
     PHPWS_Core::requireConfig('phatform', 'phatform.php');
@@ -19,7 +19,7 @@ if(isset($_REQUEST['module']) && $_REQUEST['module'] == 'phatform') {
     PHPWS_Core::initModClass('phatform', 'Textfield.php');
 
     /**
-     * error definitions 
+     * error definitions
      */
 
     define('PHATFORM_INVALID_NAME',          101);

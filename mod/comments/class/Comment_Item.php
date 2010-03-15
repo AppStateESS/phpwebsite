@@ -70,26 +70,26 @@ class Comment_Item {
 
     public function __construct($id=null)
     {
-	if (empty($id)) {
-	    return;
-	}
+        if (empty($id)) {
+            return;
+        }
 
-	$this->setId($id);
-	$result = $this->init();
-	if (PEAR::isError($result)) {
-	    $this->_error = $result;
-	}
+        $this->setId($id);
+        $result = $this->init();
+        if (PEAR::isError($result)) {
+            $this->_error = $result;
+        }
     }
 
     public function init()
     {
-	if (!isset($this->id))
-	    return FALSE;
+        if (!isset($this->id))
+        return FALSE;
 
-	$db = new PHPWS_DB('comments_items');
-	$result = $db->loadObject($this);
-	if (PEAR::isError($result)) {
-	    return $result;
+        $db = new PHPWS_DB('comments_items');
+        $result = $db->loadObject($this);
+        if (PEAR::isError($result)) {
+            return $result;
         } elseif (!$result) {
             $this->id = 0;
         }
@@ -97,38 +97,38 @@ class Comment_Item {
 
     public function setId($id)
     {
-	$this->id = (int)$id;
+        $this->id = (int)$id;
     }
 
     public function setThreadId($thread_id)
     {
-	$this->thread_id = (int)$thread_id;
+        $this->thread_id = (int)$thread_id;
     }
 
     public function getThreadId()
     {
-	return $this->thread_id;
+        return $this->thread_id;
     }
 
     public function setParent($parent)
     {
-	$this->parent = (int)$parent;
+        $this->parent = (int)$parent;
     }
 
     public function setSubject($subject)
     {
-	$this->subject = strip_tags(trim($subject));
+        $this->subject = strip_tags(trim($subject));
     }
 
     public function setEntry($entry)
     {
         $entry = strip_tags($entry);
-	$this->entry = PHPWS_Text::parseInput($entry);
+        $this->entry = PHPWS_Text::parseInput($entry);
     }
 
     public function getEntry($format=TRUE, $quoted=FALSE)
     {
-	if ($format) {
+        if ($format) {
             $entry = PHPWS_Text::parseOutput($this->entry, true, true);
         } else {
             $entry =  $this->entry;
@@ -162,41 +162,41 @@ class Comment_Item {
 
     public function stampAuthor()
     {
-	if (Current_User::isLogged()) {
-	    $this->author_id = Current_User::getId();
-	    $result = Comments::updateCommentUser($this->author_id);
+        if (Current_User::isLogged()) {
+            $this->author_id = Current_User::getId();
+            $result = Comments::updateCommentUser($this->author_id);
 
-	    if (PEAR::isError($result)) {
-		PHPWS_Error::log($result);
-		return FALSE;
-	    }
-	} else {
-	    $this->author_id = 0;
-	}
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                return FALSE;
+            }
+        } else {
+            $this->author_id = 0;
+        }
     }
 
     public function stampIP()
     {
-	$this->author_ip = $_SERVER['REMOTE_ADDR'];
+        $this->author_ip = $_SERVER['REMOTE_ADDR'];
     }
 
     public function getIP()
     {
-	return $this->author_ip;
+        return $this->author_ip;
     }
 
     public function stampCreateTime()
     {
-	$this->create_time = mktime();
+        $this->create_time = mktime();
     }
 
     public function getCreateTime($format=TRUE)
     {
-	if ($format) {
-	    return strftime(COMMENT_DATE_FORMAT, $this->create_time);
-	} else {
-	    return $this->create_time;
-	}
+        if ($format) {
+            return strftime(COMMENT_DATE_FORMAT, $this->create_time);
+        } else {
+            return $this->create_time;
+        }
     }
 
     public function getRelativeTime()
@@ -206,43 +206,43 @@ class Comment_Item {
 
     public function stampEditor()
     {
-	$this->edit_author = Current_User::getDisplayName();
-	$this->edit_time = gmmktime();
+        $this->edit_author = Current_User::getDisplayName();
+        $this->edit_time = gmmktime();
     }
 
 
     public function getEditTime($format=TRUE)
     {
-	if ($format) {
-	    if (empty($this->edit_time)) {
-		return null;
-	    } else {
-		return gmstrftime(COMMENT_DATE_FORMAT, $this->edit_time);
-	    }
-	} else {
-	    return $this->edit_time;
-	}
+        if ($format) {
+            if (empty($this->edit_time)) {
+                return null;
+            } else {
+                return gmstrftime(COMMENT_DATE_FORMAT, $this->edit_time);
+            }
+        } else {
+            return $this->edit_time;
+        }
     }
 
     public function setEditReason($reason)
     {
-	$this->edit_reason = strip_tags($reason);
+        $this->edit_reason = strip_tags($reason);
     }
 
     public function getEditReason()
     {
-	return $this->edit_reason;
+        return $this->edit_reason;
     }
 
 
     public function getEditAuthor()
     {
-	return $this->edit_author;
+        return $this->edit_author;
     }
 
     public function getAuthor()
     {
-	if (!empty($GLOBALS['Comment_Users'])) {
+        if (!empty($GLOBALS['Comment_Users'])) {
             $author = @$GLOBALS['Comment_Users'][$this->author_id];
         }
 
@@ -265,7 +265,7 @@ class Comment_Item {
 
     public function getError()
     {
-	return $this->_error;
+        return $this->_error;
     }
 
     public function getTpl($thread)
@@ -284,15 +284,15 @@ class Comment_Item {
             $author_info['ANONYMOUS_TAG'] = COMMENT_ANONYMOUS_TAG;
         }
 
-	$template['SUBJECT_LABEL'] = dgettext('comments', 'Subject');
-	$template['ENTRY_LABEL']   = dgettext('comments', 'Comment');
-	$template['AUTHOR_LABEL']  = dgettext('comments', 'Author');
-	$template['POSTED_BY']	   = dgettext('comments', 'Posted by');
-	$template['POSTED_ON']	   = dgettext('comments', 'Posted on');
+        $template['SUBJECT_LABEL'] = dgettext('comments', 'Subject');
+        $template['ENTRY_LABEL']   = dgettext('comments', 'Comment');
+        $template['AUTHOR_LABEL']  = dgettext('comments', 'Author');
+        $template['POSTED_BY']	   = dgettext('comments', 'Posted by');
+        $template['POSTED_ON']	   = dgettext('comments', 'Posted on');
 
-	$template['SUBJECT']	     = $this->subject;
-	$template['ENTRY']	     = $this->getEntry(TRUE);
-	$template['CREATE_TIME']     = $this->getCreateTime();
+        $template['SUBJECT']	     = $this->subject;
+        $template['ENTRY']	     = $this->getEntry(TRUE);
+        $template['CREATE_TIME']     = $this->getCreateTime();
         $template['RELATIVE_CREATE'] = $this->getRelativeTime();
         if ($can_post) {
             $template['QUOTE_LINK']  = $this->quoteLink();
@@ -305,9 +305,9 @@ class Comment_Item {
                 }
             }
             if ($thread->userCan() || ($this->author_id > 0 && $this->author_id == Current_User::getId()))
-                $template['EDIT_LINK']       = $this->editLink();
+            $template['EDIT_LINK']       = $this->editLink();
             if (!$this->protected && $thread->userCan('delete_comments'))
-                $template['DELETE_LINK']     = $this->deleteLink();
+            $template['DELETE_LINK']     = $this->deleteLink();
             // If phpwsbb is installed && we have moderation & forking privileges
             if (isset($GLOBALS['Modules']['phpwsbb']) && $thread->userCan('fork_messages', 'phpwsbb')) {
                 $vars = array();
@@ -322,7 +322,7 @@ class Comment_Item {
         }
         $template['VIEW_LINK']       = $this->viewLink();
         if ($thread->userCan('punish_users'))
-            $template['PUNISH_LINK']     = $this->punishUserLink(true);
+        $template['PUNISH_LINK']     = $this->punishUserLink(true);
 
         if ($this->parent) {
             $template['RESPONSE_LABEL']  = dgettext('comments', 'In response to');
@@ -330,19 +330,19 @@ class Comment_Item {
             $template['RESPONSE_NAME']   = $this->responseAuthor();
         }
 
-	if ($this->edit_time) {
-	    $template['EDIT_LABEL']	   = dgettext('comments', 'Edited');
-	    $template['EDIT_AUTHOR']	   = $this->getEditAuthor();
-	    $template['EDIT_AUTHOR_LABEL'] = dgettext('comments', 'Edited by');
-	    $template['EDIT_TIME_LABEL']   = dgettext('comments', 'Edited on');
-	    $template['EDIT_TIME']	   = $this->getEditTime();
-	    if (!empty($this->edit_reason)) {
-		$template['EDIT_REASON']       = $this->getEditReason();
-		$template['EDIT_REASON_LABEL'] = dgettext('comments', 'Reason');
-	    } else {
+        if ($this->edit_time) {
+            $template['EDIT_LABEL']	   = dgettext('comments', 'Edited');
+            $template['EDIT_AUTHOR']	   = $this->getEditAuthor();
+            $template['EDIT_AUTHOR_LABEL'] = dgettext('comments', 'Edited by');
+            $template['EDIT_TIME_LABEL']   = dgettext('comments', 'Edited on');
+            $template['EDIT_TIME']	   = $this->getEditTime();
+            if (!empty($this->edit_reason)) {
+                $template['EDIT_REASON']       = $this->getEditReason();
+                $template['EDIT_REASON_LABEL'] = dgettext('comments', 'Reason');
+            } else {
                 $template['EDIT_REASON'] = null;
             }
-	} else {
+        } else {
             $template['EDIT_TIME'] = null;
             $template['EDIT_REASON'] = null;
             $template['EDIT_AUTHOR'] = null;
@@ -357,7 +357,7 @@ class Comment_Item {
             $template['IP_ADDRESS_LABEL'] = dgettext('comments', 'IP');
             $template['IP_ADDRESS'] = $this->getIp();
             if (!$this->protected)
-                $template['SELECT_THIS'] = '<input type="checkbox" name="cm_id[]" value="'.$this->id.'" title="'.dgettext('comments', 'Select this Comment').'">';
+            $template['SELECT_THIS'] = '<input type="checkbox" name="cm_id[]" value="'.$this->id.'" title="'.dgettext('comments', 'Select this Comment').'">';
         }
         $template = array_merge($author_info, $template);
         return $template;
@@ -365,35 +365,35 @@ class Comment_Item {
 
     public function save($stamp_update=true)
     {
-	if (empty($this->thread_id)) {
-	    return PHPWS_Error::get(COMMENTS_MISSING_THREAD, 'comments', 'Comment_Item::save');
-	}
+        if (empty($this->thread_id)) {
+            return PHPWS_Error::get(COMMENTS_MISSING_THREAD, 'comments', 'Comment_Item::save');
+        }
 
         if (empty($this->subject)) {
             $this->subject = COMMENT_NO_SUBJECT;
         }
 
-	if (empty($this->create_time)) {
-	    $this->stampCreateTime();
-	}
+        if (empty($this->create_time)) {
+            $this->stampCreateTime();
+        }
 
         if (empty($this->id)) {
-    	    $this->stampIP();
-    	    $this->stampAuthor();
-    	    $increase_count = TRUE;
-    	} else {
+            $this->stampIP();
+            $this->stampAuthor();
+            $increase_count = TRUE;
+        } else {
             if ($stamp_update) {
                 $this->stampEditor();
             }
-	    $increase_count = FALSE;
+            $increase_count = FALSE;
         }
 
-	$db = new PHPWS_DB('comments_items');
-	$result = $db->saveObject($this);
-	if (!PEAR::isError($result) && $increase_count && $this->approved) {
+        $db = new PHPWS_DB('comments_items');
+        $result = $db->saveObject($this);
+        if (!PEAR::isError($result) && $increase_count && $this->approved) {
             PHPWS_Error::logIfError($this->stampThread());
-	}
-	return $result;
+        }
+        return $result;
     }
 
     public function stampThread()
@@ -434,7 +434,7 @@ class Comment_Item {
     {
         $vars['QUESTION'] = dgettext('comments', 'Are you sure you want to delete this comment?');
         $vars['ADDRESS'] = 'index.php?module=comments&amp;cm_id=' . $this->id . '&amp;aop=delete_comment&amp;authkey='
-            . Current_User::getAuthKey();
+        . Current_User::getAuthKey();
         $vars['LINK'] = Icon::show('delete');
         $vars['CLASS'] = 'comment_delete_link';
         $vars['TITLE'] = dgettext('comments', 'Delete this comment');
@@ -445,8 +445,8 @@ class Comment_Item {
     {
         $link = Icon::show('clear');
         return PHPWS_Text::secureLink($link, 'comments',
-                                      array('aop'=>'clear_report', 'cm_id'=>$this->id),
-                                      NULL, dgettext('comments', 'Clear this report'));
+        array('aop'=>'clear_report', 'cm_id'=>$this->id),
+        NULL, dgettext('comments', 'Clear this report'));
     }
 
     public function punishUserLink($graphic=false)
@@ -455,7 +455,7 @@ class Comment_Item {
         $punish_form = Comment_Forms::punishForm($this);
         if ($punish_form) {
             return sprintf('<span class="comment-punish"><img src="%smod/comments/img/noentry.png" title="%s" /><div class="comment-punish-list">%s</div></span>',
-                           PHPWS_SOURCE_HTTP, dgettext('comments', 'Punish this user'), $punish_form);
+            PHPWS_SOURCE_HTTP, dgettext('comments', 'Punish this user'), $punish_form);
         } else {
             return null;
         }
@@ -492,10 +492,10 @@ class Comment_Item {
 
     public function viewLink()
     {
-	$vars['uop']   = 'view_comment';
-	$vars['cm_id']	   = $this->id;
+        $vars['uop']   = 'view_comment';
+        $vars['cm_id']	   = $this->id;
 
-	return PHPWS_Text::moduleLink($this->subject, 'comments', $vars);
+        return PHPWS_Text::moduleLink($this->subject, 'comments', $vars);
     }
 
     /**
@@ -505,7 +505,7 @@ class Comment_Item {
     {
         // Protected comments cannot be deleted
         if ($this->protected)
-            return false;
+        return false;
 
         // physical removal
         $db = new PHPWS_DB('comments_items');
@@ -540,13 +540,13 @@ class Comment_Item {
                 $db->addOrder('create_time desc');
                 $result = $db->select('row');
                 if (PHPWS_Error::logIfError($result))
-                    return;
+                return;
                 if (empty($result))
-                    $thread->last_poster = dgettext('comments', 'None');
+                $thread->last_poster = dgettext('comments', 'None');
                 elseif ($row['display_name'])
-                    $thread->last_poster = $row['display_name'];
+                $thread->last_poster = $row['display_name'];
                 else
-                    $thread->last_poster = trim($row['anon_name'] . ' '.COMMENT_ANONYMOUS_TAG);
+                $thread->last_poster = trim($row['anon_name'] . ' '.COMMENT_ANONYMOUS_TAG);
             }
 
             $thread->save();
@@ -564,10 +564,10 @@ class Comment_Item {
 
     public function responseNumber()
     {
-	$vars['uop'] = 'view_comment';
-	$vars['cm_id']	     = $this->parent;
+        $vars['uop'] = 'view_comment';
+        $vars['cm_id']	     = $this->parent;
 
-	return PHPWS_Text::moduleLink($this->parent, 'comments', $vars);
+        return PHPWS_Text::moduleLink($this->parent, 'comments', $vars);
     }
 
     public function responseAuthor()
@@ -577,7 +577,7 @@ class Comment_Item {
             $name = $author->display_name;
         }
         else if (!empty($this->parent_anon_name))
-            $name = $this->parent_anon_name.' '.COMMENT_ANONYMOUS_TAG;
+        $name = $this->parent_anon_name.' '.COMMENT_ANONYMOUS_TAG;
         else { // backward compatibility - cache data for future use
             $comment = new Comment_Item($this->parent);
             $name = $comment->getAuthorName();
@@ -597,8 +597,8 @@ class Comment_Item {
         $tpl['SUBJECT'] = $this->viewLink();
 
         $tpl['ENTRY']   = sprintf('<span class="pointer" onmouseout="quick_view(\'#cm%s\'); return false" onmouseover="quick_view(\'#cm%s\'); return false">%s</span>',
-                                  $this->id, $this->id,
-                                  substr($this->entry, 0, 50));
+        $this->id, $this->id,
+        substr($this->entry, 0, 50));
         $tpl['FULL'] = sprintf('<div class="full-view" id="cm%s">%s</div>', $this->id, $this->getEntry());
 
         $links[] = $this->clearReportLink();
@@ -613,12 +613,12 @@ class Comment_Item {
         $tpl['VIEW_LINK'] =  $this->viewLink();
 
         $tpl['ENTRY']   = sprintf('<span class="pointer" onmouseout="quick_view(\'#cm%s\'); return false" onmouseover="quick_view(\'#cm%s\'); return false">%s</span>',
-                                  $this->id, $this->id,
-                                  substr($this->entry, 0, 50));
+        $this->id, $this->id,
+        substr($this->entry, 0, 50));
         $tpl['FULL'] = sprintf('<div class="full-view" id="cm%s">%s</div>', $this->id, $this->getEntry());
 
-	$tpl['POSTED_ON']	   = dgettext('comments', 'Posted on');
-	$tpl['CREATE_TIME']   = $this->getCreateTime();
+        $tpl['POSTED_ON']	   = dgettext('comments', 'Posted on');
+        $tpl['CREATE_TIME']   = $this->getCreateTime();
 
         if (Current_User::allow('comments')) {
             $tpl['CHECK'] = sprintf('<input type="checkbox" name="cm_id[]" value="%s" />', $this->id);
@@ -652,8 +652,8 @@ class Comment_Item {
         $links[] = $this->punishUserLink(true);
 
         $tpl['ENTRY']   = sprintf('<span class="pointer" onmouseout="quick_view(\'#cm%s\'); return false" onmouseover="quick_view(\'#cm%s\'); return false">%s</span>',
-                                  $this->id, $this->id,
-                                  substr($this->entry, 0, 50));
+        $this->id, $this->id,
+        substr($this->entry, 0, 50));
         $tpl['FULL'] = sprintf('<div class="full-view" id="cm%s">%s</div>', $this->id, $this->getEntry());
         $tpl['SUBJECT'] = $this->viewLink();
         $tpl['ACTION'] = implode('', $links);

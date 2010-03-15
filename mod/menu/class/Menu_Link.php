@@ -1,10 +1,10 @@
 <?php
-  /**
-   * Class for individual menu links
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Class for individual menu links
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 define('MENU_MISSING_INFO', 1);
 
@@ -57,13 +57,13 @@ class Menu_Link {
     }
 
     public function getDB()
-        {
-            if (empty($this->_db)) {
-                $this->_db = new PHPWS_DB('menu_links');
-            }
-            $this->_db->reset();
-            return $this->_db;
+    {
+        if (empty($this->_db)) {
+            $this->_db = new PHPWS_DB('menu_links');
         }
+        $this->_db->reset();
+        return $this->_db;
+    }
 
     /**
      * Grabs all the child links under the current link
@@ -124,8 +124,8 @@ class Menu_Link {
 
     public function getUrl()
     {
-        return sprintf('<a href="%s" class="menu-link-href" id="menu-link-href-%s" title="%s">%s</a>', 
-                       str_replace('&', '&amp;', $this->url), $this->id, $this->title, $this->title);
+        return sprintf('<a href="%s" class="menu-link-href" id="menu-link-href-%s" title="%s">%s</a>',
+        str_replace('&', '&amp;', $this->url), $this->id, $this->title, $this->title);
     }
 
 
@@ -174,7 +174,7 @@ class Menu_Link {
     public function save()
     {
         if (empty($this->menu_id) || empty($this->title) ||
-            empty($this->url) || !isset($this->key_id) ) {
+        empty($this->url) || !isset($this->key_id) ) {
             return PHPWS_Error::get(MENU_MISSING_INFO, 'menu', 'Menu_Link::save');
         }
 
@@ -199,7 +199,7 @@ class Menu_Link {
         }
 
         if ( preg_match("@$current_url$@", $this->url) ||
-             preg_match("@$redirect_url$@", $this->url) ) {
+        preg_match("@$redirect_url$@", $this->url) ) {
             return true;
         } else {
             return false;
@@ -236,8 +236,8 @@ class Menu_Link {
         }
 
         if ((Menu::isAdminMode() && PHPWS_Settings::get('menu', 'show_all_admin')) ||
-            $this->_menu->_show_all || $current_link || $this->parent == 0 ||
-            in_array($this->parent, $current_parent)) {
+        $this->_menu->_show_all || $current_link || $this->parent == 0 ||
+        in_array($this->parent, $current_parent)) {
 
             $link = $this->getUrl();
 
@@ -279,7 +279,7 @@ class Menu_Link {
 
         foreach ($this->_children as $child) {
             if ( ($current_key->id !== 0 && $child->key_id == $current_key->id) ||
-                 ($child->url == $current_key->url)) {
+            ($child->url == $current_key->url)) {
                 return true;
             }
 
@@ -343,9 +343,9 @@ class Menu_Link {
                             $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink($up_link, 'menu', $vars);
                         } else {
                             $template['MOVE_LINK_UP'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>',
-                                                                $this->menu_id, $this->id, 'up', $up_link);
+                            $this->menu_id, $this->id, 'up', $up_link);
                         }
-                        
+
                         $down_link = MENU_LINK_DOWN;
                         $vars['command'] = 'move_link_down';
                         if ($popup) {
@@ -354,18 +354,18 @@ class Menu_Link {
                             $template['MOVE_LINK_DOWN'] = PHPWS_Text::secureLink($down_link, 'menu', $vars);
                         } else {
                             $template['MOVE_LINK_DOWN'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>',
-                                                                  $this->menu_id, $this->id, 'down', $down_link);
+                            $this->menu_id, $this->id, 'down', $down_link);
                         }
                     }
 
                     if ($this->link_order != 1) {
                         $template['LINK_INDENT'] = sprintf('<a style="cursor : pointer" id="menu-indent-%s-%s" class="menu-indent">%s</a>',
-                                                            $this->menu_id, $this->id, MENU_LINK_INDENT_INCREASE);
+                        $this->menu_id, $this->id, MENU_LINK_INDENT_INCREASE);
                     }
 
                     if ($this->parent) {
                         $template['LINK_OUTDENT'] = sprintf('<a style="cursor : pointer" id="menu-outdent-%s-%s" class="menu-outdent">%s</a>',
-                                                            $this->menu_id, $this->id, MENU_LINK_INDENT_DECREASE);
+                        $this->menu_id, $this->id, MENU_LINK_INDENT_DECREASE);
                     }
 
                     if ($popup) {
@@ -385,12 +385,12 @@ class Menu_Link {
                     if ($keyed) {
                         $vars['key_id'] = $key->id;
                     }
-                    
+
                     $js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
                     $js['label'] = MENU_LINK_ADMIN;
                     $js['width'] = 200;
                     $js['height'] = 300;
-                    
+
                     $template['ADMIN'] = javascript('open_window', $js);
                 }
             } else {
@@ -433,7 +433,7 @@ class Menu_Link {
 
         if (!$popup) {
             return sprintf('<a style="cursor : pointer" onclick="delete_link(\'%s\', \'%s\', \'%s\')">%s</a>',
-                           $this->menu_id, $this->id, htmlentities($this->getTitle(), ENT_QUOTES, 'UTF-8'), $link);
+            $this->menu_id, $this->id, htmlentities($this->getTitle(), ENT_QUOTES, 'UTF-8'), $link);
         } else {
             $link .= ' ' . dgettext('menu', 'Delete link');
             $vars['pu'] = 1;
@@ -444,7 +444,7 @@ class Menu_Link {
         $vars['link_id'] = $this->id;
         $vars['command'] = 'delete_link';
         $js['QUESTION'] = dgettext('menu', 'Are you sure you want to delete this link: ' .
-                                   addslashes($this->getTitle()));
+        addslashes($this->getTitle()));
         $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, true);
         return javascript('confirm', $js);
     }

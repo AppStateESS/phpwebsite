@@ -32,16 +32,16 @@ class advViews {
     function deleteExport() {
         if(isset($_POST['yes'])){
             if(!isset($_REQUEST['EXPORT_filename'])) {
-                $content = dgettext('phatform', 'There was a problem deleting the export.') . '<br /><br />';     
+                $content = dgettext('phatform', 'There was a problem deleting the export.') . '<br /><br />';
                 $content .= $this->viewExports();
                 return $content;
             }
 
-            $filename = PHPWS_HOME_DIR . 'files/phatform/export/' . $_REQUEST['EXPORT_filename'];      
+            $filename = PHPWS_HOME_DIR . 'files/phatform/export/' . $_REQUEST['EXPORT_filename'];
             if(is_file($filename) && unlink($filename)) {
-                $content = dgettext('phatform', 'The phatform export was successfully <b>deleted</b>.') . '<br /><br />'; 
+                $content = dgettext('phatform', 'The phatform export was successfully <b>deleted</b>.') . '<br /><br />';
             } else {
-                $content = dgettext('phatform', 'There was a problem deleting the export.') . '<br /><br />';     
+                $content = dgettext('phatform', 'There was a problem deleting the export.') . '<br /><br />';
             }
 
             $content .= $_SESSION['PHAT_advViews']->viewExports();
@@ -76,7 +76,7 @@ class advViews {
     function viewArchive() {
         $content  = $_SESSION['PHAT_FormManager']->menu();
 
-        $filename = PHPWS_HOME_DIR . 'files/phatform/archive/' . $_REQUEST['ARCHIVE_filename'];      
+        $filename = PHPWS_HOME_DIR . 'files/phatform/archive/' . $_REQUEST['ARCHIVE_filename'];
         if(is_file($filename)) {
             $fileContent = file($filename);
         } else {
@@ -92,7 +92,7 @@ class advViews {
         }
 
         if(isset($_REQUEST['ARCHIVE_filename']))
-            $this->filename = $_REQUEST['ARCHIVE_filename'];
+        $this->filename = $_REQUEST['ARCHIVE_filename'];
 
         $buildingSQL = FALSE;
         $endCreateSmnt = 0;
@@ -102,10 +102,10 @@ class advViews {
         // extract out table containing report data
         for($i=0; $i < count($fileContent); $i++) {
             $line = $fileContent[$i];
-            if(stristr($line, 'CREATE TABLE mod_phatform_form_') && 
-               ($line[0] != '#' && ($line[0] != '-' && $line[1] != '-'))) {
+            if(stristr($line, 'CREATE TABLE mod_phatform_form_') &&
+            ($line[0] != '#' && ($line[0] != '-' && $line[1] != '-'))) {
                 $buildingSQL = TRUE;
-        
+
                 ereg('form_([0-9]+)', $line, $formNumArr);
                 $formNum = $formNumArr[1];
             }
@@ -114,7 +114,7 @@ class advViews {
                 $sql .= $line;
             }
 
-            if($buildingSQL == TRUE && stristr($line, ';')) {   
+            if($buildingSQL == TRUE && stristr($line, ';')) {
                 $endCreateSmnt = $i + 6;
                 break;
             }
@@ -136,14 +136,14 @@ class advViews {
         if($result) {
             foreach($result as $form) {
                 if($form['archiveFileName'] == $this->filename)
-                    return $this->readyViewArchive($form['id'], $form['archiveTableName']);
+                return $this->readyViewArchive($form['id'], $form['archiveTableName']);
             }
-        } 
+        }
 
-      
+
         if(isset($_REQUEST['yes'])) {
             // create main report table
-            PHPWS_DB::query(trim($sql));   
+            PHPWS_DB::query(trim($sql));
 
             $inserts = FALSE;
             for($j=$endCreateSmnt; $j < count($fileContent); $j++) {
@@ -151,18 +151,18 @@ class advViews {
 
                 // check if finished inserting report data
                 if(stristr($line, 'CREATE TABLE'))
-                    break;
+                break;
 
                 // check to see if finished with comments and spaces before insert commands
                 if(stristr($line, 'INSERT INTO '))
-                    $inserts = TRUE;
-        
+                $inserts = TRUE;
+
                 // line is insertion data so put in database
                 if($inserts) {
                     $sql = trim($line);
                     if(!empty($sql) && stristr($sql, $orgnTableName)) {
                         $sql = str_replace($orgnTableName, $newTableName, $sql);
-                        PHPWS_DB::query(trim($sql));   
+                        PHPWS_DB::query(trim($sql));
                     } else {
                         break;
                     }
@@ -213,18 +213,18 @@ class advViews {
     function deleteArchive() {
         if(isset($_POST['yes'])){
             if(!isset($_REQUEST['ARCHIVE_filename'])) {
-                $content = dgettext('phatform', 'There was a problem deleting the archive.') . '<br /><br />';    
+                $content = dgettext('phatform', 'There was a problem deleting the archive.') . '<br /><br />';
                 $content .= $this->viewArchives();
                 return $content;
             }
 
             $this->cleanUpArchive();
 
-            $filename = PHPWS_HOME_DIR . 'files/phatform/archive/' . $_REQUEST['ARCHIVE_filename'];      
+            $filename = PHPWS_HOME_DIR . 'files/phatform/archive/' . $_REQUEST['ARCHIVE_filename'];
             if(is_file($filename) && unlink($filename)) {
-                $content = dgettext('phatform', 'The phatform archive was successfully <b>deleted</b>.') . '<br /><br />';        
+                $content = dgettext('phatform', 'The phatform archive was successfully <b>deleted</b>.') . '<br /><br />';
             } else {
-                $content = dgettext('phatform', 'There was a problem deleting the archive.') . '<br /><br />';    
+                $content = dgettext('phatform', 'There was a problem deleting the archive.') . '<br /><br />';
             }
 
             $content .= $_SESSION['PHAT_advViews']->viewArchives();
@@ -261,16 +261,16 @@ class advViews {
         header("Content-Type: $type");
         header('Content-Length: '. filesize($filename));
         header('Content-Description: File Transfer');
-    
+
         $user_agent = strtolower($_SERVER['HTTP_USER_AGENT']);
         $saveasname = basename($filename);
         if((is_integer(strpos($user_agent, 'msie')))
-           && (is_integer (strpos($user_agent, 'win')))) {
+        && (is_integer (strpos($user_agent, 'win')))) {
             header('Content-Disposition: filename="'.$saveasname.'"');
         } else {
             header('Content-Disposition: attachment; filename="'.$saveasname.'"');
         }
-    
+
         header('Pragma: cache');
     }
 
@@ -292,13 +292,13 @@ class advViews {
         } else {
             $_REQUEST['PDA_start'] = $this->pageStart;
         }
-    
+
         if(isset($_REQUEST['PDA_section'])) {
             $this->pageSection = $_REQUEST['PDA_section'];
         } else {
             $_REQUEST['PDA_section'] = $this->pageSection;
         }
-    
+
         if(isset($_REQUEST['PDA_limit'])) {
             $this->pageLimit = $_REQUEST['PDA_limit'];
         } else {
@@ -309,9 +309,9 @@ class advViews {
         $listTags['FILENAME_LABEL'] = dgettext('phatform', 'Filename');
         $listTags['DATE_LABEL'] = dgettext('phatform', 'Date Created');
         $listTags['ACTION_LABEL'] = dgettext('phatform', 'Action');
-    
+
         $highlight = ' class="bgcolor1"';
-    
+
         $files = array();
         $total_files = 0;
         $dir = PHPWS_HOME_DIR . 'files/phatform/export/';
@@ -346,7 +346,7 @@ class advViews {
                 $rowTags['FILENAME'] = $entry['filename'];
                 $rowTags['DATE'] = $entry['date'];
                 if(isset($entry['formId']))
-                    $rowTags['FORM_LABEL'] = $entry['formId'];
+                $rowTags['FORM_LABEL'] = $entry['formId'];
                 $rowTags['DOWNLOAD'] = '<a href="index.php?module=phatform&amp;EXPORT_OP=downloadExport&amp;EXPORT_filename=' . $entry['filename'] . '">' . dgettext('phatform', 'Download') . '</a>';
                 $rowTags['DELETE'] = '<a href="index.php?module=phatform&amp;EXPORT_OP=deleteExport&amp;EXPORT_filename=' . $entry['filename'] . '">' . dgettext('phatform', 'Delete') . '</a>';
                 if ($tog%2) {
@@ -359,22 +359,22 @@ class advViews {
             }
 
             if((count($files) > $this->pageLimit)) {
-                $listTags['NAVIGATION_LINKS'] = $data[1]; 
+                $listTags['NAVIGATION_LINKS'] = $data[1];
             }
-      
+
             $listTags['SECTION_INFO'] = $data[2];
             $listTags['SECTION_INFO_LABEL'] = dgettext('phatform', 'Entries');
             $listTags['LINK_BACK'] = '<a href="./index.php?module=phatform&amp;PHAT_FORM_OP=report">' . dgettext('phatform', 'Report View') . '</a>';
         } else {
             $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . dgettext('phatform', 'No entries were found matching your search query.') . '</td></tr>';
-        }      
+        }
 
         $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Existing Exports');
         return PHPWS_Template::processTemplate($listTags, 'phatform', 'report/export/list.tpl');
     }
 
     function getArchiveFormName($filename, $formId) {
-        $path = PHPWS_HOME_DIR . 'files/phatform/archive/' . $filename;      
+        $path = PHPWS_HOME_DIR . 'files/phatform/archive/' . $filename;
         if(is_file($path)) {
             $fileContent = file($path);
         } else {
@@ -391,13 +391,13 @@ class advViews {
             if(stristr($line, "INSERT INTO mod_phatform_forms VALUES ($formId")) {
                 $insertValues = explode(',', $line);
                 if(!empty($insertValues[4]))
-                    return $insertValues[4];
+                return $insertValues[4];
                 else
-                    return false;
+                return false;
             }
         }
 
-        return false;    
+        return false;
     }
 
     function viewArchives() {
@@ -406,13 +406,13 @@ class advViews {
         } else {
             $_REQUEST['PDA_start'] = $this->pageStart;
         }
-    
+
         if(isset($_REQUEST['PDA_section'])) {
             $this->pageSection = $_REQUEST['PDA_section'];
         } else {
             $_REQUEST['PDA_section'] = $this->pageSection;
         }
-    
+
         if(isset($_REQUEST['PDA_limit'])) {
             $this->pageLimit = $_REQUEST['PDA_limit'];
         } else {
@@ -425,7 +425,7 @@ class advViews {
         $listTags['DATE_LABEL'] = dgettext('phatform', 'Date Created');
         $listTags['ACTION_LABEL'] = dgettext('phatform', 'Action');
         $highlight = ' class="bgcolor1"';
-    
+
         $files = array();
         $total_files = 0;
         $dir = PHPWS_HOME_DIR . 'files/phatform/archive/';
@@ -456,9 +456,9 @@ class advViews {
                 ereg('^([0-9]+)', $entry['filename'], $formNum);
 
                 if($formname = $this->getArchiveFormName($entry['filename'], $formNum[0]))
-                    $rowTags['FORMNAME']  = $formname;
+                $rowTags['FORMNAME']  = $formname;
                 else
-                    $rowTags['FORMNAME'] = dgettext('phatform', 'Unknown');
+                $rowTags['FORMNAME'] = dgettext('phatform', 'Unknown');
 
                 $rowTags['HIGHLIGHT'] = $highlight;
                 $rowTags['FILENAME'] = $entry['filename'];
@@ -473,7 +473,7 @@ class advViews {
                 }
 
                 $rowTags['DELETE'] = '<a href="index.php?module=phatform&amp;ARCHIVE_OP=deleteArchive&amp;ARCHIVE_filename=' . $entry['filename'] . '">' . dgettext('phatform', 'Delete') . '</a>';
-                
+
                 if ($tog%2) {
                     $highlight = ' class="bgcolor1"';
                 } else {
@@ -482,18 +482,18 @@ class advViews {
                 $tog++;
                 $listTags['LIST_ITEMS'] .= PHPWS_Template::processTemplate($rowTags, 'phatform', 'report/archive/row.tpl');
             }
-      
+
             if((count($files) > $this->pageLimit)) {
-                $listTags['NAVIGATION_LINKS'] = $data[1]; 
+                $listTags['NAVIGATION_LINKS'] = $data[1];
             }
-      
+
             $listTags['SECTION_INFO'] = $data[2];
             $listTags['SECTION_INFO_LABEL'] = dgettext('phatform', 'Entries');
             $listTags['LINK_BACK'] = '<a href="index.php?module=phatform&amp;PHAT_FORM_OP=report">' . dgettext('phatform', 'Report View') . '</a>';
         } else {
 
             $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . dgettext('phatform', 'No entries were found matching your search query.') . '</td></tr>';
-        }      
+        }
 
         $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Existing Archives');
         return PHPWS_Template::processTemplate($listTags, 'phatform', 'report/archive/list.tpl');
@@ -513,11 +513,11 @@ class advViews {
                         return dgettext('phatform', 'Successfully deleted table associated with the archive with filename ') . "<b>'". $_REQUEST['ARCHIVE_filename'] . "'</b>.";
                     }
                     else {
-                        return dgettext('phatform', 'There was a problem deleting viewing archive table associated for filename ') . "<b>'".$_REQUEST['ARCHIVE_filename'] . "'</b>.";       
+                        return dgettext('phatform', 'There was a problem deleting viewing archive table associated for filename ') . "<b>'".$_REQUEST['ARCHIVE_filename'] . "'</b>.";
                     }
 
                 } else {
-                    return dgettext('phatform', 'There was a problem deleting viewing archive table associated for filename ') . "<b>'".$_REQUEST['ARCHIVE_filename'] . "'</b>.";   
+                    return dgettext('phatform', 'There was a problem deleting viewing archive table associated for filename ') . "<b>'".$_REQUEST['ARCHIVE_filename'] . "'</b>.";
                 }
             }
         }
@@ -525,43 +525,43 @@ class advViews {
 
     function exportActions() {
         switch($_REQUEST['EXPORT_OP']) {
-        case 'downloadExport':
-            $content  = $_SESSION['PHAT_FormManager']->menu();
-            $content .= $_SESSION['PHAT_advViews']->downloadExistingExport();
-            break;
+            case 'downloadExport':
+                $content  = $_SESSION['PHAT_FormManager']->menu();
+                $content .= $_SESSION['PHAT_advViews']->downloadExistingExport();
+                break;
 
-        case 'deleteExport':
-            $content  = $_SESSION['PHAT_FormManager']->menu();
-            $content .= $_SESSION['PHAT_advViews']->deleteExport();
-            break;
+            case 'deleteExport':
+                $content  = $_SESSION['PHAT_FormManager']->menu();
+                $content .= $_SESSION['PHAT_advViews']->deleteExport();
+                break;
         }
-    
+
         $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Existing Exports');
         $GLOBALS['CNT_phatform']['content'] = $content;
     }
 
     function archiveActions() {
         switch($_REQUEST['ARCHIVE_OP']) {
-        case 'downloadArchive':
-            $content  = $_SESSION['PHAT_FormManager']->menu();
-            $content .= $_SESSION['PHAT_advViews']->downloadExistingArchive();      
-            break;
+            case 'downloadArchive':
+                $content  = $_SESSION['PHAT_FormManager']->menu();
+                $content .= $_SESSION['PHAT_advViews']->downloadExistingArchive();
+                break;
 
-        case 'viewArchive':
-            $content = $_SESSION['PHAT_advViews']->viewArchive();            
-            break;
+            case 'viewArchive':
+                $content = $_SESSION['PHAT_advViews']->viewArchive();
+                break;
 
-        case 'deleteArchive':
-            $content  = $_SESSION['PHAT_FormManager']->menu();
-            $content .= $_SESSION['PHAT_advViews']->deleteArchive();      
-            break;
+            case 'deleteArchive':
+                $content  = $_SESSION['PHAT_FormManager']->menu();
+                $content .= $_SESSION['PHAT_advViews']->deleteArchive();
+                break;
 
-        case 'cleanUpArchive':
-            $content  = $_SESSION['PHAT_FormManager']->menu();
-            $content .= $_SESSION['PHAT_advViews']->cleanUpArchive();      
-            $content .= '<br /><br />';
-            $content .= $_SESSION['PHAT_advViews']->viewArchives();
-            break;
+            case 'cleanUpArchive':
+                $content  = $_SESSION['PHAT_FormManager']->menu();
+                $content .= $_SESSION['PHAT_advViews']->cleanUpArchive();
+                $content .= '<br /><br />';
+                $content .= $_SESSION['PHAT_advViews']->viewArchives();
+                break;
         }
 
         $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Existing Archives');
@@ -573,7 +573,7 @@ class advViews {
 
 /**
  * paginateDataArray
- * 
+ *
  * This function will paginate an array of data. While using this function remember to always pass it the same content array
  * and DO NOT alter array during usage unless you are starting back at zero.
  *
@@ -589,28 +589,28 @@ class advViews {
  * @access public
  */
 function paginateDataArray($content, $link_back, $default_limit=10, $make_sections=FALSE, $curr_sec_decor=NULL, $link_class=NULL, $break_point=20, $return_array=FALSE){
-    
+
     if (is_null($curr_sec_decor))
-        $curr_sec_decor = array("<b>[ ", " ]</b>");
+    $curr_sec_decor = array("<b>[ ", " ]</b>");
 
     if(isset($_REQUEST['PDA_limit'])){
         $limit = $_REQUEST['PDA_limit'];
     } else {
         $limit = $default_limit;
     }
-    
+
     if(isset($_REQUEST['PDA_start'])){
         $start = $_REQUEST['PDA_start'];
     } else {
         $start = 0;
     }
-    
+
     if(isset($_REQUEST['PDA_section'])){
         $current_section = $_REQUEST['PDA_section'];
     } else {
         $current_section = 1;
     }
-  
+
     if(is_array($content)){
         $numrows = count($content);
         $sections = ceil($numrows / $limit);
@@ -620,7 +620,7 @@ function paginateDataArray($content, $link_back, $default_limit=10, $make_sectio
         $nav_links = "";
         $item_count = 0;
         $pad = 3;
-      
+
         if (isset($link_class)) {
             $link_class = " class=\"$link_class\"";
         }
@@ -644,7 +644,7 @@ function paginateDataArray($content, $link_back, $default_limit=10, $make_sectio
         } else {
             $nav_links = "<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($start - $limit) . "&#38;PDA_section=" . ($current_section - 1). "\"" . $link_class . "\" title=\"&#60;&#60;\">&#60;&#60;</a>\n";
         }
-      
+
         if($make_sections && ($sections <= $break_point)){
             for($x = 1; $x <= $sections; $x++){
                 if($x == $current_section){
@@ -678,18 +678,18 @@ function paginateDataArray($content, $link_back, $default_limit=10, $make_sectio
             $nav_links .= "<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($start + $limit) . "&#38;PDA_section=" . ($current_section + 1) . "\"" . $link_class . "\" title=\"&#62;&#62;\">&#62;&#62;</a>\n";
             $section_info = ($start + 1) . " - " . ($start + $limit) . ' ' . dgettext('phatform','of') . ' ' .$numrows . "\n";
         }
-      
+
     } else {
         exit("Argument 1 to function paginateDataArray not an array.");
     }
-    
+
 
     if($return_array) {
         return array(0=>$array_of_items, 1=>$nav_links, 2=>$section_info);
     } else {
         return array("0"=>"$string_of_items", "1"=>"$nav_links", "2"=>"$section_info");
     }
-  }// END FUNC paginateDataArray()
+}// END FUNC paginateDataArray()
 
 
 ?>

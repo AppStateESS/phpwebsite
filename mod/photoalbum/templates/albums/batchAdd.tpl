@@ -1,6 +1,9 @@
-{BACK_LINK}<br /><br />
-{START_FORM}
-{NUM_FORMS_TEXT}: {NUM_FORMS}&#160;&#160;{PHOTOS_UPDATE}<br /><br />
-{PHOTO_FORMS}<br />
-{PHOTOS_SAVE}
-{END_FORM}
+{BACK_LINK}
+<br />
+<br />
+{START_FORM} {NUM_FORMS_TEXT}: {NUM_FORMS}&#160;&#160;{PHOTOS_UPDATE}
+<br />
+<br />
+{PHOTO_FORMS}
+<br />
+{PHOTOS_SAVE} {END_FORM}

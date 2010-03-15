@@ -144,13 +144,13 @@ class PHPWS_Panel{
         $itemname = $this->getItemname();
 
         if (isset($_REQUEST['tab']) &&
-            isset($this->tabs[$_REQUEST['tab']]) &&
-            $itemname == $this->tabs[$_REQUEST['tab']]->itemname)
-            $this->setCurrentTab($_REQUEST['tab']);
+        isset($this->tabs[$_REQUEST['tab']]) &&
+        $itemname == $this->tabs[$_REQUEST['tab']]->itemname)
+        $this->setCurrentTab($_REQUEST['tab']);
 
 
         if (isset($_SESSION['Panel_Current_Tab'][$itemname]))
-            return $_SESSION['Panel_Current_Tab'][$itemname];
+        return $_SESSION['Panel_Current_Tab'][$itemname];
         else {
             $currentTab = $this->getFirstTab();
             $this->setCurrentTab($currentTab);

@@ -5,8 +5,8 @@
  */
 
 if (!Current_User::isDeity()){
-  header("location:index.php");
-  exit();
+    header("location:index.php");
+    exit();
 }
 
 function photoalbum_uninstall(&$content) {

@@ -152,7 +152,7 @@ class Signup_Slot {
             if ($slot->id == $this->id) {
                 continue;
             } elseif (!isset($total_slots[$slot->id]) ||
-                      $slot->openings != $total_slots[$slot->id]) {
+            $slot->openings != $total_slots[$slot->id]) {
                 $options[$slot->id] = $slot->title;
             }
         }
@@ -243,7 +243,7 @@ class Signup_Slot {
 
         javascript('close_refresh', array('use_link'=>1));
         $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="closeWindow(); return false" />',
-                                dgettext('signup', 'Close'));
+        dgettext('signup', 'Close'));
         return $tpl;
     }
 

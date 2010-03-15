@@ -1,16 +1,16 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Adam Morton
-   * @author Steven Levin
-   */
+/**
+ * @version $Id$
+ * @author Adam Morton
+ * @author Steven Levin
+ */
 
 function archive($formId = NULL) {
     if(!isset($formId)) {
         $message = dgettext('phatform', 'No form ID was passed');
         return new PHPWS_Error('phatform', 'archive()', $message, 'continue', PHAT_DEBUG_MODE);
     }
- 
+
     $archiveDir = PHPWS_HOME_DIR . 'files/phatform/archive/';
     $path = $archiveDir;
 
@@ -47,18 +47,18 @@ function archive($formId = NULL) {
     $table[] = 'mod_phatform_textfield';
     $table[] = 'mod_phatform_textfield_seq';
 
-    
+
     $step1 = explode('//', PHPWS_DSN);
-    
+
     $step2 = explode('@', $step1[1]);
-    
+
     $step3 = explode(':', $step2[0]);
-    
+
     $step4 = explode('/', $step2[1]);
-    
+
     $dbuser = $step3[0];
     $dbpass = $step3[1];
-    
+
     $dbhost = $step4[0];
     $dbname = $step4[1];
 

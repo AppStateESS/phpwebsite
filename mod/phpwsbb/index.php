@@ -27,7 +27,7 @@ if (Current_User::isLogged()) {
             Layout::add(PHPWS_Error::printError($result));
             return;
         }
-    	// if User doesn't have an activity entry yet.  Create one.
+        // if User doesn't have an activity entry yet.  Create one.
         if (empty($result)) {
             $db->reset();
             $db->addValue('user_id', Current_User::getId());
@@ -37,10 +37,10 @@ if (Current_User::isLogged()) {
             $result['last_on'] = 0;
             $result['last_activity'] = time();
         }
-    	$db->reset();
+        $db->reset();
         $session_lifetime = ini_get('session.gc_maxlifetime');
         $since = time() - $session_lifetime;
-    	// if the last activity was in a previous session, update last_on
+        // if the last activity was in a previous session, update last_on
 
         if ($result['last_activity'] < $since) {
             $db->addValue('last_on', $result['last_activity']);
@@ -80,28 +80,28 @@ if (isset($_REQUEST['BB_vars']))
 // Basic view public function request
 if (!empty($_GET['view'])) {
     switch ($_GET['view']) {
-    case 'topic':
-        $topic = & new PHPWSBB_Topic((int) $_GET['id']);
-        if ($topic->id) {
-            $title = $topic->get_title();
-            $content = $topic->view();
-        }
-        else {
-            $message = dgettext('phpwsbb', "This topic doesn't exist.  Please check the address you entered.");
-        }
-        break;
+        case 'topic':
+            $topic = & new PHPWSBB_Topic((int) $_GET['id']);
+            if ($topic->id) {
+                $title = $topic->get_title();
+                $content = $topic->view();
+            }
+            else {
+                $message = dgettext('phpwsbb', "This topic doesn't exist.  Please check the address you entered.");
+            }
+            break;
 
-    case 'forum':
-        $forum = new PHPWSBB_Forum((int) $_GET['id']);
-        if ($forum->id) {
-            $title = $forum->get_title();
-            $content = $forum->view();
-        }
-        else {
-            $message = dgettext('phpwsbb', "This forum doesn't exist.  Please check the address you entered.");
-            $content = '<br />';
-        }
-        break;
+        case 'forum':
+            $forum = new PHPWSBB_Forum((int) $_GET['id']);
+            if ($forum->id) {
+                $title = $forum->get_title();
+                $content = $forum->view();
+            }
+            else {
+                $message = dgettext('phpwsbb', "This forum doesn't exist.  Please check the address you entered.");
+                $content = '<br />';
+            }
+            break;
     }
 }
 
@@ -121,127 +121,127 @@ elseif (!empty($_REQUEST['op'])) {
     }
 
     switch ($_REQUEST['op']) {
-    case 'create_topic':
-        $topic = new PHPWSBB_Topic();
-        $topic->fid = $forum->id;
-        $title = sprintf(dgettext('phpwsbb', 'Create a New Topic in Forum "%s"'), $forum->get_title());
-        $content = $topic->edit();
-    	break;
-
-    case 'save_topic':
-        // Make sure that we can save this topic
-        if (empty($forum) || !$forum->can_post()) {
-            $message = dgettext('phpwsbb', 'You are not authorized to save topics in this forum.');
-            Security::log($GLOBALS['BB_message']);
-            break;
-        }
-        $topic = & new PHPWSBB_Topic();
-        if ($topic->create($forum->id) !== true) {
-            $message = $topic->_error;
-            $title = sprintf(dgettext('phpwsbb', 'Editing Topic "%s"'), $topic->get_title());
+        case 'create_topic':
+            $topic = new PHPWSBB_Topic();
+            $topic->fid = $forum->id;
+            $title = sprintf(dgettext('phpwsbb', 'Create a New Topic in Forum "%s"'), $forum->get_title());
             $content = $topic->edit();
             break;
-        }
-        $title = $topic->get_title();
-        $content = $topic->view();
-        $_SESSION['DBPager_Last_View']['comments_items'] = 'index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id;
-        unset($message);
-    	break;
 
-    case 'getnew':
-        if (!empty($_SESSION['phpwsbb_last_on'])) {
-            $since = $_SESSION['phpwsbb_last_on'];
-        } else {
-            $since = mktime();
-        }
-
-        $title = sprintf(dgettext('phpwsbb', 'New Posts Since My Last Visit (%s)'), PHPWSBB_Data::get_long_date($since));
-        PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
-        $content = PHPWSBB_Lists::search_threads('since', $since);
-        Layout::addPageTitle($title);
-    	break;
-
-    case 'viewtoday':
-        $since = strtotime('00:00 today');
-        $title = dgettext('phpwsbb', 'Today\'s Posts');
-        PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
-        $content = PHPWSBB_Lists::search_threads('since', $since);
-        Layout::addPageTitle($title);
-    	break;
-
-    case 'viewweek':
-        $since = strtotime('last monday');
-        $title = dgettext('phpwsbb', 'This Week\'s Posts');
-        PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
-        $content = PHPWSBB_Lists::search_threads('since', $since);
-        Layout::addPageTitle($title);
-    	break;
-
-    case 'viewzerothreads':
-        $title = dgettext('phpwsbb', 'Threads with no replies');
-        PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
-        $content = PHPWSBB_Lists::search_threads('zerothreads');
-        Layout::addPageTitle($title);
-    	break;
-
-    case 'viewuserthreads':
-        PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
-        if (isset($_REQUEST['user'])) {
-            $title = sprintf(dgettext('phpwsbb', 'Topics started by %s'), $_REQUEST['username']);
-            $content = PHPWSBB_Lists::search_threads('userthreads', (int) $_REQUEST['user']);
-        } else {
-            $title = dgettext('phpwsbb', 'My Topics');
-            $content = PHPWSBB_Lists::search_threads('userthreads', Current_User::getId());
-        }
-        Layout::addPageTitle($title);
-    	break;
-
-    case 'viewlockedthreads':
-        $title = dgettext('phpwsbb', 'Locked Threads');
-        PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
-        $content = PHPWSBB_Lists::search_threads('lockedthreads');
-        Layout::addPageTitle($title);
-    	break;
-
-        /*
-        case 'fill_topic':  // For diagnostic use only! Creates test comments in a topic
-        // Make sure that we can save this topic
-            if (empty($topic) || empty($forum) || !$forum->can_post()) {
-                $message = dgettext('phpwsbb', 'You are not authorized to post here.');
+        case 'save_topic':
+            // Make sure that we can save this topic
+            if (empty($forum) || !$forum->can_post()) {
+                $message = dgettext('phpwsbb', 'You are not authorized to save topics in this forum.');
                 Security::log($GLOBALS['BB_message']);
                 break;
             }
-            // Load the topic's comment list
-            include(PHPWS_SOURCE_DIR . 'mod/phpwsbb/inc/'. $_REQUEST['template'] .'.php');
-            if (empty($comment_list)) {
-                $message = 'Invalid Template File.';
+            $topic = & new PHPWSBB_Topic();
+            if ($topic->create($forum->id) !== true) {
+                $message = $topic->_error;
+                $title = sprintf(dgettext('phpwsbb', 'Editing Topic "%s"'), $topic->get_title());
+                $content = $topic->edit();
                 break;
             }
-            // Load a list of all user ids
-            $db = new PHPWS_DB('users');
-            $db->addColumn('id');
-            $list = $db->select('col');
-            PHPWS_Error::logIfError($list);
-            $listsize = count($list) - 1;
-            // Create all requested comments
-            foreach ($comment_list AS $comment) {
-            // If non is specified, pick a random user as author
-                if (!$comment['author_id'] && empty($comment['anon_name']))
-                    $comment['author_id'] = $list[rand(0, $listsize)];
-                PHPWSBB_Data::create_comment($topic->id, $comment['subject'], $comment['entry'], $comment['author_id'], $comment['anon_name']);
-                sleep(1);
-            }
-            // reload & show the topic
-            $topic = & new PHPWSBB_Topic($topic->id);
             $title = $topic->get_title();
             $content = $topic->view();
-        break;
-        */
-    default:
-        // If none of these actions were requested & user is an admin..
-        if (Current_User::authorized('comments')) {
-            include(PHPWS_SOURCE_DIR . 'mod/phpwsbb/index_admin.php');
-        }
+            $_SESSION['DBPager_Last_View']['comments_items'] = 'index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id;
+            unset($message);
+            break;
+
+        case 'getnew':
+            if (!empty($_SESSION['phpwsbb_last_on'])) {
+                $since = $_SESSION['phpwsbb_last_on'];
+            } else {
+                $since = mktime();
+            }
+
+            $title = sprintf(dgettext('phpwsbb', 'New Posts Since My Last Visit (%s)'), PHPWSBB_Data::get_long_date($since));
+            PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
+            $content = PHPWSBB_Lists::search_threads('since', $since);
+            Layout::addPageTitle($title);
+            break;
+
+        case 'viewtoday':
+            $since = strtotime('00:00 today');
+            $title = dgettext('phpwsbb', 'Today\'s Posts');
+            PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
+            $content = PHPWSBB_Lists::search_threads('since', $since);
+            Layout::addPageTitle($title);
+            break;
+
+        case 'viewweek':
+            $since = strtotime('last monday');
+            $title = dgettext('phpwsbb', 'This Week\'s Posts');
+            PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
+            $content = PHPWSBB_Lists::search_threads('since', $since);
+            Layout::addPageTitle($title);
+            break;
+
+        case 'viewzerothreads':
+            $title = dgettext('phpwsbb', 'Threads with no replies');
+            PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
+            $content = PHPWSBB_Lists::search_threads('zerothreads');
+            Layout::addPageTitle($title);
+            break;
+
+        case 'viewuserthreads':
+            PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
+            if (isset($_REQUEST['user'])) {
+                $title = sprintf(dgettext('phpwsbb', 'Topics started by %s'), $_REQUEST['username']);
+                $content = PHPWSBB_Lists::search_threads('userthreads', (int) $_REQUEST['user']);
+            } else {
+                $title = dgettext('phpwsbb', 'My Topics');
+                $content = PHPWSBB_Lists::search_threads('userthreads', Current_User::getId());
+            }
+            Layout::addPageTitle($title);
+            break;
+
+        case 'viewlockedthreads':
+            $title = dgettext('phpwsbb', 'Locked Threads');
+            PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
+            $content = PHPWSBB_Lists::search_threads('lockedthreads');
+            Layout::addPageTitle($title);
+            break;
+
+            /*
+             case 'fill_topic':  // For diagnostic use only! Creates test comments in a topic
+             // Make sure that we can save this topic
+             if (empty($topic) || empty($forum) || !$forum->can_post()) {
+             $message = dgettext('phpwsbb', 'You are not authorized to post here.');
+             Security::log($GLOBALS['BB_message']);
+             break;
+             }
+             // Load the topic's comment list
+             include(PHPWS_SOURCE_DIR . 'mod/phpwsbb/inc/'. $_REQUEST['template'] .'.php');
+             if (empty($comment_list)) {
+             $message = 'Invalid Template File.';
+             break;
+             }
+             // Load a list of all user ids
+             $db = new PHPWS_DB('users');
+             $db->addColumn('id');
+             $list = $db->select('col');
+             PHPWS_Error::logIfError($list);
+             $listsize = count($list) - 1;
+             // Create all requested comments
+             foreach ($comment_list AS $comment) {
+             // If non is specified, pick a random user as author
+             if (!$comment['author_id'] && empty($comment['anon_name']))
+             $comment['author_id'] = $list[rand(0, $listsize)];
+             PHPWSBB_Data::create_comment($topic->id, $comment['subject'], $comment['entry'], $comment['author_id'], $comment['anon_name']);
+             sleep(1);
+             }
+             // reload & show the topic
+             $topic = & new PHPWSBB_Topic($topic->id);
+             $title = $topic->get_title();
+             $content = $topic->view();
+             break;
+             */
+        default:
+            // If none of these actions were requested & user is an admin..
+            if (Current_User::authorized('comments')) {
+                include(PHPWS_SOURCE_DIR . 'mod/phpwsbb/index_admin.php');
+            }
     }
 }
 
@@ -256,17 +256,17 @@ if (empty($content)) {
 /* Show the MiniAdmin */
 PHPWSBB_Data::MiniAdmin();
 if (!empty($topic))
- $topic->MiniAdmin();
- if (!empty($forum))
- $forum->MiniAdmin();
+$topic->MiniAdmin();
+if (!empty($forum))
+$forum->MiniAdmin();
 
- /* Show generated content */
+/* Show generated content */
 if (!empty($title))
-    $template['TITLE']   = $title;
+$template['TITLE']   = $title;
 if (!empty($message))
-    $template['MESSAGE'] = $message;
+$template['MESSAGE'] = $message;
 if (!empty($content))
-    $template['CONTENT'] = $content;
+$template['CONTENT'] = $content;
 $content = PHPWS_Template::process($template, 'phpwsbb', 'main.tpl');
 // Release module vars
 unset($topic, $forum, $title, $message, $template,$GLOBALS['Moderators_byForum'], $GLOBALS['Moderators_byUser'],
@@ -277,4 +277,4 @@ unset($thread,$GLOBALS['Comment_Users'],$GLOBALS['Comment_UsersGroups'],$GLOBALS
 Layout::add($content);
 unset($content);
 
- ?>
+?>

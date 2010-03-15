@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 class Version_Restore {
     public $source_table  = NULL;
@@ -131,7 +131,7 @@ class Version_Restore {
 
             if (Current_User::isUnrestricted($this->module)) {
                 $links[] = sprintf('<a href="%s">%s</a>',
-                                   $this->restore_url . '&amp;version_id=' . $version['id'], dgettext('version', 'Restore'));
+                $this->restore_url . '&amp;version_id=' . $version['id'], dgettext('version', 'Restore'));
 
                 $jsvars['QUESTION'] = dgettext('version', 'Are you sure you want to remove this version?');
                 $jsvars['ADDRESS']  = $this->remove_url . '&amp;version_id=' . $version['id'];

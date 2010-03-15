@@ -1,12 +1,10 @@
-{HOME_LINK} :: 
+{HOME_LINK} ::
 <!-- BEGIN CATEGORY -->
-{CATEGORY_LINKS} :: 
+{CATEGORY_LINKS} ::
 <!-- END CATEGORY -->
 {FORUM_TITLE_LINK} :: {THREAD_TITLE_LINK}
-
 <br />
 <br />
-
 <!-- BEGIN NONLOCAL -->
 {REFER_DESCRIPTION}
 <br />
@@ -16,4 +14,3 @@
 <br />
 <!-- END REFER -->
 <!-- END NONLOCAL -->
-

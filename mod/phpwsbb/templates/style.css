@@ -1,42 +1,46 @@
-.phpwsbb_add_topic_link, .phpwsbb_go_new_message_link, .phpwsbb_new_messages,.phpwsbb_no_new_messages, .phpwsbb_hot_topic, 
-.phpwsbb_locked, .phpwsbb_sticky, .phpwsbb_subscribed, .phpwsbb_go_forum_new_message_link, .phpwsbb_forum_new_messages, 
-.phpwsbb_forum_no_new_messages, .phpwsbb_forum_locked 
-{
+.phpwsbb_add_topic_link,.phpwsbb_go_new_message_link,.phpwsbb_new_messages,.phpwsbb_no_new_messages,.phpwsbb_hot_topic,.phpwsbb_locked,.phpwsbb_sticky,.phpwsbb_subscribed,.phpwsbb_go_forum_new_message_link,.phpwsbb_forum_new_messages,.phpwsbb_forum_no_new_messages,.phpwsbb_forum_locked
+    {
     display: block;
     background-repeat: no-repeat;
     background-position: 100%;
 }
 
 a.phpwsbb_add_topic_link {
-    display:block;
-    float:left;
+    display: block;
+    float: left;
     background-image: url(../../images/mod/phpwsbb/green-right.png);
-    padding-right:8px;
+    padding-right: 8px;
     margin: 0 .5em;
 }
+
 a.phpwsbb_add_topic_link:hover span {
-    color : yellow;
-    text-decoration : none;
+    color: yellow;
+    text-decoration: none;
 }
-a.phpwsbb_add_topic_link span { 
-    display:block;
-    padding:0 10px 0 18px;
-    background:transparent url(../../images/mod/phpwsbb/green-left.png);
-    line-height:30px;
-    color : white;
+
+a.phpwsbb_add_topic_link span {
+    display: block;
+    padding: 0 10px 0 18px;
+    background: transparent url(../../images/mod/phpwsbb/green-left.png);
+    line-height: 30px;
+    color: white;
 }
 
 a.phpwsbb_go_new_message_link {
-    float :left;
+    float: left;
     width: 16px;
     height: 16px;
     background-image: url(../../images/mod/phpwsbb/new_message.png);
     margin-right: .5em;
 }
-a.phpwsbb_go_new_message_link:hover {
-/*    background-color: #00ff00;*/
+
+a.phpwsbb_go_new_message_link:hover { /*    background-color: #00ff00;*/
+    
 }
-a.phpwsbb_go_new_message_link span { display : none; }
+
+a.phpwsbb_go_new_message_link span {
+    display: none;
+}
 
 div.phpwsbb_new_messages {
     display: block;
@@ -44,94 +48,126 @@ div.phpwsbb_new_messages {
     height: 16px;
     background-image: url(../../images/mod/phpwsbb/new_messages.png);
 }
-div.phpwsbb_new_messages span { display : none; }
+
+div.phpwsbb_new_messages span {
+    display: none;
+}
 
 div.phpwsbb_no_new_messages {
     width: 16px;
     height: 16px;
     background-image: url(../../images/mod/phpwsbb/no_new_messages.png);
 }
-div.phpwsbb_no_new_messages span { display : none; }
+
+div.phpwsbb_no_new_messages span {
+    display: none;
+}
 
 div.phpwsbb_hot_topic {
-    float :left;
+    float: left;
     width: 20px;
     height: 20px;
     background-image: url(../../images/mod/phpwsbb/hot.png);
     margin: 0 .5em;
 }
-div.phpwsbb_hot_topic span { display : none; }
+
+div.phpwsbb_hot_topic span {
+    display: none;
+}
 
 div.phpwsbb_locked {
-    float :left;
+    float: left;
     width: 16px;
     height: 16px;
     background-image: url(../../images/mod/phpwsbb/locked.png);
     margin: 0 .5em;
 }
-div.phpwsbb_locked span { display : none; }
+
+div.phpwsbb_locked span {
+    display: none;
+}
 
 div.phpwsbb_sticky {
-    float :left;
+    float: left;
     width: 16px;
     height: 16px;
     background-image: url(../../images/mod/phpwsbb/sticky.png);
     margin: 0 1em;
 }
-div.phpwsbb_sticky span { display : none; }
+
+div.phpwsbb_sticky span {
+    display: none;
+}
 
 div.phpwsbb_subscribed {
-    float :left;
+    float: left;
     width: 16px;
     height: 16px;
     background-image: url(../../images/mod/phpwsbb/subscribed.png);
     margin: 0 .5em;
 }
-div.phpwsbb_subscribed span { display : none; }
+
+div.phpwsbb_subscribed span {
+    display: none;
+}
 
 a.phpwsbb_go_forum_new_message_link {
-    float :left;
+    float: left;
     width: 16px;
     height: 16px;
     background-image: url(../../images/mod/phpwsbb/new_message.png);
     margin-right: .5em;
 }
+
 a.phpwsbb_go_forum_new_message_link:hover {
-/*    background-color: #00ff00;*/
+    /*    background-color: #00ff00;*/
+    
 }
-a.phpwsbb_go_forum_new_message_link span { display : none; }
+
+a.phpwsbb_go_forum_new_message_link span {
+    display: none;
+}
 
 div.phpwsbb_forum_new_messages {
     width: 16px;
     height: 16px;
     background-image: url(../../images/mod/phpwsbb/new_messages.png);
 }
-div.phpwsbb_forum_new_messages span { display : none; }
+
+div.phpwsbb_forum_new_messages span {
+    display: none;
+}
 
 div.phpwsbb_forum_no_new_messages {
     width: 16px;
     height: 16px;
     background-image: url(../../images/mod/phpwsbb/no_new_messages.png);
 }
-div.phpwsbb_forum_no_new_messages span { display : none; }
+
+div.phpwsbb_forum_no_new_messages span {
+    display: none;
+}
 
 div.phpwsbb_forum_locked {
-    float :left;
+    float: left;
     width: 16px;
     height: 16px;
     background-image: url(../../images/mod/phpwsbb/locked.png);
     margin: 0 .5em;
 }
-div.phpwsbb_forum_locked span { display : none; }
+
+div.phpwsbb_forum_locked span {
+    display: none;
+}
 
 table.phpwsbb {
     border-style: solid;
     border-width: 1.5px;
-    width : 100%;
+    width: 100%;
 }
 
 table.phpwsbb td {
     border-style: solid;
     border-width: 1px;
-    border-color : grey;
+    border-color: grey;
 }

@@ -9,7 +9,7 @@ function comments_install(&$content)
     $rank = new Comment_Rank;
     $rank->group_name = 'All members';
     $rank->save();
-    
+
     PHPWS_Settings::set('comments', 'default_rank', $rank->id);
     PHPWS_Settings::save('comments');
     return true;

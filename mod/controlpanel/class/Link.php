@@ -21,12 +21,12 @@ class PHPWS_Panel_Link {
     public function __construct($id=null)
     {
         if (!isset($id))
-            return;
+        return;
 
         $this->setId($id);
         $result = $this->init();
         if (PEAR::isError($result))
-            PHPWS_Error::log($result);
+        PHPWS_Error::log($result);
     }
 
     public function init()
@@ -97,15 +97,9 @@ class PHPWS_Panel_Link {
             $authkey = null;
         }
 
-        $image_path = sprintf('mod/%s/img/%s', $this->itemname, $this->image);
-
-        if (is_file($image_path)) {
-            $image = sprintf('<img src="%s" title="%s" alt="%s" />',
-                             $image_path, $this->getLabel(),
-                             sprintf(dgettext('controlpanel', '%s module icon'), $this->getLabel()));
-        } else {
-            return null;
-        }
+        $image_path = sprintf('%smod/%s/img/%s', PHPWS_SOURCE_HTTP, $this->itemname, $this->image);
+            $image = sprintf('<img src="%s" title="%s" alt="%s" />', $image_path, $this->getLabel(),
+                sprintf(dgettext('controlpanel', '%s module icon'), $this->getLabel()));
 
         if ($linkable == true) {
             $image = sprintf('<a href="%s%s">%s</a>', $this->url, $authkey, $image);
@@ -131,7 +125,7 @@ class PHPWS_Panel_Link {
             return sprintf('<a href="%s%s">%s</a>', $this->url, $authkey, $this->getLabel());
         }
         else
-            return $this->url;
+        return $this->url;
     }
 
     public function setLinkOrder($order)
@@ -264,7 +258,7 @@ class PHPWS_Panel_Link {
         $db->addWhere('id', $this->id);
         $result = $db->delete();
         if (PEAR::isError($result))
-            return $result;
+        return $result;
 
         $db->reset();
         $db->addWhere('tab', $this->tab);
@@ -272,10 +266,10 @@ class PHPWS_Panel_Link {
         $result = $db->getObjects('PHPWS_Panel_Link');
 
         if (PEAR::isError($result))
-            return $result;
+        return $result;
 
         if (empty($result))
-            return true;
+        return true;
 
         $count = 1;
         foreach ($result as $link){

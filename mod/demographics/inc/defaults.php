@@ -1,26 +1,26 @@
 <?php
 
-  /**
-   * Default demographics fields
-   *
-   * It is assumed a developer will use fields from the list before reinventing
-   * fields for their module.
-   *
-   * Module field files should be structured just like this file.
-   * Each field can have the following charactistics
-   * 
-   *    type  - either text, smallint (use for boolean), or integer. if not set, 
-   *            defaults to char
-   *    limit - maximum characters allowed. 255 is the the maximum (Some databases
-   *            go over this, some don't) Ignored if type is boolean.
-   *
-   * The index of the array is the label for the field
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Default demographics fields
+ *
+ * It is assumed a developer will use fields from the list before reinventing
+ * fields for their module.
+ *
+ * Module field files should be structured just like this file.
+ * Each field can have the following charactistics
+ *
+ *    type  - either text, smallint (use for boolean), or integer. if not set,
+ *            defaults to char
+ *    limit - maximum characters allowed. 255 is the the maximum (Some databases
+ *            go over this, some don't) Ignored if type is boolean.
+ *
+ * The index of the array is the label for the field
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
-  /* ----- Personal information ----- */
+/* ----- Personal information ----- */
 $fields['courtesy_title']['limit'] = 20; // Mr. Mrs. Dr. Professor, Senator
 $fields['honorific']['limit']      = 20; // Esquire, the Third, the Barbarian
 $fields['first_name']['limit']     = 40;

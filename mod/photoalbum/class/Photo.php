@@ -1,10 +1,10 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author  Steven Levin <steven at NOSPAM tux[dot]appstate[dot]edu>
-   * @modified Verdon Vaillancourt
-   */
+/**
+ * @version $Id$
+ * @author  Steven Levin <steven at NOSPAM tux[dot]appstate[dot]edu>
+ * @modified Verdon Vaillancourt
+ */
 
 define('PHOTOALBUM_DUPLICATE_IMAGE', 2);
 
@@ -129,13 +129,13 @@ class PHPWS_Photo extends PHPWS_Item {
 
     public function _edit() {
         /*
-        if (empty($_SESSION['PHPWS_AlbumManager']->album->pager)) {
-            return null;
-        }
-        $PAGER_limit   = $_SESSION['PHPWS_AlbumManager']->album->pager->limit;
-        $PAGER_start   = $_SESSION['PHPWS_AlbumManager']->album->pager->start;
-        $PAGER_section = $_SESSION['PHPWS_AlbumManager']->album->pager->section;
-        */
+         if (empty($_SESSION['PHPWS_AlbumManager']->album->pager)) {
+         return null;
+         }
+         $PAGER_limit   = $_SESSION['PHPWS_AlbumManager']->album->pager->limit;
+         $PAGER_start   = $_SESSION['PHPWS_AlbumManager']->album->pager->start;
+         $PAGER_section = $_SESSION['PHPWS_AlbumManager']->album->pager->section;
+         */
 
         $id = $this->getId();
         $authorize = TRUE;
@@ -152,7 +152,7 @@ class PHPWS_Photo extends PHPWS_Item {
         }
 
         $options = array(0=>dgettext('photoalbum', 'Visible'),
-                         1=>dgettext('photoalbum', 'Hidden'));
+        1=>dgettext('photoalbum', 'Hidden'));
 
         $hidden = 0;
         if($this->isHidden()) {
@@ -185,10 +185,10 @@ class PHPWS_Photo extends PHPWS_Item {
 
         $form->add('module', 'hidden', 'photoalbum');
         /*
-        $form->add('PAGER_limit', 'hidden', $PAGER_limit);
-        $form->add('PAGER_start', 'hidden', $PAGER_start);
-        $form->add('PAGER_section', 'hidden', $PAGER_section);
-        */
+         $form->add('PAGER_limit', 'hidden', $PAGER_limit);
+         $form->add('PAGER_start', 'hidden', $PAGER_start);
+         $form->add('PAGER_section', 'hidden', $PAGER_section);
+         */
         $form->add('PHPWS_Photo_op', 'hidden', 'save');
 
         $tags = array();
@@ -211,14 +211,14 @@ class PHPWS_Photo extends PHPWS_Item {
         }
 
         /*
-        $getArray = array(
-                          'PHPWS_Album_op'=>'view',
-                          'PAGER_limit'   => $PAGER_limit,
-                          'PAGER_start'   => $PAGER_start,
-                          'PAGER_section' => $PAGER_section);
+         $getArray = array(
+         'PHPWS_Album_op'=>'view',
+         'PAGER_limit'   => $PAGER_limit,
+         'PAGER_start'   => $PAGER_start,
+         'PAGER_section' => $PAGER_section);
 
-        $tags['BACK_LINK'] = PHPWS_Text::moduleLink(dgettext('photoalbum', 'Back to album'), 'photoalbum', $getArray);
-        */
+         $tags['BACK_LINK'] = PHPWS_Text::moduleLink(dgettext('photoalbum', 'Back to album'), 'photoalbum', $getArray);
+         */
         $tags['BACK_LINK'] = PHPWS_Text::backLink();
 
         $tags['PHOTO_TEXT'] = dgettext('photoalbum', 'Upload Image');
@@ -256,7 +256,7 @@ class PHPWS_Photo extends PHPWS_Item {
         if(isset($_REQUEST['Photo_remove']) && ($_REQUEST['Photo_remove'] == 1)) {
             if($this->_unlink()) {
                 if(!isset($this->_label))
-                    $this->_label = '';
+                $this->_label = '';
 
                 $this->commit();
 
@@ -419,10 +419,10 @@ class PHPWS_Photo extends PHPWS_Item {
 
     public function _delete() {
         /*
-        $pagerSection= (int)$_SESSION['PHPWS_AlbumManager']->album->pager->section;
-        $pagerLimit  = (int)$_SESSION['PHPWS_AlbumManager']->album->pager->limit;
-        $pagerStart  = (int)$_SESSION['PHPWS_AlbumManager']->album->pager->start;
-        */
+         $pagerSection= (int)$_SESSION['PHPWS_AlbumManager']->album->pager->section;
+         $pagerLimit  = (int)$_SESSION['PHPWS_AlbumManager']->album->pager->limit;
+         $pagerStart  = (int)$_SESSION['PHPWS_AlbumManager']->album->pager->start;
+         */
 
         if(!Current_User::allow('photoalbum', 'delete_photo')) {
             Current_User::disallow();
@@ -447,9 +447,9 @@ class PHPWS_Photo extends PHPWS_Item {
             $_SESSION['PHPWS_AlbumManager']->message = $message;
 
             /*
-            $_REQUEST['PAGER_section'] = $pagerSection;
-            $_REQUEST['PAGER_start']   = $pagerStart;
-            */
+             $_REQUEST['PAGER_section'] = $pagerSection;
+             $_REQUEST['PAGER_start']   = $pagerStart;
+             */
 
             $_REQUEST['PHPWS_Album_op'] = 'view';
             $_SESSION['PHPWS_AlbumManager']->album->action();
@@ -462,18 +462,18 @@ class PHPWS_Photo extends PHPWS_Item {
             $form->add('PHPWS_Photo_op', 'hidden', 'delete');
 
             /*
-            $form->add('PAGER_limit', 'hidden', $pagerLimit);
+             $form->add('PAGER_limit', 'hidden', $pagerLimit);
 
-            if($_SESSION['PHPWS_AlbumManager']->album->pager->_itemCount == 1 &&
-               ($pagerSection != 1 || $pagerSection != 0)) {
-                $form->add('PAGER_section', 'hidden', $pagerSection - 1);
-                $form->add('PAGER_start', 'hidden', $pagerStart - $pagerLimit);
+             if($_SESSION['PHPWS_AlbumManager']->album->pager->_itemCount == 1 &&
+             ($pagerSection != 1 || $pagerSection != 0)) {
+             $form->add('PAGER_section', 'hidden', $pagerSection - 1);
+             $form->add('PAGER_start', 'hidden', $pagerStart - $pagerLimit);
 
-            } else {
-                $form->add('PAGER_section', 'hidden', $pagerSection);
-                $form->add('PAGER_start', 'hidden', $_SESSION['PHPWS_AlbumManager']->album->pager->start);
-            }
-            */
+             } else {
+             $form->add('PAGER_section', 'hidden', $pagerSection);
+             $form->add('PAGER_start', 'hidden', $_SESSION['PHPWS_AlbumManager']->album->pager->start);
+             }
+             */
 
             $form->add('Photo_yes', 'submit', dgettext('photoalbum', 'Yes'));
             $form->add('Photo_no', 'submit', dgettext('photoalbum', 'No'));
@@ -522,35 +522,35 @@ class PHPWS_Photo extends PHPWS_Item {
 
         if(isset($_REQUEST['PHPWS_Photo_op'])) {
             switch($_REQUEST['PHPWS_Photo_op']) {
-            case 'view':
-                $key = new Key($_SESSION['PHPWS_AlbumManager']->album->_key_id);
-                if (!$key->allowView()) {
-                    PHPWS_Core::errorPage('403');
-                }
-                $title = dgettext('photoalbum', 'View Photo');
-                $content = $this->_view();
-                break;
+                case 'view':
+                    $key = new Key($_SESSION['PHPWS_AlbumManager']->album->_key_id);
+                    if (!$key->allowView()) {
+                        PHPWS_Core::errorPage('403');
+                    }
+                    $title = dgettext('photoalbum', 'View Photo');
+                    $content = $this->_view();
+                    break;
 
-            case 'edit':
-                if($this->_id == NULL)
+                case 'edit':
+                    if($this->_id == NULL)
                     $title = dgettext('photoalbum', 'New Photo');
-                else
+                    else
                     $title = dgettext('photoalbum', 'Edit Photo');
 
-                $content = $this->_edit();
-                break;
+                    $content = $this->_edit();
+                    break;
 
-            case 'save':
-                $this->_save();
-                break;
+                case 'save':
+                    $this->_save();
+                    break;
 
-            case 'delete':
-                $this->_delete();
-                break;
+                case 'delete':
+                    $this->_delete();
+                    break;
 
-            case 'print':
-                $this->_print();
-                break;
+                case 'print':
+                    $this->_print();
+                    break;
             }
         }
 
@@ -570,10 +570,10 @@ class PHPWS_Photo extends PHPWS_Item {
 
         $link = PHPWS_Text::linkAddress('photoalbum', $vars);
         $tpl['THUMBNAIL'] = sprintf('<a href="%s"><img src="%s/%s" title="%s" width="%s" height="%s"/></a>',
-                                    $link,
-                                    $directory, $value['tnname'],
-                                    $value['label'], $value['tnwidth'],
-                                    $value['tnheight']);
+        $link,
+        $directory, $value['tnname'],
+        $value['label'], $value['tnwidth'],
+        $value['tnheight']);
 
         $tpl['TITLE'] = sprintf('<a href="%s">%s</a>', $link, $value['label']);
 

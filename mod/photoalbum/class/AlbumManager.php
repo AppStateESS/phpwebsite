@@ -1,10 +1,10 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author  Steven Levin <steven at NOSPAM tux[dot]appstate[dot]edu>
-   * @modified Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author  Steven Levin <steven at NOSPAM tux[dot]appstate[dot]edu>
+ * @modified Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 require_once(PHPWS_SOURCE_DIR . 'mod/photoalbum/class/Album.php');
 PHPWS_Core::initModClass('photoalbum', 'Message.php');
@@ -134,20 +134,20 @@ class PHPWS_AlbumManager {
 
         if(isset($_REQUEST['PHPWS_AlbumManager_op'])) {
             switch($_REQUEST['PHPWS_AlbumManager_op']) {
-            case 'list':
-                $this->_list();
-                break;
+                case 'list':
+                    $this->_list();
+                    break;
 
-            case 'new':
-                if (!Current_User::allow('photoalbum')) {
-                    Current_User::disallow();
-                }
-                $this->_new();
-                break;
+                case 'new':
+                    if (!Current_User::allow('photoalbum')) {
+                        Current_User::disallow();
+                    }
+                    $this->_new();
+                    break;
 
-            case 'accessDenied':
-                $this->_accessDenied();
-                break;
+                case 'accessDenied':
+                    $this->_accessDenied();
+                    break;
             }
         }
     }

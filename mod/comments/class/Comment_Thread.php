@@ -51,9 +51,9 @@ class Comment_Thread {
         $db->addColumn('comments_monitors.thread_id', null, 'monitored');
         $db->addColumn('comments_monitors.send_notice', null, 'send_notice');
         $db->addJoin('left', 'comments_threads', 'comments_monitors',
-                     array('comments_threads.id', 'comments_monitors.user_id'),
-                     array('comments_monitors.thread_id', Current_User::getId()),
-                     true);
+        array('comments_threads.id', 'comments_monitors.user_id'),
+        array('comments_monitors.thread_id', Current_User::getId()),
+        true);
         $db->addWhere('id', $this->id);
 
         $result = $db->loadObject($this);
@@ -116,9 +116,9 @@ class Comment_Thread {
         $db->addColumn('comments_monitors.send_notice', null, 'send_notice');
 
         $db->addJoin('left', 'comments_threads', 'comments_monitors',
-                     array('comments_threads.id', 'comments_monitors.user_id'),
-                     array('comments_monitors.thread_id', Current_User::getId()),
-                     true);
+        array('comments_threads.id', 'comments_monitors.user_id'),
+        array('comments_monitors.thread_id', Current_User::getId()),
+        true);
         $db->addWhere('key_id', $this->key_id);
         $result = $db->loadObject($this);
 
@@ -212,21 +212,21 @@ class Comment_Thread {
     public function _getTimePeriod()
     {
         switch ($_GET['time_period']) {
-        case 'today':
-            return gmmktime(0,0,0);
-            break;
+            case 'today':
+                return gmmktime(0,0,0);
+                break;
 
-        case 'yd':
-            return gmmktime(0,0,0, gmdate('m'), gmdate('d')-1);
-            break;
+            case 'yd':
+                return gmmktime(0,0,0, gmdate('m'), gmdate('d')-1);
+                break;
 
-        case 'week':
-            return gmmktime(0,0,0, gmdate('m'), gmdate('d')-7);
-            break;
+            case 'week':
+                return gmmktime(0,0,0, gmdate('m'), gmdate('d')-7);
+                break;
 
-        case 'month':
-            return gmmktime(0,0,0, gmdate('m')-1);
-            break;
+            case 'month':
+                return gmmktime(0,0,0, gmdate('m')-1);
+                break;
         }
 
     }
@@ -258,7 +258,7 @@ class Comment_Thread {
                              'yd'     => dgettext('comments', 'Since yesterday'),
                              'week'   => dgettext('comments', 'This week'),
                              'month'  => dgettext('comments', 'This month')
-                             );
+        );
 
         $order_list = array('old_all'  => dgettext('comments', 'Oldest first'),
                             'new_all'  => dgettext('comments', 'Newest first'));
@@ -316,13 +316,13 @@ class Comment_Thread {
         }
 
         switch ($default_order) {
-        case 'new_all':
-            $pager->setOrder('create_time', 'desc');
-            break;
+            case 'new_all':
+                $pager->setOrder('create_time', 'desc');
+                break;
 
-        case 'old_all':
-            $pager->setOrder('create_time', 'asc');
-            break;
+            case 'old_all':
+                $pager->setOrder('create_time', 'asc');
+                break;
         }
         $form->setMatch('order', $default_order);
         $form->addSubmit(dgettext('comments', 'Go'));
@@ -350,17 +350,17 @@ class Comment_Thread {
         }
         if (!empty($actions)) {
             $page_tags['BULK_ACTION'] = '<select id="list_actions_edit" name="aop" title="'
-                . dgettext('comments', 'Select the desired action for the checked comments').'">'
-                . $actions."</select>\n ";
+            . dgettext('comments', 'Select the desired action for the checked comments').'">'
+            . $actions."</select>\n ";
             $page_tags['MOD_FORM_START'] = '<form class="phpws-form" id="phpws_form" action="index.php?module=comments" method="post">'
-                . '<input type="hidden" name="authkey" value="'.Current_User::getAuthKey().'">';
+            . '<input type="hidden" name="authkey" value="'.Current_User::getAuthKey().'">';
             $page_tags['MOD_FORM_END'] = '</form>';
         }
 
         if ($this->canComment())
-            $page_tags['NEW_POST_LINK'] = $this->postLink();
+        $page_tags['NEW_POST_LINK'] = $this->postLink();
         elseif ($this->locked)
-            $page_tags['NEW_POST_LINK'] = dgettext('comments', 'This topic is locked.  No more comments');
+        $page_tags['NEW_POST_LINK'] = dgettext('comments', 'This topic is locked.  No more comments');
 
         $pager->setModule('comments');
         $pager->setTemplate(COMMENT_VIEW_TEMPLATE);
@@ -386,10 +386,10 @@ class Comment_Thread {
             PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
             // If this is already in a forum, offer to disassociate it
             if (!empty($this->phpwsbb_topic) && !$this->phpwsbb_topic->is_phpwsbb)
-                PHPWSBB_Data::drop_item_link($this->id, $this->_key->module, $this->_key->item_name);
+            PHPWSBB_Data::drop_item_link($this->id, $this->_key->module, $this->_key->item_name);
             elseif (empty($this->phpwsbb_topic))
-                // otherwise, add an "Attach to Forum" link to the MiniAdmin
-                PHPWSBB_Data::move_item_link($this->_key);
+            // otherwise, add an "Attach to Forum" link to the MiniAdmin
+            PHPWSBB_Data::move_item_link($this->_key);
         }
         // If this thread is being monitored and the "send_notice" flag is not set, set it
         if ($this->monitored && !$this->send_notice) {
@@ -406,7 +406,7 @@ class Comment_Thread {
     public function canComment()
     {
         if (isset($GLOBALS['Perms']['canComment'][$this->id]))
-            return $GLOBALS['Perms']['canComment'][$this->id];
+        return $GLOBALS['Perms']['canComment'][$this->id];
 
         $user = Comments::getCommentUser(Current_User::getId());
         $result =  (!$this->locked || $this->userCan()) && !$user->locked && (Current_User::isLogged() || $this->allow_anon);
@@ -563,7 +563,7 @@ class Comment_Thread {
     public function userCan($function = null, $module = 'comments')
     {
         if (isset($GLOBALS['Perms'][$module][$this->id][$function]))
-            return $GLOBALS['Perms'][$module][$this->id][$function];
+        return $GLOBALS['Perms'][$module][$this->id][$function];
         $is_moderator = empty($this->phpwsbb_topic) || PHPWSBB_Forum::canModerate(Current_User::getId(), $this->phpwsbb_topic->fid);
         $GLOBALS['Perms'][$module][$this->id][$function] = $this->id && $is_moderator && Current_User::allow($module, $function);
         return $GLOBALS['Perms'][$module][$this->id][$function];
@@ -578,12 +578,12 @@ class Comment_Thread {
     public function loadTopic()
     {
         if (!isset($GLOBALS['Modules']['phpwsbb']))
-            return;
+        return;
         PHPWS_Core::initModClass('phpwsbb', 'Topic.php');
         PHPWS_Core::initModClass('phpwsbb', 'Forum.php');
         $topic = & new PHPWSBB_Topic($this->id);
         if ($topic->id)
-            $this->phpwsbb_topic = $topic;
+        $this->phpwsbb_topic = $topic;
     }
 
     /**
@@ -599,7 +599,7 @@ class Comment_Thread {
         $db->addValue('allow_anon', (int) $status);
         $result = $db->update();
         if (!PHPWS_Error::logIfError($result))
-            return true;
+        return true;
     }
 
     /**
@@ -616,7 +616,7 @@ class Comment_Thread {
         if (!empty($this->phpwsbb_topic)) {
             $forum = $this->phpwsbb_topic->get_forum();
             if ($forum->active)
-                $tags = $forum->getStatusTags();
+            $tags = $forum->getStatusTags();
         }
 
         PHPWS_Text::filterText('some text');
@@ -624,13 +624,13 @@ class Comment_Thread {
         if (ALLOW_TEXT_FILTERS && in_array('bb', $filters)) {
             $list[] = dgettext('comments', 'cbparser BB code is <b>on</b>');
             if (ALLOW_BB_SMILIES)
-                $list[] = dgettext('comments', 'Smilies are <b>on</b>');
+            $list[] = dgettext('comments', 'Smilies are <b>on</b>');
             else
-                $list[] = dgettext('comments', 'Smilies are <b>off</b>');
+            $list[] = dgettext('comments', 'Smilies are <b>off</b>');
             if (ALLOW_BB_IMAGES)
-                $list[] = dgettext('comments', '[IMG] is <b>allowed</b>');
+            $list[] = dgettext('comments', '[IMG] is <b>allowed</b>');
             else
-                $list[] = dgettext('comments', '[IMG] is <b>not allowed</b>');
+            $list[] = dgettext('comments', '[IMG] is <b>not allowed</b>');
         }
 
         if (ALLOW_TEXT_FILTERS && in_array('pear', $filters)) {
@@ -640,14 +640,14 @@ class Comment_Thread {
         }
 
         if (PHPWS_ALLOWED_TAGS)
-            $list[] = dgettext('comments', 'HTML tags are <b>on</b>');
+        $list[] = dgettext('comments', 'HTML tags are <b>on</b>');
         else
-            $list[] = dgettext('comments', 'HTML tags are <b>off</b>');
+        $list[] = dgettext('comments', 'HTML tags are <b>off</b>');
 
         if (ALLOW_PROFANITY)
-            $list[] = dgettext('comments', 'Profanity is <b>allowed</b>');
+        $list[] = dgettext('comments', 'Profanity is <b>allowed</b>');
         else
-            $list[] = dgettext('comments', 'Profanity is <b>not allowed</b>');
+        $list[] = dgettext('comments', 'Profanity is <b>not allowed</b>');
 
         $tags['STATUS_FLAGS'] = implode("<br />\n", $list);
         $tags['STATUS_TITLE'] = dgettext('comments', 'Feature Summary');

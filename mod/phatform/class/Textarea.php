@@ -50,7 +50,7 @@ class PHAT_Textarea extends PHAT_Element {
             $leftOvers = $this->init();
         }
     } // END FUNC PHAT_Textarea
- 
+
     function hasOptions() {return FALSE;}
 
     /**
@@ -66,7 +66,7 @@ class PHAT_Textarea extends PHAT_Element {
         }
 
         if($this->isRequired())
-            $viewTags['REQUIRED_FLAG'] = '&#42;'; 
+        $viewTags['REQUIRED_FLAG'] = '&#42;';
 
         $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb());
         $viewTags['NAME'] = 'PHAT_' . $this->getLabel();
@@ -129,10 +129,10 @@ class PHAT_Textarea extends PHAT_Element {
             $currentError = $result;
             $error = TRUE;
         }
-    
+
         $label = $this->getLabel();
         if((!$_SESSION['PHAT_FormManager']->form->checkLabel($_REQUEST['PHAT_ElementName']) && (strcasecmp($label, $_REQUEST['PHAT_ElementName']) != 0))
-           || PHPWS_Error::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
+        || PHPWS_Error::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
             $currentError = PHPWS_Error::get(PHATFORM_INVALID_NAME, 'phatform', 'PHAT_Textarea::save()');
             $error = TRUE;
         }
@@ -150,25 +150,25 @@ class PHAT_Textarea extends PHAT_Element {
         }
 
         $rows = PHPWS_Text::parseInput($_REQUEST['PHAT_ElementRows']);
-  
+
         if($rows)
-            $this->_rows = $rows;
+        $this->_rows = $rows;
         else
-            $this->_rows = PHAT_DEFAULT_ROWS;
+        $this->_rows = PHAT_DEFAULT_ROWS;
 
         $cols = PHPWS_Text::parseInput($_REQUEST['PHAT_ElementCols']);
 
         if($cols)
-            $this->_cols = $cols;
+        $this->_cols = $cols;
         else
-            $this->_cols = PHAT_DEFAULT_COLS;
+        $this->_cols = PHAT_DEFAULT_COLS;
 
         if($error) {
             return $currentError;
         } else {
             if(PHPWS_Error::isError($this->commit())) {
                 return PHPWS_Error::get(PHATFORM_ELEMENT_FAIL, 'phatform', 'PHAT_Textarea::save()',
-                                        array(dgettext('phatform', 'Textarea')));
+                array(dgettext('phatform', 'Textarea')));
             } else {
                 return sprintf(dgettext('phatform', 'The %s element was saved successfully.'), dgettext('phatform', 'Textarea'));
             }

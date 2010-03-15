@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <dependency>
-  <module>
-    <title>comments</title>
-    <properName>Comments</properName>
-    <version>1.2.4</version>
-    <url>http://phpwebsite.appstate.edu/comments</url>
-  </module>
+	<module>
+		<title>comments</title>
+		<properName>Comments</properName>
+		<version>1.2.4</version>
+		<url>http://phpwebsite.appstate.edu/comments</url>
+	</module>
 </dependency>

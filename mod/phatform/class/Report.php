@@ -49,9 +49,9 @@ class PHAT_Report {
      *
      * @var    integer
      * @access private
-     */ 
+     */
     var $_completeEntries = NULL;
- 
+
     /**
      * The number of imcomlete entries for this form
      *
@@ -176,13 +176,13 @@ class PHAT_Report {
 
         $statsTags['LAST_ENTRY_LABEL'] = dgettext('phatform', 'Last Entry');
         $statsTags['LAST_ENTRY'] = $this->getLastEntry();
-    
+
         $statsTags['LIST_LINK'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=list&amp;PHAT_FullList=1">' . dgettext('phatform', 'Full List') . '</a>';
 
         $statsTags['PRINT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=list&amp;lay_quiet=1" target="_blank">' . dgettext('phatform', 'Print') . '</a>';
 
         if(isset($_REQUEST['ARCHIVE_OP']))
-            $statsTags['BACK_LINK'] = $_SESSION['PHAT_advViews']->archiveBack();
+        $statsTags['BACK_LINK'] = $_SESSION['PHAT_advViews']->archiveBack();
 
         $elements = array();
         $elements[0] = PHPWS_Form::formHidden('PHAT_REPORT_OP', 'export');
@@ -190,7 +190,7 @@ class PHAT_Report {
         $elements[0] .= PHPWS_Form::formSubmit(dgettext('phatform', 'Export'), 'export');
 
         if(!isset($this->archive))
-            $statsTags['EXPORT'] = PHPWS_Form::makeForm('export_button', 'index.php', $elements);
+        $statsTags['EXPORT'] = PHPWS_Form::makeForm('export_button', 'index.php', $elements);
 
         return PHPWS_Template::processTemplate($statsTags, 'phatform', 'report/stats.tpl');
     }
@@ -221,7 +221,7 @@ class PHAT_Report {
             } else {
                 $_REQUEST['PDA_start'] = $this->pageStart;
             }
-        
+
             if(isset($_REQUEST['PDA_section'])) {
                 $this->pageSection = $_REQUEST['PDA_section'];
             } else {
@@ -262,7 +262,7 @@ class PHAT_Report {
                 if(!isset($this->archive)) {
                     $rowTags['EDIT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=edit&amp;PHAT_ENTRY_ID=' . $entry['id'] . '">' . dgettext('phatform', 'Edit') . '</a>';
                     $rowTags['DELETE'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=confirmDelete&amp;PHAT_ENTRY_ID=' . $entry['id'] . '">' . dgettext('phatform', 'Delete') . '</a>';
-                }       
+                }
 
                 if ($count%2) {
                     $highlight = ' class="bgcolor1"';
@@ -273,15 +273,15 @@ class PHAT_Report {
 
             if(!isset($_REQUEST['lay_quiet'])) {
                 if(($this->_totalEntries > $this->pageLimit)) {
-                    $listTags['NAVIGATION_LINKS'] = $data[1]; 
+                    $listTags['NAVIGATION_LINKS'] = $data[1];
                 }
-      
+
                 $listTags['SECTION_INFO'] = $data[2];
                 $listTags['SECTION_INFO_LABEL'] = dgettext('phatform', 'Entries');
             }
         } else {
             $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . dgettext('phatform', 'No entries were found matching your search query.') . '</td></tr>';
-        }      
+        }
 
         if(!isset($_REQUEST['lay_quiet'])) {
             $filterOptions = array(1=>dgettext('phatform', 'All'), 2=>dgettext('phatform', 'Incomplete'), 3=>dgettext('phatform', 'Complete'));
@@ -290,13 +290,13 @@ class PHAT_Report {
             $elements[0] = PHPWS_Form::formHidden('module', 'phatform');
             $elements[0] .= PHPWS_Form::formHidden('PHAT_REPORT_OP', 'list');
             $elements[0] .= PHPWS_Form::formSelect('PHAT_ListFilter', $filterOptions, $this->_listFilter, FALSE, TRUE);
-      
+
             $elements[0] .= PHPWS_Form::formSelect('PDA_limit', $limitOptions, $this->pageLimit, TRUE);
-      
+
             if(!$_SESSION['PHAT_FormManager']->form->isAnonymous()) {
                 $elements[0] .= PHPWS_Form::formTextField('PHAT_EntrySearch', $this->_searchQuery, 20, 255);
             }
-      
+
             $elements[0] .= PHPWS_Form::formSubmit(dgettext('phatform', 'Search'));
             $listTags['SEARCH_FORM'] = PHPWS_Form::makeForm('PHAT_SearchEntries', 'index.php', $elements);
         }
@@ -315,7 +315,7 @@ class PHAT_Report {
         /* Find the key into the entries array for the selected entry */
         foreach($this->_entries as $entryKey=>$entryValue) {
             if($entryValue['id'] == $_REQUEST['PHAT_ENTRY_ID'])
-                break;
+            break;
         }
 
         /* Get the data for the selected entry from the database */
@@ -359,26 +359,26 @@ class PHAT_Report {
             $entryTags['ENTRY_DATA'] .= PHPWS_Template::processTemplate($rowTags, 'phatform', 'report/entryRow.tpl');
         }
 
-        if(isset($this->archive)) 
-            $entryTags['BACK_LINK'] = $_SESSION['PHAT_advViews']->getArchiveViewLink();
+        if(isset($this->archive))
+        $entryTags['BACK_LINK'] = $_SESSION['PHAT_advViews']->getArchiveViewLink();
 
         if($showLinks && !isset($_REQUEST['lay_quiet'])) {
             $entryTags['PRINT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $_REQUEST['PHAT_ENTRY_ID'] . '&amp;lay_quiet=1" target="_blank">' . dgettext('phatform', 'Print View') . '</a>';
 
             /* Show the next and/or previous links to step through entries */
             if($entryKey < sizeof($this->_entries) - 1)
-                $entryTags['NEXT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $this->_entries[$entryKey+1]['id'] . '">' . dgettext('phatform', 'Next Entry') . '</a>';
-      
+            $entryTags['NEXT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $this->_entries[$entryKey+1]['id'] . '">' . dgettext('phatform', 'Next Entry') . '</a>';
+
             if($entryKey > 0)
-                $entryTags['PREVIOUS'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $this->_entries[$entryKey-1]['id'] . '">' . dgettext('phatform', 'Previous Entry') . '</a>';
+            $entryTags['PREVIOUS'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $this->_entries[$entryKey-1]['id'] . '">' . dgettext('phatform', 'Previous Entry') . '</a>';
         }
 
         $GLOBALS['CNT_phatform']['title'] = $_SESSION['PHAT_FormManager']->form->getLabel();
         /* Return the entire processed entry */
         if(isset($_REQUEST['lay_quiet']))
-            echo PHPWS_Template::processTemplate($entryTags, 'phatform', 'report/entry.tpl');
+        echo PHPWS_Template::processTemplate($entryTags, 'phatform', 'report/entry.tpl');
         else
-            return PHPWS_Template::processTemplate($entryTags, 'phatform', 'report/entry.tpl');
+        return PHPWS_Template::processTemplate($entryTags, 'phatform', 'report/entry.tpl');
     }
 
     /**
@@ -409,16 +409,16 @@ class PHAT_Report {
         }
 
         $elements[0] = implode("\n", $eles);
-    
+
         $confirmTags['MESSAGE'] = dgettext('phatform', 'Are you sure you want to delete this entry?');
         $confirmTags['NO_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'No'), 'PHAT_DeleteNo');
         $confirmTags['YES_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Yes'), 'PHAT_DeleteYes');
-    
+
         $elements[0] .= PHPWS_Template::processTemplate($confirmTags, 'phatform', 'report/deleteConfirm.tpl');
         $content = PHPWS_Form::makeForm('PHAT_EntryDeleteConfirm', 'index.php', $elements);
         $content .= '<br /><hr /><br />';
         $content .= $this->view(FALSE);
-    
+
         return $content;
     }
 
@@ -438,7 +438,7 @@ class PHAT_Report {
             /* Find the key into the entries array for the selected entry */
             foreach($this->_entries as $entryKey=>$entryValue) {
                 if($entryValue['id'] == $_REQUEST['PHAT_ENTRY_ID'])
-                    break;
+                break;
             }
             unset($this->_entries[$entryKey]);
             $message = dgettext('phatform', 'The form entry was successfully deleted from the database.');
@@ -485,22 +485,22 @@ class PHAT_Report {
         }
 
         if(isset($this->_searchQuery) && ($this->_searchQuery != '')) {
-            $sql .= " user LIKE '%" . $this->_searchQuery . "%' AND"; 
+            $sql .= " user LIKE '%" . $this->_searchQuery . "%' AND";
         }
 
         if($this->_listFilter) {
             switch($this->_listFilter) {
-            case '1':
-                $sql .= " position>='-1'";
-                break;
+                case '1':
+                    $sql .= " position>='-1'";
+                    break;
 
-            case '2':
-                $sql .= " position!='-1'";
-                break;
+                case '2':
+                    $sql .= " position!='-1'";
+                    break;
 
-            case '3':
-                $sql .= " position='-1'";
-                break;  
+                case '3':
+                    $sql .= " position='-1'";
+                    break;
             }
         }
 
@@ -562,58 +562,58 @@ class PHAT_Report {
      */
     function action() {
         switch($_REQUEST['PHAT_REPORT_OP']) {
-        case 'list':
-            if(Current_User::allow('phatform', 'report_view')) {
-                $content = $this->report();
-            } else {
-                $this->accessDenied();
-            }
-            break;
-
-        case 'edit':
-            if(Current_User::allow('phatform', 'report_edit')) {
-                $content = $_SESSION['PHAT_FormManager']->menu() . $this->edit();
-            } else {
-                $this->accessDenied();
-            }
-            break;
-
-        case 'view':
-            if(Current_User::allow('phatform', 'report_view')) {
-                $content = $_SESSION['PHAT_FormManager']->menu() . $this->view();
-            } else {
-                $this->accessDenied();
-            }
-            break;
-
-        case 'confirmDelete':
-            if(Current_User::allow('phatform', 'report_delete')) {
-                $content = $this->confirmDelete();
-            } else {
-                $this->accessDenied();
-            }
-            break;
-
-        case 'delete':
-            if(Current_User::allow('phatform', 'report_delete')) {
-                $content = $this->delete();
-            } else {
-                $this->accessDenied();
-            }
-            break;
-
-        case 'export':
-            if(Current_User::allow('phatform', 'report_export')) {
-                include(PHPWS_SOURCE_DIR . 'mod/phatform/inc/Export.php');
-                $error = export($this->_formId);
-                if(PHPWS_Error::isError($error)) {
-                    javascript('alert', array('content' => PHPWS_Error::printError($error)));
+            case 'list':
+                if(Current_User::allow('phatform', 'report_view')) {
                     $content = $this->report();
+                } else {
+                    $this->accessDenied();
                 }
-            } else {
-                $this->accessDenied();
-            }
-            break;
+                break;
+
+            case 'edit':
+                if(Current_User::allow('phatform', 'report_edit')) {
+                    $content = $_SESSION['PHAT_FormManager']->menu() . $this->edit();
+                } else {
+                    $this->accessDenied();
+                }
+                break;
+
+            case 'view':
+                if(Current_User::allow('phatform', 'report_view')) {
+                    $content = $_SESSION['PHAT_FormManager']->menu() . $this->view();
+                } else {
+                    $this->accessDenied();
+                }
+                break;
+
+            case 'confirmDelete':
+                if(Current_User::allow('phatform', 'report_delete')) {
+                    $content = $this->confirmDelete();
+                } else {
+                    $this->accessDenied();
+                }
+                break;
+
+            case 'delete':
+                if(Current_User::allow('phatform', 'report_delete')) {
+                    $content = $this->delete();
+                } else {
+                    $this->accessDenied();
+                }
+                break;
+
+            case 'export':
+                if(Current_User::allow('phatform', 'report_export')) {
+                    include(PHPWS_SOURCE_DIR . 'mod/phatform/inc/Export.php');
+                    $error = export($this->_formId);
+                    if(PHPWS_Error::isError($error)) {
+                        javascript('alert', array('content' => PHPWS_Error::printError($error)));
+                        $content = $this->report();
+                    }
+                } else {
+                    $this->accessDenied();
+                }
+                break;
         }
 
         if($content) {
@@ -627,7 +627,7 @@ class PHAT_Report {
 
     /**
      * paginateDataArray
-     * 
+     *
      * This function will paginate an array of data. While using this function remember to always pass it the same content array
      * and DO NOT alter array during usage unless you are starting back at zero.
      *
@@ -643,9 +643,9 @@ class PHAT_Report {
      * @access public
      */
     function paginateDataArray($content, $link_back, $default_limit=10, $make_sections=FALSE, $curr_sec_decor=NULL, $link_class=NULL, $break_point=20, $return_array=FALSE){
-    
+
         if (is_null($curr_sec_decor))
-            $curr_sec_decor = array('<b>[ ', ' ]</b>');
+        $curr_sec_decor = array('<b>[ ', ' ]</b>');
 
         if(isset($_REQUEST['PDA_limit']) && $_REQUEST['PDA_limit'] > 0){
             $limit = $_REQUEST['PDA_limit'];
@@ -660,13 +660,13 @@ class PHAT_Report {
         } else {
             $start = 0;
         }
-    
+
         if(isset($_REQUEST['PDA_section'])){
             $current_section = $_REQUEST['PDA_section'];
         } else {
             $current_section = 1;
         }
-  
+
         if(is_array($content)){
             $numrows = count($content);
             $sections = ceil($numrows / $limit);
@@ -676,7 +676,7 @@ class PHAT_Report {
             $nav_links = '';
             $item_count = 0;
             $pad = 3;
-      
+
             if (isset($link_class)) {
                 $link_class = " class=\"$link_class\"";
             }
@@ -700,7 +700,7 @@ class PHAT_Report {
             } else {
                 $nav_links = "<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($start - $limit) . "&#38;PDA_section=" . ($current_section - 1). "\"" . $link_class . "\" title=\"&#60;&#60;\">&#60;&#60;</a>\n";
             }
-      
+
             if($make_sections && ($sections <= $break_point)){
                 for($x = 1; $x <= $sections; $x++){
                     if($x == $current_section){
@@ -734,11 +734,11 @@ class PHAT_Report {
                 $nav_links .= "<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($start + $limit) . "&#38;PDA_section=" . ($current_section + 1) . "\"" . $link_class . "\" title=\"&#62;&#62;\">&#62;&#62;</a>\n";
                 $section_info = ($start + 1) . " - " . ($start + $limit) . ' ' . dgettext('phatform', 'of') . ' ' .$numrows . "\n";
             }
-      
+
         } else {
             exit("Argument 1 to function paginateDataArray not an array.");
         }
-    
+
 
         if($return_array) {
             return array(0=>$array_of_items, 1=>$nav_links, 2=>$section_info);

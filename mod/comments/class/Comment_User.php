@@ -99,7 +99,7 @@ class Comment_User extends Demographics_User {
         // If this is the current user, use the created date
         if (!isset($date)) {
             if ($this->user_id == Current_User::getId())
-                $this->joined_date = Current_User::getCreatedDate();
+            $this->joined_date = Current_User::getCreatedDate();
             else { // otherwise, load the user's data
                 $user = new PHPWS_User($this->user_id);
                 $this->joined_date = $user->created;
@@ -178,7 +178,7 @@ class Comment_User extends Demographics_User {
     public function getAvatar($format=true)
     {
         // If there's no avatar tag...
-    	if (empty($this->avatar)) {
+        if (empty($this->avatar)) {
             // if there's a FileCabinet number listed...
             if ($this->avatar_id) {
                 // Retrieve & save a new avatar tag
@@ -187,7 +187,7 @@ class Comment_User extends Demographics_User {
             } else {
                 return null;
             }
-    	}
+        }
         if ($format) {
             return sprintf('<img src="%s" />', $this->avatar);
         } else {
@@ -223,9 +223,9 @@ class Comment_User extends Demographics_User {
     {
         if ($format && isset($this->website)) {
             return sprintf('<a href="%s" title="%s">%s</a>',
-                           PHPWS_Text::checkLink($this->website),
-                           sprintf(dgettext('comments', '%s\'s Website'), $this->display_name),
-                           dgettext('comments', 'Website'));
+            PHPWS_Text::checkLink($this->website),
+            sprintf(dgettext('comments', '%s\'s Website'), $this->display_name),
+            dgettext('comments', 'Website'));
         } else {
             return $this->website;
         }
@@ -351,11 +351,11 @@ class Comment_User extends Demographics_User {
         }
 
         //avatar
-    	// Get current Avatar permissions
-    	$perm = $this->getAvatarLevel();
+        // Get current Avatar permissions
+        $perm = $this->getAvatarLevel();
 
-    	// If user wants to upload an image...
-    	if (!empty($_FILES['local_avatar']['name']) && $perm['local']) {
+        // If user wants to upload an image...
+        if (!empty($_FILES['local_avatar']['name']) && $perm['local']) {
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $image = new PHPWS_Image;
             $image->setDirectory('images/comments/');
@@ -381,8 +381,8 @@ class Comment_User extends Demographics_User {
         }
         // otherwise, if user wants to use a remote image...
         elseif (!empty($_POST['remote_avatar']) && $perm['remote']
-                && strlen($_POST['remote_avatar']) > 10 && substr(trim($_POST['remote_avatar']),0,7) == 'http://'
-                && $this->testAvatar($_POST['remote_avatar'], $errors)) {
+        && strlen($_POST['remote_avatar']) > 10 && substr(trim($_POST['remote_avatar']),0,7) == 'http://'
+        && $this->testAvatar($_POST['remote_avatar'], $errors)) {
             $this->setAvatar(trim($_POST['remote_avatar']));
         }
         // otherwise, use the selected gallery image...
@@ -396,7 +396,7 @@ class Comment_User extends Demographics_User {
         $this->setlocation(@$_POST['location']);
         //monitordefault
         if(!empty($_POST['monitordefault']))
-            $this->monitordefault == (int) (bool) $_POST['monitordefault'];
+        $this->monitordefault == (int) (bool) $_POST['monitordefault'];
         //suspendmonitors
         $this->suspendmonitors == (int) empty($_POST['suspendmonitors']);
         $db = new PHPWS_DB('comments_monitors');
@@ -413,14 +413,14 @@ class Comment_User extends Demographics_User {
         }
 
         /*        // need some error checking here
-        if (empty($_POST['contact_email'])) {
-            $this->contact_email = NULL;
-        } else {
-            if (!$this->setContactEmail($_POST['contact_email'])) {
-                $errors[] = dgettext('comments', 'Your contact email is formatted improperly.');
-            }
-        }
-        */
+         if (empty($_POST['contact_email'])) {
+         $this->contact_email = NULL;
+         } else {
+         if (!$this->setContactEmail($_POST['contact_email'])) {
+         $errors[] = dgettext('comments', 'Your contact email is formatted improperly.');
+         }
+         }
+         */
 
         if (!empty($errors)) {
             return $errors;
@@ -446,18 +446,18 @@ class Comment_User extends Demographics_User {
 
     public function getPostTpl($values)
     {
-    	// Create Comment_Item class
+        // Create Comment_Item class
         $comment = new Comment_Item();
-    	PHPWS_Core::plugObject($comment, $values);
-    	// Get associated Comment_Thread
-    	if (!isset($GLOBALS['cm_threads'][$comment->thread_id]))
-            $GLOBALS['cm_threads'][$comment->thread_id] = new Comment_Thread($comment->thread_id);
-    	$thread = & $GLOBALS['cm_threads'][$comment->thread_id];
-    	// If there's an associated PHPWSBB_Topic, get template variables
-    	if (!empty($thread->phpwsbb_topic))
-            $t_tags = $thread->phpwsbb_topic->_get_tags();
-    	// otherwise, make some up
-    	else {
+        PHPWS_Core::plugObject($comment, $values);
+        // Get associated Comment_Thread
+        if (!isset($GLOBALS['cm_threads'][$comment->thread_id]))
+        $GLOBALS['cm_threads'][$comment->thread_id] = new Comment_Thread($comment->thread_id);
+        $thread = & $GLOBALS['cm_threads'][$comment->thread_id];
+        // If there's an associated PHPWSBB_Topic, get template variables
+        if (!empty($thread->phpwsbb_topic))
+        $t_tags = $thread->phpwsbb_topic->_get_tags();
+        // otherwise, make some up
+        else {
             $t_tags['THREAD_TITLE_LINK'] = $thread->_key->getUrl();
             $t_tags['THREAD_TITLE_LABEL'] = dgettext('comments', 'In').' '.dgettext($thread->_key->module, $thread->_key->item_name);
             $t_tags['THREAD_REPLIES'] = $thread->total_comments;
@@ -477,7 +477,7 @@ class Comment_User extends Demographics_User {
                              'yd'     => dgettext('comments', 'Since yesterday'),
                              'week'   => dgettext('comments', 'This week'),
                              'month'  => dgettext('comments', 'This month')
-                             );
+        );
 
         $order_list = array('old_all'  => dgettext('comments', 'Oldest first'),
                             'new_all'  => dgettext('comments', 'Newest first'));
@@ -517,13 +517,13 @@ class Comment_User extends Demographics_User {
         }
 
         switch ($default_order) {
-        case 'new_all':
-            $pager->setOrder('create_time', 'desc');
-            break;
+            case 'new_all':
+                $pager->setOrder('create_time', 'desc');
+                break;
 
-        case 'old_all':
-            $pager->setOrder('create_time', 'asc');
-            break;
+            case 'old_all':
+                $pager->setOrder('create_time', 'asc');
+                break;
         }
         $form->setMatch('order', $default_order);
 
@@ -545,7 +545,7 @@ class Comment_User extends Demographics_User {
         $pager->initialize();
         $rows = $pager->getRows();
         if (!empty($rows))
-            Comment_Thread::_createUserList($rows);
+        Comment_Thread::_createUserList($rows);
 
         $content = $pager->get();
 
@@ -595,15 +595,15 @@ class Comment_User extends Demographics_User {
         // Loop through all relevant usergroups to generate rank tags
         if (!empty($user_ranks)) {
             foreach ($user_ranks as $rank) {
-               if ( ($rank->group_id == 0 || in_array($rank->group_id, $user_groups)) &&
-                     !empty($rank->user_ranks) ) {
-                   /*
-                    foreach ($rank->user_ranks as $user_rank) {
-                        if ($user_rank->min_posts <= $this->comments_made) {
-                            $user_rank->loadInfo($images, $composites, $titles);
-                        }
-                    }
-                   */
+                if ( ($rank->group_id == 0 || in_array($rank->group_id, $user_groups)) &&
+                !empty($rank->user_ranks) ) {
+                    /*
+                     foreach ($rank->user_ranks as $user_rank) {
+                     if ($user_rank->min_posts <= $this->comments_made) {
+                     $user_rank->loadInfo($images, $composites, $titles);
+                     }
+                     }
+                     */
                     foreach ($rank->user_ranks as $key => $user_rank) {
                         if ($user_rank->min_posts <= $this->comments_made) {
                             $pick = $key;
@@ -678,11 +678,11 @@ class Comment_User extends Demographics_User {
      */
     public function subscribe($user_id, $thread_id)
     {
-    	if (empty($user_id) || empty($thread_id))
-            return;
+        if (empty($user_id) || empty($thread_id))
+        return;
         $db = new PHPWS_DB('comments_monitors');
-    	$db->addValue('thread_id', (int) $thread_id);
-    	$db->addValue('user_id', (int) $user_id);
+        $db->addValue('thread_id', (int) $thread_id);
+        $db->addValue('user_id', (int) $user_id);
         return PHPWS_Error::logIfError($db->insert());
     }
 
@@ -695,12 +695,12 @@ class Comment_User extends Demographics_User {
      */
     public function unsubscribe($user_id, $thread_id)
     {
-    	if (empty($user_id) || empty($thread_id))
-            return;
+        if (empty($user_id) || empty($thread_id))
+        return;
         $db = new PHPWS_DB('comments_monitors');
-    	if ($thread_id !== 'all')
-            $db->addWhere('thread_id', (int) $thread_id);
-    	$db->addWhere('user_id', (int) $user_id);
+        if ($thread_id !== 'all')
+        $db->addWhere('thread_id', (int) $thread_id);
+        $db->addWhere('user_id', (int) $user_id);
         return PHPWS_Error::logIfError($db->delete());
     }
 
@@ -739,7 +739,7 @@ class Comment_User extends Demographics_User {
 
         if (COMMENT_MAX_AVATAR_WIDTH < $test[0] || COMMENT_MAX_AVATAR_HEIGHT < $test[1]) {
             $errors[] = sprintf(dgettext('comments', 'Your avatar must be smaller than %sx%spx.'),
-                                COMMENT_MAX_AVATAR_WIDTH, COMMENT_MAX_AVATAR_HEIGHT);
+            COMMENT_MAX_AVATAR_WIDTH, COMMENT_MAX_AVATAR_HEIGHT);
             return false;
         }
 

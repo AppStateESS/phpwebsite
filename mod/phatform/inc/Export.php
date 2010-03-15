@@ -1,9 +1,9 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Adam Morton
-   * @author Steven Levin
-   */
+/**
+ * @version $Id$
+ * @author Adam Morton
+ * @author Steven Levin
+ */
 
 function export($formId = NULL) {
     if(!isset($formId)) {
@@ -32,7 +32,7 @@ function export($formId = NULL) {
         $data = '';
         foreach($result[0] as $key=>$value) {
             if($key != 'position')
-                $data .= $key . "\t";
+            $data .= $key . "\t";
         }
 
         foreach($result as $entry) {

@@ -1,10 +1,10 @@
 <?php
-  /**
-   * This is a list of names you do not want to allow for anonymous submissions.
-   * Regular expression rules are used.
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * This is a list of names you do not want to allow for anonymous submissions.
+ * Regular expression rules are used.
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 $forbidden_names[] = 'fuck';
 $forbidden_names[] = 'shit';

@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PHPWS1_6_2,Phatform3_1_1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-26 15:18-0500\n"
-"PO-Revision-Date: 2009-05-25 10:22+0100\n"
-"Last-Translator: HanV <hanv@users.sourceforge.net>\n"
+"PO-Revision-Date: 2010-02-01 11:42+0100\n"
+"Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: HanV\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -352,7 +352,7 @@ msgid "No element was removed."
 msgstr "Er is geen element verwijderd."
 
 msgid "No entries were found matching your search query."
-msgstr "Er is niet gevonden met deze zoekcriteria."
+msgstr "Er is niets gevonden met deze zoekcriteria."
 
 msgid "No form ID was passed"
 msgstr "Geen formulier-ID doorgegeven"
@@ -577,7 +577,7 @@ msgid "Unable to save %s."
 msgstr "Opslaan %s is mislukt."
 
 msgid "Unapproved Forms"
-msgstr "Niet gekeurde formulieren"
+msgstr "Niet goedgekeurde formulieren"
 
 msgid "Unknown"
 msgstr "Onbekend"
@@ -647,4 +647,7 @@ msgstr "U mag alleen eigen formulieren wijzigen!"
 
 msgid "of"
 msgstr "van"
+
+msgid "Creates online forms. Email, CSV reporting available."
+msgstr "Aanmaken on-line formulieren (incl. e-mail, csv)."
 

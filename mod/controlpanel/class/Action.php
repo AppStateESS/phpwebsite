@@ -1,9 +1,9 @@
 <?php
-  /**
-   *
-   * @author Matthew McNaney <matt at tux dot appstate dot edu>
-   * @version $Id$
-   */
+/**
+ *
+ * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @version $Id$
+ */
 
 class CP_Action {
     public function adminAction()
@@ -16,75 +16,75 @@ class CP_Action {
         }
 
         switch ($command){
-        case 'post_tab':
-            if (!empty($_POST['title'])) {
-                $tab = new PHPWS_Panel_Tab($_POST['tab_id']);
-                $tab->setTitle($_POST['title']);
-                PHPWS_Error::logIfError($tab->save());
-                $content = javascript('close_refresh');
+            case 'post_tab':
+                if (!empty($_POST['title'])) {
+                    $tab = new PHPWS_Panel_Tab($_POST['tab_id']);
+                    $tab->setTitle($_POST['title']);
+                    PHPWS_Error::logIfError($tab->save());
+                    $content = javascript('close_refresh');
+                    break;
+                }
+            case 'edit_tab_title':
+                $tab = new PHPWS_Panel_Tab($_REQUEST['tab_id']);
+
+                $content = CP_Action::editTabTitle($tab);
+                if (empty($content)) {
+                    $content = javascript('close_refresh');
+                }
+                Layout::nakedDisplay($content);
                 break;
-            }
-        case 'edit_tab_title':
-            $tab = new PHPWS_Panel_Tab($_REQUEST['tab_id']);
 
-            $content = CP_Action::editTabTitle($tab);
-            if (empty($content)) {
-                $content = javascript('close_refresh');
-            }
-            Layout::nakedDisplay($content);
-            break;
+            case 'post_link':
+                if (!empty($_POST['label'])) {
+                    $link = new PHPWS_Panel_Link($_POST['link_id']);
+                    $link->setLabel($_POST['label']);
+                    $link->setDescription($_POST['description']);
+                    PHPWS_Error::logIfError($link->save());
+                    unset($_SESSION['CP_All_links']);
+                    $content = javascript('close_refresh');
+                    break;
+                }
+            case 'edit_link':
+                $link = new PHPWS_Panel_Link($_REQUEST['link_id']);
 
-        case 'post_link':
-            if (!empty($_POST['label'])) {
-                $link = new PHPWS_Panel_Link($_POST['link_id']);
-                $link->setLabel($_POST['label']);
-                $link->setDescription($_POST['description']);
-                PHPWS_Error::logIfError($link->save());
-                unset($_SESSION['CP_All_links']);
-                $content = javascript('close_refresh');
+                $content = CP_Action::editLink($link);
+                if (empty($content)) {
+                    $content = javascript('close_refresh');
+                }
+                Layout::nakedDisplay($content);
                 break;
-            }
-        case 'edit_link':
-            $link = new PHPWS_Panel_Link($_REQUEST['link_id']);
 
-            $content = CP_Action::editLink($link);
-            if (empty($content)) {
-                $content = javascript('close_refresh');
-            }
-            Layout::nakedDisplay($content);
-            break;
+            case 'admin_menu':
+                $content = CP_Action::adminMenu();
+                break;
 
-        case 'admin_menu':
-            $content = CP_Action::adminMenu();
-            break;
+            case 'tab_up':
+                $tab = new PHPWS_Panel_Tab($_REQUEST['tab_id']);
+                $tab->moveup();
+                PHPWS_ControlPanel::reset();
+                $content = CP_Action::adminMenu();
+                break;
 
-        case 'tab_up':
-            $tab = new PHPWS_Panel_Tab($_REQUEST['tab_id']);
-            $tab->moveup();
-            PHPWS_ControlPanel::reset();
-            $content = CP_Action::adminMenu();
-            break;
+            case 'tab_down':
+                $tab = new PHPWS_Panel_Tab($_REQUEST['tab_id']);
+                $tab->movedown();
+                PHPWS_ControlPanel::reset();
+                $content = CP_Action::adminMenu();
+                break;
 
-        case 'tab_down':
-            $tab = new PHPWS_Panel_Tab($_REQUEST['tab_id']);
-            $tab->movedown();
-            PHPWS_ControlPanel::reset();
-            $content = CP_Action::adminMenu();
-            break;
+            case 'link_up':
+                $link = new PHPWS_Panel_Link($_REQUEST['link_id']);
+                $link->moveup();
+                PHPWS_ControlPanel::reset();
+                $content = CP_Action::adminMenu();
+                break;
 
-        case 'link_up':
-            $link = new PHPWS_Panel_Link($_REQUEST['link_id']);
-            $link->moveup();
-            PHPWS_ControlPanel::reset();
-            $content = CP_Action::adminMenu();
-            break;
-
-        case 'link_down':
-            $link = new PHPWS_Panel_Link($_REQUEST['link_id']);
-            $link->movedown();
-            PHPWS_ControlPanel::reset();
-            $content = CP_Action::adminMenu();
-            break;
+            case 'link_down':
+                $link = new PHPWS_Panel_Link($_REQUEST['link_id']);
+                $link->movedown();
+                PHPWS_ControlPanel::reset();
+                $content = CP_Action::adminMenu();
+                break;
         }
 
         $template['TITLE'] = dgettext('controlpanel', 'Control Panel Administration');
@@ -117,9 +117,9 @@ class CP_Action {
         $down_link = Icon::show('sort-down', $down_link_command);
 
         if (count($tabs) > 1)
-            $move_tabs = TRUE;
+        $move_tabs = TRUE;
         else
-            $move_tabs = FALSE;
+        $move_tabs = FALSE;
 
         foreach ($tabs as $tab_obj){
             $taction = array();

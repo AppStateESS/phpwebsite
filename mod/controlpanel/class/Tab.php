@@ -90,10 +90,10 @@ class PHPWS_Panel_Tab {
             } elseif ($this->_secure) {
                 $authkey = Current_User::getAuthKey();
                 return sprintf('<a href="%s&amp;tab=%s&amp;authkey=%s"%s>%s</a>',
-                               $link, $this->id, $authkey, $link_title, $title);
+                $link, $this->id, $authkey, $link_title, $title);
             } else {
                 return sprintf('<a href="%s&amp;tab=%s"%s>%s</a>',
-                               $link, $this->id, $link_title, $title);
+                $link, $this->id, $link_title, $title);
             }
         } else {
             return $this->link;
@@ -108,19 +108,19 @@ class PHPWS_Panel_Tab {
     public function getOrder()
     {
         if (isset($this->tab_order))
-            return $this->tab_order;
+        return $this->tab_order;
 
         $DB = new PHPWS_DB('controlpanel_tab');
         $DB->addColumn('tab_order', 'max');
         $max = $DB->select('one');
 
         if (PEAR::isError($max))
-            exit($max->getMessage());
+        exit($max->getMessage());
 
         if (isset($max))
-            return $max + 1;
+        return $max + 1;
         else
-            return 1;
+        return 1;
     }
 
     public function setItemname($itemname)

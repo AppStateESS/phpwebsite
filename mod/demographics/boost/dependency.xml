@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <dependency>
-  <module>
-    <title>core</title>
-    <properName>phpWebSite Core</properName>
-    <version>1.9.5</version>
-    <url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
-  </module>
-  <module>
-    <title>users</title>
-    <properName>Users</properName>
-    <version>2.6.3</version>
-    <url>http://phpwebsite.appstate.edu/downloads/modules/users/</url>
-  </module>
+	<module>
+		<title>core</title>
+		<properName>phpWebSite Core</properName>
+		<version>1.9.5</version>
+		<url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
+	</module>
+	<module>
+		<title>users</title>
+		<properName>Users</properName>
+		<version>2.6.3</version>
+		<url>http://phpwebsite.appstate.edu/downloads/modules/users/</url>
+	</module>
 </dependency>

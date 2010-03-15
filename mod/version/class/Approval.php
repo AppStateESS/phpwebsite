@@ -205,23 +205,23 @@ class Version_Approval {
 
             if (!$restrict_approval || !Current_User::isRestricted($this->module)) {
                 $links[] = sprintf('<a href="%s">%s</a>',
-                                   $this->approve_url . '&amp;version_id=' . $app_item['id'],
-                                   dgettext('version', 'Approve'));
+                $this->approve_url . '&amp;version_id=' . $app_item['id'],
+                dgettext('version', 'Approve'));
 
                 $links[] = sprintf('<a href="%s">%s</a>',
-                                   $this->disapprove_url . '&amp;version_id=' . $app_item['id'],
-                                   dgettext('version', 'Disapprove'));
+                $this->disapprove_url . '&amp;version_id=' . $app_item['id'],
+                dgettext('version', 'Disapprove'));
             }
 
 
             if (isset($this->view_url)) {
                 $links[] = sprintf('<a href="%s">%s</a>',
-                                   $this->view_url . '&amp;version_id=' . $app_item['id'], dgettext('version', 'View'));
+                $this->view_url . '&amp;version_id=' . $app_item['id'], dgettext('version', 'View'));
             }
 
             if (isset($this->edit_url)) {
                 $links[] = sprintf('<a href="%s">%s</a>',
-                                   $this->edit_url . '&amp;version_id=' . $app_item['id'], dgettext('version', 'Edit'));
+                $this->edit_url . '&amp;version_id=' . $app_item['id'], dgettext('version', 'Edit'));
             }
 
             if (!empty($links)) {

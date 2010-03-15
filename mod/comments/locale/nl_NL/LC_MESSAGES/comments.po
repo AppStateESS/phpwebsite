@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PHPWS1_6_2,Comments1_2_4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-26 15:18-0500\n"
-"PO-Revision-Date: 2009-05-25 14:36+0100\n"
-"Last-Translator: HanV <hanv@users.sourceforge.net>\n"
+"PO-Revision-Date: 2010-02-03 22:12+0100\n"
+"Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: HanV\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -63,11 +63,11 @@ msgstr "Anonieme namen toestaan"
 msgid "Allow images in signatures"
 msgstr "Afbeeldingen in handtekening toestaan"
 
-msgid "Allow this groups's users to use remote avatars after"
+msgid "Allow this group's users to use remote custom avatars after"
 msgstr "Toestaan dat de groepsleden externe avatars gebruiken"
 
-msgid "Allow this group's users to upload custom avatars after"
-msgstr "Toestaan dat de groepsleden algemene avatars uploaden"
+msgid "Allow this groups's users to upload custom avatars after"
+msgstr "Toestaan dat de groepsleden avatars uploaden"
 
 msgid "Allow user avatars"
 msgstr "Avatar gebruiker toestaan"
@@ -145,7 +145,7 @@ msgid "Ban user"
 msgstr "Ban gebruiker"
 
 msgid "Ban user account"
-msgstr "Ban gebruikercode"
+msgstr "Ban gebruikerscode"
 
 msgid "Be particularly careful with this next option.  If you select it, the only way that you can restore your monitors is to manually re-select each topic!"
 msgstr "Let op, deze optie kan niet ongedaan gemaakt worden. U dient dan handmatig alle topics opnieuw te selecteren om weer te gaan volgen."
@@ -316,7 +316,7 @@ msgid "From"
 msgstr "Van"
 
 msgid "Get anonymous posters' names"
-msgstr "Haal namen anonieme poster op"
+msgstr "Haal namen anonieme posters op"
 
 msgid "Go"
 msgstr "Start"
@@ -442,7 +442,7 @@ msgid "Permanently stop monitoring all topics"
 msgstr "Stop volgen alle topics"
 
 msgid "Personal Information"
-msgstr "Persoonijke gegevens"
+msgstr "Persoonlijke gegevens"
 
 msgid "Please copy the word in the above image."
 msgstr "Vul het woord in het bovenstaande plaatje in."
@@ -456,7 +456,7 @@ msgstr "Commentaar posten"
 msgid "Post New Comment"
 msgstr "Post nieuw commentaar"
 
-msgid "Post Level"
+msgid "Post level"
 msgstr "Post niveau"
 
 msgid "Posted by"
@@ -528,8 +528,8 @@ msgstr "Verwijder dit commentaar"
 msgid "Removing module's comments."
 msgstr "Verwijderen module commentaar."
 
-msgid "Repeat this image."
-msgstr "Afbeelding herhalen."
+msgid "Repeat Image"
+msgstr "Afbeelding herhalen"
 
 msgid "Replies to this comment"
 msgstr "Reacties op dit commentaar."
@@ -544,7 +544,7 @@ msgid "Report"
 msgstr "Meld"
 
 msgid "Report this comment to an administrator"
-msgstr "Meld dit commentaar bij de beheerder(s)"
+msgstr "Meld dit commentaar bij de beheerders"
 
 msgid "Reported (%s)"
 msgstr "Gemeld (%s)"
@@ -664,7 +664,7 @@ msgid "There was a problem saving your image."
 msgstr "Er is een fout opgetreden bij het opslaan van de afbeelding."
 
 msgid "This is the current member ranking system.<br />Don't worry about the order - the Rank types will re-order themselves by posting level."
-msgstr "Dit is de huidige indelingen van de rangen.<br />De volgorde hier is niet van belang, die wordt door het niveau van posten bepaald."
+msgstr "Dit is de huidige indeling van de rangen.<br />De volgorde is niet van belang, die wordt door het niveau van posten bepaald."
 
 msgid "This month"
 msgstr "Deze maand"
@@ -675,14 +675,14 @@ msgstr "Deze handtekening komt onder uw bijdragen te staan. Het zijn max. 255 te
 msgid "This topic is locked.  No more comments"
 msgstr "Dit topic is geblokkeerd, er kan niet meer in gepost worden."
 
-msgid "Times reported"
-msgstr "Aantal keren gemeld"
-
 msgid "This week"
 msgstr "Deze week"
 
 msgid "Thread Monitor"
-msgstr "Volg Thread"
+msgstr "Thread Monitor"
+
+msgid "Times reported"
+msgstr "Aantal keren gemeld"
 
 msgid "Today"
 msgstr "Vandaag"

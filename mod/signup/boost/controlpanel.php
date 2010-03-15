@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at appstate dot edu>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at appstate dot edu>
+ */
 
 $link[] = array('label'       => 'Signup',
 		'restricted'  => true,
@@ -13,4 +13,4 @@ $link[] = array('label'       => 'Signup',
 		'tab'         => 'content'
 		);
 
-?>
+		?>

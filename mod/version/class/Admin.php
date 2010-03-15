@@ -1,11 +1,11 @@
 <?php
 
-  /**
-   * Administration interface
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Administration interface
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 class Version_Admin {
     public function main()
@@ -19,19 +19,19 @@ class Version_Admin {
         }
 
         switch ($command) {
-        case 'settings':
-            $title = dgettext('version', 'Version settings');
-            $content = Version_Admin::settings();
-            break;
+            case 'settings':
+                $title = dgettext('version', 'Version settings');
+                $content = Version_Admin::settings();
+                break;
 
-        case 'post_setting':
-            PHPWS_Settings::set('version', 'saved_versions', $_REQUEST['saved_versions']);
-            PHPWS_Settings::save('version');
-            $title = dgettext('version', 'Version settings');
-            $message = dgettext('version', 'Settings saved.');
-            $content = Version_Admin::settings();
-            break;
-            
+            case 'post_setting':
+                PHPWS_Settings::set('version', 'saved_versions', $_REQUEST['saved_versions']);
+                PHPWS_Settings::save('version');
+                $title = dgettext('version', 'Version settings');
+                $message = dgettext('version', 'Settings saved.');
+                $content = Version_Admin::settings();
+                break;
+
         }
 
         $template['TITLE']   = $title;

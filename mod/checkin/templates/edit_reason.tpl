@@ -3,5 +3,4 @@
 {SUMMARY}</p>
 <p><strong>{MESSAGE_LABEL}</strong><br />
 {MESSAGE}</p>
-{GO}
-{END_FORM}
+{GO} {END_FORM}

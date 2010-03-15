@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 if (PHPWS_Core::atHome() || isset($GLOBALS['comments_viewed'])) {
     $show_number = PHPWS_Settings::get('comments', 'recent_comments');

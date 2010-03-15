@@ -263,8 +263,8 @@ class PHPWSBB_Forum
         $pager->addSortHeader('total_posts', dgettext('phpwsbb', 'Posts'));
         $pager->addSortHeader('times_viewed', dgettext('phpwsbb', 'Views'));
 
-//        $pager->db->addColumn('phpws_key.creator');
-//        $pager->db->addColumn('phpws_key.times_viewed');
+        //        $pager->db->addColumn('phpws_key.creator');
+        //        $pager->db->addColumn('phpws_key.times_viewed');
 
         $link = 'index.php?module=phpwsbb&amp;view=forum&amp;id='.$this->id;
         $pager->setLink($link);

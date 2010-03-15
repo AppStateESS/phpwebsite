@@ -1,11 +1,11 @@
 <?php
-  /**
-   * This class will show javascript slideshow for a photoalbum.
-   *
-   * @version $Id$
-   * @author  Darren Greene <dg49379@NOSPAM.tux.appstate.edu>
-   * @modified Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * This class will show javascript slideshow for a photoalbum.
+ *
+ * @version $Id$
+ * @author  Darren Greene <dg49379@NOSPAM.tux.appstate.edu>
+ * @modified Matthew McNaney <mcnaney at gmail dot com>
+ */
 define('PHPWS_SOURCE_HTTP', './');
 class SlideShow {
 
@@ -34,7 +34,7 @@ class SlideShow {
             $blurbs .= "'" . str_replace("'", "\'", $blurb) . "', ";
 
             if ((($photo->_width >= PHOTOALBUM_MAX_WIDTH ||
-                  $photo->_height >= PHOTOALBUM_MAX_HEIGHT))) {
+            $photo->_height >= PHOTOALBUM_MAX_HEIGHT))) {
 
                 $ratio = $photo->_width / $photo->_height;
                 if ($ratio >= 1) {
@@ -42,27 +42,27 @@ class SlideShow {
                     $heights .= PHOTOALBUM_MAX_WIDTH / $ratio . ', ';
 
                     if((PHOTOALBUM_MAX_HEIGHT / $ratio) > $largest_height)
-                        $largest_height = PHOTOALBUM_MAX_HEIGHT / $ratio;
+                    $largest_height = PHOTOALBUM_MAX_HEIGHT / $ratio;
                 } else {
                     $widths  .= PHOTOALBUM_MAX_HEIGHT * $ratio . ', ';
                     $heights .= PHOTOALBUM_MAX_HEIGHT . ', ';
 
                     if(PHOTOALBUM_MAX_HEIGHT > $largest_height)
-                        $largest_height = PHOTOALBUM_MAX_HEIGHT;
+                    $largest_height = PHOTOALBUM_MAX_HEIGHT;
                 }
             } else {
                 if(isset($photo->_width))
-                    $widths .= $photo->_width . ', ';
+                $widths .= $photo->_width . ', ';
                 else
-                    $widths .= '0, ';
+                $widths .= '0, ';
 
                 if(isset($photo->_height))
-                    $heights .= $photo->_height . ', ';
+                $heights .= $photo->_height . ', ';
                 else
-                    $heights .= '0, ';
+                $heights .= '0, ';
 
                 if($photo->_height > $largest_height)
-                    $largest_height = $photo->_height;
+                $largest_height = $photo->_height;
             }
         }
 
@@ -75,8 +75,8 @@ class SlideShow {
         $jsTags['PAUSE_TEXT'] = dgettext('photoalbum', 'Stop Show');
         $jsTags['PLAY_TEXT'] = dgettext('photoalbum', 'Start Show');
         $tags['QUIT_SLIDESHOW'] = sprintf('<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=view&amp;PHPWS_Album_id=%s">%s</a>',
-                                          $_SESSION['PHPWS_AlbumManager']->album->_id,
-                                          dgettext('photoalbum', 'Back to Album'));
+        $_SESSION['PHPWS_AlbumManager']->album->_id,
+        dgettext('photoalbum', 'Back to Album'));
 
         $speedOptions = array('2000'  =>dgettext('photoalbum', 'Two Seconds'),
                               '3000'  =>dgettext('photoalbum', 'Three Seconds'),
@@ -120,10 +120,10 @@ class SlideShow {
         $tags['ADJUST_SPEED_TEXT_FIELD'] = $form->get('adjustSpeedField');
 
         $tags["ADJUST_SPEED_LABEL"] =
-            dgettext('photoalbum', "Set Speed: &nbsp;");
+        dgettext('photoalbum', "Set Speed: &nbsp;");
 
         $jsTags["IE_FILTER_LABEL"] =
-            dgettext('photoalbum', "Transition Effect: &nbsp;");
+        dgettext('photoalbum', "Transition Effect: &nbsp;");
 
         $tags["LOOP_LABEL"] = dgettext('photoalbum', "Loop:  ");
         $jsTags["LOADING_NEXT_TXT"] = dgettext('photoalbum', "Loading Next Image...");

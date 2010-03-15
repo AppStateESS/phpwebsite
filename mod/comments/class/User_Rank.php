@@ -16,7 +16,7 @@ class Comment_User_Rank {
     public function __construct($id=0)
     {
         $this->id = (int)$id;
-        
+
         if ($this->id) {
             $this->init();
         }
@@ -80,17 +80,17 @@ class Comment_User_Rank {
     function getImage()
     {
         $tag = sprintf('<img src="%s" class="user_rank" alt="%s" title="%s" />',
-                       $this->image, $this->title, $this->title);
+        $this->image, $this->title, $this->title);
         return $tag;
     }
 
     function loadInfo(&$images, &$composites, &$titles) {
         $titles[] = $this->title;
-    	if (!empty($this->image)) {
+        if (!empty($this->image)) {
             $tag = sprintf('<img src="%s" class="user_rank" alt="%s" title="%s" />',
-                           $this->image,
-                           $this->title,
-                           $this->title);
+            $this->image,
+            $this->title,
+            $this->title);
             if (!empty($this->stack)) {
                 $tag .= "<br />\n";
             }

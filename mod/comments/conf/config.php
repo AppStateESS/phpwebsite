@@ -1,10 +1,10 @@
 <?php
-  /**
-   * Comment's define config
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Comment's define config
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 define('DEFAULT_ANONYMOUS_TITLE', dgettext('comments', 'Anonymous')); // What an anonymous poster is called
 

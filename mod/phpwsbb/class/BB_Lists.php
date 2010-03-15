@@ -26,20 +26,20 @@ class PHPWSBB_Lists
             $s = PHPWS_Cache::get($cachekey);
         }
         if (!empty($s))
-            $cat_arr = unserialize($s);
+        $cat_arr = unserialize($s);
         else {
             // Load all forum objects into an indexed array
             $db = & new PHPWS_DB('phpwsbb_forums');
             $db->addOrder('sortorder asc');
             $db->addOrder('title asc');
             if(!Current_User::allow('phpwsbb', 'manage_forums'))
-                Key::restrictView($db, 'phpwsbb', false);
+            Key::restrictView($db, 'phpwsbb', false);
             $result = $db->select('col');
             if (PHPWS_Error::logIfError($result) || empty($result))
-                return dgettext('phpwsbb', 'There are no available Forums');
+            return dgettext('phpwsbb', 'There are no available Forums');
             $cat_arr[0]['forums'] = array();
             foreach ($result AS $value)
-                $cat_arr[0]['forums'][$value] = new PHPWSBB_Forum($value);
+            $cat_arr[0]['forums'][$value] = new PHPWSBB_Forum($value);
 
             // Load all forum ids belonging to categories
             $db = new PHPWS_DB('category_items');
@@ -52,29 +52,29 @@ class PHPWSBB_Lists
             $db->addOrder('phpws_key.title asc');
             $result = $db->select();
             if (PHPWS_Error::logIfError($result))
-                return PHPWS_Error::printError($result);
+            return PHPWS_Error::printError($result);
             if (!empty($result))
-                // Loop through all records...
-                foreach ($result AS $value) {
-                    // moving the forum object to a category-indexed array
-                    $cat_arr[$value['cat_id']]['forums'][] = $cat_arr[0]['forums'][$value['id']];
-                    unset($cat_arr[0]['forums'][$value['id']]);
-                    if (!isset($cat_arr[$value['cat_id']]['category'])) {
-                        $category = & new Category($value['cat_id']);
-                        $a = array('CATEGORY_NAME' => $category->getTitle(),
+            // Loop through all records...
+            foreach ($result AS $value) {
+                // moving the forum object to a category-indexed array
+                $cat_arr[$value['cat_id']]['forums'][] = $cat_arr[0]['forums'][$value['id']];
+                unset($cat_arr[0]['forums'][$value['id']]);
+                if (!isset($cat_arr[$value['cat_id']]['category'])) {
+                    $category = & new Category($value['cat_id']);
+                    $a = array('CATEGORY_NAME' => $category->getTitle(),
                                    'CATEGORY_DESCRIPTION' => $category->getDescription(),
                                    'SECTION_TITLE' => dgettext('phpwsbb', 'Section'));
-                        if ($category->icon) {
-                            $a['CATEGORY_ICON'] = $category->getIcon();
-                        }
-                        $cat_arr[$value['cat_id']]['category'] = $a;
+                    if ($category->icon) {
+                        $a['CATEGORY_ICON'] = $category->getIcon();
                     }
+                    $cat_arr[$value['cat_id']]['category'] = $a;
                 }
+            }
             // Cache the results for unregistered users
             if (!Current_User::isLogged()) {
                 $lifetime = 86400; // number of seconds until cache refresh
-                                   // default is set in CACHE_LIFETIME in the
-                                   // config/core/config.php file
+                // default is set in CACHE_LIFETIME in the
+                // config/core/config.php file
                 PHPWS_Cache::save($cachekey, $cat_arr, $lifetime);
             }
         }
@@ -82,7 +82,7 @@ class PHPWSBB_Lists
         $tpl = & new PHPWS_Template('phpwsbb');
         $tpl->setFile('forum_list.tpl');
         // Loop through the category array for the amount of rows
-    	foreach ($cat_arr AS $key => $value) {
+        foreach ($cat_arr AS $key => $value) {
             // List all forums in this category
             // Single category display
             foreach ($value['forums'] AS $forum) {
@@ -92,7 +92,7 @@ class PHPWSBB_Lists
             }
             $tpl->setCurrentBlock('cat_list');
             if (isset($value['category']))
-                $tpl->setData($value['category']);
+            $tpl->setData($value['category']);
             $tpl->parseCurrentBlock();
         }
 
@@ -135,26 +135,26 @@ class PHPWSBB_Lists
 
         /* Modify WHERE clause to the desired list type */
         switch ($type) {
-        case 'since':
-            $pager->db->addWhere('lastpost_date', $var, '>=');
-            break;
+            case 'since':
+                $pager->db->addWhere('lastpost_date', $var, '>=');
+                break;
 
-        case 'zerothreads':
-            $pager->db->addWhere('total_posts', '2', '<');
-            break;
+            case 'zerothreads':
+                $pager->db->addWhere('total_posts', '2', '<');
+                break;
 
-        case 'userthreads':
-            $pager->db->addWhere('phpws_key.creator_id', $var);
-            break;
+            case 'userthreads':
+                $pager->db->addWhere('phpws_key.creator_id', $var);
+                break;
 
-        case 'lockedthreads':
-            $pager->db->addWhere('locked', '1');
-            break;
+            case 'lockedthreads':
+                $pager->db->addWhere('locked', '1');
+                break;
         }
         $pager->db->addColumn('phpwsbb_forums.title', null, 'forumname');
         $pager->db->addWhere('phpwsbb_forums.id', 'phpwsbb_topics.fid');
         if(!Current_User::allow('phpwsbb', 'manage_forums'))
-            $pager->db->addWhere('phpwsbb_forums.id', PHPWSBB_Data::get_forum_ids());
+        $pager->db->addWhere('phpwsbb_forums.id', PHPWSBB_Data::get_forum_ids());
         $pager->addSortHeader('phpws_key.title', dgettext('phpwsbb', 'Topic'));
         $pager->addSortHeader('phpws_key.creator', dgettext('phpwsbb', 'Topic Starter'));
         $pager->addSortHeader('phpws_key.create_date', dgettext('phpwsbb', 'Start Date'));

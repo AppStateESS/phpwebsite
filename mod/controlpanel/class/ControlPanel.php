@@ -54,9 +54,9 @@ class PHPWS_ControlPanel {
 
         foreach ($checkTabs as $tab) {
             if ($tab->getItemname() == 'controlpanel' &&
-                in_array($tab->id, $tabList) &&
-                (!isset($links) || !in_array($tab->id, $links))
-                ) {
+            in_array($tab->id, $tabList) &&
+            (!isset($links) || !in_array($tab->id, $links))
+            ) {
                 $panel->dropTab($tab->id);
             }
         }
@@ -92,10 +92,10 @@ class PHPWS_ControlPanel {
         // Headers to the tab's link if it is not a control panel
         // link tab.
         if (isset($_REQUEST['command']) &&
-            $_REQUEST['command'] == 'panel_view' &&
-            !preg_match('/controlpanel/', $link) &&
-            $link != $current_link
-            ){
+        $_REQUEST['command'] == 'panel_view' &&
+        !preg_match('/controlpanel/', $link) &&
+        $link != $current_link
+        ){
             PHPWS_Core::reroute($link);
         }
 
@@ -422,7 +422,7 @@ class PHPWS_ControlPanel {
     {
         Layout::addStyle('controlpanel', 'panel_link.css');
         $reg_link = PHPWS_Text::quickLink(dgettext('users', 'Control Panel'), 'controlpanel',
-                                          array('command'=>'panel_view'));
+        array('command'=>'panel_view'));
 
         if (!$fly_out) {
             return $reg_link->get();
@@ -446,7 +446,7 @@ class PHPWS_ControlPanel {
                 foreach($links as $link) {
                     $tpl->setCurrentBlock('links');
                     $tpl->setData(array('LINK'=> sprintf('<a href="%s&amp;authkey=%s">%s</a>',
-                                                         $link->url, $authkey, str_replace(' ', '&#160;', $link->label))));
+                    $link->url, $authkey, str_replace(' ', '&#160;', $link->label))));
                     $tpl->parseCurrentBlock();
                 }
 

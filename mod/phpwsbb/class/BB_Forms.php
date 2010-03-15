@@ -9,18 +9,18 @@ PHPWS_Core::initModClass('phpwsbb', 'Forum.php');
  *
  * @author Eloi George <eloi@NOSPAM.bygeorgeware.com>
  * @module phpwsBB
- */ 
+ */
 class PHPWSBB_Forms
 {
 
     /**
-	/* Edits the module's default settings.
-	*
-	* @author Eloi George <eloi@NOSPAM.bygeorgeware.com>
-	* @module phpwsbb
-	* @param none
-	* @return none
-	*/
+     /* Edits the module's default settings.
+     *
+     * @author Eloi George <eloi@NOSPAM.bygeorgeware.com>
+     * @module phpwsbb
+     * @param none
+     * @return none
+     */
     public function edit_configuration ()
     {
         $form = & new PHPWS_Form('Config');
@@ -34,11 +34,11 @@ class PHPWSBB_Forms
         $tags['FORMAT_HEADER'] = dgettext('phpwsbb', 'Text Format');
         $tags['FORMAT_NOTE'] = dgettext('phpwsbb', 'Note: For information on how to format dates, please refer to <a href="http://www.w3schools.com/PHP/func_date_strftime.asp">this page at w3schools.com</a>');
 
-        /* allow_anon_posts */ 
+        /* allow_anon_posts */
         $form->addCheckBox('allow_anon_posts');
         $form->setMatch('allow_anon_posts', $val['allow_anon_posts']);
         $form->setLabel('allow_anon_posts', dgettext('phpwsbb', 'Allow Anonymous Posts'));
-		
+
         /* showforumsblock */
         $form->addCheckBox('showforumsblock');
         $form->setMatch('showforumsblock', $val['showforumsblock']);
@@ -63,23 +63,23 @@ class PHPWSBB_Forms
         //		$form->addTplTag('USE_VIEWS_HELP', PHPWS_Help::show_link('phpwsbb', 'views'));
 
         /* long_date_format */
-        $form->addText('long_date_format', $val['long_date_format']); 
+        $form->addText('long_date_format', $val['long_date_format']);
         $form->setMaxSize('long_date_format', '25');
         $form->setWidth('long_date_format', '50%');
         $form->setLabel('long_date_format', dgettext('phpwsbb', 'Long Date Format'));
         //		$form->addTplTag('DATE_FORMAT_HELP', PHPWS_Help::show_link('phpwsbb', 'date_format'));
-        $form->addTplTag('LONG_DATE_FORMAT_EXAMPLE', 
-                         sprintf(dgettext('phpwsbb', 'The current long date format is %1$s, which looks like "%2$s"'), 
-                                 $val['long_date_format'], PHPWSBB_Data::get_long_date(time())));
+        $form->addTplTag('LONG_DATE_FORMAT_EXAMPLE',
+        sprintf(dgettext('phpwsbb', 'The current long date format is %1$s, which looks like "%2$s"'),
+        $val['long_date_format'], PHPWSBB_Data::get_long_date(time())));
 
         /* short_date_format */
-        $form->addText('short_date_format', $val['short_date_format']); 
+        $form->addText('short_date_format', $val['short_date_format']);
         $form->setMaxSize('short_date_format', '25');
         $form->setWidth('short_date_format', '50%');
         $form->setLabel('short_date_format', dgettext('phpwsbb', 'Short Date Format'));
-        $form->addTplTag('SHORT_DATE_FORMAT_EXAMPLE', 
-                         sprintf(dgettext('phpwsbb', 'The current short date format is %1$s, which looks like "%2$s"'), 
-                                 $val['short_date_format'], PHPWSBB_Data::get_short_date(time())));
+        $form->addTplTag('SHORT_DATE_FORMAT_EXAMPLE',
+        sprintf(dgettext('phpwsbb', 'The current short date format is %1$s, which looks like "%2$s"'),
+        $val['short_date_format'], PHPWSBB_Data::get_short_date(time())));
 
 
         $tags['SAVE'] =  '<input name="BB_vars[op:config::save:1]" value="'.dgettext('phpwsbb', 'Save Settings').'" type="submit">';
@@ -96,17 +96,17 @@ class PHPWSBB_Forms
      *
      * @author Eloi George <eloi@NOSPAM.bygeorgeware.com>
      * @module phpwsBB
-     * @param object $object : Item to move.  Can be either a PHPWSBB_Topic or a Key object. 
-     * @param bool $popup : Whether to show it as a popup window. 
+     * @param object $object : Item to move.  Can be either a PHPWSBB_Topic or a Key object.
+     * @param bool $popup : Whether to show it as a popup window.
      * @return string : HTML text
      */
     public function assign_forum(&$object, $popup=FALSE)
     {
-        if (!$object_class = get_class($object)) 
-            return '';
-    	$forums = PHPWSBB_Data::get_forum_list();
-        if (empty($forums)) 
-            return dgettext('phpwsbb', 'There are no available Forums');
+        if (!$object_class = get_class($object))
+        return '';
+        $forums = PHPWSBB_Data::get_forum_list();
+        if (empty($forums))
+        return dgettext('phpwsbb', 'There are no available Forums');
 
         $form = new PHPWS_Form('forum_list');
         $form->addHidden('module', 'phpwsbb');
@@ -124,7 +124,7 @@ class PHPWSBB_Forms
             $str = dgettext('phpwsbb', 'Move this Topic to');
             unset($forums[$topic->fid]);
             $url = 'index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id;
-        } 
+        }
         else {
             $key = $object;
             $form->addHidden('key_id', $key->id);
@@ -142,10 +142,10 @@ class PHPWSBB_Forms
         if ($popup) {
             $form->addHidden('popup', '1');
             $form->addTplTag('CLOSE_WINDOW', sprintf('<input type="button" value="%s" onclick="opener.location.href=\'%s\'; window.close();" />',
-                                                     dgettext('categories', 'Close Window'), $url));
+            dgettext('categories', 'Close Window'), $url));
         }
         else
-            $form->addTplTag('CLOSE_WINDOW', sprintf('<a href="%s">%s</a>', $url, dgettext('phpwsbb', 'Back to "%s"')));
+        $form->addTplTag('CLOSE_WINDOW', sprintf('<a href="%s">%s</a>', $url, dgettext('phpwsbb', 'Back to "%s"')));
 
         $template = $form->getTemplate();
         return PHPWS_Template::process($template, 'phpwsbb', 'assign_forum.tpl');
@@ -157,10 +157,10 @@ class PHPWSBB_Forms
      *
      * @author Eloi George <eloi@NOSPAM.bygeorgeware.com>
      * @module phpwsBB
-     * @param string $address : Address to direct the responses to. 
-     * @param string $question : Confirmation question. 
-     * @param string $approve : Text to show on the Approval button. 
-     * @param string $disapprove : Text to show on the Disapproval button. 
+     * @param string $address : Address to direct the responses to.
+     * @param string $question : Confirmation question.
+     * @param string $approve : Text to show on the Approval button.
+     * @param string $disapprove : Text to show on the Disapproval button.
      * @return string : HTML text
      */
     public function show_dialog($address, $title, $question, $approve = 'Yes', $disapprove = 'No')
@@ -200,7 +200,7 @@ class PHPWSBB_Forms
         $title = sprintf(dgettext('phpwsbb', 'Moving %1$s Comments From "%2$s" To another Topic'), count($comment_ids), $oldthread->_key->title);
         Layout::addPageTitle($title);
         $form->addTplTag('MOD_TITLE', $title);
-        $form->addText('topic'); 
+        $form->addText('topic');
         $form->setMaxSize('topic', '8');
         $form->setSize('topic', '10');
         $form->setLabel('topic', dgettext('phpwsbb', 'Enter the Id of the topic you are moving these comments to'));
@@ -223,9 +223,9 @@ class PHPWSBB_Forms
      */
     public function split_comments($comment_ids)
     {
-    	$forums = PHPWSBB_Data::get_forum_list();
-        if (empty($forums)) 
-            return dgettext('phpwsbb', 'No forums have been created yet');
+        $forums = PHPWSBB_Data::get_forum_list();
+        if (empty($forums))
+        return dgettext('phpwsbb', 'No forums have been created yet');
 
         // Get the thread object
         $c_item = & new Comment_Item($comment_ids[0]);
@@ -242,14 +242,14 @@ class PHPWSBB_Forms
         $form->addSelect('new_forum', $forums);
         // Get the current forum
         $topic = & new PHPWSBB_Topic($thread->id);
-        if ($topic->fid) 
-            $form->setMatch('new_forum', $topic->fid);
+        if ($topic->fid)
+        $form->setMatch('new_forum', $topic->fid);
         $form->setLabel('new_forum', dgettext('phpwsbb', 'Create a new Topic in'));
         // cm_subject
         $subject = strip_tags(trim($thread->_key->title));
         if (!empty($_POST['cm_subject']))
-            $subject = trim($_POST['cm_subject']);
-        $form->addText('cm_subject', $subject); 
+        $subject = trim($_POST['cm_subject']);
+        $form->addText('cm_subject', $subject);
         $form->setMaxSize('cm_subject', '50');
         $form->setWidth('cm_subject', '70%');
         $form->setLabel('cm_subject', dgettext('phpwsbb', 'Topic Title (the tag [Split] will be added to its front)'));

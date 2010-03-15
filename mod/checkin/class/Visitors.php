@@ -87,7 +87,7 @@ class Checkin_Visitor {
     public function removeLink()
     {
         $js['question'] = sprintf(dgettext('checkin', 'Are you sure you want to remove %s from the waiting list?'),
-                                  addslashes($this->getName()));
+        addslashes($this->getName()));
         $js['address']  = PHPWS_Text::linkAddress('checkin', array('aop'=>'remove_visitor',
                                                                    'visitor_id'=> $this->id));
         $js['link']     = dgettext('checkin', 'Remove');

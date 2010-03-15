@@ -54,7 +54,7 @@ class Checkin_Staff {
         }
 
         $result = $db->select('col');
-        
+
         if (!PHPWS_Error::logIfError($result)) {
             $this->_reasons = & $result;
         }
@@ -79,73 +79,73 @@ class Checkin_Staff {
         foreach ($farray as $val) {
             $subval = explode('-', $val);
             switch (1) {
-            case strlen($val) == 1:
-                $final[] = $val;
-                break;
+                case strlen($val) == 1:
+                    $final[] = $val;
+                    break;
 
-            case preg_match('/^\w{1}-\w{1}$/', $val):
-                $final[] = "[$val]";
-                break;
+                case preg_match('/^\w{1}-\w{1}$/', $val):
+                    $final[] = "[$val]";
+                    break;
 
-            case preg_match('/^\w{2}-\w{2}$/', $val):
-                if (substr($subval[0], 0, 1) == substr($subval[1], 0, 1)) {
-                    $final[] = sprintf('%s[%s-%s]', substr($subval[0], 0, 1),
-                                       substr($subval[0], 1, 1),
-                                       substr($subval[1], 1, 1));
-                } else {
-                    $char1 = substr($subval[0], 0, 1);
-                    $char2 = substr($subval[0], 1, 1);
+                case preg_match('/^\w{2}-\w{2}$/', $val):
+                    if (substr($subval[0], 0, 1) == substr($subval[1], 0, 1)) {
+                        $final[] = sprintf('%s[%s-%s]', substr($subval[0], 0, 1),
+                        substr($subval[0], 1, 1),
+                        substr($subval[1], 1, 1));
+                    } else {
+                        $char1 = substr($subval[0], 0, 1);
+                        $char2 = substr($subval[0], 1, 1);
+                        if ($char2 == 'a') {
+                            $final[] = $char1;
+                        } else {
+                            $final[] = sprintf('%s[a-%s]', $char1, $char2);
+                        }
+
+                        $char3 = substr($subval[1], 0, 1);
+                        $char4 = substr($subval[1], 1, 1);
+
+                        if ($char4 == 'a') {
+                            $final[] = $subval[1];
+                        } else {
+                            $final[] = sprintf('%s[a-%s]', $char3, $char4);
+                        }
+                    }
+                    break;
+
+                case preg_match('/^\w{1}-\w{2}$/', $val):
+                    $final[] = $subval[0];
+                    $char1 = substr($subval[1], 0, 1);
+                    $char2 = substr($subval[1], 1, 1);
                     if ($char2 == 'a') {
-                        $final[] = $char1;
+                        $final[] = $subval[1];
                     } else {
                         $final[] = sprintf('%s[a-%s]', $char1, $char2);
                     }
+                    break;
 
+                case preg_match('/^\w{2}-\w{1}$/', $val):
+                    $char1 = substr($subval[0], 0, 1);
+                    $char2 = substr($subval[0], 1, 1);
                     $char3 = substr($subval[1], 0, 1);
-                    $char4 = substr($subval[1], 1, 1);
+                    if ($char2 == 'z') {
+                        $final[] = $subval[0];
+                    } else {
+                        $final[] = sprintf('%s[%s-z]', $char1, $char2);
+                    }
 
-                    if ($char4 == 'a') {
+                    $start_char = (int)ord($char1);
+                    $final_char = (int)ord($char3);
+                    if ($final_char - $start_char == 1) {
                         $final[] = $subval[1];
                     } else {
-                        $final[] = sprintf('%s[a-%s]', $char3, $char4);
+                        for ($i = $start_char; $i < $final_char; $i++);
+                        $final[] = sprintf('[%s-%s]', chr($start_char + 1), chr($i));
                     }
-                }
-                break;
+                    break;
 
-            case preg_match('/^\w{1}-\w{2}$/', $val):
-                $final[] = $subval[0];
-                $char1 = substr($subval[1], 0, 1);
-                $char2 = substr($subval[1], 1, 1);
-                if ($char2 == 'a') {
-                    $final[] = $subval[1];
-                } else {
-                    $final[] = sprintf('%s[a-%s]', $char1, $char2);
-                }
-                break;
-
-            case preg_match('/^\w{2}-\w{1}$/', $val):
-                $char1 = substr($subval[0], 0, 1);
-                $char2 = substr($subval[0], 1, 1);
-                $char3 = substr($subval[1], 0, 1);
-                if ($char2 == 'z') {
-                    $final[] = $subval[0];
-                } else {
-                    $final[] = sprintf('%s[%s-z]', $char1, $char2);
-                }
-
-                $start_char = (int)ord($char1);
-                $final_char = (int)ord($char3);
-                if ($final_char - $start_char == 1) {
-                    $final[] = $subval[1];
-                } else {
-                    for ($i = $start_char; $i < $final_char; $i++);
-                    $final[] = sprintf('[%s-%s]', chr($start_char + 1), chr($i));
-                }
-                break;
-
-            default:
-                $final[] = $val;
-                break;
+                default:
+                    $final[] = $val;
+                    break;
             }
         }
         return implode('|', $final);
@@ -155,18 +155,18 @@ class Checkin_Staff {
     public function row_tags()
     {
         switch ($this->filter_type) {
-        case 0 :
-            $tpl['FILTER_INFO'] = dgettext('checkin', 'None');
-            break;
+            case 0 :
+                $tpl['FILTER_INFO'] = dgettext('checkin', 'None');
+                break;
 
-        case CO_FT_LAST_NAME:
-            $tpl['FILTER_INFO'] = sprintf(dgettext('checkin', 'Last name: %s'), $this->filter);
-            break;
+            case CO_FT_LAST_NAME:
+                $tpl['FILTER_INFO'] = sprintf(dgettext('checkin', 'Last name: %s'), $this->filter);
+                break;
 
-        case CO_FT_REASON:
-            $this->loadReasons(true);
-            $tpl['FILTER_INFO'] = implode('<br>', $this->_reasons);
-            break;
+            case CO_FT_REASON:
+                $this->loadReasons(true);
+                $tpl['FILTER_INFO'] = implode('<br>', $this->_reasons);
+                break;
         }
         $vars['staff_id'] = $this->id;
         $vars['aop'] = 'edit_staff';
@@ -192,7 +192,7 @@ class Checkin_Staff {
             $this->view_order = $max_order + 1;
             $db->reset();
         }
-        
+
         return !PHPWS_Error::logIfError($db->saveObject($this));
     }
 

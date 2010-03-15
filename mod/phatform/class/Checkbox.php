@@ -43,7 +43,7 @@ class PHAT_Checkbox extends PHAT_Element {
         }
 
         if($this->isRequired())
-            $viewTags['REQUIRED_FLAG'] = '&#42;'; 
+        $viewTags['REQUIRED_FLAG'] = '&#42;';
 
         $viewTags['BLURB'] = $this->getBlurb();
         $viewTags['CHECK_BOXES'] = '';
@@ -53,7 +53,7 @@ class PHAT_Checkbox extends PHAT_Element {
         $value = $this->getValue();
 
         for($i = 0; $i < sizeof($optionText); $i++)
-            $viewTags['CHECK_BOXES'] .= PHPWS_Form::formCheckBox('PHAT_' . $label . '[' . $i . ']', $optionValues[$i], $value[$i], NULL, $optionText[$i]) . "<br />\n";
+        $viewTags['CHECK_BOXES'] .= PHPWS_Form::formCheckBox('PHAT_' . $label . '[' . $i . ']', $optionValues[$i], $value[$i], NULL, $optionText[$i]) . "<br />\n";
 
         return PHPWS_Template::processTemplate($viewTags, 'phatform', 'checkbox/view.tpl');
     } // END FUNC view
@@ -115,8 +115,8 @@ class PHAT_Checkbox extends PHAT_Element {
         $error = FALSE;
         $label = $this->getLabel();
         if((!$_SESSION['PHAT_FormManager']->form->checkLabel($_REQUEST['PHAT_ElementName']) && (strcasecmp($label, $_REQUEST['PHAT_ElementName']) != 0))
-           || PEAR::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
-            
+        || PEAR::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
+
             $message = dgettext('phatform', 'The name you entered for the Checkbox is not valid or is already in use with this form.');
             $currentError = PHPWS_Error::get(PHATFORM_INVALID_NAME, 'phatform', 'PHAT_Checkbox::save()', $_REQUEST['PHAT_ElementName']);
             $error = TRUE;
