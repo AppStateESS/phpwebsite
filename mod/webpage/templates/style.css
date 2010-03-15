@@ -1,16 +1,16 @@
 div.page-links {
-margin-top : 20px;
-text-align : center;
+    margin-top: 20px;
+    text-align: center;
 }
 
 div.page-links span a:link {
-text-decoration : none;
+    text-decoration: none;
 }
 
 div.page-links span a:visited {
-text-decoration : none;
+    text-decoration: none;
 }
 
 p.wp-admin-links {
-   text-align : center;
+    text-align: center;
 }

@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 $errors[WP_MISSING_TEMPLATE]  = dgettext('webpage', 'Missing template file.');
 $errors[WP_TPL_FILE_MISSING]  = dgettext('webpage', 'Cannot find template file.');

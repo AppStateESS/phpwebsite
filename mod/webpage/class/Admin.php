@@ -69,543 +69,543 @@ class Webpage_Admin {
         // Determines if page panel needs creating
         // also see panel commands below switch to add content
         switch ($command) {
-        case 'edit_webpage':
-        case 'edit_page':
-        case 'add_page':
-            if ($volume->id && Current_User::isRestricted('webpage')) {
-                $xversion = new Version('webpage_volume');
-                $xversion->setSource($volume);
-                $approval_id = $xversion->isWaitingApproval();
-                if ($approval_id) {
-                     $version_id = & $approval_id;
-                     $version = new Version('webpage_volume', $version_id);
-                     $version->loadObject($volume);
-                     $volume->loadApprovalPages();
-                     if (isset($volume->_pages[$_REQUEST['page_id']])) {
-                         $page = $volume->_pages[$_REQUEST['page_id']];
-                     }
-                }
+            case 'edit_webpage':
+            case 'edit_page':
+            case 'add_page':
+                if ($volume->id && Current_User::isRestricted('webpage')) {
+                    $xversion = new Version('webpage_volume');
+                    $xversion->setSource($volume);
+                    $approval_id = $xversion->isWaitingApproval();
+                    if ($approval_id) {
+                        $version_id = & $approval_id;
+                        $version = new Version('webpage_volume', $version_id);
+                        $version->loadObject($volume);
+                        $volume->loadApprovalPages();
+                        if (isset($volume->_pages[$_REQUEST['page_id']])) {
+                            $page = $volume->_pages[$_REQUEST['page_id']];
+                        }
+                    }
 
-            }
-        case 'new':
-        case 'delete_page':
-        case 'edit_header':
-        case 'post_header':
-        case 'post_page':
-        case 'activate':
-        case 'deactivate':
-        case 'feature':
-        case 'approval_view':
-        case 'deactivate_vol':
-        case 'activate_vol':
-        case 'restore_volume':
-        case 'restore_page':
-            $pagePanel = Webpage_Forms::pagePanel($volume, $version_id);
-            $pagePanel->enableSecure();
+                }
+            case 'new':
+            case 'delete_page':
+            case 'edit_header':
+            case 'post_header':
+            case 'post_page':
+            case 'activate':
+            case 'deactivate':
+            case 'feature':
+            case 'approval_view':
+            case 'deactivate_vol':
+            case 'activate_vol':
+            case 'restore_volume':
+            case 'restore_page':
+                $pagePanel = Webpage_Forms::pagePanel($volume, $version_id);
+                $pagePanel->enableSecure();
         }
 
         switch ($command) {
             // web page admin
-        case 'new':
-            $pagePanel->setCurrentTab('header');
-            $title = dgettext('webpage', 'Create header');
-            $content = Webpage_Forms::editHeader($volume, $version);
-            break;
+            case 'new':
+                $pagePanel->setCurrentTab('header');
+                $title = dgettext('webpage', 'Create header');
+                $content = Webpage_Forms::editHeader($volume, $version);
+                break;
 
-        case 'restore_volume_version':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
-            $version->restore();
-            Webpage_Admin::sendMessage( dgettext('webpage', 'Header restored.'),
-                                       sprintf('edit_webpage&tab=header&volume_id=%s', $volume->id) );
-            break;
+            case 'restore_volume_version':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
+                $version->restore();
+                Webpage_Admin::sendMessage( dgettext('webpage', 'Header restored.'),
+                sprintf('edit_webpage&tab=header&volume_id=%s', $volume->id) );
+                break;
 
-        case 'restore_page_version':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
+            case 'restore_page_version':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
 
-            $page_version = new Version('webpage_page', (int)$_GET['version_id']);
-            /**
-             * Have to set the page number.
-             * We don't want the saved version to screw up the page order
-             **/
-            $page_version->source_data['page_number'] = $page->page_number;
-            $page_version->restore();
-            Webpage_Admin::sendMessage( dgettext('webpage', 'Page restored.'),
-                                       sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
-                                               $page->page_number, $volume->id, $page->id));
-            break;
+                $page_version = new Version('webpage_page', (int)$_GET['version_id']);
+                /**
+                 * Have to set the page number.
+                 * We don't want the saved version to screw up the page order
+                 **/
+                $page_version->source_data['page_number'] = $page->page_number;
+                $page_version->restore();
+                Webpage_Admin::sendMessage( dgettext('webpage', 'Page restored.'),
+                sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
+                $page->page_number, $volume->id, $page->id));
+                break;
 
-        case 'page_up':
-            if (!Current_User::allow('webpage', 'edit_page', null, null, true)) {
-                Current_User::disallow();
-            }
-            $page->moveUp();
-            Webpage_Admin::sendMessage( dgettext('webpage', 'Page moved.'),
-                                        sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
-                                                $page->page_number, $volume->id, $page->id));
-            break;
+            case 'page_up':
+                if (!Current_User::allow('webpage', 'edit_page', null, null, true)) {
+                    Current_User::disallow();
+                }
+                $page->moveUp();
+                Webpage_Admin::sendMessage( dgettext('webpage', 'Page moved.'),
+                sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
+                $page->page_number, $volume->id, $page->id));
+                break;
 
-        case 'page_down':
-            if (!Current_User::allow('webpage', 'edit_page', null, null, true)) {
-                Current_User::disallow();
-            }
+            case 'page_down':
+                if (!Current_User::allow('webpage', 'edit_page', null, null, true)) {
+                    Current_User::disallow();
+                }
 
-            $page->moveDown();
-            Webpage_Admin::sendMessage( dgettext('webpage', 'Page moved.'),
-                                        sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
-                                                $page->page_number, $volume->id, $page->id));
-            break;
+                $page->moveDown();
+                Webpage_Admin::sendMessage( dgettext('webpage', 'Page moved.'),
+                sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
+                $page->page_number, $volume->id, $page->id));
+                break;
 
-        case 'remove_page_restore':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
+            case 'remove_page_restore':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
 
-            $page_version = new Version('webpage_page', (int)$_GET['version_id']);
-            $page_version->delete();
-            Webpage_Admin::sendMessage( dgettext('webpage', 'Page restored.'),
-                                       sprintf('restore_page&tab=page_%s&volume_id=%s&page_id=%s',
-                                               $page->page_number, $volume->id, $page->id));
+                $page_version = new Version('webpage_page', (int)$_GET['version_id']);
+                $page_version->delete();
+                Webpage_Admin::sendMessage( dgettext('webpage', 'Page restored.'),
+                sprintf('restore_page&tab=page_%s&volume_id=%s&page_id=%s',
+                $page->page_number, $volume->id, $page->id));
 
 
-        case 'remove_volume_restore':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
+            case 'remove_volume_restore':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
 
-            $version->delete();
-            Webpage_Admin::sendMessage( dgettext('webpage', 'Header version deleted.'),
-                                       sprintf('restore_volume&volume_id=%s', $volume->id) );
-            break;
+                $version->delete();
+                Webpage_Admin::sendMessage( dgettext('webpage', 'Header version deleted.'),
+                sprintf('restore_volume&volume_id=%s', $volume->id) );
+                break;
 
-        case 'edit_webpage':
-            if (!$volume->canEdit()) {
-                Current_User::disallow();
-            }
+            case 'edit_webpage':
+                if (!$volume->canEdit()) {
+                    Current_User::disallow();
+                }
 
-            $title = sprintf(dgettext('webpage', 'Administrate page: %s'), $volume->title);
-            if ($page->id) {
-                $pagePanel->setCurrentTab('page_' . $page->page_number);
-                $content = $page->view(TRUE, $version_id);
-            } elseif (stristr($pagePanel->getCurrentTab(), 'page_')) {
-                $page = $volume->getPagebyNumber(substr($pagePanel->getCurrentTab(), 5));
-
-                if ($page) {
+                $title = sprintf(dgettext('webpage', 'Administrate page: %s'), $volume->title);
+                if ($page->id) {
+                    $pagePanel->setCurrentTab('page_' . $page->page_number);
                     $content = $page->view(TRUE, $version_id);
+                } elseif (stristr($pagePanel->getCurrentTab(), 'page_')) {
+                    $page = $volume->getPagebyNumber(substr($pagePanel->getCurrentTab(), 5));
+
+                    if ($page) {
+                        $content = $page->view(TRUE, $version_id);
+                    } else {
+                        $content = $volume->viewHeader($version_id);
+                    }
+
                 } else {
                     $content = $volume->viewHeader($version_id);
                 }
+                break;
 
-            } else {
-                $content = $volume->viewHeader($version_id);
-            }
-            break;
+            case 'approve':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
 
-        case 'approve':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
+                $title = dgettext('webpage', 'Web Page Approval');
+                $content = Webpage_Forms::approval();
+                break;
 
-            $title = dgettext('webpage', 'Web Page Approval');
-            $content = Webpage_Forms::approval();
-            break;
+            case 'join_page':
+                if (!$volume->canEdit()) {
+                    Current_User::disallow();
+                }
 
-        case 'join_page':
-            if (!$volume->canEdit()) {
-                Current_User::disallow();
-            }
+                if (!isset($_REQUEST['page_id'])) {
+                    PHPWS_Core::errorPage('404');
+                }
+                $volume->joinPage((int)$_REQUEST['page_id']);
+                Webpage_Admin::sendMessage( dgettext('webpage', 'Page joined.'),
+                sprintf('edit_webpage&tab=page_%s&volume_id=%s', $page->page_number, $volume->id) );
+                break;
 
-            if (!isset($_REQUEST['page_id'])) {
-                PHPWS_Core::errorPage('404');
-            }
-            $volume->joinPage((int)$_REQUEST['page_id']);
-            Webpage_Admin::sendMessage( dgettext('webpage', 'Page joined.'),
-                                       sprintf('edit_webpage&tab=page_%s&volume_id=%s', $page->page_number, $volume->id) );
-            break;
+            case 'join_all_pages':
+                if (!$volume->canEdit()) {
+                    Current_User::disallow();
+                }
 
-        case 'join_all_pages':
-            if (!$volume->canEdit()) {
-                Current_User::disallow();
-            }
+                $volume->joinAllPages();
+                Webpage_Admin::sendMessage( dgettext('webpage', 'Pages joined.'),
+                sprintf('edit_webpage&tab=page_1&volume_id=%s', $volume->id) );
+                break;
 
-            $volume->joinAllPages();
-            Webpage_Admin::sendMessage( dgettext('webpage', 'Pages joined.'),
-                                        sprintf('edit_webpage&tab=page_1&volume_id=%s', $volume->id) );
-            break;
+            case 'delete_page':
+                if (!Current_User::allow('webpage', 'edit_page', $volume->id, 'volume', true)) {
+                    Current_User::disallow();
+                }
 
-        case 'delete_page':
-            if (!Current_User::allow('webpage', 'edit_page', $volume->id, 'volume', true)) {
-                Current_User::disallow();
-            }
-
-            if (!isset($_REQUEST['page_id'])) {
-                PHPWS_Core::errorPage('404');
-            }
-            $volume->dropPage((int)$_REQUEST['page_id']);
-            Webpage_Admin::sendMessage(dgettext('webpage', 'Page removed.'),
+                if (!isset($_REQUEST['page_id'])) {
+                    PHPWS_Core::errorPage('404');
+                }
+                $volume->dropPage((int)$_REQUEST['page_id']);
+                Webpage_Admin::sendMessage(dgettext('webpage', 'Page removed.'),
                                        'edit_webpage&tab=header&volume_id=' . $volume->id);
-            break;
+                break;
 
 
-        case 'approval_view':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
+            case 'approval_view':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
 
-            $title = dgettext('webpage', 'Approval view');
-            if (!isset($_REQUEST['version_id'])) {
-                PHPWS_Core::errorPage('404');
-            }
-            $content = Webpage_Admin::approvalView($volume, $version);
-            break;
+                $title = dgettext('webpage', 'Approval view');
+                if (!isset($_REQUEST['version_id'])) {
+                    PHPWS_Core::errorPage('404');
+                }
+                $content = Webpage_Admin::approvalView($volume, $version);
+                break;
 
-        case 'disapprove_webpage':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow(dgettext('webpage', 'Attempted to disapprove a webpage.'));
-                return;
-            }
-            if (Webpage_Admin::disapproveWebpage()) {
-                Webpage_Admin::sendMessage(dgettext('webpage', 'Web page disapproved.'),'approve');
-            } else {
-                Webpage_Admin::sendMessage(dgettext('webpage', 'A problem occurred when trying to disapprove a web page.'),'approve');
-            }
-            break;
-
-        case 'approve_webpage':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow(dgettext('webpage', 'Attempted to approve a webpage.'));
-                return;
-            }
-            if (Webpage_Admin::approveWebpage()) {
-                Webpage_Admin::sendMessage(dgettext('webpage', 'Web page approved.'),'approve');
-            } else {
-                Webpage_Admin::sendMessage(dgettext('webpage', 'A problem occurred when trying to approve a web page.'),'approve');
-            }
-            break;
-
-        case 'edit_page':
-            if (!$volume->canEdit()) {
-                Current_User::disallow();
-            }
-
-            $pagePanel->setCurrentTab('page_' . $page->page_number);
-            $title = sprintf(dgettext('webpage', 'Edit Page %s'),$page->page_number);
-            $content = Webpage_Forms::editPage($page, $version);
-            break;
-
-        case 'add_page':
-            if (!$volume->canEdit()) {
-                Current_User::disallow();
-            }
-
-            $pagePanel->setCurrentTab('add_page');
-            $title = sprintf(dgettext('webpage', 'Add page: %s'), $volume->title);
-            $content = Webpage_Forms::editPage($page, $version);
-            break;
-
-        case 'edit_header':
-            if (!$volume->canEdit()) {
-                Current_User::disallow();
-            }
-
-            $pagePanel->setCurrentTab('header');
-            $title = sprintf(dgettext('webpage', 'Edit header: %s'), $volume->title);
-            $content = Webpage_Forms::editHeader($volume, $version);
-            break;
-
-        case 'post_header':
-            if (!$volume->canEdit()) {
-                Current_User::disallow();
-            }
-
-            if (PHPWS_Core::isPosted()) {
-                if ($volume->id) {
-                    Webpage_Admin::sendMessage(dgettext('webpage', 'Ignoring repeat post.'),
-                                               'edit_webpage&tab=header&volume_id=' . $volume->id);
+            case 'disapprove_webpage':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow(dgettext('webpage', 'Attempted to disapprove a webpage.'));
+                    return;
+                }
+                if (Webpage_Admin::disapproveWebpage()) {
+                    Webpage_Admin::sendMessage(dgettext('webpage', 'Web page disapproved.'),'approve');
                 } else {
-                    Webpage_Admin::sendMessage(dgettext('webpage', 'Ignoring repeat post.'), 'new');
+                    Webpage_Admin::sendMessage(dgettext('webpage', 'A problem occurred when trying to disapprove a web page.'),'approve');
                 }
                 break;
-            }
 
-            $result = $volume->post();
-
-            if (is_array($result)) {
-                // errors occurred
-                $title = sprintf(dgettext('webpage', 'Edit header page: %s'), $volume->title);
-                $content = Webpage_Forms::editHeader($volume, $version);
-                $message = implode('<br />', $result);
-            } else {
-                PHPWS_Core::initModClass('webpage', 'Forms.php');
-                $new_vol = (bool)$volume->id ? false : true;
-                $result = $volume->save();
-                if (PEAR::isError($result)) {
-                    PHPWS_Error::log($result);
-                    Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred. Please check your logs.'), 'list');
+            case 'approve_webpage':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow(dgettext('webpage', 'Attempted to approve a webpage.'));
+                    return;
+                }
+                if (Webpage_Admin::approveWebpage()) {
+                    Webpage_Admin::sendMessage(dgettext('webpage', 'Web page approved.'),'approve');
                 } else {
-                    if ($new_vol) {
-                        Webpage_Admin::sendMessage(dgettext('webpage', 'Header saved successfully.'),
-                                                   sprintf('add_page&volume_id=%s&version_id=%s',
-                                                           $volume->id, $version_id)
-                                                   );
+                    Webpage_Admin::sendMessage(dgettext('webpage', 'A problem occurred when trying to approve a web page.'),'approve');
+                }
+                break;
+
+            case 'edit_page':
+                if (!$volume->canEdit()) {
+                    Current_User::disallow();
+                }
+
+                $pagePanel->setCurrentTab('page_' . $page->page_number);
+                $title = sprintf(dgettext('webpage', 'Edit Page %s'),$page->page_number);
+                $content = Webpage_Forms::editPage($page, $version);
+                break;
+
+            case 'add_page':
+                if (!$volume->canEdit()) {
+                    Current_User::disallow();
+                }
+
+                $pagePanel->setCurrentTab('add_page');
+                $title = sprintf(dgettext('webpage', 'Add page: %s'), $volume->title);
+                $content = Webpage_Forms::editPage($page, $version);
+                break;
+
+            case 'edit_header':
+                if (!$volume->canEdit()) {
+                    Current_User::disallow();
+                }
+
+                $pagePanel->setCurrentTab('header');
+                $title = sprintf(dgettext('webpage', 'Edit header: %s'), $volume->title);
+                $content = Webpage_Forms::editHeader($volume, $version);
+                break;
+
+            case 'post_header':
+                if (!$volume->canEdit()) {
+                    Current_User::disallow();
+                }
+
+                if (PHPWS_Core::isPosted()) {
+                    if ($volume->id) {
+                        Webpage_Admin::sendMessage(dgettext('webpage', 'Ignoring repeat post.'),
+                                               'edit_webpage&tab=header&volume_id=' . $volume->id);
                     } else {
-                        Webpage_Admin::sendMessage(dgettext('webpage', 'Header saved successfully.'),
+                        Webpage_Admin::sendMessage(dgettext('webpage', 'Ignoring repeat post.'), 'new');
+                    }
+                    break;
+                }
+
+                $result = $volume->post();
+
+                if (is_array($result)) {
+                    // errors occurred
+                    $title = sprintf(dgettext('webpage', 'Edit header page: %s'), $volume->title);
+                    $content = Webpage_Forms::editHeader($volume, $version);
+                    $message = implode('<br />', $result);
+                } else {
+                    PHPWS_Core::initModClass('webpage', 'Forms.php');
+                    $new_vol = (bool)$volume->id ? false : true;
+                    $result = $volume->save();
+                    if (PEAR::isError($result)) {
+                        PHPWS_Error::log($result);
+                        Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred. Please check your logs.'), 'list');
+                    } else {
+                        if ($new_vol) {
+                            Webpage_Admin::sendMessage(dgettext('webpage', 'Header saved successfully.'),
+                            sprintf('add_page&volume_id=%s&version_id=%s',
+                            $volume->id, $version_id)
+                            );
+                        } else {
+                            Webpage_Admin::sendMessage(dgettext('webpage', 'Header saved successfully.'),
                                                    'edit_webpage&tab=header&volume_id=' . $volume->id . '&version_id=' . $version_id);
+                        }
                     }
                 }
-            }
-            break;
-
-        case 'post_page':
-            if (!$volume->canEdit()) {
-                Current_User::disallow();
-            }
-            $title = sprintf(dgettext('webpage', 'Administrate page: %s'), $volume->title);
-
-            $result = $page->post();
-            if (isset($_POST['page_version_id'])) {
-                $version_id = (int)$_POST['page_version_id'];
-            }
-
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-                Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred while saving your page. Please check the error log.'),
-                                           sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
-                                                   $page->page_number, $volume->id, $page->id, $version_id));
-
                 break;
-            } elseif (is_array($result)) {
-                $title = sprintf(dgettext('webpage', 'Edit Page %s'),$page->page_number);
-                $message = implode('<br />', $result);
-                $content = Webpage_Forms::editPage($page, $version);
-            } else {
-                $result = $page->save();
+
+            case 'post_page':
+                if (!$volume->canEdit()) {
+                    Current_User::disallow();
+                }
+                $title = sprintf(dgettext('webpage', 'Administrate page: %s'), $volume->title);
+
+                $result = $page->post();
+                if (isset($_POST['page_version_id'])) {
+                    $version_id = (int)$_POST['page_version_id'];
+                }
+
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
                     Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred while saving your page. Please check the error log.'),
-                                               sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
-                                                       $page->page_number, $volume->id, $page->id, $version_id));
-                }
+                    sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
+                    $page->page_number, $volume->id, $page->id, $version_id));
 
-                if ( isset($_POST['force_template']) ) {
-                    $force_result = $volume->forceTemplate($page->template);
-
-                    if (PEAR::isError($force_result)) {
-                        PHPWS_Error::log($force_result);
-                        Webpage_Admin::sendMessage(dgettext('webpage', 'Error: Unable to force template.'),
-                                                   sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
-                                                           $page->page_number, $volume->id, $page->id, $version_id));
-                    }
-                }
-                if (!$page->approved) {
-                    $message = dgettext('webpage', 'Page held for approval.');
+                    break;
+                } elseif (is_array($result)) {
+                    $title = sprintf(dgettext('webpage', 'Edit Page %s'),$page->page_number);
+                    $message = implode('<br />', $result);
+                    $content = Webpage_Forms::editPage($page, $version);
                 } else {
-                    $message = dgettext('webpage', 'Page saved successfully.');
+                    $result = $page->save();
+                    if (PEAR::isError($result)) {
+                        PHPWS_Error::log($result);
+                        Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred while saving your page. Please check the error log.'),
+                        sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
+                        $page->page_number, $volume->id, $page->id, $version_id));
+                    }
+
+                    if ( isset($_POST['force_template']) ) {
+                        $force_result = $volume->forceTemplate($page->template);
+
+                        if (PEAR::isError($force_result)) {
+                            PHPWS_Error::log($force_result);
+                            Webpage_Admin::sendMessage(dgettext('webpage', 'Error: Unable to force template.'),
+                            sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
+                            $page->page_number, $volume->id, $page->id, $version_id));
+                        }
+                    }
+                    if (!$page->approved) {
+                        $message = dgettext('webpage', 'Page held for approval.');
+                    } else {
+                        $message = dgettext('webpage', 'Page saved successfully.');
+                    }
+                    Webpage_Admin::sendMessage($message,
+                    sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
+                    $page->page_number, $volume->id, $page->id, $version_id));
                 }
-                Webpage_Admin::sendMessage($message,
-                                           sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
-                                                   $page->page_number, $volume->id, $page->id, $version_id));
-            }
-            break;
+                break;
 
-        case 'list':
-            $title = dgettext('webpage', 'List Web Pages');
-            $content = Webpage_Forms::wp_list();
-            break;
+            case 'list':
+                $title = dgettext('webpage', 'List Web Pages');
+                $content = Webpage_Forms::wp_list();
+                break;
 
-        case 'move_to_frontpage':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
+            case 'move_to_frontpage':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
 
-            if (isset($_POST['webpage'])) {
-                Webpage_Admin::setFrontPage($_POST['webpage'], 1);
-            } elseif($volume->id) {
-                Webpage_Admin::setFrontPage(array($volume->id), 1);
-            }
+                if (isset($_POST['webpage'])) {
+                    Webpage_Admin::setFrontPage($_POST['webpage'], 1);
+                } elseif($volume->id) {
+                    Webpage_Admin::setFrontPage(array($volume->id), 1);
+                }
 
-            Webpage_Admin::goBack();
-            break;
-
-        case 'move_off_frontpage':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
-
-            if (isset($_POST['webpage'])) {
-                Webpage_Admin::setFrontPage($_POST['webpage'], 0);
-            } elseif($volume->id) {
-                Webpage_Admin::setFrontPage(array($volume->id), 0);
-            }
-            Webpage_Admin::goBack();
-            break;
-
-
-        case 'delete_wp':
-            if (!Current_User::allow('webpage', 'delete_page', $volume->id, 'volume', true)) {
-                Current_User::disallow();
-            }
-
-            // deletes an entire volume, coming from list page
-            if (!Current_User::authorized('webpage', 'delete_page')) {
-                Current_User::disallow();
-                return;
-            }
-
-            $result = Webpage_Admin::deleteWebpages();
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-                $title = dgettext('webpage', 'Error');
-                $content = dgettext('webpage', 'A problem occurred when trying to delete your webpage.');
-            } else {
                 Webpage_Admin::goBack();
-            }
+                break;
 
-            break;
+            case 'move_off_frontpage':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
 
-        case 'activate_vol':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
+                if (isset($_POST['webpage'])) {
+                    Webpage_Admin::setFrontPage($_POST['webpage'], 0);
+                } elseif($volume->id) {
+                    Webpage_Admin::setFrontPage(array($volume->id), 0);
+                }
+                Webpage_Admin::goBack();
+                break;
 
-            $volume->active = 1;
-            $volume->save();
-            Webpage_Admin::goBack();
-            break;
 
-        case 'deactivate_vol':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
+            case 'delete_wp':
+                if (!Current_User::allow('webpage', 'delete_page', $volume->id, 'volume', true)) {
+                    Current_User::disallow();
+                }
 
-            $volume->active = 0;
-            $volume->save();
-            Webpage_Admin::goBack();
-            break;
+                // deletes an entire volume, coming from list page
+                if (!Current_User::authorized('webpage', 'delete_page')) {
+                    Current_User::disallow();
+                    return;
+                }
 
-        case 'feature':
-            if (!Current_User::allow('webpage', 'featured', null, null, true)) {
-                Current_User::disallow();
-            }
+                $result = Webpage_Admin::deleteWebpages();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                    $title = dgettext('webpage', 'Error');
+                    $content = dgettext('webpage', 'A problem occurred when trying to delete your webpage.');
+                } else {
+                    Webpage_Admin::goBack();
+                }
 
-            if (isset($_POST['webpage'])) {
-                Webpage_Admin::setFeatured($_POST['webpage'], 1);
-            }
-            Webpage_Admin::goBack();
-            break;
+                break;
 
-        case 'activate':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
+            case 'activate_vol':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
 
-            if (isset($_POST['webpage'])) {
-                Webpage_Admin::setActive($_POST['webpage'], 1);
-            }
-            Webpage_Admin::goBack();
-            break;
+                $volume->active = 1;
+                $volume->save();
+                Webpage_Admin::goBack();
+                break;
 
-        case 'deactivate':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
+            case 'deactivate_vol':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
 
-            if (isset($_POST['webpage'])) {
-                Webpage_Admin::setActive($_POST['webpage'], 0);
-            }
-            Webpage_Admin::goBack();
-            break;
+                $volume->active = 0;
+                $volume->save();
+                Webpage_Admin::goBack();
+                break;
 
-        case 'restore_page':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
+            case 'feature':
+                if (!Current_User::allow('webpage', 'featured', null, null, true)) {
+                    Current_User::disallow();
+                }
 
-            $title = sprintf(dgettext('webpage', 'Restore Page %s'), $page->page_number);
-            $content = Webpage_Admin::restorePage($volume, $page);
-            break;
+                if (isset($_POST['webpage'])) {
+                    Webpage_Admin::setFeatured($_POST['webpage'], 1);
+                }
+                Webpage_Admin::goBack();
+                break;
 
-        case 'restore_volume':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
+            case 'activate':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
 
-            $title = dgettext('webpage', 'Restore Web Page Header');
-            $content = Webpage_Admin::restoreVolume($volume);
-            break;
+                if (isset($_POST['webpage'])) {
+                    Webpage_Admin::setActive($_POST['webpage'], 1);
+                }
+                Webpage_Admin::goBack();
+                break;
 
-        case 'post_settings':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
+            case 'deactivate':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
 
-            Webpage_Admin::postSettings();
-            $message = dgettext('webpage', 'Settings saved.');
-        case 'settings':
-            if (Current_User::isRestricted('webpage')) {
-                Current_User::disallow();
-            }
+                if (isset($_POST['webpage'])) {
+                    Webpage_Admin::setActive($_POST['webpage'], 0);
+                }
+                Webpage_Admin::goBack();
+                break;
 
-            $title = dgettext('webpage', 'Settings');
-            $content = Webpage_Admin::settings();
-            break;
+            case 'restore_page':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
 
-        case 'drop_feature':
-            if (!Current_User::allow('webpage', 'featured', null, null, true)) {
-                Current_User::disallow();
-            }
+                $title = sprintf(dgettext('webpage', 'Restore Page %s'), $page->page_number);
+                $content = Webpage_Admin::restorePage($volume, $page);
+                break;
 
-            if (!Current_User::authorized('webpage', 'featured')) {
-                Current_User::disallow();
-            }
-            Webpage_Admin::dropFeature($volume);
-            PHPWS_Core::home();
-            break;
+            case 'restore_volume':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
 
-        case 'up_feature':
-            if (!Current_User::allow('webpage', 'featured', null, null, true)) {
-                Current_User::disallow();
-            }
+                $title = dgettext('webpage', 'Restore Web Page Header');
+                $content = Webpage_Admin::restoreVolume($volume);
+                break;
 
-            if (!Current_User::authorized('webpage', 'featured')) {
-                Current_User::disallow();
-            }
-            Webpage_Admin::moveFeature($volume, 'up');
-            PHPWS_Core::home();
-            break;
+            case 'post_settings':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
 
-        case 'down_feature':
-            if (!Current_User::allow('webpage', 'featured', null, null, true)) {
-                Current_User::disallow();
-            }
+                Webpage_Admin::postSettings();
+                $message = dgettext('webpage', 'Settings saved.');
+            case 'settings':
+                if (Current_User::isRestricted('webpage')) {
+                    Current_User::disallow();
+                }
 
-            if (!Current_User::authorized('webpage', 'featured')) {
-                Current_User::disallow();
-            }
-            Webpage_Admin::moveFeature($volume, 'down');
-            PHPWS_Core::home();
-            break;
+                $title = dgettext('webpage', 'Settings');
+                $content = Webpage_Admin::settings();
+                break;
 
-        default:
-            PHPWS_Core::errorPage('404');
+            case 'drop_feature':
+                if (!Current_User::allow('webpage', 'featured', null, null, true)) {
+                    Current_User::disallow();
+                }
+
+                if (!Current_User::authorized('webpage', 'featured')) {
+                    Current_User::disallow();
+                }
+                Webpage_Admin::dropFeature($volume);
+                PHPWS_Core::home();
+                break;
+
+            case 'up_feature':
+                if (!Current_User::allow('webpage', 'featured', null, null, true)) {
+                    Current_User::disallow();
+                }
+
+                if (!Current_User::authorized('webpage', 'featured')) {
+                    Current_User::disallow();
+                }
+                Webpage_Admin::moveFeature($volume, 'up');
+                PHPWS_Core::home();
+                break;
+
+            case 'down_feature':
+                if (!Current_User::allow('webpage', 'featured', null, null, true)) {
+                    Current_User::disallow();
+                }
+
+                if (!Current_User::authorized('webpage', 'featured')) {
+                    Current_User::disallow();
+                }
+                Webpage_Admin::moveFeature($volume, 'down');
+                PHPWS_Core::home();
+                break;
+
+            default:
+                PHPWS_Core::errorPage('404');
         }   // end web page admin cases
 
         // Sticks inside the panel
         switch ($command) {
-        case 'new':
-        case 'edit_webpage':
-        case 'edit_page':
-        case 'add_page':
-        case 'post_page':
-        case 'edit_header':
-        case 'post_header':
-        case 'restore_volume':
-        case 'restore_page':
-            $pagePanel->setContent($content);
-            $content = $pagePanel->display();
+            case 'new':
+            case 'edit_webpage':
+            case 'edit_page':
+            case 'add_page':
+            case 'post_page':
+            case 'edit_header':
+            case 'post_header':
+            case 'restore_volume':
+            case 'restore_page':
+                $pagePanel->setContent($content);
+                $content = $pagePanel->display();
         }
 
 
@@ -662,7 +662,7 @@ class Webpage_Admin {
     {
         $_SESSION['Webpage_Message'] = $message;
         $url = sprintf('index.php?module=webpage&wp_admin=%s&authkey=%s',
-                       $command, Current_User::getAuthkey());
+        $command, Current_User::getAuthkey());
         PHPWS_Core::reroute($url);
     }
 

@@ -1,11 +1,11 @@
 <?php
 
-  /**
-   * Uninstall file for webpage
-   * 
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Uninstall file for webpage
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 function webpage_uninstall(&$content)
 {

@@ -23,25 +23,25 @@ class Webpage_User {
         }
 
         switch ($command) {
-        case 'view':
-            if (!isset($_REQUEST['id'])) {
-                PHPWS_Core::errorPage(404);
-                exit();
-            }
+            case 'view':
+                if (!isset($_REQUEST['id'])) {
+                    PHPWS_Core::errorPage(404);
+                    exit();
+                }
 
-            $volume = new Webpage_Volume($_GET['id']);
-            $volume->loadKey();
-            if (!$volume->_key->allowView()) {
-                Current_User::requireLogin();
-            }
-            @$page = $_GET['page'];
-            Layout::add($volume->view($page));
-            PHPWS_Core::initModClass('menu', 'Menu.php');
-            break;
+                $volume = new Webpage_Volume($_GET['id']);
+                $volume->loadKey();
+                if (!$volume->_key->allowView()) {
+                    Current_User::requireLogin();
+                }
+                @$page = $_GET['page'];
+                Layout::add($volume->view($page));
+                PHPWS_Core::initModClass('menu', 'Menu.php');
+                break;
 
-        default:
-            PHPWS_Core::errorPage('404');
-            break;
+            default:
+                PHPWS_Core::errorPage('404');
+                break;
         }
 
     }

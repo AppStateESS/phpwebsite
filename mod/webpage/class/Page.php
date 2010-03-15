@@ -215,7 +215,7 @@ class Webpage_Page {
         if (Current_User::allow('webpage', 'delete_page', null, null, true)) {
             $jsvar['QUESTION'] = dgettext('webpage', 'Are you sure you want to remove this page?');
             $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=delete_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
-                                        $this->id, $this->volume_id, Current_User::getAuthKey());
+            $this->id, $this->volume_id, Current_User::getAuthKey());
             $jsvar['LINK'] = ('Delete');
 
             $links[] = javascript('confirm', $jsvar);
@@ -228,13 +228,13 @@ class Webpage_Page {
             if($this->page_number < count($this->_volume->_pages)) {
                 $jsvar['QUESTION'] = dgettext('webpage', 'Are you sure you want to join this page to the next?');
                 $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
-                                            $this->id, $this->volume_id, Current_User::getAuthKey());
+                $this->id, $this->volume_id, Current_User::getAuthKey());
                 $jsvar['LINK'] = ('Join next');
                 $links[] = javascript('confirm', $jsvar);
 
                 $jsvar['QUESTION'] = dgettext('webpage', 'Are you sure you want to join ALL the pages into just one page? Warning: You will lose all page backups!');
                 $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_all_pages&amp;volume_id=%s&amp;authkey=%s',
-                                            $this->volume_id, Current_User::getAuthKey());
+                $this->volume_id, Current_User::getAuthKey());
                 $jsvar['LINK'] = ('Join all');
                 $links[] = javascript('confirm', $jsvar);
             }
@@ -326,8 +326,8 @@ class Webpage_Page {
         $this->_volume->flagKey();
 
         if ( Current_User::isLogged() &&
-             ( Current_User::isUser($this->_volume->create_user_id) ||
-               Current_User::allow('webpage', 'edit_page', $this->volume_id, 'volume') ) ) {
+        ( Current_User::isUser($this->_volume->create_user_id) ||
+        Current_User::allow('webpage', 'edit_page', $this->volume_id, 'volume') ) ) {
             $vars = array('wp_admin'  => 'edit_page',
                           'page_id'   => $this->id,
                           'volume_id' => $this->volume_id);
@@ -363,7 +363,7 @@ class Webpage_Page {
                         SET page_number = page_number - 1
                         WHERE volume_id = %s
                         AND page_number > %s',
-                       $this->volume_id, $this->page_number);
+        $this->volume_id, $this->page_number);
 
         $result = $db->query($sql);
         if (PEAR::isError($result)) {

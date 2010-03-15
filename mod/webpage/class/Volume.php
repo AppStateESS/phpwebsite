@@ -251,7 +251,7 @@ class Webpage_Volume {
             if (Current_User::allow('webpage', 'delete_page')) {
                 $vars['wp_admin'] = 'delete_wp';
                 $js_vars['QUESTION'] = sprintf(dgettext('webpage', 'Are you sure you want to delete &quot;%s&quot and all its pages?'),
-                                               $this->title);
+                $this->title);
                 $js_vars['ADDRESS'] = PHPWS_Text::linkAddress('webpage', $vars, true);
                 $js_vars['LINK'] = dgettext('webpage', 'Delete');
                 $links[] = javascript('confirm', $js_vars);
@@ -503,7 +503,7 @@ class Webpage_Volume {
         }
 
         if ( (Current_User::allow('webpage', 'edit_page') && Current_User::isUser($this->create_user_id)) ||
-             Current_User::allow('webpage', 'edit_page', $this->id, 'volume')) {
+        Current_User::allow('webpage', 'edit_page', $this->id, 'volume')) {
             $vars['wp_admin'] = 'edit_header';
             $vars['volume_id'] = $this->id;
             if ($version) {

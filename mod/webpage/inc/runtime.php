@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 if (!isset($_REQUEST['module']) || $_REQUEST['module'] == 'webpage') {
     PHPWS_Core::initModClass('webpage', 'User.php');
