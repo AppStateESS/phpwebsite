@@ -95,7 +95,7 @@ class Branch {
     public function getBranchConfig()
     {
         $name = preg_replace('/\W/', '-', $this->branch_name);
-        return PHPWS_SOURCE_DIR . 'config/branches/' . $name . '.php';
+        return $this->directory . 'config/config.php';
     }
 
     public function save()
@@ -132,6 +132,9 @@ class Branch {
             return FALSE;
         }
 
+        if (!mkdir($this->directory . 'config/')) {
+            return FALSE;
+        }
         return TRUE;
     }
 
@@ -140,16 +143,14 @@ class Branch {
      */
     public function getTpl()
     {
-
         $tpl['URL'] = $this->getUrl();
 
-        $links[] = PHPWS_Text::secureLink(dgettext('branch', 'Edit'), 'branch',
-        array('command'=>'edit_branch', 'branch_id'=>$this->id));
+        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'branch', array('command'=>'edit_branch', 'branch_id'=>$this->id));
 
         $js['question'] = dgettext('branch', 'Removing this branch will make it inaccessible.\nThe database and files will remain behind.\nIf you are sure you want to remove the branch, type the branch name:');
         $js['address'] = sprintf('index.php?module=branch&command=remove_branch&branch_id=%s&authkey=%s', $this->id, Current_User::getAuthKey());
         $js['value_name'] = 'branch_name';
-        $js['link'] = dgettext('branch', 'Remove');
+        $js['link'] = Icon::show('delete');
 
         $links[] = javascript('prompt', $js);
 
@@ -157,7 +158,7 @@ class Branch {
         array('command'=>'branch_modules', 'branch_id'=>$this->id));
         $tpl['DIRECTORY'] = sprintf('<abbr title="%s">%s</abbr>', $this->directory,
         PHPWS_Text::shortenUrl($this->directory));
-        $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['ACTION'] = implode(' ', $links);
         return $tpl;
     }
 
@@ -256,7 +257,7 @@ class Branch {
 
         $db = new PHPWS_DB('branch_sites');
         $db->addWhere('site_hash', SITE_HASH);
-        $db->addColumn('id');
+        $db->addColumn('branch_name');
         $result = $db->select('one');
 
         PHPWS_DB::loadDB();
@@ -272,6 +273,16 @@ class Branch {
             $_SESSION['Approved_Branch'] = $result;
             return true;
         }
+    }
+
+    public function getCurrentBranch()
+    {
+        if (!isset($_SESSION['Approved_Branch'])) {
+            if (!Branch::checkCurrentBranch()) {
+                return null;
+            }
+        }
+        return $_SESSION['Approved_Branch'];
     }
 
     public function getHubDB()

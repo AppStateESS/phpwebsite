@@ -46,15 +46,7 @@ class Branch_Admin {
     public function __construct()
     {
         $this->db_list = array ('mysql' =>'MySQL',
-                                'ibase' =>'InterBase',
-                                'mssql' =>'Microsoft SQL Server',
-                                'msql'  =>'Mini SQL',
-                                'oci8'  =>'Oracle 7/8/8i',
-                                'odbc'  =>'ODBC',
-                                'pgsql' =>'PostgreSQL',
-                                'sybase'=>'SyBase',
-                                'fbsql' =>'FrontBase',
-                                'ifx'   =>'Informix');
+                                'pgsql' =>'PostgreSQL');
 
         if (isset($_SESSION['branch_create_step'])) {
             $this->create_step = $_SESSION['branch_create_step'];
@@ -313,7 +305,7 @@ class Branch_Admin {
     {
         require_once 'File.php';
 
-        $location = PHPWS_SOURCE_DIR . 'config/branches/';
+        $location = $this->branch->directory . 'config/';
         if (!is_writable($location)) {
             return false;
         }
