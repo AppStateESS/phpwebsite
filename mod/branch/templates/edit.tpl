@@ -1,7 +1,6 @@
 {START_FORM}
 <!-- BEGIN database -->
-<fieldset>
-<legend>{DB_LEGEND}</legend>
+<fieldset><legend>{DB_LEGEND}</legend>
 <table class="form-table">
     <tr>
         <td>{CREATEDB_LABEL}</td>
@@ -32,12 +31,9 @@
         <td>{DBPORT}</td>
     </tr>
 </table>
-{PLUG} {SUBMIT}
-</fieldset>
+{PLUG} {SUBMIT}</fieldset>
 <!-- END database -->
-
-<fieldset>
-<legend>{BRANCH_LEGEND}</legend>
+<fieldset><legend>{BRANCH_LEGEND}</legend>
 <table class="form-table">
     <tr>
         <td>{BRANCH_NAME_LABEL}</td>
@@ -56,7 +52,5 @@
         <td>{HASH}</td>
     </tr>
 </table>
-{SUBMIT}
-</fieldset>
-
+{SUBMIT}</fieldset>
 {END_FORM}

@@ -6,18 +6,16 @@
         <th>{URL_LABEL}</th>
         <th>{ACTION_LABEL}</th>
     </tr>
-<!-- BEGIN listrows -->
-    <tr {TOGGLE}>
+    <!-- BEGIN listrows -->
+    <tr{TOGGLE}>
         <td>{BRANCH_NAME}</td>
         <td>{DIRECTORY}</td>
         <td>{URL}</td>
         <td>{ACTION}</td>
     </tr>
-<!-- END listrows -->
+    <!-- END listrows -->
 </table>
 {EMPTY_MESSAGE}
-<div style="text-align : center">
-  <b>{PAGE_LABEL}</b><br />
-  {PAGES}<br />
-  {LIMITS}
-</div>
+<div style="text-align: center"><b>{PAGE_LABEL}</b><br />
+{PAGES}<br />
+{LIMITS}</div>

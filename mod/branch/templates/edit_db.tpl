@@ -1,8 +1,5 @@
 {START_FORM}
-
-<fieldset>
-<legend>{DB_LEGEND}</legend>
-{PLUG} 
+<fieldset><legend>{DB_LEGEND}</legend> {PLUG}
 <table class="form-table">
     <tr>
         <td>{CREATEDB_LABEL}</td>
@@ -37,6 +34,5 @@
         <td>{DBPORT}</td>
     </tr>
 </table>
-{SUBMIT}
-</fieldset>
+{SUBMIT}</fieldset>
 {END_FORM}

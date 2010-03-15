@@ -1,6 +1,5 @@
 {START_FORM}
-<fieldset>
-<legend>{BRANCH_LEGEND}</legend>
+<fieldset><legend>{BRANCH_LEGEND}</legend>
 <table class="form-table">
     <tr>
         <td>{BRANCH_NAME_LABEL}</td>
@@ -19,7 +18,5 @@
         <td>{SITE_HASH}</td>
     </tr>
 </table>
-{SUBMIT}
-</fieldset>
-
+{SUBMIT}</fieldset>
 {END_FORM}
