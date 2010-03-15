@@ -3,7 +3,7 @@
 /**
  * recaptcha_settings.dist.php - Default Settings for the ReCaptcha captcha library
  *
- * This file is provided as an example of the configuration for the phpWebsite 
+ * This file is provided as an example of the configuration for the phpWebsite
  * Recaptcha module. It (generally) contains default values, which you can
  * (and sometimes must) customize.
  *

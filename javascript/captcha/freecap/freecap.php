@@ -1,28 +1,28 @@
 <?php
 
 /************************************************************\
-*
-*		freeCap v1.4.1 Copyright 2005 Howard Yeend
-*		www.puremango.co.uk
-*
-*    This file is part of freeCap.
-*
-*    freeCap is free software; you can redistribute it and/or modify
-*    it under the terms of the GNU General Public License as published by
-*    the Free Software Foundation; either version 2 of the License, or
-*    (at your option) any later version.
-*
-*    freeCap is distributed in the hope that it will be useful,
-*    but WITHOUT ANY WARRANTY; without even the implied warranty of
-*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*    GNU General Public License for more details.
-*
-*    You should have received a copy of the GNU General Public License
-*    along with freeCap; if not, write to the Free Software
-*    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*
-*
-\************************************************************/
+ *
+ *		freeCap v1.4.1 Copyright 2005 Howard Yeend
+ *		www.puremango.co.uk
+ *
+ *    This file is part of freeCap.
+ *
+ *    freeCap is free software; you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation; either version 2 of the License, or
+ *    (at your option) any later version.
+ *
+ *    freeCap is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with freeCap; if not, write to the Free Software
+ *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ \************************************************************/
 ini_set('memory_limit', '32M');
 
 include('../../../config/core/config.php');
@@ -128,11 +128,11 @@ $blur_bg = false;
 $bg_dir = PHPWS_SOURCE_DIR . 'javascript/captcha/freecap/';
 $bg_images = array('ht_freecap_im1.jpg','ht_freecap_im2.jpg','ht_freecap_im3.jpg','ht_freecap_im4.jpg','ht_freecap_im5.jpg');
 // for non-transparent backgrounds only:
-	// if 0, merges CAPTCHA with bg
-	// if 1, write CAPTCHA over bg
-	$merge_type = 0;
-	// should we morph the bg? (recommend yes, but takes a little longer to compute)
-	$morph_bg = true;
+// if 0, merges CAPTCHA with bg
+// if 1, write CAPTCHA over bg
+$merge_type = 0;
+// should we morph the bg? (recommend yes, but takes a little longer to compute)
+$morph_bg = true;
 
 // you shouldn't need to edit anything below this, but it's extensively commented if you do want to play
 // have fun, and email me with ideas, or improvements to the code (very interested in speed improvements)
@@ -154,15 +154,15 @@ $seed_func(make_seed());
 // If you can remove most of the bg, then it's not a good enough percentage
 switch($bg_type)
 {
-	case 0:
-		break;
-	case 1:
-	case 2:
-		$bg_fade_pct = 65;
-		break;
-	case 3:
-		$bg_fade_pct = 50;
-		break;
+    case 0:
+        break;
+    case 1:
+    case 2:
+        $bg_fade_pct = 65;
+        break;
+    case 3:
+        $bg_fade_pct = 50;
+        break;
 }
 // slightly randomise the bg fade
 $bg_fade_pct += $rand_func(-2,2);
@@ -171,11 +171,11 @@ $bg_fade_pct += $rand_func(-2,2);
 $font_widths = Array();
 for($i=0 ; $i<sizeof($font_locations) ; $i++)
 {
-	$handle = fopen($font_locations[$i],"r");
-	// read header of GD font, up to char width
-	$c_wid = fread($handle,12);
-	$font_widths[$i] = ord($c_wid[8])+ord($c_wid[9])+ord($c_wid[10])+ord($c_wid[11]);
-	fclose($handle);
+    $handle = fopen($font_locations[$i],"r");
+    // read header of GD font, up to char width
+    $c_wid = fread($handle,12);
+    $font_widths[$i] = ord($c_wid[8])+ord($c_wid[9])+ord($c_wid[10])+ord($c_wid[11]);
+    fclose($handle);
 }
 
 // modify image width depending on maximum possible length of word
@@ -192,31 +192,31 @@ $im2 = ImageCreate($width, $height);
 //////////////////////////////////////////////////////
 if(empty($_SESSION['freecap_attempts']))
 {
-	$_SESSION['freecap_attempts'] = 1;
+    $_SESSION['freecap_attempts'] = 1;
 } else {
-	$_SESSION['freecap_attempts']++;
+    $_SESSION['freecap_attempts']++;
 
-	// if more than ($max_attempts) refreshes, block further refreshes
-	// can be negated by connecting with new session id
-	// could get round this by storing num attempts in database against IP
-	// could get round that by connecting with different IP (eg, using proxy servers)
-	// in short, there's little point trying to avoid brute forcing
-	// the best way to protect against BF attacks is to ensure the dictionary is not
-	// accessible via the web or use random string option
-	if($_SESSION['freecap_attempts']>$max_attempts)
-	{
-		$_SESSION['freecap_word_hash'] = false;
+    // if more than ($max_attempts) refreshes, block further refreshes
+    // can be negated by connecting with new session id
+    // could get round this by storing num attempts in database against IP
+    // could get round that by connecting with different IP (eg, using proxy servers)
+    // in short, there's little point trying to avoid brute forcing
+    // the best way to protect against BF attacks is to ensure the dictionary is not
+    // accessible via the web or use random string option
+    if($_SESSION['freecap_attempts']>$max_attempts)
+    {
+        $_SESSION['freecap_word_hash'] = false;
 
-		$bg = ImageColorAllocate($im,255,255,255);
-		ImageColorTransparent($im,$bg);
+        $bg = ImageColorAllocate($im,255,255,255);
+        ImageColorTransparent($im,$bg);
 
-		$red = ImageColorAllocate($im, 255, 0, 0);
-		// depending on how rude you want to be :-)
-		//ImageString($im,5,0,20,"bugger off you spamming bastards!",$red);
-		ImageString($im,5,15,20,"service no longer available",$red);
+        $red = ImageColorAllocate($im, 255, 0, 0);
+        // depending on how rude you want to be :-)
+        //ImageString($im,5,0,20,"bugger off you spamming bastards!",$red);
+        ImageString($im,5,15,20,"service no longer available",$red);
 
-		sendImage($im);
-	}
+        sendImage($im);
+    }
 }
 
 
@@ -225,87 +225,87 @@ if(empty($_SESSION['freecap_attempts']))
 ////// Functions:
 //////////////////////////////////////////////////////
 function make_seed() {
-// from http://php.net/srand
+    // from http://php.net/srand
     list($usec, $sec) = explode(' ', microtime());
     return (float) $sec + ((float) $usec * 100000);
 }
 
 function rand_color() {
-	global $bg_type,$rand_func;
-	if($bg_type==3)
-	{
-		// needs darker colour..
-		return $rand_func(10,100);
-	} else {
-		return $rand_func(60,170);
-	}
+    global $bg_type,$rand_func;
+    if($bg_type==3)
+    {
+        // needs darker colour..
+        return $rand_func(10,100);
+    } else {
+        return $rand_func(60,170);
+    }
 }
 
 function myImageBlur($im)
 {
-	// w00t. my very own blur function
-	// in GD2, there's a gaussian blur function. bunch of bloody show-offs... :-)
+    // w00t. my very own blur function
+    // in GD2, there's a gaussian blur function. bunch of bloody show-offs... :-)
 
-	$width = imagesx($im);
-	$height = imagesy($im);
+    $width = imagesx($im);
+    $height = imagesy($im);
 
-	$temp_im = ImageCreateTrueColor($width,$height);
-	$bg = ImageColorAllocate($temp_im,150,150,150);
+    $temp_im = ImageCreateTrueColor($width,$height);
+    $bg = ImageColorAllocate($temp_im,150,150,150);
 
-	// preserves transparency if in orig image
-	ImageColorTransparent($temp_im,$bg);
+    // preserves transparency if in orig image
+    ImageColorTransparent($temp_im,$bg);
 
-	// fill bg
-	ImageFill($temp_im,0,0,$bg);
+    // fill bg
+    ImageFill($temp_im,0,0,$bg);
 
-	// anything higher than 3 makes it totally unreadable
-	// might be useful in a 'real' blur function, though (ie blurring pictures not text)
-	$distance = 1;
-	// use $distance=30 to have multiple copies of the word. not sure if this is useful.
+    // anything higher than 3 makes it totally unreadable
+    // might be useful in a 'real' blur function, though (ie blurring pictures not text)
+    $distance = 1;
+    // use $distance=30 to have multiple copies of the word. not sure if this is useful.
 
-	// blur by merging with itself at different x/y offsets:
-	ImageCopyMerge($temp_im, $im, 0, 0, 0, $distance, $width, $height-$distance, 70);
-	ImageCopyMerge($im, $temp_im, 0, 0, $distance, 0, $width-$distance, $height, 70);
-	ImageCopyMerge($temp_im, $im, 0, $distance, 0, 0, $width, $height, 70);
-	ImageCopyMerge($im, $temp_im, $distance, 0, 0, 0, $width, $height, 70);
-	// remove temp image
-	ImageDestroy($temp_im);
+    // blur by merging with itself at different x/y offsets:
+    ImageCopyMerge($temp_im, $im, 0, 0, 0, $distance, $width, $height-$distance, 70);
+    ImageCopyMerge($im, $temp_im, 0, 0, $distance, 0, $width-$distance, $height, 70);
+    ImageCopyMerge($temp_im, $im, 0, $distance, 0, 0, $width, $height, 70);
+    ImageCopyMerge($im, $temp_im, $distance, 0, 0, 0, $width, $height, 70);
+    // remove temp image
+    ImageDestroy($temp_im);
 
-	return $im;
+    return $im;
 }
 
 function sendImage($pic)
 {
-	// output image with appropriate headers
-	global $output,$im,$im2,$im3;
-	header(base64_decode("WC1DYXB0Y2hhOiBmcmVlQ2FwIDEuNCAtIHd3dy5wdXJlbWFuZ28uY28udWs="));
-	switch($output)
-	{
-		// add other cases as desired
-		case "jpg":
-			header("Content-Type: image/jpeg");
-			ImageJPEG($pic);
-			break;
-		case "gif":
-			header("Content-Type: image/gif");
-			ImageGIF($pic);
-			break;
-		case "png":
-		default:
-			header("Content-Type: image/png");
-			ImagePNG($pic);
-			break;
-	}
+    // output image with appropriate headers
+    global $output,$im,$im2,$im3;
+    header(base64_decode("WC1DYXB0Y2hhOiBmcmVlQ2FwIDEuNCAtIHd3dy5wdXJlbWFuZ28uY28udWs="));
+    switch($output)
+    {
+        // add other cases as desired
+        case "jpg":
+            header("Content-Type: image/jpeg");
+            ImageJPEG($pic);
+            break;
+        case "gif":
+            header("Content-Type: image/gif");
+            ImageGIF($pic);
+            break;
+        case "png":
+        default:
+            header("Content-Type: image/png");
+            ImagePNG($pic);
+            break;
+    }
 
-	// kill GD images (removes from memory)
-	ImageDestroy($im);
-	ImageDestroy($im2);
-	ImageDestroy($pic);
-	if(!empty($im3))
-	{
-		ImageDestroy($im3);
-	}
-	exit();
+    // kill GD images (removes from memory)
+    ImageDestroy($im);
+    ImageDestroy($im2);
+    ImageDestroy($pic);
+    if(!empty($im3))
+    {
+        ImageDestroy($im3);
+    }
+    exit();
 }
 
 
@@ -316,38 +316,38 @@ function sendImage($pic)
 //////////////////////////////////////////////////////
 if($use_dict==1)
 {
-	// load dictionary and choose random word
-	$words = @file($dict_location);
-	$word = strtolower($words[$rand_func(0,sizeof($words)-1)]);
-	// cut off line endings/other possible odd chars
-	$word = ereg_replace("[^a-z]","",$word);
-	// might be large file so forget it now (frees memory)
-	$words = "";
-	unset($words);
+    // load dictionary and choose random word
+    $words = @file($dict_location);
+    $word = strtolower($words[$rand_func(0,sizeof($words)-1)]);
+    // cut off line endings/other possible odd chars
+    $word = ereg_replace("[^a-z]","",$word);
+    // might be large file so forget it now (frees memory)
+    $words = "";
+    unset($words);
 } else {
-	// based on code originally by breakzero at hotmail dot com
-	// (http://uk.php.net/manual/en/function.rand.php)
-	// generate pseudo-random string
-	// doesn't use ijtf as are easily mistaken
+    // based on code originally by breakzero at hotmail dot com
+    // (http://uk.php.net/manual/en/function.rand.php)
+    // generate pseudo-random string
+    // doesn't use ijtf as are easily mistaken
 
-	// I'm not using numbers because the custom fonts I've created don't support anything other than
-	// lowercase or space (but you can download new fonts or create your own using my GD fontmaker script)
-	$consonants = 'bcdghklmnpqrsvwxyz';
-	$vowels = 'aeuo';
-	$word = "";
+    // I'm not using numbers because the custom fonts I've created don't support anything other than
+    // lowercase or space (but you can download new fonts or create your own using my GD fontmaker script)
+    $consonants = 'bcdghklmnpqrsvwxyz';
+    $vowels = 'aeuo';
+    $word = "";
 
-	$wordlen = $rand_func(5,$max_word_length);
+    $wordlen = $rand_func(5,$max_word_length);
 
-	for($i=0 ; $i<$wordlen ; $i++)
-	{
-		// don't allow to start with 'vowel'
-		if($rand_func(0,4)>=2 && $i!=0)
-		{
-			$word .= $vowels{$rand_func(0,strlen($vowels)-1)};
-		} else {
-			$word .= $consonants{$rand_func(0,strlen($consonants)-1)};
-		}
-	}
+    for($i=0 ; $i<$wordlen ; $i++)
+    {
+        // don't allow to start with 'vowel'
+        if($rand_func(0,4)>=2 && $i!=0)
+        {
+            $word .= $vowels{$rand_func(0,strlen($vowels)-1)};
+        } else {
+            $word .= $consonants{$rand_func(0,strlen($consonants)-1)};
+        }
+    }
 }
 
 // save hash of word for comparison
@@ -395,161 +395,161 @@ ImageFill($im2,0,0,$bg2);
 
 if($bg_type!=0)
 {
-	// generate noisy background, to be merged with CAPTCHA later
-	// any suggestions on how best to do this much appreciated
-	// sample code would be even better!
-	// I'm not an OCR expert (hell, I'm not even an image expert; puremango.co.uk was designed in MsPaint)
-	// so the noise models are based around my -guesswork- as to what would make it hard for an OCR prog
-	// ideally, the character obfuscation would be strong enough not to need additional background noise
-	// in any case, I hope at least one of the options given here provide some extra security!
+    // generate noisy background, to be merged with CAPTCHA later
+    // any suggestions on how best to do this much appreciated
+    // sample code would be even better!
+    // I'm not an OCR expert (hell, I'm not even an image expert; puremango.co.uk was designed in MsPaint)
+    // so the noise models are based around my -guesswork- as to what would make it hard for an OCR prog
+    // ideally, the character obfuscation would be strong enough not to need additional background noise
+    // in any case, I hope at least one of the options given here provide some extra security!
 
-	$im3 = ImageCreateTrueColor($width,$height);
-	$temp_bg = ImageCreateTrueColor($width*1.5,$height*1.5);
-	$bg3 = ImageColorAllocate($im3,255,255,255);
-	ImageFill($im3,0,0,$bg3);
-	$temp_bg_col = ImageColorAllocate($temp_bg,255,255,255);
-	ImageFill($temp_bg,0,0,$temp_bg_col);
+    $im3 = ImageCreateTrueColor($width,$height);
+    $temp_bg = ImageCreateTrueColor($width*1.5,$height*1.5);
+    $bg3 = ImageColorAllocate($im3,255,255,255);
+    ImageFill($im3,0,0,$bg3);
+    $temp_bg_col = ImageColorAllocate($temp_bg,255,255,255);
+    ImageFill($temp_bg,0,0,$temp_bg_col);
 
-	// we draw all noise onto temp_bg
-	// then if we're morphing, merge from temp_bg to im3
-	// or if not, just copy a $widthx$height portion of $temp_bg to $im3
-	// temp_bg is much larger so that when morphing, the edges retain the noise.
+    // we draw all noise onto temp_bg
+    // then if we're morphing, merge from temp_bg to im3
+    // or if not, just copy a $widthx$height portion of $temp_bg to $im3
+    // temp_bg is much larger so that when morphing, the edges retain the noise.
 
-	if($bg_type==1)
-	{
-		// grid bg:
+    if($bg_type==1)
+    {
+        // grid bg:
 
-		// draw grid on x
-		for($i=$rand_func(6,20) ; $i<$width*2 ; $i+=$rand_func(10,25))
-		{
-			ImageSetThickness($temp_bg,$rand_func(2,6));
-			$text_r = $rand_func(100,150);
-			$text_g = $rand_func(100,150);
-			$text_b = $rand_func(100,150);
-			$text_colour3 = ImageColorAllocate($temp_bg, $text_r, $text_g, $text_b);
+        // draw grid on x
+        for($i=$rand_func(6,20) ; $i<$width*2 ; $i+=$rand_func(10,25))
+        {
+            ImageSetThickness($temp_bg,$rand_func(2,6));
+            $text_r = $rand_func(100,150);
+            $text_g = $rand_func(100,150);
+            $text_b = $rand_func(100,150);
+            $text_colour3 = ImageColorAllocate($temp_bg, $text_r, $text_g, $text_b);
 
-			ImageLine($temp_bg,$i,0,$i,$height*2,$text_colour3);
-		}
-		// draw grid on y
-		for($i=$rand_func(6,20) ; $i<$height*2 ; $i+=$rand_func(10,25))
-		{
-			ImageSetThickness($temp_bg,$rand_func(2,6));
-			$text_r = $rand_func(100,150);
-			$text_g = $rand_func(100,150);
-			$text_b = $rand_func(100,150);
-			$text_colour3 = ImageColorAllocate($temp_bg, $text_r, $text_g, $text_b);
+            ImageLine($temp_bg,$i,0,$i,$height*2,$text_colour3);
+        }
+        // draw grid on y
+        for($i=$rand_func(6,20) ; $i<$height*2 ; $i+=$rand_func(10,25))
+        {
+            ImageSetThickness($temp_bg,$rand_func(2,6));
+            $text_r = $rand_func(100,150);
+            $text_g = $rand_func(100,150);
+            $text_b = $rand_func(100,150);
+            $text_colour3 = ImageColorAllocate($temp_bg, $text_r, $text_g, $text_b);
 
-			ImageLine($temp_bg,0,$i,$width*2, $i ,$text_colour3);
-		}
-	} else if($bg_type==2) {
-		// draw squiggles!
+            ImageLine($temp_bg,0,$i,$width*2, $i ,$text_colour3);
+        }
+    } else if($bg_type==2) {
+        // draw squiggles!
 
-		$bg3 = ImageColorAllocate($im3,255,255,255);
-		ImageFill($im3,0,0,$bg3);
-		ImageSetThickness($temp_bg,4);
+        $bg3 = ImageColorAllocate($im3,255,255,255);
+        ImageFill($im3,0,0,$bg3);
+        ImageSetThickness($temp_bg,4);
 
-		for($i=0 ; $i<strlen($word)+1 ; $i++)
-		{
-			$text_r = $rand_func(100,150);
-			$text_g = $rand_func(100,150);
-			$text_b = $rand_func(100,150);
-			$text_colour3 = ImageColorAllocate($temp_bg, $text_r, $text_g, $text_b);
+        for($i=0 ; $i<strlen($word)+1 ; $i++)
+        {
+            $text_r = $rand_func(100,150);
+            $text_g = $rand_func(100,150);
+            $text_b = $rand_func(100,150);
+            $text_colour3 = ImageColorAllocate($temp_bg, $text_r, $text_g, $text_b);
 
-			$points = Array();
-			// draw random squiggle for each character
-			// the longer the loop, the more complex the squiggle
-			// keep random so OCR can't say "if found shape has 10 points, ignore it"
-			// each squiggle will, however, be a closed shape, so OCR could try to find
-			// line terminations and start from there. (I don't think they're that advanced yet..)
-			for($j=1 ; $j<$rand_func(5,10) ; $j++)
-			{
-				$points[] = $rand_func(1*(20*($i+1)),1*(50*($i+1)));
-				$points[] = $rand_func(30,$height+30);
-			}
+            $points = Array();
+            // draw random squiggle for each character
+            // the longer the loop, the more complex the squiggle
+            // keep random so OCR can't say "if found shape has 10 points, ignore it"
+            // each squiggle will, however, be a closed shape, so OCR could try to find
+            // line terminations and start from there. (I don't think they're that advanced yet..)
+            for($j=1 ; $j<$rand_func(5,10) ; $j++)
+            {
+                $points[] = $rand_func(1*(20*($i+1)),1*(50*($i+1)));
+                $points[] = $rand_func(30,$height+30);
+            }
 
-			ImagePolygon($temp_bg,$points,intval(sizeof($points)/2),$text_colour3);
-		}
+            ImagePolygon($temp_bg,$points,intval(sizeof($points)/2),$text_colour3);
+        }
 
-	} else if($bg_type==3) {
-		// take random chunks of $bg_images and paste them onto the background
+    } else if($bg_type==3) {
+        // take random chunks of $bg_images and paste them onto the background
 
-	    $img_num = sizeof($bg_images);
-		for($i=0 ; $i<$img_num ; $i++)
-		{
-			// read each image and its size
-			$temp_im[$i] = ImageCreateFromJPEG($bg_dir . $bg_images[$i]);
-			$temp_width[$i] = imagesx($temp_im[$i]);
-			$temp_height[$i] = imagesy($temp_im[$i]);
-		}
+        $img_num = sizeof($bg_images);
+        for($i=0 ; $i<$img_num ; $i++)
+        {
+            // read each image and its size
+            $temp_im[$i] = ImageCreateFromJPEG($bg_dir . $bg_images[$i]);
+            $temp_width[$i] = imagesx($temp_im[$i]);
+            $temp_height[$i] = imagesy($temp_im[$i]);
+        }
 
-		$blocksize = $rand_func(20,60);
-		for($i=0 ; $i<$width*2 ; $i+=$blocksize)
-		{
-			// could randomise blocksize here... hardly matters
-			for($j=0 ; $j<$height*2 ; $j+=$blocksize)
-			{
-				$image_index = $rand_func(0,sizeof($temp_im)-1);
-				$cut_x = $rand_func(0,$temp_width[$image_index]-$blocksize);
-				$cut_y = $rand_func(0,$temp_height[$image_index]-$blocksize);
-				ImageCopy($temp_bg, $temp_im[$image_index], $i, $j, $cut_x, $cut_y, $blocksize, $blocksize);
-			}
-		}
-		for($i=0 ; $i<sizeof($temp_im) ; $i++)
-		{
-			// remove bgs from memory
-			ImageDestroy($temp_im[$i]);
-		}
+        $blocksize = $rand_func(20,60);
+        for($i=0 ; $i<$width*2 ; $i+=$blocksize)
+        {
+            // could randomise blocksize here... hardly matters
+            for($j=0 ; $j<$height*2 ; $j+=$blocksize)
+            {
+                $image_index = $rand_func(0,sizeof($temp_im)-1);
+                $cut_x = $rand_func(0,$temp_width[$image_index]-$blocksize);
+                $cut_y = $rand_func(0,$temp_height[$image_index]-$blocksize);
+                ImageCopy($temp_bg, $temp_im[$image_index], $i, $j, $cut_x, $cut_y, $blocksize, $blocksize);
+            }
+        }
+        for($i=0 ; $i<sizeof($temp_im) ; $i++)
+        {
+            // remove bgs from memory
+            ImageDestroy($temp_im[$i]);
+        }
 
-		// for debug:
-		//sendImage($temp_bg);
-	}
+        // for debug:
+        //sendImage($temp_bg);
+    }
 
-	// for debug:
-	//sendImage($im3);
+    // for debug:
+    //sendImage($im3);
 
-	if($morph_bg)
-	{
-		// morph background
-		// we do this separately to the main text morph because:
-		// a) the main text morph is done char-by-char, this is done across whole image
-		// b) if an attacker could un-morph the bg, it would un-morph the CAPTCHA
-		// hence bg is morphed differently to text
-		// why do we morph it at all? it might make it harder for an attacker to remove the background
-		// morph_chunk 1 looks better but takes longer
+    if($morph_bg)
+    {
+        // morph background
+        // we do this separately to the main text morph because:
+        // a) the main text morph is done char-by-char, this is done across whole image
+        // b) if an attacker could un-morph the bg, it would un-morph the CAPTCHA
+        // hence bg is morphed differently to text
+        // why do we morph it at all? it might make it harder for an attacker to remove the background
+        // morph_chunk 1 looks better but takes longer
 
-		// this is a different and less perfect morph than the one we do on the CAPTCHA
-		// occasonally you get some dark background showing through around the edges
-		// it doesn't need to be perfect as it's only the bg.
-		$morph_chunk = $rand_func(1,5);
-		$morph_y = 0;
-		for($x=0 ; $x<$width ; $x+=$morph_chunk)
-		{
-			$morph_chunk = $rand_func(1,5);
-			$morph_y += $rand_func(-1,1);
-			ImageCopy($im3, $temp_bg, $x, 0, $x+30, 30+$morph_y, $morph_chunk, $height*2);
-		}
+        // this is a different and less perfect morph than the one we do on the CAPTCHA
+        // occasonally you get some dark background showing through around the edges
+        // it doesn't need to be perfect as it's only the bg.
+        $morph_chunk = $rand_func(1,5);
+        $morph_y = 0;
+        for($x=0 ; $x<$width ; $x+=$morph_chunk)
+        {
+            $morph_chunk = $rand_func(1,5);
+            $morph_y += $rand_func(-1,1);
+            ImageCopy($im3, $temp_bg, $x, 0, $x+30, 30+$morph_y, $morph_chunk, $height*2);
+        }
 
-		ImageCopy($temp_bg, $im3, 0, 0, 0, 0, $width, $height);
+        ImageCopy($temp_bg, $im3, 0, 0, 0, 0, $width, $height);
 
-		$morph_x = 0;
-		for($y=0 ; $y<=$height; $y+=$morph_chunk)
-		{
-			$morph_chunk = $rand_func(1,5);
-			$morph_x += $rand_func(-1,1);
-			ImageCopy($im3, $temp_bg, $morph_x, $y, 0, $y, $width, $morph_chunk);
+        $morph_x = 0;
+        for($y=0 ; $y<=$height; $y+=$morph_chunk)
+        {
+            $morph_chunk = $rand_func(1,5);
+            $morph_x += $rand_func(-1,1);
+            ImageCopy($im3, $temp_bg, $morph_x, $y, 0, $y, $width, $morph_chunk);
 
-		}
-	} else {
-		// just copy temp_bg onto im3
-		ImageCopy($im3,$temp_bg,0,0,30,30,$width,$height);
-	}
+        }
+    } else {
+        // just copy temp_bg onto im3
+        ImageCopy($im3,$temp_bg,0,0,30,30,$width,$height);
+    }
 
-	ImageDestroy($temp_bg);
+    ImageDestroy($temp_bg);
 
-	if($blur_bg)
-	{
-		myImageBlur($im3);
-	}
+    if($blur_bg)
+    {
+        myImageBlur($im3);
+    }
 }
 // for debug:
 //sendImage($im3);
@@ -568,26 +568,26 @@ $word_start_y = 15;
 
 if($col_type==0)
 {
-	$text_r = rand_color();
-	$text_g = rand_color();
-	$text_b = rand_color();
-	$text_colour2 = ImageColorAllocate($im2, $text_r, $text_g, $text_b);
+    $text_r = rand_color();
+    $text_g = rand_color();
+    $text_b = rand_color();
+    $text_colour2 = ImageColorAllocate($im2, $text_r, $text_g, $text_b);
 }
 
 // write each char in different font
 for($i=0 ; $i<strlen($word) ; $i++)
 {
-	if($col_type==1)
-	{
-		$text_r = rand_color();
-		$text_g = rand_color();
-		$text_b = rand_color();
-		$text_colour2 = ImageColorAllocate($im2, $text_r, $text_g, $text_b);
-	}
+    if($col_type==1)
+    {
+        $text_r = rand_color();
+        $text_g = rand_color();
+        $text_b = rand_color();
+        $text_colour2 = ImageColorAllocate($im2, $text_r, $text_g, $text_b);
+    }
 
-	$j = $rand_func(0,sizeof($font_locations)-1);
-	$font = ImageLoadFont($font_locations[$j]);
-	ImageString($im2, $font, $word_start_x+($font_widths[$j]*$i), $word_start_y, $word{$i}, $text_colour2);
+    $j = $rand_func(0,sizeof($font_locations)-1);
+    $font = ImageLoadFont($font_locations[$j]);
+    ImageString($im2, $font, $word_start_x+($font_widths[$j]*$i), $word_start_y, $word{$i}, $text_colour2);
 }
 // use last pixelwidth
 $font_pixelwidth = $font_widths[$j];
@@ -610,16 +610,16 @@ $y_pos = 0;
 // firstly move each character up or down a bit:
 for($i=$word_start_x ; $i<$word_pix_size ; $i+=$font_pixelwidth)
 {
-	// move on Y axis
-	// deviates at least 4 pixels between each letter
-	$prev_y = $y_pos;
-	do{
-		$y_pos = $rand_func(-5,5);
-	} while($y_pos<$prev_y+2 && $y_pos>$prev_y-2);
-	ImageCopy($im, $im2, $i, $y_pos, $i, 0, $font_pixelwidth, $height);
+    // move on Y axis
+    // deviates at least 4 pixels between each letter
+    $prev_y = $y_pos;
+    do{
+        $y_pos = $rand_func(-5,5);
+    } while($y_pos<$prev_y+2 && $y_pos>$prev_y-2);
+    ImageCopy($im, $im2, $i, $y_pos, $i, 0, $font_pixelwidth, $height);
 
-	// for debug:
-	//ImageRectangle($im,$i,$y_pos+10,$i+$font_pixelwidth,$y_pos+70,$debug);
+    // for debug:
+    //ImageRectangle($im,$i,$y_pos+10,$i+$font_pixelwidth,$y_pos+70,$debug);
 }
 
 // for debug:
@@ -635,23 +635,23 @@ $morph_factor = 1;
 $morph_x = 0;
 for($j=0 ; $j<strlen($word) ; $j++)
 {
-	$y_pos = 0;
-	for($i=0 ; $i<=$height; $i+=$y_chunk)
-	{
-		$orig_x = $word_start_x+($j*$font_pixelwidth);
-		// morph x += so that instead of deviating from orig x each time, we deviate from where we last deviated to
-		// get it? instead of a zig zag, we get more of a sine wave.
-		// I wish we could deviate more but it looks crap if we do.
-		$morph_x += $rand_func(-$morph_factor,$morph_factor);
-		// had to change this to ImageCopyMerge when starting using ImageCreateTrueColor
-		// according to the manual; "when (pct is) 100 this function behaves identically to imagecopy()"
-		// but this is NOT true when dealing with transparencies...
-		ImageCopyMerge($im2, $im, $orig_x+$morph_x, $i+$y_pos, $orig_x, $i, $font_pixelwidth, $y_chunk, 100);
+    $y_pos = 0;
+    for($i=0 ; $i<=$height; $i+=$y_chunk)
+    {
+        $orig_x = $word_start_x+($j*$font_pixelwidth);
+        // morph x += so that instead of deviating from orig x each time, we deviate from where we last deviated to
+        // get it? instead of a zig zag, we get more of a sine wave.
+        // I wish we could deviate more but it looks crap if we do.
+        $morph_x += $rand_func(-$morph_factor,$morph_factor);
+        // had to change this to ImageCopyMerge when starting using ImageCreateTrueColor
+        // according to the manual; "when (pct is) 100 this function behaves identically to imagecopy()"
+        // but this is NOT true when dealing with transparencies...
+        ImageCopyMerge($im2, $im, $orig_x+$morph_x, $i+$y_pos, $orig_x, $i, $font_pixelwidth, $y_chunk, 100);
 
-		// for debug:
-		//ImageLine($im2, $orig_x+$morph_x, $i, $orig_x+$morph_x+1, $i+$y_chunk, $debug2);
-		//ImageLine($im2, $orig_x+$morph_x+$font_pixelwidth, $i, $orig_x+$morph_x+$font_pixelwidth+1, $i+$y_chunk, $debug2);
-	}
+        // for debug:
+        //ImageLine($im2, $orig_x+$morph_x, $i, $orig_x+$morph_x+1, $i+$y_chunk, $debug2);
+        //ImageLine($im2, $orig_x+$morph_x+$font_pixelwidth, $i, $orig_x+$morph_x+$font_pixelwidth+1, $i+$y_chunk, $debug2);
+    }
 }
 
 // for debug:
@@ -664,15 +664,15 @@ $y_pos = 0;
 $x_chunk = 1;
 for($i=0 ; $i<=$width ; $i+=$x_chunk)
 {
-	// can result in image going too far off on Y-axis;
-	// not much I can do about that, apart from make image bigger
-	// again, I wish I could do 1.5 pixels
-	$y_pos += $rand_func(-1,1);
-	ImageCopy($im, $im2, $i, $y_pos, $i, 0, $x_chunk, $height);
+    // can result in image going too far off on Y-axis;
+    // not much I can do about that, apart from make image bigger
+    // again, I wish I could do 1.5 pixels
+    $y_pos += $rand_func(-1,1);
+    ImageCopy($im, $im2, $i, $y_pos, $i, 0, $x_chunk, $height);
 
-	// for debug:
-	//ImageLine($im,$i+$x_chunk,0,$i+$x_chunk,100,$debug);
-	//ImageLine($im,$i,$y_pos+25,$i+$x_chunk,$y_pos+25,$debug);
+    // for debug:
+    //ImageLine($im,$i+$x_chunk,0,$i+$x_chunk,100,$debug);
+    //ImageLine($im,$i,$y_pos+25,$i+$x_chunk,$y_pos+25,$debug);
 }
 
 // for debug:
@@ -689,8 +689,8 @@ myImageBlur($im);
 
 if($output!="jpg" && $bg_type==0)
 {
-	// make background transparent
-	ImageColorTransparent($im,$bg);
+    // make background transparent
+    ImageColorTransparent($im,$bg);
 }
 
 
@@ -708,22 +708,22 @@ if($output!="jpg" && $bg_type==0)
 ImageFilledRectangle($im2,0,0,$width,$height,$bg2);
 if(is_array($site_tags))
 {
-	for($i=0 ; $i<sizeof($site_tags) ; $i++)
-	{
-		// ensure tags are centered
-		$tag_width = strlen($site_tags[$i])*6;
-		// write tag is chosen position
-		if($tag_pos==0 || $tag_pos==2)
-		{
-			// write at top
-			ImageString($im2, 2, intval($width/2)-intval($tag_width/2), (10*$i), $site_tags[$i], $site_tag_col2);
-		}
-		if($tag_pos==1 || $tag_pos==2)
-		{
-			// write at bottom
-			ImageString($im2, 2, intval($width/2)-intval($tag_width/2), ($height-34+($i*10)), $site_tags[$i], $site_tag_col2);
-		}
-	}
+    for($i=0 ; $i<sizeof($site_tags) ; $i++)
+    {
+        // ensure tags are centered
+        $tag_width = strlen($site_tags[$i])*6;
+        // write tag is chosen position
+        if($tag_pos==0 || $tag_pos==2)
+        {
+            // write at top
+            ImageString($im2, 2, intval($width/2)-intval($tag_width/2), (10*$i), $site_tags[$i], $site_tag_col2);
+        }
+        if($tag_pos==1 || $tag_pos==2)
+        {
+            // write at bottom
+            ImageString($im2, 2, intval($width/2)-intval($tag_width/2), ($height-34+($i*10)), $site_tags[$i], $site_tag_col2);
+        }
+    }
 }
 ImageCopyMerge($im2,$im,0,0,0,0,$width,$height,80);
 ImageCopy($im,$im2,0,0,0,0,$width,$height);
@@ -739,34 +739,34 @@ ImageCopy($im,$im2,0,0,0,0,$width,$height);
 
 if($bg_type!=0)
 {
-	// merge bg image with CAPTCHA image to create smooth background
+    // merge bg image with CAPTCHA image to create smooth background
 
-	// fade bg:
-	if($bg_type!=3)
-	{
-		$temp_im = ImageCreateTrueColor($width,$height);
-		$white = ImageColorAllocate($temp_im,255,255,255);
-		ImageFill($temp_im,0,0,$white);
-		ImageCopyMerge($im3,$temp_im,0,0,0,0,$width,$height,$bg_fade_pct);
-		// for debug:
-		//sendImage($im3);
-		ImageDestroy($temp_im);
-		$c_fade_pct = 50;
-	} else {
-		$c_fade_pct = $bg_fade_pct;
-	}
+    // fade bg:
+    if($bg_type!=3)
+    {
+        $temp_im = ImageCreateTrueColor($width,$height);
+        $white = ImageColorAllocate($temp_im,255,255,255);
+        ImageFill($temp_im,0,0,$white);
+        ImageCopyMerge($im3,$temp_im,0,0,0,0,$width,$height,$bg_fade_pct);
+        // for debug:
+        //sendImage($im3);
+        ImageDestroy($temp_im);
+        $c_fade_pct = 50;
+    } else {
+        $c_fade_pct = $bg_fade_pct;
+    }
 
-	// captcha over bg:
-	// might want to not blur if using this method
-	// otherwise leaves white-ish border around each letter
-	if($merge_type==1)
-	{
-		ImageCopyMerge($im3,$im,0,0,0,0,$width,$height,100);
-		ImageCopy($im,$im3,0,0,0,0,$width,$height);
-	} else {
-		// bg over captcha:
-		ImageCopyMerge($im,$im3,0,0,0,0,$width,$height,$c_fade_pct);
-	}
+    // captcha over bg:
+    // might want to not blur if using this method
+    // otherwise leaves white-ish border around each letter
+    if($merge_type==1)
+    {
+        ImageCopyMerge($im3,$im,0,0,0,0,$width,$height,100);
+        ImageCopy($im,$im3,0,0,0,0,$width,$height);
+    } else {
+        // bg over captcha:
+        ImageCopyMerge($im,$im3,0,0,0,0,$width,$height,$c_fade_pct);
+    }
 }
 // for debug:
 //sendImage($im);
