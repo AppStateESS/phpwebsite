@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
-   */
+/**
+ * @version $Id$
+ * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
+ */
 
 $proper_name  = 'Notification';
 $version      = '0.0.1';
