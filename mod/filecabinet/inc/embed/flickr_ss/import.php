@@ -7,7 +7,7 @@
 function flickr_ss_import($media)
 {
     if (preg_match('@^http://@', $media->file_name) &&
-        !preg_match('/flikr\.com/', $media->file_name)) {
+    !preg_match('/flikr\.com/', $media->file_name)) {
         return false;
     }
 

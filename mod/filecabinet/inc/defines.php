@@ -5,7 +5,7 @@
  */
 
 /**
- * Folder defines must match file associations for 
+ * Folder defines must match file associations for
  * basic types.
  */
 define('IMAGE_FOLDER',      1);

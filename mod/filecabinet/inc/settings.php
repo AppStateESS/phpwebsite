@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 $settings = array('base_doc_directory'   => PHPWS_HOME_DIR . 'files/filecabinet/',
                   'max_image_dimension'  => 1400,
@@ -32,5 +32,5 @@ $settings = array('base_doc_directory'   => PHPWS_HOME_DIR . 'files/filecabinet/
                   'fck_allow_images'     => 1,
                   'fck_allow_documents'  => 1,
                   'fck_allow_media'      => 1
-                  );
+);
 ?>

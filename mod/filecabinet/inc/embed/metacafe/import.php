@@ -26,9 +26,9 @@ function metacafe_import($media)
     $media->width  = 400;
     $media->height = 345;
     /*
-    $media->width       = $info['RSS']['CHANNEL'][0]['ITEM'][0]['MEDIA:CONTENT']['ATTRIBUTES']['WIDTH'];
-    $media->height      = $info['RSS']['CHANNEL'][0]['ITEM'][0]['MEDIA:CONTENT']['ATTRIBUTES']['HEIGHT'];
-    */
+     $media->width       = $info['RSS']['CHANNEL'][0]['ITEM'][0]['MEDIA:CONTENT']['ATTRIBUTES']['WIDTH'];
+     $media->height      = $info['RSS']['CHANNEL'][0]['ITEM'][0]['MEDIA:CONTENT']['ATTRIBUTES']['HEIGHT'];
+     */
 
     if (!empty($thumbnail)) {
         $thumb_name = 'metacafe_' . $media->file_name . '.jpg';

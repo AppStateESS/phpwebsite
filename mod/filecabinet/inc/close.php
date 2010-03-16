@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 pinFolder();
 
@@ -11,7 +11,7 @@ function pinFolder() {
     $key = Key::getCurrent();
     if ($key && !$key->isDummy()) {
         if ( Current_User::isUnrestricted('filecabinet') &&
-             Current_User::allow('filecabinet', 'edit_folders') ) {
+        Current_User::allow('filecabinet', 'edit_folders') ) {
             $js['address'] = PHPWS_Text::linkAddress('filecabinet', array('aop'=>'pin_form', 'key_id'=>$key->id), true);
             $js['label'] = dgettext('filecabinet', 'Pin folder');
             $js['width'] = 360;
