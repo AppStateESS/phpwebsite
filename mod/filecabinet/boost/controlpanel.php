@@ -12,4 +12,4 @@ $link[] = array('label'       => dgettext('filecabinet', 'File Cabinet'),
                 'image'       => 'cabinet.png',
                 'tab'         => 'admin'
                 );
-?>
+                ?>
