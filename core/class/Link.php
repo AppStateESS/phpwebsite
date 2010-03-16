@@ -59,7 +59,7 @@ class PHPWS_Link {
         }
 
         return sprintf('<a href="%s"%s>%s</a>',
-                       $this->address, $param_list, $this->label);
+        $this->address, $param_list, $this->label);
     }
 
     public function setLabel($label)
@@ -144,19 +144,19 @@ class PHPWS_Link {
     {
         $target = strtolower($target);
         switch ($target) {
-        case 'index':
-        case 'blank':
-            $target = '_blank';
-            break;
-        case '_blank':
-        case '_parent':
-        case '_self':
-        case '_top':
-            break;
+            case 'index':
+            case 'blank':
+                $target = '_blank';
+                break;
+            case '_blank':
+            case '_parent':
+            case '_self':
+            case '_top':
+                break;
 
-        default:
-            $this->target = null;
-            return;
+            default:
+                $this->target = null;
+                return;
         }
         $this->target = $target;
     }
@@ -164,32 +164,32 @@ class PHPWS_Link {
     public function getParameter($parameter)
     {
         switch ($parameter) {
-        case 'title':
-            return sprintf('title="%s"', $this->title);
+            case 'title':
+                return sprintf('title="%s"', $this->title);
 
-        case 'onclick':
-            return sprintf('onclick="%s"', $this->onclick);
+            case 'onclick':
+                return sprintf('onclick="%s"', $this->onclick);
 
-        case 'onmouseover':
-            return sprintf('onmouseover="%s"', $this->onmouseover);
+            case 'onmouseover':
+                return sprintf('onmouseover="%s"', $this->onmouseover);
 
-        case 'onmouseout':
-            return sprintf('onmouseout="%s"', $this->onmouseout);
+            case 'onmouseout':
+                return sprintf('onmouseout="%s"', $this->onmouseout);
 
-        case 'target':
-            return sprintf('target="%s"', $this->target);
+            case 'target':
+                return sprintf('target="%s"', $this->target);
 
-        case 'class_name':
-            return sprintf('class="%s"', $this->class_name);
+            case 'class_name':
+                return sprintf('class="%s"', $this->class_name);
 
-        case 'style':
-            return sprintf('style="%s"', $this->style);
+            case 'style':
+                return sprintf('style="%s"', $this->style);
 
-        case 'id':
-            return sprintf('id="%s"', $this->id);
+            case 'id':
+                return sprintf('id="%s"', $this->id);
 
-        case 'no_follow':
-            return 'rel="nofollow"';
+            case 'no_follow':
+                return 'rel="nofollow"';
         }
     }
 

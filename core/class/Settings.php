@@ -83,7 +83,7 @@ class PHPWS_Settings {
     }
 
     /*
-     * Not in use and probably not usable. Removing notes on it but keeping it just 
+     * Not in use and probably not usable. Removing notes on it but keeping it just
      * in case someone is using it.
      */
     public function append($module, $setting, $value)
@@ -97,7 +97,7 @@ class PHPWS_Settings {
             }
             return true;
         } elseif ( isset($GLOBALS['PHPWS_Settings'][$module][$setting]) &&
-                   !is_array($GLOBALS['PHPWS_Settings'][$module][$setting])) {
+        !is_array($GLOBALS['PHPWS_Settings'][$module][$setting])) {
             return false;
         }
 
@@ -133,20 +133,20 @@ class PHPWS_Settings {
             $db->addValue('setting_type', $type);
 
             switch( $type ) {
-            case 1:
-                $db->addValue('small_num', (int)$value);
-                break;
-            case 2:
-                $db->addValue('large_num', (int)$value);
-                break;
+                case 1:
+                    $db->addValue('small_num', (int)$value);
+                    break;
+                case 2:
+                    $db->addValue('large_num', (int)$value);
+                    break;
 
-            case 3:
-                $db->addValue('small_char', $value);
-                break;
+                case 3:
+                    $db->addValue('small_char', $value);
+                    break;
 
-            case 4:
-                $db->addValue('large_char', $value);
-                break;
+                case 4:
+                    $db->addValue('large_char', $value);
+                    break;
             }
             $result = $db->insert();
             if (PEAR::isError($result)) {
@@ -215,18 +215,18 @@ class PHPWS_Settings {
         } else {
             foreach ($result as $key => $value) {
                 switch ($value['setting_type']) {
-                case 1:
-                    $setval = $value['small_num'];
-                    break;
-                case 2:
-                    $setval = $value['large_num'];
-                    break;
-                case 3:
-                    $setval = $value['small_char'];
-                    break;
-                case 4:
-                    $setval = $value['large_char'];
-                    break;
+                    case 1:
+                        $setval = $value['small_num'];
+                        break;
+                    case 2:
+                        $setval = $value['large_num'];
+                        break;
+                    case 3:
+                        $setval = $value['small_char'];
+                        break;
+                    case 4:
+                        $setval = $value['large_char'];
+                        break;
                 }
 
                 PHPWS_Settings::set($module, $value['setting_name'], $setval);
@@ -238,38 +238,38 @@ class PHPWS_Settings {
     public function getType($value)
     {
         switch (gettype($value)) {
-        case 'NULL':
-            return 3;
-            break;
-
-        case 'boolean':
-        case 'integer':
-            if ((int)$value < 32700) {
-                return 1;
-            } else {
-                return 2;
-            }
-            break;
-
-        case 'double':
-        case 'string':
-            if (strpos($value, '.') === false && is_numeric($value)) {
-                return PHPWS_Settings::getType((int)$value);
-            }
-            if (strlen($value) < 100) {
+            case 'NULL':
                 return 3;
-            } else {
+                break;
+
+            case 'boolean':
+            case 'integer':
+                if ((int)$value < 32700) {
+                    return 1;
+                } else {
+                    return 2;
+                }
+                break;
+
+            case 'double':
+            case 'string':
+                if (strpos($value, '.') === false && is_numeric($value)) {
+                    return PHPWS_Settings::getType((int)$value);
+                }
+                if (strlen($value) < 100) {
+                    return 3;
+                } else {
+                    return 4;
+                }
+                break;
+
+            case 'object':
+            case 'array':
                 return 4;
-            }
-            break;
+                break;
 
-        case 'object':
-        case 'array':
-            return 4;
-            break;
-
-        default:
-            return 4;
+            default:
+                return 4;
         }
     }
 

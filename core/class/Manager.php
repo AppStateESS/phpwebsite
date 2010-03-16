@@ -334,10 +334,10 @@ class PHPWS_Manager {
             $paging = $listName . 'Paging';
 
             if(!is_array($$columns)
-               || (isset($$actions) && !is_array($$actions))
-               || (isset($$permissions) && !is_array($$permissions))
-               || (isset($$extraLabels) && !is_array($$extraLabels))
-               || (isset($$paging) && !is_array($$paging))) {
+            || (isset($$actions) && !is_array($$actions))
+            || (isset($$permissions) && !is_array($$permissions))
+            || (isset($$extraLabels) && !is_array($$extraLabels))
+            || (isset($$paging) && !is_array($$paging))) {
 
                 $message = _('Manager configuration file is an improper format.');
                 $error = new PHPWS_Error('core', 'PHPWS_Manager::init()', $message, 'exit', 1);
@@ -505,12 +505,12 @@ class PHPWS_Manager {
                 }
 
                 if (isset($this->_overrideOrder[$this->listName][$listColumn][0]))
-                    $overRide = $this->_overrideOrder[$this->listName][$listColumn][0];
+                $overRide = $this->_overrideOrder[$this->listName][$listColumn][0];
                 else
-                    $overRide = 'default';
+                $overRide = 'default';
 
                 if(isset($this->_listPaging[$this->listName]))
-                    switch($overRide) {
+                switch($overRide) {
                     case 0:
                         $listTags[$key1] .= '<a href="./index.php?module=' . $this->_module . '&amp;' . $request . '&amp;PHPWS_MAN_LIST=' . $this->listName .
                             '&amp;PHPWS_MAN_COLUMN=' . $listColumn . '&amp;PHPWS_MAN_ORDER=1&amp;' .
@@ -518,7 +518,7 @@ class PHPWS_Manager {
                             'PAGER_limit=' . $this->_pagers[$this->listName]->limit . '&amp;' .
                             'PAGER_start=' . $this->_pagers[$this->listName]->start . '&amp;' .
                             'PAGER_section=' . $this->_pagers[$this->listName]->section .
-                            $anchor . '">';
+                        $anchor . '">';
                         $listTags[$key1] .= Icon::show('sort') . '</a>';
                         break;
 
@@ -528,7 +528,7 @@ class PHPWS_Manager {
                             'PAGER_limit=' . $this->_pagers[$this->listName]->limit . '&amp;' .
                             'PAGER_start=' . $this->_pagers[$this->listName]->start . '&amp;' .
                             'PAGER_section=' . $this->_pagers[$this->listName]->section .
-                            $anchor . '">';
+                        $anchor . '">';
                         $listTags[$key1] .= Icon::show('sort-up') . '</a>';
                         break;
 
@@ -538,7 +538,7 @@ class PHPWS_Manager {
                             'PAGER_limit=' . $this->_pagers[$this->listName]->limit . '&amp;' .
                             'PAGER_start=' . $this->_pagers[$this->listName]->start . '&amp;' .
                             'PAGER_section=' . $this->_pagers[$this->listName]->section .
-                            $anchor . '">';
+                        $anchor . '">';
                         $listTags[$key1] .= Icon::show('sort-down') . '</a>';
                         break;
 
@@ -548,9 +548,9 @@ class PHPWS_Manager {
                             'PAGER_limit=' . $this->_pagers[$this->listName]->limit . '&amp;' .
                             'PAGER_start=' . $this->_pagers[$this->listName]->start . '&amp;' .
                             'PAGER_section=' . $this->_pagers[$this->listName]->section .
-                            $anchor . '">';
+                        $anchor . '">';
                         $listTags[$key1] .= Icon::show('sort') . '</a>';
-                    }
+                }
             }
 
             $columns++;
@@ -613,9 +613,9 @@ class PHPWS_Manager {
                             $rowTags['HIDDEN'] = $this->_listValues['hidden'][$item['hidden']];
                         } else {
                             if($item['hidden'] == 1)
-                                $rowTags['HIDDEN'] = _('Hidden');
+                            $rowTags['HIDDEN'] = _('Hidden');
                             else
-                                $rowTags['HIDDEN'] = _('Visible');
+                            $rowTags['HIDDEN'] = _('Visible');
                         }
                     } else if($listColumn == 'approved') {
                         /* Setting message depending if this item is approved or not */
@@ -623,9 +623,9 @@ class PHPWS_Manager {
                             $rowTags['APPROVED'] = $this->_listValues['approved'][$item['approved']];
                         } else {
                             if($item['approved'] == 1)
-                                $rowTags['APPROVED'] = _('Approved');
+                            $rowTags['APPROVED'] = _('Approved');
                             else
-                                $rowTags['APPROVED'] = _('Unapproved');
+                            $rowTags['APPROVED'] = _('Unapproved');
                         }
                     } else if($listColumn == 'groups') {
                         $groups = unserialize($item['groups']);
@@ -635,7 +635,7 @@ class PHPWS_Manager {
                             /* Create a string of group names the current item belongs to */
                             foreach($groups as $group) {
                                 if($flag)
-                                    $rowTags['GROUPS'] .= ', ';
+                                $rowTags['GROUPS'] .= ', ';
 
                                 $rowTags['GROUPS'] .= $group;
                                 $flag = TRUE;
@@ -672,7 +672,7 @@ class PHPWS_Manager {
             if(isset($this->_listActions[$this->listName]) && is_array($this->_listActions[$this->listName])) {
                 foreach($this->_listActions[$this->listName] as $actionString => $actionLabel) {
                     if (isset($this->_listPermissions[$this->listName][$actionString]))
-                        $permission = $this->_listPermissions[$this->listName][$actionString];
+                    $permission = $this->_listPermissions[$this->listName][$actionString];
 
                     if(isset($permission)) {
                         if(Current_User::allow($this->_module, $permission)) {
@@ -859,7 +859,7 @@ class PHPWS_Manager {
             $flag = FALSE;
             foreach($_REQUEST['PHPWS_MAN_ITEMS'] as $itemId) {
                 if($flag)
-                    $sql .= " OR id='";
+                $sql .= " OR id='";
 
                 $sql .= $itemId . "'";
                 $flag = TRUE;
@@ -868,9 +868,9 @@ class PHPWS_Manager {
             /* Execute query and test for failure */
             $result = PHPWS_DB::query($sql);
             if($result)
-                return TRUE;
+            return TRUE;
             else
-                return FALSE;
+            return FALSE;
         }
     }// END FUNC _doMassUpdate()
 
@@ -979,7 +979,7 @@ class PHPWS_Manager {
             $this->_owner = $owner;
             return TRUE;
         } else
-            return FALSE;
+        return FALSE;
     }
 
     /**
@@ -1069,17 +1069,17 @@ class PHPWS_Manager {
         unset($this->_overrideOrder[$_REQUEST['PHPWS_MAN_LIST']]);
         $this->_overrideOrder[$_REQUEST['PHPWS_MAN_LIST']][$_REQUEST['PHPWS_MAN_COLUMN']][0] = $_REQUEST['PHPWS_MAN_ORDER'];
         switch($this->_overrideOrder[$_REQUEST['PHPWS_MAN_LIST']][$_REQUEST['PHPWS_MAN_COLUMN']][0]) {
-        case 0:
-            $this->_overrideOrder[$_REQUEST['PHPWS_MAN_LIST']][$_REQUEST['PHPWS_MAN_COLUMN']][1] = NULL;
-            break;
+            case 0:
+                $this->_overrideOrder[$_REQUEST['PHPWS_MAN_LIST']][$_REQUEST['PHPWS_MAN_COLUMN']][1] = NULL;
+                break;
 
-        case 1:
-            $this->_overrideOrder[$_REQUEST['PHPWS_MAN_LIST']][$_REQUEST['PHPWS_MAN_COLUMN']][1] = $_REQUEST['PHPWS_MAN_COLUMN'] . ' DESC';
-            break;
+            case 1:
+                $this->_overrideOrder[$_REQUEST['PHPWS_MAN_LIST']][$_REQUEST['PHPWS_MAN_COLUMN']][1] = $_REQUEST['PHPWS_MAN_COLUMN'] . ' DESC';
+                break;
 
-        case 2:
-            $this->_overrideOrder[$_REQUEST['PHPWS_MAN_LIST']][$_REQUEST['PHPWS_MAN_COLUMN']][1] = $_REQUEST['PHPWS_MAN_COLUMN'] . ' ASC';
-            break;
+            case 2:
+                $this->_overrideOrder[$_REQUEST['PHPWS_MAN_LIST']][$_REQUEST['PHPWS_MAN_COLUMN']][1] = $_REQUEST['PHPWS_MAN_COLUMN'] . ' ASC';
+                break;
         }
         return TRUE;
     }
@@ -1137,62 +1137,62 @@ class PHPWS_Manager {
      */
     function managerAction() {
         switch($_REQUEST[$this->_request]) {
-        case 'list':
-            $list = $this->_listFunction;
-            $this->$list();
-            break;
-
-        case 'edit':
-            if(isset($_REQUEST['PHPWS_MAN_ITEMS']) &&
-               is_array($_REQUEST['PHPWS_MAN_ITEMS']) &&
-               sizeof($_REQUEST['PHPWS_MAN_ITEMS']) > 0) {
-                $edit = $this->_editFunction;
-                $this->$edit($_REQUEST['PHPWS_MAN_ITEMS']);
-            } else {
+            case 'list':
                 $list = $this->_listFunction;
                 $this->$list();
-            }
-            break;
+                break;
 
-        case 'view':
-            if(isset($_REQUEST['PHPWS_MAN_ITEMS']) &&
-               is_array($_REQUEST['PHPWS_MAN_ITEMS']) &&
-               sizeof($_REQUEST['PHPWS_MAN_ITEMS']) > 0) {
-                $view = $this->_viewFunction;
-                $this->$view($_REQUEST['PHPWS_MAN_ITEMS']);
-            } else {
+            case 'edit':
+                if(isset($_REQUEST['PHPWS_MAN_ITEMS']) &&
+                is_array($_REQUEST['PHPWS_MAN_ITEMS']) &&
+                sizeof($_REQUEST['PHPWS_MAN_ITEMS']) > 0) {
+                    $edit = $this->_editFunction;
+                    $this->$edit($_REQUEST['PHPWS_MAN_ITEMS']);
+                } else {
+                    $list = $this->_listFunction;
+                    $this->$list();
+                }
+                break;
+
+            case 'view':
+                if(isset($_REQUEST['PHPWS_MAN_ITEMS']) &&
+                is_array($_REQUEST['PHPWS_MAN_ITEMS']) &&
+                sizeof($_REQUEST['PHPWS_MAN_ITEMS']) > 0) {
+                    $view = $this->_viewFunction;
+                    $this->$view($_REQUEST['PHPWS_MAN_ITEMS']);
+                } else {
+                    $list = $this->_listFunction;
+                    $this->$list();
+                }
+                break;
+
+            case 'hide':
+                $this->_doMassUpdate('hidden', 1);
                 $list = $this->_listFunction;
                 $this->$list();
-            }
-            break;
+                break;
 
-        case 'hide':
-            $this->_doMassUpdate('hidden', 1);
-            $list = $this->_listFunction;
-            $this->$list();
-            break;
-
-        case 'show':
-            $this->_doMassUpdate('hidden', 0);
-            $list = $this->_listFunction;
-            $this->$list();
-            break;
-
-        case 'approve':
-            $this->_doMassUpdate('approved', 1);
-            $list = $this->_listFunction;
-            $this->$list();
-            break;
-
-        case 'delete':
-            if(is_array($_REQUEST['PHPWS_MAN_ITEMS']) && sizeof($_REQUEST['PHPWS_MAN_ITEMS']) > 0) {
-                $delete = $this->_deleteFunction;
-                $this->$delete($_REQUEST['PHPWS_MAN_ITEMS']);
-            } else {
+            case 'show':
+                $this->_doMassUpdate('hidden', 0);
                 $list = $this->_listFunction;
                 $this->$list();
-            }
-            break;
+                break;
+
+            case 'approve':
+                $this->_doMassUpdate('approved', 1);
+                $list = $this->_listFunction;
+                $this->$list();
+                break;
+
+            case 'delete':
+                if(is_array($_REQUEST['PHPWS_MAN_ITEMS']) && sizeof($_REQUEST['PHPWS_MAN_ITEMS']) > 0) {
+                    $delete = $this->_deleteFunction;
+                    $this->$delete($_REQUEST['PHPWS_MAN_ITEMS']);
+                } else {
+                    $list = $this->_listFunction;
+                    $this->$list();
+                }
+                break;
         }
     }// END FUNC managerAction()
 

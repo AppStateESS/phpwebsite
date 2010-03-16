@@ -1,14 +1,14 @@
 <?php
-  /**
-   * Small class that assists in loading CAPTCHA routines
-   * 
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * Small class that assists in loading CAPTCHA routines
+ *
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 if (!defined('CAPTCHA_NAME')) {
     define('CAPTCHA_NAME', '');
- }
+}
 
 class Captcha {
 
@@ -32,7 +32,7 @@ class Captcha {
         }
 
         include $file;
-        
+
         if (!function_exists('verify')) {
             return false;
         }

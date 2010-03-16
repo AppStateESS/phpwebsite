@@ -1,15 +1,15 @@
 <?php
 
-  /**
-   * Parses bbcode
-   *
-   * This is a copy of corzblog's (http://corz.org/) bb parsing
-   * code. Compared to Pear's bbcode parser, it is easier to use and
-   * edit. It has been altered to work specifically with phpWebSite.
-   *
-   * @author (or at corz.org
-   * @modified Matt McNaney <matt at tux dot appstate dot edu>
-   */
+/**
+ * Parses bbcode
+ *
+ * This is a copy of corzblog's (http://corz.org/) bb parsing
+ * code. Compared to Pear's bbcode parser, it is easier to use and
+ * edit. It has been altered to work specifically with phpWebSite.
+ *
+ * @author (or at corz.org
+ * @modified Matt McNaney <matt at tux dot appstate dot edu>
+ */
 
 
 // If TRUE, then 'smilies' will be parsed.
@@ -114,7 +114,7 @@ function bb_filter($bb2html)
 
     if (BBCODE_QUOTE_TYPE == 'fieldset') {
         $bb2html = preg_replace(array('/\[quote="(.*)"\]/isU', '/\[quote(?!=".*").*\]/isU', '/\[\/quote\]/isU'),
-                                array('<fieldset class="quote">&#013;<legend>' . _('\1 wrote') . ':</legend>&#013;\2', '<fieldset>&#013;', '</fieldset>&#013;'), $bb2html);
+        array('<fieldset class="quote">&#013;<legend>' . _('\1 wrote') . ':</legend>&#013;\2', '<fieldset>&#013;', '</fieldset>&#013;'), $bb2html);
     } elseif (BBCODE_QUOTE_TYPE == 'blockquote') {
         $bb2html = preg_replace('/\[quote="(.*)"\]/Ui', '<blockquote class="quote"><h3>' . _('\1 wrote') . ':</h3>', $bb2html);
         $bb2html = str_ireplace('[quote]', '<blockquote class="quote">', $bb2html);
@@ -183,7 +183,7 @@ function getSmilie($bbcode)
             }
             $search[] = '@(?!<.*?)' . preg_quote($icon[2]) . '(?![^<>]*?>)@si';
             $replace[] = sprintf('<img src="images/core/smilies/%s" title="%s" alt="%s" />',
-                                 $icon[0], $icon[1], $icon[1]);
+            $icon[0], $icon[1], $icon[1]);
 
         }
 

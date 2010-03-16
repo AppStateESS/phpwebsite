@@ -9,9 +9,9 @@
  * Images
  * Links
  * Lists
- * 
+ *
  * You can add/remove filters from the PEAR_BB_FILTERS.
- * 
+ *
  * @version $Id$
  */
 

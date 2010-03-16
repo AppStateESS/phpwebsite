@@ -204,7 +204,7 @@ class Key {
     public function allowView($check_dates=true)
     {
         if (Current_User::allow($this->module, $this->edit_permission,
-                                      $this->item_id, $this->item_name)) {
+        $this->item_id, $this->item_name)) {
             return true;
         } elseif (!$this->active) {
             return false;
@@ -212,7 +212,7 @@ class Key {
 
         $now = mktime();
         if ($check_dates &&
-            (($this->hide_after < $now) || ($this->show_after > $now))) {
+        (($this->hide_after < $now) || ($this->show_after > $now))) {
             return false;
         }
 
@@ -245,7 +245,7 @@ class Key {
         }
 
         return Current_User::allow($this->module, $this->edit_permission,
-                                   $this->item_id, $this->item_name);
+        $this->item_id, $this->item_name);
     }
 
     public function init()
@@ -304,7 +304,7 @@ class Key {
                 return $result;
             } elseif ($result) {
                 return PHPWS_Error::get(KEY_DUPLICATE, 'core', 'Key::save',
-                                        sprintf('%s-%s-%s', $this->module, $this->item_name, $this->item_id));
+                sprintf('%s-%s-%s', $this->module, $this->item_name, $this->item_id));
             }
             $db->reset();
         }
@@ -573,8 +573,8 @@ class Key {
         }
 
         if ( Current_User::isDeity() ||
-             (isset($module) && Current_User::isUnrestricted($module) )
-             ) {
+        (isset($module) && Current_User::isUnrestricted($module) )
+        ) {
             return;
         }
 
@@ -705,7 +705,7 @@ class Key {
         }
 
         if ( isset($_SESSION['Key_Views']) &&
-             in_array($this->id, $_SESSION['Key_Views']) ) {
+        in_array($this->id, $_SESSION['Key_Views']) ) {
             return;
         }
 
@@ -757,9 +757,9 @@ class Key {
     public function isBlocked($module)
     {
         if (empty($module) ||
-            !is_string($module) ||
-            !isset($GLOBALS['Key_Blocked_Popups']) ||
-            !is_array($GLOBALS['Key_Blocked_Popups'])) {
+        !is_string($module) ||
+        !isset($GLOBALS['Key_Blocked_Popups']) ||
+        !is_array($GLOBALS['Key_Blocked_Popups'])) {
             return false;
         }
 

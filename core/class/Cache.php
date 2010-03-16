@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney gmail dot com>
+ */
 
 require_once 'Cache/Lite.php';
 
@@ -14,7 +14,7 @@ class PHPWS_Cache {
         $options = array(
                          'cacheDir' => CACHE_DIRECTORY,
                          'lifeTime' => (int)$lifetime
-                         );
+        );
         $cache = new Cache_Lite($options);
 
         return $cache;

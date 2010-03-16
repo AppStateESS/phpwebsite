@@ -1,11 +1,11 @@
 <?php
 
-  /**
-   * Separates work into batches to prevent memory caps or timeouts
-   *
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * Separates work into batches to prevent memory caps or timeouts
+ *
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 define('DEFAULT_BATCH_SET', 50);
 if (!defined('GRAPH_MULTIPLIER')) {

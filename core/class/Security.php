@@ -26,7 +26,7 @@ class Security {
         }
 
         $infraction = sprintf('%s@%s %s -- %s', $username, $ip, $via, $message);
-        
+
         PHPWS_Core::log(escapeshellcmd($infraction), 'security.log', _('Warning'));
     }
 }

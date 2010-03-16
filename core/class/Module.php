@@ -336,7 +336,7 @@ class PHPWS_Module {
         static $depend_list = array();
 
         if (!empty($depend_list) &&
-            isset($depend_list[$this->title])) {
+        isset($depend_list[$this->title])) {
             return $depend_list[$this->title];
         }
 

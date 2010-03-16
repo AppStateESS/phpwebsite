@@ -41,168 +41,168 @@ class MyServer extends IXR_IntrospectionServer {
         $this->IXR_IntrospectionServer();
         /*  Don't want to support an API that's obsolete 2 times over, don't know if I have to.
 
-      $this->addCallback(
-          'blogger.newPost',
-          'this:blogger_newPost',
-          array('string'),
-          'Creates a new post, and optionally publishes it.'
-      );
-      $this->addCallback(
-          'blogger.editPost',
-          'this:blogger_editPost',
-          array('boolean'),
-          'Updates the information about an existing post.'
-      );
+        $this->addCallback(
+        'blogger.newPost',
+        'this:blogger_newPost',
+        array('string'),
+        'Creates a new post, and optionally publishes it.'
+        );
+        $this->addCallback(
+        'blogger.editPost',
+        'this:blogger_editPost',
+        array('boolean'),
+        'Updates the information about an existing post.'
+        );
 
-      $this->addCallback(
-          'blogger.getRecentPosts',
-          'this:blogger_getRecentPosts',
-          array('array'),
-          'Returns a list of the most recent posts in the system.'
-      );
-      $this->addCallback(
-          'blogger.getUserInfo',
-          'this:blogger_getUserInfo',
-          array('struct'),
-          'Returns information about an author in the system'
-      );
+        $this->addCallback(
+        'blogger.getRecentPosts',
+        'this:blogger_getRecentPosts',
+        array('array'),
+        'Returns a list of the most recent posts in the system.'
+        );
+        $this->addCallback(
+        'blogger.getUserInfo',
+        'this:blogger_getUserInfo',
+        array('struct'),
+        'Returns information about an author in the system'
+        );
         */
 
         $this->addCallback(
                            'blogger.deletePost',
                            'this:blogger_deletePost',
-                           array('array', 'string', 'string', 'string', 'string', 'boolean'),
+        array('array', 'string', 'string', 'string', 'string', 'boolean'),
                            'Deletes a post.'
                            );
 
-        $this->addCallback(
+                           $this->addCallback(
                            'blogger.getUsersBlogs',
                            'this:blogger_getUsersBlogs',
                            array('array','string','string','string'),
                            'Returns a list of weblogs to which an author has posting privileges.'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'metaWeblog.newPost',
                            'this:metaWeblog_newPost',
                            array('string','string','string','string','struct','boolean'),
                            'Creates a new post, and optionally publishes it.'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'metaWeblog.editPost',
                            'this:metaWeblog_editPost',
                            array('boolean','string','string','string','struct','boolean'),
                            'Updates an existing post.'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'metaWeblog.getPost',
                            'this:metaWeblog_getPost',
                            array('struct','string','string','string'),
                            'Returns information about a specific post.'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'metaWeblog.getRecentPosts',
                            'this:metaWeblog_getRecentPosts',
                            array('array','string','string','string','int'),
                            'Returns a list of the most recent posts in the system.'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'metaWeblog.newMediaObject',
                            'this:metaWeblog_newMediaObject',
                            array('string','string','string','string','struct'),
                            'Uploads a file to your webserver.'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'metaWeblog.getCategories',
                            'this:metaWeblog_getCategories',
                            array('array','string','string','string'),
                            'Returns a list of all categories defined in the weblog.'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'mt.getRecentPostTitles',
                            'this:mt_getRecentPostTitles',
                            array('array','string','string','string','int'),
                            'Returns a bandwidth-friendly list of the most recent posts in the system.'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'mt.getCategoryList',
                            'this:mt_getCategoryList',
                            array('array','string','string','string'),
                            'Returns a list of all categories defined in the weblog.'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'mt.getPostCategories',
                            'this:mt_getPostCategories',
                            array('array','string','string','string'),
                            'Returns a list of all categories to which the post is assigned.'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'mt.setPostCategories',
                            'this:mt_setPostCategories',
                            array('boolean','string','string','string','array'),
                            'Sets the categories for a post.'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'mt.supportedMethods',
                            'this:mt_supportedMethods',
                            array('array'),
                            'Retrieve information about the XML-RPC methods supported by the server.'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'mt.supportedTextFilters',
                            'this:mt_supportedTextFilters',
                            array('array'),
                            'Retrieve information about the text formatting plugins supported by the server.'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'mt.getTrackbackPings',
                            'this:mt_getTrackbackPings',
                            array('array','string'),
                            ' Retrieve the list of TrackBack pings posted to a particular entry. This could be used to programmatically retrieve the list of pings for a particular entry, then iterate through each of those pings doing the same, until one has built up a graph of the web of entries referencing one another on a particular topic.'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'mt.publishPost',
                            'this:mt_publishPost',
                            array('boolean','string','string','string'),
                            'Publish (rebuild) all of the static files related to an entry from your weblog. Equivalent to saving an entry in the system (but without the ping).'
                            );
 
-        $this->addCallback(
+                           $this->addCallback(
                            'test.isLoggedIn',
                            'this:isLoggedIn',
                            array('string','string','string'),
                            'Returns user status'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'test.getDate',
                            'this:getDate',
                            array('string'),
                            'Returns the current date'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'test.getTime',
                            'this:getTime',
                            array('string'),
                            'Returns the current time'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'test.helloWorld',
                            'this:helloWorld',
                            array('string'),
                            'Returns "Hello World"'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'test.error',
                            'this:ooh',
                            array('struct'),
                            'Triggers an error response'
                            );
-        $this->addCallback(
+                           $this->addCallback(
                            'test.multiplied',
                            'this:times10',
                            array('int', 'struct'),
                            'Returns X*10, X*100, X*1000'
                            );
-        $this->serve();
+                           $this->serve();
     }
 
     public function removeCategoryItems($key_id)
@@ -419,7 +419,7 @@ class MyServer extends IXR_IntrospectionServer {
         $ext = PHPWS_File::getFileExtension($filename);
 
         if ( !(ALLOW_OCTET_STREAM && $filetype == 'application/octet-stream')
-             && !in_array($filetype, $allowed_images)) {
+        && !in_array($filetype, $allowed_images)) {
             return new IXR_Error(-652, "File type '$filetype' not allowed.");
         }
 
@@ -590,7 +590,7 @@ class MyServer extends IXR_IntrospectionServer {
                      'times10' => (int)$value * 10,
                      'times100' => (int)$value * 10,
                      'times1000' => (int)$value * 10,
-                     );
+        );
     }
 
 }

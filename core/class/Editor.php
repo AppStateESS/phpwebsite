@@ -1,18 +1,18 @@
 <?php
 
-  /**
-   * Used to load DHTML editors. Plugin files must be available.
-   *
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * Used to load DHTML editors. Plugin files must be available.
+ *
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 PHPWS_Core::initCoreClass('File.php');
 
 // If true, then force the usage of the selected editor
 if (!defined('FORCE_EDITOR')) {
     define ('FORCE_EDITOR', false);
- }
+}
 
 class Editor {
     public $data       = NULL; // Contains the editor text

@@ -51,7 +51,7 @@ class PHPWS_Error {
         include $errorFile;
 
         if (!isset($errors))
-            return FALSE;
+        return FALSE;
 
         if (PEAR::isError($value)) {
             $value = $value->getCode();

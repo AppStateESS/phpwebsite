@@ -1,24 +1,24 @@
 <?php
 
-  /**
-   * Base class for items used in phpWebSite's 0.x  modules.
-   *
-   * This class exists to supply backward compatibility with 0.x
-   * modules.
-   *
-   * @version $Id$
-   * @author  Steven Levin <steven at tux dot appstate dot edu>
-   * @author  Adam Morton
-   * @author  Matthew McNaney <matt at tux dot appstate dot edu>
-   * @package Core
-   */
+/**
+ * Base class for items used in phpWebSite's 0.x  modules.
+ *
+ * This class exists to supply backward compatibility with 0.x
+ * modules.
+ *
+ * @version $Id$
+ * @author  Steven Levin <steven at tux dot appstate dot edu>
+ * @author  Adam Morton
+ * @author  Matthew McNaney <matt at tux dot appstate dot edu>
+ * @package Core
+ */
 class PHPWS_Item {
 
     /**
      * Database id of this item.
      *
      * @var     integer
-     * @example $this->_id = 2; 
+     * @example $this->_id = 2;
      * @access  private
      */
     var $_id = NULL;
@@ -141,14 +141,14 @@ class PHPWS_Item {
         if((isset($this->_id) && isset($this->_table))) {
             $DB = new PHPWS_DB($this->_table);
             $DB->addWhere('id', (int)$this->_id);
-            
+
             $className = get_class($this);
             $itemResult = $DB->select('row');
 
             if (PEAR::isError($itemResult)) {
                 return $itemResult;
             }
-            
+
             if (!isset($itemResult)) {
                 return PHPWS_Error::get(PHPWS_ITEM_NO_RESULT, 'core', 'PHPWS_Item::init');
             } else {
@@ -165,7 +165,7 @@ class PHPWS_Item {
         } else {
             return PHPWS_Error::get(PHPWS_ITEM_ID_TABLE, 'core', 'PHPWS_Item::init');
         }
-        
+
         return TRUE;
     } // END FUNC init
 
@@ -181,7 +181,7 @@ class PHPWS_Item {
      * removed before interpreting the column name.
      *
      * @param  boolean Flag whether or not to call set function for the item
-     * @param  array   Extra variables to be saved to the database, must be an 
+     * @param  array   Extra variables to be saved to the database, must be an
      *                 associative array keyed by the table column
      * @return boolean TRUE on success and FALSE on failure.
      * @access public
@@ -210,7 +210,7 @@ class PHPWS_Item {
 
     /**
      * Remove this item from the database
-     * 
+     *
      * Removes the current Item from the database if $this->_id is set properly.
      * Items which extend must provide the approval if necessary.
      *
@@ -224,16 +224,16 @@ class PHPWS_Item {
             $result = $DB->delete();
             return (PEAR::isError($result) ? $result : TRUE);
         } else
-            return PHPWS_Error::get(PHPWS_ITEM_ID_TABLE, 'core', 'PHPWS_Item::kill');
+        return PHPWS_Error::get(PHPWS_ITEM_ID_TABLE, 'core', 'PHPWS_Item::kill');
     } // END FUNC kill
 
     /**
      * Sets all member variables.
      *
      * This function takes an associative array and uses it to set the member
-     * variables for this item with the values found in the array.  This is done via 
-     * the set functions for this item.  The set functions will do any error checking 
-     * on the variables and set them accordingly.  If any variable is invalid, a FALSE 
+     * variables for this item with the values found in the array.  This is done via
+     * the set functions for this item.  The set functions will do any error checking
+     * on the variables and set them accordingly.  If any variable is invalid, a FALSE
      * is returned and this item remains unchanged.
      *
      * @param  array   $vars The associative array of variables.
@@ -464,7 +464,7 @@ class PHPWS_Item {
             return PEAR::raiseError($error);
         }
     } // END FUNC setTable
-  
+
     /**
      * Adds variable names to the exclude list
      *
@@ -476,7 +476,7 @@ class PHPWS_Item {
      */
     function addExclude($list = NULL) {
         if(is_array($list))
-            $this->_exclude = array_merge($this->_exclude, $list);
+        $this->_exclude = array_merge($this->_exclude, $list);
         else {
             $error = 'Argument passed was not an array in PHPWS_Item::addExclude().';
             return PEAR::raiseError($error);
@@ -496,9 +496,9 @@ class PHPWS_Item {
      */
     function getId() {
         if(isset($this->_id))
-            return $this->_id;
+        return $this->_id;
         else
-            return NULL;
+        return NULL;
     } // END FUNC getId
 
     /**
@@ -509,9 +509,9 @@ class PHPWS_Item {
      */
     function getOwner() {
         if(isset($this->_owner))
-            return $this->_owner;
+        return $this->_owner;
         else
-            return NULL;
+        return NULL;
     } // END FUNC getOwner
 
     /**
@@ -522,9 +522,9 @@ class PHPWS_Item {
      */
     function getEditor() {
         if(isset($this->_editor))
-            return $this->_editor;
+        return $this->_editor;
         else
-            return NULL;
+        return NULL;
     } // END FUNC getEditor
 
     /**
@@ -535,9 +535,9 @@ class PHPWS_Item {
      */
     function getIp() {
         if(isset($this->_ip))
-            return $this->_ip;
+        return $this->_ip;
         else
-            return NULL;
+        return NULL;
     } // END FUNC getIp
 
     /**
@@ -548,9 +548,9 @@ class PHPWS_Item {
      */
     function getLabel() {
         if(isset($this->_label))
-            return $this->_label;
+        return $this->_label;
         else
-            return NULL;
+        return NULL;
     } // END FUNC getLabel
 
     /**
@@ -563,9 +563,9 @@ class PHPWS_Item {
      */
     function getCreated() {
         if(isset($this->_created))
-            return date(PHPWS_DATE_FORMAT . ' ' . PHPWS_TIME_FORMAT, $this->_created);
+        return date(PHPWS_DATE_FORMAT . ' ' . PHPWS_TIME_FORMAT, $this->_created);
         else
-            return NULL;
+        return NULL;
     } // END FUNC getCreated
 
     /**
@@ -577,10 +577,10 @@ class PHPWS_Item {
      * @access public
      */
     function getUpdated() {
-        if(isset($this->_updated)) 
-            return date(PHPWS_DATE_FORMAT . ' ' . PHPWS_TIME_FORMAT, $this->_updated);
-        else 
-            return NULL;
+        if(isset($this->_updated))
+        return date(PHPWS_DATE_FORMAT . ' ' . PHPWS_TIME_FORMAT, $this->_updated);
+        else
+        return NULL;
     } // END FUNC getUpdated
 
     /**
@@ -591,9 +591,9 @@ class PHPWS_Item {
      */
     function getTable() {
         if(isset($this->_table))
-            return $this->_table;
+        return $this->_table;
         else
-            return NULL;
+        return NULL;
     } // END FUNC getTable
 
     /**
@@ -616,9 +616,9 @@ class PHPWS_Item {
      */
     function isActive() {
         if(isset($this->_active) && $this->_active)
-            return TRUE;
+        return TRUE;
         else
-            return FALSE;
+        return FALSE;
     } // END FUNC isActive
 
     /**
@@ -629,9 +629,9 @@ class PHPWS_Item {
      */
     function isApproved() {
         if(isset($this->_approved) && $this->_approved)
-            return TRUE;
+        return TRUE;
         else
-            return FALSE;
+        return FALSE;
     } // END FUNC isApproved
 
     function set($name, $value) {
@@ -653,7 +653,7 @@ class PHPWS_Item {
             return $this->$pri;
         } else if(array_key_exists($pub, $vars)) {
             return $this->$pub;
-        } 
+        }
     }
 
 

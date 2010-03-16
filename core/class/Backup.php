@@ -37,7 +37,7 @@ class Backup {
             $result = $this->_buildBackupTable();
 
             if (PEAR::isError($result))
-                return $result;
+            return $result;
         }
 
         $current_item = $this->getPastItems();
@@ -56,7 +56,7 @@ class Backup {
 
         foreach ($result as $col){
             if ($col['name'] == 'id')
-                continue;
+            continue;
             $allColumns[] = $col;
         }
 
@@ -86,7 +86,7 @@ class Backup {
 
         $backupTable = Backup::getBackupTable($table);
         if (PEAR::isError($backupTable))
-            return $backupTable;
+        return $backupTable;
 
         $db = new PHPWS_DB($table);
         $db->addWhere('id', $item_id);
@@ -143,7 +143,7 @@ class Backup {
     public function get($item_id, $table){
         $backupTable = Backup::getBackupTable($table);
         if (PEAR::isError($backupTable))
-            return $backupTable;
+        return $backupTable;
 
         $db = new PHPWS_DB($backupTable);
         $db->addOrder('backup_order desc');
@@ -153,7 +153,7 @@ class Backup {
     public function flush($item_id, $table){
         $backupTable = Backup::getBackupTable($table);
         if (PEAR::isError($backupTable))
-            return $backupTable;
+        return $backupTable;
 
         $db = new PHPWS_DB($backupTable);
         $db->addWhere('backup_id', $item_id);

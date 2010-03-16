@@ -1,21 +1,21 @@
 <?php
-  /**
-   * Copied from php.net
-   * http://us2.php.net/manual/en/ref.xml.php
-   *
-   * Written  by  raphael at schwarzschmid dot de
-   * Modified by  james at clickmedia dot com
-   *              php dot notes at stoecklin dot net
-   *              Felix dot Riesterer at gmx dot net
-   *
-   * The first part of the code pulls the data from the xml file.
-   *
-   * The second part orders the data into an associative array
-   *
-   * @author raphael at schwarzschmid dot de
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Copied from php.net
+ * http://us2.php.net/manual/en/ref.xml.php
+ *
+ * Written  by  raphael at schwarzschmid dot de
+ * Modified by  james at clickmedia dot com
+ *              php dot notes at stoecklin dot net
+ *              Felix dot Riesterer at gmx dot net
+ *
+ * The first part of the code pulls the data from the xml file.
+ *
+ * The second part orders the data into an associative array
+ *
+ * @author raphael at schwarzschmid dot de
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 
 class XMLParser {
@@ -63,8 +63,8 @@ class XMLParser {
             if (!$parse) {
                 if ($die_on_error) {
                     die(sprintf("XML error: %s at line %d",
-                                xml_error_string(xml_get_error_code($this->xml)),
-                                xml_get_current_line_number($this->xml)));
+                    xml_error_string(xml_get_error_code($this->xml)),
+                    xml_get_current_line_number($this->xml)));
                     xml_parser_free($this->xml);
                 } else {
                     return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', 'XMLParset:parse', $xml_file);

@@ -999,11 +999,11 @@ class PHPWS_DB {
                             $table_name = sprintf('count(%s.%s)', $table, $name);
                         }
                     } else if(!is_null($coalesce)) {
-                    	if($distinct) {
-                    		$table_name = sprintf('coalesce(distinct(%s.%s), %s)', $table, $name, $coalesce);
-                    	} else {
-                    		$table_name = sprintf('coalesce(%s.%s, %s)', $table, $name, $coalesce);
-                    	}
+                        if($distinct) {
+                            $table_name = sprintf('coalesce(distinct(%s.%s), %s)', $table, $name, $coalesce);
+                        } else {
+                            $table_name = sprintf('coalesce(%s.%s, %s)', $table, $name, $coalesce);
+                        }
                     } else {
                         if ($distinct) {
                             $table_name = sprintf('distinct(%s.%s)', $table, $name);
@@ -2421,18 +2421,18 @@ class PHPWS_DB {
         if (!is_array($object_vars)) {
             return PHPWS_Error::get(PHPWS_DB_NO_OBJ_VARS, 'core', 'PHPWS_DB::saveObject');
         }
-        
+
         foreach ($object_vars as $column => $value){
             if ($stripChar == true) {
                 $column = substr($column, 1);
             }
 
             $isTblColumn = $this->isTableColumn($column);
-            
+
             if(PEAR::isError($isTblColumn)){
                 throw new Exception('Could not determine if column ' . $column . ' is a valid column in this table. Check table ownership.');
             }
-            
+
             if (!$isTblColumn) {
                 continue;
             }
@@ -2443,7 +2443,7 @@ class PHPWS_DB {
 
             $this->addValue($column, $value);
         }
-        
+
         if (isset($this->qwhere) || !empty($this->where)) {
             $result = $this->update();
         } else {

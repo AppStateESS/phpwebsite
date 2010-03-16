@@ -185,7 +185,7 @@ class PHPWS_Mail {
         require_once 'Mail/mime.php';
 
         if (empty($this->send_to) || empty($this->from_address) ||
-            ( empty($this->message_body) && empty($this->html_body) ) ) {
+        ( empty($this->message_body) && empty($this->html_body) ) ) {
             return false;
         }
 
@@ -216,37 +216,37 @@ class PHPWS_Mail {
         }
 
         switch ($this->backend_type) {
-        case 'mail':
-            break;
+            case 'mail':
+                break;
 
-        case 'sendmail':
-            if (defined('SENDMAIL_PATH')) {
-                $param['sendmail_path'] = SENDMAIL_PATH;
-            }
+            case 'sendmail':
+                if (defined('SENDMAIL_PATH')) {
+                    $param['sendmail_path'] = SENDMAIL_PATH;
+                }
 
-            break;
+                break;
 
-        case 'smtp':
-            if (!defined('SMTP_HOST') || !defined('SMTP_PORT')) {
-                return false;
-            }
+            case 'smtp':
+                if (!defined('SMTP_HOST') || !defined('SMTP_PORT')) {
+                    return false;
+                }
 
-            if ( !defined('SMTP_AUTH') ||
-                 ( SMTP_AUTH && (!defined('SMTP_USER') || !defined('SMTP_PASS')) ) ) {
-                return false;
-            }
+                if ( !defined('SMTP_AUTH') ||
+                ( SMTP_AUTH && (!defined('SMTP_USER') || !defined('SMTP_PASS')) ) ) {
+                    return false;
+                }
 
-            $param['host'] = SMTP_HOST;
-            $param['port'] = SMTP_PORT;
+                $param['host'] = SMTP_HOST;
+                $param['port'] = SMTP_PORT;
 
-            if (SMTP_AUTH) {
-                $param['auth'] = true;
-                $param['username'] = SMTP_USER;
-                $param['password'] = SMTP_PASS;
-            } else {
-                $param['auth'] = false;
-            }
-            break;
+                if (SMTP_AUTH) {
+                    $param['auth'] = true;
+                    $param['username'] = SMTP_USER;
+                    $param['password'] = SMTP_PASS;
+                } else {
+                    $param['auth'] = false;
+                }
+                break;
 
         }
 

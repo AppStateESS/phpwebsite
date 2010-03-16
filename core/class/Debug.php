@@ -15,7 +15,7 @@ class PHPWS_Debug {
     public function test($value, $show_recursive=FALSE)
     {
         if ( DEITY_ONLY_TEST && (!isset($_SESSION['User']) || !class_exists('Current_User') || !Current_User::isDeity()) ) {
-                return;
+            return;
         }
 
         if (empty($value)) {
@@ -23,31 +23,31 @@ class PHPWS_Debug {
         }
 
         switch(1) {
-        case is_object($value):
-            return PHPWS_Debug::testObject($value, 1, $show_recursive);
-            break;
-      
-        case is_array($value):
-            return 'Array' . PHPWS_Debug::testArray($value, 1, $show_recursive);
-            break;
+            case is_object($value):
+                return PHPWS_Debug::testObject($value, 1, $show_recursive);
+                break;
 
-        case is_bool($value):
-            if ($value) {
-                return '<pre>bool(TRUE)</pre>';
-            }
-            else {
-                return '<pre>bool(FALSE)</pre>';
-            }
+            case is_array($value):
+                return 'Array' . PHPWS_Debug::testArray($value, 1, $show_recursive);
+                break;
 
-        case is_numeric($value):
-            return '<pre>' . $value . '</pre>';
+            case is_bool($value):
+                if ($value) {
+                    return '<pre>bool(TRUE)</pre>';
+                }
+                else {
+                    return '<pre>bool(FALSE)</pre>';
+                }
 
-        case is_string($value):
-            return '<pre>' . preg_replace('/\n|(\r\n)/', '\n', htmlspecialchars($value)) . '</pre>';
-            break;
+            case is_numeric($value):
+                return '<pre>' . $value . '</pre>';
 
-        default:
-            return '<pre>' . $value . '</pre>';
+            case is_string($value):
+                return '<pre>' . preg_replace('/\n|(\r\n)/', '\n', htmlspecialchars($value)) . '</pre>';
+                break;
+
+            default:
+                return '<pre>' . $value . '</pre>';
         }
     }
 
@@ -65,7 +65,7 @@ class PHPWS_Debug {
     {
         return PHPWS_Debug::test($_GET);
     }
-  
+
     public function server()
     {
         return PHPWS_Debug::test($_SERVER);
@@ -106,7 +106,7 @@ class PHPWS_Debug {
     {
         if(is_object($objVar)) {
             $test_recursion = md5(serialize($objVar));
-            
+
             if ($show_recursive && isset($GLOBALS['Test_Recursion'])) {
                 if (in_array($test_recursion, $GLOBALS['Test_Recursion'])) {
                     return _('Recursive object:') . ' ' . get_class($objVar);
@@ -119,7 +119,7 @@ class PHPWS_Debug {
 
             $objectInfo = (get_object_vars($objVar));
             return '<b>' . _('Class Name') . ':</b> ' . get_class($objVar) .
-                PHPWS_Debug::testArray($objectInfo, $displayTags, $show_recursive);
+            PHPWS_Debug::testArray($objectInfo, $displayTags, $show_recursive);
         }
 
         if (!is_object($objVar)) {
@@ -139,11 +139,11 @@ class PHPWS_Debug {
      * @modified Steven Levin <steven@NOSPAM.tux.appstate.edu>
      * @param array $arrayVar array to be tested
      * @param bool $displayTags whether or not to show html tags
-     * @return string table with contents of array 
+     * @return string table with contents of array
      */
-    public function testArray($arrayVar, $displayTags=TRUE, $show_recursive=FALSE) 
+    public function testArray($arrayVar, $displayTags=TRUE, $show_recursive=FALSE)
     {
-        
+
         if (empty($arrayVar)) {
             return '<pre>' . PHPWS_Debug::emptyVal($arrayVar) . '</pre>';
         }
@@ -159,10 +159,10 @@ class PHPWS_Debug {
             $GLOBALS['Test_Recursion'][]  = $test_recursion;
         }
 
-        
+
         if(is_array($arrayVar)) {
             if(!empty($arrayVar)) {
-                $info[] =  
+                $info[] =
 '<table cellpadding="3" border="1">
   <tr>
     <td><b>' . 'KEY' . '</b></td>
@@ -184,7 +184,7 @@ class PHPWS_Debug {
                         $value = '<pre>' . $value . '</pre>';
                     }
 
-                    $info[] = '  <tr>'; 
+                    $info[] = '  <tr>';
                     $info[] = '    <td valign="top"><b>' . htmlspecialchars($key) . '</b></td>';
                     $info[] = '    <td>' . $value . '</td>';
                     $info[] = '  </tr>';
@@ -202,24 +202,24 @@ class PHPWS_Debug {
     public function emptyVal($value)
     {
         switch (1) {
-        case is_string($value):
-            if ($value == '0') {
-                return 'string(1)"0"';
-            } else {
-                return '""';
-            }
-            
-        case is_array($value):
-            return 'array()';
-            
-        case is_null($value):
-            return 'NULL';
+            case is_string($value):
+                if ($value == '0') {
+                    return 'string(1)"0"';
+                } else {
+                    return '""';
+                }
 
-        case is_bool($value):
-            return 'bool(FALSE)';
-            
-        case is_integer($value):
-            return 'int(0)';
+            case is_array($value):
+                return 'array()';
+
+            case is_null($value):
+                return 'NULL';
+
+            case is_bool($value):
+                return 'bool(FALSE)';
+
+            case is_integer($value):
+                return 'int(0)';
         }
     }
 
@@ -236,7 +236,7 @@ function test($value, $exitAfter=FALSE, $show_recursive=FALSE)
 
 function objectInfo($object)
 {
-    
+
     if (!is_object($object)){
         if (gettype($object) == 'object') {
             echo _('This is an incomplete object. If this is a sessioned object, make sure to declare the class before the variable.') . '<br />';
@@ -248,7 +248,7 @@ function objectInfo($object)
 
     $info['class'] = get_class($object);
     $info['methods'] = get_class_methods($info['class']);
-    
+
     test($info);
     return TRUE;
 }

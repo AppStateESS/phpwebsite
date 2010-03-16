@@ -1,10 +1,10 @@
 <?php
 
-  /**
-   * Write, reads, and deletes cookies under one site index
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * Write, reads, and deletes cookies under one site index
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 define('COOKIE_HASH', md5(SITE_HASH . $_SERVER['HTTP_HOST']));
 

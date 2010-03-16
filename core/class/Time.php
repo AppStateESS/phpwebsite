@@ -1,12 +1,12 @@
 <?php
 
-  /**
-   * The PHPWS_Time class is mainly for the parsing of timestamps
-   * into and out of UTC time.
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * The PHPWS_Time class is mainly for the parsing of timestamps
+ * into and out of UTC time.
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 class PHPWS_Time {
 
@@ -37,21 +37,21 @@ class PHPWS_Time {
             $time = mktime();
         }
         switch ($mode) {
-        case 'user':
-            $new_time = PHPWS_Time::getUserTime($time);
-            $tz = PHPWS_Time::getUserTZ();
-            break;
+            case 'user':
+                $new_time = PHPWS_Time::getUserTime($time);
+                $tz = PHPWS_Time::getUserTZ();
+                break;
 
-        case 'server':
-            $new_time = PHPWS_Time::getServerTime($time);
-            $tz = PHPWS_Time::getServerTZ();
-            break;
+            case 'server':
+                $new_time = PHPWS_Time::getServerTime($time);
+                $tz = PHPWS_Time::getServerTZ();
+                break;
 
-        case 'all_day':
-        case 'utc':
-            $new_time = &$time;
-            $tz = 0;
-            break;
+            case 'all_day':
+            case 'utc':
+                $new_time = &$time;
+                $tz = 0;
+                break;
         }
 
 

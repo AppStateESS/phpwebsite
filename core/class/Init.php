@@ -47,6 +47,7 @@ function __autoload($class_name)
 }
 
 PHPWS_Core::initCoreClass('Database.php');
+PHPWS_Core::initCoreClass('Debug.php');
 PHPWS_Core::initCoreClass('Settings.php');
 PHPWS_Core::initCoreClass('Link.php');
 PHPWS_Core::initCoreClass('Text.php');

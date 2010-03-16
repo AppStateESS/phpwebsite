@@ -13,39 +13,39 @@ class mysql_PHPWS_SQL {
     public function export(&$info)
     {
         switch ($info['type']){
-        case 'int':
-            if (!isset($info['len']) || $info['len'] > 6)
+            case 'int':
+                if (!isset($info['len']) || $info['len'] > 6)
                 $setting = 'INT';
-            else
+                else
                 $setting = 'SMALLINT';
-            break;
+                break;
 
-        case 'blob':
-            $setting = 'TEXT';
-            $info['flags'] = NULL;
-            break;
+            case 'blob':
+                $setting = 'TEXT';
+                $info['flags'] = NULL;
+                break;
 
-        case 'string':
-            if (!is_numeric($info['len']) || $info['len'] > 255) {
-                $length = 255;
-            } else {
-                $length = $info['len'];
-            }
-            $setting = "CHAR($length)";
-            break;
+            case 'string':
+                if (!is_numeric($info['len']) || $info['len'] > 255) {
+                    $length = 255;
+                } else {
+                    $length = $info['len'];
+                }
+                $setting = "CHAR($length)";
+                break;
 
-        case 'date':
-            $setting = 'DATE';
-            break;
+            case 'date':
+                $setting = 'DATE';
+                break;
 
-        case 'real':
-            $setting = 'FLOAT';
-            break;
+            case 'real':
+                $setting = 'FLOAT';
+                break;
 
-        case 'timestamp':
-            $setting = 'TIMESTAMP';
-            $info['flags'] = NULL;
-            break;
+            case 'timestamp':
+                $setting = 'TIMESTAMP';
+                $info['flags'] = NULL;
+                break;
 
         }
 
@@ -57,7 +57,7 @@ class mysql_PHPWS_SQL {
     {
         $table = PHPWS_DB::addPrefix($table);
         $sql = sprintf('ALTER TABLE %s CHANGE %s %s %s',
-                       $table, $column_name, $new_name, $specs['parameters']);
+        $table, $column_name, $new_name, $specs['parameters']);
         return $sql;
     }
 
