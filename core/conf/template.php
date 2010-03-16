@@ -11,7 +11,7 @@
 /**
  * Setting FORCE_THEME_TEMPLATES to TRUE forces the template class
  * to ONLY look for template files in your current theme. When FALSE
- * the template class will first look in your theme then in the 
+ * the template class will first look in your theme then in the
  * templates/ directory. When FALSE, the template class has to make
  * sure the file is in the theme. If you know for sure, it is then
  * setting this to TRUE will save a file check.

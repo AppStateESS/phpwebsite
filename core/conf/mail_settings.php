@@ -19,7 +19,7 @@ define('MAIL_BACKEND', 'mail');
 
 /**
  * If using sendmail, path MAY need to be set. Pear's default
- * directory is "/usr/bin/sendmail". If sendmail is in a different 
+ * directory is "/usr/bin/sendmail". If sendmail is in a different
  * directory, uncomment the below and set the correct directory.
  */
 

@@ -1,11 +1,11 @@
 <?php
 
 /**
-  * This config file allows you to set phpWebSite language settings
-  *
-  * @version $Id$
-  * @author Matthew McNaney <mcnaney at gmail dot com>
-  */
+ * This config file allows you to set phpWebSite language settings
+ *
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 /**
  * Should phpWebSite be unable to assign a language to a user
@@ -15,7 +15,7 @@
  *
  * This setting used to be in core's config.php file but was moved
  * here. The below will not go into effect if already set. Do not remove
- * the defined check until you remove the define from your core/conf/config.php
+ * the defined check until you remove the define from your config/config.php
  * file.
  */
 
@@ -46,8 +46,8 @@ define('FORCE_DEFAULT_LANGUAGE', false);
 define('IGNORE_BROWSER_LANGUAGE', false);
 
 /**
- * If true, phpWebSite will use the putenv function to set 
- * LANGUAGE and LANG environment variables. 
+ * If true, phpWebSite will use the putenv function to set
+ * LANGUAGE and LANG environment variables.
  * This may cause problems with some servers.
  * Default is "false"
  */

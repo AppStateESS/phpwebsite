@@ -2,10 +2,10 @@
 
 /**************************************************************
  * The settings in this file affect the hub and all branches
- * Most of the defines from this file were originally in the 
+ * Most of the defines from this file were originally in the
  * config.php file. That file now contains hub/branch specific
  * information.
- * 
+ *
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
@@ -179,5 +179,26 @@ define('MOD_REWRITE_ENABLED', TRUE);
  */
 
 define ('UTF8_MODE', false);
+
+/**--------------------------------------------------------------------------
+ *  The settings below will be moved a settings module on the next release
+ *--------------------------------------------------------------------------*/
+
+/************************ EDITOR *******************************/
+/*
+ * If you have downloaded a wysiwyg editor or editors for
+ * phpwebsite, you may enable their use below. You can also
+ * choose which editor you want to use as the default.
+ *
+ * Example: define('DEFAULT_EDITOR_TOOL', 'fckeditor');
+ *
+ * Force editor is true by default to assure all choices. Changing
+ * it to false will cause phpws to check your browser against the
+ * editors supported.php file.
+ */
+define('USE_WYSIWYG_EDITOR', true);
+define('DEFAULT_EDITOR_TOOL', 'fckeditor');
+define('FORCE_EDITOR', true);
+
 
 ?>

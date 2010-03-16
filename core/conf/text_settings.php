@@ -125,23 +125,23 @@ $words = array(
 		   'faggot.*'       =>'... I have issues with my sexuality! '
 		   );
 
-define('ALLOW_PROFANITY', FALSE);
-define('PROFANE_WORDS', serialize($words));
+		   define('ALLOW_PROFANITY', FALSE);
+		   define('PROFANE_WORDS', serialize($words));
 
 
-/**
- * These defines were originally in the bb filter itself. That would prevent
- * branches from setting their site as they wished.
- */
+		   /**
+		    * These defines were originally in the bb filter itself. That would prevent
+		    * branches from setting their site as they wished.
+		    */
 
-// If TRUE, then 'smilies' will be parsed.
-define('ALLOW_BB_SMILIES', true);
+		   // If TRUE, then 'smilies' will be parsed.
+		   define('ALLOW_BB_SMILIES', true);
 
-// If TRUE, users can post with the [img] tag
-define('ALLOW_BB_IMAGES', true);
+		   // If TRUE, users can post with the [img] tag
+		   define('ALLOW_BB_IMAGES', true);
 
-// Either "fieldset" or "blockquote"
-define('BBCODE_QUOTE_TYPE', 'fieldset');
+		   // Either "fieldset" or "blockquote"
+		   define('BBCODE_QUOTE_TYPE', 'fieldset');
 
 
-?>
+		   ?>

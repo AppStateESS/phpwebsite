@@ -70,7 +70,7 @@ define('PHPWS_ITEM_NO_RESULT',        -401);
 
 
 /*************** Module.php ***************/
-define('PHPWS_NO_MOD_FOUND',          -500);   
+define('PHPWS_NO_MOD_FOUND',          -500);
 
 /*************** Error.php ****************/
 define('PHPWS_NO_ERROR_FILE',         -600);

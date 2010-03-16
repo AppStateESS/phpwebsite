@@ -32,7 +32,7 @@ define('FORM_GENERIC_LEGEND', _('Form'));
  * If this is turned on, forms will add MAX_FILE_SIZE
  * restrictions as a hidden variable. This can prevent
  * large uploads. HOWEVER, if a file goes above the
- * max size, you will receive a system warning. So, you will 
+ * max size, you will receive a system warning. So, you will
  * need to make sure display_errors is Off.
  */
 define('FORM_USE_FILE_RESTRICTIONS', TRUE);

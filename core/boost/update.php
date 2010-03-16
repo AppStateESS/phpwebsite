@@ -496,8 +496,8 @@ function coreUpdateFiles($files, &$content)
     }
     $content[] = "     " . implode("\n     ", $files);
     $content[] = '';
-            return $good;
-    }
+    return $good;
+}
 
 
-    ?>
+?>
