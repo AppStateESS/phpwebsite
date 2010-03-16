@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 $errors[FC_FILENAME_NOT_SET]       = dgettext('filecabinet', 'Filename not set.');
 $errors[FC_DIRECTORY_NOT_SET]      = dgettext('filecabinet', 'Directory not set.');

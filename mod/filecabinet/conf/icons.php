@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 $icon_list = array('application/asx'          => 'video.png',
                    'application/futuresplash' => 'flash.png',
                    'application/msword'       => 'document.png',
