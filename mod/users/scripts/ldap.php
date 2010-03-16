@@ -1,7 +1,7 @@
 <?php
 /**
  * This script was modified from a working script. You will need
- * to play with the settings to get to operate. 
+ * to play with the settings to get to operate.
  * Check this site for LDAP binding information:
  * http://www.rlmueller.net/LDAP_Binding.htm
  * @author Tommy De Jesus
@@ -31,7 +31,7 @@ class ldap_authorization extends User_Authorization {
             return false;
         }
         $connection = ldap_connect($this->host, $this->port)
-            or die(sprintf(dgettext('users', 'Could not connect to %s'), $this->host));
+        or die(sprintf(dgettext('users', 'Could not connect to %s'), $this->host));
 
         $this->bind = @ldap_bind($connection, $this->ldap_dn, $this->bind_password);
 

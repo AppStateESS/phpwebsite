@@ -34,7 +34,7 @@ abstract class User_Authorization
     public $show_login_form = false;
 
     /**
-     * If true, users will force the user to the 
+     * If true, users will force the user to the
      * login_url until they log in
      */
     public $force_login = false;

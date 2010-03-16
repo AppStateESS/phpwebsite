@@ -28,7 +28,7 @@ class PHPWS_Group {
             }
             $this->loadMembers();
             if ($loadGroups == TRUE)
-                $this->loadGroups();
+            $this->loadGroups();
         }
     }
 
@@ -96,10 +96,10 @@ class PHPWS_Group {
     {
         if ($test == TRUE){
             if (empty($name) || preg_match('/[^\w\s]+/', $name))
-                return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, 'users', 'setName');
+            return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, 'users', 'setName');
 
             if (strlen($name) < GROUPNAME_LENGTH)
-                return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, 'users', 'setName');
+            return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, 'users', 'setName');
 
             $db = new PHPWS_DB('users_groups');
             $db->addWhere('name', $name);
@@ -107,9 +107,9 @@ class PHPWS_Group {
             $result = $db->select('one');
             if (isset($result)){
                 if(PEAR::isError($result))
-                    return $result;
+                return $result;
                 else
-                    return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users', 'setName');
+                return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users', 'setName');
             } else {
                 $this->name = $name;
                 return TRUE;
@@ -143,7 +143,7 @@ class PHPWS_Group {
     public function dropMember($member)
     {
         if (!is_array($this->_members))
-            return;
+        return;
 
         $key = array_search($member, $this->_members);
         unset($this->_members[$key]);

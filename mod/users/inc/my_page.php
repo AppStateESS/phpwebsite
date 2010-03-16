@@ -1,16 +1,16 @@
 <?php
 
-  /**
-   * My Page for users, controls changing password, display name, etc.
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * My Page for users, controls changing password, display name, etc.
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
-  // Number of days a remember me cookie will last
+// Number of days a remember me cookie will last
 if (!defined('REMEMBER_ME_LIFE')) {
     define('REMEMBER_ME_LIFE', 365);
- }
+}
 
 function my_page()
 {
@@ -26,32 +26,32 @@ function my_page()
 
     $template['TITLE'] = dgettext('users', 'Change my Settings');
     switch ($subcommand){
-    case 'updateSettings':
-        if (isset($_GET['save'])) {
-            $template['MESSAGE'] = dgettext('users', 'User settings updated.');
-        }
-
-        $content = User_Settings::userForm($user);
-        break;
-
-    case 'postUser':
-        User_Settings::setTZ();
-        User_Settings::setEditor();
-        User_Settings::rememberMe();
-        User_Settings::setCP();
-        $result = User_Action::postUser($user, FALSE);
-
-        if (is_array($result)) {
-            $content = User_Settings::userForm($user, $result);
-        } else {
-            if (PHPWS_Error::logIfError($user->save())) {
-                $content = dgettext('users', 'An error occurred while updating your user account.');
-            } else {
-                $_SESSION['User'] = $user;
-                PHPWS_Core::reroute('index.php?module=users&action=user&tab=users&save=1');
+        case 'updateSettings':
+            if (isset($_GET['save'])) {
+                $template['MESSAGE'] = dgettext('users', 'User settings updated.');
             }
-        }
-        break;
+
+            $content = User_Settings::userForm($user);
+            break;
+
+        case 'postUser':
+            User_Settings::setTZ();
+            User_Settings::setEditor();
+            User_Settings::rememberMe();
+            User_Settings::setCP();
+            $result = User_Action::postUser($user, FALSE);
+
+            if (is_array($result)) {
+                $content = User_Settings::userForm($user, $result);
+            } else {
+                if (PHPWS_Error::logIfError($user->save())) {
+                    $content = dgettext('users', 'An error occurred while updating your user account.');
+                } else {
+                    $_SESSION['User'] = $user;
+                    PHPWS_Core::reroute('index.php?module=users&action=user&tab=users&save=1');
+                }
+            }
+            break;
     }
 
     $template['CONTENT'] = $content;

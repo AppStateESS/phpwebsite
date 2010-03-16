@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 $settings = array('default_authorization' => 0,
                   'new_user_method'       => 0,
                   'user_menu'             => 'css.tpl',
@@ -11,5 +11,5 @@ $settings = array('default_authorization' => 0,
                   'forbidden_usernames'   => "admin\nroot\nwebmaster\nadministrator\neditor",
                   'local_script'          => 0,
                   'allow_new_users'       => 1
-                  );
+);
 ?>

@@ -35,7 +35,7 @@ class cosign_authorization extends User_Authorization {
 
         Current_User::loginUser($_SERVER['REMOTE_USER']);
     }
-   
+     
     public function verify()
     {
         if (empty($this->user->username) || empty($_SERVER['REMOTE_USER'])) {

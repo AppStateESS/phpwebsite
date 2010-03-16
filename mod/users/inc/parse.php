@@ -1,14 +1,14 @@
 <?php
 
-  /**
-   * @author Matthew McNaney
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney
+ * @version $Id$
+ */
 
 function new_account($item)
 {
     if (!PHPWS_User::getUserSetting('new_user_method') > 0) {
-        
+
         $msg = dgettext('users', 'New user signup is currently disabled.');
         return $msg;
     }
