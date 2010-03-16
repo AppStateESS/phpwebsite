@@ -460,7 +460,7 @@ class PHPWS_Core {
         }
 
         if (!is_file($file)) {
-            throw new PEAR_Exception(dgettext('core', 'Config file missing'));
+            return false;
         }
 
         return $file;
@@ -552,6 +552,11 @@ class PHPWS_Core {
             return;
         }
 
+        if (PHPWS_Core::isBranch()) {
+            $message = '{' . Branch::getCurrentBranch() . '} ' . $message;
+        } else {
+            $message = '{HUB} ' . $message;
+        }
 
         $log->log($message, PEAR_LOG_NOTICE);
         $log->close();
