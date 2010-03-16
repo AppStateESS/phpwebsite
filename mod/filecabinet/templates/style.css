@@ -1,201 +1,199 @@
 div#fc-folder-list {
-     overflow : auto;
-/*     min-height : 600px; */
+    overflow: auto;
+    /*     min-height : 600px; */
 }
 
 div.pin-list {
-   overflow : hidden;
+    overflow: hidden;
 }
 
 div.fc-file {
-   text-align : center;
-   float : left;
-   display : inline;
-   margin-left : 10px;
-   margin-bottom : 10px;
+    text-align: center;
+    float: left;
+    display: inline;
+    margin-left: 10px;
+    margin-bottom: 10px;
 }
 
 td.fc-file-type {
-   text-align : center;
-   font-size : .9em;
+    text-align: center;
+    font-size: .9em;
 }
 
-
 div.fc-icon {
-   text-align : center;
-   float : left;
-   display : inline;
-   margin-left : 50px;
-   margin-bottom : 50px;
-   width : 125px;
-   height : 150px;
+    text-align: center;
+    float: left;
+    display: inline;
+    margin-left: 50px;
+    margin-bottom: 50px;
+    width: 125px;
+    height: 150px;
 }
 
 #fc-folder-list div.fc-icon p {
-   margin : 0px;
-   padding : 0px;
+    margin: 0px;
+    padding: 0px;
 }
 
 div.fc-thumbnails {
-   padding : 5px;
-   width : 220px;
-   height : 200px;
-   text-align : center;
-   overflow : auto;
-   border : 1px solid #999;
+    padding: 5px;
+    width: 220px;
+    height: 200px;
+    text-align: center;
+    overflow: auto;
+    border: 1px solid #999;
 }
 
 div.fc-placeholder {
-width : 300px;
+    width: 300px;
 }
 
 div#type-select {
-   border-bottom : 1px solid black;
+    border-bottom: 1px solid black;
 }
 
 div#main-selection {
-   margin-top : 140px;
-   margin-left : 40px;
+    margin-top: 140px;
+    margin-left: 40px;
 }
 
 div#main-selection div {
-   float : left;
-   text-align : center;
+    float: left;
+    text-align: center;
 }
 
 div#main-selection span.label {
-   font-size : 1.3em;
-   font-weight : bold;
+    font-size: 1.3em;
+    font-weight: bold;
 }
 
 div#options {
-   position : absolute;
-   top : 550px;
-   background-color : white;
-   width : 780px;
-   border-top : 1px black solid;
-   padding-top : 10px;
+    position: absolute;
+    top: 550px;
+    background-color: white;
+    width: 780px;
+    border-top: 1px black solid;
+    padding-top: 10px;
 }
 
-div#folder-selection, div#selection {
-   width : 770px;
-   height : 415px;
-   overflow : auto;
+div#folder-selection,div#selection {
+    width: 770px;
+    height: 415px;
+    overflow: auto;
 }
 
-a.folder, div.item {
-   text-align : center;
-   float : left;
-   margin : 6px 5px;
+a.folder,div.item {
+    text-align: center;
+    float: left;
+    margin: 6px 5px;
 }
 
-a.folder:hover, div.item:hover {
-   text-decoration : none;
-   background-color : #eee;
+a.folder:hover,div.item:hover {
+    text-decoration: none;
+    background-color: #eee;
 }
 
 a.folder {
-   width : 100px;
-   height : 130px;
+    width: 100px;
+    height: 130px;
 }
 
-
 div.item {
-   padding-top : 5px;
-   /* Compare width to FC_THUMBNAIL_WIDTH */
-   width : 140px;
-   height : 200px;
+    padding-top: 5px;
+    /* Compare width to FC_THUMBNAIL_WIDTH */
+    width: 140px;
+    height: 200px;
 }
 
 div#current-folder {
-   font-size : 1.3em;
+    font-size: 1.3em;
 }
 
 div#selection {
-   background-repeat : no-repeat;
-   background-image : url(folder_back.png);
+    background-repeat: no-repeat;
+    background-image: url(folder_back.png);
 }
 
 p.fc-options {
-     text-align : center;
-     clear : both;
+    text-align: center;
+    clear: both;
 }
 
 span#heading {
-    font-size : 1.4em;
-    font-weight : bold;
+    font-size: 1.4em;
+    font-weight: bold;
 }
 
 .alt {
-    margin-left : 20px;
+    margin-left: 20px;
 }
 
 div#folder-title {
-    padding : 3px 0px 3px 10px;
-    background-color : #ddd;
+    padding: 3px 0px 3px 10px;
+    background-color: #ddd;
 }
 
 .highlight {
-    background-color : #80B26B;
+    background-color: #80B26B;
 }
 
 .alt-high img {
-    background-color : #80B26B;
-    border : 2px solid #80B26B;
+    background-color: #80B26B;
+    border: 2px solid #80B26B;
 }
 
 .no-use img {
-    opacity : .2;
+    opacity: .2;
 }
 
 .image-panel {
-    padding : 3px;
-    font-size : 10px;
-    text-align : left;
-    float : right;
-    border : 1px solid black;
-    position : absolute;
-    background-color : white;
-    max-width : 180px;
-    display : none;
+    padding: 3px;
+    font-size: 10px;
+    text-align: left;
+    float: right;
+    border: 1px solid black;
+    position: absolute;
+    background-color: white;
+    max-width: 180px;
+    display: none;
 }
 
 .image-panel ul {
-    margin : 0px;
-    padding : 0px;
-    padding-left : 1.5em;
+    margin: 0px;
+    padding: 0px;
+    padding-left: 1.5em;
 }
 
 p.center {
-    text-align : center;
+    text-align: center;
 }
 
 div#carousel-pick {
-    width : 140px;
-    height : 190px;
-    background-color : white;
-    display : none;
-    position : absolute;
-    border : 1px solid black;
-    float : right;
-    left : 160px;
-    top : 100px;
-    padding : 8px;
+    width: 140px;
+    height: 190px;
+    background-color: white;
+    display: none;
+    position: absolute;
+    border: 1px solid black;
+    float: right;
+    left: 160px;
+    top: 100px;
+    padding: 8px;
 }
 
 div#lightbox-pick {
-    width : 140px;
-    height : 190px;
-    background-color : white;
-    display : none;
-    position : absolute;
-    border : 1px solid black;
-    float : right;
-    left : 160px;
-    top : 100px;
-    padding : 8px;
+    width: 140px;
+    height: 190px;
+    background-color: white;
+    display: none;
+    position: absolute;
+    border: 1px solid black;
+    float: right;
+    left: 160px;
+    top: 100px;
+    padding: 8px;
 }
 
-span.item-title, span.item-info { 
-   font-size : 10px;
+span.item-title,span.item-info {
+    font-size: 10px;
 }

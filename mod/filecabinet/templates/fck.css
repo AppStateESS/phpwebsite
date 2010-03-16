@@ -1,58 +1,57 @@
-.oc { 
-   cursor : pointer;
+.oc {
+    cursor: pointer;
 }
 
-ul { 
-   margin : 0px;
-   padding : 0px;
-   padding-left : 10px;
+ul {
+    margin: 0px;
+    padding: 0px;
+    padding-left: 10px;
 }
-
 
 ul li {
-   list-style-image : none;
-   list-style-type : none;
+    list-style-image: none;
+    list-style-type: none;
 }
 
-.thumbnail { 
-   display : none;
-   position : absolute;
+.thumbnail {
+    display: none;
+    position: absolute;
 }
 
-#layout-naked p.other-size { 
-   font-size : 90%;
-   margin : 0px;
-   padding : 0px;
-   padding-left : 20px;
+#layout-naked p.other-size {
+    font-size: 90%;
+    margin: 0px;
+    padding: 0px;
+    padding-left: 20px;
 }
 
-div#type-choice { 
-   padding : 10px;
-   border-bottom : 1px solid black;
+div#type-choice {
+    padding: 10px;
+    border-bottom: 1px solid black;
 }
 
-div#folders-listing { 
-   padding : 5px 5px 20px 5px;
+div#folders-listing {
+    padding: 5px 5px 20px 5px;
 }
 
-li.selection:hover { 
-   background-color : #e3e3e3;
+li.selection:hover {
+    background-color: #e3e3e3;
 }
 
 #fck-close {
-   position : fixed;
-   left : 0px;
-   bottom : 0px;
-   text-align : center;
-   width : 100%;
-   background-color : #e3e3e3;
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    text-align: center;
+    width: 100%;
+    background-color: #e3e3e3;
 }
 
-#fck-close input { 
-   margin : 5px 0px;
+#fck-close input {
+    margin: 5px 0px;
 }
 
-ul.folders { 
-   margin : 0px;
-   padding : 0px;
+ul.folders {
+    margin: 0px;
+    padding: 0px;
 }

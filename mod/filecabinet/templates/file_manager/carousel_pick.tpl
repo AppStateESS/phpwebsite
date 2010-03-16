@@ -1,5 +1,4 @@
-<div id="carousel-pick">
-{START_FORM}
+<div id="carousel-pick">{START_FORM}
 <div><b>{DIRECTION_DESC}</b><br />
 {DIRECTION_1} {DIRECTION_1_LABEL}<br />
 {DIRECTION_2} {DIRECTION_2_LABEL}<br />
