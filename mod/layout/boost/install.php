@@ -1,71 +1,32 @@
 <?php
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 function layout_install(&$content, $branchInstall=FALSE)
 {
-    $page_title = NULL;
-    
+    // Removed response install
+    /*
     if (isset($_POST['process_layout'])) {
-        if (empty($_POST['page_title'])) {
-            $error  = dgettext('layout', 'Please enter a page title.');
-        } else {
-            $page_title = strip_tags($_POST['page_title']);
-            $default_theme = $_POST['theme'];
-        }
-
-        if (!isset($error)) {
-            $db = & new PHPWS_DB('layout_config');
-            $db->addValue('default_theme', trim($default_theme));
-            $db->addValue('page_title', $page_title);
-            $db->update();
-            $content[] = dgettext('layout', 'Layout settings updated.');
-            return TRUE;
-        } else {
-            $tpl['ERROR'] = $error;
-        }
+    if (empty($_POST['page_title'])) {
+    $error  = dgettext('layout', 'Please enter a page title.');
     } else {
-        $page_title = 'My phpWebSite';
-        $default_theme = 'default';
+    $page_title = strip_tags($_POST['page_title']);
+    $default_theme = $_POST['theme'];
     }
+    */
+    $page_title = 'My phpWebSite';
+    $default_theme = 'default';
 
-    PHPWS_Core::initCoreClass('File.php');
-    $theme_dir = PHPWS_SOURCE_DIR . 'themes/';
-    $available_themes = PHPWS_File::readDirectory($theme_dir, TRUE);
-
-    $form = & new PHPWS_Form;
-    if (isset($_REQUEST['module'])) {
-        $form->addHidden('module', $_REQUEST['module']);
-        if ($_REQUEST['module'] == 'branch') {
-            $form->addHidden('command', $_REQUEST['command']);
-            $form->addHidden('branch_id', $_REQUEST['branch_id']);
-        }
+    if (!isset($error)) {
+        $db = new PHPWS_DB('layout_config');
+        $db->addValue('default_theme', trim($default_theme));
+        $db->addValue('page_title', $page_title);
+        $db->update();
+        $content[] = dgettext('layout', 'Layout settings updated.');
+        return true;
     } else {
-        $form->addHidden('step', 3);
+        return $error;
     }
-    $form->addHidden('process_layout', 1);
-
-    if (empty($available_themes)) {
-        $content[] = dgettext('layout', 'No themes installed.');
-        $content[] = dgettext('layout', 'Expect an error theme when finished.');
-    } else {
-        $form->addSelect('theme', $available_themes);
-        $form->reindexValue('theme');
-        $form->setLabel('theme', dgettext('layout', 'Pick a theme'));
-        $form->setMatch('theme', $default_theme);
-    }
-
-    $form->addText('page_title', $page_title);
-    $form->setLabel('page_title', dgettext('layout', 'Page Title'));
-    $form->setTitle('page_title', dgettext('layout', 'Page Title: Name of your web site'));
-    $form->addSubmit(dgettext('layout', 'Done'));
-  
-    $template = $form->getTemplate();
-    $content[] = PHPWS_Template::process($template, 'layout', 'setup.tpl');
-    
-    return FALSE;
 }
-
-?>

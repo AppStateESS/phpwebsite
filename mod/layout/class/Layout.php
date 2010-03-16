@@ -195,14 +195,9 @@ class Layout {
         }
 
         $cssFile['tag'] = & $tag;
-        $templateLoc = "templates/$module/$filename";
         $moduleLoc   = sprintf('mod/%s/templates/%s', $module, $filename);
 
-        if ( (FORCE_MOD_TEMPLATES || !is_file($templateLoc)) && is_file($moduleLoc)) {
-            $cssFile['file'] = $moduleLoc;
-        } else {
-            $cssFile['file'] = $templateLoc;
-        }
+        $cssFile['file'] = $moduleLoc;
 
         Layout::addToStyleList($cssFile);
 
@@ -521,6 +516,10 @@ class Layout {
             $js = 'javascript/';
         }
 
+        if (empty($base)) {
+            $base = PHPWS_SOURCE_DIR;
+        }
+
         PHPWS_CORE::initCoreClass('File.php');
         $headfile    = $base . $js . $directory . '/head.js';
         $bodyfile    = $base . $js . $directory . '/body.js';
@@ -538,9 +537,7 @@ class Layout {
                 $data = $default;
             }
         }
-
         $data['source_http'] = PHPWS_SOURCE_HTTP;
-
         Layout::loadJavascriptFile($headfile, $directory, $data);
 
         if (is_file($bodyfile)) {
@@ -1244,7 +1241,7 @@ function javascriptMod($module, $directory, $data=null)
     if (preg_match('/\W/', $module)) {
         return false;
     }
-    $root_directory = "mod/$module/";
+    $root_directory = PHPWS_SOURCE_DIR . "mod/$module/";
     return Layout::getJavascript($directory, $data, $root_directory);
 }
 

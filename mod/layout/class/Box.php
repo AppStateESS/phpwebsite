@@ -21,12 +21,12 @@ class Layout_Box {
     public function __construct($id=NULL)
     {
         if (!isset($id))
-            return;
+        return;
 
         $this->setID($id);
         $result = $this->init();
         if (PEAR::isError($result))
-            PHPWS_Error::log($result);
+        PHPWS_Error::log($result);
     }
 
     public function init()
@@ -125,10 +125,10 @@ class Layout_Box {
     {
 
         if ($dest != 'move_box_up'     &&
-            $dest != 'move_box_down'   &&
-            $dest != 'move_box_top'    &&
-            $dest != 'move_box_bottom' &&
-            $dest != 'restore') {
+        $dest != 'move_box_down'   &&
+        $dest != 'move_box_top'    &&
+        $dest != 'move_box_bottom' &&
+        $dest != 'restore') {
 
             $themeVars = $_SESSION['Layout_Settings']->getAllowedVariables();
 
@@ -162,54 +162,54 @@ class Layout_Box {
         }
 
         switch ($dest) {
-        case 'restore':
-            $this->kill();
-            $this->reorderBoxes($this->theme, $this->theme_var);
-            Layout::resetBoxes();
-            return;
-            break;
-
-        case 'move_box_up':
-            if ($this->box_order == 1) {
-                $this->move('move_box_bottom');
+            case 'restore':
+                $this->kill();
+                $this->reorderBoxes($this->theme, $this->theme_var);
+                Layout::resetBoxes();
                 return;
-            } else {
-                $old_box = & $boxes[$this->box_order - 1];
-                $old_box->box_order++;
-                $this->box_order--;
-                if (!PHPWS_Error::logIfError($old_box->save())) {
-                    PHPWS_Error::logIfError($this->save());
+                break;
+
+            case 'move_box_up':
+                if ($this->box_order == 1) {
+                    $this->move('move_box_bottom');
+                    return;
+                } else {
+                    $old_box = & $boxes[$this->box_order - 1];
+                    $old_box->box_order++;
+                    $this->box_order--;
+                    if (!PHPWS_Error::logIfError($old_box->save())) {
+                        PHPWS_Error::logIfError($this->save());
+                    }
+                    return;
                 }
-                return;
-            }
-            break;
+                break;
 
-        case 'move_box_down':
-            if ($this->box_order == (count($boxes) + 1)) {
-                $this->move('move_box_top');
-                return;
-            } else {
-                $old_box = & $boxes[$this->box_order + 1];
-                $old_box->box_order--;
-                $this->box_order++;
-                if (!PHPWS_Error::logIfError($old_box->save())) {
-                    PHPWS_Error::logIfError($this->save());
+            case 'move_box_down':
+                if ($this->box_order == (count($boxes) + 1)) {
+                    $this->move('move_box_top');
+                    return;
+                } else {
+                    $old_box = & $boxes[$this->box_order + 1];
+                    $old_box->box_order--;
+                    $this->box_order++;
+                    if (!PHPWS_Error::logIfError($old_box->save())) {
+                        PHPWS_Error::logIfError($this->save());
+                    }
+                    return;
                 }
-                return;
-            }
-            break;
+                break;
 
-        case 'move_box_top':
-            $this->box_order = 1;
-            $this->save();
-            $count = 2;
-            break;
+            case 'move_box_top':
+                $this->box_order = 1;
+                $this->save();
+                $count = 2;
+                break;
 
-        case 'move_box_bottom':
-            $this->box_order = count($boxes) + 1;
-            $this->save();
-            $count = 1;
-            break;
+            case 'move_box_bottom':
+                $this->box_order = count($boxes) + 1;
+                $this->save();
+                $count = 1;
+                break;
         }
 
         foreach ($boxes as $box) {

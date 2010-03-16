@@ -181,7 +181,7 @@ class Layout_Settings {
             $this->current_theme = $this->default_theme;
         }
 
-        $themeInit = 'themes/' . $this->current_theme . '/theme.ini';
+        $themeInit = PHPWS_SOURCE_DIR . 'themes/' . $this->current_theme . '/theme.ini';
 
         if (is_file($themeInit)){
             $themeVars = parse_ini_file($themeInit, true);

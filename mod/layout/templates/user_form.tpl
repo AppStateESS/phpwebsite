@@ -5,5 +5,4 @@
         <td>{ALTERNATE}</td>
     </tr>
 </table>
-{SUBMIT}
-{END_FORM}
+{SUBMIT} {END_FORM}

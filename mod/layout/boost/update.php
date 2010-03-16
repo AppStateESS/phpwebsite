@@ -1,29 +1,29 @@
 <?php
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 function layout_update(&$content, $currentVersion)
 {
     switch ($currentVersion) {
 
-    case version_compare($currentVersion, '2.2.0', '<'):
-        $content[] = 'This package will not update versions under 2.2.0.';
-        return false;
+        case version_compare($currentVersion, '2.2.0', '<'):
+            $content[] = 'This package will not update versions under 2.2.0.';
+            return false;
 
-    case version_compare($currentVersion, '2.2.1', '<'):
-        $content[] = '+ Fixed improper sql call in update_220.sql file.';
+        case version_compare($currentVersion, '2.2.1', '<'):
+            $content[] = '+ Fixed improper sql call in update_220.sql file.';
 
-    case version_compare($currentVersion, '2.3.0', '<'):
-        $content[] = '<pre>';
-        if (PHPWS_Boost::updateFiles(array('conf/config.php', 'conf/error.php'), 'layout')) {
-            $content[] = 'Updated conf/config.php and conf/error.php file.';
-        } else {
-            $content[] = 'Unable to update conf/config.php and conf/error.php file.';
-        }
-        $content[] = '
+        case version_compare($currentVersion, '2.3.0', '<'):
+            $content[] = '<pre>';
+            if (PHPWS_Boost::updateFiles(array('conf/config.php', 'conf/error.php'), 'layout')) {
+                $content[] = 'Updated conf/config.php and conf/error.php file.';
+            } else {
+                $content[] = 'Unable to update conf/config.php and conf/error.php file.';
+            }
+            $content[] = '
 2.3.0 changes
 -------------
 + Removed references from object constructors.
@@ -36,16 +36,16 @@ function layout_update(&$content, $currentVersion)
 + Added missing media parameters to XML mode.
 </pre>';
 
-    case version_compare($currentVersion, '2.4.0', '<'):
-        $files = array('img/layout.png', 'templates/no_cookie.tpl');
-        $content[] = '<pre>';
-        if (PHPWS_Boost::updateFiles($files, 'layout')) {
-            $content[] = '--- Successfully updated the following files:';
-        } else {
-            $content[] = '--- Was unable to copy the following files:';
-        }
-        $content[] = '     ' . implode("\n     ", $files);
-        $content[] = '
+        case version_compare($currentVersion, '2.4.0', '<'):
+            $files = array('img/layout.png', 'templates/no_cookie.tpl');
+            $content[] = '<pre>';
+            if (PHPWS_Boost::updateFiles($files, 'layout')) {
+                $content[] = '--- Successfully updated the following files:';
+            } else {
+                $content[] = '--- Was unable to copy the following files:';
+            }
+            $content[] = '     ' . implode("\n     ", $files);
+            $content[] = '
 2.4.0 changes
 -------------
 + Layout now checks and forces a user to enable cookies on their
@@ -61,16 +61,16 @@ function layout_update(&$content, $currentVersion)
 + Changed Control Panel icon
 </pre>';
 
-    case version_compare($currentVersion, '2.4.1', '<'):
-        $files = array('conf/config.php');
-        $content[] = '<pre>';
-        if (PHPWS_Boost::updateFiles($files, 'layout')) {
-            $content[] = '--- Successfully updated the following files:';
-        } else {
-            $content[] = '--- Was unable to copy the following files:';
-        }
-        $content[] = '     ' . implode("\n     ", $files);
-        $content[] = '
+        case version_compare($currentVersion, '2.4.1', '<'):
+            $files = array('conf/config.php');
+            $content[] = '<pre>';
+            if (PHPWS_Boost::updateFiles($files, 'layout')) {
+                $content[] = '--- Successfully updated the following files:';
+            } else {
+                $content[] = '--- Was unable to copy the following files:';
+            }
+            $content[] = '     ' . implode("\n     ", $files);
+            $content[] = '
 2.4.1 changes
 -------------
 + Bug #1741111 - Fixed moving a top box up and a bottom box down.
@@ -79,35 +79,35 @@ function layout_update(&$content, $currentVersion)
   too quickly. Moved cookie check to the close.php file.
 </pre>';
 
-    case version_compare($currentVersion, '2.4.2', '<'):
-        $content[] = '<pre>';
-        $files = array('templates/arrange.tpl', 'conf/error.php', 'templates/move_box_select.tpl');
-        layoutUpdateFiles($files, $content);
+        case version_compare($currentVersion, '2.4.2', '<'):
+            $content[] = '<pre>';
+            $files = array('templates/arrange.tpl', 'conf/error.php', 'templates/move_box_select.tpl');
+            layoutUpdateFiles($files, $content);
 
-        if (!PHPWS_Boost::inBranch()) {
-            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/layout/boost/changes/2_4_2.txt');
-        }
-        $content[] = '</pre>';
+            if (!PHPWS_Boost::inBranch()) {
+                $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/layout/boost/changes/2_4_2.txt');
+            }
+            $content[] = '</pre>';
 
-    case version_compare($currentVersion, '2.4.3', '<'):
-        $content[] = '<pre>2.4.3 changes
+        case version_compare($currentVersion, '2.4.3', '<'):
+            $content[] = '<pre>2.4.3 changes
 -----------------
 + nakedDisplay now allows a choice whether to use the blank template
   or not when it wraps. Default is to not.
 + Fixed noCache.
 </pre>';
 
-    case version_compare($currentVersion, '2.4.4', '<'):
-        $content[] = '<pre>';
-        $db = new PHPWS_DB('layout_config');
-        if (PHPWS_Error::logIfError($db->dropTableColumn('userAllow'))) {
-            $content[] = '--- An error occurred when trying to drop the userAllow column from the layout_config table.';
-        } else {
-            $content[] = '--- Dropped the userAllow column from the layout_config table.';
-        }
+        case version_compare($currentVersion, '2.4.4', '<'):
+            $content[] = '<pre>';
+            $db = new PHPWS_DB('layout_config');
+            if (PHPWS_Error::logIfError($db->dropTableColumn('userAllow'))) {
+                $content[] = '--- An error occurred when trying to drop the userAllow column from the layout_config table.';
+            } else {
+                $content[] = '--- Dropped the userAllow column from the layout_config table.';
+            }
 
-        layoutUpdateFiles(array('templates/user_form.tpl'), $content);
-        $content[] = '2.4.4 changes
+            layoutUpdateFiles(array('templates/user_form.tpl'), $content);
+            $content[] = '2.4.4 changes
 -------------------
 + Dropped unused column from config table.
 + Added collapse function. Adds id="layout-collapse" to theme template
@@ -116,18 +116,18 @@ function layout_update(&$content, $currentVersion)
   error.
 + Fixed notice.</pre>';
 
-    case version_compare($currentVersion, '2.4.5', '<'):
-        $content[] = '<pre>';
-        $db = new PHPWS_DB('layout_config');
-        if (PHPWS_Error::logIfError($db->addTableColumn('deity_reload', 'smallint not null default 0'))) {
-            $content[] = 'Could not create layout_config.deity_reload column.';
-            return false;
-        } else {
-            $content[] = 'Added layout_config.deity_reload column.';
-        }
+        case version_compare($currentVersion, '2.4.5', '<'):
+            $content[] = '<pre>';
+            $db = new PHPWS_DB('layout_config');
+            if (PHPWS_Error::logIfError($db->addTableColumn('deity_reload', 'smallint not null default 0'))) {
+                $content[] = 'Could not create layout_config.deity_reload column.';
+                return false;
+            } else {
+                $content[] = 'Added layout_config.deity_reload column.';
+            }
 
-        layoutUpdateFiles(array('templates/metatags.tpl', 'conf/config.php'), $content);
-        $content[] = '2.4.5 changes
+            layoutUpdateFiles(array('templates/metatags.tpl', 'conf/config.php'), $content);
+            $content[] = '2.4.5 changes
 --------------------
 + Added option to use a Key\'s summary or title to fill in the meta
   description.
@@ -138,24 +138,24 @@ function layout_update(&$content, $currentVersion)
 + Added LAYOUT_IGNORE_JS_CHECK to force javascript use.
 + PHP 5 formatted';
 
-    case version_compare($currentVersion, '2.4.6', '<'):
-        $content[] = '<pre>2.4.6 changes
+        case version_compare($currentVersion, '2.4.6', '<'):
+            $content[] = '<pre>2.4.6 changes
 ---------------------
 + Fix to cache headers
 </pre>';
 
-  case version_compare($currentVersion, '2.4.7', '<'):
-        $content[] = '<pre>';
-        layoutUpdateFiles(array('templates/themes.tpl'), $content);
-        $content[] = '2.4.7 changes
+        case version_compare($currentVersion, '2.4.7', '<'):
+            $content[] = '<pre>';
+            layoutUpdateFiles(array('templates/themes.tpl'), $content);
+            $content[] = '2.4.7 changes
 ---------------------
 + Added option to layout theme tab to disable or order module style
   sheet inclusion.
 + Can enable box move from mini admin
 </pre>';
 
-  case version_compare($currentVersion, '2.4.8', '<'):
-        $content[] = '<pre>2.4.8 changes
+        case version_compare($currentVersion, '2.4.8', '<'):
+            $content[] = '<pre>2.4.8 changes
 ---------------------
 + Bug#2424256 - Removed browser check to use @import on style sheets.
 </pre>';

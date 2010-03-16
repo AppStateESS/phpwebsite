@@ -8,7 +8,7 @@
 
 if (Current_User::allow('layout')) {
     Layout::miniLinks();
- }
+}
 
 Layout::keyDescriptions();
 Layout::showKeyStyle();

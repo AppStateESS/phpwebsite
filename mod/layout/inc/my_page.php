@@ -1,12 +1,12 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 function my_page()
 {
-    
+
     $title = $content =  NULL;
 
     if (@$message = $_SESSION['Layout_User_Message']) {
@@ -23,23 +23,23 @@ function my_page()
     }
 
     switch ($lo_command) {
-    case 'user_form':
-        $title = dgettext('layout', 'Display settings');
-        $content = Layout_User_Settings::user_form(); 
-        break;
+        case 'user_form':
+            $title = dgettext('layout', 'Display settings');
+            $content = Layout_User_Settings::user_form();
+            break;
 
-    case 'save_settings':
-        Layout_User_Settings::save_settings();
-        $_SESSION['Reset_Layout'] = 1;
-        $_SESSION['Layout_User_Message'] = dgettext('layout', 'Settings saved');
-        PHPWS_Core::reroute('index.php?module=users&action=user&tab=layout');
-        break;
+        case 'save_settings':
+            Layout_User_Settings::save_settings();
+            $_SESSION['Reset_Layout'] = 1;
+            $_SESSION['Layout_User_Message'] = dgettext('layout', 'Settings saved');
+            PHPWS_Core::reroute('index.php?module=users&action=user&tab=layout');
+            break;
     }
 
     $tpl['TITLE']   = $title;
     $tpl['CONTENT'] = $content;
     $tpl['MESSAGE'] = $message;
-    
+
     return PHPWS_Template::process($tpl, 'layout', 'main.tpl');
 }
 

@@ -1,13 +1,13 @@
 <?php
 
-  /**
-   * This class handles the administrative functionality
-   * for layout. Changing themes, meta tags, etc. is handled
-   * here.
-   *
-   * @author Matthew McNaney <matt at tux dot appstate.edu dot>
-   * @version $Id$
-   */
+/**
+ * This class handles the administrative functionality
+ * for layout. Changing themes, meta tags, etc. is handled
+ * here.
+ *
+ * @author Matthew McNaney <matt at tux dot appstate.edu dot>
+ * @version $Id$
+ */
 
 define('DEFAULT_LAYOUT_TAB', 'boxes');
 
@@ -29,207 +29,207 @@ class Layout_Admin {
         }
 
         switch ($command){
-        case 'arrange':
-            $title = dgettext('layout', 'Arrange Layout');
-            $content[] = Layout_Admin::arrangeForm();
-            break;
+            case 'arrange':
+                $title = dgettext('layout', 'Arrange Layout');
+                $content[] = Layout_Admin::arrangeForm();
+                break;
 
-        case 'turn_off_box_move':
-            Layout::moveBoxes(false);
-            PHPWS_Core::goBack();
-            break;
+            case 'turn_off_box_move':
+                Layout::moveBoxes(false);
+                PHPWS_Core::goBack();
+                break;
 
-        case 'post_style_change':
-            $result = Layout_Admin::postStyleChange();
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-            }
-            javascript('close_refresh');
-            break;
-
-        case 'reset_boxes':
-            if (!Current_User::authorized('layout')) {
-                Current_User::disallow();
-            }
-            Layout::resetDefaultBoxes();
-            unset($_SESSION['Layout_Settings']);
-            PHPWS_Core::reroute('index.php?module=layout&action=admin&authkey=' . Current_User::getAuthKey());
-            break;
-
-        case 'move_boxes_on':
-            if (!Current_User::authorized('layout')) {
-                Current_User::disallow();
-            }
-            Layout::moveBoxes(true);
-            PHPWS_Core::goBack();
-            break;
-
-        case 'move_boxes_off':
-            if (!Current_User::authorized('layout')) {
-                Current_User::disallow();
-            }
-            Layout::moveBoxes(false);
-            PHPWS_Core::goBack();
-            break;
-
-        case 'confirmThemeChange':
-            $title = dgettext('layout', 'Themes');
-            if (isset($_POST['confirm'])) {
-                Layout_Admin::changeTheme();
-                $template['MESSAGE'] = dgettext('layout', 'Theme settings updated.');
-            } else {
-                Layout::reset();
-            }
-
-            $content[] = Layout_Admin::adminThemes();
-            break;
-
-        case 'edit_footer':
-            if (!Current_User::authorized('layout')) {
-                Current_User::disallow();
-            }
-            $result = Layout_Admin::postFooter();
-            if (PEAR::isError($result)){
-                PHPWS_Error::log($result);
-                $title = dgettext('layout', 'Error');
-                $content[] = dgettext('layout', 'There was a problem updating the settings.');
-            } else {
-                $title = dgettext('layout', 'Footer updated.');
-                $content[] = Layout_Admin::editFooter();
-            }
-            break;
-
-
-        case 'edit_header':
-            if (!Current_User::authorized('layout')) {
-                Current_User::disallow();
-            }
-            $result = Layout_Admin::postHeader();
-            if (PEAR::isError($result)){
-                $title = dgettext('layout', 'Error');
-                $content[] = dgettext('layout', 'There was a problem updating the settings.');
-            } else {
-                $title = dgettext('layout', 'Header updated.');
-                $content[] = Layout_Admin::editHeader();
-            }
-            break;
-
-
-        case 'footer':
-            $title = dgettext('layout', 'Edit Footer');
-            $content[] = Layout_Admin::editFooter();
-            break;
-
-        case 'header':
-            $title = dgettext('layout', 'Edit Header');
-            $content[] = Layout_Admin::editHeader();
-            break;
-
-        case 'meta':
-            $title = dgettext('layout', 'Edit Meta Tags');
-            $content[] = Layout_Admin::metaForm();
-            break;
-
-        case 'clear_templates':
-            if (!Current_User::authorized('layout')) {
-                Current_User::disallow();
-            }
-            $files = PHPWS_File::readDirectory('templates/cache', false, true);
-            if (!empty($files) && is_array($files)) {
-                foreach ($files as $fn) {
-                    @unlink('templates/cache/' . $fn);
+            case 'post_style_change':
+                $result = Layout_Admin::postStyleChange();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
                 }
-            }
-            PHPWS_Core::goBack();
-            break;
+                javascript('close_refresh');
+                break;
 
-        case 'clear_cache':
-            if (!Current_User::authorized('layout')) {
-                Current_User::disallow();
-            }
-            PHPWS_Cache::clearCache();
-            PHPWS_Core::goBack();
-            break;
+            case 'reset_boxes':
+                if (!Current_User::authorized('layout')) {
+                    Current_User::disallow();
+                }
+                Layout::resetDefaultBoxes();
+                unset($_SESSION['Layout_Settings']);
+                PHPWS_Core::reroute('index.php?module=layout&action=admin&authkey=' . Current_User::getAuthKey());
+                break;
 
-        case 'moveBox':
-            $result = Layout_Admin::moveBox();
-            PHPWS_Error::logIfError($result);
-            javascript('close_refresh');
-            Layout::nakedDisplay();
-            break;
+            case 'move_boxes_on':
+                if (!Current_User::authorized('layout')) {
+                    Current_User::disallow();
+                }
+                Layout::moveBoxes(true);
+                PHPWS_Core::goBack();
+                break;
 
-        case 'postMeta':
-            if (!Current_User::authorized('layout')) {
-                Current_User::disallow();
-            }
-            Layout_Admin::postMeta();
-            if (isset($_POST['key_id'])) {
+            case 'move_boxes_off':
+                if (!Current_User::authorized('layout')) {
+                    Current_User::disallow();
+                }
+                Layout::moveBoxes(false);
+                PHPWS_Core::goBack();
+                break;
+
+            case 'confirmThemeChange':
+                $title = dgettext('layout', 'Themes');
+                if (isset($_POST['confirm'])) {
+                    Layout_Admin::changeTheme();
+                    $template['MESSAGE'] = dgettext('layout', 'Theme settings updated.');
+                } else {
+                    Layout::reset();
+                }
+
+                $content[] = Layout_Admin::adminThemes();
+                break;
+
+            case 'edit_footer':
+                if (!Current_User::authorized('layout')) {
+                    Current_User::disallow();
+                }
+                $result = Layout_Admin::postFooter();
+                if (PEAR::isError($result)){
+                    PHPWS_Error::log($result);
+                    $title = dgettext('layout', 'Error');
+                    $content[] = dgettext('layout', 'There was a problem updating the settings.');
+                } else {
+                    $title = dgettext('layout', 'Footer updated.');
+                    $content[] = Layout_Admin::editFooter();
+                }
+                break;
+
+
+            case 'edit_header':
+                if (!Current_User::authorized('layout')) {
+                    Current_User::disallow();
+                }
+                $result = Layout_Admin::postHeader();
+                if (PEAR::isError($result)){
+                    $title = dgettext('layout', 'Error');
+                    $content[] = dgettext('layout', 'There was a problem updating the settings.');
+                } else {
+                    $title = dgettext('layout', 'Header updated.');
+                    $content[] = Layout_Admin::editHeader();
+                }
+                break;
+
+
+            case 'footer':
+                $title = dgettext('layout', 'Edit Footer');
+                $content[] = Layout_Admin::editFooter();
+                break;
+
+            case 'header':
+                $title = dgettext('layout', 'Edit Header');
+                $content[] = Layout_Admin::editHeader();
+                break;
+
+            case 'meta':
+                $title = dgettext('layout', 'Edit Meta Tags');
+                $content[] = Layout_Admin::metaForm();
+                break;
+
+            case 'clear_templates':
+                if (!Current_User::authorized('layout')) {
+                    Current_User::disallow();
+                }
+                $files = PHPWS_File::readDirectory('templates/cache', false, true);
+                if (!empty($files) && is_array($files)) {
+                    foreach ($files as $fn) {
+                        @unlink('templates/cache/' . $fn);
+                    }
+                }
+                PHPWS_Core::goBack();
+                break;
+
+            case 'clear_cache':
+                if (!Current_User::authorized('layout')) {
+                    Current_User::disallow();
+                }
+                PHPWS_Cache::clearCache();
+                PHPWS_Core::goBack();
+                break;
+
+            case 'moveBox':
+                $result = Layout_Admin::moveBox();
+                PHPWS_Error::logIfError($result);
                 javascript('close_refresh');
                 Layout::nakedDisplay();
-                exit();
-            }
-            Layout::reset();
-            $title = dgettext('layout', 'Edit Meta Tags');
-            $template['MESSAGE'] = dgettext('layout', 'Meta Tags updated.');
-            $content[] = Layout_Admin::metaForm();
-            break;
+                break;
 
-        case 'demo_fail':
-            unset($_SESSION['Layout_Settings']);
-            Layout::checkSettings();
-            PHPWS_Core::reroute('index.php?module=layout&amp;action=admin&amp;command=confirmThemeChange');
-            break;
+            case 'postMeta':
+                if (!Current_User::authorized('layout')) {
+                    Current_User::disallow();
+                }
+                Layout_Admin::postMeta();
+                if (isset($_POST['key_id'])) {
+                    javascript('close_refresh');
+                    Layout::nakedDisplay();
+                    exit();
+                }
+                Layout::reset();
+                $title = dgettext('layout', 'Edit Meta Tags');
+                $template['MESSAGE'] = dgettext('layout', 'Meta Tags updated.');
+                $content[] = Layout_Admin::metaForm();
+                break;
 
-        case 'demo_theme':
-            $title = dgettext('layout', 'Confirm Theme Change');
-            $content[] = dgettext('layout', 'If you are happy with the change, click the appropiate button.');
-            $content[] = dgettext('layout', 'Failure to respond in ten seconds, reverts phpWebSite to the default theme.');
-            $content[] = Layout_Admin::confirmThemeChange();
-            break;
+            case 'demo_fail':
+                unset($_SESSION['Layout_Settings']);
+                Layout::checkSettings();
+                PHPWS_Core::reroute('index.php?module=layout&amp;action=admin&amp;command=confirmThemeChange');
+                break;
 
-        case 'postTheme':
-            if (!Current_User::authorized('layout')) {
-                Current_User::disallow();
-            }
-            if ($_POST['default_theme'] != $_SESSION['Layout_Settings']->current_theme) {
-                Layout::reset($_POST['default_theme']);
-                PHPWS_Core::reroute('index.php?module=layout&action=admin&command=demo_theme&authkey=' . Current_User::getAuthKey());
-            } else {
-                PHPWS_Settings::set('layout', 'include_css_order', (int)$_POST['include_css_order']);
-                PHPWS_Settings::save('layout');
+            case 'demo_theme':
+                $title = dgettext('layout', 'Confirm Theme Change');
+                $content[] = dgettext('layout', 'If you are happy with the change, click the appropiate button.');
+                $content[] = dgettext('layout', 'Failure to respond in ten seconds, reverts phpWebSite to the default theme.');
+                $content[] = Layout_Admin::confirmThemeChange();
+                break;
 
+            case 'postTheme':
+                if (!Current_User::authorized('layout')) {
+                    Current_User::disallow();
+                }
+                if ($_POST['default_theme'] != $_SESSION['Layout_Settings']->current_theme) {
+                    Layout::reset($_POST['default_theme']);
+                    PHPWS_Core::reroute('index.php?module=layout&action=admin&command=demo_theme&authkey=' . Current_User::getAuthKey());
+                } else {
+                    PHPWS_Settings::set('layout', 'include_css_order', (int)$_POST['include_css_order']);
+                    PHPWS_Settings::save('layout');
+
+                    $title = dgettext('layout', 'Themes');
+                    $content[] = Layout_Admin::adminThemes();
+                }
+                break;
+
+            case 'theme':
                 $title = dgettext('layout', 'Themes');
                 $content[] = Layout_Admin::adminThemes();
-            }
-            break;
+                break;
 
-        case 'theme':
-            $title = dgettext('layout', 'Themes');
-            $content[] = Layout_Admin::adminThemes();
-            break;
+            case 'js_style_change':
+                $content = Layout_Admin::jsStyleChange();
+                if (empty($content)) {
+                    javascript('close_refresh');
+                }
+                Layout::nakedDisplay($content, dgettext('layout', 'Change CSS'));
+                break;
 
-        case 'js_style_change':
-            $content = Layout_Admin::jsStyleChange();
-            if (empty($content)) {
-                javascript('close_refresh');
-            }
-            Layout::nakedDisplay($content, dgettext('layout', 'Change CSS'));
-            break;
+            case 'page_meta_tags':
+                $content = Layout_Admin::pageMetaTags((int)$_REQUEST['key_id']);
+                if (empty($content)) {
+                    javascript('close_refresh');
+                }
+                Layout::nakedDisplay($content, dgettext('layout', 'Set meta tags'));
+                break;
 
-        case 'page_meta_tags':
-            $content = Layout_Admin::pageMetaTags((int)$_REQUEST['key_id']);
-            if (empty($content)) {
-                javascript('close_refresh');
-            }
-            Layout::nakedDisplay($content, dgettext('layout', 'Set meta tags'));
-            break;
-
-        case 'move_popup':
-            if (!Current_User::authorized('layout')) {
-                Current_User::disallow();
-            }
-            Layout_Admin::moveBoxMenu();
-            break;
+            case 'move_popup':
+                if (!Current_User::authorized('layout')) {
+                    Current_User::disallow();
+                }
+                Layout_Admin::moveBoxMenu();
+                break;
         }
 
         $template['TITLE']   = $title;
@@ -237,7 +237,7 @@ class Layout_Admin {
             $template['CONTENT'] = implode('<br />', $content);
         }
         if (isset($message))
-            $template['MESSAGE'] = $message;
+        $template['MESSAGE'] = $message;
 
         $final = PHPWS_Template::process($template, 'layout', 'main.tpl');
         $panel->setContent($final);
