@@ -393,9 +393,8 @@ class FC_File_Manager {
             } else {
                 $icon_name = 'document80_bw.png';
             }
-            $document_img = sprintf('<img src="%s/mod/filecabinet/img/file_manager/file_type/%s" title="%s"/>',
-            $icon_name,
-            dgettext('filecabinet', 'View document folders'));
+            $document_img = sprintf('<img src="%s/mod/filecabinet/img/file_manager/file_type/%s" title="%s" />',
+            PHPWS_SOURCE_HTTP, $icon_name, dgettext('filecabinet', 'View document folders'));
 
             if ($force_type) {
                 $tpl['DOCUMENT_ICON'] = & $document_img;
@@ -414,8 +413,7 @@ class FC_File_Manager {
                 $icon_name = 'image80_bw.png';
             }
             $image_img    = sprintf('<img src="%s/mod/filecabinet/img/file_manager/file_type/%s" title="%s"/>',
-            $icon_name,
-            dgettext('filecabinet', 'View image folders'));
+            PHPWS_SOURCE_HTTP, $icon_name, dgettext('filecabinet', 'View image folders'));
 
             if ($force_type) {
                 $tpl['IMAGE_ICON'] = & $image_img;
@@ -434,8 +432,7 @@ class FC_File_Manager {
                 $icon_name = 'media80_bw.png';
             }
             $media_img    = sprintf('<img src="%s/mod/filecabinet/img/file_manager/file_type/%s" title="%s"/>',
-            $icon_name,
-            dgettext('filecabinet', 'View media folders'));
+            PHPWS_SOURCE_HTTP, $icon_name, dgettext('filecabinet', 'View media folders'));
 
             if ($force_type) {
                 $tpl['MEDIA_ICON'] = & $media_img;

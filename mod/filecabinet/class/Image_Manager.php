@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::initModClass('filecabinet', 'Image.php');
@@ -39,39 +39,39 @@ class FC_Image_Manager {
     public function admin()
     {
         switch ($_REQUEST['iop']) {
-        case 'delete_image':
-            if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
-                Current_User::disallow();
-            }
-            $this->image->delete();
-            PHPWS_Core::goBack();
-            break;
+            case 'delete_image':
+                if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+                    Current_User::disallow();
+                }
+                $this->image->delete();
+                PHPWS_Core::goBack();
+                break;
 
-        case 'post_image_upload':
-            if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
-                Current_User::disallow();
-            }
-            $this->postImageUpload();
-            break;
+            case 'post_image_upload':
+                if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+                    Current_User::disallow();
+                }
+                $this->postImageUpload();
+                break;
 
-        case 'upload_image_form':
-            if (!$this->folder->id || !Current_User::secured('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
-                Current_User::disallow();
-            }
-            if (!empty($_GET['fw']) && !empty($_GET['fh'])) {
-                $this->edit((int)$_GET['fw'], (int)$_GET['fh']);
-            } else {
-                $this->edit();
-            }
-            break;
+            case 'upload_image_form':
+                if (!$this->folder->id || !Current_User::secured('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+                    Current_User::disallow();
+                }
+                if (!empty($_GET['fw']) && !empty($_GET['fh'])) {
+                    $this->edit((int)$_GET['fw'], (int)$_GET['fh']);
+                } else {
+                    $this->edit();
+                }
+                break;
 
-        case 'clip_image':
-            if ($this->image->id) {
-                Clipboard::copy($this->image->title, $this->image->getTag(null,false,true), true,
-                                sprintf('[filecabinet:image:%s]', $this->image->id));
-            }
-            PHPWS_Core::goBack();
-            break;
+            case 'clip_image':
+                if ($this->image->id) {
+                    Clipboard::copy($this->image->title, $this->image->getTag(null,false,true), true,
+                    sprintf('[filecabinet:image:%s]', $this->image->id));
+                }
+                PHPWS_Core::goBack();
+                break;
         }
         return $this->content;
     }
@@ -160,7 +160,7 @@ class FC_Image_Manager {
         $form->setLabel('url', dgettext('filecabinet', 'Image link url'));
 
         if ($this->folder->max_image_dimension &&
-            ($this->folder->max_image_dimension < $this->max_width) ) {
+        ($this->folder->max_image_dimension < $this->max_width) ) {
             $max_width = $this->folder->max_image_dimension;
         } else {
             $max_width = $this->max_width;
@@ -173,7 +173,7 @@ class FC_Image_Manager {
             $form->addTplTag('RESIZE', sprintf('%s x %spx', $force_width, $force_height));
         } else {
             $resizes = Cabinet::getResizes($max_width);
-            
+
             if (!empty($resizes)) {
                 $form->addSelect('resize', $resizes);
                 $form->setLabel('resize', dgettext('filecabinet', 'Resize image if over'));
@@ -189,27 +189,27 @@ class FC_Image_Manager {
 
 
         switch (1) {
-        case empty($this->image->url):
-            $form->setMatch('link', 'none');
-            $form->addTplTag('VISIBLE', 'none');
-            $form->setValue('url', 'http://');
-            break;
+            case empty($this->image->url):
+                $form->setMatch('link', 'none');
+                $form->addTplTag('VISIBLE', 'none');
+                $form->setValue('url', 'http://');
+                break;
 
-        case $this->image->url == 'parent':
-            $form->setMatch('link', 'parent');
-            $form->addTplTag('VISIBLE', 'none');
-            break;
+            case $this->image->url == 'parent':
+                $form->setMatch('link', 'parent');
+                $form->addTplTag('VISIBLE', 'none');
+                break;
 
-        case $this->image->url == 'folder':
-            $form->setMatch('link', 'folder');
-            $form->addTplTag('VISIBLE', 'none');
-            break;
+            case $this->image->url == 'folder':
+                $form->setMatch('link', 'folder');
+                $form->addTplTag('VISIBLE', 'none');
+                break;
 
-        default:
-            $form->setMatch('link', 'url');
-            $form->setValue('url', $this->image->url);
-            $form->addTplTag('VISIBLE', 'table-row');
-            break;
+            default:
+                $form->setMatch('link', 'url');
+                $form->setValue('url', $this->image->url);
+                $form->addTplTag('VISIBLE', 'table-row');
+                break;
         }
 
 
@@ -285,29 +285,29 @@ class FC_Image_Manager {
             return;
         } elseif ($result) {
             switch ($_POST['link']) {
-            case 'url':
-                if (empty($_POST['url'])) {
+                case 'url':
+                    if (empty($_POST['url'])) {
+                        $this->image->url = null;
+                    } else {
+                        $this->image->url = $_POST['url'];
+                    }
+                    $this->url = $_POST['link'];
+                    break;
+
+                case 'parent':
+                    if ($this->image->parent_id) {
+                        $this->image->url = 'parent';
+                    } else {
+                        $this->image->url = null;
+                    }
+                    break;
+
+                case 'folder':
+                    $this->image->url = 'folder';
+                    break;
+
+                default:
                     $this->image->url = null;
-                } else {
-                    $this->image->url = $_POST['url'];
-                }
-                $this->url = $_POST['link'];
-                break;
-
-            case 'parent':
-                if ($this->image->parent_id) {
-                    $this->image->url = 'parent';
-                } else {
-                    $this->image->url = null;
-                }
-                break;
-
-            case 'folder':
-                $this->image->url = 'folder';
-                break;
-
-            default:
-                $this->image->url = null;
             }
 
             if ($this->image->id) {

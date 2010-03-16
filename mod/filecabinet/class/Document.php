@@ -107,17 +107,17 @@ class PHPWS_Document extends File_Common {
 
         if ($format) {
             switch ($type) {
-            case 'small_icon':
-            case 'icon':
-                return sprintf('<a href="%s">%s</a>', $link, $this->getIconView($type));
+                case 'small_icon':
+                case 'icon':
+                    return sprintf('<a href="%s">%s</a>', $link, $this->getIconView($type));
 
-            case 'download':
-            case 'filename':
-                return sprintf('<a href="%s">%s</a>', $link, $this->file_name);
+                case 'download':
+                case 'filename':
+                    return sprintf('<a href="%s">%s</a>', $link, $this->file_name);
 
-            default:
-            case 'title':
-                return sprintf('<a href="%s">%s</a>', $link, htmlspecialchars($this->title, ENT_QUOTES));
+                default:
+                case 'title':
+                    return sprintf('<a href="%s">%s</a>', $link, htmlspecialchars($this->title, ENT_QUOTES));
             }
         } else {
             return $link;
@@ -228,7 +228,7 @@ class PHPWS_Document extends File_Common {
 
         if ($filename_len > 20) {
             $file_name = sprintf('<abbr title="%s">%s</abbr>', $this->file_name,
-                                 PHPWS_Text::shortenUrl($this->file_name, 20));
+            PHPWS_Text::shortenUrl($this->file_name, 20));
         } else {
             $file_name = & $this->file_name;
         }

@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 PHPWS_Core::initModClass('filecabinet', 'Image.php');
 PHPWS_Core::initModClass('filecabinet', 'Document.php');
@@ -22,17 +22,17 @@ class Cabinet_Form {
         if (Current_User::allow('filecabinet')) {
             if (!is_writable($folder->_base_directory)) {
                 switch ($folder->ftype) {
-                case IMAGE_FOLDER:
-                    $this->cabinet->message = dgettext('filecabinet', 'Your images directory is not writable.');
-                    break;
+                    case IMAGE_FOLDER:
+                        $this->cabinet->message = dgettext('filecabinet', 'Your images directory is not writable.');
+                        break;
 
-                case DOCUMENT_FOLDER:
-                    $this->cabinet->message = dgettext('filecabinet', 'Your documents directory is not writable.');
-                    break;
+                    case DOCUMENT_FOLDER:
+                        $this->cabinet->message = dgettext('filecabinet', 'Your documents directory is not writable.');
+                        break;
 
-                case MULTIMEDIA_FOLDER:
-                    $this->cabinet->message = dgettext('filecabinet', 'Your multimedia directory is not writable.');
-                    break;
+                    case MULTIMEDIA_FOLDER:
+                        $this->cabinet->message = dgettext('filecabinet', 'Your multimedia directory is not writable.');
+                        break;
                 }
 
             } else {
@@ -43,19 +43,19 @@ class Cabinet_Form {
         }
 
         switch ($folder->ftype) {
-        case IMAGE_FOLDER:
-            $aop = 'image';
-            $table = 'images';
-            break;
-            
-        case DOCUMENT_FOLDER:
-            $aop = 'document';
-            $table = 'documents';
-            break;
+            case IMAGE_FOLDER:
+                $aop = 'image';
+                $table = 'images';
+                break;
 
-        case MULTIMEDIA_FOLDER:
-            $table = $aop = 'multimedia';
-            break;
+            case DOCUMENT_FOLDER:
+                $aop = 'document';
+                $table = 'documents';
+                break;
+
+            case MULTIMEDIA_FOLDER:
+                $table = $aop = 'multimedia';
+                break;
         }
 
         $pagetags['ITEM_LABEL']  = dgettext('filecabinet', 'Items');
@@ -284,7 +284,7 @@ class Cabinet_Form {
             $this->cabinet->message .= dgettext('filecabinet', 'Warning: this folder\'s directory is not writable.');
             $dir_write = false;
         }
-        
+
         if ($folder->ftype == IMAGE_FOLDER) {
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $pager = new DBPager('images', 'PHPWS_Image');
@@ -466,7 +466,7 @@ class Cabinet_Form {
         }
 
         $form->addRadioAssoc('jcaro_type', array(0=>dgettext('filecabinet', 'Horizontal'),
-                                                 1=>dgettext('filecabinet', 'Vertical')));
+        1=>dgettext('filecabinet', 'Vertical')));
         $form->setMatch('jcaro_type', (int)PHPWS_Settings::get('filecabinet', 'vertical_folder'));
 
         $num = array(1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8);
@@ -510,7 +510,7 @@ If you are sure, type Y-E-S below.'),
                         'address'    => $link->getAddress(),
                         'value_name' => 'confirm',
                         'link'       => dgettext('filecabinet', 'Reindex document directories')
-                        );
+            );
             $tpl['FIX_DIRECTORIES'] = javascript('prompt', $js);
         }
 
@@ -550,7 +550,7 @@ If you are sure, type Y-E-S below.'),
 
         foreach ($files as $file) {
             if (!is_file($classify_dir . $file) || !PHPWS_File::checkMimeType($classify_dir . $file)
-                || !$this->cabinet->fileTypeAllowed($file)) {
+            || !$this->cabinet->fileTypeAllowed($file)) {
                 continue;
             }
 
@@ -582,7 +582,7 @@ If you are sure, type Y-E-S below.'),
             $form->addSubmit('submit', dgettext('filecabinet', 'Classify files'));
             $subtpl = $form->getTemplate();
             $subtpl['HIDDEN'] = sprintf('<input type="hidden" name="file_count[%s]" value="%s" />',
-                                        $count, $file);
+            $count, $file);
             $subtpl['FILE_NAME'] = $file;
             $subtpl['FILE_NAME_LABEL'] = dgettext('filecabinet', 'File name');
 

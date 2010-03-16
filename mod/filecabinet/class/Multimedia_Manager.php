@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
 
 class FC_Multimedia_Manager {
@@ -22,55 +22,55 @@ class FC_Multimedia_Manager {
     public function admin()
     {
         switch ($_REQUEST['mop']) {
-        case 'delete_multimedia':
-            if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
-                Current_User::disallow();
-            }
-            $this->multimedia->delete();
-            PHPWS_Core::goBack();
-            break;
+            case 'delete_multimedia':
+                if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+                    Current_User::disallow();
+                }
+                $this->multimedia->delete();
+                PHPWS_Core::goBack();
+                break;
 
-        case 'post_multimedia_upload':
-            if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
-                Current_User::disallow();
-            }
-            $this->postMultimediaUpload();
-            break;
+            case 'post_multimedia_upload':
+                if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+                    Current_User::disallow();
+                }
+                $this->postMultimediaUpload();
+                break;
 
-        case 'upload_multimedia_form':
-            if (!Current_User::secured('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
-                Current_User::disallow();
-            }
-            $this->edit();
-            break;
+            case 'upload_multimedia_form':
+                if (!Current_User::secured('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
+                    Current_User::disallow();
+                }
+                $this->edit();
+                break;
 
-        case 'clip_multimedia':
-            if ($this->multimedia->id) {
-                Clipboard::copy($this->multimedia->title, $this->multimedia->getTag(), true, 
-                                sprintf('[filecabinet:media:%s]', $this->multimedia->id));
-            }
-            PHPWS_Core::goBack();
-            break;
+            case 'clip_multimedia':
+                if ($this->multimedia->id) {
+                    Clipboard::copy($this->multimedia->title, $this->multimedia->getTag(), true,
+                    sprintf('[filecabinet:media:%s]', $this->multimedia->id));
+                }
+                PHPWS_Core::goBack();
+                break;
 
-        case 'edit_embed':
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
-                Current_User::disallow();
-            }
+            case 'edit_embed':
+                if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
+                    Current_User::disallow();
+                }
 
-            $this->editEmbed();
-            break;
-
-        case 'post_embed':
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
-                Current_User::disallow();
-            }
-
-            if (!$this->postEmbed()) {
                 $this->editEmbed();
-            } else {
-                javascript('close_refresh');
-            }
-            break;
+                break;
+
+            case 'post_embed':
+                if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
+                    Current_User::disallow();
+                }
+
+                if (!$this->postEmbed()) {
+                    $this->editEmbed();
+                } else {
+                    javascript('close_refresh');
+                }
+                break;
 
         }
         return $this->content;
@@ -78,14 +78,6 @@ class FC_Multimedia_Manager {
 
     public function postEmbed()
     {
-        //        require 'config/filecabinet/allow_embed.php';
-
-        /*
-         * come back to this, add to settings
-        if (!in_array($embed_type, $allowed_embeds)) {
-            return false;
-        }
-        */
         $this->multimedia->file_name      = $_POST['embed_id'];
         $this->multimedia->file_type      = $_POST['embed_type'];
         $this->multimedia->folder_id      = $_POST['folder_id'];
@@ -216,7 +208,7 @@ class FC_Multimedia_Manager {
             $ow['address'] = PHPWS_Text::linkAddress('filecabinet', array('aop' =>'change_tn',
                                                                           'type'=>'mm',
                                                                           'id'  =>$this->multimedia->id),
-                                                     true);
+            true);
             $ow['label'] = 'Change thumbnail';
             $ow['width'] = 400;
             $ow['height'] = 250;

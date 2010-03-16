@@ -117,7 +117,7 @@ class PHPWS_Multimedia extends File_Common {
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
             $clip = Icon::show('clip', dgettext('filecabinet', 'Clip media'));
             $links[] = PHPWS_Text::secureLink($clip, 'filecabinet',
-                                              array('mop'=>'clip_multimedia',
+            array('mop'=>'clip_multimedia',
                                                     'multimedia_id' => $this->id));
             $links[] = $this->editLink(true);
             $links[] = $this->deleteLink(true);
@@ -202,7 +202,7 @@ class PHPWS_Multimedia extends File_Common {
                 $values['label'] = $this->getThumbnail();
             } else {
                 $values['label'] = sprintf('<img src="%smod/filecabinet/img/viewmag+.png" title="%s" />', PHPWS_SOURCE_HTTP,
-                                           dgettext('filecabinet', 'View full image'));
+                dgettext('filecabinet', 'View full image'));
             }
         }
 
@@ -231,7 +231,7 @@ class PHPWS_Multimedia extends File_Common {
         $jsvars['window_name'] = 'edit_link';
 
         if ($icon) {
-            $jsvars['label'] =sprintf('<img src="%smod/filecabinet/img/edit.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Edit multimedia file'));
+            $jsvars['label'] = Icon::show('edit', dgettext('filecabinet', 'Edit multimedia file'));
         } else {
             $jsvars['label'] = dgettext('filecabinet', 'Edit');
         }
@@ -259,28 +259,23 @@ class PHPWS_Multimedia extends File_Common {
 
     public function getTag($embed=false)
     {
-        $strict = false;
-
         $filter = $this->getFilter();
-
         $tpl['WIDTH']  = $this->width;
         $tpl['HEIGHT'] = $this->height;
-
-        $is_video = $this->isVideo();
+        $tpl['IMAGE']  = $this->getThumbnail(null, false);
 
         $thumbnail = $this->thumbnailPath();
 
         $tpl['FILE_PATH'] = PHPWS_Core::getHomeHttp() . $this->getPath();
         $tpl['FILE_NAME'] = $this->file_name;
+        $tpl['ID'] = 'media' . $this->id;
 
         // check for filter file
         if ($this->embedded) {
-            $strict = true;
-            $filter_tpl = sprintf('%smod/filecabinet/inc/embed/%s/embed.tpl',
-                                  PHPWS_SOURCE_DIR, $filter);
+            $filter_tpl = sprintf('%smod/filecabinet/inc/embed/%s/embed.tpl', PHPWS_SOURCE_DIR, $filter);
         } else {
-            $filter_exe = "templates/filecabinet/filters/$filter/filter.php";
-            $filter_tpl = "filters/$filter.tpl";
+            $filter_exe = PHPWS_SOURCE_DIR . "mod/filecabinet/templates/filters/$filter/filter.php";
+            $filter_tpl = PHPWS_SOURCE_DIR . "mod/filecabinet/templates/filters/$filter.tpl";
             if ($embed) {
                 if ($filter == 'media') {
                     $filter_tpl = "filters/media_embed.tpl";
@@ -288,15 +283,13 @@ class PHPWS_Multimedia extends File_Common {
                     $filter_tpl = "filters/shockwave_embed.tpl";
                 }
             }
-
             if (is_file($filter_exe)) {
                 include $filter_exe;
             }
+
         }
 
-        $tpl['ID'] = 'media' . $this->id;
-
-        return PHPWS_Template::process($tpl, 'filecabinet', $filter_tpl, $strict);
+        return PHPWS_Template::process($tpl, 'filecabinet', $filter_tpl, true);
     }
 
     public function getFilter()
@@ -305,45 +298,50 @@ class PHPWS_Multimedia extends File_Common {
             return $this->file_type;
         }
         $this->getExtension();
-
         switch ($this->_ext) {
-        case 'flv':
-        case 'mp3':
-        case 'wav':
-            return 'media';
-            break;
+            case 'flv':
+                return 'flowplayer';
+                break;
 
-        case 'qt':
-        case 'mov':
-            return 'quicktime';
-            break;
+            case 'mp3':
+            case 'wav':
+                return 'media';
+                break;
 
-        case 'mpeg':
-        case 'mpe':
-        case 'mpg':
-        case 'wmv':
-        case 'avi':
-            return 'windows';
-            break;
+            case 'qt':
+            case 'mov':
+                return 'quicktime';
+                break;
 
-        case 'swf':
-            $this->width = 400;
-            $this->height = 400;
-            return 'shockwave';
-            break;
+            case 'mpeg':
+            case 'mpe':
+            case 'mpg':
+            case 'wmv':
+            case 'avi':
+                return 'windows';
+                break;
+
+            case 'swf':
+                $this->width = 400;
+                $this->height = 400;
+                return 'shockwave';
+                break;
         }
     }
 
 
-    public function getThumbnail($css_id=null)
+    public function getThumbnail($css_id=null, $force_resize=true)
     {
         if (empty($css_id)) {
             $css_id = $this->id;
         }
-
-        return sprintf('<img src="%s" title="%s" id="multimedia-thumbnail-%s" />',
-                       $this->thumbnailPath(),
-                       $this->title, $css_id);
+        if ($force_resize) {
+            $width =  'width="' . FC_THUMBNAIL_WIDTH . '"';
+        } else {
+            $width = null;
+        }
+        return sprintf('<img src="%s" title="%s" id="multimedia-thumbnail-%s"%s />',
+        $this->thumbnailPath(), $this->title, $css_id, $width);
     }
 
     public function tnFileName()
@@ -374,7 +372,7 @@ class PHPWS_Multimedia extends File_Common {
         $raw_file_name = $this->dropExtension();
 
         if (!PHPWS_Settings::get('filecabinet', 'use_ffmpeg') ||
-            $this->file_type == 'application/x-shockwave-flash') {
+        $this->file_type == 'application/x-shockwave-flash') {
             $this->genericTN($raw_file_name);
             return;
         } else {
@@ -392,7 +390,8 @@ class PHPWS_Multimedia extends File_Common {
             $jpeg = $raw_file_name . '.jpg';
             $thumb_path = $thumbnail_directory . $jpeg;
 
-            $max_size = FC_THUMBNAIL_WIDTH;
+            //$max_size = FC_THUMBNAIL_WIDTH;
+            $max_size = $this->width;
 
             if ($this->width > $this->height) {
                 $diff = $max_size / $this->width;
@@ -415,7 +414,7 @@ class PHPWS_Multimedia extends File_Common {
              */
 
             $command = sprintf('%sffmpeg -i %s -an -s %sx%s -ss 00:00:05 -r 1 -vframes 1 -y -f mjpeg %s',
-                               $ffmpeg_directory, $this->getPath(), $new_width, $new_height, $thumb_path);
+            $ffmpeg_directory, $this->getPath(), $new_width, $new_height, $thumb_path);
             @system($command);
 
             if (!is_file($thumb_path) || filesize($thumb_path) < 10) {
@@ -423,11 +422,48 @@ class PHPWS_Multimedia extends File_Common {
                 $this->genericTN($raw_file_name);
                 return false;
             } else {
+                $this->addPlayButton($thumb_path);
                 $this->thumbnail = & $jpeg;
             }
         }
         return true;
     }
+
+    /**
+     * @param unknown_type $jpeg
+     * @return unknown_type
+     */
+    private function addPlayButton($jpeg)
+    {
+        $button = PHPWS_SOURCE_DIR . 'mod/filecabinet/img/playbutton.png';
+
+        $w_offset = floor($this->width / 2) - 30;
+        $h_offset = floor($this->height / 2) - 30;
+
+        $background = imagecreatefromjpeg($jpeg);
+
+        // Find base image size
+        $swidth = imagesx($background);
+        $sheight = imagesy($background);
+
+        // Turn on alpha blending
+        imagealphablending($background, true);
+
+        // Create overlay image
+        $button = imagecreatefrompng($button);
+
+        // Get the size of overlay
+        $owidth = imagesx($button);
+        $oheight = imagesy($button);
+
+        // Overlay watermark
+        imagecopy($background, $button, $swidth - $owidth - $w_offset, $sheight - $oheight - $h_offset, 0, 0, $owidth, $oheight);
+        imagejpeg($background, $jpeg);
+        // Destroy the images
+        imagedestroy($background);
+        imagedestroy($button);
+    }
+
 
     public function makeAudioThumbnail()
     {
@@ -523,7 +559,7 @@ class PHPWS_Multimedia extends File_Common {
         $title_len = strlen($this->title);
         if ($title_len > 20) {
             $file_name = sprintf('<abbr title="%s">%s</abbr>', $this->file_name,
-                                 PHPWS_Text::shortenUrl($this->file_name, 20));
+            PHPWS_Text::shortenUrl($this->file_name, 20));
         } else {
             $file_name = & $this->file_name;
         }
@@ -533,7 +569,7 @@ class PHPWS_Multimedia extends File_Common {
 
         if ($filename_len > 20) {
             $file_name = sprintf('<abbr title="%s">%s</abbr>', $this->file_name,
-                                 PHPWS_Text::shortenUrl($this->file_name, 20));
+            PHPWS_Text::shortenUrl($this->file_name, 20));
         } else {
             $file_name = & $this->file_name;
         }

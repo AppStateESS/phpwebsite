@@ -128,28 +128,28 @@ class File_Common {
 
         if (!empty($_FILES[$var_name]['error'])) {
             switch ($_FILES[$var_name]['error']) {
-            case UPLOAD_ERR_INI_SIZE:
-                $this->_errors[] =  PHPWS_Error::get(PHPWS_FILE_SIZE, 'core', 'File_Common::getFiles');
-                break;
+                case UPLOAD_ERR_INI_SIZE:
+                    $this->_errors[] =  PHPWS_Error::get(PHPWS_FILE_SIZE, 'core', 'File_Common::getFiles');
+                    break;
 
-            case UPLOAD_ERR_FORM_SIZE:
-                $this->_errors[] = PHPWS_Error::get(FC_MAX_FORM_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
-                return false;
-                break;
-
-            case UPLOAD_ERR_NO_FILE:
-                // Missing file is not important for an update or if they specify to ignore it.
-                if ($this->id || $ignore_missing_file) {
-                    return true;
-                } else {
-                    $this->_errors[] = PHPWS_Error::get(FC_NO_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost');
+                case UPLOAD_ERR_FORM_SIZE:
+                    $this->_errors[] = PHPWS_Error::get(FC_MAX_FORM_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
                     return false;
-                }
-                break;
+                    break;
 
-            case UPLOAD_ERR_NO_TMP_DIR:
-                $this->_errors[] = PHPWS_Error::get(FC_MISSING_TMP, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
-                return false;
+                case UPLOAD_ERR_NO_FILE:
+                    // Missing file is not important for an update or if they specify to ignore it.
+                    if ($this->id || $ignore_missing_file) {
+                        return true;
+                    } else {
+                        $this->_errors[] = PHPWS_Error::get(FC_NO_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost');
+                        return false;
+                    }
+                    break;
+
+                case UPLOAD_ERR_NO_TMP_DIR:
+                    $this->_errors[] = PHPWS_Error::get(FC_MISSING_TMP, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
+                    return false;
             }
         }
 
@@ -186,7 +186,7 @@ class File_Common {
 
             if (!PHPWS_File::checkMimeType($file_vars['tmp_name'], $file_vars['ext'])) {
                 $this->_errors[] = PHPWS_Error::get(FC_FILE_TYPE_MISMATCH, 'filecabinet', 'File_Common::importPost',
-                                                    $file_vars['ext'] . ':' . PHPWS_File::getMimeType($file_vars['tmp_name']));
+                $file_vars['ext'] . ':' . PHPWS_File::getMimeType($file_vars['tmp_name']));
                 return false;
             }
 
@@ -344,8 +344,8 @@ class File_Common {
     public function loadFileSize()
     {
         if (empty($this->file_directory) ||
-            empty($this->file_name) ||
-            !is_file($this->getPath())) {
+        empty($this->file_name) ||
+        !is_file($this->getPath())) {
             return false;
         }
 
@@ -411,17 +411,17 @@ class File_Common {
         }
 
         switch ($this->_classtype) {
-        case 'image':
-            $db = new PHPWS_DB('images');
-            break;
+            case 'image':
+                $db = new PHPWS_DB('images');
+                break;
 
-        case 'document':
-            $db = new PHPWS_DB('documents');
-            break;
+            case 'document':
+                $db = new PHPWS_DB('documents');
+                break;
 
-        case 'multimedia':
-            $db = new PHPWS_DB('multimedia');
-            break;
+            case 'multimedia':
+                $db = new PHPWS_DB('multimedia');
+                break;
         }
 
         $db->addWhere('id', $this->id);
@@ -491,63 +491,63 @@ class File_Common {
             $this->folder_id      = $new_folder->id;
             $this->file_directory = $dest_dir;
             switch ($this->_classtype) {
-            case 'image':
-                // copy the thumbnail
-                if (@copy($stn, $dtn)) {
-                    if (!PHPWS_Error::logIfError($this->save(false, false, false))) {
-                        // no error occurs, unlink the source file and thumbnail
-                        unlink($source);
-                        unlink($stn);
-                        return true;
+                case 'image':
+                    // copy the thumbnail
+                    if (@copy($stn, $dtn)) {
+                        if (!PHPWS_Error::logIfError($this->save(false, false, false))) {
+                            // no error occurs, unlink the source file and thumbnail
+                            unlink($source);
+                            unlink($stn);
+                            return true;
+                        } else {
+                            // error occurred, delete the copy file
+                            unlink($dest);
+                            return false;
+                        }
                     } else {
-                        // error occurred, delete the copy file
-                        unlink($dest);
+                        // thumbnail copy failed, remove copy
+                        @unlink($dest);
                         return false;
                     }
-                } else {
-                    // thumbnail copy failed, remove copy
-                    @unlink($dest);
-                    return false;
-                }
-                break;
+                    break;
 
-            case 'document':
-                if (!PHPWS_Error::logIfError($this->save(false, false))) {
-                    // no error occurs, unlink the source file
-                    unlink($source);
-                    return true;
-                } else {
-                    // error occurred, delete the copy file
-                    unlink($dest);
-                    return false;
-                }
-                break;
-
-            case 'multimedia':
-                // copy the thumbnail
-                if (@copy($stn, $dtn)) {
+                case 'document':
                     if (!PHPWS_Error::logIfError($this->save(false, false))) {
-                        // no error occurs, unlink the source file and thumbnail
+                        // no error occurs, unlink the source file
                         unlink($source);
-                        unlink($stn);
                         return true;
                     } else {
                         // error occurred, delete the copy file
                         unlink($dest);
                         return false;
                     }
-                } else {
-                    // thumbnail copy failed, remove copy
-                    @unlink($dest);
-                    return false;
-                }
-                break;
+                    break;
+
+                case 'multimedia':
+                    // copy the thumbnail
+                    if (@copy($stn, $dtn)) {
+                        if (!PHPWS_Error::logIfError($this->save(false, false))) {
+                            // no error occurs, unlink the source file and thumbnail
+                            unlink($source);
+                            unlink($stn);
+                            return true;
+                        } else {
+                            // error occurred, delete the copy file
+                            unlink($dest);
+                            return false;
+                        }
+                    } else {
+                        // thumbnail copy failed, remove copy
+                        @unlink($dest);
+                        return false;
+                    }
+                    break;
 
             }
         }
         return true;
     }
-    
+
     public function getTitle($shorten=false)
     {
         if ($shorten && (strlen($this->title) > FILE_TITLE_CUTOFF)) {

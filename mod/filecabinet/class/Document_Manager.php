@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
@@ -24,34 +24,34 @@ class FC_Document_Manager {
     public function admin()
     {
         switch ($_REQUEST['dop']) {
-        case 'delete_document':
-            if (!$this->folder->id || !Current_User::secured('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
-                Current_User::disallow();
-            }
-            $this->document->delete();
-            PHPWS_Core::returnToBookmark();
-            break;
-        case 'post_document_upload':
-            if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
-                Current_User::disallow();
-            }
-            return $this->postDocumentUpload();
-            break;
-        case 'upload_document_form':
-            if (!$this->folder->id || !Current_User::secured('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
-                Current_User::disallow();
-            }
+            case 'delete_document':
+                if (!$this->folder->id || !Current_User::secured('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+                    Current_User::disallow();
+                }
+                $this->document->delete();
+                PHPWS_Core::returnToBookmark();
+                break;
+            case 'post_document_upload':
+                if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+                    Current_User::disallow();
+                }
+                return $this->postDocumentUpload();
+                break;
+            case 'upload_document_form':
+                if (!$this->folder->id || !Current_User::secured('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+                    Current_User::disallow();
+                }
 
-            return $this->edit();
-            break;
+                return $this->edit();
+                break;
 
-        case 'clip_document':
-            if ($this->document->id) {
-                Clipboard::copy($this->document->title, $this->document->getViewLink(true, null, true), true,
-                                sprintf('[filecabinet:doc:%s]', $this->document->id));
-            }
-            PHPWS_Core::goBack();
-            break;
+            case 'clip_document':
+                if ($this->document->id) {
+                    Clipboard::copy($this->document->title, $this->document->getViewLink(true, null, true), true,
+                    sprintf('[filecabinet:doc:%s]', $this->document->id));
+                }
+                PHPWS_Core::goBack();
+                break;
         }
 
     }

@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 class Folder {
     public $id                  = 0;
@@ -56,7 +56,7 @@ class Folder {
     {
         $vars['QUESTION'] = dgettext('filecabinet', 'Are you certain you want to delete this folder and all its contents?');
         $vars['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', array('aop'=>'delete_folder', 'folder_id'=>$this->id),
-                                                    true);
+        true);
         $label = dgettext('filecabinet', 'Delete');
         if ($mode == 'image') {
             $vars['LINK'] = Icon::show('delete');
@@ -165,22 +165,22 @@ class Folder {
 
         $link_var['folder_id'] = $this->id;
         switch ($type) {
-        case 'image':
-            $link_var['iop'] = 'upload_image_form';
-            $link_var['fw'] = $force_width;
-            $link_var['fh'] = $force_height;
-            $label = dgettext('filecabinet', 'Add image');
-            break;
+            case 'image':
+                $link_var['iop'] = 'upload_image_form';
+                $link_var['fw'] = $force_width;
+                $link_var['fh'] = $force_height;
+                $label = dgettext('filecabinet', 'Add image');
+                break;
 
-        case 'document':
-            $link_var['dop'] = 'upload_document_form';
-            $label = dgettext('filecabinet', 'Add document');
-            break;
+            case 'document':
+                $link_var['dop'] = 'upload_document_form';
+                $label = dgettext('filecabinet', 'Add document');
+                break;
 
-        case 'media':
-            $link_var['mop'] = 'upload_multimedia_form';
-            $label = dgettext('filecabinet', 'Add media');
-            break;
+            case 'media':
+                $link_var['mop'] = 'upload_multimedia_form';
+                $label = dgettext('filecabinet', 'Add media');
+                break;
         }
 
         $link = new PHPWS_Link(null, 'filecabinet', $link_var, true);
@@ -190,17 +190,17 @@ class Folder {
         $vars['title'] = & $label;
 
         switch ($mode) {
-        case 'button':
-            $vars['label']   = $label;
-            $vars['type']    = 'button';
-            break;
+            case 'button':
+                $vars['label']   = $label;
+                $vars['type']    = 'button';
+                break;
 
-        case 'icon':
-            $vars['label'] = Icon::show('add');
-            break;
+            case 'icon':
+                $vars['label'] = Icon::show('add');
+                break;
 
-        default:
-            $vars['label']   = $label;
+            default:
+                $vars['label']   = $label;
         }
 
         return javascript('open_window', $vars);
@@ -209,9 +209,9 @@ class Folder {
     public function embedLink($button=false)
     {
         $vars['address'] = PHPWS_Text::linkAddress('filecabinet',
-                                                   array('mop'      =>'edit_embed',
+        array('mop'      =>'edit_embed',
                                                          'folder_id'=>$this->id),
-                                                   true);
+        true);
         $vars['width']   = 400;
         $vars['height']  = 200;
         $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add embedded');
@@ -239,7 +239,7 @@ class Folder {
             return $link;
         } else {
             return sprintf('<a href="%s" title="%s">%s</a>', $link, dgettext('filecabinet', 'View folder'),
-                           $this->title);
+            $this->title);
         }
     }
 
@@ -586,7 +586,7 @@ class Folder {
 
         if (count($this->_files) > $count) {
             $tpl['MORE'] = sprintf('<a href="%s">%s</a>', $this->viewLink(false),
-                                   dgettext('filecabinet', 'More...'));
+            dgettext('filecabinet', 'More...'));
         }
 
 

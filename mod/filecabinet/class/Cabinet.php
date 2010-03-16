@@ -1512,7 +1512,7 @@ class Cabinet {
         //$media = new PHPWS_Multimedia($id);
         /*
         FCKEditor does not play nice with embeds objects etc.
-         */
+        */
         printf('[filecabinet:media:%s]', $id);
         /*
          echo sprintf('<img style="border : 2px solid black" class="fck-video-insert" src="%s%s" id="fckvideo-%s" title="%s" />',

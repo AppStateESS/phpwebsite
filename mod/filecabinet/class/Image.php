@@ -62,8 +62,8 @@ class PHPWS_Image extends File_Common {
     public function loadDimensions()
     {
         if (empty($this->file_directory) ||
-            empty($this->file_name) ||
-            !is_file($this->getPath())) {
+        empty($this->file_name) ||
+        !is_file($this->getPath())) {
             return false;
         }
 
@@ -155,7 +155,7 @@ class PHPWS_Image extends File_Common {
                 $values['label'] = $this->getThumbnail();
             } else {
                 $values['label'] = sprintf('<img src="%smod/filecabinet/img/viewmag+.png" title="%s" />', PHPWS_SOURCE_HTTP,
-                                           dgettext('filecabinet', 'View full image'));
+                dgettext('filecabinet', 'View full image'));
             }
         }
 
@@ -229,7 +229,7 @@ class PHPWS_Image extends File_Common {
             if($this->url == 'folder') {
                 $link =   $link = sprintf('index.php?module=filecabinet&amp;uop=view_folder&amp;folder_id=%s', $this->folder_id);
                 $image_tag =  sprintf('<a href="%s" title="%s">%s</a>', $link, dgettext('filecabinet', 'View all images in folder'),
-                                      $image_tag);
+                $image_tag);
             } else {
                 $image_tag = sprintf('<a href="%s">%s</a>', $this->url, $image_tag);
             }
@@ -265,15 +265,15 @@ class PHPWS_Image extends File_Common {
         }
 
         $image_tag = sprintf('<img src="%s" title="%s" id="image-thumbnail-%s" alt="%s" width="%s" height="%s" />',
-                             $thumbpath,
-                             htmlspecialchars($this->title, ENT_QUOTES), $css_id, $this->alt,
-                             $dimensions[0], $dimensions[1]);
+        $thumbpath,
+        htmlspecialchars($this->title, ENT_QUOTES), $css_id, $this->alt,
+        $dimensions[0], $dimensions[1]);
 
         if ($linked && !empty($this->url)) {
             if($this->url == 'folder') {
                 $link =   $link = sprintf('index.php?module=filecabinet&amp;uop=view_folder&amp;folder_id=%s', $this->folder_id);
                 $image_tag =  sprintf('<a href="%s" title="%s">%s</a>', $link, dgettext('filecabinet', 'View all images in folder'),
-                                      $image_tag);
+                $image_tag);
             } else {
                 $image_tag = sprintf('<a href="%s">%s</a>', $this->url, $image_tag);
             }
@@ -324,8 +324,8 @@ class PHPWS_Image extends File_Common {
             // testing purposes
             /*
             printf('<hr>w=%s h=%s<br>mw=%s mh=%s<br>nw=%s nh=%s<br>cw=%s ch=%s<hr>',
-                   $this->width, $this->height, $max_width, $max_height,
-                   $new_width, $new_height, $crop_width, $crop_height);
+            $this->width, $this->height, $max_width, $max_height,
+            $new_width, $new_height, $crop_width, $crop_height);
             */
 
             return PHPWS_File::cropImage($dst, $dst, $crop_width, $crop_height);
@@ -429,7 +429,7 @@ class PHPWS_Image extends File_Common {
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
             $clip = Icon::show('clip', dgettext('filecabinet', 'Clip image'));
             $links[] = PHPWS_Text::secureLink($clip, 'filecabinet',
-                                              array('iop'      => 'clip_image',
+            array('iop'      => 'clip_image',
                                                     'image_id' => $this->id));
             $links[] = $this->editLink(true);
             $links[] = $this->deleteLink(true);
@@ -451,7 +451,7 @@ class PHPWS_Image extends File_Common {
     {
         if ( ($fmanager->max_width < $this->width) || ($fmanager->max_height < $this->height) ) {
             return sprintf('<a href="#" onclick="slider(%s); return false">%s</a>',
-                           $this->id, $this->getThumbnail());
+            $this->id, $this->getThumbnail());
         } else {
             $vars = $fmanager->linkInfo(false);
             $vars['fop']       = 'pick_file';
@@ -465,7 +465,7 @@ class PHPWS_Image extends File_Common {
     public function managerTpl($fmanager)
     {
         if ($fmanager->file_assoc->file_type == FC_IMAGE &&
-            $fmanager->file_assoc->file_id == $this->id) {
+        $fmanager->file_assoc->file_id == $this->id) {
             $tpl['HIGHLIGHT'] = 'highlight';
         }
 
@@ -473,7 +473,7 @@ class PHPWS_Image extends File_Common {
         $tpl['TITLE'] = $this->getTitle(true);
 
         $tpl['INFO']  = sprintf('%s x %s - %s', $this->width, $this->height,
-                                $this->getSize(true));
+        $this->getSize(true));
 
         if (is_file($this->getPath())) {
             $tpl['ICON']  = $this->getManagerIcon($fmanager);
@@ -501,7 +501,7 @@ class PHPWS_Image extends File_Common {
         $tpl['ID'] = $this->id;
 
         $tpl['MESSAGE'] = sprintf(dgettext('filecabinet', 'This image is larger than the %sx%s limit. What do you wish to do?'),
-                                  $fmanager->max_width, $fmanager->max_height);
+        $fmanager->max_width, $fmanager->max_height);
         $vars = $fmanager->linkInfo(false);
         $vars['fop'] = 'pick_file';
         $vars['mw'] = $fmanager->max_width;
@@ -520,7 +520,7 @@ class PHPWS_Image extends File_Common {
         $choices[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Resize and crop excess'), 'filecabinet', $vars);
 
         $choices[] = sprintf('<a href="#" onclick="slider(%s); return false;">%s</a>', $this->id,
-                            dgettext('filecabinet', 'Cancel'));
+        dgettext('filecabinet', 'Cancel'));
 
         $tpl['CHOICES'] = implode('</li><li>',$choices);
         return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/resize.tpl');
@@ -563,17 +563,17 @@ class PHPWS_Image extends File_Common {
     public function _getDegrees()
     {
         switch (@$_REQUEST['rotate']) {
-        case '90cw':
-            return 270;
+            case '90cw':
+                return 270;
 
-        case '90ccw':
-            return 90;
+            case '90ccw':
+                return 90;
 
-        case '180':
-            return 180;
+            case '180':
+                return 180;
 
-        default:
-            return 0;
+            default:
+                return 0;
         }
     }
 
@@ -737,23 +737,23 @@ class PHPWS_Image extends File_Common {
     public function getExtension()
     {
         switch ($this->file_type) {
-        case 'image/jpeg':
-        case 'image/jpg':
-        case 'image/pjpeg':
-            return 'jpg';
+            case 'image/jpeg':
+            case 'image/jpg':
+            case 'image/pjpeg':
+                return 'jpg';
 
-        case 'image/png':
-        case 'image/x-png':
-            return 'png';
+            case 'image/png':
+            case 'image/x-png':
+                return 'png';
 
-        case 'image/gif':
-            return 'gif';
+            case 'image/gif':
+                return 'gif';
 
-        case 'image/wbmp':
-            return 'bmp';
+            case 'image/wbmp':
+                return 'bmp';
 
-        default:
-            return null;
+            default:
+                return null;
         }
     }
 
