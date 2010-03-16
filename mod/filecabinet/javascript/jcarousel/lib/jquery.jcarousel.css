@@ -24,8 +24,7 @@
     padding: 0;
 }
 
-.jcarousel-list li,
-.jcarousel-item {
+.jcarousel-list li,.jcarousel-item {
     float: left;
     list-style: none;
     /* We set the width/height explicitly. No width/height causes infinite loops. */

@@ -1,34 +1,37 @@
-html, body {
+html,body {
     min-height: 100%;
     height: auto !important;
     height: 100%;
 }
 
 body {
-    font: 100.01% "Trebuchet MS", Trebuchet, Tahoma, Verdana, Arial, sans-serif;
+    font: 100.01% "Trebuchet MS", Trebuchet, Tahoma, Verdana, Arial,
+        sans-serif;
     color: #333;
     padding: 0;
 }
 
 body * {
-    line-height:1.22em;
+    line-height: 1.22em;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,h2,h3,h4,h5,h6 {
     font-family: Georgia, "Times New Roman", Times, serif;
-    color:#4088b8;
+    color: #4088b8;
     clear: both;
 }
 
 h1 {
+    
 }
 
 h2 {
     color: #c8c8c8;
-		margin-top: -25px;
+    margin-top: -25px;
 }
 
 h3 {
+    
 }
 
 h4 {
@@ -41,8 +44,8 @@ p {
     clear: both;
 }
 
-ul, ol {
-    margin-left 0;
+ul,ol {margin-left 0;
+    
 }
 
 ul ul {
@@ -78,16 +81,16 @@ td {
     vertical-align: top;
 }
 
-select, input, textarea {
+select,input,textarea {
     font: 99% "Trebuchet MS", Trebuchet, Tahoma, Verdana, Arial, sans-serif;
 }
 
-pre, code, tt, dt {
+pre,code,tt,dt {
     font: 100% monospace;
     margin: 20px 0;
 }
 
-pre, blockquote {
+pre,blockquote {
     padding: 15px;
     background-color: #f0f0f0;
     margin: 20px 0;
