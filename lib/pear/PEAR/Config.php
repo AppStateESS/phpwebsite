@@ -57,7 +57,7 @@ if (getenv('PHP_PEAR_SYSCONF_DIR')) {
 } elseif (getenv('SystemRoot')) {
     define('PEAR_CONFIG_SYSCONFDIR', getenv('SystemRoot'));
 } else {
-    define('PEAR_CONFIG_SYSCONFDIR', PHP_SYSCONFDIR);
+    define('PEAR_CONFIG_SYSCONFDIR', PHP_SYSCONFDIR . '/pear');
 }
 
 // Default for master_server
