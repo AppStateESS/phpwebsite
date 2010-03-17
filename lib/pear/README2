@@ -1,4 +1,6 @@
 The PEAR library included with phpWebSite is a subset of the original. Some directories and files have been removed.
 These directories and files included documentation and test files. LICENCE files were not deleted.
 
+Some files updated to conform to strict PHP standards.
+
 If you want the full versions, see the README file included with this distribution.
