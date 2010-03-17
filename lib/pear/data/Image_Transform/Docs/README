@@ -1,0 +1,31 @@
+Quick Readme:
+@ 2002-5-16
+These classes are of alpha condition, and have not been extensively tested - 
+primarily because ImageMagick is broken on my ISP's server, NetPBM is missing 
+a few of the modules I've used here, and I haven't had time to extensively test
+the GD implementation (donations of servers, old computers etc can be sent to 
+peter@mapledesign.co.uk :-D)
+
+Please have a play with them and see if they work as you expect them to.
+
+Peter.
+
+----oOo----
+Quick rundown - more in the Examples folder:
+
+define('IMAGE_TRANSFORM_LIB_PATH', '/usr/local/ImageMagick/bin');
+require_once "Image_Transform/Image_Transform.php";
+$im = Image_Transform::factory('IM');
+$im->load('/path/to/Foobar.jpg');
+
+$im->resize('600', '480');
+// next will resize so that the largest length is 300px - height or width
+// This works on the original image, not the 600x480 one which has been lost.
+$im->scale(300);
+// Show the image...
+$im->display();
+// Again, the following scale works on the original image, not the 300px one
+$im->scale(150);
+$im->save('/path/to/NewFoobar.jpg');
+// Now free the memory - should be called free?
+$im->destroy();
