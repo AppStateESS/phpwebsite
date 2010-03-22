@@ -57,7 +57,7 @@ class Layout {
      *
      * @author Matt McNaney <matt at tux dot appstate dot edu>
      */
-    public function add($text, $module=NULL, $content_var=NULL, $default_body=FALSE)
+    public static function add($text, $module=NULL, $content_var=NULL, $default_body=FALSE)
     {
         if (!is_string($text)) {
             return;
@@ -104,7 +104,7 @@ class Layout {
         }
     }
 
-    public function _loadBox($text, $module, $contentVar)
+    public static function _loadBox($text, $module, $contentVar)
     {
         $GLOBALS['Layout'][$module][$contentVar][] = $text;
     }
@@ -144,7 +144,7 @@ class Layout {
 
     // Index is the name of the javascript header
     // prevents repeated scripts
-    public function addJSHeader($script, $index=NULL)
+    public static function addJSHeader($script, $index=NULL)
     {
         static $index_count = 0;
 
@@ -174,7 +174,7 @@ class Layout {
     /**
      * Adds a module's style sheet to the style sheet list
      */
-    public function addStyle($module, $filename=NULL)
+    public static function addStyle($module, $filename=NULL)
     {
         if (!LAYOUT_ALLOW_STYLE_LINKS) {
             return;
@@ -211,7 +211,7 @@ class Layout {
 
     }
 
-    public function addToStyleList($value)
+    public static function addToStyleList($value)
     {
         $alternate = FALSE;
         $title     = NULL;
@@ -253,7 +253,7 @@ class Layout {
     }
 
 
-    public function checkSettings()
+    public static function checkSettings()
     {
         if (!isset($_SESSION['Layout_Settings'])) {
             $_SESSION['Layout_Settings'] = new Layout_Settings;
@@ -497,7 +497,7 @@ class Layout {
      * @param string $base
      * @return unknown_type
      */
-    public function getJavascript($directory, array $data=NULL, $base=NULL)
+    public static function getJavascript($directory, array $data=NULL, $base=NULL)
     {
         // previously a choice, now mandated. Leaving this in for backwards
         // compatibility
@@ -671,12 +671,12 @@ class Layout {
         return implode("\n", $links);
     }
 
-    public function getTheme()
+    public static function getTheme()
     {
         return $_SESSION['Layout_Settings']->current_theme;
     }
 
-    public function getThemeDir()
+    public static function getThemeDir()
     {
         Layout::checkSettings();
         $themeDir = Layout::getTheme();
@@ -690,7 +690,7 @@ class Layout {
 
     // Loads a javascript file into the header of the theme
     // index is the name of javascript. prevents repeats
-    public function loadJavascriptFile($filename, $index, $data=NULL)
+    public static function loadJavascriptFile($filename, $index, $data=NULL)
     {
         if (!is_file($filename)) {
             return FALSE;
@@ -797,7 +797,7 @@ class Layout {
      * Unlike the add function, which appends a content variable's
      * data, set OVERWRITES the current values
      */
-    public function set($text, $module=null, $contentVar=null)
+    public static function set($text, $module=null, $contentVar=null)
     {
         Layout::checkSettings();
         if (!isset($contentVar)) {
@@ -1135,7 +1135,7 @@ class Layout {
     /**
      * Retrieves the layout head information
      */
-    public function getCacheHeaders($cache_key)
+    public static function getCacheHeaders($cache_key)
     {
         $cache_key = 'layout_header' . $cache_key;
 
