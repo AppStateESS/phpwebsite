@@ -61,7 +61,7 @@ function my_page()
 
 class User_Settings {
 
-    function userForm(PHPWS_User $user, $message=NULL)
+    public static function userForm(PHPWS_User $user, $message=NULL)
     {
         javascript('jquery');
         $form = new PHPWS_Form;
@@ -209,7 +209,7 @@ class User_Settings {
         return PHPWS_Template::process($template, 'users', 'my_page/user_setting.tpl');
     }
 
-    function setTZ()
+    public function setTZ()
     {
         if ($_POST['timezone'] != 'server' && preg_match('/[^0-9\-]/', $_POST['timezone'])) {
             return;
@@ -231,7 +231,7 @@ class User_Settings {
         }
     }
 
-    function setCP()
+    public function setCP()
     {
         if (isset($_POST['cp'])) {
             PHPWS_Cookie::write('user_cp', 1);
@@ -240,14 +240,14 @@ class User_Settings {
         }
     }
 
-    function setEditor()
+    public function setEditor()
     {
         if (!preg_match('/\W/', $_POST['editor'])) {
             PHPWS_Cookie::write('phpws_editor', $_POST['editor']);
         }
     }
 
-    function rememberMe()
+    public function rememberMe()
     {
         // User must authorize locally
         if ( PHPWS_Settings::get('users', 'allow_remember') && $_SESSION['User']->authorize == 1) {

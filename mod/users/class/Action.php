@@ -19,7 +19,7 @@ if (!defined('ALLOW_DEITY_FORGET')) {
 
 class User_Action {
 
-    public function adminAction()
+    public static function adminAction()
     {
         PHPWS_Core::initModClass('users', 'Group.php');
         $message = $content = null;
@@ -523,7 +523,7 @@ class User_Action {
     }
 
 
-    public function getMessage()
+    public static function getMessage()
     {
         if (!isset($_SESSION['User_Admin_Message'])) {
             return null;
@@ -657,7 +657,7 @@ class User_Action {
         }
     }
 
-    public function cpanel()
+    public static function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = PHPWS_Text::linkAddress('users', array('action'=>'admin'),false,false,true,false);
@@ -694,7 +694,7 @@ class User_Action {
      * Controller of user requests. Based on the command request variable
      * defaults to my_page
      */
-    public function userAction()
+    public static function userAction()
     {
         $auth = Current_User::getAuthorization();
         $content = $title = null;

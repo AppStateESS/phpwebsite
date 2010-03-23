@@ -452,7 +452,7 @@ class User_Form {
 		return $content;
 	}
 
-	public function userForm(PHPWS_User $user, $message=NULL)
+	public static function userForm(PHPWS_User $user, $message=NULL)
 	{
 		javascript('jquery');
 		javascriptMod('users', 'generate');
@@ -515,11 +515,6 @@ class User_Form {
 
 		$vars['action'] = 'admin';
 		$vars['user_id'] = $user->id;
-
-		/*
-		 $vars['command'] = 'editUser';
-		 $links[] = PHPWS_Text::secureLink(dgettext('users', 'Edit'), 'users', $vars);
-		 */
 
 		if ($user->id) {
 			$vars['command'] = 'setUserPermissions';
@@ -962,7 +957,7 @@ class User_Form {
 		return Captcha::get();
 	}
 
-	public function loginPage()
+	public static function loginPage()
 	{
 		if (isset($_REQUEST['phpws_username'])) {
 			$username = $_REQUEST['phpws_username'];
