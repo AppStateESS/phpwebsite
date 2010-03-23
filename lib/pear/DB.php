@@ -444,7 +444,7 @@ class DB
      *
      * @see DB_common::setOption()
      */
-    function &factory($type, $options = false)
+    public function &factory($type, $options = false)
     {
         if (!is_array($options)) {
             $options = array('persistent' => $options);
@@ -515,7 +515,7 @@ class DB
      *
      * @uses DB::parseDSN(), DB_common::setOption(), PEAR::isError()
      */
-    function &connect($dsn, $options = array())
+    public function &connect($dsn, $options = array())
     {
         $dsninfo = DB::parseDSN($dsn);
         $type = $dsninfo['phptype'];
@@ -574,7 +574,7 @@ class DB
      *
      * @return string  the DB API version number
      */
-    function apiVersion()
+    public function apiVersion()
     {
         return '1.7.13';
     }
@@ -589,7 +589,7 @@ class DB
      *
      * @return bool  whether $value is DB_Error object
      */
-    function isError($value)
+    public static function isError($value)
     {
         return is_a($value, 'DB_Error');
     }
@@ -604,7 +604,7 @@ class DB
      *
      * @return bool  whether $value is a DB_<driver> object
      */
-    function isConnection($value)
+    public function isConnection($value)
     {
         return (is_object($value) &&
                 is_subclass_of($value, 'db_common') &&
@@ -625,7 +625,7 @@ class DB
      *
      * @return boolean  whether $query is a data manipulation query
      */
-    function isManip($query)
+    public static function isManip($query)
     {
         $manips = 'INSERT|UPDATE|DELETE|REPLACE|'
                 . 'CREATE|DROP|'
@@ -649,7 +649,7 @@ class DB
      * @return string  the error message or false if the error code was
      *                  not recognized
      */
-    function errorMessage($value)
+    public function errorMessage($value)
     {
         static $errorMessages;
         if (!isset($errorMessages)) {
@@ -730,7 +730,7 @@ class DB
      *  + username: User name for login
      *  + password: Password for login
      */
-    function parseDSN($dsn)
+    public function parseDSN($dsn)
     {
         $parsed = array(
             'phptype'  => false,
@@ -859,7 +859,7 @@ class DB
      * @param boolean true to hide the password, false to include it
      * @return string
      */
-    function getDSNString($dsn, $hidePassword) {
+    public function getDSNString($dsn, $hidePassword) {
         /* Calling parseDSN will ensure that we have all the array elements
          * defined, and means that we deal with strings and array in the same
          * manner. */
@@ -958,7 +958,7 @@ class DB_Error extends PEAR_Error
      *
      * @see PEAR_Error
      */
-    function DB_Error($code = DB_ERROR, $mode = PEAR_ERROR_RETURN,
+    public function DB_Error($code = DB_ERROR, $mode = PEAR_ERROR_RETURN,
                       $level = E_USER_NOTICE, $debuginfo = null)
     {
         if (is_int($code)) {
@@ -1094,7 +1094,7 @@ class DB_result
      *
      * @return void
      */
-    function DB_result(&$dbh, $result, $options = array())
+    public function DB_result(&$dbh, $result, $options = array())
     {
         $this->autofree    = $dbh->options['autofree'];
         $this->dbh         = &$dbh;
@@ -1117,7 +1117,7 @@ class DB_result
      *
      * @return void
      */
-    function setOption($key, $value = null)
+    public function setOption($key, $value = null)
     {
         switch ($key) {
             case 'limit_from':
@@ -1158,7 +1158,7 @@ class DB_result
      *
      * @see DB_common::setOption(), DB_common::setFetchMode()
      */
-    function &fetchRow($fetchmode = DB_FETCHMODE_DEFAULT, $rownum = null)
+    public function &fetchRow($fetchmode = DB_FETCHMODE_DEFAULT, $rownum = null)
     {
         if ($fetchmode === DB_FETCHMODE_DEFAULT) {
             $fetchmode = $this->fetchmode;
@@ -1240,7 +1240,7 @@ class DB_result
      *
      * @see DB_common::setOption(), DB_common::setFetchMode()
      */
-    function fetchInto(&$arr, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum = null)
+    public function fetchInto(&$arr, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum = null)
     {
         if ($fetchmode === DB_FETCHMODE_DEFAULT) {
             $fetchmode = $this->fetchmode;
@@ -1301,7 +1301,7 @@ class DB_result
      *
      * @return int  the number of columns.  A DB_Error object on failure.
      */
-    function numCols()
+    public function numCols()
     {
         return $this->dbh->numCols($this->result);
     }
@@ -1314,7 +1314,7 @@ class DB_result
      *
      * @return int  the number of rows.  A DB_Error object on failure.
      */
-    function numRows()
+    public function numRows()
     {
         if ($this->dbh->features['numrows'] === 'emulate'
             && $this->dbh->options['portability'] & DB_PORTABILITY_NUMROWS)
@@ -1337,7 +1337,7 @@ class DB_result
         }
 
         /* fbsql is checked for here because limit queries are implemented
-         * using a TOP() function, which results in fbsql_num_rows still
+         * using a TOP() public function, which results in fbsql_num_rows still
          * returning the total number of rows that would have been returned,
          * rather than the real number. As a result, we'll just do the limit
          * calculations for fbsql in the same way as a database with emulated
@@ -1368,7 +1368,7 @@ class DB_result
      *
      * @return bool  true if a new result is available or false if not
      */
-    function nextResult()
+    public function nextResult()
     {
         return $this->dbh->nextResult($this->result);
     }
@@ -1381,7 +1381,7 @@ class DB_result
      *
      * @return bool  true on success.  A DB_Error object on failure.
      */
-    function free()
+    public function free()
     {
         $err = $this->dbh->freeResult($this->result);
         if (DB::isError($err)) {
@@ -1399,7 +1399,7 @@ class DB_result
      * @see DB_common::tableInfo()
      * @deprecated Method deprecated some time before Release 1.2
      */
-    function tableInfo($mode = null)
+    public function tableInfo($mode = null)
     {
         if (is_string($mode)) {
             return $this->dbh->raiseError(DB_ERROR_NEED_MORE_DATA);
@@ -1417,7 +1417,7 @@ class DB_result
      *
      * @since Method available since Release 1.7.0
      */
-    function getQuery()
+    public function getQuery()
     {
         return $this->query;
     }
@@ -1430,7 +1430,7 @@ class DB_result
      *
      * @return integer  the current row being looked at.  Starts at 1.
      */
-    function getRowCounter()
+    public function getRowCounter()
     {
         return $this->row_counter;
     }
@@ -1467,7 +1467,7 @@ class DB_row
      *
      * @return void
      */
-    function DB_row(&$arr)
+    public function DB_row(&$arr)
     {
         foreach ($arr as $key => $value) {
             $this->$key = &$arr[$key];

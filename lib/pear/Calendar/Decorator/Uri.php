@@ -112,7 +112,7 @@ class Calendar_Decorator_Uri extends Calendar_Decorator
      */
     function setFragments($y, $m = null, $d = null, $h = null, $i = null, $s = null)
     {
-        $this->Uri = & new Calendar_Util_Uri($y, $m, $d, $h, $i, $s);
+        $this->Uri = new Calendar_Util_Uri($y, $m, $d, $h, $i, $s);
     }
 
     /**

@@ -457,7 +457,7 @@ class Calendar
     {
         if (!isset($this->validator)) {
             include_once CALENDAR_ROOT.'Validator.php';
-            $this->validator = & new Calendar_Validator($this);
+            $this->validator = new Calendar_Validator($this);
         }
         return $this->validator;
     }

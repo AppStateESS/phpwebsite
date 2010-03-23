@@ -252,7 +252,7 @@ class Image_Transform
                 );
             }
         }
-        $obj =& new $classname();
+        $obj = new $classname();
 
         // Check startup error
         if ($error =& $obj->isError()) {
