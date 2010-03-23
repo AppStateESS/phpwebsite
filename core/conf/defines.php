@@ -64,7 +64,13 @@ define('CORE_COOKIE_TIMEOUT', 2592000);
 //define('SERVER_TIME_ZONE', -4);
 //define('SERVER_USE_DST', 1);
 
+/**
+ * PHP 5.1 requires a time zone to be set before you can use the
+ * date function. The full list is here:
+ * http://us3.php.net/manual/en/timezones.php
+ */
 
+define('DATE_SET_SERVER_TIME_ZONE', 'America/New_York');
 
 /********************** Logging Settings **********************/
 
