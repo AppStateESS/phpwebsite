@@ -1,4 +1,4 @@
-f<?php
+<?php
 /**
  * Controls the text parsing and profanity controls for phpWebSite
  * Also contains extra HTML utilities
