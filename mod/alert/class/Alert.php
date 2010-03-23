@@ -98,12 +98,12 @@ class Alert {
             switch ((int)$type->post_type) {
                 case APST_DAILY:
                     $alert_type = 'daily_alerts';
-                    $db->addWhere('create_date', mktime() - 86400, '>');
+                    $db->addWhere('create_date', time() - 86400, '>');
                     break;
 
                 case APST_WEEKLY:
                     $alert_type = 'weekly_alerts';
-                    $db->addWhere('create_date', mktime() - (86400 * 7), '>');
+                    $db->addWhere('create_date', time() - (86400 * 7), '>');
                     break;
 
                 case APST_PERM:
@@ -893,7 +893,7 @@ class Alert {
         $channel->module = 'alert';
         $channel->title = $this->type->title;
         $channel->description = '';
-        $channel->pub_date = mktime();
+        $channel->pub_date = time();
         header('Content-type: text/xml');
         echo $channel->view();
         exit();

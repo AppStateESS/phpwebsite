@@ -267,7 +267,7 @@ class Podcaster_Episode {
         $db = new PHPWS_DB('podcaster_episode');
 
         if (empty($this->id)) {
-            $this->date_created = mktime();
+            $this->date_created = time();
             if (Current_User::isLogged()) {
                 $this->create_user_id = Current_User::getId();
                 $this->created_user   = Current_User::getDisplayName();
@@ -293,7 +293,7 @@ class Podcaster_Episode {
             $this->updated_user   = dgettext('podcaster', 'Anonymous');
         }
 
-        $this->date_updated = mktime();
+        $this->date_updated = time();
 
         $result = $db->saveObject($this);
         if (PEAR::isError($result)) {

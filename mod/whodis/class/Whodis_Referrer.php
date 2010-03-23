@@ -44,10 +44,10 @@ class Whodis_Referrer {
             $this->created = $created;
         } else {
             $this->visits = 1;
-            $this->created = mktime();
+            $this->created = time();
         }
 
-        $this->updated = mktime();
+        $this->updated = time();
         return $db->saveObject($this);
     }
 

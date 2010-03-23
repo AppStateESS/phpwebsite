@@ -1,12 +1,12 @@
 <?php
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
-  // The default maximum amount of feeds to show regardless
-  // of age
+// The default maximum amount of feeds to show regardless
+// of age
 define('RSS_SERVE_LIMIT', 10);
 
 // the default maximum age in days a feed should be released

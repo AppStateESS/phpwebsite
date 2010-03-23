@@ -33,7 +33,7 @@ class Checkin_Visitor {
     {
         $db = new PHPWS_DB('checkin_visitor');
         if (empty($this->arrival_time)) {
-            $this->arrival_time = mktime();
+            $this->arrival_time = time();
         }
         return $db->saveObject($this);
     }

@@ -152,7 +152,7 @@ elseif (!empty($_REQUEST['op'])) {
             if (!empty($_SESSION['phpwsbb_last_on'])) {
                 $since = $_SESSION['phpwsbb_last_on'];
             } else {
-                $since = mktime();
+                $since = time();
             }
 
             $title = sprintf(dgettext('phpwsbb', 'New Posts Since My Last Visit (%s)'), PHPWSBB_Data::get_long_date($since));

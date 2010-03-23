@@ -453,7 +453,7 @@ class Podcaster_Channel {
         $db = new PHPWS_DB('podcaster_channel');
 
         if (empty($this->id)) {
-            $this->date_created = mktime();
+            $this->date_created = time();
             if (Current_User::isLogged()) {
                 $this->create_user_id = Current_User::getId();
                 $this->created_user   = Current_User::getDisplayName();
@@ -471,7 +471,7 @@ class Podcaster_Channel {
             $this->updated_user   = dgettext('podcaster', 'Anonymous');
         }
 
-        $this->date_updated = mktime();
+        $this->date_updated = time();
 
         $result = $db->saveObject($this);
         if (PEAR::isError($result)) {
@@ -603,7 +603,7 @@ class Podcaster_Channel {
         $template['COPYRIGHT']           = PHPWS_Settings::get('podcaster', 'copyright');
         $template['WEBMASTER']           = PHPWS_Settings::get('podcaster', 'webmaster') . '(' . dgettext('podcaster', 'Webmaster') . ')';
         $template['MANAGING_EDITOR']     = PHPWS_Settings::get('podcaster', 'editor') . '(' . dgettext('podcaster', 'Managing Editor') . ')';
-        $template['LAST_BUILD_DATE']     = gmstrftime('%a, %d %b %Y %R GMT', mktime());
+        $template['LAST_BUILD_DATE']     = gmstrftime('%a, %d %b %Y %R GMT', time());
         $template['ITUNES_EXPLICIT']     = $this->getItunes_explicit(true);
         $template['ITUNES_CATEGORY']     = $this->getItunes_category(true);
 

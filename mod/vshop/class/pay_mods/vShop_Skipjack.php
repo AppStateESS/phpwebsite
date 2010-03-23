@@ -120,7 +120,7 @@ class vShop_Skipjack {
         $order->country,
         $order->phone,
         $order->email,
-        $this->_orderID . mktime(),
+        $this->_orderID . time(),
         $_POST['ccnum'],
         $_POST['ccem'],
         $_POST['ccey'],

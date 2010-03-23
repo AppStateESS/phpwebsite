@@ -214,7 +214,7 @@ class Note_Item {
             return false;
         }
 
-        $this->date_sent = mktime();
+        $this->date_sent = time();
 
         $db = new PHPWS_DB('notes');
         return $db->saveObject($this);

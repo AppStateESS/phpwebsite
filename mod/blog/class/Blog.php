@@ -43,7 +43,7 @@ class Blog {
 
     public function __construct($id=null)
     {
-        $this->update_date = mktime();
+        $this->update_date = time();
 
         if (empty($id)) {
             $this->allow_comments = PHPWS_Settings::get('blog', 'allow_comments');
@@ -180,7 +180,7 @@ class Blog {
         if ($this->publish_date) {
             return strftime($type, $this->publish_date);
         } else {
-            return strftime($type, mktime());
+            return strftime($type, time());
         }
     }
 
@@ -220,7 +220,7 @@ class Blog {
         PHPWS_Core::initModClass('version', 'Version.php');
         $db = new PHPWS_DB('blog_entries');
         if (empty($this->id)) {
-            $this->create_date = mktime();
+            $this->create_date = time();
 
             if (!$this->publish_date) {
                 $this->publish_date = $this->create_date;
@@ -243,7 +243,7 @@ class Blog {
             $this->updater    = dgettext('blog', 'Anonymous');
         }
 
-        $this->update_date = mktime();
+        $this->update_date = time();
 
         $version = new Version('blog_entries');
 
@@ -373,9 +373,9 @@ class Blog {
         $template['TITLE'] = sprintf('<a href="%s" rel="bookmark">%s</a>',
         $this->getViewLink(true), $this->title);
 
-        if ($this->publish_date > mktime()) {
+        if ($this->publish_date > time()) {
             $template['UNPUBLISHED'] = dgettext('blog', 'Unpublished');
-        } elseif ($this->expire_date && $this->expire_date < mktime()) {
+        } elseif ($this->expire_date && $this->expire_date < time()) {
             $template['UNPUBLISHED'] = dgettext('blog', 'Expired');
         }
 
@@ -596,7 +596,7 @@ class Blog {
         }
 
         if (empty($_POST['publish_date'])) {
-            $this->publish_date = mktime();
+            $this->publish_date = time();
         } else {
             $this->publish_date = strtotime($_POST['publish_date']);
         }

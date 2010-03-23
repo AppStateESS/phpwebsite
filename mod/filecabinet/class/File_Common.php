@@ -284,7 +284,7 @@ class File_Common {
         }
 
         if (!$this->id && is_file($this->getPath())) {
-            $this->file_name = mktime() . $this->file_name;
+            $this->file_name = time() . $this->file_name;
             PHPWS_Error::log(FC_DUPLICATE_FILE, 'filecabinet', 'File_Common::write', $this->getPath());
         }
 

@@ -323,7 +323,7 @@ class Skeleton {
         }
 
         if (empty($_POST['died'])) {
-            $this->skeleton->died = mktime();
+            $this->skeleton->died = time();
         } else {
             $this->skeleton->died = strtotime($_POST['died']);
         }

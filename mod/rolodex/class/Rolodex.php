@@ -483,7 +483,7 @@ class Rolodex {
                     $this->loadMember();
                     if ($this->member->isMemberVisible()) {
                         if (PHPWS_Settings::get('rolodex', 'enable_expiry')) {
-                            if ($this->member->date_expires <= mktime()) {
+                            if ($this->member->date_expires <= time()) {
                                 $this->forwardMessage(dgettext('rolodex', 'Sorry, this membership has expired.'));
                                 if (!Current_User::isUnrestricted('rolodex'))
                                 PHPWS_Core::reroute('index.php?module=rolodex&uop=list');
@@ -730,7 +730,7 @@ class Rolodex {
             $tags['approvals'] = array('title'=>sprintf(dgettext('rolodex', 'Unapproved (%s)'), $unapproved), 'link'=>$link);
             if (PHPWS_Settings::get('rolodex', 'enable_expiry')) {
                 $db = new PHPWS_DB('rolodex_member');
-                $db->addWhere('date_expires', mktime(), '<=');
+                $db->addWhere('date_expires', time(), '<=');
                 $expired = $db->count();
                 $tags['expired'] = array('title'=>sprintf(dgettext('rolodex', 'Expired (%s)'), $expired), 'link'=>$link);
             }
@@ -1198,7 +1198,7 @@ class Rolodex {
             $image->setMaxWidth(PHPWS_Settings::get('rolodex', 'max_img_width'));
             $image->setMaxHeight(PHPWS_Settings::get('rolodex', 'max_img_height'));
 
-            $prefix = sprintf('%s_%s_', $this->member->user_id, mktime());
+            $prefix = sprintf('%s_%s_', $this->member->user_id, time());
             if (!$image->importPost('image', false, true, $prefix)) {
                 if (isset($image->_errors)) {
                     foreach ($image->_errors as $oError) {
@@ -1418,7 +1418,7 @@ class Rolodex {
     {
         PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
         $db = new PHPWS_DB('rolodex_member');
-        $db->addWhere('date_expires', mktime(), '<=');
+        $db->addWhere('date_expires', time(), '<=');
         $expired = $db->getObjects('Rolodex_Member');
         $num = count($expired);
         if ($expired) {
@@ -1526,9 +1526,9 @@ class Rolodex {
 
         if (PHPWS_Settings::get('rolodex', 'enable_expiry')) {
             if ($expired) {
-                $db->addWhere('date_expires', mktime(), '<=');
+                $db->addWhere('date_expires', time(), '<=');
             } else {
-                $db->addWhere('date_expires', mktime(), '>=');
+                $db->addWhere('date_expires', time(), '>=');
             }
         }
 

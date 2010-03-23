@@ -180,7 +180,7 @@ class Profile {
 
     public function setSubmitDate()
     {
-        $this->submit_date = mktime();
+        $this->submit_date = time();
     }
 
     public function getFullstory($formatted=TRUE)

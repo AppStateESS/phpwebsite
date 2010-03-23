@@ -10,7 +10,7 @@
 PHPWS_Core::requireConfig('search');
 class Search_User {
 
-    function main()
+    public function main()
     {
         if (!isset($_GET['user'])) {
             PHPWS_Core::errorPage('404');
@@ -29,7 +29,7 @@ class Search_User {
         }
     }
 
-    function searchBox()
+    public static function searchBox()
     {
         if (SEARCH_DEFAULT) {
             $onclick = sprintf('onclick="if(this.value == \'%s\')this.value = \'\';"',
@@ -72,7 +72,7 @@ class Search_User {
         Layout::add($content, 'search', 'search_box');
     }
 
-    function getModList()
+    public static function getModList()
     {
         $db = new PHPWS_DB('search');
         $db->addColumn('module', null, null, false, true);
@@ -95,7 +95,7 @@ class Search_User {
         return $mod_list;
     }
 
-    function sendToAlternate($alternate, $search_phrase)
+    public function sendToAlternate($alternate, $search_phrase)
     {
         $file = PHPWS_Core::getConfigFile('search', 'alternate.php');
         if (!$file) {
@@ -122,7 +122,7 @@ class Search_User {
         exit();
     }
 
-    function searchPost()
+    public function searchPost()
     {
         $search_phrase = @$_GET['search'];
         $search_phrase = str_replace('+', ' ', $search_phrase);
@@ -189,7 +189,7 @@ class Search_User {
         Layout::add($content);
     }
 
-    function addAlternates(PHPWS_Form $form)
+    public function addAlternates(PHPWS_Form $form)
     {
         $file = PHPWS_Core::getConfigFile('search', 'alternate.php');
         if ($file) {
@@ -208,7 +208,7 @@ class Search_User {
         }
     }
 
-    function getIgnore()
+    public function getIgnore()
     {
         $db = new PHPWS_DB('search_stats');
         $db->addWhere('ignored', 1);
@@ -216,7 +216,7 @@ class Search_User {
         return $db->select('col');
     }
 
-    function getResults($phrase, $module=NULL, $exact_match=FALSE)
+    public function getResults($phrase, $module=NULL, $exact_match=FALSE)
     {
         PHPWS_Core::initModClass('search', 'Stats.php');
 

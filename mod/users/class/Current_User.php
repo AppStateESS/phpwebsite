@@ -20,7 +20,7 @@ final class Current_User {
     /**
      * Initializes the User session
      */
-    public function init($id=0)
+    public static function init($id=0)
     {
         if ($id) {
             $_SESSION['User'] = new PHPWS_User($id);
@@ -32,7 +32,7 @@ final class Current_User {
         }
     }
 
-    public function getUserObj()
+    public static function getUserObj()
     {
         return $_SESSION['User'];
     }
@@ -48,7 +48,7 @@ final class Current_User {
      *                                     priviledges for that module regardless of
      *                                     module, subpermission, or item id
      */
-    public function allow($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
+    public static function allow($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
     {
         if ($unrestricted_only && Current_User::isRestricted($module)) {
             return false;
@@ -65,7 +65,7 @@ final class Current_User {
      * Works like authorized, but checks for a salted authkey
      * Won't work on posts yet.
      */
-    public function secured($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
+    public static function secured($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
     {
         if ($unrestricted_only && Current_User::isRestricted($module)) {
             return false;
@@ -80,7 +80,7 @@ final class Current_User {
 
 
     /**
-     * Works the same as the allow function but confirms the user's authorization code
+     * Works the same as the allow static function but confirms the user's authorization code
      *
      * @param  string   module             Name of the module checking
      * @param  string   subpermission      Name of the module permission to verify
@@ -90,7 +90,7 @@ final class Current_User {
      *                                     priviledges for that module regardless of
      *                                     module, subpermission, or item id
      */
-    public function authorized($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
+    public static function authorized($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
     {
         if ($unrestricted_only && Current_User::isRestricted($module)) {
             return false;
@@ -103,7 +103,7 @@ final class Current_User {
         return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, true);
     }
 
-    public function allowedItem($module, $item_id, $itemname=null)
+    public static function allowedItem($module, $item_id, $itemname=null)
     {
         return $_SESSION['User']->allowedItem($module, $item_id, $itemname);
     }
@@ -111,7 +111,7 @@ final class Current_User {
     /**
      * Verifies the user is a deity and their authorization code is permitted
      */
-    public function deityAllow()
+    public static function deityAllow()
     {
         return $_SESSION['User']->deityAllow();
     }
@@ -122,7 +122,7 @@ final class Current_User {
      * @param string  message  Message sent to log
      * @param boolean login    If true, then allow change to login
      */
-    public function disallow($message=null, $login=true)
+    public static function disallow($message=null, $login=true)
     {
         if ($login && Current_User::requireLogin()) {
             return;
@@ -131,7 +131,7 @@ final class Current_User {
         }
     }
 
-    public function getLogin()
+    public static function getLogin()
     {
         $user = $_SESSION['User'];
         $auth = Current_User::getAuthorization();
@@ -160,17 +160,17 @@ final class Current_User {
     /**
      * returns true is currently logged user is a deity
      */
-    public function isDeity()
+    public static function isDeity()
     {
         return $_SESSION['User']->isDeity();
     }
 
-    public function getId()
+    public static function getId()
     {
         return $_SESSION['User']->getId();
     }
 
-    public function getAuthKey($salt_value=null)
+    public static function getAuthKey($salt_value=null)
     {
         if (!isset($_SESSION['User'])) {
             return null;
@@ -179,12 +179,12 @@ final class Current_User {
         return $_SESSION['User']->getAuthKey($salt_value);
     }
 
-    public function verifyAuthKey($check_salted=false)
+    public static function verifyAuthKey($check_salted=false)
     {
         return $_SESSION['User']->verifyAuthKey($check_salted);
     }
 
-    public function verifySaltedUrl()
+    public static function verifySaltedUrl()
     {
         $val = PHPWS_Text::getGetValues();
         unset($val['module']);
@@ -196,7 +196,7 @@ final class Current_User {
     }
 
 
-    public function getUnrestrictedLevels()
+    public static function getUnrestrictedLevels()
     {
         return $_SESSION['User']->getUnrestrictedLevels();
     }
@@ -207,7 +207,7 @@ final class Current_User {
      * permission. User permission must be checked separately.
      * You may want to use !isUnrestricted instead.
      */
-    public function isRestricted($module)
+    public static function isRestricted($module)
     {
         if (Current_User::isDeity()) {
             return false;
@@ -223,7 +223,7 @@ final class Current_User {
      * @param integer id
      * @return True, if current user's id equals the parameter
      */
-    public function isUser($id)
+    public static function isUser($id)
     {
         if (!$id) {
             return false;
@@ -235,7 +235,7 @@ final class Current_User {
      * Returns true is the user has unrestricted access to a module.
      * Unlike isRestricted, user must be logged in and have module access
      */
-    public function isUnrestricted($module)
+    public static function isUnrestricted($module)
     {
         if (Current_User::isDeity()) {
             return true;
@@ -253,30 +253,30 @@ final class Current_User {
         return $level == UNRESTRICTED_PERMISSION ? true : false;
     }
 
-    public function updateLastLogged()
+    public static function updateLastLogged()
     {
         $db = new PHPWS_DB('users');
         $db->addWhere('id', $_SESSION['User']->getId());
-        $db->addValue('last_logged', mktime());
+        $db->addValue('last_logged', time());
         return $db->update();
     }
 
-    public function getUsername()
+    public static function getUsername()
     {
         return $_SESSION['User']->getUsername();
     }
 
-    public function getDisplayName()
+    public static function getDisplayName()
     {
         return $_SESSION['User']->getDisplayName();
     }
 
-    public function getEmail($html=false,$showAddress=false)
+    public static function getEmail($html=false,$showAddress=false)
     {
         return $_SESSION['User']->getEmail($html,$showAddress);
     }
 
-    public function isLogged()
+    public static function isLogged()
     {
         if (!isset($_SESSION['User'])) {
             $_SESSION['User'] = new PHPWS_User;
@@ -285,12 +285,12 @@ final class Current_User {
         return $_SESSION['User']->isLogged();
     }
 
-    public function save()
+    public static function save()
     {
         return $_SESSION['User']->save();
     }
 
-    public function getPermissionLevel($module)
+    public static function getPermissionLevel($module)
     {
         if ($_SESSION['User']->isDeity())
         return UNRESTRICTED_PERMISSION;
@@ -298,22 +298,22 @@ final class Current_User {
         return $_SESSION['User']->_permission->getPermissionLevel($module);
     }
 
-    public function giveItemPermission($key)
+    public static function giveItemPermission($key)
     {
         return Users_Permission::giveItemPermission(Current_User::getId(), $key);
     }
 
-    public function getCreatedDate()
+    public static function getCreatedDate()
     {
         return $_SESSION['User']->created;
     }
 
-    public function getIP()
+    public static function getIP()
     {
         return $_SERVER['REMOTE_ADDR'];
     }
 
-    public function getGroups()
+    public static function getGroups()
     {
         if (empty($_SESSION['User']->_groups)) {
             return null;
@@ -321,7 +321,7 @@ final class Current_User {
         return $_SESSION['User']->_groups;
     }
 
-    public function permissionMenu()
+    public static function permissionMenu()
     {
         $key = Key::getCurrent();
 
@@ -343,7 +343,7 @@ final class Current_User {
         }
     }
 
-    public function popupPermission($key_id, $label=null, $mode=null)
+    public static function popupPermission($key_id, $label=null, $mode=null)
     {
         if (empty($label)) {
             $label = dgettext('users', 'Permission');
@@ -372,7 +372,7 @@ final class Current_User {
      * Returns true if the supplied username only contains characters defined
      * by the ALLOWED_USERNAME_CHARACTERS variable.
      */
-    public function allowUsername($username)
+    public static function allowUsername($username)
     {
         return !preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/i', $username);
     }
@@ -380,7 +380,7 @@ final class Current_User {
     /**
      * Logs in a user dependant on their authorization setting
      */
-    public function loginUser($username, $password=null)
+    public static function loginUser($username, $password=null)
     {
         if (!Current_User::allowUsername($username)) {
             return PHPWS_Error::get(USER_BAD_CHARACTERS, 'users', 'Current_User::loginUser');
@@ -453,7 +453,7 @@ final class Current_User {
         }
     }
 
-    public function requireLogin()
+    public static function requireLogin()
     {
         if (Current_User::isLogged()) {
             return false;
@@ -468,7 +468,7 @@ final class Current_User {
         PHPWS_Core::reroute($url);
     }
 
-    public function rememberLogin()
+    public static function rememberLogin()
     {
         if (!isset($_SESSION['User'])) {
             return false;
@@ -530,7 +530,7 @@ final class Current_User {
         return true;
     }
 
-    public function allowRememberMe()
+    public static function allowRememberMe()
     {
         if ( PHPWS_Settings::get('users', 'allow_remember') &&
         ( !Current_User::isDeity() || ALLOW_DEITY_REMEMBER_ME ) ) {
@@ -540,7 +540,7 @@ final class Current_User {
         }
     }
 
-    public function loadAuthorization(PHPWS_User $user)
+    public static function loadAuthorization(PHPWS_User $user)
     {
         if (!is_file($user->auth_path)) {
             return false;
@@ -555,12 +555,12 @@ final class Current_User {
         return true;
     }
 
-    public function getAuthorization()
+    public static function getAuthorization()
     {
         return $GLOBALS['User_Authorization'];
     }
 
-    public function isLocalUser()
+    public static function isLocalUser()
     {
         $auth = Current_User::getAuthorization();
         return $auth->local_user;

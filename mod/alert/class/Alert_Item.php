@@ -99,12 +99,12 @@ class Alert_Item {
     public function save()
     {
         if (!$this->id) {
-            $this->create_date = mktime();
+            $this->create_date = time();
             $this->created_by_id = Current_User::getId();
             $this->created_name = Current_User::getUsername();
         }
 
-        $this->update_date   = mktime();
+        $this->update_date   = time();
         $this->updated_by_id = Current_User::getId();
         $this->updated_name  = Current_User::getUsername();
 

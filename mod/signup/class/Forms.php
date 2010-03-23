@@ -408,7 +408,7 @@ class Signup_Forms {
             $peep->email = Current_User::getEmail();
         }
 
-        if ($sheet->end_time < mktime()) {
+        if ($sheet->end_time < time()) {
             $this->signup->title = dgettext('signup', 'Sorry');
             $this->signup->content = dgettext('signup', 'We are no longer accepting applications.');
             return;

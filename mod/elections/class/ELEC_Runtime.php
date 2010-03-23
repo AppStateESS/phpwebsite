@@ -53,8 +53,8 @@ class ELEC_Runtime
             if (!isset($_SESSION['User']->username)) {
                 $db->addWhere('pubview', 1);
             }
-            $db->addWhere('opening', mktime(), '<=');
-            $db->addWhere('closing', mktime(), '>=');
+            $db->addWhere('opening', time(), '<=');
+            $db->addWhere('closing', time(), '>=');
             $db->addOrder('title', 'asc');
 
             $result = $db->getObjects('Elections_ballot');

@@ -145,7 +145,7 @@ class Skeleton_Skeleton {
         if ($this->died) {
             return strftime($type, $this->died);
         } else {
-            return strftime($type, mktime());
+            return strftime($type, time());
         }
     }
 

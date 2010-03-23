@@ -28,7 +28,7 @@ class RSS_Channel {
 
     public function __construct($id=NULL)
     {
-        $this->_last_build_date = gmstrftime('%a, %d %b %Y %R GMT', mktime());
+        $this->_last_build_date = gmstrftime('%a, %d %b %Y %R GMT', time());
         if (!$id) {
             return;
         }
@@ -110,8 +110,8 @@ class RSS_Channel {
         $db->addWhere('module', $this->module);
         $db->addWhere('active', 1);
         $db->addWhere('restricted', 0);
-        $db->addWhere('show_after', mktime(), '<');
-        $db->addWhere('hide_after', mktime(), '>');
+        $db->addWhere('show_after', time(), '<');
+        $db->addWhere('hide_after', time(), '>');
 
         $db->addOrder('create_date desc');
         // rss limit is 15

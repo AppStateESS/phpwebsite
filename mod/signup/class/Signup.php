@@ -547,7 +547,7 @@ class Signup {
 
         $peep->registered = 0;
         $peep->hashcheck = md5(rand());
-        $peep->timeout = mktime() + SIGNUP_WINDOW;
+        $peep->timeout = time() + SIGNUP_WINDOW;
 
         if (PHPWS_Error::logIfError($peep->save())) {
             $db->unlockTables();
@@ -882,7 +882,7 @@ class Signup {
 
         if (!$this->peep->id ||
         $this->peep->hashcheck != $hash ||
-        $this->peep->timeout < mktime()) {
+        $this->peep->timeout < time()) {
             $this->title = dgettext('signup', 'Sorry');
             $this->content = dgettext('signup', 'Your application could not be verified. If over a hour has passed since you applied, you may want to try again.');
             return;
@@ -1068,7 +1068,7 @@ class Signup {
     {
         $db = new PHPWS_DB('signup_peeps');
         $db->addWhere('registered', 0);
-        $db->addWhere('timeout', mktime(), '<');
+        $db->addWhere('timeout', time(), '<');
         PHPWS_Error::logIfError($db->delete());
     }
 

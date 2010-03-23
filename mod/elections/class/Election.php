@@ -441,7 +441,7 @@ class Election {
         }
 
         if (empty($_POST['opening'])) {
-            $this->ballot->opening = mktime();
+            $this->ballot->opening = time();
         } else {
             $this->ballot->opening = strtotime($_POST['opening']);
         }
@@ -634,7 +634,7 @@ class Election {
                 $this->vote->username  = 'Annon';
             }
 
-            $this->vote->votedate = mktime();
+            $this->vote->votedate = time();
             $this->vote->ip = $_SERVER['REMOTE_ADDR'];
 
 

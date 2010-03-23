@@ -67,7 +67,7 @@ class Search_Stats {
             if ($found > $stat->highest_result) {
                 $stat->highest_result = $found;
             }
-            $stat->last_called = mktime();
+            $stat->last_called = time();
             $stat->save($insert);
         }
     }

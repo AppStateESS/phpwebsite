@@ -828,7 +828,7 @@ class Calendar_Event {
         static $contact = null;
 
         if (empty($today)) {
-            $today = mktime();
+            $today = time();
             $contact = PHPWS_Settings::get('users', 'site_contact');
         }
 

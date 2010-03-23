@@ -1751,7 +1751,7 @@ class Rolodex_Member extends Demographics_User {
     {
 
         if ($this->isNew()) {
-            $this->date_created = mktime();
+            $this->date_created = time();
             $expires = mktime(0, 0, 0, date("m"), date("d")+PHPWS_Settings::get('rolodex', 'expiry_interval'), date("Y"));
             $this->date_expires = $expires;
             if (PHPWS_Settings::get('rolodex', 'req_approval') && !Current_User::allow('rolodex', 'edit_member')) {
@@ -1770,7 +1770,7 @@ class Rolodex_Member extends Demographics_User {
             $expires = strtotime($_POST['date_expires']);
             $this->date_expires = $expires;
         }
-        $this->date_updated = mktime();
+        $this->date_updated = time();
 
         $this->saveKey();
 

@@ -187,7 +187,7 @@ class Comment_Item {
 
     public function stampCreateTime()
     {
-        $this->create_time = mktime();
+        $this->create_time = time();
     }
 
     public function getCreateTime($format=TRUE)
@@ -207,7 +207,7 @@ class Comment_Item {
     public function stampEditor()
     {
         $this->edit_author = Current_User::getDisplayName();
-        $this->edit_time = gmmktime();
+        $this->edit_time = gmtime();
     }
 
 

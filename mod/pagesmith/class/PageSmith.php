@@ -288,7 +288,7 @@ class PageSmith {
         $this->panel->setModule('pagesmith');
     }
 
-    public function pageTplDir()
+    public static function pageTplDir()
     {
         return PHPWS_Template::getTemplateDirectory('pagesmith')  . 'page_templates/';
     }

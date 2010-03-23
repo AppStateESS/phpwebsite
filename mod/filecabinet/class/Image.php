@@ -539,7 +539,7 @@ class PHPWS_Image extends File_Common {
             return true;
         }
 
-        $tmp_file = $this->file_directory . mktime() . $this->file_name;
+        $tmp_file = $this->file_directory . time() . $this->file_name;
 
         if (PHPWS_File::rotateImage($this->getPath(), $tmp_file, $degrees)) {
             @copy($tmp_file, $this->getPath());

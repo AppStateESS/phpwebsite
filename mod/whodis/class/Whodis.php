@@ -58,7 +58,7 @@ class Whodis {
         $go = false;
         if (!empty($_POST['days_old'])) {
             $days = (int)$_POST['days_old'];
-            $updated = mktime() - (86400 * $days);
+            $updated = time() - (86400 * $days);
             $db->addWhere('updated', $updated, '<', null, 1);
             $go = true;
         }

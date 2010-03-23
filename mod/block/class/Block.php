@@ -11,7 +11,7 @@ PHPWS_Core::initModClass('block', 'Block_Item.php');
 
 class Block {
 
-    public function show()
+    public static function show()
     {
         Block::showAllBlocks();
 
@@ -28,7 +28,7 @@ class Block {
 
     }
 
-    public function showAllBlocks()
+    public static function showAllBlocks()
     {
         $key = new Key;
         $key->id = -1;
@@ -63,7 +63,7 @@ class Block {
         Layout::add($complete, 'block', 'Block_List');
     }
 
-    public function showBlocks($key)
+    public static function showBlocks($key)
     {
         $db = new PHPWS_DB('block');
         $db->addWhere('block_pinned.key_id', $key->id);

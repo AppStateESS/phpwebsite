@@ -290,9 +290,9 @@ class Notes_My_Page {
         Layout::add(PHPWS_Template::process($tpl, 'layout', 'box.tpl'), 'notes', 'reminder');
     }
 
-    public function showUnread()
+    public static function showUnread()
     {
-        if ( isset($_SESSION['Notes_Unread']) && ( $_SESSION['Notes_Unread']['last_check'] + (NOTE_CHECK_INTERVAL * 60) >=  mktime() ) ) {
+        if ( isset($_SESSION['Notes_Unread']) && ( $_SESSION['Notes_Unread']['last_check'] + (NOTE_CHECK_INTERVAL * 60) >=  time() ) ) {
             $notes = $_SESSION['Notes_Unread']['last_count'];
         } else {
             $db = new PHPWS_DB('notes');
@@ -303,7 +303,7 @@ class Notes_My_Page {
                 PHPWS_Error::log($notes);
                 return;
             }
-            $_SESSION['Notes_Unread']['last_check'] = mktime();
+            $_SESSION['Notes_Unread']['last_check'] = time();
             $_SESSION['Notes_Unread']['last_count'] = &$notes;
         }
 

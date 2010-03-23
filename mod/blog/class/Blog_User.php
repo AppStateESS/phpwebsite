@@ -48,7 +48,7 @@ class Blog_User {
                 if (Current_User::allow('blog', 'edit_blog')) {
                     Blog_User::miniAdminList();
                 }
-                if ($blog->publish_date > mktime() && !Current_User::allow('blog')) {
+                if ($blog->publish_date > time() && !Current_User::allow('blog')) {
                     PHPWS_Core::errorPage('404');
                 } else {
                     $content = $blog->view(true, false);
@@ -255,8 +255,8 @@ class Blog_User {
         }
 
         $db->addWhere('approved', 1);
-        $db->addWhere('publish_date', mktime(), '<');
-        $db->addWhere('expire_date', mktime(), '>', 'and', 1);
+        $db->addWhere('publish_date', time(), '<');
+        $db->addWhere('expire_date', time(), '>', 'and', 1);
         $db->addWhere('expire_date', 0, '=', 'or', 1);
         $db->setGroupConj(1, 'and');
         Key::restrictView($db, 'blog');

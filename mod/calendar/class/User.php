@@ -755,7 +755,7 @@ class Calendar_User {
         } else {
             $vars['view'] = $this->current_view;
         }
-        $vars['date'] = mktime();
+        $vars['date'] = time();
 
         switch ($view) {
             case 'grid':
@@ -1109,7 +1109,7 @@ class Calendar_User {
             return null;
         }
 
-        $startdate = mktime();
+        $startdate = time();
 
         foreach ($result as $schedule) {
             $tpl = array();

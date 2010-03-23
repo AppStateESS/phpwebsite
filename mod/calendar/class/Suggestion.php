@@ -145,7 +145,7 @@ class Calendar_Suggestion extends Calendar_Event {
     public function save()
     {
         $this->schedule_id = $this->_schedule->id;
-        $this->submitted = mktime();
+        $this->submitted = time();
         $db = new PHPWS_DB('calendar_suggestions');
         return $db->saveObject($this);
     }

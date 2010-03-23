@@ -105,7 +105,7 @@ class RSS {
         }
 
         Layout::addLink(sprintf('<link rel="alternate" type="application/rss+xml" title="%s" href="%s" />',
-                                $channel->title, $channel->getAddress(FALSE)));
+        $channel->title, $channel->getAddress(FALSE)));
     }
 
 }

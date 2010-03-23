@@ -346,14 +346,14 @@ class Webpage_Volume {
         if (!$version_update) {
             $this->update_user_id = Current_User::getId();
             $this->updated_user   = Current_User::getUsername();
-            $this->date_updated   = mktime();
+            $this->date_updated   = time();
         }
 
         if (!$this->id) {
             $new_vol = true;
             $this->create_user_id = Current_User::getId();
             $this->created_user = Current_User::getUsername();
-            $this->date_created = mktime();
+            $this->date_created = time();
         } else {
             $new_vol = false;
         }

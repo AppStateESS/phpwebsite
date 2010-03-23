@@ -97,7 +97,7 @@ class PHPWS_User {
     public function login()
     {
         $this->setLogged(true);
-        $this->setLastLogged(mktime());
+        $this->setLastLogged(time());
         $this->addLogCount();
         $this->makeAuthKey();
         $this->updateOnly();
@@ -555,9 +555,9 @@ class PHPWS_User {
         }
 
         if ($newUser == true) {
-            $this->created = mktime();
+            $this->created = time();
         } else {
-            $this->updated = mktime();
+            $this->updated = time();
         }
 
         $db = new PHPWS_DB('users');
@@ -601,7 +601,7 @@ class PHPWS_User {
     public function makeAuthKey()
     {
         $key = rand();
-        $this->salt_base = $key . mktime();
+        $this->salt_base = $key . time();
         $this->auth_key = md5($this->username . $this->salt_base);
     }
 
@@ -732,7 +732,7 @@ class PHPWS_User {
         unset($GLOBALS['User_Settings']);
     }
 
-    public function getUserSetting($setting, $refresh=false)
+    public static function getUserSetting($setting, $refresh=false)
     {
         return PHPWS_Settings::get('users', $setting);
     }

@@ -1509,8 +1509,8 @@ class Calendar_Admin {
         $days = (int)$_POST['advance_post'];
 
         $publish = $event->start_time - ($days * 86400);
-        if ($publish < mktime()) {
-            $blog->publish_date = mktime();
+        if ($publish < time()) {
+            $blog->publish_date = time();
         } else {
             $blog->publish_date = & $publish;
         }

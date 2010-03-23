@@ -14,7 +14,7 @@ abstract class Notification
 
     public function __construct()
     {
-        $this->timestamp = mktime();
+        $this->timestamp = time();
     }
 
     public abstract function toString();

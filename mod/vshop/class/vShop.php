@@ -1582,14 +1582,14 @@ class vShop {
 
             print_r($order_array); exit;
             $this->order->order_array = $order_array;
-            $this->order->order_date = mktime();
-            $this->order->update_date = mktime();
+            $this->order->order_date = time();
+            $this->order->update_date = time();
             $this->order->status = 1;
             $this->order->completed = 0;
             $this->order->cancelled = 0;
             $this->order->ip_address = $_SERVER['REMOTE_ADDR'];
         } else {
-            $this->order->update_date = mktime();
+            $this->order->update_date = time();
             $this->order->status = $_POST['status'];
         }
 

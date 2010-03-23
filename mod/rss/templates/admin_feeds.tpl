@@ -1,5 +1,4 @@
 {ADD_LINK}
-
 <table width="98%" cellpadding="3" cellspacing="3">
     <tr>
         <th>{TITLE_SORT} {TITLE_LABEL}</th>
@@ -21,8 +20,6 @@
     <!-- END listrows -->
 </table>
 {EMPTY_MESSAGE}
-<div class="align-center">
-  <b>{PAGE_LABEL}</b><br />
-  {PAGES}<br />
-  {LIMITS}
-</div>
+<div class="align-center"><b>{PAGE_LABEL}</b><br />
+{PAGES}<br />
+{LIMITS}</div>

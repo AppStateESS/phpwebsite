@@ -290,10 +290,10 @@ class PS_Page {
     public function save()
     {
         if (!$this->id) {
-            $this->create_date = mktime();
+            $this->create_date = time();
         }
 
-        $this->last_updated = mktime();
+        $this->last_updated = time();
 
         // If this page has a parent and the order is not set
         // then increment

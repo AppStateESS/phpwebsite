@@ -986,7 +986,7 @@ class Checkin_Admin extends Checkin {
         $this->staff->visitor_id = $this->visitor->id;
         $this->staff->save();
 
-        $this->visitor->start_meeting = mktime();
+        $this->visitor->start_meeting = time();
         $this->visitor->assigned = $this->staff->id;
         $this->visitor->save();
     }
@@ -1001,7 +1001,7 @@ class Checkin_Admin extends Checkin {
         $this->staff->visitor_id = 0;
         $this->staff->save();
 
-        $this->visitor->end_meeting = mktime();
+        $this->visitor->end_meeting = time();
         $this->visitor->finished = true;
         $this->visitor->save();
     }

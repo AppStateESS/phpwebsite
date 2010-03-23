@@ -186,11 +186,11 @@ class Version {
 
         if (empty($this->id)) {
             $this->vr_creator = Current_User::getId();
-            $this->vr_create_date = mktime();
+            $this->vr_create_date = time();
         }
 
         $this->vr_editor = Current_User::getId();
-        $this->vr_edit_date = mktime();
+        $this->vr_edit_date = time();
 
         if (empty($this->vr_number)) {
             $this->vr_number = $this->_getVersionNumber();

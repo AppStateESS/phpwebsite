@@ -244,9 +244,9 @@ class Rolodex_Forms {
         /* expired yes/no */
         if (PHPWS_Settings::get('rolodex', 'enable_expiry')) {
             if ($expired) {
-                $pager->addWhere('date_expires', mktime(), '<=');
+                $pager->addWhere('date_expires', time(), '<=');
             } else {
-                $pager->addWhere('date_expires', mktime(), '>=');
+                $pager->addWhere('date_expires', time(), '>=');
             }
         }
 

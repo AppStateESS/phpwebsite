@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-define('LAYOUT_THEME_EXEC', false);
+define('LAYOUT_THEME_EXEC', true);
 
 define('DEFAULT_BOX_VAR', 'DEFAULT');
 define('DEFAULT_THEME_VAR', 'BODY');

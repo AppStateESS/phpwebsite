@@ -646,7 +646,7 @@ class User_Action {
 
         if (isset($_POST['language'])) {
             $locale = preg_replace('/\W/', '', $_POST['language']);
-            setcookie('phpws_default_language', $locale, mktime() + CORE_COOKIE_TIMEOUT);
+            setcookie('phpws_default_language', $locale, time() + CORE_COOKIE_TIMEOUT);
         }
 
         if (isset($error)) {
@@ -907,7 +907,7 @@ class User_Action {
             $user = new PHPWS_User($user_id);
 
             // If the deadline has not yet passed, approve the user, save, and return true
-            if ($row['deadline'] > mktime()) {
+            if ($row['deadline'] > time()) {
                 $db->delete();
                 $user->approved = 1;
                 if (PHPWS_Error::logIfError($user->save())) {
@@ -927,7 +927,7 @@ class User_Action {
     public function cleanUpConfirm()
     {
         $db = new PHPWS_DB('users_signup');
-        $db->addWhere('deadline', mktime(), '<');
+        $db->addWhere('deadline', time(), '<');
         $result = $db->delete();
         PHPWS_Error::logIfError($result);
     }
@@ -1000,7 +1000,7 @@ class User_Action {
 
     public function _createSignupConfirmation($user_id)
     {
-        $deadline = mktime() + (3600 * NEW_SIGNUP_WINDOW);
+        $deadline = time() + (3600 * NEW_SIGNUP_WINDOW);
         $authkey = md5($deadline . $user_id);
 
         $db = new PHPWS_DB('users_signup');
@@ -1335,7 +1335,7 @@ class User_Action {
         $db = new PHPWS_DB('users_pw_reset');
 
         // clear old reset rows
-        $db->addWhere('timeout', mktime(), '<');
+        $db->addWhere('timeout', time(), '<');
         PHPWS_Error::logIfError($db->delete());
         $db->reset();
 
@@ -1378,7 +1378,7 @@ class User_Action {
             $db->addValue('user_id', $user_id);
             $db->addValue('authhash', $hash);
             // 1 hour limit = 3600
-            $db->addValue('timeout', mktime() + 3600);
+            $db->addValue('timeout', time() + 3600);
             if (PHPWS_Error::logIfError($db->insert())) {
                 return false;
             } else {
@@ -1425,7 +1425,7 @@ class User_Action {
 
         $db = new PHPWS_DB('users_pw_reset');
         $db->addWhere('authhash', $auth);
-        $db->addWhere('timeout', mktime(), '>');
+        $db->addWhere('timeout', time(), '>');
         $db->addColumn('user_id');
         $result = $db->select('one');
 
@@ -1454,7 +1454,7 @@ class User_Action {
         $db = new PHPWS_DB('users_pw_reset');
         $db->addWhere('user_id', $user_id);
         $db->addWhere('authhash', $auth);
-        $db->addWhere('timeout', mktime(), '>');
+        $db->addWhere('timeout', time(), '>');
         $result = $db->select();
         $db->reset();
         $db->addWhere('user_id', $user_id);

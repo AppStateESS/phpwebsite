@@ -384,7 +384,7 @@ class Rideboard {
         $tpl = $form->getTemplate();
 
         $db = new PHPWS_DB('rb_ride');
-        $db->addWhere('depart_time', mktime(), '<');
+        $db->addWhere('depart_time', time(), '<');
         $db->addColumn('id');
         $old_rides = $db->count();
 
@@ -578,7 +578,7 @@ class Rideboard {
 
         if (PHPWS_Form::testDate('depart_time')) {
             $this->ride->depart_time = (int)PHPWS_Form::getPostedDate('depart_time');
-            if ($this->ride->depart_time < mktime()) {
+            if ($this->ride->depart_time < time()) {
                 $errors[] = dgettext('rideboard', 'Your leaving date must be in the future.');
             }
         } else {
@@ -714,8 +714,8 @@ class Rideboard {
             $search_before = $search_time - (86400 * 7);
             $search_after  = $search_time + (86400 * 7);
 
-            if ($search_before < mktime()) {
-                $search_before = mktime();
+            if ($search_before < time()) {
+                $search_before = time();
             }
 
             $pager->db->addWhere('depart_time', $search_before, '>', null, 'time');
@@ -753,7 +753,7 @@ class Rideboard {
     public function purgeRides()
     {
         $db = new PHPWS_DB('rb_ride');
-        $db->addWhere('depart_time', mktime(), '<');
+        $db->addWhere('depart_time', time(), '<');
         return !PHPWS_Error::logIfError($db->delete());
     }
 
@@ -853,7 +853,7 @@ class Rideboard {
         }
 
         if (empty($this->carpool->created)) {
-            $this->carpool->created = mktime();
+            $this->carpool->created = time();
         }
 
         if (PHPWS_Error::logIfError($this->carpool->save())) {

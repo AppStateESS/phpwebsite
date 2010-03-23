@@ -67,7 +67,7 @@ class RB_Ride {
 
     public function getDepartTime()
     {
-        if (mktime() > $this->depart_time) {
+        if (time() > $this->depart_time) {
             return sprintf('%s (%s)', strftime('%d %b, %Y', $this->depart_time),
             dgettext('rideboard', 'Expired'));
         } else {
@@ -172,7 +172,7 @@ class RB_Ride {
     {
         $tpl = $this->tags(false);
 
-        if ($this->depart_time < mktime()) {
+        if ($this->depart_time < time()) {
             $tpl['WARNING'] = dgettext('rideboard', 'The ride has expired.');
         }
 

@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 PHPWS_Core::initCoreClass('XMLParser.php');
 
@@ -63,14 +63,14 @@ class RSS_Feed {
         $links[] = PHPWS_Text::secureLink(dgettext('rss', 'Reset'), 'rss', $vars);
 
         $jsvars['address'] = sprintf('index.php?module=rss&command=edit_feed&feed_id=%s&authkey=%s',
-                                   $this->id, Current_User::getAuthKey());
+        $this->id, Current_User::getAuthKey());
         $jsvars['label'] = dgettext('rss', 'Edit');
         $jsvars['height'] = '280';
         $links[] = javascript('open_window', $jsvars);
 
         $js['QUESTION'] = dgettext('rss', 'Are you sure you want to delete this RSS feed?');
         $js['ADDRESS']  = sprintf('index.php?module=rss&command=delete_feed&feed_id=%s&authkey=%s',
-                                  $this->id, Current_User::getAuthKey());
+        $this->id, Current_User::getAuthKey());
         $js['LINK']     = dgettext('rss', 'Delete');
         $links[] = javascript('confirm', $js);
 
@@ -264,10 +264,10 @@ class RSS_Feed {
 
             if (isset($image['LINK'])) {
                 $tpl['IMAGE'] = sprintf('<a href="%s"><img src="%s" title="%s" border="0" /></a>',
-                                        $image['LINK'], $image['URL'], $image['TITLE']);
+                $image['LINK'], $image['URL'], $image['TITLE']);
             } else {
                 $tpl['IMAGE'] = sprintf('<img src="%s" title="%s" border="0" />',
-                                        $image['URL'], $image['TITLE']);
+                $image['URL'], $image['TITLE']);
             }
 
         } else {
@@ -286,43 +286,43 @@ class RSS_Feed {
             extract($info);
 
             switch ($name) {
-            case 'ITEM':
-                $this->addItem($info['child']);
-                break;
-
-            case 'ITEMS':
-                if ($version == '1.0') {
-                    $items = &$child[0]['child'];
-                    if (empty($items)) {
-                        continue;
-                    }
-                    foreach ($items as $item) {
-                        list(,$resource) = each($item['attributes']);
-                        $this->mapped['CHANNEL']['ITEM_RESOURCES'][] = $resource;
-                    }
-                } elseif ($version == '2.0' || $version == '0.92') {
+                case 'ITEM':
                     $this->addItem($info['child']);
-                }
-                break;
+                    break;
 
-            case 'IMAGE':
-                if ($version == '1.0' && isset($item['attributes']) && is_array($item['attributes'])) {
-                    foreach ($item['attributes'] as $ignore=>$resource);
-                    $this->mapped['CHANNEL']['IMAGE'] = $resource;
-                } elseif ($version == '2.0' || $version == '0.92') {
-                    $this->pullImage($info['child']);
-                }
-                break;
+                case 'ITEMS':
+                    if ($version == '1.0') {
+                        $items = &$child[0]['child'];
+                        if (empty($items)) {
+                            continue;
+                        }
+                        foreach ($items as $item) {
+                            list(,$resource) = each($item['attributes']);
+                            $this->mapped['CHANNEL']['ITEM_RESOURCES'][] = $resource;
+                        }
+                    } elseif ($version == '2.0' || $version == '0.92') {
+                        $this->addItem($info['child']);
+                    }
+                    break;
 
-            case 'TEXTINPUT':
-                if (isset($item['attributes']) && is_array($item['attributes'])) {
-                    foreach ($item['attributes'] as $ignore=>$resource);
-                    $this->mapped['CHANNEL']['TEXTINPUT'] = $resource;
-                }
-                break;
+                case 'IMAGE':
+                    if ($version == '1.0' && isset($item['attributes']) && is_array($item['attributes'])) {
+                        foreach ($item['attributes'] as $ignore=>$resource);
+                        $this->mapped['CHANNEL']['IMAGE'] = $resource;
+                    } elseif ($version == '2.0' || $version == '0.92') {
+                        $this->pullImage($info['child']);
+                    }
+                    break;
 
-            default:
-                $this->mapped['CHANNEL'][$name] = $content;
+                case 'TEXTINPUT':
+                    if (isset($item['attributes']) && is_array($item['attributes'])) {
+                        foreach ($item['attributes'] as $ignore=>$resource);
+                        $this->mapped['CHANNEL']['TEXTINPUT'] = $resource;
+                    }
+                    break;
+
+                default:
+                    $this->mapped['CHANNEL'][$name] = $content;
             }
         }
 
@@ -366,21 +366,21 @@ class RSS_Feed {
         foreach ($section as $sec_key => $sec_value) {
             switch ($sec_value['name']) {
 
-            case 'CHANNEL':
-                $this->pullChannel($sec_value['child'], $version);
-                break;
+                case 'CHANNEL':
+                    $this->pullChannel($sec_value['child'], $version);
+                    break;
 
-            case 'IMAGE':
-                $this->pullImage($sec_value['child']);
-                break;
+                case 'IMAGE':
+                    $this->pullImage($sec_value['child']);
+                    break;
 
-            case 'ITEM':
-                $this->addItem($sec_value['child']);
-                break;
+                case 'ITEM':
+                    $this->addItem($sec_value['child']);
+                    break;
 
-            case 'TEXTINPUT':
-                $this->pullTextInput($sec_value['child']);
-                break;
+                case 'TEXTINPUT':
+                    $this->pullTextInput($sec_value['child']);
+                    break;
             }
 
         }

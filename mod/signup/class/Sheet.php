@@ -58,7 +58,7 @@ class Signup_Sheet {
     public function getStartTime()
     {
         if (!$this->start_time) {
-            return strftime('%Y/%m/%d %H:00', mktime());
+            return strftime('%Y/%m/%d %H:00', time());
         } else {
             return strftime('%Y/%m/%d %H:00', $this->start_time);
         }
@@ -67,7 +67,7 @@ class Signup_Sheet {
     public function getEndTime()
     {
         if (!$this->end_time) {
-            return strftime('%Y/%m/%d %H:00', mktime() + (86400 * 7));
+            return strftime('%Y/%m/%d %H:00', time() + (86400 * 7));
         } else {
             return strftime('%Y/%m/%d %H:00', $this->end_time);
         }
@@ -75,7 +75,7 @@ class Signup_Sheet {
 
     public function defaultStart()
     {
-        $this->start_time = mktime() - 86400;
+        $this->start_time = time() - 86400;
     }
 
     public function defaultEnd()

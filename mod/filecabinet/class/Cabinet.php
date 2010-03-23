@@ -1035,7 +1035,7 @@ class Cabinet {
         Layout::addStyle('filecabinet', 'file_view.css');
     }
 
-    public function getTag($id)
+    public static function getTag($id)
     {
         PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
         $file_assoc = new FC_File_Assoc($id);

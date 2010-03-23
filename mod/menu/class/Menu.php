@@ -16,7 +16,7 @@ class Menu {
         Menu_Admin::main();
     }
 
-    public function getPinAllMenus()
+    public static function getPinAllMenus()
     {
         $db = new PHPWS_DB('menus');
         $db->addWhere('pin_all', 1);
@@ -29,7 +29,7 @@ class Menu {
      * Grabs all the menus pinned to every page and displays
      * them.
      */
-    public function showPinned()
+    public static function showPinned()
     {
         Layout::addStyle('menu');
 
@@ -50,7 +50,7 @@ class Menu {
         }
     }
 
-    public function miniadmin()
+    public static function miniadmin()
     {
         if (!PHPWS_Settings::get('menu', 'miniadmin') ||
         !Current_User::allow('menu')) {
@@ -73,7 +73,7 @@ class Menu {
      * Function called by mod developer to add their
      * link or to just show the menu on that item
      */
-    public function show()
+    public static function show()
     {
         $seen = array();
 
@@ -244,7 +244,7 @@ class Menu {
     }
 
 
-    public function isAdminMode()
+    public static function isAdminMode()
     {
         if (isset($_SESSION['Menu_Admin_Mode'])) {
             return $_SESSION['Menu_Admin_Mode'];

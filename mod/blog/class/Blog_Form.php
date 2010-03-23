@@ -272,7 +272,7 @@ class Blog_Form {
 
         if (Current_User::isDeity()) {
             javascript('datepicker');
-            $form->addText('purge_date', date('m/d/Y', mktime() - 31536000));
+            $form->addText('purge_date', date('m/d/Y', time() - 31536000));
             $form->setLabel('purge_date', dgettext('blog', 'Purge all entries before this date'));
             $form->setClass('purge_date', 'datepicker');
 

@@ -123,11 +123,11 @@ class Alert_Type {
                 break;
 
             case APST_WEEKLY:
-                $db->addWhere('create_date', mktime() - (7 * 86400), '>=');
+                $db->addWhere('create_date', time() - (7 * 86400), '>=');
                 break;
 
             case APST_DAILY:
-                $db->addWhere('create_date', mktime() - 86400, '>=');
+                $db->addWhere('create_date', time() - 86400, '>=');
                 break;
 
             case APST_PERM:

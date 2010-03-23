@@ -211,7 +211,7 @@ class Elections_Ballot {
         if ($this->opening) {
             return strftime($type, $this->opening);
         } else {
-            return strftime($type, mktime());
+            return strftime($type, time());
         }
     }
 
@@ -614,7 +614,7 @@ class Elections_Ballot {
 
     function can_vote()
     {
-        $now = mktime();
+        $now = time();
         $msg = NULL;
 
         /* check the date */

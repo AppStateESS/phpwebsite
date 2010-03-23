@@ -6,7 +6,8 @@
     </tr>
     <tr>
         <td>{TITLE_LABEL}</td>
-        <td>{TITLE}<br /><i>{TITLE_WARNING}</i></td>
+        <td>{TITLE}<br />
+        <i>{TITLE_WARNING}</i></td>
     </tr>
     <tr>
         <td>{ITEM_LIMIT_LABEL}</td>

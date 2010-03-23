@@ -15,7 +15,7 @@ define('CAT_LINK_DIVIDERS', '&gt;&gt;');
 
 class Categories {
 
-    public function show()
+    public static function show()
     {
         if (!Current_User::allow('categories')) {
             return;

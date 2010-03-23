@@ -985,7 +985,7 @@ class PHPWS_Boost {
      if (empty($last_dir)) {
      $last_dir = array_pop($local_array);
      }
-     $local_array[] = sprintf('%s_%s', mktime(), $last_dir);
+     $local_array[] = sprintf('%s_%s', time(), $last_dir);
      $new_dir_name = implode('/', $local_array);
 
      if (!@rename($local_file, $new_dir_name)) {
@@ -1074,7 +1074,7 @@ class PHPWS_Boost {
         $aFile = explode('/', $filename);
         $file_alone = array_pop($aFile);
 
-        $file_alone = mktime() . '_' . $file_alone;
+        $file_alone = time() . '_' . $file_alone;
         $new_filename = implode('/', $aFile) . '/' . $file_alone;
         return @copy($filename, $new_filename);
     }

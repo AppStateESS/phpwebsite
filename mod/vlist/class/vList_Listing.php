@@ -612,7 +612,7 @@ class vList_Listing {
     public function saveListing()
     {
         $this->editor_id = Current_User::getId();
-        $this->updated = mktime();
+        $this->updated = time();
 
         $db = new PHPWS_DB('vlist_listing');
         $result = $db->saveObject($this);
@@ -625,14 +625,14 @@ class vList_Listing {
     public function save()
     {
         $this->editor_id = Current_User::getId();
-        $this->updated = mktime();
+        $this->updated = time();
         if (!PHPWS_Settings::get('vlist', 'enable_users')) {
             if (!$this->id) {
                 $this->owner_id = Current_User::getId();
             }
         }
         if (!$this->id) {
-            $this->created = mktime();
+            $this->created = time();
             if (!Current_User::allow('vlist', 'edit_listing')) {
                 $this->approved = 0;
                 $this->active = 1;

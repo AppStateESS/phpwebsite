@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 class RSS_Admin {
 
@@ -41,95 +41,95 @@ class RSS_Admin {
         }
 
         switch ($command) {
-        case 'channels':
-            $tpl = RSS_Admin::channels();
-            break;
+            case 'channels':
+                $tpl = RSS_Admin::channels();
+                break;
 
-        case 'settings':
-            $tpl = RSS_Admin::settings();
-            break;
+            case 'settings':
+                $tpl = RSS_Admin::settings();
+                break;
 
-        case 'save_settings':
-            $result = RSS_Admin::save_settings();
+            case 'save_settings':
+                $result = RSS_Admin::save_settings();
 
-            if (!$result) {
-                PHPWS_Settings::save('rss');
-                $result = dgettext('rss', 'Settings saved successfully.');
-            }
-            $tpl = RSS_Admin::settings();
-            $tpl['MESSAGE'] = &$result;
-            break;
+                if (!$result) {
+                    PHPWS_Settings::save('rss');
+                    $result = dgettext('rss', 'Settings saved successfully.');
+                }
+                $tpl = RSS_Admin::settings();
+                $tpl['MESSAGE'] = &$result;
+                break;
 
-        case 'save_feed':
-            $result = $feed->post();
-            if (is_array($result)) {
+            case 'save_feed':
+                $result = $feed->post();
+                if (is_array($result)) {
+                    $tpl = RSS_Admin::editFeed($feed);
+                    $tpl['MESSAGE'] = implode('<br />', $result);
+                    Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rss', 'main.tpl'));
+                    exit();
+                } else {
+                    $result = $feed->save();
+                    javascript('close_refresh');
+                }
+                break;
+
+            case 'edit_channel':
+                $tpl = RSS_Admin::editChannel($channel);
+                break;
+
+            case 'post_channel':
+                $result = $channel->post();
+                if (is_array($result)) {
+                    $message = implode('<br />', $result);
+                    $tpl = RSS_Admin::editChannel($channel);
+                } else {
+                    $result = $channel->save();
+                    if (PEAR::isError($result)) {
+                        RSS_Admin::sendMessage(dgettext('rss', 'An error occurred when saving your channel.'), 'channels');
+                    } else {
+                        RSS_Admin::sendMessage(dgettext('rss', 'Channel saved.'), 'channels');
+                    }
+                }
+                break;
+
+            case 'reset_feed':
+                $feed->reset();
+            case 'import':
+                $tpl = RSS_Admin::import();
+                break;
+
+            case 'turn_on_display':
+                $feed->display = 1;
+                $feed->save();
+                $tpl = RSS_Admin::import();
+                break;
+
+            case 'turn_off_display':
+                $feed->display = 0;
+                $feed->save();
+                $tpl = RSS_Admin::import();
+                break;
+
+            case 'add_feed':
                 $tpl = RSS_Admin::editFeed($feed);
-                $tpl['MESSAGE'] = implode('<br />', $result);
                 Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rss', 'main.tpl'));
                 exit();
-            } else {
-                $result = $feed->save();
-                javascript('close_refresh');
-            }
-            break;
+                break;
 
-        case 'edit_channel':
-            $tpl = RSS_Admin::editChannel($channel);
-            break;
+            case 'edit_feed':
+                $tpl = RSS_Admin::editFeed($feed);
+                Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rss', 'main.tpl'));
+                exit();
+                break;
 
-        case 'post_channel':
-            $result = $channel->post();
-            if (is_array($result)) {
-                $message = implode('<br />', $result);
-                $tpl = RSS_Admin::editChannel($channel);
-            } else {
-                $result = $channel->save();
-                if (PEAR::isError($result)) {
-                    RSS_Admin::sendMessage(dgettext('rss', 'An error occurred when saving your channel.'), 'channels');
-                } else {
-                    RSS_Admin::sendMessage(dgettext('rss', 'Channel saved.'), 'channels');
-                }
-            }
-            break;
+            case 'delete_feed':
+                $feed->delete();
+                $tpl = RSS_Admin::import();
+                break;
 
-        case 'reset_feed':
-            $feed->reset();
-        case 'import':
-            $tpl = RSS_Admin::import();
-            break;
-
-        case 'turn_on_display':
-            $feed->display = 1;
-            $feed->save();
-            $tpl = RSS_Admin::import();
-            break;
-
-        case 'turn_off_display':
-            $feed->display = 0;
-            $feed->save();
-            $tpl = RSS_Admin::import();
-            break;
-
-        case 'add_feed':
-            $tpl = RSS_Admin::editFeed($feed);
-            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rss', 'main.tpl'));
-            exit();
-            break;
-
-        case 'edit_feed':
-            $tpl = RSS_Admin::editFeed($feed);
-            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rss', 'main.tpl'));
-            exit();
-            break;
-
-        case 'delete_feed':
-            $feed->delete();
-            $tpl = RSS_Admin::import();
-            break;
-
-        default:
-            PHPWS_Core::errorPage('404');
-            break;
+            default:
+                PHPWS_Core::errorPage('404');
+                break;
         }
 
         if (!empty($message)) {
@@ -149,7 +149,7 @@ class RSS_Admin {
         $_SESSION['RSS_Message'] = $message;
 
         PHPWS_Core::reroute(sprintf('index.php?module=rss&command=%s&authkey=%s',
-                                    $command, Current_User::getAuthKey()));
+        $command, Current_User::getAuthKey()));
 
     }
 
