@@ -240,7 +240,7 @@ class HTTP_Download
      */
     function HTTP_Download($params = array())
     {
-        $this->HTTP = &new HTTP_Header;
+        $this->HTTP = new HTTP_Header;
         $this->setParams($params);
     }
     // }}}
@@ -702,7 +702,7 @@ class HTTP_Download
      */
     function staticSend($params, $guess = false)
     {
-        $d = &new HTTP_Download();
+        $d = new HTTP_Download();
         $e = $d->setParams($params);
         if (PEAR::isError($e)) {
             return $e;

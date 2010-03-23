@@ -83,7 +83,7 @@ class Calendar_Engine_Factory
      * @return object instance of a calendar calculation engine
      * @access protected
      */
-    function & getEngine()
+    public static function getEngine()
     {
         static $engine = false;
         switch (CALENDAR_ENGINE) {
@@ -207,7 +207,7 @@ class Calendar
     {
         static $cE = null;
         if (!isset($cE)) {
-            $cE = & Calendar_Engine_Factory::getEngine();
+            $cE = Calendar_Engine_Factory::getEngine();
         }
         $this->cE     = & $cE;
         $this->year   = (int)$y;

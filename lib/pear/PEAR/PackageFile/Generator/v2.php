@@ -232,7 +232,7 @@ http://pear.php.net/dtd/package-2.0.xsd',
                             array($this->_packagefile->getTasksNs() . ':', '-'),
                             array('', '_'), $tag);
                         $task = "PEAR_Task_$tag";
-                        $task = &new $task($this->_packagefile->_config,
+                        $task = new $task($this->_packagefile->_config,
                             $this->_packagefile->_logger,
                             PEAR_TASK_PACKAGE);
                         $task->init($raw, $atts, null);

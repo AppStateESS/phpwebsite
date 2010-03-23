@@ -69,8 +69,8 @@ require_once 'PEAR.php';
 		> headers. Therefore I made the following function:
 		> 
 		> function decode_utf8($txt) {
-		> $trans=array("�&#8216;"=>"õ","ű"=>"û","Ő"=>"�&#8226;","Ű"
-		=>"�&#8250;");
+		> $trans=array("�&#8216;"=>"õ","ű"=>"û","Ő"=>"�&#8226;","Ű"
+		=>"�&#8250;");
 		> $txt=strtr($txt,$trans);
 		> return(utf8_decode($txt));
 		> }
@@ -308,7 +308,7 @@ class Mail_mimeDecode extends PEAR
                     break;
 
                 case 'message/rfc822':
-                    $obj = &new Mail_mimeDecode($body);
+                    $obj = new Mail_mimeDecode($body);
                     $return->parts[] = $obj->decode(array('include_bodies' => $this->_include_bodies,
 					                                      'decode_bodies'  => $this->_decode_bodies,
 														  'decode_headers' => $this->_decode_headers));
