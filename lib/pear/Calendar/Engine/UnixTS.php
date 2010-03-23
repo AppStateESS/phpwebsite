@@ -38,7 +38,7 @@
 
 /**
  * Performs calendar calculations based on the PHP date() function and
- * Unix timestamps (using PHP's time() function).
+ * Unix timestamps (using PHP's mktime() function).
  *
  * @category  Date and Time
  * @package   Calendar

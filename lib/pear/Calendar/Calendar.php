@@ -83,7 +83,7 @@ class Calendar_Engine_Factory
      * @return object instance of a calendar calculation engine
      * @access protected
      */
-    public static function getEngine()
+    function & getEngine()
     {
         static $engine = false;
         switch (CALENDAR_ENGINE) {
@@ -207,7 +207,7 @@ class Calendar
     {
         static $cE = null;
         if (!isset($cE)) {
-            $cE = Calendar_Engine_Factory::getEngine();
+            $cE = & Calendar_Engine_Factory::getEngine();
         }
         $this->cE     = & $cE;
         $this->year   = (int)$y;
@@ -457,7 +457,7 @@ class Calendar
     {
         if (!isset($this->validator)) {
             include_once CALENDAR_ROOT.'Validator.php';
-            $this->validator = new Calendar_Validator($this);
+            $this->validator = & new Calendar_Validator($this);
         }
         return $this->validator;
     }

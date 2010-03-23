@@ -205,7 +205,7 @@ class HTTP_Upload_Error extends PEAR
                 'en'    => 'The file was only partially uploaded.',
                 'de'    => 'Die Datei wurde unvollst&auml;ndig &uuml;bertragen.',
                 'nl'    => 'Het bestand is slechts gedeeltelijk geupload.',
-                'pt_BR' => 'O arquivo nï¿½o foi enviado por completo.'
+                'pt_BR' => 'O arquivo não foi enviado por completo.'
                 ),
             'ERROR' => array(
                 'es'    => 'Error en subida:',
@@ -215,7 +215,7 @@ class HTTP_Upload_Error extends PEAR
                 'pt_BR' => 'Erro de upload:'
                 ),
             'DEV_NO_DEF_FILE' => array(
-                'es'    => 'No estï¿½ definido en el formulario este nombre de fichero como &lt;input type="file" name=?&gt;.',
+                'es'    => 'No está definido en el formulario este nombre de fichero como &lt;input type="file" name=?&gt;.',
                 'en'    => 'This filename is not defined in the form as &lt;input type="file" name=?&gt;.',
                 'de'    => 'Dieser Dateiname ist im Formular nicht als &lt;input type="file" name=?&gt; definiert.',
                 'nl'    => 'Deze bestandsnaam is niett gedefineerd in het formulier als &lt;input type="file" name=?&gt;.'
@@ -250,13 +250,11 @@ class HTTP_Upload_Error extends PEAR
     /**
      * Overwrites the PEAR::raiseError method
      *
-     * This function was updated to conform with strict PHP 5 standards
-     * Please excuse the extra, fake parameters
      * @param    string $e_code      type of error
      * @return   object PEAR_Error   a PEAR-Error object
      * @access   public
      */
-    function raiseError($e_code=null, $a=null, $b=null, $c=null, $d=null, $e=null, $f=null)
+    function raiseError($e_code)
     {
         return PEAR::raiseError($this->errorCode($e_code), $e_code);
     }
@@ -333,11 +331,11 @@ class HTTP_Upload extends HTTP_Upload_Error
         static $is_built = false;
         //build only once for multiple calls
         if (!$is_built) {
-            $files = $this->_buildFiles();
+            $files = &$this->_buildFiles();
             if (PEAR::isError($files)) {
                 // there was an error with the form.
                 // Create a faked upload embedding the error
-                $this->files['_error'] =  new HTTP_Upload_File(
+                $this->files['_error'] =  &new HTTP_Upload_File(
                                                        '_error', null,
                                                        null, null,
                                                        null, $files->getCode(),
@@ -662,7 +660,7 @@ class HTTP_Upload_File extends HTTP_Upload_Error
      */
     function nameToSafe($name, $maxlen=250)
     {
-        $noalpha = 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½ï¿½ï¿½';
+        $noalpha = 'ÁÉÍÓÚÝáéíóúýÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÄËÏÖÜäëïöüÿÃãÕõÅåÑñÇç@°ºª';
         $alpha   = 'AEIOUYaeiouyAEIOUaeiouAEIOUaeiouAEIOUaeiouyAaOoAaNnCcaooa';
 
         $name = substr($name, 0, $maxlen);
@@ -702,18 +700,11 @@ class HTTP_Upload_File extends HTTP_Upload_Error
     /**
      * Some error occured during upload (most common due a file size problem,
      * like max size exceeded or 0 bytes long).
-     * 
-     * Changed for phpWebSite to conform with php 5 standards 
      * @return bool If there were errors submitting the file (probably
      *              because the file excess the max permitted file size)
      * @access public
      */
-    public static function isError($dummy)
-    {
-    	return $this->isHTTPError();
-    }
-    
-    public function isHTTPError()
+    function isError()
     {
         if (in_array($this->upload['error'], array('TOO_LARGE', 'BAD_FORM','DEV_NO_DEF_FILE'))) {
             return true;

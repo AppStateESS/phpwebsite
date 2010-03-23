@@ -58,7 +58,7 @@ require_once CALENDAR_ROOT.'Day.php';
  * Decorator for fetching the day of the week
  * <code>
  * $Day = new Calendar_Day(2003, 10, 23);
- * $Weekday = new Calendar_Decorator_Weekday($Day);
+ * $Weekday = & new Calendar_Decorator_Weekday($Day);
  * $Weekday->setFirstDay(0); // Set first day of week to Sunday (default Mon)
  * echo $Weekday->thisWeekDay(); // Displays 5 - fifth day of week relative to Sun
  * </code>

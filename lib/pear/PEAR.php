@@ -69,7 +69,7 @@ $GLOBALS['_PEAR_error_handler_stack']    = array();
  * destructor, use error_log(), syslog() or something similar.
  *
  * IMPORTANT! To use the emulated destructors you need to create the
- * objects by reference: $obj = new PEAR_child;
+ * objects by reference: $obj =& new PEAR_child;
  *
  * @category   pear
  * @package    PEAR
@@ -263,7 +263,7 @@ class PEAR
      * @access  public
      * @return  bool    true if parameter is an error
      */
-    public static function isError($data, $code = null)
+    function isError($data, $code = null)
     {
         if (!is_a($data, 'PEAR_Error')) {
             return false;
@@ -508,7 +508,7 @@ class PEAR
      * @see PEAR::setErrorHandling
      * @since PHP 4.0.5
      */
-    function raiseError($message = null,
+    function &raiseError($message = null,
                          $code = null,
                          $mode = null,
                          $options = null,

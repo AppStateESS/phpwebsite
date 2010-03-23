@@ -53,7 +53,7 @@ require_once CALENDAR_ROOT.'Calendar.php';
  * Represents a Minute and builds Seconds
  * <code>
  * require_once 'Calendar'.DIRECTORY_SEPARATOR.'Minute.php';
- * $Minute = new Calendar_Minute(2003, 10, 21, 15, 31); // Oct 21st 2003, 3:31pm
+ * $Minute = & new Calendar_Minute(2003, 10, 21, 15, 31); // Oct 21st 2003, 3:31pm
  * $Minute->build(); // Build Calendar_Second objects
  * while ($Second = & $Minute->fetch()) {
  *     echo $Second->thisSecond().'<br />';
