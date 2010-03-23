@@ -81,7 +81,7 @@ if (isset($_REQUEST['BB_vars']))
 if (!empty($_GET['view'])) {
     switch ($_GET['view']) {
         case 'topic':
-            $topic = & new PHPWSBB_Topic((int) $_GET['id']);
+            $topic = new PHPWSBB_Topic((int) $_GET['id']);
             if ($topic->id) {
                 $title = $topic->get_title();
                 $content = $topic->view();
@@ -110,7 +110,7 @@ if (!empty($_GET['view'])) {
 elseif (!empty($_REQUEST['op'])) {
     //If Topic is requested, pre-load it
     if (!empty($_REQUEST['topic'])) {
-        $topic = & new PHPWSBB_Topic((int) $_REQUEST['topic']);
+        $topic = new PHPWSBB_Topic((int) $_REQUEST['topic']);
         $forum = $topic->get_forum();
     }
     //If Forum is requested, pre-load it
@@ -135,7 +135,7 @@ elseif (!empty($_REQUEST['op'])) {
                 Security::log($GLOBALS['BB_message']);
                 break;
             }
-            $topic = & new PHPWSBB_Topic();
+            $topic = new PHPWSBB_Topic();
             if ($topic->create($forum->id) !== true) {
                 $message = $topic->_error;
                 $title = sprintf(dgettext('phpwsbb', 'Editing Topic "%s"'), $topic->get_title());
@@ -232,7 +232,7 @@ elseif (!empty($_REQUEST['op'])) {
              sleep(1);
              }
              // reload & show the topic
-             $topic = & new PHPWSBB_Topic($topic->id);
+             $topic = new PHPWSBB_Topic($topic->id);
              $title = $topic->get_title();
              $content = $topic->view();
              break;

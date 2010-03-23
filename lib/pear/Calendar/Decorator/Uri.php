@@ -61,7 +61,7 @@ require_once CALENDAR_ROOT.'Util'.DIRECTORY_SEPARATOR.'Uri.php';
  * have a specific need to use a decorator
  * <code>
  * $Day = new Calendar_Day(2003, 10, 23);
- * $Uri = & new Calendar_Decorator_Uri($Day);
+ * $Uri = new Calendar_Decorator_Uri($Day);
  * $Uri->setFragments('year', 'month', 'day');
  * echo $Uri->getPrev(); // Displays year=2003&month=10&day=22
  * </code>

@@ -8,7 +8,7 @@
 
 function phatform_uninstall(&$content) {
 
-    $db = & new PHPWS_DB('mod_phatform_forms');
+    $db = new PHPWS_DB('mod_phatform_forms');
     $db->addColumn('id');
     $db->addColumn('archiveTableName');
     $db->addWhere('saved', 1);

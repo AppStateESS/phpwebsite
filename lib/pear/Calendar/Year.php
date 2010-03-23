@@ -53,7 +53,7 @@ require_once CALENDAR_ROOT.'Calendar.php';
  * Represents a Year and builds Months<br>
  * <code>
  * require_once 'Calendar'.DIRECTORY_SEPARATOR.'Year.php';
- * $Year = & new Calendar_Year(2003, 10, 21); // 21st Oct 2003
+ * $Year = new Calendar_Year(2003, 10, 21); // 21st Oct 2003
  * $Year->build(); // Build Calendar_Month objects
  * while ($Month = & $Year->fetch()) {
  *     echo $Month->thisMonth().'<br />';

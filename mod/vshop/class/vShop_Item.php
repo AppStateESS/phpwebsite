@@ -581,7 +581,7 @@ class vShop_Item {
 
         $this->saveKey();
 
-        $search = & new Search($this->key_id);
+        $search = new Search($this->key_id);
         $search->resetKeywords();
         $search->addKeywords($this->title);
         $search->addKeywords($this->description);

@@ -17,14 +17,14 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 if (Current_User::authorized('phpwsbb'))
 switch ($_REQUEST['op']) {
     case 'create_forum':
-        $forum = & new PHPWSBB_Forum();
+        $forum = new PHPWSBB_Forum();
         $title = dgettext('phpwsbb', 'Create a New Forum');
         $content = $forum->edit();
         break;
 
     case 'edit_forum':
         if (empty($forum))
-        $forum = & new PHPWSBB_Forum();
+        $forum = new PHPWSBB_Forum();
         $forum->update();
         $forum->update_forum();
         $forum->save();
@@ -64,13 +64,13 @@ switch ($_REQUEST['op']) {
             // If there is a list...
             if (!empty($ids))
             foreach ($ids AS $recid) {
-                $obj = & new PHPWSBB_Topic($recid);
+                $obj = new PHPWSBB_Topic($recid);
                 $obj->delete();
             }
             // Delete the Forum
             if (empty($message)) {
                 // Delete the forum record & Key id
-                $db = & new PHPWS_DB('phpwsbb_forums');
+                $db = new PHPWS_DB('phpwsbb_forums');
                 $db->addWhere('id', $_REQUEST['forum']);
                 $result = $db->delete();
                 if (PHPWS_Error::logIfError($result))
@@ -148,7 +148,7 @@ switch ($_REQUEST['op']) {
         // otherwise, we're importing a key...
         else {
             // get thread's id#
-            $db = & new PHPWS_DB('comments_threads');
+            $db = new PHPWS_DB('comments_threads');
             $db->addColumn('id');
             $db->addWhere('key_id', $key->id);
             $result = $db->select('one');
@@ -159,7 +159,7 @@ switch ($_REQUEST['op']) {
             $message = PHPWS_Error::printError($result);
             else {
                 // insert the new topic
-                $topic = & new PHPWSBB_Topic();
+                $topic = new PHPWSBB_Topic();
                 $topic->id = $result;
                 $topic->fid = $newforum->id;
                 $topic->key_id = $key->id;
@@ -305,7 +305,7 @@ FROM phpwsbb_topics
 GROUP BY phpwsbb_topics.id
 ORDER BY comments_items.create_time desc
 ';
-        $db = & new PHPWS_DB('phpwsbb_topics');
+        $db = new PHPWS_DB('phpwsbb_topics');
         $result = $db->select(null, $sql);
         if (PHPWS_Error::logIfError($result))
         $message = PHPWS_Error::printError($result);
@@ -345,7 +345,7 @@ ORDER BY comments_items.create_time desc
             $message = $msg_noauth;
             break;
         }
-        $db = & new PHPWS_DB('phpwsbb_topics');
+        $db = new PHPWS_DB('phpwsbb_topics');
         $sql = 'SELECT fid,COUNT(total_posts) AS total_topics, SUM(total_posts) AS total_topic_posts FROM phpwsbb_topics GROUP BY fid';
         $count_info = $db->select(null, $sql);
         if (PHPWS_Error::logIfError($count_info))
@@ -428,7 +428,7 @@ ORDER BY comments_items.create_time desc
                 break;
             }
             // Create a new topic
-            $topic = & new PHPWSBB_Topic();
+            $topic = new PHPWSBB_Topic();
             $topic->is_phpwsbb = $oldthread->id;
             $topic->title = strip_tags(trim($_POST['cm_subject']));
             $topic->summary = $oldthread->_key->summary;
@@ -456,7 +456,7 @@ ORDER BY comments_items.create_time desc
             unset($thread);
         }
         // Move comments
-        $db = & new PHPWS_DB('comments_items');
+        $db = new PHPWS_DB('comments_items');
         $db->addValue('thread_id', $topic->id);
         $db->addWhere('id', explode(',', $_REQUEST['comment_ids']));
         $db->addWhere('thread_id', $oldthread->id);
@@ -465,7 +465,7 @@ ORDER BY comments_items.create_time desc
             break;
         }
         // Update the new thread's stats
-        $db = & new PHPWS_DB('comments_threads');
+        $db = new PHPWS_DB('comments_threads');
         $sql = 'UPDATE comments_threads SET total_comments = (SELECT COUNT(id) FROM comments_items WHERE thread_id = comments_threads.id) WHERE id = '.$topic->id;
         if (PHPWS_Error::logIfError($db->query($sql))) {
             $content = dgettext('phpwsbb', 'Could not update comment count in table "comments_threads"');
@@ -490,7 +490,7 @@ ORDER BY comments_items.create_time desc
             break;
         }
         // If there's an old topic, update its stats
-        $oldtopic = & new PHPWSBB_Topic($oldthread_id);
+        $oldtopic = new PHPWSBB_Topic($oldthread_id);
         if ($oldtopic->id) {
             $oldtopic->update_topic();
             $oldtopic->commit();

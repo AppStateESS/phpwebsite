@@ -105,7 +105,7 @@ class PHPWSBB_Data
             return unserialize($s);
         }
         // Load all forum records
-        $db = & new PHPWS_DB('phpwsbb_forums');
+        $db = new PHPWS_DB('phpwsbb_forums');
         $db->addColumn('id');
         $db->addColumn('title');
         $db->addOrder('sortorder asc');
@@ -147,7 +147,7 @@ class PHPWSBB_Data
             return unserialize($s);
         }
         // Load all forum records
-        $db = & new PHPWS_DB('phpwsbb_forums');
+        $db = new PHPWS_DB('phpwsbb_forums');
         $db->addColumn('id');
         if(!Current_User::allow('phpwsbb', 'manage_forums'))
         Key::restrictView($db, 'phpwsbb', false);
@@ -278,7 +278,7 @@ class PHPWSBB_Data
             }
         }
         // Load all forum records
-        $db = & new PHPWS_DB('phpwsbb_moderators');
+        $db = new PHPWS_DB('phpwsbb_moderators');
         $db->addColumn('*');
         $db->addColumn('phpwsbb_forums.title');
         $db->addColumn('users.display_name');

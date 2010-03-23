@@ -604,7 +604,7 @@ class Signup {
         $message[] = '';
         $message[] = dgettext('signup', 'You have one hour to confirm your application.');
 
-        $mail = & new PHPWS_Mail;
+        $mail = new PHPWS_Mail;
 
         $mail->addSendTo($send_to);
         $mail->setSubject($subject);

@@ -245,7 +245,7 @@ class Layout {
      * retains style sheet information.
      *
      */
-    public function nakedDisplay($content=NULL, $title=NULL, $use_blank=false)
+    public static function nakedDisplay($content=NULL, $title=NULL, $use_blank=false)
     {
         Layout::disableRobots();
         echo Layout::wrap($content, $title, $use_blank);
@@ -265,7 +265,7 @@ class Layout {
         unset($GLOBALS['Layout'][$module][$contentVar]);
     }
 
-    public function disableRobots()
+    public static function disableRobots()
     {
         $GLOBALS['Layout_Robots'] = '00';
     }
@@ -925,7 +925,7 @@ class Layout {
         }
     }
 
-    public function cacheOff()
+    public static function cacheOff()
     {
         $_SESSION['Layout_Settings']->cache = FALSE;
     }
@@ -1005,7 +1005,7 @@ class Layout {
     /**
      * Wraps the content with the layout header
      */
-    public function wrap($content, $title=NULL, $use_blank=false)
+    public static function wrap($content, $title=NULL, $use_blank=false)
     {
         $template['CONTENT'] = $content;
         Layout::loadHeaderTags($template);

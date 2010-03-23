@@ -29,7 +29,7 @@ class PHPWSBB_Lists
         $cat_arr = unserialize($s);
         else {
             // Load all forum objects into an indexed array
-            $db = & new PHPWS_DB('phpwsbb_forums');
+            $db = new PHPWS_DB('phpwsbb_forums');
             $db->addOrder('sortorder asc');
             $db->addOrder('title asc');
             if(!Current_User::allow('phpwsbb', 'manage_forums'))
@@ -60,7 +60,7 @@ class PHPWSBB_Lists
                 $cat_arr[$value['cat_id']]['forums'][] = $cat_arr[0]['forums'][$value['id']];
                 unset($cat_arr[0]['forums'][$value['id']]);
                 if (!isset($cat_arr[$value['cat_id']]['category'])) {
-                    $category = & new Category($value['cat_id']);
+                    $category = new Category($value['cat_id']);
                     $a = array('CATEGORY_NAME' => $category->getTitle(),
                                    'CATEGORY_DESCRIPTION' => $category->getDescription(),
                                    'SECTION_TITLE' => dgettext('phpwsbb', 'Section'));
@@ -79,7 +79,7 @@ class PHPWSBB_Lists
             }
         }
 
-        $tpl = & new PHPWS_Template('phpwsbb');
+        $tpl = new PHPWS_Template('phpwsbb');
         $tpl->setFile('forum_list.tpl');
         // Loop through the category array for the amount of rows
         foreach ($cat_arr AS $key => $value) {

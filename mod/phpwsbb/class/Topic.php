@@ -72,7 +72,7 @@ class PHPWSBB_Topic
         $this->loadKey($key);
 
         elseif(!is_array($id)) {
-            $db = & new PHPWS_DB('phpwsbb_topics');
+            $db = new PHPWS_DB('phpwsbb_topics');
             $db->addWhere('id', (int) $id);
             $result = $db->loadObject($this);
             if (PHPWS_Error::logIfError($result))
@@ -372,7 +372,7 @@ class PHPWSBB_Topic
     public function update_topic ()
     {
         // Update the lastpost information
-        $db = & new PHPWS_DB('comments_items');
+        $db = new PHPWS_DB('comments_items');
         $db->addColumn('comments_items.id');
         $db->addColumn('comments_items.create_time');
         $db->addColumn('comments_items.author_id');
@@ -516,7 +516,7 @@ class PHPWSBB_Topic
         }
         if ($insert && $this->is_phpwsbb)
         $this->setKey();
-        $db = & new PHPWS_DB('phpwsbb_topics');
+        $db = new PHPWS_DB('phpwsbb_topics');
         $result = $db->saveObject($this, false, !(bool) $insert);
         if (PHPWS_Error::logIfError($result)) {
             $this->_error = dgettext('phpwsbb', 'There was an error when saving this topic to the database!');
@@ -663,7 +663,7 @@ class PHPWSBB_Topic
      */
     public function drop()
     {
-        $db = & new PHPWS_DB('phpwsbb_topics');
+        $db = new PHPWS_DB('phpwsbb_topics');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
         if (!$result || PHPWS_Error::logIfError($result))

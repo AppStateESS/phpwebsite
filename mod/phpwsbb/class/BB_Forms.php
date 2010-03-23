@@ -23,7 +23,7 @@ class PHPWSBB_Forms
      */
     public function edit_configuration ()
     {
-        $form = & new PHPWS_Form('Config');
+        $form = new PHPWS_Form('Config');
         $form->setAction('index.php?module=phpwsbb&op=config');
         $val = PHPWS_Settings::get('phpwsbb');
 
@@ -185,12 +185,12 @@ class PHPWSBB_Forms
     public function move_comments ($comment_ids)
     {
         // Get the thread object
-        $c_item = & new Comment_Item($comment_ids[0]);
-        $oldthread = & new Comment_Thread($c_item->getThreadId());
+        $c_item = new Comment_Item($comment_ids[0]);
+        $oldthread = new Comment_Thread($c_item->getThreadId());
 
         // Get the thread object
-        $c_item = & new Comment_Item($comment_ids[0]);
-        $oldthread = & new Comment_Thread($c_item->getThreadId());
+        $c_item = new Comment_Item($comment_ids[0]);
+        $oldthread = new Comment_Thread($c_item->getThreadId());
 
         $form = new PHPWS_Form('forum_list');
         $form->addhidden('module', 'phpwsbb');
@@ -228,8 +228,8 @@ class PHPWSBB_Forms
         return dgettext('phpwsbb', 'No forums have been created yet');
 
         // Get the thread object
-        $c_item = & new Comment_Item($comment_ids[0]);
-        $thread = & new Comment_Thread($c_item->getThreadId());
+        $c_item = new Comment_Item($comment_ids[0]);
+        $thread = new Comment_Thread($c_item->getThreadId());
 
         $form = new PHPWS_Form('forum_list');
         $form->addhidden('module', 'phpwsbb');
@@ -241,7 +241,7 @@ class PHPWSBB_Forms
         $form->addTplTag('MOD_TITLE', $title);
         $form->addSelect('new_forum', $forums);
         // Get the current forum
-        $topic = & new PHPWSBB_Topic($thread->id);
+        $topic = new PHPWSBB_Topic($thread->id);
         if ($topic->fid)
         $form->setMatch('new_forum', $topic->fid);
         $form->setLabel('new_forum', dgettext('phpwsbb', 'Create a new Topic in'));

@@ -581,7 +581,7 @@ class Comment_Thread {
         return;
         PHPWS_Core::initModClass('phpwsbb', 'Topic.php');
         PHPWS_Core::initModClass('phpwsbb', 'Forum.php');
-        $topic = & new PHPWSBB_Topic($this->id);
+        $topic = new PHPWSBB_Topic($this->id);
         if ($topic->id)
         $this->phpwsbb_topic = $topic;
     }

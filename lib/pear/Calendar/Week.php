@@ -54,7 +54,7 @@ require_once CALENDAR_ROOT.'Calendar.php';
  * Represents a Week and builds Days in tabular format<br>
  * <code>
  * require_once 'Calendar/Week.php';
- * $Week = & new Calendar_Week(2003, 10, 1); Oct 2003, 1st tabular week
+ * $Week = new Calendar_Week(2003, 10, 1); Oct 2003, 1st tabular week
  * echo '<tr>';
  * while ($Day = & $Week->fetch()) {
  *     if ($Day->isEmpty()) {

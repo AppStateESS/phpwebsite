@@ -52,7 +52,7 @@ class PHPWSBB_Forum
             return;
         }
         if(!is_array($id)) {
-            $db = & new PHPWS_DB('phpwsbb_forums');
+            $db = new PHPWS_DB('phpwsbb_forums');
             $this->addColumns($db);
             $db->addWhere('id', (int) $id);
             $result = $db->loadObject($this);
@@ -122,7 +122,7 @@ class PHPWSBB_Forum
         // Retrieve lastpost/topic information
         if ($getlasttopic) {
             $lastthread = new PHPWSBB_Topic();
-            $db = & new PHPWS_DB('phpwsbb_topics');
+            $db = new PHPWS_DB('phpwsbb_topics');
             PHPWSBB_Topic::addColumns($db);
             $db->addWhere('fid', $this->id);
             Key::restrictView($db, 'phpwsbb');
@@ -478,7 +478,7 @@ class PHPWSBB_Forum
         // Add a moderator
         if (!empty($_REQUEST['add_member']) && !isset($GLOBALS['Moderators_byUser'][(int) $_REQUEST['add_member']][$this->id])) {
             $id = (int) $_REQUEST['add_member'];
-            $user = & new PHPWS_User($id);
+            $user = new PHPWS_User($id);
             if ($user->allow('comments')) {
                 $db = new PHPWS_DB('phpwsbb_moderators');
                 $db->addValue('forum_id', $this->id);
@@ -507,7 +507,7 @@ class PHPWSBB_Forum
      */
     public function update_forum ($commit = false) {
         // Get topic counts
-        $db = & new PHPWS_DB('phpwsbb_topics');
+        $db = new PHPWS_DB('phpwsbb_topics');
         $sql = 'SELECT COUNT(total_posts), SUM(total_posts) FROM phpwsbb_topics WHERE total_posts >0 AND fid = '.$this->id;
         $row = $db->select('row', $sql);
         $this->topics = (int) $row['COUNT(total_posts)'];
@@ -536,7 +536,7 @@ class PHPWSBB_Forum
             return false;
         }
 
-        $db = & new PHPWS_DB('phpwsbb_forums');
+        $db = new PHPWS_DB('phpwsbb_forums');
         $result = $db->saveObject($this);
         if (PHPWS_Error::logIfError($result)) {
             $GLOBALS['BB_message'] = dgettext('phpwsbb', 'There was an error when saving this forum to the database!');
@@ -547,14 +547,14 @@ class PHPWSBB_Forum
         $update = FALSE;
         if (empty($this->key_id))
         {
-            $key = & new Key;
+            $key = new Key;
             $update = TRUE;
         }
         else
         {
-            $key = & new Key($this->key_id);
+            $key = new Key($this->key_id);
             if (PEAR::isError($key->_error)) {
-                $key = & new Key;
+                $key = new Key;
                 $update = TRUE;
             }
         }
@@ -569,7 +569,7 @@ class PHPWSBB_Forum
         $result = $key->save();
         $this->key_id = $key->id;
         if ($update) {
-            $db1 = & new PHPWS_DB('phpwsbb_forums');
+            $db1 = new PHPWS_DB('phpwsbb_forums');
             $db1->addValue('key_id', $this->key_id);
             $db1->addWhere('id', $this->id);
             $db1->update();

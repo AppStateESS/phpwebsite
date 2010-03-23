@@ -668,7 +668,7 @@ class vList_Listing {
             PHPWS_Error::logIfError($db->delete());
         }
 
-        $search = & new Search($this->key_id);
+        $search = new Search($this->key_id);
         $search->resetKeywords();
         $search->addKeywords($this->title);
         $search->addKeywords($this->description);

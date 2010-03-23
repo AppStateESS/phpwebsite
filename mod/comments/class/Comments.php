@@ -386,7 +386,7 @@ class Comments {
                 break;
 
             case 'lock_thread':
-                $thread = & new Comment_Thread((int) @$_REQUEST['thread_id']);
+                $thread = new Comment_Thread((int) @$_REQUEST['thread_id']);
                 if ($thread->userCan())
                 $thread->setLock((int) @$_REQUEST['lock']);
                 PHPWS_Core::reroute($thread->_key->url);
@@ -825,7 +825,7 @@ class Comments {
         return;
 
         // look for all users that are monitoring this thread
-        $db = & new PHPWS_DB('comments_monitors');
+        $db = new PHPWS_DB('comments_monitors');
         $db->addColumn('comments_monitors.user_id');
         $db->addColumn('users.id');
         $db->addColumn('users.username');
@@ -840,7 +840,7 @@ class Comments {
         return;
 
         // Send all email notices (not current user)
-        //xxxxNOTE: Need to create a core_based Mail_Queue to pop these into for Comments & Newsletter modules
+        //xxxxNOTE: Need to create a core_based Mail_Queue to pop these into for Comments newsletter modules
         PHPWS_Core::initCoreClass('Mail.php');
         $mail = new PHPWS_Mail;
         foreach ($result AS $to) {

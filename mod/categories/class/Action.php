@@ -12,7 +12,7 @@ PHPWS_Core::initModClass('categories', 'Category.php');
 
 class Categories_Action {
 
-    public function admin()
+    public static function admin()
     {
         if (!Current_User::authorized('categories')) {
             Current_User::disallow(dgettext('categories', 'You are not authorized to administrate categories.'));
@@ -22,7 +22,7 @@ class Categories_Action {
         $message = Categories_Action::getMessage();
 
         $content = array();
-        $panel = & Categories_Action::cpanel();
+        $panel = Categories_Action::cpanel();
 
         if (isset($_REQUEST['subaction'])) {
             $subaction = $_REQUEST['subaction'];
@@ -125,7 +125,7 @@ class Categories_Action {
         exit();
     }
 
-    public function getMessage()
+    public static function getMessage()
     {
         $message = NULL;
         if (isset($_SESSION['Category_message'])) {
@@ -193,7 +193,7 @@ class Categories_Action {
     }
 
 
-    public function cpanel()
+    public static function cpanel()
     {
         Layout::addStyle('categories');
 
@@ -216,7 +216,7 @@ class Categories_Action {
     }
 
 
-    public function edit(Category $category, $errors=NULL)
+    public static function edit(Category $category, $errors=NULL)
     {
         $template = NULL;
         PHPWS_Core::initCoreClass('Editor.php');
@@ -274,7 +274,7 @@ class Categories_Action {
         return PHPWS_Template::process($final_template, 'categories', 'forms/edit.tpl');
     }
 
-    public function getManager($image_id, $image_name)
+    public static function getManager($image_id, $image_name)
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager($image_name, $image_id);

@@ -72,7 +72,7 @@ function podcaster_uninstall(&$content) {
     }
 
 
-    $form = & new PHPWS_Form('rm_media_confirm');
+    $form = new PHPWS_Form('rm_media_confirm');
 
     $form->addHidden('module', 'boost');
     $form->addHidden('opmod', 'podcaster');

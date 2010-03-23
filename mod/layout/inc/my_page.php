@@ -47,7 +47,7 @@ function my_page()
 class Layout_User_Settings {
     function user_form()
     {
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         My_Page::addHidden($form, 'layout');
 
         $form->addHidden('lo_command', 'save_settings');

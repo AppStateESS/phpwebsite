@@ -283,7 +283,7 @@ class Categories {
     }
 
 
-    public function getCategories($mode='sorted', $drop=NULL)
+    public static function getCategories($mode='sorted', $drop=NULL)
     {
         $db = new PHPWS_DB('categories');
 
@@ -328,7 +328,7 @@ class Categories {
     }
 
 
-    public function _buildList($list, $drop=NULL)
+    public static function _buildList($list, $drop=NULL)
     {
         if (empty($list)) {
             return NULL;

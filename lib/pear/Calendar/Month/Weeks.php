@@ -59,7 +59,7 @@ require_once CALENDAR_ROOT.'Month.php';
  * Represents a Month and builds Weeks
  * <code>
  * require_once 'Calendar'.DIRECTORY_SEPARATOR.'Month'.DIRECTORY_SEPARATOR.'Weeks.php';
- * $Month = & new Calendar_Month_Weeks(2003, 10); // Oct 2003
+ * $Month = new Calendar_Month_Weeks(2003, 10); // Oct 2003
  * $Month->build(); // Build Calendar_Day objects
  * while ($Week = & $Month->fetch()) {
  *     echo $Week->thisWeek().'<br />';

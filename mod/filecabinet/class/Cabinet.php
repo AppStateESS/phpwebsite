@@ -519,7 +519,7 @@ class Cabinet {
         Layout::add($main);
     }
 
-    public function fileManager($itemname, $file_id=0, $module=null)
+    public static function fileManager($itemname, $file_id=0, $module=null)
     {
         Layout::addStyle('filecabinet');
         PHPWS_Core::initModClass('filecabinet', 'File_Manager.php');
@@ -1198,7 +1198,7 @@ class Cabinet {
         return $all;
     }
 
-    public function getResizes($max_width=0, $add_default=false)
+    public static function getResizes($max_width=0, $add_default=false)
     {
         if (!$max_width) {
             $max_width = PHPWS_Settings::get('filecabinet', 'max_image_dimension');

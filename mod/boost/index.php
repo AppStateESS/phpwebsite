@@ -30,7 +30,7 @@ PHPWS_Core::initModClass('boost', 'Form.php');
 PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 PHPWS_Core::initModClass('boost', 'Action.php');
 
-$boostPanel = & new PHPWS_Panel('boost');
+$boostPanel = new PHPWS_Panel('boost');
 $boostPanel->enableSecure();
 Boost_Form::setTabs($boostPanel);
 

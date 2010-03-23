@@ -55,7 +55,7 @@ if (PHPWS_Settings::get('phpwsbb', 'showlatestpostsblock')) {
     }
     if (empty($list))  {
         PHPWS_Core::initModClass('phpwsbb', 'Topic.php');
-        $db = & new PHPWS_DB('phpwsbb_topics');
+        $db = new PHPWS_DB('phpwsbb_topics');
         PHPWSBB_Topic::addColumns($db);
         Key::restrictView($db, 'phpwsbb');
         $db->addOrder('lastpost_date desc');

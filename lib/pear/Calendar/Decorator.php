@@ -49,8 +49,8 @@
 .*         return date('D', $day);
  *     }
  * }
- * $Day = & new Calendar_Day(2003, 10, 25);
- * $DayDecorator = & new DayDecorator($Day);
+ * $Day = new Calendar_Day(2003, 10, 25);
+ * $DayDecorator = new DayDecorator($Day);
  * echo $DayDecorator->thisDay(); // Outputs "Sat"
  * </code>
  *
