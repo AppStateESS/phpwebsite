@@ -14,7 +14,7 @@ class PHPWS_Settings {
     /**
      * Returns the value of a setting or false if not set
      */
-    public function get($module, $setting=null)
+    public static function get($module, $setting=null)
     {
         if (empty($setting) && PHPWS_Settings::is_set($module)) {
             return $GLOBALS['PHPWS_Settings'][$module];
@@ -31,7 +31,7 @@ class PHPWS_Settings {
      * checking against default settings. If all were pulled at once,
      * newly added settings would get ignored.
      */
-    public function is_set($module, $setting=null)
+    public static function is_set($module, $setting=null)
     {
         if (!isset($GLOBALS['PHPWS_Settings'][$module])) {
             $result = PHPWS_Settings::load($module);
@@ -54,7 +54,7 @@ class PHPWS_Settings {
         }
     }
 
-    public function in_array($module, $setting, $value)
+    public static function in_array($module, $setting, $value)
     {
         if (!PHPWS_Settings::is_set($module, $setting)) {
             return false;
@@ -65,7 +65,7 @@ class PHPWS_Settings {
     /**
      * Sets the module setting value
      */
-    public function set($module, $setting, $value=null)
+    public static function set($module, $setting, $value=null)
     {
         if (empty($setting)) {
             return;
@@ -86,7 +86,7 @@ class PHPWS_Settings {
      * Not in use and probably not usable. Removing notes on it but keeping it just
      * in case someone is using it.
      */
-    public function append($module, $setting, $value)
+    public static function append($module, $setting, $value)
     {
         if (is_array($setting)) {
             foreach ($setting as $key => $subval) {
@@ -109,7 +109,7 @@ class PHPWS_Settings {
     /**
      * updates the settings table
      */
-    public function save($module)
+    public static function save($module)
     {
         if (!PHPWS_Settings::is_set($module)) {
             return false;
@@ -160,7 +160,7 @@ class PHPWS_Settings {
         PHPWS_Settings::load($module);
     }
 
-    public function loadConfig($module)
+    public static function loadConfig($module)
     {
         $filename = sprintf('%smod/%s/inc/settings.php', PHPWS_SOURCE_DIR, $module);
 
@@ -171,7 +171,7 @@ class PHPWS_Settings {
         }
     }
 
-    public function reset($module, $value)
+    public static function reset($module, $value)
     {
         $default = PHPWS_Settings::loadConfig($module);
         if (!$default) {
@@ -193,7 +193,7 @@ class PHPWS_Settings {
      * Loads the settings into the session
      *
      */
-    public function load($module)
+    public static function load($module)
     {
         $default = PHPWS_Settings::loadConfig($module);
         if (!$default) {
@@ -235,7 +235,7 @@ class PHPWS_Settings {
         return true;
     }
 
-    public function getType($value)
+    public static function getType($value)
     {
         switch (gettype($value)) {
             case 'NULL':
@@ -276,7 +276,7 @@ class PHPWS_Settings {
     /**
      * Unregisters a module's settings
      */
-    public function unregister($module)
+    public static function unregister($module)
     {
         $db = new PHPWS_DB('mod_settings');
         $db->addWhere('module', $module);
@@ -286,7 +286,7 @@ class PHPWS_Settings {
     /**
      * Clears the settings global
      */
-    public function clear()
+    public static function clear()
     {
         unset($GLOBALS['PHPWS_Settings']);
     }

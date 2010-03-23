@@ -9,7 +9,7 @@ require_once 'Cache/Lite.php';
 
 class PHPWS_Cache {
 
-    public function initCache($lifetime=CACHE_LIFETIME)
+    public static function initCache($lifetime=CACHE_LIFETIME)
     {
         $options = array(
                          'cacheDir' => CACHE_DIRECTORY,
@@ -20,7 +20,7 @@ class PHPWS_Cache {
         return $cache;
     }
 
-    public function isEnabled()
+    public static function isEnabled()
     {
         if (defined('ALLOW_CACHE_LITE')) {
             return ALLOW_CACHE_LITE;
@@ -35,7 +35,7 @@ class PHPWS_Cache {
      * @param int    lifetime Seconds to retain cache
      * @returns string on success, FALSE otherwise
      */
-    public function get($key, $lifetime=CACHE_LIFETIME)
+    public static function get($key, $lifetime=CACHE_LIFETIME)
     {
         if (!PHPWS_Cache::isEnabled()) {
             return;
@@ -46,21 +46,21 @@ class PHPWS_Cache {
         return $cache->get(md5($key));
     }
 
-    public function writeIni($switch=0)
+    public static function writeIni($switch=0)
     {
         PHPWS_Core::initCoreClass('File.php');
         $info = "cache = $switch\n";
         return PHPWS_File::writeFile(CACHE_DIRECTORY . 'phpws_cache.ini', $info, TRUE);
     }
 
-    public function remove($key)
+    public static function remove($key)
     {
         $key .= SITE_HASH . CURRENT_LANGUAGE;
         $cache = PHPWS_Cache::initCache();
         return $cache->remove(md5($key));
     }
 
-    public function clearCache()
+    public static function clearCache()
     {
         $cache = PHPWS_Cache::initCache();
         $cache->clean();
@@ -72,7 +72,7 @@ class PHPWS_Cache {
      * @param string content Content stored in the cache
      * @returns boolean TRUE on success, FALSE otherwise
      */
-    public function save($key, $content)
+    public static function save($key, $content)
     {
         $key .= SITE_HASH . CURRENT_LANGUAGE;
         if (!PHPWS_Cache::isEnabled()) {

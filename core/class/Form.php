@@ -402,7 +402,7 @@ class PHPWS_Form {
     {
         $allowed_month_formats = array('%b', '%B', '%m');
         if ($current_date < 1) {
-            $current_date = mktime();
+            $current_date = time();
         }
 
         if (!in_array($month_format, $allowed_month_formats)) {
@@ -625,10 +625,10 @@ class PHPWS_Form {
     }
 
 
-    public function makeLabel($name, $label)
+    public function makeLabel($element, $label)
     {
-        $required = $this->getRequired();
-        return sprintf('<label class="%s-label" id="%s-label" for="%s">%s</label>%s', $this->type, $name, $name, $label, $required);
+        $required = $element->getRequired();
+        return sprintf('<label class="%s-label" id="%s-label" for="%s">%s</label>%s', $element->type, $element->name, $element->name, $label, $required);
     }
 
 
@@ -2226,7 +2226,7 @@ class Form_Element {
                 }
 
                 if ($tagMode) {
-                    return PHPWS_Form::makeLabel($this->id, $label);
+                    return $this->_form->makeLabel($this, $label);
                 } else {
                     return $label;
                 }

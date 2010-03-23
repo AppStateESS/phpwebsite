@@ -16,6 +16,9 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 require_once PHPWS_SOURCE_DIR . 'core/conf/defines.php';
 require_once PHPWS_SOURCE_DIR . 'core/conf/language.php';
 
+date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
+
+
 if (!defined('PHPWS_HOME_DIR')) {
     define('PHPWS_HOME_DIR', './');
 }
@@ -174,7 +177,7 @@ function initLanguage()
                     if (setLanguage($langTest)) {
                         $locale_found = TRUE;
                         $locale = $langTest;
-                        setcookie('phpws_default_language', $locale, mktime() + CORE_COOKIE_TIMEOUT);
+                        setcookie('phpws_default_language', $locale, time() + CORE_COOKIE_TIMEOUT);
                         break;
                     }
                 }
@@ -187,7 +190,7 @@ function initLanguage()
 
         if ($locale_found == FALSE) {
             $locale = setLanguage(DEFAULT_LANGUAGE);
-            setcookie('phpws_default_language', $locale, mktime() + CORE_COOKIE_TIMEOUT);
+            setcookie('phpws_default_language', $locale, time() + CORE_COOKIE_TIMEOUT);
         }
     }
 

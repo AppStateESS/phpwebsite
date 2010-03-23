@@ -1,4 +1,4 @@
-<?php
+f<?php
 /**
  * Controls the text parsing and profanity controls for phpWebSite
  * Also contains extra HTML utilities
@@ -265,7 +265,7 @@ class PHPWS_Text {
         return $text;
     }
 
-    public function fixAmpersand($text)
+    public static function fixAmpersand($text)
     {
         return preg_replace('/&(?!\w+;)(?!#)/U', '&amp;\\1', $text);
     }
@@ -390,7 +390,7 @@ class PHPWS_Text {
      *                               run against the output text.
      * @return  string  text         Stripped text
      */
-    public function parseOutput($text, $decode=ENCODE_PARSED_TEXT, $use_filters=false, $use_breaker=USE_BREAKER)
+    public static function parseOutput($text, $decode=ENCODE_PARSED_TEXT, $use_filters=false, $use_breaker=USE_BREAKER)
     {
         $t = new PHPWS_Text;
         $t->setText($text, $decode);
@@ -495,7 +495,7 @@ class PHPWS_Text {
         return sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], $title);
     }
 
-    public function quickLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
+    public static function quickLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
     {
         $link = new PHPWS_Link($subject, $module, $getVars);
         $link->setTarget($target);
@@ -516,7 +516,7 @@ class PHPWS_Text {
     /**
      * Returns a module link with the authkey attached
      */
-    public function secureLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
+    public static function secureLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
     {
         $link = PHPWS_Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
         $link->secure = true;
@@ -534,7 +534,7 @@ class PHPWS_Text {
      * @param boolean add_base    If true, add the site url to the address
      * @param boolean convert_amp If true, use "&amp;" instead of "&"
      */
-    public function linkAddress($module=null, $getVars=null, $secure=false, $add_base=false, $convert_amp=true, $rewrite=false)
+    public static function linkAddress($module=null, $getVars=null, $secure=false, $add_base=false, $convert_amp=true, $rewrite=false)
     {
         $link = new PHPWS_Link(null, $module, $getVars);
         $link->secure      = $secure;
@@ -564,7 +564,7 @@ class PHPWS_Text {
      * @param string class_name String added to css class
      * @return string The complated link.
      */
-    public function moduleLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
+    public static function moduleLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
     {
         $link = PHPWS_Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
         return $link->get();
@@ -629,7 +629,7 @@ class PHPWS_Text {
     /**
      * Makes links relative to home site
      */
-    public function makeRelative(&$text, $prefix=true, $inlink_only=false)
+    public static function makeRelative(&$text, $prefix=true, $inlink_only=false)
     {
         $address = addslashes(PHPWS_Core::getHomeHttp());
         if ($prefix) {
@@ -653,7 +653,7 @@ class PHPWS_Text {
      * @param allowed_mods mixed Array of allowed modules or string of one
      * @param ignore_mods  mixed Array of ignored modules or string of one
      */
-    public function parseTag($text, $allowed_mods=null, $ignored_mods=null)
+    public static function parseTag($text, $allowed_mods=null, $ignored_mods=null)
     {
         if (!isset($GLOBALS['embedded_tags'])) {
             return $text;
@@ -684,7 +684,7 @@ class PHPWS_Text {
         return $text;
     }
 
-    public function addTag($module, $function_names)
+    public static function addTag($module, $function_names)
     {
         if (is_string($function_names)) {
             $GLOBALS['embedded_tags'][$module][] = $function_names;
@@ -815,7 +815,7 @@ class PHPWS_Text {
      * Returns a condensed version of text based on the maximum amount
      * of characters allowed.
      */
-    public function condense($text, $max_characters=255)
+    public static function condense($text, $max_characters=255)
     {
         $text = strip_tags($text);
         if (strlen($text) < $max_characters) {

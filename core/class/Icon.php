@@ -27,7 +27,7 @@ class Icon extends Image {
     {
         static $icon_objects = null;
         if (!isset($icon_objects[$type])) {
-            Icon::loadIcon($type, &$icon_objects);
+            Icon::loadIcon($type, $icon_objects);
         }
         return $icon_objects[$type];
     }
@@ -37,7 +37,7 @@ class Icon extends Image {
         return parent::__toString();
     }
 
-    public function show($type, $alt=null)
+    public static function show($type, $alt=null)
     {
         $icon = Icon::get($type);
         if ($alt) {
@@ -46,7 +46,7 @@ class Icon extends Image {
         return $icon->__toString();
     }
 
-    private static function loadIcon($type, $icon_objects)
+    private static function loadIcon($type, &$icon_objects)
     {
         static $params = null;
         if (empty($params)) {

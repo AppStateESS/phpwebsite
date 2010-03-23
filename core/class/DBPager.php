@@ -1453,7 +1453,7 @@ class DBPager {
         }
 
         $index_set = false;
-        $tmp_file = PHPWS_Text::randomString(10) . mktime();
+        $tmp_file = PHPWS_Text::randomString(10) . time();
         $directory = CACHE_DIRECTORY;
         $file_path = sprintf('%s/%s', $directory, $tmp_file);;
         $fp = fopen($file_path, 'w');
@@ -1482,7 +1482,7 @@ class DBPager {
             fwrite($fp, $row);
         }
         fclose($fp);
-        $new_file = mktime() . '_pager.csv';
+        $new_file = time() . '_pager.csv';
 
         require_once 'HTTP/Download.php';
         $dl = new HTTP_Download;

@@ -128,7 +128,7 @@ class PHPWS_DateTime extends PHPWS_Template {
         } elseif ($data)
         $new_data = $data;
         else
-        $new_data= mktime();
+        $new_data= time();
 
         $date["year"] = date($this->date_year, $new_data);
         $date["month"] = date($this->date_month, $new_data);
@@ -201,7 +201,7 @@ class PHPWS_DateTime extends PHPWS_Template {
         $d = substr($date, 6, 2);
 
         return mktime(12,0,0, $m, $d, $y);
-    }// END FUNC mktime()
+    }// END FUNC time()
 
     /**
      * Creates a month array for formDate
@@ -247,7 +247,7 @@ class PHPWS_DateTime extends PHPWS_Template {
      */
     public function yearArray($start=NULL, $length=10){
         if (!$start)
-        $start = date("Y", mktime());
+        $start = date("Y", time());
 
         for ($i=$start; $i<=$start+$length; $i++){
             $date = $this->date(mktime(0,0,0,1,1,$i));

@@ -29,7 +29,7 @@ if (!defined('BBCODE_QUOTE_TYPE')) {
 
 function bb_filter($bb2html)
 {
-    $title = mktime();
+    $title = time();
     /*      pre-formatted text (even bbcode inside [pre] text will remain untouched, as it should be)
      there may be multiple <pre> blocks, so we grab them all and create an array     */
     $pre = array(); $i=0;

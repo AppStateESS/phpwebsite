@@ -210,7 +210,7 @@ class Key {
             return false;
         }
 
-        $now = mktime();
+        $now = time();
         if ($check_dates &&
         (($this->hide_after < $now) || ($this->show_after > $now))) {
             return false;
@@ -280,7 +280,7 @@ class Key {
         }
 
         if (empty($this->create_date)) {
-            $this->create_date = mktime();
+            $this->create_date = time();
         }
 
         if (empty($this->creator)) {
@@ -291,7 +291,7 @@ class Key {
         $this->updater = Current_User::getDisplayName();
         $this->updater_id = Current_User::getId();
 
-        $this->update_date = mktime();
+        $this->update_date = time();
 
         $db = new PHPWS_DB('phpws_key');
 
@@ -429,7 +429,7 @@ class Key {
         return ($this->module == 'home' ? true : false);
     }
 
-    public function getHomeKey()
+    public static function getHomeKey()
     {
         if (!isset($GLOBALS['Home_Key'])) {
             $key = new Key;
@@ -516,7 +516,7 @@ class Key {
      * Retrieves the current flagged key. Will return the home key if
      * on the home page and allow_home is true.
      */
-    public function getCurrent($allow_home=true)
+    public static function getCurrent($allow_home=true)
     {
         if (!isset($GLOBALS['Current_Flag'])) {
             if (isset($_REQUEST['module']) || !$allow_home) {
@@ -542,9 +542,9 @@ class Key {
      * to your db object.
      *
      */
-    public function restrictView($db, $module=null, $check_dates=true, $source_table=null)
+    public static function restrictView($db, $module=null, $check_dates=true, $source_table=null)
     {
-        $now = mktime();
+        $now = time();
         if (empty($source_table)) {
             $source_table = $db->tables[0];
         }
@@ -646,7 +646,7 @@ class Key {
      * @param  string   key_id_column : (optional) Usually "key_id".  Only use this if you allow edits where "key_id=0"
      * @param  string   owner_id_column : (optional) Only use this if you allow edits on content created by the user
      */
-    public function restrictEdit($db, $module, $edit_permission=null, $source_table=null, $key_id_column=null, $owner_id_column=null)
+    public static function restrictEdit($db, $module, $edit_permission=null, $source_table=null, $key_id_column=null, $owner_id_column=null)
     {
         if (Current_User::isDeity()) {
             return;
@@ -718,7 +718,7 @@ class Key {
     /**
      * A set of checks on a key to see if it is usable for content indexing
      */
-    public function checkKey($key, $allow_home_key=true) {
+    public static function checkKey($key, $allow_home_key=true) {
         if ( empty($key) || isset($key->_error) ) {
             return false;
         }

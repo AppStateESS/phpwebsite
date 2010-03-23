@@ -22,7 +22,7 @@
 
 abstract class Data {
 
-    public function show($hidden_values = null)
+    public function debug($hidden_values = null)
     {
         if (function_exists('xdebug_var_dump')) {
             // xdebug adds <pre> tags

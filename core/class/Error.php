@@ -7,11 +7,11 @@
 require_once 'PEAR.php';
 
 class PHPWS_Error {
-    public function isError($item){
+    public static function isError($item){
         return PEAR::isError($item);
     }
 
-    public function logIfError($item)
+    public static function logIfError($item)
     {
         if (PEAR::isError($item)) {
             PHPWS_Error::log($item);

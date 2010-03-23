@@ -144,7 +144,8 @@ class PHPWS_DB {
             return true;
         }
 
-        $connect = DB::connect($dsn);
+        $pear_db = new DB;
+        $connect = $pear_db->connect($dsn);
 
         if (PEAR::isError($connect)) {
             if (CLEAR_DSN) {
@@ -773,7 +774,7 @@ class PHPWS_DB {
     }
 
 
-    public function checkOperator($operator)
+    public static function checkOperator($operator)
     {
         $allowed = array('>',
                          '>=',
@@ -1967,7 +1968,7 @@ class PHPWS_DB {
     }
 
 
-    public function disconnect()
+    public static function disconnect()
     {
         if (empty($GLOBALS['PHPWS_DB']['dbs'])) {
             return;
