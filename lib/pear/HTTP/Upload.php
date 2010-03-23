@@ -702,11 +702,13 @@ class HTTP_Upload_File extends HTTP_Upload_Error
     /**
      * Some error occured during upload (most common due a file size problem,
      * like max size exceeded or 0 bytes long).
+     * 
+     * Changed for phpWebSite to conform with php 5 standards 
      * @return bool If there were errors submitting the file (probably
      *              because the file excess the max permitted file size)
      * @access public
      */
-    public function isError($dummy)
+    public static function isError($dummy)
     {
     	return $this->isHTTPError();
     }
