@@ -84,7 +84,7 @@ class Editor {
         return Layout::getJavascript('editors/' . $this->type, $formData);
     }
 
-    public function getEditorList()
+    public static function getEditorList()
     {
         return PHPWS_File::readDirectory('javascript/editors/', true);
     }
@@ -99,7 +99,7 @@ class Editor {
         return $this->name;
     }
 
-    public function getUserType()
+    public static function getUserType()
     {
         if ($user_type = PHPWS_Cookie::read('phpws_editor')) {
             if ($user_type == 'none') {
@@ -156,7 +156,7 @@ class Editor {
     }
 
 
-    public function willWork($type=null)
+    public static function willWork($type=null)
     {
         if (empty($type)) {
             $type = Editor::getUserType();

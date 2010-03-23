@@ -60,7 +60,7 @@ class PHPWS_File {
 	/**
 	 * Cannot set files_only and recursive to true
 	 */
-	public function readDirectory($path, $directories_only=false, $files_only=false, $recursive=false, $extensions=null, $indeep=false)
+	public static function readDirectory($path, $directories_only=false, $files_only=false, $recursive=false, $extensions=null, $indeep=false)
 	{
 		static $first_path = null;
 		$listing = null;
@@ -707,7 +707,7 @@ class PHPWS_File {
 		return strtolower(array_pop($aFile));
 	}
 
-	public function appendSlash(&$directory)
+	public static function appendSlash(&$directory)
 	{
 		if (!preg_match('/\/$/', $directory)) {
 			$directory .= '/';
