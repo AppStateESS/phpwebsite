@@ -46,7 +46,7 @@ class vList_Group {
     {
         $db = new PHPWS_DB('vlist_group');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -250,7 +250,7 @@ class vList_Group {
     {
         $db = new PHPWS_DB('vlist_group');
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 

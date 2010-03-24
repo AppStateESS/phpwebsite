@@ -36,7 +36,7 @@ class Notes_My_Page {
         case 'delete_note':
             $note = new Note_Item((int)$_REQUEST['id']);
             $result = $note->delete();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
             }
 
@@ -115,7 +115,7 @@ class Notes_My_Page {
         }
     }
 
-    public function myPageVars($include_mod=true)
+    public static function myPageVars($include_mod=true)
     {
         $vars = array('action' => 'user', 'tab' => 'notes');
 
@@ -299,7 +299,7 @@ class Notes_My_Page {
             $db->addWhere('user_id', Current_User::getId());
             $db->addWhere('read_once', 0);
             $notes = $db->count();
-            if (PEAR::isError($notes)) {
+            if (PHPWS_Error::isError($notes)) {
                 PHPWS_Error::log($notes);
                 return;
             }

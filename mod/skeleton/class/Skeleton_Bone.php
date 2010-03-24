@@ -48,7 +48,7 @@ class Skeleton_Bone {
     {
         $db = new PHPWS_DB('skeleton_bones');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -281,7 +281,7 @@ class Skeleton_Bone {
         $db = new PHPWS_DB('skeleton_bones');
 
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
     }

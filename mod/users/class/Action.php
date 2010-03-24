@@ -369,7 +369,7 @@ class User_Action {
                 PHPWS_Core::initModClass('users', 'Group.php');
                 $result = User_Action::postGroup($group);
 
-                if (PEAR::isError($result)){
+                if (PHPWS_Error::isError($result)){
                     $message = $result->getMessage();
                     $title = isset($group->id) ? dgettext('users', 'Edit Group') : dgettext('users', 'Create Group');
                     $content = User_form::groupForm($group);
@@ -548,7 +548,7 @@ class User_Action {
         $new_user_method = PHPWS_User::getUserSetting('new_user_method');
 
         $result = $user->setUsername($_POST['username']);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $error['USERNAME_ERROR'] = dgettext('users', 'Please try another user name.');
         }
 
@@ -560,7 +560,7 @@ class User_Action {
         if (!$user->isUser() || (!empty($_POST['password1']) || !empty($_POST['password2']))){
             $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 $error['PASSWORD_ERROR'] = $result->getMessage();
             }
             else {
@@ -572,7 +572,7 @@ class User_Action {
             $error['EMAIL_ERROR'] = dgettext('users', 'Missing an email address.');
         } else {
             $result = $user->setEmail($_POST['email']);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 $error['EMAIL_ERROR'] = dgettext('users', 'This email address cannot be used.');
             }
         }
@@ -605,7 +605,7 @@ class User_Action {
         if (!$user->id || ($user->authorize == PHPWS_Settings::get('users', 'local_script') && $set_username)) {
             $user->_prev_username = $user->username;
             $result = $user->setUsername($_POST['username']);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 $error['USERNAME_ERROR'] = $result->getMessage();
             }
 
@@ -617,7 +617,7 @@ class User_Action {
 
         if (isset($_POST['display_name'])) {
             $result = $user->setDisplayName($_POST['display_name']);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 $error['DISPLAY_ERROR'] = $result->getMessage();
             }
         }
@@ -625,7 +625,7 @@ class User_Action {
         if (!$user->isUser() || (!empty($_POST['password1']) || !empty($_POST['password2']))){
             $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 $error['PASSWORD_ERROR'] = $result->getMessage();
             }
             else {
@@ -634,7 +634,7 @@ class User_Action {
         }
 
         $result = $user->setEmail($_POST['email']);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $error['EMAIL_ERROR'] = $result->getMessage();
         }
 
@@ -716,7 +716,7 @@ class User_Action {
                         $title = dgettext('users', 'Login page');
                         $message = dgettext('users', 'Username and password combination not found.');
                         $content = User_Form::loginPage();
-                    } elseif(PEAR::isError($result)) {
+                    } elseif(PHPWS_Error::isError($result)) {
                         if (preg_match('/L\d/', $result->code)) {
                             $title = dgettext('users', 'Sorry');
                             $content = $result->getMessage();
@@ -846,7 +846,7 @@ class User_Action {
             case 'reset_pw':
                 $pw_result = User_Action::finishResetPW();
                 switch ($pw_result) {
-                    case PEAR::isError($pw_result):
+                    case PHPWS_Error::isError($pw_result):
                         $title = dgettext('users', 'Reset my password');
                         $content = dgettext('users', 'Passwords were not acceptable for the following reason:');
                         $content .= '<br />' . $pw_result->getmessage() . '<br />';
@@ -1057,7 +1057,7 @@ class User_Action {
     public function postGroup(PHPWS_Group $group, $showLikeGroups=false)
     {
         $result = $group->setName($_POST['groupname'], true);
-        if (PEAR::isError($result))
+        if (PHPWS_Error::isError($result))
         return $result;
         $group->setActive(true);
         return true;
@@ -1097,7 +1097,7 @@ class User_Action {
         $db->addColumn('name');
 
         $result = $db->select('col');
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -1160,7 +1160,7 @@ class User_Action {
         }
     }
 
-    public function getAuthorizationList()
+    public static function getAuthorizationList()
     {
         $db = new PHPWS_DB('users_auth_scripts');
         $db->addOrder('display_name');
@@ -1185,7 +1185,7 @@ class User_Action {
             $db->addWhere('filename', strip_tags($_POST['file_list']));
             $result = $db->select('one');
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             } elseif (!empty($result)) {
                 return false;
@@ -1195,7 +1195,7 @@ class User_Action {
             $db->addValue('display_name', $_POST['file_list']);
             $db->addValue('filename', $_POST['file_list']);
             $result = $db->insert();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         } else {
@@ -1222,7 +1222,7 @@ class User_Action {
         $db = new PHPWS_DB('users_auth_scripts');
         $db->addWhere('id', (int)$script_id);
         $result = $db->delete();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
         $db2 = new PHPWS_DB('users');
@@ -1441,7 +1441,7 @@ class User_Action {
     public function finishResetPW()
     {
         $result = PHPWS_User::checkPassword($_POST['password1'], $_POST['password2']);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 

@@ -27,7 +27,7 @@ class Access_Shortcut {
     {
         $db = new PHPWS_DB('access_shortcuts');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -79,7 +79,7 @@ class Access_Shortcut {
         }
 
         $result = $this->setKeyword($_POST['keyword']);
-        if (PEAR::isError($result) || $result == FALSE) {
+        if (PHPWS_Error::isError($result) || $result == FALSE) {
             return $result;
         }
 
@@ -119,7 +119,7 @@ class Access_Shortcut {
             $db->addWhere('keyword', $keyword);
             $result = $db->select();
             if (!empty($result)) {
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     return FALSE;
                 } else {

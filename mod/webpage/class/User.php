@@ -59,7 +59,7 @@ class Webpage_User {
         $result = $db->getObjects('webpage_volume');
         if (empty($result)) {
             return null;
-        } elseif (PEAR::isError($result)) {
+        } elseif (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         } else {
             foreach ($result as $volume) {
@@ -106,7 +106,7 @@ class Webpage_User {
         Key::restrictView($db, 'webpage');
         $result = $db->getObjects('Webpage_Volume');
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return NULL;
         }

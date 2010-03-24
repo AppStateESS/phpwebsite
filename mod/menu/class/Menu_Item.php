@@ -29,7 +29,7 @@ class Menu_Item {
         $this->id = (int)$id;
         $result = $this->init();
         $this->resetdb();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
             PHPWS_Error::log($result);
         }
@@ -52,7 +52,7 @@ class Menu_Item {
 
         $this->resetdb();
         $result = $this->_db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
     }
@@ -114,7 +114,7 @@ class Menu_Item {
             return $errors;
         } else {
             $result = $this->save();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 return array(dgettext('menu', 'Unable to save menu. Please check error logs.'));
             }
@@ -132,7 +132,7 @@ class Menu_Item {
 
         $this->resetdb();
         $result = $this->_db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -164,7 +164,7 @@ class Menu_Item {
 
         $key->title = $this->title;
         $result = $key->save();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 

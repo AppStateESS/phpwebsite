@@ -114,7 +114,7 @@ class Version_Approval {
         $result = $this->_db->select();
 
         if ($obj_mode) {
-            if (PEAR::isError($result) || empty($result)) {
+            if (PHPWS_Error::isError($result) || empty($result)) {
                 return $result;
             }
 
@@ -145,7 +145,7 @@ class Version_Approval {
         $result = $this->get(FALSE);
 
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -185,7 +185,7 @@ class Version_Approval {
 
                 $result = $temp_obj->{$this->view_method}();
 
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     return $result;
                 } elseif (empty($result)) {
                     continue;

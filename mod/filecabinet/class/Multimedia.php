@@ -34,7 +34,7 @@ class PHPWS_Multimedia extends File_Common {
         $this->id = (int)$id;
         $result = $this->init();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->id = 0;
             $this->_errors[] = $result;
         } elseif (empty($result)) {
@@ -485,7 +485,7 @@ class PHPWS_Multimedia extends File_Common {
     {
         $result = $this->commonDelete();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -525,7 +525,7 @@ class PHPWS_Multimedia extends File_Common {
 
         if ($write) {
             $result = $this->write();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }

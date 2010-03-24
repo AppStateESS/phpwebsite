@@ -45,7 +45,7 @@ function my_page()
 
 
 class Layout_User_Settings {
-    function user_form()
+    public static function user_form()
     {
         $form = new PHPWS_Form;
         My_Page::addHidden($form, 'layout');
@@ -67,7 +67,7 @@ class Layout_User_Settings {
         return PHPWS_Template::process($template, 'layout', 'user_form.tpl');
     }
 
-    function save_settings()
+    public function save_settings()
     {
         if (isset($_POST['alternate'])) {
             PHPWS_Cookie::write('layout_style', $_POST['alternate']);

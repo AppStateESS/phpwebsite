@@ -65,7 +65,7 @@ class Access {
                     $result = Access::postDenyAllow();
                     if ($result == false) {
                         Access::sendMessage(dgettext('access', 'IP address was not formatted correctly or not allowed.'), 'deny_allow');
-                    } elseif (PEAR::isError($result)) {
+                    } elseif (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
                         Access::sendMessage(dgettext('access', 'An error occurred.') . ' ' . dgettext('access', 'Please check your logs.'), 'deny_allow');
                     }
@@ -90,7 +90,7 @@ class Access {
                     $shortcut = new Access_Shortcut($_REQUEST['shortcut_id']);
                     if (empty($shortcut->_error) && $shortcut->id) {
                         $result = $shortcut->delete();
-                        if (PEAR::isError($result)) {
+                        if (PHPWS_Error::isError($result)) {
                             Access::sendMessage(dgettext('access', 'An error occurred when deleting your shortcut.'), 'shortcuts');
                         }
                     }
@@ -107,7 +107,7 @@ class Access {
                 case 'post_shortcut_list':
                     $message = NULL;
                     $result = Access::postShortcutList();
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         $message = dgettext('access', 'An error occurred.') . ' ' . dgettext('access', 'Please check your logs.');
                     }
                     Access::sendMessage($message, 'shortcuts');
@@ -131,7 +131,7 @@ class Access {
 
                     $result = $shortcut->postShortcut();
                     $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', dgettext('access', 'Close window'));
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         PHPWS_Core::initModClass('access', 'Forms.php');
                         $message = $result->getMessage();
                         $content = Access_Forms::shortcut_menu();
@@ -184,7 +184,7 @@ class Access {
     public function saveShortcut(Access_Shortcut $shortcut)
     {
         $result = $shortcut->save();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $content[] = dgettext('access', 'A serious error occurred. Please check your error.log.');
             $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', dgettext('access', 'Close window'));
@@ -406,7 +406,7 @@ class Access {
                 break;
         }
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
     }

@@ -46,7 +46,7 @@ class RSS {
         }
 
         $result = $oChannel->save();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             PHPWS_Boost::addLog($module, dgettext('rss', 'An error occurred registering to RSS module.'));
             $content[] = dgettext('rss', 'An error occurred registering to RSS module.');

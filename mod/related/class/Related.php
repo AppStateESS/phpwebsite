@@ -30,7 +30,7 @@ class Related {
 
         $this->setId($id);
         $result = $this->init();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
     }
@@ -40,7 +40,7 @@ class Related {
         $db = new PHPWS_DB('related_main');
         $result = $db->loadObject($this);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         } elseif (!$result) {
             $this->id = NULL;
@@ -122,7 +122,7 @@ class Related {
         $db->addColumn('friend_id');
         $result = $db->select('col');
 
-        if (PEAR::isError($result) || empty($result)) {
+        if (PHPWS_Error::isError($result) || empty($result)) {
             return $result;
         }
 
@@ -239,7 +239,7 @@ class Related {
             $db = new PHPWS_DB('related_main');
             $db->addWhere('key_id', $this->key_id);
             $result = $db->loadObject($this);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
 
@@ -302,7 +302,7 @@ class Related {
         $db = new PHPWS_DB('related_main');
         $result = $db->saveObject($this);
 
-        if (PEAR::isError($result))
+        if (PHPWS_Error::isError($result))
         return $result;
 
         if (!is_array($this->friends))

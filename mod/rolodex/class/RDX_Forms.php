@@ -1294,7 +1294,7 @@ class Rolodex_Forms {
 
         if (PHPWS_Settings::get('rolodex', 'use_captcha') && extension_loaded('gd')) {
             $result = $this->confirmGraphic();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
             } else {
                 $form->addTplTag('GRAPHIC', $result);

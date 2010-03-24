@@ -35,7 +35,7 @@ class Menu_Link {
 
         $this->id = (int)$id;
         $result = $this->init();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
             $this->id = 0;
         }
@@ -46,7 +46,7 @@ class Menu_Link {
         $db = $this->getDB();
         $db = new PHPWS_DB('menu_links');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
         if (!$result) {
@@ -489,7 +489,7 @@ class Menu_Link {
         $this->link_order--;
         $result = $above->save();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -518,7 +518,7 @@ class Menu_Link {
         $this->link_order++;
         $result = $below->save();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 

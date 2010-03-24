@@ -681,7 +681,7 @@ class Calendar_User {
 
             $_SESSION['Calendar_Total_Suggestions']++;
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 if(PHPWS_Calendar::isJS()) {
                     javascript('close_refresh', array('timeout'=>5, 'refresh'=>0));

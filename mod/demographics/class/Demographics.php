@@ -12,7 +12,7 @@ class Demographics {
     /**
      * Returns the fields currently used in demographics
      */
-    function getFields()
+    public function getFields()
     {
         $db = new PHPWS_DB('demographics');
         $columns = $db->getTableColumns();
@@ -20,7 +20,7 @@ class Demographics {
     }
 
     // returns default demographic fields
-    function getDefaultFields()
+    public function getDefaultFields()
     {
         static $fields;
         if (empty($fields)) {
@@ -40,7 +40,7 @@ class Demographics {
      * Returns TRUE if the field is one of Demographic's default
      * fields.
      */
-    function isDefaultField($field_name)
+    public function isDefaultField($field_name)
     {
         $fields = Demographics::getDefaultFields();
         return isset($fields[$field_name]);
@@ -49,7 +49,7 @@ class Demographics {
     /**
      * Returns the stats for Demographics default field
      */
-    function getDefaultStats($field_name)
+    public function getDefaultStats($field_name)
     {
         $fields = Demographics::getDefaultFields();
         return $fields[$field_name];
@@ -61,7 +61,7 @@ class Demographics {
      * Looks in the modules conf directory for a demographics
      * configuration file.
      */
-    function register($module)
+    public static function register($module)
     {
 
         $file = sprintf('%smod/%s/boost/demographics.php', PHPWS_SOURCE_DIR, $module);
@@ -91,7 +91,7 @@ class Demographics {
     /**
      * Registers a new field to the system
      */
-    function registerField($field_name, $stats)
+    public function registerField($field_name, $stats)
     {
         $current_fields = Demographics::getFields();
 
@@ -109,7 +109,7 @@ class Demographics {
         return TRUE;
     }
 
-    function unregisterField($field_name)
+    public function unregisterField($field_name)
     {
         $current_fields = Demographics::getFields();
 
@@ -125,7 +125,7 @@ class Demographics {
     /**
      * Registers one of Demographic's default fields
      */
-    function registerDefaultField($field_name)
+    public function registerDefaultField($field_name)
     {
         $current_fields = Demographics::getFields();
 
@@ -143,7 +143,7 @@ class Demographics {
      * Creates a new field (column) for demographics
      * @modified Eloi George <adarkling at users dot sourceforge dot net>
      */
-    function createField($field_name, $stats)
+    public function createField($field_name, $stats)
     {
         $stat_types = array('text', 'smallint', 'integer', 'boolean');
 
@@ -184,7 +184,7 @@ class Demographics {
      * Removes a module's special fields when
      * uninstalled
      */
-    function unregister($module)
+    public function unregister($module)
     {
         $file = PHPWS_Core::getConfigFile($module, 'demographics.php');
 
@@ -207,7 +207,7 @@ class Demographics {
     /**
      * Patch #1939132 by Eloi George
      */
-    function getList($ids, $table=NULL, $class_name=NULL)
+    public function getList($ids, $table=NULL, $class_name=NULL)
     {
         if (!is_array($ids)) {
             return FALSE;

@@ -114,7 +114,7 @@ class PHPWS_Panel_Tab {
         $DB->addColumn('tab_order', 'max');
         $max = $DB->select('one');
 
-        if (PEAR::isError($max))
+        if (PHPWS_Error::isError($max))
         exit($max->getMessage());
 
         if (isset($max))

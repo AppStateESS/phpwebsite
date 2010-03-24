@@ -392,7 +392,7 @@ final class Current_User {
         $db->addWhere('username', strtolower($username));
         $result = $db->loadObject($user);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -420,7 +420,7 @@ final class Current_User {
         $auth->setPassword($password);
         $result = $auth->authenticate();
 
-        if (PEAR::isError($result)){
+        if (PHPWS_Error::isError($result)){
             return $result;
         }
 
@@ -505,7 +505,7 @@ final class Current_User {
 
         if (!$result) {
             return false;
-        } elseif (PEAR::isError($result)) {
+        } elseif (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return false;
         }
@@ -521,7 +521,7 @@ final class Current_User {
 
         if (!$result) {
             return false;
-        } elseif (PEAR::isError($result)) {
+        } elseif (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return false;
         }

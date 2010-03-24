@@ -86,7 +86,7 @@ class Webpage_Volume {
         $result = $db->getObjects('Webpage_Page');
 
         if (!empty($result)) {
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 return;
             } else {
@@ -102,7 +102,7 @@ class Webpage_Volume {
     {
         $this->resetDB();
         $result = $this->_db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
             return;
         }
@@ -313,7 +313,7 @@ class Webpage_Volume {
         $pagedb->addWhere('volume_id', $this->id);
         $result = $pagedb->delete();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -326,7 +326,7 @@ class Webpage_Volume {
         $this->resetDB();
         $this->_db->addWhere('id', $this->id);
         $result = $this->_db->delete();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -362,7 +362,7 @@ class Webpage_Volume {
         if ($this->approved || !$this->id) {
             $this->resetDB();
             $result = $this->_db->saveObject($this);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -657,7 +657,7 @@ class Webpage_Volume {
         $source->content .= '&lt;br /&gt;&lt;h2&gt;' . $next_page->title . '&lt;/h2&gt;' . $next_page->content;
         $source->save();
         $result = $next_page->delete();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return false;
         } else {

@@ -105,7 +105,7 @@ class Profiler {
 
         if (isset($_REQUEST['profile_id'])) {
             $profile = new Profile($_REQUEST['profile_id']);
-            if (PEAR::isError($profile->_error)) {
+            if (PHPWS_Error::isError($profile->_error)) {
                 PHPWS_Core::errorPage(404);
             }
         }
@@ -187,7 +187,7 @@ class Profiler {
                     Layout::nakedDisplay($content);
                 } else {
                     $result = $division->save();
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
                     }
                     javascript('close_refresh');
@@ -217,7 +217,7 @@ class Profiler {
                     $content = Profile_Forms::edit($profile);
                 } else {
                     $result = $profile->save();
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
                         $title = dgettext('profiler', 'Sorry');
                         $content = dgettext('profiler', 'An error occurred when saving your profile.');
@@ -244,7 +244,7 @@ class Profiler {
                 }
 
                 $result = Profiler::saveSettings();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     $title = dgettext('profiler', 'Uh oh');
                     $content = dgettext('profiler', 'There was a problem saving your settings.');

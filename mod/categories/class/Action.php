@@ -93,7 +93,7 @@ class Categories_Action {
                     $content[] = Categories_Action::edit($category, $result);
                 } else {
                     $result = $category->save();
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
                         $message = dgettext('categories', 'Unable to save category.') . ' ' .  dgettext('categories', 'Please contact your administrator.');
                     }
@@ -464,7 +464,7 @@ class Categories_Action {
         $db->addWhere('title', $title, 'like');
         $db->addColumn('id');
         $result = $db->select('one');
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return false;
         } elseif ($result) {
@@ -480,7 +480,7 @@ class Categories_Action {
 
         $result = $category->save();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return false;
         }

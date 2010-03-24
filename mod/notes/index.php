@@ -21,7 +21,7 @@ switch ($_REQUEST['command']) {
         PHPWS_Core::initModClass('notes', 'Note_Item.php');
         $note = new Note_Item((int)$_REQUEST['id']);
         $result = $note->delete();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
 

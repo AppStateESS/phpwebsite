@@ -48,7 +48,7 @@ class Finc_File {
     {
         $db = new PHPWS_DB('finc_file');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -200,7 +200,7 @@ class Finc_File {
         $db = new PHPWS_DB('finc_file');
 
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -215,7 +215,7 @@ class Finc_File {
             $key = new Key;
         } else {
             $key = new Key($this->key_id);
-            if (PEAR::isError($key->_error)) {
+            if (PHPWS_Error::isError($key->_error)) {
                 $key = new Key;
             }
         }

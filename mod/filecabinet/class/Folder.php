@@ -38,7 +38,7 @@ class Folder {
     {
         $db = new PHPWS_DB('folders');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
         }
     }
@@ -326,7 +326,7 @@ class Folder {
             $key = new Key;
         } else {
             $key = new Key($this->key_id);
-            if (PEAR::isError($key->getError())) {
+            if (PHPWS_Error::isError($key->getError())) {
                 $key = new Key;
             }
         }
@@ -339,7 +339,7 @@ class Folder {
         $key->setTitle($this->title);
         $key->setSummary($this->description);
         $result = $key->save();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
         $this->key_id = $key->id;
@@ -349,7 +349,7 @@ class Folder {
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
             $result = $db->update();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -507,7 +507,7 @@ class Folder {
         $db->addOrder('title');
         $result = $db->getObjects($obj_name);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return false;
         } elseif ($result) {
@@ -539,7 +539,7 @@ class Folder {
         $db->addWhere('id', 'filecabinet_pins.folder_id');
         Key::restrictView($db, 'filecabinet');
         $result = $db->getObjects('Folder');
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return;
         } elseif (!$result) {

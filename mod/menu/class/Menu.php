@@ -34,7 +34,7 @@ class Menu {
         Layout::addStyle('menu');
 
         $result = Menu::getPinAllMenus();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return;
         }
@@ -91,7 +91,7 @@ class Menu {
         Key::restrictView($db, 'menu');
         $result = $db->getObjects('Menu_Item');
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         } elseif (!empty($result)) {
             foreach ($result as $menu) {
@@ -294,7 +294,7 @@ class Menu {
             }
 
             $result = $menu->getLinks();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 PHPWS_Core::errorPage();
             }

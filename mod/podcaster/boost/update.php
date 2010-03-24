@@ -106,7 +106,7 @@ function podcaster_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '1.0.5', '<'):
             $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/podcaster/boost/sql_update_105.sql');
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = '+ Unable to import new iTunes categories table.';
                 return false;
@@ -130,7 +130,7 @@ function podcaster_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '1.1.0', '<'):
             $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/podcaster/boost/sql_update_110.sql');
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = '+ Unable to upgrade the channel table.';
                 return false;
@@ -211,13 +211,13 @@ It has been replaced with mod/podcaster/inc/runtime.php
             PHPWS_Core::initModClass('podcaster', 'PCR_Channel.php');
             $db = new PHPWS_DB('podcaster_channel');
             $channels = $db->getObjects('Podcaster_Channel');
-            if (PEAR::isError($channels)) {
+            if (PHPWS_Error::isError($channels)) {
                 PHPWS_Error::log($channels);
                 $error = true;
             }
             foreach ($channels as $channel) {
                 $result = $channel->saveKey();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     $error = true;
                 }
@@ -234,13 +234,13 @@ Please save each channel to force an update of the key file.';
             PHPWS_Core::initModClass('podcaster', 'PCR_Episode.php');
             $db = new PHPWS_DB('podcaster_episode');
             $episodes = $db->getObjects('Podcaster_Episode');
-            if (PEAR::isError($episodes)) {
+            if (PHPWS_Error::isError($episodes)) {
                 PHPWS_Error::log($episodes);
                 $error = true;
             }
             foreach ($episodes as $episode) {
                 $result = $episode->saveKey();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     $error = true;
                 }

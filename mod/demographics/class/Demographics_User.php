@@ -52,7 +52,7 @@ class Demographics_User {
 
         $result = $db->loadObject($this);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
             return false;
         } elseif ($result) {
@@ -88,7 +88,7 @@ class Demographics_User {
         }
 
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
             return $result;
         }
@@ -101,7 +101,7 @@ class Demographics_User {
             }
 
             $result = $db->saveObject($this);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 $this->_error = $result;
                 return $result;
             }
@@ -125,7 +125,7 @@ class Demographics_User {
             $db = new PHPWS_DB('demographics');
             $db->addWhere('user_id', $this->user_id);
             $result = $db->delete();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 $this->_error = $result;
                 return $result;
             }
@@ -136,7 +136,7 @@ class Demographics_User {
             $db->addWhere('user_id', $this->user_id);
 
             $result = $db->delete();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 $this->_error = $result;
                 return $result;
             }

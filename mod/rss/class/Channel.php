@@ -42,7 +42,7 @@ class RSS_Channel {
         $db = new PHPWS_DB('rss_channel');
         $result = $db->loadObject($this);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
             return $result;
         }
@@ -119,7 +119,7 @@ class RSS_Channel {
 
         $result = $db->getObjects('Key');
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_feeds = NULL;
             $this->_error = $result;
             return $result;

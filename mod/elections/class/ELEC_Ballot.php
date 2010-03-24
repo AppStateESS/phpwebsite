@@ -61,7 +61,7 @@ class Elections_Ballot {
     {
         $db = new PHPWS_DB('elections_ballots');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -544,7 +544,7 @@ class Elections_Ballot {
         $db = new PHPWS_DB('elections_ballots');
 
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -559,7 +559,7 @@ class Elections_Ballot {
             $key = new Key;
         } else {
             $key = new Key($this->key_id);
-            if (PEAR::isError($key->_error)) {
+            if (PHPWS_Error::isError($key->_error)) {
                 $key = new Key;
             }
         }

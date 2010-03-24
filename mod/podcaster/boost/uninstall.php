@@ -31,7 +31,7 @@ function podcaster_uninstall(&$content) {
             $db = new PHPWS_DB('podcaster_episode');
             $db->addWhere('media_id', 0, '>');
             $episodes = $db->getObjects('Podcaster_Episode');
-            if (PEAR::isError($episodes)) {
+            if (PHPWS_Error::isError($episodes)) {
                 return $episodes;
             } elseif (empty($episodes)) {
                 /* go ahead and drop the tables */
@@ -47,7 +47,7 @@ function podcaster_uninstall(&$content) {
                 $media = $episode->getMedia();
                 if ($media) {
                     $result = $media->delete();
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
                         $error = true;
                     }

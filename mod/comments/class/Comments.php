@@ -34,7 +34,7 @@ class Comments {
             }
         }
 
-        if ( empty($key) || $key->isDummy() || PEAR::isError($key->_error) ) {
+        if ( empty($key) || $key->isDummy() || PHPWS_Error::isError($key->_error) ) {
             return NULL;
         }
 
@@ -492,7 +492,7 @@ class Comments {
 
                 if (Comments::postComment($thread, $c_item)) {
                     $result = $c_item->save();
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
                         $title = dgettext('comments', 'Sorry');
                         $content[] = dgettext('comments', 'A problem occurred when trying to save your comment.');
@@ -684,10 +684,10 @@ class Comments {
     }
 
 
-    public function unregister($module)
+    public static function unregister($module)
     {
         $ids = Key::getAllIds($module);
-        if (PEAR::isError($ids)) {
+        if (PHPWS_Error::isError($ids)) {
             PHPWS_Error::log($ids);
             return FALSE;
         }
@@ -702,7 +702,7 @@ class Comments {
         $id_list = $db->select('col');
         if (empty($id_list)) {
             return TRUE;
-        } elseif (PEAR::isError($id_list)) {
+        } elseif (PHPWS_Error::isError($id_list)) {
             PHPWS_Error::log($id_list);
             return FALSE;
         }
@@ -710,14 +710,14 @@ class Comments {
         $db2 = new PHPWS_DB('comments_items');
         $db2->addWhere('thread_id', $id_list, 'in');
         $result = $db2->delete();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($id_list);
             return FALSE;
         } else {
             $db->reset();
             $db->addWhere('key_id', $ids, 'in');
             $result = $db->delete();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($id_list);
                 return FALSE;
             }

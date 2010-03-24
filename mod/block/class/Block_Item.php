@@ -99,7 +99,7 @@ class Block_Item {
     {
         $db = new PHPWS_DB('block');
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -121,7 +121,7 @@ class Block_Item {
         $key->edit_permission = 'edit_block';
         $key->title = $this->title;
         $result = $key->save();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -147,13 +147,13 @@ class Block_Item {
 
         $result = $db->delete();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
 
         $key = new Key($this->key_id);
         $result = $key->delete();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
     }
@@ -217,7 +217,7 @@ class Block_Item {
             $db->addWhere('key_id', -1);
             $db->addColumn('block_id');
             $result = $db->select('col');
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 return false;
             }

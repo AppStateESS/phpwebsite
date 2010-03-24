@@ -71,7 +71,7 @@ class Block {
         Key::restrictView($db, 'block');
         $result = $db->getObjects('Block_Item');
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return NULL;
         }

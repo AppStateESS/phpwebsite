@@ -163,7 +163,7 @@ class Blog_User {
             return null;
         }
         $result = $blog->save();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $tpl['TITLE'] = dgettext('blog', 'Sorry');
             $tpl['CONTENT'] =  dgettext('blog', 'A problem occured with your submission. Please try again later.');
@@ -291,7 +291,7 @@ class Blog_User {
         Layout::addStyle('blog');
         $result = Blog_User::getEntries($db, $limit, $offset);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return NULL;
         }
@@ -311,7 +311,7 @@ class Blog_User {
                 $db->setLimit($past_entries, $limit);
                 $past = $db->getObjects('Blog');
 
-                if (PEAR::isError($past)) {
+                if (PHPWS_Error::isError($past)) {
                     PHPWS_Error::log($past);
                 } elseif($past) {
                     Blog_User::showPast($past);

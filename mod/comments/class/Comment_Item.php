@@ -76,7 +76,7 @@ class Comment_Item {
 
         $this->setId($id);
         $result = $this->init();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
         }
     }
@@ -88,7 +88,7 @@ class Comment_Item {
 
         $db = new PHPWS_DB('comments_items');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         } elseif (!$result) {
             $this->id = 0;
@@ -166,7 +166,7 @@ class Comment_Item {
             $this->author_id = Current_User::getId();
             $result = Comments::updateCommentUser($this->author_id);
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 return FALSE;
             }
@@ -390,7 +390,7 @@ class Comment_Item {
 
         $db = new PHPWS_DB('comments_items');
         $result = $db->saveObject($this);
-        if (!PEAR::isError($result) && $increase_count && $this->approved) {
+        if (!PHPWS_Error::isError($result) && $increase_count && $this->approved) {
             PHPWS_Error::logIfError($this->stampThread());
         }
         return $result;

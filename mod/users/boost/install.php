@@ -30,7 +30,7 @@ function users_install(&$content)
         $sql = 'select a.password, b.* from user_authorization as a, users as b where b.deity = 1 and a.username = b.username';
         $deities = $db->getAll($sql);
 
-        if (PEAR::isError($deities)) {
+        if (PHPWS_Error::isError($deities)) {
             PHPWS_Error::log($deities);
             $content[] = dgettext('users', 'Could not access hub database.');
             return FALSE;
@@ -49,7 +49,7 @@ function users_install(&$content)
                 $auth_db->addValue('username', $deity['username']);
                 $auth_db->addValue('password', $deity['password']);
                 $result = $auth_db->insert();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     $content[] = dgettext('users', 'Unable to copy deity login to branch.');
                     continue;
@@ -58,7 +58,7 @@ function users_install(&$content)
                 $user_db->addValue($deity);
                 $result = $user_db->insert();
 
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     $content[] = dgettext('users', 'Unable to copy deity users to branch.');
                     Branch::loadBranchDB();
@@ -102,7 +102,7 @@ function users_install(&$content)
     $user->setApproved(TRUE);
     $user->setAuthorize($authorize_id);
     $result = $user->save();
-    if (PEAR::isError($result)) {
+    if (PHPWS_Error::isError($result)) {
     return $result;
     }
 

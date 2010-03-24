@@ -22,7 +22,7 @@ function comments_unregister_key(Key $key)
     $db->addWhere('key_id', $key->id);
     $result = $db->loadObject($thread);
 
-    if (PEAR::isError($result)) {
+    if (PHPWS_Error::isError($result)) {
         return $result;
     } elseif (empty($result)) {
         return TRUE;

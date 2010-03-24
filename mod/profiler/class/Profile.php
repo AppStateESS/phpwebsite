@@ -41,7 +41,7 @@ class Profile {
 
         $this->setId($id);
         $result = $this->init();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
             return FALSE;
         }
@@ -218,7 +218,7 @@ class Profile {
         $this->resetdb();
         $result = $this->_db->loadObject($this);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         } elseif (empty($result)) {
             return PHPWS_Error::get(PFL_PROFILE_NOT_FOUND, 'profiler',
@@ -327,7 +327,7 @@ class Profile {
         $this->resetdb();
         $this->_db->addWhere('id', $this->id);
         $result = $this->_db->delete();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -341,7 +341,7 @@ class Profile {
         if ($this->approved || !$this->id) {
             $this->resetdb();
             $result = $this->_db->saveObject($this);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }

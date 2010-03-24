@@ -108,7 +108,7 @@ class Blog_Admin {
                 }
                 $version = new Version('blog_entries', $_REQUEST['version_id']);
                 $result = $version->delete();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     Blog_Admin::setForward(dgettext('blog', 'A problem occurred when trying to disapprove this entry.'), 'approval');
                 } else {
@@ -137,7 +137,7 @@ class Blog_Admin {
                 $version->setApproved(TRUE);
                 $result = $version->save();
                 Blog_Admin::resetCache();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     Blog_Admin::setForward(dgettext('blog', 'An error occurred when saving your version.'), 'approval');
                 } else {
@@ -244,7 +244,7 @@ class Blog_Admin {
                     $result = $blog->save();
                     Blog_Admin::resetCache();
 
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         $message = dgettext('blog', 'An error occurred when trying to save your entry. Please check your logs.');
                         PHPWS_Error::log($result);
                         Blog_Admin::setForward($message, 'list');
@@ -461,7 +461,7 @@ class Blog_Admin {
             $version = new Version('blog_entries');
             $unapproved = $version->countUnapproved();
 
-            if (PEAR::isError($unapproved)) {
+            if (PHPWS_Error::isError($unapproved)) {
                 PHPWS_Error::log($unapproved);
                 $unapproved = '??';
             }

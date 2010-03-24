@@ -101,7 +101,7 @@ class Calendar_Admin {
         PHPWS_Core::plugObject($event, $values);
 
         $result = $event->save();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return false;
         }
@@ -413,7 +413,7 @@ class Calendar_Admin {
             $vars['aop'] = 'approval';
             $db = new PHPWS_DB('calendar_suggestions');
             $count = $db->count();
-            if (PEAR::isError($count)) {
+            if (PHPWS_Error::isError($count)) {
                 PHPWS_Error::log($count);
                 $count = 0;
             }
@@ -525,7 +525,7 @@ class Calendar_Admin {
                 if ($this->calendar->schedule->checkPermissions(true)) {
                     $event = $this->calendar->schedule->loadEvent();
                     $result = $event->delete();
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
                     }
                 }
@@ -834,7 +834,7 @@ class Calendar_Admin {
             }
 
             $result = $event->save();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 if(PHPWS_Calendar::isJS()) {
                     $this->sendMessage(dgettext('calendar', 'An error occurred when saving your event.'), null, false);
@@ -846,7 +846,7 @@ class Calendar_Admin {
                 }
             } else {
                 $result = $this->saveRepeat($event);
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     if (PHPWS_Calendar::isJS()) {
                         PHPWS_Error::log($result);
                         $this->sendMessage(dgettext('calendar', 'An error occurred when trying to repeat an event.', null, false));
@@ -916,7 +916,7 @@ class Calendar_Admin {
         if (empty($event->repeat_type)) {
             // Previously, the event repeated, remove the copies
             $result = $event->clearRepeats();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
             }
             return true;
@@ -934,7 +934,7 @@ class Calendar_Admin {
 
         // The repeat setting changed or were never set, so need to recreate the copies
         $result = $event->clearRepeats();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
 
@@ -971,7 +971,7 @@ class Calendar_Admin {
             return false;
         }
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         } else {
             return true;
@@ -988,7 +988,7 @@ class Calendar_Admin {
             }
 
             $result = $this->calendar->schedule->save();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 if(PHPWS_Calendar::isJS()) {
                     $this->sendMessage(dgettext('calendar', 'An error occurred when saving your schedule.'), null, false);
@@ -1057,7 +1057,7 @@ class Calendar_Admin {
             $copy_event->end_time = $time_unit + $time_diff;
             $time_unit += 86400;
             $result = $copy_event->save();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -1148,7 +1148,7 @@ class Calendar_Admin {
                         $copy_event->start_time = $time_unit;
                         $copy_event->end_time = $time_unit + $time_diff;
                         $result = $copy_event->save();
-                        if (PEAR::isError($result)) {
+                        if (PHPWS_Error::isError($result)) {
                             return $result;
                         }
                     }
@@ -1206,7 +1206,7 @@ class Calendar_Admin {
             $copy_event->end_time   = $start_time + $time_diff;
 
             $result = $copy_event->save();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
 
@@ -1271,7 +1271,7 @@ class Calendar_Admin {
             $copy_event->end_time = $start_time + $time_diff;
 
             $result = $copy_event->save();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
 
@@ -1324,7 +1324,7 @@ class Calendar_Admin {
             $copy_event->start_time = $time_unit;
             $copy_event->end_time = $time_unit + $time_diff;
             $result = $copy_event->save();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
             $time_unit += 86400;

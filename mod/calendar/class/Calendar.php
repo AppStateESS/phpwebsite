@@ -188,7 +188,7 @@ class PHPWS_Calendar {
             $db->setLimit(1);
             $id = $db->select('one');
 
-            if (PEAR::isError($id)) {
+            if (PHPWS_Error::isError($id)) {
                 PHPWS_Error::log($id);
                 return;
             }

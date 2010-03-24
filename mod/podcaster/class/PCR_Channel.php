@@ -58,7 +58,7 @@ class Podcaster_Channel {
     {
         $db = new PHPWS_DB('podcaster_channel');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -474,7 +474,7 @@ class Podcaster_Channel {
         $this->date_updated = time();
 
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -486,7 +486,7 @@ class Podcaster_Channel {
             $search->addKeywords($this->title);
             $search->addKeywords($this->description);
             $result = $search->save();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -500,7 +500,7 @@ class Podcaster_Channel {
             $key = new Key;
         } else {
             $key = new Key($this->key_id);
-            if (PEAR::isError($key->_error)) {
+            if (PHPWS_Error::isError($key->_error)) {
                 $key = new Key;
             }
         }
@@ -556,7 +556,7 @@ class Podcaster_Channel {
         $db->setLimit(PHPWS_Settings::get('podcaster', 'channel_limit'));
         $result = $db->getObjects('Podcaster_Episode');
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_feeds = NULL;
             $this->_error = $result;
             return $result;

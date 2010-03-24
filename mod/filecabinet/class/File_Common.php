@@ -157,7 +157,7 @@ class File_Common {
         $oUpload = new HTTP_Upload('en');
         $this->_upload = $oUpload->getFiles($var_name);
 
-        if (PEAR::isError($this->_upload)) {
+        if (PHPWS_Error::isError($this->_upload)) {
             $this->_errors[] = $this->_upload();
             return false;
         }
@@ -216,13 +216,13 @@ class File_Common {
                 list($this->width, $this->height, $image_type, $image_attr) = getimagesize($this->_upload->upload['tmp_name']);
 
                 $result = $this->prewriteResize();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     $this->errors[] = $result;
                     return false;
                 }
 
                 $result = $this->prewriteRotate();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     $this->errors[] = $result;
                     return false;
                 }
@@ -297,7 +297,7 @@ class File_Common {
             }
 
             $moved = $this->_upload->moveTo($directory);
-            if (!PEAR::isError($moved)) {
+            if (!PHPWS_Error::isError($moved)) {
                 if ($public) {
                     chmod($directory . '/' . $moved, 0644);
                 } else {
@@ -427,7 +427,7 @@ class File_Common {
         $db->addWhere('id', $this->id);
         $result = $db->delete();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 

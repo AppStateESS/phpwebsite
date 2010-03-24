@@ -77,7 +77,7 @@ class Access_Forms {
         $form->addSubmit('go', dgettext('access', 'Go'));
 
         $result = Access::getAllowDeny();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
 
@@ -136,7 +136,7 @@ class Access_Forms {
         $template['DENY_ACTION_SUBMIT'] = javascript('select_confirm', $js_vars);
 
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return dgettext('access', 'An error occurred when trying to access the allowed and denied ip records. Please check your logs.');
         } elseif (empty($result)) {

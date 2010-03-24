@@ -723,7 +723,7 @@ class Cabinet {
         $db->addValue('folder_id', $folder_id);
         $db->addValue('key_id', $key_id);
         $result = $db->insert();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
     }

@@ -1721,7 +1721,7 @@ class Rolodex_Member extends Demographics_User {
 
     public function logError()
     {
-        if (PEAR::isError($this->_error)) {
+        if (PHPWS_Error::isError($this->_error)) {
             PHPWS_Error::log($this->_error);
         }
     }
@@ -1807,7 +1807,7 @@ class Rolodex_Member extends Demographics_User {
             $search->addKeywords($this->getDisplay_name());
             $search->addKeywords($this->description);
             $result = $search->save();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -1862,7 +1862,7 @@ class Rolodex_Member extends Demographics_User {
             $key = new Key;
         } else {
             $key = new Key($this->key_id);
-            if (PEAR::isError($key->_error)) {
+            if (PHPWS_Error::isError($key->_error)) {
                 $key = new Key;
             }
         }

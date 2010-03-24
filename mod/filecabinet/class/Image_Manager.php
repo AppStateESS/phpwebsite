@@ -276,7 +276,7 @@ class FC_Image_Manager {
     {
         // importPost in File_Common
         $result = $this->image->importPost('file_name');
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
@@ -316,7 +316,7 @@ class FC_Image_Manager {
 
             $result = $this->image->save();
             $this->updateResizes($this->image);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
             }
 

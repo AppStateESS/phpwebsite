@@ -229,7 +229,7 @@ class Calendar_Schedule {
 
         $result = $db->delete();
 
-        if (!PEAR::isError($result)) {
+        if (!PHPWS_Error::isError($result)) {
             $db2 = new PHPWS_DB('phpws_key');
             $db2->addWhere('module', 'calendar');
             $db2->addWhere('item_name', 'event' . $this->id);
@@ -314,7 +314,7 @@ class Calendar_Schedule {
         $db = Calendar_Schedule::getDB();
         $db->addWhere('user_id', $user_id);
         $result = $db->loadObject($schedule);
-        if (PEAR::isError($result) || !$result) {
+        if (PHPWS_Error::isError($result) || !$result) {
             return $result;
         } else {
             return $schedule;
@@ -372,7 +372,7 @@ class Calendar_Schedule {
         $db = $this->getDB();
         $result = $db->loadObject($this);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->id = 0;
             PHPWS_Error::log($result);
         } elseif (!$result) {
@@ -516,19 +516,19 @@ class Calendar_Schedule {
         }
 
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return false;
         } else {
             if (!PHPWS_DB::isTable($this->getEventTable())) {
                 $result = $this->createEventTable();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     $this->delete();
                     return $result;
                 }
             }
 
             $result = $this->saveKey();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 $this->delete();
                 return $result;
             }
@@ -586,7 +586,7 @@ class Calendar_Schedule {
             $key = new Key;
         } else {
             $key = new Key($this->key_id);
-            if (PEAR::isError($key->getError())) {
+            if (PHPWS_Error::isError($key->getError())) {
                 $key = new Key;
             }
         }

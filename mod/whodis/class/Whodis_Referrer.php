@@ -33,7 +33,7 @@ class Whodis_Referrer {
         $result = $db->select('row');
 
         $db->reset();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 

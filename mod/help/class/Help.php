@@ -7,7 +7,7 @@
 
 $config = PHPWS_Core::getConfigFile('help', 'config.php');
 
-if (PEAR::isError($config)){
+if (PHPWS_Error::isError($config)){
     PHPWS_Error::log($config);
 } else {
     include_once $config;

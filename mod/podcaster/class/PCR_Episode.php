@@ -296,7 +296,7 @@ class Podcaster_Episode {
         $this->date_updated = time();
 
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -308,7 +308,7 @@ class Podcaster_Episode {
             $search->addKeywords($this->title);
             $search->addKeywords($this->description);
             $result = $search->save();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -322,7 +322,7 @@ class Podcaster_Episode {
             $key = new Key;
         } else {
             $key = new Key($this->key_id);
-            if (PEAR::isError($key->_error)) {
+            if (PHPWS_Error::isError($key->_error)) {
                 $key = new Key;
             }
         }

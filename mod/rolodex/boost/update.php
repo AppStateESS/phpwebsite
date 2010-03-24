@@ -30,7 +30,7 @@ function rolodex_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '0.7.0', '<'):
             $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/rolodex/boost/sql_update_070.sql');
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = '+ Unable to add the location and feature tables.';
                 return false;

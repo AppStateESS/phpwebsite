@@ -18,7 +18,7 @@ class Profiler_Division {
 
         $this->id = (int)$id;
         $result =  $this->init();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->error = $result;
         } elseif (!$result) {
             $this->error = PHPWS_Error::get(PHPWS_DB_EMPTY_SELECT, 'core', 'Profiler_Division::constructor', 'ID: ' . $id);

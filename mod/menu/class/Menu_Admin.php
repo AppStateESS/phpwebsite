@@ -129,7 +129,7 @@ class Menu_Admin {
 
             case 'edit_link_title':
                 $result = Menu_Admin::editLinkTitle($_REQUEST['link_id'], $_REQUEST['link_title']);
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     $title = dgettext('menu', 'Sorry');
                     $content = dgettext('menu', 'A problem occurred when saving your link.');
@@ -369,7 +369,7 @@ class Menu_Admin {
             }
 
             $result = $link->save();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
             }
         }
@@ -476,7 +476,7 @@ class Menu_Admin {
     public function addLink(Menu_Item $menu, $key_id, $parent=0)
     {
         $result = $menu->addLink($key_id, $parent);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return false;
         }
@@ -488,7 +488,7 @@ class Menu_Admin {
     public function addRawLink(Menu_Item $menu, $title, $url, $parent=0)
     {
         $result = $menu->addRawLink($title, $url, $parent);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return false;
         }

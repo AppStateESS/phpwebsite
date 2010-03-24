@@ -17,7 +17,7 @@ class My_Page {
 
         $result = $this->init();
 
-        if (PEAR::isError($result)){
+        if (PHPWS_Error::isError($result)){
             PHPWS_Error::log($result);
             Layout::add(PHPWS_ControlPanel::display(dgettext('users', 'The is a problem with My Page.')));
             return;
@@ -37,7 +37,7 @@ class My_Page {
 
         $content = My_Page::userOption($module);
 
-        if (PEAR::isError($content)) {
+        if (PHPWS_Error::isError($content)) {
             $panel->setContent($content->getMessage());
         } else {
             $panel->setContent($content);
@@ -52,7 +52,7 @@ class My_Page {
         $db->addColumn('mod_title');
         $result = $db->select('col');
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -109,7 +109,7 @@ class My_Page {
         return $content;
     }
 
-    public function registerMyPage($mod_title)
+    public static function registerMyPage($mod_title)
     {
         $filename = sprintf('%smod/%s/inc/my_page.php', PHPWS_SOURCE_DIR, $mod_title);
         if (!is_file($filename)) {
@@ -121,7 +121,7 @@ class My_Page {
         return $db->insert();
     }
 
-    public function unregisterMyPage($mod_title)
+    public static function unregisterMyPage($mod_title)
     {
         $db = new PHPWS_DB('users_my_page_mods');
         $db->addWhere('mod_title', $mod_title);
@@ -129,7 +129,7 @@ class My_Page {
     }
 
 
-    public function addHidden(PHPWS_Form $form, $module)
+    public static function addHidden(PHPWS_Form $form, $module)
     {
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');

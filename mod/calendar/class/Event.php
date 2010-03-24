@@ -136,7 +136,7 @@ class Calendar_Event {
         } else {
             $this->id = (int)$id;
             $result = $this->init();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $this->id = 0;
             } elseif (!$result) {
@@ -682,7 +682,7 @@ class Calendar_Event {
 
         $db = new PHPWS_DB($table);
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         } elseif (!$this->pid) {
             // only save the key if the pid is 0
@@ -693,7 +693,7 @@ class Calendar_Event {
                 $save_key = false;
             }
             $key = $this->saveKey();
-            if (PEAR::isError($key)) {
+            if (PHPWS_Error::isError($key)) {
                 PHPWS_Error::log($key);
                 return false;
             }
@@ -718,7 +718,7 @@ class Calendar_Event {
             $key = new Key;
         } else {
             $key = new Key($this->key_id);
-            if (PEAR::isError($key->getError())) {
+            if (PHPWS_Error::isError($key->getError())) {
                 $key = new Key;
             }
         }
@@ -734,7 +734,7 @@ class Calendar_Event {
         }
 
         $result = $key->save();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
         $this->key_id = $key->id;

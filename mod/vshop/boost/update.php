@@ -50,7 +50,7 @@ function vshop_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '0.7.0', '<'):
             $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/vshop/boost/sql_update_070.sql');
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = '+ Unable to add the option sets and values, and attributes tables.';
                 return false;

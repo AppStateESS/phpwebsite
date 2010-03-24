@@ -102,7 +102,7 @@ class Related {
         $db->setIndexBy("rating");
         $result = $db->select("col");
 
-        if (PEAR::isError($result))
+        if (PHPWS_Error::isError($result))
         return $result;
 
         $this->friends = $result;

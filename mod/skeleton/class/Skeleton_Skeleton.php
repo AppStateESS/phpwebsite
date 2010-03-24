@@ -49,7 +49,7 @@ class Skeleton_Skeleton {
     {
         $db = new PHPWS_DB('skeleton_skeletons');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -295,7 +295,7 @@ class Skeleton_Skeleton {
         $db = new PHPWS_DB('skeleton_skeletons');
 
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -306,7 +306,7 @@ class Skeleton_Skeleton {
         $search->addKeywords($this->title);
         $search->addKeywords($this->description);
         $result = $search->save();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -319,7 +319,7 @@ class Skeleton_Skeleton {
             $key = new Key;
         } else {
             $key = new Key($this->key_id);
-            if (PEAR::isError($key->_error)) {
+            if (PHPWS_Error::isError($key->_error)) {
                 $key = new Key;
             }
         }

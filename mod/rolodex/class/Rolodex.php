@@ -1207,7 +1207,7 @@ class Rolodex {
                 }
             } elseif ($image->file_name) {
                 $result = $image->write();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     $errors[] = array(dgettext('rolodex', 'There was a problem saving your image.'));
                 } else {

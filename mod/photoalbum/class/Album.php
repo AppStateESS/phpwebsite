@@ -661,7 +661,7 @@ class PHPWS_Album extends PHPWS_Item {
             $update_album = TRUE;
         } else {
             $key = new Key($this->_key_id);
-            if (PEAR::isError($key->getError())) {
+            if (PHPWS_Error::isError($key->getError())) {
                 $key = new Key;
                 $update_album = TRUE;
             }

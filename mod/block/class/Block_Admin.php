@@ -11,7 +11,7 @@ PHPWS_Core::requireConfig('block');
 
 class Block_Admin {
 
-    public function action()
+    public static function action()
     {
         if (!Current_User::allow('block')) {
             Current_User::disallow();
@@ -38,7 +38,7 @@ class Block_Admin {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
-    public function cpanel()
+    public static function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $linkBase = 'index.php?module=block';
@@ -54,7 +54,7 @@ class Block_Admin {
         return $panel;
     }
 
-    public function route($action)
+    public static function route($action)
     {
         $title = $content = NULL;
         $message = Block_Admin::getMessage();
@@ -133,7 +133,7 @@ class Block_Admin {
                 if (!PHPWS_Core::isPosted()) {
                     Block_Admin::postBlock($block);
                     $result = $block->save();
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
                     } elseif (isset($_REQUEST['key_id'])) {
                         Block_Admin::lockBlock($block->id, $_REQUEST['key_id']);
@@ -144,7 +144,7 @@ class Block_Admin {
 
             case 'lock':
                 $result = Block_Admin::lockBlock($_GET['block_id'], $_GET['key_id']);
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                 }
                 PHPWS_Core::goBack();
@@ -179,7 +179,7 @@ class Block_Admin {
         }
     }
 
-    public function getMessage()
+    public static function getMessage()
     {
         if (isset($_SESSION['block_message'])) {
             $message = $_SESSION['block_message'];
@@ -203,13 +203,13 @@ class Block_Admin {
         }
         $result = $db->delete();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
 
     }
 
-    public function edit(Block_Item $block, $js=FALSE)
+    public static function edit(Block_Item $block, $js=FALSE)
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         PHPWS_Core::initCoreClass('Editor.php');
@@ -273,7 +273,7 @@ class Block_Admin {
     }
 
 
-    public function blockList()
+    public static function blockList()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -334,7 +334,7 @@ class Block_Admin {
         Clipboard::copy($block->getTitle(), $block->getTag());
     }
 
-    public function settings()
+    public static function settings()
     {
         $form = new PHPWS_Form('block-form');
         $form->addHidden('module', 'block');

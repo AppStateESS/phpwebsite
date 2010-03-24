@@ -82,7 +82,7 @@ class Search_User {
         $db->setIndexBy('module');
         $result = $db->select('col');
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $result = NULL;
         }
@@ -173,7 +173,7 @@ class Search_User {
 
         $result = Search_User::getResults($search_phrase, $module, $exact_match);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $template['SEARCH_RESULTS'] = dgettext('search', 'A problem occurred during your search.');
         } elseif (empty($result)) {
@@ -225,7 +225,7 @@ class Search_User {
         $pageTags['TITLE_LABEL']    = dgettext('search', 'Title');
 
         $ignore = Search_User::getIgnore();
-        if (PEAR::isError($ignore)) {
+        if (PHPWS_Error::isError($ignore)) {
             PHPWS_Error::log($ignore);
             $ignore = NULL;
         }

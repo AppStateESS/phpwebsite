@@ -25,7 +25,7 @@ class PHPWS_Panel_Link {
 
         $this->setId($id);
         $result = $this->init();
-        if (PEAR::isError($result))
+        if (PHPWS_Error::isError($result))
         PHPWS_Error::log($result);
     }
 
@@ -33,7 +33,7 @@ class PHPWS_Panel_Link {
     {
         $db = new PHPWS_DB('controlpanel_link');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
     }
@@ -144,7 +144,7 @@ class PHPWS_Panel_Link {
         $db->addColumn('link_order', 'max');
         $max = $db->select('one');
 
-        if (PEAR::isError($max)) {
+        if (PHPWS_Error::isError($max)) {
             return $max;
         }
 
@@ -257,7 +257,7 @@ class PHPWS_Panel_Link {
         $db = new PHPWS_DB('controlpanel_link');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
-        if (PEAR::isError($result))
+        if (PHPWS_Error::isError($result))
         return $result;
 
         $db->reset();
@@ -265,7 +265,7 @@ class PHPWS_Panel_Link {
         $db->addOrder('link_order');
         $result = $db->getObjects('PHPWS_Panel_Link');
 
-        if (PEAR::isError($result))
+        if (PHPWS_Error::isError($result))
         return $result;
 
         if (empty($result))

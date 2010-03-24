@@ -47,7 +47,7 @@ class vShop_Option_value {
     {
         $db = new PHPWS_DB('vshop_option_values');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -207,7 +207,7 @@ class vShop_Option_value {
         //print_r($this); exit;
         $result = $db->saveObject($this);
         //print_r($result); exit;
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
     }

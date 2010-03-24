@@ -54,7 +54,7 @@ class Version_Restore {
 
         if (empty($result)) {
             return NULL;
-        } elseif ( PEAR::isError($result) ) {
+        } elseif ( PHPWS_Error::isError($result) ) {
             $this->error = $result;
             return;
         }
@@ -111,7 +111,7 @@ class Version_Restore {
 
                 $result = $temp_obj->{$this->view_method}();
 
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     return $result;
                 } elseif (empty($result)) {
                     continue;

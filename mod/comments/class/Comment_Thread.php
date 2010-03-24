@@ -57,7 +57,7 @@ class Comment_Thread {
         $db->addWhere('id', $this->id);
 
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $this->_error = $result->getMessage();
         }
@@ -122,12 +122,12 @@ class Comment_Thread {
         $db->addWhere('key_id', $this->key_id);
         $result = $db->loadObject($this);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result->getMessage();
             return $result;
         } elseif (empty($result)) {
             $result = $this->save();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
 
                 $this->_error = dgettext('comments', 'Error occurred trying to create new thread.');
@@ -195,7 +195,7 @@ class Comment_Thread {
         $db->addWhere('thread_id', $this->id);
         $item_result = $db->delete();
 
-        if (PEAR::isError($item_result)) {
+        if (PHPWS_Error::isError($item_result)) {
             return $item_result;
         }
 
@@ -203,7 +203,7 @@ class Comment_Thread {
         $db->addWhere('id', $this->id);
         $thread_result = $db->delete();
 
-        if (PEAR::isError($thread_result)) {
+        if (PHPWS_Error::isError($thread_result)) {
             return $thread_result;
         }
         return TRUE;

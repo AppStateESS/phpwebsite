@@ -154,7 +154,7 @@ class Branch_Admin {
                     $this->edit_basic();
                 } else {
                     $result = $this->branch->save();
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
                         $this->title = dgettext('branch', 'An error occurred while saving your branch.');
                         $this->content = $result->getMessage();
@@ -259,7 +259,7 @@ class Branch_Admin {
 
         $result = $this->create_core();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $this->content[] = dgettext('branch', 'Core SQL import failed.');
             return false;
@@ -278,7 +278,7 @@ class Branch_Admin {
     {
         $db = new PHPWS_DB;
         $loaddb = $db->loadDB($this->getDSN(), $this->dbprefix);
-        if (PEAR::isError($loaddb)) {
+        if (PHPWS_Error::isError($loaddb)) {
             return $loaddb;
         }
 
@@ -290,7 +290,7 @@ class Branch_Admin {
             $db->addValue('version', $version);
             $result = $db->insert();
             $db->disconnect();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 return $result;
             }
@@ -410,7 +410,7 @@ class Branch_Admin {
 
         $result = $_SESSION['Boost']->install(false, true, $this->branch->directory);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $this->content[] = dgettext('branch', 'An error occurred while trying to install your modules.')
             . ' ' . dgettext('branch', 'Please check your error logs and try again.');
@@ -547,7 +547,7 @@ class Branch_Admin {
                 // connection made, but database does not exist
                 if (isset($_POST['createdb'])) {
                     $result = $this->createDB();
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         $this->message[] = dgettext('branch', 'An error occurred when trying to connect to the database.');
                         $this->edit_db();
                     } elseif ($result) {
@@ -703,14 +703,14 @@ class Branch_Admin {
 
         $connection = DB::connect($dsn1);
 
-        if (PEAR::isError($connection)) {
+        if (PHPWS_Error::isError($connection)) {
             // basic connection failed
             PHPWS_Error::log($connection);
             return BRANCH_NO_CONNECTION;
         } else {
             $connection2 = DB::connect($dsn2);
 
-            if (PEAR::isError($connection2)) {
+            if (PHPWS_Error::isError($connection2)) {
                 // check to see if the database does not exist
                 // mysql delivers the first error, postgres the second
                 if ($connection2->getCode() == DB_ERROR_NOSUCHDB ||
@@ -803,13 +803,13 @@ class Branch_Admin {
         }
         $db = & DB::connect($dsn);
 
-        if (PEAR::isError($db)) {
+        if (PHPWS_Error::isError($db)) {
             PHPWS_Error::log($db);
             return $db;
         }
 
         $result = $db->query('CREATE DATABASE ' . $this->dbname);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($db);
             return false;
         } else {
@@ -906,7 +906,7 @@ class Branch_Admin {
             $db->addValue('branch_id', (int)$_POST['branch_id']);
             $db->addValue('module_name', $module);
             $result = $db->insert();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 return false;
             }
@@ -919,7 +919,7 @@ class Branch_Admin {
     {
         $db = new PHPWS_DB('branch_sites');
         $result = $db->getObjects('Branch');
-        if (PEAR::isError($result) || !$load_db_info || empty($result)) {
+        if (PHPWS_Error::isError($result) || !$load_db_info || empty($result)) {
             return $result;
         }
         foreach ($result as $branch) {

@@ -137,13 +137,13 @@ class PHAT_Dropbox extends PHAT_Element {
         $label = $this->getLabel();
 
         if((!$_SESSION['PHAT_FormManager']->form->checkLabel($_REQUEST['PHAT_ElementName']) && (strcasecmp($label, $_REQUEST['PHAT_ElementName']) != 0))
-        || PEAR::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
+        || PHPWS_Error::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
             $currentError = PHPWS_Error::get(PHATFORM_INVALID_NAME, 'phatform', 'PHAT_Dropbox::save()', $_REQUEST['PHAT_ElementName']);
             $error = TRUE;
         }
 
         $result = $this->setBlurb($_REQUEST['PHAT_ElementBlurb']);
-        if(PEAR::isError($result)) {
+        if(PHPWS_Error::isError($result)) {
             $currentError = $result;
             $error = TRUE;
         }

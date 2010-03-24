@@ -48,7 +48,7 @@ class Elections_Vote {
     {
         $db = new PHPWS_DB('elections_votes');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -160,7 +160,7 @@ class Elections_Vote {
         $db = new PHPWS_DB('elections_votes');
 
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
     }

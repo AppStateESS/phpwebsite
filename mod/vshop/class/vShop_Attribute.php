@@ -51,7 +51,7 @@ class vShop_Attribute {
     {
         $db = new PHPWS_DB('vshop_attributes');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -285,7 +285,7 @@ class vShop_Attribute {
     {
         $db = new PHPWS_DB('vshop_attributes');
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
     }

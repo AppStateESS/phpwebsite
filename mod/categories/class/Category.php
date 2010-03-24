@@ -31,7 +31,7 @@ class Category {
 
         $this->setId($id);
         $result = $this->init();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
     }
@@ -40,7 +40,7 @@ class Category {
     {
         $db = new PHPWS_DB('categories');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 

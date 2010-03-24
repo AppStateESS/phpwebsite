@@ -91,7 +91,7 @@ function vlist_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '1.0.3', '<'):
             $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/vlist/boost/sql_update_103.sql');
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = '+ Unable to upgrade the database according to mod/vlist/boost/sql_update_103.sql.';
                 return false;

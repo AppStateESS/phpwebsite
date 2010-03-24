@@ -7,7 +7,7 @@ PHPWS_Core::initModClass('comments', 'Comment_User.php');
 
 class Comments_My_Page {
 
-    public function main()
+    public static function main()
     {
         if (isset($_REQUEST['my_page_op'])) {
             $command = &$_REQUEST['my_page_op'];
@@ -54,7 +54,7 @@ class Comments_My_Page {
         PHPWS_Core::reroute('index.php?module=users&action=user&tab=comments');
     }
 
-    public function getMessage()
+    public static function getMessage()
     {
         if (!isset($_SESSION['Comment_Message'])) {
             return NULL;
@@ -64,7 +64,7 @@ class Comments_My_Page {
         return $message;
     }
 
-    public function editOptions($user)
+    public static function editOptions($user)
     {
         $form = new PHPWS_Form;
         $hidden['module'] = 'users';

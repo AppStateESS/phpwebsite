@@ -65,7 +65,7 @@ class Branch {
     {
         $db = new PHPWS_DB('branch_sites');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return $result;
         }
@@ -78,7 +78,7 @@ class Branch {
         $db->addWhere('branch_name', $branch_name);
         $db->addWhere('id', $this->id, '!=');
         $result = $db->select();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return FALSE;
         } elseif ($result) {
@@ -262,7 +262,7 @@ class Branch {
 
         PHPWS_DB::loadDB();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $_SESSION['Approved_Branch'] = FALSE;
             return false;
@@ -300,7 +300,7 @@ class Branch {
 
         $connection = DB::connect($dsn);
 
-        if (PEAR::isError($connection)) {
+        if (PHPWS_Error::isError($connection)) {
             PHPWS_Error::log($connection);
             return FALSE;
         }
@@ -332,7 +332,7 @@ class Branch {
 
         PHPWS_DB::loadDB();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return null;
         } else {
@@ -349,7 +349,7 @@ class Branch {
         $db = new PHPWS_DB('branch_sites');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return false;
         }
@@ -357,7 +357,7 @@ class Branch {
         $db->setTable('branch_mod_limit');
         $db->addWhere('branch_id', $this->id);
         $result = $db->delete();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
 

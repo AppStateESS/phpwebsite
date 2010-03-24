@@ -95,7 +95,7 @@ class Layout_Settings {
         $db = new PHPWS_DB('layout_metatags');
         $db->addWhere('key_id', $key_id);
         $row = $db->select('row');
-        if (PEAR::isError($row)) {
+        if (PHPWS_Error::isError($row)) {
             PHPWS_Error::log($row);
             return null;
         }
@@ -148,7 +148,7 @@ class Layout_Settings {
         $db->addColumn('module');
         $result = $db->select();
 
-        if (PEAR::isError($result)){
+        if (PHPWS_Error::isError($result)){
             PHPWS_Error::log($result);
             PHPWS_Core::errorPage();
         }
@@ -168,7 +168,7 @@ class Layout_Settings {
         $db = new PHPWS_DB('layout_config');
         $result = $db->loadObject($this, false);
 
-        if (PEAR::isError($result)){
+        if (PHPWS_Error::isError($result)){
             PHPWS_Error::log($result);
             PHPWS_Core::errorPage();
         }
@@ -286,7 +286,7 @@ class Layout_Settings {
         $db->addWhere('key_id', (int)$key_id);
         $db->addColumn('style');
         $result = $db->select('one');
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $this->_key_styles[$key_id] = null;
             return false;

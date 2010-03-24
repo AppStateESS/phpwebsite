@@ -518,7 +518,7 @@ class PHAT_Report {
     function setComplete() {
         $sql = 'SELECT count(id) FROM ' . $this->getFormTable() . " WHERE position='-1'";
         $result = PHPWS_DB::getAll($sql);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
         $this->_completeEntries = $result[0]['count(id)'];
@@ -533,7 +533,7 @@ class PHAT_Report {
     function setIncomplete() {
         $sql = 'SELECT count(id) FROM ' . $this->getFormTable() . " WHERE position!='-1'";
         $result = PHPWS_DB::getAll($sql);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 

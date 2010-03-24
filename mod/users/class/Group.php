@@ -22,7 +22,7 @@ class PHPWS_Group {
         if (isset($id)){
             $this->setId($id);
             $result = $this->init();
-            if (PEAR::isError($result)){
+            if (PHPWS_Error::isError($result)){
                 $this->_error = $result;
                 return;
             }
@@ -65,7 +65,7 @@ class PHPWS_Group {
         $DB->addColumn('group_id');
         $result = $DB->select('col');
 
-        if (PEAR::isError($result)){
+        if (PHPWS_Error::isError($result)){
             PHPWS_Error::log($result);
             return;
         }
@@ -106,7 +106,7 @@ class PHPWS_Group {
             $db->addWhere('id', $this->id, '!=');
             $result = $db->select('one');
             if (isset($result)){
-                if(PEAR::isError($result))
+                if(PHPWS_Error::isError($result))
                 return $result;
                 else
                 return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users', 'setName');

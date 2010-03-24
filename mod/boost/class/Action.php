@@ -82,7 +82,7 @@ class Boost_Action {
         return PHPWS_Template::process($template, 'boost', 'check_update.tpl');
     }
 
-    public function installModule($module_title)
+    public static function installModule($module_title)
     {
         PHPWS_Core::initModClass('boost', 'Boost.php');
 
@@ -91,7 +91,7 @@ class Boost_Action {
         return $boost->install();
     }
 
-    public function uninstallModule($module_title)
+    public static function uninstallModule($module_title)
     {
         PHPWS_Core::initModClass('boost', 'Boost.php');
 
@@ -120,13 +120,13 @@ class Boost_Action {
             $file_ver = PHPWS_Core::getVersionInfo();
             $db->addValue('version', $file_ver['version']);
             $result = $db->update();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = dgettext('boost', 'An error occurred updating the core.');
             } else {
                 $content[] = dgettext('boost', 'Core successfully updated.');
             }
-        } elseif (PEAR::isError($result)) {
+        } elseif (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $content[] = dgettext('boost', 'An error occurred updating the core.');
         } else {

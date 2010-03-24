@@ -52,7 +52,7 @@ class UNI_Element {
     {
         $db = new PHPWS_DB($this->db_element);
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -560,7 +560,7 @@ class UNI_Element {
     {
         $db = new PHPWS_DB($this->db_element);
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -578,7 +578,7 @@ class UNI_Element {
          $db->addValue('sort', $option['sort']);
          $result = $db->update();
          }
-         if (PEAR::isError($result)) {
+         if (PHPWS_Error::isError($result)) {
          return $result;
          }
          }

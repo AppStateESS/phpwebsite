@@ -25,7 +25,7 @@ class Layout_Box {
 
         $this->setID($id);
         $result = $this->init();
-        if (PEAR::isError($result))
+        if (PHPWS_Error::isError($result))
         PHPWS_Error::log($result);
     }
 
@@ -103,7 +103,7 @@ class Layout_Box {
         $db->addWhere('theme', $this->theme);
         $result = $db->select('one');
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         } elseif ($result && $result != $this->id) {
             return FALSE;
@@ -156,7 +156,7 @@ class Layout_Box {
             return NULL;
         }
 
-        if (PEAR::isError($boxes)) {
+        if (PHPWS_Error::isError($boxes)) {
             PHPWS_Error::log($boxes);
             return NULL;
         }
@@ -264,7 +264,7 @@ class Layout_Box {
         $db->addWhere('id', $this->getId());
         $result = $db->delete();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 

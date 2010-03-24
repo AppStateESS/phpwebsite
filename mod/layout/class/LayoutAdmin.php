@@ -41,7 +41,7 @@ class Layout_Admin {
 
             case 'post_style_change':
                 $result = Layout_Admin::postStyleChange();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                 }
                 javascript('close_refresh');
@@ -89,7 +89,7 @@ class Layout_Admin {
                     Current_User::disallow();
                 }
                 $result = Layout_Admin::postFooter();
-                if (PEAR::isError($result)){
+                if (PHPWS_Error::isError($result)){
                     PHPWS_Error::log($result);
                     $title = dgettext('layout', 'Error');
                     $content[] = dgettext('layout', 'There was a problem updating the settings.');
@@ -105,7 +105,7 @@ class Layout_Admin {
                     Current_User::disallow();
                 }
                 $result = Layout_Admin::postHeader();
-                if (PEAR::isError($result)){
+                if (PHPWS_Error::isError($result)){
                     $title = dgettext('layout', 'Error');
                     $content[] = dgettext('layout', 'There was a problem updating the settings.');
                 } else {
@@ -308,7 +308,7 @@ class Layout_Admin {
 
         $form->addSubmit('update', dgettext('layout', 'Update Theme Settings'));
         $themeList = Layout_Admin::getThemeList();
-        if (PEAR::isError($themeList)){
+        if (PHPWS_Error::isError($themeList)){
             PHPWS_Error::log($themeList);
             return dgettext('layout', 'There was a problem reading the theme directories.');
         }
@@ -363,7 +363,7 @@ class Layout_Admin {
     public function changeTheme()
     {
         $result = $_SESSION['Layout_Settings']->saveSettings();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
         Layout::reset();
@@ -506,7 +506,7 @@ class Layout_Admin {
         $box = new Layout_Box($_GET['box_source']);
         $result = $box->move($_GET['box_dest']);
 
-        if (PEAR::isError($result)){
+        if (PHPWS_Error::isError($result)){
             PHPWS_Error::log($result);
             Layout::add('An unexpected error occurred when trying to save the new box position.');
             return;

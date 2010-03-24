@@ -90,7 +90,7 @@ class PS_Text extends PS_Section {
     {
         $db = new PHPWS_DB('ps_text');
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
         $search = new Search($key_id);

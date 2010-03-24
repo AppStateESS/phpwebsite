@@ -48,7 +48,7 @@ class Users_Permission {
                 continue;
             }
             $result = $db->addTableColumn($perm_name, $columnSetting);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 $content[] = sprintf(dgettext('users', 'Could not create "%s" permission column.'), $perm_name);
                 PHPWS_Error::log($result);
             } else {
@@ -96,7 +96,7 @@ class Users_Permission {
         // If permissions object is not set, load it
         if (!isset($this->permissions[$module])) {
             $result = Users_Permission::loadPermission($module);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -144,7 +144,7 @@ class Users_Permission {
     {
         if (!isset($this->permissions[$module])) {
             $result = Users_Permission::loadPermission($module);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -182,7 +182,7 @@ class Users_Permission {
         $itemdb->addWhere('phpws_key.module', $module);
 
         $result = $itemdb->select();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         } elseif (!empty($result)) {
             foreach ($result as $key) {
@@ -221,14 +221,14 @@ class Users_Permission {
         return TRUE;
     }
 
-    public function removePermissions($module)
+    public static function removePermissions($module)
     {
         $tableName = Users_Permission::getPermissionTableName($module);
         if (!PHPWS_DB::isTable($tableName)) {
             return FALSE;
         }
         $result = PHPWS_DB::dropTable($tableName, FALSE, FALSE);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return $result;
         }
@@ -236,7 +236,7 @@ class Users_Permission {
         return TRUE;
     }
 
-    public function createPermissions($module)
+    public static function createPermissions($module)
     {
         $permissions = NULL;
         $file = sprintf('%smod/%s/boost/permission.php', PHPWS_SOURCE_DIR,
@@ -248,7 +248,7 @@ class Users_Permission {
         include_once $file;
 
         $result = Users_Permission::createPermissionTable($module, $permissions);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $errors[] = $result;
         }
 
@@ -261,7 +261,7 @@ class Users_Permission {
         return TRUE;
     }
 
-    public function createPermissionTable($module, $permissions=NULL)
+    public static function createPermissionTable($module, $permissions=NULL)
     {
         $tableName = Users_Permission::getPermissionTableName($module);
         $columnSetting = 'smallint NOT NULL default \'0\'';
@@ -284,7 +284,7 @@ class Users_Permission {
         return $DB->createTable();
     }
 
-    public function getPermissionTableName($module)
+    public static function getPermissionTableName($module)
     {
         return implode('', array($module, '_permissions'));
     }
@@ -344,7 +344,7 @@ class Users_Permission {
     public function getRestrictedGroups($key, $edit_rights=false)
     {
         $group_list = Users_Permission::getPermissionGroups($key, $edit_rights);
-        if (empty($group_list) || PEAR::isError($group_list)) {
+        if (empty($group_list) || PHPWS_Error::isError($group_list)) {
             return $group_list;
         } elseif (isset($group_list['restricted']['all'])) {
             return $group_list;
@@ -391,7 +391,7 @@ class Users_Permission {
 
         $db->addOrder('name');
         $result = $db->select();
-        if (empty($result) || PEAR::isError($result)) {
+        if (empty($result) || PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -431,7 +431,7 @@ class Users_Permission {
         $db->addWhere('id', $groups);
         $result = $db->getObjects('PHPWS_Group');
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 

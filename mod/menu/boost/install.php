@@ -13,7 +13,7 @@ function menu_install(&$content)
     $menu->template = 'basic';
     $menu->pin_all = 1;
     $result = $menu->save();
-    if (PEAR::isError($result)) {
+    if (PHPWS_Error::isError($result)) {
         PHPWS_Error::log($result);
         return false;
     } else {

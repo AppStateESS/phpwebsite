@@ -16,7 +16,7 @@ class Whodis {
 
                     $whodis = new Whodis_Referrer;
                     $result = $whodis->save($referrer);
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
                     }
                 }
@@ -39,7 +39,7 @@ class Whodis {
 
         if (empty($filters)) {
             return true;
-        } elseif (PEAR::isError($filters)) {
+        } elseif (PHPWS_Error::isError($filters)) {
             PHPWS_Error::log($filters);
             return true;
         }
@@ -123,7 +123,7 @@ class Whodis {
                 $db = new PHPWS_DB('whodis_filters');
                 $db->addValue('filter', $filter);
                 $result = $db->insert();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                 }
             }
@@ -132,7 +132,7 @@ class Whodis {
                 $db = new PHPWS_DB('whodis_filters');
                 $db->addWhere('id', $_POST['filter_pick']);
                 $result = $db->delete();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                 }
             }

@@ -134,7 +134,7 @@ class Layout {
         $box->setThemeVar($theme_var);
 
         $result = $box->save();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             PHPWS_Core::errorPage();
         }
@@ -399,7 +399,7 @@ class Layout {
 
             $finalTheme = Layout::loadTheme(Layout::getCurrentTheme(), $bodyLayout);
 
-            if (PEAR::isError($finalTheme)) {
+            if (PHPWS_Error::isError($finalTheme)) {
                 $content = implode('', $bodyLayout);
             } else {
                 $content = $finalTheme->get();
@@ -739,14 +739,14 @@ class Layout {
         $tpl = new PHPWS_Template;
         $themeDir = Layout::getThemeDir();
 
-        if (PEAR::isError($themeDir)) {
+        if (PHPWS_Error::isError($themeDir)) {
             PHPWS_Error::log($themeDir);
             PHPWS_Core::errorPage();
         }
 
         $result = $tpl->setFile($themeDir . 'theme.tpl', TRUE);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -787,7 +787,7 @@ class Layout {
         $db->addWhere('theme', Layout::getDefaultTheme());
         $result = $db->delete();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
     }
@@ -965,7 +965,7 @@ class Layout {
         if (Key::checkKey($key, false)) {
             $page_metatags = Layout::getMetaPage($key->id);
 
-            if (PEAR::isError($page_metatags)) {
+            if (PHPWS_Error::isError($page_metatags)) {
                 PHPWS_Error::log($page_metatags);
                 $page_metatags = null;
             }
@@ -1031,13 +1031,13 @@ class Layout {
         $db = new PHPWS_DB('layout_box');
         $db->addWhere('content_var', $content_var);
         $result = $db->getObjects('Layout_Box');
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
         foreach ($result as $box) {
             $check = $box->kill();
-            if (PEAR::isError($check)) {
+            if (PHPWS_Error::isError($check)) {
                 return $check;
             }
         }
@@ -1066,7 +1066,7 @@ class Layout {
     /**
      * Returns an array of alternate style sheets for the current theme
      */
-    public function getAlternateStyles()
+    public static function getAlternateStyles()
     {
         $sheets = null;
         $settings = $_SESSION['Layout_Settings'];

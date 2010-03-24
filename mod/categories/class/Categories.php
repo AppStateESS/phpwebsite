@@ -158,7 +158,7 @@ class Categories {
 
             $result = $db->select('count');
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 return NULL;
             }
@@ -474,7 +474,7 @@ class Categories {
         return PHPWS_Template::process($template, 'categories', 'module_list.tpl');
     }
 
-    public function removeModule($module)
+    public static function removeModule($module)
     {
         $db = new PHPWS_DB('category_items');
         $db->addWhere('module', $module);

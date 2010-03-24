@@ -258,7 +258,7 @@ class User_Settings {
                 $password = $db->select('one');
                 if (empty($password)) {
                     return false;
-                } elseif (PEAR::isError($password)) {
+                } elseif (PHPWS_Error::isError($password)) {
                     PHPWS_Error::log($password);
                     return false;
                 }

@@ -28,7 +28,7 @@ class Calendar_Suggestion extends Calendar_Event {
         } else {
             $this->id = (int)$id;
             $result = $this->init();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $this->id = 0;
             } elseif (!$result) {

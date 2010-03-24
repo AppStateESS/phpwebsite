@@ -11,21 +11,21 @@ function calendar_uninstall(&$content)
     $db = new PHPWS_DB('calendar_schedule');
     $schedules = $db->getObjects('Calendar_Schedule');
 
-    if (PEAR::isError($schedules)) {
+    if (PHPWS_Error::isError($schedules)) {
         return $schedules;
     } elseif (empty($schedules)) {
         $result = PHPWS_DB::dropTable('calendar_schedule');
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
         $result = PHPWS_DB::dropTable('calendar_notice');
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
         $result = PHPWS_DB::dropTable('calendar_suggestions');
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -36,24 +36,24 @@ function calendar_uninstall(&$content)
 
     foreach ($schedules as $sch) {
         $result = $sch->delete();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $error = true;
         }
     }
 
     $result = PHPWS_DB::dropTable('calendar_schedule');
-    if (PEAR::isError($result)) {
+    if (PHPWS_Error::isError($result)) {
         return $result;
     }
 
     $result = PHPWS_DB::dropTable('calendar_notice');
-    if (PEAR::isError($result)) {
+    if (PHPWS_Error::isError($result)) {
         return $result;
     }
 
     $result = PHPWS_DB::dropTable('calendar_suggestions');
-    if (PEAR::isError($result)) {
+    if (PHPWS_Error::isError($result)) {
         return $result;
     }
 

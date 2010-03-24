@@ -231,7 +231,7 @@ class PHAT_Form extends PHPWS_Item {
 
             $result = PHPWS_DB::getAll($sql);
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 return;
             }
@@ -1063,7 +1063,7 @@ class PHAT_Form extends PHPWS_Item {
             $db->update();
         } else {
             $result = $db->insert();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
             } else {
                 $this->_dataId = $result;

@@ -221,7 +221,7 @@ class Note_Item {
     }
 
 
-    public function sendLink($user_id=0, $label=null, $popup=true)
+    public static function sendLink($user_id=0, $label=null, $popup=true)
     {
         $vars = Notes_My_Page::myPageVars(false);
         $vars['op'] = 'send_note';

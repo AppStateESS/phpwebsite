@@ -105,7 +105,7 @@ class PHPWS_ControlPanel {
 	public static function loadTabs()
 	{
 		$tabs = PHPWS_ControlPanel::getAllTabs();
-		if (PEAR::isError($tabs)){
+		if (PHPWS_Error::isError($tabs)){
 			PHPWS_Error::log($tabs);
 			PHPWS_Core::errorPage();
 		}
@@ -160,12 +160,12 @@ class PHPWS_ControlPanel {
 		return $_SESSION['CP_All_links'][$idx];
 	}
 
-	public function reset()
+	public static function reset()
 	{
 		unset($_SESSION['CP_All_links']);
 	}
 
-	public function unregisterModule($module, &$content)
+	public static function unregisterModule($module, &$content)
 	{
 		PHPWS_Core::initModClass('controlpanel', 'Tab.php');
 		PHPWS_Core::initModClass('controlpanel', 'Link.php');
@@ -200,7 +200,7 @@ class PHPWS_ControlPanel {
 			foreach ($itemnameList as $itemname) {
 				$db->addWhere('itemname', $itemname);
 				$result = $db->getObjects('PHPWS_Panel_Link');
-				if (PEAR::isError($result)) {
+				if (PHPWS_Error::isError($result)) {
 					PHPWS_Error::log($result);
 
 					return $result;
@@ -237,7 +237,7 @@ class PHPWS_ControlPanel {
 				$db->addWhere('label', $label);
 				$result = $db->getObjects('PHPWS_Panel_Tab');
 
-				if (PEAR::isError($result)) {
+				if (PHPWS_Error::isError($result)) {
 
 					PHPWS_Error::log($result);
 					return $result;
@@ -254,10 +254,9 @@ class PHPWS_ControlPanel {
 		$content[] = dgettext('controlpanel', 'Control Panel links and tabs have been removed.');
 		PHPWS_ControlPanel::reset();
 		return true;
-
 	}
 
-	public function registerModule($module, &$content)
+	public static function registerModule($module, &$content)
 	{
 		PHPWS_Core::initModClass('controlpanel', 'Tab.php');
 		PHPWS_Core::initModClass('controlpanel', 'Link.php');
@@ -303,7 +302,7 @@ class PHPWS_ControlPanel {
 				}
 
 				$result = $tab->save();
-				if (PEAR::isError($result)) {
+				if (PHPWS_Error::isError($result)) {
 					$content[] = dgettext('controlpanel', 'An error occurred when trying to save a controlpanel tab.');
 					PHPWS_Error::log($result);
 					return false;
@@ -350,7 +349,7 @@ class PHPWS_ControlPanel {
 				$db->addWhere('id', $info['tab']);
 				$db->addColumn('id');
 				$result = $db->select('one');
-				if (PEAR::isError($result)) {
+				if (PHPWS_Error::isError($result)) {
 					PHPWS_Error::log($result);
 					continue;
 				}
@@ -363,7 +362,7 @@ class PHPWS_ControlPanel {
 
 				$modlink->setTab($tab_id);
 				$result = $modlink->save();
-				if (PEAR::isError($result)) {
+				if (PHPWS_Error::isError($result)) {
 					PHPWS_Error::log($result);
 					$content[] = dgettext('controlpanel', 'There was a problem trying to save a Control Panel link.');
 					return false;

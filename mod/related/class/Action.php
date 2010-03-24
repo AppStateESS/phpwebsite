@@ -255,7 +255,7 @@ class Related_Action {
 
         $result = $_SESSION['Related_Bank']->save();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             Layout::add(dgettext('related', 'The Related module encountered a database error.'));
             return;

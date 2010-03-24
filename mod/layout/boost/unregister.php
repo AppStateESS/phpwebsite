@@ -17,7 +17,7 @@ function layout_unregister($module, &$content){
         return;
     }
 
-    if (PEAR::isError($moduleBoxes)) {
+    if (PHPWS_Error::isError($moduleBoxes)) {
         return $moduleBoxes;
     }
 

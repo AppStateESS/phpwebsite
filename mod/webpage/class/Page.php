@@ -36,7 +36,7 @@ class Webpage_Page {
     {
         $db = new PHPWS_DB('webpage_page');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
             return;
         }
@@ -354,7 +354,7 @@ class Webpage_Page {
 
         $result = $db->delete();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -366,7 +366,7 @@ class Webpage_Page {
         $this->volume_id, $this->page_number);
 
         $result = $db->query($sql);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         } else {
             return true;
@@ -401,7 +401,7 @@ class Webpage_Page {
         if ($this->approved || !$this->id) {
             $db = new PHPWS_DB('webpage_page');
             $result = $db->saveObject($this);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }

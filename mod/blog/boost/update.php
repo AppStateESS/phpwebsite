@@ -27,7 +27,7 @@ function blog_update(&$content, $currentVersion)
 
             $db = new PHPWS_DB('blog_entries');
             $result = $db->addTableColumn('image_id', 'int NOT NULL default 0');
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = 'Unable to add image_id colume to blog_entries table.</pre>';
                 return false;
@@ -71,7 +71,7 @@ function blog_update(&$content, $currentVersion)
 
             $db = new PHPWS_DB('blog_entries');
             $result = $db->addTableColumn('expire_date', 'int not null default 0', 'publish_date');
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = 'Unable to create table column "expire_date" on blog_entries table.</pre>';
                 return false;
@@ -80,7 +80,7 @@ function blog_update(&$content, $currentVersion)
             }
 
             $result = $db->addTableColumn('sticky', 'smallint not null default 0');
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = 'Unable to create table column "sticky" on blog_entries table.</pre>';
                 return false;

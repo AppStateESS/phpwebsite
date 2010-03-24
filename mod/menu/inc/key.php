@@ -20,7 +20,7 @@ function menu_unregister_key(Key $key)
     $db->addWhere('key_id', $key->id);
     $result = $db->delete();
 
-    if (PEAR::isError($result)) {
+    if (PHPWS_Error::isError($result)) {
         PHPWS_Error::log($result);
     }
 
@@ -28,7 +28,7 @@ function menu_unregister_key(Key $key)
     $db2->addWhere('key_id', $key->id);
     $result = $db2->delete();
 
-    if (PEAR::isError($result)) {
+    if (PHPWS_Error::isError($result)) {
         PHPWS_Error::log($result);
     }
 

@@ -28,7 +28,7 @@ class PHPWS_Document extends File_Common {
 
         $this->id = (int)$id;
         $result = $this->init();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->id = 0;
             $this->_errors[] = $result;
         } elseif (empty($result)) {
@@ -205,7 +205,7 @@ class PHPWS_Document extends File_Common {
 
         if ($write) {
             $result = $this->write(false);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }

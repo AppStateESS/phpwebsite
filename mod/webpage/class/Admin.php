@@ -342,7 +342,7 @@ class Webpage_Admin {
                     PHPWS_Core::initModClass('webpage', 'Forms.php');
                     $new_vol = (bool)$volume->id ? false : true;
                     $result = $volume->save();
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
                         Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred. Please check your logs.'), 'list');
                     } else {
@@ -370,7 +370,7 @@ class Webpage_Admin {
                     $version_id = (int)$_POST['page_version_id'];
                 }
 
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred while saving your page. Please check the error log.'),
                     sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
@@ -383,7 +383,7 @@ class Webpage_Admin {
                     $content = Webpage_Forms::editPage($page, $version);
                 } else {
                     $result = $page->save();
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
                         Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred while saving your page. Please check the error log.'),
                         sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
@@ -393,7 +393,7 @@ class Webpage_Admin {
                     if ( isset($_POST['force_template']) ) {
                         $force_result = $volume->forceTemplate($page->template);
 
-                        if (PEAR::isError($force_result)) {
+                        if (PHPWS_Error::isError($force_result)) {
                             PHPWS_Error::log($force_result);
                             Webpage_Admin::sendMessage(dgettext('webpage', 'Error: Unable to force template.'),
                             sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
@@ -456,7 +456,7 @@ class Webpage_Admin {
                 }
 
                 $result = Webpage_Admin::deleteWebpages();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     $title = dgettext('webpage', 'Error');
                     $content = dgettext('webpage', 'A problem occurred when trying to delete your webpage.');
@@ -746,7 +746,7 @@ class Webpage_Admin {
         $db->addColumn('id');
         $all_cols = $db->select('col');
 
-        if (PEAR::isError($all_cols)) {
+        if (PHPWS_Error::isError($all_cols)) {
             PHPWS_Error::log($all_cols);
             return;
         }
@@ -760,7 +760,7 @@ class Webpage_Admin {
             $db->addValue('id', $id);
             $db->addValue('vol_order', $vol_order);
             $result = $db->insert();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 return;
             }
@@ -821,7 +821,7 @@ class Webpage_Admin {
         foreach ($webpage as $wp) {
             $volume = new Webpage_Volume($wp);
             $result = $volume->delete();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -857,14 +857,14 @@ class Webpage_Admin {
                 $pageVer->loadObject($pageObj);
                 $pageObj->approved = 1;
                 $result = $pageObj->save();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     return FALSE;
                 }
                 $pageVer->setSource($pageObj);
                 $pageVer->setApproved(TRUE);
                 $result = $pageVer->save();
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     return FALSE;
                 }
@@ -878,7 +878,7 @@ class Webpage_Admin {
         $new_volume = $volume->key_id ? false : true;
 
         $result = $volume->save(true);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return FALSE;
         }
@@ -886,7 +886,7 @@ class Webpage_Admin {
         $version->setSource($volume);
         $version->setApproved(TRUE);
         $result = $version->save();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return FALSE;
         }
@@ -937,7 +937,7 @@ class Webpage_Admin {
         $db->addWhere('id', $volume->id);
         $db->addColumn('vol_order');
         $vol_order = $db->select('one');
-        if (PEAR::isError($vol_order)) {
+        if (PHPWS_Error::isError($vol_order)) {
             PHPWS_Error::log($vol_order);
         } elseif (!$vol_order) {
             return;

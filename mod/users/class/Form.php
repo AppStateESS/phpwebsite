@@ -237,7 +237,7 @@ class User_Form {
 		return $template;
 	}
 
-	public function manageUsers()
+	public static function manageUsers()
 	{
 		PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -311,7 +311,7 @@ class User_Form {
 	}
 
 
-	public function manageGroups()
+	public static function manageGroups()
 	{
 		PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -358,7 +358,7 @@ class User_Form {
 			$result = $db->select('one');
 
 			if (isset($result)) {
-				if (PEAR::isError($result)) {
+				if (PHPWS_Error::isError($result)) {
 					PHPWS_Error::log($result);
 				}
 				else {
@@ -445,7 +445,7 @@ class User_Form {
 			$content = dgettext('users', 'No members.');
 		}
 
-		if (PEAR::isError($content)) {
+		if (PHPWS_Error::isError($content)) {
 			PHPWS_Error::log($content);
 			return $content->getMessage();
 		}
@@ -474,7 +474,7 @@ class User_Form {
 			$db->addColumn('id');
 			$db->addColumn('display_name');
 			$result = $db->select('col');
-			if (PEAR::isError($result)) {
+			if (PHPWS_Error::isError($result)) {
 				PHPWS_Error::log($result);
 			} else {
 				if (!isset($result[$user->authorize])) {
@@ -573,7 +573,7 @@ class User_Form {
 		return implode('<br />', $content);
 	}
 
-	public function groupForm(PHPWS_Group $group)
+	public static function groupForm(PHPWS_Group $group)
 	{
 		$form = new PHPWS_Form('groupForm');
 		$members = $group->getMembers();
@@ -682,7 +682,7 @@ class User_Form {
 		$db->setIndexBy('id');
 		$result = $db->getObjects('PHPWS_Group');
 
-		if (PEAR::isError($result)) {
+		if (PHPWS_Error::isError($result)) {
 			PHPWS_Error::log($result);
 			return NULL;
 		} elseif (!isset($result)) {
@@ -723,7 +723,7 @@ class User_Form {
 	/**
 	 *  Form for adding and choosing default authorization scripts
 	 */
-	public function authorizationSetup()
+	public static function authorizationSetup()
 	{
 		$template = array();
 		PHPWS_Core::initCoreClass('File.php');
@@ -828,7 +828,7 @@ class User_Form {
 		return PHPWS_Template::process($template, 'users', 'forms/authorization.tpl');
 	}
 
-	public function settings()
+	public static function settings()
 	{
 		PHPWS_Core::initModClass('help', 'Help.php');
 
@@ -931,7 +931,7 @@ class User_Form {
 
 		if (PHPWS_User::getUserSetting('graphic_confirm')) {
 			$result = User_Form::confirmGraphic();
-			if (PEAR::isError($result)) {
+			if (PHPWS_Error::isError($result)) {
 				PHPWS_Error::log($result);
 			} else {
 				$form->addTplTag('GRAPHIC', $result);
@@ -999,7 +999,7 @@ class User_Form {
 	public function permissionMenu(Key $key, $popbox=FALSE)
 	{
 		$edit_groups = Users_Permission::getRestrictedGroups($key, TRUE);
-		if (PEAR::isError($edit_groups)) {
+		if (PHPWS_Error::isError($edit_groups)) {
 			PHPWS_Error::log($edit_groups);
 			$tpl['MESSAGE'] = $edit_groups->getMessage();
 			return $tpl;

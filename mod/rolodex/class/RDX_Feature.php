@@ -46,7 +46,7 @@ class Rolodex_Feature {
     {
         $db = new PHPWS_DB('rolodex_feature');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -188,7 +188,7 @@ class Rolodex_Feature {
     {
         $db = new PHPWS_DB('rolodex_feature');
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 

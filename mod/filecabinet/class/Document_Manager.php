@@ -155,7 +155,7 @@ class FC_Document_Manager {
         // importPost in File_Common
         $result = $this->document->importPost('file_name');
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;

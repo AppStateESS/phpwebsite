@@ -53,7 +53,7 @@ class Blog {
 
         $this->id = (int)$id;
         $result = $this->init();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
     }
@@ -66,7 +66,7 @@ class Blog {
 
         $db = new PHPWS_DB('blog_entries');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         } elseif (!$result) {
             $this->id = 0;
@@ -252,7 +252,7 @@ class Blog {
         }
         if ($this->approved || !$this->id) {
             $result = $db->saveObject($this);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -277,7 +277,7 @@ class Blog {
             $search->addKeywords($this->summary);
             $search->addKeywords($this->entry);
             $result = $search->save();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -293,7 +293,7 @@ class Blog {
             $key = new Key;
         } else {
             $key = new Key($this->key_id);
-            if (PEAR::isError($key->getError())) {
+            if (PHPWS_Error::isError($key->getError())) {
                 $key = new Key;
             }
         }
@@ -645,7 +645,7 @@ class Blog {
         $db->addWhere('id', $this->id);
         $result = $db->delete();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $all_is_well = false;
         }

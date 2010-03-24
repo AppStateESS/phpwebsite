@@ -40,7 +40,7 @@ CREATE TABLE whodis_filters (
   PRIMARY KEY  (id)
 )";
             $result = PHPWS_DB::query($sql);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = 'An error occurred when trying to create the whodis_filters table.';
                 return false;

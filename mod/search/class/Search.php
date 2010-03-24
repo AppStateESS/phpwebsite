@@ -32,7 +32,7 @@ class Search {
         $db = new PHPWS_DB('search');
         $db->addWhere('key_id', $this->key_id);
         $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
         }
 

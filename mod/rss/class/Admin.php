@@ -84,7 +84,7 @@ class RSS_Admin {
                     $tpl = RSS_Admin::editChannel($channel);
                 } else {
                     $result = $channel->save();
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         RSS_Admin::sendMessage(dgettext('rss', 'An error occurred when saving your channel.'), 'channels');
                     } else {
                         RSS_Admin::sendMessage(dgettext('rss', 'Channel saved.'), 'channels');
@@ -287,7 +287,7 @@ class RSS_Admin {
         if (empty($channels)) {
             $final_tpl['CONTENT'] = dgettext('rss', 'No channels have been registered.');
             return $final_tpl;
-        } elseif (PEAR::isError($channels)) {
+        } elseif (PHPWS_Error::isError($channels)) {
             PHPWS_Error::log($channels);
             $final_tpl['CONTENT'] = dgettext('rss', 'An error occurred when trying to access your RSS channels.');
             return $final_tpl;

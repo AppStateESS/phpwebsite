@@ -44,7 +44,7 @@ class Version {
         $this->source_table = $source_table;
         $this->id = (int)$id;
         $result = $this->init();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
             return;
         }
@@ -110,7 +110,7 @@ class Version {
         }
 
         $result = $this->_initVersionTable();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $this->id = 0;
             $this->_error = $result;
@@ -119,7 +119,7 @@ class Version {
 
         if (!empty($this->id)) {
             $result = $this->_initVersion();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -209,7 +209,7 @@ class Version {
                 if (!$version_db->isTableColumn($col_name)) {
                     if($source_db->isTableColumn($col_name)) {
                         $result = $this->_copyVersionColumn($col_name);
-                        if (PEAR::isError($result)) {
+                        if (PHPWS_Error::isError($result)) {
                             return $result;
                         }
                     } else {
@@ -238,7 +238,7 @@ class Version {
         if (!$this->vr_approved) {
             $id = $this->isWaitingApproval();
             if ($id) {
-                if (PEAR::isError($id)) {
+                if (PHPWS_Error::isError($id)) {
                     return $id;
                 } else {
                     $this->id = $id;
@@ -251,7 +251,7 @@ class Version {
         if (!empty($this->id)) {
             $version_db->addWhere('id', $this->id);
             $result = $version_db->update();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 $this->_error = $result;
                 return $result;
             }
@@ -259,7 +259,7 @@ class Version {
         } else {
             $result = $version_db->insert();
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 $this->_error = $result;
                 return $result;
             }
@@ -286,7 +286,7 @@ class Version {
         $db->addColumn('vr_number', 'max');
         $last_number = $db->select('one');
 
-        if (PEAR::isError($last_number)) {
+        if (PHPWS_Error::isError($last_number)) {
             PHPWS_Error::log($last_number);
             return;
         }
@@ -327,7 +327,7 @@ class Version {
         $result = $version_db->addWhere('vr_approved', 0);
         $result = $version_db->select();
 
-        if (PEAR::isError($result) || empty($result)) {
+        if (PHPWS_Error::isError($result) || empty($result)) {
             return $result;
         }
 
@@ -393,7 +393,7 @@ class Version {
         $version_db = new PHPWS_DB($this->version_table);
         $version_db->addWhere('id', $this->id);
         $row = $version_db->select('row');
-        if (PEAR::isError($row)) {
+        if (PHPWS_Error::isError($row)) {
             return $row;
         }
 
@@ -406,7 +406,7 @@ class Version {
         if (!PHPWS_DB::isTable($this->version_table)) {
             $result = $this->_buildVersionTable();
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -447,7 +447,7 @@ class Version {
 
         $sql = 'CREATE TABLE ' . $this->version_table . ' (' . implode(', ', $columns) . ')';
         $result = PHPWS_DB::query($sql);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -508,7 +508,7 @@ class Version {
         $db->addWhere('id', $this->id);
         $result = $db->delete();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -523,7 +523,7 @@ class Version {
                     $source = new PHPWS_DB($this->source_table);
                     $source->addWhere('id', $this->source_id);
                     $result = $source->delete();
-                    if (PEAR::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         return $result;
                     } else {
                         return true;
@@ -550,7 +550,7 @@ class Version {
         $db->addValue($data);
 
         $result = $db->update();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
