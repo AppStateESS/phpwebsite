@@ -649,7 +649,7 @@ class DB
      * @return string  the error message or false if the error code was
      *                  not recognized
      */
-    public function errorMessage($value)
+    public static function errorMessage($value)
     {
         static $errorMessages;
         if (!isset($errorMessages)) {

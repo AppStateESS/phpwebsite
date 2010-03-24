@@ -53,7 +53,7 @@ require_once CALENDAR_ROOT.'Calendar.php';
  * Represents a Month and builds Days
  * <code>
  * require_once 'Calendar/Month.php';
- * $Month = & new Calendar_Month(2003, 10); // Oct 2003
+ * $Month = new Calendar_Month(2003, 10); // Oct 2003
  * $Month->build(); // Build Calendar_Day objects
  * while ($Day = & $Month->fetch()) {
  *     echo $Day->thisDay().'<br />';

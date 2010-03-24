@@ -4,3 +4,14 @@ Also, some files were updated to conform to strict PHP standards. A PEAR update 
 not change the functionality.
 
 If you want the full versions, see the README file included with this distribution.
+
+Changes
+
+All files:
+"&new" to "new"
+"& new" to "new"
+
+Calendar/Calendar.php
+Calender_Engine_Factory::getEngine - made static
+Calendar::Calendar - removed pass-by-reference
+

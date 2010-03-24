@@ -41,7 +41,7 @@
  * Utility to help building HTML links for navigating the calendar<br />
  * <code>
  * $Day = new Calendar_Day(2003, 10, 23);
- * $Uri = & new Calendar_Util_Uri('year', 'month', 'day');
+ * $Uri = new Calendar_Util_Uri('year', 'month', 'day');
  * echo $Uri->prev($Day,'month'); // Displays year=2003&amp;month=10
  * echo $Uri->prev($Day,'day'); // Displays year=2003&amp;month=10&amp;day=22
  * $Uri->seperator = '/';
