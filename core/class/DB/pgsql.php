@@ -120,7 +120,7 @@ class pgsql_PHPWS_SQL {
     {
         $table = PHPWS_DB::addPrefix($table);
         $result = $GLOBALS['PHPWS_DB']['connection']->query("DROP SEQUENCE $table");
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 

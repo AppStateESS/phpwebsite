@@ -229,7 +229,7 @@ class DBPager {
         $this->table = & $table;
         $this->db = new PHPWS_DB($table);
 
-        if (PEAR::isError($this->db)){
+        if (PHPWS_Error::isError($this->db)){
             $this->error = $this->db;
             $this->db = null;
         }
@@ -799,7 +799,7 @@ class DBPager {
         }
 
         $count = $this->getTotalRows();
-        if (PEAR::isError($count)) {
+        if (PHPWS_Error::isError($count)) {
             return $count;
         }
 
@@ -875,7 +875,7 @@ class DBPager {
 
         $this->row_query = $this->db->lastQuery();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -1351,7 +1351,7 @@ class DBPager {
 
         $template = $form->getTemplate();
 
-        if (PEAR::isError($template)) {
+        if (PHPWS_Error::isError($template)) {
             PHPWS_Error::log($template);
             return null;
         }
@@ -1393,7 +1393,7 @@ class DBPager {
         }
 
         $template = $form->getTemplate();
-        if (PEAR::isError($template)) {
+        if (PHPWS_Error::isError($template)) {
             PHPWS_Error::log($template);
             return null;
         }
@@ -1415,7 +1415,7 @@ class DBPager {
 
         $pages = $this->getPageLinks();
 
-        if (PEAR::isError($pages)) {
+        if (PHPWS_Error::isError($pages)) {
             return $pages;
         }
 
@@ -1517,7 +1517,7 @@ class DBPager {
 
         if (empty($this->display_rows)) {
             $result = $this->initialize();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -1538,7 +1538,7 @@ class DBPager {
 
         $rows = $this->getPageRows();
 
-        if (PEAR::isError($rows)) {
+        if (PHPWS_Error::isError($rows)) {
             return $rows;
         }
 

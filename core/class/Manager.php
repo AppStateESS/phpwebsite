@@ -595,7 +595,7 @@ class PHPWS_Manager {
 
                 $rowTags['ROW_CLASS'] = $row_class;
                 if($makeForm) {
-                    $ele = & new Form_CheckBox('PHPWS_MAN_ITEMS[]', $item['id']);
+                    $ele = new Form_CheckBox('PHPWS_MAN_ITEMS[]', $item['id']);
                     $rowTags['SELECT'] = $ele->get();
                 }
 
@@ -686,13 +686,13 @@ class PHPWS_Manager {
 
             if($makeForm) {
                 /* Create action select and Go button */
-                $ele = & new Form_Select($this->_request, $actions);
+                $ele = new Form_Select($this->_request, $actions);
                 $listTags['ACTION_SELECT'] = $ele->get();
                 $listTags['ACTION_BUTTON'] = sprintf('<input type="submit" value="%s" />', _('Go'));
                 $listTags['TOGGLE_ALL'] = javascript('check_all', array('FORM_NAME' => 'PHPWS_MAN_LIST_' . $this->listName));
 
                 /* Add hidden variable to designate the current module */
-                $ele = & new Form_Hidden('module', $this->_module);
+                $ele = new Form_Hidden('module', $this->_module);
                 $elements[0] = $ele->get();
                 $elements[0] .= PHPWS_Template::processTemplate($listTags, 'core', $listTpl, FALSE);
 

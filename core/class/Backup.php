@@ -36,7 +36,7 @@ class Backup {
         if (!PHPWS_DB::isTable($this->getBackupTableName())) {
             $result = $this->_buildBackupTable();
 
-            if (PEAR::isError($result))
+            if (PHPWS_Error::isError($result))
             return $result;
         }
 
@@ -85,7 +85,7 @@ class Backup {
         }
 
         $backupTable = Backup::getBackupTable($table);
-        if (PEAR::isError($backupTable))
+        if (PHPWS_Error::isError($backupTable))
         return $backupTable;
 
         $db = new PHPWS_DB($table);
@@ -133,7 +133,7 @@ class Backup {
         if (!PHPWS_DB::isTable($backupTable)){
             $result = Backup::_buildBackupTable($table);
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -142,7 +142,7 @@ class Backup {
 
     public function get($item_id, $table){
         $backupTable = Backup::getBackupTable($table);
-        if (PEAR::isError($backupTable))
+        if (PHPWS_Error::isError($backupTable))
         return $backupTable;
 
         $db = new PHPWS_DB($backupTable);
@@ -152,7 +152,7 @@ class Backup {
 
     public function flush($item_id, $table){
         $backupTable = Backup::getBackupTable($table);
-        if (PEAR::isError($backupTable))
+        if (PHPWS_Error::isError($backupTable))
         return $backupTable;
 
         $db = new PHPWS_DB($backupTable);

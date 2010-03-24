@@ -339,7 +339,7 @@ class PHPWS_Form {
     {
         foreach ($dup as $name=>$value) {
             $result = $this->add($name, $type, $value);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -496,7 +496,7 @@ class PHPWS_Form {
         }
         $result = PHPWS_Form::createElement($name, $type, $value);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -566,7 +566,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setValue($value);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -584,7 +584,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setDisabled($value);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -599,7 +599,7 @@ class PHPWS_Form {
         foreach ($this->_elements[$name] as $key=>$element){
             if($this->_elements[$name][$key]->type == 'password') {
                 $result = $this->_elements[$name][$key]->setAutoComplete($value);
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     return $result;
                 }
             }
@@ -618,7 +618,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setReadOnly($value);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -644,7 +644,7 @@ class PHPWS_Form {
             }
             $result = $this->_elements[$name][$key]->setOptgroup($value, $label);
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -667,7 +667,7 @@ class PHPWS_Form {
                 $result = $this->_elements[$name][$key]->setLabel($label);
             }
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -692,7 +692,7 @@ class PHPWS_Form {
         foreach ($this->_elements[$name] as $key => $element){
             $result = $this->_elements[$name][$key]->setRequired($required);
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -743,7 +743,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setExtra($extra);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -770,7 +770,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setWidth($width);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -799,7 +799,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setHeight($height);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -823,7 +823,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setRows($rows);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -848,7 +848,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setTitle($title);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -872,7 +872,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setCols($cols);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -899,7 +899,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setTab($order);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -922,13 +922,13 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setSize((int)$size);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
             if (!empty($maxsize)) {
                 $result = $this->_elements[$name][$key]->setMaxSize((int)$maxsize);
             }
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -946,7 +946,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->allowValue();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -972,7 +972,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setTag($tag);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -1048,7 +1048,7 @@ class PHPWS_Form {
                 continue;
             }
             $result = $this->_elements[$name][$key]->setMatch($match);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -1062,7 +1062,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setClass($class_name);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -1076,7 +1076,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setId($id_name);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -1091,7 +1091,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setStyle($style_name);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -1112,7 +1112,7 @@ class PHPWS_Form {
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setMaxSize($maxsize);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }

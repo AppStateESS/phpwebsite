@@ -934,7 +934,7 @@ class DB2 extends Data {
      */
     public function pearError($result)
     {
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->error = & $result;
             return true;
         } else {

@@ -15,7 +15,7 @@ class PHPWS_File {
 	 * @author Matthew McNaney <mcnaney at gmail dot com>
 	 * @return array directories Array of directories if successful, NULL if nothing found
 	 */
-	public function listDirectories($root_dir, $with_root=false, $recursive=false)
+	public static function listDirectories($root_dir, $with_root=false, $recursive=false)
 	{
 		$directories = NULL;
 

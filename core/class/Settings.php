@@ -35,7 +35,7 @@ class PHPWS_Settings {
     {
         if (!isset($GLOBALS['PHPWS_Settings'][$module])) {
             $result = PHPWS_Settings::load($module);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 return false;
             }
@@ -149,7 +149,7 @@ class PHPWS_Settings {
                     break;
             }
             $result = $db->insert();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 unset($GLOBALS['PHPWS_Settings'][$module]);
                 PHPWS_Settings::load($module);
                 return $result;
@@ -208,7 +208,7 @@ class PHPWS_Settings {
         $db->addWhere('module', $module);
         $result = $db->select();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         } elseif (empty($result)) {
             PHPWS_Settings::save($module);

@@ -145,7 +145,7 @@ class PHPWS_Item {
             $className = get_class($this);
             $itemResult = $DB->select('row');
 
-            if (PEAR::isError($itemResult)) {
+            if (PHPWS_Error::isError($itemResult)) {
                 return $itemResult;
             }
 
@@ -200,7 +200,7 @@ class PHPWS_Item {
             $this->setIp();
         }
 
-        $db = & new PHPWS_DB($this->_table);
+        $db = new PHPWS_DB($this->_table);
         if (!empty($this->_id)) {
             $db->addWhere('id', $this->_id);
         }
@@ -222,7 +222,7 @@ class PHPWS_Item {
             $DB = new PHPWS_DB($this->_table);
             $DB->addWhere('id', $this->_id);
             $result = $DB->delete();
-            return (PEAR::isError($result) ? $result : TRUE);
+            return (PHPWS_Error::isError($result) ? $result : TRUE);
         } else
         return PHPWS_Error::get(PHPWS_ITEM_ID_TABLE, 'core', 'PHPWS_Item::kill');
     } // END FUNC kill

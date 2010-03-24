@@ -68,7 +68,7 @@ class PHPWS_Text {
         $this->setText($text, $encoded);
     }
 
-    public function decodeText($text)
+    public static function decodeText($text)
     {
         return html_entity_decode($text, ENT_QUOTES, 'UTF-8');
     }
@@ -304,7 +304,7 @@ class PHPWS_Text {
      * @return array   $text_array Array of sentences
      * @access public
      */
-    public function sentence($text, $stripNewlines = false)
+    public static function sentence($text, $stripNewlines = false)
     {
         if (!is_string($text)) {
             return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'PHPWS_Text::sentence');
@@ -696,7 +696,7 @@ class PHPWS_Text {
         return true;
     }
 
-    public function getGetValues($query=null)
+    public static function getGetValues($query=null)
     {
         if (empty($query)) {
             if (isset($_SERVER['REDIRECT_QUERY_STRING'])) {
@@ -752,7 +752,7 @@ class PHPWS_Text {
      * @modified lorecarra at postino dot it
      * @modified Matt McNaney <matt at tux dot appstate dot edu>
      */
-    public function xml2php($file, $level = 0)
+    public static function xml2php($file, $level = 0)
     {
         $xml_parser = xml_parser_create();
         $contents = @file_get_contents($file);
@@ -773,7 +773,7 @@ class PHPWS_Text {
      *
      * @author Matt McNaney <matt at tux dot appstate dot edu>
      */
-    public function _orderXML(&$arr_vals)
+    public static function _orderXML(&$arr_vals)
     {
         if (empty($arr_vals)) {
             return null;
@@ -795,7 +795,7 @@ class PHPWS_Text {
         return $new_val;
     }
 
-    public function tagXML($arr_vals)
+    public static function tagXML($arr_vals)
     {
         if (empty($arr_vals)) {
             return null;
@@ -891,7 +891,7 @@ class PHPWS_Text {
      * Changes an array into a serialized string for salting
      * a link's values
      */
-    public function saltArray($values)
+    public static function saltArray($values)
     {
         foreach ($values as $key=>$val) {
             $values[$key] = (string)$val;

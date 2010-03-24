@@ -529,7 +529,7 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
 
         $definition = array('fields'=>$field_array);
         $result = $this->db2->mdb2->createIndex($this->full_name, $index_name, $definition);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             throw new PEAR_Exception($result->getMessage());
         } else {
             return true;
@@ -597,7 +597,7 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
         $definition = array('fields' => $field_array);
 
         $result = $this->db2->mdb2->createConstraint($this->getFullName(), $index_name, $definition);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             throw new PEAR_Exception($result->getMessage());
         } else {
             return true;
@@ -624,7 +624,7 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
     {
         echo 'drop dammit';
         $result = $this->db2->mdb2->dropTable($this->getFullName());
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             throw new PEAR_Exception($result->getMessage());
         } else {
             return true;

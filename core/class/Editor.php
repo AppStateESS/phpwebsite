@@ -29,7 +29,7 @@ class Editor {
     {
         $editorList = $this->getEditorList();
 
-        if (PEAR::isError($editorList)) {
+        if (PHPWS_Error::isError($editorList)) {
             PHPWS_Error::log($editorList);
             $this->type = null;
             return;
@@ -42,7 +42,7 @@ class Editor {
         $this->editorList = $editorList;
         if (isset($type)) {
             $result = $this->setType($type);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $this->type = null;
                 return;

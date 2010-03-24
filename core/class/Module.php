@@ -137,7 +137,7 @@ class PHPWS_Module {
                 $result = PHPWS_Module::initByDB();
             }
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 $this->_error = $result;
             } elseif(empty($result)) {
                 $this->_error = PHPWS_Error::get(PHPWS_NO_MOD_FOUND, 'core', 'PHPWS_Module::init', $title);
@@ -287,7 +287,7 @@ class PHPWS_Module {
                 $this->setProperName($this->getProperName(true));
             }
             $result = $db->saveObject($this);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
 
@@ -296,7 +296,7 @@ class PHPWS_Module {
             $db = new PHPWS_DB('core_version');
             $db->addValue('version', $this->version);
             $result = $db->update();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -325,7 +325,7 @@ class PHPWS_Module {
             $db->addValue('version', $stats['VERSION']);
             $result = $db->insert();
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -381,7 +381,7 @@ class PHPWS_Module {
         $db->addWhere('title', $title);
         $db->addColumn('title');
         $result = $db->select('one');
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return false;
         } else {
@@ -400,7 +400,7 @@ class PHPWS_Module {
         $db = new PHPWS_DB('modules');
         $db->addWhere('title', $this->title);
         $result = $db->select('row');
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return false;
         }

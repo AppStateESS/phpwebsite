@@ -44,7 +44,7 @@ class XMLParser {
 
         $result = $this->parse($xml_file, $die_on_error);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->error = $result;
         }
     }

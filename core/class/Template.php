@@ -32,7 +32,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         if (isset($file)){
             $result = $this->setFile($file);
 
-            if (PEAR::isError($result)){
+            if (PHPWS_Error::isError($result)){
                 PHPWS_Error::log($result);
                 $this->error = $result;
             }
@@ -166,7 +166,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
             $mod_tpl      = PHPWS_SOURCE_DIR . "mod/$module/templates/$file";
             $template_tpl = "templates/$module/$file";
 
-            if (PEAR::isError($theme_tpl)) {
+            if (PHPWS_Error::isError($theme_tpl)) {
                 return $theme_tpl;
             }
 
@@ -202,7 +202,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
     public function setData($data)
     {
-        if (PEAR::isError($data)){
+        if (PHPWS_Error::isError($data)){
             PHPWS_Error::log($data);
             return NULL;
         }
@@ -229,7 +229,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
             return NULL;
         }
 
-        if (PEAR::isError($template)){
+        if (PHPWS_Error::isError($template)){
             PHPWS_Error::log($template);
             return NULL;
         }
@@ -243,7 +243,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
         $tpl->ignore_cache = (bool)$ignore_cache;
 
-        if (PEAR::isError($tpl->error)) {
+        if (PHPWS_Error::isError($tpl->error)) {
             PHPWS_Error::log($tpl->error);
             return _('Template error.');
         }
@@ -265,7 +265,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
         $result = $tpl->get();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 

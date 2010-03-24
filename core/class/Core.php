@@ -35,7 +35,7 @@ class PHPWS_Core {
             PHPWS_Core::errorPage();
         }
 
-        if (PEAR::isError($moduleList)) {
+        if (PHPWS_Error::isError($moduleList)) {
             PHPWS_Error::log($moduleList);
             PHPWS_Core::errorPage();
         }
@@ -108,7 +108,7 @@ class PHPWS_Core {
         $db->addColumn('proper_name');
         $db->addColumn('title');
         $result = $db->select('col');
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return NULL;
         }
@@ -546,9 +546,10 @@ class PHPWS_Core {
 
 
         $conf = array('mode' => LOG_PERMISSION, 'timeFormat' => LOG_TIME_FORMAT);
-        $log  = &Log::singleton('file', PHPWS_LOG_DIRECTORY . $filename, $type, $conf, PEAR_LOG_NOTICE);
+        $factory = new Log(1);
+        $log  = $factory->singleton('file', PHPWS_LOG_DIRECTORY . $filename, $type, $conf, PEAR_LOG_NOTICE);
 
-        if (PEAR::isError($log)) {
+        if (PHPWS_Error::isError($log)) {
             return;
         }
 
@@ -637,7 +638,7 @@ class PHPWS_Core {
         }
 
         $file = PHPWS_Core::getConfigFile('core', 'core_modules.php');
-        if (PEAR::isError($file)) {
+        if (PHPWS_Error::isError($file)) {
             return $file;
         }
 

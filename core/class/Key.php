@@ -165,7 +165,7 @@ class Key {
         $db->addColumn('group_id');
         $result = $db->select('col');
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return array();
         }
@@ -186,7 +186,7 @@ class Key {
         $db->addWhere('key_id', $this->id);
         $db->addColumn('group_id');
         $result = $db->select('col');
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return array();
         }
@@ -254,7 +254,7 @@ class Key {
 
         $result = $db->loadObject($this);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
         } elseif (empty($result)) {
             $this->_error = PHPWS_Error::get(KEY_NOT_FOUND, 'core', 'Key::init', $this->id);
@@ -300,7 +300,7 @@ class Key {
             $db->addWhere('item_name', $this->item_name);
             $db->addWhere('item_id', $this->item_id);
             $result = $db->select('row');
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             } elseif ($result) {
                 return PHPWS_Error::get(KEY_DUPLICATE, 'core', 'Key::save',
@@ -311,7 +311,7 @@ class Key {
 
 
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
             return $result;
         }
@@ -334,14 +334,14 @@ class Key {
         $view_db = new PHPWS_DB('phpws_key_view');
         $view_db->addWhere('key_id', $this->id);
         $result = $view_db->delete();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
         $edit_db = new PHPWS_DB('phpws_key_edit');
         $edit_db->addWhere('key_id', $this->id);
         $result = $edit_db->delete();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -485,7 +485,7 @@ class Key {
 
         $this->unregister();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $all_is_well = false;
         }
@@ -495,7 +495,7 @@ class Key {
         $db->addWhere('key_id', $this->id);
         $result = $db->delete();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $all_is_well = false;
         }
@@ -505,7 +505,7 @@ class Key {
         $db->addWhere('key_id', $this->id);
         $result = $db->delete();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $all_is_well = false;
         }
@@ -793,7 +793,7 @@ class Key {
             }
 
             $result = $func_name($this);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $success = false;
             }
@@ -801,7 +801,7 @@ class Key {
         return $success;
     }
 
-    public function registerModule($module)
+    public static function registerModule($module)
     {
         $db = new PHPWS_DB('phpws_key_register');
         $db->addValue('module', $module);
@@ -816,14 +816,14 @@ class Key {
      * Returns true is all is well, false if there was a problem cleaning
      * up the associations, and an error object if a major problem occurred.
      */
-    public function unregisterModule($module)
+    public static function unregisterModule($module)
     {
         $error_free = true;
 
         $db1 = new PHPWS_DB('phpws_key');
         $db1->addWhere('module', $module);
         $result = $db1->getObjects('Key');
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -839,14 +839,14 @@ class Key {
         $db2 = new PHPWS_DB('phpws_key_register');
         $db2->addWhere('module', $module);
         $result = $db2->delete();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
         return $error_free;
     }
 
-    public function getAllIds($module)
+    public static function getAllIds($module)
     {
         $db = new PHPWS_DB('phpws_key');
         $db->addColumn('id');
