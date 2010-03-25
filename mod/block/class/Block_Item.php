@@ -7,279 +7,275 @@
  */
 
 class Block_Item {
-    public $id         = 0;
-    public $key_id     = 0;
-    public $title      = null;
-    public $content    = null;
-    public $file_id    = 0;
-    public $hide_title = 0;
-    public $_pin_key   = null;
+	public $id         = 0;
+	public $key_id     = 0;
+	public $title      = null;
+	public $content    = null;
+	public $file_id    = 0;
+	public $hide_title = 0;
+	public $_pin_key   = null;
 
 
-    public function __construct($id=null)
-    {
-        if (empty($id)) {
-            return;
-        }
+	public function __construct($id=null)
+	{
+		if (empty($id)) {
+			return;
+		}
 
-        $this->setId($id);
-        $this->init();
-    }
+		$this->setId($id);
+		$this->init();
+	}
 
-    public function setId($id)
-    {
-        $this->id = (int)$id;
-    }
+	public function setId($id)
+	{
+		$this->id = (int)$id;
+	}
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    public function setTitle($title)
-    {
-        $this->title = strip_tags($title);
-    }
+	public function setTitle($title)
+	{
+		$this->title = strip_tags($title);
+	}
 
-    public function getTitle()
-    {
-        return $this->title;
-    }
+	public function getTitle()
+	{
+		return $this->title;
+	}
 
-    public function getContentVar()
-    {
-        return 'block_' . $this->id;
-    }
+	public function getContentVar()
+	{
+		return 'block_' . $this->id;
+	}
 
-    public function setContent($content)
-    {
-        $this->content = PHPWS_Text::parseInput($content);
-    }
+	public function setContent($content)
+	{
+		$this->content = PHPWS_Text::parseInput($content);
+	}
 
-    public function getContent($format=TRUE)
-    {
-        if ($format) {
-            return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content), null, 'block');
-        } else {
-            return $this->content;
-        }
-    }
+	public function getContent($format=TRUE)
+	{
+		if ($format) {
+			return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content), null, 'block');
+		} else {
+			return $this->content;
+		}
+	}
 
-    public function setPinKey($key)
-    {
-        $this->_pin_key = $key;
-    }
+	public function setPinKey($key)
+	{
+		$this->_pin_key = $key;
+	}
 
-    public function getKey()
-    {
-        $key = new Key('block', 'block', $this->id);
-        return $key;
-    }
+	public function getKey()
+	{
+		$key = new Key('block', 'block', $this->id);
+		return $key;
+	}
 
-    public function getTag()
-    {
-        return '[block:' . $this->id . ']';
-    }
+	public function getTag()
+	{
+		return '[block:' . $this->id . ']';
+	}
 
-    public function summarize(){
-        return substr(strip_tags($this->getContent()), 0, 40);
-    }
+	public function summarize(){
+		return substr(strip_tags($this->getContent()), 0, 40);
+	}
 
-    public function init()
-    {
-        if (empty($this->id)) {
-            return FALSE;
-        }
+	public function init()
+	{
+		if (empty($this->id)) {
+			return FALSE;
+		}
 
-        $db = new PHPWS_DB('block');
-        return $db->loadObject($this);
-    }
+		$db = new PHPWS_DB('block');
+		return $db->loadObject($this);
+	}
 
-    public function save($save_key=TRUE)
-    {
-        $db = new PHPWS_DB('block');
-        $result = $db->saveObject($this);
-        if (PHPWS_Error::isError($result)) {
-            return $result;
-        }
+	public function save($save_key=TRUE)
+	{
+		$db = new PHPWS_DB('block');
+		$result = $db->saveObject($this);
+		if (PHPWS_Error::isError($result)) {
+			return $result;
+		}
 
-        if ($save_key) {
-            $this->saveKey();
-        }
-    }
+		if ($save_key) {
+			$this->saveKey();
+		}
+	}
 
-    public function saveKey()
-    {
-        if (empty($this->key_id)) {
-            $key = new Key;
-            $key->module = $key->item_name = 'block';
-            $key->item_id = $this->id;
-        } else {
-            $key = new Key($this->key_id);
-        }
+	public function saveKey()
+	{
+		if (empty($this->key_id)) {
+			$key = new Key;
+			$key->module = $key->item_name = 'block';
+			$key->item_id = $this->id;
+		} else {
+			$key = new Key($this->key_id);
+		}
 
-        $key->edit_permission = 'edit_block';
-        $key->title = $this->title;
-        $result = $key->save();
-        if (PHPWS_Error::isError($result)) {
-            return $result;
-        }
+		$key->edit_permission = 'edit_block';
+		$key->title = $this->title;
+		$result = $key->save();
+		if (PHPWS_Error::isError($result)) {
+			return $result;
+		}
 
-        if (empty($this->key_id)) {
-            $this->key_id = $key->id;
-            $this->save(FALSE);
-        }
+		if (empty($this->key_id)) {
+			$this->key_id = $key->id;
+			$this->save(FALSE);
+		}
 
-    }
+	}
 
-    public function clearPins()
-    {
-        $db = new PHPWS_DB('block_pinned');
-        $db->addWhere('block_id', $this->id);
-        $db->delete();
-    }
+	public function clearPins()
+	{
+		$db = new PHPWS_DB('block_pinned');
+		$db->addWhere('block_id', $this->id);
+		$db->delete();
+	}
 
-    public function kill()
-    {
-        $this->clearPins();
-        $db = new PHPWS_DB('block');
-        $db->addWhere('id', $this->id);
+	public function kill()
+	{
+		$this->clearPins();
+		$db = new PHPWS_DB('block');
+		$db->addWhere('id', $this->id);
 
-        $result = $db->delete();
+		$result = $db->delete();
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
-        }
+		if (PHPWS_Error::isError($result)) {
+			PHPWS_Error::log($result);
+		}
 
-        $key = new Key($this->key_id);
-        $result = $key->delete();
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
-        }
-    }
+		$key = new Key($this->key_id);
+		$result = $key->delete();
+		if (PHPWS_Error::isError($result)) {
+			PHPWS_Error::log($result);
+		}
+	}
 
-    public function view($pin_mode=FALSE, $admin_icon=TRUE)
-    {
-        $edit = $opt = null;
-        if (Current_User::allow('block')) {
-            $img = Icon::show('edit', dgettext('block', 'Edit block'));
-            $edit = PHPWS_Text::secureLink($img, 'block', array('block_id'=>$this->id,
+	public function view($pin_mode=FALSE, $admin_icon=TRUE)
+	{
+		$edit = $opt = null;
+		if (Current_User::allow('block')) {
+			$img = Icon::show('edit', dgettext('block', 'Edit block'));
+			$edit = PHPWS_Text::secureLink($img, 'block', array('block_id'=>$this->id,
                                                                 'action'=>'edit'));
 
-            if (!empty($this->_pin_key) && $pin_mode) {
-                $link['action']   = 'lock';
-                $link['block_id'] = $this->id;
-                $link['key_id'] = $this->_pin_key->id;
-                $img = '<img src="' . PHPWS_SOURCE_HTTP . '/mod/block/img/pin.png" />';
-                $opt = PHPWS_Text::secureLink($img, 'block', $link);
-            } elseif (!empty($this->_pin_key) && $admin_icon) {
-                $vars['action'] = 'remove';
-                $vars['block_id'] = $this->id;
-                $vars['key_id'] = $this->_pin_key->id;
-                $js_var['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
-                $js_var['QUESTION'] = dgettext('block', 'Are you sure you want to remove this block from this page?');
-                $icon = Icon::get('close');
-                $icon->setAlt(dgettext('block', 'Delete block'));
-                $icon->setStyle('margin : 3px');
-                $js_var['LINK'] = $icon->__toString();
+			if (!empty($this->_pin_key) && $pin_mode) {
+				$link['action']   = 'lock';
+				$link['block_id'] = $this->id;
+				$link['key_id'] = $this->_pin_key->id;
+				$img = '<img src="' . PHPWS_SOURCE_HTTP . '/mod/block/img/pin.png" />';
+				$opt = PHPWS_Text::secureLink($img, 'block', $link);
+			} elseif (!empty($this->_pin_key) && $admin_icon) {
+				$vars['action'] = 'remove';
+				$vars['block_id'] = $this->id;
+				$vars['key_id'] = $this->_pin_key->id;
+				$js_var['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
+				$js_var['QUESTION'] = dgettext('block', 'Are you sure you want to remove this block from this page?');
+				$icon = Icon::get('close');
+				$icon->setAlt(dgettext('block', 'Delete block'));
+				$icon->setStyle('margin : 3px');
+				$js_var['LINK'] = $icon->__toString();
 
-                $opt = Layout::getJavascript('confirm', $js_var);
-            }
-        }
+				$opt = Layout::getJavascript('confirm', $js_var);
+			}
+		}
 
-        $link['block_id'] = $this->id;
-        $template = array('CONTENT' => $this->getContent(),
-                          'FILE'    => Cabinet::getTag($this->file_id),
-                          'OPT'     => $opt,
-                          'EDIT'    => $edit
-        );
-        if (!$this->hide_title) {
-            $template['TITLE'] = $this->getTitle();
-        }
-        return PHPWS_Template::process($template, 'block', 'sample.tpl');
-    }
+		$link['block_id'] = $this->id;
+		$template = array('CONTENT'=>$this->getContent(), 'FILE'=>Cabinet::getTag($this->file_id), 'OPT'=>$opt, 'EDIT'=>$edit, 'ID' => $this->getId());
+		if (!$this->hide_title) {
+			$template['TITLE'] = $this->getTitle();
+		}
+		return PHPWS_Template::process($template, 'block', 'sample.tpl');
+	}
 
-    public function isPinned()
-    {
-        if (!isset($_SESSION['Pinned_Blocks'])) {
-            return FALSE;
-        }
+	public function isPinned()
+	{
+		if (!isset($_SESSION['Pinned_Blocks'])) {
+			return FALSE;
+		}
 
-        return isset($_SESSION['Pinned_Blocks'][$this->id]);
-    }
+		return isset($_SESSION['Pinned_Blocks'][$this->id]);
+	}
 
-    public function allPinned()
-    {
-        static $all_pinned = null;
+	public function allPinned()
+	{
+		static $all_pinned = null;
 
-        if (empty($all_pinned)) {
-            $db = new PHPWS_DB('block_pinned');
-            $db->addWhere('key_id', -1);
-            $db->addColumn('block_id');
-            $result = $db->select('col');
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
-                return false;
-            }
-            if ($result) {
-                $all_pinned = & $result;
-            } else {
-                $all_pinned = true;
-            }
-        }
+		if (empty($all_pinned)) {
+			$db = new PHPWS_DB('block_pinned');
+			$db->addWhere('key_id', -1);
+			$db->addColumn('block_id');
+			$result = $db->select('col');
+			if (PHPWS_Error::isError($result)) {
+				PHPWS_Error::log($result);
+				return false;
+			}
+			if ($result) {
+				$all_pinned = & $result;
+			} else {
+				$all_pinned = true;
+			}
+		}
 
-        if (is_array($all_pinned)) {
-            return in_array($this->id, $all_pinned);
-        } else {
-            return false;
-        }
+		if (is_array($all_pinned)) {
+			return in_array($this->id, $all_pinned);
+		} else {
+			return false;
+		}
 
-    }
+	}
 
-    public function getTpl()
-    {
-        $vars['block_id'] = $this->getId();
+	public function getTpl()
+	{
+		$vars['block_id'] = $this->getId();
 
-        if (Current_User::allow('block', 'edit_block', $this->id)) {
-            $vars['action'] = 'edit';
-            $links[] = PHPWS_Text::secureLink(dgettext('block', 'Edit'), 'block', $vars);
-        }
+		if (Current_User::allow('block', 'edit_block', $this->id)) {
+			$vars['action'] = 'edit';
+			$links[] = PHPWS_Text::secureLink(dgettext('block', 'Edit'), 'block', $vars);
+		}
 
-        if ($this->isPinned()) {
-            $vars['action'] = 'unpin';
-            $links[] = PHPWS_Text::secureLink(dgettext('block', 'Unpin'), 'block', $vars);
-        } else {
-            if ($this->allPinned()) {
-                $vars['action'] = 'remove';
-                $links[] = PHPWS_Text::secureLink(dgettext('block', 'Unpin all'), 'block', $vars);
-            } else {
-                $vars['action'] = 'pin';
-                $links[] = PHPWS_Text::secureLink(dgettext('block', 'Pin'), 'block', $vars);
-                $vars['action'] = 'pin_all';
-                $links[] = PHPWS_Text::secureLink(dgettext('block', 'Pin all'), 'block', $vars);
-            }
-        }
+		if ($this->isPinned()) {
+			$vars['action'] = 'unpin';
+			$links[] = PHPWS_Text::secureLink(dgettext('block', 'Unpin'), 'block', $vars);
+		} else {
+			if ($this->allPinned()) {
+				$vars['action'] = 'remove';
+				$links[] = PHPWS_Text::secureLink(dgettext('block', 'Unpin all'), 'block', $vars);
+			} else {
+				$vars['action'] = 'pin';
+				$links[] = PHPWS_Text::secureLink(dgettext('block', 'Pin'), 'block', $vars);
+				$vars['action'] = 'pin_all';
+				$links[] = PHPWS_Text::secureLink(dgettext('block', 'Pin all'), 'block', $vars);
+			}
+		}
 
-        if (Current_User::isUnrestricted('block')) {
-            $links[] = Current_User::popupPermission($this->key_id);
-        }
+		if (Current_User::isUnrestricted('block')) {
+			$links[] = Current_User::popupPermission($this->key_id);
+		}
 
 
-        $vars['action'] = 'copy';
-        $links[] = PHPWS_Text::secureLink(dgettext('block', 'Copy'), 'block', $vars);
+		$vars['action'] = 'copy';
+		$links[] = PHPWS_Text::secureLink(dgettext('block', 'Copy'), 'block', $vars);
 
-        if (Current_User::allow('block', 'delete_block')) {
-            $vars['action'] = 'delete';
-            $confirm_vars['QUESTION'] = dgettext('block', 'Are you sure you want to permanently delete this block?');
-            $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
-            $confirm_vars['LINK'] = dgettext('block', 'Delete');
-            $links[] = javascript('confirm', $confirm_vars);
-        }
+		if (Current_User::allow('block', 'delete_block')) {
+			$vars['action'] = 'delete';
+			$confirm_vars['QUESTION'] = dgettext('block', 'Are you sure you want to permanently delete this block?');
+			$confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
+			$confirm_vars['LINK'] = dgettext('block', 'Delete');
+			$links[] = javascript('confirm', $confirm_vars);
+		}
 
-        $template['ACTION'] = implode(' | ', $links);
-        $template['CONTENT'] = $this->summarize();
-        return $template;
-    }
+		$template['ACTION'] = implode(' | ', $links);
+		$template['CONTENT'] = $this->summarize();
+		return $template;
+	}
 
 }
 
