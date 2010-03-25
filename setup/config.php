@@ -5,7 +5,7 @@
  */
 define('DEFAULT_DBTYPE', 'mysql');
 // CHANGE BACK
-define('DEFAULT_DBUSER', 'matt');
+define('DEFAULT_DBUSER', 'phpwebsite');
 define('DEFAULT_DBHOST', 'localhost');
 define('DEFAULT_DBPORT', NULL);
 define('DEFAULT_DBNAME', 'phpwebsite');
