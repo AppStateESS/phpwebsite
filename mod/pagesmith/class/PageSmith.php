@@ -484,13 +484,11 @@ class PageSmith {
 
     public function postSettings()
     {
-        if (isset($_POST['auto_link'])) {
-            PHPWS_Settings::set('pagesmith', 'auto_link', 1);
-        } else {
-            PHPWS_Settings::set('pagesmith', 'auto_link', 0);
-        }
-
+        PHPWS_Settings::set('pagesmith', 'auto_link', isset($_POST['auto_link']));
+        PHPWS_Settings::set('pagesmith', 'back_to_top', isset($_POST['back_to_top']));
+        
         PHPWS_Settings::save('pagesmith');
+        PHPWS_Cache::clearCache();
     }
 
     private function postTemplate()
