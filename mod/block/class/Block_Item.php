@@ -161,7 +161,7 @@ class Block_Item {
 	public function view($pin_mode=FALSE, $admin_icon=TRUE)
 	{
 		$edit = $opt = null;
-		if (Current_User::allow('block')) {
+		if (Current_User::allow('block', 'edit_block', $this->id)) {
 			$img = Icon::show('edit', dgettext('block', 'Edit block'));
 			$edit = PHPWS_Text::secureLink($img, 'block', array('block_id'=>$this->id,
                                                                 'action'=>'edit'));
@@ -239,30 +239,30 @@ class Block_Item {
 		if (Current_User::allow('block', 'edit_block', $this->id)) {
 			$vars['action'] = 'edit';
 			$links[] = PHPWS_Text::secureLink(dgettext('block', 'Edit'), 'block', $vars);
-		}
-
-		if ($this->isPinned()) {
-			$vars['action'] = 'unpin';
-			$links[] = PHPWS_Text::secureLink(dgettext('block', 'Unpin'), 'block', $vars);
-		} else {
-			if ($this->allPinned()) {
-				$vars['action'] = 'remove';
-				$links[] = PHPWS_Text::secureLink(dgettext('block', 'Unpin all'), 'block', $vars);
+			if ($this->isPinned()) {
+				$vars['action'] = 'unpin';
+				$links[] = PHPWS_Text::secureLink(dgettext('block', 'Unpin'), 'block', $vars);
 			} else {
-				$vars['action'] = 'pin';
-				$links[] = PHPWS_Text::secureLink(dgettext('block', 'Pin'), 'block', $vars);
-				$vars['action'] = 'pin_all';
-				$links[] = PHPWS_Text::secureLink(dgettext('block', 'Pin all'), 'block', $vars);
+				if ($this->allPinned()) {
+					$vars['action'] = 'remove';
+					$links[] = PHPWS_Text::secureLink(dgettext('block', 'Unpin all'), 'block', $vars);
+				} else {
+					$vars['action'] = 'pin';
+					$links[] = PHPWS_Text::secureLink(dgettext('block', 'Pin'), 'block', $vars);
+					$vars['action'] = 'pin_all';
+					$links[] = PHPWS_Text::secureLink(dgettext('block', 'Pin all'), 'block', $vars);
+				}
 			}
+
+			if (Current_User::isUnrestricted('block')) {
+				$links[] = Current_User::popupPermission($this->key_id);
+			}
+
+
+			$vars['action'] = 'copy';
+			$links[] = PHPWS_Text::secureLink(dgettext('block', 'Copy'), 'block', $vars);
 		}
 
-		if (Current_User::isUnrestricted('block')) {
-			$links[] = Current_User::popupPermission($this->key_id);
-		}
-
-
-		$vars['action'] = 'copy';
-		$links[] = PHPWS_Text::secureLink(dgettext('block', 'Copy'), 'block', $vars);
 
 		if (Current_User::allow('block', 'delete_block')) {
 			$vars['action'] = 'delete';
@@ -272,7 +272,11 @@ class Block_Item {
 			$links[] = javascript('confirm', $confirm_vars);
 		}
 
-		$template['ACTION'] = implode(' | ', $links);
+		if (!empty($links)) {
+			$template['ACTION'] = implode(' | ', $links);
+		} else {
+			$template['ACTION'] = ' ';
+		}
 		$template['CONTENT'] = $this->summarize();
 		return $template;
 	}
