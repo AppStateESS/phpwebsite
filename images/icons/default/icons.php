@@ -59,6 +59,7 @@ $icons['help'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-512', '
 $icons['home'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-302', 'y'=>'-122', 'label'=>dgettext('core', 'Home'));
 $icons['image'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-150', 'y'=>'-32', 'label'=>dgettext('core', 'Image'));
 $icons['important'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-362', 'y'=>'-62', 'label'=>dgettext('core', 'Important'));
+$icons['install'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-62', 'y'=>'-242', 'label'=>dgettext('core', 'Install'));
 $icons['lock'] = array('src'=>'lock.png', 'label'=>dgettext('core', 'Lock'));
 $icons['magnify'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-150', 'y'=>'-242', 'label'=>dgettext('core', 'Magnify'));
 $icons['maximize'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-32', 'y'=>'-272', 'label'=>dgettext('core', 'Maximize'));
