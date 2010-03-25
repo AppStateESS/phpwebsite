@@ -77,8 +77,8 @@ class PHPWS_SiteManager
                 break;
 
             case 'uninstall_module':
-                $boost = & new PHPWS_Boost;
-                $module = & new PHPWS_Module($_GET['module_title']);
+                $boost = new PHPWS_Boost;
+                $module = new PHPWS_Module($_GET['module_title']);
                 $boost->addModule($module);
                 $boost->uninstall();
                 PHPWS_Core::goBack();
@@ -97,7 +97,7 @@ class PHPWS_SiteManager
 
     function loginForm()
     {
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->setAction('manager.php');
         $form->addHidden('command', 'post_login');
         $form->addText('phpws_username');
@@ -115,7 +115,7 @@ class PHPWS_SiteManager
 
     function main()
     {
-        $db = & new PHPWS_DB('modules');
+        $db = new PHPWS_DB('modules');
         $db->addOrder('title');
         $result = $db->select();
 
