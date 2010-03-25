@@ -12,7 +12,7 @@ class Demographics {
     /**
      * Returns the fields currently used in demographics
      */
-    public function getFields()
+    public static function getFields()
     {
         $db = new PHPWS_DB('demographics');
         $columns = $db->getTableColumns();
@@ -20,7 +20,7 @@ class Demographics {
     }
 
     // returns default demographic fields
-    public function getDefaultFields()
+    public static function getDefaultFields()
     {
         static $fields;
         if (empty($fields)) {
@@ -40,7 +40,7 @@ class Demographics {
      * Returns TRUE if the field is one of Demographic's default
      * fields.
      */
-    public function isDefaultField($field_name)
+    public static function isDefaultField($field_name)
     {
         $fields = Demographics::getDefaultFields();
         return isset($fields[$field_name]);
@@ -91,7 +91,7 @@ class Demographics {
     /**
      * Registers a new field to the system
      */
-    public function registerField($field_name, $stats)
+    public static function registerField($field_name, $stats)
     {
         $current_fields = Demographics::getFields();
 
@@ -143,7 +143,7 @@ class Demographics {
      * Creates a new field (column) for demographics
      * @modified Eloi George <adarkling at users dot sourceforge dot net>
      */
-    public function createField($field_name, $stats)
+    public static function createField($field_name, $stats)
     {
         $stat_types = array('text', 'smallint', 'integer', 'boolean');
 

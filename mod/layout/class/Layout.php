@@ -109,7 +109,7 @@ class Layout {
 		$GLOBALS['Layout'][$module][$contentVar][] = $text;
 	}
 
-	public function addBox($content_var, $module, $theme_var=NULL, $theme=NULL)
+	public static function addBox($content_var, $module, $theme_var=NULL, $theme=NULL)
 	{
 		PHPWS_Core::initModClass('layout', 'Box.php');
 
@@ -775,7 +775,7 @@ class Layout {
 	}
 
 
-	public function resetBoxes()
+	public static function resetBoxes()
 	{
 		$_SESSION['Layout_Settings']->loadContentVars();
 		$_SESSION['Layout_Settings']->loadBoxes();
