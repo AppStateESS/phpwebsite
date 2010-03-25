@@ -105,7 +105,7 @@ class User_Form {
 		return PHPWS_Template::process($template, 'users', 'usermenus/' . $usermenu);
 	}
 
-	public function setPermissions($id)
+	public static function setPermissions($id)
 	{
 		$group = new PHPWS_Group($id, FALSE);
 
@@ -167,7 +167,7 @@ class User_Form {
 	}
 
 
-	public function modulePermission($mod, PHPWS_Group $group)
+	public static function modulePermission($mod, PHPWS_Group $group)
 	{
 		$file = PHPWS_SOURCE_DIR . 'mod/' . $mod['title'] . '/boost/permission.php';
 		if (!is_file($file)) {
@@ -283,8 +283,7 @@ class User_Form {
 		$pager->setLink('index.php?module=users&amp;action=admin&amp;tab=manage_users&amp;authkey=' . Current_User::getAuthKey());
 		$pager->addPageTags($pageTags);
 		$pager->addRowTags('getUserTpl');
-		$pager->addToggle('class="toggle1"');
-		$pager->addToggle('class="toggle2"');
+		$pager->addToggle(' class="bgcolor1"');
 		$pager->addSortHeader('username', dgettext('users', 'Username'));
 		$pager->addSortHeader('display_name', dgettext('users', 'Display'));
 		$pager->addSortHeader('email', dgettext('users', 'Email'));

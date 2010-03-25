@@ -289,7 +289,7 @@ class Users_Permission {
         return implode('', array($module, '_permissions'));
     }
 
-    public function setPermissions($group_id, $module, $level, $subpermissions=NULL)
+    public static function setPermissions($group_id, $module, $level, $subpermissions=NULL)
     {
         if (empty($group_id) || !is_numeric($group_id)) {
             return false;
