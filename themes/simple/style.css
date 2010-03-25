@@ -58,7 +58,7 @@ div#wrapper {
 	width: 1003px;
 	background: transparent url("images/vert_tile.png") repeat-y scroll
 		center top;
-	min-height: 600px;
+		overflow: auto;
 }
 
 div#container {
@@ -123,6 +123,24 @@ div#theme-generator {
 	background-color: #3e5414;
 	color: white;
 	text-align: center;
+}
+
+.bgcolor1 {
+	background-color: #FFDD78;
+}
+
+th {
+	background-color: #739B69;
+	text-align: left;
+}
+
+a {
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a:hover {
+	text-decoration: underline;
 }
 
 div.box {
@@ -235,7 +253,7 @@ div#miniadmin li {
 }
 
 li.menu-link {
-	font-size: 11px;
+	font-size: 12px;
 	background-repeat: no-repeat;
 	background-image: url('../images/menu_bg.gif');
 	border-bottom: 1px solid white;
@@ -282,6 +300,10 @@ li.menu-link ul li a.menu-link-href {
 }
 
 /******* controlpanel ******/
+#body-content ul.tabmenu {
+	margin : 2px 0px;
+	}
+	
 #body-content ul.tabmenu li {
 	margin: 0px;
 	margin-right: 4px;
@@ -290,7 +312,7 @@ li.menu-link ul li a.menu-link-href {
 
 #body-content ul.tabmenu li a {
 	background-color: #F4D669;
-	padding-bottom: 0px;
+	padding-bottom: 1px;
 }
 
 #body-content ul.tabmenu li a:hover {
@@ -298,8 +320,16 @@ li.menu-link ul li a.menu-link-href {
 }
 
 #body-content ul.tabmenu li.active a {
-	padding-bottom: 1px;
+	padding-bottom: 2px;
 	background-color: #F4C20A;
+}
+
+#body-content div.controlpanel div.controlpanel ul.tabmenu li a {
+	padding-bottom: 1px;
+}
+
+#body-content div.controlpanel div.controlpanel ul.tabmenu li.active a {
+	padding-bottom: 2px;
 }
 
 .frame {
@@ -308,11 +338,11 @@ li.menu-link ul li a.menu-link-href {
 
 div.controlpanel div.controlpanel .panel-content,div.controlpanel div.controlpanel .panel-content input,div.controlpanel div.controlpanel .panel-content select
 	{
-	font-size: 95%;
+	font-size: 1em;
 }
 
 .tabmenu li {
-	font-size: .9em;
+	font-size: 1em;
 }
 
 .panel-content {
@@ -351,7 +381,7 @@ div.month-view-mini table,div.month-view-mini table td {
 
 div#sidepanel td.day-normal {
 	background-color: #DAE3DE;
-	color : black;
+	color: black;
 }
 
 div#sidepanel td.day-normal a {
@@ -360,8 +390,9 @@ div#sidepanel td.day-normal a {
 
 div#sidepanel td.day-current {
 	background-color: #FFDD78;
-	color : black;
+	color: black;
 }
+
 div#sidepanel td.day-current a {
-	color : black;
+	color: black;
 }
