@@ -154,7 +154,7 @@ class Branch {
 
         $links[] = javascript('prompt', $js);
 
-        $links[] = PHPWS_Text::secureLink(dgettext('branch', 'Modules'), 'branch',
+        $links[] = PHPWS_Text::secureLink(Icon::show('install', dgettext('branch', 'Modules')), 'branch',
         array('command'=>'branch_modules', 'branch_id'=>$this->id));
         $tpl['DIRECTORY'] = sprintf('<abbr title="%s">%s</abbr>', $this->directory,
         PHPWS_Text::shortenUrl($this->directory));
