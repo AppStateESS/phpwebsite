@@ -162,7 +162,7 @@ class Branch {
         return $tpl;
     }
 
-    public function getHubPrefix() {
+    public static function getHubPrefix() {
         $handle = @fopen(PHPWS_SOURCE_DIR . 'core/conf/branches/config.php', 'r');
         if ($handle) {
             $search_for = '^define\(\'PHPWS_TABLE_PREFIX\',';
@@ -181,7 +181,7 @@ class Branch {
         }
     }
 
-    public function getHubDSN()
+    public static function getHubDSN()
     {
         $handle = @fopen(PHPWS_SOURCE_DIR . 'config/config.php', 'r');
         if ($handle) {
@@ -205,7 +205,7 @@ class Branch {
      * Makes a connection to the hub database. Used when currently using a
      * branch connection.
      */
-    public function loadHubDB()
+    public static function loadHubDB()
     {
         $dsn = Branch::getHubDSN();
         if (empty($dsn)) {
@@ -235,14 +235,14 @@ class Branch {
     /**
      * Restores the branch connection after calling the loadHubDB
      */
-    public function restoreBranchDB()
+    public static function restoreBranchDB()
     {
         $prefix = $dsn = null;
         extract($GLOBALS['Branch_Temp']);
         PHPWS_DB::loadDB($dsn, $prefix);
     }
 
-    public function checkCurrentBranch()
+    public static function checkCurrentBranch()
     {
         if (isset($_SESSION['Approved_Branch'])) {
             return (bool)$_SESSION['Approved_Branch'];
@@ -257,7 +257,7 @@ class Branch {
 
         $db = new PHPWS_DB('branch_sites');
         $db->addWhere('site_hash', SITE_HASH);
-        $db->addColumn('branch_name');
+        $db->addColumn('id');
         $result = $db->select('one');
 
         PHPWS_DB::loadDB();
@@ -275,7 +275,7 @@ class Branch {
         }
     }
 
-    public function getCurrentBranch()
+    public static function getCurrentBranch()
     {
         if (!isset($_SESSION['Approved_Branch'])) {
             if (!Branch::checkCurrentBranch()) {
@@ -307,7 +307,7 @@ class Branch {
         return $connection;
     }
 
-    public function getCurrent()
+    public static function getCurrent()
     {
         if (!isset($_SESSION['Approved_Branch'])) {
             return FALSE;
@@ -316,7 +316,7 @@ class Branch {
         }
     }
 
-    public function getBranchMods()
+    public static function getBranchMods()
     {
         $branch_id = Branch::getCurrent();
         if (!$branch_id) {
@@ -329,7 +329,6 @@ class Branch {
         $db->addColumn('module_name');
         $db->addWhere('branch_id', $branch_id);
         $result = $db->select('col');
-
         PHPWS_DB::loadDB();
 
         if (PHPWS_Error::isError($result)) {
