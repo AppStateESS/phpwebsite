@@ -260,7 +260,7 @@ class Setup {
         $dsn = $this->getDSN(1);
         $db = DB::connect($dsn);
 
-        if (PEAR::isError($db)) {
+        if (PHPWS_Error::isError($db)) {
             PHPWS_Error::log($db);
             $this->messages[] = dgettext('core','Unable to connect.');
             $this->messages[] = dgettext('core','Check your configuration settings.');
@@ -268,7 +268,7 @@ class Setup {
         }
 
         $result = $db->query('CREATE DATABASE ' . $this->getConfigSet('dbname'));
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($db);
             $this->messages[] = dgettext('core','Unable to create the database.');
             $this->messages[] = dgettext('core','You will need to create it manually and rerun the setup.');
@@ -319,7 +319,7 @@ class Setup {
             $dsn = $this->getDSN(1);
             $connection = DB::connect($dsn);
 
-            if (PEAR::isError($connection)) {
+            if (PHPWS_Error::isError($connection)) {
                 PHPWS_Error::log($connection);
                 return 0;
             }
@@ -329,7 +329,7 @@ class Setup {
 
         $result = DB::connect($dsn);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             // mysql delivers the first error, postgres the second
             if ($result->getCode() == DB_ERROR_NOSUCHDB ||
             $result->getCode() == DB_ERROR_CONNECT_FAILED) {
@@ -573,7 +573,7 @@ class Setup {
         $db = new PHPWS_DB;
         $result = $db->importFile('core/boost/install.sql');
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $this->content[] = dgettext('core','Some errors occurred while creating the core database tables.');
             $this->content[] = dgettext('core','Please check your error log file.');
@@ -586,7 +586,7 @@ class Setup {
             $db->addValue('version', $version);
             $result = $db->insert();
 
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $this->content[] = dgettext('core','Some errors occurred while creating the core database tables.');
                 $this->content[] = dgettext('core','Please check your error log file.');
@@ -606,7 +606,7 @@ class Setup {
         }
         $result = $_SESSION['Boost']->install(false);
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $this->content[] = dgettext('core','An error occurred while trying to install your modules.')
             . ' ' . dgettext('core','Please check your error logs and try again.');
@@ -833,7 +833,7 @@ class Setup {
                         $this->step = 6;
                         $this->goToStep();
                         break;
-                    } elseif (PEAR::isError($result)) {
+                    } elseif (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
                         $this->content[] = dgettext('core', 'Sorry an error occurred. Please check your logs.');
                     } else {
