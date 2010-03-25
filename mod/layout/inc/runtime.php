@@ -4,6 +4,5 @@
  * @version $Id$
  */
 
-javascriptEnabled();
 Layout::checkSettings();
 ?>

@@ -12,7 +12,7 @@
 define('DEFAULT_LAYOUT_TAB', 'boxes');
 
 class Layout_Admin {
-    public function admin()
+    public static function admin()
     {
         if (!Current_User::allow('layout')) {
             Current_User::disallow();
@@ -284,7 +284,7 @@ class Layout_Admin {
     }
 
 
-    public function adminPanel()
+    public static function adminPanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=layout&amp;action=admin';
@@ -299,7 +299,7 @@ class Layout_Admin {
         return $panel;
     }
 
-    public function adminThemes()
+    public static function adminThemes()
     {
         $form = new PHPWS_Form('themes');
         $form->addHidden('module', 'layout');
@@ -330,7 +330,7 @@ class Layout_Admin {
         return PHPWS_Template::process($template, 'layout', 'themes.tpl');
     }
 
-    public function arrangeForm()
+    public static function arrangeForm()
     {
         $vars['action'] = 'admin';
         $vars['command'] = 'reset_boxes';
@@ -382,7 +382,7 @@ class Layout_Admin {
         return $form->getMerge();
     }
 
-    public function editFooter()
+    public static function editFooter()
     {
         $form = new PHPWS_Form('edit_footer');
         $form->addHidden('module', 'layout');
@@ -407,7 +407,7 @@ class Layout_Admin {
     }
 
 
-    public function editHeader()
+    public static function editHeader()
     {
         $form = new PHPWS_Form('edit_header');
         $form->addHidden('module', 'layout');
@@ -431,7 +431,7 @@ class Layout_Admin {
         return PHPWS_Template::process($template, 'layout', 'edit_header.tpl');
     }
 
-    public function getThemeList()
+    public static function getThemeList()
     {
         PHPWS_Core::initCoreClass('File.php');
         return PHPWS_File::readDirectory('themes/', 1);
@@ -441,7 +441,7 @@ class Layout_Admin {
      * Form for meta tags. Used for site mata tags and individual key
      * meta tags.
      */
-    public function metaForm($key_id=0)
+    public static function metaForm($key_id=0)
     {
         $meta_description = $meta_keywords = $page_title = null;
         $meta_robots = '11';
