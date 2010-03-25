@@ -140,7 +140,7 @@ class PHPWS_File {
 	 *
 	 * @author Matthew McNaney <mcnaney at gmail dot com>
 	 */
-	public function copy_directory($source_directory, $dest_directory, $overwrite=true, $hidden=false) {
+	public static function copy_directory($source_directory, $dest_directory, $overwrite=true, $hidden=false) {
 		PHPWS_File::appendSlash($source_directory);
 		PHPWS_File::appendSlash($dest_directory);
 
@@ -698,7 +698,7 @@ class PHPWS_File {
 	}
 
 
-	public function getFileExtension($filename)
+	public static function getFileExtension($filename)
 	{
 		if (!strpos($filename, '.')) {
 			return null;
@@ -714,7 +714,7 @@ class PHPWS_File {
 		}
 	}
 
-	public function getMimeType($file_path)
+	public static function getMimeType($file_path)
 	{
 		$mime_type = null;
 		if (function_exists('finfo_open')) {
@@ -789,7 +789,7 @@ class PHPWS_File {
 		}
 	}
 
-	public function getAllFileTypes()
+	public static function getAllFileTypes()
 	{
 		static $all_file_types = null;
 		if (empty($all_file_types)) {

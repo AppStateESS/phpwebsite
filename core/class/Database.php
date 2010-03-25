@@ -2461,7 +2461,7 @@ class PHPWS_DB {
     }
 
 
-    public function allowed($value)
+    public static function allowed($value)
     {
         if (!is_string($value)) {
             return false;
@@ -2554,7 +2554,7 @@ class PHPWS_DB {
         return $table;
     }
 
-    public function getPrefix()
+    public static function getPrefix()
     {
         if (isset($GLOBALS['PHPWS_DB']['tbl_prefix'])) {
             return $GLOBALS['PHPWS_DB']['tbl_prefix'];

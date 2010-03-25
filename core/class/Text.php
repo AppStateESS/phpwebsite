@@ -324,7 +324,7 @@ class PHPWS_Text {
      *
      * @author Matthew McNaney <matt at tux dot appstate dot edu>
      */
-    public function breaker($text)
+    public static function breaker($text)
     {
         $do_not_break = array('/(<table.*>)\n/iU',
                               '/(<tbody.*>)\n/iU',
@@ -848,7 +848,7 @@ class PHPWS_Text {
         $text));
     }
 
-    public function shortenUrl($url, $limit=COLLAPSE_LIMIT)
+    public static function shortenUrl($url, $limit=COLLAPSE_LIMIT)
     {
         // + 3 takes the "..." into account
         if (!(int)$limit || strlen($url) < $limit + 3) {
