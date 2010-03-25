@@ -99,7 +99,7 @@ class Notes_My_Page {
         }
     }
 
-    public function miniAdminLink($key)
+    public static function miniAdminLink($key)
     {
         $vars = Notes_My_Page::myPageVars(false);
         $vars['op'] = 'send_note';
@@ -270,7 +270,7 @@ class Notes_My_Page {
         $this->content = PHPWS_Template::process($tpl, 'notes', 'send_note.tpl');
     }
 
-    public function showAssociations($key)
+    public static function showAssociations($key)
     {
         $db = new PHPWS_DB('notes');
         $db->addWhere('user_id', Current_User::getId());

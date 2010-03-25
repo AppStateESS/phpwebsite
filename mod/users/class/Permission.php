@@ -341,7 +341,7 @@ class Users_Permission {
      * @param object  key          Key object for comparison
      * @param boolean edit_rights  If true, check the edit permissions as well
      */
-    public function getRestrictedGroups($key, $edit_rights=false)
+    public static function getRestrictedGroups($key, $edit_rights=false)
     {
         $group_list = Users_Permission::getPermissionGroups($key, $edit_rights);
         if (empty($group_list) || PHPWS_Error::isError($group_list)) {
@@ -355,7 +355,7 @@ class Users_Permission {
      * Returns an associative list of all groups and their levels of permission
      * in reference to the key passed to it
      */
-    public function getPermissionGroups($key, $edit_rights=false)
+    public static function getPermissionGroups($key, $edit_rights=false)
     {
         if ( empty($key) ||
         !PHPWS_Core::isClass($key, 'key') ||

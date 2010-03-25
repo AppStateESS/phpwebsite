@@ -10,7 +10,7 @@ PHPWS_Core::initModClass('menu', 'Menu_Item.php');
 
 class Menu {
 
-    public function admin()
+    public static function admin()
     {
         PHPWS_Core::initModClass('menu', 'Menu_Admin.php');
         Menu_Admin::main();

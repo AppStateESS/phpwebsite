@@ -86,7 +86,7 @@ class Comments {
     }
 
 
-    public function panel()
+    public static function panel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
@@ -118,7 +118,7 @@ class Comments {
     /**
      * Authorization checked in index.php
      */
-    public function adminAction($command)
+    public static function adminAction($command)
     {
         $panel = Comments::panel();
         $content = NULL;
@@ -965,7 +965,7 @@ class Comments {
         return $tpl;
     }
 
-    public function getUserRanking($simple=false)
+    public static function getUserRanking($simple=false)
     {
         static $all_ranks = null;
         static $simple_ranks = null;
@@ -1004,7 +1004,7 @@ class Comments {
         }
     }
 
-    public function getDefaultRank()
+    public static function getDefaultRank()
     {
         $rank = new Comment_Rank(PHPWS_Settings::get('comments', 'default_rank'));
         return $rank;

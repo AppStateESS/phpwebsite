@@ -9,7 +9,7 @@
 
 class Menu_Admin {
 
-    public function main()
+    public static function main()
     {
         $title = $content = $message = NULL;
 
@@ -497,7 +497,7 @@ class Menu_Admin {
     }
 
 
-    public function cpanel()
+    public static function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
@@ -521,7 +521,7 @@ class Menu_Admin {
         return $panel;
     }
 
-    public function editMenu(Menu_Item $menu)
+    public static function editMenu(Menu_Item $menu)
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'menu');
@@ -571,7 +571,7 @@ class Menu_Admin {
         }
     }
 
-    public function menuList()
+    public static function menuList()
     {
         $page_tags['ACTION'] = dgettext('menu', 'Action');
 
@@ -621,7 +621,7 @@ class Menu_Admin {
     }
 
 
-    public function settings()
+    public static function settings()
     {
         $form = new PHPWS_Form('menu-settings');
         $form->addHidden('module', 'menu');

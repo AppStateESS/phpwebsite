@@ -984,7 +984,7 @@ class User_Form {
 	}
 
 
-	public function _getNonUserGroups()
+	public static function _getNonUserGroups()
 	{
 		$db = new PHPWS_DB('users_groups');
 		$db->addOrder('name');
@@ -996,7 +996,7 @@ class User_Form {
 	/**
 	 * Creates the permission menu template
 	 */
-	public function permissionMenu(Key $key, $popbox=FALSE)
+	public static function permissionMenu(Key $key, $popbox=FALSE)
 	{
 		$edit_groups = Users_Permission::getRestrictedGroups($key, TRUE);
 		if (PHPWS_Error::isError($edit_groups)) {
@@ -1069,7 +1069,7 @@ class User_Form {
 		return $tpl;
 	}
 
-	public function _createMultiple($group_list, $name, $matches)
+	public static function _createMultiple($group_list, $name, $matches)
 	{
 		if (empty($group_list)) {
 			return NULL;

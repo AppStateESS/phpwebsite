@@ -53,7 +53,7 @@ class Categories {
     }
 
 
-    public function showForm(Key $key, $popup=FALSE)
+    public static function showForm(Key $key, $popup=FALSE)
     {
         Layout::addStyle('categories');
         $full_list = $add_list = Categories::getCategories('list');
@@ -274,7 +274,7 @@ class Categories {
     /**
      * Retrieves current categories for a key id
      */
-    public function getCurrent($key_id)
+    public static function getCurrent($key_id)
     {
         $db = new PHPWS_DB('category_items');
         $db->addWhere('key_id', (int)$key_id);

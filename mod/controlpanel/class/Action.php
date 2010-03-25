@@ -6,7 +6,7 @@
  */
 
 class CP_Action {
-    public function adminAction()
+    public static function adminAction()
     {
         if (isset($_REQUEST['command'])) {
             $command = $_REQUEST['command'];
@@ -95,7 +95,7 @@ class CP_Action {
     }
 
 
-    public function adminMenu()
+    public static function adminMenu()
     {
         $tabs = PHPWS_ControlPanel::getAllTabs();
         $links = PHPWS_ControlPanel::getAllLinks();

@@ -8,7 +8,7 @@
  */
 
 class Version_Admin {
-    public function main()
+    public static function main()
     {
         $message = $title = $content = NULL;
 
@@ -41,7 +41,7 @@ class Version_Admin {
         Layout::add(PHPWS_ControlPanel::display(PHPWS_Template::process($template, 'version', 'main.tpl')));
     }
 
-    public function settings()
+    public static function settings()
     {
         $versions[0] = dgettext('version', 'Keep all versions');
         $versions[5] = 5;

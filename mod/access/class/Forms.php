@@ -10,7 +10,7 @@
 
 class Access_Forms {
 
-    public function shortcuts()
+    public static function shortcuts()
     {
         if (!Current_User::allow('access')) {
             Current_User::disallow();
@@ -58,7 +58,7 @@ class Access_Forms {
         return $content;
     }
 
-    public function denyAllowForm()
+    public static function denyAllowForm()
     {
         if (!Current_User::allow('access', 'admin_options')) {
             Current_User::disallow();

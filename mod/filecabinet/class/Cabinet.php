@@ -908,7 +908,7 @@ class Cabinet {
         }
     }
 
-    public function getMaxSizes()
+    public static function getMaxSizes()
     {
         $sys_size = str_replace('M', '', ini_get('upload_max_filesize'));
         $sys_size = $sys_size * 1000000;
@@ -1007,7 +1007,7 @@ class Cabinet {
         return true;
     }
 
-    public function listFolders($type=null, $simple=false)
+    public static function listFolders($type=null, $simple=false)
     {
         $db = new PHPWS_DB('folders');
         if ($type) {

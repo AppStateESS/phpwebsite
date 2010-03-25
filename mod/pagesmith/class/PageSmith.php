@@ -666,7 +666,7 @@ class PageSmith {
         }
     }
 
-    public function checkLorum($text)
+    public static function checkLorum($text)
     {
         return preg_match('/^<!-- lorem -->/', $text);
     }

@@ -167,7 +167,7 @@ class PHPWS_Calendar {
     }
 
 
-    public function isJS()
+    public static function isJS()
     {
         return isset($_REQUEST['js']);
     }

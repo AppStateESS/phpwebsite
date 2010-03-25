@@ -10,7 +10,7 @@
 
 class Search_Admin {
 
-    function main()
+    public static function main()
     {
         if (!Current_User::allow('search')) {
             Current_User::disallow();
@@ -128,7 +128,7 @@ class Search_Admin {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
-    function removeSearchword($keyword, $key_id)
+    public function removeSearchword($keyword, $key_id)
     {
         $search = new Search((int)$key_id);
         if ($search->_error) {
@@ -140,7 +140,7 @@ class Search_Admin {
         return $search->save();
     }
 
-    function addKeyword($keyword, $key_id)
+    public function addKeyword($keyword, $key_id)
     {
         $search = new Search((int)$key_id);
         if ($search->_error) {
@@ -152,13 +152,13 @@ class Search_Admin {
         return $search->save();
     }
 
-    function sendMessage($message, $command)
+    public function sendMessage($message, $command)
     {
         $_SESSION['Search_Message'] = $message;
         PHPWS_Core::reroute('index.php?module=search&command=' . $command);
     }
 
-    function getMessage()
+    public static function getMessage()
     {
         if (!isset($_SESSION['Search_Message'])) {
             return NULL;
@@ -168,7 +168,7 @@ class Search_Admin {
         return $message;
     }
 
-    function addParseWord($words)
+    public function addParseWord($words)
     {
         if (!isset($_SESSION['Search_Add_Words'])) {
             $_SESSION['Search_Add_Words'] = $words;
@@ -179,7 +179,7 @@ class Search_Admin {
         $_SESSION['Search_Admin'] = TRUE;
     }
 
-    function miniAdmin()
+    public function miniAdmin()
     {
         $key = Key::getCurrent();
 
@@ -233,7 +233,7 @@ class Search_Admin {
         Layout::add($content, 'search', 'admin_box');
     }
 
-    function settings()
+    public static function settings()
     {
         $main['TITLE'] = dgettext('search', 'Search Settings');
 
@@ -253,7 +253,7 @@ class Search_Admin {
         return $main;
     }
 
-    function keyword()
+    public static function keyword()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -306,7 +306,7 @@ class Search_Admin {
     }
 
 
-    function ignore()
+    public static function ignore()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -353,7 +353,7 @@ class Search_Admin {
 
     }
 
-    function setIgnore($kw_list, $ignore)
+    public function setIgnore($kw_list, $ignore)
     {
         if (!is_array($kw_list)) {
             return FALSE;
@@ -364,7 +364,7 @@ class Search_Admin {
         return $db->update();
     }
 
-    function cpanel()
+    public static function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=search';
@@ -379,7 +379,7 @@ class Search_Admin {
         return $panel;
     }
 
-    function deleteKeyword()
+    public function deleteKeyword()
     {
         if (!empty($_GET['keyword'])) {
             $db = new PHPWS_DB('search_stats');
@@ -395,7 +395,7 @@ class Search_Admin {
         return true;
     }
 
-    function saveSettings()
+    public function saveSettings()
     {
         if (isset($_POST['show_alternates'])) {
             PHPWS_Settings::set('search', 'show_alternates', 1);

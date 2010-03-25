@@ -19,7 +19,7 @@ PHPWS_Core::requireConfig('access');
 
 class Access {
 
-    public function main()
+    public static function main()
     {
         $title = $content = NULL;
 
@@ -295,7 +295,7 @@ class Access {
         }
     }
 
-    public function shortcut(Key $key)
+    public static function shortcut(Key $key)
     {
         $vars['command'] = 'edit_shortcut';
         $vars['key_id']  = $key->id;
@@ -308,7 +308,7 @@ class Access {
     }
 
 
-    public function cpanel()
+    public static function cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link['link'] = 'index.php?module=access';
@@ -340,7 +340,7 @@ class Access {
 
     }
 
-    public function getAllowDeny()
+    public static function getAllowDeny()
     {
         $db = new PHPWS_DB('access_allow_deny');
         $db->addOrder('ip_address');
@@ -365,7 +365,7 @@ class Access {
         exit();
     }
 
-    public function getMessage()
+    public static function getMessage()
     {
         $message = NULL;
         if (isset($_SESSION['Access_message'])) {
@@ -534,7 +534,7 @@ class Access {
         }
     }
 
-    public function allowDeny()
+    public static function allowDeny()
     {
         if (!PHPWS_Settings::get('access', 'allow_deny_enabled')) {
             $_SESSION['Access_Allow_Deny'] = true;
@@ -587,7 +587,7 @@ class Access {
         return false;
     }
 
-    public function inflateIp($address)
+    public static function inflateIp($address)
     {
         $i = explode('.', $address);
         foreach ($i as $sub) {
@@ -671,7 +671,7 @@ class Access {
         return $db->delete();
     }
 
-    public function htaccess()
+    public static function htaccess()
     {
         $current_directory = dirname($_SERVER['PHP_SELF']);
         $base_needed = false;

@@ -453,7 +453,7 @@ class User_Action {
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
     }
 
-    public function popupPermission()
+    public static function popupPermission()
     {
         if (!isset($_GET['key_id'])) {
             echo dgettext('users', 'Missing key information.');
@@ -476,7 +476,7 @@ class User_Action {
         Layout::nakedDisplay($content);
     }
 
-    public function getPermissionForm(Key $key)
+    public static function getPermissionForm(Key $key)
     {
         if (Current_User::isUnrestricted($key->module) &&
         Current_User::allow($key->module, $key->edit_permission)) {
@@ -1075,7 +1075,7 @@ class User_Action {
         Layout::add(dgettext('users', 'Username and password refused.'));
     }
 
-    public function getGroups($mode=null)
+    public static function getGroups($mode=null)
     {
         if (isset($GLOBALS['User_Group_List'])) {
             return $GLOBALS['User_Group_List'];

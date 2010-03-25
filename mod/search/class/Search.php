@@ -50,6 +50,7 @@ class Search {
 
     public function setKey($key)
     {
+    	test($key);
         if ( (strtolower(get_class($key)) == 'key') && $key->id > 0) {
             $this->key_id = (int)$key->id;
         } elseif (is_numeric($key)) {

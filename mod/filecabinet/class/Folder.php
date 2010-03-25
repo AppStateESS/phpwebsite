@@ -532,7 +532,7 @@ class Folder {
         return $db->count();
     }
 
-    public function getPinned($key_id)
+    public static function getPinned($key_id)
     {
         $db = new PHPWS_DB('folders');
         $db->addWhere('filecabinet_pins.key_id', $key_id);
