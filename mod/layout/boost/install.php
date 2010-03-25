@@ -17,7 +17,7 @@ function layout_install(&$content, $branchInstall=FALSE)
     }
     */
     $page_title = 'My phpWebSite';
-    $default_theme = 'default';
+    $default_theme = 'simple';
 
     if (!isset($error)) {
         $db = new PHPWS_DB('layout_config');

@@ -349,7 +349,7 @@ class Menu_Item {
     /**
      * This link lets you add a stored link to the menu
      */
-    public function getPinLink($menu_id, $link_id=0, $popup=false)
+    public static function getPinLink($menu_id, $link_id=0, $popup=false)
     {
         if (!isset($_SESSION['Menu_Pin_Links'])) {
             return null;

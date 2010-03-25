@@ -600,7 +600,7 @@ class User_Action {
         return Captcha::verify();
     }
 
-    public function postUser(PHPWS_User $user, $set_username=true)
+    public static function postUser(PHPWS_User $user, $set_username=true)
     {
         if (!$user->id || ($user->authorize == PHPWS_Settings::get('users', 'local_script') && $set_username)) {
             $user->_prev_username = $user->username;
@@ -1540,7 +1540,7 @@ class User_Action {
         return true;
     }
 
-    public function askNotify($user)
+    public static function askNotify($user)
     {
         $content[] = dgettext('users', 'Do you wish to notify the new user?');
         $_SESSION['New_User']['user_id']  = $user->id;
@@ -1586,7 +1586,7 @@ class User_Action {
         return $result;
     }
 
-    public function assignDefaultGroup(PHPWS_User $user)
+    public static function assignDefaultGroup(PHPWS_User $user)
     {
         $db = new PHPWS_DB('users_auth_scripts');
         $db->addColumn('default_group');

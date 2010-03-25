@@ -118,7 +118,7 @@ class Menu {
         return $url == $compare;
     }
 
-    public function getSiteLink($menu_id, $parent_id=0, $isKeyed=false, $popup=false)
+    public static function getSiteLink($menu_id, $parent_id=0, $isKeyed=false, $popup=false)
     {
         $vars['command']   = 'add_site_link';
         $vars['menu_id']   = $menu_id;
@@ -144,7 +144,7 @@ class Menu {
         return javascript('open_window', $js);
     }
 
-    public function getAddLink($menu_id, $parent_id=null, $popup=false)
+    public static function getAddLink($menu_id, $parent_id=null, $popup=false)
     {
         $key = Key::getCurrent();
         if (empty($key->url)) {
@@ -211,7 +211,7 @@ class Menu {
         }
     }
 
-    public function getUnpinLink($menu_id, $key_id, $pin_all=0)
+    public static function getUnpinLink($menu_id, $key_id, $pin_all=0)
     {
         $vars['command'] = 'unpin_menu';
         $vars['menu_id'] = $menu_id;
@@ -229,7 +229,7 @@ class Menu {
         return javascript('confirm', $js);
     }
 
-    public function deleteLink($link_id)
+    public static function deleteLink($link_id)
     {
         $link = new Menu_Link($link_id);
         if ($link->id) {

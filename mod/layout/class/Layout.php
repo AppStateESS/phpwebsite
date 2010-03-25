@@ -622,7 +622,7 @@ class Layout {
 	/**
 	 * Uses meta tags to load or refresh a new page
 	 */
-	public function metaRoute($address=NULL, $time=5)
+	public static function metaRoute($address=NULL, $time=5)
 	{
 		if (empty($address)) {
 			$address = './index.php';
@@ -765,7 +765,7 @@ class Layout {
 		$_SESSION['Layout_Settings']->_move_box = (bool)$key;
 	}
 
-	public function reset($theme=null)
+	public static function reset($theme=null)
 	{
 		if ($theme) {
 			$_SESSION['Layout_Settings'] = new Layout_Settings($theme);

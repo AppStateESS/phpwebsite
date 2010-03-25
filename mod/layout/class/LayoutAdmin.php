@@ -360,7 +360,7 @@ class Layout_Admin {
     }
 
 
-    public function changeTheme()
+    public static function changeTheme()
     {
         $result = $_SESSION['Layout_Settings']->saveSettings();
         if (PHPWS_Error::isError($result)) {
@@ -369,7 +369,7 @@ class Layout_Admin {
         Layout::reset();
     }
 
-    public function confirmThemeChange()
+    public static function confirmThemeChange()
     {
         $form = new PHPWS_Form('confirmThemeChange');
         $form->addHidden('module', 'layout');
