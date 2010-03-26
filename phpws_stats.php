@@ -17,8 +17,8 @@
  * There is also an ini_set for display_errors. Again, this should normally be
  * kept commented.
  */
-// ini_set('display_errors', 'On');
-// error_reporting (E_ALL);
+//ini_set('display_errors', 'On');
+//error_reporting (-1);
 
 define('stats_on',        false); // Must be true for anything to echo
 define('stats_classes',   false); // Show the classes currently included
@@ -31,81 +31,81 @@ define('browser_details', false); // Shows information collected about your brow
 define('language_details',false); // Shows the current and default language options.
 
 if (stats_on && stats_time) {
-    list($usec, $sec) = explode(' ', microtime());
-    $GLOBALS['site_start_time'] = ((float)$usec + (float)$sec);
+	list($usec, $sec) = explode(' ', microtime());
+	$GLOBALS['site_start_time'] = ((float)$usec + (float)$sec);
 }
 
 function show_stats()
 {
-    if (!stats_on) {
-        return TRUE;
-    }
+	if (!stats_on) {
+		return TRUE;
+	}
 
-    if (stats_time) {
-        list($usec, $sec) = explode(' ', microtime());
-        $site_end_time = ((float)$usec + (float)$sec);
-        $execute_time = round( ($site_end_time - $GLOBALS['site_start_time']), 3);
-        $content[] = sprintf(_('Execution time: %s seconds.'), $execute_time);
-    }
+	if (stats_time) {
+		list($usec, $sec) = explode(' ', microtime());
+		$site_end_time = ((float)$usec + (float)$sec);
+		$execute_time = round( ($site_end_time - $GLOBALS['site_start_time']), 3);
+		$content[] = sprintf(_('Execution time: %s seconds.'), $execute_time);
+	}
 
-    if (stats_memory) {
-        $memory_used = round( (memory_get_usage() / 1024) / 1024, 3);
-        $content[] = sprintf('Memory used: %sMB', $memory_used);
-    }
+	if (stats_memory) {
+		$memory_used = round( (memory_get_usage() / 1024) / 1024, 3);
+		$content[] = sprintf('Memory used: %sMB', $memory_used);
+	}
 
-    if (stats_classes) {
-        $classes = get_declared_classes();
-        $content[] = _('Declared classes:') . '<ul>' . implode('</li><li>', $classes) . '</ul>';
-    }
+	if (stats_classes) {
+		$classes = get_declared_classes();
+		$content[] = _('Declared classes:') . '<ul>' . implode('</li><li>', $classes) . '</ul>';
+	}
 
-    if (stats_sessions) {
-        $sessions = array_keys($_SESSION);
-        $content[] = _('Current sessions:') . '<ul>' . implode('</li><li>', $sessions) . '</ul>';
-    }
+	if (stats_sessions) {
+		$sessions = array_keys($_SESSION);
+		$content[] = _('Current sessions:') . '<ul>' . implode('</li><li>', $sessions) . '</ul>';
+	}
 
-    if (display_status) {
-        if (ALLOW_CACHE_LITE) {
-            $subcontent[] = _('Cache Lite is enabled.');
-        } else {
-            $subcontent[] = _('Cache Lite is disabled.');
-        }
+	if (display_status) {
+		if (ALLOW_CACHE_LITE) {
+			$subcontent[] = _('Cache Lite is enabled.');
+		} else {
+			$subcontent[] = _('Cache Lite is disabled.');
+		}
 
-        if (FORCE_MOD_TEMPLATES) {
-            $subcontent[] = _('Using module template, not local.');
-        } else {
-            $subcontent[] = _('Using local templates, not module\'s.');
-        }
+		if (FORCE_MOD_TEMPLATES) {
+			$subcontent[] = _('Using module template, not local.');
+		} else {
+			$subcontent[] = _('Using local templates, not module\'s.');
+		}
 
-        if (FORCE_MOD_CONFIG) {
-            $subcontent[] = _('Using configuration files directly from module\'s directory.');
-        } else {
-            $subcontent[] = _('Using local configuration files.');
-        }
+		if (FORCE_MOD_CONFIG) {
+			$subcontent[] = _('Using configuration files directly from module\'s directory.');
+		} else {
+			$subcontent[] = _('Using local configuration files.');
+		}
 
-        $content[] = implode('<br />', $subcontent);
-    }
+		$content[] = implode('<br />', $subcontent);
+	}
 
-    if (language_details) {
-        $subcontent[] = sprintf(_('The current language is %s.'), CURRENT_LANGUAGE);
-        $subcontent[] = sprintf(_('The default language is %s.'), DEFAULT_LANGUAGE);
-        if (FORCE_DEFAULT_LANGUAGE) {
-            $subcontent[] = _('The default language is being forced.');
-        }
-        $content[] = implode('<br />', $subcontent);
-    }
+	if (language_details) {
+		$subcontent[] = sprintf(_('The current language is %s.'), CURRENT_LANGUAGE);
+		$subcontent[] = sprintf(_('The default language is %s.'), DEFAULT_LANGUAGE);
+		if (FORCE_DEFAULT_LANGUAGE) {
+			$subcontent[] = _('The default language is being forced.');
+		}
+		$content[] = implode('<br />', $subcontent);
+	}
 
-    if (isset($content)) {
-        echo implode('<hr />', $content);
-    }
+	if (isset($content)) {
+		echo implode('<hr />', $content);
+	}
 
-    if(show_request) {
-        echo '<hr />' . _('Request') . ' ';
-        test($_REQUEST);
-    }
+	if(show_request) {
+		echo '<hr />' . _('Request') . ' ';
+		test($_REQUEST);
+	}
 
-    if (browser_details) {
-        test($GLOBALS['browser_info']);
-    }
+	if (browser_details) {
+		test($GLOBALS['browser_info']);
+	}
 }
 
 ?>
