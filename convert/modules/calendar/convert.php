@@ -71,7 +71,7 @@ function convert()
             $db->addWhere('startDate', IGNORE_BEFORE, '>=');
         }
 
-        $batch = & new Batches('convert_events');
+        $batch = new Batches('convert_events');
 
         $total_entries = $db->count();
         if ($total_entries < 1) {
@@ -134,17 +134,17 @@ function runBatch(&$db, &$batch)
     if (!isset($_SESSION['schedule_id'])) {
         return false;
     } else {
-        $schedule = & new Calendar_Schedule((int)$_SESSION['schedule_id']);
+        $schedule = new Calendar_Schedule((int)$_SESSION['schedule_id']);
     }
 
-    $admin = & new Calendar_Admin;
+    $admin = new Calendar_Admin;
 
     if (empty($result)) {
         return NULL;
     } else {
         foreach ($result as $oldEvent) {
             $result = convertEvent($oldEvent, $schedule, $admin);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $errors[] = 'Problem importing: ' . $oldEvent['title'];
             }
@@ -165,7 +165,7 @@ function createSchedule()
     $schedule->summary = _('Events pulled from 0.10.x calendar module.');
     $schedule->public = true;
     $result = $schedule->save();
-    if (PEAR::isError($result)) {
+    if (PHPWS_Error::isError($result)) {
         PHPWS_Error::log($result);
         return false;
     }
@@ -179,7 +179,7 @@ function createSchedule()
 
 function convertEvent($event, &$schedule, &$admin)
 {
-    $new_event = & new Calendar_Event;
+    $new_event = new Calendar_Event;
     $new_event->_schedule = $schedule;
 
     $new_event->summary = PHPWS_Text::breaker(utf8_encode($event['title']));

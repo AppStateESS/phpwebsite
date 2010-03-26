@@ -155,7 +155,7 @@ function convertPage($page)
     $db->addValue($val);
     $result = $db->insert(FALSE);
 
-    if (PEAR::isError($result)) {
+    if (PHPWS_Error::isError($result)) {
         return FALSE;
     }
 
@@ -246,7 +246,7 @@ function saveSections($sections, $volume_id, $title, $key_id)
         if ($method == 'sep') {
             $page->setContent(implode("\n", $page_content));
             $result = $page->save();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
             }
         }
@@ -259,7 +259,7 @@ function saveSections($sections, $volume_id, $title, $key_id)
         $page->page_number = 1;
         $page->template    = 'basic.tpl';
         $result = $page->save();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
     }

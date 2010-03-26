@@ -124,13 +124,13 @@ function convert_phpwsbb_forums()
     echo 'Converting Forums...';
     foreach ($result as $oldForum) {
         // Convert forum, keeping the same id#
-        $forum = & new PHPWSBB_Forum();
+        $forum = new PHPWSBB_Forum();
         $forum->id = $oldForum['id'];
         $forum->title = $oldForum['label'];
         $forum->description = $oldForum['description'];
         $forum->sortorder = $oldForum['sortorder'];
         // Create an associated KEY
-        $key = & new Key;
+        $key = new Key;
         $key->setModule('phpwsbb');
         $key->setItemName('forum');
         $key->setItemId($forum->id);
@@ -295,7 +295,7 @@ function convertUsers ()
 
     $db->addOrder('user_id asc');
 
-    $batch = & new Batches('convert_phpwsbb');
+    $batch = new Batches('convert_phpwsbb');
 
     $total_entries = $db->count();
     if ($total_entries < 1) {
@@ -433,7 +433,7 @@ function convert_phpwsbb_topics()
     // The descending order is so that all free ids will be taken up first.
     $db->addOrder('id desc');
 
-    $batch = & new Batches('convert_phpwsbb');
+    $batch = new Batches('convert_phpwsbb');
 
     $total_entries = $db->count();
     if ($total_entries < 1) {
@@ -576,7 +576,7 @@ function convert_phpwsbb_topic($entry)
     if (PHPWS_Error::logIfError($result))
     exit(PHPWS_Error::printError($result));
     if (!empty($result)) {
-        $db = & new PHPWS_DB('comments_monitors');
+        $db = new PHPWS_DB('comments_monitors');
         foreach ($result AS $user_id) {
             $db->addValue('thread_id', $newid);
             $db->addValue('user_id', $user_id);

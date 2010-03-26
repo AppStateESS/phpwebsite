@@ -33,18 +33,18 @@ function convert()
 
     if (empty($all_blocks)) {
         return _('No blocks found.');
-    } elseif (PEAR::isError($all_blocks)) {
+    } elseif (PHPWS_Error::isError($all_blocks)) {
         PHPWS_Error::log($all_blocks);
         return _('An error occurred while accessing your mod_blockmaker_data table.');
     }
 
     $values['key_id'] = 0;
     foreach ($all_blocks as $old_block) {
-        $new_block = & new Block_Item;
+        $new_block = new Block_Item;
         $new_block->setTitle(utf8_encode($old_block['block_title']));
         $new_block->setContent(PHPWS_Text::breaker(utf8_encode($old_block['block_content'] . $old_block['block_footer'])));
         $result = $new_block->save();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($all_blocks);
             return _('An error occurred while converting your old blocks.');
         }

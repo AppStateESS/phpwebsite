@@ -173,7 +173,7 @@ function runBatch(&$db, &$batch)
                 continue;
             }
             $result = convertUser($oldUser);
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $errors = TRUE;
             }
@@ -196,7 +196,7 @@ function convertUser($oldUser)
     $val['created']      = $val['last_logged']  = $oldUser['last_on'];
     $val['email']        = $oldUser['email'];
     $val['deity']        = $oldUser['deity'];
-    $val['updated']      = mktime();
+    $val['updated']      = time();
     $val['log_count']    = $oldUser['log_sess'];
     $val['authorize']    = $_SESSION['users_convert_init'];
     $val['active']       = 1;
@@ -204,7 +204,7 @@ function convertUser($oldUser)
     $db->addValue($val);
 
     $result = $db->insert(FALSE);
-    if (PEAR::isError($result)) {
+    if (PHPWS_Error::isError($result)) {
         return $result;
     }
 
@@ -215,7 +215,7 @@ function convertUser($oldUser)
     $db->addValue('user_id', $val['id']);
 
     $result = $db->insert();
-    if (PEAR::isError($result)) {
+    if (PHPWS_Error::isError($result)) {
         return $result;
     }
 
@@ -241,7 +241,7 @@ function initialize()
         $db->addValue('display_name', 'Convert');
         $db->addValue('filename', 'convert.php');
         $id = $db->insert();
-        if (PEAR::isError($id)) {
+        if (PHPWS_Error::isError($id)) {
             PHPWS_Error::log($id);
             PHPWS_Core::errorPage();
         }
@@ -251,7 +251,7 @@ function initialize()
         $db->addWhere('filename', 'convert.php');
         $db->addColumn('id');
         $id = $db->select('one');
-        if (PEAR::isError($id)) {
+        if (PHPWS_Error::isError($id)) {
             PHPWS_Error::log($id);
             PHPWS_Core::errorPage();
         }
@@ -260,7 +260,7 @@ function initialize()
             $db->addValue('display_name', 'Convert');
             $db->addValue('filename', 'convert.php');
             $id = $db->insert();
-            if (PEAR::isError($id)) {
+            if (PHPWS_Error::isError($id)) {
                 PHPWS_Error::log($id);
                 PHPWS_Core::errorPage();
             }

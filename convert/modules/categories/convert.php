@@ -282,7 +282,7 @@ function convertImage ($image_name, $image_alt)
     $new_directory = $_SESSION['Category Folder_Dir'];
 
     $err = PHPWS_File::fileCopy($old_file, $new_directory, $image_name, 1, 1);
-    if (PEAR::isError($err))
+    if (PHPWS_Error::isError($err))
     exit(PHPWS_Error::printError($err));
     if (!$err)
     exit('Something went wrong with the image transfer');
@@ -309,7 +309,7 @@ function convertImage ($image_name, $image_alt)
     $img->file_type = $image_type;
     $img->folder_id = $_SESSION['Category Folder'];
     $result = $img->save(true, false, false);
-    if (PEAR::isError($result)) {
+    if (PHPWS_Error::isError($result)) {
         exit(PHPWS_Error::printError($result));
     }
     $hold = $img->file_directory;

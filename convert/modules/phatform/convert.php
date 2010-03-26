@@ -36,7 +36,7 @@ function convertElements()
     $tbl_prefix = Convert::getTblPrefix();
 
     if (!empty($checkbox)) {
-        if (PEAR::isError($checkbox)) {
+        if (PHPWS_Error::isError($checkbox)) {
             PHPWS_Error::log($checkbox);
             return _('An error occurred when trying to copy your mod_phatform_checkbox table.');
         }
@@ -60,7 +60,7 @@ function convertElements()
     $db = Convert::getSourceDB('mod_phatform_dropbox');
     $dropbox = $db->export(false);
     if (!empty($dropbox)) {
-        if (PEAR::isError($dropbox)) {
+        if (PHPWS_Error::isError($dropbox)) {
             PHPWS_Error::log($dropbox);
             return _('An error occurred when trying to copy your mod_phatform_dropbox table.');
         }
@@ -85,7 +85,7 @@ function convertElements()
     $multiselect = $db->export(false);
 
     if (!empty($multiselect)) {
-        if (PEAR::isError($multiselect)) {
+        if (PHPWS_Error::isError($multiselect)) {
             PHPWS_Error::log($multiselect);
             return _('An error occurred when trying to copy your mod_phatform_multiselect table.');
         }
@@ -111,7 +111,7 @@ function convertElements()
     $options = $db->export(false);
 
     if (!empty($options)) {
-        if (PEAR::isError($options)) {
+        if (PHPWS_Error::isError($options)) {
             PHPWS_Error::log($options);
             return _('An error occurred when trying to copy your mod_phatform_options table.');
         }
@@ -137,7 +137,7 @@ function convertElements()
     $radiobutton = $db->export(false);
 
     if (!empty($radiobutton)) {
-        if (PEAR::isError($radiobutton)) {
+        if (PHPWS_Error::isError($radiobutton)) {
             PHPWS_Error::log($radiobutton);
             return _('An error occurred when trying to copy your mod_phatform_radiobutton table.');
         }
@@ -162,7 +162,7 @@ function convertElements()
     $db = Convert::getSourceDB('mod_phatform_textarea');
     $textarea = $db->export(false);
     if (!empty($textarea)) {
-        if (PEAR::isError($textarea)) {
+        if (PHPWS_Error::isError($textarea)) {
             PHPWS_Error::log($textarea);
             return _('An error occurred when trying to copy your mod_phatform_textarea table.');
         }
@@ -186,7 +186,7 @@ function convertElements()
     $db = Convert::getSourceDB('mod_phatform_textfield');
     $textfield = $db->export(false);
     if (!empty($textfield)) {
-        if (PEAR::isError($textfield)) {
+        if (PHPWS_Error::isError($textfield)) {
             PHPWS_Error::log($textfield);
             return _('An error occurred when trying to copy your mod_phatform_textfield table.');
         }
@@ -234,7 +234,7 @@ function convertPhatforms()
     if (empty($result)) {
         return _('No forms to convert.');
     } else {
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             return _('An unrecoverable error occurred. Check your logs.');
         }
@@ -244,7 +244,7 @@ function convertPhatforms()
             $db = Convert::getSourceDB($form_table_name);
             if (!$db) {
                 continue;
-            } elseif (PEAR::isError($db)) {
+            } elseif (PHPWS_Error::isError($db)) {
                 PHPWS_Error::log($db);
                 continue;
             } else {
@@ -256,7 +256,7 @@ function convertPhatforms()
                 $db->disconnect();
                 Convert::siteDB();
                 $result = PHPWS_DB::import($form_data);
-                if (PEAR::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     continue;
                 }
@@ -286,7 +286,7 @@ function convertPhatforms()
             $result = $savedb->insert(false);
 
             $savedb->reset();
-            if (PEAR::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
             }
             createSeqTable($form_table_name);

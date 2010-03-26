@@ -74,7 +74,7 @@ function convertMenu()
         $val['pin_all']    = 1;
         $newdb->addValue($val);
         $result = $newdb->insert(false);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $errors[] = $val['title'];
         }
@@ -106,7 +106,7 @@ function convertLinks()
 
     $db = Convert::getSourceDB('mod_menuman_items');
 
-    $batch = & new Batches('convert_menu_links');
+    $batch = new Batches('convert_menu_links');
     $total_links = $db->count();
     if ($total_links < 1) {
         return _('No menu links to convert.');
@@ -186,7 +186,7 @@ function linkBatch($db, $batch)
         foreach ($result as $link) {
             if ($link['menu_item_active']) {
                 $link_result = convertLink($link);
-                if (PEAR::isError($link_result)) {
+                if (PHPWS_Error::isError($link_result)) {
                     PHPWS_Error::log($link_result);
                 }
             }

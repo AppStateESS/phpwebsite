@@ -68,7 +68,7 @@ function convert()
             $db->addWhere('dateCreated', IGNORE_BEFORE, '>=');
         }
 
-        $batch = & new Batches('convert_blog');
+        $batch = new Batches('convert_blog');
 
         $total_entries = $db->count();
         if ($total_entries < 1) {
@@ -199,7 +199,7 @@ function convertAnnouncement($entry)
     $db->addValue($val);
     $result = $db->insert(FALSE);
 
-    $search = & new Search($key->id);
+    $search = new Search($key->id);
     $search->addKeywords($val['summary']);
     if (!empty($val['entry'])) {
         $search->addKeywords($val['entry']);
@@ -207,7 +207,7 @@ function convertAnnouncement($entry)
     $search->addKeywords($val['title']);
     $search->save();
 
-    if (PEAR::isError($result)) {
+    if (PHPWS_Error::isError($result)) {
         PHPWS_Error::log($result);
     }
 
@@ -234,18 +234,18 @@ function createSeqTable()
 
 function convertComments($comments, $key_id)
 {
-    $db = & new PHPWS_DB('comments_threads');
+    $db = new PHPWS_DB('comments_threads');
     $db->addValue('key_id', $key_id);
     $thread_id = $db->insert();
 
-    if (PEAR::isError($thread_id)) {
+    if (PHPWS_Error::isError($thread_id)) {
         PHPWS_Error::log($thread_id);
         return;
     } elseif (!$thread_id) {
         return;
     }
 
-    $db2 = & new PHPWS_DB('comments_items');
+    $db2 = new PHPWS_DB('comments_items');
     $count = 0;
 
     foreach ($comments as $comment) {
@@ -269,7 +269,7 @@ function convertComments($comments, $key_id)
         $db2->addValue($val);
 
         $result = $db2->insert(false);
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
         $db2->reset();
@@ -296,11 +296,11 @@ function buildAuthor($username)
         return FALSE;
     }
 
-    if (!$user_id || PEAR::isError($user_id)) {
+    if (!$user_id || PHPWS_Error::isError($user_id)) {
         return FALSE;
     }
 
-    $db2 = & new PHPWS_DB('comments_users');
+    $db2 = new PHPWS_DB('comments_users');
     if (isset($_SESSION['Authors']) && in_array($user_id, $_SESSION['Authors'])) {
         $db2->addWhere('user_id', $user_id);
         $db2->incrementColumn('comments_made');
@@ -311,10 +311,10 @@ function buildAuthor($username)
     $db2->addValue('user_id', $user_id);
     $db2->addValue('display_name', $username);
     $db2->addValue('comments_made', 1);
-    $db2->addValue('joined_date', mktime());
+    $db2->addValue('joined_date', time());
     $db2->insert();
 
-    $db3 = & new PHPWS_DB('demographics');
+    $db3 = new PHPWS_DB('demographics');
     $db3->addValue('user_id', $user_id);
     $db3->insert();
 
