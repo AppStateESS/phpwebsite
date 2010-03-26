@@ -24,7 +24,7 @@ session_start();
 
 require_once 'convert/class/Convert.php';
 
-$convert = & new Convert;
+$convert = new Convert;
 $convert->action();
 
 
