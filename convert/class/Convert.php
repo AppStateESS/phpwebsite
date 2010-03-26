@@ -88,7 +88,7 @@ class Convert {
 
         $db = & DB::connect($dsn);
 
-        if (PEAR::isError($db)) {
+        if (PHPWS_Error::isError($db)) {
             return FALSE;
         } else {
             $_SESSION['OTHER_DATABASE'] = $dsn;
@@ -244,7 +244,7 @@ class Convert {
             $db->addColumn('branch_name');
             $db->setIndexBy('id');
             $branches = $db->select('col');
-            if (PEAR::isError($branches)) {
+            if (PHPWS_Error::isError($branches)) {
                 PHPWS_Error::log($branches);
             } else {
                 $branches[0] = _('Hub site');
@@ -470,7 +470,7 @@ class Convert {
         $db = new PHPWS_DB('converted');
         $db->addWhere('convert_name', $name);
         $result = $db->select();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         } else  {
             return !empty($result);
