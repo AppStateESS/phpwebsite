@@ -118,11 +118,10 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
     }
 
-    public function getTemplateHttp($module, $directory=NULL)
+    public static function getTemplateHttp($module, $directory=NULL)
     {
         $theme_dir  = PHPWS_Template::getTplDir($module) . $directory;
         $module_dir = sprintf('%smod/%s/templates/%s', PHPWS_SOURCE_HTTP, $module, $directory);
-
         if (FORCE_THEME_TEMPLATES) {
             return $theme_dir;
         } else {

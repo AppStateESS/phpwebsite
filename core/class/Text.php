@@ -420,7 +420,7 @@ class PHPWS_Text {
      * @return boolean true on valid input, false on invalid input
      * @access public
      */
-    public function isValidInput($userEntry, $type=null)
+    public static function isValidInput($userEntry, $type=null)
     {
         if (empty($userEntry) || !is_string($userEntry)) return false;
 
