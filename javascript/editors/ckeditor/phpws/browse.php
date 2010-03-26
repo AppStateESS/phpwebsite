@@ -22,7 +22,9 @@ require_once('../../../../config/config.php');
 ?>
 <html>
 <head>
-<script type="text/javascript" src="<?php echo PHPWS_SOURCE_HTTP ?>/javascript/editors/ckeditor/ckeditor.js"></script>
+<script type="text/javascript"
+    src="<?php echo PHPWS_SOURCE_HTTP ?>/javascript/editors/ckeditor/ckeditor.js"
+></script>
 <script type="text/javascript">
 function send_url()
 {
