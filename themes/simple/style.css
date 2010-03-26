@@ -150,6 +150,7 @@ div.box {
 /********* users **********/
 #css-user-login {
 	margin-bottom: 12px;
+	padding : 5px;
 }
 
 #user-panel span {
