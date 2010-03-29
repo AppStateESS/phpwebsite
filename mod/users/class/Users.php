@@ -711,7 +711,7 @@ class PHPWS_User {
 		}
 	}
 
-	public function disallow($message=null)
+	public static function disallow($message=null)
 	{
 		if (!isset($message)){
 			$message = dgettext('users', 'Improper permission level for action requested.');

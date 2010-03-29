@@ -447,7 +447,7 @@ class Users_Permission {
 
 
 
-    public function postViewPermissions(Key $key)
+    public static function postViewPermissions(Key $key)
     {
         if (!isset($_POST['view_permission'])) {
             return;
@@ -463,7 +463,7 @@ class Users_Permission {
         }
     }
 
-    public function postEditPermissions(Key $key)
+    public static function postEditPermissions(Key $key)
     {
         if (!isset($_POST['edit_groups']) || !is_array($_POST['edit_groups'])) {
             return;

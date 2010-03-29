@@ -486,7 +486,7 @@ class User_Action {
         }
     }
 
-    public function permission()
+    public static function permission()
     {
         if (!isset($_REQUEST['key_id'])) {
             return;
@@ -517,7 +517,6 @@ class User_Action {
             } else {
                 $_SESSION['Permission_Message'] = dgettext('users', 'Permissions updated.');
             }
-
             PHPWS_Core::goBack();
         }
     }
