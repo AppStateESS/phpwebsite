@@ -50,7 +50,7 @@ abstract class DB2_Group {
      * Each db has its own method for outputting a group query.
      * @return string
      */
-    abstract protected function __toString();
+    abstract public function __toString();
 
     /**
      * Verifies a group type may be used with the factory db. For example,
