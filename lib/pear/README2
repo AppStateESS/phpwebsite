@@ -15,3 +15,6 @@ Calendar/Calendar.php
 Calender_Engine_Factory::getEngine - made static
 Calendar::Calendar - removed pass-by-reference
 
+MDB2.php
+pass-by-references removed
+Removed PHP 4 constructor
