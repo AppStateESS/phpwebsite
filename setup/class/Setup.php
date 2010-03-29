@@ -50,7 +50,7 @@ class Setup {
 
     public function configExists()
     {
-        return is_file(PHPWS_SOURCE_DIR . 'config/config.php');
+        return is_file(PHPWS_SOURCE_DIR . 'config/core/config.php');
     }
 
     public function initConfigSet()
@@ -104,7 +104,7 @@ class Setup {
     }
 
     /**
-     * Writes the config/config.php file. Assumes one does not already
+     * Writes the config/core/config.php file. Assumes one does not already
      * exist
      * @return unknown_type
      */
@@ -327,7 +327,8 @@ class Setup {
             $dsn = $this->getDSN(2);
         }
 
-        $result = DB::connect($dsn);
+        $tdb = new DB;
+        $result = $tdb->connect($dsn);
 
         if (PHPWS_Error::isError($result)) {
             // mysql delivers the first error, postgres the second

@@ -18,7 +18,7 @@
  * @package
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
-require_once('../../../../config/config.php');
+require_once('../../../../config/core/config.php');
 ?>
 <html>
 <head>
