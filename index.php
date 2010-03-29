@@ -16,8 +16,8 @@ include 'phpws_stats.php';
 
 define('AUTO_ROUTE', TRUE);
 
-if (is_file('config/config.php')) {
-    require_once 'config/config.php';
+if (is_file('config/core/config.php')) {
+    require_once 'config/core/config.php';
 } else {
     if (AUTO_ROUTE == TRUE) {
         if (is_file('./setup/index.php')) {
