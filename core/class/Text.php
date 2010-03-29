@@ -899,7 +899,7 @@ class PHPWS_Text {
         return serialize($values);
     }
 
-    public function tag_implode($tag, array $content)
+    public static function tag_implode($tag, array $content)
     {
         $tag = preg_replace('/[<>]/', '', $tag);
         return "<$tag>" . implode("</$tag>\n<$tag>", $content) . "</$tag>\n";
