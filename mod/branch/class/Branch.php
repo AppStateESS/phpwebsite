@@ -95,7 +95,7 @@ class Branch {
     public function getBranchConfig()
     {
         $name = preg_replace('/\W/', '-', $this->branch_name);
-        return $this->directory . 'config/config.php';
+        return $this->directory . 'config/core/config.php';
     }
 
     public function save()
@@ -183,7 +183,7 @@ class Branch {
 
     public static function getHubDSN()
     {
-        $handle = @fopen(PHPWS_SOURCE_DIR . 'config/config.php', 'r');
+        $handle = @fopen(PHPWS_SOURCE_DIR . 'config/core/config.php', 'r');
         if ($handle) {
             $search_for = '^define\(\'PHPWS_DSN\',';
             while (!feof($handle)) {
