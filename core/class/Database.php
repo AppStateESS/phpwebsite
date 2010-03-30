@@ -1983,7 +1983,7 @@ class PHPWS_DB {
      * This function can not be called statically.
      */
 
-    public function importFile($filename, $report_errors=true)
+    public static function importFile($filename, $report_errors=true)
     {
         if (!is_file($filename)) {
             return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::importFile');
@@ -1998,7 +1998,7 @@ class PHPWS_DB {
      * @returns True if successful, false if not successful and report_errors = false or
      *               Error object if report_errors = true
      */
-    public function import($text, $report_errors=true)
+    public static function import($text, $report_errors=true)
     {
         PHPWS_DB::touchDB();
 
@@ -2058,7 +2058,7 @@ class PHPWS_DB {
     }
 
 
-    public function homogenize(&$query)
+    public static function homogenize(&$query)
     {
         $query_list = explode(',', $query);
 

@@ -1415,7 +1415,7 @@ class DB2 extends Data {
             $this->mdb2->loadModule('Manager');
             $table_list = $this->mdb2->listTables();
         }
-
+        
         if ($this->tbl_prefix) {
             $table_name = $this->tbl_prefix . $table_name;
         }
