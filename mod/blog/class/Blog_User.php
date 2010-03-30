@@ -14,7 +14,7 @@ if (!defined('MAX_BLOG_CACHE_PAGES')) {
 
 class Blog_User {
 
-    public function miniAdminList()
+    public static function miniAdminList()
     {
         $vars['action'] = 'admin';
         $vars['tab'] = 'list';
@@ -183,13 +183,13 @@ class Blog_User {
         return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
     }
 
-    public function totalEntries(PHPWS_DB $db)
+    public static function totalEntries(PHPWS_DB $db)
     {
         $db->addColumn('id',null, null, true);
         return $db->select('one');
     }
 
-    public function getEntries(PHPWS_DB $db, $limit, $offset=0)
+    public static function getEntries(PHPWS_DB $db, $limit, $offset=0)
     {
         $db->resetColumns();
         $db->setLimit($limit, $offset);
@@ -199,7 +199,7 @@ class Blog_User {
         return $db->getObjects('Blog');
     }
 
-    public function allowView()
+    public static function allowView()
     {
         if (Current_User::allow('blog')) {
             return true;
@@ -238,7 +238,7 @@ class Blog_User {
         return true;
     }
 
-    public function show($start_date=null, $end_date=null)
+    public static function show($start_date=null, $end_date=null)
     {
         if (!Blog_User::allowView()) {
             return null;
@@ -373,7 +373,7 @@ class Blog_User {
      * Works with show public function
      * Displays entries outside the page limit
      */
-    public function showPast($entries)
+    public static function showPast($entries)
     {
         if (empty($entries)) {
             return false;
