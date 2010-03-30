@@ -919,7 +919,7 @@ class Branch_Admin {
 		return true;
 	}
 
-	public function getBranches($load_db_info=false)
+	public static function getBranches($load_db_info=false)
 	{
 		$db = new PHPWS_DB('branch_sites');
 		$result = $db->getObjects('Branch');
