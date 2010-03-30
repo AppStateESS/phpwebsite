@@ -6,7 +6,6 @@
  * @author  Darren Greene <dg49379@NOSPAM.tux.appstate.edu>
  * @modified Matthew McNaney <mcnaney at gmail dot com>
  */
-define('PHPWS_SOURCE_HTTP', './');
 class SlideShow {
 
     function play($photos) {
