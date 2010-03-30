@@ -1154,6 +1154,18 @@ class PHPWS_Boost {
 		return javascript('prompt', $js);
 	}
 
+	/**
+	 * Used to copy files down to local directories and branches. After 
+	 * phpwebsite 1.7.0, no longer required. Kept here to prevent prior
+	 * updates from breaking.
+	 * @param mixed $dummy1
+	 * @param mixed $dummy2
+	 * @param mixed $dummy3
+	 */
+	public static function updateFiles($dummy1=null, $dummy2=null, $dummy3=null)
+	{
+		return true;
+	}
 }
 
 ?>

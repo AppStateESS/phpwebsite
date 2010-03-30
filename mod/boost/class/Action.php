@@ -136,7 +136,7 @@ class Boost_Action {
         return implode('<br />', $content);
     }
 
-    public function updateModule($module_title)
+    public static function updateModule($module_title)
     {
         PHPWS_Core::initModClass('boost', 'Boost.php');
         $boost = new PHPWS_Boost;
