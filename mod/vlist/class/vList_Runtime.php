@@ -26,7 +26,7 @@
 class vList_Runtime
 {
 
-    public function showBlock() {
+    public static function showBlock() {
         if (PHPWS_Settings::get('vlist', 'enable_sidebox')) {
             if (PHPWS_Settings::get('vlist', 'sidebox_homeonly')) {
                 $key = Key::getCurrent();

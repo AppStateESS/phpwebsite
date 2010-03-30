@@ -26,7 +26,7 @@
 class vMail_Runtime
 {
 
-    public function showBlock() {
+    public static function showBlock() {
         if (PHPWS_Settings::get('vmail', 'enable_sidebox')) {
             if (PHPWS_Settings::get('vmail', 'sidebox_homeonly')) {
                 $key = Key::getCurrent();

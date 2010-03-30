@@ -288,7 +288,7 @@ class Whatsnew {
     }
 
 
-    function showBlock() {
+    public static function showBlock() {
         PHPWS_Core::initModClass('layout', 'Layout.php');
         if (PHPWS_Settings::get('whatsnew', 'homeonly')) {
             $key = Key::getCurrent();

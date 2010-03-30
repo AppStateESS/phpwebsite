@@ -26,7 +26,7 @@
 class Skeleton_Runtime
 {
 
-    public function showBlock() {
+    public static function showBlock() {
         if (PHPWS_Settings::get('skeleton', 'enable_sidebox')) {
             if (PHPWS_Settings::get('skeleton', 'sidebox_homeonly')) {
                 $key = Key::getCurrent();

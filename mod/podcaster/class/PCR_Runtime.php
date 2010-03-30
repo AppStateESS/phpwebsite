@@ -26,7 +26,7 @@
 class PCR_Runtime
 {
 
-    function showBlock() {
+    public static function showBlock() {
         if (PHPWS_Settings::get('podcaster', 'show_block')) {
             if (PHPWS_Settings::get('podcaster', 'block_on_home_only')) {
                 $key = Key::getCurrent();

@@ -247,7 +247,7 @@ class Related {
         }
     }
 
-    public function show($allowEdit=TRUE)
+    public static function show($allowEdit=TRUE)
     {
         PHPWS_Core::initCoreClass('Module.php');
 
