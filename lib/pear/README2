@@ -16,5 +16,30 @@ Calender_Engine_Factory::getEngine - made static
 Calendar::Calendar - removed pass-by-reference
 
 MDB2.php
+---------------------------
+Commented out PHP 4 constructors
+pass-by-references removed on some constructions
+(MDB2::_wrapResult was cast to a variable and then passed as a reference)
+
+Following were made public static functions:
+MDB2::singleton
+MDB2::parseDSN
+MDB2::factory
+MDB2::classExists
+MDB2::loadClass
+MDB2::setOptions
+MDB2::areEquals
+MDB2::isResultCommon
+MDB2::isError
+MDB2::fileExists
+
+
+MDB2/Manager/mysql.php
+---------------------------
 pass-by-references removed
-Removed PHP 4 constructor
+
+
+
+PEAR.php
+---------------------------
+PEAR::isError made public static
