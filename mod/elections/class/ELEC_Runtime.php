@@ -26,7 +26,7 @@
 class ELEC_Runtime
 {
 
-    public function showBlock() {
+    public static function showBlock() {
         if (PHPWS_Settings::get('elections', 'enable_sidebox')) {
             if (PHPWS_Settings::get('elections', 'sidebox_homeonly')) {
                 $key = Key::getCurrent();

@@ -26,7 +26,7 @@
 class RDX_Runtime
 {
 
-    public function showBlock() {
+    public static function showBlock() {
         if (PHPWS_Settings::get('rolodex', 'show_block')) {
             if (PHPWS_Settings::get('rolodex', 'block_on_home_only')) {
                 $key = Key::getCurrent();
