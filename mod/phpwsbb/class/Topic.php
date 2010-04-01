@@ -270,7 +270,7 @@ class PHPWSBB_Topic
      * @return array
      * @access public
      */
-    public function addColumns (& $db)
+    public static function addColumns (& $db)
     {
         $db->addColumn('phpwsbb_topics.*');
         $db->addColumn('phpws_key.module',    	null, 'module');

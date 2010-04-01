@@ -184,7 +184,7 @@ class Categories {
     }
 
 
-    public function _getItemsCategories($key)
+    public static function _getItemsCategories($key)
     {
         $db = new PHPWS_DB('categories');
         $db->addWhere('category_items.key_id', $key->id);
@@ -215,7 +215,7 @@ class Categories {
         return $link;
     }
 
-    public function catList($key)
+    public static function catList($key)
     {
         if (empty($key)) {
             $key = Key::getCurrent();
@@ -236,7 +236,7 @@ class Categories {
         }
     }
 
-    public function getIcons($key=null)
+    public static function getIcons($key=null)
     {
         $icons = null;
 

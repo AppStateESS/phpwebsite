@@ -301,7 +301,7 @@ class Whatsnew {
     }
 
 
-    function whatsnewBlock() {
+    public static function whatsnewBlock() {
 
         if (PHPWS_Settings::get('whatsnew', 'cache_timeout') > 0) {
             $cache_key = 'whatsnew_cache_key';

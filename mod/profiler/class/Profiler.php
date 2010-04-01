@@ -304,7 +304,7 @@ class Profiler {
      * I have hardcoded display numbers here for now but if/when categories
      * are added, this will change.
      */
-    public function view($div_id=0)
+    public static function view($div_id=0)
     {
         if (!PHPWS_Settings::get('profiler', 'profile_homepage')) {
             return;

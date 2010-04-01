@@ -46,7 +46,7 @@ class Webpage_User {
 
     }
 
-    public function showFeatured()
+    public static function showFeatured()
     {
         if (isset($_REQUEST['module'])) {
             return NULL;
@@ -92,7 +92,7 @@ class Webpage_User {
         Layout::add($content, 'webpage', 'featured');
     }
 
-    public function showFrontPage()
+    public static function showFrontPage()
     {
         if (isset($_REQUEST['module'])) {
             return NULL;

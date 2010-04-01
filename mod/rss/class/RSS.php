@@ -57,7 +57,7 @@ class RSS {
         }
     }
 
-    public function showFeeds()
+    public static function showFeeds()
     {
         PHPWS_Core::initModClass('rss', 'Feed.php');
         $db = new PHPWS_DB('rss_feeds');
@@ -92,7 +92,7 @@ class RSS {
         exit();
     }
 
-    public function showIcon($key)
+    public static function showIcon($key)
     {
         PHPWS_Core::initModClass('rss', 'Channel.php');
         $channel = new RSS_Channel;

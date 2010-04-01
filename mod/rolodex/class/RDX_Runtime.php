@@ -39,7 +39,7 @@ class RDX_Runtime
         }
     }
 
-    public function showRolodexBlock() {
+    public static function showRolodexBlock() {
 
         $db = new PHPWS_DB('rolodex_member');
         $db->addColumn('user_id');

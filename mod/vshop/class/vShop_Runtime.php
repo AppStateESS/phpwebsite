@@ -78,7 +78,7 @@ class vShop_Runtime
         }
     }
 
-    public function showBlock() {
+    public static function showBlock() {
         if (PHPWS_Settings::get('vshop', 'enable_sidebox')) {
             if (PHPWS_Settings::get('vshop', 'sidebox_homeonly')) {
                 $key = Key::getCurrent();

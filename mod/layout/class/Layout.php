@@ -166,7 +166,7 @@ class Layout {
 		$GLOBALS['Extra_Style'] = $link;
 	}
 
-	public function addLink($link)
+	public static function addLink($link)
 	{
 		$GLOBALS['Layout_Links'][] = $link;
 	}
@@ -873,7 +873,6 @@ class Layout {
 		}
 
 		$file = PHPWS_SOURCE_HTTP . $file;
-
 		if ($header == TRUE) {
 			if (isset($alternate) && $alternate == TRUE) {
 				return sprintf('<?xml-stylesheet alternate="yes" %s href="%s" type="text/css"%s?>', $cssTitle, $file, $media_tag);

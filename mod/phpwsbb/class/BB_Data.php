@@ -96,7 +96,7 @@ class PHPWSBB_Data
      * @param none
      * @return array
      */
-    public function get_forum_list ($id_only = false)
+    public static function get_forum_list ($id_only = false)
     {
         $cachekey = 'bb_forumlist';
         if (!Current_User::isLogged()) {

@@ -6,7 +6,7 @@
 
 class Whodis {
 
-    function record()
+    public static function record()
     {
         if (!empty($_SERVER['HTTP_REFERER'])) {
             $referrer = & $_SERVER['HTTP_REFERER'];
@@ -24,7 +24,7 @@ class Whodis {
         }
     }
 
-    function passFilters($referrer)
+    public static function passFilters($referrer)
     {
         $home_url = PHPWS_Core::getHomeHttp();
         $preg_match = str_replace('/', '\/', ($home_url));
@@ -52,7 +52,7 @@ class Whodis {
         return true;
     }
 
-    function purge()
+    public function purge()
     {
         $db = new PHPWS_DB('whodis');
         $go = false;
@@ -83,7 +83,7 @@ class Whodis {
         return $db->delete();
     }
 
-    function admin()
+    public function admin()
     {
         if (!Current_User::allow('whodis')) {
             Current_User::disallow();
@@ -115,7 +115,7 @@ class Whodis {
         }
     }
 
-    function filterOption()
+    public function filterOption()
     {
         if (isset($_POST['add_filter_button']) && !empty($_POST['add_filter'])) {
             $filter = preg_replace('/[^\w\.-\s]/', '', strip_tags($_POST['add_filter']));
@@ -139,7 +139,7 @@ class Whodis {
         }
     }
 
-    function filters()
+    public function filters()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -183,12 +183,12 @@ class Whodis {
 
     }
 
-    function checkbox($values)
+    public function checkbox($values)
     {
         return array('FILTER_PICK' => sprintf('<input type="checkbox" name="filter_pick[]" value="%s" />', $values['id']));
     }
 
-    function listReferrers()
+    public function listReferrers()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('whodis', 'Whodis_Referrer.php');

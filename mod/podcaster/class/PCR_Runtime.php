@@ -39,7 +39,7 @@ class PCR_Runtime
         }
     }
 
-    function showPodcasterBlock() {
+    public static function showPodcasterBlock() {
 
         $db = new PHPWS_DB('podcaster_episode');
         $db->addColumn('id');
