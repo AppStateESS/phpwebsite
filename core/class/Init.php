@@ -13,6 +13,10 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 	define('PHPWS_SOURCE_DIR', str_replace('core/class', '', dirname(__FILE__)));
 }
 
+if (!defined('PHPWS_SOURCE_HTTP')) {
+	define('PHPWS_SOURCE_HTTP', './');
+}
+
 /**
  * Prior to 1.7.0, all settings were in a local config.php file.
  * Most settings were moved to defines.php and were server-wide
@@ -24,7 +28,9 @@ if (!defined('DB_ALLOW_TABLE_INDEX')) {
 }
 require_once PHPWS_SOURCE_DIR . 'core/conf/language.php';
 
-date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
+if (defined('DATE_SET_SERVER_TIME_ZONE')) {
+	date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
+}
 
 
 if (!defined('PHPWS_HOME_DIR')) {
