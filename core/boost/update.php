@@ -481,9 +481,110 @@ Editors
   o Added code to prevent multiple identical joins.
 + Text : Fixed bug in fixAnchors that didn\'t allow it to work with hyphenated ids
 + DBPager : fixed a problem with multiple joinResult calls to same table.</pre>';
+
+        case version_compare($version, '2.0.0', '<'):
+            if (PHPWS_Core::isBranch()) {
+                $content[] = 'This update can only be installed on the hub.';
+                return false;
+            }
+
+            if (PHPWS_Core::inBranch()) {
+                $config_dir = PHPWS_SOURCE_DIR . 'config/core/';
+                if (!is_writable($config_dir) || !is_writable($config_dir . 'config.php')) {
+                    $content[] = '<p>Core update can not continue until your hub installation\'s <strong>config/core/</strong> directory<br />and
+        		<strong>config/core/config.php</strong> are writable.</p>';
+                    return false;
+                }
+                $db = new DB2;
+                if ($db->tableExists('branch_sites')) {
+                    try {
+                        $db->addTable('branch_sites');
+                        $branches = $db->select();
+                    } catch (PEAR_Exception $e) {
+                        $content[] = 'Could not fetch branches because:';
+                        $content[] = $e->getMessage();
+                        return false;
+                    }
+                    foreach ($branches as $branch) {
+                        $b_directory = $branch['directory'] . 'config/core/';
+                        $branch_dirs[] = $b_directory;
+                        if (!is_writable($b_directory) || !is_writable($b_directory . 'config.php')) {
+                            $not_writable[] = $b_directory;
+                        }
+                    }
+                    if (isset($not_writable)) {
+                        $content[] = 'Can not update core until the following branch config.php files are made writable:';
+                        foreach ($not_writable as $dir) {
+                            $content[] = $dir;
+                        }
+                        return false;
+                    } else {
+                        $content[] = 'All branch config files are writable.';
+                    }
+                } else {
+                    $branch_dirs = null;
+                }
+                $content[] = 'Updating hub config file.';
+
+                if (!updateTo170($config_dir, $content)) {
+                    return false;
+                }
+
+                if (!empty($branch_dirs)) {
+                    $content[] = 'Updating branch config files.';
+                    foreach ($branch_dirs as $branch_path) {
+                        updateTo170($branch_path, $content);
+                    }
+                }
+                $content[] = '2.0.0 changes
+                -----------------
+                + Hub/Branch overhaul. Branches pull config/templates/ from hub instead of locally.
+                + Added Icon class. Standardizes icons and prevents overlap.
+                + Added tag_implode function.
+                + Created Form2 class.
+                + getConfigFile does not throw error now.
+                + Dutch translation updated.
+                + Added autoload function for core classes.
+                + Source dir derived from file path and not simply "./"
+                + Added Image class.
+                + Critical functions changed to throw exceptions.';
+            }
+            return true;
     }
     return true;
 }
+
+function updateTo170($config_dir, &$content)
+{
+    static $source_http = null;
+    if (empty($source_http)) {
+        if (PHPWS_Core::isBranch()) {
+            $content[] = 'Can not install from branch.';
+            return false;
+        }
+        $source_http = PHPWS_Core::getHomeHttp(true,true,true);
+    }
+
+    $file_path = $config_dir . 'config.php';
+    $file_path_contents = file_get_contents($file_path);
+    if (!preg_match('/PHPWS_SOURCE_HTTP/', $file_path_contents)) {
+        $new_config_contents = str_replace('<?php', "<?php\ndefine('PHPWS_SOURCE_HTTP', '$source_http');\n", $file_path_contents);
+        if (!rename($file_path, $config_dir . 'config-prior170.php')) {
+            $content[] = 'Could not backup your config.php file to config-prior170.php';
+            return false;
+        }
+        if (!file_put_contents($file_path, $new_config_contents)) {
+            $content[] = 'Could not create new config.php file. Restoring previous config.';
+            rename($config_dir . 'config-prior170.php', $file_path);
+            return false;
+        }
+        $content[] = 'Config file updated:' . $file_path;
+    } else {
+        $content[] = 'Config does not need updating:' .  $file_path;
+    }
+    return true;
+}
+
 
 function coreUpdateFiles($files, &$content)
 {
