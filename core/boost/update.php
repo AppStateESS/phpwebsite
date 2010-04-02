@@ -484,17 +484,18 @@ Editors
 
         case version_compare($version, '2.0.0', '<'):
             if (PHPWS_Core::isBranch()) {
-                $content[] = 'This update can only be installed on the hub.';
+                $content[] = 'This update can only be performed on the hub.';
                 return false;
             }
 
-            if (PHPWS_Core::inBranch()) {
+            if (!PHPWS_Boost::inBranch()) {
                 $config_dir = PHPWS_SOURCE_DIR . 'config/core/';
                 if (!is_writable($config_dir) || !is_writable($config_dir . 'config.php')) {
                     $content[] = '<p>Core update can not continue until your hub installation\'s <strong>config/core/</strong> directory<br />and
         		<strong>config/core/config.php</strong> are writable.</p>';
                     return false;
                 }
+                
                 $db = new DB2;
                 if ($db->tableExists('branch_sites')) {
                     try {
@@ -536,18 +537,24 @@ Editors
                         updateTo170($branch_path, $content);
                     }
                 }
-                $content[] = '2.0.0 changes
-                -----------------
-                + Hub/Branch overhaul. Branches pull config/templates/ from hub instead of locally.
-                + Added Icon class. Standardizes icons and prevents overlap.
-                + Added tag_implode function.
-                + Created Form2 class.
-                + getConfigFile does not throw error now.
-                + Dutch translation updated.
-                + Added autoload function for core classes.
-                + Source dir derived from file path and not simply "./"
-                + Added Image class.
-                + Critical functions changed to throw exceptions.';
+                $content[] = <<<EOT
+                <pre>2.0.0 changes
+-----------------
++ Hub/Branch overhaul. Branches pull config/templates/ from hub instead of locally.
++ Added Icon class. Standardizes icons and prevents overlap.
++ Added tag_implode function.
++ Created Form2 class.
++ getConfigFile does not throw error now.
++ Dutch translation updated.
++ Added autoload function for core classes.
++ Source dir derived from file path and not simply "./"
++ Added Image class.
++ Critical functions changed to throw exceptions.</pre>
+                
+<p><strong>Note: this update creates a backup of your config/core/config.php file named<br />
+config-prior170.php.<br />
+If your installation is working, this file may be safely deleted.</strong></p>
+EOT;
             }
             return true;
     }
