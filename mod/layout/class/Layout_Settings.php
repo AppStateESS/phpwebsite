@@ -167,21 +167,20 @@ class Layout_Settings {
     {
         $db = new PHPWS_DB('layout_config');
         $result = $db->loadObject($this, false);
-
         if (PHPWS_Error::isError($result)){
             PHPWS_Error::log($result);
             PHPWS_Core::errorPage();
         }
-
-        if ($theme && is_dir(PHPWS_SOURCE_DIR . 'themes/' . $theme)) {
+        
+        if ($theme && is_dir(Layout::getThemeDirRoot() . $theme)) {
             $this->default_theme = $theme;
         }
 
         if (empty($this->current_theme)) {
             $this->current_theme = $this->default_theme;
         }
-
-        $themeInit = PHPWS_SOURCE_DIR . 'themes/' . $this->current_theme . '/theme.ini';
+        
+        $themeInit = Layout::getThemeDirRoot() . $this->current_theme . '/theme.ini';
 
         if (is_file($themeInit)){
             $themeVars = parse_ini_file($themeInit, true);
@@ -189,12 +188,13 @@ class Layout_Settings {
             $this->loadStyleSheets($themeVars);
         } else {
             PHPWS_Error::log(LAYOUT_INI_FILE, 'layout', 'Layout_Settings::loadSettings', $themeInit);
-            PHPWS_Core::errorPage();
+            //PHPWS_Core::errorPage();
         }
         if (Current_User::isDeity()) {
             $this->deity_reload = true;
         }
     }
+    
 
     public function loadStyleSheets($themeVars)
     {
