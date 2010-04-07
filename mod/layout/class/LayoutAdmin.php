@@ -134,7 +134,7 @@ class Layout_Admin {
                 if (!Current_User::authorized('layout')) {
                     Current_User::disallow();
                 }
-                $files = PHPWS_File::readDirectory('templates/cache', false, true);
+                $files = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'templates/cache', false, true);
                 if (!empty($files) && is_array($files)) {
                     foreach ($files as $fn) {
                         @unlink('templates/cache/' . $fn);
@@ -434,7 +434,7 @@ class Layout_Admin {
     public static function getThemeList()
     {
         PHPWS_Core::initCoreClass('File.php');
-        return PHPWS_File::readDirectory('themes/', 1);
+        return PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'themes/', 1);
     }
 
     /**

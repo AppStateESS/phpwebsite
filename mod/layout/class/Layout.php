@@ -330,9 +330,10 @@ class Layout {
 	public static function display()
 	{
 		if (LAYOUT_THEME_EXEC) {
-			$theme_exec = sprintf('themes/%s/theme.php', Layout::getCurrentTheme());
+			$theme_exec = sprintf('%sthemes/%s/theme.php', PHPWS_SOURCE_DIR, Layout::getCurrentTheme());
 			@include_once $theme_exec;
 		}
+		
 		Layout::processHeld();
 		$themeVarList = array();
 
@@ -396,10 +397,10 @@ class Layout {
 			}
 
 			Layout::loadHeaderTags($bodyLayout);
-
 			$finalTheme = Layout::loadTheme(Layout::getCurrentTheme(), $bodyLayout);
 
 			if (PHPWS_Error::isError($finalTheme)) {
+			    PHPWS_Error::log($finalTheme);
 				$content = implode('', $bodyLayout);
 			} else {
 				$content = $finalTheme->get();
@@ -514,10 +515,6 @@ class Layout {
 			$directory = sprintf('mod/%s/javascript/%s', $js_dir[$start_key++], $js_dir[$start_key]);
 		} else {
 			$js = 'javascript/';
-		}
-
-		if (empty($base)) {
-			$base = PHPWS_SOURCE_DIR;
 		}
 
 		PHPWS_CORE::initCoreClass('File.php');
@@ -680,7 +677,8 @@ class Layout {
 	{
 		Layout::checkSettings();
 		$themeDir = Layout::getTheme();
-		return PHPWS_SOURCE_DIR . "themes/$themeDir/";
+		//return PHPWS_SOURCE_DIR . "themes/$themeDir/";
+		return "themes/$themeDir/";
 	}
 
 	public static function isMoveBox()
@@ -737,15 +735,15 @@ class Layout {
 	public static function loadTheme($theme, $template)
 	{
 		$tpl = new PHPWS_Template;
+		$tpl->setRoot(PHPWS_SOURCE_DIR);
 		$themeDir = Layout::getThemeDir();
 
 		if (PHPWS_Error::isError($themeDir)) {
 			PHPWS_Error::log($themeDir);
 			PHPWS_Core::errorPage();
 		}
-
+		
 		$result = $tpl->setFile($themeDir . 'theme.tpl', TRUE);
-
 		if (PHPWS_Error::isError($result)) {
 			return $result;
 		}
@@ -755,7 +753,7 @@ class Layout {
 		}
 
 		$template['THEME_DIRECTORY'] = PHPWS_SOURCE_DIR . "themes/$theme/";
-
+		$template['THEME_HTTP'] = PHPWS_SOURCE_HTTP . "themes/$theme/";
 		$tpl->setData($template);
 		return $tpl;
 	}

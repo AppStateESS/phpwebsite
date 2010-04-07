@@ -173,7 +173,7 @@ class Layout_Settings {
             PHPWS_Core::errorPage();
         }
 
-        if ($theme && is_dir('themes/' . $theme)) {
+        if ($theme && is_dir(PHPWS_SOURCE_DIR . 'themes/' . $theme)) {
             $this->default_theme = $theme;
         }
 
