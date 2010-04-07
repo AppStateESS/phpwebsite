@@ -182,6 +182,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
 
         if ($result) {
+            PHPWS_Error::logIfError($result);
             $this->lastTemplatefile = $used_tpl;
             return $result;
         } else {
@@ -282,11 +283,11 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
     }
 
-    public function processTemplate($template, $module, $file, $defaultTpl=true)
+    public static function processTemplate($template, $module, $file, $defaultTpl=true)
     {
-        if ($defaultTpl)
-        return PHPWS_Template::process($template, $module, $file);
-        else {
+        if ($defaultTpl) {
+            return PHPWS_Template::process($template, $module, $file);
+        } else {
             $tpl = new PHPWS_Template($module);
             $tpl->setFile($file, true);
             $tpl->setData($template);
