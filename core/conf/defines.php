@@ -206,6 +206,12 @@ define('USE_WYSIWYG_EDITOR', true);
 define('DEFAULT_EDITOR_TOOL', 'fckeditor');
 define('FORCE_EDITOR', true);
 
+/************************ Captcha Settings *******************/
+/**
+* Determines if you want to use captcha and if so which version.
+* phpWebSite ships with freecap by default which is supplied by
+* http://www.puremango.co.uk/
+*/
 define('ALLOW_CAPTCHA', true);
 define('CAPTCHA_NAME', 'freecap');
 ?>
