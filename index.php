@@ -7,9 +7,7 @@
  * @author Matthew McNaney <matt at tux dot appstate edu>
  * @version $Id$
  */
-
 ini_set('register_globals', 0);
-include 'phpws_stats.php';
 
 // For extra security, consider changing AUTO_ROUTE to FALSE
 // after installation
@@ -30,6 +28,8 @@ if (is_file('config/core/config.php')) {
         exit('Fatal Error: Could not locate your configuration file.');
     }
 }
+
+include PHPWS_SOURCE_DIR . 'phpws_stats.php';
 
 // Commented out in phpWebSite 2.0. If missing functions, uncomment
 // require_once PHPWS_SOURCE_DIR . 'inc/Functions.php';
