@@ -206,5 +206,6 @@ define('USE_WYSIWYG_EDITOR', true);
 define('DEFAULT_EDITOR_TOOL', 'fckeditor');
 define('FORCE_EDITOR', true);
 
-
+define('ALLOW_CAPTCHA', true);
+define('CAPTCHA_NAME', 'freecap');
 ?>
