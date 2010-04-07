@@ -86,7 +86,7 @@ class Editor {
 
     public static function getEditorList()
     {
-        return PHPWS_File::readDirectory('javascript/editors/', true);
+        return PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'javascript/editors/', true);
     }
 
     public function getError()
