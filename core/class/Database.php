@@ -1533,7 +1533,7 @@ class PHPWS_DB {
         return $db->select('row', $sql);
     }
 
-    public function getCol($sql)
+    public static function getCol($sql)
     {
         $db = new PHPWS_DB;
         return $db->select('col', $sql);
