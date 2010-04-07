@@ -561,7 +561,7 @@ class PHPWS_Photo extends PHPWS_Item {
         }
     }
 
-    public function rowTpl($value)
+    public static function rowTpl($value)
     {
         $directory = './images/photoalbum/' . $value['album'];
         $vars['PHPWS_Album_id'] = $value['album'];

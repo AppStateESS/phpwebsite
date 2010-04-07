@@ -752,7 +752,7 @@ class PHPWS_Album extends PHPWS_Item {
         }
     }
 
-    public function AlbumRow($value)
+    public static function AlbumRow($value)
     {
         $vars['PHPWS_Album_op'] = 'view';
         $vars['PHPWS_Album_id'] = $value['id'];
