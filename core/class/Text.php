@@ -483,7 +483,7 @@ class PHPWS_Text {
     /**
      * Creates a link to the previous referer (page)
      */
-    public function backLink($title=null)
+    public static function backLink($title=null)
     {
         if (empty($title)) {
             $title = _('Return to previous page.');

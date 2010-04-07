@@ -72,7 +72,7 @@ class Key {
         $this->init();
     }
 
-    public function isKey($key)
+    public static function isKey($key)
     {
         if (is_object($key) && strtolower(get_class($key)) == 'key') {
             return true;
