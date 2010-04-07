@@ -540,7 +540,7 @@ Editors
                 $content[] = <<<EOT
                 <pre>2.0.0 changes
 -----------------
-+ Hub/Branch overhaul. Branches pull config/templates/ from hub instead of locally.
++ Hub/Branch overhaul. Branches pull config, templates, javascript, and theme files from hub instead of locally.
 + Added Icon class. Standardizes icons and prevents overlap.
 + Added tag_implode function.
 + Created Form2 class.
@@ -549,11 +549,21 @@ Editors
 + Added autoload function for core classes.
 + Source dir derived from file path and not simply "./"
 + Added Image class.
-+ Critical functions changed to throw exceptions.</pre>
++ Critical functions changed to throw exceptions.
++ Setup steamlined.</pre>
                 
-<p><strong>Note: this update creates a backup of your config/core/config.php file named<br />
+<p><strong>Note:</strong> this update creates a backup of your config/core/config.php file named<br />
 config-prior170.php.<br />
-If your installation is working, this file may be safely deleted.</strong></p>
+If your installation is working, this file may be safely deleted.</p>
+<p>IMPORTANT! Many settings in the old config.php have been moved to core/conf/defines.php in the hub.
+You can delete all settings <strong>except</strong> the following:</p>
+<ul><li>PHPWS_SOURCE_DIR</li>
+<li>PHPWS_HOME_DIR</li>
+<li>PHPWS_SOURCE_HTTP</li>
+<li>SITE_HASH</li>
+<li>PHPWS_DSN</li>
+<li>PHPWS_TABLE_PREFIX</li></ul>
+
 EOT;
             }
             return true;
