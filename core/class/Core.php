@@ -535,7 +535,6 @@ class PHPWS_Core {
     public static function log($message, $filename, $type=NULL)
     {
         require_once 'Log.php';
-
         if (!is_writable(PHPWS_LOG_DIRECTORY)) {
             exit(_('Unable to write to log directory.'));
         }
@@ -554,7 +553,8 @@ class PHPWS_Core {
         }
 
         if (PHPWS_Core::isBranch()) {
-            $message = '{' . Branch::getCurrentBranch() . '} ' . $message;
+            $branch_name = Branch::getCurrentBranchName();
+            $message = '{' . $branch_name . '}' . $message;
         } else {
             $message = '{HUB} ' . $message;
         }
