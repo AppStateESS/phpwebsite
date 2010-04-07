@@ -242,6 +242,16 @@ class Branch {
         PHPWS_DB::loadDB($dsn, $prefix);
     }
 
+    public static function getCurrentBranchName()
+    {
+        if (!isset($_SESSION['Approved_Branch'])) {
+            if (!Branch::checkCurrentBranch()) {
+                return null;
+            }
+        }
+        return $_SESSION['Approved_Branch']['branch_name'];
+    }
+    
     public static function checkCurrentBranch()
     {
         if (isset($_SESSION['Approved_Branch'])) {
@@ -258,7 +268,8 @@ class Branch {
         $db = new PHPWS_DB('branch_sites');
         $db->addWhere('site_hash', SITE_HASH);
         $db->addColumn('id');
-        $result = $db->select('one');
+        $db->addColumn('branch_name');
+        $result = $db->select('row');
 
         PHPWS_DB::loadDB();
 
@@ -282,7 +293,7 @@ class Branch {
                 return null;
             }
         }
-        return $_SESSION['Approved_Branch'];
+        return $_SESSION['Approved_Branch']['id'];
     }
 
     public function getHubDB()
