@@ -125,7 +125,7 @@ class Editor {
         return $this->type;
     }
 
-    public function isType($type_name)
+    public static function isType($type_name)
     {
         return in_array($type_name, Editor::getEditorList());
     }
