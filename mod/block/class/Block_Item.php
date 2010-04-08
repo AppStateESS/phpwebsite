@@ -234,33 +234,34 @@ class Block_Item {
 
 	public function getTpl()
 	{
+//	    Icon::demo();
 		$vars['block_id'] = $this->getId();
 
 		if (Current_User::allow('block', 'edit_block', $this->id)) {
 			$vars['action'] = 'edit';
-			$links[] = PHPWS_Text::secureLink(dgettext('block', 'Edit'), 'block', $vars);
+			$links[] = PHPWS_Text::secureLink(Icon::show('edit', dgettext('block', 'Edit')), 'block', $vars);
 			if ($this->isPinned()) {
 				$vars['action'] = 'unpin';
-				$links[] = PHPWS_Text::secureLink(dgettext('block', 'Unpin'), 'block', $vars);
+				$links[] = PHPWS_Text::secureLink(Icon::show('unsticky', dgettext('block', 'Unpin')), 'block', $vars);
 			} else {
 				if ($this->allPinned()) {
 					$vars['action'] = 'remove';
 					$links[] = PHPWS_Text::secureLink(dgettext('block', 'Unpin all'), 'block', $vars);
 				} else {
 					$vars['action'] = 'pin';
-					$links[] = PHPWS_Text::secureLink(dgettext('block', 'Pin'), 'block', $vars);
+					$links[] = PHPWS_Text::secureLink(Icon::show('sticky', dgettext('block', 'Pin')), 'block', $vars);
 					$vars['action'] = 'pin_all';
 					$links[] = PHPWS_Text::secureLink(dgettext('block', 'Pin all'), 'block', $vars);
 				}
 			}
 
 			if (Current_User::isUnrestricted('block')) {
-				$links[] = Current_User::popupPermission($this->key_id);
+				$links[] = Current_User::popupPermission($this->key_id, null, 'icon');
 			}
 
 
 			$vars['action'] = 'copy';
-			$links[] = PHPWS_Text::secureLink(dgettext('block', 'Copy'), 'block', $vars);
+			$links[] = PHPWS_Text::secureLink(Icon::show('copy', dgettext('block', 'Copy')), 'block', $vars);
 		}
 
 
@@ -268,12 +269,12 @@ class Block_Item {
 			$vars['action'] = 'delete';
 			$confirm_vars['QUESTION'] = dgettext('block', 'Are you sure you want to permanently delete this block?');
 			$confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
-			$confirm_vars['LINK'] = dgettext('block', 'Delete');
+			$confirm_vars['LINK'] = Icon::show('delete');
 			$links[] = javascript('confirm', $confirm_vars);
 		}
 
 		if (!empty($links)) {
-			$template['ACTION'] = implode(' | ', $links);
+			$template['ACTION'] = implode('', $links);
 		} else {
 			$template['ACTION'] = ' ';
 		}
