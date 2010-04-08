@@ -5,7 +5,7 @@
  */
 
 $default['class'] = 'js-slider';
-$default['id'] = 'span-' . mktime();
+$default['id'] = 'span-' . time();
 $default['speed'] = 'fast';
 
 switch (@$data['speed']) {
