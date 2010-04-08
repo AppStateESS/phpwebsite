@@ -43,35 +43,74 @@ class Icon extends Image {
         if ($alt) {
             $icon->setAlt($alt);
         }
+        Icon::includeStyle();
         return $icon->__toString();
     }
 
-    private static function loadIcon($type, &$icon_objects)
+    public static function setIconSource($source)
+    {
+        $GLOBALS['Icon_Source'] = $source;
+    }
+
+    public static function getIconSource()
+    {
+        if (!isset($GLOBALS['Icon_Source'])) {
+            $GLOBALS['Icon_Source'] = 'default';
+        }
+
+        return 'images/icons/' . $GLOBALS['Icon_Source'] . '/';
+    }
+
+    public static function getIconArray()
+    {
+        $filename = Icon::getIconSource() . 'icons.php';
+        include $filename;
+        if (empty($icons)) {
+            trigger_error(dgettext('core', 'An icons variable was not found.'));
+            exit();
+        }
+        return $icons;
+    }
+
+    /**
+     * Loads the current icons setup.
+     * @return array Array of icon parameters, used by loadIcon
+     */
+    public static function getParams()
     {
         static $params = null;
-        if (empty($params)) {
-            /*
-             * @todo alternate method for deciding icon set, possible theme override
-             */
-            $source = 'default';
-
-            $filename = PHPWS_SOURCE_DIR . 'images/icons/' . $source . '/icons.php';
-            include $filename;
-
-            if (!isset($source)) {
-                throw new PEAR_Exception(dgettext('core', 'Icon file missing source directory'));
-            }
-
-            $params['source'] = "images/icons/$source/";
-
-            $params['icons'] = & $icons;
-            if (isset($default_icon)) {
-                $params['default_icon'] = $default_icon;
-            }
-            if (class_exists('Layout')) {
-                Layout::addToStyleList($params['source'] . 'icon.css');
-            }
+        if (!empty($params)) {
+            return $params;
         }
+
+        $icons = Icon::getIconArray();
+
+        $params['source'] = Icon::getIconSource();
+
+        $params['icons'] = & $icons;
+        if (isset($default_icon)) {
+            $params['default_icon'] = $default_icon;
+        }
+
+        return $params;
+    }
+
+    public static function includeStyle()
+    {
+        static $included = false;
+        if ($included) {
+            return;
+        }
+
+        $css = Icon::getIconSource() . 'icon.css';
+        Layout::addToStyleList($css);
+        $included = true;
+    }
+
+
+    private static function loadIcon($type, &$icon_objects)
+    {
+        $params = Icon::getParams();
 
         $icon = & $params['icons'][$type];
         $src = PHPWS_SOURCE_HTTP . $params['source'] . $icon['src'];
@@ -97,6 +136,20 @@ class Icon extends Image {
             $o->setAlt($icon['label']);
         }
         $icon_objects[$type] = $o;
+    }
+
+    public static function demo()
+    {
+        $icons = Icon::getIconArray();
+        $icon_list = array_keys($icons);
+
+        foreach ($icon_list as $item) {
+            $content[] = Icon::show($item) . " $item";
+        }
+
+        $final =  implode('<br />', $content);
+        echo Layout::wrap($final);
+        exit();
     }
 }
 ?>
