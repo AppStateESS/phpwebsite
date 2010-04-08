@@ -68,6 +68,7 @@ $icons['new'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-362', 'y
 $icons['next'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-392', 'y'=>'-122', 'label'=>dgettext('core', 'Next'));
 $icons['paste'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-212', 'y'=>'-62', 'label'=>dgettext('core', 'Paste'));
 $icons['pause'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-2', 'y'=>'-182', 'label'=>dgettext('core', 'Pause'));
+$icons['permission'] = array('src'=>'safe-icon.png', 'label'=>dgettext('core', 'Permission'));
 $icons['play'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-32', 'y'=>'-182', 'label'=>dgettext('core', 'Play'));
 $icons['preference'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-212', 'y'=>'-212', 'label'=>dgettext('core', 'Preference'));
 $icons['previous'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-422', 'y'=>'-122', 'label'=>dgettext('core', 'Previous'));
