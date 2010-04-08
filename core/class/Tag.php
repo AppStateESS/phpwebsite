@@ -126,7 +126,11 @@ class Tag extends Data {
         if($this->open) {
             $result .= ">{$this->value}</{$this->tag_type}>";
         } else {
-            $result .= sprintf(' value="%s" />', htmlentities($this->value, ENT_COMPAT, 'UTF-8'));
+            if (!empty($this->value)) {
+                $result .= sprintf(' value="%s" />', htmlentities($this->value, ENT_COMPAT, 'UTF-8'));
+            } else {
+                $result .= ' />';
+            }
         }
         return $result;
     }
