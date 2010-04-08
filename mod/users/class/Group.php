@@ -291,14 +291,14 @@ class PHPWS_Group {
         $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'users', $linkVar, NULL, dgettext('users', 'Edit Group'));
 
         $linkVar['command'] = 'setGroupPermissions';
-        $links[] = PHPWS_Text::secureLink(sprintf('<img src="%smod/users/img/key.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('users', 'Permissions')), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(Icon::show('permission'), 'users', $linkVar);
         $linkVar['command'] = 'manageMembers';
         $links[] = PHPWS_Text::secureLink(Icon::show('users', dgettext('users', 'Members')), 'users', $linkVar);
 
         $linkVar['command'] = 'remove_group';
         $removelink['ADDRESS'] = PHPWS_Text::linkAddress('users', $linkVar, TRUE);
         $removelink['QUESTION'] = dgettext('users', 'Are you SURE you want to remove this group?');
-        $removelink['LINK'] = sprintf('<img src="%smod/users/img/delete.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('users', 'Remove'));
+        $removelink['LINK'] = Icon::show('delete', dgettext('users', 'Remove'));
         $links[] = Layout::getJavascript('confirm', $removelink);
 
         $template['ACTIONS'] = implode('', $links);

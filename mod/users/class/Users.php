@@ -900,13 +900,13 @@ class PHPWS_User {
                                                     'user_id'=> $this->id), true);
 		$link->setSalted();
 		$jsvar['ADDRESS'] = $link->getAddress();
-		$jsvar['LINK']    = sprintf('<img src="%smod/users/img/delete.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('users', 'Delete'));
+		$jsvar['LINK']    = Icon::show('delete');
 
 		$linkVar['command'] = 'editUser';
-		$links[] = PHPWS_Text::secureLink(sprintf('<img src="%smod/users/img/edit.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('users', 'Edit')), 'users', $linkVar);
+		$links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'users', $linkVar);
 
 		$linkVar['command'] = 'setUserPermissions';
-		$links[] = PHPWS_Text::secureLink(sprintf('<img src="%smod/users/img/key.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('users', 'Permissions')), 'users', $linkVar);
+		$links[] = PHPWS_Text::secureLink(Icon::show('permission'), 'users', $linkVar);
 
 		if (!$this->isDeity() && ($this->id != Current_User::getId())) {
 			$links[] = Layout::getJavascript('confirm', $jsvar);
@@ -917,7 +917,6 @@ class PHPWS_User {
 		if ($this->deity && !Current_User::isDeity()) {
 			unset($template['ACTIONS']);
 		}
-
 		return $template;
 	}
 

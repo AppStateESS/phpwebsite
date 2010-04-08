@@ -333,7 +333,7 @@ class User_Form {
 		return $pager->get();
 	}
 
-	public function manageMembers(PHPWS_Group $group)
+	public static function manageMembers(PHPWS_Group $group)
 	{
 		$form = new PHPWS_Form('memberList');
 		$form->addHidden('module', 'users');
@@ -383,12 +383,12 @@ class User_Form {
 		$vars['action']   = 'admin';
 		$vars['group_id'] = $group->id;
 		$vars['command']  = 'edit_group';
-		$links[] = PHPWS_Text::secureLink(dgettext('users', 'Edit'), 'users', $vars);
+		$links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'users', $vars);
 
 		$vars['command'] = 'setGroupPermissions';
-		$links[] = PHPWS_Text::secureLink(dgettext('users', 'Permissions'), 'users', $vars);
+		$links[] = PHPWS_Text::secureLink(Icon::show('permission'), 'users', $vars);
 
-		$template['LINKS'] = implode(' | ', $links);
+		$template['LINKS'] = implode(' ', $links);
 
 		$template['CURRENT_MEMBERS_LBL'] = dgettext('users', 'Current Members');
 		$template['CURRENT_MEMBERS'] = User_Form::getMemberList($group);
@@ -399,7 +399,7 @@ class User_Form {
 	}
 
 
-	public function getMemberList(PHPWS_Group $group)
+	public static function getMemberList(PHPWS_Group $group)
 	{
 		$col_limit = 30;
 		$content = NULL;
