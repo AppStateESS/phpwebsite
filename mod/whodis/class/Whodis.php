@@ -83,7 +83,7 @@ class Whodis {
         return $db->delete();
     }
 
-    public function admin()
+    public static function admin()
     {
         if (!Current_User::allow('whodis')) {
             Current_User::disallow();
@@ -188,7 +188,7 @@ class Whodis {
         return array('FILTER_PICK' => sprintf('<input type="checkbox" name="filter_pick[]" value="%s" />', $values['id']));
     }
 
-    public function listReferrers()
+    public static function listReferrers()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('whodis', 'Whodis_Referrer.php');
