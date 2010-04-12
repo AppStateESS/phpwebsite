@@ -286,6 +286,7 @@ class Cabinet_Form {
         }
 
         if ($folder->ftype == IMAGE_FOLDER) {
+            javascript('lightbox');
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $pager = new DBPager('images', 'PHPWS_Image');
             $pager->setTemplate('image_grid.tpl');

@@ -1023,7 +1023,7 @@ class Cabinet {
         return $db->select();
     }
 
-    public function getFile($id)
+    public static function getFile($id)
     {
         PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
         $file_assoc = new FC_File_Assoc($id);
