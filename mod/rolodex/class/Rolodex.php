@@ -1573,7 +1573,7 @@ class Rolodex {
     }
 
 
-    public function navLinks()
+    public static function navLinks()
     {
 
         $links[] = PHPWS_Text::moduleLink(dgettext('rolodex', 'Browse members'), 'rolodex', array('uop'=>'list'));

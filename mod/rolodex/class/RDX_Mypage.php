@@ -26,7 +26,7 @@
 PHPWS_Core::initModClass('rolodex', 'Rolodex.php');
 class Rolodex_Mypage {
 
-    public function main()
+    public static function main()
     {
         Rolodex_Mypage::action($tpl['TITLE'], $tpl['CONTENT']);
         $tpl['MESSAGE'] = Rolodex_Mypage::getMessage();
@@ -65,14 +65,13 @@ class Rolodex_Mypage {
         }
 
         return PHPWS_Template::process($tpl, 'rolodex', 'my_page.tpl');
-
     }
 
 
 
     /* nothing below here used yet, maybe use in future */
 
-    public function action(&$title, &$content)
+    public static function action(&$title, &$content)
     {
         if (isset($_REQUEST['uop']))
         {
@@ -86,7 +85,7 @@ class Rolodex_Mypage {
     }
 
 
-    public function searchForm()
+    public static function searchForm()
     {
         $form = new PHPWS_Form('rolodex_search');
         $form->setMethod('get');
@@ -116,7 +115,7 @@ class Rolodex_Mypage {
         PHPWS_Core::reroute(PHPWS_Text::linkAddress('users', array('action'=>'user', 'tab'=>'rolodex'), false));
     }
 
-    public function getMessage()
+    public static function getMessage()
     {
         if (isset($_SESSION['rolodex_message']))
         {
