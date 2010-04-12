@@ -264,7 +264,7 @@ class Related {
         if (!Current_User::allow('related') || (bool)$allowEdit == FALSE) {
             $mode = 'view';
         }
-        elseif (Related_Action::isBanked()) {
+        elseif ($related->isBanked()) {
             $mode = 'edit';
         }
         elseif (isset($related->id)) {

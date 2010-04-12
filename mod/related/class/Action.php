@@ -9,7 +9,7 @@
 
 class Related_Action {
 
-    public function create(Related $related)
+    public static function create(Related $related)
     {
         $template['TITLE_LBL'] = dgettext('related', 'Title');
         $template['MODULE_LBL'] = dgettext('related', 'Module');
