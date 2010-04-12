@@ -544,6 +544,7 @@ Editors
 + Added Icon class. Standardizes icons and prevents overlap.
 + Added tag_implode function.
 + Created Form2 class.
++ Added CKeditor.
 + getConfigFile does not throw error now.
 + Dutch translation updated.
 + Added autoload function for core classes.
