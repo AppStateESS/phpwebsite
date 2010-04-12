@@ -185,7 +185,7 @@ class PHPWS_Text {
         return $text;
     }
 
-    public function filterText($text)
+    public static function filterText($text)
     {
         static $filters = null;
 
