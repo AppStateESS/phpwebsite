@@ -464,7 +464,7 @@ class PHPWS_Text {
     /**
      * Creates a mod_rewrite link that can be parsed by Apache
      */
-    public function rewriteLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
+    public static function rewriteLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
     {
         $link = PHPWS_Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
         $link->rewrite = true;

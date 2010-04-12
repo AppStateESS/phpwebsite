@@ -1527,7 +1527,7 @@ class PHPWS_DB {
         }
     }
 
-    public function getRow($sql)
+    public static function getRow($sql)
     {
         $db = new PHPWS_DB;
         return $db->select('row', $sql);
@@ -1539,19 +1539,19 @@ class PHPWS_DB {
         return $db->select('col', $sql);
     }
 
-    public function getAll($sql)
+    public static function getAll($sql)
     {
         $db = new PHPWS_DB;
         return $db->select('all', $sql);
     }
 
-    public function getOne($sql)
+    public static function getOne($sql)
     {
         $db = new PHPWS_DB;
         return $db->select('one', $sql);
     }
 
-    public function getAssoc($sql)
+    public static function getAssoc($sql)
     {
         $db = new PHPWS_DB;
         return $db->select('assoc', $sql);
