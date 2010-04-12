@@ -542,9 +542,11 @@ Editors
 -----------------
 + Hub/Branch overhaul. Branches pull config, templates, javascript, and theme files from hub instead of locally.
 + Added Icon class. Standardizes icons and prevents overlap.
++ Added Tag class: extendable class used with Image and Form2.
 + Added tag_implode function.
 + Created Form2 class.
 + Added CKeditor.
++ Added Lightbox.
 + getConfigFile does not throw error now.
 + Dutch translation updated.
 + Added autoload function for core classes.
