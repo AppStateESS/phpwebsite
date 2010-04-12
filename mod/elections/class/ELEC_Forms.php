@@ -594,7 +594,7 @@ class Elections_Forms {
             }
         }
 
-        if ($items) {
+        if (!empty($items)) {
             $form = new PHPWS_Form;
             if ($multiple) {
                 $form->addMultiple($select_name, $items);
