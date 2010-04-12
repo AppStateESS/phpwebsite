@@ -234,7 +234,6 @@ class Block_Item {
 
 	public function getTpl()
 	{
-//	    Icon::demo();
 		$vars['block_id'] = $this->getId();
 
 		if (Current_User::allow('block', 'edit_block', $this->id)) {
