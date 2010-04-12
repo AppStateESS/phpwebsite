@@ -7,7 +7,7 @@
 
 class RSS_Admin {
 
-    public function main()
+    public static function main()
     {
         $tpl['MESSAGE'] = NULL;
         $message = RSS_Admin::getMessage();
@@ -18,7 +18,7 @@ class RSS_Admin {
             Current_User::disallow();
         }
 
-        $panel = & RSS_Admin::adminPanel();
+        $panel = RSS_Admin::adminPanel();
 
         if (isset($_REQUEST['command'])) {
             $command = $_REQUEST['command'];
@@ -153,7 +153,7 @@ class RSS_Admin {
 
     }
 
-    public function getMessage()
+    public static function getMessage()
     {
         if (!isset($_SESSION['RSS_Message'])) {
             return NULL;
@@ -164,7 +164,7 @@ class RSS_Admin {
         return $message;
     }
 
-    public function adminPanel()
+    public static function adminPanel()
     {
         $opt['link'] = 'index.php?module=rss';
 
@@ -275,7 +275,7 @@ class RSS_Admin {
         return $message;
     }
 
-    public function channels()
+    public static function channels()
     {
         PHPWS_Core::initModClass('rss', 'Channel.php');
         $final_tpl['TITLE'] = dgettext('rss', 'Administrate RSS Feeds');
@@ -314,7 +314,7 @@ class RSS_Admin {
         return $final_tpl;
     }
 
-    public function editFeed(RSS_Feed $feed)
+    public static function editFeed(RSS_Feed $feed)
     {
         $form = new PHPWS_Form;
         if ($feed->id) {
@@ -356,7 +356,7 @@ class RSS_Admin {
         return $tpl;
     }
 
-    public function import()
+    public static function import()
     {
         PHPWS_Core::requireConfig('rss');
 

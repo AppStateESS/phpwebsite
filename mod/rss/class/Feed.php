@@ -60,21 +60,21 @@ class RSS_Feed {
     {
         $vars['command'] = 'reset_feed';
         $vars['feed_id'] = $this->id;
-        $links[] = PHPWS_Text::secureLink(dgettext('rss', 'Reset'), 'rss', $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('refresh', dgettext('rss', 'Reset')), 'rss', $vars);
 
         $jsvars['address'] = sprintf('index.php?module=rss&command=edit_feed&feed_id=%s&authkey=%s',
         $this->id, Current_User::getAuthKey());
-        $jsvars['label'] = dgettext('rss', 'Edit');
+        $jsvars['label'] = Icon::show('edit');
         $jsvars['height'] = '280';
         $links[] = javascript('open_window', $jsvars);
 
         $js['QUESTION'] = dgettext('rss', 'Are you sure you want to delete this RSS feed?');
         $js['ADDRESS']  = sprintf('index.php?module=rss&command=delete_feed&feed_id=%s&authkey=%s',
         $this->id, Current_User::getAuthKey());
-        $js['LINK']     = dgettext('rss', 'Delete');
+        $js['LINK']     = Icon::show('delete');
         $links[] = javascript('confirm', $js);
 
-        $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['ACTION'] = implode(' ', $links);
 
         if ($this->display) {
             $vars['command'] = 'turn_off_display';
