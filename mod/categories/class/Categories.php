@@ -317,10 +317,9 @@ class Categories {
         return $result;
     }
 
-    public function initList($list)
+    public static function initList($list)
     {
         foreach ($list as $cat){
-            //            $cat->loadIcon();
             $cat->loadChildren();
             $children[$cat->id] = $cat;
         }
@@ -489,7 +488,7 @@ class Categories {
     /**
      * Returns a category form for module inclusion
      */
-    public function getForm($match=null, $select_name='category', $multiple=true)
+    public static function getForm($match=null, $select_name='category', $multiple=true)
     {
         $categories = Categories::getCategories('list');
 
