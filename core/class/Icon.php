@@ -64,7 +64,7 @@ class Icon extends Image {
     public static function getIconArray()
     {
         $filename = Icon::getIconSource() . 'icons.php';
-        include $filename;
+        include PHPWS_SOURCE_DIR . $filename;
         if (empty($icons)) {
             trigger_error(dgettext('core', 'An icons variable was not found.'));
             exit();
