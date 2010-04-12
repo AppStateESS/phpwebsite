@@ -26,6 +26,9 @@
  *  check for PEAR::isError() in $upload->getFiles() or call
  *  $upload->isMissing(). Instead you'll
  *  get the error when do a check for $file->isError().
+ *  
+ *  >> Note for phpWebSite users - this is changed. Don't do it.
+ *     Use $file->hasError() instead
  *
  *  Example:
  *
@@ -254,7 +257,7 @@ class HTTP_Upload_Error extends PEAR
      * @return   object PEAR_Error   a PEAR-Error object
      * @access   public
      */
-    function raiseError($e_code)
+    function &raiseError($e_code=null, $a=null, $b=null, $c=null, $d=null, $e=null, $f=null)
     {
         return PEAR::raiseError($this->errorCode($e_code), $e_code);
     }
@@ -704,7 +707,7 @@ class HTTP_Upload_File extends HTTP_Upload_Error
      *              because the file excess the max permitted file size)
      * @access public
      */
-    function isError()
+    function hasError()
     {
         if (in_array($this->upload['error'], array('TOO_LARGE', 'BAD_FORM','DEV_NO_DEF_FILE'))) {
             return true;

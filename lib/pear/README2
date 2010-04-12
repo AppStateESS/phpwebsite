@@ -43,3 +43,8 @@ pass-by-references removed
 PEAR.php
 ---------------------------
 PEAR::isError made public static
+
+
+HTTP/Upload.php
+HTTP_Upload_Error::raiseError - made compatible with PEAR::raiseError
+HTTP_Upload_File::isError - changed name of function is "hasError"
