@@ -672,7 +672,7 @@ class Menu_Admin {
         return PHPWS_Template::process($tpl, 'menu', 'admin/settings.tpl');
     }
 
-    public function siteLink($menu, $link, $errors=NULL)
+    public static function siteLink($menu, $link, $errors=NULL)
     {
         $form = new PHPWS_Form('site_link');
         if ($link->id) {

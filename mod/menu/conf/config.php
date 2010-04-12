@@ -12,7 +12,7 @@ define('MENU_CURRENT_LINK_STYLE', 'current-link');
 
 define('MENU_LINK_ADD', sprintf('<img src="%smod/menu/img/gtk-add.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP, dgettext('menu', 'Add link'), dgettext('menu', 'Add link')));
 
-define('MENU_LINK_ADD_SITE', sprintf('<img src="%smod/menu/img/offsite.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP, dgettext('menu', 'Add other link'), dgettext('menu', 'Add other link')));
+define('MENU_LINK_ADD_SITE', sprintf('<img src="%smod/menu/img/icon_link.gif" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP, dgettext('menu', 'Add other link'), dgettext('menu', 'Add other link')));
 
 define('MENU_LINK_EDIT', sprintf('<img src="%smod/menu/img/gnome-stock-edit.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP, dgettext('menu', 'Edit link title'), dgettext('menu', 'Edit link title')));
 
