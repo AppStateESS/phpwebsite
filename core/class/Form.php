@@ -1870,6 +1870,7 @@ class Form_TextArea extends Form_Element {
         if (!USE_BREAKER && !empty($this->_form->use_breaker)) {
             $check_name = sprintf('%s_breaker', $this->name);
             $checkbox = new Form_Checkbox($check_name);
+            $checkbox->_form = $this->_form;
             $checkbox->setLabel(_('Break newlines'));
             $checkbox->setId($check_name);
             $breaker = sprintf('<div class="textarea-breaker">%s %s</div>', $checkbox->get(), $checkbox->getLabel(true, true));
@@ -2226,6 +2227,9 @@ class Form_Element {
                 }
 
                 if ($tagMode) {
+                    if (empty($this->_form)) {
+                        test($this);
+                    }
                     return $this->_form->makeLabel($this, $label);
                 } else {
                     return $label;
