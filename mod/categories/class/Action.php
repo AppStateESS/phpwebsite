@@ -287,7 +287,7 @@ class Categories_Action {
     }
 
 
-    public function category_list()
+    public static function category_list()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
