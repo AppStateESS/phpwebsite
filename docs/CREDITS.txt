@@ -143,6 +143,9 @@ http://code.google.com/p/fugue-icons/
 Tango Desktop Project
 http://tango-project.org/
 
+Lightbox2
+Lokesh Dhakar
+http://www.huddletogether.com/projects/lightbox2/
 
 --------------------------------------------------------------------------
 To those who translate, we salute you.
