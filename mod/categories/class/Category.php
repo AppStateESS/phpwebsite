@@ -202,22 +202,22 @@ class Category {
         $vars['category_id'] = $this->getId();
 
         $vars['subaction'] = 'edit';
-        $links[] = PHPWS_Text::secureLink(dgettext('categories', 'Edit'), 'categories', $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'categories', $vars);
 
         if (Current_User::allow('categories', 'delete_categories')) {
             if (javascriptEnabled()) {
                 $js_vars['QUESTION'] = dgettext('categories', 'Are you sure you want to delete this category?');
                 $js_vars['ADDRESS']  = 'index.php?module=categories&amp;action=admin&amp;subaction=deleteCategory&amp;category_id=' .
                 $this->getId() . '&amp;authkey=' . Current_User::getAuthKey();
-                $js_vars['LINK']     = dgettext('categories', 'Delete');
+                $js_vars['LINK']     = Icon::show('delete');
                 $links[] = Layout::getJavascript('confirm', $js_vars);
             } else {
                 $vars['subaction'] = 'delete';
-                $links[] = PHPWS_Text::moduleLink(dgettext('categories', 'Delete'), 'categories', $vars);
+                $links[] = PHPWS_Text::secureLink(Icon::show('delete'), 'categories', $vars);
             }
         }
 
-        $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['ACTION'] = implode(' ', $links);
         $tpl['DESCRIPTION'] = $this->getDescription();
         $tpl['PARENT'] = $this->getParentTitle();
         $tpl['TITLE'] = $this->getViewLink();
