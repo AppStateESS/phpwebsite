@@ -21,7 +21,7 @@ class Blog_User {
         MiniAdmin::add('blog', PHPWS_Text::secureLink(dgettext('blog', 'Blog list'), 'blog', $vars));
     }
 
-    public function main()
+    public static function main()
     {
         if (isset($_REQUEST['blog_id'])) {
             $blog = new Blog((int)$_REQUEST['blog_id']);

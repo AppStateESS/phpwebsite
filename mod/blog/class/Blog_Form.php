@@ -12,7 +12,7 @@ class Blog_Form {
     /**
      * @param boolean limited   If true, use anonymous submission form
      */
-    public function edit(Blog $blog, $version_id=NULL, $limited=false)
+    public static function edit(Blog $blog, $version_id=NULL, $limited=false)
     {
         $form = new PHPWS_Form('edit-blog');
         $form->useBreaker();
@@ -143,7 +143,6 @@ class Blog_Form {
         $form->addText('expire_date', $blog->getExpireDate());
         $form->setLabel('expire_date', dgettext('blog', 'Expire date/time'));
         $form->setSize('expire_date', 20);
-
         $template = $form->getTemplate();
 
         $jscal['form_name'] = 'edit-blog';

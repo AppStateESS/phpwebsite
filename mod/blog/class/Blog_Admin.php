@@ -14,7 +14,7 @@ if (!defined('MAX_BLOG_CACHE_PAGES')) {
 
 class Blog_Admin {
 
-    public function main()
+    public static function main()
     {
         if (!Current_User::authorized('blog')) {
             Current_User::disallow(dgettext('blog', 'User attempted access to Blog administration.'));
@@ -436,7 +436,7 @@ class Blog_Admin {
         PHPWS_Core::reroute($link);
     }
 
-    public function getForward()
+    public static function getForward()
     {
         if (!isset($_SESSION['Blog_Forward'])) {
             return NULL;
@@ -447,7 +447,7 @@ class Blog_Admin {
         return $message;
     }
 
-    public function cpanel()
+    public static function cpanel()
     {
         PHPWS_Core::initModClass('version', 'Version.php');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
@@ -487,7 +487,7 @@ class Blog_Admin {
     }
 
 
-    public function entry_list()
+    public static function entry_list()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         $db = new PHPWS_DB('blog_stickies');
