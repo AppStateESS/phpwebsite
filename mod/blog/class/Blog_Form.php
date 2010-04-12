@@ -162,7 +162,7 @@ class Blog_Form {
         return PHPWS_Template::process($template, 'blog', 'edit.tpl');
     }
 
-    public function settings()
+    public static function settings()
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'blog');
