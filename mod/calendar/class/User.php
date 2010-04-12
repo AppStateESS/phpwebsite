@@ -1132,7 +1132,7 @@ class Calendar_User {
 
             $enddate = $startdate + (86400 * $days_ahead);
             $event_list = $schedule->getEvents($startdate, $enddate);
-            if (!$result) {
+            if (!$event_list) {
                 continue;
             }
 
