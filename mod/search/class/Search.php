@@ -100,7 +100,7 @@ class Search {
 		$this->keywords = array_unique($this->keywords);
 	}
 
-	public function filterWords($text, $encode=true)
+	public static function filterWords($text, $encode=true)
 	{
 		$text = str_replace('&amp;', '&', $text);
 		// can't use strip_tags because we need the spaces

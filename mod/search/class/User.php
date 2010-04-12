@@ -10,7 +10,7 @@
 PHPWS_Core::requireConfig('search');
 class Search_User {
 
-    public function main()
+    public static function main()
     {
         if (!isset($_GET['user'])) {
             PHPWS_Core::errorPage('404');
@@ -122,7 +122,7 @@ class Search_User {
         exit();
     }
 
-    public function searchPost()
+    public static function searchPost()
     {
         $search_phrase = @$_GET['search'];
         $search_phrase = str_replace('+', ' ', $search_phrase);
@@ -189,7 +189,7 @@ class Search_User {
         Layout::add($content);
     }
 
-    public function addAlternates(PHPWS_Form $form)
+    public static function addAlternates(PHPWS_Form $form)
     {
         $file = PHPWS_Core::getConfigFile('search', 'alternate.php');
         if ($file) {
@@ -208,7 +208,7 @@ class Search_User {
         }
     }
 
-    public function getIgnore()
+    public static function getIgnore()
     {
         $db = new PHPWS_DB('search_stats');
         $db->addWhere('ignored', 1);
@@ -216,7 +216,7 @@ class Search_User {
         return $db->select('col');
     }
 
-    public function getResults($phrase, $module=NULL, $exact_match=FALSE)
+    public static function getResults($phrase, $module=NULL, $exact_match=FALSE)
     {
         PHPWS_Core::initModClass('search', 'Stats.php');
 

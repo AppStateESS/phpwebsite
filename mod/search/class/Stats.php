@@ -19,7 +19,7 @@ class Search_Stats {
     public $exact_success  = 0;
 
 
-    public function record($words, $found, $exact_match) {
+    public static function record($words, $found, $exact_match) {
         if (empty($words)) {
             return FALSE;
         }

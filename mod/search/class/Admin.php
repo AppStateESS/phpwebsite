@@ -179,7 +179,7 @@ class Search_Admin {
         $_SESSION['Search_Admin'] = TRUE;
     }
 
-    public function miniAdmin()
+    public static function miniAdmin()
     {
         $key = Key::getCurrent();
 
