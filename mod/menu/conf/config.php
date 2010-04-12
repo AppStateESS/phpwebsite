@@ -16,9 +16,9 @@ define('MENU_LINK_ADD_SITE', sprintf('<img src="%smod/menu/img/icon_link.png" ti
 
 define('MENU_LINK_EDIT', sprintf('<img src="%smod/menu/img/gnome-stock-edit.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP, dgettext('menu', 'Edit link title'), dgettext('menu', 'Edit link title')));
 
-define('MENU_LINK_INDENT_INCREASE', sprintf('<img src="%smod/menu/img/icon_indent.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP, dgettext('menu', 'Increase indent'), dgettext('menu', 'Increase indent')));
+define('MENU_LINK_INDENT_INCREASE', sprintf('<img src="%smod/menu/img/right.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP, dgettext('menu', 'Increase indent'), dgettext('menu', 'Increase indent')));
 
-define('MENU_LINK_INDENT_DECREASE', sprintf('<img src="%smod/menu/img/icon_outdent.gif" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP, dgettext('menu', 'Decrease indent'), dgettext('menu', 'Decrease indent')));
+define('MENU_LINK_INDENT_DECREASE', sprintf('<img src="%smod/menu/img/left.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP, dgettext('menu', 'Decrease indent'), dgettext('menu', 'Decrease indent')));
 
 define('MENU_LINK_DELETE', sprintf('<img src="%smod/menu/img/gtk-delete.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP, dgettext('menu', 'Delete link'), dgettext('menu', 'Delete link')));
 
