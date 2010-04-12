@@ -20,7 +20,7 @@ class Comments {
     /**
      * Returns the comment thread object associated with a specific key
      */
-    public function getThread($key=NULL)
+    public static function getThread($key=NULL)
     {
         if (empty($key)) {
             $key = Key::getCurrent();
@@ -47,7 +47,7 @@ class Comments {
         return $thread;
     }
 
-    public function getCommentUser($user_id)
+    public static function getCommentUser($user_id)
     {
         if (isset($GLOBALS['Comment_Users'][$user_id])) {
             return $GLOBALS['Comment_Users'][$user_id];
