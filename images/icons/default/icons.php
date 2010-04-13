@@ -28,7 +28,7 @@
  */
 
 $icons['active'] = array('src'=>'active.png', 'label'=>dgettext('core', 'Active'));
-$icons['add'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-212', 'y'=>'-150', 'label'=>dgettext('core', 'Add'));
+$icons['add'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-213', 'y'=>'-152', 'label'=>dgettext('core', 'Add'));
 $icons['approved'] = array('src'=>'approved.png', 'label'=>dgettext('core', 'Approved'));
 $icons['bookmark'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-122', 'y'=>'-32', 'label'=>dgettext('core', 'Bookmark'));
 $icons['calendar'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-452', 'y'=>'-272', 'label'=>dgettext('core', 'Calendar'));
