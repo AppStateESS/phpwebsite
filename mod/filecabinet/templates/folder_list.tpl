@@ -1,13 +1,13 @@
 {ADMIN_LINKS}
 <table cellpadding="6" cellspacing="2" width="100%">
     <tr>
-        <th>{TITLE_SORT}</th>
-        <th width="20%">{PUBLIC_FOLDER_SORT}</th>
-        <th width="10%">{ITEM_LABEL}</th>
+        <th style="width : 30%">{TITLE_SORT}</th>
+        <th style="width : 15%">{PUBLIC_FOLDER_SORT}</th>
+        <th style="width : 8%">{ITEM_LABEL}</th>
         <!-- BEGIN modcreated -->
         <th>{MODULE_CREATED_SORT}</th>
         <!-- END modcreated -->
-        <th width="20%">&#160;</th>
+        <th style="width : 25%">&#160;</th>
     </tr>
     <!-- BEGIN listrows -->
     <tr class="{TOGGLE}">

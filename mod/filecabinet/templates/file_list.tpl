@@ -17,7 +17,7 @@
     <tr{TOGGLE}>
         <td class="fc-title">{TITLE}<br />
         <i>{FILE_NAME}</i></td>
-        <td class="fc-file-type">{ICON}<br />
+        <td class="fc-file-type">
         {FILE_TYPE}</td>
         <td class="fc-size">{SIZE}</td>
         <!-- BEGIN download-col -->
