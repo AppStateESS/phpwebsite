@@ -448,7 +448,6 @@ class PHPWS_Image extends File_Common {
         $tpl['SIZE'] = $this->getSize(TRUE);
         $tpl['FILE_NAME'] = $this->file_name;
         $tpl['THUMBNAIL'] = $this->lightboxThumb();
-        //$tpl['THUMBNAIL'] = $this->getJSView(TRUE);
         $tpl['TITLE']     = htmlspecialchars($this->title, ENT_QUOTES);
         $tpl['DIMENSIONS'] = sprintf('%s x %s', $this->width, $this->height);
 

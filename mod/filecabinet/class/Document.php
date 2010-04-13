@@ -156,7 +156,7 @@ class PHPWS_Document extends File_Common {
             $tpl['FILE_NAME'] = $this->file_name;
         }
 
-        $tpl['ICON']      = $this->getViewLink(true, 'icon');
+        $tpl['ICON']      = $this->getViewLink(true, 'small_icon');
         $tpl['TITLE']     = htmlspecialchars($this->title, ENT_QUOTES);
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
             $links[] = $this->editLink(true);
@@ -173,7 +173,7 @@ class PHPWS_Document extends File_Common {
         } else {
             $tpl['ACTION'] = null;
         }
-
+        $tpl['FILE_TYPE'] = $this->getFileType(true);
         $tpl['DOWNLOADED'] = $this->downloaded;
 
         $tpl['TITLE'] = $this->getViewLink(true);
@@ -302,7 +302,7 @@ class PHPWS_Document extends File_Common {
         } else {
             $tpl['ICON']     = $this->getViewLink(true, 'icon');
         }
-        $tpl['TYPE']     = $this->file_type;
+        $tpl['TYPE']     = $this->getFileType(true);
         $tpl['DESCRIPTION'] = $this->getDescription();
         $tpl['DOWNLOAD'] = dgettext('filecabinet', 'Download file');
         if ($return_tpl) {

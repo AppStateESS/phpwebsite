@@ -62,6 +62,23 @@ class File_Common {
         }
     }
 
+    /**
+     * Returns the file type. If shorten == true, then the
+     * type will be shortened for display purposes. This is on account
+     * of certain mime types getting around 40 characters
+     * @param $shorten
+     */
+    public function getFileType($shorten=false)
+    {
+        $file_length = strlen($this->file_type);
+        if ($shorten && $file_length > 20) {
+            $short_name =  substr($this->file_type, 0, 8) . '...' . substr($this->file_type, $file_length - 8);
+            return '<abbr title="' . $this->file_type . '">' . $short_name . '</abbr>';
+        } else {
+            return $this->file_type;
+        }
+    }
+    
     public function setMaxSize($max_size)
     {
         $this->_max_size = (int)$max_size;

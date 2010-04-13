@@ -273,6 +273,11 @@ class Cabinet_Form {
         return PHPWS_Template::process($tpl, 'filecabinet', 'edit_folder.tpl');
     }
 
+    /**
+     * Lists the contents of a folder for adminstrative changes.
+     * @param object $folder
+     * @param boolean $pick_image
+     */
     public function folderContents($folder, $pick_image=false)
     {
         PHPWS_Core::bookmark();

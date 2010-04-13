@@ -439,7 +439,7 @@ class Folder {
     {
         if (FC_ICON_PAGER_LINKS) {
             $mode = 'icon';
-            $spacer = '&#160;';
+            $spacer = '';
         } else {
             $mode = null;
             $spacer = ' | ';
