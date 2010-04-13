@@ -36,6 +36,7 @@ window.close();
 </script>
 </head>
 <body>
-<input type="button" onclick="send_url()" name="thing" value="Click me" />
+Image editor browser not yet available
+<!--   <input type="button" onclick="send_url()" name="thing" value="Click me" /> -->
 </body>
 </html>
