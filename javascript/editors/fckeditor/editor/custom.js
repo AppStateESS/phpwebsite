@@ -13,19 +13,9 @@ FCKConfig.ToolbarSets["phpws"] = [
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
 	'/',
 	['filecabinet', 'Image', 'YouTube', 'Table', 'Link','Unlink','Anchor'],
-	['SpellCheck', 'Rule','Smiley','SpecialChar', '-', 
-	'Style', 'FontFormat']
+	['SpellCheck', 'Rule','Smiley','SpecialChar', 'TextColor','BGColor'], '/',
+	['Style', 'FontFormat', 'FontName','FontSize']
 ] ;
-
-/**
- * Paste the below into the ToolbarSets above to "expand" your choices
- *
-
-, '/',
-['FontName','FontSize', 'TextColor','BGColor']
-
-*
-**/
 
 FCKConfig.LinkBrowser = false ;
 
