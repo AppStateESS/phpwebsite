@@ -5,8 +5,8 @@
  */
 
 if (empty($data['WIDTH']) || empty($data['HEIGHT'])) {
-    $data['WIDTH'] = 500;
-    $data['HEIGHT'] = 250;
+    $data['WIDTH'] = '100%';
+    $data['HEIGHT'] = '250px';
 }
 
 
