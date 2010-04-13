@@ -357,7 +357,7 @@ class PHPWS_Text {
         return $text;
     }
 
-    public function parseInput($text, $encode=ENCODE_PARSED_TEXT, $relative_links=MAKE_ADDRESSES_RELATIVE)
+    public static function parseInput($text, $encode=ENCODE_PARSED_TEXT, $relative_links=MAKE_ADDRESSES_RELATIVE)
     {
         // Moved over from getPrint/parseOutput
         if ((bool)$relative_links) {

@@ -740,7 +740,7 @@ class PHPWS_File {
 		}
 	}
 
-	public function checkMimeType($file_path, $ext=null)
+	public static function checkMimeType($file_path, $ext=null)
 	{
 		$all_file_type = PHPWS_File::getAllFileTypes();
 		if (empty($ext)) {
