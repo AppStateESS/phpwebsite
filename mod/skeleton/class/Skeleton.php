@@ -384,12 +384,12 @@ class Skeleton {
     {
 
         isset($_POST['enable_sidebox']) ?
-        PHPWS_Settings::set('skeleton', 'enable_sidebox', 1) :
-        PHPWS_Settings::set('skeleton', 'enable_sidebox', 0);
+            PHPWS_Settings::set('skeleton', 'enable_sidebox', 1) :
+            PHPWS_Settings::set('skeleton', 'enable_sidebox', 0);
 
         isset($_POST['sidebox_homeonly']) ?
-        PHPWS_Settings::set('skeleton', 'sidebox_homeonly', 1) :
-        PHPWS_Settings::set('skeleton', 'sidebox_homeonly', 0);
+            PHPWS_Settings::set('skeleton', 'sidebox_homeonly', 1) :
+            PHPWS_Settings::set('skeleton', 'sidebox_homeonly', 0);
 
         if (!empty($_POST['sidebox_text'])) {
             PHPWS_Settings::set('skeleton', 'sidebox_text', PHPWS_Text::parseInput($_POST['sidebox_text']));

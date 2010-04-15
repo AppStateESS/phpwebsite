@@ -181,7 +181,7 @@ class Skeleton_Skeleton {
             }
         } else {
             if (Current_User::allow('skeleton', 'edit_bone'))
-            $tpl['EMPTY'] = dgettext('skeleton', 'Click on "New bone" to start.');
+                $tpl['EMPTY'] = dgettext('skeleton', 'Click on "New bone" to start.');
         }
 
         $key->flag();
@@ -232,7 +232,7 @@ class Skeleton_Skeleton {
         $links = array_merge($links, Skeleton::navLinks());
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
     public function delete()
@@ -284,7 +284,7 @@ class Skeleton_Skeleton {
         $tpl['BONES'] = $this->getQtyBones();
 
         if($links)
-        $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }

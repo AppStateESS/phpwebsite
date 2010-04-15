@@ -195,7 +195,7 @@ class Skeleton_Bone {
         $links = array_merge($links, Skeleton::navLinks());
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
 
@@ -236,7 +236,7 @@ class Skeleton_Bone {
         $tpl['SKELETON'] = $this->getSkeleton(true);
 
         if($links)
-        $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }
@@ -270,7 +270,7 @@ class Skeleton_Bone {
         }
 
         if($links)
-        $tpl['BONE_LINKS'] = implode(' | ', $links);
+            $tpl['BONE_LINKS'] = implode(' | ', $links);
 
         return $tpl;
     }

@@ -91,10 +91,10 @@ class Skeleton_Forms {
 
         /* I am not using the next line in this mod, I just leave it
          * as a reminder of addWhere()
-         if (!Current_User::isUnrestricted('skeleton')) {
-         $pager->addWhere('active', 1);
-         }
-         */
+        if (!Current_User::isUnrestricted('skeleton')) {
+            $pager->addWhere('active', 1);
+        }
+        */
 
         $pager->setOrder('title', 'asc', true);
         $pager->setTemplate('list_skeletons.tpl');
@@ -237,7 +237,7 @@ class Skeleton_Forms {
         if (PHPWS_Settings::get('skeleton', 'enable_files')) {
             PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('file_id', $bone->file_id);
-            //            $manager->imageOnly();
+//            $manager->imageOnly();
             $manager->maxImageWidth(PHPWS_Settings::get('skeleton', 'max_width'));
             $manager->maxImageHeight(PHPWS_Settings::get('skeleton', 'max_height'));
             if ($manager) {
