@@ -184,7 +184,7 @@ class vMail_Recipient {
         $links = array_merge($links, vMail::navLinks());
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
     public function delete()
@@ -240,7 +240,7 @@ class vMail_Recipient {
         }
 
         if($links)
-        $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }

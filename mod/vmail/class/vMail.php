@@ -180,7 +180,7 @@ class vMail {
                         $this->content = $this->recipient->submitMessage();
                     } else {
                         $this->forwardMessage(dgettext('vmail', 'Sorry, there was a problem sending the message.'));
-                        //                        PHPWS_Core::reroute('index.php?module=vmail&id=' . $this->recipient->id);
+//                        PHPWS_Core::reroute('index.php?module=vmail&id=' . $this->recipient->id);
                         PHPWS_Core::reroute('index.php?module=vmail&uop=list_recipients');
                     }
                 } else {
@@ -309,12 +309,12 @@ class vMail {
         }
 
         isset($_POST['lock_subject']) ?
-        $this->recipient->lock_subject = 1 :
-        $this->recipient->lock_subject = 0;
+            $this->recipient->lock_subject = 1 :
+            $this->recipient->lock_subject = 0;
 
         isset($_POST['active']) ?
-        $this->recipient->active = 1 :
-        $this->recipient->active = 0;
+            $this->recipient->active = 1 :
+            $this->recipient->active = 0;
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
@@ -337,12 +337,12 @@ class vMail {
         }
 
         isset($_POST['enable_sidebox']) ?
-        PHPWS_Settings::set('vmail', 'enable_sidebox', 1) :
-        PHPWS_Settings::set('vmail', 'enable_sidebox', 0);
+            PHPWS_Settings::set('vmail', 'enable_sidebox', 1) :
+            PHPWS_Settings::set('vmail', 'enable_sidebox', 0);
 
         isset($_POST['sidebox_homeonly']) ?
-        PHPWS_Settings::set('vmail', 'sidebox_homeonly', 1) :
-        PHPWS_Settings::set('vmail', 'sidebox_homeonly', 0);
+            PHPWS_Settings::set('vmail', 'sidebox_homeonly', 1) :
+            PHPWS_Settings::set('vmail', 'sidebox_homeonly', 0);
 
         if (!empty($_POST['sidebox_text'])) {
             PHPWS_Settings::set('vmail', 'sidebox_text', PHPWS_Text::parseInput($_POST['sidebox_text']));
@@ -351,8 +351,8 @@ class vMail {
         }
 
         isset($_POST['use_captcha']) ?
-        PHPWS_Settings::set('vmail', 'use_captcha', 1) :
-        PHPWS_Settings::set('vmail', 'use_captcha', 0);
+            PHPWS_Settings::set('vmail', 'use_captcha', 1) :
+            PHPWS_Settings::set('vmail', 'use_captcha', 0);
 
 
         if (isset($errors)) {
@@ -418,7 +418,7 @@ class vMail {
     function confirm()
     {
         if (!PHPWS_Settings::get('vmail', 'use_captcha') ||
-        !extension_loaded('gd')) {
+            !extension_loaded('gd')) {
             return true;
         }
 
@@ -451,7 +451,7 @@ class vMail {
         $mail->setFrom(sprintf('%s<%s>', $from, $sender));
         $mail->setMessageBody($message);
 
-        //print_r($mail); exit;
+//print_r($mail); exit;
         return $mail->send();
 
     }
