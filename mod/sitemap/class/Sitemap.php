@@ -153,34 +153,34 @@ class Sitemap {
     {
 
         isset($_POST['respect_privs']) ?
-        PHPWS_Settings::set('sitemap', 'respect_privs', 1) :
-        PHPWS_Settings::set('sitemap', 'respect_privs', 0);
+            PHPWS_Settings::set('sitemap', 'respect_privs', 1) :
+            PHPWS_Settings::set('sitemap', 'respect_privs', 0);
 
         isset($_POST['local_only']) ?
-        PHPWS_Settings::set('sitemap', 'local_only', 1) :
-        PHPWS_Settings::set('sitemap', 'local_only', 0);
+            PHPWS_Settings::set('sitemap', 'local_only', 1) :
+            PHPWS_Settings::set('sitemap', 'local_only', 0);
 
         isset($_POST['use_change']) ?
-        PHPWS_Settings::set('sitemap', 'use_change', 1) :
-        PHPWS_Settings::set('sitemap', 'use_change', 0);
+            PHPWS_Settings::set('sitemap', 'use_change', 1) :
+            PHPWS_Settings::set('sitemap', 'use_change', 0);
 
         PHPWS_Settings::set('sitemap', 'change_freq', $_POST['change_freq']);
 
         isset($_POST['use_lastmod']) ?
-        PHPWS_Settings::set('sitemap', 'use_lastmod', 1) :
-        PHPWS_Settings::set('sitemap', 'use_lastmod', 0);
+            PHPWS_Settings::set('sitemap', 'use_lastmod', 1) :
+            PHPWS_Settings::set('sitemap', 'use_lastmod', 0);
 
         isset($_POST['use_priority']) ?
-        PHPWS_Settings::set('sitemap', 'use_priority', 1) :
-        PHPWS_Settings::set('sitemap', 'use_priority', 0);
+            PHPWS_Settings::set('sitemap', 'use_priority', 1) :
+            PHPWS_Settings::set('sitemap', 'use_priority', 0);
 
         isset($_POST['allow_feed']) ?
-        PHPWS_Settings::set('sitemap', 'allow_feed', 1) :
-        PHPWS_Settings::set('sitemap', 'allow_feed', 0);
+            PHPWS_Settings::set('sitemap', 'allow_feed', 1) :
+            PHPWS_Settings::set('sitemap', 'allow_feed', 0);
 
         isset($_POST['addkeys']) ?
-        PHPWS_Settings::set('sitemap', 'addkeys', 1) :
-        PHPWS_Settings::set('sitemap', 'addkeys', 0);
+            PHPWS_Settings::set('sitemap', 'addkeys', 1) :
+            PHPWS_Settings::set('sitemap', 'addkeys', 0);
 
         if (isset($_POST['exclude_keys'])) {
             PHPWS_Settings::set('sitemap', 'exclude_keys', $_POST['exclude_keys']);
@@ -399,21 +399,21 @@ class Sitemap {
         /* get the menu items */
         if (!empty($menus) && is_array($menus)) {
             $menuitems = $this->getMenuItems($menus);
-            //            print_r($menuitems); //exit;
+//            print_r($menuitems); //exit;
         }
 
         /* get other keyed items */
         if ($addkeys) {
             $otheritems = $this->getOtherItems($exclude_keys);
-            //            print_r($otheritems); //exit;
+//            print_r($otheritems); //exit;
             /* compare the arrays for dupes and return the cleaned array */
             $menuitems = array_udiff($menuitems, $otheritems, array($this, 'compareURL'));
-            //            print_r($menuitems); exit;
+//            print_r($menuitems); exit;
         }
 
         /* merge the two arrays */
         $allitems = array_merge($menuitems, $otheritems);
-        //        print_r($allitems); exit;
+//        print_r($allitems); exit;
 
         if (!empty($allitems) && is_array($allitems)) {
 
@@ -461,7 +461,7 @@ class Sitemap {
             }
 
 
-            //            print_r($tpl['links-listing']); exit;
+//            print_r($tpl['links-listing']); exit;
             $content = PHPWS_Template::process($tpl, 'sitemap', 'sitemap.tpl');
             return $content;
 
@@ -492,7 +492,7 @@ class Sitemap {
 
             $db->addOrder('link_order');
             $db->setIndexBy('id');
-            //            $db->setTestMode();
+//            $db->setTestMode();
             $result = $db->select();
 
             if (empty($result) || PHPWS_Error::logIfError($result)) {
@@ -556,7 +556,7 @@ class Sitemap {
 
             /* filter out the null ones and get the cleaned array */
             $final = array_filter($final);
-            //print_r($final); exit;
+//print_r($final); exit;
 
             return $final;
         } else {
@@ -578,7 +578,7 @@ class Sitemap {
 
         $db->addOrder('id');
         $db->setIndexBy('id');
-        //            $db->setTestMode();
+//            $db->setTestMode();
         $result = $db->select();
 
         if (empty($result) || PHPWS_Error::logIfError($result)) {
@@ -642,7 +642,7 @@ class Sitemap {
 
         /* filter out the null ones and get the cleaned array */
         $final = array_filter($final);
-        //print_r($final); exit;
+//print_r($final); exit;
 
         return $final;
     }
@@ -665,7 +665,7 @@ class Sitemap {
     {
         $pattern = '/^(([\w]+:)?\/\/)?(([\d\w]|%[a-fA-f\d]{2,2})+(:([\d\w]|%[a-fA-f\d]{2,2})+)?@)?([\d\w][-\d\w]{0,253}[\d\w]\.)+[\w]{2,4}(:[\d]+)?(\/([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)*(\?(&?([-+_~.\d\w]|%[a-fA-f\d]{2,2})=?)*)?(#([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)?$/';
         preg_match($pattern, $link, $matches);
-        //        print_r($matches); exit;
+//        print_r($matches); exit;
         if ($matches[1]) {
             return true;
         } else {

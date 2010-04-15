@@ -29,4 +29,4 @@ $link[] = array('label' => dgettext('menu', 'Sitemap'),
 		'image'         => 'sitemap.png',
 		'tab'           => 'admin'
 		);
-		?>
+?>

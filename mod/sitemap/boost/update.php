@@ -33,9 +33,9 @@ function sitemap_update(&$content, $currentVersion)
             $files = array('templates/edit_settings.tpl',
                            'templates/map_settings.tpl'
                            );
-                           sitemapUpdateFiles($files, $content);
+            sitemapUpdateFiles($files, $content);
 
-                           $content[] = '0.5.0 changes
+            $content[] = '0.5.0 changes
 ----------------
 + Separated getMenuItems to its own function so I could..
 + Added ability to get other non-menu keyed items into sitemap
@@ -52,9 +52,9 @@ function sitemap_update(&$content, $currentVersion)
             $files = array('templates/edit_settings.tpl',
                            'templates/map_settings.tpl'
                            );
-                           sitemapUpdateFiles($files, $content);
+            sitemapUpdateFiles($files, $content);
 
-                           $content[] = '0.6.0 changes
+            $content[] = '0.6.0 changes
 ----------------
 + Added ability to set default exclude list for keyed items
 + Added ability to customize exclude list for manual sitemaps
