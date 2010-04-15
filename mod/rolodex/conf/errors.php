@@ -23,7 +23,7 @@
  */
 
 $errors = array (RDX_NO_USER_ID => dgettext('rolodex', 'Rolodex member is missing user id.'),
-RDX_COULD_NOT_DELETE_IMG => dgettext('rolodex', 'There was a problem deleting the image.')
+                 RDX_COULD_NOT_DELETE_IMG => dgettext('rolodex', 'There was a problem deleting the image.')
 );
 
 ?>

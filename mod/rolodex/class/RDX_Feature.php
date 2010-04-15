@@ -163,7 +163,7 @@ class Rolodex_Feature {
         $tpl['TITLE'] = $this->viewLink() . ' ('.$this->getQtyMembers().')';
         $tpl['DESCRIPTION'] = $this->getListDescription(120);
         if($links)
-        $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
 
@@ -180,7 +180,7 @@ class Rolodex_Feature {
         $links = array_merge($links, Rolodex::navLinks());
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
 
@@ -197,7 +197,7 @@ class Rolodex_Feature {
 
     public function viewLink()
     {
-        //        return PHPWS_Text::rewriteLink($this->title, 'rolodex', $this->id);
+//        return PHPWS_Text::rewriteLink($this->title, 'rolodex', $this->id);
         $vars['uop']  = 'view_feature';
         $vars['feature'] = $this->id;
         return PHPWS_Text::moduleLink(dgettext('rolodex', $this->title), 'rolodex', $vars);

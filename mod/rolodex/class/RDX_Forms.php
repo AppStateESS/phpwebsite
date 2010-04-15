@@ -41,7 +41,7 @@ class Rolodex_Forms {
 
             case 'edit_member':
                 if (empty($this->rolodex->member)) {
-                    //                    $this->rolodex->loadMember($_REQUEST['user_id']); // I don't think the id in here matters but am unsure?
+//                    $this->rolodex->loadMember($_REQUEST['user_id']); // I don't think the id in here matters but am unsure?
                     $this->rolodex->loadMember(); // I don't think the id in here matters but am unsure?
                 }
 
@@ -165,7 +165,7 @@ class Rolodex_Forms {
 
     public function listMembers($approved=null, $expired=false, $location=null, $feature=null, $category=null)
     {
-        //print_r($_REQUEST); exit;
+//print_r($_REQUEST); exit;
         /* init the classes */
         PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
         PHPWS_Core::initCoreClass('DBPager.php');
@@ -272,7 +272,7 @@ class Rolodex_Forms {
         }
 
         /* unset the filters if a search is being done */
-        //        if (isset($_REQUEST['search']) && $_REQUEST['clearFilters']) {
+//        if (isset($_REQUEST['search']) && $_REQUEST['clearFilters']) {
         if (isset($_REQUEST['search']) && !empty($_REQUEST['search'])) {
             unset($_REQUEST['browseLetter']);
             unset($_REQUEST['locations']);
@@ -377,8 +377,8 @@ class Rolodex_Forms {
             }
         }
 
-        //        $ptags['CLEAR_FILTERS'] = '<input type="radio" name="clearFilters" value="1" checked="checked" />' . dgettext('rolodex', 'Clear filters or');
-        //        $ptags['CLEAR_FILTERS'] .= ' <input type="radio" name="clearFilters" value="0" />' . dgettext('rolodex', 'Search within results');
+//        $ptags['CLEAR_FILTERS'] = '<input type="radio" name="clearFilters" value="1" checked="checked" />' . dgettext('rolodex', 'Clear filters or');
+//        $ptags['CLEAR_FILTERS'] .= ' <input type="radio" name="clearFilters" value="0" />' . dgettext('rolodex', 'Search within results');
         if (isset($ptags['ITEM_TITLE'])) {
             $ptags['CLEAR_FILTERS'] = sprintf(dgettext('rolodex', 'Search within %s.'), $ptags['ITEM_TITLE']);
         } else {
@@ -387,18 +387,18 @@ class Rolodex_Forms {
 
         $pager->addPageTags($ptags);
         $pager->addToggle('class="toggle1"');
-        //        $pager->setSearch('last_name','title'); // the alias doesn't work here so we do the below
+//        $pager->setSearch('last_name','title'); // the alias doesn't work here so we do the below
         $pager->setSearch('demographics.business_name', 'demographics.first_name', 'demographics.last_name', 'rolodex_member.description');
 
         /* debug stuff */
-        //        print_r($pager);
-        //        $pager->db->setTestMode();
+//        print_r($pager);
+//        $pager->db->setTestMode();
 
         /* get the final content */
         $this->rolodex->content = $pager->get();
 
-        /* don't remember what I was testing/doing with the next line doh! */
-        //        $this->rolodex->content .= Categories::getCategoryList('rolodex');
+/* don't remember what I was testing/doing with the next line doh! */        
+//        $this->rolodex->content .= Categories::getCategoryList('rolodex');
 
         /* set the list/page title */
         if (isset($approved) && $approved == 0) {
@@ -424,7 +424,7 @@ class Rolodex_Forms {
         PHPWS_Core::initCoreClass('DBPager.php');
         $pager = new DBPager('rolodex_location', 'Rolodex_Location');
         $pager->setModule('rolodex');
-        //        $pager->setOrder('title', 'asc', true);
+//        $pager->setOrder('title', 'asc', true);
         $pager->setDefaultOrder('title', 'asc', true);
         $pager->setTemplate('list_location.tpl');
         $pager->addRowTags('rowTag');
@@ -446,7 +446,7 @@ class Rolodex_Forms {
         $pager->addPageTags($ptags);
         $pager->addToggle('class="toggle1"');
         $pager->setSearch('title', 'description');
-        //        $pager->addSortHeader('title', dgettext('rolodex', 'Title'));
+//        $pager->addSortHeader('title', dgettext('rolodex', 'Title'));
 
         $this->rolodex->content = $pager->get();
         $this->rolodex->title = sprintf(dgettext('rolodex', '%s Locations'), PHPWS_Settings::get('rolodex', 'module_title'));
@@ -508,7 +508,7 @@ class Rolodex_Forms {
         $pager->addToggle('class="toggle1"');
         $pager->setSearch('title', 'description');
 
-        //        $pager->db->setTestMode();
+//        $pager->db->setTestMode();
         $this->rolodex->content = $pager->get();
         $this->rolodex->title = sprintf(dgettext('rolodex', '%s Categories'), PHPWS_Settings::get('rolodex', 'module_title'));
     }
@@ -542,7 +542,7 @@ class Rolodex_Forms {
         $form->setMethod('get');
         $form->addHidden('module', 'rolodex');
         $form->addHidden('uop', 'adv_search');
-        //        $form->addHidden('uop', 'adv_search');
+//        $form->addHidden('uop', 'adv_search');
         $form->addText('pager_c_search');
 
         $form->addSubmit(dgettext('rolodex', 'Go'));
@@ -834,8 +834,8 @@ class Rolodex_Forms {
         $form->addHidden('module', 'rolodex');
         $form->addHidden('aop', 'edit_member');
 
-        // I don't seem to need the class
-        //        PHPWS_Core::initModClass('users', 'Users.php');
+// I don't seem to need the class
+//        PHPWS_Core::initModClass('users', 'Users.php');
         $db = new PHPWS_DB('users');
         $db->addColumn('id');
         $db->addColumn('username');
@@ -865,7 +865,7 @@ class Rolodex_Forms {
 
     public function editMember($admin=true)
     {
-        //print_r($this->rolodex->member);
+//print_r($this->rolodex->member);
         $form = new PHPWS_Form('rolodex_member');
         $member = & $this->rolodex->member;
 
@@ -1141,15 +1141,15 @@ class Rolodex_Forms {
         if (PHPWS_Settings::get('rolodex', 'use_categories') || PHPWS_Settings::get('rolodex', 'use_locations') || PHPWS_Settings::get('rolodex', 'use_features')) {
             $tpl['SELECT_LIST_TIP'] = dgettext('rolodex', 'To use the category, location, or feature lists, select an item from the list and click on the "+" symbol to add the selection to this profile. To remove a selection, click on the name of the item in the box below the select menu.');
         }
-        if (PHPWS_Settings::get('rolodex', 'custom1_name') ||
-        PHPWS_Settings::get('rolodex', 'custom2_name') ||
-        PHPWS_Settings::get('rolodex', 'custom3_name') ||
-        PHPWS_Settings::get('rolodex', 'custom4_name') ||
-        (PHPWS_Settings::get('rolodex', 'custom5_name') && Current_User::allow('rolodex', 'edit_member')) ||
-        (PHPWS_Settings::get('rolodex', 'custom6_name') && Current_User::allow('rolodex', 'edit_member')) ||
-        (PHPWS_Settings::get('rolodex', 'custom7_name') && Current_User::allow('rolodex', 'edit_member')) ||
-        (PHPWS_Settings::get('rolodex', 'custom8_name') && Current_User::allow('rolodex', 'edit_member'))
-        ) {
+        if (PHPWS_Settings::get('rolodex', 'custom1_name') || 
+            PHPWS_Settings::get('rolodex', 'custom2_name') || 
+            PHPWS_Settings::get('rolodex', 'custom3_name') || 
+            PHPWS_Settings::get('rolodex', 'custom4_name') || 
+            (PHPWS_Settings::get('rolodex', 'custom5_name') && Current_User::allow('rolodex', 'edit_member')) || 
+            (PHPWS_Settings::get('rolodex', 'custom6_name') && Current_User::allow('rolodex', 'edit_member')) || 
+            (PHPWS_Settings::get('rolodex', 'custom7_name') && Current_User::allow('rolodex', 'edit_member')) || 
+            (PHPWS_Settings::get('rolodex', 'custom8_name') && Current_User::allow('rolodex', 'edit_member')) 
+           ) {
             $tpl['META_GROUP_LABEL'] = dgettext('rolodex', 'Extra');
         }
 
@@ -1330,10 +1330,10 @@ class Rolodex_Forms {
         $tpl['EXPORT_CSV'] = PHPWS_Text::moduleLink(dgettext('rolodex', 'Export records to csv'), 'rolodex', array('uop'=>'export'));
 
         $tpl['RESET_EXPIRED'] = PHPWS_Text::secureLink(sprintf(dgettext('rolodex', 'Reset all expiry dates to %s days from now'), PHPWS_Settings::get('rolodex', 'expiry_interval')), 'rolodex', array('aop'=>'reset_expired'));
-        $vars['aop'] = 'delete_expired';
-        $js['ADDRESS'] = PHPWS_Text::linkAddress('rolodex', $vars, true);
-        $js['QUESTION'] = dgettext('rolodex', 'Are you sure you want to delete all expired members?\nEach user\'s demographic information will be retained for other modules, but all Rolodex information will be permanently removed.');
-        $js['LINK'] = dgettext('rolodex', 'Delete all expired members');
+            $vars['aop'] = 'delete_expired';
+            $js['ADDRESS'] = PHPWS_Text::linkAddress('rolodex', $vars, true);
+            $js['QUESTION'] = dgettext('rolodex', 'Are you sure you want to delete all expired members?\nEach user\'s demographic information will be retained for other modules, but all Rolodex information will be permanently removed.');
+            $js['LINK'] = dgettext('rolodex', 'Delete all expired members');
         $tpl['DELETE_EXPIRED'] = javascript('confirm', $js);
 
         $tpl['SEARCH_INDEX_ALL'] = PHPWS_Text::secureLink(dgettext('rolodex', 'Register all current rolodex records to the search module'), 'rolodex', array('aop'=>'search_index_all'));

@@ -49,9 +49,9 @@ function rolodex_update(&$content, $currentVersion)
                            'templates/alpha_click.tpl',
                            'templates/edit_settings.tpl'
                            );
-                           rolodexUpdateFiles($files, $content);
+                rolodexUpdateFiles($files, $content);
 
-                           $content[] = '0.7.0 changes
+                $content[] = '0.7.0 changes
 ----------------
 + Add support for Location(s) and Feature(s)
 + Added a bunch of new views to support those
@@ -73,9 +73,9 @@ function rolodex_update(&$content, $currentVersion)
             $files = array('templates/message_member.tpl',
                        'templates/edit_settings.tpl'
                        );
-                       rolodexUpdateFiles($files, $content);
+            rolodexUpdateFiles($files, $content);
 
-                       $content[] = '0.8.0 changes
+            $content[] = '0.8.0 changes
 ----------------
 + Added new setting to use link or form for contact
 + Added memnber contact form
@@ -92,9 +92,9 @@ function rolodex_update(&$content, $currentVersion)
                        'templates/message_member.tpl',
                        'templates/edit_settings.tpl'
                        );
-                       rolodexUpdateFiles($files, $content);
+            rolodexUpdateFiles($files, $content);
 
-                       $content[] = '0.9.0 changes
+            $content[] = '0.9.0 changes
 ----------------
 + Various text improvements throughout
 + Added more details to list views
@@ -119,9 +119,9 @@ function rolodex_update(&$content, $currentVersion)
                        'img/view.gif',
                        'templates/block.tpl'
                        );
-                       rolodexUpdateFiles($files, $content);
+            rolodexUpdateFiles($files, $content);
 
-                       $content[] = '1.0.0 changes
+            $content[] = '1.0.0 changes
 ----------------
 + Registered evening_phone field with demographics module
 + Split phone privacy settings into home and business
@@ -159,9 +159,9 @@ function rolodex_update(&$content, $currentVersion)
                        'templates/view_member.tpl', 
                        'templates/list_member.tpl'
                        );
-                       rolodexUpdateFiles($files, $content);
+            rolodexUpdateFiles($files, $content);
 
-                       $content[] = '1.1.0 changes
+            $content[] = '1.1.0 changes
 ----------------
 + Added support for email/contact link privacy at user level 
 + Minor layout tweaks

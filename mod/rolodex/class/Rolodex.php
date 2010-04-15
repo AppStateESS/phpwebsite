@@ -105,10 +105,10 @@ class Rolodex {
                     if ($oldsearch != PHPWS_Settings::get('rolodex', 'privacy_use_search')) {
                         if (PHPWS_Settings::get('rolodex', 'privacy_use_search')) {
                             if ($this->search_index_all())
-                            $msg .= dgettext('rolodex', 'All current member records have been indexed with the search module.');
+                                $msg .= dgettext('rolodex', 'All current member records have been indexed with the search module.');
                         } else {
                             if ($this->search_remove_all())
-                            $msg .= dgettext('rolodex', 'All current member records have been removed from the search module.');
+                                $msg .= dgettext('rolodex', 'All current member records have been removed from the search module.');
                         }
                     }
                     $this->forwardMessage($msg);
@@ -412,7 +412,7 @@ class Rolodex {
                     PHPWS_Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
-                    //                    $this->forms->categories();
+//                    $this->forms->categories();
                     $this->forms->listCategories();
                 }
                 break;
@@ -486,7 +486,7 @@ class Rolodex {
                             if ($this->member->date_expires <= time()) {
                                 $this->forwardMessage(dgettext('rolodex', 'Sorry, this membership has expired.'));
                                 if (!Current_User::isUnrestricted('rolodex'))
-                                PHPWS_Core::reroute('index.php?module=rolodex&uop=list');
+                                    PHPWS_Core::reroute('index.php?module=rolodex&uop=list');
                             }
                         }
                         $this->title = $this->member->getDisplay_name(true);
@@ -531,9 +531,9 @@ class Rolodex {
                 break;
 
             case 'post_member':
-                //            print(Current_User::getId() . ':' . $_REQUEST['user_id']); exit;
-                //            print($_SESSION['User']->id . ':' . $_REQUEST['user_id']); exit;
-                //                if (Current_User::getId() !== $_REQUEST['user_id']) {
+//            print(Current_User::getId() . ':' . $_REQUEST['user_id']); exit;
+//            print($_SESSION['User']->id . ':' . $_REQUEST['user_id']); exit;
+//                if (Current_User::getId() !== $_REQUEST['user_id']) {
                 if ($_SESSION['User']->id != $_REQUEST['user_id']) {
                     Current_User::disallow();
                 }
@@ -759,22 +759,22 @@ class Rolodex {
         }
 
         isset($_POST['allow_anon']) ?
-        PHPWS_Settings::set('rolodex', 'allow_anon', 1) :
-        PHPWS_Settings::set('rolodex', 'allow_anon', 0);
+            PHPWS_Settings::set('rolodex', 'allow_anon', 1) :
+            PHPWS_Settings::set('rolodex', 'allow_anon', 0);
 
         PHPWS_Settings::set('rolodex', 'sortby', (int)$_POST['sortby']);
 
         isset($_POST['req_approval']) ?
-        PHPWS_Settings::set('rolodex', 'req_approval', 1) :
-        PHPWS_Settings::set('rolodex', 'req_approval', 0);
+            PHPWS_Settings::set('rolodex', 'req_approval', 1) :
+            PHPWS_Settings::set('rolodex', 'req_approval', 0);
 
         isset($_POST['send_notification']) ?
-        PHPWS_Settings::set('rolodex', 'send_notification', 1) :
-        PHPWS_Settings::set('rolodex', 'send_notification', 0);
+            PHPWS_Settings::set('rolodex', 'send_notification', 1) :
+            PHPWS_Settings::set('rolodex', 'send_notification', 0);
 
         isset($_POST['notify_all_saves']) ?
-        PHPWS_Settings::set('rolodex', 'notify_all_saves', 1) :
-        PHPWS_Settings::set('rolodex', 'notify_all_saves', 0);
+            PHPWS_Settings::set('rolodex', 'notify_all_saves', 1) :
+            PHPWS_Settings::set('rolodex', 'notify_all_saves', 0);
 
         if (isset($_POST['admin_contact']) && ($_POST['admin_contact']) !== '') {
             if (PHPWS_Text::isValidInput($_POST['admin_contact'], 'email')) {
@@ -787,16 +787,16 @@ class Rolodex {
         }
 
         isset($_POST['use_categories']) ?
-        PHPWS_Settings::set('rolodex', 'use_categories', 1) :
-        PHPWS_Settings::set('rolodex', 'use_categories', 0);
+            PHPWS_Settings::set('rolodex', 'use_categories', 1) :
+            PHPWS_Settings::set('rolodex', 'use_categories', 0);
 
         isset($_POST['use_locations']) ?
-        PHPWS_Settings::set('rolodex', 'use_locations', 1) :
-        PHPWS_Settings::set('rolodex', 'use_locations', 0);
+            PHPWS_Settings::set('rolodex', 'use_locations', 1) :
+            PHPWS_Settings::set('rolodex', 'use_locations', 0);
 
         isset($_POST['use_features']) ?
-        PHPWS_Settings::set('rolodex', 'use_features', 1) :
-        PHPWS_Settings::set('rolodex', 'use_features', 0);
+            PHPWS_Settings::set('rolodex', 'use_features', 1) :
+            PHPWS_Settings::set('rolodex', 'use_features', 0);
 
         if (isset($_POST['comments_enable'])) {
             if (isset($_POST['comments_enforce'])) {
@@ -838,25 +838,25 @@ class Rolodex {
         PHPWS_Settings::set('rolodex', 'list_address', $_POST['list_address']);
 
         isset($_POST['list_phone']) ?
-        PHPWS_Settings::set('rolodex', 'list_phone', 1) :
-        PHPWS_Settings::set('rolodex', 'list_phone', 0);
+            PHPWS_Settings::set('rolodex', 'list_phone', 1) :
+            PHPWS_Settings::set('rolodex', 'list_phone', 0);
 
         isset($_POST['list_categories']) ?
-        PHPWS_Settings::set('rolodex', 'list_categories', 1) :
-        PHPWS_Settings::set('rolodex', 'list_categories', 0);
+            PHPWS_Settings::set('rolodex', 'list_categories', 1) :
+            PHPWS_Settings::set('rolodex', 'list_categories', 0);
 
         isset($_POST['list_locations']) ?
-        PHPWS_Settings::set('rolodex', 'list_locations', 1) :
-        PHPWS_Settings::set('rolodex', 'list_locations', 0);
+            PHPWS_Settings::set('rolodex', 'list_locations', 1) :
+            PHPWS_Settings::set('rolodex', 'list_locations', 0);
 
         isset($_POST['list_features']) ?
-        PHPWS_Settings::set('rolodex', 'list_features', 1) :
-        PHPWS_Settings::set('rolodex', 'list_features', 0);
+            PHPWS_Settings::set('rolodex', 'list_features', 1) :
+            PHPWS_Settings::set('rolodex', 'list_features', 0);
 
 
         isset($_POST['enable_expiry']) ?
-        PHPWS_Settings::set('rolodex', 'enable_expiry', 1) :
-        PHPWS_Settings::set('rolodex', 'enable_expiry', 0);
+            PHPWS_Settings::set('rolodex', 'enable_expiry', 1) :
+            PHPWS_Settings::set('rolodex', 'enable_expiry', 0);
 
         if (isset($_POST['expiry_interval'])) {
             PHPWS_Settings::set('rolodex', 'expiry_interval', (int)$_POST['expiry_interval']);
@@ -865,8 +865,8 @@ class Rolodex {
         }
 
         isset($_POST['use_captcha']) ?
-        PHPWS_Settings::set('rolodex', 'use_captcha', 1) :
-        PHPWS_Settings::set('rolodex', 'use_captcha', 0);
+            PHPWS_Settings::set('rolodex', 'use_captcha', 1) :
+            PHPWS_Settings::set('rolodex', 'use_captcha', 0);
 
         if ( !empty($_POST['max_img_width']) ) {
             $max_img_width = (int)$_POST['max_img_width'];
@@ -911,14 +911,14 @@ class Rolodex {
         }
 
         isset($_POST['show_block']) ?
-        PHPWS_Settings::set('rolodex', 'show_block', 1) :
-        PHPWS_Settings::set('rolodex', 'show_block', 0);
+            PHPWS_Settings::set('rolodex', 'show_block', 1) :
+            PHPWS_Settings::set('rolodex', 'show_block', 0);
 
         PHPWS_Settings::set('rolodex', 'block_order_by_rand', $_POST['block_order_by_rand']);
 
         isset($_POST['block_on_home_only']) ?
-        PHPWS_Settings::set('rolodex', 'block_on_home_only', 1) :
-        PHPWS_Settings::set('rolodex', 'block_on_home_only', 0);
+            PHPWS_Settings::set('rolodex', 'block_on_home_only', 1) :
+            PHPWS_Settings::set('rolodex', 'block_on_home_only', 0);
 
         if (!empty($_POST['custom1_name'])) {
             PHPWS_Settings::set('rolodex', 'custom1_name', PHPWS_Text::parseInput(strip_tags($_POST['custom1_name'])));
@@ -969,36 +969,36 @@ class Rolodex {
         }
 
         isset($_POST['custom1_list']) ?
-        PHPWS_Settings::set('rolodex', 'custom1_list', 1) :
-        PHPWS_Settings::set('rolodex', 'custom1_list', 0);
+            PHPWS_Settings::set('rolodex', 'custom1_list', 1) :
+            PHPWS_Settings::set('rolodex', 'custom1_list', 0);
 
         isset($_POST['custom2_list']) ?
-        PHPWS_Settings::set('rolodex', 'custom2_list', 1) :
-        PHPWS_Settings::set('rolodex', 'custom2_list', 0);
+            PHPWS_Settings::set('rolodex', 'custom2_list', 1) :
+            PHPWS_Settings::set('rolodex', 'custom2_list', 0);
 
         isset($_POST['custom3_list']) ?
-        PHPWS_Settings::set('rolodex', 'custom3_list', 1) :
-        PHPWS_Settings::set('rolodex', 'custom3_list', 0);
+            PHPWS_Settings::set('rolodex', 'custom3_list', 1) :
+            PHPWS_Settings::set('rolodex', 'custom3_list', 0);
 
         isset($_POST['custom4_list']) ?
-        PHPWS_Settings::set('rolodex', 'custom4_list', 1) :
-        PHPWS_Settings::set('rolodex', 'custom4_list', 0);
+            PHPWS_Settings::set('rolodex', 'custom4_list', 1) :
+            PHPWS_Settings::set('rolodex', 'custom4_list', 0);
 
         isset($_POST['custom5_list']) ?
-        PHPWS_Settings::set('rolodex', 'custom5_list', 1) :
-        PHPWS_Settings::set('rolodex', 'custom5_list', 0);
+            PHPWS_Settings::set('rolodex', 'custom5_list', 1) :
+            PHPWS_Settings::set('rolodex', 'custom5_list', 0);
 
         isset($_POST['custom6_list']) ?
-        PHPWS_Settings::set('rolodex', 'custom6_list', 1) :
-        PHPWS_Settings::set('rolodex', 'custom6_list', 0);
+            PHPWS_Settings::set('rolodex', 'custom6_list', 1) :
+            PHPWS_Settings::set('rolodex', 'custom6_list', 0);
 
         isset($_POST['custom7_list']) ?
-        PHPWS_Settings::set('rolodex', 'custom7_list', 1) :
-        PHPWS_Settings::set('rolodex', 'custom7_list', 0);
+            PHPWS_Settings::set('rolodex', 'custom7_list', 1) :
+            PHPWS_Settings::set('rolodex', 'custom7_list', 0);
 
         isset($_POST['custom8_list']) ?
-        PHPWS_Settings::set('rolodex', 'custom8_list', 1) :
-        PHPWS_Settings::set('rolodex', 'custom8_list', 0);
+            PHPWS_Settings::set('rolodex', 'custom8_list', 1) :
+            PHPWS_Settings::set('rolodex', 'custom8_list', 0);
 
 
         if (isset($errors)) {
@@ -1015,8 +1015,8 @@ class Rolodex {
     public function postMember()
     {
         $this->loadMember();
-        //        print_r($_POST); exit;
-
+//        print_r($_POST); exit;
+        
         if (isset($_POST['courtesy_title'])) {
             $this->member->setCourtesy_title($_POST['courtesy_title']);
         }
@@ -1372,7 +1372,7 @@ class Rolodex {
     function confirm()
     {
         if (!PHPWS_Settings::get('rolodex', 'use_captcha') ||
-        !extension_loaded('gd')) {
+            !extension_loaded('gd')) {
             return true;
         }
 
@@ -1685,7 +1685,7 @@ class Rolodex {
         }
 
         for ($i=$start;$i<=$end;$i++)
-        $ret_array[] = chr($i);
+            $ret_array[] = chr($i);
 
         return $ret_array;
     }
