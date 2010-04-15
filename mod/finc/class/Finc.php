@@ -153,11 +153,11 @@ class Finc {
                 $this->loadFile();
                 if ($this->file->active) {
                     if (PHPWS_Settings::get('finc', 'show_title'))
-                    $this->title = $this->file->getTitle(true);
+                        $this->title = $this->file->getTitle(true);
                     if (PHPWS_Settings::get('finc', 'add_title_tag'))
-                    Layout::addPageTitle($this->file->getTitle());
+                        Layout::addPageTitle($this->file->getTitle());
                     if (PHPWS_Settings::get('finc', 'show_description'))
-                    $this->description = $this->file->getDescription(true);
+                        $this->description = $this->file->getDescription(true);
                     $this->content = $this->file->getContents();
                 } else {
                     $this->title = dgettext('finc', 'Inactive File.');
@@ -302,16 +302,16 @@ class Finc {
     {
 
         isset($_POST['show_title']) ?
-        PHPWS_Settings::set('finc', 'show_title', 1) :
-        PHPWS_Settings::set('finc', 'show_title', 0);
+            PHPWS_Settings::set('finc', 'show_title', 1) :
+            PHPWS_Settings::set('finc', 'show_title', 0);
 
         isset($_POST['add_title_tag']) ?
-        PHPWS_Settings::set('finc', 'add_title_tag', 1) :
-        PHPWS_Settings::set('finc', 'add_title_tag', 0);
+            PHPWS_Settings::set('finc', 'add_title_tag', 1) :
+            PHPWS_Settings::set('finc', 'add_title_tag', 0);
 
         isset($_POST['show_description']) ?
-        PHPWS_Settings::set('finc', 'show_description', 1) :
-        PHPWS_Settings::set('finc', 'show_description', 0);
+            PHPWS_Settings::set('finc', 'show_description', 1) :
+            PHPWS_Settings::set('finc', 'show_description', 0);
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);

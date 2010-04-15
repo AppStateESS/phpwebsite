@@ -190,7 +190,7 @@ class Finc_File {
         $tpl['PATH'] = $this->getPath(true);
         $tpl['DESCRIPTION'] = $this->getListDescription(120);
         if($links)
-        $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
 
