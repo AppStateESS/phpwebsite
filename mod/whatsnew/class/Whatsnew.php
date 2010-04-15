@@ -174,12 +174,12 @@ class Whatsnew {
     {
 
         isset($_POST['enable']) ?
-        PHPWS_Settings::set('whatsnew', 'enable', 1) :
-        PHPWS_Settings::set('whatsnew', 'enable', 0);
+            PHPWS_Settings::set('whatsnew', 'enable', 1) :
+            PHPWS_Settings::set('whatsnew', 'enable', 0);
 
         isset($_POST['homeonly']) ?
-        PHPWS_Settings::set('whatsnew', 'homeonly', 1) :
-        PHPWS_Settings::set('whatsnew', 'homeonly', 0);
+            PHPWS_Settings::set('whatsnew', 'homeonly', 1) :
+            PHPWS_Settings::set('whatsnew', 'homeonly', 0);
 
         if (!empty($_POST['title'])) {
             PHPWS_Settings::set('whatsnew', 'title', strip_tags(PHPWS_Text::parseInput($_POST['title'])));
@@ -208,16 +208,16 @@ class Whatsnew {
         }
 
         isset($_POST['show_summaries']) ?
-        PHPWS_Settings::set('whatsnew', 'show_summaries', 1) :
-        PHPWS_Settings::set('whatsnew', 'show_summaries', 0);
+            PHPWS_Settings::set('whatsnew', 'show_summaries', 1) :
+            PHPWS_Settings::set('whatsnew', 'show_summaries', 0);
 
         isset($_POST['show_dates']) ?
-        PHPWS_Settings::set('whatsnew', 'show_dates', 1) :
-        PHPWS_Settings::set('whatsnew', 'show_dates', 0);
+            PHPWS_Settings::set('whatsnew', 'show_dates', 1) :
+            PHPWS_Settings::set('whatsnew', 'show_dates', 0);
 
         isset($_POST['show_source_modules']) ?
-        PHPWS_Settings::set('whatsnew', 'show_source_modules', 1) :
-        PHPWS_Settings::set('whatsnew', 'show_source_modules', 0);
+            PHPWS_Settings::set('whatsnew', 'show_source_modules', 1) :
+            PHPWS_Settings::set('whatsnew', 'show_source_modules', 0);
 
         if (isset($_POST['exclude'])) {
             PHPWS_Settings::set('whatsnew', 'exclude', $_POST['exclude']);
@@ -337,7 +337,7 @@ class Whatsnew {
         $db->addColumn('phpws_key.update_date');
         $db->addColumn('modules.title', null, 'module_title');
         $db->addColumn('modules.proper_name');
-        //        $db->setTestMode();
+//        $db->setTestMode();
         $result = $db->select();
 
         $tpl['TITLE'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('whatsnew', 'title'));
