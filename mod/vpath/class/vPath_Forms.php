@@ -94,6 +94,10 @@ class vPath_Forms {
         $form->setMatch('show_sub_menu', PHPWS_Settings::get('vpath', 'show_sub_menu'));
         $form->setLabel('show_sub_menu', dgettext('vpath', 'Display sub menu for current location'));
 
+        $form->addCheckbox('show_peer_menu', 1);
+        $form->setMatch('show_peer_menu', PHPWS_Settings::get('vpath', 'show_peer_menu'));
+        $form->setLabel('show_peer_menu', dgettext('vpath', 'Display peer menu if current location has no subs'));
+
         $form->addSubmit('save', dgettext('vpath', 'Save settings'));
 
         $tpl = $form->getTemplate();

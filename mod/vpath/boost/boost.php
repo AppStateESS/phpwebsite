@@ -23,7 +23,7 @@
  */
 
 $proper_name  = 'vPath';
-$version      = '1.0.3';
+$version      = '1.0.4';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/vpath/check.xml';
 $priority     = 50;
 $about        = true;

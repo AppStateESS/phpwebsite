@@ -1,1 +1,3 @@
-<div class="vpath">{PREFIX} {PATH} {SUFFIX}</div>
+<div class="vpath">
+<strong>{PREFIX}</strong> {PATH} {SUFFIX}
+</div>

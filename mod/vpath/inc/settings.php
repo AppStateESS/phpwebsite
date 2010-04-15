@@ -31,5 +31,6 @@ $settings['divider']        = 1;
 $settings['divider_space']  = 1;
 $settings['link_current']   = 0;
 $settings['show_sub_menu']  = 0;
+$settings['show_peer_menu'] = 0;
 
 ?>

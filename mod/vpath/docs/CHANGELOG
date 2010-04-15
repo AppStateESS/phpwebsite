@@ -1,3 +1,10 @@
+Version 1.0.4
+------------------------------------------------------
+February 5 2010
++ Added option to display peer menu for current location
+  when no sub/child items exist
++ Minor tweaks to path template
+
 Version 1.0.3
 ------------------------------------------------------
 December 7 2009

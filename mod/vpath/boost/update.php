@@ -58,14 +58,31 @@ function vpath_update(&$content, $currentVersion)
             $files = array( 'templates/edit_settings.tpl',
                         'templates/sub.tpl'
                         );
-                        vpathUpdateFiles($files, $content);
+            vpathUpdateFiles($files, $content);
 
-                        $content[] = '
+            $content[] = '
 1.0.3 changes
 ---------------------
 + Added option to display sub menu for current location
 </pre>';
 
+        case version_compare($currentVersion, '1.0.4', '<'):
+            $content[] = '<pre>';
+    
+            $files = array( 'templates/edit_settings.tpl', 
+                            'templates/path.tpl', 
+                            'templates/sub.tpl'
+            );
+            vpathUpdateFiles($files, $content);
+        
+            $content[] = '
+1.0.4 changes
+---------------------
++ Added option to display peer menu for current location
+  when no sub/child items exist
++ Minor tweaks to path template
+</pre>';
+        
 
 
     } // end switch

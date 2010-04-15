@@ -22,6 +22,17 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-$vpath_dividers = array (1=>'&raquo;', 2=>'/', 3=>'*', 4=>'&bull;', 5=>'&gt;', 6=>'&diams;', 7=>'&spades;', 8=>'&clubs;', 9=>'&hearts;');
+$vpath_dividers = array (   1=>'&raquo;', 
+                            2=>'/', 
+                            3=>'*', 
+                            4=>'&bull;', 
+                            5=>'&gt;', 
+                            6=>'&diams;', 
+                            7=>'&spades;', 
+                            8=>'&clubs;', 
+                            9=>'&hearts;', 
+                            10=>':', 
+                            11=>'::'
+                        );
 
 ?>
