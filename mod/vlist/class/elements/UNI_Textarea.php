@@ -71,9 +71,9 @@ class UNI_Textarea extends UNI_Element {
     function edit()
     {
         $numoptions = $this->numoptions;
-        $elements[0] =  PHPWS_Form::formHidden('module', 'vlist') .
-        PHPWS_Form::formHidden('aop', 'post_element') .
-        PHPWS_Form::formHidden('type', 'Textarea') ;
+        $elements[0] =  PHPWS_Form::formHidden('module', 'vlist') . 
+                        PHPWS_Form::formHidden('aop', 'post_element') . 
+                        PHPWS_Form::formHidden('type', 'Textarea') ;
         if ($this->id) {
             $elements[0] .=  PHPWS_Form::formHidden('id', $this->id) ;
         }
@@ -96,8 +96,8 @@ class UNI_Textarea extends UNI_Element {
         $tpl['SORT_INPUT'] = PHPWS_Form::formTextField('sort', $this->sort, 5, 3);
         $tpl['LIST_LABEL'] = dgettext('vlist', 'Use in list');
         $tpl['LIST_INPUT'] = PHPWS_Form::formCheckBox('list', 1, $this->list);
-        //        $tpl['SEARCH_LABEL'] = dgettext('vlist', 'Use in advanced search');
-        //        $tpl['SEARCH_INPUT'] = PHPWS_Form::formCheckBox('search', 1, $this->search);
+//        $tpl['SEARCH_LABEL'] = dgettext('vlist', 'Use in advanced search');
+//        $tpl['SEARCH_INPUT'] = PHPWS_Form::formCheckBox('search', 1, $this->search);
         $tpl['PRIVATE_LABEL'] = dgettext('vlist', 'Private (Internal use only)');
         $tpl['PRIVATE_INPUT'] = PHPWS_Form::formCheckBox('private', 1, $this->private);
 

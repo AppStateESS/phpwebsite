@@ -260,7 +260,7 @@ class vList_Listing {
                 }
 
                 $result = $db->select();
-                //print_r($result); //exit;
+//print_r($result); //exit;
                 /* if there's an item */
                 if ($result) {
                     $tpl['VALUE'] = null;
@@ -326,8 +326,12 @@ class vList_Listing {
             $tpl['GROUP_LINKS_LABEL'] = PHPWS_Settings::get('vlist', 'groups_title');
         }
         $tpl['DESCRIPTION'] = PHPWS_Text::parseTag($this->getDescription(true));
-        $tpl['FILE'] = $this->getFile();
-        $tpl['IMAGE'] = $this->getImage();
+        if (PHPWS_Settings::get('vlist', 'enable_files')) {
+            $tpl['FILE'] = $this->getFile();
+        }
+        if (PHPWS_Settings::get('vlist', 'enable_images')) {
+            $tpl['IMAGE'] = $this->getImage();
+        }
         if (PHPWS_Settings::get('vlist', 'enable_users') && (PHPWS_Settings::get('vlist', 'show_users') || Current_User::allow('vlist'))) {
             $tpl['USER'] = $this->ownerLink();
             $tpl['USER_LABEL'] = dgettext('vlist', 'Listed by, ');
@@ -364,7 +368,7 @@ class vList_Listing {
         $links = array_merge($links, vList::navLinks());
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
 
@@ -402,7 +406,7 @@ class vList_Listing {
         $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the listing %s?'), $this->getTitle());
         if ($icon) {
             $js['LINK'] = sprintf('<img src="%s/mod/vlist/img/delete.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
-            dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
+                                    dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
         } else {
             $js['LINK'] = dgettext('vlist', 'Delete');
         }
@@ -415,7 +419,7 @@ class vList_Listing {
 
         if ($icon) {
             $label = sprintf('<img src="%s/mod/vlist/img/edit.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
-            dgettext('vlist', 'Edit listing'), dgettext('vlist', 'Edit listing'));
+                                dgettext('vlist', 'Edit listing'), dgettext('vlist', 'Edit listing'));
         } elseif (empty($label)) {
             $label = dgettext('vlist', 'Edit');
         }
@@ -433,7 +437,7 @@ class vList_Listing {
             $vars['aop'] = 'unapprove_listing';
             if ($icon) {
                 $label = sprintf('<img src="%s/mod/vlist/img/approved.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
-                dgettext('vlist', 'Unapprove'), dgettext('vlist', 'Unapprove'));
+                                    dgettext('vlist', 'Unapprove'), dgettext('vlist', 'Unapprove'));
             } elseif (empty($label)) {
                 $label = dgettext('vlist', 'Unapprove');
             }
@@ -441,7 +445,7 @@ class vList_Listing {
             $vars['aop'] = 'approve_listing';
             if ($icon) {
                 $label = sprintf('<img src="%s/mod/vlist/img/unapproved.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
-                dgettext('vlist', 'Approve'), dgettext('vlist', 'Approve'));
+                                    dgettext('vlist', 'Approve'), dgettext('vlist', 'Approve'));
             } elseif (empty($label)) {
                 $label = dgettext('vlist', 'Approve');
             }
@@ -457,7 +461,7 @@ class vList_Listing {
             $vars['aop'] = 'deactivate_listing';
             if ($icon) {
                 $label = sprintf('<img src="%s/mod/vlist/img/active.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
-                dgettext('vlist', 'Deactivate'), dgettext('vlist', 'Deactivate'));
+                                    dgettext('vlist', 'Deactivate'), dgettext('vlist', 'Deactivate'));
             } elseif (empty($label)) {
                 $label = dgettext('vlist', 'Deactivate');
             }
@@ -465,7 +469,7 @@ class vList_Listing {
             $vars['aop'] = 'activate_listing';
             if ($icon) {
                 $label = sprintf('<img src="%s/mod/vlist/img/inactive.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
-                dgettext('vlist', 'Activate'), dgettext('vlist', 'Activate'));
+                                    dgettext('vlist', 'Activate'), dgettext('vlist', 'Activate'));
             } elseif (empty($label)) {
                 $label = dgettext('vlist', 'Activate');
             }
@@ -593,7 +597,7 @@ class vList_Listing {
                         }
 
                         if($value) {
-                            //                            $tpl['EXTRA_VALUES'][] = implode('<br />', $value);
+//                            $tpl['EXTRA_VALUES'][] = implode('<br />', $value);
                             $tpl['EXTRA_VALUES'] .= implode('<br />', $value);
                         }
                         $tpl['EXTRA_VALUES'] .= '</td>';
@@ -603,8 +607,8 @@ class vList_Listing {
         }
 
         if($links)
-        $tpl['ACTION'] = implode('  ', $links);
-        //print_r($tpl); //exit;
+            $tpl['ACTION'] = implode('  ', $links);
+//print_r($tpl); //exit;
         return $tpl;
     }
 
@@ -723,7 +727,7 @@ class vList_Listing {
             $db->addValue('group_id', (int)$item_id);
         }
         $db->addValue('listing_id', (int)$listing_id);
-        //print_r($db); exit;
+//print_r($db); exit;
         return $db->insert();
     }
 

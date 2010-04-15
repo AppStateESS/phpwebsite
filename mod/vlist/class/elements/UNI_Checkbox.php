@@ -82,9 +82,9 @@ class UNI_Checkbox extends UNI_Element {
     function edit()
     {
         $numoptions = $this->numoptions;
-        $elements[0] =  PHPWS_Form::formHidden('module', 'vlist') .
-        PHPWS_Form::formHidden('aop', 'post_element') .
-        PHPWS_Form::formHidden('type', 'Checkbox') ;
+        $elements[0] =  PHPWS_Form::formHidden('module', 'vlist') . 
+                        PHPWS_Form::formHidden('aop', 'post_element') . 
+                        PHPWS_Form::formHidden('type', 'Checkbox') ;
         if ($this->id) {
             $elements[0] .=  PHPWS_Form::formHidden('id', $this->id) ;
         }

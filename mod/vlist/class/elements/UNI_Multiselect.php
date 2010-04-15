@@ -83,9 +83,9 @@ class UNI_Multiselect extends UNI_Element {
     function edit()
     {
         $numoptions = $this->numoptions;
-        $elements[0] =  PHPWS_Form::formHidden('module', 'vlist') .
-        PHPWS_Form::formHidden('aop', 'post_element') .
-        PHPWS_Form::formHidden('type', 'Multiselect') ;
+        $elements[0] =  PHPWS_Form::formHidden('module', 'vlist') . 
+                        PHPWS_Form::formHidden('aop', 'post_element') . 
+                        PHPWS_Form::formHidden('type', 'Multiselect') ;
         if ($this->id) {
             $elements[0] .=  PHPWS_Form::formHidden('id', $this->id) ;
         }

@@ -170,10 +170,11 @@ class vList_Forms {
 
         /* unset the filters if a search is being done */
         /* need to add the extras here somehow maybe */
+        /* this is  not working because the actual var is $_REQUEST['pager_c_search'] */
         if (isset($_REQUEST['search']) && !empty($_REQUEST['search'])) {
             unset($_REQUEST['browseLetter']);
-            //            unset($_REQUEST['groups']);
-            //            unset($_REQUEST['owner']);
+//            unset($_REQUEST['groups']);
+//            unset($_REQUEST['owner']);
         }
 
         /* if the alpha click list is being used */
@@ -261,22 +262,29 @@ class vList_Forms {
                     }
                     /* unset the filters if a search is being done */
                     /* doesn't seem to be working not sure why */
-                    //                    if (isset($_REQUEST['search']) && !empty($_REQUEST['search'])) {
                     if (isset($_REQUEST['pager_c_search']) && !empty($_REQUEST['pager_c_search'])) {
                         if (isset($_REQUEST['UNI_' . $id])) {
                             unset($_REQUEST['UNI_' . $id . '%5B' . $_REQUEST['UNI_' . $id] . '%5D']);
                         }
                     }
                     if ($type == 'Checkbox' || $type == 'Dropbox' || $type == 'Multiselect' || $type == 'Radiobutton') {
-                        //print_r($_REQUEST['UNI_' . $id]);
-
+//print_r($_REQUEST['UNI_' . $id]);
+                        
                         if (isset($_REQUEST['UNI_' . $id])) {
                             foreach ($_REQUEST['UNI_' . $id] as $option) {
                                 $all_options[$id][] = $option;
                             }
                         }
 
-                    } else {
+                    } 
+/* ** not using this anymore
+      interferes with pager search and
+      we have disabled text fields in advanced search anyways
+      if I want to bring it back (and text fields on adv search)
+      I would need to build an aray here instead and then append it 
+      to an array of the basics below, and send all that to $pager->setSearch()
+      the thing is $pager->setSearch() is a one time deal and not cummulative
+                    else {
                         if (isset($_REQUEST['pager_c_search']) && $_REQUEST['pager_c_search'] !== '') {
                             $pager->db->addColumn('vlist_element_items.*');
                             $pager->db->addWhere('vlist_listing.id', 'vlist_element_items.listing_id');
@@ -284,6 +292,7 @@ class vList_Forms {
                             $pager->setSearch('vlist_element_items.value', 'vlist_listing.title', 'vlist_listing.description');
                         }
                     }
+*/
                 }
 
                 if (!empty($all_options)) {
@@ -352,9 +361,9 @@ class vList_Forms {
         $pager->addPageTags($ptags);
         $pager->addToggle('class="toggle1"');
         $pager->setSearch('vlist_listing.title', 'vlist_listing.description');
-        //        $pager->cacheQueries();
-        // $pager->db->setTestMode();
-        // print_r($ptags); //exit();
+//        $pager->cacheQueries();
+// $pager->db->setTestMode();
+// print_r($ptags); //exit();
         $this->vlist->content = $pager->get();
 
         /* set the list/page title */
@@ -485,8 +494,8 @@ class vList_Forms {
         $form->setLabel('title', dgettext('vlist', 'Title'));
 
         if (isset($_REQUEST['uop']) && $_REQUEST['uop'] == 'submit_listing') {
-            //            $form->addHidden('approved', null);
-            //            $form->addHidden('active', null);
+//            $form->addHidden('approved', null);
+//            $form->addHidden('active', null);
         } else {
             $form->addCheckbox('approved', 1);
             $form->setMatch('approved', $listing->approved);
@@ -780,7 +789,7 @@ class vList_Forms {
                 $db->addWhere('element_id', $id);
                 $db->addWhere('listing_id', $listing->id);
                 $result = $db->select();
-                //print_r($result); exit;
+//print_r($result); exit;
                 if ($result) {
                     $match = array();
                     if ($type == 'Checkbox' || $type == 'Multiselect') {

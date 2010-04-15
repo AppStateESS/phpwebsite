@@ -1,2 +1,1 @@
-{FIELD}
-<br />
+{FIELD}<br />

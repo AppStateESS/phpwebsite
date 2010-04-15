@@ -24,19 +24,19 @@
 
 function vlist_update(&$content, $currentVersion)
 {
-    //    $home_dir = PHPWS_Boost::getHomeDir();
+//    $home_dir = PHPWS_Boost::getHomeDir();
     switch ($currentVersion) {
 
         case version_compare($currentVersion, '1.0.1', '<'):
             $content[] = '<pre>';
 
             $files = array('templates/block.tpl',
-            //                            'templates/set_status.tpl',
+//                            'templates/set_status.tpl',
                             'templates/edit_settings.tpl'
                             );
-                            vlistUpdateFiles($files, $content);
+            vlistUpdateFiles($files, $content);
 
-                            $content[] = '1.0.1 changes
+            $content[] = '1.0.1 changes
 ----------------
 + Added setting for default sort order
 + Added setting for default sort order
@@ -74,9 +74,9 @@ function vlist_update(&$content, $currentVersion)
                             'img/unlocked.png', 
                             'templates/edit_settings.tpl'
                             );
-                            vlistUpdateFiles($files, $content);
+            vlistUpdateFiles($files, $content);
 
-                            $content[] = '1.0.2 changes
+            $content[] = '1.0.2 changes
 ----------------
 + Added setting for internal only fields
 + Added setting for user profile privacy
@@ -103,9 +103,9 @@ function vlist_update(&$content, $currentVersion)
                                 'img/unapproved.png', 
                                 'templates/edit_listing.tpl'
                                 );
-                                vlistUpdateFiles($files, $content);
+                vlistUpdateFiles($files, $content);
 
-                                $content[] = '1.0.3 changes
+                $content[] = '1.0.3 changes
 ----------------
 + Fixed bug I introduced in 1.0.2 that prevented editing values
   in custom field setup

@@ -1,3 +1,10 @@
+Version 1.0.4 -- Aug-Oct 2009
+------------------------------------------------------------------
++ Fixed search in list bug
++ Fixed images and files from showing, if setting is changed to no
+  after having been yes and files/images attached
+
+
 Version 1.0.3 -- Aug 2009
 ------------------------------------------------------------------
 + Fixed bug I introduced in 1.0.2 that prevented editing values

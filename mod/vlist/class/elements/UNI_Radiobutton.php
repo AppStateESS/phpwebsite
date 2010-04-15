@@ -83,9 +83,9 @@ class UNI_Radiobutton extends UNI_Element {
     function edit()
     {
         $numoptions = $this->numoptions;
-        $elements[0] =  PHPWS_Form::formHidden('module', 'vlist') .
-        PHPWS_Form::formHidden('aop', 'post_element') .
-        PHPWS_Form::formHidden('type', 'Radiobutton') ;
+        $elements[0] =  PHPWS_Form::formHidden('module', 'vlist') . 
+                        PHPWS_Form::formHidden('aop', 'post_element') . 
+                        PHPWS_Form::formHidden('type', 'Radiobutton') ;
         if ($this->id) {
             $elements[0] .=  PHPWS_Form::formHidden('id', $this->id) ;
         }

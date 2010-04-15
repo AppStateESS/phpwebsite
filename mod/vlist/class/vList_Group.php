@@ -105,7 +105,7 @@ class vList_Group {
         if (empty($this->description)) {
             return '';
         }
-        //        return substr(ltrim(strip_tags(str_replace('<br />', ' ', $this->getDescription(true)))), 0, $length) . ' ...';
+//        return substr(ltrim(strip_tags(str_replace('<br />', ' ', $this->getDescription(true)))), 0, $length) . ' ...';
         return substr(ltrim(str_replace('<br />', ' ', $this->getDescription(true))), 0, $length) . ' ...';
     }
 
@@ -172,7 +172,7 @@ class vList_Group {
         $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the group %s?'), $this->getTitle());
         if ($icon) {
             $js['LINK'] = sprintf('<img src="%smod/vlist/img/delete.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
-            dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
+                                    dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
         } else {
             $js['LINK'] = dgettext('vlist', 'Delete');
         }
@@ -185,7 +185,7 @@ class vList_Group {
 
         if ($icon) {
             $label = sprintf('<img src="%smod/vlist/img/edit.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
-            dgettext('vlist', 'Edit group'), dgettext('vlist', 'Edit group'));
+                                dgettext('vlist', 'Edit group'), dgettext('vlist', 'Edit group'));
         } elseif (empty($label)) {
             $label = dgettext('vlist', 'Edit');
         }
@@ -225,7 +225,7 @@ class vList_Group {
         $tpl['DESCRIPTION'] = $this->getListDescription(120);
         $tpl['THUMB'] = $this->getThumbnail(true);
         if($links)
-        $tpl['ACTION'] = implode(' ', $links);
+            $tpl['ACTION'] = implode(' ', $links);
         return $tpl;
     }
 
@@ -242,7 +242,7 @@ class vList_Group {
         $links = array_merge($links, vList::navLinks());
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
 

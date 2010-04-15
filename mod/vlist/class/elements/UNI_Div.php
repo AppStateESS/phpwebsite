@@ -55,9 +55,9 @@ class UNI_Div extends UNI_Element {
 
     function edit()
     {
-        $elements[0] =  PHPWS_Form::formHidden('module', 'vlist') .
-        PHPWS_Form::formHidden('aop', 'post_element') .
-        PHPWS_Form::formHidden('type', 'Div') ;
+        $elements[0] =  PHPWS_Form::formHidden('module', 'vlist') . 
+                        PHPWS_Form::formHidden('aop', 'post_element') . 
+                        PHPWS_Form::formHidden('type', 'Div') ;
         if ($this->id) {
             $elements[0] .=  PHPWS_Form::formHidden('id', $this->id) ;
         }

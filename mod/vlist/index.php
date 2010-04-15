@@ -40,7 +40,7 @@ if (isset($_REQUEST['aop'])) {
     $vlist->userMenu('view_listing');
 } else {
     PHPWS_Core::home();
-    //    $vlist->userMenu('listings');
+//    $vlist->userMenu('listings');
 }
 
 
