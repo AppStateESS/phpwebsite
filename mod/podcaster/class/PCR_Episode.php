@@ -332,13 +332,13 @@ class Podcaster_Episode {
         $key->setItemId($this->id);
         $key->setEditPermission('edit_episode');
         $key->setUrl($this->viewLink(true));
-        /*
-         if (MOD_REWRITE_ENABLED) {
-         $key->setUrl('podcaster/' . $this->channel_id . '/' . $this->id);
-         } else {
-         $key->setUrl('index.php?module=podcaster&amp;uop=view_episode&amp;episode_id=' . $this->id);
-         }
-         */
+/*
+        if (MOD_REWRITE_ENABLED) {
+            $key->setUrl('podcaster/' . $this->channel_id . '/' . $this->id);
+        } else {
+            $key->setUrl('index.php?module=podcaster&amp;uop=view_episode&amp;episode_id=' . $this->id);
+        }
+*/
         if ($this->approved) {
             $key->active = (int)$this->active;
         } else {
@@ -385,7 +385,7 @@ class Podcaster_Episode {
             $links[] = $active;
         } else {
             if (Current_User::allow('podcaster'))
-            $links[] = $this->active ? dgettext('podcaster', 'Active') : dgettext('podcaster', 'Not Active');
+                $links[] = $this->active ? dgettext('podcaster', 'Active') : dgettext('podcaster', 'Not Active');
         }
 
         if (Current_User::isUnrestricted('podcaster')) {
@@ -399,7 +399,7 @@ class Podcaster_Episode {
             $links[] = $approved;
         } else {
             if (Current_User::allow('podcaster'))
-            $links[] = $this->approved ? dgettext('podcaster', 'Approved') : dgettext('podcaster', 'Not Approved');
+                $links[] = $this->approved ? dgettext('podcaster', 'Approved') : dgettext('podcaster', 'Not Approved');
         }
 
         if (Current_User::allow('podcaster', 'delete_episode')){
@@ -411,7 +411,7 @@ class Podcaster_Episode {
         }
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
 

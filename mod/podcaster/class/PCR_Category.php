@@ -139,7 +139,7 @@ class Podcaster_Category {
             $links[] = $active;
         } else {
             if (Current_User::allow('podcaster'))
-            $links[] = $this->active ? dgettext('podcaster', 'Active') : dgettext('podcaster', 'Not Active');
+                $links[] = $this->active ? dgettext('podcaster', 'Active') : dgettext('podcaster', 'Not Active');
         }
 
         if (Current_User::allow('podcaster', 'delete_channel')){
@@ -154,7 +154,7 @@ class Podcaster_Category {
         $tpl['DATE_UPDATED'] = $this->getDateUpdated();
         $tpl['DESCRIPTION'] = $this->getListDescription(120);
         if($links)
-        $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
 

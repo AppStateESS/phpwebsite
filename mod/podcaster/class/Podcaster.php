@@ -126,7 +126,7 @@ class Podcaster {
                         } else {
                             $this->forwardMessage(dgettext('podcaster', 'Episode saved successfully.'));
                         }
-                        //                    PHPWS_Core::reroute('index.php?module=podcaster&aop=edit_episode&id=' . $this->channel->id);
+//                        PHPWS_Core::reroute('index.php?module=podcaster&aop=edit_episode&id=' . $this->channel->id);
                         PHPWS_Core::reroute('index.php?module=podcaster&uop=view_channel&id=' . $this->channel->id);
                     }
                 } else {
@@ -529,18 +529,18 @@ class Podcaster {
         }
 
         isset($_POST['show_block']) ?
-        PHPWS_Settings::set('podcaster', 'show_block', 1) :
-        PHPWS_Settings::set('podcaster', 'show_block', 0);
+            PHPWS_Settings::set('podcaster', 'show_block', 1) :
+            PHPWS_Settings::set('podcaster', 'show_block', 0);
 
         isset($_POST['req_approval']) ?
-        PHPWS_Settings::set('podcaster', 'req_approval', 1) :
-        PHPWS_Settings::set('podcaster', 'req_approval', 0);
+            PHPWS_Settings::set('podcaster', 'req_approval', 1) :
+            PHPWS_Settings::set('podcaster', 'req_approval', 0);
 
         PHPWS_Settings::set('podcaster', 'block_order_by_rand', $_POST['block_order_by_rand']);
 
         isset($_POST['block_on_home_only']) ?
-        PHPWS_Settings::set('podcaster', 'block_on_home_only', 1) :
-        PHPWS_Settings::set('podcaster', 'block_on_home_only', 0);
+            PHPWS_Settings::set('podcaster', 'block_on_home_only', 1) :
+            PHPWS_Settings::set('podcaster', 'block_on_home_only', 0);
 
 
         if (!empty($_POST['editor'])) {
@@ -568,14 +568,14 @@ class Podcaster {
         }
 
         isset($_POST['rm_media']) ?
-        PHPWS_Settings::set('podcaster', 'rm_media', 1) :
-        PHPWS_Settings::set('podcaster', 'rm_media', 0);
+            PHPWS_Settings::set('podcaster', 'rm_media', 1) :
+            PHPWS_Settings::set('podcaster', 'rm_media', 0);
 
 
 
         isset($_POST['mod_folders_only']) ?
-        PHPWS_Settings::set('podcaster', 'mod_folders_only', 1) :
-        PHPWS_Settings::set('podcaster', 'mod_folders_only', 0);
+            PHPWS_Settings::set('podcaster', 'mod_folders_only', 1) :
+            PHPWS_Settings::set('podcaster', 'mod_folders_only', 0);
 
         if ( !empty($_POST['max_width']) ) {
             $max_width = (int)$_POST['max_width'];
@@ -615,7 +615,7 @@ class Podcaster {
         }
 
         $this->content = PHPWS_Text::secureLink(dgettext('podcaster', 'Return to channel page'), 'podcaster',
-        array('id'=>$this->channel->id, 'uop'=>'view_channel'));
+                                                array('id'=>$this->channel->id, 'uop'=>'view_channel'));
 
     }
 }

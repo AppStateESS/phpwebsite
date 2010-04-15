@@ -46,9 +46,9 @@ function podcaster_update(&$content, $currentVersion)
                        'templates/list_episode_channel.tpl',
                        'templates/list_channel.tpl'
                        );
-                       podcasterUpdateFiles($files, $content);
+            podcasterUpdateFiles($files, $content);
 
-                       $content[] = '1.0.2 changes
+            $content[] = '1.0.2 changes
 ----------------
 + Added paged archive view
 + Fixed paged channel list
@@ -88,9 +88,9 @@ function podcaster_update(&$content, $currentVersion)
                        'img/rss_sm.png',
                        'conf/config.php'
                        );
-                       podcasterUpdateFiles($files, $content);
+            podcasterUpdateFiles($files, $content);
 
-                       $content[] = '1.0.4 changes
+            $content[] = '1.0.4 changes
 ----------------
 + Updated documentation
 + Got channel rss caching working (needs updated /core/class/cache.php)
@@ -116,9 +116,9 @@ function podcaster_update(&$content, $currentVersion)
                 $files = array('templates/edit_channel.tpl',
                            'templates/info.tpl'
                            );
-                           podcasterUpdateFiles($files, $content);
+                podcasterUpdateFiles($files, $content);
 
-                           $content[] = '1.0.5 changes
+                $content[] = '1.0.5 changes
 ----------------
 + Added database table and class for iTunes categories
 + Improved iTunes categories functions in channel and form class
@@ -148,22 +148,22 @@ function podcaster_update(&$content, $currentVersion)
                            'templates/view_rss.tpl',
                            'templates/info.tpl'
                            );
-                           podcasterUpdateFiles($files, $content);
-                           PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
-                           if (Cabinet::convertImagesToFileAssoc('podcaster_channel', 'image_id')) {
-                               $content[] = '--- Converted channel images to new File Cabinet format.';
-                           } else {
-                               $content[] = '--- Could not convert channel images to new File Cabinet format.</pre>';
-                               return false;
-                           }
-                           if (Cabinet::convertMediaToFileAssoc('podcaster_episode', 'media_id')) {
-                               $content[] = '--- Converted episode media to new File Cabinet format.';
-                           } else {
-                               $content[] = '--- Could not convert episode media to new File Cabinet format.</pre>';
-                               return false;
-                           }
+                podcasterUpdateFiles($files, $content);
+                PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+                if (Cabinet::convertImagesToFileAssoc('podcaster_channel', 'image_id')) {
+                    $content[] = '--- Converted channel images to new File Cabinet format.';
+                } else {
+                    $content[] = '--- Could not convert channel images to new File Cabinet format.</pre>';
+                    return false;
+                }
+                if (Cabinet::convertMediaToFileAssoc('podcaster_episode', 'media_id')) {
+                    $content[] = '--- Converted episode media to new File Cabinet format.';
+                } else {
+                    $content[] = '--- Could not convert episode media to new File Cabinet format.</pre>';
+                    return false;
+                }
 
-                           $content[] = '
+                $content[] = '
 1.1.0 changes
 ----------------
 + Added support for File Cabinet 2.0 features

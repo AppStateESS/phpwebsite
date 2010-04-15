@@ -279,7 +279,7 @@ class Podcaster_Forms {
             $this->podcaster->title = dgettext('podcaster', 'All Podcaster Episodes');
         }
 
-        //        $pager->db->setTestMode();
+//        $pager->db->setTestMode();
         $this->podcaster->content = $pager->get();
     }
 

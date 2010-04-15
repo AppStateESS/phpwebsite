@@ -1,3 +1,1 @@
-{TITLE}
-<br />
-<span class="smaller">{PUBLISHER}</span>
+{TITLE}<br /><span class="smaller">{PUBLISHER}</span>
