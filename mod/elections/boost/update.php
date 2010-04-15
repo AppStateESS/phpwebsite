@@ -35,9 +35,9 @@ function elections_update(&$content, $currentVersion)
                        'templates/view_ballot.tpl', 
                        'templates/list_ballots.tpl'
                        );
-                       electionsUpdateFiles($files, $content);
+            electionsUpdateFiles($files, $content);
 
-                       $content[] = '2.0.1 changes
+            $content[] = '2.0.1 changes
 ----------------
 + Fixed duplicate error when editing candidates
 + Fixed saving image/file with candidate and ballot

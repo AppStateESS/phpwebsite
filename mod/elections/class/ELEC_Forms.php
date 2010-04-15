@@ -569,8 +569,8 @@ class Elections_Forms {
         $db->addColumn('id');
         $db->addColumn('title');
         $result = $db->getObjects('Elections_Ballot');
-        //        print_r($result); exit;
-
+//        print_r($result); exit;
+        
         return $result;
     }
 

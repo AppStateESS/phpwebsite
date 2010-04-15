@@ -137,7 +137,7 @@ class Election {
                 if (!Current_User::authorized('elections')) {
                     Current_User::disallow();
                 }
-                //            print_r($_REQUEST); exit;
+//            print_r($_REQUEST); exit;
                 if (isset($_REQUEST['get_results'])) {
                     $this->exportCSV('results', $_REQUEST['results_ballot']);
                 } elseif (isset($_REQUEST['list_results'])) {
@@ -158,11 +158,11 @@ class Election {
                     $this->forms->election = & $this;
                     $this->forms->listVotes($_REQUEST['votes_ballot']);
                 } elseif (isset($_REQUEST['purge_votes'])) {
-                    //            print_r($_REQUEST); exit;
+//            print_r($_REQUEST); exit;
                     if ($this->purgeVotes($_REQUEST['votes_ballot'])) {
                         $this->forwardMessage(dgettext('elections', 'Logs successfully purged.'));
                         $this->loadForm('reports');
-                        //                        PHPWS_Core::reroute('index.php?module=elections&aop=menu&tab=reports');
+//                        PHPWS_Core::reroute('index.php?module=elections&aop=menu&tab=reports');
                     } else {
                         $this->forwardMessage(dgettext('elections', 'Error occurred when purging logs.'));
                         $this->loadForm('reports');
@@ -379,8 +379,8 @@ class Election {
                                   'link'=>$link);
             $tags['new_candidate'] = array('title'=>dgettext('elections', 'New Candidate'),
                                  'link'=>$link);
-            //            $tags['list_candidates'] = array('title'=>dgettext('elections', 'Candidates'),
-            //                                  'link'=>$link);
+//            $tags['list_candidates'] = array('title'=>dgettext('elections', 'Candidates'),
+//                                  'link'=>$link);
             $tags['reports'] = array('title'=>dgettext('elections', 'Reports'),
                                   'link'=>$link);
             $tags['settings'] = array('title'=>dgettext('elections', 'Settings'),
@@ -415,24 +415,24 @@ class Election {
         }
 
         isset($_POST['pubview']) ?
-        $this->ballot->setPubview(1) :
-        $this->ballot->setPubview(0);
+            $this->ballot->setPubview(1) :
+            $this->ballot->setPubview(0);
 
         isset($_POST['pubvote']) ?
-        $this->ballot->setPubvote(1) :
-        $this->ballot->setPubvote(0);
+            $this->ballot->setPubvote(1) :
+            $this->ballot->setPubvote(0);
 
         isset($_POST['show_in_block']) ?
-        $this->ballot->setShow_in_block(1) :
-        $this->ballot->setShow_in_block(0);
+            $this->ballot->setShow_in_block(1) :
+            $this->ballot->setShow_in_block(0);
 
         $this->ballot->setMinchoice($_POST['minchoice']);
 
         $this->ballot->setMaxchoice($_POST['maxchoice']);
 
         isset($_POST['ranking']) ?
-        $this->ballot->setRanking(1) :
-        $this->ballot->setRanking(0);
+            $this->ballot->setRanking(1) :
+            $this->ballot->setRanking(0);
 
         if (isset($_POST['votegroups'])) {
             $this->ballot->setVotegroups($_POST['votegroups']);
@@ -536,16 +536,16 @@ class Election {
     {
 
         isset($_POST['enable_elections']) ?
-        PHPWS_Settings::set('elections', 'enable_elections', 1) :
-        PHPWS_Settings::set('elections', 'enable_elections', 0);
+            PHPWS_Settings::set('elections', 'enable_elections', 1) :
+            PHPWS_Settings::set('elections', 'enable_elections', 0);
 
         isset($_POST['enable_sidebox']) ?
-        PHPWS_Settings::set('elections', 'enable_sidebox', 1) :
-        PHPWS_Settings::set('elections', 'enable_sidebox', 0);
+            PHPWS_Settings::set('elections', 'enable_sidebox', 1) :
+            PHPWS_Settings::set('elections', 'enable_sidebox', 0);
 
         isset($_POST['sidebox_homeonly']) ?
-        PHPWS_Settings::set('elections', 'sidebox_homeonly', 1) :
-        PHPWS_Settings::set('elections', 'sidebox_homeonly', 0);
+            PHPWS_Settings::set('elections', 'sidebox_homeonly', 1) :
+            PHPWS_Settings::set('elections', 'sidebox_homeonly', 0);
 
         if (!empty($_POST['title'])) {
             PHPWS_Settings::set('elections', 'title', strip_tags(PHPWS_Text::parseInput($_POST['title'])));
@@ -600,20 +600,20 @@ class Election {
     {
         $this->loadVote();
 
-        //print_r($_POST['Candidate_Vote']); exit;
+//print_r($_POST['Candidate_Vote']); exit;
 
         /* make sure of at least 1 vote */
         if (!isset ($_POST['Candidate_Vote']) || !is_array($_POST['Candidate_Vote']) || array_sum($_POST['Candidate_Vote']) < $this->ballot->minchoice) {
             $errors[] = sprintf(dgettext('elections', 'VOTING ERROR: You must make at least %s selection(s). Please try again.'), $this->ballot->minchoice);
 
-            /* make sure there's not too many */
+        /* make sure there's not too many */
         } elseif (array_sum($_POST['Candidate_Vote']) > $this->ballot->maxchoice) {
             $errors[] = sprintf(dgettext('elections', 'VOTING ERROR: You are only allowed to make %s selections. Please try again.'), $this->ballot->maxchoice);
 
-            /* OK good to go */
+        /* OK good to go */
         } else {
 
-            //print_r($_POST['Candidate_Vote']); exit;
+//print_r($_POST['Candidate_Vote']); exit;
 
             PHPWS_Core::initModClass('elections', 'ELEC_Candidate.php');
             /* loop through the Candidate_Vote[] array */
@@ -639,17 +639,17 @@ class Election {
 
 
             /* set a cookie for public elections */
-            //			if ($this->pubvote) {
-            $cookieName = "BALLOT_" . $_POST['ballot_id'];
-            $value = $_POST['ballot_id'];
-            setcookie($cookieName, $value, time()+31536000);
-            //			}
+//			if ($this->pubvote) {
+                $cookieName = "BALLOT_" . $_POST['ballot_id'];
+                $value = $_POST['ballot_id'];
+                setcookie($cookieName, $value, time()+31536000);
+//			}
         }
 
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
-            //            $this->userMenu('view_ballot');
+//            $this->userMenu('view_ballot');
             return false;
         } else {
             $this->message = implode('<br />', $msgs);

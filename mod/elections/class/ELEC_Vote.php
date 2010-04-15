@@ -115,7 +115,7 @@ class Elections_Vote {
         }
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
 
@@ -149,7 +149,7 @@ class Elections_Vote {
         $tpl['DATE'] = $this->getVotedate('%H:%M %D');
         $tpl['IP'] = $this->ip;
         if($links)
-        $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }

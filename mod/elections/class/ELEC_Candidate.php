@@ -25,7 +25,7 @@
 class Elections_Candidate {
 
     public $id             = 0;
-    //    public $key_id         = 0;
+//    public $key_id         = 0;
     public $ballot_id      = 0;
     public $title          = null;
     public $description    = null;
@@ -274,11 +274,11 @@ class Elections_Candidate {
             PHPWS_Core::errorPage(404);
         }
 
-        //        $key = new Key($this->key_id);
+//        $key = new Key($this->key_id);
 
-        //        if (!$key->allowView()) {
-        //            Current_User::requireLogin();
-        //        }
+//        if (!$key->allowView()) {
+//            Current_User::requireLogin();
+//        }
 
         $tpl = $this->getCustoms();
         $tpl['CANDIDATE_LINKS'] = $this->candidateLinks();
@@ -290,7 +290,7 @@ class Elections_Candidate {
 
 
 
-        //        $key->flag();
+//        $key->flag();
 
         return PHPWS_Template::process($tpl, 'elections', 'view_candidate.tpl');
     }
@@ -314,7 +314,7 @@ class Elections_Candidate {
         }
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
 
@@ -329,7 +329,7 @@ class Elections_Candidate {
         $db->addWhere('id', $this->id);
         PHPWS_Error::logIfError($db->delete());
 
-        //        Key::drop($this->key_id);
+//        Key::drop($this->key_id);
 
     }
 
@@ -354,7 +354,7 @@ class Elections_Candidate {
         $tpl['BALLOT'] = $this->getBallot(true);
         $tpl['VOTES'] = $this->getVotes();
         if($links)
-        $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
 
@@ -387,7 +387,7 @@ class Elections_Candidate {
             return $result;
         }
 
-        //        $this->saveKey();
+//        $this->saveKey();
 
     }
 
@@ -511,22 +511,22 @@ class Elections_Candidate {
         $content .= '"' . dgettext('elections', 'Title') . '",';
         $content .= '"' . dgettext('elections', 'Votes') . '",';
 
-        /*  think about this in multi-ballot exports, could be messy
-         PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
-         $ballot = new Elections_Ballot($this->ballot_id);
-         if ($ballot->custom1label) {
-         $content .= '"' . $ballot->getCustom1label(true) . '",';
-         }
-         if ($ballot->custom2label) {
-         $content .= '"' . $ballot->getCustom2label(true) . '",';
-         }
-         if ($ballot->custom3label) {
-         $content .= '"' . $ballot->getCustom3label(true) . '",';
-         }
-         if ($ballot->custom4label) {
-         $content .= '"' . $ballot->getCustom4label(true) . '",';
-         }
-         */
+/*  think about this in multi-ballot exports, could be messy
+        PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
+        $ballot = new Elections_Ballot($this->ballot_id);
+        if ($ballot->custom1label) {
+            $content .= '"' . $ballot->getCustom1label(true) . '",';
+        }
+        if ($ballot->custom2label) {
+            $content .= '"' . $ballot->getCustom2label(true) . '",';
+        }
+        if ($ballot->custom3label) {
+            $content .= '"' . $ballot->getCustom3label(true) . '",';
+        }
+        if ($ballot->custom4label) {
+            $content .= '"' . $ballot->getCustom4label(true) . '",';
+        }
+*/
 
         $content .= '"' . dgettext('elections', 'Description') . '"';
 
@@ -544,22 +544,22 @@ class Elections_Candidate {
         $content .= '"' . $this->getTitle(true) . '",';
         $content .= '"' . $this->votes . '",';
 
-        /*  think about this in multi-ballot exports, could be messy
-         PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
-         $ballot = new Elections_Ballot($this->ballot_id);
-         if ($ballot->custom1label) {
-         $content .= '"' . $this->getCustom1(true) . '",';
-         }
-         if ($ballot->custom2label) {
-         $content .= '"' . $this->getCustom2(true) . '",';
-         }
-         if ($ballot->custom3label) {
-         $content .= '"' . $this->getCustom3(true) . '",';
-         }
-         if ($ballot->custom4label) {
-         $content .= '"' . $this->getCustom4(true) . '",';
-         }
-         */
+/*  think about this in multi-ballot exports, could be messy
+        PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
+        $ballot = new Elections_Ballot($this->ballot_id);
+        if ($ballot->custom1label) {
+            $content .= '"' . $this->getCustom1(true) . '",';
+        }
+        if ($ballot->custom2label) {
+            $content .= '"' . $this->getCustom2(true) . '",';
+        }
+        if ($ballot->custom3label) {
+            $content .= '"' . $this->getCustom3(true) . '",';
+        }
+        if ($ballot->custom4label) {
+            $content .= '"' . $this->getCustom4(true) . '",';
+        }
+*/
 
         $content .= '"' . $this->stripLF($this->getDescription(true)) . '"';
 

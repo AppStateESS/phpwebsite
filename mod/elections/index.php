@@ -45,7 +45,7 @@ if (isset($_REQUEST['aop'])) {
 } elseif (isset($_REQUEST['candidate'])) {
     $election->userMenu('view_candidate');
 } else {
-    //    PHPWS_Core::home();
+//    PHPWS_Core::home();
     $election->userMenu('list_ballots');
 }
 

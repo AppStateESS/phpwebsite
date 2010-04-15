@@ -408,7 +408,7 @@ class Elections_Ballot {
             }
         } else {
             if (Current_User::allow('elections'))
-            $tpl['EMPTY'] = dgettext('elections', 'Click on "New candidate" to start.');
+                $tpl['EMPTY'] = dgettext('elections', 'Click on "New candidate" to start.');
         }
 
         $key->flag();
@@ -470,7 +470,7 @@ class Elections_Ballot {
         }
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
 
@@ -525,8 +525,8 @@ class Elections_Ballot {
         } else {
             $tpl['THUMBNAIL'] = null;
         }
-        //        $tpl['OPENS'] = $this->getOpening('%H:%M %a, %b %d, %y');
-        //        $tpl['CLOSES'] = $this->getClosing('%H:%M %a, %b %d, %y');
+//        $tpl['OPENS'] = $this->getOpening('%H:%M %a, %b %d, %y');
+//        $tpl['CLOSES'] = $this->getClosing('%H:%M %a, %b %d, %y');
         $tpl['OPENS'] = $this->getOpening('%H:%M %D');
         $tpl['CLOSES'] = $this->getClosing('%H:%M %D');
         $tpl['CANDIDATES'] = $this->getQtyCandidates();
@@ -534,7 +534,7 @@ class Elections_Ballot {
             $tpl['VOTES'] = $this->getVotes();
         }
         if($links)
-        $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
 
@@ -625,36 +625,36 @@ class Elections_Ballot {
                     /* check to see if public is allowed */
                     if ($this->pubvote) {
                         $msg = '1';
-                        /* if it's not are they logged in */
+                    /* if it's not are they logged in */
                     } elseif (isset($_SESSION['User']->username)) {
                         /* is there a group restriction */
                         if (isset($this->votegroups)){
                             $votegroups = explode(":", $this->votegroups);
                             $votegroups_array = array_intersect($votegroups, $_SESSION['User']->_groups);
-                            // test                            print_r($votegroups_array); exit;
+// test                            print_r($votegroups_array); exit;
                             /* if they're in the group */
                             if(count($votegroups_array) > 0 or Current_User::isUnrestricted('elections')) {
                                 $msg = '1';
                             } else {
                                 $msg = dgettext('elections', 'You are not a member of an authorized voting group for this ballot.');
                             }
-                            /* no group restriction */
+                        /* no group restriction */
                         } else {
                             $msg = '1';
                         }
-                        /* no public and not logged in */
+                    /* no public and not logged in */
                     } else {
                         $msg = dgettext('elections', 'Public voting is not allowed for this ballot. You must log in first.');
                     }
-                    /* they've already voted */
+                /* they've already voted */
                 } else {
                     $msg = dgettext('elections', 'You have already voted in this ballot.');
                 }
-                /* voting is closed */
+            /* voting is closed */
             } else {
                 $msg = dgettext('elections', 'Voting has closed for this ballot.');
             }
-            /* voting isn't open yet */
+        /* voting isn't open yet */
         } else {
             $msg = dgettext('elections', 'Voting has not opened yet for this ballot.');
         }
@@ -665,14 +665,14 @@ class Elections_Ballot {
 
     function already_voted()
     {
-        if ($this->pubvote) {
-            /* check for a cookie */
-            if (isset($_COOKIE["BALLOT_$this->id"]) && ($_COOKIE["BALLOT_$this->id"] == $this->id))
-            return true;
-            else
-            return false;
-        } else {
-            /* check the voters log */
+    	if ($this->pubvote) {
+    		/* check for a cookie */
+    		if (isset($_COOKIE["BALLOT_$this->id"]) && ($_COOKIE["BALLOT_$this->id"] == $this->id))
+    			return true;
+    		else
+    			return false;
+    	} else {
+    		/* check the voters log */
             $db = new PHPWS_DB('elections_votes');
             $db->addWhere('username', Current_User::getUsername());
             $db->addWhere('ballot_id', $this->id);
