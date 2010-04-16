@@ -210,7 +210,7 @@ class vShop_Attribute {
         }
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
     public function delete()
@@ -244,7 +244,7 @@ class vShop_Attribute {
         $tpl['TITLE'] = $this->viewLink();
 
         if($links)
-        $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }
@@ -267,7 +267,7 @@ class vShop_Attribute {
             $links[] = javascript('confirm', $js);
         }
 
-        //        $tpl['ATTRIBUTE_TITLE'] = $this->getTitle(true);
+//        $tpl['ATTRIBUTE_TITLE'] = $this->getTitle(true);
         $tpl['ATTRIBUTE_SET'] = $this->getSet(true);
         $tpl['ATTRIBUTE_VALUE'] = $this->getValue(true);
         $tpl['ATTRIBUTE_PRICE_PREFIX'] = $this->price_prefix;
@@ -276,7 +276,7 @@ class vShop_Attribute {
         $tpl['ATTRIBUTE_WEIGHT_MOD'] = $this->getWeight_mod(true);
 
         if($links)
-        $tpl['ATTRIBUTE_LINKS'] = implode(' | ', $links);
+            $tpl['ATTRIBUTE_LINKS'] = implode(' | ', $links);
 
         return $tpl;
     }

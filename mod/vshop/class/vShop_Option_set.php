@@ -143,7 +143,7 @@ class vShop_Option_set {
             }
         } else {
             if (Current_User::allow('vshop', 'settings'))
-            $tpl['EMPTY'] = dgettext('vshop', 'Click on "New value" to start.');
+                $tpl['EMPTY'] = dgettext('vshop', 'Click on "New value" to start.');
         }
 
         return PHPWS_Template::process($tpl, 'vshop', 'view_option_set.tpl');
@@ -165,10 +165,10 @@ class vShop_Option_set {
             $links[] = PHPWS_Text::secureLink(dgettext('vshop', 'Add Value'), 'vshop', $vars);
         }
 
-        //        $links = array_merge($links, vShop::navLinks());
+//        $links = array_merge($links, vShop::navLinks());
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
     public function delete()
@@ -185,7 +185,7 @@ class vShop_Option_set {
 
     public function rowTag()
     {
-        //        $vars['id'] = $this->id;
+//        $vars['id'] = $this->id;
         $vars['option_set_id'] = $this->id;
         $links = array();
 
@@ -210,7 +210,7 @@ class vShop_Option_set {
         $tpl['VALUES'] = $this->getQtyValues();
 
         if($links)
-        $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }

@@ -26,7 +26,7 @@
 $pay_methods = array(
     'vShop_Cheque'      =>  dgettext('vshop', 'Cheque / Money Order'), 
     'vShop_PaypalBasic' =>  dgettext('vshop', 'Paypal / Credit Card'), 
-    'vShop_Skipjack' =>  dgettext('vshop', 'Skipjack / Credit Card') 
+    'vShop_Skipjack'    =>  dgettext('vshop', 'Skipjack / Credit Card') 
 );
 
 

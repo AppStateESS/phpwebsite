@@ -52,9 +52,9 @@ class vShop_Skipjack {
     /* ************************************************************* */
     private $_sj_host = 'www.skipjackic.com';
     /* if you have a developer account, you may use the sandbox server to test */
-    //    private $_sj_host = 'developer.skipjackic.com';
+//    private $_sj_host = 'developer.skipjackic.com';
     private $_sj_DeveloperSerialNumber = null;
-    //    private $_sj_DeveloperSerialNumber = 'xxxxxxxxxxxx';
+//    private $_sj_DeveloperSerialNumber = 'xxxxxxxxxxxx';
 
     public $_orderID;
 
@@ -90,7 +90,7 @@ class vShop_Skipjack {
         $tpl = $form->getTemplate();
         $tpl['CARDS'] = sprintf(dgettext('vshop', 'We accept: %s'), implode(', ', $this->_sj_Cards));
         $tpl['MESSAGE'] = dgettext('vshop', 'Click once and only once to complete your payment. Please be patient as the transaction may take a few secconds.');
-        //        $tpl['LOGO'] = null;
+//        $tpl['LOGO'] = null;
 
         return $tpl;
 
@@ -103,31 +103,31 @@ class vShop_Skipjack {
         $total = number_format($order->order_array['total_grand'], 2, '.', '');
         $orderstring = PHPWS_Settings::get('vshop', 'mod_title') . "~" . dgettext('vshop', 'Aggregated items') . "~" . $total . "~1~N~||";
 
-        /*  this isn't really needed but could be used to send custom stuff to skipjack
-         $customvars = array(
-         "$taxrate Tax=$tax",
-         "BeforeTax=$subtotal",
-         "Total=$total"
-         );
-         */
+/*  this isn't really needed but could be used to send custom stuff to skipjack
+        $customvars = array(
+            "$taxrate Tax=$tax",
+            "BeforeTax=$subtotal",
+            "Total=$total"
+        );
+*/
 
         /* do the transaction */
-        $response = $this->SingleCharge($order->first_name.' '.$order->last_name,
-        $order->address_1,
-        $order->city,
-        $order->state,
-        $order->postal_code,
-        $order->country,
-        $order->phone,
-        $order->email,
-        $this->_orderID . time(),
-        $_POST['ccnum'],
-        $_POST['ccem'],
-        $_POST['ccey'],
-        $orderstring,
-        number_format($order->order_array['total_grand'], 2, '', ''),
-        $customvars
-        );
+        $response = $this->SingleCharge($order->first_name.' '.$order->last_name, 
+                                        $order->address_1, 
+                                        $order->city, 
+                                        $order->state, 
+                                        $order->postal_code, 
+                                        $order->country, 
+                                        $order->phone, 
+                                        $order->email, 
+                                        $this->_orderID . mktime(), 
+                                        $_POST['ccnum'], 
+                                        $_POST['ccem'], 
+                                        $_POST['ccey'], 
+                                        $orderstring, 
+                                        number_format($order->order_array['total_grand'], 2, '', ''), 
+                                        $customvars
+                                    );
         if(stristr($response, 'OK - Auth Code')) $approved=true; else $approved=false;
 
         $transaction = $approved;
@@ -158,47 +158,47 @@ class vShop_Skipjack {
     function SingleCharge($name,$street,$city,$state,$zip,$country,$phone,$email,$ordernumber,$ccnum,$ccem,$ccey,$orderstring,$amount,$customvars='') {
 
         $CC_ERRORS = array( -1    =>    'Invalid length (-1)',
-        -35   =>    'Invalid credit card number (-35)',
-        -37   =>    'Failed communication (-37)',
-        -39   =>    'Serial number is too short (-39)',
-        -51   =>    'The zip code is invalid',
-        -52   =>    'The shipto zip code is invalid',
-        -53   =>    'Length of expiration date (-53)',
-        -54   =>    'Length of account number date (-54)',
-        -55   =>    'Length of street address (-55)',
-        -56   =>    'Length of shipto street address (-56)',
-        -57   =>    'Length of transaction amount (-57)',
-        -58   =>    'Length of name (-58)',
-        -59   =>    'Length of location (-59)',
-        -60   =>    'Length of state (-60)',
-        -61   =>    'Length of shipto state (-61)',
-        -62   =>    'Length of order string (-62)',
-        -64   =>    'Invalid phone number (-64)',
-        -65   =>	'Empty name (-65)',
-        -66   =>    'Empty email (-66)',
-        -67   =>    'Empty street address (-66)',
-        -68   =>    'Empty city (-68)',
-        -69   =>    'Empty state (-69)',
-        -70   =>    'Empty zip code (-70)',
-        -71   =>    'Empty order number (-71)',
-        -72   =>    'Empty account number (-72)',
-        -73   =>    'Empty expiration month (-73)',
-        -74   =>    'Empty expiration year (-74)',
-        -75   =>    'Empty serial number (-75)',
-        -76   =>    'Empty transaction amount (-76)',
-        -79   =>    'Length of customer name (-79)',
-        -80   =>    'Length of shipto customer name (-80)',
-        -81   =>    'Length of customer location (-81)',
-        -82   =>    'Length of customer state (-82)',
-        -83   =>    'Length of shipto phone (-83)',
-        -84   =>    'Pos Error duplicate ordernumber (-84)',
-        -91   =>    'Pos Error CVV2 (-91)',
-        -92   =>    'Pos Error Approval Code (-92)',
-        -93   =>    'Pos Error Blind Credits Not Allowed (-93)',
-        -94   =>    'Pos Error Blind Credits Failed (-94)',
-        -95   =>    'Pos Error Voice Authorizations Not Allowed (-95)'
-        );
-
+                            -35   =>    'Invalid credit card number (-35)',
+                            -37   =>    'Failed communication (-37)',
+                            -39   =>    'Serial number is too short (-39)',
+                            -51   =>    'The zip code is invalid',
+                            -52   =>    'The shipto zip code is invalid',
+                            -53   =>    'Length of expiration date (-53)',
+                            -54   =>    'Length of account number date (-54)',
+                            -55   =>    'Length of street address (-55)',
+                            -56   =>    'Length of shipto street address (-56)',
+                            -57   =>    'Length of transaction amount (-57)',
+                            -58   =>    'Length of name (-58)',
+                            -59   =>    'Length of location (-59)',
+                            -60   =>    'Length of state (-60)',
+                            -61   =>    'Length of shipto state (-61)',
+                            -62   =>    'Length of order string (-62)',
+                            -64   =>    'Invalid phone number (-64)',
+                            -65   =>	'Empty name (-65)', 
+                            -66   =>    'Empty email (-66)',
+                            -67   =>    'Empty street address (-66)',
+                            -68   =>    'Empty city (-68)',
+                            -69   =>    'Empty state (-69)',
+                            -70   =>    'Empty zip code (-70)',
+                            -71   =>    'Empty order number (-71)',
+                            -72   =>    'Empty account number (-72)',
+                            -73   =>    'Empty expiration month (-73)',
+                            -74   =>    'Empty expiration year (-74)',
+                            -75   =>    'Empty serial number (-75)',
+                            -76   =>    'Empty transaction amount (-76)',
+                            -79   =>    'Length of customer name (-79)',
+                            -80   =>    'Length of shipto customer name (-80)',
+                            -81   =>    'Length of customer location (-81)',
+                            -82   =>    'Length of customer state (-82)',
+                            -83   =>    'Length of shipto phone (-83)',
+                            -84   =>    'Pos Error duplicate ordernumber (-84)',
+                            -91   =>    'Pos Error CVV2 (-91)',
+                            -92   =>    'Pos Error Approval Code (-92)',
+                            -93   =>    'Pos Error Blind Credits Not Allowed (-93)',
+                            -94   =>    'Pos Error Blind Credits Failed (-94)',
+                            -95   =>    'Pos Error Voice Authorizations Not Allowed (-95)'
+                        );
+        
         $url = 'https://' . $this->_sj_host . '/scripts/evolvcc.dll?Authorize';
         if (!empty($phone)) {
             $phone = $phone;
@@ -229,7 +229,7 @@ class vShop_Skipjack {
             $customvars = join('&', $customvars);
             $postvars = "$postvars&$customvars";
         }
-        //print($postvars); exit;
+//print($postvars); exit;        
         /* initiate the transaction */
         $ch = curl_init();
 
@@ -241,7 +241,7 @@ class vShop_Skipjack {
 
         $r = curl_exec($ch);
         curl_close($ch);
-        //print_r($postvars); print_r($r); exit;
+//print_r($postvars); print_r($r); exit;
         /* parse out the vars from the junky html */
         $ok = 0;
         $lines = split('<', $r);

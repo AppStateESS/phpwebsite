@@ -68,7 +68,7 @@ class vShop_Option_value {
 
     public function setSort($sort)
     {
-        //print_r($sort); exit;
+//print_r($sort); exit;
         $this->sort = (int)$sort;
     }
 
@@ -125,10 +125,10 @@ class vShop_Option_value {
             $links[] = PHPWS_Text::secureLink(dgettext('vshop', 'Edit option value'), 'vshop', $vars);
         }
 
-        //        $links = array_merge($links, vShop::navLinks());
+//        $links = array_merge($links, vShop::navLinks());
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
     public function delete()
@@ -145,7 +145,7 @@ class vShop_Option_value {
 
     public function rowTag()
     {
-        //        $vars['id'] = $this->id;
+//        $vars['id'] = $this->id;
         $vars['option_value_id'] = $this->id;
         $links = array();
 
@@ -165,7 +165,7 @@ class vShop_Option_value {
         $tpl['SORT'] = $this->sort;
 
         if($links)
-        $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }
@@ -177,7 +177,7 @@ class vShop_Option_value {
         $vars['option_set_id'] = $this->set_id;
         $links = array();
 
-        //        $links[] = $this->addLink(true) . ' ' . $this->addLink();
+//        $links[] = $this->addLink(true) . ' ' . $this->addLink();
 
         if (Current_User::allow('vshop', 'settings')) {
             $vars['aop']  = 'edit_option_value';
@@ -194,7 +194,7 @@ class vShop_Option_value {
         $tpl['VALUE_TITLE'] = $this->viewLink();
 
         if($links)
-        $tpl['VALUE_LINKS'] = implode(' | ', $links);
+            $tpl['VALUE_LINKS'] = implode(' | ', $links);
 
         return $tpl;
     }
@@ -202,11 +202,11 @@ class vShop_Option_value {
     public function save()
     {
         $db = new PHPWS_DB('vshop_option_values');
-        //print_r($db); exit;
-        //        $db->setTestMode();
-        //print_r($this); exit;
+//print_r($db); exit;
+//        $db->setTestMode();
+//print_r($this); exit;
         $result = $db->saveObject($this);
-        //print_r($result); exit;
+//print_r($result); exit;
         if (PHPWS_Error::isError($result)) {
             return $result;
         }

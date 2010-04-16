@@ -179,7 +179,7 @@ class vShop_Dept {
             }
         } else {
             if (Current_User::allow('vshop', 'edit_items'))
-            $tpl['EMPTY'] = dgettext('vshop', 'Click on "New item" to start.');
+                $tpl['EMPTY'] = dgettext('vshop', 'Click on "New item" to start.');
         }
 
         $key->flag();
@@ -232,7 +232,7 @@ class vShop_Dept {
         }
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
     public function delete()
@@ -284,7 +284,7 @@ class vShop_Dept {
         $tpl['ITEMS'] = $this->getQtyItems();
 
         if($links)
-        $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }

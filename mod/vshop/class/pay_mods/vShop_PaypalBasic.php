@@ -51,7 +51,7 @@ class vShop_PaypalBasic {
 
     private $_pp_url = 'https://www.paypal.com/cgi-bin/webscr';
     /* if you have a developer account, you may use the sandbox server to test */
-    //    private $_pp_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+//    private $_pp_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
 
     private $_pp_return_url;
     public $_orderID;
@@ -75,7 +75,7 @@ class vShop_PaypalBasic {
         $form->addHidden('item_name_1', dgettext('vshop', 'Aggregated items'));
         $form->addHidden('amount_1', $total);
         $form->addHidden('currency_code', PHPWS_Settings::get('vshop', 'currency'));
-        //        $form->addHidden('notify_url', $this->_pp_notify_url);
+//        $form->addHidden('notify_url', $this->_pp_notify_url);
         $form->addHidden('return', $this->_pp_return_url);
 
         $form->addHidden('address_1', $order->address_1);

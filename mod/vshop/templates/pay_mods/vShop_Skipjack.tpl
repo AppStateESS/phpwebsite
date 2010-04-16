@@ -3,6 +3,5 @@
 <p>{CCNUM} {CCNUM_LABEL}</p>
 <p>{CCEM}-{CCEY} {CCEM_LABEL}</p>
 <p>{MESSAGE}</p>
-{SUBMIT}
-<br />
+{SUBMIT}<br />
 {END_FORM}

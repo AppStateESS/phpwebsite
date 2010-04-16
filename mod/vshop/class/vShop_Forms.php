@@ -121,7 +121,7 @@ class vShop_Forms {
                 if (empty($this->vshop->order)) {
                     $this->vshop->loadOrder();
                 }
-                //print_r($this->vshop->order); exit;
+//print_r($this->vshop->order); exit;
                 $this->setStatus();
                 break;
 
@@ -214,7 +214,7 @@ class vShop_Forms {
         /* I am not using the next line in this mod, I just leave it
          * as a reminder of addWhere()
          if (!Current_User::isUnrestricted('vshop')) {
-         $pager->addWhere('active', 1);
+             $pager->addWhere('active', 1);
          }
          */
 
@@ -242,9 +242,9 @@ class vShop_Forms {
     {
         $ptags['TITLE_HEADER'] = dgettext('vshop', 'Name');
         $ptags['PRICE_HEADER'] = dgettext('vshop', 'Price');
-        //        if (PHPWS_Settings::get('vshop', 'use_inventory')) {
-        $ptags['STOCK_HEADER'] = dgettext('vshop', 'Stock');
-        //        }
+//        if (PHPWS_Settings::get('vshop', 'use_inventory')) {
+            $ptags['STOCK_HEADER'] = dgettext('vshop', 'Stock');
+//        }
         $ptags['DEPT_HEADER'] = dgettext('vshop', 'Department');
 
         PHPWS_Core::initModClass('vshop', 'vShop_Item.php');
@@ -422,7 +422,7 @@ class vShop_Forms {
         $form->setLabel('title', dgettext('vshop', 'Title'));
 
         $form->addTextArea('description', $dept->getDescription());
-        //        $form->useEditor('description', true, true, 0, 0, 'fckeditor');
+//        $form->useEditor('description', true, true, 0, 0, 'fckeditor');
         $form->useEditor('description', true, true, 0, 0);
         $form->setRows('description', '6');
         $form->setCols('description', '40');
@@ -496,7 +496,7 @@ class vShop_Forms {
         if (PHPWS_Settings::get('vshop', 'enable_files')) {
             PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('file_id', $item->file_id);
-            //            $manager->imageOnly();
+//            $manager->imageOnly();
             $manager->maxImageWidth(PHPWS_Settings::get('vshop', 'max_width'));
             $manager->maxImageHeight(PHPWS_Settings::get('vshop', 'max_height'));
             if ($manager) {
@@ -518,21 +518,21 @@ class vShop_Forms {
             $form->addText('stock', $item->stock);
             $form->setSize('stock', 5);
             $form->setMaxSize('stock', 5);
-            //        $form->setRequired('stock');
+    //        $form->setRequired('stock');
             $form->setLabel('stock', dgettext('vshop', 'Qty in stock'));
         }
 
         $form->addText('weight', $item->weight);
         $form->setSize('weight', 5);
         $form->setMaxSize('weight', 5);
-        //        $form->setRequired('weight');
+//        $form->setRequired('weight');
         $form->setLabel('weight', dgettext('vshop', 'Weight'));
 
         if (PHPWS_Settings::get('vshop', 'shipping_calculation') == 2) {
             $form->addText('shipping', $item->shipping);
             $form->setSize('shipping', 5);
             $form->setMaxSize('shipping', 5);
-            //        $form->setRequired('shipping');
+    //        $form->setRequired('shipping');
             $form->setLabel('shipping', dgettext('vshop', 'Shipping fee'));
         }
 
@@ -658,8 +658,8 @@ class vShop_Forms {
     {
         $form = new PHPWS_Form;
         $option_value = & $this->vshop->option_value;
-        //print_r($option_value); exit;
-        //        require PHPWS_SOURCE_DIR . 'mod/vshop/inc/zones.php';
+//print_r($option_value); exit;
+//        require PHPWS_SOURCE_DIR . 'mod/vshop/inc/zones.php';
 
         $form->addHidden('module', 'vshop');
         $form->addHidden('aop', 'post_option_value');
@@ -708,7 +708,7 @@ class vShop_Forms {
         $form = new PHPWS_Form;
         $attribute = & $this->vshop->attribute;
         $item = & $this->vshop->item;
-        //print_r($item); exit;
+//print_r($item); exit;
 
         $form->addHidden('module', 'vshop');
         $form->addHidden('aop', 'post_attribute');
@@ -733,7 +733,7 @@ class vShop_Forms {
         $db->addOrder('sort asc');
         $db->addOrder('title asc');
         $db->addWhere('vshop_option_sets.id', 'vshop_option_values.set_id');
-        //        $db->setTestMode();
+//        $db->setTestMode();
         $result = $db->select();
         if ($result) {
             foreach ($result as $value) {
@@ -753,7 +753,7 @@ class vShop_Forms {
         $form->addText('price_mod', $attribute->price_mod);
         $form->setSize('price_mod', 10);
         $form->setMaxSize('price_mod', 20);
-        //        $form->setRequired('price_mod');
+//        $form->setRequired('price_mod');
         $form->setLabel('price_mod', dgettext('vshop', 'Price modifier (x.xx)'));
 
         $choices = array('+'=>'+','-'=>'-');
@@ -764,7 +764,7 @@ class vShop_Forms {
         $form->addText('weight_mod', $attribute->weight_mod);
         $form->setSize('weight_mod', 5);
         $form->setMaxSize('weight_mod', 5);
-        //        $form->setRequired('weight_mod');
+//        $form->setRequired('weight_mod');
         $form->setLabel('weight_mod', sprintf(dgettext('vshop', 'Weight modifier (%s)'), PHPWS_Settings::get('vshop', 'weight_unit')));
 
         $tpl = $form->getTemplate();
@@ -1063,7 +1063,7 @@ class vShop_Forms {
                 );
             }
             $tpl['TOTAL_LABEL'] = dgettext('vshop', 'Total');
-            //            $tpl['TOTAL'] = number_format($total_items, 2, '.', ',');
+//            $tpl['TOTAL'] = number_format($total_items, 2, '.', ',');
             if (PHPWS_Settings::get('vshop', 'curr_symbol_pos') == 1) {
                 $tpl['TOTAL'] = PHPWS_Settings::get('vshop', 'currency_symbol') . number_format($total_items, 2, '.', ',');
                 if (PHPWS_Settings::get('vshop', 'display_currency')) {
@@ -1230,7 +1230,7 @@ class vShop_Forms {
         }
 
         $tpl['FINAL_LABEL'] = dgettext('vshop', 'Total Due');
-        //        $tpl['FINAL'] = number_format($order_data['total_grand'], 2, '.', ',');
+//        $tpl['FINAL'] = number_format($order_data['total_grand'], 2, '.', ',');
         if (PHPWS_Settings::get('vshop', 'curr_symbol_pos') == 1) {
             $tpl['FINAL'] = PHPWS_Settings::get('vshop', 'currency_symbol') . number_format($order_data['total_grand'], 2, '.', ',');
             if (PHPWS_Settings::get('vshop', 'display_currency')) {

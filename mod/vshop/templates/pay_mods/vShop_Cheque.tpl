@@ -1,6 +1,5 @@
 {START_FORM}
 <p>{METHOD}</p>
 <p>{MESSAGE}</p>
-{SUBMIT}
-<br />
+{SUBMIT}<br />
 {END_FORM}

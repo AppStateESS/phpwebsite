@@ -24,8 +24,8 @@
 
 
 $statuses = array(  1=>dgettext('vshop', 'Pending'),
-2=>dgettext('vshop', 'Processing'),
-3=>dgettext('vshop', 'Shipped')
+                    2=>dgettext('vshop', 'Processing'),
+                    3=>dgettext('vshop', 'Shipped')
 );
 
 ?>

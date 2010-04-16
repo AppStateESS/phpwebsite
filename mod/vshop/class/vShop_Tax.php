@@ -144,7 +144,7 @@ class vShop_Tax {
         $links = array_merge($links, vShop::navLinks());
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
     public function delete()
@@ -179,7 +179,7 @@ class vShop_Tax {
         $tpl['RATE'] = $this->getRate(true);
 
         if($links)
-        $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }

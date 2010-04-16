@@ -24,8 +24,8 @@
 
 
 $types = array( 1=>dgettext('vshop', 'Select list'),
-2=>dgettext('vshop', 'Radio buttons'),
-3=>dgettext('vshop', 'Checkboxes')
+                2=>dgettext('vshop', 'Radio buttons'),
+                3=>dgettext('vshop', 'Checkboxes')
 );
 
 ?>

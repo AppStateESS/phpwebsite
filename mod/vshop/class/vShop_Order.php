@@ -308,7 +308,7 @@ class vShop_Order {
 
     public function view()
     {
-        //print_r($this->order_array);
+//print_r($this->order_array);
         if (!$this->id) {
             PHPWS_Core::errorPage(404);
         }
@@ -355,7 +355,7 @@ class vShop_Order {
         $links = array_merge($links, vShop::navLinks());
 
         if($links)
-        return implode(' | ', $links);
+            return implode(' | ', $links);
     }
 
     public function delete()
@@ -385,6 +385,7 @@ class vShop_Order {
             }
 
             $vars['aop'] = 'delete_order';
+            $vars['tab'] = $_REQUEST['tab'];
             $js['ADDRESS'] = PHPWS_Text::linkAddress('vshop', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('vshop', 'Are you sure you want to delete order %s from %s?'), $this->id, $this->getCustomer());
             $js['LINK'] = dgettext('vshop', 'Delete');
@@ -421,7 +422,7 @@ class vShop_Order {
         }
 
         if($links)
-        $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
     }

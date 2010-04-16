@@ -24,7 +24,7 @@
 
 function vshop_update(&$content, $currentVersion)
 {
-    //    $home_dir = PHPWS_Boost::getHomeDir();
+//    $home_dir = PHPWS_Boost::getHomeDir();
     switch ($currentVersion) {
 
         case version_compare($currentVersion, '0.6.0', '<'):
@@ -34,9 +34,9 @@ function vshop_update(&$content, $currentVersion)
                             'templates/set_status.tpl', 
                             'templates/edit_settings.tpl'
                             );
-                            vshopUpdateFiles($files, $content);
+            vshopUpdateFiles($files, $content);
 
-                            $content[] = '0.6.0 changes
+            $content[] = '0.6.0 changes
 ----------------
 + added is_array checks to links() array_merge in dept and item class
 + added currency and symbol to checkout and confirmation screens
@@ -62,9 +62,9 @@ function vshop_update(&$content, $currentVersion)
                            'templates/list_option_values.tpl',
                            'templates/edit_settings.tpl'
                            );
-                           vshopUpdateFiles($files, $content);
+                vshopUpdateFiles($files, $content);
 
-                           $content[] = '0.7.0 changes
+                $content[] = '0.7.0 changes
 ----------------
 + added support for product attributes
 

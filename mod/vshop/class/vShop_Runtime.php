@@ -30,7 +30,7 @@ class vShop_Runtime
         PHPWS_Core::initModClass('vshop', 'vShop_Cart.php');
         $cart = vShop_Cart::CreateInstance();
         $cart_data = $cart->GetCart();
-        //        print_r($cart_data);
+//        print_r($cart_data);
         if (!empty($cart_data)) {
             $tpl['TITLE'] = sprintf(dgettext('vshop', '%s Cart'), PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'mod_title')));
             $tpl['LABEL'] = dgettext('vshop', 'Cart contents');
