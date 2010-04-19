@@ -4,7 +4,7 @@
  * @version $Id$
  */
 
-$version       = '1.4.7';
+$version       = '1.4.8';
 $proper_name   = 'Photo Album';
 $priority      = 50;
 $import_sql    = true;

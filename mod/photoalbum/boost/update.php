@@ -106,6 +106,14 @@ function photoalbum_update(&$content, $version) {
 this module.
 </pre>';
 
+            case version_compare($version, '1.4.8', '<'):
+            $content[] = '<pre>
+1.4.8 changes
+-------------
++ Icon class implemented.
++ PHP 5 strict fixes.
+</pre>';
+
     }
 
     return true;
