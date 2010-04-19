@@ -90,6 +90,14 @@ Please download version 1.1.2.</pre>';
 -------------
 + Removed isPosted check on block save.
 </pre>';
+
+        case version_compare($currentVersion, '1.3.3', '<'):
+            $content[] = '<pre>1.3.3 changes
+-------------
++ PHP 5 strict changes.
++ Using Icon class.
++ Id added to each block.
+</pre>';
     }
     return TRUE;
 }

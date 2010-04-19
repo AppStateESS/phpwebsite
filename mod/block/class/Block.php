@@ -35,7 +35,7 @@ class Block {
         Block::showBlocks($key);
     }
 
-    public function viewPinnedBlocks($key)
+    public static function viewPinnedBlocks($key)
     {
         if (!isset($_SESSION['Pinned_Blocks'])) {
             return FALSE;

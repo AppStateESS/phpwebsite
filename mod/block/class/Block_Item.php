@@ -245,12 +245,12 @@ class Block_Item {
 			} else {
 				if ($this->allPinned()) {
 					$vars['action'] = 'remove';
-					$links[] = PHPWS_Text::secureLink(dgettext('block', 'Unpin all'), 'block', $vars);
+					$links[] = PHPWS_Text::secureLink(Icon::show('unsticky', dgettext('block', 'Unpin all')), 'block', $vars);
 				} else {
 					$vars['action'] = 'pin';
-					$links[] = PHPWS_Text::secureLink(Icon::show('sticky', dgettext('block', 'Pin')), 'block', $vars);
+					$links[] = PHPWS_Text::secureLink(Icon::show('clip', dgettext('block', 'Clip')), 'block', $vars);
 					$vars['action'] = 'pin_all';
-					$links[] = PHPWS_Text::secureLink(dgettext('block', 'Pin all'), 'block', $vars);
+					$links[] = PHPWS_Text::secureLink(Icon::show('sticky_all', dgettext('block', 'Pin all')), 'block', $vars);
 				}
 			}
 
