@@ -559,9 +559,17 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Media player updated to latest version.
 + FCKeditor media insertion had problems with any media other than
   YouTube embeds. SmartTag for media is displayed instead.</pre>';
-    }
 
-    return true;
+        case version_compare($version, '2.3.0', '<'):
+            $content[] = '<pre>2.3.0 changes
+---------------------
++ Icon class implemented.
++ Video player changed to Flowplayer.
++ Lightbox option for public folders.
++ Image carousel switched to jcarousel with Lightbox usage.
++ Updated to work with core updates.</pre>';
+            return true;
+    }
 }
 
 function fc_updatefiles($files, &$content)
