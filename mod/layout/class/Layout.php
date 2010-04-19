@@ -417,7 +417,7 @@ class Layout {
         return $content;
     }
 
-    public function getBox($module, $contentVar)
+    public static function getBox($module, $contentVar)
     {
         if (isset($_SESSION['Layout_Settings']->_boxes[$module][$contentVar])) {
             return $_SESSION['Layout_Settings']->_boxes[$module][$contentVar];
@@ -1072,7 +1072,7 @@ class Layout {
      * Makes a select form option to move boxes to other parts
      * of the layout
      */
-    public function moveBoxesTag($box)
+    public static function moveBoxesTag($box)
     {
         $vars['action']  = 'admin';
         $vars['command'] = 'move_popup';
@@ -1136,7 +1136,7 @@ class Layout {
         }
     }
 
-    public function collapse()
+    public static function collapse()
     {
         $GLOBALS['Layout_Collapse'] = true;
     }

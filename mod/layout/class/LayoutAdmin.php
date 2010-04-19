@@ -630,7 +630,7 @@ class Layout_Admin {
         return $content;
     }
 
-    public function moveBoxMenu()
+    public static function moveBoxMenu()
     {
         $box = new Layout_Box($_GET['box']);
         $vars['action'] = 'admin';
