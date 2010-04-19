@@ -94,6 +94,13 @@ Please download update 2.1.1.</pre>';
 ----------------
 + Fixed translation typo</pre>';
 
+        case version_compare($currentVersion, '2.3.4', '<'):
+            $content[] = '<pre>
+2.3.4 changes
+----------------
++ Hub/Branch changes.
++ PHP strict changes.</pre>';
+
     }
 
     return TRUE;
