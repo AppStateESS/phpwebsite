@@ -9,7 +9,7 @@ PHPWS_Core::initModClass('boost', 'Boost.php');
 
 class Boost_Action {
 
-    public function checkupdate($mod_title)
+    public static function checkupdate($mod_title)
     {
         PHPWS_Core::initCoreClass('Module.php');
         $module = new PHPWS_Module($mod_title);
