@@ -60,6 +60,12 @@ function miniadmin_update(&$content, $version)
 + Wrapped div box-content around links per Obones patch submission
 </pre>';
 
+        case version_compare($version, '1.2.2', '<'):
+            $content[] = '<pre>
+1.2.2 changes
+------------------
++ PHP 5 strict formatted.</pre>';
+
     }
     return true;
 }
