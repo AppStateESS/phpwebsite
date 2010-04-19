@@ -398,6 +398,13 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
 + Fixed reported and approval tabs
 + remaining user actions renamed to uop
 </pre>';
+
+        case version_compare($currentVersion, '1.3.0', '<'):
+            $content[] = '<pre>1.3.0 changes
+-----------------------
++ Javascript calls moved to javascriptMod
++ PHP 5 strict fixes.
++ Icon substitution.</pre>';
     }
 
     return true;
