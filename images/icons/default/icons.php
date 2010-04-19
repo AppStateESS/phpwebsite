@@ -47,6 +47,7 @@ $icons['copy'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-62', 'y
 $icons['cut'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-92', 'y'=>'-62', 'label'=>dgettext('core', 'Cut'));
 $icons['deactive'] = array('src'=>'deactive.png', 'label'=>dgettext('core', 'Not active'));
 $icons['delete'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-122', 'y'=>'-62', 'label'=>dgettext('core', 'Delete'));
+$icons['down'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-242', 'y'=>'-121', 'label'=>dgettext('core', 'Down'));
 $icons['edit'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-62', 'y'=>'-2', 'label'=>dgettext('core', 'Edit'));
 $icons['email'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-302', 'y'=>'-152', 'label'=>dgettext('core', 'Email'));
 $icons['error'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-332', 'y'=>'-32', 'label'=>dgettext('core', 'Error'));
@@ -85,6 +86,7 @@ $icons['sort-down'] = array('src'=>'down.png', 'label'=>dgettext('core', 'Sorted
 $icons['sort-up'] = array('src'=>'up.png', 'label'=>dgettext('core', 'Sorted ascending'));
 $icons['sound'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-599', 'y'=>'-2', 'label'=>dgettext('core', 'Sound'));
 $icons['sticky'] = array('src'=>'sticky.png', 'label'=>dgettext('core', 'Sticky'));
+$icons['sticky_all'] = array('src'=>'sticky_all.png', 'label'=>dgettext('core', 'Sticky all'));
 $icons['stop-play'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-62', 'y'=>'-182', 'label'=>dgettext('core', 'Stop playback'));
 $icons['subtract'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-242', 'y'=>'-150', 'label'=>dgettext('core', 'Subtract'));
 $icons['time'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-452', 'y'=>'-2', 'label'=>dgettext('core', 'Time'));
@@ -94,7 +96,8 @@ $icons['trash-full'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-4
 $icons['undo'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-302', 'y'=>'-62', 'label'=>dgettext('core', 'Undo'));
 $icons['unlock'] = array('src'=>'lock-unlock.png', 'label'=>dgettext('core', 'Unlock'));
 $icons['unsticky'] = array('src'=>'unsticky.png', 'label'=>dgettext('core', 'Sticky'));
-$icons['upload'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-451', 'y'=>'-121', 'label'=>dgettext('core', 'Users'));
+$icons['up'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-482', 'y'=>'-121', 'label'=>dgettext('core', 'Up'));
+$icons['upload'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-451', 'y'=>'-121', 'label'=>dgettext('core', 'Upload'));
 $icons['users'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-242', 'y'=>'-242', 'label'=>dgettext('core', 'Users'));
 $icons['video'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-302', 'y'=>'-2', 'label'=>dgettext('core', 'Video'));
 $icons['wait'] = array('src'=>'ajax25.gif', 'label'=>dgettext('core', 'Please wait'));
