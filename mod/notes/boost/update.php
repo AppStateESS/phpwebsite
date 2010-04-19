@@ -76,8 +76,13 @@ function notes_update(&$content, $version) {
 --------------
 + Changes to notes to allow sending to username or display name.
 + Increased note send window size.
-</pre>
-';
+</pre>';
+
+        case version_compare($version, '1.1.2', '<'):
+            $content[] = '<pre>1.1.2 changes
+--------------
++ PHP 5 strict fixes.
++ Forcing notes to use theme\'s blank template is available.</pre>';
 
     }
 
