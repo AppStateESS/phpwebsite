@@ -1,5 +1,5 @@
 -- vshop - phpwebsite module
--- @version $Id:  $
+-- @version $Id$
 -- @author Verdon Vaillancourt <verdonv at gmail dot com>
 
 CREATE TABLE vshop_depts (
