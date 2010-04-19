@@ -311,6 +311,16 @@ function pagesmith_update(&$content, $currentVersion)
 + Fixed lost text bug.
 </pre>';
 
+        case version_compare($currentVersion, '1.4.0', '<'):
+            $content[] = '<pre>1.4.0 changes
+-------------
++ Icon class implemented.
++ Fixed on disableLinks script.
++ Added black page check on saving. Prohibits empty content from being saved to the database.
++ Added option to turn off "Back to top" links.
++ Added default installation page.
++ PHP 5 strict fixes.</pre>';
+
     } // end switch
 
     return true;
