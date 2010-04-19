@@ -129,6 +129,12 @@ function categories_update(&$content, $currentVersion)
 + Error notice fixed.
 </pre>';
 
+            case version_compare($currentVersion, '2.3.1', '<'):
+            $content[] = '<pre>2.3.1 changes
+-----------------
++ Icon class used.
++ PHP 5 Strict changes.</pre>';
+
     }
     return true;
 }
