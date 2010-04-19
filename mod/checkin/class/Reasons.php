@@ -32,16 +32,16 @@ class Checkin_Reasons {
         $vars['reason_id'] = $this->id;
 
         $vars['aop'] = 'edit_reason';
-        $links[] = PHPWS_Text::secureLink(dgettext('checkin', 'Edit'), 'checkin', $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'checkin', $vars);
 
 
         $vars['aop'] = 'delete_reason';
         $js['question'] = dgettext('confirm', 'Are you sure you want to delete this reason?.');
         $js['address']  = PHPWS_Text::linkAddress('checkin', $vars, true);
-        $js['link'] = dgettext('checkin', 'Delete');
+        $js['link'] = Icon::show('delete');
         $links[] = javascript('confirm', $js);
 
-        $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['ACTION'] = implode('', $links);
         return $tpl;
     }
 

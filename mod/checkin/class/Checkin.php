@@ -86,7 +86,7 @@ class Checkin {
         }
     }
 
-    public function getReasons($all=false)
+    public static function getReasons($all=false)
     {
         $db = new PHPWS_DB('checkin_reasons');
         $db->addOrder('summary');
@@ -234,7 +234,7 @@ class Checkin {
         return sprintf('/^%s/i', implode('|', $final));
     }
 
-    public function timeWaiting($rel)
+    public static function timeWaiting($rel)
     {
         if ($rel < 0) {
             return dgettext('checkin', 'Time error');

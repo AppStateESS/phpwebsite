@@ -68,6 +68,14 @@ function checkin_update(&$content, $current_version) {
 ---------------------
 + Fixed waiting time setting</pre>';
 
+        case version_compare($current_version, '1.1.0', '<'):
+            $content[] = '<pre>1.1.0 changes
+---------------------
++ Added code to prevent refreshed duplicates
++ Fixed possible error in admin view
++ Added monthly and student reports
++ Added report for number of times a visitor has visited within 30 days.
++ PHP 5 Strict changes</pre>';
     }
     return true;
 }

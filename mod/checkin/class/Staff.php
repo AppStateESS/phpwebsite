@@ -170,15 +170,15 @@ class Checkin_Staff {
         }
         $vars['staff_id'] = $this->id;
         $vars['aop'] = 'edit_staff';
-        $links[] = PHPWS_Text::secureLink(dgettext('checkin', 'Edit'), 'checkin', $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'checkin', $vars);
 
         $vars['aop'] = 'move_up';
-        $links[] = PHPWS_Text::secureLink(dgettext('checkin', 'Up'), 'checkin', $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('up'), 'checkin', $vars);
         $vars['aop'] = 'move_down';
-        $links[] = PHPWS_Text::secureLink(dgettext('checkin', 'Down'), 'checkin', $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('down'), 'checkin', $vars);
 
         $tpl['VIEW_ORDER'] = $this->view_order;
-        $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['ACTION'] = implode('', $links);
         return $tpl;
     }
 
