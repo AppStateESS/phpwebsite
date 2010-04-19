@@ -110,6 +110,11 @@ function branch_update(&$content, $version)
 + Added ability to install on populated databases.
 + Copying the correct htaccess file.</pre>';
 
+        case version_compare($version, '1.3.0', '<'):
+            $content[] = '<pre>1.3.0 Changes
+-------------
++ PHP 5 strict fixes.
++ Branches no longer create local file versions.</pre>';
 
     }
     return true;
