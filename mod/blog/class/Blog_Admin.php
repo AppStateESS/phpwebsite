@@ -304,7 +304,7 @@ class Blog_Admin {
     }
 
 
-    public function postSettings()
+    public static function postSettings()
     {
         if (isset($_POST['show_recent'])) {
             PHPWS_Settings::set('blog', 'show_recent', $_POST['show_recent']);

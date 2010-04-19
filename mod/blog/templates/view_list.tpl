@@ -1,4 +1,3 @@
-
 <div class="hentry box blog-list-view">
 <div class="box-title">
 <h2 class="entry-title">{TITLE} <!-- BEGIN unpub --><span

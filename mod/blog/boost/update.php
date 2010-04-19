@@ -290,6 +290,12 @@ function blog_update(&$content, $currentVersion)
 + Blog templates now have have single view and multiple view
   templates.';
             $content[] = '</pre>';
+            
+        case version_compare($currentVersion, '1.8.3', '<'):
+            $content[] = '<pre>1.8.3 changes
+---------------------
++ Hub/Branch changes.
++ Updated code to conform to php 5 strict standards.</pre>';
 
     } // end of switch
     return true;
