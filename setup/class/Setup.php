@@ -112,13 +112,13 @@ class Setup {
     {
         require_once 'File.php';
 
-        $location = PHPWS_SOURCE_DIR . 'config/';
+        $location = PHPWS_SOURCE_DIR . 'config/core/';
         if (!is_writable($location)) {
+            $this->messages[] = 'Cannot write file to ' . $location;
             return false;
         }
 
         $filename = $location . 'config.php';
-
         if (is_file($filename)) {
             $this->messages[] = dgettext('core', 'Configuration file already exists.');
             return false;
@@ -317,7 +317,8 @@ class Setup {
     {
         if (empty($dsn)) {
             $dsn = $this->getDSN(1);
-            $connection = DB::connect($dsn);
+            $pear_db = new DB;
+            $connection = $pear_db->connect($dsn);
 
             if (PHPWS_Error::isError($connection)) {
                 PHPWS_Error::log($connection);
@@ -805,7 +806,7 @@ class Setup {
                         header('location: index.php?step=3');
                         exit();
                     } else {
-                        echo 'config failed';
+                        echo implode('<br />', $this->messages);
                     }
                     exit();
                 }

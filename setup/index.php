@@ -3,8 +3,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-ini_set('display_errors', 'On');
-error_reporting (-1);
+//ini_set('display_errors', 'On');
+//error_reporting (-1);
 
 chdir('../');
 set_include_path('lib/pear/');
