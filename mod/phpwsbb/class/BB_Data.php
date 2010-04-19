@@ -239,7 +239,7 @@ class PHPWSBB_Data
      * @param none
      * @return none
      */
-    public function clearCaches()
+    public static function clearCaches()
     {
         PHPWS_Cache::remove('bb_forumlist');
         PHPWS_Cache::remove('bb_forumsblock');

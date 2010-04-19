@@ -33,7 +33,7 @@ Changes in version 2.0.1
 ========================
 Changes in version 2.0.2
 ========================
-+ Fixed "Fatal error: Class `PHPWSBB_Forms` not found" bug
++ Fixed "Fatal error: Class "PHPWSBB_Forms" not found" bug
 + Adjusted formatting of forum.tpl
 + Minor php5 compatibility change
 </pre>';
@@ -43,11 +43,11 @@ Changes in version 2.0.2
 ========================
 Changes in version 2.0.3
 ========================
-+ Forms use `break post` now.
++ Forms use "break post" now.
 + Memory usage optimization
 + Fixed approval bug reported by Verdon http://www.phpwsforums.com/showpost.php?p=30440
 + Improved display of unapproved topics
-+ Forum List `Topics` counter was including unapproved articles.  Fixed.
++ Forum List "Topics" counter was including unapproved articles.  Fixed.
 + Fixed homepage filter bug reported by Verdon http://www.phpwsforums.com/showpost.php?p=30460
 + Fixed topic permissions bug reported by Verdon http://www.phpwsforums.com/showpost.php?p=30460
 </pre>';
@@ -57,10 +57,17 @@ Changes in version 2.0.3
 ========================
 Changes in version 2.0.4
 ========================
-+ Changed topics` edit permission to `manage forums` SuperModerators` comments will always be approved no matter what.
-+ `Create Topic` form now only asks for an anonymous name if both Comments & the Forum settings allow it.
++ Changed topics\' edit permission to "manage forums" SuperModerators\' comments will always be approved no matter what.
++ "Create Topic" form now only asks for an anonymous name if both Comments & the Forum settings allow it.
 </pre>';
 
+                   case version_compare($currentVersion, '2.0.4', '<'):
+            $content[] = '<pre>
+2.0.5 changes
+--------------
++ Fixed NOT NULL constraints in install sql.
++ Fixed problems with forum listing displays.</pre>';
+            
 
     } // end of switch
 
