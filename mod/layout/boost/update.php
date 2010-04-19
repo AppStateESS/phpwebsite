@@ -160,6 +160,16 @@ function layout_update(&$content, $currentVersion)
 + Bug#2424256 - Removed browser check to use @import on style sheets.
 </pre>';
 
+        case version_compare($currentVersion, '2.5.0', '<'):
+            $content[] = '<pre>2.5.0 changes
+---------------------
++ Icon class used.
++ Change of template directories to conform with core hub/branch change.
++ PHP 5 strict fixes.
++ New javascript detection method.
++ Default theme is now simple.
++ Allow admin to use hub or local themes.
+</pre>';
     }
     return true;
 }
