@@ -267,6 +267,12 @@ function calendar_update(&$content, $version)
             $content[] = '<pre>1.7.2 changes
 ------------------
 + Fixed event ical download</pre>';
+
+        case version_compare($version, '1.7.3', '<'):
+            $content[] = '<pre>1.7.3 changes
+------------------
++ Fixed empty events check in Upcoming Events
++ PHP 5 strict fixes.</pre>';
     } // end of switch
 
     return true;
