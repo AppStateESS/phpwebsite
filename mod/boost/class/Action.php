@@ -221,7 +221,7 @@ class Boost_Action {
     /**
      * Checks all modules for update status
      */
-    public function checkAll()
+    public static function checkAll()
     {
         PHPWS_Core::initModClass('boost', 'Boost.php');
         $all_mods = PHPWS_Boost::getAllMods();
