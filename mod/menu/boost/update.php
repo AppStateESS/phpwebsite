@@ -250,6 +250,14 @@ Please download 1.2.1.</pre>';
 + Added file include for missing class.
 + Added missing indent tags to popup_admin.tpl</pre>
 ';
+
+        case version_compare($currentVersion, '1.6.3', '<'):
+            $content[] = '<pre>1.6.3 changes
+---------------
++ View permission fix.
++ Icon class used.
++ PHP 5 strict fixes</pre>
+';
     }
     return true;
 }
