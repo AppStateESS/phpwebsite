@@ -46,6 +46,10 @@ function clipboard_update(&$content, $currentVersion)
   smarttags.
 </pre>';
 
+        case version_compare($currentVersion, '1.1.1', '<'):
+            $content[] = '<pre>1.1.1 changes
+-------------
++ Fixed javascript call</pre>';
     }
 
     return true;

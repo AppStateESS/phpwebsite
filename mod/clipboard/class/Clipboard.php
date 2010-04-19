@@ -11,7 +11,7 @@ class Clipboard
 {
     public $components = NULL;
 
-    public function action()
+    public static function action()
     {
         if (!isset($_REQUEST['action']))
         return;
@@ -36,7 +36,7 @@ class Clipboard
 
     }
 
-    public function view()
+    public static function view()
     {
         Layout::addStyle('clipboard');
         javascript('jquery');
@@ -50,7 +50,7 @@ class Clipboard
             dgettext('clipboard', 'Smart Tag'));
         }
 
-        javascript('clipboard', 'pick_view', $js);
+        javascriptMod('clipboard', 'pick_view', $js);
 
         $template['TITLE']   = dgettext('clipboard', 'Clipboard');
         $template['CONTENT'] = $clip->content;
@@ -70,7 +70,7 @@ class Clipboard
     }
 
 
-    public function show()
+    public static function show()
     {
         javascript('jquery');
         PHPWS_Core::configRequireOnce('clipboard', 'config.php');
@@ -116,12 +116,12 @@ class Clipboard
         Layout::set($layout, 'clipboard', 'clipboard');
     }
 
-    public function init()
+    public static function init()
     {
         $_SESSION['Clipboard'] = new Clipboard;
     }
 
-    public function copy($title, $content=null, $source=null, $smarttag=null, $show_source=true)
+    public static function copy($title, $content=null, $source=null, $smarttag=null, $show_source=true)
     {
         if (empty($title) || empty($content)) {
             return false;
@@ -139,7 +139,7 @@ class Clipboard
         Clipboard::show();
     }
 
-    public function clear()
+    public static function clear()
     {
         unset($_SESSION['Clipboard']);
     }
