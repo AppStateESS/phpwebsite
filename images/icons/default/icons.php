@@ -38,22 +38,21 @@ $icons['check'] = array('src'=>'approved.png', 'label'=>dgettext('core', 'Check'
 $icons['clear'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-32', 'y'=>'-62', 'label'=>dgettext('core', 'Clear'));
 $icons['clip'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-272', 'y'=>'-152', 'label'=>dgettext('core', 'Clip'));
 $icons['close'] = array('src'=>'close.png', 'label'=>dgettext('core', 'Close'));
-// may wish to change the label on the next two to the opposite in your module (not here)
-$icons['download'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-211', 'y'=>'-121', 'label'=>dgettext('core', 'Download'));
-$icons['folder-close'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-392', 'y'=>'-92', 'label'=>dgettext('core', 'Closed'));
-$icons['folder-open'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-362', 'y'=>'-92', 'label'=>dgettext('core', 'Opened'));
 $icons['comment'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-92', 'y'=>'-150', 'label'=>dgettext('core', 'Comment'));
 $icons['copy'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-62', 'y'=>'-62', 'label'=>dgettext('core', 'Copy'));
 $icons['cut'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-92', 'y'=>'-62', 'label'=>dgettext('core', 'Cut'));
 $icons['deactive'] = array('src'=>'deactive.png', 'label'=>dgettext('core', 'Not active'));
 $icons['delete'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-122', 'y'=>'-62', 'label'=>dgettext('core', 'Delete'));
 $icons['down'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-242', 'y'=>'-121', 'label'=>dgettext('core', 'Down'));
+$icons['download'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-211', 'y'=>'-121', 'label'=>dgettext('core', 'Download'));
 $icons['edit'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-62', 'y'=>'-2', 'label'=>dgettext('core', 'Edit'));
 $icons['email'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-302', 'y'=>'-152', 'label'=>dgettext('core', 'Email'));
 $icons['error'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-332', 'y'=>'-32', 'label'=>dgettext('core', 'Error'));
 $icons['exit'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-122', 'y'=>'-242', 'label'=>dgettext('core', 'Exit'));
 $icons['fast-forward'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-150', 'y'=>'-182', 'label'=>dgettext('core', 'Fast forward'));
 $icons['file'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-482', 'y'=>'-32', 'label'=>dgettext('core', 'File'));
+$icons['folder-close'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-392', 'y'=>'-92', 'label'=>dgettext('core', 'Closed'));
+$icons['folder-open'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-362', 'y'=>'-92', 'label'=>dgettext('core', 'Opened'));
 $icons['forbidden'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-272', 'y'=>'-32', 'label'=>dgettext('core', 'Forbidden'));
 $icons['grin'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-32', 'y'=>'-92', 'label'=>dgettext('core', 'Grin'));
 $icons['help'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-512', 'y'=>'-122', 'label'=>dgettext('core', 'Help'));
