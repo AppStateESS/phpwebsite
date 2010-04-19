@@ -87,6 +87,15 @@ function phatform_update(&$content, $version)
 + Preventing numbers from being element names.
 </pre>';
 
+        case version_compare($version, '3.1.5', '<'):
+            $content[] = '<pre>
+3.1.5 changes
+-------------
++ mod_rewrite works with form.
++ Page selection fix.
++ Fixed element deletion.
++ Some PHP 5 strict fixes.</pre>';
+
     }
     return true;
 }
