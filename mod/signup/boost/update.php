@@ -146,6 +146,12 @@ function signup_update(&$content, $currentVersion)
             $content[] = '<pre>1.3.1 changes
 -------------------
 + Fixed incorrect counting of people in slots.</pre>';
+
+        case version_compare($currentVersion, '1.3.2', '<'):
+            $content[] = '<pre>1.3.2 changes
+-------------------
++ PHP 5 strict fixes.
++ Icon class added</pre>';
     }
     return true;
 }
