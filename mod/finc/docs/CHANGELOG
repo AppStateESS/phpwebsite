@@ -1,7 +1,9 @@
-Version 1.0.0 -- Mar 2008
+Version 1.1.1 -- Apr 2010
 ------------------------------------------------------------------
-May 17 - 19
-+ Initial writing of mod
++ Updated for phpws Core 2.0.0
++ PHP strict fixes
++ Some code tidy up
+
 
 Version 1.1.0 -- Nov 2008
 ------------------------------------------------------------------
@@ -9,3 +11,8 @@ Version 1.1.0 -- Nov 2008
 + Made phpws 1.6 compatible
 + Moved readme text to README file
 
+
+Version 1.0.0 -- Mar 2008
+------------------------------------------------------------------
+May 17 - 19
++ Initial writing of mod

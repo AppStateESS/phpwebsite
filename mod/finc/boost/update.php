@@ -40,6 +40,17 @@ function finc_update(&$content, $currentVersion)
 </pre>';
 
 
+        case version_compare($currentVersion, '1.1.1', '<'):
+            $content[] = '<pre>';
+
+            $content[] = '1.1.1 changes
+----------------
++ Updated for phpws Core 2.0.0
++ PHP strict fixes
++ Some code tidy up
+
+
+</pre>';
 
 
     } // end switch

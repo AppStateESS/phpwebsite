@@ -23,10 +23,10 @@
  */
 
 $proper_name  = 'Finc';
-$version      = '1.1.0';
+$version      = '1.1.1';
 $import_sql   = true;
 $file_dir     = true;
-$version_http = 'http://verdon.ca/downloads/modules/finc/check.xml';
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/finc/check.xml';
 $about        = true;
 $priority     = 50;
 $dependency   = true;
