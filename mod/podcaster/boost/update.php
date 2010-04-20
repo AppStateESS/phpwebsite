@@ -274,6 +274,17 @@ Please save each episode to force an update of the key file.';
 </pre>';
 
 
+        case version_compare($currentVersion, '1.2.2', '<'):
+            $content[] = '<pre>';
+
+            $content[] = '1.2.2 changes
+----------------
++ Updated for phpws Core 2.0.0
++ PHP strict fixes
++ Some code tidy up
+</pre>';
+
+
     } // end switch
     return true;
 }

@@ -23,7 +23,7 @@
  */
 
 $proper_name  = 'Podcaster';
-$version      = '1.2.1';
+$version      = '1.2.2';
 $import_sql   = true;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/podcaster/check.xml';
 $about        = true;
