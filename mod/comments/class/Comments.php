@@ -425,7 +425,7 @@ class Comments {
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
     }
 
-    public function userAction($command)
+    public static function userAction($command)
     {
         $title = NULL;
         if (isset($_REQUEST['thread_id'])) {
@@ -660,7 +660,7 @@ class Comments {
     /**
      * Determines if captcha should be used
      */
-    public function useCaptcha()
+    public static function useCaptcha()
     {
         if (!extension_loaded('gd')) {
             return false;

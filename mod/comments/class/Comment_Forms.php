@@ -6,7 +6,7 @@
 
 class Comment_Forms {
 
-	public function form(Comment_Thread $thread, $c_item)
+	public static function form(Comment_Thread $thread, $c_item)
 	{
 		$form = new PHPWS_Form;
 
@@ -490,7 +490,7 @@ class Comment_Forms {
 		return $pager->get();
 	}
 
-	public function punishForm($comment)
+	public static function punishForm($comment)
 	{
 		javascriptMod('comments', 'admin', array('authkey'=>Current_User::getAuthKey()));
 
