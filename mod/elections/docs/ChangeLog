@@ -1,6 +1,9 @@
-Version 2.0.0 -- Feb 2009
+Version 2.0.2 -- Apr 2010
 ------------------------------------------------------------------
-+ Initial rough-in of mod
++ Updated for phpws Core 2.0.0
++ PHP strict fixes
++ Some code tidy up
+
 
 Version 2.0.1 -- Mar 2009
 ------------------------------------------------------------------
@@ -13,3 +16,7 @@ Version 2.0.1 -- Mar 2009
 + Some optimizing of code
 + Some code tidy up
 
+
+Version 2.0.0 -- Feb 2009
+------------------------------------------------------------------
++ Initial rough-in of mod

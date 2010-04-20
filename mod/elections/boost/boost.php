@@ -23,9 +23,9 @@
  */
 
 $proper_name  = 'Elections';
-$version      = '2.0.1';
+$version      = '2.0.2';
 $import_sql   = true;
-$version_http = 'http://verdon.ca/downloads/modules/elections/check.xml';
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/elections/check.xml';
 $about        = true;
 $priority     = 50;
 $dependency   = true;
