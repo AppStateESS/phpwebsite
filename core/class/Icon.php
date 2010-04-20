@@ -26,6 +26,7 @@ class Icon extends Image {
     public static function get($type)
     {
         static $icon_objects = null;
+
         if (!isset($icon_objects[$type])) {
             Icon::loadIcon($type, $icon_objects);
         }
@@ -113,7 +114,12 @@ class Icon extends Image {
         $params = Icon::getParams();
 
         $icon = & $params['icons'][$type];
-        $src = PHPWS_SOURCE_HTTP . $params['source'] . $icon['src'];
+        if (empty($icon)) {
+            trigger_error(sprintf(dgettext('core', 'Icon type not found: %s'), $type));
+            $src = PHPWS_SOURCE_HTTP . 'core/img/not_found.gif';
+        } else {
+            $src = PHPWS_SOURCE_HTTP . $params['source'] . $icon['src'];
+        }
         $o = new Icon($src);
 
         if (isset($icon['class'])) {
@@ -136,6 +142,8 @@ class Icon extends Image {
             $o->setAlt($icon['label']);
         }
         $icon_objects[$type] = $o;
+        
+        return true;
     }
 
     public static function demo()
