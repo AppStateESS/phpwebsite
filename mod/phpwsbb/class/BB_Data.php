@@ -173,7 +173,7 @@ class PHPWSBB_Data
      * @param object $object : Item to move.  Can be either a PHPWSBB_Topic or a Key object.
      * @return none
      */
-    public function move_item_link (&$object)
+    public static function move_item_link (&$object)
     {
         if (!Current_User::allow('phpwsbb', 'move_threads') || !$object_class = get_class($object))
         return;
