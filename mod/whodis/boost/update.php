@@ -122,6 +122,10 @@ CREATE TABLE whodis_filters (
 + Changed url to a text field from a varchar.
 </pre>';
 
+            $content[] = '<pre>0.2.1 changes
+---------------
++ PHP 5 strict changes.</pre>';
+
     }
     return true;
 }

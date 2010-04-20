@@ -139,7 +139,7 @@ class Whodis {
         }
     }
 
-    public function filters()
+    public static function filters()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
