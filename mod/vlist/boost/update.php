@@ -119,6 +119,25 @@ function vlist_update(&$content, $currentVersion)
             }
 
 
+        case version_compare($currentVersion, '1.0.5', '<'):
+            $content[] = '<pre>';
+
+            $content[] = '1.0.4 changes
+----------------
++ Fixed search in list bug
++ Fixed images and files from showing, if setting is changed to no
+  after having been yes and files/images attached
+
+1.0.5 changes
+----------------
++ Updated for phpws Core 2.0.0
++ PHP strict fixes
++ Some code tidy up
+
+
+</pre>';
+
+
 
     } // end switch
     return true;
