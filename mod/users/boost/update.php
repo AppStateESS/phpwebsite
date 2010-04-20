@@ -347,6 +347,19 @@ timeout INT NOT NULL default 0,
 + The user constructor was trying to load the authorization script on
   failed users. Thanks Verdon.</pre>';
 
+        case version_compare($currentVersion, '2.7.0', '<'):
+            $content[] = '<pre>2.7.0 changes
+-------------------------
++ Usernames and passwords can not be changed on non local users
++ Added switch to settings to prevent admins from making new users
++ Site admin can be set by non-deities again
++ Fixed bug with users able to change password on alternate auth.
++ Fixed some bugs with user creation and editing with alternate authentication.
++ Hiding permissions and members in create group form
++ Icon class implemented.
++ Strict PHP 5 changes made.
+</pre>';
+            
     } // End of switch statement
 
     return TRUE;
