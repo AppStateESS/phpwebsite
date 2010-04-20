@@ -30,10 +30,10 @@ class Related_Action {
         return PHPWS_Template::process($template, 'related', 'create.tpl');
     }
 
-    public function edit(Related $current)
+    public static function edit(Related $current)
     {
         PHPWS_Core::initCoreClass('Module.php');
-        $related = & Related_Action::getBank();
+        $related = Related_Action::getBank();
         $template['TITLE_LBL'] = dgettext('related', 'Title');
         $template['MODULE_LBL'] = dgettext('related', 'Module');
         $template['TITLE'] = $related->getUrl(TRUE);
@@ -101,7 +101,7 @@ class Related_Action {
     }
 
 
-    public function view(Related $related)
+    public static function view(Related $related)
     {
         $friends = $related->listFriends();
 
@@ -138,18 +138,18 @@ class Related_Action {
     }
 
 
-    public function setCurrent(Related $friend)
+    public static function setCurrent(Related $friend)
     {
         unset($_SESSION['Current__Friend']);
         $_SESSION['Current_Friend'] = $friend;
     }
 
-    public function setBank($related)
+    public static function setBank($related)
     {
         $_SESSION['Related_Bank'] = $related;
     }
 
-    public function getBank()
+    public static function getBank()
     {
         return $_SESSION['Related_Bank'];
     }
@@ -165,10 +165,10 @@ class Related_Action {
     }
 
 
-    public function start()
+    public static function start()
     {
         $related = new Related;
-        $related->setKey($_REQUEST['key']);
+        $related->setKey($_GET['key']);
         $related->setBanked(TRUE);
         Related_Action::setBank($related);
         PHPWS_Core::reroute($related->getUrl());

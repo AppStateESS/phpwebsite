@@ -247,7 +247,7 @@ class Related {
         }
     }
 
-    public static function show($allowEdit=TRUE)
+    public function show($allowEdit=TRUE)
     {
         PHPWS_Core::initCoreClass('Module.php');
 
@@ -256,7 +256,7 @@ class Related {
         if (empty($key) || $key->isDummy() || empty($key->title) || empty($key->url)) {
             return NULL;
         }
-
+        
         $related = new Related;
         $related->setKey($key);
         $related->load();
@@ -264,7 +264,7 @@ class Related {
         if (!Current_User::allow('related') || (bool)$allowEdit == FALSE) {
             $mode = 'view';
         }
-        elseif ($related->isBanked()) {
+        elseif ($this->isBanked()) {
             $mode = 'edit';
         }
         elseif (isset($related->id)) {
@@ -290,7 +290,6 @@ class Related {
 
         if (!empty($body)) {
             $content = &$body;
-
             Layout::add($content, 'related', 'bank');
         }
 

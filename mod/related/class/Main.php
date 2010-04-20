@@ -1,6 +1,14 @@
 <?php
 
-PHPWS_Core::initModClass("related", "Friend.php");
+
+/**
+ * Object for storing related items
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
+
+PHPWS_Core::initModClass('related', 'Friend.php');
 
 class Related {
 
@@ -48,7 +56,7 @@ class Related {
 
 
     public function setTitle($title){
-        $this->title = preg_replace("/[^\w\s]/", "", strip_tags($title));
+        $this->title = preg_replace('/[^\w\s]/', '', strip_tags($title));
     }
 
     public function getTitle(){
@@ -96,11 +104,11 @@ class Related {
         if (!isset($this->id))
         return NULL;
 
-        $db = new PHPWS_DB("related_friends");
-        $db->addWhere("source_id", $this->id);
-        $db->addOrder("rating");
-        $db->setIndexBy("rating");
-        $result = $db->select("col");
+        $db = new PHPWS_DB('related_friends');
+        $db->addWhere('source_id', $this->id);
+        $db->addOrder('rating');
+        $db->setIndexBy('rating');
+        $result = $db->select('col');
 
         if (PHPWS_Error::isError($result))
         return $result;

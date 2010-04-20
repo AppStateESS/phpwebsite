@@ -63,6 +63,14 @@ function related_update(&$content, $version)
 + Patch #2501401 from Olivier Sannier - Some h1 tags added.
 </pre>';
 
+        case version_compare($version, '0.2.2', '<'):
+            $content[] = '<pre>
+0.2.2 changes
+--------------
++ PHP 5 strict formatted.
++ Icon class implemented.
+</pre>';
+
     }
 
     return true;
