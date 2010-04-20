@@ -228,7 +228,6 @@ It has been replaced with mod/rolodex/inc/runtime.php
 
             $content[] = '1.3.1 changes
 ----------------
-
 + Fixed bug in printCVS function
 + Improved privacy in CVS export
 + Changed email hiding to hide from all but admins
@@ -237,6 +236,24 @@ It has been replaced with mod/rolodex/inc/runtime.php
 + Fixed bug in RDX_Runtime that was usually causing the sideblock 
   to not show for logged in users (thanks trf000)
 + fixed typo in Category form instruction
+
+</pre>';
+
+
+        case version_compare($currentVersion, '1.3.3', '<'):
+            $content[] = '<pre>';
+
+            $content[] = '1.3.2 changes
+----------------
++ Reorganized changelog
++ Fixed odd bug that could lead to duplicate tabs when adding the
+  first location or feature (thanks majjhima)
+
+1.3.3 changes
+----------------
++ Updated for phpws Core 2.0.0
++ PHP strict fixes
++ Some code tidy up
 
 </pre>';
 
