@@ -84,6 +84,20 @@ function vpath_update(&$content, $currentVersion)
 </pre>';
         
 
+        case version_compare($currentVersion, '1.0.5', '<'):
+            $content[] = '<pre>';
+    
+            $content[] = '
+1.0.5 changes
+---------------------
++ Updated for phpws Core 2.0.0
++ PHP strict fixes
++ Some code tidy up
+
+
+</pre>';
+        
+
 
     } // end switch
     return true;
