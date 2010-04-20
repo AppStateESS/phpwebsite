@@ -95,6 +95,18 @@ function whatsnew_update(&$content, $currentVersion)
 </pre>';
 
 
+        case version_compare($currentVersion, '1.0.3', '<'):
+            $content[] = '<pre>';
+
+            $content[] = '1.0.3 changes
+----------------
++ Updated for phpws Core 2.0.0
++ PHP strict fixes
++ Some code tidy up
+
+</pre>';
+
+
 
     } // end switch
     return true;

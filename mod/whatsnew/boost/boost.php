@@ -23,9 +23,9 @@
  */
 
 $proper_name  = "What's New";
-$version      = '1.0.2';
+$version      = '1.0.3';
 $import_sql   = false;
-$version_http = 'http://verdon.ca/downloads/modules/whatsnew/check.xml';
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/whatsnew/check.xml';
 $about        = true;
 $priority     = 50;
 $dependency   = true;
