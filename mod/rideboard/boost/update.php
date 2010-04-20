@@ -66,6 +66,11 @@ PRIMARY KEY ( id )
 ---------------
 + Translation typo fixed.</pre>';
 
+        case version_compare($version, '1.1.3', '<'):
+            $content[] = '<pre>1.1.3 changes
+---------------
++ PHP strict fixes</pre>';
+
     }
     return true;
 }

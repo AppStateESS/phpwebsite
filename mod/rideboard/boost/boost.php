@@ -5,7 +5,7 @@
  */
 
 $proper_name  = 'Ride Board';
-$version      = '1.1.2';
+$version      = '1.1.3';
 $import_sql   = true;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/rideboard/check.xml';
 $about        = true;
