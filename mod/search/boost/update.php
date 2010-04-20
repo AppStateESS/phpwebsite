@@ -92,6 +92,11 @@ function search_update(&$content, $currentVersion)
 + Fixed: wrong class name to key registration
 + PHP 5 formatted.
 </pre>';        
+
+            case version_compare($currentVersion, '0.4.1', '<'):
+            $content[] = '<pre>0.4.1 changes
+-------------
++ PHP 5 strict formatted.</pre>';        
     }
 
     return TRUE;
