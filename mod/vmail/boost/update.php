@@ -22,16 +22,37 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-$proper_name  = 'vMail';
-$version      = '1.0.1';
-$register     = false;
-$unregister   = false;
-$import_sql   = true;
-$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/vmail/check.xml';
-$about        = true;
-$priority     = 50;
-$dependency   = true;
-$image_dir    = false;
-$file_dir     = false;
+function vmail_update(&$content, $currentVersion)
+{
+    $home_dir = PHPWS_Boost::getHomeDir();
+    switch ($currentVersion) {
+
+        case version_compare($currentVersion, '1.0.1', '<'):
+            $content[] = '<pre>';
+
+            $content[] = '1.0.1 changes
+----------------
++ Updated for phpws Core 2.0.0
++ PHP strict fixes
++ Some code tidy up
+
+</pre>';
+
+
+
+
+    } // end switch
+    return true;
+}
+
+function vmailUpdateFiles($files, &$content)
+{
+    if (PHPWS_Boost::updateFiles($files, 'vmail')) {
+        $content[] = '--- Updated the following files:';
+    } else {
+        $content[] = '--- Unable to update the following files:';
+    }
+    $content[] = "    " . implode("\n    ", $files);
+}
 
 ?>
