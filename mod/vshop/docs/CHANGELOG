@@ -1,3 +1,9 @@
+Version 0.6.2 -- Apr 2010
+------------------------------------------------------------------
++ Updated for phpws Core 2.0.0
++ PHP strict fixes
++ Some code tidy up
+
 Version 0.6.1 -- Mar 2009
 ------------------------------------------------------------------
 + back-ported the following fixes to 0.6.1
