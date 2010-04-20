@@ -137,6 +137,12 @@ function rss_update(&$content, $version)
 0.3.3 changes
 --------------
 + Check made on feed array in case it was force fed it won\'t get overwritten.</pre>';
+
+        case version_compare($version, '0.3.4', '<'):
+            $content[] = '<pre>
+0.3.4 changes
+--------------
++ PHP 5 strict changes</pre>';
     }
 
     return true;
