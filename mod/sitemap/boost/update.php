@@ -69,6 +69,15 @@ function sitemap_update(&$content, $currentVersion)
 + translation typo fixed
 </pre>';
 
+        case version_compare($currentVersion, '0.6.2', '<'):
+            $content[] = '<pre>0.6.2 changes
+----------------
++ Updated for phpws Core 2.0.0
++ PHP strict fixes
++ Some code tidy up
+</pre>';
+
+
     } // end switch
     return true;
 }

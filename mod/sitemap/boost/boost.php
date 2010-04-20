@@ -23,7 +23,7 @@
  */
 
 $proper_name  = 'Sitemap';
-$version      = '0.6.1';
+$version      = '0.6.2';
 $register     = false;
 $import_sql   = false;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/sitemap/check.xml';

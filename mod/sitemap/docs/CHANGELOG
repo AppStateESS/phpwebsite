@@ -1,47 +1,52 @@
-Version 0.1.0 -- June 2008
+Version 0.6.2 -- Apr 2010
 ------------------------------------------------------------------
-June 28 - 29
-+ Initial writing of mod
++ Updated for phpws Core 2.0.0
++ PHP strict fixes
++ Some code tidy up
 
-Version 0.2.0 -- June 2008
-------------------------------------------------------------------
-June 30
-+ Moved default mod date from settings to build map
-+ Improved text in settings area and provide link to protocal info
-+ Added the info tab
-+ General code tidy up
 
-Version 0.3.0 -- June 2008
-------------------------------------------------------------------
-June 30
-+ Added live sitemap feed
-+ Added feed cache to settings
-+ Added feed switch to settings
+Version 0.6.1 - June 11, 2009
+-----------------------------------------------------------------
++ Bug #2796161 - Fixed typo
 
-Version 0.4.0 -- July 2008
+
+Version 0.6.0 -- July 2008
 ------------------------------------------------------------------
-July 01
-+ Added missing info tab template
++ Added ability to set default exclude list for keyed items
++ Added ability to customize exclude list for manual sitemaps
++ A bit more code tidy up
++ Updated english lang file
+
 
 Version 0.5.0 -- July 2008
 ------------------------------------------------------------------
-July 07
 + Separated getMenuItems to its own function so I could..
 + Added ability to get other non-menu keyed items into sitemap
 + Added option to include file cabinet keyed items yes/no
 + A bit of code tidy up
 + Added english lang file
 
-Version 0.6.0 -- July 2008
+
+Version 0.4.0 -- July 2008
 ------------------------------------------------------------------
-July 16
-+ Added ability to set default exclude list for keyed items
-+ Added ability to customize exclude list for manual sitemaps
-+ A bit more code tidy up
-+ Updated english lang file
++ Added missing info tab template
 
-Version 0.6.1 - June 11, 2009
------------------------------------------------------------------
-9 June 2009
-+ Bug #2796161 - Fixed typo
 
+Version 0.3.0 -- June 2008
+------------------------------------------------------------------
++ Added live sitemap feed
++ Added feed cache to settings
++ Added feed switch to settings
+
+
+Version 0.2.0 -- June 2008
+------------------------------------------------------------------
++ Moved default mod date from settings to build map
++ Improved text in settings area and provide link to protocal info
++ Added the info tab
++ General code tidy up
+
+
+Version 0.1.0 -- June 2008
+------------------------------------------------------------------
++ Initial writing of mod
