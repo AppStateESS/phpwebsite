@@ -83,6 +83,11 @@ function version_update(&$content, $currentVersion)
 + Approval was using strtolower method name to conform with php 4 problem.
   Removed it. Thanks Micah.</pre>';
 
+        case version_compare($currentVersion, '0.2.2', '<'):
+            $content[] = '<pre>0.2.2 changes
+-------------
++ PHP 5 strict changes made.</pre>';
+
     }
     return TRUE;
 }
