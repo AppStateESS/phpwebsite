@@ -207,7 +207,7 @@ class Demographics {
     /**
      * Patch #1939132 by Eloi George
      */
-    public function getList($ids, $table=NULL, $class_name=NULL)
+    public static function getList($ids, $table=NULL, $class_name=NULL)
     {
         if (!is_array($ids)) {
             return FALSE;
