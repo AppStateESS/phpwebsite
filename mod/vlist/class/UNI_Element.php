@@ -248,8 +248,7 @@ class UNI_Element {
         $js['ADDRESS'] = PHPWS_Text::linkAddress('vlist', $vars,true);
         $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the element %s?'), $this->getTitle());
         if ($icon) {
-            $js['LINK'] = sprintf('<img src="%smod/vlist/img/delete.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
-                                    dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
+            $js['LINK'] = Icon::show('delete', dgettext('vlist', 'Delete element'));
         } else {
             $js['LINK'] = dgettext('vlist', 'Delete');
         }
@@ -261,8 +260,7 @@ class UNI_Element {
     {
 
         if ($icon) {
-            $label = sprintf('<img src="%smod/vlist/img/edit.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
-                                dgettext('vlist', 'Edit element'), dgettext('vlist', 'Edit element'));
+            $label = Icon::show('edit', dgettext('vlist', 'Edit element'));
         } elseif (empty($label)) {
             $label = dgettext('vlist', 'Edit');
         }
@@ -280,40 +278,38 @@ class UNI_Element {
             $var_col = $this->list;
             $var_act = 'list_element';
             $var_dis = 'delist_element';
-            $var_act_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/active.png';
-            $var_inact_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/inactive.png';
+            $var_act_img = Icon::show('active', dgettext('vlist', 'Deactivate'));
+            $var_inact_img = Icon::show('inactive', dgettext('vlist', 'Activate'));
         } elseif ($type == 'search') {
             $var_col = $this->search;
             $var_act = 'search_element';
             $var_dis = 'desearch_element';
-            $var_act_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/active.png';
-            $var_inact_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/inactive.png';
+            $var_act_img = Icon::show('active', dgettext('vlist', 'Deactivate'));
+            $var_inact_img = Icon::show('inactive', dgettext('vlist', 'Activate'));
         } elseif ($type == 'private') {
             $var_col = $this->private;
             $var_act = 'private_element';
             $var_dis = 'deprivate_element';
-            $var_act_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/locked.png';
-            $var_inact_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/unlocked.png';
+            $var_act_img = Icon::show('lock', dgettext('vlist', 'Unlock'));
+            $var_inact_img = Icon::show('unlock', dgettext('vlist', 'Lock'));
         } else {
             $var_col = $this->active;
             $var_act = 'activate_element';
             $var_dis = 'deactivate_element';
-            $var_act_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/active.png';
-            $var_inact_img = '' . PHPWS_SOURCE_HTTP . 'mod/vlist/img/inactive.png';
+            $var_act_img = Icon::show('active', dgettext('vlist', 'Deactivate'));
+            $var_inact_img = Icon::show('inactive', dgettext('vlist', 'Activate'));
         }
         if ($var_col) {
             $vars['aop'] = $var_dis;
             if ($icon) {
-                $label = sprintf('<img src="%s" title="%s" alt="%s" >',
-                                 $var_act_img, dgettext('vlist', 'Deactivate'), dgettext('vlist', 'Deactivate'));
+                $label = $var_act_img;
             } elseif (empty($label)) {
                 $label = dgettext('vlist', 'Deactivate');
             }
         } else {
             $vars['aop'] = $var_act;
             if ($icon) {
-                $label = sprintf('<img src="%s" title="%s" alt="%s" >',
-                                 $var_inact_img, dgettext('vlist', 'Activate'), dgettext('vlist', 'Activate'));
+                $label = $var_inact_img;
             } elseif (empty($label)) {
                 $label = dgettext('vlist', 'Activate');
             }
@@ -431,8 +427,7 @@ class UNI_Element {
             $vars['aop'] = 'delete_option';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('vlist', $vars,true);
             $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the option %s?'), $optionText[$i]);
-            $js['LINK'] = sprintf('<img src="%smod/vlist/img/delete.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
-                                    dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
+            $js['LINK'] = Icon::show('delete', dgettext('vlist', 'Delete option'));
             $optionRow['DELETE'] =  javascript('confirm', $js);
 
             $check = null;

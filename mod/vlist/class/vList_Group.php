@@ -171,8 +171,7 @@ class vList_Group {
         $js['ADDRESS'] = PHPWS_Text::linkAddress('vlist', $vars, true);
         $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the group %s?'), $this->getTitle());
         if ($icon) {
-            $js['LINK'] = sprintf('<img src="%smod/vlist/img/delete.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
-                                    dgettext('vlist', 'Delete'), dgettext('vlist', 'Delete'));
+            $js['LINK'] = Icon::show('delete', dgettext('vlist', 'Delete group'));
         } else {
             $js['LINK'] = dgettext('vlist', 'Delete');
         }
@@ -184,8 +183,7 @@ class vList_Group {
     {
 
         if ($icon) {
-            $label = sprintf('<img src="%smod/vlist/img/edit.png" title="%s" alt="%s" >', PHPWS_SOURCE_HTTP,
-                                dgettext('vlist', 'Edit group'), dgettext('vlist', 'Edit group'));
+            $label = Icon::show('edit', dgettext('vlist', 'Edit group'));
         } elseif (empty($label)) {
             $label = dgettext('vlist', 'Edit');
         }

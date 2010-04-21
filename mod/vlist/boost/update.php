@@ -133,6 +133,7 @@ function vlist_update(&$content, $currentVersion)
 + Updated for phpws Core 2.0.0
 + PHP strict fixes
 + Some code tidy up
++ Implemented new Icon class
 
 
 </pre>';
