@@ -42,7 +42,8 @@ $icons['comment'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-92',
 $icons['copy'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-62', 'y'=>'-62', 'label'=>dgettext('core', 'Copy'));
 $icons['cut'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-92', 'y'=>'-62', 'label'=>dgettext('core', 'Cut'));
 $icons['deactive'] = array('src'=>'deactive.png', 'label'=>dgettext('core', 'Not active'));
-$icons['delete'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-122', 'y'=>'-62', 'label'=>dgettext('core', 'Delete'));
+$icons['delete'] = array('src'=>'trash.png', 'label'=>dgettext('core', 'Delete'));
+//$icons['delete'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-122', 'y'=>'-62', 'label'=>dgettext('core', 'Delete'));
 $icons['down'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-242', 'y'=>'-121', 'label'=>dgettext('core', 'Down'));
 $icons['download'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-211', 'y'=>'-121', 'label'=>dgettext('core', 'Download'));
 $icons['edit'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-62', 'y'=>'-2', 'label'=>dgettext('core', 'Edit'));
