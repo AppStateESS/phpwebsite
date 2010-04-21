@@ -1,0 +1,32 @@
+How to use Icon class
+by Verdon Vaillancourt
+
+The icon class was developed to provide a global set of icons for any module developer 
+to easily use, so that there is a consistant presentation across all modules.
+
+
+
+Using the icon class in your module is simple. Just add a line like the following ...
+
+    $edit_icon = Icon::show('edit');
+    echo $edit_icon;
+
+You can also effect the alt text of the icon like this ...
+
+    $edit_icon = Icon::show('edit', dgettext('mymod', 'Edit this widget'));
+    echo $edit_icon;
+
+A real world example with a link might look like this ... 
+
+    $edit_icon = Icon::show('edit', dgettext('mymod', 'Edit widget'));
+    $vars['id'] = $this->id;
+    $vars['aop'] = 'edit_widget';
+    return PHPWS_Text::secureLink($edit_icon, 'mymod', $vars);
+
+
+
+
+If you want a quick look at all the icons available to you ...
+
+    Icon::demo();
+
