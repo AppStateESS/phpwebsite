@@ -39,11 +39,25 @@ MDB2/Manager/mysql.php
 pass-by-references removed
 
 
+DB.php
+---------------------------
+functions made static:
+ connect
+ parseDSN 
+ 
+
+File.php
+---------------------------
+Made public static:
+ _File 
+ closeAll
 
 PEAR.php
 ---------------------------
-PEAR::isError made public static
-
+Functions made public static:
+ isError
+ registerShutdownFunc()
+ getStaticProperty
 
 HTTP/Upload.php
 HTTP_Upload_Error::raiseError - made compatible with PEAR::raiseError

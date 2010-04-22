@@ -97,7 +97,7 @@ class File extends PEAR
      * 
      * @access private 
      */
-    function _File()
+    public static function _File()
     {
         File::closeAll();
     }
@@ -373,7 +373,7 @@ class File extends PEAR
      * @access  public
      * @return  void
      */
-    function closeAll()
+    public static function closeAll()
     {
         $locks = &PEAR::getStaticProperty('File', 'locks');
         $filePointers = &PEAR::getStaticProperty('File', 'filePointers');
