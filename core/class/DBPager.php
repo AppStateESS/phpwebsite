@@ -1602,7 +1602,7 @@ class DBPager {
         $_SESSION['DBPager_Last_View'][$this->table] = PHPWS_Core::getCurrentUrl();
     }
 
-    public function getLastView($table)
+    public static function getLastView($table)
     {
         if (isset($_SESSION['DBPager_Last_View'][$table])) {
             return $_SESSION['DBPager_Last_View'][$table];

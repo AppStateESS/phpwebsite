@@ -5,7 +5,7 @@
  *
  * Loads modules and their respective files.
  * @version $Id$
- * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package Core
  */
 

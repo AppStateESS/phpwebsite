@@ -8,7 +8,7 @@
  * edit. It has been altered to work specifically with phpWebSite.
  *
  * @author (or at corz.org
- * @modified Matt McNaney <matt at tux dot appstate dot edu>
+ * @modified Matt McNaney <mcnaney at gmail dot com>
  */
 
 
@@ -162,7 +162,7 @@ function bb_filter($bb2html)
 /**
  * Gets smilie graphics for bbcode
  *
- * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 function getSmilie($bbcode)
 {

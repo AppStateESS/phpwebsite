@@ -3,7 +3,7 @@
  * A database class
  *
  * @version $Id$
- * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package Core
  */
 require_once 'DB.php';
@@ -2304,7 +2304,7 @@ class PHPWS_DB {
     }
 
     /**
-     * @author Matt McNaney <matt at tux dot appstate dot edu>
+     * @author Matt McNaney <mcnaney at gmail dot com>
      * @param  object $object        Object variable filled with result.
      * @param  object $require_where If true, require a where parameter or
      *                               have the id set
@@ -2356,7 +2356,7 @@ class PHPWS_DB {
      * } // end constuctor
      * } //end class
      *
-     * @author Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      * @param string $class_name Name of class used in object
      * @return array $items      Array of objects
      * @access public

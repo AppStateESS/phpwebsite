@@ -6,7 +6,7 @@
  * See core/conf/text_settings.php for configuration options
  *
  * @version $Id$
- * @author  Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author  Matthew McNaney <mcnaney at gmail dot com>
  * @author  Adam Morton
  * @author  Steven Levin
  * @author  Don Seiler <don@NOSPAM.seiler.us>
@@ -275,7 +275,7 @@ class PHPWS_Text {
      *
      * Profanity definitions are set by the core in the textSettings.php file
      *
-     * @author Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      * @param  string $text Text to be parsed
      * @return string Parsed text
      * @access public
@@ -322,7 +322,7 @@ class PHPWS_Text {
      * Also, used logic from cor's (see bb2html code) function
      * to parse the <pre> tags.
      *
-     * @author Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      */
     public static function breaker($text)
     {
@@ -383,7 +383,7 @@ class PHPWS_Text {
      *
      * Should be used after retrieving data from the database
      *
-     * @author                       Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author                       Matthew McNaney <mcnaney at gmail dot com>
      * @param   string  text         Text to parse
      * @param   boolean decode       Whether entity_decoding should take place.
      * @param   boolean use_filters  If true, any filters requested in the text_settings file will be
@@ -414,7 +414,7 @@ class PHPWS_Text {
      * is used to pull database data, etc. Also, will ALWAYS return false
      * if it receives blank data.
      *
-     * @author Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      * @param  string  $userEntry Text to be checked
      * @param  string  $type      What type of comparison
      * @return boolean true on valid input, false on invalid input
@@ -527,7 +527,7 @@ class PHPWS_Text {
      * Makes the index string for moduleLink. Can also be called alone
      * User module must be in use.
      *
-     * @author Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      * @param string  module      Name of module for link
      * @param array   getVars     Associative array of get values
      * @param boolean secure      If true, adds authkey to link
@@ -555,7 +555,7 @@ class PHPWS_Text {
      * For local links ONLY. It adds the hub web address and index.php automatically.
      * You supply the name of the module and the variables.
      *
-     * @author Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      * @param string subject String to appear as the 'click on' word(s)
      * @param string module Name of module to access
      * @param array getVars Associative array of GET variable to append to the link
@@ -576,7 +576,7 @@ class PHPWS_Text {
      *
      * More text detail
      *
-     * @author Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      * @param  string $link Link string to check
      * @return string $link Appended string
      * @access public
@@ -597,7 +597,7 @@ class PHPWS_Text {
     /**
      * Returns true if the text appears to have unslashed quotes or apostrophes
      *
-     * @author Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      * @param  string  $text Text to be checked for unslashed quotes or apostrophes
      * @return boolean true on success, false on failure
      * @access public
@@ -613,7 +613,7 @@ class PHPWS_Text {
     /**
      * Removes slashes ONLY from quotes or apostrophes, nothing else
      *
-     * @author Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      * @param  string $text Text to remove slashes from
      * @return string $text Parsed text
      * @access public
@@ -750,7 +750,7 @@ class PHPWS_Text {
      *
      * @author   mv at brazil dot com
      * @modified lorecarra at postino dot it
-     * @modified Matt McNaney <matt at tux dot appstate dot edu>
+     * @modified Matt McNaney <mcnaney at gmail dot com>
      */
     public static function xml2php($file, $level = 0)
     {
@@ -771,7 +771,7 @@ class PHPWS_Text {
      * Further processes the data from xml2php into a more
      * useful array structure.
      *
-     * @author Matt McNaney <matt at tux dot appstate dot edu>
+     * @author Matt McNaney <mcnaney at gmail dot com>
      */
     public static function _orderXML(&$arr_vals)
     {

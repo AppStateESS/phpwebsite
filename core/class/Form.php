@@ -22,7 +22,7 @@
  * For many form elements, that may be all you need.
  *
  * @version $Id$
- * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  * @author Don Seiler <don at seiler dot us>
  * @package Core
  *
@@ -484,7 +484,7 @@ class PHPWS_Form {
      * See setType for the form types.
      * See setValue for value information.
      *
-     * @author             Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author             Matthew McNaney <mcnaney at gmail dot com>
      * @param string name  The name of the form element
      * @param string type  The type of form element (text, check, radio, etc)
      * @param mixed  value The default value of the form element
@@ -719,7 +719,7 @@ class PHPWS_Form {
 
     /**
      * Removes a form element from the class
-     * @author Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      */
     public function drop($name)
     {
@@ -731,7 +731,7 @@ class PHPWS_Form {
      *
      * This is useful for style components, javascript, etc.
      *
-     * @author            Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author            Matthew McNaney <mcnaney at gmail dot com>
      * @param string name Name of element to set the type
      * @param string type Extra text to add to element
      */
@@ -758,7 +758,7 @@ class PHPWS_Form {
      * a style width. The width will size itself depending on side of
      * or its contained (i.e. a table cell)
      *
-     * @author             Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author             Matthew McNaney <mcnaney at gmail dot com>
      * @param string name  Name of element to set the type
      * @param string width Percentage of width wanted on element
      */
@@ -787,7 +787,7 @@ class PHPWS_Form {
      * Note: You can set the height of a text field, but it will look
      * strange and it has no real functionality.
      *
-     * @author              Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author              Matthew McNaney <mcnaney at gmail dot com>
      * @param string name   Name of element to set the type
      * @param string height Percentage of height wanted on element
      */
@@ -811,7 +811,7 @@ class PHPWS_Form {
      *
      * Rows must be more than 1 and less than 100
      *
-     * @author Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      * @param string name Name of element to set the rows
      * @param string rows Number rows to use in a textarea
      */
@@ -836,7 +836,7 @@ class PHPWS_Form {
      * A tag outputs its title when 'moused-over'. This works in newer browsers.
      * It is not required but can help inform the user on its function.
      *
-     * @author Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      * @param string name  Name of element to set the rows
      * @param string title Title text
      */
@@ -860,7 +860,7 @@ class PHPWS_Form {
      *
      * Columns must be more than 10 and less than 500
      *
-     * @author Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      * @param string name Name of element to set the rows
      * @param string rows Number columns to use in a textarea
      */
@@ -887,7 +887,7 @@ class PHPWS_Form {
      * and what order you want it in. PHPWS_Form does not check your settings
      * so be careful you don't use the same number more than once.
      *
-     * @author               Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author               Matthew McNaney <mcnaney at gmail dot com>
      * @param  string  name  Name of element to set the type
      * @param  integer order Numeric order of tab queue
      */
@@ -910,7 +910,7 @@ class PHPWS_Form {
      * Sets the number of characters for text boxes, number of rows
      * for select boxes
      *
-     * @author Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      * @param string name Name of element to set the type
      * @param string size Size to make the element
      */
@@ -960,7 +960,7 @@ class PHPWS_Form {
      * variable for your template. A good function to use to convert
      * old templates.
      *
-     * @author                Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author                Matthew McNaney <mcnaney at gmail dot com>
      * @param string name     Name of element to set the type
      * @param string template Name of template tag to print for this element
      */
@@ -992,7 +992,7 @@ class PHPWS_Form {
      *
      * This would change the index array to array('apple'=>'apple', 'orange'=>'orange', etc.
      *
-     * @author                    Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author                    Matthew McNaney <mcnaney at gmail dot com>
      * @param string name         Name of element to set the type
      */
     public function reindexValue($name)
@@ -1027,7 +1027,7 @@ class PHPWS_Form {
      * Also, match will ONLY match to the VALUE of a select box unless you set
      * optionMatch to true.
      *
-     * @author                    Matthew McNaney <matt at tux dot appstate dot edu>
+     * @author                    Matthew McNaney <mcnaney at gmail dot com>
      * @param string name         Name of element to set the type
      * @param string match        Value to match against the element's value
      * @param boolean optionMatch If true, then a select box will try to match
@@ -1100,7 +1100,7 @@ class PHPWS_Form {
     /**
      * Sets the max text size for a text, password, file element
      *
-     * @author Matthew McNaney<matt at tux dot appstate dot edu>
+     * @author Matthew McNaney<mcnaney at gmail dot com>
      * @param string  name Name of element to set the maxsize
      * @param integer maxsize The max number of characters allowed in the element's field
      */
@@ -1140,7 +1140,7 @@ class PHPWS_Form {
     /**
      * Indicates whether an element exists
      *
-     * @author         Matthew McNaney<matt at tux dot appstate dot edu>
+     * @author         Matthew McNaney<mcnaney at gmail dot com>
      * @param  string  name Name to check if exists
      * @return boolean true if the element exists, false otherwise
      */
@@ -1278,7 +1278,7 @@ class PHPWS_Form {
      *
      * If you need to send the form elsewhere, set the directory here.
      *
-     * @author                   Matthew McNaney<matt at tux dot appstate dot edu>
+     * @author                   Matthew McNaney<mcnaney at gmail dot com>
      * @param  string  directory Directory that a form will post to
      */
     public function setAction($directory)
@@ -1345,7 +1345,7 @@ class PHPWS_Form {
      *
      * Hidden variables will be added on to START_FORM. They will NOT have their own template tag.
      *
-     * @author                     Matthew McNaney<matt at tux dot appstate dot edu>
+     * @author                     Matthew McNaney<mcnaney at gmail dot com>
      * @param  boolean phpws       If true and the action is missing, phpWebSite will attempt to use your directory settings instead
      * @param  boolean helperTags  If true START and END_FORM tags will be created, otherwise they will not
      * @param  array   template    If a current template is supplied, form will add to it.

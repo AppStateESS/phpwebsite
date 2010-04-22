@@ -5,7 +5,7 @@
  * profanity is listed in this file. Stop reading now if this offends you.
  *
  * This file contains the default text settings for the PHPWS_Text class.
- * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
 

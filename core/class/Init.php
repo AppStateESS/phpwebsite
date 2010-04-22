@@ -5,7 +5,7 @@
  * - sets the language settings and contains the 'translate function'
  * - starts most the vital core classes
  *
- * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
 
