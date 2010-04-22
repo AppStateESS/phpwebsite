@@ -49,7 +49,7 @@ class Demographics {
     /**
      * Returns the stats for Demographics default field
      */
-    public function getDefaultStats($field_name)
+    public static function getDefaultStats($field_name)
     {
         $fields = Demographics::getDefaultFields();
         return $fields[$field_name];
@@ -125,7 +125,7 @@ class Demographics {
     /**
      * Registers one of Demographic's default fields
      */
-    public function registerDefaultField($field_name)
+    public static function registerDefaultField($field_name)
     {
         $current_fields = Demographics::getFields();
 

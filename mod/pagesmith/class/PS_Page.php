@@ -289,6 +289,7 @@ class PS_Page {
 
 	public function save()
 	{
+	    PHPWS_Core::initModClass('search', 'Search.php');
 		if (!$this->id) {
 			$this->create_date = time();
 		}
