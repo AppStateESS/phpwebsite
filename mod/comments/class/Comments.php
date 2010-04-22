@@ -3,7 +3,7 @@
 /**
  * Developer class for accessing comments
  *
- * @author Matt McNaney <matt at tux dot appstate dot edu>
+ * @author Matt McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
 

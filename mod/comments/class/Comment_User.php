@@ -3,7 +3,7 @@
 /**
  * Stores the user information specific to comments
  *
- * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
 PHPWS_Core::requireConfig('comments');

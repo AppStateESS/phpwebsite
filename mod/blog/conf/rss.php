@@ -3,7 +3,7 @@
  * not used : link, pub_date, text_input
  *
  *
- * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
 

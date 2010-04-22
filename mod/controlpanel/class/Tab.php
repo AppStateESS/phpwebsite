@@ -3,7 +3,7 @@
  * Tab class
  *
  * @version $Id$
- * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @author  Matt McNaney <mcnaney at gmail dot com>
  */
 
 class PHPWS_Panel_Tab {

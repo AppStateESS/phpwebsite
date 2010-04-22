@@ -4,7 +4,7 @@
  * Class for comment threads. Threads hold all the comments for
  * a specific item.
  *
- * @author Matt McNaney <matt at tux dot appstate dot edu>
+ * @author Matt McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
 

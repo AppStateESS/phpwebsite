@@ -4,7 +4,7 @@
  * Controls the content "boxes" for sections of content
  * in Layout.
  *
- * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
 

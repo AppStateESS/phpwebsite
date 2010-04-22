@@ -4,7 +4,7 @@
  * Controls the viewing and layout of the site
  *
  * @version $Id$
- * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package Core
  */
 PHPWS_Core::requireConfig('layout');
@@ -55,7 +55,7 @@ class Layout {
      * BODY tag by default instead of the DEFAULT tag. This occurs when
      * a preset theme variable was not created for the content variable.
      *
-     * @author Matt McNaney <matt at tux dot appstate dot edu>
+     * @author Matt McNaney <mcnaney at gmail dot com>
      */
     public static function add($text, $module=NULL, $content_var=NULL, $default_body=FALSE)
     {

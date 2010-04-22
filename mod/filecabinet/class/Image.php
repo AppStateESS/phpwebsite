@@ -4,7 +4,7 @@
  * Image class that builds off the File_Command class
  * Assists with image files
  *
- * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
 

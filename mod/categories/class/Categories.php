@@ -4,7 +4,7 @@
  * General category administration
  *
  * @version $Id$
- * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package categories
  */
 

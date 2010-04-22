@@ -3,7 +3,7 @@
 /**
  * Class assists with managing items needing approval
  *
- * @author Matt McNaney <matt at tux dot appstate dot edu>
+ * @author Matt McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
 

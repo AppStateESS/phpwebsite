@@ -7,7 +7,7 @@
  * as a central place to administrate all the files uploaded to the site.
  *
  * @version $Id$
- * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
 PHPWS_Core::initModClass('filecabinet', 'Folder.php');

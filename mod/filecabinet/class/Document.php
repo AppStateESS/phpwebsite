@@ -6,7 +6,7 @@
  * At some time there may be special circumstances for documents but
  * for now they are just download links.
  *
- * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
 

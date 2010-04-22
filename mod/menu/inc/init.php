@@ -2,7 +2,7 @@
 /**
  * Initializes the menu class
  *
- * @author Matthew McNaney <matt at tux dot appstate dot edu
+ * @author Matthew McNaney <mcnaney at gmail dot com
  * @version $Id$
  */
 

@@ -4,7 +4,7 @@
  * of blog entries.
  *
  * @version $Id$
- * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
 PHPWS_Core::initModClass('blog', 'Blog_Form.php');
