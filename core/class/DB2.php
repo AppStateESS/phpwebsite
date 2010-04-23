@@ -910,7 +910,7 @@ class DB2 extends Data {
             }
         }
 
-        $query[] = implode(', ', $update_values);
+        $query[] = DB2::toStringImplode(', ', $update_values);
 
         if (!empty($where)) {
             $query[] = $where;
