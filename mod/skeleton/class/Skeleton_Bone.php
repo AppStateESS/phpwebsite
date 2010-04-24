@@ -220,14 +220,15 @@ class Skeleton_Bone {
         $links = array();
 
         if (Current_User::allow('skeleton', 'edit_bone')) {
+            $label = Icon::show('edit');
             $vars['aop']  = 'edit_bone';
-            $links[] = PHPWS_Text::secureLink(dgettext('skeleton', 'Edit'), 'skeleton', $vars);
+            $links[] = PHPWS_Text::secureLink($label, 'skeleton', $vars);
         }
         if (Current_User::allow('skeleton', 'delete_bone')) {
             $vars['aop'] = 'delete_bone';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('skeleton', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('skeleton', 'Are you sure you want to delete the bone %s?'), $this->getTitle());
-            $js['LINK'] = dgettext('skeleton', 'Delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -236,7 +237,7 @@ class Skeleton_Bone {
         $tpl['SKELETON'] = $this->getSkeleton(true);
 
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' ', $links);
 
         return $tpl;
     }
@@ -249,14 +250,15 @@ class Skeleton_Bone {
         $links = array();
 
         if (Current_User::allow('skeleton', 'edit_bone')) {
+            $label = Icon::show('edit');
             $vars['aop']  = 'edit_bone';
-            $links[] = PHPWS_Text::secureLink(dgettext('skeleton', 'Edit'), 'skeleton', $vars);
+            $links[] = PHPWS_Text::secureLink($label, 'skeleton', $vars);
         }
         if (Current_User::allow('skeleton', 'delete_bone')) {
             $vars['aop'] = 'delete_bone';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('skeleton', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('skeleton', 'Are you sure you want to delete the bone %s?'), $this->getTitle());
-            $js['LINK'] = dgettext('skeleton', 'Delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -270,7 +272,7 @@ class Skeleton_Bone {
         }
 
         if($links)
-            $tpl['BONE_LINKS'] = implode(' | ', $links);
+            $tpl['BONE_LINKS'] = implode(' ', $links);
 
         return $tpl;
     }

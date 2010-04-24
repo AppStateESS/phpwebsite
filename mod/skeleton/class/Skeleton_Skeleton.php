@@ -262,19 +262,21 @@ class Skeleton_Skeleton {
         $links = array();
 
         if (Current_User::allow('skeleton', 'edit_bone')) {
+            $label = Icon::show('add', dgettext('skeleton', 'Add Bone'));
             $vars['aop']  = 'edit_bone';
             $vars['skeleton_id'] = $this->id;
-            $links[] = PHPWS_Text::secureLink(dgettext('skeleton', 'Add Bone'), 'skeleton', $vars);
+            $links[] = PHPWS_Text::secureLink($label, 'skeleton', $vars);
         }
         if (Current_User::allow('skeleton', 'edit_skeleton')) {
+            $label = Icon::show('edit');
             $vars['aop']  = 'edit_skeleton';
-            $links[] = PHPWS_Text::secureLink(dgettext('skeleton', 'Edit'), 'skeleton', $vars);
+            $links[] = PHPWS_Text::secureLink($label, 'skeleton', $vars);
         }
         if (Current_User::allow('skeleton', 'delete_skeleton')) {
             $vars['aop'] = 'delete_skeleton';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('skeleton', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('skeleton', 'Are you sure you want to delete the skeleton %s?'), $this->getTitle());
-            $js['LINK'] = dgettext('skeleton', 'Delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -284,7 +286,7 @@ class Skeleton_Skeleton {
         $tpl['BONES'] = $this->getQtyBones();
 
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' ', $links);
 
         return $tpl;
     }
