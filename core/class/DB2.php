@@ -210,7 +210,7 @@ class DB2 extends Data {
                     }
                 } else {
                     try {
-                        $this->loadHubDSN();
+                        $this->loadDSN();
                     } catch (PEAR_Exception $e) {
                         throw new PEAR_Exception(dgettext('core', 'Could not load hub DSN.'), $e);
                     }
@@ -461,44 +461,41 @@ class DB2 extends Data {
      */
     public function setTablePrefix($tbl_prefix)
     {
+        if (preg_match('/\W/', $tbl_prefix)) {
+            trigger_error(dgettext('core', 'Table prefix contains illegal characters'), E_ERROR);
+        }
         $this->tbl_prefix = $tbl_prefix;
     }
 
     /**
-     * Makes a connection to the phpws hub database.
-     * New 2.x method
-     * @access private
+     * Formally named loadHubDSN but that designation has been removed.
+     * This function will load the currently defined DSN in to the object.
+     * The define comes from the local config/core/config.php whether from hub
+     * or branch. A different DSN and table prefix may be set via the parameters.
+     *
+     * @param string $dsn : DSN formated string
+     * @param string $table_prefix : Prefix to prefix to all table names.
+     * @access public
      * @return void
      */
-    private function loadHubDSN()
+    public function loadDSN($dsn=null, $table_prefix=null)
     {
-        static $dsn        = null;
-        static $tbl_prefix = null;
+        static $dsn          = null;
+        static $table_prefix = null;
 
         if (empty($dsn)) {
-            /**
-             * Eventually, I'd like to have a simpler method for storing the database
-             * information. For now, I am commenting this out. Down the line hopefully
-             * it can be brought back.
-             * The database DSN is currently in config.php as a define. I'd like to
-             * remove it from there into its own file.
-             */
             $dsn = PHPWS_DSN;
             if (defined('PHPWS_TABLE_PREFIX')) {
-                $tbl_prefix = PHPWS_TABLE_PREFIX;
+                $table_prefix = PHPWS_TABLE_PREFIX;
             }
-            /*
-             if (!@include HUB_DSN_DIRECTORY . 'database.php') {
-             throw new PEAR_Exception(dgettext('core', 'Could not include database.php file for hub.'));
-             }
-             */
+
             if (empty($dsn)) {
-                throw new PEAR_Exception(dgettext('core', 'DSN not set in hub database file.'));
+                throw new PEAR_Exception(dgettext('core', 'DSN not set database file.'));
             }
         }
 
-        $this->dsn =  $dsn;
-        $this->tbl_prefix = $tbl_prefix;
+        $this->setDSN($dsn);
+        $this->setTablePrefix($table_prefix);
     }
 
 
@@ -526,47 +523,16 @@ class DB2 extends Data {
     }
 
     /**
-     * Makes a connection to the current phpws branch database.
+     * Makes a connection to a branch database.
      * Exception thrown on failure
      *
-     * @param string $branch : Name of the current branch
+     * @param object $branch : Branch object
      * @return void
      */
-    private function loadBranchDSN($branch=null)
+    public function loadBranchDSN(Branch $branch)
     {
-        /**
-         * This was written with 2.0 in mind. For now, just going to connect
-         * the same way the hub does. Will come back here after branch conversion.
-         */
-        $this->loadHubDSN();
-        return;
-
-        /**
-         * Keeping below for later
-         */
-        static $dsn            = null;
-        static $tbl_prefix     = null;
-
-        $current_branch = PHPWS_Core::getCurrentBranch();
-        /**
-         * If the branch is not sent, use the current branch.
-         */
-        if (empty($branch)) {
-            $branch = $current_branch;
-        }
-
-        if (empty($dsn)) {
-            if (!@include BRANCH_DSN_DIRECTORY . $branch . '.php') {
-                throw new PEAR_Exception(dgettext('core', 'Could not include branch DSN file.'));
-            }
-
-            if (empty($dsn)) {
-                throw new PEAR_Exception(dgettext('core', 'DSN not set in branch database file.'));
-            }
-        }
-
-        $this->dsn        = $dsn;
-        $this->tbl_prefix = $tbl_prefix;
+        $this->setDSN($branch->dsn);
+        $this->setTablePrefix($branch->prefix);
     }
 
     /**
