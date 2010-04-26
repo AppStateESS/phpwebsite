@@ -258,7 +258,8 @@ class Setup {
     public function createDatabase()
     {
         $dsn = $this->getDSN(1);
-        $db = DB::connect($dsn);
+        $dbobj = new DB;
+        $db = $dbobj->connect($dsn);
 
         if (PHPWS_Error::isError($db)) {
             PHPWS_Error::log($db);
