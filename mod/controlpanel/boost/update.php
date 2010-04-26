@@ -116,7 +116,12 @@ function controlpanel_update(&$content, $currentVersion)
 
 		case version_compare($currentVersion, '2.3.0', '<'):
 			PHPWS_Core::initCoreClass('DB2.php');
+			
 			$db2 = new DB2;
+			if ($branch = PHPWS_Boost::inBranch(true)) {
+			    $db2->loadBranchDSN($branch);
+			} 
+		
 			$t1 = $db2->addTable('controlpanel_link');
 			$f1 = $t1->addField('id');
 			$t1->addField('image');
