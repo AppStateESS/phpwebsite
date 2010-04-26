@@ -24,10 +24,13 @@ class Branch {
         $this->init();
     }
 
-
+    /**
+     * Loads the branch's DSN and table prefix into the objects
+     * 
+     * @return boolean  True on success, false on failure
+     */
     public function loadDSN()
     {
-        // @todo this needs changing to work with new system
         $config_file = $this->getBranchConfig();
 
         $config_contents = file_get_contents($config_file);
@@ -242,6 +245,10 @@ class Branch {
         PHPWS_DB::loadDB($dsn, $prefix);
     }
 
+    /**
+     * Returns the name of the branch saved in $_SESSION['Approved_Branch'].
+     * For full information, use Branch::getCurrentBranch
+     */
     public static function getCurrentBranchName()
     {
         if (!isset($_SESSION['Approved_Branch'])) {
@@ -251,7 +258,15 @@ class Branch {
         }
         return $_SESSION['Approved_Branch']['branch_name'];
     }
-    
+
+    /**
+     * Checks the Approved_Branch session and returns true
+     * if set. If not set, the function builds the session.
+     * If the branch site is approved, the row result is copied to
+     * the session and true is returned. If not approved, false is
+     * set to the session and false is returned.
+     * This function DOES NOT assist with hub updating branch modules.
+     */
     public static function checkCurrentBranch()
     {
         if (isset($_SESSION['Approved_Branch'])) {
@@ -267,8 +282,6 @@ class Branch {
 
         $db = new PHPWS_DB('branch_sites');
         $db->addWhere('site_hash', SITE_HASH);
-        $db->addColumn('id');
-        $db->addColumn('branch_name');
         $result = $db->select('row');
 
         PHPWS_DB::loadDB();
@@ -286,7 +299,22 @@ class Branch {
         }
     }
 
+    /**
+     * Returns an array of information pulled from the
+     * $_SESSION['Approved_Branch'] variable. This session is
+     * set in checkCurrentBranch.
+     */
     public static function getCurrentBranch()
+    {
+        if (!isset($_SESSION['Approved_Branch'])) {
+            if (!Branch::checkCurrentBranch()) {
+                return null;
+            }
+        }
+        return $_SESSION['Approved_Branch'];
+    }
+
+    public static function getCurrentBranchId()
     {
         if (!isset($_SESSION['Approved_Branch'])) {
             if (!Branch::checkCurrentBranch()) {
