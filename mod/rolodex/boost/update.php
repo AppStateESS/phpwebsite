@@ -254,6 +254,7 @@ It has been replaced with mod/rolodex/inc/runtime.php
 + Updated for phpws Core 2.0.0
 + PHP strict fixes
 + Some code tidy up
++ Implemented Icon class
 
 </pre>';
 

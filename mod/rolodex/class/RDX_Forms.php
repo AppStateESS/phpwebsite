@@ -441,7 +441,8 @@ class Rolodex_Forms {
         }
         if (Current_User::allow('rolodex', 'settings', null, null, true)) {
             $vars3['aop']  = 'new_location';
-            $ptags['ADD_LINK'] = PHPWS_Text::secureLink(dgettext('rolodex', 'Add Location'), 'rolodex', $vars3);
+            $label = Icon::show('add', dgettext('rolodex', 'Add Location'));
+            $ptags['ADD_LINK'] = PHPWS_Text::secureLink($label . ' ' . dgettext('rolodex', 'Add Location'), 'rolodex', $vars3);
         }
         $pager->addPageTags($ptags);
         $pager->addToggle('class="toggle1"');
@@ -479,7 +480,8 @@ class Rolodex_Forms {
         }
         if (Current_User::allow('rolodex', 'settings', null, null, true)) {
             $vars3['aop']  = 'new_feature';
-            $ptags['ADD_LINK'] = PHPWS_Text::secureLink(dgettext('rolodex', 'Add Feature'), 'rolodex', $vars3);
+            $label = Icon::show('add', dgettext('rolodex', 'Add Feature'));
+            $ptags['ADD_LINK'] = PHPWS_Text::secureLink($label . ' ' . dgettext('rolodex', 'Add Feature'), 'rolodex', $vars3);
         }
         $pager->addPageTags($ptags);
         $pager->addToggle('class="toggle1"');

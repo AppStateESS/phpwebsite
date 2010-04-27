@@ -151,19 +151,20 @@ class Rolodex_Location {
 
         if (Current_User::allow('rolodex', 'settings', null, null, true)){
             $vars['aop']  = 'edit_location';
-            $links[] = PHPWS_Text::secureLink(dgettext('rolodex', 'Edit'), 'rolodex', $vars);
+            $label = Icon::show('edit');
+            $links[] = PHPWS_Text::secureLink($label, 'rolodex', $vars);
 
             $vars['aop'] = 'delete_location';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('rolodex', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('rolodex', 'Are you sure you want to delete the location %s?'), $this->getTitle());
-            $js['LINK'] = dgettext('rolodex', 'Delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
         $tpl['TITLE'] = $this->viewLink() . ' ('.$this->getQtyMembers().')';
         $tpl['DESCRIPTION'] = $this->getListDescription(120);
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' ', $links);
         return $tpl;
     }
 

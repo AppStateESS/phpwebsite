@@ -1347,28 +1347,31 @@ class Rolodex_Member extends Demographics_User {
 
         if (Current_User::allow('rolodex', 'edit_member')){
             $vars['aop']  = 'edit_member';
-            $links[] = PHPWS_Text::secureLink(dgettext('rolodex', 'Edit'), 'rolodex', $vars);
+            $label = Icon::show('edit');
+            $links[] = PHPWS_Text::secureLink($label, 'rolodex', $vars);
         }
 
         if (Current_User::isUnrestricted('rolodex')) {
             if ($this->active) {
                 $vars['aop'] = 'deactivate_member';
-                $active = PHPWS_Text::secureLink(dgettext('rolodex', 'Deactivate'), 'rolodex', $vars);
+                $label = Icon::show('active', dgettext('rolodex', 'Deactivate'));
+                $active = PHPWS_Text::secureLink($label, 'rolodex', $vars);
             } else {
                 $vars['aop'] = 'activate_member';
-                $active = PHPWS_Text::secureLink(dgettext('rolodex', 'Activate'), 'rolodex', $vars);
+                $label = Icon::show('inactive', dgettext('rolodex', 'Activate'));
+                $active = PHPWS_Text::secureLink($label, 'rolodex', $vars);
             }
             $links[] = $active;
         } else {
             if (Current_User::allow('rolodex'))
-                $links[] = $this->active ? dgettext('rolodex', 'Active') : dgettext('rolodex', 'Not Active');
+                $links[] = $this->active ? Icon::show('active') : Icon::show('inactive');
         }
 
         if (Current_User::allow('rolodex', 'delete_member')){
             $vars['aop'] = 'delete_member';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('rolodex', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('rolodex', 'Are you sure you want to delete the member %s?\nDemographic information will be retained for other modules, but all Rolodex member information will be permanently removed.'), addslashes(htmlspecialchars_decode($this->getDisplay_name(true),ENT_QUOTES)));
-            $js['LINK'] = dgettext('rolodex', 'Delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -1540,7 +1543,7 @@ class Rolodex_Member extends Demographics_User {
         }
 
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' ', $links);
         return $tpl;
     }
 
