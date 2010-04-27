@@ -15,7 +15,7 @@
  * see this information, uncomment the below and put your ip address within.
  * The default setting is uncommented for 127.0.0.1 viewable only.
  */
-define('IP_VIEW', '127.0.0.1');
+//define('IP_VIEW', '127.0.0.1');
 
 if (defined('IP_VIEW') && IP_VIEW != $_SERVER['REMOTE_ADDR']) {
     return;
