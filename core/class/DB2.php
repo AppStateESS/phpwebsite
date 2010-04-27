@@ -208,9 +208,6 @@ class DB2 extends Data {
             $this->loadDSN($dsn, $tbl_prefix);
         }
 
-        $this->loadOptions();
-        $this->connect();
-
         $this->logDB(sprintf(dgettext('core', 'Connected to database "%s"'), $this->mdb2->database_name));
     }
 
@@ -483,6 +480,8 @@ class DB2 extends Data {
         $this->setDSN($dsn);
         $this->setTablePrefix($table_prefix);
         $this->deriveDatabaseType();
+        $this->loadOptions();
+        $this->connect();
     }
 
 
