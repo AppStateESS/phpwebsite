@@ -9,19 +9,6 @@
  */
 
 /**
- * If the define below is uncommented, the ip address set within will
- * limit views to a specific ip address. So, if you need to see information
- * about your installation, but don't wish others coming to the site to
- * see this information, uncomment the below and put your ip address within.
- * The default setting is uncommented for 127.0.0.1 viewable only.
- */
-//define('IP_VIEW', '127.0.0.1');
-
-if (defined('IP_VIEW') && IP_VIEW != $_SERVER['REMOTE_ADDR']) {
-    return;
-}
-
-/**
  * Line below determines which errors should be shown.
  * The default is E_ALL. If you are having problems, it is suggested
  * you uncomment this line.
@@ -33,6 +20,15 @@ if (defined('IP_VIEW') && IP_VIEW != $_SERVER['REMOTE_ADDR']) {
 
 ini_set('display_errors', 'On');
 error_reporting (-1);
+
+/**
+ * If the define below is uncommented, the ip address set within will
+ * limit views to a specific ip address. So, if you need to see information
+ * about your installation, but don't wish others coming to the site to
+ * see this information, uncomment the below and put your ip address within.
+ * The default setting is uncommented for 127.0.0.1 viewable only.
+ */
+define('IP_VIEW', '127.0.0.1');
 
 define('stats_on',        false); // Must be true for anything to echo
 define('stats_classes',   false); // Show the classes currently included
@@ -51,8 +47,12 @@ if (stats_on && stats_time) {
 
 function show_stats()
 {
+    if (defined('IP_VIEW') && IP_VIEW != $_SERVER['REMOTE_ADDR']) {
+        return;
+    }
+    
     if (!stats_on) {
-        return TRUE;
+        return;
     }
 
     if (stats_time) {
