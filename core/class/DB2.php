@@ -463,9 +463,6 @@ class DB2 extends Data {
      */
     public function loadDSN($dsn=null, $table_prefix=null)
     {
-        static $dsn          = null;
-        static $table_prefix = null;
-
         if (empty($dsn)) {
             $dsn = PHPWS_DSN;
             if (defined('PHPWS_TABLE_PREFIX')) {
