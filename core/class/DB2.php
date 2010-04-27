@@ -200,28 +200,24 @@ class DB2 extends Data {
             $this->table_info = & $GLOBALS['mdb2_table_info'];
         }
 
+        $this->loadOptions();
+        
+        // No dsn sent, try connection based on local config.php
         if (empty($dsn)) {
-            if (empty($this->dsn)) {
-                try {
-                    $this->loadDSN();
-                } catch (PEAR_Exception $e) {
-                    throw new PEAR_Exception(dgettext('core', 'Could not load hub DSN.'), $e);
-                }
-            } else {
-                $dsn        = & $this->dsn;
-                $tbl_prefix = & $this->tbl_prefix;
+            try {
+                $this->loadDSN();
+            } catch (PEAR_Exception $e) {
+                throw new PEAR_Exception(dgettext('core', 'Could not load hub DSN.'), $e);
             }
         } else {
             $this->dsn        = $dsn;
             $this->tbl_prefix = $tbl_prefix;
+            try {
+                $this->connect();
+            } catch (PEAR_Exception $e) {
+                throw new PEAR_Exception(dgettext('core', 'Could not connect to database using requested DSN.'), $e);
+            }
         }
-
-        try {
-            $this->connect();
-        } catch (PEAR_Exception $e) {
-            return $e;
-        }
-        $this->loadOptions();
         $this->logDB(sprintf(dgettext('core', 'Connected to database "%s"'), $this->mdb2->database_name));
     }
 
@@ -488,6 +484,7 @@ class DB2 extends Data {
 
         $this->setDSN($dsn);
         $this->setTablePrefix($table_prefix);
+        $this->connect();
     }
 
 
@@ -525,6 +522,7 @@ class DB2 extends Data {
     {
         $this->setDSN($branch->dsn);
         $this->setTablePrefix($branch->prefix);
+        $this->connect();
     }
 
     /**
