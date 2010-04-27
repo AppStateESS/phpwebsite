@@ -166,12 +166,13 @@ class vShop_Tax {
 
         if (Current_User::allow('vshop', 'settings')) {
             $vars['aop']  = 'edit_tax';
-            $links[] = PHPWS_Text::secureLink(dgettext('vshop', 'Edit'), 'vshop', $vars);
+            $label = Icon::show('edit');
+            $links[] = PHPWS_Text::secureLink($label, 'vshop', $vars);
 
             $vars['aop'] = 'delete_tax';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('vshop', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('vshop', 'Are you sure you want to delete the tax %s?'), $this->getTitle());
-            $js['LINK'] = dgettext('vshop', 'Delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -179,7 +180,7 @@ class vShop_Tax {
         $tpl['RATE'] = $this->getRate(true);
 
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' ', $links);
 
         return $tpl;
     }

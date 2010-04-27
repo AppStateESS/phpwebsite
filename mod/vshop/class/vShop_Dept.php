@@ -264,17 +264,19 @@ class vShop_Dept {
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['aop']  = 'edit_item';
             $vars['dept_id'] = $this->id;
-            $links[] = PHPWS_Text::secureLink(dgettext('vshop', 'Add Item'), 'vshop', $vars);
+            $label = Icon::show('add', dgettext('vshop', 'Add Item'));
+            $links[] = PHPWS_Text::secureLink($label, 'vshop', $vars);
         }
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['aop']  = 'edit_dept';
-            $links[] = PHPWS_Text::secureLink(dgettext('vshop', 'Edit'), 'vshop', $vars);
+            $label = Icon::show('edit');
+            $links[] = PHPWS_Text::secureLink($label, 'vshop', $vars);
         }
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['aop'] = 'delete_dept';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('vshop', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('vshop', 'Are you sure you want to delete the department %s?'), $this->getTitle());
-            $js['LINK'] = dgettext('vshop', 'Delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -284,7 +286,7 @@ class vShop_Dept {
         $tpl['ITEMS'] = $this->getQtyItems();
 
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' ', $links);
 
         return $tpl;
     }

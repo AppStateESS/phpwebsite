@@ -260,7 +260,8 @@ class vShop_Forms {
         }
         if (Current_User::allow('vshop', 'settings', null, null, true)) {
             $vars['aop']  = 'new_tax';
-            $ptags['ADD_LINK'] = PHPWS_Text::secureLink(dgettext('vshop', 'Add Tax'), 'vshop', $vars);
+            $label = Icon::show('add', dgettext('rolodex', 'Add Tax'));
+            $ptags['ADD_LINK'] = PHPWS_Text::secureLink($label . ' ' . dgettext('vshop', 'Add Tax'), 'vshop', $vars);
         }
         $pager->addPageTags($ptags);
         $pager->addToggle('class="toggle1"');

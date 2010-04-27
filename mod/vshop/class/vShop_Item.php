@@ -352,13 +352,14 @@ class vShop_Item {
 
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['aop']  = 'edit_item';
-            $links[] = PHPWS_Text::secureLink(dgettext('vshop', 'Edit'), 'vshop', $vars);
+            $label = Icon::show('edit');
+            $links[] = PHPWS_Text::secureLink($label, 'vshop', $vars);
         }
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['aop'] = 'delete_item';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('vshop', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('vshop', 'Are you sure you want to delete the item %s?'), $this->getTitle());
-            $js['LINK'] = dgettext('vshop', 'Delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -371,7 +372,7 @@ class vShop_Item {
 //        }
 
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' ', $links);
 
         return $tpl;
     }
@@ -386,14 +387,15 @@ class vShop_Item {
         $links[] = $this->addLink(true) . ' ' . $this->addLink();
 
         if (Current_User::allow('vshop', 'edit_items')) {
+            $label = Icon::show('edit');
             $vars['aop']  = 'edit_item';
-            $links[] = PHPWS_Text::secureLink(dgettext('vshop', 'Edit'), 'vshop', $vars);
+            $links[] = PHPWS_Text::secureLink($label, 'vshop', $vars);
         }
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['aop'] = 'delete_item';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('vshop', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('vshop', 'Are you sure you want to delete the item %s?'), $this->getTitle());
-            $js['LINK'] = dgettext('vshop', 'Delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -411,7 +413,7 @@ class vShop_Item {
         }
 
         if($links)
-            $tpl['ITEM_LINKS'] = implode(' | ', $links);
+            $tpl['ITEM_LINKS'] = implode(' ', $links);
 
         return $tpl;
     }

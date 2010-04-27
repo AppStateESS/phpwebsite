@@ -381,20 +381,21 @@ class vShop_Order {
 
             if ($_GET['tab'] == 'orders') {
                 $vars['aop']  = 'edit_order';
-                $links[] = PHPWS_Text::secureLink(dgettext('vshop', 'Edit'), 'vshop', $vars);
+                $label = Icon::show('edit');
+                $links[] = PHPWS_Text::secureLink($label, 'vshop', $vars);
             }
 
             $vars['aop'] = 'delete_order';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('vshop', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('vshop', 'Are you sure you want to delete order %s from %s?'), $this->id, $this->getCustomer());
-            $js['LINK'] = dgettext('vshop', 'Delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
 
             if ($_GET['tab'] == 'orders') {
                 $vars['aop'] = 'cancel_order';
                 $js['ADDRESS'] = PHPWS_Text::linkAddress('vshop', $vars, true);
                 $js['QUESTION'] = sprintf(dgettext('vshop', 'Are you sure you want to cancel order %s from %s?'), $this->id, $this->getCustomer());
-                $js['LINK'] = dgettext('vshop', 'Cancel');
+                $js['LINK'] = Icon::show('cancel');
                 $links[] = javascript('confirm', $js);
             }
 
@@ -421,7 +422,7 @@ class vShop_Order {
         }
 
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' ', $links);
 
         return $tpl;
     }
