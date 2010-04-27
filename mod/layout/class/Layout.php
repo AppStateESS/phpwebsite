@@ -84,7 +84,7 @@ class Layout {
     }
 
 
-    public function plug($content, $theme_var)
+    public static function plug($content, $theme_var)
     {
         if (empty($content) || empty($theme_var) || preg_match('/\W/', $theme_var)) {
             return false;
