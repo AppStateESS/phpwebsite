@@ -210,13 +210,14 @@ class vMail_Recipient {
 
         if (Current_User::allow('vmail', 'edit_recipient')) {
             $vars['aop']  = 'edit_recipient';
-            $links[] = PHPWS_Text::secureLink(dgettext('vmail', 'Edit'), 'vmail', $vars);
+            $label = Icon::show('edit');
+            $links[] = PHPWS_Text::secureLink($label, 'vmail', $vars);
         }
         if (Current_User::allow('vmail', 'delete_recipient')) {
             $vars['aop'] = 'delete_recipient';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('vmail', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('vmail', 'Are you sure you want to delete the recipient %s?'), $this->getLabel());
-            $js['LINK'] = dgettext('vmail', 'Delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -231,16 +232,18 @@ class vMail_Recipient {
         if (Current_User::allow('vmail', 'edit_recipient')) {
             if ($this->active) {
                 $vars['aop'] = 'deactivate_recipient';
-                $active = PHPWS_Text::secureLink(dgettext('vmail', 'Deactivate'), 'vmail', $vars);
+                $label = Icon::show('active', dgettext('rolodex', 'Deactivate'));
+                $active = PHPWS_Text::secureLink($label, 'vmail', $vars);
             } else {
                 $vars['aop'] = 'activate_recipient';
-                $active = PHPWS_Text::secureLink(dgettext('vmail', 'Activate'), 'vmail', $vars);
+                $label = Icon::show('inactive', dgettext('rolodex', 'Activate'));
+                $active = PHPWS_Text::secureLink($label, 'vmail', $vars);
             }
             $links[] = $active;
         }
 
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' ', $links);
 
         return $tpl;
     }
