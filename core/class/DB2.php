@@ -200,24 +200,16 @@ class DB2 extends Data {
             $this->table_info = & $GLOBALS['mdb2_table_info'];
         }
 
-        $this->loadOptions();
-        
         // No dsn sent, try connection based on local config.php
         if (empty($dsn)) {
-            try {
-                $this->loadDSN();
-            } catch (PEAR_Exception $e) {
-                throw new PEAR_Exception(dgettext('core', 'Could not load hub DSN.'), $e);
-            }
+            $this->loadDSN();
         } else {
-            $this->dsn        = $dsn;
-            $this->tbl_prefix = $tbl_prefix;
-            try {
-                $this->connect();
-            } catch (PEAR_Exception $e) {
-                throw new PEAR_Exception(dgettext('core', 'Could not connect to database using requested DSN.'), $e);
-            }
+            $this->loadDSN($dsn, $tbl_prefix);
         }
+
+        $this->loadOptions();
+        $this->connect();
+
         $this->logDB(sprintf(dgettext('core', 'Connected to database "%s"'), $this->mdb2->database_name));
     }
 
@@ -478,13 +470,12 @@ class DB2 extends Data {
             }
 
             if (empty($dsn)) {
-                throw new PEAR_Exception(dgettext('core', 'DSN not set database file.'));
+                throw new PEAR_Exception(dgettext('core', 'DSN not set in database config file.'));
             }
         }
 
         $this->setDSN($dsn);
         $this->setTablePrefix($table_prefix);
-        $this->connect();
     }
 
 
@@ -520,9 +511,7 @@ class DB2 extends Data {
      */
     public function loadBranchDSN(Branch $branch)
     {
-        $this->setDSN($branch->dsn);
-        $this->setTablePrefix($branch->prefix);
-        $this->connect();
+        $this->loadDSN($branch->dsn, $branch->prefix);
     }
 
     /**
@@ -530,7 +519,7 @@ class DB2 extends Data {
      * Default seqcol_name is 'sequence', id is used for backward compatibility
      * @return void
      */
-    private function connect()
+    public function connect()
     {
         $this->mdb2 = MDB2::singleton($this->dsn, $this->database_options);
 
@@ -539,7 +528,7 @@ class DB2 extends Data {
             if (CLEAR_DSN) {
                 $this->mdb2->userinfo = str_replace($this->dsn, '-- DSN removed --', $this->mdb2->userinfo);
             }
-            throw new PEAR_Exception(dgettext('core', 'Could not connect to the database.'));
+            throw new PEAR_Exception(dgettext('core', 'Could not connect to the database using supplied DSN information.'));
         }
 
         // there are two other fetch modes - neither really more helpful
