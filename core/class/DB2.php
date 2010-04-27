@@ -185,6 +185,7 @@ class DB2 extends Data {
 
     private $database_options = array();
 
+    private $database_type = null;
 
     /**
      * The dsn is expected to in PEAR DB format.
@@ -213,6 +214,11 @@ class DB2 extends Data {
         $this->logDB(sprintf(dgettext('core', 'Connected to database "%s"'), $this->mdb2->database_name));
     }
 
+    private function deriveDatabaseType()
+    {
+        $this->database_type = strstr($this->dsn, ':', true);
+    }
+
     private function loadOptions()
     {
         include PHPWS_SOURCE_DIR . 'core/conf/DB2.php';
@@ -229,12 +235,12 @@ class DB2 extends Data {
             $this->database_options = $all['database'];
         }
 
-        if (isset(${$this->mdb2->dbsyntax}['table'])) {
-            $this->table_options = array_merge($this->table_options, ${$this->mdb2->dbsyntax}['table']);
+        if (isset(${$this->database_type}['table'])) {
+            $this->table_options = array_merge($this->table_options, ${$this->database_type}['table']);
         }
 
-        if (isset(${$this->mdb2->dbsyntax}['database'])) {
-            $this->database_options = array_merge($this->database_options, ${$this->mdb2->dbsyntax}['database']);
+        if (isset(${$this->database_type}['database'])) {
+            $this->database_options = array_merge($this->database_options, ${$this->database_type}['database']);
         }
     }
 
@@ -476,6 +482,7 @@ class DB2 extends Data {
 
         $this->setDSN($dsn);
         $this->setTablePrefix($table_prefix);
+        $this->deriveDatabaseType();
     }
 
 
