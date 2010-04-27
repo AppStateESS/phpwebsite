@@ -202,18 +202,10 @@ class DB2 extends Data {
 
         if (empty($dsn)) {
             if (empty($this->dsn)) {
-                if (PHPWS_Core::isBranch()) {
-                    try {
-                        $this->loadBranchDSN();
-                    } catch (PEAR_Exception $e) {
-                        throw new PEAR_Exception(dgettext('core', 'Could not load branch DSN.'), $e);
-                    }
-                } else {
-                    try {
-                        $this->loadDSN();
-                    } catch (PEAR_Exception $e) {
-                        throw new PEAR_Exception(dgettext('core', 'Could not load hub DSN.'), $e);
-                    }
+                try {
+                    $this->loadDSN();
+                } catch (PEAR_Exception $e) {
+                    throw new PEAR_Exception(dgettext('core', 'Could not load hub DSN.'), $e);
                 }
             } else {
                 $dsn        = & $this->dsn;
@@ -1381,7 +1373,7 @@ class DB2 extends Data {
             $this->mdb2->loadModule('Manager');
             $table_list = $this->mdb2->listTables();
         }
-        
+
         if ($this->tbl_prefix) {
             $table_name = $this->tbl_prefix . $table_name;
         }
