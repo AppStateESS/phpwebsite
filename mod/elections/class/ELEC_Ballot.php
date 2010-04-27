@@ -508,13 +508,15 @@ class Elections_Ballot {
         if (Current_User::isUnrestricted('elections')) {
             $vars['aop']  = 'edit_candidate';
             $vars['ballot_id'] = $this->id;
-            $links[] = PHPWS_Text::secureLink(dgettext('elections', 'Add Candidate'), 'elections', $vars);
+            $label = Icon::show('add', dgettext('elections', 'Add Candidate'));
+            $links[] = PHPWS_Text::secureLink($label, 'elections', $vars);
             $vars['aop']  = 'edit_ballot';
-            $links[] = PHPWS_Text::secureLink(dgettext('elections', 'Edit'), 'elections', $vars);
+            $label = Icon::show('edit');
+            $links[] = PHPWS_Text::secureLink($label, 'elections', $vars);
             $vars['aop'] = 'delete_ballot';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('elections', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('elections', 'Are you sure you want to delete the ballot %s?'), $this->getTitle());
-            $js['LINK'] = dgettext('elections', 'Delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -534,7 +536,7 @@ class Elections_Ballot {
             $tpl['VOTES'] = $this->getVotes();
         }
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' ', $links);
         return $tpl;
     }
 

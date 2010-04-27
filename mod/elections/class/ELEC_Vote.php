@@ -140,7 +140,7 @@ class Elections_Vote {
             $vars['aop'] = 'delete_vote';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('elections', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('elections', 'Are you sure you want to delete the vote %s? This will not take back the votes, just remove this record from the log.'), $this->id);
-            $js['LINK'] = dgettext('elections', 'Delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -149,7 +149,7 @@ class Elections_Vote {
         $tpl['DATE'] = $this->getVotedate('%H:%M %D');
         $tpl['IP'] = $this->ip;
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' ', $links);
 
         return $tpl;
     }
