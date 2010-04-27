@@ -170,19 +170,22 @@ class Finc_File {
 
         if (Current_User::isUnrestricted('finc')) {
             $vars['aop']  = 'edit_file';
-            $links[] = PHPWS_Text::secureLink(dgettext('finc', 'Edit'), 'finc', $vars);
+            $label = Icon::show('edit');
+            $links[] = PHPWS_Text::secureLink($label, 'finc', $vars);
             if ($this->active) {
                 $vars['aop'] = 'deactivate_file';
-                $active = PHPWS_Text::secureLink(dgettext('finc', 'Deactivate'), 'finc', $vars);
+                $label = Icon::show('active', dgettext('finc', 'Deactivate'));
+                $active = PHPWS_Text::secureLink($label, 'finc', $vars);
             } else {
                 $vars['aop'] = 'activate_file';
-                $active = PHPWS_Text::secureLink(dgettext('finc', 'Activate'), 'finc', $vars);
+                $label = Icon::show('inactive', dgettext('finc', 'Activate'));
+                $active = PHPWS_Text::secureLink($label, 'finc', $vars);
             }
             $links[] = $active;
             $vars['aop'] = 'delete_file';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('finc', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('finc', 'Are you sure you want to delete the file %s?\n\nOnly the databse record will be destroyed. You will still have to physically remove "%s" from your file system.'), $this->getTitle(true), $this->getPath());
-            $js['LINK'] = dgettext('finc', 'Delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -190,7 +193,7 @@ class Finc_File {
         $tpl['PATH'] = $this->getPath(true);
         $tpl['DESCRIPTION'] = $this->getListDescription(120);
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' ', $links);
         return $tpl;
     }
 

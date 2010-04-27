@@ -3,6 +3,7 @@ Version 1.1.1 -- Apr 2010
 + Updated for phpws Core 2.0.0
 + PHP strict fixes
 + Some code tidy up
++ Implemented Icon class
 
 
 Version 1.1.0 -- Nov 2008
