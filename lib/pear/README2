@@ -33,6 +33,9 @@ MDB2::isResultCommon
 MDB2::isError
 MDB2::fileExists
 
+Cache/Lite.php
+Cache_Lite::raiseError - fixed strict error
+
 
 MDB2/Manager/mysql.php
 ---------------------------
