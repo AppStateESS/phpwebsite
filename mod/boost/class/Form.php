@@ -116,11 +116,6 @@ class Boost_Form {
 
 				$template['VERSION'] =sprintf('%s &gt; %s', $core_db->version, $core_file->version);
 				$template['COMMAND'] = implode(' | ', $core_links);
-			} elseif ($allow_update) {
-				$js_file['QUESTION'] = dgettext('boost', 'Clicking OK will copy the core\\\'s configuration, image and (if on a branch site) javascript directories locally.\nNo backups will occur and all local files will be overwritten.\nAre you certain you want to do this?');
-				$js_file['ADDRESS']  = PHPWS_Text::linkAddress('boost', array('opmod'=>'core', 'action'=>'copy_local'), true);
-				$js_file['LINK'] = dgettext('boost', 'Revert');
-				$template['COMMAND'] = javascript('confirm', $js_file);
 			} else {
 				$template['COMMAND'] = dgettext('boost', 'None');
 			}
@@ -246,14 +241,6 @@ class Boost_Form {
 					} else {
 						$links[] = PHPWS_Boost::uninstallLink($title);
 					}
-				}
-				if ($allow_update) {
-					$js_file['QUESTION'] = dgettext('boost', 'Clicking OK will copy this module\\\'s configuration, image, templates, and javascript folders locally.\nNo backups will occur and all local files will be overwritten.\nAre you certain you want to do this?');
-					$js_file['ADDRESS'] = PHPWS_Text::linkAddress('boost', array('opmod'=>$title, 'action'=>'copy_local'), true);
-					$js_file['LINK'] = dgettext('boost', 'Revert');
-					$links[] = javascript('confirm', $js_file);
-				} else {
-					$links[] = dgettext('boost', 'Revert');
 				}
 			}
 
