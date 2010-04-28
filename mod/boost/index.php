@@ -108,11 +108,6 @@ switch ($_REQUEST['action']){
     case 'show_depended_upon':
         $content[] = Boost_Action::showDependedUpon($_REQUEST['opmod']);
         break;
-
-    case 'copy_local':
-        $content[] = Boost_Action::copyLocal($_REQUEST['opmod']);
-        break;
-
 }// End area switch
 
 if ($js) {
