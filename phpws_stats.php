@@ -18,8 +18,8 @@
  * kept commented.
  */
 
-ini_set('display_errors', 'On');
-error_reporting (-1);
+//ini_set('display_errors', 'On');
+//error_reporting (-1);
 
 /**
  * If the define below is uncommented, the ip address set within will
