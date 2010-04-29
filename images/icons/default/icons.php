@@ -65,6 +65,7 @@ $icons['install'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-62',
 $icons['lock'] = array('src'=>'lock.png', 'label'=>dgettext('core', 'Lock'));
 $icons['magnify'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-150', 'y'=>'-242', 'label'=>dgettext('core', 'Magnify'));
 $icons['maximize'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-32', 'y'=>'-272', 'label'=>dgettext('core', 'Maximize'));
+$icons['missing'] = array('src'=>'missing.png', 'label'=>dgettext('core', 'Missing'));
 $icons['music'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-32', 'y'=>'-32', 'label'=>dgettext('core', 'Music'));
 $icons['new'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-362', 'y'=>'-32', 'label'=>dgettext('core', 'New'));
 $icons['next'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-392', 'y'=>'-122', 'label'=>dgettext('core', 'Next'));
