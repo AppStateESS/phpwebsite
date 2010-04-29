@@ -116,24 +116,16 @@ function controlpanel_update(&$content, $currentVersion)
 
 		case version_compare($currentVersion, '2.3.0', '<'):
 			PHPWS_Core::initCoreClass('DB2.php');
+			$db = new PHPWS_DB('controlpanel_link');
+			$db->addColumn('id');
+			$db->addColumn('image');
+			$result = $db->select();
 			
-			$db2 = new DB2;
-			if ($branch = PHPWS_Boost::inBranch(true)) {
-			    $db2->loadBranchDSN($branch);
-			} 
-		
-			$t1 = $db2->addTable('controlpanel_link');
-			$f1 = $t1->addField('id');
-			$t1->addField('image');
-			$db2->setIndexBy($f1);
-			$result = $db2->select(DB2_COLUMN);
-
-			foreach ($result as $id=>$link) {
-				$new_link = preg_replace('@images/mod/\w+/@', '', $link);
-				$t1->addValue('image', $new_link);
-				$t1->addWhere('id', $id);
-				$db2->update();
-				$t1->reset();
+			foreach ($result as $link) {
+			    $db->addWhere('id', $link['id']);
+			    $db->addValue('image', preg_replace('@images/mod/\w+/@', '', $link['image']));
+			    $db->update();
+			    $db->reset();
 			}
 			unset($_SESSION['CP_All_links']);
 			$content[] = '<pre>2.3.0 changes
