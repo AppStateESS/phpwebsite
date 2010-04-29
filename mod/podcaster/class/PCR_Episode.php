@@ -140,9 +140,18 @@ class Podcaster_Episode {
 
     function getMedia($print=false, $icon=false, $text=null)
     {
+/*
         if (!$this->media_id) {
             if ($print) {
-                return dgettext('podcaster', 'No Media');
+                return dgettext('podcaster', 'No Media Attached');
+            } else {
+                return null;
+            }
+        }
+*/
+        if (!$this->media_id) {
+            if ($print) {
+                return Icon::show('missing', 'No Media Attached');
             } else {
                 return null;
             }
@@ -367,51 +376,56 @@ class Podcaster_Episode {
         $vars['episode_id'] = $this->id;
         $vars2['episode_id'] = $this->id;
 
-        $links[] = $this->getMedia(true,false,dgettext('podcaster', 'Play'));
+        $links[] = $this->getMedia(true,false,Icon::show('play'));
 
         if (Current_User::allow('podcaster', 'edit_episode')){
             $vars['aop']  = 'edit_episode';
-            $links[] = PHPWS_Text::secureLink(dgettext('podcaster', 'Edit'), 'podcaster', $vars);
+            $label = Icon::show('edit');
+            $links[] = PHPWS_Text::secureLink($label, 'podcaster', $vars);
         }
 
         if (Current_User::isUnrestricted('podcaster')) {
             if ($this->active) {
                 $vars['aop'] = 'deactivate_episode';
-                $active = PHPWS_Text::secureLink(dgettext('podcaster', 'Deactivate'), 'podcaster', $vars);
+                $label = Icon::show('active', dgettext('podcaster', 'Deactivate'));
+                $active = PHPWS_Text::secureLink($label, 'podcaster', $vars);
             } else {
                 $vars['aop'] = 'activate_episode';
-                $active = PHPWS_Text::secureLink(dgettext('podcaster', 'Activate'), 'podcaster', $vars);
+                $label = Icon::show('inactive', dgettext('podcaster', 'Activate'));
+                $active = PHPWS_Text::secureLink($label, 'podcaster', $vars);
             }
             $links[] = $active;
         } else {
             if (Current_User::allow('podcaster'))
-                $links[] = $this->active ? dgettext('podcaster', 'Active') : dgettext('podcaster', 'Not Active');
+                $links[] = $this->active ? Icon::show('active') : Icon::show('inactive');
         }
 
         if (Current_User::isUnrestricted('podcaster')) {
             if ($this->approved) {
                 $vars['aop'] = 'unapprove_episode';
-                $approved = PHPWS_Text::secureLink(dgettext('podcaster', 'Unapprove'), 'podcaster', $vars);
+                $label = Icon::show('approved', dgettext('podcaster', 'Unapprove'));
+                $approved = PHPWS_Text::secureLink($label, 'podcaster', $vars);
             } else {
                 $vars['aop'] = 'approve_episode';
-                $approved = PHPWS_Text::secureLink(dgettext('podcaster', 'Approve'), 'podcaster', $vars);
+                $label = Icon::show('unapproved', dgettext('podcaster', 'Approve'));
+                $approved = PHPWS_Text::secureLink($label, 'podcaster', $vars);
             }
             $links[] = $approved;
         } else {
             if (Current_User::allow('podcaster'))
-                $links[] = $this->approved ? dgettext('podcaster', 'Approved') : dgettext('podcaster', 'Not Approved');
+                $links[] = $this->approved ? Icon::show('approved') : Icon::show('unapproved');
         }
 
         if (Current_User::allow('podcaster', 'delete_episode')){
             $vars['aop'] = 'delete_episode';
             $jsconf['QUESTION'] = dgettext('podcaster', 'Are you certain you want to delete this episode?');
             $jsconf['ADDRESS'] = PHPWS_Text::linkAddress('podcaster', $vars, true);
-            $jsconf['LINK'] = dgettext('podcaster', 'Delete episode');
+            $jsconf['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $jsconf);
         }
 
         if($links)
-            return implode(' | ', $links);
+            return implode(' ', $links);
     }
 
 

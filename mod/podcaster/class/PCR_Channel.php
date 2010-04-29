@@ -381,33 +381,37 @@ class Podcaster_Channel {
 
         if (Current_User::allow('podcaster', 'edit_episode')){
             $vars['aop']  = 'new_episode';
-            $links[] = PHPWS_Text::secureLink(dgettext('podcaster', 'New Episode'), 'podcaster', $vars);
+            $label = Icon::show('add', dgettext('rolodex', 'Add Episode'));
+            $links[] = PHPWS_Text::secureLink($label, 'podcaster', $vars);
         }
 
         if (Current_User::allow('podcaster', 'edit_channel')){
             $vars['aop']  = 'edit_channel';
-            $links[] = PHPWS_Text::secureLink(dgettext('podcaster', 'Edit'), 'podcaster', $vars);
+            $label = Icon::show('edit');
+            $links[] = PHPWS_Text::secureLink($label, 'podcaster', $vars);
         }
 
         if (Current_User::isUnrestricted('podcaster')) {
             if ($this->active) {
                 $vars['aop'] = 'deactivate_channel';
-                $active = PHPWS_Text::secureLink(dgettext('podcaster', 'Deactivate'), 'podcaster', $vars);
+                $label = Icon::show('active', dgettext('podcaster', 'Deactivate'));
+                $active = PHPWS_Text::secureLink($label, 'podcaster', $vars);
             } else {
                 $vars['aop'] = 'activate_channel';
-                $active = PHPWS_Text::secureLink(dgettext('podcaster', 'Activate'), 'podcaster', $vars);
+                $label = Icon::show('inactive', dgettext('podcaster', 'Activate'));
+                $active = PHPWS_Text::secureLink($label, 'podcaster', $vars);
             }
             $links[] = $active;
         } else {
             if (Current_User::allow('podcaster'))
-                $links[] = $this->active ? dgettext('podcaster', 'Active') : dgettext('podcaster', 'Not Active');
+                $links[] = $this->active ? Icon::show('active') : Icon::show('inactive');
         }
 
         if (Current_User::allow('podcaster', 'delete_channel')){
             $vars['aop'] = 'delete_channel';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('podcaster', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('podcaster', 'Are you sure you want to delete the channel %s?\nAll related episodes and channel information will be permanently removed.'), $this->getTitle());
-            $js['LINK'] = dgettext('podcaster', 'Delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -415,7 +419,7 @@ class Podcaster_Channel {
         $tpl['DATE_UPDATED'] = $this->getDateUpdated();
         $tpl['DESCRIPTION'] = $this->getListDescription(120);
         if($links)
-            $tpl['ACTION'] = implode(' | ', $links);
+            $tpl['ACTION'] = implode(' ', $links);
         return $tpl;
     }
 
