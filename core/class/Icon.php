@@ -30,7 +30,7 @@ class Icon extends Image {
         if (!isset($icon_objects[$type])) {
             Icon::loadIcon($type, $icon_objects);
         }
-        return $icon_objects[$type];
+        return clone($icon_objects[$type]);
     }
 
     public function __toString()
@@ -149,6 +149,9 @@ class Icon extends Image {
 
     public static function demo()
     {
+        if (!class_exists('Layout')) {
+            trigger_error(dgettext('core', 'Layout class not enabled'), E_USER_ERROR);
+        }
         $icons = Icon::getIconArray();
         $icon_list = array_keys($icons);
 
