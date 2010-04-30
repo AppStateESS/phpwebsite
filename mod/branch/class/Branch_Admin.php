@@ -305,7 +305,7 @@ class Branch_Admin {
     {
         require_once 'File.php';
 
-        $location = $this->branch->directory . 'config/';
+        $location = $this->branch->directory . 'config/core/';
         if (!is_writable($location)) {
             return false;
         }

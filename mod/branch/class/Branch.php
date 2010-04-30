@@ -138,6 +138,10 @@ class Branch {
         if (!mkdir($this->directory . 'config/')) {
             return FALSE;
         }
+
+        if (!mkdir($this->directory . 'config/core/')) {
+            return FALSE;
+        }
         return TRUE;
     }
 
