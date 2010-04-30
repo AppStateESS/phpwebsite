@@ -514,6 +514,9 @@ class DB2 extends Data {
      */
     public function loadBranchDSN(Branch $branch)
     {
+        if (empty($branch->dsn)) {
+            $branch->loadDSN();
+        }
         $this->loadDSN($branch->dsn, $branch->prefix);
     }
 
