@@ -702,7 +702,7 @@ class Branch_Admin {
         $dsn2 = $dsn1 . '/' . $this->dbname;
 
         $pear_db = new DB;
-        $connection = $pear_db->connect($dsn);
+        $connection = $pear_db->connect($dsn1);
 
         if (PHPWS_Error::isError($connection)) {
             // basic connection failed
