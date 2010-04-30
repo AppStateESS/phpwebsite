@@ -35,6 +35,7 @@ class Icon extends Image {
 
     public function __toString()
     {
+        Icon::includeStyle();
         return parent::__toString();
     }
 
@@ -142,7 +143,7 @@ class Icon extends Image {
             $o->setAlt($icon['label']);
         }
         $icon_objects[$type] = $o;
-        
+
         return true;
     }
 
