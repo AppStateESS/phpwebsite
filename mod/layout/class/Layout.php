@@ -518,9 +518,9 @@ class Layout {
         }
 
         PHPWS_CORE::initCoreClass('File.php');
-        $headfile    = $base . $js . $directory . '/head.js';
-        $bodyfile    = $base . $js . $directory . '/body.js';
-        $defaultfile = $base . $js . $directory . '/default.php';
+        $headfile    = PHPWS_SOURCE_DIR . $base . $js . $directory . '/head.js';
+        $bodyfile    = PHPWS_SOURCE_DIR . $base . $js . $directory . '/body.js';
+        $defaultfile = PHPWS_SOURCE_DIR . $base . $js . $directory . '/default.php';
 
         if (is_file($defaultfile)) {
             require $defaultfile;
@@ -536,7 +536,7 @@ class Layout {
         }
         $data['source_http'] = PHPWS_SOURCE_HTTP;
         Layout::loadJavascriptFile($headfile, $directory, $data);
-
+        
         if (is_file($bodyfile)) {
             if (isset($data)) {
                 return PHPWS_Template::process($data, 'layout', $bodyfile, TRUE);
