@@ -536,7 +536,6 @@ class Layout {
         }
         $data['source_http'] = PHPWS_SOURCE_HTTP;
         Layout::loadJavascriptFile($headfile, $directory, $data);
-        
         if (is_file($bodyfile)) {
             if (isset($data)) {
                 return PHPWS_Template::process($data, 'layout', $bodyfile, TRUE);
@@ -1236,7 +1235,7 @@ function javascriptMod($module, $directory, $data=null)
     if (preg_match('/\W/', $module)) {
         return false;
     }
-    $root_directory = PHPWS_SOURCE_DIR . "mod/$module/";
+    $root_directory = "mod/$module/";
     return Layout::getJavascript($directory, $data, $root_directory);
 }
 
