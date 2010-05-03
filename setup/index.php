@@ -11,7 +11,7 @@ set_include_path('lib/pear/');
 
 define('CONFIG_CREATED', is_file('config/core/config.php'));
 if (CONFIG_CREATED) {
-	require_once 'config/core/config.php';
+	require_once './config/core/config.php';
 } else {
 	define('SITE_HASH', md5(rand()));
 }
