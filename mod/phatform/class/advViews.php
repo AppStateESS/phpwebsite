@@ -321,8 +321,8 @@ class advViews {
                 while(($file = readdir($dh)) !== false) {
                     if(ereg('.zip$', $file)) {
                         $files[$total_files]['filename'] = $file;
-                        $timeStamp = split('\.', $file);
-                        $formId = split('_', $file);
+                        $timeStamp = preg_split('/\./', $file);
+                        $formId = preg_split('/_/', $file);
                         $files[$total_files]['date'] = date('m / d / y', $timeStamp[1]);
 
                         $total_files++;
@@ -434,7 +434,7 @@ class advViews {
                 while(($file = readdir($dh)) !== false) {
                     if(ereg('phat$', $file)) {
                         $files[$total_files]['filename'] = $file;
-                        $timeStamp = split('\.', $file);
+                        $timeStamp = preg_split('/\./', $file);
                         $files[$total_files]['date'] = date('m / d / y', $timeStamp[1]);
                         $total_files++;
                     }
