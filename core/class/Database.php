@@ -2589,7 +2589,7 @@ class PHPWS_DB {
      * Prefix tablenames, but not within 'quoted values', called from prefixQuery
      * @author Hilmar
      */
-    public function prefixVary($sql, $tbl)
+    public static function prefixVary($sql, $tbl)
     {
         $repl = true;
         $ar = explode("'", $sql);
@@ -2610,7 +2610,7 @@ class PHPWS_DB {
         return $sql;
     }
 
-    public function pullTables($sql)
+    public static function pullTables($sql)
     {
         $sql = preg_replace('/ {2,}/', ' ', trim($sql));
         $sql = preg_replace('/[\n\r]/', ' ', $sql);
