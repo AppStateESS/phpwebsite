@@ -628,7 +628,7 @@ class PHPWS_Form {
     public function makeLabel($element, $label)
     {
         $required = $element->getRequired();
-        return sprintf('<label class="%s-label" id="%s-label" for="%s">%s</label>%s', $element->type, $element->name, $element->name, $label, $required);
+        return sprintf('<label class="%s-label" id="%s-label" for="%s">%s</label>%s', $element->type, $element->name, $element->id, $label, $required);
     }
 
 
