@@ -1,8 +1,8 @@
-<script type="text/javascript" src="javascript/jquery/jquery.selectboxes.js"></script>
+<script type="text/javascript" src="{source_http}javascript/jquery/jquery.selectboxes.js"></script>
 <script type="text/javascript">
 /**
  * Uses a set of options to create a more user friendly multiple select.
- * 
+ *
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
@@ -27,7 +27,7 @@ function add_value(id, sname) {
 
     link = '<a href="#" onclick="remove(\'' + id + '\', \'' + selection_value + '\'); return false;">' + selection_name + '</a>';
     input = '<input id="' + id + '-hidden" type="hidden" name="' + sname + '[]" value="' + selection_value  + '" />';
-    
+
     select_box.append('<div id="' + line_id + '">' + link + input + '</div>');
 }
 

@@ -8,7 +8,7 @@
 require_once('recaptchalib.php'); // The ReCaptcha library supplied by rechaptcha.net
 
 // Check for recaptcha_settings.php, show an error if it doesn't exist
-$settings_file = './javascript/captcha/recaptcha/recaptcha_settings.php';
+$settings_file = PHPWS_SOURCE_DIR . 'javascript/captcha/recaptcha/recaptcha_settings.php';
 if(file_exists($settings_file)){
     require_once($settings_file);
 }else{

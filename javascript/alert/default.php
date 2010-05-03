@@ -7,7 +7,7 @@ if (!substr("\'", $data['content'])) {
 $data['content'] = strip_tags($data['content']);
 
 if (empty($data['label'])) {
-    $headfile = $base . 'javascript/alert/head2.js';
+    $headfile = PHPWS_SOURCE_DIR . 'javascript/alert/head2.js';
 }
 
 ?>

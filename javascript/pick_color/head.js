@@ -1,5 +1,5 @@
-<script type="text/javascript" src="javascript/pick_color/farbtastic.js"></script>
-<link rel="stylesheet" href="javascript/pick_color/farbtastic.css" type="text/css" />
+<script type="text/javascript" src="{source_http}javascript/pick_color/farbtastic.js"></script>
+<link rel="stylesheet" href="{source_http}javascript/pick_color/farbtastic.css" type="text/css" />
 <script type="text/javascript">
 function farb(pick_id, input_id)
 {

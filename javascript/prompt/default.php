@@ -11,7 +11,7 @@ $default['value_name']    = 'prompt';
 $default['link']          = 'Prompt!';
 if (isset($data['type'])) {
     if ($data['type'] == 'button') {
-        $bodyfile = $base . 'javascript/prompt/body2.js';
+        $bodyfile = PHPWS_SOURCE_DIR . 'javascript/prompt/body2.js';
     }
 }
 

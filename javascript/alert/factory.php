@@ -7,7 +7,6 @@
  */
 
 class javascript_alert extends Javascript {
-    protected $wrap_head_script = true;
     protected $use_jquery = true;
     private $label = null;
     private $content = null;

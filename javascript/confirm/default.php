@@ -18,7 +18,7 @@ if (isset($data['address'])) {
 
 if (isset($data['type'])) {
     if ($data['type'] == 'button') {
-        $bodyfile = $base . 'javascript/confirm/body2.js';
+        $bodyfile = PHPWS_SOURCE_DIR . 'javascript/confirm/body2.js';
     }
 }
 

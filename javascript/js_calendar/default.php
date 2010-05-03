@@ -14,15 +14,15 @@ $default['date_name'] = 'date';
 if (isset($data['type'])) {
     switch ($data['type']) {
     case 'select':
-        $bodyfile = $base . 'javascript/js_calendar/body2.js';
+        $bodyfile = PHPWS_SOURCE_DIR . 'javascript/js_calendar/body2.js';
         break;
 
     case 'select_clock':
-        $bodyfile = $base . 'javascript/js_calendar/body4.js';
+        $bodyfile = PHPWS_SOURCE_DIR . 'javascript/js_calendar/body4.js';
         break;
 
     case 'text_clock':
-        $bodyfile = $base . 'javascript/js_calendar/body5.js';
+        $bodyfile = PHPWS_SOURCE_DIR . 'javascript/js_calendar/body5.js';
         break;
 
     case 'pick':
@@ -38,7 +38,7 @@ if (isset($data['type'])) {
             $data['day'] = date('d');
         }
 
-        $bodyfile = $base . 'javascript/js_calendar/body3.js';
+        $bodyfile = PHPWS_SOURCE_DIR . 'javascript/js_calendar/body3.js';
         break;
 
     default:
