@@ -1,7 +1,7 @@
-<script type="text/javascript" src="./javascript/editors/fckeditor/fckeditor.js"></script>
+<script type="text/javascript" src="{source_http}javascript/editors/fckeditor/fckeditor.js"></script>
 <script type="text/javascript">
 //<![CDATA[
-var basepath = './javascript/editors/fckeditor/';
+var basepath = '{source_http}javascript/editors/fckeditor/';
 /* This code only works on a source code submission. Hoping for a
 //change in the editor
 */
