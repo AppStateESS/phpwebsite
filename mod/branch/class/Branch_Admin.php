@@ -311,7 +311,6 @@ class Branch_Admin {
         }
 
         $filename = $this->branch->getBranchConfig();
-
         if (is_file($filename)) {
             return false;
         }
@@ -322,6 +321,9 @@ class Branch_Admin {
         $config_file[] = sprintf("define('PHPWS_SOURCE_HTTP', '%s');", PHPWS_SOURCE_HTTP);
         $config_file[] = sprintf("define('SITE_HASH', '%s');", $this->branch->site_hash);
         $config_file[] = sprintf("define('PHPWS_DSN', '%s');", $this->getDSN());
+        if (!empty($this->dbprefix)) {
+            $config_file[] = sprintf("define('PHPWS_TABLE_PREFIX', '%s');", $this->dbprefix);
+        }
         $config_file[] = '?>';
         return file_put_contents($filename, implode("\n", $config_file));
     }
