@@ -21,7 +21,7 @@ $default['center']      = 1;
 
 if (isset($data['type'])) {
     if ($data['type'] == 'button') {
-        $bodyfile = $base . 'javascript/open_window/body2.js';
+        $bodyfile = PHPWS_SOURCE_DIR . 'javascript/open_window/body2.js';
     }
 }
 
