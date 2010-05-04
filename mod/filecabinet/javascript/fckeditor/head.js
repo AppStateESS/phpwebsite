@@ -14,30 +14,30 @@ $(document).ready(function() {
     initFolders();
     $('#folders-listing').html('{pick}');
     $('#folders-listing').ajaxStart(function() {
-        $(this).html('<div style="margin-top : 150px; text-align : center"><img src="./images/core/ajax-loader-big.gif" /></div>');
+        $(this).html('<div style="margin-top : 150px; text-align : center"><img src="./core/ajax-loader-big.gif" /></div>');
     });
 });
 
 function initFolders() {
     $('#image-nav').click(function() {
         $('#folders-listing').html('');
-        $('#fck-doc-type').attr('src', './images/mod/filecabinet/file_manager/file_type/document80_bw.png');
-        $('#fck-img-type').attr('src', './images/mod/filecabinet/file_manager/file_type/image80.png');
-        $('#fck-mm-type').attr('src', './images/mod/filecabinet/file_manager/file_type/media80_bw.png');
+        $('#fck-doc-type').attr('src', '{source_http}mod/filecabinet/img/file_manager/file_type/document80_bw.png');
+        $('#fck-img-type').attr('src', '{source_http}mod/filecabinet/img/file_manager/file_type/image80.png');
+        $('#fck-mm-type').attr('src', '{source_http}mod/filecabinet/img/file_manager/file_type/media80_bw.png');
         getFolders(1, 0);
     });
     $('#doc-nav').click(function() {
         $('#folders-listing').html('');
-        $('#fck-img-type').attr('src', './images/mod/filecabinet/file_manager/file_type/image80_bw.png');
-        $('#fck-doc-type').attr('src', './images/mod/filecabinet/file_manager/file_type/document80.png');
-        $('#fck-mm-type').attr('src', './images/mod/filecabinet/file_manager/file_type/media80_bw.png');
+        $('#fck-img-type').attr('src', '{source_http}mod/filecabinet/img/file_manager/file_type/image80_bw.png');
+        $('#fck-doc-type').attr('src', '{source_http}mod/filecabinet/img/file_manager/file_type/document80.png');
+        $('#fck-mm-type').attr('src', '{source_http}mod/filecabinet/img/file_manager/file_type/media80_bw.png');
         getFolders(2, 0);
     });
     $('#media-nav').click(function() {
         $('#folders-listing').html('');
-        $('#fck-img-type').attr('src', './images/mod/filecabinet/file_manager/file_type/image80_bw.png');
-        $('#fck-doc-type').attr('src', './images/mod/filecabinet/file_manager/file_type/document80_bw.png');
-        $('#fck-mm-type').attr('src', './images/mod/filecabinet/file_manager/file_type/media80.png');
+        $('#fck-img-type').attr('src', '{source_http}mod/filecabinet/img/file_manager/file_type/image80_bw.png');
+        $('#fck-doc-type').attr('src', '{source_http}mod/filecabinet/img/file_manager/file_type/document80_bw.png');
+        $('#fck-mm-type').attr('src', '{source_http}mod/filecabinet/img/file_manager/file_type/media80.png');
         getFolders(3, 0);
     });
 }
