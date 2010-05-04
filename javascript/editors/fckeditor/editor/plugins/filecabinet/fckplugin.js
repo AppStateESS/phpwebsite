@@ -18,7 +18,7 @@ Filecabinet.prototype.Execute = function()
     x = 320;
     y = 240;
     referrer = document.referrer;
-    local_http = referrer.replace(/(.+\/)index\.php.+/i, '$1');
+    local_http = referrer.replace(/(.+\/)index\.php.*/i, '$1');
     if (screen) {
         y = (screen.availHeight - fc_height)/2;
         x = (screen.availWidth - fc_width)/2;
