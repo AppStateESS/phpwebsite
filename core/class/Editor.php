@@ -185,7 +185,7 @@ class Editor {
             return $_SESSION['Editor_Works'][$type];
         }
         $browser = strtolower($GLOBALS['browser']);
-        $support_file = sprintf('javascript/editors/%s/supported.php', $type);
+        $support_file = sprintf(PHPWS_SOURCE_DIR . 'javascript/editors/%s/supported.php', $type);
         if (is_file($support_file)) {
             include $support_file;
             if (isset($supported)) {
