@@ -17,13 +17,13 @@ Filecabinet.prototype.Execute = function()
 {
     x = 320;
     y = 240;
-    
+    referrer = document.referrer;
+    local_http = referrer.replace(/(.+\/)index\.php.+/i, '$1');
     if (screen) {
         y = (screen.availHeight - fc_height)/2;
         x = (screen.availWidth - fc_width)/2;
     }
-    
-    window.open('../../../../index.php?module=filecabinet&instance=' + FCK.Name + '&aop=fckeditor', '', 'top='+ y +',left='+ x +',screenY='+ y +',screenX='+ x +',toolbar=no,titlebar=no,scrollbars=yes,menubar=no,location=no,resizable=yes,width='+fc_width+',height='+fc_height);
+    window.open(local_http + 'index.php?module=filecabinet&instance=' + FCK.Name + '&aop=fckeditor', '', 'top='+ y +',left='+ x +',screenY='+ y +',screenX='+ x +',toolbar=no,titlebar=no,scrollbars=yes,menubar=no,location=no,resizable=yes,width='+fc_width+',height='+fc_height);
 }
 
 // Register the command.
