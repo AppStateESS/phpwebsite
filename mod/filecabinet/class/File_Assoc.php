@@ -272,7 +272,7 @@ class FC_File_Assoc {
 
             case FC_IMAGE_RESIZE:
             case FC_IMAGE_CROP:
-                if ($this->_source->id) {
+                if (isset($this->_source->id) && $this->_source->id) {
                     if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
                         return $this->_source->captioned(null, $this->_link_image, $base);
                     } else {
