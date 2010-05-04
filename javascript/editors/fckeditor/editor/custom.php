@@ -34,12 +34,12 @@ FCKConfig.LinkUpload = false ;
 
 
 FCKConfig.ImageUpload = true ;
-FCKConfig.ImageUploadURL = FCKConfig.BasePath + 'filemanager/connectors/phpws/upload.php?Type=Image' ;
+FCKConfig.ImageUploadURL = FCKConfig.BasePath + 'filemanager/connectors/phpws/upload.php?Type=Image&local=$local' ;
 FCKConfig.ImageUploadAllowedExtensions	= ".(jpg|gif|jpeg|png|bmp)$" ;		// empty for all
 FCKConfig.ImageUploadDeniedExtensions	= "" ;							// empty for no one
 
 FCKConfig.FlashUpload = true ;
-FCKConfig.FlashUploadURL = FCKConfig.BasePath + 'filemanager/connectors/phpws/upload.php?Type=Flash' ;
+FCKConfig.FlashUploadURL = FCKConfig.BasePath + 'filemanager/connectors/phpws/upload.php?Type=Flash&local=$local' ;
 FCKConfig.FlashUploadAllowedExtensions	= ".(swf|flv)$" ;		// empty for all
 FCKConfig.FlashUploadDeniedExtensions	= "" ;
 
