@@ -20,6 +20,10 @@
 
 global $Config ;
 
+define('SESSION_NAME', md5($_GET['local'] . $_SERVER['REMOTE_ADDR']));
+session_name(SESSION_NAME);
+session_start();
+
 // SECURITY: You must explicitelly enable this "uploader".
 $Config['Enabled'] = true ;
 
@@ -48,14 +52,14 @@ $Config['ForceSingleExtension'] = true ;
 
 $Config['AllowedExtensions']['File']	= array() ;
 $Config['DeniedExtensions']['File']	= array('php','php2','php3','php4','php5','phtml','pwml','inc','asp','aspx','ascx','jsp','cfm','cfc','pl','bat','exe','com','dll','vbs','js','reg','cgi') ;
-$Config['Subdirectory']['File']	= 'files/' ;
+$Config['Subdirectory']['File']	= $_SESSION['FCK_FILE_DIRECTORY'] ;
 
 $Config['AllowedExtensions']['Image']	= array('jpg','gif','jpeg','png') ;
 $Config['DeniedExtensions']['Image']	= array() ;
-$Config['Subdirectory']['Image']	= 'images/' ;
+$Config['Subdirectory']['Image']	= $_SESSION['FCK_IMAGE_DIRECTORY'];
 
 $Config['AllowedExtensions']['Flash']	= array('swf','fla') ;
 $Config['DeniedExtensions']['Flash']	= array() ;
-$Config['Subdirectory']['Flash']	= 'media/' ;
+$Config['Subdirectory']['Flash']	= $_SESSION['FCK_MEDIA_DIRECTORY'] ;
 
 ?>
