@@ -14,7 +14,6 @@
  */
 
 javascript('jquery');
-
 $autogrow = true;
 
 $data['VALUE'] = preg_replace('@src="(./)?(images|files)/@', 'src="' . PHPWS_Core::getHomeHttp() . '\\2/', $data['VALUE']);
@@ -33,11 +32,11 @@ if ($autogrow) {
 if ($data['LIMITED']) {
     $data['config'] = 'limited.js';
 } else {
-    $data['config'] = 'custom.js';
+    $data['config'] =  'custom.php?local=' . SITE_HASH;
 }
 
 $current_theme = Layout::getCurrentTheme();
-if (is_file("themes/$current_theme/fckeditor.css")) {
+if (is_file(PHPWS_SOURCE_DIR . "themes/$current_theme/fckeditor.css")) {
     $data['current_theme'] = $current_theme;
 }
 
@@ -50,7 +49,6 @@ if ($_SESSION['User']->id) {
 } else {
     $_SESSION['FCK_Allow'] = false;
 }
-
 
 if (!defined('FCK_IMAGE_DIRECTORY')) {
     define('FCK_IMAGE_DIRECTORY', PHPWS_HOME_DIR . 'images/');
@@ -73,7 +71,6 @@ $home_url = PHPWS_Core::getHomeHttp();
 if (!defined('FCK_IMAGE_URL')) {
     define('FCK_IMAGE_URL', $home_url . 'images/');
 }
-
 if (!defined('FCK_FILE_URL')) {
     define('FCK_FILE_URL', $home_url . 'files/');
 }
