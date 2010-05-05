@@ -520,7 +520,7 @@ class Access {
         return true;
     }
 
-    public function forward()
+    public static function forward()
     {
         PHPWS_Core::initModClass('access', 'Shortcut.php');
         $db = new PHPWS_DB('access_shortcuts');
