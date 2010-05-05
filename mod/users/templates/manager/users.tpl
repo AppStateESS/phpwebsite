@@ -7,7 +7,7 @@
         {DISPLAY_NAME_SORT}</th>
         <th>{EMAIL_SORT}</th>
         <th>{LAST_LOGGED_SORT}</th>
-        <th width="5%">{ACTIVE_LABEL}</th>
+        <th>{ACTIVE_SORT}</th>
         <th>{ACTIONS_LABEL}</th>
     </tr>
     <!-- BEGIN listrows -->

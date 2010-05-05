@@ -273,7 +273,6 @@ class User_Form {
 
 		$pageTags = $form->getTemplate();
 
-		$pageTags['ACTIVE_LABEL'] = dgettext('users', 'Active');
 		$pageTags['ACTIONS_LABEL'] = dgettext('users', 'Actions');
 
 		$pager = new DBPager('users', 'PHPWS_User');
@@ -288,6 +287,7 @@ class User_Form {
 		$pager->addSortHeader('display_name', dgettext('users', 'Display'));
 		$pager->addSortHeader('email', dgettext('users', 'Email'));
 		$pager->addSortHeader('last_logged', dgettext('users', 'Last Logged'));
+		$pager->addSortHeader('active', dgettext('users', 'Active'));
 		$pager->setSearch('username', 'email', 'display_name');
 		$pager->cacheQueries();
 
