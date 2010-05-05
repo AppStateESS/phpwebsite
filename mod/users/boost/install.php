@@ -92,36 +92,6 @@ function users_install(&$content)
     $user = new PHPWS_User;
     $content[] = '<hr />';
 
-    // removing response installation. New user created by Core.
-    /*
-    if (isset($_POST['mod_title']) && $_POST['mod_title']=='users') {
-    $result = User_Action::postUser($user);
-    if (!is_array($result)) {
-    $user->setDeity(TRUE);
-    $user->setActive(TRUE);
-    $user->setApproved(TRUE);
-    $user->setAuthorize($authorize_id);
-    $result = $user->save();
-    if (PHPWS_Error::isError($result)) {
-    return $result;
-    }
-
-    PHPWS_Settings::set('users', array('site_contact' => $user->getEmail()));
-    PHPWS_Settings::save('users');
-    $content[] = dgettext('users', 'User created successfully.');
-    $content[] = dgettext('users', 'User\'s email used as contact email address.');
-    } else {
-    $content[] = userForm($user, $result);
-
-    return FALSE;
-    }
-    } else {
-    $content[] = dgettext('users', 'Please create a user to administrate the site.') . '<br />';
-    $content[] = userForm($user);
-
-    return FALSE;
-    }
-    */
     return TRUE;
 }
 
@@ -136,6 +106,7 @@ function userForm(&$user, $errors=NULL){
         $form->addHidden('module', $_REQUEST['module']);
     } else {
         $form->addHidden('step', 3);
+        $form->addHidden('display_name','Install');
     }
 
     $form->addHidden('mod_title', 'users');
