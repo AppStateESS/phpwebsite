@@ -32,12 +32,6 @@ define('LAYOUT_CHECK_COOKIE', false);
 
 
 /**
- * Changing this to true will cause javascript to parse module javascript
- * and use the copy from the module directory. This will NOT WORK branch sites.
- */
-define('LAYOUT_FORCE_MOD_JS', false);
-
-/**
  * If true, layout doesn't bother with a javascript check, it just
  * assumes the user has it activated.
  */
