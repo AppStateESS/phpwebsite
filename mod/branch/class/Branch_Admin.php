@@ -782,6 +782,7 @@ class Branch_Admin {
     {
         $dsn = & $GLOBALS['PHPWS_DB']['connection']->dsn;
 
+        $this->dbname = $dsn['database'];
         $this->dbuser = $dsn['username'];
         $this->dbpass = $dsn['password'];
         $this->dbhost = $dsn['hostspec'];
