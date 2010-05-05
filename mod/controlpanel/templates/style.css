@@ -70,12 +70,13 @@ div.controlpanel {
 div.link {
     font-size: .8em;
     margin: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     padding: 5px;
     float: left;
     width: 150px;
-    height: 95px;
+    min-height: 95px;
     display: inline;
+    line-height: 1.2em;
 }
 
 div.link img {
