@@ -159,25 +159,24 @@ class PHPWS_Template extends HTML_Template_Sigma {
         $this->setCache();
         if ($strict == true) {
             $result = $this->loadTemplateFile($file);
-            $used_tpl = &$file;
+            $used_tpl = & $file;
         } else {
             $theme_tpl    = PHPWS_Template::getTplDir($module) . $file;
             $mod_tpl      = PHPWS_SOURCE_DIR . "mod/$module/templates/$file";
-            $template_tpl = "templates/$module/$file";
 
             if (PHPWS_Error::isError($theme_tpl)) {
                 return $theme_tpl;
             }
 
-            if ( FORCE_THEME_TEMPLATES || (!FORCE_MOD_TEMPLATES && is_file($theme_tpl)) ) {
+            if (is_file($theme_tpl)) {
                 $result = $this->loadTemplateFile($theme_tpl);
-                $used_tpl = &$theme_tpl;
-            } elseif ( FORCE_MOD_TEMPLATES || !is_file($template_tpl) ) {
+                $used_tpl = & $theme_tpl;
+            } elseif (is_file($mod_tpl)) {
                 $result = $this->loadTemplateFile($mod_tpl);
-                $used_tpl = &$mod_tpl;
+                $used_tpl = & $mod_tpl;
             } else {
-                $result = $this->loadTemplateFile($template_tpl);
-                $used_tpl = &$template_tpl;
+                trigger_error(dgettext('core', 'Missing template file:') . $file);
+                return;
             }
         }
 
