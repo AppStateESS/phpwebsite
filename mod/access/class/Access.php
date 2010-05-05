@@ -166,6 +166,24 @@ class Access {
                         Current_User::disallow();
                     }
                     break;
+
+                case 'add_forward':
+                    if (Current_User::isDeity()) {
+                        Access::addForward();
+                        PHPWS_Core::goBack();
+                    } else {
+                        Current_User::disallow();
+                    }
+                    break;
+
+                case 'remove_forward':
+                    if (Current_User::isDeity()) {
+                        Access::removeForward();
+                        PHPWS_Core::goBack();
+                    } else {
+                        Current_User::disallow();
+                    }
+                    break;
             }
         }
 
@@ -675,6 +693,7 @@ class Access {
     {
         $current_directory = dirname($_SERVER['PHP_SELF']);
         $base_needed = false;
+        $fake_js = false;
 
         if (!is_file('.htaccess')) {
             $tpl['CURRENT_HTACCESS'] = dgettext('access', 'Your .htaccess file does not exist or is not readable.');
@@ -682,26 +701,45 @@ class Access {
             $htaccess_contents = file('.htaccess');
             $tpl['CURRENT_HTACCESS'] = implode('', $htaccess_contents);
             $base = null;
-
-            foreach ($htaccess_contents as $val) {
-                if (preg_match('/^rewritebase/i', trim($val))) {
-                    $base = trim(str_ireplace('rewritebase', '', $val));
-                    break;
+            if (is_writable('.htaccess')) {
+                foreach ($htaccess_contents as $val) {
+                    if (preg_match('/^rewritebase/i', trim($val))) {
+                        $base = trim(str_ireplace('rewritebase', '', $val));
+                    }
+                    if (preg_match('/^rewriterule \^js/i', trim($val))) {
+                        $fake_js = true;
+                    }
                 }
-            }
 
-            if (!$base) {
-                if ($current_directory == '' || $current_directory == '/') {
-                    $tpl['BASE_FOUND'] = dgettext('access', 'RewriteBase is not set or needed.');
+                if (PHPWS_Core::isBranch()) {
+                    if ($fake_js) {
+                        $tpl['FORWARD_FOUND'] = dgettext('access', 'Javascript forward line found.');
+                        $tpl['REMOVE_FORWARD'] = PHPWS_Text::secureLink(dgettext('access', 'Remove forward'), 'access',
+                        array('command'=>'remove_forward'));
+                        $tpl['ADD_FORWARD'] = PHPWS_Text::secureLink(dgettext('access', 'Reset forward'), 'access',
+                        array('command'=>'add_forward'));
+                    } else {
+                        $tpl['FORWARD_FOUND'] = dgettext('access', 'Javascript forward line not found.');
+                        $tpl['ADD_FORWARD'] = PHPWS_Text::secureLink(dgettext('access', 'Add forward address'), 'access',
+                        array('command'=>'add_forward'));
+                    }
+                }
+
+                if (!$base) {
+                    if ($current_directory == '' || $current_directory == '/') {
+                        $tpl['BASE_FOUND'] = dgettext('access', 'RewriteBase is not set or needed.');
+                    } else {
+                        $base_needed = true;
+                        $tpl['BASE_FOUND'] = dgettext('access', 'Your RewriteBase is not set but may be needed.');
+                    }
+                } elseif ($base == $current_directory) {
+                    $tpl['BASE_FOUND'] = dgettext('access', 'Current RewriteBase matches installation directory.');
                 } else {
                     $base_needed = true;
-                    $tpl['BASE_FOUND'] = dgettext('access', 'Your RewriteBase is not set but may be needed.');
+                    $tpl['BASE_FOUND'] = dgettext('access', 'Current RewriteBase does not match the installation directory.');
                 }
-            } elseif ($base == $current_directory) {
-                $tpl['BASE_FOUND'] = dgettext('access', 'Current RewriteBase matches installation directory.');
             } else {
-                $base_needed = true;
-                $tpl['BASE_FOUND'] = dgettext('access', 'Current RewriteBase does not match the installation directory.');
+                $tpl['BASE_FOUND'] = dgettext('access', 'Your .htaccess file is not writable.');
             }
         }
 
@@ -718,14 +756,62 @@ class Access {
         return $content;
     }
 
-    public function addRewriteBase()
+    public static function addForward()
+    {
+        if (Access::removeForward()) {
+            $htaccess = Access::getHtaccess();
+            if (empty($htaccess)) {
+                return false;
+            }
+            foreach ($htaccess as $key=>$val) {
+                if (preg_match('/^rewriteengine/i', trim($val))) {
+                    $htaccess[$key] = sprintf("RewriteEngine On\nRewriteRule ^js/(.*)$ %s$1 [L,R=301,NC]", PHPWS_SOURCE_HTTP);
+                    break;
+                }
+            }
+            if (!empty($htaccess)) {
+                file_put_contents('.htaccess', implode('', $htaccess));
+            }
+            return true;
+        }
+    }
+
+    public static function removeForward()
+    {
+        $htaccess = Access::getHtaccess();
+        if (empty($htaccess)) {
+            return false;
+        }
+
+        foreach ($htaccess as $key=>$val) {
+            if (preg_match('/^rewriterule \^js/i', trim($val))) {
+                $htaccess[$key] = "\n";
+            }
+        }
+
+        if (!empty($htaccess)) {
+            file_put_contents('.htaccess', implode('', $htaccess));
+        }
+        return true;
+    }
+
+
+    public static function getHtaccess()
     {
         $current_directory = dirname($_SERVER['PHP_SELF']);
         if (!is_file('.htaccess') || !is_readable('.htaccess') || !is_writable('.htaccess')) {
             return;
         }
 
-        $htaccess = file('.htaccess');
+        return file('.htaccess');
+    }
+
+    public static function addRewriteBase()
+    {
+        $htaccess = Access::getHtaccess();
+        if (empty($htaccess)) {
+            return null;
+        }
         $base_found = false;
         foreach ($htaccess as $key=>$val) {
             if (preg_match('/^rewritebase/i', trim($val))) {
