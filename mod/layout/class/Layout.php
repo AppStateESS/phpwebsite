@@ -535,6 +535,12 @@ class Layout {
             }
         }
         $data['source_http'] = PHPWS_SOURCE_HTTP;
+        $data['home_http'] = PHPWS_Core::getHomeHttp();
+        if (PHPWS_Core::isBranch()) {
+            $data['js_http'] = 'js/';
+        } else {
+            $data['js_http'] = './';
+        }
         Layout::loadJavascriptFile($headfile, $directory, $data);
         if (is_file($bodyfile)) {
             if (isset($data)) {
