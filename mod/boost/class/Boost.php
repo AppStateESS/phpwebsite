@@ -1006,10 +1006,11 @@ class PHPWS_Boost {
     }
 
     /**
-     * Returns the name of the current branch if Boost is
+     * Returns the current branch object or true if Boost is
      * installing/updating/uninstalling a branch site from the hub.
      * If a module needs to check if it is running from a branch,
      * PHPWS_Core::isBranch should be used.
+     * @param boolean return_object : If true, return current branch object
      */
     public static function inBranch($return_object=false)
     {
