@@ -693,7 +693,6 @@ class Access {
     {
         $current_directory = dirname($_SERVER['PHP_SELF']);
         $base_needed = false;
-        $fake_js = false;
 
         if (!is_file('.htaccess')) {
             $tpl['CURRENT_HTACCESS'] = dgettext('access', 'Your .htaccess file does not exist or is not readable.');
@@ -705,23 +704,6 @@ class Access {
                 foreach ($htaccess_contents as $val) {
                     if (preg_match('/^rewritebase/i', trim($val))) {
                         $base = trim(str_ireplace('rewritebase', '', $val));
-                    }
-                    if (preg_match('/^rewriterule \^js/i', trim($val))) {
-                        $fake_js = true;
-                    }
-                }
-
-                if (PHPWS_Core::isBranch()) {
-                    if ($fake_js) {
-                        $tpl['FORWARD_FOUND'] = dgettext('access', 'Javascript forward line found.');
-                        $tpl['REMOVE_FORWARD'] = PHPWS_Text::secureLink(dgettext('access', 'Remove forward'), 'access',
-                        array('command'=>'remove_forward'));
-                        $tpl['ADD_FORWARD'] = PHPWS_Text::secureLink(dgettext('access', 'Reset forward'), 'access',
-                        array('command'=>'add_forward'));
-                    } else {
-                        $tpl['FORWARD_FOUND'] = dgettext('access', 'Javascript forward line not found.');
-                        $tpl['ADD_FORWARD'] = PHPWS_Text::secureLink(dgettext('access', 'Add forward address'), 'access',
-                        array('command'=>'add_forward'));
                     }
                 }
 
