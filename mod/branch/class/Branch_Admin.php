@@ -239,7 +239,7 @@ class Branch_Admin {
             $this->content[] = dgettext('branch', 'Copied admin file to branch.');
         }
 
-        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor/', $this->branch->directory . 'javascript/editors/fckeditor/')) {
+        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor/', $this->branch->directory . 'javascript/editors/fckeditor')) {
             $this->content[] = dgettext('branch', 'Failed to copy FCKeditor to branch.');
             return false;
         } else {
