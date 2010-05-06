@@ -1,12 +1,4 @@
-<html>
-  <head>
-    <meta name="generator" content="HTML Tidy, see www.w3.org">
-
-    <title></title>
-  </head>
-
-  <body>
-    {START_FORM} 
+    {START_FORM}
 
     <div id="config-form">
       <div class="config-item">
@@ -108,6 +100,4 @@
       </div>
     </div>
     {END_FORM}
-  </body>
-</html>
 

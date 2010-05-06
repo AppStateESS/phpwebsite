@@ -831,6 +831,7 @@ class Setup {
                     $db = new PHPWS_DB('users');
                     $result = $db->select();
                     if (empty($result)) {
+                        $_SESSION['User']->setDisplayName('Administrator');
                         $_SESSION['User']->save();
                         $this->content[] = dgettext('core', 'New user created successfully.');
                         $this->step = 6;
