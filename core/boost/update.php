@@ -489,58 +489,61 @@ Editors
             }
 
             if (!PHPWS_Boost::inBranch()) {
-                $config_dir = PHPWS_SOURCE_DIR . 'config/core/';
-                if (!is_writable($config_dir) || !is_writable($config_dir . 'config.php')) {
-                    $content[] = '<p>Core update can not continue until your hub installation\'s <strong>config/core/</strong> directory<br />and
-        		<strong>config/core/config.php</strong> are writable.</p>';
-                    return false;
-                }
-                
-                $db = new DB2;
-                if ($db->tableExists('branch_sites')) {
-                    try {
-                        $db->addTable('branch_sites');
-                        $branches = $db->select();
-                    } catch (PEAR_Exception $e) {
-                        $content[] = 'Could not fetch branches because:';
-                        $content[] = $e->getMessage();
-                        return false;
-                    }
-                    foreach ($branches as $branch) {
-                        $b_directory = $branch['directory'] . 'config/core/';
-                        $branch_dirs[] = $b_directory;
-                        if (!is_writable($b_directory) || !is_writable($b_directory . 'config.php')) {
-                            $not_writable[] = $b_directory;
-                        }
-                    }
-                    if (isset($not_writable)) {
-                        $content[] = 'Can not update core until the following branch config.php files are made writable:';
-                        foreach ($not_writable as $dir) {
-                            $content[] = $dir;
-                        }
-                        return false;
-                    } else {
-                        $content[] = 'All branch config files are writable.';
-                    }
-                } else {
-                    $branch_dirs = null;
-                }
-                $content[] = 'Updating hub config file.';
+                /*$config_dir = PHPWS_SOURCE_DIR . 'config/core/';
+                 if (!is_writable($config_dir) || !is_writable($config_dir . 'config.php')) {
+                 $content[] = '<p>Core update can not continue until your hub installation\'s <strong>config/core/</strong> directory<br />and
+                 <strong>config/core/config.php</strong> are writable.</p>';
+                 return false;
+                 }
 
-                if (!updateTo170($config_dir, $content)) {
-                    return false;
-                }
+                 $db = new DB2;
+                 if ($db->tableExists('branch_sites')) {
+                 try {
+                 $db->addTable('branch_sites');
+                 $branches = $db->select();
+                 } catch (PEAR_Exception $e) {
+                 $content[] = 'Could not fetch branches because:';
+                 $content[] = $e->getMessage();
+                 return false;
+                 }
+                 foreach ($branches as $branch) {
+                 $b_directory = $branch['directory'] . 'config/core/';
+                 $branch_dirs[] = $b_directory;
+                 if (!is_writable($b_directory) || !is_writable($b_directory . 'config.php')) {
+                 $not_writable[] = $b_directory;
+                 }
+                 }
+                 if (isset($not_writable)) {
+                 $content[] = 'Can not update core until the following branch config.php files are made writable:';
+                 foreach ($not_writable as $dir) {
+                 $content[] = $dir;
+                 }
+                 return false;
+                 } else {
+                 $content[] = 'All branch config files are writable.';
+                 }
+                 } else {
+                 $branch_dirs = null;
+                 }
+                 $content[] = 'Updating hub config file.';
 
-                if (!empty($branch_dirs)) {
-                    $content[] = 'Updating branch config files.';
-                    foreach ($branch_dirs as $branch_path) {
-                        updateTo170($branch_path, $content);
-                    }
-                }
+                 if (!updateTo170($config_dir, $content)) {
+                 return false;
+                 }
+
+                 if (!empty($branch_dirs)) {
+                 $content[] = 'Updating branch config files.';
+                 foreach ($branch_dirs as $branch_path) {
+                 updateTo170($branch_path, $content);
+                 }
+                 }
+                 */
+
                 $content[] = <<<EOT
                 <pre>2.0.0 changes
 -----------------
-+ Hub/Branch overhaul. Branches pull config, templates, javascript, and theme files from hub instead of locally.
++ Hub/Branch overhaul. Branches pull config, templates, javascript,
+  and theme files from hub instead of locally.
 + Added Icon class. Standardizes icons and prevents overlap.
 + Added Tag class: extendable class used with Image and Form2.
 + Added tag_implode function.
@@ -554,7 +557,7 @@ Editors
 + Added Image class.
 + Critical functions changed to throw exceptions.
 + Setup steamlined.</pre>
-                
+
 <p><strong>Note:</strong> this update creates a backup of your config/core/config.php file named<br />
 config-prior170.php.<br />
 If your installation is working, this file may be safely deleted.</p>
@@ -569,7 +572,14 @@ You can delete all settings <strong>except</strong> the following:</p>
 
 EOT;
             }
-            return true;
+            if ($branch = PHPWS_Boost::inBranch(true)) {
+                if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor/', $branch->directory . 'javascript/editors/fckeditor', true)) {
+                    $this->content[] = dgettext('branch', 'Failed to copy FCKeditor to branch.');
+                }
+            } else {
+                $content[] = 'FCKeditor not copied to branch. Check directory permissions.';
+            }
+
     }
     return true;
 }
