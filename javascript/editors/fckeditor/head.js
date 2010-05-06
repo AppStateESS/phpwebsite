@@ -2,6 +2,7 @@
 <script type="text/javascript">
 //<![CDATA[
 var base_http = '{source_http}';
+var home_http = '{home_http}';
 /* This code only works on a source code submission. Hoping for a
 //change in the editor
 */

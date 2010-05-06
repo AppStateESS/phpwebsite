@@ -32,7 +32,7 @@ if ($autogrow) {
 if ($data['LIMITED']) {
     $data['config'] = 'limited.js';
 } else {
-    $data['config'] =  'custom.php?local=' . SITE_HASH;
+    $data['config'] =  'custom.js';
 }
 
 $current_theme = Layout::getCurrentTheme();
