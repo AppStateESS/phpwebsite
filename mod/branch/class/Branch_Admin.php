@@ -138,6 +138,7 @@ class Branch_Admin {
             case 'save_branch_modules':
                 if ($this->saveBranchModules()) {
                     $this->message = dgettext('branch', 'Module list saved successfully.');
+                    $this->message .= sprintf('<br /><a href="http://%s">%s</a>', $this->branch->url, dgettext('branch', 'Go to the branch site...'));
                 } else {
                     $this->message = dgettext('branch', 'An error occurred when trying to save the module list.');
                 }
@@ -166,9 +167,12 @@ class Branch_Admin {
                             $this->setCreateStep(3);
                             $this->title = dgettext('branch', 'Create branch directories');
                             $this->message[] = dgettext('branch', 'Branch created successfully.');
+                            $this->install_branch_core();
+                            /*
                             $vars['command'] = 'install_branch_core';
                             $vars['branch_id'] = $this->branch->id;
-                            $this->content = PHPWS_Text::secureLink(dgettext('branch', 'Continue to install branch core'), 'branch', $vars);
+                            */
+                            //$this->content = PHPWS_Text::secureLink(dgettext('branch', 'Continue to install branch core'), 'branch', $vars);
                         } else {
                             $this->title = dgettext('branch', 'Unable to create branch directories.');
                             $this->content = dgettext('branch', 'Sorry, but Branch failed to make the proper directories.');
@@ -235,6 +239,12 @@ class Branch_Admin {
             $this->content[] = dgettext('branch', 'Copied admin file to branch.');
         }
 
+        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor/', $this->branch->directory . 'javascript/editors/fckeditor/')) {
+            $this->content[] = dgettext('branch', 'Failed to copy FCKeditor to branch.');
+            return false;
+        } else {
+            $this->content[] = dgettext('branch', 'Copied FCKeditor to branch.');
+        }
 
         if (is_file(PHPWS_SOURCE_DIR . 'core/inc/htaccess')) {
             $this->content[] = dgettext('branch', '.htaccess detected on hub. Attempting to create default file on branch.');

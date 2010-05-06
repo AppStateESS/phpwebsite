@@ -26,7 +26,7 @@ class Branch {
 
     /**
      * Loads the branch's DSN and table prefix into the objects
-     * 
+     *
      * @return boolean  True on success, false on failure
      */
     public function loadDSN()
@@ -128,6 +128,14 @@ class Branch {
         }
 
         if (!mkdir($this->directory . 'images/')) {
+            return FALSE;
+        }
+
+        if (!mkdir($this->directory . 'javascript/')) {
+            return FALSE;
+        }
+
+        if (!mkdir($this->directory . 'javascript/editors/')) {
             return FALSE;
         }
 
