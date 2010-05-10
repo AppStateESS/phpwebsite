@@ -130,6 +130,7 @@ class Setup {
         $config_file[] = sprintf("define('PHPWS_SOURCE_HTTP', '%s');", str_replace('setup/index.php', '', PHPWS_CORE::getCurrentUrl(false)));
         $config_file[] = sprintf("define('SITE_HASH', '%s');", md5(rand()));
         $config_file[] = sprintf("define('PHPWS_DSN', '%s');", $_SESSION['configSettings']['dsn']);
+        $config_file[] = sprintf("define('PHPWS_TABLE_PREFIX', '%s');", $_SESSION['configSettings']['dbprefix']);
         $config_file[] = '?>';
         return file_put_contents($filename, implode("\n", $config_file));
     }
