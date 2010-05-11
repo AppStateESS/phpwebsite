@@ -178,7 +178,7 @@ class Branch {
     }
 
     public static function getHubPrefix() {
-        $handle = @fopen(PHPWS_SOURCE_DIR . 'core/conf/branches/config.php', 'r');
+        $handle = @fopen(PHPWS_SOURCE_DIR . 'config/core/config.php', 'r');
         if ($handle) {
             $search_for = '^define\(\'PHPWS_TABLE_PREFIX\',';
             while (!feof($handle)) {

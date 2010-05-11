@@ -328,7 +328,6 @@ class Branch_Admin {
         $config_file[] = '<?php';
         $config_file[] = sprintf("define('PHPWS_SOURCE_DIR', '%s');", PHPWS_SOURCE_DIR);
         $config_file[] = sprintf("define('PHPWS_HOME_DIR', '%s');", $this->branch->directory);
-        $config_file[] = sprintf("define('PHPWS_SOURCE_HTTP', '%s');", PHPWS_SOURCE_HTTP);
         $config_file[] = sprintf("define('SITE_HASH', '%s');", $this->branch->site_hash);
         $config_file[] = sprintf("define('PHPWS_DSN', '%s');", $this->getDSN());
         if (!empty($this->dbprefix)) {
@@ -416,6 +415,7 @@ class Branch_Admin {
             $_SESSION['Boost']->loadModules($modules);
         }
 
+        // Load branch database
         PHPWS_DB::loadDB($this->getDSN(), $this->dbprefix);
 
         $this->title = dgettext('branch', 'Installing core modules');
