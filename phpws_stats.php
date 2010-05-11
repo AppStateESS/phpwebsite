@@ -50,7 +50,7 @@ function show_stats()
     if (defined('IP_VIEW') && IP_VIEW != $_SERVER['REMOTE_ADDR']) {
         return;
     }
-    
+
     if (!stats_on) {
         return;
     }
@@ -82,12 +82,6 @@ function show_stats()
             $subcontent[] = _('Cache Lite is enabled.');
         } else {
             $subcontent[] = _('Cache Lite is disabled.');
-        }
-
-        if (FORCE_MOD_TEMPLATES) {
-            $subcontent[] = _('Using module template, not local.');
-        } else {
-            $subcontent[] = _('Using local templates, not module\'s.');
         }
 
         if (FORCE_MOD_CONFIG) {
