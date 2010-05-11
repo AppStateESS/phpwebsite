@@ -16,7 +16,7 @@ function forwardInfo()
 {
     $url =  PHPWS_Core::getCurrentUrl();
 
-    if ($url == 'index.php') {
+    if ($url == 'index.php' || $url== '') {
         return;
     }
 
