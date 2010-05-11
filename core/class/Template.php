@@ -72,7 +72,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
         if (empty($root_dir) && defined('CACHE_LIFETIME')) {
             if (CACHE_TPL_LOCALLY) {
-                $root_dir = 'templates/cache/';
+                $root_dir = PHPWS_SOURCE_DIR . 'templates/cache/';
             } elseif(defined('CACHE_DIRECTORY')) {
                 $root_dir = CACHE_DIRECTORY;
             } else {
