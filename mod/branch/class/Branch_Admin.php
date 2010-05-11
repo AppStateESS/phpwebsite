@@ -168,11 +168,6 @@ class Branch_Admin {
                             $this->title = dgettext('branch', 'Create branch directories');
                             $this->message[] = dgettext('branch', 'Branch created successfully.');
                             $this->install_branch_core();
-                            /*
-                            $vars['command'] = 'install_branch_core';
-                            $vars['branch_id'] = $this->branch->id;
-                            */
-                            //$this->content = PHPWS_Text::secureLink(dgettext('branch', 'Continue to install branch core'), 'branch', $vars);
                         } else {
                             $this->title = dgettext('branch', 'Unable to create branch directories.');
                             $this->content = dgettext('branch', 'Sorry, but Branch failed to make the proper directories.');
@@ -259,6 +254,10 @@ class Branch_Admin {
         $index_file = sprintf('<?php include \'%sindex.php\'; ?>', PHPWS_SOURCE_DIR);
         file_put_contents($this->branch->directory . 'phpws_stats.php', $stats);
         file_put_contents($this->branch->directory . 'index.php', $index_file);
+
+        file_put_contents($this->branch->directory . 'files/.htaccess', 'Deny from all');
+        file_put_contents($this->branch->directory . 'config/.htaccess', 'Deny from all');
+
 
         if (!$this->copy_config()) {
             $this->content[] = dgettext('branch', 'Failed to create config.php file in the branch.');
