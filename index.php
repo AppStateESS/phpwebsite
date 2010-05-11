@@ -35,7 +35,7 @@ include PHPWS_SOURCE_DIR . 'phpws_stats.php';
 // require_once PHPWS_SOURCE_DIR . 'inc/Functions.php';
 
 ob_start();
-
+require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
 require_once PHPWS_SOURCE_DIR . 'core/class/Init.php';
 require_once PHPWS_SOURCE_DIR . 'inc/Forward.php';
 
