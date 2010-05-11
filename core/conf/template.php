@@ -20,18 +20,6 @@
 define('FORCE_THEME_TEMPLATES', false);
 
 /**
- * phpWebSite uses templates from the templates directory by default.
- * This makes sense for ordering purposes and to make branches load
- * faster.
- * However if you are developing, you may not want it too. In that
- * case you can force the core to pull module templates from the
- * module template directory directly. Set the below to TRUE if
- * this is the case.
- */
-
-define('FORCE_MOD_TEMPLATES', false);
-
-/**
  * Normally, if the the Pear template class can't fill in at least one
  * tag in a template, it will return NULL. Setting the below to TRUE,
  * causes the phpWebSite to still return template WITHOUT the tag
