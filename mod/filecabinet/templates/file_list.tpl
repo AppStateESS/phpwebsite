@@ -4,8 +4,7 @@
 <hr />
 <table width="100%" cellpadding="2">
     <tr>
-        <th>{TITLE_SORT}<br />
-        {FILE_NAME_SORT}</th>
+        <th>{TITLE_SORT} - {FILE_NAME_SORT}</th>
         <th>{FILE_TYPE_SORT}</th>
         <th>{SIZE_SORT} {SIZE_LABEL}</th>
         <!-- BEGIN download -->
@@ -15,8 +14,7 @@
     </tr>
     <!-- BEGIN listrows -->
     <tr{TOGGLE}>
-        <td class="fc-title">{TITLE}<br />
-        <i>{FILE_NAME}</i></td>
+        <td class="fc-title">{TITLE} - <i>{FILE_NAME}</i></td>
         <td class="fc-file-type">
         {FILE_TYPE}</td>
         <td class="fc-size">{SIZE}</td>

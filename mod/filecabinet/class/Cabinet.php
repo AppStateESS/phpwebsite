@@ -481,11 +481,16 @@ class Cabinet {
             Layout::add(dgettext('filecabinet', 'Sorry but this file is inaccessible at this time.'));
             return;
         }
+        $file_name = preg_replace('/[^\w]/', '-', $document->getTitle());
+        $file_name = preg_replace('/-{2,}/', '-', $file_name);
+        $file_name = preg_replace('/-$/', '', $file_name);
+        $file_name.= '.' . $document->getExtension();
         $document->downloaded++;
         $document->save();
         $dl = new HTTP_Download;
         $dl->setFile($file_path);
-        $dl->setContentDisposition(HTTP_DOWNLOAD_ATTACHMENT, $document->filename);
+        $dl->setCache(true);
+        $dl->setContentDisposition(HTTP_DOWNLOAD_ATTACHMENT, $file_name);
         $dl->setContentType($document->file_type);
         $dl->send();
         exit();

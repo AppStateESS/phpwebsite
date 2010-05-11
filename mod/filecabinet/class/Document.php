@@ -148,16 +148,9 @@ class PHPWS_Document extends File_Common {
     {
         $links = null;
 
-        $tpl['SIZE']      = $this->getSize(true);
-        $dpath = $this->getDownloadPath();
-        if ($dpath) {
-            $tpl['FILE_NAME'] = sprintf('<a href="%s">%s</a>', $dpath, $this->file_name);
-        } else {
-            $tpl['FILE_NAME'] = $this->file_name;
-        }
+        $tpl['SIZE'] = $this->getSize(true);
 
         $tpl['ICON']      = $this->getViewLink(true, 'small_icon');
-        $tpl['TITLE']     = htmlspecialchars($this->title, ENT_QUOTES);
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
             $links[] = $this->editLink(true);
 
