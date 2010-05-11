@@ -127,12 +127,17 @@ class Setup {
         $config_file[] = '<?php';
         $config_file[] = sprintf("define('PHPWS_SOURCE_DIR', '%s');", PHPWS_SOURCE_DIR);
         $config_file[] = sprintf("define('PHPWS_HOME_DIR', '%s');", PHPWS_SOURCE_DIR);
-        $config_file[] = sprintf("define('PHPWS_SOURCE_HTTP', '%s');", str_replace('setup/index.php', '', PHPWS_CORE::getCurrentUrl(false)));
+
         $config_file[] = sprintf("define('SITE_HASH', '%s');", md5(rand()));
         $config_file[] = sprintf("define('PHPWS_DSN', '%s');", $_SESSION['configSettings']['dsn']);
         $config_file[] = sprintf("define('PHPWS_TABLE_PREFIX', '%s');", $_SESSION['configSettings']['dbprefix']);
         $config_file[] = '?>';
-        return file_put_contents($filename, implode("\n", $config_file));
+        if(!file_put_contents($filename, implode("\n", $config_file))) {
+            return false;
+        } else {
+            $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>", str_replace('setup/index.php', '', PHPWS_CORE::getCurrentUrl(false)));
+            return file_put_contents($location . 'source.php', $source_http);
+        }
     }
 
 
@@ -855,7 +860,8 @@ class Setup {
                 if ($this->installContentModules()) {
                     $this->content[] = dgettext('core', 'Starting modules installed.');
                     $this->content[] = dgettext('core', 'The site should be ready for you to use.');
-                    $this->content[] = sprintf('<a href="%s">%s</a>', PHPWS_SOURCE_HTTP, dgettext('core', 'Continue to your new site...'));
+//                    $this->content[] = sprintf('<a href="%s">%s</a>', PHPWS_SOURCE_HTTP, dgettext('core', 'Continue to your new site...'));
+                    $this->content[] = sprintf('<a href="../">%s</a>', dgettext('core', 'Continue to your new site...'));
                     unset($_SESSION['configSettings']);
                     unset($_SESSION['User']);
                     unset($_SESSION['session_check']);
