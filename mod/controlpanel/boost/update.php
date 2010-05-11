@@ -115,12 +115,11 @@ function controlpanel_update(&$content, $currentVersion)
 
 
 		case version_compare($currentVersion, '2.3.0', '<'):
-			PHPWS_Core::initCoreClass('DB2.php');
 			$db = new PHPWS_DB('controlpanel_link');
 			$db->addColumn('id');
 			$db->addColumn('image');
 			$result = $db->select();
-			
+
 			foreach ($result as $link) {
 			    $db->addWhere('id', $link['id']);
 			    $db->addValue('image', preg_replace('@images/mod/\w+/@', '', $link['image']));
