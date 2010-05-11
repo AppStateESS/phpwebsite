@@ -73,11 +73,7 @@ class Webpage_Page {
 
     public function getTemplateDirectory()
     {
-        if (FORCE_MOD_TEMPLATES) {
-            $directory = PHPWS_SOURCE_DIR . 'mod/webpage/templates/page/';
-        } else {
-            $directory = 'templates/webpage/page/';
-        }
+        $directory = PHPWS_SOURCE_DIR . 'mod/webpage/templates/page/';
         return $directory;
     }
 
