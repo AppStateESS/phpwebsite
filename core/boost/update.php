@@ -497,7 +497,7 @@ Editors
                     return false;
                 }
 
-                $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>", str_replace('setup/index.php', '', PHPWS_CORE::getCurrentUrl(false)));
+                $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>", str_replace('setup/index.php', '', PHPWS_CORE::getHomeHttp()));
                 if (!file_put_contents($config_dir . 'source.php', $source_http)) {
                     $content[] = '<p>Could not create config/core/source.php file.</p>';
                     return false;
