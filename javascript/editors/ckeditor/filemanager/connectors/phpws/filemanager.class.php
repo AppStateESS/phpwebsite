@@ -372,12 +372,14 @@ class Filemanager {
 
 	// @simo
 	private function hostPrefixed($filepath) {
-	   return str_replace('/var/www/workspace/phpwebsite/', 'http://localhost/workspace/phpwebsite/', $filepath);
+	   return  strstr($filepath, 'images/');
+	   /*
 	  if(isset($this->config['add_host']) && $this->config['add_host'] == true) {
 	    return 'http://' . $_SERVER['HTTP_HOST'] . '/'. $filepath;
 	  } else {
 	    return $filepath; // @jason
 	  }
+	  */
 	}
 
 }
