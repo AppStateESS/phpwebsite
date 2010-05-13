@@ -53,7 +53,7 @@ $config['images'] = array('jpg','gif','png');
 /**
  *	Add the server host (http://www.domain.com) as prefix to files
  */
-$config['add_host'] = false;
+$config['add_host'] = $_SESSION['ck_http'];
 
 
 
