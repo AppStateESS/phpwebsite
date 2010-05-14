@@ -487,7 +487,6 @@ Editors
                 $content[] = 'This update can only be performed on the hub.';
                 return false;
             }
-
             if (!PHPWS_Boost::inBranch()) {
                 $config_dir = PHPWS_SOURCE_DIR . 'config/core/';
 
@@ -538,10 +537,14 @@ EOT;
             }
             if ($branch = PHPWS_Boost::inBranch(true)) {
                 if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor/', $branch->directory . 'javascript/editors/fckeditor', true)) {
+                    mkdir($branch->directory . 'images/ckeditor/');
                     $this->content[] = dgettext('branch', 'Failed to copy FCKeditor to branch.');
                 }
+                else {
+                    $content[] = 'FCKeditor not copied to branch. Check directory permissions.';
+                }
             } else {
-                $content[] = 'FCKeditor not copied to branch. Check directory permissions.';
+                mkdir(PHPWS_SOURCE_DIR . 'images/ckeditor/');
             }
 
     }
