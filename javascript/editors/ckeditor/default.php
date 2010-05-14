@@ -1,5 +1,6 @@
 <?php
-$_SESSION['ckeditor_image_directory'] = '/var/www/workspace/phpwebsite/images/';
-$_SESSION['ckeditor_http'] = 'http://localhost/workspace/phpwebsite/images/';
-$default['site_hash'] = SITE_HASH;
+$_SESSION['ck_dir'] = PHPWS_SOURCE_DIR . 'images/ckeditor/';
+$_SESSION['ck_http'] = PHPWS_Core::getHomeHttp() . 'images/ckeditor/';
+$_SESSION['source_dir'] = PHPWS_SOURCE_DIR;
+$default['session_name'] = session_name();
 ?>

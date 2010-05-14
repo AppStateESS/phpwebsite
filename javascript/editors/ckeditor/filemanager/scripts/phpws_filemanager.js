@@ -25,10 +25,12 @@ var setDimensions = function(){
 // whenever a new directory is selected.
 var setUploader = function(path){
 	$('#currentpath').val(path);
-	$('#uploader h1').text('Current Folder: ' + path);
+	$('#uploader h1').text('Current Folder: ' + path.replace(source_dir, ''));
+	//$('#uploader h1').text('Current Folder: ' + path);
 
 	$('#newfolder').unbind().click(function(){
-		// var foldername = prompt('Enter the name of the new folder:', 'My Folder');
+		// var foldername = prompt('Enter the name of the new folder:', 'My
+		// Folder');
 		var foldername = 'My Folder';
 		var msg = 'Enter the name of the new folder: <input id="fname" name="fname" type="text" value="' + foldername + '" />';
 

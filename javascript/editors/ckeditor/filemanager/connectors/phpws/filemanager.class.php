@@ -171,20 +171,21 @@ class Filemanager {
     }
 
     public function delete() {
-        if(is_dir($this->get['path'])) {
-            $this->unlinkRecursive($this->get['path']);
+        $path = $this->backToDir($this->get['path']);
+        if(is_dir($path)) {
+            $this->unlinkRecursive($path);
             $array = array(
 				'Error'=>"",
 				'Code'=>0,
-				'Path'=>$this->get['path']
+				'Path'=>$path
             );
             return $array;
-        } else if(file_exists($this->get['path'])) {
-            unlink($this->get['path']);
+        } else if(file_exists($path)) {
+            unlink($path);
             $array = array(
 				'Error'=>"",
 				'Code'=>0,
-				'Path'=>$this->get['path']
+				'Path'=>$path
             );
             return $array;
         } else {
