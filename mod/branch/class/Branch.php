@@ -131,6 +131,10 @@ class Branch {
             return FALSE;
         }
 
+        if (!mkdir($this->directory . 'images/ckeditor/')) {
+            return FALSE;
+        }
+
         if (!mkdir($this->directory . 'javascript/')) {
             return FALSE;
         }
