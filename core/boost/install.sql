@@ -23,7 +23,7 @@ CREATE TABLE dependencies (
 
 CREATE TABLE mod_settings (
  module varchar(40) NOT NULL,
- setting_name varchar(30) NOT NULL,
+ setting_name varchar(60) NOT NULL,
  setting_type smallint NOT NULL default 4,
  small_num smallint NOT NULL default 0,
  large_num int NOT NULL default 0,
