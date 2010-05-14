@@ -2,7 +2,7 @@
 $sn = & $_GET['sn'];
 session_name($sn);
 session_start();
-$ck_image_dir = $_SESSION['ck_image_directory'];
+$ck_image_dir = $_SESSION['ck_dir'];
 $ck_image_http = $_SESSION['ck_http'];
 
 echo <<<EOF
