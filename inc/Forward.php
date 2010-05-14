@@ -26,6 +26,12 @@ function forwardInfo()
         $preg = '/[^\w\-]/';
     }
 
+    // Should ignore the ? and everything after it
+    $qpos = strpos($url, '?');
+    if($qpos !== FALSE) {
+        $url = substr($url, 0, $qpos);
+    }
+
     $aUrl = explode('/', $url);
     $module = array_shift($aUrl);
 
