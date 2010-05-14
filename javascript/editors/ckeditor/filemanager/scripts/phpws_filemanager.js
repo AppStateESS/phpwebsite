@@ -121,9 +121,9 @@ $.urlParam = function(name){
 // contextual menu option in list views.
 // NOTE: closes the window when finished.
 var selectItem = function(data){
-	alert(path);
 	if(window.opener){
-		path = path.replace(home_dir, '');
+		path = data['Path'];
+		path = path.replace(ck_image_dir, ck_image_http);
 		if($.urlParam('CKEditor')){
 			// use CKEditor 3.0 integration method
 			window.opener.CKEDITOR.tools.callFunction($.urlParam('CKEditorFuncNum'), path);

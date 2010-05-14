@@ -26,6 +26,8 @@ echo <<<EOF
             var showThumbs = true;
             var lang = 'phpws';
             var home_dir = '$home_dir';
+            var ck_image_dir = '$ck_image_dir';
+            var ck_image_http = '$ck_image_http';
         </script>
         <script type="text/javascript" src="scripts/jquery-1.2.6.min.js"></script>
         <script type="text/javascript" src="scripts/jquery.form.js"></script>
