@@ -21,12 +21,6 @@ abstract class Javascript {
 
     protected $body_script = null;
 
-    /**
-     * If true, head script wrapped with <script> tag
-     * @var boolean
-     */
-    protected $wrap_body_script = false;
-
     protected $demo_code = null;
 
     /**
