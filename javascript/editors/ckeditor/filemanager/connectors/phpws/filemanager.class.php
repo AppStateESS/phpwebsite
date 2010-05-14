@@ -125,7 +125,6 @@ class Filemanager {
                     $this->item = array();
                     $this->item['properties'] = $this->properties;
                     $this->get_file_info($this->get['path'] . $file);
-
                     if(!isset($this->params['type']) || (isset($this->params['type']) && $this->params['type']=='Images' && in_array($this->item['filetype'],$this->config['images']))) {
                         $array[$this->get['path'] . $file] = array(
 							'Path'=>$this->get['path'] . $file,
@@ -289,7 +288,8 @@ class Filemanager {
         $this->item['filename'] = $tmp[(sizeof($tmp)-1)];
         $tmp = explode('.',$this->item['filename']);
         $this->item['filetype'] = $tmp[(sizeof($tmp)-1)];
-        $this->item['filemtime'] = filemtime($_SESSION['ck_dir'] . $this->item['filename']);
+
+        $this->item['filemtime'] = filemtime($this->get['path']);
         //$this->item['filectime'] = filectime($_SESSION['ck_dir'] . $this->item['filename']);
 
         $this->item['preview'] = $this->hostPrefixed($this->config['icons']['path'] . $this->config['icons']['default']); // @simo

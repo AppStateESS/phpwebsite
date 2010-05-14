@@ -25,7 +25,7 @@ var setDimensions = function(){
 // whenever a new directory is selected.
 var setUploader = function(path){
 	$('#currentpath').val(path);
-	$('#uploader h1').text('Current Folder: ' + path.replace(source_dir, ''));
+	$('#uploader h1').text('Current Folder: ' + path.replace(home_dir, ''));
 	//$('#uploader h1').text('Current Folder: ' + path);
 
 	$('#newfolder').unbind().click(function(){
@@ -121,19 +121,21 @@ $.urlParam = function(name){
 // contextual menu option in list views.
 // NOTE: closes the window when finished.
 var selectItem = function(data){
+	alert(path);
 	if(window.opener){
+		path = path.replace(home_dir, '');
 		if($.urlParam('CKEditor')){
 			// use CKEditor 3.0 integration method
-			window.opener.CKEDITOR.tools.callFunction($.urlParam('CKEditorFuncNum'), data['Path']);
+			window.opener.CKEDITOR.tools.callFunction($.urlParam('CKEditorFuncNum'), path);
 		} else {
 			// use FCKEditor 2.0 integration method
 			if(data['Properties']['Width'] != ''){
-				var p = data['Path'];
+				var p = path;
 				var w = data['Properties']['Width'];
 				var h = data['Properties']['Height'];
 				window.opener.SetUrl(p,w,h);
 			} else {
-				window.opener.SetUrl(data['Path']);
+				window.opener.SetUrl(path);
 			}
 		}
 
@@ -369,6 +371,7 @@ var getFileInfo = function(file){
 
 	// Retrieve the data & populate the template.
 	$.getJSON(fileConnector + '?sn=' + sn + '&mode=getinfo&path=' + file, function(data){
+		alert('sick');
 		if(data['Code'] == 0){
 			$('#fileinfo').find('h1').text(data['Filename']);
 			$('#fileinfo').find('img').attr('src',data['Preview']);
@@ -397,7 +400,6 @@ var getFileInfo = function(file){
 var getFolderInfo = function(path){
 	// Update location for status, upload, & new folder functions.
 	setUploader(path);
-
 	// Display an activity indicator.
 	$('#fileinfo').html('<img id="activity" src="images/wait30trans.gif" width="30" height="30" />');
 

@@ -20,6 +20,7 @@ require_once('filemanager.class.php');
 $fm = new Filemanager($config);
 $response = '';
 
+                 file_put_contents('/var/www/workspace/phpwebsite/images/info.txt',  "seriously wtf\n", FILE_APPEND);
 if(!auth()) {
     $fm->error($fm->lang('AUTHORIZATION_REQUIRED'));
 }
@@ -33,7 +34,6 @@ if(!isset($_GET)) {
         switch($_GET['mode']) {
 
             default:
-
                 $fm->error($fm->lang('MODE_ERROR'));
                 break;
 

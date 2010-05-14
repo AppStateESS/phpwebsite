@@ -4,7 +4,7 @@ session_name($sn);
 session_start();
 $ck_image_dir = $_SESSION['ck_dir'];
 $ck_image_http = $_SESSION['ck_http'];
-$source_dir = $_SESSION['source_dir'];
+$home_dir = $_SESSION['home_dir'];
 
 echo <<<EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -25,7 +25,7 @@ echo <<<EOF
             var fileRoot = '$ck_image_dir';
             var showThumbs = true;
             var lang = 'phpws';
-            var source_dir = '$source_dir';
+            var home_dir = '$home_dir';
         </script>
         <script type="text/javascript" src="scripts/jquery-1.2.6.min.js"></script>
         <script type="text/javascript" src="scripts/jquery.form.js"></script>

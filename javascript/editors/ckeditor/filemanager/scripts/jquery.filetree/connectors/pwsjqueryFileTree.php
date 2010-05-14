@@ -15,7 +15,6 @@
 //
 // Output a list of files for jQuery File Tree
 //
-
 $sn = & $_GET['sn'];
 session_name($sn);
 session_start();
@@ -35,7 +34,7 @@ if( file_exists($root . $_POST['dir']) ) {
 		foreach( $files as $file ) {
 			if( file_exists($root . $_POST['dir'] . $file) && $file != '.' && $file != '..' && !is_dir($root . $_POST['dir'] . $file) ) {
 				$ext = preg_replace('/^.*\./', '', $file);
-				echo "<li class=\"file ext_$ext\"><a href=\"#\" rel=\"" . $_SESSION['ck_http'] . $file . "\">" . htmlentities($file) . "</a></li>";
+				echo "<li class=\"file ext_$ext\"><a href=\"#\" rel=\"" . $_POST['dir'] . $file . "\">" . htmlentities($file) . "</a></li>";
 			}
 		}
 		echo "</ul>";
