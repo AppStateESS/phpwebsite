@@ -1104,7 +1104,7 @@ class User_Action {
         return $result;
     }
 
-    public function update_settings()
+    public static function update_settings()
     {
         $error = null;
 
