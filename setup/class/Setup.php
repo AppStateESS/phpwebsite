@@ -55,19 +55,10 @@ class Setup {
 
     public function initConfigSet()
     {
+        $this->setConfigSet('cache_directory', '/tmp/');
         if (!isset($_SESSION['configSettings'])) {
             $_SESSION['configSettings']['database'] = false;
             // Could use some windows checking here
-            $this->setConfigSet('cache_directory', '/tmp/');
-            $this->setConfigSet('site_hash', md5(rand()));
-            $this->setConfigSet('dbname', DEFAULT_DBNAME);
-            $this->setConfigSet('dbuser', DEFAULT_DBUSER);
-            $this->setConfigSet('dbport', DEFAULT_DBPORT);
-            $this->setConfigSet('dbhost', DEFAULT_DBHOST);
-            $this->setConfigSet('dbtype', DEFAULT_DBTYPE);
-        } else {
-            $this->setConfigSet('cache_directory', '/tmp/');
-            $this->setConfigSet('site_hash', md5(rand()));
             $this->setConfigSet('dbname', DEFAULT_DBNAME);
             $this->setConfigSet('dbuser', DEFAULT_DBUSER);
             $this->setConfigSet('dbport', DEFAULT_DBPORT);
@@ -100,7 +91,6 @@ class Setup {
             }
         }
         $this->title = dgettext('core', 'Create Configuration File');
-        $this->display();
     }
 
     /**
@@ -135,7 +125,7 @@ class Setup {
         if(!file_put_contents($filename, implode("\n", $config_file))) {
             return false;
         } else {
-            $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>", str_replace('setup/index.php', '', PHPWS_CORE::getCurrentUrl(false)));
+            $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>", str_replace('setup/', '', PHPWS_Core::getHomeHttp()));
             return file_put_contents($location . 'source.php', $source_http);
         }
     }
@@ -233,11 +223,11 @@ class Setup {
             $this->messages[] = dgettext('core', 'Database found.');
             return true;
         } elseif ($checkConnection == 2) {
-            $sub['main'] = dgettext('core','PhpWebSite was able to connect, but the database already contained tables.');
+            $sub[] = dgettext('core','PhpWebSite was able to connect, but the database already contained tables.');
             if ($this->getConfigSet('dbprefix')) {
                 $sub[] = dgettext('core','Since you set a table prefix, you may force an installation into this database.');
                 $sub[] = dgettext('core','Click the link below to continue or change your connection settings.');
-                $sub[] = sprintf('<a href="index.php?step=1b">%s</a>',dgettext('core','I want to install phpWebSite in this database.'));
+                $sub[] = sprintf('<a href="index.php?step=7">%s</a>',dgettext('core','I want to install phpWebSite in this database.'));
             } else {
                 $sub[] = dgettext('core', 'Create a new database, remove all tables from the database you want to use, or use table prefixing.');
                 $_SESSION['configSettings']['database'] = false;
@@ -375,9 +365,6 @@ class Setup {
 
     public function databaseConfig()
     {
-        if (isset($this->messages['main'])) {
-            $formTpl['MAIN'] = $this->messages['main'];
-        }
         $form = new PHPWS_Form();
         $form->addHidden('step', '2');
 
@@ -413,7 +400,6 @@ class Setup {
             $formTpl['DBNAME_ERR'] = $this->messages['dbname'];
         }
         $formTpl['TITLE'] = dgettext('core', 'Database configuration');
-
         $form->addSelect('dbtype', $databases);
         $form->setMatch('dbtype', $this->getConfigSet('dbtype'));
         $form->setLabel('dbtype', dgettext('core','Database Type'));
@@ -678,7 +664,6 @@ class Setup {
             $message = null;
         }
 
-
         $tpl->setData(array('TITLE'=>$this->title, 'CONTENT'=>$content, 'MESSAGE'=>$message));
 
         echo $tpl->get();
@@ -860,12 +845,25 @@ class Setup {
                 if ($this->installContentModules()) {
                     $this->content[] = dgettext('core', 'Starting modules installed.');
                     $this->content[] = dgettext('core', 'The site should be ready for you to use.');
-//                    $this->content[] = sprintf('<a href="%s">%s</a>', PHPWS_SOURCE_HTTP, dgettext('core', 'Continue to your new site...'));
+                    //                    $this->content[] = sprintf('<a href="%s">%s</a>', PHPWS_SOURCE_HTTP, dgettext('core', 'Continue to your new site...'));
                     $this->content[] = sprintf('<a href="../">%s</a>', dgettext('core', 'Continue to your new site...'));
                     unset($_SESSION['configSettings']);
                     unset($_SESSION['User']);
                     unset($_SESSION['session_check']);
                     $this->display();
+                }
+
+            case '7':
+                $dsn = $this->getDSN(2);
+                $this->setConfigSet('dsn', $dsn);
+                $_SESSION['configSettings']['database'] = true;
+                if ($this->writeConfigFile()) {
+                    // config written, need to reload page for new defines
+                    header('location: index.php?step=3');
+                    exit();
+                } else {
+                    $this->step = 2;
+                    $this->createConfig();
                 }
         }
         $this->display();
