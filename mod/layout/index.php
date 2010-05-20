@@ -14,6 +14,11 @@ if ($_REQUEST['module'] != 'layout' || !isset($_REQUEST['action'])) {
     PHPWS_Core::errorPage('404');
 }
 
+
+if ($_REQUEST['action'] == 'ckeditor') {
+    Layout::ckeditor();
+}
+
 if (!Current_User::allow('layout')) {
     Current_User::disallow();
 }
