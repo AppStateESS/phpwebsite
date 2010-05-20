@@ -3,8 +3,11 @@
 ---------------------------------------------------------*/
 
 // Sets paths to connectors based on language selection.
-var treeConnector = 'scripts/jquery.filetree/connectors/pwsjqueryFileTree.php?sn=' + sn;
-var fileConnector = 'connectors/phpws/filemanager.php';
+//var treeConnector = 'scripts/jquery.filetree/connectors/pwsjqueryFileTree.php?sn=' + sn;
+//var fileConnector = 'connectors/phpws/filemanager.php';
+
+var fileConnector = 'index.php?module=layout&action=ckeditor&sub=fileconnect';
+var treeConnector = 'index.php?module=layout&action=ckeditor&sub=treeconnect';
 
 // Options for alert, prompt, and confirm dialogues.
 $.SetImpromptuDefaults({
@@ -19,13 +22,12 @@ var setDimensions = function(){
 	var newH = $(window).height() - 50;
 	$('#splitter, #filetree, #fileinfo, .vsplitbar').height(newH);
 }
-
 // Sets the folder status, upload, and new folder functions
 // to the path specified. Called on initial page load and
 // whenever a new directory is selected.
 var setUploader = function(path){
 	$('#currentpath').val(path);
-	$('#uploader h1').text('Current Folder: ' + path.replace(home_dir, ''));
+	$('#uploader h1').text('Current Folder: ' + path);
 	//$('#uploader h1').text('Current Folder: ' + path);
 
 	$('#newfolder').unbind().click(function(){
@@ -41,7 +43,7 @@ var setUploader = function(path){
 			if(fname != ''){
 				foldername = fname;
 
-				$.getJSON(fileConnector + '?sn=' + sn + '&mode=addfolder&path=' + $('#currentpath').val() + '&name=' + foldername, function(result){
+				$.getJSON(fileConnector + '&mode=addfolder&path=' + $('#currentpath').val() + '&name=' + foldername, function(result){
 					if(result['Code'] == 0){
 						addFolder(result['Parent'], result['Name']);
 						getFolderInfo(result['Parent']);
@@ -81,7 +83,7 @@ var bindToolbar = function(data){
 	});
 
 	$('#fileinfo').find('button#download').click(function(){
-		window.location = fileConnector + '?sn=' + sn + '&mode=download&path=' + data['Path'];
+		window.location = fileConnector + '&mode=download&path=' + data['Path'];
 	});
 }
 
@@ -160,7 +162,7 @@ var renameItem = function(data){
 		if(rname != ''){
 			var givenName = rname;
 			var oldPath = data['Path'];
-			var connectString = fileConnector + '?sn=' + sn + '&mode=rename&old=' + data['Path'] + '&new=' + givenName;
+			var connectString = fileConnector + '&mode=rename&old=' + data['Path'] + '&new=' + givenName;
 
 			$.ajax({
 				type: 'GET',
@@ -210,7 +212,7 @@ var deleteItem = function(data){
 
 	var doDelete = function(v, m){
 		if(v != 1) return false;
-		var connectString = fileConnector + '?sn=' + sn + '&mode=delete&path=' + data['Path'];
+		var connectString = fileConnector + '&mode=delete&path=' + data['Path'];
 
 		$.ajax({
 			type: 'GET',
@@ -319,7 +321,7 @@ var getDetailView = function(path){
 
 // Binds contextual menus to items in list and grid views.
 var setMenus = function(action, path){
-	$.getJSON(fileConnector + '?sn=' + sn + '&mode=getinfo&path=' + path, function(data){
+	$.getJSON(fileConnector + '&mode=getinfo&path=' + path, function(data){
 		if($('#fileinfo').data('view') == 'grid'){
 			var item = $('#fileinfo').find('img[alt="' + data['Path'] + '"]').parent();
 		} else {
@@ -332,7 +334,7 @@ var setMenus = function(action, path){
 				break;
 
 			case 'download':
-				window.location = fileConnector + '?sn=' + sn + '&mode=download&path=' + data['Path'];
+				window.location = fileConnector + '&mode=download&path=' + data['Path'];
 				break;
 
 			case 'rename':
@@ -370,7 +372,7 @@ var getFileInfo = function(file){
 	$('#fileinfo').html(template);
 
 	// Retrieve the data & populate the template.
-	$.getJSON(fileConnector + '?sn=' + sn + '&mode=getinfo&path=' + file, function(data){
+	$.getJSON(fileConnector + '&mode=getinfo&path=' + file, function(data){
 		if(data['Code'] == 0){
 			$('#fileinfo').find('h1').text(data['Filename']);
 			$('#fileinfo').find('img').attr('src',data['Preview']);
@@ -403,9 +405,8 @@ var getFolderInfo = function(path){
 	$('#fileinfo').html('<img id="activity" src="images/wait30trans.gif" width="30" height="30" />');
 
 	// Retrieve the data and generate the markup.
-	$.getJSON(fileConnector + '?sn=' + sn + '&path=' + path + '&mode=getfolder&showThumbs=' + showThumbs, function(data){
+	$.getJSON(fileConnector + '&path=' + path + '&mode=getfolder&showThumbs=' + showThumbs, function(data){
 		var result = '';
-
 		if(data){
 			if($('#fileinfo').data('view') == 'grid'){
 				result += '<ul id="contents" class="grid">';

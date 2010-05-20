@@ -1,27 +1,19 @@
 <?php
-$sn = & $_GET['sn'];
-session_name($sn);
-session_start();
-$ck_image_dir = $_SESSION['ck_dir'];
-$ck_image_http = $_SESSION['ck_http'];
-$home_dir = $_SESSION['home_dir'];
-
 echo <<<EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <title>File Manager</title>
-        <link rel="stylesheet" type="text/css" href="styles/reset.css" />
-        <link rel="stylesheet" type="text/css" href="scripts/jquery.filetree/jqueryFileTree.css" />
-        <link rel="stylesheet" type="text/css" href="scripts/jquery.contextmenu/jquery.contextMenu.css" />
-        <link rel="stylesheet" type="text/css" href="styles/filemanager.css" />
+        <link rel="stylesheet" type="text/css" href="{$ck_fm_http}styles/reset.css" />
+        <link rel="stylesheet" type="text/css" href="{$ck_fm_http}scripts/jquery.filetree/jqueryFileTree.css" />
+        <link rel="stylesheet" type="text/css" href="{$ck_fm_http}scripts/jquery.contextmenu/jquery.contextMenu.css" />
+        <link rel="stylesheet" type="text/css" href="{$ck_fm_http}styles/filemanager.css" />
         <!--[if IE]>
-        <link rel="stylesheet" type="text/css" href="styles/ie.css" />
+        <link rel="stylesheet" type="text/css" href="{$ck_fm_http}styles/ie.css" />
         <![endif]-->
 
         <script type="text/javascript">
-            var sn = '$sn';
             var fileRoot = '$ck_image_dir';
             var showThumbs = true;
             var lang = 'phpws';
@@ -29,14 +21,14 @@ echo <<<EOF
             var ck_image_dir = '$ck_image_dir';
             var ck_image_http = '$ck_image_http';
         </script>
-        <script type="text/javascript" src="scripts/jquery-1.2.6.min.js"></script>
-        <script type="text/javascript" src="scripts/jquery.form.js"></script>
-        <script type="text/javascript" src="scripts/jquery.splitter/jquery.splitter.js"></script>
-        <script type="text/javascript" src="scripts/jquery.contextmenu/jquery.contextMenu.js"></script>
-        <script type="text/javascript" src="scripts/jquery.impromptu-1.5.js"></script>
-        <script type="text/javascript" src="scripts/jquery.tablesorter.min.js"></script>
-        <script type="text/javascript" src="scripts/jquery.filetree/pwsjqueryFileTree.js"></script>
-        <script type="text/javascript" src="scripts/phpws_filemanager.js"></script>
+        <script type="text/javascript" src="{$ck_fm_http}scripts/jquery-1.2.6.min.js"></script>
+        <script type="text/javascript" src="{$ck_fm_http}scripts/jquery.form.js"></script>
+        <script type="text/javascript" src="{$ck_fm_http}scripts/jquery.splitter/jquery.splitter.js"></script>
+        <script type="text/javascript" src="{$ck_fm_http}scripts/jquery.contextmenu/jquery.contextMenu.js"></script>
+        <script type="text/javascript" src="{$ck_fm_http}scripts/jquery.impromptu-1.5.js"></script>
+        <script type="text/javascript" src="{$ck_fm_http}scripts/jquery.tablesorter.min.js"></script>
+        <script type="text/javascript" src="{$ck_fm_http}scripts/jquery.filetree/pwsjqueryFileTree.js"></script>
+        <script type="text/javascript" src="{$ck_fm_http}scripts/phpws_filemanager.js"></script>
     </head>
     <body>
         <form id="uploader" method="post">

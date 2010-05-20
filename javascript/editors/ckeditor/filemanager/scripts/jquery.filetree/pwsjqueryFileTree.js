@@ -37,7 +37,7 @@ if(jQuery) (function($){
 			// Defaults
 			if( !o ) var o = {};
 			if( o.root == undefined ) o.root = '/';
-			if( o.script == undefined ) o.script = 'pwsjqueryFileTree.php?sn=' + sn;
+			if( o.script == undefined ) o.script = 'index.php?module=layout&action=ckeditor&sub=treeconnect';
 			if( o.folderEvent == undefined ) o.folderEvent = 'click';
 			if( o.expandSpeed == undefined ) o.expandSpeed= 500;
 			if( o.collapseSpeed == undefined ) o.collapseSpeed= 500;

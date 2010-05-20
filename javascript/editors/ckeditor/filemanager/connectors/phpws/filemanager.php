@@ -11,10 +11,6 @@
  *	@copyright	Authors
  */
 
-$sn = & $_GET['sn'];
-session_name($sn);
-session_start();
-
 require_once('filemanager.config.php');
 require_once('filemanager.class.php');
 $fm = new Filemanager($config);
