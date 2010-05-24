@@ -83,7 +83,6 @@ EOF;
 
     public function loadScript()
     {
-        $this->setType('link');
         $event_name = $this->checkbox_class . '-checkall';
         $uncheck_name = dgettext('core', 'Uncheck all');
         $check_name = dgettext('core', 'Check all');
