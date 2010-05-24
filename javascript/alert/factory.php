@@ -20,7 +20,7 @@ class javascript_alert extends Javascript {
 EOF;
         $this->setDemoCode($demo_code);
         $this->setLabel('Click on me');
-        $this->setContent('Hello world');
+        $this->setContent('Hello world!');
     }
 
     public function setLabel($label)
@@ -30,7 +30,7 @@ EOF;
 
     public function setContent($content)
     {
-        $this->content = $content;
+        $this->content = $this->quote($content);
     }
 
     public function loadScript()
