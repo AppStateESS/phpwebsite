@@ -7,10 +7,10 @@
 {JAVASCRIPT}
 {STYLE}
 <!--[if lt IE 7]>
-  <link rel="stylesheet" type="text/css" href="themes/vv_3col/hacks.css" />
+  <link rel="stylesheet" type="text/css" href="{THEME_HTTP}themes/vv_3col/hacks.css" />
 <![endif]-->
 <!--[if IE 7]>
-  <link rel="stylesheet" type="text/css" href="themes/vv_3col/ie7.css" />
+  <link rel="stylesheet" type="text/css" href="{THEME_HTTP}themes/vv_3col/ie7.css" />
 <![endif]-->
 
 </head>
@@ -19,7 +19,7 @@
 <!-- Mast start -->
 <div id="mast">
     <div id="banners">{BANNERS}</div>
-    <a href="./"><img src="themes/vv_3col/img/logo.gif" alt="Logo Mast Image" width="500" height="100" border="0" /></a>
+    <a href="./"><img src="{THEME_HTTP}themes/vv_3col/img/logo.gif" alt="Logo Mast Image" width="500" height="100" border="0" /></a>
 </div>
 <!-- Mast end -->
 <!-- BEGIN layout_header --><div id="header"><div class="padding">{LAYOUT_HEADER}</div></div><!-- END layout_header -->
