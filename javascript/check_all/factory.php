@@ -128,14 +128,5 @@ EOF;
         $this->addHeadScript($head, true);
         $this->setBodyScript($body);
     }
-
-    public function get()
-    {
-
-        if (1) {
-            return sprintf('<input type="%s" name="check_all" value="{check_label}" onclick="CheckAll(this, \'{checkbox_name}\');" />', 1 );
-        }
-
-    }
 }
 ?>
