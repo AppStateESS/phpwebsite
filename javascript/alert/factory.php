@@ -21,6 +21,7 @@ EOF;
         $this->setDemoCode($demo_code);
         $this->setLabel('Click on me');
         $this->setContent('Hello world!');
+        $this->prepare();
     }
 
     public function setLabel($label)
@@ -33,12 +34,12 @@ EOF;
         $this->content = $this->quote($content);
     }
 
-    public function loadScript()
+    public function prepare()
     {
         $head_script = <<<EOF
 function notice(alert_text){if (alert_text == '') {return;}alert(alert_text);}
 EOF;
-        $this->addHeadScript($head_script, true);
+        $this->setHeadScript($head_script, true);
 
         $body_script = <<<EOF
 <a href="#" onclick="javascript:notice('{$this->content}'); return false">{$this->label}</a>

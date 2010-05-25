@@ -6,7 +6,9 @@
  * @package Core
  */
 
-abstract class Javascript {
+PHPWS_Core::initCoreClass('jsmin.php');
+
+abstract class Javascript extends Data {
     /**
      * @var string
      */
@@ -33,6 +35,7 @@ abstract class Javascript {
     protected $includes = null;
 
     abstract public function loadDemo();
+    abstract public function prepare();
 
 
     public function setBodyScript($body_script)
@@ -40,16 +43,22 @@ abstract class Javascript {
         $this->body_script = $body_script;
     }
 
-    public function getHeadScript()
+    public function setHeadScript($head_script, $wrap=false, $jsmin=false)
     {
-        if ($this->use_jquery) {
-            $this->loadJQuery();
-        }
-        if (empty($this->head_script)) {
-            return null;
+        if ($jsmin) {
+            $head_script = $this->jsmin($head_script);
         }
 
-        return implode("\n", $this->head_script);
+        if ($wrap) {
+            $head_script = $this->wrapScript($head_script);
+        }
+
+        $this->head_script = $head_script;
+    }
+
+    public function getHeadScript()
+    {
+        return $this->head_script;
     }
 
     public function getBodyScript()
@@ -113,7 +122,7 @@ abstract class Javascript {
         return <<<EOF
 <script type="text/javascript">
 //<![CDATA[
-        $script
+$script
 //]]>
 </script>
 EOF;
@@ -162,6 +171,10 @@ EOF;
 
     public function getIncludes()
     {
+        if ($this->use_jquery) {
+            $this->loadJQuery();
+        }
+
         if (!empty($this->includes)) {
             return implode("\n", $this->includes);
         }
@@ -203,13 +216,11 @@ EOF;
     }
 
     /**
-     * Reduces the script to one line
+     * Reduces the script using jsmin class
      */
-    public function shrink($script)
+    public function jsmin($script)
     {
-        $script = str_replace("\n", '', $script);
-        $script = preg_replace('/\s+/', ' ', $script);
-        return $script;
+        return JSMin::minify($script);
     }
 
     public function __toString()
@@ -221,16 +232,15 @@ EOF;
     public function demo()
     {
         $this->loadDemo();
-        if ($this->use_jquery) {
-            $this->loadJQuery();
-        }
         if (empty($this->demo_code)) {
             $demo_code = dgettext('core', 'No demo code available');
         } else {
             $demo_code = $this->getDemoCode();
         }
+
         $includes = $this->getIncludes();
         $head_script = $this->getHeadScript();
+        $body_script = $this->getBodyScript();
         $example_code = $this->getDemoExample();
 
         $title = dgettext('core', 'Javascript demonstration:') . " $this->script_name";
@@ -266,6 +276,7 @@ EOF;
     <body>
     $demo_code
     $example_code
+    $body_script
     </body>
 </html>
 EOF;

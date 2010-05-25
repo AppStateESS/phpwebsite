@@ -62,23 +62,6 @@ class javascript_check_all extends Javascript {
     }
 
 
-    public function getBodyScript()
-    {
-        $event_name = $this->checkbox_class . '-checkall';
-        $check_name = dgettext('core', 'Check all');
-
-        switch ($this->type) {
-            case 'link':
-                return '<a href="#" class="check-all" id="' . $event_name . '">' . $check_name . '</a>';
-                break;
-
-            case 'checkbox':
-            case 'button':
-                return '<input type="'.$this->type.'" class="check-all" id="' . $event_name . '" name="check-all" value="'. $check_name .'" />';
-                break;
-        }
-    }
-
     public function loadDemo()
     {
         $demo_code = <<<EOF
@@ -97,6 +80,9 @@ EOF;
         $js2 = Javascript::factory('check_all');
         $js2->setType('link');
         $js2->setCheckClass('veggies');
+
+        $js->prepare();
+        $js2->prepare();
 
         $demo1 = (string)$js;
         $demo2 = (string)$js2;
@@ -120,13 +106,15 @@ EOF;
 </tr>
 </table>
 EOF;
-
+        $this->prepare();
         $this->setDemoCode($demo_code);
         $this->setDemoExample($demo_example);
+        $this->setBodyScript(null);
     }
 
-    public function getHeadScript()
+    public function prepare()
     {
+        $event_name = $this->checkbox_class . '-checkall';
         $uncheck_name = dgettext('core', 'Uncheck all');
         $check_name = dgettext('core', 'Check all');
 
@@ -158,7 +146,19 @@ EOF;
     });
 });
 EOF;
-        return $this->wrapScript($head);
+        $this->setHeadScript($head, true, true);
+
+        switch ($this->type) {
+            case 'link':
+                $body = '<a href="#" class="check-all" id="' . $event_name . '">' . $check_name . '</a>';
+                break;
+
+            case 'checkbox':
+            case 'button':
+                $body = '<input type="'.$this->type.'" class="check-all" id="' . $event_name . '" name="check-all" value="'. $check_name .'" />';
+                break;
+        }
+        $this->setBodyScript($body);
     }
 }
 ?>
