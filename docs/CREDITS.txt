@@ -147,6 +147,10 @@ Lightbox2
 Lokesh Dhakar
 http://www.huddletogether.com/projects/lightbox2/
 
+JSmin
+Ryan Grove & Douglas Crockford
+http://code.google.com/p/jsmin-php/
+
 --------------------------------------------------------------------------
 To those who translate, we salute you.
 --------------------------------------------------------------------------
