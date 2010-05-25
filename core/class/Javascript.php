@@ -23,31 +23,17 @@ abstract class Javascript {
 
     protected $demo_code = null;
 
+    protected $example = null;
+
     /**
      * An array of scripts to include in the head.
      *
      * @var array
      */
-    protected $script_includes = null;
+    protected $includes = null;
 
     abstract public function loadDemo();
-    
-    /**
-     * This method is called just prior to producing the head and body
-     * of the script
-     */
-    abstract public function loadScript();
 
-    public function addHeadScript($script, $wrap=false)
-    {
-        if (!$this->currentlyInHead($script)) {
-            if ($wrap) {
-                $this->head_script[] = $this->wrapScript($script);
-            } else {
-                $this->head_script[] = $script;
-            }
-        }
-    }
 
     public function setBodyScript($body_script)
     {
@@ -90,10 +76,23 @@ abstract class Javascript {
         return $js;
     }
 
-
+    /**
+     * Example code displayed during demo mode. This should consist of
+     * the expected php code to make your script function.
+     * @param string $code
+     */
     protected function setDemoCode($code)
     {
         $this->demo_code = $code;
+    }
+
+    /**
+     * Example html that may be required for your code demo
+     * @param string $example
+     */
+    protected function setDemoExample($example)
+    {
+        $this->example = $example;
     }
 
     protected function getDemoCode()
@@ -101,6 +100,13 @@ abstract class Javascript {
         return '<fieldset><legend>' . $this->script_name . '</legend><pre>' . $this->demo_code . '</pre></fieldset>';
     }
 
+
+    protected function getDemoExample()
+    {
+        if (!empty($this->example)) {
+            return $this->example;
+        }
+    }
 
     public function wrapScript($script)
     {
@@ -125,27 +131,39 @@ EOF;
         static $jquery_loaded = false;
 
         if (!$jquery_loaded) {
-            $this->addHeadInclude(PHPWS_SOURCE_HTTP . 'javascript/jquery/jquery.js', true);
+            $this->addHeadInclude(PHPWS_SOURCE_HTTP . 'javascript/jquery/jquery.js', true, true);
             $jquery_loaded = true;
         }
     }
 
     /**
-     * Adds a file to the script_includes array which will be added to the head
+     * Adds a file to the includes array which will be added to the head
      * of the page. This method will assume the script is in the current "script_name"
      * directory. If $strict_path is true, then the path prefixing will not be added.
      * @param string $file_name : Name of script file to include
      * @param boolean $strict_path : If true, assume the file_name is the full path to
      *                               the script file.
+     * @param boolean $prepend : forces the scripts to the front of the head_script array
      */
-    public function addHeadInclude($file_name, $strict_path=false)
+    public function addHeadInclude($file_name, $strict_path=false, $prepend=false)
     {
         if (!$strict_path) {
             $file_name =  PHPWS_SOURCE_HTTP . 'javascript/' . $this->script_name . '/' . $file_name;
         }
 
         if (!$this->currentlyInHead($file_name)) {
-            $this->head_script[] = $this->wrapInclude($file_name);
+            if ($prepend && !empty($this->includes)) {
+                array_unshift($this->includes, $this->wrapInclude($file_name));
+            } else {
+                $this->includes[] = $this->wrapInclude($file_name);
+            }
+        }
+    }
+
+    public function getIncludes()
+    {
+        if (!empty($this->includes)) {
+            return implode("\n", $this->includes);
         }
     }
 
@@ -173,19 +191,47 @@ EOF;
         }
     }
 
+    /**
+     * Prepares text for display in script. Put slashes on single quotes and
+     * changes double quotes to &quot;
+     * @param $text
+     */
+    public function quote($text)
+    {
+        $text = str_replace("'", "\'", $text);
+        return str_replace('"', '&quot;', $text);
+    }
+
+    /**
+     * Reduces the script to one line
+     */
+    public function shrink($script)
+    {
+        $script = str_replace("\n", '', $script);
+        $script = preg_replace('/\s+/', ' ', $script);
+        return $script;
+    }
+
+    public function __toString()
+    {
+        return $this->getBodyScript();
+    }
+
+
     public function demo()
     {
         $this->loadDemo();
+        if ($this->use_jquery) {
+            $this->loadJQuery();
+        }
         if (empty($this->demo_code)) {
             $demo_code = dgettext('core', 'No demo code available');
         } else {
             $demo_code = $this->getDemoCode();
         }
-    
-        $this->loadScript();
-        
+        $includes = $this->getIncludes();
         $head_script = $this->getHeadScript();
-        $body_script = $this->getBodyScript();
+        $example_code = $this->getDemoExample();
 
         $title = dgettext('core', 'Javascript demonstration:') . " $this->script_name";
         echo <<<EOF
@@ -200,7 +246,7 @@ EOF;
             border : 1px solid gray;
             background-color : white;
             }
-    
+
             fieldset legend {
             padding : 3px;
             border-left : 1px solid gray;
@@ -208,17 +254,18 @@ EOF;
             border-right : 1px solid gray;
             margin-bottom : 20px;
             }
-            
+
             pre {
             margin : 0px;
             }
         </style>
         <title>$title</title>
+        $includes
         $head_script
     </head>
     <body>
     $demo_code
-    $body_script
+    $example_code
     </body>
 </html>
 EOF;

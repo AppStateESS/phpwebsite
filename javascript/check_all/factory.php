@@ -61,72 +61,104 @@ class javascript_check_all extends Javascript {
         $this->checkbox_class = $class;
     }
 
+
+    public function getBodyScript()
+    {
+        $event_name = $this->checkbox_class . '-checkall';
+        $check_name = dgettext('core', 'Check all');
+
+        switch ($this->type) {
+            case 'link':
+                return '<a href="#" class="check-all" id="' . $event_name . '">' . $check_name . '</a>';
+                break;
+
+            case 'checkbox':
+            case 'button':
+                return '<input type="'.$this->type.'" class="check-all" id="' . $event_name . '" name="check-all" value="'. $check_name .'" />';
+                break;
+        }
+    }
+
     public function loadDemo()
     {
         $demo_code = <<<EOF
 \$js = new Javascript('check_all');
 \$js->setType('button'); // button is default, may also use link or checkbox
 \$js->setCheckClass('fruits');
+
+\$js2 = new Javascript('check_all');
+\$js2->setType('link');
+\$js2->setCheckClass('veggies');
 EOF;
+        $js = Javascript::factory('check_all');
+        $js->setType('button'); // button is default, may also use link or checkbox
+        $js->setCheckClass('fruits');
+
+        $js2 = Javascript::factory('check_all');
+        $js2->setType('link');
+        $js2->setCheckClass('veggies');
+
+        $demo1 = (string)$js;
+        $demo2 = (string)$js2;
 
         $demo_example = <<<EOF
+<table cellpadding="6"><tr><td>
 <p><input type="checkbox" name="apple" class="fruits" value="1" /> Apple<br />
 <input type="checkbox" name="banana" class="fruits" value="1" /> Banana<br />
 <input type="checkbox" name="grape" class="fruits" value="1" /> Grape<br />
 <input type="checkbox" name="melon" class="fruits" value="1" /> Melon<br />
 <input type="checkbox" name="orange" class="fruits" value="1" /> Orange</p>
+        $demo1
+</td>
+<td><p><input type="checkbox" name="carrot" class="veggies" value="1" /> Carrot<br />
+<input type="checkbox" name="pepper" class="veggies" value="1" /> Pepper<br />
+<input type="checkbox" name="lettuce" class="veggies" value="1" /> Lettuce<br />
+<input type="checkbox" name="celery" class="veggies" value="1" /> Celery<br />
+<input type="checkbox" name="cucumber" class="veggies" value="1" /> Cucumber</p>
+        $demo2
+</td>
+</tr>
+</table>
 EOF;
+
         $this->setDemoCode($demo_code);
         $this->setDemoExample($demo_example);
-        $this->setCheckClass('fruits');
     }
 
-    public function loadScript()
+    public function getHeadScript()
     {
-        $event_name = $this->checkbox_class . '-checkall';
         $uncheck_name = dgettext('core', 'Uncheck all');
         $check_name = dgettext('core', 'Check all');
-
-        switch ($this->type) {
-            case 'link':
-                $body = '<a href="." id="' . $event_name . '">' . $check_name . '</a>';
-                break;
-
-            case 'checkbox':
-            case 'button':
-                $body = '<input type="'.$this->type.'" class="check-all" id="' . $event_name . '" name="check-all" value="'. $check_name .'" />';
-                break;
-        }
-
 
         $head = <<<EOF
 \$(document).ready(function() {
     var checked_vars = new Array();
-    \$('#$event_name').click(function() {
-        if (checked_vars['$event_name']) {
+    \$('.check-all').click(function() {
+        class_name = $(this).attr('id');
+        class_name = class_name.replace('-checkall', '');
+
+        if (checked_vars[class_name]) {
             if (this.tagName == 'INPUT') {
-                $('#$event_name').attr('value', '$check_name');
+                $(this).attr('value', '$check_name');
             } else {
-                $('#$event_name').html('$check_name');
+                $(this).html('$check_name');
             }
-            $('.$this->checkbox_class').attr('checked', '');
-            checked_vars['$event_name'] = 0;
+            $('.' + class_name).attr('checked', '');
+            checked_vars[class_name] = 0;
         } else {
             if (this.tagName == 'INPUT') {
-                $('#$event_name').attr('value', '$uncheck_name');
+                $(this).attr('value', '$uncheck_name');
             } else {
-                $('#$event_name').html('$uncheck_name');
+                $(this).html('$uncheck_name');
             }
-            $('.$this->checkbox_class').attr('checked', 'checked');
-            checked_vars['$event_name'] = 1;
+            $('.' + class_name).attr('checked', 'checked');
+            checked_vars[class_name] = 1;
         }
         return false;
     });
 });
 EOF;
-
-        $this->addHeadScript($head, true);
-        $this->setBodyScript($body);
+        return $this->wrapScript($head);
     }
 }
 ?>
