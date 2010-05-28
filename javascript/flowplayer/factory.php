@@ -28,11 +28,11 @@ class javascript_flowplayer extends Javascript {
 
     private $height = 480;
 
-    private $video_path = 'scooter.flv';
+    private $file_path = null;
 
-    private $id = 'wtf';
+    private $id = null;
 
-    private $sample = 'edward.jpg';
+    private $sample = null;
 
     protected $use_jquery = false;
 
@@ -60,6 +60,11 @@ class javascript_flowplayer extends Javascript {
     private $playlist = null;
 
     private $resize_to_image = false;
+
+    public function setFilePath($path)
+    {
+        $this->file_path = $path;
+    }
 
     /**
      * Sets "clip" option for the flowplayer
@@ -115,6 +120,7 @@ class javascript_flowplayer extends Javascript {
 
     public function prepare()
     {
+        $this->id = rand();
         $this->addInclude('flowplayer.js');
         $this->setHeadScript('<link rel="stylesheet" type="text/css" href="javascript/flowplayer/style.css">');
         $this->loadBody();
@@ -126,7 +132,7 @@ class javascript_flowplayer extends Javascript {
             return '"' . $this->video_path . '"';
         } else {
             if (!isset($this->clip['url']) && empty($this->playlist)) {
-                $this->clip['url'] = $this->video_path;
+                $this->clip['url'] = $this->file_path;
             }
             $clip = '{clip: {' . Javascript::displayParams($this->clip) . '} }';
             return $clip;
