@@ -19,6 +19,9 @@
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
 
+// smallest dimension allowed for videos
+define('FP_MIN_DIMENSION', 100);
+
 class javascript_flowplayer extends Javascript {
 
     private $width = 640;
@@ -33,12 +36,77 @@ class javascript_flowplayer extends Javascript {
 
     protected $use_jquery = false;
 
+    /**
+     * An array of "common clip" options
+     * @var array
+     */
+    private $clip = null;
+
+    /**
+     * "player" settings for the object
+     * @var array
+     */
     private $player = null;
 
+    /**
+     * Playlist options
+     * This will be an array of clip arrays
+     *
+     * $playlist = array( array('url'=>'image.jpg', 'scaling'=>'orig'),
+     *                    array('url'=>'movie_file.flv', 'autoplay'=>false)
+     *                  );
+     * @var array
+     */
+    private $playlist = null;
 
-    public function __construct()
+    private $resize_to_image = false;
+
+    /**
+     * Sets "clip" option for the flowplayer
+     * @link http://flowplayer.org/documentation/configuration/clips.html
+     * @param array $clip
+     */
+    public function setClipOptions(array $clip)
     {
-        $this->player = new Flowplayer;
+        $this->clip = $clip;
+    }
+
+    /**
+     * Sets "player" option for the flowplayer
+     * @link http://flowplayer.org/documentation/configuration/player.html
+     * @param array $clip
+     */
+    public function setPlayerOptions(array $player)
+    {
+        $this->player = $player;
+    }
+
+    public function setWidth($width)
+    {
+        if ($width < FP_MIN_DIMENSION) {
+            return;
+        }
+        $this->width = (int)$width;
+    }
+
+    public function setHeight($height)
+    {
+        if ($height < FP_MIN_DIMENSION) {
+            return;
+        }
+        $this->height = (int)$height;
+    }
+
+    public function setDimensions($width, $height)
+    {
+        $this->setWidth($width);
+        $this->setHeight($height);
+    }
+
+    public function setSample($sample, $resize=false)
+    {
+        $this->sample = $sample;
+        $this->resize_to_image = (bool)$resize;
     }
 
     public function loadDemo() {
@@ -52,32 +120,43 @@ class javascript_flowplayer extends Javascript {
         $this->loadBody();
     }
 
+    private function getClip()
+    {
+        if (empty($this->clip)) {
+            return '"' . $this->video_path . '"';
+        } else {
+            if (!isset($this->clip['url']) && empty($this->playlist)) {
+                $this->clip['url'] = $this->video_path;
+            }
+            $clip = '{clip: {' . Javascript::displayParams($this->clip) . '} }';
+            return $clip;
+        }
+    }
+
     private function loadBody()
     {
         $flowplayer = PHPWS_SOURCE_HTTP . 'javascript/flowplayer/flowplayer.swf';
+
+        if ($this->sample) {
+            $img_dim = getimagesize($this->sample);
+            if ($this->resize_to_image) {
+                $this->setDimensions($img_dim[0], $img_dim[1]);
+            }
+            $sample = <<<EOF
+<img src="$this->sample" $img_dim[3] />
+EOF;
+        } else {
+            $sample = null;
+        }
+
+        $clip = $this->getClip();
+
         $body = <<<EOF
-<a href="$this->video_path" style="display:block;width:{$this->width}px;height:{$this->height}px;" id="$this->id"></a>
-<script language="javascript">flowplayer("$this->id", "$flowplayer");</script>
+        <div style="width : $this->width; height : $this->height" id="$this->id">$sample</div>
+<script language="javascript">flowplayer("$this->id", "$flowplayer", $clip);</script>
 EOF;
         $this->setBodyScript($body);
     }
-
-}
-
-class Flowplayer extends Data {
-    private $clip = null;
-    private $playlist = null;
-
-    public function __construct() {
-        $this->clip = new FP_Clip;
-        $this->playlist = new FP_Playlist;
-    }
-}
-
-class FP_Clip {
-}
-
-class FP_Playlist {
 
 }
 
