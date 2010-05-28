@@ -17,6 +17,9 @@
 </table>
 <!-- BEGIN empty -->
 <div class="align-center">{EMPTY_MESSAGE}</div>
+<div class="align-center">{TOTAL_ROWS}<br />
+{PAGE_LABEL} {PAGES}<br />
+{LIMIT_LABEL} {LIMITS}</div>
 <!-- END empty -->
 {CHECK_ALL_SHORTCUTS}
 <div class="align-center">{LIST_ACTION} {SUBMIT}</div>
