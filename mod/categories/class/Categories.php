@@ -198,7 +198,7 @@ class Categories {
      *
      * @author Matthew McNaney
      */
-    public function getSimpleLinks($key=NULL)
+    public static function getSimpleLinks($key=NULL)
     {
         $link = NULL;
         $cat_result = Categories::catList($key);
