@@ -710,7 +710,7 @@ class Layout {
         }
     }
 
-    public function getModuleJavascript($module, $script_name, $data=NULL)
+    public static function getModuleJavascript($module, $script_name, $data=NULL)
     {
         $base = PHPWS_SOURCE_DIR . "mod/$module";
         $dir_check = "/javascript/$script_name";
@@ -1236,6 +1236,9 @@ class Layout {
 
 function javascriptEnabled()
 {
+    if (!isset($_SESSION['javascript_enabled'])) {
+        return false;
+    }
     return $_SESSION['javascript_enabled'];
 }
 

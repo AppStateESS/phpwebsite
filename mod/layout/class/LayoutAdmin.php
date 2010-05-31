@@ -581,7 +581,7 @@ class Layout_Admin {
         return $_SESSION['Layout_Settings']->saveSettings();
     }
 
-    public function postMeta()
+    public static function postMeta()
     {
         extract($_POST);
 
