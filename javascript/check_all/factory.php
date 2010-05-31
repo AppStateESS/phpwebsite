@@ -25,6 +25,8 @@ class javascript_check_all extends Javascript {
      */
     private $checkbox_class = null;
 
+    protected $use_jquery = true;
+
     /**
      * Set the check all interface type
      * @param mixed $type
@@ -84,9 +86,6 @@ EOF;
         $js->prepare();
         $js2->prepare();
 
-        $demo1 = (string)$js;
-        $demo2 = (string)$js2;
-
         $demo_example = <<<EOF
 <table cellpadding="6"><tr><td>
 <p><input type="checkbox" name="apple" class="fruits" value="1" /> Apple<br />
@@ -94,14 +93,14 @@ EOF;
 <input type="checkbox" name="grape" class="fruits" value="1" /> Grape<br />
 <input type="checkbox" name="melon" class="fruits" value="1" /> Melon<br />
 <input type="checkbox" name="orange" class="fruits" value="1" /> Orange</p>
-        $demo1
+$js
 </td>
 <td><p><input type="checkbox" name="carrot" class="veggies" value="1" /> Carrot<br />
 <input type="checkbox" name="pepper" class="veggies" value="1" /> Pepper<br />
 <input type="checkbox" name="lettuce" class="veggies" value="1" /> Lettuce<br />
 <input type="checkbox" name="celery" class="veggies" value="1" /> Celery<br />
 <input type="checkbox" name="cucumber" class="veggies" value="1" /> Cucumber</p>
-        $demo2
+$js2
 </td>
 </tr>
 </table>
