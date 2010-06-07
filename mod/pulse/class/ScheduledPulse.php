@@ -67,9 +67,9 @@ abstract class ScheduledPulse
 
     public static function getInstance(array $r)
     {
-        PHPWS_Core::initModClass($r['module'], $r['class_file']);
+        Core\Core::initModClass($r['module'], $r['class_file']);
         $sp = new $r['class']();
-        PHPWS_Core::plugObject($sp, $r);
+        Core\Core::plugObject($sp, $r);
         return $sp;
     }
 

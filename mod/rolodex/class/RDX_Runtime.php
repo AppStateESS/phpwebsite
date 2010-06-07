@@ -64,7 +64,7 @@ class RDX_Runtime
             } else {
                 $tpl['MEMBER_LABEL'] = dgettext('rolodex', 'Most Recent Member');
             }
-            PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
+            Core\Core::initModClass('rolodex', 'RDX_Member.php');
             $member = new Rolodex_Member($result[0]['user_id']);
             $tpl['MEMBER_TITLE'] = $member->viewLink();
             if ($member->getThumbnail()) {
@@ -73,7 +73,7 @@ class RDX_Runtime
                 $tpl['MEMBER_THUMBNAIL'] = null;
             }
             $tpl['BROWSE_LINK'] = PHPWS_Text::moduleLink(dgettext('rolodex', 'Browse all members'), 'rolodex', array('uop'=>'list'));
-            PHPWS_Core::initModClass('layout', 'Layout.php');
+            Core\Core::initModClass('layout', 'Layout.php');
             Layout::add(PHPWS_Template::process($tpl, 'rolodex', 'block.tpl'), 'rolodex', 'rdx_sidebox');
         }
 

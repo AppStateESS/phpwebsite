@@ -87,7 +87,7 @@ class PHPWSBB_Topic
         }
         /* otherwise, $id is an array of object data */
         else {
-            PHPWS_Core::plugObject($this, $id);
+            Core\Core::plugObject($this, $id);
         }
     }
 
@@ -254,7 +254,7 @@ class PHPWSBB_Topic
             /* Raise the Key flag (also updates view count)*/
             $this->_key->flag();
             /* Get Comment Thread */
-            PHPWS_Core::initModClass('comments', 'Comments.php');
+            Core\Core::initModClass('comments', 'Comments.php');
             $thread = Comments::getThread($this->_key);
             $content = $thread->view();
         }
@@ -349,9 +349,9 @@ class PHPWSBB_Topic
         //		$form->useEditor('cm_entry');
         $form->setLabel('cm_entry', dgettext('phpwsbb', 'Comment'));
         /* CAPTCHA */
-        PHPWS_Core::initModClass('comments', 'Comments.php');
+        Core\Core::initModClass('comments', 'Comments.php');
         if (Comments::useCaptcha()) {
-            PHPWS_Core::initCoreClass('Captcha.php');
+            Core\Core::initCoreClass('Captcha.php');
             $form->setLabel('captcha', dgettext('phpwsbb', 'Please copy the word in the above image.'));
             $form->addTplTag('CAPTCHA_IMAGE', Captcha::get());
         }
@@ -436,8 +436,8 @@ class PHPWSBB_Topic
         return false;
 
         // create associated Comment Thread
-        PHPWS_Core::initModClass('comments', 'Comments.php');
-        PHPWS_Core::initModClass('comments', 'Comment_Item.php');
+        Core\Core::initModClass('comments', 'Comments.php');
+        Core\Core::initModClass('comments', 'Comment_Item.php');
         $thread = new Comment_Thread;
         $thread->id = $this->id;
         $thread->key_id = $this->key_id;

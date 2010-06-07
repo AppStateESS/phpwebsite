@@ -9,7 +9,7 @@
 
 function rideboard_install(&$content)
 {
-    if (PHPWS_Core::initModClass('menu', 'Menu.php')) {
+    if (Core\Core::initModClass('menu', 'Menu.php')) {
         Menu::pinLink('Ride Board', 'index.php?module=rideboard');
         Menu::enableAdminMode();
     }

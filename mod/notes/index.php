@@ -14,11 +14,11 @@ if (!isset($_REQUEST['command'])) {
 switch ($_REQUEST['command']) {
     case 'close_notes':
         $_SESSION['No_Notes'] = 1;
-        PHPWS_Core::goBack();
+        Core\Core::goBack();
         break;
 
     case 'delete_note':
-        PHPWS_Core::initModClass('notes', 'Note_Item.php');
+        Core\Core::initModClass('notes', 'Note_Item.php');
         $note = new Note_Item((int)$_REQUEST['id']);
         $result = $note->delete();
         if (PHPWS_Error::isError($result)) {

@@ -6,10 +6,10 @@
  * @version $Id$
  */
 
-PHPWS_Core::initModClass('profiler', 'Profile.php');
-PHPWS_Core::initModClass('profiler', 'Division.php');
+Core\Core::initModClass('profiler', 'Profile.php');
+Core\Core::initModClass('profiler', 'Division.php');
 
-PHPWS_Core::requireConfig('profiler');
+Core\Core::requireConfig('profiler');
 
 class Profiler {
     public function user()
@@ -17,12 +17,12 @@ class Profiler {
         $content = NULL;
 
         if (empty($_REQUEST['user_cmd'])) {
-            PHPWS_Core::errorPage('404');
+            Core\Core::errorPage('404');
         }
         switch ($_REQUEST['user_cmd']) {
             case 'random_profile':
                 if (!isset($_REQUEST['type']) || !isset($_REQUEST['template'])) {
-                    PHPWS_Core::errorPage('404');
+                    Core\Core::errorPage('404');
                 }
 
                 $content = Profiler::pullRandomProfile($_REQUEST['type'], $_REQUEST['template']);
@@ -32,12 +32,12 @@ class Profiler {
 
             case 'view_profile':
                 if (!isset($_REQUEST['id'])) {
-                    PHPWS_Core::errorPage(404);
+                    Core\Core::errorPage(404);
                 }
                 $profile = new Profile($_REQUEST['id']);
                 if (!empty($profile->_error)) {
                     PHPWS_Error::log($profile->_error);
-                    PHPWS_Core::errorPage(404);
+                    Core\Core::errorPage(404);
                 }
 
                 if (Current_User::allow('profiler')) {
@@ -52,7 +52,7 @@ class Profiler {
 
             case 'view_div':
                 if (!isset($_REQUEST['div_id'])) {
-                    PHPWS_Core::errorPage('404');
+                    Core\Core::errorPage('404');
                 }
 
                 Profiler::view((int)$_REQUEST['div_id']);
@@ -64,7 +64,7 @@ class Profiler {
     public function pullRandomProfile($type, $template)
     {
         if (!is_numeric($type)) {
-            PHPWS_Core::errorPage('404');
+            Core\Core::errorPage('404');
         }
         $db = new PHPWS_DB('profiles');
         if ($type) {
@@ -92,7 +92,7 @@ class Profiler {
             Current_User::disallow();
         }
 
-        PHPWS_Core::initModClass('profiler', 'Forms.php');
+        Core\Core::initModClass('profiler', 'Forms.php');
         $title = $content = $message = NULL;
         $panel = & Profiler::cpanel();
         $panel->enableSecure();
@@ -106,7 +106,7 @@ class Profiler {
         if (isset($_REQUEST['profile_id'])) {
             $profile = new Profile($_REQUEST['profile_id']);
             if (PHPWS_Error::isError($profile->_error)) {
-                PHPWS_Core::errorPage(404);
+                Core\Core::errorPage(404);
             }
         }
         switch ($command) {
@@ -139,7 +139,7 @@ class Profiler {
                 break;
 
             case 'edit_division':
-                PHPWS_Core::initModClass('profiler', 'Division.php');
+                Core\Core::initModClass('profiler', 'Division.php');
                 if (isset($_REQUEST['division_id'])) {
                     $division = new Profiler_Division((int)$_REQUEST['division_id']);
                 } else {
@@ -165,11 +165,11 @@ class Profiler {
                     $division->delete();
                 }
 
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'update_division':
-                PHPWS_Core::initModClass('profiler', 'Division.php');
+                Core\Core::initModClass('profiler', 'Division.php');
                 if (isset($_REQUEST['division_id'])) {
                     $division = new Profiler_Division((int)$_REQUEST['division_id']);
                 } else {
@@ -196,7 +196,7 @@ class Profiler {
                 break;
 
             case 'post_profile':
-                if (!isset($_POST['profile_id']) && PHPWS_Core::isPosted()) {
+                if (!isset($_POST['profile_id']) && Core\Core::isPosted()) {
                     $title = dgettext('profiler', 'You recently posted this identical profile.');
                     $content = dgettext('profiler', 'Ignoring the repeat.');
                     break;
@@ -269,7 +269,7 @@ class Profiler {
 
     public function cpanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=profiler';
 
         $tabs['new']       = array ('title'=> dgettext('profiler', 'New'), 'link'=> $link);

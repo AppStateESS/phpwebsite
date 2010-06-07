@@ -6,7 +6,7 @@
 
 function youtube_import($media)
 {
-    PHPWS_Core::initCoreClass('XMLParser.php');
+    Core\Core::initCoreClass('XMLParser.php');
     $feed_url = 'http://gdata.youtube.com/feeds/api/videos?vq=';
     if (preg_match('/http:\/\//', $media->file_name)) {
         $pull_regexp = '@http://(www.)?youtube.com/.*(\?|&)v=([^&]+)(&.*)?@';

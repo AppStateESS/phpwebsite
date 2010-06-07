@@ -17,7 +17,7 @@ class Layout_Admin {
         if (!Current_User::allow('layout')) {
             Current_User::disallow();
         }
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $content = null;
         $panel = Layout_Admin::adminPanel();
 
@@ -36,7 +36,7 @@ class Layout_Admin {
 
             case 'turn_off_box_move':
                 Layout::moveBoxes(false);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'post_style_change':
@@ -53,7 +53,7 @@ class Layout_Admin {
                 }
                 Layout::resetDefaultBoxes();
                 unset($_SESSION['Layout_Settings']);
-                PHPWS_Core::reroute('index.php?module=layout&action=admin&authkey=' . Current_User::getAuthKey());
+                Core\Core::reroute('index.php?module=layout&action=admin&authkey=' . Current_User::getAuthKey());
                 break;
 
             case 'move_boxes_on':
@@ -61,7 +61,7 @@ class Layout_Admin {
                     Current_User::disallow();
                 }
                 Layout::moveBoxes(true);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'move_boxes_off':
@@ -69,7 +69,7 @@ class Layout_Admin {
                     Current_User::disallow();
                 }
                 Layout::moveBoxes(false);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'confirmThemeChange':
@@ -140,7 +140,7 @@ class Layout_Admin {
                         @unlink('templates/cache/' . $fn);
                     }
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'clear_cache':
@@ -148,7 +148,7 @@ class Layout_Admin {
                     Current_User::disallow();
                 }
                 PHPWS_Cache::clearCache();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'moveBox':
@@ -177,7 +177,7 @@ class Layout_Admin {
             case 'demo_fail':
                 unset($_SESSION['Layout_Settings']);
                 Layout::checkSettings();
-                PHPWS_Core::reroute('index.php?module=layout&amp;action=admin&amp;command=confirmThemeChange');
+                Core\Core::reroute('index.php?module=layout&amp;action=admin&amp;command=confirmThemeChange');
                 break;
 
             case 'demo_theme':
@@ -193,7 +193,7 @@ class Layout_Admin {
                 }
                 if ($_POST['default_theme'] != $_SESSION['Layout_Settings']->current_theme) {
                     Layout::reset($_POST['default_theme']);
-                    PHPWS_Core::reroute('index.php?module=layout&action=admin&command=demo_theme&authkey=' . Current_User::getAuthKey());
+                    Core\Core::reroute('index.php?module=layout&action=admin&command=demo_theme&authkey=' . Current_User::getAuthKey());
                 } else {
                     PHPWS_Settings::set('layout', 'include_css_order', (int)$_POST['include_css_order']);
                     PHPWS_Settings::set('layout', 'use_hub_themes', isset($_POST['use_hub_themes']));
@@ -287,7 +287,7 @@ class Layout_Admin {
 
     public static function adminPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=layout&amp;action=admin';
         $tabs['arrange']   = array('title'=>dgettext('layout', 'Arrange'),   'link'=>$link);
         $tabs['meta']      = array('title'=>dgettext('layout', 'Meta Tags'), 'link'=>$link);
@@ -319,7 +319,7 @@ class Layout_Admin {
         }
 
         if (empty($themeList)) {
-            if (!PHPWS_Core::isBranch() && PHPWS_Settings::get('layout', 'use_hub_themes')) {
+            if (!Core\Core::isBranch() && PHPWS_Settings::get('layout', 'use_hub_themes')) {
                 $form->addTplTag('DEFAULT_THEME', dgettext('layout', 'Could not find any themes on the hub.'));
             } else {
                 $form->addTplTag('DEFAULT_THEME', dgettext('layout', 'Could not find any themes on this branch. Switching back to hub.'));
@@ -451,7 +451,7 @@ class Layout_Admin {
 
     public static function getThemeList()
     {
-        PHPWS_Core::initCoreClass('File.php');
+        Core\Core::initCoreClass('File.php');
         return PHPWS_File::readDirectory(Layout::getThemeDirRoot(), 1);
     }
 
@@ -520,7 +520,7 @@ class Layout_Admin {
      */
     public function moveBox()
     {
-        PHPWS_Core::initModClass('layout', 'Box.php');
+        Core\Core::initModClass('layout', 'Box.php');
         $box = new Layout_Box($_GET['box_source']);
         $result = $box->move($_GET['box_dest']);
 

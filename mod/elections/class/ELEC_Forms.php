@@ -89,8 +89,8 @@ class Elections_Forms {
                 $ptags['VOTES_HEADER'] = dgettext('elections', 'Votes');
             }
 
-            PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
-            PHPWS_Core::initCoreClass('DBPager.php');
+            Core\Core::initModClass('elections', 'ELEC_Ballot.php');
+            Core\Core::initCoreClass('DBPager.php');
             $pager = new DBPager('elections_ballots', 'Elections_Ballot');
             $pager->setModule('elections');
             if (!isset($_SESSION['User']->username)) {
@@ -126,8 +126,8 @@ class Elections_Forms {
         $ptags['BALLOT_HEADER'] = dgettext('elections', 'Ballot');
         $ptags['VOTES_HEADER'] = dgettext('elections', 'Votes');
 
-        PHPWS_Core::initModClass('elections', 'ELEC_Candidate.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('elections', 'ELEC_Candidate.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('elections_candidates', 'Elections_Candidate');
         $pager->setModule('elections');
 
@@ -166,8 +166,8 @@ class Elections_Forms {
             $ptags['DATE_HEADER'] = dgettext('elections', 'Vote date');
             $ptags['IP_HEADER'] = dgettext('elections', 'IP Address');
 
-            PHPWS_Core::initModClass('elections', 'ELEC_Vote.php');
-            PHPWS_Core::initCoreClass('DBPager.php');
+            Core\Core::initModClass('elections', 'ELEC_Vote.php');
+            Core\Core::initCoreClass('DBPager.php');
             $pager = new DBPager('elections_votes', 'Elections_Vote');
             $pager->setModule('elections');
             if ($ballot_id > 0) {
@@ -220,7 +220,7 @@ class Elections_Forms {
         $form->setLabel('description', dgettext('elections', 'Description'));
 
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager('image_id', $ballot->image_id);
         $manager->imageOnly();
         $manager->maxImageWidth(PHPWS_Settings::get('elections', 'max_width'));
@@ -334,7 +334,7 @@ class Elections_Forms {
         $form->setCols('description', '40');
         $form->setLabel('description', dgettext('elections', 'Description'));
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager('image_id', $candidate->image_id);
         $manager->imageOnly();
         $manager->maxImageWidth(PHPWS_Settings::get('elections', 'max_width'));
@@ -516,7 +516,7 @@ class Elections_Forms {
 
     public function getAllGroups()
     {
-        PHPWS_Core::initModClass('users', 'Action.php');
+        Core\Core::initModClass('users', 'Action.php');
         return User_Action::getGroups('group');
     }
 
@@ -564,7 +564,7 @@ class Elections_Forms {
 
     public function getAllBallots()
     {
-        PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
+        Core\Core::initModClass('elections', 'ELEC_Ballot.php');
         $db = new PHPWS_DB('elections_ballots');
         $db->addColumn('id');
         $db->addColumn('title');

@@ -106,8 +106,8 @@ class Finc_Forms {
         $ptags['TITLE_HEADER'] = dgettext('finc', 'Title');
         $ptags['PATH_HEADER'] = dgettext('finc', 'Path/filename');
 
-        PHPWS_Core::initModClass('finc', 'FINC_File.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('finc', 'FINC_File.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('finc_file', 'Finc_File');
         $pager->setModule('finc');
         if (!Current_User::isUnrestricted('finc')) {

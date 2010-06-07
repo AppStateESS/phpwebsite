@@ -110,7 +110,7 @@ class Podcaster_Episode {
         }
 
         if ($print) {
-            PHPWS_Core::initModClass('podcaster', 'PCR_Channel.php');
+            Core\Core::initModClass('podcaster', 'PCR_Channel.php');
             $channel = new Podcaster_Channel($this->channel_id);
             if ($icon) {
                 $link = '<a href="./index.php?module=podcaster&amp;id=' . $this->channel_id . '&amp;uop=view_rss"><img src="' . PHPWS_SOURCE_HTTP . 'mod/podcaster/img/rss_sm.png" width="14" height="14" border="0" alt="' . dgettext('podcaster', 'Subscribe RSS') . '" title="' . dgettext('podcaster', 'Subscribe RSS') . '" /></a>';
@@ -157,7 +157,7 @@ class Podcaster_Episode {
             }
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+        Core\Core::initModClass('filecabinet', 'File_Assoc.php');
         $file = new FC_File_Assoc($this->media_id);
         if (!$file->id) {
             $file->logErrors();
@@ -165,7 +165,7 @@ class Podcaster_Episode {
         }
 
         if ($file->file_type == 3) {
-            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+            Core\Core::initModClass('filecabinet', 'Multimedia.php');
             $media = new PHPWS_Multimedia($file->file_id);
             if (!$media->id) {
                 $media->logErrors();
@@ -183,7 +183,7 @@ class Podcaster_Episode {
                 return $media;
             }
         } elseif ($file->file_type == 2) {
-            PHPWS_Core::initModClass('filecabinet', 'Document.php');
+            Core\Core::initModClass('filecabinet', 'Document.php');
             $media = new PHPWS_Document($file->file_id);
             if (!$media->id) {
                 $media->logErrors();
@@ -452,7 +452,7 @@ class Podcaster_Episode {
 
     public function viewLink($bare=false)
     {
-        PHPWS_Core::initCoreClass('Link.php');
+        Core\Core::initCoreClass('Link.php');
         $link = new PHPWS_Link($this->title, 'podcaster', array('channel'=>$this->channel_id, 'episode'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
@@ -468,7 +468,7 @@ class Podcaster_Episode {
     function view()
     {
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
 
         $key = new Key($this->key_id);

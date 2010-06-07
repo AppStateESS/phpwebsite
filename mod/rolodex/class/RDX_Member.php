@@ -22,8 +22,8 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-PHPWS_Core::requireConfig('rolodex');
-PHPWS_Core::initModClass('demographics', 'Demographics.php');
+Core\Core::requireConfig('rolodex');
+Core\Core::initModClass('demographics', 'Demographics.php');
 
 class Rolodex_Member extends Demographics_User {
 
@@ -144,7 +144,7 @@ class Rolodex_Member extends Demographics_User {
             if (empty($result)) {
                 $link[] = null;
             } else {
-                PHPWS_Core::initModClass('rolodex', 'RDX_Location.php');
+                Core\Core::initModClass('rolodex', 'RDX_Location.php');
                 foreach ($result as $id){
                     $location = new Rolodex_Location($id);
                     if ($nolink) {
@@ -173,7 +173,7 @@ class Rolodex_Member extends Demographics_User {
             if (empty($result)) {
                 $link[] = null;
             } else {
-                PHPWS_Core::initModClass('rolodex', 'RDX_Feature.php');
+                Core\Core::initModClass('rolodex', 'RDX_Feature.php');
                 foreach ($result as $id){
                     $feature = new Rolodex_Feature($id);
                     if ($nolink) {
@@ -1137,7 +1137,7 @@ class Rolodex_Member extends Demographics_User {
     public function view()
     {
         if (!$this->user_id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
 
         $key = new Key($this->key_id);
@@ -1325,7 +1325,7 @@ class Rolodex_Member extends Demographics_User {
         }
 
 
-        PHPWS_Core::initModClass('comments', 'Comments.php');
+        Core\Core::initModClass('comments', 'Comments.php');
         if ($this->allow_comments) {
             $comments = Comments::getThread($key);
             if ($comments) {
@@ -1557,7 +1557,7 @@ class Rolodex_Member extends Demographics_User {
             $name = $this->getDisplay_name(true);
         }
 
-        PHPWS_Core::initCoreClass('Link.php');
+        Core\Core::initCoreClass('Link.php');
         $link = new PHPWS_Link($name, 'rolodex', array('id'=>$this->user_id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
@@ -1788,7 +1788,7 @@ class Rolodex_Member extends Demographics_User {
             if (PHPWS_Settings::get('rolodex', 'comments_anon_enable')) {
                 if (PHPWS_Settings::get('rolodex', 'comments_anon_enforce')) {
                     $this->setAllow_anon(1);
-                    PHPWS_Core::initModClass('comments', 'Comments.php');
+                    Core\Core::initModClass('comments', 'Comments.php');
                     $thread = Comments::getThread($this->key_id);
                     $thread->allowAnonymous(1);
                     $thread->save();
@@ -1796,7 +1796,7 @@ class Rolodex_Member extends Demographics_User {
                     isset($_POST['allow_anon']) ?
                         $this->setAllow_anon(1) :
                         $this->setAllow_anon(0);
-                    PHPWS_Core::initModClass('comments', 'Comments.php');
+                    Core\Core::initModClass('comments', 'Comments.php');
                     $thread = Comments::getThread($this->key_id);
                     $thread->allowAnonymous($this->allow_anon);
                     $thread->save();
@@ -1819,7 +1819,7 @@ class Rolodex_Member extends Demographics_User {
             $db = new PHPWS_DB('category_items');
             $db->addWhere('key_id', (int)$this->key_id);
             PHPWS_Error::logIfError($db->delete());
-            PHPWS_Core::initModClass('categories', 'Action.php');
+            Core\Core::initModClass('categories', 'Action.php');
             foreach ($_POST['categories'] as $var => $val) {
                 Categories_Action::addCategoryItem($val, $this->key_id);
             }
@@ -2122,7 +2122,7 @@ class Rolodex_Member extends Demographics_User {
 
         $page_title = $_SESSION['Layout_Settings']->getPageTitle(true);
         $site_contact = PHPWS_User::getUserSetting('site_contact');
-        $url = PHPWS_Core::getHomeHttp();
+        $url = Core\Core::getHomeHttp();
         if ($new) {
             $message = sprintf(dgettext('rolodex', 'You have a new %s application from %s waiting for your review at %s.'), PHPWS_Settings::get('rolodex', 'module_title'), $this->getDisplay_name(true), $url);
             $subject = sprintf(dgettext('rolodex', 'Pending %s Application'), PHPWS_Settings::get('rolodex', 'module_title'));
@@ -2131,7 +2131,7 @@ class Rolodex_Member extends Demographics_User {
             $subject = sprintf(dgettext('rolodex', 'Modified %s Profile'), PHPWS_Settings::get('rolodex', 'module_title'));
         }
 
-        PHPWS_Core::initCoreClass('Mail.php');
+        Core\Core::initCoreClass('Mail.php');
         $mail = new PHPWS_Mail;
         $mail->addSendTo(PHPWS_Settings::get('rolodex', 'admin_contact'));
         $mail->setSubject($subject);

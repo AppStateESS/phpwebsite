@@ -8,9 +8,9 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireConfig('filecabinet');
-PHPWS_Core::requireInc('filecabinet', 'defines.php');
-PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
+Core\Core::requireConfig('filecabinet');
+Core\Core::requireInc('filecabinet', 'defines.php');
+Core\Core::initModClass('filecabinet', 'File_Common.php');
 
 if (!defined('FC_MIN_POPUP_SIZE')) {
     define('FC_MIN_POPUP_SIZE', 400);

@@ -104,7 +104,7 @@ function rolodex_update(&$content, $currentVersion)
 
 
         case version_compare($currentVersion, '1.0.0', '<'):
-            PHPWS_Core::initModClass('demographics', 'Demographics.php');
+            Core\Core::initModClass('demographics', 'Demographics.php');
             if (PHPWS_Error::logIfError(Demographics::registerDefaultField('evening_phone'))) {
                 $content[] = 'Could not register evening_phone column in demographics table.</pre>';
                 return false;

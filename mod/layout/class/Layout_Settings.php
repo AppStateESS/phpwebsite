@@ -7,7 +7,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::initModClass('layout', 'Box.php');
+Core\Core::initModClass('layout', 'Box.php');
 
 class Layout_Settings {
     public $current_theme    = null;
@@ -150,7 +150,7 @@ class Layout_Settings {
 
         if (PHPWS_Error::isError($result)){
             PHPWS_Error::log($result);
-            PHPWS_Core::errorPage();
+            Core\Core::errorPage();
         }
 
         if (empty($result)) {
@@ -169,7 +169,7 @@ class Layout_Settings {
         $result = $db->loadObject($this, false);
         if (PHPWS_Error::isError($result)){
             PHPWS_Error::log($result);
-            PHPWS_Core::errorPage();
+            Core\Core::errorPage();
         }
         
         if ($theme && is_dir(Layout::getThemeDirRoot() . $theme)) {
@@ -188,7 +188,7 @@ class Layout_Settings {
             $this->loadStyleSheets($themeVars);
         } else {
             PHPWS_Error::log(LAYOUT_INI_FILE, 'layout', 'Layout_Settings::loadSettings', $themeInit);
-            //PHPWS_Core::errorPage();
+            //Core\Core::errorPage();
         }
         if (Current_User::isDeity()) {
             $this->deity_reload = true;
@@ -263,7 +263,7 @@ class Layout_Settings {
     public function saveSettings()
     {
         $db = new PHPWS_DB('layout_config');
-        $vars = PHPWS_Core::stripObjValues($this);
+        $vars = Core\Core::stripObjValues($this);
         unset($vars['current_theme']);
         unset($vars['_contentVars']);
         unset($vars['_boxes']);

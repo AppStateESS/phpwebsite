@@ -5,6 +5,6 @@
  * @version $Id$
  */
 
-PHPWS_Core::initModClass('breadcrumb', 'Breadcrumb.php');
+Core\Core::initModClass('breadcrumb', 'Breadcrumb.php');
 
 ?>

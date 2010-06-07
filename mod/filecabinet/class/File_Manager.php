@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+Core\Core::initModClass('filecabinet', 'File_Assoc.php');
 class FC_File_Manager {
     public $module         = null;
     public $file_assoc     = null;
@@ -141,7 +141,7 @@ class FC_File_Manager {
 
     public function loadFileAssoc($file_id)
     {
-        PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+        Core\Core::initModClass('filecabinet', 'File_Assoc.php');
         $this->file_assoc = new FC_File_Assoc($file_id);
     }
 
@@ -498,7 +498,7 @@ class FC_File_Manager {
     public function folderContentView()
     {
         javascript('jquery');
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        Core\Core::initModClass('filecabinet', 'Image.php');
         javascript('confirm'); // needed for deletion
 
         Layout::addStyle('filecabinet');
@@ -663,7 +663,7 @@ class FC_File_Manager {
                 break;
 
             case DOCUMENT_FOLDER:
-                PHPWS_Core::initModClass('filecabinet', 'Document.php');
+                Core\Core::initModClass('filecabinet', 'Document.php');
                 $db = new PHPWS_DB('documents');
                 $class_name = 'PHPWS_Document';
                 $file_type = FC_DOCUMENT;
@@ -709,7 +709,7 @@ class FC_File_Manager {
                 $this->max_height);
 
                 javascriptMod('filecabinet', 'pick_file', $js);
-                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+                Core\Core::initModClass('filecabinet', 'Multimedia.php');
                 $db = new PHPWS_DB('multimedia');
                 $class_name = 'PHPWS_Multimedia';
                 $file_type = FC_MEDIA;
@@ -884,7 +884,7 @@ class FC_File_Manager {
                 $file_assoc->width   = $this->max_width;
                 $file_assoc->height  = $this->max_height;
 
-                PHPWS_Core::initModClass('filecabinet', 'Image.php');
+                Core\Core::initModClass('filecabinet', 'Image.php');
                 $image = new PHPWS_Image($id);
                 if (!$dst = $image->makeResizePath()) {
                     return false;

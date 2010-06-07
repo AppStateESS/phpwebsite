@@ -45,7 +45,7 @@ class Comment_Rank {
 
     public function loadUserRanks()
     {
-        PHPWS_Core::initModClass('comments', 'User_Rank.php');
+        Core\Core::initModClass('comments', 'User_Rank.php');
         $db = new PHPWS_DB('comments_user_ranks');
         $db->setIndexBy('id');
         $db->addWhere('rank_id', $this->id);

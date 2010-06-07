@@ -5,7 +5,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+Core\Core::initModClass('controlpanel', 'Panel.php');
 
 class PHPWS_ControlPanel {
 
@@ -15,7 +15,7 @@ class PHPWS_ControlPanel {
 
 		$panel = new PHPWS_Panel('controlpanel');
 		$panel->disableSecure();
-		$current_mod = PHPWS_Core::getCurrentModule();
+		$current_mod = Core\Core::getCurrentModule();
 
 		$checkTabs = PHPWS_ControlPanel::loadTabs();
 
@@ -27,7 +27,7 @@ class PHPWS_ControlPanel {
 			PHPWS_Error::log(CP_NO_TABS, 'controlpanel', 'display');
 			PHPWS_ControlPanel::makeDefaultTabs();
 			PHPWS_ControlPanel::reset();
-			PHPWS_Core::errorPage();
+			Core\Core::errorPage();
 			exit();
 		}
 
@@ -96,7 +96,7 @@ class PHPWS_ControlPanel {
 		!preg_match('/controlpanel/', $link) &&
 		$link != $current_link
 		){
-			PHPWS_Core::reroute($link);
+			Core\Core::reroute($link);
 		}
 
 		return $panel->display();
@@ -107,7 +107,7 @@ class PHPWS_ControlPanel {
 		$tabs = PHPWS_ControlPanel::getAllTabs();
 		if (PHPWS_Error::isError($tabs)){
 			PHPWS_Error::log($tabs);
-			PHPWS_Core::errorPage();
+			Core\Core::errorPage();
 		}
 
 		return $tabs;
@@ -123,7 +123,7 @@ class PHPWS_ControlPanel {
 
 	public static function getAllLinks($alpha_order=false)
 	{
-		PHPWS_Core::initModClass('controlpanel', 'Link.php');
+		Core\Core::initModClass('controlpanel', 'Link.php');
 		$allLinks = null;
 
 		// This session prevents the DB query and link
@@ -167,8 +167,8 @@ class PHPWS_ControlPanel {
 
 	public static function unregisterModule($module, &$content)
 	{
-		PHPWS_Core::initModClass('controlpanel', 'Tab.php');
-		PHPWS_Core::initModClass('controlpanel', 'Link.php');
+		Core\Core::initModClass('controlpanel', 'Tab.php');
+		Core\Core::initModClass('controlpanel', 'Link.php');
 
 		$itemnameList = array();
 		$cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
@@ -258,8 +258,8 @@ class PHPWS_ControlPanel {
 
 	public static function registerModule($module, &$content)
 	{
-		PHPWS_Core::initModClass('controlpanel', 'Tab.php');
-		PHPWS_Core::initModClass('controlpanel', 'Link.php');
+		Core\Core::initModClass('controlpanel', 'Tab.php');
+		Core\Core::initModClass('controlpanel', 'Link.php');
 
 		$cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
 

@@ -22,8 +22,8 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-PHPWS_Core::requireInc('sitemap', 'errordefines.php');
-PHPWS_Core::requireConfig('sitemap');
+Core\Core::requireInc('sitemap', 'errordefines.php');
+Core\Core::requireConfig('sitemap');
 
 class Sitemap {
     public $forms       = null;
@@ -51,10 +51,10 @@ class Sitemap {
 
                 if (PHPWS_Error::logIfError($this->buildFile())) {
                     $this->forwardMessage(dgettext('sitemap', 'Error occurred when creating file.'));
-                    PHPWS_Core::reroute('index.php?module=sitemap&aop=menu&tab=new');
+                    Core\Core::reroute('index.php?module=sitemap&aop=menu&tab=new');
                 } else {
                     $this->forwardMessage(dgettext('sitemap', 'File created successfully.'));
-                    PHPWS_Core::reroute('index.php?module=sitemap&aop=menu&tab=new');
+                    Core\Core::reroute('index.php?module=sitemap&aop=menu&tab=new');
                 }
 
                 break;
@@ -65,7 +65,7 @@ class Sitemap {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('sitemap', 'Sitemap settings saved.'));
-                    PHPWS_Core::reroute('index.php?module=sitemap&aop=menu');
+                    Core\Core::reroute('index.php?module=sitemap&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -98,7 +98,7 @@ class Sitemap {
 
     public function sendMessage()
     {
-        PHPWS_Core::reroute('index.php?module=sitemap&amp;uop=message');
+        Core\Core::reroute('index.php?module=sitemap&amp;uop=message');
     }
 
     public function forwardMessage($message, $title=null)
@@ -117,14 +117,14 @@ class Sitemap {
             if (isset($_SESSION['SM_Message']['title'])) {
                 $this->title = $_SESSION['SM_Message']['title'];
             }
-            PHPWS_Core::killSession('SM_Message');
+            Core\Core::killSession('SM_Message');
         }
     }
 
 
     public function loadForm($type)
     {
-        PHPWS_Core::initModClass('sitemap', 'SM_Forms.php');
+        Core\Core::initModClass('sitemap', 'SM_Forms.php');
         $this->forms = new Sitemap_Forms;
         $this->forms->sitemap = & $this;
         $this->forms->get($type);
@@ -133,7 +133,7 @@ class Sitemap {
 
     public function loadPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('sitemap-panel');
         $link = 'index.php?module=sitemap&aop=menu';
 
@@ -222,7 +222,7 @@ class Sitemap {
     public function getMenus($match=null, $select_name='menus', $multiple=true, $count=true)
     {
 
-        PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+        Core\Core::initModClass('menu', 'Menu_Item.php');
         $db = new PHPWS_DB('menus');
         $db->addOrder('title asc');
 
@@ -272,7 +272,7 @@ class Sitemap {
     public function getKeyMods($match=null, $select_name='keys', $multiple=true, $count=true)
     {
 
-        PHPWS_Core::initCoreClass('Key.php');
+        Core\Core::initCoreClass('Key.php');
         $db = new PHPWS_DB('phpws_key');
         $db->addOrder('module asc');
 
@@ -349,7 +349,7 @@ class Sitemap {
             echo $content;
             exit();
         } else {
-            PHPWS_Core::reroute();
+            Core\Core::reroute();
         }
     }
 
@@ -376,7 +376,7 @@ class Sitemap {
         if ($_REQUEST['build_type']) {
             /* save to server */
             $filename = 'sitemap.xml';
-            PHPWS_Core::initCoreClass('File.php');
+            Core\Core::initCoreClass('File.php');
             return PHPWS_File::writeFile(PHPWS_HOME_DIR.$filename, $content, true);
         } else {
             /* download */

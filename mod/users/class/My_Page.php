@@ -12,7 +12,7 @@ class My_Page {
         $auth = Current_User::getAuthorization();
 
         if (!Current_User::isLogged() || !$auth->local_user ) {
-            PHPWS_Core::errorPage('403');
+            Core\Core::errorPage('403');
         }
 
         $result = $this->init();
@@ -47,7 +47,7 @@ class My_Page {
 
     public function init()
     {
-        PHPWS_Core::initCoreClass('Module.php');
+        Core\Core::initCoreClass('Module.php');
         $db = new PHPWS_DB('users_my_page_mods');
         $db->addColumn('mod_title');
         $result = $db->select('col');
@@ -73,7 +73,7 @@ class My_Page {
 
     public function cpanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=users&amp;action=user';
 
         foreach ($this->modules as $module){

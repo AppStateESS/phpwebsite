@@ -74,7 +74,7 @@ class Elections_Vote {
         }
 
         if ($print) {
-            PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
+            Core\Core::initModClass('elections', 'ELEC_Ballot.php');
             $ballot = new Elections_Ballot($this->ballot_id);
             return $ballot->viewLink();
         } else {
@@ -86,7 +86,7 @@ class Elections_Vote {
     public function view()
     {
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
 
 
@@ -168,7 +168,7 @@ class Elections_Vote {
 
     public function viewLink($bare=false)
     {
-        PHPWS_Core::initCoreClass('Link.php');
+        Core\Core::initCoreClass('Link.php');
         $link = new PHPWS_Link($this->id, 'elections', array('ballot'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 

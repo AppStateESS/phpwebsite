@@ -123,7 +123,7 @@ class vShop_Forms {
 
     function settingsPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=vshop&aop=menu';
 
         if (Current_User::allow('vshop', 'settings', null, null, true)){
@@ -140,7 +140,7 @@ class vShop_Forms {
 
     function ordersPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=vshop&aop=menu';
 
         if (Current_User::allow('vshop', 'edit_orders')){
@@ -167,8 +167,8 @@ class vShop_Forms {
         $ptags['TITLE_HEADER'] = dgettext('vshop', 'Title');
         $ptags['ITEMS_HEADER'] = dgettext('vshop', 'Items');
 
-        PHPWS_Core::initModClass('vshop', 'vShop_Dept.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('vshop', 'vShop_Dept.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('vshop_depts', 'vShop_Dept');
         $pager->setModule('vshop');
 
@@ -208,8 +208,8 @@ class vShop_Forms {
 //        }
         $ptags['DEPT_HEADER'] = dgettext('vshop', 'Department');
 
-        PHPWS_Core::initModClass('vshop', 'vShop_Item.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('vshop', 'vShop_Item.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('vshop_items', 'vShop_Item');
         $pager->setModule('vshop');
         $pager->setOrder('title', 'asc', true);
@@ -243,8 +243,8 @@ class vShop_Forms {
         $ptags['TITLE_HEADER'] = dgettext('vshop', 'Title');
         $ptags['RATE_HEADER'] = dgettext('vshop', 'Rate');
 
-        PHPWS_Core::initModClass('vshop', 'vShop_Tax.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('vshop', 'vShop_Tax.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('vshop_taxes', 'vShop_Tax');
         $pager->setModule('vshop');
 
@@ -280,8 +280,8 @@ class vShop_Forms {
         $ptags['UPDATED_HEADER'] = dgettext('vshop', 'Modified');
         $ptags['STATUS_HEADER'] = dgettext('vshop', 'Status');
 
-        PHPWS_Core::initModClass('vshop', 'vShop_Order.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('vshop', 'vShop_Order.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('vshop_orders', 'vShop_Order');
         $pager->setModule('vshop');
         $pager->addWhere('completed', $completed);
@@ -329,7 +329,7 @@ class vShop_Forms {
         $form->setLabel('description', dgettext('vshop', 'Description'));
 
         if (PHPWS_Settings::get('vshop', 'enable_files')) {
-            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+            Core\Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('file_id', $dept->file_id);
             $manager->imageOnly();
             $manager->maxImageWidth(PHPWS_Settings::get('vshop', 'max_width'));
@@ -366,7 +366,7 @@ class vShop_Forms {
             $form->addSubmit(dgettext('vshop', 'Add'));
         }
 
-        PHPWS_Core::initModClass('vshop', 'vShop_Dept.php');
+        Core\Core::initModClass('vshop', 'vShop_Dept.php');
         $db = new PHPWS_DB('vshop_depts');
         $db->addColumn('id');
         $db->addColumn('title');
@@ -393,7 +393,7 @@ class vShop_Forms {
         $form->setLabel('description', dgettext('vshop', 'Description'));
 
         if (PHPWS_Settings::get('vshop', 'enable_files')) {
-            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+            Core\Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('file_id', $item->file_id);
 //            $manager->imageOnly();
             $manager->maxImageWidth(PHPWS_Settings::get('vshop', 'max_width'));
@@ -695,7 +695,7 @@ class vShop_Forms {
         $form->addHidden('module', 'vshop');
         $form->addHidden('aop', 'edit_item');
 
-        PHPWS_Core::initModClass('vshop', 'vShop_Dept.php');
+        Core\Core::initModClass('vshop', 'vShop_Dept.php');
         $db = new PHPWS_DB('vshop_depts');
         $db->addColumn('id');
         $db->addColumn('title');
@@ -744,7 +744,7 @@ class vShop_Forms {
 
         $tpl = $form->getTemplate();
 
-        PHPWS_Core::initModClass('vshop', 'vShop_Cart.php');
+        Core\Core::initModClass('vshop', 'vShop_Cart.php');
         $cart = vShop_Cart::CreateInstance();
         $cart_data = $cart->GetCart();
         if (!empty($cart_data)) {
@@ -757,7 +757,7 @@ class vShop_Forms {
             $total_items = 0.00;
             foreach ($cart_data as $id=>$val) {
                 $qty = $cart_data[$id]['count'];
-                PHPWS_Core::initModClass('vshop', 'vShop_Item.php');
+                Core\Core::initModClass('vshop', 'vShop_Item.php');
                 $item = new vShop_Item($id);
                 $subtotal = $item->price * $qty;
                 $total_items = $total_items + $subtotal;
@@ -965,7 +965,7 @@ class vShop_Forms {
         /* I should error check here to make sure the class is there */
         
         $payclass = $this->vshop->order->pay_method;
-        PHPWS_Core::initModClass('vshop', 'pay_mods/' . $payclass . '.php');
+        Core\Core::initModClass('vshop', 'pay_mods/' . $payclass . '.php');
         $payment = new $payclass($this->vshop->order->id);
 
         $this->vshop->title = dgettext('vshop', 'Confirm order');

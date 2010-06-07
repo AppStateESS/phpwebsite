@@ -22,8 +22,8 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-PHPWS_Core::requireInc('vshop', 'errordefines.php');
-PHPWS_Core::requireConfig('vshop');
+Core\Core::requireInc('vshop', 'errordefines.php');
+Core\Core::requireConfig('vshop');
 
 class vShop {
     public $forms      = null;
@@ -54,24 +54,24 @@ class vShop {
             case 'edit_tax':
             case 'post_tax':
             case 'delete_tax':
-                PHPWS_Core::initModClass('vshop', 'vShop_Forms.php');
+                Core\Core::initModClass('vshop', 'vShop_Forms.php');
                 $settingsPanel = vShop_Forms::settingsPanel();
                 $settingsPanel->enableSecure();
                 break;
             case 'sales_report':
             case 'inventory_report':
-                PHPWS_Core::initModClass('vshop', 'vShop_Forms.php');
+                Core\Core::initModClass('vshop', 'vShop_Forms.php');
                 $ordersPanel = vShop_Forms::ordersPanel();
                 $ordersPanel->enableSecure();
                 break;
             case 'menu':
                 if (isset($_GET['tab'])) {
-                    PHPWS_Core::initModClass('vshop', 'vShop_Forms.php');
+                    Core\Core::initModClass('vshop', 'vShop_Forms.php');
                     if ($_GET['tab'] == 'settings' || $_GET['tab'] == 'taxes') {
                         $settingsPanel = vShop_Forms::settingsPanel();
                         $settingsPanel->enableSecure();
                     } elseif ($_GET['tab'] == 'orders' || $_GET['tab'] == 'reports' || $_GET['tab'] == 'incompleted' || $_GET['tab'] == 'cancelled') {
-                        PHPWS_Core::initModClass('vshop', 'vShop_Forms.php');
+                        Core\Core::initModClass('vshop', 'vShop_Forms.php');
                         $ordersPanel = vShop_Forms::ordersPanel();
                         $ordersPanel->enableSecure();
                     }
@@ -105,10 +105,10 @@ class vShop {
                 if ($this->postDept()) {
                     if (PHPWS_Error::logIfError($this->dept->save())) {
                         $this->forwardMessage(dgettext('vshop', 'Error occurred when saving department.'));
-                        PHPWS_Core::reroute('index.php?module=vshop&aop=menu');
+                        Core\Core::reroute('index.php?module=vshop&aop=menu');
                     } else {
                         $this->forwardMessage(dgettext('vshop', 'Department saved successfully.'));
-                        PHPWS_Core::reroute('index.php?module=vshop&aop=menu');
+                        Core\Core::reroute('index.php?module=vshop&aop=menu');
                     }
                 } else {
                     $this->loadForm('edit_dept');
@@ -140,11 +140,11 @@ class vShop {
                 if ($this->postItem()) {
                     if (PHPWS_Error::logIfError($this->item->save())) {
                         $this->forwardMessage(dgettext('vshop', 'Error occurred when saving item.'));
-                        PHPWS_Core::reroute('index.php?module=vshop&aop=menu');
+                        Core\Core::reroute('index.php?module=vshop&aop=menu');
                     } else {
                         $this->forwardMessage(dgettext('vshop', 'Item saved successfully.'));
-// old                        PHPWS_Core::reroute('index.php?module=vshop&dept='.$this->item->dept_id);
-                        PHPWS_Core::reroute('index.php?module=vshop&aop=menu&tab=list_items&dept='.$this->item->dept_id); // new from wendall
+// old                        Core\Core::reroute('index.php?module=vshop&dept='.$this->item->dept_id);
+                        Core\Core::reroute('index.php?module=vshop&aop=menu&tab=list_items&dept='.$this->item->dept_id); // new from wendall
                     }
                 } else {
                     $this->loadForm('edit_item');
@@ -186,10 +186,10 @@ class vShop {
                 if ($this->postTax()) {
                     if (PHPWS_Error::logIfError($this->tax->save())) {
                         $this->forwardMessage(dgettext('vshop', 'Error occurred when saving tax.'));
-                        PHPWS_Core::reroute('index.php?module=vshop&aop=menu&tab=taxes');
+                        Core\Core::reroute('index.php?module=vshop&aop=menu&tab=taxes');
                     } else {
                         $this->forwardMessage(dgettext('vshop', 'Tax saved successfully.'));
-                        PHPWS_Core::reroute('index.php?module=vshop&aop=menu&tab=taxes');
+                        Core\Core::reroute('index.php?module=vshop&aop=menu&tab=taxes');
                     }
                 } else {
                     $this->loadForm('edit_tax');
@@ -215,7 +215,7 @@ class vShop {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('vshop', 'vShop settings saved.'));
-                    PHPWS_Core::reroute('index.php?module=vshop&aop=menu');
+                    Core\Core::reroute('index.php?module=vshop&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -228,7 +228,7 @@ class vShop {
 //                    Current_User::disallow();
 //                }
                 $this->loadOrder();
-                PHPWS_Core::initModClass('vshop', 'vShop_Forms.php');
+                Core\Core::initModClass('vshop', 'vShop_Forms.php');
                 $this->forms = new vShop_Forms;
                 $this->forms->vshop = & $this;
                 $this->title = $this->order->getTitle(true);
@@ -252,12 +252,12 @@ class vShop {
                 if ($this->postOrder(true)) {
                     if (PHPWS_Error::logIfError($this->order->save())) {
                         $this->forwardMessage(dgettext('vshop', 'Error occurred when saving order.'));
-                        PHPWS_Core::reroute('index.php?module=vshop&aop=menu&tab=orders');
+                        Core\Core::reroute('index.php?module=vshop&aop=menu&tab=orders');
                     } else {
                         $this->sendNotice($this->order->id, 'customer', 'update');
                         $this->sendNotice($this->order->id, 'admin', 'update');
                         $this->forwardMessage(dgettext('vshop', 'Order saved successfully.'));
-                        PHPWS_Core::reroute('index.php?module=vshop&aop=menu&tab=orders');
+                        Core\Core::reroute('index.php?module=vshop&aop=menu&tab=orders');
                     }
                 } else {
                     $this->loadForm('edit_order');
@@ -296,7 +296,7 @@ class vShop {
                     Current_User::disallow();
                 }
                 $this->loadOrder();
-                PHPWS_Core::initModClass('vshop', 'vShop_Forms.php');
+                Core\Core::initModClass('vshop', 'vShop_Forms.php');
                 $content = vShop_Forms::setStatus($this->order);
                 Layout::nakedDisplay($content);
                 break;
@@ -369,7 +369,7 @@ class vShop {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -389,7 +389,7 @@ class vShop {
                     }
                     $this->content = $this->dept->view();
                 } else {
-                    PHPWS_Core::initModClass('vshop', 'vShop_Forms.php');
+                    Core\Core::initModClass('vshop', 'vShop_Forms.php');
                     $this->forms = new vShop_Forms;
                     $this->forms->vshop = & $this;
                     $this->forms->listDepts();
@@ -420,7 +420,7 @@ class vShop {
 
             case 'addto_cart':
                 $this->loadItem();
-                PHPWS_Core::initModClass('vshop', 'vShop_Cart.php');
+                Core\Core::initModClass('vshop', 'vShop_Cart.php');
                 $cart = vShop_Cart::CreateInstance();
                 if (isset($_REQUEST['qty'])) {
                     $qty = $_REQUEST['qty'];
@@ -439,12 +439,12 @@ class vShop {
                 } else {
                     $this->forwardMessage(sprintf(dgettext('vshop', 'Sorry, we do not have enough %s in stock for your request.'), $this->item->getTitle(true)));
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'subtractfrom_cart':
                 $this->loadItem();
-                PHPWS_Core::initModClass('vshop', 'vShop_Cart.php');
+                Core\Core::initModClass('vshop', 'vShop_Cart.php');
                 if (isset($_REQUEST['qty'])) {
                     $qty = $_REQUEST['qty'];
                 } else {
@@ -453,23 +453,23 @@ class vShop {
                 $cart = vShop_Cart::CreateInstance();
                 $cart->RemoveItems($this->item->id, $qty);
                 $this->forwardMessage(sprintf(dgettext('vshop', '%s successfully removed from your cart.'), $this->item->getTitle(true)));
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'clear_cart':
-                PHPWS_Core::initModClass('vshop', 'vShop_Cart.php');
+                Core\Core::initModClass('vshop', 'vShop_Cart.php');
                 $cart = vShop_Cart::CreateInstance();
                 $cart->EmptyCart();
                 $this->forwardMessage(dgettext('vshop', 'Your cart was successfully cleared.'));
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'update_cart':
-                PHPWS_Core::initModClass('vshop', 'vShop_Cart.php');
+                Core\Core::initModClass('vshop', 'vShop_Cart.php');
                 $cart = vShop_Cart::CreateInstance();
                 if (PHPWS_Settings::get('vshop', 'use_inventory')) {
 //                    $cart_data = $cart->GetCart();
-                    PHPWS_Core::initModClass('vshop', 'vShop_Item.php');
+                    Core\Core::initModClass('vshop', 'vShop_Item.php');
                 }
                 foreach ($_REQUEST['qtys'] as $id => $var) {
                     $msg = null;
@@ -491,12 +491,12 @@ class vShop {
                 }
                 $msg .= dgettext('vshop', 'Your cart was successfully updated.');
                 $this->forwardMessage($msg);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'checkout':
                 $this->loadOrder();
-                PHPWS_Core::initModClass('vshop', 'vShop_Forms.php');
+                Core\Core::initModClass('vshop', 'vShop_Forms.php');
                 $this->forms = new vShop_Forms;
                 $this->forms->vshop = & $this;
                 $this->forms->checkout();
@@ -506,15 +506,15 @@ class vShop {
                 if ($this->postOrder()) {
                     if (PHPWS_Error::logIfError($this->order->save())) {
                         $this->forwardMessage(dgettext('vshop', 'Error occurred when saving order.'));
-                        PHPWS_Core::reroute('index.php?module=vshop&uop=checkout');
+                        Core\Core::reroute('index.php?module=vshop&uop=checkout');
                     } else {
                         $this->forwardMessage(dgettext('vshop', 'Order saved successfully.'));
 //                        print_r($this->order); exit;
-                        PHPWS_Core::initModClass('vshop', 'vShop_Cart.php');
+                        Core\Core::initModClass('vshop', 'vShop_Cart.php');
                         $cart = vShop_Cart::CreateInstance();
                         $cart->EmptyCart();
                         $_SESSION['vShop_order'] = $this->order->id;
-                        PHPWS_Core::reroute('index.php?module=vshop&uop=payment');
+                        Core\Core::reroute('index.php?module=vshop&uop=payment');
                     }
                 } else {
 //                    $this->loadForm('checkout');
@@ -524,7 +524,7 @@ class vShop {
     
             case 'payment':
                 $this->loadOrder($_SESSION['vShop_order']);
-                PHPWS_Core::initModClass('vshop', 'vShop_Forms.php');
+                Core\Core::initModClass('vshop', 'vShop_Forms.php');
                 $this->forms = new vShop_Forms;
                 $this->forms->vshop = & $this;
                 $this->forms->payment();
@@ -534,7 +534,7 @@ class vShop {
                 $this->loadOrder($_SESSION['vShop_order']);
 
                 $payclass = $this->order->pay_method;
-                PHPWS_Core::initModClass('vshop', 'pay_mods/' . $payclass . '.php');
+                Core\Core::initModClass('vshop', 'pay_mods/' . $payclass . '.php');
                 $payment = new $payclass($this->order->id);
 //print_r($payment->complete()); exit;                
                 /* process the payment */
@@ -559,11 +559,11 @@ class vShop {
                     
                     /* unset the order in session */
                     unset($_SESSION['vShop_order']);
-                    PHPWS_Core::reroute('index.php?module=vshop');
+                    Core\Core::reroute('index.php?module=vshop');
 
                 } else {
                     $this->message = implode('<br />', $payment->complete());
-                    PHPWS_Core::initModClass('vshop', 'vShop_Forms.php');
+                    Core\Core::initModClass('vshop', 'vShop_Forms.php');
                     $this->forms = new vShop_Forms;
                     $this->forms->vshop = & $this;
                     $this->forms->payment();
@@ -602,14 +602,14 @@ class vShop {
             if (isset($_SESSION['vShop_Message']['title'])) {
                 $this->title = $_SESSION['vShop_Message']['title'];
             }
-            PHPWS_Core::killSession('vShop_Message');
+            Core\Core::killSession('vShop_Message');
         }
     }
 
 
     public function loadForm($type)
     {
-        PHPWS_Core::initModClass('vshop', 'vShop_Forms.php');
+        Core\Core::initModClass('vshop', 'vShop_Forms.php');
         $this->forms = new vShop_Forms;
         $this->forms->vshop = & $this;
 //print_r($this->forms->vshop); exit;
@@ -619,7 +619,7 @@ class vShop {
 
     public function loadDept($id=0)
     {
-        PHPWS_Core::initModClass('vshop', 'vShop_Dept.php');
+        Core\Core::initModClass('vshop', 'vShop_Dept.php');
 
         if ($id) {
             $this->dept = new vShop_Dept($id);
@@ -637,7 +637,7 @@ class vShop {
 
     public function loadItem($id=0)
     {
-        PHPWS_Core::initModClass('vshop', 'vShop_Item.php');
+        Core\Core::initModClass('vshop', 'vShop_Item.php');
 
         if ($id) {
             $this->item = new vShop_Item($id);
@@ -662,7 +662,7 @@ class vShop {
 
     public function loadTax($id=0)
     {
-        PHPWS_Core::initModClass('vshop', 'vShop_Tax.php');
+        Core\Core::initModClass('vshop', 'vShop_Tax.php');
 
         if ($id) {
             $this->tax = new vShop_Tax($id);
@@ -680,7 +680,7 @@ class vShop {
 
     public function loadOrder($id=0)
     {
-        PHPWS_Core::initModClass('vshop', 'vShop_Order.php');
+        Core\Core::initModClass('vshop', 'vShop_Order.php');
 
         if ($id) {
             $this->order = new vShop_Order($id);
@@ -698,7 +698,7 @@ class vShop {
 
     public function loadPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('vshop-panel');
         $link = 'index.php?module=vshop&aop=menu';
         
@@ -1100,8 +1100,8 @@ class vShop {
             /* process the cart */
     
             /* init the classes */
-            PHPWS_Core::initModClass('vshop', 'vShop_Cart.php');
-            PHPWS_Core::initModClass('vshop', 'vShop_Item.php');
+            Core\Core::initModClass('vshop', 'vShop_Cart.php');
+            Core\Core::initModClass('vshop', 'vShop_Item.php');
             
             /* init the cart */
             $cart = vShop_Cart::CreateInstance();
@@ -1251,7 +1251,7 @@ class vShop {
         $customer_email = $this->order->email;
         $shop_name = PHPWS_Settings::get('vshop', 'mod_title');
         $shop_email = PHPWS_Settings::get('vshop', 'admin_email');
-        $url = PHPWS_Core::getHomeHttp();
+        $url = Core\Core::getHomeHttp();
         $message = null;
 
         if ($to == 'customer') {
@@ -1263,7 +1263,7 @@ class vShop {
                 $message .= sprintf(dgettext('vshop', 'This message from %s was sent from %s.'), $shop_name, $url) . "\n";
                 $message .= dgettext('vshop', 'Thank You for placing your order with us. Order details are below.') . "\n\n";
                 $message .= "\n\n";
-                PHPWS_Core::initModClass('vshop', 'vShop_Forms.php');
+                Core\Core::initModClass('vshop', 'vShop_Forms.php');
                 $this->forms = new vShop_Forms;
                 $this->forms->vshop = & $this;
                 $message .= $this->forms->orderDetails(false);
@@ -1286,7 +1286,7 @@ class vShop {
                 $subject = dgettext('vshop', 'A new order has been placed.');
                 $message .= sprintf(dgettext('vshop', 'A new order has been placed by %s at %s.'), $customer_name, $shop_name) . "\n\n";
                 $message .= "\n\n";
-                PHPWS_Core::initModClass('vshop', 'vShop_Forms.php');
+                Core\Core::initModClass('vshop', 'vShop_Forms.php');
                 $this->forms = new vShop_Forms;
                 $this->forms->vshop = & $this;
                 $message .= $this->forms->orderDetails(false);
@@ -1304,7 +1304,7 @@ class vShop {
             }
         }
 //print($message); exit;
-        PHPWS_Core::initCoreClass('Mail.php');
+        Core\Core::initCoreClass('Mail.php');
         $mail = new PHPWS_Mail;
         $mail->addSendTo($sendto);
         $mail->setSubject($subject);

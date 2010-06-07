@@ -5,7 +5,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::initModClass('menu', 'Menu_Link.php');
+Core\Core::initModClass('menu', 'Menu_Link.php');
 
 define('MENU_MISSING_TPL', -2);
 
@@ -439,7 +439,7 @@ class Menu_Item {
                             $pinvars['key_id'] = $key->id;
                         }
                     } else {
-                        $pinvars['lurl'] = urlencode(PHPWS_Core::getCurrentUrl());
+                        $pinvars['lurl'] = urlencode(Core\Core::getCurrentUrl());
                     }
 
                     $js['address'] = PHPWS_Text::linkAddress('menu', $pinvars);

@@ -217,7 +217,7 @@ class Blog {
 
     public function save()
     {
-        PHPWS_Core::initModClass('version', 'Version.php');
+        Core\Core::initModClass('version', 'Version.php');
         $db = new PHPWS_DB('blog_entries');
         if (empty($this->id)) {
             $this->create_date = time();
@@ -265,7 +265,7 @@ class Blog {
             if ($update) {
                 $db->saveObject($this);
             }
-            PHPWS_Core::initModClass('comments', 'Comments.php');
+            Core\Core::initModClass('comments', 'Comments.php');
             $thread = Comments::getThread($this->key_id);
             $thread->allowAnonymous($this->allow_anon);
             $thread->setApproval($this->_comment_approval);
@@ -358,10 +358,10 @@ class Blog {
     public function view($edit=true, $summarized=true)
     {
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
 
-        PHPWS_Core::initModClass('comments', 'Comments.php');
+        Core\Core::initModClass('comments', 'Comments.php');
 
         $key = new Key($this->key_id);
 
@@ -639,7 +639,7 @@ class Blog {
     {
         $all_is_well = true;
 
-        PHPWS_Core::initModClass('version', 'Version.php');
+        Core\Core::initModClass('version', 'Version.php');
         Version::flush('blog_entries', $this->id);
         $db = new PHPWS_DB('blog_entries');
         $db->addWhere('id', $this->id);

@@ -53,17 +53,17 @@ class Search_Admin {
             case 'close_admin':
                 unset($_SESSION['Search_Add_Words']);
                 unset($_SESSION['Search_Admin']);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'delete_keyword':
                 Search_Admin::deleteKeyword();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'add_parse_word':
                 if (!isset($_REQUEST['keyword'])) {
-                    PHPWS_Core::goBack();
+                    Core\Core::goBack();
                 }
                 Search_Admin::addParseWord($_REQUEST['keyword']);
                 Search_Admin::sendMessage(dgettext('search', 'Keywords added to admin menu.'), 'keyword');
@@ -76,41 +76,41 @@ class Search_Admin {
                         unset($_SESSION['Search_Add_Words'][$array_key]);
                     }
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'add_keyword':
                 if (!isset($_GET['kw']) || !isset($_GET['key_id'])) {
-                    PHPWS_Core::goBack();
+                    Core\Core::goBack();
                 }
 
                 Search_Admin::addKeyword($_GET['kw'], $_GET['key_id']);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'remove_searchword':
                 if (!isset($_GET['kw']) || !isset($_GET['key_id'])) {
-                    PHPWS_Core::goBack();
+                    Core\Core::goBack();
                 }
 
                 Search_Admin::removeSearchword($_GET['kw'], $_GET['key_id']);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'add_ignore':
                 if (!isset($_GET['keyword'])) {
-                    PHPWS_Core::goBack();
+                    Core\Core::goBack();
                 }
                 Search_Admin::setIgnore($_GET['keyword'], 1);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'remove_ignore':
                 if (!isset($_GET['keyword'])) {
-                    PHPWS_Core::goBack();
+                    Core\Core::goBack();
                 }
                 Search_Admin::setIgnore($_GET['keyword'], 0);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'save_settings':
@@ -155,7 +155,7 @@ class Search_Admin {
     public function sendMessage($message, $command)
     {
         $_SESSION['Search_Message'] = $message;
-        PHPWS_Core::reroute('index.php?module=search&command=' . $command);
+        Core\Core::reroute('index.php?module=search&command=' . $command);
     }
 
     public static function getMessage()
@@ -255,11 +255,11 @@ class Search_Admin {
 
     public static function keyword()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
 
         $tpl['TITLE'] = dgettext('search', 'Keywords');
 
-        PHPWS_Core::initModClass('search', 'Stats.php');
+        Core\Core::initModClass('search', 'Stats.php');
 
         $pager = new DBPager('search_stats', 'Search_Stats');
         $pager->setModule('search');
@@ -308,11 +308,11 @@ class Search_Admin {
 
     public static function ignore()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
 
         $tpl['TITLE'] = dgettext('search', 'Ignored');
 
-        PHPWS_Core::initModClass('search', 'Stats.php');
+        Core\Core::initModClass('search', 'Stats.php');
 
         $pager = new DBPager('search_stats', 'Search_Stats');
         $pager->setModule('search');
@@ -366,7 +366,7 @@ class Search_Admin {
 
     public static function cpanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=search';
         $tab['keyword']  = array ('title'=>dgettext('search', 'Keywords'), 'link'=> $link);
         $tab['ignore']   = array ('title'=>dgettext('search', 'Ignore'), 'link'=> $link);

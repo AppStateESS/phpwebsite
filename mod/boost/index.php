@@ -9,7 +9,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-PHPWS_Core::requireConfig('boost');
+Core\Core::requireConfig('boost');
 
 if (DEITY_ACCESS_ONLY && !Current_User::isDeity()) {
     Current_User::disallow();
@@ -20,15 +20,15 @@ if (!Current_User::authorized('boost')) {
 }
 
 if (!isset($_REQUEST['action'])) {
-    PHPWS_Core::errorPage(404);
+    Core\Core::errorPage(404);
 }
 
 $js = false;
 
 $content = array();
-PHPWS_Core::initModClass('boost', 'Form.php');
-PHPWS_Core::initModClass('controlpanel', 'Panel.php');
-PHPWS_Core::initModClass('boost', 'Action.php');
+Core\Core::initModClass('boost', 'Form.php');
+Core\Core::initModClass('controlpanel', 'Panel.php');
+Core\Core::initModClass('boost', 'Action.php');
 
 $boostPanel = new PHPWS_Panel('boost');
 $boostPanel->enableSecure();
@@ -53,7 +53,7 @@ switch ($_REQUEST['action']){
         break;
 
     case 'aboutView':
-        PHPWS_Core::initModClass('boost', 'Boost.php');
+        Core\Core::initModClass('boost', 'Boost.php');
         PHPWS_Boost::aboutView($_REQUEST['aboutmod']);
         break;
 
@@ -80,7 +80,7 @@ switch ($_REQUEST['action']){
         if (@$_REQUEST['confirm'] == $_REQUEST['opmod']) {
             $content[] = Boost_Action::uninstallModule($_REQUEST['opmod']);
         } else {
-            PHPWS_Core::goBack();
+            Core\Core::goBack();
         }
         break;
 

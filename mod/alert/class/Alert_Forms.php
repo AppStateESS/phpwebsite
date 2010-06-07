@@ -9,7 +9,7 @@ class Alert_Forms {
 
     public function editItem()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $item = & $this->alert->item;
         $manager = Cabinet::fileManager('image_id', $item->image_id);
         $manager->maxImageWidth(500);
@@ -114,8 +114,8 @@ class Alert_Forms {
     {
         $pagetags['CONTACT_ALERT'] = $this->contactAlert();
 
-        PHPWS_Core::initModClass('alert', 'Alert_Item.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('alert', 'Alert_Item.php');
+        Core\Core::initCoreClass('DBPager.php');
 
         $pagetags['TITLE_LABEL'] = dgettext('alert', 'Title');
         $pagetags['ADD_ITEM'] = PHPWS_Text::secureLink(dgettext('alert', 'Add alert'),
@@ -142,7 +142,7 @@ class Alert_Forms {
     public function manageParticipants()
     {
         javascriptMod('alert', 'check_all');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('alert_participant');
         $pager->initialize(false);
         $pager->db->addColumn('id');
@@ -263,8 +263,8 @@ class Alert_Forms {
 
     public function manageTypes()
     {
-        PHPWS_Core::initModClass('alert', 'Alert_Type.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('alert', 'Alert_Type.php');
+        Core\Core::initCoreClass('DBPager.php');
 
         $pagetags['TITLE_LABEL'] = dgettext('alert', 'Title');
         $pagetags['ADD_TYPE'] = PHPWS_Text::secureLink(dgettext('alert', 'Add alert type'),

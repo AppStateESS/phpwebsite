@@ -5,7 +5,7 @@
  */
 
 if (!isset($_REQUEST['module'])) {
-    PHPWS_Core::initModClass('profiler', 'Profiler.php');
+    Core\Core::initModClass('profiler', 'Profiler.php');
 
     Profiler::view();
 }

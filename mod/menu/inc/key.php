@@ -10,7 +10,7 @@
 
 function menu_unregister_key(Key $key)
 {
-    PHPWS_Core::initModClass('menu', 'Menu_Link.php');
+    Core\Core::initModClass('menu', 'Menu_Link.php');
 
     if (empty($key) || empty($key->id)) {
         return FALSE;

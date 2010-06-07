@@ -5,8 +5,8 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireConfig('controlpanel');
-PHPWS_Core::initModClass('controlpanel', 'Tab.php');
+Core\Core::requireConfig('controlpanel');
+Core\Core::initModClass('controlpanel', 'Tab.php');
 
 class PHPWS_Panel{
     public $itemname     = null;
@@ -160,7 +160,7 @@ class PHPWS_Panel{
 
     public function getFirstTab()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Tab.php');
+        Core\Core::initModClass('controlpanel', 'Tab.php');
         $result = null;
 
         $tabs = $this->getTabs();

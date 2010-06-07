@@ -3,7 +3,7 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-PHPWS_Core::initModClass('comments', 'Comment_User.php');
+Core\Core::initModClass('comments', 'Comment_User.php');
 
 class Comments_My_Page {
 
@@ -51,7 +51,7 @@ class Comments_My_Page {
     public function sendMessage($message, $command=NULL)
     {
         $_SESSION['Comment_Message'] = $message;
-        PHPWS_Core::reroute('index.php?module=users&action=user&tab=comments');
+        Core\Core::reroute('index.php?module=users&action=user&tab=comments');
     }
 
     public static function getMessage()

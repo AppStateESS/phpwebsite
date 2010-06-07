@@ -20,7 +20,7 @@ function pinFolder() {
             MiniAdmin::add('filecabinet', $link);
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'Folder.php');
+        Core\Core::initModClass('filecabinet', 'Folder.php');
         Folder::getPinned($key->id);
     }
 }

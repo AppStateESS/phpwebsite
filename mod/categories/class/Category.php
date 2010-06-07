@@ -7,7 +7,7 @@
  * @package categories
  */
 
-PHPWS_Core::configRequireOnce('categories', 'config.php');
+Core\Core::configRequireOnce('categories', 'config.php');
 
 class Category {
     public $id          = NULL;
@@ -120,7 +120,7 @@ class Category {
 
     public function getIcon()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         return Cabinet::getTag($this->icon);
     }
 

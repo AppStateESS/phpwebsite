@@ -15,8 +15,8 @@ if (!defined('PHPWS_SOURCE_DIR') || !isset($_REQUEST['action'])) {
     return NULL;
 }
 
-PHPWS_CORE::initModClass('related', 'Related.php');
-PHPWS_CORE::initModClass('related', 'Action.php');
+Core\Core::initModClass('related', 'Related.php');
+Core\Core::initModClass('related', 'Action.php');
 
 switch ($_REQUEST['action']) {
     case 'start':
@@ -28,7 +28,7 @@ switch ($_REQUEST['action']) {
         $related->loadFriends();
         $related->setBanked(TRUE);
         Related_Action::newBank($related);
-        PHPWS_Core::reroute($related->getUrl());
+        Core\Core::reroute($related->getUrl());
         break;
 
     case 'add':

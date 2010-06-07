@@ -118,7 +118,7 @@ class vShop_Tax {
     public function view()
     {
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
 
         $tpl['TAX_LINKS'] = $this->links();

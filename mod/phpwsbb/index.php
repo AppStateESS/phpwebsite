@@ -57,11 +57,11 @@ if (Current_User::isLogged()) {
     $db->update();
 }
 
-PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
+Core\Core::initModClass('phpwsbb', 'BB_Data.php');
 PHPWSBB_Data::load_moderators();
-PHPWS_Core::initModClass('phpwsbb', 'Forum.php');
-PHPWS_Core::initModClass('phpwsbb', 'Topic.php');
-PHPWS_Core::initModClass('comments', 'Comments.php');
+Core\Core::initModClass('phpwsbb', 'Forum.php');
+Core\Core::initModClass('phpwsbb', 'Topic.php');
+Core\Core::initModClass('comments', 'Comments.php');
 $msg_noauth = dgettext('phpwsbb', "You're not allowed to do this!");
 
 /* Process any form button submissions */
@@ -156,7 +156,7 @@ elseif (!empty($_REQUEST['op'])) {
             }
 
             $title = sprintf(dgettext('phpwsbb', 'New Posts Since My Last Visit (%s)'), PHPWSBB_Data::get_long_date($since));
-            PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
+            Core\Core::initModClass('phpwsbb', 'BB_Lists.php');
             $content = PHPWSBB_Lists::search_threads('since', $since);
             Layout::addPageTitle($title);
             break;
@@ -164,7 +164,7 @@ elseif (!empty($_REQUEST['op'])) {
         case 'viewtoday':
             $since = strtotime('00:00 today');
             $title = dgettext('phpwsbb', 'Today\'s Posts');
-            PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
+            Core\Core::initModClass('phpwsbb', 'BB_Lists.php');
             $content = PHPWSBB_Lists::search_threads('since', $since);
             Layout::addPageTitle($title);
             break;
@@ -172,20 +172,20 @@ elseif (!empty($_REQUEST['op'])) {
         case 'viewweek':
             $since = strtotime('last monday');
             $title = dgettext('phpwsbb', 'This Week\'s Posts');
-            PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
+            Core\Core::initModClass('phpwsbb', 'BB_Lists.php');
             $content = PHPWSBB_Lists::search_threads('since', $since);
             Layout::addPageTitle($title);
             break;
 
         case 'viewzerothreads':
             $title = dgettext('phpwsbb', 'Threads with no replies');
-            PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
+            Core\Core::initModClass('phpwsbb', 'BB_Lists.php');
             $content = PHPWSBB_Lists::search_threads('zerothreads');
             Layout::addPageTitle($title);
             break;
 
         case 'viewuserthreads':
-            PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
+            Core\Core::initModClass('phpwsbb', 'BB_Lists.php');
             if (isset($_REQUEST['user'])) {
                 $title = sprintf(dgettext('phpwsbb', 'Topics started by %s'), $_REQUEST['username']);
                 $content = PHPWSBB_Lists::search_threads('userthreads', (int) $_REQUEST['user']);
@@ -198,7 +198,7 @@ elseif (!empty($_REQUEST['op'])) {
 
         case 'viewlockedthreads':
             $title = dgettext('phpwsbb', 'Locked Threads');
-            PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
+            Core\Core::initModClass('phpwsbb', 'BB_Lists.php');
             $content = PHPWSBB_Lists::search_threads('lockedthreads');
             Layout::addPageTitle($title);
             break;
@@ -249,7 +249,7 @@ elseif (!empty($_REQUEST['op'])) {
 /* If nothing else, show the top menu */
 if (empty($content)) {
     $title = dgettext('phpwsbb', 'Bulletin Board Forums');
-    PHPWS_Core::initModClass('phpwsbb', 'BB_Lists.php');
+    Core\Core::initModClass('phpwsbb', 'BB_Lists.php');
     $content = PHPWSBB_Lists::list_forums();
 }
 

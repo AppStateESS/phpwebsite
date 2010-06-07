@@ -8,9 +8,9 @@
 
 function users_install(&$content)
 {
-    PHPWS_Core::initModClass('users', 'Users.php');
-    PHPWS_Core::initModClass('users', 'Action.php');
-    PHPWS_Core::configRequireOnce('users', 'config.php');
+    Core\Core::initModClass('users', 'Users.php');
+    Core\Core::initModClass('users', 'Action.php');
+    Core\Core::configRequireOnce('users', 'config.php');
 
     if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'branch') {
         $db = new PHPWS_DB;
@@ -97,8 +97,8 @@ function users_install(&$content)
 
 
 function userForm(&$user, $errors=NULL){
-    PHPWS_Core::initCoreClass('Form.php');
-    PHPWS_Core::initModClass('users', 'Form.php');
+    Core\Core::initCoreClass('Form.php');
+    Core\Core::initModClass('users', 'Form.php');
 
     $form = new PHPWS_Form;
 

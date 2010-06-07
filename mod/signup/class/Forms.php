@@ -314,8 +314,8 @@ class Signup_Forms {
 
     public function report()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('signup', 'Peeps.php');
+        Core\Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('signup', 'Peeps.php');
 
         $pager = new DBPager('signup_peeps', 'Signup_Peep');
         $pager->addWhere('sheet_id', $this->signup->sheet->id);
@@ -382,8 +382,8 @@ class Signup_Forms {
     {
         $ptags['TITLE_HEADER'] = dgettext('signup', 'Title');
 
-        PHPWS_Core::initModClass('signup', 'Sheet.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('signup', 'Sheet.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('signup_sheet', 'Signup_Sheet');
         $pager->setModule('signup');
         $pager->setTemplate('sheet_list.tpl');
@@ -398,7 +398,7 @@ class Signup_Forms {
     public function userSignup()
     {
         if (!$this->signup->sheet->id) {
-            PHPWS_Core::errorPage('404');
+            Core\Core::errorPage('404');
         }
 
         $sheet = $this->signup->sheet;

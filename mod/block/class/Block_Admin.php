@@ -7,7 +7,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireConfig('block');
+Core\Core::requireConfig('block');
 
 class Block_Admin {
 
@@ -40,7 +40,7 @@ class Block_Admin {
 
 	public static function cpanel()
 	{
-		PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+		Core\Core::initModClass('controlpanel', 'Panel.php');
 		$linkBase = 'index.php?module=block';
 		$tabs['new']  = array ('title'=>dgettext('block', 'New'),  'link'=> $linkBase);
 		$tabs['list'] = array ('title'=>dgettext('block', 'List'), 'link'=> $linkBase);
@@ -78,7 +78,7 @@ class Block_Admin {
 
 				$block->kill();
 				Block_Admin::sendMessage(dgettext('block', 'Block deleted.'));
-				PHPWS_Core::goBack();
+				Core\Core::goBack();
 				break;
 
 			case 'edit':
@@ -121,7 +121,7 @@ class Block_Admin {
 					Current_User::disallow();
 				}
 				Block_Admin::removeBlock();
-				PHPWS_Core::goBack();
+				Core\Core::goBack();
 				break;
 
 			case 'copy':
@@ -130,7 +130,7 @@ class Block_Admin {
 				}
 
 				Block_Admin::copyBlock($block);
-				PHPWS_Core::goBack();
+				Core\Core::goBack();
 				break;
 
 			case 'postBlock':
@@ -156,7 +156,7 @@ class Block_Admin {
 				break;
 
 			case 'postJSBlock':
-				if (!PHPWS_Core::isPosted()) {
+				if (!Core\Core::isPosted()) {
 					Block_Admin::postBlock($block);
 					$result = $block->save();
 					if (PHPWS_Error::isError($result)) {
@@ -173,7 +173,7 @@ class Block_Admin {
 				if (PHPWS_Error::isError($result)) {
 					PHPWS_Error::log($result);
 				}
-				PHPWS_Core::goBack();
+				Core\Core::goBack();
 				break;
 
 			case 'list':
@@ -201,7 +201,7 @@ class Block_Admin {
 	{
 		$_SESSION['block_message'] = $message;
 		if (isset($command)) {
-			PHPWS_Core::reroute(PHPWS_Text::linkAddress('block', array('action'=>$command), TRUE));
+			Core\Core::reroute(PHPWS_Text::linkAddress('block', array('action'=>$command), TRUE));
 		}
 	}
 
@@ -237,8 +237,8 @@ class Block_Admin {
 
 	public static function edit(Block_Item $block, $js=FALSE)
 	{
-		PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
-		PHPWS_Core::initCoreClass('Editor.php');
+		Core\Core::initModClass('filecabinet', 'Cabinet.php');
+		Core\Core::initCoreClass('Editor.php');
 		$form = new PHPWS_Form;
 		$form->addHidden('module', 'block');
 
@@ -301,7 +301,7 @@ class Block_Admin {
 
 	public static function blockList()
 	{
-		PHPWS_Core::initCoreClass('DBPager.php');
+		Core\Core::initCoreClass('DBPager.php');
 
 		$pageTags['CONTENT'] = dgettext('block', 'Content');
 		$pageTags['ACTION']  = dgettext('block', 'Action');

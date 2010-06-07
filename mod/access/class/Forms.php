@@ -17,8 +17,8 @@ class Access_Forms {
             return;
         }
 
-        PHPWS_Core::initModClass('access', 'Shortcut.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('access', 'Shortcut.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('access_shortcuts', 'Access_Shortcut');
         $pager->setModule('access');
         $pager->setTemplate('forms/shortcut_list.tpl');
@@ -65,7 +65,7 @@ class Access_Forms {
             return;
         }
 
-        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        Core\Core::initModClass('access', 'Allow_Deny.php');
 
         $form = new PHPWS_Form('allow_deny');
         $form->addHidden('module', 'access');
@@ -189,7 +189,7 @@ class Access_Forms {
 
     public function shortcut_menu()
     {
-        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        Core\Core::initModClass('access', 'Shortcut.php');
         @$sc_id = $_REQUEST['sc_id'];
 
         if (!$sc_id) {

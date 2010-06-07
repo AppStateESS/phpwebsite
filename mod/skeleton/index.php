@@ -27,7 +27,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-PHPWS_Core::initModClass('skeleton', 'Skeleton.php');
+Core\Core::initModClass('skeleton', 'Skeleton.php');
 $skeleton = new Skeleton;
 
 if (isset($_REQUEST['aop'])) {
@@ -43,7 +43,7 @@ if (isset($_REQUEST['aop'])) {
 } elseif (isset($_REQUEST['skeleton'])) {
     $skeleton->userMenu('view_skeleton');
 } else {
-    PHPWS_Core::home();
+    Core\Core::home();
 }
 
 

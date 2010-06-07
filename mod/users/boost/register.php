@@ -7,8 +7,8 @@
 
 function users_register($module, &$content)
 {
-    PHPWS_Core::initModClass('users', 'Permission.php');
-    PHPWS_Core::initModClass('users', 'My_Page.php');
+    Core\Core::initModClass('users', 'Permission.php');
+    Core\Core::initModClass('users', 'My_Page.php');
 
     $no_permissions = $no_my_page = FALSE;
 

@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::initCoreClass('xmlrpc.php');
+Core\Core::initCoreClass('xmlrpc.php');
 
 class Blog_XML extends MyServer {
     public $image_directory = 'images/blog/';
@@ -149,11 +149,11 @@ class Blog_XML extends MyServer {
         $d['title'] = $blog->title;
 
         if (MOD_REWRITE_ENABLED) {
-            $d['link'] = PHPWS_Core::getHomeHttp() . 'blog/' . $blog->id;
+            $d['link'] = Core\Core::getHomeHttp() . 'blog/' . $blog->id;
         } else {
-            $d['link'] = PHPWS_Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
+            $d['link'] = Core\Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
         }
-        $d['permalink'] = PHPWS_Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
+        $d['permalink'] = Core\Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
 
         $d['mt_allow_comments'] = $blog->allow_comments;
         $d['mt_allow_pings'] = 0;

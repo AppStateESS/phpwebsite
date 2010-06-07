@@ -9,7 +9,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-PHPWS_Core::initModClass('help', 'Help.php');
+Core\Core::initModClass('help', 'Help.php');
 
 PHPWS_Help::show_help();
 

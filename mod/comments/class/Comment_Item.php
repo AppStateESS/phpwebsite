@@ -8,7 +8,7 @@
 
 define('COMMENTS_MISSING_THREAD', 1);
 
-PHPWS_Core::requireConfig('comments', 'config.php');
+Core\Core::requireConfig('comments', 'config.php');
 
 class Comment_Item {
     // Id number of comment
@@ -148,7 +148,7 @@ class Comment_Item {
         if (empty($name) || strlen($name) < 2) {
             $this->anon_name = DEFAULT_ANONYMOUS_TITLE;
         } else {
-            include PHPWS_Core::getConfigFile('comments', 'forbidden.php');
+            include Core\Core::getConfigFile('comments', 'forbidden.php');
             foreach ($forbidden_names as $fn) {
                 if (preg_match('/' . $fn . '/i', $name)) {
                     return false;
@@ -451,7 +451,7 @@ class Comment_Item {
 
     public function punishUserLink($graphic=false)
     {
-        PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+        Core\Core::initModClass('comments', 'Comment_Forms.php');
         $punish_form = Comment_Forms::punishForm($this);
         if ($punish_form) {
             return sprintf('<span class="comment-punish"><img src="%smod/comments/img/noentry.png" title="%s" /><div class="comment-punish-list">%s</div></span>',

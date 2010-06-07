@@ -15,7 +15,7 @@ define('ACCESS_FILES_DIR',         5);
 define('ACCESS_HTACCESS_WRITE',    6);
 define('ACCESS_HTACCESS_MISSING',  7);
 
-PHPWS_Core::requireConfig('access');
+Core\Core::requireConfig('access');
 
 class Access {
 
@@ -73,20 +73,20 @@ class Access {
                     break;
 
                 case 'delete_allow_deny':
-                    PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+                    Core\Core::initModClass('access', 'Allow_Deny.php');
                     $allow_deny = new Access_Allow_Deny($_GET['ad_id']);
                     $allow_deny->delete();
                     Access::sendMessage(dgettext('access', 'IP address deleted.'), 'deny_allow');
                     break;
 
                 case 'deny_allow':
-                    PHPWS_Core::initModClass('access', 'Forms.php');
+                    Core\Core::initModClass('access', 'Forms.php');
                     $title = dgettext('access', 'Denys and Allows');
                     $content = Access_Forms::denyAllowForm();
                     break;
 
                 case 'delete_shortcut':
-                    PHPWS_Core::initModClass('access', 'Shortcut.php');
+                    Core\Core::initModClass('access', 'Shortcut.php');
                     $shortcut = new Access_Shortcut($_REQUEST['shortcut_id']);
                     if (empty($shortcut->_error) && $shortcut->id) {
                         $result = $shortcut->delete();
@@ -98,7 +98,7 @@ class Access {
                     break;
 
                 case 'shortcuts':
-                    PHPWS_Core::initModClass('access', 'Forms.php');
+                    Core\Core::initModClass('access', 'Forms.php');
                     $title = dgettext('access', 'Shortcuts');
                     $content = Access_Forms::shortcuts();
                     break;
@@ -114,14 +114,14 @@ class Access {
                     break;
 
                 case 'edit_shortcut':
-                    PHPWS_Core::initModClass('access', 'Forms.php');
+                    Core\Core::initModClass('access', 'Forms.php');
                     $content = Access_Forms::shortcut_menu();
                     Layout::nakedDisplay($content);
                     exit();
                     break;
 
                 case 'post_shortcut':
-                    PHPWS_Core::initModClass('access', 'Shortcut.php');
+                    Core\Core::initModClass('access', 'Shortcut.php');
 
                     if (isset($_POST['sc_id'])) {
                         $shortcut = new Access_Shortcut($_POST['sc_id']);
@@ -132,7 +132,7 @@ class Access {
                     $result = $shortcut->postShortcut();
                     $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', dgettext('access', 'Close window'));
                     if (PHPWS_Error::isError($result)) {
-                        PHPWS_Core::initModClass('access', 'Forms.php');
+                        Core\Core::initModClass('access', 'Forms.php');
                         $message = $result->getMessage();
                         $content = Access_Forms::shortcut_menu();
                     } elseif ($result == false) {
@@ -161,7 +161,7 @@ class Access {
                 case 'add_rewritebase':
                     if (Current_User::isDeity()) {
                         Access::addRewriteBase();
-                        PHPWS_Core::goBack();
+                        Core\Core::goBack();
                     } else {
                         Current_User::disallow();
                     }
@@ -170,7 +170,7 @@ class Access {
                 case 'add_forward':
                     if (Current_User::isDeity()) {
                         Access::addForward();
-                        PHPWS_Core::goBack();
+                        Core\Core::goBack();
                     } else {
                         Current_User::disallow();
                     }
@@ -179,7 +179,7 @@ class Access {
                 case 'remove_forward':
                     if (Current_User::isDeity()) {
                         Access::removeForward();
-                        PHPWS_Core::goBack();
+                        Core\Core::goBack();
                     } else {
                         Current_User::disallow();
                     }
@@ -223,7 +223,7 @@ class Access {
     public function getAllowDenyList()
     {
         $content = array();
-        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        Core\Core::initModClass('access', 'Allow_Deny.php');
 
         if (!PHPWS_Settings::get('access', 'allow_deny_enabled')) {
             return "Order Allow,Deny\nAllow from all\n\n";
@@ -303,7 +303,7 @@ class Access {
 
     public function loadShortcut($title)
     {
-        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        Core\Core::initModClass('access', 'Shortcut.php');
         $shortcut = new Access_Shortcut;
         $db = new PHPWS_DB('access_shortcuts');
         $db->addWhere('keyword', $title);
@@ -328,7 +328,7 @@ class Access {
 
     public static function cpanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $link['link'] = 'index.php?module=access';
 
         if (MOD_REWRITE_ENABLED) {
@@ -367,7 +367,7 @@ class Access {
 
     public function getShortcuts($active_only=false)
     {
-        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        Core\Core::initModClass('access', 'Shortcut.php');
         $db = new PHPWS_DB('access_shortcuts');
         $db->addOrder('keyword');
         if ($active_only) {
@@ -379,7 +379,7 @@ class Access {
     public function sendMessage($message, $command)
     {
         $_SESSION['Access_message'] = $message;
-        PHPWS_Core::reroute(sprintf('index.php?module=access&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
+        Core\Core::reroute(sprintf('index.php?module=access&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
         exit();
     }
 
@@ -404,7 +404,7 @@ class Access {
             return NULL;
         }
 
-        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        Core\Core::initModClass('access', 'Shortcut.php');
         $db = new PHPWS_DB('access_shortcuts');
         $db->addWhere('id', $_POST['shortcut']);
 
@@ -436,7 +436,7 @@ class Access {
             exit();
         }
 
-        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        Core\Core::initModClass('access', 'Allow_Deny.php');
 
         if (@$_POST['allow_deny_enabled']) {
             PHPWS_Settings::set('access', 'allow_deny_enabled', 1);
@@ -540,7 +540,7 @@ class Access {
 
     public static function forward()
     {
-        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        Core\Core::initModClass('access', 'Shortcut.php');
         $db = new PHPWS_DB('access_shortcuts');
         $db->addWhere('keyword', $GLOBALS['Forward']);
         $db->setLimit(1);
@@ -548,7 +548,7 @@ class Access {
         if (@$sc = $scl[0]) {
             $sc->loadGet();
         } else {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
     }
 
@@ -625,7 +625,7 @@ class Access {
 
     public function isDenied($ip)
     {
-        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        Core\Core::initModClass('access', 'Allow_Deny.php');
         $ad = new Access_Allow_Deny;
         if (!$ad->setIpAddress($ip)) {
             return false;
@@ -650,7 +650,7 @@ class Access {
     {
         $allow_or_deny = (int)(bool)$allow_or_deny;
 
-        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        Core\Core::initModClass('access', 'Allow_Deny.php');
         $ad = new Access_Allow_Deny;
         if (!$ad->setIpAddress($ip)) {
             return false;
@@ -677,7 +677,7 @@ class Access {
     {
         $allow_or_deny = (int)(bool)$allow_or_deny;
 
-        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        Core\Core::initModClass('access', 'Allow_Deny.php');
         $ad = new Access_Allow_Deny;
         if (!$ad->setIpAddress($ip)) {
             return false;

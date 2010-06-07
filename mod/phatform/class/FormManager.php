@@ -252,7 +252,7 @@ class PHAT_FormManager extends PHPWS_Manager {
      * @access private
      */
     function _accessDenied() {
-        PHPWS_Core::errorPage('400');
+        Core\Core::errorPage('400');
     }
 
 

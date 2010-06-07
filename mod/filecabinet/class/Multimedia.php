@@ -5,8 +5,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::requireConfig('filecabinet');
-PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
+Core\Core::requireConfig('filecabinet');
+Core\Core::initModClass('filecabinet', 'File_Common.php');
 
 define('GENERIC_VIDEO_ICON', PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/video_generic.jpg');
 define('GENERIC_AUDIO_ICON', PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/audio.png');
@@ -266,7 +266,7 @@ class PHPWS_Multimedia extends File_Common {
 
         $thumbnail = $this->thumbnailPath();
 
-        $tpl['FILE_PATH'] = PHPWS_Core::getHomeHttp() . $this->getPath();
+        $tpl['FILE_PATH'] = Core\Core::getHomeHttp() . $this->getPath();
         $tpl['FILE_NAME'] = $this->file_name;
         $tpl['ID'] = 'media' . $this->id;
 

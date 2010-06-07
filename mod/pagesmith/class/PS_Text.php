@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::initModClass('pagesmith', 'PS_Section.php');
+Core\Core::initModClass('pagesmith', 'PS_Section.php');
 
 class PS_Text extends PS_Section {
 

@@ -12,7 +12,7 @@ define('CONFIRM_SIGNUP', 2);
 // Needs addition
 //define('APPROVE_SIGNUP', 3);
 
-PHPWS_Core::initCoreClass('Form.php');
+Core\Core::initCoreClass('Form.php');
 
 class User_Form {
 
@@ -45,7 +45,7 @@ class User_Form {
 	{
 		$auth = Current_User::getAuthorization();
 
-		PHPWS_Core::initCoreClass('Text.php');
+		Core\Core::initCoreClass('Text.php');
 		$template['GREETING'] = dgettext('users', 'Hello');
 		$template['USERNAME'] = Current_User::getUsername();
 		$template['DISPLAY_NAME'] = Current_User::getDisplayName();
@@ -109,7 +109,7 @@ class User_Form {
 	{
 		$group = new PHPWS_Group($id, FALSE);
 
-		$modules = PHPWS_Core::getModules();
+		$modules = Core\Core::getModules();
 
 		foreach ($modules as $mod) {
 			$preorder[$mod['title']] = $mod;
@@ -239,7 +239,7 @@ class User_Form {
 
 	public static function manageUsers()
 	{
-		PHPWS_Core::initCoreClass('DBPager.php');
+		Core\Core::initCoreClass('DBPager.php');
 
 		$form = new PHPWS_Form('group-search');
 		$form->setMethod('get');
@@ -312,7 +312,7 @@ class User_Form {
 
 	public static function manageGroups()
 	{
-		PHPWS_Core::initCoreClass('DBPager.php');
+		Core\Core::initCoreClass('DBPager.php');
 
 		$pageTags['MEMBERS_LABEL'] = dgettext('users', 'Members');
 		$pageTags['ACTIONS_LABEL'] = dgettext('users', 'Actions');
@@ -725,7 +725,7 @@ class User_Form {
 	public static function authorizationSetup()
 	{
 		$template = array();
-		PHPWS_Core::initCoreClass('File.php');
+		Core\Core::initCoreClass('File.php');
 
 		$auth_list = User_Action::getAuthorizationList();
 
@@ -829,7 +829,7 @@ class User_Form {
 
 	public static function settings()
 	{
-		PHPWS_Core::initModClass('help', 'Help.php');
+		Core\Core::initModClass('help', 'Help.php');
 
 		$content = array();
 
@@ -952,7 +952,7 @@ class User_Form {
 
 	public function confirmGraphic()
 	{
-		PHPWS_Core::initCoreClass('Captcha.php');
+		Core\Core::initCoreClass('Captcha.php');
 		return Captcha::get();
 	}
 
@@ -1117,7 +1117,7 @@ class User_Form {
 
 	public function forgotForm()
 	{
-		PHPWS_Core::initCoreClass('Captcha.php');
+		Core\Core::initCoreClass('Captcha.php');
 		$form = new PHPWS_Form('forgot-password');
 		$form->addHidden('module', 'users');
 		$form->addHidden('action', 'user');

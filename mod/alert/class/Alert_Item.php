@@ -121,7 +121,7 @@ class Alert_Item {
 
     public function view()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $tpl['TITLE']       = $this->title;
         $tpl['DESCRIPTION'] = $this->getDescription();
         if ($this->image_id) {
@@ -141,7 +141,7 @@ class Alert_Item {
 
     public function createFeed()
     {
-        PHPWS_Core::initModClass('rss', 'Feed.php');
+        Core\Core::initModClass('rss', 'Feed.php');
         $feed = new Key;
         $feed->title = $this->title;
         $feed->url = 'index.php?module=alert&id=' . $this->id;
@@ -157,7 +157,7 @@ class Alert_Item {
 
         $content = implode('', $body);
         // Fixed relative links
-        $content = str_replace('images/filecabinet', PHPWS_Core::getHomeHttp() . 'images/filecabinet', $content);
+        $content = str_replace('images/filecabinet', Core\Core::getHomeHttp() . 'images/filecabinet', $content);
 
         return $content;
     }

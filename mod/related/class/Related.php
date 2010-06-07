@@ -8,8 +8,8 @@
  */
 
 
-PHPWS_Core::configRequireOnce('related', 'config.php');
-PHPWS_Core::initModClass('related', 'Action.php');
+Core\Core::configRequireOnce('related', 'config.php');
+Core\Core::initModClass('related', 'Action.php');
 
 class Related {
 
@@ -249,7 +249,7 @@ class Related {
 
     public function show($allowEdit=TRUE)
     {
-        PHPWS_Core::initCoreClass('Module.php');
+        Core\Core::initCoreClass('Module.php');
 
         $key = Key::getCurrent();
 

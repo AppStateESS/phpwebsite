@@ -23,7 +23,7 @@
  */
 
 
-PHPWS_Core::initModClass('rolodex', 'Rolodex.php');
+Core\Core::initModClass('rolodex', 'Rolodex.php');
 class Rolodex_Mypage {
 
     public static function main()
@@ -57,7 +57,7 @@ class Rolodex_Mypage {
             $tpl['CONTENT'] = implode(' | ', $links);
             $tpl['CONTENT'] .= Rolodex_Mypage::searchForm();
             if ($result > 0) {
-                PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
+                Core\Core::initModClass('rolodex', 'RDX_Member.php');
                 if (Rolodex_Member::isDataVisible('privacy_export')) {
                     $tpl['CONTENT'] .= '<br />' . PHPWS_Text::moduleLink(dgettext('rolodex', 'Export records to csv'), 'rolodex', array('uop'=>'export'));
                 }
@@ -106,13 +106,13 @@ class Rolodex_Mypage {
     public function sendMessage(&$result, $success_msg, $error_msg)
     {
         $_SESSION['rolodex_message'] = (PHPWS_Error::logIfError($result) ? $error_msg : $success_msg);
-        PHPWS_Core::reroute(PHPWS_Text::linkAddress('users', array('action'=>'user', 'tab'=>'rolodex'), false));
+        Core\Core::reroute(PHPWS_Text::linkAddress('users', array('action'=>'user', 'tab'=>'rolodex'), false));
     }
 
     public function sendMessageOnly($msg)
     {
         $_SESSION['rolodex_message'] = $msg;
-        PHPWS_Core::reroute(PHPWS_Text::linkAddress('users', array('action'=>'user', 'tab'=>'rolodex'), false));
+        Core\Core::reroute(PHPWS_Text::linkAddress('users', array('action'=>'user', 'tab'=>'rolodex'), false));
     }
 
     public static function getMessage()

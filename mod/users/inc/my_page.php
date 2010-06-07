@@ -14,7 +14,7 @@ if (!defined('REMEMBER_ME_LIFE')) {
 
 function my_page()
 {
-    PHPWS_Core::initModClass('help', 'Help.php');
+    Core\Core::initModClass('help', 'Help.php');
     if (isset($_REQUEST['subcommand'])) {
         $subcommand = $_REQUEST['subcommand'];
     }
@@ -48,7 +48,7 @@ function my_page()
                     $content = dgettext('users', 'An error occurred while updating your user account.');
                 } else {
                     $_SESSION['User'] = $user;
-                    PHPWS_Core::reroute('index.php?module=users&action=user&tab=users&save=1');
+                    Core\Core::reroute('index.php?module=users&action=user&tab=users&save=1');
                 }
             }
             break;
@@ -164,7 +164,7 @@ class User_Settings {
         $form->addSubmit('submit', dgettext('users', 'Update my information'));
 
         if (!DISABLE_TRANSLATION && !FORCE_DEFAULT_LANGUAGE) {
-            $language_file = PHPWS_Core::getConfigFile('users', 'languages.php');
+            $language_file = Core\Core::getConfigFile('users', 'languages.php');
 
             if ($language_file) {
                 include $language_file;

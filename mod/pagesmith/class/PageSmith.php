@@ -4,8 +4,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::requireInc('pagesmith', 'error_defines.php');
-PHPWS_Core::requireConfig('pagesmith');
+Core\Core::requireInc('pagesmith', 'error_defines.php');
+Core\Core::requireConfig('pagesmith');
 
 if (!defined('PS_ALLOWED_HEADER_TAGS')) {
     define('PS_ALLOWED_HEADER_TAGS', '<b><strong><i><u><em>');
@@ -155,9 +155,9 @@ class PageSmith {
                         $this->killSaved();
                         PHPWS_Cache::clearCache();
                         if (isset($_POST['save_so_far'])) {
-                            PHPWS_Core::reroute(PHPWS_Text::linkAddress('pagesmith', array('id'=>$this->page->id, 'aop'=>'edit_page'), true));
+                            Core\Core::reroute(PHPWS_Text::linkAddress('pagesmith', array('id'=>$this->page->id, 'aop'=>'edit_page'), true));
                         } else {
-                            PHPWS_Core::reroute($this->page->url());
+                            Core\Core::reroute($this->page->url());
                         }
                         break;
                 }
@@ -177,7 +177,7 @@ class PageSmith {
                     Current_User::disallow();
                 }
                 $this->shortenLinks();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'lengthen_links':
@@ -185,7 +185,7 @@ class PageSmith {
                     Current_User::disallow();
                 }
                 $this->lengthenLinks();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'post_settings':
@@ -225,7 +225,7 @@ class PageSmith {
                 break;
 
             default:
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
                 break;
         }
 
@@ -242,14 +242,14 @@ class PageSmith {
 
     public function loadForms()
     {
-        PHPWS_Core::initModClass('pagesmith', 'PS_Forms.php');
+        Core\Core::initModClass('pagesmith', 'PS_Forms.php');
         $this->forms = new PS_Forms;
         $this->forms->ps = & $this;
     }
 
     public function loadPage()
     {
-        PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
+        Core\Core::initModClass('pagesmith', 'PS_Page.php');
         if (@$_REQUEST['id']) {
             $this->page = new PS_Page($_REQUEST['id']);
         } else {
@@ -270,7 +270,7 @@ class PageSmith {
 
     public function loadPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('pagesmith');
 
         $link = 'index.php?module=pagesmith&amp;aop=menu';
@@ -377,8 +377,8 @@ class PageSmith {
             PHPWS_Cache::clearCache();
         }
 
-        if ($menu_link && PHPWS_Core::moduleExists('menu')) {
-            if (PHPWS_Core::initModClass('menu', 'Menu.php')) {
+        if ($menu_link && Core\Core::moduleExists('menu')) {
+            if (Core\Core::initModClass('menu', 'Menu.php')) {
                 Menu::quickKeyLink($this->page->key_id);
             }
         }
@@ -435,12 +435,12 @@ class PageSmith {
     public function killSaved()
     {
         $_SESSION['PS_Page'] = null;
-        PHPWS_Core::killSession('PS_Page');
+        Core\Core::killSession('PS_Page');
     }
 
     public function postHeader()
     {
-        PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
+        Core\Core::initModClass('pagesmith', 'PS_Text.php');
         $header = strip_tags($_POST['header'], PS_ALLOWED_HEADER_TAGS);
 
         $section = new PS_Text;
@@ -459,7 +459,7 @@ class PageSmith {
     public function postText()
     {
         $warning = null;
-        PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
+        Core\Core::initModClass('pagesmith', 'PS_Text.php');
         $text = & $_POST['text'];
 
         $section = new PS_Text;

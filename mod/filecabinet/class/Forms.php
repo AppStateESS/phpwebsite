@@ -5,8 +5,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::initModClass('filecabinet', 'Image.php');
-PHPWS_Core::initModClass('filecabinet', 'Document.php');
+Core\Core::initModClass('filecabinet', 'Image.php');
+Core\Core::initModClass('filecabinet', 'Document.php');
 
 
 class Cabinet_Form {
@@ -14,7 +14,7 @@ class Cabinet_Form {
 
     public function getFolders($type)
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
         $folder = new Folder;
         $folder->ftype = $type;
         $folder->loadDirectory();
@@ -227,7 +227,7 @@ class Cabinet_Form {
         }
 
         if ($select_module) {
-            $modules = PHPWS_Core::getModuleNames();
+            $modules = Core\Core::getModuleNames();
             $modlist[0] = dgettext('filecabinet', '-- General --');
             foreach ($modules as $key=>$mod) {
                 $modlist[$key] = $mod;
@@ -280,9 +280,9 @@ class Cabinet_Form {
      */
     public function folderContents($folder, $pick_image=false)
     {
-        PHPWS_Core::bookmark();
+        Core\Core::bookmark();
         Layout::addStyle('filecabinet');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
 
         $dir_write = true;
         if (!is_writable($folder->getFullDirectory())) {
@@ -292,14 +292,14 @@ class Cabinet_Form {
 
         if ($folder->ftype == IMAGE_FOLDER) {
             javascript('lightbox');
-            PHPWS_Core::initModClass('filecabinet', 'Image.php');
+            Core\Core::initModClass('filecabinet', 'Image.php');
             $pager = new DBPager('images', 'PHPWS_Image');
             $pager->setTemplate('image_grid.tpl');
             $limits[9]  = 9;
             $limits[16] = 16;
             $limits[25] = 25;
         } elseif ($folder->ftype == DOCUMENT_FOLDER) {
-            PHPWS_Core::initModClass('filecabinet', 'Document.php');
+            Core\Core::initModClass('filecabinet', 'Document.php');
             $pager = new DBPager('documents', 'PHPWS_Document');
             $pager->setTemplate('file_list.tpl');
             $pager->addToggle('class="bgcolor1"');
@@ -308,7 +308,7 @@ class Cabinet_Form {
             $limits[50] =  50;
             $pager->addSortHeader('downloaded', sprintf('<abbr title="%s">%s</abbr>', dgettext('filecabinet', 'Downloaded'), dgettext('filecabinet', 'DL')));
         } elseif ($folder->ftype = MULTIMEDIA_FOLDER) {
-            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+            Core\Core::initModClass('filecabinet', 'Multimedia.php');
             $pager = new DBPager('multimedia', 'PHPWS_Multimedia');
             $pager->setTemplate('multimedia_grid.tpl');
             $pager->addToggle('class="bgcolor1"');

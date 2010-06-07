@@ -9,8 +9,8 @@
  * @version $Id$
  */
 
-PHPWS_Core::initModClass('users', 'Authorization.php');
-PHPWS_Core::initModClass('users', 'Users.php');
+Core\Core::initModClass('users', 'Authorization.php');
+Core\Core::initModClass('users', 'Users.php');
 
 if (!defined('ALLOW_DEITY_REMEMBER_ME')) {
     define('ALLOW_DEITY_REMEMBER_ME', false);
@@ -150,7 +150,7 @@ final class Current_User {
             $auth->forceLogin();
         }
 
-        PHPWS_Core::initModClass('users', 'Form.php');
+        Core\Core::initModClass('users', 'Form.php');
         $login = User_Form::logBox();
         if (!empty($login)) {
             Layout::set($login, 'users', 'login_box', false);
@@ -432,7 +432,7 @@ final class Current_User {
                 $user->setApproved(true);
                 $auth->createUser();
                 $user->save();
-                PHPWS_Core::initModClass('users', 'Action.php');
+                Core\Core::initModClass('users', 'Action.php');
                 User_Action::assignDefaultGroup($user);
             }
 
@@ -458,14 +458,14 @@ final class Current_User {
         if (Current_User::isLogged()) {
             return false;
         }
-        PHPWS_Core::bookmark(false);
+        Core\Core::bookmark(false);
         $auth = Current_User::getAuthorization();
         if (!empty($auth->login_url)) {
             $url = $auth->login_url;
         } else {
             $url = 'index.php?module=users&action=user&command=login_page';
         }
-        PHPWS_Core::reroute($url);
+        Core\Core::reroute($url);
     }
 
     public static function rememberLogin()

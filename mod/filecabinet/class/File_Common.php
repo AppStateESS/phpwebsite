@@ -7,7 +7,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::initCoreClass('File.php');
+Core\Core::initCoreClass('File.php');
 
 define('FILE_TITLE_CUTOFF', 24);
 

@@ -191,11 +191,11 @@ class Menu_Link {
         static $redirect_url = null;
 
         if (!$current_url) {
-            $current_url = preg_quote(PHPWS_Core::getCurrentUrl(true,false));
+            $current_url = preg_quote(Core\Core::getCurrentUrl(true,false));
         }
 
         if (!$redirect_url) {
-            $redirect_url = preg_quote(PHPWS_Core::getCurrentUrl());
+            $redirect_url = preg_quote(Core\Core::getCurrentUrl());
         }
 
         if ( preg_match("@$current_url$@", $this->url) ||
@@ -381,7 +381,7 @@ class Menu_Link {
                     $template['ADMIN'] = MENU_LINK_ADMIN;
                 } else {
                     $vars['command'] = 'popup_admin';
-                    $vars['curl'] = urlencode(PHPWS_Core::getCurrentUrl(false));
+                    $vars['curl'] = urlencode(Core\Core::getCurrentUrl(false));
                     if ($keyed) {
                         $vars['key_id'] = $key->id;
                     }

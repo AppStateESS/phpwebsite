@@ -10,19 +10,19 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 }
 
 if (isset($_REQUEST['wp_user'])) {
-    PHPWS_Core::initModClass('webpage', 'User.php');
+    Core\Core::initModClass('webpage', 'User.php');
     Webpage_User::main();
 } elseif(isset($_REQUEST['wp_admin'])) {
-    PHPWS_Core::initModClass('webpage', 'Admin.php');
+    Core\Core::initModClass('webpage', 'Admin.php');
     Webpage_Admin::main();
 } elseif (isset($_REQUEST['id'])) {
-    PHPWS_Core::initModClass('webpage', 'User.php');
+    Core\Core::initModClass('webpage', 'User.php');
     Webpage_User::main('view');
 } elseif (Current_User::allow('webpage')) {
-    PHPWS_Core::initModClass('webpage', 'Admin.php');
+    Core\Core::initModClass('webpage', 'Admin.php');
     Webpage_Admin::main();
 } else {
-    PHPWS_Core::errorPage('404');
+    Core\Core::errorPage('404');
 }
 
 ?>

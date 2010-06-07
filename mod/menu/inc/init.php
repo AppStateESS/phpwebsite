@@ -6,7 +6,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireConfig('menu', 'config.php');
-PHPWS_Core::initModClass('menu', 'Menu.php');
+Core\Core::requireConfig('menu', 'config.php');
+Core\Core::initModClass('menu', 'Menu.php');
 
 ?>

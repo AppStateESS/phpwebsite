@@ -66,10 +66,10 @@ class vMail {
                 if ($this->postRecipient()) {
                     if (PHPWS_Error::logIfError($this->recipient->save())) {
                         $this->forwardMessage(dgettext('vmail', 'Error occurred when saving recipient.'));
-                        PHPWS_Core::reroute('index.php?module=vmail&aop=menu');
+                        Core\Core::reroute('index.php?module=vmail&aop=menu');
                     } else {
                         $this->forwardMessage(dgettext('vmail', 'Recipient saved successfully.'));
-                        PHPWS_Core::reroute('index.php?module=vmail&aop=menu');
+                        Core\Core::reroute('index.php?module=vmail&aop=menu');
                     }
                 } else {
                     $this->loadForm('edit_recipient');
@@ -115,7 +115,7 @@ class vMail {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('vmail', 'vMail settings saved.'));
-                    PHPWS_Core::reroute('index.php?module=vmail&aop=menu');
+                    Core\Core::reroute('index.php?module=vmail&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -142,7 +142,7 @@ class vMail {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -154,7 +154,7 @@ class vMail {
             case 'view_recipient':
                 $this->loadRecipient();
                 if ($this->recipient->active) {
-                    PHPWS_Core::initModClass('vmail', 'vMail_Forms.php');
+                    Core\Core::initModClass('vmail', 'vMail_Forms.php');
                     $this->forms = new vMail_Forms;
                     $this->forms->vmail = & $this;
                     $this->forms->composeMessage();
@@ -165,7 +165,7 @@ class vMail {
                 break;
 
             case 'list_recipients':
-                PHPWS_Core::initModClass('vmail', 'vMail_Forms.php');
+                Core\Core::initModClass('vmail', 'vMail_Forms.php');
                 $this->forms = new vMail_Forms;
                 $this->forms->vmail = & $this;
                 $this->forms->listRecipients();
@@ -180,8 +180,8 @@ class vMail {
                         $this->content = $this->recipient->submitMessage();
                     } else {
                         $this->forwardMessage(dgettext('vmail', 'Sorry, there was a problem sending the message.'));
-//                        PHPWS_Core::reroute('index.php?module=vmail&id=' . $this->recipient->id);
-                        PHPWS_Core::reroute('index.php?module=vmail&uop=list_recipients');
+//                        Core\Core::reroute('index.php?module=vmail&id=' . $this->recipient->id);
+                        Core\Core::reroute('index.php?module=vmail&uop=list_recipients');
                     }
                 } else {
                     $this->loadForm('compose_message');
@@ -219,14 +219,14 @@ class vMail {
             if (isset($_SESSION['vMail_Message']['title'])) {
                 $this->title = $_SESSION['vMail_Message']['title'];
             }
-            PHPWS_Core::killSession('vMail_Message');
+            Core\Core::killSession('vMail_Message');
         }
     }
 
 
     public function loadForm($type)
     {
-        PHPWS_Core::initModClass('vmail', 'vMail_Forms.php');
+        Core\Core::initModClass('vmail', 'vMail_Forms.php');
         $this->forms = new vMail_Forms;
         $this->forms->vmail = & $this;
         $this->forms->get($type);
@@ -235,7 +235,7 @@ class vMail {
 
     public function loadRecipient($id=0)
     {
-        PHPWS_Core::initModClass('vmail', 'vMail_Recipient.php');
+        Core\Core::initModClass('vmail', 'vMail_Recipient.php');
 
         if ($id) {
             $this->recipient = new vMail_Recipient($id);
@@ -253,7 +253,7 @@ class vMail {
 
     public function loadPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('vmail-panel');
         $link = 'index.php?module=vmail&aop=menu';
 
@@ -422,7 +422,7 @@ class vMail {
             return true;
         }
 
-        PHPWS_Core::initCoreClass('Captcha.php');
+        Core\Core::initCoreClass('Captcha.php');
         return Captcha::verify();
     }
 
@@ -431,7 +431,7 @@ class vMail {
     {
         $this->loadRecipient();
 
-        $url = PHPWS_Core::getHomeHttp();
+        $url = Core\Core::getHomeHttp();
         $from = $_POST['name'];
         $sender = $_POST['email'];
         $sendto = $this->recipient->getLabel();
@@ -444,7 +444,7 @@ class vMail {
         $message .= $_POST['message'] . "\n\n";
         $message .= sprintf(dgettext('vmail', 'Sent from IP Address: %s'), $_SERVER['REMOTE_ADDR']) . "\n\n";
 
-        PHPWS_Core::initCoreClass('Mail.php');
+        Core\Core::initCoreClass('Mail.php');
         $mail = new PHPWS_Mail;
         $mail->addSendTo(sprintf('%s<%s>', $this->recipient->getLabel(), $this->recipient->getAddress()));
         $mail->setSubject($subject);

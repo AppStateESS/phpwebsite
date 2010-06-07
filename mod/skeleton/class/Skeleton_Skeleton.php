@@ -119,7 +119,7 @@ class Skeleton_Skeleton {
             return null;
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $file = Cabinet::getFile($this->file_id);
 
         if ($file->isImage(true)) {
@@ -153,7 +153,7 @@ class Skeleton_Skeleton {
     public function view()
     {
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
 
         $key = new Key($this->key_id);
@@ -192,7 +192,7 @@ class Skeleton_Skeleton {
 
     public function getAllBones($limit=false)
     {
-        PHPWS_Core::initModClass('skeleton', 'Skeleton_Bone.php');
+        Core\Core::initModClass('skeleton', 'Skeleton_Bone.php');
         $db = new PHPWS_DB('skeleton_bones');
         $db->addOrder('title asc');
         $db->addWhere('skeleton_id', $this->id);

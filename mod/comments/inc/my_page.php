@@ -7,7 +7,7 @@
 
 function my_page()
 {
-    PHPWS_Core::initModClass('comments', 'My_Page.php');
+    Core\Core::initModClass('comments', 'My_Page.php');
     $content = Comments_My_Page::main();
     return $content;
 }

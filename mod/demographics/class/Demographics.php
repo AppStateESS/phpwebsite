@@ -4,8 +4,8 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireInc('demographics', 'errorDefines.php');
-PHPWS_Core::initModClass('demographics', 'Demographics_User.php');
+Core\Core::requireInc('demographics', 'errorDefines.php');
+Core\Core::initModClass('demographics', 'Demographics_User.php');
 define('DEMOGRAPHICS_DEFAULT_LIMIT', 255);
 
 class Demographics {
@@ -186,7 +186,7 @@ class Demographics {
      */
     public function unregister($module)
     {
-        $file = PHPWS_Core::getConfigFile($module, 'demographics.php');
+        $file = Core\Core::getConfigFile($module, 'demographics.php');
 
         if (!is_file($file)) {
             PHPWS_Boost::addLog($module, dgettext('demographics', 'No demographics file found.'));

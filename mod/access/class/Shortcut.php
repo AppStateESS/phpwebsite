@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::requireConfig('access');
+Core\Core::requireConfig('access');
 
 class Access_Shortcut {
     public $id       = 0;
@@ -182,7 +182,7 @@ class Access_Shortcut {
     public function getRewrite($full=FALSE, $linkable=TRUE)
     {
         if ($full) {
-            $address[] = PHPWS_Core::getHomeHttp();
+            $address[] = Core\Core::getHomeHttp();
         }
         $address[] = $this->keyword;
 

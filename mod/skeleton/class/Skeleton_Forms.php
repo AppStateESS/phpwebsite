@@ -84,8 +84,8 @@ class Skeleton_Forms {
         $ptags['DIED_HEADER'] = dgettext('skeleton', 'Died');
         $ptags['BONES_HEADER'] = dgettext('skeleton', 'Bones');
 
-        PHPWS_Core::initModClass('skeleton', 'Skeleton_Skeleton.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('skeleton', 'Skeleton_Skeleton.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('skeleton_skeletons', 'Skeleton_Skeleton');
         $pager->setModule('skeleton');
 
@@ -121,8 +121,8 @@ class Skeleton_Forms {
         $ptags['TITLE_HEADER'] = dgettext('skeleton', 'Name');
         $ptags['SKELETON_HEADER'] = dgettext('skeleton', 'Skeleton');
 
-        PHPWS_Core::initModClass('skeleton', 'Skeleton_Bone.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('skeleton', 'Skeleton_Bone.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('skeleton_bones', 'Skeleton_Bone');
         $pager->setModule('skeleton');
         $pager->setOrder('title', 'asc', true);
@@ -175,7 +175,7 @@ class Skeleton_Forms {
         $form->setLabel('description', dgettext('skeleton', 'Description'));
 
         if (PHPWS_Settings::get('skeleton', 'enable_files')) {
-            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+            Core\Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('file_id', $skeleton->file_id);
             $manager->imageOnly();
             $manager->maxImageWidth(PHPWS_Settings::get('skeleton', 'max_width'));
@@ -235,7 +235,7 @@ class Skeleton_Forms {
         $form->setLabel('description', dgettext('skeleton', 'Description'));
 
         if (PHPWS_Settings::get('skeleton', 'enable_files')) {
-            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+            Core\Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('file_id', $bone->file_id);
 //            $manager->imageOnly();
             $manager->maxImageWidth(PHPWS_Settings::get('skeleton', 'max_width'));
@@ -322,7 +322,7 @@ class Skeleton_Forms {
         $form->addHidden('module', 'skeleton');
         $form->addHidden('aop', 'edit_bone');
 
-        PHPWS_Core::initModClass('skeleton', 'Skeleton_Skeleton.php');
+        Core\Core::initModClass('skeleton', 'Skeleton_Skeleton.php');
         $db = new PHPWS_DB('skeleton_skeletons');
         $db->addColumn('id');
         $db->addColumn('title');

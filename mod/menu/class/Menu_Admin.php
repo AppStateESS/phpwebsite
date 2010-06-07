@@ -13,7 +13,7 @@ class Menu_Admin {
     {
         $title = $content = $message = NULL;
 
-        PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+        Core\Core::initModClass('menu', 'Menu_Item.php');
 
         if (!Current_User::allow('menu')){
             Current_User::disallow(dgettext('menu', 'User attempted access to Menu administration.'));
@@ -86,7 +86,7 @@ class Menu_Admin {
                     unset($_SESSION['Menu_Admin_Mode']);
                 }
                 if (isset($_REQUEST['return'])) {
-                    PHPWS_Core::goBack();
+                    Core\Core::goBack();
                 }
             case 'settings':
                 $title = dgettext('menu', 'Menu Settings');
@@ -169,12 +169,12 @@ class Menu_Admin {
 
             case 'unclip':
                 unset($_SESSION['Menu_Clip'][$_GET['menu_id']]);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'clip':
                 $_SESSION['Menu_Clip'][$_GET['menu_id']] = $_GET['menu_id'];
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'ajax_add_link':
@@ -304,12 +304,12 @@ class Menu_Admin {
 
             case 'unpin_menu':
                 Menu_Admin::unpinMenu($menu);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'pin_menu':
                 Menu_Admin::pinMenu();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'pin_all':
@@ -330,7 +330,7 @@ class Menu_Admin {
                 if (!empty($_GET['menu_id'])) {
                     $menu->reorderLinks();
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
         } // end command switch
@@ -382,7 +382,7 @@ class Menu_Admin {
     public function sendMessage($message, $command)
     {
         $_SESSION['Menu_message'] = $message;
-        PHPWS_Core::reroute(sprintf('index.php?module=menu&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
+        Core\Core::reroute(sprintf('index.php?module=menu&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
         exit();
     }
 
@@ -499,7 +499,7 @@ class Menu_Admin {
 
     public static function cpanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
 
         if (Current_User::allow('menu', 'create_new_menu')) {
             $newLink = 'index.php?module=menu';
@@ -575,7 +575,7 @@ class Menu_Admin {
     {
         $page_tags['ACTION'] = dgettext('menu', 'Action');
 
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('menus', 'Menu_Item');
         $pager->setModule('menu');
         $pager->addPageTags($page_tags);
@@ -797,7 +797,7 @@ class Menu_Admin {
             javascript('close_refresh');
             Layout::nakedDisplay();
         } else {
-            PHPWS_Core::goBack();
+            Core\Core::goBack();
         }
     }
 

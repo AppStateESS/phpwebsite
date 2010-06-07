@@ -81,7 +81,7 @@ class Sitemap_Forms {
         $form->setLabel('addkeys', dgettext('sitemap', 'Include keyed module items not in menus in your sitemap'));
 
         $form->addRadio('build_type', array(0, 1));
-        $form->setLabel('build_type', array(dgettext('sitemap', 'Download'), sprintf(dgettext('sitemap', 'Save to server (%s)'), PHPWS_Core::getHomeHttp() . 'sitemap.xml')));
+        $form->setLabel('build_type', array(dgettext('sitemap', 'Download'), sprintf(dgettext('sitemap', 'Save to server (%s)'), Core\Core::getHomeHttp() . 'sitemap.xml')));
         $form->setMatch('build_type', $bMatch);
 
         if (PHPWS_Settings::get('sitemap', 'use_lastmod')) {
@@ -175,7 +175,7 @@ class Sitemap_Forms {
         } else {
             $modlink = 'index.php?module=sitemap';
         }
-        $tpl['INFO_3'] = sprintf(dgettext('sitemap', 'First, review the settings. Then, you can either download a sitemap file for using later, save a sitemap file to the server at %s, or allow a live and dynamic sitemap feed at %s'), PHPWS_Core::getHomeHttp() . 'sitemap.xml', PHPWS_Core::getHomeHttp() . $modlink);
+        $tpl['INFO_3'] = sprintf(dgettext('sitemap', 'First, review the settings. Then, you can either download a sitemap file for using later, save a sitemap file to the server at %s, or allow a live and dynamic sitemap feed at %s'), Core\Core::getHomeHttp() . 'sitemap.xml', Core\Core::getHomeHttp() . $modlink);
         $tpl['INFO_4_LABEL'] = null;
         $tpl['INFO_4'] = null;
         $tpl['INFO_5_LABEL'] = null;

@@ -5,6 +5,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::initModClass('miniadmin', 'MiniAdmin.php');
+Core\Core::initModClass('miniadmin', 'MiniAdmin.php');
 
 ?>

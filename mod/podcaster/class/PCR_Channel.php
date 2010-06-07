@@ -178,7 +178,7 @@ class Podcaster_Channel {
             return null;
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        Core\Core::initModClass('filecabinet', 'Image.php');
         $image = new PHPWS_Image($this->image_id);
         if (!$image->id) {
             $image->logErrors();
@@ -245,7 +245,7 @@ class Podcaster_Channel {
         }
 
         if ($print) {
-            PHPWS_Core::initModClass('podcaster', 'PCR_Category.php');
+            Core\Core::initModClass('podcaster', 'PCR_Category.php');
             $cats = NULL;
             foreach ($this->itunes_category as $cat_id) {
                 $cat = new Podcaster_Category($cat_id);
@@ -268,7 +268,7 @@ class Podcaster_Channel {
     function view()
     {
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
 
         $key = new Key($this->key_id);
@@ -340,7 +340,7 @@ class Podcaster_Channel {
 
         $db = new PHPWS_DB('podcaster_episode');
         $db->addWhere('channel_id', $this->id);
-        PHPWS_Core::initModClass('podcaster', 'PCR_Episode.php');
+        Core\Core::initModClass('podcaster', 'PCR_Episode.php');
         $result = $db->getObjects('Podcaster_Episode');
         if ($result) {
             foreach ($result as $episode) {
@@ -353,7 +353,7 @@ class Podcaster_Channel {
 
     function getAllEpisodes($limit=false)
     {
-        PHPWS_Core::initModClass('podcaster', 'PCR_Episode.php');
+        Core\Core::initModClass('podcaster', 'PCR_Episode.php');
         $db = new PHPWS_DB('podcaster_episode');
         $db->addOrder('date_updated desc');
         $db->addWhere('channel_id', $this->id);
@@ -535,7 +535,7 @@ class Podcaster_Channel {
 
     public function viewLink($bare=false)
     {
-        PHPWS_Core::initCoreClass('Link.php');
+        Core\Core::initCoreClass('Link.php');
 //        $link = new PHPWS_Link($this->title, 'podcaster', array('id'=>$this->id));
         $link = new PHPWS_Link($this->title, 'podcaster', array('channel'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
@@ -551,7 +551,7 @@ class Podcaster_Channel {
 
     function loadFeeds()
     {
-        PHPWS_Core::initModClass('podcaster', 'PCR_Episode.php');
+        Core\Core::initModClass('podcaster', 'PCR_Episode.php');
         $db = new PHPWS_DB('podcaster_episode');
         $db->addWhere('channel_id', $this->id);
         $db->addWhere('active', 1);
@@ -586,7 +586,7 @@ class Podcaster_Channel {
         }
 
 
-        $home_http = PHPWS_Core::getHomeHttp();
+        $home_http = Core\Core::getHomeHttp();
         $image = $this->getImage();
         $template['CHANNEL_TITLE']       = $this->title;
         $template['CHANNEL_OWNER']       = $this->created_user;

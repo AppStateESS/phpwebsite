@@ -6,9 +6,9 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::requireConfig('comments');
-PHPWS_Core::initModClass('comments', 'Comments.php');
-PHPWS_Core::initModClass('demographics', 'Demographics.php');
+Core\Core::requireConfig('comments');
+Core\Core::initModClass('comments', 'Comments.php');
+Core\Core::initModClass('demographics', 'Demographics.php');
 
 class Comment_User extends Demographics_User {
 
@@ -119,7 +119,7 @@ class Comment_User extends Demographics_User {
     {
         if (is_integer($avatar) && $avatar) {
             $this->avatar_id = $avatar;
-            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+            Core\Core::initModClass('filecabinet', 'Cabinet.php');
             $file = Cabinet::getFile($this->avatar_id);
             $this->avatar = $file->getPath();
         }
@@ -356,7 +356,7 @@ class Comment_User extends Demographics_User {
 
         // If user wants to upload an image...
         if (!empty($_FILES['local_avatar']['name']) && $perm['local']) {
-            PHPWS_Core::initModClass('filecabinet', 'Image.php');
+            Core\Core::initModClass('filecabinet', 'Image.php');
             $image = new PHPWS_Image;
             $image->setDirectory('images/comments/');
             $image->setMaxWidth(COMMENT_MAX_AVATAR_WIDTH);
@@ -448,7 +448,7 @@ class Comment_User extends Demographics_User {
     {
         // Create Comment_Item class
         $comment = new Comment_Item();
-        PHPWS_Core::plugObject($comment, $values);
+        Core\Core::plugObject($comment, $values);
         // Get associated Comment_Thread
         if (!isset($GLOBALS['cm_threads'][$comment->thread_id]))
         $GLOBALS['cm_threads'][$comment->thread_id] = new Comment_Thread($comment->thread_id);
@@ -470,7 +470,7 @@ class Comment_User extends Demographics_User {
     public function list_posts()
     {
         Layout::addStyle('comments');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
 
         $time_period = array('all'    => dgettext('comments', 'All'),
                              'today'  => dgettext('comments', 'Today'),
@@ -715,7 +715,7 @@ class Comment_User extends Demographics_User {
             return false;
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        Core\Core::initModClass('filecabinet', 'Image.php');
         $ext = PHPWS_File::getFileExtension($url);
         echo $ext;
 

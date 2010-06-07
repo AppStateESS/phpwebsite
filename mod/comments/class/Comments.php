@@ -12,8 +12,8 @@ define('CURRENT_VIEW_MODE', 3);
 
 define('COMMENTS_MISSING_DEFAULT_RANK', 2);
 
-PHPWS_Core::initModClass('comments', 'Comment_Thread.php');
-PHPWS_Core::initModClass('comments', 'Comment_User.php');
+Core\Core::initModClass('comments', 'Comment_Thread.php');
+Core\Core::initModClass('comments', 'Comment_User.php');
 
 class Comments {
 
@@ -88,7 +88,7 @@ class Comments {
 
     public static function panel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
 
         $tabs['settings'] = array('title'=>dgettext('comments', 'Settings'), 'link'=>'index.php?module=comments');
 
@@ -135,7 +135,7 @@ class Comments {
                     $comment = new Comment_Item((int) $cm_id);
                     $comment->delete();
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 return;
                 break;
 
@@ -143,25 +143,25 @@ class Comments {
                 // Admin approved a comment
                 $comment = new Comment_Item($_REQUEST['cm_id']);
                 $comment->approve();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'remove':
                 $comment = new Comment_Item($_REQUEST['cm_id']);
                 $comment->delete(false);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'report':
                 $panel->setCurrentTab('report');
-                PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                Core\Core::initModClass('comments', 'Comment_Forms.php');
                 $content = Comment_Forms::reported();
                 break;
 
             case 'move_comments':
                 // If phpwsbb is installed...
                 if (isset($GLOBALS['Modules']['phpwsbb'])) {
-                    PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
+                    Core\Core::initModClass('phpwsbb', 'BB_Forms.php');
                     $content = PHPWSBB_Forms::move_comments($comments);
                 } else
                 $content = dgettext('comments', 'Sorry, module phpwsBB is not installed.');
@@ -170,7 +170,7 @@ class Comments {
             case 'ranks':
                 $panel->setCurrentTab('ranks');
                 if (Current_User::allow('comments', 'settings')) {
-                    PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                    Core\Core::initModClass('comments', 'Comment_Forms.php');
                     $content = Comment_Forms::ranksForm();
                 } else {
                     $content = dgettext('comments', 'Sorry, but you do not have rights to alter ranks.');
@@ -181,7 +181,7 @@ class Comments {
             case 'split_comments':
                 // If phpwsbb is installed...
                 if (isset($GLOBALS['Modules']['phpwsbb'])) {
-                    PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
+                    Core\Core::initModClass('phpwsbb', 'BB_Forms.php');
                     $content = PHPWSBB_Forms::split_comments($comments);
                 } else
                 $content = dgettext('comments', 'Sorry, module phpwsBB is not installed.');
@@ -190,7 +190,7 @@ class Comments {
             case 'settings':
                 $panel->setCurrentTab('settings');
                 if (Current_User::allow('comments', 'settings')) {
-                    PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                    Core\Core::initModClass('comments', 'Comment_Forms.php');
                     $content = Comment_Forms::settingsForm();
                 } else {
                     $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
@@ -201,28 +201,28 @@ class Comments {
                 if (!empty($_POST['cm_id'])) {
                     Comments::multipleApprove($_POST['cm_id']);
                 }
-                PHPWS_Core::reroute('index.php?module=comments&tab=approval&authkey=' . Current_User::getAuthKey());
+                Core\Core::reroute('index.php?module=comments&tab=approval&authkey=' . Current_User::getAuthKey());
                 break;
 
             case 'remove_all':
                 if (!empty($_POST['cm_id'])) {
                     Comments::multipleRemove($_POST['cm_id']);
                 }
-                PHPWS_Core::reroute('index.php?module=comments&tab=approval&authkey=' . Current_User::getAuthKey());
+                Core\Core::reroute('index.php?module=comments&tab=approval&authkey=' . Current_User::getAuthKey());
                 break;
 
             case 'approval':
                 // Basic comment permissions allow approval
-                PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                Core\Core::initModClass('comments', 'Comment_Forms.php');
                 $panel->setCurrentTab('approval');
                 $content = Comment_Forms::approvalForm();
                 break;
 
             case 'post_rank':
                 if (Current_User::authorized('comments', 'settings')) {
-                    PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                    Core\Core::initModClass('comments', 'Comment_Forms.php');
                     Comment_Forms::postRank(Comments::loadRank());
-                    PHPWS_Core::goBack();
+                    Core\Core::goBack();
                 } else {
                     $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
                 }
@@ -230,12 +230,12 @@ class Comments {
 
             case 'delete_rank':
                 if (Current_User::authorized('comments', 'settings')) {
-                    PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                    Core\Core::initModClass('comments', 'Comment_Forms.php');
                     $rank = Comments::loadRank();
                     if ($rank->group_id) {
                         $rank->delete();
                     }
-                    PHPWS_Core::goBack();
+                    Core\Core::goBack();
                 } else {
                     $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
                 }
@@ -243,9 +243,9 @@ class Comments {
 
             case 'create_rank':
                 if (Current_User::authorized('comments', 'settings')) {
-                    PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                    Core\Core::initModClass('comments', 'Comment_Forms.php');
                     Comment_Forms::postRank(Comments::loadRank(), true);
-                    PHPWS_Core::goBack();
+                    Core\Core::goBack();
                 } else {
                     $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
                 }
@@ -253,9 +253,9 @@ class Comments {
 
             case 'post_user_rank':
                 if (Current_User::authorized('comments', 'settings')) {
-                    PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                    Core\Core::initModClass('comments', 'Comment_Forms.php');
                     Comment_Forms::postUserRank();
-                    PHPWS_Core::goBack();
+                    Core\Core::goBack();
                 } else {
                     $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
                 }
@@ -263,10 +263,10 @@ class Comments {
 
             case 'drop_user_rank':
                 if (Current_User::authorized('comments', 'settings')) {
-                    PHPWS_Core::initModClass('comments', 'User_Rank.php');
+                    Core\Core::initModClass('comments', 'User_Rank.php');
                     $user_rank = new Comment_User_Rank($_GET['user_rank_id']);
                     $user_rank->delete();
-                    PHPWS_Core::goBack();
+                    Core\Core::goBack();
                 } else {
                     Current_User::disallow();
                 }
@@ -274,9 +274,9 @@ class Comments {
 
             case 'post_settings':
                 if (Current_User::authorized('comments', 'settings')) {
-                    PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                    Core\Core::initModClass('comments', 'Comment_Forms.php');
                     Comment_Forms::postSettings();
-                    PHPWS_Core::goBack();
+                    Core\Core::goBack();
                 } else {
                     $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
                 }
@@ -287,7 +287,7 @@ class Comments {
                 if ($thread->userCan()) {
                     $thread->setAnonPosting((int) @$_REQUEST['allow']);
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'unlock_user':
@@ -324,7 +324,7 @@ class Comments {
                         PHPWS_Error::logIfError($comment->save());
                     }
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'unban_user':
@@ -353,7 +353,7 @@ class Comments {
 
             case 'deny_ip':
                 if (Current_User::authorized('access')) {
-                    PHPWS_Core::initModClass('access', 'Access.php');
+                    Core\Core::initModClass('access', 'Access.php');
                     Access::addIp($_GET['id'], false);
                     echo sprintf('<a href="#" onclick="punish_user(\'%s\', this, \'remove_deny_ip\'); return false;">%s</a>',
                     $_GET['id'], dgettext('comments', 'Remove IP denial'));
@@ -363,7 +363,7 @@ class Comments {
 
             case 'remove_deny_ip':
                 if (Current_User::authorized('access')) {
-                    PHPWS_Core::initModClass('access', 'Access.php');
+                    Core\Core::initModClass('access', 'Access.php');
 
                     Access::removeIp($_GET['id'], false);
                     echo sprintf('<a href="#" onclick="punish_user(\'%s\', this, \'deny_ip\'); return false;">%s</a>',
@@ -379,7 +379,7 @@ class Comments {
                 }
                 $comment = new Comment_Item($_REQUEST['cm_id']);
                 if ($comment->id) {
-                    PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                    Core\Core::initModClass('comments', 'Comment_Forms.php');
                     $content = Comment_Forms::punishForm($comment);
                 }
                 Layout::nakedDisplay($content);
@@ -389,7 +389,7 @@ class Comments {
                 $thread = new Comment_Thread((int) @$_REQUEST['thread_id']);
                 if ($thread->userCan())
                 $thread->setLock((int) @$_REQUEST['lock']);
-                PHPWS_Core::reroute($thread->_key->url);
+                Core\Core::reroute($thread->_key->url);
                 break;
 
             case 'recalc_userposts':
@@ -407,19 +407,19 @@ class Comments {
                 if (Current_User::authorized('comments', 'delete_comments') && !empty($_GET['aid'])) {
                     Comments::deleteAllUserComments($_GET['aid']);
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'delete_all_ip_comments':
                 if (Current_User::authorized('comments', 'delete_comments') && !empty($_GET['aip'])) {
                     Comments::deleteAllUserComments(0, $_GET['aip']);
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
 
             default:
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
         }
         $panel->setContent($content);
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
@@ -443,11 +443,11 @@ class Comments {
         switch ($command) {
             case 'post_comment':
                 if ($thread->canComment()) {
-                    PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                    Core\Core::initModClass('comments', 'Comment_Forms.php');
                     $title = dgettext('comments', 'Post Comment');
                     $content[] = Comment_Forms::form($thread, $c_item);
                 } else {
-                    PHPWS_Core::errorPage('404');
+                    Core\Core::errorPage('404');
                 }
                 break;
 
@@ -477,11 +477,11 @@ class Comments {
 
             case 'save_comment':
                 if (empty($_POST['cm_subject']) && empty($_POST['cm_entry'])) {
-                    PHPWS_Core::reroute($thread->_key->url);
+                    Core\Core::reroute($thread->_key->url);
                 }
 
-                if (PHPWS_Core::isPosted()) {
-                    PHPWS_Core::reroute($thread->_key->url);
+                if (Core\Core::isPosted()) {
+                    Core\Core::reroute($thread->_key->url);
                 }
 
                 if (!isset($thread)) {
@@ -504,13 +504,13 @@ class Comments {
                             $content[] = sprintf('<a href="%s">%s</a>', $thread->getSourceUrl(false, $c_item->id),
                             dgettext('comments', 'Return to the thread...'));
                         } else {
-                            PHPWS_Core::reroute($thread->getSourceUrl(false, $c_item->id));
+                            Core\Core::reroute($thread->getSourceUrl(false, $c_item->id));
                             exit();
                         }
                     }
 
                 } else {
-                    PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
+                    Core\Core::initModClass('comments', 'Comment_Forms.php');
                     $title = dgettext('comments', 'Post Comment');
                     $content[] = Comment_Forms::form($thread, $c_item);
                 }
@@ -520,7 +520,7 @@ class Comments {
             case 'view_comment':
                 $thread = new Comment_Thread($c_item->thread_id);
                 if (!$thread->id) {
-                    PHPWS_Core::errorPage('404');
+                    Core\Core::errorPage('404');
                     break;
                 }
 
@@ -532,7 +532,7 @@ class Comments {
                     $title = sprintf(dgettext('comments', 'Comment from: %s'), $thread->_key->getUrl());
                     $content[] = Comments::viewComment($c_item, $thread);
                 } else {
-                    PHPWS_Core::errorPage('404');
+                    Core\Core::errorPage('404');
                 }
                 break;
 
@@ -547,17 +547,17 @@ class Comments {
 
             case 'set_monitor':
                 Comment_User::subscribe(Current_User::getId(), $thread->id);
-                PHPWS_Core::reroute($thread->_key->url);
+                Core\Core::reroute($thread->_key->url);
                 break;
 
             case 'unset_monitor':
                 Comment_User::unsubscribe(Current_User::getId(), $thread->id);
-                PHPWS_Core::reroute($thread->_key->url);
+                Core\Core::reroute($thread->_key->url);
                 break;
         }
 
         if (empty($content)) {
-            PHPWS_Core::errorPage('404');
+            Core\Core::errorPage('404');
         }
 
         $template['TITLE'] = $title;
@@ -584,7 +584,7 @@ class Comments {
         }
 
         $link = 'index.php?' . implode('&', $url);
-        PHPWS_Core::reroute($link);
+        Core\Core::reroute($link);
         return;
     }
 
@@ -647,7 +647,7 @@ class Comments {
         }
 
         if ( Comments::useCaptcha() ) {
-            PHPWS_Core::initCoreClass('Captcha.php');
+            Core\Core::initCoreClass('Captcha.php');
             if (!Captcha::verify()) {
                 $cm_item->_error =  dgettext('comments', 'You failed verification. Try again.');
                 return false;
@@ -841,7 +841,7 @@ class Comments {
 
         // Send all email notices (not current user)
         //xxxxNOTE: Need to create a core_based Mail_Queue to pop these into for Comments newsletter modules
-        PHPWS_Core::initCoreClass('Mail.php');
+        Core\Core::initCoreClass('Mail.php');
         $mail = new PHPWS_Mail;
         foreach ($result AS $to) {
             if ($to['id'] != Current_User::getId())
@@ -853,9 +853,9 @@ class Comments {
         $replace = array(dgettext('comments', 'Member')
         , $cm_item->getAuthorName()
         , $thread->_key->title
-        , PHPWS_Core::getHomeHttp().$thread->_key->url
+        , Core\Core::getHomeHttp().$thread->_key->url
         , $cm_item->getEntry()
-        , PHPWS_Core::getHomeHttp().'index.php?module=users&action=user&tab=comments'
+        , Core\Core::getHomeHttp().'index.php?module=users&action=user&tab=comments'
         );
         $body = str_replace($find, $replace, PHPWS_Settings::get('comments', 'email_text'));
         $mail->setSubject(str_replace($find, $replace, PHPWS_Settings::get('comments', 'email_subject')));
@@ -913,7 +913,7 @@ class Comments {
         javascriptMod('comments', 'admin');
         javascriptMod('comments', 'quick_view');
 
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
         if (empty($comment_user->user_id)) {
             return dgettext('comments', 'No comments made');
         }
@@ -953,7 +953,7 @@ class Comments {
     public function getCommentTpl($data) {
         $thread = new Comment_Thread;
         $comment = new Comment_Item;
-        PHPWS_Core::plugObject($comment, $data);
+        Core\Core::plugObject($comment, $data);
         $tpl = $comment->historyTags();
 
         $tpl['TOPIC_ID'] = $data['thread_id'];
@@ -983,7 +983,7 @@ class Comments {
         $db->setIndexBy('id');
         $default_rank = PHPWS_Settings::get('comments', 'default_rank');
 
-        PHPWS_Core::initModClass('comments', 'Rank.php');
+        Core\Core::initModClass('comments', 'Rank.php');
         $db->addColumn('comments_ranks.*');
         $result = $db->getObjects('Comment_Rank', true);
 
@@ -1012,7 +1012,7 @@ class Comments {
 
     public function loadRank()
     {
-        PHPWS_Core::initModClass('comments', 'Rank.php');
+        Core\Core::initModClass('comments', 'Rank.php');
         if (isset($_REQUEST['rank_id'])) {
             $rank = new Comment_Rank($_REQUEST['rank_id']);
         } else {

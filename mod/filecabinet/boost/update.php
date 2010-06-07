@@ -29,7 +29,7 @@ Please download version 1.0.2.</pre>';
                 $content[] = '--- Deleted false folder keys.';
 
                 $db->reset();
-                PHPWS_Core::initModClass('filecabinet', 'Folder.php');
+                Core\Core::initModClass('filecabinet', 'Folder.php');
                 $result = $db->getObjects('Folder');
                 if (!empty($result)) {
                     foreach ($result as $folder) {
@@ -345,7 +345,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                 }
             }
 
-            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+            Core\Core::initModClass('filecabinet', 'Multimedia.php');
             $result = $db->getObjects('PHPWS_Multimedia');
 
             if ($result) {

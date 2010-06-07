@@ -21,7 +21,7 @@
  * @version $Id$
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
-PHPWS_Core::requireConfig('vlist');
+Core\Core::requireConfig('vlist');
 
 class UNI_Element {
 
@@ -232,10 +232,10 @@ class UNI_Element {
         /* save the element */
         if (PHPWS_Error::logIfError($this->saveElement(true))) {
             $this->vlist->forwardMessage(dgettext('vlist', 'Error occurred when saving element.'));
-            PHPWS_Core::reroute('index.php?module=vlist&aop=edit_element&element=' . $this->id);
+            Core\Core::reroute('index.php?module=vlist&aop=edit_element&element=' . $this->id);
         } else {
             $this->vlist->forwardMessage(dgettext('vlist', 'Element saved successfully.'));
-            PHPWS_Core::reroute('index.php?module=vlist&aop=edit_options&element=' . $this->id);
+            Core\Core::reroute('index.php?module=vlist&aop=edit_options&element=' . $this->id);
         }
 
     }
@@ -514,10 +514,10 @@ class UNI_Element {
 
         if (PHPWS_Error::logIfError($this->saveElement(true))) {
             $this->vlist->forwardMessage(dgettext('vlist', 'Error occurred when saving element.'));
-            PHPWS_Core::reroute('index.php?module=vlist&aop=edit_element&element=' . $this->id);
+            Core\Core::reroute('index.php?module=vlist&aop=edit_element&element=' . $this->id);
         } else {
             $this->vlist->forwardMessage(dgettext('vlist', 'Element saved successfully.'));
-            PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+            Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
         }
 
     }
@@ -534,19 +534,19 @@ class UNI_Element {
             }
             if (PHPWS_Error::logIfError($this->saveElement($update))) {
                 $this->vlist->forwardMessage(dgettext('vlist', 'Error occurred when saving element.'));
-                PHPWS_Core::reroute('index.php?module=vlist&aop=edit_element&element=' . $this->id);
+                Core\Core::reroute('index.php?module=vlist&aop=edit_element&element=' . $this->id);
             } else {
                 if ($this->type == 'Checkbox' || $this->type == 'Dropbox' || $this->type == 'Radiobutton' || $this->type == 'Multiselect') {
                     $this->vlist->forwardMessage(dgettext('vlist', 'Element saved successfully, please add your options.'));
-                    PHPWS_Core::reroute('index.php?module=vlist&aop=edit_options&element=' . $this->id);
+                    Core\Core::reroute('index.php?module=vlist&aop=edit_options&element=' . $this->id);
                 } else {
                     $this->vlist->forwardMessage(dgettext('vlist', 'Element saved successfully.'));
-                    PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                    Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 }
             }
         } else {
             $this->vlist->forwardMessage($this->vlist->message);
-            PHPWS_Core::reroute('index.php?module=vlist&aop=edit_element&element=' . $this->id . '&type=' . $this->type);
+            Core\Core::reroute('index.php?module=vlist&aop=edit_element&element=' . $this->id . '&type=' . $this->type);
         }
     }
 

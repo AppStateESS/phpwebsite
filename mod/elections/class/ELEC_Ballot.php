@@ -185,7 +185,7 @@ class Elections_Ballot {
             return null;
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $file = Cabinet::getFile($this->image_id);
 
         if ($file->isImage(true)) {
@@ -281,7 +281,7 @@ class Elections_Ballot {
     public function view()
     {
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
 
         $key = new Key($this->key_id);
@@ -374,7 +374,7 @@ class Elections_Ballot {
                 $votegroups = explode(":", $this->votegroups);
                 $gnames = null;
                 foreach ($votegroups as $row) {
-                    PHPWS_Core::initModClass('users', 'Group.php');
+                    Core\Core::initModClass('users', 'Group.php');
                     $group = new PHPWS_Group($row);
                     $gnames .= $group->getName() . ', ';
                 }
@@ -419,7 +419,7 @@ class Elections_Ballot {
 
     public function getAllCandidates($limit=false)
     {
-        PHPWS_Core::initModClass('elections', 'ELEC_Candidate.php');
+        Core\Core::initModClass('elections', 'ELEC_Candidate.php');
         $db = new PHPWS_DB('elections_candidates');
         $db->addOrder('title desc');
         $db->addWhere('ballot_id', $this->id);
@@ -597,7 +597,7 @@ class Elections_Ballot {
 
     public function viewLink($bare=false, $tpl=false)
     {
-        PHPWS_Core::initCoreClass('Link.php');
+        Core\Core::initCoreClass('Link.php');
         $link = new PHPWS_Link($this->title, 'elections', array('ballot'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 

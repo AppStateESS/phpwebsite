@@ -8,7 +8,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::initModClass('comments', 'Comment_Item.php');
+Core\Core::initModClass('comments', 'Comment_Item.php');
 
 define('NO_COMMENTS_FOUND', 'none');
 
@@ -155,7 +155,7 @@ class Comment_Thread {
     public function getSourceUrl($full=FALSE, $comment_id=0)
     {
 
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
         $url = DBPager::getLastView('comments_items');
 
         if ($comment_id) {
@@ -251,7 +251,7 @@ class Comment_Thread {
             $this->miniAdmin();
         }
 
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
 
         $time_period = array('all'    => dgettext('comments', 'All'),
                              'today'  => dgettext('comments', 'Today'),
@@ -383,7 +383,7 @@ class Comment_Thread {
 
         // If phpwsbb is installed...
         if (isset($GLOBALS['Modules']['phpwsbb'])) {
-            PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
+            Core\Core::initModClass('phpwsbb', 'BB_Data.php');
             // If this is already in a forum, offer to disassociate it
             if (!empty($this->phpwsbb_topic) && !$this->phpwsbb_topic->is_phpwsbb)
             PHPWSBB_Data::drop_item_link($this->id, $this->_key->module, $this->_key->item_name);
@@ -579,8 +579,8 @@ class Comment_Thread {
     {
         if (!isset($GLOBALS['Modules']['phpwsbb']))
         return;
-        PHPWS_Core::initModClass('phpwsbb', 'Topic.php');
-        PHPWS_Core::initModClass('phpwsbb', 'Forum.php');
+        Core\Core::initModClass('phpwsbb', 'Topic.php');
+        Core\Core::initModClass('phpwsbb', 'Forum.php');
         $topic = new PHPWSBB_Topic($this->id);
         if ($topic->id)
         $this->phpwsbb_topic = $topic;

@@ -6,7 +6,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireInc('webpage', 'error_defines.php');
+Core\Core::requireInc('webpage', 'error_defines.php');
 
 class Webpage_Page {
     public $id          = 0;
@@ -166,7 +166,7 @@ class Webpage_Page {
         if (!$this->image_id) {
             return null;
         } else {
-            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+            Core\Core::initModClass('filecabinet', 'Cabinet.php');
             return Cabinet::getTag($this->image_id);
         }
     }
@@ -371,7 +371,7 @@ class Webpage_Page {
 
     public function save()
     {
-        PHPWS_Core::initModClass('version', 'Version.php');
+        Core\Core::initModClass('version', 'Version.php');
         if (empty($this->volume_id)) {
             return PHPWS_Error::get('WP_MISSING_VOLUME_ID', 'webpage', 'Webpage_Page::save');
         }

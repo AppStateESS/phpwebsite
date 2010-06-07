@@ -166,7 +166,7 @@ class vShop_Item {
             return null;
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $file = Cabinet::getFile($this->file_id);
 
         if ($file->isImage(true)) {
@@ -194,7 +194,7 @@ class vShop_Item {
         }
 
         if ($print) {
-            PHPWS_Core::initModClass('vshop', 'vShop_Dept.php');
+            Core\Core::initModClass('vshop', 'vShop_Dept.php');
             $dept = new vShop_Dept($this->dept_id);
             return $dept->viewLink();
         } else {
@@ -273,7 +273,7 @@ class vShop_Item {
     public function view()
     {
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
 
         $key = new Key($this->key_id);
@@ -478,7 +478,7 @@ class vShop_Item {
 
     public function viewLink($bare=false)
     {
-        PHPWS_Core::initCoreClass('Link.php');
+        Core\Core::initCoreClass('Link.php');
         $link = new PHPWS_Link($this->title, 'vshop', array('dept'=>$this->dept_id, 'item'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 

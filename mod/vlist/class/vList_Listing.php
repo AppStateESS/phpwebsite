@@ -139,7 +139,7 @@ class vList_Listing {
             return null;
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $file = Cabinet::getFile($this->file_id);
 
         if ($link_only) {
@@ -166,7 +166,7 @@ class vList_Listing {
             return null;
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $image = Cabinet::getFile($this->image_id);
 
         if ($image->isImage(true)) {
@@ -198,7 +198,7 @@ class vList_Listing {
             if (empty($result)) {
                 $link[] = null;
             } else {
-                PHPWS_Core::initModClass('vlist', 'vList_Group.php');
+                Core\Core::initModClass('vlist', 'vList_Group.php');
                 foreach ($result as $id){
                     $group = new vList_Group($id);
                     if ($nolink) {
@@ -309,7 +309,7 @@ class vList_Listing {
     public function view()
     {
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
 
         $key = new Key($this->key_id);
@@ -745,8 +745,8 @@ class vList_Listing {
             return dgettext('vlist', 'Anonymous');
         }
 
-        if (PHPWS_Core::moduleExists('rolodex')) {
-            PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
+        if (Core\Core::moduleExists('rolodex')) {
+            Core\Core::initModClass('rolodex', 'RDX_Member.php');
             $user = new Rolodex_Member($this->owner_id);
             if ($user) {
                 $name = $user->getDisplay_name();
@@ -775,7 +775,7 @@ class vList_Listing {
 
         $page_title = $_SESSION['Layout_Settings']->getPageTitle(true);
         $site_contact = PHPWS_User::getUserSetting('site_contact');
-        $url = PHPWS_Core::getHomeHttp();
+        $url = Core\Core::getHomeHttp();
         if ($new) {
             $message = sprintf(dgettext('vlist', 'You have a new %s submission entitled %s waiting for your review at %s.'), PHPWS_Settings::get('vlist', 'module_title'), $this->getTitle(true), $url);
             $subject = sprintf(dgettext('vlist', 'Pending %s Submission'), PHPWS_Settings::get('vlist', 'module_title'));
@@ -784,7 +784,7 @@ class vList_Listing {
             $subject = sprintf(dgettext('vlist', 'Modified %s Listing'), PHPWS_Settings::get('vlist', 'module_title'));
         }
 
-        PHPWS_Core::initCoreClass('Mail.php');
+        Core\Core::initCoreClass('Mail.php');
         $mail = new PHPWS_Mail;
         $mail->addSendTo(PHPWS_Settings::get('vlist', 'admin_contact'));
         $mail->setSubject($subject);

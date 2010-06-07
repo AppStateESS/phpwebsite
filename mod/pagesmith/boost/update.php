@@ -124,7 +124,7 @@ function pagesmith_update(&$content, $currentVersion)
 </pre>';
 
         case version_compare($currentVersion, '1.1.0', '<'):
-            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+            Core\Core::initModClass('filecabinet', 'Cabinet.php');
             $content[] = '<pre>';
             Cabinet::convertImagesToFileAssoc('ps_block', 'type_id');
             $content[] = '--- Images converted for File Cabinet 2.0.0.';
@@ -347,7 +347,7 @@ function pagesmithUpdateFiles($files, &$content)
  */
 function pagesmithSearchIndex()
 {
-    PHPWS_Core::initModClass('search', 'Search.php');
+    Core\Core::initModClass('search', 'Search.php');
     $db = new PHPWS_DB('ps_text');
     $db->addColumn('id');
     $db->addColumn('content');

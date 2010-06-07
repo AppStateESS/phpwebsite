@@ -7,8 +7,8 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireInc('webpage', 'error_defines.php');
-PHPWS_Core::initModClass('webpage', 'Volume.php');
+Core\Core::requireInc('webpage', 'error_defines.php');
+Core\Core::initModClass('webpage', 'Volume.php');
 
 class Webpage_User {
     public function main($command=NULL)
@@ -17,7 +17,7 @@ class Webpage_User {
             if (isset($_REQUEST['wp_user'])) {
                 $command = $_REQUEST['wp_user'];
             } else {
-                PHPWS_Core::errorPage(404);
+                Core\Core::errorPage(404);
                 exit();
             }
         }
@@ -25,7 +25,7 @@ class Webpage_User {
         switch ($command) {
             case 'view':
                 if (!isset($_REQUEST['id'])) {
-                    PHPWS_Core::errorPage(404);
+                    Core\Core::errorPage(404);
                     exit();
                 }
 
@@ -36,11 +36,11 @@ class Webpage_User {
                 }
                 @$page = $_GET['page'];
                 Layout::add($volume->view($page));
-                PHPWS_Core::initModClass('menu', 'Menu.php');
+                Core\Core::initModClass('menu', 'Menu.php');
                 break;
 
             default:
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
                 break;
         }
 
@@ -98,7 +98,7 @@ class Webpage_User {
             return NULL;
         }
 
-        PHPWS_Core::initModClass('webpage', 'Volume.php');
+        Core\Core::initModClass('webpage', 'Volume.php');
 
         $db = new PHPWS_DB('webpage_volume');
         $db->addWhere('frontpage', 1);

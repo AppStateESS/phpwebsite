@@ -7,7 +7,7 @@
  * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package Core
  */
-PHPWS_Core::requireConfig('layout');
+Core\Core::requireConfig('layout');
 
 if (!defined('LAYOUT_IGNORE_JS_CHECK')) {
     define('LAYOUT_IGNORE_JS_CHECK', false);
@@ -36,8 +36,8 @@ if (!defined('LAYOUT_FORCE_MOD_JS')) {
     define('LAYOUT_FORCE_MOD_JS', false);
 }
 
-PHPWS_Core::initModClass('layout', 'Layout_Settings.php');
-PHPWS_Core::initCoreClass('Template.php');
+Core\Core::initModClass('layout', 'Layout_Settings.php');
+Core\Core::initCoreClass('Template.php');
 
 class Layout {
 
@@ -111,7 +111,7 @@ class Layout {
 
     public static function addBox($content_var, $module, $theme_var=NULL, $theme=NULL)
     {
-        PHPWS_Core::initModClass('layout', 'Box.php');
+        Core\Core::initModClass('layout', 'Box.php');
 
         if (!isset($theme)) {
             $theme = $_SESSION['Layout_Settings']->current_theme;
@@ -136,7 +136,7 @@ class Layout {
         $result = $box->save();
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
-            PHPWS_Core::errorPage();
+            Core\Core::errorPage();
         }
 
         Layout::resetBoxes();
@@ -517,7 +517,7 @@ class Layout {
             $js = 'javascript/';
         }
 
-        PHPWS_CORE::initCoreClass('File.php');
+        Core\Core::initCoreClass('File.php');
         $headfile    = PHPWS_SOURCE_DIR . $base . $js . $directory . '/head.js';
         $bodyfile    = PHPWS_SOURCE_DIR . $base . $js . $directory . '/body.js';
         $defaultfile = PHPWS_SOURCE_DIR . $base . $js . $directory . '/default.php';
@@ -536,7 +536,7 @@ class Layout {
         }
         $data['source_http'] = PHPWS_SOURCE_HTTP;
         $data['source_dir'] = PHPWS_SOURCE_DIR;
-        $data['home_http'] = PHPWS_Core::getHomeHttp();
+        $data['home_http'] = Core\Core::getHomeHttp();
         $data['home_dir'] = PHPWS_HOME_DIR;
 
         Layout::loadJavascriptFile($headfile, $directory, $data);
@@ -745,7 +745,7 @@ class Layout {
 
         if (PHPWS_Error::isError($themeDir)) {
             PHPWS_Error::log($themeDir);
-            PHPWS_Core::errorPage();
+            Core\Core::errorPage();
         }
 
         $result = $tpl->setFile($themeDir . 'theme.tpl', TRUE);
@@ -953,7 +953,7 @@ class Layout {
     public static function getBase()
     {
         return '<base href="'
-        . PHPWS_Core::getHttp()
+        . Core\Core::getHttp()
         . $_SERVER['HTTP_HOST']
         . preg_replace("/index.*/", "", $_SERVER['PHP_SELF'])
         . '" />';
@@ -992,12 +992,12 @@ class Layout {
         }
 
         if (!isset($_SESSION['javascript_enabled'])) {
-            $jsHead[] = '<noscript><meta http-equiv="refresh" content="0;url=index.php?nojs=1&ret=' . urlencode(PHPWS_Core::getCurrentUrl()) . '"/></noscript>';
+            $jsHead[] = '<noscript><meta http-equiv="refresh" content="0;url=index.php?nojs=1&ret=' . urlencode(Core\Core::getCurrentUrl()) . '"/></noscript>';
         }
 
         if (isset($_GET['nojs'])) {
             $_SESSION['javascript_enabled'] = false;
-            PHPWS_Core::reroute(urldecode($_GET['ret']));
+            Core\Core::reroute(urldecode($_GET['ret']));
         } elseif (!isset($_SESSION['javascript_enabled'])) {
             $_SESSION['javascript_enabled'] = true;
         }
@@ -1202,7 +1202,7 @@ class Layout {
     public static function ckeditor()
     {
         if (!Current_User::isLogged()) {
-            PHPWS_Core::errorPage('404');
+            Core\Core::errorPage('404');
             exit();
         }
         $ck_image_dir = './images/ckeditor/';
@@ -1254,7 +1254,7 @@ function check_cookie()
     if (!$cookie) {
         if (!isset($_GET['cc'])) {
             PHPWS_Cookie::write('cookie_enabled', 'y');
-            PHPWS_Core::reroute('index.php?cc=1');
+            Core\Core::reroute('index.php?cc=1');
         } else {
             $tpl['MESSAGE'] = dgettext('layout', 'This site requires you to enable cookies on your browser.');
             $message = PHPWS_Template::process($tpl, 'layout', 'no_cookie.tpl');

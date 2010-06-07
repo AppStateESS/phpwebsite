@@ -5,7 +5,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireConfig('breadcrumb');
+Core\Core::requireConfig('breadcrumb');
 
 class Breadcrumb {
     public $sticky_home   = BC_STICKY_HOME;

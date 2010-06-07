@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::initModClass('pagesmith', 'PS_Section.php');
+Core\Core::initModClass('pagesmith', 'PS_Section.php');
 
 class PS_Block extends PS_Section {
     // Id to the element tracked by this block e.g. the image id
@@ -39,7 +39,7 @@ class PS_Block extends PS_Section {
 
     public function loadFiller()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager($this->secname, $this->type_id);
         $manager->maxImageWidth($this->width);
         $manager->maxImageHeight($this->height);
@@ -73,7 +73,7 @@ class PS_Block extends PS_Section {
     public function getContent()
     {
         if (empty($this->content)) {
-            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+            Core\Core::initModClass('filecabinet', 'Cabinet.php');
             $this->content = Cabinet::getTag($this->type_id);
         }
         return $this->content;

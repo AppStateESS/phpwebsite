@@ -7,9 +7,9 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireInc('webpage', 'error_defines.php');
-PHPWS_Core::initModClass('webpage', 'Volume.php');
-PHPWS_Core::initModClass('webpage', 'Forms.php');
+Core\Core::requireInc('webpage', 'error_defines.php');
+Core\Core::initModClass('webpage', 'Volume.php');
+Core\Core::initModClass('webpage', 'Forms.php');
 
 class Webpage_Admin {
 
@@ -219,7 +219,7 @@ class Webpage_Admin {
                 }
 
                 if (!isset($_REQUEST['page_id'])) {
-                    PHPWS_Core::errorPage('404');
+                    Core\Core::errorPage('404');
                 }
                 $volume->joinPage((int)$_REQUEST['page_id']);
                 Webpage_Admin::sendMessage( dgettext('webpage', 'Page joined.'),
@@ -242,7 +242,7 @@ class Webpage_Admin {
                 }
 
                 if (!isset($_REQUEST['page_id'])) {
-                    PHPWS_Core::errorPage('404');
+                    Core\Core::errorPage('404');
                 }
                 $volume->dropPage((int)$_REQUEST['page_id']);
                 Webpage_Admin::sendMessage(dgettext('webpage', 'Page removed.'),
@@ -257,7 +257,7 @@ class Webpage_Admin {
 
                 $title = dgettext('webpage', 'Approval view');
                 if (!isset($_REQUEST['version_id'])) {
-                    PHPWS_Core::errorPage('404');
+                    Core\Core::errorPage('404');
                 }
                 $content = Webpage_Admin::approvalView($volume, $version);
                 break;
@@ -321,7 +321,7 @@ class Webpage_Admin {
                     Current_User::disallow();
                 }
 
-                if (PHPWS_Core::isPosted()) {
+                if (Core\Core::isPosted()) {
                     if ($volume->id) {
                         Webpage_Admin::sendMessage(dgettext('webpage', 'Ignoring repeat post.'),
                                                'edit_webpage&tab=header&volume_id=' . $volume->id);
@@ -339,7 +339,7 @@ class Webpage_Admin {
                     $content = Webpage_Forms::editHeader($volume, $version);
                     $message = implode('<br />', $result);
                 } else {
-                    PHPWS_Core::initModClass('webpage', 'Forms.php');
+                    Core\Core::initModClass('webpage', 'Forms.php');
                     $new_vol = (bool)$volume->id ? false : true;
                     $result = $volume->save();
                     if (PHPWS_Error::isError($result)) {
@@ -562,7 +562,7 @@ class Webpage_Admin {
                     Current_User::disallow();
                 }
                 Webpage_Admin::dropFeature($volume);
-                PHPWS_Core::home();
+                Core\Core::home();
                 break;
 
             case 'up_feature':
@@ -574,7 +574,7 @@ class Webpage_Admin {
                     Current_User::disallow();
                 }
                 Webpage_Admin::moveFeature($volume, 'up');
-                PHPWS_Core::home();
+                Core\Core::home();
                 break;
 
             case 'down_feature':
@@ -586,11 +586,11 @@ class Webpage_Admin {
                     Current_User::disallow();
                 }
                 Webpage_Admin::moveFeature($volume, 'down');
-                PHPWS_Core::home();
+                Core\Core::home();
                 break;
 
             default:
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
         }   // end web page admin cases
 
         // Sticks inside the panel
@@ -619,7 +619,7 @@ class Webpage_Admin {
 
     public function restorePage(Webpage_Volume $volume, Webpage_Page $page)
     {
-        PHPWS_Core::initModClass('version', 'Restore.php');
+        Core\Core::initModClass('version', 'Restore.php');
 
         $restore = new Version_Restore('webpage', 'webpage_page', $page->id,
                                        'Webpage_Page', 'viewBasic');
@@ -640,7 +640,7 @@ class Webpage_Admin {
 
     public function restoreVolume(Webpage_Volume $volume)
     {
-        PHPWS_Core::initModClass('version', 'Restore.php');
+        Core\Core::initModClass('version', 'Restore.php');
 
         $restore = new Version_Restore('webpage', 'webpage_volume', $volume->id,
                                        'Webpage_Volume', 'approval_view');
@@ -663,7 +663,7 @@ class Webpage_Admin {
         $_SESSION['Webpage_Message'] = $message;
         $url = sprintf('index.php?module=webpage&wp_admin=%s&authkey=%s',
         $command, Current_User::getAuthkey());
-        PHPWS_Core::reroute($url);
+        Core\Core::reroute($url);
     }
 
     public function getMessage()
@@ -687,8 +687,8 @@ class Webpage_Admin {
 
     public function cpanel()
     {
-        PHPWS_Core::initModClass('version', 'Version.php');
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('version', 'Version.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $link['link'] = 'index.php?module=webpage';
 
         $link['title'] = dgettext('webpage', 'New');
@@ -925,7 +925,7 @@ class Webpage_Admin {
 
     public function goBack()
     {
-        PHPWS_Core::reroute('index.php?module=webpage&tab=list');
+        Core\Core::reroute('index.php?module=webpage&tab=list');
     }
 
     public function dropFeature($volume)

@@ -11,7 +11,7 @@
  */
 if (isset($_REQUEST['module']))
 return;
-PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
+Core\Core::initModClass('phpwsbb', 'BB_Data.php');
 $forums = PHPWSBB_Data::get_forum_list();
 $forum_ids = array_keys($forums);
 
@@ -54,7 +54,7 @@ if (PHPWS_Settings::get('phpwsbb', 'showlatestpostsblock')) {
         $list = unserialize($list);
     }
     if (empty($list))  {
-        PHPWS_Core::initModClass('phpwsbb', 'Topic.php');
+        Core\Core::initModClass('phpwsbb', 'Topic.php');
         $db = new PHPWS_DB('phpwsbb_topics');
         PHPWSBB_Topic::addColumns($db);
         Key::restrictView($db, 'phpwsbb');

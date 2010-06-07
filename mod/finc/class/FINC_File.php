@@ -131,7 +131,7 @@ class Finc_File {
     function getContents()
     {
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
         $key = new Key($this->key_id);
 
@@ -248,7 +248,7 @@ class Finc_File {
 
     function viewLink($bare=false)
     {
-        PHPWS_Core::initCoreClass('Link.php');
+        Core\Core::initCoreClass('Link.php');
         $link = new PHPWS_Link($this->title, 'finc', array('id'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 

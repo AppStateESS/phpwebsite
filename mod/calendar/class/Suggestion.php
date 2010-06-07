@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::initModClass('calendar', 'Event.php');
+Core\Core::initModClass('calendar', 'Event.php');
 
 class Calendar_Suggestion extends Calendar_Event {
     public $id          = 0;

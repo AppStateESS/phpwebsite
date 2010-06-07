@@ -33,10 +33,10 @@ class Boost_Form {
 	public static function listModules($type)
 	{
 		Layout::addStyle('boost');
-		PHPWS_Core::initCoreClass('Module.php');
-		PHPWS_Core::initCoreClass('Text.php');
-		PHPWS_Core::initCoreClass('File.php');
-		PHPWS_Core::initModClass('boost', 'Boost.php');
+		Core\Core::initCoreClass('Module.php');
+		Core\Core::initCoreClass('Text.php');
+		Core\Core::initCoreClass('File.php');
+		Core\Core::initModClass('boost', 'Boost.php');
 
 		$allow_update = true;
 		$core_update_needed = false;
@@ -47,10 +47,10 @@ class Boost_Form {
 			$allow_update = false;
 		}
 
-		$core_mods      = PHPWS_Core::coreModList();
-		$installed_mods = PHPWS_Core::installModList();
+		$core_mods      = Core\Core::coreModList();
+		$installed_mods = Core\Core::installModList();
 
-		if (PHPWS_Core::isBranch()) {
+		if (Core\Core::isBranch()) {
 			$branch_mods = Branch::getBranchMods();
 			if (empty($branch_mods)) {
 				$dir_mods = array();
@@ -274,7 +274,7 @@ class Boost_Form {
 
 		$tpl['LATEST_LABEL'] = dgettext('boost', 'Latest version');
 
-		$release_version = PHPWS_Core::releaseVersion();
+		$release_version = Core\Core::releaseVersion();
 		$tpl['PHPWS_VERSION'] = $release_version;
 
 		$result = PHPWS_Template::process($tpl, 'boost', 'module_list.tpl');

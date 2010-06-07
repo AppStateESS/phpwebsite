@@ -22,7 +22,7 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-PHPWS_Core::requireConfig('whatsnew');
+Core\Core::requireConfig('whatsnew');
 
 class Whatsnew {
     var $forms      = null;
@@ -56,7 +56,7 @@ class Whatsnew {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('whatsnew', 'Whatsnew settings saved.'));
-                    PHPWS_Core::reroute('index.php?module=whatsnew&aop=menu');
+                    Core\Core::reroute('index.php?module=whatsnew&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -68,7 +68,7 @@ class Whatsnew {
                 }
                 if ($this->flushCache()) {
                     $this->forwardMessage(dgettext('whatsnew', 'Cache flushed.'));
-                    PHPWS_Core::reroute('index.php?module=whatsnew&aop=menu');
+                    Core\Core::reroute('index.php?module=whatsnew&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -95,7 +95,7 @@ class Whatsnew {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -140,14 +140,14 @@ class Whatsnew {
             if (isset($_SESSION['Whatsnew_Message']['title'])) {
                 $this->title = $_SESSION['Whatsnew_Message']['title'];
             }
-            PHPWS_Core::killSession('Whatsnew_Message');
+            Core\Core::killSession('Whatsnew_Message');
         }
     }
 
 
     function loadForm($type)
     {
-        PHPWS_Core::initModClass('whatsnew', 'Whatsnew_Forms.php');
+        Core\Core::initModClass('whatsnew', 'Whatsnew_Forms.php');
         $this->forms = new whatsnew_Forms;
         $this->forms->whatsnew = & $this;
         $this->forms->get($type);
@@ -156,7 +156,7 @@ class Whatsnew {
 
     function loadPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('whatsnew-panel');
         $link = 'index.php?module=whatsnew&aop=menu';
 
@@ -241,7 +241,7 @@ class Whatsnew {
     function getKeyMods($match=null, $select_name='exclude', $multiple=true, $count=true)
     {
 
-        PHPWS_Core::initCoreClass('Key.php');
+        Core\Core::initCoreClass('Key.php');
         $db = new PHPWS_DB('phpws_key');
         $db->addOrder('module asc');
 
@@ -289,7 +289,7 @@ class Whatsnew {
 
 
     public static function showBlock() {
-        PHPWS_Core::initModClass('layout', 'Layout.php');
+        Core\Core::initModClass('layout', 'Layout.php');
         if (PHPWS_Settings::get('whatsnew', 'homeonly')) {
             $key = Key::getCurrent();
             if (!empty($key) && $key->isHomeKey()) {

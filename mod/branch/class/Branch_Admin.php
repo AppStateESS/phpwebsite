@@ -10,7 +10,7 @@ define('BRANCH_CONNECT_WITH_TABLES', 3);
 define('BRANCH_CONNECT_SUCCESS',     4);
 define('BRANCH_CONNECT_BAD_DB',      5);
 
-PHPWS_Core::initModClass('branch', 'Branch.php');
+Core\Core::initModClass('branch', 'Branch.php');
 
 class Branch_Admin {
     // Contains the panel object
@@ -216,7 +216,7 @@ class Branch_Admin {
 
     public function install_branch_core()
     {
-        PHPWS_Core::initCoreClass('File.php');
+        Core\Core::initCoreClass('File.php');
         $content = array();
 
         $this->title = dgettext('branch', 'Install branch core');
@@ -338,7 +338,7 @@ class Branch_Admin {
 
     public function post_basic()
     {
-        PHPWS_Core::initCoreClass('File.php');
+        Core\Core::initCoreClass('File.php');
         $result = true;
 
         if (empty($this->branch->dbname) && isset($this->dbname)) {
@@ -409,7 +409,7 @@ class Branch_Admin {
     public function core_module_installation()
     {
         if (!isset($_SESSION['Boost'])){
-            $modules = PHPWS_Core::coreModList();
+            $modules = Core\Core::coreModList();
             $_SESSION['Boost'] = new PHPWS_Boost;
             $_SESSION['Boost']->loadModules($modules);
         }
@@ -489,7 +489,7 @@ class Branch_Admin {
 
     public function cpanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $newLink = 'index.php?module=branch&amp;command=new';
         $newCommand = array ('title'=>dgettext('branch', 'New'), 'link'=> $newLink);
 
@@ -839,12 +839,12 @@ class Branch_Admin {
      */
     public function edit_modules()
     {
-        PHPWS_Core::initCoreClass('File.php');
+        Core\Core::initCoreClass('File.php');
         $this->title = sprintf(dgettext('branch', 'Module access for "%s"'), $this->branch->branch_name);
 
         $content = null;
 
-        $core_mods = PHPWS_Core::coreModList();
+        $core_mods = Core\Core::coreModList();
         $all_mods = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'mod/', true);
         $all_mods = array_diff($all_mods, $core_mods);
 
@@ -896,7 +896,7 @@ class Branch_Admin {
         $page_tags['URL_LABEL']         = dgettext('branch', 'Url');
         $page_tags['ACTION_LABEL']      = dgettext('branch', 'Action');
 
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('branch_sites', 'Branch');
         $pager->setModule('branch');
         $pager->setTemplate('branch_list.tpl');

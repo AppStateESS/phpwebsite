@@ -62,7 +62,7 @@ class Comment_Forms {
 		$form->addSubmit(dgettext('comments', 'Post Comment'));
 
 		if (Comments::useCaptcha()) {
-			PHPWS_Core::initCoreClass('Captcha.php');
+			Core\Core::initCoreClass('Captcha.php');
 			$form->addTplTag('CAPTCHA_IMAGE', Captcha::get());
 		}
 
@@ -402,7 +402,7 @@ class Comment_Forms {
 	public function postUserRank()
 	{
 		$default_rank_id = PHPWS_Settings::get('comments', 'default_rank');
-		PHPWS_Core::initModClass('comments', 'User_Rank.php');
+		Core\Core::initModClass('comments', 'User_Rank.php');
 
 		if (isset($_POST['user_rank_id'])) {
 			$user_rank = new Comment_User_Rank($_POST['user_rank_id']);
@@ -446,8 +446,8 @@ class Comment_Forms {
 		javascriptMod('comments', 'quick_view');
 		Layout::addStyle('comments');
 		Layout::addStyle('comments', 'admin.css');
-		PHPWS_Core::initCoreClass('DBPager.php');
-		PHPWS_Core::initModClass('comments', 'Comment_Item.php');
+		Core\Core::initCoreClass('DBPager.php');
+		Core\Core::initModClass('comments', 'Comment_Item.php');
 		$pager = new DBPager('comments_items', 'Comment_Item');
 		$pager->setModule('comments');
 		$pager->setTemplate('reported.tpl');
@@ -459,7 +459,7 @@ class Comment_Forms {
 		if (isset($GLOBALS['Modules']['phpwsbb']) && !Current_User::allow('phpwsbb', 'manage_forums')) {
 			//left join to phpwsbb parent topic ON phpwsbb_topics.id = comments_items.thread_id
 			$pager->db->addJoin('left', 'comments_items', 'phpwsbb_topics', 'thread_id', 'id');
-			PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
+			Core\Core::initModClass('phpwsbb', 'BB_Data.php');
 			PHPWSBB_Data::load_moderators();
 			// What forums can user moderate?
 			if (!empty($GLOBALS['Moderators_byUser'][Current_User::getId()])) {
@@ -528,7 +528,7 @@ class Comment_Forms {
 
 		if (Current_User::allow('access') && $comment->author_ip != '127.0.0.1') {
 			if (!isset($user) || !$user->allow('access')) {
-				PHPWS_Core::initModClass('access', 'Access.php');
+				Core\Core::initModClass('access', 'Access.php');
 				if (!Access::isDenied($comment->author_ip)) {
 					$links[] = sprintf('<a href="#" onclick="punish_user(\'%s\', this, \'deny_ip\'); return false;">%s</a>',
 					$comment->author_ip, dgettext('comments', 'Deny IP address'));
@@ -569,7 +569,7 @@ class Comment_Forms {
 
 	public static function approvalForm()
 	{
-		PHPWS_Core::initCoreClass('DBPager.php');
+		Core\Core::initCoreClass('DBPager.php');
 		Layout::addStyle('comments');
 		Layout::addStyle('comments', 'admin.css');
 		javascript('jquery');
@@ -600,7 +600,7 @@ class Comment_Forms {
 		if (isset($GLOBALS['Modules']['phpwsbb']) && !Current_User::allow('phpwsbb', 'manage_forums')) {
 			//left join to phpwsbb parent topic ON phpwsbb_topics.id = comments_items.thread_id
 			$pager->db->addJoin('left', 'comments_items', 'phpwsbb_topics', 'thread_id', 'id');
-			PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
+			Core\Core::initModClass('phpwsbb', 'BB_Data.php');
 			PHPWSBB_Data::load_moderators();
 			// What forums can user moderate?
 			if (!empty($GLOBALS['Moderators_byUser'][Current_User::getId()])) {

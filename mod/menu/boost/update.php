@@ -209,7 +209,7 @@ Please download 1.2.1.</pre>';
             if (PHPWS_Error::logIfError($db->addTableColumn('key_id', 'int not null default 0'))) {
                 return false;
             }
-            PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+            Core\Core::initModClass('menu', 'Menu_Item.php');
             $menus = $db->getObjects('Menu_Item');
             if (!empty($menus) && !PHPWS_Error::logIfError($menus)) {
                 foreach ($menus as $m) {

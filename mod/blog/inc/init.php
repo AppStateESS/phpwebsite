@@ -7,7 +7,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::configRequireOnce('blog', 'config.php');
-PHPWS_Core::initModClass('blog', 'Blog_User.php');
+Core\Core::configRequireOnce('blog', 'config.php');
+Core\Core::initModClass('blog', 'Blog_User.php');
 
 ?>

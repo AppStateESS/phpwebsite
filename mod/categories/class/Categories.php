@@ -9,7 +9,7 @@
  */
 
 require_once PHPWS_SOURCE_DIR . 'mod/categories/inc/errorDefines.php';
-PHPWS_Core::initModClass('categories', 'Category.php');
+Core\Core::initModClass('categories', 'Category.php');
 
 define('CAT_LINK_DIVIDERS', '&gt;&gt;');
 
@@ -412,7 +412,7 @@ class Categories {
 
     public function getModuleListing($cat_id=NULL)
     {
-        PHPWS_Core::initCoreClass('Module.php');
+        Core\Core::initCoreClass('Module.php');
         $db = new PHPWS_DB('category_items');
         if (isset($cat_id)) {
             $db->addWhere('cat_id' , (int)$cat_id);
@@ -429,7 +429,7 @@ class Categories {
             return NULL;
         }
 
-        $mod_names = PHPWS_Core::getModuleNames();
+        $mod_names = Core\Core::getModuleNames();
 
         foreach ($result as $keys) {
             extract($keys);

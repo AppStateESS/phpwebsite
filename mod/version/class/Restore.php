@@ -107,7 +107,7 @@ class Version_Restore {
 
             if (!empty($this->class_name) && !empty($this->view_method)) {
                 $temp_obj = new $this->class_name;
-                PHPWS_Core::plugObject($temp_obj, $version);
+                Core\Core::plugObject($temp_obj, $version);
 
                 $result = $temp_obj->{$this->view_method}();
 

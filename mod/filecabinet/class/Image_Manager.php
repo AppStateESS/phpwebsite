@@ -5,8 +5,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::requireConfig('filecabinet');
-PHPWS_Core::initModClass('filecabinet', 'Image.php');
+Core\Core::requireConfig('filecabinet');
+Core\Core::initModClass('filecabinet', 'Image.php');
 
 if (!defined('RESIZE_IMAGE_USE_DUPLICATE')) {
     define('RESIZE_IMAGE_USE_DUPLICATE', true);
@@ -44,7 +44,7 @@ class FC_Image_Manager {
                     Current_User::disallow();
                 }
                 $this->image->delete();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'post_image_upload':
@@ -70,7 +70,7 @@ class FC_Image_Manager {
                     Clipboard::copy($this->image->title, $this->image->getTag(null,false,true), true,
                     sprintf('[filecabinet:image:%s]', $this->image->id));
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
         }
         return $this->content;

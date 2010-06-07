@@ -220,7 +220,7 @@ class PHPWS_Group {
 
     public function dropPermissions()
     {
-        $modules = PHPWS_Core::getModules(true, true);
+        $modules = Core\Core::getModules(true, true);
         if (empty($modules)) {
             return false;
         }
@@ -249,7 +249,7 @@ class PHPWS_Group {
 
     public function allow($module, $permission=NULL, $item_id=NULL, $itemname=NULL)
     {
-        PHPWS_Core::initModClass('users', 'Permission.php');
+        Core\Core::initModClass('users', 'Permission.php');
 
         if (!isset($this->_permissions)) {
             $this->loadPermissions();
@@ -260,7 +260,7 @@ class PHPWS_Group {
 
     public function getPermissionLevel($module)
     {
-        PHPWS_Core::initModClass('users', 'Permission.php');
+        Core\Core::initModClass('users', 'Permission.php');
 
         if (!isset($this->_permission)) {
             $this->loadPermissions();

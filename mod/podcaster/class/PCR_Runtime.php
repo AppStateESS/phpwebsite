@@ -60,11 +60,11 @@ class PCR_Runtime
                 $tpl['EPISODE_LABEL'] = dgettext('podcaster', 'Most Recent Episode');
             }
             $tpl['CHANNEL_LABEL'] = dgettext('podcaster', 'From the  channel...');
-            PHPWS_Core::initModClass('podcaster', 'PCR_Episode.php');
+            Core\Core::initModClass('podcaster', 'PCR_Episode.php');
             $episode = new Podcaster_Episode($result[0]['id']);
             $tpl['EPISODE_TITLE'] = $episode->viewLink();
             $tpl['CHANNEL_TITLE'] = $episode->getChannel(true, true);
-            PHPWS_Core::initModClass('layout', 'Layout.php');
+            Core\Core::initModClass('layout', 'Layout.php');
             Layout::add(PHPWS_Template::process($tpl, 'podcaster', 'block.tpl'), 'podcaster', 'pcr_sidebox');
         }
 

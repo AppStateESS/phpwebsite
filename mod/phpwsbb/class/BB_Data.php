@@ -202,7 +202,7 @@ class PHPWSBB_Data
             $link = javascript('open_window', $js_vars);
             MiniAdmin::add('phpwsbb', $link);
         } else {
-            PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
+            Core\Core::initModClass('phpwsbb', 'BB_Forms.php');
             $content = PHPWSBB_Forms::assign_forum($object);
             if (!empty($content))
             Layout::add($content, 'phpwsb');

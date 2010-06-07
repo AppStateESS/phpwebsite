@@ -576,7 +576,7 @@ class PHAT_Element extends PHPWS_Item {
      * @access public
      */
     function accessDenied() {
-        PHPWS_Core::errorPage('404');
+        Core\Core::errorPage('404');
     } // END FUNC accessDenied()
 
     /**

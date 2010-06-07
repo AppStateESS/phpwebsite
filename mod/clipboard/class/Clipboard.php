@@ -30,7 +30,7 @@ class Clipboard
 
             case 'clear':
                 unset($_SESSION['Clipboard']);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
         }
 
@@ -73,7 +73,7 @@ class Clipboard
     public static function show()
     {
         javascript('jquery');
-        PHPWS_Core::configRequireOnce('clipboard', 'config.php');
+        Core\Core::configRequireOnce('clipboard', 'config.php');
 
         if (!isset($_SESSION['Clipboard'])) {
             Clipboard::init();

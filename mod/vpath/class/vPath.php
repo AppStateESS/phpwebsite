@@ -47,7 +47,7 @@ class vPath {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('vpath', 'vPath settings saved.'));
-                    PHPWS_Core::reroute('index.php?module=vpath&aop=menu');
+                    Core\Core::reroute('index.php?module=vpath&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -94,14 +94,14 @@ class vPath {
             if (isset($_SESSION['VP_Message']['title'])) {
                 $this->title = $_SESSION['VP_Message']['title'];
             }
-            PHPWS_Core::killSession('VP_Message');
+            Core\Core::killSession('VP_Message');
         }
     }
 
 
     public function loadForm($type)
     {
-        PHPWS_Core::initModClass('vpath', 'vPath_Forms.php');
+        Core\Core::initModClass('vpath', 'vPath_Forms.php');
         $this->forms = new vPath_Forms;
         $this->forms->vpath = & $this;
         $this->forms->get($type);
@@ -110,7 +110,7 @@ class vPath {
 
     public function loadPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('vpath-panel');
         $link = 'index.php?module=vpath&aop=menu';
 
@@ -185,11 +185,11 @@ class vPath {
         static $redirect_url = null;
 
         if (!$current_url) {
-            $current_url = preg_quote(PHPWS_Core::getCurrentUrl(true,false));
+            $current_url = preg_quote(Core\Core::getCurrentUrl(true,false));
         }
 
         if (!$redirect_url) {
-            $redirect_url = preg_quote(PHPWS_Core::getCurrentUrl());
+            $redirect_url = preg_quote(Core\Core::getCurrentUrl());
         }
 
         if ( preg_match("@$current_url$@", $url) ||
@@ -233,11 +233,11 @@ class vPath {
             static $redirect_url = null;
 
             if (!$current_url) {
-                $current_url = preg_quote(PHPWS_Core::getCurrentUrl(true,false));
+                $current_url = preg_quote(Core\Core::getCurrentUrl(true,false));
             }
 
             if (!$redirect_url) {
-                $redirect_url = preg_quote(PHPWS_Core::getCurrentUrl());
+                $redirect_url = preg_quote(Core\Core::getCurrentUrl());
             }
 
         } */
@@ -298,7 +298,7 @@ class vPath {
                 $title = $_SESSION['Layout_Settings']->getPageTitle();
             }
             if (PHPWS_Settings::get('vpath', 'link_current')) {
-                $list[0] = sprintf('<a href="%s">%s</a>', PHPWS_Core::getCurrentUrl(), $title);
+                $list[0] = sprintf('<a href="%s">%s</a>', Core\Core::getCurrentUrl(), $title);
             } else {
                 $list[0] = $title;
             }

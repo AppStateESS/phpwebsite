@@ -49,7 +49,7 @@ class Blog_User {
                     Blog_User::miniAdminList();
                 }
                 if ($blog->publish_date > time() && !Current_User::allow('blog')) {
-                    PHPWS_Core::errorPage('404');
+                    Core\Core::errorPage('404');
                 } else {
                     $content = $blog->view(true, false);
                 }
@@ -89,7 +89,7 @@ class Blog_User {
 
             case 'submit':
                 if (Current_User::allow('blog', 'edit_blog')) {
-                    PHPWS_Core::reroute(PHPWS_Text::linkAddress('blog', array('action'=>'admin', 'tab'=>'new'), 1));
+                    Core\Core::reroute(PHPWS_Text::linkAddress('blog', array('action'=>'admin', 'tab'=>'new'), 1));
                 } elseif (PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
                     // Must create a new blog. Don't use above shortcut
                     $blog = new Blog;
@@ -109,7 +109,7 @@ class Blog_User {
                 break;
 
             default:
-                PHPWS_Core::errorPage(404);
+                Core\Core::errorPage(404);
                 break;
         }
 
@@ -148,11 +148,11 @@ class Blog_User {
         $blog->approved = false;
 
         if (PHPWS_Settings::get('blog', 'captcha_submissions')) {
-            PHPWS_Core::initCoreClass('Captcha.php');
+            Core\Core::initCoreClass('Captcha.php');
             if (!Captcha::verify()) {
                 $blog->_error[] = dgettext('blog', 'Please enter word in image correctly.');
             }
-        }  elseif (PHPWS_Core::isPosted() && empty($blog->_error)) {
+        }  elseif (Core\Core::isPosted() && empty($blog->_error)) {
             $tpl['TITLE'] = dgettext('blog', 'Repeat submission');
             $tpl['CONTENT'] =  dgettext('blog', 'Your submission is still awaiting approval.');
             return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
@@ -177,7 +177,7 @@ class Blog_User {
 
     public function submitAnonymous(Blog $blog)
     {
-        PHPWS_Core::initModClass('blog', 'Blog_Form.php');
+        Core\Core::initModClass('blog', 'Blog_Form.php');
         $tpl['TITLE'] = dgettext('blog', 'Submit Entry');
         $tpl['CONTENT'] = Blog_Form::edit($blog, null, true);
         return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
@@ -322,8 +322,8 @@ class Blog_User {
         $rss = false;
         foreach ($result as $blog) {
             if (!$rss) {
-                if (PHPWS_Core::moduleExists('rss')) {
-                    PHPWS_Core::initModClass('rss', 'RSS.php');
+                if (Core\Core::moduleExists('rss')) {
+                    Core\Core::initModClass('rss', 'RSS.php');
                     $key = new Key($blog->key_id);
                     RSS::showIcon($key);
                     $rss = true;
@@ -399,7 +399,7 @@ class Blog_User {
 
             case 1:
                 // home page only
-                if (!PHPWS_Core::atHome()) {
+                if (!Core\Core::atHome()) {
                     return;
                 }
                 break;

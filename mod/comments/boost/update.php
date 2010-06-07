@@ -119,7 +119,7 @@ Please download 0.6.3.</pre>';
 </pre>';
 
         case version_compare($currentVersion, '1.2.0', '<'):
-            PHPWS_Core::initModClass('demographics', 'Demographics.php');
+            Core\Core::initModClass('demographics', 'Demographics.php');
             Demographics::registerField('avatar_id', array('type'=>'integer'));
             $content[] = 'Created "avatar_id" column in user demographics table.';
 
@@ -283,7 +283,7 @@ CREATE INDEX comments_usr_idx ON comments_user_ranks (rank_id);';
             }
             $content[] = "     " . implode("\n     ", $files);
 
-            PHPWS_Core::initModClass('comments', 'Rank.php');
+            Core\Core::initModClass('comments', 'Rank.php');
             $rank = new Comment_Rank;
             $rank->group_name = 'All members';
             $rank->save();

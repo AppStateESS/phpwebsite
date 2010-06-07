@@ -96,7 +96,7 @@ class Podcaster_Forms {
         $form->setCols('description', '40');
         $form->setLabel('description', dgettext('podcaster', 'Description'));
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager('image_id', $channel->image_id);
         $manager->imageOnly();
         $manager->maxImageWidth(PHPWS_Settings::get('podcaster', 'max_width'));
@@ -122,7 +122,7 @@ class Podcaster_Forms {
         $form->setLabel('itunes_explicit', dgettext('podcaster', 'iTunes Explicit'));
         $form->setMatch('itunes_explicit', $channel->getItunes_explicit());
 
-        PHPWS_Core::initModClass('podcaster', 'PCR_Category.php');
+        Core\Core::initModClass('podcaster', 'PCR_Category.php');
         $db = new PHPWS_DB('podcaster_category');
         $db->addOrder('id asc');
         $result = $db->getObjects('Podcaster_Category');
@@ -173,7 +173,7 @@ class Podcaster_Forms {
         $form->setCols('description', '40');
         $form->setLabel('description', dgettext('podcaster', 'Description'));
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager('media_id', $this->podcaster->episode->media_id);
         if ($this->podcaster->channel->media_type == 0) {
             $manager->mediaOnly();
@@ -211,8 +211,8 @@ class Podcaster_Forms {
         $ptags['TITLE_HEADER'] = dgettext('podcaster', 'Title');
         $ptags['DATE_UPDATED_HEADER'] = dgettext('podcaster', 'Updated');
 
-        PHPWS_Core::initModClass('podcaster', 'PCR_Channel.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('podcaster', 'PCR_Channel.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('podcaster_channel', 'Podcaster_Channel');
         $pager->setModule('podcaster');
         if (!Current_User::isUnrestricted('podcaster')) {
@@ -247,8 +247,8 @@ class Podcaster_Forms {
         $ptags['DATE_UPDATED_HEADER'] = dgettext('podcaster', 'Updated');
         $ptags['CHANNEL_HEADER'] = dgettext('podcaster', 'Channel');
 
-        PHPWS_Core::initModClass('podcaster', 'PCR_Episode.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('podcaster', 'PCR_Episode.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('podcaster_episode', 'Podcaster_Episode');
         $pager->setModule('podcaster');
         if (isset($approved)) {
@@ -272,7 +272,7 @@ class Podcaster_Forms {
         $pager->setSearch('title', 'description');
 
         if (isset($channel_id)) {
-            PHPWS_Core::initModClass('podcaster', 'PCR_Channel.php');
+            Core\Core::initModClass('podcaster', 'PCR_Channel.php');
             $channel = new Podcaster_Channel($channel_id);
             $this->podcaster->title = sprintf(dgettext('podcaster', 'All %s Episodes'), $channel->viewLink());
         } else {

@@ -8,8 +8,8 @@
  * @version $Id$
  */
 
-PHPWS_Core::initCoreClass('Module.php');
-PHPWS_Core::configRequireOnce('boost', 'config.php');
+Core\Core::initCoreClass('Module.php');
+Core\Core::configRequireOnce('boost', 'config.php');
 
 define('BOOST_NEW',      0);
 define('BOOST_START',    1);
@@ -455,7 +455,7 @@ class PHPWS_Boost {
 
     public function createDirectories($mod, &$content, $homeDir = NULL, $overwrite=false)
     {
-        PHPWS_Core::initCoreClass('File.php');
+        Core\Core::initCoreClass('File.php');
         if (!isset($homeDir)) {
             $homeDir = $this->getHomeDir();
         }
@@ -481,7 +481,7 @@ class PHPWS_Boost {
 
     public function removeDirectories($mod, &$content, $homeDir = NULL)
     {
-        PHPWS_Core::initCoreClass('File.php');
+        Core\Core::initCoreClass('File.php');
         if (!isset($homeDir)) {
             $this->getHomeDir();
         }
@@ -820,12 +820,12 @@ class PHPWS_Boost {
     public static function addLog($module, $message)
     {
         $message = dgettext('boost', 'Module') . ' - ' . $module . ' : ' . $message;
-        PHPWS_Core::log($message, 'boost.log');
+        Core\Core::log($message, 'boost.log');
     }
 
     public function aboutView($module)
     {
-        PHPWS_Core::initCoreClass('Module.php');
+        Core\Core::initCoreClass('Module.php');
         $mod = new PHPWS_Module($module);
         $file = $mod->getDirectory() . 'boost/about.html';
 
@@ -888,7 +888,7 @@ class PHPWS_Boost {
         if (!$errorDir) {
             $GLOBALS['Boost_Current_Directory'] = false;
         }
-        if ($check_branch && !PHPWS_Core::isBranch() && PHPWS_Core::moduleExists('branch')) {
+        if ($check_branch && !Core\Core::isBranch() && Core\Core::moduleExists('branch')) {
             $db = new PHPWS_DB('branch_sites');
             $db->addColumn('branch_name');
             $db->addColumn('directory');
@@ -957,11 +957,11 @@ class PHPWS_Boost {
 
     public function updateBranches(&$content)
     {
-        if (!PHPWS_Core::moduleExists('branch')) {
+        if (!Core\Core::moduleExists('branch')) {
             return true;
         }
 
-        PHPWS_Core::initModClass('branch', 'Branch_Admin.php');
+        Core\Core::initModClass('branch', 'Branch_Admin.php');
         $branches = Branch_Admin::getBranches(true);
         if (empty($branches)) {
             return true;
@@ -1009,7 +1009,7 @@ class PHPWS_Boost {
      * Returns the current branch object or true if Boost is
      * installing/updating/uninstalling a branch site from the hub.
      * If a module needs to check if it is running from a branch,
-     * PHPWS_Core::isBranch should be used.
+     * Core\Core::isBranch should be used.
      * @param boolean return_object : If true, return current branch object
      */
     public static function inBranch($return_object=false)

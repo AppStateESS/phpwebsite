@@ -11,7 +11,7 @@ function flickr_ss_import($media)
         return false;
     }
 
-    PHPWS_Core::initCoreClass('XMLParser.php');
+    Core\Core::initCoreClass('XMLParser.php');
     $feed_url = "http://api.flickr.com/services/feeds/photos_public.gne?id=";
     $parse = new XMLParser($feed_url . $media->file_name, false);
 

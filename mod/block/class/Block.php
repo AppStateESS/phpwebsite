@@ -7,7 +7,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::initModClass('block', 'Block_Item.php');
+Core\Core::initModClass('block', 'Block_Item.php');
 
 class Block {
 

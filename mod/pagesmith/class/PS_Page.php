@@ -65,8 +65,8 @@ class PS_Page {
 
 	public function loadSections($form_mode=false, $filler=true)
 	{
-		PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
-		PHPWS_Core::initModClass('pagesmith', 'PS_Block.php');
+		Core\Core::initModClass('pagesmith', 'PS_Text.php');
+		Core\Core::initModClass('pagesmith', 'PS_Block.php');
 
 		if (empty($this->_tpl)) {
 			$this->loadTemplate();
@@ -74,7 +74,7 @@ class PS_Page {
 
 		if (empty($this->_tpl->structure)) {
 			PHPWS_Error::log(PS_PG_TPL_ERROR, 'pagesmith', 'PS_Page::loadSections', $this->_tpl->file);
-			PHPWS_Core::errorPage();
+			Core\Core::errorPage();
 		}
 
 		foreach ($this->_tpl->structure as $section_xml) {
@@ -121,7 +121,7 @@ class PS_Page {
 			if (!empty($text_sections)) {
 				foreach ($text_sections as $secname=>$section) {
 					if (isset($this->_sections[$secname])) {
-						PHPWS_Core::plugObject($this->_sections[$secname], $section);
+						Core\Core::plugObject($this->_sections[$secname], $section);
 						// we don't want smarttags parsed
 						$this->_content[$secname] = $this->_sections[$secname]->getContent(!$form_mode);
 					} else {
@@ -133,7 +133,7 @@ class PS_Page {
 			if (!empty($block_sections)) {
 				foreach ($block_sections as $secname=>$section) {
 					if (isset($this->_sections[$secname])) {
-						PHPWS_Core::plugObject($this->_sections[$secname], $section);
+						Core\Core::plugObject($this->_sections[$secname], $section);
 						if ($form_mode && $this->_sections[$secname]->type_id) {
 							//reload the image form if the image is set
 							$this->_sections[$secname]->loadFiller();
@@ -152,7 +152,7 @@ class PS_Page {
 	 */
 	public function loadTemplate($tpl=null)
 	{
-		PHPWS_Core::initModClass('pagesmith', 'PS_Template.php');
+		Core\Core::initModClass('pagesmith', 'PS_Template.php');
 		if (!empty($tpl)) {
 			$this->_tpl = new PS_Template($tpl);
 		} elseif (!empty($this->template)) {
@@ -289,7 +289,7 @@ class PS_Page {
 
 	public function save()
 	{
-	    PHPWS_Core::initModClass('search', 'Search.php');
+	    Core\Core::initModClass('search', 'Search.php');
 		if (!$this->id) {
 			$this->create_date = time();
 		}
@@ -364,8 +364,8 @@ class PS_Page {
 			$db->addValue('key_id', $this->key_id);
 			PHPWS_Error::logIfError($db->update());
 		} elseif ($this->_title_change) {
-			if (PHPWS_Core::moduleExists('menu')){
-				PHPWS_Core::initModClass('menu', 'Menu.php');
+			if (Core\Core::moduleExists('menu')){
+				Core\Core::initModClass('menu', 'Menu.php');
 				Menu::updateKeyLink($this->key_id);
 			}
 		}
@@ -414,7 +414,7 @@ class PS_Page {
 		}
 
 		$this->loadSections();
-		if (!empty($this->title) && !PHPWS_Core::atHome()) {
+		if (!empty($this->title) && !Core\Core::atHome()) {
 			Layout::addPageTitle($this->title);
 		}
 
@@ -425,7 +425,7 @@ class PS_Page {
 		$tpl['CONTENT'] = PHPWS_Template::process($this->_content, 'pagesmith', $this->_tpl->page_path . 'page.tpl');
 		$this->pageLinks($tpl);
 		if (PHPWS_Settings::get('pagesmith', 'back_to_top')) {
-			$tpl['BACK_TO_TOP'] = sprintf('<a href="%s#%s">%s</a>', PHPWS_Core::getCurrentUrl(), $anchor_title, dgettext('pagesmith', 'Back to top'));
+			$tpl['BACK_TO_TOP'] = sprintf('<a href="%s#%s">%s</a>', Core\Core::getCurrentUrl(), $anchor_title, dgettext('pagesmith', 'Back to top'));
 		}
 		$content = PHPWS_Template::process($tpl, 'pagesmith', 'page_frame.tpl');
 

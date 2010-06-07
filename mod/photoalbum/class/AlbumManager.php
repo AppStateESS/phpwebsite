@@ -7,7 +7,7 @@
  */
 
 require_once(PHPWS_SOURCE_DIR . 'mod/photoalbum/class/Album.php');
-PHPWS_Core::initModClass('photoalbum', 'Message.php');
+Core\Core::initModClass('photoalbum', 'Message.php');
 class PHPWS_AlbumManager {
 
     /**
@@ -47,7 +47,7 @@ class PHPWS_AlbumManager {
             return;
         }
 
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
         $template['TITLE'] = dgettext('photoalbum', 'Photo Albums');
         $template['CONTENT'] = NULL;
 

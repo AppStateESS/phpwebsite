@@ -6,9 +6,9 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireInc('webpage', 'error_defines.php');
-PHPWS_Core::requireConfig('webpage', 'config.php');
-PHPWS_Core::initModClass('webpage', 'Page.php');
+Core\Core::requireInc('webpage', 'error_defines.php');
+Core\Core::requireConfig('webpage', 'config.php');
+Core\Core::initModClass('webpage', 'Page.php');
 
 if (!defined('WP_VOLUME_DATE_FORMAT')) {
     define('WP_VOLUME_DATE_FORMAT', '%c');
@@ -337,7 +337,7 @@ class Webpage_Volume {
 
     public function save($version_update=false)
     {
-        PHPWS_Core::initModClass('version', 'Version.php');
+        Core\Core::initModClass('version', 'Version.php');
 
         if (empty($this->title)) {
             return PHPWS_Error::get(WP_TPL_TITLE_MISSING, 'webpages', 'Volume::save');
@@ -557,7 +557,7 @@ class Webpage_Volume {
     public function view($page=null, $show_page_title=true)
     {
         if (!$this->canView()) {
-            if ($this->frontpage && PHPWS_Core::atHome()) {
+            if ($this->frontpage && Core\Core::atHome()) {
                 return null;
             } else {
                 return dgettext('webpage', 'Sorry, this web page is restricted.');

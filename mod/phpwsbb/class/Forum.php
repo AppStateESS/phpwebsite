@@ -63,7 +63,7 @@ class PHPWSBB_Forum
         }
         /* otherwise, $id is an array of object data */
         else {
-            PHPWS_Core::plugObject($this, $id);
+            Core\Core::plugObject($this, $id);
         }
     }
 
@@ -226,7 +226,7 @@ class PHPWSBB_Forum
         }
 
         /* Create DBPager object */
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
 
         $pager = new DBPager('phpwsbb_topics', 'PHPWSBB_Topic');
         $pager->setModule('phpwsbb');
@@ -290,7 +290,7 @@ class PHPWSBB_Forum
      */
     public function edit ()
     {
-        PHPWS_Core::initModClass('help', 'Help.php');
+        Core\Core::initModClass('help', 'Help.php');
         if(!Current_User::allow('phpwsbb', 'manage_forums')) {
             $message = sprintf(dgettext('phpwsbb', 'You are not authorized to edit forum %s.', $this->title));
             Security::log($message);
@@ -611,7 +611,7 @@ class PHPWSBB_Forum
         if (!$user_id) $user_id = Current_User::getId();
         if (!$forum_id) $forum_id = $this->id;
         if (!isset($GLOBALS['Moderators_byUser'])) {
-            PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
+            Core\Core::initModClass('phpwsbb', 'BB_Data.php');
             PHPWSBB_Data::load_moderators();
         }
         return isset($GLOBALS['Moderators_byUser'][$user_id][$forum_id]);

@@ -23,7 +23,7 @@
  */
 
 
-PHPWS_Core::initModClass('vmail', 'vMail_Runtime.php');
+Core\Core::initModClass('vmail', 'vMail_Runtime.php');
 vMail_Runtime::showBlock();
 
 ?>

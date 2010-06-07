@@ -28,7 +28,7 @@ class PS_Forms {
 
     public function loadTemplates()
     {
-        PHPWS_Core::initModClass('pagesmith', 'PS_Template.php');
+        Core\Core::initModClass('pagesmith', 'PS_Template.php');
         if (!empty($this->tpl_list)) {
             return true;
         }
@@ -107,7 +107,7 @@ class PS_Forms {
         javascriptMod('pagesmith', 'pagetitle', $jsvars);
 
         if (!empty($page->_orphans)) {
-            $tpl['ORPHAN_LINK'] = sprintf('<a href="%s#orphans">%s</a>', PHPWS_Core::getCurrentUrl(), dgettext('pagesmith', 'Orphans'));
+            $tpl['ORPHAN_LINK'] = sprintf('<a href="%s#orphans">%s</a>', Core\Core::getCurrentUrl(), dgettext('pagesmith', 'Orphans'));
             $tpl['ORPHANS'] = $this->listOrphans($page->_orphans);
         }
 
@@ -138,7 +138,7 @@ class PS_Forms {
                     $empty_content = empty($orf['type_id']);
                     break;
             }
-            PHPWS_Core::plugObject($sec, $orf);
+            Core\Core::plugObject($sec, $orf);
 
             if ($empty_content) {
                 $row['CONTENT'] = sprintf('<em>%s</em>', dgettext('pagesmith', 'Empty content. Consider deletion.'));
@@ -204,8 +204,8 @@ class PS_Forms {
     public function pageList()
     {
         Layout::addStyle('pagesmith');
-        PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
+        Core\Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('pagesmith', 'PS_Page.php');
 
         $pgtags['ACTION_LABEL']  = dgettext('pagesmith', 'Action');
 

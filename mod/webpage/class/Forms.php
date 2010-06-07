@@ -10,7 +10,7 @@ class Webpage_Forms {
 
     public function pagePanel($volume, $version_id=0)
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $link['link'] = 'index.php?module=webpage&wp_admin=edit_webpage&volume_id=' . $volume->id;
         if ($version_id) {
             $link['link'] .= '&version_id=' . $version_id;
@@ -128,7 +128,7 @@ class Webpage_Forms {
         $form->setLabel('force_template', dgettext('webpage', 'Force all pages to use this template'));
 
         if (PHPWS_Settings::get('webpage', 'add_images')) {
-            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+            Core\Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('image_id', $page->image_id);
             $manager->maxImageWidth(640);
             $manager->maxImageHeight(480);
@@ -189,7 +189,7 @@ class Webpage_Forms {
         }
 
 
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('webpage_volume', 'Webpage_Volume');
         $pager->setModule('webpage');
         $pager->setTemplate('forms/list.tpl');
@@ -211,7 +211,7 @@ class Webpage_Forms {
 
     public function approval()
     {
-        PHPWS_Core::initModClass('version', 'Version.php');
+        Core\Core::initModClass('version', 'Version.php');
 
         $approval = new Version_Approval('webpage', 'webpage_volume', 'Webpage_Volume', 'approval_view');
         $vars['wp_admin'] = 'edit_webpage';

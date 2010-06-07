@@ -167,7 +167,7 @@ class Elections_Candidate {
             return null;
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $file = Cabinet::getFile($this->image_id);
 
         if ($file->isImage(true)) {
@@ -201,7 +201,7 @@ class Elections_Candidate {
         }
 
         if ($print) {
-            PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
+            Core\Core::initModClass('elections', 'ELEC_Ballot.php');
             $ballot = new Elections_Ballot($this->ballot_id);
             return $ballot->viewLink();
         } else {
@@ -271,7 +271,7 @@ class Elections_Candidate {
     public function view()
     {
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
 
 //        $key = new Key($this->key_id);
@@ -435,7 +435,7 @@ class Elections_Candidate {
 
     public function viewLink($bare=false)
     {
-        PHPWS_Core::initCoreClass('Link.php');
+        Core\Core::initCoreClass('Link.php');
         $link = new PHPWS_Link($this->title, 'elections', array('ballot'=>$this->ballot_id, 'candidate'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
@@ -449,7 +449,7 @@ class Elections_Candidate {
 
     public function getVoteBox()
     {
-        PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
+        Core\Core::initModClass('elections', 'ELEC_Ballot.php');
         $ballot = new Elections_Ballot($this->ballot_id);
         if (isset($_REQUEST['Candidate_Vote'][$this->id])) {
             $match = $_REQUEST['Candidate_Vote'][$this->id];
@@ -476,7 +476,7 @@ class Elections_Candidate {
 
     public function getCustoms()
     {
-        PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
+        Core\Core::initModClass('elections', 'ELEC_Ballot.php');
         $ballot = new Elections_Ballot($this->ballot_id);
         $tpl = null;
         if ($ballot->custom1label) {
@@ -513,7 +513,7 @@ class Elections_Candidate {
         $content .= '"' . dgettext('elections', 'Votes') . '",';
 
 /*  think about this in multi-ballot exports, could be messy
-        PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
+        Core\Core::initModClass('elections', 'ELEC_Ballot.php');
         $ballot = new Elections_Ballot($this->ballot_id);
         if ($ballot->custom1label) {
             $content .= '"' . $ballot->getCustom1label(true) . '",';
@@ -546,7 +546,7 @@ class Elections_Candidate {
         $content .= '"' . $this->votes . '",';
 
 /*  think about this in multi-ballot exports, could be messy
-        PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
+        Core\Core::initModClass('elections', 'ELEC_Ballot.php');
         $ballot = new Elections_Ballot($this->ballot_id);
         if ($ballot->custom1label) {
             $content .= '"' . $this->getCustom1(true) . '",';

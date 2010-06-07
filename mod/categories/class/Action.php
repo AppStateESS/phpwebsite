@@ -7,8 +7,8 @@
  * @version $Id$
  */
 
-PHPWS_CORE::configRequireOnce('categories', 'config.php');
-PHPWS_Core::initModClass('categories', 'Category.php');
+Core\Core::configRequireOnce('categories', 'config.php');
+Core\Core::initModClass('categories', 'Category.php');
 
 class Categories_Action {
 
@@ -44,7 +44,7 @@ class Categories_Action {
                     Categories_Action::postItem();
                 }
 
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'deleteCategory':
@@ -53,7 +53,7 @@ class Categories_Action {
                 } else {
                     Current_User::disallow();
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'edit':
@@ -82,7 +82,7 @@ class Categories_Action {
                 if ($popup) {
                     Layout::nakedDisplay($popup);
                 } else {
-                    PHPWS_Core::errorPage('404');
+                    Core\Core::errorPage('404');
                 }
                 break;
 
@@ -121,7 +121,7 @@ class Categories_Action {
     public function sendMessage($message, $command)
     {
         $_SESSION['Category_message'] = $message;
-        PHPWS_Core::reroute(sprintf('index.php?module=categories&action=admin&subaction=%s&authkey=%s', $command, Current_User::getAuthKey()));
+        Core\Core::reroute(sprintf('index.php?module=categories&action=admin&subaction=%s&authkey=%s', $command, Current_User::getAuthKey()));
         exit();
     }
 
@@ -164,7 +164,7 @@ class Categories_Action {
 
     public function postCategory(Category $category)
     {
-        PHPWS_Core::initCoreClass('File.php');
+        Core\Core::initCoreClass('File.php');
 
         if (empty($_POST['title'])) {
             $errors['title'] = dgettext('categories', 'Your category must have a title.');
@@ -197,7 +197,7 @@ class Categories_Action {
     {
         Layout::addStyle('categories');
 
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $newLink = 'index.php?module=categories&amp;action=admin';
         $newCommand = array ('title'=>dgettext('categories', 'New'), 'link'=> $newLink);
 
@@ -219,7 +219,7 @@ class Categories_Action {
     public static function edit(Category $category, $errors=NULL)
     {
         $template = NULL;
-        PHPWS_Core::initCoreClass('Editor.php');
+        Core\Core::initCoreClass('Editor.php');
 
         $form = new PHPWS_Form('edit_form');
         $form->add('module', 'hidden', 'categories');
@@ -276,7 +276,7 @@ class Categories_Action {
 
     public static function getManager($image_id, $image_name)
     {
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager($image_name, $image_id);
         $manager->maxImageWidth(CAT_MAX_ICON_WIDTH);
         $manager->maxImageHeight(CAT_MAX_ICON_HEIGHT);
@@ -289,7 +289,7 @@ class Categories_Action {
 
     public static function category_list()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
 
         $pageTags['TITLE_LABEL'] = dgettext('categories', 'Title');
         $pageTags['PARENT_LABEL'] = dgettext('categories', 'Parent');
@@ -318,7 +318,7 @@ class Categories_Action {
         $oMod = $category = NULL;
 
         if (!empty($module)) {
-            PHPWS_Core::initCoreClass('Module.php');
+            Core\Core::initCoreClass('Module.php');
             $oMod = new PHPWS_Module($module);
         }
 
@@ -406,7 +406,7 @@ class Categories_Action {
      */
     public function getAllItems(Category $category, $module)
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
 
         $pageTags['TITLE_LABEL'] = dgettext('categories', 'Item Title');
         $pageTags['CREATE_DATE_LABEL'] = dgettext('categories', 'Creation date');

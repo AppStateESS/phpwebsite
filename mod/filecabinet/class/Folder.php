@@ -467,7 +467,7 @@ class Folder {
             $links[] = $this->deleteLink('image');
         }
 
-        $mods = PHPWS_Core::getModuleNames();
+        $mods = Core\Core::getModuleNames();
         if ($this->module_created && isset($mods[$this->module_created])) {
             $tpl['MODULE_CREATED'] = $mods[$this->module_created];
         } else {
@@ -490,15 +490,15 @@ class Folder {
     public function loadFiles($original_only=false)
     {
         if ($this->ftype == IMAGE_FOLDER) {
-            PHPWS_Core::initModClass('filecabinet', 'Image.php');
+            Core\Core::initModClass('filecabinet', 'Image.php');
             $db = new PHPWS_DB('images');
             $obj_name = 'PHPWS_Image';
         } elseif ($this->ftype == DOCUMENT_FOLDER) {
-            PHPWS_Core::initModClass('filecabinet', 'Document.php');
+            Core\Core::initModClass('filecabinet', 'Document.php');
             $db = new PHPWS_DB('documents');
             $obj_name = 'PHPWS_Document';
         } elseif ($this->ftype == MULTIMEDIA_FOLDER) {
-            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+            Core\Core::initModClass('filecabinet', 'Multimedia.php');
             $db = new PHPWS_DB('multimedia');
             $obj_name = 'PHPWS_Multimedia';
         }

@@ -59,8 +59,8 @@ class Calendar_Admin {
 
     public function approval()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('calendar', 'Suggestion.php');
+        Core\Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('calendar', 'Suggestion.php');
 
         $pager = new DBPager('calendar_suggestions', 'Calendar_Suggestion');
         $pager->setModule('calendar');
@@ -83,22 +83,22 @@ class Calendar_Admin {
     {
         if ( !Current_User::authorized('calendar', 'edit_public') ||
         Current_User::isRestricted('calendar') ) {
-            PHPWS_Core::errorPage('403');
+            Core\Core::errorPage('403');
         }
 
-        PHPWS_Core::initModClass('calendar', 'Suggestion.php');
+        Core\Core::initModClass('calendar', 'Suggestion.php');
         $suggestion = new Calendar_Suggestion((int)$id);
         if (!$suggestion->id) {
-            PHPWS_Core::errorPage('404');
+            Core\Core::errorPage('404');
         }
 
-        $values = PHPWS_Core::stripObjValues($suggestion);
+        $values = Core\Core::stripObjValues($suggestion);
         unset($values['id']);
 
         $event = new Calendar_Event;
         $event->loadSchedule($suggestion->schedule_id);
         $event->public = 1;
-        PHPWS_Core::plugObject($event, $values);
+        Core\Core::plugObject($event, $values);
 
         $result = $event->save();
         if (PHPWS_Error::isError($result)) {
@@ -113,13 +113,13 @@ class Calendar_Admin {
     {
         if ( !Current_User::authorized('calendar', 'edit_public') ||
         Current_User::isRestricted('calendar') ) {
-            PHPWS_Core::errorPage('403');
+            Core\Core::errorPage('403');
         }
 
-        PHPWS_Core::initModClass('calendar', 'Suggestion.php');
+        Core\Core::initModClass('calendar', 'Suggestion.php');
         $suggestion = new Calendar_Suggestion((int)$id);
         if (!$suggestion->id) {
-            PHPWS_Core::errorPage('404');
+            Core\Core::errorPage('404');
         }
 
         return $suggestion->delete();
@@ -460,7 +460,7 @@ class Calendar_Admin {
 
             case 'approve_suggestion':
                 $this->approveSuggestion($_GET['suggestion_id']);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
 
@@ -494,7 +494,7 @@ class Calendar_Admin {
                 break;
 
             case 'blog_event':
-                if (PHPWS_Core::moduleExists('blog') &&
+                if (Core\Core::moduleExists('blog') &&
                 Current_User::allow('blog', 'edit_blog') &&
                 $this->calendar->schedule->checkPermissions(true)) {
                     $event = $this->calendar->schedule->loadEvent();
@@ -503,7 +503,7 @@ class Calendar_Admin {
                 break;
 
             case 'post_blog':
-                if (PHPWS_Core::moduleExists('blog') &&
+                if (Core\Core::moduleExists('blog') &&
                 Current_User::allow('blog', 'edit_blog') &&
                 $this->calendar->schedule->checkPermissions(true)) {
                     $this->postBlog();
@@ -529,7 +529,7 @@ class Calendar_Admin {
                         PHPWS_Error::log($result);
                     }
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'delete_schedule':
@@ -543,12 +543,12 @@ class Calendar_Admin {
 
             case 'disapprove_suggestion':
                 $this->disapproveSuggestion($_GET['suggestion_id']);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'edit_schedule':
                 if (empty($_REQUEST['sch_id'])) {
-                    PHPWS_Core::errorPage('404');
+                    Core\Core::errorPage('404');
                 }
 
                 if (!$this->calendar->schedule->checkPermissions()) {
@@ -591,7 +591,7 @@ class Calendar_Admin {
                     Current_User::disallow();
                 }
                 PHPWS_Cache::remove($_REQUEST['key']);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'schedules':
@@ -671,7 +671,7 @@ class Calendar_Admin {
             return;
         }
 
-        PHPWS_Core::initModClass('calendar', 'Event.php');
+        Core\Core::initModClass('calendar', 'Event.php');
 
         $table = $this->calendar->schedule->getEventTable();
 
@@ -1025,7 +1025,7 @@ class Calendar_Admin {
 
     public function repeatDaily(Calendar_Event $event)
     {
-        PHPWS_Core::requireConfig('calendar');
+        Core\Core::requireConfig('calendar');
 
         $dst_start = date('I', $event->start_time);
 
@@ -1337,8 +1337,8 @@ class Calendar_Admin {
     {
         $this->title = dgettext('calendar', 'Schedules');
 
-        PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('calendar', 'Schedule.php');
+        Core\Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('calendar', 'Schedule.php');
 
         $page_tags['DESCRIPTION_LABEL']  = dgettext('calendar', 'Description');
         $page_tags['PUBLIC_LABEL']       = dgettext('calendar', 'Public');
@@ -1386,7 +1386,7 @@ class Calendar_Admin {
     {
         $_SESSION['Calendar_Admin_Message'] = $message;
         if ($route && !empty($command)) {
-            PHPWS_Core::reroute('index.php?module=calendar&aop=' . $command);
+            Core\Core::reroute('index.php?module=calendar&aop=' . $command);
         }
     }
 
@@ -1491,7 +1491,7 @@ class Calendar_Admin {
     {
         $event = $this->calendar->schedule->loadEvent();
 
-        if (!PHPWS_Core::initModClass('blog', 'Blog.php')) {
+        if (!Core\Core::initModClass('blog', 'Blog.php')) {
             return;
         }
         $blog = new Blog;

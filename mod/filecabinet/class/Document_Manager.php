@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::initModClass('filecabinet', 'Document.php');
+Core\Core::initModClass('filecabinet', 'Document.php');
 
 class FC_Document_Manager {
     public $folder   = null;
@@ -29,7 +29,7 @@ class FC_Document_Manager {
                     Current_User::disallow();
                 }
                 $this->document->delete();
-                PHPWS_Core::returnToBookmark();
+                Core\Core::returnToBookmark();
                 break;
             case 'post_document_upload':
                 if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
@@ -50,7 +50,7 @@ class FC_Document_Manager {
                     Clipboard::copy($this->document->title, $this->document->getViewLink(true, null, true), true,
                     sprintf('[filecabinet:doc:%s]', $this->document->id));
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
         }
 
@@ -70,7 +70,7 @@ class FC_Document_Manager {
             $this->loadDocument();
         }
 
-        PHPWS_Core::initCoreClass('File.php');
+        Core\Core::initCoreClass('File.php');
 
         $form = new PHPWS_FORM;
         $form->addHidden('module',    'filecabinet');
@@ -170,7 +170,7 @@ class FC_Document_Manager {
                 Layout::nakedDisplay($content);
                 exit();
             }
-            PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+            Core\Core::initModClass('filecabinet', 'File_Assoc.php');
             FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
 
             $this->document->moveToFolder();

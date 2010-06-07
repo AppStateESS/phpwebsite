@@ -1,6 +1,6 @@
 <?php
-PHPWS_Core::initModClass('phpwsbb', 'Topic.php');
-PHPWS_Core::initModClass('phpwsbb', 'Forum.php');
+Core\Core::initModClass('phpwsbb', 'Topic.php');
+Core\Core::initModClass('phpwsbb', 'Forum.php');
 
 /**
  * This class controls the display of all editing forms.

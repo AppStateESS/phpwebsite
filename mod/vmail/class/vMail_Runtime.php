@@ -63,7 +63,7 @@ class vMail_Runtime
             $tpl['TITLE'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('vmail', 'module_title'));
             $tpl['TEXT'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('vmail', 'sidebox_text'));
 
-            PHPWS_Core::initModClass('layout', 'Layout.php');
+            Core\Core::initModClass('layout', 'Layout.php');
             Layout::add(PHPWS_Template::process($tpl, 'vmail', 'block.tpl'), 'vmail', 'vmail_sidebox');
         }
     }

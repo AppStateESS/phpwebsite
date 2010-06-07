@@ -24,7 +24,7 @@
 
 
 if (isset($_SESSION['vShop_cart'])) {
-    PHPWS_Core::initModClass('vshop', 'vShop_Runtime.php');
+    Core\Core::initModClass('vshop', 'vShop_Runtime.php');
     vShop_Runtime::showCart();
 }
 

@@ -32,7 +32,7 @@ function my_page()
             Layout_User_Settings::save_settings();
             $_SESSION['Reset_Layout'] = 1;
             $_SESSION['Layout_User_Message'] = dgettext('layout', 'Settings saved');
-            PHPWS_Core::reroute('index.php?module=users&action=user&tab=layout');
+            Core\Core::reroute('index.php?module=users&action=user&tab=layout');
             break;
     }
 

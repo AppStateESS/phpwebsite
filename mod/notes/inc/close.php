@@ -6,7 +6,7 @@
  */
 
 if (Current_User::isLogged()) {
-    PHPWS_Core::initModClass('notes', 'My_Page.php');
+    Core\Core::initModClass('notes', 'My_Page.php');
 
     Notes_My_Page::showUnread();
 

@@ -73,7 +73,7 @@ abstract class User_Authorization
         if (!$this->force_login) {
             return;
         }
-        PHPWS_Core::reroute($this->login_link);
+        Core\Core::reroute($this->login_link);
     }
 
     public function setPassword($password)

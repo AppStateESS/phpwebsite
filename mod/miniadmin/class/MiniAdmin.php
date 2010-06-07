@@ -7,7 +7,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireConfig('miniadmin');
+Core\Core::requireConfig('miniadmin');
 
 if (!defined('MINIADMIN_TEMPLATE')) {
     define('MINIADMIN_TEMPLATE', 'mini_admin.tpl');
@@ -29,7 +29,7 @@ class MiniAdmin {
 
     public static function get()
     {
-        $modlist = PHPWS_Core::getModuleNames();
+        $modlist = Core\Core::getModuleNames();
 
         if (!isset($GLOBALS['MiniAdmin'])) {
             return NULL;

@@ -1,0 +1,12 @@
+<!ELEMENT template (title, summary, thumbnail, style, structure, folders?)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT summary (#PCDATA)>
+<!ELEMENT thumbnail (#PCDATA)>
+<!ELEMENT style (#PCDATA)>
+<!ELEMENT structure (section+)>
+<!ELEMENT folders (name+)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT section (name, type, width?, height?)>
+<!ELEMENT type (#PCDATA)>
+<!ELEMENT width (#PCDATA)>
+<!ELEMENT height (#PCDATA)>

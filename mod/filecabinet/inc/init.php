@@ -5,8 +5,8 @@
  */
 
 PHPWS_Text::addTag('filecabinet', array('document'));
-PHPWS_Core::requireInc('filecabinet', 'parse.php');
-PHPWS_Core::requireInc('filecabinet', 'defines.php');
-PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+Core\Core::requireInc('filecabinet', 'parse.php');
+Core\Core::requireInc('filecabinet', 'defines.php');
+Core\Core::initModClass('filecabinet', 'Cabinet.php');
 
 ?>

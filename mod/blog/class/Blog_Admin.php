@@ -7,7 +7,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::initModClass('blog', 'Blog_Form.php');
+Core\Core::initModClass('blog', 'Blog_Form.php');
 if (!defined('MAX_BLOG_CACHE_PAGES')) {
     define('MAX_BLOG_CACHE_PAGES', 3);
 }
@@ -26,7 +26,7 @@ class Blog_Admin {
 
         $panel = Blog_Admin::cpanel();
         $panel->enableSecure();
-        PHPWS_Core::initModClass('version', 'Version.php');
+        Core\Core::initModClass('version', 'Version.php');
 
         if (isset($_REQUEST['command'])) {
             $command = $_REQUEST['command'];
@@ -178,7 +178,7 @@ class Blog_Admin {
 
             case 'menu_submit_link':
                 Menu::pinLink(dgettext('blog', 'Submit entry'), 'index.php?module=blog&action=user&action=submit');
-                PHPWS_Core::reroute('index.php?module=blog&action=admin&tab=settings&authkey=' . Current_User::getAuthKey());
+                Core\Core::reroute('index.php?module=blog&action=admin&tab=settings&authkey=' . Current_User::getAuthKey());
                 break;
 
             case 'restore':
@@ -191,7 +191,7 @@ class Blog_Admin {
                     Current_User::disallow();
                 }
                 Blog_Admin::sticky($blog);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'unsticky':
@@ -199,7 +199,7 @@ class Blog_Admin {
                     Current_User::disallow();
                 }
                 Blog_Admin::unsticky($blog);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'restorePrevBlog':
@@ -237,7 +237,7 @@ class Blog_Admin {
                     }
                     $content = Blog_Form::edit($blog);
                 } else {
-                    if (!isset($_POST['blog_id']) && PHPWS_Core::isPosted()) {
+                    if (!isset($_POST['blog_id']) && Core\Core::isPosted()) {
                         Blog_Admin::setForward(dgettext('blog', 'Entry saved successfully.'), 'list');
                     }
 
@@ -253,14 +253,14 @@ class Blog_Admin {
                     if (!$blog->approved) {
                         Blog_Admin::setForward(dgettext('blog', 'Your entry is being held for approval.'), 'list');
                     } else {
-                        PHPWS_Core::reroute($blog->getViewLink(true));
+                        Core\Core::reroute($blog->getViewLink(true));
                     }
                 }
                 break;
 
             case 'reset_cache':
                 Blog_Admin::resetCache();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'post_settings':
@@ -433,7 +433,7 @@ class Blog_Admin {
     {
         $_SESSION['Blog_Forward'] = $message;
         $link = PHPWS_Text::linkAddress('blog', array('action'=>'admin', 'command' => $command), TRUE);
-        PHPWS_Core::reroute($link);
+        Core\Core::reroute($link);
     }
 
     public static function getForward()
@@ -449,8 +449,8 @@ class Blog_Admin {
 
     public static function cpanel()
     {
-        PHPWS_Core::initModClass('version', 'Version.php');
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('version', 'Version.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $newLink = 'index.php?module=blog&amp;action=admin';
         $newCommand = array ('title'=>dgettext('blog', 'New'), 'link'=> $newLink);
 
@@ -489,7 +489,7 @@ class Blog_Admin {
 
     public static function entry_list()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
         $db = new PHPWS_DB('blog_stickies');
         $db->addColumn('blog_id');
         $GLOBALS['blog_stickies'] = $db->select('col');
@@ -535,7 +535,7 @@ class Blog_Admin {
 
     public function restoreVersionList(&$blog)
     {
-        PHPWS_Core::initModClass('version', 'Restore.php');
+        Core\Core::initModClass('version', 'Restore.php');
         $vars['action'] = 'admin';
         $vars['command'] = 'restorePrevBlog';
         $vars['blog_id'] = $blog->id;
@@ -639,7 +639,7 @@ class Blog_Admin {
 
     public function purgeEntries($date)
     {
-        PHPWS_Core::initModClass('blog', 'Blog.php');
+        Core\Core::initModClass('blog', 'Blog.php');
         if (empty($date)) {
             return;
         }

@@ -6,7 +6,7 @@
 
 function calendar_uninstall(&$content)
 {
-    PHPWS_Core::initModClass('calendar', 'Schedule.php');
+    Core\Core::initModClass('calendar', 'Schedule.php');
     // Need functions to remove old event tables
     $db = new PHPWS_DB('calendar_schedule');
     $schedules = $db->getObjects('Calendar_Schedule');

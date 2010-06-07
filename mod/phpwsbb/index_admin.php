@@ -84,7 +84,7 @@ switch ($_REQUEST['op']) {
             $address = 'index.php?module=phpwsbb&amp;op=delete_forum&amp;forum='.$forum->id;
             $title = dgettext('phpwsbb', 'Delete Confirmation') .' -- '. $forum->get_title();
             $question = dgettext('phpwsbb', 'This will delete the forum and all topics under it!  Are you sure you want to delete this?');
-            PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
+            Core\Core::initModClass('phpwsbb', 'BB_Forms.php');
             $content = PHPWSBB_Forms::show_dialog($address, $title, $question);
         }
         break;
@@ -124,7 +124,7 @@ switch ($_REQUEST['op']) {
         // Show dialog if destination forum hasn't been picked yet
         if (!isset($_REQUEST['new_forum'])) {
             // Show the assignment form
-            PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
+            Core\Core::initModClass('phpwsbb', 'BB_Forms.php');
             if (!empty($topic))
             $content = PHPWSBB_Forms::assign_forum($topic, $is_popup);
             else
@@ -217,7 +217,7 @@ switch ($_REQUEST['op']) {
             $address = 'index.php?module=phpwsbb&amp;op=delete_topic&amp;topic='.$topic->id;
             $title = dgettext('phpwsbb', 'Delete Confirmation') .' -- '. $topic->get_title();
             $question = dgettext('phpwsbb', 'This will delete the topic and all messages under it!  Are you sure you want to delete this?');
-            PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
+            Core\Core::initModClass('phpwsbb', 'BB_Forms.php');
             $content = PHPWSBB_Forms::show_dialog($address, $title, $question);
         }
         break;
@@ -276,7 +276,7 @@ switch ($_REQUEST['op']) {
         }
         // otherwise, show PHPWSBB_Forms::split_comments()
         else {
-            PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
+            Core\Core::initModClass('phpwsbb', 'BB_Forms.php');
             $content = PHPWSBB_Forms::split_comments($id_list);
         }
         break;
@@ -371,7 +371,7 @@ ORDER BY comments_items.create_time desc
             $message = $msg_noauth;
             break;
         }
-        PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
+        Core\Core::initModClass('phpwsbb', 'BB_Forms.php');
         $template['TITLE'] = dgettext('phpwsbb', 'PHPWSBB Settings');
         if (!empty($_REQUEST['reset'])) {
             include(PHPWS_SOURCE_DIR . 'mod/phpwsbb/inc/settings.php');
@@ -435,7 +435,7 @@ ORDER BY comments_items.create_time desc
             // If there's a problem, show the split_comments form
             if (!$topic->create($forum->id)) {
                 $message = $topic->_error;
-                PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
+                Core\Core::initModClass('phpwsbb', 'BB_Forms.php');
                 $content = PHPWSBB_Forms::split_comments($comments);
                 break;
             }
@@ -447,7 +447,7 @@ ORDER BY comments_items.create_time desc
         }
         // otherwise, check Comment Thread permission
         else {
-            PHPWS_Core::initModClass('comments', 'Comments.php');
+            Core\Core::initModClass('comments', 'Comments.php');
             $thread = new Comment_Thread($topic->id);
             if (!$thread->canComment()) {
                 $content = dgettext('phpwsbb', "You don't have permission to post to this topic!");
@@ -496,7 +496,7 @@ ORDER BY comments_items.create_time desc
             $oldtopic->commit();
         }
         $_SESSION['DBPager_Last_View']['comments_items'] = 'index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id;
-        PHPWS_Core::reroute('index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id);
+        Core\Core::reroute('index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id);
         break;
 }
 

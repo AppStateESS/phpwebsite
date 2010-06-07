@@ -142,7 +142,7 @@ class vList_Group {
             return null;
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $image = Cabinet::getFile($this->image_id);
 
         if ($image->isImage(true)) {

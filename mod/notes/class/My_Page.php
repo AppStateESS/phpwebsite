@@ -4,8 +4,8 @@
    * @version $Id$
    */
 
-PHPWS_Core::requireConfig('notes');
-PHPWS_Core::initModClass('notes', 'Note_Item.php');
+Core\Core::requireConfig('notes');
+Core\Core::initModClass('notes', 'Note_Item.php');
 
 class Notes_My_Page {
     public $title   = null;
@@ -85,7 +85,7 @@ class Notes_My_Page {
             break;
 
         default:
-            PHPWS_Core::errorPage('404');
+            Core\Core::errorPage('404');
         }
 
         $tpl['TITLE'] =  $this->title;
@@ -186,7 +186,7 @@ class Notes_My_Page {
     {
         Layout::addStyle('notes');
         unset($_SESSION['Notes_Unread']);
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('notes', 'Note_Item');
         $pager->setModule('notes');
         $pager->setTemplate('read.tpl');
@@ -211,7 +211,7 @@ class Notes_My_Page {
             javascript('close_refresh');
             Layout::nakedDisplay();
         } else {
-            PHPWS_Core::reroute('index.php?module=users&action=user&tab=notes');
+            Core\Core::reroute('index.php?module=users&action=user&tab=notes');
             exit();
         }
     }

@@ -48,7 +48,7 @@ class ELEC_Runtime
 
             $tpl['TEXT'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('elections', 'sidebox_text'));
 
-            PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
+            Core\Core::initModClass('elections', 'ELEC_Ballot.php');
             $db = new PHPWS_DB('elections_ballots');
             if (!isset($_SESSION['User']->username)) {
                 $db->addWhere('pubview', 1);
@@ -70,7 +70,7 @@ class ELEC_Runtime
             $tpl['TEXT'] = dgettext('elections', 'Thank you for your interest. However, all elections are currently closed.');
         }
 
-        PHPWS_Core::initModClass('layout', 'Layout.php');
+        Core\Core::initModClass('layout', 'Layout.php');
         Layout::add(PHPWS_Template::process($tpl, 'elections', 'block.tpl'), 'elections', 'elections_sidebox');
     }
 

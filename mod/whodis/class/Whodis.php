@@ -12,7 +12,7 @@ class Whodis {
             $referrer = & $_SERVER['HTTP_REFERER'];
             if (!preg_match('/["\']/', $referrer)) {
                 if (Whodis::passFilters($referrer)) {
-                    PHPWS_Core::initModClass('whodis', 'Whodis_Referrer.php');
+                    Core\Core::initModClass('whodis', 'Whodis_Referrer.php');
 
                     $whodis = new Whodis_Referrer;
                     $result = $whodis->save($referrer);
@@ -26,7 +26,7 @@ class Whodis {
 
     public static function passFilters($referrer)
     {
-        $home_url = PHPWS_Core::getHomeHttp();
+        $home_url = Core\Core::getHomeHttp();
         $preg_match = str_replace('/', '\/', ($home_url));
 
         if (preg_match('/^' . $preg_match . '/', $referrer)) {
@@ -94,7 +94,7 @@ class Whodis {
             switch ($_REQUEST['op']) {
                 case 'purge':
                     Whodis::purge();
-                    PHPWS_Core::goBack();
+                    Core\Core::goBack();
                     break;
 
                 case 'filters':
@@ -103,7 +103,7 @@ class Whodis {
 
                 case 'filters_option':
                     Whodis::filterOption();
-                    PHPWS_Core::goBack();
+                    Core\Core::goBack();
                     break;
 
                 case 'list':
@@ -141,7 +141,7 @@ class Whodis {
 
     public static function filters()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
 
         $form = new PHPWS_Form('filter');
         $form->addHidden('module', 'whodis');
@@ -190,8 +190,8 @@ class Whodis {
 
     public static function listReferrers()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('whodis', 'Whodis_Referrer.php');
+        Core\Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('whodis', 'Whodis_Referrer.php');
 
         $form = new PHPWS_Form('purge');
         $form->addHidden('module', 'whodis');

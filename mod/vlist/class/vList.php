@@ -22,7 +22,7 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-PHPWS_Core::requireConfig('vlist');
+Core\Core::requireConfig('vlist');
 
 class vList {
     public $forms      = null;
@@ -44,7 +44,7 @@ class vList {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['aop'])) {
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['aop'];
@@ -69,14 +69,14 @@ class vList {
             case 'edit_options':
             case 'post_options':
             case 'delete_option':
-                PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
+                Core\Core::initModClass('vlist', 'vList_Forms.php');
                 $settingsPanel = vList_Forms::settingsPanel();
                 $settingsPanel->enableSecure();
                 break;
             case 'menu':
                 if (isset($_GET['tab'])) {
                     if ($_GET['tab'] == 'settings' || $_GET['tab'] == 'groups' || $_GET['tab'] == 'elements') {
-                        PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
+                        Core\Core::initModClass('vlist', 'vList_Forms.php');
                         $settingsPanel = vList_Forms::settingsPanel();
                         $settingsPanel->enableSecure();
                     }
@@ -110,18 +110,18 @@ class vList {
                 if ($this->postListing()) {
                     if (PHPWS_Error::logIfError($this->listing->save())) {
                         $this->forwardMessage(dgettext('vlist', 'Error occurred when saving listing.'));
-                        PHPWS_Core::reroute('index.php?module=vlist&aop=menu');
+                        Core\Core::reroute('index.php?module=vlist&aop=menu');
                     } else {
                         if (PHPWS_Settings::get('vlist', 'enable_elements')) {
                             if ($this->postExtras()) {
                                 $this->forwardMessage(dgettext('vlist', 'Listing saved successfully.'));
-                                PHPWS_Core::reroute('index.php?module=vlist&aop=menu');
+                                Core\Core::reroute('index.php?module=vlist&aop=menu');
                             } else {
                                 $this->loadForm('edit_listing');
                             }
                         } else {
                             $this->forwardMessage(dgettext('vlist', 'Listing saved successfully.'));
-                            PHPWS_Core::reroute('index.php?module=vlist&aop=menu');
+                            Core\Core::reroute('index.php?module=vlist&aop=menu');
                         }
                     }
                 } else {
@@ -147,7 +147,7 @@ class vList {
                 $this->listing->approved = 1;
                 $this->listing->saveListing();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Listing %s approved.'), $this->listing->getTitle(true)));
-                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
+                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
                 break;
 
             case 'unapprove_listing':
@@ -158,7 +158,7 @@ class vList {
                 $this->listing->approved = 0;
                 $this->listing->saveListing();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Listing %s unapproved.'), $this->listing->getTitle(true)));
-                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
+                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
                 break;
 
             case 'activate_listing':
@@ -169,7 +169,7 @@ class vList {
                 $this->listing->active = 1;
                 $this->listing->saveListing();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Listing %s activated.'), $this->listing->getTitle(true)));
-                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
+                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
                 break;
 
             case 'deactivate_listing':
@@ -180,7 +180,7 @@ class vList {
                 $this->listing->active = 0;
                 $this->listing->saveListing();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Listing %s deactivated.'), $this->listing->getTitle(true)));
-                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
+                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
                 break;
 
 
@@ -201,10 +201,10 @@ class vList {
                 if ($this->postGroup()) {
                     if (PHPWS_Error::logIfError($this->group->save())) {
                         $this->forwardMessage(dgettext('vlist', 'Error occurred when saving group.'));
-                        PHPWS_Core::reroute('index.php?module=vlist&aop=edit_group&group=' . $this->group->id);
+                        Core\Core::reroute('index.php?module=vlist&aop=edit_group&group=' . $this->group->id);
                     } else {
                         $this->forwardMessage(dgettext('vlist', 'Group saved successfully.'));
-                        PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=groups');
+                        Core\Core::reroute('index.php?module=vlist&aop=menu&tab=groups');
                     }
                 } else {
                     $this->loadForm('edit_group');
@@ -235,10 +235,10 @@ class vList {
                     }
                 } else {
                     $this->forwardMessage(dgettext('vlist', 'You must select a valid element type to add.'));
-                    PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                    Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 }
                 $class = 'UNI_' . $type;
-                PHPWS_Core::initModClass('vlist', 'elements/' . $class . '.php');
+                Core\Core::initModClass('vlist', 'elements/' . $class . '.php');
                 $this->element = new $class;
                 $this->element->vlist = & $this;
                 $this->title = sprintf(dgettext('vlist', 'Add/edit %s custom element'), $_POST['type']);
@@ -291,7 +291,7 @@ class vList {
                 $this->element->active = 1;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s activated.'), $this->element->getTitle(true)));
-                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'deactivate_element':
@@ -302,7 +302,7 @@ class vList {
                 $this->element->active = 0;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s deactivated.'), $this->element->getTitle(true)));
-                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'list_element':
@@ -313,7 +313,7 @@ class vList {
                 $this->element->list = 1;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s enabled in list.'), $this->element->getTitle(true)));
-                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'delist_element':
@@ -324,7 +324,7 @@ class vList {
                 $this->element->list = 0;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s disabled in list.'), $this->element->getTitle(true)));
-                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'search_element':
@@ -335,7 +335,7 @@ class vList {
                 $this->element->search = 1;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s enabled in search.'), $this->element->getTitle(true)));
-                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'desearch_element':
@@ -346,7 +346,7 @@ class vList {
                 $this->element->search = 0;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s disabled in search.'), $this->element->getTitle(true)));
-                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'private_element':
@@ -357,7 +357,7 @@ class vList {
                 $this->element->private = 1;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s is now restricted.'), $this->element->getTitle(true)));
-                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'deprivate_element':
@@ -368,7 +368,7 @@ class vList {
                 $this->element->private = 0;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s is now public.'), $this->element->getTitle(true)));
-                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'edit_options':
@@ -412,7 +412,7 @@ class vList {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('vlist', 'Listing settings saved.'));
-                    PHPWS_Core::reroute('index.php?module=vlist&aop=menu');
+                    Core\Core::reroute('index.php?module=vlist&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -468,7 +468,7 @@ class vList {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -496,11 +496,11 @@ class vList {
                     if ($this->postListing()) {
                         if (PHPWS_Error::logIfError($this->listing->save())) {
                             $this->forwardMessage(dgettext('vlist', 'Error occurred when submitting listing.'));
-                            PHPWS_Core::reroute('index.php?module=vlist&uop=listings');
+                            Core\Core::reroute('index.php?module=vlist&uop=listings');
                         } else {
                             if ($this->postExtras()) {
                                 $this->forwardMessage(dgettext('vlist', 'Listing submitted for review successfully.'));
-                                PHPWS_Core::reroute('index.php?module=vlist&uop=listings');
+                                Core\Core::reroute('index.php?module=vlist&uop=listings');
                             } else {
                                 $this->loadForm('edit_listing');
                             }
@@ -514,7 +514,7 @@ class vList {
                 break;
 
             case 'listings':
-                PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
+                Core\Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
                 $this->forms->listListings(1, 1);
@@ -537,7 +537,7 @@ class vList {
                 break;
 
             case 'groups':
-                PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
+                Core\Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
                 $this->forms->listGroups();
@@ -551,7 +551,7 @@ class vList {
                 } elseif (isset($_REQUEST['id'])) {
                     $id = $_REQUEST['id'];
                 }
-                PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
+                Core\Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
                 $this->forms->listListings(1, 1, $id);
@@ -565,7 +565,7 @@ class vList {
                 } elseif (isset($_REQUEST['id'])) {
                     $id = $_REQUEST['id'];
                 }
-                PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
+                Core\Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
                 $this->forms->listListings(1, 1, null, $id);
@@ -580,14 +580,14 @@ class vList {
                 break;
 
             case 'advanced':
-                PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
+                Core\Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
                 $this->forms->advSearchForm();
                 break;
 
             case 'adv_search':
-                PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
+                Core\Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
                 $this->forms->listListings(1, 1);
@@ -624,14 +624,14 @@ class vList {
             if (isset($_SESSION['vList_Message']['title'])) {
                 $this->title = $_SESSION['vList_Message']['title'];
             }
-            PHPWS_Core::killSession('vList_Message');
+            Core\Core::killSession('vList_Message');
         }
     }
 
 
     public function loadForm($type)
     {
-        PHPWS_Core::initModClass('vlist', 'vList_Forms.php');
+        Core\Core::initModClass('vlist', 'vList_Forms.php');
         $this->forms = new vList_Forms;
         $this->forms->vlist = & $this;
         $this->forms->get($type);
@@ -640,7 +640,7 @@ class vList {
 
     public function loadListing($id=0)
     {
-        PHPWS_Core::initModClass('vlist', 'vList_Listing.php');
+        Core\Core::initModClass('vlist', 'vList_Listing.php');
 
         if ($id) {
             $this->listing = new vList_Listing($id);
@@ -658,7 +658,7 @@ class vList {
 
     public function loadGroup($id=0)
     {
-        PHPWS_Core::initModClass('vlist', 'vList_Group.php');
+        Core\Core::initModClass('vlist', 'vList_Group.php');
 
         if ($id) {
             $this->group = new vList_Group($id);
@@ -694,10 +694,10 @@ class vList {
                 }
             } else {
                 $this->forwardMessage(dgettext('vlist', 'The type of element was not specified.'));
-                PHPWS_Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
             }
             $class = 'UNI_' . $type;
-            PHPWS_Core::initModClass('vlist', 'elements/' . $class . '.php');
+            Core\Core::initModClass('vlist', 'elements/' . $class . '.php');
             $this->element = new $class;
         }
 
@@ -719,7 +719,7 @@ class vList {
             }
         }
         $class = 'UNI_' . $type;
-        PHPWS_Core::initModClass('vlist', 'elements/' . $class . '.php');
+        Core\Core::initModClass('vlist', 'elements/' . $class . '.php');
         $this->element = new $class($id);
 
     }
@@ -727,7 +727,7 @@ class vList {
 
     public function loadPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('vlist-panel');
         $link = 'index.php?module=vlist&aop=menu';
 
@@ -1237,7 +1237,7 @@ class vList {
 
         switch($type) {
             case 'group':
-                PHPWS_Core::initModClass('vlist', 'vList_Group.php');
+                Core\Core::initModClass('vlist', 'vList_Group.php');
                 $db = new PHPWS_DB('vlist_group');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('vList_Group');
@@ -1285,7 +1285,7 @@ class vList {
 
         switch($type) {
             case 'group':
-                PHPWS_Core::initModClass('vlist', 'vList_Group.php');
+                Core\Core::initModClass('vlist', 'vList_Group.php');
                 $db = new PHPWS_DB('vlist_group');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('vList_Group');

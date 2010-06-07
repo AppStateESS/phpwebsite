@@ -22,8 +22,8 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-PHPWS_Core::requireInc('finc', 'errordefines.php');
-PHPWS_Core::requireConfig('finc');
+Core\Core::requireInc('finc', 'errordefines.php');
+Core\Core::requireConfig('finc');
 
 class Finc {
     var $forms       = null;
@@ -65,10 +65,10 @@ class Finc {
                 if ($this->postFile()) {
                     if (PHPWS_Error::logIfError($this->file->save())) {
                         $this->forwardMessage(dgettext('finc', 'Error occurred when saving file.'));
-                        PHPWS_Core::reroute('index.php?module=finc&aop=list');
+                        Core\Core::reroute('index.php?module=finc&aop=list');
                     } else {
                         $this->forwardMessage(dgettext('finc', 'File saved successfully.'));
-                        PHPWS_Core::reroute('index.php?module=finc&aop=list');
+                        Core\Core::reroute('index.php?module=finc&aop=list');
                     }
                 } else {
                     $this->loadForm('edit');
@@ -113,7 +113,7 @@ class Finc {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('finc', 'Finc settings saved.'));
-                    PHPWS_Core::reroute('index.php?module=finc&aop=menu');
+                    Core\Core::reroute('index.php?module=finc&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -140,7 +140,7 @@ class Finc {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -187,7 +187,7 @@ class Finc {
 
     function sendMessage()
     {
-        PHPWS_Core::reroute('index.php?module=finc&amp;uop=message');
+        Core\Core::reroute('index.php?module=finc&amp;uop=message');
     }
 
     function forwardMessage($message, $title=null)
@@ -206,14 +206,14 @@ class Finc {
             if (isset($_SESSION['FINC_Message']['title'])) {
                 $this->title = $_SESSION['FINC_Message']['title'];
             }
-            PHPWS_Core::killSession('FINC_Message');
+            Core\Core::killSession('FINC_Message');
         }
     }
 
 
     function loadForm($type)
     {
-        PHPWS_Core::initModClass('finc', 'FINC_Forms.php');
+        Core\Core::initModClass('finc', 'FINC_Forms.php');
         $this->forms = new Finc_Forms;
         $this->forms->finc = & $this;
         $this->forms->get($type);
@@ -222,7 +222,7 @@ class Finc {
 
     function loadFile($id=0)
     {
-        PHPWS_Core::initModClass('finc', 'FINC_File.php');
+        Core\Core::initModClass('finc', 'FINC_File.php');
 
         if ($id) {
             $this->file = new Finc_File($id);
@@ -238,7 +238,7 @@ class Finc {
 
     function loadPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('finc-panel');
         $link = 'index.php?module=finc&aop=menu';
 

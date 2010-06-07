@@ -3,7 +3,7 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+Core\Core::initModClass('filecabinet', 'Multimedia.php');
 
 class FC_Multimedia_Manager {
     public $multimedia = null;
@@ -27,7 +27,7 @@ class FC_Multimedia_Manager {
                     Current_User::disallow();
                 }
                 $this->multimedia->delete();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'post_multimedia_upload':
@@ -49,7 +49,7 @@ class FC_Multimedia_Manager {
                     Clipboard::copy($this->multimedia->title, $this->multimedia->getTag(), true,
                     sprintf('[filecabinet:media:%s]', $this->multimedia->id));
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'edit_embed':
@@ -154,7 +154,7 @@ class FC_Multimedia_Manager {
             $this->loadMultimedia();
         }
 
-        PHPWS_Core::initCoreClass('File.php');
+        Core\Core::initCoreClass('File.php');
 
         $form = new PHPWS_FORM;
         $form->addHidden('module',    'filecabinet');

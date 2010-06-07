@@ -6,7 +6,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::initModClass('checkin', 'Checkin.php');
+Core\Core::initModClass('checkin', 'Checkin.php');
 
 define('CO_FT_LAST_NAME',  1);
 define('CO_FT_REASON',     2);
@@ -45,7 +45,7 @@ class Checkin_Admin extends Checkin {
         } elseif ($_REQUEST['tab']) {
             $cmd = $_REQUEST['tab'];
         } else {
-            PHPWS_Core::errorPage('404');
+            Core\Core::errorPage('404');
         }
 
         $js = false;
@@ -54,27 +54,27 @@ class Checkin_Admin extends Checkin {
 
             case 'finish_meeting':
                 $this->finishMeeting();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'start_meeting':
                 $this->startMeeting();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'sendback':
                 $this->sendBack();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'unavailable':
                 $this->unavailable();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'available':
                 $this->available();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
 
@@ -116,7 +116,7 @@ class Checkin_Admin extends Checkin {
                     $db = new PHPWS_DB('checkin_staff');
                     $db->moveRow('view_order', 'id', $_GET['staff_id'], 'up');
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'move_down':
@@ -124,7 +124,7 @@ class Checkin_Admin extends Checkin {
                     $db = new PHPWS_DB('checkin_staff');
                     $db->moveRow('view_order', 'id', $_GET['staff_id'], 'down');
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'assign':
@@ -137,24 +137,24 @@ class Checkin_Admin extends Checkin {
             case 'post_note':
                 $this->loadVisitor();
                 $this->saveNote();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'hide_panel':
                 PHPWS_Cookie::write('checkin_hide_panel', 1);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'show_panel':
                 PHPWS_Cookie::delete('checkin_hide_panel');
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 $this->panel->setCurrentTab('assign');
                 $this->assign();
                 break;
 
             case 'hide_sidebar':
                 PHPWS_Cookie::write('checkin_hide_sidebar', 1);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 $this->panel->setCurrentTab('assign');
                 $this->use_sidebar = false;
                 $this->assign();
@@ -162,7 +162,7 @@ class Checkin_Admin extends Checkin {
 
             case 'show_sidebar':
                 PHPWS_Cookie::delete('checkin_hide_sidebar');
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 $this->panel->setCurrentTab('assign');
                 $this->assign();
                 break;
@@ -187,7 +187,7 @@ class Checkin_Admin extends Checkin {
                 if (Current_User::allow('checkin', 'remove_visitors')) {
                     $this->removeVisitor();
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'settings':
@@ -209,7 +209,7 @@ class Checkin_Admin extends Checkin {
                     $this->loadReason();
                     if ($this->postReason()) {
                         $this->reason->save();
-                        PHPWS_Core::reroute('index.php?module=checkin&tab=reasons');
+                        Core\Core::reroute('index.php?module=checkin&tab=reasons');
                     } else {
                         $this->editReason();
                     }
@@ -251,7 +251,7 @@ class Checkin_Admin extends Checkin {
                     // save post
                     $this->staff->save();
                     $this->staff->saveReasons();
-                    PHPWS_Core::reroute('index.php?module=checkin&tab=staff');
+                    Core\Core::reroute('index.php?module=checkin&tab=staff');
                 } else {
                     // post failed
                     $this->loadStaff();
@@ -266,7 +266,7 @@ class Checkin_Admin extends Checkin {
                     $this->postSettings();
                 }
 
-                PHPWS_Core::reroute('index.php?module=checkin&tab=settings');
+                Core\Core::reroute('index.php?module=checkin&tab=settings');
                 break;
 
             case 'edit_reason':
@@ -277,7 +277,7 @@ class Checkin_Admin extends Checkin {
             case 'delete_reason':
                 $this->loadReason();
                 $this->reason->delete();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
         }
 
@@ -617,8 +617,8 @@ class Checkin_Admin extends Checkin {
 
     public function staff()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('checkin', 'Staff.php');
+        Core\Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('checkin', 'Staff.php');
 
         $page_tags['ADD_STAFF']    = $this->addStaffLink();
         $page_tags['FILTER_LABEL'] = dgettext('checkin', 'Filter');
@@ -691,8 +691,8 @@ class Checkin_Admin extends Checkin {
 
     public function reasons()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('checkin', 'Reasons.php');
+        Core\Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('checkin', 'Reasons.php');
 
         $pt['MESSAGE_LABEL'] = dgettext('checkin', 'Submission message');
         $pt['ADD_REASON'] = PHPWS_Text::secureLink(dgettext('checkin', 'Add reason'), 'checkin',
@@ -956,7 +956,7 @@ class Checkin_Admin extends Checkin {
 
     public function loadCurrentStaff()
     {
-        PHPWS_Core::initModClass('checkin', 'Staff.php');
+        Core\Core::initModClass('checkin', 'Staff.php');
         if (empty($this->current_staff)) {
             $db = new PHPWS_DB('checkin_staff');
             $db->addWhere('user_id', Current_User::getId());
@@ -1030,8 +1030,8 @@ class Checkin_Admin extends Checkin {
 
     public function visitorReport($print=false)
     {
-        PHPWS_Core::initModClass('checkin', 'Staff.php');
-        PHPWS_Core::initModClass('checkin', 'Visitors.php');
+        Core\Core::initModClass('checkin', 'Staff.php');
+        Core\Core::initModClass('checkin', 'Visitors.php');
         $visitor = new Checkin_Visitor($_GET['vis_id']);
         if (!$visitor->id) {
             $this->content = dgettext('checkin', 'Visitor not found');
@@ -1095,8 +1095,8 @@ class Checkin_Admin extends Checkin {
 
     public function monthReport($print=false)
     {
-        PHPWS_Core::initModClass('checkin', 'Staff.php');
-        PHPWS_Core::initModClass('checkin', 'Visitors.php');
+        Core\Core::initModClass('checkin', 'Staff.php');
+        Core\Core::initModClass('checkin', 'Visitors.php');
         $staff = new Checkin_Staff((int)$_GET['staff_id']);
         if (!$staff->id) {
             $this->content = dgettext('checkin', 'Staff member not found.');
@@ -1172,7 +1172,7 @@ class Checkin_Admin extends Checkin {
 
     public function report($print=false)
     {
-        PHPWS_Core::initCoreClass('Link.php');
+        Core\Core::initCoreClass('Link.php');
         $this->loadStaffList();
         if (empty($this->staff_list)) {
             $this->content = dgettext('checkin', 'No staff have been created.');
@@ -1219,7 +1219,7 @@ class Checkin_Admin extends Checkin {
             $reasons[0] = dgettext('checkin', 'No reason');
         }
 
-        PHPWS_Core::initModClass('checkin', 'Visitors.php');
+        Core\Core::initModClass('checkin', 'Visitors.php');
         $db = new PHPWS_DB('checkin_visitor');
         $db->addWhere('start_meeting', $udate, '>=');
         $db->addWhere('end_meeting', $udate + 86400, '<');
@@ -1302,7 +1302,7 @@ class Checkin_Admin extends Checkin {
 
     public function repeats()
     {
-        PHPWS_Core::initCoreClass('DB2.php');
+        Core\Core::initCoreClass('DB2.php');
         $end_date = (int)$_GET['date'];
         $start_date = mktime(0,0,0, date('m', $end_date) - 1, date('d', $end_date));
         $this->title = sprintf(dgettext('checkin', 'Multiple visits made between %s and %s'),

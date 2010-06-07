@@ -32,7 +32,7 @@ class Related_Action {
 
     public static function edit(Related $current)
     {
-        PHPWS_Core::initCoreClass('Module.php');
+        Core\Core::initCoreClass('Module.php');
         $related = Related_Action::getBank();
         $template['TITLE_LBL'] = dgettext('related', 'Title');
         $template['MODULE_LBL'] = dgettext('related', 'Module');
@@ -171,14 +171,14 @@ class Related_Action {
         $related->setKey($_GET['key']);
         $related->setBanked(TRUE);
         Related_Action::setBank($related);
-        PHPWS_Core::reroute($related->getUrl());
+        Core\Core::reroute($related->getUrl());
     }
 
     public function quit()
     {
         $location = $_SESSION['Related_Bank']->getUrl();
         unset($_SESSION['Related_Bank']);
-        PHPWS_Core::reroute($location);
+        Core\Core::reroute($location);
     }
 
     public function add()
@@ -202,7 +202,7 @@ class Related_Action {
             }
         }
 
-        PHPWS_Core::reroute($friend->getUrl());
+        Core\Core::reroute($friend->getUrl());
     }
 
     public function up()
@@ -216,7 +216,7 @@ class Related_Action {
         }
 
         $_SESSION['Related_Bank']->moveFriendUp($_REQUEST['pos']);
-        PHPWS_Core::reroute($_SESSION['Current_Friend']->getUrl());
+        Core\Core::reroute($_SESSION['Current_Friend']->getUrl());
     }
 
     public function down()
@@ -230,7 +230,7 @@ class Related_Action {
         }
 
         $_SESSION['Related_Bank']->moveFriendDown($_REQUEST['pos']);
-        PHPWS_Core::reroute($_SESSION['Current_Friend']->getUrl());
+        Core\Core::reroute($_SESSION['Current_Friend']->getUrl());
     }
 
     public function remove()
@@ -244,7 +244,7 @@ class Related_Action {
         }
 
         $_SESSION['Related_Bank']->removeFriend($_REQUEST['pos']);
-        PHPWS_Core::reroute($_SESSION['Current_Friend']->getUrl());
+        Core\Core::reroute($_SESSION['Current_Friend']->getUrl());
     }
 
     public function save()
@@ -291,7 +291,7 @@ class Related_Action {
             $related = & $_SESSION['Related_Bank'];
             $related->setTitle($_REQUEST['new_title']);
         }
-        PHPWS_Core::reroute($related->getUrl());
+        Core\Core::reroute($related->getUrl());
     }
 
 }

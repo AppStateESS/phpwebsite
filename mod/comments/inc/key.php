@@ -14,7 +14,7 @@ function comments_unregister_key(Key $key)
         return FALSE;
     }
 
-    PHPWS_Core::initModClass('comments', 'Comment_Thread.php');
+    Core\Core::initModClass('comments', 'Comment_Thread.php');
 
     $thread = new Comment_Thread;
 

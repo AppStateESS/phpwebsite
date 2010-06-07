@@ -85,7 +85,7 @@ class Podcaster_Category {
     function view()
     {
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
 
         $template['TITLE'] = $this->getTitle(true);

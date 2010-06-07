@@ -9,14 +9,14 @@ class RSS {
 
     public function registerModule($module, &$content)
     {
-        $reg_file = PHPWS_Core::getConfigFile($module, 'rss.php');
+        $reg_file = Core\Core::getConfigFile($module, 'rss.php');
 
         if ($reg_file == FALSE) {
             PHPWS_Boost::addLog($module, dgettext('rss', 'No RSS file found.'));
             return FALSE;
         }
 
-        PHPWS_Core::initModClass('rss', 'Channel.php');
+        Core\Core::initModClass('rss', 'Channel.php');
         include $reg_file;
 
         $oChannel = new RSS_Channel;
@@ -42,7 +42,7 @@ class RSS {
         if (!empty($channel['link'])) {
             $oChannel->link = strip_tags($channel['link']);
         } else {
-            $oChannel->link = PHPWS_Core::getHomeHttp();
+            $oChannel->link = Core\Core::getHomeHttp();
         }
 
         $result = $oChannel->save();
@@ -59,7 +59,7 @@ class RSS {
 
     public static function showFeeds()
     {
-        PHPWS_Core::initModClass('rss', 'Feed.php');
+        Core\Core::initModClass('rss', 'Feed.php');
         $db = new PHPWS_DB('rss_feeds');
 
         $db->addWhere('display', 1);
@@ -77,7 +77,7 @@ class RSS {
 
     public function viewChannel($module)
     {
-        PHPWS_Core::initModClass('rss', 'Channel.php');
+        Core\Core::initModClass('rss', 'Channel.php');
         $channel = new RSS_Channel;
         $db = new PHPWS_DB('rss_channel');
         $db->addWhere('module', $module);
@@ -94,7 +94,7 @@ class RSS {
 
     public static function showIcon($key)
     {
-        PHPWS_Core::initModClass('rss', 'Channel.php');
+        Core\Core::initModClass('rss', 'Channel.php');
         $channel = new RSS_Channel;
         $db = new PHPWS_DB('rss_channel');
         $db->addWhere('module', $key->module);

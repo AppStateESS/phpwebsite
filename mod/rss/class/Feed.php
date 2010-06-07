@@ -5,9 +5,9 @@
  * @version $Id$
  */
 
-PHPWS_Core::initCoreClass('XMLParser.php');
+Core\Core::initCoreClass('XMLParser.php');
 
-PHPWS_Core::requireConfig('rss');
+Core\Core::requireConfig('rss');
 
 class RSS_Feed {
     public $id           = 0;

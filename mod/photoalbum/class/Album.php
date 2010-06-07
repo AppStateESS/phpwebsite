@@ -320,14 +320,14 @@ class PHPWS_Album extends PHPWS_Item {
     }
 
     public function _view() {
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
 
         $columns = NULL;
         $id = $this->getId();
 
         $key = new Key($this->_key_id);
         if (!$key->allowView()) {
-            PHPWS_Core::errorPage('403');
+            Core\Core::errorPage('403');
         }
         $key->flag();
 

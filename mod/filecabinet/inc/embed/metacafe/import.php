@@ -1,7 +1,7 @@
 <?php
 function metacafe_import($media)
 {
-    PHPWS_Core::initCoreClass('XMLParser.php');
+    Core\Core::initCoreClass('XMLParser.php');
     if (preg_match('/http:\/\//', $media->file_name)) {
         $pull_regexp = '@http://www.metacafe.com/watch/(\d+).*@';
         $media->file_name = preg_replace($pull_regexp, "\\1", $media->file_name);

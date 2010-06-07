@@ -7,9 +7,9 @@
  * @version $Id$
  */
 
-PHPWS_Core::initModClass('users', 'Permission.php');
-PHPWS_Core::initModClass('users', 'Authorization.php');
-PHPWS_Core::requireConfig('users');
+Core\Core::initModClass('users', 'Permission.php');
+Core\Core::initModClass('users', 'Authorization.php');
+Core\Core::requireConfig('users');
 require_once PHPWS_SOURCE_DIR . 'mod/users/inc/errorDefines.php';
 
 if (!defined('ALLOWED_USERNAME_CHARACTERS')) {
@@ -491,7 +491,7 @@ class PHPWS_User {
 			return true;
 		}
 
-		PHPWS_Core::initModClass('users', 'Permission.php');
+		Core\Core::initModClass('users', 'Permission.php');
 		return $this->_permission->allow($module, $subpermission, $item_id, $itemname);
 	}
 
@@ -506,7 +506,7 @@ class PHPWS_User {
 
 	public function save()
 	{
-		PHPWS_Core::initModClass('users', 'Group.php');
+		Core\Core::initModClass('users', 'Group.php');
 
 		if (!$this->id) {
 			$newUser = true;
@@ -717,7 +717,7 @@ class PHPWS_User {
 			$message = dgettext('users', 'Improper permission level for action requested.');
 		}
 		Security::log($message);
-		PHPWS_Core::errorPage('403');
+		Core\Core::errorPage('403');
 	}
 
 
@@ -783,7 +783,7 @@ class PHPWS_User {
 	 */
 	public function removeAssociations()
 	{
-		$modules = PHPWS_Core::getModules(true, true);
+		$modules = Core\Core::getModules(true, true);
 		foreach ($modules as $mod) {
 			$file = sprintf('%smod/%s/inc/remove_user.php', PHPWS_SOURCE_DIR, $mod);
 			if (is_file($file)) {
@@ -802,17 +802,17 @@ class PHPWS_User {
 			return false;
 		}
 
-		if (!PHPWS_Core::moduleExists($key->module)) {
+		if (!Core\Core::moduleExists($key->module)) {
 			return PHPWS_Error::get(PHPWS_NO_MOD_FOUND, 'core', __CLASS__ . '::' . __FUNCTION__);
 		}
 
-		PHPWS_Core::initModClass('users', 'Permission.php');
+		Core\Core::initModClass('users', 'Permission.php');
 		return Users_Permission::savePermissions($key);
 	}
 
 	public static function getAllGroups()
 	{
-		PHPWS_Core::initModClass('users', 'Action.php');
+		Core\Core::initModClass('users', 'Action.php');
 		return User_Action::getGroups('group');
 	}
 
@@ -834,7 +834,7 @@ class PHPWS_User {
 			return UNRESTRICTED_PERMISSION;
 		}
 
-		PHPWS_Core::initModClass('users', 'Permission.php');
+		Core\Core::initModClass('users', 'Permission.php');
 
 		if (!isset($this->_permission)) {
 			$this->loadPermissions();

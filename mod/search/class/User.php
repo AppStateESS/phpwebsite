@@ -7,13 +7,13 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireConfig('search');
+Core\Core::requireConfig('search');
 class Search_User {
 
     public static function main()
     {
         if (!isset($_GET['user'])) {
-            PHPWS_Core::errorPage('404');
+            Core\Core::errorPage('404');
         }
 
         $command = $_GET['user'];
@@ -24,7 +24,7 @@ class Search_User {
                 break;
 
             default:
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
                 break;
         }
     }
@@ -36,7 +36,7 @@ class Search_User {
             SEARCH_DEFAULT);
         }
 
-        PHPWS_Core::initCoreClass('Form.php');
+        Core\Core::initCoreClass('Form.php');
 
         $form = new PHPWS_Form('search_box');
         $form->setMethod('get');
@@ -97,9 +97,9 @@ class Search_User {
 
     public function sendToAlternate($alternate, $search_phrase)
     {
-        $file = PHPWS_Core::getConfigFile('search', 'alternate.php');
+        $file = Core\Core::getConfigFile('search', 'alternate.php');
         if (!$file) {
-            PHPWS_Core::errorPage();
+            Core\Core::errorPage();
             exit();
         }
 
@@ -107,7 +107,7 @@ class Search_User {
 
         if (!isset($alternate_search_engine) || !is_array($alternate_search_engine) ||
         !isset($alternate_search_engine[$alternate])) {
-            PHPWS_Core::errorPage();
+            Core\Core::errorPage();
             exit();
         }
 
@@ -115,7 +115,7 @@ class Search_User {
 
         $query_string = str_replace(' ', '+', $search_phrase);
 
-        $site = urlencode(PHPWS_Core::getHomeHttp(FALSE, FALSE, FALSE));
+        $site = urlencode(Core\Core::getHomeHttp(FALSE, FALSE, FALSE));
         $url = sprintf($gosite['url'], $query_string, $site);
 
         header('location: ' . $url);
@@ -191,7 +191,7 @@ class Search_User {
 
     public static function addAlternates(PHPWS_Form $form)
     {
-        $file = PHPWS_Core::getConfigFile('search', 'alternate.php');
+        $file = Core\Core::getConfigFile('search', 'alternate.php');
         if ($file) {
             include($file);
 
@@ -218,7 +218,7 @@ class Search_User {
 
     public static function getResults($phrase, $module=NULL, $exact_match=FALSE)
     {
-        PHPWS_Core::initModClass('search', 'Stats.php');
+        Core\Core::initModClass('search', 'Stats.php');
 
         $pageTags = array();
         $pageTags['MODULE_LABEL'] = dgettext('search', 'Module');
@@ -253,7 +253,7 @@ class Search_User {
             return FALSE;
         }
 
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('phpws_key', 'Key');
         $pager->setModule('search');
         $pager->setTemplate('search_results.tpl');

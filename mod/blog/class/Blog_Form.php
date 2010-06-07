@@ -5,7 +5,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::initCoreClass('Form.php');
+Core\Core::initCoreClass('Form.php');
 
 class Blog_Form {
 
@@ -19,7 +19,7 @@ class Blog_Form {
         $form->addHidden('module', 'blog');
 
         if ($limited) {
-            PHPWS_Core::initCoreClass('Captcha.php');
+            Core\Core::initCoreClass('Captcha.php');
 
             $form->addHidden('action', 'post_suggestion');
             $form->addSubmit('submit', dgettext('blog', 'Suggest entry'));
@@ -61,7 +61,7 @@ class Blog_Form {
             $form->setLabel('comment_approval', dgettext('blog', 'Comment approval'));
 
             if ($blog->id && $blog->approved) {
-                PHPWS_Core::initModClass('comments', 'Comments.php');
+                Core\Core::initModClass('comments', 'Comments.php');
                 $thread = Comments::getThread($blog->key_id);
                 $form->setMatch('allow_anon', $thread->allow_anon);
                 $form->setMatch('comment_approval', $thread->approval);
@@ -99,7 +99,7 @@ class Blog_Form {
                 $form->setDisabled('image_url', true);
             }
 
-            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+            Core\Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('image_id', $blog->image_id);
             $manager->maxImageWidth(PHPWS_Settings::get('blog', 'max_width'));
             $manager->maxImageHeight(PHPWS_Settings::get('blog', 'max_height'));
@@ -217,7 +217,7 @@ class Blog_Form {
         $form->setLabel('logged_users_only', dgettext('blog', 'Logged user view only'));
         $form->setMatch('logged_users_only', PHPWS_Settings::get('blog', 'logged_users_only'));
 
-        PHPWS_Core::initModClass('users', 'Action.php');
+        Core\Core::initModClass('users', 'Action.php');
         $groups = User_Action::getGroups('group');
 
         if (!empty($groups)) {

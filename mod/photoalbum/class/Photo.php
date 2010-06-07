@@ -234,7 +234,7 @@ class PHPWS_Photo extends PHPWS_Item {
      */
     public function _save() {
         $allowedImageTypes = unserialize(ALLOWED_IMAGE_TYPES);
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        Core\Core::initModClass('filecabinet', 'Image.php');
         $id = $this->getId();
         $authorize = TRUE;
         if(isset($id)) {
@@ -525,7 +525,7 @@ class PHPWS_Photo extends PHPWS_Item {
                 case 'view':
                     $key = new Key($_SESSION['PHPWS_AlbumManager']->album->_key_id);
                     if (!$key->allowView()) {
-                        PHPWS_Core::errorPage('403');
+                        Core\Core::errorPage('403');
                     }
                     $title = dgettext('photoalbum', 'View Photo');
                     $content = $this->_view();

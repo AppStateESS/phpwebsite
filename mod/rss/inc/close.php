@@ -9,7 +9,7 @@ if (empty($key) || $key->isDummy() || $key->restricted) {
     return;
 }
 
-PHPWS_Core::initModClass('rss', 'RSS.php');
+Core\Core::initModClass('rss', 'RSS.php');
 RSS::showIcon($key);
 
 ?>

@@ -23,9 +23,9 @@
  */
 
 
-PHPWS_Core::requireInc('rolodex', 'errordefines.php');
-PHPWS_Core::requireConfig('rolodex');
-PHPWS_Core::requireConfig('comments');
+Core\Core::requireInc('rolodex', 'errordefines.php');
+Core\Core::requireConfig('rolodex');
+Core\Core::requireConfig('comments');
 
 class Rolodex {
     public $forms    = null;
@@ -68,14 +68,14 @@ class Rolodex {
             case 'edit_feature':
             case 'post_feature':
             case 'delete_feature':
-                PHPWS_Core::initModClass('rolodex', 'RDX_Forms.php');
+                Core\Core::initModClass('rolodex', 'RDX_Forms.php');
                 $settingsPanel = Rolodex_Forms::settingsPanel();
                 $settingsPanel->enableSecure();
                 break;
             case 'menu':
                 if (isset($_GET['tab'])) {
                     if ($_GET['tab'] == 'settings' || $_GET['tab'] == 'utilities' || $_GET['tab'] == 'locations' || $_GET['tab'] == 'features') {
-                        PHPWS_Core::initModClass('rolodex', 'RDX_Forms.php');
+                        Core\Core::initModClass('rolodex', 'RDX_Forms.php');
                         $settingsPanel = Rolodex_Forms::settingsPanel();
                         $settingsPanel->enableSecure();
                     }
@@ -112,7 +112,7 @@ class Rolodex {
                         }
                     }
                     $this->forwardMessage($msg);
-                    PHPWS_Core::reroute('index.php?module=rolodex&aop=menu');
+                    Core\Core::reroute('index.php?module=rolodex&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -129,10 +129,10 @@ class Rolodex {
                 if ($this->postMember()) {
                     if (PHPWS_Error::logIfError($this->member->saveMember())) {
                         $this->forwardMessage(dgettext('rolodex', 'Error occurred when saving member profile.'));
-                        PHPWS_Core::reroute('index.php?module=rolodex&aop=edit_member&user_id=' . $this->member->user_id);
+                        Core\Core::reroute('index.php?module=rolodex&aop=edit_member&user_id=' . $this->member->user_id);
                     } else {
                         $this->forwardMessage(dgettext('rolodex', 'Member profile saved successfully.'));
-                        PHPWS_Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
+                        Core\Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
                     }
                 } else {
                     $this->loadForm('edit_member');
@@ -250,10 +250,10 @@ class Rolodex {
                 if ($this->postLocation()) {
                     if (PHPWS_Error::logIfError($this->location->save())) {
                         $this->forwardMessage(dgettext('rolodex', 'Error occurred when saving location.'));
-                        PHPWS_Core::reroute('index.php?module=rolodex&aop=edit_location&location=' . $this->location->id);
+                        Core\Core::reroute('index.php?module=rolodex&aop=edit_location&location=' . $this->location->id);
                     } else {
                         $this->forwardMessage(dgettext('rolodex', 'Location saved successfully.'));
-                        PHPWS_Core::reroute('index.php?module=rolodex&aop=menu&tab=locations');
+                        Core\Core::reroute('index.php?module=rolodex&aop=menu&tab=locations');
                     }
                 } else {
                     $this->loadForm('edit_location');
@@ -279,10 +279,10 @@ class Rolodex {
                 if ($this->postFeature()) {
                     if (PHPWS_Error::logIfError($this->feature->save())) {
                         $this->forwardMessage(dgettext('rolodex', 'Error occurred when saving feature.'));
-                        PHPWS_Core::reroute('index.php?module=rolodex&aop=edit_feature&feature=' . $this->feature->id);
+                        Core\Core::reroute('index.php?module=rolodex&aop=edit_feature&feature=' . $this->feature->id);
                     } else {
                         $this->forwardMessage(dgettext('rolodex', 'Feature saved successfully.'));
-                        PHPWS_Core::reroute('index.php?module=rolodex&aop=menu&tab=features');
+                        Core\Core::reroute('index.php?module=rolodex&aop=menu&tab=features');
                     }
                 } else {
                     $this->loadForm('edit_feature');
@@ -345,7 +345,7 @@ class Rolodex {
 
     public function sendMessage()
     {
-        PHPWS_Core::reroute('index.php?module=rolodex&amp;uop=message');
+        Core\Core::reroute('index.php?module=rolodex&amp;uop=message');
     }
 
     public function forwardMessage($message, $title=null)
@@ -364,7 +364,7 @@ class Rolodex {
             if (isset($_SESSION['RDX_Message']['title'])) {
                 $this->title = $_SESSION['RDX_Message']['title'];
             }
-            PHPWS_Core::killSession('RDX_Message');
+            Core\Core::killSession('RDX_Message');
         }
     }
 
@@ -374,7 +374,7 @@ class Rolodex {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -387,7 +387,7 @@ class Rolodex {
             case 'message':
                 $this->loadMessage();
                 if (empty($this->message)) {
-                    PHPWS_Core::home();
+                    Core\Core::home();
                 }
                 $this->title = PHPWS_Settings::get('rolodex', 'module_title');
                 break;
@@ -397,7 +397,7 @@ class Rolodex {
                     $this->title = PHPWS_Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
-                    PHPWS_Core::initModClass('rolodex', 'RDX_Forms.php');
+                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->listMembers(1);
@@ -409,7 +409,7 @@ class Rolodex {
                     $this->title = PHPWS_Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
-                    PHPWS_Core::initModClass('rolodex', 'RDX_Forms.php');
+                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
 //                    $this->forms->categories();
@@ -422,7 +422,7 @@ class Rolodex {
                     $this->title = PHPWS_Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
-                    PHPWS_Core::initModClass('rolodex', 'RDX_Forms.php');
+                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->listLocations();
@@ -434,7 +434,7 @@ class Rolodex {
                     $this->title = PHPWS_Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
-                    PHPWS_Core::initModClass('rolodex', 'RDX_Forms.php');
+                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->listFeatures();
@@ -446,7 +446,7 @@ class Rolodex {
                     $this->title = PHPWS_Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
-                    PHPWS_Core::initModClass('rolodex', 'RDX_Forms.php');
+                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->advSearchForm();
@@ -458,7 +458,7 @@ class Rolodex {
                     $this->title = PHPWS_Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
-                    PHPWS_Core::initModClass('rolodex', 'RDX_Forms.php');
+                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->listMembers(1);
@@ -466,7 +466,7 @@ class Rolodex {
                 break;
 
             case 'export':
-                PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
+                Core\Core::initModClass('rolodex', 'RDX_Member.php');
                 if (Rolodex_Member::isDataVisible('privacy_export')) {
                     $this->exportCSV();
                 } else {
@@ -486,7 +486,7 @@ class Rolodex {
                             if ($this->member->date_expires <= time()) {
                                 $this->forwardMessage(dgettext('rolodex', 'Sorry, this membership has expired.'));
                                 if (!Current_User::isUnrestricted('rolodex'))
-                                    PHPWS_Core::reroute('index.php?module=rolodex&uop=list');
+                                    Core\Core::reroute('index.php?module=rolodex&uop=list');
                             }
                         }
                         $this->title = $this->member->getDisplay_name(true);
@@ -519,10 +519,10 @@ class Rolodex {
                 if ($this->checkMessage()) {
                     if (!PHPWS_Error::logIfError($this->sendMail())) {
                         $this->forwardMessage(dgettext('rolodex', 'Message sent succesfully.'));
-                        PHPWS_Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
+                        Core\Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
                     } else {
                         $this->forwardMessage(dgettext('rolodex', 'There was a problem sending the message.'));
-                        PHPWS_Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
+                        Core\Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
                     }
                 } else {
                     $this->loadForm('message_member');
@@ -544,14 +544,14 @@ class Rolodex {
                         } else {
                             $this->forwardMessage(dgettext('rolodex', 'Error occurred when saving member profile.'));
                         }
-                        PHPWS_Core::reroute('index.php?module=rolodex&uop=edit_member&user_id=' . $this->member->user_id);
+                        Core\Core::reroute('index.php?module=rolodex&uop=edit_member&user_id=' . $this->member->user_id);
                     } else {
                         if (PHPWS_Settings::get('rolodex', 'req_approval') && $this->member->isNew()) {
                             $this->forwardMessage(dgettext('rolodex', 'Member profile submitted successfully. An admin will review.'));
-                            PHPWS_Core::reroute('index.php?module=rolodex&uop=list');
+                            Core\Core::reroute('index.php?module=rolodex&uop=list');
                         } else {
                             $this->forwardMessage(dgettext('rolodex', 'Member profile saved successfully.'));
-                            PHPWS_Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
+                            Core\Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
                         }
                     }
                 } else {
@@ -571,7 +571,7 @@ class Rolodex {
                     } elseif (isset($_REQUEST['id'])) {
                         $id = $_REQUEST['id'];
                     }
-                    PHPWS_Core::initModClass('rolodex', 'RDX_Forms.php');
+                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->listMembers(1, false, $id, null, null);
@@ -590,7 +590,7 @@ class Rolodex {
                     } elseif (isset($_REQUEST['id'])) {
                         $id = $_REQUEST['id'];
                     }
-                    PHPWS_Core::initModClass('rolodex', 'RDX_Forms.php');
+                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->listMembers(1, false, null, $id, null);
@@ -609,7 +609,7 @@ class Rolodex {
                     } elseif (isset($_REQUEST['id'])) {
                         $id = $_REQUEST['id'];
                     }
-                    PHPWS_Core::initModClass('rolodex', 'RDX_Forms.php');
+                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->listMembers(1, false, null, null, $id);
@@ -634,7 +634,7 @@ class Rolodex {
 
     public function loadForm($type)
     {
-        PHPWS_Core::initModClass('rolodex', 'RDX_Forms.php');
+        Core\Core::initModClass('rolodex', 'RDX_Forms.php');
         $this->forms = new Rolodex_Forms;
         $this->forms->rolodex = & $this;
         $this->forms->get($type);
@@ -643,7 +643,7 @@ class Rolodex {
 
     public function loadMember($user_id=0)
     {
-        PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
+        Core\Core::initModClass('rolodex', 'RDX_Member.php');
 
         if ($user_id) {
             $this->member = new Rolodex_Member($user_id);
@@ -659,7 +659,7 @@ class Rolodex {
 
     public function loadLocation($id=0)
     {
-        PHPWS_Core::initModClass('rolodex', 'RDX_Location.php');
+        Core\Core::initModClass('rolodex', 'RDX_Location.php');
 
         if ($id) {
             $this->location = new Rolodex_Location($id);
@@ -677,7 +677,7 @@ class Rolodex {
 
     public function loadFeature($id=0)
     {
-        PHPWS_Core::initModClass('rolodex', 'RDX_Feature.php');
+        Core\Core::initModClass('rolodex', 'RDX_Feature.php');
 
         if ($id) {
             $this->feature = new Rolodex_Feature($id);
@@ -695,7 +695,7 @@ class Rolodex {
 
     public function loadCategory($id=0)
     {
-        PHPWS_Core::initModClass('categories', 'Category.php');
+        Core\Core::initModClass('categories', 'Category.php');
 
         if ($id) {
             $this->category = new Category($id);
@@ -712,7 +712,7 @@ class Rolodex {
 
     public function loadPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('rolodex-panel');
         $link = 'index.php?module=rolodex&aop=menu';
 
@@ -1188,7 +1188,7 @@ class Rolodex {
 
 
         /* begin image stuff */
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        Core\Core::initModClass('filecabinet', 'Image.php');
         if (isset($_FILES['image']) && !empty($_FILES['image']['name'])) {
             $current_image = 'images/rolodex/' . $this->member->image['name'];
             $current_thumb = 'images/rolodex/' . $this->member->image['thumb_name'];
@@ -1376,7 +1376,7 @@ class Rolodex {
             return true;
         }
 
-        PHPWS_Core::initCoreClass('Captcha.php');
+        Core\Core::initCoreClass('Captcha.php');
         return Captcha::verify();
     }
 
@@ -1385,7 +1385,7 @@ class Rolodex {
     {
         $this->loadMember();
 
-        $url = PHPWS_Core::getHomeHttp();
+        $url = Core\Core::getHomeHttp();
         $from = $_POST['name'];
         $sender = $_POST['email'];
         $sendto = $this->member->getDisplay_email();
@@ -1393,7 +1393,7 @@ class Rolodex {
         $message = sprintf(dgettext('rolodex', 'This message from %s was sent via %s.'), $from, $url) . "\n\n";
         $message .= $_POST['message'];
 
-        PHPWS_Core::initCoreClass('Mail.php');
+        Core\Core::initCoreClass('Mail.php');
         $mail = new PHPWS_Mail;
         $mail->addSendTo($sendto);
         $mail->setSubject($subject);
@@ -1416,7 +1416,7 @@ class Rolodex {
 
     public function deleteExpired()
     {
-        PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
+        Core\Core::initModClass('rolodex', 'RDX_Member.php');
         $db = new PHPWS_DB('rolodex_member');
         $db->addWhere('date_expires', time(), '<=');
         $expired = $db->getObjects('Rolodex_Member');
@@ -1440,13 +1440,13 @@ class Rolodex {
 
     public function setAllComments_annon($num)
     {
-        PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
+        Core\Core::initModClass('rolodex', 'RDX_Member.php');
         $db = new PHPWS_DB('rolodex_member');
         $result = $db->getObjects('Rolodex_Member');
         if ($result) {
             foreach ($result as $member) {
                 $member->setAllow_anon($num);
-                PHPWS_Core::initModClass('comments', 'Comments.php');
+                Core\Core::initModClass('comments', 'Comments.php');
                 $thread = Comments::getThread($member->key_id);
                 $thread->allowAnonymous($num);
                 $thread->save();
@@ -1461,7 +1461,7 @@ class Rolodex {
     public function search_index_all()
     {
 
-        PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
+        Core\Core::initModClass('rolodex', 'RDX_Member.php');
         $db = new PHPWS_DB('rolodex_member');
         $db->addColumn('demographics.user_id');
         $db->addColumn('demographics.first_name');
@@ -1493,7 +1493,7 @@ class Rolodex {
     public function search_remove_all()
     {
 
-        PHPWS_Core::initModClass('search', 'Search.php');
+        Core\Core::initModClass('search', 'Search.php');
         $db = new PHPWS_DB('search');
         $db->addWhere('module', 'rolodex');
         $result = $db->delete();
@@ -1510,7 +1510,7 @@ class Rolodex {
     public function exportCSV($approved=null, $expired=false)
     {
 
-        PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
+        Core\Core::initModClass('rolodex', 'RDX_Member.php');
 
         $content = null;
         $content .= Rolodex_Member::printCSVHeader();
@@ -1702,13 +1702,13 @@ class Rolodex {
 
         switch($type) {
             case 'location':
-                PHPWS_Core::initModClass('rolodex', 'RDX_Location.php');
+                Core\Core::initModClass('rolodex', 'RDX_Location.php');
                 $db = new PHPWS_DB('rolodex_location');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('Rolodex_Location');
                 break;
             case 'feature':
-                PHPWS_Core::initModClass('rolodex', 'RDX_Feature.php');
+                Core\Core::initModClass('rolodex', 'RDX_Feature.php');
                 $db = new PHPWS_DB('rolodex_feature');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('Rolodex_Feature');
@@ -1756,13 +1756,13 @@ class Rolodex {
 
         switch($type) {
             case 'location':
-                PHPWS_Core::initModClass('rolodex', 'RDX_Location.php');
+                Core\Core::initModClass('rolodex', 'RDX_Location.php');
                 $db = new PHPWS_DB('rolodex_location');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('Rolodex_Location');
                 break;
             case 'feature':
-                PHPWS_Core::initModClass('rolodex', 'RDX_Feature.php');
+                Core\Core::initModClass('rolodex', 'RDX_Feature.php');
                 $db = new PHPWS_DB('rolodex_feature');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('Rolodex_Feature');
@@ -1808,7 +1808,7 @@ class Rolodex {
     public function getCatSelect($match=null, $select_name='categories', $multiple=true, $count=true)
     {
 
-        PHPWS_Core::initModClass('categories', 'Category.php');
+        Core\Core::initModClass('categories', 'Category.php');
         $db = new PHPWS_DB('categories');
         $db->addOrder('title asc');
 

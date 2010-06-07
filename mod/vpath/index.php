@@ -27,13 +27,13 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-PHPWS_Core::initModClass('vpath', 'vPath.php');
+Core\Core::initModClass('vpath', 'vPath.php');
 $vpath = new vPath;
 
 if (isset($_REQUEST['aop']) && Current_User::allow('vpath')) {
     $vpath->adminMenu();
 } else {
-    PHPWS_Core::home();
+    Core\Core::home();
 }
 
 

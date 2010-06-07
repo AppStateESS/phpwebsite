@@ -550,7 +550,7 @@ class PHAT_Report {
      * @access private
      */
     function _accessDenied() {
-        PHPWS_Core::errorPage('400');
+        Core\Core::errorPage('400');
     }// END FUNC accessDenied()
 
 

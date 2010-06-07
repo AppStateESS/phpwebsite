@@ -8,9 +8,9 @@
  */
 
 require_once PHPWS_SOURCE_DIR . 'mod/users/inc/errorDefines.php';
-PHPWS_Core::requireConfig('users');
-PHPWS_Core::initModClass('users', 'Form.php');
-//PHPWS_Core::initCoreClass('Form.php');
+Core\Core::requireConfig('users');
+Core\Core::initModClass('users', 'Form.php');
+//Core\Core::initCoreClass('Form.php');
 
 
 if (!defined('ALLOW_DEITY_FORGET')) {
@@ -21,7 +21,7 @@ class User_Action {
 
     public static function adminAction()
     {
-        PHPWS_Core::initModClass('users', 'Group.php');
+        Core\Core::initModClass('users', 'Group.php');
         $message = $content = null;
 
         if (!Current_User::allow('users')) {
@@ -101,7 +101,7 @@ class User_Action {
                     return;
                 }
                 $user->kill();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'deify_user':
@@ -112,7 +112,7 @@ class User_Action {
                 }
                 $user->deity = 1;
                 $user->save();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'mortalize_user':
@@ -123,7 +123,7 @@ class User_Action {
                 }
                 $user->deity = 0;
                 $user->save();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
 
@@ -156,10 +156,10 @@ class User_Action {
                 }
 
                 if (!$user->id) {
-                    PHPWS_Core::errorPage('404');
+                    Core\Core::errorPage('404');
                 }
 
-                PHPWS_Core::initModClass('users', 'Group.php');
+                Core\Core::initModClass('users', 'Group.php');
                 $title = dgettext('users', 'Set User Permissions') . ' : ' . $user->getUsername();
                 $content = User_Form::setPermissions($user->getUserGroup());
                 break;
@@ -171,7 +171,7 @@ class User_Action {
                 }
 
                 User_Action::activateUser($_REQUEST['user_id'], false);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'activateUser':
@@ -181,7 +181,7 @@ class User_Action {
                 }
 
                 User_Action::activateUser($_REQUEST['user_id'], true);
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
                 /** End User Forms **/
@@ -194,7 +194,7 @@ class User_Action {
                     return;
                 }
 
-                PHPWS_Core::initModClass('users', 'Group.php');
+                Core\Core::initModClass('users', 'Group.php');
                 $title = dgettext('users', 'Set Group Permissions') .' : '. $group->getName();
                 $content = User_Form::setPermissions($_REQUEST['group_id'], 'group');
                 break;
@@ -218,13 +218,13 @@ class User_Action {
 
             case 'manage_groups':
                 $panel->setCurrentTab('manage_groups');
-                PHPWS_Core::killSession('Last_Member_Search');
+                Core\Core::killSession('Last_Member_Search');
                 $title = dgettext('users', 'Manage Groups');
                 $content = User_Form::manageGroups();
                 break;
 
             case 'manageMembers':
-                PHPWS_Core::initModClass('users', 'Group.php');
+                Core\Core::initModClass('users', 'Group.php');
                 $title = dgettext('users', 'Manage Members') . ' : ' . $group->getName();
                 $content = User_Form::manageMembers($group);
                 break;
@@ -366,7 +366,7 @@ class User_Action {
                     return;
                 }
 
-                PHPWS_Core::initModClass('users', 'Group.php');
+                Core\Core::initModClass('users', 'Group.php');
                 $result = User_Action::postGroup($group);
 
                 if (PHPWS_Error::isError($result)){
@@ -392,7 +392,7 @@ class User_Action {
                     return;
                 }
 
-                PHPWS_Core::initModClass('users', 'Group.php');
+                Core\Core::initModClass('users', 'Group.php');
                 $group->addMember($_REQUEST['member']);
                 $group->save();
                 unset($_SESSION['Last_Member_Search']);
@@ -405,7 +405,7 @@ class User_Action {
                     return;
                 }
 
-                PHPWS_Core::initModClass('users', 'Group.php');
+                Core\Core::initModClass('users', 'Group.php');
                 $group->dropMember($_REQUEST['member']);
                 $group->save();
                 unset($_SESSION['Last_Member_Search']);
@@ -438,7 +438,7 @@ class User_Action {
                 break;
 
             default:
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
                 break;
         }
 
@@ -517,7 +517,7 @@ class User_Action {
             } else {
                 $_SESSION['Permission_Message'] = dgettext('users', 'Permissions updated.');
             }
-            PHPWS_Core::goBack();
+            Core\Core::goBack();
         }
     }
 
@@ -535,7 +535,7 @@ class User_Action {
     public function sendMessage($message, $command)
     {
         $_SESSION['User_Admin_Message'] = $message;
-        PHPWS_Core::reroute('index.php?module=users&action=admin&command='
+        Core\Core::reroute('index.php?module=users&action=admin&command='
         . $command . '&authkey=' . Current_User::getAuthKey());
     }
 
@@ -595,7 +595,7 @@ class User_Action {
             return true;
         }
 
-        PHPWS_Core::initCoreClass('Captcha.php');
+        Core\Core::initCoreClass('Captcha.php');
         return Captcha::verify();
     }
 
@@ -658,7 +658,7 @@ class User_Action {
 
     public static function cpanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $link = PHPWS_Text::linkAddress('users', array('action'=>'admin'),false,false,true,false);
 
         if (PHPWS_Settings::get('users', 'allow_new_users') || Current_User::isDeity()) {
@@ -727,10 +727,10 @@ class User_Action {
                         }
                     } else {
                         Current_User::getLogin();
-                        PHPWS_Core::returnToBookmark();
+                        Core\Core::returnToBookmark();
                     }
                 } else {
-                    PHPWS_Core::errorPage('403');
+                    Core\Core::errorPage('403');
                 }
                 break;
 
@@ -748,7 +748,7 @@ class User_Action {
 
             case 'my_page':
                 if ($auth->local_user) {
-                    PHPWS_Core::initModClass('users', 'My_Page.php');
+                    Core\Core::initModClass('users', 'My_Page.php');
                     $my_page = new My_Page;
                     $my_page->main();
                 } else {
@@ -791,13 +791,13 @@ class User_Action {
             case 'logout':
                 $auth = Current_User::getAuthorization();
                 $auth->logout();
-                PHPWS_Core::killAllSessions();
-                PHPWS_Core::reroute('index.php?module=users&action=reset');
+                Core\Core::killAllSessions();
+                Core\Core::reroute('index.php?module=users&action=reset');
                 break;
 
             case 'login_page':
                 if (Current_User::isLogged()) {
-                    PHPWS_Core::home();
+                    Core\Core::home();
                 }
                 $title = dgettext('users', 'Login Page');
                 $content = User_Form::loginPage();
@@ -805,7 +805,7 @@ class User_Action {
 
             case 'confirm_user':
                 if (Current_User::isLogged()) {
-                    PHPWS_Core::home();
+                    Core\Core::home();
                 }
                 if (User_Action::confirmUser()) {
                     $title = dgettext('users', 'Welcome!');
@@ -820,7 +820,7 @@ class User_Action {
 
             case 'forgot_password':
                 if (Current_User::isLogged()) {
-                    PHPWS_Core::home();
+                    Core\Core::home();
                 }
                 $title = dgettext('users', 'Forgot Password');
                 $content = User_Form::forgotForm();
@@ -829,7 +829,7 @@ class User_Action {
             case 'post_forgot':
                 $title = dgettext('users', 'Forgot Password');
                 if (ALLOW_CAPTCHA) {
-                    PHPWS_Core::initCoreClass('Captcha.php');
+                    Core\Core::initCoreClass('Captcha.php');
                     if (!Captcha::verify()) {
                         $content = dgettext('users', 'Captcha information was incorrect.');
                         $content .= User_Form::forgotForm();
@@ -858,13 +858,13 @@ class User_Action {
                         break;
 
                     case 1:
-                        PHPWS_Core::home();
+                        Core\Core::home();
                         break;
                 }
                 break;
 
             default:
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
                 break;
         }
 
@@ -891,7 +891,7 @@ class User_Action {
         $hash = $_GET['hash'];
         if (preg_match('/\W/', $hash)) {
             Security::log(sprintf(dgettext('users', 'User tried to send bad hash (%s) to confirm user.'), $hash));
-            PHPWS_Core::errorPage('400');
+            Core\Core::errorPage('400');
         }
         $db = new PHPWS_DB('users_signup');
         $db->addWhere('authkey', $hash);
@@ -974,7 +974,7 @@ class User_Action {
 
         $message = User_Action::_getSignupMessage($authkey);
 
-        PHPWS_Core::initCoreClass('Mail.php');
+        Core\Core::initCoreClass('Mail.php');
         $mail = new PHPWS_Mail;
         $mail->addSendTo($user->email);
         $mail->setSubject(dgettext('users', 'Confirmation email'));
@@ -986,7 +986,7 @@ class User_Action {
 
     public function _getSignupMessage($authkey)
     {
-        $http = PHPWS_Core::getHomeHttp();
+        $http = Core\Core::getHomeHttp();
 
         $template['LINK'] = sprintf('%sindex.php?module=users&action=user&command=confirm_user&hash=%s',
         $http, $authkey);
@@ -1031,7 +1031,7 @@ class User_Action {
 
     public function postPermission()
     {
-        PHPWS_Core::initModClass('users', 'Permission.php');
+        Core\Core::initModClass('users', 'Permission.php');
 
         extract($_POST);
 
@@ -1080,7 +1080,7 @@ class User_Action {
             return $GLOBALS['User_Group_List'];
         }
 
-        PHPWS_Core::initModClass('users', 'Group.php');
+        Core\Core::initModClass('users', 'Group.php');
 
         $db = new PHPWS_DB('users_groups');
         if ($mode == 'users') {
@@ -1270,7 +1270,7 @@ class User_Action {
                     return false;
                 }
 
-                if (PHPWS_Core::isPosted()) {
+                if (Core\Core::isPosted()) {
                     $content = dgettext('users', 'Please check your email for a response.');
                     return true;
                 }
@@ -1313,7 +1313,7 @@ class User_Action {
                 $content = dgettext('users', 'Email address not found. Please try again.');
                 return false;
             } else {
-                if (PHPWS_Core::isPosted()) {
+                if (Core\Core::isPosted()) {
                     $content = dgettext('users', 'Please check your email for a response.');
                     return true;
                 }
@@ -1351,7 +1351,7 @@ class User_Action {
         $db->reset();
 
         $page_title = $_SESSION['Layout_Settings']->getPageTitle(true);
-        $url = PHPWS_Core::getHomeHttp();
+        $url = Core\Core::getHomeHttp();
         $hash = md5(time() .  $email);
 
         $message[] = dgettext('users', 'Did you forget your password at our site?');
@@ -1365,7 +1365,7 @@ class User_Action {
 
         $body = implode("\n", $message);
 
-        PHPWS_Core::initCoreClass('Mail.php');
+        Core\Core::initCoreClass('Mail.php');
         $mail = new PHPWS_Mail;
         $mail->addSendTo($email);
         $mail->setSubject(dgettext('users', 'Forgot your password?'));
@@ -1391,7 +1391,7 @@ class User_Action {
     public function emailUsernameReminder($username, $email)
     {
         $page_title = $_SESSION['Layout_Settings']->getPageTitle(true);
-        $url = PHPWS_Core::getHomeHttp();
+        $url = Core\Core::getHomeHttp();
         $hash = md5(time() .  $email);
 
         $message[] = dgettext('users', 'Did you forget your user name at our site?');
@@ -1401,7 +1401,7 @@ class User_Action {
         $message[] = $url;
         $body = implode("\n", $message);
 
-        PHPWS_Core::initCoreClass('Mail.php');
+        Core\Core::initCoreClass('Mail.php');
         $mail = new PHPWS_Mail;
         $mail->addSendTo($email);
         $mail->setSubject(dgettext('users', 'Forgot your user name?'));
@@ -1481,7 +1481,7 @@ class User_Action {
 
     public function checkPermissionTables()
     {
-        PHPWS_Core::initModClass('users', 'Permission.php');
+        Core\Core::initModClass('users', 'Permission.php');
         $db = new PHPWS_DB('modules');
         $db->addWhere('active', 1);
         $db->addColumn('title');
@@ -1559,7 +1559,7 @@ class User_Action {
 
     public function notifyUser()
     {
-        PHPWS_Core::initCoreClass('Mail.php');
+        Core\Core::initCoreClass('Mail.php');
         setLanguage(DEFAULT_LANGUAGE);
         if (!isset($_SESSION['New_User'])) {
             return;
@@ -1570,7 +1570,7 @@ class User_Action {
 
         $body[] = sprintf(dgettext('users', '%s created an user account for you.'), $page_title);
         $body[] = dgettext('users', 'You may log-in using the following information:');
-        $body[] = sprintf(dgettext('users', 'Site address: %s'), PHPWS_Core::getHomeHttp());
+        $body[] = sprintf(dgettext('users', 'Site address: %s'), Core\Core::getHomeHttp());
         $body[] = sprintf(dgettext('users', 'Username: %s'), $username);
         $body[] = sprintf(dgettext('users', 'Password: %s'), $password);
         $body[] = dgettext('users', 'Please change your password immediately after logging in.');

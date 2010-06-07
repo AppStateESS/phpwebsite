@@ -14,7 +14,7 @@ if ($_REQUEST['module'] != 'comments') {
     return;
 }
 
-PHPWS_Core::initModClass('comments', 'Comments.php');
+Core\Core::initModClass('comments', 'Comments.php');
 
 if (isset($_REQUEST['user_action'])) {
     $_POST['uop'] = $_GET['uop'] = $_REQUEST['uop'] = $_REQUEST['user_action'];
@@ -29,7 +29,7 @@ if (isset($_REQUEST['uop'])) {
 } elseif (isset($_REQUEST['cm_id'])) {
     Comments::userAction('view_comment');
 } else {
-    PHPWS_Core::errorPage('404');
+    Core\Core::errorPage('404');
 }
 
 ?>

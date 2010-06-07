@@ -21,7 +21,7 @@ class PulseController
 
     public function pulse()
     {
-        PHPWS_Core::initModClass('pulse', 'ScheduledPulse.php');
+        Core\Core::initModClass('pulse', 'ScheduledPulse.php');
         $exec = time();
 
         $db = new PHPWS_DB('pulse_schedule');

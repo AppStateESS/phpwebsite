@@ -22,7 +22,7 @@ class Profile_Forms {
 
     public function edit($profile)
     {
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $div = new PHPWS_DB('profiler_division');
         $div->addWhere('show_homepage', 1);
         $div->addOrder('title');
@@ -104,7 +104,7 @@ class Profile_Forms {
 
     public function profileList()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pageTags['LASTNAME']     = dgettext('profiler', 'Last Name');
         $pageTags['FIRSTNAME']    = dgettext('profiler', 'First Name');
         $pageTags['PROFILE_TYPE'] = dgettext('profiler', 'Type');
@@ -147,8 +147,8 @@ class Profile_Forms {
 
     public function divisionList()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('profiler', 'Division.php');
+        Core\Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('profiler', 'Division.php');
         $js_vars['height']  = '200';
         $js_vars['address'] = 'index.php?module=profiler&amp;command=edit_division&authkey=' . Current_User::getAuthKey();
         $js_vars['label']   = dgettext('profiler', 'Add division');

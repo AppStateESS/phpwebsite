@@ -11,7 +11,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 }
 
 if ($_REQUEST['module'] != 'layout' || !isset($_REQUEST['action'])) {
-    PHPWS_Core::errorPage('404');
+    Core\Core::errorPage('404');
 }
 
 
@@ -23,7 +23,7 @@ if (!Current_User::allow('layout')) {
     Current_User::disallow();
 }
 
-PHPWS_Core::initModClass('layout', 'LayoutAdmin.php');
+Core\Core::initModClass('layout', 'LayoutAdmin.php');
 
 switch ($_REQUEST['action']){
     case 'admin':
@@ -31,7 +31,7 @@ switch ($_REQUEST['action']){
         break;
 
     default:
-        PHPWS_Core::errorPage('404');
+        Core\Core::errorPage('404');
 } // END action switch
 
 ?>

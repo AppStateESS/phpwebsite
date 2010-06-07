@@ -71,8 +71,8 @@ class vMail_Forms {
             MiniAdmin::add('vmail', $link);
         }
 
-        PHPWS_Core::initModClass('vmail', 'vMail_Recipient.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('vmail', 'vMail_Recipient.php');
+        Core\Core::initCoreClass('DBPager.php');
         $ptags = array();
         $pager = new DBPager('vmail_recipients', 'vMail_Recipient');
         $pager->setModule('vmail');
@@ -294,7 +294,7 @@ class vMail_Forms {
 
     public function confirmGraphic()
     {
-        PHPWS_Core::initCoreClass('Captcha.php');
+        Core\Core::initCoreClass('Captcha.php');
         return Captcha::get();
     }
 

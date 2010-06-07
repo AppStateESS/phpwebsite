@@ -5,7 +5,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-if (PHPWS_Core::atHome()) {
+if (Core\Core::atHome()) {
     showFP();
 }
 
@@ -18,7 +18,7 @@ function showFP()
     $db->loadClass('pagesmith', 'PS_Page.php');
     $result = $db->getObjects('PS_Page');
     if (!PHPWS_Error::logIfError($result) && !empty($result)) {
-        PHPWS_Core::initModClass('pagesmith', 'PageSmith.php');
+        Core\Core::initModClass('pagesmith', 'PageSmith.php');
         foreach ($result as $page) {
             $content = $page->view();
             if ($content && !PHPWS_Error::logIfError($content)) {

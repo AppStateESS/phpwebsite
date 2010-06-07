@@ -8,7 +8,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::initModClass('related', 'Friend.php');
+Core\Core::initModClass('related', 'Friend.php');
 
 class Related {
 

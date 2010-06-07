@@ -7,7 +7,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::configRequireOnce('profiler', 'config.php');
+Core\Core::configRequireOnce('profiler', 'config.php');
 
 // Error defines
 define('PFL_PROFILE_NOT_FOUND', 1);
@@ -68,7 +68,7 @@ class Profile {
         $template['FIRST_NAME'] = $this->firstname;
         $template['LAST_NAME'] = $this->lastname;
 
-        $link = PHPWS_Core::getHomeHttp() . 'index.php?module=profiler&amp;user_cmd=view_profile&amp;id=' . $this->id;
+        $link = Core\Core::getHomeHttp() . 'index.php?module=profiler&amp;user_cmd=view_profile&amp;id=' . $this->id;
 
         if (!empty($images['small'])) {
             $image = & $images['small'];
@@ -116,7 +116,7 @@ class Profile {
 
     public function loadImages()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $images['small'] = $images['medium'] = $images['large'] = null;
 
         if ($this->photo_small) {
@@ -229,7 +229,7 @@ class Profile {
 
     public function postProfile()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        Core\Core::initModClass('filecabinet', 'Image.php');
 
         if (!Current_User::authorized('profiler')) {
             Current_User::disallow();
@@ -323,7 +323,7 @@ class Profile {
 
     public function delete()
     {
-        PHPWS_Core::initModClass('version', 'Version.php');
+        Core\Core::initModClass('version', 'Version.php');
         $this->resetdb();
         $this->_db->addWhere('id', $this->id);
         $result = $this->_db->delete();
@@ -336,7 +336,7 @@ class Profile {
 
     public function save()
     {
-        PHPWS_Core::initModClass('version', 'Version.php');
+        Core\Core::initModClass('version', 'Version.php');
 
         if ($this->approved || !$this->id) {
             $this->resetdb();

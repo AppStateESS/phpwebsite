@@ -126,7 +126,7 @@ class vShop_Dept {
             return null;
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $file = Cabinet::getFile($this->file_id);
 
         if ($file->isImage(true)) {
@@ -151,7 +151,7 @@ class vShop_Dept {
     public function view()
     {
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
 
         $key = new Key($this->key_id);
@@ -190,7 +190,7 @@ class vShop_Dept {
 
     public function getAllItems($limit=false)
     {
-        PHPWS_Core::initModClass('vshop', 'vShop_Item.php');
+        Core\Core::initModClass('vshop', 'vShop_Item.php');
         $db = new PHPWS_DB('vshop_items');
         $db->addOrder('title asc');
         $db->addWhere('dept_id', $this->id);
@@ -351,7 +351,7 @@ class vShop_Dept {
 
     public function viewLink($bare=false)
     {
-        PHPWS_Core::initCoreClass('Link.php');
+        Core\Core::initCoreClass('Link.php');
         $link = new PHPWS_Link($this->title, 'vshop', array('dept'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 

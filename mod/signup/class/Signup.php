@@ -4,8 +4,8 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireInc('signup', 'errordefines.php');
-PHPWS_Core::requireConfig('signup');
+Core\Core::requireInc('signup', 'errordefines.php');
+Core\Core::requireConfig('signup');
 
 if (!defined('SIGNUP_WINDOW')) {
     define('SIGNUP_WINDOW', 3600);
@@ -170,18 +170,18 @@ class Signup {
                 }
 
                 if ($this->postSheet()) {
-                    if (!$this->sheet->id && PHPWS_Core::isPosted()) {
+                    if (!$this->sheet->id && Core\Core::isPosted()) {
                         $this->message = dgettext('signup', 'Sheet previously posted.');
                         $this->loadForm('edit_sheet');
                     } else {
                         $new_sheet = !$this->sheet->id;
                         if (PHPWS_Error::logIfError($this->sheet->save())) {
                             $this->forwardMessage(dgettext('signup', 'Error occurred when saving sheet.'));
-                            PHPWS_Core::reroute('index.php?module=signup&aop=list');
+                            Core\Core::reroute('index.php?module=signup&aop=list');
                         } else {
                             $this->forwardMessage(dgettext('signup', 'Sheet saved successfully.'));
                             if ($new_sheet) {
-                                PHPWS_Core::reroute('index.php?module=signup&aop=edit_slots&sheet_id=' . $this->sheet->id);
+                                Core\Core::reroute('index.php?module=signup&aop=edit_slots&sheet_id=' . $this->sheet->id);
                             } else {
                                 $this->loadForm('list');
                             }
@@ -218,19 +218,19 @@ class Signup {
                 if (PHPWS_Error::logIfError($result) || !$result) {
                     $this->forwardMessage(dgettext('signup', 'Error occurred when moving applicant. Slot may be full.'));
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'move_up':
                 $this->loadSlot();
                 $this->slot->moveUp();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'move_down':
                 $this->loadSlot();
                 $this->slot->moveDown();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
 
@@ -242,7 +242,7 @@ class Signup {
             case 'delete_slot_peep':
                 $this->loadPeep();
                 $this->peep->delete();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
 
@@ -262,7 +262,7 @@ class Signup {
                 $this->loadSheet();
                 $this->resetSlots($command);
                 $this->forwardMessage(dgettext('signup', 'Slot order reset.'));
-                PHPWS_Core::reroute('index.php?module=signup&sheet_id=' . $this->sheet->id . '&aop=edit_slots&authkey=' . Current_User::getAuthKey());
+                Core\Core::reroute('index.php?module=signup&sheet_id=' . $this->sheet->id . '&aop=edit_slots&authkey=' . Current_User::getAuthKey());
                 break;
 
         }
@@ -312,7 +312,7 @@ class Signup {
 
     public function sendMessage()
     {
-        PHPWS_Core::reroute('index.php?module=signup&amp;uop=message');
+        Core\Core::reroute('index.php?module=signup&amp;uop=message');
     }
 
     public function forwardMessage($message, $title=null)
@@ -369,13 +369,13 @@ class Signup {
             if (isset($_SESSION['SU_Message']['title'])) {
                 $this->title = $_SESSION['SU_Message']['title'];
             }
-            PHPWS_Core::killSession('SU_Message');
+            Core\Core::killSession('SU_Message');
         }
     }
 
     public function loadForm($type)
     {
-        PHPWS_Core::initModClass('signup', 'Forms.php');
+        Core\Core::initModClass('signup', 'Forms.php');
         $this->forms = new Signup_Forms;
         $this->forms->signup = $this;
         $this->forms->get($type);
@@ -383,7 +383,7 @@ class Signup {
 
     public function loadPeep($id=0)
     {
-        PHPWS_Core::initModClass('signup', 'Peeps.php');
+        Core\Core::initModClass('signup', 'Peeps.php');
         if ($id) {
             $this->peep = new Signup_Peep($id);
         } elseif (isset($_REQUEST['peep_id'])) {
@@ -396,7 +396,7 @@ class Signup {
                 $this->peep->last_name  = $last_name;
                 $this->peep->email      = $email;
                 $this->peep->phone      = $phone;
-                PHPWS_Core::killSession('SU_Temp_Peep');
+                Core\Core::killSession('SU_Temp_Peep');
             }
         }
 
@@ -417,7 +417,7 @@ class Signup {
 
     public function loadSheet($id=0)
     {
-        PHPWS_Core::initModClass('signup', 'Sheet.php');
+        Core\Core::initModClass('signup', 'Sheet.php');
         if ($id) {
             $this->sheet = new Signup_Sheet($id);
         } elseif (isset($_REQUEST['sheet_id'])) {
@@ -429,7 +429,7 @@ class Signup {
 
     public function loadSlot($id=0)
     {
-        PHPWS_Core::initModClass('signup', 'Slots.php');
+        Core\Core::initModClass('signup', 'Slots.php');
         if ($id) {
             $this->slot = new Signup_Slot($id);
         } elseif (isset($_REQUEST['slot_id'])) {
@@ -454,7 +454,7 @@ class Signup {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -464,7 +464,7 @@ class Signup {
             case 'message':
                 $this->loadMessage();
                 if (empty($this->message)) {
-                    PHPWS_Core::home();
+                    Core\Core::home();
                 }
                 $this->title = dgettext('signup', 'Signup');
                 break;
@@ -572,7 +572,7 @@ class Signup {
         $sheet = & $this->sheet;
         $slot  = & $this->slot;
 
-        PHPWS_Core::initCoreClass('Mail.php');
+        Core\Core::initCoreClass('Mail.php');
         $full_name = $peep->first_name . $peep->last_name;
 
         if (preg_match('@["\'\.]@', $full_name)) {
@@ -591,7 +591,7 @@ class Signup {
         }
 
         $site_title = Layout::getPageTitle(true);
-        $link = PHPWS_Core::getHomeHttp() . 'index.php?module=signup&uop=confirm&h=' .
+        $link = Core\Core::getHomeHttp() . 'index.php?module=signup&uop=confirm&h=' .
         $peep->hashcheck . '&p=' . $peep->id;
 
         $message[] = sprintf(dgettext('signup', 'Greetings from %s,'), $site_title);
@@ -619,7 +619,7 @@ class Signup {
      */
     public function sendEmail()
     {
-        PHPWS_Core::initCoreClass('Mail.php');
+        Core\Core::initCoreClass('Mail.php');
 
         if (!isset($_SESSION['Email_Applicants'])) {
             $_SESSION['Email_Applicants']['email'] = & $this->email;
@@ -646,7 +646,7 @@ class Signup {
         if (!$this->sheet->id) {
             $this->title = dgettext('signup', 'Sorry');
             $this->content = dgettext('signup', 'Unable to send emails. Signup sheet does not exist.');
-            PHPWS_Core::killSession('Email_Applicants');
+            Core\Core::killSession('Email_Applicants');
             return;
         }
 
@@ -686,13 +686,13 @@ class Signup {
         $this->title = dgettext('signup', 'Emails sent');
         $this->content = dgettext('signup', 'Returning to applicant listing.');
         Layout::metaRoute($link, 5);
-        PHPWS_Core::killSession('Email_Applicants');
+        Core\Core::killSession('Email_Applicants');
     }
 
 
     public function loadPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('signup-panel');
         $link = 'index.php?module=signup&aop=menu';
 
@@ -962,7 +962,7 @@ class Signup {
 
     public function csvExport()
     {
-        PHPWS_Core::initModClass('signup', 'Peeps.php');
+        Core\Core::initModClass('signup', 'Peeps.php');
 
         $db = new PHPWS_DB('signup_peeps');
         $db->addWhere('sheet_id', $this->sheet->id);
@@ -1020,7 +1020,7 @@ class Signup {
 
     public function printApplicants()
     {
-        PHPWS_Core::initModClass('signup', 'Peeps.php');
+        Core\Core::initModClass('signup', 'Peeps.php');
 
         $db = new PHPWS_DB('signup_peeps');
         $db->addWhere('sheet_id', $this->sheet->id);

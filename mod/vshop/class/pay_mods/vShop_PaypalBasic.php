@@ -58,7 +58,7 @@ class vShop_PaypalBasic {
 
     function __construct($orderID){
       $this->_orderID = $orderID;
-      $this->_pp_return_url = PHPWS_Core::getHomeHttp() . 'index.php?module=vshop&uop=complete_order&order_id=' . $this->_orderID;
+      $this->_pp_return_url = Core\Core::getHomeHttp() . 'index.php?module=vshop&uop=complete_order&order_id=' . $this->_orderID;
     }
 
 

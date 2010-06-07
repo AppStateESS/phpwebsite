@@ -27,7 +27,7 @@ function podcaster_uninstall(&$content) {
     if (isset($_REQUEST['process_uninstall'])) {
 
         if ($_REQUEST['rm_media']) {
-            PHPWS_Core::initModClass('podcaster', 'PCR_Episode.php');
+            Core\Core::initModClass('podcaster', 'PCR_Episode.php');
             $db = new PHPWS_DB('podcaster_episode');
             $db->addWhere('media_id', 0, '>');
             $episodes = $db->getObjects('Podcaster_Episode');

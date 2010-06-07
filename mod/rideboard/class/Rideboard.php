@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::requireInc('rideboard', 'defines.php');
+Core\Core::requireInc('rideboard', 'defines.php');
 
 class Rideboard {
     public $ride     = null;
@@ -53,7 +53,7 @@ class Rideboard {
                     javascript('close_refresh');
                     $js = true;
                 } else {
-                    PHPWS_Core::goBack();
+                    Core\Core::goBack();
                 }
                 break;
 
@@ -62,7 +62,7 @@ class Rideboard {
                     Current_User::disallow(null, false);
                 }
                 $this->purgeRides();
-                PHPWS_Core::reroute(PHPWS_Text::linkAddress('rideboard', array('aop'=>'settings')));
+                Core\Core::reroute(PHPWS_Text::linkAddress('rideboard', array('aop'=>'settings')));
                 break;
 
 
@@ -86,12 +86,12 @@ class Rideboard {
                 break;
 
             case 'add_link':
-                if (PHPWS_Core::moduleExists('menu')) {
-                    if (PHPWS_Core::initModClass('menu', 'Menu.php')) {
+                if (Core\Core::moduleExists('menu')) {
+                    if (Core\Core::initModClass('menu', 'Menu.php')) {
                         Menu::quickLink(dgettext('rideboard', 'Rideboard'), 'index.php?module=rideboard');
                     }
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
         }
 
@@ -187,7 +187,7 @@ class Rideboard {
                     }
                 } else {
                     $this->searchSession();
-                    PHPWS_Core::reroute(PHPWS_Text::linkAddress('rideboard', array('uop'=>'search_rides')));
+                    Core\Core::reroute(PHPWS_Text::linkAddress('rideboard', array('uop'=>'search_rides')));
                 }
                 break;
 
@@ -203,7 +203,7 @@ class Rideboard {
                         $this->ride->delete();
                     }
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'delete_carpool':
@@ -211,7 +211,7 @@ class Rideboard {
                 if (Current_User::verifyAuthKey() && $this->carpool->allowDelete()) {
                     PHPWS_Error::logIfError($this->carpool->delete());
                 }
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'cpinfo':
@@ -289,7 +289,7 @@ class Rideboard {
     public function locations()
     {
         $this->title = dgettext('rideboard', 'Edit locations');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
         $tpl['ADD_LOCATION'] = $this->locationForm();
         $tpl['LOCATION_LABEL'] = dgettext('rideboard', 'Locations');
 
@@ -407,7 +407,7 @@ class Rideboard {
 
     public function loadRide()
     {
-        PHPWS_Core::initModClass('rideboard', 'Ride.php');
+        Core\Core::initModClass('rideboard', 'Ride.php');
 
         if (isset($_REQUEST['rid'])) {
             $this->ride = new RB_Ride($_REQUEST['rid']);
@@ -556,7 +556,7 @@ class Rideboard {
 
     public function postRide()
     {
-        if (PHPWS_Core::isPosted()) {
+        if (Core\Core::isPosted()) {
             return false;
         }
 
@@ -665,8 +665,8 @@ class Rideboard {
 
     public function searchRides()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('rideboard', 'Ride.php');
+        Core\Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('rideboard', 'Ride.php');
 
         if (!isset($_SESSION['rb_search'])) {
             $this->title = dgettext('rideboard', 'Sorry');
@@ -759,8 +759,8 @@ class Rideboard {
 
     public function carpool()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('rideboard', 'Carpool.php');
+        Core\Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('rideboard', 'Carpool.php');
 
         $tpl['LINK'] = javascript('open_window',
         array('address' => PHPWS_Text::linkAddress('rideboard',
@@ -825,7 +825,7 @@ class Rideboard {
 
     public function loadCarpool()
     {
-        PHPWS_Core::initModClass('rideboard', 'Carpool.php');
+        Core\Core::initModClass('rideboard', 'Carpool.php');
         if (isset($_REQUEST['cid'])) {
             $this->carpool = new RB_Carpool((int)$_REQUEST['cid']);
         } else {

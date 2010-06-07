@@ -6,6 +6,6 @@
  * @version $Id$
  */
 
-PHPWS_Core::initModClass('related', 'Related.php');
+Core\Core::initModClass('related', 'Related.php');
 
 ?>

@@ -10,7 +10,7 @@ define('CALENDAR_EVENT_TYPE_ALL_DAY', 2);
 define('CALENDAR_EVENT_TYPE_STARTS',  3);
 define('CALENDAR_EVENT_TYPE_ENDS'  ,  4);
 
-PHPWS_Core::requireInc('calendar', 'error_defines.php');
+Core\Core::requireInc('calendar', 'error_defines.php');
 
 if (!defined('CALENDAR_SAME_DAY_MDY')) {
     define('CALENDAR_SAME_DAY_MDY', true);
@@ -441,7 +441,7 @@ class Calendar_Event {
         if ($this->_schedule->checkPermissions()) {
             $link[] = $this->editLink();
             $link[] = $this->deleteLink();
-            if (PHPWS_Core::moduleExists('blog')) {
+            if (Core\Core::moduleExists('blog')) {
                 if (Current_User::allow('blog', 'edit_blog', null, null, true)) {
                     $link[] = $this->blogLink();
                 }
@@ -672,7 +672,7 @@ class Calendar_Event {
 
     public function save()
     {
-        PHPWS_Core::initModClass('search', 'Search.php');
+        Core\Core::initModClass('search', 'Search.php');
 
         $table = $this->_schedule->getEventTable();
 

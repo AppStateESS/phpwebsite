@@ -310,7 +310,7 @@ class vShop_Order {
     {
 //print_r($this->order_array);
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
 
         $tpl['ORDER_LINKS'] = $this->links();
@@ -442,7 +442,7 @@ class vShop_Order {
 
     public function updateInventory($add=false)
     {
-        PHPWS_Core::initModClass('vshop', 'vShop_Item.php');
+        Core\Core::initModClass('vshop', 'vShop_Item.php');
         foreach ($this->order_array['items'] as $id=>$var) {
             $item = new vShop_Item($this->order_array['items'][$id]['id']);
             $old_qty = $item->stock;

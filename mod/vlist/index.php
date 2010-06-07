@@ -27,7 +27,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-PHPWS_Core::initModClass('vlist', 'vList.php');
+Core\Core::initModClass('vlist', 'vList.php');
 $vlist = new vList;
 
 if (isset($_REQUEST['aop'])) {
@@ -39,7 +39,7 @@ if (isset($_REQUEST['aop'])) {
 } elseif (isset($_REQUEST['listing'])) {
     $vlist->userMenu('view_listing');
 } else {
-    PHPWS_Core::home();
+    Core\Core::home();
 //    $vlist->userMenu('listings');
 }
 

@@ -27,7 +27,7 @@ class vShop_Runtime
 {
 
     public function showCart() {
-        PHPWS_Core::initModClass('vshop', 'vShop_Cart.php');
+        Core\Core::initModClass('vshop', 'vShop_Cart.php');
         $cart = vShop_Cart::CreateInstance();
         $cart_data = $cart->GetCart();
 //        print_r($cart_data);
@@ -39,7 +39,7 @@ class vShop_Runtime
             $total_items = 0.00;
             foreach ($cart_data as $id=>$val) {
                 $qty = $cart_data[$id]['count'];
-                PHPWS_Core::initModClass('vshop', 'vShop_Item.php');
+                Core\Core::initModClass('vshop', 'vShop_Item.php');
                 $item = new vShop_Item($id);
                 $subtotal = $item->price * $qty;
                 $total_items = $total_items + $subtotal;
@@ -73,7 +73,7 @@ class vShop_Runtime
             $js['LINK'] = dgettext('vshop', 'Clear Cart');
             $tpl['CLEAR_LINK'] = javascript('confirm', $js);
 
-            PHPWS_Core::initModClass('layout', 'Layout.php');
+            Core\Core::initModClass('layout', 'Layout.php');
             Layout::add(PHPWS_Template::process($tpl, 'vshop', 'cart.tpl'), 'vshop', 'vshop_cart');
         }
     }
@@ -102,7 +102,7 @@ class vShop_Runtime
             $tpl['TITLE'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'mod_title'));
             $tpl['LABEL'] = dgettext('vshop', 'Random Item');
             $tpl['TEXT'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'sidebox_text'));
-            PHPWS_Core::initModClass('vshop', 'vShop_Item.php');
+            Core\Core::initModClass('vshop', 'vShop_Item.php');
             $item = new vShop_Item($result[0]['id']);
             $tpl['NAME'] = $item->viewLink();
             $tpl['ADD'] = $item->addLink(true) . ' ' . $item->addLink();
@@ -113,7 +113,7 @@ class vShop_Runtime
             }
             $tpl['LINK'] = PHPWS_Text::moduleLink(dgettext('vshop', 'Browse all items'), 'vshop');
 
-            PHPWS_Core::initModClass('layout', 'Layout.php');
+            Core\Core::initModClass('layout', 'Layout.php');
             Layout::add(PHPWS_Template::process($tpl, 'vshop', 'block.tpl'), 'vshop', 'vshop_sidebox');
         }
 

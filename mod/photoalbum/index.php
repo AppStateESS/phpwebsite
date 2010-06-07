@@ -12,7 +12,7 @@ if(!defined('PHPWS_SOURCE_DIR')) {
 
 $CNT_photoalbum['content'] = NULL;
 
-PHPWS_Core::requireConfig('photoalbum');
+Core\Core::requireConfig('photoalbum');
 
 
 if (!isset($_SESSION['PHPWS_AlbumManager']) && (isset($_REQUEST['module']) && $_REQUEST['module'] == 'photoalbum')) {

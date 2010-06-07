@@ -113,7 +113,7 @@ class Signup_Sheet {
 
     public function getAllSlots($bare=false, $search=null)
     {
-        PHPWS_Core::initModClass('signup', 'Slots.php');
+        Core\Core::initModClass('signup', 'Slots.php');
         $db = new PHPWS_DB('signup_slots');
         $db->addOrder('s_order');
         $db->addWhere('sheet_id', $this->id);

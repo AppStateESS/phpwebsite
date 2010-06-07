@@ -5,7 +5,7 @@
  * @modifed Matthew McNaney
  */
 
-$config = PHPWS_Core::getConfigFile('help', 'config.php');
+$config = Core\Core::getConfigFile('help', 'config.php');
 
 if (PHPWS_Error::isError($config)){
     PHPWS_Error::log($config);

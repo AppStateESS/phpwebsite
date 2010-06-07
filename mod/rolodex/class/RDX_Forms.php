@@ -64,7 +64,7 @@ class Rolodex_Forms {
                     $this->editMember($admin);
                 } else {
                     $this->rolodex->forwardMessage(dgettext('rolodex', 'You may only edit your own profile.'));
-                    PHPWS_Core::reroute('index.php?module=rolodex&uop=list');
+                    Core\Core::reroute('index.php?module=rolodex&uop=list');
                 }
                 break;
 
@@ -138,7 +138,7 @@ class Rolodex_Forms {
 
     public function settingsPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=rolodex&aop=menu';
 
         if (Current_User::allow('rolodex', 'settings', null, null, true)){
@@ -167,8 +167,8 @@ class Rolodex_Forms {
     {
 //print_r($_REQUEST); exit;
         /* init the classes */
-        PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('rolodex', 'RDX_Member.php');
+        Core\Core::initCoreClass('DBPager.php');
 
         /* add the alpha click list for approved lists */
         if (isset($approved) && $approved == 1) {
@@ -292,7 +292,7 @@ class Rolodex_Forms {
         /* if it's a list by location */
         if ($location) {
             $_REQUEST['locations'] = $location;
-            PHPWS_Core::initModClass('rolodex', 'RDX_Location.php');
+            Core\Core::initModClass('rolodex', 'RDX_Location.php');
             $item = new Rolodex_Location($location);
             Layout::addPageTitle($item->getTitle());
             $ptags['ITEM_TITLE'] = $item->getTitle(true);
@@ -314,7 +314,7 @@ class Rolodex_Forms {
         /* if it's a list by feature */
         if ($feature) {
             $_REQUEST['features'] = $feature;
-            PHPWS_Core::initModClass('rolodex', 'RDX_Feature.php');
+            Core\Core::initModClass('rolodex', 'RDX_Feature.php');
             $item = new Rolodex_Feature($feature);
             Layout::addPageTitle($item->getTitle());
             $ptags['ITEM_TITLE'] = $item->getTitle(true);
@@ -336,7 +336,7 @@ class Rolodex_Forms {
         /* if it's a list by category */
         if ($category) {
             $_REQUEST['categories'] = $category;
-            PHPWS_Core::initModClass('categories', 'Category.php');
+            Core\Core::initModClass('categories', 'Category.php');
             $item = new Category($category);
             Layout::addPageTitle($item->getTitle());
             $ptags['ITEM_TITLE'] = $item->getTitle();
@@ -420,8 +420,8 @@ class Rolodex_Forms {
         $ptags['DESCRIPTION_HEADER'] = dgettext('rolodex', 'Description');
         $ptags['ALPHA_CLICK'] = $this->rolodex->alpha_click();
 
-        PHPWS_Core::initModClass('rolodex', 'RDX_Location.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('rolodex', 'RDX_Location.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('rolodex_location', 'Rolodex_Location');
         $pager->setModule('rolodex');
 //        $pager->setOrder('title', 'asc', true);
@@ -460,8 +460,8 @@ class Rolodex_Forms {
         $ptags['DESCRIPTION_HEADER'] = dgettext('rolodex', 'Description');
         $ptags['ALPHA_CLICK'] = $this->rolodex->alpha_click();
 
-        PHPWS_Core::initModClass('rolodex', 'RDX_Feature.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('rolodex', 'RDX_Feature.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('rolodex_feature', 'Rolodex_feature');
         $pager->setModule('rolodex');
         $pager->setOrder('title', 'asc', true);
@@ -499,7 +499,7 @@ class Rolodex_Forms {
         $ptags['DESCRIPTION_HEADER'] = dgettext('rolodex', 'Description');
         $ptags['ALPHA_CLICK'] = $this->rolodex->alpha_click();
 
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('categories');
         $pager->setModule('rolodex');
         $pager->setOrder('title', 'asc', true);
@@ -530,7 +530,7 @@ class Rolodex_Forms {
             $tpl['DESCRIPTION'] = substr(ltrim(strip_tags(str_replace('<br />', ' ', PHPWS_Text::parseOutput($value['description'])))), 0, 120) . ' ...';
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $tpl['ICON'] = Cabinet::getTag($value['icon']);
 
         return $tpl;
@@ -837,7 +837,7 @@ class Rolodex_Forms {
         $form->addHidden('aop', 'edit_member');
 
 // I don't seem to need the class
-//        PHPWS_Core::initModClass('users', 'Users.php');
+//        Core\Core::initModClass('users', 'Users.php');
         $db = new PHPWS_DB('users');
         $db->addColumn('id');
         $db->addColumn('username');
@@ -1185,7 +1185,7 @@ class Rolodex_Forms {
         $form->setCols('description', '40');
         $form->setLabel('description', dgettext('rolodex', 'Description'));
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager('image_id', $location->image_id);
         $manager->imageOnly();
         $manager->maxImageWidth(PHPWS_Settings::get('rolodex', 'other_img_width'));
@@ -1229,7 +1229,7 @@ class Rolodex_Forms {
         $form->setCols('description', '40');
         $form->setLabel('description', dgettext('rolodex', 'Description'));
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager('image_id', $feature->image_id);
         $manager->imageOnly();
         $manager->maxImageWidth(PHPWS_Settings::get('rolodex', 'other_img_width'));
@@ -1316,7 +1316,7 @@ class Rolodex_Forms {
 
     public function confirmGraphic()
     {
-        PHPWS_Core::initCoreClass('Captcha.php');
+        Core\Core::initCoreClass('Captcha.php');
         return Captcha::get();
     }
 

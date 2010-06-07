@@ -47,7 +47,7 @@ class Alert {
         } elseif (!empty($_GET['id'])) {
             $command = 'view';
         } else {
-            PHPWS_Core::home();
+            Core\Core::home();
         }
 
         switch($command) {
@@ -239,14 +239,14 @@ class Alert {
                 $this->loadItem();
                 $this->item->active = 0;
                 PHPWS_Error::logIfError($this->item->save());
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'activate_item':
                 $this->loadItem();
                 $this->item->active = 1;
                 PHPWS_Error::logIfError($this->item->save());
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'types':
@@ -299,17 +299,17 @@ class Alert {
 
             case 'assign_participants':
                 $this->assignParticipants();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'remove_all_participants':
                 $this->removeAllParticipants();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'add_all_participants':
                 $this->addAllParticipants();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
 
             case 'subtract_multiple':
@@ -423,20 +423,20 @@ class Alert {
     public function sendMessage($message, $aop)
     {
         $_SESSION['Alert_Message'] = $message;
-        PHPWS_Core::reroute(PHPWS_Text::linkAddress('alert', array('aop'=>$aop), true));
+        Core\Core::reroute(PHPWS_Text::linkAddress('alert', array('aop'=>$aop), true));
     }
 
     public function loadMessage()
     {
         if (isset($_SESSION['Alert_Message'])) {
             $this->addMessage($_SESSION['Alert_Message']);
-            PHPWS_Core::killSession('Alert_Message');
+            Core\Core::killSession('Alert_Message');
         }
     }
 
     public function loadItem()
     {
-        PHPWS_Core::initModClass('alert', 'Alert_Item.php');
+        Core\Core::initModClass('alert', 'Alert_Item.php');
         if (isset($_REQUEST['id'])) {
             $this->item = new Alert_Item($_REQUEST['id']);
             if (!$this->item->id) {
@@ -449,7 +449,7 @@ class Alert {
 
     public function loadTypeByFeed()
     {
-        PHPWS_Core::initModClass('alert', 'Alert_Type.php');
+        Core\Core::initModClass('alert', 'Alert_Type.php');
         $db = new PHPWS_DB('alert_type');
         $db->addWhere('feedname', $this->rssfeed);
         $db->setLimit(1);
@@ -460,7 +460,7 @@ class Alert {
                 return false;
             } else {
                 $this->type = new Alert_Type;
-                PHPWS_Core::plugObject($this->type, $row);
+                Core\Core::plugObject($this->type, $row);
                 return true;
             }
         }
@@ -468,7 +468,7 @@ class Alert {
 
     public function loadType($type_id=0)
     {
-        PHPWS_Core::initModClass('alert', 'Alert_Type.php');
+        Core\Core::initModClass('alert', 'Alert_Type.php');
 
         if (!$type_id && isset($_REQUEST['type_id'])) {
             $type_id = & $_REQUEST['type_id'];
@@ -486,7 +486,7 @@ class Alert {
 
     public function loadForms()
     {
-        PHPWS_Core::initModClass('alert', 'Alert_Forms.php');
+        Core\Core::initModClass('alert', 'Alert_Forms.php');
         $this->forms = new Alert_Forms;
         $this->forms->alert = & $this;
     }
@@ -669,7 +669,7 @@ class Alert {
             if (!isset($_SESSION['Alert_Contact_Start'])) {
                 $_SESSION['Alert_Contact_Start'] = true;
                 $this->content = dgettext('alert', 'Copying participant list. Please wait.');
-                Layout::metaRoute(PHPWS_Core::getCurrentUrl(), 0);
+                Layout::metaRoute(Core\Core::getCurrentUrl(), 0);
                 return;
             }
             $result = Alert::copyContacts();
@@ -687,12 +687,12 @@ class Alert {
             $item->contact_complete = 1;
             $item->save();
             $this->content = dgettext('alert', 'Participant list created. Starting to send emails.');
-            Layout::metaRoute(PHPWS_Core::getCurrentUrl(), 0);
-            PHPWS_Core::killSession('Alert_Contact_Start');
+            Layout::metaRoute(Core\Core::getCurrentUrl(), 0);
+            Core\Core::killSession('Alert_Contact_Start');
             return;
         }
 
-        PHPWS_Core::initCoreClass('Batch.php');
+        Core\Core::initCoreClass('Batch.php');
 
         if (!isset($_SESSION['Total_Participants'])) {
             $db = new PHPWS_DB('alert_contact');
@@ -775,7 +775,7 @@ class Alert {
 
     public function _emailParticipant($email_address)
     {
-        PHPWS_Core::initCoreClass('Mail.php');
+        Core\Core::initCoreClass('Mail.php');
         $subject = sprintf('%s: %s', $this->type->title, $this->item->title);
 
         $mail = new PHPWS_Mail;
@@ -887,7 +887,7 @@ class Alert {
         foreach ($items as $item) {
             $feeds[] = $item->createFeed();
         }
-        PHPWS_Core::initModClass('rss', 'Channel.php');
+        Core\Core::initModClass('rss', 'Channel.php');
         $channel = new RSS_Channel;
         $channel->_feeds = $feeds;
         $channel->module = 'alert';

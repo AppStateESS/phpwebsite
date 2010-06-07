@@ -7,7 +7,7 @@
  * @package Core
  */
 
-PHPWS_Core::initModClass('version', 'Approval.php');
+Core\Core::initModClass('version', 'Approval.php');
 
 define('VERSION_TABLE_SUFFIX', '_version');
 
@@ -345,7 +345,7 @@ class Version {
         if (!is_array($data)) {
             return false;
         }
-        PHPWS_Core::plugObject($this, $data);
+        Core\Core::plugObject($this, $data);
         $diff = array_diff_assoc($data, get_object_vars($this));
         $this->setSource($diff);
 
@@ -468,7 +468,7 @@ class Version {
         if (!$data) {
             return false;
         }
-        PHPWS_Core::plugObject($object, $data);
+        Core\Core::plugObject($object, $data);
         return true;
     }
 

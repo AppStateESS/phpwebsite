@@ -58,7 +58,7 @@ class vList_Runtime
             $tpl['TITLE'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('vlist', 'module_title'));
             $tpl['LABEL'] = $label;
             $tpl['TEXT'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('vlist', 'sidebox_text'));
-            PHPWS_Core::initModClass('vlist', 'vList_Listing.php');
+            Core\Core::initModClass('vlist', 'vList_Listing.php');
             $listing = new vList_Listing($result[0]['id']);
             $tpl['NAME'] = $listing->viewLink();
             if ($listing->image_id) {
@@ -74,7 +74,7 @@ class vList_Runtime
                 $tpl['SUBMIT_LINK'] = PHPWS_Text::moduleLink(dgettext('vlist', 'Submit a listing'), 'vlist', array('uop'=>'submit_listing'));
             }
 
-            PHPWS_Core::initModClass('layout', 'Layout.php');
+            Core\Core::initModClass('layout', 'Layout.php');
             Layout::add(PHPWS_Template::process($tpl, 'vlist', 'block.tpl'), 'vlist', 'vlist_sidebox');
         }
 

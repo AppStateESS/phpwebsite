@@ -9,7 +9,7 @@ define('CAL_VIEW_ALL',         1); // everyone can see this calendar
 define('CAL_VIEW_SOME',        2); // most will see the open and close details only
 define('CAL_VIEW_LIMIT',       3); // only people given express permission can view
 
-PHPWS_Core::requireInc('calendar', 'error_defines.php');
+Core\Core::requireInc('calendar', 'error_defines.php');
 
 class Calendar_Schedule {
     /**
@@ -382,7 +382,7 @@ class Calendar_Schedule {
 
     public function loadEvent()
     {
-        PHPWS_Core::initModClass('calendar', 'Event.php');
+        Core\Core::initModClass('calendar', 'Event.php');
 
         if (!empty($_REQUEST['event_id'])) {
             $event = new Calendar_Event((int)$_REQUEST['event_id'], $this);
@@ -552,7 +552,7 @@ class Calendar_Schedule {
             return null;
         }
 
-        PHPWS_Core::initModClass('calendar', 'Event.php');
+        Core\Core::initModClass('calendar', 'Event.php');
 
         $db = new PHPWS_DB($event_table);
 
@@ -627,7 +627,7 @@ class Calendar_Schedule {
 
     function exportEvent($event_id)
     {
-        PHPWS_Core::initModClass('calendar', 'Event.php');
+        Core\Core::initModClass('calendar', 'Event.php');
         $event = new Calendar_Event($event_id, $this);
         if ($event->id) {
             $tpl = $event->icalTags();

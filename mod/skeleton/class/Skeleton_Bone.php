@@ -127,7 +127,7 @@ class Skeleton_Bone {
             return null;
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $file = Cabinet::getFile($this->file_id);
 
         if ($file->isImage(true)) {
@@ -155,7 +155,7 @@ class Skeleton_Bone {
         }
 
         if ($print) {
-            PHPWS_Core::initModClass('skeleton', 'Skeleton_Skeleton.php');
+            Core\Core::initModClass('skeleton', 'Skeleton_Skeleton.php');
             $skeleton = new Skeleton_Skeleton($this->skeleton_id);
             return $skeleton->viewLink();
         } else {
@@ -167,7 +167,7 @@ class Skeleton_Bone {
     public function view()
     {
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            Core\Core::errorPage(404);
         }
 
         Layout::addPageTitle($this->getTitle());

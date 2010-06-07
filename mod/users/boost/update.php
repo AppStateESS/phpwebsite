@@ -183,7 +183,7 @@ timeout INT NOT NULL default 0,
         case version_compare($currentVersion, '2.4.9', '<'):
             $content[] = '<pre>';
 
-            if (PHPWS_Core::isBranch() || PHPWS_Boost::inBranch()) {
+            if (Core\Core::isBranch() || PHPWS_Boost::inBranch()) {
                 $user_db = new PHPWS_DB('users');
                 $user_db->addWhere('deity', 1);
                 $user_db->addColumn('id');

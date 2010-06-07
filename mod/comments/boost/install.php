@@ -5,7 +5,7 @@
  */
 function comments_install(&$content)
 {
-    PHPWS_Core::initModClass('comments', 'Rank.php');
+    Core\Core::initModClass('comments', 'Rank.php');
     $rank = new Comment_Rank;
     $rank->group_name = 'All members';
     $rank->save();

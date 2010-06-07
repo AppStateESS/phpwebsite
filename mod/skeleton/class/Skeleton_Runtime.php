@@ -50,7 +50,7 @@ class Skeleton_Runtime
             $tpl['TITLE'] = dgettext('skeleton', 'Skeletons');
             $tpl['LABEL'] = dgettext('skeleton', 'Random Skeleton');
             $tpl['TEXT'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('skeleton', 'sidebox_text'));
-            PHPWS_Core::initModClass('skeleton', 'Skeleton_Skeleton.php');
+            Core\Core::initModClass('skeleton', 'Skeleton_Skeleton.php');
             $skeleton = new Skeleton_Skeleton($result[0]['id']);
             $tpl['NAME'] = $skeleton->viewLink();
             if ($skeleton->file_id) {
@@ -59,7 +59,7 @@ class Skeleton_Runtime
                 $tpl['THUMBNAIL'] = null;
             }
             $tpl['LINK'] = PHPWS_Text::moduleLink(dgettext('skeleton', 'List all skeletons'), 'skeleton', array('uop'=>'list_skeletons'));
-            PHPWS_Core::initModClass('layout', 'Layout.php');
+            Core\Core::initModClass('layout', 'Layout.php');
             Layout::add(PHPWS_Template::process($tpl, 'skeleton', 'block.tpl'), 'skeleton', 'skeleton_sidebox');
         }
 

@@ -148,9 +148,9 @@ class Search {
 
 		// Removes trademark/registered, contractions, and website suffix
 		$text = preg_replace('/(n\'t|\'([sd]|ll|re|ve))|\.(com|edu|net|org)|\(tm\)|\(r\)/', '', $text);
-		$config_file = PHPWS_Core::getConfigFile('search', $file_name);
+		$config_file = Core\Core::getConfigFile('search', $file_name);
 		if (!$config_file) {
-			$config_file = PHPWS_Core::getConfigFile('search', 'wordlist.txt');
+			$config_file = Core\Core::getConfigFile('search', 'wordlist.txt');
 			if (!$config_file) {
 				return $text;
 			}

@@ -116,7 +116,7 @@ class PHPWSBB_Lists
     public function search_threads ($type, $var = null)
     {
         /* Create DBPager object */
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initCoreClass('DBPager.php');
 
         $pager = new DBPager('phpwsbb_topics', 'PHPWSBB_Topic');
         $pager->setModule('phpwsbb');

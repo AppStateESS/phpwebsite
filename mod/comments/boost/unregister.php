@@ -7,7 +7,7 @@
 
 function comments_unregister($module, &$content)
 {
-    PHPWS_Core::initModClass('comments', 'Comments.php');
+    Core\Core::initModClass('comments', 'Comments.php');
     $content[] = dgettext('comments', 'Removing module\'s comments.');
     if (Comments::unregister($module)) {
         $content[] = dgettext('comments', 'Comments (if any) removed successfully');

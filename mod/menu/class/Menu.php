@@ -6,13 +6,13 @@
  * @version $Id$
  */
 
-PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+Core\Core::initModClass('menu', 'Menu_Item.php');
 
 class Menu {
 
     public static function admin()
     {
-        PHPWS_Core::initModClass('menu', 'Menu_Admin.php');
+        Core\Core::initModClass('menu', 'Menu_Admin.php');
         Menu_Admin::main();
     }
 
@@ -114,7 +114,7 @@ class Menu {
 
     public function atLink($url)
     {
-        $compare =  PHPWS_Core::getCurrentUrl();
+        $compare =  Core\Core::getCurrentUrl();
         return $url == $compare;
     }
 
@@ -128,7 +128,7 @@ class Menu {
             if (isset($_GET['curl'])) {
                 $vars['dadd'] = urlencode($_GET['curl']);
             } else {
-                $vars['dadd'] = urlencode(PHPWS_Core::getCurrentUrl(false));
+                $vars['dadd'] = urlencode(Core\Core::getCurrentUrl(false));
             }
         }
 
@@ -259,9 +259,9 @@ class Menu {
     public function siteMap()
     {
         if (!isset($_GET['site_map'])) {
-            PHPWS_Core::errorPage('404');
+            Core\Core::errorPage('404');
         }
-        PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+        Core\Core::initModClass('menu', 'Menu_Item.php');
 
         if ($_GET['site_map'] == 'all') {
             $db = new PHPWS_DB('menus');
@@ -269,11 +269,11 @@ class Menu {
             if ($result) {
                 foreach($result as $menu) {
                     if (empty($menu->title)) {
-                        PHPWS_Core::errorPage('404');
+                        Core\Core::errorPage('404');
                     }
                     $result = $menu->getLinks();
                     if (PHPWS_Error::logIfError($result)) {
-                        PHPWS_Core::errorPage();
+                        Core\Core::errorPage();
                     }
                     $content = array();
                     if (!empty($result)) {
@@ -290,13 +290,13 @@ class Menu {
         } else {
             $menu = new Menu_Item((int)$_GET['site_map']);
             if (empty($menu->title)) {
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
             }
 
             $result = $menu->getLinks();
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
-                PHPWS_Core::errorPage();
+                Core\Core::errorPage();
             }
             $content = array();
             if (!empty($result)) {
@@ -370,7 +370,7 @@ class Menu {
             return false;
         }
 
-        PHPWS_Core::initModClass('menu', 'Menu_Link.php');
+        Core\Core::initModClass('menu', 'Menu_Link.php');
 
         $link = new Menu_Link;
 

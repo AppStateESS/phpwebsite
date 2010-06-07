@@ -149,7 +149,7 @@ function podcaster_update(&$content, $currentVersion)
                            'templates/info.tpl'
                            );
                 podcasterUpdateFiles($files, $content);
-                PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+                Core\Core::initModClass('filecabinet', 'Cabinet.php');
                 if (Cabinet::convertImagesToFileAssoc('podcaster_channel', 'image_id')) {
                     $content[] = '--- Converted channel images to new File Cabinet format.';
                 } else {
@@ -208,7 +208,7 @@ It has been replaced with mod/podcaster/inc/runtime.php
 
             /* update channel keys */
             $error = false;
-            PHPWS_Core::initModClass('podcaster', 'PCR_Channel.php');
+            Core\Core::initModClass('podcaster', 'PCR_Channel.php');
             $db = new PHPWS_DB('podcaster_channel');
             $channels = $db->getObjects('Podcaster_Channel');
             if (PHPWS_Error::isError($channels)) {
@@ -231,7 +231,7 @@ Please save each channel to force an update of the key file.';
 
             /* update episode keys */
             $error = false;
-            PHPWS_Core::initModClass('podcaster', 'PCR_Episode.php');
+            Core\Core::initModClass('podcaster', 'PCR_Episode.php');
             $db = new PHPWS_DB('podcaster_episode');
             $episodes = $db->getObjects('Podcaster_Episode');
             if (PHPWS_Error::isError($episodes)) {

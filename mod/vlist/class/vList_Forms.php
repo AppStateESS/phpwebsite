@@ -88,7 +88,7 @@ class vList_Forms {
 
     public function settingsPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        Core\Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=vlist&aop=menu';
 
         if (Current_User::allow('vlist', 'settings', null, null, true)){
@@ -118,8 +118,8 @@ class vList_Forms {
             MiniAdmin::add('vlist', $link);
         }
 
-        PHPWS_Core::initModClass('vlist', 'vList_Listing.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('vlist', 'vList_Listing.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('vlist_listing', 'vList_Listing');
         $pager->setModule('vlist');
         $pager->db->addColumn('vlist_listing.*');
@@ -189,7 +189,7 @@ class vList_Forms {
         /* if it's a list by group */
         if ($group) {
             $_REQUEST['groups'] = $group;
-            PHPWS_Core::initModClass('vlist', 'vList_Group.php');
+            Core\Core::initModClass('vlist', 'vList_Group.php');
             $item = new vList_Group($group);
             Layout::addPageTitle($item->getTitle());
             $ptags['ITEM_TITLE'] = $item->getTitle(true);
@@ -205,8 +205,8 @@ class vList_Forms {
         if ($owner) {
             if (PHPWS_Settings::get('vlist', 'show_users') || Current_User::allow('vlist')) {
                 $_REQUEST['owner'] = $owner;
-                if (PHPWS_Core::moduleExists('rolodex')) {
-                    PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
+                if (Core\Core::moduleExists('rolodex')) {
+                    Core\Core::initModClass('rolodex', 'RDX_Member.php');
                     $user = new Rolodex_Member($owner);
                     if ($user) {
                         Layout::addPageTitle($user->getDisplay_name());
@@ -387,8 +387,8 @@ class vList_Forms {
             $ptags['ALPHA_CLICK'] = $this->vlist->alpha_click();
         }
 
-        PHPWS_Core::initModClass('vlist', 'vList_Group.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('vlist', 'vList_Group.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('vlist_group', 'vList_Group');
         $pager->setModule('vlist');
         $pager->setDefaultOrder('title', 'asc', true);
@@ -428,8 +428,8 @@ class vList_Forms {
         $ptags['PRIVATE_HEADER'] = dgettext('vlist', 'Private');
         $ptags['ADD_FORM'] = $this->addElement();
 
-        PHPWS_Core::initModClass('vlist', 'UNI_Element.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('vlist', 'UNI_Element.php');
+        Core\Core::initCoreClass('DBPager.php');
         $pager = new DBPager('vlist_element', 'UNI_Element');
         $pager->setModule('vlist');
         $pager->setOrder('sort', 'asc', true);
@@ -514,7 +514,7 @@ class vList_Forms {
 
         if (PHPWS_Settings::get('vlist', 'enable_images')) {
             if (PHPWS_Settings::get('vlist', 'anon_files') || (PHPWS_Settings::get('vlist', 'user_files') && $_SESSION['User']->username != '') || Current_User::allow('vlist', 'edit_listing')) {
-                PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+                Core\Core::initModClass('filecabinet', 'Cabinet.php');
                 $manager = Cabinet::fileManager('image_id', $listing->image_id);
                 $manager->imageOnly();
                 $manager->maxImageWidth(PHPWS_Settings::get('vlist', 'max_width'));
@@ -527,7 +527,7 @@ class vList_Forms {
 
         if (PHPWS_Settings::get('vlist', 'enable_files')) {
             if (PHPWS_Settings::get('vlist', 'anon_files') || (PHPWS_Settings::get('vlist', 'user_files') && $_SESSION['User']->username != '') || Current_User::allow('vlist', 'edit_listing')) {
-                PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+                Core\Core::initModClass('filecabinet', 'Cabinet.php');
                 $manager = Cabinet::fileManager('file_id', $listing->file_id);
                 $manager->documentOnly();
                 if ($manager) {
@@ -580,7 +580,7 @@ class vList_Forms {
         $form->setCols('description', '40');
         $form->setLabel('description', dgettext('vlist', 'Description'));
 
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        Core\Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager('image_id', $group->image_id);
         $manager->imageOnly();
         $manager->maxImageWidth(PHPWS_Settings::get('vlist', 'max_width'));
@@ -809,7 +809,7 @@ class vList_Forms {
                     $match = null;
                 }
                 $class = 'UNI_' . $type;
-                PHPWS_Core::initModClass('vlist', 'elements/' . $class . '.php');
+                Core\Core::initModClass('vlist', 'elements/' . $class . '.php');
                 $field = new $class($id);
                 $tpl['FIELD'] = $field->view($match);
                 $form .= PHPWS_Template::processTemplate($tpl, 'vlist', 'listing_extras_form.tpl');

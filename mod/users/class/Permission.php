@@ -358,7 +358,7 @@ class Users_Permission {
     public static function getPermissionGroups($key, $edit_rights=false)
     {
         if ( empty($key) ||
-        !PHPWS_Core::isClass($key, 'key') ||
+        !Core\Core::isClass($key, 'key') ||
         $key->isHomeKey() ||
         empty($key->module) ||
         ($edit_rights && empty($key->edit_permission) )
@@ -424,7 +424,7 @@ class Users_Permission {
 
     public function getGroupList($groups)
     {
-        PHPWS_Core::initModClass('users', 'Group.php');
+        Core\Core::initModClass('users', 'Group.php');
 
         $db = new PHPWS_DB('users_groups');
 
@@ -509,7 +509,7 @@ class Users_Permission {
             $key->_edit_groups = array();
         }
 
-        PHPWS_Core::initModClass('users', 'Group.php');
+        Core\Core::initModClass('users', 'Group.php');
 
         foreach ($groups as $group_id) {
             $group_obj = new PHPWS_Group($group_id, false);

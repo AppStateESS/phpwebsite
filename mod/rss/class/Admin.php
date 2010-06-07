@@ -11,8 +11,8 @@ class RSS_Admin {
     {
         $tpl['MESSAGE'] = NULL;
         $message = RSS_Admin::getMessage();
-        PHPWS_Core::initModClass('rss', 'Feed.php');
-        PHPWS_Core::initModClass('rss', 'Channel.php');
+        Core\Core::initModClass('rss', 'Feed.php');
+        Core\Core::initModClass('rss', 'Channel.php');
 
         if (!Current_User::allow('rss')) {
             Current_User::disallow();
@@ -128,7 +128,7 @@ class RSS_Admin {
                 break;
 
             default:
-                PHPWS_Core::errorPage('404');
+                Core\Core::errorPage('404');
                 break;
         }
 
@@ -148,7 +148,7 @@ class RSS_Admin {
     {
         $_SESSION['RSS_Message'] = $message;
 
-        PHPWS_Core::reroute(sprintf('index.php?module=rss&command=%s&authkey=%s',
+        Core\Core::reroute(sprintf('index.php?module=rss&command=%s&authkey=%s',
         $command, Current_User::getAuthKey()));
 
     }
@@ -277,7 +277,7 @@ class RSS_Admin {
 
     public static function channels()
     {
-        PHPWS_Core::initModClass('rss', 'Channel.php');
+        Core\Core::initModClass('rss', 'Channel.php');
         $final_tpl['TITLE'] = dgettext('rss', 'Administrate RSS Feeds');
 
         $db = new PHPWS_DB('rss_channel');
@@ -358,7 +358,7 @@ class RSS_Admin {
 
     public static function import()
     {
-        PHPWS_Core::requireConfig('rss');
+        Core\Core::requireConfig('rss');
 
         if (!ini_get('allow_url_fopen')) {
             $tpl['TITLE'] = dgettext('rss', 'Sorry');
@@ -366,8 +366,8 @@ class RSS_Admin {
             return $tpl;
         }
 
-        PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('rss', 'Feed.php');
+        Core\Core::initCoreClass('DBPager.php');
+        Core\Core::initModClass('rss', 'Feed.php');
         $content = NULL;
 
         $vars['address'] = 'index.php?module=rss&command=add_feed';
