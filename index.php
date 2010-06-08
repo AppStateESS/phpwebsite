@@ -31,19 +31,16 @@ if (is_file('config/core/config.php')) {
 
 include PHPWS_SOURCE_DIR . 'phpws_stats.php';
 
-// Commented out in phpWebSite 2.0. If missing functions, uncomment
-// require_once PHPWS_SOURCE_DIR . 'inc/Functions.php';
-
 ob_start();
 if (is_file(PHPWS_SOURCE_DIR . 'config/core/source.php')) {
     require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
 }
-require_once PHPWS_SOURCE_DIR . 'core/class/Init.php';
+require_once PHPWS_SOURCE_DIR . 'inc/Initialization.php';
 require_once PHPWS_SOURCE_DIR . 'inc/Forward.php';
 
 
-PHPWS_Core::requireConfig('core', 'file_types.php');
-PHPWS_Core::initializeModules();
+Core\Core::requireConfig('core', 'file_types.php');
+Core\Core::initializeModules();
 
 define('SESSION_NAME', md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
 session_name(SESSION_NAME);
@@ -51,22 +48,22 @@ session_start();
 
 require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
 
-if (!PHPWS_Core::checkBranch()) {
-    PHPWS_Core::errorPage();
+if (!Core\Core::checkBranch()) {
+    Core\Core::errorPage();
 }
 
-PHPWS_Core::runtimeModules();
-PHPWS_Core::checkOverpost();
-PHPWS_Core::runCurrentModule();
-PHPWS_Core::closeModules();
+Core\Core::runtimeModules();
+Core\Core::checkOverpost();
+Core\Core::runCurrentModule();
+Core\Core::closeModules();
 ob_end_flush();
 
-PHPWS_DB::disconnect();
+Core\DB::disconnect();
 
-PHPWS_Core::setLastPost();
+Core\Core::setLastPost();
 
 if (isset($_REQUEST['reset'])) {
-    PHPWS_Core::killAllSessions();
+    Core\Core::killAllSessions();
 }
 
 show_stats();
