@@ -27,9 +27,9 @@ class PCR_Runtime
 {
 
     public static function showBlock() {
-        if (PHPWS_Settings::get('podcaster', 'show_block')) {
-            if (PHPWS_Settings::get('podcaster', 'block_on_home_only')) {
-                $key = Key::getCurrent();
+        if (Core\Settings::get('podcaster', 'show_block')) {
+            if (Core\Settings::get('podcaster', 'block_on_home_only')) {
+                $key = Core\Key::getCurrent();
                 if (!empty($key) && $key->isHomeKey()) {
                     PCR_Runtime::showPodcasterBlock();
                 }
@@ -41,20 +41,20 @@ class PCR_Runtime
 
     public static function showPodcasterBlock() {
 
-        $db = new PHPWS_DB('podcaster_episode');
+        $db = new Core\DB('podcaster_episode');
         $db->addColumn('id');
         $db->addWhere('active', 1);
         $db->addWhere('approved', 1);
-        if (PHPWS_Settings::get('podcaster', 'block_order_by_rand')) {
+        if (Core\Settings::get('podcaster', 'block_order_by_rand')) {
             $db->addOrder('rand');
         } else {
             $db->addOrder('date_created desc');
         }
         $db->setLimit(1);
         $result = $db->select();
-        if (!PHPWS_Error::logIfError($result) && !empty($result)) {
+        if (!Core\Error::logIfError($result) && !empty($result)) {
             $tpl['TITLE'] = dgettext('podcaster', 'Podcaster');
-            if (PHPWS_Settings::get('podcaster', 'block_order_by_rand')) {
+            if (Core\Settings::get('podcaster', 'block_order_by_rand')) {
                 $tpl['EPISODE_LABEL'] = dgettext('podcaster', 'Random Episode');
             } else {
                 $tpl['EPISODE_LABEL'] = dgettext('podcaster', 'Most Recent Episode');
@@ -65,7 +65,7 @@ class PCR_Runtime
             $tpl['EPISODE_TITLE'] = $episode->viewLink();
             $tpl['CHANNEL_TITLE'] = $episode->getChannel(true, true);
             Core\Core::initModClass('layout', 'Layout.php');
-            Layout::add(PHPWS_Template::process($tpl, 'podcaster', 'block.tpl'), 'podcaster', 'pcr_sidebox');
+            Layout::add(Core\Template::process($tpl, 'podcaster', 'block.tpl'), 'podcaster', 'pcr_sidebox');
         }
 
     }

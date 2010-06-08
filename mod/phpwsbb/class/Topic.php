@@ -72,10 +72,10 @@ class PHPWSBB_Topic
         $this->loadKey($key);
 
         elseif(!is_array($id)) {
-            $db = new PHPWS_DB('phpwsbb_topics');
+            $db = new Core\DB('phpwsbb_topics');
             $db->addWhere('id', (int) $id);
             $result = $db->loadObject($this);
-            if (PHPWS_Error::logIfError($result))
+            if (Core\Error::logIfError($result))
             return $result;
             $this->loadKey($key);
             // Make sure we can view inactive topics
@@ -99,11 +99,11 @@ class PHPWSBB_Topic
      */
     public function loadKey($key = null)
     {
-        if (!empty($key) && Key::isKey($key))
+        if (!empty($key) && Core\Key::isKey($key))
         $this->_key = $key;
-        elseif (!Key::isKey($this->_key)) {
-            $this->_key = new Key($this->key_id);
-            if (PHPWS_Error::logIfError($this->_key->_error))
+        elseif (!Core\Key::isKey($this->_key)) {
+            $this->_key = new Core\Key($this->key_id);
+            if (Core\Error::logIfError($this->_key->_error))
             exit('There has been an error.  Please check your phpWebsite error logs.');
         }
 
@@ -146,7 +146,7 @@ class PHPWSBB_Topic
         $tags['THREAD_STICKY'] = $this->sticky;
         $tags['THREAD_LOCKED'] = dgettext('phpwsbb', 'Locked');
         $tags['THREAD_REPLIES'] = $this->total_posts;
-        if (PHPWS_Settings::get('phpwsbb', 'use_views'))
+        if (Core\Settings::get('phpwsbb', 'use_views'))
         $tags['THREAD_VIEWS'] = $this->times_viewed;
         $tags['THREAD_TITLE_LABEL'] = dgettext('comments', 'In Topic');
         $tags['THREAD_REPLIES_LABEL'] = dgettext('comments', 'Posts');
@@ -159,7 +159,7 @@ class PHPWSBB_Topic
         $tags['THREAD_SOURCE_LINK'] = '<a href="'.$this->url.'">'.$title.'</a>';
 
         if (!empty($this->summary))
-        $tags['THREAD_SUMMARY'] = PHPWS_Text::parseOutput($this->summary);
+        $tags['THREAD_SUMMARY'] = Core\Text::parseOutput($this->summary);
 
         if (!$this->is_phpwsbb) {
             $tags['MODULE'] = $this->module;
@@ -185,11 +185,11 @@ class PHPWSBB_Topic
             //            $link = sprintf('index.php?module=phpwsbb&amp;view=topic&amp;id=%1$s&amp;pg=last#cm_%2$s', $this->id, $this->lastpost_post_id);
             //			$image_tag = sprintf('<a href="%1$s" class="%2$s" title="%3$s"><span>%4$s</span></a>'
             //                         , $link, 'phpwsbb_go_new_message_link', $str, $str);
-            $link = PHPWS_Text::quickLink('<span>'.$str.'</span>', 'phpwsbb', array('view'=>'topic', 'id'=>$this->id, 'pg'=>'last'), null, $str, 'phpwsbb_go_new_message_link');
+            $link = Core\Text::quickLink('<span>'.$str.'</span>', 'phpwsbb', array('view'=>'topic', 'id'=>$this->id, 'pg'=>'last'), null, $str, 'phpwsbb_go_new_message_link');
             $link->rewrite = true;
             $link->setAnchor('cm_'.$this->lastpost_post_id);
             $tags['FORUM_LASTPOST_POST_LINK'] = $link->get();
-            //PHPWS_Text::rewriteLink('<span>'.$str.'</span>', 'phpwsbb', array('view'=>'topic', 'id'=>$this->id, 'pg'=>'last'), null, $str, 'phpwsbb_go_new_message_link', 'cm_'.$lastthread->lastpost_post_id);
+            //Core\Text::rewriteLink('<span>'.$str.'</span>', 'phpwsbb', array('view'=>'topic', 'id'=>$this->id, 'pg'=>'last'), null, $str, 'phpwsbb_go_new_message_link', 'cm_'.$lastthread->lastpost_post_id);
             $tags['THREAD_LASTPOST_INFO'] = sprintf(dgettext('phpwsbb', '%1$s %2$s<br />by %3$s'), $tags['FORUM_LASTPOST_POST_LINK'], $tags['THREAD_LASTPOST_DATE'], $tags['THREAD_LASTPOST_AUTHOR']);
         } else {
             $tags['THREAD_LASTPOST_INFO'] = dgettext('phpwsbb', 'None');
@@ -258,7 +258,7 @@ class PHPWSBB_Topic
             $thread = Comments::getThread($this->_key);
             $content = $thread->view();
         }
-        return PHPWS_Template::processTemplate($tags, 'phpwsbb', 'topic.tpl') . $content;
+        return Core\Template::processTemplate($tags, 'phpwsbb', 'topic.tpl') . $content;
     }
 
     /**
@@ -313,7 +313,7 @@ class PHPWSBB_Topic
         }
 
         /* Construct editform tags */
-        $form = new PHPWS_Form;
+        $form = new Core\Form;
         $form->useBreaker();
         $form->setAction('index.php?module=phpwsbb');
         if ($this->id)
@@ -329,9 +329,9 @@ class PHPWSBB_Topic
         if (!$this->id)
         $form->addTplTag('BACK_LINK', sprintf(dgettext('phpwsbb', 'Back to Forum "%s"'), $formtags['FORUM_TITLE_LINK']));
         else
-        $form->addTplTag('BACK_LINK', sprintf(dgettext('phpwsbb', 'Back to Topic "%s"'), PHPWS_Text::rewriteLink($this->title, 'phpwsbb', array('view'=>'topic', 'id'=>$this->id))));
+        $form->addTplTag('BACK_LINK', sprintf(dgettext('phpwsbb', 'Back to Topic "%s"'), Core\Text::rewriteLink($this->title, 'phpwsbb', array('view'=>'topic', 'id'=>$this->id))));
         /* Anonymous Poster Info */
-        if (!Current_User::isLogged() && $forum->allow_anon && PHPWS_Settings::get('comments', 'anonymous_naming')) {
+        if (!Current_User::isLogged() && $forum->allow_anon && Core\Settings::get('comments', 'anonymous_naming')) {
             $form->addText('anon_name', @$_POST['anon_name']);
             $form->setLabel('anon_name', dgettext('comments', 'Name'));
             $form->setSize('anon_name', 20, 20);
@@ -351,14 +351,13 @@ class PHPWSBB_Topic
         /* CAPTCHA */
         Core\Core::initModClass('comments', 'Comments.php');
         if (Comments::useCaptcha()) {
-            Core\Core::initCoreClass('Captcha.php');
-            $form->setLabel('captcha', dgettext('phpwsbb', 'Please copy the word in the above image.'));
+                        $form->setLabel('captcha', dgettext('phpwsbb', 'Please copy the word in the above image.'));
             $form->addTplTag('CAPTCHA_IMAGE', Captcha::get());
         }
 
         $form->addSubmit('submit');
         $tags = $form->getTemplate();
-        return PHPWS_Template::processTemplate($tags, 'comments', 'edit.tpl').'<br /><br />';
+        return Core\Template::processTemplate($tags, 'comments', 'edit.tpl').'<br /><br />';
     }
 
     /**
@@ -372,7 +371,7 @@ class PHPWSBB_Topic
     public function update_topic ()
     {
         // Update the lastpost information
-        $db = new PHPWS_DB('comments_items');
+        $db = new Core\DB('comments_items');
         $db->addColumn('comments_items.id');
         $db->addColumn('comments_items.create_time');
         $db->addColumn('comments_items.author_id');
@@ -383,7 +382,7 @@ class PHPWSBB_Topic
         $db->addWhere('comments_items.approved', 1);
         $db->addOrder('create_time desc');
         $row = $db->select('row');
-        if (PHPWS_Error::logIfError($row))
+        if (Core\Error::logIfError($row))
         return;
         if (empty($row)) { // Topic is either empty or full of unapproved comments
             $this->total_posts = 0;
@@ -430,8 +429,8 @@ class PHPWSBB_Topic
         $this->summary = $summary;
 
         // Determine the id to use
-        $db = new PHPWS_DB('comments_threads');
-        $this->id = $GLOBALS['PHPWS_DB']['connection']->nextId($db->addPrefix('comments_threads'));
+        $db = new Core\DB('comments_threads');
+        $this->id = $GLOBALS['Core\DB']['connection']->nextId($db->addPrefix('comments_threads'));
         if (!$this->commit(true))
         return false;
 
@@ -445,7 +444,7 @@ class PHPWSBB_Topic
         $thread->allowAnonymous($forum->allow_anon);
         $thread->setApproval($forum->default_approval);
         $result = $db->saveObject($thread, false, false);
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             $this->_error = dgettext('phpwsbb', 'ERROR: Could not save comment_thread.  Please alert the site administrator.');
             return false;
         }
@@ -456,7 +455,7 @@ class PHPWSBB_Topic
             if (!Comments::postComment($thread, $c_item))
             return $c_item->_error;
             $result = $c_item->save();
-            if (PHPWS_Error::logIfError($result)) {
+            if (Core\Error::logIfError($result)) {
                 $this->_error = dgettext('phpwsbb', 'ERROR: Could not save comment.  Please alert the site administrator.');
                 return false;
             }
@@ -493,7 +492,7 @@ class PHPWSBB_Topic
         $this->_key->setTitle($this->title);
         $this->_key->setSummary(strip_tags($this->summary));
         $result = $this->_key->save();
-        if (PHPWS_Error::logIfError($result))
+        if (Core\Error::logIfError($result))
         exit('There has been an error.  Please check your phpWebsite error logs.');
         $this->key_id = $this->_key->id;
         return $result;
@@ -516,16 +515,16 @@ class PHPWSBB_Topic
         }
         if ($insert && $this->is_phpwsbb)
         $this->setKey();
-        $db = new PHPWS_DB('phpwsbb_topics');
+        $db = new Core\DB('phpwsbb_topics');
         $result = $db->saveObject($this, false, !(bool) $insert);
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             $this->_error = dgettext('phpwsbb', 'There was an error when saving this topic to the database!');
             return false;
         }
         // Update Forum post stats
         $forum->update_forum(true);
         // Reset Session Cache
-        PHPWS_Cache::remove('bb_latestpostsblock');
+        Core\Cache::remove('bb_latestpostsblock');
         return true;
     }
 
@@ -547,7 +546,7 @@ class PHPWSBB_Topic
         if (!$this->active)
         $hidden = '['.dgettext('phpwsbb', 'Hidden').'] ';
         if ($this->is_phpwsbb > 1)
-        $split = '['.PHPWS_Text::rewriteLink(dgettext('phpwsbb', 'Fork'), 'phpwsbb', array('view'=>'topic', 'id'=>$this->is_phpwsbb)).'] ';
+        $split = '['.Core\Text::rewriteLink(dgettext('phpwsbb', 'Fork'), 'phpwsbb', array('view'=>'topic', 'id'=>$this->is_phpwsbb)).'] ';
         return $topic_type . $sticky . $hidden . $split . $this->title;
     }
 
@@ -564,7 +563,7 @@ class PHPWSBB_Topic
         if (empty($title))
         $title = $this->title;
         return str_replace('>'.$title, ' title="'.$this->summary.'">'.$title,
-        PHPWS_Text::rewriteLink($title, 'phpwsbb', array('view'=>'topic', 'id'=>$this->id)));
+        Core\Text::rewriteLink($title, 'phpwsbb', array('view'=>'topic', 'id'=>$this->id)));
     }
 
     /**
@@ -581,9 +580,9 @@ class PHPWSBB_Topic
         $forum = $this->get_forum();
         if ($forum->userCan('phpwsbb', 'sticky_threads'))
         if ($this->sticky)
-        $link[] = PHPWS_Text::secureLink(dgettext('phpwsbb', '"Unstick" this Topic'), 'phpwsbb', array('op'=>'unstick_topic','topic'=>$this->id));
+        $link[] = Core\Text::secureLink(dgettext('phpwsbb', '"Unstick" this Topic'), 'phpwsbb', array('op'=>'unstick_topic','topic'=>$this->id));
         else
-        $link[] = PHPWS_Text::secureLink(dgettext('phpwsbb', '"Stick" this Topic'), 'phpwsbb', array('op'=>'stick_topic','topic'=>$this->id));
+        $link[] = Core\Text::secureLink(dgettext('phpwsbb', '"Stick" this Topic'), 'phpwsbb', array('op'=>'stick_topic','topic'=>$this->id));
         if ($forum->userCan('phpwsbb', 'delete_threads')) {
             $js_var['QUESTION'] = dgettext('phpwsbb', 'This will delete the topic and all messages under it!  Are you sure you want to delete this?');
             $js_var['ADDRESS'] = 'index.php?module=phpwsbb&amp;op=delete_topic&amp;yes=1&amp;topic='.$this->id.'&amp;authkey='.Current_User::getAuthKey();
@@ -595,9 +594,9 @@ class PHPWSBB_Topic
         }
         if (Current_User::allow('phpwsbb', 'hide_threads')) {
             if ($this->active)
-            $link[] = PHPWS_Text::secureLink(dgettext('phpwsbb', 'Hide this Topic'), 'phpwsbb', array('op'=>'hide_topic','topic'=>$this->id));
+            $link[] = Core\Text::secureLink(dgettext('phpwsbb', 'Hide this Topic'), 'phpwsbb', array('op'=>'hide_topic','topic'=>$this->id));
             else
-            $link[] = PHPWS_Text::secureLink(dgettext('phpwsbb', 'Show this Topic'), 'phpwsbb', array('op'=>'show_topic','topic'=>$this->id));
+            $link[] = Core\Text::secureLink(dgettext('phpwsbb', 'Show this Topic'), 'phpwsbb', array('op'=>'show_topic','topic'=>$this->id));
         }
         if (!empty($link));
         MiniAdmin::add('phpwsbb', $link);
@@ -663,10 +662,10 @@ class PHPWSBB_Topic
      */
     public function drop()
     {
-        $db = new PHPWS_DB('phpwsbb_topics');
+        $db = new Core\DB('phpwsbb_topics');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
-        if (!$result || PHPWS_Error::logIfError($result))
+        if (!$result || Core\Error::logIfError($result))
         return false;
         return true;
     }
@@ -703,12 +702,12 @@ class PHPWSBB_Topic
         }
 
         for($i=1; $i <= $stop; $i++)
-        $pageList[] = PHPWS_Text::rewriteLink($i , 'phpwsbb', array('view'=>'topic', 'id'=>$this->id, 'pg'=>$i));
+        $pageList[] = Core\Text::rewriteLink($i , 'phpwsbb', array('view'=>'topic', 'id'=>$this->id, 'pg'=>$i));
 
         if ($restart) {
             $pageList[] = '...';
             for($i=$restart; $i <= $total_pages; $i++)
-            $pageList[] = PHPWS_Text::rewriteLink($i , 'phpwsbb', array('view'=>'topic', 'id'=>$this->id, 'pg'=>$i));
+            $pageList[] = Core\Text::rewriteLink($i , 'phpwsbb', array('view'=>'topic', 'id'=>$this->id, 'pg'=>$i));
         }
 
         return 'Pages: ' . implode('<span>, </span>', $pageList);

@@ -10,7 +10,7 @@ Core\Core::initModClass('checkin', 'Checkin.php');
 class Checkin_User extends Checkin {
 
     public function checkinForm() {
-        $form = new PHPWS_Form('checkin');
+        $form = new Core\Form('checkin');
         $form->addHidden('module', 'checkin');
         $form->addHidden('uop', 'post_checkin');
 
@@ -36,8 +36,8 @@ class Checkin_User extends Checkin {
 
         $tpl = $form->getTemplate();
         $this->title =  dgettext('checkin', 'Please check in using the form below');
-        $this->content = PHPWS_Template::process($tpl, 'checkin', 'signin.tpl');
-        if (!Current_User::isLogged() && PHPWS_Settings::get('checkin', 'collapse_signin')) {
+        $this->content = Core\Template::process($tpl, 'checkin', 'signin.tpl');
+        if (!Current_User::isLogged() && Core\Settings::get('checkin', 'collapse_signin')) {
             Layout::collapse();
         }
     }
@@ -53,7 +53,7 @@ class Checkin_User extends Checkin {
 
         $tpl['CONTENT'] = & $this->content;
 
-        return PHPWS_Template::process($tpl, 'checkin', 'main.tpl');
+        return Core\Template::process($tpl, 'checkin', 'main.tpl');
     }
 
     public function process($command=null)
@@ -82,7 +82,7 @@ class Checkin_User extends Checkin {
 
             case 'post_checkin':
                 if ($this->postCheckin()) {
-                    if (PHPWS_Error::logIfError($this->visitor->save())) {
+                    if (Core\Error::logIfError($this->visitor->save())) {
                         Core\Core::reroute('index.php?module=checkin&uop=error');
                     } else {
                         Core\Core::reroute('index.php?module=checkin&uop=thank&reason_id=' . $_POST['reason_id']);

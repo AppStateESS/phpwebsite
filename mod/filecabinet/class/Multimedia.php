@@ -25,7 +25,7 @@ class PHPWS_Multimedia extends File_Common {
     public function __construct($id=0)
     {
         $this->loadAllowedTypes();
-        $this->setMaxSize(PHPWS_Settings::get('filecabinet', 'max_multimedia_size'));
+        $this->setMaxSize(Core\Settings::get('filecabinet', 'max_multimedia_size'));
 
         if (empty($id)) {
             return;
@@ -34,12 +34,12 @@ class PHPWS_Multimedia extends File_Common {
         $this->id = (int)$id;
         $result = $this->init();
 
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->id = 0;
             $this->_errors[] = $result;
         } elseif (empty($result)) {
             $this->id = 0;
-            $this->_errors[] = PHPWS_Error::get(FC_MULTIMEDIA_NOT_FOUND, 'filecabinet', 'PHPWS_Multimedia');
+            $this->_errors[] = Core\Error::get(FC_MULTIMEDIA_NOT_FOUND, 'filecabinet', 'PHPWS_Multimedia');
         }
         $this->loadExtension();
     }
@@ -50,14 +50,14 @@ class PHPWS_Multimedia extends File_Common {
             return false;
         }
 
-        $db = new PHPWS_DB('multimedia');
+        $db = new Core\DB('multimedia');
         return $db->loadObject($this);
     }
 
 
     public function loadAllowedTypes()
     {
-        $this->_allowed_types = explode(',', PHPWS_Settings::get('filecabinet', 'media_files'));
+        $this->_allowed_types = explode(',', Core\Settings::get('filecabinet', 'media_files'));
     }
 
     public function getID3()
@@ -84,8 +84,8 @@ class PHPWS_Multimedia extends File_Common {
             $this->width = & $fileinfo['video']['streams'][2]['resolution_x'];
             $this->height = & $fileinfo['video']['streams'][2]['resolution_y'];
         } else {
-            $this->width = PHPWS_Settings::get('filecabinet', 'default_mm_width');
-            $this->height = PHPWS_Settings::get('filecabinet', 'default_mm_height');
+            $this->width = Core\Settings::get('filecabinet', 'default_mm_width');
+            $this->height = Core\Settings::get('filecabinet', 'default_mm_height');
         }
 
         $this->duration = (int)$fileinfo['playtime_seconds'];
@@ -115,8 +115,8 @@ class PHPWS_Multimedia extends File_Common {
     public function rowTags()
     {
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
-            $clip = Icon::show('clip', dgettext('filecabinet', 'Clip media'));
-            $links[] = PHPWS_Text::secureLink($clip, 'filecabinet',
+            $clip = Core\Icon::show('clip', dgettext('filecabinet', 'Clip media'));
+            $links[] = Core\Text::secureLink($clip, 'filecabinet',
             array('mop'=>'clip_multimedia',
                                                     'multimedia_id' => $this->id));
             $links[] = $this->editLink(true);
@@ -224,14 +224,14 @@ class PHPWS_Multimedia extends File_Common {
         $jsvars['width'] = 550;
         $jsvars['height'] = 620;
 
-        $link = new PHPWS_Link(null, 'filecabinet', $vars);
+        $link = new Core\Link(null, 'filecabinet', $vars);
         $link->setSecure();
         $link->setSalted();
         $jsvars['address'] = $link->getAddress();
         $jsvars['window_name'] = 'edit_link';
 
         if ($icon) {
-            $jsvars['label'] = Icon::show('edit', dgettext('filecabinet', 'Edit multimedia file'));
+            $jsvars['label'] = Core\Icon::show('edit', dgettext('filecabinet', 'Edit multimedia file'));
         } else {
             $jsvars['label'] = dgettext('filecabinet', 'Edit');
         }
@@ -246,10 +246,10 @@ class PHPWS_Multimedia extends File_Common {
         $vars['folder_id'] = $this->folder_id;
 
         $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this multimedia file?');
-        $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+        $js['ADDRESS']  = Core\Text::linkAddress('filecabinet', $vars, true);
 
         if ($icon) {
-            $js['LINK'] = Icon::show('delete');
+            $js['LINK'] = Core\Icon::show('delete');
         } else {
             $js['LINK'] = dgettext('filecabinet', 'Delete');
         }
@@ -289,7 +289,7 @@ class PHPWS_Multimedia extends File_Common {
 
         }
 
-        return PHPWS_Template::process($tpl, 'filecabinet', $filter_tpl, true);
+        return Core\Template::process($tpl, 'filecabinet', $filter_tpl, true);
     }
 
     public function getFilter()
@@ -364,22 +364,22 @@ class PHPWS_Multimedia extends File_Common {
         $thumbnail_directory = $this->thumbnailDirectory();
 
         if (!is_writable($thumbnail_directory)) {
-            PHPWS_Error::log(FC_THUMBNAIL_NOT_WRITABLE, 'filecabinet',
+            Core\Error::log(FC_THUMBNAIL_NOT_WRITABLE, 'filecabinet',
                              'Multimedia::makeVideoThumbnail', $thumbnail_directory);
             return false;
         }
 
         $raw_file_name = $this->dropExtension();
 
-        if (!PHPWS_Settings::get('filecabinet', 'use_ffmpeg') ||
+        if (!Core\Settings::get('filecabinet', 'use_ffmpeg') ||
         $this->file_type == 'application/x-shockwave-flash') {
             $this->genericTN($raw_file_name);
             return;
         } else {
-            $ffmpeg_directory = PHPWS_Settings::get('filecabinet', 'ffmpeg_directory');
+            $ffmpeg_directory = Core\Settings::get('filecabinet', 'ffmpeg_directory');
 
             if (!is_file($ffmpeg_directory . 'ffmpeg')) {
-                PHPWS_Error::log(FC_FFMPREG_NOT_FOUND, 'filecabinet',
+                Core\Error::log(FC_FFMPREG_NOT_FOUND, 'filecabinet',
                                  'Multimedia::makeVideoThumbnail', $ffmpeg_directory);
                 $this->genericTN($raw_file_name);
                 return true;
@@ -470,7 +470,7 @@ class PHPWS_Multimedia extends File_Common {
         $thumbnail_directory = $this->thumbnailDirectory();
 
         if (!is_writable($thumbnail_directory)) {
-            PHPWS_Error::log(FC_THUMBNAIL_NOT_WRITABLE, 'filecabinet',
+            Core\Error::log(FC_THUMBNAIL_NOT_WRITABLE, 'filecabinet',
                              'Multimedia::makeAudioThumbnail', $thumbnail_directory);
 
             return false;
@@ -485,7 +485,7 @@ class PHPWS_Multimedia extends File_Common {
     {
         $result = $this->commonDelete();
 
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
@@ -493,7 +493,7 @@ class PHPWS_Multimedia extends File_Common {
             $tn_path = $this->thumbnailDirectory() . $this->dropExtension() . '.*';
             foreach (glob($tn_path) as $filename) {
                 if (!@unlink($filename)) {
-                    PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $filename);
+                    Core\Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $filename);
                 }
             }
         }
@@ -501,7 +501,7 @@ class PHPWS_Multimedia extends File_Common {
         if ($this->embedded) {
             $filename = $this->thumbnailDirectory() . $this->file_name . '.jpg';
             if (!@unlink($filename)) {
-                PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $filename);
+                Core\Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $filename);
             }
         }
 
@@ -516,16 +516,16 @@ class PHPWS_Multimedia extends File_Common {
                 if ($folder->id) {
                     $this->setDirectory($folder->getFullDirectory());
                 } else {
-                    return PHPWS_Error::get(FC_MISSING_FOLDER, 'filecabinet', 'PHPWS_Multimedia::save');
+                    return Core\Error::get(FC_MISSING_FOLDER, 'filecabinet', 'PHPWS_Multimedia::save');
                 }
             } else {
-                return PHPWS_Error::get(FC_DIRECTORY_NOT_SET, 'filecabinet', 'PHPWS_Multimedia::save');
+                return Core\Error::get(FC_DIRECTORY_NOT_SET, 'filecabinet', 'PHPWS_Multimedia::save');
             }
         }
 
         if ($write) {
             $result = $this->write();
-            if (PHPWS_Error::isError($result)) {
+            if (Core\Error::isError($result)) {
                 return $result;
             }
         }
@@ -546,7 +546,7 @@ class PHPWS_Multimedia extends File_Common {
             $this->title = $this->file_name;
         }
 
-        $db = new PHPWS_DB('multimedia');
+        $db = new Core\DB('multimedia');
         return $db->saveObject($this);
     }
 
@@ -559,7 +559,7 @@ class PHPWS_Multimedia extends File_Common {
         $title_len = strlen($this->title);
         if ($title_len > 20) {
             $file_name = sprintf('<abbr title="%s">%s</abbr>', $this->file_name,
-            PHPWS_Text::shortenUrl($this->file_name, 20));
+            Core\Text::shortenUrl($this->file_name, 20));
         } else {
             $file_name = & $this->file_name;
         }
@@ -569,7 +569,7 @@ class PHPWS_Multimedia extends File_Common {
 
         if ($filename_len > 20) {
             $file_name = sprintf('<abbr title="%s">%s</abbr>', $this->file_name,
-            PHPWS_Text::shortenUrl($this->file_name, 20));
+            Core\Text::shortenUrl($this->file_name, 20));
         } else {
             $file_name = & $this->file_name;
         }
@@ -603,14 +603,14 @@ class PHPWS_Multimedia extends File_Common {
             $vars['fop']       = 'pick_file';
             $vars['file_type'] = FC_MEDIA;
             $vars['id']        = $this->id;
-            $link = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+            $link = Core\Text::linkAddress('filecabinet', $vars, true);
             return sprintf('<a href="%s">%s</a>', $link, $this->getThumbnail());
         }
     }
 
     public function deleteAssoc()
     {
-        $db = new PHPWS_DB('fc_file_assoc');
+        $db = new Core\DB('fc_file_assoc');
         $db->addWhere('file_type', FC_MEDIA);
         $db->addWhere('file_id', $this->id);
         return $db->delete();

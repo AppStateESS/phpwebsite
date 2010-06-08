@@ -43,9 +43,9 @@ class Podcaster_Category {
 
     function init()
     {
-        $db = new PHPWS_DB('podcaster_category');
+        $db = new Core\DB('podcaster_category');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -73,7 +73,7 @@ class Podcaster_Category {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->title);
+            return Core\Text::parseOutput($this->title);
         } else {
             return $this->title;
         }
@@ -91,7 +91,7 @@ class Podcaster_Category {
         $template['TITLE'] = $this->getTitle(true);
         $template['PARENT'] = $this->getParent(true);
 
-        return PHPWS_Template::process($template, 'podcaster', 'view_category.tpl');
+        return Core\Template::process($template, 'podcaster', 'view_category.tpl');
 
     }
 
@@ -102,11 +102,11 @@ class Podcaster_Category {
             return;
         }
 
-        $db = new PHPWS_DB('podcaster_category');
+        $db = new Core\DB('podcaster_category');
         $db->addWhere('id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
     }
 
 
@@ -120,21 +120,21 @@ class Podcaster_Category {
 
         if (Current_User::allow('podcaster', 'edit_episode')){
             $vars['aop']  = 'new_episode';
-            $links[] = PHPWS_Text::secureLink(dgettext('podcaster', 'New Episode'), 'podcaster', $vars);
+            $links[] = Core\Text::secureLink(dgettext('podcaster', 'New Episode'), 'podcaster', $vars);
         }
 
         if (Current_User::allow('podcaster', 'edit_channel')){
             $vars['aop']  = 'edit_channel';
-            $links[] = PHPWS_Text::secureLink(dgettext('podcaster', 'Edit'), 'podcaster', $vars);
+            $links[] = Core\Text::secureLink(dgettext('podcaster', 'Edit'), 'podcaster', $vars);
         }
 
         if (Current_User::isUnrestricted('podcaster')) {
             if ($this->active) {
                 $vars['aop'] = 'deactivate_channel';
-                $active = PHPWS_Text::secureLink(dgettext('podcaster', 'Deactivate'), 'podcaster', $vars);
+                $active = Core\Text::secureLink(dgettext('podcaster', 'Deactivate'), 'podcaster', $vars);
             } else {
                 $vars['aop'] = 'activate_channel';
-                $active = PHPWS_Text::secureLink(dgettext('podcaster', 'Activate'), 'podcaster', $vars);
+                $active = Core\Text::secureLink(dgettext('podcaster', 'Activate'), 'podcaster', $vars);
             }
             $links[] = $active;
         } else {
@@ -144,7 +144,7 @@ class Podcaster_Category {
 
         if (Current_User::allow('podcaster', 'delete_channel')){
             $vars['aop'] = 'delete_channel';
-            $js['ADDRESS'] = PHPWS_Text::linkAddress('podcaster', $vars, true);
+            $js['ADDRESS'] = Core\Text::linkAddress('podcaster', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('podcaster', 'Are you sure you want to delete the channel %s?\nAll related episodes and channel information will be permanently removed.'), $this->getTitle());
             $js['LINK'] = dgettext('podcaster', 'Delete');
             $links[] = javascript('confirm', $js);
@@ -161,10 +161,10 @@ class Podcaster_Category {
 
     function save()
     {
-        $db = new PHPWS_DB('podcaster_category');
+        $db = new Core\DB('podcaster_category');
 
         $result = $db->saveObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
     }

@@ -7,10 +7,10 @@
 
 function checkin_uninstall(&$content)
 {
-    PHPWS_DB::dropTable('checkin_staff');
-    PHPWS_DB::dropTable('checkin_reasons');
-    PHPWS_DB::dropTable('checkin_visitor');
-    PHPWS_DB::dropTable('checkin_rtos');
+    Core\DB::dropTable('checkin_staff');
+    Core\DB::dropTable('checkin_reasons');
+    Core\DB::dropTable('checkin_visitor');
+    Core\DB::dropTable('checkin_rtos');
     return true;
 }
 

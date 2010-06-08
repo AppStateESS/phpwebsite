@@ -5,9 +5,9 @@
  */
 
 function signup_uninstall(&$content) {
-    PHPWS_DB::dropTable('signup_sheet');
-    PHPWS_DB::dropTable('signup_peeps');
-    PHPWS_DB::dropTable('signup_slots');
+    Core\DB::dropTable('signup_sheet');
+    Core\DB::dropTable('signup_peeps');
+    Core\DB::dropTable('signup_slots');
     $content[] = dgettext('signup', 'Signup tables dropped.');
     return true;
 }

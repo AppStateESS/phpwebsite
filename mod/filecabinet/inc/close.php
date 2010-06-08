@@ -8,11 +8,11 @@
 pinFolder();
 
 function pinFolder() {
-    $key = Key::getCurrent();
+    $key = Core\Key::getCurrent();
     if ($key && !$key->isDummy()) {
         if ( Current_User::isUnrestricted('filecabinet') &&
         Current_User::allow('filecabinet', 'edit_folders') ) {
-            $js['address'] = PHPWS_Text::linkAddress('filecabinet', array('aop'=>'pin_form', 'key_id'=>$key->id), true);
+            $js['address'] = Core\Text::linkAddress('filecabinet', array('aop'=>'pin_form', 'key_id'=>$key->id), true);
             $js['label'] = dgettext('filecabinet', 'Pin folder');
             $js['width'] = 360;
             $js['height'] = 150;

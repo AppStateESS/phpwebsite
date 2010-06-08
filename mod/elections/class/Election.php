@@ -65,7 +65,7 @@ class Election {
                     Current_User::disallow();
                 }
                 if ($this->postBallot()) {
-                    if (PHPWS_Error::logIfError($this->ballot->save())) {
+                    if (Core\Error::logIfError($this->ballot->save())) {
                         $this->forwardMessage(dgettext('elections', 'Error occurred when saving ballot.'));
                         Core\Core::reroute('index.php?module=elections&aop=menu');
                     } else {
@@ -97,7 +97,7 @@ class Election {
                     Current_User::disallow();
                 }
                 if ($this->postCandidate()) {
-                    if (PHPWS_Error::logIfError($this->candidate->save())) {
+                    if (Core\Error::logIfError($this->candidate->save())) {
                         $this->forwardMessage(dgettext('elections', 'Error occurred when saving candidate.'));
                         Core\Core::reroute('index.php?module=elections&aop=menu');
                     } else {
@@ -179,9 +179,9 @@ class Election {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'elections', 'main_admin.tpl'));
+            Layout::nakedDisplay(Core\Template::process($tpl, 'elections', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(PHPWS_Template::process($tpl, 'elections', 'main_admin.tpl'));
+            $this->panel->setContent(Core\Template::process($tpl, 'elections', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -231,7 +231,7 @@ class Election {
                 $this->loadBallot();
                 if ($this->ballot->can_vote() == '1') {
                     if ($this->postVote()) {
-                        if (PHPWS_Error::logIfError($this->vote->save())) {
+                        if (Core\Error::logIfError($this->vote->save())) {
                             $this->forwardMessage(dgettext('elections', 'Error occurred when registering vote.'));
                             Core\Core::reroute('index.php?module=elections&uop=list_ballots');
                         } else {
@@ -261,9 +261,9 @@ class Election {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'elections', 'main_user.tpl'));
+            Layout::nakedDisplay(Core\Template::process($tpl, 'elections', 'main_user.tpl'));
         } else {
-            Layout::add(PHPWS_Template::process($tpl, 'elections', 'main_user.tpl'));
+            Layout::add(Core\Template::process($tpl, 'elections', 'main_user.tpl'));
         }
 
     }
@@ -447,7 +447,7 @@ class Election {
         }
 
         if (empty($_POST['closing'])) {
-            $this->ballot->closing = mktime(0, 0, 0, date("m"), date("d")+PHPWS_Settings::get('elections', 'expiry_interval'), date("Y"));
+            $this->ballot->closing = mktime(0, 0, 0, date("m"), date("d")+Core\Settings::get('elections', 'expiry_interval'), date("Y"));
         } else {
             $this->ballot->closing = strtotime($_POST['closing']);
         }
@@ -536,49 +536,49 @@ class Election {
     {
 
         isset($_POST['enable_elections']) ?
-            PHPWS_Settings::set('elections', 'enable_elections', 1) :
-            PHPWS_Settings::set('elections', 'enable_elections', 0);
+            Core\Settings::set('elections', 'enable_elections', 1) :
+            Core\Settings::set('elections', 'enable_elections', 0);
 
         isset($_POST['enable_sidebox']) ?
-            PHPWS_Settings::set('elections', 'enable_sidebox', 1) :
-            PHPWS_Settings::set('elections', 'enable_sidebox', 0);
+            Core\Settings::set('elections', 'enable_sidebox', 1) :
+            Core\Settings::set('elections', 'enable_sidebox', 0);
 
         isset($_POST['sidebox_homeonly']) ?
-            PHPWS_Settings::set('elections', 'sidebox_homeonly', 1) :
-            PHPWS_Settings::set('elections', 'sidebox_homeonly', 0);
+            Core\Settings::set('elections', 'sidebox_homeonly', 1) :
+            Core\Settings::set('elections', 'sidebox_homeonly', 0);
 
         if (!empty($_POST['title'])) {
-            PHPWS_Settings::set('elections', 'title', strip_tags(PHPWS_Text::parseInput($_POST['title'])));
+            Core\Settings::set('elections', 'title', strip_tags(Core\Text::parseInput($_POST['title'])));
         } else {
-            PHPWS_Settings::reset('elections', 'title');
+            Core\Settings::reset('elections', 'title');
         }
 
         if (!empty($_POST['sidebox_text'])) {
-            PHPWS_Settings::set('elections', 'sidebox_text', PHPWS_Text::parseInput($_POST['sidebox_text']));
+            Core\Settings::set('elections', 'sidebox_text', Core\Text::parseInput($_POST['sidebox_text']));
         }
 
         if (isset($_POST['enable_images'])) {
-            PHPWS_Settings::set('elections', 'enable_images', 1);
+            Core\Settings::set('elections', 'enable_images', 1);
             if ( !empty($_POST['max_width']) ) {
                 $max_width = (int)$_POST['max_width'];
                 if ($max_width >= 50 && $max_width <= 600 ) {
-                    PHPWS_Settings::set('elections', 'max_width', $max_width);
+                    Core\Settings::set('elections', 'max_width', $max_width);
                 }
             }
             if ( !empty($_POST['max_height']) ) {
                 $max_height = (int)$_POST['max_height'];
                 if ($max_height >= 50 && $max_height <= 600 ) {
-                    PHPWS_Settings::set('elections', 'max_height', $max_height);
+                    Core\Settings::set('elections', 'max_height', $max_height);
                 }
             }
         } else {
-            PHPWS_Settings::set('elections', 'enable_images', 0);
+            Core\Settings::set('elections', 'enable_images', 0);
         }
 
         if ( !empty($_POST['expiry_interval']) ) {
             $expiry_interval = (int)$_POST['expiry_interval'];
             if ($expiry_interval >= 1 && $expiry_interval <= 365 ) {
-                PHPWS_Settings::set('elections', 'expiry_interval', $expiry_interval);
+                Core\Settings::set('elections', 'expiry_interval', $expiry_interval);
             }
         }
 
@@ -586,7 +586,7 @@ class Election {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            if (PHPWS_Settings::save('elections')) {
+            if (Core\Settings::save('elections')) {
                 return true;
             } else {
                 return falsel;
@@ -661,11 +661,11 @@ class Election {
 
     public function purgeVotes($ballot_id=0)
     {
-        $db = new PHPWS_DB('elections_votes');
+        $db = new Core\DB('elections_votes');
         if ($ballot_id > 0) {
             $db->addWhere('ballot_id', $ballot_id);
         }
-        return PHPWS_Error::logIfError($db->delete());
+        return Core\Error::logIfError($db->delete());
     }
 
 
@@ -677,11 +677,11 @@ class Election {
         if ($type == 'results') {
             Core\Core::initModClass('elections', 'ELEC_Candidate.php');
             $content .= Elections_Candidate::printCSVHeader();
-            $db = new PHPWS_DB('elections_candidates');
+            $db = new Core\DB('elections_candidates');
         } elseif ($type == 'votes') {
             Core\Core::initModClass('elections', 'ELEC_Vote.php');
             $content .= Elections_Vote::printCSVHeader();
-            $db = new PHPWS_DB('elections_votes');
+            $db = new Core\DB('elections_votes');
         }
 
         $db->addColumn('id');
@@ -732,10 +732,10 @@ class Election {
     public function navLinks()
     {
 
-        $links[] = PHPWS_Text::moduleLink(dgettext('elections', 'List ballots'), 'elections', array('uop'=>'list_ballots'));
+        $links[] = Core\Text::moduleLink(dgettext('elections', 'List ballots'), 'elections', array('uop'=>'list_ballots'));
 
         if (Current_User::allow('elections') && !isset($_REQUEST['aop'])){
-            $links[] = PHPWS_Text::moduleLink(dgettext('elections', 'Settings'), "elections",  array('aop'=>'menu', 'tab'=>'settings'));
+            $links[] = Core\Text::moduleLink(dgettext('elections', 'Settings'), "elections",  array('aop'=>'menu', 'tab'=>'settings'));
         }
 
         return $links;

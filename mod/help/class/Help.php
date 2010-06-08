@@ -7,8 +7,8 @@
 
 $config = Core\Core::getConfigFile('help', 'config.php');
 
-if (PHPWS_Error::isError($config)){
-    PHPWS_Error::log($config);
+if (Core\Error::isError($config)){
+    Core\Error::log($config);
 } else {
     include_once $config;
 }
@@ -23,7 +23,7 @@ class PHPWS_Help{
         $vars['label'] = $label;
         $vars['address'] = 'index.php?module=help&amp;pre=1&amp;helpMod=' . $module . '&amp;option=' . $help;
         $link = Layout::getJavascript('open_window', $vars);
-        $result = PHPWS_Template::process(array('LINK'=> $link), 'help', 'link.tpl');
+        $result = Core\Template::process(array('LINK'=> $link), 'help', 'link.tpl');
 
         return $result;
     }
@@ -36,7 +36,7 @@ class PHPWS_Help{
         $vars['label'] = $label;
         $vars['address'] = 'index.php?module=help&amp;helpMod=' . $module . '&amp;option=' . $help;
         $link = Layout::getJavascript('open_window', $vars);
-        $result = PHPWS_Template::process(array('LINK'=> $link), 'help', 'link.tpl');
+        $result = Core\Template::process(array('LINK'=> $link), 'help', 'link.tpl');
 
         return $result;
     }
@@ -75,7 +75,7 @@ class PHPWS_Help{
             $template['CONTENT'] = $help_info[$option]['content'];
         }
 
-        $content = PHPWS_Template::process($template, 'help', 'help.tpl');
+        $content = Core\Template::process($template, 'help', 'help.tpl');
 
         Layout::nakedDisplay($content);
     }

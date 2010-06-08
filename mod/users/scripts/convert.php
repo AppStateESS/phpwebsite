@@ -25,7 +25,7 @@ class convert_authorization extends User_Authorization {
 
     public function authenticate()
     {
-        $db = new PHPWS_DB('users_conversion');
+        $db = new Core\DB('users_conversion');
         if (!Current_User::allowUsername($this->user->username)) {
             return FALSE;
         }
@@ -34,22 +34,22 @@ class convert_authorization extends User_Authorization {
         $db->addWhere('password', md5($this->password));
         $result = $db->select('one');
 
-        if (PHPWS_Error::logIfError($result) || !$result) {
+        if (Core\Error::logIfError($result) || !$result) {
             return false;
         }
 
-        $db2 = new PHPWS_DB('users');
+        $db2 = new Core\DB('users');
         $db2->addWhere('username', strtolower($this->user->username));
         $result = $db2->loadObject($this->user);
 
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             return false;
         }
 
         $this->user->setPassword($this->password);
         $this->user->authorize = LOCAL_AUTHORIZATION;
         $result = $this->user->save();
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 

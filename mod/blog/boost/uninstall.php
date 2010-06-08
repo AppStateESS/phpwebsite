@@ -9,7 +9,7 @@
 
 function blog_uninstall(&$content)
 {
-    PHPWS_DB::dropTable('blog_entries');
+    Core\DB::dropTable('blog_entries');
     $content[] = dgettext('blog', 'Blog tables removed.');
     return TRUE;
 }

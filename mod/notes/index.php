@@ -21,8 +21,8 @@ switch ($_REQUEST['command']) {
         Core\Core::initModClass('notes', 'Note_Item.php');
         $note = new Note_Item((int)$_REQUEST['id']);
         $result = $note->delete();
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
         }
 
         Layout::nakedDisplay(javascript('close_refresh'));
@@ -33,7 +33,7 @@ switch ($_REQUEST['command']) {
         if (!Current_User::isLogged()) {
             exit();
         }
-        $db = new PHPWS_DB('users');
+        $db = new Core\DB('users');
         if (empty($_GET['q'])) {
             exit();
         }
@@ -45,7 +45,7 @@ switch ($_REQUEST['command']) {
         $db->addColumn('id');
         $db->setIndexBy('id');
         $result = $db->select('col');
-        if (!empty($result) && !PHPWS_Error::logIfError($result)) {
+        if (!empty($result) && !Core\Error::logIfError($result)) {
             foreach ($result as $key=>$value) {
                 $output[] = "$value|$key";
             }

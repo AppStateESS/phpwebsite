@@ -93,15 +93,15 @@ class Breadcrumb {
         }
 
         if (!empty($tpl)) {
-            $content = PHPWS_Template::process($tpl, 'breadcrumb', 'bc.tpl');
+            $content = Core\Template::process($tpl, 'breadcrumb', 'bc.tpl');
             Layout::add($content, 'breadcrumb', 'view');
         }
     }
 
     public function recordView()
     {
-        $key = Key::getCurrent();
-        if (!Key::checkKey($key, TRUE)) {
+        $key = Core\Key::getCurrent();
+        if (!Core\Key::checkKey($key, TRUE)) {
             return;
         }
 

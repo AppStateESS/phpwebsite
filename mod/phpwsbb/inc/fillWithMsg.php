@@ -1,5 +1,5 @@
 <?php
-$fillMsgStamp = strftime(PHPWS_Settings::get('phpwsbb', 'long_date_format'));
+$fillMsgStamp = strftime(Core\Settings::get('phpwsbb', 'long_date_format'));
 $comment_list[] = array('subject'=> 'Diagnostic message #1'
 , 'entry'=> 'This auto-generated comment is #1 in the ' . $fillMsgStamp . ' series.
 

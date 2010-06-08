@@ -8,9 +8,9 @@ function checkin_update(&$content, $current_version) {
     switch (1) {
         case version_compare($current_version, '1.0.1', '<'):
             $content[] = '<pre>';
-            $db = new PHPWS_DB('checkin_staff');
+            $db = new Core\DB('checkin_staff');
 
-            if (PHPWS_Error::logIfError($db->addTableColumn('view_order', 'smallint not null default 0'))) {
+            if (Core\Error::logIfError($db->addTableColumn('view_order', 'smallint not null default 0'))) {
                 $content[] = 'Unable to create checkin_staff.view_order column.</pre>';
                 return false;
             } else {
@@ -26,7 +26,7 @@ function checkin_update(&$content, $current_version) {
                     $db->reset();
                     $db->addWhere('id', $staff_id);
                     $db->addValue('view_order', $count);
-                    PHPWS_Error::logIfError($db->update());
+                    Core\Error::logIfError($db->update());
                     $count++;
                 }
             }

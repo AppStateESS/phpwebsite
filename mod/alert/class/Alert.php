@@ -69,7 +69,7 @@ class Alert {
         $tpl['MESSAGE'] = $this->message;
         $tpl['CONTENT'] = $this->content;
 
-        Layout::add(PHPWS_Template::process($tpl, 'alert', 'user.tpl'));
+        Layout::add(Core\Template::process($tpl, 'alert', 'user.tpl'));
     }
 
     public function viewItems()
@@ -83,7 +83,7 @@ class Alert {
             return;
         }
 
-        $db = new PHPWS_DB('alert_item');
+        $db = new Core\DB('alert_item');
         $db->loadClass('alert', 'Alert_Item.php');
         $db->setIndexBy('id');
         $db->addOrder('create_date desc');
@@ -121,7 +121,7 @@ class Alert {
 
             $result = $db->getObjects('Alert_Item');
 
-            if (PHPWS_Error::logIfError($result)) {
+            if (Core\Error::logIfError($result)) {
                 continue;
             }
 
@@ -138,7 +138,7 @@ class Alert {
             $tpl['TITLE'] = $type->title;
             $tpl['CLASS'] = sprintf('alert-type-%s', $type->id);
 
-            Layout::add(PHPWS_Template::process($tpl, 'alert', 'view_type.tpl'), 'alert', $alert_type, true);
+            Layout::add(Core\Template::process($tpl, 'alert', 'view_type.tpl'), 'alert', $alert_type, true);
             if ($high_alert) {
                 return;
             }
@@ -147,13 +147,13 @@ class Alert {
 
     public function loadTypes()
     {
-        $db = new PHPWS_DB('alert_type');
+        $db = new Core\DB('alert_type');
         $db->addOrder('post_type desc');
         $db->loadClass('alert', 'Alert_Type.php');
         $db->setIndexBy('id');
         $result = $db->getObjects('Alert_Type');
 
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             $this->type_list = null;
             return;
         }
@@ -197,7 +197,7 @@ class Alert {
                 $this->loadItem();
                 if ($this->postItem()) {
                     // need to process after save
-                    if (PHPWS_Error::logIfError($this->item->save())) {
+                    if (Core\Error::logIfError($this->item->save())) {
                         $this->sendMessage(dgettext('alert', 'An error occurred. Could not save alert.'), 'list');
                     } else {
                         $this->sendMessage(dgettext('alert', 'Alert saved.'), 'list');
@@ -238,14 +238,14 @@ class Alert {
             case 'deactivate_item':
                 $this->loadItem();
                 $this->item->active = 0;
-                PHPWS_Error::logIfError($this->item->save());
+                Core\Error::logIfError($this->item->save());
                 Core\Core::goBack();
                 break;
 
             case 'activate_item':
                 $this->loadItem();
                 $this->item->active = 1;
-                PHPWS_Error::logIfError($this->item->save());
+                Core\Error::logIfError($this->item->save());
                 Core\Core::goBack();
                 break;
 
@@ -327,7 +327,7 @@ class Alert {
             case 'post_type':
                 $this->loadType();
                 if ($this->postType()) {
-                    if (PHPWS_Error::logIfError($this->type->save())) {
+                    if (Core\Error::logIfError($this->type->save())) {
                         $this->sendMessage(dgettext('alert', 'An error occurred. Could not save alert type.'), 'types');
                     } else {
                         $this->sendMessage(dgettext('alert', 'Type saved.'), 'types');
@@ -349,7 +349,7 @@ class Alert {
             return;
         }
 
-        $db = new PHPWS_DB('alert_prt_to_type');
+        $db = new Core\DB('alert_prt_to_type');
         $count = 0;
 
         $add = isset($_POST['add_checked_participants']);
@@ -361,13 +361,13 @@ class Alert {
                 foreach ($participants as $prt) {
                     $db->addValue('type_id', $type_id);
                     $db->addValue('prt_id', $prt);
-                    PHPWS_Error::logIfError($db->insert());
+                    Core\Error::logIfError($db->insert());
                     $db->resetValues();
                 }
             } elseif ($remove) {
                 $db->addWhere('type_id', $type_id);
                 $db->addWhere('prt_id', $participants);
-                PHPWS_Error::logIfError($db->delete());
+                Core\Error::logIfError($db->delete());
             }
         }
     }
@@ -379,9 +379,9 @@ class Alert {
         }
 
         $type_id = & $_GET['type_id'];
-        $db = new PHPWS_DB('alert_prt_to_type');
+        $db = new Core\DB('alert_prt_to_type');
         $db->addWhere('type_id', $type_id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
     }
 
     public function addAllParticipants()
@@ -392,23 +392,23 @@ class Alert {
 
         $type_id = & $_GET['type_id'];
 
-        $db = new PHPWS_DB('alert_participant');
+        $db = new Core\DB('alert_participant');
         $db->addColumn('id');
         $participants = $db->select('col');
-        if (PHPWS_Error::logIfError($participants) || empty($participants)) {
+        if (Core\Error::logIfError($participants) || empty($participants)) {
             return;
         }
 
-        $db = new PHPWS_DB('alert_prt_to_type');
+        $db = new Core\DB('alert_prt_to_type');
         $db->addWhere('type_id', $type_id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
         $db->reset();
         foreach ($participants as $id) {
             $db->resetValues();
             $db->addValue('type_id', $type_id);
             $db->addValue('prt_id', $id);
-            PHPWS_Error::logIfError($db->insert());
+            Core\Error::logIfError($db->insert());
         }
     }
 
@@ -417,13 +417,13 @@ class Alert {
         $tpl['TITLE'] = $this->title;
         $tpl['MESSAGE'] = $this->getMessage();
         $tpl['CONTENT'] = $this->content;
-        Layout::nakedDisplay(PHPWS_Template::process($tpl, 'alert', 'main.tpl'));
+        Layout::nakedDisplay(Core\Template::process($tpl, 'alert', 'main.tpl'));
     }
 
     public function sendMessage($message, $aop)
     {
         $_SESSION['Alert_Message'] = $message;
-        Core\Core::reroute(PHPWS_Text::linkAddress('alert', array('aop'=>$aop), true));
+        Core\Core::reroute(Core\Text::linkAddress('alert', array('aop'=>$aop), true));
     }
 
     public function loadMessage()
@@ -450,12 +450,12 @@ class Alert {
     public function loadTypeByFeed()
     {
         Core\Core::initModClass('alert', 'Alert_Type.php');
-        $db = new PHPWS_DB('alert_type');
+        $db = new Core\DB('alert_type');
         $db->addWhere('feedname', $this->rssfeed);
         $db->setLimit(1);
         $row = $db->select('row');
         if ($row) {
-            if (PHPWS_Error::logIfError($row)) {
+            if (Core\Error::logIfError($row)) {
                 $this->type = null;
                 return false;
             } else {
@@ -513,7 +513,7 @@ class Alert {
 
     public function getTypes($mode='form')
     {
-        $db = new PHPWS_DB('alert_type');
+        $db = new Core\DB('alert_type');
         switch ($mode) {
             case 'form':
                 $db->addColumn('id');
@@ -528,7 +528,7 @@ class Alert {
                 $types = $db->getObjects('Alert_Type');
         }
 
-        if (!empty($types) || PHPWS_Error::isError($types)) {
+        if (!empty($types) || Core\Error::isError($types)) {
             return $types;
         } else {
             return null;
@@ -627,19 +627,19 @@ class Alert {
             $settings['email_batch_number'] = (int)$_POST['email_batch_number'];
         }
 
-        if (empty($_POST['contact_reply_address']) || !PHPWS_Text::isValidInput($_POST['contact_reply_address'], 'email')) {
+        if (empty($_POST['contact_reply_address']) || !Core\Text::isValidInput($_POST['contact_reply_address'], 'email')) {
             $this->addMessage(dgettext('alert', 'Please enter an acceptable contact email address.'));
         } else {
             $settings['contact_reply_address'] = $_POST['contact_reply_address'];
         }
 
-        PHPWS_Settings::set('alert', $settings);
-        PHPWS_Settings::save('alert');
+        Core\Settings::set('alert', $settings);
+        Core\Settings::save('alert');
     }
 
     public function contactNeeded()
     {
-        $db = new PHPWS_DB('alert_item');
+        $db = new Core\DB('alert_item');
         $db->loadClass('alert', 'Alert_Item.php');
         $db->addWhere('alert_type.email', 1, '=', 'and', 1);
         $db->addWhere('alert_item.type_id', 'alert_type.id', '=', 'and', 1);
@@ -673,7 +673,7 @@ class Alert {
                 return;
             }
             $result = Alert::copyContacts();
-            if (PHPWS_Error::logIfError($result)) {
+            if (Core\Error::logIfError($result)) {
                 $this->content = dgettext('alert', 'An error occurred when trying to copy participants to the contact list.');
                 return false;
             } elseif (!$result) {
@@ -692,14 +692,13 @@ class Alert {
             return;
         }
 
-        Core\Core::initCoreClass('Batch.php');
-
+        
         if (!isset($_SESSION['Total_Participants'])) {
-            $db = new PHPWS_DB('alert_contact');
+            $db = new Core\DB('alert_contact');
             $db->addWhere('item_id', $item->id);
             $db->addColumn('prt_id');
             $result = $db->count();
-            if (PHPWS_Error::logIfError($result)) {
+            if (Core\Error::logIfError($result)) {
                 $this->content = dgettext('alert', 'An error occurred when trying to determine the total number of participants.');
                 return false;
             }
@@ -708,7 +707,7 @@ class Alert {
 
         $batch = new Batches('email_participants');
         $batch->setTotalItems($_SESSION['Total_Participants']);
-        $batch_set = PHPWS_Settings::get('alert', 'email_batch_number');
+        $batch_set = Core\Settings::get('alert', 'email_batch_number');
         if (empty($batch_set)) {
             $this->content = dgettext('alert', 'Cannot continue processing batches. The batch has been set to zero.');
             return false;
@@ -725,7 +724,7 @@ class Alert {
         // deleting the records as I go.
         $limit = $batch->getLimit();
 
-        $db = new PHPWS_DB('alert_contact');
+        $db = new Core\DB('alert_contact');
         $db->addWhere('item_id', $item->id);
         $db->setLimit($limit);
         $db->addColumn('prt_id');
@@ -775,18 +774,17 @@ class Alert {
 
     public function _emailParticipant($email_address)
     {
-        Core\Core::initCoreClass('Mail.php');
-        $subject = sprintf('%s: %s', $this->type->title, $this->item->title);
+                $subject = sprintf('%s: %s', $this->type->title, $this->item->title);
 
         $mail = new PHPWS_Mail;
         $mail->addSendTo($email_address);
         $mail->setSubject($subject);
-        $mail->setFrom(PHPWS_Settings::get('alert', 'contact_reply_address'));
-        $mail->setReplyTo(PHPWS_Settings::get('alert', 'contact_reply_address'));
+        $mail->setFrom(Core\Settings::get('alert', 'contact_reply_address'));
+        $mail->setReplyTo(Core\Settings::get('alert', 'contact_reply_address'));
 
         $mail->setHTMLBody($this->item->getHTML());
         $mail->setMessageBody($this->item->getBody());
-        if (PHPWS_Error::logIfError($mail->send())) {
+        if (Core\Error::logIfError($mail->send())) {
             return false;
         } else {
             return true;
@@ -795,7 +793,7 @@ class Alert {
 
     public function copyContacts()
     {
-        $db = new PHPWS_DB('alert_participant');
+        $db = new Core\DB('alert_participant');
         $db->addWhere('item_id', $this->item->id);
         $db->delete();
         $db->resetWhere();
@@ -803,11 +801,11 @@ class Alert {
         $db->addWhere('alert_prt_to_type.type_id', $this->type->id);
         $db->addWhere('id', 'alert_prt_to_type.prt_id');
         $result = $db->select();
-        if (empty($result) || PHPWS_Error::logIfError($result)) {
+        if (empty($result) || Core\Error::logIfError($result)) {
             return $result;
         }
 
-        $db = new PHPWS_DB('alert_contact');
+        $db = new Core\DB('alert_contact');
 
         $count = 1;
 
@@ -816,7 +814,7 @@ class Alert {
             $db->addValue('email', $prt['email']);
             $db->addValue('item_id', $this->item->id);
             $result = $db->insert();
-            if (PHPWS_Error::isError($result)) {
+            if (Core\Error::isError($result)) {
                 return $result;
             }
             $count++;
@@ -837,15 +835,15 @@ class Alert {
             return;
         }
 
-        $db = new PHPWS_DB('alert_participant');
+        $db = new Core\DB('alert_participant');
         foreach ($addresses as $email) {
             $email = trim($email);
-            if (!PHPWS_Text::isValidInput($email, 'email')) {
+            if (!Core\Text::isValidInput($email, 'email')) {
                 continue;
             }
             $db->resetValues();
             $db->addValue('email', $email);
-            PHPWS_Error::logIfError($db->insert());
+            Core\Error::logIfError($db->insert());
         }
 
     }
@@ -863,12 +861,12 @@ class Alert {
             return;
         }
 
-        $db = new PHPWS_DB('alert_participant');
+        $db = new Core\DB('alert_participant');
         foreach ($addresses as $email) {
             $email = trim($email);
             $db->resetValues();
             $db->addWhere('email', $email);
-            PHPWS_Error::logIfError($db->delete());
+            Core\Error::logIfError($db->delete());
         }
     }
 
@@ -880,7 +878,7 @@ class Alert {
         }
 
         $items = $this->type->getItems();
-        if (PHPWS_Error::logIfError($items) || empty($items)) {
+        if (Core\Error::logIfError($items) || empty($items)) {
             exit();
         }
 

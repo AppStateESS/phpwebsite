@@ -52,9 +52,9 @@ class Elections_Candidate {
 
     public function init()
     {
-        $db = new PHPWS_DB('elections_candidates');
+        $db = new Core\DB('elections_candidates');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -70,7 +70,7 @@ class Elections_Candidate {
 
     public function setDescription($description)
     {
-        $this->description = PHPWS_Text::parseInput($description);
+        $this->description = Core\Text::parseInput($description);
     }
 
     public function setBallot_id($ballot_id)
@@ -100,22 +100,22 @@ class Elections_Candidate {
 
     public function setCustom1($custom1)
     {
-        $this->custom1 = PHPWS_Text::parseInput($custom1);
+        $this->custom1 = Core\Text::parseInput($custom1);
     }
 
     public function setCustom2($custom2)
     {
-        $this->custom2 = PHPWS_Text::parseInput($custom2);
+        $this->custom2 = Core\Text::parseInput($custom2);
     }
 
     public function setCustom3($custom3)
     {
-        $this->custom3 = PHPWS_Text::parseInput($custom3);
+        $this->custom3 = Core\Text::parseInput($custom3);
     }
 
     public function setCustom4($custom4)
     {
-        $this->custom4 = PHPWS_Text::parseInput($custom4);
+        $this->custom4 = Core\Text::parseInput($custom4);
     }
 
 
@@ -127,9 +127,9 @@ class Elections_Candidate {
 
         if ($print) {
             if ($breadcrumb) {
-                return $this->getBallot(true) . ' &#187; ' . PHPWS_Text::parseOutput($this->title);
+                return $this->getBallot(true) . ' &#187; ' . Core\Text::parseOutput($this->title);
             } else {
-                return PHPWS_Text::parseOutput($this->title);
+                return Core\Text::parseOutput($this->title);
             }
         } else {
             return $this->title;
@@ -143,7 +143,7 @@ class Elections_Candidate {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->description);
+            return Core\Text::parseOutput($this->description);
         } else {
             return $this->description;
         }
@@ -221,7 +221,7 @@ class Elections_Candidate {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->custom1);
+            return Core\Text::parseOutput($this->custom1);
         } else {
             return $this->custom1;
         }
@@ -234,7 +234,7 @@ class Elections_Candidate {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->custom2);
+            return Core\Text::parseOutput($this->custom2);
         } else {
             return $this->custom2;
         }
@@ -247,7 +247,7 @@ class Elections_Candidate {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->custom3);
+            return Core\Text::parseOutput($this->custom3);
         } else {
             return $this->custom3;
         }
@@ -260,7 +260,7 @@ class Elections_Candidate {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->custom4);
+            return Core\Text::parseOutput($this->custom4);
         } else {
             return $this->custom4;
         }
@@ -274,7 +274,7 @@ class Elections_Candidate {
             Core\Core::errorPage(404);
         }
 
-//        $key = new Key($this->key_id);
+//        $key = new Core\Key($this->key_id);
 
 //        if (!$key->allowView()) {
 //            Current_User::requireLogin();
@@ -285,14 +285,14 @@ class Elections_Candidate {
 
         Layout::addPageTitle($this->getTitle());
         $tpl['TITLE'] = $this->getTitle(true);
-        $tpl['DESCRIPTION'] = PHPWS_Text::parseTag($this->getDescription(true));
+        $tpl['DESCRIPTION'] = Core\Text::parseTag($this->getDescription(true));
         $tpl['FILE'] = $this->getFile();
 
 
 
 //        $key->flag();
 
-        return PHPWS_Template::process($tpl, 'elections', 'view_candidate.tpl');
+        return Core\Template::process($tpl, 'elections', 'view_candidate.tpl');
     }
 
 
@@ -304,7 +304,7 @@ class Elections_Candidate {
             $vars['ballot_id'] = $this->ballot_id;
             $vars['candidate_id'] = $this->id;
             $vars['aop']  = 'edit_candidate';
-            $links[] = PHPWS_Text::secureLink(dgettext('elections', 'Edit candidate'), 'elections', $vars);
+            $links[] = Core\Text::secureLink(dgettext('elections', 'Edit candidate'), 'elections', $vars);
         }
 
         if ($addNav) {
@@ -325,11 +325,11 @@ class Elections_Candidate {
         }
 
         /* delete the candidate */
-        $db = new PHPWS_DB('elections_candidates');
+        $db = new Core\DB('elections_candidates');
         $db->addWhere('id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
-//        Key::drop($this->key_id);
+//        Core\Key::drop($this->key_id);
 
     }
 
@@ -341,12 +341,12 @@ class Elections_Candidate {
 
         if (Current_User::isUnrestricted('elections')) {
             $vars['aop']  = 'edit_candidate';
-            $label = Icon::show('edit');
-            $links[] = PHPWS_Text::secureLink($label, 'elections', $vars);
+            $label = Core\Icon::show('edit');
+            $links[] = Core\Text::secureLink($label, 'elections', $vars);
             $vars['aop'] = 'delete_candidate';
-            $js['ADDRESS'] = PHPWS_Text::linkAddress('elections', $vars, true);
+            $js['ADDRESS'] = Core\Text::linkAddress('elections', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('elections', 'Are you sure you want to delete the candidate %s?'), $this->getTitle());
-            $js['LINK'] = Icon::show('delete');
+            $js['LINK'] = Core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -381,10 +381,10 @@ class Elections_Candidate {
 
     public function save()
     {
-        $db = new PHPWS_DB('elections_candidates');
+        $db = new Core\DB('elections_candidates');
 
         $result = $db->saveObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
@@ -396,11 +396,11 @@ class Elections_Candidate {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Key;
+            $key = new Core\Key;
         } else {
-            $key = new Key($this->key_id);
-            if (PHPWS_Error::isError($key->_error)) {
-                $key = new Key;
+            $key = new Core\Key($this->key_id);
+            if (Core\Error::isError($key->_error)) {
+                $key = new Core\Key;
             }
         }
 
@@ -418,16 +418,16 @@ class Elections_Candidate {
         $key->setTitle($this->title);
         $key->setSummary($this->description);
         $result = $key->save();
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             return false;
         }
 
         if (!$this->key_id) {
             $this->key_id = $key->id;
-            $db = new PHPWS_DB('elections_candidates');
+            $db = new Core\DB('elections_candidates');
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
-            PHPWS_Error::logIfError($db->update());
+            Core\Error::logIfError($db->update());
         }
         return true;
     }
@@ -435,8 +435,7 @@ class Elections_Candidate {
 
     public function viewLink($bare=false)
     {
-        Core\Core::initCoreClass('Link.php');
-        $link = new PHPWS_Link($this->title, 'elections', array('ballot'=>$this->ballot_id, 'candidate'=>$this->id));
+                $link = new Core\Link($this->title, 'elections', array('ballot'=>$this->ballot_id, 'candidate'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {
@@ -467,7 +466,7 @@ class Elections_Candidate {
                 $tpl .= '<input type="button" name="+" onclick=\'javascript: document.getElementById("Candidate_Vote['.$this->id.']").value++;\' value="+" />';
             }
         } else {
-            $tpl = PHPWS_Form::formCheckBox("Candidate_Vote[".$this->id."]", 1, $match, $this->id);
+            $tpl = Core\Form::formCheckBox("Candidate_Vote[".$this->id."]", 1, $match, $this->id);
         }
 
         return $tpl;

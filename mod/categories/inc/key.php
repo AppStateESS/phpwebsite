@@ -14,7 +14,7 @@ function categories_unregister_key(&$key)
         return FALSE;
     }
 
-    $db = new PHPWS_DB('category_items');
+    $db = new Core\DB('category_items');
     $db->addWhere('key_id', (int)$key->id);
     return $db->delete();
 }

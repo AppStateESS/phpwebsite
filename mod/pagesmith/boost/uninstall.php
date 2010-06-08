@@ -6,9 +6,9 @@
 
 function pagesmith_uninstall(&$content)
 {
-    PHPWS_DB::dropTable('ps_block');
-    PHPWS_DB::dropTable('ps_text');
-    PHPWS_DB::dropTable('ps_page');
+    Core\DB::dropTable('ps_block');
+    Core\DB::dropTable('ps_text');
+    Core\DB::dropTable('ps_page');
     $content[] = 'Tables removed.';
     return TRUE;
 }

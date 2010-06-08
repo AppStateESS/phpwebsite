@@ -47,11 +47,10 @@ class PHPWS_AlbumManager {
             return;
         }
 
-        Core\Core::initCoreClass('DBPager.php');
-        $template['TITLE'] = dgettext('photoalbum', 'Photo Albums');
+                $template['TITLE'] = dgettext('photoalbum', 'Photo Albums');
         $template['CONTENT'] = NULL;
 
-        $pager = new DBPager('mod_photoalbum_albums');
+        $pager = new Core\DBPager('mod_photoalbum_albums');
         $pager->setModule('photoalbum');
         $pager->setTemplate('albums/list.tpl');
 
@@ -88,7 +87,7 @@ class PHPWS_AlbumManager {
     }
 
     public function _accessDenied() {
-        if(PHPWS_Error::isError($this->error)) {
+        if(Core\Error::isError($this->error)) {
             $this->error->message('CNT_photoalbum', dgettext('photoalbum', 'Access Denied!'));
             $this->error = NULL;
         } else {
@@ -100,7 +99,7 @@ class PHPWS_AlbumManager {
 
     public function updateAlbumList($albumId) {
         $sql = "SELECT label, tnname, tnwidth, tnheight FROM mod_photoalbum_photos WHERE album='$albumId' ORDER BY updated DESC LIMIT 1";
-        $result = PHPWS_DB::getAll($sql);
+        $result = Core\DB::getAll($sql);
 
         if(isset($result[0])) {
             $image[] = '<img src="images/photoalbum/';
@@ -115,7 +114,7 @@ class PHPWS_AlbumManager {
 
             $time = time();
             $sql = "UPDATE mod_photoalbum_albums SET image='$image', updated='$time' WHERE id='$albumId'";
-            PHPWS_DB::query($sql);
+            Core\DB::query($sql);
         }
     }
 

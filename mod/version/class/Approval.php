@@ -36,7 +36,7 @@ class Version_Approval {
                 $this->setViewMethod($view_method);
             }
         }
-        $this->_db = new PHPWS_DB($this->version_table);
+        $this->_db = new Core\DB($this->version_table);
     }
 
 
@@ -114,7 +114,7 @@ class Version_Approval {
         $result = $this->_db->select();
 
         if ($obj_mode) {
-            if (PHPWS_Error::isError($result) || empty($result)) {
+            if (Core\Error::isError($result) || empty($result)) {
                 return $result;
             }
 
@@ -132,7 +132,7 @@ class Version_Approval {
     public function getList($restrict_approval=TRUE)
     {
 
-        if (!PHPWS_DB::isTable($this->version_table)) {
+        if (!Core\DB::isTable($this->version_table)) {
             $msg = dgettext('version', 'No items for approval.');
 
             return $msg;
@@ -145,7 +145,7 @@ class Version_Approval {
         $result = $this->get(FALSE);
 
 
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
@@ -185,7 +185,7 @@ class Version_Approval {
 
                 $result = $temp_obj->{$this->view_method}();
 
-                if (PHPWS_Error::isError($result)) {
+                if (Core\Error::isError($result)) {
                     return $result;
                 } elseif (empty($result)) {
                     continue;
@@ -232,7 +232,7 @@ class Version_Approval {
             $temp_count++;
         }
 
-        return PHPWS_Template::process($template, 'version', $template_file);
+        return Core\Template::process($template, 'version', $template_file);
     }
 
 }

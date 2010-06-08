@@ -20,7 +20,7 @@ class PHPWS_Document extends File_Common {
     function __construct($id=NULL)
     {
         $this->loadAllowedTypes();
-        $this->setMaxSize(PHPWS_Settings::get('filecabinet', 'max_document_size'));
+        $this->setMaxSize(Core\Settings::get('filecabinet', 'max_document_size'));
 
         if (empty($id)) {
             return;
@@ -28,12 +28,12 @@ class PHPWS_Document extends File_Common {
 
         $this->id = (int)$id;
         $result = $this->init();
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->id = 0;
             $this->_errors[] = $result;
         } elseif (empty($result)) {
             $this->id = 0;
-            $this->_errors[] = PHPWS_Error::get(FC_IMG_NOT_FOUND, 'filecabinet', 'PHPWS_Image');
+            $this->_errors[] = Core\Error::get(FC_IMG_NOT_FOUND, 'filecabinet', 'PHPWS_Image');
         }
         $this->loadExtension();
     }
@@ -44,7 +44,7 @@ class PHPWS_Document extends File_Common {
             return false;
         }
 
-        $db = new PHPWS_DB('documents');
+        $db = new Core\DB('documents');
         return $db->loadObject($this);
     }
 
@@ -126,7 +126,7 @@ class PHPWS_Document extends File_Common {
 
     public function loadAllowedTypes()
     {
-        $this->_allowed_types = explode(',', PHPWS_Settings::get('filecabinet', 'document_files'));
+        $this->_allowed_types = explode(',', Core\Settings::get('filecabinet', 'document_files'));
     }
 
     public function allowDocumentType($type)
@@ -157,7 +157,7 @@ class PHPWS_Document extends File_Common {
             $vars['document_id'] = $this->id;
             $vars['dop']      = 'clip_document';
             $clip = sprintf('<img src="%smod/filecabinet/img/clip.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Clip document'));
-            $links[] = PHPWS_Text::moduleLink($clip, 'filecabinet', $vars);
+            $links[] = Core\Text::moduleLink($clip, 'filecabinet', $vars);
             $links[] = $this->deleteLink(true);
         }
 
@@ -181,15 +181,15 @@ class PHPWS_Document extends File_Common {
                 if ($folder->id) {
                     $this->setDirectory($folder->getFullDirectory());
                 } else {
-                    return PHPWS_Error::get(FC_MISSING_FOLDER, 'filecabinet', 'PHPWS_Document::save');
+                    return Core\Error::get(FC_MISSING_FOLDER, 'filecabinet', 'PHPWS_Document::save');
                 }
             } else {
-                return PHPWS_Error::get(FC_DIRECTORY_NOT_SET, 'filecabinet', 'PHPWS_Document::save');
+                return Core\Error::get(FC_DIRECTORY_NOT_SET, 'filecabinet', 'PHPWS_Document::save');
             }
         }
 
         if (!is_writable($this->file_directory)) {
-            return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Document::save', $this->file_directory);
+            return Core\Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Document::save', $this->file_directory);
         }
 
         if (empty($this->title)) {
@@ -198,12 +198,12 @@ class PHPWS_Document extends File_Common {
 
         if ($write) {
             $result = $this->write(false);
-            if (PHPWS_Error::isError($result)) {
+            if (Core\Error::isError($result)) {
                 return $result;
             }
         }
 
-        $db = new PHPWS_DB('documents');
+        $db = new Core\DB('documents');
         return $db->saveObject($this);
     }
 
@@ -221,7 +221,7 @@ class PHPWS_Document extends File_Common {
 
         if ($filename_len > 20) {
             $file_name = sprintf('<abbr title="%s">%s</abbr>', $this->file_name,
-            PHPWS_Text::shortenUrl($this->file_name, 20));
+            Core\Text::shortenUrl($this->file_name, 20));
         } else {
             $file_name = & $this->file_name;
         }
@@ -240,14 +240,14 @@ class PHPWS_Document extends File_Common {
         $vars['document_id'] = $this->id;
         $vars['folder_id']   = $this->folder_id;
         $vars['dop'] = 'delete_document';
-        $link = new PHPWS_Link(null, 'filecabinet', $vars, true);
+        $link = new Core\Link(null, 'filecabinet', $vars, true);
         $link->setSalted(1);
         $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this document?');
 
         $js['ADDRESS'] = $link->getAddress();
 
         if ($icon) {
-            $js['LINK'] = Icon::show('delete', dgettext('filecabinet', 'Delete document'));
+            $js['LINK'] = Core\Icon::show('delete', dgettext('filecabinet', 'Delete document'));
         } else {
             $js['LINK'] = dgettext('filecabinet', 'Delete');
         }
@@ -260,7 +260,7 @@ class PHPWS_Document extends File_Common {
         $vars['document_id'] = $this->id;
         $vars['folder_id']   = $this->folder_id;
         $vars['dop'] = 'upload_document_form';
-        $link = new PHPWS_Link(null, 'filecabinet', $vars, true);
+        $link = new Core\Link(null, 'filecabinet', $vars, true);
         $link->setSalted(1);
 
         $js['address'] = $link->getAddress();
@@ -268,7 +268,7 @@ class PHPWS_Document extends File_Common {
         $js['height'] = 500;
 
         if ($icon) {
-            $js['label'] = Icon::show('edit', dgettext('filecabinet', 'Edit document'));
+            $js['label'] = Core\Icon::show('edit', dgettext('filecabinet', 'Edit document'));
         } else {
             $js['label'] = dgettext('filecabinet', 'Edit');
         }
@@ -282,7 +282,7 @@ class PHPWS_Document extends File_Common {
         $vars['fop']       = 'pick_file';
         $vars['file_type'] = FC_DOCUMENT;
         $vars['id']        = $this->id;
-        $link = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+        $link = Core\Text::linkAddress('filecabinet', $vars, true);
         return sprintf('<a href="%s">%s</a>', $link, $this->getIconView());
     }
 
@@ -301,13 +301,13 @@ class PHPWS_Document extends File_Common {
         if ($return_tpl) {
             return $tpl;
         } else {
-            return PHPWS_Template::process($tpl, 'filecabinet', 'document_download.tpl');
+            return Core\Template::process($tpl, 'filecabinet', 'document_download.tpl');
         }
     }
 
     public function deleteAssoc()
     {
-        $db = new PHPWS_DB('fc_file_assoc');
+        $db = new Core\DB('fc_file_assoc');
         $db->addWhere('file_type', FC_DOCUMENT);
         $db->addWhere('file_id', $this->id);
         return $db->delete();

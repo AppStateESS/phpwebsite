@@ -342,8 +342,8 @@ class Webpage_Admin {
                     Core\Core::initModClass('webpage', 'Forms.php');
                     $new_vol = (bool)$volume->id ? false : true;
                     $result = $volume->save();
-                    if (PHPWS_Error::isError($result)) {
-                        PHPWS_Error::log($result);
+                    if (Core\Error::isError($result)) {
+                        Core\Error::log($result);
                         Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred. Please check your logs.'), 'list');
                     } else {
                         if ($new_vol) {
@@ -370,8 +370,8 @@ class Webpage_Admin {
                     $version_id = (int)$_POST['page_version_id'];
                 }
 
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
+                if (Core\Error::isError($result)) {
+                    Core\Error::log($result);
                     Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred while saving your page. Please check the error log.'),
                     sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
                     $page->page_number, $volume->id, $page->id, $version_id));
@@ -383,8 +383,8 @@ class Webpage_Admin {
                     $content = Webpage_Forms::editPage($page, $version);
                 } else {
                     $result = $page->save();
-                    if (PHPWS_Error::isError($result)) {
-                        PHPWS_Error::log($result);
+                    if (Core\Error::isError($result)) {
+                        Core\Error::log($result);
                         Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred while saving your page. Please check the error log.'),
                         sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
                         $page->page_number, $volume->id, $page->id, $version_id));
@@ -393,8 +393,8 @@ class Webpage_Admin {
                     if ( isset($_POST['force_template']) ) {
                         $force_result = $volume->forceTemplate($page->template);
 
-                        if (PHPWS_Error::isError($force_result)) {
-                            PHPWS_Error::log($force_result);
+                        if (Core\Error::isError($force_result)) {
+                            Core\Error::log($force_result);
                             Webpage_Admin::sendMessage(dgettext('webpage', 'Error: Unable to force template.'),
                             sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
                             $page->page_number, $volume->id, $page->id, $version_id));
@@ -456,8 +456,8 @@ class Webpage_Admin {
                 }
 
                 $result = Webpage_Admin::deleteWebpages();
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
+                if (Core\Error::isError($result)) {
+                    Core\Error::log($result);
                     $title = dgettext('webpage', 'Error');
                     $content = dgettext('webpage', 'A problem occurred when trying to delete your webpage.');
                 } else {
@@ -611,7 +611,7 @@ class Webpage_Admin {
 
         $template = Webpage_Admin::template($title, $content, $message);
 
-        $final = PHPWS_Template::process($template, 'webpage', 'main.tpl');
+        $final = Core\Template::process($template, 'webpage', 'main.tpl');
         $panel->setContent($final);
         $finalPanel = $panel->display();
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
@@ -627,10 +627,10 @@ class Webpage_Admin {
         $vars['volume_id'] = $volume->id;
         $vars['page_id'] = $page->id;
         $vars['wp_admin'] = 'restore_page_version';
-        $restore_link = PHPWS_Text::linkAddress('webpage', $vars, true);
+        $restore_link = Core\Text::linkAddress('webpage', $vars, true);
 
         $vars['wp_admin'] = 'remove_page_restore';
-        $remove_link = PHPWS_Text::linkAddress('webpage', $vars, true);
+        $remove_link = Core\Text::linkAddress('webpage', $vars, true);
 
         $restore->setRestoreUrl($restore_link);
         $restore->setRemoveUrl($remove_link);
@@ -647,10 +647,10 @@ class Webpage_Admin {
 
         $vars['volume_id'] = $volume->id;
         $vars['wp_admin'] = 'restore_volume_version';
-        $restore_link = PHPWS_Text::linkAddress('webpage', $vars, true);
+        $restore_link = Core\Text::linkAddress('webpage', $vars, true);
 
         $vars['wp_admin'] = 'remove_volume_restore';
-        $remove_link = PHPWS_Text::linkAddress('webpage', $vars, true);
+        $remove_link = Core\Text::linkAddress('webpage', $vars, true);
 
         $restore->setRestoreUrl($restore_link);
         $restore->setRemoveUrl($remove_link);
@@ -721,7 +721,7 @@ class Webpage_Admin {
             return;
         }
 
-        $db = new PHPWS_DB('webpage_volume');
+        $db = new Core\DB('webpage_volume');
         $db->addWhere('id', $pages);
         $db->addValue('frontpage', (int)$move_val);
         return $db->update();
@@ -738,7 +738,7 @@ class Webpage_Admin {
 
     public function setFeatured($pages, $featured=1)
     {
-        $db = new PHPWS_DB('webpage_featured');
+        $db = new Core\DB('webpage_featured');
         $db->addColumn('vol_order');
         $vol_order = $db->select('max');
 
@@ -746,8 +746,8 @@ class Webpage_Admin {
         $db->addColumn('id');
         $all_cols = $db->select('col');
 
-        if (PHPWS_Error::isError($all_cols)) {
-            PHPWS_Error::log($all_cols);
+        if (Core\Error::isError($all_cols)) {
+            Core\Error::log($all_cols);
             return;
         }
 
@@ -760,8 +760,8 @@ class Webpage_Admin {
             $db->addValue('id', $id);
             $db->addValue('vol_order', $vol_order);
             $result = $db->insert();
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 return;
             }
         }
@@ -784,26 +784,26 @@ class Webpage_Admin {
         }
 
         $vars['wp_admin'] = 'approve';
-        $options[] = PHPWS_Text::secureLink(dgettext('webpage', 'Approval list'), 'webpage', $vars);
+        $options[] = Core\Text::secureLink(dgettext('webpage', 'Approval list'), 'webpage', $vars);
 
         $vars['version_id'] = $version->id;
         $vars['volume_id']  = $volume->id;
 
         $vars['wp_admin']   = 'edit_webpage';
-        $options[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit'), 'webpage', $vars);
+        $options[] = Core\Text::secureLink(dgettext('webpage', 'Edit'), 'webpage', $vars);
 
         if (!$version->vr_approved && Current_User::isUnrestricted('webpage')) {
             $vars['wp_admin']   = 'approve_webpage';
 
-            $options[] = PHPWS_Text::secureLink(dgettext('webpage', 'Approve'), 'webpage', $vars);
+            $options[] = Core\Text::secureLink(dgettext('webpage', 'Approve'), 'webpage', $vars);
 
             $vars['wp_admin'] = 'disapprove_webpage';
-            $options[] = PHPWS_Text::secureLink(dgettext('webpage', 'Disapprove'), 'webpage', $vars);
+            $options[] = Core\Text::secureLink(dgettext('webpage', 'Disapprove'), 'webpage', $vars);
         }
 
 
         $template['LINKS'] = implode(' | ', $options);
-        return PHPWS_Template::process($template, 'webpage', 'approval_view.tpl');
+        return Core\Template::process($template, 'webpage', 'approval_view.tpl');
     }
 
     public function deleteWebpages()
@@ -821,7 +821,7 @@ class Webpage_Admin {
         foreach ($webpage as $wp) {
             $volume = new Webpage_Volume($wp);
             $result = $volume->delete();
-            if (PHPWS_Error::isError($result)) {
+            if (Core\Error::isError($result)) {
                 return $result;
             }
         }
@@ -831,14 +831,14 @@ class Webpage_Admin {
     public function disapproveWebpage()
     {
         $version = new Version('webpage_volume', $_GET['version_id']);
-        if (PHPWS_Error::logIfError($version->delete())) {
+        if (Core\Error::logIfError($version->delete())) {
             return false;
         }
 
-        $db = new PHPWS_DB('webpage_page_version');
+        $db = new Core\DB('webpage_page_version');
         $db->addWhere('volume_id', $version->source_id);
         $db->addWhere('approved', 0);
-        return !PHPWS_Error::logIfError($db->delete());
+        return !Core\Error::logIfError($db->delete());
     }
 
     public function approveWebpage()
@@ -857,15 +857,15 @@ class Webpage_Admin {
                 $pageVer->loadObject($pageObj);
                 $pageObj->approved = 1;
                 $result = $pageObj->save();
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
+                if (Core\Error::isError($result)) {
+                    Core\Error::log($result);
                     return FALSE;
                 }
                 $pageVer->setSource($pageObj);
                 $pageVer->setApproved(TRUE);
                 $result = $pageVer->save();
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
+                if (Core\Error::isError($result)) {
+                    Core\Error::log($result);
                     return FALSE;
                 }
             }
@@ -878,16 +878,16 @@ class Webpage_Admin {
         $new_volume = $volume->key_id ? false : true;
 
         $result = $volume->save(true);
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             return FALSE;
         }
 
         $version->setSource($volume);
         $version->setApproved(TRUE);
         $result = $version->save();
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             return FALSE;
         }
 
@@ -900,27 +900,27 @@ class Webpage_Admin {
     public function postSettings()
     {
         if (isset($_POST['add_images'])) {
-            PHPWS_Settings::set('webpage', 'add_images', 1);
+            Core\Settings::set('webpage', 'add_images', 1);
         } else {
-            PHPWS_Settings::set('webpage', 'add_images', 0);
+            Core\Settings::set('webpage', 'add_images', 0);
         }
 
-        PHPWS_Settings::save('webpage');
+        Core\Settings::save('webpage');
     }
 
     public function settings()
     {
-        $form = new PHPWS_Form('webpage_settings');
+        $form = new Core\Form('webpage_settings');
         $form->addHidden('module', 'webpage');
         $form->addHidden('wp_admin', 'post_settings');
 
         $form->addCheckbox('add_images', 1);
-        $form->setMatch('add_images', PHPWS_Settings::get('webpage', 'add_images'));
+        $form->setMatch('add_images', Core\Settings::get('webpage', 'add_images'));
         $form->setLabel('add_images', dgettext('webpage', 'Simple image forms'));
         $form->addSubmit('save', dgettext('webpage', 'Save settings'));
 
         $tpl = $form->getTemplate();
-        return PHPWS_Template::process($tpl, 'webpage', 'forms/settings.tpl');
+        return Core\Template::process($tpl, 'webpage', 'forms/settings.tpl');
     }
 
     public function goBack()
@@ -933,12 +933,12 @@ class Webpage_Admin {
         if (!$volume->id) {
             return;
         }
-        $db = new PHPWS_DB('webpage_featured');
+        $db = new Core\DB('webpage_featured');
         $db->addWhere('id', $volume->id);
         $db->addColumn('vol_order');
         $vol_order = $db->select('one');
-        if (PHPWS_Error::isError($vol_order)) {
-            PHPWS_Error::log($vol_order);
+        if (Core\Error::isError($vol_order)) {
+            Core\Error::log($vol_order);
         } elseif (!$vol_order) {
             return;
         }
@@ -953,7 +953,7 @@ class Webpage_Admin {
         if (!$volume->id) {
             return;
         }
-        $db = new PHPWS_DB('webpage_featured');
+        $db = new Core\DB('webpage_featured');
         $db->addWhere('id', $volume->id);
         $db->addColumn('vol_order');
         $vol_order = $db->select('one');

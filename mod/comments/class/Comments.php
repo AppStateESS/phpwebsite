@@ -23,18 +23,18 @@ class Comments {
     public static function getThread($key=NULL)
     {
         if (empty($key)) {
-            $key = Key::getCurrent();
+            $key = Core\Key::getCurrent();
         }
 
-        if (!Key::isKey($key)) {
+        if (!Core\Key::isKey($key)) {
             if (is_numeric($key)) {
-                $key = new Key((int)$key);
+                $key = new Core\Key((int)$key);
             } else {
                 return NULL;
             }
         }
 
-        if ( empty($key) || $key->isDummy() || PHPWS_Error::isError($key->_error) ) {
+        if ( empty($key) || $key->isDummy() || Core\Error::isError($key->_error) ) {
             return NULL;
         }
 
@@ -94,7 +94,7 @@ class Comments {
 
         $tabs['ranks'] = array('title'=>dgettext('comments', 'Member ranks'), 'link'=>'index.php?module=comments');
 
-        $db = new PHPWS_DB('comments_items');
+        $db = new Core\DB('comments_items');
         $db->addColumn('id', null, null, true);
         $db->addWhere('reported', 0, '>');
         $count = $db->select('one');
@@ -321,7 +321,7 @@ class Comments {
                     foreach  ($comments as $cm_id) {
                         $comment = new Comment_Item((int) $cm_id);
                         $comment->reported = 0;
-                        PHPWS_Error::logIfError($comment->save());
+                        Core\Error::logIfError($comment->save());
                     }
                 }
                 Core\Core::goBack();
@@ -396,10 +396,10 @@ class Comments {
                 $where = '';
                 if (!empty($_REQUEST['user']))
                 $where = ' WHERE user_id = '. (int) $_REQUEST['user'];
-                $db = new PHPWS_DB('comments_threads');
+                $db = new Core\DB('comments_threads');
                 $sql = 'UPDATE comments_users SET comments_made = (SELECT COUNT(ID) FROM comments_items WHERE comments_items.author_id = comments_users.user_id)'.$where;
                 $result = $db->query($sql);
-                PHPWS_Error::logIfError($result);
+                Core\Error::logIfError($result);
                 $content = dgettext('comments', 'All user postcounts have been recalculated');
                 break;
 
@@ -455,7 +455,7 @@ class Comments {
                 if (isset($_REQUEST['cm_id'])) {
                     $cm_id = (int)$_REQUEST['cm_id'];
                     if (!$_SESSION['Users_Reported_Comments'][$cm_id]) {
-                        $db = new PHPWS_DB('comments_items');
+                        $db = new Core\DB('comments_items');
                         $db->addWhere('id', $cm_id);
                         $db->incrementColumn('reported');
                         $_SESSION['Users_Reported_Comments'][$cm_id] = true;
@@ -492,8 +492,8 @@ class Comments {
 
                 if (Comments::postComment($thread, $c_item)) {
                     $result = $c_item->save();
-                    if (PHPWS_Error::isError($result)) {
-                        PHPWS_Error::log($result);
+                    if (Core\Error::isError($result)) {
+                        Core\Error::log($result);
                         $title = dgettext('comments', 'Sorry');
                         $content[] = dgettext('comments', 'A problem occurred when trying to save your comment.');
                         $content[] = dgettext('comments', 'Please try again later.');
@@ -563,17 +563,17 @@ class Comments {
         $template['TITLE'] = $title;
         $template['CONTENT'] = implode('<br />', $content);
 
-        Layout::add(PHPWS_Template::process($template, 'comments', 'main.tpl'));
+        Layout::add(Core\Template::process($template, 'comments', 'main.tpl'));
     }
 
     public function changeView()
     {
-        $getValues = PHPWS_Text::getGetValues();
+        $getValues = Core\Text::getGetValues();
 
         if (isset($_GET['referer'])) {
-            $referer = PHPWS_Text::getGetValues(urldecode($_GET['referer']));
+            $referer = Core\Text::getGetValues(urldecode($_GET['referer']));
         } else {
-            $referer = PHPWS_Text::getGetValues($_SERVER['HTTP_REFERER']);
+            $referer = Core\Text::getGetValues($_SERVER['HTTP_REFERER']);
         }
 
         $referer['time_period'] = $getValues['time_period'];
@@ -634,7 +634,7 @@ class Comments {
         }
 
         if (!Current_User::isLogged() &&
-        PHPWS_Settings::get('comments', 'anonymous_naming')) {
+        Core\Settings::get('comments', 'anonymous_naming')) {
             $name = trim(strip_tags($_POST['anon_name']));
             if (empty($name) || strlen($name) < 2) {
                 $cm_item->_error = dgettext('comments', 'Your name cannot be shorter than 2 characters.');
@@ -647,8 +647,7 @@ class Comments {
         }
 
         if ( Comments::useCaptcha() ) {
-            Core\Core::initCoreClass('Captcha.php');
-            if (!Captcha::verify()) {
+                        if (!Captcha::verify()) {
                 $cm_item->_error =  dgettext('comments', 'You failed verification. Try again.');
                 return false;
             }
@@ -670,7 +669,7 @@ class Comments {
             return false;
         }
 
-        $captcha = PHPWS_Settings::get('comments', 'captcha');
+        $captcha = Core\Settings::get('comments', 'captcha');
 
         // if captcha is enabled (1 or 2)
         // and everyone has to use it (option 2) or
@@ -686,9 +685,9 @@ class Comments {
 
     public static function unregister($module)
     {
-        $ids = Key::getAllIds($module);
-        if (PHPWS_Error::isError($ids)) {
-            PHPWS_Error::log($ids);
+        $ids = Core\Key::getAllIds($module);
+        if (Core\Error::isError($ids)) {
+            Core\Error::log($ids);
             return FALSE;
         }
 
@@ -696,29 +695,29 @@ class Comments {
             return TRUE;
         }
 
-        $db = new PHPWS_DB('comments_threads');
+        $db = new Core\DB('comments_threads');
         $db->addWhere('key_id', $ids, 'in');
         $db->addColumn('id');
         $id_list = $db->select('col');
         if (empty($id_list)) {
             return TRUE;
-        } elseif (PHPWS_Error::isError($id_list)) {
-            PHPWS_Error::log($id_list);
+        } elseif (Core\Error::isError($id_list)) {
+            Core\Error::log($id_list);
             return FALSE;
         }
 
-        $db2 = new PHPWS_DB('comments_items');
+        $db2 = new Core\DB('comments_items');
         $db2->addWhere('thread_id', $id_list, 'in');
         $result = $db2->delete();
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($id_list);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($id_list);
             return FALSE;
         } else {
             $db->reset();
             $db->addWhere('key_id', $ids, 'in');
             $result = $db->delete();
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($id_list);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($id_list);
                 return FALSE;
             }
             return TRUE;
@@ -730,7 +729,7 @@ class Comments {
         $tpl = $comment->getTpl($thread);
         $tpl['RESPONSES'] = dgettext('comments', 'Replies to this comment');
         $tpl['CHILDREN'] = $thread->view($comment->id);
-        $content = PHPWS_Template::process($tpl, 'comments', COMMENT_VIEW_ONE_TPL);
+        $content = Core\Template::process($tpl, 'comments', COMMENT_VIEW_ONE_TPL);
 
         return $content;
     }
@@ -740,7 +739,7 @@ class Comments {
      */
     public function showRecentComments($limit)
     {
-        $db = new PHPWS_DB('comments_items');
+        $db = new Core\DB('comments_items');
         $db->setLimit($limit);
         $db->addOrder('create_time desc');
         $db->addColumn('comments_items.id');
@@ -786,7 +785,7 @@ class Comments {
 
         $tpl['BOX_TITLE'] = dgettext('comments', 'Recent comments');
 
-        $content = PHPWS_Template::process($tpl, 'comments', 'recent.tpl');
+        $content = Core\Template::process($tpl, 'comments', 'recent.tpl');
         Layout::add($content, 'comments', 'recent');
     }
 
@@ -821,11 +820,11 @@ class Comments {
      */
     public function sendUpdateNotice(&$thread, &$cm_item)
     {
-        if(!PHPWS_Settings::get('comments', 'allow_user_monitors'))
+        if(!Core\Settings::get('comments', 'allow_user_monitors'))
         return;
 
         // look for all users that are monitoring this thread
-        $db = new PHPWS_DB('comments_monitors');
+        $db = new Core\DB('comments_monitors');
         $db->addColumn('comments_monitors.user_id');
         $db->addColumn('users.id');
         $db->addColumn('users.username');
@@ -836,13 +835,12 @@ class Comments {
         $db->addWhere('users.id', 'comments_monitors.user_id');
         $db->addWhere('users.active', 1);
         $result = $db->select();
-        if (PHPWS_Error::logIfError($result) || empty($result))
+        if (Core\Error::logIfError($result) || empty($result))
         return;
 
         // Send all email notices (not current user)
         //xxxxNOTE: Need to create a core_based Mail_Queue to pop these into for Comments newsletter modules
-        Core\Core::initCoreClass('Mail.php');
-        $mail = new PHPWS_Mail;
+                $mail = new PHPWS_Mail;
         foreach ($result AS $to) {
             if ($to['id'] != Current_User::getId())
             $mail->addSendTo($to['email']);
@@ -857,19 +855,19 @@ class Comments {
         , $cm_item->getEntry()
         , Core\Core::getHomeHttp().'index.php?module=users&action=user&tab=comments'
         );
-        $body = str_replace($find, $replace, PHPWS_Settings::get('comments', 'email_text'));
-        $mail->setSubject(str_replace($find, $replace, PHPWS_Settings::get('comments', 'email_subject')));
+        $body = str_replace($find, $replace, Core\Settings::get('comments', 'email_text'));
+        $mail->setSubject(str_replace($find, $replace, Core\Settings::get('comments', 'email_subject')));
         $mail->setFrom(PHPWS_User::getUserSetting('site_contact'));
         $mail->setMessageBody($body);
         $mail->sendIndividually();
         $mail->send();
 
         // Unset the "send notice" flag so that only one notice is sent
-        $db = new PHPWS_DB('comments_monitors');
+        $db = new Core\DB('comments_monitors');
         $db->addWhere('thread_id', $this->id);
         $db->addWhere('suspended', 0);
         $db->addValue('send_notice', 0);
-        PHPWS_Error::logIfError($db->update());
+        Core\Error::logIfError($db->update());
     }
 
     /*
@@ -877,15 +875,15 @@ class Comments {
      */
     public function update_reported_comments()
     {
-        PHPWS_Settings::get('comments', 'reported_comments');
-        $db = new PHPWS_DB('comments_items');
+        Core\Settings::get('comments', 'reported_comments');
+        $db = new Core\DB('comments_items');
         $db->addColumn('id', null, null, true);
         $db->addWhere('reported', 0, '>');
         $count = $db->select('one');
-        if (PHPWS_Error::logIfError($count))
+        if (Core\Error::logIfError($count))
         $count = 0;
-        PHPWS_Settings::set('comments', 'reported_comments', $count);
-        PHPWS_Settings::save('comments');
+        Core\Settings::set('comments', 'reported_comments', $count);
+        Core\Settings::save('comments');
     }
 
     /*
@@ -893,15 +891,15 @@ class Comments {
      */
     public function update_unapproved_comments()
     {
-        PHPWS_Settings::get('comments', 'unapproved_comments');
-        $db = new PHPWS_DB('comments_items');
+        Core\Settings::get('comments', 'unapproved_comments');
+        $db = new Core\DB('comments_items');
         $db->addColumn('id', null, null, true);
         $db->addWhere('approved', 0);
         $count = $db->select('one');
-        if (PHPWS_Error::logIfError($count))
+        if (Core\Error::logIfError($count))
         $count = 0;
-        PHPWS_Settings::set('comments', 'unapproved_comments', $count);
-        PHPWS_Settings::save('comments');
+        Core\Settings::set('comments', 'unapproved_comments', $count);
+        Core\Settings::save('comments');
     }
 
 
@@ -913,11 +911,10 @@ class Comments {
         javascriptMod('comments', 'admin');
         javascriptMod('comments', 'quick_view');
 
-        Core\Core::initCoreClass('DBPager.php');
-        if (empty($comment_user->user_id)) {
+                if (empty($comment_user->user_id)) {
             return dgettext('comments', 'No comments made');
         }
-        $pager = new DBPager('comments_items');
+        $pager = new Core\DBPager('comments_items');
         $pager->setModule('comments');
         $pager->setTemplate('history.tpl');
         $pager->addWhere('author_id', $comment_user->user_id);
@@ -944,7 +941,7 @@ class Comments {
         $pager->addWhere('approved', 1);
 
         if(!Current_User::isDeity()) {
-            Key::restrictView($pager->db, 'comments', false, 'comments_threads');
+            Core\Key::restrictView($pager->db, 'comments', false, 'comments_threads');
         }
 
         return $pager->get();
@@ -976,18 +973,18 @@ class Comments {
             return $all_ranks;
         }
 
-        $db = new PHPWS_DB('comments_ranks');
+        $db = new Core\DB('comments_ranks');
         $db->addColumn('users_groups.name', null, 'group_name');
         $db->addJoin('left', 'comments_ranks', 'users_groups', 'group_id', 'id');
         $db->addOrder('users_groups.name');
         $db->setIndexBy('id');
-        $default_rank = PHPWS_Settings::get('comments', 'default_rank');
+        $default_rank = Core\Settings::get('comments', 'default_rank');
 
         Core\Core::initModClass('comments', 'Rank.php');
         $db->addColumn('comments_ranks.*');
         $result = $db->getObjects('Comment_Rank', true);
 
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             return null;
         }
         $result[$default_rank]->group_name = dgettext('comments', 'All Members');
@@ -1006,7 +1003,7 @@ class Comments {
 
     public static function getDefaultRank()
     {
-        $rank = new Comment_Rank(PHPWS_Settings::get('comments', 'default_rank'));
+        $rank = new Comment_Rank(Core\Settings::get('comments', 'default_rank'));
         return $rank;
     }
 
@@ -1028,7 +1025,7 @@ class Comments {
             return;
         }
 
-        $db = new PHPWS_DB('comments_items');
+        $db = new Core\DB('comments_items');
         if ($author_id) {
             $db->addWhere('author_id', $author_id);
         } else {
@@ -1039,13 +1036,13 @@ class Comments {
         $db->addColumn('thread_id', null, null, false, true);
 
         $threads = $db->select('col');
-        if (PHPWS_Error::logIfError($threads) || empty($threads)) {
+        if (Core\Error::logIfError($threads) || empty($threads)) {
             return;
         }
 
         // now delete all the comments
         $db->resetColumns();
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
         // go through threads and update their comment count
         foreach ($threads as $thread_id) {
@@ -1055,10 +1052,10 @@ class Comments {
         }
 
         if ($author_id) {
-            $db = new PHPWS_DB('comments_users');
+            $db = new Core\DB('comments_users');
             $db->addWhere('user_id', $author_id);
             $db->setValue('comments_made', 0);
-            PHPWS_Error::logIfError($db->update());
+            Core\Error::logIfError($db->update());
         }
 
     }

@@ -23,26 +23,26 @@ class PHPWSBB_Lists
         Layout::addStyle('phpwsbb');
         if (!Current_User::isLogged()) {
             $cachekey = 'phpwsbbForums';
-            $s = PHPWS_Cache::get($cachekey);
+            $s = Core\Cache::get($cachekey);
         }
         if (!empty($s))
         $cat_arr = unserialize($s);
         else {
             // Load all forum objects into an indexed array
-            $db = new PHPWS_DB('phpwsbb_forums');
+            $db = new Core\DB('phpwsbb_forums');
             $db->addOrder('sortorder asc');
             $db->addOrder('title asc');
             if(!Current_User::allow('phpwsbb', 'manage_forums'))
-            Key::restrictView($db, 'phpwsbb', false);
+            Core\Key::restrictView($db, 'phpwsbb', false);
             $result = $db->select('col');
-            if (PHPWS_Error::logIfError($result) || empty($result))
+            if (Core\Error::logIfError($result) || empty($result))
             return dgettext('phpwsbb', 'There are no available Forums');
             $cat_arr[0]['forums'] = array();
             foreach ($result AS $value)
             $cat_arr[0]['forums'][$value] = new PHPWSBB_Forum($value);
 
             // Load all forum ids belonging to categories
-            $db = new PHPWS_DB('category_items');
+            $db = new Core\DB('category_items');
             $db->addColumn('phpwsbb_forums.id');
             $db->addColumn('category_items.cat_id');
             $db->addWhere('category_items.module', 'phpwsbb');
@@ -51,8 +51,8 @@ class PHPWSBB_Lists
             $db->addOrder('phpwsbb_forums.sortorder asc');
             $db->addOrder('phpws_key.title asc');
             $result = $db->select();
-            if (PHPWS_Error::logIfError($result))
-            return PHPWS_Error::printError($result);
+            if (Core\Error::logIfError($result))
+            return Core\Error::printError($result);
             if (!empty($result))
             // Loop through all records...
             foreach ($result AS $value) {
@@ -75,11 +75,11 @@ class PHPWSBB_Lists
                 $lifetime = 86400; // number of seconds until cache refresh
                 // default is set in CACHE_LIFETIME in the
                 // config/core/config.php file
-                PHPWS_Cache::save($cachekey, $cat_arr, $lifetime);
+                Core\Cache::save($cachekey, $cat_arr, $lifetime);
             }
         }
 
-        $tpl = new PHPWS_Template('phpwsbb');
+        $tpl = new Core\Template('phpwsbb');
         $tpl->setFile('forum_list.tpl');
         // Loop through the category array for the amount of rows
         foreach ($cat_arr AS $key => $value) {
@@ -115,10 +115,9 @@ class PHPWSBB_Lists
      */
     public function search_threads ($type, $var = null)
     {
-        /* Create DBPager object */
-        Core\Core::initCoreClass('DBPager.php');
-
-        $pager = new DBPager('phpwsbb_topics', 'PHPWSBB_Topic');
+        /* Create Core\DBPager object */
+        
+        $pager = new Core\DBPager('phpwsbb_topics', 'PHPWSBB_Topic');
         $pager->setModule('phpwsbb');
         $pager->setTemplate('search_topics.tpl');
         $pager->setCacheIdentifier('search_'.$type);

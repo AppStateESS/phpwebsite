@@ -92,11 +92,11 @@ class Layout_Settings {
 
     public function getPageMetaTags($key_id)
     {
-        $db = new PHPWS_DB('layout_metatags');
+        $db = new Core\DB('layout_metatags');
         $db->addWhere('key_id', $key_id);
         $row = $db->select('row');
-        if (PHPWS_Error::isError($row)) {
-            PHPWS_Error::log($row);
+        if (Core\Error::isError($row)) {
+            Core\Error::log($row);
             return null;
         }
 
@@ -126,7 +126,7 @@ class Layout_Settings {
     public function loadBoxes()
     {
         $theme = $this->current_theme;
-        $db = new PHPWS_db('layout_box');
+        $db = new Core\DB('layout_box');
         $db->addWhere('theme', $theme);
         if(!$boxes = $db->getObjects('Layout_Box')) {
             return;
@@ -142,14 +142,14 @@ class Layout_Settings {
 
     public function loadContentVars()
     {
-        $db = new PHPWS_db('layout_box');
+        $db = new Core\DB('layout_box');
         $db->addWhere('theme', $this->current_theme);
         $db->addColumn('content_var');
         $db->addColumn('module');
         $result = $db->select();
 
-        if (PHPWS_Error::isError($result)){
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)){
+            Core\Error::log($result);
             Core\Core::errorPage();
         }
 
@@ -165,10 +165,10 @@ class Layout_Settings {
 
     public function loadSettings($theme=null)
     {
-        $db = new PHPWS_DB('layout_config');
+        $db = new Core\DB('layout_config');
         $result = $db->loadObject($this, false);
-        if (PHPWS_Error::isError($result)){
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)){
+            Core\Error::log($result);
             Core\Core::errorPage();
         }
         
@@ -187,7 +187,7 @@ class Layout_Settings {
             $this->loadBoxSettings($themeVars);
             $this->loadStyleSheets($themeVars);
         } else {
-            PHPWS_Error::log(LAYOUT_INI_FILE, 'layout', 'Layout_Settings::loadSettings', $themeInit);
+            Core\Error::log(LAYOUT_INI_FILE, 'layout', 'Layout_Settings::loadSettings', $themeInit);
             //Core\Core::errorPage();
         }
         if (Current_User::isDeity()) {
@@ -201,7 +201,7 @@ class Layout_Settings {
         $this->_extra_styles = null;
         $this->_style_sheets = null;
         $directory = sprintf('themes/%s/', $this->current_theme);
-        @$cookie = PHPWS_Cookie::read('layout_style');
+        @$cookie = Core\Cookie::read('layout_style');
 
         for ($i = 1; $i < 20; $i++) {
             if (isset($themeVars['style_sheet_' . $i])) {
@@ -262,7 +262,7 @@ class Layout_Settings {
 
     public function saveSettings()
     {
-        $db = new PHPWS_DB('layout_config');
+        $db = new Core\DB('layout_config');
         $vars = Core\Core::stripObjValues($this);
         unset($vars['current_theme']);
         unset($vars['_contentVars']);
@@ -282,12 +282,12 @@ class Layout_Settings {
 
     public function loadKeyStyle($key_id)
     {
-        $db = new PHPWS_DB('layout_styles');
+        $db = new Core\DB('layout_styles');
         $db->addWhere('key_id', (int)$key_id);
         $db->addColumn('style');
         $result = $db->select('one');
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             $this->_key_styles[$key_id] = null;
             return false;
         }

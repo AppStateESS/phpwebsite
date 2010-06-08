@@ -35,7 +35,7 @@ $boostPanel->enableSecure();
 Boost_Form::setTabs($boostPanel);
 
 $vars = array('action'=>'admin', 'tab'=>$boostPanel->getCurrentTab());
-$backToBoost = PHPWS_Text::secureLink(dgettext('boost', 'Return to Boost'), 'boost', $vars);
+$backToBoost = Core\Text::secureLink(dgettext('boost', 'Return to Boost'), 'boost', $vars);
 
 switch ($_REQUEST['action']){
     case 'admin':
@@ -64,8 +64,8 @@ switch ($_REQUEST['action']){
         }
 
         $result = Boost_Action::installModule($_REQUEST['opmod']);
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             $content[] = dgettext('boost', 'An error occurred while installing this module.') .
              ' ' . dgettext('boost', 'Please check your error logs.');
         } else {

@@ -164,7 +164,7 @@ function access_update(&$content, $version)
 
         case version_compare($version, '1.1.5', '<'):
             $module = new PHPWS_Module('access');
-            PHPWS_Error::logIfError($module->save());
+            Core\Error::logIfError($module->save());
             $content[] = '<pre>1.1.5 changes
 ---------------
 + Lowered Access priority to assure its init.php is called early.</pre>';

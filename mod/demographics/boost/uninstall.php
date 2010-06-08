@@ -6,7 +6,7 @@
 
 function demographics_uninstall(&$content)
 {
-    PHPWS_DB::dropTable('demographics');
+    Core\DB::dropTable('demographics');
     $content[] = dgettext('demographics', 'Demographics table removed.');
     return TRUE;
 }

@@ -10,8 +10,8 @@ function comments_install(&$content)
     $rank->group_name = 'All members';
     $rank->save();
 
-    PHPWS_Settings::set('comments', 'default_rank', $rank->id);
-    PHPWS_Settings::save('comments');
+    Core\Settings::set('comments', 'default_rank', $rank->id);
+    Core\Settings::save('comments');
     return true;
 }
 ?>

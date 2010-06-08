@@ -48,7 +48,7 @@ class Calendar_Admin {
                 }
             } else {
                 // new schedule
-                if (PHPWS_Settings::get('calendar', 'personal_schedules')) {
+                if (Core\Settings::get('calendar', 'personal_schedules')) {
                     return true;
                 } else {
                     return false;
@@ -59,10 +59,9 @@ class Calendar_Admin {
 
     public function approval()
     {
-        Core\Core::initCoreClass('DBPager.php');
-        Core\Core::initModClass('calendar', 'Suggestion.php');
+                Core\Core::initModClass('calendar', 'Suggestion.php');
 
-        $pager = new DBPager('calendar_suggestions', 'Calendar_Suggestion');
+        $pager = new Core\DBPager('calendar_suggestions', 'Calendar_Suggestion');
         $pager->setModule('calendar');
         $pager->setTemplate('admin/approval.tpl');
         $pager->setOrder('submitted', null, true);
@@ -101,8 +100,8 @@ class Calendar_Admin {
         Core\Core::plugObject($event, $values);
 
         $result = $event->save();
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             return false;
         }
 
@@ -155,7 +154,7 @@ class Calendar_Admin {
         Layout::addStyle('calendar');
 
         // the form id is linked to the check_date javascript
-        $form = new PHPWS_Form('event_form');
+        $form = new Core\Form('event_form');
         if (isset($_REQUEST['js'])) {
             $form->addHidden('js', 1);
         }
@@ -380,7 +379,7 @@ class Calendar_Admin {
                 $linkvar['js'] = 1;
             }
 
-            $source_link = PHPWS_Text::moduleLink(dgettext('calendar', 'Click here if you would prefer to edit the source event.'), 'calendar', $linkvar);
+            $source_link = Core\Text::moduleLink(dgettext('calendar', 'Click here if you would prefer to edit the source event.'), 'calendar', $linkvar);
             $tpl['REPEAT_WARNING'] = dgettext('calendar', 'This is a repeat of another event.') . '<br />' . $source_link;
         }
 
@@ -391,7 +390,7 @@ class Calendar_Admin {
             javascriptMod('calendar', 'check_date');
         }
 
-        return PHPWS_Template::process($tpl, 'calendar', 'admin/forms/edit_event.tpl');
+        return Core\Template::process($tpl, 'calendar', 'admin/forms/edit_event.tpl');
     }
 
 
@@ -401,24 +400,24 @@ class Calendar_Admin {
 
         $vars['aop'] = 'schedules';
         $tabs['schedules'] = array('title' => dgettext('calendar', 'Schedules'),
-                                   'link' => PHPWS_Text::linkAddress('calendar', $vars));
+                                   'link' => Core\Text::linkAddress('calendar', $vars));
 
         if (Current_User::allow('calendar', 'settings')) {
             $vars['aop'] = 'settings';
             $tabs['settings']    = array('title' => dgettext('calendar', 'Settings'),
-                                         'link' => PHPWS_Text::linkAddress('calendar', $vars));
+                                         'link' => Core\Text::linkAddress('calendar', $vars));
         }
 
         if (Current_User::isUnrestricted('calendar') && Current_User::allow('calendar', 'edit_public')) {
             $vars['aop'] = 'approval';
-            $db = new PHPWS_DB('calendar_suggestions');
+            $db = new Core\DB('calendar_suggestions');
             $count = $db->count();
-            if (PHPWS_Error::isError($count)) {
-                PHPWS_Error::log($count);
+            if (Core\Error::isError($count)) {
+                Core\Error::log($count);
                 $count = 0;
             }
             $tabs['approval']    = array('title' => sprintf(dgettext('calendar', 'Approval (%s)'), $count),
-                                         'link' => PHPWS_Text::linkAddress('calendar', $vars));
+                                         'link' => Core\Text::linkAddress('calendar', $vars));
 
         }
 
@@ -485,7 +484,7 @@ class Calendar_Admin {
             case 'create_schedule':
                 if (!Current_User::allow('calendar') ||
                 (!Current_User::allow('calendar', 'edit_public') &&
-                !PHPWS_Settings::get('calendar', 'personal_schedules'))) {
+                !Core\Settings::get('calendar', 'personal_schedules'))) {
                     Current_User::disallow();
                 }
                 $this->calendar->schedule = new Calendar_Schedule;
@@ -525,8 +524,8 @@ class Calendar_Admin {
                 if ($this->calendar->schedule->checkPermissions(true)) {
                     $event = $this->calendar->schedule->loadEvent();
                     $result = $event->delete();
-                    if (PHPWS_Error::isError($result)) {
-                        PHPWS_Error::log($result);
+                    if (Core\Error::isError($result)) {
+                        Core\Error::log($result);
                     }
                 }
                 Core\Core::goBack();
@@ -560,8 +559,8 @@ class Calendar_Admin {
 
             case 'make_default_public':
                 if (Current_User::isUnrestricted('calendar')) {
-                    PHPWS_Settings::set('calendar', 'public_schedule', (int)$_REQUEST['sch_id']);
-                    PHPWS_Settings::save('calendar');
+                    Core\Settings::set('calendar', 'public_schedule', (int)$_REQUEST['sch_id']);
+                    Core\Settings::save('calendar');
                     $this->message =dgettext('calendar', 'Default public schedule set.');
                 }
                 $this->scheduleListing();
@@ -590,7 +589,7 @@ class Calendar_Admin {
                 if (!Current_User::allow('calendar')) {
                     Current_User::disallow();
                 }
-                PHPWS_Cache::remove($_REQUEST['key']);
+                Core\Cache::remove($_REQUEST['key']);
                 Core\Core::goBack();
                 break;
 
@@ -631,7 +630,7 @@ class Calendar_Admin {
         // Clears in case of js window opening
         $this->content = $this->title = $this->message = null;
 
-        $final = PHPWS_Template::process($tpl, 'calendar', 'admin/main.tpl');
+        $final = Core\Template::process($tpl, 'calendar', 'admin/main.tpl');
 
         if (PHPWS_Calendar::isJS()) {
             Layout::nakedDisplay($final);
@@ -675,7 +674,7 @@ class Calendar_Admin {
 
         $table = $this->calendar->schedule->getEventTable();
 
-        $db = new PHPWS_DB($table);
+        $db = new Core\DB($table);
 
         $success = 0;
         $duplicates = 0;
@@ -765,7 +764,7 @@ class Calendar_Admin {
                         $result = $db->select('one');
 
                         if (!empty($result)) {
-                            if (PHPWS_Error::logIfError($result)) {
+                            if (Core\Error::logIfError($result)) {
                                 $parse_errors[] = dgettext('calendar', 'Error accessing event table.');
                             } else {
                                 $duplicates++;
@@ -773,7 +772,7 @@ class Calendar_Admin {
                         } else {
                             $save = $event->save();
 
-                            if (PHPWS_Error::logIfError($save) || !$save) {
+                            if (Core\Error::logIfError($save) || !$save) {
                                 $parse_errors[] = dgettext('calendar', 'Error saving new event.');
                             } else {
                                 $success++;
@@ -801,7 +800,7 @@ class Calendar_Admin {
 
     private function uploadEvent()
     {
-        $form = new PHPWS_Form('upload-event');
+        $form = new Core\Form('upload-event');
         $form->addHidden('module', 'calendar');
         $form->addHidden('aop', 'post_upload');
         $form->addHidden('js', 1);
@@ -811,7 +810,7 @@ class Calendar_Admin {
         $form->addSubmit('go', dgettext('calendar', 'Send file'));
         $tpl = $form->getTemplate();
         $tpl['CLOSE'] = javascript('close_window');
-        $this->content = PHPWS_Template::process($tpl, 'calendar', 'upload.tpl');
+        $this->content = Core\Template::process($tpl, 'calendar', 'upload.tpl');
         $this->title = dgettext('calendar', 'Import iCal/vCal file');
     }
 
@@ -834,8 +833,8 @@ class Calendar_Admin {
             }
 
             $result = $event->save();
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 if(PHPWS_Calendar::isJS()) {
                     $this->sendMessage(dgettext('calendar', 'An error occurred when saving your event.'), null, false);
                     javascript('close_refresh');
@@ -846,9 +845,9 @@ class Calendar_Admin {
                 }
             } else {
                 $result = $this->saveRepeat($event);
-                if (PHPWS_Error::isError($result)) {
+                if (Core\Error::isError($result)) {
                     if (PHPWS_Calendar::isJS()) {
-                        PHPWS_Error::log($result);
+                        Core\Error::log($result);
                         $this->sendMessage(dgettext('calendar', 'An error occurred when trying to repeat an event.', null, false));
                         javascript('close_refresh');
                         Layout::nakedDisplay();
@@ -858,12 +857,12 @@ class Calendar_Admin {
                     }
                 }
 
-                PHPWS_Cache::remove(sprintf('grid_%s_%s_%s',
+                Core\Cache::remove(sprintf('grid_%s_%s_%s',
                 date('n', $event->start_time),
                 date('Y', $event->start_time),
                 $this->calendar->schedule->id));
 
-                PHPWS_Cache::remove(sprintf('list_%s_%s_%s',
+                Core\Cache::remove(sprintf('list_%s_%s_%s',
                 date('n', $event->start_time),
                 date('Y', $event->start_time),
                 $this->calendar->schedule->id));
@@ -884,21 +883,21 @@ class Calendar_Admin {
 
     public function postSettings()
     {
-        PHPWS_Settings::set('calendar', 'personal_schedules', (int)isset($_POST['personal_schedules']));
-        PHPWS_Settings::set('calendar', 'allow_submissions', (int)isset($_POST['allow_submissions']));
-        PHPWS_Settings::set('calendar', 'mini_event_link', (int)isset($_POST['mini_event_link']));
-        PHPWS_Settings::set('calendar', 'cache_month_views', (int)isset($_POST['cache_month_views']));
-        PHPWS_Settings::set('calendar', 'mini_grid', (int)isset($_POST['mini_grid']));
-        PHPWS_Settings::set('calendar', 'anon_ical', (int)isset($_POST['anon_ical']));
-        PHPWS_Settings::set('calendar', 'no_follow', (int)isset($_POST['no_follow']));
+        Core\Settings::set('calendar', 'personal_schedules', (int)isset($_POST['personal_schedules']));
+        Core\Settings::set('calendar', 'allow_submissions', (int)isset($_POST['allow_submissions']));
+        Core\Settings::set('calendar', 'mini_event_link', (int)isset($_POST['mini_event_link']));
+        Core\Settings::set('calendar', 'cache_month_views', (int)isset($_POST['cache_month_views']));
+        Core\Settings::set('calendar', 'mini_grid', (int)isset($_POST['mini_grid']));
+        Core\Settings::set('calendar', 'anon_ical', (int)isset($_POST['anon_ical']));
+        Core\Settings::set('calendar', 'no_follow', (int)isset($_POST['no_follow']));
 
-        PHPWS_Settings::set('calendar', 'display_mini', (int)$_POST['display_mini']);
-        PHPWS_Settings::set('calendar', 'starting_day', (int)$_POST['starting_day']);
-        PHPWS_Settings::set('calendar', 'default_view', $_POST['default_view']);
-        PHPWS_Settings::set('calendar', 'brief_grid', $_POST['brief_grid']);
+        Core\Settings::set('calendar', 'display_mini', (int)$_POST['display_mini']);
+        Core\Settings::set('calendar', 'starting_day', (int)$_POST['starting_day']);
+        Core\Settings::set('calendar', 'default_view', $_POST['default_view']);
+        Core\Settings::set('calendar', 'brief_grid', $_POST['brief_grid']);
 
-        PHPWS_Settings::save('calendar');
-        PHPWS_Cache::clearCache();
+        Core\Settings::save('calendar');
+        Core\Cache::clearCache();
     }
 
     /**
@@ -916,8 +915,8 @@ class Calendar_Admin {
         if (empty($event->repeat_type)) {
             // Previously, the event repeated, remove the copies
             $result = $event->clearRepeats();
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
             }
             return true;
         }
@@ -934,8 +933,8 @@ class Calendar_Admin {
 
         // The repeat setting changed or were never set, so need to recreate the copies
         $result = $event->clearRepeats();
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
         }
 
 
@@ -971,7 +970,7 @@ class Calendar_Admin {
             return false;
         }
 
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         } else {
             return true;
@@ -980,7 +979,7 @@ class Calendar_Admin {
 
     public function postSchedule()
     {
-        $default_public = PHPWS_Settings::get('calendar', 'public_schedule');
+        $default_public = Core\Settings::get('calendar', 'public_schedule');
         if ($this->calendar->schedule->post()) {
             if (!$this->allowSchedulePost()) {
                 Current_User::disallow();
@@ -988,8 +987,8 @@ class Calendar_Admin {
             }
 
             $result = $this->calendar->schedule->save();
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 if(PHPWS_Calendar::isJS()) {
                     $this->sendMessage(dgettext('calendar', 'An error occurred when saving your schedule.'), null, false);
                     javascript('close_refresh');
@@ -1000,13 +999,13 @@ class Calendar_Admin {
                 }
             } else {
                 if ( $this->calendar->schedule->public && ($default_public < 1)) {
-                    PHPWS_Settings::set('calendar', 'public_schedule', $this->calendar->schedule->id);
-                    PHPWS_Settings::save('calendar');
+                    Core\Settings::set('calendar', 'public_schedule', $this->calendar->schedule->id);
+                    Core\Settings::save('calendar');
                 }
 
                 if (!$this->calendar->schedule->public && $this->calendar->schedule->id == $default_public) {
-                    PHPWS_Settings::set('calendar', 'public_schedule', 0);
-                    PHPWS_Settings::save('calendar');
+                    Core\Settings::set('calendar', 'public_schedule', 0);
+                    Core\Settings::save('calendar');
                 }
 
                 if(PHPWS_Calendar::isJS()) {
@@ -1050,14 +1049,14 @@ class Calendar_Admin {
 
             $max_count++;
             if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
-                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatDaily');
+                return Core\Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatDaily');
             }
 
             $copy_event->start_time = $time_unit;
             $copy_event->end_time = $time_unit + $time_diff;
             $time_unit += 86400;
             $result = $copy_event->save();
-            if (PHPWS_Error::isError($result)) {
+            if (Core\Error::isError($result)) {
                 return $result;
             }
         }
@@ -1142,13 +1141,13 @@ class Calendar_Admin {
                         $max_count++;
 
                         if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
-                            return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatWeekly');
+                            return Core\Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatWeekly');
                         }
 
                         $copy_event->start_time = $time_unit;
                         $copy_event->end_time = $time_unit + $time_diff;
                         $result = $copy_event->save();
-                        if (PHPWS_Error::isError($result)) {
+                        if (Core\Error::isError($result)) {
                             return $result;
                         }
                     }
@@ -1198,7 +1197,7 @@ class Calendar_Admin {
             $max_count++;
 
             if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
-                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatYearly');
+                return Core\Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatYearly');
             }
 
             $start_time = mktime($c_hour, $c_min, 0, $ts_month, $ts_day, $c_year);
@@ -1206,7 +1205,7 @@ class Calendar_Admin {
             $copy_event->end_time   = $start_time + $time_diff;
 
             $result = $copy_event->save();
-            if (PHPWS_Error::isError($result)) {
+            if (Core\Error::isError($result)) {
                 return $result;
             }
 
@@ -1244,7 +1243,7 @@ class Calendar_Admin {
         while ($ts_count <= $event->end_repeat) {
             $max_count++;
             if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
-                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatMonthly');
+                return Core\Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatMonthly');
             }
 
             $copy_event->id = 0;
@@ -1271,7 +1270,7 @@ class Calendar_Admin {
             $copy_event->end_time = $start_time + $time_diff;
 
             $result = $copy_event->save();
-            if (PHPWS_Error::isError($result)) {
+            if (Core\Error::isError($result)) {
                 return $result;
             }
 
@@ -1318,13 +1317,13 @@ class Calendar_Admin {
 
             $max_count++;
             if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
-                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatWeekly');
+                return Core\Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatWeekly');
             }
 
             $copy_event->start_time = $time_unit;
             $copy_event->end_time = $time_unit + $time_diff;
             $result = $copy_event->save();
-            if (PHPWS_Error::isError($result)) {
+            if (Core\Error::isError($result)) {
                 return $result;
             }
             $time_unit += 86400;
@@ -1337,8 +1336,7 @@ class Calendar_Admin {
     {
         $this->title = dgettext('calendar', 'Schedules');
 
-        Core\Core::initCoreClass('DBPager.php');
-        Core\Core::initModClass('calendar', 'Schedule.php');
+                Core\Core::initModClass('calendar', 'Schedule.php');
 
         $page_tags['DESCRIPTION_LABEL']  = dgettext('calendar', 'Description');
         $page_tags['PUBLIC_LABEL']       = dgettext('calendar', 'Public');
@@ -1350,18 +1348,18 @@ class Calendar_Admin {
 
         if (javascriptEnabled()) {
             $vars['js'] = 1;
-            $js_vars['address'] = PHPWS_Text::linkAddress('calendar', $vars);
+            $js_vars['address'] = Core\Text::linkAddress('calendar', $vars);
             $js_vars['label']   = $label;
             $js_vars['width']   = 640;
             $js_vars['height']  = 640;
             $page_tags['ADD_CALENDAR'] = javascript('open_window', $js_vars);
         } else {
-            $page_tags['ADD_CALENDAR'] = PHPWS_Text::secureLink($label, 'calendar', $vars);
+            $page_tags['ADD_CALENDAR'] = Core\Text::secureLink($label, 'calendar', $vars);
         }
 
         $page_tags['ADMIN_LABEL']        = dgettext('calendar', 'Options');
 
-        $pager = new DBPager('calendar_schedule', 'Calendar_Schedule');
+        $pager = new Core\DBPager('calendar_schedule', 'Calendar_Schedule');
         $pager->setModule('calendar');
         $pager->setTemplate('admin/schedules.tpl');
         $pager->addPageTags($page_tags);
@@ -1392,24 +1390,24 @@ class Calendar_Admin {
 
     public function settings()
     {
-        $form = new PHPWS_Form('calendar_settings');
+        $form = new Core\Form('calendar_settings');
         $form->addHidden('module', 'calendar');
         $form->addHidden('aop', 'post_settings');
 
         $form->addCheckbox('allow_submissions', 1);
-        $form->setMatch('allow_submissions', PHPWS_Settings::get('calendar', 'allow_submissions'));
+        $form->setMatch('allow_submissions', Core\Settings::get('calendar', 'allow_submissions'));
         $form->setLabel('allow_submissions', dgettext('calendar', 'Allow public event submissions'));
 
         $form->addCheckbox('mini_event_link', 1);
-        $form->setMatch('mini_event_link', PHPWS_Settings::get('calendar', 'mini_event_link'));
+        $form->setMatch('mini_event_link', Core\Settings::get('calendar', 'mini_event_link'));
         $form->setLabel('mini_event_link', dgettext('calendar', 'Only link days with events in mini calendar'));
 
         $form->addCheckbox('anon_ical', 1);
-        $form->setMatch('anon_ical', PHPWS_Settings::get('calendar', 'anon_ical'));
+        $form->setMatch('anon_ical', Core\Settings::get('calendar', 'anon_ical'));
         $form->setLabel('anon_ical', dgettext('calendar', 'Allow anonymous iCal exports of public schedules'));
 
         $form->addCheckbox('no_follow', 1);
-        $form->setMatch('no_follow', PHPWS_Settings::get('calendar', 'no_follow'));
+        $form->setMatch('no_follow', Core\Settings::get('calendar', 'no_follow'));
         $form->setLabel('no_follow', dgettext('calendar', 'No follow directives added to navigation links'));
 
         $start_days = array(0,1);
@@ -1417,28 +1415,28 @@ class Calendar_Admin {
         $start_days_label[1] = strftime('%A', mktime(0,0,0,1,5,1970));
         $form->addRadio('starting_day', $start_days);
         $form->setLabel('starting_day', $start_days_label);
-        $form->setMatch('starting_day', PHPWS_Settings::get('calendar', 'starting_day'));
+        $form->setMatch('starting_day', Core\Settings::get('calendar', 'starting_day'));
 
         $form->addRadio('brief_grid', array(0,1));
-        $form->setMatch('brief_grid', PHPWS_Settings::get('calendar', 'brief_grid'));
+        $form->setMatch('brief_grid', Core\Settings::get('calendar', 'brief_grid'));
         $form->setLabel('brief_grid', array(0 => dgettext('calendar', 'Show event titles'),
         1 => dgettext('calendar', 'Show number of events')));
 
         $form->addCheck('personal_schedules', 1);
         $form->setLabel('personal_schedules', dgettext('calendar', 'Allow personal schedules'));
-        $form->setMatch('personal_schedules', PHPWS_Settings::get('calendar', 'personal_schedules'));
+        $form->setMatch('personal_schedules', Core\Settings::get('calendar', 'personal_schedules'));
 
         $form->addCheck('cache_month_views', 1);
         $form->setLabel('cache_month_views', dgettext('calendar', 'Cache month views (public only)'));
-        $form->setMatch('cache_month_views', PHPWS_Settings::get('calendar', 'cache_month_views'));
+        $form->setMatch('cache_month_views', Core\Settings::get('calendar', 'cache_month_views'));
 
         $form->addCheck('mini_grid', 1);
         $form->setLabel('mini_grid', dgettext('calendar', 'Show mini grid'));
-        $form->setMatch('mini_grid', PHPWS_Settings::get('calendar', 'mini_grid'));
+        $form->setMatch('mini_grid', Core\Settings::get('calendar', 'mini_grid'));
 
         $form->addRadio('display_mini', array(0,1,2));
         $form->setLabel('display_mini', array(dgettext('calendar', 'Don\'t show'), dgettext('calendar', 'Only on front page'), dgettext('calendar', 'On all pages')));
-        $form->setMatch('display_mini', PHPWS_Settings::get('calendar', 'display_mini'));
+        $form->setMatch('display_mini', Core\Settings::get('calendar', 'display_mini'));
 
         $views['grid'] = dgettext('calendar', 'Month grid');
         $views['list'] = dgettext('calendar', 'Month list');
@@ -1447,7 +1445,7 @@ class Calendar_Admin {
 
         $form->addSelect('default_view', $views);
         $form->setLabel('default_view', dgettext('calendar', 'Default view'));
-        $form->setMatch('default_view', PHPWS_Settings::get('calendar', 'default_view'));
+        $form->setMatch('default_view', Core\Settings::get('calendar', 'default_view'));
 
         $form->addSubmit(dgettext('calendar', 'Save settings'));
         $tpl = $form->getTemplate();
@@ -1457,14 +1455,14 @@ class Calendar_Admin {
 
         $tpl['START_LABEL'] = dgettext('calendar', 'Week start day');
 
-        $this->content = PHPWS_Template::process($tpl, 'calendar', 'admin/settings.tpl');
+        $this->content = Core\Template::process($tpl, 'calendar', 'admin/settings.tpl');
         $this->title   = dgettext('calendar', 'Calendar settings');
     }
 
     public function blogEvent()
     {
         $event = $this->calendar->schedule->loadEvent();
-        $form = new PHPWS_Form('blog_event');
+        $form = new Core\Form('blog_event');
         $form->addHidden('module', 'calendar');
         $form->addHidden('aop', 'post_blog');
         $form->addHidden('event_id', $event->id);
@@ -1484,7 +1482,7 @@ class Calendar_Admin {
         $tpl = $form->getTemplate();
         $tpl['CLOSE'] = javascript('close_window');
         $this->title = dgettext('calendar', 'Post Event to Blog');
-        $this->content = PHPWS_Template::process($tpl, 'calendar', 'admin/forms/blog.tpl');
+        $this->content = Core\Template::process($tpl, 'calendar', 'admin/forms/blog.tpl');
     }
 
     public function postBlog()
@@ -1503,7 +1501,7 @@ class Calendar_Admin {
             $summary[] = $event->getLocation();
         }
 
-        $blog->summary = PHPWS_Text::parseInput('<p class="calendar-post">' . implode('<br />', $summary) . '</p>') . $event->description;
+        $blog->summary = Core\Text::parseInput('<p class="calendar-post">' . implode('<br />', $summary) . '</p>') . $event->description;
         $blog->approved = 1;
 
         $days = (int)$_POST['advance_post'];
@@ -1515,7 +1513,7 @@ class Calendar_Admin {
             $blog->publish_date = & $publish;
         }
 
-        return !PHPWS_Error::logIfError($blog->save());
+        return !Core\Error::logIfError($blog->save());
     }
 }
 

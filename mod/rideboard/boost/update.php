@@ -38,7 +38,7 @@ function rideboard_update(&$content, $version)
 
         case version_compare($version, '1.1.1', '<'):
             $content[] = '<pre>';
-            if (!PHPWS_DB::isTable('rb_carpool')) {
+            if (!Core\DB::isTable('rb_carpool')) {
                 $carpool = 'CREATE TABLE rb_carpool (
 id INT NOT NULL,
 user_id INT NOT NULL default 0,
@@ -49,8 +49,8 @@ dest_address VARCHAR( 255 ) NOT NULL,
 comment TEXT,
 PRIMARY KEY ( id )
 );';
-                $result = PHPWS_DB::query($carpool);
-                if (PHPWS_Error::logIfError($result)) {
+                $result = Core\DB::query($carpool);
+                if (Core\Error::logIfError($result)) {
                     $content[] = 'Unable to create carpool table.</pre>';
                     return false;
                 } else {

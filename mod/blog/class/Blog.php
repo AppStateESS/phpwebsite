@@ -46,15 +46,15 @@ class Blog {
         $this->update_date = time();
 
         if (empty($id)) {
-            $this->allow_comments = PHPWS_Settings::get('blog', 'allow_comments');
-            $this->image_link = PHPWS_Settings::get('blog', 'image_link');
+            $this->allow_comments = Core\Settings::get('blog', 'allow_comments');
+            $this->image_link = Core\Settings::get('blog', 'image_link');
             return;
         }
 
         $this->id = (int)$id;
         $result = $this->init();
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
         }
     }
 
@@ -64,9 +64,9 @@ class Blog {
             return false;
         }
 
-        $db = new PHPWS_DB('blog_entries');
+        $db = new Core\DB('blog_entries');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         } elseif (!$result) {
             $this->id = 0;
@@ -121,11 +121,11 @@ class Blog {
 
     public function setEntry($entry)
     {
-        if (PHPWS_Text::breakPost('entry')) {
-            $entry = PHPWS_Text::breaker($entry);
+        if (Core\Text::breakPost('entry')) {
+            $entry = Core\Text::breaker($entry);
         }
 
-        $this->entry = PHPWS_Text::parseInput($entry);
+        $this->entry = Core\Text::parseInput($entry);
     }
 
 
@@ -136,7 +136,7 @@ class Blog {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->entry);
+            return Core\Text::parseOutput($this->entry);
         } else {
             return $this->entry;
         }
@@ -144,10 +144,10 @@ class Blog {
 
     public function setSummary($summary)
     {
-        if (PHPWS_Text::breakPost('summary')) {
-            $summary = PHPWS_Text::breaker($summary);
+        if (Core\Text::breakPost('summary')) {
+            $summary = Core\Text::breaker($summary);
         }
-        $this->summary = PHPWS_Text::parseInput($summary);
+        $this->summary = Core\Text::parseInput($summary);
     }
 
 
@@ -158,7 +158,7 @@ class Blog {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->summary);
+            return Core\Text::parseOutput($this->summary);
         } else {
             return $this->summary;
         }
@@ -218,7 +218,7 @@ class Blog {
     public function save()
     {
         Core\Core::initModClass('version', 'Version.php');
-        $db = new PHPWS_DB('blog_entries');
+        $db = new Core\DB('blog_entries');
         if (empty($this->id)) {
             $this->create_date = time();
 
@@ -252,7 +252,7 @@ class Blog {
         }
         if ($this->approved || !$this->id) {
             $result = $db->saveObject($this);
-            if (PHPWS_Error::isError($result)) {
+            if (Core\Error::isError($result)) {
                 return $result;
             }
         }
@@ -277,7 +277,7 @@ class Blog {
             $search->addKeywords($this->summary);
             $search->addKeywords($this->entry);
             $result = $search->save();
-            if (PHPWS_Error::isError($result)) {
+            if (Core\Error::isError($result)) {
                 return $result;
             }
         }
@@ -290,11 +290,11 @@ class Blog {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Key;
+            $key = new Core\Key;
         } else {
-            $key = new Key($this->key_id);
-            if (PHPWS_Error::isError($key->getError())) {
-                $key = new Key;
+            $key = new Core\Key($this->key_id);
+            if (Core\Error::isError($key->getError())) {
+                $key = new Core\Key;
             }
         }
 
@@ -318,7 +318,7 @@ class Blog {
 
     public function getViewLink($bare=false)
     {
-        $link = new PHPWS_Link(dgettext('blog', 'View'), 'blog', array('id'=>$this->id));
+        $link = new Core\Link(dgettext('blog', 'View'), 'blog', array('id'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {
@@ -333,8 +333,8 @@ class Blog {
         $template['TITLE'] = $this->title;
         $template['LOCAL_DATE']  = $this->getPublishDate();
         $template['PUBLISHED_DATE'] = PHPWS_Time::getDTTime($this->publish_date);
-        $template['SUMMARY'] = PHPWS_Text::parseTag($this->getSummary(true));
-        $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(true));
+        $template['SUMMARY'] = Core\Text::parseTag($this->getSummary(true));
+        $template['ENTRY'] = Core\Text::parseTag($this->getEntry(true));
         $template['IMAGE'] = $this->getFile($this->thumbnail);
 
         $template['POSTED_BY'] = dgettext('blog', 'Posted by');
@@ -345,7 +345,7 @@ class Blog {
             $template['AUTHOR'] = dgettext('blog', 'Anonymous');
         }
 
-        return PHPWS_Template::process($template, 'blog', 'view_full.tpl');
+        return Core\Template::process($template, 'blog', 'view_full.tpl');
     }
 
 
@@ -363,7 +363,7 @@ class Blog {
 
         Core\Core::initModClass('comments', 'Comments.php');
 
-        $key = new Key($this->key_id);
+        $key = new Core\Key($this->key_id);
 
         if (!$key->allowView() || !Blog_User::allowView()) {
             Current_User::requireLogin();
@@ -386,16 +386,16 @@ class Blog {
 
         if ($summarized) {
             if (empty($summary)) {
-                $template['SUMMARY'] = PHPWS_Text::parseTag($entry);
+                $template['SUMMARY'] = Core\Text::parseTag($entry);
             } else {
                 if (!empty($entry)) {
-                    $template['READ_MORE'] = PHPWS_Text::rewriteLink(dgettext('blog', 'Read more'), 'blog', array('id'=>$this->id));
+                    $template['READ_MORE'] = Core\Text::rewriteLink(dgettext('blog', 'Read more'), 'blog', array('id'=>$this->id));
                 }
-                $template['SUMMARY'] =  PHPWS_Text::parseTag($summary);
+                $template['SUMMARY'] =  Core\Text::parseTag($summary);
             }
         } else {
-            $template['SUMMARY'] =  PHPWS_Text::parseTag($summary);
-            $template['ENTRY'] = PHPWS_Text::parseTag($entry);
+            $template['SUMMARY'] =  Core\Text::parseTag($summary);
+            $template['ENTRY'] = Core\Text::parseTag($entry);
         }
 
         $template['IMAGE'] = $this->getFile($this->thumbnail && $summarized);
@@ -409,9 +409,9 @@ class Blog {
             $vars['action']  = 'admin';
             $vars['command'] = 'edit';
 
-            $template['EDIT_LINK'] = PHPWS_Text::secureLink(dgettext('blog', 'Edit'), 'blog', $vars);
+            $template['EDIT_LINK'] = Core\Text::secureLink(dgettext('blog', 'Edit'), 'blog', $vars);
             if (!$summarized) {
-                MiniAdmin::add('blog', array(PHPWS_Text::secureLink(dgettext('blog', 'Edit blog'), 'blog', $vars)));
+                MiniAdmin::add('blog', array(Core\Text::secureLink(dgettext('blog', 'Edit blog'), 'blog', $vars)));
             }
         }
 
@@ -420,7 +420,7 @@ class Blog {
 
             if ($summarized && !empty($comments)) {
                 $link = $comments->countComments(true);
-                $comment_link = new PHPWS_Link($link, 'blog', array('id'=>$this->id));
+                $comment_link = new Core\Link($link, 'blog', array('id'=>$this->id));
                 $comment_link->setRewrite();
                 $comment_link->setAnchor('comments');
                 $template['COMMENT_LINK'] = $comment_link->get();
@@ -447,10 +447,10 @@ class Blog {
             }
         }
 
-        if (PHPWS_Settings::get('blog', 'show_category_icons')) {
+        if (Core\Settings::get('blog', 'show_category_icons')) {
             $result = Categories::getIcons($key);
             if (!empty($result)) {
-                if (PHPWS_Settings::get('blog', 'single_cat_icon')) {
+                if (Core\Settings::get('blog', 'single_cat_icon')) {
                     $template['cat-icons'][] = array('CAT_ICON'=>array_shift($result));
                 } else {
                     foreach ($result as $icon) {
@@ -460,7 +460,7 @@ class Blog {
             }
         }
 
-        if (PHPWS_Settings::get('blog', 'show_category_links')) {
+        if (Core\Settings::get('blog', 'show_category_links')) {
             $result = Categories::getSimpleLinks($key);
             if (!empty($result)) {
                 $template['CATEGORIES'] = implode(', ', $result);
@@ -476,7 +476,7 @@ class Blog {
         } else {
             $view_tpl = 'view_full.tpl';
         }
-        return PHPWS_Template::process($template, 'blog', $view_tpl);
+        return Core\Template::process($template, 'blog', $view_tpl);
     }
 
 
@@ -500,33 +500,33 @@ class Blog {
         || Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ) {
 
             $link['command'] = 'edit';
-            $icon = Icon::show('edit');
-            $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
+            $icon = Core\Icon::show('edit');
+            $list[] = Core\Text::secureLink($icon, 'blog', $link);
         }
 
         if (Current_User::allow('blog', 'delete_blog')){
             $link['command'] = 'delete';
             $confirm_vars['QUESTION'] = dgettext('blog', 'Are you sure you want to permanently delete this blog entry?');
-            $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('blog', $link, true);
+            $confirm_vars['ADDRESS'] = Core\Text::linkAddress('blog', $link, true);
 
-            $confirm_vars['LINK'] = Icon::show('delete');
+            $confirm_vars['LINK'] = Core\Icon::show('delete');
             $list[] = Layout::getJavascript('confirm', $confirm_vars);
         }
 
         if (Current_User::isUnrestricted('blog')){
             $link['command'] = 'restore';
-            $icon = Icon::show('redo', dgettext('blog', 'Restore'));
-            $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
+            $icon = Core\Icon::show('redo', dgettext('blog', 'Restore'));
+            $list[] = Core\Text::secureLink($icon, 'blog', $link);
 
 
             if ($this->sticky) {
                 $link['command'] = 'unsticky';
-                $icon = Icon::show('unsticky');
-                $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
+                $icon = Core\Icon::show('unsticky');
+                $list[] = Core\Text::secureLink($icon, 'blog', $link);
             } else {
                 $link['command'] = 'sticky';
-                $icon = Icon::show('sticky');
-                $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
+                $icon = Core\Icon::show('sticky');
+                $list[] = Core\Text::secureLink($icon, 'blog', $link);
             }
         }
 
@@ -626,7 +626,7 @@ class Blog {
         } else {
             $url = $_POST['image_url'];
             if (!empty($url) || $url == 'http://') {
-                $this->image_link = PHPWS_Text::checkLink($url);
+                $this->image_link = Core\Text::checkLink($url);
             } else {
                 $this->image_link = 'default';
             }
@@ -641,16 +641,16 @@ class Blog {
 
         Core\Core::initModClass('version', 'Version.php');
         Version::flush('blog_entries', $this->id);
-        $db = new PHPWS_DB('blog_entries');
+        $db = new Core\DB('blog_entries');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             $all_is_well = false;
         }
 
-        $key = new Key($this->key_id);
+        $key = new Core\Key($this->key_id);
         $key->delete();
         return $all_is_well;
     }

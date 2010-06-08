@@ -63,7 +63,7 @@ class Podcaster {
                     Current_User::disallow();
                 }
                 if ($this->postChannel()) {
-                    if (PHPWS_Error::logIfError($this->channel->save())) {
+                    if (Core\Error::logIfError($this->channel->save())) {
                         $this->forwardMessage(dgettext('podcaster', 'Error occurred when saving channel.'));
                         Core\Core::reroute('index.php?module=podcaster&aop=list');
                     } else {
@@ -117,7 +117,7 @@ class Podcaster {
                 }
 
                 if ($this->postEpisode()) {
-                    if (PHPWS_Error::logIfError($this->episode->save())) {
+                    if (Core\Error::logIfError($this->episode->save())) {
                         $this->forwardMessage(dgettext('podcaster', 'Error occurred when saving episode.'));
                         Core\Core::reroute('index.php?module=podcaster&aop=list');
                     } else {
@@ -203,9 +203,9 @@ class Podcaster {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'podcaster', 'main_admin.tpl'));
+            Layout::nakedDisplay(Core\Template::process($tpl, 'podcaster', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(PHPWS_Template::process($tpl, 'podcaster', 'main_admin.tpl'));
+            $this->panel->setContent(Core\Template::process($tpl, 'podcaster', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -352,9 +352,9 @@ class Podcaster {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'podcaster', 'main_user.tpl'));
+            Layout::nakedDisplay(Core\Template::process($tpl, 'podcaster', 'main_user.tpl'));
         } else {
-            Layout::add(PHPWS_Template::process($tpl, 'podcaster', 'main_user.tpl'));
+            Layout::add(Core\Template::process($tpl, 'podcaster', 'main_user.tpl'));
         }
 
     }
@@ -382,7 +382,7 @@ class Podcaster {
         Core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('podcaster-panel');
         $link = 'index.php?module=podcaster&aop=menu';
-        $db = new PHPWS_DB('podcaster_episode');
+        $db = new Core\DB('podcaster_episode');
         $db->addWhere('approved', 0);
         $unapproved = $db->count();
 
@@ -516,78 +516,78 @@ class Podcaster {
 
         $channel_limit = (int)$_POST['channel_limit'];
         if ((int)$channel_limit > 0 && (int)$channel_limit <= 50) {
-            PHPWS_Settings::set('podcaster', 'channel_limit', $channel_limit);
+            Core\Settings::set('podcaster', 'channel_limit', $channel_limit);
         } else {
-            PHPWS_Settings::reset('podcaster', 'channel_limit');
+            Core\Settings::reset('podcaster', 'channel_limit');
         }
 
         $cache_timeout = (int)$_POST['cache_timeout'];
         if ((int)$cache_timeout <= 7200) {
-            PHPWS_Settings::set('podcaster', 'cache_timeout', $cache_timeout);
+            Core\Settings::set('podcaster', 'cache_timeout', $cache_timeout);
         } else {
-            PHPWS_Settings::reset('podcaster', 'cache_timeout');
+            Core\Settings::reset('podcaster', 'cache_timeout');
         }
 
         isset($_POST['show_block']) ?
-            PHPWS_Settings::set('podcaster', 'show_block', 1) :
-            PHPWS_Settings::set('podcaster', 'show_block', 0);
+            Core\Settings::set('podcaster', 'show_block', 1) :
+            Core\Settings::set('podcaster', 'show_block', 0);
 
         isset($_POST['req_approval']) ?
-            PHPWS_Settings::set('podcaster', 'req_approval', 1) :
-            PHPWS_Settings::set('podcaster', 'req_approval', 0);
+            Core\Settings::set('podcaster', 'req_approval', 1) :
+            Core\Settings::set('podcaster', 'req_approval', 0);
 
-        PHPWS_Settings::set('podcaster', 'block_order_by_rand', $_POST['block_order_by_rand']);
+        Core\Settings::set('podcaster', 'block_order_by_rand', $_POST['block_order_by_rand']);
 
         isset($_POST['block_on_home_only']) ?
-            PHPWS_Settings::set('podcaster', 'block_on_home_only', 1) :
-            PHPWS_Settings::set('podcaster', 'block_on_home_only', 0);
+            Core\Settings::set('podcaster', 'block_on_home_only', 1) :
+            Core\Settings::set('podcaster', 'block_on_home_only', 0);
 
 
         if (!empty($_POST['editor'])) {
-            if (PHPWS_Text::isValidInput($_POST['editor'], 'email')) {
-                PHPWS_Settings::set('podcaster', 'editor', $_POST['editor']);
+            if (Core\Text::isValidInput($_POST['editor'], 'email')) {
+                Core\Settings::set('podcaster', 'editor', $_POST['editor']);
             } else {
                 $errors[] = dgettext('podcaster', 'Please check editor email format.');
             }
         } else {
-            PHPWS_Settings::set('podcaster', 'editor', '');
+            Core\Settings::set('podcaster', 'editor', '');
         }
 
         if (!empty($_POST['webmaster'])) {
-            if (PHPWS_Text::isValidInput($_POST['webmaster'], 'email')) {
-                PHPWS_Settings::set('podcaster', 'webmaster', $_POST['webmaster']);
+            if (Core\Text::isValidInput($_POST['webmaster'], 'email')) {
+                Core\Settings::set('podcaster', 'webmaster', $_POST['webmaster']);
             } else {
                 $errors[] = dgettext('podcaster', 'Please check webmaster email format.');
             }
         } else {
-            PHPWS_Settings::set('podcaster', 'webmaster', '');
+            Core\Settings::set('podcaster', 'webmaster', '');
         }
 
         if (!empty($_POST['copyright'])) {
-            PHPWS_Settings::set('podcaster', 'copyright', strip_tags($_POST['copyright']));
+            Core\Settings::set('podcaster', 'copyright', strip_tags($_POST['copyright']));
         }
 
         isset($_POST['rm_media']) ?
-            PHPWS_Settings::set('podcaster', 'rm_media', 1) :
-            PHPWS_Settings::set('podcaster', 'rm_media', 0);
+            Core\Settings::set('podcaster', 'rm_media', 1) :
+            Core\Settings::set('podcaster', 'rm_media', 0);
 
 
 
         isset($_POST['mod_folders_only']) ?
-            PHPWS_Settings::set('podcaster', 'mod_folders_only', 1) :
-            PHPWS_Settings::set('podcaster', 'mod_folders_only', 0);
+            Core\Settings::set('podcaster', 'mod_folders_only', 1) :
+            Core\Settings::set('podcaster', 'mod_folders_only', 0);
 
         if ( !empty($_POST['max_width']) ) {
             $max_width = (int)$_POST['max_width'];
             if ($max_width >= 50 && $max_width <= 600 ) {
-                PHPWS_Settings::set('podcaster', 'max_width', $max_width);
+                Core\Settings::set('podcaster', 'max_width', $max_width);
             }
         }
 
         if ( !empty($_POST['max_height']) ) {
             $max_height = (int)$_POST['max_height'];
             if ($max_height >= 50 && $max_height <= 600 ) {
-                PHPWS_Settings::set('podcaster', 'max_height', $max_height);
+                Core\Settings::set('podcaster', 'max_height', $max_height);
             }
         }
 
@@ -596,7 +596,7 @@ class Podcaster {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            if (PHPWS_Settings::save('podcaster')) {
+            if (Core\Settings::save('podcaster')) {
                 return true;
             } else {
                 return falsel;
@@ -614,7 +614,7 @@ class Podcaster {
             $this->title = dgettext('podcaster', 'Episode could not be deleted successfully.');
         }
 
-        $this->content = PHPWS_Text::secureLink(dgettext('podcaster', 'Return to channel page'), 'podcaster',
+        $this->content = Core\Text::secureLink(dgettext('podcaster', 'Return to channel page'), 'podcaster',
                                                 array('id'=>$this->channel->id, 'uop'=>'view_channel'));
 
     }

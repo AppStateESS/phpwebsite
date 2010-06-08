@@ -33,9 +33,9 @@ class PHPWS_Panel_Tab {
 
     public function init()
     {
-        $DB = new PHPWS_DB('controlpanel_tab');
+        $DB = new Core\DB('controlpanel_tab');
         $result = $DB->loadObject($this);
-        if (PHPWS_Error::logIfError($result) || !$result) {
+        if (Core\Error::logIfError($result) || !$result) {
             $this->id = null;
         }
     }
@@ -110,11 +110,11 @@ class PHPWS_Panel_Tab {
         if (isset($this->tab_order))
         return $this->tab_order;
 
-        $DB = new PHPWS_DB('controlpanel_tab');
+        $DB = new Core\DB('controlpanel_tab');
         $DB->addColumn('tab_order', 'max');
         $max = $DB->select('one');
 
-        if (PHPWS_Error::isError($max))
+        if (Core\Error::isError($max))
         exit($max->getMessage());
 
         if (isset($max))
@@ -145,7 +145,7 @@ class PHPWS_Panel_Tab {
 
     public function save()
     {
-        $db = new PHPWS_DB('controlpanel_tab');
+        $db = new Core\DB('controlpanel_tab');
         $db->addWhere('id', $this->id);
         $db->delete();
         $db->resetWhere();
@@ -155,7 +155,7 @@ class PHPWS_Panel_Tab {
 
     public function nextBox()
     {
-        $db = new PHPWS_DB('controlpanel_tab');
+        $db = new Core\DB('controlpanel_tab');
         $db->addWhere('theme', $this->getTheme());
         $db->addWhere('theme_var', $this->getThemeVar());
         $db->addColumn('box_order', 'max');
@@ -174,7 +174,7 @@ class PHPWS_Panel_Tab {
      */
     public function moveUp()
     {
-        $db = new PHPWS_DB('controlpanel_tab');
+        $db = new Core\DB('controlpanel_tab');
         $db->setIndexBy('tab_order');
         $db->addOrder('tab_order');
         $allTabs = $db->getObjects('PHPWS_Panel_Tab');
@@ -200,7 +200,7 @@ class PHPWS_Panel_Tab {
 
     public function moveDown()
     {
-        $db = new PHPWS_DB('controlpanel_tab');
+        $db = new Core\DB('controlpanel_tab');
         $db->setIndexBy('tab_order');
         $db->addOrder('tab_order');
         $allTabs = $db->getObjects('PHPWS_Panel_Tab');

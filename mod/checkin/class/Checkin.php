@@ -23,7 +23,7 @@ class Checkin {
     public function loadVisitorList($staff_id=null, $index=false)
     {
         Core\Core::initModClass('checkin', 'Visitors.php');
-        $db = new PHPWS_DB('checkin_visitor');
+        $db = new Core\DB('checkin_visitor');
         if ($index) {
             $db->setIndexBy('assigned', true);
         }
@@ -34,7 +34,7 @@ class Checkin {
         $db->addOrder('arrival_time asc');
         $result = $db->getObjects('Checkin_Visitor');
 
-        if (!PHPWS_Error::logIfError($result)) {
+        if (!Core\Error::logIfError($result)) {
             $this->visitor_list = & $result;
         }
     }
@@ -43,13 +43,13 @@ class Checkin {
     public function loadStaffList()
     {
         Core\Core::initModClass('checkin', 'Staff.php');
-        $db = new PHPWS_DB('checkin_staff');
+        $db = new Core\DB('checkin_staff');
         $db->addColumn('users.display_name');
         $db->addColumn('checkin_staff.*');
         $db->addWhere('user_id', 'users.id');
         $db->addOrder('checkin_staff.view_order');
         $result = $db->getObjects('Checkin_Staff');
-        if (!PHPWS_Error::logIfError($result)) {
+        if (!Core\Error::logIfError($result)) {
             $this->staff_list = & $result;
         }
     }
@@ -88,7 +88,7 @@ class Checkin {
 
     public static function getReasons($all=false)
     {
-        $db = new PHPWS_DB('checkin_reasons');
+        $db = new Core\DB('checkin_reasons');
         $db->addOrder('summary');
         if (!$all) {
             $db->addColumn('id');
@@ -116,7 +116,7 @@ class Checkin {
 
     public function getStaffList($as_object=false, $available_only=false)
     {
-        $db = new PHPWS_DB('checkin_staff');
+        $db = new Core\DB('checkin_staff');
         if ($available_only) {
             $db->addWhere('status', 1, '!=');
         }

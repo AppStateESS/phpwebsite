@@ -47,18 +47,18 @@ class PHPWSBB_Forum
     public function __construct ($id = NULL)
     {
         if(empty($id)) {
-            $this->allow_anon = PHPWS_Settings::get('phpwsbb', 'allow_anon_posts');
-            $this->default_approval = PHPWS_Settings::get('comments', 'default_approval');
+            $this->allow_anon = Core\Settings::get('phpwsbb', 'allow_anon_posts');
+            $this->default_approval = Core\Settings::get('comments', 'default_approval');
             return;
         }
         if(!is_array($id)) {
-            $db = new PHPWS_DB('phpwsbb_forums');
+            $db = new Core\DB('phpwsbb_forums');
             $this->addColumns($db);
             $db->addWhere('id', (int) $id);
             $result = $db->loadObject($this);
             if (PHPWS_ERROR::logIfError($result)) {
                 $this->id = 0;
-                exit( PHPWS_Error::get('Forum not loaded', 'phpwsbb', 'PHPWSBB_Forum::new'));
+                exit( Core\Error::get('Forum not loaded', 'phpwsbb', 'PHPWSBB_Forum::new'));
             }
         }
         /* otherwise, $id is an array of object data */
@@ -84,7 +84,7 @@ class PHPWSBB_Forum
             $db->addWhere('phpws_key.id', 'phpwsbb_forums.key_id');
         }
         else
-        Key::restrictView($db, 'phpwsbb', false);
+        Core\Key::restrictView($db, 'phpwsbb', false);
     }
 
     /**
@@ -104,15 +104,15 @@ class PHPWSBB_Forum
         $tags['FORUM_ID'] = $this->id;
         $tags['FORUM_KEY_ID'] = $this->key_id;
 
-        $tags['HOME_LINK'] = PHPWS_Text::rewriteLink(dgettext('phpwsbb', 'Bulletin Boards'), 'phpwsbb');
+        $tags['HOME_LINK'] = Core\Text::rewriteLink(dgettext('phpwsbb', 'Bulletin Boards'), 'phpwsbb');
 
         $title = $this->get_title();
         $tags['FORUM_TITLE'] = $title;
-        $tags['FORUM_TITLE_LINK'] = PHPWS_Text::rewriteLink($title, 'phpwsbb', array('view'=>'forum', 'id'=>$this->id));
+        $tags['FORUM_TITLE_LINK'] = Core\Text::rewriteLink($title, 'phpwsbb', array('view'=>'forum', 'id'=>$this->id));
         $tags['FORUM_LABEL'] = dgettext('comments', 'Forum');
 
         if ($this->description)
-        $tags['FORUM_DESCRIPTION'] = PHPWS_Text::parseOutput($this->description);
+        $tags['FORUM_DESCRIPTION'] = Core\Text::parseOutput($this->description);
 
         $tags['FORUM_ACTIVE'] = $this->active;
         $tags['FORUM_TOPICS'] = $this->topics;
@@ -122,15 +122,15 @@ class PHPWSBB_Forum
         // Retrieve lastpost/topic information
         if ($getlasttopic) {
             $lastthread = new PHPWSBB_Topic();
-            $db = new PHPWS_DB('phpwsbb_topics');
+            $db = new Core\DB('phpwsbb_topics');
             PHPWSBB_Topic::addColumns($db);
             $db->addWhere('fid', $this->id);
-            Key::restrictView($db, 'phpwsbb');
+            Core\Key::restrictView($db, 'phpwsbb');
             $db->addOrder('lastpost_date desc');
             $db->loadObject($lastthread);
             if ($lastthread->id) {
                 $tags['FORUM_LASTPOST_TOPIC_LABEL'] = $lastthread->title;
-                $tags['FORUM_LASTPOST_TOPIC_LINK'] = PHPWS_Text::rewriteLink($lastthread->title, 'phpwsbb', array('view'=>'topic', 'id'=>$lastthread->id));
+                $tags['FORUM_LASTPOST_TOPIC_LINK'] = Core\Text::rewriteLink($lastthread->title, 'phpwsbb', array('view'=>'topic', 'id'=>$lastthread->id));
                 $tags['FORUM_LASTPOST_TOPIC_ID'] = $lastthread->id;
                 $tags['FORUM_LASTPOST_POST_ID'] = $lastthread->lastpost_post_id;
                 $tags['FORUM_LASTPOST_AUTHOR'] = $lastthread->lastpost_author;
@@ -140,7 +140,7 @@ class PHPWSBB_Forum
                 $tags['FORUM_LASTPOST_DATE_SHORT'] = PHPWSBB_Data::get_short_date($lastthread->lastpost_date);
                 $tags['FORUM_LASTPOST_DATE_REL'] = PHPWS_Time::relativeTime(PHPWS_Time::getUserTime($lastthread->lastpost_date));
                 $str = dgettext('phpwsbb', 'View the last post');
-                $link = PHPWS_Text::quickLink('<span>'.$str.'</span>', 'phpwsbb', array('view'=>'topic', 'id'=>$lastthread->id, 'pg'=>'last'), null, $str, 'phpwsbb_go_forum_new_message_link');
+                $link = Core\Text::quickLink('<span>'.$str.'</span>', 'phpwsbb', array('view'=>'topic', 'id'=>$lastthread->id, 'pg'=>'last'), null, $str, 'phpwsbb_go_forum_new_message_link');
                 $link->rewrite = true;
                 $link->setAnchor('cm_'.$lastthread->lastpost_post_id);
                 $tags['FORUM_LASTPOST_POST_LINK'] = $link->get();
@@ -178,7 +178,7 @@ class PHPWSBB_Forum
 
         /* Show Category links & icons */
         $cat_link = $cat_icon = array();
-        $db = new PHPWS_DB('categories');
+        $db = new Core\DB('categories');
         $db->addWhere('category_items.key_id', $this->key_id);
         $db->addWhere('id', 'category_items.cat_id');
         $cat_result = $db->getObjects('Category');
@@ -221,14 +221,13 @@ class PHPWSBB_Forum
         /* If it's being viewed by itself... */
         if ($_REQUEST['module']=='phpwsbb') {
             /* Raise the Key flag */
-            $key = new Key($this->key_id);
+            $key = new Core\Key($this->key_id);
             $key->flag();
         }
 
-        /* Create DBPager object */
-        Core\Core::initCoreClass('DBPager.php');
-
-        $pager = new DBPager('phpwsbb_topics', 'PHPWSBB_Topic');
+        /* Create Core\DBPager object */
+        
+        $pager = new Core\DBPager('phpwsbb_topics', 'PHPWSBB_Topic');
         $pager->setModule('phpwsbb');
         $pager->setTemplate('forum.tpl');
         $pager->setCacheIdentifier('viewforum_'.$this->id);
@@ -272,7 +271,7 @@ class PHPWSBB_Forum
         $pager->addPageTags($this->_get_tags() + $this->getStatusTags());
         $content = $pager->get();
 
-        if (PHPWS_Error::logIfError($content)) {
+        if (Core\Error::logIfError($content)) {
             echo $pager->db->lastQuery();
             $content = dgettext('phpwsbb', 'Sorry, an error occurred.');
         }
@@ -299,7 +298,7 @@ class PHPWSBB_Forum
         /* Variable to set tab order */
         $tabs = 1;
         /* Create form */
-        $form = new PHPWS_Form('bb_edit');
+        $form = new Core\Form('bb_edit');
         $form->useBreaker();
         if ($this->id)
         $forum_arg = '&amp;forum='.$this->id;
@@ -355,9 +354,9 @@ class PHPWSBB_Forum
         $form->addTplTag('CATEGORY', dgettext('phpwsbb', 'None'));
         /* Back Link */
         if (!$this->id)
-        $form->addTplTag('BACK_LINK', PHPWS_Text::rewriteLink(dgettext('phpwsbb', 'Back to Main Listing'), 'phpwsbb'));
+        $form->addTplTag('BACK_LINK', Core\Text::rewriteLink(dgettext('phpwsbb', 'Back to Main Listing'), 'phpwsbb'));
         else
-        $form->addTplTag('BACK_LINK', PHPWS_Text::rewriteLink(dgettext('phpwsbb', 'Back to Forum Listing'), 'phpwsbb', array('view'=>'forum', 'id'=>$this->id)));
+        $form->addTplTag('BACK_LINK', Core\Text::rewriteLink(dgettext('phpwsbb', 'Back to Forum Listing'), 'phpwsbb', array('view'=>'forum', 'id'=>$this->id)));
 
         /* Moderator List */
         // Display list of current moderators
@@ -369,7 +368,7 @@ class PHPWSBB_Forum
             $count = 0;
             foreach ($GLOBALS['Moderators_byForum'][$this->id] AS $m_id => $m_name) {
                 $vars['drop_member'] = $m_id;
-                $action = PHPWS_Text::secureLink(dgettext('phpwsbb', 'Drop'), 'phpwsbb', $vars, NULL, dgettext('phpwsbb', 'Drop this moderator from the forum.'));
+                $action = Core\Text::secureLink(dgettext('phpwsbb', 'Drop'), 'phpwsbb', $vars, NULL, dgettext('phpwsbb', 'Drop this moderator from the forum.'));
                 if (++$count % 2)
                 $template['STYLE'] = 'class="bg-light"';
                 else
@@ -389,7 +388,7 @@ class PHPWSBB_Forum
 
         // If we did not find a desired user, display a list of all like names
         if (!empty($_SESSION['BBLast_Member_Search'])) {
-            $db = new PHPWS_DB('users');
+            $db = new Core\DB('users');
             $db->addColumn('username');
             $db->addColumn('id');
             $db->addWhere('username', '%'.$_SESSION['BBLast_Member_Search'].'%', 'LIKE');
@@ -400,10 +399,10 @@ class PHPWSBB_Forum
             $vars['op'] = 'edit_forum';
             $vars['forum'] = $this->id;
             $count = 0;
-            if (!PHPWS_Error::logIfError($result) && !empty($result)) {
+            if (!Core\Error::logIfError($result) && !empty($result)) {
                 foreach ($result AS $row) {
                     $vars['add_member'] = $row['id'];
-                    $action = PHPWS_Text::secureLink(dgettext('phpwsbb', 'Add'), 'phpwsbb', $vars, NULL, dgettext('phpwsbb', 'Make this user a moderator of this forum.'));
+                    $action = Core\Text::secureLink(dgettext('phpwsbb', 'Add'), 'phpwsbb', $vars, NULL, dgettext('phpwsbb', 'Make this user a moderator of this forum.'));
                     if (++$count % 2)
                     $template['STYLE'] = 'class="bg-light"';
                     else
@@ -420,7 +419,7 @@ class PHPWSBB_Forum
         }
 
         $tags = $form->getTemplate();
-        return PHPWS_Template::processTemplate($tags, 'phpwsbb', 'edit_forum.tpl');
+        return Core\Template::processTemplate($tags, 'phpwsbb', 'edit_forum.tpl');
     }
 
     /**
@@ -436,12 +435,12 @@ class PHPWSBB_Forum
         $error = $message = array();
         if (isset($_REQUEST['Forum_label'])) {
             if(!empty($_REQUEST['Forum_label']))
-            $this->title = PHPWS_Text::parseInput($_REQUEST['Forum_label']);
+            $this->title = Core\Text::parseInput($_REQUEST['Forum_label']);
             else
             $error['title'] = dgettext('phpwsbb', 'You must have a name for your forum.');
 
             if(!empty($_REQUEST['Forum_description']))
-            $this->description = PHPWS_Text::parseInput($_REQUEST['Forum_description']);
+            $this->description = Core\Text::parseInput($_REQUEST['Forum_description']);
             else
             $error['description'] = dgettext('phpwsbb', 'I need a short description of this forum.');
 
@@ -458,18 +457,18 @@ class PHPWSBB_Forum
         // Moderator Name Search
         if (!empty($_POST['search_member'])) {
             $_SESSION['BBLast_Member_Search'] = preg_replace('/[\W]+/', '', $_POST['search_member']);
-            $db = new PHPWS_DB('users_groups');
+            $db = new Core\DB('users_groups');
             $db->addColumn('id');
             $db->addWhere('name', $_SESSION['BBLast_Member_Search']);
             $id = $db->select('one');
             // If we found the desired user, flag them to be added
-            if (!PHPWS_Error::logIfError($id) && !empty($id))
+            if (!Core\Error::logIfError($id) && !empty($id))
             $_REQUEST['add_member'] = $id;
         }
 
         // Delete a moderator
         if (!empty($_REQUEST['drop_member']) && isset($GLOBALS['Moderators_byUser'][(int) $_REQUEST['drop_member']][$this->id])) {
-            $db = new PHPWS_DB('phpwsbb_moderators');
+            $db = new Core\DB('phpwsbb_moderators');
             $db->addWhere('forum_id', $this->id);
             $db->addWhere('user_id', (int) $_REQUEST['drop_member']);
             $result = $db->delete();
@@ -480,11 +479,11 @@ class PHPWSBB_Forum
             $id = (int) $_REQUEST['add_member'];
             $user = new PHPWS_User($id);
             if ($user->allow('comments')) {
-                $db = new PHPWS_DB('phpwsbb_moderators');
+                $db = new Core\DB('phpwsbb_moderators');
                 $db->addValue('forum_id', $this->id);
                 $db->addValue('user_id', $id);
                 $result = $db->insert();
-                if ($result && !PHPWS_Error::logIfError($result));
+                if ($result && !Core\Error::logIfError($result));
                 $GLOBALS['BB_message'] = dgettext('phpwsbb', 'Moderator added.');
             }
             else
@@ -507,14 +506,14 @@ class PHPWSBB_Forum
      */
     public function update_forum ($commit = false) {
         // Get topic counts
-        $db = new PHPWS_DB('phpwsbb_topics');
+        $db = new Core\DB('phpwsbb_topics');
         $sql = 'SELECT COUNT(total_posts), SUM(total_posts) FROM phpwsbb_topics WHERE total_posts >0 AND fid = '.$this->id;
         $row = $db->select('row', $sql);
         $this->topics = (int) $row['COUNT(total_posts)'];
         $this->posts = (int) $row['SUM(total_posts)'];
         if ($commit) {
             $sql = 'UPDATE phpwsbb_forums SET topics = '.$this->topics.', posts = '.$this->posts.' WHERE id=' . $this->id;
-            PHPWS_Error::logIfError(PHPWS_DB::query($sql));
+            Core\Error::logIfError(Core\DB::query($sql));
         }
     }
 
@@ -536,9 +535,9 @@ class PHPWSBB_Forum
             return false;
         }
 
-        $db = new PHPWS_DB('phpwsbb_forums');
+        $db = new Core\DB('phpwsbb_forums');
         $result = $db->saveObject($this);
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             $GLOBALS['BB_message'] = dgettext('phpwsbb', 'There was an error when saving this forum to the database!');
             return false;
         }
@@ -547,14 +546,14 @@ class PHPWSBB_Forum
         $update = FALSE;
         if (empty($this->key_id))
         {
-            $key = new Key;
+            $key = new Core\Key;
             $update = TRUE;
         }
         else
         {
-            $key = new Key($this->key_id);
-            if (PHPWS_Error::isError($key->_error)) {
-                $key = new Key;
+            $key = new Core\Key($this->key_id);
+            if (Core\Error::isError($key->_error)) {
+                $key = new Core\Key;
                 $update = TRUE;
             }
         }
@@ -569,17 +568,17 @@ class PHPWSBB_Forum
         $result = $key->save();
         $this->key_id = $key->id;
         if ($update) {
-            $db1 = new PHPWS_DB('phpwsbb_forums');
+            $db1 = new Core\DB('phpwsbb_forums');
             $db1->addValue('key_id', $this->key_id);
             $db1->addWhere('id', $this->id);
             $db1->update();
         }
 
         // Reset all data Caches
-        PHPWS_Cache::remove('bb_forumlist');
-        PHPWS_Cache::remove('bb_forumIds');
-        PHPWS_Cache::remove('bb_forumsblock');
-        PHPWS_Cache::remove('bb_latestpostsblock');
+        Core\Cache::remove('bb_forumlist');
+        Core\Cache::remove('bb_forumIds');
+        Core\Cache::remove('bb_forumsblock');
+        Core\Cache::remove('bb_latestpostsblock');
         unset($GLOBALS['BBForumTags'][$this->id]);
         return true;
     }
@@ -653,13 +652,13 @@ class PHPWSBB_Forum
     {
         $link = array();
         if ($this->can_post())
-        $link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'Submit a new topic'), 'phpwsbb', array('op'=>'create_topic','forum'=>$this->id));
+        $link[] = Core\Text::moduleLink(dgettext('phpwsbb', 'Submit a new topic'), 'phpwsbb', array('op'=>'create_topic','forum'=>$this->id));
         if (Current_User::allow('phpwsbb', 'manage_forums')) {
-            $link[] = PHPWS_Text::secureLink(dgettext('phpwsbb', 'Edit this Forum'), 'phpwsbb', array('op'=>'edit_forum','forum'=>$this->id));
+            $link[] = Core\Text::secureLink(dgettext('phpwsbb', 'Edit this Forum'), 'phpwsbb', array('op'=>'edit_forum','forum'=>$this->id));
             if ($this->active)
-            $link[] = PHPWS_Text::secureLink(dgettext('phpwsbb', 'Hide this Forum'), 'phpwsbb', array('op'=>'hide_forum','forum'=>$this->id));
+            $link[] = Core\Text::secureLink(dgettext('phpwsbb', 'Hide this Forum'), 'phpwsbb', array('op'=>'hide_forum','forum'=>$this->id));
             else
-            $link[] = PHPWS_Text::secureLink(dgettext('phpwsbb', 'Show this Forum'), 'phpwsbb', array('op'=>'show_forum','forum'=>$this->id));
+            $link[] = Core\Text::secureLink(dgettext('phpwsbb', 'Show this Forum'), 'phpwsbb', array('op'=>'show_forum','forum'=>$this->id));
             $js_var['QUESTION'] = dgettext('phpwsbb', 'This will delete the forum and all topics under it!  Are you sure you want to delete this?');
             $js_var['ADDRESS'] = 'index.php?module=phpwsbb&amp;op=delete_forum&amp;yes=1&amp;forum='.$this->id.'&amp;authkey='.Current_User::getAuthKey();
             $js_var['LINK']    = dgettext('phpwsbb', 'Delete this Forum');
@@ -697,8 +696,8 @@ class PHPWSBB_Forum
     public function getStatusTags()
     {
         if ($this->active) {
-            $tags['HOME_LINK'] = PHPWS_Text::rewriteLink(dgettext('phpwsbb', 'Bulletin Boards'), 'phpwsbb');
-            $tags['FORUM_TITLE_LINK'] = PHPWS_Text::rewriteLink($this->title, 'phpwsbb', array('view'=>'forum', 'id'=>$this->id));
+            $tags['HOME_LINK'] = Core\Text::rewriteLink(dgettext('phpwsbb', 'Bulletin Boards'), 'phpwsbb');
+            $tags['FORUM_TITLE_LINK'] = Core\Text::rewriteLink($this->title, 'phpwsbb', array('view'=>'forum', 'id'=>$this->id));
             $tags['FORUM_LABEL'] = dgettext('comments', 'Forum');
         }
         if ($this->can_post())

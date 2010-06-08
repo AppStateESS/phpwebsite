@@ -25,9 +25,9 @@
 
 function wiki_uninstall(&$content)
 {
-    PHPWS_DB::dropTable('wiki_pages');
-    PHPWS_DB::dropTable('wiki_images');
-    PHPWS_DB::dropTable('wiki_interwiki');
+    Core\DB::dropTable('wiki_pages');
+    Core\DB::dropTable('wiki_images');
+    Core\DB::dropTable('wiki_interwiki');
     $content[] = dgettext('wiki', 'Wiki tables removed.');
     return TRUE;
 }

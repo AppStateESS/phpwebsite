@@ -25,15 +25,15 @@ class PHPWS_Panel_Link {
 
         $this->setId($id);
         $result = $this->init();
-        if (PHPWS_Error::isError($result))
-        PHPWS_Error::log($result);
+        if (Core\Error::isError($result))
+        Core\Error::log($result);
     }
 
     public function init()
     {
-        $db = new PHPWS_DB('controlpanel_link');
+        $db = new Core\DB('controlpanel_link');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
     }
@@ -139,12 +139,12 @@ class PHPWS_Panel_Link {
             return $this->link_order;
         }
 
-        $db = new PHPWS_DB('controlpanel_link');
+        $db = new Core\DB('controlpanel_link');
         $db->addWhere('tab', $this->tab);
         $db->addColumn('link_order', 'max');
         $max = $db->select('one');
 
-        if (PHPWS_Error::isError($max)) {
+        if (Core\Error::isError($max)) {
             return $max;
         }
 
@@ -178,7 +178,7 @@ class PHPWS_Panel_Link {
 
     public function save()
     {
-        $db = new PHPWS_DB('controlpanel_link');
+        $db = new Core\DB('controlpanel_link');
         $this->link_order = $this->getLinkOrder();
         $result = $db->saveObject($this);
         return $result;
@@ -190,7 +190,7 @@ class PHPWS_Panel_Link {
         $tpl['NAME']        = $this->getUrl(true);
         $tpl['DESCRIPTION'] = $this->getDescription();
 
-        return PHPWS_Template::process($tpl, 'controlpanel', 'link.tpl');
+        return Core\Template::process($tpl, 'controlpanel', 'link.tpl');
     }
 
     /**
@@ -199,7 +199,7 @@ class PHPWS_Panel_Link {
      */
     public function moveUp()
     {
-        $db = new PHPWS_DB('controlpanel_link');
+        $db = new Core\DB('controlpanel_link');
         $db->setIndexBy('link_order');
         $db->addWhere('tab', $this->tab);
         $db->addOrder('link_order');
@@ -226,7 +226,7 @@ class PHPWS_Panel_Link {
 
     public function moveDown()
     {
-        $db = new PHPWS_DB('controlpanel_link');
+        $db = new Core\DB('controlpanel_link');
         $db->setIndexBy('link_order');
         $db->addWhere('tab', $this->tab);
         $db->addOrder('link_order');
@@ -254,10 +254,10 @@ class PHPWS_Panel_Link {
 
     public function kill()
     {
-        $db = new PHPWS_DB('controlpanel_link');
+        $db = new Core\DB('controlpanel_link');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
-        if (PHPWS_Error::isError($result))
+        if (Core\Error::isError($result))
         return $result;
 
         $db->reset();
@@ -265,7 +265,7 @@ class PHPWS_Panel_Link {
         $db->addOrder('link_order');
         $result = $db->getObjects('PHPWS_Panel_Link');
 
-        if (PHPWS_Error::isError($result))
+        if (Core\Error::isError($result))
         return $result;
 
         if (empty($result))

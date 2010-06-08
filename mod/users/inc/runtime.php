@@ -14,7 +14,7 @@ if (@$_REQUEST['module'] == 'users' && @$_REQUEST['action'] == 'reset') {
 } elseif (!isset($_SESSION['User'])) {
     Current_User::init();
     if (Current_User::allowRememberMe()) {
-        if (PHPWS_Settings::get('users', 'allow_remember')) {
+        if (Core\Settings::get('users', 'allow_remember')) {
             Current_User::rememberLogin();
         }
     }

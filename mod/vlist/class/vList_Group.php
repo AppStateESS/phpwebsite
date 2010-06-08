@@ -44,9 +44,9 @@ class vList_Group {
 
     public function init()
     {
-        $db = new PHPWS_DB('vlist_group');
+        $db = new Core\DB('vlist_group');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -63,7 +63,7 @@ class vList_Group {
 
     public function setDescription($description)
     {
-        $this->description = PHPWS_Text::parseInput($description);
+        $this->description = Core\Text::parseInput($description);
     }
 
 
@@ -80,7 +80,7 @@ class vList_Group {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->title);
+            return Core\Text::parseOutput($this->title);
         } else {
             return $this->title;
         }
@@ -94,7 +94,7 @@ class vList_Group {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->description);
+            return Core\Text::parseOutput($this->description);
         } else {
             return $this->description;
         }
@@ -112,7 +112,7 @@ class vList_Group {
 
     public function getQtyMembers()
     {
-        $db = new PHPWS_DB('vlist_group_items');
+        $db = new Core\DB('vlist_group_items');
         $db->addWhere('group_id', $this->id);
         if (!Current_User::isUnrestricted('vlist')) {
             $db->addColumn('vlist_group_items.*');
@@ -168,10 +168,10 @@ class vList_Group {
     {
         $vars['group'] = $this->id;
         $vars['aop'] = 'delete_group';
-        $js['ADDRESS'] = PHPWS_Text::linkAddress('vlist', $vars, true);
+        $js['ADDRESS'] = Core\Text::linkAddress('vlist', $vars, true);
         $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the group %s?'), $this->getTitle());
         if ($icon) {
-            $js['LINK'] = Icon::show('delete', dgettext('vlist', 'Delete group'));
+            $js['LINK'] = Core\Icon::show('delete', dgettext('vlist', 'Delete group'));
         } else {
             $js['LINK'] = dgettext('vlist', 'Delete');
         }
@@ -183,14 +183,14 @@ class vList_Group {
     {
 
         if ($icon) {
-            $label = Icon::show('edit', dgettext('vlist', 'Edit group'));
+            $label = Core\Icon::show('edit', dgettext('vlist', 'Edit group'));
         } elseif (empty($label)) {
             $label = dgettext('vlist', 'Edit');
         }
 
         $vars['group'] = $this->id;
         $vars['aop'] = 'edit_group';
-        return PHPWS_Text::secureLink($label, 'vlist', $vars);
+        return Core\Text::secureLink($label, 'vlist', $vars);
     }
 
 
@@ -200,12 +200,12 @@ class vList_Group {
             return;
         }
 
-        $db = new PHPWS_DB('vlist_group');
+        $db = new Core\DB('vlist_group');
         $db->addWhere('id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
-        $db = new PHPWS_DB('vlist_group_items');
+        Core\Error::logIfError($db->delete());
+        $db = new Core\DB('vlist_group_items');
         $db->addWhere('group_id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
     }
 
@@ -234,7 +234,7 @@ class vList_Group {
         if (Current_User::allow('vlist', 'settings', null, null, true)) {
             $vars['group'] = $this->id;
             $vars['aop']  = 'edit_group';
-            $links[] = PHPWS_Text::secureLink(dgettext('vlist', 'Edit group'), 'vlist', $vars);
+            $links[] = Core\Text::secureLink(dgettext('vlist', 'Edit group'), 'vlist', $vars);
         }
 
         $links = array_merge($links, vList::navLinks());
@@ -246,9 +246,9 @@ class vList_Group {
 
     public function save()
     {
-        $db = new PHPWS_DB('vlist_group');
+        $db = new Core\DB('vlist_group');
         $result = $db->saveObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
@@ -259,7 +259,7 @@ class vList_Group {
     {
         $vars['uop']  = 'view_group';
         $vars['group'] = $this->id;
-        $link = new PHPWS_Link($this->title, 'vlist', $vars);
+        $link = new Core\Link($this->title, 'vlist', $vars);
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {

@@ -22,16 +22,16 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-if (PHPWS_Settings::get('vpath', 'enable_path')) {
-    if (!PHPWS_Settings::get('vpath', 'show_on_home')) {
-        $key = Key::getCurrent();
+if (Core\Settings::get('vpath', 'enable_path')) {
+    if (!Core\Settings::get('vpath', 'show_on_home')) {
+        $key = Core\Key::getCurrent();
         if (!empty($key) && $key->isHomeKey()) {
             $foobar = null;
         } else {
-            vPath::buildTrail(PHPWS_Settings::get('vpath', 'menu_id'));
+            vPath::buildTrail(Core\Settings::get('vpath', 'menu_id'));
         }
     } else {
-        vPath::buildTrail(PHPWS_Settings::get('vpath', 'menu_id'));
+        vPath::buildTrail(Core\Settings::get('vpath', 'menu_id'));
     }
 }
 

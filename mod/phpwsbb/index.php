@@ -16,15 +16,15 @@ Layout::addStyle('phpwsbb');
 
 // When was this user last on?
 if (Current_User::isLogged()) {
-    $db = new PHPWS_DB('phpwsbb_users');
+    $db = new Core\DB('phpwsbb_users');
     // If this is the first phpwsbb session activity...
 
     if (empty($_SESSION['phpwsbb_last_on'])) {
         // load last_on information
         $db->addWhere('user_id', Current_User::getId());
         $result = $db->select('row');
-        if (PHPWS_Error::logIfError($result)) {
-            Layout::add(PHPWS_Error::printError($result));
+        if (Core\Error::logIfError($result)) {
+            Layout::add(Core\Error::printError($result));
             return;
         }
         // if User doesn't have an activity entry yet.  Create one.
@@ -144,7 +144,7 @@ elseif (!empty($_REQUEST['op'])) {
             }
             $title = $topic->get_title();
             $content = $topic->view();
-            $_SESSION['DBPager_Last_View']['comments_items'] = 'index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id;
+            $_SESSION['Core\DBPager_Last_View']['comments_items'] = 'index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id;
             unset($message);
             break;
 
@@ -218,10 +218,10 @@ elseif (!empty($_REQUEST['op'])) {
              break;
              }
              // Load a list of all user ids
-             $db = new PHPWS_DB('users');
+             $db = new Core\DB('users');
              $db->addColumn('id');
              $list = $db->select('col');
-             PHPWS_Error::logIfError($list);
+             Core\Error::logIfError($list);
              $listsize = count($list) - 1;
              // Create all requested comments
              foreach ($comment_list AS $comment) {
@@ -267,7 +267,7 @@ if (!empty($message))
 $template['MESSAGE'] = $message;
 if (!empty($content))
 $template['CONTENT'] = $content;
-$content = PHPWS_Template::process($template, 'phpwsbb', 'main.tpl');
+$content = Core\Template::process($template, 'phpwsbb', 'main.tpl');
 // Release module vars
 unset($topic, $forum, $title, $message, $template,$GLOBALS['Moderators_byForum'], $GLOBALS['Moderators_byUser'],
 $GLOBALS['BBForumTags'], $GLOBALS['BB_errors'], $GLOBALS['BB_message'], $GLOBALS['BBForums']);

@@ -185,14 +185,14 @@ class PHAT_Report {
         $statsTags['BACK_LINK'] = $_SESSION['PHAT_advViews']->archiveBack();
 
         $elements = array();
-        $elements[0] = PHPWS_Form::formHidden('PHAT_REPORT_OP', 'export');
-        $elements[0] .= PHPWS_Form::formHidden('module', 'phatform');
-        $elements[0] .= PHPWS_Form::formSubmit(dgettext('phatform', 'Export'), 'export');
+        $elements[0] = Core\Form::formHidden('PHAT_REPORT_OP', 'export');
+        $elements[0] .= Core\Form::formHidden('module', 'phatform');
+        $elements[0] .= Core\Form::formSubmit(dgettext('phatform', 'Export'), 'export');
 
         if(!isset($this->archive))
-        $statsTags['EXPORT'] = PHPWS_Form::makeForm('export_button', 'index.php', $elements);
+        $statsTags['EXPORT'] = Core\Form::makeForm('export_button', 'index.php', $elements);
 
-        return PHPWS_Template::processTemplate($statsTags, 'phatform', 'report/stats.tpl');
+        return Core\Template::processTemplate($statsTags, 'phatform', 'report/stats.tpl');
     }
 
     /**
@@ -203,7 +203,7 @@ class PHAT_Report {
      */
     function listEntries() {
         if(isset($_REQUEST['PHAT_EntrySearch'])) {
-            $this->_searchQuery = PHPWS_Text::parseInput($_REQUEST['PHAT_EntrySearch']);
+            $this->_searchQuery = Core\Text::parseInput($_REQUEST['PHAT_EntrySearch']);
             $this->_listFilter = $_REQUEST['PHAT_ListFilter'];
             $this->setEntries();
             $this->pageStart = 0;
@@ -268,7 +268,7 @@ class PHAT_Report {
                     $highlight = ' class="bgcolor1"';
                 }
                 $count ++;
-                $listTags['LIST_ITEMS'] .= PHPWS_Template::processTemplate($rowTags, 'phatform', 'report/row.tpl');
+                $listTags['LIST_ITEMS'] .= Core\Template::processTemplate($rowTags, 'phatform', 'report/row.tpl');
             }
 
             if(!isset($_REQUEST['lay_quiet'])) {
@@ -287,22 +287,22 @@ class PHAT_Report {
             $filterOptions = array(1=>dgettext('phatform', 'All'), 2=>dgettext('phatform', 'Incomplete'), 3=>dgettext('phatform', 'Complete'));
             $limitOptions = array(10=>10, 20=>20, 30=>30, 40=>40, 50=>50);
 
-            $elements[0] = PHPWS_Form::formHidden('module', 'phatform');
-            $elements[0] .= PHPWS_Form::formHidden('PHAT_REPORT_OP', 'list');
-            $elements[0] .= PHPWS_Form::formSelect('PHAT_ListFilter', $filterOptions, $this->_listFilter, FALSE, TRUE);
+            $elements[0] = Core\Form::formHidden('module', 'phatform');
+            $elements[0] .= Core\Form::formHidden('PHAT_REPORT_OP', 'list');
+            $elements[0] .= Core\Form::formSelect('PHAT_ListFilter', $filterOptions, $this->_listFilter, FALSE, TRUE);
 
-            $elements[0] .= PHPWS_Form::formSelect('PDA_limit', $limitOptions, $this->pageLimit, TRUE);
+            $elements[0] .= Core\Form::formSelect('PDA_limit', $limitOptions, $this->pageLimit, TRUE);
 
             if(!$_SESSION['PHAT_FormManager']->form->isAnonymous()) {
-                $elements[0] .= PHPWS_Form::formTextField('PHAT_EntrySearch', $this->_searchQuery, 20, 255);
+                $elements[0] .= Core\Form::formTextField('PHAT_EntrySearch', $this->_searchQuery, 20, 255);
             }
 
-            $elements[0] .= PHPWS_Form::formSubmit(dgettext('phatform', 'Search'));
-            $listTags['SEARCH_FORM'] = PHPWS_Form::makeForm('PHAT_SearchEntries', 'index.php', $elements);
+            $elements[0] .= Core\Form::formSubmit(dgettext('phatform', 'Search'));
+            $listTags['SEARCH_FORM'] = Core\Form::makeForm('PHAT_SearchEntries', 'index.php', $elements);
         }
 
         $GLOBALS['CNT_phatform']['title'] = $_SESSION['PHAT_FormManager']->form->getLabel();
-        return PHPWS_Template::processTemplate($listTags, 'phatform', 'report/list.tpl');
+        return Core\Template::processTemplate($listTags, 'phatform', 'report/list.tpl');
     }
 
     /**
@@ -320,7 +320,7 @@ class PHAT_Report {
 
         /* Get the data for the selected entry from the database */
         $sql = 'SELECT * FROM ' . $this->getFormTable() . " WHERE id='" . $_REQUEST['PHAT_ENTRY_ID'] . "'";
-        $entry = PHPWS_DB::getRow($sql);
+        $entry = Core\DB::getRow($sql);
 
         $rowClass = NULL;
         $entryTags = array();
@@ -353,10 +353,10 @@ class PHAT_Report {
             if(preg_match('/a:.:{/', $value)) {
                 $rowTags['ENTRY_VALUE'] = implode(', ', unserialize($value));
             } else {
-                $rowTags['ENTRY_VALUE'] = PHPWS_Text::parseOutput($value);
+                $rowTags['ENTRY_VALUE'] = Core\Text::parseOutput($value);
             }
 
-            $entryTags['ENTRY_DATA'] .= PHPWS_Template::processTemplate($rowTags, 'phatform', 'report/entryRow.tpl');
+            $entryTags['ENTRY_DATA'] .= Core\Template::processTemplate($rowTags, 'phatform', 'report/entryRow.tpl');
         }
 
         if(isset($this->archive))
@@ -376,9 +376,9 @@ class PHAT_Report {
         $GLOBALS['CNT_phatform']['title'] = $_SESSION['PHAT_FormManager']->form->getLabel();
         /* Return the entire processed entry */
         if(isset($_REQUEST['lay_quiet']))
-        echo PHPWS_Template::processTemplate($entryTags, 'phatform', 'report/entry.tpl');
+        echo Core\Template::processTemplate($entryTags, 'phatform', 'report/entry.tpl');
         else
-        return PHPWS_Template::processTemplate($entryTags, 'phatform', 'report/entry.tpl');
+        return Core\Template::processTemplate($entryTags, 'phatform', 'report/entry.tpl');
     }
 
     /**
@@ -405,17 +405,17 @@ class PHAT_Report {
         $hiddens['PHAT_REPORT_OP'] = 'delete';
         $hiddens['PHAT_ENTRY_ID'] = $_REQUEST['PHAT_ENTRY_ID'];
         foreach ($hiddens as $key => $value) {
-            $eles[] = PHPWS_Form::formHidden($key, $value);
+            $eles[] = Core\Form::formHidden($key, $value);
         }
 
         $elements[0] = implode("\n", $eles);
 
         $confirmTags['MESSAGE'] = dgettext('phatform', 'Are you sure you want to delete this entry?');
-        $confirmTags['NO_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'No'), 'PHAT_DeleteNo');
-        $confirmTags['YES_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Yes'), 'PHAT_DeleteYes');
+        $confirmTags['NO_BUTTON'] = Core\Form::formSubmit(dgettext('phatform', 'No'), 'PHAT_DeleteNo');
+        $confirmTags['YES_BUTTON'] = Core\Form::formSubmit(dgettext('phatform', 'Yes'), 'PHAT_DeleteYes');
 
-        $elements[0] .= PHPWS_Template::processTemplate($confirmTags, 'phatform', 'report/deleteConfirm.tpl');
-        $content = PHPWS_Form::makeForm('PHAT_EntryDeleteConfirm', 'index.php', $elements);
+        $elements[0] .= Core\Template::processTemplate($confirmTags, 'phatform', 'report/deleteConfirm.tpl');
+        $content = Core\Form::makeForm('PHAT_EntryDeleteConfirm', 'index.php', $elements);
         $content .= '<br /><hr /><br />';
         $content .= $this->view(FALSE);
 
@@ -430,7 +430,7 @@ class PHAT_Report {
      */
     function delete() {
         if(isset($_REQUEST['PHAT_DeleteYes'])) {
-            $db = new PHPWS_DB('mod_phatform_form_' . $this->_formId);
+            $db = new Core\DB('mod_phatform_form_' . $this->_formId);
             $db->addWhere('id', (int)$_REQUEST['PHAT_ENTRY_ID']);
             $db->delete();
 
@@ -461,7 +461,7 @@ class PHAT_Report {
     function getLastEntry() {
         $lastEntry = NULL;
         $sql = 'SELECT id, user, MAX(updated) FROM ' . $this->getFormTable() . ' GROUP BY user';
-        $result = PHPWS_DB::getAll($sql);
+        $result = Core\DB::getAll($sql);
 
         if(sizeof($result) > 0) {
             $lastEntry = $result[0]['user'] . ' (' . date(PHPWS_DATE_FORMAT, $result[0]['MAX(updated)']) . ')';
@@ -504,7 +504,7 @@ class PHAT_Report {
             }
         }
 
-        $result = PHPWS_DB::getAll($sql);
+        $result = Core\DB::getAll($sql);
 
         $this->_entries = $result;
     }
@@ -517,8 +517,8 @@ class PHAT_Report {
      */
     function setComplete() {
         $sql = 'SELECT count(id) FROM ' . $this->getFormTable() . " WHERE position='-1'";
-        $result = PHPWS_DB::getAll($sql);
-        if (PHPWS_Error::isError($result)) {
+        $result = Core\DB::getAll($sql);
+        if (Core\Error::isError($result)) {
             return $result;
         }
         $this->_completeEntries = $result[0]['count(id)'];
@@ -532,8 +532,8 @@ class PHAT_Report {
      */
     function setIncomplete() {
         $sql = 'SELECT count(id) FROM ' . $this->getFormTable() . " WHERE position!='-1'";
-        $result = PHPWS_DB::getAll($sql);
-        if (PHPWS_Error::isError($result)) {
+        $result = Core\DB::getAll($sql);
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
@@ -606,8 +606,8 @@ class PHAT_Report {
                 if(Current_User::allow('phatform', 'report_export')) {
                     include(PHPWS_SOURCE_DIR . 'mod/phatform/inc/Export.php');
                     $error = export($this->_formId);
-                    if(PHPWS_Error::isError($error)) {
-                        javascript('alert', array('content' => PHPWS_Error::printError($error)));
+                    if(Core\Error::isError($error)) {
+                        javascript('alert', array('content' => Core\Error::printError($error)));
                         $content = $this->report();
                     }
                 } else {

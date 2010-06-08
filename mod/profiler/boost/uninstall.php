@@ -10,8 +10,8 @@
 function profiler_uninstall(&$content)
 {
 
-    PHPWS_DB::dropTable('profiles');
-    PHPWS_DB::dropTable('profiler_division');
+    Core\DB::dropTable('profiles');
+    Core\DB::dropTable('profiler_division');
     $content[] = dgettext('profiler', 'Profiles table removed.');
 
     return TRUE;

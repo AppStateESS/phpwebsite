@@ -27,9 +27,9 @@ class Skeleton_Runtime
 {
 
     public static function showBlock() {
-        if (PHPWS_Settings::get('skeleton', 'enable_sidebox')) {
-            if (PHPWS_Settings::get('skeleton', 'sidebox_homeonly')) {
-                $key = Key::getCurrent();
+        if (Core\Settings::get('skeleton', 'enable_sidebox')) {
+            if (Core\Settings::get('skeleton', 'sidebox_homeonly')) {
+                $key = Core\Key::getCurrent();
                 if (!empty($key) && $key->isHomeKey()) {
                     Skeleton_Runtime::showSkeletonBlock();
                 }
@@ -41,15 +41,15 @@ class Skeleton_Runtime
 
     public function showSkeletonBlock() {
 
-        $db = new PHPWS_DB('skeleton_skeletons');
+        $db = new Core\DB('skeleton_skeletons');
         $db->addColumn('id');
         $db->addOrder('rand');
         $db->setLimit(1);
         $result = $db->select();
-        if (!PHPWS_Error::logIfError($result) && !empty($result)) {
+        if (!Core\Error::logIfError($result) && !empty($result)) {
             $tpl['TITLE'] = dgettext('skeleton', 'Skeletons');
             $tpl['LABEL'] = dgettext('skeleton', 'Random Skeleton');
-            $tpl['TEXT'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('skeleton', 'sidebox_text'));
+            $tpl['TEXT'] = Core\Text::parseOutput(Core\Settings::get('skeleton', 'sidebox_text'));
             Core\Core::initModClass('skeleton', 'Skeleton_Skeleton.php');
             $skeleton = new Skeleton_Skeleton($result[0]['id']);
             $tpl['NAME'] = $skeleton->viewLink();
@@ -58,9 +58,9 @@ class Skeleton_Runtime
             } else {
                 $tpl['THUMBNAIL'] = null;
             }
-            $tpl['LINK'] = PHPWS_Text::moduleLink(dgettext('skeleton', 'List all skeletons'), 'skeleton', array('uop'=>'list_skeletons'));
+            $tpl['LINK'] = Core\Text::moduleLink(dgettext('skeleton', 'List all skeletons'), 'skeleton', array('uop'=>'list_skeletons'));
             Core\Core::initModClass('layout', 'Layout.php');
-            Layout::add(PHPWS_Template::process($tpl, 'skeleton', 'block.tpl'), 'skeleton', 'skeleton_sidebox');
+            Layout::add(Core\Template::process($tpl, 'skeleton', 'block.tpl'), 'skeleton', 'skeleton_sidebox');
         }
 
     }

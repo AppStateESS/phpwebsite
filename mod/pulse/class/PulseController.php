@@ -24,7 +24,7 @@ class PulseController
         Core\Core::initModClass('pulse', 'ScheduledPulse.php');
         $exec = time();
 
-        $db = new PHPWS_DB('pulse_schedule');
+        $db = new Core\DB('pulse_schedule');
         $db->addWhere('execute_at', $exec, '<');
         $db->addWhere('status', PULSE_STATUS_SCHEDULED);
 
@@ -42,7 +42,7 @@ class PulseController
             // Get One Result
             $result = $db->select();
 
-            if(PHPWS_Error::logIfError($result)) {
+            if(Core\Error::logIfError($result)) {
                 echo "ERROR IN PULSE\n" . $result->__toString();
                 exit();
             }

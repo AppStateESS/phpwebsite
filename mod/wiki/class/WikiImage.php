@@ -40,8 +40,8 @@ class WikiImage
         {
             $this->setId($id);
 
-            $db = new PHPWS_DB('wiki_images');
-            PHPWS_Error::logIfError($db->loadObject($this));
+            $db = new Core\DB('wiki_images');
+            Core\Error::logIfError($db->loadObject($this));
         }
     }
 
@@ -70,11 +70,11 @@ class WikiImage
 
     function getOwnerUsername()
     {
-        $db = new PHPWS_DB('users');
+        $db = new Core\DB('users');
         $db->addWhere('id', $this->getOwnerId());
         $db->addColumn('username');
         $result = $db->select('col');
-        if (PHPWS_Error::logIfError($result))
+        if (Core\Error::logIfError($result))
         {
             return dgettext('wiki', 'N/A');
         }
@@ -149,14 +149,14 @@ class WikiImage
 
     function setSummary($summary)
     {
-        $this->summary = PHPWS_Text::parseInput($summary);
+        $this->summary = Core\Text::parseInput($summary);
     }
 
     function getSummary($parse=TRUE)
     {
         if ($parse)
         {
-            return PHPWS_Text::parseOutput($this->summary);
+            return Core\Text::parseOutput($this->summary);
         }
 
         return $this->summary;
@@ -169,7 +169,7 @@ class WikiImage
      */
     function add()
     {
-        $form = new PHPWS_Form;
+        $form = new Core\Form;
         $form->addHidden('module', 'wiki');
         $form->addHidden('op', 'doimageupload');
 
@@ -226,7 +226,7 @@ class WikiImage
                 $image->setFilename($this->created . '_' . $image->file_name);
             }
 
-            if (PHPWS_Error::logIfError($image->write()))
+            if (Core\Error::logIfError($image->write()))
             {
                 return dgettext('wiki', 'There was a problem saving your image.');
             }
@@ -236,8 +236,8 @@ class WikiImage
             $this->setType($image->file_type);
         }
 
-        $db = new PHPWS_DB('wiki_images');
-        if (PHPWS_Error::logIfError($db->saveObject($this)))
+        $db = new Core\DB('wiki_images');
+        if (Core\Error::logIfError($db->saveObject($this)))
         {
             @unlink(PHPWS_HOME_DIR . 'images/wiki/' . $this->getFilename());
             return dgettext('wiki', 'There was a problem saving your image.');
@@ -253,7 +253,7 @@ class WikiImage
     function delete()
     {
         if (!Current_User::authorized('wiki', 'upload_images') &&
-            !(PHPWS_Settings::get('wiki', 'allow_image_upload') && Current_User::isLogged()))
+            !(Core\Settings::get('wiki', 'allow_image_upload') && Current_User::isLogged()))
         {
             Current_User::disallow(dgettext('wiki', 'User attempted access to image delete.'));
             return;
@@ -262,9 +262,9 @@ class WikiImage
         if (isset($_REQUEST['yes']))
         {
             @unlink(PHPWS_HOME_DIR . 'images/wiki/' . $this->getFilename());
-            $db = new PHPWS_DB('wiki_images');
+            $db = new Core\DB('wiki_images');
             $db->addWhere('id', $this->getId());
-            if (PHPWS_Error::logIfError($db->delete()))
+            if (Core\Error::logIfError($db->delete()))
             {
                 return dgettext('wiki', 'Error deleting image.');
             }
@@ -277,13 +277,13 @@ class WikiImage
 
         $tags = array();
         $tags['MESSAGE'] = dgettext('wiki', 'Are you sure you want to delete this image?');
-        $tags['YES'] = PHPWS_Text::secureLink(dgettext('wiki', 'Yes'), 'wiki',
+        $tags['YES'] = Core\Text::secureLink(dgettext('wiki', 'Yes'), 'wiki',
                                               array('op'=>'doimagedelete', 'yes'=>1, 'id'=>$this->getId()));
-        $tags['NO'] = PHPWS_Text::secureLink(dgettext('wiki', 'No'), 'wiki',
+        $tags['NO'] = Core\Text::secureLink(dgettext('wiki', 'No'), 'wiki',
                                              array('op'=>'doimagedelete', 'no'=>1, 'id'=>$this->getId()));
         $tags['WIKIPAGE'] = '<img src="images/wiki/' . $this->getFilename() . '" alt="" />';
 
-        return PHPWS_Template::processTemplate($tags, 'wiki', 'confirm.tpl');
+        return Core\Template::processTemplate($tags, 'wiki', 'confirm.tpl');
     }
 
     function getTag()
@@ -298,10 +298,10 @@ class WikiImage
         $vars['id'] = $this->getId();
 
         $vars['op'] = 'imagecopy';
-        $links[] = PHPWS_Text::secureLink(dgettext('wiki', 'Copy'), 'wiki', $vars);
+        $links[] = Core\Text::secureLink(dgettext('wiki', 'Copy'), 'wiki', $vars);
 
         $vars['op'] = 'imagedelete';
-        $links[] = PHPWS_Text::secureLink(dgettext('wiki', 'Delete'), 'wiki', $vars);
+        $links[] = Core\Text::secureLink(dgettext('wiki', 'Delete'), 'wiki', $vars);
 
         $template['ACTIONS'] = implode(' | ', $links);
         $template['FILENAME'] = $this->getFilename();

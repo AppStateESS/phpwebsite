@@ -13,25 +13,25 @@ function users_install(&$content)
     Core\Core::configRequireOnce('users', 'config.php');
 
     if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'branch') {
-        $db = new PHPWS_DB;
-        PHPWS_Settings::clear();
+        $db = new Core\DB;
+        Core\Settings::clear();
         if (!createLocalAuthScript()) {
             $content[] = 'Could not create authorization script.';
             return false;
         }
         Branch::loadHubDB();
-        $db = new PHPWS_DB('mod_settings');
+        $db = new Core\DB('mod_settings');
         $db->addWhere('module', 'users');
         $db->addWhere('setting_name', 'site_contact');
         $db->addColumn('small_char');
         $site_contact = $db->select('one');
 
-        $db = new PHPWS_DB('users');
+        $db = new Core\DB('users');
         $sql = 'select a.password, b.* from user_authorization as a, users as b where b.deity = 1 and a.username = b.username';
         $deities = $db->getAll($sql);
 
-        if (PHPWS_Error::isError($deities)) {
-            PHPWS_Error::log($deities);
+        if (Core\Error::isError($deities)) {
+            Core\Error::log($deities);
             $content[] = dgettext('users', 'Could not access hub database.');
             return FALSE;
         }
@@ -40,17 +40,17 @@ function users_install(&$content)
             return FALSE;
         } else {
             Branch::restoreBranchDB();
-            PHPWS_Settings::set('users', 'site_contact', $site_contact);
-            PHPWS_Settings::save('users');
-            $auth_db = new PHPWS_DB('user_authorization');
-            $user_db = new PHPWS_DB('users');
-            $group_db = new PHPWS_DB('users_groups');
+            Core\Settings::set('users', 'site_contact', $site_contact);
+            Core\Settings::save('users');
+            $auth_db = new Core\DB('user_authorization');
+            $user_db = new Core\DB('users');
+            $group_db = new Core\DB('users_groups');
             foreach ($deities as $deity) {
                 $auth_db->addValue('username', $deity['username']);
                 $auth_db->addValue('password', $deity['password']);
                 $result = $auth_db->insert();
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
+                if (Core\Error::isError($result)) {
+                    Core\Error::log($result);
                     $content[] = dgettext('users', 'Unable to copy deity login to branch.');
                     continue;
                 }
@@ -58,8 +58,8 @@ function users_install(&$content)
                 $user_db->addValue($deity);
                 $result = $user_db->insert();
 
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
+                if (Core\Error::isError($result)) {
+                    Core\Error::log($result);
                     $content[] = dgettext('users', 'Unable to copy deity users to branch.');
                     Branch::loadBranchDB();
                     return FALSE;
@@ -68,7 +68,7 @@ function users_install(&$content)
                 $group_db->addValue('active', 1);
                 $group_db->addValue('name', $deity['username']);
                 $group_db->addValue('user_id', $result);
-                if (PHPWS_Error::logIfError($group_db->insert())) {
+                if (Core\Error::logIfError($group_db->insert())) {
                     $content[] = dgettext('users', 'Unable to copy deity user group to branch.');
                     Branch::loadBranchDB();
                     return FALSE;
@@ -88,7 +88,7 @@ function users_install(&$content)
         return false;
     }
 
-    $authorize_id = PHPWS_Settings::get('users', 'local_script');
+    $authorize_id = Core\Settings::get('users', 'local_script');
     $user = new PHPWS_User;
     $content[] = '<hr />';
 
@@ -97,10 +97,9 @@ function users_install(&$content)
 
 
 function userForm(&$user, $errors=NULL){
-    Core\Core::initCoreClass('Form.php');
-    Core\Core::initModClass('users', 'Form.php');
+        Core\Core::initModClass('users', 'Form.php');
 
-    $form = new PHPWS_Form;
+    $form = new Core\Form;
 
     if (isset($_REQUEST['module'])) {
         $form->addHidden('module', $_REQUEST['module']);
@@ -129,7 +128,7 @@ function userForm(&$user, $errors=NULL){
         }
     }
 
-    $result = PHPWS_Template::process($template, 'users', 'forms/userForm.tpl');
+    $result = Core\Template::process($template, 'users', 'forms/userForm.tpl');
 
     $content[] = $result;
     return implode("\n", $content);
@@ -137,20 +136,20 @@ function userForm(&$user, $errors=NULL){
 
 function createLocalAuthScript()
 {
-    if (PHPWS_Settings::get('users', 'local_script')) {
+    if (Core\Settings::get('users', 'local_script')) {
         return true;
     }
-    $db = new PHPWS_DB('users_auth_scripts');
+    $db = new Core\DB('users_auth_scripts');
     $db->addValue('display_name', dgettext('users', 'Local'));
     $db->addValue('filename', 'local.php');
     $authorize_id = $db->insert();
 
-    if (PHPWS_Error::logIfError($authorize_id)) {
+    if (Core\Error::logIfError($authorize_id)) {
         return false;
     }
-    PHPWS_Settings::set('users', 'default_authorization', $authorize_id);
-    PHPWS_Settings::set('users', 'local_script', $authorize_id);
-    PHPWS_Settings::save('users');
+    Core\Settings::set('users', 'default_authorization', $authorize_id);
+    Core\Settings::set('users', 'local_script', $authorize_id);
+    Core\Settings::save('users');
     return true;
 }
 

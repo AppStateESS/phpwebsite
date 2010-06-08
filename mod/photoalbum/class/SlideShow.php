@@ -104,7 +104,7 @@ class SlideShow {
                            'revealTrans(duration=3, transition=20)' => dgettext('photoalbum', 'Strips'),
                            'revealTrans(duration=3, transition=14)' => dgettext('photoalbum', 'Barn'));
 
-        $form = new PHPWS_Form;
+        $form = new Core\Form;
         $form->addSelect('adjustSpeedField', $speedOptions);
         $form->setMatch('adjustSpeedField', 5000);
         $form->setExtra('adjustSpeedField', 'onchange="adjustSpeed()"');
@@ -137,10 +137,10 @@ class SlideShow {
         $get_var["PHPWS_Album_op"] = "slideShow";
         $get_var["SS_mode"] = "nojsmode";
 
-        $tags["LOW_TECH_LINK"] .= PHPWS_Text::moduleLink($linkText, 'photoalbum', $get_var);
+        $tags["LOW_TECH_LINK"] .= Core\Text::moduleLink($linkText, 'photoalbum', $get_var);
         $tags["LOW_TECH_LINK"] .= dgettext('photoalbum', ' mode.');
 
-        $jsContent = PHPWS_Template::processTemplate($jsTags, 'photoalbum', 'slideshow/js.tpl');
+        $jsContent = Core\Template::processTemplate($jsTags, 'photoalbum', 'slideshow/js.tpl');
 
         Layout::addJSHeader($jsContent);
 
@@ -151,7 +151,7 @@ class SlideShow {
             $tags['IMAGE'] = ' ';
         }
 
-        return PHPWS_Template::processTemplate($tags, 'photoalbum', 'slideshow/slideshow.tpl');
+        return Core\Template::processTemplate($tags, 'photoalbum', 'slideshow/slideshow.tpl');
     }
 
 }

@@ -15,7 +15,7 @@ class Block {
     {
         Block::showAllBlocks();
 
-        $key = Key::getCurrent();
+        $key = Core\Key::getCurrent();
 
         if (empty($key) || $key->isDummy(true)) {
             return;
@@ -30,7 +30,7 @@ class Block {
 
     public static function showAllBlocks()
     {
-        $key = new Key;
+        $key = new Core\Key;
         $key->id = -1;
         Block::showBlocks($key);
     }
@@ -65,14 +65,14 @@ class Block {
 
     public static function showBlocks($key)
     {
-        $db = new PHPWS_DB('block');
+        $db = new Core\DB('block');
         $db->addWhere('block_pinned.key_id', $key->id);
         $db->addWhere('id', 'block_pinned.block_id');
-        Key::restrictView($db, 'block');
+        Core\Key::restrictView($db, 'block');
         $result = $db->getObjects('Block_Item');
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             return NULL;
         }
 

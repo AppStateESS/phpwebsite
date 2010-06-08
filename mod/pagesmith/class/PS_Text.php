@@ -20,9 +20,9 @@ class PS_Text extends PS_Section {
 
     public function init()
     {
-        $db = new PHPWS_DB('ps_text');
+        $db = new Core\DB('ps_text');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             return $result;
         }
         if (!$result) {
@@ -51,7 +51,7 @@ class PS_Text extends PS_Section {
             if (empty($lorum)) {
                 $lorum = file_get_contents(PHPWS_SOURCE_DIR . 'mod/pagesmith/inc/lorum.txt');
             }
-            $this->content =  PHPWS_Text::breaker($lorum);
+            $this->content =  Core\Text::breaker($lorum);
         }
         $this->setSaved();
     }
@@ -73,24 +73,24 @@ class PS_Text extends PS_Section {
         }
 
         if ($view_mode) {
-            return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content));
+            return Core\Text::parseTag(Core\Text::parseOutput($this->content));
         } else {
-            return PHPWS_Text::decodeText($this->content);
+            return Core\Text::decodeText($this->content);
             /**
              * Prior to 24 Mar 09, this was what it returned. This prevented anchors
              * and filtered words in edit mode. Although testing the change does not
              * indicate side effects, I am leaving this in just case. -Matt
              */
-            //return PHPWS_Text::parseOutput($this->content);
+            //return Core\Text::parseOutput($this->content);
         }
     }
 
 
     public function save($key_id)
     {
-        $db = new PHPWS_DB('ps_text');
+        $db = new Core\DB('ps_text');
         $result = $db->saveObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
         $search = new Search($key_id);

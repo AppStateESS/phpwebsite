@@ -64,48 +64,48 @@ class UNI_Textarea extends UNI_Element {
         }
         $tpl['NAME'] = 'UNI_' . $this->id;
 
-        return PHPWS_Template::processTemplate($tpl, 'vlist', 'elements/view_textarea.tpl');
+        return Core\Template::processTemplate($tpl, 'vlist', 'elements/view_textarea.tpl');
     }
 
 
     function edit()
     {
         $numoptions = $this->numoptions;
-        $elements[0] =  PHPWS_Form::formHidden('module', 'vlist') . 
-                        PHPWS_Form::formHidden('aop', 'post_element') . 
-                        PHPWS_Form::formHidden('type', 'Textarea') ;
+        $elements[0] =  Core\Form::formHidden('module', 'vlist') . 
+                        Core\Form::formHidden('aop', 'post_element') . 
+                        Core\Form::formHidden('type', 'Textarea') ;
         if ($this->id) {
-            $elements[0] .=  PHPWS_Form::formHidden('id', $this->id) ;
+            $elements[0] .=  Core\Form::formHidden('id', $this->id) ;
         }
 
         $tpl['LABEL_LABEL'] = dgettext('vlist', 'Label/name');
-        $tpl['LABEL_INPUT'] = PHPWS_Form::formTextField('label', $this->getTitle(), UNI_DEFAULT_SIZE, UNI_DEFAULT_MAXSIZE);
+        $tpl['LABEL_INPUT'] = Core\Form::formTextField('label', $this->getTitle(), UNI_DEFAULT_SIZE, UNI_DEFAULT_MAXSIZE);
 
         $tpl['ROWS_LABEL'] = dgettext('vlist', 'Rows');
-        $tpl['ROWS_INPUT'] = PHPWS_Form::formTextField('rows', $this->getRows(), 5, 3);
+        $tpl['ROWS_INPUT'] = Core\Form::formTextField('rows', $this->getRows(), 5, 3);
         $tpl['COLS_LABEL'] = dgettext('vlist', 'Columns');
-        $tpl['COLS_INPUT'] = PHPWS_Form::formTextField('cols', $this->getCols(), 5, 3);
+        $tpl['COLS_INPUT'] = Core\Form::formTextField('cols', $this->getCols(), 5, 3);
         $tpl['VALUE_LABEL'] = dgettext('vlist', 'Default value');
-        $tpl['VALUE_INPUT'] = PHPWS_Form::formTextArea('value', $this->getValue(), UNI_DEFAULT_ROWS, UNI_DEFAULT_COLS);
+        $tpl['VALUE_INPUT'] = Core\Form::formTextArea('value', $this->getValue(), UNI_DEFAULT_ROWS, UNI_DEFAULT_COLS);
 
         $tpl['REQUIRE_LABEL'] = dgettext('vlist', 'Required');
-        $tpl['REQUIRE_INPUT'] = PHPWS_Form::formCheckBox('required', 1, $this->required);
+        $tpl['REQUIRE_INPUT'] = Core\Form::formCheckBox('required', 1, $this->required);
         $tpl['ACTIVE_LABEL'] = dgettext('vlist', 'Active');
-        $tpl['ACTIVE_INPUT'] = PHPWS_Form::formCheckBox('active', 1, $this->active);
+        $tpl['ACTIVE_INPUT'] = Core\Form::formCheckBox('active', 1, $this->active);
         $tpl['SORT_LABEL'] = dgettext('vlist', 'Sort order');
-        $tpl['SORT_INPUT'] = PHPWS_Form::formTextField('sort', $this->sort, 5, 3);
+        $tpl['SORT_INPUT'] = Core\Form::formTextField('sort', $this->sort, 5, 3);
         $tpl['LIST_LABEL'] = dgettext('vlist', 'Use in list');
-        $tpl['LIST_INPUT'] = PHPWS_Form::formCheckBox('list', 1, $this->list);
+        $tpl['LIST_INPUT'] = Core\Form::formCheckBox('list', 1, $this->list);
 //        $tpl['SEARCH_LABEL'] = dgettext('vlist', 'Use in advanced search');
-//        $tpl['SEARCH_INPUT'] = PHPWS_Form::formCheckBox('search', 1, $this->search);
+//        $tpl['SEARCH_INPUT'] = Core\Form::formCheckBox('search', 1, $this->search);
         $tpl['PRIVATE_LABEL'] = dgettext('vlist', 'Private (Internal use only)');
-        $tpl['PRIVATE_INPUT'] = PHPWS_Form::formCheckBox('private', 1, $this->private);
+        $tpl['PRIVATE_INPUT'] = Core\Form::formCheckBox('private', 1, $this->private);
 
-        $tpl['NEXT_BUTTON'] = PHPWS_Form::formSubmit(dgettext('vlist', 'Save Textarea'));
+        $tpl['NEXT_BUTTON'] = Core\Form::formSubmit(dgettext('vlist', 'Save Textarea'));
 
-        $elements[0] .= PHPWS_Template::processTemplate($tpl, 'vlist', 'elements/edit_textarea.tpl');
+        $elements[0] .= Core\Template::processTemplate($tpl, 'vlist', 'elements/edit_textarea.tpl');
 
-        return PHPWS_Form::makeForm('UNI_Textarea_edit', 'index.php', $elements, 'post', null, null);
+        return Core\Form::makeForm('UNI_Textarea_edit', 'index.php', $elements, 'post', null, null);
     }
 
 

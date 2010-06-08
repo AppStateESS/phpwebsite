@@ -50,7 +50,7 @@ class Webpage_Volume {
     public function resetDB()
     {
         if (empty($this->_db)) {
-            $this->_db = new PHPWS_DB('webpage_volume');
+            $this->_db = new Core\DB('webpage_volume');
         } else {
             $this->_db->reset();
         }
@@ -76,7 +76,7 @@ class Webpage_Volume {
 
     public function loadPages()
     {
-        $db = new PHPWS_DB('webpage_page');
+        $db = new Core\DB('webpage_page');
         $db->addWhere('volume_id', $this->id);
         if ($this->approved) {
             $db->addWhere('approved', 1);
@@ -86,8 +86,8 @@ class Webpage_Volume {
         $result = $db->getObjects('Webpage_Page');
 
         if (!empty($result)) {
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 return;
             } else {
                 foreach ($result as $key => $page) {
@@ -102,7 +102,7 @@ class Webpage_Volume {
     {
         $this->resetDB();
         $result = $this->_db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_error = $result;
             return;
         }
@@ -139,13 +139,13 @@ class Webpage_Volume {
 
     public function setSummary($summary)
     {
-        $this->summary = PHPWS_Text::parseInput($summary);
+        $this->summary = Core\Text::parseInput($summary);
     }
 
 
     public function getSummary()
     {
-        return PHPWS_Text::parseOutput($this->summary);
+        return Core\Text::parseOutput($this->summary);
     }
 
     public function getTotalPages()
@@ -189,7 +189,7 @@ class Webpage_Volume {
                 return 'index.php?module=webpage&amp;id=' . $this->id;
             }
         } else {
-            return PHPWS_Text::rewriteLink(dgettext('webpage', 'View'), 'webpage', array('id'=>$this->id));
+            return Core\Text::rewriteLink(dgettext('webpage', 'View'), 'webpage', array('id'=>$this->id));
         }
     }
 
@@ -239,7 +239,7 @@ class Webpage_Volume {
                     $vars['version_id'] = & $approval_id;
                 }
             }
-            $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit'), 'webpage', $vars);
+            $links[] = Core\Text::secureLink(dgettext('webpage', 'Edit'), 'webpage', $vars);
         }
 
         if ($this->canView()) {
@@ -252,7 +252,7 @@ class Webpage_Volume {
                 $vars['wp_admin'] = 'delete_wp';
                 $js_vars['QUESTION'] = sprintf(dgettext('webpage', 'Are you sure you want to delete &quot;%s&quot and all its pages?'),
                 $this->title);
-                $js_vars['ADDRESS'] = PHPWS_Text::linkAddress('webpage', $vars, true);
+                $js_vars['ADDRESS'] = Core\Text::linkAddress('webpage', $vars, true);
                 $js_vars['LINK'] = dgettext('webpage', 'Delete');
                 $links[] = javascript('confirm', $js_vars);
             }
@@ -281,10 +281,10 @@ class Webpage_Volume {
         if (Current_User::isUnrestricted('webpage')) {
             if ($this->frontpage) {
                 $vars['wp_admin'] = 'move_off_frontpage';
-                $fp = PHPWS_Text::secureLink(dgettext('webpage', 'Yes'), 'webpage', $vars);
+                $fp = Core\Text::secureLink(dgettext('webpage', 'Yes'), 'webpage', $vars);
             } else {
                 $vars['wp_admin'] = 'move_to_frontpage';
-                $fp = PHPWS_Text::secureLink(dgettext('webpage', 'No'), 'webpage', $vars);
+                $fp = Core\Text::secureLink(dgettext('webpage', 'No'), 'webpage', $vars);
             }
             $tpl['FRONTPAGE'] = $fp;
         } else {
@@ -294,10 +294,10 @@ class Webpage_Volume {
         if (Current_User::isUnrestricted('webpage')) {
             if ($this->active) {
                 $vars['wp_admin'] = 'deactivate_vol';
-                $active = PHPWS_Text::secureLink(dgettext('webpage', 'Yes'), 'webpage', $vars);
+                $active = Core\Text::secureLink(dgettext('webpage', 'Yes'), 'webpage', $vars);
             } else {
                 $vars['wp_admin'] = 'activate_vol';
-                $active = PHPWS_Text::secureLink(dgettext('webpage', 'No'), 'webpage', $vars);
+                $active = Core\Text::secureLink(dgettext('webpage', 'No'), 'webpage', $vars);
             }
             $tpl['ACTIVE'] = $active;
         } else {
@@ -309,24 +309,24 @@ class Webpage_Volume {
 
     public function delete()
     {
-        $pagedb = new PHPWS_DB('webpage_page');
+        $pagedb = new Core\DB('webpage_page');
         $pagedb->addWhere('volume_id', $this->id);
         $result = $pagedb->delete();
 
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
-        $page_version = new PHPWS_DB('webpage_page_version');
+        $page_version = new Core\DB('webpage_page_version');
         $page_version->addWhere('volume_id', $this->id);
         $page_version->delete();
 
-        Key::drop($this->key_id);
+        Core\Key::drop($this->key_id);
 
         $this->resetDB();
         $this->_db->addWhere('id', $this->id);
         $result = $this->_db->delete();
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
@@ -340,7 +340,7 @@ class Webpage_Volume {
         Core\Core::initModClass('version', 'Version.php');
 
         if (empty($this->title)) {
-            return PHPWS_Error::get(WP_TPL_TITLE_MISSING, 'webpages', 'Volume::save');
+            return Core\Error::get(WP_TPL_TITLE_MISSING, 'webpages', 'Volume::save');
         }
 
         if (!$version_update) {
@@ -362,7 +362,7 @@ class Webpage_Volume {
         if ($this->approved || !$this->id) {
             $this->resetDB();
             $result = $this->_db->saveObject($this);
-            if (PHPWS_Error::isError($result)) {
+            if (Core\Error::isError($result)) {
                 return $result;
             }
         }
@@ -377,7 +377,7 @@ class Webpage_Volume {
             $search = new Search($this->key_id);
             $search->addKeywords($this->title);
             $search->addKeywords($this->summary);
-            PHPWS_Error::logIfError($search->save());
+            Core\Error::logIfError($search->save());
         }
 
         if (!$version_process) {
@@ -393,9 +393,9 @@ class Webpage_Volume {
     public function saveKey()
     {
         if ($this->key_id) {
-            $key = new Key($this->key_id);
+            $key = new Core\Key($this->key_id);
         } else {
-            $key = new Key;
+            $key = new Core\Key;
             $key->setModule('webpage');
             $key->setItemName('volume');
             $key->setItemId($this->id);
@@ -407,7 +407,7 @@ class Webpage_Volume {
         $key->setSummary($this->summary);
         $key->setUrl($this->getViewLink(true));
 
-        if (PHPWS_Error::logIfError($key->save())) {
+        if (Core\Error::logIfError($key->save())) {
             return null;
         }
         $this->key_id = $key->id;
@@ -449,7 +449,7 @@ class Webpage_Volume {
 
     public function getPageSelect($alist)
     {
-        $form = new PHPWS_Form('page_select');
+        $form = new Core\Form('page_select');
         $form->setMethod('get');
         $form->noAuthKey();
         $form->addHidden('module', 'webpage');
@@ -487,14 +487,14 @@ class Webpage_Volume {
 
             if ($this->_current_page > 1) {
                 $page = $this->_current_page - 1;
-                $template['PAGE_LEFT'] = PHPWS_Text::rewriteLink(WP_PAGE_LEFT, 'webpage', array('id'=>$this->id, 'page'=>$page));
-                $template['PREVIOUS_PAGE']  = PHPWS_Text::rewriteLink(WP_PREVIOUS_PAGE, 'webpage', array('id'=>$this->id, 'page'=>$page));
+                $template['PAGE_LEFT'] = Core\Text::rewriteLink(WP_PAGE_LEFT, 'webpage', array('id'=>$this->id, 'page'=>$page));
+                $template['PREVIOUS_PAGE']  = Core\Text::rewriteLink(WP_PREVIOUS_PAGE, 'webpage', array('id'=>$this->id, 'page'=>$page));
             }
 
             if ($this->_current_page < count($this->_pages)) {
                 $page = $this->_current_page + 1;
-                $template['PAGE_RIGHT'] = PHPWS_Text::rewriteLink(WP_PAGE_RIGHT, 'webpage', array('id'=>$this->id, 'page'=>$page));
-                $template['NEXT_PAGE']  = PHPWS_Text::rewriteLink(WP_NEXT_PAGE, 'webpage', array('id'=>$this->id, 'page'=>$page));
+                $template['PAGE_RIGHT'] = Core\Text::rewriteLink(WP_PAGE_RIGHT, 'webpage', array('id'=>$this->id, 'page'=>$page));
+                $template['NEXT_PAGE']  = Core\Text::rewriteLink(WP_NEXT_PAGE, 'webpage', array('id'=>$this->id, 'page'=>$page));
             }
 
 
@@ -509,18 +509,18 @@ class Webpage_Volume {
             if ($version) {
                 $vars['version_id'] = $version;
             }
-            $template['EDIT_HEADER'] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit header'), 'webpage', $vars);
+            $template['EDIT_HEADER'] = Core\Text::secureLink(dgettext('webpage', 'Edit header'), 'webpage', $vars);
         }
 
         if (!$version && Current_User::allow('webpage', 'edit_page', null, null, true)) {
             $vars = array('wp_admin' => 'restore_volume', 'volume_id'=>$this->id);
-            $template['RESTORE'] = PHPWS_Text::secureLink(dgettext('webpage', 'Restore'), 'webpage', $vars);
+            $template['RESTORE'] = Core\Text::secureLink(dgettext('webpage', 'Restore'), 'webpage', $vars);
             if ($this->featured) {
                 $vars['wp_admin'] = 'unfeature';
             } else {
                 $vars['wp_admin'] = 'feature';
             }
-            $template['FEATURE'] = PHPWS_Text::secureLink(dgettext('webpage', 'Feature'), 'webpage', $vars);
+            $template['FEATURE'] = Core\Text::secureLink(dgettext('webpage', 'Feature'), 'webpage', $vars);
         }
 
         $result = Categories::getSimpleLinks($this->key_id);
@@ -537,7 +537,7 @@ class Webpage_Volume {
             $this->flagKey();
         }
         $template = $this->getTplTags(false, $version);
-        return PHPWS_Template::process($template, 'webpage', 'header.tpl');
+        return Core\Template::process($template, 'webpage', 'header.tpl');
     }
 
     public function forceTemplate($template)
@@ -548,7 +548,7 @@ class Webpage_Volume {
             return false;
         }
 
-        $db = new PHPWS_DB('webpage_page');
+        $db = new Core\DB('webpage_page');
         $db->addValue('template', $template);
         $db->addWhere('volume_id', $this->id);
         return $db->update();
@@ -580,7 +580,7 @@ class Webpage_Volume {
                 $oPage = $this->getCurrentPage();
 
                 if (!is_object($oPage)) {
-                    PHPWS_Error::log(WP_PAGE_FROM_VOLUME, 'webpage', 'Webpage_Volume::view');
+                    Core\Error::log(WP_PAGE_FROM_VOLUME, 'webpage', 'Webpage_Volume::view');
                     return null;
                 }
                 $content = $oPage->view();
@@ -600,13 +600,13 @@ class Webpage_Volume {
             $template['multiple'][] = $page->getTplTags(false, false);
         }
 
-        return PHPWS_Template::process($template, 'webpage', 'multiple/default.tpl');
+        return Core\Template::process($template, 'webpage', 'multiple/default.tpl');
     }
 
     public function flagKey()
     {
         if ($this->frontpage) {
-            $key = Key::getHomeKey();
+            $key = Core\Key::getHomeKey();
             $key->flag();
             return;
         }
@@ -617,7 +617,7 @@ class Webpage_Volume {
     public function loadKey()
     {
         if (empty($this->_key)) {
-            $this->_key = new Key($this->key_id);
+            $this->_key = new Core\Key($this->key_id);
         }
     }
 
@@ -657,8 +657,8 @@ class Webpage_Volume {
         $source->content .= '&lt;br /&gt;&lt;h2&gt;' . $next_page->title . '&lt;/h2&gt;' . $next_page->content;
         $source->save();
         $result = $next_page->delete();
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             return false;
         } else {
             return true;
@@ -688,7 +688,7 @@ class Webpage_Volume {
     {
         $template['TITLE'] = $this->title;
         $template['SUMMARY'] = $this->getSummary();
-        return PHPWS_Template::process($template, 'webpage', 'approval_list.tpl');
+        return Core\Template::process($template, 'webpage', 'approval_list.tpl');
     }
 
     public function saveSearch()

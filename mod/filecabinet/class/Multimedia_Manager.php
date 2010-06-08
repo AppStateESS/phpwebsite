@@ -88,12 +88,12 @@ class FC_Multimedia_Manager {
             $this->message = dgettext('filecabinet', 'Unable to process embedded information.');
             return false;
         }
-        return !PHPWS_Error::logIfError($this->multimedia->save(false, false));
+        return !Core\Error::logIfError($this->multimedia->save(false, false));
     }
 
     public function editEmbed()
     {
-        $form = new PHPWS_Form('embedd');
+        $form = new Core\Form('embedd');
         $form->addHidden('module', 'filecabinet');
         $form->addHidden('mop', 'post_embed');
         $form->addHidden('folder_id', $this->folder->id);
@@ -102,7 +102,7 @@ class FC_Multimedia_Manager {
         $form->setSize('embed_id', 30);
         $form->setLabel('embed_id', dgettext('filecabinet', 'Url or id'));
 
-        $directories = PHPWS_File::listDirectories(PHPWS_SOURCE_DIR . 'mod/filecabinet/inc/embed/');
+        $directories = Core\File::listDirectories(PHPWS_SOURCE_DIR . 'mod/filecabinet/inc/embed/');
 
         foreach ($directories as $dir) {
             $file = sprintf('%smod/filecabinet/inc/embed/%s/data.php', PHPWS_SOURCE_DIR, $dir);
@@ -126,7 +126,7 @@ class FC_Multimedia_Manager {
             $tpl['ERROR'] = $this->message;
         }
 
-        $this->content = PHPWS_Template::process($tpl, 'filecabinet', 'embed_edit.tpl');
+        $this->content = Core\Template::process($tpl, 'filecabinet', 'embed_edit.tpl');
     }
 
 
@@ -144,7 +144,7 @@ class FC_Multimedia_Manager {
         if (isset($_REQUEST['ms']) && $_REQUEST['ms'] > 1000) {
             $this->setMaxSize($_REQUEST['ms']);
         } else {
-            $this->setMaxSize(PHPWS_Settings::get('filecabinet', 'max_multimedia_size'));
+            $this->setMaxSize(Core\Settings::get('filecabinet', 'max_multimedia_size'));
         }
     }
 
@@ -154,9 +154,8 @@ class FC_Multimedia_Manager {
             $this->loadMultimedia();
         }
 
-        Core\Core::initCoreClass('File.php');
-
-        $form = new PHPWS_FORM;
+        
+        $form = new Core\Form;
         $form->addHidden('module',    'filecabinet');
         $form->addHidden('mop',       'post_multimedia_upload');
         $form->addHidden('ms',        $this->max_size);
@@ -205,7 +204,7 @@ class FC_Multimedia_Manager {
             $template['CURRENT_MULTIMEDIA_LABEL'] = dgettext('filecabinet', 'Current multimedia');
             $template['CURRENT_MULTIMEDIA_ICON']  = $this->multimedia->getThumbnail();
             $template['CURRENT_MULTIMEDIA_FILE']  = $this->multimedia->file_name;
-            $ow['address'] = PHPWS_Text::linkAddress('filecabinet', array('aop' =>'change_tn',
+            $ow['address'] = Core\Text::linkAddress('filecabinet', array('aop' =>'change_tn',
                                                                           'type'=>'mm',
                                                                           'id'  =>$this->multimedia->id),
             true);
@@ -240,7 +239,7 @@ class FC_Multimedia_Manager {
         if ($this->message) {
             $template['ERROR'] = $this->message;
         }
-        $this->content = PHPWS_Template::process($template, 'filecabinet', 'multimedia_edit.tpl');
+        $this->content = Core\Template::process($template, 'filecabinet', 'multimedia_edit.tpl');
     }
 
     public function setMaxSize($size)
@@ -255,8 +254,8 @@ class FC_Multimedia_Manager {
         // importPost in File_Common
         $result = $this->multimedia->importPost('file_name');
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
             $this->content = dgettext('filecabinet', 'An error occurred when trying to save your multimedia file.');
@@ -269,8 +268,8 @@ class FC_Multimedia_Manager {
                 $result = $this->multimedia->save();
             }
 
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 $this->content = dgettext('filecabinet', 'An error occurred when trying to save your multimedia file.');
                 $this->content .= '<br /><strong>' . $result->getMessage() . '</strong>';
                 $this->content .= '<br /><br />' . javascript('close_window', array('value'=> dgettext('filecabinet', 'Close this window')));

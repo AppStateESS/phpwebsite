@@ -8,7 +8,7 @@
 function archive($formId = NULL) {
     if(!isset($formId)) {
         $message = dgettext('phatform', 'No form ID was passed');
-        return new PHPWS_Error('phatform', 'archive()', $message, 'continue', PHAT_DEBUG_MODE);
+        return new Core\Error('phatform', 'archive()', $message, 'continue', PHAT_DEBUG_MODE);
     }
 
     $archiveDir = PHPWS_HOME_DIR . 'files/phatform/archive/';
@@ -17,12 +17,12 @@ function archive($formId = NULL) {
     clearstatcache();
     if(!is_dir($path)) {
         if(is_writeable($archiveDir)) {
-            PHPWS_File::makeDir($path);
+            Core\File::makeDir($path);
         } else {
-            return PHPWS_Error::get(PHATFORM_ARCHIVE_PATH, 'phatform', 'Archive.php::archive', $path);
+            return Core\Error::get(PHATFORM_ARCHIVE_PATH, 'phatform', 'Archive.php::archive', $path);
         }
     } else if(!is_writeable($path)) {
-        return PHPWS_Error::get(PHATFORM_ARCHIVE_PATH, 'phatform', 'Archive.php::archive()');
+        return Core\Error::get(PHATFORM_ARCHIVE_PATH, 'phatform', 'Archive.php::archive()');
     }
 
     $table = array();

@@ -95,9 +95,9 @@ class Menu_Admin {
 
             case 'move_link':
                 if (empty($_GET['key_id'])) {
-                    $key = Key::getHomeKey();
+                    $key = Core\Key::getHomeKey();
                 } else {
-                    $key = new Key($_GET['key_id']);
+                    $key = new Core\Key($_GET['key_id']);
                 }
                 $key->flag();
 
@@ -129,8 +129,8 @@ class Menu_Admin {
 
             case 'edit_link_title':
                 $result = Menu_Admin::editLinkTitle($_REQUEST['link_id'], $_REQUEST['link_title']);
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
+                if (Core\Error::isError($result)) {
+                    Core\Error::log($result);
                     $title = dgettext('menu', 'Sorry');
                     $content = dgettext('menu', 'A problem occurred when saving your link.');
                 } else {
@@ -148,9 +148,9 @@ class Menu_Admin {
 
                 if (isset($_GET['ajax'])) {
                     if (empty($_GET['key_id'])) {
-                        $key = Key::getHomeKey();
+                        $key = Core\Key::getHomeKey();
                     } else {
-                        $key = new Key($_GET['key_id']);
+                        $key = new Core\Key($_GET['key_id']);
                     }
                     $key->flag();
 
@@ -185,7 +185,7 @@ class Menu_Admin {
                 if (isset($_GET['key_id'])) {
                     $result = Menu_Admin::addLink($menu, $_GET['key_id'], $parent_id);
                 } elseif (isset($_REQUEST['url'])) {
-                    $key = Key::getHomeKey();
+                    $key = Core\Key::getHomeKey();
                     $result = Menu_Admin::addRawLink($menu, $_GET['link_title'], $_GET['url'], $parent_id);
                 }
                 echo $menu->view(false, true, $key);
@@ -339,7 +339,7 @@ class Menu_Admin {
         $tpl['CONTENT'] = $content;
         $tpl['MESSAGE'] = $message;
 
-        $final_content = PHPWS_Template::process($tpl, 'menu', 'main.tpl');
+        $final_content = Core\Template::process($tpl, 'menu', 'main.tpl');
         $panel->setContent($final_content);
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
     }
@@ -369,8 +369,8 @@ class Menu_Admin {
             }
 
             $result = $link->save();
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
             }
         }
         unset($_SESSION['Menu_Pin_Links'][$pin_id]);
@@ -388,7 +388,7 @@ class Menu_Admin {
 
     public function pinPageForm($url, $error=false)
     {
-        $form = new PHPWS_Form('menu');
+        $form = new Core\Form('menu');
         $form->addText('title');
         $form->setLabel('title', dgettext('menu', 'Enter link title'));
         $form->addHidden('command', 'pin_page_post');
@@ -400,13 +400,13 @@ class Menu_Admin {
         if ($error) {
             $tpl['ERRORS'] = dgettext('menu', 'You must enter a link title.');
         }
-        return PHPWS_Template::process($tpl, 'menu', 'admin/offsite.tpl');
+        return Core\Template::process($tpl, 'menu', 'admin/offsite.tpl');
     }
 
     public function pinPage()
     {
         if (isset($_GET['key_id'])) {
-            $key = new Key($_GET['key_id']);
+            $key = new Core\Key($_GET['key_id']);
             if ($key) {
                 Menu::pinLink($key->title, $key->url, $key->id);
                 $content = javascript('close_refresh');
@@ -435,7 +435,7 @@ class Menu_Admin {
         $menu_id = &$_REQUEST['menu_id'];
         $key_id = &$_REQUEST['key_id'];
 
-        $db = new PHPWS_DB('menu_assoc');
+        $db = new Core\DB('menu_assoc');
         $db->addWhere('menu_id', $menu_id);
         $db->addWhere('key_id', $key_id);
         $db->delete();
@@ -455,7 +455,7 @@ class Menu_Admin {
             $menu->pin_all = 0;
             return $menu->save();
         } else {
-            $db = new PHPWS_DB('menu_assoc');
+            $db = new Core\DB('menu_assoc');
             $db->addWhere('menu_id', $menu->id);
             $db->addWhere('key_id', $_REQUEST['key_id']);
             return $db->delete();
@@ -476,8 +476,8 @@ class Menu_Admin {
     public function addLink(Menu_Item $menu, $key_id, $parent=0)
     {
         $result = $menu->addLink($key_id, $parent);
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             return false;
         }
 
@@ -488,8 +488,8 @@ class Menu_Admin {
     public function addRawLink(Menu_Item $menu, $title, $url, $parent=0)
     {
         $result = $menu->addRawLink($title, $url, $parent);
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             return false;
         }
 
@@ -523,7 +523,7 @@ class Menu_Admin {
 
     public static function editMenu(Menu_Item $menu)
     {
-        $form = new PHPWS_Form;
+        $form = new Core\Form;
         $form->addHidden('module', 'menu');
         $form->addHidden('command', 'post_menu');
         if ($menu->id) {
@@ -552,7 +552,7 @@ class Menu_Admin {
         }
 
         $template = $form->getTemplate();
-        return PHPWS_Template::process($template, 'menu', 'menu_form.tpl');
+        return Core\Template::process($template, 'menu', 'menu_form.tpl');
     }
 
 
@@ -575,8 +575,7 @@ class Menu_Admin {
     {
         $page_tags['ACTION'] = dgettext('menu', 'Action');
 
-        Core\Core::initCoreClass('DBPager.php');
-        $pager = new DBPager('menus', 'Menu_Item');
+                $pager = new Core\DBPager('menus', 'Menu_Item');
         $pager->setModule('menu');
         $pager->addPageTags($page_tags);
         $pager->setTemplate('admin/menu_list.tpl');
@@ -605,7 +604,7 @@ class Menu_Admin {
             $pin_list[$key] = $data['title'];
         }
 
-        $form = new PHPWS_Form('pick_link');
+        $form = new Core\Form('pick_link');
         $form->addHidden('module', 'menu');
         $form->addHidden('command', 'add_pin_link');
         $form->addHidden('menu_id', $menu_id);
@@ -617,13 +616,13 @@ class Menu_Admin {
 
         $tpl = $form->getTemplate();
         $tpl['CLOSE'] = sprintf('<a href="#" onclick="window.close(); return false">%s</a>', dgettext('menu', 'Close'));
-        return PHPWS_Template::process($tpl, 'menu', 'admin/pin_list.tpl');
+        return Core\Template::process($tpl, 'menu', 'admin/pin_list.tpl');
     }
 
 
     public static function settings()
     {
-        $form = new PHPWS_Form('menu-settings');
+        $form = new Core\Form('menu-settings');
         $form->addHidden('module', 'menu');
         $form->addHidden('command', 'save_settings');
 
@@ -638,43 +637,43 @@ class Menu_Admin {
 
         $form->addCheck('float_mode', 1);
         $form->setLabel('float_mode', dgettext('menu', 'Use floating admin links'));
-        $form->setMatch('float_mode', PHPWS_Settings::get('menu', 'float_mode'));
+        $form->setMatch('float_mode', Core\Settings::get('menu', 'float_mode'));
 
         $form->addCheck('drag_sort', 1);
         $form->setLabel('drag_sort', dgettext('menu', 'Use drag and sort'));
-        $form->setMatch('drag_sort', PHPWS_Settings::get('menu', 'drag_sort'));
+        $form->setMatch('drag_sort', Core\Settings::get('menu', 'drag_sort'));
 
         $form->addCheck('miniadmin', 1);
         $form->setLabel('miniadmin', dgettext('menu', 'Use MiniAdmin instead of Admin mode link'));
-        $form->setMatch('miniadmin', PHPWS_Settings::get('menu', 'miniadmin'));
+        $form->setMatch('miniadmin', Core\Settings::get('menu', 'miniadmin'));
 
         $form->addCheck('home_link', 1);
         $form->setLabel('home_link', dgettext('menu', 'Add home link on new menus'));
-        $form->setMatch('home_link', PHPWS_Settings::get('menu', 'home_link'));
+        $form->setMatch('home_link', Core\Settings::get('menu', 'home_link'));
 
-        $form->addText('max_link_characters', PHPWS_Settings::get('menu', 'max_link_characters'));
+        $form->addText('max_link_characters', Core\Settings::get('menu', 'max_link_characters'));
         $form->setLabel('max_link_characters', dgettext('menu', 'Maximum link characters'));
         $form->setSize('max_link_characters', 3, 3);
 
         $form->addCheck('show_all_admin', 1);
         $form->setLabel('show_all_admin', dgettext('menu', 'Expand menu during admin mode'));
-        $form->setMatch('show_all_admin', PHPWS_Settings::get('menu', 'show_all_admin'));
+        $form->setMatch('show_all_admin', Core\Settings::get('menu', 'show_all_admin'));
 
         $form->addCheck('always_add', 1);
         $form->setLabel('always_add', dgettext('menu', 'Always show add links'));
-        $form->setMatch('always_add', PHPWS_Settings::get('menu', 'always_add'));
+        $form->setMatch('always_add', Core\Settings::get('menu', 'always_add'));
 
         $form->addSubmit('submit', dgettext('menu', 'Save settings'));
 
         $tpl = $form->getTemplate();
         $tpl['ADMIN_MODE_NOTE'] = dgettext('menu', 'Admin mode status');
 
-        return PHPWS_Template::process($tpl, 'menu', 'admin/settings.tpl');
+        return Core\Template::process($tpl, 'menu', 'admin/settings.tpl');
     }
 
     public static function siteLink($menu, $link, $errors=NULL)
     {
-        $form = new PHPWS_Form('site_link');
+        $form = new Core\Form('site_link');
         if ($link->id) {
             $form->addHidden('link_id', $link->id);
         }
@@ -684,7 +683,7 @@ class Menu_Admin {
         $form->addHidden('parent_id', $link->parent);
         $form->addText('title', $link->title);
         $form->setLabel('title', dgettext('menu', 'Title'));
-        $char_limit = PHPWS_Settings::get('menu', 'max_link_characters');
+        $char_limit = Core\Settings::get('menu', 'max_link_characters');
         if ($char_limit > 0) {
             $form->setSize('title', $char_limit);
             $form->setMaxSize('title', $char_limit);
@@ -709,7 +708,7 @@ class Menu_Admin {
             $template['ERRORS'] = implode('<br />', $errors);
         }
 
-        $content = PHPWS_Template::process($template, 'menu', 'admin/offsite.tpl');
+        $content = Core\Template::process($template, 'menu', 'admin/offsite.tpl');
         Layout::addJSHeader('<script type="text/javascript">self.resizeTo(500,300);</script>');
         Layout::nakedDisplay($content);
     }
@@ -774,9 +773,9 @@ class Menu_Admin {
 
         if (isset($_GET['key_id'])) {
             if ($_GET['key_id']) {
-                $key = new Key($_GET['key_id']);
+                $key = new Core\Key($_GET['key_id']);
             } else {
-                $key = Key::getHomeKey();
+                $key = Core\Key::getHomeKey();
             }
             $key->flag();
         }
@@ -786,7 +785,7 @@ class Menu_Admin {
 
         $template['CLOSE'] = javascript('close_window');
 
-        $content = PHPWS_Template::process($template, 'menu', 'popup_admin.tpl');
+        $content = Core\Template::process($template, 'menu', 'popup_admin.tpl');
 
         return $content;
     }
@@ -813,27 +812,27 @@ class Menu_Admin {
         if (!empty($_POST['max_link_characters'])) {
             $chars = (int)$_POST['max_link_characters'];
             if ($chars > 10 && $chars < 1000) {
-                PHPWS_Settings::set('menu', 'max_link_characters', $chars);
+                Core\Settings::set('menu', 'max_link_characters', $chars);
             }
         }
 
-        PHPWS_Settings::set('menu', 'float_mode', (int)isset($_POST['float_mode']));
-        PHPWS_Settings::set('menu', 'drag_sort', (int)isset($_POST['drag_sort']));
-        PHPWS_Settings::set('menu', 'miniadmin', (int)isset($_POST['miniadmin']));
-        PHPWS_Settings::set('menu', 'home_link', (int)isset($_POST['home_link']));
-        PHPWS_Settings::set('menu', 'show_all_admin', (int)isset($_POST['show_all_admin']));
-        PHPWS_Settings::set('menu', 'always_add', (int)isset($_POST['always_add']));
-        PHPWS_Settings::save('menu');
+        Core\Settings::set('menu', 'float_mode', (int)isset($_POST['float_mode']));
+        Core\Settings::set('menu', 'drag_sort', (int)isset($_POST['drag_sort']));
+        Core\Settings::set('menu', 'miniadmin', (int)isset($_POST['miniadmin']));
+        Core\Settings::set('menu', 'home_link', (int)isset($_POST['home_link']));
+        Core\Settings::set('menu', 'show_all_admin', (int)isset($_POST['show_all_admin']));
+        Core\Settings::set('menu', 'always_add', (int)isset($_POST['always_add']));
+        Core\Settings::save('menu');
     }
 
     private function JSFlagKey()
     {
         if (empty($_GET['key_id']) && empty($_GET['ref_key'])) {
-            $key = Key::getHomeKey();
+            $key = Core\Key::getHomeKey();
         } elseif (isset($_GET['key_id'])) {
-            $key = new Key($_GET['key_id']);
+            $key = new Core\Key($_GET['key_id']);
         } else {
-            $key = new Key($_GET['ref_key']);
+            $key = new Core\Key($_GET['ref_key']);
         }
         $key->flag();
         return $key;
@@ -849,7 +848,7 @@ class Menu_Admin {
             $link_order = 1;
         }
 
-        $db = new PHPWS_DB('menu_links');
+        $db = new Core\DB('menu_links');
         $db->addWhere('parent', $parent_id);
         $db->addWhere('link_order', $link_order, '>=');
         $db->incrementColumn('link_order');
@@ -880,7 +879,7 @@ class Menu_Admin {
         if ($link->link_order == 1) {
             return;
         }
-        $db = new PHPWS_DB('menu_links');
+        $db = new Core\DB('menu_links');
         $db->addWhere('parent', $link->parent);
         $db->addWhere('link_order', $link->link_order - 1);
         $db->addColumn('id');
@@ -901,7 +900,7 @@ class Menu_Admin {
             return;
         }
         // Grab the parent link to this link
-        $db = new PHPWS_DB('menu_links');
+        $db = new Core\DB('menu_links');
         $db->addWhere('id', $link->parent);
         $db->addColumn('parent');
         $db->addColumn('link_order');

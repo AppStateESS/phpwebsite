@@ -41,7 +41,7 @@ class Profile {
 
         $this->setId($id);
         $result = $this->init();
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_error = $result;
             return FALSE;
         }
@@ -53,7 +53,7 @@ class Profile {
         if (isset($this->_db)) {
             $this->_db->reset();
         } else {
-            $this->_db = new PHPWS_DB('profiles');
+            $this->_db = new Core\DB('profiles');
         }
     }
 
@@ -93,7 +93,7 @@ class Profile {
         $template['EMAIL'] = $this->getEmail();
         $template['EMAIL_LABEL'] = dgettext('profiler', 'Email address');
 
-        return PHPWS_Template::process($template, 'profiler', 'views/' . $template_name . '.tpl');
+        return Core\Template::process($template, 'profiler', 'views/' . $template_name . '.tpl');
     }
 
     public function getEmail()
@@ -102,7 +102,7 @@ class Profile {
             return null;
         }
 
-        return sprintf('<a class="email" href="mailto:%s">%s</a>', $this->email, Icon::show('email'));
+        return sprintf('<a class="email" href="mailto:%s">%s</a>', $this->email, Core\Icon::show('email'));
     }
 
     public function getWebsite()
@@ -156,13 +156,13 @@ class Profile {
 
     public function setCaption($caption)
     {
-        $this->caption = PHPWS_Text::parseInput($caption);
+        $this->caption = Core\Text::parseInput($caption);
     }
 
     public function getCaption($formatted=TRUE)
     {
         if ($formatted) {
-            return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->caption));
+            return Core\Text::parseTag(Core\Text::parseOutput($this->caption));
         } else {
             return $this->caption;
         }
@@ -170,7 +170,7 @@ class Profile {
 
     public function setFullstory($fullstory)
     {
-        $this->fullstory = PHPWS_Text::parseInput($fullstory);
+        $this->fullstory = Core\Text::parseInput($fullstory);
     }
 
     public function setProfileType($profile_type)
@@ -186,7 +186,7 @@ class Profile {
     public function getFullstory($formatted=TRUE)
     {
         if ($formatted) {
-            return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->fullstory));
+            return Core\Text::parseTag(Core\Text::parseOutput($this->fullstory));
         } else {
             return $this->fullstory;
         }
@@ -197,7 +197,7 @@ class Profile {
         static $all_profiles = array();
 
         if (empty($all_profiles)) {
-            $div = new PHPWS_DB('profiler_division');
+            $div = new Core\DB('profiler_division');
             $div->addWhere('show_homepage', 1);
             $div->addOrder('title');
             $div->addColumn('id');
@@ -218,10 +218,10 @@ class Profile {
         $this->resetdb();
         $result = $this->_db->loadObject($this);
 
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         } elseif (empty($result)) {
-            return PHPWS_Error::get(PFL_PROFILE_NOT_FOUND, 'profiler',
+            return Core\Error::get(PFL_PROFILE_NOT_FOUND, 'profiler',
                                     'Profile::init', 'Id:' . $this->id);
         }
         return TRUE;
@@ -265,9 +265,9 @@ class Profile {
         }
 
         if (!empty($_POST['website'])) {
-            $link = PHPWS_Text::checkLink($_POST['website']);
+            $link = Core\Text::checkLink($_POST['website']);
             $this->website = $link;
-            if (!PHPWS_Text::isValidInput($link, 'url')) {
+            if (!Core\Text::isValidInput($link, 'url')) {
                 $error[] = dgettext('profiler', 'Web site address does not appear valid.');
             }
         } else {
@@ -276,7 +276,7 @@ class Profile {
 
         if (isset($_POST['email'])) {
             $this->email = $_POST['email'];
-            if (!PHPWS_Text::isValidInput($this->email, 'email')) {
+            if (!Core\Text::isValidInput($this->email, 'email')) {
                 $error[] = dgettext('profiler', 'Email address does not appear valid.');
             }
         } else {
@@ -305,14 +305,14 @@ class Profile {
 
         $vars['profile_id'] = $this->id;
         $vars['command'] = 'edit';
-        $links[] = PHPWS_Text::secureLink(dgettext('profiler', 'Edit'), 'profiler', $vars);
+        $links[] = Core\Text::secureLink(dgettext('profiler', 'Edit'), 'profiler', $vars);
 
         $tpl['SUBMIT_DATE'] = strftime(PRF_SUBMIT_DATE_FORMAT, $this->submit_date);
 
         if (Current_User::allow('profiler', 'delete_profiles')) {
             $vars['command'] = 'delete';
             $confirm_vars['QUESTION'] = dgettext('profiler', 'Are you sure you want to permanently delete this profile?');
-            $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('profiler', $vars, TRUE);
+            $confirm_vars['ADDRESS'] = Core\Text::linkAddress('profiler', $vars, TRUE);
             $confirm_vars['LINK'] = dgettext('profiler', 'Delete');
             $links[] = Layout::getJavascript('confirm', $confirm_vars);
         }
@@ -327,7 +327,7 @@ class Profile {
         $this->resetdb();
         $this->_db->addWhere('id', $this->id);
         $result = $this->_db->delete();
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
@@ -341,7 +341,7 @@ class Profile {
         if ($this->approved || !$this->id) {
             $this->resetdb();
             $result = $this->_db->saveObject($this);
-            if (PHPWS_Error::isError($result)) {
+            if (Core\Error::isError($result)) {
                 return $result;
             }
         }

@@ -5,7 +5,6 @@
  * @version $Id$
  */
 
-Core\Core::initCoreClass('Form.php');
 
 class Blog_Form {
 
@@ -14,17 +13,16 @@ class Blog_Form {
      */
     public static function edit(Blog $blog, $version_id=NULL, $limited=false)
     {
-        $form = new PHPWS_Form('edit-blog');
+        $form = new Core\Form('edit-blog');
         $form->useBreaker();
         $form->addHidden('module', 'blog');
 
         if ($limited) {
-            Core\Core::initCoreClass('Captcha.php');
-
+            
             $form->addHidden('action', 'post_suggestion');
             $form->addSubmit('submit', dgettext('blog', 'Suggest entry'));
 
-            if (PHPWS_Settings::get('blog', 'captcha_submissions')) {
+            if (Core\Settings::get('blog', 'captcha_submissions')) {
                 $form->addTplTag('CAPTCHA_IMAGE', Captcha::get());
             }
         } else {
@@ -66,8 +64,8 @@ class Blog_Form {
                 $form->setMatch('allow_anon', $thread->allow_anon);
                 $form->setMatch('comment_approval', $thread->approval);
             } else {
-                $form->setMatch('allow_anon', PHPWS_Settings::get('blog', 'anonymous_comments'));
-                $form->setMatch('comment_approval', PHPWS_Settings::get('comments', 'default_approval'));
+                $form->setMatch('allow_anon', Core\Settings::get('blog', 'anonymous_comments'));
+                $form->setMatch('comment_approval', Core\Settings::get('comments', 'default_approval'));
             }
 
             $link_choices['none']       = dgettext('blog', 'No link and ignore image link setting');
@@ -101,10 +99,10 @@ class Blog_Form {
 
             Core\Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('image_id', $blog->image_id);
-            $manager->maxImageWidth(PHPWS_Settings::get('blog', 'max_width'));
-            $manager->maxImageHeight(PHPWS_Settings::get('blog', 'max_height'));
+            $manager->maxImageWidth(Core\Settings::get('blog', 'max_width'));
+            $manager->maxImageHeight(Core\Settings::get('blog', 'max_height'));
 
-            $manager->moduleLimit(PHPWS_Settings::get('blog', 'mod_folders_only'));
+            $manager->moduleLimit(Core\Settings::get('blog', 'mod_folders_only'));
 
             if ($manager) {
                 $form->addTplTag('FILE_MANAGER', $manager->get());
@@ -159,70 +157,70 @@ class Blog_Form {
         if ($blog->_error) {
             $template['MESSAGE'] = implode('<br />', $blog->_error);
         }
-        return PHPWS_Template::process($template, 'blog', 'edit.tpl');
+        return Core\Template::process($template, 'blog', 'edit.tpl');
     }
 
     public static function settings()
     {
-        $form = new PHPWS_Form;
+        $form = new Core\Form;
         $form->addHidden('module', 'blog');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'post_settings');
 
-        $form->addText('blog_limit', PHPWS_Settings::get('blog', 'blog_limit'));
+        $form->addText('blog_limit', Core\Settings::get('blog', 'blog_limit'));
         $form->setSize('blog_limit', 2, 2);
         $form->setLabel('blog_limit', dgettext('blog', 'Blog view limit'));
 
-        $form->addText('past_entries', PHPWS_Settings::get('blog', 'past_entries'));
+        $form->addText('past_entries', Core\Settings::get('blog', 'past_entries'));
         $form->setLabel('past_entries', dgettext('blog', 'Number of past entries'));
         $form->setSize('past_entries', 2, 2);
 
         $form->addCheck('allow_comments', 1);
         $form->setLabel('allow_comments', dgettext('blog', 'Allow comments by default'));
-        $form->setMatch('allow_comments', PHPWS_Settings::get('blog', 'allow_comments'));
+        $form->setMatch('allow_comments', Core\Settings::get('blog', 'allow_comments'));
 
         $form->addCheck('captcha_submissions', 1);
         $form->setLabel('captcha_submissions', dgettext('blog', 'CAPTCHA submissions'));
-        $form->setMatch('captcha_submissions', PHPWS_Settings::get('blog', 'captcha_submissions'));
+        $form->setMatch('captcha_submissions', Core\Settings::get('blog', 'captcha_submissions'));
 
         $form->addCheck('anonymous_comments', 1);
         $form->setLabel('anonymous_comments', dgettext('blog', 'Allow anonymous comments by default'));
-        $form->setMatch('anonymous_comments', PHPWS_Settings::get('blog', 'anonymous_comments'));
+        $form->setMatch('anonymous_comments', Core\Settings::get('blog', 'anonymous_comments'));
 
         $form->addCheck('simple_image', 1);
         $form->setLabel('simple_image', dgettext('blog', 'Use Image Manager'));
-        $form->setMatch('simple_image', PHPWS_Settings::get('blog', 'simple_image'));
+        $form->setMatch('simple_image', Core\Settings::get('blog', 'simple_image'));
 
         $form->addCheck('mod_folders_only', 1);
         $form->setLabel('mod_folders_only', dgettext('blog', 'Hide general image folders'));
-        $form->setMatch('mod_folders_only', PHPWS_Settings::get('blog', 'mod_folders_only'));
+        $form->setMatch('mod_folders_only', Core\Settings::get('blog', 'mod_folders_only'));
 
         $form->addCheck('home_page_display', 1);
         $form->setLabel('home_page_display', dgettext('blog', 'Show blog on home page'));
-        $form->setMatch('home_page_display', PHPWS_Settings::get('blog', 'home_page_display'));
+        $form->setMatch('home_page_display', Core\Settings::get('blog', 'home_page_display'));
 
         $form->addCheck('show_category_links', 1);
         $form->setLabel('show_category_links', dgettext('blog', 'Show category links'));
-        $form->setMatch('show_category_links', PHPWS_Settings::get('blog', 'show_category_links'));
+        $form->setMatch('show_category_links', Core\Settings::get('blog', 'show_category_links'));
 
         $form->addCheck('show_category_icons', 1);
         $form->setLabel('show_category_icons', dgettext('blog', 'Show category icons'));
-        $form->setMatch('show_category_icons', PHPWS_Settings::get('blog', 'show_category_icons'));
+        $form->setMatch('show_category_icons', Core\Settings::get('blog', 'show_category_icons'));
 
         $form->addCheck('single_cat_icon', 1);
         $form->setLabel('single_cat_icon', dgettext('blog', 'Only show one category icon'));
-        $form->setMatch('single_cat_icon', PHPWS_Settings::get('blog', 'single_cat_icon'));
+        $form->setMatch('single_cat_icon', Core\Settings::get('blog', 'single_cat_icon'));
 
         $form->addCheck('logged_users_only', 1);
         $form->setLabel('logged_users_only', dgettext('blog', 'Logged user view only'));
-        $form->setMatch('logged_users_only', PHPWS_Settings::get('blog', 'logged_users_only'));
+        $form->setMatch('logged_users_only', Core\Settings::get('blog', 'logged_users_only'));
 
         Core\Core::initModClass('users', 'Action.php');
         $groups = User_Action::getGroups('group');
 
         if (!empty($groups)) {
             $group_match = array();
-            $group_match_str = PHPWS_Settings::get('blog', 'view_only');
+            $group_match_str = Core\Settings::get('blog', 'view_only');
 
             if (!empty($group_match_str)) {
                 $group_match = explode(':', $group_match_str);
@@ -239,10 +237,10 @@ class Blog_Form {
 
         $form->addSelect('show_recent', $show);
         $form->setLabel('show_recent', dgettext('blog', 'Show recent entries'));
-        $form->setMatch('show_recent', PHPWS_Settings::get('blog', 'show_recent'));
+        $form->setMatch('show_recent', Core\Settings::get('blog', 'show_recent'));
 
 
-        $cache_view = PHPWS_Settings::get('blog', 'cache_view');
+        $cache_view = Core\Settings::get('blog', 'cache_view');
         $form->addCheck('cache_view', 1);
         $form->setLabel('cache_view', dgettext('blog', 'Cache anonymous view'));
         $form->setMatch('cache_view', $cache_view);
@@ -251,19 +249,19 @@ class Blog_Form {
             $form->addTplTag('RESET_CACHE', dgettext('blog', 'System caching disabled.'));
         } else {
             if ($cache_view) {
-                $form->addTplTag('RESET_CACHE', PHPWS_Text::secureLink(dgettext('blog', 'Reset cache'), 'blog', array('action'=>'admin', 'command'=>'reset_cache')));
+                $form->addTplTag('RESET_CACHE', Core\Text::secureLink(dgettext('blog', 'Reset cache'), 'blog', array('action'=>'admin', 'command'=>'reset_cache')));
             }
         }
 
         $form->addCheck('allow_anonymous_submits', 1);
         $form->setLabel('allow_anonymous_submits', dgettext('blog', 'Allow anonymous submissions'));
-        $form->setMatch('allow_anonymous_submits', PHPWS_Settings::get('blog', 'allow_anonymous_submits'));
+        $form->setMatch('allow_anonymous_submits', Core\Settings::get('blog', 'allow_anonymous_submits'));
 
-        $form->addTextField('max_width', PHPWS_Settings::get('blog', 'max_width'));
+        $form->addTextField('max_width', Core\Settings::get('blog', 'max_width'));
         $form->setLabel('max_width', dgettext('blog', 'Maximum image width (50-2048)'));
         $form->setSize('max_width', 4,4);
 
-        $form->addTextField('max_height', PHPWS_Settings::get('blog', 'max_height'));
+        $form->addTextField('max_height', Core\Settings::get('blog', 'max_height'));
         $form->setLabel('max_height', dgettext('blog', 'Maximum image height (50-2048)'));
         $form->setSize('max_height', 4,4);
 
@@ -281,8 +279,8 @@ class Blog_Form {
         $template = $form->getTemplate();
 
 
-        if (PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
-            $template['MENU_LINK'] = PHPWS_Text::secureLink(dgettext('blog', 'Clip for menu'), 'blog',
+        if (Core\Settings::get('blog', 'allow_anonymous_submits')) {
+            $template['MENU_LINK'] = Core\Text::secureLink(dgettext('blog', 'Clip for menu'), 'blog',
             array('action'=>'admin', 'command'=>'menu_submit_link'));
         }
 
@@ -292,7 +290,7 @@ class Blog_Form {
         $template['SUBMISSION_LABEL'] = dgettext('blog', 'Submission');
         $template['PAST_NOTE']        = dgettext('blog', 'Set to zero to prevent display');
 
-        return PHPWS_Template::process($template, 'blog', 'settings.tpl');
+        return Core\Template::process($template, 'blog', 'settings.tpl');
     }
 }
 ?>

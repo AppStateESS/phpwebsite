@@ -442,10 +442,10 @@ class Cabinet {
         $template['CONTENT'] = &$this->content;
 
         if ($javascript) {
-            $main = PHPWS_Template::process($template, 'filecabinet', 'javascript.tpl');
+            $main = Core\Template::process($template, 'filecabinet', 'javascript.tpl');
             Layout::nakedDisplay($main);
         } else {
-            $main = PHPWS_Template::process($template, 'filecabinet', 'main.tpl');
+            $main = Core\Template::process($template, 'filecabinet', 'main.tpl');
             $this->panel->setContent($main);
             $finalPanel = $this->panel->display();
             Layout::add(PHPWS_ControlPanel::display($finalPanel));
@@ -461,7 +461,7 @@ class Cabinet {
 
         if (!empty($document->_errors)) {
             foreach ($this->_errors as $err) {
-                PHPWS_Error::log($err);
+                Core\Error::log($err);
             }
             Layout::add(dgettext('filecabinet', 'Sorry but this file is inaccessible at this time.'));
             return;
@@ -477,7 +477,7 @@ class Cabinet {
         $file_path = $document->getPath();
 
         if (!is_file($file_path)) {
-            PHPWS_Error::log(FC_DOCUMENT_NOT_FOUND, 'filecabinet', 'Cabinet_Action::download', $file_path);
+            Core\Error::log(FC_DOCUMENT_NOT_FOUND, 'filecabinet', 'Cabinet_Action::download', $file_path);
             Layout::add(dgettext('filecabinet', 'Sorry but this file is inaccessible at this time.'));
             return;
         }
@@ -520,7 +520,7 @@ class Cabinet {
         $template['MESSAGE'] = $this->message;
         $template['CONTENT'] = $this->content;
 
-        $main = PHPWS_Template::process($template, 'filecabinet', 'plain.tpl');
+        $main = Core\Template::process($template, 'filecabinet', 'plain.tpl');
         Layout::add($main);
     }
 
@@ -572,7 +572,7 @@ class Cabinet {
         $tpl['DESCRIPTION'] = $image->getDescription();
         $tpl['CLOSE'] = javascript('close_window');
         if ($view_folder && $folder->public_folder) {
-            $db = new PHPWS_DB('images');
+            $db = new Core\DB('images');
             $db->setLimit(1);
             $db->addWhere('folder_id', $image->folder_id);
             $db->addWhere('title', $image->title, '>');
@@ -580,7 +580,7 @@ class Cabinet {
             $next_img = $db->getObjects('PHPWS_Image');
 
             if (!empty($next_img)) {
-                $next_link = Icon::show('next', dgettext('filecabinet', 'Next image'));
+                $next_link = Core\Icon::show('next', dgettext('filecabinet', 'Next image'));
                 $tpl['NEXT'] = sprintf('<a id="next-link" href="%s%s">%s</a>', Core\Core::getHomeHttp(),
                 $next_img[0]->popupAddress(),
                 $next_link);
@@ -595,13 +595,13 @@ class Cabinet {
             $prev_img = $db->getObjects('PHPWS_Image');
 
             if (!empty($prev_img)) {
-                $prev_link = Icon::show('previous', dgettext('filecabinet', 'Previous image'));
+                $prev_link = Core\Icon::show('previous', dgettext('filecabinet', 'Previous image'));
                 $tpl['PREV'] = sprintf('<a id="prev-link" href="%s%s">%s</a>', Core\Core::getHomeHttp(),
                 $prev_img[0]->popupAddress(),
                 $prev_link);
             }
         }
-        $content = PHPWS_Template::process($tpl, 'filecabinet', 'image_view.tpl');
+        $content = Core\Template::process($tpl, 'filecabinet', 'image_view.tpl');
         Layout::nakedDisplay($content);
     }
 
@@ -623,7 +623,7 @@ class Cabinet {
         $tpl['MULTIMEDIA'] = $multimedia->getTag();
         $tpl['DESCRIPTION'] = $multimedia->getDescription();
         $tpl['CLOSE'] = javascript('close_window');
-        $content = PHPWS_Template::process($tpl, 'filecabinet', 'multimedia_view.tpl');
+        $content = Core\Template::process($tpl, 'filecabinet', 'multimedia_view.tpl');
         Layout::nakedDisplay($content);
     }
 
@@ -705,7 +705,7 @@ class Cabinet {
         $folder_id = (int)$_REQUEST['folder_id'];
         $key_id    = (int)$_REQUEST['key_id'];
 
-        $db = new PHPWS_DB('filecabinet_pins');
+        $db = new Core\DB('filecabinet_pins');
         $db->addWhere('folder_id', $folder_id);
         $db->addWhere('key_id', $key_id);
         $db->delete();
@@ -720,7 +720,7 @@ class Cabinet {
         $folder_id = (int)$_POST['folder_id'];
         $key_id = (int)$_POST['key_id'];
 
-        $db = new PHPWS_DB('filecabinet_pins');
+        $db = new Core\DB('filecabinet_pins');
         $db->addWhere('folder_id', $folder_id);
         $db->addWhere('key_id', $key_id);
         $db->delete();
@@ -728,8 +728,8 @@ class Cabinet {
         $db->addValue('folder_id', $folder_id);
         $db->addValue('key_id', $key_id);
         $result = $db->insert();
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
         }
     }
 
@@ -787,7 +787,7 @@ class Cabinet {
         }
         $this->title = $this->folder->title;
         $this->loadForms();
-        $kids = PHPWS_Settings::get('filecabinet', 'no_kids');
+        $kids = Core\Settings::get('filecabinet', 'no_kids');
         $this->forms->folderContents($this->folder, false, $kids);
     }
 
@@ -862,11 +862,11 @@ class Cabinet {
 
             if (!@rename($incoming_file, $folder_directory)) {
                 $errors[$filename] = sprintf(dgettext('filecabinet', 'Could not move file "%s" to "%s" folder directory.'), $filename, $folder->title);
-                PHPWS_Error::log(FC_FILE_MOVE, 'filecabinet', 'Cabinet::classifyFiles', $folder_directory);
+                Core\Error::log(FC_FILE_MOVE, 'filecabinet', 'Cabinet::classifyFiles', $folder_directory);
                 continue;
             }
 
-            $file_obj->file_type = PHPWS_File::getMimeType($file_obj->getPath());
+            $file_obj->file_type = Core\File::getMimeType($file_obj->getPath());
             $file_obj->loadFileSize();
 
             // if image is getting saved, need to process
@@ -917,13 +917,13 @@ class Cabinet {
     {
         $sys_size = str_replace('M', '', ini_get('upload_max_filesize'));
         $sys_size = $sys_size * 1000000;
-        $form = new PHPWS_Form;
+        $form = new Core\Form;
 
         $sizes['system']     = & $sys_size;
         $sizes['form']       = & $form->max_file_size;
-        $sizes['document']   = PHPWS_Settings::get('filecabinet', 'max_document_size');
-        $sizes['image']      = PHPWS_Settings::get('filecabinet', 'max_image_size');
-        $sizes['multimedia'] = PHPWS_Settings::get('filecabinet', 'max_multimedia_size');
+        $sizes['document']   = Core\Settings::get('filecabinet', 'max_document_size');
+        $sizes['image']      = Core\Settings::get('filecabinet', 'max_image_size');
+        $sizes['multimedia'] = Core\Settings::get('filecabinet', 'max_multimedia_size');
         $sizes['absolute']   = ABSOLUTE_UPLOAD_LIMIT;
 
         return $sizes;
@@ -932,7 +932,7 @@ class Cabinet {
     public function getClassifyDir()
     {
         if (FC_ALLOW_CLASSIFY_DIR_SETTING) {
-            $directory = PHPWS_Settings::get('filecabinet', 'classify_directory');
+            $directory = Core\Settings::get('filecabinet', 'classify_directory');
         } else {
             $directory = FC_CLASSIFY_DIRECTORY;
         }
@@ -946,7 +946,7 @@ class Cabinet {
 
     public function changeTN()
     {
-        $form = new PHPWS_Form('thumbnail');
+        $form = new Core\Form('thumbnail');
         $form->addHidden('module', 'filecabinet');
         $form->addHidden('aop', 'post_thumbnail');
         $form->addHidden('type', $_REQUEST['type']);
@@ -966,7 +966,7 @@ class Cabinet {
         $tpl = $form->getTemplate();
 
         $tpl['CLOSE'] = javascript('close_window');
-        $thumb = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
+        $thumb = Core\Settings::get('filecabinet', 'max_thumbnail_size');
         $warnings[] = sprintf(dgettext('filecabinet', 'Max thumbnail size : %sx%s.'), $thumb, $thumb);
         if ($mm->isVideo()) {
             $warnings[] = dgettext('filecabinet', 'Image must be a jpeg file.');
@@ -975,7 +975,7 @@ class Cabinet {
         $tpl['WARNINGS'] = implode('<br />', $warnings);
         $this->title = dgettext('filecabinet', 'Upload new thumbnail');
 
-        $this->content = PHPWS_Template::process($tpl, 'filecabinet', 'thumbnail.tpl');
+        $this->content = Core\Template::process($tpl, 'filecabinet', 'thumbnail.tpl');
     }
 
     public function postTN()
@@ -989,7 +989,7 @@ class Cabinet {
                 return false;
             }
         }
-        $thumb = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
+        $thumb = Core\Settings::get('filecabinet', 'max_thumbnail_size');
         $image = new PHPWS_Image;
         $image->setMaxWidth($thumb);
         $image->setMaxHeight($thumb);
@@ -1014,7 +1014,7 @@ class Cabinet {
 
     public static function listFolders($type=null, $simple=false)
     {
-        $db = new PHPWS_DB('folders');
+        $db = new Core\DB('folders');
         if ($type) {
             $db->addWhere('ftype', (int)$type);
             $db->addOrder('title');
@@ -1079,18 +1079,18 @@ class Cabinet {
 
     public function convertToFileAssoc($table, $column, $type)
     {
-        $db = new PHPWS_DB('fc_convert');
+        $db = new Core\DB('fc_convert');
         $db->addWhere('table_name', $table);
         $db->addWhere('column_name', $column);
         $result = $db->select();
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             return false;
         } elseif ($result) {
             return true;
         }
 
         Core\Core::initModClass('filecabinet', 'File_Assoc.php');
-        $db = new PHPWS_DB($table);
+        $db = new Core\DB($table);
         $db->addColumn('id');
         $db->addColumn($column);
         $db->setIndexBy('id');
@@ -1105,15 +1105,15 @@ class Cabinet {
             if (@$file_assoc_id = $item_converted[$item_id]) {
                 $db->addValue($column, $file_assoc_id);
                 $db->addWhere('id', $id);
-                PHPWS_Error::logIfError($db->update());
+                Core\Error::logIfError($db->update());
             } else {
                 $file_assoc = new FC_File_Assoc;
                 $file_assoc->file_type = $type;
                 $file_assoc->file_id = $item_id;
-                if (!PHPWS_Error::logIfError($file_assoc->save())) {
+                if (!Core\Error::logIfError($file_assoc->save())) {
                     $db->addValue($column, $file_assoc->id);
                     $db->addWhere('id', $id);
-                    if (PHPWS_Error::logIfError($db->update())) {
+                    if (Core\Error::logIfError($db->update())) {
                         continue;
                     }
                 }
@@ -1124,7 +1124,7 @@ class Cabinet {
         $db->reset();
         $db->addValue('table_name', $table);
         $db->addValue('column_name', $column);
-        PHPWS_Error::logIfError($db->insert());
+        Core\Error::logIfError($db->insert());
         return true;
     }
 
@@ -1142,7 +1142,7 @@ class Cabinet {
     public function fileTypeAllowed($ext, $mode='all')
     {
         if (strpos($ext, '.')) {
-            $ext = PHPWS_File::getFileExtension($ext);
+            $ext = Core\File::getFileExtension($ext);
         }
 
         $types = Cabinet::getAllowedTypes($mode);
@@ -1158,7 +1158,7 @@ class Cabinet {
         }
 
         if ($mode=='all' || $mode=='image') {
-            $image = PHPWS_Settings::get('filecabinet', 'image_files');
+            $image = Core\Settings::get('filecabinet', 'image_files');
             if ($image) {
                 $image = explode(',', $image);
             }
@@ -1168,7 +1168,7 @@ class Cabinet {
         }
 
         if ($mode=='all' || $mode=='document') {
-            $docs  = PHPWS_Settings::get('filecabinet', 'document_files');
+            $docs  = Core\Settings::get('filecabinet', 'document_files');
             if ($docs) {
                 $docs = explode(',', $docs);
             }
@@ -1178,7 +1178,7 @@ class Cabinet {
         }
 
         if ($mode=='all' || $mode=='media') {
-            $media = PHPWS_Settings::get('filecabinet', 'media_files');
+            $media = Core\Settings::get('filecabinet', 'media_files');
             if ($media) {
                 $media = explode(',', $media);
             }
@@ -1206,12 +1206,12 @@ class Cabinet {
     public static function getResizes($max_width=0, $add_default=false)
     {
         if (!$max_width) {
-            $max_width = PHPWS_Settings::get('filecabinet', 'max_image_dimension');
+            $max_width = Core\Settings::get('filecabinet', 'max_image_dimension');
         }
 
         if ($add_default) {
             $resizes[0] = sprintf(dgettext('filecabinet', 'Default (%spx)'),
-            PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
+            Core\Settings::get('filecabinet', 'max_image_dimension'));
         }
 
         switch (1) {
@@ -1253,9 +1253,9 @@ class Cabinet {
      * Called from the three file type managers. Adds a file listing
      * to move files from one folder to another
      */
-    public function moveToForm(PHPWS_Form $form, $folder)
+    public function moveToForm(Core\Form $form, $folder)
     {
-        $db = new PHPWS_DB('folders');
+        $db = new Core\DB('folders');
         $db->addWhere('id', $folder->id, '!=');
         $db->addWhere('ftype', $folder->ftype);
         $db->addColumn('id');
@@ -1333,9 +1333,9 @@ class Cabinet {
 
         foreach ($files as $filename) {
             $path = $classify_dir . $filename;
-            $ext = PHPWS_File::getFileExtension($filename);
+            $ext = Core\File::getFileExtension($filename);
             if ($this->fileTypeAllowed($path, $type) &&
-            PHPWS_File::checkMimeType($path) &&
+            Core\File::checkMimeType($path) &&
             in_array($ext, $allowed_types)) {
                 $file_obj = new $class_name;
                 $file_obj->folder_id = $folder->id;
@@ -1345,11 +1345,11 @@ class Cabinet {
                 $folder_directory = $file_obj->getPath();
 
                 if (!@rename($path, $folder_directory)) {
-                    PHPWS_Error::log(FC_FILE_MOVE, 'filecabinet', 'Cabinet::classifyIntoFolder', $folder_directory);
+                    Core\Error::log(FC_FILE_MOVE, 'filecabinet', 'Cabinet::classifyIntoFolder', $folder_directory);
                     continue;
                 }
 
-                $file_obj->file_type = PHPWS_File::getMimeType($file_obj->getPath());
+                $file_obj->file_type = Core\File::getMimeType($file_obj->getPath());
                 $file_obj->loadFileSize();
                 if ($folder->ftype == IMAGE_FOLDER) {
                     $file_obj->loadDimensions();
@@ -1370,17 +1370,17 @@ class Cabinet {
 
         $active = false;
 
-        if (PHPWS_Settings::get('filecabinet', 'fck_allow_images')) {
+        if (Core\Settings::get('filecabinet', 'fck_allow_images')) {
             $active = true;
             $tpl['IMAGES'] = sprintf('<a class="oc" id="image-nav"><img id="fck-img-type" src="%smod/filecabinet/img/file_manager/file_type/image80.png" width="50" height="50" title="%s" /></a>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Images'));
         }
 
-        if (PHPWS_Settings::get('filecabinet', 'fck_allow_documents')) {
+        if (Core\Settings::get('filecabinet', 'fck_allow_documents')) {
             $active = true;
             $tpl['DOCUMENTS'] = sprintf('<a class="oc" id="doc-nav"><img id="fck-doc-type" src="%smod/filecabinet/img/file_manager/file_type/document80.png" title="%s" width="50" height="50" /></a>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Documents'));
         }
 
-        if (PHPWS_Settings::get('filecabinet', 'fck_allow_media')) {
+        if (Core\Settings::get('filecabinet', 'fck_allow_media')) {
             $active = true;
             $tpl['MULTIMEDIA'] = sprintf('<a class="oc" id="media-nav"><img id="fck-mm-type" src="%smod/filecabinet/img/file_manager/file_type/media80.png" title="%s" width="50" height="50" /></a>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Multimedia'));
         }
@@ -1392,21 +1392,21 @@ class Cabinet {
 
         $tpl['CLOSE'] = dgettext('filecabinet', 'Cancel');
 
-        $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckeditor.tpl');
+        $content = Core\Template::process($tpl, 'filecabinet', 'fckeditor.tpl');
 
         Layout::nakedDisplay($content);
     }
 
     public function fckFolders($ftype=IMAGE_FOLDER)
     {
-        $db = new PHPWS_DB('folders');
+        $db = new Core\DB('folders');
         $db->addWhere('ftype', $ftype);
         $db->addColumn('id');
         $db->addColumn('title');
         $db->addColumn('public_folder');
         $db->addOrder('title');
         $result = $db->select();
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             if ($ftype == IMAGE_FOLDER) {
                 echo dgettext('filecabinet', 'Could not pull image folders.');
             } elseif ($ftype == DOCUMENT_FOLDER) {
@@ -1432,7 +1432,7 @@ class Cabinet {
             $tpl['folders'][] = $sub;
         }
 
-        $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckfolders.tpl');
+        $content = Core\Template::process($tpl, 'filecabinet', 'fckfolders.tpl');
         echo $content;
         exit();
     }
@@ -1446,12 +1446,12 @@ class Cabinet {
         Core\Core::initModClass('filecabinet', 'Image.php');
         Core\Core::initModClass('filecabinet', 'File_Assoc.php');
 
-        $db = new PHPWS_DB('images');
+        $db = new Core\DB('images');
         $db->addWhere('folder_id', $_GET['fid']);
         $db->addOrder('title');
         $result = $db->getObjects('PHPWS_Image');
 
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             echo dgettext('filecabinet', 'Could not pull images.');
             exit();
         }
@@ -1461,7 +1461,7 @@ class Cabinet {
         foreach ($result as $image) {
             $resizes = $this->getResizeIds($image);
             $sub['OTHER'] = null;
-            if (!PHPWS_Error::logIfError($resizes) && !empty($resizes)) {
+            if (!Core\Error::logIfError($resizes) && !empty($resizes)) {
                 $smaller = array();
                 foreach ($resizes as $fc_id) {
                     $res = new FC_File_Assoc($fc_id);
@@ -1477,7 +1477,7 @@ class Cabinet {
             $tpl['images'][] = $sub;
         }
 
-        $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckimages.tpl');
+        $content = Core\Template::process($tpl, 'filecabinet', 'fckimages.tpl');
         echo $content;
         exit();
     }
@@ -1532,12 +1532,12 @@ class Cabinet {
     public function fckDocuments()
     {
         Core\Core::initModClass('filecabinet', 'Document.php');
-        $db = new PHPWS_DB('documents');
+        $db = new Core\DB('documents');
         $db->addWhere('folder_id', $_GET['fid']);
         $db->addOrder('title');
         $result = $db->getObjects('PHPWS_Document');
 
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             echo dgettext('filecabinet', 'Could not pull documents.');
             exit();
         }
@@ -1554,7 +1554,7 @@ class Cabinet {
                 $tpl['documents'][] = $sub;
             }
         }
-        $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckdocuments.tpl');
+        $content = Core\Template::process($tpl, 'filecabinet', 'fckdocuments.tpl');
         echo $content;
         exit();
     }
@@ -1562,12 +1562,12 @@ class Cabinet {
     public function fckMultimedia()
     {
         Core\Core::initModClass('filecabinet', 'Multimedia.php');
-        $db = new PHPWS_DB('multimedia');
+        $db = new Core\DB('multimedia');
         $db->addWhere('folder_id', $_GET['fid']);
         $db->addOrder('title');
         $result = $db->getObjects('PHPWS_Multimedia');
 
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             echo dgettext('filecabinet', 'Could not pull multimedia.');
             exit();
         }
@@ -1581,14 +1581,14 @@ class Cabinet {
                 $tpl['multimedia'][] = $sub;
             }
         }
-        $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckmultimedia.tpl');
+        $content = Core\Template::process($tpl, 'filecabinet', 'fckmultimedia.tpl');
         echo $content;
         exit();
     }
 
     public function getResizeIds($image)
     {
-        $db = new PHPWS_DB('fc_file_assoc');
+        $db = new Core\DB('fc_file_assoc');
         $db->addOrder('width');
         $db->addWhere('file_id', $image->id);
         $db->addWhere('file_type', 7, null, null, 'x');
@@ -1601,13 +1601,13 @@ class Cabinet {
     public function fixDocumentDirectories()
     {
 
-        $directory = PHPWS_Settings::get('filecabinet', 'base_doc_directory');
-        $db = new PHPWS_DB('documents');
+        $directory = Core\Settings::get('filecabinet', 'base_doc_directory');
+        $db = new Core\DB('documents');
         $db->addColumn('id');
         $db->addColumn('file_directory');
         $result = $db->select();
 
-        if (empty($result) || PHPWS_Error::logIfError($result)) {
+        if (empty($result) || Core\Error::logIfError($result)) {
             return;
         }
 
@@ -1627,7 +1627,7 @@ class Cabinet {
             if (!empty($last_dir)) {
                 $db->addWhere('id', $doc['id']);
                 $db->addValue('file_directory', $new_dir);
-                PHPWS_Error::logIfError($db->update());
+                Core\Error::logIfError($db->update());
             }
         }
 

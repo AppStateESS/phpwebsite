@@ -41,13 +41,13 @@ class PHPWS_Panel{
             $tab->setId($id);
 
             if (!isset($info['title'])) {
-                return PHPWS_Error::get(CP_MISSING_TITLE, 'controlpanel', 'quickSetTabs');
+                return Core\Error::get(CP_MISSING_TITLE, 'controlpanel', 'quickSetTabs');
             } else {
                 $tab->setTitle($info['title']);
             }
 
             if (!isset($info['link'])) {
-                return PHPWS_Error::get(CP_MISSING_LINK, 'controlpanel', 'quickSetTabs');
+                return Core\Error::get(CP_MISSING_LINK, 'controlpanel', 'quickSetTabs');
             } else {
                 $tab->setLink($info['link']);
             }
@@ -76,7 +76,7 @@ class PHPWS_Panel{
     public function setTabs($tabs)
     {
         if (!is_array($tabs)) {
-            return PHPWS_Error::get(CP_BAD_TABS, 'controlpanel', 'setTabs');
+            return Core\Error::get(CP_BAD_TABS, 'controlpanel', 'setTabs');
         }
 
         $this->tabs = & $tabs;
@@ -187,7 +187,7 @@ class PHPWS_Panel{
             $settpl['TITLE']   = & $title;
             $settpl['MESSAGE'] = & $message;
             $settpl['CONTENT'] = & $content;
-            $content = PHPWS_Template::process($settpl, 'controlpanel', 'default.tpl');
+            $content = Core\Template::process($settpl, 'controlpanel', 'default.tpl');
         }
 
         if (!isset($module)) {
@@ -198,7 +198,7 @@ class PHPWS_Panel{
             $panel = CP_DEFAULT_PANEL;
         }
 
-        if (!is_file(PHPWS_Template::getTemplateDirectory($module) . $panel)){
+        if (!is_file(Core\Template::getTemplateDirectory($module) . $panel)){
             $module = 'controlpanel';
             $panel = CP_DEFAULT_PANEL;
         }
@@ -222,7 +222,7 @@ class PHPWS_Panel{
         }
 
         $template['CONTENT'] = $content;
-        return PHPWS_Template::process($template, $module, $panel);
+        return Core\Template::process($template, $module, $panel);
     }
 }
 

@@ -46,8 +46,8 @@ class RSS {
         }
 
         $result = $oChannel->save();
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             PHPWS_Boost::addLog($module, dgettext('rss', 'An error occurred registering to RSS module.'));
             $content[] = dgettext('rss', 'An error occurred registering to RSS module.');
             return NULL;
@@ -60,7 +60,7 @@ class RSS {
     public static function showFeeds()
     {
         Core\Core::initModClass('rss', 'Feed.php');
-        $db = new PHPWS_DB('rss_feeds');
+        $db = new Core\DB('rss_feeds');
 
         $db->addWhere('display', 1);
         $result = $db->getObjects('RSS_Feed');
@@ -79,7 +79,7 @@ class RSS {
     {
         Core\Core::initModClass('rss', 'Channel.php');
         $channel = new RSS_Channel;
-        $db = new PHPWS_DB('rss_channel');
+        $db = new Core\DB('rss_channel');
         $db->addWhere('module', $module);
         $db->loadObject($channel);
 
@@ -96,7 +96,7 @@ class RSS {
     {
         Core\Core::initModClass('rss', 'Channel.php');
         $channel = new RSS_Channel;
-        $db = new PHPWS_DB('rss_channel');
+        $db = new Core\DB('rss_channel');
         $db->addWhere('module', $key->module);
         $db->loadObject($channel);
 

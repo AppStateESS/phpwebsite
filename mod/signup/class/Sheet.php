@@ -30,9 +30,9 @@ class Signup_Sheet {
 
     public function init()
     {
-        $db = new PHPWS_DB('signup_sheet');
+        $db = new Core\DB('signup_sheet');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -47,12 +47,12 @@ class Signup_Sheet {
 
     public function setDescription($description)
     {
-        $this->description = PHPWS_Text::parseInput($description);
+        $this->description = Core\Text::parseInput($description);
     }
 
     public function getDescription()
     {
-        return PHPWS_Text::parseOutput($this->description);
+        return Core\Text::parseOutput($this->description);
     }
 
     public function getStartTime()
@@ -89,32 +89,32 @@ class Signup_Sheet {
             return;
         }
 
-        $db = new PHPWS_DB('signup_sheet');
+        $db = new Core\DB('signup_sheet');
         $db->addWhere('id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
-        Key::drop($this->key_id);
+        Core\Key::drop($this->key_id);
 
-        $db = new PHPWS_DB('signup_slots');
+        $db = new Core\DB('signup_slots');
         $db->addWhere('sheet_id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
-        $db = new PHPWS_DB('signup_peeps');
+        $db = new Core\DB('signup_peeps');
         $db->addWhere('sheet_id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
     }
 
     public function editSlotLink()
     {
         $vars['aop'] = 'edit_slots';
         $vars['sheet_id']  = $this->id;
-        return PHPWS_Text::moduleLink(dgettext('signup', 'Edit slots'), 'signup', $vars);
+        return Core\Text::moduleLink(dgettext('signup', 'Edit slots'), 'signup', $vars);
     }
 
     public function getAllSlots($bare=false, $search=null)
     {
         Core\Core::initModClass('signup', 'Slots.php');
-        $db = new PHPWS_DB('signup_slots');
+        $db = new Core\DB('signup_slots');
         $db->addOrder('s_order');
         $db->addWhere('sheet_id', $this->id);
 
@@ -131,18 +131,18 @@ class Signup_Sheet {
             return $db->select('col');
         } else {
             $result = $db->getObjects('Signup_Slot');
-            if (empty($result) || PHPWS_Error::logIfError($result)) {
+            if (empty($result) || Core\Error::logIfError($result)) {
                 return null;
             }
 
-            $db = new PHPWS_DB('signup_peeps');
+            $db = new Core\DB('signup_peeps');
             $db->addColumn('id', null, null, true);
             foreach ($result as $slot) {
                 $db->addWhere('slot_id', $slot->id);
                 $db->addWhere('registered', 1);
                 $sub = $db->select('one');
                 $db->resetWhere();
-                if (!PHPWS_Error::logIfError($sub)) {
+                if (!Core\Error::logIfError($sub)) {
                     $slot->_filled = $sub;
                 }
             }
@@ -156,11 +156,11 @@ class Signup_Sheet {
         if (Current_User::allow('signup', 'edit_sheet', $this->id, 'sheet')) {
             if (Current_User::isUnrestricted('signup')) {
                 $vars['aop']  = 'edit_sheet';
-                $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Edit'), 'signup', $vars);
+                $links[] = Core\Text::secureLink(dgettext('signup', 'Edit'), 'signup', $vars);
             }
 
             $vars['aop']  = 'edit_slots';
-            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Slots'), 'signup', $vars);
+            $links[] = Core\Text::secureLink(dgettext('signup', 'Slots'), 'signup', $vars);
 
             if (Current_User::isUnrestricted('signup')) {
                 $links[] = Current_User::popupPermission($this->key_id);
@@ -168,11 +168,11 @@ class Signup_Sheet {
         }
 
         $vars['aop'] = 'report';
-        $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Report'), 'signup', $vars);
+        $links[] = Core\Text::secureLink(dgettext('signup', 'Report'), 'signup', $vars);
 
         if (Current_User::isUnrestricted('signup')) {
             $vars['aop'] = 'delete_sheet';
-            $js['ADDRESS'] = PHPWS_Text::linkAddress('signup', $vars, true);
+            $js['ADDRESS'] = Core\Text::linkAddress('signup', $vars, true);
             $js['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this sheet?\nAll slots and signup information will be permanently removed.');
             $js['LINK'] = dgettext('signup', 'Delete');
             $links[] = javascript('confirm', $js);
@@ -185,9 +185,9 @@ class Signup_Sheet {
 
     public function save()
     {
-        $db = new PHPWS_DB('signup_sheet');
+        $db = new Core\DB('signup_sheet');
         $result = $db->saveObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
@@ -198,11 +198,11 @@ class Signup_Sheet {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Key;
+            $key = new Core\Key;
         } else {
-            $key = new Key($this->key_id);
-            if (PHPWS_Error::isError($key->_error)) {
-                $key = new Key;
+            $key = new Core\Key($this->key_id);
+            if (Core\Error::isError($key->_error)) {
+                $key = new Core\Key;
             }
         }
 
@@ -219,16 +219,16 @@ class Signup_Sheet {
 
         $key->setTitle($this->title);
         $result = $key->save();
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             return false;
         }
 
         if (!$this->key_id) {
             $this->key_id = $key->id;
-            $db = new PHPWS_DB('signup_sheet');
+            $db = new Core\DB('signup_sheet');
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
-            PHPWS_Error::logIfError($db->update());
+            Core\Error::logIfError($db->update());
         }
         return true;
     }
@@ -239,7 +239,7 @@ class Signup_Sheet {
      */
     public function totalSlotsFilled()
     {
-        $db = new PHPWS_DB('signup_peeps');
+        $db = new Core\DB('signup_peeps');
         $db->addWhere('sheet_id', $this->id);
         $db->addWhere('registered', 1);
         $db->addColumn('slot_id');
@@ -262,12 +262,12 @@ class Signup_Sheet {
 
     public function viewLink()
     {
-        return PHPWS_Text::rewriteLink($this->title, 'signup', array('sheet_id'=> $this->id));
+        return Core\Text::rewriteLink($this->title, 'signup', array('sheet_id'=> $this->id));
     }
 
     public function flag()
     {
-        $key = new Key($this->key_id);
+        $key = new Core\Key($this->key_id);
         $key->flag();
     }
 

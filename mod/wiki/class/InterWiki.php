@@ -42,7 +42,7 @@ class InterWiki
         }
         $this->setId($id);
 
-        $db = new PHPWS_DB('wiki_interwiki');
+        $db = new Core\DB('wiki_interwiki');
         $db->loadObject($this);
     }
 
@@ -114,7 +114,7 @@ class InterWiki
 
     function setUrl($url)
     {
-        $this->url = PHPWS_Text::parseInput($url);
+        $this->url = Core\Text::parseInput($url);
     }
 
     function getUrl()
@@ -129,7 +129,7 @@ class InterWiki
      */
     function add()
     {
-        $form = new PHPWS_Form;
+        $form = new Core\Form;
         $form->addHidden('module', 'wiki');
         $form->addHidden('op', 'addinterwiki');
 
@@ -157,7 +157,7 @@ class InterWiki
      */
     function edit()
     {
-        $form = new PHPWS_Form;
+        $form = new Core\Form;
         $form->addHidden('module', 'wiki');
         $form->addHidden('op', 'saveinterwiki');
         $form->addHidden('id', $this->getId());
@@ -206,11 +206,11 @@ class InterWiki
         $this->setCreated(mktime());
         $this->setUpdated(mktime());
 
-        $db = new PHPWS_DB('wiki_interwiki');
+        $db = new Core\DB('wiki_interwiki');
         $result = $db->saveObject($this);
         if (PEAR::isError($result))
         {
-            PHPWS_Error::log($result);
+            Core\Error::log($result);
             return dgettext('wiki', 'Error saving link.');
         }
 
@@ -226,12 +226,12 @@ class InterWiki
     {
         if (isset($_REQUEST['yes']))
         {
-            $db = new PHPWS_DB('wiki_interwiki');
+            $db = new Core\DB('wiki_interwiki');
             $db->addWhere('id', $this->getId());
             $result = $db->delete();
             if (PEAR::isError($result))
             {
-                PHPWS_Error::log($result);
+                Core\Error::log($result);
                 return dgettext('wiki', 'Error deleting interwiki link.');
             }
             return dgettext('wiki', 'Interwiki link deleted!');
@@ -250,9 +250,9 @@ class InterWiki
             $tags['LABEL'] = $this->getLabel();
             $tags['URL'] = $this->getUrl();
 
-            $tags['YES'] = PHPWS_Text::secureLink(dgettext('wiki', 'Yes'), 'wiki',
+            $tags['YES'] = Core\Text::secureLink(dgettext('wiki', 'Yes'), 'wiki',
                            array('op'=>'dodeleteinterwiki', 'yes'=>1, 'id'=>$this->getId()));
-            $tags['NO'] = PHPWS_Text::secureLink(dgettext('wiki', 'No'), 'wiki',
+            $tags['NO'] = Core\Text::secureLink(dgettext('wiki', 'No'), 'wiki',
                           array('op'=>'dodeleteinterwiki', 'no'=>1, 'id'=>$this->getId()));
 
             return $tags;
@@ -264,13 +264,13 @@ class InterWiki
         $vars['id'] = $this->getId();
 
         $vars['op'] = 'editinterwiki';
-        $links[] = PHPWS_Text::secureLink(dgettext('wiki', 'Edit'), 'wiki', $vars);
+        $links[] = Core\Text::secureLink(dgettext('wiki', 'Edit'), 'wiki', $vars);
 
         $vars['op'] = 'copyinterwiki';
-        $links[] = PHPWS_Text::secureLink(dgettext('wiki', 'Copy'), 'wiki', $vars);
+        $links[] = Core\Text::secureLink(dgettext('wiki', 'Copy'), 'wiki', $vars);
 
         $vars['op'] = 'deleteinterwiki';
-        $links[] = PHPWS_Text::secureLink(dgettext('wiki', 'Delete'), 'wiki', $vars);
+        $links[] = Core\Text::secureLink(dgettext('wiki', 'Delete'), 'wiki', $vars);
 
         $template['ACTIONS'] = implode(' | ', $links);
         $template['LABEL'] = $this->getLabel();
@@ -288,14 +288,13 @@ class InterWiki
     function setup()
     {
         if (!Current_User::authorized('wiki', 'edit_page') &&
-            !(PHPWS_Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged()))
+            !(Core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged()))
         {
             Current_User::disallow(dgettext('wiki', 'User attempted access to Interwiki setup.'));
             return;
         }
 
-        Core\Core::initCoreClass('DBPager.php');
-
+        
         if ($_REQUEST['op'] == 'editinterwiki')
         {
             $tags = $this->edit();
@@ -319,7 +318,7 @@ class InterWiki
         }
 
         $tags['MESSAGE']         = WikiManager::getMessage();
-        $tags['BACK']            = PHPWS_Text::moduleLink(dgettext('wiki', 'Back to Wiki'), 'wiki');
+        $tags['BACK']            = Core\Text::moduleLink(dgettext('wiki', 'Back to Wiki'), 'wiki');
         $tags['SITE_LIST_LABEL'] = dgettext('wiki', 'Site list');
         $tags['USAGE']           = sprintf(dgettext('wiki', 'To link to an interwiki site, use %s.'), 'WikiName:PageName');
         $tags['LIST_LABEL']      = dgettext('wiki', 'Site Name');
@@ -327,7 +326,7 @@ class InterWiki
         $tags['LIST_UPDATED']    = dgettext('wiki', 'Updated');
         $tags['LIST_ACTIONS']    = dgettext('wiki', 'Actions');
 
-        $pager = new DBPager('wiki_interwiki', 'InterWiki');
+        $pager = new Core\DBPager('wiki_interwiki', 'InterWiki');
         $pager->setModule('wiki');
         $pager->setTemplate('interwiki/setup.tpl');
         $pager->addToggle(' class="bgcolor1"');
@@ -338,7 +337,7 @@ class InterWiki
 
         $template['TITLE'] = dgettext('wiki', 'Interwiki Setup');
         $template['CONTENT'] = $pager->get();
-        Layout::add(PHPWS_Template::process($template, 'wiki', 'box.tpl'), 'wiki', 'wiki_mod', TRUE);
+        Layout::add(Core\Template::process($template, 'wiki', 'box.tpl'), 'wiki', 'wiki_mod', TRUE);
     }
 }
 

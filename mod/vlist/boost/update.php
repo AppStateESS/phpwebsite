@@ -52,9 +52,9 @@ function vlist_update(&$content, $currentVersion)
         case version_compare($currentVersion, '1.0.2', '<'):
             $content[] = '<pre>';
 
-            $db = new PHPWS_DB('vlist_element');
+            $db = new Core\DB('vlist_element');
             if (!$db->isTableColumn('private')) {
-                if (PHPWS_Error::logIfError($db->addTableColumn('private', 'smallint NOT NULL default 0'))) {
+                if (Core\Error::logIfError($db->addTableColumn('private', 'smallint NOT NULL default 0'))) {
                     $content[] = '--- Could not create column private on vlist_element table.</pre>';
                     return false;
                 } else {
@@ -90,9 +90,9 @@ function vlist_update(&$content, $currentVersion)
 
 
         case version_compare($currentVersion, '1.0.3', '<'):
-            $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/vlist/boost/sql_update_103.sql');
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            $result = Core\DB::importFile(PHPWS_SOURCE_DIR . 'mod/vlist/boost/sql_update_103.sql');
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 $content[] = '+ Unable to upgrade the database according to mod/vlist/boost/sql_update_103.sql.';
                 return false;
             } else {

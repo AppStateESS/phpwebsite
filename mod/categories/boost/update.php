@@ -74,10 +74,10 @@ function categories_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '2.2.1', '<'):
             Core\Core::initModClass('filecabinet', 'Cabinet.php');
-            $db = new PHPWS_DB('categories');
+            $db = new Core\DB('categories');
             $result = $db->select();
 
-            if (PHPWS_Error::logIfError($result)) {
+            if (Core\Error::logIfError($result)) {
                 $content[] = 'An error occurred when accessing your categories table.';
                 return false;
             }
@@ -93,7 +93,7 @@ function categories_update(&$content, $currentVersion)
                     $cat['icon'] = (int)$cat['icon'];
                     $db->reset();
                     $db->addValue($cat);
-                    PHPWS_Error::logIfError($db->insert(false));
+                    Core\Error::logIfError($db->insert(false));
                     $db->reset();
                 }
             }

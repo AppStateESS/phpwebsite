@@ -36,14 +36,14 @@ class Profiler {
                 }
                 $profile = new Profile($_REQUEST['id']);
                 if (!empty($profile->_error)) {
-                    PHPWS_Error::log($profile->_error);
+                    Core\Error::log($profile->_error);
                     Core\Core::errorPage(404);
                 }
 
                 if (Current_User::allow('profiler')) {
                     $vars['command']    = 'edit';
                     $vars['profile_id'] = $profile->id;
-                    $link = PHPWS_Text::secureLink(dgettext('profiler', 'Edit profile'), 'profiler', $vars);
+                    $link = Core\Text::secureLink(dgettext('profiler', 'Edit profile'), 'profiler', $vars);
                     MiniAdmin::add('profiler', $link);
                 }
 
@@ -66,7 +66,7 @@ class Profiler {
         if (!is_numeric($type)) {
             Core\Core::errorPage('404');
         }
-        $db = new PHPWS_DB('profiles');
+        $db = new Core\DB('profiles');
         if ($type) {
             $db->addWhere('profile_type', $type);
         }
@@ -105,7 +105,7 @@ class Profiler {
 
         if (isset($_REQUEST['profile_id'])) {
             $profile = new Profile($_REQUEST['profile_id']);
-            if (PHPWS_Error::isError($profile->_error)) {
+            if (Core\Error::isError($profile->_error)) {
                 Core\Core::errorPage(404);
             }
         }
@@ -147,7 +147,7 @@ class Profiler {
                 }
 
                 if ($division->error) {
-                    PHPWS_Error::log($division->error);
+                    Core\Error::log($division->error);
                     $content = dgettext('profiler', 'There is a problem with this Profiler division.');
                     return;
                 }
@@ -177,7 +177,7 @@ class Profiler {
                 }
 
                 if ($division->error) {
-                    PHPWS_Error::log($division->error);
+                    Core\Error::log($division->error);
                     $content = dgettext('profiler', 'There is a problem with this Profiler division.');
                     return;
                 }
@@ -187,8 +187,8 @@ class Profiler {
                     Layout::nakedDisplay($content);
                 } else {
                     $result = $division->save();
-                    if (PHPWS_Error::isError($result)) {
-                        PHPWS_Error::log($result);
+                    if (Core\Error::isError($result)) {
+                        Core\Error::log($result);
                     }
                     javascript('close_refresh');
                 }
@@ -217,8 +217,8 @@ class Profiler {
                     $content = Profile_Forms::edit($profile);
                 } else {
                     $result = $profile->save();
-                    if (PHPWS_Error::isError($result)) {
-                        PHPWS_Error::log($result);
+                    if (Core\Error::isError($result)) {
+                        Core\Error::log($result);
                         $title = dgettext('profiler', 'Sorry');
                         $content = dgettext('profiler', 'An error occurred when saving your profile.');
                     } else {
@@ -244,13 +244,13 @@ class Profiler {
                 }
 
                 $result = Profiler::saveSettings();
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
+                if (Core\Error::isError($result)) {
+                    Core\Error::log($result);
                     $title = dgettext('profiler', 'Uh oh');
                     $content = dgettext('profiler', 'There was a problem saving your settings.');
                 } else {
                     $title = dgettext('profiler', 'Setting saved');
-                    $content = PHPWS_Text::secureLink(dgettext('profiler', 'Go back to the Settings page.'), 'profiler');
+                    $content = Core\Text::secureLink(dgettext('profiler', 'Go back to the Settings page.'), 'profiler');
                 }
                 break;
 
@@ -260,7 +260,7 @@ class Profiler {
         $tpl['MESSAGE'] = $message;
         $tpl['TITLE']   = $title;
 
-        $finalcontent = PHPWS_Template::process($tpl, 'profiler', 'main.tpl');
+        $finalcontent = Core\Template::process($tpl, 'profiler', 'main.tpl');
         $panel->setContent($finalcontent);
         $finalPanel = $panel->display();
 
@@ -287,14 +287,14 @@ class Profiler {
     public function saveSettings()
     {
         if (isset($_POST['profile_homepage'])) {
-            PHPWS_Settings::set('profiler', 'profile_homepage', 1);
+            Core\Settings::set('profiler', 'profile_homepage', 1);
         } else {
-            PHPWS_Settings::set('profiler', 'profile_homepage', 0);
+            Core\Settings::set('profiler', 'profile_homepage', 0);
         }
-        PHPWS_Settings::set('profiler', 'profile_number',
+        Core\Settings::set('profiler', 'profile_number',
         (int)$_POST['profile_number']);
 
-        return PHPWS_Settings::save('profiler');
+        return Core\Settings::save('profiler');
     }
 
 
@@ -306,11 +306,11 @@ class Profiler {
      */
     public static function view($div_id=0)
     {
-        if (!PHPWS_Settings::get('profiler', 'profile_homepage')) {
+        if (!Core\Settings::get('profiler', 'profile_homepage')) {
             return;
         }
 
-        $div = new PHPWS_DB('profiler_division');
+        $div = new Core\DB('profiler_division');
         if (!$div_id) {
             $div->addWhere('show_homepage', 1);
         } else {
@@ -324,10 +324,10 @@ class Profiler {
             return;
         }
 
-        $limit = PHPWS_Settings::get('profiler', 'profile_number');
-        $db = new PHPWS_DB('profiles');
+        $limit = Core\Settings::get('profiler', 'profile_number');
+        $db = new Core\DB('profiles');
 
-        $tpl = new PHPWS_Template('profiler');
+        $tpl = new Core\Template('profiler');
         $tpl->setFile('homepage.tpl');
 
         foreach ($division_list as $division) {

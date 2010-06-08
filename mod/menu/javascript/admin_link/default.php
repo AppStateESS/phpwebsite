@@ -6,9 +6,9 @@
 
 javascript('jquery_ui');
 
-$key = Key::getCurrent();
-if (!Key::checkKey($key)) {
-    $key = new Key;
+$key = Core\Key::getCurrent();
+if (!Core\Key::checkKey($key)) {
+    $key = new Core\Key;
 }
 
 $data['delete_question'] = dgettext('menu', 'Are you sure you want to delete this link:');

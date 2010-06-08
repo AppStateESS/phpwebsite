@@ -17,7 +17,7 @@ if (!$_SESSION['Access_Allow_Deny']) {
 
 
 if (MOD_REWRITE_ENABLED && Current_User::allow('access')) {
-    $key = Key::getCurrent();
+    $key = Core\Key::getCurrent();
     if (!empty($key) && !$key->isDummy()) {
         Core\Core::initModClass('access', 'Access.php');
         Access::shortcut($key);

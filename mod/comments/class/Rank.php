@@ -24,7 +24,7 @@ class Comment_Rank {
 
     private function init($load_user_ranks=true)
     {
-        $db = new PHPWS_DB('comments_ranks');
+        $db = new Core\DB('comments_ranks');
         $result = $db->loadObject($this);
 
         if (!$this->group_id) {
@@ -46,23 +46,23 @@ class Comment_Rank {
     public function loadUserRanks()
     {
         Core\Core::initModClass('comments', 'User_Rank.php');
-        $db = new PHPWS_DB('comments_user_ranks');
+        $db = new Core\DB('comments_user_ranks');
         $db->setIndexBy('id');
         $db->addWhere('rank_id', $this->id);
         $db->addOrder('min_posts');
         $result = $db->getObjects('Comment_User_Rank');
 
-        if (!PHPWS_Error::logIfError($result)) {
+        if (!Core\Error::logIfError($result)) {
             $this->user_ranks = & $result;
         }
     }
 
     public function save()
     {
-        $db = new PHPWS_DB('comments_ranks');
+        $db = new Core\DB('comments_ranks');
         $result = $db->saveObject($this);
 
-        return !PHPWS_Error::logIfError($result);
+        return !Core\Error::logIfError($result);
     }
 
     public function delete()
@@ -71,15 +71,15 @@ class Comment_Rank {
         if (!$this->group_id) {
             return false;
         }
-        $db = new PHPWS_DB('comments_ranks');
+        $db = new Core\DB('comments_ranks');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             return false;
         }
-        $db = new PHPWS_DB('comments_user_ranks');
+        $db = new Core\DB('comments_user_ranks');
         $db->addWhere('rank_id', $this->id);
-        return !PHPWS_Error::logIfError($db->delete());
+        return !Core\Error::logIfError($db->delete());
     }
 
     public function allowLocal($comments_made)

@@ -14,7 +14,7 @@ function search_unregister_key(Key $key)
         return FALSE;
     }
 
-    $db = new PHPWS_DB('search');
+    $db = new Core\DB('search');
     $db->addWhere('key_id', (int)$key->id);
     return $db->delete();
 }

@@ -13,8 +13,8 @@ function menu_install(&$content)
     $menu->template = 'basic';
     $menu->pin_all = 1;
     $result = $menu->save();
-    if (PHPWS_Error::isError($result)) {
-        PHPWS_Error::log($result);
+    if (Core\Error::isError($result)) {
+        Core\Error::log($result);
         return false;
     } else {
         $content[] = dgettext('menu', 'Default menu created successfully.');

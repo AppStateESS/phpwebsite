@@ -35,7 +35,7 @@ class MiniAdmin {
             return NULL;
         }
 
-        $oTpl = new PHPWS_Template('miniadmin');
+        $oTpl = new Core\Template('miniadmin');
         $oTpl->setFile(MINIADMIN_TEMPLATE);
 
         $tpl['MINIADMIN_TITLE'] = dgettext('miniadmin', 'MiniAdmin');
@@ -49,7 +49,7 @@ class MiniAdmin {
             foreach ($links['links'] as $link) {
                 $oTpl->setCurrentBlock('links');
                 $oTpl->setData(array('LINE_MODULE' => $modlist[$module],
-                                     'ADMIN_LINK' => PHPWS_Text::fixAmpersand($link)));
+                                     'ADMIN_LINK' => Core\Text::fixAmpersand($link)));
                 $oTpl->parseCurrentBlock();
             }
             $oTpl->setCurrentBlock('module');

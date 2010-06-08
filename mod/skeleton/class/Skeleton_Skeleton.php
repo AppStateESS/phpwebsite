@@ -47,9 +47,9 @@ class Skeleton_Skeleton {
 
     public function init()
     {
-        $db = new PHPWS_DB('skeleton_skeletons');
+        $db = new Core\DB('skeleton_skeletons');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -65,7 +65,7 @@ class Skeleton_Skeleton {
 
     public function setDescription($description)
     {
-        $this->description = PHPWS_Text::parseInput($description);
+        $this->description = Core\Text::parseInput($description);
     }
 
     public function setFile_id($file_id)
@@ -82,7 +82,7 @@ class Skeleton_Skeleton {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->title);
+            return Core\Text::parseOutput($this->title);
         } else {
             return $this->title;
         }
@@ -95,7 +95,7 @@ class Skeleton_Skeleton {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->description);
+            return Core\Text::parseOutput($this->description);
         } else {
             return $this->description;
         }
@@ -156,7 +156,7 @@ class Skeleton_Skeleton {
             Core\Core::errorPage(404);
         }
 
-        $key = new Key($this->key_id);
+        $key = new Core\Key($this->key_id);
 
         if (!$key->allowView()) {
             Current_User::requireLogin();
@@ -165,12 +165,12 @@ class Skeleton_Skeleton {
         Layout::addPageTitle($this->getTitle());
         $tpl['ITEM_LINKS'] = $this->links();
         $tpl['TITLE'] = $this->getTitle(true);
-        $tpl['DESCRIPTION'] = PHPWS_Text::parseTag($this->getDescription(true));
+        $tpl['DESCRIPTION'] = Core\Text::parseTag($this->getDescription(true));
         $tpl['FILE'] = $this->getFile();
 
         $bones = $this->getAllBones();
 
-        if (PHPWS_Error::logIfError($bones)) {
+        if (Core\Error::logIfError($bones)) {
             $this->skeleton->content = dgettext('skeleton', 'An error occurred when accessing this skeleton\'s bones.');
             return;
         }
@@ -186,14 +186,14 @@ class Skeleton_Skeleton {
 
         $key->flag();
 
-        return PHPWS_Template::process($tpl, 'skeleton', 'view_skeleton.tpl');
+        return Core\Template::process($tpl, 'skeleton', 'view_skeleton.tpl');
     }
 
 
     public function getAllBones($limit=false)
     {
         Core\Core::initModClass('skeleton', 'Skeleton_Bone.php');
-        $db = new PHPWS_DB('skeleton_bones');
+        $db = new Core\DB('skeleton_bones');
         $db->addOrder('title asc');
         $db->addWhere('skeleton_id', $this->id);
         if ($limit) {
@@ -206,7 +206,7 @@ class Skeleton_Skeleton {
 
     public function getQtyBones()
     {
-        $db = new PHPWS_DB('skeleton_bones');
+        $db = new Core\DB('skeleton_bones');
         $db->addWhere('skeleton_id', $this->id);
         $qty = $db->count();
         return $qty;
@@ -220,13 +220,13 @@ class Skeleton_Skeleton {
         if (Current_User::allow('skeleton', 'edit_bone')) {
             $vars['aop']  = 'edit_bone';
             $vars['skeleton_id'] = $this->id;
-            $links[] = PHPWS_Text::secureLink(dgettext('skeleton', 'Add Bone'), 'skeleton', $vars);
+            $links[] = Core\Text::secureLink(dgettext('skeleton', 'Add Bone'), 'skeleton', $vars);
         }
 
         if (Current_User::allow('skeleton', 'edit_skeleton')) {
             $vars['id'] = $this->id;
             $vars['aop']  = 'edit_skeleton';
-            $links[] = PHPWS_Text::secureLink(dgettext('skeleton', 'Edit skeleton'), 'skeleton', $vars);
+            $links[] = Core\Text::secureLink(dgettext('skeleton', 'Edit skeleton'), 'skeleton', $vars);
         }
 
         $links = array_merge($links, Skeleton::navLinks());
@@ -242,16 +242,16 @@ class Skeleton_Skeleton {
         }
 
         /* delete the related bones */
-        $db = new PHPWS_DB('skeleton_bones');
+        $db = new Core\DB('skeleton_bones');
         $db->addWhere('skeleton_id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
         /* delete the skeleton */
-        $db = new PHPWS_DB('skeleton_skeletons');
+        $db = new Core\DB('skeleton_skeletons');
         $db->addWhere('id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
-        Key::drop($this->key_id);
+        Core\Key::drop($this->key_id);
 
     }
 
@@ -262,21 +262,21 @@ class Skeleton_Skeleton {
         $links = array();
 
         if (Current_User::allow('skeleton', 'edit_bone')) {
-            $label = Icon::show('add', dgettext('skeleton', 'Add Bone'));
+            $label = Core\Icon::show('add', dgettext('skeleton', 'Add Bone'));
             $vars['aop']  = 'edit_bone';
             $vars['skeleton_id'] = $this->id;
-            $links[] = PHPWS_Text::secureLink($label, 'skeleton', $vars);
+            $links[] = Core\Text::secureLink($label, 'skeleton', $vars);
         }
         if (Current_User::allow('skeleton', 'edit_skeleton')) {
-            $label = Icon::show('edit');
+            $label = Core\Icon::show('edit');
             $vars['aop']  = 'edit_skeleton';
-            $links[] = PHPWS_Text::secureLink($label, 'skeleton', $vars);
+            $links[] = Core\Text::secureLink($label, 'skeleton', $vars);
         }
         if (Current_User::allow('skeleton', 'delete_skeleton')) {
             $vars['aop'] = 'delete_skeleton';
-            $js['ADDRESS'] = PHPWS_Text::linkAddress('skeleton', $vars, true);
+            $js['ADDRESS'] = Core\Text::linkAddress('skeleton', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('skeleton', 'Are you sure you want to delete the skeleton %s?'), $this->getTitle());
-            $js['LINK'] = Icon::show('delete');
+            $js['LINK'] = Core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -294,10 +294,10 @@ class Skeleton_Skeleton {
 
     public function save()
     {
-        $db = new PHPWS_DB('skeleton_skeletons');
+        $db = new Core\DB('skeleton_skeletons');
 
         $result = $db->saveObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
@@ -308,7 +308,7 @@ class Skeleton_Skeleton {
         $search->addKeywords($this->title);
         $search->addKeywords($this->description);
         $result = $search->save();
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
@@ -318,11 +318,11 @@ class Skeleton_Skeleton {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Key;
+            $key = new Core\Key;
         } else {
-            $key = new Key($this->key_id);
-            if (PHPWS_Error::isError($key->_error)) {
-                $key = new Key;
+            $key = new Core\Key($this->key_id);
+            if (Core\Error::isError($key->_error)) {
+                $key = new Core\Key;
             }
         }
 
@@ -334,16 +334,16 @@ class Skeleton_Skeleton {
         $key->setTitle($this->title);
         $key->setSummary($this->description);
         $result = $key->save();
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             return false;
         }
 
         if (!$this->key_id) {
             $this->key_id = $key->id;
-            $db = new PHPWS_DB('skeleton_skeletons');
+            $db = new Core\DB('skeleton_skeletons');
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
-            PHPWS_Error::logIfError($db->update());
+            Core\Error::logIfError($db->update());
         }
         return true;
     }
@@ -351,7 +351,7 @@ class Skeleton_Skeleton {
 
     public function viewLink($bare=false)
     {
-        $link = new PHPWS_Link($this->title, 'skeleton', array('skeleton'=>$this->id));
+        $link = new Core\Link($this->title, 'skeleton', array('skeleton'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {

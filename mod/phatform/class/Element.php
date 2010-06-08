@@ -78,15 +78,15 @@ class PHAT_Element extends PHPWS_Item {
      * Sets the blurb for this element
      *
      * @param  string $blurb The text for this blurb
-     * @return mixed  TRUE on success PHPWS_Error on failure
+     * @return mixed  TRUE on success Core\Error on failure
      * @access public
      */
     function setBlurb($blurb = NULL) {
         if($blurb) {
-            $this->_blurb = PHPWS_Text::parseInput($blurb);
+            $this->_blurb = Core\Text::parseInput($blurb);
             return TRUE;
         } else if(PHAT_BLURB_REQUIRED) {
-            return PHPWS_Error::get(PHATFORM_ASSOC_TEXT, 'phatform', 'PHAT_Element::setBlurb()');
+            return Core\Error::get(PHATFORM_ASSOC_TEXT, 'phatform', 'PHAT_Element::setBlurb()');
         } else {
             $this->_blurb = NULL;
             return TRUE;
@@ -97,7 +97,7 @@ class PHAT_Element extends PHPWS_Item {
      * Sets the value for this element
      *
      * @param  mixed  $value Whatever the value of this PHAT_Element is to be
-     * @return mixed  TRUE on success PHPWS_Error on failure
+     * @return mixed  TRUE on success Core\Error on failure
      * @access public
      */
     function setValue($value = NULL) {
@@ -105,10 +105,10 @@ class PHAT_Element extends PHPWS_Item {
             $this->_value = $value;
             return TRUE;
         } else if(isset($value)) {
-            $this->_value = PHPWS_Text::parseInput($value);
+            $this->_value = Core\Text::parseInput($value);
         } else if(PHAT_VALUE_REQUIRED) {
             $message = dgettext('phatform', 'The value for this element was not set.');
-            return PHPWS_Error::get(PHATFORM_VALUE_MISSING, 'phatform', 'PHAT_Element::setValue()');
+            return Core\Error::get(PHATFORM_VALUE_MISSING, 'phatform', 'PHAT_Element::setValue()');
         } else {
             $this->_value = NULL;
             return TRUE;
@@ -224,7 +224,7 @@ class PHAT_Element extends PHPWS_Item {
      */
     function getOptionSets() {
         $sql = 'SELECT id, label FROM mod_phatform_options';
-        $optionResult = PHPWS_DB::query($sql);
+        $optionResult = Core\DB::query($sql);
         $options[0] = '';
         while($row = $optionResult->fetchrow(DB_FETCHMODE_ASSOC)) {
             $options[$row['id']] = $row['label'];
@@ -249,7 +249,7 @@ class PHAT_Element extends PHPWS_Item {
 
         if(isset($_REQUEST['PHAT_OptionSet']) && ($_REQUEST['PHAT_OptionSet'] != 0) && ($_REQUEST['PHAT_OptionSet'] != $this->getOptionSet())) {
             $this->setOptionSet($_REQUEST['PHAT_OptionSet']);
-            $db = new PHPWS_DB('mod_phatform_options');
+            $db = new Core\DB('mod_phatform_options');
 
             $db->addWhere('id', $this->getOptionSet());
             $optionResult = $db->select();
@@ -285,7 +285,7 @@ class PHAT_Element extends PHPWS_Item {
         } else if(sizeof($this->_optionText) > 0) {
             $loops = sizeof($this->_optionText);
         } else {
-            return PHPWS_Error::get(PHATFORM_ZERO_OPTIONS, 'phatform', 'PHAT_Element::getOptions()');
+            return Core\Error::get(PHATFORM_ZERO_OPTIONS, 'phatform', 'PHAT_Element::getOptions()');
         }
 
         $elements[0] = '<input type="hidden" name="module" value="phatform" /><input type="hidden" name="PHAT_EL_OP" value="SaveElementOptions" />';
@@ -339,7 +339,7 @@ class PHAT_Element extends PHPWS_Item {
                 $rowClass = null;
             }
 
-            $editTags['OPTIONS'] .= PHPWS_Template::processTemplate($optionRow, 'phatform', 'element/option.tpl');
+            $editTags['OPTIONS'] .= Core\Template::processTemplate($optionRow, 'phatform', 'element/option.tpl');
         }
 
 
@@ -360,19 +360,19 @@ class PHAT_Element extends PHPWS_Item {
         $element->setMatch($check);
 
         $editTags['USE_TEXT_CHECK'] = dgettext('phatform', 'Use option text as values') . ': ' . $element->get();
-        $editTags['SAVE_OPTION_SET'] = dgettext('phatform', 'Save option set as') . ': ' . PHPWS_Form::formTextField('PHAT_SaveOptionSet', $setName, PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
-        $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_OptionBack');
-        $editTags['SAVE_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Save ' . $properName));
+        $editTags['SAVE_OPTION_SET'] = dgettext('phatform', 'Save option set as') . ': ' . Core\Form::formTextField('PHAT_SaveOptionSet', $setName, PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
+        $editTags['BACK_BUTTON'] = Core\Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_OptionBack');
+        $editTags['SAVE_BUTTON'] = Core\Form::formSubmit(dgettext('phatform', 'Save ' . $properName));
 
-        $elements[0] .= PHPWS_Template::processTemplate($editTags, 'phatform', 'element/optionList.tpl');
+        $elements[0] .= Core\Template::processTemplate($editTags, 'phatform', 'element/optionList.tpl');
 
-        return PHPWS_Form::makeForm('PHAT_Options', 'index.php', $elements, 'post', NULL, NULL);
+        return Core\Form::makeForm('PHAT_Options', 'index.php', $elements, 'post', NULL, NULL);
     } // END FUNC getOptions
 
     /**
      * Save the options for this PHAT_Element
      *
-     * @return mixed  Content if the editing is to continue, PHPWS_Error on failure, or message on success
+     * @return mixed  Content if the editing is to continue, Core\Error on failure, or message on success
      * @access public
      */
     function saveOptions() {
@@ -392,14 +392,14 @@ class PHAT_Element extends PHPWS_Item {
 
             for($i = 0; $i < sizeof($_REQUEST['PHAT_ElementOptions']); $i++) {
                 if($_REQUEST['PHAT_ElementOptions'][$i] != NULL) {
-                    $this->_optionText[$i] = PHPWS_Text::parseInput($_REQUEST['PHAT_ElementOptions'][$i]);
+                    $this->_optionText[$i] = Core\Text::parseInput($_REQUEST['PHAT_ElementOptions'][$i]);
                 } else {
                     $this->_optionText[$i] = NULL;
                     $saveText = FALSE;
                 }
 
                 if($_REQUEST['PHAT_ElementValues'][$i] != NULL) {
-                    $this->_optionValues[$i] = PHPWS_Text::parseInput($_REQUEST['PHAT_ElementValues'][$i]);
+                    $this->_optionValues[$i] = Core\Text::parseInput($_REQUEST['PHAT_ElementValues'][$i]);
                     $atLeastOne = TRUE;
                 } else {
                     $this->_optionValues[$i] = NULL;
@@ -423,7 +423,7 @@ class PHAT_Element extends PHPWS_Item {
 
             if($saveText && $saveValues) {
                 if($_REQUEST['PHAT_SaveOptionSet']) {
-                    $label = PHPWS_Text::parseInput($_REQUEST['PHAT_SaveOptionSet']);
+                    $label = Core\Text::parseInput($_REQUEST['PHAT_SaveOptionSet']);
                     $options = addslashes(serialize($this->_optionText));
                     $values = addslashes(serialize($this->_optionValues));
 
@@ -431,19 +431,19 @@ class PHAT_Element extends PHPWS_Item {
                                        'optionSet'=>$options,
                                        'valueSet'=>$values
                     );
-                    $db = new PHPWS_DB('mod_phatform_options');
+                    $db = new Core\DB('mod_phatform_options');
                     $db->addValue($saveArray);
                     $id = $db->insert();
                     if($id) {
                         $this->setOptionSet($id);
                         $returnText = sprintf(dgettext('phatform', 'The option set %s was successfully saved.'), '<b><i>' . $label . '</i></b>') . '<br />';
                     } else {
-                        return PHPWS_Error::get(PHATFORM_OPTION_WONT_SAVE, 'phatform', 'PHAT_Element::saveOptions()', array($label));
+                        return Core\Error::get(PHATFORM_OPTION_WONT_SAVE, 'phatform', 'PHAT_Element::saveOptions()', array($label));
                     }
                 }
 
-                if(PHPWS_Error::isError($this->commit())) {
-                    return PHPWS_Error::get(PHATFORM_ELEMENT_FAIL, 'phatform', 'PHAT_Element::saveOptions()',  array($properName));
+                if(Core\Error::isError($this->commit())) {
+                    return Core\Error::get(PHATFORM_ELEMENT_FAIL, 'phatform', 'PHAT_Element::saveOptions()',  array($properName));
                 } else {
                     $returnText .= sprintf(dgettext('phatform', 'The %s was saved successfully.'), '<b><i>' . $properName . '</i></b>');
                     return $returnText;
@@ -451,13 +451,13 @@ class PHAT_Element extends PHPWS_Item {
 
             } else {
                 if($atLeastOne) {
-                    return PHPWS_Error::get(PHATFORM_VALUES_NOT_SET, 'phatform', 'PHAT_Element::saveOptions()');
+                    return Core\Error::get(PHATFORM_VALUES_NOT_SET, 'phatform', 'PHAT_Element::saveOptions()');
                 } else {
-                    return PHPWS_Error::get(PHATFORM_VAL_OPT_NOT_SET, 'phatform', 'PHAT_Element::saveOptions()');
+                    return Core\Error::get(PHATFORM_VAL_OPT_NOT_SET, 'phatform', 'PHAT_Element::saveOptions()');
                 }
             }
         } else {
-            return PHPWS_Error::get(PHATFORM_ELEMENT_FAIL, 'phatform', 'PHAT_Element::saveOptions()', array($properName));
+            return Core\Error::get(PHATFORM_ELEMENT_FAIL, 'phatform', 'PHAT_Element::saveOptions()', array($properName));
         }
     } // END FUNC saveOptions
 
@@ -484,7 +484,7 @@ class PHAT_Element extends PHPWS_Item {
                     if(Current_User::allow('phatform', 'edit_forms')) {
                         $result = $this->save();
 
-                        if(PHPWS_Error::isError($result)) {
+                        if(Core\Error::isError($result)) {
                             $GLOBALS['CNT_phatform']['message'] =  $result->getMessage();
                             $content .= $this->edit();
                         } elseif($this->hasOptions()) {
@@ -496,7 +496,7 @@ class PHAT_Element extends PHPWS_Item {
 
                             if($new) {
                                 $result = $_SESSION['PHAT_FormManager']->form->pushElement();
-                                if(PHPWS_Error::isError($result)) {
+                                if(Core\Error::isError($result)) {
                                     $content .= $result->getMessage() .'<br />';
                                     $content .= $this->edit();
                                     return;
@@ -518,7 +518,7 @@ class PHAT_Element extends PHPWS_Item {
                             $content = $this->edit();
                         } else {
                             $result = $this->saveOptions();
-                            if(PHPWS_Error::isError($result)) {
+                            if(Core\Error::isError($result)) {
                                 $content .= $result->getMessage() .'<br />';
                                 $content .= $this->getOptions();
                             } else {
@@ -527,7 +527,7 @@ class PHAT_Element extends PHPWS_Item {
 
                                 if($new) {
                                     $result = $_SESSION['PHAT_FormManager']->form->pushElement();
-                                    if(PHPWS_Error::isError($result)) {
+                                    if(Core\Error::isError($result)) {
                                         $content .= $result->getMessage() .'<br />';
                                         $content .= $this->edit();
                                         return;
@@ -548,7 +548,7 @@ class PHAT_Element extends PHPWS_Item {
                 case 'RemoveElement':
                     if(Current_User::allow('phatform', 'edit_forms')) {
                         $result = $this->remove();
-                        if(PHPWS_Error::isError($result)) {
+                        if(Core\Error::isError($result)) {
                             $content .= $result->getMessage() .'<br />';
                         } else {
                             $content = $_SESSION['PHAT_FormManager']->menu();
@@ -587,11 +587,11 @@ class PHAT_Element extends PHPWS_Item {
     function remove() {
         if(isset($_REQUEST['PHAT_Yes'])) {
             $result = $this->kill();
-            if(PHPWS_Error::isError($result)) {
-                return PHPWS_Error::get(PHATFORM_CANNOT_DELETE_ELEMENT, 'phatform', 'PHAT_Element::remove()');
+            if(Core\Error::isError($result)) {
+                return Core\Error::get(PHATFORM_CANNOT_DELETE_ELEMENT, 'phatform', 'PHAT_Element::remove()');
             } else {
                 $result = $_SESSION['PHAT_FormManager']->form->popElement();
-                if(PHPWS_Error::isError($result)) {
+                if(Core\Error::isError($result)) {
                     return $result;
                 } else {
                     return dgettext('phatform', 'The element was successfully removed.');
@@ -604,15 +604,15 @@ class PHAT_Element extends PHPWS_Item {
             $properName = ucfirst(str_ireplace('phat_', '', $className));
 
             $tags['MESSAGE'] = sprintf(dgettext('phatform', 'Are you sure you want to remove this %s element?'), '<b><i>' . $properName . '</i></b>');
-            $tags['YES_BUTTON'] = PHPWS_Form::formSubmit('Yes', 'PHAT_Yes');
-            $tags['NO_BUTTON'] = PHPWS_Form::formSubmit('No', 'PHAT_No');
+            $tags['YES_BUTTON'] = Core\Form::formSubmit('Yes', 'PHAT_Yes');
+            $tags['NO_BUTTON'] = Core\Form::formSubmit('No', 'PHAT_No');
             $tags['ELEMENT_PREVIEW'] = $this->view();
 
-            $elements[0] = PHPWS_Form::formHidden('module', 'phatform');
-            $elements[0] .= PHPWS_Form::formHidden('PHAT_EL_OP', 'RemoveElement');
-            $elements[0] .= PHPWS_Template::processTemplate($tags, 'phatform', 'form/deleteConfirm.tpl');
+            $elements[0] = Core\Form::formHidden('module', 'phatform');
+            $elements[0] .= Core\Form::formHidden('PHAT_EL_OP', 'RemoveElement');
+            $elements[0] .= Core\Template::processTemplate($tags, 'phatform', 'form/deleteConfirm.tpl');
 
-            $content = PHPWS_Form::makeForm('PHAT_Confirm', 'index.php', $elements);
+            $content = Core\Form::makeForm('PHAT_Confirm', 'index.php', $elements);
         }
 
         return $content;

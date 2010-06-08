@@ -28,16 +28,16 @@ function podcaster_uninstall(&$content) {
 
         if ($_REQUEST['rm_media']) {
             Core\Core::initModClass('podcaster', 'PCR_Episode.php');
-            $db = new PHPWS_DB('podcaster_episode');
+            $db = new Core\DB('podcaster_episode');
             $db->addWhere('media_id', 0, '>');
             $episodes = $db->getObjects('Podcaster_Episode');
-            if (PHPWS_Error::isError($episodes)) {
+            if (Core\Error::isError($episodes)) {
                 return $episodes;
             } elseif (empty($episodes)) {
                 /* go ahead and drop the tables */
-                PHPWS_DB::dropTable('podcaster_channel');
-                PHPWS_DB::dropTable('podcaster_episode');
-                PHPWS_DB::dropTable('podcaster_category');
+                Core\DB::dropTable('podcaster_channel');
+                Core\DB::dropTable('podcaster_episode');
+                Core\DB::dropTable('podcaster_category');
                 $content[] = dgettext('podcaster', 'Podcaster tables dropped, no media to delete.');
                 return true;
             }
@@ -47,23 +47,23 @@ function podcaster_uninstall(&$content) {
                 $media = $episode->getMedia();
                 if ($media) {
                     $result = $media->delete();
-                    if (PHPWS_Error::isError($result)) {
-                        PHPWS_Error::log($result);
+                    if (Core\Error::isError($result)) {
+                        Core\Error::log($result);
                         $error = true;
                     }
                 }
             }
             /* go ahead and drop the tables */
-            PHPWS_DB::dropTable('podcaster_channel');
-            PHPWS_DB::dropTable('podcaster_episode');
-            PHPWS_DB::dropTable('podcaster_category');
+            Core\DB::dropTable('podcaster_channel');
+            Core\DB::dropTable('podcaster_episode');
+            Core\DB::dropTable('podcaster_category');
             $content[] = sprintf(dgettext('podcaster', 'Podcaster tables dropped, %s media file(s) deleted.'), $num);
             return true;
         } else {
             /* go ahead and drop the tables */
-            PHPWS_DB::dropTable('podcaster_channel');
-            PHPWS_DB::dropTable('podcaster_episode');
-            PHPWS_DB::dropTable('podcaster_category');
+            Core\DB::dropTable('podcaster_channel');
+            Core\DB::dropTable('podcaster_episode');
+            Core\DB::dropTable('podcaster_category');
             $content[] = dgettext('podcaster', 'Podcaster tables dropped.');
             return true;
         }
@@ -72,7 +72,7 @@ function podcaster_uninstall(&$content) {
     }
 
 
-    $form = new PHPWS_Form('rm_media_confirm');
+    $form = new Core\Form('rm_media_confirm');
 
     $form->addHidden('module', 'boost');
     $form->addHidden('opmod', 'podcaster');
@@ -83,7 +83,7 @@ function podcaster_uninstall(&$content) {
 
     $form->addHidden('process_uninstall', 1);
 
-    if (PHPWS_Settings::get('podcaster', 'rm_media')) {
+    if (Core\Settings::get('podcaster', 'rm_media')) {
         $match = 1;
     } else {
         $match = 0;
@@ -98,7 +98,7 @@ function podcaster_uninstall(&$content) {
     $template = $form->getTemplate();
 
     $template['RM_MEDIA'] = dgettext('podcaster', 'Delete related media files from filecabinet?');
-    $content[] = PHPWS_Template::process($template, 'podcaster', 'uninstall.tpl');
+    $content[] = Core\Template::process($template, 'podcaster', 'uninstall.tpl');
 
     return false;
 

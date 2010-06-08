@@ -20,7 +20,7 @@ class local_authorization extends User_Authorization {
         if (empty($this->password)) {
             return false;
         }
-        $db = new PHPWS_DB('user_authorization');
+        $db = new Core\DB('user_authorization');
         if (!Current_User::allowUsername($this->user->username)) {
             return false;
         }
@@ -31,7 +31,7 @@ class local_authorization extends User_Authorization {
         $db->addWhere('password', $password_hash);
         $result = $db->select('one');
 
-        return (!PHPWS_Error::logIfError($result) && (bool)$result);
+        return (!Core\Error::logIfError($result) && (bool)$result);
     }
 
     public function verify()

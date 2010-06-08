@@ -59,7 +59,7 @@ class Webpage_Forms {
 
     public function editHeader(Webpage_Volume $volume, $version)
     {
-        $form = new PHPWS_Form;
+        $form = new Core\Form;
         $form->addHidden('module', 'webpage');
         $form->addHidden('wp_admin', 'post_header');
 
@@ -83,13 +83,13 @@ class Webpage_Forms {
         $form->setLabel('summary', dgettext('webpage', 'Summary'));
 
         $template = $form->getTemplate();
-        return PHPWS_Template::process($template, 'webpage', 'forms/edit.tpl');
+        return Core\Template::process($template, 'webpage', 'forms/edit.tpl');
     }
 
 
     public function editPage(Webpage_Page $page, $version)
     {
-        $form = new PHPWS_Form;
+        $form = new Core\Form;
         $form->addHidden('module', 'webpage');
         $form->addHidden('wp_admin', 'post_page');
         $form->addHidden('volume_id', $page->volume_id);
@@ -127,7 +127,7 @@ class Webpage_Forms {
         $form->addCheck('force_template', 1);
         $form->setLabel('force_template', dgettext('webpage', 'Force all pages to use this template'));
 
-        if (PHPWS_Settings::get('webpage', 'add_images')) {
+        if (Core\Settings::get('webpage', 'add_images')) {
             Core\Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('image_id', $page->image_id);
             $manager->maxImageWidth(640);
@@ -139,7 +139,7 @@ class Webpage_Forms {
         }
 
         $template = $form->getTemplate();
-        return PHPWS_Template::process($template, 'webpage', 'forms/edit_page.tpl');
+        return Core\Template::process($template, 'webpage', 'forms/edit_page.tpl');
     }
 
     public function wp_list()
@@ -160,7 +160,7 @@ class Webpage_Forms {
             $select_op['feature']            = dgettext('webpage', 'Feature page');
         }
 
-        $form = new PHPWS_Form;
+        $form = new Core\Form;
         $form->addHidden('module', 'webpage');
 
         if (count($select_op) > 1) {
@@ -189,8 +189,7 @@ class Webpage_Forms {
         }
 
 
-        Core\Core::initCoreClass('DBPager.php');
-        $pager = new DBPager('webpage_volume', 'Webpage_Volume');
+                $pager = new Core\DBPager('webpage_volume', 'Webpage_Volume');
         $pager->setModule('webpage');
         $pager->setTemplate('forms/list.tpl');
         $pager->setLink('index.php?module=webpage&amp;tab=list');
@@ -198,7 +197,7 @@ class Webpage_Forms {
         $pager->addRowTags('rowTags');
         $pager->addToggle('class="bgcolor1"');
         $pager->setSearch('title');
-        Key::restrictEdit($pager->db, 'webpage', 'edit_page');
+        Core\Key::restrictEdit($pager->db, 'webpage', 'edit_page');
         $pager->db->addWhere('approved', 1);
         $pager->db->addWhere('approved', 0, '=', 'or', 'up');
         $pager->db->addWhere('update_user_id', Current_User::getId(), '=', 'and', 'up');
@@ -215,16 +214,16 @@ class Webpage_Forms {
 
         $approval = new Version_Approval('webpage', 'webpage_volume', 'Webpage_Volume', 'approval_view');
         $vars['wp_admin'] = 'edit_webpage';
-        $approval->setEditUrl(PHPWS_Text::linkAddress('webpage', $vars, TRUE));
+        $approval->setEditUrl(Core\Text::linkAddress('webpage', $vars, TRUE));
 
         $vars['wp_admin'] = 'approval_view';
-        $approval->setViewUrl(PHPWS_Text::linkAddress('webpage', $vars, TRUE));
+        $approval->setViewUrl(Core\Text::linkAddress('webpage', $vars, TRUE));
 
         $vars['wp_admin'] = 'approve_webpage';
-        $approval->setApproveUrl(PHPWS_Text::linkAddress('webpage', $vars, TRUE));
+        $approval->setApproveUrl(Core\Text::linkAddress('webpage', $vars, TRUE));
 
         $vars['wp_admin'] = 'disapprove_webpage';
-        $approval->setDisapproveUrl(PHPWS_Text::linkAddress('webpage', $vars, TRUE));
+        $approval->setDisapproveUrl(Core\Text::linkAddress('webpage', $vars, TRUE));
 
         return $approval->getList();
     }

@@ -41,8 +41,8 @@ class OldWikiPage
         if (isset($id) && is_numeric($id))
         {
             $this->setId($id);
-            $db = new PHPWS_DB('wiki_pages_version');
-            PHPWS_Error::logIfError($db->loadObject($this));
+            $db = new Core\DB('wiki_pages_version');
+            Core\Error::logIfError($db->loadObject($this));
         }
     }
 
@@ -68,11 +68,11 @@ class OldWikiPage
 
     function getEditor()
     {
-        $db = new PHPWS_DB('users');
+        $db = new Core\DB('users');
         $db->addWhere('id', $this->getEditorId());
         $db->addColumn('display_name');
         $result = $db->select('col');
-        if (PHPWS_Error::logIfError($result))
+        if (Core\Error::logIfError($result))
         {
             return dgettext('wiki', 'N/A');
         }
@@ -107,7 +107,7 @@ class OldWikiPage
 
     function getComment()
     {
-        return PHPWS_Text::parseOutput($this->comment);
+        return Core\Text::parseOutput($this->comment);
     }
 
     function getVrNumber()
@@ -123,11 +123,11 @@ class OldWikiPage
 
     function getAllowEdit()
     {
-        $db = new PHPWS_DB('wiki_pages');
+        $db = new Core\DB('wiki_pages');
         $db->addWhere('id', $this->getSourceId());
         $db->addColumn('allow_edit');
         $result = $db->select('col');
-        if (PHPWS_Error::logIfError($result))
+        if (Core\Error::logIfError($result))
         {
             return 0;
         }
@@ -140,28 +140,28 @@ class OldWikiPage
         $links = NULL;
 
         if ((Current_User::allow('wiki', 'edit_page') ||
-            (PHPWS_Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) &&
+            (Core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) &&
             $this->getAllowEdit() && !$this->getVrCurrent())
         {
-            $links .= PHPWS_Template::process(array('LINK'=>PHPWS_Text::secureLink(dgettext('wiki', 'Restore'), 'wiki',
+            $links .= Core\Template::process(array('LINK'=>Core\Text::secureLink(dgettext('wiki', 'Restore'), 'wiki',
                       array('page_op'=>'restore', 'page'=>$this->getTitle(FALSE), 'id'=>$this->getId()))),
                       'wiki', 'menu_item.tpl');
         }
 
         if (Current_User::allow('wiki', 'delete_page') && $this->getAllowEdit() && !$this->getVrCurrent())
         {
-            $js_var['ADDRESS'] = PHPWS_Text::linkAddress('wiki', array('page_op'=>'removeold',
+            $js_var['ADDRESS'] = Core\Text::linkAddress('wiki', array('page_op'=>'removeold',
                                  'page'=>$this->getTitle(FALSE), 'id'=>$this->getId()), TRUE);
             $js_var['QUESTION'] = dgettext('wiki', 'Are you sure you want to remove this page revision?');
             $js_var['LINK'] = dgettext('wiki', 'Remove');
-            $links .= PHPWS_Template::process(array('LINK'=>(Layout::getJavascript('confirm', $js_var))),
+            $links .= Core\Template::process(array('LINK'=>(Layout::getJavascript('confirm', $js_var))),
                       'wiki', 'menu_item.tpl');
         }
 
-        $links .= PHPWS_Template::process(array('LINK'=>PHPWS_Text::moduleLink(dgettext('wiki', 'History'), 'wiki',
+        $links .= Core\Template::process(array('LINK'=>Core\Text::moduleLink(dgettext('wiki', 'History'), 'wiki',
                   array('page_op'=>'history', 'page_id'=>$this->getSourceId()))), 'wiki', 'menu_item.tpl');
 
-        $links .= PHPWS_Template::process(array('LINK'=>PHPWS_Text::moduleLink(dgettext('wiki', 'Back to Page'), 'wiki',
+        $links .= Core\Template::process(array('LINK'=>Core\Text::moduleLink(dgettext('wiki', 'Back to Page'), 'wiki',
                   array('page'=>$this->getTitle(FALSE)))), 'wiki', 'menu_item.tpl');
 
         return $links;
@@ -173,18 +173,18 @@ class OldWikiPage
 
         if (!$this->getVrCurrent())
         {
-            $db = new PHPWS_DB('wiki_pages_version');
+            $db = new Core\DB('wiki_pages_version');
             $db->addWhere('source_id', $this->getSourceId());
-            $links[] = PHPWS_Text::moduleLink(dgettext('wiki', 'Current'), 'wiki', array('page'=>$this->getTitle(FALSE),
+            $links[] = Core\Text::moduleLink(dgettext('wiki', 'Current'), 'wiki', array('page'=>$this->getTitle(FALSE),
             'page_op'=>'compare', 'oVer'=>$this->getVrNumber(), 'nVer'=>$db->count()));
         }
 
-        $db2 = new PHPWS_DB('wiki_pages_version');
+        $db2 = new Core\DB('wiki_pages_version');
         $db2->addWhere('source_id', $this->getSourceId());
         $db2->addColumn('vr_number', 'min');
         if ($this->getVrNumber() != $db2->select('min'))
         {
-            $links[] = PHPWS_Text::moduleLink(dgettext('wiki', 'Previous'), 'wiki', array('page'=>$this->getTitle(FALSE),
+            $links[] = Core\Text::moduleLink(dgettext('wiki', 'Previous'), 'wiki', array('page'=>$this->getTitle(FALSE),
                        'page_op'=>'compare', 'oVer'=>($this->getVrNumber()-1), 'nVer'=>$this->getVrNumber()));
         }
 
@@ -198,7 +198,7 @@ class OldWikiPage
         $tags['PAGETEXT'] = $this->getPagetext();
         $tags['MESSAGE'] = sprintf(dgettext('wiki', 'Revision as of %s'), $this->getUpdated());
 
-        if (PHPWS_Settings::get('wiki', 'show_modified_info'))
+        if (Core\Settings::get('wiki', 'show_modified_info'))
         {
             $editor = $this->getEditor();
             if (Current_User::isLogged() && (Current_User::getId() != $this->getEditorId()))
@@ -211,18 +211,18 @@ class OldWikiPage
             $tags['UPDATED_INFO'] = sprintf(dgettext('wiki', 'Last modified %1$s by %2$s'), $this->getUpdated(), $editor);
         }
 
-        if (PHPWS_Settings::get('wiki', 'add_to_title'))
+        if (Core\Settings::get('wiki', 'add_to_title'))
         {
             Layout::addPageTitle($this->getTitle());
         }
 
-        return PHPWS_Template::process($tags, 'wiki', 'view.tpl');
+        return Core\Template::process($tags, 'wiki', 'view.tpl');
     }
 
     function restore($hits)
     {
         if (!((Current_User::authorized('wiki', 'edit_page') ||
-            (PHPWS_Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) &&
+            (Core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) &&
             $this->getAllowEdit() && !$this->getVrCurrent()))
         {
             Current_User::disallow(dgettext('wiki', 'User attempted to restore previous page version.'));
@@ -258,20 +258,20 @@ class OldWikiPage
         $vars['page'] = $this->getTitle(FALSE);
         $vars['page_op'] = 'viewold';
         $vars['id'] = $this->getId();
-        $links[] = PHPWS_Text::moduleLink(dgettext('wiki', 'View'), 'wiki', $vars);
+        $links[] = Core\Text::moduleLink(dgettext('wiki', 'View'), 'wiki', $vars);
 
         if ((Current_User::allow('wiki', 'edit_page') ||
-            (PHPWS_Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) &&
+            (Core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) &&
             $this->getAllowEdit() && !$this->getVrCurrent())
         {
             $vars['page_op'] = 'restore';
-            $links[] = PHPWS_Text::secureLink(dgettext('wiki', 'Restore'), 'wiki', $vars);
+            $links[] = Core\Text::secureLink(dgettext('wiki', 'Restore'), 'wiki', $vars);
         }
 
         if (Current_User::allow('wiki', 'delete_page') && $this->getAllowEdit() && !$this->getVrCurrent())
         {
             $vars['page_op'] = 'removeold';
-            $js_var['ADDRESS'] = PHPWS_Text::linkAddress('wiki', $vars, TRUE);
+            $js_var['ADDRESS'] = Core\Text::linkAddress('wiki', $vars, TRUE);
             $js_var['QUESTION'] = dgettext('wiki', 'Are you sure you want to remove this page revision?');
             $js_var['LINK'] = dgettext('wiki', 'Remove');
             $links[] = Layout::getJavascript('confirm', $js_var);
@@ -289,20 +289,20 @@ class OldWikiPage
 
     function getRecentChangesTpl()
     {
-        $db = new PHPWS_DB('wiki_pages_version');
+        $db = new Core\DB('wiki_pages_version');
         $db->addWhere('source_id', $this->getSourceId());
         $db->addColumn('vr_number', 'min');
         if ($this->getVrNumber() != $db->select('min'))
         {
-            $links[] = PHPWS_Text::moduleLink(dgettext('wiki', 'Diff'), 'wiki', array('page'=>$this->getTitle(FALSE),
+            $links[] = Core\Text::moduleLink(dgettext('wiki', 'Diff'), 'wiki', array('page'=>$this->getTitle(FALSE),
                        'page_op'=>'compare', 'oVer'=>($this->getVrNumber()-1), 'nVer'=>$this->getVrNumber()));
         }
 
-        $links[] = PHPWS_Text::moduleLink(dgettext('wiki', 'History'), 'wiki',
+        $links[] = Core\Text::moduleLink(dgettext('wiki', 'History'), 'wiki',
                                           array('page_op'=>'history', 'page_id'=>$this->getSourceId()));
 
         $template['VIEW']     = implode(' | ', $links);
-        $template['PAGE']     = PHPWS_Text::moduleLink($this->getTitle(), 'wiki', array('page'=>$this->getTitle(FALSE)));
+        $template['PAGE']     = Core\Text::moduleLink($this->getTitle(), 'wiki', array('page'=>$this->getTitle(FALSE)));
         $template['UPDATED']  = $this->getUpdated();
         $template['EDITOR']   = $this->getEditor();
         $template['COMMENT']  = $this->getComment() . '';

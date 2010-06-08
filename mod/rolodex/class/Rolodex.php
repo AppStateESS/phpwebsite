@@ -99,11 +99,11 @@ class Rolodex {
                 if (!Current_User::authorized('rolodex', 'settings')) {
                     Current_User::disallow();
                 }
-                $oldsearch = PHPWS_Settings::get('rolodex', 'privacy_use_search');
+                $oldsearch = Core\Settings::get('rolodex', 'privacy_use_search');
                 if ($this->postSettings()) {
                     $msg = dgettext('rolodex', 'Rolodex settings saved.') . '<br />';
-                    if ($oldsearch != PHPWS_Settings::get('rolodex', 'privacy_use_search')) {
-                        if (PHPWS_Settings::get('rolodex', 'privacy_use_search')) {
+                    if ($oldsearch != Core\Settings::get('rolodex', 'privacy_use_search')) {
+                        if (Core\Settings::get('rolodex', 'privacy_use_search')) {
                             if ($this->search_index_all())
                                 $msg .= dgettext('rolodex', 'All current member records have been indexed with the search module.');
                         } else {
@@ -127,7 +127,7 @@ class Rolodex {
                     Current_User::disallow();
                 }
                 if ($this->postMember()) {
-                    if (PHPWS_Error::logIfError($this->member->saveMember())) {
+                    if (Core\Error::logIfError($this->member->saveMember())) {
                         $this->forwardMessage(dgettext('rolodex', 'Error occurred when saving member profile.'));
                         Core\Core::reroute('index.php?module=rolodex&aop=edit_member&user_id=' . $this->member->user_id);
                     } else {
@@ -165,7 +165,7 @@ class Rolodex {
 
             case 'reset_expired':
                 $settingsPanel->setCurrentTab('utilities');
-                $interval = PHPWS_Settings::get('rolodex', 'expiry_interval');
+                $interval = Core\Settings::get('rolodex', 'expiry_interval');
                 $this->resetExpired($interval);
                 $this->message = sprintf(dgettext('rolodex', 'All expiry dates set to %s days from now.'), $interval);
                 $this->loadForm('utilities');
@@ -184,7 +184,7 @@ class Rolodex {
 
             case 'search_index_all':
                 $settingsPanel->setCurrentTab('utilities');
-                if (PHPWS_Settings::get('rolodex', 'privacy_use_search')) {
+                if (Core\Settings::get('rolodex', 'privacy_use_search')) {
                     $this->search_index_all();
                     $this->message = dgettext('rolodex', 'All current member records have been indexed with the search module.');
                 } else {
@@ -195,7 +195,7 @@ class Rolodex {
 
             case 'search_remove_all':
                 $settingsPanel->setCurrentTab('utilities');
-                if (PHPWS_Settings::get('rolodex', 'privacy_use_search')) {
+                if (Core\Settings::get('rolodex', 'privacy_use_search')) {
                     $this->message = dgettext('rolodex', 'Search indexing is enabled in Rolodex settings. You must disable it there before you may perform this action.');
                 } else {
                     $this->search_remove_all();
@@ -248,7 +248,7 @@ class Rolodex {
             case 'post_location':
                 $settingsPanel->setCurrentTab('locations');
                 if ($this->postLocation()) {
-                    if (PHPWS_Error::logIfError($this->location->save())) {
+                    if (Core\Error::logIfError($this->location->save())) {
                         $this->forwardMessage(dgettext('rolodex', 'Error occurred when saving location.'));
                         Core\Core::reroute('index.php?module=rolodex&aop=edit_location&location=' . $this->location->id);
                     } else {
@@ -277,7 +277,7 @@ class Rolodex {
             case 'post_feature':
                 $settingsPanel->setCurrentTab('features');
                 if ($this->postFeature()) {
-                    if (PHPWS_Error::logIfError($this->feature->save())) {
+                    if (Core\Error::logIfError($this->feature->save())) {
                         $this->forwardMessage(dgettext('rolodex', 'Error occurred when saving feature.'));
                         Core\Core::reroute('index.php?module=rolodex&aop=edit_feature&feature=' . $this->feature->id);
                     } else {
@@ -334,9 +334,9 @@ class Rolodex {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rolodex', 'main_admin.tpl'));
+            Layout::nakedDisplay(Core\Template::process($tpl, 'rolodex', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(PHPWS_Template::process($tpl, 'rolodex', 'main_admin.tpl'));
+            $this->panel->setContent(Core\Template::process($tpl, 'rolodex', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -389,12 +389,12 @@ class Rolodex {
                 if (empty($this->message)) {
                     Core\Core::home();
                 }
-                $this->title = PHPWS_Settings::get('rolodex', 'module_title');
+                $this->title = Core\Settings::get('rolodex', 'module_title');
                 break;
 
             case 'list':
-                if (!PHPWS_Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = PHPWS_Settings::get('rolodex', 'module_title');
+                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = Core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
                     Core\Core::initModClass('rolodex', 'RDX_Forms.php');
@@ -405,8 +405,8 @@ class Rolodex {
                 break;
 
             case 'categories':
-                if (!PHPWS_Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = PHPWS_Settings::get('rolodex', 'module_title');
+                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = Core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
                     Core\Core::initModClass('rolodex', 'RDX_Forms.php');
@@ -418,8 +418,8 @@ class Rolodex {
                 break;
 
             case 'locations':
-                if (!PHPWS_Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = PHPWS_Settings::get('rolodex', 'module_title');
+                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = Core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
                     Core\Core::initModClass('rolodex', 'RDX_Forms.php');
@@ -430,8 +430,8 @@ class Rolodex {
                 break;
 
             case 'features':
-                if (!PHPWS_Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = PHPWS_Settings::get('rolodex', 'module_title');
+                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = Core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
                     Core\Core::initModClass('rolodex', 'RDX_Forms.php');
@@ -442,8 +442,8 @@ class Rolodex {
                 break;
 
             case 'advanced':
-                if (!PHPWS_Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = PHPWS_Settings::get('rolodex', 'module_title');
+                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = Core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
                     Core\Core::initModClass('rolodex', 'RDX_Forms.php');
@@ -454,8 +454,8 @@ class Rolodex {
                 break;
 
             case 'adv_search':
-                if (!PHPWS_Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = PHPWS_Settings::get('rolodex', 'module_title');
+                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = Core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
                     Core\Core::initModClass('rolodex', 'RDX_Forms.php');
@@ -470,19 +470,19 @@ class Rolodex {
                 if (Rolodex_Member::isDataVisible('privacy_export')) {
                     $this->exportCSV();
                 } else {
-                    $this->title = PHPWS_Settings::get('rolodex', 'module_title');
+                    $this->title = Core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, your access does not allow CSV exporting.');
                 }
                 break;
 
             case 'view_member':
-                if (!PHPWS_Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = PHPWS_Settings::get('rolodex', 'module_title');
+                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = Core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this member.');
                 } else {
                     $this->loadMember();
                     if ($this->member->isMemberVisible()) {
-                        if (PHPWS_Settings::get('rolodex', 'enable_expiry')) {
+                        if (Core\Settings::get('rolodex', 'enable_expiry')) {
                             if ($this->member->date_expires <= time()) {
                                 $this->forwardMessage(dgettext('rolodex', 'Sorry, this membership has expired.'));
                                 if (!Current_User::isUnrestricted('rolodex'))
@@ -492,7 +492,7 @@ class Rolodex {
                         $this->title = $this->member->getDisplay_name(true);
                         $this->content = $this->member->view();
                     } else {
-                        $this->title = PHPWS_Settings::get('rolodex', 'module_title');
+                        $this->title = Core\Settings::get('rolodex', 'module_title');
                         $this->content = dgettext('rolodex', 'Sorry, this user has restricted privacy settings.');
                     }
                 }
@@ -517,7 +517,7 @@ class Rolodex {
 
             case 'send_message':
                 if ($this->checkMessage()) {
-                    if (!PHPWS_Error::logIfError($this->sendMail())) {
+                    if (!Core\Error::logIfError($this->sendMail())) {
                         $this->forwardMessage(dgettext('rolodex', 'Message sent succesfully.'));
                         Core\Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
                     } else {
@@ -538,15 +538,15 @@ class Rolodex {
                     Current_User::disallow();
                 }
                 if ($this->postMember()) {
-                    if (PHPWS_Error::logIfError($this->member->saveMember())) {
-                        if (PHPWS_Settings::get('rolodex', 'req_approval')) {
+                    if (Core\Error::logIfError($this->member->saveMember())) {
+                        if (Core\Settings::get('rolodex', 'req_approval')) {
                             $this->forwardMessage(dgettext('rolodex', 'Error occurred when submitting member profile.'));
                         } else {
                             $this->forwardMessage(dgettext('rolodex', 'Error occurred when saving member profile.'));
                         }
                         Core\Core::reroute('index.php?module=rolodex&uop=edit_member&user_id=' . $this->member->user_id);
                     } else {
-                        if (PHPWS_Settings::get('rolodex', 'req_approval') && $this->member->isNew()) {
+                        if (Core\Settings::get('rolodex', 'req_approval') && $this->member->isNew()) {
                             $this->forwardMessage(dgettext('rolodex', 'Member profile submitted successfully. An admin will review.'));
                             Core\Core::reroute('index.php?module=rolodex&uop=list');
                         } else {
@@ -560,8 +560,8 @@ class Rolodex {
                 break;
 
             case 'view_location':
-                if (!PHPWS_Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = PHPWS_Settings::get('rolodex', 'module_title');
+                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = Core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
                     if (isset($_REQUEST['location_id'])) {
@@ -579,8 +579,8 @@ class Rolodex {
                 break;
 
             case 'view_feature':
-                if (!PHPWS_Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = PHPWS_Settings::get('rolodex', 'module_title');
+                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = Core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
                     if (isset($_REQUEST['feature_id'])) {
@@ -598,8 +598,8 @@ class Rolodex {
                 break;
 
             case 'view_category':
-                if (!PHPWS_Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = PHPWS_Settings::get('rolodex', 'module_title');
+                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = Core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
                     if (isset($_REQUEST['category_id'])) {
@@ -624,9 +624,9 @@ class Rolodex {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rolodex', 'main_user.tpl'));
+            Layout::nakedDisplay(Core\Template::process($tpl, 'rolodex', 'main_user.tpl'));
         } else {
-            Layout::add(PHPWS_Template::process($tpl, 'rolodex', 'main_user.tpl'));
+            Layout::add(Core\Template::process($tpl, 'rolodex', 'main_user.tpl'));
         }
 
     }
@@ -724,12 +724,12 @@ class Rolodex {
                               'link'=>$link);
 
         if (Current_User::isUnrestricted('rolodex')) {
-            $db = new PHPWS_DB('rolodex_member');
+            $db = new Core\DB('rolodex_member');
             $db->addWhere('active', 0);
             $unapproved = $db->count();
             $tags['approvals'] = array('title'=>sprintf(dgettext('rolodex', 'Unapproved (%s)'), $unapproved), 'link'=>$link);
-            if (PHPWS_Settings::get('rolodex', 'enable_expiry')) {
-                $db = new PHPWS_DB('rolodex_member');
+            if (Core\Settings::get('rolodex', 'enable_expiry')) {
+                $db = new Core\DB('rolodex_member');
                 $db->addWhere('date_expires', time(), '<=');
                 $expired = $db->count();
                 $tags['expired'] = array('title'=>sprintf(dgettext('rolodex', 'Expired (%s)'), $expired), 'link'=>$link);
@@ -753,259 +753,259 @@ class Rolodex {
     {
 
         if (!empty($_POST['module_title'])) {
-            PHPWS_Settings::set('rolodex', 'module_title', strip_tags($_POST['module_title']));
+            Core\Settings::set('rolodex', 'module_title', strip_tags($_POST['module_title']));
         } else {
             $errors[] = dgettext('rolodex', 'Please provide a module title.');
         }
 
         isset($_POST['allow_anon']) ?
-            PHPWS_Settings::set('rolodex', 'allow_anon', 1) :
-            PHPWS_Settings::set('rolodex', 'allow_anon', 0);
+            Core\Settings::set('rolodex', 'allow_anon', 1) :
+            Core\Settings::set('rolodex', 'allow_anon', 0);
 
-        PHPWS_Settings::set('rolodex', 'sortby', (int)$_POST['sortby']);
+        Core\Settings::set('rolodex', 'sortby', (int)$_POST['sortby']);
 
         isset($_POST['req_approval']) ?
-            PHPWS_Settings::set('rolodex', 'req_approval', 1) :
-            PHPWS_Settings::set('rolodex', 'req_approval', 0);
+            Core\Settings::set('rolodex', 'req_approval', 1) :
+            Core\Settings::set('rolodex', 'req_approval', 0);
 
         isset($_POST['send_notification']) ?
-            PHPWS_Settings::set('rolodex', 'send_notification', 1) :
-            PHPWS_Settings::set('rolodex', 'send_notification', 0);
+            Core\Settings::set('rolodex', 'send_notification', 1) :
+            Core\Settings::set('rolodex', 'send_notification', 0);
 
         isset($_POST['notify_all_saves']) ?
-            PHPWS_Settings::set('rolodex', 'notify_all_saves', 1) :
-            PHPWS_Settings::set('rolodex', 'notify_all_saves', 0);
+            Core\Settings::set('rolodex', 'notify_all_saves', 1) :
+            Core\Settings::set('rolodex', 'notify_all_saves', 0);
 
         if (isset($_POST['admin_contact']) && ($_POST['admin_contact']) !== '') {
-            if (PHPWS_Text::isValidInput($_POST['admin_contact'], 'email')) {
-                PHPWS_Settings::set('rolodex', 'admin_contact', $_POST['admin_contact']);
+            if (Core\Text::isValidInput($_POST['admin_contact'], 'email')) {
+                Core\Settings::set('rolodex', 'admin_contact', $_POST['admin_contact']);
             } else {
                 $errors[] = dgettext('rolodex', 'Check your admin contact e-mail address for formatting errors.');
             }
         } else {
-            PHPWS_Settings::set('rolodex', 'admin_contact', null);
+            Core\Settings::set('rolodex', 'admin_contact', null);
         }
 
         isset($_POST['use_categories']) ?
-            PHPWS_Settings::set('rolodex', 'use_categories', 1) :
-            PHPWS_Settings::set('rolodex', 'use_categories', 0);
+            Core\Settings::set('rolodex', 'use_categories', 1) :
+            Core\Settings::set('rolodex', 'use_categories', 0);
 
         isset($_POST['use_locations']) ?
-            PHPWS_Settings::set('rolodex', 'use_locations', 1) :
-            PHPWS_Settings::set('rolodex', 'use_locations', 0);
+            Core\Settings::set('rolodex', 'use_locations', 1) :
+            Core\Settings::set('rolodex', 'use_locations', 0);
 
         isset($_POST['use_features']) ?
-            PHPWS_Settings::set('rolodex', 'use_features', 1) :
-            PHPWS_Settings::set('rolodex', 'use_features', 0);
+            Core\Settings::set('rolodex', 'use_features', 1) :
+            Core\Settings::set('rolodex', 'use_features', 0);
 
         if (isset($_POST['comments_enable'])) {
             if (isset($_POST['comments_enforce'])) {
-                PHPWS_Settings::set('rolodex', 'comments_enforce', 1);
+                Core\Settings::set('rolodex', 'comments_enforce', 1);
                 $this->setAllComments(1);
             } else {
-                PHPWS_Settings::set('rolodex', 'comments_enforce', 0);
+                Core\Settings::set('rolodex', 'comments_enforce', 0);
             }
-            PHPWS_Settings::set('rolodex', 'comments_enable', 1);
+            Core\Settings::set('rolodex', 'comments_enable', 1);
             if (isset($_POST['comments_anon_enable'])) {
                 if (isset($_POST['comments_anon_enforce'])) {
-                    PHPWS_Settings::set('rolodex', 'comments_anon_enforce', 1);
+                    Core\Settings::set('rolodex', 'comments_anon_enforce', 1);
                     $this->setAllComments_annon(1);
                 } else {
-                    PHPWS_Settings::set('rolodex', 'comments_anon_enforce', 0);
+                    Core\Settings::set('rolodex', 'comments_anon_enforce', 0);
                 }
-                PHPWS_Settings::set('rolodex', 'comments_anon_enable', 1);
+                Core\Settings::set('rolodex', 'comments_anon_enable', 1);
             } else {
-                PHPWS_Settings::set('rolodex', 'comments_anon_enable', 0);
-                PHPWS_Settings::set('rolodex', 'comments_anon_enforce', 0);
+                Core\Settings::set('rolodex', 'comments_anon_enable', 0);
+                Core\Settings::set('rolodex', 'comments_anon_enforce', 0);
             }
         } else {
-            PHPWS_Settings::set('rolodex', 'comments_enable', 0);
-            PHPWS_Settings::set('rolodex', 'comments_enforce', 0);
-            PHPWS_Settings::set('rolodex', 'comments_anon_enable', 0);
-            PHPWS_Settings::set('rolodex', 'comments_anon_enforce', 0);
+            Core\Settings::set('rolodex', 'comments_enable', 0);
+            Core\Settings::set('rolodex', 'comments_enforce', 0);
+            Core\Settings::set('rolodex', 'comments_anon_enable', 0);
+            Core\Settings::set('rolodex', 'comments_anon_enforce', 0);
         }
 
-        PHPWS_Settings::set('rolodex', 'contact_type', $_POST['contact_type']);
-        PHPWS_Settings::set('rolodex', 'privacy_contact', $_POST['privacy_contact']);
-        PHPWS_Settings::set('rolodex', 'privacy_web', $_POST['privacy_web']);
-        PHPWS_Settings::set('rolodex', 'privacy_home_phone', $_POST['privacy_home_phone']);
-        PHPWS_Settings::set('rolodex', 'privacy_bus_phone', $_POST['privacy_bus_phone']);
-        PHPWS_Settings::set('rolodex', 'privacy_home', $_POST['privacy_home']);
-        PHPWS_Settings::set('rolodex', 'privacy_business', $_POST['privacy_business']);
-        PHPWS_Settings::set('rolodex', 'privacy_export', $_POST['privacy_export']);
-        PHPWS_Settings::set('rolodex', 'privacy_use_search', $_POST['privacy_use_search']);
+        Core\Settings::set('rolodex', 'contact_type', $_POST['contact_type']);
+        Core\Settings::set('rolodex', 'privacy_contact', $_POST['privacy_contact']);
+        Core\Settings::set('rolodex', 'privacy_web', $_POST['privacy_web']);
+        Core\Settings::set('rolodex', 'privacy_home_phone', $_POST['privacy_home_phone']);
+        Core\Settings::set('rolodex', 'privacy_bus_phone', $_POST['privacy_bus_phone']);
+        Core\Settings::set('rolodex', 'privacy_home', $_POST['privacy_home']);
+        Core\Settings::set('rolodex', 'privacy_business', $_POST['privacy_business']);
+        Core\Settings::set('rolodex', 'privacy_export', $_POST['privacy_export']);
+        Core\Settings::set('rolodex', 'privacy_use_search', $_POST['privacy_use_search']);
 
-        PHPWS_Settings::set('rolodex', 'list_address', $_POST['list_address']);
+        Core\Settings::set('rolodex', 'list_address', $_POST['list_address']);
 
         isset($_POST['list_phone']) ?
-            PHPWS_Settings::set('rolodex', 'list_phone', 1) :
-            PHPWS_Settings::set('rolodex', 'list_phone', 0);
+            Core\Settings::set('rolodex', 'list_phone', 1) :
+            Core\Settings::set('rolodex', 'list_phone', 0);
 
         isset($_POST['list_categories']) ?
-            PHPWS_Settings::set('rolodex', 'list_categories', 1) :
-            PHPWS_Settings::set('rolodex', 'list_categories', 0);
+            Core\Settings::set('rolodex', 'list_categories', 1) :
+            Core\Settings::set('rolodex', 'list_categories', 0);
 
         isset($_POST['list_locations']) ?
-            PHPWS_Settings::set('rolodex', 'list_locations', 1) :
-            PHPWS_Settings::set('rolodex', 'list_locations', 0);
+            Core\Settings::set('rolodex', 'list_locations', 1) :
+            Core\Settings::set('rolodex', 'list_locations', 0);
 
         isset($_POST['list_features']) ?
-            PHPWS_Settings::set('rolodex', 'list_features', 1) :
-            PHPWS_Settings::set('rolodex', 'list_features', 0);
+            Core\Settings::set('rolodex', 'list_features', 1) :
+            Core\Settings::set('rolodex', 'list_features', 0);
 
 
         isset($_POST['enable_expiry']) ?
-            PHPWS_Settings::set('rolodex', 'enable_expiry', 1) :
-            PHPWS_Settings::set('rolodex', 'enable_expiry', 0);
+            Core\Settings::set('rolodex', 'enable_expiry', 1) :
+            Core\Settings::set('rolodex', 'enable_expiry', 0);
 
         if (isset($_POST['expiry_interval'])) {
-            PHPWS_Settings::set('rolodex', 'expiry_interval', (int)$_POST['expiry_interval']);
+            Core\Settings::set('rolodex', 'expiry_interval', (int)$_POST['expiry_interval']);
         } else {
-            PHPWS_Settings::reset('rolodex', 'expiry_interval');
+            Core\Settings::reset('rolodex', 'expiry_interval');
         }
 
         isset($_POST['use_captcha']) ?
-            PHPWS_Settings::set('rolodex', 'use_captcha', 1) :
-            PHPWS_Settings::set('rolodex', 'use_captcha', 0);
+            Core\Settings::set('rolodex', 'use_captcha', 1) :
+            Core\Settings::set('rolodex', 'use_captcha', 0);
 
         if ( !empty($_POST['max_img_width']) ) {
             $max_img_width = (int)$_POST['max_img_width'];
             if ($max_img_width >= 50 && $max_img_width <= 600 ) {
-                PHPWS_Settings::set('rolodex', 'max_img_width', $max_img_width);
+                Core\Settings::set('rolodex', 'max_img_width', $max_img_width);
             }
         }
 
         if ( !empty($_POST['max_img_height']) ) {
             $max_img_height = (int)$_POST['max_img_height'];
             if ($max_img_height >= 50 && $max_img_height <= 600 ) {
-                PHPWS_Settings::set('rolodex', 'max_img_height', $max_img_height);
+                Core\Settings::set('rolodex', 'max_img_height', $max_img_height);
             }
         }
 
         if ( !empty($_POST['max_thumb_width']) ) {
             $max_thumb_width = (int)$_POST['max_thumb_width'];
             if ($max_thumb_width >= 40 && $max_thumb_width <= 200 ) {
-                PHPWS_Settings::set('rolodex', 'max_thumb_width', $max_thumb_width);
+                Core\Settings::set('rolodex', 'max_thumb_width', $max_thumb_width);
             }
         }
 
         if ( !empty($_POST['max_thumb_height']) ) {
             $max_thumb_height = (int)$_POST['max_thumb_height'];
             if ($max_thumb_height >= 40 && $max_thumb_height <= 200 ) {
-                PHPWS_Settings::set('rolodex', 'max_thumb_height', $max_thumb_height);
+                Core\Settings::set('rolodex', 'max_thumb_height', $max_thumb_height);
             }
         }
 
         if ( !empty($_POST['other_img_width']) ) {
             $other_img_width = (int)$_POST['other_img_width'];
             if ($other_img_width >= 20 && $other_img_width <= 400 ) {
-                PHPWS_Settings::set('rolodex', 'other_img_width', $other_img_width);
+                Core\Settings::set('rolodex', 'other_img_width', $other_img_width);
             }
         }
 
         if ( !empty($_POST['other_img_height']) ) {
             $other_img_height = (int)$_POST['other_img_height'];
             if ($other_img_height >= 20 && $other_img_height <= 400 ) {
-                PHPWS_Settings::set('rolodex', 'other_img_height', $other_img_height);
+                Core\Settings::set('rolodex', 'other_img_height', $other_img_height);
             }
         }
 
         isset($_POST['show_block']) ?
-            PHPWS_Settings::set('rolodex', 'show_block', 1) :
-            PHPWS_Settings::set('rolodex', 'show_block', 0);
+            Core\Settings::set('rolodex', 'show_block', 1) :
+            Core\Settings::set('rolodex', 'show_block', 0);
 
-        PHPWS_Settings::set('rolodex', 'block_order_by_rand', $_POST['block_order_by_rand']);
+        Core\Settings::set('rolodex', 'block_order_by_rand', $_POST['block_order_by_rand']);
 
         isset($_POST['block_on_home_only']) ?
-            PHPWS_Settings::set('rolodex', 'block_on_home_only', 1) :
-            PHPWS_Settings::set('rolodex', 'block_on_home_only', 0);
+            Core\Settings::set('rolodex', 'block_on_home_only', 1) :
+            Core\Settings::set('rolodex', 'block_on_home_only', 0);
 
         if (!empty($_POST['custom1_name'])) {
-            PHPWS_Settings::set('rolodex', 'custom1_name', PHPWS_Text::parseInput(strip_tags($_POST['custom1_name'])));
+            Core\Settings::set('rolodex', 'custom1_name', Core\Text::parseInput(strip_tags($_POST['custom1_name'])));
         } else {
-            PHPWS_Settings::set('rolodex', 'custom1_name', null);
+            Core\Settings::set('rolodex', 'custom1_name', null);
         }
 
         if (!empty($_POST['custom2_name'])) {
-            PHPWS_Settings::set('rolodex', 'custom2_name', PHPWS_Text::parseInput(strip_tags($_POST['custom2_name'])));
+            Core\Settings::set('rolodex', 'custom2_name', Core\Text::parseInput(strip_tags($_POST['custom2_name'])));
         } else {
-            PHPWS_Settings::set('rolodex', 'custom2_name', null);
+            Core\Settings::set('rolodex', 'custom2_name', null);
         }
 
         if (!empty($_POST['custom3_name'])) {
-            PHPWS_Settings::set('rolodex', 'custom3_name', PHPWS_Text::parseInput(strip_tags($_POST['custom3_name'])));
+            Core\Settings::set('rolodex', 'custom3_name', Core\Text::parseInput(strip_tags($_POST['custom3_name'])));
         } else {
-            PHPWS_Settings::set('rolodex', 'custom3_name', null);
+            Core\Settings::set('rolodex', 'custom3_name', null);
         }
 
         if (!empty($_POST['custom4_name'])) {
-            PHPWS_Settings::set('rolodex', 'custom4_name', PHPWS_Text::parseInput(strip_tags($_POST['custom4_name'])));
+            Core\Settings::set('rolodex', 'custom4_name', Core\Text::parseInput(strip_tags($_POST['custom4_name'])));
         } else {
-            PHPWS_Settings::set('rolodex', 'custom4_name', null);
+            Core\Settings::set('rolodex', 'custom4_name', null);
         }
 
         if (!empty($_POST['custom5_name'])) {
-            PHPWS_Settings::set('rolodex', 'custom5_name', PHPWS_Text::parseInput(strip_tags($_POST['custom5_name'])));
+            Core\Settings::set('rolodex', 'custom5_name', Core\Text::parseInput(strip_tags($_POST['custom5_name'])));
         } else {
-            PHPWS_Settings::reset('rolodex', 'custom5_name');
+            Core\Settings::reset('rolodex', 'custom5_name');
         }
 
         if (!empty($_POST['custom6_name'])) {
-            PHPWS_Settings::set('rolodex', 'custom6_name', PHPWS_Text::parseInput(strip_tags($_POST['custom6_name'])));
+            Core\Settings::set('rolodex', 'custom6_name', Core\Text::parseInput(strip_tags($_POST['custom6_name'])));
         } else {
-            PHPWS_Settings::set('rolodex', 'custom6_name', null);
+            Core\Settings::set('rolodex', 'custom6_name', null);
         }
 
         if (!empty($_POST['custom7_name'])) {
-            PHPWS_Settings::set('rolodex', 'custom7_name', PHPWS_Text::parseInput(strip_tags($_POST['custom7_name'])));
+            Core\Settings::set('rolodex', 'custom7_name', Core\Text::parseInput(strip_tags($_POST['custom7_name'])));
         } else {
-            PHPWS_Settings::set('rolodex', 'custom7_name', null);
+            Core\Settings::set('rolodex', 'custom7_name', null);
         }
 
         if (!empty($_POST['custom8_name'])) {
-            PHPWS_Settings::set('rolodex', 'custom8_name', PHPWS_Text::parseInput(strip_tags($_POST['custom8_name'])));
+            Core\Settings::set('rolodex', 'custom8_name', Core\Text::parseInput(strip_tags($_POST['custom8_name'])));
         } else {
-            PHPWS_Settings::set('rolodex', 'custom8_name', null);
+            Core\Settings::set('rolodex', 'custom8_name', null);
         }
 
         isset($_POST['custom1_list']) ?
-            PHPWS_Settings::set('rolodex', 'custom1_list', 1) :
-            PHPWS_Settings::set('rolodex', 'custom1_list', 0);
+            Core\Settings::set('rolodex', 'custom1_list', 1) :
+            Core\Settings::set('rolodex', 'custom1_list', 0);
 
         isset($_POST['custom2_list']) ?
-            PHPWS_Settings::set('rolodex', 'custom2_list', 1) :
-            PHPWS_Settings::set('rolodex', 'custom2_list', 0);
+            Core\Settings::set('rolodex', 'custom2_list', 1) :
+            Core\Settings::set('rolodex', 'custom2_list', 0);
 
         isset($_POST['custom3_list']) ?
-            PHPWS_Settings::set('rolodex', 'custom3_list', 1) :
-            PHPWS_Settings::set('rolodex', 'custom3_list', 0);
+            Core\Settings::set('rolodex', 'custom3_list', 1) :
+            Core\Settings::set('rolodex', 'custom3_list', 0);
 
         isset($_POST['custom4_list']) ?
-            PHPWS_Settings::set('rolodex', 'custom4_list', 1) :
-            PHPWS_Settings::set('rolodex', 'custom4_list', 0);
+            Core\Settings::set('rolodex', 'custom4_list', 1) :
+            Core\Settings::set('rolodex', 'custom4_list', 0);
 
         isset($_POST['custom5_list']) ?
-            PHPWS_Settings::set('rolodex', 'custom5_list', 1) :
-            PHPWS_Settings::set('rolodex', 'custom5_list', 0);
+            Core\Settings::set('rolodex', 'custom5_list', 1) :
+            Core\Settings::set('rolodex', 'custom5_list', 0);
 
         isset($_POST['custom6_list']) ?
-            PHPWS_Settings::set('rolodex', 'custom6_list', 1) :
-            PHPWS_Settings::set('rolodex', 'custom6_list', 0);
+            Core\Settings::set('rolodex', 'custom6_list', 1) :
+            Core\Settings::set('rolodex', 'custom6_list', 0);
 
         isset($_POST['custom7_list']) ?
-            PHPWS_Settings::set('rolodex', 'custom7_list', 1) :
-            PHPWS_Settings::set('rolodex', 'custom7_list', 0);
+            Core\Settings::set('rolodex', 'custom7_list', 1) :
+            Core\Settings::set('rolodex', 'custom7_list', 0);
 
         isset($_POST['custom8_list']) ?
-            PHPWS_Settings::set('rolodex', 'custom8_list', 1) :
-            PHPWS_Settings::set('rolodex', 'custom8_list', 0);
+            Core\Settings::set('rolodex', 'custom8_list', 1) :
+            Core\Settings::set('rolodex', 'custom8_list', 0);
 
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            PHPWS_Settings::save('rolodex');
+            Core\Settings::save('rolodex');
             return true;
         }
 
@@ -1062,7 +1062,7 @@ class Rolodex {
         }
 
         if (!empty($_POST['website'])) {
-            $link = PHPWS_Text::checkLink($_POST['website']);
+            $link = Core\Text::checkLink($_POST['website']);
             if (!$this->member->setWebsite($link)) {
                 $errors[] = dgettext('rolodex', 'Check your website address for formatting errors.');
             }
@@ -1195,8 +1195,8 @@ class Rolodex {
             $img_array = null;
             $image = new PHPWS_Image;
             $image->setDirectory('images/rolodex/');
-            $image->setMaxWidth(PHPWS_Settings::get('rolodex', 'max_img_width'));
-            $image->setMaxHeight(PHPWS_Settings::get('rolodex', 'max_img_height'));
+            $image->setMaxWidth(Core\Settings::get('rolodex', 'max_img_width'));
+            $image->setMaxHeight(Core\Settings::get('rolodex', 'max_img_height'));
 
             $prefix = sprintf('%s_%s_', $this->member->user_id, time());
             if (!$image->importPost('image', false, true, $prefix)) {
@@ -1207,8 +1207,8 @@ class Rolodex {
                 }
             } elseif ($image->file_name) {
                 $result = $image->write();
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
+                if (Core\Error::isError($result)) {
+                    Core\Error::log($result);
                     $errors[] = array(dgettext('rolodex', 'There was a problem saving your image.'));
                 } else {
                     if ($current_image != $image->getPath() && is_file($current_image)) {
@@ -1225,7 +1225,7 @@ class Rolodex {
             $source = $image->file_directory . $image->file_name;
             $new_file = preg_replace('/\.(jpg|jpeg|gif|png)$/i', '_tn.\\1', $image->file_name);
             $destination = $image->file_directory . $new_file;
-            if (!PHPWS_File::scaleImage($source, $destination, PHPWS_Settings::get('rolodex', 'max_thumb_width'), PHPWS_Settings::get('rolodex', 'max_thumb_height'))) {
+            if (!Core\File::scaleImage($source, $destination, Core\Settings::get('rolodex', 'max_thumb_width'), Core\Settings::get('rolodex', 'max_thumb_height'))) {
                 $errors[] = array(dgettext('rolodex', 'There was a problem saving your thumbnail image.'));
             } else {
                 $size = getimagesize($destination);
@@ -1335,7 +1335,7 @@ class Rolodex {
         }
 
         if (!empty($_POST['email'])) {
-            if (PHPWS_Text::isValidInput($_POST['email'], 'email')) {
+            if (Core\Text::isValidInput($_POST['email'], 'email')) {
                 $_POST['email'] = $_POST['email'];
             } else {
                 $errors[] = dgettext('rolodex', 'Your email address is improperly formatted.');
@@ -1371,13 +1371,12 @@ class Rolodex {
 
     function confirm()
     {
-        if (!PHPWS_Settings::get('rolodex', 'use_captcha') ||
+        if (!Core\Settings::get('rolodex', 'use_captcha') ||
             !extension_loaded('gd')) {
             return true;
         }
 
-        Core\Core::initCoreClass('Captcha.php');
-        return Captcha::verify();
+                return Captcha::verify();
     }
 
 
@@ -1393,8 +1392,7 @@ class Rolodex {
         $message = sprintf(dgettext('rolodex', 'This message from %s was sent via %s.'), $from, $url) . "\n\n";
         $message .= $_POST['message'];
 
-        Core\Core::initCoreClass('Mail.php');
-        $mail = new PHPWS_Mail;
+                $mail = new PHPWS_Mail;
         $mail->addSendTo($sendto);
         $mail->setSubject($subject);
         $mail->setFrom(sprintf('%s<%s>', $from, $sender));
@@ -1408,16 +1406,16 @@ class Rolodex {
     public function resetExpired($interval)
     {
         $expires = mktime(0, 0, 0, date("m"), date("d")+$interval, date("Y"));
-        $db = new PHPWS_DB('rolodex_member');
+        $db = new Core\DB('rolodex_member');
         $db->addValue('date_expires', $expires);
-        PHPWS_Error::logIfError($db->update());
+        Core\Error::logIfError($db->update());
     }
 
 
     public function deleteExpired()
     {
         Core\Core::initModClass('rolodex', 'RDX_Member.php');
-        $db = new PHPWS_DB('rolodex_member');
+        $db = new Core\DB('rolodex_member');
         $db->addWhere('date_expires', time(), '<=');
         $expired = $db->getObjects('Rolodex_Member');
         $num = count($expired);
@@ -1432,16 +1430,16 @@ class Rolodex {
 
     public function setAllComments($num)
     {
-        $db = new PHPWS_DB('rolodex_member');
+        $db = new Core\DB('rolodex_member');
         $db->addValue('allow_comments', $num);
-        PHPWS_Error::logIfError($db->update());
+        Core\Error::logIfError($db->update());
     }
 
 
     public function setAllComments_annon($num)
     {
         Core\Core::initModClass('rolodex', 'RDX_Member.php');
-        $db = new PHPWS_DB('rolodex_member');
+        $db = new Core\DB('rolodex_member');
         $result = $db->getObjects('Rolodex_Member');
         if ($result) {
             foreach ($result as $member) {
@@ -1453,7 +1451,7 @@ class Rolodex {
             }
         }
         $db->addValue('allow_anon', $num);
-        PHPWS_Error::logIfError($db->update());
+        Core\Error::logIfError($db->update());
     }
 
 
@@ -1462,7 +1460,7 @@ class Rolodex {
     {
 
         Core\Core::initModClass('rolodex', 'RDX_Member.php');
-        $db = new PHPWS_DB('rolodex_member');
+        $db = new Core\DB('rolodex_member');
         $db->addColumn('demographics.user_id');
         $db->addColumn('demographics.first_name');
         $db->addColumn('demographics.last_name');
@@ -1473,7 +1471,7 @@ class Rolodex {
         $db->addOrder('demographics.user_id');
         $result = $db->select();
         if (!empty($result)) {
-            if (PHPWS_Error::logIfError($result)) {
+            if (Core\Error::logIfError($result)) {
                 return false;
             }
             foreach ($result as $member) {
@@ -1483,7 +1481,7 @@ class Rolodex {
                 $search->addKeywords($name);
                 $search->addKeywords($member['business_name']);
                 $search->addKeywords($member['description']);
-                PHPWS_Error::logIfError($search->save());
+                Core\Error::logIfError($search->save());
             }
         }
         return true;
@@ -1494,12 +1492,12 @@ class Rolodex {
     {
 
         Core\Core::initModClass('search', 'Search.php');
-        $db = new PHPWS_DB('search');
+        $db = new Core\DB('search');
         $db->addWhere('module', 'rolodex');
         $result = $db->delete();
 
         if (!empty($result)) {
-            if (PHPWS_Error::logIfError($result)) {
+            if (Core\Error::logIfError($result)) {
                 return false;
             }
         }
@@ -1515,7 +1513,7 @@ class Rolodex {
         $content = null;
         $content .= Rolodex_Member::printCSVHeader();
 
-        $db = new PHPWS_DB('rolodex_member');
+        $db = new Core\DB('rolodex_member');
         $db->addColumn('demographics.user_id');
         $db->addColumn('rolodex_member.user_id');
         $db->addWhere('rolodex_member.user_id', 'demographics.user_id');
@@ -1524,7 +1522,7 @@ class Rolodex {
             $db->addWhere('active', $approved);
         }
 
-        if (PHPWS_Settings::get('rolodex', 'enable_expiry')) {
+        if (Core\Settings::get('rolodex', 'enable_expiry')) {
             if ($expired) {
                 $db->addWhere('date_expires', time(), '<=');
             } else {
@@ -1542,7 +1540,7 @@ class Rolodex {
             $db->addWhere('rolodex_member.privacy', 1, '<=');
         }
 
-        if (PHPWS_Settings::get('rolodex', 'sortby')) {
+        if (Core\Settings::get('rolodex', 'sortby')) {
             $db->addOrder('demographics.last_name', 'asc');
             $db->addOrder('demographics.first_name', 'asc');
             $db->addOrder('demographics.business_name', 'asc');
@@ -1576,39 +1574,39 @@ class Rolodex {
     public static function navLinks()
     {
 
-        $links[] = PHPWS_Text::moduleLink(dgettext('rolodex', 'Browse members'), 'rolodex', array('uop'=>'list'));
+        $links[] = Core\Text::moduleLink(dgettext('rolodex', 'Browse members'), 'rolodex', array('uop'=>'list'));
 
-        if (PHPWS_Settings::get('rolodex', 'use_categories')) {
-            $db = new PHPWS_DB('category_items');
+        if (Core\Settings::get('rolodex', 'use_categories')) {
+            $db = new Core\DB('category_items');
             $db->addWhere('module', 'rolodex');
             $categories = $db->count();
             if ($categories > 0) {
-                $links[] = PHPWS_Text::moduleLink(dgettext('rolodex', 'Categories'), "rolodex",  array('uop'=>'categories'));
+                $links[] = Core\Text::moduleLink(dgettext('rolodex', 'Categories'), "rolodex",  array('uop'=>'categories'));
             }
         }
 
-        if (PHPWS_Settings::get('rolodex', 'use_locations')) {
-            $db = new PHPWS_DB('rolodex_location');
+        if (Core\Settings::get('rolodex', 'use_locations')) {
+            $db = new Core\DB('rolodex_location');
             $locations = $db->count();
             if ($locations > 0) {
-                $links[] = PHPWS_Text::moduleLink(dgettext('rolodex', 'Locations'), "rolodex",  array('uop'=>'locations'));
+                $links[] = Core\Text::moduleLink(dgettext('rolodex', 'Locations'), "rolodex",  array('uop'=>'locations'));
             }
         }
 
-        if (PHPWS_Settings::get('rolodex', 'use_features')) {
-            $db = new PHPWS_DB('rolodex_feature');
+        if (Core\Settings::get('rolodex', 'use_features')) {
+            $db = new Core\DB('rolodex_feature');
             $features = $db->count();
             if ($features > 0) {
-                $links[] = PHPWS_Text::moduleLink(dgettext('rolodex', 'Features'), "rolodex",  array('uop'=>'features'));
+                $links[] = Core\Text::moduleLink(dgettext('rolodex', 'Features'), "rolodex",  array('uop'=>'features'));
             }
         }
 
         if ($categories > 0 || $locations > 0 || $features > 0) {
-            $links[] = PHPWS_Text::moduleLink(dgettext('rolodex', 'Advanced'), "rolodex",  array('uop'=>'advanced'));
+            $links[] = Core\Text::moduleLink(dgettext('rolodex', 'Advanced'), "rolodex",  array('uop'=>'advanced'));
         }
 
         if (Current_User::allow('rolodex', 'settings', null, null, true) && !isset($_REQUEST['aop'])){
-            $links[] = PHPWS_Text::moduleLink(dgettext('rolodex', 'Settings'), "rolodex",  array('aop'=>'menu', 'tab'=>'settings'));
+            $links[] = Core\Text::moduleLink(dgettext('rolodex', 'Settings'), "rolodex",  array('aop'=>'menu', 'tab'=>'settings'));
         }
 
         return $links;
@@ -1624,40 +1622,40 @@ class Rolodex {
             if (@$_REQUEST['uop'] == "list") {
                 $vars['uop'] = 'list';
                 $vars['browseLetter'] = $alphachar;
-                $alpha[] .= PHPWS_Text::moduleLink($alphachar, "rolodex", $vars) . "\n";
+                $alpha[] .= Core\Text::moduleLink($alphachar, "rolodex", $vars) . "\n";
             } elseif (@$_REQUEST['aop'] == "list_expired") {
                 $vars['aop'] = 'list_expired';
                 $vars['browseLetter'] = $alphachar;
-                $alpha[] .= PHPWS_Text::moduleLink($alphachar, "rolodex", $vars) . "\n";
+                $alpha[] .= Core\Text::moduleLink($alphachar, "rolodex", $vars) . "\n";
             } else {
                 $vars['uop'] = 'list';
                 $vars['browseLetter'] = $alphachar;
-                $alpha[] .= PHPWS_Text::moduleLink($alphachar, "rolodex", $vars) . "\n";
+                $alpha[] .= Core\Text::moduleLink($alphachar, "rolodex", $vars) . "\n";
             }
         }
 
         if (@$_REQUEST['uop'] == "list") {
             $vars['uop'] = 'list';
             $vars['browseLetter'] = 'Other';
-            $alpha[] .= PHPWS_Text::moduleLink(dgettext('rolodex', 'Other'), "rolodex",  $vars) . "\n";
-            $alpha[] .= PHPWS_Text::moduleLink(dgettext('rolodex', 'All'), "rolodex",  array('uop'=>'list')) . "\n";
+            $alpha[] .= Core\Text::moduleLink(dgettext('rolodex', 'Other'), "rolodex",  $vars) . "\n";
+            $alpha[] .= Core\Text::moduleLink(dgettext('rolodex', 'All'), "rolodex",  array('uop'=>'list')) . "\n";
         } elseif (@$_REQUEST['aop'] == "list_expired") {
             $vars['aop'] = 'list_expired';
             $vars['browseLetter'] = 'Other';
-            $alpha[] .= PHPWS_Text::moduleLink(dgettext('rolodex', 'Other'), "rolodex",  $vars) . "\n";
-            $alpha[] .= PHPWS_Text::moduleLink(dgettext('rolodex', 'All'), "rolodex",  array('aop'=>'list_expired')) . "\n";
+            $alpha[] .= Core\Text::moduleLink(dgettext('rolodex', 'Other'), "rolodex",  $vars) . "\n";
+            $alpha[] .= Core\Text::moduleLink(dgettext('rolodex', 'All'), "rolodex",  array('aop'=>'list_expired')) . "\n";
         } else {
             $vars['uop'] = 'list';
             $vars['browseLetter'] = 'Other';
-            $alpha[] .= PHPWS_Text::moduleLink(dgettext('rolodex', 'Other'), "rolodex",  $vars) . "\n";
-            $alpha[] .= PHPWS_Text::moduleLink(dgettext('rolodex', 'All'), "rolodex",  array('uop'=>'list')) . "\n";
+            $alpha[] .= Core\Text::moduleLink(dgettext('rolodex', 'Other'), "rolodex",  $vars) . "\n";
+            $alpha[] .= Core\Text::moduleLink(dgettext('rolodex', 'All'), "rolodex",  array('uop'=>'list')) . "\n";
         }
 
         $links = $this->navLinks();
 
         $tpl['LIST'] = implode(' | ', $alpha);
         $tpl['LINKS'] = implode(' | ', $links);
-        return PHPWS_Template::process($tpl, 'rolodex', 'alpha_click.tpl');
+        return Core\Template::process($tpl, 'rolodex', 'alpha_click.tpl');
 
     }
 
@@ -1703,13 +1701,13 @@ class Rolodex {
         switch($type) {
             case 'location':
                 Core\Core::initModClass('rolodex', 'RDX_Location.php');
-                $db = new PHPWS_DB('rolodex_location');
+                $db = new Core\DB('rolodex_location');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('Rolodex_Location');
                 break;
             case 'feature':
                 Core\Core::initModClass('rolodex', 'RDX_Feature.php');
-                $db = new PHPWS_DB('rolodex_feature');
+                $db = new Core\DB('rolodex_feature');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('Rolodex_Feature');
                 break;
@@ -1732,7 +1730,7 @@ class Rolodex {
                 }
                 return javascript('multiple_select', $vars);
             } else {
-                $form = new PHPWS_Form;
+                $form = new Core\Form;
                 $form->addMultiple($select_name, $items);
                 if (!empty($match) && is_array($match)) {
                     $form->setMatch($select_name, $match);
@@ -1740,7 +1738,7 @@ class Rolodex {
                 return $form->get($select_name);
             }
         } else {
-            $form = new PHPWS_Form;
+            $form = new Core\Form;
             $form->addSelect($select_name, $items);
             if (!empty($match) && is_string($match)) {
                 $form->setMatch($select_name, $match);
@@ -1757,13 +1755,13 @@ class Rolodex {
         switch($type) {
             case 'location':
                 Core\Core::initModClass('rolodex', 'RDX_Location.php');
-                $db = new PHPWS_DB('rolodex_location');
+                $db = new Core\DB('rolodex_location');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('Rolodex_Location');
                 break;
             case 'feature':
                 Core\Core::initModClass('rolodex', 'RDX_Feature.php');
-                $db = new PHPWS_DB('rolodex_feature');
+                $db = new Core\DB('rolodex_feature');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('Rolodex_Feature');
                 break;
@@ -1772,7 +1770,7 @@ class Rolodex {
         if ($result) {
             foreach ($result as $item) {
                 if ($count) {
-                    $db = new PHPWS_DB('rolodex_'.$type.'_items');
+                    $db = new Core\DB('rolodex_'.$type.'_items');
                     $db->addWhere($type.'_id', $item->id);
                     $qty = $db->count();
                     $items[$item->id] = $item->title . ' ('.$qty.')';
@@ -1784,14 +1782,14 @@ class Rolodex {
 
         if ($items) {
             if ($multiple) {
-                $form = new PHPWS_Form;
+                $form = new Core\Form;
                 $form->addMultiple($select_name, $items);
                 if (!empty($match) && is_array($match)) {
                     $form->setMatch($select_name, $match);
                 }
                 return $form->get($select_name);
             } else {
-                $form = new PHPWS_Form;
+                $form = new Core\Form;
                 $form->addSelect($select_name, $items);
                 if (!empty($match) && is_string($match)) {
                     $form->setMatch($select_name, $match);
@@ -1809,7 +1807,7 @@ class Rolodex {
     {
 
         Core\Core::initModClass('categories', 'Category.php');
-        $db = new PHPWS_DB('categories');
+        $db = new Core\DB('categories');
         $db->addOrder('title asc');
 
         $result = $db->getObjects('Category');
@@ -1817,7 +1815,7 @@ class Rolodex {
         if ($result) {
             foreach ($result as $item) {
                 if ($count) {
-                    $db = new PHPWS_DB('category_items');
+                    $db = new Core\DB('category_items');
                     $db->addWhere('cat_id', $item->id);
                     $db->addWhere('module', 'rolodex');
                     $qty = $db->count();
@@ -1830,14 +1828,14 @@ class Rolodex {
 
         if ($items) {
             if ($multiple) {
-                $form = new PHPWS_Form;
+                $form = new Core\Form;
                 $form->addMultiple($select_name, $items);
                 if (!empty($match) && is_array($match)) {
                     $form->setMatch($select_name, $match);
                 }
                 return $form->get($select_name);
             } else {
-                $form = new PHPWS_Form;
+                $form = new Core\Form;
                 $form->addSelect($select_name, $items);
                 if (!empty($match) && is_string($match)) {
                     $form->setMatch($select_name, $match);

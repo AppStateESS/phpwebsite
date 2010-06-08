@@ -25,9 +25,9 @@ class Access_Shortcut {
 
     public function init()
     {
-        $db = new PHPWS_DB('access_shortcuts');
+        $db = new Core\DB('access_shortcuts');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_error = $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -66,20 +66,20 @@ class Access_Shortcut {
     public function postShortcut()
     {
         if (!isset($_POST['keyword'])) {
-            return PHPWS_Error::get(SHORTCUT_MISSING_KEYWORD, 'access', 'Shortcut::postShortcut');
+            return Core\Error::get(SHORTCUT_MISSING_KEYWORD, 'access', 'Shortcut::postShortcut');
         }
 
         if (!$this->id) {
             if (empty($_POST['key_id'])) {
-                return PHPWS_Error::get(SHORTCUT_MISSING_KEY, 'access', 'Shortcut::postShortcut');
+                return Core\Error::get(SHORTCUT_MISSING_KEY, 'access', 'Shortcut::postShortcut');
             } else {
-                $key = new Key((int)$_POST['key_id']);
+                $key = new Core\Key((int)$_POST['key_id']);
                 $this->setUrl($key->module, $key->url);
             }
         }
 
         $result = $this->setKeyword($_POST['keyword']);
-        if (PHPWS_Error::isError($result) || $result == FALSE) {
+        if (Core\Error::isError($result) || $result == FALSE) {
             return $result;
         }
 
@@ -111,19 +111,19 @@ class Access_Shortcut {
         $keyword = trim($keyword);
 
         if (empty($keyword)) {
-            return PHPWS_Error::get(SHORTCUT_BAD_KEYWORD, 'access', 'Shortcut::setKeyword');
+            return Core\Error::get(SHORTCUT_BAD_KEYWORD, 'access', 'Shortcut::setKeyword');
         }
 
         if (!$this->id) {
-            $db = new PHPWS_DB('access_shortcuts');
+            $db = new Core\DB('access_shortcuts');
             $db->addWhere('keyword', $keyword);
             $result = $db->select();
             if (!empty($result)) {
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
+                if (Core\Error::isError($result)) {
+                    Core\Error::log($result);
                     return FALSE;
                 } else {
-                    return PHPWS_Error::get(SHORTCUT_WORD_IN_USE, 'access', 'Shortcut::setKeyword');
+                    return Core\Error::get(SHORTCUT_WORD_IN_USE, 'access', 'Shortcut::setKeyword');
                 }
             }
         }
@@ -143,7 +143,7 @@ class Access_Shortcut {
 
         $vars['command'] = 'edit_shortcut';
         $vars['sc_id'] = $this->id;
-        $link = PHPWS_Text::linkAddress('access', $vars, true);
+        $link = Core\Text::linkAddress('access', $vars, true);
         $js_vars['address'] = $link;
         $js_vars['label'] = dgettext('access', 'Edit');
         $js_vars['height'] = '200';
@@ -168,14 +168,14 @@ class Access_Shortcut {
     public function save()
     {
         if (empty($this->keyword)) {
-            return PHPWS_Error::get(SHORTCUT_MISSING_KEYWORD, 'access', 'Shortcut::save');
+            return Core\Error::get(SHORTCUT_MISSING_KEYWORD, 'access', 'Shortcut::save');
         }
 
         if (empty($this->url)) {
-            return PHPWS_Error::get(SHORTCUT_MISSING_URL, 'access', 'Shortcut::save');
+            return Core\Error::get(SHORTCUT_MISSING_URL, 'access', 'Shortcut::save');
         }
 
-        $db = new PHPWS_DB('access_shortcuts');
+        $db = new Core\DB('access_shortcuts');
         return $db->saveObject($this);
     }
 
@@ -196,7 +196,7 @@ class Access_Shortcut {
 
     public function delete()
     {
-        $db = new PHPWS_DB('access_shortcuts');
+        $db = new Core\DB('access_shortcuts');
         $db->addWhere('id', $this->id);
         return $db->delete();
     }

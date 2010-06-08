@@ -10,7 +10,7 @@ if (Current_User::isLogged()) {
 
     Notes_My_Page::showUnread();
 
-    $key = Key::getCurrent(false);
+    $key = Core\Key::getCurrent(false);
     if ($key) {
         Notes_My_Page::miniAdminLink($key);
         Notes_My_Page::showAssociations($key);

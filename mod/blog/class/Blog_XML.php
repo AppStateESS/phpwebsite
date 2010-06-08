@@ -4,7 +4,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-Core\Core::initCoreClass('xmlrpc.php');
 
 class Blog_XML extends MyServer {
     public $image_directory = 'images/blog/';
@@ -13,7 +12,7 @@ class Blog_XML extends MyServer {
     {
         $blog = new Blog($id);
         if ($blog->delete()) {
-            PHPWS_Cache::clearCache();
+            Core\Cache::clearCache();
             return true;
         } else {
             return new IXR_Error(4040, 'Unable to delete entry.');
@@ -52,13 +51,13 @@ class Blog_XML extends MyServer {
 
     public function getRecent($limit)
     {
-        $db = new PHPWS_DB('blog_entries');
+        $db = new Core\DB('blog_entries');
         $db->setLimit($limit);
         $db->addOrder('publish_date desc');
-        Key::restrictEdit($db, 'blog', 'edit_blog');
+        Core\Key::restrictEdit($db, 'blog', 'edit_blog');
         $result = $db->getObjects('Blog');
 
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             return new IXR_Error(4000, XMLRPC_BAD_RESULT);
         }
 
@@ -118,10 +117,10 @@ class Blog_XML extends MyServer {
         if (isset($mt_allow_comments)) {
             $blog->allow_comments = (bool)$mt_allow_comments;
         } else {
-            $blog->allow_comments = PHPWS_Settings::get('blog', 'allow_comments');
+            $blog->allow_comments = Core\Settings::get('blog', 'allow_comments');
         }
 
-        if (PHPWS_Settings::get('blog', 'obey_publish')) {
+        if (Core\Settings::get('blog', 'obey_publish')) {
             $blog->approved = $publish;
         } else {
             $blog->approved = 1;
@@ -129,10 +128,10 @@ class Blog_XML extends MyServer {
 
         $result = $blog->save();
 
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             return new IXR_Error(5010, 'Database Error!  Post not saved.');
         } else {
-            PHPWS_Cache::clearCache();
+            Core\Cache::clearCache();
             return $blog->id;
         }
     }

@@ -5,6 +5,6 @@
  */
 
 // displays a link to the new user signup
-PHPWS_Text::addTag('users', 'new_account');
+Core\Text::addTag('users', 'new_account');
 
 ?>

@@ -1,8 +1,7 @@
 <?php
 function metacafe_import($media)
 {
-    Core\Core::initCoreClass('XMLParser.php');
-    if (preg_match('/http:\/\//', $media->file_name)) {
+        if (preg_match('/http:\/\//', $media->file_name)) {
         $pull_regexp = '@http://www.metacafe.com/watch/(\d+).*@';
         $media->file_name = preg_replace($pull_regexp, "\\1", $media->file_name);
     }
@@ -10,7 +9,7 @@ function metacafe_import($media)
     $feed_url = 'http://www.metacafe.com/api/item/';
     $parse = new XMLParser($feed_url . $media->file_name, false);
     if ($parse->error) {
-        PHPWS_Error::log($parse->error);
+        Core\Error::log($parse->error);
         return false;
     }
     $parse->setContentOnly(false);
@@ -34,7 +33,7 @@ function metacafe_import($media)
         $thumb_name = 'metacafe_' . $media->file_name . '.jpg';
         $thumb_dir  = $media->thumbnailDirectory();
         if (!is_dir($thumb_dir)) {
-            PHPWS_Error::log(FC_THUMBNAIL_NOT_WRITABLE, 'filecabinet', 'youtube_import', $thumb_dir);
+            Core\Error::log(FC_THUMBNAIL_NOT_WRITABLE, 'filecabinet', 'youtube_import', $thumb_dir);
             $media->genericTN($thumb_name);
         } else {
             $thumb_path = $thumb_dir . $thumb_name;

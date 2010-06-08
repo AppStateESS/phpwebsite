@@ -29,9 +29,9 @@ class PHPWS_Image extends File_Common {
     public function __construct($id=null)
     {
         $this->loadAllowedTypes();
-        $this->setMaxWidth(PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
-        $this->setMaxHeight(PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
-        $this->setMaxSize(PHPWS_Settings::get('filecabinet', 'max_image_size'));
+        $this->setMaxWidth(Core\Settings::get('filecabinet', 'max_image_dimension'));
+        $this->setMaxHeight(Core\Settings::get('filecabinet', 'max_image_dimension'));
+        $this->setMaxSize(Core\Settings::get('filecabinet', 'max_image_size'));
 
         if (empty($id)) {
             return;
@@ -39,12 +39,12 @@ class PHPWS_Image extends File_Common {
 
         $this->id = (int)$id;
         $result = $this->init();
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->id = 0;
             $this->_errors[] = $result;
         } elseif (empty($result)) {
             $this->id = 0;
-            $this->_errors[] = PHPWS_Error::get(FC_IMG_NOT_FOUND, 'filecabinet', 'PHPWS_Image');
+            $this->_errors[] = Core\Error::get(FC_IMG_NOT_FOUND, 'filecabinet', 'PHPWS_Image');
         }
         $this->loadExtension();
     }
@@ -55,7 +55,7 @@ class PHPWS_Image extends File_Common {
             return false;
         }
 
-        $db = new PHPWS_DB('images');
+        $db = new Core\DB('images');
         return $db->loadObject($this);
     }
 
@@ -210,7 +210,7 @@ class PHPWS_Image extends File_Common {
         $tpl['IMAGE']   = $this->getTag($id, $linked, $base);
         $tpl['CAPTION'] = $this->getDescription();
         $tpl['WIDTH']   = $width . 'px';
-        return PHPWS_Template::process($tpl, 'filecabinet', 'captioned_image.tpl');
+        return Core\Template::process($tpl, 'filecabinet', 'captioned_image.tpl');
     }
 
     public function getTag($id=null, $linked=true, $base=false)
@@ -257,8 +257,8 @@ class PHPWS_Image extends File_Common {
 
         $dimensions = getimagesize($thumbpath);
 
-        if (PHPWS_Settings::get('filecabinet', 'force_thumbnail_dimensions')) {
-            $max_size = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
+        if (Core\Settings::get('filecabinet', 'force_thumbnail_dimensions')) {
+            $max_size = Core\Settings::get('filecabinet', 'max_thumbnail_size');
             $ratio = $dimensions[0] / $dimensions[1];
             if ($ratio == 1) {
                 $dimensions = array($max_size, $max_size);
@@ -290,7 +290,7 @@ class PHPWS_Image extends File_Common {
 
     public function loadAllowedTypes()
     {
-        $this->_allowed_types = explode(',', PHPWS_Settings::get('filecabinet', 'image_files'));
+        $this->_allowed_types = explode(',', Core\Settings::get('filecabinet', 'image_files'));
     }
 
 
@@ -327,7 +327,7 @@ class PHPWS_Image extends File_Common {
                 $crop_height = $max_height;
             }
 
-            PHPWS_File::scaleImage($this->getPath(), $dst, $new_width, $new_height);
+            Core\File::scaleImage($this->getPath(), $dst, $new_width, $new_height);
             // testing purposes
             /*
             printf('<hr>w=%s h=%s<br>mw=%s mh=%s<br>nw=%s nh=%s<br>cw=%s ch=%s<hr>',
@@ -335,15 +335,15 @@ class PHPWS_Image extends File_Common {
             $new_width, $new_height, $crop_width, $crop_height);
             */
 
-            return PHPWS_File::cropImage($dst, $dst, $crop_width, $crop_height);
+            return Core\File::cropImage($dst, $dst, $crop_width, $crop_height);
         } else {
-            return PHPWS_File::scaleImage($this->getPath(), $dst, $max_width, $max_height);
+            return Core\File::scaleImage($this->getPath(), $dst, $max_width, $max_height);
         }
     }
 
     public function makeThumbnail()
     {
-        $max_tn = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
+        $max_tn = Core\Settings::get('filecabinet', 'max_thumbnail_size');
         if ($this->width <= $max_tn && $this->height <= $max_tn) {
             return @copy($this->getPath(), $this->thumbnailPath());
         } else {
@@ -356,25 +356,25 @@ class PHPWS_Image extends File_Common {
     {
         // deleteAssoc call occurs in commonDelete
         $result = $this->commonDelete();
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
         $tn = $this->thumbnailPath();
         if (!@unlink($tn)) {
-            PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Image::delete', $path);
+            Core\Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Image::delete', $path);
         }
 
         $path = $this->getResizePath();
         if ($path) {
-            PHPWS_File::rmdir($path);
+            Core\File::rmdir($path);
         }
         return true;
     }
 
     public function deleteAssoc()
     {
-        $db = new PHPWS_DB('fc_file_assoc');
+        $db = new Core\DB('fc_file_assoc');
         $db->addWhere('file_type', FC_IMAGE, '=', 'or', 1);
         $db->addWhere('file_type', FC_IMAGE_RESIZE, '=', 'or', 1);
         $db->addWhere('file_type', FC_IMAGE_CROP, '=', 'or', 1);
@@ -397,8 +397,8 @@ class PHPWS_Image extends File_Common {
         $vars['folder_id'] = $this->folder_id;
 
         $jsvars['width'] = 550;
-        $jsvars['height'] = 600 + PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
-        $link = new PHPWS_Link(null, 'filecabinet', $vars);
+        $jsvars['height'] = 600 + Core\Settings::get('filecabinet', 'max_thumbnail_size');
+        $link = new Core\Link(null, 'filecabinet', $vars);
         $link->setSecure();
         $link->setSalted();
         $jsvars['address'] = $link->getAddress();
@@ -406,7 +406,7 @@ class PHPWS_Image extends File_Common {
         $jsvars['window_name'] = 'edit_link';
 
         if ($icon) {
-            $jsvars['label'] = Icon::show('edit');
+            $jsvars['label'] = Core\Icon::show('edit');
         } else {
             $jsvars['label'] = dgettext('filecabinet', 'Edit');
         }
@@ -421,10 +421,10 @@ class PHPWS_Image extends File_Common {
         $vars['folder_id'] = $this->folder_id;
 
         $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this image?');
-        $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+        $js['ADDRESS']  = Core\Text::linkAddress('filecabinet', $vars, true);
 
         if ($icon) {
-            $js['LINK'] = Icon::show('delete');
+            $js['LINK'] = Core\Icon::show('delete');
         } else {
             $js['LINK'] = dgettext('filecabinet', 'Delete');
         }
@@ -434,8 +434,8 @@ class PHPWS_Image extends File_Common {
     public function rowTags()
     {
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
-            $clip = Icon::show('clip', dgettext('filecabinet', 'Clip image'));
-            $links[] = PHPWS_Text::secureLink($clip, 'filecabinet',
+            $clip = Core\Icon::show('clip', dgettext('filecabinet', 'Clip image'));
+            $links[] = Core\Text::secureLink($clip, 'filecabinet',
             array('iop'      => 'clip_image',
                                                     'image_id' => $this->id));
             $links[] = $this->editLink(true);
@@ -464,7 +464,7 @@ class PHPWS_Image extends File_Common {
             $vars['fop']       = 'pick_file';
             $vars['file_type'] = FC_IMAGE;
             $vars['id']        = $this->id;
-            $link = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+            $link = Core\Text::linkAddress('filecabinet', $vars, true);
             return sprintf('<a href="%s">%s</a>', $link, $this->getThumbnail());
         }
     }
@@ -517,20 +517,20 @@ class PHPWS_Image extends File_Common {
         $vars['file_type'] = 1;
 
         if (!$fmanager->force_resize) {
-            $choices[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Use original image'), 'filecabinet', $vars);
+            $choices[] = Core\Text::secureLink(dgettext('filecabinet', 'Use original image'), 'filecabinet', $vars);
         }
 
         $vars['file_type'] = 7;
-        $choices[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Resize image maintaining aspect'), 'filecabinet', $vars);
+        $choices[] = Core\Text::secureLink(dgettext('filecabinet', 'Resize image maintaining aspect'), 'filecabinet', $vars);
 
         $vars['file_type'] = 9;
-        $choices[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Resize and crop excess'), 'filecabinet', $vars);
+        $choices[] = Core\Text::secureLink(dgettext('filecabinet', 'Resize and crop excess'), 'filecabinet', $vars);
 
         $choices[] = sprintf('<a href="#" onclick="slider(%s); return false;">%s</a>', $this->id,
         dgettext('filecabinet', 'Cancel'));
 
         $tpl['CHOICES'] = implode('</li><li>',$choices);
-        return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/resize.tpl');
+        return Core\Template::process($tpl, 'filecabinet', 'file_manager/resize.tpl');
     }
 
     /**
@@ -548,7 +548,7 @@ class PHPWS_Image extends File_Common {
 
         $tmp_file = $this->file_directory . time() . $this->file_name;
 
-        if (PHPWS_File::rotateImage($this->getPath(), $tmp_file, $degrees)) {
+        if (Core\File::rotateImage($this->getPath(), $tmp_file, $degrees)) {
             @copy($tmp_file, $this->getPath());
             $this->loadDimensions();
             $this->makeThumbnail();
@@ -593,19 +593,19 @@ class PHPWS_Image extends File_Common {
                 if ($folder->id) {
                     $this->setDirectory($folder->getFullDirectory());
                 } else {
-                    return PHPWS_Error::get(FC_MISSING_FOLDER, 'filecabinet', 'PHPWS_Image::save');
+                    return Core\Error::get(FC_MISSING_FOLDER, 'filecabinet', 'PHPWS_Image::save');
                 }
             } else {
-                return PHPWS_Error::get(FC_DIRECTORY_NOT_SET, 'filecabinet', 'PHPWS_Image::save');
+                return Core\Error::get(FC_DIRECTORY_NOT_SET, 'filecabinet', 'PHPWS_Image::save');
             }
         }
 
         if (!$this->folder_id) {
-            return PHPWS_Error::get(FC_MISSING_FOLDER, 'filecabinet', 'PHPWS_Image::save');
+            return Core\Error::get(FC_MISSING_FOLDER, 'filecabinet', 'PHPWS_Image::save');
         }
 
         if (!is_writable($this->file_directory)) {
-            return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::save', $this->file_directory);
+            return Core\Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::save', $this->file_directory);
         }
 
 
@@ -618,7 +618,7 @@ class PHPWS_Image extends File_Common {
 
         if ($write) {
             $result = $this->write();
-            if (PHPWS_Error::isError($result)) {
+            if (Core\Error::isError($result)) {
                 return $result;
             }
         }
@@ -627,14 +627,14 @@ class PHPWS_Image extends File_Common {
             $this->makeThumbnail();
         }
 
-        $db = new PHPWS_DB('images');
+        $db = new Core\DB('images');
 
         if ((bool)$no_dupes && empty($this->id)) {
             $db->addWhere('file_name',  $this->file_name);
             $db->addWhere('folder_id', $this->folder_id);
             $db->addColumn('id');
             $result = $db->select('one');
-            if (PHPWS_Error::isError($result)) {
+            if (Core\Error::isError($result)) {
                 return $result;
             } elseif (isset($result) && is_numeric($result)) {
                 $this->id = $result;
@@ -698,13 +698,13 @@ class PHPWS_Image extends File_Common {
         $tmp_file = $this->_upload->upload['tmp_name'];
         $cpy_file = $tmp_file . '.rs';
 
-        $result = PHPWS_File::scaleImage($tmp_file, $cpy_file, $resize_width, $resize_height);
+        $result = Core\File::scaleImage($tmp_file, $cpy_file, $resize_width, $resize_height);
 
-        if (!PHPWS_Error::logIfError($result) && !$result) {
-            return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'PHPWS_Image::prewriteResize', array($this->width, $this->height, $this->_max_width, $this->_max_height));
+        if (!Core\Error::logIfError($result) && !$result) {
+            return Core\Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'PHPWS_Image::prewriteResize', array($this->width, $this->height, $this->_max_width, $this->_max_height));
         } else {
             if (!@copy($cpy_file, $tmp_file)) {
-                return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'PHPWS_Image::prewriteResize', array($this->width, $this->height, $this->_max_width, $this->_max_height));
+                return Core\Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'PHPWS_Image::prewriteResize', array($this->width, $this->height, $this->_max_width, $this->_max_height));
             } else {
                 list($this->width, $this->height, $image_type, $image_attr) = getimagesize($tmp_file);
                 $image_name = $this->file_name;
@@ -726,13 +726,13 @@ class PHPWS_Image extends File_Common {
         $tmp_file = $this->_upload->upload['tmp_name'];
         $cpy_file = $tmp_file . '.rs';
 
-        $result = PHPWS_File::rotateImage($tmp_file, $cpy_file, $degrees);
+        $result = Core\File::rotateImage($tmp_file, $cpy_file, $degrees);
 
-        if (!PHPWS_Error::logIfError($result) && !$result) {
-            return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'PHPWS_Image::prewriteRotate', array($this->width, $this->height, $this->_max_width, $this->_max_height));
+        if (!Core\Error::logIfError($result) && !$result) {
+            return Core\Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'PHPWS_Image::prewriteRotate', array($this->width, $this->height, $this->_max_width, $this->_max_height));
         } else {
             if (!@copy($cpy_file, $tmp_file)) {
-                return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'PHPWS_Image::prewriteRotate', array($this->width, $this->height, $this->_max_width, $this->_max_height));
+                return Core\Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'PHPWS_Image::prewriteRotate', array($this->width, $this->height, $this->_max_width, $this->_max_height));
             } else {
                 list($this->width, $this->height, $image_type, $image_attr) = getimagesize($tmp_file);
                 return true;
@@ -780,18 +780,18 @@ class PHPWS_Image extends File_Common {
                 }
             } else {
                 if (!@mkdir($full_dir)) {
-                    PHPWS_Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::makeResizePath', $dir);
+                    Core\Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::makeResizePath', $dir);
                     return false;
                 }
             }
         } else {
             if (!@mkdir($base_dir)) {
-                PHPWS_Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::makeResizePath', $dir);
+                Core\Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::makeResizePath', $dir);
                 return false;
             }
 
             if (!@mkdir($full_dir)) {
-                PHPWS_Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::makeResizePath', $dir);
+                Core\Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::makeResizePath', $dir);
                 return false;
             }
         }

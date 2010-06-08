@@ -46,9 +46,9 @@ class Finc_File {
 
     function init()
     {
-        $db = new PHPWS_DB('finc_file');
+        $db = new Core\DB('finc_file');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -71,7 +71,7 @@ class Finc_File {
 
     function setDescription($description)
     {
-        $this->description = PHPWS_Text::parseInput($description);
+        $this->description = Core\Text::parseInput($description);
     }
 
 
@@ -88,7 +88,7 @@ class Finc_File {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->title);
+            return Core\Text::parseOutput($this->title);
         } else {
             return $this->title;
         }
@@ -102,7 +102,7 @@ class Finc_File {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->path);
+            return Core\Text::parseOutput($this->path);
         } else {
             return $this->path;
         }
@@ -116,7 +116,7 @@ class Finc_File {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->description);
+            return Core\Text::parseOutput($this->description);
         } else {
             return $this->description;
         }
@@ -133,7 +133,7 @@ class Finc_File {
         if (!$this->id) {
             Core\Core::errorPage(404);
         }
-        $key = new Key($this->key_id);
+        $key = new Core\Key($this->key_id);
 
         $filename = $this->getPath();
         if (@fopen($filename, "rb")) {
@@ -155,11 +155,11 @@ class Finc_File {
             return;
         }
 
-        $db = new PHPWS_DB('finc_file');
+        $db = new Core\DB('finc_file');
         $db->addWhere('id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
-        Key::drop($this->key_id);
+        Core\Key::drop($this->key_id);
 
     }
 
@@ -170,22 +170,22 @@ class Finc_File {
 
         if (Current_User::isUnrestricted('finc')) {
             $vars['aop']  = 'edit_file';
-            $label = Icon::show('edit');
-            $links[] = PHPWS_Text::secureLink($label, 'finc', $vars);
+            $label = Core\Icon::show('edit');
+            $links[] = Core\Text::secureLink($label, 'finc', $vars);
             if ($this->active) {
                 $vars['aop'] = 'deactivate_file';
-                $label = Icon::show('active', dgettext('finc', 'Deactivate'));
-                $active = PHPWS_Text::secureLink($label, 'finc', $vars);
+                $label = Core\Icon::show('active', dgettext('finc', 'Deactivate'));
+                $active = Core\Text::secureLink($label, 'finc', $vars);
             } else {
                 $vars['aop'] = 'activate_file';
-                $label = Icon::show('inactive', dgettext('finc', 'Activate'));
-                $active = PHPWS_Text::secureLink($label, 'finc', $vars);
+                $label = Core\Icon::show('inactive', dgettext('finc', 'Activate'));
+                $active = Core\Text::secureLink($label, 'finc', $vars);
             }
             $links[] = $active;
             $vars['aop'] = 'delete_file';
-            $js['ADDRESS'] = PHPWS_Text::linkAddress('finc', $vars, true);
+            $js['ADDRESS'] = Core\Text::linkAddress('finc', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('finc', 'Are you sure you want to delete the file %s?\n\nOnly the databse record will be destroyed. You will still have to physically remove "%s" from your file system.'), $this->getTitle(true), $this->getPath());
-            $js['LINK'] = Icon::show('delete');
+            $js['LINK'] = Core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -200,10 +200,10 @@ class Finc_File {
 
     function save()
     {
-        $db = new PHPWS_DB('finc_file');
+        $db = new Core\DB('finc_file');
 
         $result = $db->saveObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
@@ -215,11 +215,11 @@ class Finc_File {
     function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Key;
+            $key = new Core\Key;
         } else {
-            $key = new Key($this->key_id);
-            if (PHPWS_Error::isError($key->_error)) {
-                $key = new Key;
+            $key = new Core\Key($this->key_id);
+            if (Core\Error::isError($key->_error)) {
+                $key = new Core\Key;
             }
         }
 
@@ -231,16 +231,16 @@ class Finc_File {
         $key->setTitle($this->title);
         $key->setSummary($this->description);
         $result = $key->save();
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             return false;
         }
 
         if (!$this->key_id) {
             $this->key_id = $key->id;
-            $db = new PHPWS_DB('finc_file');
+            $db = new Core\DB('finc_file');
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
-            PHPWS_Error::logIfError($db->update());
+            Core\Error::logIfError($db->update());
         }
         return true;
     }
@@ -248,8 +248,7 @@ class Finc_File {
 
     function viewLink($bare=false)
     {
-        Core\Core::initCoreClass('Link.php');
-        $link = new PHPWS_Link($this->title, 'finc', array('id'=>$this->id));
+                $link = new Core\Link($this->title, 'finc', array('id'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {

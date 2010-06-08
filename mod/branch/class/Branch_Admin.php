@@ -155,8 +155,8 @@ class Branch_Admin {
                     $this->edit_basic();
                 } else {
                     $result = $this->branch->save();
-                    if (PHPWS_Error::isError($result)) {
-                        PHPWS_Error::log($result);
+                    if (Core\Error::isError($result)) {
+                        Core\Error::log($result);
                         $this->title = dgettext('branch', 'An error occurred while saving your branch.');
                         $this->content = $result->getMessage();
                         return;
@@ -186,7 +186,7 @@ class Branch_Admin {
                 $result =  $this->core_module_installation();
                 if ($result) {
                     $this->content[] = dgettext('branch', 'All done!');
-                    $this->content[] = PHPWS_Text::secureLink(dgettext('branch', 'Set up allowed modules'),
+                    $this->content[] = Core\Text::secureLink(dgettext('branch', 'Set up allowed modules'),
                                                           'branch', array('command' => 'branch_modules',
                                                                           'branch_id' => $this->branch->id));
                     $this->resetAdmin();
@@ -216,8 +216,7 @@ class Branch_Admin {
 
     public function install_branch_core()
     {
-        Core\Core::initCoreClass('File.php');
-        $content = array();
+                $content = array();
 
         $this->title = dgettext('branch', 'Install branch core');
 
@@ -227,14 +226,14 @@ class Branch_Admin {
             return false;
         }
 
-        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'admin/', $this->branch->directory . 'admin/')) {
+        if (!Core\File::copy_directory(PHPWS_SOURCE_DIR . 'admin/', $this->branch->directory . 'admin/')) {
             $this->content[] = dgettext('branch', 'Failed to copy admin file to branch.');
             return false;
         } else {
             $this->content[] = dgettext('branch', 'Copied admin file to branch.');
         }
 
-        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor/', $this->branch->directory . 'javascript/editors/fckeditor')) {
+        if (!Core\File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor/', $this->branch->directory . 'javascript/editors/fckeditor')) {
             $this->content[] = dgettext('branch', 'Failed to copy FCKeditor to branch.');
             return false;
         } else {
@@ -268,8 +267,8 @@ class Branch_Admin {
 
         $result = $this->create_core();
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             $this->content[] = dgettext('branch', 'Core SQL import failed.');
             return false;
         } else {
@@ -279,15 +278,15 @@ class Branch_Admin {
         $link = dgettext('branch', 'Core installed successfully. Continue to core module installation.');
         $vars['command']   = 'core_module_installation';
         $vars['branch_id'] = $this->branch->id;
-        $this->content[] = PHPWS_Text::secureLink($link, 'branch', $vars);
+        $this->content[] = Core\Text::secureLink($link, 'branch', $vars);
         return true;
     }
 
     public function create_core()
     {
-        $db = new PHPWS_DB;
+        $db = new Core\DB;
         $loaddb = $db->loadDB($this->getDSN(), $this->dbprefix);
-        if (PHPWS_Error::isError($loaddb)) {
+        if (Core\Error::isError($loaddb)) {
             return $loaddb;
         }
 
@@ -299,8 +298,8 @@ class Branch_Admin {
             $db->addValue('version', $version);
             $result = $db->insert();
             $db->disconnect();
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 return $result;
             }
             return true;
@@ -338,8 +337,7 @@ class Branch_Admin {
 
     public function post_basic()
     {
-        Core\Core::initCoreClass('File.php');
-        $result = true;
+                $result = true;
 
         if (empty($this->branch->dbname) && isset($this->dbname)) {
             $this->branch->dbname = $this->dbname;
@@ -376,7 +374,7 @@ class Branch_Admin {
         } elseif (!is_writable($this->branch->directory)) {
             $this->message[] = dgettext('branch', 'Directory exists but is not writable.');
             $result = false;
-        } elseif(!$this->branch->id && PHPWS_File::listDirectories($this->branch->directory)) {
+        } elseif(!$this->branch->id && Core\File::listDirectories($this->branch->directory)) {
             $this->message[] = dgettext('branch', 'Directory exists but already contains files.');
             $result = false;
         }
@@ -415,14 +413,14 @@ class Branch_Admin {
         }
 
         // Load branch database
-        PHPWS_DB::loadDB($this->getDSN(), $this->dbprefix);
+        Core\DB::loadDB($this->getDSN(), $this->dbprefix);
 
         $this->title = dgettext('branch', 'Installing core modules');
 
         $result = $_SESSION['Boost']->install(false, true, $this->branch->directory);
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             $this->content[] = dgettext('branch', 'An error occurred while trying to install your modules.')
             . ' ' . dgettext('branch', 'Please check your error logs and try again.');
             return true;
@@ -430,7 +428,7 @@ class Branch_Admin {
             $this->content[] = $result;
         }
 
-        PHPWS_DB::loadDB();
+        Core\DB::loadDB();
         return $_SESSION['Boost']->isFinished();
     }
 
@@ -524,7 +522,7 @@ class Branch_Admin {
         } else {
             $template['CONTENT'] = $this->content;
         }
-        $content = PHPWS_Template::process($template, 'branch', 'main.tpl');
+        $content = Core\Template::process($template, 'branch', 'main.tpl');
 
         $this->panel->setContent($content);
         Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
@@ -551,14 +549,14 @@ class Branch_Admin {
     public function testDB($force_on_populated=false)
     {
         $connection = $this->checkConnection();
-        PHPWS_DB::loadDB();
+        Core\DB::loadDB();
 
         switch ($connection) {
             case BRANCH_CONNECT_NO_DB:
                 // connection made, but database does not exist
                 if (isset($_POST['createdb'])) {
                     $result = $this->createDB();
-                    if (PHPWS_Error::isError($result)) {
+                    if (Core\Error::isError($result)) {
                         $this->message[] = dgettext('branch', 'An error occurred when trying to connect to the database.');
                         $this->edit_db();
                     } elseif ($result) {
@@ -617,7 +615,7 @@ class Branch_Admin {
     {
         $branch = $this->branch;
 
-        $form = new PHPWS_Form('branch-form');
+        $form = new Core\Form('branch-form');
         $form->addHidden('module', 'branch');
         $form->addHidden('command', 'post_basic');
 
@@ -646,7 +644,7 @@ class Branch_Admin {
         $form->setLabel('site_hash', dgettext('branch', 'ID hash'));
         $template = $form->getTemplate();
         $template['BRANCH_LEGEND'] = dgettext('branch', 'Branch specifications');
-        $this->content = PHPWS_Template::process($template, 'branch', 'edit_basic.tpl');
+        $this->content = Core\Template::process($template, 'branch', 'edit_basic.tpl');
     }
 
     /**
@@ -655,7 +653,7 @@ class Branch_Admin {
     public function edit_db($force=false)
     {
         $this->title = dgettext('branch', 'Setup branch database');
-        $form = new PHPWS_Form('branch-form');
+        $form = new Core\Form('branch-form');
         $form->addHidden('module', 'branch');
         $form->addHidden('command', 'post_db');
         $form->addHidden('force', (int)$force);
@@ -695,7 +693,7 @@ class Branch_Admin {
 
         $template = $form->getTemplate();
 
-        $this->content = PHPWS_Template::process($template, 'branch', 'edit_db.tpl');
+        $this->content = Core\Template::process($template, 'branch', 'edit_db.tpl');
     }
 
     public function checkConnection()
@@ -715,15 +713,15 @@ class Branch_Admin {
         $pear_db = new DB;
         $connection = $pear_db->connect($dsn1);
 
-        if (PHPWS_Error::isError($connection)) {
+        if (Core\Error::isError($connection)) {
             // basic connection failed
-            PHPWS_Error::log($connection);
+            Core\Error::log($connection);
             return BRANCH_NO_CONNECTION;
         } else {
             $pear_db2 = new DB;
             $connection2 = $pear_db2->connect($dsn2);
 
-            if (PHPWS_Error::isError($connection2)) {
+            if (Core\Error::isError($connection2)) {
                 // check to see if the database does not exist
                 // mysql delivers the first error, postgres the second
                 if ($connection2->getCode() == DB_ERROR_NOSUCHDB ||
@@ -731,7 +729,7 @@ class Branch_Admin {
                     return BRANCH_CONNECT_NO_DB;
                 } else {
                     // connection failed with db name
-                    PHPWS_Error::log($connection2);
+                    Core\Error::log($connection2);
                     return BRANCH_CONNECT_BAD_DB;
                 }
             } else {
@@ -761,7 +759,7 @@ class Branch_Admin {
         $this->dbprefix = $_POST['dbprefix'];
 
         $this->dbname = $_POST['dbname'];
-        if (!PHPWS_DB::allowed($this->dbname)) {
+        if (!Core\DB::allowed($this->dbname)) {
             $this->message[] = dgettext('branch', 'This database name is not allowed.');
             $result = false;
         }
@@ -789,7 +787,7 @@ class Branch_Admin {
      */
     public function plugHubValues()
     {
-        $dsn = & $GLOBALS['PHPWS_DB']['connection']->dsn;
+        $dsn = & $GLOBALS['Core\DB']['connection']->dsn;
 
         $this->dbname = $dsn['database'];
         $this->dbuser = $dsn['username'];
@@ -801,7 +799,7 @@ class Branch_Admin {
             $this->dbport = null;
         }
 
-        $this->dbprefix = PHPWS_DB::getPrefix();
+        $this->dbprefix = Core\DB::getPrefix();
         // dsn also contains dbsyntax
         $this->dbtype = $dsn['phptype'];
     }
@@ -819,14 +817,14 @@ class Branch_Admin {
         $tdb = new DB;
         $db = $tdb->connect($dsn);
 
-        if (PHPWS_Error::isError($db)) {
-            PHPWS_Error::log($db);
+        if (Core\Error::isError($db)) {
+            Core\Error::log($db);
             return $db;
         }
 
         $result = $db->query('CREATE DATABASE ' . $this->dbname);
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($db);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($db);
             return false;
         } else {
             return true;
@@ -839,13 +837,12 @@ class Branch_Admin {
      */
     public function edit_modules()
     {
-        Core\Core::initCoreClass('File.php');
-        $this->title = sprintf(dgettext('branch', 'Module access for "%s"'), $this->branch->branch_name);
+                $this->title = sprintf(dgettext('branch', 'Module access for "%s"'), $this->branch->branch_name);
 
         $content = null;
 
         $core_mods = Core\Core::coreModList();
-        $all_mods = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'mod/', true);
+        $all_mods = Core\File::readDirectory(PHPWS_SOURCE_DIR . 'mod/', true);
         $all_mods = array_diff($all_mods, $core_mods);
 
         foreach ($all_mods as $key => $module) {
@@ -854,14 +851,14 @@ class Branch_Admin {
             }
         }
 
-        $db = new PHPWS_DB('branch_mod_limit');
+        $db = new Core\DB('branch_mod_limit');
         $db->addWhere('branch_id', $this->branch->id);
         $db->addColumn('module_name');
         $branch_mods = $db->select('col');
 
         unset($dir_mods[array_search('branch', $dir_mods)]);
         sort($dir_mods);
-        $form = new PHPWS_Form('module_list');
+        $form = new Core\Form('module_list');
         $form->useRowRepeat();
 
         $form->addHidden('module', 'branch');
@@ -882,7 +879,7 @@ class Branch_Admin {
 
         $template['DIRECTIONS'] = dgettext('branch', 'Unchecked modules cannot be installed on this branch.');
 
-        $content = PHPWS_Template::process($template, 'branch', 'module_list.tpl');
+        $content = Core\Template::process($template, 'branch', 'module_list.tpl');
         $this->content = & $content;
     }
 
@@ -896,8 +893,7 @@ class Branch_Admin {
         $page_tags['URL_LABEL']         = dgettext('branch', 'Url');
         $page_tags['ACTION_LABEL']      = dgettext('branch', 'Action');
 
-        Core\Core::initCoreClass('DBPager.php');
-        $pager = new DBPager('branch_sites', 'Branch');
+                $pager = new Core\DBPager('branch_sites', 'Branch');
         $pager->setModule('branch');
         $pager->setTemplate('branch_list.tpl');
         $pager->addPageTags($page_tags);
@@ -909,7 +905,7 @@ class Branch_Admin {
 
     public function saveBranchModules()
     {
-        $db = new PHPWS_DB('branch_mod_limit');
+        $db = new Core\DB('branch_mod_limit');
         $db->addWhere('branch_id', (int)$_POST['branch_id']);
         $db->delete();
         $db->reset();
@@ -922,8 +918,8 @@ class Branch_Admin {
             $db->addValue('branch_id', (int)$_POST['branch_id']);
             $db->addValue('module_name', $module);
             $result = $db->insert();
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 return false;
             }
             $db->reset();
@@ -933,9 +929,9 @@ class Branch_Admin {
 
     public static function getBranches($load_db_info=false)
     {
-        $db = new PHPWS_DB('branch_sites');
+        $db = new Core\DB('branch_sites');
         $result = $db->getObjects('Branch');
-        if (PHPWS_Error::isError($result) || !$load_db_info || empty($result)) {
+        if (Core\Error::isError($result) || !$load_db_info || empty($result)) {
             return $result;
         }
         foreach ($result as $branch) {

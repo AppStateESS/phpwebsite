@@ -67,13 +67,13 @@ function users_update(&$content, $currentVersion)
 </pre>';
 
         case version_compare($currentVersion, '2.4.0', '<'):
-            if (!PHPWS_DB::isTable('users_pw_reset')) {
+            if (!Core\DB::isTable('users_pw_reset')) {
                 $new_table = 'CREATE TABLE users_pw_reset (
 user_id INT NOT NULL default 0,
 authhash CHAR( 32 ) NOT NULL default 0,
 timeout INT NOT NULL default 0,
 );';
-                if (!PHPWS_DB::import($new_table)) {
+                if (!Core\DB::import($new_table)) {
                     $content[] = 'Unable to create users_pw_reset table.';
                     return false;
                 } else {
@@ -130,7 +130,7 @@ timeout INT NOT NULL default 0,
             $source_dir = PHPWS_SOURCE_DIR . 'mod/users/javascript/';
             $dest_dir   = $home_dir . 'javascript/modules/users/';
 
-            if (PHPWS_File::copy_directory($source_dir, $dest_dir, true)) {
+            if (Core\File::copy_directory($source_dir, $dest_dir, true)) {
                 $content[] = "--- Successfully copied $source_dir to $dest_dir";
             } else {
                 $content[] = "--- Could not copy $source_dir to $dest_dir";
@@ -184,15 +184,15 @@ timeout INT NOT NULL default 0,
             $content[] = '<pre>';
 
             if (Core\Core::isBranch() || PHPWS_Boost::inBranch()) {
-                $user_db = new PHPWS_DB('users');
+                $user_db = new Core\DB('users');
                 $user_db->addWhere('deity', 1);
                 $user_db->addColumn('id');
                 $user_db->addColumn('username');
                 $user_db->setIndexBy('id');
                 $user_ids = $user_db->select('col');
 
-                if (!empty($user_ids) && !PHPWS_Error::logIfError($user_ids)) {
-                    $group_db = new PHPWS_DB('users_groups');
+                if (!empty($user_ids) && !Core\Error::logIfError($user_ids)) {
+                    $group_db = new Core\DB('users_groups');
                     foreach ($user_ids as $id=>$username) {
                         $group_db->addWhere('user_id', $id);
                         $result = $group_db->select('row');
@@ -201,7 +201,7 @@ timeout INT NOT NULL default 0,
                             $group_db->addValue('active', 1);
                             $group_db->addValue('name', $username);
                             $group_db->addValue('user_id', $id);
-                            if (!PHPWS_Error::logIfError($group_db->insert())) {
+                            if (!Core\Error::logIfError($group_db->insert())) {
                                 $content[] = '--- Created missing group for user: ' . $username;
                             }
                         }
@@ -250,12 +250,12 @@ timeout INT NOT NULL default 0,
         case version_compare($currentVersion, '2.6.0', '<'):
             $content[] = '<pre>';
             Users_Permission::registerPermissions('users', $content);
-            $db = new PHPWS_DB('users_auth_scripts');
+            $db = new Core\DB('users_auth_scripts');
             $db->addWhere('filename', 'local.php');
             $db->addColumn('id');
             $auth_id = $db->select('one');
-            PHPWS_Settings::set('users', 'local_script', $auth_id);
-            PHPWS_Settings::save('users');
+            Core\Settings::set('users', 'local_script', $auth_id);
+            Core\Settings::save('users');
             $files = array('conf/languages.php', 'templates/my_page/user_setting.tpl',
                        'templates/usermenus/css.tpl', 'img/permission.png', 'templates/forms/userForm.tpl');
             userUpdateFiles($files, $content);
@@ -303,8 +303,8 @@ timeout INT NOT NULL default 0,
                        'templates/forms/settings.tpl',
                        'templates/manager/users.tpl');
             userUpdateFiles($files, $content);
-            $db = new PHPWS_DB('users_auth_scripts');
-            PHPWS_Error::logIfError($db->addTableColumn('default_group', 'int not null default 0'));
+            $db = new Core\DB('users_auth_scripts');
+            Core\Error::logIfError($db->addTableColumn('default_group', 'int not null default 0'));
             $content[] = '2.6.3 changes
 ------------------
 + Added icons for admin options under manage users and groups
@@ -322,8 +322,8 @@ timeout INT NOT NULL default 0,
 </pre>';
 
         case version_compare($currentVersion, '2.6.4', '<'):
-            $db = new PHPWS_DB('users_auth_scripts');
-            PHPWS_Error::logIfError($db->addTableColumn('default_group', 'int not null default 0'));
+            $db = new Core\DB('users_auth_scripts');
+            Core\Error::logIfError($db->addTableColumn('default_group', 'int not null default 0'));
             $content[] = '<pre>2.6.4 changes
 -------------------------
 + Added missing column to install.sql</pre>';

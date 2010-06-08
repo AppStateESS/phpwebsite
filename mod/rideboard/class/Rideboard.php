@@ -62,7 +62,7 @@ class Rideboard {
                     Current_User::disallow(null, false);
                 }
                 $this->purgeRides();
-                Core\Core::reroute(PHPWS_Text::linkAddress('rideboard', array('aop'=>'settings')));
+                Core\Core::reroute(Core\Text::linkAddress('rideboard', array('aop'=>'settings')));
                 break;
 
 
@@ -70,18 +70,18 @@ class Rideboard {
                 if (!Current_User::authorized('rideboard')) {
                     Current_User::disallow(null, false);
                 }
-                PHPWS_Settings::set('rideboard', 'default_slocation', (int)$_POST['default_slocation']);
-                PHPWS_Settings::set('rideboard', 'miles_or_kilometers', (int)$_POST['miles_or_kilometers']);
-                PHPWS_Settings::set('rideboard', 'carpool', (int)isset($_POST['carpool']));
+                Core\Settings::set('rideboard', 'default_slocation', (int)$_POST['default_slocation']);
+                Core\Settings::set('rideboard', 'miles_or_kilometers', (int)$_POST['miles_or_kilometers']);
+                Core\Settings::set('rideboard', 'carpool', (int)isset($_POST['carpool']));
 
                 $dest = preg_replace('/[^\w,\-\.\:\s]/', '', strip_tags($_POST['default_destination']));
 
                 if (!empty($dest)) {
-                    PHPWS_Settings::set('rideboard', 'default_destination', $dest);
+                    Core\Settings::set('rideboard', 'default_destination', $dest);
                 } else {
-                    PHPWS_Settings::set('rideboard', 'default_destination', null);
+                    Core\Settings::set('rideboard', 'default_destination', null);
                 }
-                PHPWS_Settings::save('rideboard');
+                Core\Settings::save('rideboard');
                 $this->settings();
                 break;
 
@@ -101,10 +101,10 @@ class Rideboard {
 
 
         if ($js) {
-            $content = PHPWS_Template::process($tpl, 'rideboard', 'main.tpl');
+            $content = Core\Template::process($tpl, 'rideboard', 'main.tpl');
             Layout::nakedDisplay($content);
         } else {
-            $content = PHPWS_Template::process($tpl, 'rideboard', 'panel_main.tpl');
+            $content = Core\Template::process($tpl, 'rideboard', 'panel_main.tpl');
             $this->panel->setContent($content);
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
@@ -121,7 +121,7 @@ class Rideboard {
         }
 
         $_SESSION['rb_search']['use_date']           = isset($_POST['use_date']);
-        $_SESSION['rb_search']['search_time']        = PHPWS_Form::getPostedDate('search_time');
+        $_SESSION['rb_search']['search_time']        = Core\Form::getPostedDate('search_time');
         $_SESSION['rb_search']['search_ride_type']   = (int)$_POST['search_ride_type'];
         $_SESSION['rb_search']['search_gender_pref'] = (int)$_POST['search_gender_pref'];
         $_SESSION['rb_search']['search_smoking']     = (int)$_POST['search_smoking'];
@@ -172,22 +172,22 @@ class Rideboard {
                     if ($this->postLimit()) {
                         $this->title = dgettext('rideboard', 'Sorry');
                         $this->content = sprintf(dgettext('rideboard', 'You are limited to %s ride posts per account.'),
-                        PHPWS_Settings::get('rideboard', 'post_limit'));
+                        Core\Settings::get('rideboard', 'post_limit'));
                     } elseif ($this->postRide()) {
-                        if (PHPWS_Error::logIfError($this->ride->save())) {
+                        if (Core\Error::logIfError($this->ride->save())) {
                             $this->title = dgettext('rideboard', 'Sorry');
                             $this->content = dgettext('rideboard', 'An error occurred when trying to save your ride. Please try again later.');
-                            $this->content .= '<br />' . PHPWS_Text::moduleLink(dgettext('rideboard', 'Return to Ride Board menu.'), 'rideboard');
+                            $this->content .= '<br />' . Core\Text::moduleLink(dgettext('rideboard', 'Return to Ride Board menu.'), 'rideboard');
                         } else {
                             $this->title = dgettext('rideboard', 'Ride posted!');
-                            $this->content = PHPWS_Text::moduleLink(dgettext('rideboard', 'Return to Ride Board menu.'), 'rideboard');
+                            $this->content = Core\Text::moduleLink(dgettext('rideboard', 'Return to Ride Board menu.'), 'rideboard');
                         }
                     } else {
                         $this->userMain();
                     }
                 } else {
                     $this->searchSession();
-                    Core\Core::reroute(PHPWS_Text::linkAddress('rideboard', array('uop'=>'search_rides')));
+                    Core\Core::reroute(Core\Text::linkAddress('rideboard', array('uop'=>'search_rides')));
                 }
                 break;
 
@@ -209,7 +209,7 @@ class Rideboard {
             case 'delete_carpool':
                 $this->loadCarpool();
                 if (Current_User::verifyAuthKey() && $this->carpool->allowDelete()) {
-                    PHPWS_Error::logIfError($this->carpool->delete());
+                    Core\Error::logIfError($this->carpool->delete());
                 }
                 Core\Core::goBack();
                 break;
@@ -232,7 +232,7 @@ class Rideboard {
         $tpl['TITLE']   = & $this->title;
         $tpl['MESSAGE'] = $this->getMessage();
 
-        $content = PHPWS_Template::process($tpl, 'rideboard', 'main.tpl');
+        $content = Core\Template::process($tpl, 'rideboard', 'main.tpl');
         if ($js) {
             Layout::nakedDisplay($content);
         } else {
@@ -243,7 +243,7 @@ class Rideboard {
 
     public function loadAdminPanel()
     {
-        $link = PHPWS_Text::linkAddress('rideboard', array('aop'=>'main'));;
+        $link = Core\Text::linkAddress('rideboard', array('aop'=>'main'));;
         $tabs['locations']      = array ('title' => dgettext('rideboard', 'Locations'),
                                          'link'  => $link);
 
@@ -261,16 +261,16 @@ class Rideboard {
 
     public function locationForm($id=0)
     {
-        $form = new PHPWS_Form('location');
+        $form = new Core\Form('location');
         $form->addHidden('module', 'rideboard');
         $form->addHidden('aop', 'post_location');
         $form->addText('city_state');
         if ($id) {
-            $db = new PHPWS_DB('rb_location');
+            $db = new Core\DB('rb_location');
             $db->addWhere('id', (int)$id);
             $db->addColumn('city_state');
             $location = $db->select('one');
-            if (!PHPWS_Error::logIfError($location) && !empty($location)) {
+            if (!Core\Error::logIfError($location) && !empty($location)) {
                 $form->addHidden('lid', $id);
                 $form->setValue('city_state', $location);
             }
@@ -283,17 +283,16 @@ class Rideboard {
         $form->addSubmit(dgettext('rideboard', 'Go'));
         $tpl = $form->getTemplate();
 
-        return PHPWS_Template::process($tpl, 'rideboard', 'edit_location.tpl');
+        return Core\Template::process($tpl, 'rideboard', 'edit_location.tpl');
     }
 
     public function locations()
     {
         $this->title = dgettext('rideboard', 'Edit locations');
-        Core\Core::initCoreClass('DBPager.php');
-        $tpl['ADD_LOCATION'] = $this->locationForm();
+                $tpl['ADD_LOCATION'] = $this->locationForm();
         $tpl['LOCATION_LABEL'] = dgettext('rideboard', 'Locations');
 
-        $pager = new DBPager('rb_location');
+        $pager = new Core\DBPager('rb_location');
         $pager->setModule('rideboard');
         $pager->setTemplate('location.tpl');
         $pager->addPageTags($tpl);
@@ -316,19 +315,19 @@ class Rideboard {
             return;
         }
 
-        $db = new PHPWS_DB('rb_location');
+        $db = new Core\DB('rb_location');
         $db->addValue('city_state', strip_tags($_POST['city_state']));
         if (isset($_POST['lid'])) {
             $db->addWhere('id', (int)$_POST['lid']);
-            PHPWS_Error::logIfError($db->update());
+            Core\Error::logIfError($db->update());
         } else {
-            PHPWS_Error::logIfError($db->insert());
+            Core\Error::logIfError($db->insert());
         }
     }
 
     public function getLocations()
     {
-        $db = new PHPWS_DB('rb_location');
+        $db = new Core\DB('rb_location');
         $db->addColumn('id');
         $db->addColumn('city_state');
         $db->addOrder('city_state');
@@ -339,7 +338,7 @@ class Rideboard {
 
     public function locationRow($value)
     {
-        $js['address'] = PHPWS_Text::linkAddress('rideboard', array('aop'=>'edit_location',
+        $js['address'] = Core\Text::linkAddress('rideboard', array('aop'=>'edit_location',
                                                                     'lid'=>$value['id']),
         true);
         $js['label'] = dgettext('rideboard', 'Edit');
@@ -352,44 +351,44 @@ class Rideboard {
 
     public function settings()
     {
-        $form = new PHPWS_Form('settings');
+        $form = new Core\Form('settings');
         $form->addHidden('module', 'rideboard');
         $form->addHidden('aop', 'post_settings');
 
         $locations = $this->getLocations();
 
-        if (PHPWS_Error::logIfError($locations) || empty($locations)) {
+        if (Core\Error::logIfError($locations) || empty($locations)) {
             $locations = array(0=> dgettext('rideboard', 'No default'));
         }
 
         $form->addSelect('default_slocation', $locations);
         $form->setLabel('default_slocation', dgettext('rideboard', 'Default starting location'));
-        $form->setMatch('default_slocation', PHPWS_Settings::get('rideboard', 'default_slocation'));
+        $form->setMatch('default_slocation', Core\Settings::get('rideboard', 'default_slocation'));
         $form->addSubmit(dgettext('rideboard', 'Save settings'));
 
 
         $form->addRadio('miles_or_kilometers', array(0,1));
         $form->setLabel('miles_or_kilometers', array(0=>dgettext('rideboard', 'Miles'),
         1=>dgettext('rideboard', 'Kilometers')));
-        $form->setMatch('miles_or_kilometers', PHPWS_Settings::get('rideboard', 'miles_or_kilometers'));
+        $form->setMatch('miles_or_kilometers', Core\Settings::get('rideboard', 'miles_or_kilometers'));
 
         $form->addCheck('carpool', 1);
-        $form->setMatch('carpool', PHPWS_Settings::get('rideboard', 'carpool'));
+        $form->setMatch('carpool', Core\Settings::get('rideboard', 'carpool'));
         $form->setLabel('carpool', dgettext('rideboard', 'Enable carpooling'));
 
-        $form->addText('default_destination', PHPWS_Settings::get('rideboard', 'default_destination'));
+        $form->addText('default_destination', Core\Settings::get('rideboard', 'default_destination'));
         $form->setLabel('default_destination', dgettext('rideboard', 'Default destination'));
         $form->setSize('default_destination', 40);
 
         $tpl = $form->getTemplate();
 
-        $db = new PHPWS_DB('rb_ride');
+        $db = new Core\DB('rb_ride');
         $db->addWhere('depart_time', time(), '<');
         $db->addColumn('id');
         $old_rides = $db->count();
 
         if ($old_rides) {
-            $tpl['PURGE'] = PHPWS_Text::secureLink(sprintf(dngettext('rideboard', 'You have %s ride that has expired. Click here to purge it.',
+            $tpl['PURGE'] = Core\Text::secureLink(sprintf(dngettext('rideboard', 'You have %s ride that has expired. Click here to purge it.',
                                                                      'You have %s rides that have expired. Click here to purge them.', $old_rides),
             $old_rides),
                                                    'rideboard', array('aop'=>'purge_rides')
@@ -398,10 +397,10 @@ class Rideboard {
             $tpl['PURGE'] = dgettext('rideboard', 'No rides need purging.');
         }
 
-        $tpl['MENU'] = PHPWS_Text::moduleLink(dgettext('rideboard', 'Add menu link'), 'rideboard', array('aop'=>'add_link'));
+        $tpl['MENU'] = Core\Text::moduleLink(dgettext('rideboard', 'Add menu link'), 'rideboard', array('aop'=>'add_link'));
 
         $tpl['DISTANCE_LABEL'] = dgettext('rideboard', 'Distance format');
-        $this->content = PHPWS_Template::process($tpl, 'rideboard', 'settings.tpl');
+        $this->content = Core\Template::process($tpl, 'rideboard', 'settings.tpl');
         $this->title = dgettext('rideboard', 'Rideboard Settings');
     }
 
@@ -429,7 +428,7 @@ class Rideboard {
          */
 
         $locations = $this->getLocations();
-        if (PHPWS_Error::logIfError($locations) || empty($locations)) {
+        if (Core\Error::logIfError($locations) || empty($locations)) {
             $locations = array(0 => dgettext('rideboard', '- Location in comments -'));
         } else {
             $locations = array_reverse($locations, true);
@@ -438,7 +437,7 @@ class Rideboard {
         }
 
 
-        $form = new PHPWS_Form('ride');
+        $form = new Core\Form('ride');
         $form->addHidden('module', 'rideboard');
         $form->addHidden('uop', 'user_post');
 
@@ -466,17 +465,17 @@ class Rideboard {
         $tpl['POST_TITLE'] = dgettext('rideboard', 'Post ride');
         $tpl['SEARCH_TITLE'] = dgettext('rideboard', 'Search for ride');
 
-        $links[] = PHPWS_Text::moduleLink(dgettext('rideboard', 'View my rides'), 'rideboard',
+        $links[] = Core\Text::moduleLink(dgettext('rideboard', 'View my rides'), 'rideboard',
         array('uop' => 'view_my_rides'));
 
-        if (PHPWS_Settings::get('rideboard', 'carpool')) {
-            $links[] = PHPWS_Text::moduleLink(dgettext('rideboard', 'Carpool'), 'rideboard',
+        if (Core\Settings::get('rideboard', 'carpool')) {
+            $links[] = Core\Text::moduleLink(dgettext('rideboard', 'Carpool'), 'rideboard',
             array('uop' => 'carpool'));
         }
 
 
         $tpl['LINKS'] = implode(' | ', $links);
-        $this->content = PHPWS_Template::process($tpl, 'rideboard', 'ride_form.tpl');
+        $this->content = Core\Template::process($tpl, 'rideboard', 'ride_form.tpl');
     }
 
     public function postForm(&$form, $locations)
@@ -576,8 +575,8 @@ class Rideboard {
             $errors[] = dgettext('rideboard', 'Your leaving and arriving locations must be different.');
         }
 
-        if (PHPWS_Form::testDate('depart_time')) {
-            $this->ride->depart_time = (int)PHPWS_Form::getPostedDate('depart_time');
+        if (Core\Form::testDate('depart_time')) {
+            $this->ride->depart_time = (int)Core\Form::getPostedDate('depart_time');
             if ($this->ride->depart_time < time()) {
                 $errors[] = dgettext('rideboard', 'Your leaving date must be in the future.');
             }
@@ -605,19 +604,19 @@ class Rideboard {
 
     public function postLimit()
     {
-        $db = new PHPWS_DB('rb_ride');
+        $db = new Core\DB('rb_ride');
         $db->addWhere('user_id', Current_User::getId());
         $result = $db->count();
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             return true;
         }
 
-        return ($result >= PHPWS_Settings::get('rideboard', 'post_limit'));
+        return ($result >= Core\Settings::get('rideboard', 'post_limit'));
     }
 
     public function getRidesDB()
     {
-        $db = new PHPWS_DB('rb_ride');
+        $db = new Core\DB('rb_ride');
         $db->addTable('rb_location', 't1');
         $db->addTable('rb_location', 't2');
         $db->loadClass('rideboard', 'Ride.php');
@@ -640,7 +639,7 @@ class Rideboard {
 
         $result = $db->getObjects('RB_Ride');
 
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             $this->content = dgettext('rideboard', 'An error occurred when pulling your rides.');
             return;
         }
@@ -660,22 +659,21 @@ class Rideboard {
         $tpl['START_LABEL']     = dgettext('rideboard', 'Leaving from');
         $tpl['DEST_LABEL']      = dgettext('rideboard', 'Destination');
 
-        $this->content = PHPWS_Template::process($tpl, 'rideboard', 'my_rides.tpl');
+        $this->content = Core\Template::process($tpl, 'rideboard', 'my_rides.tpl');
     }
 
     public function searchRides()
     {
-        Core\Core::initCoreClass('DBPager.php');
-        Core\Core::initModClass('rideboard', 'Ride.php');
+                Core\Core::initModClass('rideboard', 'Ride.php');
 
         if (!isset($_SESSION['rb_search'])) {
             $this->title = dgettext('rideboard', 'Sorry');
             $this->content = dgettext('rideboard', 'Your session timed out.');
-            $this->content .= '<br />' . PHPWS_Text::moduleLink(dgettext('rideboard', 'Back to search'), 'rideboard');
+            $this->content .= '<br />' . Core\Text::moduleLink(dgettext('rideboard', 'Back to search'), 'rideboard');
             return;
         }
 
-        $tpl['LINK'] = PHPWS_Text::moduleLink(dgettext('rideboard', 'Back to search'), 'rideboard');
+        $tpl['LINK'] = Core\Text::moduleLink(dgettext('rideboard', 'Back to search'), 'rideboard');
         $tpl['TITLE_LABEL']     = dgettext('rideboard', 'Trip title');
         $tpl['RIDE_TYPE_LABEL'] = dgettext('rideboard', 'Driver or Rider');
         $tpl['RIDE_TYPE_ABBR']  = dgettext('rideboard', 'D/R');
@@ -684,7 +682,7 @@ class Rideboard {
         $tpl['START_LABEL']     = dgettext('rideboard', 'Leaving from/on');
         $tpl['DEST_LABEL']      = dgettext('rideboard', 'Destination');
 
-        $pager = new DBPager('rb_ride', 'RB_Ride');
+        $pager = new Core\DBPager('rb_ride', 'RB_Ride');
         $pager->setModule('rideboard');
         $pager->setTemplate('search_rides.tpl');
         $pager->addRowTags('tags', false);
@@ -752,23 +750,22 @@ class Rideboard {
 
     public function purgeRides()
     {
-        $db = new PHPWS_DB('rb_ride');
+        $db = new Core\DB('rb_ride');
         $db->addWhere('depart_time', time(), '<');
-        return !PHPWS_Error::logIfError($db->delete());
+        return !Core\Error::logIfError($db->delete());
     }
 
     public function carpool()
     {
-        Core\Core::initCoreClass('DBPager.php');
-        Core\Core::initModClass('rideboard', 'Carpool.php');
+                Core\Core::initModClass('rideboard', 'Carpool.php');
 
         $tpl['LINK'] = javascript('open_window',
-        array('address' => PHPWS_Text::linkAddress('rideboard',
+        array('address' => Core\Text::linkAddress('rideboard',
         array('uop'=>'carpool_form')),
                                         'label'=> dgettext('rideboard', 'Create a carpool'),
                                         'width'=>640, 'height'=>480));
 
-        $pager = new DBPager('rb_carpool', 'RB_Carpool');
+        $pager = new Core\DBPager('rb_carpool', 'RB_Carpool');
         $pager->setModule('rideboard');
         $pager->setTemplate('carpools.tpl');
         $pager->addRowTags('row_tags', false);
@@ -788,7 +785,7 @@ class Rideboard {
 
     public function carpoolForm()
     {
-        $form = new PHPWS_Form('carpool');
+        $form = new Core\Form('carpool');
         $form->addHidden('module', 'rideboard');
         $form->addHidden('uop', 'post_carpool');
         if ($this->carpool->id) {
@@ -820,7 +817,7 @@ class Rideboard {
         } else {
             $this->title = dgettext('rideboard', 'Create a new carpool');
         }
-        $this->content = PHPWS_Template::process($tpl, 'rideboard', 'edit_carpool.tpl');
+        $this->content = Core\Template::process($tpl, 'rideboard', 'edit_carpool.tpl');
     }
 
     public function loadCarpool()
@@ -856,7 +853,7 @@ class Rideboard {
             $this->carpool->created = time();
         }
 
-        if (PHPWS_Error::logIfError($this->carpool->save())) {
+        if (Core\Error::logIfError($this->carpool->save())) {
             $this->message = dgettext('rideboard', 'A problem occurred when trying to save your carpool information. Try again later.');
             return false;
         } else {

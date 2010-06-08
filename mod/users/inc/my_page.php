@@ -44,7 +44,7 @@ function my_page()
             if (is_array($result)) {
                 $content = User_Settings::userForm($user, $result);
             } else {
-                if (PHPWS_Error::logIfError($user->save())) {
+                if (Core\Error::logIfError($user->save())) {
                     $content = dgettext('users', 'An error occurred while updating your user account.');
                 } else {
                     $_SESSION['User'] = $user;
@@ -56,7 +56,7 @@ function my_page()
 
     $template['CONTENT'] = $content;
 
-    return PHPWS_Template::process($template, 'users', 'my_page/main.tpl');
+    return Core\Template::process($template, 'users', 'my_page/main.tpl');
 }
 
 class User_Settings {
@@ -64,7 +64,7 @@ class User_Settings {
     public static function userForm(PHPWS_User $user, $message=NULL)
     {
         javascript('jquery');
-        $form = new PHPWS_Form;
+        $form = new Core\Form;
 
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');
@@ -122,7 +122,7 @@ class User_Settings {
         if (isset($_REQUEST['timezone'])) {
             $user_tz = $_REQUEST['timezone'];
         } else {
-            $user_tz = PHPWS_Cookie::read('user_tz');
+            $user_tz = Core\Cookie::read('user_tz');
         }
 
         $form->addSelect('timezone', $timezones);
@@ -132,7 +132,7 @@ class User_Settings {
         if (isset($_REQUEST['dst']) && $_REQUEST['timezone'] != 'server') {
             $dst = $_REQUEST['dst'];
         } else {
-            $dst = PHPWS_Cookie::read('user_dst');
+            $dst = Core\Cookie::read('user_dst');
         }
 
         $form->addCheckbox('dst', 1);
@@ -142,7 +142,7 @@ class User_Settings {
         if (isset($_POST['cp'])) {
             $cp = (int)$_POST['cp'];
         } else {
-            $cp = (int)PHPWS_Cookie::read('user_cp');
+            $cp = (int)Core\Cookie::read('user_cp');
         }
 
         $form->addCheckbox('cp', 1);
@@ -153,7 +153,7 @@ class User_Settings {
             // User must authorize locally
             if ($_SESSION['User']->authorize == 1) {
                 $form->addCheckbox('remember_me', 1);
-                if (PHPWS_Cookie::read('remember_me')) {
+                if (Core\Cookie::read('remember_me')) {
                     $form->setMatch('remember_me', 1);
                 }
                 $form->setLabel('remember_me', dgettext('users', 'Remember me'));
@@ -206,7 +206,7 @@ class User_Settings {
         $template['LOCAL_INFO'] = dgettext('users', 'Localization');
         $template['PREF'] = dgettext('users', 'Preferences');
 
-        return PHPWS_Template::process($template, 'users', 'my_page/user_setting.tpl');
+        return Core\Template::process($template, 'users', 'my_page/user_setting.tpl');
     }
 
     public function setTZ()
@@ -216,59 +216,59 @@ class User_Settings {
         }
 
         if ($_POST['timezone'] == 'server') {
-            PHPWS_Cookie::delete('user_tz');
-            PHPWS_Cookie::delete('user_dst');
+            Core\Cookie::delete('user_tz');
+            Core\Cookie::delete('user_dst');
             return;
         } else {
-            PHPWS_Cookie::write('user_tz', strip_tags($_POST['timezone']));
+            Core\Cookie::write('user_tz', strip_tags($_POST['timezone']));
         }
 
 
         if (isset($_POST['dst'])){
-            PHPWS_Cookie::write('user_dst', 1);
+            Core\Cookie::write('user_dst', 1);
         } else {
-            PHPWS_Cookie::delete('user_dst');
+            Core\Cookie::delete('user_dst');
         }
     }
 
     public function setCP()
     {
         if (isset($_POST['cp'])) {
-            PHPWS_Cookie::write('user_cp', 1);
+            Core\Cookie::write('user_cp', 1);
         } else {
-            PHPWS_Cookie::delete('user_cp');
+            Core\Cookie::delete('user_cp');
         }
     }
 
     public function setEditor()
     {
         if (!preg_match('/\W/', $_POST['editor'])) {
-            PHPWS_Cookie::write('phpws_editor', $_POST['editor']);
+            Core\Cookie::write('phpws_editor', $_POST['editor']);
         }
     }
 
     public function rememberMe()
     {
         // User must authorize locally
-        if ( PHPWS_Settings::get('users', 'allow_remember') && $_SESSION['User']->authorize == 1) {
+        if ( Core\Settings::get('users', 'allow_remember') && $_SESSION['User']->authorize == 1) {
             if (isset($_POST['remember_me'])) {
-                $db = new PHPWS_DB('user_authorization');
+                $db = new Core\DB('user_authorization');
                 $db->addColumn('password');
                 $db->addWhere('username', $_SESSION['User']->username);
                 $password = $db->select('one');
                 if (empty($password)) {
                     return false;
-                } elseif (PHPWS_Error::isError($password)) {
-                    PHPWS_Error::log($password);
+                } elseif (Core\Error::isError($password)) {
+                    Core\Error::log($password);
                     return false;
                 }
 
                 $remember['username'] = $_SESSION['User']->username;
                 $remember['password'] = $password;
                 $time_to_live = time() + (86400 * REMEMBER_ME_LIFE);
-                PHPWS_Cookie::write('remember_me', serialize($remember), $time_to_live);
+                Core\Cookie::write('remember_me', serialize($remember), $time_to_live);
             } else {
-                PHPWS_Cookie::delete('remember_me');
+                Core\Cookie::delete('remember_me');
             }
         }
     }

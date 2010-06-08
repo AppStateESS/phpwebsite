@@ -25,8 +25,8 @@ function demographics_update(&$content, $version)
 ';
 
         case version_compare($version, '1.1.0', '<'):
-            $db = new PHPWS_DB('demographics');
-            if (PHPWS_Error::logIfError($db->createTableIndex('user_id', null, true))) {
+            $db = new Core\DB('demographics');
+            if (Core\Error::logIfError($db->createTableIndex('user_id', null, true))) {
                 $content[] = 'Warning: A problems occurred when trying to create a unique index on the demographics table.';
             }
 

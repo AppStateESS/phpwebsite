@@ -11,20 +11,19 @@ class Boost_Action {
 
     public static function checkupdate($mod_title)
     {
-        Core\Core::initCoreClass('Module.php');
-        $module = new PHPWS_Module($mod_title);
+                $module = new PHPWS_Module($mod_title);
 
         $file = $module->getVersionHttp();
         if (empty($file)) {
             return dgettext('boost', 'Update check file not found.');
         }
 
-        $full_xml_array = PHPWS_Text::xml2php($file, 2);
+        $full_xml_array = Core\Text::xml2php($file, 2);
 
         if (empty($full_xml_array)) {
             return dgettext('boost', 'Update check file not found.');
         }
-        $version_info = PHPWS_Text::tagXML($full_xml_array);
+        $version_info = Core\Text::tagXML($full_xml_array);
 
         $template['LOCAL_VERSION_LABEL'] = dgettext('boost', 'Local version');
         $template['LOCAL_VERSION'] = $module->getVersion();
@@ -79,7 +78,7 @@ class Boost_Action {
         }
 
         $template['TITLE'] = dgettext('boost', 'Module') . ': ' . $module->getProperName(TRUE);
-        return PHPWS_Template::process($template, 'boost', 'check_update.tpl');
+        return Core\Template::process($template, 'boost', 'check_update.tpl');
     }
 
     public static function installModule($module_title)
@@ -116,18 +115,18 @@ class Boost_Action {
         $result = core_update($content, $ver_info['version']);
 
         if ($result === true) {
-            $db = new PHPWS_DB('core_version');
+            $db = new Core\DB('core_version');
             $file_ver = Core\Core::getVersionInfo();
             $db->addValue('version', $file_ver['version']);
             $result = $db->update();
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 $content[] = dgettext('boost', 'An error occurred updating the core.');
             } else {
                 $content[] = dgettext('boost', 'Core successfully updated.');
             }
-        } elseif (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        } elseif (Core\Error::isError($result)) {
+            Core\Error::log($result);
             $content[] = dgettext('boost', 'An error occurred updating the core.');
         } else {
             $content[] = dgettext('boost', 'An error occurred updating the core.');
@@ -151,15 +150,14 @@ class Boost_Action {
 
     public function showDependedUpon($base_mod)
     {
-        Core\Core::initCoreClass('Module.php');
-        $module = new PHPWS_Module($base_mod);
+                $module = new PHPWS_Module($base_mod);
         $dependents = $module->isDependedUpon();
         if (empty($dependents)) {
             return dgettext('boost', 'This module does not have dependents.');
         }
 
         $template['TITLE'] = sprintf(dgettext('boost', '%s Dependencies'), $module->getProperName());
-        $content[] = PHPWS_Text::backLink() . '<br />';
+        $content[] = Core\Text::backLink() . '<br />';
         $content[] = dgettext('boost', 'The following modules depend on this module to function:');
         foreach ($dependents as $mod) {
             $dep_module = new PHPWS_Module($mod);
@@ -169,13 +167,12 @@ class Boost_Action {
         $content[] = PHPWS_Boost::uninstallLink($base_mod);
         $template['CONTENT'] = implode('<br />', $content);
 
-        return PHPWS_Template::process($template, 'boost', 'main.tpl');
+        return Core\Template::process($template, 'boost', 'main.tpl');
     }
 
     public function showDependency($base_module_title)
     {
-        Core\Core::initCoreClass('Module.php');
-        $module = new PHPWS_Module($base_module_title);
+                $module = new PHPWS_Module($base_module_title);
         $depend = $module->getDependencies();
         $template['TITLE'] = sprintf(dgettext('boost', '%s Module Dependencies'), $module->getProperName());
 
@@ -215,7 +212,7 @@ class Boost_Action {
             $template['module-row'][] = $tpl;
         }
 
-        return PHPWS_Template::process($template, 'boost', 'dependency.tpl');
+        return Core\Template::process($template, 'boost', 'dependency.tpl');
     }
 
     /**
@@ -229,8 +226,7 @@ class Boost_Action {
             return;
         }
 
-        Core\Core::initCoreClass('Module.php');
-
+        
         $all_mods[] = 'core';
 
         if (!ini_get('allow_url_fopen')) {
@@ -244,13 +240,13 @@ class Boost_Action {
                 continue;
             }
 
-            $full_xml_array = PHPWS_Text::xml2php($file, 2);
+            $full_xml_array = Core\Text::xml2php($file, 2);
 
             if (empty($full_xml_array)) {
                 continue;
             }
 
-            $version_info = PHPWS_Text::tagXML($full_xml_array);
+            $version_info = Core\Text::tagXML($full_xml_array);
             if (empty($version_info) || empty($version_info['VERSION'])) {
                 continue;
             }

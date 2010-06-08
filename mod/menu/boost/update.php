@@ -62,7 +62,7 @@ Please download 1.2.1.</pre>';
             $horz_dir  = $home_directory . 'templates/menu/menu_layout/horizontal/';
 
             if (!is_dir($basic_dir)) {
-                if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/basic/', $basic_dir)) {
+                if (Core\File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/basic/', $basic_dir)) {
                     $content[] = "--- Successfully copied directory: $basic_dir";
                 } else {
                     $content[] = "--- Failed to copy directory: $basic_dir</pre>";
@@ -71,7 +71,7 @@ Please download 1.2.1.</pre>';
             }
 
             if (!is_dir($horz_dir)) {
-                if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/horizontal/', $horz_dir)) {
+                if (Core\File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/horizontal/', $horz_dir)) {
                     $content[] = "--- Successfully copied directory: $horz_dir";
                 } else {
                     $content[] = "--- Failed to copy directory: $horz_dir</pre>";
@@ -101,10 +101,10 @@ Please download 1.2.1.</pre>';
         case version_compare($currentVersion, '1.4.2', '<'):
             $content[] = '<pre>';
 
-            $db = new PHPWS_DB('menus');
+            $db = new Core\DB('menus');
             $db->addWhere('template', 'basic.tpl');
             $db->addValue('template', 'basic');
-            if (PHPWS_Error::logIfError($db->update())) {
+            if (Core\Error::logIfError($db->update())) {
                 $content[] = '--- Failed to update menus table.';
             } else {
                 $content[] = '--- Updated menu table with correct template directory.';
@@ -154,8 +154,8 @@ Please download 1.2.1.</pre>';
 + Adding missing paging navigation.</pre>';
 
         case version_compare($currentVersion, '1.5.0', '<'):
-            $db = new PHPWS_DB('menu_links');
-            PHPWS_Error::logIfError($db->alterColumnType('title', 'varchar(255) not null'));
+            $db = new Core\DB('menu_links');
+            Core\Error::logIfError($db->alterColumnType('title', 'varchar(255) not null'));
             $files = array('templates/style.css',
                        'templates/menu_layout/basic/menu.tpl',
                        'templates/menu_layout/basic/link.tpl',
@@ -205,13 +205,13 @@ Please download 1.2.1.</pre>';
 + Commented out pin page link in template</pre>';
 
         case version_compare($currentVersion, '1.6.0', '<'):
-            $db = new PHPWS_DB('menus');
-            if (PHPWS_Error::logIfError($db->addTableColumn('key_id', 'int not null default 0'))) {
+            $db = new Core\DB('menus');
+            if (Core\Error::logIfError($db->addTableColumn('key_id', 'int not null default 0'))) {
                 return false;
             }
             Core\Core::initModClass('menu', 'Menu_Item.php');
             $menus = $db->getObjects('Menu_Item');
-            if (!empty($menus) && !PHPWS_Error::logIfError($menus)) {
+            if (!empty($menus) && !Core\Error::logIfError($menus)) {
                 foreach ($menus as $m) {
                     $m->save();
                 }

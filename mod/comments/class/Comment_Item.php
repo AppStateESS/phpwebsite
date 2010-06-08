@@ -76,7 +76,7 @@ class Comment_Item {
 
         $this->setId($id);
         $result = $this->init();
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_error = $result;
         }
     }
@@ -86,9 +86,9 @@ class Comment_Item {
         if (!isset($this->id))
         return FALSE;
 
-        $db = new PHPWS_DB('comments_items');
+        $db = new Core\DB('comments_items');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         } elseif (!$result) {
             $this->id = 0;
@@ -123,13 +123,13 @@ class Comment_Item {
     public function setEntry($entry)
     {
         $entry = strip_tags($entry);
-        $this->entry = PHPWS_Text::parseInput($entry);
+        $this->entry = Core\Text::parseInput($entry);
     }
 
     public function getEntry($format=TRUE, $quoted=FALSE)
     {
         if ($format) {
-            $entry = PHPWS_Text::parseOutput($this->entry, true, true);
+            $entry = Core\Text::parseOutput($this->entry, true, true);
         } else {
             $entry =  $this->entry;
         }
@@ -166,8 +166,8 @@ class Comment_Item {
             $this->author_id = Current_User::getId();
             $result = Comments::updateCommentUser($this->author_id);
 
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 return FALSE;
             }
         } else {
@@ -317,7 +317,7 @@ class Comment_Item {
                 $str = dgettext('comments', 'Split topic from this position');
                 $str = '<span>' . dgettext('comments', 'Split Topic') . '</span>';
                 $title = dgettext('comments', 'Split topic from this position');
-                $template['FORK_THIS'] = PHPWS_Text::secureLink($str, 'phpwsbb', $vars, null, $title, 'comment_fork_link');
+                $template['FORK_THIS'] = Core\Text::secureLink($str, 'phpwsbb', $vars, null, $title, 'comment_fork_link');
             }
         }
         $template['VIEW_LINK']       = $this->viewLink();
@@ -366,7 +366,7 @@ class Comment_Item {
     public function save($stamp_update=true)
     {
         if (empty($this->thread_id)) {
-            return PHPWS_Error::get(COMMENTS_MISSING_THREAD, 'comments', 'Comment_Item::save');
+            return Core\Error::get(COMMENTS_MISSING_THREAD, 'comments', 'Comment_Item::save');
         }
 
         if (empty($this->subject)) {
@@ -388,10 +388,10 @@ class Comment_Item {
             $increase_count = FALSE;
         }
 
-        $db = new PHPWS_DB('comments_items');
+        $db = new Core\DB('comments_items');
         $result = $db->saveObject($this);
-        if (!PHPWS_Error::isError($result) && $increase_count && $this->approved) {
-            PHPWS_Error::logIfError($this->stampThread());
+        if (!Core\Error::isError($result) && $increase_count && $this->approved) {
+            Core\Error::logIfError($this->stampThread());
         }
         return $result;
     }
@@ -402,7 +402,7 @@ class Comment_Item {
         $thread->increaseCount();
         $thread->postLastUser($this->author_id);
         $result = $thread->save();
-        if (!PHPWS_Error::logIfError($result)) {
+        if (!Core\Error::logIfError($result)) {
             // Update any associated phpwsbb topic's lastpost information
             if (!empty($thread->phpwsbb_topic)) {
                 $thread->phpwsbb_topic->update_topic();
@@ -427,7 +427,7 @@ class Comment_Item {
         $vars['thread_id'] = $this->thread_id;
         $str = '<span>' . dgettext('comments', 'Edit') . '</span>';
         $title = dgettext('comments', 'Edit this comment');
-        return PHPWS_Text::secureLink($str, 'comments', $vars, null, $title, 'comment_edit_link');
+        return Core\Text::secureLink($str, 'comments', $vars, null, $title, 'comment_edit_link');
     }
 
     public function deleteLink()
@@ -435,7 +435,7 @@ class Comment_Item {
         $vars['QUESTION'] = dgettext('comments', 'Are you sure you want to delete this comment?');
         $vars['ADDRESS'] = 'index.php?module=comments&amp;cm_id=' . $this->id . '&amp;aop=delete_comment&amp;authkey='
         . Current_User::getAuthKey();
-        $vars['LINK'] = Icon::show('delete');
+        $vars['LINK'] = Core\Icon::show('delete');
         $vars['CLASS'] = 'comment_delete_link';
         $vars['TITLE'] = dgettext('comments', 'Delete this comment');
         return Layout::getJavascript('confirm', $vars);
@@ -443,8 +443,8 @@ class Comment_Item {
 
     public function clearReportLink()
     {
-        $link = Icon::show('clear');
-        return PHPWS_Text::secureLink($link, 'comments',
+        $link = Core\Icon::show('clear');
+        return Core\Text::secureLink($link, 'comments',
         array('aop'=>'clear_report', 'cm_id'=>$this->id),
         NULL, dgettext('comments', 'Clear this report'));
     }
@@ -469,7 +469,7 @@ class Comment_Item {
         $vars['type']      = 'quote';
         $str = '<span>' . dgettext('comments', 'Quote') . '</span>';
         $title = dgettext('comments', 'Quote this comment');
-        return PHPWS_Text::moduleLink($str, 'comments', $vars, null, $title, 'comment_quote_link');
+        return Core\Text::moduleLink($str, 'comments', $vars, null, $title, 'comment_quote_link');
     }
 
     public function replyLink()
@@ -479,7 +479,7 @@ class Comment_Item {
         $vars['cm_parent'] = $this->id;
         $str = '<span>' . dgettext('comments', 'Reply') . '</span>';
         $title = dgettext('comments', 'Reply to this comment');
-        return PHPWS_Text::secureLink($str, 'comments', $vars, null, $title, 'comment_reply_link');
+        return Core\Text::secureLink($str, 'comments', $vars, null, $title, 'comment_reply_link');
     }
 
     public function reportLink()
@@ -495,7 +495,7 @@ class Comment_Item {
         $vars['uop']   = 'view_comment';
         $vars['cm_id']	   = $this->id;
 
-        return PHPWS_Text::moduleLink($this->subject, 'comments', $vars);
+        return Core\Text::moduleLink($this->subject, 'comments', $vars);
     }
 
     /**
@@ -508,9 +508,9 @@ class Comment_Item {
         return false;
 
         // physical removal
-        $db = new PHPWS_DB('comments_items');
+        $db = new Core\DB('comments_items');
         $db->addWhere('id', $this->id);
-        if (PHPWS_Error::logIfError($db->delete())) {
+        if (Core\Error::logIfError($db->delete())) {
             return false;
         }
 
@@ -530,7 +530,7 @@ class Comment_Item {
                 $thread->last_poster = $thread->phpwsbb_topic->lastpost_author;
             }
             else {
-                $db = new PHPWS_DB('comments_items');
+                $db = new Core\DB('comments_items');
                 $db->addColumn('comments_items.author_id');
                 $db->addColumn('comments_items.anon_name');
                 $db->addColumn('users.display_name');
@@ -539,7 +539,7 @@ class Comment_Item {
                 $db->addWhere('comments_items.approved', 1);
                 $db->addOrder('create_time desc');
                 $result = $db->select('row');
-                if (PHPWS_Error::logIfError($result))
+                if (Core\Error::logIfError($result))
                 return;
                 if (empty($result))
                 $thread->last_poster = dgettext('comments', 'None');
@@ -559,7 +559,7 @@ class Comment_Item {
      */
     public function clearChildren()
     {
-        PHPWS_DB::query('update comments_items set parent=0 where parent=' . $this->id);
+        Core\DB::query('update comments_items set parent=0 where parent=' . $this->id);
     }
 
     public function responseNumber()
@@ -567,7 +567,7 @@ class Comment_Item {
         $vars['uop'] = 'view_comment';
         $vars['cm_id']	     = $this->parent;
 
-        return PHPWS_Text::moduleLink($this->parent, 'comments', $vars);
+        return Core\Text::moduleLink($this->parent, 'comments', $vars);
     }
 
     public function responseAuthor()
@@ -583,12 +583,12 @@ class Comment_Item {
             $name = $comment->getAuthorName();
             $this->parent_author_id = $comment->author_id;
             $this->parent_anon_name = $comment->anon_name;
-            $db = new PHPWS_DB('comments_items');
-            PHPWS_Error::logIfError($db->saveObject($this));
+            $db = new Core\DB('comments_items');
+            Core\Error::logIfError($db->saveObject($this));
         }
         $vars['uop']   = 'view_comment';
         $vars['cm_id'] = $this->parent;
-        return PHPWS_Text::moduleLink($name, 'comments', $vars);
+        return Core\Text::moduleLink($name, 'comments', $vars);
     }
 
     public function reportTags()
@@ -641,13 +641,13 @@ class Comment_Item {
 
         $tpl['CHECKBOX'] = sprintf('<input type="checkbox" name="cm_id[]" value="%s" />', $this->id);
 
-        $approve = Icon::show('check', dgettext('comments', 'Approve this comment'));
+        $approve = Core\Icon::show('check', dgettext('comments', 'Approve this comment'));
 
-        $remove = Icon::show('cancel', dgettext('comments', 'Remove this comment'));
+        $remove = Core\Icon::show('cancel', dgettext('comments', 'Remove this comment'));
 
-        $links[] = PHPWS_Text::secureLink($approve, 'comments', array('aop'=>'approve',
+        $links[] = Core\Text::secureLink($approve, 'comments', array('aop'=>'approve',
                                                                       'cm_id'=>$this->id));
-        $links[] = PHPWS_Text::secureLink($remove, 'comments', array('aop'=>'remove',
+        $links[] = Core\Text::secureLink($remove, 'comments', array('aop'=>'remove',
                                                                      'cm_id'=>$this->id));
         $links[] = $this->punishUserLink(true);
 

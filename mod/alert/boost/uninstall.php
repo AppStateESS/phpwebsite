@@ -6,11 +6,11 @@
 
 function alert_uninstall(&$content)
 {
-    PHPWS_DB::dropTable('alert_participant');
-    PHPWS_DB::dropTable('alert_prt_to_type');
-    PHPWS_DB::dropTable('alert_contact');
-    PHPWS_DB::dropTable('alert_item');
-    PHPWS_DB::dropTable('alert_type');
+    Core\DB::dropTable('alert_participant');
+    Core\DB::dropTable('alert_prt_to_type');
+    Core\DB::dropTable('alert_contact');
+    Core\DB::dropTable('alert_item');
+    Core\DB::dropTable('alert_type');
     return true;
 }
 ?>

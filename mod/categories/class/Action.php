@@ -93,8 +93,8 @@ class Categories_Action {
                     $content[] = Categories_Action::edit($category, $result);
                 } else {
                     $result = $category->save();
-                    if (PHPWS_Error::isError($result)) {
-                        PHPWS_Error::log($result);
+                    if (Core\Error::isError($result)) {
+                        Core\Error::log($result);
                         $message = dgettext('categories', 'Unable to save category.') . ' ' .  dgettext('categories', 'Please contact your administrator.');
                     }
                     else {
@@ -111,7 +111,7 @@ class Categories_Action {
         $template['CONTENT'] = implode('', $content);
         $template['MESSAGE'] = $message;
 
-        $final = PHPWS_Template::process($template, 'categories', 'menu.tpl');
+        $final = Core\Template::process($template, 'categories', 'menu.tpl');
 
         $panel->setContent($final);
         $finalPanel = $panel->display();
@@ -164,8 +164,7 @@ class Categories_Action {
 
     public function postCategory(Category $category)
     {
-        Core\Core::initCoreClass('File.php');
-
+        
         if (empty($_POST['title'])) {
             $errors['title'] = dgettext('categories', 'Your category must have a title.');
         }
@@ -219,9 +218,8 @@ class Categories_Action {
     public static function edit(Category $category, $errors=NULL)
     {
         $template = NULL;
-        Core\Core::initCoreClass('Editor.php');
-
-        $form = new PHPWS_Form('edit_form');
+        
+        $form = new Core\Form('edit_form');
         $form->add('module', 'hidden', 'categories');
         $form->add('action', 'hidden', 'admin');
         $form->add('subaction', 'hidden', 'postCategory');
@@ -271,7 +269,7 @@ class Categories_Action {
 
         $form->mergeTemplate($template);
         $final_template = $form->getTemplate();
-        return PHPWS_Template::process($final_template, 'categories', 'forms/edit.tpl');
+        return Core\Template::process($final_template, 'categories', 'forms/edit.tpl');
     }
 
     public static function getManager($image_id, $image_name)
@@ -289,13 +287,12 @@ class Categories_Action {
 
     public static function category_list()
     {
-        Core\Core::initCoreClass('DBPager.php');
-
+        
         $pageTags['TITLE_LABEL'] = dgettext('categories', 'Title');
         $pageTags['PARENT_LABEL'] = dgettext('categories', 'Parent');
         $pageTags['ACTION_LABEL'] = dgettext('categories', 'Action');
 
-        $pager = new DBPager('categories', 'Category');
+        $pager = new Core\DBPager('categories', 'Category');
         $pager->setModule('categories');
         $pager->setDefaultLimit(10);
         $pager->setTemplate('category_list.tpl');
@@ -318,8 +315,7 @@ class Categories_Action {
         $oMod = $category = NULL;
 
         if (!empty($module)) {
-            Core\Core::initCoreClass('Module.php');
-            $oMod = new PHPWS_Module($module);
+                        $oMod = new PHPWS_Module($module);
         }
 
         if (!isset($id)) {
@@ -356,13 +352,13 @@ class Categories_Action {
         $template['FAMILY'] = & $family_list;
         $template['CONTENT'] = & $content;
 
-        return PHPWS_Template::process($template, 'categories', 'view_categories.tpl');
+        return Core\Template::process($template, 'categories', 'view_categories.tpl');
     }
 
 
     public function moduleSelect($category=NULL)
     {
-        $db = new PHPWS_DB('category_items');
+        $db = new Core\DB('category_items');
 
         if (isset($category)) {
             $db->addWhere('cat_id', $category);
@@ -371,7 +367,7 @@ class Categories_Action {
             $mod_list = Categories::getModuleListing();
         }
 
-        Key::restrictView($db);
+        Core\Key::restrictView($db);
         $all_no = $db->count();
 
         if (!empty($mod_list)) {
@@ -380,7 +376,7 @@ class Categories_Action {
             $mod_list[0] = sprintf(dgettext('categories', 'All - %s items'), $all_no);
         }
 
-        $form = new PHPWS_Form('module_select');
+        $form = new Core\Form('module_select');
         $form->noAuthKey();
         $form->setMethod('get');
         $form->addHidden('module', 'categories');
@@ -406,16 +402,15 @@ class Categories_Action {
      */
     public function getAllItems(Category $category, $module)
     {
-        Core\Core::initCoreClass('DBPager.php');
-
+        
         $pageTags['TITLE_LABEL'] = dgettext('categories', 'Item Title');
         $pageTags['CREATE_DATE_LABEL'] = dgettext('categories', 'Creation date');
 
-        $pager = new DBPager('phpws_key', 'Key');
+        $pager = new Core\DBPager('phpws_key', 'Key');
         $pager->addWhere('category_items.cat_id', $category->id);
         $pager->addWhere('category_items.module', $module);
 
-        Key::restrictView($pager->db, $module);
+        Core\Key::restrictView($pager->db, $module);
         $pager->setModule('categories');
         $pager->setLimitList(array(10, 25, 50));
         $pager->setDefaultLimit(25);
@@ -436,17 +431,17 @@ class Categories_Action {
 
     public function addCategoryItem($cat_id, $key_id)
     {
-        $db = new PHPWS_DB('category_items');
+        $db = new Core\DB('category_items');
         $db->addValue('cat_id', (int)$cat_id);
         $db->addValue('key_id', (int)$key_id);
-        $key = new Key((int)$key_id);
+        $key = new Core\Key((int)$key_id);
         $db->addValue('module', $key->module);
         return $db->insert();
     }
 
     public function removeCategoryItem($cat_id, $key_id)
     {
-        $db = new PHPWS_DB('category_items');
+        $db = new Core\DB('category_items');
         $db->addWhere('cat_id', (int)$cat_id);
         $db->addWhere('key_id', (int)$key_id);
         return $db->delete();
@@ -460,12 +455,12 @@ class Categories_Action {
             return false;
         }
 
-        $db = new PHPWS_DB('categories');
+        $db = new Core\DB('categories');
         $db->addWhere('title', $title, 'like');
         $db->addColumn('id');
         $result = $db->select('one');
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             return false;
         } elseif ($result) {
             $result = Categories_Action::addCategoryItem($result, $key_id);
@@ -480,8 +475,8 @@ class Categories_Action {
 
         $result = $category->save();
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             return false;
         }
 
@@ -504,7 +499,7 @@ class Categories_Action {
      */
     public function categoryPopup()
     {
-        $key = new Key((int)$_REQUEST['key_id']);
+        $key = new Core\Key((int)$_REQUEST['key_id']);
         $content = Categories::showForm($key, TRUE);
         return $content;
     }

@@ -18,11 +18,11 @@ function comments_unregister_key(Key $key)
 
     $thread = new Comment_Thread;
 
-    $db = new PHPWS_DB('comments_threads');
+    $db = new Core\DB('comments_threads');
     $db->addWhere('key_id', $key->id);
     $result = $db->loadObject($thread);
 
-    if (PHPWS_Error::isError($result)) {
+    if (Core\Error::isError($result)) {
         return $result;
     } elseif (empty($result)) {
         return TRUE;

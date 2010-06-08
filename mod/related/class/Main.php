@@ -104,13 +104,13 @@ class Related {
         if (!isset($this->id))
         return NULL;
 
-        $db = new PHPWS_DB('related_friends');
+        $db = new Core\DB('related_friends');
         $db->addWhere('source_id', $this->id);
         $db->addOrder('rating');
         $db->setIndexBy('rating');
         $result = $db->select('col');
 
-        if (PHPWS_Error::isError($result))
+        if (Core\Error::isError($result))
         return $result;
 
         $this->friends = $result;

@@ -36,16 +36,15 @@ class Search_User {
             SEARCH_DEFAULT);
         }
 
-        Core\Core::initCoreClass('Form.php');
-
-        $form = new PHPWS_Form('search_box');
+        
+        $form = new Core\Form('search_box');
         $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addHidden('user', 'search');
         $form->addText('search', SEARCH_DEFAULT);
         $form->setLabel('search', dgettext('search', 'Search'));
 
-        if (PHPWS_Settings::get('search', 'show_alternates')) {
+        if (Core\Settings::get('search', 'show_alternates')) {
             Search_User::addAlternates($form);
         }
 
@@ -58,7 +57,7 @@ class Search_User {
 
         $form->addSelect('mod_title', $mod_list);
 
-        $key = Key::getCurrent();
+        $key = Core\Key::getCurrent();
 
         if (!empty($key) && !$key->isDummy()) {
             $form->setMatch('mod_title', $key->module);
@@ -68,13 +67,13 @@ class Search_User {
 
         $template = $form->getTemplate();
 
-        $content = PHPWS_Template::process($template, 'search', 'search_box.tpl');
+        $content = Core\Template::process($template, 'search', 'search_box.tpl');
         Layout::add($content, 'search', 'search_box');
     }
 
     public static function getModList()
     {
-        $db = new PHPWS_DB('search');
+        $db = new Core\DB('search');
         $db->addColumn('module', null, null, false, true);
         $db->addColumn('modules.proper_name');
         $db->addGroupBy('modules.proper_name');
@@ -82,8 +81,8 @@ class Search_User {
         $db->setIndexBy('module');
         $result = $db->select('col');
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             $result = NULL;
         }
 
@@ -133,7 +132,7 @@ class Search_User {
             exit();
         }
 
-        $form = new PHPWS_Form('search_box');
+        $form = new Core\Form('search_box');
         $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addHidden('user', 'search');
@@ -173,8 +172,8 @@ class Search_User {
 
         $result = Search_User::getResults($search_phrase, $module, $exact_match);
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             $template['SEARCH_RESULTS'] = dgettext('search', 'A problem occurred during your search.');
         } elseif (empty($result)) {
             $template['SEARCH_RESULTS'] = dgettext('search', 'No results found.');
@@ -184,12 +183,12 @@ class Search_User {
 
         $template['SEARCH_RESULTS_LABEL'] = dgettext('search', 'Search Results');
 
-        $content = PHPWS_Template::process($template, 'search', 'search_page.tpl');
+        $content = Core\Template::process($template, 'search', 'search_page.tpl');
 
         Layout::add($content);
     }
 
-    public static function addAlternates(PHPWS_Form $form)
+    public static function addAlternates(Core\Form $form)
     {
         $file = Core\Core::getConfigFile('search', 'alternate.php');
         if ($file) {
@@ -210,7 +209,7 @@ class Search_User {
 
     public static function getIgnore()
     {
-        $db = new PHPWS_DB('search_stats');
+        $db = new Core\DB('search_stats');
         $db->addWhere('ignored', 1);
         $db->addColumn('keyword');
         return $db->select('col');
@@ -225,8 +224,8 @@ class Search_User {
         $pageTags['TITLE_LABEL']    = dgettext('search', 'Title');
 
         $ignore = Search_User::getIgnore();
-        if (PHPWS_Error::isError($ignore)) {
-            PHPWS_Error::log($ignore);
+        if (Core\Error::isError($ignore)) {
+            Core\Error::log($ignore);
             $ignore = NULL;
         }
 
@@ -253,8 +252,7 @@ class Search_User {
             return FALSE;
         }
 
-        Core\Core::initCoreClass('DBPager.php');
-        $pager = new DBPager('phpws_key', 'Key');
+                $pager = new Core\DBPager('phpws_key', 'Key');
         $pager->setModule('search');
         $pager->setTemplate('search_results.tpl');
         $pager->addToggle('class="bgcolor1"');
@@ -285,9 +283,9 @@ class Search_User {
 
         if ($module) {
             $pager->addWhere('search.module', $module);
-            Key::restrictView($pager->db, $module);
+            Core\Key::restrictView($pager->db, $module);
         } else {
-            Key::restrictView($pager->db);
+            Core\Key::restrictView($pager->db);
         }
 
         $result = $pager->get();

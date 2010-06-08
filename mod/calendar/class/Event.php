@@ -136,8 +136,8 @@ class Calendar_Event {
         } else {
             $this->id = (int)$id;
             $result = $this->init();
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 $this->id = 0;
             } elseif (!$result) {
                 $this->id = 0;
@@ -148,7 +148,7 @@ class Calendar_Event {
     public function clearRepeats()
     {
         $table = $this->_schedule->getEventTable();
-        $db = new PHPWS_DB($table);
+        $db = new Core\DB($table);
 
         $db->addWhere('pid', $this->id);
         return $db->delete();
@@ -171,14 +171,14 @@ class Calendar_Event {
     {
         $table = $this->_schedule->getEventTable();
 
-        Key::drop($this->key_id);
+        Core\Key::drop($this->key_id);
 
-        $db = new PHPWS_DB($table);
+        $db = new Core\DB($table);
         $db->addWhere('id', $this->id);
 
         // Remove any possible children
         $db->addWhere('pid', $this->id, null, 'or');
-        PHPWS_Cache::clearCache();
+        Core\Cache::clearCache();
         return $db->delete();
     }
 
@@ -186,13 +186,13 @@ class Calendar_Event {
     {
         if (javascriptEnabled()) {
             $vars['QUESTION'] = dgettext('calendar', 'Are you sure you want to permanently delete this event?');
-            $vars['ADDRESS'] = PHPWS_Text::linkAddress('calendar', array('aop' => 'delete_event',
+            $vars['ADDRESS'] = Core\Text::linkAddress('calendar', array('aop' => 'delete_event',
                                                                          'sch_id' => $this->_schedule->id,
                                                                          'event_id' => $this->id), true);
             $vars['LINK']    = dgettext('calendar', 'Delete');
             return javascript('confirm', $vars);
         } else {
-            return PHPWS_Text::secureLink(dgettext('calendar', 'Delete'), 'calendar',
+            return Core\Text::secureLink(dgettext('calendar', 'Delete'), 'calendar',
             array('aop'         => 'delete_event',
                                                 'sch_id' => $this->_schedule->id,
                                                 'event_id'    => $this->id
@@ -209,7 +209,7 @@ class Calendar_Event {
         $var['event_id'] = $this->id;
         $var['js']       = 1;
 
-        $js['address'] = PHPWS_Text::linkAddress('calendar', $var, true);
+        $js['address'] = Core\Text::linkAddress('calendar', $var, true);
         $js['label'] = dgettext('calendar', 'Blog this');
         $js['width'] = '320';
         $js['height'] = '240';
@@ -231,13 +231,13 @@ class Calendar_Event {
 
         if (javascriptEnabled()) {
             $linkvar['js'] = 1;
-            $jsvars['address'] = PHPWS_Text::linkAddress('calendar', $linkvar);
+            $jsvars['address'] = Core\Text::linkAddress('calendar', $linkvar);
             $jsvars['link_title'] = $jsvars['label'] = $link_label;
             $jsvars['width'] = CALENDAR_EVENT_WIDTH;
             $jsvars['height'] = CALENDAR_EVENT_HEIGHT;
             return javascript('open_window', $jsvars);
         } else {
-            return PHPWS_Text::moduleLink($link_label, 'calendar', $linkvar);
+            return Core\Text::moduleLink($link_label, 'calendar', $linkvar);
         }
     }
 
@@ -245,7 +245,7 @@ class Calendar_Event {
     public function flagKey()
     {
         if (!isset($this->_key)) {
-            $this->_key = new Key($this->key_id);
+            $this->_key = new Core\Key($this->key_id);
         }
         $this->_key->flag();
     }
@@ -298,7 +298,7 @@ class Calendar_Event {
     public function getKey()
     {
         if (!$this->_key) {
-            $this->_key = new Key($this->key_id);
+            $this->_key = new Core\Key($this->key_id);
         }
 
         return $this->_key;
@@ -320,7 +320,7 @@ class Calendar_Event {
 
     public function getDescription()
     {
-        return PHPWS_Text::parseOutput($this->description);
+        return Core\Text::parseOutput($this->description);
     }
 
     /**
@@ -418,7 +418,7 @@ class Calendar_Event {
     {
         if (!empty($this->loc_link)) {
             return sprintf('<a href="%s" title="%s">%s</a>',
-            PHPWS_Text::checkLink($this->loc_link),
+            Core\Text::checkLink($this->loc_link),
             dgettext('calendar', 'Visit this location\'s web site.'),
             $this->location);
         } else {
@@ -455,7 +455,7 @@ class Calendar_Event {
             $tpl['LOCATION'] = $this->getLocation();
         }
 
-        $tpl['BACK_LINK'] = PHPWS_Text::backLink();
+        $tpl['BACK_LINK'] = Core\Text::backLink();
 
         return $tpl;
     }
@@ -465,7 +465,7 @@ class Calendar_Event {
         $vars['view']     = 'event';
         $vars['event_id'] = $this->id;
         $vars['sch_id']   = $this->_schedule->id;
-        return PHPWS_Text::linkAddress('calendar', $vars);
+        return Core\Text::linkAddress('calendar', $vars);
     }
 
 
@@ -474,10 +474,10 @@ class Calendar_Event {
         $table = $this->_schedule->getEventTable();
 
         if (empty($table)) {
-            return PHPWS_Error::get(CAL_EVENT_TABLE_MISSING, 'calendar', 'Calendar::init', $table);
+            return Core\Error::get(CAL_EVENT_TABLE_MISSING, 'calendar', 'Calendar::init', $table);
         }
 
-        $db = new PHPWS_DB($table);
+        $db = new Core\DB($table);
         return $db->loadObject($this);
     }
 
@@ -676,13 +676,13 @@ class Calendar_Event {
 
         $table = $this->_schedule->getEventTable();
 
-        if (!PHPWS_DB::isTable($table)) {
-            return PHPWS_Error::get(CAL_EVENT_TABLE_MISSING, 'calendar', 'Calendar_Event::save');
+        if (!Core\DB::isTable($table)) {
+            return Core\Error::get(CAL_EVENT_TABLE_MISSING, 'calendar', 'Calendar_Event::save');
         }
 
-        $db = new PHPWS_DB($table);
+        $db = new Core\DB($table);
         $result = $db->saveObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         } elseif (!$this->pid) {
             // only save the key if the pid is 0
@@ -693,8 +693,8 @@ class Calendar_Event {
                 $save_key = false;
             }
             $key = $this->saveKey();
-            if (PHPWS_Error::isError($key)) {
-                PHPWS_Error::log($key);
+            if (Core\Error::isError($key)) {
+                Core\Error::log($key);
                 return false;
             }
 
@@ -715,11 +715,11 @@ class Calendar_Event {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Key;
+            $key = new Core\Key;
         } else {
-            $key = new Key($this->key_id);
-            if (PHPWS_Error::isError($key->getError())) {
-                $key = new Key;
+            $key = new Core\Key($this->key_id);
+            if (Core\Error::isError($key->getError())) {
+                $key = new Core\Key;
             }
         }
 
@@ -734,7 +734,7 @@ class Calendar_Event {
         }
 
         $result = $key->save();
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
         $this->key_id = $key->id;
@@ -748,7 +748,7 @@ class Calendar_Event {
             $description = strip_tags($description);
         }
 
-        $this->description = PHPWS_Text::parseInput($description);
+        $this->description = Core\Text::parseInput($description);
     }
 
     public function setLocation($location)
@@ -773,7 +773,7 @@ class Calendar_Event {
         $this->summary = strip_tags($summary);
     }
 
-    public function timeForm($name, $match, PHPWS_Form $form)
+    public function timeForm($name, $match, Core\Form $form)
     {
         static $hours = NULL;
         static $minutes = NULL;
@@ -808,7 +808,7 @@ class Calendar_Event {
         }
 
         $table = $this->_schedule->getEventTable();
-        $db = new PHPWS_DB($table);
+        $db = new Core\DB($table);
 
         $saveVals['summary']     = $this->summary;
         $saveVals['location']    = $this->location;
@@ -829,7 +829,7 @@ class Calendar_Event {
 
         if (empty($today)) {
             $today = time();
-            $contact = PHPWS_Settings::get('users', 'site_contact');
+            $contact = Core\Settings::get('users', 'site_contact');
         }
 
         $tpl['TODAY']   = PHPWS_Time::getDTTime($today);

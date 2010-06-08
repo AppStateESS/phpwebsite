@@ -57,7 +57,7 @@ class WikiDiff extends Text_Diff_Renderer
         $olderpage = new OldWikiPage();
         $newerpage = new OldWikiPage();
 
-        $db = new PHPWS_DB('wiki_pages_version');
+        $db = new Core\DB('wiki_pages_version');
         $db->addWhere('title', $_REQUEST['page']);
         $db->addWhere('vr_number', $oVer);
         $db->loadObject($olderpage);
@@ -74,8 +74,8 @@ class WikiDiff extends Text_Diff_Renderer
         $nPagetext = htmlspecialchars(str_replace("&#39;", "'", $newerpage->getPagetext(FALSE)));
         if (!(ALLOW_PROFANITY))
         {
-            $oPagetext = PHPWS_Text::profanityFilter($oPagetext);
-            $nPagetext = PHPWS_Text::profanityFilter($nPagetext);
+            $oPagetext = Core\Text::profanityFilter($oPagetext);
+            $nPagetext = Core\Text::profanityFilter($nPagetext);
         }
         // End diff text parsing
 
@@ -87,8 +87,8 @@ class WikiDiff extends Text_Diff_Renderer
 
         $tags = array();
         $tags['TITLE'] = dgettext('wiki', 'Difference between revisions');
-        $tags['BACK_PAGE'] = PHPWS_Text::moduleLink(dgettext('wiki', 'Back to Page'), 'wiki', array('page'=>$_REQUEST['page']));
-        $tags['BACK_HISTORY'] = PHPWS_Text::moduleLink(dgettext('wiki', 'Back to History'), 'wiki', array('page_op'=>'history',
+        $tags['BACK_PAGE'] = Core\Text::moduleLink(dgettext('wiki', 'Back to Page'), 'wiki', array('page'=>$_REQUEST['page']));
+        $tags['BACK_HISTORY'] = Core\Text::moduleLink(dgettext('wiki', 'Back to History'), 'wiki', array('page_op'=>'history',
                                 'page_id'=>$newerpage->getSourceId()));
         $tags['DIFF'] = $this->_output;
         $tags['OLDER_VERSION'] = $olderpage->getVrNumber();
@@ -97,7 +97,7 @@ class WikiDiff extends Text_Diff_Renderer
         $tags['NEWER_UPDATED'] = $newerpage->getUpdated();
         $tags['VERSION_LABEL'] = dgettext('wiki', 'Version');
 
-        return PHPWS_Template::process($tags, 'wiki', 'diff/' . $this->_format . '/diff.tpl');
+        return Core\Template::process($tags, 'wiki', 'diff/' . $this->_format . '/diff.tpl');
     }
 
     /**
@@ -129,7 +129,7 @@ class WikiDiff extends Text_Diff_Renderer
             $tags['NEW_LINES'] = 'Line ' . $ybeg;
         }
 
-        $this->_output .= PHPWS_Template::process($tags, 'wiki', 'diff/' . $this->_format . '/blockheader.tpl');
+        $this->_output .= Core\Template::process($tags, 'wiki', 'diff/' . $this->_format . '/blockheader.tpl');
     }
 
     /**
@@ -145,12 +145,12 @@ class WikiDiff extends Text_Diff_Renderer
         {
             if($line == NULL)
             {
-                $this->_output .= PHPWS_Template::process(array('LINE'=>'&nbsp;'), 'wiki',
+                $this->_output .= Core\Template::process(array('LINE'=>'&nbsp;'), 'wiki',
                                   'diff/' . $this->_format . '/' . $template . '.tpl');
             }
             else
             {
-                $this->_output .= PHPWS_Template::process(array('LINE'=>$line), 'wiki',
+                $this->_output .= Core\Template::process(array('LINE'=>$line), 'wiki',
                                   'diff/' . $this->_format . '/' . $template . '.tpl');
             }
         }

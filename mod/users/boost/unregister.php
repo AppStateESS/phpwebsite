@@ -9,7 +9,7 @@ function users_unregister($module, &$content){
     Core\Core::initModClass('users', 'My_Page.php');
     $result = Users_Permission::removePermissions($module);
 
-    if (PHPWS_Error::isError($result)) {
+    if (Core\Error::isError($result)) {
 
         $content[] = dgettext('users', 'Permissions table not removed successfully.');
 
@@ -19,7 +19,7 @@ function users_unregister($module, &$content){
     }
 
     $result = My_Page::unregisterMyPage($module);
-    if (PHPWS_Error::isError($result)){
+    if (Core\Error::isError($result)){
         PHPWS_Boost::addLog('users', dgettext('users', 'A problem occurred when trying to unregister this module from My Page.'));
         $content[] = dgettext('users', 'A problem occurred when trying to unregister this module from My Page.');
         return FALSE;

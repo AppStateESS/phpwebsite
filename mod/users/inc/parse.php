@@ -20,7 +20,7 @@ function new_account($item)
         $link = USER_SIGNUP_QUESTION;
     }
 
-    return PHPWS_Text::moduleLink($link, 'users', $signup_vars);
+    return Core\Text::moduleLink($link, 'users', $signup_vars);
 }
 
 ?>

@@ -15,7 +15,7 @@ class Alert_Forms {
         $manager->maxImageWidth(500);
         $manager->maxImageHeight(500);
 
-        $form = new PHPWS_Form('alert-item');
+        $form = new Core\Form('alert-item');
 
         if ($item->id) {
             $this->alert->title = dgettext('alert', 'Update Alert');
@@ -37,7 +37,7 @@ class Alert_Forms {
         $form->useEditor('description');
 
         $types = $this->alert->getTypes();
-        if (PHPWS_Error::logIfError($types)) {
+        if (Core\Error::logIfError($types)) {
             $this->alert->title = dgettext('alert', 'Sorry');
             $this->alert->content = dgettext('alert', 'An error occurred when trying to load alert types. Check your logs.');
             return;
@@ -57,7 +57,7 @@ class Alert_Forms {
         $tpl['IMAGE'] = $manager->get();
         $tpl['IMAGE_LABEL'] = dgettext('alert', 'Image');
 
-        $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'edit_item.tpl');
+        $this->alert->content = Core\Template::process($tpl, 'alert', 'edit_item.tpl');
     }
 
 
@@ -65,7 +65,7 @@ class Alert_Forms {
     {
         $type = & $this->alert->type;
 
-        $form = new PHPWS_Form('edit-type');
+        $form = new Core\Form('edit-type');
 
         if ($type->id) {
             $this->alert->title = dgettext('alert', 'Update alert type');
@@ -107,7 +107,7 @@ class Alert_Forms {
 
         $tpl['POST_TYPE_LABEL'] = dgettext('alert', 'Post type');
 
-        $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'edit_type.tpl');
+        $this->alert->content = Core\Template::process($tpl, 'alert', 'edit_type.tpl');
     }
 
     public function manageItems()
@@ -115,10 +115,9 @@ class Alert_Forms {
         $pagetags['CONTACT_ALERT'] = $this->contactAlert();
 
         Core\Core::initModClass('alert', 'Alert_Item.php');
-        Core\Core::initCoreClass('DBPager.php');
-
+        
         $pagetags['TITLE_LABEL'] = dgettext('alert', 'Title');
-        $pagetags['ADD_ITEM'] = PHPWS_Text::secureLink(dgettext('alert', 'Add alert'),
+        $pagetags['ADD_ITEM'] = Core\Text::secureLink(dgettext('alert', 'Add alert'),
                                                        'alert', array('aop'=>'edit_item'));
         $pagetags['ACTION_LABEL'] = dgettext('alert', 'Action');
         $pagetags['ACTIVE_LABEL'] = dgettext('alert', 'Active');
@@ -127,7 +126,7 @@ class Alert_Forms {
 
         $pagetags['NAME_LABEL'] = dgettext('alert', 'by');
 
-        $pager = new DBPager('alert_item', 'Alert_Item');
+        $pager = new Core\DBPager('alert_item', 'Alert_Item');
         $pager->setModule('alert');
         $pager->addPageTags($pagetags);
         $pager->addRowTags('rowTags');
@@ -142,13 +141,12 @@ class Alert_Forms {
     public function manageParticipants()
     {
         javascriptMod('alert', 'check_all');
-        Core\Core::initCoreClass('DBPager.php');
-        $pager = new DBPager('alert_participant');
+                $pager = new Core\DBPager('alert_participant');
         $pager->initialize(false);
         $pager->db->addColumn('id');
         $part_id_list = $pager->db->select('col');
 
-        $db = new PHPWS_DB('alert_prt_to_type');
+        $db = new Core\DB('alert_prt_to_type');
         $db->addColumn('prt_id');
         $db->addColumn('type_id');
         $db->addWhere('prt_id', $part_id_list);
@@ -156,12 +154,12 @@ class Alert_Forms {
         $GLOBALS['PRT_matches'] = $db->select('col');
 
         $pager->db->reset();
-        $form = new PHPWS_Form('participants-form');
+        $form = new Core\Form('participants-form');
         $form->addHidden('module', 'alert');
         $form->addHidden('aop', 'assign_participants');
 
         $vars['aop'] = 'add_multiple';
-        $js['address'] = PHPWS_Text::linkAddress('alert', $vars, true);
+        $js['address'] = Core\Text::linkAddress('alert', $vars, true);
         $js['label'] = dgettext('alert', 'Add multiple');
         $js['height'] = 480;
         $js['height'] = 360;
@@ -169,7 +167,7 @@ class Alert_Forms {
 
         $vars['aop'] = 'subtract_multiple';
         $js['label'] = dgettext('alert', 'Subtract multiple');
-        $js['address'] = PHPWS_Text::linkAddress('alert', $vars, true);
+        $js['address'] = Core\Text::linkAddress('alert', $vars, true);
         $pagetags['SUBTRACT_MULTIPLE'] = javascript('open_window', $js);
 
         $types = $this->alert->getTypes('obj');
@@ -238,7 +236,7 @@ class Alert_Forms {
             return null;
         }
 
-        if (PHPWS_Error::logIfError($contact_needed)) {
+        if (Core\Error::logIfError($contact_needed)) {
             return dgettext('alert', 'An error occurred while checking contact status.');
         } else {
             $tpl['TITLE'] = dgettext('alert', 'The following alerts need to send email notices.');
@@ -249,7 +247,7 @@ class Alert_Forms {
                 } else {
                     $label = dgettext('alert', 'Start mailing');
                 }
-                $link = PHPWS_Text::linkAddress('alert', array('aop'=>'send_email', 'id'=> $item->id), true);
+                $link = Core\Text::linkAddress('alert', array('aop'=>'send_email', 'id'=> $item->id), true);
                 $subtpl['STATUS'] = javascript('open_window', array('address'=>$link, 'label'=>$label,
                                                                     'type'=>'button', 'width'=>460, 'height'=>230));
                 $tpl['rows'][] = $subtpl;
@@ -257,17 +255,16 @@ class Alert_Forms {
 
         }
         Layout::addStyle('alert');
-        return PHPWS_Template::process($tpl, 'alert', 'contact_links.tpl');
+        return Core\Template::process($tpl, 'alert', 'contact_links.tpl');
 
     }
 
     public function manageTypes()
     {
         Core\Core::initModClass('alert', 'Alert_Type.php');
-        Core\Core::initCoreClass('DBPager.php');
-
+        
         $pagetags['TITLE_LABEL'] = dgettext('alert', 'Title');
-        $pagetags['ADD_TYPE'] = PHPWS_Text::secureLink(dgettext('alert', 'Add alert type'),
+        $pagetags['ADD_TYPE'] = Core\Text::secureLink(dgettext('alert', 'Add alert type'),
                                                        'alert', array('aop'=>'edit_type'));
         $pagetags['POST_TYPE_LABEL'] = dgettext('alert', 'Post type');
         $pagetags['EMAIL_ABBR']     = dgettext('alert', 'Email');
@@ -276,7 +273,7 @@ class Alert_Forms {
         $pagetags['RSSFEED_LABEL']   = dgettext('alert', 'RSS feed available');
         $pagetags['ACTION_LABEL']    = dgettext('alert', 'Action');
 
-        $pager = new DBPager('alert_type', 'Alert_Type');
+        $pager = new Core\DBPager('alert_type', 'Alert_Type');
         $pager->setModule('alert');
         $pager->addPageTags($pagetags);
         $pager->addRowTags('rowTags');
@@ -290,9 +287,9 @@ class Alert_Forms {
 
     public function settings()
     {
-        $settings = PHPWS_Settings::get('alert');
+        $settings = Core\Settings::get('alert');
 
-        $form = new PHPWS_Form('alert-settings');
+        $form = new Core\Form('alert-settings');
         $form->addHidden('module', 'alert');
         $form->addHidden('aop', 'post_settings');
 
@@ -312,12 +309,12 @@ class Alert_Forms {
 
         $tpl = $form->getTemplate();
         $this->alert->title = dgettext('alert', 'Alert Settings');
-        $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'settings.tpl');
+        $this->alert->content = Core\Template::process($tpl, 'alert', 'settings.tpl');
     }
 
     public function addMultiple()
     {
-        $form = new PHPWS_Form('add-multiple');
+        $form = new Core\Form('add-multiple');
         $form->addHidden('module', 'alert');
         $form->addHidden('aop', 'post_multiple_adds');
         $form->addTextArea('multiple');
@@ -328,12 +325,12 @@ class Alert_Forms {
         $tpl['CANCEL'] = javascript('close_window');
 
         $this->alert->title = dgettext('alert', 'Add Multiple Participants');
-        $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'multiple.tpl');
+        $this->alert->content = Core\Template::process($tpl, 'alert', 'multiple.tpl');
     }
 
     public function subtractMultiple()
     {
-        $form = new PHPWS_Form('subtract-multiple');
+        $form = new Core\Form('subtract-multiple');
         $form->addHidden('module', 'alert');
         $form->addHidden('aop', 'post_multiple_subtracts');
         $form->addTextArea('multiple');
@@ -344,7 +341,7 @@ class Alert_Forms {
         $tpl['CANCEL'] = javascript('close_window');
 
         $this->alert->title = dgettext('alert', 'Subtract Multiple Participants');
-        $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'multiple.tpl');
+        $this->alert->content = Core\Template::process($tpl, 'alert', 'multiple.tpl');
     }
 
 

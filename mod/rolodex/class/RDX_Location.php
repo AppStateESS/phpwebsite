@@ -44,9 +44,9 @@ class Rolodex_Location {
 
     public function init()
     {
-        $db = new PHPWS_DB('rolodex_location');
+        $db = new Core\DB('rolodex_location');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -63,7 +63,7 @@ class Rolodex_Location {
 
     public function setDescription($description)
     {
-        $this->description = PHPWS_Text::parseInput($description);
+        $this->description = Core\Text::parseInput($description);
     }
 
 
@@ -81,7 +81,7 @@ class Rolodex_Location {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->title);
+            return Core\Text::parseOutput($this->title);
         } else {
             return $this->title;
         }
@@ -95,7 +95,7 @@ class Rolodex_Location {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->description);
+            return Core\Text::parseOutput($this->description);
         } else {
             return $this->description;
         }
@@ -112,7 +112,7 @@ class Rolodex_Location {
 
     public function getQtyMembers()
     {
-        $db = new PHPWS_DB('rolodex_location_items');
+        $db = new Core\DB('rolodex_location_items');
         $db->addWhere('location_id', $this->id);
         $num = $db->count();
         return $num;
@@ -134,12 +134,12 @@ class Rolodex_Location {
             return;
         }
 
-        $db = new PHPWS_DB('rolodex_location');
+        $db = new Core\DB('rolodex_location');
         $db->addWhere('id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
-        $db = new PHPWS_DB('rolodex_location_items');
+        Core\Error::logIfError($db->delete());
+        $db = new Core\DB('rolodex_location_items');
         $db->addWhere('location_id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
     }
 
@@ -151,13 +151,13 @@ class Rolodex_Location {
 
         if (Current_User::allow('rolodex', 'settings', null, null, true)){
             $vars['aop']  = 'edit_location';
-            $label = Icon::show('edit');
-            $links[] = PHPWS_Text::secureLink($label, 'rolodex', $vars);
+            $label = Core\Icon::show('edit');
+            $links[] = Core\Text::secureLink($label, 'rolodex', $vars);
 
             $vars['aop'] = 'delete_location';
-            $js['ADDRESS'] = PHPWS_Text::linkAddress('rolodex', $vars, true);
+            $js['ADDRESS'] = Core\Text::linkAddress('rolodex', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('rolodex', 'Are you sure you want to delete the location %s?'), $this->getTitle());
-            $js['LINK'] = Icon::show('delete');
+            $js['LINK'] = Core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -175,7 +175,7 @@ class Rolodex_Location {
         if (Current_User::allow('rolodex', 'settings', null, null, true)) {
             $vars['location'] = $this->id;
             $vars['aop']  = 'edit_location';
-            $links[] = PHPWS_Text::secureLink(dgettext('rolodex', 'Edit location'), 'rolodex', $vars);
+            $links[] = Core\Text::secureLink(dgettext('rolodex', 'Edit location'), 'rolodex', $vars);
         }
 
         $links = array_merge($links, Rolodex::navLinks());
@@ -187,9 +187,9 @@ class Rolodex_Location {
 
     public function save()
     {
-        $db = new PHPWS_DB('rolodex_location');
+        $db = new Core\DB('rolodex_location');
         $result = $db->saveObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
@@ -198,10 +198,10 @@ class Rolodex_Location {
 
     public function viewLink()
     {
-//        return PHPWS_Text::rewriteLink($this->title, 'rolodex', $this->id);
+//        return Core\Text::rewriteLink($this->title, 'rolodex', $this->id);
         $vars['uop']  = 'view_location';
         $vars['location'] = $this->id;
-        return PHPWS_Text::moduleLink(dgettext('rolodex', $this->title), 'rolodex', $vars);
+        return Core\Text::moduleLink(dgettext('rolodex', $this->title), 'rolodex', $vars);
     }
 
 

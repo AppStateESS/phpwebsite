@@ -310,7 +310,7 @@ function convertPage($page)
 
     if (PEAR::isError($result))
     {
-        PHPWS_Error::log($result);
+        Core\Error::log($result);
         return FALSE;
     }
 
@@ -347,11 +347,11 @@ function convertImage($image)
     $newimage->setType($image['type']);
     $newimage->setSummary($image['summary']);
 
-    $db = new PHPWS_DB('wiki_images');
+    $db = new Core\DB('wiki_images');
     $result = $db->saveObject($newimage);
     if (PEAR::isError($result))
     {
-        PHPWS_Error::log($result);
+        Core\Error::log($result);
         return FALSE;
     }
 

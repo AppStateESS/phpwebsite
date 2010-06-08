@@ -6,6 +6,6 @@
 
 Core\Core::initModClass('block', 'Block.php');
 require_once PHPWS_SOURCE_DIR . 'mod/block/inc/parse.php';
-PHPWS_Text::addTag('block', 'view');
+Core\Text::addTag('block', 'view');
 
 ?>

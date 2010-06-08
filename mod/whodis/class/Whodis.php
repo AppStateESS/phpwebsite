@@ -16,8 +16,8 @@ class Whodis {
 
                     $whodis = new Whodis_Referrer;
                     $result = $whodis->save($referrer);
-                    if (PHPWS_Error::isError($result)) {
-                        PHPWS_Error::log($result);
+                    if (Core\Error::isError($result)) {
+                        Core\Error::log($result);
                     }
                 }
             }
@@ -33,14 +33,14 @@ class Whodis {
             return false;
         }
 
-        $db = new PHPWS_DB('whodis_filters');
+        $db = new Core\DB('whodis_filters');
         $db->addColumn('filter');
         $filters = $db->select('col');
 
         if (empty($filters)) {
             return true;
-        } elseif (PHPWS_Error::isError($filters)) {
-            PHPWS_Error::log($filters);
+        } elseif (Core\Error::isError($filters)) {
+            Core\Error::log($filters);
             return true;
         }
 
@@ -54,7 +54,7 @@ class Whodis {
 
     public function purge()
     {
-        $db = new PHPWS_DB('whodis');
+        $db = new Core\DB('whodis');
         $go = false;
         if (!empty($_POST['days_old'])) {
             $days = (int)$_POST['days_old'];
@@ -120,20 +120,20 @@ class Whodis {
         if (isset($_POST['add_filter_button']) && !empty($_POST['add_filter'])) {
             $filter = preg_replace('/[^\w\.-\s]/', '', strip_tags($_POST['add_filter']));
             if (!empty($filter)) {
-                $db = new PHPWS_DB('whodis_filters');
+                $db = new Core\DB('whodis_filters');
                 $db->addValue('filter', $filter);
                 $result = $db->insert();
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
+                if (Core\Error::isError($result)) {
+                    Core\Error::log($result);
                 }
             }
         } elseif (isset($_POST['delete_checked'])) {
             if (!empty($_POST['filter_pick']) && is_array($_POST['filter_pick'])) {
-                $db = new PHPWS_DB('whodis_filters');
+                $db = new Core\DB('whodis_filters');
                 $db->addWhere('id', $_POST['filter_pick']);
                 $result = $db->delete();
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
+                if (Core\Error::isError($result)) {
+                    Core\Error::log($result);
                 }
             }
         }
@@ -141,9 +141,8 @@ class Whodis {
 
     public static function filters()
     {
-        Core\Core::initCoreClass('DBPager.php');
-
-        $form = new PHPWS_Form('filter');
+        
+        $form = new Core\Form('filter');
         $form->addHidden('module', 'whodis');
         $form->addHidden('op', 'filters_option');
         $form->addText('add_filter');
@@ -154,16 +153,16 @@ class Whodis {
         $page_tags = $form->getTemplate();
 
         $page_tags['CHECK_ALL'] = javascript('check_all', array('checkbox_name'=>'filter_pick[]'));
-        $pager = new DBPager('whodis_filters');
+        $pager = new Core\DBPager('whodis_filters');
         $pager->setModule('whodis');
         $pager->setTemplate('filter.tpl');
         $pager->setSearch('filter');
 
         $vars['op'] = 'list';
-        $links[] = PHPWS_Text::moduleLink(dgettext('whodis', 'Referrers'), 'whodis', $vars);
+        $links[] = Core\Text::moduleLink(dgettext('whodis', 'Referrers'), 'whodis', $vars);
 
         $vars['op'] = 'filters';
-        $links[] = PHPWS_Text::moduleLink(dgettext('whodis', 'Filters'), 'whodis', $vars);
+        $links[] = Core\Text::moduleLink(dgettext('whodis', 'Filters'), 'whodis', $vars);
 
         $page_tags['ADMIN_LINKS']  = implode(' | ', $links);
         $page_tags['FILTER_LABEL'] = dgettext('whodis', 'Filters');
@@ -190,10 +189,9 @@ class Whodis {
 
     public static function listReferrers()
     {
-        Core\Core::initCoreClass('DBPager.php');
-        Core\Core::initModClass('whodis', 'Whodis_Referrer.php');
+                Core\Core::initModClass('whodis', 'Whodis_Referrer.php');
 
-        $form = new PHPWS_Form('purge');
+        $form = new Core\Form('purge');
         $form->addHidden('module', 'whodis');
         $form->addHidden('op', 'purge');
         $days = array(0     => dgettext('whodis', '- Referrer age -'),
@@ -218,16 +216,16 @@ class Whodis {
 
         $page_tags['CHECK_ALL'] = javascript('check_all', array('checkbox_name'=>'referrer[]'));
 
-        $pager = new DBPager('whodis', 'Whodis_Referrer');
+        $pager = new Core\DBPager('whodis', 'Whodis_Referrer');
         $pager->setModule('whodis');
         $pager->setTemplate('admin.tpl');
         $pager->setSearch('url');
 
         $vars['op'] = 'list';
-        $links[] = PHPWS_Text::moduleLink(dgettext('whodis', 'Referrers'), 'whodis', $vars);
+        $links[] = Core\Text::moduleLink(dgettext('whodis', 'Referrers'), 'whodis', $vars);
 
         $vars['op'] = 'filters';
-        $links[] = PHPWS_Text::moduleLink(dgettext('whodis', 'Filters'), 'whodis', $vars);
+        $links[] = Core\Text::moduleLink(dgettext('whodis', 'Filters'), 'whodis', $vars);
         $page_tags['ADMIN_LINKS']   = implode(' | ', $links);
 
         $page_tags['URL_LABEL']     = dgettext('whodis', 'Referrer');

@@ -42,9 +42,9 @@ class FC_File_Assoc {
         }
 
         $this->id = (int)$id;
-        $db = new PHPWS_DB('fc_file_assoc');
+        $db = new Core\DB('fc_file_assoc');
         $result = $db->loadObject($this);
-        if (!PHPWS_Error::logIfError($result)) {
+        if (!Core\Error::logIfError($result)) {
             if (!$result) {
                 $this->id = 0;
             }
@@ -96,7 +96,7 @@ class FC_File_Assoc {
             case FC_IMAGE_RANDOM:
                 Core\Core::initModClass('filecabinet', 'Image.php');
                 $image = new PHPWS_Image;
-                $db = new PHPWS_DB('images');
+                $db = new Core\DB('images');
                 $db->addWhere('folder_id', $this->file_id);
                 $db->addorder('random');
                 $db->setLimit(1);
@@ -131,7 +131,7 @@ class FC_File_Assoc {
 
         if ($thumbnail) {
             $img = $this->_resize_parent->getThumbnail();
-        } elseif (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
+        } elseif (Core\Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
             $img = $this->_source->captioned(null, false);
         } else {
             $img = $this->_source->getTag(null, false);
@@ -260,7 +260,7 @@ class FC_File_Assoc {
             case FC_IMAGE:
             case FC_IMAGE_RANDOM:
                 if ($this->_source->id) {
-                    if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
+                    if (Core\Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
                         return $this->_source->captioned(null, $this->_link_image, $base);
                     } else {
                         return $this->_source->getTag(null, $this->_link_image, $base);
@@ -273,7 +273,7 @@ class FC_File_Assoc {
             case FC_IMAGE_RESIZE:
             case FC_IMAGE_CROP:
                 if (isset($this->_source->id) && $this->_source->id) {
-                    if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
+                    if (Core\Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
                         return $this->_source->captioned(null, $this->_link_image, $base);
                     } else {
                         return $this->_source->getTag(null, $this->_link_image, $base);
@@ -315,14 +315,14 @@ class FC_File_Assoc {
         }
 
         $tpl['DOWNLOAD'] = sprintf(dgettext('filecabinet', 'Download from %s'), $folder->title);
-        return PHPWS_Template::process($tpl, 'filecabinet', 'multi_doc_download.tpl');
+        return Core\Template::process($tpl, 'filecabinet', 'multi_doc_download.tpl');
     }
 
     public function randomImage()
     {
         Core\Core::initModClass('filecabinet', 'Image.php');
         $image = new PHPWS_Image;
-        $db = new PHPWS_DB('images');
+        $db = new Core\DB('images');
         $db->addWhere('folder_id', $this->file_id);
         $db->addorder('random');
         $db->setLimit(1);
@@ -350,11 +350,11 @@ class FC_File_Assoc {
                 $message = dgettext('filecabinet', 'Folder is private. Slideshow not available');
             }
         }
-        $db = new PHPWS_DB('images');
+        $db = new Core\DB('images');
         $db->addWhere('folder_id', $this->file_id);
 
         $result = $db->getObjects('PHPWS_Image');
-        if (PHPWS_Error::logIfError($result) || !$result) {
+        if (Core\Error::logIfError($result) || !$result) {
             return dgettext('filecabinet', 'Folder missing image files.');
         } else {
             foreach ($result as $image) {
@@ -370,7 +370,7 @@ class FC_File_Assoc {
 
             $tpl['CARO_ID'] = "caro-$count";
             $tpl_file = 'carousel.tpl';
-            return PHPWS_Template::process($tpl, 'filecabinet', $tpl_file);
+            return Core\Template::process($tpl, 'filecabinet', $tpl_file);
         }
     }
 
@@ -378,7 +378,7 @@ class FC_File_Assoc {
     {
         static $repeats = array();
         javascript('jquery');
-        $max_size = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
+        $max_size = Core\Settings::get('filecabinet', 'max_thumbnail_size');
         $total_size = $this->getTotalCarouselSize();
 
         $svars['TOTAL_SIZE'] = $total_size;
@@ -399,7 +399,7 @@ class FC_File_Assoc {
 
     public function getTotalCarouselSize()
     {
-        $max_size = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
+        $max_size = Core\Settings::get('filecabinet', 'max_thumbnail_size');
         return ($max_size * $this->num_visible) + ($this->num_visible * 10);
     }
 
@@ -416,7 +416,7 @@ class FC_File_Assoc {
                 $message = dgettext('filecabinet', 'Folder is private. Slideshow not available');
             }
         }
-        $db = new PHPWS_DB('images');
+        $db = new Core\DB('images');
         $db->addWhere('folder_id', $this->file_id);
         if ($this->num_visible < 99) {
             $db->addOrder('rand');
@@ -424,7 +424,7 @@ class FC_File_Assoc {
         }
 
         $result = $db->getObjects('PHPWS_Image');
-        if (PHPWS_Error::logIfError($result) || !$result) {
+        if (Core\Error::logIfError($result) || !$result) {
             return dgettext('filecabinet', 'Folder missing image files.');
         } else {
             foreach ($result as $image) {
@@ -439,7 +439,7 @@ class FC_File_Assoc {
             if ($message) {
                 $tpl['MESSAGE'] = $message;
             }
-            return PHPWS_Template::process($tpl, 'filecabinet', $tpl_file);
+            return Core\Template::process($tpl, 'filecabinet', $tpl_file);
         }
     }
 
@@ -467,11 +467,11 @@ class FC_File_Assoc {
 
     public function getFolder()
     {
-        $db = new PHPWS_DB('folders');
+        $db = new Core\DB('folders');
         if ($this->file_type == FC_IMAGE_RANDOM || $this->file_type == FC_IMAGE_FOLDER || $this->file_type == FC_IMAGE_LIGHTBOX
         || $this->file_type == FC_DOCUMENT_FOLDER) {
             $folder = new Folder($this->file_id);
-            if (PHPWS_Error::logIfError($folder) || !$folder->id) {
+            if (Core\Error::logIfError($folder) || !$folder->id) {
                 return false;
             } else {
                 return $folder;
@@ -484,7 +484,7 @@ class FC_File_Assoc {
             $db->addWhere('folders.id', "$table.folder_id");
             $result = $db->loadObject($folder);
 
-            if (PHPWS_Error::logIfError($result) || !$result) {
+            if (Core\Error::logIfError($result) || !$result) {
                 return false;
             } else {
                 return $folder;
@@ -494,13 +494,13 @@ class FC_File_Assoc {
 
     public function save()
     {
-        $db = new PHPWS_DB('fc_file_assoc');
+        $db = new Core\DB('fc_file_assoc');
         return $db->saveObject($this);
     }
 
     public function updateTag($file_type, $id, $tag)
     {
-        $db = new PHPWS_DB('fc_file_assoc');
+        $db = new Core\DB('fc_file_assoc');
         $db->addWhere('ftype', (int)$file_type);
         $db->addWhere('file_id', (int)$id);
         $db->addValue('tag',  htmlentities($tag, ENT_QUOTES, 'UTF-8'));
@@ -510,14 +510,14 @@ class FC_File_Assoc {
     public function imageFolderView()
     {
         Core\Core::initModClass('filecabinet', 'Image.php');
-        $db = new PHPWS_DB('images');
+        $db = new Core\DB('images');
         $db->addWhere('folder_id', $this->file_id);
         $result = $db->getObjects('PHPWS_Image');
     }
 
     public function delete()
     {
-        $db = new PHPWS_DB('fc_file_assoc');
+        $db = new Core\DB('fc_file_assoc');
         $db->addWhere('id', $this->id);
         return $db->delete();
     }

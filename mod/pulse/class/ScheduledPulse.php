@@ -75,10 +75,10 @@ abstract class ScheduledPulse
 
     public function load()
     {
-        $db = new PHPWS_DB('pulse_schedule');
+        $db = new Core\DB('pulse_schedule');
         $result = $db->loadObject($this);
 
-        if(PHPWS_Error::logIfError($result)) {
+        if(Core\Error::logIfError($result)) {
             return FALSE;
         }
         return TRUE;
@@ -86,10 +86,10 @@ abstract class ScheduledPulse
 
     public function save()
     {
-        $db = new PHPWS_DB('pulse_schedule');
+        $db = new Core\DB('pulse_schedule');
         $result = $db->saveObject($this);
 
-        if(PHPWS_Error::logIfError($result)) {
+        if(Core\Error::logIfError($result)) {
             return FALSE;
         }
         return TRUE;

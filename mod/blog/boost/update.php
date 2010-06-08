@@ -25,10 +25,10 @@ function blog_update(&$content, $currentVersion)
         case version_compare($currentVersion, '1.4.1', '<'):
             $content[] = '<pre>';
 
-            $db = new PHPWS_DB('blog_entries');
+            $db = new Core\DB('blog_entries');
             $result = $db->addTableColumn('image_id', 'int NOT NULL default 0');
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 $content[] = 'Unable to add image_id colume to blog_entries table.</pre>';
                 return false;
             }
@@ -69,10 +69,10 @@ function blog_update(&$content, $currentVersion)
             $content[] = '<pre>1.4.3 Changes
 -------------';
 
-            $db = new PHPWS_DB('blog_entries');
+            $db = new Core\DB('blog_entries');
             $result = $db->addTableColumn('expire_date', 'int not null default 0', 'publish_date');
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 $content[] = 'Unable to create table column "expire_date" on blog_entries table.</pre>';
                 return false;
             } else {
@@ -80,8 +80,8 @@ function blog_update(&$content, $currentVersion)
             }
 
             $result = $db->addTableColumn('sticky', 'smallint not null default 0');
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 $content[] = 'Unable to create table column "sticky" on blog_entries table.</pre>';
                 return false;
             } else {
@@ -141,10 +141,10 @@ function blog_update(&$content, $currentVersion)
             $columns['updater']     = 'varchar(50) NOT NULL';
             $columns['updater_id']  = 'int not null default 0';
 
-            $db = new PHPWS_DB('blog_entries');
+            $db = new Core\DB('blog_entries');
             foreach ($columns as $column_name => $col_info) {
                 $result = $db->addTableColumn($column_name, $col_info, 'create_date');
-                if (PHPWS_Error::logIfError($result)) {
+                if (Core\Error::logIfError($result)) {
                     $content[] = "--- Unable to create table column '$column_name' on blog_entries table.</pre>";
                     return false;
                 } else {
@@ -203,8 +203,8 @@ function blog_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '1.7.0', '<'):
             $content[] = '<pre>';
-            $db = new PHPWS_DB('blog_entries');
-            if (PHPWS_Error::logIfError($db->addTableColumn('image_link', "varchar(255) NOT NULL default 'default'"))) {
+            $db = new Core\DB('blog_entries');
+            if (Core\Error::logIfError($db->addTableColumn('image_link', "varchar(255) NOT NULL default 'default'"))) {
                 $content[] = '--- Unable to create image_link column on blog_entries table.</pre>';
                 return false;
             } else {
@@ -231,8 +231,8 @@ function blog_update(&$content, $currentVersion)
             }
 
         case version_compare($currentVersion, '1.7.2', '<'):
-            $db = new PHPWS_DB('blog_entries');
-            if (PHPWS_Error::logIfError($db->addTableColumn('thumbnail', 'smallint not null default 0'))) {
+            $db = new Core\DB('blog_entries');
+            if (Core\Error::logIfError($db->addTableColumn('thumbnail', 'smallint not null default 0'))) {
                 $content[] = 'Unable to create thumbnail column on blog_entries table.';
             }
             $content[] = '<pre>';

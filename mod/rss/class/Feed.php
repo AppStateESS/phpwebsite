@@ -5,7 +5,6 @@
  * @version $Id$
  */
 
-Core\Core::initCoreClass('XMLParser.php');
 
 Core\Core::requireConfig('rss');
 
@@ -37,7 +36,7 @@ class RSS_Feed {
         if (empty($this->id)) {
             return FALSE;
         }
-        $db = new PHPWS_DB('rss_feeds');
+        $db = new Core\DB('rss_feeds');
         return $db->loadObject($this);
     }
 
@@ -60,28 +59,28 @@ class RSS_Feed {
     {
         $vars['command'] = 'reset_feed';
         $vars['feed_id'] = $this->id;
-        $links[] = PHPWS_Text::secureLink(Icon::show('refresh', dgettext('rss', 'Reset')), 'rss', $vars);
+        $links[] = Core\Text::secureLink(Core\Icon::show('refresh', dgettext('rss', 'Reset')), 'rss', $vars);
 
         $jsvars['address'] = sprintf('index.php?module=rss&command=edit_feed&feed_id=%s&authkey=%s',
         $this->id, Current_User::getAuthKey());
-        $jsvars['label'] = Icon::show('edit');
+        $jsvars['label'] = Core\Icon::show('edit');
         $jsvars['height'] = '280';
         $links[] = javascript('open_window', $jsvars);
 
         $js['QUESTION'] = dgettext('rss', 'Are you sure you want to delete this RSS feed?');
         $js['ADDRESS']  = sprintf('index.php?module=rss&command=delete_feed&feed_id=%s&authkey=%s',
         $this->id, Current_User::getAuthKey());
-        $js['LINK']     = Icon::show('delete');
+        $js['LINK']     = Core\Icon::show('delete');
         $links[] = javascript('confirm', $js);
 
         $tpl['ACTION'] = implode(' ', $links);
 
         if ($this->display) {
             $vars['command'] = 'turn_off_display';
-            $tpl['DISPLAY'] = PHPWS_Text::secureLink(dgettext('rss', 'Yes'), 'rss', $vars);
+            $tpl['DISPLAY'] = Core\Text::secureLink(dgettext('rss', 'Yes'), 'rss', $vars);
         } else {
             $vars['command'] = 'turn_on_display';
-            $tpl['DISPLAY'] = PHPWS_Text::secureLink(dgettext('rss', 'No'), 'rss', $vars);
+            $tpl['DISPLAY'] = Core\Text::secureLink(dgettext('rss', 'No'), 'rss', $vars);
         }
 
         $hours   = floor($this->refresh_time / 3600);
@@ -116,7 +115,7 @@ class RSS_Feed {
 
         $refresh_time = sprintf(dgettext('rss', 'Every %s'), $time);
 
-        $tpl['ADDRESS'] = sprintf('<a href="%s">%s</a>', $this->address, PHPWS_Text::shortenUrl($this->address));
+        $tpl['ADDRESS'] = sprintf('<a href="%s">%s</a>', $this->address, Core\Text::shortenUrl($this->address));
         $tpl['REFRESH_TIME'] = $refresh_time;
 
         return $tpl;
@@ -130,7 +129,7 @@ class RSS_Feed {
 
         if ($use_cache) {
             $cache_key = $this->address;
-            $data = PHPWS_Cache::get($cache_key, $this->refresh_time);
+            $data = Core\Cache::get($cache_key, $this->refresh_time);
         }
 
         if (!empty($data)) {
@@ -143,13 +142,13 @@ class RSS_Feed {
 
             $this->_parser = new XMLParser($this->address);
             if ($this->_parser->error) {
-                PHPWS_Error::log($this->_parser->error);
+                Core\Error::log($this->_parser->error);
                 return FALSE;
             }
 
             $this->mapData();
             if ($use_cache) {
-                PHPWS_Cache::save($cache_key, serialize($this->mapped));
+                Core\Cache::save($cache_key, serialize($this->mapped));
             }
         }
         return TRUE;
@@ -161,7 +160,7 @@ class RSS_Feed {
     public function reset()
     {
         $cache_key = $this->address;
-        PHPWS_Cache::remove($cache_key);
+        Core\Cache::remove($cache_key);
     }
 
     public function post()
@@ -219,13 +218,13 @@ class RSS_Feed {
             $this->loadTitle();
         }
 
-        $db = new PHPWS_DB('rss_feeds');
+        $db = new Core\DB('rss_feeds');
         return $db->saveObject($this);
     }
 
     public function delete()
     {
-        $db = new PHPWS_DB('rss_feeds');
+        $db = new Core\DB('rss_feeds');
         $db->addWhere('id', $this->id);
         return $db->delete();
     }
@@ -274,7 +273,7 @@ class RSS_Feed {
             $tpl['FEED_TITLE'] = &$this->title;
         }
 
-        $content = PHPWS_Template::process($tpl, 'rss', 'feeds/view_rss.tpl');
+        $content = Core\Template::process($tpl, 'rss', 'feeds/view_rss.tpl');
 
         return $content;
     }

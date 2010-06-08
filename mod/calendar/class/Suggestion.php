@@ -28,8 +28,8 @@ class Calendar_Suggestion extends Calendar_Event {
         } else {
             $this->id = (int)$id;
             $result = $this->init();
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 $this->id = 0;
             } elseif (!$result) {
                 $this->id = 0;
@@ -39,7 +39,7 @@ class Calendar_Suggestion extends Calendar_Event {
 
     public function delete()
     {
-        $db = new PHPWS_DB('calendar_suggestions');
+        $db = new Core\DB('calendar_suggestions');
         $db->addWhere('id', $this->id);
         return $db->delete();
     }
@@ -110,7 +110,7 @@ class Calendar_Suggestion extends Calendar_Event {
         if (!empty($this->location)) {
             if (!empty($this->loc_link)) {
                 $tpl['LOCATION'] = sprintf('<a href="%s" title="%s">%s</a>',
-                PHPWS_Text::checkLink($this->loc_link),
+                Core\Text::checkLink($this->loc_link),
                 dgettext('calendar', 'Visit this location\'s web site.'),
                 $this->location);
             } else {
@@ -121,10 +121,10 @@ class Calendar_Suggestion extends Calendar_Event {
         $vars['suggestion_id'] = $this->id;
 
         $vars['aop'] = 'approve_suggestion';
-        $links[] = PHPWS_Text::secureLink(dgettext('calendar', 'Approve'), 'calendar', $vars);
+        $links[] = Core\Text::secureLink(dgettext('calendar', 'Approve'), 'calendar', $vars);
 
         $vars['aop'] = 'disapprove_suggestion';
-        $links[] = PHPWS_Text::secureLink(dgettext('calendar', 'Disapprove'), 'calendar', $vars);
+        $links[] = Core\Text::secureLink(dgettext('calendar', 'Disapprove'), 'calendar', $vars);
 
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
@@ -133,7 +133,7 @@ class Calendar_Suggestion extends Calendar_Event {
 
     public function init()
     {
-        $db = new PHPWS_DB('calendar_suggestions');
+        $db = new Core\DB('calendar_suggestions');
         return $db->loadObject($this);
     }
 
@@ -146,7 +146,7 @@ class Calendar_Suggestion extends Calendar_Event {
     {
         $this->schedule_id = $this->_schedule->id;
         $this->submitted = time();
-        $db = new PHPWS_DB('calendar_suggestions');
+        $db = new Core\DB('calendar_suggestions');
         return $db->saveObject($this);
     }
 

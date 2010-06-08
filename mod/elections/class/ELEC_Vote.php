@@ -46,9 +46,9 @@ class Elections_Vote {
 
     public function init()
     {
-        $db = new PHPWS_DB('elections_votes');
+        $db = new Core\DB('elections_votes');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -92,10 +92,10 @@ class Elections_Vote {
 
         $tpl['BALLOT_LINKS'] = $this->ballotLinks();
         $tpl['TITLE'] = $this->getTitle(true);
-        $tpl['DESCRIPTION'] = PHPWS_Text::parseTag($this->getDescription(true));
+        $tpl['DESCRIPTION'] = Core\Text::parseTag($this->getDescription(true));
 
 
-        return PHPWS_Template::process($tpl, 'elections', 'view_vote.tpl');
+        return Core\Template::process($tpl, 'elections', 'view_vote.tpl');
     }
 
 
@@ -107,7 +107,7 @@ class Elections_Vote {
         if (Current_User::allow('elections')) {
             $vars['id'] = $this->id;
             $vars['aop']  = 'edit_ballot';
-            $links[] = PHPWS_Text::secureLink(dgettext('elections', 'Edit ballot'), 'elections', $vars);
+            $links[] = Core\Text::secureLink(dgettext('elections', 'Edit ballot'), 'elections', $vars);
         }
 
         if (is_array(Election::navLinks())) {
@@ -125,9 +125,9 @@ class Elections_Vote {
             return;
         }
 
-        $db = new PHPWS_DB('elections_votes');
+        $db = new Core\DB('elections_votes');
         $db->addWhere('id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
     }
 
 
@@ -138,9 +138,9 @@ class Elections_Vote {
 
         if (Current_User::isUnrestricted('elections')) {
             $vars['aop'] = 'delete_vote';
-            $js['ADDRESS'] = PHPWS_Text::linkAddress('elections', $vars, true);
+            $js['ADDRESS'] = Core\Text::linkAddress('elections', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('elections', 'Are you sure you want to delete the vote %s? This will not take back the votes, just remove this record from the log.'), $this->id);
-            $js['LINK'] = Icon::show('delete');
+            $js['LINK'] = Core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -157,10 +157,10 @@ class Elections_Vote {
 
     public function save()
     {
-        $db = new PHPWS_DB('elections_votes');
+        $db = new Core\DB('elections_votes');
 
         $result = $db->saveObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
     }
@@ -168,8 +168,7 @@ class Elections_Vote {
 
     public function viewLink($bare=false)
     {
-        Core\Core::initCoreClass('Link.php');
-        $link = new PHPWS_Link($this->id, 'elections', array('ballot'=>$this->id));
+                $link = new Core\Link($this->id, 'elections', array('ballot'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {

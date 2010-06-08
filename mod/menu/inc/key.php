@@ -16,20 +16,20 @@ function menu_unregister_key(Key $key)
         return FALSE;
     }
 
-    $db = new PHPWS_DB('menu_links');
+    $db = new Core\DB('menu_links');
     $db->addWhere('key_id', $key->id);
     $result = $db->delete();
 
-    if (PHPWS_Error::isError($result)) {
-        PHPWS_Error::log($result);
+    if (Core\Error::isError($result)) {
+        Core\Error::log($result);
     }
 
-    $db2 = new PHPWS_DB('menu_assoc');
+    $db2 = new Core\DB('menu_assoc');
     $db2->addWhere('key_id', $key->id);
     $result = $db2->delete();
 
-    if (PHPWS_Error::isError($result)) {
-        PHPWS_Error::log($result);
+    if (Core\Error::isError($result)) {
+        Core\Error::log($result);
     }
 
     return true;

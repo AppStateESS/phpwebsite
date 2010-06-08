@@ -8,7 +8,7 @@
 function export($formId = NULL) {
     if(!isset($formId)) {
         $message = dgettext('phatform', 'No form ID was passed');
-        return new PHPWS_Error('phatform', 'export()', $message, 'continue', PHAT_DEBUG_MODE);
+        return new Core\Error('phatform', 'export()', $message, 'continue', PHAT_DEBUG_MODE);
     }
 
     $exportDir = PHPWS_HOME_DIR . 'files/phatform/export/';
@@ -17,16 +17,16 @@ function export($formId = NULL) {
     clearstatcache();
     if(!is_dir($path)) {
         if(is_writeable($exportDir)) {
-            PHPWS_File::makeDir($path);
+            Core\File::makeDir($path);
         } else {
-            return PHPWS_Error::get(PHATFORM_EXPORT_PATH, 'phatform', 'Export.php::export()');
+            return Core\Error::get(PHATFORM_EXPORT_PATH, 'phatform', 'Export.php::export()');
         }
     } elseif(!is_writeable($path)) {
-        return PHPWS_Error::get(PHATFORM_EXPORT_PATH, 'phatform', 'Export.php::export()');
+        return Core\Error::get(PHATFORM_EXPORT_PATH, 'phatform', 'Export.php::export()');
     }
 
     $sql = 'SELECT * FROM mod_phatform_form_' . $formId;
-    $result = PHPWS_DB::getAll($sql);
+    $result = Core\DB::getAll($sql);
 
     if(sizeof($result) > 0) {
         $data = '';

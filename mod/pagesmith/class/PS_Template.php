@@ -36,10 +36,9 @@ class PS_Template {
 
     public function loadTemplate()
     {
-        Core\Core::initCoreClass('XMLParser.php');
-        $xml = new XMLParser($this->file);
+                $xml = new Core\XMLParser($this->file);
         $xml->setContentOnly(true);
-        if (PHPWS_Error::isError($xml->error)) {
+        if (Core\Error::isError($xml->error)) {
             return $xml->error;
         }
 
@@ -51,7 +50,7 @@ class PS_Template {
 
         $this->data = $result['TEMPLATE'];
         if (!isset($this->data['TITLE'])) {
-            $this->error[] = PHPWS_Error::get(PS_TPL_NO_TITLE, 'pagesmith', 'PS_Template::loadTemplate', $this->name);
+            $this->error[] = Core\Error::get(PS_TPL_NO_TITLE, 'pagesmith', 'PS_Template::loadTemplate', $this->name);
             return;
         }
 
@@ -62,7 +61,7 @@ class PS_Template {
         }
 
         if (empty($this->data['THUMBNAIL'])) {
-            $this->error[] = PHPWS_Error::get(PS_TPL_NO_TN, 'pagesmith', 'PS_Template::loadTemplate', $this->name);
+            $this->error[] = Core\Error::get(PS_TPL_NO_TN, 'pagesmith', 'PS_Template::loadTemplate', $this->name);
             return;
         }
 
@@ -73,7 +72,7 @@ class PS_Template {
         }
 
         if (empty($this->data['STRUCTURE']['SECTION'])) {
-            $this->error[] = PHPWS_Error::get(PS_TPL_NO_SECTIONS, 'pagesmith', 'PS_Template::loadTemplate', $this->name);
+            $this->error[] = Core\Error::get(PS_TPL_NO_SECTIONS, 'pagesmith', 'PS_Template::loadTemplate', $this->name);
             return;
         }
 
@@ -109,12 +108,12 @@ class PS_Template {
         $vars['aop'] = 'pick_template';
         $vars['tpl'] = $this->name;
         $vars['pid'] = $parent_page;
-        return PHPWS_Text::secureLink($this->getThumbnail(), 'pagesmith', $vars);
+        return Core\Text::secureLink($this->getThumbnail(), 'pagesmith', $vars);
     }
 
     public function getThumbnail()
     {
-        $tpl_dir = PHPWS_Template::getTemplateHttp('pagesmith');
+        $tpl_dir = Core\Template::getTemplateHttp('pagesmith');
         return sprintf('<img src="%s%s%s" title="%s" />',
         $tpl_dir, $this->page_path,
         $this->thumbnail, $this->title);

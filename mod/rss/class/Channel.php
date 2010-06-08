@@ -39,10 +39,10 @@ class RSS_Channel {
 
     public function init()
     {
-        $db = new PHPWS_DB('rss_channel');
+        $db = new Core\DB('rss_channel');
         $result = $db->loadObject($this);
 
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_error = $result;
             return $result;
         }
@@ -72,7 +72,7 @@ class RSS_Channel {
     {
         if ($linkable) {
             $vars['mod_title'] = $this->module;
-            return PHPWS_Text::moduleLink($this->title, 'rss', $vars);
+            return Core\Text::moduleLink($this->title, 'rss', $vars);
         } else {
             return $this->title;
         }
@@ -80,7 +80,7 @@ class RSS_Channel {
 
     public function save()
     {
-        $db = new PHPWS_DB('rss_channel');
+        $db = new Core\DB('rss_channel');
         return $db->saveObject($this);
     }
 
@@ -88,15 +88,14 @@ class RSS_Channel {
     {
         $vars['channel_id'] = $this->id;
         $vars['command'] = 'edit_channel';
-        $links[] = PHPWS_Text::secureLink(dgettext('rss', 'Edit'), 'rss', $vars);
+        $links[] = Core\Text::secureLink(dgettext('rss', 'Edit'), 'rss', $vars);
 
         return $links;
     }
 
     public function getAddress($include_http=TRUE)
     {
-        Core\Core::initCoreClass('Link.php');
-        $link = new PHPWS_Link;
+                $link = new Core\Link;
         $link->full_url = $include_http;
         $link->setRewrite();
         $link->setModule('rss');
@@ -106,7 +105,7 @@ class RSS_Channel {
 
     public function loadFeeds()
     {
-        $db = new PHPWS_DB('phpws_key');
+        $db = new Core\DB('phpws_key');
         $db->addWhere('module', $this->module);
         $db->addWhere('active', 1);
         $db->addWhere('restricted', 0);
@@ -119,7 +118,7 @@ class RSS_Channel {
 
         $result = $db->getObjects('Key');
 
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_feeds = NULL;
             $this->_error = $result;
             return $result;
@@ -153,7 +152,7 @@ class RSS_Channel {
     public function view()
     {
         $cache_key = $this->module . '_cache_key';
-        $content = PHPWS_Cache::get($cache_key, RSS_CACHE_TIMEOUT);
+        $content = Core\Cache::get($cache_key, RSS_CACHE_TIMEOUT);
 
         if (!empty($content)) {
             return $content;
@@ -174,9 +173,9 @@ class RSS_Channel {
         $template['SEARCH_DESCRIPTION'] = sprintf('Search in %s', $this->title);
         $template['SEARCH_NAME'] = 'search';
 
-        $template['COPYRIGHT'] = PHPWS_Settings::get('rss', 'copyright');
-        $template['WEBMASTER'] = PHPWS_Settings::get('rss', 'webmaster');
-        $template['MANAGING_EDITOR'] = PHPWS_Settings::get('rss', 'editor');
+        $template['COPYRIGHT'] = Core\Settings::get('rss', 'copyright');
+        $template['WEBMASTER'] = Core\Settings::get('rss', 'webmaster');
+        $template['MANAGING_EDITOR'] = Core\Settings::get('rss', 'editor');
 
         $template['LAST_BUILD_DATE'] = $this->_last_build_date;
 
@@ -207,14 +206,14 @@ class RSS_Channel {
             }
         }
 
-        if (PHPWS_Settings::get('rss', 'rssfeed') == 2) {
+        if (Core\Settings::get('rss', 'rssfeed') == 2) {
             $tpl_file = 'rss20.tpl';
         } else {
             $tpl_file = 'rss10.tpl';
         }
-        $content = PHPWS_Template::process($template, 'rss', $tpl_file);
+        $content = Core\Template::process($template, 'rss', $tpl_file);
         $content = utf8_encode($content);
-        PHPWS_Cache::save($cache_key, $content);
+        Core\Cache::save($cache_key, $content);
         return $content;
     }
 

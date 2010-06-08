@@ -27,9 +27,9 @@ class RDX_Runtime
 {
 
     public static function showBlock() {
-        if (PHPWS_Settings::get('rolodex', 'show_block')) {
-            if (PHPWS_Settings::get('rolodex', 'block_on_home_only')) {
-                $key = Key::getCurrent();
+        if (Core\Settings::get('rolodex', 'show_block')) {
+            if (Core\Settings::get('rolodex', 'block_on_home_only')) {
+                $key = Core\Key::getCurrent();
                 if (!empty($key) && $key->isHomeKey()) {
                     RDX_Runtime::showRolodexBlock();
                 }
@@ -41,7 +41,7 @@ class RDX_Runtime
 
     public static function showRolodexBlock() {
 
-        $db = new PHPWS_DB('rolodex_member');
+        $db = new Core\DB('rolodex_member');
         $db->addColumn('user_id');
         $db->addWhere('active', 1);
         if (!Current_User::isLogged()) {
@@ -50,16 +50,16 @@ class RDX_Runtime
             $db->addWhere('privacy', 0);
             $db->addWhere('privacy', 1, '=', 'or');
         }
-        if (PHPWS_Settings::get('rolodex', 'block_order_by_rand')) {
+        if (Core\Settings::get('rolodex', 'block_order_by_rand')) {
             $db->addOrder('rand');
         } else {
             $db->addOrder('date_created desc');
         }
         $db->setLimit(1);
         $result = $db->select();
-        if (!PHPWS_Error::logIfError($result) && !empty($result)) {
-            $tpl['TITLE'] = PHPWS_Settings::get('rolodex', 'module_title');
-            if (PHPWS_Settings::get('rolodex', 'block_order_by_rand')) {
+        if (!Core\Error::logIfError($result) && !empty($result)) {
+            $tpl['TITLE'] = Core\Settings::get('rolodex', 'module_title');
+            if (Core\Settings::get('rolodex', 'block_order_by_rand')) {
                 $tpl['MEMBER_LABEL'] = dgettext('rolodex', 'Featured Member');
             } else {
                 $tpl['MEMBER_LABEL'] = dgettext('rolodex', 'Most Recent Member');
@@ -72,9 +72,9 @@ class RDX_Runtime
             } else {
                 $tpl['MEMBER_THUMBNAIL'] = null;
             }
-            $tpl['BROWSE_LINK'] = PHPWS_Text::moduleLink(dgettext('rolodex', 'Browse all members'), 'rolodex', array('uop'=>'list'));
+            $tpl['BROWSE_LINK'] = Core\Text::moduleLink(dgettext('rolodex', 'Browse all members'), 'rolodex', array('uop'=>'list'));
             Core\Core::initModClass('layout', 'Layout.php');
-            Layout::add(PHPWS_Template::process($tpl, 'rolodex', 'block.tpl'), 'rolodex', 'rdx_sidebox');
+            Layout::add(Core\Template::process($tpl, 'rolodex', 'block.tpl'), 'rolodex', 'rdx_sidebox');
         }
 
     }

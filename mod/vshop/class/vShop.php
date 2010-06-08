@@ -103,7 +103,7 @@ class vShop {
                     Current_User::disallow();
                 }
                 if ($this->postDept()) {
-                    if (PHPWS_Error::logIfError($this->dept->save())) {
+                    if (Core\Error::logIfError($this->dept->save())) {
                         $this->forwardMessage(dgettext('vshop', 'Error occurred when saving department.'));
                         Core\Core::reroute('index.php?module=vshop&aop=menu');
                     } else {
@@ -138,7 +138,7 @@ class vShop {
                     Current_User::disallow();
                 }
                 if ($this->postItem()) {
-                    if (PHPWS_Error::logIfError($this->item->save())) {
+                    if (Core\Error::logIfError($this->item->save())) {
                         $this->forwardMessage(dgettext('vshop', 'Error occurred when saving item.'));
                         Core\Core::reroute('index.php?module=vshop&aop=menu');
                     } else {
@@ -184,7 +184,7 @@ class vShop {
                     Current_User::disallow();
                 }
                 if ($this->postTax()) {
-                    if (PHPWS_Error::logIfError($this->tax->save())) {
+                    if (Core\Error::logIfError($this->tax->save())) {
                         $this->forwardMessage(dgettext('vshop', 'Error occurred when saving tax.'));
                         Core\Core::reroute('index.php?module=vshop&aop=menu&tab=taxes');
                     } else {
@@ -250,7 +250,7 @@ class vShop {
                     Current_User::disallow();
                 }
                 if ($this->postOrder(true)) {
-                    if (PHPWS_Error::logIfError($this->order->save())) {
+                    if (Core\Error::logIfError($this->order->save())) {
                         $this->forwardMessage(dgettext('vshop', 'Error occurred when saving order.'));
                         Core\Core::reroute('index.php?module=vshop&aop=menu&tab=orders');
                     } else {
@@ -283,7 +283,7 @@ class vShop {
                 $this->loadOrder();
                 $this->order->cancelled = 1;
                 $this->message = dgettext('vshop', 'Order cancelled');
-                if (PHPWS_Settings::get('vshop', 'use_inventory')) {
+                if (Core\Settings::get('vshop', 'use_inventory')) {
                     $this->order->updateInventory(true);
                     $this->message .= dgettext('vshop', 'and items returned to inventory');
                 }
@@ -355,9 +355,9 @@ class vShop {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'vshop', 'main_admin.tpl'));
+            Layout::nakedDisplay(Core\Template::process($tpl, 'vshop', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(PHPWS_Template::process($tpl, 'vshop', 'main_admin.tpl'));
+            $this->panel->setContent(Core\Template::process($tpl, 'vshop', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
         
@@ -382,7 +382,7 @@ class vShop {
                 if (vShop::countDepts() == 1) {
                     $this->loadDept($this->getSingleDept());
                     Layout::addPageTitle($this->dept->getTitle());
-                    if (PHPWS_Settings::get('vshop', 'use_breadcrumb')) {
+                    if (Core\Settings::get('vshop', 'use_breadcrumb')) {
                         $this->title = $this->dept->getTitle(true,true);
                     } else {
                         $this->title = $this->dept->getTitle(true);
@@ -399,7 +399,7 @@ class vShop {
             case 'view_dept':
                 $this->loadDept();
                 Layout::addPageTitle($this->dept->getTitle());
-                if (PHPWS_Settings::get('vshop', 'use_breadcrumb')) {
+                if (Core\Settings::get('vshop', 'use_breadcrumb')) {
                     $this->title = $this->dept->getTitle(true,true);
                 } else {
                     $this->title = $this->dept->getTitle(true);
@@ -410,7 +410,7 @@ class vShop {
             case 'view_item':
                 $this->loadItem();
                 Layout::addPageTitle($this->item->getTitle());
-                if (PHPWS_Settings::get('vshop', 'use_breadcrumb')) {
+                if (Core\Settings::get('vshop', 'use_breadcrumb')) {
                     $this->title = $this->item->getTitle(true,true);
                 } else {
                     $this->title = $this->item->getTitle(true);
@@ -427,13 +427,13 @@ class vShop {
                 } else {
                     $qty = 1;
                 }
-                if (PHPWS_Settings::get('vshop', 'use_inventory')) {
+                if (Core\Settings::get('vshop', 'use_inventory')) {
                     $cart_data = $cart->GetCart();
                     $qty_incart = $cart_data[$this->item->id]['count'];
                     $new_qty = $qty_incart + $qty;
                 }
-// old                if (PHPWS_Settings::get('vshop', 'use_inventory') && $new_qty <= $this->item->stock) {
-                if ((PHPWS_Settings::get('vshop', 'use_inventory') && $new_qty <= $this->item->stock) || (!PHPWS_Settings::get('vshop', 'use_inventory'))) { // fixed thanks wendall
+// old                if (Core\Settings::get('vshop', 'use_inventory') && $new_qty <= $this->item->stock) {
+                if ((Core\Settings::get('vshop', 'use_inventory') && $new_qty <= $this->item->stock) || (!Core\Settings::get('vshop', 'use_inventory'))) { // fixed thanks wendall
                     $cart->addItems($this->item->id, null, $qty);
                     $this->forwardMessage(sprintf(dgettext('vshop', '%s successfully added to your cart.'), $this->item->getTitle(true)));
                 } else {
@@ -467,14 +467,14 @@ class vShop {
             case 'update_cart':
                 Core\Core::initModClass('vshop', 'vShop_Cart.php');
                 $cart = vShop_Cart::CreateInstance();
-                if (PHPWS_Settings::get('vshop', 'use_inventory')) {
+                if (Core\Settings::get('vshop', 'use_inventory')) {
 //                    $cart_data = $cart->GetCart();
                     Core\Core::initModClass('vshop', 'vShop_Item.php');
                 }
                 foreach ($_REQUEST['qtys'] as $id => $var) {
                     $msg = null;
                     $qty[$id] = $var;
-                    if (PHPWS_Settings::get('vshop', 'use_inventory')) {
+                    if (Core\Settings::get('vshop', 'use_inventory')) {
 //                        $qty_incart = $cart_data[$id]['count'];
 //                        $new_qty = $qty_incart + $qty;
                         $item = new vShop_Item($id);
@@ -504,7 +504,7 @@ class vShop {
 
             case 'post_order':
                 if ($this->postOrder()) {
-                    if (PHPWS_Error::logIfError($this->order->save())) {
+                    if (Core\Error::logIfError($this->order->save())) {
                         $this->forwardMessage(dgettext('vshop', 'Error occurred when saving order.'));
                         Core\Core::reroute('index.php?module=vshop&uop=checkout');
                     } else {
@@ -546,14 +546,14 @@ class vShop {
     
                     /* update the order */
                     $this->order->completed = 1;
-                    if (PHPWS_Settings::get('vshop', 'use_inventory')) {
+                    if (Core\Settings::get('vshop', 'use_inventory')) {
                         $this->order->updateInventory();
                     }
                     $this->order->save();
                     
                     $message = $payment->successMessage();
                     $message .= '<br /><br />';
-                    $message .= PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'order_message'));
+                    $message .= Core\Text::parseOutput(Core\Settings::get('vshop', 'order_message'));
                     $message .= '<br /><br />';
                     $this->forwardMessage($message);
                     
@@ -578,9 +578,9 @@ class vShop {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'vshop', 'main_user.tpl'));
+            Layout::nakedDisplay(Core\Template::process($tpl, 'vshop', 'main_user.tpl'));
         } else {
-            Layout::add(PHPWS_Template::process($tpl, 'vshop', 'main_user.tpl'));
+            Layout::add(Core\Template::process($tpl, 'vshop', 'main_user.tpl'));
         }
         
    }
@@ -850,60 +850,60 @@ class vShop {
     {
 
         isset($_POST['enable_sidebox']) ?
-            PHPWS_Settings::set('vshop', 'enable_sidebox', 1) :
-            PHPWS_Settings::set('vshop', 'enable_sidebox', 0);
+            Core\Settings::set('vshop', 'enable_sidebox', 1) :
+            Core\Settings::set('vshop', 'enable_sidebox', 0);
 
         isset($_POST['sidebox_homeonly']) ?
-            PHPWS_Settings::set('vshop', 'sidebox_homeonly', 1) :
-            PHPWS_Settings::set('vshop', 'sidebox_homeonly', 0);
+            Core\Settings::set('vshop', 'sidebox_homeonly', 1) :
+            Core\Settings::set('vshop', 'sidebox_homeonly', 0);
 
         if (!empty($_POST['mod_title'])) {
-            PHPWS_Settings::set('vshop', 'mod_title', strip_tags(PHPWS_Text::parseInput($_POST['mod_title'])));
+            Core\Settings::set('vshop', 'mod_title', strip_tags(Core\Text::parseInput($_POST['mod_title'])));
         } else {
-            PHPWS_Settings::reset('vshop', 'mod_title');
+            Core\Settings::reset('vshop', 'mod_title');
         }
 
         if (!empty($_POST['sidebox_text'])) {
-            PHPWS_Settings::set('vshop', 'sidebox_text', PHPWS_Text::parseInput($_POST['sidebox_text']));
+            Core\Settings::set('vshop', 'sidebox_text', Core\Text::parseInput($_POST['sidebox_text']));
         } else {
-            PHPWS_Settings::set('vshop', 'sidebox_text', null);
+            Core\Settings::set('vshop', 'sidebox_text', null);
         }
 
         if (isset($_POST['enable_files'])) {
-            PHPWS_Settings::set('vshop', 'enable_files', 1);
+            Core\Settings::set('vshop', 'enable_files', 1);
             if ( !empty($_POST['max_width']) ) {
                 $max_width = (int)$_POST['max_width'];
                 if ($max_width >= 50 && $max_width <= 600 ) {
-                    PHPWS_Settings::set('vshop', 'max_width', $max_width);
+                    Core\Settings::set('vshop', 'max_width', $max_width);
                 }
             }
             if ( !empty($_POST['max_height']) ) {
                 $max_height = (int)$_POST['max_height'];
                 if ($max_height >= 50 && $max_height <= 600 ) {
-                    PHPWS_Settings::set('vshop', 'max_height', $max_height);
+                    Core\Settings::set('vshop', 'max_height', $max_height);
                 }
             }
         } else {
-            PHPWS_Settings::set('vshop', 'enable_files', 0);
+            Core\Settings::set('vshop', 'enable_files', 0);
         }
 
         isset($_POST['use_inventory']) ?
-            PHPWS_Settings::set('vshop', 'use_inventory', 1) :
-            PHPWS_Settings::set('vshop', 'use_inventory', 0);
+            Core\Settings::set('vshop', 'use_inventory', 1) :
+            Core\Settings::set('vshop', 'use_inventory', 0);
 
         isset($_POST['use_breadcrumb']) ?
-            PHPWS_Settings::set('vshop', 'use_breadcrumb', 1) :
-            PHPWS_Settings::set('vshop', 'use_breadcrumb', 0);
+            Core\Settings::set('vshop', 'use_breadcrumb', 1) :
+            Core\Settings::set('vshop', 'use_breadcrumb', 0);
 
         if (!empty($_POST['checkout_inst'])) {
-            PHPWS_Settings::set('vshop', 'checkout_inst', PHPWS_Text::parseInput($_POST['checkout_inst']));
+            Core\Settings::set('vshop', 'checkout_inst', Core\Text::parseInput($_POST['checkout_inst']));
         } else {
-            PHPWS_Settings::set('vshop', 'checkout_inst', null);
+            Core\Settings::set('vshop', 'checkout_inst', null);
         }
 
         if (!empty($_POST['admin_email'])) {
-            if (PHPWS_Text::isValidInput($_POST['admin_email'], 'email')) {
-                PHPWS_Settings::set('vshop', 'admin_email', strip_tags(PHPWS_Text::parseInput($_POST['admin_email'])));
+            if (Core\Text::isValidInput($_POST['admin_email'], 'email')) {
+                Core\Settings::set('vshop', 'admin_email', strip_tags(Core\Text::parseInput($_POST['admin_email'])));
             } else {
                 $errors[] = dgettext('vshop', 'Check your e-mail address for formatting errors.');
             }
@@ -914,83 +914,83 @@ class vShop {
         if (empty($_POST['pay_methods'])) {
             $errors[] = dgettext('vshop', 'You must select at least one payment method.');
         } else {
-            PHPWS_Settings::set('vshop', 'payment_methods', $_POST['pay_methods']);
+            Core\Settings::set('vshop', 'payment_methods', $_POST['pay_methods']);
         }
 
         if (!empty($_POST['order_message'])) {
-            PHPWS_Settings::set('vshop', 'order_message', PHPWS_Text::parseInput($_POST['order_message']));
+            Core\Settings::set('vshop', 'order_message', Core\Text::parseInput($_POST['order_message']));
         } else {
-            PHPWS_Settings::set('vshop', 'order_message', null);
+            Core\Settings::set('vshop', 'order_message', null);
         }
 
         if (!empty($_POST['weight_unit'])) {
-            PHPWS_Settings::set('vshop', 'weight_unit', strip_tags(PHPWS_Text::parseInput($_POST['weight_unit'])));
+            Core\Settings::set('vshop', 'weight_unit', strip_tags(Core\Text::parseInput($_POST['weight_unit'])));
         } else {
-            PHPWS_Settings::reset('vshop', 'weight_unit');
+            Core\Settings::reset('vshop', 'weight_unit');
         }
 
         if (!empty($_POST['currency'])) {
             if (eregi('[a-z]{3}', $_POST['currency'])) {
-                PHPWS_Settings::set('vshop', 'currency', strip_tags(PHPWS_Text::parseInput(strtoupper($_POST['currency']))));
+                Core\Settings::set('vshop', 'currency', strip_tags(Core\Text::parseInput(strtoupper($_POST['currency']))));
             } else {
                 $errors[] = dgettext('vshop', 'Check your currency code for formatting errors.');
             }
         } else {
-            PHPWS_Settings::reset('vshop', 'currency');
+            Core\Settings::reset('vshop', 'currency');
         }
 
         if (!empty($_POST['currency_symbol'])) {
-            PHPWS_Settings::set('vshop', 'currency_symbol', strip_tags(PHPWS_Text::parseInput(strtoupper($_POST['currency_symbol']))));
+            Core\Settings::set('vshop', 'currency_symbol', strip_tags(Core\Text::parseInput(strtoupper($_POST['currency_symbol']))));
         } else {
-            PHPWS_Settings::reset('vshop', 'currency_symbol');
+            Core\Settings::reset('vshop', 'currency_symbol');
         }
 
         if (!empty($_POST['curr_symbol_pos'])) {
-            PHPWS_Settings::set('vshop', 'curr_symbol_pos', strip_tags(PHPWS_Text::parseInput($_POST['curr_symbol_pos'])));
+            Core\Settings::set('vshop', 'curr_symbol_pos', strip_tags(Core\Text::parseInput($_POST['curr_symbol_pos'])));
         } else {
-            PHPWS_Settings::reset('vshop', 'curr_symbol_pos');
+            Core\Settings::reset('vshop', 'curr_symbol_pos');
         }
 
         isset($_POST['display_currency']) ?
-            PHPWS_Settings::set('vshop', 'display_currency', 1) :
-            PHPWS_Settings::set('vshop', 'display_currency', 0);
+            Core\Settings::set('vshop', 'display_currency', 1) :
+            Core\Settings::set('vshop', 'display_currency', 0);
 
-        PHPWS_Settings::set('vshop', 'shipping_calculation', $_POST['shipping_calculation']);
+        Core\Settings::set('vshop', 'shipping_calculation', $_POST['shipping_calculation']);
 
         if (!empty($_POST['shipping_flat']) ) {
-            PHPWS_Settings::set('vshop', 'shipping_flat', (int)$_POST['shipping_flat']);
+            Core\Settings::set('vshop', 'shipping_flat', (int)$_POST['shipping_flat']);
         }
 
         if (!empty($_POST['shipping_percent']) ) {
-            PHPWS_Settings::set('vshop', 'shipping_percent', (int)$_POST['shipping_percent']);
+            Core\Settings::set('vshop', 'shipping_percent', (int)$_POST['shipping_percent']);
         }
 
         if (!empty($_POST['shipping_minimum'])) {
             $shipping_minimum = (float)$_POST['shipping_minimum'];
             if ($shipping_minimum > 0) {
-                PHPWS_Settings::set('vshop', 'shipping_minimum', $shipping_minimum);
+                Core\Settings::set('vshop', 'shipping_minimum', $shipping_minimum);
             }
         } else {
-            PHPWS_Settings::reset('vshop', 'shipping_minimum');
+            Core\Settings::reset('vshop', 'shipping_minimum');
         }
 
         if ( !empty($_POST['shipping_maximum']) ) {
             $shipping_maximum = (float)$_POST['shipping_maximum'];
             if ($shipping_maximum > 0) {
-                PHPWS_Settings::set('vshop', 'shipping_maximum', $shipping_maximum);
+                Core\Settings::set('vshop', 'shipping_maximum', $shipping_maximum);
             }
         } else {
-            PHPWS_Settings::reset('vshop', 'shipping_maximum');
+            Core\Settings::reset('vshop', 'shipping_maximum');
         }
 
         isset($_POST['secure_checkout']) ?
-            PHPWS_Settings::set('vshop', 'secure_checkout', 1) :
-            PHPWS_Settings::set('vshop', 'secure_checkout', 0);
+            Core\Settings::set('vshop', 'secure_checkout', 1) :
+            Core\Settings::set('vshop', 'secure_checkout', 0);
 
         if (isset($_POST['secure_checkout'])) {
             if (!empty($_POST['secure_url'])) {
-                if (PHPWS_Text::isValidInput($_POST['secure_url'], 'url')) {
-                    PHPWS_Settings::set('vshop', 'secure_url', $_POST['secure_url']);
+                if (Core\Text::isValidInput($_POST['secure_url'], 'url')) {
+                    Core\Settings::set('vshop', 'secure_url', $_POST['secure_url']);
                 } else {
                     $errors[] = dgettext('vshop', 'Check your secure URL for formatting errors.');
                 }
@@ -998,7 +998,7 @@ class vShop {
                 $errors[] = dgettext('vshop', 'You must provide a secure URL.');
             }
         } else {
-            PHPWS_Settings::set('vshop', 'secure_url', null);
+            Core\Settings::set('vshop', 'secure_url', null);
         }
 
 
@@ -1006,7 +1006,7 @@ class vShop {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            if (PHPWS_Settings::save('vshop')) {
+            if (Core\Settings::save('vshop')) {
                 return true;
             } else { 
                 return falsel;
@@ -1118,8 +1118,8 @@ class vShop {
                 $total_shipping = 0.00;
     
                 /* see if any taxes apply to the zone */
-                $db = new PHPWS_DB('vshop_taxes');
-                $db->addWhere('zones', '%' . PHPWS_Text::parseInput($_POST['state']) . '%', 'LIKE');
+                $db = new Core\DB('vshop_taxes');
+                $db->addWhere('zones', '%' . Core\Text::parseInput($_POST['state']) . '%', 'LIKE');
                 $taxes_result = $db->select();
                 if ($taxes_result) {
                     foreach ($taxes_result as $tax) {
@@ -1159,7 +1159,7 @@ class vShop {
                     $total_weight = $total_weight + $item->weight;
 
                     /* if shipping is by item */
-                    if (PHPWS_Settings::get('vshop', 'shipping_calculation') == 2) {
+                    if (Core\Settings::get('vshop', 'shipping_calculation') == 2) {
                         $total_shipping = $total_shipping + $item->shipping;
                         $order_array['items'][$id]['shipping'] = $item->shipping;
                     }
@@ -1176,38 +1176,38 @@ class vShop {
                 }
 
                 /* if shipping is free */
-                if (PHPWS_Settings::get('vshop', 'shipping_calculation') == 1) {
+                if (Core\Settings::get('vshop', 'shipping_calculation') == 1) {
                     $shipping_calculation = dgettext('vshop', 'Free shipping');
                 /* if shipping is by item */
-                } elseif (PHPWS_Settings::get('vshop', 'shipping_calculation') == 2) {
+                } elseif (Core\Settings::get('vshop', 'shipping_calculation') == 2) {
                     $shipping_calculation = dgettext('vshop', 'Flat rate per item');
                 /* if shipping is by flat rate per order */
-                } elseif (PHPWS_Settings::get('vshop', 'shipping_calculation') == 3) {
+                } elseif (Core\Settings::get('vshop', 'shipping_calculation') == 3) {
                     $shipping_calculation = dgettext('vshop', 'Flat rate per order');
-                    $total_shipping = PHPWS_Settings::get('vshop', 'shipping_flat');
+                    $total_shipping = Core\Settings::get('vshop', 'shipping_flat');
                 /* if shipping is % by weight */
-                } elseif (PHPWS_Settings::get('vshop', 'shipping_calculation') == 4) {
+                } elseif (Core\Settings::get('vshop', 'shipping_calculation') == 4) {
                     $shipping_calculation = dgettext('vshop', '% rate * weight');
-                    $rate = '.'.str_pad(PHPWS_Settings::get('vshop', 'shipping_percent'), 2, "0", STR_PAD_LEFT);
+                    $rate = '.'.str_pad(Core\Settings::get('vshop', 'shipping_percent'), 2, "0", STR_PAD_LEFT);
                     $total_shipping = $total_weight * $rate;
                 /* if shipping is % by price */
-                } elseif (PHPWS_Settings::get('vshop', 'shipping_calculation') == 5) {
+                } elseif (Core\Settings::get('vshop', 'shipping_calculation') == 5) {
                     $shipping_calculation = dgettext('vshop', '% rate * total');
-                    $rate = '.'.str_pad(PHPWS_Settings::get('vshop', 'shipping_percent'), 2, "0", STR_PAD_LEFT);
+                    $rate = '.'.str_pad(Core\Settings::get('vshop', 'shipping_percent'), 2, "0", STR_PAD_LEFT);
                     $total_shipping = $total_items * $rate;
                 } 
                 
                 /* check for shipping min and max */
-                if (PHPWS_Settings::get('vshop', 'shipping_minimum') > 0) {
-                    if ($total_shipping < PHPWS_Settings::get('vshop', 'shipping_minimum')) {
-                        $total_shipping = PHPWS_Settings::get('vshop', 'shipping_minimum');
-                        $shipping_calculation = sprintf(dgettext('vshop', 'Minimum shipping of %s'), number_format(PHPWS_Settings::get('vshop', 'shipping_minimum'), 2, '.', ','));
+                if (Core\Settings::get('vshop', 'shipping_minimum') > 0) {
+                    if ($total_shipping < Core\Settings::get('vshop', 'shipping_minimum')) {
+                        $total_shipping = Core\Settings::get('vshop', 'shipping_minimum');
+                        $shipping_calculation = sprintf(dgettext('vshop', 'Minimum shipping of %s'), number_format(Core\Settings::get('vshop', 'shipping_minimum'), 2, '.', ','));
                     } 
                 }
-                if (PHPWS_Settings::get('vshop', 'shipping_maximum') > 0) {
-                    if ($total_items > PHPWS_Settings::get('vshop', 'shipping_maximum')) {
+                if (Core\Settings::get('vshop', 'shipping_maximum') > 0) {
+                    if ($total_items > Core\Settings::get('vshop', 'shipping_maximum')) {
                         $total_shipping = 0.00;
-                        $shipping_calculation = sprintf(dgettext('vshop', 'Free shipping on items over %s'), number_format(PHPWS_Settings::get('vshop', 'shipping_maximum'), 2, '.', ','));
+                        $shipping_calculation = sprintf(dgettext('vshop', 'Free shipping on items over %s'), number_format(Core\Settings::get('vshop', 'shipping_maximum'), 2, '.', ','));
                     }
                 }
                 
@@ -1249,8 +1249,8 @@ class vShop {
         $this->loadOrder($id);
         $customer_name = $this->order->first_name . ' ' . $this->order->last_name;
         $customer_email = $this->order->email;
-        $shop_name = PHPWS_Settings::get('vshop', 'mod_title');
-        $shop_email = PHPWS_Settings::get('vshop', 'admin_email');
+        $shop_name = Core\Settings::get('vshop', 'mod_title');
+        $shop_email = Core\Settings::get('vshop', 'admin_email');
         $url = Core\Core::getHomeHttp();
         $message = null;
 
@@ -1259,7 +1259,7 @@ class vShop {
             $sendfrom = sprintf('%s<%s>', $shop_name, $shop_email);
             if ($type == 'new') {
                 $subject = dgettext('vshop', 'Thank you for your order.');
-                $message .= PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'order_message')) . "\n\n";
+                $message .= Core\Text::parseOutput(Core\Settings::get('vshop', 'order_message')) . "\n\n";
                 $message .= sprintf(dgettext('vshop', 'This message from %s was sent from %s.'), $shop_name, $url) . "\n";
                 $message .= dgettext('vshop', 'Thank You for placing your order with us. Order details are below.') . "\n\n";
                 $message .= "\n\n";
@@ -1304,8 +1304,7 @@ class vShop {
             }
         }
 //print($message); exit;
-        Core\Core::initCoreClass('Mail.php');
-        $mail = new PHPWS_Mail;
+                $mail = new PHPWS_Mail;
         $mail->addSendTo($sendto);
         $mail->setSubject($subject);
         $mail->setFrom($sendfrom);
@@ -1318,20 +1317,20 @@ class vShop {
     public function navLinks()
     {
         $links = array();
-        if (!PHPWS_Settings::get('vshop', 'use_breadcrumb')) {
+        if (!Core\Settings::get('vshop', 'use_breadcrumb')) {
             if (vShop::countDepts() !== 1) {
-                $links[] = PHPWS_Text::moduleLink(dgettext('vshop', 'List all departments'), 'vshop');
+                $links[] = Core\Text::moduleLink(dgettext('vshop', 'List all departments'), 'vshop');
             }
         }
         if (isset($_SESSION['vShop_cart']) && $_SESSION['vShop_cart'] !== 'N;') { // && !is_null($_SESSION['vShop_cart'])
-            if (!PHPWS_Settings::get('vshop', 'secure_checkout')) {
+            if (!Core\Settings::get('vshop', 'secure_checkout')) {
                 $links[] = '<a href="index.php?module=vshop&amp;uop=checkout"><img src="' . PHPWS_SOURCE_HTTP . 'mod/vshop/img/checkout.gif" width="12" height="12" alt="' . dgettext('vshop', 'Checkout') . '" title="' . dgettext('vshop', 'Checkout') . '" border="0" /> ' . dgettext('vshop', 'Checkout') . '</a>';
             } else {
-                $links[] = '<a href="' . PHPWS_Settings::get('vshop', 'secure_url') . 'index.php?module=vshop&amp;uop=checkout"><img src="' . PHPWS_SOURCE_HTTP . 'mod/vshop/img/checkout.gif" width="12" height="12" alt="' . dgettext('vshop', 'Checkout') . '" title="' . dgettext('vshop', 'Checkout') . '" border="0" /> ' . dgettext('vshop', 'Checkout') . '</a>';
+                $links[] = '<a href="' . Core\Settings::get('vshop', 'secure_url') . 'index.php?module=vshop&amp;uop=checkout"><img src="' . PHPWS_SOURCE_HTTP . 'mod/vshop/img/checkout.gif" width="12" height="12" alt="' . dgettext('vshop', 'Checkout') . '" title="' . dgettext('vshop', 'Checkout') . '" border="0" /> ' . dgettext('vshop', 'Checkout') . '</a>';
             }
         }
         if (Current_User::allow('vshop', 'settings', null, null, true) && !isset($_REQUEST['aop'])){
-            $links[] = PHPWS_Text::moduleLink(dgettext('vshop', 'Settings'), "vshop",  array('aop'=>'menu', 'tab'=>'settings'));
+            $links[] = Core\Text::moduleLink(dgettext('vshop', 'Settings'), "vshop",  array('aop'=>'menu', 'tab'=>'settings'));
         }
         
         return $links;
@@ -1341,7 +1340,7 @@ class vShop {
     public function countDepts()
     {
 
-        $db = new PHPWS_DB('vshop_depts');
+        $db = new Core\DB('vshop_depts');
         $db->addColumn('id');
         $result = $db->count();
         
@@ -1352,7 +1351,7 @@ class vShop {
     public function getSingleDept()
     {
 
-        $db = new PHPWS_DB('vshop_depts');
+        $db = new Core\DB('vshop_depts');
         $db->addColumn('id');
         $result = $db->select('row');
         

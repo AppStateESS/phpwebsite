@@ -29,10 +29,10 @@ class Search {
 
 	public function init()
 	{
-		$db = new PHPWS_DB('search');
+		$db = new Core\DB('search');
 		$db->addWhere('key_id', $this->key_id);
 		$result = $db->loadObject($this);
-		if (PHPWS_Error::isError($result)) {
+		if (Core\Error::isError($result)) {
 			$this->_error = $result;
 		}
 
@@ -183,12 +183,12 @@ class Search {
 		if (empty($this->key_id) || empty($this->keywords)) {
 			return FALSE;
 		}
-		$db = new PHPWS_DB('search');
+		$db = new Core\DB('search');
 		$db->addWhere('key_id', $this->key_id);
 		$db->delete();
 		$db->reset();
 
-		$key = new Key($this->key_id);
+		$key = new Core\Key($this->key_id);
 
 		$db->addValue('key_id', $key->id);
 		$db->addValue('module', $key->module);

@@ -24,7 +24,7 @@ class PHPWS_ControlPanel {
 		$allLinks = PHPWS_ControlPanel::getAllLinks();
 
 		if (empty($checkTabs)){
-			PHPWS_Error::log(CP_NO_TABS, 'controlpanel', 'display');
+			Core\Error::log(CP_NO_TABS, 'controlpanel', 'display');
 			PHPWS_ControlPanel::makeDefaultTabs();
 			PHPWS_ControlPanel::reset();
 			Core\Core::errorPage();
@@ -71,7 +71,7 @@ class PHPWS_ControlPanel {
 					$link_content[] = $link->view();
 				}
 
-				$link_content = PHPWS_Template::process(array('LINKS' => implode('', $link_content)), 'controlpanel', 'links.tpl');
+				$link_content = Core\Template::process(array('LINKS' => implode('', $link_content)), 'controlpanel', 'links.tpl');
 				$panel->setContent($link_content);
 			}
 		} else {
@@ -105,8 +105,8 @@ class PHPWS_ControlPanel {
 	public static function loadTabs()
 	{
 		$tabs = PHPWS_ControlPanel::getAllTabs();
-		if (PHPWS_Error::isError($tabs)){
-			PHPWS_Error::log($tabs);
+		if (Core\Error::isError($tabs)){
+			Core\Error::log($tabs);
 			Core\Core::errorPage();
 		}
 
@@ -115,7 +115,7 @@ class PHPWS_ControlPanel {
 
 	public static function getAllTabs()
 	{
-		$db = new PHPWS_DB('controlpanel_tab');
+		$db = new Core\DB('controlpanel_tab');
 		$db->setIndexBy('id');
 		$db->addOrder('tab_order');
 		return $db->getObjects('PHPWS_Panel_Tab');
@@ -135,7 +135,7 @@ class PHPWS_ControlPanel {
 			return $_SESSION['CP_All_links'][$idx];
 		}
 
-		$DB = new PHPWS_DB('controlpanel_link');
+		$DB = new Core\DB('controlpanel_link');
 
 		if ($alpha_order) {
 			$DB->addOrder('label');
@@ -196,12 +196,12 @@ class PHPWS_ControlPanel {
 				}
 			}
 
-			$db = new PHPWS_DB('controlpanel_link');
+			$db = new Core\DB('controlpanel_link');
 			foreach ($itemnameList as $itemname) {
 				$db->addWhere('itemname', $itemname);
 				$result = $db->getObjects('PHPWS_Panel_Link');
-				if (PHPWS_Error::isError($result)) {
-					PHPWS_Error::log($result);
+				if (Core\Error::isError($result)) {
+					Core\Error::log($result);
 
 					return $result;
 				} elseif (!$result) {
@@ -232,14 +232,14 @@ class PHPWS_ControlPanel {
 				}
 			}
 
-			$db = new PHPWS_DB('controlpanel_tab');
+			$db = new Core\DB('controlpanel_tab');
 			foreach ($labelList as $label){
 				$db->addWhere('label', $label);
 				$result = $db->getObjects('PHPWS_Panel_Tab');
 
-				if (PHPWS_Error::isError($result)) {
+				if (Core\Error::isError($result)) {
 
-					PHPWS_Error::log($result);
+					Core\Error::log($result);
 					return $result;
 				} elseif (empty($result)) {
 					continue;
@@ -302,9 +302,9 @@ class PHPWS_ControlPanel {
 				}
 
 				$result = $tab->save();
-				if (PHPWS_Error::isError($result)) {
+				if (Core\Error::isError($result)) {
 					$content[] = dgettext('controlpanel', 'An error occurred when trying to save a controlpanel tab.');
-					PHPWS_Error::log($result);
+					Core\Error::log($result);
 					return false;
 				}
 			}
@@ -314,7 +314,7 @@ class PHPWS_ControlPanel {
 		}
 
 		if (isset($link) && is_array($link)) {
-			$db = new PHPWS_DB('controlpanel_tab');
+			$db = new Core\DB('controlpanel_tab');
 			foreach ($link as $info){
 				$modlink = new PHPWS_Panel_Link;
 
@@ -349,8 +349,8 @@ class PHPWS_ControlPanel {
 				$db->addWhere('id', $info['tab']);
 				$db->addColumn('id');
 				$result = $db->select('one');
-				if (PHPWS_Error::isError($result)) {
-					PHPWS_Error::log($result);
+				if (Core\Error::isError($result)) {
+					Core\Error::log($result);
 					continue;
 				}
 				elseif (!isset($result)) {
@@ -362,8 +362,8 @@ class PHPWS_ControlPanel {
 
 				$modlink->setTab($tab_id);
 				$result = $modlink->save();
-				if (PHPWS_Error::isError($result)) {
-					PHPWS_Error::log($result);
+				if (Core\Error::isError($result)) {
+					Core\Error::log($result);
 					$content[] = dgettext('controlpanel', 'There was a problem trying to save a Control Panel link.');
 					return false;
 				}
@@ -395,7 +395,7 @@ class PHPWS_ControlPanel {
 			}
 		}
 
-		$db = new PHPWS_DB('controlpanel_link');
+		$db = new Core\DB('controlpanel_link');
 		$result = $db->getObjects('PHPWS_Panel_Link');
 
 		$count = 1;
@@ -420,7 +420,7 @@ class PHPWS_ControlPanel {
 	public static function panelLink($fly_out=false)
 	{
 		Layout::addStyle('controlpanel', 'panel_link.css');
-		$reg_link = PHPWS_Text::quickLink(dgettext('users', 'Control Panel'), 'controlpanel',
+		$reg_link = Core\Text::quickLink(dgettext('users', 'Control Panel'), 'controlpanel',
 		array('command'=>'panel_view'));
 
 		if (!$fly_out) {
@@ -436,7 +436,7 @@ class PHPWS_ControlPanel {
 
 		$all_links = PHPWS_ControlPanel::getAllLinks(true);
 
-		$tpl = new PHPWS_Template('controlpanel');
+		$tpl = new Core\Template('controlpanel');
 		$tpl->setFile('subpanel.tpl');
 
 		$authkey = Current_User::getAuthKey();

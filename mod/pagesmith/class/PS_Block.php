@@ -24,9 +24,9 @@ class PS_Block extends PS_Section {
 
     public function init()
     {
-        $db = new PHPWS_DB('ps_block');
+        $db = new Core\DB('ps_block');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             return $result;
         }
         if (!$result) {
@@ -81,7 +81,7 @@ class PS_Block extends PS_Section {
 
     public function save($key_id=null)
     {
-        $db = new PHPWS_DB('ps_block');
+        $db = new Core\DB('ps_block');
         $db->saveObject($this);
     }
 

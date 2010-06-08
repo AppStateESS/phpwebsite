@@ -25,12 +25,12 @@
 function finc_uninstall(&$content) {
 
     $dir = PHPWS_HOME_DIR . 'files/finc/';
-    if (PHPWS_File::rmdir($dir)) {
+    if (Core\File::rmdir($dir)) {
         $content[] = dgettext('finc', 'Finc files removed.');
     } else {
         $content[] = dgettext('finc', 'There was a problem deleting the finc files. You may want to do it manually.');
     }
-    PHPWS_DB::dropTable('finc_file');
+    Core\DB::dropTable('finc_file');
     $content[] = dgettext('finc', 'Finc tables dropped.');
 
     return true;

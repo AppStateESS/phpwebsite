@@ -70,9 +70,8 @@ class FC_Document_Manager {
             $this->loadDocument();
         }
 
-        Core\Core::initCoreClass('File.php');
-
-        $form = new PHPWS_FORM;
+        
+        $form = new Core\Form;
         $form->addHidden('module',    'filecabinet');
         $form->addHidden('dop',       'post_document_upload');
         $form->addHidden('ms',        $this->max_size);
@@ -130,7 +129,7 @@ class FC_Document_Manager {
             $template['ERROR'] = $this->document->printErrors();
         }
 
-        return PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
+        return Core\Template::process($template, 'filecabinet', 'document_edit.tpl');
     }
 
     public function loadDocument($document_id=0)
@@ -146,7 +145,7 @@ class FC_Document_Manager {
         if (isset($_REQUEST['ms']) && $_REQUEST['ms'] > 1000) {
             $this->setMaxSize($_REQUEST['ms']);
         } else {
-            $this->setMaxSize(PHPWS_Settings::get('filecabinet', 'max_document_size'));
+            $this->setMaxSize(Core\Settings::get('filecabinet', 'max_document_size'));
         }
     }
 
@@ -155,8 +154,8 @@ class FC_Document_Manager {
         // importPost in File_Common
         $result = $this->document->importPost('file_name');
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
             javascript('close_refresh', $vars);
@@ -164,7 +163,7 @@ class FC_Document_Manager {
         } elseif ($result) {
             $result = $this->document->save();
 
-            if (PHPWS_Error::logIfError($result)) {
+            if (Core\Error::logIfError($result)) {
                 $content = dgettext('filecabinet', '<p>Could not upload file to folder. Please check your directory permissions.</p>');
                 $content .= sprintf('<a href="#" onclick="window.close(); return false">%s</a>', dgettext('filecabinet', 'Close this window'));
                 Layout::nakedDisplay($content);

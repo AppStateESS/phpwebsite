@@ -120,7 +120,7 @@ class PHPWS_Calendar {
             $year = &$this->int_year;
         }
 
-        $start_day = (int)PHPWS_Settings::get('calendar', 'starting_day');
+        $start_day = (int)Core\Settings::get('calendar', 'starting_day');
         require_once 'Calendar/Month/Weekdays.php';
         $oMonth = new Calendar_Month_Weekdays($year, $month, $start_day);
         return $oMonth;
@@ -131,8 +131,8 @@ class PHPWS_Calendar {
      */
     public function getScheduleList($mode='object')
     {
-        $db = new PHPWS_DB('calendar_schedule');
-        Key::restrictView($db);
+        $db = new Core\DB('calendar_schedule');
+        Core\Key::restrictView($db);
         $user_id = Current_User::getId();
 
         if ($user_id) {
@@ -160,7 +160,7 @@ class PHPWS_Calendar {
     public function getWeek()
     {
         require_once 'Calendar/Week.php';
-        $start_day = (int)PHPWS_Settings::get('calendar', 'starting_day');
+        $start_day = (int)Core\Settings::get('calendar', 'starting_day');
         $oWeek = new Calendar_Week($this->int_year, $this->int_month, $this->int_day, $start_day);
         $oWeek->build();
         return $oWeek;
@@ -175,29 +175,29 @@ class PHPWS_Calendar {
 
     public function loadDefaultSchedule()
     {
-        $sch_id = PHPWS_Settings::get('calendar', 'public_schedule');
+        $sch_id = Core\Settings::get('calendar', 'public_schedule');
 
         if ($sch_id > 0) {
             $this->schedule = new Calendar_Schedule((int)$sch_id);
         } elseif ($sch_id == -1) {
             $this->schedule = new Calendar_Schedule;
         } else {
-            $db = new PHPWS_DB('calendar_schedule');
+            $db = new Core\DB('calendar_schedule');
             $db->addColumn('id');
             $db->addWhere('public', 1);
             $db->setLimit(1);
             $id = $db->select('one');
 
-            if (PHPWS_Error::isError($id)) {
-                PHPWS_Error::log($id);
+            if (Core\Error::isError($id)) {
+                Core\Error::log($id);
                 return;
             }
 
             if (empty($id)) {
                 $id = -1;
             }
-            PHPWS_Settings::set('calendar', 'public_schedule', $id);
-            PHPWS_Settings::save('calendar');
+            Core\Settings::set('calendar', 'public_schedule', $id);
+            Core\Settings::save('calendar');
         }
     }
 

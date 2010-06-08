@@ -9,9 +9,9 @@
 
 function webpage_uninstall(&$content)
 {
-    PHPWS_DB::dropTable('webpage_volume');
-    PHPWS_DB::dropTable('webpage_page');
-    PHPWS_DB::dropTable('webpage_featured');
+    Core\DB::dropTable('webpage_volume');
+    Core\DB::dropTable('webpage_page');
+    Core\DB::dropTable('webpage_featured');
     $content[] = dgettext('webpage', 'Web Page tables removed.');
     return TRUE;
 }

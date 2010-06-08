@@ -26,7 +26,7 @@
 Core\Core::configRequireOnce('wiki', 'config.php');
 
 // Display on the home page if option is set
-if (!isset($_REQUEST['module']) && PHPWS_Settings::get('wiki', 'show_on_home'))
+if (!isset($_REQUEST['module']) && Core\Settings::get('wiki', 'show_on_home'))
 {
     Core\Core::initModClass('wiki', 'WikiManager.php');
     WikiManager::action();

@@ -53,9 +53,9 @@ class vList_Listing {
 
     public function init()
     {
-        $db = new PHPWS_DB('vlist_listing');
+        $db = new Core\DB('vlist_listing');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -71,7 +71,7 @@ class vList_Listing {
 
     public function setDescription($description)
     {
-        $this->description = PHPWS_Text::parseInput($description);
+        $this->description = Core\Text::parseInput($description);
     }
 
     public function setFile_id($file_id)
@@ -109,7 +109,7 @@ class vList_Listing {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->title);
+            return Core\Text::parseOutput($this->title);
         } else {
             return $this->title;
         }
@@ -122,7 +122,7 @@ class vList_Listing {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->description);
+            return Core\Text::parseOutput($this->description);
         } else {
             return $this->description;
         }
@@ -190,7 +190,7 @@ class vList_Listing {
 
     public function get_groups($print=false, $nolink=false)
     {
-        $db = new PHPWS_DB('vlist_group_items');
+        $db = new Core\DB('vlist_group_items');
         $db->addWhere('listing_id', (int)$this->id);
         $db->addColumn('group_id');
         $result = $db->select('col');
@@ -221,7 +221,7 @@ class vList_Listing {
     {
         $extras = null;
         /* get the elements */
-        $db = new PHPWS_DB('vlist_element');
+        $db = new Core\DB('vlist_element');
         $db->addWhere('active', 1);
         if (!Current_User::allow('vlist')) {
             $db->addWhere('private', 0);
@@ -242,7 +242,7 @@ class vList_Listing {
                 }
 
                 /* get the items */
-                $db = new PHPWS_DB('vlist_element_items');
+                $db = new Core\DB('vlist_element_items');
                 $db->addColumn('vlist_element_items.*');
                 $db->addWhere('element_id', $id);
                 $db->addWhere('listing_id', $this->id);
@@ -266,37 +266,37 @@ class vList_Listing {
                     $tpl['VALUE'] = null;
                     if ($type == 'Checkbox' || $type == 'Multiselect') {
                         foreach ($result as $option) {
-                            $tpl['VALUE'] .= PHPWS_Text::parseOutput($option['label']) . '<br />';
+                            $tpl['VALUE'] .= Core\Text::parseOutput($option['label']) . '<br />';
                         }
                     } elseif ($type == 'Dropbox' || $type == 'Radiobutton') {
                         foreach ($result as $option) {
-                            $tpl['VALUE'] .= PHPWS_Text::parseOutput($option['label']) . '<br />';
+                            $tpl['VALUE'] .= Core\Text::parseOutput($option['label']) . '<br />';
                         }
                     } elseif ($type == 'Link') {
                         foreach ($result as $option) {
-                            $tpl['VALUE'] .= PHPWS_Text::parseOutput(sprintf('<a href="%s" title="%s">%s</a>', PHPWS_Text::checkLink($option['value']), dgettext('vlist', 'Visit this listings\'s link.'), $option['value']));
+                            $tpl['VALUE'] .= Core\Text::parseOutput(sprintf('<a href="%s" title="%s">%s</a>', Core\Text::checkLink($option['value']), dgettext('vlist', 'Visit this listings\'s link.'), $option['value']));
                         }
                     } elseif ($type == 'GPS') {
                         foreach ($result as $option) {
-                            $tpl['VALUE'] .= PHPWS_Text::parseOutput(sprintf('<a href="%s" title="%s">%s</a>', 'http://maps.google.com/maps?q='.urlencode($option['value']), dgettext('vlist', 'See listings on google maps.'), sprintf(dgettext('vlist', 'See "%s" on Google Maps'), $option['value'])));
+                            $tpl['VALUE'] .= Core\Text::parseOutput(sprintf('<a href="%s" title="%s">%s</a>', 'http://maps.google.com/maps?q='.urlencode($option['value']), dgettext('vlist', 'See listings on google maps.'), sprintf(dgettext('vlist', 'See "%s" on Google Maps'), $option['value'])));
                         }
                     } elseif ($type == 'Email') {
                         foreach ($result as $option) {
-                            $tpl['VALUE'] .= PHPWS_Text::parseOutput(sprintf('<a href="%s">%s</a>', 'mailto:' . $option['value'], $option['value']));
+                            $tpl['VALUE'] .= Core\Text::parseOutput(sprintf('<a href="%s">%s</a>', 'mailto:' . $option['value'], $option['value']));
                         }
                     } elseif ($type == 'GMap') {
                         foreach ($result as $option) {
-                            $tpl['VALUE'] .= PHPWS_Text::parseOutput(sprintf('<a href="%s" title="%s">%s</a>', 'http://maps.google.com/maps?q='.urlencode($option['value']), dgettext('vlist', 'See listings on google maps.'), sprintf(dgettext('vlist', 'See "%s" on Google Maps'), $option['value'])));
+                            $tpl['VALUE'] .= Core\Text::parseOutput(sprintf('<a href="%s" title="%s">%s</a>', 'http://maps.google.com/maps?q='.urlencode($option['value']), dgettext('vlist', 'See listings on google maps.'), sprintf(dgettext('vlist', 'See "%s" on Google Maps'), $option['value'])));
                         }
                     } else {
                         foreach ($result as $option) {
-                            $tpl['VALUE'] .= PHPWS_Text::parseOutput($option['value']);
+                            $tpl['VALUE'] .= Core\Text::parseOutput($option['value']);
                         }
                     }
                 } else {
                     $tpl['VALUE'] = null;
                 }
-                $extras .= PHPWS_Template::processTemplate($tpl, 'vlist', 'listing_extras_view.tpl');
+                $extras .= Core\Template::processTemplate($tpl, 'vlist', 'listing_extras_view.tpl');
             }
         } else {
             $extras = dgettext('vlist', 'Sorry, no custom elements have been setup.');
@@ -312,7 +312,7 @@ class vList_Listing {
             Core\Core::errorPage(404);
         }
 
-        $key = new Key($this->key_id);
+        $key = new Core\Key($this->key_id);
 
         if (!$key->allowView()) {
             Current_User::requireLogin();
@@ -321,37 +321,37 @@ class vList_Listing {
         Layout::addPageTitle($this->getTitle());
         $tpl['ITEM_LINKS'] = $this->links();
         $tpl['TITLE'] = sprintf(dgettext('vlist', '#%s %s'), $this->id, $this->getTitle(true));
-        if ($this->get_groups(true) && PHPWS_Settings::get('vlist', 'enable_groups')) {
+        if ($this->get_groups(true) && Core\Settings::get('vlist', 'enable_groups')) {
             $tpl['GROUP_LINKS'] = implode(', ', $this->get_groups(true));
-            $tpl['GROUP_LINKS_LABEL'] = PHPWS_Settings::get('vlist', 'groups_title');
+            $tpl['GROUP_LINKS_LABEL'] = Core\Settings::get('vlist', 'groups_title');
         }
-        $tpl['DESCRIPTION'] = PHPWS_Text::parseTag($this->getDescription(true));
-        if (PHPWS_Settings::get('vlist', 'enable_files')) {
+        $tpl['DESCRIPTION'] = Core\Text::parseTag($this->getDescription(true));
+        if (Core\Settings::get('vlist', 'enable_files')) {
             $tpl['FILE'] = $this->getFile();
         }
-        if (PHPWS_Settings::get('vlist', 'enable_images')) {
+        if (Core\Settings::get('vlist', 'enable_images')) {
             $tpl['IMAGE'] = $this->getImage();
         }
-        if (PHPWS_Settings::get('vlist', 'enable_users') && (PHPWS_Settings::get('vlist', 'show_users') || Current_User::allow('vlist'))) {
+        if (Core\Settings::get('vlist', 'enable_users') && (Core\Settings::get('vlist', 'show_users') || Current_User::allow('vlist'))) {
             $tpl['USER'] = $this->ownerLink();
             $tpl['USER_LABEL'] = dgettext('vlist', 'Listed by, ');
         }
-        if (PHPWS_Settings::get('vlist', 'view_created')) {
+        if (Core\Settings::get('vlist', 'view_created')) {
             $tpl['CREATED'] = $this->getCreated();
             $tpl['CREATED_LABEL'] = dgettext('vlist', 'Created on, ');
         }
-        if (PHPWS_Settings::get('vlist', 'view_updated')) {
+        if (Core\Settings::get('vlist', 'view_updated')) {
             $tpl['UPDATED'] = $this->getUpdated();
             $tpl['UPDATED_LABEL'] = dgettext('vlist', 'Updated on, ');
         }
 
-        if (PHPWS_Settings::get('vlist', 'enable_elements')) {
+        if (Core\Settings::get('vlist', 'enable_elements')) {
             $tpl['EXTRAS'] = $this->getExtras();
         }
 
         $key->flag();
 
-        return PHPWS_Template::process($tpl, 'vlist', 'view_listing.tpl');
+        return Core\Template::process($tpl, 'vlist', 'view_listing.tpl');
     }
 
 
@@ -362,7 +362,7 @@ class vList_Listing {
         if (Current_User::allow('vlist', 'edit_listing')) {
             $vars['id'] = $this->id;
             $vars['aop']  = 'edit_listing';
-            $links[] = PHPWS_Text::secureLink(dgettext('vlist', 'Edit listing'), 'vlist', $vars);
+            $links[] = Core\Text::secureLink(dgettext('vlist', 'Edit listing'), 'vlist', $vars);
         }
 
         $links = array_merge($links, vList::navLinks());
@@ -379,21 +379,21 @@ class vList_Listing {
         }
 
         /* tidy up extras' items */
-        $db = new PHPWS_DB('vlist_element_items');
+        $db = new Core\DB('vlist_element_items');
         $db->addWhere('listing_id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
         /* tidy up groups' items */
-        $db = new PHPWS_DB('vlist_group_items');
+        $db = new Core\DB('vlist_group_items');
         $db->addWhere('listing_id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
         /* delete the listing */
-        $db = new PHPWS_DB('vlist_listing');
+        $db = new Core\DB('vlist_listing');
         $db->addWhere('id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
-        Key::drop($this->key_id);
+        Core\Key::drop($this->key_id);
 
     }
 
@@ -402,10 +402,10 @@ class vList_Listing {
     {
         $vars['id'] = $this->id;
         $vars['aop'] = 'delete_listing';
-        $js['ADDRESS'] = PHPWS_Text::linkAddress('vlist', $vars, true);
+        $js['ADDRESS'] = Core\Text::linkAddress('vlist', $vars, true);
         $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the listing %s?'), $this->getTitle());
         if ($icon) {
-            $js['LINK'] = Icon::show('delete', dgettext('vlist', 'Delete listing'));
+            $js['LINK'] = Core\Icon::show('delete', dgettext('vlist', 'Delete listing'));
         } else {
             $js['LINK'] = dgettext('vlist', 'Delete');
         }
@@ -417,14 +417,14 @@ class vList_Listing {
     {
 
         if ($icon) {
-            $label = Icon::show('edit', dgettext('vlist', 'Edit listing'));
+            $label = Core\Icon::show('edit', dgettext('vlist', 'Edit listing'));
         } elseif (empty($label)) {
             $label = dgettext('vlist', 'Edit');
         }
 
         $vars['id'] = $this->id;
         $vars['aop'] = 'edit_listing';
-        return PHPWS_Text::secureLink($label, 'vlist', $vars);
+        return Core\Text::secureLink($label, 'vlist', $vars);
     }
 
 
@@ -434,19 +434,19 @@ class vList_Listing {
         if ($this->approved) {
             $vars['aop'] = 'unapprove_listing';
             if ($icon) {
-                $label = Icon::show('approved', dgettext('vlist', 'Unapprove listing'));
+                $label = Core\Icon::show('approved', dgettext('vlist', 'Unapprove listing'));
             } elseif (empty($label)) {
                 $label = dgettext('vlist', 'Unapprove');
             }
         } else {
             $vars['aop'] = 'approve_listing';
             if ($icon) {
-                $label = Icon::show('unapproved', dgettext('vlist', 'Approve listing'));
+                $label = Core\Icon::show('unapproved', dgettext('vlist', 'Approve listing'));
             } elseif (empty($label)) {
                 $label = dgettext('vlist', 'Approve');
             }
         }
-        return PHPWS_Text::secureLink($label, 'vlist', $vars);
+        return Core\Text::secureLink($label, 'vlist', $vars);
     }
 
 
@@ -456,19 +456,19 @@ class vList_Listing {
         if ($this->active) {
             $vars['aop'] = 'deactivate_listing';
             if ($icon) {
-                $label = Icon::show('active', dgettext('vlist', 'Deactivate listing'));
+                $label = Core\Icon::show('active', dgettext('vlist', 'Deactivate listing'));
             } elseif (empty($label)) {
                 $label = dgettext('vlist', 'Deactivate');
             }
         } else {
             $vars['aop'] = 'activate_listing';
             if ($icon) {
-                $label = Icon::show('inactive', dgettext('vlist', 'Activate listing'));
+                $label = Core\Icon::show('inactive', dgettext('vlist', 'Activate listing'));
             } elseif (empty($label)) {
                 $label = dgettext('vlist', 'Activate');
             }
         }
-        return PHPWS_Text::secureLink($label, 'vlist', $vars);
+        return Core\Text::secureLink($label, 'vlist', $vars);
     }
 
 
@@ -490,19 +490,19 @@ class vList_Listing {
         $tpl['ID'] = $this->id;
         $tpl['TITLE'] = $this->viewLink();
 
-        if (PHPWS_Settings::get('vlist', 'enable_users') && (PHPWS_Settings::get('vlist', 'list_users') || Current_User::allow('vlist'))) {
+        if (Core\Settings::get('vlist', 'enable_users') && (Core\Settings::get('vlist', 'list_users') || Current_User::allow('vlist'))) {
             $tpl['OWNER'] = $this->ownerLink();
         } else {
             $tpl['OWNER'] = null;
         }
 
-        if (PHPWS_Settings::get('vlist', 'list_created')) {
+        if (Core\Settings::get('vlist', 'list_created')) {
             $tpl['CREATED'] = $this->getCreated();
         } else {
             $tpl['CREATED'] = null;
         }
 
-        if (PHPWS_Settings::get('vlist', 'list_updated')) {
+        if (Core\Settings::get('vlist', 'list_updated')) {
             $tpl['UPDATED'] = $this->getUpdated();
         } else {
             $tpl['UPDATED'] = null;
@@ -510,7 +510,7 @@ class vList_Listing {
 
         $tpl['DESCRIPTION'] = $this->getListDescription(120);
         $tpl['THUMB'] = $this->getThumbnail(true);
-        if (PHPWS_Settings::get('vlist', 'list_groups') && PHPWS_Settings::get('vlist', 'enable_groups')) {
+        if (Core\Settings::get('vlist', 'list_groups') && Core\Settings::get('vlist', 'enable_groups')) {
             if ($this->get_groups(true)) {
                 $tpl['GROUP_LINKS'] = implode(', ', $this->get_groups(true));
                 $tpl['GROUP_LINKS_LABEL'] = dgettext('vlist', 'Group(s)');
@@ -523,8 +523,8 @@ class vList_Listing {
 
         $tpl['EXTRA_VALUES'] = null;
 
-        if (PHPWS_Settings::get('vlist', 'enable_elements')) {
-            $db = new PHPWS_DB('vlist_element');
+        if (Core\Settings::get('vlist', 'enable_elements')) {
+            $db = new Core\DB('vlist_element');
             $db->addWhere('active', 1);
             if (!Current_User::allow('vlist')) {
                 $db->addWhere('private', 0);
@@ -539,7 +539,7 @@ class vList_Listing {
                     if ($element['list']) {
                         $tpl['EXTRA_VALUES'] .= '<td>';
                         /* get the items */
-                        $db = new PHPWS_DB('vlist_element_items');
+                        $db = new Core\DB('vlist_element_items');
                         $db->addColumn('vlist_element_items.*');
                         $db->addWhere('element_id', $id);
                         $db->addWhere('listing_id', $this->id);
@@ -559,31 +559,31 @@ class vList_Listing {
                             $value = null;
                             if ($type == 'Checkbox' || $type == 'Multiselect') {
                                 foreach ($result as $option) {
-                                    $value[] = PHPWS_Text::parseOutput($option['label']);
+                                    $value[] = Core\Text::parseOutput($option['label']);
                                 }
                             } elseif ($type == 'Dropbox' || $type == 'Radiobutton') {
                                 foreach ($result as $option) {
-                                    $value[] = PHPWS_Text::parseOutput($option['label']);
+                                    $value[] = Core\Text::parseOutput($option['label']);
                                 }
                             } elseif ($type == 'Link') {
                                 foreach ($result as $option) {
-                                    $value[] = PHPWS_Text::parseOutput(sprintf('<a href="%s" title="%s">%s</a>', PHPWS_Text::checkLink($option['value']), dgettext('vlist', 'Visit this listings\'s link.'), $option['value'])) . '<br />';
+                                    $value[] = Core\Text::parseOutput(sprintf('<a href="%s" title="%s">%s</a>', Core\Text::checkLink($option['value']), dgettext('vlist', 'Visit this listings\'s link.'), $option['value'])) . '<br />';
                                 }
                             } elseif ($type == 'GPS') {
                                 foreach ($result as $option) {
-                                    $value[] = PHPWS_Text::parseOutput(sprintf('<a href="%s" title="%s">%s</a>', 'http://maps.google.com/maps?q='.urlencode($option['value']), dgettext('vlist', 'See listings on google maps.'), sprintf(dgettext('vlist', 'See "%s" on Google Maps'), $option['value'])));
+                                    $value[] = Core\Text::parseOutput(sprintf('<a href="%s" title="%s">%s</a>', 'http://maps.google.com/maps?q='.urlencode($option['value']), dgettext('vlist', 'See listings on google maps.'), sprintf(dgettext('vlist', 'See "%s" on Google Maps'), $option['value'])));
                                 }
                             } elseif ($type == 'Email') {
                                 foreach ($result as $option) {
-                                    $value[] = PHPWS_Text::parseOutput(sprintf('<a href="%s">%s</a>', 'mailto:' . $option['value'], $option['value'])) . '<br />';
+                                    $value[] = Core\Text::parseOutput(sprintf('<a href="%s">%s</a>', 'mailto:' . $option['value'], $option['value'])) . '<br />';
                                 }
                             } elseif ($type == 'GMap') {
                                 foreach ($result as $option) {
-                                    $value[] = PHPWS_Text::parseOutput(sprintf('<a href="%s" title="%s">%s</a>', 'http://maps.google.com/maps?q='.urlencode($option['value']), dgettext('vlist', 'See listings on google maps.'), sprintf(dgettext('vlist', 'See "%s" on Google Maps'), $option['value'])));
+                                    $value[] = Core\Text::parseOutput(sprintf('<a href="%s" title="%s">%s</a>', 'http://maps.google.com/maps?q='.urlencode($option['value']), dgettext('vlist', 'See listings on google maps.'), sprintf(dgettext('vlist', 'See "%s" on Google Maps'), $option['value'])));
                                 }
                             } else {
                                 foreach ($result as $option) {
-                                    $value[] = PHPWS_Text::parseOutput($option['value']);
+                                    $value[] = Core\Text::parseOutput($option['value']);
                                 }
                             }
                         } else {
@@ -612,9 +612,9 @@ class vList_Listing {
         $this->editor_id = Current_User::getId();
         $this->updated = time();
 
-        $db = new PHPWS_DB('vlist_listing');
+        $db = new Core\DB('vlist_listing');
         $result = $db->saveObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
     }
@@ -624,7 +624,7 @@ class vList_Listing {
     {
         $this->editor_id = Current_User::getId();
         $this->updated = time();
-        if (!PHPWS_Settings::get('vlist', 'enable_users')) {
+        if (!Core\Settings::get('vlist', 'enable_users')) {
             if (!$this->id) {
                 $this->owner_id = Current_User::getId();
             }
@@ -634,36 +634,36 @@ class vList_Listing {
             if (!Current_User::allow('vlist', 'edit_listing')) {
                 $this->approved = 0;
                 $this->active = 1;
-                if (PHPWS_Settings::get('vlist', 'notify_submit') && PHPWS_Settings::get('vlist', 'admin_contact')) {
+                if (Core\Settings::get('vlist', 'notify_submit') && Core\Settings::get('vlist', 'admin_contact')) {
                     $this->sendNotification(true);
                 }
             }
         } else {
-            if (PHPWS_Settings::get('vlist', 'notify_edit') && PHPWS_Settings::get('vlist', 'admin_contact') && !Current_User::allow('vlist')) {
+            if (Core\Settings::get('vlist', 'notify_edit') && Core\Settings::get('vlist', 'admin_contact') && !Current_User::allow('vlist')) {
                 $this->sendNotification(false);
             }
         }
 
-        $db = new PHPWS_DB('vlist_listing');
+        $db = new Core\DB('vlist_listing');
 
         $result = $db->saveObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
         $this->saveKey();
 
         if (isset($_POST['groups']) && $_POST['groups'][0] !== '0') {
-            $db = new PHPWS_DB('vlist_group_items');
+            $db = new Core\DB('vlist_group_items');
             $db->addWhere('listing_id', (int)$this->id);
-            PHPWS_Error::logIfError($db->delete());
+            Core\Error::logIfError($db->delete());
             foreach ($_POST['groups'] as $var => $val) {
                 $this->addItem('group', $val, $this->id);
             }
         } else {
-            $db = new PHPWS_DB('vlist_group_items');
+            $db = new Core\DB('vlist_group_items');
             $db->addWhere('listing_id', (int)$this->id);
-            PHPWS_Error::logIfError($db->delete());
+            Core\Error::logIfError($db->delete());
         }
 
         $search = new Search($this->key_id);
@@ -671,7 +671,7 @@ class vList_Listing {
         $search->addKeywords($this->title);
         $search->addKeywords($this->description);
         $result = $search->save();
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
@@ -681,11 +681,11 @@ class vList_Listing {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Key;
+            $key = new Core\Key;
         } else {
-            $key = new Key($this->key_id);
-            if (PHPWS_Error::isError($key->_error)) {
-                $key = new Key;
+            $key = new Core\Key($this->key_id);
+            if (Core\Error::isError($key->_error)) {
+                $key = new Core\Key;
             }
         }
 
@@ -698,16 +698,16 @@ class vList_Listing {
         $key->setTitle($this->title);
         $key->setSummary($this->description);
         $result = $key->save();
-        if (PHPWS_Error::logIfError($result)) {
+        if (Core\Error::logIfError($result)) {
             return false;
         }
 
         if (!$this->key_id) {
             $this->key_id = $key->id;
-            $db = new PHPWS_DB('vlist_listing');
+            $db = new Core\DB('vlist_listing');
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
-            PHPWS_Error::logIfError($db->update());
+            Core\Error::logIfError($db->update());
         }
         return true;
     }
@@ -717,7 +717,7 @@ class vList_Listing {
     public function addItem($type, $item_id, $listing_id)
     {
         if ($type =='group') {
-            $db = new PHPWS_DB('vlist_group_items');
+            $db = new Core\DB('vlist_group_items');
             $db->addValue('group_id', (int)$item_id);
         }
         $db->addValue('listing_id', (int)$listing_id);
@@ -728,7 +728,7 @@ class vList_Listing {
 
     public function viewLink($bare=false)
     {
-        $link = new PHPWS_Link($this->title, 'vlist', array('listing'=>$this->id));
+        $link = new Core\Link($this->title, 'vlist', array('listing'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {
@@ -760,7 +760,7 @@ class vList_Listing {
         $vars['uop']  = 'view_owner';
         $vars['owner'] = $this->owner_id;
 
-        $link = new PHPWS_Link($name, 'vlist', $vars);
+        $link = new Core\Link($name, 'vlist', $vars);
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {
@@ -777,16 +777,15 @@ class vList_Listing {
         $site_contact = PHPWS_User::getUserSetting('site_contact');
         $url = Core\Core::getHomeHttp();
         if ($new) {
-            $message = sprintf(dgettext('vlist', 'You have a new %s submission entitled %s waiting for your review at %s.'), PHPWS_Settings::get('vlist', 'module_title'), $this->getTitle(true), $url);
-            $subject = sprintf(dgettext('vlist', 'Pending %s Submission'), PHPWS_Settings::get('vlist', 'module_title'));
+            $message = sprintf(dgettext('vlist', 'You have a new %s submission entitled %s waiting for your review at %s.'), Core\Settings::get('vlist', 'module_title'), $this->getTitle(true), $url);
+            $subject = sprintf(dgettext('vlist', 'Pending %s Submission'), Core\Settings::get('vlist', 'module_title'));
         } else {
-            $message = sprintf(dgettext('vlist', 'The %s listing %s has been modified at %s.'), PHPWS_Settings::get('vlist', 'module_title'), $this->getTitle(true), $url);
-            $subject = sprintf(dgettext('vlist', 'Modified %s Listing'), PHPWS_Settings::get('vlist', 'module_title'));
+            $message = sprintf(dgettext('vlist', 'The %s listing %s has been modified at %s.'), Core\Settings::get('vlist', 'module_title'), $this->getTitle(true), $url);
+            $subject = sprintf(dgettext('vlist', 'Modified %s Listing'), Core\Settings::get('vlist', 'module_title'));
         }
 
-        Core\Core::initCoreClass('Mail.php');
-        $mail = new PHPWS_Mail;
-        $mail->addSendTo(PHPWS_Settings::get('vlist', 'admin_contact'));
+                $mail = new PHPWS_Mail;
+        $mail->addSendTo(Core\Settings::get('vlist', 'admin_contact'));
         $mail->setSubject($subject);
         $mail->setFrom(sprintf('%s<%s>', $page_title, $site_contact));
         $mail->setMessageBody($message);

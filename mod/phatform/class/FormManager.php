@@ -86,7 +86,7 @@ class PHAT_FormManager extends PHPWS_Manager {
         $tags = array();
         $tags['LINKS'] = implode('&#160;|&#160;', $links);
 
-        return PHPWS_Template::processTemplate($tags, 'phatform', 'manager/menu.tpl');
+        return Core\Template::processTemplate($tags, 'phatform', 'manager/menu.tpl');
     }// END FUNC _menu
 
     /**
@@ -228,22 +228,22 @@ class PHAT_FormManager extends PHPWS_Manager {
         $confirmTags['ITEMS'] = '';
 
         $confirmTags['MESSAGE'] = dgettext('phatform', 'Are you sure you wish to delete the following forms?  All data associated with these forms will be lost!');
-        $confirmTags['YES_BUTTON'] = PHPWS_Form::formSubmit('Yes', 'yes');
-        $confirmTags['NO_BUTTON'] = PHPWS_Form::formSubmit('No', 'no');
+        $confirmTags['YES_BUTTON'] = Core\Form::formSubmit('Yes', 'yes');
+        $confirmTags['NO_BUTTON'] = Core\Form::formSubmit('No', 'no');
 
         /* Step through ids and grab the names of each form */
         foreach($ids as $key=>$id) {
             $temp = new PHAT_Form($id);
             $confirmTags['ITEMS'] .= $key+1 . '. ' . $temp->getLabel() . '<br />';
-            $elements[0] .= PHPWS_Form::formHidden('PHPWS_MAN_ITEMS[]', $id);
+            $elements[0] .= Core\Form::formHidden('PHPWS_MAN_ITEMS[]', $id);
         }
 
         /* Finish creating elements array for form */
-        $elements[0] .= PHPWS_Form::formHidden('module', $this->_module);
-        $elements[0] .= PHPWS_Form::formHidden('PHAT_MAN_OP', 'delete');
-        $elements[0] .= PHPWS_Template::processTemplate($confirmTags, 'phatform', 'manager/confirm.tpl');
+        $elements[0] .= Core\Form::formHidden('module', $this->_module);
+        $elements[0] .= Core\Form::formHidden('PHAT_MAN_OP', 'delete');
+        $elements[0] .= Core\Template::processTemplate($confirmTags, 'phatform', 'manager/confirm.tpl');
 
-        return PHPWS_Form::makeForm('PHPWS_MAN_Deletion', 'index.php', $elements);
+        return Core\Form::makeForm('PHPWS_MAN_Deletion', 'index.php', $elements);
     } // END FUNC _confirmDelete()
 
     /**
@@ -289,8 +289,8 @@ class PHAT_FormManager extends PHPWS_Manager {
             if(isset($_REQUEST['PHAT_SaveOptionSet'])) {
                 if(is_array($_REQUEST['PHAT_ElementOptions']) && is_array($_REQUEST['PHAT_ElementValues'])) {
                     for($i = 0; $i < sizeof($_REQUEST['PHAT_ElementOptions']); $i++) {
-                        $_REQUEST['PHAT_ElementOptions'][$i] = PHPWS_Text::parseInput($_REQUEST['PHAT_ElementOptions'][$i]);
-                        $_REQUEST['PHAT_ElementValues'][$i] = PHPWS_Text::parseInput($_REQUEST['PHAT_ElementValues'][$i]);
+                        $_REQUEST['PHAT_ElementOptions'][$i] = Core\Text::parseInput($_REQUEST['PHAT_ElementOptions'][$i]);
+                        $_REQUEST['PHAT_ElementValues'][$i] = Core\Text::parseInput($_REQUEST['PHAT_ElementValues'][$i]);
                     }
                      
                     $options = addslashes(serialize($_REQUEST['PHAT_ElementOptions']));
@@ -298,13 +298,13 @@ class PHAT_FormManager extends PHPWS_Manager {
                     $saveArray = array('optionSet'=>$options,
                                        'valueSet'=>$values
                     );
-                    $db = new PHPWS_DB('mod_phatform_options');
+                    $db = new Core\DB('mod_phatform_options');
                     $db->addWhere('id', $optionSetId);
                     $db->addValue($saveArray);
                     $db->update();
                 }
             } else if(isset($_REQUEST['PHAT_delete'])) {
-                $db = new PHPWS_DB('mod_phatform_options');
+                $db = new Core\DB('mod_phatform_options');
                 $db->addWhere('id', $optionSetId);
                 $db->delete();
                 $_REQUEST['PHAT_MAN_OP'] = 'Options';
@@ -315,13 +315,13 @@ class PHAT_FormManager extends PHPWS_Manager {
             $GLOBALS['CNT_phatform']['title'] = PHAT_TITLE;
              
             $sql = "SELECT * FROM mod_phatform_options WHERE id='$optionSetId'";
-            $result = PHPWS_DB::getRow($sql);
+            $result = Core\DB::getRow($sql);
              
             if($result) {
                 $elements = array();
-                $elements[] = PHPWS_Form::formHidden('module', $this->_module);
-                $elements[] = PHPWS_Form::formHidden('PHAT_MAN_OP', 'editOptions');
-                $elements[] = PHPWS_Form::formHidden('PHAT_OptionSetId', $optionSetId);
+                $elements[] = Core\Form::formHidden('module', $this->_module);
+                $elements[] = Core\Form::formHidden('PHAT_MAN_OP', 'editOptions');
+                $elements[] = Core\Form::formHidden('PHAT_OptionSetId', $optionSetId);
                  
                 $options = unserialize(stripslashes($result['optionSet']));
                 $values = unserialize(stripslashes($result['valueSet']));
@@ -338,8 +338,8 @@ class PHAT_FormManager extends PHPWS_Manager {
 
                 for($i = 0; $i < sizeof($options); $i++) {
                     $optionRow['OPTION_NUMBER'] = $i + 1;
-                    $optionRow['OPTION_INPUT'] = PHPWS_Form::formTextField("PHAT_ElementOptions[$i]", $options[$i], PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
-                    $optionRow['VALUE_INPUT'] = PHPWS_Form::formTextField("PHAT_ElementValues[$i]", $values[$i], PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
+                    $optionRow['OPTION_INPUT'] = Core\Form::formTextField("PHAT_ElementOptions[$i]", $options[$i], PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
+                    $optionRow['VALUE_INPUT'] = Core\Form::formTextField("PHAT_ElementValues[$i]", $values[$i], PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
                     $optionRow['ROW_CLASS'] = $rowClass;
                     if ($i%2) {
                         $rowClass = ' class="bgcolor1"';
@@ -347,15 +347,15 @@ class PHAT_FormManager extends PHPWS_Manager {
                         $rowClass = null;
                     }
                      
-                    $editTags['OPTIONS'] .= PHPWS_Template::processTemplate($optionRow, 'phatform', 'options/option.tpl');
+                    $editTags['OPTIONS'] .= Core\Template::processTemplate($optionRow, 'phatform', 'options/option.tpl');
                 }
             }
-            $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_OptionBack');
-            $editTags['SAVE_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Save'), 'PHAT_SaveOptionSet');
+            $editTags['BACK_BUTTON'] = Core\Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_OptionBack');
+            $editTags['SAVE_BUTTON'] = Core\Form::formSubmit(dgettext('phatform', 'Save'), 'PHAT_SaveOptionSet');
              
-            $elements[] = PHPWS_Template::processTemplate($editTags, 'phatform', 'options/optionList.tpl');
+            $elements[] = Core\Template::processTemplate($editTags, 'phatform', 'options/optionList.tpl');
              
-            return PHPWS_Form::makeForm('PHAT_Options_edit', 'index.php', $elements);
+            return Core\Form::makeForm('PHAT_Options_edit', 'index.php', $elements);
         } else {
             $this->_list();
         }

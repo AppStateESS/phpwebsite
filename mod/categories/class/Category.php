@@ -31,16 +31,16 @@ class Category {
 
         $this->setId($id);
         $result = $this->init();
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
         }
     }
 
     public function init()
     {
-        $db = new PHPWS_DB('categories');
+        $db = new Core\DB('categories');
         $result = $db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
@@ -69,12 +69,12 @@ class Category {
 
     public function setDescription($description)
     {
-        $this->description = PHPWS_Text::parseInput($description);
+        $this->description = Core\Text::parseInput($description);
     }
 
     public function getDescription()
     {
-        return PHPWS_Text::parseOutput($this->description);
+        return Core\Text::parseOutput($this->description);
     }
 
     public function setParent($parent)
@@ -130,7 +130,7 @@ class Category {
             return;
         }
 
-        $db = new PHPWS_DB('categories');
+        $db = new Core\DB('categories');
         $db->addWhere('parent', $this->id);
         $db->addOrder('title');
         $result = $db->getObjects('Category');
@@ -144,7 +144,7 @@ class Category {
 
     public function save()
     {
-        $db = new PHPWS_DB('categories');
+        $db = new Core\DB('categories');
         $result = $db->saveObject($this);
         return $result;
     }
@@ -154,7 +154,7 @@ class Category {
         if (empty($this->id)) {
             return FALSE;
         }
-        $db = new PHPWS_DB('categories');
+        $db = new Core\DB('categories');
         $db->addWhere('id', $this->id);
         return $db->delete();
     }
@@ -169,9 +169,9 @@ class Category {
             $vars['action']  = 'view';
             $vars['id']      = $this->id;
             $vars['ref_mod'] = $module;
-            return PHPWS_Text::moduleLink($label, 'categories', $vars);
+            return Core\Text::moduleLink($label, 'categories', $vars);
         } else {
-            return PHPWS_Text::rewriteLink($label, 'categories', array('id'=>$this->id));
+            return Core\Text::rewriteLink($label, 'categories', array('id'=>$this->id));
         }
     }
 
@@ -202,18 +202,18 @@ class Category {
         $vars['category_id'] = $this->getId();
 
         $vars['subaction'] = 'edit';
-        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'categories', $vars);
+        $links[] = Core\Text::secureLink(Core\Icon::show('edit'), 'categories', $vars);
 
         if (Current_User::allow('categories', 'delete_categories')) {
             if (javascriptEnabled()) {
                 $js_vars['QUESTION'] = dgettext('categories', 'Are you sure you want to delete this category?');
                 $js_vars['ADDRESS']  = 'index.php?module=categories&amp;action=admin&amp;subaction=deleteCategory&amp;category_id=' .
                 $this->getId() . '&amp;authkey=' . Current_User::getAuthKey();
-                $js_vars['LINK']     = Icon::show('delete');
+                $js_vars['LINK']     = Core\Icon::show('delete');
                 $links[] = Layout::getJavascript('confirm', $js_vars);
             } else {
                 $vars['subaction'] = 'delete';
-                $links[] = PHPWS_Text::secureLink(Icon::show('delete'), 'categories', $vars);
+                $links[] = Core\Text::secureLink(Core\Icon::show('delete'), 'categories', $vars);
             }
         }
 

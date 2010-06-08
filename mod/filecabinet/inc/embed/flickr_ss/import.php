@@ -11,12 +11,11 @@ function flickr_ss_import($media)
         return false;
     }
 
-    Core\Core::initCoreClass('XMLParser.php');
-    $feed_url = "http://api.flickr.com/services/feeds/photos_public.gne?id=";
+        $feed_url = "http://api.flickr.com/services/feeds/photos_public.gne?id=";
     $parse = new XMLParser($feed_url . $media->file_name, false);
 
     if ($parse->error) {
-        PHPWS_Error::log($parse->error);
+        Core\Error::log($parse->error);
         return false;
     }
     $parse->setContentOnly(false);

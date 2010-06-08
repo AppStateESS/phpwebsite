@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-if (Core\Core::atHome() && PHPWS_Settings::get('checkin', 'front_page')) {
+if (Core\Core::atHome() && Core\Settings::get('checkin', 'front_page')) {
     Core\Core::initModClass('checkin', 'Checkin_User.php');
     $checkin = new Checkin_User;
     $checkin->process('checkin_form');

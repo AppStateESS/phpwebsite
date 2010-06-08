@@ -50,9 +50,9 @@ class UNI_Element {
 
     public function init()
     {
-        $db = new PHPWS_DB($this->db_element);
+        $db = new Core\DB($this->db_element);
         $result = $db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -75,7 +75,7 @@ class UNI_Element {
             $this->value = $value;
             return true;
         } else if(isset($value)) {
-            $this->value = PHPWS_Text::parseInput($value);
+            $this->value = Core\Text::parseInput($value);
             return true;
         } else {
             $this->value = null;
@@ -91,7 +91,7 @@ class UNI_Element {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->title);
+            return Core\Text::parseOutput($this->title);
         } else {
             return $this->title;
         }
@@ -105,7 +105,7 @@ class UNI_Element {
         }
 
         if ($print) {
-            return PHPWS_Text::parseOutput($this->value);
+            return Core\Text::parseOutput($this->value);
         } else {
             return $this->value;
         }
@@ -158,7 +158,7 @@ class UNI_Element {
 
     public function getQtyItems()
     {
-        $db = new PHPWS_DB($this->db_item);
+        $db = new Core\DB($this->db_item);
         $db->addWhere('element_id', $this->id);
         $num = $db->count();
         return $num;
@@ -167,7 +167,7 @@ class UNI_Element {
 
     private function loadOptions()
     {
-        $db = new PHPWS_DB($this->db_option);
+        $db = new Core\DB($this->db_option);
         $db->addWhere('element_id', $this->id);
         $db->addOrder('sort asc');
 
@@ -193,19 +193,19 @@ class UNI_Element {
         }
 
         /* delete related element_items */
-        $db = new PHPWS_DB($this->db_item);
+        $db = new Core\DB($this->db_item);
         $db->addWhere('element_id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
         /* delete related element_options */
-        $db = new PHPWS_DB($this->db_option);
+        $db = new Core\DB($this->db_option);
         $db->addWhere('element_id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
         /* delete the element */
-        $db = new PHPWS_DB($this->db_element);
+        $db = new Core\DB($this->db_element);
         $db->addWhere('id', $this->id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
     }
 
@@ -217,20 +217,20 @@ class UNI_Element {
         }
 
         /* delete related element_items */
-        $db = new PHPWS_DB($this->db_item);
+        $db = new Core\DB($this->db_item);
         $db->addWhere('option_id', $id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
         /* delete the option */
-        $db = new PHPWS_DB($this->db_option);
+        $db = new Core\DB($this->db_option);
         $db->addWhere('id', $id);
-        PHPWS_Error::logIfError($db->delete());
+        Core\Error::logIfError($db->delete());
 
         /* reduce numoptions */
         $this->numoptions = $this->numoptions -1;
 
         /* save the element */
-        if (PHPWS_Error::logIfError($this->saveElement(true))) {
+        if (Core\Error::logIfError($this->saveElement(true))) {
             $this->vlist->forwardMessage(dgettext('vlist', 'Error occurred when saving element.'));
             Core\Core::reroute('index.php?module=vlist&aop=edit_element&element=' . $this->id);
         } else {
@@ -245,10 +245,10 @@ class UNI_Element {
     {
         $vars['element']  = $this->id;
         $vars['aop'] = 'delete_element';
-        $js['ADDRESS'] = PHPWS_Text::linkAddress('vlist', $vars,true);
+        $js['ADDRESS'] = Core\Text::linkAddress('vlist', $vars,true);
         $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the element %s?'), $this->getTitle());
         if ($icon) {
-            $js['LINK'] = Icon::show('delete', dgettext('vlist', 'Delete element'));
+            $js['LINK'] = Core\Icon::show('delete', dgettext('vlist', 'Delete element'));
         } else {
             $js['LINK'] = dgettext('vlist', 'Delete');
         }
@@ -260,14 +260,14 @@ class UNI_Element {
     {
 
         if ($icon) {
-            $label = Icon::show('edit', dgettext('vlist', 'Edit element'));
+            $label = Core\Icon::show('edit', dgettext('vlist', 'Edit element'));
         } elseif (empty($label)) {
             $label = dgettext('vlist', 'Edit');
         }
 
         $vars['element']  = $this->id;
         $vars['aop'] = 'edit_element';
-        return PHPWS_Text::secureLink($label, 'vlist', $vars);
+        return Core\Text::secureLink($label, 'vlist', $vars);
     }
 
 
@@ -278,26 +278,26 @@ class UNI_Element {
             $var_col = $this->list;
             $var_act = 'list_element';
             $var_dis = 'delist_element';
-            $var_act_img = Icon::show('active', dgettext('vlist', 'Deactivate'));
-            $var_inact_img = Icon::show('inactive', dgettext('vlist', 'Activate'));
+            $var_act_img = Core\Icon::show('active', dgettext('vlist', 'Deactivate'));
+            $var_inact_img = Core\Icon::show('inactive', dgettext('vlist', 'Activate'));
         } elseif ($type == 'search') {
             $var_col = $this->search;
             $var_act = 'search_element';
             $var_dis = 'desearch_element';
-            $var_act_img = Icon::show('active', dgettext('vlist', 'Deactivate'));
-            $var_inact_img = Icon::show('inactive', dgettext('vlist', 'Activate'));
+            $var_act_img = Core\Icon::show('active', dgettext('vlist', 'Deactivate'));
+            $var_inact_img = Core\Icon::show('inactive', dgettext('vlist', 'Activate'));
         } elseif ($type == 'private') {
             $var_col = $this->private;
             $var_act = 'private_element';
             $var_dis = 'deprivate_element';
-            $var_act_img = Icon::show('lock', dgettext('vlist', 'Unlock'));
-            $var_inact_img = Icon::show('unlock', dgettext('vlist', 'Lock'));
+            $var_act_img = Core\Icon::show('lock', dgettext('vlist', 'Unlock'));
+            $var_inact_img = Core\Icon::show('unlock', dgettext('vlist', 'Lock'));
         } else {
             $var_col = $this->active;
             $var_act = 'activate_element';
             $var_dis = 'deactivate_element';
-            $var_act_img = Icon::show('active', dgettext('vlist', 'Deactivate'));
-            $var_inact_img = Icon::show('inactive', dgettext('vlist', 'Activate'));
+            $var_act_img = Core\Icon::show('active', dgettext('vlist', 'Deactivate'));
+            $var_inact_img = Core\Icon::show('inactive', dgettext('vlist', 'Activate'));
         }
         if ($var_col) {
             $vars['aop'] = $var_dis;
@@ -314,7 +314,7 @@ class UNI_Element {
                 $label = dgettext('vlist', 'Activate');
             }
         }
-        return PHPWS_Text::secureLink($label, 'vlist', $vars);
+        return Core\Text::secureLink($label, 'vlist', $vars);
     }
 
 
@@ -397,7 +397,7 @@ class UNI_Element {
             $loops = sizeof($optionText);
         } else {
             /* NOT SURE if I need this */
-            return PHPWS_Error::get(PROPERTIES_ZERO_OPTIONS, 'vlist', 'UNI_Element::editOptions()');
+            return Core\Error::get(PROPERTIES_ZERO_OPTIONS, 'vlist', 'UNI_Element::editOptions()');
         }
 
         $elements[0] = '<input type="hidden" name="module" value="vlist" /><input type="hidden" name="aop" value="post_options" /><input type="hidden" name="element_id" value="' . $this->id . '" />';
@@ -425,9 +425,9 @@ class UNI_Element {
             $vars['option_id']  = $optionId[$i];
             $vars['element_id']  = $this->id;
             $vars['aop'] = 'delete_option';
-            $js['ADDRESS'] = PHPWS_Text::linkAddress('vlist', $vars,true);
+            $js['ADDRESS'] = Core\Text::linkAddress('vlist', $vars,true);
             $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the option %s?'), $optionText[$i]);
-            $js['LINK'] = Icon::show('delete', dgettext('vlist', 'Delete option'));
+            $js['LINK'] = Core\Icon::show('delete', dgettext('vlist', 'Delete option'));
             $optionRow['DELETE'] =  javascript('confirm', $js);
 
             $check = null;
@@ -455,14 +455,14 @@ class UNI_Element {
                 $rowClass = null;
             }
 
-            $tpl['OPTIONS'] .= PHPWS_Template::processTemplate($optionRow, 'vlist', 'elements/edit_option.tpl');
+            $tpl['OPTIONS'] .= Core\Template::processTemplate($optionRow, 'vlist', 'elements/edit_option.tpl');
         }
 
-        $tpl['SAVE_BUTTON'] = PHPWS_Form::formSubmit(dgettext('vlist', 'Save ' . $properName));
+        $tpl['SAVE_BUTTON'] = Core\Form::formSubmit(dgettext('vlist', 'Save ' . $properName));
 
-        $elements[0] .= PHPWS_Template::processTemplate($tpl, 'vlist', 'elements/list_options.tpl');
+        $elements[0] .= Core\Template::processTemplate($tpl, 'vlist', 'elements/list_options.tpl');
 
-        return PHPWS_Form::makeForm('UNI_Options', 'index.php', $elements, 'post', NULL, NULL);
+        return Core\Form::makeForm('UNI_Options', 'index.php', $elements, 'post', NULL, NULL);
     }
 
 
@@ -475,11 +475,11 @@ class UNI_Element {
 
         /* for each of the posted options */
         for($i = 0; $i < sizeof($_REQUEST['UNI_OptionId']); $i++) {
-            $db = new PHPWS_DB($this->db_option);
+            $db = new Core\DB($this->db_option);
             $save_array = array();
 
             if($_REQUEST['UNI_OptionText'][$i] != null) {
-                $save_array['label'] = PHPWS_Text::parseInput($_REQUEST['UNI_OptionText'][$i]);
+                $save_array['label'] = Core\Text::parseInput($_REQUEST['UNI_OptionText'][$i]);
             } else {
                 $save_array['label'] = sprintf(dgettext('vlist', 'Selection %s'), $_REQUEST['UNI_OptionId'][$i]);
             }
@@ -512,7 +512,7 @@ class UNI_Element {
         }
         $this->setValue($value);
 
-        if (PHPWS_Error::logIfError($this->saveElement(true))) {
+        if (Core\Error::logIfError($this->saveElement(true))) {
             $this->vlist->forwardMessage(dgettext('vlist', 'Error occurred when saving element.'));
             Core\Core::reroute('index.php?module=vlist&aop=edit_element&element=' . $this->id);
         } else {
@@ -532,7 +532,7 @@ class UNI_Element {
             } else {
                 $update = false;
             }
-            if (PHPWS_Error::logIfError($this->saveElement($update))) {
+            if (Core\Error::logIfError($this->saveElement($update))) {
                 $this->vlist->forwardMessage(dgettext('vlist', 'Error occurred when saving element.'));
                 Core\Core::reroute('index.php?module=vlist&aop=edit_element&element=' . $this->id);
             } else {
@@ -553,15 +553,15 @@ class UNI_Element {
 
     public function saveElement($update=false)
     {
-        $db = new PHPWS_DB($this->db_element);
+        $db = new Core\DB($this->db_element);
         $result = $db->saveObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             return $result;
         }
 
         /* not sure I need this anymore, don;t think so at the moment */
         /* begin save options 
-        $db = new PHPWS_DB($this->db_option);
+        $db = new Core\DB($this->db_option);
         foreach($this->options as $option) {
             if($update == false) {
                 $db->addValue('element_id', $this->id);
@@ -573,7 +573,7 @@ class UNI_Element {
                 $db->addValue('sort', $option['sort']);
                 $result = $db->update();
             }
-            if (PHPWS_Error::isError($result)) {
+            if (Core\Error::isError($result)) {
                 return $result;
             }
         }
@@ -654,7 +654,7 @@ class UNI_Element {
     {
         $vars['uop']  = 'view_element';
         $vars['element'] = $this->id;
-        return PHPWS_Text::moduleLink(dgettext('vlist', $this->title), 'vlist', $vars);
+        return Core\Text::moduleLink(dgettext('vlist', $this->title), 'vlist', $vars);
     }
 
 

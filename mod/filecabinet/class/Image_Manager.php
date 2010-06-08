@@ -96,7 +96,7 @@ class FC_Image_Manager {
      */
     public function edit($force_width=0, $force_height=0)
     {
-        $form = new PHPWS_Form;
+        $form = new Core\Form;
         $form->addHidden('module', 'filecabinet');
 
         $form->addHidden('iop',      'post_image_upload');
@@ -255,7 +255,7 @@ class FC_Image_Manager {
 
         $template['ERRORS'] = $this->image->printErrors();
 
-        $this->content = PHPWS_Template::process($template, 'filecabinet', 'image_edit.tpl');
+        $this->content = Core\Template::process($template, 'filecabinet', 'image_edit.tpl');
     }
 
 
@@ -276,8 +276,8 @@ class FC_Image_Manager {
     {
         // importPost in File_Common
         $result = $this->image->importPost('file_name');
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
             $this->content = dgettext('filecabinet', 'An error occurred when trying to save your image.');
@@ -316,8 +316,8 @@ class FC_Image_Manager {
 
             $result = $this->image->save();
             $this->updateResizes($this->image);
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
             }
 
             $this->image->moveToFolder();
@@ -343,19 +343,19 @@ class FC_Image_Manager {
         if (isset($_REQUEST['ms']) && $_REQUEST['ms'] > 1000) {
             $this->setMaxSize($_REQUEST['ms']);
         } else {
-            $this->setMaxSize(PHPWS_Settings::get('filecabinet', 'max_image_size'));
+            $this->setMaxSize(Core\Settings::get('filecabinet', 'max_image_size'));
         }
 
         if (isset($_REQUEST['mh']) && $_REQUEST['mh'] > 50) {
             $this->setMaxHeight($_REQUEST['mh']);
         } else {
-            $this->setMaxHeight(PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
+            $this->setMaxHeight(Core\Settings::get('filecabinet', 'max_image_dimension'));
         }
 
         if (isset($_REQUEST['mw']) && $_REQUEST['mw'] > 50) {
             $this->setMaxWidth($_REQUEST['mw']);
         } else {
-            $this->setMaxWidth(PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
+            $this->setMaxWidth(Core\Settings::get('filecabinet', 'max_image_dimension'));
         }
     }
 
@@ -378,7 +378,7 @@ class FC_Image_Manager {
             return;
         }
 
-        $images = PHPWS_File::readDirectory($dir, false, true);
+        $images = Core\File::readDirectory($dir, false, true);
         if (empty($images)) {
             return;
         }

@@ -10,7 +10,7 @@ function block_view($block_id) {
         return NULL;
     }
     $template['BLOCK'] = $block->view(FALSE, FALSE);
-    return PHPWS_Template::process($template, 'block', 'embedded.tpl');
+    return Core\Template::process($template, 'block', 'embedded.tpl');
 }
 
 ?>

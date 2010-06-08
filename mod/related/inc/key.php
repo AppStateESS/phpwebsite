@@ -14,7 +14,7 @@ function related_unregister_key(Key $key)
         return FALSE;
     }
 
-    $db = new PHPWS_DB('related_main');
+    $db = new Core\DB('related_main');
     $db->addWhere('key_id', (int)$key->id);
     $db->addColumn('id');
     $result = $db->select('col');
@@ -23,7 +23,7 @@ function related_unregister_key(Key $key)
         return true;
     }
 
-    $db2 = new PHPWS_DB('related_friends');
+    $db2 = new Core\DB('related_friends');
     $db2->addWhere('source_id', $result);
     $db2->addWhere('friend_id', $result, '=', 'or');
     $db2->delete();

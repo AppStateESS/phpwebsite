@@ -66,7 +66,7 @@ class Clipboard
 
         $button = dgettext('clipboard', 'Close Window');
         $template['BUTTON'] = sprintf('<input type="button" onclick="window.close()" value="%s" />', $button);
-        Layout::nakedDisplay(PHPWS_Template::process($template, 'clipboard', 'clipboard.tpl'));
+        Layout::nakedDisplay(Core\Template::process($template, 'clipboard', 'clipboard.tpl'));
     }
 
 
@@ -105,13 +105,13 @@ class Clipboard
 
         unset($clipVars['key']);
         $clipVars['action'] = 'clear';
-        $template['CLEAR'] = PHPWS_Text::moduleLink(dgettext('clipboard', 'Clear'), 'clipboard', $clipVars);
+        $template['CLEAR'] = Core\Text::moduleLink(dgettext('clipboard', 'Clear'), 'clipboard', $clipVars);
         $template['LINKS'] = implode('', $content);
 
-        $vars['CONTENT'] = PHPWS_Template::process($template, 'clipboard', 'list.tpl');
+        $vars['CONTENT'] = Core\Template::process($template, 'clipboard', 'list.tpl');
         $vars['TITLE'] = dgettext('clipboard', 'Clipboard');
 
-        $layout = PHPWS_Template::process($vars, 'clipboard', 'show.tpl');
+        $layout = Core\Template::process($vars, 'clipboard', 'show.tpl');
 
         Layout::set($layout, 'clipboard', 'clipboard');
     }

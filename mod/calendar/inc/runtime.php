@@ -4,7 +4,7 @@
  * @version $Id$
  */
 
-$mini_cal_display = PHPWS_Settings::get('calendar', 'display_mini');
+$mini_cal_display = Core\Settings::get('calendar', 'display_mini');
 
 if ($mini_cal_display == MINI_CAL_SHOW_ALWAYS ||
 ($mini_cal_display == MINI_CAL_SHOW_FRONT && Core\Core::atHome())) {
@@ -12,7 +12,7 @@ if ($mini_cal_display == MINI_CAL_SHOW_ALWAYS ||
 
     $Calendar = new PHPWS_Calendar;
     $Calendar->loadUser();
-    if (PHPWS_Settings::get('calendar', 'mini_grid')) {
+    if (Core\Settings::get('calendar', 'mini_grid')) {
         $lil_calendar = $Calendar->user->mini_month();
         Layout::add($lil_calendar, 'calendar', 'minimonth');
     }

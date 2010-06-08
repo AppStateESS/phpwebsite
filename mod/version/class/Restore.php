@@ -42,7 +42,7 @@ class Version_Restore {
             return FALSE;
         }
 
-        $db = new PHPWS_DB($this->version_table);
+        $db = new Core\DB($this->version_table);
         $db->addWhere('source_id', $this->source_id);
         $db->addWhere('vr_approved', 1);
         $db->addWhere('vr_current', 0);
@@ -54,7 +54,7 @@ class Version_Restore {
 
         if (empty($result)) {
             return NULL;
-        } elseif ( PHPWS_Error::isError($result) ) {
+        } elseif ( Core\Error::isError($result) ) {
             $this->error = $result;
             return;
         }
@@ -79,7 +79,7 @@ class Version_Restore {
     public function getList()
     {
 
-        if ( !PHPWS_DB::isTable($this->version_table) || empty($this->backup_list) ) {
+        if ( !Core\DB::isTable($this->version_table) || empty($this->backup_list) ) {
             $msg = dgettext('version', 'No backup versions available.');
 
             return $msg;
@@ -111,7 +111,7 @@ class Version_Restore {
 
                 $result = $temp_obj->{$this->view_method}();
 
-                if (PHPWS_Error::isError($result)) {
+                if (Core\Error::isError($result)) {
                     return $result;
                 } elseif (empty($result)) {
                     continue;
@@ -150,7 +150,7 @@ class Version_Restore {
             return $msg;
         } else {
 
-            return PHPWS_Template::process($template, 'version', $template_file);
+            return Core\Template::process($template, 'version', $template_file);
         }
     }
 }

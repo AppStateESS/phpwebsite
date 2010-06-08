@@ -64,7 +64,7 @@ class vMail {
                     Current_User::disallow();
                 }
                 if ($this->postRecipient()) {
-                    if (PHPWS_Error::logIfError($this->recipient->save())) {
+                    if (Core\Error::logIfError($this->recipient->save())) {
                         $this->forwardMessage(dgettext('vmail', 'Error occurred when saving recipient.'));
                         Core\Core::reroute('index.php?module=vmail&aop=menu');
                     } else {
@@ -128,9 +128,9 @@ class vMail {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'vmail', 'main_admin.tpl'));
+            Layout::nakedDisplay(Core\Template::process($tpl, 'vmail', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(PHPWS_Template::process($tpl, 'vmail', 'main_admin.tpl'));
+            $this->panel->setContent(Core\Template::process($tpl, 'vmail', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -159,7 +159,7 @@ class vMail {
                     $this->forms->vmail = & $this;
                     $this->forms->composeMessage();
                 } else {
-                    $this->title = sprintf(dgettext('vmail', '%s inactive'), PHPWS_Settings::get('vmail', 'module_title'));
+                    $this->title = sprintf(dgettext('vmail', '%s inactive'), Core\Settings::get('vmail', 'module_title'));
                     $this->content = dgettext('vmail', 'This recipient is currently not active.');
                 }
                 break;
@@ -173,10 +173,10 @@ class vMail {
 
             case 'send_message':
                 if ($this->checkMessage()) {
-                    if (!PHPWS_Error::logIfError($this->sendMail())) {
+                    if (!Core\Error::logIfError($this->sendMail())) {
                         $this->loadRecipient();
                         $this->message = dgettext('vmail', 'Message sent succesfully.');
-                        $this->title = sprintf(dgettext('vmail', '%s message sent'), PHPWS_Settings::get('vmail', 'module_title'));
+                        $this->title = sprintf(dgettext('vmail', '%s message sent'), Core\Settings::get('vmail', 'module_title'));
                         $this->content = $this->recipient->submitMessage();
                     } else {
                         $this->forwardMessage(dgettext('vmail', 'Sorry, there was a problem sending the message.'));
@@ -195,9 +195,9 @@ class vMail {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'vmail', 'main_user.tpl'));
+            Layout::nakedDisplay(Core\Template::process($tpl, 'vmail', 'main_user.tpl'));
         } else {
-            Layout::add(PHPWS_Template::process($tpl, 'vmail', 'main_user.tpl'));
+            Layout::add(Core\Template::process($tpl, 'vmail', 'main_user.tpl'));
         }
 
     }
@@ -331,35 +331,35 @@ class vMail {
     {
 
         if (!empty($_POST['module_title'])) {
-            PHPWS_Settings::set('vmail', 'module_title', strip_tags($_POST['module_title']));
+            Core\Settings::set('vmail', 'module_title', strip_tags($_POST['module_title']));
         } else {
             $errors[] = dgettext('vmail', 'Please provide a module title.');
         }
 
         isset($_POST['enable_sidebox']) ?
-            PHPWS_Settings::set('vmail', 'enable_sidebox', 1) :
-            PHPWS_Settings::set('vmail', 'enable_sidebox', 0);
+            Core\Settings::set('vmail', 'enable_sidebox', 1) :
+            Core\Settings::set('vmail', 'enable_sidebox', 0);
 
         isset($_POST['sidebox_homeonly']) ?
-            PHPWS_Settings::set('vmail', 'sidebox_homeonly', 1) :
-            PHPWS_Settings::set('vmail', 'sidebox_homeonly', 0);
+            Core\Settings::set('vmail', 'sidebox_homeonly', 1) :
+            Core\Settings::set('vmail', 'sidebox_homeonly', 0);
 
         if (!empty($_POST['sidebox_text'])) {
-            PHPWS_Settings::set('vmail', 'sidebox_text', PHPWS_Text::parseInput($_POST['sidebox_text']));
+            Core\Settings::set('vmail', 'sidebox_text', Core\Text::parseInput($_POST['sidebox_text']));
         } else {
-            PHPWS_Settings::set('vmail', 'sidebox_text', null);
+            Core\Settings::set('vmail', 'sidebox_text', null);
         }
 
         isset($_POST['use_captcha']) ?
-            PHPWS_Settings::set('vmail', 'use_captcha', 1) :
-            PHPWS_Settings::set('vmail', 'use_captcha', 0);
+            Core\Settings::set('vmail', 'use_captcha', 1) :
+            Core\Settings::set('vmail', 'use_captcha', 0);
 
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            if (PHPWS_Settings::save('vmail')) {
+            if (Core\Settings::save('vmail')) {
                 return true;
             } else {
                 return falsel;
@@ -381,7 +381,7 @@ class vMail {
         }
 
         if (!empty($_POST['email'])) {
-            if (PHPWS_Text::isValidInput($_POST['email'], 'email')) {
+            if (Core\Text::isValidInput($_POST['email'], 'email')) {
                 $_POST['email'] = $_POST['email'];
             } else {
                 $errors[] = dgettext('vmail', 'Your email address is improperly formatted.');
@@ -417,13 +417,12 @@ class vMail {
 
     function confirm()
     {
-        if (!PHPWS_Settings::get('vmail', 'use_captcha') ||
+        if (!Core\Settings::get('vmail', 'use_captcha') ||
             !extension_loaded('gd')) {
             return true;
         }
 
-        Core\Core::initCoreClass('Captcha.php');
-        return Captcha::verify();
+                return Captcha::verify();
     }
 
 
@@ -444,8 +443,7 @@ class vMail {
         $message .= $_POST['message'] . "\n\n";
         $message .= sprintf(dgettext('vmail', 'Sent from IP Address: %s'), $_SERVER['REMOTE_ADDR']) . "\n\n";
 
-        Core\Core::initCoreClass('Mail.php');
-        $mail = new PHPWS_Mail;
+                $mail = new PHPWS_Mail;
         $mail->addSendTo(sprintf('%s<%s>', $this->recipient->getLabel(), $this->recipient->getAddress()));
         $mail->setSubject($subject);
         $mail->setFrom(sprintf('%s<%s>', $from, $sender));
@@ -462,9 +460,9 @@ class vMail {
     public function navLinks()
     {
 
-        $links[] = PHPWS_Text::moduleLink(dgettext('vmail', 'List all recipients'), 'vmail', array('uop'=>'list_recipients'));
+        $links[] = Core\Text::moduleLink(dgettext('vmail', 'List all recipients'), 'vmail', array('uop'=>'list_recipients'));
         if (Current_User::allow('vmail', 'settings', null, null, true) && !isset($_REQUEST['aop'])){
-            $links[] = PHPWS_Text::moduleLink(dgettext('vmail', 'Settings'), "vmail",  array('aop'=>'menu', 'tab'=>'settings'));
+            $links[] = Core\Text::moduleLink(dgettext('vmail', 'Settings'), "vmail",  array('aop'=>'menu', 'tab'=>'settings'));
         }
 
         return $links;
