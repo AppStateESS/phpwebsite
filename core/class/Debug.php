@@ -11,7 +11,7 @@ namespace Core;
 
 define('DEITY_ONLY_TEST', false);
 
-class PHPWS_Debug {
+class Debug {
     public static function test($value, $show_recursive=FALSE)
     {
         if ( DEITY_ONLY_TEST && (!isset($_SESSION['User']) || !class_exists('Current_User') || !Current_User::isDeity()) ) {
@@ -224,6 +224,8 @@ class PHPWS_Debug {
     }
 
 } // END CLASS PHPWS_Debug
+
+class PHPWS_Debug extends Debug{}
 
 function test($value, $exitAfter=FALSE, $show_recursive=FALSE)
 {
