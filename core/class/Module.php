@@ -6,7 +6,7 @@ namespace Core;
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-class PHPWS_Module {
+class Module {
     public $title         = null;
     public $proper_name   = null;
     public $priority      = 50;
@@ -462,4 +462,5 @@ class PHPWS_Module {
     }
 }
 
+class PHPWS_Module extends Module{}
 ?>

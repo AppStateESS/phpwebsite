@@ -8,7 +8,7 @@ namespace Core;
  * @version $Id$
  */
 
-class PHPWS_Time {
+class Time {
 
     public static function convertServerTime($time)
     {
@@ -228,5 +228,6 @@ class PHPWS_Time {
         }
     }
 }
+class PHPWS_Time extends Time{}
 
 ?>

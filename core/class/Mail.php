@@ -42,7 +42,7 @@ namespace Core;
 
 Core::requireConfig('core', 'mail_settings.php');
 
-class PHPWS_Mail {
+class Mail {
     public $send_to           = array();
     public $subject_line      = null;
     public $from_address      = null;
@@ -273,5 +273,7 @@ class PHPWS_Mail {
     }
 
 }
+
+class PHPWS_Mail extends Mail{}
 
 ?>
