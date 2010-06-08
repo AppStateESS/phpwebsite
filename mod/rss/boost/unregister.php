@@ -6,11 +6,11 @@
 
 function rss_unregister($module, &$content)
 {
-    $db = new Core\DB('rssfeeds');
+    $db = new \core\DB('rssfeeds');
     $db->addWhere('module', $module);
     $result = $db->delete();
-    if (Core\Error::isError($result)) {
-        Core\Error::log($result);
+    if (core\Error::isError($result)) {
+        \core\Error::log($result);
         $content[] = dgettext('rss', 'An error occurred trying to unregister this module from RSSFeeds.');
         return FALSE;
     } else {

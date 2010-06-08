@@ -18,7 +18,7 @@ class Blog_User {
     {
         $vars['action'] = 'admin';
         $vars['tab'] = 'list';
-        MiniAdmin::add('blog', Core\Text::secureLink(dgettext('blog', 'Blog list'), 'blog', $vars));
+        MiniAdmin::add('blog', \core\Text::secureLink(dgettext('blog', 'Blog list'), 'blog', $vars));
     }
 
     public static function main()
@@ -49,7 +49,7 @@ class Blog_User {
                     Blog_User::miniAdminList();
                 }
                 if ($blog->publish_date > time() && !Current_User::allow('blog')) {
-                    Core\Core::errorPage('404');
+                    \core\Core::errorPage('404');
                 } else {
                     $content = $blog->view(true, false);
                 }
@@ -89,8 +89,8 @@ class Blog_User {
 
             case 'submit':
                 if (Current_User::allow('blog', 'edit_blog')) {
-                    Core\Core::reroute(Core\Text::linkAddress('blog', array('action'=>'admin', 'tab'=>'new'), 1));
-                } elseif (Core\Settings::get('blog', 'allow_anonymous_submits')) {
+                    \core\Core::reroute(core\Text::linkAddress('blog', array('action'=>'admin', 'tab'=>'new'), 1));
+                } elseif (core\Settings::get('blog', 'allow_anonymous_submits')) {
                     // Must create a new blog. Don't use above shortcut
                     $blog = new Blog;
                     $content = Blog_User::submitAnonymous($blog);
@@ -109,7 +109,7 @@ class Blog_User {
                 break;
 
             default:
-                Core\Core::errorPage(404);
+                \core\Core::errorPage(404);
                 break;
         }
 
@@ -119,7 +119,7 @@ class Blog_User {
 
     public function postSuggestion(Blog $blog)
     {
-        if (!Core\Settings::get('blog', 'allow_anonymous_submits')) {
+        if (!core\Settings::get('blog', 'allow_anonymous_submits')) {
             return dgettext('blog', 'Site is not accepting anonymous submissions.');
         }
 
@@ -147,14 +147,14 @@ class Blog_User {
 
         $blog->approved = false;
 
-        if (Core\Settings::get('blog', 'captcha_submissions')) {
+        if (core\Settings::get('blog', 'captcha_submissions')) {
                         if (!Captcha::verify()) {
                 $blog->_error[] = dgettext('blog', 'Please enter word in image correctly.');
             }
-        }  elseif (Core\Core::isPosted() && empty($blog->_error)) {
+        }  elseif (core\Core::isPosted() && empty($blog->_error)) {
             $tpl['TITLE'] = dgettext('blog', 'Repeat submission');
             $tpl['CONTENT'] =  dgettext('blog', 'Your submission is still awaiting approval.');
-            return Core\Template::process($tpl, 'blog', 'user_main.tpl');
+            return \core\Template::process($tpl, 'blog', 'user_main.tpl');
         }
 
 
@@ -162,33 +162,33 @@ class Blog_User {
             return null;
         }
         $result = $blog->save();
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             $tpl['TITLE'] = dgettext('blog', 'Sorry');
             $tpl['CONTENT'] =  dgettext('blog', 'A problem occured with your submission. Please try again later.');
         } else {
             $tpl['TITLE'] = dgettext('blog', 'Thank you');
             $tpl['CONTENT'] =  dgettext('blog', 'Your entry has been submitted for review.');
         }
-        return Core\Template::process($tpl, 'blog', 'user_main.tpl');
+        return \core\Template::process($tpl, 'blog', 'user_main.tpl');
     }
 
 
     public function submitAnonymous(Blog $blog)
     {
-        Core\Core::initModClass('blog', 'Blog_Form.php');
+        \core\Core::initModClass('blog', 'Blog_Form.php');
         $tpl['TITLE'] = dgettext('blog', 'Submit Entry');
         $tpl['CONTENT'] = Blog_Form::edit($blog, null, true);
-        return Core\Template::process($tpl, 'blog', 'user_main.tpl');
+        return \core\Template::process($tpl, 'blog', 'user_main.tpl');
     }
 
-    public static function totalEntries(Core\DB $db)
+    public static function totalEntries(core\DB $db)
     {
         $db->addColumn('id',null, null, true);
         return $db->select('one');
     }
 
-    public static function getEntries(Core\DB $db, $limit, $offset=0)
+    public static function getEntries(core\DB $db, $limit, $offset=0)
     {
         $db->resetColumns();
         $db->setLimit($limit, $offset);
@@ -205,12 +205,12 @@ class Blog_User {
         }
 
         // Only logged users may view and user is not logged in
-        if (Core\Settings::get('blog', 'logged_users_only') &&
+        if (core\Settings::get('blog', 'logged_users_only') &&
         !Current_User::isLogged()) {
             return false;
         }
 
-        $view_groups = Core\Settings::get('blog', 'view_only');
+        $view_groups = \core\Settings::get('blog', 'view_only');
         if (!empty($view_groups)) {
             $allowed_groups = explode(':', $view_groups);
         } else {
@@ -243,7 +243,7 @@ class Blog_User {
             return null;
         }
 
-        $db = new Core\DB('blog_entries');
+        $db = new \core\DB('blog_entries');
 
         if ($start_date) {
             $db->addWhere('publish_date', $start_date, '>=', 'and', 2);
@@ -258,11 +258,11 @@ class Blog_User {
         $db->addWhere('expire_date', time(), '>', 'and', 1);
         $db->addWhere('expire_date', 0, '=', 'or', 1);
         $db->setGroupConj(1, 'and');
-        Core\Key::restrictView($db, 'blog');
+        \core\Key::restrictView($db, 'blog');
 
         $total_entries = Blog_User::totalEntries($db);
 
-        $limit = Core\Settings::get('blog', 'blog_limit');
+        $limit = \core\Settings::get('blog', 'blog_limit');
         $page = @$_GET['page'];
 
         if (!is_numeric($page) || $page < 2) {
@@ -281,8 +281,8 @@ class Blog_User {
         if ($page <= MAX_BLOG_CACHE_PAGES &&
         !Current_User::isLogged() &&
         !Current_User::allow('blog') &&
-        Core\Settings::get('blog', 'cache_view') &&
-        $content = Core\Cache::get($cache_key)) {
+        \core\Settings::get('blog', 'cache_view') &&
+        $content = \core\Cache::get($cache_key)) {
             Layout::getCacheHeaders($cache_key);
             return $content;
         }
@@ -290,28 +290,28 @@ class Blog_User {
         Layout::addStyle('blog');
         $result = Blog_User::getEntries($db, $limit, $offset);
 
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             return NULL;
         }
 
         if (empty($result)) {
             if (Current_User::allow('blog')) {
-                MiniAdmin::add('blog', Core\Text::secureLink(dgettext('blog', 'Create first blog entry!'), 'blog', array('action'=>'admin', 'tab'=>'new')));
+                MiniAdmin::add('blog', \core\Text::secureLink(dgettext('blog', 'Create first blog entry!'), 'blog', array('action'=>'admin', 'tab'=>'new')));
             }
 
             return NULL;
         }
 
         if ($page < 2) {
-            $past_entries = Core\Settings::get('blog', 'past_entries');
+            $past_entries = \core\Settings::get('blog', 'past_entries');
 
             if ($past_entries) {
                 $db->setLimit($past_entries, $limit);
                 $past = $db->getObjects('Blog');
 
-                if (Core\Error::isError($past)) {
-                    Core\Error::log($past);
+                if (core\Error::isError($past)) {
+                    \core\Error::log($past);
                 } elseif($past) {
                     Blog_User::showPast($past);
                 }
@@ -321,9 +321,9 @@ class Blog_User {
         $rss = false;
         foreach ($result as $blog) {
             if (!$rss) {
-                if (Core\Core::moduleExists('rss')) {
-                    Core\Core::initModClass('rss', 'RSS.php');
-                    $key = new Core\Key($blog->key_id);
+                if (core\Core::moduleExists('rss')) {
+                    \core\Core::initModClass('rss', 'RSS.php');
+                    $key = new \core\Key($blog->key_id);
                     RSS::showIcon($key);
                     $rss = true;
                 }
@@ -337,31 +337,31 @@ class Blog_User {
         $page_vars['action'] = 'view';
         if ($page > 1) {
             $page_vars['page'] = $page - 1;
-            $tpl['PREV_PAGE'] = Core\Text::moduleLink(dgettext('blog', 'Previous page'), 'blog', $page_vars);
+            $tpl['PREV_PAGE'] = \core\Text::moduleLink(dgettext('blog', 'Previous page'), 'blog', $page_vars);
             if ($limit + $offset < $total_entries) {
                 $page_vars['page'] = $page + 1;
-                $tpl['NEXT_PAGE'] = Core\Text::moduleLink(dgettext('blog', 'Next page'), 'blog', $page_vars);
+                $tpl['NEXT_PAGE'] = \core\Text::moduleLink(dgettext('blog', 'Next page'), 'blog', $page_vars);
             }
         } elseif ($limit + $offset < $total_entries) {
             $page_vars['page'] = 2;
-            $tpl['NEXT_PAGE'] = Core\Text::moduleLink(dgettext('blog', 'Next page'), 'blog', $page_vars);
+            $tpl['NEXT_PAGE'] = \core\Text::moduleLink(dgettext('blog', 'Next page'), 'blog', $page_vars);
         }
 
         $tpl['ENTRIES'] = implode('', $list);
 
-        $content = Core\Template::process($tpl, 'blog', 'list_view.tpl');
+        $content = \core\Template::process($tpl, 'blog', 'list_view.tpl');
 
         // again only caching first pages
         if ($page <= MAX_BLOG_CACHE_PAGES &&
         !Current_User::isLogged() && !Current_User::allow('blog') &&
-        Core\Settings::get('blog', 'cache_view')) {
-            Core\Cache::save($cache_key, $content);
+        \core\Settings::get('blog', 'cache_view')) {
+            \core\Cache::save($cache_key, $content);
             Layout::cacheHeaders($cache_key);
         } elseif (Current_User::allow('blog', 'edit_blog')) {
             Blog_User::miniAdminList();
             $vars['action'] = 'admin';
             $vars['tab'] = 'new';
-            $link[] = Core\Text::secureLink(dgettext('blog', 'Add new blog'), 'blog', $vars);
+            $link[] = \core\Text::secureLink(dgettext('blog', 'Add new blog'), 'blog', $vars);
             MiniAdmin::add('blog', $link);
         }
 
@@ -382,7 +382,7 @@ class Blog_User {
         }
 
         $tpl['PAST_TITLE'] = dgettext('blog', 'Previous blog entries');
-        $content = Core\Template::process($tpl, 'blog', 'past_view.tpl');
+        $content = \core\Template::process($tpl, 'blog', 'past_view.tpl');
         Layout::add($content, 'blog', 'previous_entries');
     }
 
@@ -391,14 +391,14 @@ class Blog_User {
      */
     public function showSide()
     {
-        switch(Core\Settings::get('blog', 'show_recent')) {
+        switch(core\Settings::get('blog', 'show_recent')) {
             case 0:
                 // don't show
                 return;
 
             case 1:
                 // home page only
-                if (!Core\Core::atHome()) {
+                if (!core\Core::atHome()) {
                     return;
                 }
                 break;
@@ -408,9 +408,9 @@ class Blog_User {
                 break;
         }
 
-        $db = new Core\DB('blog_entries');
+        $db = new \core\DB('blog_entries');
         $db->addWhere('sticky', 0);
-        $limit = Core\Settings::get('blog', 'blog_limit');
+        $limit = \core\Settings::get('blog', 'blog_limit');
         $result = Blog_User::getEntries($db, $limit);
 
         if (!$result) {
@@ -422,7 +422,7 @@ class Blog_User {
         }
 
         $tpl['RECENT_TITLE'] = sprintf('<a href="index.php?module=blog&amp;action=view">%s</a>', dgettext('blog', 'Recent blog entries'));
-        $content = Core\Template::process($tpl, 'blog', 'recent_view.tpl');
+        $content = \core\Template::process($tpl, 'blog', 'recent_view.tpl');
         Layout::add($content, 'blog', 'recent_entries');
     }
 

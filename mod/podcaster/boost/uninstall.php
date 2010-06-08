@@ -27,17 +27,17 @@ function podcaster_uninstall(&$content) {
     if (isset($_REQUEST['process_uninstall'])) {
 
         if ($_REQUEST['rm_media']) {
-            Core\Core::initModClass('podcaster', 'PCR_Episode.php');
-            $db = new Core\DB('podcaster_episode');
+            \core\Core::initModClass('podcaster', 'PCR_Episode.php');
+            $db = new \core\DB('podcaster_episode');
             $db->addWhere('media_id', 0, '>');
             $episodes = $db->getObjects('Podcaster_Episode');
-            if (Core\Error::isError($episodes)) {
+            if (core\Error::isError($episodes)) {
                 return $episodes;
             } elseif (empty($episodes)) {
                 /* go ahead and drop the tables */
-                Core\DB::dropTable('podcaster_channel');
-                Core\DB::dropTable('podcaster_episode');
-                Core\DB::dropTable('podcaster_category');
+                \core\DB::dropTable('podcaster_channel');
+                \core\DB::dropTable('podcaster_episode');
+                \core\DB::dropTable('podcaster_category');
                 $content[] = dgettext('podcaster', 'Podcaster tables dropped, no media to delete.');
                 return true;
             }
@@ -47,23 +47,23 @@ function podcaster_uninstall(&$content) {
                 $media = $episode->getMedia();
                 if ($media) {
                     $result = $media->delete();
-                    if (Core\Error::isError($result)) {
-                        Core\Error::log($result);
+                    if (core\Error::isError($result)) {
+                        \core\Error::log($result);
                         $error = true;
                     }
                 }
             }
             /* go ahead and drop the tables */
-            Core\DB::dropTable('podcaster_channel');
-            Core\DB::dropTable('podcaster_episode');
-            Core\DB::dropTable('podcaster_category');
+            \core\DB::dropTable('podcaster_channel');
+            \core\DB::dropTable('podcaster_episode');
+            \core\DB::dropTable('podcaster_category');
             $content[] = sprintf(dgettext('podcaster', 'Podcaster tables dropped, %s media file(s) deleted.'), $num);
             return true;
         } else {
             /* go ahead and drop the tables */
-            Core\DB::dropTable('podcaster_channel');
-            Core\DB::dropTable('podcaster_episode');
-            Core\DB::dropTable('podcaster_category');
+            \core\DB::dropTable('podcaster_channel');
+            \core\DB::dropTable('podcaster_episode');
+            \core\DB::dropTable('podcaster_category');
             $content[] = dgettext('podcaster', 'Podcaster tables dropped.');
             return true;
         }
@@ -72,7 +72,7 @@ function podcaster_uninstall(&$content) {
     }
 
 
-    $form = new Core\Form('rm_media_confirm');
+    $form = new \core\Form('rm_media_confirm');
 
     $form->addHidden('module', 'boost');
     $form->addHidden('opmod', 'podcaster');
@@ -83,7 +83,7 @@ function podcaster_uninstall(&$content) {
 
     $form->addHidden('process_uninstall', 1);
 
-    if (Core\Settings::get('podcaster', 'rm_media')) {
+    if (core\Settings::get('podcaster', 'rm_media')) {
         $match = 1;
     } else {
         $match = 0;
@@ -98,7 +98,7 @@ function podcaster_uninstall(&$content) {
     $template = $form->getTemplate();
 
     $template['RM_MEDIA'] = dgettext('podcaster', 'Delete related media files from filecabinet?');
-    $content[] = Core\Template::process($template, 'podcaster', 'uninstall.tpl');
+    $content[] = \core\Template::process($template, 'podcaster', 'uninstall.tpl');
 
     return false;
 

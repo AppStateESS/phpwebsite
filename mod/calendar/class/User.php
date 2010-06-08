@@ -54,7 +54,7 @@ class Calendar_User {
         } elseif (isset($_REQUEST['id']) && isset($_REQUEST['page'])) {
             $this->current_view = 'event';
         } else {
-            $this->current_view = Core\Settings::get('calendar', 'default_view');
+            $this->current_view = \core\Settings::get('calendar', 'default_view');
         }
     }
 
@@ -69,7 +69,7 @@ class Calendar_User {
         }
     }
 
-    public function getDaysEvents($startdate, Core\Template $tpl)
+    public function getDaysEvents($startdate, \core\Template $tpl)
     {
         $year  = (int)date('Y', $startdate);
         $month = (int)date('m', $startdate);
@@ -150,7 +150,7 @@ class Calendar_User {
      */
     public function day()
     {
-        if (Core\Settings::get('calendar', 'use_calendar_style')) {
+        if (core\Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
 
@@ -159,7 +159,7 @@ class Calendar_User {
 
         $this->calendar->loadEventList($startdate, $enddate);
 
-        $tpl = new Core\Template('calendar');
+        $tpl = new \core\Template('calendar');
         $tpl->setFile('view/day.tpl');
 
         if (!$this->getDaysEvents($startdate, $tpl)) {
@@ -195,16 +195,16 @@ class Calendar_User {
             $vars['sch_id'] = $this->calendar->schedule->id;
         }
 
-        $dlink = new Core\Link($label, 'calendar', $vars);
-        $dlink->setNoFollow(Core\Settings::get('calendar', 'no_follow'));
+        $dlink = new \core\Link($label, 'calendar', $vars);
+        $dlink->setNoFollow(core\Settings::get('calendar', 'no_follow'));
         return $dlink->get();
     }
 
 
     public function event($js=false) {
-        Core\Core::initModClass('calendar', 'Event.php');
+        \core\Core::initModClass('calendar', 'Event.php');
         if (!$this->event->id) {
-            Core\Core::errorPage('404');
+            \core\Core::errorPage('404');
         }
 
         $template = $this->event->getTpl();
@@ -212,12 +212,12 @@ class Calendar_User {
         if ($js) {
             $template['CLOSE_WINDOW'] = javascript('close_window', array('value'=>dgettext('calendar', 'Close')));
         } else {
-            $template['BACK_LINK'] = Core\Text::backLink(dgettext('calendar', 'Back'));
+            $template['BACK_LINK'] = \core\Text::backLink(dgettext('calendar', 'Back'));
         }
 
         $template['DOWNLOAD']   = $this->eventDownloadLink($this->event->id);
         $template['VIEW_LINKS'] = $this->viewLinks('event');
-        return Core\Template::process($template, 'calendar', 'view/event.tpl');
+        return \core\Template::process($template, 'calendar', 'view/event.tpl');
     }
 
 
@@ -234,7 +234,7 @@ class Calendar_User {
 
     public function getUrl()
     {
-        $getVars = Core\Text::getGetValues();
+        $getVars = \core\Text::getGetValues();
         if (empty($getVars)) {
             return 'index.php';
         }
@@ -252,7 +252,7 @@ class Calendar_User {
 
     public function loadSuggestion($id=0)
     {
-        Core\Core::initModClass('calendar', 'Suggestion.php');
+        \core\Core::initModClass('calendar', 'Suggestion.php');
         $this->event = new Calendar_Suggestion;
         $this->event->_schedule = & $this->calendar->schedule;
         $this->event->schedule_id = $this->event->_schedule->id;
@@ -260,7 +260,7 @@ class Calendar_User {
 
     public function loadEvent($event_id)
     {
-        Core\Core::initModClass('calendar', 'Event.php');
+        \core\Core::initModClass('calendar', 'Event.php');
         $this->event = new Calendar_Event($event_id, $this->calendar->schedule);
         return true;
     }
@@ -280,8 +280,8 @@ class Calendar_User {
                 break;
 
             case 'suggest_event':
-                if (!Core\Settings::get('calendar', 'allow_submissions')) {
-                    Core\Core::errorPage('403');
+                if (!core\Settings::get('calendar', 'allow_submissions')) {
+                    \core\Core::errorPage('403');
                 }
 
                 if (!$this->allowSuggestion()) {
@@ -290,7 +290,7 @@ class Calendar_User {
                     break;
                 }
 
-                Core\Core::initModClass('calendar', 'Admin.php');
+                \core\Core::initModClass('calendar', 'Admin.php');
                 $this->loadSuggestion();
                 $this->title = dgettext('calendar', 'Suggest event');
                 $this->content = Calendar_Admin::event_form($this->event, true);
@@ -298,7 +298,7 @@ class Calendar_User {
 
             case 'post_suggestion':
                 if (!$this->postSuggestion()) {
-                    Core\Core::initModClass('calendar', 'Admin.php');
+                    \core\Core::initModClass('calendar', 'Admin.php');
                     $this->title = dgettext('calendar', 'Suggest event');
                     $this->content = Calendar_Admin::event_form($this->event, true);
                 }
@@ -316,7 +316,7 @@ class Calendar_User {
                 break;
 
                 if ( ( !$this->calendar->schedule->public && !$this->calendar->schedule->checkPermissions() ) ||
-                ( $this->calendar->schedule->public && (Core\Settings::get('calendar', 'anon_ical') && Current_User::isLogged()) ) ||
+                ( $this->calendar->schedule->public && (core\Settings::get('calendar', 'anon_ical') && Current_User::isLogged()) ) ||
                 empty($_GET['sdate']) || empty($_GET['edate']) ||
                 !$this->calendar->schedule->id) {
                     $this->title = dgettext('calendar', 'Sorry');
@@ -349,7 +349,7 @@ class Calendar_User {
         // Clears in case of js window opening
         $this->content = $this->title = $this->message = null;
 
-        $final = Core\Template::process($tpl, 'calendar', 'user_main.tpl');
+        $final = \core\Template::process($tpl, 'calendar', 'user_main.tpl');
 
         if (PHPWS_Calendar::isJS()) {
             Layout::nakedDisplay($final);
@@ -360,16 +360,16 @@ class Calendar_User {
 
     public function mini_month()
     {
-        $no_follow = Core\Settings::get('calendar', 'no_follow');
+        $no_follow = \core\Settings::get('calendar', 'no_follow');
 
         $month = (int)date('m');
         $year  = (int)date('Y');
 
         // Check cache
-        if (Core\Settings::get('calendar', 'cache_month_views')) {
+        if (core\Settings::get('calendar', 'cache_month_views')) {
             $cache_key = sprintf('mini_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
 
-            $content = Core\Cache::get($cache_key);
+            $content = \core\Cache::get($cache_key);
             if (!empty($content)) {
                 return $content;
             }
@@ -378,13 +378,13 @@ class Calendar_User {
         $startdate = mktime(0,0,0, $month, 1, $year);
         $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
 
-        if (Core\Settings::get('calendar', 'use_calendar_style')) {
+        if (core\Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
 
-        if (Core\Settings::get('calendar', 'mini_event_link')) {
+        if (core\Settings::get('calendar', 'mini_event_link')) {
             $this->calendar->loadDefaultSchedule();
-            $default_start = Core\Settings::get('calendar','starting_day');
+            $default_start = \core\Settings::get('calendar','starting_day');
             $start_day = date('w', $startdate) - $default_start;
             $end_day  = date('w', $enddate);
 
@@ -400,7 +400,7 @@ class Calendar_User {
         $oMonth->build();
         $date = mktime(0,0,0, $month, 1, $year);
 
-        $oTpl = new Core\Template('calendar');
+        $oTpl = new \core\Template('calendar');
         $oTpl->setFile('view/month/mini.tpl');
 
         $this->_weekday($oMonth, $oTpl);
@@ -411,7 +411,7 @@ class Calendar_User {
             $vars['sch_id'] = $_SESSION['Current_Schedule'];
         }
         $vars['date'] = mktime(0,0,0, $month, 1, $year);
-        $slink = new Core\Link(strftime('%B', $date), 'calendar', $vars);
+        $slink = new \core\Link(strftime('%B', $date), 'calendar', $vars);
         $slink->setNoFollow($no_follow);
         $template['FULL_MONTH_NAME'] = $slink->get();
         $slink->setLabel(strftime('%b', $date));
@@ -423,7 +423,7 @@ class Calendar_User {
         $content = $oTpl->get();
 
         if (isset($cache_key)) {
-            Core\Cache::save($cache_key, $content);
+            \core\Cache::save($cache_key, $content);
         }
         return $content;
     }
@@ -433,7 +433,7 @@ class Calendar_User {
      */
     public function _month_days($oMonth, $oTpl, $link_days=true, $list_events=false)
     {
-        $no_follow = Core\Settings::get('calendar', 'no_follow');
+        $no_follow = \core\Settings::get('calendar', 'no_follow');
         while($day = $oMonth->fetch()) {
             $data = array();
             $data['COUNT'] = null;
@@ -470,7 +470,7 @@ class Calendar_User {
                         $oTpl->parseCurrentBlock();
                     }
                 } else {
-                    $dlink = new Core\Link(sprintf('%s event(s)', $no_of_events),
+                    $dlink = new \core\Link(sprintf('%s event(s)', $no_of_events),
                                                             'calendar', array('view'=>'day',
                                                                               'date'=>$day->thisDay(true),
                                                                               'sch_id'=>$this->calendar->schedule->id));
@@ -496,7 +496,7 @@ class Calendar_User {
      */
     public function month_grid()
     {
-        if (Core\Settings::get('calendar', 'use_calendar_style')) {
+        if (core\Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
 
@@ -506,10 +506,10 @@ class Calendar_User {
         $date_pick = $this->getDatePick();
 
         // Check cache
-        if ($this->calendar->schedule->public && Core\Settings::get('calendar', 'cache_month_views')) {
+        if ($this->calendar->schedule->public && \core\Settings::get('calendar', 'cache_month_views')) {
             $cache_key = sprintf('grid_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
 
-            $content = Core\Cache::get($cache_key);
+            $content = \core\Cache::get($cache_key);
             if (!empty($content)) {
                 return $content;
             }
@@ -520,7 +520,7 @@ class Calendar_User {
         $startdate = mktime(0,0,0, $month, 1, $year);
         $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
 
-        $default_start = Core\Settings::get('calendar','starting_day');
+        $default_start = \core\Settings::get('calendar','starting_day');
         $start_day = date('w', $startdate) - $default_start;
         $end_day  = date('w', $enddate);
 
@@ -535,14 +535,14 @@ class Calendar_User {
 
 
         // Cache empty, make month
-        $oTpl = new Core\Template('calendar');
+        $oTpl = new \core\Template('calendar');
         $oTpl->setFile('view/month/grid.tpl');
 
         $this->_weekday($oMonth, $oTpl);
         reset($oMonth->children);
 
         // create day cells in grid
-        $this->_month_days($oMonth, $oTpl, true, !Core\Settings::get('calendar', 'brief_grid'));
+        $this->_month_days($oMonth, $oTpl, true, !core\Settings::get('calendar', 'brief_grid'));
 
         $template['FULL_MONTH_NAME']    = strftime('%B', $date);
         $template['PARTIAL_MONTH_NAME'] = strftime('%b', $date);
@@ -560,7 +560,7 @@ class Calendar_User {
         $content = $oTpl->get();
 
         if (isset($cache_key)) {
-            Core\Cache::save($cache_key, $content);
+            \core\Cache::save($cache_key, $content);
         }
 
         return $content;
@@ -569,7 +569,7 @@ class Calendar_User {
 
     public function month_list()
     {
-        if (Core\Settings::get('calendar', 'use_calendar_style')) {
+        if (core\Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
 
@@ -577,13 +577,13 @@ class Calendar_User {
         $year  = &$this->calendar->int_year;
         $day   = 1;
 
-        if ($this->calendar->schedule->public && !Current_User::isLogged() && Core\Settings::get('calendar', 'cache_month_views')) {
+        if ($this->calendar->schedule->public && !Current_User::isLogged() && \core\Settings::get('calendar', 'cache_month_views')) {
             $cache_key = sprintf('list_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
         }
 
         if (isset($cache_key)) {
             // Check cache
-            $content = Core\Cache::get($cache_key);
+            $content = \core\Cache::get($cache_key);
             if (!empty($content)) {
                 return $content;
             }
@@ -598,14 +598,14 @@ class Calendar_User {
 
         $this->calendar->loadEventList($startdate, $enddate);
 
-        $tpl = new Core\Template('calendar');
+        $tpl = new \core\Template('calendar');
         $tpl->setFile('view/month/list.tpl');
 
         $events_found = false;
 
         $lvars = array('view' => 'day', 'schedule_id'=>$this->calendar->schedule->id);
-        $slink = new Core\Link(null, 'calendar');
-        $slink->setNoFollow(Core\Settings::get('calendar', 'no_follow'));
+        $slink = new \core\Link(null, 'calendar');
+        $slink->setNoFollow(core\Settings::get('calendar', 'no_follow'));
 
         for ($i = $startdate; $i <= $enddate; $i += 86400) {
             $day_result = $this->getDaysEvents($i, $tpl);
@@ -649,7 +649,7 @@ class Calendar_User {
         $content = $tpl->get();
 
         if (isset($cache_key)) {
-            Core\Cache::save($cache_key, $content);
+            \core\Cache::save($cache_key, $content);
         }
 
         return $content;
@@ -661,7 +661,7 @@ class Calendar_User {
         $this->loadSuggestion();
 
         if ($this->event->post()) {
-            if (Core\Core::isPosted()) {
+            if (core\Core::isPosted()) {
                 $this->title = dgettext('calendar', 'Duplicate suggestion.');
                 $this->content = dgettext('calendar', 'You may try to suggest a different event.');
                 return true;
@@ -681,8 +681,8 @@ class Calendar_User {
 
             $_SESSION['Calendar_Total_Suggestions']++;
 
-            if (Core\Error::isError($result)) {
-                Core\Error::log($result);
+            if (core\Error::isError($result)) {
+                \core\Error::log($result);
                 if(PHPWS_Calendar::isJS()) {
                     javascript('close_refresh', array('timeout'=>5, 'refresh'=>0));
                     Layout::nakedDisplay('Event suggestion failed to save. Try again later.');
@@ -714,7 +714,7 @@ class Calendar_User {
     {
         $vars['aop'] = 'reset_cache';
         $vars['key'] = sprintf('%s_%s_%s_%s', $type, $month, $year, $schedule);
-        MiniAdmin::add('calendar', Core\Text::secureLink(dgettext('calendar', 'Reset cache'), 'calendar', $vars));
+        MiniAdmin::add('calendar', \core\Text::secureLink(dgettext('calendar', 'Reset cache'), 'calendar', $vars));
     }
 
     public function schedulePick()
@@ -723,7 +723,7 @@ class Calendar_User {
         if (count($schedules) < 2) {
             return null;
         }
-        $form = new Core\Form('schedule_pick');
+        $form = new \core\Form('schedule_pick');
         $form->setMethod('get');
         $form->addHidden('module', 'calendar');
         $form->addHidden('view', $this->current_view);
@@ -740,7 +740,7 @@ class Calendar_User {
         if ( !$this->allowSuggestion()                      ||
         !$this->calendar->schedule->public             ||
         Current_User::allow('calendar', 'edit_public') ||
-        !Core\Settings::get('calendar', 'allow_submissions') ) {
+        !core\Settings::get('calendar', 'allow_submissions') ) {
             return null;
         }
 
@@ -772,7 +772,7 @@ class Calendar_User {
                 $view_name = dgettext('calendar', 'Today');
         }
 
-        return Core\Text::moduleLink($view_name, 'calendar', $vars);
+        return \core\Text::moduleLink($view_name, 'calendar', $vars);
     }
 
     /**
@@ -780,7 +780,7 @@ class Calendar_User {
      */
     public function view()
     {
-        $key = new Core\Key($this->calendar->schedule->key_id);
+        $key = new \core\Key($this->calendar->schedule->key_id);
         if (!$key->allowView()) {
             $this->calendar->loadDefaultSchedule();
         }
@@ -796,14 +796,14 @@ class Calendar_User {
 
                 if (javascriptEnabled()) {
                     $vars['js'] = 1;
-                    $js_vars['address'] = Core\Text::linkAddress('calendar', $vars);
+                    $js_vars['address'] = \core\Text::linkAddress('calendar', $vars);
                     $js_vars['label']   = $label;
                     $js_vars['width']   = 640;
                     $js_vars['height']  = 600;
                     $add_schedule = javascript('open_window', $js_vars);
 
                 } else {
-                    $add_schedule = Core\Text::secureLink($label, 'calendar', $vars);
+                    $add_schedule = \core\Text::secureLink($label, 'calendar', $vars);
                 }
                 MiniAdmin::add('calendar', $add_schedule);
             }
@@ -814,7 +814,7 @@ class Calendar_User {
         $schedule_key = $this->calendar->schedule->getKey();
 
         if ( (!$this->calendar->schedule->public && !$schedule_key->allowView())) {
-            Core\Core::errorPage('403');
+            \core\Core::errorPage('403');
         }
 
         switch ($this->current_view) {
@@ -887,8 +887,8 @@ class Calendar_User {
         if (!$this->calendar->schedule->id) {
             return null;
         }
-        $no_follow = Core\Settings::get('calendar', 'no_follow');
-        $vars = Core\Text::getGetValues();
+        $no_follow = \core\Settings::get('calendar', 'no_follow');
+        $vars = \core\Text::getGetValues();
         unset($vars['module']);
 
         if ($current_view == 'grid') {
@@ -927,7 +927,7 @@ class Calendar_User {
             $links[] = dgettext('calendar', 'Grid');
         } else {
             $vars['view'] = 'grid';
-            $glink = new Core\Link(dgettext('calendar', 'Grid'), 'calendar', $vars);
+            $glink = new \core\Link(dgettext('calendar', 'Grid'), 'calendar', $vars);
             $glink->setNoFollow($no_follow);
             $links[] = $glink->get();
         }
@@ -936,7 +936,7 @@ class Calendar_User {
             $links[] = dgettext('calendar', 'Month');
         } else {
             $vars['view'] = 'list';
-            $glink = new Core\Link(dgettext('calendar', 'Month'), 'calendar', $vars);
+            $glink = new \core\Link(dgettext('calendar', 'Month'), 'calendar', $vars);
             $glink->setNoFollow($no_follow);
             $links[] = $glink->get();
         }
@@ -953,7 +953,7 @@ class Calendar_User {
             $links[] = dgettext('calendar', 'Week');
         } else {
             $vars['view'] = 'week';
-            $wlink = new Core\Link(dgettext('calendar', 'Week'), 'calendar', $vars);
+            $wlink = new \core\Link(dgettext('calendar', 'Week'), 'calendar', $vars);
             $wlink->setNoFollow($no_follow);
             $links[] = $wlink->get();
         }
@@ -970,7 +970,7 @@ class Calendar_User {
             $links[] = dgettext('calendar', 'Day');
         } else {
             $vars['view'] = 'day';
-            $dlink = new Core\Link(dgettext('calendar', 'Day'), 'calendar', $vars);
+            $dlink = new \core\Link(dgettext('calendar', 'Day'), 'calendar', $vars);
             $dlink->setNoFollow($no_follow);
             $links[] = $dlink->get();
         }
@@ -979,7 +979,7 @@ class Calendar_User {
 
         if (!empty($left_arrow_time)) {
             $vars['date'] = $left_arrow_time;
-            $larrow = new Core\Link('&lt;&lt;', 'calendar', $vars);
+            $larrow = new \core\Link('&lt;&lt;', 'calendar', $vars);
             $larrow->setTitle($left_link_title);
             $larrow->setNoFollow($no_follow);
             array_unshift($links, $larrow->get());
@@ -987,7 +987,7 @@ class Calendar_User {
 
         if (!empty($right_arrow_time)) {
             $vars['date'] = $right_arrow_time;
-            $rarrow = new Core\Link('&gt;&gt;', 'calendar', $vars);
+            $rarrow = new \core\Link('&gt;&gt;', 'calendar', $vars);
             $rarrow->setTitle($right_link_title);
             $rarrow->setNoFollow($no_follow);
             $links[] = $rarrow->get();
@@ -1000,11 +1000,11 @@ class Calendar_User {
     public function week()
     {
         strftime('%c', $this->calendar->current_date);
-        if (Core\Settings::get('calendar', 'use_calendar_style')) {
+        if (core\Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
 
-        $start_day = Core\Settings::get('calendar','starting_day');
+        $start_day = \core\Settings::get('calendar','starting_day');
         $current_weekday = date('w', $this->calendar->current_date);
 
         if ($current_weekday != $start_day) {
@@ -1017,11 +1017,11 @@ class Calendar_User {
         $enddate = $startdate + (86400 * 7) - 1;
 
         $this->calendar->loadEventList($startdate, $enddate);
-        if (Core\Settings::get('calendar', 'use_calendar_style')) {
+        if (core\Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
 
-        $tpl = new Core\Template('calendar');
+        $tpl = new \core\Template('calendar');
         $tpl->setFile('view/week.tpl');
 
         $start_range = strftime(CALENDAR_WEEK_HEADER, $startdate);
@@ -1042,7 +1042,7 @@ class Calendar_User {
             $day_result = $this->getDaysEvents($i, $tpl);
             if ($day_result) {
                 $events_found = true;
-                $link = Core\Text::linkAddress('calendar', array('date'=>$i, 'view'=>'day'));
+                $link = \core\Text::linkAddress('calendar', array('date'=>$i, 'view'=>'day'));
                 $day_tpl['FULL_WEEKDAY'] = sprintf('<a href="%s">%s</a>', $link, strftime('%A', $i));
                 $day_tpl['ABBR_WEEKDAY'] = sprintf('<a href="%s">%s</a>', $link, strftime('%a', $i));
                 $day_tpl['DAY_NUMBER']   = sprintf('<a href="%s">%s</a>', $link, strftime('%e', $i));
@@ -1078,7 +1078,7 @@ class Calendar_User {
     /**
      * Fills in the header weekdays on the grid layout
      */
-    public function _weekday($oMonth, Core\Template $oTpl)
+    public function _weekday($oMonth, \core\Template $oTpl)
     {
         $day_count = 0;
 
@@ -1099,13 +1099,13 @@ class Calendar_User {
 
     public function upcomingEvents()
     {
-        $db = new Core\DB('calendar_schedule');
+        $db = new \core\DB('calendar_schedule');
         $db->addWhere('show_upcoming', 0, '>');
         $db->addWhere('public', 1);
-        Core\Key::restrictView($db, 'calendar');
+        \core\Key::restrictView($db, 'calendar');
 
         $result = $db->getObjects('Calendar_Schedule');
-        if (Core\Error::logIfError($result) || !$result) {
+        if (core\Error::logIfError($result) || !$result) {
             return null;
         }
 
@@ -1154,7 +1154,7 @@ class Calendar_User {
 
                 if ($current_day != strftime(CALENDAR_UPCOMING_FORMAT, $event->start_time)) {
                     $current_day = strftime(CALENDAR_UPCOMING_FORMAT, $event->start_time);
-                    $tpl['events'][$count]['DAY'] = Core\Text::moduleLink($current_day, 'calendar', $vars);
+                    $tpl['events'][$count]['DAY'] = \core\Text::moduleLink($current_day, 'calendar', $vars);
                 } else {
                     $tpl['events'][$count]['DAY'] = null;
                 }
@@ -1162,13 +1162,13 @@ class Calendar_User {
                 $count++;
             }
 
-            $upcoming[] = Core\Template::process($tpl, 'calendar', 'view/upcoming.tpl');
+            $upcoming[] = \core\Template::process($tpl, 'calendar', 'view/upcoming.tpl');
         }
 
         if (!empty($upcoming)) {
             $ftpl['TITLE'] = dgettext('calendar', 'Upcoming events');
             $ftpl['CONTENT'] = implode("\n", $upcoming);
-            return Core\Template::process($ftpl, 'calendar', 'user_main.tpl');
+            return \core\Template::process($ftpl, 'calendar', 'user_main.tpl');
         } else {
             return null;
         }
@@ -1180,8 +1180,8 @@ class Calendar_User {
             $dl['uop'] = 'ical_event_dl';
             $dl['sch_id'] = $this->calendar->schedule->id;
             $dl['event_id'] = $event_id;
-            $icon = Core\Icon::show('download');
-            $download = new Core\Link($icon, 'calendar', $dl);
+            $icon = \core\Icon::show('download');
+            $download = new \core\Link($icon, 'calendar', $dl);
             $download->setNoFollow();
             return $download->get();
         } else {
@@ -1196,8 +1196,8 @@ class Calendar_User {
             $dl['sch_id'] = $this->calendar->schedule->id;
             $dl['sdate'] = $startdate;
             $dl['edate'] = $enddate;
-            $icon = Core\Icon::show('download');
-            $download = new Core\Link($icon, 'calendar', $dl);
+            $icon = \core\Icon::show('download');
+            $download = new \core\Link($icon, 'calendar', $dl);
             $download->setNoFollow();
             return $download->get();
         } else {

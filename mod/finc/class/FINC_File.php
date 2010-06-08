@@ -46,9 +46,9 @@ class Finc_File {
 
     function init()
     {
-        $db = new Core\DB('finc_file');
+        $db = new \core\DB('finc_file');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -71,7 +71,7 @@ class Finc_File {
 
     function setDescription($description)
     {
-        $this->description = Core\Text::parseInput($description);
+        $this->description = \core\Text::parseInput($description);
     }
 
 
@@ -88,7 +88,7 @@ class Finc_File {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->title);
+            return \core\Text::parseOutput($this->title);
         } else {
             return $this->title;
         }
@@ -102,7 +102,7 @@ class Finc_File {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->path);
+            return \core\Text::parseOutput($this->path);
         } else {
             return $this->path;
         }
@@ -116,7 +116,7 @@ class Finc_File {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->description);
+            return \core\Text::parseOutput($this->description);
         } else {
             return $this->description;
         }
@@ -131,9 +131,9 @@ class Finc_File {
     function getContents()
     {
         if (!$this->id) {
-            Core\Core::errorPage(404);
+            \core\Core::errorPage(404);
         }
-        $key = new Core\Key($this->key_id);
+        $key = new \core\Key($this->key_id);
 
         $filename = $this->getPath();
         if (@fopen($filename, "rb")) {
@@ -155,11 +155,11 @@ class Finc_File {
             return;
         }
 
-        $db = new Core\DB('finc_file');
+        $db = new \core\DB('finc_file');
         $db->addWhere('id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
-        Core\Key::drop($this->key_id);
+        \core\Key::drop($this->key_id);
 
     }
 
@@ -170,22 +170,22 @@ class Finc_File {
 
         if (Current_User::isUnrestricted('finc')) {
             $vars['aop']  = 'edit_file';
-            $label = Core\Icon::show('edit');
-            $links[] = Core\Text::secureLink($label, 'finc', $vars);
+            $label = \core\Icon::show('edit');
+            $links[] = \core\Text::secureLink($label, 'finc', $vars);
             if ($this->active) {
                 $vars['aop'] = 'deactivate_file';
-                $label = Core\Icon::show('active', dgettext('finc', 'Deactivate'));
-                $active = Core\Text::secureLink($label, 'finc', $vars);
+                $label = \core\Icon::show('active', dgettext('finc', 'Deactivate'));
+                $active = \core\Text::secureLink($label, 'finc', $vars);
             } else {
                 $vars['aop'] = 'activate_file';
-                $label = Core\Icon::show('inactive', dgettext('finc', 'Activate'));
-                $active = Core\Text::secureLink($label, 'finc', $vars);
+                $label = \core\Icon::show('inactive', dgettext('finc', 'Activate'));
+                $active = \core\Text::secureLink($label, 'finc', $vars);
             }
             $links[] = $active;
             $vars['aop'] = 'delete_file';
-            $js['ADDRESS'] = Core\Text::linkAddress('finc', $vars, true);
+            $js['ADDRESS'] = \core\Text::linkAddress('finc', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('finc', 'Are you sure you want to delete the file %s?\n\nOnly the databse record will be destroyed. You will still have to physically remove "%s" from your file system.'), $this->getTitle(true), $this->getPath());
-            $js['LINK'] = Core\Icon::show('delete');
+            $js['LINK'] = \core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -200,10 +200,10 @@ class Finc_File {
 
     function save()
     {
-        $db = new Core\DB('finc_file');
+        $db = new \core\DB('finc_file');
 
         $result = $db->saveObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -215,11 +215,11 @@ class Finc_File {
     function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Core\Key;
+            $key = new \core\Key;
         } else {
-            $key = new Core\Key($this->key_id);
-            if (Core\Error::isError($key->_error)) {
-                $key = new Core\Key;
+            $key = new \core\Key($this->key_id);
+            if (core\Error::isError($key->_error)) {
+                $key = new \core\Key;
             }
         }
 
@@ -231,16 +231,16 @@ class Finc_File {
         $key->setTitle($this->title);
         $key->setSummary($this->description);
         $result = $key->save();
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return false;
         }
 
         if (!$this->key_id) {
             $this->key_id = $key->id;
-            $db = new Core\DB('finc_file');
+            $db = new \core\DB('finc_file');
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
-            Core\Error::logIfError($db->update());
+            \core\Error::logIfError($db->update());
         }
         return true;
     }
@@ -248,7 +248,7 @@ class Finc_File {
 
     function viewLink($bare=false)
     {
-                $link = new Core\Link($this->title, 'finc', array('id'=>$this->id));
+                $link = new \core\Link($this->title, 'finc', array('id'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {

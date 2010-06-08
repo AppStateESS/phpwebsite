@@ -24,7 +24,7 @@ class Comment_Rank {
 
     private function init($load_user_ranks=true)
     {
-        $db = new Core\DB('comments_ranks');
+        $db = new \core\DB('comments_ranks');
         $result = $db->loadObject($this);
 
         if (!$this->group_id) {
@@ -45,24 +45,24 @@ class Comment_Rank {
 
     public function loadUserRanks()
     {
-        Core\Core::initModClass('comments', 'User_Rank.php');
-        $db = new Core\DB('comments_user_ranks');
+        \core\Core::initModClass('comments', 'User_Rank.php');
+        $db = new \core\DB('comments_user_ranks');
         $db->setIndexBy('id');
         $db->addWhere('rank_id', $this->id);
         $db->addOrder('min_posts');
         $result = $db->getObjects('Comment_User_Rank');
 
-        if (!Core\Error::logIfError($result)) {
+        if (!core\Error::logIfError($result)) {
             $this->user_ranks = & $result;
         }
     }
 
     public function save()
     {
-        $db = new Core\DB('comments_ranks');
+        $db = new \core\DB('comments_ranks');
         $result = $db->saveObject($this);
 
-        return !Core\Error::logIfError($result);
+        return !core\Error::logIfError($result);
     }
 
     public function delete()
@@ -71,15 +71,15 @@ class Comment_Rank {
         if (!$this->group_id) {
             return false;
         }
-        $db = new Core\DB('comments_ranks');
+        $db = new \core\DB('comments_ranks');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return false;
         }
-        $db = new Core\DB('comments_user_ranks');
+        $db = new \core\DB('comments_user_ranks');
         $db->addWhere('rank_id', $this->id);
-        return !Core\Error::logIfError($db->delete());
+        return !core\Error::logIfError($db->delete());
     }
 
     public function allowLocal($comments_made)

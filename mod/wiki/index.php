@@ -29,7 +29,7 @@ if (!defined('PHPWS_SOURCE_DIR'))
     exit();
 }
 
-Core\Core::initModClass('wiki', 'WikiManager.php');
+core\Core::initModClass('wiki', 'WikiManager.php');
 WikiManager::action();
 
 ?>

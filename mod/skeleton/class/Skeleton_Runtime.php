@@ -27,9 +27,9 @@ class Skeleton_Runtime
 {
 
     public static function showBlock() {
-        if (Core\Settings::get('skeleton', 'enable_sidebox')) {
-            if (Core\Settings::get('skeleton', 'sidebox_homeonly')) {
-                $key = Core\Key::getCurrent();
+        if (core\Settings::get('skeleton', 'enable_sidebox')) {
+            if (core\Settings::get('skeleton', 'sidebox_homeonly')) {
+                $key = \core\Key::getCurrent();
                 if (!empty($key) && $key->isHomeKey()) {
                     Skeleton_Runtime::showSkeletonBlock();
                 }
@@ -41,16 +41,16 @@ class Skeleton_Runtime
 
     public function showSkeletonBlock() {
 
-        $db = new Core\DB('skeleton_skeletons');
+        $db = new \core\DB('skeleton_skeletons');
         $db->addColumn('id');
         $db->addOrder('rand');
         $db->setLimit(1);
         $result = $db->select();
-        if (!Core\Error::logIfError($result) && !empty($result)) {
+        if (!core\Error::logIfError($result) && !empty($result)) {
             $tpl['TITLE'] = dgettext('skeleton', 'Skeletons');
             $tpl['LABEL'] = dgettext('skeleton', 'Random Skeleton');
-            $tpl['TEXT'] = Core\Text::parseOutput(Core\Settings::get('skeleton', 'sidebox_text'));
-            Core\Core::initModClass('skeleton', 'Skeleton_Skeleton.php');
+            $tpl['TEXT'] = \core\Text::parseOutput(core\Settings::get('skeleton', 'sidebox_text'));
+            \core\Core::initModClass('skeleton', 'Skeleton_Skeleton.php');
             $skeleton = new Skeleton_Skeleton($result[0]['id']);
             $tpl['NAME'] = $skeleton->viewLink();
             if ($skeleton->file_id) {
@@ -58,9 +58,9 @@ class Skeleton_Runtime
             } else {
                 $tpl['THUMBNAIL'] = null;
             }
-            $tpl['LINK'] = Core\Text::moduleLink(dgettext('skeleton', 'List all skeletons'), 'skeleton', array('uop'=>'list_skeletons'));
-            Core\Core::initModClass('layout', 'Layout.php');
-            Layout::add(Core\Template::process($tpl, 'skeleton', 'block.tpl'), 'skeleton', 'skeleton_sidebox');
+            $tpl['LINK'] = \core\Text::moduleLink(dgettext('skeleton', 'List all skeletons'), 'skeleton', array('uop'=>'list_skeletons'));
+            \core\Core::initModClass('layout', 'Layout.php');
+            Layout::add(core\Template::process($tpl, 'skeleton', 'block.tpl'), 'skeleton', 'skeleton_sidebox');
         }
 
     }

@@ -98,7 +98,7 @@ function branch_update(&$content, $version)
         case version_compare($version, '1.1.6', '<'):
             $content[] = '<pre>1.1.6 Changes
 -------------
-+ Uses core\'s default htaccess file.</pre>';
++ Uses \core\'s default htaccess file.</pre>';
 
         case version_compare($version, '1.2.0', '<'):
             $content[] = '<pre>1.2.0 Changes

@@ -23,9 +23,9 @@
  */
 
 
-Core\Core::requireInc('rolodex', 'errordefines.php');
-Core\Core::requireConfig('rolodex');
-Core\Core::requireConfig('comments');
+core\Core::requireInc('rolodex', 'errordefines.php');
+core\Core::requireConfig('rolodex');
+core\Core::requireConfig('comments');
 
 class Rolodex {
     public $forms    = null;
@@ -68,14 +68,14 @@ class Rolodex {
             case 'edit_feature':
             case 'post_feature':
             case 'delete_feature':
-                Core\Core::initModClass('rolodex', 'RDX_Forms.php');
+                \core\Core::initModClass('rolodex', 'RDX_Forms.php');
                 $settingsPanel = Rolodex_Forms::settingsPanel();
                 $settingsPanel->enableSecure();
                 break;
             case 'menu':
                 if (isset($_GET['tab'])) {
                     if ($_GET['tab'] == 'settings' || $_GET['tab'] == 'utilities' || $_GET['tab'] == 'locations' || $_GET['tab'] == 'features') {
-                        Core\Core::initModClass('rolodex', 'RDX_Forms.php');
+                        \core\Core::initModClass('rolodex', 'RDX_Forms.php');
                         $settingsPanel = Rolodex_Forms::settingsPanel();
                         $settingsPanel->enableSecure();
                     }
@@ -99,11 +99,11 @@ class Rolodex {
                 if (!Current_User::authorized('rolodex', 'settings')) {
                     Current_User::disallow();
                 }
-                $oldsearch = Core\Settings::get('rolodex', 'privacy_use_search');
+                $oldsearch = \core\Settings::get('rolodex', 'privacy_use_search');
                 if ($this->postSettings()) {
                     $msg = dgettext('rolodex', 'Rolodex settings saved.') . '<br />';
-                    if ($oldsearch != Core\Settings::get('rolodex', 'privacy_use_search')) {
-                        if (Core\Settings::get('rolodex', 'privacy_use_search')) {
+                    if ($oldsearch != \core\Settings::get('rolodex', 'privacy_use_search')) {
+                        if (core\Settings::get('rolodex', 'privacy_use_search')) {
                             if ($this->search_index_all())
                                 $msg .= dgettext('rolodex', 'All current member records have been indexed with the search module.');
                         } else {
@@ -112,7 +112,7 @@ class Rolodex {
                         }
                     }
                     $this->forwardMessage($msg);
-                    Core\Core::reroute('index.php?module=rolodex&aop=menu');
+                    \core\Core::reroute('index.php?module=rolodex&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -127,12 +127,12 @@ class Rolodex {
                     Current_User::disallow();
                 }
                 if ($this->postMember()) {
-                    if (Core\Error::logIfError($this->member->saveMember())) {
+                    if (core\Error::logIfError($this->member->saveMember())) {
                         $this->forwardMessage(dgettext('rolodex', 'Error occurred when saving member profile.'));
-                        Core\Core::reroute('index.php?module=rolodex&aop=edit_member&user_id=' . $this->member->user_id);
+                        \core\Core::reroute('index.php?module=rolodex&aop=edit_member&user_id=' . $this->member->user_id);
                     } else {
                         $this->forwardMessage(dgettext('rolodex', 'Member profile saved successfully.'));
-                        Core\Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
+                        \core\Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
                     }
                 } else {
                     $this->loadForm('edit_member');
@@ -165,7 +165,7 @@ class Rolodex {
 
             case 'reset_expired':
                 $settingsPanel->setCurrentTab('utilities');
-                $interval = Core\Settings::get('rolodex', 'expiry_interval');
+                $interval = \core\Settings::get('rolodex', 'expiry_interval');
                 $this->resetExpired($interval);
                 $this->message = sprintf(dgettext('rolodex', 'All expiry dates set to %s days from now.'), $interval);
                 $this->loadForm('utilities');
@@ -184,7 +184,7 @@ class Rolodex {
 
             case 'search_index_all':
                 $settingsPanel->setCurrentTab('utilities');
-                if (Core\Settings::get('rolodex', 'privacy_use_search')) {
+                if (core\Settings::get('rolodex', 'privacy_use_search')) {
                     $this->search_index_all();
                     $this->message = dgettext('rolodex', 'All current member records have been indexed with the search module.');
                 } else {
@@ -195,7 +195,7 @@ class Rolodex {
 
             case 'search_remove_all':
                 $settingsPanel->setCurrentTab('utilities');
-                if (Core\Settings::get('rolodex', 'privacy_use_search')) {
+                if (core\Settings::get('rolodex', 'privacy_use_search')) {
                     $this->message = dgettext('rolodex', 'Search indexing is enabled in Rolodex settings. You must disable it there before you may perform this action.');
                 } else {
                     $this->search_remove_all();
@@ -248,12 +248,12 @@ class Rolodex {
             case 'post_location':
                 $settingsPanel->setCurrentTab('locations');
                 if ($this->postLocation()) {
-                    if (Core\Error::logIfError($this->location->save())) {
+                    if (core\Error::logIfError($this->location->save())) {
                         $this->forwardMessage(dgettext('rolodex', 'Error occurred when saving location.'));
-                        Core\Core::reroute('index.php?module=rolodex&aop=edit_location&location=' . $this->location->id);
+                        \core\Core::reroute('index.php?module=rolodex&aop=edit_location&location=' . $this->location->id);
                     } else {
                         $this->forwardMessage(dgettext('rolodex', 'Location saved successfully.'));
-                        Core\Core::reroute('index.php?module=rolodex&aop=menu&tab=locations');
+                        \core\Core::reroute('index.php?module=rolodex&aop=menu&tab=locations');
                     }
                 } else {
                     $this->loadForm('edit_location');
@@ -277,12 +277,12 @@ class Rolodex {
             case 'post_feature':
                 $settingsPanel->setCurrentTab('features');
                 if ($this->postFeature()) {
-                    if (Core\Error::logIfError($this->feature->save())) {
+                    if (core\Error::logIfError($this->feature->save())) {
                         $this->forwardMessage(dgettext('rolodex', 'Error occurred when saving feature.'));
-                        Core\Core::reroute('index.php?module=rolodex&aop=edit_feature&feature=' . $this->feature->id);
+                        \core\Core::reroute('index.php?module=rolodex&aop=edit_feature&feature=' . $this->feature->id);
                     } else {
                         $this->forwardMessage(dgettext('rolodex', 'Feature saved successfully.'));
-                        Core\Core::reroute('index.php?module=rolodex&aop=menu&tab=features');
+                        \core\Core::reroute('index.php?module=rolodex&aop=menu&tab=features');
                     }
                 } else {
                     $this->loadForm('edit_feature');
@@ -334,9 +334,9 @@ class Rolodex {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'rolodex', 'main_admin.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'rolodex', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(Core\Template::process($tpl, 'rolodex', 'main_admin.tpl'));
+            $this->panel->setContent(core\Template::process($tpl, 'rolodex', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -345,7 +345,7 @@ class Rolodex {
 
     public function sendMessage()
     {
-        Core\Core::reroute('index.php?module=rolodex&amp;uop=message');
+        \core\Core::reroute('index.php?module=rolodex&amp;uop=message');
     }
 
     public function forwardMessage($message, $title=null)
@@ -364,7 +364,7 @@ class Rolodex {
             if (isset($_SESSION['RDX_Message']['title'])) {
                 $this->title = $_SESSION['RDX_Message']['title'];
             }
-            Core\Core::killSession('RDX_Message');
+            \core\Core::killSession('RDX_Message');
         }
     }
 
@@ -374,7 +374,7 @@ class Rolodex {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                Core\Core::errorPage('404');
+                \core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -387,17 +387,17 @@ class Rolodex {
             case 'message':
                 $this->loadMessage();
                 if (empty($this->message)) {
-                    Core\Core::home();
+                    \core\Core::home();
                 }
-                $this->title = Core\Settings::get('rolodex', 'module_title');
+                $this->title = \core\Settings::get('rolodex', 'module_title');
                 break;
 
             case 'list':
-                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = Core\Settings::get('rolodex', 'module_title');
+                if (!core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = \core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
-                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
+                    \core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->listMembers(1);
@@ -405,11 +405,11 @@ class Rolodex {
                 break;
 
             case 'categories':
-                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = Core\Settings::get('rolodex', 'module_title');
+                if (!core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = \core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
-                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
+                    \core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
 //                    $this->forms->categories();
@@ -418,11 +418,11 @@ class Rolodex {
                 break;
 
             case 'locations':
-                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = Core\Settings::get('rolodex', 'module_title');
+                if (!core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = \core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
-                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
+                    \core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->listLocations();
@@ -430,11 +430,11 @@ class Rolodex {
                 break;
 
             case 'features':
-                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = Core\Settings::get('rolodex', 'module_title');
+                if (!core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = \core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
-                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
+                    \core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->listFeatures();
@@ -442,11 +442,11 @@ class Rolodex {
                 break;
 
             case 'advanced':
-                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = Core\Settings::get('rolodex', 'module_title');
+                if (!core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = \core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
-                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
+                    \core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->advSearchForm();
@@ -454,11 +454,11 @@ class Rolodex {
                 break;
 
             case 'adv_search':
-                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = Core\Settings::get('rolodex', 'module_title');
+                if (!core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = \core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
-                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
+                    \core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->listMembers(1);
@@ -466,33 +466,33 @@ class Rolodex {
                 break;
 
             case 'export':
-                Core\Core::initModClass('rolodex', 'RDX_Member.php');
+                \core\Core::initModClass('rolodex', 'RDX_Member.php');
                 if (Rolodex_Member::isDataVisible('privacy_export')) {
                     $this->exportCSV();
                 } else {
-                    $this->title = Core\Settings::get('rolodex', 'module_title');
+                    $this->title = \core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, your access does not allow CSV exporting.');
                 }
                 break;
 
             case 'view_member':
-                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = Core\Settings::get('rolodex', 'module_title');
+                if (!core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = \core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this member.');
                 } else {
                     $this->loadMember();
                     if ($this->member->isMemberVisible()) {
-                        if (Core\Settings::get('rolodex', 'enable_expiry')) {
+                        if (core\Settings::get('rolodex', 'enable_expiry')) {
                             if ($this->member->date_expires <= time()) {
                                 $this->forwardMessage(dgettext('rolodex', 'Sorry, this membership has expired.'));
                                 if (!Current_User::isUnrestricted('rolodex'))
-                                    Core\Core::reroute('index.php?module=rolodex&uop=list');
+                                    \core\Core::reroute('index.php?module=rolodex&uop=list');
                             }
                         }
                         $this->title = $this->member->getDisplay_name(true);
                         $this->content = $this->member->view();
                     } else {
-                        $this->title = Core\Settings::get('rolodex', 'module_title');
+                        $this->title = \core\Settings::get('rolodex', 'module_title');
                         $this->content = dgettext('rolodex', 'Sorry, this user has restricted privacy settings.');
                     }
                 }
@@ -517,12 +517,12 @@ class Rolodex {
 
             case 'send_message':
                 if ($this->checkMessage()) {
-                    if (!Core\Error::logIfError($this->sendMail())) {
+                    if (!core\Error::logIfError($this->sendMail())) {
                         $this->forwardMessage(dgettext('rolodex', 'Message sent succesfully.'));
-                        Core\Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
+                        \core\Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
                     } else {
                         $this->forwardMessage(dgettext('rolodex', 'There was a problem sending the message.'));
-                        Core\Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
+                        \core\Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
                     }
                 } else {
                     $this->loadForm('message_member');
@@ -538,20 +538,20 @@ class Rolodex {
                     Current_User::disallow();
                 }
                 if ($this->postMember()) {
-                    if (Core\Error::logIfError($this->member->saveMember())) {
-                        if (Core\Settings::get('rolodex', 'req_approval')) {
+                    if (core\Error::logIfError($this->member->saveMember())) {
+                        if (core\Settings::get('rolodex', 'req_approval')) {
                             $this->forwardMessage(dgettext('rolodex', 'Error occurred when submitting member profile.'));
                         } else {
                             $this->forwardMessage(dgettext('rolodex', 'Error occurred when saving member profile.'));
                         }
-                        Core\Core::reroute('index.php?module=rolodex&uop=edit_member&user_id=' . $this->member->user_id);
+                        \core\Core::reroute('index.php?module=rolodex&uop=edit_member&user_id=' . $this->member->user_id);
                     } else {
-                        if (Core\Settings::get('rolodex', 'req_approval') && $this->member->isNew()) {
+                        if (core\Settings::get('rolodex', 'req_approval') && $this->member->isNew()) {
                             $this->forwardMessage(dgettext('rolodex', 'Member profile submitted successfully. An admin will review.'));
-                            Core\Core::reroute('index.php?module=rolodex&uop=list');
+                            \core\Core::reroute('index.php?module=rolodex&uop=list');
                         } else {
                             $this->forwardMessage(dgettext('rolodex', 'Member profile saved successfully.'));
-                            Core\Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
+                            \core\Core::reroute('index.php?module=rolodex&id=' . $this->member->user_id);
                         }
                     }
                 } else {
@@ -560,8 +560,8 @@ class Rolodex {
                 break;
 
             case 'view_location':
-                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = Core\Settings::get('rolodex', 'module_title');
+                if (!core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = \core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
                     if (isset($_REQUEST['location_id'])) {
@@ -571,7 +571,7 @@ class Rolodex {
                     } elseif (isset($_REQUEST['id'])) {
                         $id = $_REQUEST['id'];
                     }
-                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
+                    \core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->listMembers(1, false, $id, null, null);
@@ -579,8 +579,8 @@ class Rolodex {
                 break;
 
             case 'view_feature':
-                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = Core\Settings::get('rolodex', 'module_title');
+                if (!core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = \core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
                     if (isset($_REQUEST['feature_id'])) {
@@ -590,7 +590,7 @@ class Rolodex {
                     } elseif (isset($_REQUEST['id'])) {
                         $id = $_REQUEST['id'];
                     }
-                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
+                    \core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->listMembers(1, false, null, $id, null);
@@ -598,8 +598,8 @@ class Rolodex {
                 break;
 
             case 'view_category':
-                if (!Core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
-                    $this->title = Core\Settings::get('rolodex', 'module_title');
+                if (!core\Settings::get('rolodex', 'allow_anon') && !Current_User::getId()) {
+                    $this->title = \core\Settings::get('rolodex', 'module_title');
                     $this->content = dgettext('rolodex', 'Sorry, anonymous member viewing is not allowed. You will need to login to view this directory.');
                 } else {
                     if (isset($_REQUEST['category_id'])) {
@@ -609,7 +609,7 @@ class Rolodex {
                     } elseif (isset($_REQUEST['id'])) {
                         $id = $_REQUEST['id'];
                     }
-                    Core\Core::initModClass('rolodex', 'RDX_Forms.php');
+                    \core\Core::initModClass('rolodex', 'RDX_Forms.php');
                     $this->forms = new Rolodex_Forms;
                     $this->forms->rolodex = & $this;
                     $this->forms->listMembers(1, false, null, null, $id);
@@ -624,9 +624,9 @@ class Rolodex {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'rolodex', 'main_user.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'rolodex', 'main_user.tpl'));
         } else {
-            Layout::add(Core\Template::process($tpl, 'rolodex', 'main_user.tpl'));
+            Layout::add(core\Template::process($tpl, 'rolodex', 'main_user.tpl'));
         }
 
     }
@@ -634,7 +634,7 @@ class Rolodex {
 
     public function loadForm($type)
     {
-        Core\Core::initModClass('rolodex', 'RDX_Forms.php');
+        \core\Core::initModClass('rolodex', 'RDX_Forms.php');
         $this->forms = new Rolodex_Forms;
         $this->forms->rolodex = & $this;
         $this->forms->get($type);
@@ -643,7 +643,7 @@ class Rolodex {
 
     public function loadMember($user_id=0)
     {
-        Core\Core::initModClass('rolodex', 'RDX_Member.php');
+        \core\Core::initModClass('rolodex', 'RDX_Member.php');
 
         if ($user_id) {
             $this->member = new Rolodex_Member($user_id);
@@ -659,7 +659,7 @@ class Rolodex {
 
     public function loadLocation($id=0)
     {
-        Core\Core::initModClass('rolodex', 'RDX_Location.php');
+        \core\Core::initModClass('rolodex', 'RDX_Location.php');
 
         if ($id) {
             $this->location = new Rolodex_Location($id);
@@ -677,7 +677,7 @@ class Rolodex {
 
     public function loadFeature($id=0)
     {
-        Core\Core::initModClass('rolodex', 'RDX_Feature.php');
+        \core\Core::initModClass('rolodex', 'RDX_Feature.php');
 
         if ($id) {
             $this->feature = new Rolodex_Feature($id);
@@ -695,7 +695,7 @@ class Rolodex {
 
     public function loadCategory($id=0)
     {
-        Core\Core::initModClass('categories', 'Category.php');
+        \core\Core::initModClass('categories', 'Category.php');
 
         if ($id) {
             $this->category = new Category($id);
@@ -712,7 +712,7 @@ class Rolodex {
 
     public function loadPanel()
     {
-        Core\Core::initModClass('controlpanel', 'Panel.php');
+        \core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('rolodex-panel');
         $link = 'index.php?module=rolodex&aop=menu';
 
@@ -724,12 +724,12 @@ class Rolodex {
                               'link'=>$link);
 
         if (Current_User::isUnrestricted('rolodex')) {
-            $db = new Core\DB('rolodex_member');
+            $db = new \core\DB('rolodex_member');
             $db->addWhere('active', 0);
             $unapproved = $db->count();
             $tags['approvals'] = array('title'=>sprintf(dgettext('rolodex', 'Unapproved (%s)'), $unapproved), 'link'=>$link);
-            if (Core\Settings::get('rolodex', 'enable_expiry')) {
-                $db = new Core\DB('rolodex_member');
+            if (core\Settings::get('rolodex', 'enable_expiry')) {
+                $db = new \core\DB('rolodex_member');
                 $db->addWhere('date_expires', time(), '<=');
                 $expired = $db->count();
                 $tags['expired'] = array('title'=>sprintf(dgettext('rolodex', 'Expired (%s)'), $expired), 'link'=>$link);
@@ -753,259 +753,259 @@ class Rolodex {
     {
 
         if (!empty($_POST['module_title'])) {
-            Core\Settings::set('rolodex', 'module_title', strip_tags($_POST['module_title']));
+            \core\Settings::set('rolodex', 'module_title', strip_tags($_POST['module_title']));
         } else {
             $errors[] = dgettext('rolodex', 'Please provide a module title.');
         }
 
         isset($_POST['allow_anon']) ?
-            Core\Settings::set('rolodex', 'allow_anon', 1) :
-            Core\Settings::set('rolodex', 'allow_anon', 0);
+            \core\Settings::set('rolodex', 'allow_anon', 1) :
+            \core\Settings::set('rolodex', 'allow_anon', 0);
 
-        Core\Settings::set('rolodex', 'sortby', (int)$_POST['sortby']);
+        \core\Settings::set('rolodex', 'sortby', (int)$_POST['sortby']);
 
         isset($_POST['req_approval']) ?
-            Core\Settings::set('rolodex', 'req_approval', 1) :
-            Core\Settings::set('rolodex', 'req_approval', 0);
+            \core\Settings::set('rolodex', 'req_approval', 1) :
+            \core\Settings::set('rolodex', 'req_approval', 0);
 
         isset($_POST['send_notification']) ?
-            Core\Settings::set('rolodex', 'send_notification', 1) :
-            Core\Settings::set('rolodex', 'send_notification', 0);
+            \core\Settings::set('rolodex', 'send_notification', 1) :
+            \core\Settings::set('rolodex', 'send_notification', 0);
 
         isset($_POST['notify_all_saves']) ?
-            Core\Settings::set('rolodex', 'notify_all_saves', 1) :
-            Core\Settings::set('rolodex', 'notify_all_saves', 0);
+            \core\Settings::set('rolodex', 'notify_all_saves', 1) :
+            \core\Settings::set('rolodex', 'notify_all_saves', 0);
 
         if (isset($_POST['admin_contact']) && ($_POST['admin_contact']) !== '') {
-            if (Core\Text::isValidInput($_POST['admin_contact'], 'email')) {
-                Core\Settings::set('rolodex', 'admin_contact', $_POST['admin_contact']);
+            if (core\Text::isValidInput($_POST['admin_contact'], 'email')) {
+                \core\Settings::set('rolodex', 'admin_contact', $_POST['admin_contact']);
             } else {
                 $errors[] = dgettext('rolodex', 'Check your admin contact e-mail address for formatting errors.');
             }
         } else {
-            Core\Settings::set('rolodex', 'admin_contact', null);
+            \core\Settings::set('rolodex', 'admin_contact', null);
         }
 
         isset($_POST['use_categories']) ?
-            Core\Settings::set('rolodex', 'use_categories', 1) :
-            Core\Settings::set('rolodex', 'use_categories', 0);
+            \core\Settings::set('rolodex', 'use_categories', 1) :
+            \core\Settings::set('rolodex', 'use_categories', 0);
 
         isset($_POST['use_locations']) ?
-            Core\Settings::set('rolodex', 'use_locations', 1) :
-            Core\Settings::set('rolodex', 'use_locations', 0);
+            \core\Settings::set('rolodex', 'use_locations', 1) :
+            \core\Settings::set('rolodex', 'use_locations', 0);
 
         isset($_POST['use_features']) ?
-            Core\Settings::set('rolodex', 'use_features', 1) :
-            Core\Settings::set('rolodex', 'use_features', 0);
+            \core\Settings::set('rolodex', 'use_features', 1) :
+            \core\Settings::set('rolodex', 'use_features', 0);
 
         if (isset($_POST['comments_enable'])) {
             if (isset($_POST['comments_enforce'])) {
-                Core\Settings::set('rolodex', 'comments_enforce', 1);
+                \core\Settings::set('rolodex', 'comments_enforce', 1);
                 $this->setAllComments(1);
             } else {
-                Core\Settings::set('rolodex', 'comments_enforce', 0);
+                \core\Settings::set('rolodex', 'comments_enforce', 0);
             }
-            Core\Settings::set('rolodex', 'comments_enable', 1);
+            \core\Settings::set('rolodex', 'comments_enable', 1);
             if (isset($_POST['comments_anon_enable'])) {
                 if (isset($_POST['comments_anon_enforce'])) {
-                    Core\Settings::set('rolodex', 'comments_anon_enforce', 1);
+                    \core\Settings::set('rolodex', 'comments_anon_enforce', 1);
                     $this->setAllComments_annon(1);
                 } else {
-                    Core\Settings::set('rolodex', 'comments_anon_enforce', 0);
+                    \core\Settings::set('rolodex', 'comments_anon_enforce', 0);
                 }
-                Core\Settings::set('rolodex', 'comments_anon_enable', 1);
+                \core\Settings::set('rolodex', 'comments_anon_enable', 1);
             } else {
-                Core\Settings::set('rolodex', 'comments_anon_enable', 0);
-                Core\Settings::set('rolodex', 'comments_anon_enforce', 0);
+                \core\Settings::set('rolodex', 'comments_anon_enable', 0);
+                \core\Settings::set('rolodex', 'comments_anon_enforce', 0);
             }
         } else {
-            Core\Settings::set('rolodex', 'comments_enable', 0);
-            Core\Settings::set('rolodex', 'comments_enforce', 0);
-            Core\Settings::set('rolodex', 'comments_anon_enable', 0);
-            Core\Settings::set('rolodex', 'comments_anon_enforce', 0);
+            \core\Settings::set('rolodex', 'comments_enable', 0);
+            \core\Settings::set('rolodex', 'comments_enforce', 0);
+            \core\Settings::set('rolodex', 'comments_anon_enable', 0);
+            \core\Settings::set('rolodex', 'comments_anon_enforce', 0);
         }
 
-        Core\Settings::set('rolodex', 'contact_type', $_POST['contact_type']);
-        Core\Settings::set('rolodex', 'privacy_contact', $_POST['privacy_contact']);
-        Core\Settings::set('rolodex', 'privacy_web', $_POST['privacy_web']);
-        Core\Settings::set('rolodex', 'privacy_home_phone', $_POST['privacy_home_phone']);
-        Core\Settings::set('rolodex', 'privacy_bus_phone', $_POST['privacy_bus_phone']);
-        Core\Settings::set('rolodex', 'privacy_home', $_POST['privacy_home']);
-        Core\Settings::set('rolodex', 'privacy_business', $_POST['privacy_business']);
-        Core\Settings::set('rolodex', 'privacy_export', $_POST['privacy_export']);
-        Core\Settings::set('rolodex', 'privacy_use_search', $_POST['privacy_use_search']);
+        \core\Settings::set('rolodex', 'contact_type', $_POST['contact_type']);
+        \core\Settings::set('rolodex', 'privacy_contact', $_POST['privacy_contact']);
+        \core\Settings::set('rolodex', 'privacy_web', $_POST['privacy_web']);
+        \core\Settings::set('rolodex', 'privacy_home_phone', $_POST['privacy_home_phone']);
+        \core\Settings::set('rolodex', 'privacy_bus_phone', $_POST['privacy_bus_phone']);
+        \core\Settings::set('rolodex', 'privacy_home', $_POST['privacy_home']);
+        \core\Settings::set('rolodex', 'privacy_business', $_POST['privacy_business']);
+        \core\Settings::set('rolodex', 'privacy_export', $_POST['privacy_export']);
+        \core\Settings::set('rolodex', 'privacy_use_search', $_POST['privacy_use_search']);
 
-        Core\Settings::set('rolodex', 'list_address', $_POST['list_address']);
+        \core\Settings::set('rolodex', 'list_address', $_POST['list_address']);
 
         isset($_POST['list_phone']) ?
-            Core\Settings::set('rolodex', 'list_phone', 1) :
-            Core\Settings::set('rolodex', 'list_phone', 0);
+            \core\Settings::set('rolodex', 'list_phone', 1) :
+            \core\Settings::set('rolodex', 'list_phone', 0);
 
         isset($_POST['list_categories']) ?
-            Core\Settings::set('rolodex', 'list_categories', 1) :
-            Core\Settings::set('rolodex', 'list_categories', 0);
+            \core\Settings::set('rolodex', 'list_categories', 1) :
+            \core\Settings::set('rolodex', 'list_categories', 0);
 
         isset($_POST['list_locations']) ?
-            Core\Settings::set('rolodex', 'list_locations', 1) :
-            Core\Settings::set('rolodex', 'list_locations', 0);
+            \core\Settings::set('rolodex', 'list_locations', 1) :
+            \core\Settings::set('rolodex', 'list_locations', 0);
 
         isset($_POST['list_features']) ?
-            Core\Settings::set('rolodex', 'list_features', 1) :
-            Core\Settings::set('rolodex', 'list_features', 0);
+            \core\Settings::set('rolodex', 'list_features', 1) :
+            \core\Settings::set('rolodex', 'list_features', 0);
 
 
         isset($_POST['enable_expiry']) ?
-            Core\Settings::set('rolodex', 'enable_expiry', 1) :
-            Core\Settings::set('rolodex', 'enable_expiry', 0);
+            \core\Settings::set('rolodex', 'enable_expiry', 1) :
+            \core\Settings::set('rolodex', 'enable_expiry', 0);
 
         if (isset($_POST['expiry_interval'])) {
-            Core\Settings::set('rolodex', 'expiry_interval', (int)$_POST['expiry_interval']);
+            \core\Settings::set('rolodex', 'expiry_interval', (int)$_POST['expiry_interval']);
         } else {
-            Core\Settings::reset('rolodex', 'expiry_interval');
+            \core\Settings::reset('rolodex', 'expiry_interval');
         }
 
         isset($_POST['use_captcha']) ?
-            Core\Settings::set('rolodex', 'use_captcha', 1) :
-            Core\Settings::set('rolodex', 'use_captcha', 0);
+            \core\Settings::set('rolodex', 'use_captcha', 1) :
+            \core\Settings::set('rolodex', 'use_captcha', 0);
 
         if ( !empty($_POST['max_img_width']) ) {
             $max_img_width = (int)$_POST['max_img_width'];
             if ($max_img_width >= 50 && $max_img_width <= 600 ) {
-                Core\Settings::set('rolodex', 'max_img_width', $max_img_width);
+                \core\Settings::set('rolodex', 'max_img_width', $max_img_width);
             }
         }
 
         if ( !empty($_POST['max_img_height']) ) {
             $max_img_height = (int)$_POST['max_img_height'];
             if ($max_img_height >= 50 && $max_img_height <= 600 ) {
-                Core\Settings::set('rolodex', 'max_img_height', $max_img_height);
+                \core\Settings::set('rolodex', 'max_img_height', $max_img_height);
             }
         }
 
         if ( !empty($_POST['max_thumb_width']) ) {
             $max_thumb_width = (int)$_POST['max_thumb_width'];
             if ($max_thumb_width >= 40 && $max_thumb_width <= 200 ) {
-                Core\Settings::set('rolodex', 'max_thumb_width', $max_thumb_width);
+                \core\Settings::set('rolodex', 'max_thumb_width', $max_thumb_width);
             }
         }
 
         if ( !empty($_POST['max_thumb_height']) ) {
             $max_thumb_height = (int)$_POST['max_thumb_height'];
             if ($max_thumb_height >= 40 && $max_thumb_height <= 200 ) {
-                Core\Settings::set('rolodex', 'max_thumb_height', $max_thumb_height);
+                \core\Settings::set('rolodex', 'max_thumb_height', $max_thumb_height);
             }
         }
 
         if ( !empty($_POST['other_img_width']) ) {
             $other_img_width = (int)$_POST['other_img_width'];
             if ($other_img_width >= 20 && $other_img_width <= 400 ) {
-                Core\Settings::set('rolodex', 'other_img_width', $other_img_width);
+                \core\Settings::set('rolodex', 'other_img_width', $other_img_width);
             }
         }
 
         if ( !empty($_POST['other_img_height']) ) {
             $other_img_height = (int)$_POST['other_img_height'];
             if ($other_img_height >= 20 && $other_img_height <= 400 ) {
-                Core\Settings::set('rolodex', 'other_img_height', $other_img_height);
+                \core\Settings::set('rolodex', 'other_img_height', $other_img_height);
             }
         }
 
         isset($_POST['show_block']) ?
-            Core\Settings::set('rolodex', 'show_block', 1) :
-            Core\Settings::set('rolodex', 'show_block', 0);
+            \core\Settings::set('rolodex', 'show_block', 1) :
+            \core\Settings::set('rolodex', 'show_block', 0);
 
-        Core\Settings::set('rolodex', 'block_order_by_rand', $_POST['block_order_by_rand']);
+        \core\Settings::set('rolodex', 'block_order_by_rand', $_POST['block_order_by_rand']);
 
         isset($_POST['block_on_home_only']) ?
-            Core\Settings::set('rolodex', 'block_on_home_only', 1) :
-            Core\Settings::set('rolodex', 'block_on_home_only', 0);
+            \core\Settings::set('rolodex', 'block_on_home_only', 1) :
+            \core\Settings::set('rolodex', 'block_on_home_only', 0);
 
         if (!empty($_POST['custom1_name'])) {
-            Core\Settings::set('rolodex', 'custom1_name', Core\Text::parseInput(strip_tags($_POST['custom1_name'])));
+            \core\Settings::set('rolodex', 'custom1_name', \core\Text::parseInput(strip_tags($_POST['custom1_name'])));
         } else {
-            Core\Settings::set('rolodex', 'custom1_name', null);
+            \core\Settings::set('rolodex', 'custom1_name', null);
         }
 
         if (!empty($_POST['custom2_name'])) {
-            Core\Settings::set('rolodex', 'custom2_name', Core\Text::parseInput(strip_tags($_POST['custom2_name'])));
+            \core\Settings::set('rolodex', 'custom2_name', \core\Text::parseInput(strip_tags($_POST['custom2_name'])));
         } else {
-            Core\Settings::set('rolodex', 'custom2_name', null);
+            \core\Settings::set('rolodex', 'custom2_name', null);
         }
 
         if (!empty($_POST['custom3_name'])) {
-            Core\Settings::set('rolodex', 'custom3_name', Core\Text::parseInput(strip_tags($_POST['custom3_name'])));
+            \core\Settings::set('rolodex', 'custom3_name', \core\Text::parseInput(strip_tags($_POST['custom3_name'])));
         } else {
-            Core\Settings::set('rolodex', 'custom3_name', null);
+            \core\Settings::set('rolodex', 'custom3_name', null);
         }
 
         if (!empty($_POST['custom4_name'])) {
-            Core\Settings::set('rolodex', 'custom4_name', Core\Text::parseInput(strip_tags($_POST['custom4_name'])));
+            \core\Settings::set('rolodex', 'custom4_name', \core\Text::parseInput(strip_tags($_POST['custom4_name'])));
         } else {
-            Core\Settings::set('rolodex', 'custom4_name', null);
+            \core\Settings::set('rolodex', 'custom4_name', null);
         }
 
         if (!empty($_POST['custom5_name'])) {
-            Core\Settings::set('rolodex', 'custom5_name', Core\Text::parseInput(strip_tags($_POST['custom5_name'])));
+            \core\Settings::set('rolodex', 'custom5_name', \core\Text::parseInput(strip_tags($_POST['custom5_name'])));
         } else {
-            Core\Settings::reset('rolodex', 'custom5_name');
+            \core\Settings::reset('rolodex', 'custom5_name');
         }
 
         if (!empty($_POST['custom6_name'])) {
-            Core\Settings::set('rolodex', 'custom6_name', Core\Text::parseInput(strip_tags($_POST['custom6_name'])));
+            \core\Settings::set('rolodex', 'custom6_name', \core\Text::parseInput(strip_tags($_POST['custom6_name'])));
         } else {
-            Core\Settings::set('rolodex', 'custom6_name', null);
+            \core\Settings::set('rolodex', 'custom6_name', null);
         }
 
         if (!empty($_POST['custom7_name'])) {
-            Core\Settings::set('rolodex', 'custom7_name', Core\Text::parseInput(strip_tags($_POST['custom7_name'])));
+            \core\Settings::set('rolodex', 'custom7_name', \core\Text::parseInput(strip_tags($_POST['custom7_name'])));
         } else {
-            Core\Settings::set('rolodex', 'custom7_name', null);
+            \core\Settings::set('rolodex', 'custom7_name', null);
         }
 
         if (!empty($_POST['custom8_name'])) {
-            Core\Settings::set('rolodex', 'custom8_name', Core\Text::parseInput(strip_tags($_POST['custom8_name'])));
+            \core\Settings::set('rolodex', 'custom8_name', \core\Text::parseInput(strip_tags($_POST['custom8_name'])));
         } else {
-            Core\Settings::set('rolodex', 'custom8_name', null);
+            \core\Settings::set('rolodex', 'custom8_name', null);
         }
 
         isset($_POST['custom1_list']) ?
-            Core\Settings::set('rolodex', 'custom1_list', 1) :
-            Core\Settings::set('rolodex', 'custom1_list', 0);
+            \core\Settings::set('rolodex', 'custom1_list', 1) :
+            \core\Settings::set('rolodex', 'custom1_list', 0);
 
         isset($_POST['custom2_list']) ?
-            Core\Settings::set('rolodex', 'custom2_list', 1) :
-            Core\Settings::set('rolodex', 'custom2_list', 0);
+            \core\Settings::set('rolodex', 'custom2_list', 1) :
+            \core\Settings::set('rolodex', 'custom2_list', 0);
 
         isset($_POST['custom3_list']) ?
-            Core\Settings::set('rolodex', 'custom3_list', 1) :
-            Core\Settings::set('rolodex', 'custom3_list', 0);
+            \core\Settings::set('rolodex', 'custom3_list', 1) :
+            \core\Settings::set('rolodex', 'custom3_list', 0);
 
         isset($_POST['custom4_list']) ?
-            Core\Settings::set('rolodex', 'custom4_list', 1) :
-            Core\Settings::set('rolodex', 'custom4_list', 0);
+            \core\Settings::set('rolodex', 'custom4_list', 1) :
+            \core\Settings::set('rolodex', 'custom4_list', 0);
 
         isset($_POST['custom5_list']) ?
-            Core\Settings::set('rolodex', 'custom5_list', 1) :
-            Core\Settings::set('rolodex', 'custom5_list', 0);
+            \core\Settings::set('rolodex', 'custom5_list', 1) :
+            \core\Settings::set('rolodex', 'custom5_list', 0);
 
         isset($_POST['custom6_list']) ?
-            Core\Settings::set('rolodex', 'custom6_list', 1) :
-            Core\Settings::set('rolodex', 'custom6_list', 0);
+            \core\Settings::set('rolodex', 'custom6_list', 1) :
+            \core\Settings::set('rolodex', 'custom6_list', 0);
 
         isset($_POST['custom7_list']) ?
-            Core\Settings::set('rolodex', 'custom7_list', 1) :
-            Core\Settings::set('rolodex', 'custom7_list', 0);
+            \core\Settings::set('rolodex', 'custom7_list', 1) :
+            \core\Settings::set('rolodex', 'custom7_list', 0);
 
         isset($_POST['custom8_list']) ?
-            Core\Settings::set('rolodex', 'custom8_list', 1) :
-            Core\Settings::set('rolodex', 'custom8_list', 0);
+            \core\Settings::set('rolodex', 'custom8_list', 1) :
+            \core\Settings::set('rolodex', 'custom8_list', 0);
 
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            Core\Settings::save('rolodex');
+            \core\Settings::save('rolodex');
             return true;
         }
 
@@ -1062,7 +1062,7 @@ class Rolodex {
         }
 
         if (!empty($_POST['website'])) {
-            $link = Core\Text::checkLink($_POST['website']);
+            $link = \core\Text::checkLink($_POST['website']);
             if (!$this->member->setWebsite($link)) {
                 $errors[] = dgettext('rolodex', 'Check your website address for formatting errors.');
             }
@@ -1188,15 +1188,15 @@ class Rolodex {
 
 
         /* begin image stuff */
-        Core\Core::initModClass('filecabinet', 'Image.php');
+        \core\Core::initModClass('filecabinet', 'Image.php');
         if (isset($_FILES['image']) && !empty($_FILES['image']['name'])) {
             $current_image = 'images/rolodex/' . $this->member->image['name'];
             $current_thumb = 'images/rolodex/' . $this->member->image['thumb_name'];
             $img_array = null;
             $image = new PHPWS_Image;
             $image->setDirectory('images/rolodex/');
-            $image->setMaxWidth(Core\Settings::get('rolodex', 'max_img_width'));
-            $image->setMaxHeight(Core\Settings::get('rolodex', 'max_img_height'));
+            $image->setMaxWidth(core\Settings::get('rolodex', 'max_img_width'));
+            $image->setMaxHeight(core\Settings::get('rolodex', 'max_img_height'));
 
             $prefix = sprintf('%s_%s_', $this->member->user_id, time());
             if (!$image->importPost('image', false, true, $prefix)) {
@@ -1207,8 +1207,8 @@ class Rolodex {
                 }
             } elseif ($image->file_name) {
                 $result = $image->write();
-                if (Core\Error::isError($result)) {
-                    Core\Error::log($result);
+                if (core\Error::isError($result)) {
+                    \core\Error::log($result);
                     $errors[] = array(dgettext('rolodex', 'There was a problem saving your image.'));
                 } else {
                     if ($current_image != $image->getPath() && is_file($current_image)) {
@@ -1225,7 +1225,7 @@ class Rolodex {
             $source = $image->file_directory . $image->file_name;
             $new_file = preg_replace('/\.(jpg|jpeg|gif|png)$/i', '_tn.\\1', $image->file_name);
             $destination = $image->file_directory . $new_file;
-            if (!Core\File::scaleImage($source, $destination, Core\Settings::get('rolodex', 'max_thumb_width'), Core\Settings::get('rolodex', 'max_thumb_height'))) {
+            if (!core\File::scaleImage($source, $destination, \core\Settings::get('rolodex', 'max_thumb_width'), \core\Settings::get('rolodex', 'max_thumb_height'))) {
                 $errors[] = array(dgettext('rolodex', 'There was a problem saving your thumbnail image.'));
             } else {
                 $size = getimagesize($destination);
@@ -1335,7 +1335,7 @@ class Rolodex {
         }
 
         if (!empty($_POST['email'])) {
-            if (Core\Text::isValidInput($_POST['email'], 'email')) {
+            if (core\Text::isValidInput($_POST['email'], 'email')) {
                 $_POST['email'] = $_POST['email'];
             } else {
                 $errors[] = dgettext('rolodex', 'Your email address is improperly formatted.');
@@ -1371,7 +1371,7 @@ class Rolodex {
 
     function confirm()
     {
-        if (!Core\Settings::get('rolodex', 'use_captcha') ||
+        if (!core\Settings::get('rolodex', 'use_captcha') ||
             !extension_loaded('gd')) {
             return true;
         }
@@ -1384,7 +1384,7 @@ class Rolodex {
     {
         $this->loadMember();
 
-        $url = Core\Core::getHomeHttp();
+        $url = \core\Core::getHomeHttp();
         $from = $_POST['name'];
         $sender = $_POST['email'];
         $sendto = $this->member->getDisplay_email();
@@ -1406,16 +1406,16 @@ class Rolodex {
     public function resetExpired($interval)
     {
         $expires = mktime(0, 0, 0, date("m"), date("d")+$interval, date("Y"));
-        $db = new Core\DB('rolodex_member');
+        $db = new \core\DB('rolodex_member');
         $db->addValue('date_expires', $expires);
-        Core\Error::logIfError($db->update());
+        \core\Error::logIfError($db->update());
     }
 
 
     public function deleteExpired()
     {
-        Core\Core::initModClass('rolodex', 'RDX_Member.php');
-        $db = new Core\DB('rolodex_member');
+        \core\Core::initModClass('rolodex', 'RDX_Member.php');
+        $db = new \core\DB('rolodex_member');
         $db->addWhere('date_expires', time(), '<=');
         $expired = $db->getObjects('Rolodex_Member');
         $num = count($expired);
@@ -1430,28 +1430,28 @@ class Rolodex {
 
     public function setAllComments($num)
     {
-        $db = new Core\DB('rolodex_member');
+        $db = new \core\DB('rolodex_member');
         $db->addValue('allow_comments', $num);
-        Core\Error::logIfError($db->update());
+        \core\Error::logIfError($db->update());
     }
 
 
     public function setAllComments_annon($num)
     {
-        Core\Core::initModClass('rolodex', 'RDX_Member.php');
-        $db = new Core\DB('rolodex_member');
+        \core\Core::initModClass('rolodex', 'RDX_Member.php');
+        $db = new \core\DB('rolodex_member');
         $result = $db->getObjects('Rolodex_Member');
         if ($result) {
             foreach ($result as $member) {
                 $member->setAllow_anon($num);
-                Core\Core::initModClass('comments', 'Comments.php');
+                \core\Core::initModClass('comments', 'Comments.php');
                 $thread = Comments::getThread($member->key_id);
                 $thread->allowAnonymous($num);
                 $thread->save();
             }
         }
         $db->addValue('allow_anon', $num);
-        Core\Error::logIfError($db->update());
+        \core\Error::logIfError($db->update());
     }
 
 
@@ -1459,8 +1459,8 @@ class Rolodex {
     public function search_index_all()
     {
 
-        Core\Core::initModClass('rolodex', 'RDX_Member.php');
-        $db = new Core\DB('rolodex_member');
+        \core\Core::initModClass('rolodex', 'RDX_Member.php');
+        $db = new \core\DB('rolodex_member');
         $db->addColumn('demographics.user_id');
         $db->addColumn('demographics.first_name');
         $db->addColumn('demographics.last_name');
@@ -1471,7 +1471,7 @@ class Rolodex {
         $db->addOrder('demographics.user_id');
         $result = $db->select();
         if (!empty($result)) {
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 return false;
             }
             foreach ($result as $member) {
@@ -1481,7 +1481,7 @@ class Rolodex {
                 $search->addKeywords($name);
                 $search->addKeywords($member['business_name']);
                 $search->addKeywords($member['description']);
-                Core\Error::logIfError($search->save());
+                \core\Error::logIfError($search->save());
             }
         }
         return true;
@@ -1491,13 +1491,13 @@ class Rolodex {
     public function search_remove_all()
     {
 
-        Core\Core::initModClass('search', 'Search.php');
-        $db = new Core\DB('search');
+        \core\Core::initModClass('search', 'Search.php');
+        $db = new \core\DB('search');
         $db->addWhere('module', 'rolodex');
         $result = $db->delete();
 
         if (!empty($result)) {
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 return false;
             }
         }
@@ -1508,12 +1508,12 @@ class Rolodex {
     public function exportCSV($approved=null, $expired=false)
     {
 
-        Core\Core::initModClass('rolodex', 'RDX_Member.php');
+        \core\Core::initModClass('rolodex', 'RDX_Member.php');
 
         $content = null;
         $content .= Rolodex_Member::printCSVHeader();
 
-        $db = new Core\DB('rolodex_member');
+        $db = new \core\DB('rolodex_member');
         $db->addColumn('demographics.user_id');
         $db->addColumn('rolodex_member.user_id');
         $db->addWhere('rolodex_member.user_id', 'demographics.user_id');
@@ -1522,7 +1522,7 @@ class Rolodex {
             $db->addWhere('active', $approved);
         }
 
-        if (Core\Settings::get('rolodex', 'enable_expiry')) {
+        if (core\Settings::get('rolodex', 'enable_expiry')) {
             if ($expired) {
                 $db->addWhere('date_expires', time(), '<=');
             } else {
@@ -1540,7 +1540,7 @@ class Rolodex {
             $db->addWhere('rolodex_member.privacy', 1, '<=');
         }
 
-        if (Core\Settings::get('rolodex', 'sortby')) {
+        if (core\Settings::get('rolodex', 'sortby')) {
             $db->addOrder('demographics.last_name', 'asc');
             $db->addOrder('demographics.first_name', 'asc');
             $db->addOrder('demographics.business_name', 'asc');
@@ -1574,39 +1574,39 @@ class Rolodex {
     public static function navLinks()
     {
 
-        $links[] = Core\Text::moduleLink(dgettext('rolodex', 'Browse members'), 'rolodex', array('uop'=>'list'));
+        $links[] = \core\Text::moduleLink(dgettext('rolodex', 'Browse members'), 'rolodex', array('uop'=>'list'));
 
-        if (Core\Settings::get('rolodex', 'use_categories')) {
-            $db = new Core\DB('category_items');
+        if (core\Settings::get('rolodex', 'use_categories')) {
+            $db = new \core\DB('category_items');
             $db->addWhere('module', 'rolodex');
             $categories = $db->count();
             if ($categories > 0) {
-                $links[] = Core\Text::moduleLink(dgettext('rolodex', 'Categories'), "rolodex",  array('uop'=>'categories'));
+                $links[] = \core\Text::moduleLink(dgettext('rolodex', 'Categories'), "rolodex",  array('uop'=>'categories'));
             }
         }
 
-        if (Core\Settings::get('rolodex', 'use_locations')) {
-            $db = new Core\DB('rolodex_location');
+        if (core\Settings::get('rolodex', 'use_locations')) {
+            $db = new \core\DB('rolodex_location');
             $locations = $db->count();
             if ($locations > 0) {
-                $links[] = Core\Text::moduleLink(dgettext('rolodex', 'Locations'), "rolodex",  array('uop'=>'locations'));
+                $links[] = \core\Text::moduleLink(dgettext('rolodex', 'Locations'), "rolodex",  array('uop'=>'locations'));
             }
         }
 
-        if (Core\Settings::get('rolodex', 'use_features')) {
-            $db = new Core\DB('rolodex_feature');
+        if (core\Settings::get('rolodex', 'use_features')) {
+            $db = new \core\DB('rolodex_feature');
             $features = $db->count();
             if ($features > 0) {
-                $links[] = Core\Text::moduleLink(dgettext('rolodex', 'Features'), "rolodex",  array('uop'=>'features'));
+                $links[] = \core\Text::moduleLink(dgettext('rolodex', 'Features'), "rolodex",  array('uop'=>'features'));
             }
         }
 
         if ($categories > 0 || $locations > 0 || $features > 0) {
-            $links[] = Core\Text::moduleLink(dgettext('rolodex', 'Advanced'), "rolodex",  array('uop'=>'advanced'));
+            $links[] = \core\Text::moduleLink(dgettext('rolodex', 'Advanced'), "rolodex",  array('uop'=>'advanced'));
         }
 
         if (Current_User::allow('rolodex', 'settings', null, null, true) && !isset($_REQUEST['aop'])){
-            $links[] = Core\Text::moduleLink(dgettext('rolodex', 'Settings'), "rolodex",  array('aop'=>'menu', 'tab'=>'settings'));
+            $links[] = \core\Text::moduleLink(dgettext('rolodex', 'Settings'), "rolodex",  array('aop'=>'menu', 'tab'=>'settings'));
         }
 
         return $links;
@@ -1622,40 +1622,40 @@ class Rolodex {
             if (@$_REQUEST['uop'] == "list") {
                 $vars['uop'] = 'list';
                 $vars['browseLetter'] = $alphachar;
-                $alpha[] .= Core\Text::moduleLink($alphachar, "rolodex", $vars) . "\n";
+                $alpha[] .= \core\Text::moduleLink($alphachar, "rolodex", $vars) . "\n";
             } elseif (@$_REQUEST['aop'] == "list_expired") {
                 $vars['aop'] = 'list_expired';
                 $vars['browseLetter'] = $alphachar;
-                $alpha[] .= Core\Text::moduleLink($alphachar, "rolodex", $vars) . "\n";
+                $alpha[] .= \core\Text::moduleLink($alphachar, "rolodex", $vars) . "\n";
             } else {
                 $vars['uop'] = 'list';
                 $vars['browseLetter'] = $alphachar;
-                $alpha[] .= Core\Text::moduleLink($alphachar, "rolodex", $vars) . "\n";
+                $alpha[] .= \core\Text::moduleLink($alphachar, "rolodex", $vars) . "\n";
             }
         }
 
         if (@$_REQUEST['uop'] == "list") {
             $vars['uop'] = 'list';
             $vars['browseLetter'] = 'Other';
-            $alpha[] .= Core\Text::moduleLink(dgettext('rolodex', 'Other'), "rolodex",  $vars) . "\n";
-            $alpha[] .= Core\Text::moduleLink(dgettext('rolodex', 'All'), "rolodex",  array('uop'=>'list')) . "\n";
+            $alpha[] .= \core\Text::moduleLink(dgettext('rolodex', 'Other'), "rolodex",  $vars) . "\n";
+            $alpha[] .= \core\Text::moduleLink(dgettext('rolodex', 'All'), "rolodex",  array('uop'=>'list')) . "\n";
         } elseif (@$_REQUEST['aop'] == "list_expired") {
             $vars['aop'] = 'list_expired';
             $vars['browseLetter'] = 'Other';
-            $alpha[] .= Core\Text::moduleLink(dgettext('rolodex', 'Other'), "rolodex",  $vars) . "\n";
-            $alpha[] .= Core\Text::moduleLink(dgettext('rolodex', 'All'), "rolodex",  array('aop'=>'list_expired')) . "\n";
+            $alpha[] .= \core\Text::moduleLink(dgettext('rolodex', 'Other'), "rolodex",  $vars) . "\n";
+            $alpha[] .= \core\Text::moduleLink(dgettext('rolodex', 'All'), "rolodex",  array('aop'=>'list_expired')) . "\n";
         } else {
             $vars['uop'] = 'list';
             $vars['browseLetter'] = 'Other';
-            $alpha[] .= Core\Text::moduleLink(dgettext('rolodex', 'Other'), "rolodex",  $vars) . "\n";
-            $alpha[] .= Core\Text::moduleLink(dgettext('rolodex', 'All'), "rolodex",  array('uop'=>'list')) . "\n";
+            $alpha[] .= \core\Text::moduleLink(dgettext('rolodex', 'Other'), "rolodex",  $vars) . "\n";
+            $alpha[] .= \core\Text::moduleLink(dgettext('rolodex', 'All'), "rolodex",  array('uop'=>'list')) . "\n";
         }
 
         $links = $this->navLinks();
 
         $tpl['LIST'] = implode(' | ', $alpha);
         $tpl['LINKS'] = implode(' | ', $links);
-        return Core\Template::process($tpl, 'rolodex', 'alpha_click.tpl');
+        return \core\Template::process($tpl, 'rolodex', 'alpha_click.tpl');
 
     }
 
@@ -1700,14 +1700,14 @@ class Rolodex {
 
         switch($type) {
             case 'location':
-                Core\Core::initModClass('rolodex', 'RDX_Location.php');
-                $db = new Core\DB('rolodex_location');
+                \core\Core::initModClass('rolodex', 'RDX_Location.php');
+                $db = new \core\DB('rolodex_location');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('Rolodex_Location');
                 break;
             case 'feature':
-                Core\Core::initModClass('rolodex', 'RDX_Feature.php');
-                $db = new Core\DB('rolodex_feature');
+                \core\Core::initModClass('rolodex', 'RDX_Feature.php');
+                $db = new \core\DB('rolodex_feature');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('Rolodex_Feature');
                 break;
@@ -1730,7 +1730,7 @@ class Rolodex {
                 }
                 return javascript('multiple_select', $vars);
             } else {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addMultiple($select_name, $items);
                 if (!empty($match) && is_array($match)) {
                     $form->setMatch($select_name, $match);
@@ -1738,7 +1738,7 @@ class Rolodex {
                 return $form->get($select_name);
             }
         } else {
-            $form = new Core\Form;
+            $form = new \core\Form;
             $form->addSelect($select_name, $items);
             if (!empty($match) && is_string($match)) {
                 $form->setMatch($select_name, $match);
@@ -1754,14 +1754,14 @@ class Rolodex {
 
         switch($type) {
             case 'location':
-                Core\Core::initModClass('rolodex', 'RDX_Location.php');
-                $db = new Core\DB('rolodex_location');
+                \core\Core::initModClass('rolodex', 'RDX_Location.php');
+                $db = new \core\DB('rolodex_location');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('Rolodex_Location');
                 break;
             case 'feature':
-                Core\Core::initModClass('rolodex', 'RDX_Feature.php');
-                $db = new Core\DB('rolodex_feature');
+                \core\Core::initModClass('rolodex', 'RDX_Feature.php');
+                $db = new \core\DB('rolodex_feature');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('Rolodex_Feature');
                 break;
@@ -1770,7 +1770,7 @@ class Rolodex {
         if ($result) {
             foreach ($result as $item) {
                 if ($count) {
-                    $db = new Core\DB('rolodex_'.$type.'_items');
+                    $db = new \core\DB('rolodex_'.$type.'_items');
                     $db->addWhere($type.'_id', $item->id);
                     $qty = $db->count();
                     $items[$item->id] = $item->title . ' ('.$qty.')';
@@ -1782,14 +1782,14 @@ class Rolodex {
 
         if ($items) {
             if ($multiple) {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addMultiple($select_name, $items);
                 if (!empty($match) && is_array($match)) {
                     $form->setMatch($select_name, $match);
                 }
                 return $form->get($select_name);
             } else {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addSelect($select_name, $items);
                 if (!empty($match) && is_string($match)) {
                     $form->setMatch($select_name, $match);
@@ -1806,8 +1806,8 @@ class Rolodex {
     public function getCatSelect($match=null, $select_name='categories', $multiple=true, $count=true)
     {
 
-        Core\Core::initModClass('categories', 'Category.php');
-        $db = new Core\DB('categories');
+        \core\Core::initModClass('categories', 'Category.php');
+        $db = new \core\DB('categories');
         $db->addOrder('title asc');
 
         $result = $db->getObjects('Category');
@@ -1815,7 +1815,7 @@ class Rolodex {
         if ($result) {
             foreach ($result as $item) {
                 if ($count) {
-                    $db = new Core\DB('category_items');
+                    $db = new \core\DB('category_items');
                     $db->addWhere('cat_id', $item->id);
                     $db->addWhere('module', 'rolodex');
                     $qty = $db->count();
@@ -1828,14 +1828,14 @@ class Rolodex {
 
         if ($items) {
             if ($multiple) {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addMultiple($select_name, $items);
                 if (!empty($match) && is_array($match)) {
                     $form->setMatch($select_name, $match);
                 }
                 return $form->get($select_name);
             } else {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addSelect($select_name, $items);
                 if (!empty($match) && is_string($match)) {
                     $form->setMatch($select_name, $match);

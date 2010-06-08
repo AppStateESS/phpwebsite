@@ -60,7 +60,7 @@ class Note_Item {
 
     public function delete($confirm=true)
     {
-        $db = new Core\DB('notes');
+        $db = new \core\DB('notes');
         $db->addWhere('id', $this->id);
         if ($confirm) {
             $db->addWhere('user_id', Current_User::getId());
@@ -77,12 +77,12 @@ class Note_Item {
         $vars['op'] = 'delete_note';
         $vars['id'] = $this->id;
 
-        return Core\Text::secureLink(dgettext('notes', 'Delete'), 'users', $vars);
+        return \core\Text::secureLink(dgettext('notes', 'Delete'), 'users', $vars);
     }
 
     public function getContent()
     {
-        return Core\Text::parseOutput($this->content, ENCODE_PARSED_TEXT, true);
+        return \core\Text::parseOutput($this->content, ENCODE_PARSED_TEXT, true);
     }
 
     public function getDateSent($format=null)
@@ -121,7 +121,7 @@ class Note_Item {
         if (empty($this->id)) {
             return FALSE;
         }
-        $db = new Core\DB('notes');
+        $db = new \core\DB('notes');
         $db->addWhere('id', $this->id);
         if ($confirm_user) {
             $db->addWhere('user_id', Current_User::getId());
@@ -148,7 +148,7 @@ class Note_Item {
         $tpl['SENT_LABEL'] = dgettext('notes', 'Sent by');
 
         if ($this->key_id) {
-            $key = new Core\Key($this->key_id);
+            $key = new \core\Key($this->key_id);
             if ($key->id) {
                 $tpl['ASSOCIATE_LABEL'] = dgettext('notes', 'In reference to');
 
@@ -177,7 +177,7 @@ class Note_Item {
         $link,
         dgettext('notes', 'Delete and close'));
 
-        return Core\Template::process($tpl, 'notes', 'note.tpl');
+        return \core\Template::process($tpl, 'notes', 'note.tpl');
     }
 
 
@@ -188,7 +188,7 @@ class Note_Item {
         $vars['id'] = $this->id;
 
         if (javascriptEnabled()) {
-            $js_vars['address'] = Core\Text::linkAddress('users', $vars);
+            $js_vars['address'] = \core\Text::linkAddress('users', $vars);
             if ($use_title) {
                 $js_vars['label'] = $this->title;
             } else {
@@ -200,9 +200,9 @@ class Note_Item {
             return javascript('open_window', $js_vars);
         } else {
             if ($use_title) {
-                return Core\Text::moduleLink($this->title, 'users', $vars, null, dgettext('notes', 'Read note'));
+                return \core\Text::moduleLink($this->title, 'users', $vars, null, dgettext('notes', 'Read note'));
             } else {
-                return Core\Text::moduleLink(dgettext('notes', 'Read'), 'users', $vars, null, dgettext('notes', 'Read note'));
+                return \core\Text::moduleLink(dgettext('notes', 'Read'), 'users', $vars, null, dgettext('notes', 'Read note'));
             }
         }
 
@@ -216,7 +216,7 @@ class Note_Item {
 
         $this->date_sent = time();
 
-        $db = new Core\DB('notes');
+        $db = new \core\DB('notes');
         return $db->saveObject($this);
     }
 
@@ -236,14 +236,14 @@ class Note_Item {
         }
 
         if ($popup) {
-            $js_vars['address'] = Core\Text::linkAddress('users', $vars);
+            $js_vars['address'] = \core\Text::linkAddress('users', $vars);
             $js_vars['label'] = $label;
             $js_vars['link_title'] = $title;
             $js_vars['width'] = 650;
             $js_vars['height'] = 600;
             return javascript('open_window', $js_vars);
         } else {
-            return Core\Text::moduleLink($label, 'users', $vars, null, $title);
+            return \core\Text::moduleLink($label, 'users', $vars, null, $title);
         }
     }
 
@@ -267,7 +267,7 @@ class Note_Item {
     public function updateRead()
     {
         unset($_SESSION['Notes_Unread']);
-        $db = new Core\DB('notes');
+        $db = new \core\DB('notes');
         $db->addWhere('id', $this->id);
         $db->addValue('read_once', 1);
         return $db->update();

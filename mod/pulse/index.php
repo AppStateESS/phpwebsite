@@ -9,7 +9,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-Core\Core::initModClass('pulse', 'PulseController.php');
+core\Core::initModClass('pulse', 'PulseController.php');
 $p = new PulseController();
 $p->process($_REQUEST);
 

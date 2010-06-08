@@ -14,7 +14,7 @@ function youtube_import($media)
 
     $parse = new XMLParser($feed_url . $media->file_name, false);
     if ($parse->error) {
-        Core\Error::log($parse->error);
+        \core\Error::log($parse->error);
         return false;
     }
     $parse->setContentOnly(false);
@@ -29,7 +29,7 @@ function youtube_import($media)
         $thumb_name = 'youtube_' . $media->file_name . '.jpg';
         $thumb_dir  = $media->thumbnailDirectory();
         if (!is_dir($thumb_dir)) {
-            Core\Error::log(FC_THUMBNAIL_NOT_WRITABLE, 'filecabinet', 'youtube_import', $thumb_dir);
+            \core\Error::log(FC_THUMBNAIL_NOT_WRITABLE, 'filecabinet', 'youtube_import', $thumb_dir);
             $media->genericTN($thumb_name);
         } else {
             $thumb_path = $thumb_dir . $thumb_name;

@@ -6,22 +6,22 @@
  * @version $Id$
  */
 
-Core\Core::initModClass('menu', 'Menu_Item.php');
+core\Core::initModClass('menu', 'Menu_Item.php');
 
 class Menu {
 
     public static function admin()
     {
-        Core\Core::initModClass('menu', 'Menu_Admin.php');
+        \core\Core::initModClass('menu', 'Menu_Admin.php');
         Menu_Admin::main();
     }
 
     public static function getPinAllMenus()
     {
-        $db = new Core\DB('menus');
+        $db = new \core\DB('menus');
         $db->addWhere('pin_all', 1);
         $db->loadClass('menu', 'Menu_Item.php');
-        Core\Key::restrictView($db, 'menu');
+        \core\Key::restrictView($db, 'menu');
         return $db->getObjects('Menu_Item');
     }
 
@@ -34,8 +34,8 @@ class Menu {
         Layout::addStyle('menu');
 
         $result = Menu::getPinAllMenus();
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             return;
         }
 
@@ -52,7 +52,7 @@ class Menu {
 
     public static function miniadmin()
     {
-        if (!Core\Settings::get('menu', 'miniadmin') ||
+        if (!core\Settings::get('menu', 'miniadmin') ||
         !Current_User::allow('menu')) {
             return;
         }
@@ -60,11 +60,11 @@ class Menu {
         if (Menu::isAdminMode()) {
             $vars['command'] = 'disable_admin_mode';
             $vars['return'] = 1;
-            MiniAdmin::add('menu', Core\Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars));
+            MiniAdmin::add('menu', \core\Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars));
         } else {
             $vars['command'] = 'enable_admin_mode';
             $vars['return'] = 1;
-            MiniAdmin::add('menu', Core\Text::moduleLink(MENU_ADMIN_ON, 'menu', $vars));
+            MiniAdmin::add('menu', \core\Text::moduleLink(MENU_ADMIN_ON, 'menu', $vars));
         }
     }
 
@@ -77,22 +77,22 @@ class Menu {
     {
         $seen = array();
 
-        $key = Core\Key::getCurrent();
+        $key = \core\Key::getCurrent();
         if (empty($key) || empty($key->title) || empty($key->url)) {
             return;
         }
 
         Layout::addStyle('menu');
 
-        $db = new Core\DB('menus');
+        $db = new \core\DB('menus');
         $db->addWhere('menu_assoc.key_id', $key->id);
         $db->addWhere('id', 'menu_assoc.menu_id');
         $db->loadClass('menu', 'Menu_Item.php');
-        Core\Key::restrictView($db, 'menu');
+        \core\Key::restrictView($db, 'menu');
         $result = $db->getObjects('Menu_Item');
 
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
         } elseif (!empty($result)) {
             foreach ($result as $menu) {
                 $seen[] = $menu->id;
@@ -114,7 +114,7 @@ class Menu {
 
     public function atLink($url)
     {
-        $compare =  Core\Core::getCurrentUrl();
+        $compare =  \core\Core::getCurrentUrl();
         return $url == $compare;
     }
 
@@ -128,12 +128,12 @@ class Menu {
             if (isset($_GET['curl'])) {
                 $vars['dadd'] = urlencode($_GET['curl']);
             } else {
-                $vars['dadd'] = urlencode(Core\Core::getCurrentUrl(false));
+                $vars['dadd'] = urlencode(core\Core::getCurrentUrl(false));
             }
         }
 
         $js['link_title'] = dgettext('menu', 'Add other link');
-        $js['address'] = Core\Text::linkAddress('menu', $vars, TRUE, FALSE);
+        $js['address'] = \core\Text::linkAddress('menu', $vars, TRUE, FALSE);
         $js['label'] = MENU_LINK_ADD_SITE;
         if ($popup) {
             $js['label'] .= ' ' . dgettext('menu', 'Add other link');
@@ -146,7 +146,7 @@ class Menu {
 
     public static function getAddLink($menu_id, $parent_id=null, $popup=false)
     {
-        $key = Core\Key::getCurrent();
+        $key = \core\Key::getCurrent();
         if (empty($key->url)) {
             return null;
         }
@@ -175,14 +175,14 @@ class Menu {
                 $menu_id, $parent_id, $link);
             } else {
                 $vars['key_id'] = $key->id;
-                return Core\Text::secureLink($link, 'menu', $vars);
+                return \core\Text::secureLink($link, 'menu', $vars);
             }
         } else {
             // for dummy keys
             if (empty($key->title)) {
                 $vars['url']      = urlencode($key->url);
                 $js['question']   = dgettext('menu', 'Enter link title');
-                $js['address']    = Core\Text::linkAddress('menu', $vars, TRUE, FALSE);
+                $js['address']    = \core\Text::linkAddress('menu', $vars, TRUE, FALSE);
                 $js['link'] = $link;
                 $js['value_name'] = 'link_title';
                 return javascript('prompt', $js);
@@ -191,7 +191,7 @@ class Menu {
                 $vars['url']        = urlencode($key->url);
 
                 if ($popup) {
-                    return Core\Text::secureLink($link, 'menu', $vars);
+                    return \core\Text::secureLink($link, 'menu', $vars);
                 } else {
                     return sprintf('<a style="cursor : pointer" onclick="add_unkeyed_link(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
                     $menu_id, $parent_id, $vars['url'], $vars['link_title'], $link);
@@ -224,7 +224,7 @@ class Menu {
         } else {
             $js['QUESTION']   = dgettext('menu', 'Are you sure you want to unpin this menu from this page?');
         }
-        $js['ADDRESS']    = Core\Text::linkAddress('menu', $vars, TRUE);
+        $js['ADDRESS']    = \core\Text::linkAddress('menu', $vars, TRUE);
         $js['LINK']       = MENU_UNPIN;
         return javascript('confirm', $js);
     }
@@ -259,21 +259,21 @@ class Menu {
     public function siteMap()
     {
         if (!isset($_GET['site_map'])) {
-            Core\Core::errorPage('404');
+            \core\Core::errorPage('404');
         }
-        Core\Core::initModClass('menu', 'Menu_Item.php');
+        \core\Core::initModClass('menu', 'Menu_Item.php');
 
         if ($_GET['site_map'] == 'all') {
-            $db = new Core\DB('menus');
+            $db = new \core\DB('menus');
             $result = $db->getObjects('Menu_Item');
             if ($result) {
                 foreach($result as $menu) {
                     if (empty($menu->title)) {
-                        Core\Core::errorPage('404');
+                        \core\Core::errorPage('404');
                     }
                     $result = $menu->getLinks();
-                    if (Core\Error::logIfError($result)) {
-                        Core\Core::errorPage();
+                    if (core\Error::logIfError($result)) {
+                        \core\Core::errorPage();
                     }
                     $content = array();
                     if (!empty($result)) {
@@ -290,13 +290,13 @@ class Menu {
         } else {
             $menu = new Menu_Item((int)$_GET['site_map']);
             if (empty($menu->title)) {
-                Core\Core::errorPage('404');
+                \core\Core::errorPage('404');
             }
 
             $result = $menu->getLinks();
-            if (Core\Error::isError($result)) {
-                Core\Error::log($result);
-                Core\Core::errorPage();
+            if (core\Error::isError($result)) {
+                \core\Error::log($result);
+                \core\Core::errorPage();
             }
             $content = array();
             if (!empty($result)) {
@@ -305,7 +305,7 @@ class Menu {
             $tpl['TITLE'] = $menu->getTitle() . ' - ' . dgettext('menu', 'Site map');
             $tpl['CONTENT'] = implode('', $content);
         }
-        Layout::add(Core\Template::process($tpl, 'menu', 'site_map.tpl'));
+        Layout::add(core\Template::process($tpl, 'menu', 'site_map.tpl'));
     }
 
     public function walkLinks($links, &$content)
@@ -330,7 +330,7 @@ class Menu {
         }
 
         $menus = Menu::getPinAllMenus();
-        if (Core\Error::logIfError($menus) || empty($menus)) {
+        if (core\Error::logIfError($menus) || empty($menus)) {
             return false;
         }
 
@@ -349,7 +349,7 @@ class Menu {
         }
 
         $menus = Menu::getPinAllMenus();
-        if (Core\Error::logIfError($menus) || empty($menus)) {
+        if (core\Error::logIfError($menus) || empty($menus)) {
             return false;
         }
 
@@ -364,27 +364,27 @@ class Menu {
             return false;
         }
 
-        $key = new Core\Key($key_id);
+        $key = new \core\Key($key_id);
 
         if ($key->isDummy()) {
             return false;
         }
 
-        Core\Core::initModClass('menu', 'Menu_Link.php');
+        \core\Core::initModClass('menu', 'Menu_Link.php');
 
         $link = new Menu_Link;
 
-        $db = new Core\DB('menu_links');
+        $db = new \core\DB('menu_links');
         $db->addWhere('key_id', (int)$key_id);
         $result = $db->loadObject($link);
-        if (!$result || Core\Error::logIfError($result)) {
+        if (!$result || \core\Error::logIfError($result)) {
             return false;
         }
 
         $link->title  = & $key->title;
         $link->url    = & $key->url;
         $link->active = & $key->active;
-        return !Core\Error::logIfError($link->save());
+        return !core\Error::logIfError($link->save());
     }
 
 }

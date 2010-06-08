@@ -125,8 +125,8 @@ class NoJSSlideShow {
             $linkText = dgettext('photoalbum', 'Previous');
 
             $tags['PREVIOUS'] =
-            Core\Text::moduleLink($linkImage, 'photoalbum', $get_var) . '&nbsp;' .
-            Core\Text::moduleLink($linkText, 'photoalbum', $get_var);
+            \core\Text::moduleLink($linkImage, 'photoalbum', $get_var) . '&nbsp;' .
+            \core\Text::moduleLink($linkText, 'photoalbum', $get_var);
         }
 
         if($this->indexNotAtEnd()) {
@@ -141,13 +141,13 @@ class NoJSSlideShow {
             $get_var['SS_mode'] = 'nojsmode';
 
             $tags['NEXT'] =
-            Core\Text::moduleLink($linkText, 'photoalbum', $get_var) . '&nbsp;' .
-            Core\Text::moduleLink($linkImage, 'photoalbum', $get_var);
+            \core\Text::moduleLink($linkText, 'photoalbum', $get_var) . '&nbsp;' .
+            \core\Text::moduleLink($linkImage, 'photoalbum', $get_var);
         }
 
         $tags['IMAGE_SRC'] = $this->filenames[$this->index];
         $tags['IMAGE_NAME'] = $this->names[$this->index];
-        $tags['IMAGE_BLURB'] = Core\Text::parseOutput($this->descriptions[$this->index]);
+        $tags['IMAGE_BLURB'] = \core\Text::parseOutput($this->descriptions[$this->index]);
         $tags['IMAGE_INDEX_INFO'] = dgettext('photoalbum', 'Image ') .
         ($this->index + 1) . ' ' . dgettext('photoalbum', 'of') . ' '.$this->max_images;
         $tags['IMAGE_WIDTH'] = $this->widths[$this->index];
@@ -160,12 +160,12 @@ class NoJSSlideShow {
             $linkText = dgettext('photoalbum', 'high tech');
             $get_var['PHPWS_Album_op'] = 'slideShow';
 
-            $tags['HIGH_TECH_LINK'] .= Core\Text::moduleLink($linkText, 'photoalbum', $get_var);
+            $tags['HIGH_TECH_LINK'] .= \core\Text::moduleLink($linkText, 'photoalbum', $get_var);
 
             $tags['HIGH_TECH_LINK'] .= dgettext('photoalbum', ' mode.');
         }
 
-        return Core\Template::processTemplate($tags, 'photoalbum',
+        return \core\Template::processTemplate($tags, 'photoalbum',
                                                'slideshow/noJSslideshow.tpl');
     }
 }

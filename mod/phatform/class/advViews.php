@@ -49,14 +49,14 @@ class advViews {
             $content = sprintf(dgettext('phatform', 'You have chosen <b>not</b> to delete the export with the filename "%s".'), $_REQUEST["EXPORT_filename"]) . '<br /><br />';
             $content .= $_SESSION['PHAT_advViews']->viewExports();
         } else {
-            $elements[0] = Core\Form::formHidden('module', 'phatform');
-            $elements[0] .= Core\Form::formHidden('EXPORT_OP', 'deleteExport');
-            $elements[0] .= Core\Form::formHidden('EXPORT_filename', $_REQUEST['EXPORT_filename']);
-            $elements[0] .= Core\Form::formSubmit(dgettext('phatform', 'Yes'), 'yes');
-            $elements[0] .= Core\Form::formSubmit(dgettext('phatform', 'No'), 'no');
+            $elements[0] = \core\Form::formHidden('module', 'phatform');
+            $elements[0] .= \core\Form::formHidden('EXPORT_OP', 'deleteExport');
+            $elements[0] .= \core\Form::formHidden('EXPORT_filename', $_REQUEST['EXPORT_filename']);
+            $elements[0] .= \core\Form::formSubmit(dgettext('phatform', 'Yes'), 'yes');
+            $elements[0] .= \core\Form::formSubmit(dgettext('phatform', 'No'), 'no');
 
             $content = sprintf(dgettext('phatform', 'Are you sure you wish to delete the export with filename "<b>%s</b>"?'), $_REQUEST['EXPORT_filename']) . '<br /><br />';
-            $content .= Core\Form::makeForm('export_delete', 'index.php', $elements);
+            $content .= \core\Form::makeForm('export_delete', 'index.php', $elements);
         }
 
         return $content;
@@ -130,7 +130,7 @@ class advViews {
         $newTableName = time() . $orgnTableName;
         $sql = str_replace($orgnTableName, $newTableName, $sql);
 
-        $db = new Core\DB('mod_phatform_forms');
+        $db = new \core\DB('mod_phatform_forms');
         $db->addWhere('archiveTableName', '%' . $orgnTableName . '%', 'LIKE');
         $result = $db->select();
         if($result) {
@@ -143,7 +143,7 @@ class advViews {
 
         if(isset($_REQUEST['yes'])) {
             // create main report table
-            Core\DB::query(trim($sql));
+            \core\DB::query(trim($sql));
 
             $inserts = FALSE;
             for($j=$endCreateSmnt; $j < count($fileContent); $j++) {
@@ -162,7 +162,7 @@ class advViews {
                     $sql = trim($line);
                     if(!empty($sql) && stristr($sql, $orgnTableName)) {
                         $sql = str_replace($orgnTableName, $newTableName, $sql);
-                        Core\DB::query(trim($sql));
+                        \core\DB::query(trim($sql));
                     } else {
                         break;
                     }
@@ -182,7 +182,7 @@ class advViews {
             $data['saved'] = 1;
             $data['archiveTableName'] = $newTableName;
             $data['archiveFileName']  = $_REQUEST['ARCHIVE_filename'];
-            $db = new Core\DB('mod_phatforms_forms');
+            $db = new \core\DB('mod_phatforms_forms');
             $db->addValue($data);
             $formId = $db->insert();
             return $this->readyViewArchive($formId, $newTableName);
@@ -193,15 +193,15 @@ class advViews {
             return $content;
 
         } else {
-            $elements[0] = Core\Form::formHidden('module', 'phatform');
-            $elements[0] .= Core\Form::formHidden('ARCHIVE_OP', 'viewArchive');
-            $elements[0] .= Core\Form::formHidden('ARCHIVE_filename', $_REQUEST['ARCHIVE_filename']);
-            $elements[0] .= Core\Form::formSubmit(dgettext('phatform', 'Yes'), 'yes');
-            $elements[0] .= Core\Form::formSubmit(dgettext('phatform', 'No'), 'no');
+            $elements[0] = \core\Form::formHidden('module', 'phatform');
+            $elements[0] .= \core\Form::formHidden('ARCHIVE_OP', 'viewArchive');
+            $elements[0] .= \core\Form::formHidden('ARCHIVE_filename', $_REQUEST['ARCHIVE_filename']);
+            $elements[0] .= \core\Form::formSubmit(dgettext('phatform', 'Yes'), 'yes');
+            $elements[0] .= \core\Form::formSubmit(dgettext('phatform', 'No'), 'no');
 
             $content .= dgettext('phatform', 'In order to view this archive a new table will need to added to your database.') . '<br /><br />';
             $content .= '<b>' . dgettext('phatform', 'Are you sure you wish to view this archive?') .'</b><br /><br />';
-            $content .= Core\Form::makeForm('archive_view', 'index.php', $elements);
+            $content .= \core\Form::makeForm('archive_view', 'index.php', $elements);
             return $content;
         }
     }
@@ -232,14 +232,14 @@ class advViews {
             $content = sprintf(dgettext('phatform', 'You have chosen <b>not</b> to delete the archive with the filename "%s".'), $_REQUEST['ARCHIVE_filename']) . '<br /><br />';
             $content .= $_SESSION['PHAT_advViews']->viewArchives();
         } else {
-            $elements[0] = Core\Form::formHidden('module', 'phatform');
-            $elements[0] .= Core\Form::formHidden('ARCHIVE_OP', 'deleteArchive');
-            $elements[0] .= Core\Form::formHidden('ARCHIVE_filename', $_REQUEST['ARCHIVE_filename']);
-            $elements[0] .= Core\Form::formSubmit(dgettext('phatform', 'Yes'), 'yes');
-            $elements[0] .= Core\Form::formSubmit(dgettext('phatform', 'No'), 'no');
+            $elements[0] = \core\Form::formHidden('module', 'phatform');
+            $elements[0] .= \core\Form::formHidden('ARCHIVE_OP', 'deleteArchive');
+            $elements[0] .= \core\Form::formHidden('ARCHIVE_filename', $_REQUEST['ARCHIVE_filename']);
+            $elements[0] .= \core\Form::formSubmit(dgettext('phatform', 'Yes'), 'yes');
+            $elements[0] .= \core\Form::formSubmit(dgettext('phatform', 'No'), 'no');
 
             $content = sprintf(dgettext('phatform', 'Are you sure you wish to delete the archive with filename "<b>%s</b>"?'), $_REQUEST['ARCHIVE_filename']) . '<br /><br />';
-            $content .= Core\Form::makeForm('archive_delete', 'index.php', $elements);
+            $content .= \core\Form::makeForm('archive_delete', 'index.php', $elements);
         }
 
         return $content;
@@ -355,7 +355,7 @@ class advViews {
                     $highlight = null;
                 }
                 $tog++;
-                $listTags['LIST_ITEMS'] .= Core\Template::processTemplate($rowTags, 'phatform', 'report/export/row.tpl');
+                $listTags['LIST_ITEMS'] .= \core\Template::processTemplate($rowTags, 'phatform', 'report/export/row.tpl');
             }
 
             if((count($files) > $this->pageLimit)) {
@@ -370,7 +370,7 @@ class advViews {
         }
 
         $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Existing Exports');
-        return Core\Template::processTemplate($listTags, 'phatform', 'report/export/list.tpl');
+        return \core\Template::processTemplate($listTags, 'phatform', 'report/export/list.tpl');
     }
 
     function getArchiveFormName($filename, $formId) {
@@ -465,7 +465,7 @@ class advViews {
                 $rowTags['DATE'] = $entry['date'];
                 $rowTags['DOWNLOAD'] = '<a href="index.php?module=phatform&amp;ARCHIVE_OP=downloadArchive&amp;ARCHIVE_filename=' . $entry['filename'] . '">' . dgettext('phatform', 'Download') . '</a>';
                 $rowTags['VIEW'] = '<a href="index.php?module=phatform&amp;ARCHIVE_OP=viewArchive&amp;ARCHIVE_filename=' . $entry['filename'] . '">' . dgettext('phatform', 'View') . '</a>';
-                $db = new Core\DB('mod_phatform_forms');
+                $db = new \core\DB('mod_phatform_forms');
                 $db->addWhere('archiveFileName', '%' . $entry['filename'] . '%', 'LIKE');
                 $result = $db->select();
                 if($result) {
@@ -480,7 +480,7 @@ class advViews {
                     $highlight = null;
                 }
                 $tog++;
-                $listTags['LIST_ITEMS'] .= Core\Template::processTemplate($rowTags, 'phatform', 'report/archive/row.tpl');
+                $listTags['LIST_ITEMS'] .= \core\Template::processTemplate($rowTags, 'phatform', 'report/archive/row.tpl');
             }
 
             if((count($files) > $this->pageLimit)) {
@@ -496,18 +496,18 @@ class advViews {
         }
 
         $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Existing Archives');
-        return Core\Template::processTemplate($listTags, 'phatform', 'report/archive/list.tpl');
+        return \core\Template::processTemplate($listTags, 'phatform', 'report/archive/list.tpl');
     }
 
     function cleanUpArchive() {
         if(isset($_REQUEST['ARCHIVE_filename'])) {
-            $db = new Core\DB('mod_phatform_forms');
+            $db = new \core\DB('mod_phatform_forms');
             $db->addWhere('archiveFileName', $_REQUEST['ARCHIVE_filename']);
             $result = $db->select();
             if($result) {
                 $sql = 'DROP TABLE ' . $result[0]['archiveTableName'];
 
-                if(Core\DB::query($sql)) {
+                if(core\DB::query($sql)) {
                     $result = $db->delete();
                     if($result) {
                         return dgettext('phatform', 'Successfully deleted table associated with the archive with filename ') . "<b>'". $_REQUEST['ARCHIVE_filename'] . "'</b>.";

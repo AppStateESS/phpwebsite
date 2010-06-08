@@ -8,7 +8,7 @@
  * @version $Id$
  */
 
-Core\Core::initModClass('comments', 'Comment_Item.php');
+core\Core::initModClass('comments', 'Comment_Item.php');
 
 define('NO_COMMENTS_FOUND', 'none');
 
@@ -46,7 +46,7 @@ class Comment_Thread {
 
     public function init()
     {
-        $db = new Core\DB('comments_threads');
+        $db = new \core\DB('comments_threads');
         $db->addColumn('comments_threads.*');
         $db->addColumn('comments_monitors.thread_id', null, 'monitored');
         $db->addColumn('comments_monitors.send_notice', null, 'send_notice');
@@ -57,8 +57,8 @@ class Comment_Thread {
         $db->addWhere('id', $this->id);
 
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             $this->_error = $result->getMessage();
         }
 
@@ -94,7 +94,7 @@ class Comment_Thread {
 
     public function loadKey()
     {
-        $this->_key = new Core\Key($this->key_id);
+        $this->_key = new \core\Key($this->key_id);
     }
 
     public function getLastPoster()
@@ -110,7 +110,7 @@ class Comment_Thread {
      */
     public function buildThread()
     {
-        $db = new Core\DB('comments_threads');
+        $db = new \core\DB('comments_threads');
         $db->addColumn('comments_threads.*');
         $db->addColumn('comments_monitors.thread_id', null, 'monitored');
         $db->addColumn('comments_monitors.send_notice', null, 'send_notice');
@@ -122,13 +122,13 @@ class Comment_Thread {
         $db->addWhere('key_id', $this->key_id);
         $result = $db->loadObject($this);
 
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = $result->getMessage();
             return $result;
         } elseif (empty($result)) {
             $result = $this->save();
-            if (Core\Error::isError($result)) {
-                Core\Error::log($result);
+            if (core\Error::isError($result)) {
+                \core\Error::log($result);
 
                 $this->_error = dgettext('comments', 'Error occurred trying to create new thread.');
 
@@ -155,7 +155,7 @@ class Comment_Thread {
     public function getSourceUrl($full=FALSE, $comment_id=0)
     {
 
-                $url = Core\DBPager::getLastView('comments_items');
+                $url = \core\DBPager::getLastView('comments_items');
 
         if ($comment_id) {
             $url .= "#cm_$comment_id";
@@ -179,30 +179,30 @@ class Comment_Thread {
         $vars['uop']   = 'post_comment';
         $vars['thread_id']     = $this->id;
         $str = dgettext('comments', 'Post New Comment');
-        return Core\Text::moduleLink('<span>'.$str.'</span>', 'comments', $vars, null, $str, 'comment_postnew_link');
+        return \core\Text::moduleLink('<span>'.$str.'</span>', 'comments', $vars, null, $str, 'comment_postnew_link');
     }
 
     public function save()
     {
-        $db = new Core\DB('comments_threads');
+        $db = new \core\DB('comments_threads');
         return $db->saveObject($this);
     }
 
     public function delete()
     {
-        $db = new Core\DB('comments_items');
+        $db = new \core\DB('comments_items');
         $db->addWhere('thread_id', $this->id);
         $item_result = $db->delete();
 
-        if (Core\Error::isError($item_result)) {
+        if (core\Error::isError($item_result)) {
             return $item_result;
         }
 
-        $db = new Core\DB('comments_threads');
+        $db = new \core\DB('comments_threads');
         $db->addWhere('id', $this->id);
         $thread_result = $db->delete();
 
-        if (Core\Error::isError($thread_result)) {
+        if (core\Error::isError($thread_result)) {
             return $thread_result;
         }
         return TRUE;
@@ -262,14 +262,14 @@ class Comment_Thread {
                             'new_all'  => dgettext('comments', 'Newest first'));
 
 
-        $pager = new Core\DBPager('comments_items', 'Comment_Item');
+        $pager = new \core\DBPager('comments_items', 'Comment_Item');
         $pager->addWhere('approved', 1);
         $pager->setAnchor('comments');
         $pager->saveLastView();
-        $form = new Core\Form;
+        $form = new \core\Form;
 
         if (!$this->_return_url) {
-            $getVals = Core\Text::getGetValues();
+            $getVals = \core\Text::getGetValues();
 
             if (!empty($getVals)) {
                 $referer[] = 'index.php?';
@@ -299,7 +299,7 @@ class Comment_Thread {
         }
         $pager->addWhere('thread_id', $this->id);
 
-        $user_order = Core\Cookie::read('cm_order_pref');
+        $user_order = \core\Cookie::read('cm_order_pref');
 
         if (isset($_GET['order'])) {
             $default_order = &$_GET['order'];
@@ -310,7 +310,7 @@ class Comment_Thread {
                 $default_order = 'new_all';
             }
         } else {
-            $default_order = Core\Settings::get('comments', 'default_order');
+            $default_order = \core\Settings::get('comments', 'default_order');
         }
 
         switch ($default_order) {
@@ -350,7 +350,7 @@ class Comment_Thread {
             $page_tags['BULK_ACTION'] = '<select id="list_actions_edit" name="aop" title="'
             . dgettext('comments', 'Select the desired action for the checked comments').'">'
             . $actions."</select>\n ";
-            $page_tags['MOD_FORM_START'] = '<form class="phpws-form" id="Core\Form" action="index.php?module=comments" method="post">'
+            $page_tags['MOD_FORM_START'] = '<form class="phpws-form" id="core\Form" action="index.php?module=comments" method="post">'
             . '<input type="hidden" name="authkey" value="'.Current_User::getAuthKey().'">';
             $page_tags['MOD_FORM_END'] = '</form>';
         }
@@ -374,14 +374,14 @@ class Comment_Thread {
         }
 
         $content = $pager->get();
-        if (Core\Error::logIfError($content)) {
+        if (core\Error::logIfError($content)) {
             return null;
         }
         $GLOBALS['comments_viewed'] = true;
 
         // If phpwsbb is installed...
         if (isset($GLOBALS['Modules']['phpwsbb'])) {
-            Core\Core::initModClass('phpwsbb', 'BB_Data.php');
+            \core\Core::initModClass('phpwsbb', 'BB_Data.php');
             // If this is already in a forum, offer to disassociate it
             if (!empty($this->phpwsbb_topic) && !$this->phpwsbb_topic->is_phpwsbb)
             PHPWSBB_Data::drop_item_link($this->id, $this->_key->module, $this->_key->item_name);
@@ -391,7 +391,7 @@ class Comment_Thread {
         }
         // If this thread is being monitored and the "send_notice" flag is not set, set it
         if ($this->monitored && !$this->send_notice) {
-            $db = new Core\DB('comments_monitors');
+            $db = new \core\DB('comments_monitors');
             $db->addWhere('thread_id', $this->id);
             $db->addWhere('user_id', Current_User::getId());
             $db->addValue('send_notice', 1);
@@ -432,19 +432,19 @@ class Comment_Thread {
         // Load  all relevant Comment_User objects
         $result = Demographics::getList($author_list, 'comments_users', 'Comment_User');
 
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return;
         }
 
         $GLOBALS['Comment_Users'] = $result;
 
         // Load all groups that these authors belong to (kept separate to save query time)
-        $db = new Core\DB('users_members');
+        $db = new \core\DB('users_members');
         $db->addWhere('member_id', $author_list);
         $db->addColumn('group_id');
         $db->addColumn('member_id');
         $result = $db->select('col');
-        if (!Core\Error::logIfError($result) && !empty($result)) {
+        if (!core\Error::logIfError($result) && !empty($result)) {
             foreach ($result as $value) {
                 $GLOBALS['Comment_UsersGroups'][$value['member_id']][] = $value['group_id'];
             }
@@ -467,13 +467,13 @@ class Comment_Thread {
 
     public function updateLastPoster()
     {
-        $db = new Core\DB('comments_items');
+        $db = new \core\DB('comments_items');
         $db->addWhere('thread_id', $this->id);
         $db->addOrder('create_time desc');
         $db->setLimit(1);
         $db->addColumn('author_id');
         $last_poster = $db->select('one');
-        if (Core\Error::logIfError($last_poster)) {
+        if (core\Error::logIfError($last_poster)) {
             $last_author = 0;
         }
         $this->postLastUser($last_poster);
@@ -482,11 +482,11 @@ class Comment_Thread {
 
     public function updateCount()
     {
-        $db = new Core\DB('comments_items');
+        $db = new \core\DB('comments_items');
         $db->addWhere('thread_id', $this->id);
         $db->addColumn('id', null, null, true);
         $comment_count = $db->select('one');
-        if (Core\Error::logIfError($comment_count)) {
+        if (core\Error::logIfError($comment_count)) {
             return false;
         }
         $this->total_comments = $comment_count;
@@ -510,29 +510,29 @@ class Comment_Thread {
         $vars['thread_id'] = $this->id;
         if ($this->monitored) {
             $vars['uop'] = 'unset_monitor';
-            $link[] = Core\Text::secureLink(dgettext('comments', 'Stop Monitoring'), 'comments', $vars);
+            $link[] = \core\Text::secureLink(dgettext('comments', 'Stop Monitoring'), 'comments', $vars);
         } else {
             $vars['uop'] = 'set_monitor';
-            $link[] = Core\Text::secureLink(dgettext('comments', 'Monitor this Thread'), 'comments', $vars);
+            $link[] = \core\Text::secureLink(dgettext('comments', 'Monitor this Thread'), 'comments', $vars);
         }
         unset($vars['uop']);
         if ($this->userCan()) {
             $vars['aop'] = 'set_anon_posting';
             if ($this->allow_anon) {
                 $vars['allow'] = '0';
-                $link[] = Core\Text::secureLink(dgettext('comments', 'Disable anonymous posting'), 'comments', $vars);
+                $link[] = \core\Text::secureLink(dgettext('comments', 'Disable anonymous posting'), 'comments', $vars);
             } else {
                 $vars['allow'] = '1';
-                $link[] = Core\Text::secureLink(dgettext('comments', 'Enable anonymous posting'), 'comments', $vars);
+                $link[] = \core\Text::secureLink(dgettext('comments', 'Enable anonymous posting'), 'comments', $vars);
             }
             unset($vars['allow']);
             $vars['aop'] = 'lock_thread';
             if ($this->locked) {
                 $vars['lock'] = '0';
-                $link[] = Core\Text::secureLink(dgettext('comments', 'Unlock this Thread'), 'comments', $vars);
+                $link[] = \core\Text::secureLink(dgettext('comments', 'Unlock this Thread'), 'comments', $vars);
             } else {
                 $vars['lock'] = '1';
-                $link[] = Core\Text::secureLink(dgettext('comments', 'Lock this Thread'), 'comments', $vars);
+                $link[] = \core\Text::secureLink(dgettext('comments', 'Lock this Thread'), 'comments', $vars);
             }
             unset($vars['lock']);
         }
@@ -577,8 +577,8 @@ class Comment_Thread {
     {
         if (!isset($GLOBALS['Modules']['phpwsbb']))
         return;
-        Core\Core::initModClass('phpwsbb', 'Topic.php');
-        Core\Core::initModClass('phpwsbb', 'Forum.php');
+        \core\Core::initModClass('phpwsbb', 'Topic.php');
+        \core\Core::initModClass('phpwsbb', 'Forum.php');
         $topic = new PHPWSBB_Topic($this->id);
         if ($topic->id)
         $this->phpwsbb_topic = $topic;
@@ -592,11 +592,11 @@ class Comment_Thread {
      */
     public function setAnonPosting($status)
     {
-        $db = new Core\DB('comments_threads');
+        $db = new \core\DB('comments_threads');
         $db->addWhere('id', $this->id);
         $db->addValue('allow_anon', (int) $status);
         $result = $db->update();
-        if (!Core\Error::logIfError($result))
+        if (!core\Error::logIfError($result))
         return true;
     }
 
@@ -617,7 +617,7 @@ class Comment_Thread {
             $tags = $forum->getStatusTags();
         }
 
-        Core\Text::filterText('some text');
+        \core\Text::filterText('some text');
         $filters = explode(',', TEXT_FILTERS);
         if (ALLOW_TEXT_FILTERS && in_array('bb', $filters)) {
             $list[] = dgettext('comments', 'cbparser BB code is <b>on</b>');

@@ -7,7 +7,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-Core\Core::initModClass('blog', 'Blog_Form.php');
+core\Core::initModClass('blog', 'Blog_Form.php');
 if (!defined('MAX_BLOG_CACHE_PAGES')) {
     define('MAX_BLOG_CACHE_PAGES', 3);
 }
@@ -26,7 +26,7 @@ class Blog_Admin {
 
         $panel = Blog_Admin::cpanel();
         $panel->enableSecure();
-        Core\Core::initModClass('version', 'Version.php');
+        \core\Core::initModClass('version', 'Version.php');
 
         if (isset($_REQUEST['command'])) {
             $command = $_REQUEST['command'];
@@ -70,7 +70,7 @@ class Blog_Admin {
                         $linkVar['action']     = 'admin';
                         $linkVar['command']    = 'edit_unapproved';
                         $linkVar['version_id'] = $approval_id;
-                        $message = Core\Text::secureLink($link, 'blog', $linkVar);
+                        $message = \core\Text::secureLink($link, 'blog', $linkVar);
                         $content = Blog_Form::edit($blog);
                     }
 
@@ -87,16 +87,16 @@ class Blog_Admin {
                 $vars['action'] = 'admin';
 
                 $vars['command'] = 'edit_unapproved';
-                $approval->setEditUrl(Core\Text::linkAddress('blog', $vars, TRUE));
+                $approval->setEditUrl(core\Text::linkAddress('blog', $vars, TRUE));
 
                 $vars['command'] = 'view_version';
-                $approval->setViewUrl(Core\Text::linkAddress('blog', $vars, TRUE));
+                $approval->setViewUrl(core\Text::linkAddress('blog', $vars, TRUE));
 
                 $vars['command'] = 'approve_item';
-                $approval->setApproveUrl(Core\Text::linkAddress('blog', $vars, TRUE));
+                $approval->setApproveUrl(core\Text::linkAddress('blog', $vars, TRUE));
 
                 $vars['command'] = 'disapprove_item';
-                $approval->setDisapproveUrl(Core\Text::linkAddress('blog', $vars, TRUE));
+                $approval->setDisapproveUrl(core\Text::linkAddress('blog', $vars, TRUE));
 
                 $content = $approval->getList();
                 break;
@@ -108,8 +108,8 @@ class Blog_Admin {
                 }
                 $version = new Version('blog_entries', $_REQUEST['version_id']);
                 $result = $version->delete();
-                if (Core\Error::isError($result)) {
-                    Core\Error::log($result);
+                if (core\Error::isError($result)) {
+                    \core\Error::log($result);
                     Blog_Admin::setForward(dgettext('blog', 'A problem occurred when trying to disapprove this entry.'), 'approval');
                 } else {
                     Blog_Admin::setForward(dgettext('blog', 'Blog entry disapproved.'), 'approval');
@@ -137,11 +137,11 @@ class Blog_Admin {
                 $version->setApproved(TRUE);
                 $result = $version->save();
                 Blog_Admin::resetCache();
-                if (Core\Error::isError($result)) {
-                    Core\Error::log($result);
+                if (core\Error::isError($result)) {
+                    \core\Error::log($result);
                     Blog_Admin::setForward(dgettext('blog', 'An error occurred when saving your version.'), 'approval');
                 } else {
-                    $key = new Core\Key($version->source_data['key_id']);
+                    $key = new \core\Key($version->source_data['key_id']);
                     $version->authorizeCreator($key);
                     Blog_Admin::setForward(dgettext('blog', 'Blog entry approved.'), 'approval');
                 }
@@ -178,7 +178,7 @@ class Blog_Admin {
 
             case 'menu_submit_link':
                 Menu::pinLink(dgettext('blog', 'Submit entry'), 'index.php?module=blog&action=user&action=submit');
-                Core\Core::reroute('index.php?module=blog&action=admin&tab=settings&authkey=' . Current_User::getAuthKey());
+                \core\Core::reroute('index.php?module=blog&action=admin&tab=settings&authkey=' . Current_User::getAuthKey());
                 break;
 
             case 'restore':
@@ -191,7 +191,7 @@ class Blog_Admin {
                     Current_User::disallow();
                 }
                 Blog_Admin::sticky($blog);
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
             case 'unsticky':
@@ -199,7 +199,7 @@ class Blog_Admin {
                     Current_User::disallow();
                 }
                 Blog_Admin::unsticky($blog);
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
             case 'restorePrevBlog':
@@ -229,7 +229,7 @@ class Blog_Admin {
                 $panel->setCurrentTab('list');
                 $blog->post_entry();
 
-                $link_back = Core\Text::linkAddress('blog', array('action' => 'admin', 'tab'=>'list'), TRUE);
+                $link_back = \core\Text::linkAddress('blog', array('action' => 'admin', 'tab'=>'list'), TRUE);
 
                 if ($blog->_error) {
                     if (empty($blog->id)) {
@@ -237,30 +237,30 @@ class Blog_Admin {
                     }
                     $content = Blog_Form::edit($blog);
                 } else {
-                    if (!isset($_POST['blog_id']) && Core\Core::isPosted()) {
+                    if (!isset($_POST['blog_id']) && \core\Core::isPosted()) {
                         Blog_Admin::setForward(dgettext('blog', 'Entry saved successfully.'), 'list');
                     }
 
                     $result = $blog->save();
                     Blog_Admin::resetCache();
 
-                    if (Core\Error::isError($result)) {
+                    if (core\Error::isError($result)) {
                         $message = dgettext('blog', 'An error occurred when trying to save your entry. Please check your logs.');
-                        Core\Error::log($result);
+                        \core\Error::log($result);
                         Blog_Admin::setForward($message, 'list');
                     }
 
                     if (!$blog->approved) {
                         Blog_Admin::setForward(dgettext('blog', 'Your entry is being held for approval.'), 'list');
                     } else {
-                        Core\Core::reroute($blog->getViewLink(true));
+                        \core\Core::reroute($blog->getViewLink(true));
                     }
                 }
                 break;
 
             case 'reset_cache':
                 Blog_Admin::resetCache();
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
             case 'post_settings':
@@ -307,48 +307,48 @@ class Blog_Admin {
     public static function postSettings()
     {
         if (isset($_POST['show_recent'])) {
-            Core\Settings::set('blog', 'show_recent', $_POST['show_recent']);
+            \core\Settings::set('blog', 'show_recent', $_POST['show_recent']);
         }
 
         isset($_POST['allow_comments']) ?
-        Core\Settings::set('blog', 'allow_comments', 1) :
-        Core\Settings::set('blog', 'allow_comments', 0);
+        \core\Settings::set('blog', 'allow_comments', 1) :
+        \core\Settings::set('blog', 'allow_comments', 0);
 
         isset($_POST['anonymous_comments']) ?
-        Core\Settings::set('blog', 'anonymous_comments', 1) :
-        Core\Settings::set('blog', 'anonymous_comments', 0);
+        \core\Settings::set('blog', 'anonymous_comments', 1) :
+        \core\Settings::set('blog', 'anonymous_comments', 0);
 
         isset($_POST['cache_view']) ?
-        Core\Settings::set('blog', 'cache_view', 1) :
-        Core\Settings::set('blog', 'cache_view', 0);
+        \core\Settings::set('blog', 'cache_view', 1) :
+        \core\Settings::set('blog', 'cache_view', 0);
 
         isset($_POST['captcha_submissions']) ?
-        Core\Settings::set('blog', 'captcha_submissions', 1) :
-        Core\Settings::set('blog', 'captcha_submissions', 0);
+        \core\Settings::set('blog', 'captcha_submissions', 1) :
+        \core\Settings::set('blog', 'captcha_submissions', 0);
 
         isset($_POST['home_page_display']) ?
-        Core\Settings::set('blog', 'home_page_display', 1) :
-        Core\Settings::set('blog', 'home_page_display', 0);
+        \core\Settings::set('blog', 'home_page_display', 1) :
+        \core\Settings::set('blog', 'home_page_display', 0);
 
         isset($_POST['allow_anonymous_submits']) ?
-        Core\Settings::set('blog', 'allow_anonymous_submits', 1) :
-        Core\Settings::set('blog', 'allow_anonymous_submits', 0);
+        \core\Settings::set('blog', 'allow_anonymous_submits', 1) :
+        \core\Settings::set('blog', 'allow_anonymous_submits', 0);
 
         isset($_POST['show_category_icons']) ?
-        Core\Settings::set('blog', 'show_category_icons', 1) :
-        Core\Settings::set('blog', 'show_category_icons', 0);
+        \core\Settings::set('blog', 'show_category_icons', 1) :
+        \core\Settings::set('blog', 'show_category_icons', 0);
 
         isset($_POST['show_category_links']) ?
-        Core\Settings::set('blog', 'show_category_links', 1) :
-        Core\Settings::set('blog', 'show_category_links', 0);
+        \core\Settings::set('blog', 'show_category_links', 1) :
+        \core\Settings::set('blog', 'show_category_links', 0);
 
         isset($_POST['single_cat_icon']) ?
-        Core\Settings::set('blog', 'single_cat_icon', 1) :
-        Core\Settings::set('blog', 'single_cat_icon', 0);
+        \core\Settings::set('blog', 'single_cat_icon', 1) :
+        \core\Settings::set('blog', 'single_cat_icon', 0);
 
         isset($_POST['logged_users_only']) ?
-        Core\Settings::set('blog', 'logged_users_only', 1) :
-        Core\Settings::set('blog', 'logged_users_only', 0);
+        \core\Settings::set('blog', 'logged_users_only', 1) :
+        \core\Settings::set('blog', 'logged_users_only', 0);
 
 
         if (isset($_POST['view_only']) && is_array($_POST['view_only'])) {
@@ -357,47 +357,47 @@ class Blog_Admin {
             $view_only = null;
         }
 
-        Core\Settings::set('blog', 'view_only', $view_only);
+        \core\Settings::set('blog', 'view_only', $view_only);
 
         if (isset($_POST['simple_image'])) {
-            Core\Settings::set('blog', 'simple_image', 1);
+            \core\Settings::set('blog', 'simple_image', 1);
             isset($_POST['mod_folders_only']) ?
-            Core\Settings::set('blog', 'mod_folders_only', 1) :
-            Core\Settings::set('blog', 'mod_folders_only', 0);
+            \core\Settings::set('blog', 'mod_folders_only', 1) :
+            \core\Settings::set('blog', 'mod_folders_only', 0);
 
             if ( !empty($_POST['max_width']) ) {
                 $max_width = (int)$_POST['max_width'];
                 if ($max_width >= 50 && $max_width <= 2048 ) {
-                    Core\Settings::set('blog', 'max_width', $max_width);
+                    \core\Settings::set('blog', 'max_width', $max_width);
                 }
             }
 
             if ( !empty($_POST['max_height']) ) {
                 $max_height = (int)$_POST['max_height'];
                 if ($max_height >= 50 && $max_height <= 2048 ) {
-                    Core\Settings::set('blog', 'max_height', $max_height);
+                    \core\Settings::set('blog', 'max_height', $max_height);
                 }
             }
         } else {
-            Core\Settings::set('blog', 'simple_image', 0);
+            \core\Settings::set('blog', 'simple_image', 0);
         }
 
         $past_limit = (int)$_POST['past_entries'];
 
         if ((int)$past_limit >= 0) {
-            Core\Settings::set('blog', 'past_entries', $past_limit);
+            \core\Settings::set('blog', 'past_entries', $past_limit);
         } else {
-            Core\Settings::reset('blog', 'past_entries');
+            \core\Settings::reset('blog', 'past_entries');
         }
 
         $blog_limit = (int)$_POST['blog_limit'];
         if ((int)$blog_limit > 0) {
-            Core\Settings::set('blog', 'blog_limit', $blog_limit);
+            \core\Settings::set('blog', 'blog_limit', $blog_limit);
         } else {
-            Core\Settings::reset('blog', 'blog_limit');
+            \core\Settings::reset('blog', 'blog_limit');
         }
 
-        Core\Settings::save('blog');
+        \core\Settings::save('blog');
     }
 
 
@@ -411,29 +411,29 @@ class Blog_Admin {
         $vars['version_id'] = $version->id;
         $vars['command'] = 'edit_unapproved';
 
-        $options[] = Core\Text::secureLink(dgettext('blog', 'Edit'), 'blog', $vars);
+        $options[] = \core\Text::secureLink(dgettext('blog', 'Edit'), 'blog', $vars);
 
         if (!$version->vr_approved && Current_User::isUnrestricted('blog')) {
             $vars['command'] = 'approve_item';
-            $options[] = Core\Text::secureLink(dgettext('blog', 'Approve'), 'blog', $vars);
+            $options[] = \core\Text::secureLink(dgettext('blog', 'Approve'), 'blog', $vars);
 
             $vars['command'] = 'disapprove_item';
-            $options[] = Core\Text::secureLink(dgettext('blog', 'Disapprove'), 'blog', $vars);
+            $options[] = \core\Text::secureLink(dgettext('blog', 'Disapprove'), 'blog', $vars);
         }
 
         $vars['command'] = 'approval';
-        $options[] = Core\Text::secureLink(dgettext('blog', 'Approval list'), 'blog', $vars);
+        $options[] = \core\Text::secureLink(dgettext('blog', 'Approval list'), 'blog', $vars);
 
         $template['OPTIONS'] = implode(' | ', $options);
         $template['VIEW'] = $blog->brief_view();
-        return Core\Template::process($template, 'blog', 'version_view.tpl');
+        return \core\Template::process($template, 'blog', 'version_view.tpl');
     }
 
     public function setForward($message, $command)
     {
         $_SESSION['Blog_Forward'] = $message;
-        $link = Core\Text::linkAddress('blog', array('action'=>'admin', 'command' => $command), TRUE);
-        Core\Core::reroute($link);
+        $link = \core\Text::linkAddress('blog', array('action'=>'admin', 'command' => $command), TRUE);
+        \core\Core::reroute($link);
     }
 
     public static function getForward()
@@ -449,8 +449,8 @@ class Blog_Admin {
 
     public static function cpanel()
     {
-        Core\Core::initModClass('version', 'Version.php');
-        Core\Core::initModClass('controlpanel', 'Panel.php');
+        \core\Core::initModClass('version', 'Version.php');
+        \core\Core::initModClass('controlpanel', 'Panel.php');
         $newLink = 'index.php?module=blog&amp;action=admin';
         $newCommand = array ('title'=>dgettext('blog', 'New'), 'link'=> $newLink);
 
@@ -461,8 +461,8 @@ class Blog_Admin {
             $version = new Version('blog_entries');
             $unapproved = $version->countUnapproved();
 
-            if (Core\Error::isError($unapproved)) {
-                Core\Error::log($unapproved);
+            if (core\Error::isError($unapproved)) {
+                \core\Error::log($unapproved);
                 $unapproved = '??';
             }
             $approvalLink = 'index.php?module=blog&amp;action=admin';
@@ -489,14 +489,14 @@ class Blog_Admin {
 
     public static function entry_list()
     {
-                $db = new Core\DB('blog_stickies');
+                $db = new \core\DB('blog_stickies');
         $db->addColumn('blog_id');
         $GLOBALS['blog_stickies'] = $db->select('col');
 
         $pageTags['SUMMARY'] = dgettext('blog', 'Summary');
         $pageTags['ACTION']  = dgettext('blog', 'Action');
 
-        $pager = new Core\DBPager('blog_entries', 'Blog');
+        $pager = new \core\DBPager('blog_entries', 'Blog');
         $pager->addSortHeader('title', dgettext('blog', 'Title'));
         $pager->addSortHeader('create_date', dgettext('blog', 'Creation'));
         $pager->addSortHeader('publish_date', dgettext('blog', 'Publish'));
@@ -534,14 +534,14 @@ class Blog_Admin {
 
     public function restoreVersionList(&$blog)
     {
-        Core\Core::initModClass('version', 'Restore.php');
+        \core\Core::initModClass('version', 'Restore.php');
         $vars['action'] = 'admin';
         $vars['command'] = 'restorePrevBlog';
         $vars['blog_id'] = $blog->id;
-        $restore_link = Core\Text::linkAddress('blog', $vars, TRUE);
+        $restore_link = \core\Text::linkAddress('blog', $vars, TRUE);
 
         $vars['command'] = 'removePrevBlog';
-        $remove_link = Core\Text::linkAddress('blog', $vars, TRUE);
+        $remove_link = \core\Text::linkAddress('blog', $vars, TRUE);
 
         $restore = new Version_Restore('blog', 'blog_entries', $blog->id, 'blog', 'brief_view');
         $restore->setRestoreUrl($restore_link);
@@ -564,7 +564,7 @@ class Blog_Admin {
 
     public function sticky($blog)
     {
-        $db = new Core\DB('blog_entries');
+        $db = new \core\DB('blog_entries');
         $db->addWhere('sticky', 0, '>');
         $db->addWhere('id', $blog->id, '!=');
         $db->addOrder('sticky');
@@ -593,7 +593,7 @@ class Blog_Admin {
         $blog->sticky = 0;
         $blog->save();
 
-        $db = new Core\DB('blog_entries');
+        $db = new \core\DB('blog_entries');
         $db->addWhere('sticky', 0, '>');
         $db->addWhere('id', $blog->id, '!=');
         $db->addOrder('sticky');
@@ -618,7 +618,7 @@ class Blog_Admin {
     public function resetCache()
     {
         for ($i=1; $i <= MAX_BLOG_CACHE_PAGES; $i++) {
-            Core\Cache::remove(BLOG_CACHE_KEY . $i);
+            \core\Cache::remove(BLOG_CACHE_KEY . $i);
         }
     }
 
@@ -626,33 +626,33 @@ class Blog_Admin {
     {
         $unix_purge_date = strtotime($purge_date);
         $purge_date = strftime('%c', $unix_purge_date);
-        $tpl['CONFIRM'] = Core\Text::secureLink(sprintf(dgettext('blog', 'I am sure that I want to delete all blog entries prior to %s'),
+        $tpl['CONFIRM'] = \core\Text::secureLink(sprintf(dgettext('blog', 'I am sure that I want to delete all blog entries prior to %s'),
         $purge_date),
                                                  'blog', array('action'=>'admin', 'command'=>'purge_entries', 'pd'=>$unix_purge_date));
-        $tpl['DENY'] = Core\Text::secureLink(dgettext('blog', 'Nevermind, go back to settings'),
+        $tpl['DENY'] = \core\Text::secureLink(dgettext('blog', 'Nevermind, go back to settings'),
                                               'blog', array('action'=>'admin', 'command'=>'settings'));
         $tpl['INSTRUCTIONS'] = dgettext('blog', 'You have chosen to purge old blog entries from your web site. Be aware they will be deleted permanently.');
 
-        return Core\Template::process($tpl, 'blog', 'purge_confirm.tpl');
+        return \core\Template::process($tpl, 'blog', 'purge_confirm.tpl');
     }
 
     public function purgeEntries($date)
     {
-        Core\Core::initModClass('blog', 'Blog.php');
+        \core\Core::initModClass('blog', 'Blog.php');
         if (empty($date)) {
             return;
         }
 
-        $db = new Core\DB('blog_entries');
+        $db = new \core\DB('blog_entries');
         $db->addWhere('create_date', $date, '<');
         $entries = $db->getObjects('Blog');
 
-        if (empty($entries) || Core\Error::logIfError($entries)) {
+        if (empty($entries) || \core\Error::logIfError($entries)) {
             return;
         }
 
         foreach ($entries as $blog) {
-            Core\Error::logIfError($blog->delete());
+            \core\Error::logIfError($blog->delete());
         }
 
     }

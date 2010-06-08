@@ -229,10 +229,10 @@ class PHAT_Form extends PHPWS_Item {
             if(!$this->_editData)
             $sql .= " AND position!='-1'";
 
-            $result = Core\DB::getAll($sql);
+            $result = \core\DB::getAll($sql);
 
-            if (Core\Error::isError($result)) {
-                Core\Error::log($result);
+            if (core\Error::isError($result)) {
+                \core\Error::log($result);
                 return;
             }
 
@@ -265,8 +265,8 @@ class PHAT_Form extends PHPWS_Item {
             $formTags['FORM_INFORMATION'] = $this->getFormInfo();
         }
 
-        Core\Core::initModClass('help', 'Help.php');
-        $form = new Core\Form('edit_settings');
+        \core\Core::initModClass('help', 'Help.php');
+        $form = new \core\Form('edit_settings');
 
         /* Setup all editable values and their labels */
 
@@ -343,7 +343,7 @@ class PHAT_Form extends PHPWS_Item {
 
         $template = $form->getTemplate();
 
-        $content = Core\Template::process($template, 'phatform', 'form/settings.tpl');
+        $content = \core\Template::process($template, 'phatform', 'form/settings.tpl');
 
         return $content;
     }// END FUNC editSettings()
@@ -368,27 +368,27 @@ class PHAT_Form extends PHPWS_Item {
         if($_REQUEST['PHAT_FormName']) {
             $this->setLabel($_REQUEST['PHAT_FormName']);
         } else {
-            $error = Core\Error::get(PHATFORM_MISSING_FORM_NAME, 'phatform', 'PHAT_Form::_saveSettings()');
+            $error = \core\Error::get(PHATFORM_MISSING_FORM_NAME, 'phatform', 'PHAT_Form::_saveSettings()');
         }
 
         /* Check for a blurb and set it if there is one */
         if($_REQUEST['PHAT_FormBlurb0']) {
             $result = $this->setBlurb0($_REQUEST['PHAT_FormBlurb0']);
-            if(!Core\Error::isError($error))
+            if(!core\Error::isError($error))
             $error = $result;
         } else {
             $result = $this->setBlurb0(NULL);
-            if(!Core\Error::isError($error))
+            if(!core\Error::isError($error))
             $error = $result;
         }
 
         /* Check for a blurb and set it if there is one */
         if($_REQUEST['PHAT_FormBlurb1']) {
             $result = $this->setBlurb1($_REQUEST['PHAT_FormBlurb1']);
-            if(!Core\Error::isError($error))
+            if(!core\Error::isError($error))
             $error = $result;
         } else {
-            $error = Core\Error::get(PHATFORM_SUBMISSION_MISSING, 'phatform', 'PHAT_Form::_saveSettings()');
+            $error = \core\Error::get(PHATFORM_SUBMISSION_MISSING, 'phatform', 'PHAT_Form::_saveSettings()');
         }
 
         /* RBW if the user has written some PHP code to handle post processing then store it. */
@@ -403,11 +403,11 @@ class PHAT_Form extends PHPWS_Item {
         /* Set the page limit or the default if nothing was input */
         if($_REQUEST['PHAT_FormPageLimit']) {
             $result = $this->setPageLimit($_REQUEST['PHAT_FormPageLimit']);
-            if(!Core\Error::isError($error))
+            if(!core\Error::isError($error))
             $error = $result;
         } else {
             $result = $this->setPageLimit();
-            if(!Core\Error::isError($error))
+            if(!core\Error::isError($error))
             $error = $result;
         }
 
@@ -424,7 +424,7 @@ class PHAT_Form extends PHPWS_Item {
                 $this->setMultiSubmit(TRUE);
             } else {
                 $this->setMultiSubmit(FALSE);
-                $error = Core\Error::get(PHATFORM_MULTI_NOT_ALLOWED, 'phatform', 'PHAT_Form::saveSettings');
+                $error = \core\Error::get(PHATFORM_MULTI_NOT_ALLOWED, 'phatform', 'PHAT_Form::saveSettings');
             }
         } else {
             $this->setMultiSubmit(FALSE);
@@ -436,7 +436,7 @@ class PHAT_Form extends PHPWS_Item {
                 $this->setAnonymous(TRUE);
             } else {
                 $this->setAnonymous(FALSE);
-                $error = Core\Error::get(PHATFORM_ANON_NOT_ALLOWED, 'phatform', 'PHAT_Form::saveSettings');
+                $error = \core\Error::get(PHATFORM_ANON_NOT_ALLOWED, 'phatform', 'PHAT_Form::saveSettings');
             }
         } else {
             $this->setAnonymous(FALSE);
@@ -472,7 +472,7 @@ class PHAT_Form extends PHPWS_Item {
             }
         }
 
-        if(Core\Error::isError($error)) {
+        if(core\Error::isError($error)) {
             $GLOBALS['CNT_phatform']['message'] = $error->getMessage();
             $content = $this->editSettings();
         } else {
@@ -492,8 +492,8 @@ class PHAT_Form extends PHPWS_Item {
                 $this->commit();
             }
 
-            if(Core\Error::isError($result)) {
-                javascript('alert', array('content' => Core\Error::printError($result)));
+            if(core\Error::isError($result)) {
+                javascript('alert', array('content' => \core\Error::printError($result)));
                 $content = $this->editSettings();
             } else {
                 $this->_position = 0;
@@ -556,7 +556,7 @@ class PHAT_Form extends PHPWS_Item {
 
         /* Begin view template array */
         if($this->currentPage() == 1) {
-            $viewTags['BLURB0'] = Core\Text::parseOutput($this->_blurb0);
+            $viewTags['BLURB0'] = \core\Text::parseOutput($this->_blurb0);
 
             if(!$this->_saved) {
                 $viewTags['WARNING'] = dgettext('phatform', 'The form must be saved before it is available to the public.');
@@ -598,14 +598,14 @@ class PHAT_Form extends PHPWS_Item {
 
                 /* If in edit mode, show the element editor for the current element */
                 if($edit) {
-                    $sectionTags['ELEMENT_NAME'] = Core\Text::parseOutput($this->element->getLabel());
+                    $sectionTags['ELEMENT_NAME'] = \core\Text::parseOutput($this->element->getLabel());
                     $sectionTags['ELEMENT_EDITOR'] = $this->_elementEditor($i);
                 }
 
                 if(!isset($formTags['ELEMENTS'])) {
-                    $formTags['ELEMENTS'] = Core\Template::processTemplate($sectionTags, 'phatform', 'form/section.tpl');
+                    $formTags['ELEMENTS'] = \core\Template::processTemplate($sectionTags, 'phatform', 'form/section.tpl');
                 } else {
-                    $formTags['ELEMENTS'] .= Core\Template::processTemplate($sectionTags, 'phatform', 'form/section.tpl');
+                    $formTags['ELEMENTS'] .= \core\Template::processTemplate($sectionTags, 'phatform', 'form/section.tpl');
                 }
             }
 
@@ -614,17 +614,17 @@ class PHAT_Form extends PHPWS_Item {
             if(!$edit) {
                 if($this->currentPage() == $this->numPages()) {
                     if($this->_editData && $this->currentPage() > 1) {
-                        $formTags['BACK_BUTTON'] = Core\Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_Back');
+                        $formTags['BACK_BUTTON'] = \core\Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_Back');
                     }
                     if (PHATFORM_CAPTCHA && $this->_anonymous && !Current_User::isLogged()) {
                                                 $formTags['CAPTCHA'] = Captcha::get();
                     }
-                    $formTags['SUBMIT_BUTTON'] = Core\Form::formSubmit(dgettext('phatform', 'Finish'), 'PHAT_Submit');
+                    $formTags['SUBMIT_BUTTON'] = \core\Form::formSubmit(dgettext('phatform', 'Finish'), 'PHAT_Submit');
                 } else {
                     if($this->_editData && $this->currentPage() > 1) {
-                        $formTags['BACK_BUTTON'] = Core\Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_Back');
+                        $formTags['BACK_BUTTON'] = \core\Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_Back');
                     }
-                    $formTags['NEXT_BUTTON'] = Core\Form::formSubmit(dgettext('phatform', 'Next'), 'PHAT_Next');
+                    $formTags['NEXT_BUTTON'] = \core\Form::formSubmit(dgettext('phatform', 'Next'), 'PHAT_Next');
                 }
             }
 
@@ -638,11 +638,11 @@ class PHAT_Form extends PHPWS_Item {
             /* Actually load hidden variables into the elements array */
             $hiddens['module'] = 'phatform';
             foreach ($hiddens as $key => $value) {
-                $eles[] = Core\Form::formHidden($key, $value);
+                $eles[] = \core\Form::formHidden($key, $value);
             }
             $elements[] = implode("\n", $eles);
-            $elements[0] .= Core\Template::processTemplate($formTags, 'phatform', 'form/form.tpl');
-            $viewTags['FORM'] = Core\Form::makeForm('PHAT_Form', 'index.php', $elements);
+            $elements[0] .= \core\Template::processTemplate($formTags, 'phatform', 'form/form.tpl');
+            $viewTags['FORM'] = \core\Form::makeForm('PHAT_Form', 'index.php', $elements);
         }
 
         /* Check to see if we should show page numbers or not */
@@ -655,14 +655,14 @@ class PHAT_Form extends PHPWS_Item {
             $viewTags['TOOLBAR'] = $this->_toolbar();
         }
 
-        $key = new Core\Key($this->_key_id);
+        $key = new \core\Key($this->_key_id);
         $key->flag();
 
         if ($error) {
             $viewTags['WARNING'] = $error->getMessage();
         }
 
-        return Core\Template::processTemplate($viewTags, 'phatform', 'form/view.tpl');
+        return \core\Template::processTemplate($viewTags, 'phatform', 'form/view.tpl');
     }// END FUNC view()
 
     function getTableName() {
@@ -693,7 +693,7 @@ class PHAT_Form extends PHPWS_Item {
 
         /* Set fetch mode and execute the sql created above */
 
-        $result = Core\DB::getAll($sql);
+        $result = \core\DB::getAll($sql);
 
         /* If a result comes back return TRUE (current user has a submission) */
         if(sizeof($result) > 0)
@@ -705,7 +705,7 @@ class PHAT_Form extends PHPWS_Item {
     /**
      * Pushes the current element onto the end of this form's elements array.
      *
-     * @return mixed A success message on success and a Core\Error object on failure.
+     * @return mixed A success message on success and a \core\Error object on failure.
      * @access public
      */
     function pushElement() {
@@ -724,7 +724,7 @@ class PHAT_Form extends PHPWS_Item {
 
         /* Commit changes to database */
         $result = $this->commit();
-        if(Core\Error::isError($result)) {
+        if(core\Error::isError($result)) {
             return $result;
         } else {
             return dgettext('phatform', 'Element successfully added!') . '<br />';
@@ -734,7 +734,7 @@ class PHAT_Form extends PHPWS_Item {
     /**
      * Pops an element out of the elements array, effectively removing it from this form.
      *
-     * @return mixed A success message on success and a Core\Error object on failure.
+     * @return mixed A success message on success and a \core\Error object on failure.
      * @access public
      */
     function popElement() {
@@ -757,7 +757,7 @@ class PHAT_Form extends PHPWS_Item {
 
         /* Commit changes and test for errors */
         $result = $this->commit();
-        if(Core\Error::isError($result)) {
+        if(core\Error::isError($result)) {
             return $result;
         } else {
             return dgettext('phatform', 'Element successfully removed!') . '<br />';
@@ -788,7 +788,7 @@ class PHAT_Form extends PHPWS_Item {
             $pageNumber[$i] = $i;
         }
 
-        $form = new Core\Form;
+        $form = new \core\Form;
 
         $form->addSelect('PHAT_PageNumber', $pageNumber);
         $form->setMatch('PHAT_PageNumber', $this->currentPage());
@@ -807,7 +807,7 @@ class PHAT_Form extends PHPWS_Item {
         $form->addHidden('module', 'phatform');
         $form->addHidden('PHAT_FORM_OP', 'ToolbarAction');
         $template = $form->getTemplate();
-        return  Core\Template::process($template, 'phatform', 'form/toolbar.tpl');
+        return  \core\Template::process($template, 'phatform', 'form/toolbar.tpl');
     }// END FUNC _toolbar()
 
     /**
@@ -857,8 +857,8 @@ class PHAT_Form extends PHPWS_Item {
         $actions['moveUp'] = dgettext('phatform', 'Move Up');
         $actions['moveDown'] = dgettext('phatform', 'Move Down');
 
-        $editor = Core\Form::formSelect("PHAT_Action_$key", $actions);
-        $editor .= Core\Form::formSubmit(dgettext('phatform', 'Go'), "go_$key");
+        $editor = \core\Form::formSelect("PHAT_Action_$key", $actions);
+        $editor .= \core\Form::formSubmit(dgettext('phatform', 'Go'), "go_$key");
 
         return $editor;
     }// END FUNC _elementEditor()
@@ -944,8 +944,8 @@ class PHAT_Form extends PHPWS_Item {
         if(isset($_REQUEST['PHAT_Next'])) {
             if($this->isSaved()) {
                 $error = $this->_saveFormData();
-                if(Core\Error::isError($error)) {
-                    javascript('alert', array('content' => Core\Error::printError($error)));
+                if(core\Error::isError($error)) {
+                    javascript('alert', array('content' => \core\Error::printError($error)));
                 }
             } else {
                 $this->_position += $this->_pageLimit;
@@ -974,8 +974,8 @@ class PHAT_Form extends PHPWS_Item {
             if($this->isSaved()) {
                 $error = $this->_saveFormData();
 
-                if(Core\Error::isError($error)) {
-                    javascript('alert', array('content' => Core\Error::printError($error)));
+                if(core\Error::isError($error)) {
+                    javascript('alert', array('content' => \core\Error::printError($error)));
                     if(Current_User::allow('phatform')) {
                         $content = $_SESSION['PHAT_FormManager']->menu() . $this->view(false, $error);
                     } else {
@@ -1017,7 +1017,7 @@ class PHAT_Form extends PHPWS_Item {
             $this->element = new $elementInfo[0]($elementInfo[1]);
 
             if($this->element->isRequired() && (!isset($_REQUEST['PHAT_' . $this->element->getLabel()]) || $_REQUEST['PHAT_' . $this->element->getLabel()] == NULL)) {
-                $error = Core\Error::get(PHATFORM_REQUIRED_MISSING, 'phatform', 'PHAT_Form::_saveFormData');
+                $error = \core\Error::get(PHATFORM_REQUIRED_MISSING, 'phatform', 'PHAT_Form::_saveFormData');
             }
 
             if($this->_editData)
@@ -1026,7 +1026,7 @@ class PHAT_Form extends PHPWS_Item {
             if(isset($_REQUEST['PHAT_' . $this->element->getLabel()])) {
                 if(is_string($_REQUEST['PHAT_' . $this->element->getLabel()]) &&
                 strlen($_REQUEST['PHAT_' . $this->element->getLabel()]) > PHAT_MAX_CHARS_TEXT_ENTRY) {
-                    $error = Core\Error::get(PHATFORM_TEXT_MAXSIZE_PASSED, 'phatform',
+                    $error = \core\Error::get(PHATFORM_TEXT_MAXSIZE_PASSED, 'phatform',
                                               'PHAT_Form::_saveFormData',
                     array($this->element->getLabel()));
                 }
@@ -1036,7 +1036,7 @@ class PHAT_Form extends PHPWS_Item {
         }
 
         /* If no errors occured, move the user to the next page in this form */
-        if(!Core\Error::isError($error)) {
+        if(!core\Error::isError($error)) {
             if($this->currentPage() != $this->numPages()) {
                 $this->_position += $this->_pageLimit;
             } else {
@@ -1053,7 +1053,7 @@ class PHAT_Form extends PHPWS_Item {
         $queryData['updated'] = time();
 
         /* Check to see if this user has started entering data for this form yet */
-        $db = new Core\DB('mod_phatform_form_' . $this->getId());
+        $db = new \core\DB('mod_phatform_form_' . $this->getId());
         $db->addValue($queryData);
 
         if(isset($this->_dataId)) {
@@ -1061,8 +1061,8 @@ class PHAT_Form extends PHPWS_Item {
             $db->update();
         } else {
             $result = $db->insert();
-            if (Core\Error::isError($result)) {
-                Core\Error::log($result);
+            if (core\Error::isError($result)) {
+                \core\Error::log($result);
             } else {
                 $this->_dataId = $result;
             }
@@ -1072,7 +1072,7 @@ class PHAT_Form extends PHPWS_Item {
     }// END FUNC _saveFormData()
 
     function _thanks() {
-        $thanksTags['MESSAGE'] = Core\Text::parseOutput($this->_blurb1);
+        $thanksTags['MESSAGE'] = \core\Text::parseOutput($this->_blurb1);
 
         $dataId = $this->_dataId;
 
@@ -1088,7 +1088,7 @@ class PHAT_Form extends PHPWS_Item {
             /* Is there a better way to do this? I just want the data elements of the form, not the rest of the row. Perhaps
              we should write a better SQL statement. */
             foreach($this->_userData as $key=>$value) {
-                if (Core\DB::allowed($key) && ($key != 'id') && ($key != 'user') && ($key != 'updated') && ($key != 'position')) {
+                if (core\DB::allowed($key) && ($key != 'id') && ($key != 'user') && ($key != 'updated') && ($key != 'position')) {
                     $form_details[$key] = $value;
                 }
             }
@@ -1117,7 +1117,7 @@ class PHAT_Form extends PHPWS_Item {
         $thanksTags['HOME'] = '<a href="./index.php">' . dgettext('phatform', 'Home') . '</a>';
 
         $GLOBALS['CNT_phatform']['title'] = $this->getLabel();
-        return Core\Template::processTemplate($thanksTags, 'phatform', 'form/thanks.tpl');
+        return \core\Template::processTemplate($thanksTags, 'phatform', 'form/thanks.tpl');
     }
 
     function checkLabel($label) {
@@ -1127,7 +1127,7 @@ class PHAT_Form extends PHPWS_Item {
             return false;
         }
 
-        if (!Core\DB::allowed($label) || in_array(strtolower($label), $restricted)) {
+        if (!core\DB::allowed($label) || in_array(strtolower($label), $restricted)) {
             return false;
         }
 
@@ -1152,14 +1152,14 @@ class PHAT_Form extends PHPWS_Item {
     function saveKey()
     {
         if (empty($this->_key_id)) {
-            $key = new Core\Key;
+            $key = new \core\Key;
             $key->setModule('phatform');
             $key->setItemName('form');
             $key->setItemId($this->_id);
             $key->setEditPermission('edit_forms');
             $key->setUrl('index.php?module=phatform&PHAT_MAN_OP=view&PHPWS_MAN_ITEMS[]=' . $this->_id);
         } else {
-            $key = new Core\Key($this->_key_id);
+            $key = new \core\Key($this->_key_id);
         }
 
         if ($this->_anonymous) {
@@ -1203,7 +1203,7 @@ class PHAT_Form extends PHPWS_Item {
             }
             $sql .= ')';
 
-            if (Core\Error::logIfError(Core\DB::query($sql))) {
+            if (core\Error::logIfError(core\DB::query($sql))) {
                 $GLOBALS['CNT_phatform']['message'] = dgettext('phatform', 'Could not save the form. Check error log.');
                 return false;
             }
@@ -1225,7 +1225,7 @@ class PHAT_Form extends PHPWS_Item {
 
             $_SESSION['PHAT_FormManager']->_list();
         } else {
-            $error = Core\Error::get(PHATFORM_NEED_ONE_ELEMENT, 'phatform', 'PHAT_Form::_saveSettings()');
+            $error = \core\Error::get(PHATFORM_NEED_ONE_ELEMENT, 'phatform', 'PHAT_Form::_saveSettings()');
             $GLOBALS['CNT_phatform']['message'] = $error->getMessage();
 
             $_REQUEST['PHAT_FORM_OP'] = 'EditAction';
@@ -1251,10 +1251,10 @@ class PHAT_Form extends PHPWS_Item {
         /* If the form is saved archive all data in it's table and remove the table. */
         if($this->isSaved()) {
             $this->report = new PHAT_Report;
-            Core\DB::dropTable('mod_phatform_form_' . $this->getId());
+            \core\DB::dropTable('mod_phatform_form_' . $this->getId());
         }
 
-        Core\Key::drop($this->_key_id);
+        \core\Key::drop($this->_key_id);
         $this->kill();
 
         $_SESSION['PHAT_FormManager']->form = null;
@@ -1279,7 +1279,7 @@ class PHAT_Form extends PHPWS_Item {
         $infoTags['TITLE'] = dgettext('phatform', 'Form Information');
 
         /* Return processed template */
-        return Core\Template::processTemplate($infoTags, 'phatform', 'form/info.tpl');
+        return \core\Template::processTemplate($infoTags, 'phatform', 'form/info.tpl');
     }// END FUNC getFormInfo()
 
     function currentPage() {
@@ -1304,7 +1304,7 @@ class PHAT_Form extends PHPWS_Item {
     function loadUserData() {
         $sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE id=\'' . $this->_dataId . '\'';
 
-        $result = Core\DB::getAll($sql);
+        $result = \core\DB::getAll($sql);
         $this->_userData = $result[0];
         $this->_position = 0;
     }
@@ -1326,7 +1326,7 @@ class PHAT_Form extends PHPWS_Item {
             $this->_position = $position;
             return TRUE;
         } else {
-            return Core\Error::get(PHATFORM_POSITION_INTEGER, 'phatform', 'PHAT_Form::setPosition()');
+            return \core\Error::get(PHATFORM_POSITION_INTEGER, 'phatform', 'PHAT_Form::setPosition()');
         }
     }// END FUNC setPosition()
 
@@ -1339,19 +1339,19 @@ class PHAT_Form extends PHPWS_Item {
      */
     function setBlurb0($blurb) {
         if($blurb === NULL || is_string($blurb)) {
-            $this->_blurb0 = Core\Text::parseInput($blurb);
+            $this->_blurb0 = \core\Text::parseInput($blurb);
             return TRUE;
         } else {
-            return Core\Error::get(PHATFORM_INSTRUCTIONS_FORMAT, 'phatform', 'PHAT_Form::setBlurb0');
+            return \core\Error::get(PHATFORM_INSTRUCTIONS_FORMAT, 'phatform', 'PHAT_Form::setBlurb0');
         }
     }// END FUNC setBlurb0()
 
     function setBlurb1($blurb) {
         if(is_string($blurb)) {
-            $this->_blurb1 = Core\Text::parseInput($blurb);
+            $this->_blurb1 = \core\Text::parseInput($blurb);
             return TRUE;
         } else {
-            return Core\Error::get(PHATFORM_MESSAGE_FORMAT, 'phatform', 'PHAT_Form::setBlurb1');
+            return \core\Error::get(PHATFORM_MESSAGE_FORMAT, 'phatform', 'PHAT_Form::setBlurb1');
         }
     }// END FUNC setBlurb1()
 
@@ -1367,7 +1367,7 @@ class PHAT_Form extends PHPWS_Item {
             $this->element = $element;
             return TRUE;
         } else {
-            return Core\Error::get(PHATFORM_ELEMENT_NOT_OBJ, 'phatform', 'PHAT_Form::setElement');
+            return \core\Error::get(PHATFORM_ELEMENT_NOT_OBJ, 'phatform', 'PHAT_Form::setElement');
         }
     }// END FUNC setElement()
 
@@ -1382,7 +1382,7 @@ class PHAT_Form extends PHPWS_Item {
             $this->_pageLimit = $limit;
             return TRUE;
         } else {
-            return Core\Error::get(PHATFORM_ELEMENT_NOT_OBJ, 'phatform', 'PHAT_Form::setPageLimit');
+            return \core\Error::get(PHATFORM_ELEMENT_NOT_OBJ, 'phatform', 'PHAT_Form::setPageLimit');
         }
     }// END FUNC setPageLimit()
 
@@ -1514,7 +1514,7 @@ class PHAT_Form extends PHPWS_Item {
      * @access private
      */
     function _accessDenied() {
-        Core\Core::errorPage('400');
+        \core\Core::errorPage('400');
     }// END FUNC accessDenied()
 
     function _confirmArchive() {
@@ -1523,8 +1523,8 @@ class PHAT_Form extends PHPWS_Item {
             $error = NULL;
             $error = archive($this->getId());
 
-            if(Core\Error::isError($error)) {
-                Core\Error::log($error);
+            if(core\Error::isError($error)) {
+                \core\Error::log($error);
                 javascript('alert', array('content' => dgettext('phatform', 'Failed to archive.')));
                 unset($_REQUEST['PHAT_ArchiveConfirm']);
                 unset($error);
@@ -1536,15 +1536,15 @@ class PHAT_Form extends PHPWS_Item {
             $this->_saved = 0;
             $this->_position = 0;
             $sql = 'UPDATE mod_phatform_forms SET saved=\'' . $this->_saved . "' WHERE id='" . $this->getId() . "'";
-            Core\DB::query($sql);
+            \core\DB::query($sql);
 
             $sql = 'DROP TABLE mod_phatform_form_' . $this->getId();
-            Core\DB::query($sql);
+            \core\DB::query($sql);
 
             $table = 'mod_phatform_form_' . $this->getId() . '_seq';
-            if(Core\DB::isTable($table)) {
+            if(core\DB::isTable($table)) {
                 $sql = 'DROP TABLE ' . $table;
-                Core\DB::query($sql);
+                \core\DB::query($sql);
             }
             $_REQUEST['PHAT_FORM_OP'] = 'EditAction';
             $_REQUEST['PHAT_Submit'] = 1;
@@ -1556,18 +1556,18 @@ class PHAT_Form extends PHPWS_Item {
             $hiddens['module'] = 'phatform';
             $hiddens['PHAT_FORM_OP'] = 'ArchiveConfirm';
             foreach ($hiddens as $key => $value) {
-                $eles[] = Core\Form::formHidden($key, $value);
+                $eles[] = \core\Form::formHidden($key, $value);
             }
 
             $elements[0] = implode("\n", $eles);
 
             $confirmTags['WARNING_TAG'] = dgettext('phatform', 'WARNING!');
             $confirmTags['MESSAGE'] = dgettext('phatform', 'You have chosen to edit a saved form! All current data will be archived and cleared if you chose to continue!  Make sure you export your data from your form before you continue!');
-            $confirmTags['CANCEL_BUTTON'] = Core\Form::formSubmit(dgettext('phatform', 'Cancel'), 'PHAT_ArchiveCancel');
-            $confirmTags['CONFIRM_BUTTON'] = Core\Form::formSubmit(dgettext('phatform', 'Confirm'), 'PHAT_ArchiveConfirm');
+            $confirmTags['CANCEL_BUTTON'] = \core\Form::formSubmit(dgettext('phatform', 'Cancel'), 'PHAT_ArchiveCancel');
+            $confirmTags['CONFIRM_BUTTON'] = \core\Form::formSubmit(dgettext('phatform', 'Confirm'), 'PHAT_ArchiveConfirm');
 
-            $elements[0] .= Core\Template::processTemplate($confirmTags, 'phatform', 'form/archiveConfirm.tpl');
-            $content =  Core\Form::makeForm('PHAT_FormArchiveConfirm', 'index.php', $elements);
+            $elements[0] .= \core\Template::processTemplate($confirmTags, 'phatform', 'form/archiveConfirm.tpl');
+            $content =  \core\Form::makeForm('PHAT_FormArchiveConfirm', 'index.php', $elements);
 
             $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Form').': '.$this->getLabel();
             $GLOBALS['CNT_phatform']['content'] .= $content;
@@ -1660,7 +1660,7 @@ class PHAT_Form extends PHPWS_Item {
             if(preg_match("/a:.:{/", $value)) {
                 $message .= implode(', ', unserialize(stripslashes($value)));
             } else {
-                $message .= Core\Text::parseOutput($value);
+                $message .= \core\Text::parseOutput($value);
             }
 
             $message = $message .
@@ -1701,14 +1701,14 @@ class PHAT_Form extends PHPWS_Item {
             if(preg_match('/a:.:{/', $value)) {
                 $rowTags['ENTRY_VALUE'] = implode(', ', unserialize(stripslashes($value)));
             } else {
-                $rowTags['ENTRY_VALUE'] = Core\Text::parseOutput($value);
+                $rowTags['ENTRY_VALUE'] = \core\Text::parseOutput($value);
             }
 
-            $entryTags['ENTRY_DATA'][] = Core\Template::processTemplate($rowTags, 'phatform', 'report/entryRow.tpl');
+            $entryTags['ENTRY_DATA'][] = \core\Template::processTemplate($rowTags, 'phatform', 'report/entryRow.tpl');
         }
 
         $entryTags['ENTRY_DATA'] = implode('', $entryTags['ENTRY_DATA']);
-        $message = Core\Template::processTemplate($entryTags, 'phatform', 'report/entry.tpl');
+        $message = \core\Template::processTemplate($entryTags, 'phatform', 'report/entry.tpl');
 
         return $message;
 
@@ -1782,8 +1782,8 @@ class PHAT_Form extends PHPWS_Item {
                     $error = NULL;
                     $error = archive($this->getId());
 
-                    if(Core\Error::isError($error)) {
-                        javascript('alert', array('content' => Core\Error::printError($error)));
+                    if(core\Error::isError($error)) {
+                        javascript('alert', array('content' => \core\Error::printError($error)));
                     } else {
                         $_SESSION['PHAT_Message'] = sprintf(dgettext('phatform', 'The form %s was successfully archived.'), '<b><i>' . $this->getLabel() . '</i></b>');
                     }

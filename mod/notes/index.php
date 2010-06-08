@@ -14,15 +14,15 @@ if (!isset($_REQUEST['command'])) {
 switch ($_REQUEST['command']) {
     case 'close_notes':
         $_SESSION['No_Notes'] = 1;
-        Core\Core::goBack();
+        \core\Core::goBack();
         break;
 
     case 'delete_note':
-        Core\Core::initModClass('notes', 'Note_Item.php');
+        \core\Core::initModClass('notes', 'Note_Item.php');
         $note = new Note_Item((int)$_REQUEST['id']);
         $result = $note->delete();
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
         }
 
         Layout::nakedDisplay(javascript('close_refresh'));
@@ -33,7 +33,7 @@ switch ($_REQUEST['command']) {
         if (!Current_User::isLogged()) {
             exit();
         }
-        $db = new Core\DB('users');
+        $db = new \core\DB('users');
         if (empty($_GET['q'])) {
             exit();
         }
@@ -45,7 +45,7 @@ switch ($_REQUEST['command']) {
         $db->addColumn('id');
         $db->setIndexBy('id');
         $result = $db->select('col');
-        if (!empty($result) && !Core\Error::logIfError($result)) {
+        if (!empty($result) && !core\Error::logIfError($result)) {
             foreach ($result as $key=>$value) {
                 $output[] = "$value|$key";
             }

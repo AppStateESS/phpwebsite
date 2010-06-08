@@ -5,7 +5,7 @@
  * @version $Id$
  */
 
-Core\Core::initModClass('controlpanel', 'Panel.php');
+core\Core::initModClass('controlpanel', 'Panel.php');
 
 class PHPWS_ControlPanel {
 
@@ -15,7 +15,7 @@ class PHPWS_ControlPanel {
 
 		$panel = new PHPWS_Panel('controlpanel');
 		$panel->disableSecure();
-		$current_mod = Core\Core::getCurrentModule();
+		$current_mod = \core\Core::getCurrentModule();
 
 		$checkTabs = PHPWS_ControlPanel::loadTabs();
 
@@ -24,10 +24,10 @@ class PHPWS_ControlPanel {
 		$allLinks = PHPWS_ControlPanel::getAllLinks();
 
 		if (empty($checkTabs)){
-			Core\Error::log(CP_NO_TABS, 'controlpanel', 'display');
+			core\Error::log(CP_NO_TABS, 'controlpanel', 'display');
 			PHPWS_ControlPanel::makeDefaultTabs();
 			PHPWS_ControlPanel::reset();
-			Core\Core::errorPage();
+			core\Core::errorPage();
 			exit();
 		}
 
@@ -71,7 +71,7 @@ class PHPWS_ControlPanel {
 					$link_content[] = $link->view();
 				}
 
-				$link_content = Core\Template::process(array('LINKS' => implode('', $link_content)), 'controlpanel', 'links.tpl');
+				$link_content = \core\Template::process(array('LINKS' => implode('', $link_content)), 'controlpanel', 'links.tpl');
 				$panel->setContent($link_content);
 			}
 		} else {
@@ -96,7 +96,7 @@ class PHPWS_ControlPanel {
 		!preg_match('/controlpanel/', $link) &&
 		$link != $current_link
 		){
-			Core\Core::reroute($link);
+			core\Core::reroute($link);
 		}
 
 		return $panel->display();
@@ -105,9 +105,9 @@ class PHPWS_ControlPanel {
 	public static function loadTabs()
 	{
 		$tabs = PHPWS_ControlPanel::getAllTabs();
-		if (Core\Error::isError($tabs)){
-			Core\Error::log($tabs);
-			Core\Core::errorPage();
+		if (core\Error::isError($tabs)){
+			core\Error::log($tabs);
+			core\Core::errorPage();
 		}
 
 		return $tabs;
@@ -115,7 +115,7 @@ class PHPWS_ControlPanel {
 
 	public static function getAllTabs()
 	{
-		$db = new Core\DB('controlpanel_tab');
+		$db = new \core\DB('controlpanel_tab');
 		$db->setIndexBy('id');
 		$db->addOrder('tab_order');
 		return $db->getObjects('PHPWS_Panel_Tab');
@@ -123,7 +123,7 @@ class PHPWS_ControlPanel {
 
 	public static function getAllLinks($alpha_order=false)
 	{
-		Core\Core::initModClass('controlpanel', 'Link.php');
+		core\Core::initModClass('controlpanel', 'Link.php');
 		$allLinks = null;
 
 		// This session prevents the DB query and link
@@ -135,7 +135,7 @@ class PHPWS_ControlPanel {
 			return $_SESSION['CP_All_links'][$idx];
 		}
 
-		$DB = new Core\DB('controlpanel_link');
+		$DB = new \core\DB('controlpanel_link');
 
 		if ($alpha_order) {
 			$DB->addOrder('label');
@@ -167,8 +167,8 @@ class PHPWS_ControlPanel {
 
 	public static function unregisterModule($module, &$content)
 	{
-		Core\Core::initModClass('controlpanel', 'Tab.php');
-		Core\Core::initModClass('controlpanel', 'Link.php');
+		core\Core::initModClass('controlpanel', 'Tab.php');
+		core\Core::initModClass('controlpanel', 'Link.php');
 
 		$itemnameList = array();
 		$cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
@@ -196,12 +196,12 @@ class PHPWS_ControlPanel {
 				}
 			}
 
-			$db = new Core\DB('controlpanel_link');
+			$db = new \core\DB('controlpanel_link');
 			foreach ($itemnameList as $itemname) {
 				$db->addWhere('itemname', $itemname);
 				$result = $db->getObjects('PHPWS_Panel_Link');
-				if (Core\Error::isError($result)) {
-					Core\Error::log($result);
+				if (core\Error::isError($result)) {
+					core\Error::log($result);
 
 					return $result;
 				} elseif (!$result) {
@@ -232,14 +232,14 @@ class PHPWS_ControlPanel {
 				}
 			}
 
-			$db = new Core\DB('controlpanel_tab');
+			$db = new \core\DB('controlpanel_tab');
 			foreach ($labelList as $label){
 				$db->addWhere('label', $label);
 				$result = $db->getObjects('PHPWS_Panel_Tab');
 
-				if (Core\Error::isError($result)) {
+				if (core\Error::isError($result)) {
 
-					Core\Error::log($result);
+					core\Error::log($result);
 					return $result;
 				} elseif (empty($result)) {
 					continue;
@@ -258,8 +258,8 @@ class PHPWS_ControlPanel {
 
 	public static function registerModule($module, &$content)
 	{
-		Core\Core::initModClass('controlpanel', 'Tab.php');
-		Core\Core::initModClass('controlpanel', 'Link.php');
+		core\Core::initModClass('controlpanel', 'Tab.php');
+		core\Core::initModClass('controlpanel', 'Link.php');
 
 		$cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
 
@@ -302,9 +302,9 @@ class PHPWS_ControlPanel {
 				}
 
 				$result = $tab->save();
-				if (Core\Error::isError($result)) {
+				if (core\Error::isError($result)) {
 					$content[] = dgettext('controlpanel', 'An error occurred when trying to save a controlpanel tab.');
-					Core\Error::log($result);
+					core\Error::log($result);
 					return false;
 				}
 			}
@@ -314,7 +314,7 @@ class PHPWS_ControlPanel {
 		}
 
 		if (isset($link) && is_array($link)) {
-			$db = new Core\DB('controlpanel_tab');
+			$db = new \core\DB('controlpanel_tab');
 			foreach ($link as $info){
 				$modlink = new PHPWS_Panel_Link;
 
@@ -349,8 +349,8 @@ class PHPWS_ControlPanel {
 				$db->addWhere('id', $info['tab']);
 				$db->addColumn('id');
 				$result = $db->select('one');
-				if (Core\Error::isError($result)) {
-					Core\Error::log($result);
+				if (core\Error::isError($result)) {
+					core\Error::log($result);
 					continue;
 				}
 				elseif (!isset($result)) {
@@ -362,8 +362,8 @@ class PHPWS_ControlPanel {
 
 				$modlink->setTab($tab_id);
 				$result = $modlink->save();
-				if (Core\Error::isError($result)) {
-					Core\Error::log($result);
+				if (core\Error::isError($result)) {
+					core\Error::log($result);
 					$content[] = dgettext('controlpanel', 'There was a problem trying to save a Control Panel link.');
 					return false;
 				}
@@ -395,7 +395,7 @@ class PHPWS_ControlPanel {
 			}
 		}
 
-		$db = new Core\DB('controlpanel_link');
+		$db = new \core\DB('controlpanel_link');
 		$result = $db->getObjects('PHPWS_Panel_Link');
 
 		$count = 1;
@@ -420,7 +420,7 @@ class PHPWS_ControlPanel {
 	public static function panelLink($fly_out=false)
 	{
 		Layout::addStyle('controlpanel', 'panel_link.css');
-		$reg_link = Core\Text::quickLink(dgettext('users', 'Control Panel'), 'controlpanel',
+		$reg_link = \core\Text::quickLink(dgettext('users', 'Control Panel'), 'controlpanel',
 		array('command'=>'panel_view'));
 
 		if (!$fly_out) {
@@ -436,7 +436,7 @@ class PHPWS_ControlPanel {
 
 		$all_links = PHPWS_ControlPanel::getAllLinks(true);
 
-		$tpl = new Core\Template('controlpanel');
+		$tpl = new \core\Template('controlpanel');
 		$tpl->setFile('subpanel.tpl');
 
 		$authkey = Current_User::getAuthKey();

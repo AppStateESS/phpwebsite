@@ -6,7 +6,7 @@
  * @version $Id$
  */
 
-Core\Core::requireConfig('rss');
+core\Core::requireConfig('rss');
 
 class RSS_Channel {
     public $id              = 0;
@@ -39,10 +39,10 @@ class RSS_Channel {
 
     public function init()
     {
-        $db = new Core\DB('rss_channel');
+        $db = new \core\DB('rss_channel');
         $result = $db->loadObject($this);
 
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = $result;
             return $result;
         }
@@ -72,7 +72,7 @@ class RSS_Channel {
     {
         if ($linkable) {
             $vars['mod_title'] = $this->module;
-            return Core\Text::moduleLink($this->title, 'rss', $vars);
+            return \core\Text::moduleLink($this->title, 'rss', $vars);
         } else {
             return $this->title;
         }
@@ -80,7 +80,7 @@ class RSS_Channel {
 
     public function save()
     {
-        $db = new Core\DB('rss_channel');
+        $db = new \core\DB('rss_channel');
         return $db->saveObject($this);
     }
 
@@ -88,14 +88,14 @@ class RSS_Channel {
     {
         $vars['channel_id'] = $this->id;
         $vars['command'] = 'edit_channel';
-        $links[] = Core\Text::secureLink(dgettext('rss', 'Edit'), 'rss', $vars);
+        $links[] = \core\Text::secureLink(dgettext('rss', 'Edit'), 'rss', $vars);
 
         return $links;
     }
 
     public function getAddress($include_http=TRUE)
     {
-                $link = new Core\Link;
+                $link = new \core\Link;
         $link->full_url = $include_http;
         $link->setRewrite();
         $link->setModule('rss');
@@ -105,7 +105,7 @@ class RSS_Channel {
 
     public function loadFeeds()
     {
-        $db = new Core\DB('phpws_key');
+        $db = new \core\DB('phpws_key');
         $db->addWhere('module', $this->module);
         $db->addWhere('active', 1);
         $db->addWhere('restricted', 0);
@@ -118,7 +118,7 @@ class RSS_Channel {
 
         $result = $db->getObjects('Key');
 
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_feeds = NULL;
             $this->_error = $result;
             return $result;
@@ -152,7 +152,7 @@ class RSS_Channel {
     public function view()
     {
         $cache_key = $this->module . '_cache_key';
-        $content = Core\Cache::get($cache_key, RSS_CACHE_TIMEOUT);
+        $content = \core\Cache::get($cache_key, RSS_CACHE_TIMEOUT);
 
         if (!empty($content)) {
             return $content;
@@ -162,20 +162,20 @@ class RSS_Channel {
             $this->loadFeeds();
         }
 
-        $home_http = Core\Core::getHomeHttp();
+        $home_http = \core\Core::getHomeHttp();
         $template['CHANNEL_TITLE']       = $this->EncodeString($this->title);
         $template['CHANNEL_ADDRESS']     = $this->getAddress();
         $template['HOME_ADDRESS']        = $home_http;
         $template['CHANNEL_DESCRIPTION'] = $this->EncodeString($this->description);
-        $template['LANGUAGE']            = CURRENT_LANGUAGE; // change later
+        $template['LANGUAGE']            = $GLOBALS['CURRENT_LANGUAGE']; // change later
         $template['SEARCH_LINK'] = sprintf('%sindex.php?module=search&amp;mod_title=%s&amp;user=search',
         $home_http, $this->module);
         $template['SEARCH_DESCRIPTION'] = sprintf('Search in %s', $this->title);
         $template['SEARCH_NAME'] = 'search';
 
-        $template['COPYRIGHT'] = Core\Settings::get('rss', 'copyright');
-        $template['WEBMASTER'] = Core\Settings::get('rss', 'webmaster');
-        $template['MANAGING_EDITOR'] = Core\Settings::get('rss', 'editor');
+        $template['COPYRIGHT'] = \core\Settings::get('rss', 'copyright');
+        $template['WEBMASTER'] = \core\Settings::get('rss', 'webmaster');
+        $template['MANAGING_EDITOR'] = \core\Settings::get('rss', 'editor');
 
         $template['LAST_BUILD_DATE'] = $this->_last_build_date;
 
@@ -206,14 +206,14 @@ class RSS_Channel {
             }
         }
 
-        if (Core\Settings::get('rss', 'rssfeed') == 2) {
+        if (core\Settings::get('rss', 'rssfeed') == 2) {
             $tpl_file = 'rss20.tpl';
         } else {
             $tpl_file = 'rss10.tpl';
         }
-        $content = Core\Template::process($template, 'rss', $tpl_file);
+        $content = \core\Template::process($template, 'rss', $tpl_file);
         $content = utf8_encode($content);
-        Core\Cache::save($cache_key, $content);
+        \core\Cache::save($cache_key, $content);
         return $content;
     }
 

@@ -26,7 +26,7 @@ function version_unregister($module, &$content)
             continue;
         }
 
-        $table_name = Core\DB::extractTableName($sql);
+        $table_name = \core\DB::extractTableName($sql);
 
         if (empty($table_name)) {
             continue;
@@ -35,13 +35,13 @@ function version_unregister($module, &$content)
         $version_table = $table_name . '_version';
         $version_table_seq = $version_table . '_seq';
 
-        if (!Core\DB::isTable($version_table)) {
+        if (!core\DB::isTable($version_table)) {
             continue;
         }
 
-        $result = Core\DB::dropTable($version_table);
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        $result = \core\DB::dropTable($version_table);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             $content[] = dgettext('version', 'There was an error removing a version table.');
         } else {
             $content[] = sprintf(dgettext('version', 'Version table removed: %s'), $version_table);

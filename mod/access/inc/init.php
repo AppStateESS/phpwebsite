@@ -5,7 +5,7 @@
  */
 
 if (isset($GLOBALS['Forward'])) {
-    Core\Core::initModClass('access', 'Access.php');
+    \core\Core::initModClass('access', 'Access.php');
     Access::forward();
 }
 

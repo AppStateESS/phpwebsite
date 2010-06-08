@@ -5,7 +5,7 @@
  * @version $Id$
  */
 
-Core\Core::requireConfig('layout', 'config.php');
-Core\Core::initModClass('layout', 'Layout.php');
+core\Core::requireConfig('layout', 'config.php');
+core\Core::initModClass('layout', 'Layout.php');
 
 ?>

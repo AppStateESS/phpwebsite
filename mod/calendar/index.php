@@ -11,7 +11,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 
 // If a admin action is called and the user has permissions enter in the admin functions
 // otherwise go into user functions
-Core\Core::initModClass('calendar', 'Calendar.php');
+core\Core::initModClass('calendar', 'Calendar.php');
 
 $Calendar = new PHPWS_Calendar;
 

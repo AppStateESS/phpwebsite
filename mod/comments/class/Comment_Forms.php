@@ -8,7 +8,7 @@ class Comment_Forms {
 
 	public static function form(Comment_Thread $thread, $c_item)
 	{
-		$form = new Core\Form;
+		$form = new \core\Form;
 
 		if (isset($_REQUEST['cm_parent'])) {
 			$c_parent = new Comment_Item($_REQUEST['cm_parent']);
@@ -24,7 +24,7 @@ class Comment_Forms {
 			$form->setSize('edit_reason', 50);
 		}
 
-		if (!Current_User::isLogged() && Core\Settings::get('comments', 'anonymous_naming')) {
+		if (!Current_User::isLogged() && \core\Settings::get('comments', 'anonymous_naming')) {
 			$form->addText('anon_name', $c_item->getEditReason());
 			$form->setLabel('anon_name', dgettext('comments', 'Name'));
 			$form->setSize('anon_name', 20, 20);
@@ -52,7 +52,7 @@ class Comment_Forms {
 		}
 
 		$form->addTextArea('cm_entry', $entry_text);
-		if (Core\Settings::get('comments', 'use_editor')) {
+		if (core\Settings::get('comments', 'use_editor')) {
 			$form->useEditor('cm_entry', true, true, 0, 0, 'tinymce');
 		}
 		$form->setLabel('cm_entry', dgettext('comments', 'Comment'));
@@ -77,15 +77,15 @@ class Comment_Forms {
 		}
 
 
-		$content = Core\Template::process($template, 'comments', 'edit.tpl');
+		$content = \core\Template::process($template, 'comments', 'edit.tpl');
 		return $content;
 	}
 
 	public static function settingsForm()
 	{
-		$settings = Core\Settings::get('comments');
+		$settings = \core\Settings::get('comments');
 
-		$form = new Core\Form('comments');
+		$form = new \core\Form('comments');
 		$form->useRowRepeat();
 		$form->addHidden('module', 'comments');
 		$form->addHidden('aop', 'post_settings');
@@ -180,7 +180,7 @@ class Comment_Forms {
 		}
 		$form->addSelect('avatar_folder_id', $folders);
 		$form->setLabel('avatar_folder_id', dgettext('comments', 'Enable avatar selection'));
-		$form->setMatch('avatar_folder_id', Core\Settings::get('comments', 'avatar_folder_id'));
+		$form->setMatch('avatar_folder_id', \core\Settings::get('comments', 'avatar_folder_id'));
 
 		$form->addSubmit(dgettext('comments', 'Save'));
 
@@ -191,7 +191,7 @@ class Comment_Forms {
 		$tpl['MODERATE']     = dgettext('comments', 'Moderation');
 		$tpl['MONITOR']      = dgettext('comments', 'Thread Monitor');
 
-		return Core\Template::process($tpl, 'comments', 'settings_form.tpl');
+		return \core\Template::process($tpl, 'comments', 'settings_form.tpl');
 	}
 
 
@@ -206,13 +206,13 @@ class Comment_Forms {
 		javascript('jquery');
 		javascriptMod('comments', 'expandCollapse');
 
-		$template = new Core\Template('comments');
+		$template = new \core\Template('comments');
 		$status = $template->setFile('ranks.tpl');
 
 		// Loop through all usergroups in the ranking array
 		foreach ($user_ranking as $id => $rank) {
 			unset($all_groups[$rank->group_id]);
-			$form = new Core\Form('form_' . $id);
+			$form = new \core\Form('form_' . $id);
 			$form->addHidden('module', 'comments');
 			$form->addHidden('aop', 'post_rank');
 			$form->addHidden('rank_id', $id);
@@ -247,7 +247,7 @@ class Comment_Forms {
 			$rank_tpl['GROUP_AVATAR_SETTINGS'] = dgettext('comments', 'Avatar Settings');
 			if ($rank->group_id) {
 				$rank_tpl['DELETE'] = javascript('confirm', array('question'=>dgettext('comments', 'Are you sure you want to remove this rank?'),
-                                                                  'address'=>Core\Text::linkAddress('comments', array('aop'=>'delete_rank',
+                                                                  'address'=>core\Text::linkAddress('comments', array('aop'=>'delete_rank',
                                                                                                                        'rank_id'=>$id), true),
                                                                   'link'=>dgettext('comments', 'Delete rank'),
                                                                   'title'=>dgettext('comments', 'Delete rank'),
@@ -270,7 +270,7 @@ class Comment_Forms {
 		$tpl['NEW_USER_RANK']   = Comment_Forms::editUserRank($new_user_rank);
 
 		if (!empty($all_groups)) {
-			$quick = new Core\Form('add_group');
+			$quick = new \core\Form('add_group');
 			$quick->addHidden('module', 'comments');
 			$quick->addHidden('aop', 'create_rank');
 			$quick->addSelect('group_id', $all_groups);
@@ -282,7 +282,7 @@ class Comment_Forms {
 		$tpl['RANK_TABLE_TEXT'] = dgettext('comments', 'Member Ranks');
 		$tpl['RANK_TABLE_HELP'] = dgettext('comments', 'This is the current member ranking system.<br />Don\'t worry about the order - the Rank types will re-order themselves by posting level.');
 		$tpl['RANK_NEW_TITLE']  = dgettext('comments', 'Create new member rank');
-		return Core\Template::process($tpl, 'comments', 'ranks.tpl');
+		return \core\Template::process($tpl, 'comments', 'ranks.tpl');
 	}
 
 	public static function editUserRank($user_rank)
@@ -292,14 +292,14 @@ class Comment_Forms {
 
 		$textwidth = 60;
 
-		$form = new Core\Form('user-rank-' . $user_rank->id);
+		$form = new \core\Form('user-rank-' . $user_rank->id);
 		$form->addHidden('module', 'comments');
 		$form->addHidden('aop', 'post_user_rank');
 
 		if ($user_rank->id) {
 			$form->addHidden('user_rank_id', $user_rank->id);
 			$js['question'] = dgettext('comments', 'Are you sure you want to delete this user rank?');
-			$js['address']  = Core\Text::linkAddress('comments', array('aop'=>'drop_user_rank', 'user_rank_id'=>$user_rank->id), true);
+			$js['address']  = \core\Text::linkAddress('comments', array('aop'=>'drop_user_rank', 'user_rank_id'=>$user_rank->id), true);
 			$js['link']     = dgettext('comments', 'Delete user rank');
 			$js['title']    = dgettext('comments', 'Delete user rank');
 			$form->addTplTag('DELETE', javascript('confirm', $js));
@@ -362,7 +362,7 @@ class Comment_Forms {
 
 		$ftpl['TAG_RANK_ID'] = $user_rank->id;
 
-		return Core\Template::process($ftpl, 'comments', 'user_rank.tpl');
+		return \core\Template::process($ftpl, 'comments', 'user_rank.tpl');
 	}
 
 
@@ -378,15 +378,15 @@ class Comment_Forms {
 		$settings['avatar_folder_id']       = (int) $_POST['avatar_folder_id'];
 
 		if (!empty($_POST['email_subject'])) {
-			$settings['email_subject'] = Core\Text::parseInput($_POST['email_subject']);
+			$settings['email_subject'] = \core\Text::parseInput($_POST['email_subject']);
 		} else {
-			Core\Settings::reset('comments', 'email_subject');
+			core\Settings::reset('comments', 'email_subject');
 		}
 
 		if (!empty($_POST['email_text'])) {
-			$settings['email_text'] = Core\Text::parseInput($_POST['email_text']);
+			$settings['email_text'] = \core\Text::parseInput($_POST['email_text']);
 		} else {
-			Core\Settings::reset('comments', 'email_text');
+			core\Settings::reset('comments', 'email_text');
 		}
 
 		$settings['monitor_posts'] = (int) !empty($_POST['monitor_posts']);
@@ -394,14 +394,14 @@ class Comment_Forms {
 		$settings['default_approval'] = (int)$_POST['default_approval'];
 		$settings['recent_comments'] = (int)$_POST['recent_comments'];
 
-		Core\Settings::set('comments', $settings);
-		return Core\Settings::save('comments');
+		core\Settings::set('comments', $settings);
+		return \core\Settings::save('comments');
 	}
 
 	public function postUserRank()
 	{
-		$default_rank_id = Core\Settings::get('comments', 'default_rank');
-		Core\Core::initModClass('comments', 'User_Rank.php');
+		$default_rank_id = \core\Settings::get('comments', 'default_rank');
+		core\Core::initModClass('comments', 'User_Rank.php');
 
 		if (isset($_POST['user_rank_id'])) {
 			$user_rank = new Comment_User_Rank($_POST['user_rank_id']);
@@ -445,8 +445,8 @@ class Comment_Forms {
 		javascriptMod('comments', 'quick_view');
 		Layout::addStyle('comments');
 		Layout::addStyle('comments', 'admin.css');
-				Core\Core::initModClass('comments', 'Comment_Item.php');
-		$pager = new Core\DBPager('comments_items', 'Comment_Item');
+				core\Core::initModClass('comments', 'Comment_Item.php');
+		$pager = new \core\DBPager('comments_items', 'Comment_Item');
 		$pager->setModule('comments');
 		$pager->setTemplate('reported.tpl');
 		$pager->addWhere('reported', 0, '>');
@@ -457,7 +457,7 @@ class Comment_Forms {
 		if (isset($GLOBALS['Modules']['phpwsbb']) && !Current_User::allow('phpwsbb', 'manage_forums')) {
 			//left join to phpwsbb parent topic ON phpwsbb_topics.id = comments_items.thread_id
 			$pager->db->addJoin('left', 'comments_items', 'phpwsbb_topics', 'thread_id', 'id');
-			Core\Core::initModClass('phpwsbb', 'BB_Data.php');
+			core\Core::initModClass('phpwsbb', 'BB_Data.php');
 			PHPWSBB_Data::load_moderators();
 			// What forums can user moderate?
 			if (!empty($GLOBALS['Moderators_byUser'][Current_User::getId()])) {
@@ -467,7 +467,7 @@ class Comment_Forms {
 			$pager->db->addWhere('phpwsbb_topics.fid', null, null, 'or', 'fidgroup');
 		}
 
-		$form = new Core\Form('reported');
+		$form = new \core\Form('reported');
 		$form->addHidden('module', 'comments');
 		$form->addSelect('aop', array(''=>'',
                                       'clear_report'=>dgettext('comments', 'Clear checked'),
@@ -526,7 +526,7 @@ class Comment_Forms {
 
 		if (Current_User::allow('access') && $comment->author_ip != '127.0.0.1') {
 			if (!isset($user) || !$user->allow('access')) {
-				Core\Core::initModClass('access', 'Access.php');
+				core\Core::initModClass('access', 'Access.php');
 				if (!Access::isDenied($comment->author_ip)) {
 					$links[] = sprintf('<a href="#" onclick="punish_user(\'%s\', this, \'deny_ip\'); return false;">%s</a>',
 					$comment->author_ip, dgettext('comments', 'Deny IP address'));
@@ -553,7 +553,7 @@ class Comment_Forms {
 				$linkvars['aop'] = 'delete_all_ip_comments';
 				$linkvars['aip'] = $comment->author_ip;
 			}
-			$qlink = new Core\Link(null, 'comments', $linkvars, true);
+			$qlink = new \core\Link(null, 'comments', $linkvars, true);
 			$confvars['address'] = $qlink->getAddress();
 			$links[] = javascript('confirm', $confvars);
 		}
@@ -571,7 +571,7 @@ class Comment_Forms {
 		Layout::addStyle('comments', 'admin.css');
 		javascript('jquery');
 		javascriptMod('comments', 'quick_view');
-		$form = new Core\Form('approval');
+		$form = new \core\Form('approval');
 		$form->addHidden('module', 'comments');
 		$form->addSelect('aop', array('approval'=>'', 'approve_all'=>dgettext('comments', 'Approve checked'),
                                       'remove_all'=>dgettext('comments', 'Remove checked')));
@@ -581,7 +581,7 @@ class Comment_Forms {
 		$tpl['CHECK_ALL'] = javascript('check_all', array('checkbox_name'=>'cm_id', 'type'=>'checkbox'));
 
 
-		$pager = new Core\DBPager('comments_items', 'Comment_Item');
+		$pager = new \core\DBPager('comments_items', 'Comment_Item');
 		$pager->setModule('comments');
 		$pager->setTemplate('approval.tpl');
 		$pager->addWhere('approved', 0);
@@ -597,7 +597,7 @@ class Comment_Forms {
 		if (isset($GLOBALS['Modules']['phpwsbb']) && !Current_User::allow('phpwsbb', 'manage_forums')) {
 			//left join to phpwsbb parent topic ON phpwsbb_topics.id = comments_items.thread_id
 			$pager->db->addJoin('left', 'comments_items', 'phpwsbb_topics', 'thread_id', 'id');
-			Core\Core::initModClass('phpwsbb', 'BB_Data.php');
+			core\Core::initModClass('phpwsbb', 'BB_Data.php');
 			PHPWSBB_Data::load_moderators();
 			// What forums can user moderate?
 			if (!empty($GLOBALS['Moderators_byUser'][Current_User::getId()])) {

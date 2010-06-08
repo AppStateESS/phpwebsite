@@ -5,6 +5,6 @@
  * @version $Id$
  */
 
-Core\Core::initModClass('clipboard', 'Clipboard.php');
+core\Core::initModClass('clipboard', 'Clipboard.php');
 
 ?>

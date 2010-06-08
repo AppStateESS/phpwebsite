@@ -5,7 +5,7 @@
  * @version $Id$
  */
 
-Core\Core::initModClass('boost', 'Boost.php');
+core\Core::initModClass('boost', 'Boost.php');
 
 class Boost_Action {
 
@@ -18,12 +18,12 @@ class Boost_Action {
             return dgettext('boost', 'Update check file not found.');
         }
 
-        $full_xml_array = Core\Text::xml2php($file, 2);
+        $full_xml_array = \core\Text::xml2php($file, 2);
 
         if (empty($full_xml_array)) {
             return dgettext('boost', 'Update check file not found.');
         }
-        $version_info = Core\Text::tagXML($full_xml_array);
+        $version_info = \core\Text::tagXML($full_xml_array);
 
         $template['LOCAL_VERSION_LABEL'] = dgettext('boost', 'Local version');
         $template['LOCAL_VERSION'] = $module->getVersion();
@@ -78,12 +78,12 @@ class Boost_Action {
         }
 
         $template['TITLE'] = dgettext('boost', 'Module') . ': ' . $module->getProperName(TRUE);
-        return Core\Template::process($template, 'boost', 'check_update.tpl');
+        return \core\Template::process($template, 'boost', 'check_update.tpl');
     }
 
     public static function installModule($module_title)
     {
-        Core\Core::initModClass('boost', 'Boost.php');
+        \core\Core::initModClass('boost', 'Boost.php');
 
         $boost = new PHPWS_Boost;
         $boost->loadModules(array($module_title));
@@ -92,7 +92,7 @@ class Boost_Action {
 
     public static function uninstallModule($module_title)
     {
-        Core\Core::initModClass('boost', 'Boost.php');
+        \core\Core::initModClass('boost', 'Boost.php');
 
         $boost = new PHPWS_Boost;
         $boost->loadModules(array($module_title));
@@ -104,29 +104,29 @@ class Boost_Action {
 
     public function updateCore()
     {
-        Core\Core::initModClass('boost', 'Boost.php');
+        \core\Core::initModClass('boost', 'Boost.php');
         $content[] = dgettext('boost', 'Updating core');
 
         require_once PHPWS_SOURCE_DIR . 'core/boost/update.php';
 
-        $ver_info = Core\Core::getVersionInfo(false);
+        $ver_info = \core\Core::getVersionInfo(false);
 
         $content[] = dgettext('boost', 'Processing update file.');
         $result = core_update($content, $ver_info['version']);
 
         if ($result === true) {
-            $db = new Core\DB('core_version');
-            $file_ver = Core\Core::getVersionInfo();
+            $db = new \core\DB('core_version');
+            $file_ver = \core\Core::getVersionInfo();
             $db->addValue('version', $file_ver['version']);
             $result = $db->update();
-            if (Core\Error::isError($result)) {
-                Core\Error::log($result);
+            if (core\Error::isError($result)) {
+                \core\Error::log($result);
                 $content[] = dgettext('boost', 'An error occurred updating the core.');
             } else {
                 $content[] = dgettext('boost', 'Core successfully updated.');
             }
-        } elseif (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        } elseif (core\Error::isError($result)) {
+            \core\Error::log($result);
             $content[] = dgettext('boost', 'An error occurred updating the core.');
         } else {
             $content[] = dgettext('boost', 'An error occurred updating the core.');
@@ -137,7 +137,7 @@ class Boost_Action {
 
     public static function updateModule($module_title)
     {
-        Core\Core::initModClass('boost', 'Boost.php');
+        \core\Core::initModClass('boost', 'Boost.php');
         $boost = new PHPWS_Boost;
         $boost->loadModules(array($module_title), FALSE);
 
@@ -157,7 +157,7 @@ class Boost_Action {
         }
 
         $template['TITLE'] = sprintf(dgettext('boost', '%s Dependencies'), $module->getProperName());
-        $content[] = Core\Text::backLink() . '<br />';
+        $content[] = \core\Text::backLink() . '<br />';
         $content[] = dgettext('boost', 'The following modules depend on this module to function:');
         foreach ($dependents as $mod) {
             $dep_module = new PHPWS_Module($mod);
@@ -167,7 +167,7 @@ class Boost_Action {
         $content[] = PHPWS_Boost::uninstallLink($base_mod);
         $template['CONTENT'] = implode('<br />', $content);
 
-        return Core\Template::process($template, 'boost', 'main.tpl');
+        return \core\Template::process($template, 'boost', 'main.tpl');
     }
 
     public function showDependency($base_module_title)
@@ -212,7 +212,7 @@ class Boost_Action {
             $template['module-row'][] = $tpl;
         }
 
-        return Core\Template::process($template, 'boost', 'dependency.tpl');
+        return \core\Template::process($template, 'boost', 'dependency.tpl');
     }
 
     /**
@@ -220,7 +220,7 @@ class Boost_Action {
      */
     public static function checkAll()
     {
-        Core\Core::initModClass('boost', 'Boost.php');
+        \core\Core::initModClass('boost', 'Boost.php');
         $all_mods = PHPWS_Boost::getAllMods();
         if (empty($all_mods)) {
             return;
@@ -240,13 +240,13 @@ class Boost_Action {
                 continue;
             }
 
-            $full_xml_array = Core\Text::xml2php($file, 2);
+            $full_xml_array = \core\Text::xml2php($file, 2);
 
             if (empty($full_xml_array)) {
                 continue;
             }
 
-            $version_info = Core\Text::tagXML($full_xml_array);
+            $version_info = \core\Text::tagXML($full_xml_array);
             if (empty($version_info) || empty($version_info['VERSION'])) {
                 continue;
             }

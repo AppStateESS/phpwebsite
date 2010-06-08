@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-Core\Core::requireConfig('access');
+core\Core::requireConfig('access');
 
 class Access_Shortcut {
     public $id       = 0;
@@ -25,9 +25,9 @@ class Access_Shortcut {
 
     public function init()
     {
-        $db = new Core\DB('access_shortcuts');
+        $db = new \core\DB('access_shortcuts');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -66,20 +66,20 @@ class Access_Shortcut {
     public function postShortcut()
     {
         if (!isset($_POST['keyword'])) {
-            return Core\Error::get(SHORTCUT_MISSING_KEYWORD, 'access', 'Shortcut::postShortcut');
+            return \core\Error::get(SHORTCUT_MISSING_KEYWORD, 'access', 'Shortcut::postShortcut');
         }
 
         if (!$this->id) {
             if (empty($_POST['key_id'])) {
-                return Core\Error::get(SHORTCUT_MISSING_KEY, 'access', 'Shortcut::postShortcut');
+                return \core\Error::get(SHORTCUT_MISSING_KEY, 'access', 'Shortcut::postShortcut');
             } else {
-                $key = new Core\Key((int)$_POST['key_id']);
+                $key = new \core\Key((int)$_POST['key_id']);
                 $this->setUrl($key->module, $key->url);
             }
         }
 
         $result = $this->setKeyword($_POST['keyword']);
-        if (Core\Error::isError($result) || $result == FALSE) {
+        if (core\Error::isError($result) || $result == FALSE) {
             return $result;
         }
 
@@ -111,19 +111,19 @@ class Access_Shortcut {
         $keyword = trim($keyword);
 
         if (empty($keyword)) {
-            return Core\Error::get(SHORTCUT_BAD_KEYWORD, 'access', 'Shortcut::setKeyword');
+            return \core\Error::get(SHORTCUT_BAD_KEYWORD, 'access', 'Shortcut::setKeyword');
         }
 
         if (!$this->id) {
-            $db = new Core\DB('access_shortcuts');
+            $db = new \core\DB('access_shortcuts');
             $db->addWhere('keyword', $keyword);
             $result = $db->select();
             if (!empty($result)) {
-                if (Core\Error::isError($result)) {
-                    Core\Error::log($result);
+                if (core\Error::isError($result)) {
+                    \core\Error::log($result);
                     return FALSE;
                 } else {
-                    return Core\Error::get(SHORTCUT_WORD_IN_USE, 'access', 'Shortcut::setKeyword');
+                    return \core\Error::get(SHORTCUT_WORD_IN_USE, 'access', 'Shortcut::setKeyword');
                 }
             }
         }
@@ -143,7 +143,7 @@ class Access_Shortcut {
 
         $vars['command'] = 'edit_shortcut';
         $vars['sc_id'] = $this->id;
-        $link = Core\Text::linkAddress('access', $vars, true);
+        $link = \core\Text::linkAddress('access', $vars, true);
         $js_vars['address'] = $link;
         $js_vars['label'] = dgettext('access', 'Edit');
         $js_vars['height'] = '200';
@@ -168,21 +168,21 @@ class Access_Shortcut {
     public function save()
     {
         if (empty($this->keyword)) {
-            return Core\Error::get(SHORTCUT_MISSING_KEYWORD, 'access', 'Shortcut::save');
+            return \core\Error::get(SHORTCUT_MISSING_KEYWORD, 'access', 'Shortcut::save');
         }
 
         if (empty($this->url)) {
-            return Core\Error::get(SHORTCUT_MISSING_URL, 'access', 'Shortcut::save');
+            return \core\Error::get(SHORTCUT_MISSING_URL, 'access', 'Shortcut::save');
         }
 
-        $db = new Core\DB('access_shortcuts');
+        $db = new \core\DB('access_shortcuts');
         return $db->saveObject($this);
     }
 
     public function getRewrite($full=FALSE, $linkable=TRUE)
     {
         if ($full) {
-            $address[] = Core\Core::getHomeHttp();
+            $address[] = \core\Core::getHomeHttp();
         }
         $address[] = $this->keyword;
 
@@ -196,7 +196,7 @@ class Access_Shortcut {
 
     public function delete()
     {
-        $db = new Core\DB('access_shortcuts');
+        $db = new \core\DB('access_shortcuts');
         $db->addWhere('id', $this->id);
         return $db->delete();
     }

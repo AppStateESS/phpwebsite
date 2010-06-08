@@ -9,7 +9,7 @@
  */
 function demographics_remove_user($user_id)
 {
-    $db = new Core\DB('demographics');
+    $db = new \core\DB('demographics');
     $db->addWhere('user_id', (int)$user_id);
     return $db->delete();
 }

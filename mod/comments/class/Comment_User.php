@@ -6,9 +6,9 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-Core\Core::requireConfig('comments');
-Core\Core::initModClass('comments', 'Comments.php');
-Core\Core::initModClass('demographics', 'Demographics.php');
+core\Core::requireConfig('comments');
+core\Core::initModClass('comments', 'Comments.php');
+core\Core::initModClass('demographics', 'Demographics.php');
 
 class Comment_User extends Demographics_User {
 
@@ -53,7 +53,7 @@ class Comment_User extends Demographics_User {
         }
         // Signatures have a max length of 255
         $sig = substr(trim($sig), 0, 255);
-        if (Core\Settings::get('comments', 'allow_image_signatures')) {
+        if (core\Settings::get('comments', 'allow_image_signatures')) {
             $this->signature = trim(strip_tags($sig, '<img>'));
         } else {
             if (preg_match('/<img/', $_POST['signature'])) {
@@ -66,7 +66,7 @@ class Comment_User extends Demographics_User {
 
     public function getSignature()
     {
-        return Core\Text::parseOutput($this->signature, true, true);
+        return \core\Text::parseOutput($this->signature, true, true);
     }
 
     public function bumpCommentsMade()
@@ -75,7 +75,7 @@ class Comment_User extends Demographics_User {
             return;
         }
 
-        $db = new Core\DB($this->_table);
+        $db = new \core\DB($this->_table);
         $db->addWhere('user_id', $this->user_id);
         $result = $db->incrementColumn('comments_made');
     }
@@ -119,7 +119,7 @@ class Comment_User extends Demographics_User {
     {
         if (is_integer($avatar) && $avatar) {
             $this->avatar_id = $avatar;
-            Core\Core::initModClass('filecabinet', 'Cabinet.php');
+            \core\Core::initModClass('filecabinet', 'Cabinet.php');
             $file = Cabinet::getFile($this->avatar_id);
             $this->avatar = $file->getPath();
         }
@@ -197,7 +197,7 @@ class Comment_User extends Demographics_User {
 
     public function setContactEmail($email_address)
     {
-        if (Core\Text::isValidInput($email_address, 'email')) {
+        if (core\Text::isValidInput($email_address, 'email')) {
             $this->contact_email = $email_address;
             return true;
         } else {
@@ -223,7 +223,7 @@ class Comment_User extends Demographics_User {
     {
         if ($format && isset($this->website)) {
             return sprintf('<a href="%s" title="%s">%s</a>',
-            Core\Text::checkLink($this->website),
+            \core\Text::checkLink($this->website),
             sprintf(dgettext('comments', '%s\'s Website'), $this->display_name),
             dgettext('comments', 'Website'));
         } else {
@@ -253,14 +253,14 @@ class Comment_User extends Demographics_User {
             @unlink($this->avatar);
         }
 
-        $db = new Core\DB('comments_items');
+        $db = new \core\DB('comments_items');
         $db->addWhere('author_id', $this->user_id);
         $db->addValue('author_id', 0);
-        Core\Error::logIfError($db->update());
+        \core\Error::logIfError($db->update());
 
-        $db = new Core\DB('comments_monitors');
+        $db = new \core\DB('comments_monitors');
         $db->addWhere('user_id', $this->user_id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
         return $this->delete();
     }
@@ -344,7 +344,7 @@ class Comment_User extends Demographics_User {
         $errors = array();
 
         //signature
-        if (Core\Settings::get('comments', 'allow_signatures')) {
+        if (core\Settings::get('comments', 'allow_signatures')) {
             $this->setSignature($_POST['signature']);
         } else {
             $this->signature = NULL;
@@ -356,7 +356,7 @@ class Comment_User extends Demographics_User {
 
         // If user wants to upload an image...
         if (!empty($_FILES['local_avatar']['name']) && $perm['local']) {
-            Core\Core::initModClass('filecabinet', 'Image.php');
+            \core\Core::initModClass('filecabinet', 'Image.php');
             $image = new PHPWS_Image;
             $image->setDirectory('images/comments/');
             $image->setMaxWidth(COMMENT_MAX_AVATAR_WIDTH);
@@ -372,7 +372,7 @@ class Comment_User extends Demographics_User {
                 // the filename will be the user's id#
                 $image->setFilename(Current_User::getId() .'.'. $image->getExtension());
                 $result = $image->write();
-                if (Core\Error::logIfError($result)) {
+                if (core\Error::logIfError($result)) {
                     $errors[] = array(dgettext('comments', 'There was a problem saving your image.'));
                 } else {
                     $this->setAvatar($image->getPath());
@@ -399,7 +399,7 @@ class Comment_User extends Demographics_User {
         $this->monitordefault == (int) (bool) $_POST['monitordefault'];
         //suspendmonitors
         $this->suspendmonitors == (int) empty($_POST['suspendmonitors']);
-        $db = new Core\DB('comments_monitors');
+        $db = new \core\DB('comments_monitors');
         $db->addValue('suspended', $this->suspendmonitors);
         $db->addWhere('user_id', Current_User::getId());
         $db->update();
@@ -409,7 +409,7 @@ class Comment_User extends Demographics_User {
         }
 
         if (isset($_POST['order_pref'])) {
-            Core\Cookie::write('cm_order_pref', (int)$_POST['order_pref']);
+            \core\Cookie::write('cm_order_pref', (int)$_POST['order_pref']);
         }
 
         /*        // need some error checking here
@@ -432,12 +432,12 @@ class Comment_User extends Demographics_User {
     public function saveUser()
     {
         $result = $this->save();
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return false;
         }
 
         $this->_base_id = $this->_extend_id = $this->user_id;
-        if (Core\Error::logIfError($result) || !$result) {
+        if (core\Error::logIfError($result) || !$result) {
             $this->_error = null;
             return false;
         }
@@ -448,7 +448,7 @@ class Comment_User extends Demographics_User {
     {
         // Create Comment_Item class
         $comment = new Comment_Item();
-        Core\Core::plugObject($comment, $values);
+        \core\Core::plugObject($comment, $values);
         // Get associated Comment_Thread
         if (!isset($GLOBALS['cm_threads'][$comment->thread_id]))
         $GLOBALS['cm_threads'][$comment->thread_id] = new Comment_Thread($comment->thread_id);
@@ -481,11 +481,11 @@ class Comment_User extends Demographics_User {
         $order_list = array('old_all'  => dgettext('comments', 'Oldest first'),
                             'new_all'  => dgettext('comments', 'Newest first'));
 
-        $pager = new Core\DBPager('comments_items');
+        $pager = new \core\DBPager('comments_items');
         $pager->setAnchor('comments');
-        $form = new Core\Form;
+        $form = new \core\Form;
 
-        $getVals = Core\Text::getGetValues();
+        $getVals = \core\Text::getGetValues();
         if (!empty($getVals)) {
             $referer[] = 'index.php?';
             foreach ($getVals as $key=>$val) {
@@ -512,7 +512,7 @@ class Comment_User extends Demographics_User {
         if (isset($_GET['order'])) {
             $default_order = &$_GET['order'];
         } else {
-            $default_order = Core\Settings::get('comments', 'default_order');
+            $default_order = \core\Settings::get('comments', 'default_order');
         }
 
         switch ($default_order) {
@@ -679,10 +679,10 @@ class Comment_User extends Demographics_User {
     {
         if (empty($user_id) || empty($thread_id))
         return;
-        $db = new Core\DB('comments_monitors');
+        $db = new \core\DB('comments_monitors');
         $db->addValue('thread_id', (int) $thread_id);
         $db->addValue('user_id', (int) $user_id);
-        return Core\Error::logIfError($db->insert());
+        return \core\Error::logIfError($db->insert());
     }
 
     /*
@@ -696,11 +696,11 @@ class Comment_User extends Demographics_User {
     {
         if (empty($user_id) || empty($thread_id))
         return;
-        $db = new Core\DB('comments_monitors');
+        $db = new \core\DB('comments_monitors');
         if ($thread_id !== 'all')
         $db->addWhere('thread_id', (int) $thread_id);
         $db->addWhere('user_id', (int) $user_id);
-        return Core\Error::logIfError($db->delete());
+        return \core\Error::logIfError($db->delete());
     }
 
     /**
@@ -714,8 +714,8 @@ class Comment_User extends Demographics_User {
             return false;
         }
 
-        Core\Core::initModClass('filecabinet', 'Image.php');
-        $ext = Core\File::getFileExtension($url);
+        \core\Core::initModClass('filecabinet', 'Image.php');
+        $ext = \core\File::getFileExtension($url);
         echo $ext;
 
         if (!PHPWS_Image::allowImageType($ext)) {
@@ -723,7 +723,7 @@ class Comment_User extends Demographics_User {
             return false;
         }
 
-        if (!Core\File::checkMimeType($url, $ext)) {
+        if (!core\File::checkMimeType($url, $ext)) {
             $errors[] = dgettext('comments', 'Unacceptable file type.');
             return false;
         }
@@ -756,7 +756,7 @@ class Comment_User extends Demographics_User {
         }
         $vars['uop'] = 'cm_history';
         $vars['uid'] = $this->user_id;
-        return Core\Text::moduleLink($this->comments_made, 'comments', $vars);
+        return \core\Text::moduleLink($this->comments_made, 'comments', $vars);
     }
 }
 

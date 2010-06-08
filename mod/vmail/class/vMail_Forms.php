@@ -67,13 +67,13 @@ class vMail_Forms {
     public function listRecipients()
     {
         if (Current_User::allow('vmail', 'edit_recipient') && isset($_REQUEST['uop'])) {
-            $link[] = Core\Text::secureLink(dgettext('vmail', 'Add new recipient'), 'vmail', array('aop'=>'new_recipient'));
+            $link[] = \core\Text::secureLink(dgettext('vmail', 'Add new recipient'), 'vmail', array('aop'=>'new_recipient'));
             MiniAdmin::add('vmail', $link);
         }
 
-        Core\Core::initModClass('vmail', 'vMail_Recipient.php');
+        \core\Core::initModClass('vmail', 'vMail_Recipient.php');
                 $ptags = array();
-        $pager = new Core\DBPager('vmail_recipients', 'vMail_Recipient');
+        $pager = new \core\DBPager('vmail_recipients', 'vMail_Recipient');
         $pager->setModule('vmail');
         if (!Current_User::authorized('vmail', 'edit_recipient')) {
             $pager->addWhere('active', 1);
@@ -96,7 +96,7 @@ class vMail_Forms {
             $vars['tab']  = 'settings';
             $vars2['aop']  = 'new_recipient';
             if (Current_User::allow('vmail', 'edit_recipient')) {
-                $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('vmail', 'Check your %s then create a %s to begin'), Core\Text::secureLink(dgettext('vmail', 'Settings'), 'vmail', $vars),  Core\Text::secureLink(dgettext('vmail', 'New Recipient'), 'vmail', $vars2));
+                $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('vmail', 'Check your %s then create a %s to begin'), \core\Text::secureLink(dgettext('vmail', 'Settings'), 'vmail', $vars),  \core\Text::secureLink(dgettext('vmail', 'New Recipient'), 'vmail', $vars2));
             } else {
                 $ptags['EMPTY_MESSAGE'] = dgettext('vmail', 'Sorry, there are no recipients available at the moment.');
             }
@@ -107,13 +107,13 @@ class vMail_Forms {
         $pager->cacheQueries();
 
         $this->vmail->content = $pager->get();
-        $this->vmail->title = sprintf(dgettext('vmail', '%s Recipients'), Core\Settings::get('vmail', 'module_title'));
+        $this->vmail->title = sprintf(dgettext('vmail', '%s Recipients'), \core\Settings::get('vmail', 'module_title'));
     }
 
 
     public function editRecipient()
     {
-        $form = new Core\Form('vmail_recipient');
+        $form = new \core\Form('vmail_recipient');
         $recipient = & $this->vmail->recipient;
 
         $form->addHidden('module', 'vmail');
@@ -163,36 +163,36 @@ class vMail_Forms {
         $tpl['DETAILS_LABEL'] = dgettext('vmail', 'Details');
         $tpl['SETTINGS_LABEL'] = dgettext('vmail', 'Settings');
 
-        $this->vmail->content = Core\Template::process($tpl, 'vmail', 'edit_recipient.tpl');
+        $this->vmail->content = \core\Template::process($tpl, 'vmail', 'edit_recipient.tpl');
     }
 
 
     public function editSettings()
     {
 
-        $form = new Core\Form('vmail_settings');
+        $form = new \core\Form('vmail_settings');
         $form->addHidden('module', 'vmail');
         $form->addHidden('aop', 'post_settings');
 
-        $form->addText('module_title', Core\Settings::get('vmail', 'module_title'));
+        $form->addText('module_title', \core\Settings::get('vmail', 'module_title'));
         $form->setSize('module_title', 30);
         $form->setLabel('module_title', dgettext('vmail', 'The display title for this module, eg. vMail, Contacts, etc.'));
 
         $form->addCheckbox('enable_sidebox', 1);
-        $form->setMatch('enable_sidebox', Core\Settings::get('vmail', 'enable_sidebox'));
+        $form->setMatch('enable_sidebox', \core\Settings::get('vmail', 'enable_sidebox'));
         $form->setLabel('enable_sidebox', dgettext('vmail', 'Enable vmail sidebox'));
 
         $form->addCheckbox('sidebox_homeonly', 1);
-        $form->setMatch('sidebox_homeonly', Core\Settings::get('vmail', 'sidebox_homeonly'));
+        $form->setMatch('sidebox_homeonly', \core\Settings::get('vmail', 'sidebox_homeonly'));
         $form->setLabel('sidebox_homeonly', dgettext('vmail', 'Show sidebox on home page only'));
 
-        $form->addTextArea('sidebox_text', Core\Text::parseOutput(Core\Settings::get('vmail', 'sidebox_text')));
+        $form->addTextArea('sidebox_text', \core\Text::parseOutput(core\Settings::get('vmail', 'sidebox_text')));
         $form->setRows('sidebox_text', '4');
         $form->setCols('sidebox_text', '40');
         $form->setLabel('sidebox_text', dgettext('vmail', 'Sidebox text'));
 
         $form->addCheckbox('use_captcha', 1);
-        $form->setMatch('use_captcha', Core\Settings::get('vmail', 'use_captcha'));
+        $form->setMatch('use_captcha', \core\Settings::get('vmail', 'use_captcha'));
         $form->setLabel('use_captcha', dgettext('vmail', 'Use graphical confirmation on vmail form (CAPTCHA)'));
 
         $form->addSubmit('save', dgettext('vmail', 'Save settings'));
@@ -201,7 +201,7 @@ class vMail_Forms {
         $tpl['SETTINGS_LABEL'] = dgettext('vmail', 'General Settings');
 
         $this->vmail->title = dgettext('vmail', 'Settings');
-        $this->vmail->content = Core\Template::process($tpl, 'vmail', 'edit_settings.tpl');
+        $this->vmail->content = \core\Template::process($tpl, 'vmail', 'edit_settings.tpl');
     }
 
 
@@ -209,7 +209,7 @@ class vMail_Forms {
     {
         $recipient = & $this->vmail->recipient;
 
-        $key = new Core\Key($recipient->key_id);
+        $key = new \core\Key($recipient->key_id);
 
         if (!$key->allowView()) {
             Current_User::requireLogin();
@@ -236,7 +236,7 @@ class vMail_Forms {
             $_POST['message'] = null;
         }
 
-        $form = new Core\Form;
+        $form = new \core\Form;
         $form->addHidden('module', 'vmail');
         $form->addHidden('uop', 'send_message');
         $form->addHidden('id', $recipient->id);
@@ -269,10 +269,10 @@ class vMail_Forms {
         $form->addText('confirm_phrase');
         $form->setLabel('confirm_phrase', dgettext('vmail', 'Confirm text'));
 
-        if (Core\Settings::get('vmail', 'use_captcha') && extension_loaded('gd')) {
+        if (core\Settings::get('vmail', 'use_captcha') && extension_loaded('gd')) {
             $result = $this->confirmGraphic();
-            if (Core\Error::isError($result)) {
-                Core\Error::log($result);
+            if (core\Error::isError($result)) {
+                \core\Error::log($result);
             } else {
                 $form->addTplTag('GRAPHIC', $result);
             }
@@ -287,7 +287,7 @@ class vMail_Forms {
 
         $key->flag();
         $this->vmail->title = sprintf(dgettext('vmail', 'Send a message to %s'), $recipient->getLabel(true));
-        $this->vmail->content = Core\Template::process($tpl, 'vmail', 'compose_message.tpl');
+        $this->vmail->content = \core\Template::process($tpl, 'vmail', 'compose_message.tpl');
     }
 
 
@@ -313,7 +313,7 @@ class vMail_Forms {
         $tpl['DONATE'] = sprintf(dgettext('vmail', 'If you would like to help out with the ongoing development of vmail, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window).'), '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=donations%40verdon%2eca&item_name=vMail%20Module%20Development&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=CA&bn=PP%2dDonationsBF&charset=UTF%2d8" target="new">', '</a>');
 
         $this->vmail->title = dgettext('vmail', 'Read me');
-        $this->vmail->content = Core\Template::process($tpl, 'vmail', 'info.tpl');
+        $this->vmail->content = \core\Template::process($tpl, 'vmail', 'info.tpl');
     }
 
 

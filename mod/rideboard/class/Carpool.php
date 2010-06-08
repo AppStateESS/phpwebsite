@@ -16,7 +16,7 @@ class RB_Carpool {
     public function __construct($id=0)
     {
         if (!$id) {
-            $this->dest_address = Core\Settings::get('rideboard', 'default_destination');
+            $this->dest_address = \core\Settings::get('rideboard', 'default_destination');
             return;
         }
 
@@ -26,9 +26,9 @@ class RB_Carpool {
 
     public function init()
     {
-        $db = new Core\DB('rb_carpool');
+        $db = new \core\DB('rb_carpool');
         $result = $db->loadObject($this);
-        if (Core\Error::logIfError($result) || !$result) {
+        if (core\Error::logIfError($result) || !$result) {
             $this->id = 0;
         }
     }
@@ -58,13 +58,13 @@ class RB_Carpool {
 
         $tpl['CLOSE'] = javascript('close_window');
 
-        return Core\Template::process($tpl, 'rideboard', 'carpool_view.tpl');
+        return \core\Template::process($tpl, 'rideboard', 'carpool_view.tpl');
     }
 
     public function row_tags()
     {
         $tpl['CREATED'] = $this->getCreated();
-        $js['address'] = Core\Text::linkAddress('rideboard', array('uop'=>'cpinfo', 'cid'=>$this->id));
+        $js['address'] = \core\Text::linkAddress('rideboard', array('uop'=>'cpinfo', 'cid'=>$this->id));
         $js['label'] = dgettext('rideboard', 'More information');
         $js['width'] = 640;
         $js['height'] = 480;
@@ -72,7 +72,7 @@ class RB_Carpool {
 
         if ($this->allowDelete()) {
             $confirm['question'] = dgettext('rideboard', 'Are you sure you want to remove this carpool?');
-            $confirm['address'] = Core\Text::linkAddress('rideboard', array('uop'=>'delete_carpool', 'cid'=>$this->id), true);
+            $confirm['address'] = \core\Text::linkAddress('rideboard', array('uop'=>'delete_carpool', 'cid'=>$this->id), true);
             $confirm['link'] = dgettext('rideboard', 'Delete');
             $confirm['title'] = dgettext('rideboard', 'Delete this carpool');
             $links[] = javascript('confirm', $confirm);
@@ -80,7 +80,7 @@ class RB_Carpool {
 
         if ($this->allowEdit()) {
             $links[] = javascript('open_window',
-            array('address' => Core\Text::linkAddress('rideboard',
+            array('address' => \core\Text::linkAddress('rideboard',
             array('uop'=>'carpool_form', 'cid'=>$this->id)),
                                         'label'=> dgettext('rideboard', 'Edit'),
                                         'width'=>640, 'height'=>480));
@@ -94,7 +94,7 @@ class RB_Carpool {
 
     public function setComment($comment)
     {
-        $this->comment = Core\Text::parseInput(strip_tags($comment));
+        $this->comment = \core\Text::parseInput(strip_tags($comment));
     }
 
     public function allowDelete()
@@ -109,7 +109,7 @@ class RB_Carpool {
 
     public function getComment()
     {
-        return Core\Text::parseOutput($this->comment, null, true, true);
+        return \core\Text::parseOutput($this->comment, null, true, true);
     }
 
     public function setAddress($type, $address)
@@ -125,13 +125,13 @@ class RB_Carpool {
 
     public function save()
     {
-        $db = new Core\DB('rb_carpool');
+        $db = new \core\DB('rb_carpool');
         return $db->saveObject($this);
     }
 
     public function delete()
     {
-        $db = new Core\DB('rb_carpool');
+        $db = new \core\DB('rb_carpool');
         $db->addWhere('id', $this->id);
         return $db->delete();
     }

@@ -6,7 +6,7 @@
 
 function demographics_register($module, &$content)
 {
-    Core\Core::initModClass('demographics', 'Demographics.php');
+    \core\Core::initModClass('demographics', 'Demographics.php');
     $result = Demographics::register($module);
     return $result;
 }

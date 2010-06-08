@@ -9,8 +9,8 @@
  * @version $Id$
  */
 
-Core\Core::initModClass('users', 'Authorization.php');
-Core\Core::initModClass('users', 'Users.php');
+core\Core::initModClass('users', 'Authorization.php');
+core\Core::initModClass('users', 'Users.php');
 
 if (!defined('ALLOW_DEITY_REMEMBER_ME')) {
     define('ALLOW_DEITY_REMEMBER_ME', false);
@@ -150,7 +150,7 @@ final class Current_User {
             $auth->forceLogin();
         }
 
-        Core\Core::initModClass('users', 'Form.php');
+        \core\Core::initModClass('users', 'Form.php');
         $login = User_Form::logBox();
         if (!empty($login)) {
             Layout::set($login, 'users', 'login_box', false);
@@ -186,7 +186,7 @@ final class Current_User {
 
     public static function verifySaltedUrl()
     {
-        $val = Core\Text::getGetValues();
+        $val = \core\Text::getGetValues();
         unset($val['module']);
         unset($val['authkey']);
         unset($val['owpop']);
@@ -255,7 +255,7 @@ final class Current_User {
 
     public static function updateLastLogged()
     {
-        $db = new Core\DB('users');
+        $db = new \core\DB('users');
         $db->addWhere('id', $_SESSION['User']->getId());
         $db->addValue('last_logged', time());
         return $db->update();
@@ -323,7 +323,7 @@ final class Current_User {
 
     public static function permissionMenu()
     {
-        $key = Core\Key::getCurrent();
+        $key = \core\Key::getCurrent();
 
         if (empty($key) || $key->isDummy() || empty($key->edit_permission)) {
             return;
@@ -334,7 +334,7 @@ final class Current_User {
 
             if (!javascriptEnabled()) {
                 $tpl = User_Form::permissionMenu($key);
-                $content = Core\Template::process($tpl, 'users', 'forms/permission_menu.tpl');
+                $content = \core\Template::process($tpl, 'users', 'forms/permission_menu.tpl');
                 Layout::add($content, 'users', 'permissions');
             } else {
                 $links[] = Current_User::popupPermission($key->id, sprintf(dgettext('users', 'Set permissions'), $key->title));
@@ -353,7 +353,7 @@ final class Current_User {
 
         switch($mode) {
             case 'icon':
-                $js_vars['label'] = Core\Icon::show('permission', $label);
+                $js_vars['label'] = \core\Icon::show('permission', $label);
                 break;
 
             default:
@@ -383,27 +383,27 @@ final class Current_User {
     public static function loginUser($username, $password=null)
     {
         if (!Current_User::allowUsername($username)) {
-            return Core\Error::get(USER_BAD_CHARACTERS, 'users', 'Current_User::loginUser');
+            return \core\Error::get(USER_BAD_CHARACTERS, 'users', 'Current_User::loginUser');
         }
 
         // First check if they are currently a user
         $user = new PHPWS_User;
-        $db = new Core\DB('users');
+        $db = new \core\DB('users');
         $db->addWhere('username', strtolower($username));
         $result = $db->loadObject($user);
 
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
         if ($result == false) {
-            if (Core\Error::logIfError($user->setUsername($username))) {
+            if (core\Error::logIfError($user->setUsername($username))) {
                 return false;
             }
         } else {
             // This user is in the local database
             if (!$user->approved) {
-                return Core\Error::get(USER_NOT_APPROVED, 'users', 'Current_User::loginUser');
+                return \core\Error::get(USER_NOT_APPROVED, 'users', 'Current_User::loginUser');
             }
             if (!$user->loadScript()) {
                 Layout::add(dgettext('users', 'Could not load authentication script. Please contact site administrator.'));
@@ -420,7 +420,7 @@ final class Current_User {
         $auth->setPassword($password);
         $result = $auth->authenticate();
 
-        if (Core\Error::isError($result)){
+        if (core\Error::isError($result)){
             return $result;
         }
 
@@ -432,13 +432,13 @@ final class Current_User {
                 $user->setApproved(true);
                 $auth->createUser();
                 $user->save();
-                Core\Core::initModClass('users', 'Action.php');
+                \core\Core::initModClass('users', 'Action.php');
                 User_Action::assignDefaultGroup($user);
             }
 
 
             if (!$user->active) {
-                return Core\Error::get(USER_DEACTIVATED, 'users', 'Current_User:loginUser', $user->username);
+                return \core\Error::get(USER_DEACTIVATED, 'users', 'Current_User:loginUser', $user->username);
             }
 
             if ($auth->localUser()) {
@@ -458,14 +458,14 @@ final class Current_User {
         if (Current_User::isLogged()) {
             return false;
         }
-        Core\Core::bookmark(false);
+        \core\Core::bookmark(false);
         $auth = Current_User::getAuthorization();
         if (!empty($auth->login_url)) {
             $url = $auth->login_url;
         } else {
             $url = 'index.php?module=users&action=user&command=login_page';
         }
-        Core\Core::reroute($url);
+        \core\Core::reroute($url);
     }
 
     public static function rememberLogin()
@@ -474,7 +474,7 @@ final class Current_User {
             return false;
         }
 
-        $remember = Core\Cookie::read('remember_me');
+        $remember = \core\Cookie::read('remember_me');
         if (!$remember) {
             return false;
         }
@@ -498,19 +498,19 @@ final class Current_User {
             return false;
         }
 
-        $db = new Core\DB('user_authorization');
+        $db = new \core\DB('user_authorization');
         $db->addWhere('username', $username);
         $db->addWhere('password', $rArray['password']);
         $result = $db->select('row');
 
         if (!$result) {
             return false;
-        } elseif (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        } elseif (core\Error::isError($result)) {
+            \core\Error::log($result);
             return false;
         }
 
-        $db2 = new Core\DB('users');
+        $db2 = new \core\DB('users');
         $db2->addWhere('username', $username);
         $db2->addWhere('approved', 1);
         $db2->addWhere('active', 1);
@@ -521,8 +521,8 @@ final class Current_User {
 
         if (!$result) {
             return false;
-        } elseif (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        } elseif (core\Error::isError($result)) {
+            \core\Error::log($result);
             return false;
         }
 
@@ -532,7 +532,7 @@ final class Current_User {
 
     public static function allowRememberMe()
     {
-        if ( Core\Settings::get('users', 'allow_remember') &&
+        if ( \core\Settings::get('users', 'allow_remember') &&
         ( !Current_User::isDeity() || ALLOW_DEITY_REMEMBER_ME ) ) {
             return true;
         } else {
@@ -548,7 +548,7 @@ final class Current_User {
         require_once $user->auth_path;
         $class_name = $user->auth_name . '_authorization';
         if (!class_exists($class_name)) {
-            Core\Error::log(USER_ERR_MISSING_AUTH, 'users', 'Current_User::loadAuthorization', $user->auth_path);
+            \core\Error::log(USER_ERR_MISSING_AUTH, 'users', 'Current_User::loadAuthorization', $user->auth_path);
             return false;
         }
         $GLOBALS['User_Authorization'] = new $class_name($user);

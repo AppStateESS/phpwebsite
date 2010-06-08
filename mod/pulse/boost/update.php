@@ -10,12 +10,12 @@ function pulse_update(&$content, $currentVersion)
     switch($currentVersion) {
 
         case version_compare($currentVersion, '1.9.1', '<'):
-            if(Core\Error::logIfError(Core\DB::dropTable('pulse_schedule'))) {
+            if(core\Error::logIfError(core\DB::dropTable('pulse_schedule'))) {
                 $content[] = 'Could not drop pulse_schedule table.';
                 return;
             }
-            $result = Core\DB::importFile(PHPWS_SOURCE_DIR . 'mod/pulse/boost/install.sql');
-            if(Core\Error::logIfError($result)) {
+            $result = \core\DB::importFile(PHPWS_SOURCE_DIR . 'mod/pulse/boost/install.sql');
+            if(core\Error::logIfError($result)) {
                 $content[] = 'Could not run install.sql.';
                 return;
             }

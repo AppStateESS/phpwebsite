@@ -4,9 +4,9 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-Core\Text::addTag('filecabinet', array('document'));
-Core\Core::requireInc('filecabinet', 'parse.php');
-Core\Core::requireInc('filecabinet', 'defines.php');
-Core\Core::initModClass('filecabinet', 'Cabinet.php');
+core\Text::addTag('filecabinet', array('document'));
+core\Core::requireInc('filecabinet', 'parse.php');
+core\Core::requireInc('filecabinet', 'defines.php');
+core\Core::initModClass('filecabinet', 'Cabinet.php');
 
 ?>

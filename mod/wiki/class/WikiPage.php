@@ -42,7 +42,7 @@ class WikiPage
     {
         if(isset($id))
         {
-            $db = new Core\DB('wiki_pages');
+            $db = new \core\DB('wiki_pages');
 
             /* Check if page id or page title */
             if (is_numeric($id))
@@ -73,7 +73,7 @@ class WikiPage
 
     function getKey()
     {
-        $key = new Core\Key($this->key_id);
+        $key = new \core\Key($this->key_id);
         return $key;
     }
 
@@ -102,11 +102,11 @@ class WikiPage
 
     function getEditor()
     {
-        $db = new Core\DB('users');
+        $db = new \core\DB('users');
         $db->addWhere('id', $this->getEditorId());
         $db->addColumn('display_name');
         $result = $db->select('col');
-        if (Core\Error::logIfError($result))
+        if (core\Error::logIfError($result))
         {
             return dgettext('wiki', 'N/A');
         }
@@ -154,7 +154,7 @@ class WikiPage
 
     function setPagetext($pagetext)
     {
-        $this->pagetext = Core\Text::parseInput($pagetext, FALSE);
+        $this->pagetext = \core\Text::parseInput($pagetext, FALSE);
     }
 
     function getPagetext($transform=TRUE)
@@ -174,8 +174,8 @@ class WikiPage
             $this->hits++;
             if ($save)
             {
-                $db = new Core\DB('wiki_pages');
-                Core\Error::logIfError($db->saveObject($this));
+                $db = new \core\DB('wiki_pages');
+                \core\Error::logIfError($db->saveObject($this));
             }
         }
     }
@@ -187,17 +187,17 @@ class WikiPage
 
     function setComment($comment)
     {
-        $this->comment = Core\Text::parseInput($comment);
+        $this->comment = \core\Text::parseInput($comment);
     }
 
     function getComment()
     {
-        return Core\Text::parseOutput($this->comment);
+        return \core\Text::parseOutput($this->comment);
     }
 
     function getVersion()
     {
-        $db = new Core\DB('wiki_pages_version');
+        $db = new \core\DB('wiki_pages_version');
         $db->addWhere('source_id', $this->getId());
         return $db->count();
     }
@@ -211,7 +211,7 @@ class WikiPage
         }
 
         $this->allow_edit = ($this->allow_edit) ? 0 : 1;
-        Core\Error::logIfError($this->save(FALSE));
+        \core\Error::logIfError($this->save(FALSE));
     }
 
     function getCategories()
@@ -235,21 +235,21 @@ class WikiPage
 
         $links = NULL;
         if ((Current_User::allow('wiki', 'edit_page') ||
-            (Core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) && $this->allow_edit)
+            (core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) && $this->allow_edit)
         {
-            $links .= Core\Template::process(array('LINK'=>Core\Text::secureLink(dgettext('wiki', 'Edit'), 'wiki',
+            $links .= \core\Template::process(array('LINK'=>core\Text::secureLink(dgettext('wiki', 'Edit'), 'wiki',
                       array('page_op'=>'edit', 'page'=>$this->getTitle(FALSE)))), 'wiki', 'menu_item.tpl');
-            $links .= Core\Template::process(array('LINK'=>Core\Text::secureLink(dgettext('wiki', 'Move'), 'wiki',
+            $links .= \core\Template::process(array('LINK'=>core\Text::secureLink(dgettext('wiki', 'Move'), 'wiki',
                       array('page_op'=>'move', 'page'=>$this->getTitle(FALSE)))), 'wiki', 'menu_item.tpl');
         }
-        else if (Core\Settings::get('wiki', 'immutable_page'))
+        else if (core\Settings::get('wiki', 'immutable_page'))
         {
-            $links .= Core\Template::process(array('LINK'=>dgettext('wiki', 'Immutable Page')), 'wiki', 'menu_item.tpl');
+            $links .= \core\Template::process(array('LINK'=>dgettext('wiki', 'Immutable Page')), 'wiki', 'menu_item.tpl');
         }
 
         if (Current_User::allow('wiki', 'delete_page'))
         {
-            $links .= Core\Template::process(array('LINK'=>Core\Text::secureLink(dgettext('wiki', 'Delete'), 'wiki',
+            $links .= \core\Template::process(array('LINK'=>core\Text::secureLink(dgettext('wiki', 'Delete'), 'wiki',
                       array('page_op'=>'delete', 'page'=>$this->getTitle(FALSE)))), 'wiki', 'menu_item.tpl');
         }
 
@@ -257,35 +257,35 @@ class WikiPage
         {
             if ($this->allow_edit)
             {
-                $links .= Core\Template::process(array('LINK'=>Core\Text::secureLink(dgettext('wiki', 'Unlocked'), 'wiki',
+                $links .= \core\Template::process(array('LINK'=>core\Text::secureLink(dgettext('wiki', 'Unlocked'), 'wiki',
                           array('page_op'=>'togglelock', 'page'=>$this->getTitle(FALSE)))), 'wiki', 'menu_item.tpl');
             }
             else
             {
-                $links .= Core\Template::process(array('LINK'=>Core\Text::secureLink(dgettext('wiki', 'Locked'), 'wiki',
+                $links .= \core\Template::process(array('LINK'=>core\Text::secureLink(dgettext('wiki', 'Locked'), 'wiki',
                           array('page_op'=>'togglelock', 'page'=>$this->getTitle(FALSE)))), 'wiki', 'menu_item.tpl');
             }
         }
 
-        if (Core\Settings::get('wiki', 'discussion'))
+        if (core\Settings::get('wiki', 'discussion'))
         {
-            $links .= Core\Template::process(array('LINK'=>Core\Text::moduleLink(dgettext('wiki', 'Discussion'), 'wiki',
+            $links .= \core\Template::process(array('LINK'=>core\Text::moduleLink(dgettext('wiki', 'Discussion'), 'wiki',
                       array('page_op'=>'discussion', 'page_id'=>$this->getId()))), 'wiki', 'menu_item.tpl');
         }
 
-        if (Core\Settings::get('wiki', 'raw_text'))
+        if (core\Settings::get('wiki', 'raw_text'))
         {
-            $links .= Core\Template::process(array('LINK'=>Core\Text::moduleLink(dgettext('wiki', 'Raw Text'), 'wiki',
+            $links .= \core\Template::process(array('LINK'=>core\Text::moduleLink(dgettext('wiki', 'Raw Text'), 'wiki',
                       array('page_op'=>'raw', 'page'=>$this->getTitle(FALSE)))), 'wiki', 'menu_item.tpl');
         }
 
-        if (Core\Settings::get('wiki', 'print_view'))
+        if (core\Settings::get('wiki', 'print_view'))
         {
-            $links .= Core\Template::process(array('LINK'=>Core\Text::moduleLink(dgettext('wiki', 'Print View'), 'wiki',
+            $links .= \core\Template::process(array('LINK'=>core\Text::moduleLink(dgettext('wiki', 'Print View'), 'wiki',
                       array('page_op'=>'print', 'page'=>$this->getTitle(FALSE)), 'blank')), 'wiki', 'menu_item.tpl');
         }
 
-        $links .= Core\Template::process(array('LINK'=>Core\Text::moduleLink(dgettext('wiki', 'History'), 'wiki',
+        $links .= \core\Template::process(array('LINK'=>core\Text::moduleLink(dgettext('wiki', 'History'), 'wiki',
                   array('page_op'=>'history', 'page_id'=>$this->getId()))), 'wiki', 'menu_item.tpl');
 
         return $links;
@@ -299,20 +299,20 @@ class WikiPage
         {
             $tags['PAGETEXT'] = $this->getPagetext();
 
-            if (Core\Settings::get('wiki', 'show_modified_info'))
+            if (core\Settings::get('wiki', 'show_modified_info'))
             {
                 $editor = $this->getEditor();
                 if (Current_User::isLogged() && (Current_User::getId() != $this->getEditorId()))
                 {
-                    Core\Core::initModClass('notes', 'My_Page.php');
-                    Core\Core::initModClass('notes', 'Note_Item.php');
+                    \core\Core::initModClass('notes', 'My_Page.php');
+                    \core\Core::initModClass('notes', 'Note_Item.php');
                     $editor = str_replace(dgettext('wiki', 'Send note'), $editor, Note_Item::sendLink($this->getEditorId()));
                 }
 
                 $tags['UPDATED_INFO'] = sprintf(dgettext('wiki', 'Last modified %1$s by %2$s'), $this->getUpdated(), $editor);
             }
 
-            if (isset($_REQUEST['module']) && Core\Settings::get('wiki', 'add_to_title'))
+            if (isset($_REQUEST['module']) && \core\Settings::get('wiki', 'add_to_title'))
             {
                 Layout::addPageTitle($this->getTitle());
             }
@@ -332,9 +332,9 @@ class WikiPage
         {
             $tags['PAGETEXT'] = dgettext('wiki', 'This page does not exist yet.');
             if (Current_User::allow('wiki', 'edit_page') ||
-                (Core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged()))
+                (core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged()))
             {
-                $tags['PAGETEXT'] .= ' ' . Core\Text::secureLink(dgettext('wiki', 'Create new empty page'), 'wiki',
+                $tags['PAGETEXT'] .= ' ' . \core\Text::secureLink(dgettext('wiki', 'Create new empty page'), 'wiki',
                                      array('page_op'=>'edit', 'page'=>$this->getTitle(FALSE)));
             }
         }
@@ -352,19 +352,19 @@ class WikiPage
             $tags['MESSAGE'] = WikiManager::getMessage();
         }
 
-        return Core\Template::process($tags, 'wiki', 'view.tpl');
+        return \core\Template::process($tags, 'wiki', 'view.tpl');
     }
 
     function edit($preview=FALSE)
     {
         if ((!Current_User::authorized('wiki', 'edit_page') &&
-            !(Core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) || !$this->allow_edit)
+            !(core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) || !$this->allow_edit)
         {
             Current_User::disallow(dgettext('wiki', 'User attempted access to wiki page edit.'));
             return;
         }
 
-        $form = new Core\Form;
+        $form = new \core\Form;
         $form->addHidden('module', 'wiki');
         $form->addHidden('page_op', 'save');
         $form->addHidden('page', $this->getTitle(FALSE));
@@ -392,13 +392,13 @@ class WikiPage
             $form->addTplTag('PREVIEW_PAGE', $this->view());
         }
 
-        return Core\Template::process($form->getTemplate(), 'wiki', 'edit.tpl');
+        return \core\Template::process($form->getTemplate(), 'wiki', 'edit.tpl');
     }
 
     function post()
     {
         if ((!Current_User::authorized('wiki', 'edit_page') &&
-            !(Core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) || !$this->allow_edit)
+            !(core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) || !$this->allow_edit)
         {
             Current_User::disallow(dgettext('wiki', 'User attempted access to wiki page save.'));
             return;
@@ -424,13 +424,13 @@ class WikiPage
         $this->setComment($_POST['comment']);
 
         $result = $this->save();
-        if (Core\Error::logIfError($result))
+        if (core\Error::logIfError($result))
         {
             WikiManager::sendMessage(dgettext('wiki', 'Page could not be saved.'),
                                      array('page'=>$this->getTitle(FALSE)), FALSE);
         }
 
-        Core\Core::initModClass('version', 'Version.php');
+        \core\Core::initModClass('version', 'Version.php');
         $version = new Version('wiki_pages');
         $version->setSource($this);
         $version->setApproved(1);
@@ -442,7 +442,7 @@ class WikiPage
 
     function save($save_key=TRUE)
     {
-        $db = new Core\DB('wiki_pages');
+        $db = new \core\DB('wiki_pages');
         $result = $db->saveObject($this);
         if (PEAR::isError($result))
         {
@@ -469,7 +469,7 @@ class WikiPage
     {
         if (empty($this->key_id))
         {
-            $key = new Core\Key;
+            $key = new \core\Key;
             $key->module = 'wiki';
             $key->item_name = 'page';
             $key->item_id = $this->getId();
@@ -477,7 +477,7 @@ class WikiPage
         }
         else
         {
-            $key = new Core\Key($this->key_id);
+            $key = new \core\Key($this->key_id);
         }
 
         $key->title = $this->getTitle();
@@ -505,19 +505,19 @@ class WikiPage
 
         if (isset($_REQUEST['yes']))
         {
-            $db = new Core\DB('wiki_pages');
+            $db = new \core\DB('wiki_pages');
             $db->addWhere('id', $this->getId());
-            if (Core\Error::logIfError($db->delete()))
+            if (core\Error::logIfError($db->delete()))
             {
                 WikiManager::sendMessage(dgettext('wiki', 'Page could not be deleted.'),
                                          array('page'=>$this->getTitle(FALSE)), FALSE);
             }
 
-            Core\Core::initModClass('version', 'Version.php');
+            \core\Core::initModClass('version', 'Version.php');
             Version::flush('wiki_pages', $this->getId());
 
-            $key = new Core\Key($this->key_id);
-            Core\Error::logIfError($key->delete());
+            $key = new \core\Key($this->key_id);
+            \core\Error::logIfError($key->delete());
 
             WikiManager::sendMessage(sprintf(dgettext('wiki', '%s deleted!'), $this->getTitle()), array(), FALSE);
         }
@@ -530,27 +530,27 @@ class WikiPage
         {
             $tags = array();
             $tags['MESSAGE'] = dgettext('wiki', 'Are you sure you want to delete this wiki page?');
-            $tags['YES'] = Core\Text::secureLink(dgettext('wiki', 'Yes'), 'wiki', array('page_op'=>'delete', 'yes'=>1,
+            $tags['YES'] = \core\Text::secureLink(dgettext('wiki', 'Yes'), 'wiki', array('page_op'=>'delete', 'yes'=>1,
                                                   'page'=>$this->getTitle(FALSE)));
-            $tags['NO'] = Core\Text::secureLink(dgettext('wiki', 'No'), 'wiki', array('page_op'=>'delete', 'no'=>1,
+            $tags['NO'] = \core\Text::secureLink(dgettext('wiki', 'No'), 'wiki', array('page_op'=>'delete', 'no'=>1,
                                                  'page'=>$this->getTitle(FALSE)));
             $tags['WIKIPAGE'] = $this->view();
 
-            return Core\Template::process($tags, 'wiki', 'confirm.tpl');
+            return \core\Template::process($tags, 'wiki', 'confirm.tpl');
         }
     }
 
     function history()
     {
-        Core\Core::initModClass('help', 'Help.php');
-        Core\Core::initModClass('wiki', 'OldWikiPage.php');
+        \core\Core::initModClass('help', 'Help.php');
+        \core\Core::initModClass('wiki', 'OldWikiPage.php');
         
-        if (Core\Settings::get('wiki', 'add_to_title'))
+        if (core\Settings::get('wiki', 'add_to_title'))
         {
             Layout::addPageTitle($this->getTitle());
         }
 
-        $tags['BACK']     = Core\Text::moduleLink(dgettext('wiki', 'Back to Page'), 'wiki', array('page'=>$this->getTitle(FALSE)));
+        $tags['BACK']     = \core\Text::moduleLink(dgettext('wiki', 'Back to Page'), 'wiki', array('page'=>$this->getTitle(FALSE)));
         $tags['TITLE']    = dgettext('wiki', 'Revision History');
         $tags['VERSION']  = dgettext('wiki', 'Version');
         $tags['UPDATED']  = dgettext('wiki', 'Updated');
@@ -559,7 +559,7 @@ class WikiPage
         $tags['DIFF']     = PHPWS_Help::show_link('wiki', 'diff', dgettext('wiki', 'Compare To'));
         $tags['ACTIONS']  = dgettext('wiki', 'Actions');
 
-        $pager = new Core\DBPager('wiki_pages_version', 'OldWikiPage');
+        $pager = new \core\DBPager('wiki_pages_version', 'OldWikiPage');
         $pager->setModule('wiki');
         $pager->setTemplate('history/list.tpl');
         $pager->addToggle(' class="bgcolor1"');
@@ -575,19 +575,19 @@ class WikiPage
     function whatLinksHere()
     {
         $tags = array();
-        $tags['BACK_PAGE'] = Core\Text::moduleLink(dgettext('wiki', 'Back to Page'), 'wiki',
+        $tags['BACK_PAGE'] = \core\Text::moduleLink(dgettext('wiki', 'Back to Page'), 'wiki',
                                                     array('page'=>$this->getTitle(FALSE)));
         $tags['TITLE'] = dgettext('wiki', 'The following pages link to here');
         $tags['LINKS'] = NULL;
 
-        $db = new Core\DB('wiki_pages');
+        $db = new \core\DB('wiki_pages');
         $db->addColumn('title');
         $db->addWhere('pagetext', '%' . $this->getTitle(FALSE) . '%', 'LIKE');
         $db->addWhere('title', $this->getTitle(FALSE), '!=');
         $db->addOrder('title');
         $result = $db->select('col');
 
-        if (Core\Error::logIfError($result) || ($result == NULL))
+        if (core\Error::logIfError($result) || ($result == NULL))
         {
             $tags['MESSAGE'] = dgettext('wiki', 'None');
         }
@@ -595,24 +595,24 @@ class WikiPage
         {
             foreach ($result as $row)
             {
-                $link = Core\Text::moduleLink(WikiManager::formatTitle($row), 'wiki', array('page'=>$row));
-                $tags['LINKS'] .= Core\Template::process(array('LINK'=>$link), 'wiki', 'whatlinkshere/link.tpl');
+                $link = \core\Text::moduleLink(WikiManager::formatTitle($row), 'wiki', array('page'=>$row));
+                $tags['LINKS'] .= \core\Template::process(array('LINK'=>$link), 'wiki', 'whatlinkshere/link.tpl');
             }
         }
 
-        return Core\Template::process($tags, 'wiki', 'whatlinkshere/page.tpl');
+        return \core\Template::process($tags, 'wiki', 'whatlinkshere/page.tpl');
     }
 
     function move()
     {
         if ((!Current_User::authorized('wiki', 'edit_page') &&
-            !(Core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) || !$this->allow_edit)
+            !(core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) || !$this->allow_edit)
         {
             Current_User::disallow(dgettext('wiki', 'User attempted access to wiki page move.'));
             return;
         }
 
-        $form = new Core\Form;
+        $form = new \core\Form;
         $form->addHidden('module', 'wiki');
         $form->addHidden('page_op', 'do_move');
         $form->addHidden('page', $this->getTitle(FALSE));
@@ -623,7 +623,7 @@ class WikiPage
 
         $form->addSubmit('move', dgettext('wiki', 'Move'));
 
-        $form->addTplTag('BACK_PAGE', Core\Text::moduleLink(dgettext('wiki', 'Back to Page'), 'wiki',
+        $form->addTplTag('BACK_PAGE', \core\Text::moduleLink(dgettext('wiki', 'Back to Page'), 'wiki',
                                                              array('page'=>$this->getTitle(FALSE))));
         $form->addTplTag('MESSAGE', WikiManager::getMessage());
         $form->addTplTag('INSTRUCTIONS', dgettext('wiki', 'Using the form below will rename a page, moving all of its history
@@ -631,13 +631,13 @@ class WikiPage
                          title will not be changed. You are responsible for making sure that links continue to point where they
                          are supposed to go. Note that the page will not be moved if there is already a page at the new title.'));
 
-        return Core\Template::process($form->getTemplate(), 'wiki', 'move.tpl');
+        return \core\Template::process($form->getTemplate(), 'wiki', 'move.tpl');
     }
 
     function doMove()
     {
         if ((!Current_User::authorized('wiki', 'edit_page') &&
-            !(Core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) || !$this->allow_edit)
+            !(core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) || !$this->allow_edit)
         {
             Current_User::disallow(dgettext('wiki', 'User attempted to execute a wiki page move.'));
             return;
@@ -649,7 +649,7 @@ class WikiPage
                                      array('page_op'=>'move','page'=>$this->getTitle(FALSE)));
         }
 
-        $db = new Core\DB('wiki_pages');
+        $db = new \core\DB('wiki_pages');
         $db->addWhere('title', $_POST['newpage']);
         $result = $db->select();
         if ($result != NULL)
@@ -662,12 +662,12 @@ class WikiPage
         $db->reset();
         $db->saveObject($this);
 
-        $db2 = new Core\DB('wiki_pages_version');
+        $db2 = new \core\DB('wiki_pages_version');
         $db2->addWhere('title', $_POST['page']);
         $db2->addValue('title', $this->getTitle(FALSE));
         $db2->update();
 
-        $db3 = new Core\DB('phpws_key');
+        $db3 = new \core\DB('phpws_key');
         $db3->addWhere('item_id', $this->getId());
         $db3->addWhere('module', 'wiki');
         $db3->addValue('title', $this->getTitle());
@@ -685,7 +685,7 @@ class WikiPage
         $redirect->setComment(sprintf(dgettext('wiki', 'Moved page to %s.'), $this->getTitle(FALSE)));
         $redirect->save();
 
-        Core\Core::initModClass('version', 'Version.php');
+        \core\Core::initModClass('version', 'Version.php');
         $version = new Version('wiki_pages');
         $version->setSource($redirect);
         $version->setApproved(1);
@@ -696,16 +696,16 @@ class WikiPage
 
     function discussion()
     {
-        if (Core\Settings::get('wiki', 'discussion'))
+        if (core\Settings::get('wiki', 'discussion'))
         {
-            Core\Core::initModClass('comments', 'Comments.php');
+            \core\Core::initModClass('comments', 'Comments.php');
             $thread = Comments::getThread($this->key_id);
 
             /* Set anonymous posting each time in case setting has changed */
-            $thread->allowAnonymous(Core\Settings::get('wiki', 'discussion_anon'));
+            $thread->allowAnonymous(core\Settings::get('wiki', 'discussion_anon'));
             $thread->save();
 
-            $back = Core\Text::moduleLink(dgettext('wiki', 'Back to Page'), 'wiki', array('page'=>$this->getTitle(FALSE)));
+            $back = \core\Text::moduleLink(dgettext('wiki', 'Back to Page'), 'wiki', array('page'=>$this->getTitle(FALSE)));
             return $back . '<br />' . $thread->view();
         }
     }
@@ -745,27 +745,27 @@ class WikiPage
                 break;
 
             case 'viewold':
-                Core\Core::initModClass('wiki', 'OldWikiPage.php');
+                \core\Core::initModClass('wiki', 'OldWikiPage.php');
                 $oldpage = new OldWikiPage($_REQUEST['id']);
                 $template['TITLE'] = $this->getTitle();
                 $template['CONTENT'] = $oldpage->view();
                 break;
 
             case 'restore':
-                Core\Core::initModClass('wiki', 'OldWikiPage.php');
+                \core\Core::initModClass('wiki', 'OldWikiPage.php');
                 $oldpage = new OldWikiPage($_REQUEST['id']);
                 $oldpage->restore($this->hits); /* Does not return */
                 break;
 
             case 'removeold':
-                Core\Core::initModClass('wiki', 'OldWikiPage.php');
+                \core\Core::initModClass('wiki', 'OldWikiPage.php');
                 $oldpage = new OldWikiPage($_REQUEST['id']);
                 $oldpage->remove(); /* Does not return */
                 break;
 
             case 'compare':
-                Core\Core::initModClass('wiki', 'WikiDiff.php');
-                $wikiDiff = new WikiDiff(Core\Settings::get('wiki', 'diff_type'));
+                \core\Core::initModClass('wiki', 'WikiDiff.php');
+                $wikiDiff = new WikiDiff(core\Settings::get('wiki', 'diff_type'));
                 $template['TITLE'] = $this->getTitle();
                 $template['CONTENT'] = $wikiDiff->diff($_REQUEST['oVer'], $_REQUEST['nVer']);
                 break;
@@ -792,7 +792,7 @@ class WikiPage
 
             case 'togglelock':
                 $this->toggleLock();
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
             default:
@@ -802,18 +802,18 @@ class WikiPage
                 $template['CATEGORIES'] = $this->getCategories();
         }
 
-        Layout::add(Core\Template::process($template, 'wiki', 'box.tpl'), 'wiki', 'wiki_mod', TRUE);
+        Layout::add(core\Template::process($template, 'wiki', 'box.tpl'), 'wiki', 'wiki_mod', TRUE);
     }
 
     function isOrphaned()
     {
-        $db = new Core\DB('wiki_pages');
+        $db = new \core\DB('wiki_pages');
         $db->addWhere('pagetext', '%' . $this->getTitle(FALSE) . '%', 'LIKE');
         $db->addWhere('id', $this->getId(), '!=');
 
         if($db->count())
         {
-            return Core\Text::moduleLink(dgettext('wiki', 'No'), 'wiki',
+            return \core\Text::moduleLink(dgettext('wiki', 'No'), 'wiki',
                                           array('page'=>$this->getTitle(FALSE), 'page_op'=>'whatlinkshere'));
         }
 
@@ -824,18 +824,18 @@ class WikiPage
     {
         $vars['page'] = $this->getTitle(FALSE);
 
-        $links[] = Core\Text::moduleLink(dgettext('wiki', 'View'), 'wiki', $vars);
+        $links[] = \core\Text::moduleLink(dgettext('wiki', 'View'), 'wiki', $vars);
 
         if (Current_User::allow('wiki', 'edit_page'))
         {
             $vars['page_op'] = 'edit';
-            $links[] = Core\Text::secureLink(dgettext('wiki', 'Edit'), 'wiki', $vars);
+            $links[] = \core\Text::secureLink(dgettext('wiki', 'Edit'), 'wiki', $vars);
         }
 
         if (Current_User::allow('wiki', 'delete_page'))
         {
             $vars['page_op'] = 'delete';
-            $links[] = Core\Text::secureLink(dgettext('wiki', 'Delete'), 'wiki', $vars);
+            $links[] = \core\Text::secureLink(dgettext('wiki', 'Delete'), 'wiki', $vars);
         }
 
         $template['ACTIONS']  = implode(' | ', $links);

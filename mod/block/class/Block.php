@@ -7,7 +7,7 @@
  * @version $Id$
  */
 
-Core\Core::initModClass('block', 'Block_Item.php');
+core\Core::initModClass('block', 'Block_Item.php');
 
 class Block {
 
@@ -15,7 +15,7 @@ class Block {
     {
         Block::showAllBlocks();
 
-        $key = Core\Key::getCurrent();
+        $key = \core\Key::getCurrent();
 
         if (empty($key) || $key->isDummy(true)) {
             return;
@@ -30,7 +30,7 @@ class Block {
 
     public static function showAllBlocks()
     {
-        $key = new Core\Key;
+        $key = new \core\Key;
         $key->id = -1;
         Block::showBlocks($key);
     }
@@ -65,14 +65,14 @@ class Block {
 
     public static function showBlocks($key)
     {
-        $db = new Core\DB('block');
+        $db = new \core\DB('block');
         $db->addWhere('block_pinned.key_id', $key->id);
         $db->addWhere('id', 'block_pinned.block_id');
-        Core\Key::restrictView($db, 'block');
+        \core\Key::restrictView($db, 'block');
         $result = $db->getObjects('Block_Item');
 
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             return NULL;
         }
 

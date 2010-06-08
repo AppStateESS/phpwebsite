@@ -13,9 +13,9 @@ function pagesmith_update(&$content, $currentVersion)
         case version_compare($currentVersion, '1.0.1', '<'):
             $content[] = '<pre>';
 
-            $db = new Core\DB('ps_page');
+            $db = new \core\DB('ps_page');
             $result = $db->addTableColumn('front_page', 'smallint NOT NULL default 0');
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $content[] = "--- Unable to create table column 'front_page' on ps_page table.</pre>";
                 return false;
             } else {
@@ -47,7 +47,7 @@ function pagesmith_update(&$content, $currentVersion)
             }
 
             $source_dir = PHPWS_SOURCE_DIR . 'mod/pagesmith/javascript/passinfo/';
-            if (!Core\File::copy_directory($source_dir, $dest_dir)) {
+            if (!core\File::copy_directory($source_dir, $dest_dir)) {
                 $content[] = "--- FAILED copying to $dest_dir.</pre>";
                 return false;
             } else {
@@ -65,7 +65,7 @@ function pagesmith_update(&$content, $currentVersion)
             $source_dir = PHPWS_SOURCE_DIR . 'mod/pagesmith/templates/page_templates/text_only/';
             $dest_dir   = $home_dir . 'templates/pagesmith/page_templates/text_only/';
 
-            if (Core\File::copy_directory($source_dir, $dest_dir)) {
+            if (core\File::copy_directory($source_dir, $dest_dir)) {
                 $content[] = "--- Successfully copied $source_dir\n    to $dest_dir\n";
             } else {
                 $content[] = "--- Failed to copy $source_dir to $dest_dir</pre>";
@@ -81,10 +81,10 @@ function pagesmith_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '1.0.4', '<'):
             $content[] = '<pre>';
-            $db = new Core\DB('phpws_key');
+            $db = new \core\DB('phpws_key');
             $db->addWhere('module', 'pagesmith');
             $db->addValue('edit_permission', 'edit_page');
-            if (Core\Error::logIfError($db->update())) {
+            if (core\Error::logIfError($db->update())) {
                 $content[] = 'Unable to update phpws_key table.</pre>';
                 return false;
             } else {
@@ -124,7 +124,7 @@ function pagesmith_update(&$content, $currentVersion)
 </pre>';
 
         case version_compare($currentVersion, '1.1.0', '<'):
-            Core\Core::initModClass('filecabinet', 'Cabinet.php');
+            \core\Core::initModClass('filecabinet', 'Cabinet.php');
             $content[] = '<pre>';
             Cabinet::convertImagesToFileAssoc('ps_block', 'type_id');
             $content[] = '--- Images converted for File Cabinet 2.0.0.';
@@ -149,21 +149,21 @@ function pagesmith_update(&$content, $currentVersion)
             $source_img = PHPWS_SOURCE_DIR . 'mod/pagesmith/img/folder_icons/';
             $local_img  = $home_dir . 'images/mod/pagesmith/folder_icons/';
 
-            if (is_dir($backup) || @Core\File::copy_directory($local_tpl, $backup)) {
+            if (is_dir($backup) || @core\File::copy_directory($local_tpl, $backup)) {
                 $content[] = '--- Local page templates backed up to: ' . $backup;
             } else {
                 $content[] = sprintf('--- Could not backup directory "%s" to "%s"</pre>', $local_tpl, $backup);
                 return false;
             }
 
-            if (@Core\File::copy_directory($source_tpl, $local_tpl)) {
+            if (@core\File::copy_directory($source_tpl, $local_tpl)) {
                 $content[] = '--- Local page templates updated.';
             } else {
                 $content[] = sprintf('--- Could not copy directory "%s" to "%s"</pre>', $source_tpl, $local_tpl);
                 return false;
             }
 
-            if (@Core\File::copy_directory($source_img, $local_img)) {
+            if (@core\File::copy_directory($source_img, $local_img)) {
                 $content[] = '--- New page template icons copied locally.';
             } else {
                 $content[] = sprintf('--- Could not copy directory "%s" to "%s"</pre>', $source_img, $local_img);
@@ -205,25 +205,25 @@ function pagesmith_update(&$content, $currentVersion)
 + Changed wording on edit text windows.</pre>';
 
         case version_compare($currentVersion, '1.3.0', '<'):
-            $db = new Core\DB('ps_block');
+            $db = new \core\DB('ps_block');
             $db->dropTableColumn('btype');
 
-            $db = new Core\DB('ps_page');
-            if (Core\Error::logIfError($db->addTableColumn('parent_page', 'int NOT NULL default 0'))) {
+            $db = new \core\DB('ps_page');
+            if (core\Error::logIfError($db->addTableColumn('parent_page', 'int NOT NULL default 0'))) {
                 $content[] = 'Could not create ps_page.parent_page column.';
                 return false;
             }
 
-            if (Core\Error::logIfError($db->addTableColumn('page_order', 'smallint NOT NULL default 0'))) {
+            if (core\Error::logIfError($db->addTableColumn('page_order', 'smallint NOT NULL default 0'))) {
                 $content[] = 'Could not create ps_page.page_order column.';
                 return false;
             }
 
-            $db = new Core\DB('ps_text');
+            $db = new \core\DB('ps_text');
 
-            if (Core\DB::getDBType() == 'mysql' ||
-            Core\DB::getDBType() == 'mysqli') {
-                if (Core\Error::logIfError($db->alterColumnType('content', 'longtext NOT NULL'))) {
+            if (core\DB::getDBType() == 'mysql' ||
+            \core\DB::getDBType() == 'mysqli') {
+                if (core\Error::logIfError($db->alterColumnType('content', 'longtext NOT NULL'))) {
                     $content[] = 'Could not alter ps_text.content column.';
                 }
             }
@@ -278,8 +278,8 @@ function pagesmith_update(&$content, $currentVersion)
 + Removed padding from page templates</pre>';
 
         case version_compare($currentVersion, '1.3.3', '<'):
-            $db = new Core\DB('ps_text');
-            if (Core\Error::logIfError($db->alterColumnType('content', 'longtext'))) {
+            $db = new \core\DB('ps_text');
+            if (core\Error::logIfError($db->alterColumnType('content', 'longtext'))) {
                 $content[] = 'Could not alter ps_text.content column.';
                 return false;
             } else {
@@ -347,8 +347,8 @@ function pagesmithUpdateFiles($files, &$content)
  */
 function pagesmithSearchIndex()
 {
-    Core\Core::initModClass('search', 'Search.php');
-    $db = new Core\DB('ps_text');
+    \core\Core::initModClass('search', 'Search.php');
+    $db = new \core\DB('ps_text');
     $db->addColumn('id');
     $db->addColumn('content');
     $db->addColumn('ps_page.key_id');
@@ -359,14 +359,14 @@ function pagesmithSearchIndex()
     $result = $db->select();
 
     if (!empty($result)) {
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return false;
         }
         foreach ($result as $pg) {
             $search = new Search($pg['key_id']);
             $search->addKeywords($pg['content']);
             $search->addKeywords($pg['title']);
-            Core\Error::logIfError($search->save());
+            \core\Error::logIfError($search->save());
         }
     }
 

@@ -46,9 +46,9 @@ class vShop_Dept {
 
     public function init()
     {
-        $db = new Core\DB('vshop_depts');
+        $db = new \core\DB('vshop_depts');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -64,7 +64,7 @@ class vShop_Dept {
 
     public function setDescription($description)
     {
-        $this->description = Core\Text::parseInput($description);
+        $this->description = \core\Text::parseInput($description);
     }
 
     public function setFile_id($file_id)
@@ -83,12 +83,12 @@ class vShop_Dept {
         if ($print) {
             if ($breadcrumb) {
                 if (vShop::countDepts() !== 1) {
-                    return Core\Text::moduleLink(Core\Text::parseOutput(Core\Settings::get('vshop', 'mod_title')), 'vshop') . ' &#187; ' . Core\Text::parseOutput($this->title);
+                    return \core\Text::moduleLink(core\Text::parseOutput(core\Settings::get('vshop', 'mod_title')), 'vshop') . ' &#187; ' . \core\Text::parseOutput($this->title);
                 } else {
-                    return Core\Text::parseOutput($this->title);
+                    return \core\Text::parseOutput($this->title);
                 }
             } else {
-                return Core\Text::parseOutput($this->title);
+                return \core\Text::parseOutput($this->title);
             }
         } else {
             return $this->title;
@@ -102,7 +102,7 @@ class vShop_Dept {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->description);
+            return \core\Text::parseOutput($this->description);
         } else {
             return $this->description;
         }
@@ -126,7 +126,7 @@ class vShop_Dept {
             return null;
         }
 
-        Core\Core::initModClass('filecabinet', 'Cabinet.php');
+        \core\Core::initModClass('filecabinet', 'Cabinet.php');
         $file = Cabinet::getFile($this->file_id);
 
         if ($file->isImage(true)) {
@@ -151,10 +151,10 @@ class vShop_Dept {
     public function view()
     {
         if (!$this->id) {
-            Core\Core::errorPage(404);
+            \core\Core::errorPage(404);
         }
 
-        $key = new Core\Key($this->key_id);
+        $key = new \core\Key($this->key_id);
 
         if (!$key->allowView()) {
             Current_User::requireLogin();            
@@ -163,12 +163,12 @@ class vShop_Dept {
         Layout::addPageTitle($this->getTitle());
         $tpl['DEPT_LINKS'] = $this->links();
         $tpl['TITLE'] = $this->getTitle(true);
-        $tpl['DESCRIPTION'] = Core\Text::parseTag($this->getDescription(true));
+        $tpl['DESCRIPTION'] = \core\Text::parseTag($this->getDescription(true));
         $tpl['FILE'] = $this->getFile();
 
         $items = $this->getAllItems();
 
-        if (Core\Error::logIfError($items)) {
+        if (core\Error::logIfError($items)) {
             $this->vshop->content = dgettext('vshop', 'An error occurred when accessing this dept\'s items.');
             return;
         }
@@ -184,14 +184,14 @@ class vShop_Dept {
 
         $key->flag();
 
-        return Core\Template::process($tpl, 'vshop', 'view_dept.tpl');
+        return \core\Template::process($tpl, 'vshop', 'view_dept.tpl');
     }
 
 
     public function getAllItems($limit=false)
     {
-        Core\Core::initModClass('vshop', 'vShop_Item.php');
-        $db = new Core\DB('vshop_items');
+        \core\Core::initModClass('vshop', 'vShop_Item.php');
+        $db = new \core\DB('vshop_items');
         $db->addOrder('title asc');
         $db->addWhere('dept_id', $this->id);
         if ($limit) {
@@ -204,7 +204,7 @@ class vShop_Dept {
 
     public function getQtyItems()
     {
-        $db = new Core\DB('vshop_items');
+        $db = new \core\DB('vshop_items');
         $db->addWhere('dept_id', $this->id);
         $qty = $db->count();
         return $qty;
@@ -218,13 +218,13 @@ class vShop_Dept {
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['aop']  = 'edit_item';
             $vars['dept_id'] = $this->id;
-            $links[] = Core\Text::secureLink(dgettext('vshop', 'Add Item'), 'vshop', $vars);
+            $links[] = \core\Text::secureLink(dgettext('vshop', 'Add Item'), 'vshop', $vars);
         }
         
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['id'] = $this->id;
             $vars['aop']  = 'edit_dept';
-            $links[] = Core\Text::secureLink(dgettext('vshop', 'Edit department'), 'vshop', $vars);
+            $links[] = \core\Text::secureLink(dgettext('vshop', 'Edit department'), 'vshop', $vars);
         }
 
         if (is_array(vShop::navLinks())) { 
@@ -242,16 +242,16 @@ class vShop_Dept {
         }
 
         /* delete the related items */
-        $db = new Core\DB('vshop_items');
+        $db = new \core\DB('vshop_items');
         $db->addWhere('dept_id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
         
         /* delete the dept */
-        $db = new Core\DB('vshop_depts');
+        $db = new \core\DB('vshop_depts');
         $db->addWhere('id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
-        Core\Key::drop($this->key_id);
+        \core\Key::drop($this->key_id);
 
     }
 
@@ -264,19 +264,19 @@ class vShop_Dept {
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['aop']  = 'edit_item';
             $vars['dept_id'] = $this->id;
-            $label = Core\Icon::show('add', dgettext('vshop', 'Add Item'));
-            $links[] = Core\Text::secureLink($label, 'vshop', $vars);
+            $label = \core\Icon::show('add', dgettext('vshop', 'Add Item'));
+            $links[] = \core\Text::secureLink($label, 'vshop', $vars);
         }
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['aop']  = 'edit_dept';
-            $label = Core\Icon::show('edit');
-            $links[] = Core\Text::secureLink($label, 'vshop', $vars);
+            $label = \core\Icon::show('edit');
+            $links[] = \core\Text::secureLink($label, 'vshop', $vars);
         }
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['aop'] = 'delete_dept';
-            $js['ADDRESS'] = Core\Text::linkAddress('vshop', $vars, true);
+            $js['ADDRESS'] = \core\Text::linkAddress('vshop', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('vshop', 'Are you sure you want to delete the department %s?'), $this->getTitle());
-            $js['LINK'] = Core\Icon::show('delete');
+            $js['LINK'] = \core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -294,10 +294,10 @@ class vShop_Dept {
 
     public function save()
     {
-        $db = new Core\DB('vshop_depts');
+        $db = new \core\DB('vshop_depts');
 
         $result = $db->saveObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -308,7 +308,7 @@ class vShop_Dept {
         $search->addKeywords($this->title);
         $search->addKeywords($this->description);
         $result = $search->save();
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -318,11 +318,11 @@ class vShop_Dept {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Core\Key;
+            $key = new \core\Key;
         } else {
-            $key = new Core\Key($this->key_id);
-            if (Core\Error::isError($key->_error)) {
-                $key = new Core\Key;
+            $key = new \core\Key($this->key_id);
+            if (core\Error::isError($key->_error)) {
+                $key = new \core\Key;
             }
         }
 
@@ -334,16 +334,16 @@ class vShop_Dept {
         $key->setTitle($this->title);
         $key->setSummary($this->description);
         $result = $key->save();
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return false;
         }
 
         if (!$this->key_id) {
             $this->key_id = $key->id;
-            $db = new Core\DB('vshop_depts');
+            $db = new \core\DB('vshop_depts');
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
-            Core\Error::logIfError($db->update());
+            \core\Error::logIfError($db->update());
         }
         return true;
     }
@@ -351,7 +351,7 @@ class vShop_Dept {
 
     public function viewLink($bare=false)
     {
-                $link = new Core\Link($this->title, 'vshop', array('dept'=>$this->id));
+                $link = new \core\Link($this->title, 'vshop', array('dept'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {

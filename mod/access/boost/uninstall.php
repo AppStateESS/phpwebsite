@@ -9,8 +9,8 @@
 
 function access_uninstall(&$content)
 {
-    Core\DB::dropTable('access_shortcuts');
-    Core\DB::dropTable('access_allow_deny');
+    \core\DB::dropTable('access_shortcuts');
+    \core\DB::dropTable('access_allow_deny');
     $content[] = dgettext('access', 'Access tables removed.');
     return TRUE;
 }

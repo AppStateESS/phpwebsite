@@ -50,9 +50,9 @@ class vMail_Recipient {
 
     public function init()
     {
-        $db = new Core\DB('vmail_recipients');
+        $db = new \core\DB('vmail_recipients');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -68,7 +68,7 @@ class vMail_Recipient {
 
     public function setAddress($address)
     {
-        if (Core\Text::isValidInput($address, 'email')) {
+        if (core\Text::isValidInput($address, 'email')) {
             $this->address = $address;
             return true;
         } else {
@@ -88,7 +88,7 @@ class vMail_Recipient {
 
     public function setSubmit_message($submit_message)
     {
-        $this->submit_message = Core\Text::parseInput($submit_message);
+        $this->submit_message = \core\Text::parseInput($submit_message);
     }
 
 
@@ -99,7 +99,7 @@ class vMail_Recipient {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->label);
+            return \core\Text::parseOutput($this->label);
         } else {
             return $this->label;
         }
@@ -112,7 +112,7 @@ class vMail_Recipient {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->address);
+            return \core\Text::parseOutput($this->address);
         } else {
             return $this->address;
         }
@@ -125,7 +125,7 @@ class vMail_Recipient {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->prefix);
+            return \core\Text::parseOutput($this->prefix);
         } else {
             return $this->prefix;
         }
@@ -138,7 +138,7 @@ class vMail_Recipient {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->subject);
+            return \core\Text::parseOutput($this->subject);
         } else {
             return $this->subject;
         }
@@ -151,7 +151,7 @@ class vMail_Recipient {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->submit_message);
+            return \core\Text::parseOutput($this->submit_message);
         } else {
             return $this->submit_message;
         }
@@ -162,12 +162,12 @@ class vMail_Recipient {
         $tpl['ITEM_LINKS'] = $this->links();
         $tpl['RECIPIENT'] = $this->getLabel(true);
         if ($this->getSubmit_message()) {
-            $tpl['SUBMIT_MESSAGE'] = Core\Text::parseTag($this->getSubmit_message(true));
+            $tpl['SUBMIT_MESSAGE'] = \core\Text::parseTag($this->getSubmit_message(true));
         } else {
             $tpl['SUBMIT_MESSAGE'] = dgettext('vmail', 'Your message was sent to');
         }
 
-        return Core\Template::process($tpl, 'vmail', 'submit_message.tpl');
+        return \core\Template::process($tpl, 'vmail', 'submit_message.tpl');
     }
 
 
@@ -178,7 +178,7 @@ class vMail_Recipient {
         if (Current_User::allow('vmail', 'edit_recipient')) {
             $vars['id'] = $this->id;
             $vars['aop']  = 'edit_recipient';
-            $links[] = Core\Text::secureLink(dgettext('vmail', 'Edit recipient'), 'vmail', $vars);
+            $links[] = \core\Text::secureLink(dgettext('vmail', 'Edit recipient'), 'vmail', $vars);
         }
 
         $links = array_merge($links, vMail::navLinks());
@@ -194,11 +194,11 @@ class vMail_Recipient {
         }
 
         /* delete the recipient */
-        $db = new Core\DB('vmail_recipients');
+        $db = new \core\DB('vmail_recipients');
         $db->addWhere('id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
-        Core\Key::drop($this->key_id);
+        \core\Key::drop($this->key_id);
 
     }
 
@@ -210,14 +210,14 @@ class vMail_Recipient {
 
         if (Current_User::allow('vmail', 'edit_recipient')) {
             $vars['aop']  = 'edit_recipient';
-            $label = Core\Icon::show('edit');
-            $links[] = Core\Text::secureLink($label, 'vmail', $vars);
+            $label = \core\Icon::show('edit');
+            $links[] = \core\Text::secureLink($label, 'vmail', $vars);
         }
         if (Current_User::allow('vmail', 'delete_recipient')) {
             $vars['aop'] = 'delete_recipient';
-            $js['ADDRESS'] = Core\Text::linkAddress('vmail', $vars, true);
+            $js['ADDRESS'] = \core\Text::linkAddress('vmail', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('vmail', 'Are you sure you want to delete the recipient %s?'), $this->getLabel());
-            $js['LINK'] = Core\Icon::show('delete');
+            $js['LINK'] = \core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -232,12 +232,12 @@ class vMail_Recipient {
         if (Current_User::allow('vmail', 'edit_recipient')) {
             if ($this->active) {
                 $vars['aop'] = 'deactivate_recipient';
-                $label = Core\Icon::show('active', dgettext('rolodex', 'Deactivate'));
-                $active = Core\Text::secureLink($label, 'vmail', $vars);
+                $label = \core\Icon::show('active', dgettext('rolodex', 'Deactivate'));
+                $active = \core\Text::secureLink($label, 'vmail', $vars);
             } else {
                 $vars['aop'] = 'activate_recipient';
-                $label = Core\Icon::show('inactive', dgettext('rolodex', 'Activate'));
-                $active = Core\Text::secureLink($label, 'vmail', $vars);
+                $label = \core\Icon::show('inactive', dgettext('rolodex', 'Activate'));
+                $active = \core\Text::secureLink($label, 'vmail', $vars);
             }
             $links[] = $active;
         }
@@ -251,10 +251,10 @@ class vMail_Recipient {
 
     public function save()
     {
-        $db = new Core\DB('vmail_recipients');
+        $db = new \core\DB('vmail_recipients');
 
         $result = $db->saveObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -266,11 +266,11 @@ class vMail_Recipient {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Core\Key;
+            $key = new \core\Key;
         } else {
-            $key = new Core\Key($this->key_id);
-            if (Core\Error::isError($key->_error)) {
-                $key = new Core\Key;
+            $key = new \core\Key($this->key_id);
+            if (core\Error::isError($key->_error)) {
+                $key = new \core\Key;
             }
         }
 
@@ -283,16 +283,16 @@ class vMail_Recipient {
         $key->setTitle($this->label);
         $key->setSummary($this->subject);
         $result = $key->save();
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return false;
         }
 
         if (!$this->key_id) {
             $this->key_id = $key->id;
-            $db = new Core\DB('vmail_recipients');
+            $db = new \core\DB('vmail_recipients');
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
-            Core\Error::logIfError($db->update());
+            \core\Error::logIfError($db->update());
         }
         return true;
     }
@@ -301,7 +301,7 @@ class vMail_Recipient {
 
     public function viewLink($bare=false)
     {
-        $link = new Core\Link($this->label, 'vmail', array('recipient'=>$this->id));
+        $link = new \core\Link($this->label, 'vmail', array('recipient'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {

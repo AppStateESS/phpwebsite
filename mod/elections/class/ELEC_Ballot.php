@@ -59,9 +59,9 @@ class Elections_Ballot {
 
     public function init()
     {
-        $db = new Core\DB('elections_ballots');
+        $db = new \core\DB('elections_ballots');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -77,7 +77,7 @@ class Elections_Ballot {
 
     public function setDescription($description)
     {
-        $this->description = Core\Text::parseInput($description);
+        $this->description = \core\Text::parseInput($description);
     }
 
     public function setImage_id($image_id)
@@ -122,22 +122,22 @@ class Elections_Ballot {
 
     public function setCustom1label($custom1label)
     {
-        $this->custom1label = Core\Text::parseInput($custom1label);
+        $this->custom1label = \core\Text::parseInput($custom1label);
     }
 
     public function setCustom2label($custom2label)
     {
-        $this->custom2label = Core\Text::parseInput($custom2label);
+        $this->custom2label = \core\Text::parseInput($custom2label);
     }
 
     public function setCustom3label($custom3label)
     {
-        $this->custom3label = Core\Text::parseInput($custom3label);
+        $this->custom3label = \core\Text::parseInput($custom3label);
     }
 
     public function setCustom4label($custom4label)
     {
-        $this->custom4label = Core\Text::parseInput($custom4label);
+        $this->custom4label = \core\Text::parseInput($custom4label);
     }
 
 
@@ -148,7 +148,7 @@ class Elections_Ballot {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->title);
+            return \core\Text::parseOutput($this->title);
         } else {
             return $this->title;
         }
@@ -161,7 +161,7 @@ class Elections_Ballot {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->description);
+            return \core\Text::parseOutput($this->description);
         } else {
             return $this->description;
         }
@@ -185,7 +185,7 @@ class Elections_Ballot {
             return null;
         }
 
-        Core\Core::initModClass('filecabinet', 'Cabinet.php');
+        \core\Core::initModClass('filecabinet', 'Cabinet.php');
         $file = Cabinet::getFile($this->image_id);
 
         if ($file->isImage(true)) {
@@ -231,7 +231,7 @@ class Elections_Ballot {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->custom1label);
+            return \core\Text::parseOutput($this->custom1label);
         } else {
             return $this->custom1label;
         }
@@ -244,7 +244,7 @@ class Elections_Ballot {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->custom2label);
+            return \core\Text::parseOutput($this->custom2label);
         } else {
             return $this->custom2label;
         }
@@ -257,7 +257,7 @@ class Elections_Ballot {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->custom3label);
+            return \core\Text::parseOutput($this->custom3label);
         } else {
             return $this->custom3label;
         }
@@ -270,7 +270,7 @@ class Elections_Ballot {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->custom4label);
+            return \core\Text::parseOutput($this->custom4label);
         } else {
             return $this->custom4label;
         }
@@ -281,10 +281,10 @@ class Elections_Ballot {
     public function view()
     {
         if (!$this->id) {
-            Core\Core::errorPage(404);
+            \core\Core::errorPage(404);
         }
 
-        $key = new Core\Key($this->key_id);
+        $key = new \core\Key($this->key_id);
 
         if (!$key->allowView()) {
             Current_User::requireLogin();
@@ -297,7 +297,7 @@ class Elections_Ballot {
                 javascriptMod('elections', 'utilities');
                 //                javascript('modules/elections/checkvotes');
             }
-            $form = new Core\Form('elections_vote');
+            $form = new \core\Form('elections_vote');
 
             $form->addHidden('module', 'elections');
             $form->addHidden('uop', 'post_vote');
@@ -330,7 +330,7 @@ class Elections_Ballot {
 
         $tpl['BALLOT_LINKS'] = $this->ballotLinks();
         $tpl['TITLE'] = $this->getTitle(true);
-        $tpl['DESCRIPTION'] = Core\Text::parseTag($this->getDescription(true));
+        $tpl['DESCRIPTION'] = \core\Text::parseTag($this->getDescription(true));
         $tpl['FILE'] = $this->getFile();
 
         if (!empty($this->opening)) {
@@ -374,7 +374,7 @@ class Elections_Ballot {
                 $votegroups = explode(":", $this->votegroups);
                 $gnames = null;
                 foreach ($votegroups as $row) {
-                    Core\Core::initModClass('users', 'Group.php');
+                    \core\Core::initModClass('users', 'Group.php');
                     $group = new PHPWS_Group($row);
                     $gnames .= $group->getName() . ', ';
                 }
@@ -393,7 +393,7 @@ class Elections_Ballot {
 
         $candidates = $this->getAllCandidates();
 
-        if (Core\Error::logIfError($candidates)) {
+        if (core\Error::logIfError($candidates)) {
             $this->election->content = dgettext('elections', 'An error occurred when accessing this ballot\'s candidates.');
             return;
         }
@@ -413,14 +413,14 @@ class Elections_Ballot {
 
         $key->flag();
 
-        return Core\Template::process($tpl, 'elections', 'view_ballot.tpl');
+        return \core\Template::process($tpl, 'elections', 'view_ballot.tpl');
     }
 
 
     public function getAllCandidates($limit=false)
     {
-        Core\Core::initModClass('elections', 'ELEC_Candidate.php');
-        $db = new Core\DB('elections_candidates');
+        \core\Core::initModClass('elections', 'ELEC_Candidate.php');
+        $db = new \core\DB('elections_candidates');
         $db->addOrder('title desc');
         $db->addWhere('ballot_id', $this->id);
         if ($limit) {
@@ -433,7 +433,7 @@ class Elections_Ballot {
 
     public function getQtyCandidates()
     {
-        $db = new Core\DB('elections_candidates');
+        $db = new \core\DB('elections_candidates');
         $db->addWhere('ballot_id', $this->id);
         $qty = $db->count();
         return $qty;
@@ -442,7 +442,7 @@ class Elections_Ballot {
 
     public function getVotes()
     {
-        $db = new Core\DB('elections_votes');
+        $db = new \core\DB('elections_votes');
         $db->addWhere('ballot_id', $this->id);
         $qty = $db->count();
         return $qty;
@@ -456,13 +456,13 @@ class Elections_Ballot {
         if (Current_User::allow('elections')) {
             $vars['aop']  = 'edit_candidate';
             $vars['ballot_id'] = $this->id;
-            $links[] = Core\Text::secureLink(dgettext('elections', 'Add Candidate'), 'elections', $vars);
+            $links[] = \core\Text::secureLink(dgettext('elections', 'Add Candidate'), 'elections', $vars);
         }
 
         if (Current_User::allow('elections')) {
             $vars['id'] = $this->id;
             $vars['aop']  = 'edit_ballot';
-            $links[] = Core\Text::secureLink(dgettext('elections', 'Edit ballot'), 'elections', $vars);
+            $links[] = \core\Text::secureLink(dgettext('elections', 'Edit ballot'), 'elections', $vars);
         }
 
         if (is_array(Election::navLinks())) {
@@ -481,21 +481,21 @@ class Elections_Ballot {
         }
 
         /* delete the related candidates */
-        $db = new Core\DB('elections_candidates');
+        $db = new \core\DB('elections_candidates');
         $db->addWhere('ballot_id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
         /* delete the related votes */
-        $db = new Core\DB('elections_votes');
+        $db = new \core\DB('elections_votes');
         $db->addWhere('ballot_id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
         /* delete the ballot */
-        $db = new Core\DB('elections_ballots');
+        $db = new \core\DB('elections_ballots');
         $db->addWhere('id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
-        Core\Key::drop($this->key_id);
+        \core\Key::drop($this->key_id);
 
     }
 
@@ -508,15 +508,15 @@ class Elections_Ballot {
         if (Current_User::isUnrestricted('elections')) {
             $vars['aop']  = 'edit_candidate';
             $vars['ballot_id'] = $this->id;
-            $label = Core\Icon::show('add', dgettext('elections', 'Add Candidate'));
-            $links[] = Core\Text::secureLink($label, 'elections', $vars);
+            $label = \core\Icon::show('add', dgettext('elections', 'Add Candidate'));
+            $links[] = \core\Text::secureLink($label, 'elections', $vars);
             $vars['aop']  = 'edit_ballot';
-            $label = Core\Icon::show('edit');
-            $links[] = Core\Text::secureLink($label, 'elections', $vars);
+            $label = \core\Icon::show('edit');
+            $links[] = \core\Text::secureLink($label, 'elections', $vars);
             $vars['aop'] = 'delete_ballot';
-            $js['ADDRESS'] = Core\Text::linkAddress('elections', $vars, true);
+            $js['ADDRESS'] = \core\Text::linkAddress('elections', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('elections', 'Are you sure you want to delete the ballot %s?'), $this->getTitle());
-            $js['LINK'] = Core\Icon::show('delete');
+            $js['LINK'] = \core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -543,10 +543,10 @@ class Elections_Ballot {
 
     public function save()
     {
-        $db = new Core\DB('elections_ballots');
+        $db = new \core\DB('elections_ballots');
 
         $result = $db->saveObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -558,11 +558,11 @@ class Elections_Ballot {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Core\Key;
+            $key = new \core\Key;
         } else {
-            $key = new Core\Key($this->key_id);
-            if (Core\Error::isError($key->_error)) {
-                $key = new Core\Key;
+            $key = new \core\Key($this->key_id);
+            if (core\Error::isError($key->_error)) {
+                $key = new \core\Key;
             }
         }
 
@@ -580,16 +580,16 @@ class Elections_Ballot {
         $key->setTitle($this->title);
         $key->setSummary($this->description);
         $result = $key->save();
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return false;
         }
 
         if (!$this->key_id) {
             $this->key_id = $key->id;
-            $db = new Core\DB('elections_ballots');
+            $db = new \core\DB('elections_ballots');
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
-            Core\Error::logIfError($db->update());
+            \core\Error::logIfError($db->update());
         }
         return true;
     }
@@ -597,7 +597,7 @@ class Elections_Ballot {
 
     public function viewLink($bare=false, $tpl=false)
     {
-                $link = new Core\Link($this->title, 'elections', array('ballot'=>$this->id));
+                $link = new \core\Link($this->title, 'elections', array('ballot'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {
@@ -674,7 +674,7 @@ class Elections_Ballot {
     			return false;
     	} else {
     		/* check the voters log */
-            $db = new Core\DB('elections_votes');
+            $db = new \core\DB('elections_votes');
             $db->addWhere('username', Current_User::getUsername());
             $db->addWhere('ballot_id', $this->id);
             $db->addColumn('id');

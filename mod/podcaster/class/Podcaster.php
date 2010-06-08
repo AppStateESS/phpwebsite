@@ -22,8 +22,8 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-Core\Core::requireInc('podcaster', 'errordefines.php');
-Core\Core::requireConfig('podcaster');
+core\Core::requireInc('podcaster', 'errordefines.php');
+core\Core::requireConfig('podcaster');
 
 class Podcaster {
     var $forms   = null;
@@ -63,12 +63,12 @@ class Podcaster {
                     Current_User::disallow();
                 }
                 if ($this->postChannel()) {
-                    if (Core\Error::logIfError($this->channel->save())) {
+                    if (core\Error::logIfError($this->channel->save())) {
                         $this->forwardMessage(dgettext('podcaster', 'Error occurred when saving channel.'));
-                        Core\Core::reroute('index.php?module=podcaster&aop=list');
+                        \core\Core::reroute('index.php?module=podcaster&aop=list');
                     } else {
                         $this->forwardMessage(dgettext('podcaster', 'Channel saved successfully.') . ' ' . dgettext('podcaster', 'Add an episode below.'));
-                        Core\Core::reroute('index.php?module=podcaster&aop=edit_episode&id=' . $this->channel->id);
+                        \core\Core::reroute('index.php?module=podcaster&aop=edit_episode&id=' . $this->channel->id);
                     }
                 } else {
                     $this->loadForm('edit');
@@ -117,17 +117,17 @@ class Podcaster {
                 }
 
                 if ($this->postEpisode()) {
-                    if (Core\Error::logIfError($this->episode->save())) {
+                    if (core\Error::logIfError($this->episode->save())) {
                         $this->forwardMessage(dgettext('podcaster', 'Error occurred when saving episode.'));
-                        Core\Core::reroute('index.php?module=podcaster&aop=list');
+                        \core\Core::reroute('index.php?module=podcaster&aop=list');
                     } else {
                         if (!$this->episode->approved) {
                             $this->forwardMessage(dgettext('podcaster', 'Episode submitted for approval successfully.'));
                         } else {
                             $this->forwardMessage(dgettext('podcaster', 'Episode saved successfully.'));
                         }
-//                        Core\Core::reroute('index.php?module=podcaster&aop=edit_episode&id=' . $this->channel->id);
-                        Core\Core::reroute('index.php?module=podcaster&uop=view_channel&id=' . $this->channel->id);
+//                        \core\Core::reroute('index.php?module=podcaster&aop=edit_episode&id=' . $this->channel->id);
+                        \core\Core::reroute('index.php?module=podcaster&uop=view_channel&id=' . $this->channel->id);
                     }
                 } else {
                     $this->loadForm('edit_episode');
@@ -164,7 +164,7 @@ class Podcaster {
                 $this->episode->approved = 1;
                 $this->episode->save();
                 $this->forwardMessage(dgettext('podcaster', 'Podcaster episode approved.'));
-                Core\Core::reroute('index.php?module=podcaster&aop=menu&tab=approvals');
+                \core\Core::reroute('index.php?module=podcaster&aop=menu&tab=approvals');
                 break;
 
             case 'unapprove_episode':
@@ -175,7 +175,7 @@ class Podcaster {
                 $this->episode->approved = 0;
                 $this->episode->save();
                 $this->forwardMessage(dgettext('podcaster', 'Podcaster episode unapproved.'));
-                Core\Core::reroute('index.php?module=podcaster&aop=menu&tab=approvals');
+                \core\Core::reroute('index.php?module=podcaster&aop=menu&tab=approvals');
                 break;
 
             case 'delete_episode':
@@ -190,7 +190,7 @@ class Podcaster {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('podcaster', 'Podcaster settings saved.'));
-                    Core\Core::reroute('index.php?module=podcaster&aop=menu');
+                    \core\Core::reroute('index.php?module=podcaster&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -203,9 +203,9 @@ class Podcaster {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'podcaster', 'main_admin.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'podcaster', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(Core\Template::process($tpl, 'podcaster', 'main_admin.tpl'));
+            $this->panel->setContent(core\Template::process($tpl, 'podcaster', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -214,7 +214,7 @@ class Podcaster {
 
     function sendMessage()
     {
-        Core\Core::reroute('index.php?module=podcaster&amp;uop=message');
+        \core\Core::reroute('index.php?module=podcaster&amp;uop=message');
     }
 
     function forwardMessage($message, $title=null)
@@ -233,14 +233,14 @@ class Podcaster {
             if (isset($_SESSION['PCR_Message']['title'])) {
                 $this->title = $_SESSION['PCR_Message']['title'];
             }
-            Core\Core::killSession('PCR_Message');
+            \core\Core::killSession('PCR_Message');
         }
     }
 
 
     function loadForm($type)
     {
-        Core\Core::initModClass('podcaster', 'PCR_Forms.php');
+        \core\Core::initModClass('podcaster', 'PCR_Forms.php');
         $this->forms = new Podcaster_Forms;
         $this->forms->podcaster = & $this;
         $this->forms->get($type);
@@ -249,7 +249,7 @@ class Podcaster {
 
     function loadChannel($id=0)
     {
-        Core\Core::initModClass('podcaster', 'PCR_Channel.php');
+        \core\Core::initModClass('podcaster', 'PCR_Channel.php');
 
         if ($id) {
             $this->channel = new Podcaster_Channel($id);
@@ -267,7 +267,7 @@ class Podcaster {
 
     function loadEpisode($id=0)
     {
-        Core\Core::initModClass('podcaster', 'PCR_Episode.php');
+        \core\Core::initModClass('podcaster', 'PCR_Episode.php');
         if ($id) {
             $this->episode = new Podcaster_Episode($id);
         } elseif (isset($_REQUEST['episode_id'])) {
@@ -295,7 +295,7 @@ class Podcaster {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                Core\Core::errorPage('404');
+                \core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -307,13 +307,13 @@ class Podcaster {
             case 'message':
                 $this->loadMessage();
                 if (empty($this->message)) {
-                    Core\Core::home();
+                    \core\Core::home();
                 }
                 $this->title = dgettext('podcaster', 'Podcaster');
                 break;
 
             case 'list':
-                Core\Core::initModClass('podcaster', 'PCR_Forms.php');
+                \core\Core::initModClass('podcaster', 'PCR_Forms.php');
                 $this->forms = new Podcaster_Forms;
                 $this->forms->podcaster = & $this;
                 $this->forms->listChannels();
@@ -322,7 +322,7 @@ class Podcaster {
             case 'view_archives':
                 $channel_id = $_REQUEST['id'];
                 $approved = 1;
-                Core\Core::initModClass('podcaster', 'PCR_Forms.php');
+                \core\Core::initModClass('podcaster', 'PCR_Forms.php');
                 $this->forms = new Podcaster_Forms;
                 $this->forms->podcaster = & $this;
                 $this->forms->listEpisodes($approved,$channel_id);
@@ -352,9 +352,9 @@ class Podcaster {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'podcaster', 'main_user.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'podcaster', 'main_user.tpl'));
         } else {
-            Layout::add(Core\Template::process($tpl, 'podcaster', 'main_user.tpl'));
+            Layout::add(core\Template::process($tpl, 'podcaster', 'main_user.tpl'));
         }
 
     }
@@ -371,7 +371,7 @@ class Podcaster {
             echo $this->channel->viewRSS();
             exit();
         } else {
-            Core\Core::errorPage('404');
+            \core\Core::errorPage('404');
         }
     }
 
@@ -379,10 +379,10 @@ class Podcaster {
 
     function loadPanel()
     {
-        Core\Core::initModClass('controlpanel', 'Panel.php');
+        \core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('podcaster-panel');
         $link = 'index.php?module=podcaster&aop=menu';
-        $db = new Core\DB('podcaster_episode');
+        $db = new \core\DB('podcaster_episode');
         $db->addWhere('approved', 0);
         $unapproved = $db->count();
 
@@ -516,78 +516,78 @@ class Podcaster {
 
         $channel_limit = (int)$_POST['channel_limit'];
         if ((int)$channel_limit > 0 && (int)$channel_limit <= 50) {
-            Core\Settings::set('podcaster', 'channel_limit', $channel_limit);
+            \core\Settings::set('podcaster', 'channel_limit', $channel_limit);
         } else {
-            Core\Settings::reset('podcaster', 'channel_limit');
+            \core\Settings::reset('podcaster', 'channel_limit');
         }
 
         $cache_timeout = (int)$_POST['cache_timeout'];
         if ((int)$cache_timeout <= 7200) {
-            Core\Settings::set('podcaster', 'cache_timeout', $cache_timeout);
+            \core\Settings::set('podcaster', 'cache_timeout', $cache_timeout);
         } else {
-            Core\Settings::reset('podcaster', 'cache_timeout');
+            \core\Settings::reset('podcaster', 'cache_timeout');
         }
 
         isset($_POST['show_block']) ?
-            Core\Settings::set('podcaster', 'show_block', 1) :
-            Core\Settings::set('podcaster', 'show_block', 0);
+            \core\Settings::set('podcaster', 'show_block', 1) :
+            \core\Settings::set('podcaster', 'show_block', 0);
 
         isset($_POST['req_approval']) ?
-            Core\Settings::set('podcaster', 'req_approval', 1) :
-            Core\Settings::set('podcaster', 'req_approval', 0);
+            \core\Settings::set('podcaster', 'req_approval', 1) :
+            \core\Settings::set('podcaster', 'req_approval', 0);
 
-        Core\Settings::set('podcaster', 'block_order_by_rand', $_POST['block_order_by_rand']);
+        \core\Settings::set('podcaster', 'block_order_by_rand', $_POST['block_order_by_rand']);
 
         isset($_POST['block_on_home_only']) ?
-            Core\Settings::set('podcaster', 'block_on_home_only', 1) :
-            Core\Settings::set('podcaster', 'block_on_home_only', 0);
+            \core\Settings::set('podcaster', 'block_on_home_only', 1) :
+            \core\Settings::set('podcaster', 'block_on_home_only', 0);
 
 
         if (!empty($_POST['editor'])) {
-            if (Core\Text::isValidInput($_POST['editor'], 'email')) {
-                Core\Settings::set('podcaster', 'editor', $_POST['editor']);
+            if (core\Text::isValidInput($_POST['editor'], 'email')) {
+                \core\Settings::set('podcaster', 'editor', $_POST['editor']);
             } else {
                 $errors[] = dgettext('podcaster', 'Please check editor email format.');
             }
         } else {
-            Core\Settings::set('podcaster', 'editor', '');
+            \core\Settings::set('podcaster', 'editor', '');
         }
 
         if (!empty($_POST['webmaster'])) {
-            if (Core\Text::isValidInput($_POST['webmaster'], 'email')) {
-                Core\Settings::set('podcaster', 'webmaster', $_POST['webmaster']);
+            if (core\Text::isValidInput($_POST['webmaster'], 'email')) {
+                \core\Settings::set('podcaster', 'webmaster', $_POST['webmaster']);
             } else {
                 $errors[] = dgettext('podcaster', 'Please check webmaster email format.');
             }
         } else {
-            Core\Settings::set('podcaster', 'webmaster', '');
+            \core\Settings::set('podcaster', 'webmaster', '');
         }
 
         if (!empty($_POST['copyright'])) {
-            Core\Settings::set('podcaster', 'copyright', strip_tags($_POST['copyright']));
+            \core\Settings::set('podcaster', 'copyright', strip_tags($_POST['copyright']));
         }
 
         isset($_POST['rm_media']) ?
-            Core\Settings::set('podcaster', 'rm_media', 1) :
-            Core\Settings::set('podcaster', 'rm_media', 0);
+            \core\Settings::set('podcaster', 'rm_media', 1) :
+            \core\Settings::set('podcaster', 'rm_media', 0);
 
 
 
         isset($_POST['mod_folders_only']) ?
-            Core\Settings::set('podcaster', 'mod_folders_only', 1) :
-            Core\Settings::set('podcaster', 'mod_folders_only', 0);
+            \core\Settings::set('podcaster', 'mod_folders_only', 1) :
+            \core\Settings::set('podcaster', 'mod_folders_only', 0);
 
         if ( !empty($_POST['max_width']) ) {
             $max_width = (int)$_POST['max_width'];
             if ($max_width >= 50 && $max_width <= 600 ) {
-                Core\Settings::set('podcaster', 'max_width', $max_width);
+                \core\Settings::set('podcaster', 'max_width', $max_width);
             }
         }
 
         if ( !empty($_POST['max_height']) ) {
             $max_height = (int)$_POST['max_height'];
             if ($max_height >= 50 && $max_height <= 600 ) {
-                Core\Settings::set('podcaster', 'max_height', $max_height);
+                \core\Settings::set('podcaster', 'max_height', $max_height);
             }
         }
 
@@ -596,7 +596,7 @@ class Podcaster {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            if (Core\Settings::save('podcaster')) {
+            if (core\Settings::save('podcaster')) {
                 return true;
             } else {
                 return falsel;
@@ -614,7 +614,7 @@ class Podcaster {
             $this->title = dgettext('podcaster', 'Episode could not be deleted successfully.');
         }
 
-        $this->content = Core\Text::secureLink(dgettext('podcaster', 'Return to channel page'), 'podcaster',
+        $this->content = \core\Text::secureLink(dgettext('podcaster', 'Return to channel page'), 'podcaster',
                                                 array('id'=>$this->channel->id, 'uop'=>'view_channel'));
 
     }

@@ -46,9 +46,9 @@ class Skeleton_Bone {
 
     public function init()
     {
-        $db = new Core\DB('skeleton_bones');
+        $db = new \core\DB('skeleton_bones');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -64,7 +64,7 @@ class Skeleton_Bone {
 
     public function setDescription($description)
     {
-        $this->description = Core\Text::parseInput($description);
+        $this->description = \core\Text::parseInput($description);
     }
 
     public function setSkeleton_id($skeleton_id)
@@ -90,7 +90,7 @@ class Skeleton_Bone {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->title);
+            return \core\Text::parseOutput($this->title);
         } else {
             return $this->title;
         }
@@ -103,7 +103,7 @@ class Skeleton_Bone {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->description);
+            return \core\Text::parseOutput($this->description);
         } else {
             return $this->description;
         }
@@ -127,7 +127,7 @@ class Skeleton_Bone {
             return null;
         }
 
-        Core\Core::initModClass('filecabinet', 'Cabinet.php');
+        \core\Core::initModClass('filecabinet', 'Cabinet.php');
         $file = Cabinet::getFile($this->file_id);
 
         if ($file->isImage(true)) {
@@ -155,7 +155,7 @@ class Skeleton_Bone {
         }
 
         if ($print) {
-            Core\Core::initModClass('skeleton', 'Skeleton_Skeleton.php');
+            \core\Core::initModClass('skeleton', 'Skeleton_Skeleton.php');
             $skeleton = new Skeleton_Skeleton($this->skeleton_id);
             return $skeleton->viewLink();
         } else {
@@ -167,16 +167,16 @@ class Skeleton_Bone {
     public function view()
     {
         if (!$this->id) {
-            Core\Core::errorPage(404);
+            \core\Core::errorPage(404);
         }
 
         Layout::addPageTitle($this->getTitle());
         $tpl['ITEM_LINKS'] = $this->links();
         $tpl['TITLE'] = $this->getTitle(true);
-        $tpl['DESCRIPTION'] = Core\Text::parseTag($this->getDescription(true));
+        $tpl['DESCRIPTION'] = \core\Text::parseTag($this->getDescription(true));
         $tpl['FILE'] = $this->getFile();
 
-        return Core\Template::process($tpl, 'skeleton', 'view_bone.tpl');
+        return \core\Template::process($tpl, 'skeleton', 'view_bone.tpl');
     }
 
 
@@ -188,7 +188,7 @@ class Skeleton_Bone {
             $vars['skeleton_id'] = $this->skeleton_id;
             $vars['bone_id'] = $this->id;
             $vars['aop']  = 'edit_bone';
-            $links[] = Core\Text::secureLink(dgettext('skeleton', 'Edit bone'), 'skeleton', $vars);
+            $links[] = \core\Text::secureLink(dgettext('skeleton', 'Edit bone'), 'skeleton', $vars);
         }
         $links[] = sprintf(dgettext('skeleton', 'Belongs to: %s'), $this->getSkeleton(true));
 
@@ -206,9 +206,9 @@ class Skeleton_Bone {
         }
 
         /* delete the bone */
-        $db = new Core\DB('skeleton_bones');
+        $db = new \core\DB('skeleton_bones');
         $db->addWhere('id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
     }
 
@@ -220,15 +220,15 @@ class Skeleton_Bone {
         $links = array();
 
         if (Current_User::allow('skeleton', 'edit_bone')) {
-            $label = Core\Icon::show('edit');
+            $label = \core\Icon::show('edit');
             $vars['aop']  = 'edit_bone';
-            $links[] = Core\Text::secureLink($label, 'skeleton', $vars);
+            $links[] = \core\Text::secureLink($label, 'skeleton', $vars);
         }
         if (Current_User::allow('skeleton', 'delete_bone')) {
             $vars['aop'] = 'delete_bone';
-            $js['ADDRESS'] = Core\Text::linkAddress('skeleton', $vars, true);
+            $js['ADDRESS'] = \core\Text::linkAddress('skeleton', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('skeleton', 'Are you sure you want to delete the bone %s?'), $this->getTitle());
-            $js['LINK'] = Core\Icon::show('delete');
+            $js['LINK'] = \core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -250,15 +250,15 @@ class Skeleton_Bone {
         $links = array();
 
         if (Current_User::allow('skeleton', 'edit_bone')) {
-            $label = Core\Icon::show('edit');
+            $label = \core\Icon::show('edit');
             $vars['aop']  = 'edit_bone';
-            $links[] = Core\Text::secureLink($label, 'skeleton', $vars);
+            $links[] = \core\Text::secureLink($label, 'skeleton', $vars);
         }
         if (Current_User::allow('skeleton', 'delete_bone')) {
             $vars['aop'] = 'delete_bone';
-            $js['ADDRESS'] = Core\Text::linkAddress('skeleton', $vars, true);
+            $js['ADDRESS'] = \core\Text::linkAddress('skeleton', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('skeleton', 'Are you sure you want to delete the bone %s?'), $this->getTitle());
-            $js['LINK'] = Core\Icon::show('delete');
+            $js['LINK'] = \core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -280,10 +280,10 @@ class Skeleton_Bone {
 
     public function save()
     {
-        $db = new Core\DB('skeleton_bones');
+        $db = new \core\DB('skeleton_bones');
 
         $result = $db->saveObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
     }
@@ -291,7 +291,7 @@ class Skeleton_Bone {
 
     public function viewLink($bare=false)
     {
-        $link = new Core\Link($this->title, 'skeleton', array('skeleton'=>$this->skeleton_id, 'bone'=>$this->id));
+        $link = new \core\Link($this->title, 'skeleton', array('skeleton'=>$this->skeleton_id, 'bone'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {

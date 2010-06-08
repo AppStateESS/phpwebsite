@@ -67,7 +67,7 @@ class Signup_Forms {
     {
         $email = & $this->signup->email;
 
-        $form = new Core\Form('email');
+        $form = new \core\Form('email');
         $form->addHidden('module', 'signup');
         $form->addHidden('aop', 'post_email');
         $form->addHidden('sheet_id', $this->signup->sheet->id);
@@ -93,7 +93,7 @@ class Signup_Forms {
         $tpl = $form->getTemplate();
 
         $this->signup->title = sprintf(dgettext('signup', 'Email %s applicants'), $this->signup->sheet->title);
-        $this->signup->content = Core\Template::process($tpl, 'signup', 'email_form.tpl');
+        $this->signup->content = \core\Template::process($tpl, 'signup', 'email_form.tpl');
     }
 
 
@@ -101,7 +101,7 @@ class Signup_Forms {
     {
         $peep = $this->signup->peep;
 
-        $form = new Core\Form;
+        $form = new \core\Form;
         $form->addHidden('module', 'signup');
         $form->addHidden('aop', 'post_peep');
         if ($peep->id) {
@@ -149,13 +149,13 @@ class Signup_Forms {
         $tpl['CLOSE'] = sprintf('<input type="button" value="%s" />', dgettext('signup', 'Close'));
         $tpl['CLOSE'] = javascript('close_refresh', array('use_link'=>1));
 
-        $this->signup->content = Core\Template::process($tpl, 'signup', 'edit_peep.tpl');
+        $this->signup->content = \core\Template::process($tpl, 'signup', 'edit_peep.tpl');
     }
 
 
     public function editSlotPopup()
     {
-        $form = new Core\Form;
+        $form = new \core\Form;
         $form->addHidden('module', 'signup');
         $form->addHidden('aop', 'post_slot');
         $form->addHidden('sheet_id', $this->signup->sheet->id);
@@ -182,7 +182,7 @@ class Signup_Forms {
         $tpl['CLEAR'] = sprintf('<input type="button" value="%s" onclick="closeWindow(); return false" />',
         dgettext('signup', 'Close'));
 
-        $this->signup->content = Core\Template::process($tpl, 'signup', 'edit_slot.tpl');
+        $this->signup->content = \core\Template::process($tpl, 'signup', 'edit_slot.tpl');
     }
 
 
@@ -190,19 +190,19 @@ class Signup_Forms {
     {
         $slot = & $this->signup->slot;
         $slot->loadPeeps();
-        if (!$slot->id || Core\Error::logIfError($slot)) {
+        if (!$slot->id || \core\Error::logIfError($slot)) {
             $this->signup->content = dgettext('signup', 'An error occurred when accessing this sheet\'s slots.');
             return;
         }
         $tpl = $slot->viewTpl();
 
-        $this->signup->content = Core\Template::process($tpl, 'signup', 'peep_pop.tpl');
+        $this->signup->content = \core\Template::process($tpl, 'signup', 'peep_pop.tpl');
     }
 
     public function editSlots()
     {
         $this->signup->title = sprintf(dgettext('signup', 'Slot setup for %s'), $this->signup->sheet->title);
-        $form = new Core\Form('seach_users');
+        $form = new \core\Form('seach_users');
         $form->setMethod('get');
         $form->addHidden('module', 'signup');
         $form->addHidden('aop', 'edit_slots');
@@ -220,15 +220,15 @@ class Signup_Forms {
         $vars['aop'] = 'edit_slot_popup';
         $vars['sheet_id'] = $this->signup->sheet->id;
         $vars['slot_id'] = 0;
-        $js['address'] = Core\Text::linkAddress('signup', $vars, true);
+        $js['address'] = \core\Text::linkAddress('signup', $vars, true);
         $js['label'] = dgettext('signup', 'Add slot');
         $tpl['ADD_SLOT'] = javascript('open_window', $js);
 
         $vars['aop'] = 'reset_slot_order';
-        $tpl['RESET'] = Core\Text::secureLink(dgettext('signup', 'Reset order'), 'signup', $vars);
+        $tpl['RESET'] = \core\Text::secureLink(dgettext('signup', 'Reset order'), 'signup', $vars);
 
         $vars['aop'] = 'alpha_order';
-        $tpl['ALPHA'] = Core\Text::secureLink(dgettext('signup', 'Alphabetic order'), 'signup', $vars);
+        $tpl['ALPHA'] = \core\Text::secureLink(dgettext('signup', 'Alphabetic order'), 'signup', $vars);
 
         $slots = $this->signup->sheet->getAllSlots(false, $search);
 
@@ -240,13 +240,13 @@ class Signup_Forms {
             $this->signup->message = dgettext('signup', 'No slots found.');
         }
 
-        $this->signup->content = Core\Template::process($tpl, 'signup', 'slot_setup.tpl');
+        $this->signup->content = \core\Template::process($tpl, 'signup', 'slot_setup.tpl');
     }
 
 
     public function editSheet()
     {
-        $form = new Core\Form('signup_sheet');
+        $form = new \core\Form('signup_sheet');
         $sheet = & $this->signup->sheet;
 
         $form->addHidden('module', 'signup');
@@ -309,14 +309,14 @@ class Signup_Forms {
 
         $tpl['EXTRA_NOTE'] = dgettext('signup', 'Blank extra fields will not appear on signup.');
 
-        $this->signup->content = Core\Template::process($tpl, 'signup', 'edit_sheet.tpl');
+        $this->signup->content = \core\Template::process($tpl, 'signup', 'edit_sheet.tpl');
     }
 
     public function report()
     {
-                Core\Core::initModClass('signup', 'Peeps.php');
+                \core\Core::initModClass('signup', 'Peeps.php');
 
-        $pager = new Core\DBPager('signup_peeps', 'Signup_Peep');
+        $pager = new \core\DBPager('signup_peeps', 'Signup_Peep');
         $pager->addWhere('sheet_id', $this->signup->sheet->id);
         $pager->addWhere('registered', 1);
         $pager->setModule('signup');
@@ -329,12 +329,12 @@ class Signup_Forms {
 
         $vars['sheet_id'] = $this->signup->sheet->id;
         $vars['aop'] = 'csv_applicants';
-        $page_tags['CSV'] = Core\Text::secureLink(dgettext('signup', 'CSV file'), 'signup', $vars);
+        $page_tags['CSV'] = \core\Text::secureLink(dgettext('signup', 'CSV file'), 'signup', $vars);
 
         $vars['aop'] = 'slot_listing';
         $js['label'] = dgettext('signup', 'Slot listing');
         $js['menubar'] = 'yes';
-        $js['address'] = Core\Text::linkAddress('signup', $vars, true);
+        $js['address'] = \core\Text::linkAddress('signup', $vars, true);
         $page_tags['SLOT_LISTING'] = javascript('open_window', $js);
 
         $vars['aop'] = 'print_applicants';
@@ -356,11 +356,11 @@ class Signup_Forms {
         $js['width'] = '1024';
         $js['height'] = '768';
         $js['menubar'] = 'yes';
-        $js['address'] = Core\Text::linkAddress('signup', $vars, true);
+        $js['address'] = \core\Text::linkAddress('signup', $vars, true);
         $page_tags['PRINT'] = javascript('open_window', $js);
 
         $vars['aop'] = 'email_applicants';
-        $page_tags['EMAIL'] = Core\Text::secureLink(dgettext('signup', 'Email'), 'signup', $vars);
+        $page_tags['EMAIL'] = \core\Text::secureLink(dgettext('signup', 'Email'), 'signup', $vars);
 
         $page_tags['EXTRA_LABEL'] = dgettext('signup', 'Extra details');
 
@@ -381,13 +381,13 @@ class Signup_Forms {
     {
         $ptags['TITLE_HEADER'] = dgettext('signup', 'Title');
 
-        Core\Core::initModClass('signup', 'Sheet.php');
-                $pager = new Core\DBPager('signup_sheet', 'Signup_Sheet');
+        \core\Core::initModClass('signup', 'Sheet.php');
+                $pager = new \core\DBPager('signup_sheet', 'Signup_Sheet');
         $pager->setModule('signup');
         $pager->setTemplate('sheet_list.tpl');
         $pager->addRowTags('rowTag');
         $pager->addPageTags($ptags);
-        Core\Key::restrictEdit($pager->db, 'signup', 'edit_sheet');
+        \core\Key::restrictEdit($pager->db, 'signup', 'edit_sheet');
 
         $this->signup->content = $pager->get();
         $this->signup->title = dgettext('signup', 'Signup Sheets');
@@ -396,7 +396,7 @@ class Signup_Forms {
     public function userSignup()
     {
         if (!$this->signup->sheet->id) {
-            Core\Core::errorPage('404');
+            \core\Core::errorPage('404');
         }
 
         $sheet = $this->signup->sheet;
@@ -443,7 +443,7 @@ class Signup_Forms {
             $this->signup->content = dgettext('signup', 'Sorry, but all available slots are full. Please check back later for possible cancellations.');
             return;
         } else {
-            $form = new Core\Form('slots');
+            $form = new \core\Form('slots');
             $form->useFieldset();
             $form->setLegend(dgettext('signup', 'Signup form'));
             $form->addHidden('module', 'signup');
@@ -489,7 +489,7 @@ class Signup_Forms {
         }
 
         $tpl['DESCRIPTION'] = $sheet->getDescription();
-        $this->signup->content = Core\Template::process($tpl, 'signup', 'signup_form.tpl');
+        $this->signup->content = \core\Template::process($tpl, 'signup', 'signup_form.tpl');
         $this->signup->sheet->flag();
     }
 

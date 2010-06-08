@@ -10,7 +10,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-Core\Core::initModClass('pagesmith', 'PageSmith.php');
+core\Core::initModClass('pagesmith', 'PageSmith.php');
 
 $pageSmith = new PageSmith;
 
@@ -21,7 +21,7 @@ if (isset($_REQUEST['uop'])) {
 } elseif (@$_GET['id']) {
     $pageSmith->viewPage();
 } else {
-    Core\Core::errorPage('404');
+    \core\Core::errorPage('404');
 }
 
 

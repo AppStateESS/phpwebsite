@@ -41,8 +41,8 @@ class OldWikiPage
         if (isset($id) && is_numeric($id))
         {
             $this->setId($id);
-            $db = new Core\DB('wiki_pages_version');
-            Core\Error::logIfError($db->loadObject($this));
+            $db = new \core\DB('wiki_pages_version');
+            \core\Error::logIfError($db->loadObject($this));
         }
     }
 
@@ -68,11 +68,11 @@ class OldWikiPage
 
     function getEditor()
     {
-        $db = new Core\DB('users');
+        $db = new \core\DB('users');
         $db->addWhere('id', $this->getEditorId());
         $db->addColumn('display_name');
         $result = $db->select('col');
-        if (Core\Error::logIfError($result))
+        if (core\Error::logIfError($result))
         {
             return dgettext('wiki', 'N/A');
         }
@@ -107,7 +107,7 @@ class OldWikiPage
 
     function getComment()
     {
-        return Core\Text::parseOutput($this->comment);
+        return \core\Text::parseOutput($this->comment);
     }
 
     function getVrNumber()
@@ -123,11 +123,11 @@ class OldWikiPage
 
     function getAllowEdit()
     {
-        $db = new Core\DB('wiki_pages');
+        $db = new \core\DB('wiki_pages');
         $db->addWhere('id', $this->getSourceId());
         $db->addColumn('allow_edit');
         $result = $db->select('col');
-        if (Core\Error::logIfError($result))
+        if (core\Error::logIfError($result))
         {
             return 0;
         }
@@ -140,28 +140,28 @@ class OldWikiPage
         $links = NULL;
 
         if ((Current_User::allow('wiki', 'edit_page') ||
-            (Core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) &&
+            (core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) &&
             $this->getAllowEdit() && !$this->getVrCurrent())
         {
-            $links .= Core\Template::process(array('LINK'=>Core\Text::secureLink(dgettext('wiki', 'Restore'), 'wiki',
+            $links .= \core\Template::process(array('LINK'=>core\Text::secureLink(dgettext('wiki', 'Restore'), 'wiki',
                       array('page_op'=>'restore', 'page'=>$this->getTitle(FALSE), 'id'=>$this->getId()))),
                       'wiki', 'menu_item.tpl');
         }
 
         if (Current_User::allow('wiki', 'delete_page') && $this->getAllowEdit() && !$this->getVrCurrent())
         {
-            $js_var['ADDRESS'] = Core\Text::linkAddress('wiki', array('page_op'=>'removeold',
+            $js_var['ADDRESS'] = \core\Text::linkAddress('wiki', array('page_op'=>'removeold',
                                  'page'=>$this->getTitle(FALSE), 'id'=>$this->getId()), TRUE);
             $js_var['QUESTION'] = dgettext('wiki', 'Are you sure you want to remove this page revision?');
             $js_var['LINK'] = dgettext('wiki', 'Remove');
-            $links .= Core\Template::process(array('LINK'=>(Layout::getJavascript('confirm', $js_var))),
+            $links .= \core\Template::process(array('LINK'=>(Layout::getJavascript('confirm', $js_var))),
                       'wiki', 'menu_item.tpl');
         }
 
-        $links .= Core\Template::process(array('LINK'=>Core\Text::moduleLink(dgettext('wiki', 'History'), 'wiki',
+        $links .= \core\Template::process(array('LINK'=>core\Text::moduleLink(dgettext('wiki', 'History'), 'wiki',
                   array('page_op'=>'history', 'page_id'=>$this->getSourceId()))), 'wiki', 'menu_item.tpl');
 
-        $links .= Core\Template::process(array('LINK'=>Core\Text::moduleLink(dgettext('wiki', 'Back to Page'), 'wiki',
+        $links .= \core\Template::process(array('LINK'=>core\Text::moduleLink(dgettext('wiki', 'Back to Page'), 'wiki',
                   array('page'=>$this->getTitle(FALSE)))), 'wiki', 'menu_item.tpl');
 
         return $links;
@@ -173,18 +173,18 @@ class OldWikiPage
 
         if (!$this->getVrCurrent())
         {
-            $db = new Core\DB('wiki_pages_version');
+            $db = new \core\DB('wiki_pages_version');
             $db->addWhere('source_id', $this->getSourceId());
-            $links[] = Core\Text::moduleLink(dgettext('wiki', 'Current'), 'wiki', array('page'=>$this->getTitle(FALSE),
+            $links[] = \core\Text::moduleLink(dgettext('wiki', 'Current'), 'wiki', array('page'=>$this->getTitle(FALSE),
             'page_op'=>'compare', 'oVer'=>$this->getVrNumber(), 'nVer'=>$db->count()));
         }
 
-        $db2 = new Core\DB('wiki_pages_version');
+        $db2 = new \core\DB('wiki_pages_version');
         $db2->addWhere('source_id', $this->getSourceId());
         $db2->addColumn('vr_number', 'min');
         if ($this->getVrNumber() != $db2->select('min'))
         {
-            $links[] = Core\Text::moduleLink(dgettext('wiki', 'Previous'), 'wiki', array('page'=>$this->getTitle(FALSE),
+            $links[] = \core\Text::moduleLink(dgettext('wiki', 'Previous'), 'wiki', array('page'=>$this->getTitle(FALSE),
                        'page_op'=>'compare', 'oVer'=>($this->getVrNumber()-1), 'nVer'=>$this->getVrNumber()));
         }
 
@@ -198,38 +198,38 @@ class OldWikiPage
         $tags['PAGETEXT'] = $this->getPagetext();
         $tags['MESSAGE'] = sprintf(dgettext('wiki', 'Revision as of %s'), $this->getUpdated());
 
-        if (Core\Settings::get('wiki', 'show_modified_info'))
+        if (core\Settings::get('wiki', 'show_modified_info'))
         {
             $editor = $this->getEditor();
             if (Current_User::isLogged() && (Current_User::getId() != $this->getEditorId()))
             {
-                Core\Core::initModClass('notes', 'My_Page.php');
-                Core\Core::initModClass('notes', 'Note_Item.php');
+                \core\Core::initModClass('notes', 'My_Page.php');
+                \core\Core::initModClass('notes', 'Note_Item.php');
                 $editor = str_replace(dgettext('wiki', 'Send note'), $editor, Note_Item::sendLink($this->getEditorId()));
             }
 
             $tags['UPDATED_INFO'] = sprintf(dgettext('wiki', 'Last modified %1$s by %2$s'), $this->getUpdated(), $editor);
         }
 
-        if (Core\Settings::get('wiki', 'add_to_title'))
+        if (core\Settings::get('wiki', 'add_to_title'))
         {
             Layout::addPageTitle($this->getTitle());
         }
 
-        return Core\Template::process($tags, 'wiki', 'view.tpl');
+        return \core\Template::process($tags, 'wiki', 'view.tpl');
     }
 
     function restore($hits)
     {
         if (!((Current_User::authorized('wiki', 'edit_page') ||
-            (Core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) &&
+            (core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) &&
             $this->getAllowEdit() && !$this->getVrCurrent()))
         {
             Current_User::disallow(dgettext('wiki', 'User attempted to restore previous page version.'));
             return;
         }
 
-        Core\Core::initModClass('version', 'Version.php');
+        \core\Core::initModClass('version', 'Version.php');
         $version = new Version('wiki_pages', $this->getId());
         $version->source_data['hits'] = $hits;
         $version->source_data['comment'] = '[' . dgettext('wiki', 'Restored') . ']';
@@ -246,7 +246,7 @@ class OldWikiPage
             return;
         }
 
-        Core\Core::initModClass('version', 'Version.php');
+        \core\Core::initModClass('version', 'Version.php');
         $version = new Version('wiki_pages', $this->getId());
         $version->delete(FALSE);
 
@@ -258,20 +258,20 @@ class OldWikiPage
         $vars['page'] = $this->getTitle(FALSE);
         $vars['page_op'] = 'viewold';
         $vars['id'] = $this->getId();
-        $links[] = Core\Text::moduleLink(dgettext('wiki', 'View'), 'wiki', $vars);
+        $links[] = \core\Text::moduleLink(dgettext('wiki', 'View'), 'wiki', $vars);
 
         if ((Current_User::allow('wiki', 'edit_page') ||
-            (Core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) &&
+            (core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged())) &&
             $this->getAllowEdit() && !$this->getVrCurrent())
         {
             $vars['page_op'] = 'restore';
-            $links[] = Core\Text::secureLink(dgettext('wiki', 'Restore'), 'wiki', $vars);
+            $links[] = \core\Text::secureLink(dgettext('wiki', 'Restore'), 'wiki', $vars);
         }
 
         if (Current_User::allow('wiki', 'delete_page') && $this->getAllowEdit() && !$this->getVrCurrent())
         {
             $vars['page_op'] = 'removeold';
-            $js_var['ADDRESS'] = Core\Text::linkAddress('wiki', $vars, TRUE);
+            $js_var['ADDRESS'] = \core\Text::linkAddress('wiki', $vars, TRUE);
             $js_var['QUESTION'] = dgettext('wiki', 'Are you sure you want to remove this page revision?');
             $js_var['LINK'] = dgettext('wiki', 'Remove');
             $links[] = Layout::getJavascript('confirm', $js_var);
@@ -289,20 +289,20 @@ class OldWikiPage
 
     function getRecentChangesTpl()
     {
-        $db = new Core\DB('wiki_pages_version');
+        $db = new \core\DB('wiki_pages_version');
         $db->addWhere('source_id', $this->getSourceId());
         $db->addColumn('vr_number', 'min');
         if ($this->getVrNumber() != $db->select('min'))
         {
-            $links[] = Core\Text::moduleLink(dgettext('wiki', 'Diff'), 'wiki', array('page'=>$this->getTitle(FALSE),
+            $links[] = \core\Text::moduleLink(dgettext('wiki', 'Diff'), 'wiki', array('page'=>$this->getTitle(FALSE),
                        'page_op'=>'compare', 'oVer'=>($this->getVrNumber()-1), 'nVer'=>$this->getVrNumber()));
         }
 
-        $links[] = Core\Text::moduleLink(dgettext('wiki', 'History'), 'wiki',
+        $links[] = \core\Text::moduleLink(dgettext('wiki', 'History'), 'wiki',
                                           array('page_op'=>'history', 'page_id'=>$this->getSourceId()));
 
         $template['VIEW']     = implode(' | ', $links);
-        $template['PAGE']     = Core\Text::moduleLink($this->getTitle(), 'wiki', array('page'=>$this->getTitle(FALSE)));
+        $template['PAGE']     = \core\Text::moduleLink($this->getTitle(), 'wiki', array('page'=>$this->getTitle(FALSE)));
         $template['UPDATED']  = $this->getUpdated();
         $template['EDITOR']   = $this->getEditor();
         $template['COMMENT']  = $this->getComment() . '';

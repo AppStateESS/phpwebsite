@@ -15,7 +15,7 @@ define('ACCESS_FILES_DIR',         5);
 define('ACCESS_HTACCESS_WRITE',    6);
 define('ACCESS_HTACCESS_MISSING',  7);
 
-Core\Core::requireConfig('access');
+core\Core::requireConfig('access');
 
 class Access {
 
@@ -65,32 +65,32 @@ class Access {
                     $result = Access::postDenyAllow();
                     if ($result == false) {
                         Access::sendMessage(dgettext('access', 'IP address was not formatted correctly or not allowed.'), 'deny_allow');
-                    } elseif (Core\Error::isError($result)) {
-                        Core\Error::log($result);
+                    } elseif (core\Error::isError($result)) {
+                        \core\Error::log($result);
                         Access::sendMessage(dgettext('access', 'An error occurred.') . ' ' . dgettext('access', 'Please check your logs.'), 'deny_allow');
                     }
                     Access::sendMessage(NULL, 'deny_allow');
                     break;
 
                 case 'delete_allow_deny':
-                    Core\Core::initModClass('access', 'Allow_Deny.php');
+                    \core\Core::initModClass('access', 'Allow_Deny.php');
                     $allow_deny = new Access_Allow_Deny($_GET['ad_id']);
                     $allow_deny->delete();
                     Access::sendMessage(dgettext('access', 'IP address deleted.'), 'deny_allow');
                     break;
 
                 case 'deny_allow':
-                    Core\Core::initModClass('access', 'Forms.php');
+                    \core\Core::initModClass('access', 'Forms.php');
                     $title = dgettext('access', 'Denys and Allows');
                     $content = Access_Forms::denyAllowForm();
                     break;
 
                 case 'delete_shortcut':
-                    Core\Core::initModClass('access', 'Shortcut.php');
+                    \core\Core::initModClass('access', 'Shortcut.php');
                     $shortcut = new Access_Shortcut($_REQUEST['shortcut_id']);
                     if (empty($shortcut->_error) && $shortcut->id) {
                         $result = $shortcut->delete();
-                        if (Core\Error::isError($result)) {
+                        if (core\Error::isError($result)) {
                             Access::sendMessage(dgettext('access', 'An error occurred when deleting your shortcut.'), 'shortcuts');
                         }
                     }
@@ -98,7 +98,7 @@ class Access {
                     break;
 
                 case 'shortcuts':
-                    Core\Core::initModClass('access', 'Forms.php');
+                    \core\Core::initModClass('access', 'Forms.php');
                     $title = dgettext('access', 'Shortcuts');
                     $content = Access_Forms::shortcuts();
                     break;
@@ -107,21 +107,21 @@ class Access {
                 case 'post_shortcut_list':
                     $message = NULL;
                     $result = Access::postShortcutList();
-                    if (Core\Error::isError($result)) {
+                    if (core\Error::isError($result)) {
                         $message = dgettext('access', 'An error occurred.') . ' ' . dgettext('access', 'Please check your logs.');
                     }
                     Access::sendMessage($message, 'shortcuts');
                     break;
 
                 case 'edit_shortcut':
-                    Core\Core::initModClass('access', 'Forms.php');
+                    \core\Core::initModClass('access', 'Forms.php');
                     $content = Access_Forms::shortcut_menu();
                     Layout::nakedDisplay($content);
                     exit();
                     break;
 
                 case 'post_shortcut':
-                    Core\Core::initModClass('access', 'Shortcut.php');
+                    \core\Core::initModClass('access', 'Shortcut.php');
 
                     if (isset($_POST['sc_id'])) {
                         $shortcut = new Access_Shortcut($_POST['sc_id']);
@@ -131,14 +131,14 @@ class Access {
 
                     $result = $shortcut->postShortcut();
                     $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', dgettext('access', 'Close window'));
-                    if (Core\Error::isError($result)) {
-                        Core\Core::initModClass('access', 'Forms.php');
+                    if (core\Error::isError($result)) {
+                        \core\Core::initModClass('access', 'Forms.php');
                         $message = $result->getMessage();
                         $content = Access_Forms::shortcut_menu();
                     } elseif ($result == false) {
                         $tpl['TITLE'] = dgettext('access', 'A serious error occurred. Please check your error.log.') . '<br />';
                         $tpl['CONTENT'] = sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], dgettext('access', 'Return to previous page.'));
-                        $content = Core\Template::process($tpl, 'access', 'box.tpl');
+                        $content = \core\Template::process($tpl, 'access', 'box.tpl');
                     } else {
                         $content = Access::saveShortcut($shortcut);
                     }
@@ -146,7 +146,7 @@ class Access {
                     $tpl['MESSAGE'] = $message;
                     $tpl['CONTENT'] = $content;
 
-                    Layout::nakedDisplay(Core\Template::process($tpl, 'access', 'main.tpl'));
+                    Layout::nakedDisplay(core\Template::process($tpl, 'access', 'main.tpl'));
                     break;
 
                 case 'htaccess':
@@ -161,7 +161,7 @@ class Access {
                 case 'add_rewritebase':
                     if (Current_User::isDeity()) {
                         Access::addRewriteBase();
-                        Core\Core::goBack();
+                        \core\Core::goBack();
                     } else {
                         Current_User::disallow();
                     }
@@ -170,7 +170,7 @@ class Access {
                 case 'add_forward':
                     if (Current_User::isDeity()) {
                         Access::addForward();
-                        Core\Core::goBack();
+                        \core\Core::goBack();
                     } else {
                         Current_User::disallow();
                     }
@@ -179,7 +179,7 @@ class Access {
                 case 'remove_forward':
                     if (Current_User::isDeity()) {
                         Access::removeForward();
-                        Core\Core::goBack();
+                        \core\Core::goBack();
                     } else {
                         Current_User::disallow();
                     }
@@ -191,7 +191,7 @@ class Access {
         $tpl['MESSAGE'] = $message;
         $tpl['CONTENT'] = $content;
 
-        $main = Core\Template::process($tpl, 'access', 'main.tpl');
+        $main = \core\Template::process($tpl, 'access', 'main.tpl');
 
         $panel->setContent($main);
         $finalPanel = $panel->display();
@@ -202,8 +202,8 @@ class Access {
     public function saveShortcut(Access_Shortcut $shortcut)
     {
         $result = $shortcut->save();
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             $content[] = dgettext('access', 'A serious error occurred. Please check your error.log.');
             $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', dgettext('access', 'Close window'));
         } else {
@@ -217,20 +217,20 @@ class Access {
         }
         $tpl['CONTENT'] = implode('<br />', $content);
 
-        return Core\Template::process($tpl, 'access', 'box.tpl');
+        return \core\Template::process($tpl, 'access', 'box.tpl');
     }
 
     public function getAllowDenyList()
     {
         $content = array();
-        Core\Core::initModClass('access', 'Allow_Deny.php');
+        \core\Core::initModClass('access', 'Allow_Deny.php');
 
-        if (!Core\Settings::get('access', 'allow_deny_enabled')) {
+        if (!core\Settings::get('access', 'allow_deny_enabled')) {
             return "Order Allow,Deny\nAllow from all\n\n";
         }
 
-        $deny_all = Core\Settings::get('access', 'deny_all');
-        $allow_all = Core\Settings::get('access', 'allow_all');
+        $deny_all = \core\Settings::get('access', 'deny_all');
+        $allow_all = \core\Settings::get('access', 'allow_all');
 
         $deny_str = $allow_str = NULL;
 
@@ -242,7 +242,7 @@ class Access {
             $allow_str = 'Allow from all';
         }
 
-        $db = new Core\DB('access_allow_deny');
+        $db = new \core\DB('access_allow_deny');
         $db->addWhere('active', 1);
 
         if ($deny_all) {
@@ -303,9 +303,9 @@ class Access {
 
     public function loadShortcut($title)
     {
-        Core\Core::initModClass('access', 'Shortcut.php');
+        \core\Core::initModClass('access', 'Shortcut.php');
         $shortcut = new Access_Shortcut;
-        $db = new Core\DB('access_shortcuts');
+        $db = new \core\DB('access_shortcuts');
         $db->addWhere('keyword', $title);
         $db->setLimit(1);
         if (!$db->loadObject($shortcut)) {
@@ -317,7 +317,7 @@ class Access {
     {
         $vars['command'] = 'edit_shortcut';
         $vars['key_id']  = $key->id;
-        $link = Core\Text::linkAddress('access', $vars, true);
+        $link = \core\Text::linkAddress('access', $vars, true);
         $js_vars['address'] = $link;
         $js_vars['label'] = dgettext('access', 'Shortcut');
         $js_vars['height'] = '200';
@@ -328,7 +328,7 @@ class Access {
 
     public static function cpanel()
     {
-        Core\Core::initModClass('controlpanel', 'Panel.php');
+        \core\Core::initModClass('controlpanel', 'Panel.php');
         $link['link'] = 'index.php?module=access';
 
         if (MOD_REWRITE_ENABLED) {
@@ -360,15 +360,15 @@ class Access {
 
     public static function getAllowDeny()
     {
-        $db = new Core\DB('access_allow_deny');
+        $db = new \core\DB('access_allow_deny');
         $db->addOrder('ip_address');
         return $db->getObjects('Access_Allow_Deny');
     }
 
     public function getShortcuts($active_only=false)
     {
-        Core\Core::initModClass('access', 'Shortcut.php');
-        $db = new Core\DB('access_shortcuts');
+        \core\Core::initModClass('access', 'Shortcut.php');
+        $db = new \core\DB('access_shortcuts');
         $db->addOrder('keyword');
         if ($active_only) {
             $db->addWhere('active', 1);
@@ -379,7 +379,7 @@ class Access {
     public function sendMessage($message, $command)
     {
         $_SESSION['Access_message'] = $message;
-        Core\Core::reroute(sprintf('index.php?module=access&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
+        \core\Core::reroute(sprintf('index.php?module=access&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
         exit();
     }
 
@@ -404,8 +404,8 @@ class Access {
             return NULL;
         }
 
-        Core\Core::initModClass('access', 'Shortcut.php');
-        $db = new Core\DB('access_shortcuts');
+        \core\Core::initModClass('access', 'Shortcut.php');
+        $db = new \core\DB('access_shortcuts');
         $db->addWhere('id', $_POST['shortcut']);
 
         switch ($_POST['list_action']) {
@@ -424,7 +424,7 @@ class Access {
                 break;
         }
 
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
     }
@@ -436,15 +436,15 @@ class Access {
             exit();
         }
 
-        Core\Core::initModClass('access', 'Allow_Deny.php');
+        \core\Core::initModClass('access', 'Allow_Deny.php');
 
         if (@$_POST['allow_deny_enabled']) {
-            Core\Settings::set('access', 'allow_deny_enabled', 1);
+            \core\Settings::set('access', 'allow_deny_enabled', 1);
         } else {
-            Core\Settings::set('access', 'allow_deny_enabled', 0);
+            \core\Settings::set('access', 'allow_deny_enabled', 0);
         }
 
-        Core\Settings::save('access');
+        \core\Settings::save('access');
 
         if (isset($_POST['add_allow_address']) && !empty($_POST['allow_address'])) {
             $allow = new Access_Allow_Deny;
@@ -472,15 +472,15 @@ class Access {
 
         if (isset($_POST['allow_action']) && $_POST['allow_action'] != 'none') {
             if ($_POST['allow_action'] == 'allow_all') {
-                if (Core\Settings::get('access', 'allow_all')) {
-                    Core\Settings::set('access', 'allow_all', 0);
+                if (core\Settings::get('access', 'allow_all')) {
+                    \core\Settings::set('access', 'allow_all', 0);
                 } else {
-                    Core\Settings::set('access', 'allow_all', 1);
+                    \core\Settings::set('access', 'allow_all', 1);
                 }
-                Core\Settings::save('access');
+                \core\Settings::save('access');
                 return true;
             } elseif (!empty($_POST['allows'])) {
-                $db = new Core\DB('access_allow_deny');
+                $db = new \core\DB('access_allow_deny');
 
                 // just in case something goes wrong
                 $db->addWhere('allow_or_deny', 1);
@@ -505,15 +505,15 @@ class Access {
         }
 
         if ($_POST['deny_action'] == 'deny_all') {
-            if (Core\Settings::get('access', 'deny_all')) {
-                Core\Settings::set('access', 'deny_all', 0);
+            if (core\Settings::get('access', 'deny_all')) {
+                \core\Settings::set('access', 'deny_all', 0);
             } else {
-                Core\Settings::set('access', 'deny_all', 1);
+                \core\Settings::set('access', 'deny_all', 1);
             }
-            Core\Settings::save('access');
+            \core\Settings::save('access');
             return true;
         } elseif (!empty($_POST['denys'])) {
-            $db = new Core\DB('access_allow_deny');
+            $db = new \core\DB('access_allow_deny');
             // just in case something goes wrong
             $db->addWhere('allow_or_deny', 0);
             $db->addWhere('id', $_POST['denys']);
@@ -540,21 +540,21 @@ class Access {
 
     public static function forward()
     {
-        Core\Core::initModClass('access', 'Shortcut.php');
-        $db = new Core\DB('access_shortcuts');
+        \core\Core::initModClass('access', 'Shortcut.php');
+        $db = new \core\DB('access_shortcuts');
         $db->addWhere('keyword', $GLOBALS['Forward']);
         $db->setLimit(1);
         $scl = $db->getObjects('Access_Shortcut');
         if (@$sc = $scl[0]) {
             $sc->loadGet();
         } else {
-            Core\Core::errorPage(404);
+            \core\Core::errorPage(404);
         }
     }
 
     public static function allowDeny()
     {
-        if (!Core\Settings::get('access', 'allow_deny_enabled')) {
+        if (!core\Settings::get('access', 'allow_deny_enabled')) {
             $_SESSION['Access_Allow_Deny'] = true;
             return;
         }
@@ -562,10 +562,10 @@ class Access {
         $address = & $_SERVER['REMOTE_ADDR'];
         $address = Access::inflateIp($address);
 
-        $allow_all = Core\Settings::get('access', 'allow_all');
-        $deny_all  = Core\Settings::get('access', 'deny_all');
+        $allow_all = \core\Settings::get('access', 'allow_all');
+        $deny_all  = \core\Settings::get('access', 'deny_all');
 
-        $db = new Core\DB('access_allow_deny');
+        $db = new \core\DB('access_allow_deny');
         $db->addWhere('active', 1);
         $db->addColumn('allow_or_deny');
         $db->addColumn('ip_address');
@@ -618,14 +618,14 @@ class Access {
 
     public function denied()
     {
-        $message = Core\Settings::get('access', dgettext('access', 'You are denied access to this site.'));
+        $message = \core\Settings::get('access', dgettext('access', 'You are denied access to this site.'));
         Layout::nakedDisplay($message, dgettext('access', 'Sorry'));
     }
 
 
     public function isDenied($ip)
     {
-        Core\Core::initModClass('access', 'Allow_Deny.php');
+        \core\Core::initModClass('access', 'Allow_Deny.php');
         $ad = new Access_Allow_Deny;
         if (!$ad->setIpAddress($ip)) {
             return false;
@@ -635,7 +635,7 @@ class Access {
         $ad->_db->addWhere('ip_address', $ad->ip_address);
         $ad->_db->addWhere('allow_or_deny', 0);
         $result = $ad->_db->select('one');
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return false;
         }
 
@@ -650,7 +650,7 @@ class Access {
     {
         $allow_or_deny = (int)(bool)$allow_or_deny;
 
-        Core\Core::initModClass('access', 'Allow_Deny.php');
+        \core\Core::initModClass('access', 'Allow_Deny.php');
         $ad = new Access_Allow_Deny;
         if (!$ad->setIpAddress($ip)) {
             return false;
@@ -660,7 +660,7 @@ class Access {
         $ad->_db->addWhere('ip_address', $ad->ip_address);
         $ad->_db->addWhere('allow_or_deny', $allow_or_deny);
         $result = $ad->_db->select('one');
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return false;
         }
 
@@ -677,13 +677,13 @@ class Access {
     {
         $allow_or_deny = (int)(bool)$allow_or_deny;
 
-        Core\Core::initModClass('access', 'Allow_Deny.php');
+        \core\Core::initModClass('access', 'Allow_Deny.php');
         $ad = new Access_Allow_Deny;
         if (!$ad->setIpAddress($ip)) {
             return false;
         }
 
-        $db = new Core\DB('access_allow_deny');
+        $db = new \core\DB('access_allow_deny');
         $db->addWhere('ip_address', $ad->ip_address);
         $db->addWhere('allow_or_deny', $allow_or_deny);
         return $db->delete();
@@ -728,13 +728,13 @@ class Access {
         if ($base_needed) {
             if (is_writable('.htaccess')) {
                 $vars['command'] = 'add_rewritebase';
-                $tpl['OPTION'] = Core\Text::secureLink(dgettext('access', 'Add RewriteBase'), 'access', $vars);
+                $tpl['OPTION'] = \core\Text::secureLink(dgettext('access', 'Add RewriteBase'), 'access', $vars);
             } else {
                 $tpl['OPTION'] = dgettext('access', 'Your .htaccess file is not writable. A RewriteBase cannot be added.');
             }
         }
 
-        $content = Core\Template::process($tpl, 'access', 'forms/htaccess.tpl');
+        $content = \core\Template::process($tpl, 'access', 'forms/htaccess.tpl');
         return $content;
     }
 

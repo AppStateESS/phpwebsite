@@ -23,7 +23,7 @@
  */
 
 
-Core\Core::initModClass('vshop', 'vShop_Runtime.php');
+core\Core::initModClass('vshop', 'vShop_Runtime.php');
 vShop_Runtime::showBlock();
 
 ?>

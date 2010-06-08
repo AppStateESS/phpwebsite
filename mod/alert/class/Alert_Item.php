@@ -36,7 +36,7 @@ class Alert_Item {
 
     public function init()
     {
-        $db = new Core\DB('alert_item');
+        $db = new \core\DB('alert_item');
         $db->loadObject($this);
     }
 
@@ -48,12 +48,12 @@ class Alert_Item {
 
     public function setDescription($desc)
     {
-        $this->description = Core\Text::parseInput($desc);
+        $this->description = \core\Text::parseInput($desc);
     }
 
     public function getDescription()
     {
-        return Core\Text::parseOutput($this->description);
+        return \core\Text::parseOutput($this->description);
     }
 
     public function rowTags()
@@ -62,13 +62,13 @@ class Alert_Item {
         $vars['id'] = $this->id;
 
         $vars['aop'] = 'edit_item';
-        $links[] = Core\Text::secureLink(dgettext('alert', 'Edit'), 'alert', $vars);
+        $links[] = \core\Text::secureLink(dgettext('alert', 'Edit'), 'alert', $vars);
 
         if (Current_User::allow('alert', 'reset_items')) {
             $js['question'] = dgettext('alert', 'Are you sure you want to reset this alert\\\'s contact status?');
             $js['link']     = dgettext('alert', 'Reset');
             $vars['aop'] = 'reset_item';
-            $js['address']  = Core\Text::linkAddress('alert', $vars, true);
+            $js['address']  = \core\Text::linkAddress('alert', $vars, true);
             $links[] = javascript('confirm', $js);
         }
 
@@ -76,22 +76,22 @@ class Alert_Item {
             $js['question'] = dgettext('alert', 'Are you sure you want to delete this alert?');
             $js['link']     = dgettext('alert', 'Delete');
             $vars['aop'] = 'delete_item';
-            $js['address']  = Core\Text::linkAddress('alert', $vars, true);
+            $js['address']  = \core\Text::linkAddress('alert', $vars, true);
             $links[] = javascript('confirm', $js);
         }
 
 
 
         $vars['aop'] = 'deactivate_item';
-        $yes_link = Core\Text::secureLink(dgettext('alert', 'Yes'), 'alert', $vars);
+        $yes_link = \core\Text::secureLink(dgettext('alert', 'Yes'), 'alert', $vars);
         $vars['aop'] = 'activate_item';
-        $no_link = Core\Text::secureLink(dgettext('alert', 'No'), 'alert', $vars);
+        $no_link = \core\Text::secureLink(dgettext('alert', 'No'), 'alert', $vars);
 
         $tpl['ACTIVE'] = $this->active ? $yes_link : $no_link;
         $tpl['ACTION'] = implode(' | ', $links);
 
-        $tpl['CREATE_DATE'] = strftime(Core\Settings::get('alert', 'date_format'), $this->create_date);
-        $tpl['UPDATE_DATE'] = strftime(Core\Settings::get('alert', 'date_format'), $this->update_date);
+        $tpl['CREATE_DATE'] = strftime(core\Settings::get('alert', 'date_format'), $this->create_date);
+        $tpl['UPDATE_DATE'] = strftime(core\Settings::get('alert', 'date_format'), $this->update_date);
 
         return $tpl;
     }
@@ -108,20 +108,20 @@ class Alert_Item {
         $this->updated_by_id = Current_User::getId();
         $this->updated_name  = Current_User::getUsername();
 
-        $db = new Core\DB('alert_item');
+        $db = new \core\DB('alert_item');
         return $db->saveObject($this);
     }
 
     public function delete()
     {
-        $db = new Core\DB('alert_item');
+        $db = new \core\DB('alert_item');
         $db->addWhere('id', $this->id);
-        return !(Core\Error::logIfError($db->delete()));
+        return !(core\Error::logIfError($db->delete()));
     }
 
     public function view()
     {
-        Core\Core::initModClass('filecabinet', 'Cabinet.php');
+        \core\Core::initModClass('filecabinet', 'Cabinet.php');
         $tpl['TITLE']       = $this->title;
         $tpl['DESCRIPTION'] = $this->getDescription();
         if ($this->image_id) {
@@ -130,7 +130,7 @@ class Alert_Item {
             $tpl['IMAGE'] = null;
         }
 
-        return Core\Template::process($tpl, 'alert', 'view_item.tpl');
+        return \core\Template::process($tpl, 'alert', 'view_item.tpl');
     }
 
     public function reset()
@@ -141,8 +141,8 @@ class Alert_Item {
 
     public function createFeed()
     {
-        Core\Core::initModClass('rss', 'Feed.php');
-        $feed = new Core\Key;
+        \core\Core::initModClass('rss', 'Feed.php');
+        $feed = new \core\Key;
         $feed->title = $this->title;
         $feed->url = 'index.php?module=alert&id=' . $this->id;
         $feed->summary = strip_tags($this->getDescription());
@@ -157,7 +157,7 @@ class Alert_Item {
 
         $content = implode('', $body);
         // Fixed relative links
-        $content = str_replace('images/filecabinet', Core\Core::getHomeHttp() . 'images/filecabinet', $content);
+        $content = str_replace('images/filecabinet', \core\Core::getHomeHttp() . 'images/filecabinet', $content);
 
         return $content;
     }

@@ -5,11 +5,11 @@
  */
 
 // Destroy unused sessions
-if (Core\Core::getCurrentModule() != 'users'){
-    Core\Core::killSession('Member_Pager');
-    Core\Core::killSession('All_Demo');
-    Core\Core::killSession('User_Manager');
-    Core\Core::killSession('Group_Manager');
+if (core\Core::getCurrentModule() != 'users'){
+    \core\Core::killSession('Member_Pager');
+    \core\Core::killSession('All_Demo');
+    \core\Core::killSession('User_Manager');
+    \core\Core::killSession('Group_Manager');
 }
 
 Current_User::permissionMenu();

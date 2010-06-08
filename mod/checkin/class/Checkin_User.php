@@ -5,12 +5,12 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-Core\Core::initModClass('checkin', 'Checkin.php');
+core\Core::initModClass('checkin', 'Checkin.php');
 
 class Checkin_User extends Checkin {
 
     public function checkinForm() {
-        $form = new Core\Form('checkin');
+        $form = new \core\Form('checkin');
         $form->addHidden('module', 'checkin');
         $form->addHidden('uop', 'post_checkin');
 
@@ -36,8 +36,8 @@ class Checkin_User extends Checkin {
 
         $tpl = $form->getTemplate();
         $this->title =  dgettext('checkin', 'Please check in using the form below');
-        $this->content = Core\Template::process($tpl, 'checkin', 'signin.tpl');
-        if (!Current_User::isLogged() && Core\Settings::get('checkin', 'collapse_signin')) {
+        $this->content = \core\Template::process($tpl, 'checkin', 'signin.tpl');
+        if (!Current_User::isLogged() && \core\Settings::get('checkin', 'collapse_signin')) {
             Layout::collapse();
         }
     }
@@ -53,7 +53,7 @@ class Checkin_User extends Checkin {
 
         $tpl['CONTENT'] = & $this->content;
 
-        return Core\Template::process($tpl, 'checkin', 'main.tpl');
+        return \core\Template::process($tpl, 'checkin', 'main.tpl');
     }
 
     public function process($command=null)
@@ -82,10 +82,10 @@ class Checkin_User extends Checkin {
 
             case 'post_checkin':
                 if ($this->postCheckin()) {
-                    if (Core\Error::logIfError($this->visitor->save())) {
-                        Core\Core::reroute('index.php?module=checkin&uop=error');
+                    if (core\Error::logIfError($this->visitor->save())) {
+                        \core\Core::reroute('index.php?module=checkin&uop=error');
                     } else {
-                        Core\Core::reroute('index.php?module=checkin&uop=thank&reason_id=' . $_POST['reason_id']);
+                        \core\Core::reroute('index.php?module=checkin&uop=thank&reason_id=' . $_POST['reason_id']);
                     }
                 } else {
                     $this->checkinForm();
@@ -93,7 +93,7 @@ class Checkin_User extends Checkin {
                 break;
 
             default:
-                Core\Core::errorPage('404');
+                \core\Core::errorPage('404');
         }
         Layout::add($this->main());
     }

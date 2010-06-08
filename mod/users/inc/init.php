@@ -5,9 +5,9 @@
  * @version $Id$
  */
 
-Core\Core::configRequireOnce('users', 'config.php', TRUE);
+core\Core::configRequireOnce('users', 'config.php', TRUE);
 require_once PHPWS_SOURCE_DIR . 'mod/users/inc/errorDefines.php';
-Core\Core::configRequireOnce('users', 'tags.php');
-Core\Core::initModClass('users', 'Current_User.php');
+core\Core::configRequireOnce('users', 'tags.php');
+core\Core::initModClass('users', 'Current_User.php');
 
 ?>

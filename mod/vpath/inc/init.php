@@ -22,6 +22,6 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-Core\Core::initModClass('vpath', 'vPath.php');
+core\Core::initModClass('vpath', 'vPath.php');
 
 ?>

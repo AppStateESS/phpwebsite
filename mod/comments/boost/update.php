@@ -49,8 +49,8 @@ Please download 0.6.3.</pre>';
 
         case version_compare($currentVersion, '1.0.0', '<'):
             $content[] = '<pre>';
-            $db = new Core\DB('comments_users');
-            if (Core\Error::logIfError($db->createTableIndex('user_id', null, true))) {
+            $db = new \core\DB('comments_users');
+            if (core\Error::logIfError($db->createTableIndex('user_id', null, true))) {
                 $content[] = 'Warning: A problems occurred when trying to create a unique index on the comments_users table.';
             }
 
@@ -70,9 +70,9 @@ Please download 0.6.3.</pre>';
 
         case version_compare($currentVersion, '1.0.1', '<'):
             $content[] = '<pre>';
-            $db = new Core\DB('comments_items');
+            $db = new \core\DB('comments_items');
             $result = $db->addTableColumn('reported', 'smallint NOT NULL default 0');
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $content[] = 'Unable to create reported column on comments_items table.</pre>';
                 return false;
             } else {
@@ -84,18 +84,18 @@ Please download 0.6.3.</pre>';
 
         case version_compare($currentVersion, '1.1.0', '<'):
             $content[] = '<pre>';
-            $db = new Core\DB('comments_threads');
+            $db = new \core\DB('comments_threads');
             $result = $db->addTableColumn('approval', 'smallint NOT NULL default 0');
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $content[] = 'Unable to create approval column on comments_threads table.</pre>';
                 return false;
             } else {
                 $content[] = 'Table column added to comments_threads.';
             }
 
-            $db = new Core\DB('comments_items');
+            $db = new \core\DB('comments_items');
             $result = $db->addTableColumn('approved', 'smallint NOT NULL default 1');
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $content[] = 'Unable to create approved column on comments_items table.</pre>';
                 return false;
             } else {
@@ -119,18 +119,18 @@ Please download 0.6.3.</pre>';
 </pre>';
 
         case version_compare($currentVersion, '1.2.0', '<'):
-            Core\Core::initModClass('demographics', 'Demographics.php');
+            \core\Core::initModClass('demographics', 'Demographics.php');
             Demographics::registerField('avatar_id', array('type'=>'integer'));
             $content[] = 'Created "avatar_id" column in user demographics table.';
 
             Demographics::registerField('location', array('limit'=>'50'));
             $content[] = 'Created "location" column in demographics table.';
 
-            $db = new Core\DB('comments_users');
-            Core\Error::logIfError($db->dropTableColumn('display_name'));
+            $db = new \core\DB('comments_users');
+            \core\Error::logIfError($db->dropTableColumn('display_name'));
 
-            if (!Core\DB::isTable('comments_monitors')) {
-                $db = new Core\DB('comments_monitors');
+            if (!core\DB::isTable('comments_monitors')) {
+                $db = new \core\DB('comments_monitors');
                 $sql = 'CREATE TABLE comments_monitors (
     thread_id   int NOT NULL,
     user_id     int NOT NULL,
@@ -141,15 +141,15 @@ CREATE INDEX comments_monitors_user_id_idx ON comments_monitors (user_id, thread
 CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, send_notice);
 ';
                 $result = $db->import($sql,true);
-                if (Core\Error::logIfError($result)) {
+                if (core\Error::logIfError($result)) {
                     $content[] = 'Unable to add "comments_monitors" table.</pre>';
-                    Core\DB::rollback();
+                    \core\DB::rollback();
                     return false;
                 }
                 $content[] = 'Created "comments_monitors" table.';
             }
 
-            if (!Core\DB::isTable('comments_ranks')) {
+            if (!core\DB::isTable('comments_ranks')) {
                 $sql = 'CREATE TABLE comments_ranks (
   id int NOT NULL default 0,
   group_id int NOT NULL default 0,
@@ -161,15 +161,15 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
 );
 CREATE INDEX commentsrankidx ON comments_ranks (group_id);';
                 $result = $db->import($sql,true);
-                if (Core\Error::logIfError($result)) {
+                if (core\Error::logIfError($result)) {
                     $content[] = 'Unable to add "comments_ranks" table.</pre>';
-                    Core\DB::rollback();
+                    \core\DB::rollback();
                     return false;
                 }
                 $content[] = 'Created "comments_ranks" table.';
             }
 
-            if (!Core\DB::isTable('comments_user_ranks')) {
+            if (!core\DB::isTable('comments_user_ranks')) {
                 $sql = 'CREATE TABLE comments_user_ranks (
   id int NOT NULL default 0,
   rank_id int NOT NULL default 0,
@@ -183,96 +183,96 @@ CREATE INDEX commentsrankidx ON comments_ranks (group_id);';
 
 CREATE INDEX comments_usr_idx ON comments_user_ranks (rank_id);';
                 $result = $db->import($sql,true);
-                if (Core\Error::logIfError($result)) {
+                if (core\Error::logIfError($result)) {
                     $content[] = 'Unable to add "comments_user_ranks" table.</pre>';
-                    Core\DB::rollback();
+                    \core\DB::rollback();
                     return false;
                 }
                 $content[] = 'Created "comments_user_ranks" table.';
             }
 
-            $db = new Core\DB('comments_items');
+            $db = new \core\DB('comments_items');
             $result = $db->addTableColumn('anon_name', 'varchar(50) default NULL');
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $content[] = 'Unable to add "anon_name" column to comments_items table.</pre>';
-                Core\DB::rollback();
+                \core\DB::rollback();
                 return false;
             }
             $content[] = 'Created "parent_author_id" column in comments_items table.';
 
-            $db = new Core\DB('comments_items');
+            $db = new \core\DB('comments_items');
             $result = $db->addTableColumn('parent_author_id', 'smallint NOT NULL default 0');
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $content[] = 'Unable to add "parent_author_id" column to comments_items table.</pre>';
-                Core\DB::rollback();
+                \core\DB::rollback();
                 return false;
             }
             $content[] = 'Created "parent_author_id" column in comments_items table.';
 
-            $db = new Core\DB('comments_items');
+            $db = new \core\DB('comments_items');
             $result = $db->addTableColumn('parent_anon_name', 'varchar(50) default NULL');
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $content[] = 'Unable to add "parent_anon_name" column to comments_items table.</pre>';
-                Core\DB::rollback();
+                \core\DB::rollback();
                 return false;
             }
             $content[] = 'Created "parent_anon_name" column in comments_items table.';
 
-            $db = new Core\DB('comments_items');
+            $db = new \core\DB('comments_items');
             $result = $db->addTableColumn('protected', 'smallint NOT NULL default 0');
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $content[] = 'Unable to add "protected" column to comments_items table.</pre>';
-                Core\DB::rollback();
+                \core\DB::rollback();
                 return false;
             }
             $content[] = 'Created "protected" column in comments_items table.';
 
-            $db = new Core\DB('comments_threads');
+            $db = new \core\DB('comments_threads');
             $result = $db->addTableColumn('locked', 'smallint NOT NULL default 0');
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $content[] = 'Unable to add "locked" column to comments_threads table.</pre>';
-                Core\DB::rollback();
+                \core\DB::rollback();
                 return false;
             }
             $content[] = 'Created "locked" column in comments_threads table.';
 
-            $db = new Core\DB('comments_users');
+            $db = new \core\DB('comments_users');
             $result = $db->addTableColumn('suspendmonitors', 'smallint NOT NULL default 0');
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $content[] = 'Unable to add "suspendmonitors" column to comments_users table.</pre>';
-                Core\DB::rollback();
+                \core\DB::rollback();
                 return false;
             }
             $content[] = 'Created "suspendmonitors" column in comments_users table.';
 
             $result = $db->addTableColumn('monitordefault', 'smallint NOT NULL default 1');
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $content[] = 'Unable to add "monitordefault" column to comments_users table.</pre>';
-                Core\DB::rollback();
+                \core\DB::rollback();
                 return false;
             }
             $content[] = 'Created "monitordefault" column in comments_users table.';
 
             $result = $db->addTableColumn('securitylevel', 'smallint NOT NULL default -1');
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $content[] = 'Unable to add "securitylevel" column to comments_users table.</pre>';
-                Core\DB::rollback();
+                \core\DB::rollback();
                 return false;
             }
             $content[] = 'Created "securitylevel" column in comments_users table.';
 
             $result = $db->addTableColumn('groups', 'varchar(50) NOT NULL');
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $content[] = 'Unable to add "groups" column to comments_users table.</pre>';
-                Core\DB::rollback();
+                \core\DB::rollback();
                 return false;
             }
             $content[] = 'Created "groups" column in comments_users table.';
 
-            Core\Settings::load('comments');
-            Core\Settings::save('comments');
-            Core\Settings::reset('comments', 'email_subject');
-            Core\Settings::reset('comments', 'email_text');
+            \core\Settings::load('comments');
+            \core\Settings::save('comments');
+            \core\Settings::reset('comments', 'email_subject');
+            \core\Settings::reset('comments', 'email_text');
             $content[] = 'Added new module settings.';
 
             $files = array('templates/', 'img/', 'javascript/', 'conf/');
@@ -283,13 +283,13 @@ CREATE INDEX comments_usr_idx ON comments_user_ranks (rank_id);';
             }
             $content[] = "     " . implode("\n     ", $files);
 
-            Core\Core::initModClass('comments', 'Rank.php');
+            \core\Core::initModClass('comments', 'Rank.php');
             $rank = new Comment_Rank;
             $rank->group_name = 'All members';
             $rank->save();
 
-            Core\Settings::set('comments', 'default_rank', $rank->id);
-            Core\Settings::save('comments');
+            \core\Settings::set('comments', 'default_rank', $rank->id);
+            \core\Settings::save('comments');
 
             $content[] = '<pre>
 1.2.0 Changes
@@ -311,16 +311,16 @@ CREATE INDEX comments_usr_idx ON comments_user_ranks (rank_id);';
 </pre>';
 
         case version_compare($currentVersion, '1.2.1', '<'):
-            $db = new Core\DB('comments_users');
-            if (Core\Error::logIfError($db->alterColumnType('groups', 'text null'))) {
+            $db = new \core\DB('comments_users');
+            if (core\Error::logIfError($db->alterColumnType('groups', 'text null'))) {
                 $content[] = '-- Unable to alter groups column.';
                 return false;
             } else {
                 $content[] = '-- Successfully altered comments_users.groups column.';
             }
 
-            if (!Core\DB::isTable('comments_monitors')) {
-                $db = new Core\DB('comments_monitors');
+            if (!core\DB::isTable('comments_monitors')) {
+                $db = new \core\DB('comments_monitors');
                 $sql = 'CREATE TABLE comments_monitors (
     thread_id   int NOT NULL,
     user_id     int NOT NULL,
@@ -331,9 +331,9 @@ CREATE INDEX comments_monitors_user_id_idx ON comments_monitors (user_id, thread
 CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, send_notice);
 ';
                 $result = $db->import($sql,true);
-                if (Core\Error::logIfError($result)) {
+                if (core\Error::logIfError($result)) {
                     $content[] = 'Unable to add "comments_monitors" table.</pre>';
-                    Core\DB::rollback();
+                    \core\DB::rollback();
                     return false;
                 }
                 $content[] = 'Created "comments_monitors" table.';

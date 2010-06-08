@@ -73,7 +73,7 @@ class Podcaster_Forms {
 
     function editChannel()
     {
-        $form = new Core\Form('podcaster_channel');
+        $form = new \core\Form('podcaster_channel');
         $channel = & $this->podcaster->channel;
 
         $form->addHidden('module', 'podcaster');
@@ -96,11 +96,11 @@ class Podcaster_Forms {
         $form->setCols('description', '40');
         $form->setLabel('description', dgettext('podcaster', 'Description'));
 
-        Core\Core::initModClass('filecabinet', 'Cabinet.php');
+        \core\Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager('image_id', $channel->image_id);
         $manager->imageOnly();
-        $manager->maxImageWidth(Core\Settings::get('podcaster', 'max_width'));
-        $manager->maxImageHeight(Core\Settings::get('podcaster', 'max_height'));
+        $manager->maxImageWidth(core\Settings::get('podcaster', 'max_width'));
+        $manager->maxImageHeight(core\Settings::get('podcaster', 'max_height'));
 
         if ($manager) {
             $form->addTplTag('FILE_MANAGER', $manager->get());
@@ -122,8 +122,8 @@ class Podcaster_Forms {
         $form->setLabel('itunes_explicit', dgettext('podcaster', 'iTunes Explicit'));
         $form->setMatch('itunes_explicit', $channel->getItunes_explicit());
 
-        Core\Core::initModClass('podcaster', 'PCR_Category.php');
-        $db = new Core\DB('podcaster_category');
+        \core\Core::initModClass('podcaster', 'PCR_Category.php');
+        $db = new \core\DB('podcaster_category');
         $db->addOrder('id asc');
         $result = $db->getObjects('Podcaster_Category');
         foreach ($result as $cat) {
@@ -145,13 +145,13 @@ class Podcaster_Forms {
         $tpl['ITUNES_INFO_LABEL'] = dgettext('podcaster', 'A note on iTunes categories:');
         $tpl['ITUNES_INFO'] = dgettext('podcaster', 'iTunes categories are used to classify your podcasts in the iTunes podcast directory. They are limited and specific. Although it is OK to leave this field empty, choosing the correct categories is good for your feed and may be used by other podcast directories and readers too.');
 
-        $this->podcaster->content = Core\Template::process($tpl, 'podcaster', 'edit_channel.tpl');
+        $this->podcaster->content = \core\Template::process($tpl, 'podcaster', 'edit_channel.tpl');
     }
 
 
     function editEpisode()
     {
-        $form = new Core\Form;
+        $form = new \core\Form;
         $form->addHidden('module', 'podcaster');
         $form->addHidden('aop', 'post_episode');
         $form->addHidden('channel_id', $this->podcaster->channel->id);
@@ -173,7 +173,7 @@ class Podcaster_Forms {
         $form->setCols('description', '40');
         $form->setLabel('description', dgettext('podcaster', 'Description'));
 
-        Core\Core::initModClass('filecabinet', 'Cabinet.php');
+        \core\Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager('media_id', $this->podcaster->episode->media_id);
         if ($this->podcaster->channel->media_type == 0) {
             $manager->mediaOnly();
@@ -202,7 +202,7 @@ class Podcaster_Forms {
             $tpl['SETTINGS_LABEL'] = dgettext('podcaster', 'Settings');
         }
 
-        $this->podcaster->content = Core\Template::process($tpl, 'podcaster', 'edit_episode.tpl');
+        $this->podcaster->content = \core\Template::process($tpl, 'podcaster', 'edit_episode.tpl');
     }
 
 
@@ -211,8 +211,8 @@ class Podcaster_Forms {
         $ptags['TITLE_HEADER'] = dgettext('podcaster', 'Title');
         $ptags['DATE_UPDATED_HEADER'] = dgettext('podcaster', 'Updated');
 
-        Core\Core::initModClass('podcaster', 'PCR_Channel.php');
-                $pager = new Core\DBPager('podcaster_channel', 'Podcaster_Channel');
+        \core\Core::initModClass('podcaster', 'PCR_Channel.php');
+                $pager = new \core\DBPager('podcaster_channel', 'Podcaster_Channel');
         $pager->setModule('podcaster');
         if (!Current_User::isUnrestricted('podcaster')) {
             $pager->addWhere('active', 1);
@@ -226,7 +226,7 @@ class Podcaster_Forms {
                 $vars['aop']  = 'menu';
                 $vars['tab']  = 'settings';
                 $vars2['aop']  = 'edit_channel';
-                $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('podcaster', 'Check your %s then create a %s to begin'), Core\Text::secureLink(dgettext('podcaster', 'Settings'), 'podcaster', $vars),  Core\Text::secureLink(dgettext('podcaster', 'New Channel'), 'podcaster', $vars2));
+                $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('podcaster', 'Check your %s then create a %s to begin'), \core\Text::secureLink(dgettext('podcaster', 'Settings'), 'podcaster', $vars),  \core\Text::secureLink(dgettext('podcaster', 'New Channel'), 'podcaster', $vars2));
             } else {
                 $ptags['EMPTY_MESSAGE'] = dgettext('podcaster', 'Sorry, no channels are available at this time.');
             }
@@ -246,8 +246,8 @@ class Podcaster_Forms {
         $ptags['DATE_UPDATED_HEADER'] = dgettext('podcaster', 'Updated');
         $ptags['CHANNEL_HEADER'] = dgettext('podcaster', 'Channel');
 
-        Core\Core::initModClass('podcaster', 'PCR_Episode.php');
-                $pager = new Core\DBPager('podcaster_episode', 'Podcaster_Episode');
+        \core\Core::initModClass('podcaster', 'PCR_Episode.php');
+                $pager = new \core\DBPager('podcaster_episode', 'Podcaster_Episode');
         $pager->setModule('podcaster');
         if (isset($approved)) {
             $pager->addWhere('approved', $approved);
@@ -270,7 +270,7 @@ class Podcaster_Forms {
         $pager->setSearch('title', 'description');
 
         if (isset($channel_id)) {
-            Core\Core::initModClass('podcaster', 'PCR_Channel.php');
+            \core\Core::initModClass('podcaster', 'PCR_Channel.php');
             $channel = new Podcaster_Channel($channel_id);
             $this->podcaster->title = sprintf(dgettext('podcaster', 'All %s Episodes'), $channel->viewLink());
         } else {
@@ -285,61 +285,61 @@ class Podcaster_Forms {
     function editSettings()
     {
 
-        $form = new Core\Form('podcaster_settings');
+        $form = new \core\Form('podcaster_settings');
         $form->addHidden('module', 'podcaster');
         $form->addHidden('aop', 'post_settings');
 
-        $form->addText('channel_limit', Core\Settings::get('podcaster', 'channel_limit'));
+        $form->addText('channel_limit', \core\Settings::get('podcaster', 'channel_limit'));
         $form->setSize('channel_limit', 2, 2);
         $form->setLabel('channel_limit', dgettext('podcaster', 'Show current episodes per channel limit (1-50)'));
 
-        $form->addText('cache_timeout', Core\Settings::get('podcaster', 'cache_timeout'));
+        $form->addText('cache_timeout', \core\Settings::get('podcaster', 'cache_timeout'));
         $form->setSize('cache_timeout', 4, 4);
         $form->setLabel('cache_timeout', dgettext('podcaster', 'Cache duration in seconds for rss feed (0-7200, set to 0 to disable cache)'));
 
         $form->addCheckbox('show_block', 1);
-        $form->setMatch('show_block', Core\Settings::get('podcaster', 'show_block'));
+        $form->setMatch('show_block', \core\Settings::get('podcaster', 'show_block'));
         $form->setLabel('show_block', dgettext('podcaster', 'Show podcaster block'));
 
         $form->addRadio('block_order_by_rand', array(0, 1));
         $form->setLabel('block_order_by_rand', array(dgettext('podcaster', 'Most recent'), dgettext('podcaster', 'Random')));
-        $form->setMatch('block_order_by_rand', Core\Settings::get('podcaster', 'block_order_by_rand'));
+        $form->setMatch('block_order_by_rand', \core\Settings::get('podcaster', 'block_order_by_rand'));
 
         $form->addCheckbox('block_on_home_only', 1);
-        $form->setMatch('block_on_home_only', Core\Settings::get('podcaster', 'block_on_home_only'));
+        $form->setMatch('block_on_home_only', \core\Settings::get('podcaster', 'block_on_home_only'));
         $form->setLabel('block_on_home_only', dgettext('podcaster', 'Show on home only'));
 
         $form->addCheckbox('req_approval', 1);
-        $form->setMatch('req_approval', Core\Settings::get('podcaster', 'req_approval'));
+        $form->setMatch('req_approval', \core\Settings::get('podcaster', 'req_approval'));
         $form->setLabel('req_approval', dgettext('podcaster', 'Require approval for new episodes'));
 
-        $form->addText('editor', Core\Settings::get('podcaster', 'editor'));
+        $form->addText('editor', \core\Settings::get('podcaster', 'editor'));
         $form->setLabel('editor', dgettext('podcaster', 'Managing editor email address'));
         $form->setSize('editor', 30);
 
-        $form->addText('webmaster', Core\Settings::get('podcaster', 'webmaster'));
+        $form->addText('webmaster', \core\Settings::get('podcaster', 'webmaster'));
         $form->setLabel('webmaster', dgettext('podcaster', 'Webmaster email address'));
         $form->setSize('webmaster', 30);
 
-        $form->addText('copyright', Core\Settings::get('podcaster', 'copyright'));
+        $form->addText('copyright', \core\Settings::get('podcaster', 'copyright'));
         $form->setLabel('copyright', dgettext('podcaster', 'Copyright'));
         $form->setSize('copyright', 40);
 
         $form->addCheckbox('rm_media', 1);
-        $form->setMatch('rm_media', Core\Settings::get('podcaster', 'rm_media'));
+        $form->setMatch('rm_media', \core\Settings::get('podcaster', 'rm_media'));
         $form->setLabel('rm_media', dgettext('podcaster', 'Delete media from filecabinet when deleting episode'));
 
-        $form->addTextField('max_width', Core\Settings::get('podcaster', 'max_width'));
+        $form->addTextField('max_width', \core\Settings::get('podcaster', 'max_width'));
         $form->setLabel('max_width', dgettext('podcaster', 'Maximum image width (50-600)'));
         $form->setSize('max_width', 4,4);
 
-        $form->addTextField('max_height', Core\Settings::get('podcaster', 'max_height'));
+        $form->addTextField('max_height', \core\Settings::get('podcaster', 'max_height'));
         $form->setLabel('max_height', dgettext('podcaster', 'Maximum image height (50-600)'));
         $form->setSize('max_height', 4,4);
 
         $form->addCheck('mod_folders_only', 1);
         $form->setLabel('mod_folders_only', dgettext('podcaster', 'Hide general image folders'));
-        $form->setMatch('mod_folders_only', Core\Settings::get('podcaster', 'mod_folders_only'));
+        $form->setMatch('mod_folders_only', \core\Settings::get('podcaster', 'mod_folders_only'));
 
         $form->addSubmit('save', dgettext('podcaster', 'Save settings'));
 
@@ -348,7 +348,7 @@ class Podcaster_Forms {
         $tpl['IMAGE_LABEL'] = dgettext('podcaster', 'Image Settings');
 
         $this->podcaster->title = dgettext('podcaster', 'Settings');
-        $this->podcaster->content = Core\Template::process($tpl, 'podcaster', 'edit_settings.tpl');
+        $this->podcaster->content = \core\Template::process($tpl, 'podcaster', 'edit_settings.tpl');
     }
 
 
@@ -369,7 +369,7 @@ class Podcaster_Forms {
         $tpl['DONATE'] = sprintf(dgettext('podcaster', 'If you would like to help out with the ongoing development of Podcaster, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window).'), '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=donations%40verdon%2eca&item_name=Podcaster%20Module%20Development&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=CA&bn=PP%2dDonationsBF&charset=UTF%2d8" target="new">', '</a>');
 
         $this->podcaster->title = dgettext('podcaster', 'Read me');
-        $this->podcaster->content = Core\Template::process($tpl, 'podcaster', 'info.tpl');
+        $this->podcaster->content = \core\Template::process($tpl, 'podcaster', 'info.tpl');
     }
 
 

@@ -1,5 +1,5 @@
 <?php
-
+namespace layout;
 /**
  * Controls layout's settings
  *
@@ -7,7 +7,6 @@
  * @version $Id$
  */
 
-Core\Core::initModClass('layout', 'Box.php');
 
 class Layout_Settings {
     public $current_theme    = null;
@@ -92,11 +91,11 @@ class Layout_Settings {
 
     public function getPageMetaTags($key_id)
     {
-        $db = new Core\DB('layout_metatags');
+        $db = new \core\DB('layout_metatags');
         $db->addWhere('key_id', $key_id);
         $row = $db->select('row');
-        if (Core\Error::isError($row)) {
-            Core\Error::log($row);
+        if (core\Error::isError($row)) {
+            \core\Error::log($row);
             return null;
         }
 
@@ -126,7 +125,7 @@ class Layout_Settings {
     public function loadBoxes()
     {
         $theme = $this->current_theme;
-        $db = new Core\DB('layout_box');
+        $db = new \core\DB('layout_box');
         $db->addWhere('theme', $theme);
         if(!$boxes = $db->getObjects('Layout_Box')) {
             return;
@@ -142,15 +141,15 @@ class Layout_Settings {
 
     public function loadContentVars()
     {
-        $db = new Core\DB('layout_box');
+        $db = new \core\DB('layout_box');
         $db->addWhere('theme', $this->current_theme);
         $db->addColumn('content_var');
         $db->addColumn('module');
         $result = $db->select();
 
-        if (Core\Error::isError($result)){
-            Core\Error::log($result);
-            Core\Core::errorPage();
+        if (\core\Error::isError($result)){
+            \core\Error::log($result);
+            \core\Core::errorPage();
         }
 
         if (empty($result)) {
@@ -165,13 +164,13 @@ class Layout_Settings {
 
     public function loadSettings($theme=null)
     {
-        $db = new Core\DB('layout_config');
+        $db = new \core\DB('layout_config');
         $result = $db->loadObject($this, false);
-        if (Core\Error::isError($result)){
-            Core\Error::log($result);
-            Core\Core::errorPage();
+        if (\core\Error::isError($result)){
+            \core\Error::log($result);
+            \core\Core::errorPage();
         }
-        
+
         if ($theme && is_dir(Layout::getThemeDirRoot() . $theme)) {
             $this->default_theme = $theme;
         }
@@ -179,7 +178,7 @@ class Layout_Settings {
         if (empty($this->current_theme)) {
             $this->current_theme = $this->default_theme;
         }
-        
+
         $themeInit = Layout::getThemeDirRoot() . $this->current_theme . '/theme.ini';
 
         if (is_file($themeInit)){
@@ -187,21 +186,21 @@ class Layout_Settings {
             $this->loadBoxSettings($themeVars);
             $this->loadStyleSheets($themeVars);
         } else {
-            Core\Error::log(LAYOUT_INI_FILE, 'layout', 'Layout_Settings::loadSettings', $themeInit);
-            //Core\Core::errorPage();
+            \core\Error::log(LAYOUT_INI_FILE, 'layout', 'Layout_Settings::loadSettings', $themeInit);
+            //core\Core::errorPage();
         }
         if (Current_User::isDeity()) {
             $this->deity_reload = true;
         }
     }
-    
+
 
     public function loadStyleSheets($themeVars)
     {
         $this->_extra_styles = null;
         $this->_style_sheets = null;
         $directory = sprintf('themes/%s/', $this->current_theme);
-        @$cookie = Core\Cookie::read('layout_style');
+        @$cookie = \core\Cookie::read('layout_style');
 
         for ($i = 1; $i < 20; $i++) {
             if (isset($themeVars['style_sheet_' . $i])) {
@@ -262,8 +261,8 @@ class Layout_Settings {
 
     public function saveSettings()
     {
-        $db = new Core\DB('layout_config');
-        $vars = Core\Core::stripObjValues($this);
+        $db = new \core\DB('layout_config');
+        $vars = \core\Core::stripObjValues($this);
         unset($vars['current_theme']);
         unset($vars['_contentVars']);
         unset($vars['_boxes']);
@@ -282,12 +281,12 @@ class Layout_Settings {
 
     public function loadKeyStyle($key_id)
     {
-        $db = new Core\DB('layout_styles');
+        $db = new \core\DB('layout_styles');
         $db->addWhere('key_id', (int)$key_id);
         $db->addColumn('style');
         $result = $db->select('one');
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (\core\Error::isError($result)) {
+            \core\Error::log($result);
             $this->_key_styles[$key_id] = null;
             return false;
         }

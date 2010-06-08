@@ -13,7 +13,7 @@ function phpwsbb_unregister_key(&$key)
         return FALSE;
     }
 
-    $db = new Core\DB('phpwsbb_topics');
+    $db = new \core\DB('phpwsbb_topics');
     $db->addWhere('id', $key->item_id);
     return $db->delete();
 }

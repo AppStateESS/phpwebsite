@@ -15,21 +15,21 @@ Please download version 1.0.2.</pre>';
 
         case version_compare($version, '1.0.2', '<'):
             $content[] = '<pre>';
-            $db = new Core\DB('folders');
+            $db = new \core\DB('folders');
             if (!$db->isTableColumn('key_id')) {
-                if (Core\Error::logIfError($db->addTableColumn('key_id', 'int NOT NULL default 0'))) {
+                if (core\Error::logIfError($db->addTableColumn('key_id', 'int NOT NULL default 0'))) {
                     $content[] = '--- An error occurred when trying to add key_id as a column to the folders table.</pre>';
                     return false;
                 }
                 $content[] = '--- Successfully added key_id column to folders table.';
 
-                $db2 = new Core\DB('phpws_key');
+                $db2 = new \core\DB('phpws_key');
                 $db2->addWhere('module', 'filecabinet');
                 $db2->delete();
                 $content[] = '--- Deleted false folder keys.';
 
                 $db->reset();
-                Core\Core::initModClass('filecabinet', 'Folder.php');
+                \core\Core::initModClass('filecabinet', 'Folder.php');
                 $result = $db->getObjects('Folder');
                 if (!empty($result)) {
                     foreach ($result as $folder) {
@@ -66,7 +66,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             $dest_dir   = $home_dir . 'templates/filecabinet/filters/';
 
             if (!is_dir($dest_dir)) {
-                if (!Core\File::copy_directory($source_dir, $dest_dir)) {
+                if (!core\File::copy_directory($source_dir, $dest_dir)) {
                     $content[] = '--- FAILED copying templates/filters/ directory locally.</pre>';
                     return false;
                 }
@@ -85,24 +85,24 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
             $content[] = "    " . implode("\n    ", $files);
 
-            $db = new Core\DB('images');
+            $db = new \core\DB('images');
             if (!$db->isTableColumn('parent_id')) {
-                if (Core\Error::logIfError($db->addTableColumn('parent_id', 'int NOT NULL default 0'))) {
+                if (core\Error::logIfError($db->addTableColumn('parent_id', 'int NOT NULL default 0'))) {
                     $content[] = 'Could not create parent_id column in images table.</pre>';
                     return false;
                 }
             }
 
             if (!$db->isTableColumn('url')) {
-                if (Core\Error::logIfError($db->addTableColumn('url', 'varchar(255) NULL'))) {
+                if (core\Error::logIfError($db->addTableColumn('url', 'varchar(255) NULL'))) {
                     $content[] = 'Could not create url column in images table.</pre>';
                     return false;
                 }
             }
 
-            if (!Core\DB::isTable('multimedia')) {
-                $result = Core\DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/multimedia.sql');
-                if (!Core\Error::logIfError($result)) {
+            if (!core\DB::isTable('multimedia')) {
+                $result = \core\DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/multimedia.sql');
+                if (!core\Error::logIfError($result)) {
                     $content[] = '--- Multimedia table created successfully.';
                 } else {
                     $content[] = '--- Failed to create multimedia table.</pre>';
@@ -153,11 +153,11 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
         case version_compare($version, '1.2.1', '<'):
             $content[] = '<pre>';
-            if (!Core\DB::isTable('filecabinet_pins')) {
-                $db = new Core\DB('filecabinet_pins');
+            if (!core\DB::isTable('filecabinet_pins')) {
+                $db = new \core\DB('filecabinet_pins');
                 $db->addValue('key_id', 'int not null default 0');
                 $db->addValue('folder_id', 'int not null default 0');
-                if (Core\Error::logIfError($db->createTable())) {
+                if (core\Error::logIfError($db->createTable())) {
                     $content[] = 'Failed to create filecabinet_pins table.</pre>';
                     return false;
                 }
@@ -186,9 +186,9 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         case version_compare($version, '1.3.0', '<'):
             $content[] = '<pre>';
 
-            $db = new Core\DB('folders');
+            $db = new \core\DB('folders');
             if (!$db->isTableColumn('module_created')) {
-                if (Core\Error::logIfError($db->addTableColumn('module_created', 'varchar(40) default null'))) {
+                if (core\Error::logIfError($db->addTableColumn('module_created', 'varchar(40) default null'))) {
                     $content[] = '--- Could not create column module_created on folders table.</pre>';
                     return false;
                 } else {
@@ -197,9 +197,9 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             }
 
 
-            $db = new Core\DB('multimedia');
+            $db = new \core\DB('multimedia');
             $result = $db->addTableColumn('thumbnail', 'varchar(255) not null');
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $content[] = '--- Unable to add thumbnail column to multimedia table.</pre>';
                 return false;
             } else {
@@ -212,14 +212,14 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             $s2 = PHPWS_SOURCE_DIR . 'mod/filecabinet/img/icons/';
             $d2 = $home_dir . 'images/mod/filecabinet/icons/';
 
-            if (Core\File::copy_directory($s1, $d1)) {
+            if (core\File::copy_directory($s1, $d1)) {
                 $content[] = "--- Successfully copied $s1 to $d1";
             } else {
                 $content[] = "--- Failed to copy $s1 to $d1</pre>";
                 return false;
             }
 
-            if (Core\File::copy_directory($s2, $d2)) {
+            if (core\File::copy_directory($s2, $d2)) {
                 $content[] = "--- Successfully copied $s2 to $d2";
             } else {
                 $content[] = "--- Failed to copy $s2 to $d2</pre>";
@@ -257,9 +257,9 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
         case version_compare($version, '1.4.1', '<'):
             $content[] = '<pre>';
-            $db = new Core\DB('folders');
+            $db = new \core\DB('folders');
             if (!$db->isTableColumn('module_created')) {
-                if (Core\Error::logIfError($db->addTableColumn('module_created', 'varchar(40) default null'))) {
+                if (core\Error::logIfError($db->addTableColumn('module_created', 'varchar(40) default null'))) {
                     $content[] = '--- Could not create column module_created on folders table.</pre>';
                     return false;
                 } else {
@@ -282,33 +282,33 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         case version_compare($version, '2.0.0', '<'):
             $content[] = '<pre>';
 
-            if (Core\File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/templates/', $home_dir . 'templates/filecabinet/')) {
+            if (core\File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/templates/', $home_dir . 'templates/filecabinet/')) {
                 $content[] = '--- Copied complete templates directory.';
             } else {
                 $content[] = '--- Could not copy complete templates directory. Use revert or copy manually.';
             }
 
-            if (Core\File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/img/', $home_dir . 'images/mod/filecabinet/')) {
+            if (core\File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/img/', $home_dir . 'images/mod/filecabinet/')) {
                 $content[] = '--- Copied complete images directory.';
             } else {
                 $content[] = '--- Could not copy complete images directory. Use revert or copy manually.';
             }
 
-            if (Core\File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/conf/', $home_dir . 'config/filecabinet/')) {
+            if (core\File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/conf/', $home_dir . 'config/filecabinet/')) {
                 $content[] = '--- Copied complete configuration directory.';
             } else {
                 $content[] = '--- Could not copy complete configuration directory. Use revert or copy manually.';
             }
 
-            if (Core\File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/javascript/', $home_dir . 'javascript/modules/filecabinet/')) {
+            if (core\File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/javascript/', $home_dir . 'javascript/modules/filecabinet/')) {
                 $content[] = '--- Copied complete javascript directory.';
             } else {
                 $content[] = '--- Could not copy complete javascript directory. Use revert or copy manually.';
             }
 
-            if (!Core\DB::isTable('fc_convert')) {
-                $result = Core\DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/fc_convert.sql');
-                if (!Core\Error::logIfError($result)) {
+            if (!core\DB::isTable('fc_convert')) {
+                $result = \core\DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/fc_convert.sql');
+                if (!core\Error::logIfError($result)) {
                     $content[] = '--- File conversion table created successfully.';
                 } else {
                     $content[] = '--- Failed to create File conversion table.</pre>';
@@ -316,9 +316,9 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                 }
             }
 
-            if (!Core\DB::isTable('fc_file_assoc')) {
-                $result = Core\DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/file_assoc.sql');
-                if (!Core\Error::logIfError($result)) {
+            if (!core\DB::isTable('fc_file_assoc')) {
+                $result = \core\DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/file_assoc.sql');
+                if (!core\Error::logIfError($result)) {
                     $content[] = '--- File assoc table created successfully.';
                 } else {
                     $content[] = '--- Failed to create File assoc table.</pre>';
@@ -326,9 +326,9 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                 }
             }
 
-            $db = new Core\DB('multimedia');
+            $db = new \core\DB('multimedia');
             if (!$db->isTableColumn('duration')) {
-                if (Core\Error::logIfError($db->addTableColumn('duration', 'int not null default 0'))) {
+                if (core\Error::logIfError($db->addTableColumn('duration', 'int not null default 0'))) {
                     $content[] = '--- Failed to create duration column on multimedia table.</pre>';
                     return false;
                 } else {
@@ -337,7 +337,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             }
 
             if (!$db->isTableColumn('embedded')) {
-                if (Core\Error::logIfError($db->addTableColumn('embedded', 'smallint not null default 0'))) {
+                if (core\Error::logIfError($db->addTableColumn('embedded', 'smallint not null default 0'))) {
                     $content[] = 'Failed to create embedded column on multimedia table.</pre>';
                     return false;
                 } else {
@@ -345,13 +345,13 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                 }
             }
 
-            Core\Core::initModClass('filecabinet', 'Multimedia.php');
+            \core\Core::initModClass('filecabinet', 'Multimedia.php');
             $result = $db->getObjects('PHPWS_Multimedia');
 
             if ($result) {
                 foreach ($result as $mm) {
                     $mm->loadDimensions();
-                    Core\Error::logIfError($mm->save());
+                    \core\Error::logIfError($mm->save());
                 }
             }
 
@@ -385,9 +385,9 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                        'templates/file_manager/folder_content_view.tpl', 'templates/file_manager/resize.tpl');
             fc_updatefiles($files, $content);
 
-            $db = new Core\DB('folders');
+            $db = new \core\DB('folders');
             $db->begin();
-            if (Core\Error::logIfError($db->addTableColumn('max_image_dimension', 'smallint  not null default 0'))) {
+            if (core\Error::logIfError($db->addTableColumn('max_image_dimension', 'smallint  not null default 0'))) {
                 $content[] = '--- Unable to add max_image_dimension column to folders table.';
                 $db->rollback();
                 return false;
@@ -395,8 +395,8 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                 $content[] = '--- Added max_image_dimension column to folders table.';
             }
 
-            $db = new Core\DB('fc_file_assoc');
-            if (Core\Error::logIfError($db->addTableColumn('width', 'smallint NOT NULL default 0'))) {
+            $db = new \core\DB('fc_file_assoc');
+            if (core\Error::logIfError($db->addTableColumn('width', 'smallint NOT NULL default 0'))) {
                 $content[] = '--- Unable to add width column to fc_file_assoc.';
                 $db->rollback();
                 return false;
@@ -404,7 +404,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                 $content[] = '--- Added width column to fc_file_assoc table';
             }
 
-            if (Core\Error::logIfError($db->addTableColumn('height', 'smallint NOT NULL default 0'))) {
+            if (core\Error::logIfError($db->addTableColumn('height', 'smallint NOT NULL default 0'))) {
                 $content[] = '--- Unable to add height column to fc_file_assoc.';
                 $db->rollback();
                 return false;
@@ -412,7 +412,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                 $content[] = '--- Added height column to fc_file_assoc table';
             }
 
-            if (Core\Error::logIfError($db->addTableColumn('cropped', 'smallint NOT NULL default 0'))) {
+            if (core\Error::logIfError($db->addTableColumn('cropped', 'smallint NOT NULL default 0'))) {
                 $content[] = '--- Unable to add cropped column to fc_file_assoc.';
                 $db->rollback();
                 return false;
@@ -428,23 +428,23 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
         case version_compare($version, '2.2.0', '<'):
             $content[] = '<pre>';
-            $db = new Core\DB('fc_file_assoc');
-            if (Core\Error::logIfError($db->addTableColumn('vertical', 'smallint not null default 0'))) {
+            $db = new \core\DB('fc_file_assoc');
+            if (core\Error::logIfError($db->addTableColumn('vertical', 'smallint not null default 0'))) {
                 $content[] = 'Unable to create vertical column in fc_file_assoc table.';
                 return false;
             }
 
-            if (Core\Error::logIfError($db->addTableColumn('num_visible', 'smallint not null default 3'))) {
+            if (core\Error::logIfError($db->addTableColumn('num_visible', 'smallint not null default 3'))) {
                 $content[] = 'Unable to create num_visible column in fc_file_assoc table.';
                 return false;
             }
 
             $db->dropTableColumn('cropped');
 
-            $db = new Core\DB('modules');
+            $db = new \core\DB('modules');
             $db->addWhere('title', 'filecabinet');
             $db->addValue('unregister', 1);
-            Core\Error::logIfError($db->update());
+            \core\Error::logIfError($db->update());
             $content[] = 'Unregister flag set in modules table.';
 
             $files = array('javascript/jcaro_lite/',
@@ -608,12 +608,12 @@ Example: mkdir phpwebsite/files/multimedia/</pre>';
 function fc_update_parent_links()
 {
     // Nulling the url column for images with 'parent' set as url
-    $db = new Core\DB('images');
+    $db = new \core\DB('images');
     $db->addWhere('url', 'parent');
     $db->addValue('url', NULL);
-    Core\Error::logIfError($db->update());
+    \core\Error::logIfError($db->update());
 
     // remove superfluous column
-    Core\Error::logIfError($db->dropTableColumn('parent_id'));
+    \core\Error::logIfError($db->dropTableColumn('parent_id'));
 }
 ?>

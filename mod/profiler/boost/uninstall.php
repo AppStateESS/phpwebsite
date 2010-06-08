@@ -10,8 +10,8 @@
 function profiler_uninstall(&$content)
 {
 
-    Core\DB::dropTable('profiles');
-    Core\DB::dropTable('profiler_division');
+    \core\DB::dropTable('profiles');
+    \core\DB::dropTable('profiler_division');
     $content[] = dgettext('profiler', 'Profiles table removed.');
 
     return TRUE;

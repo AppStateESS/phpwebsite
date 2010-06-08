@@ -38,13 +38,13 @@ Please download version 1.1.2.</pre>';
 
         case version_compare($currentVersion, '1.2.0', '<'):
             $content[] = '<pre>';
-            $db = new Core\DB('block');
-            if (Core\Error::logIfError($db->addTableColumn('file_id', 'int not null default 0'))) {
+            $db = new \core\DB('block');
+            if (core\Error::logIfError($db->addTableColumn('file_id', 'int not null default 0'))) {
                 $content[] = 'Unable to add file_id column to block table.</pre>';
                 return false;
             }
 
-            if (Core\Error::logIfError($db->addTableColumn('hide_title', 'smallint not null default 0'))) {
+            if (core\Error::logIfError($db->addTableColumn('hide_title', 'smallint not null default 0'))) {
                 $content[] = 'Unable to add file_only column to block table.</pre>';
                 return false;
             }

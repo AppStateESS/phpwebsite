@@ -58,14 +58,14 @@ class vShop_PaypalBasic {
 
     function __construct($orderID){
       $this->_orderID = $orderID;
-      $this->_pp_return_url = Core\Core::getHomeHttp() . 'index.php?module=vshop&uop=complete_order&order_id=' . $this->_orderID;
+      $this->_pp_return_url = \core\Core::getHomeHttp() . 'index.php?module=vshop&uop=complete_order&order_id=' . $this->_orderID;
     }
 
 
     public function form ($order) {
         $total = number_format($order->order_array['total_grand'], 2, '.', '');
 
-        $form = new Core\Form('vshop_payment');
+        $form = new \core\Form('vshop_payment');
         $form->addSubmit(dgettext('vshop', 'Continue Checkout at Paypal'));
 
 
@@ -74,7 +74,7 @@ class vShop_PaypalBasic {
         $form->addHidden('business', $this->_pp_business);
         $form->addHidden('item_name_1', dgettext('vshop', 'Aggregated items'));
         $form->addHidden('amount_1', $total);
-        $form->addHidden('currency_code', Core\Settings::get('vshop', 'currency'));
+        $form->addHidden('currency_code', \core\Settings::get('vshop', 'currency'));
 //        $form->addHidden('notify_url', $this->_pp_notify_url);
         $form->addHidden('return', $this->_pp_return_url);
 

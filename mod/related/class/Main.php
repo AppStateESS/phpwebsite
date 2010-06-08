@@ -8,7 +8,7 @@
  * @version $Id$
  */
 
-Core\Core::initModClass('related', 'Friend.php');
+core\Core::initModClass('related', 'Friend.php');
 
 class Related {
 
@@ -104,13 +104,13 @@ class Related {
         if (!isset($this->id))
         return NULL;
 
-        $db = new Core\DB('related_friends');
+        $db = new \core\DB('related_friends');
         $db->addWhere('source_id', $this->id);
         $db->addOrder('rating');
         $db->setIndexBy('rating');
         $result = $db->select('col');
 
-        if (Core\Error::isError($result))
+        if (core\Error::isError($result))
         return $result;
 
         $this->friends = $result;

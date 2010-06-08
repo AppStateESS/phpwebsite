@@ -24,9 +24,9 @@
 
 function elections_uninstall(&$content) {
 
-    Core\DB::dropTable('elections_ballots');
-    Core\DB::dropTable('elections_candidates');
-    Core\DB::dropTable('elections_votes');
+    \core\DB::dropTable('elections_ballots');
+    \core\DB::dropTable('elections_candidates');
+    \core\DB::dropTable('elections_votes');
     $content[] = dgettext('elections', 'Elections tables dropped.');
 
     return true;

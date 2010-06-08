@@ -10,8 +10,8 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-Core\Core::initModClass('categories', 'Action.php');
-Core\Core::initModClass('categories', 'Categories.php');
+core\Core::initModClass('categories', 'Action.php');
+core\Core::initModClass('categories', 'Categories.php');
 
 if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'admin'){
     Categories_Action::admin();

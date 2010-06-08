@@ -71,7 +71,7 @@ Changes in version 2.0.4
 
     } // end of switch
 
-    Core\Core::initModClass('phpwsbb', 'BB_Data.php');
+    \core\Core::initModClass('phpwsbb', 'BB_Data.php');
     PHPWSBB_Data::clearCaches();
     $content[] = 'Cleared all phpwsbb caches';
 

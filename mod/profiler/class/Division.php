@@ -18,16 +18,16 @@ class Profiler_Division {
 
         $this->id = (int)$id;
         $result =  $this->init();
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->error = $result;
         } elseif (!$result) {
-            $this->error = Core\Error::get(Core\DB_EMPTY_SELECT, 'core', 'Profiler_Division::constructor', 'ID: ' . $id);
+            $this->error = \core\Error::get(core\DB_EMPTY_SELECT, 'core', 'Profiler_Division::constructor', 'ID: ' . $id);
         }
     }
 
     public function init()
     {
-        $db = new Core\DB('profiler_division');
+        $db = new \core\DB('profiler_division');
         $db->addWhere('id', $this->id);
         return $db->loadObject($this);
     }
@@ -61,7 +61,7 @@ class Profiler_Division {
             $this->title = preg_replace('/[^\w\s]/u', '', $_POST['title']);
         }
 
-        $db = new Core\DB('profiler_division');
+        $db = new \core\DB('profiler_division');
         $db->addWhere('title', $this->title);
         $db->addWhere('id', $this->id, '!=');
         if ($db->select('one')) {
@@ -76,7 +76,7 @@ class Profiler_Division {
 
     public function save()
     {
-        $db = new Core\DB('profiler_division');
+        $db = new \core\DB('profiler_division');
         return $db->saveObject($this);
     }
 
@@ -84,17 +84,17 @@ class Profiler_Division {
     {
         $vars['user_cmd'] = 'view_div';
         $vars['div_id'] = $this->id;
-        return Core\Text::moduleLink($this->title, 'profiler', $vars);
+        return \core\Text::moduleLink($this->title, 'profiler', $vars);
     }
 
     public function delete()
     {
-        $db = new Core\DB('profiler_division');
+        $db = new \core\DB('profiler_division');
         $db->addWhere('id', $this->id);
-        if (!Core\Error::logIfError($db->delete())) {
-            $db = new Core\DB('profiles');
+        if (!core\Error::logIfError($db->delete())) {
+            $db = new \core\DB('profiles');
             $db->addWhere('profile_type', $this->id);
-            return !Core\Error::logIfError($db->delete());
+            return !core\Error::logIfError($db->delete());
         }
     }
 

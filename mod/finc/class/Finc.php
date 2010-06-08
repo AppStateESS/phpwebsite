@@ -22,8 +22,8 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-Core\Core::requireInc('finc', 'errordefines.php');
-Core\Core::requireConfig('finc');
+core\Core::requireInc('finc', 'errordefines.php');
+core\Core::requireConfig('finc');
 
 class Finc {
     var $forms       = null;
@@ -63,12 +63,12 @@ class Finc {
                     Current_User::disallow();
                 }
                 if ($this->postFile()) {
-                    if (Core\Error::logIfError($this->file->save())) {
+                    if (core\Error::logIfError($this->file->save())) {
                         $this->forwardMessage(dgettext('finc', 'Error occurred when saving file.'));
-                        Core\Core::reroute('index.php?module=finc&aop=list');
+                        \core\Core::reroute('index.php?module=finc&aop=list');
                     } else {
                         $this->forwardMessage(dgettext('finc', 'File saved successfully.'));
-                        Core\Core::reroute('index.php?module=finc&aop=list');
+                        \core\Core::reroute('index.php?module=finc&aop=list');
                     }
                 } else {
                     $this->loadForm('edit');
@@ -113,7 +113,7 @@ class Finc {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('finc', 'Finc settings saved.'));
-                    Core\Core::reroute('index.php?module=finc&aop=menu');
+                    \core\Core::reroute('index.php?module=finc&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -126,9 +126,9 @@ class Finc {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'finc', 'main_admin.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'finc', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(Core\Template::process($tpl, 'finc', 'main_admin.tpl'));
+            $this->panel->setContent(core\Template::process($tpl, 'finc', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -140,7 +140,7 @@ class Finc {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                Core\Core::errorPage('404');
+                \core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -152,11 +152,11 @@ class Finc {
             case 'view_file':
                 $this->loadFile();
                 if ($this->file->active) {
-                    if (Core\Settings::get('finc', 'show_title'))
+                    if (core\Settings::get('finc', 'show_title'))
                         $this->title = $this->file->getTitle(true);
-                    if (Core\Settings::get('finc', 'add_title_tag'))
+                    if (core\Settings::get('finc', 'add_title_tag'))
                         Layout::addPageTitle($this->file->getTitle());
-                    if (Core\Settings::get('finc', 'show_description'))
+                    if (core\Settings::get('finc', 'show_description'))
                         $this->description = $this->file->getDescription(true);
                     $this->content = $this->file->getContents();
                 } else {
@@ -177,9 +177,9 @@ class Finc {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'finc', 'main_user.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'finc', 'main_user.tpl'));
         } else {
-            Layout::add(Core\Template::process($tpl, 'finc', 'main_user.tpl'));
+            Layout::add(core\Template::process($tpl, 'finc', 'main_user.tpl'));
         }
 
     }
@@ -187,7 +187,7 @@ class Finc {
 
     function sendMessage()
     {
-        Core\Core::reroute('index.php?module=finc&amp;uop=message');
+        \core\Core::reroute('index.php?module=finc&amp;uop=message');
     }
 
     function forwardMessage($message, $title=null)
@@ -206,14 +206,14 @@ class Finc {
             if (isset($_SESSION['FINC_Message']['title'])) {
                 $this->title = $_SESSION['FINC_Message']['title'];
             }
-            Core\Core::killSession('FINC_Message');
+            \core\Core::killSession('FINC_Message');
         }
     }
 
 
     function loadForm($type)
     {
-        Core\Core::initModClass('finc', 'FINC_Forms.php');
+        \core\Core::initModClass('finc', 'FINC_Forms.php');
         $this->forms = new Finc_Forms;
         $this->forms->finc = & $this;
         $this->forms->get($type);
@@ -222,7 +222,7 @@ class Finc {
 
     function loadFile($id=0)
     {
-        Core\Core::initModClass('finc', 'FINC_File.php');
+        \core\Core::initModClass('finc', 'FINC_File.php');
 
         if ($id) {
             $this->file = new Finc_File($id);
@@ -238,7 +238,7 @@ class Finc {
 
     function loadPanel()
     {
-        Core\Core::initModClass('controlpanel', 'Panel.php');
+        \core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('finc-panel');
         $link = 'index.php?module=finc&aop=menu';
 
@@ -302,22 +302,22 @@ class Finc {
     {
 
         isset($_POST['show_title']) ?
-            Core\Settings::set('finc', 'show_title', 1) :
-            Core\Settings::set('finc', 'show_title', 0);
+            \core\Settings::set('finc', 'show_title', 1) :
+            \core\Settings::set('finc', 'show_title', 0);
 
         isset($_POST['add_title_tag']) ?
-            Core\Settings::set('finc', 'add_title_tag', 1) :
-            Core\Settings::set('finc', 'add_title_tag', 0);
+            \core\Settings::set('finc', 'add_title_tag', 1) :
+            \core\Settings::set('finc', 'add_title_tag', 0);
 
         isset($_POST['show_description']) ?
-            Core\Settings::set('finc', 'show_description', 1) :
-            Core\Settings::set('finc', 'show_description', 0);
+            \core\Settings::set('finc', 'show_description', 1) :
+            \core\Settings::set('finc', 'show_description', 0);
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            if (Core\Settings::save('finc')) {
+            if (core\Settings::save('finc')) {
                 return true;
             } else {
                 return falsel;

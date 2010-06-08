@@ -6,10 +6,10 @@
  * @version $Id$
  */
 
-Core\Core::initModClass('profiler', 'Profile.php');
-Core\Core::initModClass('profiler', 'Division.php');
+core\Core::initModClass('profiler', 'Profile.php');
+core\Core::initModClass('profiler', 'Division.php');
 
-Core\Core::requireConfig('profiler');
+core\Core::requireConfig('profiler');
 
 class Profiler {
     public function user()
@@ -17,12 +17,12 @@ class Profiler {
         $content = NULL;
 
         if (empty($_REQUEST['user_cmd'])) {
-            Core\Core::errorPage('404');
+            \core\Core::errorPage('404');
         }
         switch ($_REQUEST['user_cmd']) {
             case 'random_profile':
                 if (!isset($_REQUEST['type']) || !isset($_REQUEST['template'])) {
-                    Core\Core::errorPage('404');
+                    \core\Core::errorPage('404');
                 }
 
                 $content = Profiler::pullRandomProfile($_REQUEST['type'], $_REQUEST['template']);
@@ -32,18 +32,18 @@ class Profiler {
 
             case 'view_profile':
                 if (!isset($_REQUEST['id'])) {
-                    Core\Core::errorPage(404);
+                    \core\Core::errorPage(404);
                 }
                 $profile = new Profile($_REQUEST['id']);
                 if (!empty($profile->_error)) {
-                    Core\Error::log($profile->_error);
-                    Core\Core::errorPage(404);
+                    \core\Error::log($profile->_error);
+                    \core\Core::errorPage(404);
                 }
 
                 if (Current_User::allow('profiler')) {
                     $vars['command']    = 'edit';
                     $vars['profile_id'] = $profile->id;
-                    $link = Core\Text::secureLink(dgettext('profiler', 'Edit profile'), 'profiler', $vars);
+                    $link = \core\Text::secureLink(dgettext('profiler', 'Edit profile'), 'profiler', $vars);
                     MiniAdmin::add('profiler', $link);
                 }
 
@@ -52,7 +52,7 @@ class Profiler {
 
             case 'view_div':
                 if (!isset($_REQUEST['div_id'])) {
-                    Core\Core::errorPage('404');
+                    \core\Core::errorPage('404');
                 }
 
                 Profiler::view((int)$_REQUEST['div_id']);
@@ -64,9 +64,9 @@ class Profiler {
     public function pullRandomProfile($type, $template)
     {
         if (!is_numeric($type)) {
-            Core\Core::errorPage('404');
+            \core\Core::errorPage('404');
         }
-        $db = new Core\DB('profiles');
+        $db = new \core\DB('profiles');
         if ($type) {
             $db->addWhere('profile_type', $type);
         }
@@ -92,7 +92,7 @@ class Profiler {
             Current_User::disallow();
         }
 
-        Core\Core::initModClass('profiler', 'Forms.php');
+        \core\Core::initModClass('profiler', 'Forms.php');
         $title = $content = $message = NULL;
         $panel = & Profiler::cpanel();
         $panel->enableSecure();
@@ -105,8 +105,8 @@ class Profiler {
 
         if (isset($_REQUEST['profile_id'])) {
             $profile = new Profile($_REQUEST['profile_id']);
-            if (Core\Error::isError($profile->_error)) {
-                Core\Core::errorPage(404);
+            if (core\Error::isError($profile->_error)) {
+                \core\Core::errorPage(404);
             }
         }
         switch ($command) {
@@ -139,7 +139,7 @@ class Profiler {
                 break;
 
             case 'edit_division':
-                Core\Core::initModClass('profiler', 'Division.php');
+                \core\Core::initModClass('profiler', 'Division.php');
                 if (isset($_REQUEST['division_id'])) {
                     $division = new Profiler_Division((int)$_REQUEST['division_id']);
                 } else {
@@ -147,7 +147,7 @@ class Profiler {
                 }
 
                 if ($division->error) {
-                    Core\Error::log($division->error);
+                    \core\Error::log($division->error);
                     $content = dgettext('profiler', 'There is a problem with this Profiler division.');
                     return;
                 }
@@ -165,11 +165,11 @@ class Profiler {
                     $division->delete();
                 }
 
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
             case 'update_division':
-                Core\Core::initModClass('profiler', 'Division.php');
+                \core\Core::initModClass('profiler', 'Division.php');
                 if (isset($_REQUEST['division_id'])) {
                     $division = new Profiler_Division((int)$_REQUEST['division_id']);
                 } else {
@@ -177,7 +177,7 @@ class Profiler {
                 }
 
                 if ($division->error) {
-                    Core\Error::log($division->error);
+                    \core\Error::log($division->error);
                     $content = dgettext('profiler', 'There is a problem with this Profiler division.');
                     return;
                 }
@@ -187,8 +187,8 @@ class Profiler {
                     Layout::nakedDisplay($content);
                 } else {
                     $result = $division->save();
-                    if (Core\Error::isError($result)) {
-                        Core\Error::log($result);
+                    if (core\Error::isError($result)) {
+                        \core\Error::log($result);
                     }
                     javascript('close_refresh');
                 }
@@ -196,7 +196,7 @@ class Profiler {
                 break;
 
             case 'post_profile':
-                if (!isset($_POST['profile_id']) && Core\Core::isPosted()) {
+                if (!isset($_POST['profile_id']) && \core\Core::isPosted()) {
                     $title = dgettext('profiler', 'You recently posted this identical profile.');
                     $content = dgettext('profiler', 'Ignoring the repeat.');
                     break;
@@ -217,8 +217,8 @@ class Profiler {
                     $content = Profile_Forms::edit($profile);
                 } else {
                     $result = $profile->save();
-                    if (Core\Error::isError($result)) {
-                        Core\Error::log($result);
+                    if (core\Error::isError($result)) {
+                        \core\Error::log($result);
                         $title = dgettext('profiler', 'Sorry');
                         $content = dgettext('profiler', 'An error occurred when saving your profile.');
                     } else {
@@ -244,13 +244,13 @@ class Profiler {
                 }
 
                 $result = Profiler::saveSettings();
-                if (Core\Error::isError($result)) {
-                    Core\Error::log($result);
+                if (core\Error::isError($result)) {
+                    \core\Error::log($result);
                     $title = dgettext('profiler', 'Uh oh');
                     $content = dgettext('profiler', 'There was a problem saving your settings.');
                 } else {
                     $title = dgettext('profiler', 'Setting saved');
-                    $content = Core\Text::secureLink(dgettext('profiler', 'Go back to the Settings page.'), 'profiler');
+                    $content = \core\Text::secureLink(dgettext('profiler', 'Go back to the Settings page.'), 'profiler');
                 }
                 break;
 
@@ -260,7 +260,7 @@ class Profiler {
         $tpl['MESSAGE'] = $message;
         $tpl['TITLE']   = $title;
 
-        $finalcontent = Core\Template::process($tpl, 'profiler', 'main.tpl');
+        $finalcontent = \core\Template::process($tpl, 'profiler', 'main.tpl');
         $panel->setContent($finalcontent);
         $finalPanel = $panel->display();
 
@@ -269,7 +269,7 @@ class Profiler {
 
     public function cpanel()
     {
-        Core\Core::initModClass('controlpanel', 'Panel.php');
+        \core\Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=profiler';
 
         $tabs['new']       = array ('title'=> dgettext('profiler', 'New'), 'link'=> $link);
@@ -287,14 +287,14 @@ class Profiler {
     public function saveSettings()
     {
         if (isset($_POST['profile_homepage'])) {
-            Core\Settings::set('profiler', 'profile_homepage', 1);
+            \core\Settings::set('profiler', 'profile_homepage', 1);
         } else {
-            Core\Settings::set('profiler', 'profile_homepage', 0);
+            \core\Settings::set('profiler', 'profile_homepage', 0);
         }
-        Core\Settings::set('profiler', 'profile_number',
+        \core\Settings::set('profiler', 'profile_number',
         (int)$_POST['profile_number']);
 
-        return Core\Settings::save('profiler');
+        return \core\Settings::save('profiler');
     }
 
 
@@ -306,11 +306,11 @@ class Profiler {
      */
     public static function view($div_id=0)
     {
-        if (!Core\Settings::get('profiler', 'profile_homepage')) {
+        if (!core\Settings::get('profiler', 'profile_homepage')) {
             return;
         }
 
-        $div = new Core\DB('profiler_division');
+        $div = new \core\DB('profiler_division');
         if (!$div_id) {
             $div->addWhere('show_homepage', 1);
         } else {
@@ -324,10 +324,10 @@ class Profiler {
             return;
         }
 
-        $limit = Core\Settings::get('profiler', 'profile_number');
-        $db = new Core\DB('profiles');
+        $limit = \core\Settings::get('profiler', 'profile_number');
+        $db = new \core\DB('profiles');
 
-        $tpl = new Core\Template('profiler');
+        $tpl = new \core\Template('profiler');
         $tpl->setFile('homepage.tpl');
 
         foreach ($division_list as $division) {

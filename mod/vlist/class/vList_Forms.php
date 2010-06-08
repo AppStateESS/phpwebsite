@@ -88,18 +88,18 @@ class vList_Forms {
 
     public function settingsPanel()
     {
-        Core\Core::initModClass('controlpanel', 'Panel.php');
+        \core\Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=vlist&aop=menu';
 
         if (Current_User::allow('vlist', 'settings', null, null, true)){
             $tags['settings'] = array('title'=>dgettext('vlist', 'Settings'),
                                   'link'=>$link);
-            if (Core\Settings::get('vlist', 'enable_elements')) {
+            if (core\Settings::get('vlist', 'enable_elements')) {
                 $tags['elements'] = array('title'=>dgettext('vlist', 'Extra Fields'),
                                       'link'=>$link);
             }
-            if (Core\Settings::get('vlist', 'enable_groups')) {
-                $tags['groups'] = array('title'=>Core\Text::parseOutput(Core\Settings::get('vlist', 'groups_title')),
+            if (core\Settings::get('vlist', 'enable_groups')) {
+                $tags['groups'] = array('title'=>core\Text::parseOutput(core\Settings::get('vlist', 'groups_title')),
                                       'link'=>$link);
             }
         }
@@ -114,12 +114,12 @@ class vList_Forms {
     public function listListings($approved=null, $active=null, $group=null, $owner=null)
     {
         if (Current_User::allow('vlist', 'edit_listing') && isset($_REQUEST['uop'])) {
-            $link[] = Core\Text::secureLink(dgettext('vlist', 'Add new listing'), 'vlist', array('aop'=>'new_listing'));
+            $link[] = \core\Text::secureLink(dgettext('vlist', 'Add new listing'), 'vlist', array('aop'=>'new_listing'));
             MiniAdmin::add('vlist', $link);
         }
 
-        Core\Core::initModClass('vlist', 'vList_Listing.php');
-                $pager = new Core\DBPager('vlist_listing', 'vList_Listing');
+        \core\Core::initModClass('vlist', 'vList_Listing.php');
+                $pager = new \core\DBPager('vlist_listing', 'vList_Listing');
         $pager->setModule('vlist');
         $pager->db->addColumn('vlist_listing.*');
 
@@ -137,21 +137,21 @@ class vList_Forms {
 
         $pager->addSortHeader('id', 'ID#');
         $pager->addSortHeader('title', 'Title');
-        if (Core\Settings::get('vlist', 'enable_users') && (Core\Settings::get('vlist', 'list_users') || Current_User::allow('vlist'))) {
+        if (core\Settings::get('vlist', 'enable_users') && (core\Settings::get('vlist', 'list_users') || Current_User::allow('vlist'))) {
             $pager->addSortHeader('owner_id', 'Listed by');
             $ptags['COLSPAN'] = $ptags['COLSPAN'] + 1;
         } else {
             $ptags['OWNER_ID_SORT'] = null;
         }
 
-        if (Core\Settings::get('vlist', 'list_created')) {
+        if (core\Settings::get('vlist', 'list_created')) {
             $pager->addSortHeader('created', 'Created');
             $ptags['COLSPAN'] = $ptags['COLSPAN'] + 1;
         } else {
             $ptags['CREATED_SORT'] = null;
         }
 
-        if (Core\Settings::get('vlist', 'list_updated')) {
+        if (core\Settings::get('vlist', 'list_updated')) {
             $pager->addSortHeader('updated', 'Updated');
             $ptags['COLSPAN'] = $ptags['COLSPAN'] + 1;
         } else {
@@ -188,11 +188,11 @@ class vList_Forms {
         /* if it's a list by group */
         if ($group) {
             $_REQUEST['groups'] = $group;
-            Core\Core::initModClass('vlist', 'vList_Group.php');
+            \core\Core::initModClass('vlist', 'vList_Group.php');
             $item = new vList_Group($group);
             Layout::addPageTitle($item->getTitle());
             $ptags['ITEM_TITLE'] = $item->getTitle(true);
-            $ptags['ITEM_DESCRIPTION'] = Core\Text::parseTag($item->getDescription(true));
+            $ptags['ITEM_DESCRIPTION'] = \core\Text::parseTag($item->getDescription(true));
             $ptags['ITEM_IMAGE'] = $item->getFile();
             if ($item->getFile()) {
                 $ptags['ITEM_IMAGE'] = $item->getFile();
@@ -202,15 +202,15 @@ class vList_Forms {
 
         /* if it's a list by owner */
         if ($owner) {
-            if (Core\Settings::get('vlist', 'show_users') || Current_User::allow('vlist')) {
+            if (core\Settings::get('vlist', 'show_users') || Current_User::allow('vlist')) {
                 $_REQUEST['owner'] = $owner;
-                if (Core\Core::moduleExists('rolodex')) {
-                    Core\Core::initModClass('rolodex', 'RDX_Member.php');
+                if (core\Core::moduleExists('rolodex')) {
+                    \core\Core::initModClass('rolodex', 'RDX_Member.php');
                     $user = new Rolodex_Member($owner);
                     if ($user) {
                         Layout::addPageTitle($user->getDisplay_name());
                         $ptags['ITEM_TITLE'] = $user->getDisplay_name();
-                        $ptags['ITEM_DESCRIPTION'] = Core\Text::parseTag($user->getDescription(true));
+                        $ptags['ITEM_DESCRIPTION'] = \core\Text::parseTag($user->getDescription(true));
                         $ptags['ITEM_CONTACT_LINK'] = sprintf(dgettext('vlist', 'Contact %s'), $user->getDisplay_email(true));
                         $ptags['ITEM_VIEW_LINK'] = sprintf(dgettext('vlist', 'See profile for %s'), $user->viewLink());
                         if ($user->getImage()) {
@@ -241,8 +241,8 @@ class vList_Forms {
 
 
         /* search by extras start */
-        if (Core\Settings::get('vlist', 'enable_elements')) {
-            $db = new Core\DB('vlist_element');
+        if (core\Settings::get('vlist', 'enable_elements')) {
+            $db = new \core\DB('vlist_element');
             $db->addWhere('active', 1);
             if (!Current_User::allow('vlist')) {
                 $db->addWhere('private', 0);
@@ -296,7 +296,7 @@ class vList_Forms {
 
                 if (!empty($all_options)) {
 
-                    $db = new Core\DB('vlist_element_items');
+                    $db = new \core\DB('vlist_element_items');
                     $db->addColumn('listing_id');
                     $total_options = 0;
 
@@ -328,11 +328,11 @@ class vList_Forms {
         }
 
         /* set the default sorts */
-        if (Core\Settings::get('vlist', 'main_order_by') == 3) {
+        if (core\Settings::get('vlist', 'main_order_by') == 3) {
             $pager->db->addOrder('rand');
-        } elseif (Core\Settings::get('vlist', 'main_order_by') == 2) {
+        } elseif (core\Settings::get('vlist', 'main_order_by') == 2) {
             $pager->setOrder('updated', 'desc', true);
-        } elseif (Core\Settings::get('vlist', 'main_order_by') == 1) {
+        } elseif (core\Settings::get('vlist', 'main_order_by') == 1) {
             $pager->setOrder('created', 'desc', true);
         } else {
             $pager->setOrder('title', 'asc', true);
@@ -354,7 +354,7 @@ class vList_Forms {
             $vars['tab']  = 'settings';
             $vars2['aop']  = 'new_listing';
             if (isset($approved) && $approved == 1) {
-                $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('vlist', 'Check your %s then create a %s to begin'), Core\Text::secureLink(dgettext('vlist', 'Settings'), 'vlist', $vars),  Core\Text::secureLink(dgettext('vlist', 'New Listing'), 'vlist', $vars2));
+                $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('vlist', 'Check your %s then create a %s to begin'), \core\Text::secureLink(dgettext('vlist', 'Settings'), 'vlist', $vars),  \core\Text::secureLink(dgettext('vlist', 'New Listing'), 'vlist', $vars2));
             }
         }
         $pager->addPageTags($ptags);
@@ -367,9 +367,9 @@ class vList_Forms {
 
         /* set the list/page title */
         if (isset($approved) && $approved == 0) {
-            $this->vlist->title = sprintf(dgettext('vlist', 'Unapproved %s Listings'), Core\Settings::get('vlist', 'module_title'));
+            $this->vlist->title = sprintf(dgettext('vlist', 'Unapproved %s Listings'), \core\Settings::get('vlist', 'module_title'));
         } else {
-            $this->vlist->title = sprintf(dgettext('vlist', '%s Listings'), Core\Settings::get('vlist', 'module_title'));
+            $this->vlist->title = sprintf(dgettext('vlist', '%s Listings'), \core\Settings::get('vlist', 'module_title'));
             if (isset($ptags['ITEM_TITLE'])) {
                 $this->vlist->title .= sprintf(dgettext('vlist', ' - %s'), $ptags['ITEM_TITLE']);
             }
@@ -386,8 +386,8 @@ class vList_Forms {
             $ptags['ALPHA_CLICK'] = $this->vlist->alpha_click();
         }
 
-        Core\Core::initModClass('vlist', 'vList_Group.php');
-                $pager = new Core\DBPager('vlist_group', 'vList_Group');
+        \core\Core::initModClass('vlist', 'vList_Group.php');
+                $pager = new \core\DBPager('vlist_group', 'vList_Group');
         $pager->setModule('vlist');
         $pager->setDefaultOrder('title', 'asc', true);
         $pager->setTemplate('list_groups.tpl');
@@ -398,21 +398,21 @@ class vList_Forms {
                 $vars['aop']  = 'menu';
                 $vars['tab']  = 'settings';
                 $vars2['aop']  = 'new_group';
-                $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('vlist', 'Check your %s then create a %s to begin'), Core\Text::secureLink(dgettext('vlist', 'Settings'), 'vlist', $vars),  Core\Text::secureLink(dgettext('vlist', 'New Group'), 'vlist', $vars2));
+                $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('vlist', 'Check your %s then create a %s to begin'), \core\Text::secureLink(dgettext('vlist', 'Settings'), 'vlist', $vars),  \core\Text::secureLink(dgettext('vlist', 'New Group'), 'vlist', $vars2));
             } else {
                 $ptags['EMPTY_MESSAGE'] = dgettext('vlist', 'Sorry, no groups are available at this time.');
             }
         }
         if (Current_User::allow('vlist', 'settings', null, null, true)) {
             $vars['aop']  = 'new_group';
-            $ptags['ADD_LINK'] = Core\Text::secureLink(dgettext('vlist', 'Add Group'), 'vlist', $vars);
+            $ptags['ADD_LINK'] = \core\Text::secureLink(dgettext('vlist', 'Add Group'), 'vlist', $vars);
         }
         $pager->addPageTags($ptags);
         $pager->addToggle('class="toggle1"');
         $pager->setSearch('title', 'description');
 
         $this->vlist->content = $pager->get();
-        $this->vlist->title = sprintf('%s %s', Core\Text::parseOutput(Core\Settings::get('vlist', 'module_title')), Core\Text::parseOutput(Core\Settings::get('vlist', 'groups_title')));
+        $this->vlist->title = sprintf('%s %s', \core\Text::parseOutput(core\Settings::get('vlist', 'module_title')), \core\Text::parseOutput(core\Settings::get('vlist', 'groups_title')));
     }
 
 
@@ -426,8 +426,8 @@ class vList_Forms {
         $ptags['PRIVATE_HEADER'] = dgettext('vlist', 'Private');
         $ptags['ADD_FORM'] = $this->addElement();
 
-        Core\Core::initModClass('vlist', 'UNI_Element.php');
-                $pager = new Core\DBPager('vlist_element', 'UNI_Element');
+        \core\Core::initModClass('vlist', 'UNI_Element.php');
+                $pager = new \core\DBPager('vlist_element', 'UNI_Element');
         $pager->setModule('vlist');
         $pager->setOrder('sort', 'asc', true);
         $pager->setOrder('title', 'asc', true);
@@ -438,13 +438,13 @@ class vList_Forms {
         $pager->setSearch('title');
 
         $this->vlist->content = $pager->get();
-        $this->vlist->title = sprintf(dgettext('vlist', '%s Elements'), Core\Settings::get('vlist', 'module_title'));
+        $this->vlist->title = sprintf(dgettext('vlist', '%s Elements'), \core\Settings::get('vlist', 'module_title'));
     }
 
 
     public function editListing()
     {
-        $form = new Core\Form('vlist_listing');
+        $form = new \core\Form('vlist_listing');
         $listing = & $this->vlist->listing;
 
         $form->addHidden('module', 'vlist');
@@ -452,19 +452,19 @@ class vList_Forms {
             $form->addHidden('aop', 'post_listing');
             $form->addHidden('id', $listing->id);
             $form->addSubmit(dgettext('vlist', 'Update'));
-            $this->vlist->title = sprintf(dgettext('vlist', 'Update %s listing'), Core\Text::parseOutput(Core\Settings::get('vlist', 'module_title')));
+            $this->vlist->title = sprintf(dgettext('vlist', 'Update %s listing'), \core\Text::parseOutput(core\Settings::get('vlist', 'module_title')));
         } elseif (isset($_REQUEST['uop']) && $_REQUEST['uop'] == 'submit_listing') {
             $form->addHidden('uop', 'post_listing');
             $form->addSubmit(dgettext('vlist', 'Submit'));
-            $this->vlist->title = sprintf(dgettext('vlist', 'Submit %s listing'), Core\Text::parseOutput(Core\Settings::get('vlist', 'module_title')));
+            $this->vlist->title = sprintf(dgettext('vlist', 'Submit %s listing'), \core\Text::parseOutput(core\Settings::get('vlist', 'module_title')));
         } else {
             $form->addHidden('aop', 'post_listing');
             $form->addSubmit(dgettext('vlist', 'Create'));
-            $this->vlist->title = sprintf(dgettext('vlist', 'Create %s listing'), Core\Text::parseOutput(Core\Settings::get('vlist', 'module_title')));
+            $this->vlist->title = sprintf(dgettext('vlist', 'Create %s listing'), \core\Text::parseOutput(core\Settings::get('vlist', 'module_title')));
         }
 
-        if (Core\Settings::get('vlist', 'enable_users') && Current_User::allow('vlist', 'edit_listing', null, null, true)) {
-            $db = new Core\DB('users');
+        if (core\Settings::get('vlist', 'enable_users') && Current_User::allow('vlist', 'edit_listing', null, null, true)) {
+            $db = new \core\DB('users');
             $db->addColumn('id');
             $db->addColumn('username');
             $db->addColumn('display_name');
@@ -509,22 +509,22 @@ class vList_Forms {
         $form->setRequired('description');
         $form->setLabel('description', dgettext('vlist', 'Description'));
 
-        if (Core\Settings::get('vlist', 'enable_images')) {
-            if (Core\Settings::get('vlist', 'anon_files') || (Core\Settings::get('vlist', 'user_files') && $_SESSION['User']->username != '') || Current_User::allow('vlist', 'edit_listing')) {
-                Core\Core::initModClass('filecabinet', 'Cabinet.php');
+        if (core\Settings::get('vlist', 'enable_images')) {
+            if (core\Settings::get('vlist', 'anon_files') || (core\Settings::get('vlist', 'user_files') && $_SESSION['User']->username != '') || Current_User::allow('vlist', 'edit_listing')) {
+                \core\Core::initModClass('filecabinet', 'Cabinet.php');
                 $manager = Cabinet::fileManager('image_id', $listing->image_id);
                 $manager->imageOnly();
-                $manager->maxImageWidth(Core\Settings::get('vlist', 'max_width'));
-                $manager->maxImageHeight(Core\Settings::get('vlist', 'max_height'));
+                $manager->maxImageWidth(core\Settings::get('vlist', 'max_width'));
+                $manager->maxImageHeight(core\Settings::get('vlist', 'max_height'));
                 if ($manager) {
                     $form->addTplTag('IMAGE_MANAGER', $manager->get());
                 }
             }
         }
 
-        if (Core\Settings::get('vlist', 'enable_files')) {
-            if (Core\Settings::get('vlist', 'anon_files') || (Core\Settings::get('vlist', 'user_files') && $_SESSION['User']->username != '') || Current_User::allow('vlist', 'edit_listing')) {
-                Core\Core::initModClass('filecabinet', 'Cabinet.php');
+        if (core\Settings::get('vlist', 'enable_files')) {
+            if (core\Settings::get('vlist', 'anon_files') || (core\Settings::get('vlist', 'user_files') && $_SESSION['User']->username != '') || Current_User::allow('vlist', 'edit_listing')) {
+                \core\Core::initModClass('filecabinet', 'Cabinet.php');
                 $manager = Cabinet::fileManager('file_id', $listing->file_id);
                 $manager->documentOnly();
                 if ($manager) {
@@ -535,24 +535,24 @@ class vList_Forms {
 
         $tpl = $form->getTemplate();
 
-        if (Core\Settings::get('vlist', 'enable_groups')) {
+        if (core\Settings::get('vlist', 'enable_groups')) {
             $tpl['GROUPS'] = $this->vlist->getItemForm('group', $match=$listing->get_groups(), $select_name='groups', $multiple=true);
             $tpl['GROUPS_LABEL'] = dgettext('vlist', 'Group');
         }
 
         $tpl['DETAILS_LABEL'] = dgettext('vlist', 'Details');
-        if (Core\Settings::get('vlist', 'enable_elements')) {
+        if (core\Settings::get('vlist', 'enable_elements')) {
             $tpl['EXTRAS_LABEL'] = dgettext('vlist', 'Extra');
             $tpl['EXTRAS'] = $this->getExtrasForm();
         }
 
-        $this->vlist->content = Core\Template::process($tpl, 'vlist', 'edit_listing.tpl');
+        $this->vlist->content = \core\Template::process($tpl, 'vlist', 'edit_listing.tpl');
     }
 
 
     public function editGroup()
     {
-        $form = new Core\Form('vlist_group');
+        $form = new \core\Form('vlist_group');
         $group = & $this->vlist->group;
 
         $form->addHidden('module', 'vlist');
@@ -561,10 +561,10 @@ class vList_Forms {
         if ($group->id) {
             $form->addHidden('id', $group->id);
             $form->addSubmit(dgettext('vlist', 'Update'));
-            $this->vlist->title = sprintf(dgettext('vlist', 'Update %s group'), Core\Settings::get('vlist', 'module_title'));
+            $this->vlist->title = sprintf(dgettext('vlist', 'Update %s group'), \core\Settings::get('vlist', 'module_title'));
         } else {
             $form->addSubmit(dgettext('vlist', 'Create'));
-            $this->vlist->title = sprintf(dgettext('vlist', 'Create %s group'), Core\Settings::get('vlist', 'module_title'));
+            $this->vlist->title = sprintf(dgettext('vlist', 'Create %s group'), \core\Settings::get('vlist', 'module_title'));
         }
 
         $form->addText('title', $group->title);
@@ -577,11 +577,11 @@ class vList_Forms {
         $form->setCols('description', '40');
         $form->setLabel('description', dgettext('vlist', 'Description'));
 
-        Core\Core::initModClass('filecabinet', 'Cabinet.php');
+        \core\Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager('image_id', $group->image_id);
         $manager->imageOnly();
-        $manager->maxImageWidth(Core\Settings::get('vlist', 'max_width'));
-        $manager->maxImageHeight(Core\Settings::get('vlist', 'max_height'));
+        $manager->maxImageWidth(core\Settings::get('vlist', 'max_width'));
+        $manager->maxImageHeight(core\Settings::get('vlist', 'max_height'));
 
         if ($manager) {
             $form->addTplTag('FILE_MANAGER', $manager->get());
@@ -590,7 +590,7 @@ class vList_Forms {
         $tpl = $form->getTemplate();
         $tpl['DETAILS_LABEL'] = dgettext('vlist', 'Details');
 
-        $this->vlist->content = Core\Template::process($tpl, 'vlist', 'edit_group.tpl');
+        $this->vlist->content = \core\Template::process($tpl, 'vlist', 'edit_group.tpl');
 
     }
 
@@ -598,124 +598,124 @@ class vList_Forms {
     public function editSettings()
     {
 
-        $form = new Core\Form('vlist_settings');
+        $form = new \core\Form('vlist_settings');
         $form->addHidden('module', 'vlist');
         $form->addHidden('aop', 'post_settings');
 
-        $form->addText('module_title', Core\Settings::get('vlist', 'module_title'));
+        $form->addText('module_title', \core\Settings::get('vlist', 'module_title'));
         $form->setSize('module_title', 30);
         $form->setRequired('module_title');
         $form->setLabel('module_title', dgettext('vlist', 'The display title for this module, eg. vList, Properties, Listings, etc.'));
 
         $form->addCheckbox('enable_sidebox', 1);
-        $form->setMatch('enable_sidebox', Core\Settings::get('vlist', 'enable_sidebox'));
+        $form->setMatch('enable_sidebox', \core\Settings::get('vlist', 'enable_sidebox'));
         $form->setLabel('enable_sidebox', dgettext('vlist', 'Enable vlist sidebox'));
 
         $form->addCheckbox('sidebox_homeonly', 1);
-        $form->setMatch('sidebox_homeonly', Core\Settings::get('vlist', 'sidebox_homeonly'));
+        $form->setMatch('sidebox_homeonly', \core\Settings::get('vlist', 'sidebox_homeonly'));
         $form->setLabel('sidebox_homeonly', dgettext('vlist', 'Show sidebox on home page only'));
 
-        $form->addTextArea('sidebox_text', Core\Text::parseOutput(Core\Settings::get('vlist', 'sidebox_text')));
+        $form->addTextArea('sidebox_text', \core\Text::parseOutput(core\Settings::get('vlist', 'sidebox_text')));
         $form->setRows('sidebox_text', '4');
         $form->setCols('sidebox_text', '40');
         $form->setLabel('sidebox_text', dgettext('vlist', 'Sidebox text'));
 
         $form->addRadio('block_order_by', array(0, 1));
         $form->setLabel('block_order_by', array(dgettext('vlist', 'Most recent'), dgettext('vlist', 'Random')));
-        $form->setMatch('block_order_by', Core\Settings::get('vlist', 'block_order_by'));
+        $form->setMatch('block_order_by', \core\Settings::get('vlist', 'block_order_by'));
 
         $form->addRadio('main_order_by', array(0, 1, 2, 3));
         $form->setLabel('main_order_by', array(dgettext('vlist', 'Title'), dgettext('vlist', 'Created'), dgettext('vlist', 'Updated'), dgettext('vlist', 'Random')));
-        $form->setMatch('main_order_by', Core\Settings::get('vlist', 'main_order_by'));
+        $form->setMatch('main_order_by', \core\Settings::get('vlist', 'main_order_by'));
 
         $form->addCheckbox('enable_elements', 1);
-        $form->setMatch('enable_elements', Core\Settings::get('vlist', 'enable_elements'));
+        $form->setMatch('enable_elements', \core\Settings::get('vlist', 'enable_elements'));
         $form->setLabel('enable_elements', dgettext('vlist', 'Enable extra fields'));
 
         $form->addCheckbox('enable_groups', 1);
-        $form->setMatch('enable_groups', Core\Settings::get('vlist', 'enable_groups'));
+        $form->setMatch('enable_groups', \core\Settings::get('vlist', 'enable_groups'));
         $form->setLabel('enable_groups', dgettext('vlist', 'Enable groups'));
 
-        $form->addText('groups_title', Core\Settings::get('vlist', 'groups_title'));
+        $form->addText('groups_title', \core\Settings::get('vlist', 'groups_title'));
         $form->setSize('groups_title', 30);
         $form->setRequired('groups_title');
         $form->setLabel('groups_title', dgettext('vlist', 'The display title for groups, eg. Groups, Regions, Categories, etc.'));
 
         $form->addCheckbox('list_groups', 1);
-        $form->setMatch('list_groups', Core\Settings::get('vlist', 'list_groups'));
+        $form->setMatch('list_groups', \core\Settings::get('vlist', 'list_groups'));
         $form->setLabel('list_groups', dgettext('vlist', 'Include groups in list view'));
 
-        $form->addText('admin_contact', Core\Settings::get('vlist', 'admin_contact'));
+        $form->addText('admin_contact', \core\Settings::get('vlist', 'admin_contact'));
         $form->setSize('admin_contact', 30);
         $form->setRequired('admin_contact');
         $form->setLabel('admin_contact', dgettext('vlist', 'Admin email address'));
 
         $form->addCheckbox('enable_files', 1);
-        $form->setMatch('enable_files', Core\Settings::get('vlist', 'enable_files'));
+        $form->setMatch('enable_files', \core\Settings::get('vlist', 'enable_files'));
         $form->setLabel('enable_files', dgettext('vlist', 'Enable files on listings'));
 
         $form->addCheckbox('enable_images', 1);
-        $form->setMatch('enable_images', Core\Settings::get('vlist', 'enable_images'));
+        $form->setMatch('enable_images', \core\Settings::get('vlist', 'enable_images'));
         $form->setLabel('enable_images', dgettext('vlist', 'Enable images on listings'));
 
-        $form->addTextField('max_width', Core\Settings::get('vlist', 'max_width'));
+        $form->addTextField('max_width', \core\Settings::get('vlist', 'max_width'));
         $form->setLabel('max_width', dgettext('vlist', 'Maximum image width (50-600)'));
         $form->setSize('max_width', 4,4);
 
-        $form->addTextField('max_height', Core\Settings::get('vlist', 'max_height'));
+        $form->addTextField('max_height', \core\Settings::get('vlist', 'max_height'));
         $form->setLabel('max_height', dgettext('vlist', 'Maximum image height (50-600)'));
         $form->setSize('max_height', 4,4);
 
         $form->addCheckbox('enable_users', 1);
-        $form->setMatch('enable_users', Core\Settings::get('vlist', 'enable_users'));
+        $form->setMatch('enable_users', \core\Settings::get('vlist', 'enable_users'));
         $form->setLabel('enable_users', dgettext('vlist', 'Enable user profiles (uses Rolodex data if available)'));
 
         $form->addCheckbox('show_users', 1);
-        $form->setMatch('show_users', Core\Settings::get('vlist', 'show_users'));
+        $form->setMatch('show_users', \core\Settings::get('vlist', 'show_users'));
         $form->setLabel('show_users', dgettext('vlist', 'Show user details (to non-admins)'));
 
         $form->addCheckbox('list_users', 1);
-        $form->setMatch('list_users', Core\Settings::get('vlist', 'list_users'));
+        $form->setMatch('list_users', \core\Settings::get('vlist', 'list_users'));
         $form->setLabel('list_users', dgettext('vlist', 'Display users in list view (to non-admins)'));
 
         $form->addCheckbox('user_submissions', 1);
-        $form->setMatch('user_submissions', Core\Settings::get('vlist', 'user_submissions'));
+        $form->setMatch('user_submissions', \core\Settings::get('vlist', 'user_submissions'));
         $form->setLabel('user_submissions', dgettext('vlist', 'Enable user submissions'));
 
         $form->addCheckbox('anon_submissions', 1);
-        $form->setMatch('anon_submissions', Core\Settings::get('vlist', 'anon_submissions'));
+        $form->setMatch('anon_submissions', \core\Settings::get('vlist', 'anon_submissions'));
         $form->setLabel('anon_submissions', dgettext('vlist', 'Enable anonymous submissions'));
 
         $form->addCheckbox('user_files', 1);
-        $form->setMatch('user_files', Core\Settings::get('vlist', 'user_files'));
+        $form->setMatch('user_files', \core\Settings::get('vlist', 'user_files'));
         $form->setLabel('user_files', dgettext('vlist', 'Allow user img/file access'));
 
         $form->addCheckbox('anon_files', 1);
-        $form->setMatch('anon_files', Core\Settings::get('vlist', 'anon_files'));
+        $form->setMatch('anon_files', \core\Settings::get('vlist', 'anon_files'));
         $form->setLabel('anon_files', dgettext('vlist', 'Allow anonymous img/file access'));
 
         $form->addCheckbox('view_created', 1);
-        $form->setMatch('view_created', Core\Settings::get('vlist', 'view_created'));
+        $form->setMatch('view_created', \core\Settings::get('vlist', 'view_created'));
         $form->setLabel('view_created', dgettext('vlist', 'Display created date on details view'));
 
         $form->addCheckbox('view_updated', 1);
-        $form->setMatch('view_updated', Core\Settings::get('vlist', 'view_updated'));
+        $form->setMatch('view_updated', \core\Settings::get('vlist', 'view_updated'));
         $form->setLabel('view_updated', dgettext('vlist', 'Display updated date on details view'));
 
         $form->addCheckbox('list_created', 1);
-        $form->setMatch('list_created', Core\Settings::get('vlist', 'list_created'));
+        $form->setMatch('list_created', \core\Settings::get('vlist', 'list_created'));
         $form->setLabel('list_created', dgettext('vlist', 'Display created date in list view'));
 
         $form->addCheckbox('list_updated', 1);
-        $form->setMatch('list_updated', Core\Settings::get('vlist', 'list_updated'));
+        $form->setMatch('list_updated', \core\Settings::get('vlist', 'list_updated'));
         $form->setLabel('list_updated', dgettext('vlist', 'Display updated date in list view'));
 
         $form->addCheckbox('notify_submit', 1);
-        $form->setMatch('notify_submit', Core\Settings::get('vlist', 'notify_submit'));
+        $form->setMatch('notify_submit', \core\Settings::get('vlist', 'notify_submit'));
         $form->setLabel('notify_submit', dgettext('vlist', 'Send admin notice of new submissions'));
 
         $form->addCheckbox('notify_edit', 1);
-        $form->setMatch('notify_edit', Core\Settings::get('vlist', 'notify_edit'));
+        $form->setMatch('notify_edit', \core\Settings::get('vlist', 'notify_edit'));
         $form->setLabel('notify_edit', dgettext('vlist', 'Send admin notice of edits'));
 
         $form->addSubmit('save', dgettext('vlist', 'Save settings'));
@@ -727,7 +727,7 @@ class vList_Forms {
         $tpl['SUBMISSION_LABEL'] = dgettext('vlist', 'Submission Settings');
 
         $this->vlist->title = dgettext('vlist', 'Settings');
-        $this->vlist->content = Core\Template::process($tpl, 'vlist', 'edit_settings.tpl');
+        $this->vlist->content = \core\Template::process($tpl, 'vlist', 'edit_settings.tpl');
     }
 
 
@@ -753,14 +753,14 @@ class vList_Forms {
         $types['00'] = dgettext('vlist', '----');
         $types['Div'] = dgettext('vlist', 'Divider');
 
-        $form = new Core\Form;
+        $form = new \core\Form;
         $form->addHidden('module', 'vlist');
         $form->addHidden('aop', 'new_element');
         $form->addSelect('type', $types);
         $form->setMatch('type', $match);
         $form->addSubmit('Add', dgettext('vlist', 'Add'));
         $tpl = $form->getTemplate();
-        return  Core\Template::process($tpl, 'vlist', 'elements/add_element.tpl');
+        return  \core\Template::process($tpl, 'vlist', 'elements/add_element.tpl');
 
     }
 
@@ -769,7 +769,7 @@ class vList_Forms {
     {
         $listing = & $this->vlist->listing;
         $form = null;
-        $db = new Core\DB('vlist_element');
+        $db = new \core\DB('vlist_element');
         $db->addWhere('active', 1);
         $db->addOrder('sort asc');
         $result = $db->select();
@@ -782,7 +782,7 @@ class vList_Forms {
                 } else {
                     $type = $type;
                 }
-                $db = new Core\DB('vlist_element_items');
+                $db = new \core\DB('vlist_element_items');
                 $db->addWhere('element_id', $id);
                 $db->addWhere('listing_id', $listing->id);
                 $result = $db->select();
@@ -806,10 +806,10 @@ class vList_Forms {
                     $match = null;
                 }
                 $class = 'UNI_' . $type;
-                Core\Core::initModClass('vlist', 'elements/' . $class . '.php');
+                \core\Core::initModClass('vlist', 'elements/' . $class . '.php');
                 $field = new $class($id);
                 $tpl['FIELD'] = $field->view($match);
-                $form .= Core\Template::processTemplate($tpl, 'vlist', 'listing_extras_form.tpl');
+                $form .= \core\Template::processTemplate($tpl, 'vlist', 'listing_extras_form.tpl');
             }
         } else {
             $form = dgettext('vlist', 'Sorry, no custom elements have been setup.');
@@ -820,7 +820,7 @@ class vList_Forms {
 
     public function advSearchForm()
     {
-        $form = new Core\Form('vlist_adv_search');
+        $form = new \core\Form('vlist_adv_search');
 
         $form->setMethod('get');
         $form->addHidden('module', 'vlist');
@@ -832,14 +832,14 @@ class vList_Forms {
 
         $tpl['ALPHA_CLICK'] = $this->vlist->alpha_click();
 
-        if (Core\Settings::get('vlist', 'enable_groups')) {
+        if (core\Settings::get('vlist', 'enable_groups')) {
             $tpl['GROUP_SELECT'] = $this->vlist->getItemSelect('group', null, 'groups');
-            $tpl['GROUP_LABEL'] = Core\Settings::get('vlist', 'groups_title');
+            $tpl['GROUP_LABEL'] = \core\Settings::get('vlist', 'groups_title');
         }
 
-        if (Core\Settings::get('vlist', 'enable_elements')) {
+        if (core\Settings::get('vlist', 'enable_elements')) {
             $tpl['EXTRAS'] = null;
-            $db = new Core\DB('vlist_element');
+            $db = new \core\DB('vlist_element');
             $db->addWhere('active', 1);
             $db->addWhere('search', 1);
             if (!Current_User::allow('vlist')) {
@@ -852,13 +852,13 @@ class vList_Forms {
                     $id = $element['id'];
                     $type = $element['type'];
                     if ($type == 'Checkbox' || $type == 'Multiselect' || $type == 'Dropbox' || $type == 'Radiobutton') {
-                        $element['LABEL'] = Core\Text::parseOutput($element['title']);
+                        $element['LABEL'] = \core\Text::parseOutput($element['title']);
                         $element['FIELD'] = $this->vlist->getExtrasSelect($id);
                     } else {
                         $element['LABEL'] = null;
                         $element['FIELD'] = null;
                     }
-                    $tpl['EXTRAS'] .= Core\Template::processTemplate($element, 'vlist', 'adv_search_extras.tpl');
+                    $tpl['EXTRAS'] .= \core\Template::processTemplate($element, 'vlist', 'adv_search_extras.tpl');
                 }
             } else {
                 $tpl['EXTRAS'] = dgettext('vlist', 'Sorry, no custom elements have been setup.');
@@ -870,8 +870,8 @@ class vList_Forms {
         $tpl['TIP_SELECT'] = dgettext('vlist', 'Select one or more of the available options below to filter a list of members. It is possible to get too specific. If your search returns an empty list, try selecting fewer criteria.');
         $tpl['TIP_MULTI'] = dgettext('vlist', 'To select more than one itme from any given list, click on the first item then hold your control key and click on the next. Use shift-click to select a range of items. Mac users, use command-click and shift-click.');
 
-        $this->vlist->title = sprintf(dgettext('vlist', '%s Advanced Search'), Core\Settings::get('vlist', 'module_title'));
-        $this->vlist->content = Core\Template::process($tpl, 'vlist', 'adv_search_form.tpl');
+        $this->vlist->title = sprintf(dgettext('vlist', '%s Advanced Search'), \core\Settings::get('vlist', 'module_title'));
+        $this->vlist->content = \core\Template::process($tpl, 'vlist', 'adv_search_form.tpl');
 
     }
 
@@ -893,7 +893,7 @@ class vList_Forms {
         $tpl['DONATE'] = sprintf(dgettext('vlist', 'If you would like to help out with the ongoing development of vlist, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window).'), '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=donations%40verdon%2eca&item_name=vList%20Module%20Development&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=CA&bn=PP%2dDonationsBF&charset=UTF%2d8" target="new">', '</a>');
 
         $this->vlist->title = dgettext('vlist', 'Read me');
-        $this->vlist->content = Core\Template::process($tpl, 'vlist', 'info.tpl');
+        $this->vlist->content = \core\Template::process($tpl, 'vlist', 'info.tpl');
     }
 
 

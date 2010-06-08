@@ -38,8 +38,8 @@ class WikiSettings {
             return;
         }
 
-        Core\Core::initModClass('help', 'Help.php');
-        Core\Core::initModClass('wiki', 'WikiPage.php');
+        \core\Core::initModClass('help', 'Help.php');
+        \core\Core::initModClass('wiki', 'WikiPage.php');
         
         if (isset($_POST['op']) && ($_POST['op'] == 'savesettings'))
         {
@@ -47,92 +47,92 @@ class WikiSettings {
         }
 
         $tabs = 1;
-        $form = new Core\Form;
+        $form = new \core\Form;
 
         $form->addCheck('show_on_home');
-        $form->setMatch('show_on_home', Core\Settings::get('wiki', 'show_on_home'));
+        $form->setMatch('show_on_home', \core\Settings::get('wiki', 'show_on_home'));
         $form->addTplTag('SHOW_ON_HOME_LABEL',
                          PHPWS_Help::show_link('wiki', 'show_on_home', dgettext('wiki', 'Show on home page')));
         $form->setTab('show_on_home', $tabs++);
 
         $form->addCheck('allow_anon_view');
-        $form->setMatch('allow_anon_view', Core\Settings::get('wiki', 'allow_anon_view'));
+        $form->setMatch('allow_anon_view', \core\Settings::get('wiki', 'allow_anon_view'));
         $form->addTplTag('ALLOW_ANON_VIEW_LABEL',
                          PHPWS_Help::show_link('wiki', 'allow_anon_view', dgettext('wiki', 'Allow Anonymous Viewing')));
         $form->setTab('allow_anon_view', $tabs++);
 
         $form->addCheck('allow_page_edit');
-        $form->setMatch('allow_page_edit', Core\Settings::get('wiki', 'allow_page_edit'));
+        $form->setMatch('allow_page_edit', \core\Settings::get('wiki', 'allow_page_edit'));
         $form->addTplTag('ALLOW_PAGE_EDIT_LABEL',
                          PHPWS_Help::show_link('wiki', 'allow_page_edit',
                          dgettext('wiki', 'Allow all registered users to edit pages')));
         $form->setTab('allow_page_edit', $tabs++);
 
         $form->addCheck('allow_image_upload');
-        $form->setMatch('allow_image_upload', Core\Settings::get('wiki', 'allow_image_upload'));
+        $form->setMatch('allow_image_upload', \core\Settings::get('wiki', 'allow_image_upload'));
         $form->addTplTag('ALLOW_IMAGE_UPLOAD_LABEL',
                          PHPWS_Help::show_link('wiki', 'allow_image_upload',
                          dgettext('wiki', 'Allow all registered users to upload images')));
         $form->setTab('allow_image_upload', $tabs++);
 
         $form->addCheck('allow_bbcode');
-        $form->setMatch('allow_bbcode', Core\Settings::get('wiki', 'allow_bbcode'));
+        $form->setMatch('allow_bbcode', \core\Settings::get('wiki', 'allow_bbcode'));
         $form->addTplTag('ALLOW_BBCODE_LABEL',
                          PHPWS_Help::show_link('wiki', 'allow_bbcode', dgettext('wiki', 'Enable BBCode parser')));
         $form->setTab('allow_bbcode', $tabs++);
 
         $form->addCheck('ext_chars_support');
-        $form->setMatch('ext_chars_support', Core\Settings::get('wiki', 'ext_chars_support'));
+        $form->setMatch('ext_chars_support', \core\Settings::get('wiki', 'ext_chars_support'));
         $form->addTplTag('EXT_CHARS_SUPPORT_LABEL',
                          PHPWS_Help::show_link('wiki', 'ext_chars_support',
                          dgettext('wiki', 'Enable extended character set for wiki page names')));
         $form->setTab('ext_chars_support', $tabs++);
 
         $form->addCheck('add_to_title');
-        $form->setMatch('add_to_title', Core\Settings::get('wiki', 'add_to_title'));
+        $form->setMatch('add_to_title', \core\Settings::get('wiki', 'add_to_title'));
         $form->addTplTag('ADD_TO_TITLE_LABEL',
                          PHPWS_Help::show_link('wiki', 'add_to_title', dgettext('wiki', 'Add wiki page title to site title')));
         $form->setTab('add_to_title', $tabs++);
 
         $form->addCheck('format_title');
-        $form->setMatch('format_title', Core\Settings::get('wiki', 'format_title'));
+        $form->setMatch('format_title', \core\Settings::get('wiki', 'format_title'));
         $form->addTplTag('FORMAT_TITLE_LABEL',
                          PHPWS_Help::show_link('wiki', 'format_title',
                          dgettext('wiki', 'Format the wiki page title before displaying')));
         $form->setTab('format_title', $tabs++);
 
         $form->addCheck('show_modified_info');
-        $form->setMatch('show_modified_info', Core\Settings::get('wiki', 'show_modified_info'));
+        $form->setMatch('show_modified_info', \core\Settings::get('wiki', 'show_modified_info'));
         $form->addTplTag('SHOW_MODIFIED_INFO_LABEL',
                          PHPWS_Help::show_link('wiki', 'show_modified_info', dgettext('wiki', 'Show page modified information')));
         $form->setTab('show_modified_info', $tabs++);
 
         $form->addCheck('diff_type');
-        $form->setMatch('diff_type', (Core\Settings::get('wiki', 'diff_type') == 'one_col'));
+        $form->setMatch('diff_type', (core\Settings::get('wiki', 'diff_type') == 'one_col'));
         $form->addTplTag('DIFF_TYPE_LABEL',
                          PHPWS_Help::show_link('wiki', 'diff_type', dgettext('wiki', 'Use single column diff')));
         $form->setTab('diff_type', $tabs++);
 
         $form->addCheck('monitor_edits');
-        $form->setMatch('monitor_edits', Core\Settings::get('wiki', 'monitor_edits'));
+        $form->setMatch('monitor_edits', \core\Settings::get('wiki', 'monitor_edits'));
         $form->addTplTag('MONITOR_EDITS_LABEL',
                          PHPWS_Help::show_link('wiki', 'monitor_edits', dgettext('wiki', 'Monitor Edits')));
         $form->setTab('monitor_edits', $tabs++);
 
-        $form->addText('admin_email', Core\Settings::get('wiki', 'admin_email'));
+        $form->addText('admin_email', \core\Settings::get('wiki', 'admin_email'));
         $form->setSize('admin_email', 25);
         $form->addTplTag('ADMIN_EMAIL_LABEL',
                          PHPWS_Help::show_link('wiki', 'admin_email', dgettext('wiki', 'Wiki Admin Email')));
         $form->setTab('admin_email', $tabs++);
 
-        $form->addTextArea('email_text', Core\Settings::get('wiki', 'email_text'));
+        $form->addTextArea('email_text', \core\Settings::get('wiki', 'email_text'));
         $form->setWidth('email_text', '80%');
         $form->setRows('email_text', 5);
         $form->addTplTag('EMAIL_TEXT_LABEL',
                          PHPWS_Help::show_link('wiki', 'email_text', dgettext('wiki', 'Email Notification Text')));
         $form->setTab('email_text', $tabs++);
 
-        $form->addText('default_page', Core\Settings::get('wiki', 'default_page'));
+        $form->addText('default_page', \core\Settings::get('wiki', 'default_page'));
         $form->setSize('default_page', 25, 100);
         $form->addTplTag('DEFAULT_PAGE_LABEL',
                          PHPWS_Help::show_link('wiki', 'default_page', dgettext('wiki', 'Default page')));
@@ -140,48 +140,48 @@ class WikiSettings {
 
         $options = array('_blank'=>'_blank', '_parent'=>'_parent', '_self'=>'_self', '_top'=>'_top');
         $form->addSelect('ext_page_target', $options);
-        $form->setMatch('ext_page_target', Core\Settings::get('wiki', 'ext_page_target'));
+        $form->setMatch('ext_page_target', \core\Settings::get('wiki', 'ext_page_target'));
         $form->addTplTag('EXT_PAGE_TARGET_LABEL',
                          PHPWS_Help::show_link('wiki', 'ext_page_target', dgettext('wiki', 'Target for external links')));
         $form->setTab('ext_page_target', $tabs++);
 
         $form->addCheck('immutable_page');
-        $form->setMatch('immutable_page', Core\Settings::get('wiki', 'immutable_page'));
+        $form->setMatch('immutable_page', \core\Settings::get('wiki', 'immutable_page'));
         $form->setLabel('immutable_page', dgettext('wiki', 'Show immutable page text (if applicable)'));
         $form->setTab('immutable_page', $tabs++);
 
         $form->addCheck('raw_text');
-        $form->setMatch('raw_text', Core\Settings::get('wiki', 'raw_text'));
+        $form->setMatch('raw_text', \core\Settings::get('wiki', 'raw_text'));
         $form->setLabel('raw_text', dgettext('wiki', 'Show raw text link'));
         $form->setTab('raw_text', $tabs++);
 
         $form->addCheck('print_view');
-        $form->setMatch('print_view', Core\Settings::get('wiki', 'print_view'));
+        $form->setMatch('print_view', \core\Settings::get('wiki', 'print_view'));
         $form->setLabel('print_view', dgettext('wiki', 'Show print view link'));
         $form->setTab('print_view', $tabs++);
 
         $form->addCheck('what_links_here');
-        $form->setMatch('what_links_here', Core\Settings::get('wiki', 'what_links_here'));
+        $form->setMatch('what_links_here', \core\Settings::get('wiki', 'what_links_here'));
         $form->setLabel('what_links_here', dgettext('wiki', 'Show what links here link'));
         $form->setTab('what_links_here', $tabs++);
 
         $form->addCheck('recent_changes');
-        $form->setMatch('recent_changes', Core\Settings::get('wiki', 'recent_changes'));
+        $form->setMatch('recent_changes', \core\Settings::get('wiki', 'recent_changes'));
         $form->setLabel('recent_changes', dgettext('wiki', 'Show recent changes link'));
         $form->setTab('recent_changes', $tabs++);
 
         $form->addCheck('random_page');
-        $form->setMatch('random_page', Core\Settings::get('wiki', 'random_page'));
+        $form->setMatch('random_page', \core\Settings::get('wiki', 'random_page'));
         $form->setLabel('random_page', dgettext('wiki', 'Show random page link'));
         $form->setTab('random_page', $tabs++);
 
         $form->addCheck('discussion');
-        $form->setMatch('discussion', Core\Settings::get('wiki', 'discussion'));
+        $form->setMatch('discussion', \core\Settings::get('wiki', 'discussion'));
         $form->setLabel('discussion', dgettext('wiki', 'Enable discussion for registered users'));
         $form->setTab('discussion', $tabs++);
 
         $form->addCheck('discussion_anon');
-        $form->setMatch('discussion_anon', Core\Settings::get('wiki', 'discussion_anon'));
+        $form->setMatch('discussion_anon', \core\Settings::get('wiki', 'discussion_anon'));
         $form->setLabel('discussion_anon', dgettext('wiki', 'Allow anonymous discussion'));
         $form->setTab('discussion_anon', $tabs++);
 
@@ -192,7 +192,7 @@ class WikiSettings {
         $form->addHidden('op', 'savesettings');
 
         $tags = $form->getTemplate();
-        $tags['BACK'] = Core\Text::moduleLink(dgettext('wiki', 'Back to Wiki'), 'wiki');
+        $tags['BACK'] = \core\Text::moduleLink(dgettext('wiki', 'Back to Wiki'), 'wiki');
         $tags['MESSAGE']        = WikiManager::getMessage();
         $tags['MENU_ITEMS_LABEL'] = PHPWS_Help::show_link('wiki', 'menu_items', dgettext('wiki', 'Menu Items'));
         $tags['DISCUSSION_SECTION_LABEL'] = PHPWS_Help::show_link('wiki', 'discussion', dgettext('wiki', 'Discussion'));
@@ -205,7 +205,7 @@ class WikiSettings {
         $tags['ORPHANED']       = PHPWS_Help::show_link('wiki', 'orphaned_pages', dgettext('wiki', 'Orphaned'));
         $tags['ACTIONS']        = dgettext('wiki', 'Actions');
 
-        $pager = new Core\DBPager('wiki_pages', 'WikiPage');
+        $pager = new \core\DBPager('wiki_pages', 'WikiPage');
         $pager->setModule('wiki');
         $pager->setTemplate('admin.tpl');
         $pager->addToggle(' class="bgcolor1"');
@@ -216,7 +216,7 @@ class WikiSettings {
 
         $template['TITLE'] = dgettext('wiki', 'Wiki Administration');
         $template['CONTENT'] = $pager->get();
-        Layout::add(Core\Template::process($template, 'wiki', 'box.tpl'), 'wiki', 'wiki_mod', TRUE);
+        Layout::add(core\Template::process($template, 'wiki', 'box.tpl'), 'wiki', 'wiki_mod', TRUE);
     }// END FUNC admin
 
     /**
@@ -226,51 +226,51 @@ class WikiSettings {
      */
     function save()
     {
-        Core\Settings::set('wiki', 'show_on_home', (int)isset($_POST['show_on_home']));
-        Core\Settings::set('wiki', 'allow_anon_view', (int)isset($_POST['allow_anon_view']));
-        Core\Settings::set('wiki', 'allow_page_edit', (int)isset($_POST['allow_page_edit']));
-        Core\Settings::set('wiki', 'allow_image_upload', (int)isset($_POST['allow_image_upload']));
-        Core\Settings::set('wiki', 'allow_bbcode', (int)isset($_POST['allow_bbcode']));
-        Core\Settings::set('wiki', 'ext_chars_support', (int)isset($_POST['ext_chars_support']));
-        Core\Settings::set('wiki', 'add_to_title', (int)isset($_POST['add_to_title']));
-        Core\Settings::set('wiki', 'format_title', (int)isset($_POST['format_title']));
-        Core\Settings::set('wiki', 'show_modified_info', (int)isset($_POST['show_modified_info']));
-        Core\Settings::set('wiki', 'monitor_edits', (int)isset($_POST['monitor_edits']));
+        \core\Settings::set('wiki', 'show_on_home', (int)isset($_POST['show_on_home']));
+        \core\Settings::set('wiki', 'allow_anon_view', (int)isset($_POST['allow_anon_view']));
+        \core\Settings::set('wiki', 'allow_page_edit', (int)isset($_POST['allow_page_edit']));
+        \core\Settings::set('wiki', 'allow_image_upload', (int)isset($_POST['allow_image_upload']));
+        \core\Settings::set('wiki', 'allow_bbcode', (int)isset($_POST['allow_bbcode']));
+        \core\Settings::set('wiki', 'ext_chars_support', (int)isset($_POST['ext_chars_support']));
+        \core\Settings::set('wiki', 'add_to_title', (int)isset($_POST['add_to_title']));
+        \core\Settings::set('wiki', 'format_title', (int)isset($_POST['format_title']));
+        \core\Settings::set('wiki', 'show_modified_info', (int)isset($_POST['show_modified_info']));
+        \core\Settings::set('wiki', 'monitor_edits', (int)isset($_POST['monitor_edits']));
 
         if(isset($_POST['diff_type']))
-            Core\Settings::set('wiki', 'diff_type', 'one_col');
+            \core\Settings::set('wiki', 'diff_type', 'one_col');
         else
-            Core\Settings::set('wiki', 'diff_type', 'two_col');
+            \core\Settings::set('wiki', 'diff_type', 'two_col');
 
                 if(isset($_POST['admin_email']) && PHPWS_Mail::checkAddress($_POST['admin_email']))
-            Core\Settings::set('wiki', 'admin_email', Core\Text::parseInput($_POST['admin_email']));
+            \core\Settings::set('wiki', 'admin_email', \core\Text::parseInput($_POST['admin_email']));
 
         if(isset($_POST['email_text']))
-            Core\Settings::set('wiki', 'email_text', Core\Text::parseInput($_POST['email_text']));
+            \core\Settings::set('wiki', 'email_text', \core\Text::parseInput($_POST['email_text']));
 
         if(isset($_POST['default_page']) && (strlen($_POST['default_page']) > 0))
-            Core\Settings::set('wiki', 'default_page', Core\Text::parseInput($_POST['default_page']));
+            \core\Settings::set('wiki', 'default_page', \core\Text::parseInput($_POST['default_page']));
 
         if(isset($_POST['ext_page_target']))
-            Core\Settings::set('wiki', 'ext_page_target', Core\Text::parseInput($_POST['ext_page_target']));
+            \core\Settings::set('wiki', 'ext_page_target', \core\Text::parseInput($_POST['ext_page_target']));
 
-        Core\Settings::set('wiki', 'immutable_page', (int)isset($_POST['immutable_page']));
-        Core\Settings::set('wiki', 'raw_text', (int)isset($_POST['raw_text']));
-        Core\Settings::set('wiki', 'print_view', (int)isset($_POST['print_view']));
-        Core\Settings::set('wiki', 'what_links_here', (int)isset($_POST['what_links_here']));
-        Core\Settings::set('wiki', 'recent_changes', (int)isset($_POST['recent_changes']));
-        Core\Settings::set('wiki', 'random_page', (int)isset($_POST['random_page']));
-        Core\Settings::set('wiki', 'discussion', (int)isset($_POST['discussion']));
+        \core\Settings::set('wiki', 'immutable_page', (int)isset($_POST['immutable_page']));
+        \core\Settings::set('wiki', 'raw_text', (int)isset($_POST['raw_text']));
+        \core\Settings::set('wiki', 'print_view', (int)isset($_POST['print_view']));
+        \core\Settings::set('wiki', 'what_links_here', (int)isset($_POST['what_links_here']));
+        \core\Settings::set('wiki', 'recent_changes', (int)isset($_POST['recent_changes']));
+        \core\Settings::set('wiki', 'random_page', (int)isset($_POST['random_page']));
+        \core\Settings::set('wiki', 'discussion', (int)isset($_POST['discussion']));
 
         if(isset($_POST['discussion_anon']))
         {
-            Core\Settings::set('wiki', 'discussion', 1);
-            Core\Settings::set('wiki', 'discussion_anon', 1);
+            \core\Settings::set('wiki', 'discussion', 1);
+            \core\Settings::set('wiki', 'discussion_anon', 1);
         }
         else
-            Core\Settings::set('wiki', 'discussion_anon', 0);
+            \core\Settings::set('wiki', 'discussion_anon', 0);
 
-        if (Core\Error::logIfError(Core\Settings::save('wiki')))
+        if (core\Error::logIfError(core\Settings::save('wiki')))
         {
             return dgettext('wiki', 'There was an error saving the settings.');
         }

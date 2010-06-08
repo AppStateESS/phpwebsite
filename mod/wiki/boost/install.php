@@ -25,9 +25,9 @@
 
 function wiki_install(&$content)
 {
-    Core\Core::initModClass('wiki', 'WikiManager.php');
-    Core\Core::initModClass('wiki', 'WikiPage.php');
-    Core\Core::initModClass('version', 'Version.php');
+    \core\Core::initModClass('wiki', 'WikiManager.php');
+    \core\Core::initModClass('wiki', 'WikiPage.php');
+    \core\Core::initModClass('version', 'Version.php');
 
     // Adding pages that ship with the module
 
@@ -84,7 +84,7 @@ function wiki_install(&$content)
     }
 
     // Adding first interwiki link
-    Core\Core::initModClass('wiki', 'InterWiki.php');
+    \core\Core::initModClass('wiki', 'InterWiki.php');
     $interwiki = new InterWiki;
     $interwiki->setLabel('Wikipedia');
     $interwiki->setUrl('http://en.wikipedia.org/wiki/%s');

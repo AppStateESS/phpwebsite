@@ -32,7 +32,7 @@ class Demographics_User {
         }
 
         if (isset($this->_table)) {
-            $db = new Core\DB('users');
+            $db = new \core\DB('users');
             $db->addJoin('left', 'demographics', 'users', 'user_id', 'id');
             $db->addJoin('left', $this->_table, 'users', 'user_id', 'id');
             $db->addWhere('users.id', $this->user_id);
@@ -46,13 +46,13 @@ class Demographics_User {
             $db->addColumn($this->_table . '.user_id', null, '_extend_id');
             $db->addColumn('demographics.user_id', null, '_base_id');
         } else {
-            $db = new Core\DB('demographics');
+            $db = new \core\DB('demographics');
             $db->addWhere('demographics.user_id', (int)$this->user_id);
         }
 
         $result = $db->loadObject($this);
 
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = $result;
             return false;
         } elseif ($result) {
@@ -82,26 +82,26 @@ class Demographics_User {
             return false;
         }
 
-        $db = new Core\DB('demographics');
+        $db = new \core\DB('demographics');
         if ($this->_base_id) {
             $db->addWhere('user_id', $this->_base_id);
         }
 
         $result = $db->saveObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = $result;
             return $result;
         }
         $this->_base_id = $this->user_id;
 
         if (isset($this->_table)) {
-            $db = new Core\DB($this->_table);
+            $db = new \core\DB($this->_table);
             if ($this->_extend_id) {
                 $db->addWhere('user_id', $this->_extend_id);
             }
 
             $result = $db->saveObject($this);
-            if (Core\Error::isError($result)) {
+            if (core\Error::isError($result)) {
                 $this->_error = $result;
                 return $result;
             }
@@ -122,21 +122,21 @@ class Demographics_User {
         }
 
         if  ($all_user_info) {
-            $db = new Core\DB('demographics');
+            $db = new \core\DB('demographics');
             $db->addWhere('user_id', $this->user_id);
             $result = $db->delete();
-            if (Core\Error::isError($result)) {
+            if (core\Error::isError($result)) {
                 $this->_error = $result;
                 return $result;
             }
         }
 
         if (isset($this->_table)) {
-            $db = new Core\DB($this->_table);
+            $db = new \core\DB($this->_table);
             $db->addWhere('user_id', $this->user_id);
 
             $result = $db->delete();
-            if (Core\Error::isError($result)) {
+            if (core\Error::isError($result)) {
                 $this->_error = $result;
                 return $result;
             }

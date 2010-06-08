@@ -6,11 +6,11 @@
  */
 
 if (Current_User::isLogged()) {
-    Core\Core::initModClass('notes', 'My_Page.php');
+    \core\Core::initModClass('notes', 'My_Page.php');
 
     Notes_My_Page::showUnread();
 
-    $key = Core\Key::getCurrent(false);
+    $key = \core\Key::getCurrent(false);
     if ($key) {
         Notes_My_Page::miniAdminLink($key);
         Notes_My_Page::showAssociations($key);

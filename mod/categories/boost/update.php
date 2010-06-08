@@ -73,11 +73,11 @@ function categories_update(&$content, $currentVersion)
 + Added getIcons function.</pre>';
 
         case version_compare($currentVersion, '2.2.1', '<'):
-            Core\Core::initModClass('filecabinet', 'Cabinet.php');
-            $db = new Core\DB('categories');
+            \core\Core::initModClass('filecabinet', 'Cabinet.php');
+            $db = new \core\DB('categories');
             $result = $db->select();
 
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $content[] = 'An error occurred when accessing your categories table.';
                 return false;
             }
@@ -93,7 +93,7 @@ function categories_update(&$content, $currentVersion)
                     $cat['icon'] = (int)$cat['icon'];
                     $db->reset();
                     $db->addValue($cat);
-                    Core\Error::logIfError($db->insert(false));
+                    \core\Error::logIfError($db->insert(false));
                     $db->reset();
                 }
             }

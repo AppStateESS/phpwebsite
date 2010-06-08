@@ -64,12 +64,12 @@ class vMail {
                     Current_User::disallow();
                 }
                 if ($this->postRecipient()) {
-                    if (Core\Error::logIfError($this->recipient->save())) {
+                    if (core\Error::logIfError($this->recipient->save())) {
                         $this->forwardMessage(dgettext('vmail', 'Error occurred when saving recipient.'));
-                        Core\Core::reroute('index.php?module=vmail&aop=menu');
+                        \core\Core::reroute('index.php?module=vmail&aop=menu');
                     } else {
                         $this->forwardMessage(dgettext('vmail', 'Recipient saved successfully.'));
-                        Core\Core::reroute('index.php?module=vmail&aop=menu');
+                        \core\Core::reroute('index.php?module=vmail&aop=menu');
                     }
                 } else {
                     $this->loadForm('edit_recipient');
@@ -115,7 +115,7 @@ class vMail {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('vmail', 'vMail settings saved.'));
-                    Core\Core::reroute('index.php?module=vmail&aop=menu');
+                    \core\Core::reroute('index.php?module=vmail&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -128,9 +128,9 @@ class vMail {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'vmail', 'main_admin.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'vmail', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(Core\Template::process($tpl, 'vmail', 'main_admin.tpl'));
+            $this->panel->setContent(core\Template::process($tpl, 'vmail', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -142,7 +142,7 @@ class vMail {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                Core\Core::errorPage('404');
+                \core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -154,18 +154,18 @@ class vMail {
             case 'view_recipient':
                 $this->loadRecipient();
                 if ($this->recipient->active) {
-                    Core\Core::initModClass('vmail', 'vMail_Forms.php');
+                    \core\Core::initModClass('vmail', 'vMail_Forms.php');
                     $this->forms = new vMail_Forms;
                     $this->forms->vmail = & $this;
                     $this->forms->composeMessage();
                 } else {
-                    $this->title = sprintf(dgettext('vmail', '%s inactive'), Core\Settings::get('vmail', 'module_title'));
+                    $this->title = sprintf(dgettext('vmail', '%s inactive'), \core\Settings::get('vmail', 'module_title'));
                     $this->content = dgettext('vmail', 'This recipient is currently not active.');
                 }
                 break;
 
             case 'list_recipients':
-                Core\Core::initModClass('vmail', 'vMail_Forms.php');
+                \core\Core::initModClass('vmail', 'vMail_Forms.php');
                 $this->forms = new vMail_Forms;
                 $this->forms->vmail = & $this;
                 $this->forms->listRecipients();
@@ -173,15 +173,15 @@ class vMail {
 
             case 'send_message':
                 if ($this->checkMessage()) {
-                    if (!Core\Error::logIfError($this->sendMail())) {
+                    if (!core\Error::logIfError($this->sendMail())) {
                         $this->loadRecipient();
                         $this->message = dgettext('vmail', 'Message sent succesfully.');
-                        $this->title = sprintf(dgettext('vmail', '%s message sent'), Core\Settings::get('vmail', 'module_title'));
+                        $this->title = sprintf(dgettext('vmail', '%s message sent'), \core\Settings::get('vmail', 'module_title'));
                         $this->content = $this->recipient->submitMessage();
                     } else {
                         $this->forwardMessage(dgettext('vmail', 'Sorry, there was a problem sending the message.'));
-//                        Core\Core::reroute('index.php?module=vmail&id=' . $this->recipient->id);
-                        Core\Core::reroute('index.php?module=vmail&uop=list_recipients');
+//                        \core\Core::reroute('index.php?module=vmail&id=' . $this->recipient->id);
+                        \core\Core::reroute('index.php?module=vmail&uop=list_recipients');
                     }
                 } else {
                     $this->loadForm('compose_message');
@@ -195,9 +195,9 @@ class vMail {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'vmail', 'main_user.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'vmail', 'main_user.tpl'));
         } else {
-            Layout::add(Core\Template::process($tpl, 'vmail', 'main_user.tpl'));
+            Layout::add(core\Template::process($tpl, 'vmail', 'main_user.tpl'));
         }
 
     }
@@ -219,14 +219,14 @@ class vMail {
             if (isset($_SESSION['vMail_Message']['title'])) {
                 $this->title = $_SESSION['vMail_Message']['title'];
             }
-            Core\Core::killSession('vMail_Message');
+            \core\Core::killSession('vMail_Message');
         }
     }
 
 
     public function loadForm($type)
     {
-        Core\Core::initModClass('vmail', 'vMail_Forms.php');
+        \core\Core::initModClass('vmail', 'vMail_Forms.php');
         $this->forms = new vMail_Forms;
         $this->forms->vmail = & $this;
         $this->forms->get($type);
@@ -235,7 +235,7 @@ class vMail {
 
     public function loadRecipient($id=0)
     {
-        Core\Core::initModClass('vmail', 'vMail_Recipient.php');
+        \core\Core::initModClass('vmail', 'vMail_Recipient.php');
 
         if ($id) {
             $this->recipient = new vMail_Recipient($id);
@@ -253,7 +253,7 @@ class vMail {
 
     public function loadPanel()
     {
-        Core\Core::initModClass('controlpanel', 'Panel.php');
+        \core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('vmail-panel');
         $link = 'index.php?module=vmail&aop=menu';
 
@@ -331,35 +331,35 @@ class vMail {
     {
 
         if (!empty($_POST['module_title'])) {
-            Core\Settings::set('vmail', 'module_title', strip_tags($_POST['module_title']));
+            \core\Settings::set('vmail', 'module_title', strip_tags($_POST['module_title']));
         } else {
             $errors[] = dgettext('vmail', 'Please provide a module title.');
         }
 
         isset($_POST['enable_sidebox']) ?
-            Core\Settings::set('vmail', 'enable_sidebox', 1) :
-            Core\Settings::set('vmail', 'enable_sidebox', 0);
+            \core\Settings::set('vmail', 'enable_sidebox', 1) :
+            \core\Settings::set('vmail', 'enable_sidebox', 0);
 
         isset($_POST['sidebox_homeonly']) ?
-            Core\Settings::set('vmail', 'sidebox_homeonly', 1) :
-            Core\Settings::set('vmail', 'sidebox_homeonly', 0);
+            \core\Settings::set('vmail', 'sidebox_homeonly', 1) :
+            \core\Settings::set('vmail', 'sidebox_homeonly', 0);
 
         if (!empty($_POST['sidebox_text'])) {
-            Core\Settings::set('vmail', 'sidebox_text', Core\Text::parseInput($_POST['sidebox_text']));
+            \core\Settings::set('vmail', 'sidebox_text', \core\Text::parseInput($_POST['sidebox_text']));
         } else {
-            Core\Settings::set('vmail', 'sidebox_text', null);
+            \core\Settings::set('vmail', 'sidebox_text', null);
         }
 
         isset($_POST['use_captcha']) ?
-            Core\Settings::set('vmail', 'use_captcha', 1) :
-            Core\Settings::set('vmail', 'use_captcha', 0);
+            \core\Settings::set('vmail', 'use_captcha', 1) :
+            \core\Settings::set('vmail', 'use_captcha', 0);
 
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            if (Core\Settings::save('vmail')) {
+            if (core\Settings::save('vmail')) {
                 return true;
             } else {
                 return falsel;
@@ -381,7 +381,7 @@ class vMail {
         }
 
         if (!empty($_POST['email'])) {
-            if (Core\Text::isValidInput($_POST['email'], 'email')) {
+            if (core\Text::isValidInput($_POST['email'], 'email')) {
                 $_POST['email'] = $_POST['email'];
             } else {
                 $errors[] = dgettext('vmail', 'Your email address is improperly formatted.');
@@ -417,7 +417,7 @@ class vMail {
 
     function confirm()
     {
-        if (!Core\Settings::get('vmail', 'use_captcha') ||
+        if (!core\Settings::get('vmail', 'use_captcha') ||
             !extension_loaded('gd')) {
             return true;
         }
@@ -430,7 +430,7 @@ class vMail {
     {
         $this->loadRecipient();
 
-        $url = Core\Core::getHomeHttp();
+        $url = \core\Core::getHomeHttp();
         $from = $_POST['name'];
         $sender = $_POST['email'];
         $sendto = $this->recipient->getLabel();
@@ -460,9 +460,9 @@ class vMail {
     public function navLinks()
     {
 
-        $links[] = Core\Text::moduleLink(dgettext('vmail', 'List all recipients'), 'vmail', array('uop'=>'list_recipients'));
+        $links[] = \core\Text::moduleLink(dgettext('vmail', 'List all recipients'), 'vmail', array('uop'=>'list_recipients'));
         if (Current_User::allow('vmail', 'settings', null, null, true) && !isset($_REQUEST['aop'])){
-            $links[] = Core\Text::moduleLink(dgettext('vmail', 'Settings'), "vmail",  array('aop'=>'menu', 'tab'=>'settings'));
+            $links[] = \core\Text::moduleLink(dgettext('vmail', 'Settings'), "vmail",  array('aop'=>'menu', 'tab'=>'settings'));
         }
 
         return $links;

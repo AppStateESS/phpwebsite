@@ -52,9 +52,9 @@ class Podcaster_Episode {
 
     function init()
     {
-        $db = new Core\DB('podcaster_episode');
+        $db = new \core\DB('podcaster_episode');
         $result = $db->loadObject($this);
-        if (Core\Error::logIfError($result) || !$result) {
+        if (core\Error::logIfError($result) || !$result) {
             $this->id = 0;
             return false;
         }
@@ -81,7 +81,7 @@ class Podcaster_Episode {
 
     function setDescription($description)
     {
-        $this->description = Core\Text::parseInput($description);
+        $this->description = \core\Text::parseInput($description);
     }
 
 
@@ -110,7 +110,7 @@ class Podcaster_Episode {
         }
 
         if ($print) {
-            Core\Core::initModClass('podcaster', 'PCR_Channel.php');
+            \core\Core::initModClass('podcaster', 'PCR_Channel.php');
             $channel = new Podcaster_Channel($this->channel_id);
             if ($icon) {
                 $link = '<a href="./index.php?module=podcaster&amp;id=' . $this->channel_id . '&amp;uop=view_rss"><img src="' . PHPWS_SOURCE_HTTP . 'mod/podcaster/img/rss_sm.png" width="14" height="14" border="0" alt="' . dgettext('podcaster', 'Subscribe RSS') . '" title="' . dgettext('podcaster', 'Subscribe RSS') . '" /></a>';
@@ -131,7 +131,7 @@ class Podcaster_Episode {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->title);
+            return \core\Text::parseOutput($this->title);
         } else {
             return $this->title;
         }
@@ -151,13 +151,13 @@ class Podcaster_Episode {
 */
         if (!$this->media_id) {
             if ($print) {
-                return Core\Icon::show('missing', 'No Media Attached');
+                return \core\Icon::show('missing', 'No Media Attached');
             } else {
                 return null;
             }
         }
 
-        Core\Core::initModClass('filecabinet', 'File_Assoc.php');
+        \core\Core::initModClass('filecabinet', 'File_Assoc.php');
         $file = new FC_File_Assoc($this->media_id);
         if (!$file->id) {
             $file->logErrors();
@@ -165,7 +165,7 @@ class Podcaster_Episode {
         }
 
         if ($file->file_type == 3) {
-            Core\Core::initModClass('filecabinet', 'Multimedia.php');
+            \core\Core::initModClass('filecabinet', 'Multimedia.php');
             $media = new PHPWS_Multimedia($file->file_id);
             if (!$media->id) {
                 $media->logErrors();
@@ -183,7 +183,7 @@ class Podcaster_Episode {
                 return $media;
             }
         } elseif ($file->file_type == 2) {
-            Core\Core::initModClass('filecabinet', 'Document.php');
+            \core\Core::initModClass('filecabinet', 'Document.php');
             $media = new PHPWS_Document($file->file_id);
             if (!$media->id) {
                 $media->logErrors();
@@ -212,7 +212,7 @@ class Podcaster_Episode {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->created_user);
+            return \core\Text::parseOutput($this->created_user);
         } else {
             return $this->created_user;
         }
@@ -224,7 +224,7 @@ class Podcaster_Episode {
         $tpl['TITLE'] = $this->getTitle(true);
         $tpl['PUBLISHER'] = sprintf(dgettext('podcaster', 'Published by: %s'), $this->getPublisher(true));
         $tpl['CHANNEL'] = sprintf(dgettext('podcaster', 'In channel: %s'), $this->getChannel(true));
-        return Core\Template::process($tpl, 'podcaster', 'mast_episode.tpl');
+        return \core\Template::process($tpl, 'podcaster', 'mast_episode.tpl');
     }
 
 
@@ -235,7 +235,7 @@ class Podcaster_Episode {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->description);
+            return \core\Text::parseOutput($this->description);
         } else {
             return $this->description;
         }
@@ -270,10 +270,10 @@ class Podcaster_Episode {
     function save()
     {
         if (!$this->channel_id) {
-            return Core\Error::get(PCR_NO_CHANNEL_ID, 'podcaster', 'Podcaster_Episode::save');
+            return \core\Error::get(PCR_NO_CHANNEL_ID, 'podcaster', 'Podcaster_Episode::save');
         }
 
-        $db = new Core\DB('podcaster_episode');
+        $db = new \core\DB('podcaster_episode');
 
         if (empty($this->id)) {
             $this->date_created = time();
@@ -284,7 +284,7 @@ class Podcaster_Episode {
                 $this->create_user_id = 0;
                 $this->created_user   = dgettext('podcaster', 'Anonymous');
             }
-            if (Core\Settings::get('podcaster', 'req_approval')) {
+            if (core\Settings::get('podcaster', 'req_approval')) {
                 if (!Current_User::isUnrestricted('podcaster')) {
                     $this->approved = 0;
                 }
@@ -305,7 +305,7 @@ class Podcaster_Episode {
         $this->date_updated = time();
 
         $result = $db->saveObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -317,7 +317,7 @@ class Podcaster_Episode {
             $search->addKeywords($this->title);
             $search->addKeywords($this->description);
             $result = $search->save();
-            if (Core\Error::isError($result)) {
+            if (core\Error::isError($result)) {
                 return $result;
             }
         }
@@ -328,11 +328,11 @@ class Podcaster_Episode {
     function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Core\Key;
+            $key = new \core\Key;
         } else {
-            $key = new Core\Key($this->key_id);
-            if (Core\Error::isError($key->_error)) {
-                $key = new Core\Key;
+            $key = new \core\Key($this->key_id);
+            if (core\Error::isError($key->_error)) {
+                $key = new \core\Key;
             }
         }
 
@@ -356,16 +356,16 @@ class Podcaster_Episode {
         $key->setTitle($this->title);
         $key->setSummary($this->description);
         $result = $key->save();
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return false;
         }
 
         if (!$this->key_id) {
             $this->key_id = $key->id;
-            $db = new Core\DB('podcaster_episode');
+            $db = new \core\DB('podcaster_episode');
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
-            Core\Error::logIfError($db->update());
+            \core\Error::logIfError($db->update());
         }
         return true;
     }
@@ -376,51 +376,51 @@ class Podcaster_Episode {
         $vars['episode_id'] = $this->id;
         $vars2['episode_id'] = $this->id;
 
-        $links[] = $this->getMedia(true,false,Core\Icon::show('play'));
+        $links[] = $this->getMedia(true,false,core\Icon::show('play'));
 
         if (Current_User::allow('podcaster', 'edit_episode')){
             $vars['aop']  = 'edit_episode';
-            $label = Core\Icon::show('edit');
-            $links[] = Core\Text::secureLink($label, 'podcaster', $vars);
+            $label = \core\Icon::show('edit');
+            $links[] = \core\Text::secureLink($label, 'podcaster', $vars);
         }
 
         if (Current_User::isUnrestricted('podcaster')) {
             if ($this->active) {
                 $vars['aop'] = 'deactivate_episode';
-                $label = Core\Icon::show('active', dgettext('podcaster', 'Deactivate'));
-                $active = Core\Text::secureLink($label, 'podcaster', $vars);
+                $label = \core\Icon::show('active', dgettext('podcaster', 'Deactivate'));
+                $active = \core\Text::secureLink($label, 'podcaster', $vars);
             } else {
                 $vars['aop'] = 'activate_episode';
-                $label = Core\Icon::show('inactive', dgettext('podcaster', 'Activate'));
-                $active = Core\Text::secureLink($label, 'podcaster', $vars);
+                $label = \core\Icon::show('inactive', dgettext('podcaster', 'Activate'));
+                $active = \core\Text::secureLink($label, 'podcaster', $vars);
             }
             $links[] = $active;
         } else {
             if (Current_User::allow('podcaster'))
-                $links[] = $this->active ? Core\Icon::show('active') : Core\Icon::show('inactive');
+                $links[] = $this->active ? \core\Icon::show('active') : \core\Icon::show('inactive');
         }
 
         if (Current_User::isUnrestricted('podcaster')) {
             if ($this->approved) {
                 $vars['aop'] = 'unapprove_episode';
-                $label = Core\Icon::show('approved', dgettext('podcaster', 'Unapprove'));
-                $approved = Core\Text::secureLink($label, 'podcaster', $vars);
+                $label = \core\Icon::show('approved', dgettext('podcaster', 'Unapprove'));
+                $approved = \core\Text::secureLink($label, 'podcaster', $vars);
             } else {
                 $vars['aop'] = 'approve_episode';
-                $label = Core\Icon::show('unapproved', dgettext('podcaster', 'Approve'));
-                $approved = Core\Text::secureLink($label, 'podcaster', $vars);
+                $label = \core\Icon::show('unapproved', dgettext('podcaster', 'Approve'));
+                $approved = \core\Text::secureLink($label, 'podcaster', $vars);
             }
             $links[] = $approved;
         } else {
             if (Current_User::allow('podcaster'))
-                $links[] = $this->approved ? Core\Icon::show('approved') : Core\Icon::show('unapproved');
+                $links[] = $this->approved ? \core\Icon::show('approved') : \core\Icon::show('unapproved');
         }
 
         if (Current_User::allow('podcaster', 'delete_episode')){
             $vars['aop'] = 'delete_episode';
             $jsconf['QUESTION'] = dgettext('podcaster', 'Are you certain you want to delete this episode?');
-            $jsconf['ADDRESS'] = Core\Text::linkAddress('podcaster', $vars, true);
-            $jsconf['LINK'] = Core\Icon::show('delete');
+            $jsconf['ADDRESS'] = \core\Text::linkAddress('podcaster', $vars, true);
+            $jsconf['LINK'] = \core\Icon::show('delete');
             $links[] = javascript('confirm', $jsconf);
         }
 
@@ -452,7 +452,7 @@ class Podcaster_Episode {
 
     public function viewLink($bare=false)
     {
-                $link = new Core\Link($this->title, 'podcaster', array('channel'=>$this->channel_id, 'episode'=>$this->id));
+                $link = new \core\Link($this->title, 'podcaster', array('channel'=>$this->channel_id, 'episode'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {
@@ -467,10 +467,10 @@ class Podcaster_Episode {
     function view()
     {
         if (!$this->id) {
-            Core\Core::errorPage(404);
+            \core\Core::errorPage(404);
         }
 
-        $key = new Core\Key($this->key_id);
+        $key = new \core\Key($this->key_id);
 
         if (!$key->allowView()) {
             Current_User::requireLogin();
@@ -478,18 +478,18 @@ class Podcaster_Episode {
 
         Layout::addPageTitle($this->getTitle());
         $template['TITLE'] = $this->getTitle(true);
-        $template['DESCRIPTION'] = Core\Text::parseTag($this->getDescription(true));
+        $template['DESCRIPTION'] = \core\Text::parseTag($this->getDescription(true));
 
         if (Current_User::allow('podcaster', 'edit_episode')) {
             $vars['episode_id'] = $this->id;
             $vars['aop']  = 'edit_episode';
-            MiniAdmin::add('podcaster', array(Core\Text::secureLink(dgettext('podcaster', 'Edit episode'), 'podcaster', $vars)));
+            MiniAdmin::add('podcaster', array(core\Text::secureLink(dgettext('podcaster', 'Edit episode'), 'podcaster', $vars)));
         }
 
         if (Current_User::allow('podcaster', 'edit_episode') || Current_User::allow('podcaster', 'edit_channel')) {
             $vars2['aop']  = 'menu';
             $vars2['tab']  = 'list';
-            MiniAdmin::add('podcaster', array(Core\Text::secureLink(dgettext('podcaster', 'List all channels'), 'podcaster', $vars2)));
+            MiniAdmin::add('podcaster', array(core\Text::secureLink(dgettext('podcaster', 'List all channels'), 'podcaster', $vars2)));
         }
 
         $template['MEDIA'] = $this->getMedia(true,true);
@@ -497,23 +497,23 @@ class Podcaster_Episode {
 
         $key->flag();
 
-        return Core\Template::process($template, 'podcaster', 'view_episode.tpl');
+        return \core\Template::process($template, 'podcaster', 'view_episode.tpl');
 
     }
 
 
     function delete()
     {
-        Core\Key::drop($this->key_id);
-        $db = new Core\DB('podcaster_episode');
+        \core\Key::drop($this->key_id);
+        $db = new \core\DB('podcaster_episode');
         $db->addWhere('id', $this->id);
-        if (Core\Settings::get('podcaster', 'rm_media')) {
+        if (core\Settings::get('podcaster', 'rm_media')) {
             $media = $this->getMedia();
             if ($media) {
                 $media->delete();
             }
         }
-        if (Core\Error::logIfError($db->delete())) {
+        if (core\Error::logIfError($db->delete())) {
             return false;
         }
         return true;

@@ -36,9 +36,9 @@ class Folder {
 
     public function init()
     {
-        $db = new Core\DB('folders');
+        $db = new \core\DB('folders');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = $result;
         }
     }
@@ -55,11 +55,11 @@ class Folder {
     public function deleteLink($mode='link')
     {
         $vars['QUESTION'] = dgettext('filecabinet', 'Are you certain you want to delete this folder and all its contents?');
-        $vars['ADDRESS']  = Core\Text::linkAddress('filecabinet', array('aop'=>'delete_folder', 'folder_id'=>$this->id),
+        $vars['ADDRESS']  = \core\Text::linkAddress('filecabinet', array('aop'=>'delete_folder', 'folder_id'=>$this->id),
         true);
         $label = dgettext('filecabinet', 'Delete');
         if ($mode == 'image') {
-            $vars['LINK'] = Core\Icon::show('delete');
+            $vars['LINK'] = \core\Icon::show('delete');
         } else {
             $vars['LINK'] = $label;
         }
@@ -85,7 +85,7 @@ class Folder {
         }
 
         if ($mode == 'image') {
-            $js['label'] = Core\Icon::show('edit');
+            $js['label'] = \core\Icon::show('edit');
         } else {
             $js['label'] = & $label;
         }
@@ -95,7 +95,7 @@ class Folder {
             $vars['module_created'] = $module_created;
         }
 
-        $js['address'] = Core\Text::linkAddress('filecabinet', $vars, true);
+        $js['address'] = \core\Text::linkAddress('filecabinet', $vars, true);
 
         $js['width'] = 370;
         $js['height'] = 500;
@@ -110,7 +110,7 @@ class Folder {
         $vars['action'] = 'delete_image';
         $vars['image_id'] = $this->id;
         $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this image?');
-        $js['ADDRESS']  = Core\Text::linkAddress('filecabinet', $vars, true);
+        $js['ADDRESS']  = \core\Text::linkAddress('filecabinet', $vars, true);
         $js['LINK']     = dgettext('filecabinet', 'Delete');
         $links[] = javascript('confirm', $js);
     }
@@ -130,7 +130,7 @@ class Folder {
     public function loadDirectory()
     {
         if ($this->ftype == DOCUMENT_FOLDER) {
-            $this->_base_directory = Core\Settings::get('filecabinet', 'base_doc_directory');
+            $this->_base_directory = \core\Settings::get('filecabinet', 'base_doc_directory');
         } elseif ($this->ftype == IMAGE_FOLDER) {
             $this->_base_directory = 'images/filecabinet/';
         } else {
@@ -140,11 +140,11 @@ class Folder {
 
     public function unpinLink()
     {
-        $icon = Core\Icon::get('close');
+        $icon = \core\Icon::get('close');
         $icon->setStyle('float : right');
         $img = $icon->__toString();
-        $key = Core\Key::getCurrent();
-        return Core\Text::secureLink($img, 'filecabinet', array('aop'=>'unpin', 'folder_id'=>$this->id, 'key_id'=>$key->id));
+        $key = \core\Key::getCurrent();
+        return \core\Text::secureLink($img, 'filecabinet', array('aop'=>'unpin', 'folder_id'=>$this->id, 'key_id'=>$key->id));
     }
 
     public function uploadLink($mode=null, $force_width=null, $force_height=null)
@@ -183,7 +183,7 @@ class Folder {
                 break;
         }
 
-        $link = new Core\Link(null, 'filecabinet', $link_var, true);
+        $link = new \core\Link(null, 'filecabinet', $link_var, true);
         $link->convertAmp(false);
         $link->setSalted();
         $vars['address'] = $link->getAddress();
@@ -196,7 +196,7 @@ class Folder {
                 break;
 
             case 'icon':
-                $vars['label'] = Core\Icon::show('add');
+                $vars['label'] = \core\Icon::show('add');
                 break;
 
             default:
@@ -208,7 +208,7 @@ class Folder {
 
     public function embedLink($button=false)
     {
-        $vars['address'] = Core\Text::linkAddress('filecabinet',
+        $vars['address'] = \core\Text::linkAddress('filecabinet',
         array('mop'      =>'edit_embed',
                                                          'folder_id'=>$this->id),
         true);
@@ -223,7 +223,7 @@ class Folder {
 
     public function logError()
     {
-        Core\Error::log($this->_error);
+        \core\Error::log($this->_error);
     }
 
     public function setTitle($title)
@@ -245,7 +245,7 @@ class Folder {
 
     public function setDescription($description)
     {
-        $this->description = Core\Text::parseInput($description);
+        $this->description = \core\Text::parseInput($description);
     }
 
     public function post()
@@ -283,10 +283,10 @@ class Folder {
             $new_folder = false;
         }
 
-        $db = new Core\DB('folders');
+        $db = new \core\DB('folders');
         $result = $db->saveObject($this);
 
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return false;
         }
 
@@ -310,7 +310,7 @@ class Folder {
                     }
                 }
             } else {
-                Core\Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'Folder:save', $full_dir);
+                \core\Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'Folder:save', $full_dir);
                 $this->delete();
                 return false;
             }
@@ -323,11 +323,11 @@ class Folder {
     public function saveKey($new_folder=true)
     {
         if (empty($this->key_id)) {
-            $key = new Core\Key;
+            $key = new \core\Key;
         } else {
-            $key = new Core\Key($this->key_id);
-            if (Core\Error::isError($key->getError())) {
-                $key = new Core\Key;
+            $key = new \core\Key($this->key_id);
+            if (core\Error::isError($key->getError())) {
+                $key = new \core\Key;
             }
         }
 
@@ -339,17 +339,17 @@ class Folder {
         $key->setTitle($this->title);
         $key->setSummary($this->description);
         $result = $key->save();
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
         $this->key_id = $key->id;
 
         if ($new_folder) {
-            $db = new Core\DB('folders');
+            $db = new \core\DB('folders');
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
             $result = $db->update();
-            if (Core\Error::isError($result)) {
+            if (core\Error::isError($result)) {
                 return $result;
             }
         }
@@ -366,7 +366,7 @@ class Folder {
         if (!$this->key_id) {
             return true;
         }
-        $key = new Core\Key($this->key_id);
+        $key = new \core\Key($this->key_id);
         return $key->allowView();
     }
 
@@ -385,10 +385,10 @@ class Folder {
         /**
          * Delete file associations inside folder
          */
-        $db = new Core\DB('fc_file_assoc');
+        $db = new \core\DB('fc_file_assoc');
         $db->addWhere($table . '.folder_id', $this->id);
         $db->addWhere($table . '.id', 'fc_file_assoc.file_id');
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
 
         /**
@@ -400,27 +400,27 @@ class Folder {
         $db->addWhere('file_type', FC_IMAGE_RANDOM, '=', 'or', 1);
         $db->addWhere('file_type', FC_DOCUMENT_FOLDER, '=', 'or', 1);
         $db->addWhere('file_id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
         /**
          * Delete the files in the folder from the db
          */
         unset($db);
-        $db = new Core\DB($table);
+        $db = new \core\DB($table);
         $db->addWhere('folder_id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
         /**
          * Delete the folder from the database
          */
-        $db = new Core\DB('folders');
+        $db = new \core\DB('folders');
         $db->addWhere('id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
         /**
          * Delete the key
          */
-        $key = new Core\Key($this->key_id);
+        $key = new \core\Key($this->key_id);
         $key->delete();
 
         /**
@@ -429,7 +429,7 @@ class Folder {
         $directory = $this->getFullDirectory();
 
         if (is_dir($directory)) {
-            Core\File::rmdir($directory);
+            \core\File::rmdir($directory);
         }
 
         return true;
@@ -449,7 +449,7 @@ class Folder {
         $vars['aop'] = 'view_folder';
         $vars['folder_id'] = $this->id;
 
-        $tpl['TITLE'] = Core\Text::moduleLink($this->title, 'filecabinet', $vars);
+        $tpl['TITLE'] = \core\Text::moduleLink($this->title, 'filecabinet', $vars);
         $tpl['ITEMS'] = $this->tallyItems();
 
         if (Current_User::allow('filecabinet', 'edit_folders', $this->id, 'folder')) {
@@ -467,7 +467,7 @@ class Folder {
             $links[] = $this->deleteLink('image');
         }
 
-        $mods = Core\Core::getModuleNames();
+        $mods = \core\Core::getModuleNames();
         if ($this->module_created && isset($mods[$this->module_created])) {
             $tpl['MODULE_CREATED'] = $mods[$this->module_created];
         } else {
@@ -490,16 +490,16 @@ class Folder {
     public function loadFiles($original_only=false)
     {
         if ($this->ftype == IMAGE_FOLDER) {
-            Core\Core::initModClass('filecabinet', 'Image.php');
-            $db = new Core\DB('images');
+            \core\Core::initModClass('filecabinet', 'Image.php');
+            $db = new \core\DB('images');
             $obj_name = 'PHPWS_Image';
         } elseif ($this->ftype == DOCUMENT_FOLDER) {
-            Core\Core::initModClass('filecabinet', 'Document.php');
-            $db = new Core\DB('documents');
+            \core\Core::initModClass('filecabinet', 'Document.php');
+            $db = new \core\DB('documents');
             $obj_name = 'PHPWS_Document';
         } elseif ($this->ftype == MULTIMEDIA_FOLDER) {
-            Core\Core::initModClass('filecabinet', 'Multimedia.php');
-            $db = new Core\DB('multimedia');
+            \core\Core::initModClass('filecabinet', 'Multimedia.php');
+            $db = new \core\DB('multimedia');
             $obj_name = 'PHPWS_Multimedia';
         }
 
@@ -507,8 +507,8 @@ class Folder {
         $db->addOrder('title');
         $result = $db->getObjects($obj_name);
 
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             return false;
         } elseif ($result) {
             $this->_files = &$result;
@@ -521,11 +521,11 @@ class Folder {
     public function tallyItems()
     {
         if ($this->ftype == IMAGE_FOLDER) {
-            $db = new Core\DB('images');
+            $db = new \core\DB('images');
         } elseif ($this->ftype == DOCUMENT_FOLDER) {
-            $db = new Core\DB('documents');
+            $db = new \core\DB('documents');
         } elseif ($this->ftype == MULTIMEDIA_FOLDER) {
-            $db = new Core\DB('multimedia');
+            $db = new \core\DB('multimedia');
         }
 
         $db->addWhere('folder_id', $this->id);
@@ -534,13 +534,13 @@ class Folder {
 
     public static function getPinned($key_id)
     {
-        $db = new Core\DB('folders');
+        $db = new \core\DB('folders');
         $db->addWhere('filecabinet_pins.key_id', $key_id);
         $db->addWhere('id', 'filecabinet_pins.folder_id');
-        Core\Key::restrictView($db, 'filecabinet');
+        \core\Key::restrictView($db, 'filecabinet');
         $result = $db->getObjects('Folder');
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             return;
         } elseif (!$result) {
             return;
@@ -562,11 +562,11 @@ class Folder {
         }
 
         if ($this->ftype == IMAGE_FOLDER) {
-            $max = Core\Settings::get('filecabinet', 'max_pinned_images');
+            $max = \core\Settings::get('filecabinet', 'max_pinned_images');
         } elseif ($this->ftype == DOCUMENT_FOLDER) {
-            $max = Core\Settings::get('filecabinet', 'max_pinned_documents');
+            $max = \core\Settings::get('filecabinet', 'max_pinned_documents');
         } else {
-            $max = Core\Settings::get('filecabinet', 'max_pinned_multimedia');
+            $max = \core\Settings::get('filecabinet', 'max_pinned_multimedia');
         }
 
         if (!$max) {
@@ -590,7 +590,7 @@ class Folder {
         }
 
 
-        $content = Core\Template::process($tpl, 'filecabinet', 'pinned.tpl');
+        $content = \core\Template::process($tpl, 'filecabinet', 'pinned.tpl');
         Layout::add($content, 'filecabinet', 'pinfolder');
     }
 }

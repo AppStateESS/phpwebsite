@@ -22,8 +22,8 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-Core\Core::requireInc('sitemap', 'errordefines.php');
-Core\Core::requireConfig('sitemap');
+core\Core::requireInc('sitemap', 'errordefines.php');
+core\Core::requireConfig('sitemap');
 
 class Sitemap {
     public $forms       = null;
@@ -49,12 +49,12 @@ class Sitemap {
                     Current_User::disallow();
                 }
 
-                if (Core\Error::logIfError($this->buildFile())) {
+                if (core\Error::logIfError($this->buildFile())) {
                     $this->forwardMessage(dgettext('sitemap', 'Error occurred when creating file.'));
-                    Core\Core::reroute('index.php?module=sitemap&aop=menu&tab=new');
+                    \core\Core::reroute('index.php?module=sitemap&aop=menu&tab=new');
                 } else {
                     $this->forwardMessage(dgettext('sitemap', 'File created successfully.'));
-                    Core\Core::reroute('index.php?module=sitemap&aop=menu&tab=new');
+                    \core\Core::reroute('index.php?module=sitemap&aop=menu&tab=new');
                 }
 
                 break;
@@ -65,7 +65,7 @@ class Sitemap {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('sitemap', 'Sitemap settings saved.'));
-                    Core\Core::reroute('index.php?module=sitemap&aop=menu');
+                    \core\Core::reroute('index.php?module=sitemap&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -87,9 +87,9 @@ class Sitemap {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'sitemap', 'main_admin.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'sitemap', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(Core\Template::process($tpl, 'sitemap', 'main_admin.tpl'));
+            $this->panel->setContent(core\Template::process($tpl, 'sitemap', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -98,7 +98,7 @@ class Sitemap {
 
     public function sendMessage()
     {
-        Core\Core::reroute('index.php?module=sitemap&amp;uop=message');
+        \core\Core::reroute('index.php?module=sitemap&amp;uop=message');
     }
 
     public function forwardMessage($message, $title=null)
@@ -117,14 +117,14 @@ class Sitemap {
             if (isset($_SESSION['SM_Message']['title'])) {
                 $this->title = $_SESSION['SM_Message']['title'];
             }
-            Core\Core::killSession('SM_Message');
+            \core\Core::killSession('SM_Message');
         }
     }
 
 
     public function loadForm($type)
     {
-        Core\Core::initModClass('sitemap', 'SM_Forms.php');
+        \core\Core::initModClass('sitemap', 'SM_Forms.php');
         $this->forms = new Sitemap_Forms;
         $this->forms->sitemap = & $this;
         $this->forms->get($type);
@@ -133,7 +133,7 @@ class Sitemap {
 
     public function loadPanel()
     {
-        Core\Core::initModClass('controlpanel', 'Panel.php');
+        \core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('sitemap-panel');
         $link = 'index.php?module=sitemap&aop=menu';
 
@@ -153,51 +153,51 @@ class Sitemap {
     {
 
         isset($_POST['respect_privs']) ?
-            Core\Settings::set('sitemap', 'respect_privs', 1) :
-            Core\Settings::set('sitemap', 'respect_privs', 0);
+            \core\Settings::set('sitemap', 'respect_privs', 1) :
+            \core\Settings::set('sitemap', 'respect_privs', 0);
 
         isset($_POST['local_only']) ?
-            Core\Settings::set('sitemap', 'local_only', 1) :
-            Core\Settings::set('sitemap', 'local_only', 0);
+            \core\Settings::set('sitemap', 'local_only', 1) :
+            \core\Settings::set('sitemap', 'local_only', 0);
 
         isset($_POST['use_change']) ?
-            Core\Settings::set('sitemap', 'use_change', 1) :
-            Core\Settings::set('sitemap', 'use_change', 0);
+            \core\Settings::set('sitemap', 'use_change', 1) :
+            \core\Settings::set('sitemap', 'use_change', 0);
 
-        Core\Settings::set('sitemap', 'change_freq', $_POST['change_freq']);
+        \core\Settings::set('sitemap', 'change_freq', $_POST['change_freq']);
 
         isset($_POST['use_lastmod']) ?
-            Core\Settings::set('sitemap', 'use_lastmod', 1) :
-            Core\Settings::set('sitemap', 'use_lastmod', 0);
+            \core\Settings::set('sitemap', 'use_lastmod', 1) :
+            \core\Settings::set('sitemap', 'use_lastmod', 0);
 
         isset($_POST['use_priority']) ?
-            Core\Settings::set('sitemap', 'use_priority', 1) :
-            Core\Settings::set('sitemap', 'use_priority', 0);
+            \core\Settings::set('sitemap', 'use_priority', 1) :
+            \core\Settings::set('sitemap', 'use_priority', 0);
 
         isset($_POST['allow_feed']) ?
-            Core\Settings::set('sitemap', 'allow_feed', 1) :
-            Core\Settings::set('sitemap', 'allow_feed', 0);
+            \core\Settings::set('sitemap', 'allow_feed', 1) :
+            \core\Settings::set('sitemap', 'allow_feed', 0);
 
         isset($_POST['addkeys']) ?
-            Core\Settings::set('sitemap', 'addkeys', 1) :
-            Core\Settings::set('sitemap', 'addkeys', 0);
+            \core\Settings::set('sitemap', 'addkeys', 1) :
+            \core\Settings::set('sitemap', 'addkeys', 0);
 
         if (isset($_POST['exclude_keys'])) {
-            Core\Settings::set('sitemap', 'exclude_keys', $_POST['exclude_keys']);
+            \core\Settings::set('sitemap', 'exclude_keys', $_POST['exclude_keys']);
         }
 
         $cache_timeout = (int)$_POST['cache_timeout'];
         if ((int)$cache_timeout <= 7200) {
-            Core\Settings::set('sitemap', 'cache_timeout', $cache_timeout);
+            \core\Settings::set('sitemap', 'cache_timeout', $cache_timeout);
         } else {
-            Core\Settings::reset('sitemap', 'cache_timeout');
+            \core\Settings::reset('sitemap', 'cache_timeout');
         }
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            if (Core\Settings::save('sitemap')) {
+            if (core\Settings::save('sitemap')) {
                 return true;
             } else {
                 return falsel;
@@ -209,7 +209,7 @@ class Sitemap {
 
     public function getMenuIds()
     {
-        $db = new Core\DB('menus');
+        $db = new \core\DB('menus');
         $db->addWhere('restricted', 0);
         $result = $db->select();
         foreach ($result as $menu) {
@@ -222,8 +222,8 @@ class Sitemap {
     public function getMenus($match=null, $select_name='menus', $multiple=true, $count=true)
     {
 
-        Core\Core::initModClass('menu', 'Menu_Item.php');
-        $db = new Core\DB('menus');
+        \core\Core::initModClass('menu', 'Menu_Item.php');
+        $db = new \core\DB('menus');
         $db->addOrder('title asc');
 
         $result = $db->getObjects('Menu_Item');
@@ -231,7 +231,7 @@ class Sitemap {
         if ($result) {
             foreach ($result as $item) {
                 if ($count) {
-                    $db = new Core\DB('menu_links');
+                    $db = new \core\DB('menu_links');
                     $db->addWhere('menu_id', $item->id);
                     $qty = $db->count();
                     if ($qty == 1) {
@@ -248,14 +248,14 @@ class Sitemap {
 
         if ($items) {
             if ($multiple) {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addMultiple($select_name, $items);
                 if (!empty($match) && is_array($match)) {
                     $form->setMatch($select_name, $match);
                 }
                 return $form->get($select_name);
             } else {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addSelect($select_name, $items);
                 if (!empty($match) && is_string($match)) {
                     $form->setMatch($select_name, $match);
@@ -272,7 +272,7 @@ class Sitemap {
     public function getKeyMods($match=null, $select_name='keys', $multiple=true, $count=true)
     {
 
-                $db = new Core\DB('phpws_key');
+                $db = new \core\DB('phpws_key');
         $db->addOrder('module asc');
 
         $result = $db->getObjects('Key');
@@ -280,7 +280,7 @@ class Sitemap {
         if ($result) {
             foreach ($result as $item) {
                 if ($count) {
-                    $db = new Core\DB('phpws_key');
+                    $db = new \core\DB('phpws_key');
                     $db->addWhere('module', $item->module);
                     $qty = $db->count();
                     if ($qty == 1) {
@@ -297,14 +297,14 @@ class Sitemap {
 
         if (isset($items)) {
             if ($multiple) {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addMultiple($select_name, $items);
                 if (!empty($match) && is_array($match)) {
                     $form->setMatch($select_name, $match);
                 }
                 return $form->get($select_name);
             } else {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addSelect($select_name, $items);
                 if (!empty($match) && is_string($match)) {
                     $form->setMatch($select_name, $match);
@@ -319,19 +319,19 @@ class Sitemap {
 
     public function mapIt()
     {
-        if (Core\Settings::get('sitemap', 'allow_feed')) {
+        if (core\Settings::get('sitemap', 'allow_feed')) {
             /* what menus for auto, all non-restricted */
             $menus = $this->getMenuIds();
 
             /* the default exclude_keys list */
-            $exclude_keys = unserialize(Core\Settings::get('sitemap', 'exclude_keys'));
+            $exclude_keys = unserialize(core\Settings::get('sitemap', 'exclude_keys'));
 
             /* what to do about lastmod, nothing except for keyed items */
             $lastmod = null;
 
-            if (Core\Settings::get('sitemap', 'cache_timeout') > 0) {
+            if (core\Settings::get('sitemap', 'cache_timeout') > 0) {
                 $cache_key = 'sitemap_cache_key';
-                $content = Core\Cache::get($cache_key, Core\Settings::get('sitemap', 'cache_timeout'));
+                $content = \core\Cache::get($cache_key, \core\Settings::get('sitemap', 'cache_timeout'));
                 if (!empty($content)) {
                     header('Content-type: text/xml');
                     echo $content;
@@ -339,16 +339,16 @@ class Sitemap {
                 }
             }
 
-            $content = $this->buildXML($menus, $exclude_keys, $lastmod, Core\Settings::get('sitemap', 'addkeys'));
-            if (Core\Settings::get('sitemap', 'cache_timeout') > 0) {
-                Core\Cache::save($cache_key, $content);
+            $content = $this->buildXML($menus, $exclude_keys, $lastmod, \core\Settings::get('sitemap', 'addkeys'));
+            if (core\Settings::get('sitemap', 'cache_timeout') > 0) {
+                \core\Cache::save($cache_key, $content);
             }
 
             header('Content-type: text/xml');
             echo $content;
             exit();
         } else {
-            Core\Core::reroute();
+            \core\Core::reroute();
         }
     }
 
@@ -375,7 +375,7 @@ class Sitemap {
         if ($_REQUEST['build_type']) {
             /* save to server */
             $filename = 'sitemap.xml';
-                        return Core\File::writeFile(PHPWS_HOME_DIR.$filename, $content, true);
+                        return \core\File::writeFile(PHPWS_HOME_DIR.$filename, $content, true);
         } else {
             /* download */
             $filename = 'sitemap' . date('Ymd') . '.xml';
@@ -422,7 +422,7 @@ class Sitemap {
                 $link_tpl['LOC'] = htmlspecialchars($link['url']);
 
                 /* lastmod */
-                if (Core\Settings::get('sitemap', 'use_lastmod')) {
+                if (core\Settings::get('sitemap', 'use_lastmod')) {
                     if ($link['key_id']) {
                         $link_tpl['LASTMOD'] = date("Y-m-d", $link['update_date']);
                     } else {
@@ -431,12 +431,12 @@ class Sitemap {
                 }
 
                 /* changefreq */
-                if (Core\Settings::get('sitemap', 'use_change')) {
-                    $link_tpl['CHANGE_FREQ'] = $this->getChangeFreq(Core\Settings::get('sitemap', 'change_freq'));
+                if (core\Settings::get('sitemap', 'use_change')) {
+                    $link_tpl['CHANGE_FREQ'] = $this->getChangeFreq(core\Settings::get('sitemap', 'change_freq'));
                 }
 
                 /* priority */
-                if (Core\Settings::get('sitemap', 'use_priority')) {
+                if (core\Settings::get('sitemap', 'use_priority')) {
                     $basep = 0.5;
                     if (!$link['parent']) {
                         $basep = $basep + 0.5;
@@ -460,7 +460,7 @@ class Sitemap {
 
 
 //            print_r($tpl['links-listing']); exit;
-            $content = Core\Template::process($tpl, 'sitemap', 'sitemap.tpl');
+            $content = \core\Template::process($tpl, 'sitemap', 'sitemap.tpl');
             return $content;
 
         } else {
@@ -474,7 +474,7 @@ class Sitemap {
         $final = null;
         if (!empty($menus) && is_array($menus)) {
 
-            $db = new Core\DB('menu_links');
+            $db = new \core\DB('menu_links');
 
             $db->addColumn('menu_links.*');
             $db->addColumn('phpws_key.restricted');
@@ -493,7 +493,7 @@ class Sitemap {
 //            $db->setTestMode();
             $result = $db->select();
 
-            if (empty($result) || Core\Error::logIfError($result)) {
+            if (empty($result) || \core\Error::logIfError($result)) {
                 return false;
             }
 
@@ -518,14 +518,14 @@ class Sitemap {
                 }
 
                 /* optionally remove remote links */
-                if (Core\Settings::get('sitemap', 'local_only')) {
+                if (core\Settings::get('sitemap', 'local_only')) {
                     if (!$link['local']) {
                         $tidy = null;
                     }
                 }
 
                 /* optionally remove private and non-active keyed items */
-                if (Core\Settings::get('sitemap', 'respect_privs')) {
+                if (core\Settings::get('sitemap', 'respect_privs')) {
                     if ($link['key_id'] && !$link['active']) {
                         $tidy = null;
                     }
@@ -566,7 +566,7 @@ class Sitemap {
     public function getOtherItems($exclude_keys=null)
     {
         $final = null;
-        $db = new Core\DB('phpws_key');
+        $db = new \core\DB('phpws_key');
 
         if ($exclude_keys) {
             foreach ($exclude_keys as $module) {
@@ -579,7 +579,7 @@ class Sitemap {
 //            $db->setTestMode();
         $result = $db->select();
 
-        if (empty($result) || Core\Error::logIfError($result)) {
+        if (empty($result) || \core\Error::logIfError($result)) {
             return false;
         }
 
@@ -604,14 +604,14 @@ class Sitemap {
             }
 
             /* optionally remove remote links */
-            if (Core\Settings::get('sitemap', 'local_only')) {
+            if (core\Settings::get('sitemap', 'local_only')) {
                 if (!$link['local']) {
                     $tidy = null;
                 }
             }
 
             /* optionally remove private and non-active keyed items */
-            if (Core\Settings::get('sitemap', 'respect_privs')) {
+            if (core\Settings::get('sitemap', 'respect_privs')) {
                 if (!$link['active']) {
                     $tidy = null;
                 }

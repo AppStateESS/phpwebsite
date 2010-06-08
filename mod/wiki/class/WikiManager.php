@@ -33,16 +33,16 @@ class WikiManager
             if (MOD_REWRITE_ENABLED && ($secure == FALSE) && isset($command['page']) &&
                 !isset($command['page_op']) && !isset($command['op']))
             {
-                Core\Core::reroute('wiki/' . $command['page']);
+                \core\Core::reroute('wiki/' . $command['page']);
             }
             else
             {
-                Core\Core::reroute(Core\Text::linkAddress('wiki', $command, $secure));
+                \core\Core::reroute(core\Text::linkAddress('wiki', $command, $secure));
             }
         }
         else
         {
-            Core\Core::reroute(Core\Text::linkAddress('wiki', array('op'=>$command), $secure));
+            \core\Core::reroute(core\Text::linkAddress('wiki', array('op'=>$command), $secure));
         }
     }
 
@@ -80,12 +80,12 @@ class WikiManager
 
         $wikitext = str_replace("&#39;", "'", $wikitext);
 
-        $db = new Core\DB('wiki_pages');
+        $db = new \core\DB('wiki_pages');
         $db->addColumn('title');
         $pages = $db->select('col');
         if (PEAR::isError($pages))
         {
-            Core\Error::log($pages);
+            \core\Error::log($pages);
             $pages = NULL;
         }
 
@@ -100,11 +100,11 @@ class WikiManager
                              (MOD_REWRITE_ENABLED ? 'wiki/%s' : './index.php?module=wiki&amp;page=%s'));
         $wiki->setRenderConf('xhtml', 'toc', 'title', '<strong>' . dgettext('wiki', 'Table of Contents') . '</strong>');
         $wiki->setRenderConf('xhtml', 'image', 'base', 'images/wiki/');
-        $wiki->setRenderConf('xhtml', 'url', 'target', Core\Settings::get('wiki', 'ext_page_target'));
-        $wiki->setRenderConf('xhtml', 'interwiki', 'target', Core\Settings::get('wiki', 'ext_page_target'));
+        $wiki->setRenderConf('xhtml', 'url', 'target', \core\Settings::get('wiki', 'ext_page_target'));
+        $wiki->setRenderConf('xhtml', 'interwiki', 'target', \core\Settings::get('wiki', 'ext_page_target'));
 
         $sites = array();
-        $db = new Core\DB('wiki_interwiki');
+        $db = new \core\DB('wiki_interwiki');
         $result = $db->select();
         foreach ($result as $row)
         {
@@ -112,7 +112,7 @@ class WikiManager
         }
         $wiki->setRenderConf('xhtml', 'interwiki', 'sites', $sites);
 
-        if (Core\Settings::get('wiki', 'ext_chars_support'))
+        if (core\Settings::get('wiki', 'ext_chars_support'))
         {
             $wiki->setParseConf('Wikilink', 'ext_chars', true);
         }
@@ -159,15 +159,15 @@ class WikiManager
         }
         else
         {
-            $wikitext = $wiki->transform(Core\Text::profanityFilter($wikitext));
+            $wikitext = $wiki->transform(core\Text::profanityFilter($wikitext));
         }
 
-        if (Core\Settings::get('wiki', 'allow_bbcode'))
+        if (core\Settings::get('wiki', 'allow_bbcode'))
         {
-            $wikitext = Core\Text::bb2html($wikitext, 'wiki');
+            $wikitext = \core\Text::bb2html($wikitext, 'wiki');
         }
 
-        return Core\Text::parseTag($wikitext);
+        return \core\Text::parseTag($wikitext);
     }// END FUNC transform
 
     /**
@@ -177,7 +177,7 @@ class WikiManager
      */
     function formatTitle($title)
     {
-        if (Core\Settings::get('wiki', 'format_title'))
+        if (core\Settings::get('wiki', 'format_title'))
         {
             $title = trim(ereg_replace("[A-Z]", " \\0", $title));
         }
@@ -191,17 +191,17 @@ class WikiManager
      */
     function sendEmail()
     {
-        if(Core\Settings::get('wiki', 'monitor_edits'))
+        if(core\Settings::get('wiki', 'monitor_edits'))
         {
             $pagetitle = WikiManager::formatTitle(strip_tags($_REQUEST['page']));
-            $message = Core\Settings::get('wiki', 'email_text');
+            $message = \core\Settings::get('wiki', 'email_text');
             $message = str_replace('[page]', $pagetitle, $message);
-            $message = str_replace('[url]', Core\Core::getHomeHttp() .
+            $message = str_replace('[url]', \core\Core::getHomeHttp() .
                                    (MOD_REWRITE_ENABLED ? 'wiki/' : 'index.php?module=wiki&page=') .
                                    $_REQUEST['page'], $message);
 
                         $mail = new PHPWS_Mail;
-            $mail->addSendTo(Core\Settings::get('wiki', 'admin_email'));
+            $mail->addSendTo(core\Settings::get('wiki', 'admin_email'));
             $mail->setSubject(sprintf(dgettext('wiki', '%s updated!'), $pagetitle));
             $mail->setFrom(PHPWS_User::getUserSetting('site_contact'));
             $mail->setMessageBody($message);
@@ -218,13 +218,13 @@ class WikiManager
     function imageUpload()
     {
         if (!Current_User::authorized('wiki', 'upload_images') &&
-            !(Core\Settings::get('wiki', 'allow_image_upload') && Current_User::isLogged()))
+            !(core\Settings::get('wiki', 'allow_image_upload') && Current_User::isLogged()))
         {
             Current_User::disallow(dgettext('wiki', 'User attempted access to image upload.'));
             return;
         }
 
-        Core\Core::initModClass('wiki', 'WikiImage.php');
+        \core\Core::initModClass('wiki', 'WikiImage.php');
         
         if (isset($_POST['op']) && ($_POST['op'] == 'doimageupload'))
         {
@@ -239,7 +239,7 @@ class WikiManager
         }
 
         $tags = WikiImage::add();
-        $tags['BACK']               = Core\Text::moduleLink(dgettext('wiki', 'Back to Wiki'), 'wiki');
+        $tags['BACK']               = \core\Text::moduleLink(dgettext('wiki', 'Back to Wiki'), 'wiki');
         $tags['MESSAGE']            = WikiManager::getMessage();
         $tags['IMAGE_UPLOAD_LABEL'] = dgettext('wiki', 'Image Upload');
         $tags['IMAGE_LIST_LABEL']   = dgettext('wiki', 'Image List');
@@ -252,7 +252,7 @@ class WikiManager
         $tags['LIST_CREATED']       = dgettext('wiki', 'Upload Date');
         $tags['LIST_ACTIONS']       = dgettext('wiki', 'Actions');
 
-        $pager = new Core\DBPager('wiki_images', 'WikiImage');
+        $pager = new \core\DBPager('wiki_images', 'WikiImage');
         $pager->setModule('wiki');
         $pager->setTemplate('images/admin.tpl');
         $pager->addToggle(PHPWS_LIST_TOGGLE_CLASS);
@@ -264,7 +264,7 @@ class WikiManager
 
         $template['TITLE'] = dgettext('wiki', 'Wiki Images');
         $template['CONTENT'] = $pager->get();
-        Layout::add(Core\Template::process($template, 'wiki', 'box.tpl'), 'wiki', 'wiki_mod', TRUE);
+        Layout::add(core\Template::process($template, 'wiki', 'box.tpl'), 'wiki', 'wiki_mod', TRUE);
     }// END FUNC imageUpload
 
     /**
@@ -274,16 +274,16 @@ class WikiManager
      */
     function recentChanges()
     {
-        Core\Core::initModClass('wiki', 'OldWikiPage.php');
+        \core\Core::initModClass('wiki', 'OldWikiPage.php');
         
-        $tags['BACK']     = Core\Text::moduleLink(dgettext('wiki', 'Back to Wiki'), 'wiki');
+        $tags['BACK']     = \core\Text::moduleLink(dgettext('wiki', 'Back to Wiki'), 'wiki');
         $tags['PAGE']     = dgettext('wiki', 'Page Name');
         $tags['UPDATED']  = dgettext('wiki', 'Updated');
         $tags['EDITOR']   = dgettext('wiki', 'Editor');
         $tags['COMMENT']  = dgettext('wiki', 'Comment');
         $tags['VIEW']     = dgettext('wiki', 'View');
 
-        $pager = new Core\DBPager('wiki_pages_version', 'OldWikiPage');
+        $pager = new \core\DBPager('wiki_pages_version', 'OldWikiPage');
         $pager->setModule('wiki');
         $pager->setTemplate('recentchanges/list.tpl');
         $pager->addToggle(PHPWS_LIST_TOGGLE_CLASS);
@@ -303,17 +303,17 @@ class WikiManager
      */
     function random()
     {
-        $db = new Core\DB('wiki_pages');
+        $db = new \core\DB('wiki_pages');
         $db->addOrder('random');
         $db->setLimit(1);
         $db->addColumn('title');
         $result = $db->select('col');
 
-        if (!Core\Error::logIfError($result) && ($result != NULL))
+        if (!core\Error::logIfError($result) && ($result != NULL))
         {
-            Core\Core::reroute(Core\Text::linkAddress('wiki', array('page'=>$result[0])));
+            \core\Core::reroute(core\Text::linkAddress('wiki', array('page'=>$result[0])));
         }
-        Core\Core::reroute(Core\Text::linkAddress('wiki'));
+        \core\Core::reroute(core\Text::linkAddress('wiki'));
     }// END FUNC random
 
     /**
@@ -331,37 +331,37 @@ class WikiManager
         $interwiki = dgettext('wiki', 'Interwiki setup');
 
         if (isset($_REQUEST['page']) && isset($_REQUEST['page_op']) &&
-            ($_REQUEST['page_op']=='view') && (Core\Settings::get('wiki', 'what_links_here')))
+            ($_REQUEST['page_op']=='view') && (core\Settings::get('wiki', 'what_links_here')))
         {
-            $links[] = Core\Text::moduleLink($linkshere, 'wiki',
+            $links[] = \core\Text::moduleLink($linkshere, 'wiki',
                                               array('page'=>$_REQUEST['page'], 'page_op'=>'whatlinkshere'));
         }
 
-        if (Core\Settings::get('wiki', 'recent_changes'))
+        if (core\Settings::get('wiki', 'recent_changes'))
         {
-            $links[] = Core\Text::moduleLink($recentchanges, 'wiki', array('op'=>'recentchanges'));
+            $links[] = \core\Text::moduleLink($recentchanges, 'wiki', array('op'=>'recentchanges'));
         }
 
-        if (Core\Settings::get('wiki', 'random_page'))
+        if (core\Settings::get('wiki', 'random_page'))
         {
-            $links[] = Core\Text::moduleLink($randompage, 'wiki', array('op'=>'random'));
+            $links[] = \core\Text::moduleLink($randompage, 'wiki', array('op'=>'random'));
         }
 
-        if ((Core\Settings::get('wiki', 'allow_image_upload') && Current_User::isLogged()) ||
+        if ((core\Settings::get('wiki', 'allow_image_upload') && Current_User::isLogged()) ||
             Current_User::allow('wiki', 'upload_images'))
         {
-            $links[] = Core\Text::secureLink($image, 'wiki', array('op'=>'imageupload'));
+            $links[] = \core\Text::secureLink($image, 'wiki', array('op'=>'imageupload'));
         }
 
         if (Current_User::allow('wiki', 'edit_page') ||
-            (Core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged()))
+            (core\Settings::get('wiki', 'allow_page_edit') && Current_User::isLogged()))
         {
-            $links[] = Core\Text::secureLink($interwiki, 'wiki', array('op'=>'interwikisetup'));
+            $links[] = \core\Text::secureLink($interwiki, 'wiki', array('op'=>'interwikisetup'));
         }
 
         if (Current_User::allow('wiki', 'edit_settings'))
         {
-            $links[] = Core\Text::secureLink($admin, 'wiki', array('op'=>'admin'));
+            $links[] = \core\Text::secureLink($admin, 'wiki', array('op'=>'admin'));
         }
 
         if (isset($links))
@@ -381,7 +381,7 @@ class WikiManager
     {
         Layout::addStyle('wiki');
 
-        if (!Core\Settings::get('wiki', 'allow_anon_view') && !Current_User::isLogged())
+        if (!core\Settings::get('wiki', 'allow_anon_view') && !Current_User::isLogged())
         {
             Current_User::requireLogin();
             return;
@@ -389,12 +389,12 @@ class WikiManager
 
         if (isset($_REQUEST['page_id']) && is_numeric($_REQUEST['page_id']))
         {
-            Core\Core::initModClass('wiki', 'WikiPage.php');
+            \core\Core::initModClass('wiki', 'WikiPage.php');
             $wikipage = new WikiPage($_REQUEST['page_id']);
         }
         else if (isset($_REQUEST['page']) && is_string($_REQUEST['page']))
         {
-            Core\Core::initModClass('wiki', 'WikiPage.php');
+            \core\Core::initModClass('wiki', 'WikiPage.php');
             $wikipage = new WikiPage($_REQUEST['page']);
         }
 
@@ -408,7 +408,7 @@ class WikiManager
 
             if (isset($_REQUEST['id']) && is_string($_REQUEST['id']))
             {
-                Core\Core::initModClass('wiki', 'WikiPage.php');
+                \core\Core::initModClass('wiki', 'WikiPage.php');
                 $wikipage = new WikiPage($_REQUEST['id']);
             }
 
@@ -427,7 +427,7 @@ class WikiManager
         {
             case 'admin':
             case 'savesettings':
-                Core\Core::initModClass('wiki', 'WikiSettings.php');
+                \core\Core::initModClass('wiki', 'WikiSettings.php');
                 WikiSettings::admin();
                 break;
 
@@ -438,24 +438,24 @@ class WikiManager
                 break;
 
             case 'imagedelete':
-                Core\Core::initModClass('wiki', 'WikiImage.php');
+                \core\Core::initModClass('wiki', 'WikiImage.php');
                 $delImage = new WikiImage($_REQUEST['id']);
                 $template['TITLE'] = dgettext('wiki', 'Wiki Images');
                 $template['CONTENT'] = $delImage->delete();
-                Layout::add(Core\Template::process($template, 'wiki', 'box.tpl'), 'wiki', 'wiki_mod', TRUE);
+                Layout::add(core\Template::process($template, 'wiki', 'box.tpl'), 'wiki', 'wiki_mod', TRUE);
                 break;
 
             case 'imagecopy':
-                Core\Core::initModClass('wiki', 'WikiImage.php');
+                \core\Core::initModClass('wiki', 'WikiImage.php');
                 $image = new WikiImage($_REQUEST['id']);
                 Clipboard::copy($image->getFilename(), $image->getTag());
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
             case 'recentchanges':
                 $template['TITLE'] = dgettext('wiki', 'Recent changes');
                 $template['CONTENT'] = WikiManager::recentChanges();
-                Layout::add(Core\Template::process($template, 'wiki', 'box.tpl'), 'wiki', 'wiki_mod', TRUE);
+                Layout::add(core\Template::process($template, 'wiki', 'box.tpl'), 'wiki', 'wiki_mod', TRUE);
                 break;
 
             case 'random':
@@ -464,7 +464,7 @@ class WikiManager
 
             case 'interwikisetup':
             case 'addinterwiki':
-                Core\Core::initModClass('wiki', 'InterWiki.php');
+                \core\Core::initModClass('wiki', 'InterWiki.php');
                 $interwiki = new InterWiki;
                 $interwiki->setup();
                 break;
@@ -473,20 +473,20 @@ class WikiManager
             case 'saveinterwiki':
             case 'deleteinterwiki':
             case 'dodeleteinterwiki':
-                Core\Core::initModClass('wiki', 'InterWiki.php');
+                \core\Core::initModClass('wiki', 'InterWiki.php');
                 $interwiki = new InterWiki($_REQUEST['id']);
                 $interwiki->setup();
                 break;
 
             case 'copyinterwiki':
-                Core\Core::initModClass('wiki', 'InterWiki.php');
+                \core\Core::initModClass('wiki', 'InterWiki.php');
                 $interwiki = new InterWiki($_REQUEST['id']);
                 Clipboard::copy($interwiki->getLabel(), $interwiki->getLabel() . ':PageName');
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
             default:
-                $_REQUEST['page'] = Core\Settings::get('wiki', 'default_page');
+                $_REQUEST['page'] = \core\Settings::get('wiki', 'default_page');
                 WikiManager::action();
         }
     }// END FUNC action

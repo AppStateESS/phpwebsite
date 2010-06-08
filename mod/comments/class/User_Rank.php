@@ -24,16 +24,16 @@ class Comment_User_Rank {
 
     private function init()
     {
-        $db = new Core\DB('comments_user_ranks');
-        if (Core\Error::logIfError($db->loadObject($this)) || !$this->id) {
+        $db = new \core\DB('comments_user_ranks');
+        if (core\Error::logIfError($db->loadObject($this)) || !$this->id) {
             $this->id = 0;
         }
     }
 
     public function save()
     {
-        $db = new Core\DB('comments_user_ranks');
-        return !Core\Error::logIfError($db->saveObject($this));
+        $db = new \core\DB('comments_user_ranks');
+        return !core\Error::logIfError($db->saveObject($this));
     }
 
     public function setTitle($title)
@@ -52,7 +52,7 @@ class Comment_User_Rank {
     public function setImage($image)
     {
         $allowed = array('jpg', 'gif', 'png');
-        $ext = Core\File::getFileExtension($image);
+        $ext = \core\File::getFileExtension($image);
         if (is_file($image) && in_array($ext, $allowed)) {
             $this->image = $image;
         } else {
@@ -72,9 +72,9 @@ class Comment_User_Rank {
 
     public function delete()
     {
-        $db = new Core\DB('comments_user_ranks');
+        $db = new \core\DB('comments_user_ranks');
         $db->addWhere('id', $this->id);
-        return !Core\Error::logIfError($db->delete());
+        return !core\Error::logIfError($db->delete());
     }
 
     function getImage()

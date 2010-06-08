@@ -8,7 +8,7 @@
 
 define('COMMENTS_MISSING_THREAD', 1);
 
-Core\Core::requireConfig('comments', 'config.php');
+core\Core::requireConfig('comments', 'config.php');
 
 class Comment_Item {
     // Id number of comment
@@ -76,7 +76,7 @@ class Comment_Item {
 
         $this->setId($id);
         $result = $this->init();
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = $result;
         }
     }
@@ -86,9 +86,9 @@ class Comment_Item {
         if (!isset($this->id))
         return FALSE;
 
-        $db = new Core\DB('comments_items');
+        $db = new \core\DB('comments_items');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         } elseif (!$result) {
             $this->id = 0;
@@ -123,13 +123,13 @@ class Comment_Item {
     public function setEntry($entry)
     {
         $entry = strip_tags($entry);
-        $this->entry = Core\Text::parseInput($entry);
+        $this->entry = \core\Text::parseInput($entry);
     }
 
     public function getEntry($format=TRUE, $quoted=FALSE)
     {
         if ($format) {
-            $entry = Core\Text::parseOutput($this->entry, true, true);
+            $entry = \core\Text::parseOutput($this->entry, true, true);
         } else {
             $entry =  $this->entry;
         }
@@ -148,7 +148,7 @@ class Comment_Item {
         if (empty($name) || strlen($name) < 2) {
             $this->anon_name = DEFAULT_ANONYMOUS_TITLE;
         } else {
-            include Core\Core::getConfigFile('comments', 'forbidden.php');
+            include \core\Core::getConfigFile('comments', 'forbidden.php');
             foreach ($forbidden_names as $fn) {
                 if (preg_match('/' . $fn . '/i', $name)) {
                     return false;
@@ -166,8 +166,8 @@ class Comment_Item {
             $this->author_id = Current_User::getId();
             $result = Comments::updateCommentUser($this->author_id);
 
-            if (Core\Error::isError($result)) {
-                Core\Error::log($result);
+            if (core\Error::isError($result)) {
+                \core\Error::log($result);
                 return FALSE;
             }
         } else {
@@ -317,7 +317,7 @@ class Comment_Item {
                 $str = dgettext('comments', 'Split topic from this position');
                 $str = '<span>' . dgettext('comments', 'Split Topic') . '</span>';
                 $title = dgettext('comments', 'Split topic from this position');
-                $template['FORK_THIS'] = Core\Text::secureLink($str, 'phpwsbb', $vars, null, $title, 'comment_fork_link');
+                $template['FORK_THIS'] = \core\Text::secureLink($str, 'phpwsbb', $vars, null, $title, 'comment_fork_link');
             }
         }
         $template['VIEW_LINK']       = $this->viewLink();
@@ -366,7 +366,7 @@ class Comment_Item {
     public function save($stamp_update=true)
     {
         if (empty($this->thread_id)) {
-            return Core\Error::get(COMMENTS_MISSING_THREAD, 'comments', 'Comment_Item::save');
+            return \core\Error::get(COMMENTS_MISSING_THREAD, 'comments', 'Comment_Item::save');
         }
 
         if (empty($this->subject)) {
@@ -388,10 +388,10 @@ class Comment_Item {
             $increase_count = FALSE;
         }
 
-        $db = new Core\DB('comments_items');
+        $db = new \core\DB('comments_items');
         $result = $db->saveObject($this);
-        if (!Core\Error::isError($result) && $increase_count && $this->approved) {
-            Core\Error::logIfError($this->stampThread());
+        if (!core\Error::isError($result) && $increase_count && $this->approved) {
+            \core\Error::logIfError($this->stampThread());
         }
         return $result;
     }
@@ -402,7 +402,7 @@ class Comment_Item {
         $thread->increaseCount();
         $thread->postLastUser($this->author_id);
         $result = $thread->save();
-        if (!Core\Error::logIfError($result)) {
+        if (!core\Error::logIfError($result)) {
             // Update any associated phpwsbb topic's lastpost information
             if (!empty($thread->phpwsbb_topic)) {
                 $thread->phpwsbb_topic->update_topic();
@@ -427,7 +427,7 @@ class Comment_Item {
         $vars['thread_id'] = $this->thread_id;
         $str = '<span>' . dgettext('comments', 'Edit') . '</span>';
         $title = dgettext('comments', 'Edit this comment');
-        return Core\Text::secureLink($str, 'comments', $vars, null, $title, 'comment_edit_link');
+        return \core\Text::secureLink($str, 'comments', $vars, null, $title, 'comment_edit_link');
     }
 
     public function deleteLink()
@@ -435,7 +435,7 @@ class Comment_Item {
         $vars['QUESTION'] = dgettext('comments', 'Are you sure you want to delete this comment?');
         $vars['ADDRESS'] = 'index.php?module=comments&amp;cm_id=' . $this->id . '&amp;aop=delete_comment&amp;authkey='
         . Current_User::getAuthKey();
-        $vars['LINK'] = Core\Icon::show('delete');
+        $vars['LINK'] = \core\Icon::show('delete');
         $vars['CLASS'] = 'comment_delete_link';
         $vars['TITLE'] = dgettext('comments', 'Delete this comment');
         return Layout::getJavascript('confirm', $vars);
@@ -443,15 +443,15 @@ class Comment_Item {
 
     public function clearReportLink()
     {
-        $link = Core\Icon::show('clear');
-        return Core\Text::secureLink($link, 'comments',
+        $link = \core\Icon::show('clear');
+        return \core\Text::secureLink($link, 'comments',
         array('aop'=>'clear_report', 'cm_id'=>$this->id),
         NULL, dgettext('comments', 'Clear this report'));
     }
 
     public function punishUserLink($graphic=false)
     {
-        Core\Core::initModClass('comments', 'Comment_Forms.php');
+        \core\Core::initModClass('comments', 'Comment_Forms.php');
         $punish_form = Comment_Forms::punishForm($this);
         if ($punish_form) {
             return sprintf('<span class="comment-punish"><img src="%smod/comments/img/noentry.png" title="%s" /><div class="comment-punish-list">%s</div></span>',
@@ -469,7 +469,7 @@ class Comment_Item {
         $vars['type']      = 'quote';
         $str = '<span>' . dgettext('comments', 'Quote') . '</span>';
         $title = dgettext('comments', 'Quote this comment');
-        return Core\Text::moduleLink($str, 'comments', $vars, null, $title, 'comment_quote_link');
+        return \core\Text::moduleLink($str, 'comments', $vars, null, $title, 'comment_quote_link');
     }
 
     public function replyLink()
@@ -479,7 +479,7 @@ class Comment_Item {
         $vars['cm_parent'] = $this->id;
         $str = '<span>' . dgettext('comments', 'Reply') . '</span>';
         $title = dgettext('comments', 'Reply to this comment');
-        return Core\Text::secureLink($str, 'comments', $vars, null, $title, 'comment_reply_link');
+        return \core\Text::secureLink($str, 'comments', $vars, null, $title, 'comment_reply_link');
     }
 
     public function reportLink()
@@ -495,7 +495,7 @@ class Comment_Item {
         $vars['uop']   = 'view_comment';
         $vars['cm_id']	   = $this->id;
 
-        return Core\Text::moduleLink($this->subject, 'comments', $vars);
+        return \core\Text::moduleLink($this->subject, 'comments', $vars);
     }
 
     /**
@@ -508,9 +508,9 @@ class Comment_Item {
         return false;
 
         // physical removal
-        $db = new Core\DB('comments_items');
+        $db = new \core\DB('comments_items');
         $db->addWhere('id', $this->id);
-        if (Core\Error::logIfError($db->delete())) {
+        if (core\Error::logIfError($db->delete())) {
             return false;
         }
 
@@ -530,7 +530,7 @@ class Comment_Item {
                 $thread->last_poster = $thread->phpwsbb_topic->lastpost_author;
             }
             else {
-                $db = new Core\DB('comments_items');
+                $db = new \core\DB('comments_items');
                 $db->addColumn('comments_items.author_id');
                 $db->addColumn('comments_items.anon_name');
                 $db->addColumn('users.display_name');
@@ -539,7 +539,7 @@ class Comment_Item {
                 $db->addWhere('comments_items.approved', 1);
                 $db->addOrder('create_time desc');
                 $result = $db->select('row');
-                if (Core\Error::logIfError($result))
+                if (core\Error::logIfError($result))
                 return;
                 if (empty($result))
                 $thread->last_poster = dgettext('comments', 'None');
@@ -559,7 +559,7 @@ class Comment_Item {
      */
     public function clearChildren()
     {
-        Core\DB::query('update comments_items set parent=0 where parent=' . $this->id);
+        \core\DB::query('update comments_items set parent=0 where parent=' . $this->id);
     }
 
     public function responseNumber()
@@ -567,7 +567,7 @@ class Comment_Item {
         $vars['uop'] = 'view_comment';
         $vars['cm_id']	     = $this->parent;
 
-        return Core\Text::moduleLink($this->parent, 'comments', $vars);
+        return \core\Text::moduleLink($this->parent, 'comments', $vars);
     }
 
     public function responseAuthor()
@@ -583,12 +583,12 @@ class Comment_Item {
             $name = $comment->getAuthorName();
             $this->parent_author_id = $comment->author_id;
             $this->parent_anon_name = $comment->anon_name;
-            $db = new Core\DB('comments_items');
-            Core\Error::logIfError($db->saveObject($this));
+            $db = new \core\DB('comments_items');
+            \core\Error::logIfError($db->saveObject($this));
         }
         $vars['uop']   = 'view_comment';
         $vars['cm_id'] = $this->parent;
-        return Core\Text::moduleLink($name, 'comments', $vars);
+        return \core\Text::moduleLink($name, 'comments', $vars);
     }
 
     public function reportTags()
@@ -641,13 +641,13 @@ class Comment_Item {
 
         $tpl['CHECKBOX'] = sprintf('<input type="checkbox" name="cm_id[]" value="%s" />', $this->id);
 
-        $approve = Core\Icon::show('check', dgettext('comments', 'Approve this comment'));
+        $approve = \core\Icon::show('check', dgettext('comments', 'Approve this comment'));
 
-        $remove = Core\Icon::show('cancel', dgettext('comments', 'Remove this comment'));
+        $remove = \core\Icon::show('cancel', dgettext('comments', 'Remove this comment'));
 
-        $links[] = Core\Text::secureLink($approve, 'comments', array('aop'=>'approve',
+        $links[] = \core\Text::secureLink($approve, 'comments', array('aop'=>'approve',
                                                                       'cm_id'=>$this->id));
-        $links[] = Core\Text::secureLink($remove, 'comments', array('aop'=>'remove',
+        $links[] = \core\Text::secureLink($remove, 'comments', array('aop'=>'remove',
                                                                      'cm_id'=>$this->id));
         $links[] = $this->punishUserLink(true);
 

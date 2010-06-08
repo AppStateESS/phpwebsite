@@ -45,9 +45,9 @@ class vShop_Tax {
 
     public function init()
     {
-        $db = new Core\DB('vshop_taxes');
+        $db = new \core\DB('vshop_taxes');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -79,7 +79,7 @@ class vShop_Tax {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->title);
+            return \core\Text::parseOutput($this->title);
         } else {
             return $this->title;
         }
@@ -92,7 +92,7 @@ class vShop_Tax {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->rate) . ' %';
+            return \core\Text::parseOutput($this->rate) . ' %';
         } else {
             return $this->rate;
         }
@@ -106,7 +106,7 @@ class vShop_Tax {
 
         if ($print) {
             foreach ($this->zones as $zone) {
-                $zones[] = Core\Text::parseOutput($zone);
+                $zones[] = \core\Text::parseOutput($zone);
             }
             return  implode(', ', $zones);
         } else {
@@ -118,7 +118,7 @@ class vShop_Tax {
     public function view()
     {
         if (!$this->id) {
-            Core\Core::errorPage(404);
+            \core\Core::errorPage(404);
         }
 
         $tpl['TAX_LINKS'] = $this->links();
@@ -127,7 +127,7 @@ class vShop_Tax {
         $tpl['ZONES_NOTE'] = dgettext('vshop', 'Tax applies to the following zone(s)');
         $tpl['RATE'] = $this->getRate(true);
 
-        return Core\Template::process($tpl, 'vshop', 'view_tax.tpl');
+        return \core\Template::process($tpl, 'vshop', 'view_tax.tpl');
     }
 
 
@@ -138,7 +138,7 @@ class vShop_Tax {
         if (Current_User::allow('vshop', 'settings')) {
             $vars['id'] = $this->id;
             $vars['aop']  = 'edit_tax';
-            $links[] = Core\Text::secureLink(dgettext('vshop', 'Edit tax'), 'vshop', $vars);
+            $links[] = \core\Text::secureLink(dgettext('vshop', 'Edit tax'), 'vshop', $vars);
         }
 
         $links = array_merge($links, vShop::navLinks());
@@ -153,9 +153,9 @@ class vShop_Tax {
             return;
         }
 
-        $db = new Core\DB('vshop_taxes');
+        $db = new \core\DB('vshop_taxes');
         $db->addWhere('id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
     }
 
 
@@ -166,13 +166,13 @@ class vShop_Tax {
 
         if (Current_User::allow('vshop', 'settings')) {
             $vars['aop']  = 'edit_tax';
-            $label = Core\Icon::show('edit');
-            $links[] = Core\Text::secureLink($label, 'vshop', $vars);
+            $label = \core\Icon::show('edit');
+            $links[] = \core\Text::secureLink($label, 'vshop', $vars);
 
             $vars['aop'] = 'delete_tax';
-            $js['ADDRESS'] = Core\Text::linkAddress('vshop', $vars, true);
+            $js['ADDRESS'] = \core\Text::linkAddress('vshop', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('vshop', 'Are you sure you want to delete the tax %s?'), $this->getTitle());
-            $js['LINK'] = Core\Icon::show('delete');
+            $js['LINK'] = \core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -188,10 +188,10 @@ class vShop_Tax {
 
     public function save()
     {
-        $db = new Core\DB('vshop_taxes');
+        $db = new \core\DB('vshop_taxes');
 
         $result = $db->saveObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
     }
@@ -201,7 +201,7 @@ class vShop_Tax {
     {
         $vars['aop']  = 'view_tax';
         $vars['tax'] = $this->id;
-        return Core\Text::moduleLink(dgettext('vshop', $this->title), 'vshop', $vars);
+        return \core\Text::moduleLink(dgettext('vshop', $this->title), 'vshop', $vars);
     }
 
 

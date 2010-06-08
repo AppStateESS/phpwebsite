@@ -6,7 +6,7 @@
  */
 
 if (!isset($_REQUEST['module']) || $_REQUEST['module'] == 'webpage') {
-    Core\Core::initModClass('webpage', 'User.php');
+    \core\Core::initModClass('webpage', 'User.php');
     Webpage_User::showFrontPage();
     Webpage_User::showFeatured();
 }

@@ -15,7 +15,7 @@ function flickr_ss_import($media)
     $parse = new XMLParser($feed_url . $media->file_name, false);
 
     if ($parse->error) {
-        Core\Error::log($parse->error);
+        \core\Error::log($parse->error);
         return false;
     }
     $parse->setContentOnly(false);

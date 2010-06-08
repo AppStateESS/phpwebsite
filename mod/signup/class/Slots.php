@@ -25,9 +25,9 @@ class Signup_Slot {
 
     public function init()
     {
-        $db = new Core\DB('signup_slots');
+        $db = new \core\DB('signup_slots');
         $result = $db->loadObject($this);
-        if (Core\Error::logIfError($result) || !$result) {
+        if (core\Error::logIfError($result) || !$result) {
             $this->id = 0;
             return false;
         }
@@ -36,9 +36,9 @@ class Signup_Slot {
 
     public function loadPeeps($registered=true)
     {
-        Core\Core::initModClass('signup', 'Peeps.php');
+        \core\Core::initModClass('signup', 'Peeps.php');
 
-        $db = new Core\DB('signup_peeps');
+        $db = new \core\DB('signup_peeps');
         $db->addWhere('slot_id', $this->id);
         if ($registered) {
             $db->addWhere('registered', 1);
@@ -49,7 +49,7 @@ class Signup_Slot {
         $db->addOrder('last_name');
         $peeps = $db->getObjects('Signup_Peep');
 
-        if (Core\Error::logIfError($peeps)) {
+        if (core\Error::logIfError($peeps)) {
             return false;
         } else {
             $this->_peeps = & $peeps;
@@ -80,15 +80,15 @@ class Signup_Slot {
     public function save()
     {
         if (!$this->sheet_id) {
-            return Core\Error::get(SU_NO_SHEET_ID, 'signup', 'Signup_Slot::save');
+            return \core\Error::get(SU_NO_SHEET_ID, 'signup', 'Signup_Slot::save');
         }
 
-        $db = new Core\DB('signup_slots');
+        $db = new \core\DB('signup_slots');
         if (!$this->id) {
             $db->addWhere('sheet_id', $this->sheet_id);
             $db->addColumn('s_order', 'max');
             $max = $db->select('one');
-            if (Core\Error::isError($max)) {
+            if (core\Error::isError($max)) {
                 return $max;
             }
             if ($max >= 1) {
@@ -106,7 +106,7 @@ class Signup_Slot {
         $vars['aop']      = 'add_slot_peep';
         $vars['slot_id']  = $this->id;
         $jsadd['label']   = dgettext('signup', 'Add applicant');
-        $jsadd['address'] = Core\Text::linkAddress('signup', $vars, true);
+        $jsadd['address'] = \core\Text::linkAddress('signup', $vars, true);
         $jsadd['width']   = 300;
         $jsadd['height']  = 470;
         return javascript('open_window', $jsadd);
@@ -118,7 +118,7 @@ class Signup_Slot {
 
         $vars['aop'] = 'edit_slot_popup';
         $links[] = javascript('open_window', array('label'  => dgettext('signup', 'Edit Slot'),
-                                                   'address'=> Core\Text::linkAddress('signup', $vars, true)));
+                                                   'address'=> \core\Text::linkAddress('signup', $vars, true)));
 
         if ($this->_filled < $this->openings) {
             $links[] = $this->applicantAddLink();
@@ -127,17 +127,17 @@ class Signup_Slot {
         if (empty($this->_peeps)) {
             $vars['aop'] = 'delete_slot';
             $jsconf['QUESTION'] = dgettext('signup', 'Are you certain you want to delete this slot?');
-            $jsconf['ADDRESS'] = Core\Text::linkAddress('signup', $vars, true);
+            $jsconf['ADDRESS'] = \core\Text::linkAddress('signup', $vars, true);
             $jsconf['LINK'] = dgettext('signup', 'Delete slot');
             $links[] = javascript('confirm', $jsconf);
         }
 
 
         $vars['aop'] = 'move_up';
-        $links[] = Core\Text::secureLink(dgettext('signup', 'Up'), 'signup', $vars);
+        $links[] = \core\Text::secureLink(dgettext('signup', 'Up'), 'signup', $vars);
 
         $vars['aop'] = 'move_down';
-        $links[] = Core\Text::secureLink(dgettext('signup', 'Down'), 'signup', $vars);
+        $links[] = \core\Text::secureLink(dgettext('signup', 'Down'), 'signup', $vars);
 
         return implode(' | ', $links);
     }
@@ -163,8 +163,8 @@ class Signup_Slot {
 
         if ($this->_peeps) {
             $jsconf['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this person from their signup slot?');
-            $jsconf['LINK'] = Core\Icon::show('delete');
-            $jspop['label'] = Core\Icon::show('edit');
+            $jsconf['LINK'] = \core\Icon::show('delete');
+            $jspop['label'] = \core\Icon::show('edit');
 
             foreach ($this->_peeps as $peep) {
                 $links = array();
@@ -187,19 +187,19 @@ class Signup_Slot {
 
                 $vars['peep_id'] = $peep->id;
                 $vars['aop']     = 'edit_slot_peep';
-                $jspop['address'] = Core\Text::linkAddress('signup', $vars, true);
+                $jspop['address'] = \core\Text::linkAddress('signup', $vars, true);
                 $jspop['width']  = 300;
                 $jspop['height'] = 600;
                 $links[] = javascript('open_window', $jspop);
 
                 $vars['aop']     = 'delete_slot_peep';
-                $jsconf['ADDRESS'] = Core\Text::linkAddress('signup', $vars, true);
+                $jsconf['ADDRESS'] = \core\Text::linkAddress('signup', $vars, true);
                 $links[] = javascript('confirm', $jsconf);
 
                 $subtpl['ACTION'] = implode('', $links);
 
                 if (!empty($options)) {
-                    $form = new Core\Form;
+                    $form = new \core\Form;
                     $form->addHidden('module', 'signup');
                     $form->addHidden('aop', 'move_peep');
                     $form->addHidden('peep_id', $peep->id);
@@ -221,7 +221,7 @@ class Signup_Slot {
             $tpl['ORGANIZATION_LABEL'] = dgettext('signup', 'Organization');
             $tpl['MOVE_LABEL']         = dgettext('signup', 'Move');
 
-            return Core\Template::process($tpl, 'signup', 'peeps.tpl');
+            return \core\Template::process($tpl, 'signup', 'peeps.tpl');
         }
     }
 
@@ -249,7 +249,7 @@ class Signup_Slot {
 
     public function listTpl()
     {
-        $vars['address'] = Core\Text::linkAddress('signup', array('aop'=>'edit_peep_popup',
+        $vars['address'] = \core\Text::linkAddress('signup', array('aop'=>'edit_peep_popup',
                                                                    'slot_id'=>$this->id));
         $vars['label']      = $this->title;
         $vars['width']      = 800;
@@ -266,7 +266,7 @@ class Signup_Slot {
 
     public function moveUp()
     {
-        $db = new Core\DB('signup_slots');
+        $db = new \core\DB('signup_slots');
         $db->addWhere('sheet_id', $this->sheet_id);
         $db->addColumn('id', null, null, true);
         $slot_count = $db->select('one');
@@ -287,7 +287,7 @@ class Signup_Slot {
 
     public function moveDown()
     {
-        $db = new Core\DB('signup_slots');
+        $db = new \core\DB('signup_slots');
         $db->addWhere('sheet_id', $this->sheet_id);
         $db->addColumn('id', null, null, true);
         $slot_count = $db->select('one');
@@ -308,9 +308,9 @@ class Signup_Slot {
 
     public function delete()
     {
-        $db = new Core\DB('signup_slots');
+        $db = new \core\DB('signup_slots');
         $db->addWhere('id', $this->id);
-        if (Core\Error::logIfError($db->delete())) {
+        if (core\Error::logIfError($db->delete())) {
             return false;
         }
 
@@ -322,13 +322,13 @@ class Signup_Slot {
 
     public function currentOpenings()
     {
-        $db = new Core\DB('signup_peeps');
+        $db = new \core\DB('signup_peeps');
         $db->addWhere('slot_id', $this->id);
         $db->addColumn('id', null, null, true);
 
         $applicants = $db->select('one');
 
-        if (Core\Error::logIfError($applicants)) {
+        if (core\Error::logIfError($applicants)) {
             return 0;
         } else {
             return $this->openings - $applicants;

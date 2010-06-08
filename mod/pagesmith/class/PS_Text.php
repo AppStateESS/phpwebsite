@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-Core\Core::initModClass('pagesmith', 'PS_Section.php');
+core\Core::initModClass('pagesmith', 'PS_Section.php');
 
 class PS_Text extends PS_Section {
 
@@ -20,9 +20,9 @@ class PS_Text extends PS_Section {
 
     public function init()
     {
-        $db = new Core\DB('ps_text');
+        $db = new \core\DB('ps_text');
         $result = $db->loadObject($this);
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return $result;
         }
         if (!$result) {
@@ -51,7 +51,7 @@ class PS_Text extends PS_Section {
             if (empty($lorum)) {
                 $lorum = file_get_contents(PHPWS_SOURCE_DIR . 'mod/pagesmith/inc/lorum.txt');
             }
-            $this->content =  Core\Text::breaker($lorum);
+            $this->content =  \core\Text::breaker($lorum);
         }
         $this->setSaved();
     }
@@ -73,24 +73,24 @@ class PS_Text extends PS_Section {
         }
 
         if ($view_mode) {
-            return Core\Text::parseTag(Core\Text::parseOutput($this->content));
+            return \core\Text::parseTag(core\Text::parseOutput($this->content));
         } else {
-            return Core\Text::decodeText($this->content);
+            return \core\Text::decodeText($this->content);
             /**
              * Prior to 24 Mar 09, this was what it returned. This prevented anchors
              * and filtered words in edit mode. Although testing the change does not
              * indicate side effects, I am leaving this in just case. -Matt
              */
-            //return Core\Text::parseOutput($this->content);
+            //return \core\Text::parseOutput($this->content);
         }
     }
 
 
     public function save($key_id)
     {
-        $db = new Core\DB('ps_text');
+        $db = new \core\DB('ps_text');
         $result = $db->saveObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
         $search = new Search($key_id);

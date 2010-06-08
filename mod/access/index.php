@@ -9,7 +9,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-Core\Core::initModClass('access', 'Access.php');
+core\Core::initModClass('access', 'Access.php');
 if (Current_User::authorized('access')) {
     Access::main();
 } else {

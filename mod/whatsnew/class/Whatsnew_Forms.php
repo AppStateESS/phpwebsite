@@ -47,57 +47,57 @@ class Whatsnew_Forms {
     function editSettings()
     {
 
-        $form = new Core\Form('whatsnew_settings');
+        $form = new \core\Form('whatsnew_settings');
         $form->addHidden('module', 'whatsnew');
         $form->addHidden('aop', 'post_settings');
 
         $form->addCheckbox('enable', 1);
-        $form->setMatch('enable', Core\Settings::get('whatsnew', 'enable'));
+        $form->setMatch('enable', \core\Settings::get('whatsnew', 'enable'));
         $form->setLabel('enable', dgettext('whatsnew', 'Enable whatsnew'));
 
         $form->addCheckbox('homeonly', 1);
-        $form->setMatch('homeonly', Core\Settings::get('whatsnew', 'homeonly'));
+        $form->setMatch('homeonly', \core\Settings::get('whatsnew', 'homeonly'));
         $form->setLabel('homeonly', dgettext('whatsnew', 'Show whatsnew sidebox on home page only'));
 
-        $form->addTextField('title', Core\Settings::get('whatsnew', 'title'));
+        $form->addTextField('title', \core\Settings::get('whatsnew', 'title'));
         $form->setLabel('title', dgettext('whatsnew', 'Sidebox title'));
         $form->setSize('title', 30);
 
-        $form->addTextArea('text', Core\Settings::get('whatsnew', 'text'));
+        $form->addTextArea('text', \core\Settings::get('whatsnew', 'text'));
         $form->setRows('text', '4');
         $form->setCols('text', '40');
         $form->setLabel('text', dgettext('whatsnew', 'Sidebox text'));
 
-        $form->addTextField('cache_timeout', Core\Settings::get('whatsnew', 'cache_timeout'));
+        $form->addTextField('cache_timeout', \core\Settings::get('whatsnew', 'cache_timeout'));
         $form->setLabel('cache_timeout', dgettext('whatsnew', 'Cache duration for whatsnew list (in seconds, 0-7200)'));
         $form->setSize('cache_timeout', 4,4);
 
-        $form->addTextField('qty_items', Core\Settings::get('whatsnew', 'qty_items'));
+        $form->addTextField('qty_items', \core\Settings::get('whatsnew', 'qty_items'));
         $form->setLabel('qty_items', dgettext('whatsnew', 'Number of recent items to display (0-50)'));
         $form->setSize('qty_items', 4,4);
 
         $form->addCheckbox('show_summaries', 1);
-        $form->setMatch('show_summaries', Core\Settings::get('whatsnew', 'show_summaries'));
+        $form->setMatch('show_summaries', \core\Settings::get('whatsnew', 'show_summaries'));
         $form->setLabel('show_summaries', dgettext('whatsnew', 'Show item summaries'));
 
         $form->addCheckbox('show_dates', 1);
-        $form->setMatch('show_dates', Core\Settings::get('whatsnew', 'show_dates'));
+        $form->setMatch('show_dates', \core\Settings::get('whatsnew', 'show_dates'));
         $form->setLabel('show_dates', dgettext('whatsnew', 'Show item update dates'));
 
         $form->addCheckbox('show_source_modules', 1);
-        $form->setMatch('show_source_modules', Core\Settings::get('whatsnew', 'show_source_modules'));
+        $form->setMatch('show_source_modules', \core\Settings::get('whatsnew', 'show_source_modules'));
         $form->setLabel('show_source_modules', dgettext('whatsnew', 'Show item source module names'));
 
         $form->addSubmit('save', dgettext('whatsnew', 'Save settings'));
 
         $tpl = $form->getTemplate();
         $tpl['SETTINGS_LABEL'] = dgettext('whatsnew', 'General Settings');
-        $tpl['FLUSH_LINK'] = Core\Text::secureLink(dgettext('whatsnew', 'Flush cache'), 'whatsnew', array('aop'=>'flush_cache'));
-        $tpl['EXCLUDE'] = $this->whatsnew->getKeyMods(unserialize(Core\Settings::get('whatsnew', 'exclude')), 'exclude');
+        $tpl['FLUSH_LINK'] = \core\Text::secureLink(dgettext('whatsnew', 'Flush cache'), 'whatsnew', array('aop'=>'flush_cache'));
+        $tpl['EXCLUDE'] = $this->whatsnew->getKeyMods(unserialize(core\Settings::get('whatsnew', 'exclude')), 'exclude');
         $tpl['EXCLUDE_LABEL'] = dgettext('whatsnew', 'Select any modules you wish to exclude from your whatsnew box.');
 
         $this->whatsnew->title = dgettext('whatsnew', 'Settings');
-        $this->whatsnew->content = Core\Template::process($tpl, 'whatsnew', 'edit_settings.tpl');
+        $this->whatsnew->content = \core\Template::process($tpl, 'whatsnew', 'edit_settings.tpl');
     }
 
 
@@ -118,7 +118,7 @@ class Whatsnew_Forms {
         $tpl['DONATE'] = sprintf(dgettext('whatsnew', 'If you would like to help out with the ongoing development of whatsnew, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window).'), '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=donations%40verdon%2eca&item_name=Whatsnew%20Module%20Development&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=CA&bn=PP%2dDonationsBF&charset=UTF%2d8" target="new">', '</a>');
 
         $this->whatsnew->title = dgettext('whatsnew', 'Read me');
-        $this->whatsnew->content = Core\Template::process($tpl, 'whatsnew', 'info.tpl');
+        $this->whatsnew->content = \core\Template::process($tpl, 'whatsnew', 'info.tpl');
     }
 
 

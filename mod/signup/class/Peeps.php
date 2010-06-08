@@ -43,9 +43,9 @@ class Signup_Peep {
 
     public function init()
     {
-        $db = new Core\DB('signup_peeps');
+        $db = new \core\DB('signup_peeps');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = $result;
         } elseif (!$result) {
             $this->id = 0;
@@ -81,13 +81,13 @@ class Signup_Peep {
 
     public function save()
     {
-        $db = new Core\DB('signup_peeps');
+        $db = new \core\DB('signup_peeps');
         return $db->saveObject($this);
     }
 
     public function delete()
     {
-        $db = new Core\DB('signup_peeps');
+        $db = new \core\DB('signup_peeps');
         $db->addWhere('id', $this->id);
         $db->delete();
     }
@@ -105,17 +105,17 @@ class Signup_Peep {
 
     public function getExtra1()
     {
-        return Core\Text::parseOutput($this->extra1);
+        return \core\Text::parseOutput($this->extra1);
     }
 
     public function getExtra2()
     {
-        return Core\Text::parseOutput($this->extra2);
+        return \core\Text::parseOutput($this->extra2);
     }
 
     public function getExtra3()
     {
-        return Core\Text::parseOutput($this->extra3);
+        return \core\Text::parseOutput($this->extra3);
     }
 
     public function setExtra1($extra)
@@ -135,7 +135,7 @@ class Signup_Peep {
 
     public function setExtraX($extra, &$key)
     {
-        $key = Core\Text::parseInput(trim(strip_tags($extra)));
+        $key = \core\Text::parseInput(trim(strip_tags($extra)));
     }
 }
 

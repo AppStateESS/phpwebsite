@@ -47,7 +47,7 @@ class vPath {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('vpath', 'vPath settings saved.'));
-                    Core\Core::reroute('index.php?module=vpath&aop=menu');
+                    \core\Core::reroute('index.php?module=vpath&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -69,9 +69,9 @@ class vPath {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'vpath', 'main_admin.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'vpath', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(Core\Template::process($tpl, 'vpath', 'main_admin.tpl'));
+            $this->panel->setContent(core\Template::process($tpl, 'vpath', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -94,14 +94,14 @@ class vPath {
             if (isset($_SESSION['VP_Message']['title'])) {
                 $this->title = $_SESSION['VP_Message']['title'];
             }
-            Core\Core::killSession('VP_Message');
+            \core\Core::killSession('VP_Message');
         }
     }
 
 
     public function loadForm($type)
     {
-        Core\Core::initModClass('vpath', 'vPath_Forms.php');
+        \core\Core::initModClass('vpath', 'vPath_Forms.php');
         $this->forms = new vPath_Forms;
         $this->forms->vpath = & $this;
         $this->forms->get($type);
@@ -110,7 +110,7 @@ class vPath {
 
     public function loadPanel()
     {
-        Core\Core::initModClass('controlpanel', 'Panel.php');
+        \core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('vpath-panel');
         $link = 'index.php?module=vpath&aop=menu';
 
@@ -128,49 +128,49 @@ class vPath {
     {
 
         isset($_POST['enable_path']) ?
-            Core\Settings::set('vpath', 'enable_path', 1) :
-            Core\Settings::set('vpath', 'enable_path', 0);
+            \core\Settings::set('vpath', 'enable_path', 1) :
+            \core\Settings::set('vpath', 'enable_path', 0);
 
         isset($_POST['show_on_home']) ?
-            Core\Settings::set('vpath', 'show_on_home', 1) :
-            Core\Settings::set('vpath', 'show_on_home', 0);
+            \core\Settings::set('vpath', 'show_on_home', 1) :
+            \core\Settings::set('vpath', 'show_on_home', 0);
 
-        Core\Settings::set('vpath', 'menu_id', $_POST['menu_id']);
-        Core\Settings::set('vpath', 'divider', $_POST['divider']);
+        \core\Settings::set('vpath', 'menu_id', $_POST['menu_id']);
+        \core\Settings::set('vpath', 'divider', $_POST['divider']);
 
         isset($_POST['divider_space']) ?
-            Core\Settings::set('vpath', 'divider_space', 1) :
-            Core\Settings::set('vpath', 'divider_space', 0);
+            \core\Settings::set('vpath', 'divider_space', 1) :
+            \core\Settings::set('vpath', 'divider_space', 0);
 
         isset($_POST['link_current']) ?
-            Core\Settings::set('vpath', 'link_current', 1) :
-            Core\Settings::set('vpath', 'link_current', 0);
+            \core\Settings::set('vpath', 'link_current', 1) :
+            \core\Settings::set('vpath', 'link_current', 0);
 
         isset($_POST['show_sub_menu']) ?
-            Core\Settings::set('vpath', 'show_sub_menu', 1) :
-            Core\Settings::set('vpath', 'show_sub_menu', 0);
+            \core\Settings::set('vpath', 'show_sub_menu', 1) :
+            \core\Settings::set('vpath', 'show_sub_menu', 0);
 
         isset($_POST['show_peer_menu']) ?
-            Core\Settings::set('vpath', 'show_peer_menu', 1) :
-            Core\Settings::set('vpath', 'show_peer_menu', 0);
+            \core\Settings::set('vpath', 'show_peer_menu', 1) :
+            \core\Settings::set('vpath', 'show_peer_menu', 0);
 
         if (!empty($_POST['path_prefix'])) {
-            Core\Settings::set('vpath', 'path_prefix', Core\Text::parseInput($_POST['path_prefix']));
+            \core\Settings::set('vpath', 'path_prefix', \core\Text::parseInput($_POST['path_prefix']));
         } else {
-            Core\Settings::set('vpath', 'path_prefix', null);
+            \core\Settings::set('vpath', 'path_prefix', null);
         }
 
         if (!empty($_POST['path_suffix'])) {
-            Core\Settings::set('vpath', 'path_suffix', Core\Text::parseInput($_POST['path_suffix']));
+            \core\Settings::set('vpath', 'path_suffix', \core\Text::parseInput($_POST['path_suffix']));
         } else {
-            Core\Settings::set('vpath', 'path_suffix', null);
+            \core\Settings::set('vpath', 'path_suffix', null);
         }
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            if (Core\Settings::save('vpath')) {
+            if (core\Settings::save('vpath')) {
                 return true;
             } else {
                 return falsel;
@@ -185,11 +185,11 @@ class vPath {
         static $redirect_url = null;
 
         if (!$current_url) {
-            $current_url = preg_quote(Core\Core::getCurrentUrl(true,false));
+            $current_url = preg_quote(core\Core::getCurrentUrl(true,false));
         }
 
         if (!$redirect_url) {
-            $redirect_url = preg_quote(Core\Core::getCurrentUrl());
+            $redirect_url = preg_quote(core\Core::getCurrentUrl());
         }
 
         if ( preg_match("@$current_url$@", $url) ||
@@ -205,16 +205,16 @@ class vPath {
     {
 
         /* get all links for the menu_id */
-        $db = new Core\DB('menu_links');
+        $db = new \core\DB('menu_links');
         $db->addWhere('menu_id', $menu_id);
         $db->addOrder('link_order asc');
         $links = $db->select();
-        if (empty($links) || Core\Error::logIfError($links)) {
+        if (empty($links) || \core\Error::logIfError($links)) {
             return NULL;
         }
 
         /* get the current key */
-        $current_key = Core\Key::getCurrent();
+        $current_key = \core\Key::getCurrent();
 
         /* if there is a key */
         if (!empty($current_key)) {
@@ -233,11 +233,11 @@ class vPath {
             static $redirect_url = null;
 
             if (!$current_url) {
-                $current_url = preg_quote(Core\Core::getCurrentUrl(true,false));
+                $current_url = preg_quote(core\Core::getCurrentUrl(true,false));
             }
 
             if (!$redirect_url) {
-                $redirect_url = preg_quote(Core\Core::getCurrentUrl());
+                $redirect_url = preg_quote(core\Core::getCurrentUrl());
             }
 
         } */
@@ -252,7 +252,7 @@ class vPath {
                  vPath::isCurrentUrl($link['url'] == true)
           ) {
                 /* add it's title to the crumb list */
-                if (Core\Settings::get('vpath', 'link_current')) {
+                if (core\Settings::get('vpath', 'link_current')) {
                     $list[] = sprintf('<a href="%s">%s</a>', $link['url'], $link['title']);
                 } else {
                     $list[] = $link['title'];
@@ -262,7 +262,7 @@ class vPath {
                     vPath::getCrumbs($links, $list, $link['parent']);
                 }
                 /* print the sub-menu if enabled */
-                if (Core\Settings::get('vpath', 'show_sub_menu')) {
+                if (core\Settings::get('vpath', 'show_sub_menu')) {
                     $title = sprintf('<a href="%s">%s</a>', $link['url'], $link['title']);
                     vPath::buildSub($links, $link['id'], $title);
                 }
@@ -270,13 +270,13 @@ class vPath {
 
 
                 /* if peer-menu is enabled and if it has no children, print peer-menu  */
-                if (Core\Settings::get('vpath', 'show_peer_menu')) {
-                    $db = new Core\DB('menu_links');
+                if (core\Settings::get('vpath', 'show_peer_menu')) {
+                    $db = new \core\DB('menu_links');
                     $db->addWhere('parent', $link['id']);
                     $subs = $db->select();
-                    Core\Error::logIfError($subs);
+                    \core\Error::logIfError($subs);
                     if (empty($subs)) {
-                        $db = new Core\DB('menu_links');
+                        $db = new \core\DB('menu_links');
                         $db->addWhere('id', $link['parent']);
                         $parent = $db->select();
                         $title = sprintf('<a href="%s">%s</a>', $parent[0]['url'], $parent[0]['title']);
@@ -297,8 +297,8 @@ class vPath {
             } else {
                 $title = $_SESSION['Layout_Settings']->getPageTitle();
             }
-            if (Core\Settings::get('vpath', 'link_current')) {
-                $list[0] = sprintf('<a href="%s">%s</a>', Core\Core::getCurrentUrl(), $title);
+            if (core\Settings::get('vpath', 'link_current')) {
+                $list[0] = sprintf('<a href="%s">%s</a>', \core\Core::getCurrentUrl(), $title);
             } else {
                 $list[0] = $title;
             }
@@ -308,17 +308,17 @@ class vPath {
         $list = array_reverse($list);
 
         /* put it all together */
-        $tpl['PREFIX'] = Core\Settings::get('vpath', 'path_prefix');
-        $tpl['SUFFIX'] = Core\Settings::get('vpath', 'path_suffix');
+        $tpl['PREFIX'] = \core\Settings::get('vpath', 'path_prefix');
+        $tpl['SUFFIX'] = \core\Settings::get('vpath', 'path_suffix');
         require(PHPWS_SOURCE_DIR . 'mod/vpath/inc/dividers.php');
-        $divider = $vpath_dividers[Core\Settings::get('vpath', 'divider')];
-        if (Core\Settings::get('vpath', 'divider_space')) {
+        $divider = $vpath_dividers[core\Settings::get('vpath', 'divider')];
+        if (core\Settings::get('vpath', 'divider_space')) {
             $divider = ' ' . $divider . ' ';
         }
         $tpl['PATH'] = implode($list, $divider);
 
         if (!empty($tpl)) {
-            $content = Core\Template::process($tpl, 'vpath', 'path.tpl');
+            $content = \core\Template::process($tpl, 'vpath', 'path.tpl');
             Layout::add($content, 'vpath', 'view');
         }
 
@@ -355,7 +355,7 @@ class vPath {
         }
         if ($tpl['LINKS']) {
             $tpl['TITLE'] = $title;
-            $content = Core\Template::process($tpl, 'vpath', 'sub.tpl');
+            $content = \core\Template::process($tpl, 'vpath', 'sub.tpl');
             Layout::add($content, 'vpath', 'sub');
         }
     }

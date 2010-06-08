@@ -27,9 +27,9 @@ class RDX_Runtime
 {
 
     public static function showBlock() {
-        if (Core\Settings::get('rolodex', 'show_block')) {
-            if (Core\Settings::get('rolodex', 'block_on_home_only')) {
-                $key = Core\Key::getCurrent();
+        if (core\Settings::get('rolodex', 'show_block')) {
+            if (core\Settings::get('rolodex', 'block_on_home_only')) {
+                $key = \core\Key::getCurrent();
                 if (!empty($key) && $key->isHomeKey()) {
                     RDX_Runtime::showRolodexBlock();
                 }
@@ -41,7 +41,7 @@ class RDX_Runtime
 
     public static function showRolodexBlock() {
 
-        $db = new Core\DB('rolodex_member');
+        $db = new \core\DB('rolodex_member');
         $db->addColumn('user_id');
         $db->addWhere('active', 1);
         if (!Current_User::isLogged()) {
@@ -50,21 +50,21 @@ class RDX_Runtime
             $db->addWhere('privacy', 0);
             $db->addWhere('privacy', 1, '=', 'or');
         }
-        if (Core\Settings::get('rolodex', 'block_order_by_rand')) {
+        if (core\Settings::get('rolodex', 'block_order_by_rand')) {
             $db->addOrder('rand');
         } else {
             $db->addOrder('date_created desc');
         }
         $db->setLimit(1);
         $result = $db->select();
-        if (!Core\Error::logIfError($result) && !empty($result)) {
-            $tpl['TITLE'] = Core\Settings::get('rolodex', 'module_title');
-            if (Core\Settings::get('rolodex', 'block_order_by_rand')) {
+        if (!core\Error::logIfError($result) && !empty($result)) {
+            $tpl['TITLE'] = \core\Settings::get('rolodex', 'module_title');
+            if (core\Settings::get('rolodex', 'block_order_by_rand')) {
                 $tpl['MEMBER_LABEL'] = dgettext('rolodex', 'Featured Member');
             } else {
                 $tpl['MEMBER_LABEL'] = dgettext('rolodex', 'Most Recent Member');
             }
-            Core\Core::initModClass('rolodex', 'RDX_Member.php');
+            \core\Core::initModClass('rolodex', 'RDX_Member.php');
             $member = new Rolodex_Member($result[0]['user_id']);
             $tpl['MEMBER_TITLE'] = $member->viewLink();
             if ($member->getThumbnail()) {
@@ -72,9 +72,9 @@ class RDX_Runtime
             } else {
                 $tpl['MEMBER_THUMBNAIL'] = null;
             }
-            $tpl['BROWSE_LINK'] = Core\Text::moduleLink(dgettext('rolodex', 'Browse all members'), 'rolodex', array('uop'=>'list'));
-            Core\Core::initModClass('layout', 'Layout.php');
-            Layout::add(Core\Template::process($tpl, 'rolodex', 'block.tpl'), 'rolodex', 'rdx_sidebox');
+            $tpl['BROWSE_LINK'] = \core\Text::moduleLink(dgettext('rolodex', 'Browse all members'), 'rolodex', array('uop'=>'list'));
+            \core\Core::initModClass('layout', 'Layout.php');
+            Layout::add(core\Template::process($tpl, 'rolodex', 'block.tpl'), 'rolodex', 'rdx_sidebox');
         }
 
     }

@@ -7,13 +7,13 @@
  * @version $Id$
  */
 
-Core\Core::requireConfig('search');
+core\Core::requireConfig('search');
 class Search_User {
 
     public static function main()
     {
         if (!isset($_GET['user'])) {
-            Core\Core::errorPage('404');
+            \core\Core::errorPage('404');
         }
 
         $command = $_GET['user'];
@@ -24,7 +24,7 @@ class Search_User {
                 break;
 
             default:
-                Core\Core::errorPage('404');
+                \core\Core::errorPage('404');
                 break;
         }
     }
@@ -37,14 +37,14 @@ class Search_User {
         }
 
         
-        $form = new Core\Form('search_box');
+        $form = new \core\Form('search_box');
         $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addHidden('user', 'search');
         $form->addText('search', SEARCH_DEFAULT);
         $form->setLabel('search', dgettext('search', 'Search'));
 
-        if (Core\Settings::get('search', 'show_alternates')) {
+        if (core\Settings::get('search', 'show_alternates')) {
             Search_User::addAlternates($form);
         }
 
@@ -57,7 +57,7 @@ class Search_User {
 
         $form->addSelect('mod_title', $mod_list);
 
-        $key = Core\Key::getCurrent();
+        $key = \core\Key::getCurrent();
 
         if (!empty($key) && !$key->isDummy()) {
             $form->setMatch('mod_title', $key->module);
@@ -67,13 +67,13 @@ class Search_User {
 
         $template = $form->getTemplate();
 
-        $content = Core\Template::process($template, 'search', 'search_box.tpl');
+        $content = \core\Template::process($template, 'search', 'search_box.tpl');
         Layout::add($content, 'search', 'search_box');
     }
 
     public static function getModList()
     {
-        $db = new Core\DB('search');
+        $db = new \core\DB('search');
         $db->addColumn('module', null, null, false, true);
         $db->addColumn('modules.proper_name');
         $db->addGroupBy('modules.proper_name');
@@ -81,8 +81,8 @@ class Search_User {
         $db->setIndexBy('module');
         $result = $db->select('col');
 
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             $result = NULL;
         }
 
@@ -96,9 +96,9 @@ class Search_User {
 
     public function sendToAlternate($alternate, $search_phrase)
     {
-        $file = Core\Core::getConfigFile('search', 'alternate.php');
+        $file = \core\Core::getConfigFile('search', 'alternate.php');
         if (!$file) {
-            Core\Core::errorPage();
+            \core\Core::errorPage();
             exit();
         }
 
@@ -106,7 +106,7 @@ class Search_User {
 
         if (!isset($alternate_search_engine) || !is_array($alternate_search_engine) ||
         !isset($alternate_search_engine[$alternate])) {
-            Core\Core::errorPage();
+            \core\Core::errorPage();
             exit();
         }
 
@@ -114,7 +114,7 @@ class Search_User {
 
         $query_string = str_replace(' ', '+', $search_phrase);
 
-        $site = urlencode(Core\Core::getHomeHttp(FALSE, FALSE, FALSE));
+        $site = urlencode(core\Core::getHomeHttp(FALSE, FALSE, FALSE));
         $url = sprintf($gosite['url'], $query_string, $site);
 
         header('location: ' . $url);
@@ -132,7 +132,7 @@ class Search_User {
             exit();
         }
 
-        $form = new Core\Form('search_box');
+        $form = new \core\Form('search_box');
         $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addHidden('user', 'search');
@@ -172,8 +172,8 @@ class Search_User {
 
         $result = Search_User::getResults($search_phrase, $module, $exact_match);
 
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             $template['SEARCH_RESULTS'] = dgettext('search', 'A problem occurred during your search.');
         } elseif (empty($result)) {
             $template['SEARCH_RESULTS'] = dgettext('search', 'No results found.');
@@ -183,14 +183,14 @@ class Search_User {
 
         $template['SEARCH_RESULTS_LABEL'] = dgettext('search', 'Search Results');
 
-        $content = Core\Template::process($template, 'search', 'search_page.tpl');
+        $content = \core\Template::process($template, 'search', 'search_page.tpl');
 
         Layout::add($content);
     }
 
-    public static function addAlternates(Core\Form $form)
+    public static function addAlternates(core\Form $form)
     {
-        $file = Core\Core::getConfigFile('search', 'alternate.php');
+        $file = \core\Core::getConfigFile('search', 'alternate.php');
         if ($file) {
             include($file);
 
@@ -209,7 +209,7 @@ class Search_User {
 
     public static function getIgnore()
     {
-        $db = new Core\DB('search_stats');
+        $db = new \core\DB('search_stats');
         $db->addWhere('ignored', 1);
         $db->addColumn('keyword');
         return $db->select('col');
@@ -217,15 +217,15 @@ class Search_User {
 
     public static function getResults($phrase, $module=NULL, $exact_match=FALSE)
     {
-        Core\Core::initModClass('search', 'Stats.php');
+        \core\Core::initModClass('search', 'Stats.php');
 
         $pageTags = array();
         $pageTags['MODULE_LABEL'] = dgettext('search', 'Module');
         $pageTags['TITLE_LABEL']    = dgettext('search', 'Title');
 
         $ignore = Search_User::getIgnore();
-        if (Core\Error::isError($ignore)) {
-            Core\Error::log($ignore);
+        if (core\Error::isError($ignore)) {
+            \core\Error::log($ignore);
             $ignore = NULL;
         }
 
@@ -252,7 +252,7 @@ class Search_User {
             return FALSE;
         }
 
-                $pager = new Core\DBPager('phpws_key', 'Key');
+                $pager = new \core\DBPager('phpws_key', 'Key');
         $pager->setModule('search');
         $pager->setTemplate('search_results.tpl');
         $pager->addToggle('class="bgcolor1"');
@@ -283,9 +283,9 @@ class Search_User {
 
         if ($module) {
             $pager->addWhere('search.module', $module);
-            Core\Key::restrictView($pager->db, $module);
+            \core\Key::restrictView($pager->db, $module);
         } else {
-            Core\Key::restrictView($pager->db);
+            \core\Key::restrictView($pager->db);
         }
 
         $result = $pager->get();

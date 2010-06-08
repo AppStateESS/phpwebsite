@@ -53,9 +53,9 @@ class PHAT_Checkbox extends PHAT_Element {
         $value = $this->getValue();
 
         for($i = 0; $i < sizeof($optionText); $i++)
-        $viewTags['CHECK_BOXES'] .= Core\Form::formCheckBox('PHAT_' . $label . '[' . $i . ']', $optionValues[$i], $value[$i], NULL, $optionText[$i]) . "<br />\n";
+        $viewTags['CHECK_BOXES'] .= \core\Form::formCheckBox('PHAT_' . $label . '[' . $i . ']', $optionValues[$i], $value[$i], NULL, $optionText[$i]) . "<br />\n";
 
-        return Core\Template::processTemplate($viewTags, 'phatform', 'checkbox/view.tpl');
+        return \core\Template::processTemplate($viewTags, 'phatform', 'checkbox/view.tpl');
     } // END FUNC view
 
     /**
@@ -70,7 +70,7 @@ class PHAT_Checkbox extends PHAT_Element {
         $numOptions = sizeof($this->getOptionText());
         if(!$numOptions || $this->getOptionSet()) $numOptions='';
 
-        $elements[0] = Core\Form::formHidden('module', 'phatform') . Core\Form::formHidden('PHAT_EL_OP', 'SaveElement');
+        $elements[0] = \core\Form::formHidden('module', 'phatform') . \core\Form::formHidden('PHAT_EL_OP', 'SaveElement');
 
         if(!$this->getLabel()) {
             $num = $_SESSION['PHAT_FormManager']->form->numElements();
@@ -82,48 +82,48 @@ class PHAT_Checkbox extends PHAT_Element {
         }
 
         $editTags['BLURB_LABEL'] = dgettext('phatform', 'Associated Text');
-        $editTags['BLURB_INPUT'] = Core\Form::formTextArea('PHAT_ElementBlurb', $this->getBlurb(), PHAT_DEFAULT_ROWS, PHAT_DEFAULT_COLS);
+        $editTags['BLURB_INPUT'] = \core\Form::formTextArea('PHAT_ElementBlurb', $this->getBlurb(), PHAT_DEFAULT_ROWS, PHAT_DEFAULT_COLS);
         $editTags['NAME_LABEL'] = dgettext('phatform', 'Name');
-        $editTags['NAME_INPUT'] = Core\Form::formTextField('PHAT_ElementName', $this->getLabel(), PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
+        $editTags['NAME_INPUT'] = \core\Form::formTextField('PHAT_ElementName', $this->getLabel(), PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
         $editTags['OPTIONS_LABEL'] = dgettext('phatform', 'Number of Options');
-        $editTags['OPTIONS_INPUT'] = Core\Form::formTextField('PHAT_ElementNumOptions', $numOptions, 5, 3);
+        $editTags['OPTIONS_INPUT'] = \core\Form::formTextField('PHAT_ElementNumOptions', $numOptions, 5, 3);
 
         $options = $this->getOptionSets();
         if(is_array($options)) {
             $editTags['OPTION_SET_LABEL'] = dgettext('phatform', 'Predefined Option Set');
-            $editTags['OPTION_SET_INPUT'] = Core\Form::formSelect('PHAT_OptionSet', $options, $this->getOptionSet(), FALSE, TRUE);
+            $editTags['OPTION_SET_INPUT'] = \core\Form::formSelect('PHAT_OptionSet', $options, $this->getOptionSet(), FALSE, TRUE);
         }
 
         $editTags['REQUIRE_LABEL'] = dgettext('phatform', 'Required');
-        $editTags['REQUIRE_INPUT'] = Core\Form::formCheckBox('PHAT_ElementRequired', 1, $this->isRequired());
-        $editTags['BACK_BUTTON'] = Core\Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_ElementBack');
-        $editTags['NEXT_BUTTON'] = Core\Form::formSubmit(dgettext('phatform', 'Next'));
+        $editTags['REQUIRE_INPUT'] = \core\Form::formCheckBox('PHAT_ElementRequired', 1, $this->isRequired());
+        $editTags['BACK_BUTTON'] = \core\Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_ElementBack');
+        $editTags['NEXT_BUTTON'] = \core\Form::formSubmit(dgettext('phatform', 'Next'));
 
-        $elements[0] .= Core\Template::processTemplate($editTags, 'phatform', 'checkbox/edit.tpl');
+        $elements[0] .= \core\Template::processTemplate($editTags, 'phatform', 'checkbox/edit.tpl');
 
-        return Core\Form::makeForm('PHAT_CheckboxEdit', 'index.php', $elements, 'post', NULL, NULL);
+        return \core\Form::makeForm('PHAT_CheckboxEdit', 'index.php', $elements, 'post', NULL, NULL);
     } // END FUNC edit
 
     /**
      * Save this PHAT_Checkbox
      *
      * @return mixed  Content if going to getOptions stage, content for edit if first form not filled in properly,
-     *                or Core\Error on failure.
+     *                or \core\Error on failure.
      * @access public
      */
     function save() {
         $error = FALSE;
         $label = $this->getLabel();
         if((!$_SESSION['PHAT_FormManager']->form->checkLabel($_REQUEST['PHAT_ElementName']) && (strcasecmp($label, $_REQUEST['PHAT_ElementName']) != 0))
-        || Core\Error::isError($this->setLabel(Core\DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
+        || \core\Error::isError($this->setLabel(core\DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
 
             $message = dgettext('phatform', 'The name you entered for the Checkbox is not valid or is already in use with this form.');
-            $currentError = Core\Error::get(PHATFORM_INVALID_NAME, 'phatform', 'PHAT_Checkbox::save()', $_REQUEST['PHAT_ElementName']);
+            $currentError = \core\Error::get(PHATFORM_INVALID_NAME, 'phatform', 'PHAT_Checkbox::save()', $_REQUEST['PHAT_ElementName']);
             $error = TRUE;
         }
 
         $result = $this->setBlurb($_REQUEST['PHAT_ElementBlurb']);
-        if(Core\Error::isError($result)) {
+        if(core\Error::isError($result)) {
             $currentError = $result;
             $error = TRUE;
         }
@@ -140,7 +140,7 @@ class PHAT_Checkbox extends PHAT_Element {
             if((is_numeric($_REQUEST['PHAT_ElementNumOptions']) && ($_REQUEST['PHAT_ElementNumOptions'] > 0)) || isset($_REQUEST['PHAT_OptionSet'])) {
                 return $this->getOptions();
             } else {
-                return Core\Error::get(PHATFORM_ZERO_OPTIONS, 'phatform', 'PHAT_Checkbox::save()');
+                return \core\Error::get(PHATFORM_ZERO_OPTIONS, 'phatform', 'PHAT_Checkbox::save()');
             }
         }
     } // END FUNC save

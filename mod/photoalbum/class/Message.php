@@ -30,7 +30,7 @@ class PHPWS_Message {
             $messageTags['TITLE'] = $this->_title;
         }
 
-        Layout::add(Core\Template::process($messageTags, 'core', 'message.tpl'));
+        Layout::add(core\Template::process($messageTags, 'core', 'message.tpl'));
     }
 
     public function isMessage($value) {

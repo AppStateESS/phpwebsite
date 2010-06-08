@@ -5,7 +5,7 @@
  * @version $Id$
  */
 
-Core\Core::initModClass('menu', 'Menu_Link.php');
+core\Core::initModClass('menu', 'Menu_Link.php');
 
 define('MENU_MISSING_TPL', -2);
 
@@ -29,9 +29,9 @@ class Menu_Item {
         $this->id = (int)$id;
         $result = $this->init();
         $this->resetdb();
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = $result;
-            Core\Error::log($result);
+            \core\Error::log($result);
         }
     }
 
@@ -40,7 +40,7 @@ class Menu_Item {
         if (isset($this->_db)) {
             $this->_db->reset();
         } else {
-            $this->_db = new Core\DB('menus');
+            $this->_db = new \core\DB('menus');
         }
     }
 
@@ -52,7 +52,7 @@ class Menu_Item {
 
         $this->resetdb();
         $result = $this->_db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
     }
@@ -61,7 +61,7 @@ class Menu_Item {
     {
         $vars['site_map'] = $this->id;
 
-        return Core\Text::moduleLink($this->title, 'menu', $vars);
+        return \core\Text::moduleLink($this->title, 'menu', $vars);
     }
 
     public function setTitle($title)
@@ -82,8 +82,8 @@ class Menu_Item {
 
     public function getTemplateList()
     {
-        $result = Core\File::listDirectories(Core\Template::getTemplateDirectory('menu') . 'menu_layout/');
-        if (Core\Error::logIfError($result) || empty($result)) {
+        $result = \core\File::listDirectories(core\Template::getTemplateDirectory('menu') . 'menu_layout/');
+        if (core\Error::logIfError($result) || empty($result)) {
             return null;
         }
 
@@ -114,8 +114,8 @@ class Menu_Item {
             return $errors;
         } else {
             $result = $this->save();
-            if (Core\Error::isError($result)) {
-                Core\Error::log($result);
+            if (core\Error::isError($result)) {
+                \core\Error::log($result);
                 return array(dgettext('menu', 'Unable to save menu. Please check error logs.'));
             }
             return TRUE;
@@ -132,7 +132,7 @@ class Menu_Item {
 
         $this->resetdb();
         $result = $this->_db->saveObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -140,13 +140,13 @@ class Menu_Item {
             $this->saveKey();
         }
 
-        if ($new_menu && Core\Settings::get('menu', 'home_link')) {
+        if ($new_menu && \core\Settings::get('menu', 'home_link')) {
             $link = new Menu_Link;
             $link->menu_id = $this->id;
             $link->title   = dgettext('menu', 'Home');
             $link->url     = 'index.php';
             $link->key_id  = 0;
-            Core\Error::logIfError($link->save());
+            \core\Error::logIfError($link->save());
         }
 
         return true;
@@ -155,16 +155,16 @@ class Menu_Item {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Core\Key;
+            $key = new \core\Key;
             $key->module = $key->item_name = 'menu';
             $key->item_id = $this->id;
         } else {
-            $key = new Core\Key($this->key_id);
+            $key = new \core\Key($this->key_id);
         }
 
         $key->title = $this->title;
         $result = $key->save();
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -206,7 +206,7 @@ class Menu_Item {
         }
         javascript('jquery');
         $vars['authkey'] = Current_User::getAuthKey();
-        $vars['drag_sort'] = Core\Settings::get('menu', 'drag_sort');
+        $vars['drag_sort'] = \core\Settings::get('menu', 'drag_sort');
 
         javascriptMod('menu', 'admin_link', $vars);
         $loaded = true;
@@ -228,18 +228,18 @@ class Menu_Item {
             return NULL;
         }
 
-        $db = new Core\DB('menu_links');
+        $db = new \core\DB('menu_links');
         $db->setDistinct();
         $db->addWhere('menu_id', $this->id, NULL, NULL, 1);
         $db->addWhere('parent', $parent, NULL, NULL, 1);
 
-        Core\Key::restrictView($db);
+        \core\Key::restrictView($db);
         $db->addOrder('link_order');
 
         $db->setIndexBy('id');
         $result = $db->getObjects('menu_link');
 
-        if (empty($result) || Core\Error::logIfError($result)) {
+        if (empty($result) || \core\Error::logIfError($result)) {
             return NULL;
         }
 
@@ -260,15 +260,15 @@ class Menu_Item {
     {
         $vars['menu_id'] = $this->id;
         $vars['command'] = 'edit_menu';
-        $links[] = Core\Text::secureLink(dgettext('menu', 'Edit'), 'menu', $vars);
+        $links[] = \core\Text::secureLink(dgettext('menu', 'Edit'), 'menu', $vars);
 
         if (!isset($_SESSION['Menu_Clip']) ||
         !isset($_SESSION['Menu_Clip'][$this->id])) {
             $vars['command'] = 'clip';
-            $links[] = Core\Text::secureLink(dgettext('menu', 'Clip'), 'menu', $vars);
+            $links[] = \core\Text::secureLink(dgettext('menu', 'Clip'), 'menu', $vars);
         } else {
             $vars['command'] = 'unclip';
-            $links[] = Core\Text::secureLink(dgettext('menu', 'Unclip'), 'menu', $vars);
+            $links[] = \core\Text::secureLink(dgettext('menu', 'Unclip'), 'menu', $vars);
         }
 
         $vars['command'] = 'pin_all';
@@ -279,16 +279,16 @@ class Menu_Item {
             $link_title = dgettext('menu', 'Unpin');
             $vars['hook'] = 0;
         }
-        $links[] = Core\Text::secureLink($link_title, 'menu', $vars);
+        $links[] = \core\Text::secureLink($link_title, 'menu', $vars);
         unset($vars['hook']);
 
         $vars['command'] = 'delete_menu';
         $js['QUESTION'] = dgettext('menu', 'Are you sure you want to delete this menu and all its links.');
-        $js['ADDRESS']  = Core\Text::linkAddress('menu', $vars, TRUE);
+        $js['ADDRESS']  = \core\Text::linkAddress('menu', $vars, TRUE);
         $js['LINK'] = dgettext('menu', 'Delete');
         $links[] = javascript('confirm', $js);
 
-        $links[] = Core\Text::secureLink(dgettext('menu', 'Reorder links'), 'menu',
+        $links[] = \core\Text::secureLink(dgettext('menu', 'Reorder links'), 'menu',
         array('command'=>'reorder_links',
                                                 'menu_id'=>$this->id));
         $links[] = Current_User::popupPermission($this->key_id);
@@ -299,7 +299,7 @@ class Menu_Item {
 
     public function kill()
     {
-        $db = new Core\DB('menu_assoc');
+        $db = new \core\DB('menu_assoc');
         $db->addWhere('menu_id', $this->id);
         $db->delete();
 
@@ -334,7 +334,7 @@ class Menu_Item {
 
     public function addLink($key_id, $parent=0)
     {
-        $key = new Core\Key($key_id);
+        $key = new \core\Key($key_id);
         $link = new Menu_Link;
 
         $link->setMenuId($this->id);
@@ -364,7 +364,7 @@ class Menu_Item {
         $js['width']   = '300';
         $js['height']  = '100';
 
-        $js['address'] = Core\Text::linkAddress('menu', $vars, true);
+        $js['address'] = \core\Text::linkAddress('menu', $vars, true);
         if ($popup) {
             $js['label'] = sprintf('%s %s', MENU_PIN_LINK, dgettext('menu', 'Add stored page'));
         } else {
@@ -377,7 +377,7 @@ class Menu_Item {
 
     public function parseIni()
     {
-        $inifile = Core\Template::getTemplateDirectory('menu') . 'menu_layout/' . $this->template . '/options.ini';
+        $inifile = \core\Template::getTemplateDirectory('menu') . 'menu_layout/' . $this->template . '/options.ini';
         if (!is_file($inifile)) {
             return;
         }
@@ -401,18 +401,18 @@ class Menu_Item {
     {
         static $pin_page = true;
 
-        $key = Core\Key::getCurrent();
+        $key = \core\Key::getCurrent();
 
         if ($pin_mode && $key->isDummy(true)) {
             return;
         }
 
-        $tpl_dir = Core\Template::getTemplateDirectory('menu');
+        $tpl_dir = \core\Template::getTemplateDirectory('menu');
         $edit = FALSE;
         $file = 'menu_layout/' . $this->template . '/menu.tpl';
 
         if (!is_file($tpl_dir . $file)) {
-            Core\Error::log(MENU_MISSING_TPL, 'menu', 'Menu_Item::view', $tpl_dir . $file);
+            \core\Error::log(MENU_MISSING_TPL, 'menu', 'Menu_Item::view', $tpl_dir . $file);
             return false;
         }
 
@@ -423,7 +423,7 @@ class Menu_Item {
             Layout::addStyle('menu', $style);
         }
 
-        $admin_link = !Core\Settings::get('menu', 'miniadmin');
+        $admin_link = !core\Settings::get('menu', 'miniadmin');
 
         $content_var = 'menu_' . $this->id;
 
@@ -439,14 +439,14 @@ class Menu_Item {
                             $pinvars['key_id'] = $key->id;
                         }
                     } else {
-                        $pinvars['lurl'] = urlencode(Core\Core::getCurrentUrl());
+                        $pinvars['lurl'] = urlencode(core\Core::getCurrentUrl());
                     }
 
-                    $js['address'] = Core\Text::linkAddress('menu', $pinvars);
+                    $js['address'] = \core\Text::linkAddress('menu', $pinvars);
                     $js['label']   = dgettext('menu', 'Pin page');
                     $js['width']   = 300;
                     $js['height']  = 180;
-                    if (!Core\Settings::get('menu', 'miniadmin')) {
+                    if (!core\Settings::get('menu', 'miniadmin')) {
                         $tpl['PIN_PAGE'] = javascript('open_window', $js);
                     } elseif ($pin_page) {
                         MiniAdmin::add('menu', javascript('open_window', $js));
@@ -466,7 +466,7 @@ class Menu_Item {
                 if ($admin_link) {
                     $vars['command'] = 'disable_admin_mode';
                     $vars['return'] = 1;
-                    $tpl['ADMIN_LINK'] = Core\Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars);
+                    $tpl['ADMIN_LINK'] = \core\Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars);
                 }
 
                 if (isset($_SESSION['Menu_Pin_Links'])) {
@@ -475,10 +475,10 @@ class Menu_Item {
             } elseif ($admin_link) {
                 $vars['command'] = 'enable_admin_mode';
                 $vars['return'] = 1;
-                $tpl['ADMIN_LINK'] = Core\Text::moduleLink(MENU_ADMIN_ON, 'menu', $vars);
+                $tpl['ADMIN_LINK'] = \core\Text::moduleLink(MENU_ADMIN_ON, 'menu', $vars);
             }
 
-            if (empty($tpl['ADD_LINK']) && Core\Settings::get('menu', 'always_add') && Core\Key::checkKey($key)) {
+            if (empty($tpl['ADD_LINK']) && \core\Settings::get('menu', 'always_add') && \core\Key::checkKey($key)) {
                 $this->loadJS();
                 $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
                 $tpl['ADD_SITE_LINK'] = Menu::getSiteLink($this->id, 0, isset($key));
@@ -498,10 +498,10 @@ class Menu_Item {
             $pinvars['command'] = 'pin_menu';
             $pinvars['key_id'] = $key->id;
             $pinvars['menu_id'] = $this->id;
-            $tpl['CLIP'] = Core\Text::secureLink(MENU_PIN, 'menu', $pinvars);
+            $tpl['CLIP'] = \core\Text::secureLink(MENU_PIN, 'menu', $pinvars);
         }
 
-        $content = Core\Template::process($tpl, 'menu', $file);
+        $content = \core\Template::process($tpl, 'menu', $file);
 
         if ($return_content) {
             return $content;
@@ -515,7 +515,7 @@ class Menu_Item {
         if (!$this->id) {
             return false;
         }
-        $db = new Core\DB('menu_links');
+        $db = new \core\DB('menu_links');
         $db->addWhere('menu_id', $this->id);
         $db->addColumn('id');
         $db->addColumn('parent');
@@ -539,14 +539,14 @@ class Menu_Item {
                     $db->reset();
                     $db->addWhere('id', $link['id']);
                     $db->addValue('link_order', $count);
-                    Core\Error::logIfError($db->update());
+                    \core\Error::logIfError($db->update());
                     $count++;
                 }
             } else {
                 $db->reset();
                 $db->addWhere('id', $links['id']);
                 $db->addValue('link_order', $count);
-                Core\Error::logIfError($db->update());
+                \core\Error::logIfError($db->update());
             }
         }
         return true;

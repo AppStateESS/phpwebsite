@@ -99,8 +99,8 @@ function layout_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '2.4.4', '<'):
             $content[] = '<pre>';
-            $db = new Core\DB('layout_config');
-            if (Core\Error::logIfError($db->dropTableColumn('userAllow'))) {
+            $db = new \core\DB('layout_config');
+            if (core\Error::logIfError($db->dropTableColumn('userAllow'))) {
                 $content[] = '--- An error occurred when trying to drop the userAllow column from the layout_config table.';
             } else {
                 $content[] = '--- Dropped the userAllow column from the layout_config table.';
@@ -118,8 +118,8 @@ function layout_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '2.4.5', '<'):
             $content[] = '<pre>';
-            $db = new Core\DB('layout_config');
-            if (Core\Error::logIfError($db->addTableColumn('deity_reload', 'smallint not null default 0'))) {
+            $db = new \core\DB('layout_config');
+            if (core\Error::logIfError($db->addTableColumn('deity_reload', 'smallint not null default 0'))) {
                 $content[] = 'Could not create layout_config.deity_reload column.';
                 return false;
             } else {

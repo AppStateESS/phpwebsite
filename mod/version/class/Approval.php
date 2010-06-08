@@ -36,7 +36,7 @@ class Version_Approval {
                 $this->setViewMethod($view_method);
             }
         }
-        $this->_db = new Core\DB($this->version_table);
+        $this->_db = new \core\DB($this->version_table);
     }
 
 
@@ -114,7 +114,7 @@ class Version_Approval {
         $result = $this->_db->select();
 
         if ($obj_mode) {
-            if (Core\Error::isError($result) || empty($result)) {
+            if (core\Error::isError($result) || empty($result)) {
                 return $result;
             }
 
@@ -132,7 +132,7 @@ class Version_Approval {
     public function getList($restrict_approval=TRUE)
     {
 
-        if (!Core\DB::isTable($this->version_table)) {
+        if (!core\DB::isTable($this->version_table)) {
             $msg = dgettext('version', 'No items for approval.');
 
             return $msg;
@@ -145,7 +145,7 @@ class Version_Approval {
         $result = $this->get(FALSE);
 
 
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -181,11 +181,11 @@ class Version_Approval {
 
             if (!empty($this->class_name) && !empty($this->view_method)) {
                 $temp_obj = new $this->class_name;
-                Core\Core::plugObject($temp_obj, $app_item);
+                \core\Core::plugObject($temp_obj, $app_item);
 
                 $result = $temp_obj->{$this->view_method}();
 
-                if (Core\Error::isError($result)) {
+                if (core\Error::isError($result)) {
                     return $result;
                 } elseif (empty($result)) {
                     continue;
@@ -232,7 +232,7 @@ class Version_Approval {
             $temp_count++;
         }
 
-        return Core\Template::process($template, 'version', $template_file);
+        return \core\Template::process($template, 'version', $template_file);
     }
 
 }

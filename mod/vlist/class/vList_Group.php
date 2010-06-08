@@ -44,9 +44,9 @@ class vList_Group {
 
     public function init()
     {
-        $db = new Core\DB('vlist_group');
+        $db = new \core\DB('vlist_group');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -63,7 +63,7 @@ class vList_Group {
 
     public function setDescription($description)
     {
-        $this->description = Core\Text::parseInput($description);
+        $this->description = \core\Text::parseInput($description);
     }
 
 
@@ -80,7 +80,7 @@ class vList_Group {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->title);
+            return \core\Text::parseOutput($this->title);
         } else {
             return $this->title;
         }
@@ -94,7 +94,7 @@ class vList_Group {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->description);
+            return \core\Text::parseOutput($this->description);
         } else {
             return $this->description;
         }
@@ -112,7 +112,7 @@ class vList_Group {
 
     public function getQtyMembers()
     {
-        $db = new Core\DB('vlist_group_items');
+        $db = new \core\DB('vlist_group_items');
         $db->addWhere('group_id', $this->id);
         if (!Current_User::isUnrestricted('vlist')) {
             $db->addColumn('vlist_group_items.*');
@@ -142,7 +142,7 @@ class vList_Group {
             return null;
         }
 
-        Core\Core::initModClass('filecabinet', 'Cabinet.php');
+        \core\Core::initModClass('filecabinet', 'Cabinet.php');
         $image = Cabinet::getFile($this->image_id);
 
         if ($image->isImage(true)) {
@@ -168,10 +168,10 @@ class vList_Group {
     {
         $vars['group'] = $this->id;
         $vars['aop'] = 'delete_group';
-        $js['ADDRESS'] = Core\Text::linkAddress('vlist', $vars, true);
+        $js['ADDRESS'] = \core\Text::linkAddress('vlist', $vars, true);
         $js['QUESTION'] = sprintf(dgettext('vlist', 'Are you sure you want to delete the group %s?'), $this->getTitle());
         if ($icon) {
-            $js['LINK'] = Core\Icon::show('delete', dgettext('vlist', 'Delete group'));
+            $js['LINK'] = \core\Icon::show('delete', dgettext('vlist', 'Delete group'));
         } else {
             $js['LINK'] = dgettext('vlist', 'Delete');
         }
@@ -183,14 +183,14 @@ class vList_Group {
     {
 
         if ($icon) {
-            $label = Core\Icon::show('edit', dgettext('vlist', 'Edit group'));
+            $label = \core\Icon::show('edit', dgettext('vlist', 'Edit group'));
         } elseif (empty($label)) {
             $label = dgettext('vlist', 'Edit');
         }
 
         $vars['group'] = $this->id;
         $vars['aop'] = 'edit_group';
-        return Core\Text::secureLink($label, 'vlist', $vars);
+        return \core\Text::secureLink($label, 'vlist', $vars);
     }
 
 
@@ -200,12 +200,12 @@ class vList_Group {
             return;
         }
 
-        $db = new Core\DB('vlist_group');
+        $db = new \core\DB('vlist_group');
         $db->addWhere('id', $this->id);
-        Core\Error::logIfError($db->delete());
-        $db = new Core\DB('vlist_group_items');
+        \core\Error::logIfError($db->delete());
+        $db = new \core\DB('vlist_group_items');
         $db->addWhere('group_id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
     }
 
@@ -234,7 +234,7 @@ class vList_Group {
         if (Current_User::allow('vlist', 'settings', null, null, true)) {
             $vars['group'] = $this->id;
             $vars['aop']  = 'edit_group';
-            $links[] = Core\Text::secureLink(dgettext('vlist', 'Edit group'), 'vlist', $vars);
+            $links[] = \core\Text::secureLink(dgettext('vlist', 'Edit group'), 'vlist', $vars);
         }
 
         $links = array_merge($links, vList::navLinks());
@@ -246,9 +246,9 @@ class vList_Group {
 
     public function save()
     {
-        $db = new Core\DB('vlist_group');
+        $db = new \core\DB('vlist_group');
         $result = $db->saveObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -259,7 +259,7 @@ class vList_Group {
     {
         $vars['uop']  = 'view_group';
         $vars['group'] = $this->id;
-        $link = new Core\Link($this->title, 'vlist', $vars);
+        $link = new \core\Link($this->title, 'vlist', $vars);
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {

@@ -25,7 +25,7 @@
 
 function rolodex_remove_user($user_id)
 {
-    Core\Core::initModClass('rolodex', 'RDX_Member.php');
+    \core\Core::initModClass('rolodex', 'RDX_Member.php');
     $member = new Rolodex_member((int)$user_id);
     if (!$member->user_id) {
         return;

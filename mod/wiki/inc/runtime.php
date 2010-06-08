@@ -23,12 +23,12 @@
  * @version     $Id: runtime.php,v 1.19 2006/08/14 03:53:06 blindman1344 Exp $
  */
 
-Core\Core::configRequireOnce('wiki', 'config.php');
+core\Core::configRequireOnce('wiki', 'config.php');
 
 // Display on the home page if option is set
-if (!isset($_REQUEST['module']) && Core\Settings::get('wiki', 'show_on_home'))
+if (!isset($_REQUEST['module']) && \core\Settings::get('wiki', 'show_on_home'))
 {
-    Core\Core::initModClass('wiki', 'WikiManager.php');
+    \core\Core::initModClass('wiki', 'WikiManager.php');
     WikiManager::action();
 }
 

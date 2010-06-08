@@ -7,7 +7,7 @@
  * @version $Id$
  */
 
-Core\Core::requireConfig('block');
+core\Core::requireConfig('block');
 
 class Block_Admin {
 
@@ -40,7 +40,7 @@ class Block_Admin {
 
 	public static function cpanel()
 	{
-		Core\Core::initModClass('controlpanel', 'Panel.php');
+		core\Core::initModClass('controlpanel', 'Panel.php');
 		$linkBase = 'index.php?module=block';
 		$tabs['new']  = array ('title'=>dgettext('block', 'New'),  'link'=> $linkBase);
 		$tabs['list'] = array ('title'=>dgettext('block', 'List'), 'link'=> $linkBase);
@@ -78,7 +78,7 @@ class Block_Admin {
 
 				$block->kill();
 				Block_Admin::sendMessage(dgettext('block', 'Block deleted.'));
-				Core\Core::goBack();
+				core\Core::goBack();
 				break;
 
 			case 'edit':
@@ -121,7 +121,7 @@ class Block_Admin {
 					Current_User::disallow();
 				}
 				Block_Admin::removeBlock();
-				Core\Core::goBack();
+				core\Core::goBack();
 				break;
 
 			case 'copy':
@@ -130,7 +130,7 @@ class Block_Admin {
 				}
 
 				Block_Admin::copyBlock($block);
-				Core\Core::goBack();
+				core\Core::goBack();
 				break;
 
 			case 'postBlock':
@@ -156,11 +156,11 @@ class Block_Admin {
 				break;
 
 			case 'postJSBlock':
-				if (!Core\Core::isPosted()) {
+				if (!core\Core::isPosted()) {
 					Block_Admin::postBlock($block);
 					$result = $block->save();
-					if (Core\Error::isError($result)) {
-						Core\Error::log($result);
+					if (core\Error::isError($result)) {
+						core\Error::log($result);
 					} elseif (isset($_REQUEST['key_id'])) {
 						Block_Admin::lockBlock($block->id, $_REQUEST['key_id']);
 					}
@@ -170,10 +170,10 @@ class Block_Admin {
 
 			case 'lock':
 				$result = Block_Admin::lockBlock($_GET['block_id'], $_GET['key_id']);
-				if (Core\Error::isError($result)) {
-					Core\Error::log($result);
+				if (core\Error::isError($result)) {
+					core\Error::log($result);
 				}
-				Core\Core::goBack();
+				core\Core::goBack();
 				break;
 
 			case 'list':
@@ -184,7 +184,7 @@ class Block_Admin {
 			case 'js_block_edit':
 				$template['TITLE'] = dgettext('block', 'New Block');
 				$template['CONTENT'] = Block_Admin::edit($block, TRUE);
-				$content = Core\Template::process($template, 'block', 'admin.tpl');
+				$content = \core\Template::process($template, 'block', 'admin.tpl');
 				Layout::nakedDisplay($content);
 				break;
 		}
@@ -194,14 +194,14 @@ class Block_Admin {
 			$template['MESSAGE'] = &$message;
 		}
 		$template['CONTENT'] = &$content;
-		return Core\Template::process($template, 'block', 'admin.tpl');
+		return \core\Template::process($template, 'block', 'admin.tpl');
 	}
 
 	public function sendMessage($message, $command=null)
 	{
 		$_SESSION['block_message'] = $message;
 		if (isset($command)) {
-			Core\Core::reroute(Core\Text::linkAddress('block', array('action'=>$command), TRUE));
+			core\Core::reroute(core\Text::linkAddress('block', array('action'=>$command), TRUE));
 		}
 	}
 
@@ -222,23 +222,23 @@ class Block_Admin {
 			return;
 		}
 
-		$db = new Core\DB('block_pinned');
+		$db = new \core\DB('block_pinned');
 		$db->addWhere('block_id', $_GET['block_id']);
 		if (isset($_GET['key_id'])) {
 			$db->addWhere('key_id', $_GET['key_id']);
 		}
 		$result = $db->delete();
 
-		if (Core\Error::isError($result)) {
-			Core\Error::log($result);
+		if (core\Error::isError($result)) {
+			core\Error::log($result);
 		}
 
 	}
 
 	public static function edit(Block_Item $block, $js=FALSE)
 	{
-		Core\Core::initModClass('filecabinet', 'Cabinet.php');
-				$form = new Core\Form;
+		core\Core::initModClass('filecabinet', 'Cabinet.php');
+				$form = new \core\Form;
 		$form->addHidden('module', 'block');
 
 		$form->addCheck('hide_title', 1);
@@ -275,12 +275,12 @@ class Block_Admin {
 		$template = $form->getTemplate();
 
 		$manager = Cabinet::fileManager('file_id', $block->file_id);
-		$manager->maxImageWidth(Core\Settings::get('block', 'max_image_width'));
-		$manager->maxImageHeight(Core\Settings::get('block', 'max_image_height'));
+		$manager->maxImageWidth(core\Settings::get('block', 'max_image_width'));
+		$manager->maxImageHeight(core\Settings::get('block', 'max_image_height'));
 
 		$template['FILE_ID'] = $manager->get();
 
-		$content = Core\Template::process($template, 'block', 'edit.tpl');
+		$content = \core\Template::process($template, 'block', 'edit.tpl');
 		return $content;
 	}
 
@@ -303,7 +303,7 @@ class Block_Admin {
 		
 		$pageTags['CONTENT'] = dgettext('block', 'Content');
 		$pageTags['ACTION']  = dgettext('block', 'Action');
-		$pager = new Core\DBPager('block', 'Block_Item');
+		$pager = new \core\DBPager('block', 'Block_Item');
 		$pager->setModule('block');
 		$pager->setTemplate('list.tpl');
 		$pager->addToggle('class="bgcolor1"');
@@ -324,7 +324,7 @@ class Block_Admin {
 	public function pinBlockAll(Block_Item $block)
 	{
 		$values['block_id'] = $block->id;
-		$db = new Core\DB('block_pinned');
+		$db = new \core\DB('block_pinned');
 		$db->addWhere($values);
 		$result = $db->delete();
 		$db->resetWhere();
@@ -346,7 +346,7 @@ class Block_Admin {
 		$values['block_id'] = $block_id;
 		$values['key_id']   = $key_id;
 
-		$db = new Core\DB('block_pinned');
+		$db = new \core\DB('block_pinned');
 		$db->addWhere($values);
 		$result = $db->delete();
 		$db->addValue($values);
@@ -360,15 +360,15 @@ class Block_Admin {
 
 	public static function settings()
 	{
-		$form = new Core\Form('block-form');
+		$form = new \core\Form('block-form');
 		$form->addHidden('module', 'block');
 		$form->addHidden('action', 'post_settings');
 
-		$form->addText('max_image_width', Core\Settings::get('block', 'max_image_width'));
+		$form->addText('max_image_width', \core\Settings::get('block', 'max_image_width'));
 		$form->setLabel('max_image_width', dgettext('block', 'Max image width (50 - 1024)'));
 		$form->setSize('max_image_width', 4, 4);
 
-		$form->addText('max_image_height', Core\Settings::get('block', 'max_image_height'));
+		$form->addText('max_image_height', \core\Settings::get('block', 'max_image_height'));
 		$form->setLabel('max_image_height', dgettext('block', 'Max image height (50 - 3000)'));
 		$form->setSize('max_image_height', 4, 4);
 
@@ -376,7 +376,7 @@ class Block_Admin {
 
 		$tpl = $form->getTemplate();
 
-		return Core\Template::process($tpl, 'block', 'settings.tpl');
+		return \core\Template::process($tpl, 'block', 'settings.tpl');
 	}
 
 	public function postSettings()
@@ -386,7 +386,7 @@ class Block_Admin {
 		} elseif ($_POST['max_image_width'] > 1024) {
 			$error[] = dgettext('block', 'Max image width must be smaller than 1024px');
 		} else {
-			Core\Settings::set('block', 'max_image_width', (int)$_POST['max_image_width']);
+			core\Settings::set('block', 'max_image_width', (int)$_POST['max_image_width']);
 		}
 
 		if (empty($_POST['max_image_height']) || $_POST['max_image_height'] < 50) {
@@ -394,10 +394,10 @@ class Block_Admin {
 		} elseif ($_POST['max_image_height'] > 3000) {
 			$error[] = dgettext('block', 'Max image height must be smaller than 3000px');
 		} else {
-			Core\Settings::set('block', 'max_image_height', (int)$_POST['max_image_height']);
+			core\Settings::set('block', 'max_image_height', (int)$_POST['max_image_height']);
 		}
 
-		Core\Settings::save('block');
+		core\Settings::save('block');
 
 		if (isset($error)) {
 			return $error;

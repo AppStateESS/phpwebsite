@@ -9,7 +9,7 @@ define('CAL_VIEW_ALL',         1); // everyone can see this calendar
 define('CAL_VIEW_SOME',        2); // most will see the open and close details only
 define('CAL_VIEW_LIMIT',       3); // only people given express permission can view
 
-Core\Core::requireInc('calendar', 'error_defines.php');
+core\Core::requireInc('calendar', 'error_defines.php');
 
 class Calendar_Schedule {
     /**
@@ -111,10 +111,10 @@ class Calendar_Schedule {
         }
 
         if ($icon) {
-            $label = Core\Icon::show('download', $label);
+            $label = \core\Icon::show('download', $label);
         }
 
-        return Core\Text::secureLink($label, 'calendar', $vars);
+        return \core\Text::secureLink($label, 'calendar', $vars);
     }
 
 
@@ -128,10 +128,10 @@ class Calendar_Schedule {
             $label = dgettext('calendar', 'Upload iCal events');
         }
         if ($icon) {
-            $label = Core\Icon::show('upload');
+            $label = \core\Icon::show('upload');
         }
 
-        $js['address'] = Core\Text::linkAddress('calendar', $vars, 1);
+        $js['address'] = \core\Text::linkAddress('calendar', $vars, 1);
         $js['width'] = 400;
         $js['height'] = 210;
         $js['label'] = $label;
@@ -146,7 +146,7 @@ class Calendar_Schedule {
         $add_label = dgettext('calendar', 'Add event');
 
         if ($icon) {
-            $add_label = Core\Icon::show('add', $add_label);
+            $add_label = \core\Icon::show('add', $add_label);
         }
 
         if (javascriptEnabled()) {
@@ -158,7 +158,7 @@ class Calendar_Schedule {
             $vars['height'] = CALENDAR_EVENT_HEIGHT;
             return javascript('open_window', $vars);
         } else {
-            return Core\Text::moduleLink($add_label, 'calendar', array('aop'=>'create_event', 'sch_id' => $this->id, 'date' => $default_date));
+            return \core\Text::moduleLink($add_label, 'calendar', array('aop'=>'create_event', 'sch_id' => $this->id, 'date' => $default_date));
         }
     }
 
@@ -178,7 +178,7 @@ class Calendar_Schedule {
             $vars['height'] = CALENDAR_SUGGEST_HEIGHT;
             return javascript('open_window', $vars);
         } else {
-            return Core\Text::moduleLink($suggest_label, 'calendar',
+            return \core\Text::moduleLink($suggest_label, 'calendar',
             array('uop'    => 'suggest_event',
                                                 'sch_id' => $this->id,
                                                 'date'   => $default_date)
@@ -195,7 +195,7 @@ class Calendar_Schedule {
         $table = $this->getEventTable();
         $recurr = $this->getRecurrenceTable();
         if (empty($table) || empty($recurr)) {
-            return Core\Error::get(CAL_CANNOT_MAKE_EVENT_TABLE, 'calendar',
+            return \core\Error::get(CAL_CANNOT_MAKE_EVENT_TABLE, 'calendar',
                                     'Calendar_Schedule::createEventTable');
         }
 
@@ -207,12 +207,12 @@ class Calendar_Schedule {
         $file = PHPWS_SOURCE_DIR . 'mod/calendar/inc/event_table.sql';
 
         if (!is_file($file)) {
-            return Core\Error::get(PHPWS_FILE_NOT_FOUND, 'calendar',
+            return \core\Error::get(PHPWS_FILE_NOT_FOUND, 'calendar',
                                     'Calendar_Schedule::createEventTable', $file);
         }
 
-        $query = Core\Template::process($template, 'calendar', $file, true);
-        return Core\DB::import($query);
+        $query = \core\Template::process($template, 'calendar', $file, true);
+        return \core\DB::import($query);
     }
 
     /**
@@ -229,16 +229,16 @@ class Calendar_Schedule {
 
         $result = $db->delete();
 
-        if (!Core\Error::isError($result)) {
-            $db2 = new Core\DB('phpws_key');
+        if (!core\Error::isError($result)) {
+            $db2 = new \core\DB('phpws_key');
             $db2->addWhere('module', 'calendar');
             $db2->addWhere('item_name', 'event' . $this->id);
-            Core\Error::logIfError($db2->delete());
-            return Core\DB::dropTable($this->getEventTable());
+            \core\Error::logIfError($db2->delete());
+            return \core\DB::dropTable($this->getEventTable());
         } else {
-            if (Core\Settings::get('calendar', 'public_schedule') == $this->id) {
-                Core\Settings::set('calendar', 'public_schedule', 0);
-                Core\Settings::save('calendar');
+            if (core\Settings::get('calendar', 'public_schedule') == $this->id) {
+                \core\Settings::set('calendar', 'public_schedule', 0);
+                \core\Settings::save('calendar');
             }
             return $result;
         }
@@ -251,7 +251,7 @@ class Calendar_Schedule {
     public function form()
     {
         $key = $this->getKey();
-        $form = new Core\Form('schedule_form');
+        $form = new \core\Form('schedule_form');
 
         if (isset($_REQUEST['js'])) {
             $form->addHidden('js', 1);
@@ -269,7 +269,7 @@ class Calendar_Schedule {
         $form->setLabel('summary', dgettext('calendar', 'Summary'));
         $form->useEditor('summary');
 
-        if (Core\Settings::get('calendar', 'personal_schedules')) {
+        if (core\Settings::get('calendar', 'personal_schedules')) {
             if (Current_User::allow('calendar', 'edit_public')) {
                 $form->addRadio('public', array(0,1));
                 $form->setLabel('public', array(dgettext('calendar', 'Private'),
@@ -302,7 +302,7 @@ class Calendar_Schedule {
         }
 
         $template['PUBLIC_LABEL'] = dgettext('calendar', 'Availability');
-        return Core\Template::process($template, 'calendar', 'admin/forms/edit_schedule.tpl');
+        return \core\Template::process($template, 'calendar', 'admin/forms/edit_schedule.tpl');
     }
 
     public function getCurrentUserSchedule()
@@ -314,7 +314,7 @@ class Calendar_Schedule {
         $db = Calendar_Schedule::getDB();
         $db->addWhere('user_id', $user_id);
         $result = $db->loadObject($schedule);
-        if (Core\Error::isError($result) || !$result) {
+        if (core\Error::isError($result) || !$result) {
             return $result;
         } else {
             return $schedule;
@@ -323,7 +323,7 @@ class Calendar_Schedule {
 
 
     public function getDB() {
-        $db = new Core\DB('calendar_schedule');
+        $db = new \core\DB('calendar_schedule');
         return $db;
     }
 
@@ -339,7 +339,7 @@ class Calendar_Schedule {
     public function getKey()
     {
         if (!$this->_key) {
-            $this->_key = new Core\Key($this->key_id);
+            $this->_key = new \core\Key($this->key_id);
         }
 
         return $this->_key;
@@ -361,9 +361,9 @@ class Calendar_Schedule {
         $vars['sch_id'] = $this->id;
 
         if ($formatted) {
-            return Core\Text::moduleLink($this->title, 'calendar', $vars);
+            return \core\Text::moduleLink($this->title, 'calendar', $vars);
         } else {
-            return Core\Text::linkAddress('calendar', $vars);
+            return \core\Text::linkAddress('calendar', $vars);
         }
     }
 
@@ -372,9 +372,9 @@ class Calendar_Schedule {
         $db = $this->getDB();
         $result = $db->loadObject($this);
 
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->id = 0;
-            Core\Error::log($result);
+            \core\Error::log($result);
         } elseif (!$result) {
             $this->id = 0;
         }
@@ -382,7 +382,7 @@ class Calendar_Schedule {
 
     public function loadEvent()
     {
-        Core\Core::initModClass('calendar', 'Event.php');
+        \core\Core::initModClass('calendar', 'Event.php');
 
         if (!empty($_REQUEST['event_id'])) {
             $event = new Calendar_Event((int)$_REQUEST['event_id'], $this);
@@ -454,16 +454,16 @@ class Calendar_Schedule {
 
             $vars = array('aop'=>'edit_schedule', 'sch_id' => $this->id);
 
-            $label = Core\Icon::show('edit');
+            $label = \core\Icon::show('edit');
             if (javascriptEnabled()) {
                 $vars['js'] = 1;
-                $js_vars['address'] = Core\Text::linkAddress('calendar', $vars);
+                $js_vars['address'] = \core\Text::linkAddress('calendar', $vars);
                 $js_vars['label']   = & $label;
                 $js_vars['width']   = 640;
                 $js_vars['height']  = 600;
                 $links[] = javascript('open_window', $js_vars);
             } else {
-                $links[] = Core\Text::secureLink($label, 'calendar',
+                $links[] = \core\Text::secureLink($label, 'calendar',
                 array('aop'=>'edit_schedule', 'sch_id'=>$this->id));
             }
         }
@@ -472,16 +472,16 @@ class Calendar_Schedule {
             $js['QUESTION'] = dgettext('calendar', 'Are you sure you want to delete this schedule?');
             $js['ADDRESS']  = sprintf('index.php?module=calendar&amp;aop=delete_schedule&amp;sch_id=%s&amp;authkey=%s',
             $this->id, Current_User::getAuthKey());
-            $js['LINK'] = Core\Icon::show('delete');
+            $js['LINK'] = \core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
         if ($this->public && Current_User::isUnrestricted('calendar')) {
-            $public_schedule = Core\Settings::get('calendar', 'public_schedule');
+            $public_schedule = \core\Settings::get('calendar', 'public_schedule');
             if ($public_schedule != $this->id) {
                 $link_vars['aop'] = 'make_default_public';
                 $link_vars['sch_id'] = $this->id;
-                $links[] = Core\Text::secureLink(dgettext('calendar', 'Make default public'), 'calendar', $link_vars);
+                $links[] = \core\Text::secureLink(dgettext('calendar', 'Make default public'), 'calendar', $link_vars);
             } else {
                 $links[] = dgettext('calendar', 'Default public');
             }
@@ -516,19 +516,19 @@ class Calendar_Schedule {
         }
 
         $result = $db->saveObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return false;
         } else {
-            if (!Core\DB::isTable($this->getEventTable())) {
+            if (!core\DB::isTable($this->getEventTable())) {
                 $result = $this->createEventTable();
-                if (Core\Error::isError($result)) {
+                if (core\Error::isError($result)) {
                     $this->delete();
                     return $result;
                 }
             }
 
             $result = $this->saveKey();
-            if (Core\Error::isError($result)) {
+            if (core\Error::isError($result)) {
                 $this->delete();
                 return $result;
             }
@@ -552,9 +552,9 @@ class Calendar_Schedule {
             return null;
         }
 
-        Core\Core::initModClass('calendar', 'Event.php');
+        \core\Core::initModClass('calendar', 'Event.php');
 
-        $db = new Core\DB($event_table);
+        $db = new \core\DB($event_table);
 
         $db->addWhere('start_time', $start_search, '>=', null,  'start');
         $db->addWhere('start_time', $end_search,   '<',  'AND', 'start');
@@ -573,7 +573,7 @@ class Calendar_Schedule {
         $db->setIndexBy('id');
 
         $result = $db->getObjects('Calendar_Event', $this);
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return null;
         }
 
@@ -583,11 +583,11 @@ class Calendar_Schedule {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Core\Key;
+            $key = new \core\Key;
         } else {
-            $key = new Core\Key($this->key_id);
-            if (Core\Error::isError($key->getError())) {
-                $key = new Core\Key;
+            $key = new \core\Key($this->key_id);
+            if (core\Error::isError($key->getError())) {
+                $key = new \core\Key;
             }
         }
 
@@ -617,7 +617,7 @@ class Calendar_Schedule {
 
     public function setSummary($summary)
     {
-        $this->summary = Core\Text::parseInput($summary);
+        $this->summary = \core\Text::parseInput($summary);
     }
 
     public function setTitle($title)
@@ -627,7 +627,7 @@ class Calendar_Schedule {
 
     function exportEvent($event_id)
     {
-        Core\Core::initModClass('calendar', 'Event.php');
+        \core\Core::initModClass('calendar', 'Event.php');
         $event = new Calendar_Event($event_id, $this);
         if ($event->id) {
             $tpl = $event->icalTags();
@@ -635,7 +635,7 @@ class Calendar_Schedule {
             $tpl['EMPTY'] = ' ';
         }
 
-        $content = Core\Template::process($tpl, 'calendar', 'ical.tpl');
+        $content = \core\Template::process($tpl, 'calendar', 'ical.tpl');
         header("Content-type: text/calendar");
         header('Content-Disposition: attachment; filename="icalexport.ics"');
         echo $content;
@@ -663,7 +663,7 @@ class Calendar_Schedule {
             $master_tpl['EMPTY'] = ' ';
         }
 
-        $content = Core\Template::process($master_tpl, 'calendar', 'ical.tpl');
+        $content = \core\Template::process($master_tpl, 'calendar', 'ical.tpl');
         header("Content-type: text/calendar");
         header('Content-Disposition: attachment; filename="icalexport.ics"');
         echo $content;
@@ -673,7 +673,7 @@ class Calendar_Schedule {
     function allowICalDownload()
     {
         if ($this->id &&
-        ( ( $this->public && ( Current_User::isLogged() || Core\Settings::get('calendar', 'anon_ical') ) ) ||
+        ( ( $this->public && ( Current_User::isLogged() || \core\Settings::get('calendar', 'anon_ical') ) ) ||
         $this->checkPermissions() )
         ) {
             return true;

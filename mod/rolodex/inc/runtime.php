@@ -23,7 +23,7 @@
  */
 
 
-Core\Core::initModClass('rolodex', 'RDX_Runtime.php');
+core\Core::initModClass('rolodex', 'RDX_Runtime.php');
 RDX_Runtime::showBlock();
 
 ?>

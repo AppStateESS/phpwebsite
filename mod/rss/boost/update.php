@@ -40,8 +40,8 @@ function rss_update(&$content, $version)
 </pre>';
 
         case version_compare($version, '0.2.0', '<'):
-            $db = new Core\DB('rss_channel');
-            Core\Error::logIfError($db->dropTableColumn('last_build_date'));
+            $db = new \core\DB('rss_channel');
+            \core\Error::logIfError($db->dropTableColumn('last_build_date'));
             $content[] = '<pre>';
             $files = array('templates/rss20.tpl', 'templates/settings.tpl');
             if (PHPWS_Boost::updateFiles($files, 'rss')) {

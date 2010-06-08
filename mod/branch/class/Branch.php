@@ -66,10 +66,10 @@ class Branch {
 
     public function init()
     {
-        $db = new Core\DB('branch_sites');
+        $db = new \core\DB('branch_sites');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             return $result;
         }
     }
@@ -77,12 +77,12 @@ class Branch {
     public function setBranchName($branch_name)
     {
         $this->branch_name = $branch_name;
-        $db = new Core\DB('branch_sites');
+        $db = new \core\DB('branch_sites');
         $db->addWhere('branch_name', $branch_name);
         $db->addWhere('id', $this->id, '!=');
         $result = $db->select();
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             return FALSE;
         } elseif ($result) {
             return FALSE;
@@ -107,7 +107,7 @@ class Branch {
             $this->directory .= '/';
         }
 
-        $db = new Core\DB('branch_sites');
+        $db = new \core\DB('branch_sites');
         return $db->saveObject($this);
     }
 
@@ -118,7 +118,7 @@ class Branch {
         } else {
             $http = &$this->url;
         }
-        return sprintf('<a href="%s">%s</a>', $http, Core\Text::shortenUrl($http));
+        return sprintf('<a href="%s">%s</a>', $http, \core\Text::shortenUrl($http));
     }
 
     public function createDirectories()
@@ -164,19 +164,19 @@ class Branch {
     {
         $tpl['URL'] = $this->getUrl();
 
-        $links[] = Core\Text::secureLink(Core\Icon::show('edit'), 'branch', array('command'=>'edit_branch', 'branch_id'=>$this->id));
+        $links[] = \core\Text::secureLink(core\Icon::show('edit'), 'branch', array('command'=>'edit_branch', 'branch_id'=>$this->id));
 
         $js['question'] = dgettext('branch', 'Removing this branch will make it inaccessible.\nThe database and files will remain behind.\nIf you are sure you want to remove the branch, type the branch name:');
         $js['address'] = sprintf('index.php?module=branch&command=remove_branch&branch_id=%s&authkey=%s', $this->id, Current_User::getAuthKey());
         $js['value_name'] = 'branch_name';
-        $js['link'] = Core\Icon::show('delete');
+        $js['link'] = \core\Icon::show('delete');
 
         $links[] = javascript('prompt', $js);
 
-        $links[] = Core\Text::secureLink(Core\Icon::show('install', dgettext('branch', 'Modules')), 'branch',
+        $links[] = \core\Text::secureLink(core\Icon::show('install', dgettext('branch', 'Modules')), 'branch',
         array('command'=>'branch_modules', 'branch_id'=>$this->id));
         $tpl['DIRECTORY'] = sprintf('<abbr title="%s">%s</abbr>', $this->directory,
-        Core\Text::shortenUrl($this->directory));
+        \core\Text::shortenUrl($this->directory));
         $tpl['ACTION'] = implode(' ', $links);
         return $tpl;
     }
@@ -231,11 +231,11 @@ class Branch {
             return FALSE;
         }
 
-        $GLOBALS['Branch_Temp']['dsn'] = $GLOBALS['Core\DB']['dsn'];
-        $GLOBALS['Branch_Temp']['prefix'] = $GLOBALS['Core\DB']['tbl_prefix'];
+        $GLOBALS['Branch_Temp']['dsn'] = $GLOBALS['core\DB']['dsn'];
+        $GLOBALS['Branch_Temp']['prefix'] = $GLOBALS['core\DB']['tbl_prefix'];
 
         $prefix = Branch::getHubPrefix();
-        return Core\DB::loadDB($dsn, $prefix);
+        return \core\DB::loadDB($dsn, $prefix);
     }
 
     /**
@@ -248,7 +248,7 @@ class Branch {
             return false;
         }
 
-        return Core\DB::loadDB($this->dsn, $this->prefix);
+        return \core\DB::loadDB($this->dsn, $this->prefix);
     }
 
     /**
@@ -258,7 +258,7 @@ class Branch {
     {
         $prefix = $dsn = null;
         extract($GLOBALS['Branch_Temp']);
-        Core\DB::loadDB($dsn, $prefix);
+        \core\DB::loadDB($dsn, $prefix);
     }
 
     /**
@@ -291,19 +291,19 @@ class Branch {
 
         Branch::loadHubDB();
 
-        if (!Core\DB::isConnected()) {
+        if (!core\DB::isConnected()) {
             $_SESSION['Approved_Branch'] = FALSE;
             return FALSE;
         }
 
-        $db = new Core\DB('branch_sites');
+        $db = new \core\DB('branch_sites');
         $db->addWhere('site_hash', SITE_HASH);
         $result = $db->select('row');
 
-        Core\DB::loadDB();
+        \core\DB::loadDB();
 
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             $_SESSION['Approved_Branch'] = FALSE;
             return false;
         } elseif (empty($result)) {
@@ -355,8 +355,8 @@ class Branch {
 
         $connection = DB::connect($dsn);
 
-        if (Core\Error::isError($connection)) {
-            Core\Error::log($connection);
+        if (core\Error::isError($connection)) {
+            \core\Error::log($connection);
             return FALSE;
         }
         return $connection;
@@ -380,14 +380,14 @@ class Branch {
 
         Branch::loadHubDB();
 
-        $db = new Core\DB('branch_mod_limit');
+        $db = new \core\DB('branch_mod_limit');
         $db->addColumn('module_name');
         $db->addWhere('branch_id', $branch_id);
         $result = $db->select('col');
-        Core\DB::loadDB();
+        \core\DB::loadDB();
 
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             return null;
         } else {
             return $result;
@@ -400,19 +400,19 @@ class Branch {
      */
     public function delete()
     {
-        $db = new Core\DB('branch_sites');
+        $db = new \core\DB('branch_sites');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             return false;
         }
         $db->reset();
         $db->setTable('branch_mod_limit');
         $db->addWhere('branch_id', $this->id);
         $result = $db->delete();
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
         }
 
         return true;

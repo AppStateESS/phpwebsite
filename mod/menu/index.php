@@ -14,7 +14,7 @@ if (isset($_REQUEST['site_map'])) {
 } elseif(Current_User::allow('menu')) {
     Menu::admin();
 } else {
-    Core\Core::errorPage('404');
+    \core\Core::errorPage('404');
 }
 
 ?>

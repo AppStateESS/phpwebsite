@@ -27,7 +27,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-Core\Core::initModClass('elections', 'Election.php');
+core\Core::initModClass('elections', 'Election.php');
 $election = new Election;
 
 if (isset($_REQUEST['aop'])) {
@@ -45,7 +45,7 @@ if (isset($_REQUEST['aop'])) {
 } elseif (isset($_REQUEST['candidate'])) {
     $election->userMenu('view_candidate');
 } else {
-//    Core\Core::home();
+//    \core\Core::home();
     $election->userMenu('list_ballots');
 }
 

@@ -9,13 +9,13 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 }
 
 if (isset($_REQUEST['uop'])) {
-    Core\Core::initModClass('checkin', 'Checkin_User.php');
+    \core\Core::initModClass('checkin', 'Checkin_User.php');
     $checkin = new Checkin_User;
 } elseif (isset($_REQUEST['aop']) || isset($_REQUEST['tab'])) {
-    Core\Core::initModClass('checkin', 'Checkin_Admin.php');
+    \core\Core::initModClass('checkin', 'Checkin_Admin.php');
     $checkin = new Checkin_Admin;
 } else {
-    Core\Core::errorPage('404');
+    \core\Core::errorPage('404');
 }
 
 $checkin->process();

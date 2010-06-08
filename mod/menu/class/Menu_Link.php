@@ -35,7 +35,7 @@ class Menu_Link {
 
         $this->id = (int)$id;
         $result = $this->init();
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = $result;
             $this->id = 0;
         }
@@ -44,9 +44,9 @@ class Menu_Link {
     public function init()
     {
         $db = $this->getDB();
-        $db = new Core\DB('menu_links');
+        $db = new \core\DB('menu_links');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
         if (!$result) {
@@ -59,7 +59,7 @@ class Menu_Link {
     public function getDB()
     {
         if (empty($this->_db)) {
-            $this->_db = new Core\DB('menu_links');
+            $this->_db = new \core\DB('menu_links');
         }
         $this->_db->reset();
         return $this->_db;
@@ -73,7 +73,7 @@ class Menu_Link {
         $db = $this->getDB();
         $db->addWhere('parent', $this->id);
         $db->addOrder('link_order');
-        Core\Key::restrictView($db);
+        \core\Key::restrictView($db);
         $result = $db->getObjects('menu_link');
         if (empty($result)) {
             return;
@@ -99,7 +99,7 @@ class Menu_Link {
     {
         $title = strip_tags(trim($title));
 
-        $char_limit = Core\Settings::get('menu', 'max_link_characters');
+        $char_limit = \core\Settings::get('menu', 'max_link_characters');
 
         if ($char_limit > 0 && strlen($title) > $char_limit) {
             $title = substr($title, 0, $char_limit);
@@ -115,9 +115,9 @@ class Menu_Link {
     public function setUrl($url)
     {
         if (!preg_match('/^index.php/i', $url) && preg_match('/\w+\.\w{2,3}($|\/)/', $url)) {
-            $url = Core\Text::checkLink($url);
+            $url = \core\Text::checkLink($url);
         }
-        Core\Text::makeRelative($url);
+        \core\Text::makeRelative($url);
         $url = str_replace('&amp;', '&', trim($url));
         $this->url = preg_replace('/&?authkey=\w{32}/i', '', $url);
     }
@@ -175,7 +175,7 @@ class Menu_Link {
     {
         if (empty($this->menu_id) || empty($this->title) ||
         empty($this->url) || !isset($this->key_id) ) {
-            return Core\Error::get(MENU_MISSING_INFO, 'menu', 'Menu_Link::save');
+            return \core\Error::get(MENU_MISSING_INFO, 'menu', 'Menu_Link::save');
         }
 
         if (empty($this->id) || empty($this->link_order)) {
@@ -191,11 +191,11 @@ class Menu_Link {
         static $redirect_url = null;
 
         if (!$current_url) {
-            $current_url = preg_quote(Core\Core::getCurrentUrl(true,false));
+            $current_url = preg_quote(core\Core::getCurrentUrl(true,false));
         }
 
         if (!$redirect_url) {
-            $redirect_url = preg_quote(Core\Core::getCurrentUrl());
+            $redirect_url = preg_quote(core\Core::getCurrentUrl());
         }
 
         if ( preg_match("@$current_url$@", $this->url) ||
@@ -211,7 +211,7 @@ class Menu_Link {
         static $current_parent = array();
 
         $current_link = false;
-        $current_key = Core\Key::getCurrent();
+        $current_key = \core\Key::getCurrent();
 
         if (!empty($current_key)) {
             if ($this->childIsCurrent($current_key)) {
@@ -235,7 +235,7 @@ class Menu_Link {
             $current_parent[] = $this->id;
         }
 
-        if ((Menu::isAdminMode() && Core\Settings::get('menu', 'show_all_admin')) ||
+        if ((Menu::isAdminMode() && \core\Settings::get('menu', 'show_all_admin')) ||
         $this->_menu->_show_all || $current_link || $this->parent == 0 ||
         in_array($this->parent, $current_parent)) {
 
@@ -262,7 +262,7 @@ class Menu_Link {
             $template['ID'] = sprintf('menu-link-%s', $this->id);
 
             $tpl_file = 'menu_layout/' . $this->_menu->template . '/link.tpl';
-            return Core\Template::process($template, 'menu', $tpl_file);
+            return \core\Template::process($template, 'menu', $tpl_file);
         } else {
             return NULL;
         }
@@ -316,31 +316,31 @@ class Menu_Link {
     {
         if ( Menu::isAdminMode() && Current_User::allow('menu') ) {
             if (empty($_POST)) {
-                $key = Core\Key::getCurrent();
+                $key = \core\Key::getCurrent();
 
-                if (Core\Key::checkKey($key)) {
+                if (core\Key::checkKey($key)) {
                     $keyed = true;
                 } else {
-                    $key = new Core\Key;
+                    $key = new \core\Key;
                     $keyed = false;
                 }
 
                 $vars['link_id'] = $this->id;
 
-                if ($popup || Core\Settings::get('menu', 'float_mode')) {
+                if ($popup || \core\Settings::get('menu', 'float_mode')) {
                     $template['PIN_LINK']      = Menu_Item::getPinLink($this->menu_id, $this->id, $popup);
                     $template['ADD_LINK']      = Menu::getAddLink($this->menu_id, $this->id, $popup);
                     $template['ADD_SITE_LINK'] = Menu::getSiteLink($this->menu_id, $this->id, $keyed, $popup);
                     $template['DELETE_LINK']   = $this->deleteLink($popup);
                     $template['EDIT_LINK']     = $this->editLink($popup);
 
-                    if (!Core\Settings::get('menu', 'drag_sort')) {
+                    if (!core\Settings::get('menu', 'drag_sort')) {
                         $vars['command'] = 'move_link_up';
                         $up_link = MENU_LINK_UP;
                         if ($popup) {
                             $up_link .= ' ' . dgettext('menu', 'Move link up');
                             $vars['pu'] = 1;
-                            $template['MOVE_LINK_UP'] = Core\Text::secureLink($up_link, 'menu', $vars);
+                            $template['MOVE_LINK_UP'] = \core\Text::secureLink($up_link, 'menu', $vars);
                         } else {
                             $template['MOVE_LINK_UP'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>',
                             $this->menu_id, $this->id, 'up', $up_link);
@@ -351,7 +351,7 @@ class Menu_Link {
                         if ($popup) {
                             $down_link .= ' ' . dgettext('menu', 'Move link down');
                             $vars['pu'] = 1;
-                            $template['MOVE_LINK_DOWN'] = Core\Text::secureLink($down_link, 'menu', $vars);
+                            $template['MOVE_LINK_DOWN'] = \core\Text::secureLink($down_link, 'menu', $vars);
                         } else {
                             $template['MOVE_LINK_DOWN'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>',
                             $this->menu_id, $this->id, 'down', $down_link);
@@ -369,10 +369,10 @@ class Menu_Link {
                     }
 
                     if ($popup) {
-                        $template['LINK_INDENT'] = Core\Text::secureLink(sprintf('%s %s', MENU_LINK_INDENT_INCREASE, dgettext('menu', 'Increase indent')),
+                        $template['LINK_INDENT'] = \core\Text::secureLink(sprintf('%s %s', MENU_LINK_INDENT_INCREASE, dgettext('menu', 'Increase indent')),
                                                                            'menu', array('command'=>'indent_link', 'menu_id'=>$this->menu_id,
                                                                                          'link_id'=>$this->id, 'po'=>1));
-                        $template['LINK_OUTDENT'] = Core\Text::secureLink(sprintf('%s %s', MENU_LINK_INDENT_DECREASE, dgettext('menu', 'Decrease indent')),
+                        $template['LINK_OUTDENT'] = \core\Text::secureLink(sprintf('%s %s', MENU_LINK_INDENT_DECREASE, dgettext('menu', 'Decrease indent')),
                                                                            'menu', array('command'=>'outdent_link', 'menu_id'=>$this->menu_id,
                                                                                          'link_id'=>$this->id, 'po'=>1));
                     }
@@ -381,12 +381,12 @@ class Menu_Link {
                     $template['ADMIN'] = MENU_LINK_ADMIN;
                 } else {
                     $vars['command'] = 'popup_admin';
-                    $vars['curl'] = urlencode(Core\Core::getCurrentUrl(false));
+                    $vars['curl'] = urlencode(core\Core::getCurrentUrl(false));
                     if ($keyed) {
                         $vars['key_id'] = $key->id;
                     }
 
-                    $js['address'] = Core\Text::linkAddress('menu', $vars, true);
+                    $js['address'] = \core\Text::linkAddress('menu', $vars, true);
                     $js['label'] = MENU_LINK_ADMIN;
                     $js['width'] = 200;
                     $js['height'] = 300;
@@ -411,14 +411,14 @@ class Menu_Link {
         if ($this->key_id) {
             $vars['command'] = 'edit_link_title';
             $prompt_js['question']   = dgettext('menu', 'Type the new title for this link.');
-            $prompt_js['address']    = Core\Text::linkAddress('menu', $vars, true);
+            $prompt_js['address']    = \core\Text::linkAddress('menu', $vars, true);
             $prompt_js['answer']     = $this->title;
             $prompt_js['value_name'] = 'link_title';
             $prompt_js['link']       = $link;
             return javascript('prompt', $prompt_js);
         } else {
             $vars['command'] = 'edit_link';
-            $prompt_js['address'] = Core\Text::linkAddress('menu', $vars, true);
+            $prompt_js['address'] = \core\Text::linkAddress('menu', $vars, true);
             $prompt_js['label']   = $link;
             $prompt_js['width']   = 500;
             $prompt_js['height']  = 300;
@@ -445,7 +445,7 @@ class Menu_Link {
         $vars['command'] = 'delete_link';
         $js['QUESTION'] = dgettext('menu', 'Are you sure you want to delete this link: ' .
         addslashes($this->getTitle()));
-        $js['ADDRESS'] = Core\Text::linkAddress('menu', $vars, true);
+        $js['ADDRESS'] = \core\Text::linkAddress('menu', $vars, true);
         return javascript('confirm', $js);
     }
 
@@ -489,7 +489,7 @@ class Menu_Link {
         $this->link_order--;
         $result = $above->save();
 
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -518,7 +518,7 @@ class Menu_Link {
         $this->link_order++;
         $result = $below->save();
 
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 

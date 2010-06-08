@@ -22,7 +22,7 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-Core\Core::requireConfig('vlist');
+core\Core::requireConfig('vlist');
 
 class vList {
     public $forms      = null;
@@ -44,7 +44,7 @@ class vList {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['aop'])) {
-                Core\Core::errorPage('404');
+                \core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['aop'];
@@ -69,14 +69,14 @@ class vList {
             case 'edit_options':
             case 'post_options':
             case 'delete_option':
-                Core\Core::initModClass('vlist', 'vList_Forms.php');
+                \core\Core::initModClass('vlist', 'vList_Forms.php');
                 $settingsPanel = vList_Forms::settingsPanel();
                 $settingsPanel->enableSecure();
                 break;
             case 'menu':
                 if (isset($_GET['tab'])) {
                     if ($_GET['tab'] == 'settings' || $_GET['tab'] == 'groups' || $_GET['tab'] == 'elements') {
-                        Core\Core::initModClass('vlist', 'vList_Forms.php');
+                        \core\Core::initModClass('vlist', 'vList_Forms.php');
                         $settingsPanel = vList_Forms::settingsPanel();
                         $settingsPanel->enableSecure();
                     }
@@ -108,20 +108,20 @@ class vList {
                     Current_User::disallow();
                 }
                 if ($this->postListing()) {
-                    if (Core\Error::logIfError($this->listing->save())) {
+                    if (core\Error::logIfError($this->listing->save())) {
                         $this->forwardMessage(dgettext('vlist', 'Error occurred when saving listing.'));
-                        Core\Core::reroute('index.php?module=vlist&aop=menu');
+                        \core\Core::reroute('index.php?module=vlist&aop=menu');
                     } else {
-                        if (Core\Settings::get('vlist', 'enable_elements')) {
+                        if (core\Settings::get('vlist', 'enable_elements')) {
                             if ($this->postExtras()) {
                                 $this->forwardMessage(dgettext('vlist', 'Listing saved successfully.'));
-                                Core\Core::reroute('index.php?module=vlist&aop=menu');
+                                \core\Core::reroute('index.php?module=vlist&aop=menu');
                             } else {
                                 $this->loadForm('edit_listing');
                             }
                         } else {
                             $this->forwardMessage(dgettext('vlist', 'Listing saved successfully.'));
-                            Core\Core::reroute('index.php?module=vlist&aop=menu');
+                            \core\Core::reroute('index.php?module=vlist&aop=menu');
                         }
                     }
                 } else {
@@ -147,7 +147,7 @@ class vList {
                 $this->listing->approved = 1;
                 $this->listing->saveListing();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Listing %s approved.'), $this->listing->getTitle(true)));
-                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
+                \core\Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
                 break;
 
             case 'unapprove_listing':
@@ -158,7 +158,7 @@ class vList {
                 $this->listing->approved = 0;
                 $this->listing->saveListing();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Listing %s unapproved.'), $this->listing->getTitle(true)));
-                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
+                \core\Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
                 break;
 
             case 'activate_listing':
@@ -169,7 +169,7 @@ class vList {
                 $this->listing->active = 1;
                 $this->listing->saveListing();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Listing %s activated.'), $this->listing->getTitle(true)));
-                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
+                \core\Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
                 break;
 
             case 'deactivate_listing':
@@ -180,7 +180,7 @@ class vList {
                 $this->listing->active = 0;
                 $this->listing->saveListing();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Listing %s deactivated.'), $this->listing->getTitle(true)));
-                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
+                \core\Core::reroute('index.php?module=vlist&aop=menu&tab=listings');
                 break;
 
 
@@ -199,12 +199,12 @@ class vList {
                 }
                 $settingsPanel->setCurrentTab('groups');
                 if ($this->postGroup()) {
-                    if (Core\Error::logIfError($this->group->save())) {
+                    if (core\Error::logIfError($this->group->save())) {
                         $this->forwardMessage(dgettext('vlist', 'Error occurred when saving group.'));
-                        Core\Core::reroute('index.php?module=vlist&aop=edit_group&group=' . $this->group->id);
+                        \core\Core::reroute('index.php?module=vlist&aop=edit_group&group=' . $this->group->id);
                     } else {
                         $this->forwardMessage(dgettext('vlist', 'Group saved successfully.'));
-                        Core\Core::reroute('index.php?module=vlist&aop=menu&tab=groups');
+                        \core\Core::reroute('index.php?module=vlist&aop=menu&tab=groups');
                     }
                 } else {
                     $this->loadForm('edit_group');
@@ -235,10 +235,10 @@ class vList {
                     }
                 } else {
                     $this->forwardMessage(dgettext('vlist', 'You must select a valid element type to add.'));
-                    Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                    \core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 }
                 $class = 'UNI_' . $type;
-                Core\Core::initModClass('vlist', 'elements/' . $class . '.php');
+                \core\Core::initModClass('vlist', 'elements/' . $class . '.php');
                 $this->element = new $class;
                 $this->element->vlist = & $this;
                 $this->title = sprintf(dgettext('vlist', 'Add/edit %s custom element'), $_POST['type']);
@@ -291,7 +291,7 @@ class vList {
                 $this->element->active = 1;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s activated.'), $this->element->getTitle(true)));
-                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                \core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'deactivate_element':
@@ -302,7 +302,7 @@ class vList {
                 $this->element->active = 0;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s deactivated.'), $this->element->getTitle(true)));
-                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                \core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'list_element':
@@ -313,7 +313,7 @@ class vList {
                 $this->element->list = 1;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s enabled in list.'), $this->element->getTitle(true)));
-                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                \core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'delist_element':
@@ -324,7 +324,7 @@ class vList {
                 $this->element->list = 0;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s disabled in list.'), $this->element->getTitle(true)));
-                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                \core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'search_element':
@@ -335,7 +335,7 @@ class vList {
                 $this->element->search = 1;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s enabled in search.'), $this->element->getTitle(true)));
-                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                \core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'desearch_element':
@@ -346,7 +346,7 @@ class vList {
                 $this->element->search = 0;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s disabled in search.'), $this->element->getTitle(true)));
-                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                \core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'private_element':
@@ -357,7 +357,7 @@ class vList {
                 $this->element->private = 1;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s is now restricted.'), $this->element->getTitle(true)));
-                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                \core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'deprivate_element':
@@ -368,7 +368,7 @@ class vList {
                 $this->element->private = 0;
                 $this->element->saveElement();
                 $this->forwardMessage(sprintf(dgettext('vlist', 'Element %s is now public.'), $this->element->getTitle(true)));
-                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                \core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
                 break;
 
             case 'edit_options':
@@ -412,7 +412,7 @@ class vList {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('vlist', 'Listing settings saved.'));
-                    Core\Core::reroute('index.php?module=vlist&aop=menu');
+                    \core\Core::reroute('index.php?module=vlist&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -454,9 +454,9 @@ class vList {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'vlist', 'main_admin.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'vlist', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(Core\Template::process($tpl, 'vlist', 'main_admin.tpl'));
+            $this->panel->setContent(core\Template::process($tpl, 'vlist', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -468,7 +468,7 @@ class vList {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                Core\Core::errorPage('404');
+                \core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -481,9 +481,9 @@ class vList {
             case 'edit_listing':
 //print_r($_SESSION['User']); exit;
 //print_r($_SESSION['User']->username); exit;
-//                if (!Core\Settings::get('vlist', 'user_submissions')) {
-//                if (!Core\Settings::get('vlist', 'anon_submissions') && !(Core\Settings::get('vlist', 'user_submissions') && $_SESSION['User']->username == '')) {
-                if (Core\Settings::get('vlist', 'anon_submissions') || (Core\Settings::get('vlist', 'user_submissions') && $_SESSION['User']->username != '')) {
+//                if (!core\Settings::get('vlist', 'user_submissions')) {
+//                if (!core\Settings::get('vlist', 'anon_submissions') && !(core\Settings::get('vlist', 'user_submissions') && $_SESSION['User']->username == '')) {
+                if (core\Settings::get('vlist', 'anon_submissions') || (core\Settings::get('vlist', 'user_submissions') && $_SESSION['User']->username != '')) {
                     $this->loadForm('edit_listing');
                 } else {
                     Current_User::disallow();
@@ -491,16 +491,16 @@ class vList {
                 break;
 
             case 'post_listing':
-//                if (!Core\Settings::get('vlist', 'user_submissions')) {
-                if (Core\Settings::get('vlist', 'anon_submissions') || (Core\Settings::get('vlist', 'user_submissions') && $_SESSION['User']->username != '')) {
+//                if (!core\Settings::get('vlist', 'user_submissions')) {
+                if (core\Settings::get('vlist', 'anon_submissions') || (core\Settings::get('vlist', 'user_submissions') && $_SESSION['User']->username != '')) {
                     if ($this->postListing()) {
-                        if (Core\Error::logIfError($this->listing->save())) {
+                        if (core\Error::logIfError($this->listing->save())) {
                             $this->forwardMessage(dgettext('vlist', 'Error occurred when submitting listing.'));
-                            Core\Core::reroute('index.php?module=vlist&uop=listings');
+                            \core\Core::reroute('index.php?module=vlist&uop=listings');
                         } else {
                             if ($this->postExtras()) {
                                 $this->forwardMessage(dgettext('vlist', 'Listing submitted for review successfully.'));
-                                Core\Core::reroute('index.php?module=vlist&uop=listings');
+                                \core\Core::reroute('index.php?module=vlist&uop=listings');
                             } else {
                                 $this->loadForm('edit_listing');
                             }
@@ -514,7 +514,7 @@ class vList {
                 break;
 
             case 'listings':
-                Core\Core::initModClass('vlist', 'vList_Forms.php');
+                \core\Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
                 $this->forms->listListings(1, 1);
@@ -537,7 +537,7 @@ class vList {
                 break;
 
             case 'groups':
-                Core\Core::initModClass('vlist', 'vList_Forms.php');
+                \core\Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
                 $this->forms->listGroups();
@@ -551,7 +551,7 @@ class vList {
                 } elseif (isset($_REQUEST['id'])) {
                     $id = $_REQUEST['id'];
                 }
-                Core\Core::initModClass('vlist', 'vList_Forms.php');
+                \core\Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
                 $this->forms->listListings(1, 1, $id);
@@ -565,7 +565,7 @@ class vList {
                 } elseif (isset($_REQUEST['id'])) {
                     $id = $_REQUEST['id'];
                 }
-                Core\Core::initModClass('vlist', 'vList_Forms.php');
+                \core\Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
                 $this->forms->listListings(1, 1, null, $id);
@@ -580,14 +580,14 @@ class vList {
                 break;
 
             case 'advanced':
-                Core\Core::initModClass('vlist', 'vList_Forms.php');
+                \core\Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
                 $this->forms->advSearchForm();
                 break;
 
             case 'adv_search':
-                Core\Core::initModClass('vlist', 'vList_Forms.php');
+                \core\Core::initModClass('vlist', 'vList_Forms.php');
                 $this->forms = new vList_Forms;
                 $this->forms->vlist = & $this;
                 $this->forms->listListings(1, 1);
@@ -600,9 +600,9 @@ class vList {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'vlist', 'main_user.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'vlist', 'main_user.tpl'));
         } else {
-            Layout::add(Core\Template::process($tpl, 'vlist', 'main_user.tpl'));
+            Layout::add(core\Template::process($tpl, 'vlist', 'main_user.tpl'));
         }
 
     }
@@ -624,14 +624,14 @@ class vList {
             if (isset($_SESSION['vList_Message']['title'])) {
                 $this->title = $_SESSION['vList_Message']['title'];
             }
-            Core\Core::killSession('vList_Message');
+            \core\Core::killSession('vList_Message');
         }
     }
 
 
     public function loadForm($type)
     {
-        Core\Core::initModClass('vlist', 'vList_Forms.php');
+        \core\Core::initModClass('vlist', 'vList_Forms.php');
         $this->forms = new vList_Forms;
         $this->forms->vlist = & $this;
         $this->forms->get($type);
@@ -640,7 +640,7 @@ class vList {
 
     public function loadListing($id=0)
     {
-        Core\Core::initModClass('vlist', 'vList_Listing.php');
+        \core\Core::initModClass('vlist', 'vList_Listing.php');
 
         if ($id) {
             $this->listing = new vList_Listing($id);
@@ -658,7 +658,7 @@ class vList {
 
     public function loadGroup($id=0)
     {
-        Core\Core::initModClass('vlist', 'vList_Group.php');
+        \core\Core::initModClass('vlist', 'vList_Group.php');
 
         if ($id) {
             $this->group = new vList_Group($id);
@@ -694,14 +694,14 @@ class vList {
                 }
             } else {
                 $this->forwardMessage(dgettext('vlist', 'The type of element was not specified.'));
-                Core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
+                \core\Core::reroute('index.php?module=vlist&aop=menu&tab=elements');
             }
             $class = 'UNI_' . $type;
-            Core\Core::initModClass('vlist', 'elements/' . $class . '.php');
+            \core\Core::initModClass('vlist', 'elements/' . $class . '.php');
             $this->element = new $class;
         }
 
-        $db = new Core\DB('vlist_element');
+        $db = new \core\DB('vlist_element');
         $db->addWhere('id', $id);
         $db->addColumn('type');
         $result = $db->select('one');
@@ -719,7 +719,7 @@ class vList {
             }
         }
         $class = 'UNI_' . $type;
-        Core\Core::initModClass('vlist', 'elements/' . $class . '.php');
+        \core\Core::initModClass('vlist', 'elements/' . $class . '.php');
         $this->element = new $class($id);
 
     }
@@ -727,7 +727,7 @@ class vList {
 
     public function loadPanel()
     {
-        Core\Core::initModClass('controlpanel', 'Panel.php');
+        \core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('vlist-panel');
         $link = 'index.php?module=vlist&aop=menu';
 
@@ -739,11 +739,11 @@ class vList {
                                   'link'=>$link);
 
         if (Current_User::isUnrestricted('vlist')) {
-            $db = new Core\DB('vlist_listing');
+            $db = new \core\DB('vlist_listing');
             $db->addWhere('approved', 0);
             $unapproved = $db->count();
             $tags['approvals'] = array('title'=>sprintf(dgettext('vlist', 'Unapproved (%s)'), $unapproved), 'link'=>$link);
-            $db = new Core\DB('vlist_listing');
+            $db = new \core\DB('vlist_listing');
             $db->addWhere('active', 0);
             $inactive = $db->count();
             $tags['inactives'] = array('title'=>sprintf(dgettext('vlist', 'Inactive (%s)'), $inactive), 'link'=>$link);
@@ -765,7 +765,7 @@ class vList {
     {
         $this->loadListing();
 
-        if (Core\Settings::get('vlist', 'enable_users')) {
+        if (core\Settings::get('vlist', 'enable_users')) {
             $this->listing->owner_id = (int)$_POST['owner_id'];
         }
 
@@ -812,24 +812,24 @@ class vList {
     {
 
         /* first delete all the existing element items for this listing */
-        $db = new Core\DB('vlist_element_items');
+        $db = new \core\DB('vlist_element_items');
         $db->addWhere('listing_id', $this->listing->id);
         $db->delete();
 
         /* now get all the active elements */
-        $db = new Core\DB('vlist_element');
+        $db = new \core\DB('vlist_element');
         $db->addWhere('active', 1);
         $db->addOrder('sort asc');
         $result = $db->select();
 
         /* if there are any */
         if ($result) {
-            $db = new Core\DB('vlist_element_items');
+            $db = new \core\DB('vlist_element_items');
             $db->addValue('listing_id', $this->listing->id);
 
             /* then loop through them */
             foreach ($result as $element) {
-                $db = new Core\DB('vlist_element_items');
+                $db = new \core\DB('vlist_element_items');
                 $db->addValue('listing_id', $this->listing->id);
                 $db->addValue('element_id', $element['id']);
 
@@ -855,8 +855,8 @@ class vList {
                         }
                     } elseif ($element['type'] == 'Link') {
                         if (!empty($_POST['UNI_'.$element['id']])) {
-                            $link = Core\Text::checkLink(strip_tags($_POST['UNI_'.$element['id']]));
-                            if (Core\Text::isValidInput($link, 'url')) {
+                            $link = \core\Text::checkLink(strip_tags($_POST['UNI_'.$element['id']]));
+                            if (core\Text::isValidInput($link, 'url')) {
                                 $db->addValue('value', $link);
                                 $db->insert();
                             } else {
@@ -868,7 +868,7 @@ class vList {
                     } elseif ($element['type'] == 'GPS') {
                         if (!empty($_POST['UNI_'.$element['id']])) {
                             $gps = strip_tags($_POST['UNI_'.$element['id']]);
-//    NEED A REGEX HERE                        if (Core\Text::isValidInput($gps, 'url')) {
+//    NEED A REGEX HERE                        if (core\Text::isValidInput($gps, 'url')) {
                                 $db->addValue('value', $gps);
                                 $db->insert();
 //                            } else {
@@ -880,7 +880,7 @@ class vList {
                     } elseif ($element['type'] == 'Email') {
                         if (!empty($_POST['UNI_'.$element['id']])) {
                             $email = strip_tags($_POST['UNI_'.$element['id']]);
-                            if (Core\Text::isValidInput($email, 'email')) {
+                            if (core\Text::isValidInput($email, 'email')) {
                                 $db->addValue('value', $email);
                                 $db->insert();
                             } else {
@@ -892,7 +892,7 @@ class vList {
                     } elseif ($element['type'] == 'GMap') {
                         if (!empty($_POST['UNI_'.$element['id']])) {
                             $gmap = strip_tags($_POST['UNI_'.$element['id']]);
-//    NEED A REGEX HERE                        if (Core\Text::isValidInput($gmap, 'url')) {
+//    NEED A REGEX HERE                        if (core\Text::isValidInput($gmap, 'url')) {
                                 $db->addValue('value', $gmap);
                                 $db->insert();
 //                            } else {
@@ -903,7 +903,7 @@ class vList {
                         }
                     } else {
                         if (!empty($_POST['UNI_'.$element['id']])) {
-                            $db->addValue('value', Core\Text::parseInput($_POST['UNI_'.$element['id']]));
+                            $db->addValue('value', \core\Text::parseInput($_POST['UNI_'.$element['id']]));
                             $db->insert();
                         } else {
                             $errors[] = sprintf(dgettext('vlist', 'You must enter something for %s.'), $element['title']);
@@ -927,8 +927,8 @@ class vList {
                         }
                     } elseif ($element['type'] == 'Link') {
                         if (!empty($_POST['UNI_'.$element['id']])) {
-                            $link = Core\Text::checkLink(strip_tags($_POST['UNI_'.$element['id']]));
-                            if (Core\Text::isValidInput($link, 'url')) {
+                            $link = \core\Text::checkLink(strip_tags($_POST['UNI_'.$element['id']]));
+                            if (core\Text::isValidInput($link, 'url')) {
                                 $db->addValue('value', $link);
                                 $db->insert();
                             } else {
@@ -938,7 +938,7 @@ class vList {
                     } elseif ($element['type'] == 'Email') {
                         if (!empty($_POST['UNI_'.$element['id']])) {
                             $email = strip_tags($_POST['UNI_'.$element['id']]);
-                            if (Core\Text::isValidInput($email, 'email')) {
+                            if (core\Text::isValidInput($email, 'email')) {
                                 $db->addValue('value', $email);
                                 $db->insert();
                             } else {
@@ -948,7 +948,7 @@ class vList {
                     } elseif ($element['type'] == 'GMap') {
                         if (!empty($_POST['UNI_'.$element['id']])) {
                             $gmap = strip_tags($_POST['UNI_'.$element['id']]);
-//    NEED A REGEX HERE                        if (Core\Text::isValidInput($gmap, 'url')) {
+//    NEED A REGEX HERE                        if (core\Text::isValidInput($gmap, 'url')) {
                                 $db->addValue('value', $gmap);
                                 $db->insert();
 //                            } else {
@@ -957,7 +957,7 @@ class vList {
                         }
                     } else {
                         if (!empty($_POST['UNI_'.$element['id']])) {
-                            $db->addValue('value', Core\Text::parseInput($_POST['UNI_'.$element['id']]));
+                            $db->addValue('value', \core\Text::parseInput($_POST['UNI_'.$element['id']]));
                             $db->insert();
                         }
                     }
@@ -1011,49 +1011,49 @@ class vList {
     {
 
         if (!empty($_POST['module_title'])) {
-            Core\Settings::set('vlist', 'module_title', strip_tags($_POST['module_title']));
+            \core\Settings::set('vlist', 'module_title', strip_tags($_POST['module_title']));
         } else {
             $errors[] = dgettext('vlist', 'Please provide a module title.');
         }
 
         isset($_POST['enable_sidebox']) ?
-            Core\Settings::set('vlist', 'enable_sidebox', 1) :
-            Core\Settings::set('vlist', 'enable_sidebox', 0);
+            \core\Settings::set('vlist', 'enable_sidebox', 1) :
+            \core\Settings::set('vlist', 'enable_sidebox', 0);
 
-        Core\Settings::set('vlist', 'block_order_by', $_POST['block_order_by']);
-        Core\Settings::set('vlist', 'main_order_by', $_POST['main_order_by']);
+        \core\Settings::set('vlist', 'block_order_by', $_POST['block_order_by']);
+        \core\Settings::set('vlist', 'main_order_by', $_POST['main_order_by']);
 
         isset($_POST['sidebox_homeonly']) ?
-            Core\Settings::set('vlist', 'sidebox_homeonly', 1) :
-            Core\Settings::set('vlist', 'sidebox_homeonly', 0);
+            \core\Settings::set('vlist', 'sidebox_homeonly', 1) :
+            \core\Settings::set('vlist', 'sidebox_homeonly', 0);
 
         if (!empty($_POST['sidebox_text'])) {
-            Core\Settings::set('vlist', 'sidebox_text', Core\Text::parseInput($_POST['sidebox_text']));
+            \core\Settings::set('vlist', 'sidebox_text', \core\Text::parseInput($_POST['sidebox_text']));
         } else {
-            Core\Settings::set('vlist', 'sidebox_text', null);
+            \core\Settings::set('vlist', 'sidebox_text', null);
         }
 
         isset($_POST['enable_elements']) ?
-            Core\Settings::set('vlist', 'enable_elements', 1) :
-            Core\Settings::set('vlist', 'enable_elements', 0);
+            \core\Settings::set('vlist', 'enable_elements', 1) :
+            \core\Settings::set('vlist', 'enable_elements', 0);
 
         isset($_POST['enable_groups']) ?
-            Core\Settings::set('vlist', 'enable_groups', 1) :
-            Core\Settings::set('vlist', 'enable_groups', 0);
+            \core\Settings::set('vlist', 'enable_groups', 1) :
+            \core\Settings::set('vlist', 'enable_groups', 0);
 
         isset($_POST['list_groups']) ?
-            Core\Settings::set('vlist', 'list_groups', 1) :
-            Core\Settings::set('vlist', 'list_groups', 0);
+            \core\Settings::set('vlist', 'list_groups', 1) :
+            \core\Settings::set('vlist', 'list_groups', 0);
 
         if (!empty($_POST['groups_title'])) {
-            Core\Settings::set('vlist', 'groups_title', strip_tags($_POST['groups_title']));
+            \core\Settings::set('vlist', 'groups_title', strip_tags($_POST['groups_title']));
         } else {
             $errors[] = dgettext('vlist', 'Please provide a groups title.');
         }
 
         if (!empty($_POST['admin_contact'])) {
-            if (Core\Text::isValidInput($_POST['admin_contact'], 'email')) {
-                Core\Settings::set('vlist', 'admin_contact', strip_tags(Core\Text::parseInput($_POST['admin_contact'])));
+            if (core\Text::isValidInput($_POST['admin_contact'], 'email')) {
+                \core\Settings::set('vlist', 'admin_contact', strip_tags(core\Text::parseInput($_POST['admin_contact'])));
             } else {
                 $errors[] = dgettext('vlist', 'Check your e-mail address for formatting errors.');
             }
@@ -1062,84 +1062,84 @@ class vList {
         }
 
         isset($_POST['enable_files']) ?
-            Core\Settings::set('vlist', 'enable_files', 1) :
-            Core\Settings::set('vlist', 'enable_files', 0);
+            \core\Settings::set('vlist', 'enable_files', 1) :
+            \core\Settings::set('vlist', 'enable_files', 0);
 
         if (isset($_POST['enable_images'])) {
-            Core\Settings::set('vlist', 'enable_images', 1);
+            \core\Settings::set('vlist', 'enable_images', 1);
             if ( !empty($_POST['max_width']) ) {
                 $max_width = (int)$_POST['max_width'];
                 if ($max_width >= 50 && $max_width <= 600 ) {
-                    Core\Settings::set('vlist', 'max_width', $max_width);
+                    \core\Settings::set('vlist', 'max_width', $max_width);
                 }
             }
             if ( !empty($_POST['max_height']) ) {
                 $max_height = (int)$_POST['max_height'];
                 if ($max_height >= 50 && $max_height <= 600 ) {
-                    Core\Settings::set('vlist', 'max_height', $max_height);
+                    \core\Settings::set('vlist', 'max_height', $max_height);
                 }
             }
         } else {
-            Core\Settings::set('vlist', 'enable_images', 0);
+            \core\Settings::set('vlist', 'enable_images', 0);
         }
 
         isset($_POST['enable_users']) ?
-            Core\Settings::set('vlist', 'enable_users', 1) :
-            Core\Settings::set('vlist', 'enable_users', 0);
+            \core\Settings::set('vlist', 'enable_users', 1) :
+            \core\Settings::set('vlist', 'enable_users', 0);
 
         isset($_POST['show_users']) ?
-            Core\Settings::set('vlist', 'show_users', 1) :
-            Core\Settings::set('vlist', 'show_users', 0);
+            \core\Settings::set('vlist', 'show_users', 1) :
+            \core\Settings::set('vlist', 'show_users', 0);
 
         isset($_POST['list_users']) ?
-            Core\Settings::set('vlist', 'list_users', 1) :
-            Core\Settings::set('vlist', 'list_users', 0);
+            \core\Settings::set('vlist', 'list_users', 1) :
+            \core\Settings::set('vlist', 'list_users', 0);
 
         isset($_POST['user_submissions']) ?
-            Core\Settings::set('vlist', 'user_submissions', 1) :
-            Core\Settings::set('vlist', 'user_submissions', 0);
+            \core\Settings::set('vlist', 'user_submissions', 1) :
+            \core\Settings::set('vlist', 'user_submissions', 0);
 
         isset($_POST['anon_submissions']) ?
-            Core\Settings::set('vlist', 'anon_submissions', 1) :
-            Core\Settings::set('vlist', 'anon_submissions', 0);
+            \core\Settings::set('vlist', 'anon_submissions', 1) :
+            \core\Settings::set('vlist', 'anon_submissions', 0);
 
         isset($_POST['user_files']) ?
-            Core\Settings::set('vlist', 'user_files', 1) :
-            Core\Settings::set('vlist', 'user_files', 0);
+            \core\Settings::set('vlist', 'user_files', 1) :
+            \core\Settings::set('vlist', 'user_files', 0);
 
         isset($_POST['anon_files']) ?
-            Core\Settings::set('vlist', 'anon_files', 1) :
-            Core\Settings::set('vlist', 'anon_files', 0);
+            \core\Settings::set('vlist', 'anon_files', 1) :
+            \core\Settings::set('vlist', 'anon_files', 0);
 
         isset($_POST['view_created']) ?
-            Core\Settings::set('vlist', 'view_created', 1) :
-            Core\Settings::set('vlist', 'view_created', 0);
+            \core\Settings::set('vlist', 'view_created', 1) :
+            \core\Settings::set('vlist', 'view_created', 0);
 
         isset($_POST['view_updated']) ?
-            Core\Settings::set('vlist', 'view_updated', 1) :
-            Core\Settings::set('vlist', 'view_updated', 0);
+            \core\Settings::set('vlist', 'view_updated', 1) :
+            \core\Settings::set('vlist', 'view_updated', 0);
 
         isset($_POST['list_created']) ?
-            Core\Settings::set('vlist', 'list_created', 1) :
-            Core\Settings::set('vlist', 'list_created', 0);
+            \core\Settings::set('vlist', 'list_created', 1) :
+            \core\Settings::set('vlist', 'list_created', 0);
 
         isset($_POST['list_updated']) ?
-            Core\Settings::set('vlist', 'list_updated', 1) :
-            Core\Settings::set('vlist', 'list_updated', 0);
+            \core\Settings::set('vlist', 'list_updated', 1) :
+            \core\Settings::set('vlist', 'list_updated', 0);
 
         isset($_POST['notify_submit']) ?
-            Core\Settings::set('vlist', 'notify_submit', 1) :
-            Core\Settings::set('vlist', 'notify_submit', 0);
+            \core\Settings::set('vlist', 'notify_submit', 1) :
+            \core\Settings::set('vlist', 'notify_submit', 0);
 
         isset($_POST['notify_edit']) ?
-            Core\Settings::set('vlist', 'notify_edit', 1) :
-            Core\Settings::set('vlist', 'notify_edit', 0);
+            \core\Settings::set('vlist', 'notify_edit', 1) :
+            \core\Settings::set('vlist', 'notify_edit', 0);
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            if (Core\Settings::save('vlist')) {
+            if (core\Settings::save('vlist')) {
                 return true;
             } else {
                 return falsel;
@@ -1159,40 +1159,40 @@ class vList {
             if (@$_REQUEST['uop'] == "listings") {
                 $vars['uop'] = 'listings';
                 $vars['browseLetter'] = $alphachar;
-                $alpha[] .= Core\Text::moduleLink($alphachar, "vlist", $vars) . "\n";
+                $alpha[] .= \core\Text::moduleLink($alphachar, "vlist", $vars) . "\n";
             } elseif (@$_REQUEST['aop'] == "list_expired") {
                 $vars['aop'] = 'list_expired';
                 $vars['browseLetter'] = $alphachar;
-                $alpha[] .= Core\Text::moduleLink($alphachar, "vlist", $vars) . "\n";
+                $alpha[] .= \core\Text::moduleLink($alphachar, "vlist", $vars) . "\n";
             } else {
                 $vars['uop'] = 'listings';
                 $vars['browseLetter'] = $alphachar;
-                $alpha[] .= Core\Text::moduleLink($alphachar, "vlist", $vars) . "\n";
+                $alpha[] .= \core\Text::moduleLink($alphachar, "vlist", $vars) . "\n";
             }
         }
 
         if (@$_REQUEST['uop'] == "listings") {
             $vars['uop'] = 'listings';
             $vars['browseLetter'] = 'Other';
-            $alpha[] .= Core\Text::moduleLink(dgettext('vlist', 'Other'), "vlist",  $vars) . "\n";
-            $alpha[] .= Core\Text::moduleLink(dgettext('vlist', 'All'), "vlist",  array('uop'=>'listings')) . "\n";
+            $alpha[] .= \core\Text::moduleLink(dgettext('vlist', 'Other'), "vlist",  $vars) . "\n";
+            $alpha[] .= \core\Text::moduleLink(dgettext('vlist', 'All'), "vlist",  array('uop'=>'listings')) . "\n";
         } elseif (@$_REQUEST['aop'] == "list_expired") {
             $vars['aop'] = 'list_expired';
             $vars['browseLetter'] = 'Other';
-            $alpha[] .= Core\Text::moduleLink(dgettext('vlist', 'Other'), "vlist",  $vars) . "\n";
-            $alpha[] .= Core\Text::moduleLink(dgettext('vlist', 'All'), "vlist",  array('aop'=>'list_expired')) . "\n";
+            $alpha[] .= \core\Text::moduleLink(dgettext('vlist', 'Other'), "vlist",  $vars) . "\n";
+            $alpha[] .= \core\Text::moduleLink(dgettext('vlist', 'All'), "vlist",  array('aop'=>'list_expired')) . "\n";
         } else {
             $vars['uop'] = 'listings';
             $vars['browseLetter'] = 'Other';
-            $alpha[] .= Core\Text::moduleLink(dgettext('vlist', 'Other'), "vlist",  $vars) . "\n";
-            $alpha[] .= Core\Text::moduleLink(dgettext('vlist', 'All'), "vlist",  array('uop'=>'listings')) . "\n";
+            $alpha[] .= \core\Text::moduleLink(dgettext('vlist', 'Other'), "vlist",  $vars) . "\n";
+            $alpha[] .= \core\Text::moduleLink(dgettext('vlist', 'All'), "vlist",  array('uop'=>'listings')) . "\n";
         }
 
         $links = $this->navLinks();
 
         $tpl['LIST'] = implode(' | ', $alpha);
         $tpl['LINKS'] = implode(' | ', $links);
-        return Core\Template::process($tpl, 'vlist', 'alpha_click.tpl');
+        return \core\Template::process($tpl, 'vlist', 'alpha_click.tpl');
 
     }
 
@@ -1237,8 +1237,8 @@ class vList {
 
         switch($type) {
             case 'group':
-                Core\Core::initModClass('vlist', 'vList_Group.php');
-                $db = new Core\DB('vlist_group');
+                \core\Core::initModClass('vlist', 'vList_Group.php');
+                $db = new \core\DB('vlist_group');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('vList_Group');
                 break;
@@ -1261,7 +1261,7 @@ class vList {
                 }
                 return javascript('multiple_select', $vars);
             } else {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addMultiple($select_name, $items);
                 if (!empty($match) && is_array($match)) {
                     $form->setMatch($select_name, $match);
@@ -1269,7 +1269,7 @@ class vList {
                 return $form->get($select_name);
             }
         } else {
-            $form = new Core\Form;
+            $form = new \core\Form;
             $form->addSelect($select_name, $items);
             if (!empty($match) && is_string($match)) {
                 $form->setMatch($select_name, $match);
@@ -1285,8 +1285,8 @@ class vList {
 
         switch($type) {
             case 'group':
-                Core\Core::initModClass('vlist', 'vList_Group.php');
-                $db = new Core\DB('vlist_group');
+                \core\Core::initModClass('vlist', 'vList_Group.php');
+                $db = new \core\DB('vlist_group');
                 $db->addOrder('title asc');
                 $result = $db->getObjects('vList_Group');
                 break;
@@ -1295,7 +1295,7 @@ class vList {
         if ($result) {
             foreach ($result as $item) {
                 if ($count) {
-                    $db = new Core\DB('vlist_'.$type.'_items');
+                    $db = new \core\DB('vlist_'.$type.'_items');
                     $db->addWhere($type.'_id', $item->id);
                     if (!Current_User::isUnrestricted('vlist')) {
                         $db->addColumn('vlist_'.$type.'_items.*');
@@ -1315,14 +1315,14 @@ class vList {
 
         if ($items) {
             if ($multiple) {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addMultiple($select_name, $items);
                 if (!empty($match) && is_array($match)) {
                     $form->setMatch($select_name, $match);
                 }
                 return $form->get($select_name);
             } else {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addSelect($select_name, $items);
                 if (!empty($match) && is_string($match)) {
                     $form->setMatch($select_name, $match);
@@ -1340,7 +1340,7 @@ class vList {
     {
 
         $select_name = 'UNI_' . $id;
-        $db = new Core\DB('vlist_element_option');
+        $db = new \core\DB('vlist_element_option');
         $db->addWhere('element_id', $id);
         $db->addOrder('sort asc');
         $result = $db->select();
@@ -1348,7 +1348,7 @@ class vList {
         if ($result) {
             foreach ($result as $option) {
                 if ($count) {
-                    $db = new Core\DB('vlist_element_items');
+                    $db = new \core\DB('vlist_element_items');
                     $db->addWhere('option_id', $option['id']);
                     if (!Current_User::isUnrestricted('vlist')) {
                         $db->addColumn('vlist_element_items.*');
@@ -1368,14 +1368,14 @@ class vList {
 
         if ($options) {
             if ($multiple) {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addMultiple($select_name, $options);
                 if (!empty($match) && is_array($match)) {
                     $form->setMatch($select_name, $match);
                 }
                 return $form->get($select_name);
             } else {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addSelect($select_name, $options);
                 if (!empty($match) && is_string($match)) {
                     $form->setMatch($select_name, $match);
@@ -1392,18 +1392,18 @@ class vList {
     public function navLinks()
     {
 
-        $links[] = Core\Text::moduleLink(dgettext('vlist', 'All Listings'), 'vlist', array('uop'=>'listings'));
-        if (Core\Settings::get('vlist', 'enable_groups')) {
-            $db = new Core\DB('vlist_group');
+        $links[] = \core\Text::moduleLink(dgettext('vlist', 'All Listings'), 'vlist', array('uop'=>'listings'));
+        if (core\Settings::get('vlist', 'enable_groups')) {
+            $db = new \core\DB('vlist_group');
             $groups = $db->count();
             if ($groups > 0) {
-                $links[] = Core\Text::moduleLink(Core\Text::parseOutput(Core\Settings::get('vlist', 'groups_title')), "vlist",  array('uop'=>'groups'));
+                $links[] = \core\Text::moduleLink(core\Text::parseOutput(core\Settings::get('vlist', 'groups_title')), "vlist",  array('uop'=>'groups'));
             }
         } else {
             $groups = null;
         }
-        if (Core\Settings::get('vlist', 'enable_elements')) {
-            $db = new Core\DB('vlist_element');
+        if (core\Settings::get('vlist', 'enable_elements')) {
+            $db = new \core\DB('vlist_element');
             $db->addWhere('active', 1);
             $elements = $db->count();
         } else {
@@ -1411,15 +1411,15 @@ class vList {
         }
 
         if ($groups > 0 || $elements > 0) {
-            $links[] = Core\Text::moduleLink(dgettext('vlist', 'Advanced'), "vlist",  array('uop'=>'advanced'));
+            $links[] = \core\Text::moduleLink(dgettext('vlist', 'Advanced'), "vlist",  array('uop'=>'advanced'));
         }
         if (Current_User::allow('vlist', 'edit_listing')) {
-            $links[] = Core\Text::secureLink(dgettext('vlist', 'Add Listing'), 'vlist', array('aop'=>'new_listing'));
-        } elseif (Core\Settings::get('vlist', 'anon_files') || (Core\Settings::get('vlist', 'user_files') && $_SESSION['User']->username != '')) {
-            $links[] = Core\Text::moduleLink(dgettext('vlist', 'Submit a listing'), 'vlist', array('uop'=>'submit_listing'));
+            $links[] = \core\Text::secureLink(dgettext('vlist', 'Add Listing'), 'vlist', array('aop'=>'new_listing'));
+        } elseif (core\Settings::get('vlist', 'anon_files') || (core\Settings::get('vlist', 'user_files') && $_SESSION['User']->username != '')) {
+            $links[] = \core\Text::moduleLink(dgettext('vlist', 'Submit a listing'), 'vlist', array('uop'=>'submit_listing'));
         }
         if (Current_User::allow('vlist', 'settings', null, null, true) && !isset($_REQUEST['aop'])){
-            $links[] = Core\Text::moduleLink(dgettext('vlist', 'Settings'), "vlist",  array('aop'=>'menu', 'tab'=>'settings'));
+            $links[] = \core\Text::moduleLink(dgettext('vlist', 'Settings'), "vlist",  array('aop'=>'menu', 'tab'=>'settings'));
         }
 
         return $links;

@@ -8,7 +8,7 @@ function clipboard_update(&$content, $currentVersion)
 {
     switch ($currentVersion) {
         case version_compare($currentVersion, '0.0.2', '<'):
-            $db = new Core\DB('controlpanel_link');
+            $db = new \core\DB('controlpanel_link');
             $db->addWhere('itemname', 'clipboard');
             $db->delete();
             $content[] = 'Removing Clipboard\'s Control Panel link.';

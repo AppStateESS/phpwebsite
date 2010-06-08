@@ -12,7 +12,7 @@ function related_update(&$content, $version)
             $content[] = 'Made links XHTML compatible.';
 
         case version_compare($version, '0.1.1', '<'):
-            Core\Key::registerModule('related');
+            \core\Key::registerModule('related');
             $content[] = 'Register module to key.';
 
         case version_compare($version, '0.1.2', '<'):

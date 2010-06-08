@@ -59,7 +59,7 @@ class Finc_Forms {
 
     function editFile()
     {
-        $form = new Core\Form('finc_file');
+        $form = new \core\Form('finc_file');
         $file = & $this->finc->file;
 
         $form->addHidden('module', 'finc');
@@ -97,7 +97,7 @@ class Finc_Forms {
         $tpl = $form->getTemplate();
         $tpl['DETAILS_LABEL'] = dgettext('finc', 'Details');
 
-        $this->finc->content = Core\Template::process($tpl, 'finc', 'edit_file.tpl');
+        $this->finc->content = \core\Template::process($tpl, 'finc', 'edit_file.tpl');
     }
 
 
@@ -106,8 +106,8 @@ class Finc_Forms {
         $ptags['TITLE_HEADER'] = dgettext('finc', 'Title');
         $ptags['PATH_HEADER'] = dgettext('finc', 'Path/filename');
 
-        Core\Core::initModClass('finc', 'FINC_File.php');
-                $pager = new Core\DBPager('finc_file', 'Finc_File');
+        \core\Core::initModClass('finc', 'FINC_File.php');
+                $pager = new \core\DBPager('finc_file', 'Finc_File');
         $pager->setModule('finc');
         if (!Current_User::isUnrestricted('finc')) {
             $pager->addWhere('active', 1);
@@ -120,7 +120,7 @@ class Finc_Forms {
             $vars['aop']  = 'menu';
             $vars['tab']  = 'settings';
             $vars2['aop']  = 'edit_file';
-            $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('finc', 'Check your %s then create a %s to begin'), Core\Text::secureLink(dgettext('finc', 'Settings'), 'finc', $vars),  Core\Text::secureLink(dgettext('finc', 'New File'), 'finc', $vars2));
+            $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('finc', 'Check your %s then create a %s to begin'), \core\Text::secureLink(dgettext('finc', 'Settings'), 'finc', $vars),  \core\Text::secureLink(dgettext('finc', 'New File'), 'finc', $vars2));
         }
         $pager->addPageTags($ptags);
         $pager->addToggle('class="toggle1"');
@@ -134,20 +134,20 @@ class Finc_Forms {
     function editSettings()
     {
 
-        $form = new Core\Form('finc_settings');
+        $form = new \core\Form('finc_settings');
         $form->addHidden('module', 'finc');
         $form->addHidden('aop', 'post_settings');
 
         $form->addCheckbox('show_title', 1);
-        $form->setMatch('show_title', Core\Settings::get('finc', 'show_title'));
+        $form->setMatch('show_title', \core\Settings::get('finc', 'show_title'));
         $form->setLabel('show_title', dgettext('finc', 'Show title'));
 
         $form->addCheckbox('add_title_tag', 1);
-        $form->setMatch('add_title_tag', Core\Settings::get('finc', 'add_title_tag'));
+        $form->setMatch('add_title_tag', \core\Settings::get('finc', 'add_title_tag'));
         $form->setLabel('add_title_tag', dgettext('finc', 'Add title to title meta tag'));
 
         $form->addCheckbox('show_description', 1);
-        $form->setMatch('show_description', Core\Settings::get('finc', 'show_description'));
+        $form->setMatch('show_description', \core\Settings::get('finc', 'show_description'));
         $form->setLabel('show_description', dgettext('finc', 'Show description'));
 
         $form->addSubmit('save', dgettext('finc', 'Save settings'));
@@ -156,7 +156,7 @@ class Finc_Forms {
         $tpl['SETTINGS_LABEL'] = dgettext('finc', 'General Settings');
 
         $this->finc->title = dgettext('finc', 'Settings');
-        $this->finc->content = Core\Template::process($tpl, 'finc', 'edit_settings.tpl');
+        $this->finc->content = \core\Template::process($tpl, 'finc', 'edit_settings.tpl');
     }
 
 
@@ -177,7 +177,7 @@ class Finc_Forms {
         $tpl['DONATE'] = sprintf(dgettext('finc', 'If you would like to help out with the ongoing development of finc, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window).'), '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=donations%40verdon%2eca&item_name=Finc%20Module%20Development&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=CA&bn=PP%2dDonationsBF&charset=UTF%2d8" target="new">', '</a>');
 
         $this->finc->title = dgettext('finc', 'Read me');
-        $this->finc->content = Core\Template::process($tpl, 'finc', 'info.tpl');
+        $this->finc->content = \core\Template::process($tpl, 'finc', 'info.tpl');
     }
 
 

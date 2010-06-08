@@ -1,5 +1,5 @@
 <?php
-
+namespace layout;
 /**
  * Controls the viewing and layout of the site
  *
@@ -7,7 +7,7 @@
  * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package Core
  */
-Core\Core::requireConfig('layout');
+\core\Core::requireConfig('layout');
 
 if (!defined('LAYOUT_IGNORE_JS_CHECK')) {
     define('LAYOUT_IGNORE_JS_CHECK', false);
@@ -35,8 +35,6 @@ if (!defined('XML_MODE')) {
 if (!defined('LAYOUT_FORCE_MOD_JS')) {
     define('LAYOUT_FORCE_MOD_JS', false);
 }
-
-Core\Core::initModClass('layout', 'Layout_Settings.php');
 
 class Layout {
 
@@ -110,7 +108,7 @@ class Layout {
 
     public static function addBox($content_var, $module, $theme_var=NULL, $theme=NULL)
     {
-        Core\Core::initModClass('layout', 'Box.php');
+        \core\Core::initModClass('layout', 'Box.php');
 
         if (!isset($theme)) {
             $theme = $_SESSION['Layout_Settings']->current_theme;
@@ -133,9 +131,9 @@ class Layout {
         $box->setThemeVar($theme_var);
 
         $result = $box->save();
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
-            Core\Core::errorPage();
+        if (\core\Error::isError($result)) {
+            \core\Error::log($result);
+            \core\Core::errorPage();
         }
 
         Layout::resetBoxes();
@@ -179,7 +177,7 @@ class Layout {
             return;
         }
 
-        if (!Core\Settings::get('layout', 'include_css_order')) {
+        if (!\core\Settings::get('layout', 'include_css_order')) {
             return;
         }
 
@@ -200,7 +198,7 @@ class Layout {
 
         Layout::addToStyleList($cssFile);
 
-        $themeFile['file']   = Core\Template::getTplDir($module) . $filename;
+        $themeFile['file']   = \core\Template::getTplDir($module) . $filename;
         if (is_file($themeFile['file'])) {
             Layout::addToStyleList($themeFile);
             return;
@@ -311,7 +309,7 @@ class Layout {
 
         foreach ($GLOBALS['Layout_Held'] as $module => $content_info) {
             foreach ($content_info as $content_var => $info) {
-                $display = Core\Template::process($info['values'], $module, $info['template']);
+                $display = \core\Template::process($info['values'], $module, $info['template']);
                 if ($module != 'layout') {
                     Layout::add($display, $module, $content_var);
                 } else {
@@ -368,7 +366,7 @@ class Layout {
                 }
 
                 if (isset($unsortedLayout[$theme_var][$order])) {
-                    Core\Error::log(LAYOUT_BOX_ORDER_BROKEN, 'layout', 'Layout::display', $theme_var);
+                    \core\Error::log(LAYOUT_BOX_ORDER_BROKEN, 'layout', 'Layout::display', $theme_var);
                 }
                 $unsortedLayout[$theme_var][$order] = $template;
             }
@@ -398,8 +396,8 @@ class Layout {
             Layout::loadHeaderTags($bodyLayout);
             $finalTheme = Layout::loadTheme(Layout::getCurrentTheme(), $bodyLayout);
 
-            if (Core\Error::isError($finalTheme)) {
-                Core\Error::log($finalTheme);
+            if (\core\Error::isError($finalTheme)) {
+                \core\Error::log($finalTheme);
                 $content = implode('', $bodyLayout);
             } else {
                 $content = $finalTheme->get();
@@ -443,7 +441,7 @@ class Layout {
     {
         $list = NULL;
         if (!isset($GLOBALS['Layout'])) {
-            return Core\Error::get(LAYOUT_SESSION_NOT_SET, 'layout', 'getBoxContent');
+            return \core\Error::get(LAYOUT_SESSION_NOT_SET, 'layout', 'getBoxContent');
         }
 
         foreach ($GLOBALS['Layout'] as $module=>$content){
@@ -474,20 +472,20 @@ class Layout {
 
     public static function getFooter()
     {
-        if (Core\Settings::get('layout', 'footer_fp_only') && isset($_REQUEST['module'])) {
+        if (\core\Settings::get('layout', 'footer_fp_only') && isset($_REQUEST['module'])) {
             return null;
         }
 
-        return Core\Text::parseOutput($_SESSION['Layout_Settings']->footer);
+        return \core\Text::parseOutput($_SESSION['Layout_Settings']->footer);
     }
 
     public static function getHeader()
     {
-        if (Core\Settings::get('layout', 'header_fp_only') && isset($_REQUEST['module'])) {
+        if (\core\Settings::get('layout', 'header_fp_only') && isset($_REQUEST['module'])) {
             return null;
         }
 
-        return Core\Text::parseOutput($_SESSION['Layout_Settings']->header);
+        return \core\Text::parseOutput($_SESSION['Layout_Settings']->header);
     }
 
     /**
@@ -516,7 +514,7 @@ class Layout {
             $js = 'javascript/';
         }
 
-                $headfile    = PHPWS_SOURCE_DIR . $base . $js . $directory . '/head.js';
+        $headfile    = PHPWS_SOURCE_DIR . $base . $js . $directory . '/head.js';
         $bodyfile    = PHPWS_SOURCE_DIR . $base . $js . $directory . '/body.js';
         $defaultfile = PHPWS_SOURCE_DIR . $base . $js . $directory . '/default.php';
 
@@ -534,13 +532,13 @@ class Layout {
         }
         $data['source_http'] = PHPWS_SOURCE_HTTP;
         $data['source_dir'] = PHPWS_SOURCE_DIR;
-        $data['home_http'] = Core\Core::getHomeHttp();
+        $data['home_http'] = \core\Core::getHomeHttp();
         $data['home_dir'] = PHPWS_HOME_DIR;
 
         Layout::loadJavascriptFile($headfile, $directory, $data);
         if (is_file($bodyfile)) {
             if (isset($data)) {
-                return Core\Template::process($data, 'layout', $bodyfile, TRUE);
+                return \core\Template::process($data, 'layout', $bodyfile, TRUE);
             } else {
                 return file_get_contents($bodyfile);
             }
@@ -643,7 +641,7 @@ class Layout {
             return TRUE;
         }
 
-        if (Core\Settings::get('layout', 'include_css_order') == 2) {
+        if (\core\Settings::get('layout', 'include_css_order') == 2) {
             $hold = true;
         } else {
             $hold = false;
@@ -696,7 +694,7 @@ class Layout {
         }
 
         if (isset($data)) {
-            $result = Core\Template::process($data, 'layout', $filename, TRUE);
+            $result = \core\Template::process($data, 'layout', $filename, TRUE);
 
             if (!empty($result)) {
                 Layout::addJSHeader($result, $index);
@@ -735,19 +733,19 @@ class Layout {
      */
     public static function loadTheme($theme, $template)
     {
-        $tpl = new Core\Template;
-        if (Core\Settings::get('layout', 'use_hub_themes')) {
+        $tpl = new \core\Template;
+        if (\core\Settings::get('layout', 'use_hub_themes')) {
             $tpl->setRoot(PHPWS_SOURCE_DIR);
         }
         $themeDir = Layout::getThemeDir();
 
-        if (Core\Error::isError($themeDir)) {
-            Core\Error::log($themeDir);
-            Core\Core::errorPage();
+        if (\core\Error::isError($themeDir)) {
+            \core\Error::log($themeDir);
+            \core\Core::errorPage();
         }
 
         $result = $tpl->setFile($themeDir . 'theme.tpl', TRUE);
-        if (Core\Error::isError($result)) {
+        if (\core\Error::isError($result)) {
             return $result;
         }
 
@@ -777,7 +775,7 @@ class Layout {
 
     public static function getThemeDirRoot()
     {
-        if (Core\Settings::get('layout', 'use_hub_themes')) {
+        if (\core\Settings::get('layout', 'use_hub_themes')) {
             return PHPWS_SOURCE_DIR . 'themes/';
         } else {
             return PHPWS_HOME_DIR . 'themes/';
@@ -786,7 +784,7 @@ class Layout {
 
     public static function getThemeHttpRoot()
     {
-        if (Core\Settings::get('layout', 'use_hub_themes')) {
+        if (\core\Settings::get('layout', 'use_hub_themes')) {
             return PHPWS_SOURCE_HTTP . 'themes/';
         } else {
             return 'themes/';
@@ -802,12 +800,12 @@ class Layout {
 
     public function resetDefaultBoxes()
     {
-        $db = new Core\DB('layout_box');
+        $db = new \core\DB('layout_box');
         $db->addWhere('theme', Layout::getDefaultTheme());
         $result = $db->delete();
 
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (\core\Error::isError($result)) {
+            \core\Error::log($result);
         }
     }
 
@@ -832,15 +830,15 @@ class Layout {
         $vars['action']  = 'admin';
         if (Layout::isMoveBox()) {
             $vars['command'] = 'turn_off_box_move';
-            $links[] = Core\Text::moduleLink(dgettext('layout', 'Box move off'), 'layout', $vars);
+            $links[] = \core\Text::moduleLink(dgettext('layout', 'Box move off'), 'layout', $vars);
         } else {
             $vars['command'] = 'move_boxes_on';
-            $links[] = Core\Text::secureLink(dgettext('layout', 'Box move on'), 'layout', $vars);
+            $links[] = \core\Text::secureLink(dgettext('layout', 'Box move on'), 'layout', $vars);
         }
 
-        $key = Core\Key::getCurrent();
+        $key = \core\Key::getCurrent();
         if (javascriptEnabled() && Layout::getExtraStyles() &&
-        Core\Key::checkKey($key)) {
+        \core\Key::checkKey($key)) {
 
 
             $js_vars['width']  = 400;
@@ -851,14 +849,14 @@ class Layout {
             $js_vars['label'] = dgettext('layout', 'Change style');
             $vars['command']  = 'js_style_change';
 
-            $js_vars['address'] = Core\Text::linkAddress('layout', $vars, TRUE);
+            $js_vars['address'] = \core\Text::linkAddress('layout', $vars, TRUE);
             $links[] = javascript('open_window', $js_vars);
 
             if (!$key->isHomeKey()) {
                 $js_vars['height'] = 400;
                 $js_vars['label'] = dgettext('layout', 'Meta tags');
                 $vars['command']  = 'page_meta_tags';
-                $js_vars['address'] = Core\Text::linkAddress('layout', $vars, TRUE);
+                $js_vars['address'] = \core\Text::linkAddress('layout', $vars, TRUE);
                 $links[] = javascript('open_window', $js_vars);
             }
         }
@@ -909,12 +907,10 @@ class Layout {
 
     public static function submitHeaders($theme, &$template)
     {
-        if (!defined('CURRENT_LANGUAGE')) {
-            if (defined('DEFAULT_LANGUAGE')) {
-                define('CURRENT_LANGUAGE', DEFAULT_LANGUAGE);
-            } else {
-                define('CURRENT_LANGUAGE', 'en_US');
-            }
+        if (defined('DEFAULT_LANGUAGE')) {
+            $GLOBALS['CURRENT_LANGUAGE'] = DEFAULT_LANGUAGE;
+        } else {
+            $GLOBALS['CURRENT_LANGUAGE'] = 'en_US';
         }
 
 
@@ -923,17 +919,17 @@ class Layout {
             $template['XML'] = '<?xml version="1.0" encoding="UTF-8"?>';
             $template['DOCTYPE'] = "\n" . '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 ';
-            $template['XHTML'] = '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . CURRENT_LANGUAGE . '">';
+            $template['XHTML'] = '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . $GLOBALS['CURRENT_LANGUAGE'] . '">';
             $template['XML_STYLE'] = Layout::getStyleLinks(TRUE);
         } else {
             header('Content-Type: text/html; charset=UTF-8');
             $template['DOCTYPE'] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 ';
-            $template['XHTML'] = '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . CURRENT_LANGUAGE . '" lang="' . CURRENT_LANGUAGE . '">';
+            $template['XHTML'] = '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . $GLOBALS['CURRENT_LANGUAGE'] . '" lang="' . $GLOBALS['CURRENT_LANGUAGE'] . '">';
             $template['STYLE'] = Layout::getStyleLinks(FALSE);
         }
 
-        header('Content-Language: ' . CURRENT_LANGUAGE);
+        header('Content-Language: ' . $GLOBALS['CURRENT_LANGUAGE']);
         header('Content-Script-Type: text/javascript');
         header('Content-Style-Type: text/css');
 
@@ -951,7 +947,7 @@ class Layout {
     public static function getBase()
     {
         return '<base href="'
-        . Core\Core::getHttp()
+        . \core\Core::getHttp()
         . $_SERVER['HTTP_HOST']
         . preg_replace("/index.*/", "", $_SERVER['PHP_SELF'])
         . '" />';
@@ -969,7 +965,7 @@ class Layout {
 
     public static function getMetaPage($key_id)
     {
-        $db = new Core\DB('layout_metatags');
+        $db = new \core\DB('layout_metatags');
         $db->addWhere('key_id', $key_id);
         return $db->select('row');
     }
@@ -979,23 +975,23 @@ class Layout {
         $page_metatags = null;
 
         $theme = Layout::getCurrentTheme();
-        $key = Core\Key::getCurrent();
-        if (Core\Key::checkKey($key, false)) {
+        $key = \core\Key::getCurrent();
+        if (core\Key::checkKey($key, false)) {
             $page_metatags = Layout::getMetaPage($key->id);
 
-            if (Core\Error::isError($page_metatags)) {
-                Core\Error::log($page_metatags);
+            if (core\Error::isError($page_metatags)) {
+                \core\Error::log($page_metatags);
                 $page_metatags = null;
             }
         }
 
         if (!isset($_SESSION['javascript_enabled'])) {
-            $jsHead[] = '<noscript><meta http-equiv="refresh" content="0;url=index.php?nojs=1&ret=' . urlencode(Core\Core::getCurrentUrl()) . '"/></noscript>';
+            $jsHead[] = '<noscript><meta http-equiv="refresh" content="0;url=index.php?nojs=1&ret=' . urlencode(core\Core::getCurrentUrl()) . '"/></noscript>';
         }
 
         if (isset($_GET['nojs'])) {
             $_SESSION['javascript_enabled'] = false;
-            Core\Core::reroute(urldecode($_GET['ret']));
+            \core\Core::reroute(urldecode($_GET['ret']));
         } elseif (!isset($_SESSION['javascript_enabled'])) {
             $_SESSION['javascript_enabled'] = true;
         }
@@ -1042,26 +1038,26 @@ class Layout {
             $empty_tpl = sprintf('themes/%s/blank.tpl', Layout::getCurrentTheme());
 
             if (is_file($empty_tpl)) {
-                $result = Core\Template::process($template, 'layout', $empty_tpl, TRUE);
+                $result = \core\Template::process($template, 'layout', $empty_tpl, TRUE);
                 return $result;
             }
         }
-        $result = Core\Template::process($template, 'layout', 'header.tpl');
+        $result = \core\Template::process($template, 'layout', 'header.tpl');
         return $result;
     }
 
     public function purgeBox($content_var)
     {
-        $db = new Core\DB('layout_box');
+        $db = new \core\DB('layout_box');
         $db->addWhere('content_var', $content_var);
         $result = $db->getObjects('Layout_Box');
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
         foreach ($result as $box) {
             $check = $box->kill();
-            if (Core\Error::isError($check)) {
+            if (core\Error::isError($check)) {
                 return $check;
             }
         }
@@ -1081,7 +1077,7 @@ class Layout {
 
         $js['width']   = 300;
         $js['height']  = 400;
-        $js['address'] = Core\Text::linkAddress('layout', $vars, true);
+        $js['address'] = \core\Text::linkAddress('layout', $vars, true);
         $js['label']   = '-' . dgettext('layout', 'Click to move') . '-';
         $js['class']   = 'move-popup';
         return '<div align="center">' . javascript('open_window', $js) . '</div>';
@@ -1127,8 +1123,8 @@ class Layout {
 
     public static function showKeyStyle()
     {
-        $key = Core\Key::getCurrent();
-        if (!Core\Key::checkKey($key)) {
+        $key = \core\Key::getCurrent();
+        if (!core\Key::checkKey($key)) {
             return NULL;
         }
 
@@ -1153,7 +1149,7 @@ class Layout {
         $layout_data['Style']       = @$GLOBALS['Style'];
         $layout_data['Extra_Style'] = @$GLOBALS['Extra_Style'];
         $layout_data['Layout_Page_Title_Add'] = @$GLOBALS['Layout_Page_Title_Add'];
-        Core\Cache::save($cache_key, serialize($layout_data));
+        \core\Cache::save($cache_key, serialize($layout_data));
     }
 
     /**
@@ -1163,7 +1159,7 @@ class Layout {
     {
         $cache_key = 'layout_header' . $cache_key;
 
-        $data = Core\Cache::get($cache_key);
+        $data = \core\Cache::get($cache_key);
 
         if (empty($data)) {
             return;
@@ -1183,11 +1179,11 @@ class Layout {
      */
     public static function keyDescriptions()
     {
-        if (!Core\Settings::get('layout', 'use_key_summaries')) {
+        if (!core\Settings::get('layout', 'use_key_summaries')) {
             return;
         }
-        $key = Core\Key::getCurrent();
-        if (!Core\Key::checkKey($key, false)) {
+        $key = \core\Key::getCurrent();
+        if (!core\Key::checkKey($key, false)) {
             return NULL;
         }
         if (!empty($key->summary)) {
@@ -1200,7 +1196,7 @@ class Layout {
     public static function ckeditor()
     {
         if (!Current_User::isLogged()) {
-            Core\Core::errorPage('404');
+            \core\Core::errorPage('404');
             exit();
         }
         $ck_image_dir = './images/ckeditor/';
@@ -1248,14 +1244,14 @@ function javascript($directory, $data=NULL, $base=null)
 
 function check_cookie()
 {
-    $cookie = Core\Cookie::read('cookie_enabled');
+    $cookie = \core\Cookie::read('cookie_enabled');
     if (!$cookie) {
         if (!isset($_GET['cc'])) {
-            Core\Cookie::write('cookie_enabled', 'y');
-            Core\Core::reroute('index.php?cc=1');
+            \core\Cookie::write('cookie_enabled', 'y');
+            \core\Core::reroute('index.php?cc=1');
         } else {
             $tpl['MESSAGE'] = dgettext('layout', 'This site requires you to enable cookies on your browser.');
-            $message = Core\Template::process($tpl, 'layout', 'no_cookie.tpl');
+            $message = \core\Template::process($tpl, 'layout', 'no_cookie.tpl');
             Layout::nakedDisplay($message);
         }
     }

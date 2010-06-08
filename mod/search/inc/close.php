@@ -5,12 +5,12 @@
  * @version $Id$
  */
 
-Core\Core::initModClass('search', 'User.php');
+core\Core::initModClass('search', 'User.php');
 
 Search_User::searchBox();
 
 if (isset($_SESSION['Search_Admin'])) {
-    Core\Core::initModClass('search', 'Admin.php');
+    \core\Core::initModClass('search', 'Admin.php');
     Search_Admin::miniAdmin();
 }
 

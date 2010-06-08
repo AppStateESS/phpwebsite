@@ -27,7 +27,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-Core\Core::initModClass('finc', 'Finc.php');
+core\Core::initModClass('finc', 'Finc.php');
 $finc = new Finc;
 
 if (isset($_REQUEST['aop'])) {
@@ -37,7 +37,7 @@ if (isset($_REQUEST['aop'])) {
 } elseif (isset($_REQUEST['id'])) {
     $finc->userMenu('view_file');
 } else {
-    Core\Core::home();
+    \core\Core::home();
 }
 
 

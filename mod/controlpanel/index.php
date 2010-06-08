@@ -22,7 +22,7 @@ if (isset($_GET['cp_desc_toggle'])){
 }
 
 if (isset($_REQUEST['action'])){
-    Core\Core::initModClass('controlpanel', 'Action.php');
+    \core\Core::initModClass('controlpanel', 'Action.php');
 
     if ($_REQUEST['action'] == 'admin' && Current_User::allow('controlpanel')) {
         CP_Action::adminAction();

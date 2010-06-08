@@ -7,10 +7,10 @@
  */
 function phpwsbb_uninstall(&$content)
 {
-    Core\DB::dropTable('phpwsbb_forums');
-    Core\DB::dropTable('phpwsbb_topics');
-    Core\DB::dropTable('phpwsbb_users');
-    Core\DB::dropTable('phpwsbb_moderators');
+    \core\DB::dropTable('phpwsbb_forums');
+    \core\DB::dropTable('phpwsbb_topics');
+    \core\DB::dropTable('phpwsbb_users');
+    \core\DB::dropTable('phpwsbb_moderators');
     $content[] = dgettext('phpwsbb', 'Bulletin Board tables removed.');
     return TRUE;
 }

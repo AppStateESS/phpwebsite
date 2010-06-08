@@ -22,8 +22,8 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-Core\Core::requireInc('elections', 'errordefines.php');
-Core\Core::requireConfig('elections');
+core\Core::requireInc('elections', 'errordefines.php');
+core\Core::requireConfig('elections');
 
 class Election {
     public $forms      = null;
@@ -65,12 +65,12 @@ class Election {
                     Current_User::disallow();
                 }
                 if ($this->postBallot()) {
-                    if (Core\Error::logIfError($this->ballot->save())) {
+                    if (core\Error::logIfError($this->ballot->save())) {
                         $this->forwardMessage(dgettext('elections', 'Error occurred when saving ballot.'));
-                        Core\Core::reroute('index.php?module=elections&aop=menu');
+                        \core\Core::reroute('index.php?module=elections&aop=menu');
                     } else {
                         $this->forwardMessage(dgettext('elections', 'Ballot saved successfully.'));
-                        Core\Core::reroute('index.php?module=elections&aop=menu');
+                        \core\Core::reroute('index.php?module=elections&aop=menu');
                     }
                 } else {
                     $this->loadForm('edit_ballot');
@@ -97,12 +97,12 @@ class Election {
                     Current_User::disallow();
                 }
                 if ($this->postCandidate()) {
-                    if (Core\Error::logIfError($this->candidate->save())) {
+                    if (core\Error::logIfError($this->candidate->save())) {
                         $this->forwardMessage(dgettext('elections', 'Error occurred when saving candidate.'));
-                        Core\Core::reroute('index.php?module=elections&aop=menu');
+                        \core\Core::reroute('index.php?module=elections&aop=menu');
                     } else {
                         $this->forwardMessage(dgettext('elections', 'Candidate saved successfully.'));
-                        Core\Core::reroute('index.php?module=elections&aop=menu');
+                        \core\Core::reroute('index.php?module=elections&aop=menu');
                     }
                 } else {
                     $this->loadForm('edit_candidate');
@@ -126,7 +126,7 @@ class Election {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('elections', 'Election settings saved.'));
-                    Core\Core::reroute('index.php?module=elections&aop=menu');
+                    \core\Core::reroute('index.php?module=elections&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -141,19 +141,19 @@ class Election {
                 if (isset($_REQUEST['get_results'])) {
                     $this->exportCSV('results', $_REQUEST['results_ballot']);
                 } elseif (isset($_REQUEST['list_results'])) {
-                    Core\Core::initModClass('elections', 'ELEC_Forms.php');
+                    \core\Core::initModClass('elections', 'ELEC_Forms.php');
                     $this->forms = new Elections_Forms;
                     $this->forms->election = & $this;
                     $this->forms->listCandidates($_REQUEST['results_ballot'], 'votes');
                 } elseif (isset($_REQUEST['list_candidates'])) {
-                    Core\Core::initModClass('elections', 'ELEC_Forms.php');
+                    \core\Core::initModClass('elections', 'ELEC_Forms.php');
                     $this->forms = new Elections_Forms;
                     $this->forms->election = & $this;
                     $this->forms->listCandidates($_REQUEST['candidates_ballot']);
                 } elseif (isset($_REQUEST['get_votes'])) {
                     $this->exportCSV('votes', $_REQUEST['votes_ballot']);
                 } elseif (isset($_REQUEST['list_votes'])) {
-                    Core\Core::initModClass('elections', 'ELEC_Forms.php');
+                    \core\Core::initModClass('elections', 'ELEC_Forms.php');
                     $this->forms = new Elections_Forms;
                     $this->forms->election = & $this;
                     $this->forms->listVotes($_REQUEST['votes_ballot']);
@@ -162,7 +162,7 @@ class Election {
                     if ($this->purgeVotes($_REQUEST['votes_ballot'])) {
                         $this->forwardMessage(dgettext('elections', 'Logs successfully purged.'));
                         $this->loadForm('reports');
-//                        Core\Core::reroute('index.php?module=elections&aop=menu&tab=reports');
+//                        \core\Core::reroute('index.php?module=elections&aop=menu&tab=reports');
                     } else {
                         $this->forwardMessage(dgettext('elections', 'Error occurred when purging logs.'));
                         $this->loadForm('reports');
@@ -179,9 +179,9 @@ class Election {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'elections', 'main_admin.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'elections', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(Core\Template::process($tpl, 'elections', 'main_admin.tpl'));
+            $this->panel->setContent(core\Template::process($tpl, 'elections', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -193,7 +193,7 @@ class Election {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                Core\Core::errorPage('404');
+                \core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -203,7 +203,7 @@ class Election {
         switch($action) {
 
             case 'list_ballots':
-                Core\Core::initModClass('elections', 'ELEC_Forms.php');
+                \core\Core::initModClass('elections', 'ELEC_Forms.php');
                 $this->forms = new Elections_Forms;
                 $this->forms->election = & $this;
                 $this->forms->listBallots();
@@ -231,12 +231,12 @@ class Election {
                 $this->loadBallot();
                 if ($this->ballot->can_vote() == '1') {
                     if ($this->postVote()) {
-                        if (Core\Error::logIfError($this->vote->save())) {
+                        if (core\Error::logIfError($this->vote->save())) {
                             $this->forwardMessage(dgettext('elections', 'Error occurred when registering vote.'));
-                            Core\Core::reroute('index.php?module=elections&uop=list_ballots');
+                            \core\Core::reroute('index.php?module=elections&uop=list_ballots');
                         } else {
                             $this->forwardMessage(dgettext('elections', 'Vote registered successfully.'));
-                            Core\Core::reroute('index.php?module=elections&uop=list_ballots');
+                            \core\Core::reroute('index.php?module=elections&uop=list_ballots');
                         }
                     } else {
                         $this->loadBallot();
@@ -250,7 +250,7 @@ class Election {
                     }
                 } else {
                     $this->forwardMessage($this->ballot->can_vote());
-                    Core\Core::reroute('index.php?module=elections&uop=list_ballots');
+                    \core\Core::reroute('index.php?module=elections&uop=list_ballots');
                 }
                 break;
 
@@ -261,9 +261,9 @@ class Election {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'elections', 'main_user.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'elections', 'main_user.tpl'));
         } else {
-            Layout::add(Core\Template::process($tpl, 'elections', 'main_user.tpl'));
+            Layout::add(core\Template::process($tpl, 'elections', 'main_user.tpl'));
         }
 
     }
@@ -271,7 +271,7 @@ class Election {
 
     public function sendMessage()
     {
-        Core\Core::reroute('index.php?module=elections&amp;uop=message');
+        \core\Core::reroute('index.php?module=elections&amp;uop=message');
     }
 
     public function forwardMessage($message, $title=null)
@@ -290,14 +290,14 @@ class Election {
             if (isset($_SESSION['ELEC_Message']['title'])) {
                 $this->title = $_SESSION['ELEC_Message']['title'];
             }
-            Core\Core::killSession('ELEC_Message');
+            \core\Core::killSession('ELEC_Message');
         }
     }
 
 
     public function loadForm($type)
     {
-        Core\Core::initModClass('elections', 'ELEC_Forms.php');
+        \core\Core::initModClass('elections', 'ELEC_Forms.php');
         $this->forms = new Elections_Forms;
         $this->forms->election = & $this;
         $this->forms->get($type);
@@ -306,7 +306,7 @@ class Election {
 
     public function loadBallot($id=0)
     {
-        Core\Core::initModClass('elections', 'ELEC_Ballot.php');
+        \core\Core::initModClass('elections', 'ELEC_Ballot.php');
 
         if ($id) {
             $this->ballot = new Elections_Ballot($id);
@@ -324,7 +324,7 @@ class Election {
 
     public function loadCandidate($id=0)
     {
-        Core\Core::initModClass('elections', 'ELEC_Candidate.php');
+        \core\Core::initModClass('elections', 'ELEC_Candidate.php');
 
         if ($id) {
             $this->candidate = new Elections_Candidate($id);
@@ -350,7 +350,7 @@ class Election {
 
     public function loadVote($id=0)
     {
-        Core\Core::initModClass('elections', 'ELEC_Vote.php');
+        \core\Core::initModClass('elections', 'ELEC_Vote.php');
 
         if ($id) {
             $this->vote = new Elections_Vote($id);
@@ -368,7 +368,7 @@ class Election {
 
     public function loadPanel()
     {
-        Core\Core::initModClass('controlpanel', 'Panel.php');
+        \core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('elections-panel');
         $link = 'index.php?module=elections&aop=menu';
 
@@ -447,7 +447,7 @@ class Election {
         }
 
         if (empty($_POST['closing'])) {
-            $this->ballot->closing = mktime(0, 0, 0, date("m"), date("d")+Core\Settings::get('elections', 'expiry_interval'), date("Y"));
+            $this->ballot->closing = mktime(0, 0, 0, date("m"), date("d")+core\Settings::get('elections', 'expiry_interval'), date("Y"));
         } else {
             $this->ballot->closing = strtotime($_POST['closing']);
         }
@@ -536,49 +536,49 @@ class Election {
     {
 
         isset($_POST['enable_elections']) ?
-            Core\Settings::set('elections', 'enable_elections', 1) :
-            Core\Settings::set('elections', 'enable_elections', 0);
+            \core\Settings::set('elections', 'enable_elections', 1) :
+            \core\Settings::set('elections', 'enable_elections', 0);
 
         isset($_POST['enable_sidebox']) ?
-            Core\Settings::set('elections', 'enable_sidebox', 1) :
-            Core\Settings::set('elections', 'enable_sidebox', 0);
+            \core\Settings::set('elections', 'enable_sidebox', 1) :
+            \core\Settings::set('elections', 'enable_sidebox', 0);
 
         isset($_POST['sidebox_homeonly']) ?
-            Core\Settings::set('elections', 'sidebox_homeonly', 1) :
-            Core\Settings::set('elections', 'sidebox_homeonly', 0);
+            \core\Settings::set('elections', 'sidebox_homeonly', 1) :
+            \core\Settings::set('elections', 'sidebox_homeonly', 0);
 
         if (!empty($_POST['title'])) {
-            Core\Settings::set('elections', 'title', strip_tags(Core\Text::parseInput($_POST['title'])));
+            \core\Settings::set('elections', 'title', strip_tags(core\Text::parseInput($_POST['title'])));
         } else {
-            Core\Settings::reset('elections', 'title');
+            \core\Settings::reset('elections', 'title');
         }
 
         if (!empty($_POST['sidebox_text'])) {
-            Core\Settings::set('elections', 'sidebox_text', Core\Text::parseInput($_POST['sidebox_text']));
+            \core\Settings::set('elections', 'sidebox_text', \core\Text::parseInput($_POST['sidebox_text']));
         }
 
         if (isset($_POST['enable_images'])) {
-            Core\Settings::set('elections', 'enable_images', 1);
+            \core\Settings::set('elections', 'enable_images', 1);
             if ( !empty($_POST['max_width']) ) {
                 $max_width = (int)$_POST['max_width'];
                 if ($max_width >= 50 && $max_width <= 600 ) {
-                    Core\Settings::set('elections', 'max_width', $max_width);
+                    \core\Settings::set('elections', 'max_width', $max_width);
                 }
             }
             if ( !empty($_POST['max_height']) ) {
                 $max_height = (int)$_POST['max_height'];
                 if ($max_height >= 50 && $max_height <= 600 ) {
-                    Core\Settings::set('elections', 'max_height', $max_height);
+                    \core\Settings::set('elections', 'max_height', $max_height);
                 }
             }
         } else {
-            Core\Settings::set('elections', 'enable_images', 0);
+            \core\Settings::set('elections', 'enable_images', 0);
         }
 
         if ( !empty($_POST['expiry_interval']) ) {
             $expiry_interval = (int)$_POST['expiry_interval'];
             if ($expiry_interval >= 1 && $expiry_interval <= 365 ) {
-                Core\Settings::set('elections', 'expiry_interval', $expiry_interval);
+                \core\Settings::set('elections', 'expiry_interval', $expiry_interval);
             }
         }
 
@@ -586,7 +586,7 @@ class Election {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            if (Core\Settings::save('elections')) {
+            if (core\Settings::save('elections')) {
                 return true;
             } else {
                 return falsel;
@@ -615,7 +615,7 @@ class Election {
 
 //print_r($_POST['Candidate_Vote']); exit;
 
-            Core\Core::initModClass('elections', 'ELEC_Candidate.php');
+            \core\Core::initModClass('elections', 'ELEC_Candidate.php');
             /* loop through the Candidate_Vote[] array */
             foreach($_POST['Candidate_Vote'] as $id=>$val) {
                 $candidate = new Elections_Candidate($id);
@@ -661,11 +661,11 @@ class Election {
 
     public function purgeVotes($ballot_id=0)
     {
-        $db = new Core\DB('elections_votes');
+        $db = new \core\DB('elections_votes');
         if ($ballot_id > 0) {
             $db->addWhere('ballot_id', $ballot_id);
         }
-        return Core\Error::logIfError($db->delete());
+        return \core\Error::logIfError($db->delete());
     }
 
 
@@ -675,13 +675,13 @@ class Election {
         $content = null;
 
         if ($type == 'results') {
-            Core\Core::initModClass('elections', 'ELEC_Candidate.php');
+            \core\Core::initModClass('elections', 'ELEC_Candidate.php');
             $content .= Elections_Candidate::printCSVHeader();
-            $db = new Core\DB('elections_candidates');
+            $db = new \core\DB('elections_candidates');
         } elseif ($type == 'votes') {
-            Core\Core::initModClass('elections', 'ELEC_Vote.php');
+            \core\Core::initModClass('elections', 'ELEC_Vote.php');
             $content .= Elections_Vote::printCSVHeader();
-            $db = new Core\DB('elections_votes');
+            $db = new \core\DB('elections_votes');
         }
 
         $db->addColumn('id');
@@ -732,10 +732,10 @@ class Election {
     public function navLinks()
     {
 
-        $links[] = Core\Text::moduleLink(dgettext('elections', 'List ballots'), 'elections', array('uop'=>'list_ballots'));
+        $links[] = \core\Text::moduleLink(dgettext('elections', 'List ballots'), 'elections', array('uop'=>'list_ballots'));
 
         if (Current_User::allow('elections') && !isset($_REQUEST['aop'])){
-            $links[] = Core\Text::moduleLink(dgettext('elections', 'Settings'), "elections",  array('aop'=>'menu', 'tab'=>'settings'));
+            $links[] = \core\Text::moduleLink(dgettext('elections', 'Settings'), "elections",  array('aop'=>'menu', 'tab'=>'settings'));
         }
 
         return $links;

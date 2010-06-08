@@ -6,11 +6,11 @@
 
 function alert_uninstall(&$content)
 {
-    Core\DB::dropTable('alert_participant');
-    Core\DB::dropTable('alert_prt_to_type');
-    Core\DB::dropTable('alert_contact');
-    Core\DB::dropTable('alert_item');
-    Core\DB::dropTable('alert_type');
+    \core\DB::dropTable('alert_participant');
+    \core\DB::dropTable('alert_prt_to_type');
+    \core\DB::dropTable('alert_contact');
+    \core\DB::dropTable('alert_item');
+    \core\DB::dropTable('alert_type');
     return true;
 }
 ?>

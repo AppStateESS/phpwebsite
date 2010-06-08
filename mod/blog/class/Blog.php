@@ -46,15 +46,15 @@ class Blog {
         $this->update_date = time();
 
         if (empty($id)) {
-            $this->allow_comments = Core\Settings::get('blog', 'allow_comments');
-            $this->image_link = Core\Settings::get('blog', 'image_link');
+            $this->allow_comments = \core\Settings::get('blog', 'allow_comments');
+            $this->image_link = \core\Settings::get('blog', 'image_link');
             return;
         }
 
         $this->id = (int)$id;
         $result = $this->init();
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
         }
     }
 
@@ -64,9 +64,9 @@ class Blog {
             return false;
         }
 
-        $db = new Core\DB('blog_entries');
+        $db = new \core\DB('blog_entries');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         } elseif (!$result) {
             $this->id = 0;
@@ -121,11 +121,11 @@ class Blog {
 
     public function setEntry($entry)
     {
-        if (Core\Text::breakPost('entry')) {
-            $entry = Core\Text::breaker($entry);
+        if (core\Text::breakPost('entry')) {
+            $entry = \core\Text::breaker($entry);
         }
 
-        $this->entry = Core\Text::parseInput($entry);
+        $this->entry = \core\Text::parseInput($entry);
     }
 
 
@@ -136,7 +136,7 @@ class Blog {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->entry);
+            return \core\Text::parseOutput($this->entry);
         } else {
             return $this->entry;
         }
@@ -144,10 +144,10 @@ class Blog {
 
     public function setSummary($summary)
     {
-        if (Core\Text::breakPost('summary')) {
-            $summary = Core\Text::breaker($summary);
+        if (core\Text::breakPost('summary')) {
+            $summary = \core\Text::breaker($summary);
         }
-        $this->summary = Core\Text::parseInput($summary);
+        $this->summary = \core\Text::parseInput($summary);
     }
 
 
@@ -158,7 +158,7 @@ class Blog {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->summary);
+            return \core\Text::parseOutput($this->summary);
         } else {
             return $this->summary;
         }
@@ -217,8 +217,8 @@ class Blog {
 
     public function save()
     {
-        Core\Core::initModClass('version', 'Version.php');
-        $db = new Core\DB('blog_entries');
+        \core\Core::initModClass('version', 'Version.php');
+        $db = new \core\DB('blog_entries');
         if (empty($this->id)) {
             $this->create_date = time();
 
@@ -252,7 +252,7 @@ class Blog {
         }
         if ($this->approved || !$this->id) {
             $result = $db->saveObject($this);
-            if (Core\Error::isError($result)) {
+            if (core\Error::isError($result)) {
                 return $result;
             }
         }
@@ -265,7 +265,7 @@ class Blog {
             if ($update) {
                 $db->saveObject($this);
             }
-            Core\Core::initModClass('comments', 'Comments.php');
+            \core\Core::initModClass('comments', 'Comments.php');
             $thread = Comments::getThread($this->key_id);
             $thread->allowAnonymous($this->allow_anon);
             $thread->setApproval($this->_comment_approval);
@@ -277,7 +277,7 @@ class Blog {
             $search->addKeywords($this->summary);
             $search->addKeywords($this->entry);
             $result = $search->save();
-            if (Core\Error::isError($result)) {
+            if (core\Error::isError($result)) {
                 return $result;
             }
         }
@@ -290,11 +290,11 @@ class Blog {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Core\Key;
+            $key = new \core\Key;
         } else {
-            $key = new Core\Key($this->key_id);
-            if (Core\Error::isError($key->getError())) {
-                $key = new Core\Key;
+            $key = new \core\Key($this->key_id);
+            if (core\Error::isError($key->getError())) {
+                $key = new \core\Key;
             }
         }
 
@@ -318,7 +318,7 @@ class Blog {
 
     public function getViewLink($bare=false)
     {
-        $link = new Core\Link(dgettext('blog', 'View'), 'blog', array('id'=>$this->id));
+        $link = new \core\Link(dgettext('blog', 'View'), 'blog', array('id'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {
@@ -333,8 +333,8 @@ class Blog {
         $template['TITLE'] = $this->title;
         $template['LOCAL_DATE']  = $this->getPublishDate();
         $template['PUBLISHED_DATE'] = PHPWS_Time::getDTTime($this->publish_date);
-        $template['SUMMARY'] = Core\Text::parseTag($this->getSummary(true));
-        $template['ENTRY'] = Core\Text::parseTag($this->getEntry(true));
+        $template['SUMMARY'] = \core\Text::parseTag($this->getSummary(true));
+        $template['ENTRY'] = \core\Text::parseTag($this->getEntry(true));
         $template['IMAGE'] = $this->getFile($this->thumbnail);
 
         $template['POSTED_BY'] = dgettext('blog', 'Posted by');
@@ -345,7 +345,7 @@ class Blog {
             $template['AUTHOR'] = dgettext('blog', 'Anonymous');
         }
 
-        return Core\Template::process($template, 'blog', 'view_full.tpl');
+        return \core\Template::process($template, 'blog', 'view_full.tpl');
     }
 
 
@@ -358,12 +358,12 @@ class Blog {
     public function view($edit=true, $summarized=true)
     {
         if (!$this->id) {
-            Core\Core::errorPage(404);
+            \core\Core::errorPage(404);
         }
 
-        Core\Core::initModClass('comments', 'Comments.php');
+        \core\Core::initModClass('comments', 'Comments.php');
 
-        $key = new Core\Key($this->key_id);
+        $key = new \core\Key($this->key_id);
 
         if (!$key->allowView() || !Blog_User::allowView()) {
             Current_User::requireLogin();
@@ -386,16 +386,16 @@ class Blog {
 
         if ($summarized) {
             if (empty($summary)) {
-                $template['SUMMARY'] = Core\Text::parseTag($entry);
+                $template['SUMMARY'] = \core\Text::parseTag($entry);
             } else {
                 if (!empty($entry)) {
-                    $template['READ_MORE'] = Core\Text::rewriteLink(dgettext('blog', 'Read more'), 'blog', array('id'=>$this->id));
+                    $template['READ_MORE'] = \core\Text::rewriteLink(dgettext('blog', 'Read more'), 'blog', array('id'=>$this->id));
                 }
-                $template['SUMMARY'] =  Core\Text::parseTag($summary);
+                $template['SUMMARY'] =  \core\Text::parseTag($summary);
             }
         } else {
-            $template['SUMMARY'] =  Core\Text::parseTag($summary);
-            $template['ENTRY'] = Core\Text::parseTag($entry);
+            $template['SUMMARY'] =  \core\Text::parseTag($summary);
+            $template['ENTRY'] = \core\Text::parseTag($entry);
         }
 
         $template['IMAGE'] = $this->getFile($this->thumbnail && $summarized);
@@ -409,9 +409,9 @@ class Blog {
             $vars['action']  = 'admin';
             $vars['command'] = 'edit';
 
-            $template['EDIT_LINK'] = Core\Text::secureLink(dgettext('blog', 'Edit'), 'blog', $vars);
+            $template['EDIT_LINK'] = \core\Text::secureLink(dgettext('blog', 'Edit'), 'blog', $vars);
             if (!$summarized) {
-                MiniAdmin::add('blog', array(Core\Text::secureLink(dgettext('blog', 'Edit blog'), 'blog', $vars)));
+                MiniAdmin::add('blog', array(core\Text::secureLink(dgettext('blog', 'Edit blog'), 'blog', $vars)));
             }
         }
 
@@ -420,7 +420,7 @@ class Blog {
 
             if ($summarized && !empty($comments)) {
                 $link = $comments->countComments(true);
-                $comment_link = new Core\Link($link, 'blog', array('id'=>$this->id));
+                $comment_link = new \core\Link($link, 'blog', array('id'=>$this->id));
                 $comment_link->setRewrite();
                 $comment_link->setAnchor('comments');
                 $template['COMMENT_LINK'] = $comment_link->get();
@@ -447,10 +447,10 @@ class Blog {
             }
         }
 
-        if (Core\Settings::get('blog', 'show_category_icons')) {
+        if (core\Settings::get('blog', 'show_category_icons')) {
             $result = Categories::getIcons($key);
             if (!empty($result)) {
-                if (Core\Settings::get('blog', 'single_cat_icon')) {
+                if (core\Settings::get('blog', 'single_cat_icon')) {
                     $template['cat-icons'][] = array('CAT_ICON'=>array_shift($result));
                 } else {
                     foreach ($result as $icon) {
@@ -460,7 +460,7 @@ class Blog {
             }
         }
 
-        if (Core\Settings::get('blog', 'show_category_links')) {
+        if (core\Settings::get('blog', 'show_category_links')) {
             $result = Categories::getSimpleLinks($key);
             if (!empty($result)) {
                 $template['CATEGORIES'] = implode(', ', $result);
@@ -476,7 +476,7 @@ class Blog {
         } else {
             $view_tpl = 'view_full.tpl';
         }
-        return Core\Template::process($template, 'blog', $view_tpl);
+        return \core\Template::process($template, 'blog', $view_tpl);
     }
 
 
@@ -500,33 +500,33 @@ class Blog {
         || Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ) {
 
             $link['command'] = 'edit';
-            $icon = Core\Icon::show('edit');
-            $list[] = Core\Text::secureLink($icon, 'blog', $link);
+            $icon = \core\Icon::show('edit');
+            $list[] = \core\Text::secureLink($icon, 'blog', $link);
         }
 
         if (Current_User::allow('blog', 'delete_blog')){
             $link['command'] = 'delete';
             $confirm_vars['QUESTION'] = dgettext('blog', 'Are you sure you want to permanently delete this blog entry?');
-            $confirm_vars['ADDRESS'] = Core\Text::linkAddress('blog', $link, true);
+            $confirm_vars['ADDRESS'] = \core\Text::linkAddress('blog', $link, true);
 
-            $confirm_vars['LINK'] = Core\Icon::show('delete');
+            $confirm_vars['LINK'] = \core\Icon::show('delete');
             $list[] = Layout::getJavascript('confirm', $confirm_vars);
         }
 
         if (Current_User::isUnrestricted('blog')){
             $link['command'] = 'restore';
-            $icon = Core\Icon::show('redo', dgettext('blog', 'Restore'));
-            $list[] = Core\Text::secureLink($icon, 'blog', $link);
+            $icon = \core\Icon::show('redo', dgettext('blog', 'Restore'));
+            $list[] = \core\Text::secureLink($icon, 'blog', $link);
 
 
             if ($this->sticky) {
                 $link['command'] = 'unsticky';
-                $icon = Core\Icon::show('unsticky');
-                $list[] = Core\Text::secureLink($icon, 'blog', $link);
+                $icon = \core\Icon::show('unsticky');
+                $list[] = \core\Text::secureLink($icon, 'blog', $link);
             } else {
                 $link['command'] = 'sticky';
-                $icon = Core\Icon::show('sticky');
-                $list[] = Core\Text::secureLink($icon, 'blog', $link);
+                $icon = \core\Icon::show('sticky');
+                $list[] = \core\Text::secureLink($icon, 'blog', $link);
             }
         }
 
@@ -626,7 +626,7 @@ class Blog {
         } else {
             $url = $_POST['image_url'];
             if (!empty($url) || $url == 'http://') {
-                $this->image_link = Core\Text::checkLink($url);
+                $this->image_link = \core\Text::checkLink($url);
             } else {
                 $this->image_link = 'default';
             }
@@ -639,18 +639,18 @@ class Blog {
     {
         $all_is_well = true;
 
-        Core\Core::initModClass('version', 'Version.php');
+        \core\Core::initModClass('version', 'Version.php');
         Version::flush('blog_entries', $this->id);
-        $db = new Core\DB('blog_entries');
+        $db = new \core\DB('blog_entries');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
 
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             $all_is_well = false;
         }
 
-        $key = new Core\Key($this->key_id);
+        $key = new \core\Key($this->key_id);
         $key->delete();
         return $all_is_well;
     }

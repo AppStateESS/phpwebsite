@@ -21,7 +21,7 @@ class PHPWSBB_Data
     public function get_long_date($date, $type=null)
     {
         if (!$type)
-        $type = Core\Settings::get('phpwsbb', 'long_date_format');
+        $type = \core\Settings::get('phpwsbb', 'long_date_format');
         if(!is_numeric($date))
         $date = (int) $date;
         return strftime($type, PHPWS_Time::getUserTime($date));
@@ -38,7 +38,7 @@ class PHPWSBB_Data
     public function get_short_date($date, $type=null)
     {
         if (!$type)
-        $type = Core\Settings::get('phpwsbb', 'short_date_format');
+        $type = \core\Settings::get('phpwsbb', 'short_date_format');
         if(!is_int($date))
         $date = (int) $date;
         return strftime($type, PHPWS_Time::getUserTime($date));
@@ -55,17 +55,17 @@ class PHPWSBB_Data
     public function MiniAdmin()
     {
         $link = array();
-        $link[] = Core\Text::moduleLink(dgettext('phpwsbb', 'List Forums'), 'phpwsbb', array());
-        $link[] = Core\Text::moduleLink(dgettext('phpwsbb', 'New Posts'), 'phpwsbb', array('op'=>'getnew'));
-        $link[] = Core\Text::moduleLink(dgettext('phpwsbb', 'Today\'s Posts'), 'phpwsbb', array('op'=>'viewtoday'));
-        $link[] = Core\Text::moduleLink(dgettext('phpwsbb', 'This Week\'s Posts'), 'phpwsbb', array('op'=>'viewweek'));
-        $link[] = Core\Text::moduleLink(dgettext('phpwsbb', 'Locked Topics'), 'phpwsbb', array('op'=>'viewlockedthreads'));
-        $link[] = Core\Text::moduleLink(dgettext('phpwsbb', 'Empty Topics'), 'phpwsbb', array('op'=>'viewzerothreads'));
+        $link[] = \core\Text::moduleLink(dgettext('phpwsbb', 'List Forums'), 'phpwsbb', array());
+        $link[] = \core\Text::moduleLink(dgettext('phpwsbb', 'New Posts'), 'phpwsbb', array('op'=>'getnew'));
+        $link[] = \core\Text::moduleLink(dgettext('phpwsbb', 'Today\'s Posts'), 'phpwsbb', array('op'=>'viewtoday'));
+        $link[] = \core\Text::moduleLink(dgettext('phpwsbb', 'This Week\'s Posts'), 'phpwsbb', array('op'=>'viewweek'));
+        $link[] = \core\Text::moduleLink(dgettext('phpwsbb', 'Locked Topics'), 'phpwsbb', array('op'=>'viewlockedthreads'));
+        $link[] = \core\Text::moduleLink(dgettext('phpwsbb', 'Empty Topics'), 'phpwsbb', array('op'=>'viewzerothreads'));
         if (Current_User::isLogged())
-        $link[] = Core\Text::moduleLink(dgettext('phpwsbb', 'My Topics'), 'phpwsbb', array('op'=>'viewuserthreads'));
+        $link[] = \core\Text::moduleLink(dgettext('phpwsbb', 'My Topics'), 'phpwsbb', array('op'=>'viewuserthreads'));
         if (Current_User::allow('phpwsbb', 'manage_forums')) {
-            $link[] = Core\Text::secureLink(dgettext('phpwsbb', 'Add a New Forum'), 'phpwsbb', array('op'=>'create_forum'));
-            $link[] = Core\Text::secureLink(dgettext('phpwsbb', 'Admin Settings'), 'phpwsbb', array('op'=>'config'));
+            $link[] = \core\Text::secureLink(dgettext('phpwsbb', 'Add a New Forum'), 'phpwsbb', array('op'=>'create_forum'));
+            $link[] = \core\Text::secureLink(dgettext('phpwsbb', 'Admin Settings'), 'phpwsbb', array('op'=>'config'));
         }
         if (!empty($link));
         MiniAdmin::add('phpwsbb', $link);
@@ -83,8 +83,8 @@ class PHPWSBB_Data
     public function parseOutput ($text)
     {
         $ignore_list[] = 'phpwsbb';
-        //		Core\Text::parseTag($text, null, $ignore_list);
-        return Core\Text::parseOutput(Core\Text::parseTag($text, null, $ignore_list));
+        //		core\Text::parseTag($text, null, $ignore_list);
+        return \core\Text::parseOutput(core\Text::parseTag($text, null, $ignore_list));
     }
 
     /**
@@ -100,20 +100,20 @@ class PHPWSBB_Data
     {
         $cachekey = 'bb_forumlist';
         if (!Current_User::isLogged()) {
-            $s = Core\Cache::get($cachekey);
+            $s = \core\Cache::get($cachekey);
             if (!empty($s))
             return unserialize($s);
         }
         // Load all forum records
-        $db = new Core\DB('phpwsbb_forums');
+        $db = new \core\DB('phpwsbb_forums');
         $db->addColumn('id');
         $db->addColumn('title');
         $db->addOrder('sortorder asc');
         $db->addOrder('title asc');
         if(!Current_User::allow('phpwsbb', 'manage_forums'))
-        Core\Key::restrictView($db, 'phpwsbb', false);
+        \core\Key::restrictView($db, 'phpwsbb', false);
         $result = $db->select();
-        if (Core\Error::logIfError($result))
+        if (core\Error::logIfError($result))
         return null;
         $list = array();
         if (!empty($result))
@@ -124,7 +124,7 @@ class PHPWSBB_Data
             $lifetime = 86400; // number of seconds until cache refresh
             // default is set in CACHE_LIFETIME in the
             // config/core/config.php file
-            Core\Cache::save($cachekey, $list, $lifetime);
+            \core\Cache::save($cachekey, $list, $lifetime);
         }
         return $list;
     }
@@ -142,17 +142,17 @@ class PHPWSBB_Data
     {
         $cachekey = 'bb_forumIds';
         if (!Current_User::isLogged()) {
-            $s = Core\Cache::get($cachekey);
+            $s = \core\Cache::get($cachekey);
             if (!empty($s))
             return unserialize($s);
         }
         // Load all forum records
-        $db = new Core\DB('phpwsbb_forums');
+        $db = new \core\DB('phpwsbb_forums');
         $db->addColumn('id');
         if(!Current_User::allow('phpwsbb', 'manage_forums'))
-        Core\Key::restrictView($db, 'phpwsbb', false);
+        \core\Key::restrictView($db, 'phpwsbb', false);
         $result = $db->select('col');
-        if (Core\Error::logIfError($result))
+        if (core\Error::logIfError($result))
         return null;
 
         // Cache the results for unregistered users
@@ -160,7 +160,7 @@ class PHPWSBB_Data
             $lifetime = 86400; // number of seconds until cache refresh
             // default is set in CACHE_LIFETIME in the
             // config/core/config.php file
-            Core\Cache::save($cachekey, $result, $lifetime);
+            \core\Cache::save($cachekey, $result, $lifetime);
         }
         return $result;
     }
@@ -198,11 +198,11 @@ class PHPWSBB_Data
 
             $js_vars['width'] = 640;
             $js_vars['height'] = 200;
-            $js_vars['address'] = Core\Text::linkAddress('phpwsbb', $vars, TRUE);
+            $js_vars['address'] = \core\Text::linkAddress('phpwsbb', $vars, TRUE);
             $link = javascript('open_window', $js_vars);
             MiniAdmin::add('phpwsbb', $link);
         } else {
-            Core\Core::initModClass('phpwsbb', 'BB_Forms.php');
+            \core\Core::initModClass('phpwsbb', 'BB_Forms.php');
             $content = PHPWSBB_Forms::assign_forum($object);
             if (!empty($content))
             Layout::add($content, 'phpwsb');
@@ -241,10 +241,10 @@ class PHPWSBB_Data
      */
     public static function clearCaches()
     {
-        Core\Cache::remove('bb_forumlist');
-        Core\Cache::remove('bb_forumsblock');
-        Core\Cache::remove('bb_latestpostsblock');
-        Core\Cache::remove('bb_forum_moderators');
+        \core\Cache::remove('bb_forumlist');
+        \core\Cache::remove('bb_forumsblock');
+        \core\Cache::remove('bb_latestpostsblock');
+        \core\Cache::remove('bb_forum_moderators');
 
     }
 
@@ -269,7 +269,7 @@ class PHPWSBB_Data
 
         $cachekey = 'bb_forum_moderators';
         if (!$force_reload) {
-            $s = Core\Cache::get($cachekey);
+            $s = \core\Cache::get($cachekey);
             if (!empty($s)) {
                 unserialize($s);
                 $GLOBALS['Moderators_byForum'] = $s['byForum'];
@@ -278,7 +278,7 @@ class PHPWSBB_Data
             }
         }
         // Load all forum records
-        $db = new Core\DB('phpwsbb_moderators');
+        $db = new \core\DB('phpwsbb_moderators');
         $db->addColumn('*');
         $db->addColumn('phpwsbb_forums.title');
         $db->addColumn('users.display_name');
@@ -287,7 +287,7 @@ class PHPWSBB_Data
         $db->addOrder('phpwsbb_forums.sortorder asc');
         $db->addOrder('phpwsbb_forums.title asc');
         $result = $db->select();
-        if (Core\Error::logIfError($result))
+        if (core\Error::logIfError($result))
         return null;
         $byForum = $byUser = array();
         if (!empty($result))
@@ -300,7 +300,7 @@ class PHPWSBB_Data
             $lifetime = 86400; // number of seconds until cache refresh
             // default is set in CACHE_LIFETIME in the
             // config/core/config.php file
-            Core\Cache::save($cachekey, array('byForum'=>$byForum, 'byUser'=>$byUser), $lifetime);
+            \core\Cache::save($cachekey, array('byForum'=>$byForum, 'byUser'=>$byUser), $lifetime);
         }
         $GLOBALS['Moderators_byForum'] = $byForum;
         $GLOBALS['Moderators_byUser']  = $byUser;
@@ -324,13 +324,13 @@ class PHPWSBB_Data
         $c_item->author_id = (int) $author_id;
         elseif (!$c_item->setAnonName($anon_name))
         $c_item->author_id = Current_User::getId();
-        $db = new Core\DB('comments_items');
+        $db = new \core\DB('comments_items');
         $result = $db->saveObject($c_item);
-        if (Core\Error::logIfError($result) || !$result)
+        if (core\Error::logIfError($result) || !$result)
         return false;
         if ($c_item->approved) {
-            $result = Core\Error::logIfError($c_item->stampThread());
-            if (Core\Error::logIfError($result) || !$result)
+            $result = \core\Error::logIfError($c_item->stampThread());
+            if (core\Error::logIfError($result) || !$result)
             return false;
         }
         return true;

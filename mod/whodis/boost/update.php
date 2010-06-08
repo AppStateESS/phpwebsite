@@ -39,9 +39,9 @@ CREATE TABLE whodis_filters (
   filter varchar(255) NOT NULL default '',
   PRIMARY KEY  (id)
 )";
-            $result = Core\DB::query($sql);
-            if (Core\Error::isError($result)) {
-                Core\Error::log($result);
+            $result = \core\DB::query($sql);
+            if (core\Error::isError($result)) {
+                \core\Error::log($result);
                 $content[] = 'An error occurred when trying to create the whodis_filters table.';
                 return false;
             } else {
@@ -91,17 +91,17 @@ CREATE TABLE whodis_filters (
 </pre>';
 
         case version_compare($version, '0.1.2', '<'):
-            if (!Core\DB::isTable('whodis_filters')) {
-                $db = new Core\DB('whodis_filters');
+            if (!core\DB::isTable('whodis_filters')) {
+                $db = new \core\DB('whodis_filters');
                 $db->addValue('id', 'int not null default 0');
                 $db->addValue('filter', 'varchar(255) not null default \'\'');
 
-                if (Core\Error::logIfError($db->createTable())) {
+                if (core\Error::logIfError($db->createTable())) {
                     $content[] = 'Could not create whodis_filters table.';
                     return false;
                 } else {
                     $db->reset();
-                    Core\Error::logIfError($db->createPrimaryKey());
+                    \core\Error::logIfError($db->createPrimaryKey());
                 }
             }
 
@@ -111,8 +111,8 @@ CREATE TABLE whodis_filters (
 </pre>';
 
         case version_compare($version, '0.2.0', '<'):
-            $db = new Core\DB('whodis');
-            if (Core\Error::logIfError($db->alterColumnType('url', 'text'))) {
+            $db = new \core\DB('whodis');
+            if (core\Error::logIfError($db->alterColumnType('url', 'text'))) {
                 $content[] = 'Could not change whodis.url to text.';
                 return false;
             }

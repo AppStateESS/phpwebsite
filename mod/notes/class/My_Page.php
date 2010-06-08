@@ -4,8 +4,8 @@
    * @version $Id$
    */
 
-Core\Core::requireConfig('notes');
-Core\Core::initModClass('notes', 'Note_Item.php');
+core\Core::requireConfig('notes');
+core\Core::initModClass('notes', 'Note_Item.php');
 
 class Notes_My_Page {
     public $title   = null;
@@ -36,8 +36,8 @@ class Notes_My_Page {
         case 'delete_note':
             $note = new Note_Item((int)$_REQUEST['id']);
             $result = $note->delete();
-            if (Core\Error::isError($result)) {
-                Core\Error::log($result);
+            if (core\Error::isError($result)) {
+                \core\Error::log($result);
             }
 
             if (isset($_REQUEST['js'])) {
@@ -85,7 +85,7 @@ class Notes_My_Page {
             break;
 
         default:
-            Core\Core::errorPage('404');
+            \core\Core::errorPage('404');
         }
 
         $tpl['TITLE'] =  $this->title;
@@ -93,9 +93,9 @@ class Notes_My_Page {
         $tpl['MESSAGE'] = $this->message;
 
         if ($js) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'notes', 'main.tpl'), null, true);
+            Layout::nakedDisplay(core\Template::process($tpl, 'notes', 'main.tpl'), null, true);
         } else {
-            return Core\Template::process($tpl, 'notes', 'main.tpl');
+            return \core\Template::process($tpl, 'notes', 'main.tpl');
         }
     }
 
@@ -105,13 +105,13 @@ class Notes_My_Page {
         $vars['op'] = 'send_note';
         $vars['key_id'] = $key->id;
         if (javascriptEnabled()) {
-            $js_vars['address'] = Core\Text::linkAddress('users', $vars);
+            $js_vars['address'] = \core\Text::linkAddress('users', $vars);
             $js_vars['label']   = dgettext('notes', 'Associate note');
             $js_vars['width']   = 650;
             $js_vars['height']  = 650;
             MiniAdmin::add('notes', javascript('open_window', $js_vars));
         } else {
-            MiniAdmin::add('notes', Core\Text::moduleLink(dgettext('notes', 'Associate note'), 'users', $vars));
+            MiniAdmin::add('notes', \core\Text::moduleLink(dgettext('notes', 'Associate note'), 'users', $vars));
         }
     }
 
@@ -133,7 +133,7 @@ class Notes_My_Page {
         }
 
         if (!$_POST['uid'] && !preg_match('/[^\w\s\.]/', $_POST['username'])) {
-            $db = new Core\DB('users');
+            $db = new \core\DB('users');
             $db->addWhere('username', $_POST['username']);
             $db->addColumn('id');
 
@@ -186,7 +186,7 @@ class Notes_My_Page {
     {
         Layout::addStyle('notes');
         unset($_SESSION['Notes_Unread']);
-                $pager = new Core\DBPager('notes', 'Note_Item');
+                $pager = new \core\DBPager('notes', 'Note_Item');
         $pager->setModule('notes');
         $pager->setTemplate('read.tpl');
         $pager->setEmptyMessage(dgettext('notes', 'No notes found.'));
@@ -210,7 +210,7 @@ class Notes_My_Page {
             javascript('close_refresh');
             Layout::nakedDisplay();
         } else {
-            Core\Core::reroute('index.php?module=users&action=user&tab=notes');
+            \core\Core::reroute('index.php?module=users&action=user&tab=notes');
             exit();
         }
     }
@@ -219,13 +219,13 @@ class Notes_My_Page {
     public function sendNote(Note_Item $note)
     {
         Layout::addStyle('notes');
-        $form = new Core\Form('send_note');
+        $form = new \core\Form('send_note');
 
         $form->addHidden($this->myPageVars());
         $form->addHidden('op', 'post_note');
 
         if (isset($_REQUEST['key_id'])) {
-            $key = new Core\Key($_REQUEST['key_id']);
+            $key = new \core\Key($_REQUEST['key_id']);
             if ($key->id) {
                 $form->addHidden('key_id', $key->id);
                 $assoc = sprintf(dgettext('notes', 'Associate note to item: %s'), $key->title);
@@ -266,12 +266,12 @@ class Notes_My_Page {
         $tpl = $form->getTemplate();
 
         $this->title = dgettext('notes', 'Send note');
-        $this->content = Core\Template::process($tpl, 'notes', 'send_note.tpl');
+        $this->content = \core\Template::process($tpl, 'notes', 'send_note.tpl');
     }
 
     public static function showAssociations($key)
     {
-        $db = new Core\DB('notes');
+        $db = new \core\DB('notes');
         $db->addWhere('user_id', Current_User::getId());
         $db->addWhere('key_id', $key->id);
         $db->addOrder('date_sent', 'desc');
@@ -286,7 +286,7 @@ class Notes_My_Page {
         }
         $tpl['TITLE'] = dgettext('notes', 'Associated Notes');
         $tpl['CONTENT'] = implode('<br />', $content);
-        Layout::add(Core\Template::process($tpl, 'layout', 'box.tpl'), 'notes', 'reminder');
+        Layout::add(core\Template::process($tpl, 'layout', 'box.tpl'), 'notes', 'reminder');
     }
 
     public static function showUnread()
@@ -294,12 +294,12 @@ class Notes_My_Page {
         if ( isset($_SESSION['Notes_Unread']) && ( $_SESSION['Notes_Unread']['last_check'] + (NOTE_CHECK_INTERVAL * 60) >=  time() ) ) {
             $notes = $_SESSION['Notes_Unread']['last_count'];
         } else {
-            $db = new Core\DB('notes');
+            $db = new \core\DB('notes');
             $db->addWhere('user_id', Current_User::getId());
             $db->addWhere('read_once', 0);
             $notes = $db->count();
-            if (Core\Error::isError($notes)) {
-                Core\Error::log($notes);
+            if (core\Error::isError($notes)) {
+                \core\Error::log($notes);
                 return;
             }
             $_SESSION['Notes_Unread']['last_check'] = time();
@@ -310,8 +310,8 @@ class Notes_My_Page {
             $tpl['TITLE'] = dgettext('notes', 'Notes');
             $link_val = sprintf(dgettext('notes', 'You have %d unread notes.'), $notes);
             $val = Notes_My_Page::myPageVars(false);
-            $tpl['CONTENT'] = Core\Text::moduleLink($link_val, 'users', $val);
-            $content = Core\Template::process($tpl, 'layout', 'box.tpl');
+            $tpl['CONTENT'] = \core\Text::moduleLink($link_val, 'users', $val);
+            $content = \core\Template::process($tpl, 'layout', 'box.tpl');
             Layout::add($content, 'notes', 'reminder');
         }
 

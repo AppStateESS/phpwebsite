@@ -6,26 +6,26 @@
 
 function calendar_uninstall(&$content)
 {
-    Core\Core::initModClass('calendar', 'Schedule.php');
+    \core\Core::initModClass('calendar', 'Schedule.php');
     // Need functions to remove old event tables
-    $db = new Core\DB('calendar_schedule');
+    $db = new \core\DB('calendar_schedule');
     $schedules = $db->getObjects('Calendar_Schedule');
 
-    if (Core\Error::isError($schedules)) {
+    if (core\Error::isError($schedules)) {
         return $schedules;
     } elseif (empty($schedules)) {
-        $result = Core\DB::dropTable('calendar_schedule');
-        if (Core\Error::isError($result)) {
+        $result = \core\DB::dropTable('calendar_schedule');
+        if (core\Error::isError($result)) {
             return $result;
         }
 
-        $result = Core\DB::dropTable('calendar_notice');
-        if (Core\Error::isError($result)) {
+        $result = \core\DB::dropTable('calendar_notice');
+        if (core\Error::isError($result)) {
             return $result;
         }
 
-        $result = Core\DB::dropTable('calendar_suggestions');
-        if (Core\Error::isError($result)) {
+        $result = \core\DB::dropTable('calendar_suggestions');
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -36,29 +36,29 @@ function calendar_uninstall(&$content)
 
     foreach ($schedules as $sch) {
         $result = $sch->delete();
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             $error = true;
         }
     }
 
-    $result = Core\DB::dropTable('calendar_schedule');
-    if (Core\Error::isError($result)) {
+    $result = \core\DB::dropTable('calendar_schedule');
+    if (core\Error::isError($result)) {
         return $result;
     }
 
-    $result = Core\DB::dropTable('calendar_notice');
-    if (Core\Error::isError($result)) {
+    $result = \core\DB::dropTable('calendar_notice');
+    if (core\Error::isError($result)) {
         return $result;
     }
 
-    $result = Core\DB::dropTable('calendar_suggestions');
-    if (Core\Error::isError($result)) {
+    $result = \core\DB::dropTable('calendar_suggestions');
+    if (core\Error::isError($result)) {
         return $result;
     }
 
-    if (Core\DB::isTable('converted')) {
-        $db2 = new Core\DB('converted');
+    if (core\DB::isTable('converted')) {
+        $db2 = new \core\DB('converted');
         $db2->addWhere('convert_name', array('schedule', 'calendar'));
         $db2->delete();
         $content[] = dgettext('calendar', 'Removed convert flag.');

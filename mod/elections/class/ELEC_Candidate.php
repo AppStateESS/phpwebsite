@@ -52,9 +52,9 @@ class Elections_Candidate {
 
     public function init()
     {
-        $db = new Core\DB('elections_candidates');
+        $db = new \core\DB('elections_candidates');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -70,7 +70,7 @@ class Elections_Candidate {
 
     public function setDescription($description)
     {
-        $this->description = Core\Text::parseInput($description);
+        $this->description = \core\Text::parseInput($description);
     }
 
     public function setBallot_id($ballot_id)
@@ -100,22 +100,22 @@ class Elections_Candidate {
 
     public function setCustom1($custom1)
     {
-        $this->custom1 = Core\Text::parseInput($custom1);
+        $this->custom1 = \core\Text::parseInput($custom1);
     }
 
     public function setCustom2($custom2)
     {
-        $this->custom2 = Core\Text::parseInput($custom2);
+        $this->custom2 = \core\Text::parseInput($custom2);
     }
 
     public function setCustom3($custom3)
     {
-        $this->custom3 = Core\Text::parseInput($custom3);
+        $this->custom3 = \core\Text::parseInput($custom3);
     }
 
     public function setCustom4($custom4)
     {
-        $this->custom4 = Core\Text::parseInput($custom4);
+        $this->custom4 = \core\Text::parseInput($custom4);
     }
 
 
@@ -127,9 +127,9 @@ class Elections_Candidate {
 
         if ($print) {
             if ($breadcrumb) {
-                return $this->getBallot(true) . ' &#187; ' . Core\Text::parseOutput($this->title);
+                return $this->getBallot(true) . ' &#187; ' . \core\Text::parseOutput($this->title);
             } else {
-                return Core\Text::parseOutput($this->title);
+                return \core\Text::parseOutput($this->title);
             }
         } else {
             return $this->title;
@@ -143,7 +143,7 @@ class Elections_Candidate {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->description);
+            return \core\Text::parseOutput($this->description);
         } else {
             return $this->description;
         }
@@ -167,7 +167,7 @@ class Elections_Candidate {
             return null;
         }
 
-        Core\Core::initModClass('filecabinet', 'Cabinet.php');
+        \core\Core::initModClass('filecabinet', 'Cabinet.php');
         $file = Cabinet::getFile($this->image_id);
 
         if ($file->isImage(true)) {
@@ -201,7 +201,7 @@ class Elections_Candidate {
         }
 
         if ($print) {
-            Core\Core::initModClass('elections', 'ELEC_Ballot.php');
+            \core\Core::initModClass('elections', 'ELEC_Ballot.php');
             $ballot = new Elections_Ballot($this->ballot_id);
             return $ballot->viewLink();
         } else {
@@ -221,7 +221,7 @@ class Elections_Candidate {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->custom1);
+            return \core\Text::parseOutput($this->custom1);
         } else {
             return $this->custom1;
         }
@@ -234,7 +234,7 @@ class Elections_Candidate {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->custom2);
+            return \core\Text::parseOutput($this->custom2);
         } else {
             return $this->custom2;
         }
@@ -247,7 +247,7 @@ class Elections_Candidate {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->custom3);
+            return \core\Text::parseOutput($this->custom3);
         } else {
             return $this->custom3;
         }
@@ -260,7 +260,7 @@ class Elections_Candidate {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->custom4);
+            return \core\Text::parseOutput($this->custom4);
         } else {
             return $this->custom4;
         }
@@ -271,10 +271,10 @@ class Elections_Candidate {
     public function view()
     {
         if (!$this->id) {
-            Core\Core::errorPage(404);
+            \core\Core::errorPage(404);
         }
 
-//        $key = new Core\Key($this->key_id);
+//        $key = new \core\Key($this->key_id);
 
 //        if (!$key->allowView()) {
 //            Current_User::requireLogin();
@@ -285,14 +285,14 @@ class Elections_Candidate {
 
         Layout::addPageTitle($this->getTitle());
         $tpl['TITLE'] = $this->getTitle(true);
-        $tpl['DESCRIPTION'] = Core\Text::parseTag($this->getDescription(true));
+        $tpl['DESCRIPTION'] = \core\Text::parseTag($this->getDescription(true));
         $tpl['FILE'] = $this->getFile();
 
 
 
 //        $key->flag();
 
-        return Core\Template::process($tpl, 'elections', 'view_candidate.tpl');
+        return \core\Template::process($tpl, 'elections', 'view_candidate.tpl');
     }
 
 
@@ -304,7 +304,7 @@ class Elections_Candidate {
             $vars['ballot_id'] = $this->ballot_id;
             $vars['candidate_id'] = $this->id;
             $vars['aop']  = 'edit_candidate';
-            $links[] = Core\Text::secureLink(dgettext('elections', 'Edit candidate'), 'elections', $vars);
+            $links[] = \core\Text::secureLink(dgettext('elections', 'Edit candidate'), 'elections', $vars);
         }
 
         if ($addNav) {
@@ -325,11 +325,11 @@ class Elections_Candidate {
         }
 
         /* delete the candidate */
-        $db = new Core\DB('elections_candidates');
+        $db = new \core\DB('elections_candidates');
         $db->addWhere('id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
-//        Core\Key::drop($this->key_id);
+//        \core\Key::drop($this->key_id);
 
     }
 
@@ -341,12 +341,12 @@ class Elections_Candidate {
 
         if (Current_User::isUnrestricted('elections')) {
             $vars['aop']  = 'edit_candidate';
-            $label = Core\Icon::show('edit');
-            $links[] = Core\Text::secureLink($label, 'elections', $vars);
+            $label = \core\Icon::show('edit');
+            $links[] = \core\Text::secureLink($label, 'elections', $vars);
             $vars['aop'] = 'delete_candidate';
-            $js['ADDRESS'] = Core\Text::linkAddress('elections', $vars, true);
+            $js['ADDRESS'] = \core\Text::linkAddress('elections', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('elections', 'Are you sure you want to delete the candidate %s?'), $this->getTitle());
-            $js['LINK'] = Core\Icon::show('delete');
+            $js['LINK'] = \core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -381,10 +381,10 @@ class Elections_Candidate {
 
     public function save()
     {
-        $db = new Core\DB('elections_candidates');
+        $db = new \core\DB('elections_candidates');
 
         $result = $db->saveObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -396,11 +396,11 @@ class Elections_Candidate {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Core\Key;
+            $key = new \core\Key;
         } else {
-            $key = new Core\Key($this->key_id);
-            if (Core\Error::isError($key->_error)) {
-                $key = new Core\Key;
+            $key = new \core\Key($this->key_id);
+            if (core\Error::isError($key->_error)) {
+                $key = new \core\Key;
             }
         }
 
@@ -418,16 +418,16 @@ class Elections_Candidate {
         $key->setTitle($this->title);
         $key->setSummary($this->description);
         $result = $key->save();
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return false;
         }
 
         if (!$this->key_id) {
             $this->key_id = $key->id;
-            $db = new Core\DB('elections_candidates');
+            $db = new \core\DB('elections_candidates');
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
-            Core\Error::logIfError($db->update());
+            \core\Error::logIfError($db->update());
         }
         return true;
     }
@@ -435,7 +435,7 @@ class Elections_Candidate {
 
     public function viewLink($bare=false)
     {
-                $link = new Core\Link($this->title, 'elections', array('ballot'=>$this->ballot_id, 'candidate'=>$this->id));
+                $link = new \core\Link($this->title, 'elections', array('ballot'=>$this->ballot_id, 'candidate'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {
@@ -448,7 +448,7 @@ class Elections_Candidate {
 
     public function getVoteBox()
     {
-        Core\Core::initModClass('elections', 'ELEC_Ballot.php');
+        \core\Core::initModClass('elections', 'ELEC_Ballot.php');
         $ballot = new Elections_Ballot($this->ballot_id);
         if (isset($_REQUEST['Candidate_Vote'][$this->id])) {
             $match = $_REQUEST['Candidate_Vote'][$this->id];
@@ -466,7 +466,7 @@ class Elections_Candidate {
                 $tpl .= '<input type="button" name="+" onclick=\'javascript: document.getElementById("Candidate_Vote['.$this->id.']").value++;\' value="+" />';
             }
         } else {
-            $tpl = Core\Form::formCheckBox("Candidate_Vote[".$this->id."]", 1, $match, $this->id);
+            $tpl = \core\Form::formCheckBox("Candidate_Vote[".$this->id."]", 1, $match, $this->id);
         }
 
         return $tpl;
@@ -475,7 +475,7 @@ class Elections_Candidate {
 
     public function getCustoms()
     {
-        Core\Core::initModClass('elections', 'ELEC_Ballot.php');
+        \core\Core::initModClass('elections', 'ELEC_Ballot.php');
         $ballot = new Elections_Ballot($this->ballot_id);
         $tpl = null;
         if ($ballot->custom1label) {
@@ -512,7 +512,7 @@ class Elections_Candidate {
         $content .= '"' . dgettext('elections', 'Votes') . '",';
 
 /*  think about this in multi-ballot exports, could be messy
-        Core\Core::initModClass('elections', 'ELEC_Ballot.php');
+        \core\Core::initModClass('elections', 'ELEC_Ballot.php');
         $ballot = new Elections_Ballot($this->ballot_id);
         if ($ballot->custom1label) {
             $content .= '"' . $ballot->getCustom1label(true) . '",';
@@ -545,7 +545,7 @@ class Elections_Candidate {
         $content .= '"' . $this->votes . '",';
 
 /*  think about this in multi-ballot exports, could be messy
-        Core\Core::initModClass('elections', 'ELEC_Ballot.php');
+        \core\Core::initModClass('elections', 'ELEC_Ballot.php');
         $ballot = new Elections_Ballot($this->ballot_id);
         if ($ballot->custom1label) {
             $content .= '"' . $this->getCustom1(true) . '",';

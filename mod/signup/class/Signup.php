@@ -4,8 +4,8 @@
  * @version $Id$
  */
 
-Core\Core::requireInc('signup', 'errordefines.php');
-Core\Core::requireConfig('signup');
+core\Core::requireInc('signup', 'errordefines.php');
+core\Core::requireConfig('signup');
 
 if (!defined('SIGNUP_WINDOW')) {
     define('SIGNUP_WINDOW', 3600);
@@ -151,7 +151,7 @@ class Signup {
                 if ($this->postPeep()) {
                     // Since added by an admin, automatically registered
                     $this->peep->registered = 1;
-                    if (Core\Error::logIfError($this->peep->save())) {
+                    if (core\Error::logIfError($this->peep->save())) {
                         $this->forwardMessage(dgettext('signup', 'Error occurred when saving applicant.'));
                     } else {
                         $this->forwardMessage(dgettext('signup', 'Applicant saved successfully.'));
@@ -170,18 +170,18 @@ class Signup {
                 }
 
                 if ($this->postSheet()) {
-                    if (!$this->sheet->id && Core\Core::isPosted()) {
+                    if (!$this->sheet->id && \core\Core::isPosted()) {
                         $this->message = dgettext('signup', 'Sheet previously posted.');
                         $this->loadForm('edit_sheet');
                     } else {
                         $new_sheet = !$this->sheet->id;
-                        if (Core\Error::logIfError($this->sheet->save())) {
+                        if (core\Error::logIfError($this->sheet->save())) {
                             $this->forwardMessage(dgettext('signup', 'Error occurred when saving sheet.'));
-                            Core\Core::reroute('index.php?module=signup&aop=list');
+                            \core\Core::reroute('index.php?module=signup&aop=list');
                         } else {
                             $this->forwardMessage(dgettext('signup', 'Sheet saved successfully.'));
                             if ($new_sheet) {
-                                Core\Core::reroute('index.php?module=signup&aop=edit_slots&sheet_id=' . $this->sheet->id);
+                                \core\Core::reroute('index.php?module=signup&aop=edit_slots&sheet_id=' . $this->sheet->id);
                             } else {
                                 $this->loadForm('list');
                             }
@@ -200,7 +200,7 @@ class Signup {
                 }
 
                 if ($this->postSlot()) {
-                    if (Core\Error::logIfError($this->slot->save())) {
+                    if (core\Error::logIfError($this->slot->save())) {
                         $this->forwardMessage(dgettext('signup', 'Error occurred when saving slot.'));
                     } else {
                         $this->forwardMessage(dgettext('signup', 'Slot saved successfully.'));
@@ -215,22 +215,22 @@ class Signup {
             case 'move_peep':
                 $this->loadPeep();
                 $result = $this->movePeep();
-                if (Core\Error::logIfError($result) || !$result) {
+                if (core\Error::logIfError($result) || !$result) {
                     $this->forwardMessage(dgettext('signup', 'Error occurred when moving applicant. Slot may be full.'));
                 }
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
             case 'move_up':
                 $this->loadSlot();
                 $this->slot->moveUp();
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
             case 'move_down':
                 $this->loadSlot();
                 $this->slot->moveDown();
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
 
@@ -242,7 +242,7 @@ class Signup {
             case 'delete_slot_peep':
                 $this->loadPeep();
                 $this->peep->delete();
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
 
@@ -262,7 +262,7 @@ class Signup {
                 $this->loadSheet();
                 $this->resetSlots($command);
                 $this->forwardMessage(dgettext('signup', 'Slot order reset.'));
-                Core\Core::reroute('index.php?module=signup&sheet_id=' . $this->sheet->id . '&aop=edit_slots&authkey=' . Current_User::getAuthKey());
+                \core\Core::reroute('index.php?module=signup&sheet_id=' . $this->sheet->id . '&aop=edit_slots&authkey=' . Current_User::getAuthKey());
                 break;
 
         }
@@ -272,9 +272,9 @@ class Signup {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'signup', 'main.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'signup', 'main.tpl'));
         } else {
-            $this->panel->setContent(Core\Template::process($tpl, 'signup', 'main.tpl'));
+            $this->panel->setContent(core\Template::process($tpl, 'signup', 'main.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -282,7 +282,7 @@ class Signup {
 
     public function resetSlots($mode)
     {
-        $db = new Core\DB('signup_slots');
+        $db = new \core\DB('signup_slots');
         $db->addWhere('sheet_id', $this->sheet->id);
         $db->addColumn('id');
         if ($mode == 'alpha_order') {
@@ -295,7 +295,7 @@ class Signup {
 
         if (empty($slots)) {
             return true;
-        } elseif (Core\Error::logIfError($slots)) {
+        } elseif (core\Error::logIfError($slots)) {
             return false;
         }
         $count = 1;
@@ -303,7 +303,7 @@ class Signup {
             $db->reset();
             $db->addWhere('id', $id);
             $db->addValue('s_order', $count);
-            Core\Error::logIfError($db->update());
+            \core\Error::logIfError($db->update());
             $count++;
         }
 
@@ -312,7 +312,7 @@ class Signup {
 
     public function sendMessage()
     {
-        Core\Core::reroute('index.php?module=signup&amp;uop=message');
+        \core\Core::reroute('index.php?module=signup&amp;uop=message');
     }
 
     public function forwardMessage($message, $title=null)
@@ -332,7 +332,7 @@ class Signup {
 
     public function postEmail()
     {
-        if (!Core\Text::isValidInput($_POST['from'], 'email')) {
+        if (!core\Text::isValidInput($_POST['from'], 'email')) {
             $errors[] = dgettext('signup', 'Invalid reply address.');
         } else {
             $this->email['from'] = & $_POST['from'];
@@ -369,13 +369,13 @@ class Signup {
             if (isset($_SESSION['SU_Message']['title'])) {
                 $this->title = $_SESSION['SU_Message']['title'];
             }
-            Core\Core::killSession('SU_Message');
+            \core\Core::killSession('SU_Message');
         }
     }
 
     public function loadForm($type)
     {
-        Core\Core::initModClass('signup', 'Forms.php');
+        \core\Core::initModClass('signup', 'Forms.php');
         $this->forms = new Signup_Forms;
         $this->forms->signup = $this;
         $this->forms->get($type);
@@ -383,7 +383,7 @@ class Signup {
 
     public function loadPeep($id=0)
     {
-        Core\Core::initModClass('signup', 'Peeps.php');
+        \core\Core::initModClass('signup', 'Peeps.php');
         if ($id) {
             $this->peep = new Signup_Peep($id);
         } elseif (isset($_REQUEST['peep_id'])) {
@@ -396,7 +396,7 @@ class Signup {
                 $this->peep->last_name  = $last_name;
                 $this->peep->email      = $email;
                 $this->peep->phone      = $phone;
-                Core\Core::killSession('SU_Temp_Peep');
+                \core\Core::killSession('SU_Temp_Peep');
             }
         }
 
@@ -417,7 +417,7 @@ class Signup {
 
     public function loadSheet($id=0)
     {
-        Core\Core::initModClass('signup', 'Sheet.php');
+        \core\Core::initModClass('signup', 'Sheet.php');
         if ($id) {
             $this->sheet = new Signup_Sheet($id);
         } elseif (isset($_REQUEST['sheet_id'])) {
@@ -429,7 +429,7 @@ class Signup {
 
     public function loadSlot($id=0)
     {
-        Core\Core::initModClass('signup', 'Slots.php');
+        \core\Core::initModClass('signup', 'Slots.php');
         if ($id) {
             $this->slot = new Signup_Slot($id);
         } elseif (isset($_REQUEST['slot_id'])) {
@@ -454,7 +454,7 @@ class Signup {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                Core\Core::errorPage('404');
+                \core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -464,7 +464,7 @@ class Signup {
             case 'message':
                 $this->loadMessage();
                 if (empty($this->message)) {
-                    Core\Core::home();
+                    \core\Core::home();
                 }
                 $this->title = dgettext('signup', 'Signup');
                 break;
@@ -499,9 +499,9 @@ class Signup {
         $tpl['CONTENT'] = $this->content;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'signup', 'usermain.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'signup', 'usermain.tpl'));
         } else {
-            Layout::add(Core\Template::process($tpl, 'signup', 'usermain.tpl'));
+            Layout::add(core\Template::process($tpl, 'signup', 'usermain.tpl'));
         }
 
     }
@@ -511,7 +511,7 @@ class Signup {
         $peep = & $this->peep;
         $slot = & $this->slot;
 
-        $db = new Core\DB('signup_peeps');
+        $db = new \core\DB('signup_peeps');
         $db->addWhere('slot_id', $peep->slot_id);
 
         // lock carries over to saving of peep.
@@ -530,7 +530,7 @@ class Signup {
             $previous = $db->select('one');
         }
 
-        if (Core\Error::logIfError($previous)) {
+        if (core\Error::logIfError($previous)) {
             $this->forwardMessage(dgettext('signup', 'An error occurred when trying to save your application.'), dgettext('signup', 'Sorry'));
             $this->sendMessage();
             return false;
@@ -549,13 +549,13 @@ class Signup {
         $peep->hashcheck = md5(rand());
         $peep->timeout = time() + SIGNUP_WINDOW;
 
-        if (Core\Error::logIfError($peep->save())) {
+        if (core\Error::logIfError($peep->save())) {
             $db->unlockTables();
             return false;
         } else {
             // success
             $db->unlockTables();
-            if (Core\Error::logIfError($this->emailRegistration())) {
+            if (core\Error::logIfError($this->emailRegistration())) {
                 $peep->delete();
                 $this->forwardMessage(dgettext('signup', 'There is a problem with our email server. Please try again later.'), dgettext('signup', 'Sorry'));
                 $this->sendMessage();
@@ -586,11 +586,11 @@ class Signup {
         if (!empty($sheet->contact_email)) {
             $reply_to = $from = $sheet->contact_email;
         } else {
-            $reply_to = $from = Core\Settings::get('users', 'site_contact');
+            $reply_to = $from = \core\Settings::get('users', 'site_contact');
         }
 
         $site_title = Layout::getPageTitle(true);
-        $link = Core\Core::getHomeHttp() . 'index.php?module=signup&uop=confirm&h=' .
+        $link = \core\Core::getHomeHttp() . 'index.php?module=signup&uop=confirm&h=' .
         $peep->hashcheck . '&p=' . $peep->id;
 
         $message[] = sprintf(dgettext('signup', 'Greetings from %s,'), $site_title);
@@ -624,7 +624,7 @@ class Signup {
             $_SESSION['Email_Applicants']['sheet_id'] = $this->sheet->id;
             $_SESSION['Email_Applicants']['search'] = @ $_REQUEST['search'];
             $vars['aop'] = 'send_email';
-            Layout::metaRoute(Core\Text::linkAddress('signup', $vars, true), 1);
+            Layout::metaRoute(core\Text::linkAddress('signup', $vars, true), 1);
             $this->title = dgettext('signup', 'Sending emails');
             $this->content = dgettext('signup', 'Please wait');
             return;
@@ -644,11 +644,11 @@ class Signup {
         if (!$this->sheet->id) {
             $this->title = dgettext('signup', 'Sorry');
             $this->content = dgettext('signup', 'Unable to send emails. Signup sheet does not exist.');
-            Core\Core::killSession('Email_Applicants');
+            \core\Core::killSession('Email_Applicants');
             return;
         }
 
-        $db = new Core\DB('signup_peeps');
+        $db = new \core\DB('signup_peeps');
         $db->addColumn('email');
         $db->addWhere('sheet_id', $this->sheet->id);
 
@@ -665,7 +665,7 @@ class Signup {
             $this->title = dgettext('signup', 'Emails not sent');
             $this->content = dgettext('signup', 'Signup sheet did not contain any applicants.');
             return;
-        } elseif (Core\Error::logIfError($result)) {
+        } elseif (core\Error::logIfError($result)) {
             $this->title = dgettext('signup', 'Emails not sent');
             $this->content = dgettext('signup', 'An error occurred when pulling applicants.');
             return;
@@ -679,18 +679,18 @@ class Signup {
 
         $vars['aop'] = 'report';
         $vars['sheet_id'] = $this->sheet->id;
-        $link = Core\Text::linkAddress('signup', $vars, true);
+        $link = \core\Text::linkAddress('signup', $vars, true);
 
         $this->title = dgettext('signup', 'Emails sent');
         $this->content = dgettext('signup', 'Returning to applicant listing.');
         Layout::metaRoute($link, 5);
-        Core\Core::killSession('Email_Applicants');
+        \core\Core::killSession('Email_Applicants');
     }
 
 
     public function loadPanel()
     {
-        Core\Core::initModClass('controlpanel', 'Panel.php');
+        \core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('signup-panel');
         $link = 'index.php?module=signup&aop=menu';
 
@@ -717,7 +717,7 @@ class Signup {
             $errors[] = dgettext('signup', 'Please enter a last name.');
         }
 
-        if (empty($_POST['email']) || !Core\Text::isValidInput($_POST['email'], 'email')) {
+        if (empty($_POST['email']) || !core\Text::isValidInput($_POST['email'], 'email')) {
             $errors[] = dgettext('signup', 'Unsuitable email address.');
         } else {
             $this->peep->email = trim($_POST['email']);
@@ -775,7 +775,7 @@ class Signup {
         if (empty($openings)) {
             $errors[] = dgettext('signup', 'Please specify an openings amount.');
         } elseif ($this->slot->id) {
-            $db = new Core\DB('signup_peeps');
+            $db = new \core\DB('signup_peeps');
             $db->addWhere('slot_id', $this->slot->id);
             $db->addColumn('id', null, null, true);
             $peeps = $db->select('one');
@@ -829,7 +829,7 @@ class Signup {
             $this->sheet->contact_email = null;
         } else {
             $this->sheet->contact_email = $_POST['contact_email'];
-            if (!Core\Text::isValidInput($this->sheet->contact_email, 'email')) {
+            if (!core\Text::isValidInput($this->sheet->contact_email, 'email')) {
                 $errors[] = dgettext('signup', 'Contact email improperly formatted.');
             }
         }
@@ -903,7 +903,7 @@ class Signup {
             }
 
             $this->peep->registered = 1;
-            if (Core\Error::logIfError($this->peep->save())) {
+            if (core\Error::logIfError($this->peep->save())) {
                 $this->title = dgettext('signup', 'Sorry');
                 $this->content = dgettext('signup', 'A problem occurred when trying to register your application. If you continue to receive this message, please contact the site admistrator.');
                 return;
@@ -919,7 +919,7 @@ class Signup {
     {
         $slots = $this->sheet->getAllSlots();
 
-        $tpl = new Core\Template('signup');
+        $tpl = new \core\Template('signup');
         $tpl->setFile('report.tpl');
 
         foreach ($slots as $slot) {
@@ -960,9 +960,9 @@ class Signup {
 
     public function csvExport()
     {
-        Core\Core::initModClass('signup', 'Peeps.php');
+        \core\Core::initModClass('signup', 'Peeps.php');
 
-        $db = new Core\DB('signup_peeps');
+        $db = new \core\DB('signup_peeps');
         $db->addWhere('sheet_id', $this->sheet->id);
         $db->addWhere('registered', 1);
 
@@ -1018,9 +1018,9 @@ class Signup {
 
     public function printApplicants()
     {
-        Core\Core::initModClass('signup', 'Peeps.php');
+        \core\Core::initModClass('signup', 'Peeps.php');
 
-        $db = new Core\DB('signup_peeps');
+        $db = new \core\DB('signup_peeps');
         $db->addWhere('sheet_id', $this->sheet->id);
         $db->addWhere('registered', 1);
 
@@ -1057,17 +1057,17 @@ class Signup {
         $template['SHEET_TITLE']        = $this->sheet->title;
         $template['PRINT']              = sprintf('<input type="button" id="print" value="%s" onclick="print_page()" />', dgettext('signup', 'Print'));
 
-        echo Core\Template::process($template, 'signup', 'print_applicants.tpl');
+        echo \core\Template::process($template, 'signup', 'print_applicants.tpl');
         exit();
     }
 
 
     public function purgeOverdue()
     {
-        $db = new Core\DB('signup_peeps');
+        $db = new \core\DB('signup_peeps');
         $db->addWhere('registered', 0);
         $db->addWhere('timeout', time(), '<');
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
     }
 
     public function movePeep()
@@ -1094,7 +1094,7 @@ class Signup {
         } else {
             $this->title = dgettext('signup', 'Slot can not be deleted until cleared of applicants.');
         }
-        $this->content = Core\Text::secureLink(dgettext('signup', 'Return to slot page'), 'signup',
+        $this->content = \core\Text::secureLink(dgettext('signup', 'Return to slot page'), 'signup',
         array('sheet_id'=>$this->sheet->id, 'aop'=>'edit_slots'));
 
     }

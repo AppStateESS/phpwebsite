@@ -41,7 +41,7 @@ class File_Common {
     /**
      * Compares against a set of allowable extensions. This should not be
      * used alone as it is specific to File Cabinet. It is assumed you
-     * have run Core\File::checkMimeType first.
+     * have run \core\File::checkMimeType first.
      */
     public function allowType($ext=null)
     {
@@ -107,7 +107,7 @@ class File_Common {
         if (!empty($_POST['folder_id'])) {
             $this->folder_id = (int)$_POST['folder_id'];
         } elseif (!$this->folder_id && $use_folder) {
-            $this->_errors[] = Core\Error::get(FC_MISSING_FOLDER, 'filecabinet', 'File_Common::importPost');
+            $this->_errors[] = \core\Error::get(FC_MISSING_FOLDER, 'filecabinet', 'File_Common::importPost');
         }
 
         if (isset($_POST['title'])) {
@@ -145,11 +145,11 @@ class File_Common {
         if (!empty($_FILES[$var_name]['error'])) {
             switch ($_FILES[$var_name]['error']) {
                 case UPLOAD_ERR_INI_SIZE:
-                    $this->_errors[] =  Core\Error::get(PHPWS_FILE_SIZE, 'core', 'File_Common::getFiles');
+                    $this->_errors[] =  \core\Error::get(PHPWS_FILE_SIZE, 'core', 'File_Common::getFiles');
                     break;
 
                 case UPLOAD_ERR_FORM_SIZE:
-                    $this->_errors[] = Core\Error::get(FC_MAX_FORM_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
+                    $this->_errors[] = \core\Error::get(FC_MAX_FORM_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
                     return false;
                     break;
 
@@ -158,13 +158,13 @@ class File_Common {
                     if ($this->id || $ignore_missing_file) {
                         return true;
                     } else {
-                        $this->_errors[] = Core\Error::get(FC_NO_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost');
+                        $this->_errors[] = \core\Error::get(FC_NO_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost');
                         return false;
                     }
                     break;
 
                 case UPLOAD_ERR_NO_TMP_DIR:
-                    $this->_errors[] = Core\Error::get(FC_MISSING_TMP, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
+                    $this->_errors[] = \core\Error::get(FC_MISSING_TMP, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
                     return false;
             }
         }
@@ -173,7 +173,7 @@ class File_Common {
         $oUpload = new HTTP_Upload('en');
         $this->_upload = $oUpload->getFiles($var_name);
 
-        if (Core\Error::isError($this->_upload)) {
+        if (core\Error::isError($this->_upload)) {
             $this->_errors[] = $this->_upload();
             return false;
         }
@@ -194,36 +194,36 @@ class File_Common {
 
             $this->file_type = $file_vars['type'];
             if ($this->file_type == 'application/octet-stream') {
-                $mime = Core\File::getMimeType($file_vars['tmp_name']);
+                $mime = \core\File::getMimeType($file_vars['tmp_name']);
                 if ($mime != $this->file_type) {
                     $this->file_type = & $mime;
                 }
             }
 
-            if (!Core\File::checkMimeType($file_vars['tmp_name'], $file_vars['ext'])) {
-                $this->_errors[] = Core\Error::get(FC_FILE_TYPE_MISMATCH, 'filecabinet', 'File_Common::importPost',
-                $file_vars['ext'] . ':' . Core\File::getMimeType($file_vars['tmp_name']));
+            if (!core\File::checkMimeType($file_vars['tmp_name'], $file_vars['ext'])) {
+                $this->_errors[] = \core\Error::get(FC_FILE_TYPE_MISMATCH, 'filecabinet', 'File_Common::importPost',
+                $file_vars['ext'] . ':' . \core\File::getMimeType($file_vars['tmp_name']));
                 return false;
             }
 
             if (!$this->allowType($file_vars['ext'])) {
                 if ($this->_classtype == 'document') {
-                    $this->_errors[] = Core\Error::get(FC_DOCUMENT_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
+                    $this->_errors[] = \core\Error::get(FC_DOCUMENT_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
                 } elseif ($this->_classtype == 'image') {
-                    $this->_errors[] = Core\Error::get(FC_IMG_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
+                    $this->_errors[] = \core\Error::get(FC_IMG_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
                 } else {
-                    $this->_errors[] = Core\Error::get(FC_MULTIMEDIA_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
+                    $this->_errors[] = \core\Error::get(FC_MULTIMEDIA_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
                 }
                 return false;
             }
 
             if ($this->size && !$this->allowSize()) {
                 if ($this->_classtype == 'document') {
-                    $this->_errors[] = Core\Error::get(FC_DOCUMENT_SIZE, 'filecabinet', 'File_Common::importPost', array($this->size, $this->_max_size));
+                    $this->_errors[] = \core\Error::get(FC_DOCUMENT_SIZE, 'filecabinet', 'File_Common::importPost', array($this->size, $this->_max_size));
                 } elseif ($this->_classtype == 'image') {
-                    $this->_errors[] = Core\Error::get(FC_IMG_SIZE, 'filecabinet', 'File_Common::importPost', array($this->size, $this->_max_size));
+                    $this->_errors[] = \core\Error::get(FC_IMG_SIZE, 'filecabinet', 'File_Common::importPost', array($this->size, $this->_max_size));
                 } else {
-                    $this->_errors[] = Core\Error::get(FC_MULTIMEDIA_SIZE, 'filecabinet', 'File_Common::importPost', array($this->size, $this->_max_size));
+                    $this->_errors[] = \core\Error::get(FC_MULTIMEDIA_SIZE, 'filecabinet', 'File_Common::importPost', array($this->size, $this->_max_size));
                 }
                 return false;
             }
@@ -232,13 +232,13 @@ class File_Common {
                 list($this->width, $this->height, $image_type, $image_attr) = getimagesize($this->_upload->upload['tmp_name']);
 
                 $result = $this->prewriteResize();
-                if (Core\Error::isError($result)) {
+                if (core\Error::isError($result)) {
                     $this->errors[] = $result;
                     return false;
                 }
 
                 $result = $this->prewriteRotate();
-                if (Core\Error::isError($result)) {
+                if (core\Error::isError($result)) {
                     $this->errors[] = $result;
                     return false;
                 }
@@ -248,7 +248,7 @@ class File_Common {
             $this->_errors[] = $this->_upload->getMessage();
             return false;
         } elseif ($this->_upload->isMissing()) {
-            $this->_errors[] = Core\Error::get(FC_NO_UPLOAD, 'filecabinet', 'File_Common::importPost');
+            $this->_errors[] = \core\Error::get(FC_NO_UPLOAD, 'filecabinet', 'File_Common::importPost');
             return false;
         }
 
@@ -258,12 +258,12 @@ class File_Common {
 
     public function setDescription($description)
     {
-        $this->description = Core\Text::parseInput(strip_tags($description, '<em><strong><b><i><u>'));
+        $this->description = \core\Text::parseInput(strip_tags($description, '<em><strong><b><i><u>'));
     }
 
     public function getDescription()
     {
-        return Core\Text::parseOutput($this->description);
+        return \core\Text::parseOutput($this->description);
     }
 
     public function setDirectory($directory)
@@ -296,12 +296,12 @@ class File_Common {
     public function write($public=true)
     {
         if (!is_writable($this->file_directory)) {
-            return Core\Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'File_Common::write', $this->file_directory);
+            return \core\Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'File_Common::write', $this->file_directory);
         }
 
         if (!$this->id && is_file($this->getPath())) {
             $this->file_name = time() . $this->file_name;
-            Core\Error::log(FC_DUPLICATE_FILE, 'filecabinet', 'File_Common::write', $this->getPath());
+            \core\Error::log(FC_DUPLICATE_FILE, 'filecabinet', 'File_Common::write', $this->getPath());
         }
 
         if ($this->_upload) {
@@ -309,11 +309,11 @@ class File_Common {
             $directory = preg_replace('@[/\\\]$@', '', $this->file_directory);
 
             if (!is_dir($directory)) {
-                return Core\Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'File_Common::write', $directory);
+                return \core\Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'File_Common::write', $directory);
             }
 
             $moved = $this->_upload->moveTo($directory);
-            if (!Core\Error::isError($moved)) {
+            if (!core\Error::isError($moved)) {
                 if ($public) {
                     chmod($directory . '/' . $moved, 0644);
                 } else {
@@ -335,7 +335,7 @@ class File_Common {
     {
         if ( !empty($this->_errors) && is_array($this->_errors) ) {
             foreach ($this->_errors as $error) {
-                Core\Error::log($error);
+                \core\Error::log($error);
             }
         }
     }
@@ -412,7 +412,7 @@ class File_Common {
     public function loadExtension()
     {
         if (!$this->_ext && $this->file_name) {
-            $this->_ext = Core\File::getFileExtension($this->file_name);
+            $this->_ext = \core\File::getFileExtension($this->file_name);
         }
     }
 
@@ -428,32 +428,32 @@ class File_Common {
 
         switch ($this->_classtype) {
             case 'image':
-                $db = new Core\DB('images');
+                $db = new \core\DB('images');
                 break;
 
             case 'document':
-                $db = new Core\DB('documents');
+                $db = new \core\DB('documents');
                 break;
 
             case 'multimedia':
-                $db = new Core\DB('multimedia');
+                $db = new \core\DB('multimedia');
                 break;
         }
 
         $db->addWhere('id', $this->id);
         $result = $db->delete();
 
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
         $path = $this->getPath();
 
         if (!@unlink($path)) {
-            Core\Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'File_Common::commonDelete', $path);
+            \core\Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'File_Common::commonDelete', $path);
         }
 
-        Core\Error::logIfError($this->deleteAssoc());
+        \core\Error::logIfError($this->deleteAssoc());
         return true;
     }
 
@@ -485,7 +485,7 @@ class File_Common {
             $this->folder_id      = $new_folder->id;
             $this->file_directory = $dest_dir;
             if (@copy($stn, $dtn)) {
-                if (!Core\Error::logIfError($this->save(false, false))) {
+                if (!core\Error::logIfError($this->save(false, false))) {
                     // no error occurs, unlink the source file and thumbnail
                     unlink($stn);
                     return true;
@@ -510,7 +510,7 @@ class File_Common {
                 case 'image':
                     // copy the thumbnail
                     if (@copy($stn, $dtn)) {
-                        if (!Core\Error::logIfError($this->save(false, false, false))) {
+                        if (!core\Error::logIfError($this->save(false, false, false))) {
                             // no error occurs, unlink the source file and thumbnail
                             unlink($source);
                             unlink($stn);
@@ -528,7 +528,7 @@ class File_Common {
                     break;
 
                 case 'document':
-                    if (!Core\Error::logIfError($this->save(false, false))) {
+                    if (!core\Error::logIfError($this->save(false, false))) {
                         // no error occurs, unlink the source file
                         unlink($source);
                         return true;
@@ -542,7 +542,7 @@ class File_Common {
                 case 'multimedia':
                     // copy the thumbnail
                     if (@copy($stn, $dtn)) {
-                        if (!Core\Error::logIfError($this->save(false, false))) {
+                        if (!core\Error::logIfError($this->save(false, false))) {
                             // no error occurs, unlink the source file and thumbnail
                             unlink($source);
                             unlink($stn);
@@ -567,7 +567,7 @@ class File_Common {
     public function getTitle($shorten=false)
     {
         if ($shorten && (strlen($this->title) > FILE_TITLE_CUTOFF)) {
-            return sprintf('<abbr title="%s">%s</abbr>', $this->title, Core\Text::shortenUrl($this->title, FILE_TITLE_CUTOFF));
+            return sprintf('<abbr title="%s">%s</abbr>', $this->title, \core\Text::shortenUrl($this->title, FILE_TITLE_CUTOFF));
         } else {
             return $this->title;
         }
@@ -575,7 +575,7 @@ class File_Common {
 
     public function loadTitleFromFilename()
     {
-        $ext = Core\File::getFileExtension($this->file_name);
+        $ext = \core\File::getFileExtension($this->file_name);
         $this->title = str_replace('.' . $ext, '', $this->file_name);
         if (preg_match('/_/', $this->title) && !preg_match('/\s/', $this->title)) {
             $this->title = str_replace('_', ' ', $this->title);

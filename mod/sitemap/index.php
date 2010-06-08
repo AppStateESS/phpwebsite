@@ -27,7 +27,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-Core\Core::initModClass('sitemap', 'Sitemap.php');
+core\Core::initModClass('sitemap', 'Sitemap.php');
 $sitemap = new Sitemap;
 
 

@@ -68,50 +68,50 @@ class UNI_Multiselect extends UNI_Element {
             $optionId[] = $option['id'];
         }
 
-        $tpl['LABEL'] = Core\Text::parseOutput($this->getTitle());
+        $tpl['LABEL'] = \core\Text::parseOutput($this->getTitle());
 
         for($i = 0; $i < sizeof($optionId); $i++) {
             $options[$optionId[$i]] = $optionText[$i];
         }
         $size = null;
-        $tpl['MULTISELECT'] = Core\Form::formMultipleSelect('UNI_' . $this->id, $options, $match, false, true, $size);
+        $tpl['MULTISELECT'] = \core\Form::formMultipleSelect('UNI_' . $this->id, $options, $match, false, true, $size);
 
-        return Core\Template::processTemplate($tpl, 'vlist', 'elements/view_multiselect.tpl');
+        return \core\Template::processTemplate($tpl, 'vlist', 'elements/view_multiselect.tpl');
     }
 
 
     function edit()
     {
         $numoptions = $this->numoptions;
-        $elements[0] =  Core\Form::formHidden('module', 'vlist') . 
-                        Core\Form::formHidden('aop', 'post_element') . 
-                        Core\Form::formHidden('type', 'Multiselect') ;
+        $elements[0] =  \core\Form::formHidden('module', 'vlist') . 
+                        \core\Form::formHidden('aop', 'post_element') . 
+                        \core\Form::formHidden('type', 'Multiselect') ;
         if ($this->id) {
-            $elements[0] .=  Core\Form::formHidden('id', $this->id) ;
+            $elements[0] .=  \core\Form::formHidden('id', $this->id) ;
         }
 
         $tpl['LABEL_LABEL'] = dgettext('vlist', 'Label/name');
-        $tpl['LABEL_INPUT'] = Core\Form::formTextField('label', $this->getTitle(), UNI_DEFAULT_SIZE, UNI_DEFAULT_MAXSIZE);
+        $tpl['LABEL_INPUT'] = \core\Form::formTextField('label', $this->getTitle(), UNI_DEFAULT_SIZE, UNI_DEFAULT_MAXSIZE);
         $tpl['OPTIONS_LABEL'] = dgettext('vlist', 'Number of options');
-        $tpl['OPTIONS_INPUT'] = Core\Form::formTextField('numoptions', $numoptions, 5, 3);
+        $tpl['OPTIONS_INPUT'] = \core\Form::formTextField('numoptions', $numoptions, 5, 3);
         $tpl['REQUIRE_LABEL'] = dgettext('vlist', 'Required');
-        $tpl['REQUIRE_INPUT'] = Core\Form::formCheckBox('required', 1, $this->required);
+        $tpl['REQUIRE_INPUT'] = \core\Form::formCheckBox('required', 1, $this->required);
         $tpl['ACTIVE_LABEL'] = dgettext('vlist', 'Active');
-        $tpl['ACTIVE_INPUT'] = Core\Form::formCheckBox('active', 1, $this->active);
+        $tpl['ACTIVE_INPUT'] = \core\Form::formCheckBox('active', 1, $this->active);
         $tpl['SORT_LABEL'] = dgettext('vlist', 'Sort order');
-        $tpl['SORT_INPUT'] = Core\Form::formTextField('sort', $this->sort, 5, 3);
+        $tpl['SORT_INPUT'] = \core\Form::formTextField('sort', $this->sort, 5, 3);
         $tpl['LIST_LABEL'] = dgettext('vlist', 'Use in list');
-        $tpl['LIST_INPUT'] = Core\Form::formCheckBox('list', 1, $this->list);
+        $tpl['LIST_INPUT'] = \core\Form::formCheckBox('list', 1, $this->list);
         $tpl['SEARCH_LABEL'] = dgettext('vlist', 'Use in advanced search');
-        $tpl['SEARCH_INPUT'] = Core\Form::formCheckBox('search', 1, $this->search);
+        $tpl['SEARCH_INPUT'] = \core\Form::formCheckBox('search', 1, $this->search);
         $tpl['PRIVATE_LABEL'] = dgettext('vlist', 'Private (Internal use only)');
-        $tpl['PRIVATE_INPUT'] = Core\Form::formCheckBox('private', 1, $this->private);
+        $tpl['PRIVATE_INPUT'] = \core\Form::formCheckBox('private', 1, $this->private);
 
-        $tpl['NEXT_BUTTON'] = Core\Form::formSubmit(dgettext('vlist', 'Next'));
+        $tpl['NEXT_BUTTON'] = \core\Form::formSubmit(dgettext('vlist', 'Next'));
 
-        $elements[0] .= Core\Template::processTemplate($tpl, 'vlist', 'elements/edit_multiselect.tpl');
+        $elements[0] .= \core\Template::processTemplate($tpl, 'vlist', 'elements/edit_multiselect.tpl');
 
-        return Core\Form::makeForm('UNI_Multiselect_edit', 'index.php', $elements, 'post', null, null);
+        return \core\Form::makeForm('UNI_Multiselect_edit', 'index.php', $elements, 'post', null, null);
     }
 
 

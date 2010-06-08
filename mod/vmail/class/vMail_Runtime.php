@@ -27,9 +27,9 @@ class vMail_Runtime
 {
 
     public static function showBlock() {
-        if (Core\Settings::get('vmail', 'enable_sidebox')) {
-            if (Core\Settings::get('vmail', 'sidebox_homeonly')) {
-                $key = Core\Key::getCurrent();
+        if (core\Settings::get('vmail', 'enable_sidebox')) {
+            if (core\Settings::get('vmail', 'sidebox_homeonly')) {
+                $key = \core\Key::getCurrent();
                 if (!empty($key) && $key->isHomeKey()) {
                     vMail_Runtime::showvMailBlock();
                 }
@@ -41,18 +41,18 @@ class vMail_Runtime
 
     public function showvMailBlock() {
 
-        $db = new Core\DB('vmail_recipients');
+        $db = new \core\DB('vmail_recipients');
         $db->addColumn('id');
         $db->addColumn('label');
         $db->addWhere('active', 1);
         $db->addOrder('label asc');
         $result = $db->select();
 
-        if (!Core\Error::logIfError($result) && !empty($result)) {
+        if (!core\Error::logIfError($result) && !empty($result)) {
             foreach ($result as $recipient) {
                 $choices[$recipient['id']] = $recipient['label'];
             }
-            $form = new Core\Form('vMail_recipients');
+            $form = new \core\Form('vMail_recipients');
             $form->addHidden('module', 'vmail');
             $form->addHidden('uop', 'view_recipient');
             $form->addSelect('recipient', $choices);
@@ -60,11 +60,11 @@ class vMail_Runtime
             $form->addSubmit('submit', dgettext('vmail', 'Contact'));
             $tpl = $form->getTemplate();
 
-            $tpl['TITLE'] = Core\Text::parseOutput(Core\Settings::get('vmail', 'module_title'));
-            $tpl['TEXT'] = Core\Text::parseOutput(Core\Settings::get('vmail', 'sidebox_text'));
+            $tpl['TITLE'] = \core\Text::parseOutput(core\Settings::get('vmail', 'module_title'));
+            $tpl['TEXT'] = \core\Text::parseOutput(core\Settings::get('vmail', 'sidebox_text'));
 
-            Core\Core::initModClass('layout', 'Layout.php');
-            Layout::add(Core\Template::process($tpl, 'vmail', 'block.tpl'), 'vmail', 'vmail_sidebox');
+            \core\Core::initModClass('layout', 'Layout.php');
+            Layout::add(core\Template::process($tpl, 'vmail', 'block.tpl'), 'vmail', 'vmail_sidebox');
         }
     }
 

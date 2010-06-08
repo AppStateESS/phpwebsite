@@ -9,14 +9,14 @@ class RSS {
 
     public function registerModule($module, &$content)
     {
-        $reg_file = Core\Core::getConfigFile($module, 'rss.php');
+        $reg_file = \core\Core::getConfigFile($module, 'rss.php');
 
         if ($reg_file == FALSE) {
             PHPWS_Boost::addLog($module, dgettext('rss', 'No RSS file found.'));
             return FALSE;
         }
 
-        Core\Core::initModClass('rss', 'Channel.php');
+        \core\Core::initModClass('rss', 'Channel.php');
         include $reg_file;
 
         $oChannel = new RSS_Channel;
@@ -42,12 +42,12 @@ class RSS {
         if (!empty($channel['link'])) {
             $oChannel->link = strip_tags($channel['link']);
         } else {
-            $oChannel->link = Core\Core::getHomeHttp();
+            $oChannel->link = \core\Core::getHomeHttp();
         }
 
         $result = $oChannel->save();
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             PHPWS_Boost::addLog($module, dgettext('rss', 'An error occurred registering to RSS module.'));
             $content[] = dgettext('rss', 'An error occurred registering to RSS module.');
             return NULL;
@@ -59,8 +59,8 @@ class RSS {
 
     public static function showFeeds()
     {
-        Core\Core::initModClass('rss', 'Feed.php');
-        $db = new Core\DB('rss_feeds');
+        \core\Core::initModClass('rss', 'Feed.php');
+        $db = new \core\DB('rss_feeds');
 
         $db->addWhere('display', 1);
         $result = $db->getObjects('RSS_Feed');
@@ -77,9 +77,9 @@ class RSS {
 
     public function viewChannel($module)
     {
-        Core\Core::initModClass('rss', 'Channel.php');
+        \core\Core::initModClass('rss', 'Channel.php');
         $channel = new RSS_Channel;
-        $db = new Core\DB('rss_channel');
+        $db = new \core\DB('rss_channel');
         $db->addWhere('module', $module);
         $db->loadObject($channel);
 
@@ -94,9 +94,9 @@ class RSS {
 
     public static function showIcon($key)
     {
-        Core\Core::initModClass('rss', 'Channel.php');
+        \core\Core::initModClass('rss', 'Channel.php');
         $channel = new RSS_Channel;
-        $db = new Core\DB('rss_channel');
+        $db = new \core\DB('rss_channel');
         $db->addWhere('module', $key->module);
         $db->loadObject($channel);
 

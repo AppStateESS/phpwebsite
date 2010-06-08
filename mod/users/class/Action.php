@@ -8,8 +8,8 @@
  */
 
 require_once PHPWS_SOURCE_DIR . 'mod/users/inc/errorDefines.php';
-Core\Core::requireConfig('users');
-Core\Core::initModClass('users', 'Form.php');
+core\Core::requireConfig('users');
+core\Core::initModClass('users', 'Form.php');
 //
 
 if (!defined('ALLOW_DEITY_FORGET')) {
@@ -20,7 +20,7 @@ class User_Action {
 
     public static function adminAction()
     {
-        Core\Core::initModClass('users', 'Group.php');
+        \core\Core::initModClass('users', 'Group.php');
         $message = $content = null;
 
         if (!Current_User::allow('users')) {
@@ -53,7 +53,7 @@ class User_Action {
             /** Form cases **/
             /** User Forms **/
             case 'new_user':
-                if (Core\Settings::get('users', 'allow_new_users') || Current_User::isDeity()) {
+                if (core\Settings::get('users', 'allow_new_users') || Current_User::isDeity()) {
                     $panel->setCurrentTab('new_user');
                     $title = dgettext('users', 'Create User');
                     $content = User_Form::userForm($user);
@@ -100,7 +100,7 @@ class User_Action {
                     return;
                 }
                 $user->kill();
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
             case 'deify_user':
@@ -111,7 +111,7 @@ class User_Action {
                 }
                 $user->deity = 1;
                 $user->save();
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
             case 'mortalize_user':
@@ -122,7 +122,7 @@ class User_Action {
                 }
                 $user->deity = 0;
                 $user->save();
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
 
@@ -155,10 +155,10 @@ class User_Action {
                 }
 
                 if (!$user->id) {
-                    Core\Core::errorPage('404');
+                    \core\Core::errorPage('404');
                 }
 
-                Core\Core::initModClass('users', 'Group.php');
+                \core\Core::initModClass('users', 'Group.php');
                 $title = dgettext('users', 'Set User Permissions') . ' : ' . $user->getUsername();
                 $content = User_Form::setPermissions($user->getUserGroup());
                 break;
@@ -170,7 +170,7 @@ class User_Action {
                 }
 
                 User_Action::activateUser($_REQUEST['user_id'], false);
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
             case 'activateUser':
@@ -180,7 +180,7 @@ class User_Action {
                 }
 
                 User_Action::activateUser($_REQUEST['user_id'], true);
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
                 /** End User Forms **/
@@ -193,7 +193,7 @@ class User_Action {
                     return;
                 }
 
-                Core\Core::initModClass('users', 'Group.php');
+                \core\Core::initModClass('users', 'Group.php');
                 $title = dgettext('users', 'Set Group Permissions') .' : '. $group->getName();
                 $content = User_Form::setPermissions($_REQUEST['group_id'], 'group');
                 break;
@@ -217,13 +217,13 @@ class User_Action {
 
             case 'manage_groups':
                 $panel->setCurrentTab('manage_groups');
-                Core\Core::killSession('Last_Member_Search');
+                \core\Core::killSession('Last_Member_Search');
                 $title = dgettext('users', 'Manage Groups');
                 $content = User_Form::manageGroups();
                 break;
 
             case 'manageMembers':
-                Core\Core::initModClass('users', 'Group.php');
+                \core\Core::initModClass('users', 'Group.php');
                 $title = dgettext('users', 'Manage Members') . ' : ' . $group->getName();
                 $content = User_Form::manageMembers($group);
                 break;
@@ -316,7 +316,7 @@ class User_Action {
 
                     $user->setActive(true);
                     $user->setApproved(true);
-                    if (Core\Error::logIfError($user->save())) {
+                    if (core\Error::logIfError($user->save())) {
                         $title = dgettext('users', 'Sorry');
                         $content = dgettext('users', 'An error occurred when trying to save the user. Check your logs.');
                         break;
@@ -365,17 +365,17 @@ class User_Action {
                     return;
                 }
 
-                Core\Core::initModClass('users', 'Group.php');
+                \core\Core::initModClass('users', 'Group.php');
                 $result = User_Action::postGroup($group);
 
-                if (Core\Error::isError($result)){
+                if (core\Error::isError($result)){
                     $message = $result->getMessage();
                     $title = isset($group->id) ? dgettext('users', 'Edit Group') : dgettext('users', 'Create Group');
                     $content = User_form::groupForm($group);
                 } else {
                     $result = $group->save();
 
-                    if (Core\Error::logIfError($result)) {
+                    if (core\Error::logIfError($result)) {
                         $message = dgettext('users', 'An error occurred when trying to save the group.');
                     } else {
                         $message = dgettext('users', 'Group created.');
@@ -391,7 +391,7 @@ class User_Action {
                     return;
                 }
 
-                Core\Core::initModClass('users', 'Group.php');
+                \core\Core::initModClass('users', 'Group.php');
                 $group->addMember($_REQUEST['member']);
                 $group->save();
                 unset($_SESSION['Last_Member_Search']);
@@ -404,7 +404,7 @@ class User_Action {
                     return;
                 }
 
-                Core\Core::initModClass('users', 'Group.php');
+                \core\Core::initModClass('users', 'Group.php');
                 $group->dropMember($_REQUEST['member']);
                 $group->save();
                 unset($_SESSION['Last_Member_Search']);
@@ -437,7 +437,7 @@ class User_Action {
                 break;
 
             default:
-                Core\Core::errorPage('404');
+                \core\Core::errorPage('404');
                 break;
         }
 
@@ -445,7 +445,7 @@ class User_Action {
         $template['TITLE'] = $title;
         $template['MESSAGE'] = $message;
 
-        $final = Core\Template::process($template, 'users', 'main.tpl');
+        $final = \core\Template::process($template, 'users', 'main.tpl');
 
         $panel->setContent($final);
 
@@ -457,10 +457,10 @@ class User_Action {
         if (!isset($_GET['key_id'])) {
             echo dgettext('users', 'Missing key information.');
         }
-        $key = new Core\Key((int)$_GET['key_id']);
+        $key = new \core\Key((int)$_GET['key_id']);
 
-        if (!Core\Key::checkKey($key, false)) {
-            Core\Error::log(USER_BAD_KEY, 'users', 'User_Action::popupPermission', "Key : " . $_GET['key_id']);
+        if (!core\Key::checkKey($key, false)) {
+            \core\Error::log(USER_BAD_KEY, 'users', 'User_Action::popupPermission', "Key : " . $_GET['key_id']);
             echo dgettext('users', 'Unable to set permissions. Bad key data.');
             Layout::nakedDisplay();
         }
@@ -481,7 +481,7 @@ class User_Action {
         Current_User::allow($key->module, $key->edit_permission)) {
             $tpl = User_Form::permissionMenu($key, true);
 
-            return Core\Template::process($tpl, 'users', 'forms/permission_pop.tpl');
+            return \core\Template::process($tpl, 'users', 'forms/permission_pop.tpl');
         }
     }
 
@@ -491,9 +491,9 @@ class User_Action {
             return;
         }
 
-        $key = new Core\Key((int)$_REQUEST['key_id']);
+        $key = new \core\Key((int)$_REQUEST['key_id']);
 
-        if (!Core\Key::checkKey($key, false)) {
+        if (!core\Key::checkKey($key, false)) {
             return;
         }
 
@@ -511,12 +511,12 @@ class User_Action {
         if (isset($_POST['popbox'])) {
             Layout::nakedDisplay(javascript('close_refresh', array('refresh'=>0)));
         } else {
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 $_SESSION['Permission_Message'] = dgettext('users', 'An error occurred.');
             } else {
                 $_SESSION['Permission_Message'] = dgettext('users', 'Permissions updated.');
             }
-            Core\Core::goBack();
+            \core\Core::goBack();
         }
     }
 
@@ -534,7 +534,7 @@ class User_Action {
     public function sendMessage($message, $command)
     {
         $_SESSION['User_Admin_Message'] = $message;
-        Core\Core::reroute('index.php?module=users&action=admin&command='
+        \core\Core::reroute('index.php?module=users&action=admin&command='
         . $command . '&authkey=' . Current_User::getAuthKey());
     }
 
@@ -546,7 +546,7 @@ class User_Action {
         $new_user_method = PHPWS_User::getUserSetting('new_user_method');
 
         $result = $user->setUsername($_POST['username']);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $error['USERNAME_ERROR'] = dgettext('users', 'Please try another user name.');
         }
 
@@ -558,7 +558,7 @@ class User_Action {
         if (!$user->isUser() || (!empty($_POST['password1']) || !empty($_POST['password2']))){
             $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
 
-            if (Core\Error::isError($result)) {
+            if (core\Error::isError($result)) {
                 $error['PASSWORD_ERROR'] = $result->getMessage();
             }
             else {
@@ -570,7 +570,7 @@ class User_Action {
             $error['EMAIL_ERROR'] = dgettext('users', 'Missing an email address.');
         } else {
             $result = $user->setEmail($_POST['email']);
-            if (Core\Error::isError($result)) {
+            if (core\Error::isError($result)) {
                 $error['EMAIL_ERROR'] = dgettext('users', 'This email address cannot be used.');
             }
         }
@@ -599,10 +599,10 @@ class User_Action {
 
     public static function postUser(PHPWS_User $user, $set_username=true)
     {
-        if (!$user->id || ($user->authorize == Core\Settings::get('users', 'local_script') && $set_username)) {
+        if (!$user->id || ($user->authorize == \core\Settings::get('users', 'local_script') && $set_username)) {
             $user->_prev_username = $user->username;
             $result = $user->setUsername($_POST['username']);
-            if (Core\Error::isError($result)) {
+            if (core\Error::isError($result)) {
                 $error['USERNAME_ERROR'] = $result->getMessage();
             }
 
@@ -614,7 +614,7 @@ class User_Action {
 
         if (isset($_POST['display_name'])) {
             $result = $user->setDisplayName($_POST['display_name']);
-            if (Core\Error::isError($result)) {
+            if (core\Error::isError($result)) {
                 $error['DISPLAY_ERROR'] = $result->getMessage();
             }
         }
@@ -622,7 +622,7 @@ class User_Action {
         if (!$user->isUser() || (!empty($_POST['password1']) || !empty($_POST['password2']))){
             $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
 
-            if (Core\Error::isError($result)) {
+            if (core\Error::isError($result)) {
                 $error['PASSWORD_ERROR'] = $result->getMessage();
             }
             else {
@@ -631,7 +631,7 @@ class User_Action {
         }
 
         $result = $user->setEmail($_POST['email']);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $error['EMAIL_ERROR'] = $result->getMessage();
         }
 
@@ -656,10 +656,10 @@ class User_Action {
 
     public static function cpanel()
     {
-        Core\Core::initModClass('controlpanel', 'Panel.php');
-        $link = Core\Text::linkAddress('users', array('action'=>'admin'),false,false,true,false);
+        \core\Core::initModClass('controlpanel', 'Panel.php');
+        $link = \core\Text::linkAddress('users', array('action'=>'admin'),false,false,true,false);
 
-        if (Core\Settings::get('users', 'allow_new_users') || Current_User::isDeity()) {
+        if (core\Settings::get('users', 'allow_new_users') || Current_User::isDeity()) {
             $tabs['new_user'] = array('title'=>dgettext('users', 'New User'), 'link'=>$link);
         }
 
@@ -713,22 +713,22 @@ class User_Action {
                         $title = dgettext('users', 'Login page');
                         $message = dgettext('users', 'Username and password combination not found.');
                         $content = User_Form::loginPage();
-                    } elseif(Core\Error::isError($result)) {
+                    } elseif(core\Error::isError($result)) {
                         if (preg_match('/L\d/', $result->code)) {
                             $title = dgettext('users', 'Sorry');
                             $content = $result->getMessage();
                             $content .= ' ' . sprintf('<a href="mailto:%s">%s</a>', PHPWS_User::getUserSetting('site_contact'),
                             dgettext('users', 'Contact the site administrator'));
                         } else {
-                            Core\Error::log($result);
+                            \core\Error::log($result);
                             $message = dgettext('users', 'A problem occurred when accessing user information. Please try again later.');
                         }
                     } else {
                         Current_User::getLogin();
-                        Core\Core::returnToBookmark();
+                        \core\Core::returnToBookmark();
                     }
                 } else {
-                    Core\Core::errorPage('403');
+                    \core\Core::errorPage('403');
                 }
                 break;
 
@@ -746,7 +746,7 @@ class User_Action {
 
             case 'my_page':
                 if ($auth->local_user) {
-                    Core\Core::initModClass('users', 'My_Page.php');
+                    \core\Core::initModClass('users', 'My_Page.php');
                     $my_page = new My_Page;
                     $my_page->main();
                 } else {
@@ -789,13 +789,13 @@ class User_Action {
             case 'logout':
                 $auth = Current_User::getAuthorization();
                 $auth->logout();
-                Core\Core::killAllSessions();
-                Core\Core::reroute('index.php?module=users&action=reset');
+                \core\Core::killAllSessions();
+                \core\Core::reroute('index.php?module=users&action=reset');
                 break;
 
             case 'login_page':
                 if (Current_User::isLogged()) {
-                    Core\Core::home();
+                    \core\Core::home();
                 }
                 $title = dgettext('users', 'Login Page');
                 $content = User_Form::loginPage();
@@ -803,7 +803,7 @@ class User_Action {
 
             case 'confirm_user':
                 if (Current_User::isLogged()) {
-                    Core\Core::home();
+                    \core\Core::home();
                 }
                 if (User_Action::confirmUser()) {
                     $title = dgettext('users', 'Welcome!');
@@ -818,7 +818,7 @@ class User_Action {
 
             case 'forgot_password':
                 if (Current_User::isLogged()) {
-                    Core\Core::home();
+                    \core\Core::home();
                 }
                 $title = dgettext('users', 'Forgot Password');
                 $content = User_Form::forgotForm();
@@ -842,7 +842,7 @@ class User_Action {
             case 'reset_pw':
                 $pw_result = User_Action::finishResetPW();
                 switch ($pw_result) {
-                    case Core\Error::isError($pw_result):
+                    case \core\Error::isError($pw_result):
                         $title = dgettext('users', 'Reset my password');
                         $content = dgettext('users', 'Passwords were not acceptable for the following reason:');
                         $content .= '<br />' . $pw_result->getmessage() . '<br />';
@@ -855,13 +855,13 @@ class User_Action {
                         break;
 
                     case 1:
-                        Core\Core::home();
+                        \core\Core::home();
                         break;
                 }
                 break;
 
             default:
-                Core\Core::errorPage('404');
+                \core\Core::errorPage('404');
                 break;
         }
 
@@ -878,7 +878,7 @@ class User_Action {
         }
 
         if (isset($tag)) {
-            $final = Core\Template::process($tag, 'users', 'user_main.tpl');
+            $final = \core\Template::process($tag, 'users', 'user_main.tpl');
             Layout::add($final);
         }
     }
@@ -888,13 +888,13 @@ class User_Action {
         $hash = $_GET['hash'];
         if (preg_match('/\W/', $hash)) {
             Security::log(sprintf(dgettext('users', 'User tried to send bad hash (%s) to confirm user.'), $hash));
-            Core\Core::errorPage('400');
+            \core\Core::errorPage('400');
         }
-        $db = new Core\DB('users_signup');
+        $db = new \core\DB('users_signup');
         $db->addWhere('authkey', $hash);
         $row = $db->select('row');
 
-        if (Core\Error::logIfError($row)) {
+        if (core\Error::logIfError($row)) {
             return false;
         } elseif (empty($row)) {
             return false;
@@ -906,7 +906,7 @@ class User_Action {
             if ($row['deadline'] > time()) {
                 $db->delete();
                 $user->approved = 1;
-                if (Core\Error::logIfError($user->save())) {
+                if (core\Error::logIfError($user->save())) {
                     return false;
                 } else {
                     User_Action::assignDefaultGroup($user);
@@ -922,10 +922,10 @@ class User_Action {
 
     public function cleanUpConfirm()
     {
-        $db = new Core\DB('users_signup');
+        $db = new \core\DB('users_signup');
         $db->addWhere('deadline', time(), '<');
         $result = $db->delete();
-        Core\Error::logIfError($result);
+        \core\Error::logIfError($result);
     }
 
     public function successfulSignup($user)
@@ -937,7 +937,7 @@ class User_Action {
                     User_Action::assignDefaultGroup($user);
                     $content[] = dgettext('users', 'Account created successfully!');
                     $content[] = dgettext('users', 'You will return to the home page in five seconds.');
-                    $content[] = Core\Text::moduleLink(dgettext('users', 'Click here if you are not redirected.'));
+                    $content[] = \core\Text::moduleLink(dgettext('users', 'Click here if you are not redirected.'));
                     Layout::metaRoute();
                 } else {
                     $content[] = dgettext('users', 'An error occurred when trying to create your account. Please try again later.');
@@ -950,7 +950,7 @@ class User_Action {
                         $content[] = dgettext('users', 'User created successfully. Check your email for your login information.');
                     } else {
                         $result = $user->kill();
-                        Core\Error::logIfError($result);
+                        \core\Error::logIfError($result);
                         $content[] = dgettext('users', 'There was problem creating your acccount. Check back later.');
                     }
                 } else {
@@ -982,7 +982,7 @@ class User_Action {
 
     public function _getSignupMessage($authkey)
     {
-        $http = Core\Core::getHomeHttp();
+        $http = \core\Core::getHomeHttp();
 
         $template['LINK'] = sprintf('%sindex.php?module=users&action=user&command=confirm_user&hash=%s',
         $http, $authkey);
@@ -990,7 +990,7 @@ class User_Action {
         $template['HOURS'] = NEW_SIGNUP_WINDOW;
         $template['SITE_NAME'] = Layout::getPageTitle(true);
 
-        return Core\Template::process($template, 'users', 'confirm/confirm.en-us.tpl');
+        return \core\Template::process($template, 'users', 'confirm/confirm.en-us.tpl');
     }
 
     public function _createSignupConfirmation($user_id)
@@ -998,12 +998,12 @@ class User_Action {
         $deadline = time() + (3600 * NEW_SIGNUP_WINDOW);
         $authkey = md5($deadline . $user_id);
 
-        $db = new Core\DB('users_signup');
+        $db = new \core\DB('users_signup');
         $db->addValue('authkey', $authkey);
         $db->addValue('user_id', $user_id);
         $db->addValue('deadline', $deadline);
         $result = $db->insert();
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return false;
         } else {
             return $authkey;
@@ -1015,7 +1015,7 @@ class User_Action {
         $user->setPassword($user->_password);
         $user->setApproved($approved);
         $result = $user->save();
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return false;
         } elseif ($approved) {
             $user->login();
@@ -1027,7 +1027,7 @@ class User_Action {
 
     public function postPermission()
     {
-        Core\Core::initModClass('users', 'Permission.php');
+        \core\Core::initModClass('users', 'Permission.php');
 
         extract($_POST);
 
@@ -1052,7 +1052,7 @@ class User_Action {
     public function postGroup(PHPWS_Group $group, $showLikeGroups=false)
     {
         $result = $group->setName($_POST['groupname'], true);
-        if (Core\Error::isError($result))
+        if (core\Error::isError($result))
         return $result;
         $group->setActive(true);
         return true;
@@ -1076,9 +1076,9 @@ class User_Action {
             return $GLOBALS['User_Group_List'];
         }
 
-        Core\Core::initModClass('users', 'Group.php');
+        \core\Core::initModClass('users', 'Group.php');
 
-        $db = new Core\DB('users_groups');
+        $db = new \core\DB('users_groups');
         if ($mode == 'users') {
             $db->addWhere('user_id', 0, '>');
         }
@@ -1092,7 +1092,7 @@ class User_Action {
         $db->addColumn('name');
 
         $result = $db->select('col');
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -1111,7 +1111,7 @@ class User_Action {
 
         if (!isset($_POST['site_contact'])) {
             $error = dgettext('users', 'You need to set a site contact address.');
-        } elseif (!Core\Text::isValidInput($_POST['site_contact'], 'email')) {
+        } elseif (!core\Text::isValidInput($_POST['site_contact'], 'email')) {
             $error = dgettext('users', 'Please enter a valid email address as a site contact.');
         }
 
@@ -1146,22 +1146,22 @@ class User_Action {
         }
         $settings['forbidden_usernames'] = str_replace(' ', "\n", strtolower(strip_tags($_POST['forbidden_usernames'])));
 
-        Core\Settings::set('users', $settings);
+        \core\Settings::set('users', $settings);
         if ($error) {
             return $error;
         } else {
-            Core\Settings::save('users');
+            \core\Settings::save('users');
             return true;
         }
     }
 
     public static function getAuthorizationList()
     {
-        $db = new Core\DB('users_auth_scripts');
+        $db = new \core\DB('users_auth_scripts');
         $db->addOrder('display_name');
         $result = $db->select();
 
-        if (Core\Error::logIfError($result)){
+        if (core\Error::logIfError($result)){
             return null;
         }
 
@@ -1176,11 +1176,11 @@ class User_Action {
                 return false;
             }
 
-            $db = new Core\DB('users_auth_scripts');
+            $db = new \core\DB('users_auth_scripts');
             $db->addWhere('filename', strip_tags($_POST['file_list']));
             $result = $db->select('one');
 
-            if (Core\Error::isError($result)) {
+            if (core\Error::isError($result)) {
                 return $result;
             } elseif (!empty($result)) {
                 return false;
@@ -1190,22 +1190,22 @@ class User_Action {
             $db->addValue('display_name', $_POST['file_list']);
             $db->addValue('filename', $_POST['file_list']);
             $result = $db->insert();
-            if (Core\Error::isError($result)) {
+            if (core\Error::isError($result)) {
                 return $result;
             }
         } else {
             if (isset($_POST['default_authorization'])) {
-                Core\Settings::set('users', 'default_authorization', (int)$_POST['default_authorization']);
-                Core\Settings::save('users');
+                \core\Settings::set('users', 'default_authorization', (int)$_POST['default_authorization']);
+                \core\Settings::save('users');
             }
 
             if (!empty($_POST['default_group'])) {
-                $db = new Core\DB('users_auth_scripts');
+                $db = new \core\DB('users_auth_scripts');
                 foreach ($_POST['default_group'] as $auth_id => $group_id) {
                     $db->reset();
                     $db->addWhere('id', $auth_id);
                     $db->addValue('default_group', $group_id);
-                    Core\Error::logIfError($db->update());
+                    \core\Error::logIfError($db->update());
                 }
             }
         }
@@ -1214,15 +1214,15 @@ class User_Action {
 
     public function dropAuthorization($script_id)
     {
-        $db = new Core\DB('users_auth_scripts');
+        $db = new \core\DB('users_auth_scripts');
         $db->addWhere('id', (int)$script_id);
         $result = $db->delete();
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
-        $db2 = new Core\DB('users');
+        $db2 = new \core\DB('users');
         $db2->addWhere('authorize', $script_id);
-        $db2->addValue('authorize', Core\Settings::get('users', 'local_script'));
+        $db2->addValue('authorize', \core\Settings::get('users', 'local_script'));
         return $db2->update();
     }
 
@@ -1240,14 +1240,14 @@ class User_Action {
                 return false;
             }
 
-            $db = new Core\DB('users');
+            $db = new \core\DB('users');
             $db->addWhere('username', strtolower($username));
             $db->addColumn('email');
             $db->addColumn('id');
             $db->addColumn('deity');
             $db->addColumn('authorize');
             $user_search = $db->select('row');
-            if (Core\Error::logIfError($user_search)) {
+            if (core\Error::logIfError($user_search)) {
                 $content = dgettext('users', 'User name not found. Check your spelling or enter an email address instead.');
                 return false;
             } elseif (empty($user_search)) {
@@ -1266,14 +1266,14 @@ class User_Action {
                     return false;
                 }
 
-                if (Core\Core::isPosted()) {
+                if (core\Core::isPosted()) {
                     $content = dgettext('users', 'Please check your email for a response.');
                     return true;
                 }
 
                 if (empty($user_search['email'])) {
                     $content = dgettext('users', 'Your email address is missing from your account. Please contact the site administrators.');
-                    Core\Error::log(USER_ERR_NO_EMAIL, 'users', 'User_Action::postForgot');
+                    \core\Error::log(USER_ERR_NO_EMAIL, 'users', 'User_Action::postForgot');
                     return true;
                 }
 
@@ -1293,23 +1293,23 @@ class User_Action {
                 return false;
             }
 
-            if (!Core\Text::isValidInput($email, 'email')) {
+            if (!core\Text::isValidInput($email, 'email')) {
                 $content = dgettext('users', 'Email address not found. Please try again.');
                 return false;
             }
 
-            $db = new Core\DB('users');
+            $db = new \core\DB('users');
             $db->addWhere('email', $email);
             $db->addColumn('username');
             $user_search = $db->select('row');
-            if (Core\Error::logIfError($user_search)) {
+            if (core\Error::logIfError($user_search)) {
                 $content = dgettext('users', 'Email address not found. Please try again.');
                 return false;
             } elseif (empty($user_search)) {
                 $content = dgettext('users', 'Email address not found. Please try again.');
                 return false;
             } else {
-                if (Core\Core::isPosted()) {
+                if (core\Core::isPosted()) {
                     $content = dgettext('users', 'Please check your email for a response.');
                     return true;
                 }
@@ -1327,11 +1327,11 @@ class User_Action {
 
     public function emailPasswordReset($user_id, $email)
     {
-        $db = new Core\DB('users_pw_reset');
+        $db = new \core\DB('users_pw_reset');
 
         // clear old reset rows
         $db->addWhere('timeout', time(), '<');
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
         $db->reset();
 
 
@@ -1339,7 +1339,7 @@ class User_Action {
         $db->addWhere('user_id', (int)$user_id);
         $db->addColumn('user_id');
         $reset_present = $db->select('one');
-        if (Core\Error::logIfError($reset_present)) {
+        if (core\Error::logIfError($reset_present)) {
             return false;
         } elseif ($reset_present) {
             return true;
@@ -1347,7 +1347,7 @@ class User_Action {
         $db->reset();
 
         $page_title = $_SESSION['Layout_Settings']->getPageTitle(true);
-        $url = Core\Core::getHomeHttp();
+        $url = \core\Core::getHomeHttp();
         $hash = md5(time() .  $email);
 
         $message[] = dgettext('users', 'Did you forget your password at our site?');
@@ -1373,7 +1373,7 @@ class User_Action {
             $db->addValue('authhash', $hash);
             // 1 hour limit = 3600
             $db->addValue('timeout', time() + 3600);
-            if (Core\Error::logIfError($db->insert())) {
+            if (core\Error::logIfError($db->insert())) {
                 return false;
             } else {
                 return true;
@@ -1386,7 +1386,7 @@ class User_Action {
     public function emailUsernameReminder($username, $email)
     {
         $page_title = $_SESSION['Layout_Settings']->getPageTitle(true);
-        $url = Core\Core::getHomeHttp();
+        $url = \core\Core::getHomeHttp();
         $hash = md5(time() .  $email);
 
         $message[] = dgettext('users', 'Did you forget your user name at our site?');
@@ -1416,13 +1416,13 @@ class User_Action {
             return 0;
         }
 
-        $db = new Core\DB('users_pw_reset');
+        $db = new \core\DB('users_pw_reset');
         $db->addWhere('authhash', $auth);
         $db->addWhere('timeout', time(), '>');
         $db->addColumn('user_id');
         $result = $db->select('one');
 
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             return false;
         } elseif (empty($result)) {
             return 0;
@@ -1434,7 +1434,7 @@ class User_Action {
     public function finishResetPW()
     {
         $result = PHPWS_User::checkPassword($_POST['password1'], $_POST['password2']);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -1444,14 +1444,14 @@ class User_Action {
             return 0;
         }
 
-        $db = new Core\DB('users_pw_reset');
+        $db = new \core\DB('users_pw_reset');
         $db->addWhere('user_id', $user_id);
         $db->addWhere('authhash', $auth);
         $db->addWhere('timeout', time(), '>');
         $result = $db->select();
         $db->reset();
         $db->addWhere('user_id', $user_id);
-        if (Core\Error::logIfError($result)) {
+        if (core\Error::logIfError($result)) {
             $db->delete();
             return 0;
         } elseif (empty($result)) {
@@ -1461,7 +1461,7 @@ class User_Action {
             $user = new PHPWS_User($user_id);
             $user->setPassword($_POST['password1']);
             $result = $user->save();
-            if (Core\Error::logIfError($result)) {
+            if (core\Error::logIfError($result)) {
                 return 0;
             }
 
@@ -1475,8 +1475,8 @@ class User_Action {
 
     public function checkPermissionTables()
     {
-        Core\Core::initModClass('users', 'Permission.php');
-        $db = new Core\DB('modules');
+        \core\Core::initModClass('users', 'Permission.php');
+        $db = new \core\DB('modules');
         $db->addWhere('active', 1);
         $db->addColumn('title');
         $result = $db->select('col');
@@ -1497,21 +1497,21 @@ class User_Action {
 
     public function activateUser($user_id, $value)
     {
-        $db = new Core\DB('users');
+        $db = new \core\DB('users');
         $db->addWhere('id', (int)$user_id);
         $db->addWhere('deity', 0);
         $db->addValue('active', $value ? 1 : 0);
-        if (!Core\Error::logIfError($db->update())) {
-            $db = new Core\DB('users_groups');
+        if (!core\Error::logIfError($db->update())) {
+            $db = new \core\DB('users_groups');
             $db->addWhere('user_id', $user_id);
             $db->addValue('active',  $value ? 1 : 0);
-            return Core\Error::logIfError($db->update());
+            return \core\Error::logIfError($db->update());
         }
     }
 
     public function testForbidden($user)
     {
-        $forbidden = Core\Settings::get('users', 'forbidden_usernames');
+        $forbidden = \core\Settings::get('users', 'forbidden_usernames');
         if (empty($forbidden)) {
             return true;
         }
@@ -1543,10 +1543,10 @@ class User_Action {
 
         $vars['action']  = 'admin';
         $vars['command'] = 'notify_user';
-        $content[] = Core\Text::secureLink(dgettext('users', 'Yes, send them an email'), 'users', $vars);
+        $content[] = \core\Text::secureLink(dgettext('users', 'Yes, send them an email'), 'users', $vars);
 
         $vars['command'] = 'do_not_notify';
-        $content[] = Core\Text::secureLink(dgettext('users', 'No, do not notify'), 'users', $vars);
+        $content[] = \core\Text::secureLink(dgettext('users', 'No, do not notify'), 'users', $vars);
 
         return implode('<br />', $content);
     }
@@ -1563,7 +1563,7 @@ class User_Action {
 
         $body[] = sprintf(dgettext('users', '%s created an user account for you.'), $page_title);
         $body[] = dgettext('users', 'You may log-in using the following information:');
-        $body[] = sprintf(dgettext('users', 'Site address: %s'), Core\Core::getHomeHttp());
+        $body[] = sprintf(dgettext('users', 'Site address: %s'), \core\Core::getHomeHttp());
         $body[] = sprintf(dgettext('users', 'Username: %s'), $username);
         $body[] = sprintf(dgettext('users', 'Password: %s'), $password);
         $body[] = dgettext('users', 'Please change your password immediately after logging in.');
@@ -1580,7 +1580,7 @@ class User_Action {
 
     public static function assignDefaultGroup(PHPWS_User $user)
     {
-        $db = new Core\DB('users_auth_scripts');
+        $db = new \core\DB('users_auth_scripts');
         $db->addColumn('default_group');
         $db->addColumn('id');
         $db->setIndexBy('id');

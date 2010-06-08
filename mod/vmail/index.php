@@ -27,7 +27,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-Core\Core::initModClass('vmail', 'vMail.php');
+core\Core::initModClass('vmail', 'vMail.php');
 $vmail = new vMail;
 
 if (isset($_REQUEST['aop'])) {
@@ -39,7 +39,7 @@ if (isset($_REQUEST['aop'])) {
 } elseif (isset($_REQUEST['recipient'])) {
     $vmail->userMenu('view_recipient');
 } else {
-    Core\Core::home();
+    \core\Core::home();
 }
 
 

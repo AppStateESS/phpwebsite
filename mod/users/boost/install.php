@@ -8,30 +8,30 @@
 
 function users_install(&$content)
 {
-    Core\Core::initModClass('users', 'Users.php');
-    Core\Core::initModClass('users', 'Action.php');
-    Core\Core::configRequireOnce('users', 'config.php');
+    \core\Core::initModClass('users', 'Users.php');
+    \core\Core::initModClass('users', 'Action.php');
+    \core\Core::configRequireOnce('users', 'config.php');
 
     if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'branch') {
-        $db = new Core\DB;
-        Core\Settings::clear();
+        $db = new \core\DB;
+        \core\Settings::clear();
         if (!createLocalAuthScript()) {
             $content[] = 'Could not create authorization script.';
             return false;
         }
         Branch::loadHubDB();
-        $db = new Core\DB('mod_settings');
+        $db = new \core\DB('mod_settings');
         $db->addWhere('module', 'users');
         $db->addWhere('setting_name', 'site_contact');
         $db->addColumn('small_char');
         $site_contact = $db->select('one');
 
-        $db = new Core\DB('users');
+        $db = new \core\DB('users');
         $sql = 'select a.password, b.* from user_authorization as a, users as b where b.deity = 1 and a.username = b.username';
         $deities = $db->getAll($sql);
 
-        if (Core\Error::isError($deities)) {
-            Core\Error::log($deities);
+        if (core\Error::isError($deities)) {
+            \core\Error::log($deities);
             $content[] = dgettext('users', 'Could not access hub database.');
             return FALSE;
         }
@@ -40,17 +40,17 @@ function users_install(&$content)
             return FALSE;
         } else {
             Branch::restoreBranchDB();
-            Core\Settings::set('users', 'site_contact', $site_contact);
-            Core\Settings::save('users');
-            $auth_db = new Core\DB('user_authorization');
-            $user_db = new Core\DB('users');
-            $group_db = new Core\DB('users_groups');
+            \core\Settings::set('users', 'site_contact', $site_contact);
+            \core\Settings::save('users');
+            $auth_db = new \core\DB('user_authorization');
+            $user_db = new \core\DB('users');
+            $group_db = new \core\DB('users_groups');
             foreach ($deities as $deity) {
                 $auth_db->addValue('username', $deity['username']);
                 $auth_db->addValue('password', $deity['password']);
                 $result = $auth_db->insert();
-                if (Core\Error::isError($result)) {
-                    Core\Error::log($result);
+                if (core\Error::isError($result)) {
+                    \core\Error::log($result);
                     $content[] = dgettext('users', 'Unable to copy deity login to branch.');
                     continue;
                 }
@@ -58,8 +58,8 @@ function users_install(&$content)
                 $user_db->addValue($deity);
                 $result = $user_db->insert();
 
-                if (Core\Error::isError($result)) {
-                    Core\Error::log($result);
+                if (core\Error::isError($result)) {
+                    \core\Error::log($result);
                     $content[] = dgettext('users', 'Unable to copy deity users to branch.');
                     Branch::loadBranchDB();
                     return FALSE;
@@ -68,7 +68,7 @@ function users_install(&$content)
                 $group_db->addValue('active', 1);
                 $group_db->addValue('name', $deity['username']);
                 $group_db->addValue('user_id', $result);
-                if (Core\Error::logIfError($group_db->insert())) {
+                if (core\Error::logIfError($group_db->insert())) {
                     $content[] = dgettext('users', 'Unable to copy deity user group to branch.');
                     Branch::loadBranchDB();
                     return FALSE;
@@ -88,7 +88,7 @@ function users_install(&$content)
         return false;
     }
 
-    $authorize_id = Core\Settings::get('users', 'local_script');
+    $authorize_id = \core\Settings::get('users', 'local_script');
     $user = new PHPWS_User;
     $content[] = '<hr />';
 
@@ -97,9 +97,9 @@ function users_install(&$content)
 
 
 function userForm(&$user, $errors=NULL){
-        Core\Core::initModClass('users', 'Form.php');
+        \core\Core::initModClass('users', 'Form.php');
 
-    $form = new Core\Form;
+    $form = new \core\Form;
 
     if (isset($_REQUEST['module'])) {
         $form->addHidden('module', $_REQUEST['module']);
@@ -128,7 +128,7 @@ function userForm(&$user, $errors=NULL){
         }
     }
 
-    $result = Core\Template::process($template, 'users', 'forms/userForm.tpl');
+    $result = \core\Template::process($template, 'users', 'forms/userForm.tpl');
 
     $content[] = $result;
     return implode("\n", $content);
@@ -136,20 +136,20 @@ function userForm(&$user, $errors=NULL){
 
 function createLocalAuthScript()
 {
-    if (Core\Settings::get('users', 'local_script')) {
+    if (core\Settings::get('users', 'local_script')) {
         return true;
     }
-    $db = new Core\DB('users_auth_scripts');
+    $db = new \core\DB('users_auth_scripts');
     $db->addValue('display_name', dgettext('users', 'Local'));
     $db->addValue('filename', 'local.php');
     $authorize_id = $db->insert();
 
-    if (Core\Error::logIfError($authorize_id)) {
+    if (core\Error::logIfError($authorize_id)) {
         return false;
     }
-    Core\Settings::set('users', 'default_authorization', $authorize_id);
-    Core\Settings::set('users', 'local_script', $authorize_id);
-    Core\Settings::save('users');
+    \core\Settings::set('users', 'default_authorization', $authorize_id);
+    \core\Settings::set('users', 'local_script', $authorize_id);
+    \core\Settings::save('users');
     return true;
 }
 

@@ -5,7 +5,7 @@
  * @version $Id$
  */
 
-Core\Core::requireConfig('breadcrumb');
+core\Core::requireConfig('breadcrumb');
 
 class Breadcrumb {
     public $sticky_home   = BC_STICKY_HOME;
@@ -93,15 +93,15 @@ class Breadcrumb {
         }
 
         if (!empty($tpl)) {
-            $content = Core\Template::process($tpl, 'breadcrumb', 'bc.tpl');
+            $content = \core\Template::process($tpl, 'breadcrumb', 'bc.tpl');
             Layout::add($content, 'breadcrumb', 'view');
         }
     }
 
     public function recordView()
     {
-        $key = Core\Key::getCurrent();
-        if (!Core\Key::checkKey($key, TRUE)) {
+        $key = \core\Key::getCurrent();
+        if (!core\Key::checkKey($key, TRUE)) {
             return;
         }
 

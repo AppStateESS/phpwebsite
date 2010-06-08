@@ -9,7 +9,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-Core\Core::initModClass('signup', 'Signup.php');
+core\Core::initModClass('signup', 'Signup.php');
 $signup = new Signup;
 if (isset($_REQUEST['aop'])) {
     $signup->adminMenu();
@@ -18,7 +18,7 @@ if (isset($_REQUEST['aop'])) {
 } elseif (isset($_REQUEST['sheet_id'])) {
     $signup->userMenu('signup_sheet');
 } else {
-    Core\Core::home();
+    \core\Core::home();
 }
 
 ?>

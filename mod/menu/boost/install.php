@@ -7,14 +7,14 @@
 
 function menu_install(&$content)
 {
-    Core\Core::initModClass('menu', 'Menu_Item.php');
+    \core\Core::initModClass('menu', 'Menu_Item.php');
     $menu = new Menu_Item;
     $menu->title = dgettext('menu', 'Main menu');
     $menu->template = 'basic';
     $menu->pin_all = 1;
     $result = $menu->save();
-    if (Core\Error::isError($result)) {
-        Core\Error::log($result);
+    if (core\Error::isError($result)) {
+        \core\Error::log($result);
         return false;
     } else {
         $content[] = dgettext('menu', 'Default menu created successfully.');

@@ -22,12 +22,12 @@ class Related_Action {
         $vars['action'] = 'start';
         $vars['key'] = $related->key_id;
 
-        $template['LINK'] = Core\Text::secureLink(dgettext('related', 'Build Related'), 'related', $vars);
+        $template['LINK'] = \core\Text::secureLink(dgettext('related', 'Build Related'), 'related', $vars);
         $template['TITLE'] = $related->getUrl(TRUE);
 
         $module = new PHPWS_Module($related->_key->module);
         $template['MODULE'] = $module->getProperName(TRUE);
-        return Core\Template::process($template, 'related', 'create.tpl');
+        return \core\Template::process($template, 'related', 'create.tpl');
     }
 
     public static function edit(Related $current)
@@ -43,7 +43,7 @@ class Related_Action {
         $js['address'] = 'index.php?module=related&action=postTitle';
         $js['answer'] = $related->title;
         $js['value_name'] = 'new_title';
-        $js['link'] = Core\Icon::show('edit');
+        $js['link'] = \core\Icon::show('edit');
 
         $edit = javascript('prompt', $js);
 
@@ -96,7 +96,7 @@ class Related_Action {
         } else {
             $template['FRIEND_NAME'] = dgettext('related', 'View other items to add them to the list.');
         }
-        return Core\Template::process($template, 'related', 'edit.tpl');
+        return \core\Template::process($template, 'related', 'edit.tpl');
     }
 
 
@@ -108,7 +108,7 @@ class Related_Action {
             return $friends;
         }
 
-        $tpl = new Core\Template('related');
+        $tpl = new \core\Template('related');
         $result = $tpl->setFile('view.tpl');
 
         $template['TITLE'] = $related->getUrl(TRUE);
@@ -117,7 +117,7 @@ class Related_Action {
             $linkvars = array('action' => 'edit',
                               'id'     => $related->id
             );
-            $template['EDIT_LINK'] = Core\Text::moduleLink(dgettext('related', 'Edit'), 'related', $linkvars);
+            $template['EDIT_LINK'] = \core\Text::moduleLink(dgettext('related', 'Edit'), 'related', $linkvars);
         }
 
         foreach ($friends as $key=>$friend_item){
@@ -170,14 +170,14 @@ class Related_Action {
         $related->setKey($_GET['key']);
         $related->setBanked(TRUE);
         Related_Action::setBank($related);
-        Core\Core::reroute($related->getUrl());
+        \core\Core::reroute($related->getUrl());
     }
 
     public function quit()
     {
         $location = $_SESSION['Related_Bank']->getUrl();
         unset($_SESSION['Related_Bank']);
-        Core\Core::reroute($location);
+        \core\Core::reroute($location);
     }
 
     public function add()
@@ -201,7 +201,7 @@ class Related_Action {
             }
         }
 
-        Core\Core::reroute($friend->getUrl());
+        \core\Core::reroute($friend->getUrl());
     }
 
     public function up()
@@ -215,7 +215,7 @@ class Related_Action {
         }
 
         $_SESSION['Related_Bank']->moveFriendUp($_REQUEST['pos']);
-        Core\Core::reroute($_SESSION['Current_Friend']->getUrl());
+        \core\Core::reroute($_SESSION['Current_Friend']->getUrl());
     }
 
     public function down()
@@ -229,7 +229,7 @@ class Related_Action {
         }
 
         $_SESSION['Related_Bank']->moveFriendDown($_REQUEST['pos']);
-        Core\Core::reroute($_SESSION['Current_Friend']->getUrl());
+        \core\Core::reroute($_SESSION['Current_Friend']->getUrl());
     }
 
     public function remove()
@@ -243,7 +243,7 @@ class Related_Action {
         }
 
         $_SESSION['Related_Bank']->removeFriend($_REQUEST['pos']);
-        Core\Core::reroute($_SESSION['Current_Friend']->getUrl());
+        \core\Core::reroute($_SESSION['Current_Friend']->getUrl());
     }
 
     public function save()
@@ -254,8 +254,8 @@ class Related_Action {
 
         $result = $_SESSION['Related_Bank']->save();
 
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             Layout::add(dgettext('related', 'The Related module encountered a database error.'));
             return;
         }
@@ -269,7 +269,7 @@ class Related_Action {
 
         $related = Related_Action::getBank();
 
-        $form = new Core\Form;
+        $form = new \core\Form;
         $form->add('module', 'hidden', 'related');
         $form->add('action', 'hidden', 'postTitle');
         $form->add('title', 'text', $related->title);
@@ -280,7 +280,7 @@ class Related_Action {
 
         $template = $form->getTemplate();
 
-        echo Core\Template::process($template, 'related', 'change.tpl');
+        echo \core\Template::process($template, 'related', 'change.tpl');
         exit();
     }
 
@@ -290,7 +290,7 @@ class Related_Action {
             $related = & $_SESSION['Related_Bank'];
             $related->setTitle($_REQUEST['new_title']);
         }
-        Core\Core::reroute($related->getUrl());
+        \core\Core::reroute($related->getUrl());
     }
 
 }

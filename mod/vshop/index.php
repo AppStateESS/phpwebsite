@@ -27,7 +27,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-Core\Core::initModClass('vshop', 'vShop.php');
+core\Core::initModClass('vshop', 'vShop.php');
 $vshop = new vShop;
 
 if (isset($_REQUEST['aop'])) {

@@ -22,7 +22,7 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-Core\Core::requireConfig('whatsnew');
+core\Core::requireConfig('whatsnew');
 
 class Whatsnew {
     var $forms      = null;
@@ -56,7 +56,7 @@ class Whatsnew {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('whatsnew', 'Whatsnew settings saved.'));
-                    Core\Core::reroute('index.php?module=whatsnew&aop=menu');
+                    \core\Core::reroute('index.php?module=whatsnew&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -68,7 +68,7 @@ class Whatsnew {
                 }
                 if ($this->flushCache()) {
                     $this->forwardMessage(dgettext('whatsnew', 'Cache flushed.'));
-                    Core\Core::reroute('index.php?module=whatsnew&aop=menu');
+                    \core\Core::reroute('index.php?module=whatsnew&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -81,9 +81,9 @@ class Whatsnew {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'whatsnew', 'main_admin.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'whatsnew', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(Core\Template::process($tpl, 'whatsnew', 'main_admin.tpl'));
+            $this->panel->setContent(core\Template::process($tpl, 'whatsnew', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -95,7 +95,7 @@ class Whatsnew {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                Core\Core::errorPage('404');
+                \core\Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -105,7 +105,7 @@ class Whatsnew {
         switch($action) {
 
             case 'view':
-                $this->title = Core\Settings::get('whatsnew', 'title');
+                $this->title = \core\Settings::get('whatsnew', 'title');
                 $this->content = $this->whatsnewBlock();
                 break;
 
@@ -116,9 +116,9 @@ class Whatsnew {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(Core\Template::process($tpl, 'whatsnew', 'main_user.tpl'));
+            Layout::nakedDisplay(core\Template::process($tpl, 'whatsnew', 'main_user.tpl'));
         } else {
-            Layout::add(Core\Template::process($tpl, 'whatsnew', 'main_user.tpl'));
+            Layout::add(core\Template::process($tpl, 'whatsnew', 'main_user.tpl'));
         }
 
     }
@@ -140,14 +140,14 @@ class Whatsnew {
             if (isset($_SESSION['Whatsnew_Message']['title'])) {
                 $this->title = $_SESSION['Whatsnew_Message']['title'];
             }
-            Core\Core::killSession('Whatsnew_Message');
+            \core\Core::killSession('Whatsnew_Message');
         }
     }
 
 
     function loadForm($type)
     {
-        Core\Core::initModClass('whatsnew', 'Whatsnew_Forms.php');
+        \core\Core::initModClass('whatsnew', 'Whatsnew_Forms.php');
         $this->forms = new whatsnew_Forms;
         $this->forms->whatsnew = & $this;
         $this->forms->get($type);
@@ -156,7 +156,7 @@ class Whatsnew {
 
     function loadPanel()
     {
-        Core\Core::initModClass('controlpanel', 'Panel.php');
+        \core\Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('whatsnew-panel');
         $link = 'index.php?module=whatsnew&aop=menu';
 
@@ -174,61 +174,61 @@ class Whatsnew {
     {
 
         isset($_POST['enable']) ?
-            Core\Settings::set('whatsnew', 'enable', 1) :
-            Core\Settings::set('whatsnew', 'enable', 0);
+            \core\Settings::set('whatsnew', 'enable', 1) :
+            \core\Settings::set('whatsnew', 'enable', 0);
 
         isset($_POST['homeonly']) ?
-            Core\Settings::set('whatsnew', 'homeonly', 1) :
-            Core\Settings::set('whatsnew', 'homeonly', 0);
+            \core\Settings::set('whatsnew', 'homeonly', 1) :
+            \core\Settings::set('whatsnew', 'homeonly', 0);
 
         if (!empty($_POST['title'])) {
-            Core\Settings::set('whatsnew', 'title', strip_tags(Core\Text::parseInput($_POST['title'])));
+            \core\Settings::set('whatsnew', 'title', strip_tags(core\Text::parseInput($_POST['title'])));
         } else {
-            Core\Settings::reset('whatsnew', 'title');
+            \core\Settings::reset('whatsnew', 'title');
         }
 
         if (!empty($_POST['text'])) {
-            Core\Settings::set('whatsnew', 'text', Core\Text::parseInput($_POST['text']));
+            \core\Settings::set('whatsnew', 'text', \core\Text::parseInput($_POST['text']));
         } else {
-            Core\Settings::set('whatsnew', 'text', null);
+            \core\Settings::set('whatsnew', 'text', null);
         }
 
         $cache_timeout = (int)$_POST['cache_timeout'];
         if ((int)$cache_timeout <= 7200) {
-            Core\Settings::set('whatsnew', 'cache_timeout', $cache_timeout);
+            \core\Settings::set('whatsnew', 'cache_timeout', $cache_timeout);
         } else {
-            Core\Settings::reset('whatsnew', 'cache_timeout');
+            \core\Settings::reset('whatsnew', 'cache_timeout');
         }
 
         $qty_items = (int)$_POST['qty_items'];
         if ((int)$qty_items <= 50) {
-            Core\Settings::set('whatsnew', 'qty_items', $qty_items);
+            \core\Settings::set('whatsnew', 'qty_items', $qty_items);
         } else {
-            Core\Settings::reset('whatsnew', 'qty_items');
+            \core\Settings::reset('whatsnew', 'qty_items');
         }
 
         isset($_POST['show_summaries']) ?
-            Core\Settings::set('whatsnew', 'show_summaries', 1) :
-            Core\Settings::set('whatsnew', 'show_summaries', 0);
+            \core\Settings::set('whatsnew', 'show_summaries', 1) :
+            \core\Settings::set('whatsnew', 'show_summaries', 0);
 
         isset($_POST['show_dates']) ?
-            Core\Settings::set('whatsnew', 'show_dates', 1) :
-            Core\Settings::set('whatsnew', 'show_dates', 0);
+            \core\Settings::set('whatsnew', 'show_dates', 1) :
+            \core\Settings::set('whatsnew', 'show_dates', 0);
 
         isset($_POST['show_source_modules']) ?
-            Core\Settings::set('whatsnew', 'show_source_modules', 1) :
-            Core\Settings::set('whatsnew', 'show_source_modules', 0);
+            \core\Settings::set('whatsnew', 'show_source_modules', 1) :
+            \core\Settings::set('whatsnew', 'show_source_modules', 0);
 
         if (isset($_POST['exclude'])) {
-            Core\Settings::set('whatsnew', 'exclude', $_POST['exclude']);
+            \core\Settings::set('whatsnew', 'exclude', $_POST['exclude']);
         }
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            Core\Cache::remove('whatsnew_cache_key');
-            if (Core\Settings::save('whatsnew')) {
+            \core\Cache::remove('whatsnew_cache_key');
+            if (core\Settings::save('whatsnew')) {
                 return true;
             } else {
                 return false;
@@ -241,7 +241,7 @@ class Whatsnew {
     function getKeyMods($match=null, $select_name='exclude', $multiple=true, $count=true)
     {
 
-                $db = new Core\DB('phpws_key');
+                $db = new \core\DB('phpws_key');
         $db->addOrder('module asc');
 
         $result = $db->getObjects('Key');
@@ -249,7 +249,7 @@ class Whatsnew {
         if ($result) {
             foreach ($result as $item) {
                 if ($count) {
-                    $db = new Core\DB('phpws_key');
+                    $db = new \core\DB('phpws_key');
                     $db->addWhere('module', $item->module);
                     $qty = $db->count();
                     if ($qty == 1) {
@@ -266,14 +266,14 @@ class Whatsnew {
 
         if ($items) {
             if ($multiple) {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addMultiple($select_name, $items);
                 if (!empty($match) && is_array($match)) {
                     $form->setMatch($select_name, $match);
                 }
                 return $form->get($select_name);
             } else {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addSelect($select_name, $items);
                 if (!empty($match) && is_string($match)) {
                     $form->setMatch($select_name, $match);
@@ -288,9 +288,9 @@ class Whatsnew {
 
 
     public static function showBlock() {
-        Core\Core::initModClass('layout', 'Layout.php');
-        if (Core\Settings::get('whatsnew', 'homeonly')) {
-            $key = Core\Key::getCurrent();
+        \core\Core::initModClass('layout', 'Layout.php');
+        if (core\Settings::get('whatsnew', 'homeonly')) {
+            $key = \core\Key::getCurrent();
             if (!empty($key) && $key->isHomeKey()) {
                 Layout::add(Whatsnew::whatsnewBlock(), 'whatsnew', 'whatsnew_sidebox');
             }
@@ -302,9 +302,9 @@ class Whatsnew {
 
     public static function whatsnewBlock() {
 
-        if (Core\Settings::get('whatsnew', 'cache_timeout') > 0) {
+        if (core\Settings::get('whatsnew', 'cache_timeout') > 0) {
             $cache_key = 'whatsnew_cache_key';
-            $content = Core\Cache::get($cache_key, Core\Settings::get('whatsnew', 'cache_timeout'));
+            $content = \core\Cache::get($cache_key, \core\Settings::get('whatsnew', 'cache_timeout'));
             if (!empty($content)) {
                 return $content;
             }
@@ -315,8 +315,8 @@ class Whatsnew {
         $date = null;
         $module_name = null;
 
-        $exclude = unserialize(Core\Settings::get('whatsnew', 'exclude'));
-        $db = new Core\DB('phpws_key');
+        $exclude = unserialize(core\Settings::get('whatsnew', 'exclude'));
+        $db = new \core\DB('phpws_key');
 
         $db->addJoin('left', 'phpws_key', 'modules', 'module', 'title');
         $db->addWhere('active', 1);
@@ -328,7 +328,7 @@ class Whatsnew {
         }
 
         $db->addOrder('update_date desc');
-        $db->setLimit(Core\Settings::get('whatsnew', 'qty_items'));
+        $db->setLimit(core\Settings::get('whatsnew', 'qty_items'));
         $db->setIndexBy('id');
         $db->addColumn('phpws_key.url');
         $db->addColumn('phpws_key.title');
@@ -339,19 +339,19 @@ class Whatsnew {
 //        $db->setTestMode();
         $result = $db->select();
 
-        $tpl['TITLE'] = Core\Text::parseOutput(Core\Settings::get('whatsnew', 'title'));
-        $tpl['TEXT'] = Core\Text::parseOutput(Core\Settings::get('whatsnew', 'text'));
-        if (!Core\Error::logIfError($result) && !empty($result)) {
+        $tpl['TITLE'] = \core\Text::parseOutput(core\Settings::get('whatsnew', 'title'));
+        $tpl['TEXT'] = \core\Text::parseOutput(core\Settings::get('whatsnew', 'text'));
+        if (!core\Error::logIfError($result) && !empty($result)) {
             foreach ($result as $item) {
                 $link = '<a href="' . $item['url'] . '">' . $item['title'] . '</a>';
-                if (Core\Settings::get('whatsnew', 'show_summaries')) {
-                    $summary = Core\Text::parseOutput($item['summary']);
+                if (core\Settings::get('whatsnew', 'show_summaries')) {
+                    $summary = \core\Text::parseOutput($item['summary']);
                 }
-                if (Core\Settings::get('whatsnew', 'show_dates')) {
+                if (core\Settings::get('whatsnew', 'show_dates')) {
                     $date = strftime(WHATSNEW_DATE_FORMAT, $item['update_date']);
                 }
-                if (Core\Settings::get('whatsnew', 'show_source_modules')) {
-                    $module_name = dgettext($item['module_title'], Core\Text::parseOutput($item['proper_name']));
+                if (core\Settings::get('whatsnew', 'show_source_modules')) {
+                    $module_name = dgettext($item['module_title'], \core\Text::parseOutput($item['proper_name']));
                 }
                 $tpl['new-items'][] = array('LINK'=>$link, 'SUMMARY'=>$summary, 'DATE'=>$date, 'MODULE_NAME'=>$module_name);
             }
@@ -359,9 +359,9 @@ class Whatsnew {
             $tpl['new-items'][] = array('LINK'=>dgettext('whatsnew', 'Sorry, no results'));
         }
 
-        $content = Core\Template::process($tpl, 'whatsnew', 'block.tpl');
-        if (Core\Settings::get('whatsnew', 'cache_timeout') > 0 && !Current_User::isLogged() && !Current_User::allow('whatsnew')) {
-            Core\Cache::save($cache_key, $content);
+        $content = \core\Template::process($tpl, 'whatsnew', 'block.tpl');
+        if (core\Settings::get('whatsnew', 'cache_timeout') > 0 && !Current_User::isLogged() && !Current_User::allow('whatsnew')) {
+            \core\Cache::save($cache_key, $content);
         }
 
         return $content;
@@ -369,7 +369,7 @@ class Whatsnew {
 
 
     function flushCache() {
-        if (Core\Cache::remove('whatsnew_cache_key')) {
+        if (core\Cache::remove('whatsnew_cache_key')) {
             return true;
         }
     }

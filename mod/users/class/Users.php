@@ -7,9 +7,9 @@
  * @version $Id$
  */
 
-Core\Core::initModClass('users', 'Permission.php');
-Core\Core::initModClass('users', 'Authorization.php');
-Core\Core::requireConfig('users');
+core\Core::initModClass('users', 'Permission.php');
+core\Core::initModClass('users', 'Authorization.php');
+core\Core::requireConfig('users');
 require_once PHPWS_SOURCE_DIR . 'mod/users/inc/errorDefines.php';
 
 if (!defined('ALLOWED_USERNAME_CHARACTERS')) {
@@ -55,8 +55,8 @@ class PHPWS_User {
 		$this->setId($id);
 		$result = $this->init();
 
-		if (Core\Error::isError($result)) {
-			Core\Error::log($result);
+		if (core\Error::isError($result)) {
+			core\Error::log($result);
 		}
 
 		if ($result) {
@@ -66,10 +66,10 @@ class PHPWS_User {
 
 	public function init()
 	{
-		$db = new Core\DB('users');
+		$db = new \core\DB('users');
 		$result = $db->loadObject($this);
 
-		if (Core\Error::isError($result)) {
+		if (core\Error::isError($result)) {
 			$this->id = 0;
 			return $result;
 		}
@@ -111,7 +111,7 @@ class PHPWS_User {
 			return false;
 		}
 
-		$DB = new Core\DB('users');
+		$DB = new \core\DB('users');
 		$DB->addWhere('display_name', $display_name, '=', null, '1');
 		$DB->addWhere('username', $display_name, '=', 'or', '1');
 		if ($id) {
@@ -119,7 +119,7 @@ class PHPWS_User {
 		}
 
 		$result = $DB->select('one');
-		if (Core\Error::isError($result)) {
+		if (core\Error::isError($result)) {
 			return $result;
 		} else {
 			return (bool)$result;
@@ -128,7 +128,7 @@ class PHPWS_User {
 
 	public function isDuplicateUsername($username, $id=0)
 	{
-		$DB = new Core\DB('users');
+		$DB = new \core\DB('users');
 		$DB->addWhere('username', $username);
 		if ($id) {
 			$DB->addWhere('id', $id, '!=');
@@ -136,7 +136,7 @@ class PHPWS_User {
 
 		$result = $DB->select('one');
 
-		if (Core\Error::isError($result)) {
+		if (core\Error::isError($result)) {
 			return $result;
 		} else {
 			return (bool)$result;
@@ -145,14 +145,14 @@ class PHPWS_User {
 
 	public function isDuplicateGroup($name, $id=0)
 	{
-		$DB = new Core\DB('users_groups');
+		$DB = new \core\DB('users_groups');
 		$DB->addWhere('name', $name);
 		if ($id) {
 			$DB->addWhere('user_id', $id, '!=');
 		}
 
 		$result = $DB->select('one');
-		if (Core\Error::isError($result)) {
+		if (core\Error::isError($result)) {
 			return $result;
 		} else {
 			return (bool)$result;
@@ -164,14 +164,14 @@ class PHPWS_User {
 		if (empty($this->email))
 		return false;
 
-		$DB = new Core\DB('users');
+		$DB = new \core\DB('users');
 		$DB->addWhere('email', $this->email);
 		if ($this->id) {
 			$DB->addWhere('id', $this->id, '!=');
 		}
 
 		$result = $DB->select('one');
-		if (Core\Error::isError($result)) {
+		if (core\Error::isError($result)) {
 			return $result;
 		} else {
 			return (bool)$result;
@@ -183,23 +183,23 @@ class PHPWS_User {
 	{
 		$username = strtolower($username);
 		if (empty($username) || !Current_User::allowUsername($username)) {
-			return Core\Error::get(USER_ERR_BAD_USERNAME, 'users',
+			return \core\Error::get(USER_ERR_BAD_USERNAME, 'users',
                                     'setUsername', $username);
 		}
 
 		if (strlen($username) < USERNAME_LENGTH) {
-			return Core\Error::get(USER_ERR_BAD_USERNAME, 'users',
+			return \core\Error::get(USER_ERR_BAD_USERNAME, 'users',
                                     'setUsername', $username);
 		}
 
 		if ($this->isDuplicateUsername($username, $this->id) ||
 		$this->isDuplicateDisplayName($username, $this->id)) {
-			return Core\Error::get(USER_ERR_DUP_USERNAME, 'users',
+			return \core\Error::get(USER_ERR_DUP_USERNAME, 'users',
                                     'setUsername', $username); ;
 		}
 
 		if ($this->isDuplicateGroup($username, $this->id)) {
-			return Core\Error::get(USER_ERR_DUP_GROUPNAME, 'users',
+			return \core\Error::get(USER_ERR_DUP_GROUPNAME, 'users',
                                     'setUsername', $username); ;
 		}
 
@@ -216,7 +216,7 @@ class PHPWS_User {
 	public function setPassword($password, $hashPass=true)
 	{
 		if (empty($password)) {
-			Core\Error::log(USER_PASSWORD_BLANK, 'users', 'PHPWS_User::setPassword');
+			core\Error::log(USER_PASSWORD_BLANK, 'users', 'PHPWS_User::setPassword');
 		}
 
 		if ($hashPass) {
@@ -229,16 +229,16 @@ class PHPWS_User {
 	public function checkPassword($pass1, $pass2)
 	{
 		if (empty($pass1) || empty($pass2)) {
-			return Core\Error::get(USER_ERR_PASSWORD_LENGTH, 'users', 'checkPassword');
+			return \core\Error::get(USER_ERR_PASSWORD_LENGTH, 'users', 'checkPassword');
 		}
 		elseif ($pass1 != $pass2) {
-			return Core\Error::get(USER_ERR_PASSWORD_MATCH, 'users', 'checkPassword');
+			return \core\Error::get(USER_ERR_PASSWORD_MATCH, 'users', 'checkPassword');
 		}
 		elseif(strlen($pass1) < PASSWORD_LENGTH) {
-			return Core\Error::get(USER_ERR_PASSWORD_LENGTH, 'users', 'checkPassword');
+			return \core\Error::get(USER_ERR_PASSWORD_LENGTH, 'users', 'checkPassword');
 		}
 		elseif(preg_match('/(' . implode('|', unserialize(BAD_PASSWORDS)) . ')/i', $pass1)) {
-			return Core\Error::get(USER_ERR_PASSWORD_EASY, 'users', 'checkPassword');
+			return \core\Error::get(USER_ERR_PASSWORD_EASY, 'users', 'checkPassword');
 		}
 		else {
 			return true;
@@ -336,12 +336,12 @@ class PHPWS_User {
 	{
 		$this->email = $email;
 
-		if (!Core\Text::isValidInput($email, 'email')) {
-			return Core\Error::get(USER_ERR_BAD_EMAIL, 'users', 'setEmail');
+		if (!core\Text::isValidInput($email, 'email')) {
+			return \core\Error::get(USER_ERR_BAD_EMAIL, 'users', 'setEmail');
 		}
 
 		if ($this->isDuplicateEmail()) {
-			return Core\Error::get(USER_ERR_DUP_EMAIL, 'users', 'setEmail');
+			return \core\Error::get(USER_ERR_DUP_EMAIL, 'users', 'setEmail');
 		}
 
 		return true;
@@ -377,18 +377,18 @@ class PHPWS_User {
 
 
 		if (preg_match($preg, $name)) {
-			return Core\Error::get(USER_ERR_BAD_DISPLAY_NAME, 'users',
+			return \core\Error::get(USER_ERR_BAD_DISPLAY_NAME, 'users',
                                     'setUsername', $name);
 		}
 
 		if (strlen($name) < DISPLAY_NAME_LENGTH) {
-			return Core\Error::get(USER_ERR_BAD_DISPLAY_NAME, 'users',
+			return \core\Error::get(USER_ERR_BAD_DISPLAY_NAME, 'users',
                                     'setUsername', $name);
 		}
 
 		if ($this->isDuplicateUsername($name, $this->id) ||
 		$this->isDuplicateDisplayName($name, $this->id)) {
-			return Core\Error::get(USER_ERR_DUP_USERNAME, 'users',
+			return \core\Error::get(USER_ERR_DUP_USERNAME, 'users',
                                     'setDisplayName', $name); ;
 		}
 
@@ -411,20 +411,20 @@ class PHPWS_User {
 	{
 		$group = $this->getUserGroup();
 
-		if (Core\Error::isError($group)){
-			Core\Error::log($group);
+		if (core\Error::isError($group)){
+			core\Error::log($group);
 			return false;
 		}
 
 		$this->_user_group = $groupList[] = $group;
 
-		$DB = new Core\DB('users_members');
+		$DB = new \core\DB('users_members');
 		$DB->addWhere('member_id', $group);
 		$DB->addColumn('group_id');
 		$result = $DB->select('col');
 
-		if (Core\Error::isError($group)){
-			Core\Error::log($group);
+		if (core\Error::isError($group)){
+			core\Error::log($group);
 			return false;
 		}
 
@@ -448,7 +448,7 @@ class PHPWS_User {
 
 	public function canChangePassword()
 	{
-		return ($this->authorize == Core\Settings::get('users', 'local_script'));
+		return ($this->authorize == \core\Settings::get('users', 'local_script'));
 	}
 
 	public function verifyAuthKey($salt_value=null)
@@ -491,7 +491,7 @@ class PHPWS_User {
 			return true;
 		}
 
-		Core\Core::initModClass('users', 'Permission.php');
+		core\Core::initModClass('users', 'Permission.php');
 		return $this->_permission->allow($module, $subpermission, $item_id, $itemname);
 	}
 
@@ -506,7 +506,7 @@ class PHPWS_User {
 
 	public function save()
 	{
-		Core\Core::initModClass('users', 'Group.php');
+		core\Core::initModClass('users', 'Group.php');
 
 		if (!$this->id) {
 			$newUser = true;
@@ -520,30 +520,30 @@ class PHPWS_User {
 		$this->isDuplicateDisplayName($this->username, $this->id) ||
 		$this->isDuplicateUsername($this->display_name, $this->id) ||
 		$this->isDuplicateDisplayName($this->display_name, $this->id)) ? true : false;
-		if (Core\Error::isError($result)) {
+		if (core\Error::isError($result)) {
 			return $result;
 		}
 
 		if ($result == true) {
-			return Core\Error::get(USER_ERR_DUP_USERNAME, 'users', 'save');
+			return \core\Error::get(USER_ERR_DUP_USERNAME, 'users', 'save');
 		}
 
 		$result = $this->isDuplicateEmail();
-		if (Core\Error::isError($result)) {
+		if (core\Error::isError($result)) {
 			return $result;
 		}
 
 		if ($result == true) {
-			return Core\Error::get(USER_ERR_DUP_EMAIL, 'users', 'save');
+			return \core\Error::get(USER_ERR_DUP_EMAIL, 'users', 'save');
 		}
 
 		$result = $this->isDuplicateGroup($this->username, $this->id);
-		if (Core\Error::isError($result)) {
+		if (core\Error::isError($result)) {
 			return $result;
 		}
 
 		if ($result == true) {
-			return Core\Error::get(USER_ERR_DUP_GROUPNAME, 'users', 'save');
+			return \core\Error::get(USER_ERR_DUP_GROUPNAME, 'users', 'save');
 		}
 
 		if (empty($this->display_name)) {
@@ -560,19 +560,19 @@ class PHPWS_User {
 			$this->updated = time();
 		}
 
-		$db = new Core\DB('users');
+		$db = new \core\DB('users');
 		$result = $db->saveObject($this);
 
-		if (Core\Error::isError($result)){
-			Core\Error::log($result);
-			return Core\Error::get(USER_ERR_USER_NOT_SAVED, 'users', 'save');
+		if (core\Error::isError($result)){
+			core\Error::log($result);
+			return \core\Error::get(USER_ERR_USER_NOT_SAVED, 'users', 'save');
 		}
 
 		if ($this->authorize > 0) {
-			if ($this->authorize == Core\Settings::get('users', 'local_script')) {
+			if ($this->authorize == \core\Settings::get('users', 'local_script')) {
 				$result = $this->saveLocalAuthorization();
-				if (Core\Error::isError($result)) {
-					Core\Error::log($result);
+				if (core\Error::isError($result)) {
+					core\Error::log($result);
 				}
 			}
 		}
@@ -587,12 +587,12 @@ class PHPWS_User {
 
 	public function updateOnly()
 	{
-		$db = new Core\DB('users');
+		$db = new \core\DB('users');
 		$result = $db->saveObject($this);
 
-		if (Core\Error::isError($result)){
-			Core\Error::log($result);
-			return Core\Error::get(USER_ERR_USER_NOT_SAVED, 'users', 'save');
+		if (core\Error::isError($result)){
+			core\Error::log($result);
+			return \core\Error::get(USER_ERR_USER_NOT_SAVED, 'users', 'save');
 		}
 
 		return $result;
@@ -625,7 +625,7 @@ class PHPWS_User {
 			return false;
 		}
 
-		$db = new Core\DB('user_authorization');
+		$db = new \core\DB('user_authorization');
 		if (!empty($this->_prev_username)) {
 			$db->addWhere('username', $this->_prev_username);
 		} else {
@@ -647,10 +647,10 @@ class PHPWS_User {
 		$group->setActive($this->isActive());
 		$result = $group->save();
 
-		if (Core\Error::isError($result)){
-			Core\Error::log($result);
+		if (core\Error::isError($result)){
+			core\Error::log($result);
 			$this->kill();
-			return Core\Error::get(USER_ERR_USER_NOT_SAVED, 'users', 'save');
+			return \core\Error::get(USER_ERR_USER_NOT_SAVED, 'users', 'save');
 		} else {
 			$this->_user_group = $group->id;
 			return true;
@@ -659,14 +659,14 @@ class PHPWS_User {
 
 	public function updateGroup()
 	{
-		$db = new Core\DB('users_groups');
+		$db = new \core\DB('users_groups');
 		$db->addWhere('user_id', $this->id);
 		$db->addColumn('id');
 		$result = $db->select('one');
 
-		if (Core\Error::isError($result)){
-			Core\Error::log($result);
-			return Core\Error::get(USER_ERROR, 'users', 'updateGroup');
+		if (core\Error::isError($result)){
+			core\Error::log($result);
+			return \core\Error::get(USER_ERROR, 'users', 'updateGroup');
 		}
 
 		if (empty($result)) {
@@ -680,10 +680,10 @@ class PHPWS_User {
 		$group->setActive($this->isActive());
 
 		$result = $group->save();
-		if (Core\Error::isError($result)){
-			Core\Error::log($result);
+		if (core\Error::isError($result)){
+			core\Error::log($result);
 			$this->kill();
-			return Core\Error::get(USER_ERROR, 'users', 'updateGroup');
+			return \core\Error::get(USER_ERROR, 'users', 'updateGroup');
 		} else {
 			return true;
 		}
@@ -696,16 +696,16 @@ class PHPWS_User {
 			return $this->_user_group;
 		}
 
-		$db = new Core\DB('users_groups');
+		$db = new \core\DB('users_groups');
 		$db->addWhere('user_id', $this->getId());
 		$db->addColumn('id');
 
 		$result = $db->select('one');
 
-		if (Core\Error::isError($result)) {
+		if (core\Error::isError($result)) {
 			return $result;
 		} elseif (!isset($result)) {
-			return Core\Error::get(USER_ERR_MISSING_GROUP, 'users', 'getUserGroup', $this->getId());
+			return \core\Error::get(USER_ERR_MISSING_GROUP, 'users', 'getUserGroup', $this->getId());
 		} else {
 			return $result;
 		}
@@ -717,13 +717,13 @@ class PHPWS_User {
 			$message = dgettext('users', 'Improper permission level for action requested.');
 		}
 		Security::log($message);
-		Core\Core::errorPage('403');
+		core\Core::errorPage('403');
 	}
 
 
 	public function getSettings()
 	{
-		$DB = new Core\DB('users_config');
+		$DB = new \core\DB('users_config');
 		return $DB->select('row');
 	}
 
@@ -734,7 +734,7 @@ class PHPWS_User {
 
 	public static function getUserSetting($setting, $refresh=false)
 	{
-		return Core\Settings::get('users', $setting);
+		return \core\Settings::get('users', $setting);
 	}
 
 	public function loadPermissions($loadAll=true)
@@ -754,20 +754,20 @@ class PHPWS_User {
 			return false;
 		}
 
-		$db = new Core\DB('users');
+		$db = new \core\DB('users');
 		$db->addWhere('id', $this->id);
 		$result = $db->delete();
-		if (Core\Error::isError($result)) {
+		if (core\Error::isError($result)) {
 			return $result;
 		}
 
 		$this->removeAssociations();
 
 		if ($this->authorize == LOCAL_AUTHORIZATION) {
-			$db2 = new Core\DB('user_authorization');
+			$db2 = new \core\DB('user_authorization');
 			$db2->addWhere('username', $this->username);
 			$result = $db2->delete();
-			if (Core\Error::isError($result)) {
+			if (core\Error::isError($result)) {
 				return $result;
 			}
 		}
@@ -783,7 +783,7 @@ class PHPWS_User {
 	 */
 	public function removeAssociations()
 	{
-		$modules = Core\Core::getModules(true, true);
+		$modules = \core\Core::getModules(true, true);
 		foreach ($modules as $mod) {
 			$file = sprintf('%smod/%s/inc/remove_user.php', PHPWS_SOURCE_DIR, $mod);
 			if (is_file($file)) {
@@ -802,17 +802,17 @@ class PHPWS_User {
 			return false;
 		}
 
-		if (!Core\Core::moduleExists($key->module)) {
-			return Core\Error::get(PHPWS_NO_MOD_FOUND, 'core', __CLASS__ . '::' . __FUNCTION__);
+		if (!core\Core::moduleExists($key->module)) {
+			return \core\Error::get(PHPWS_NO_MOD_FOUND, 'core', __CLASS__ . '::' . __FUNCTION__);
 		}
 
-		Core\Core::initModClass('users', 'Permission.php');
+		core\Core::initModClass('users', 'Permission.php');
 		return Users_Permission::savePermissions($key);
 	}
 
 	public static function getAllGroups()
 	{
-		Core\Core::initModClass('users', 'Action.php');
+		core\Core::initModClass('users', 'Action.php');
 		return User_Action::getGroups('group');
 	}
 
@@ -834,7 +834,7 @@ class PHPWS_User {
 			return UNRESTRICTED_PERMISSION;
 		}
 
-		Core\Core::initModClass('users', 'Permission.php');
+		core\Core::initModClass('users', 'Permission.php');
 
 		if (!isset($this->_permission)) {
 			$this->loadPermissions();
@@ -851,12 +851,12 @@ class PHPWS_User {
 		if (Current_User::isDeity() && !Current_User::isUser($this->id)) {
 			if ($this->isDeity()) {
 				$dvars['QUESTION'] = dgettext('users', 'Are you sure you want to remove deity status?');
-				$dvars['ADDRESS']  = Core\Text::linkAddress('users', array('action'=>'admin', 'command'=>'mortalize_user', 'user_id'=>$this->id), 1);
+				$dvars['ADDRESS']  = \core\Text::linkAddress('users', array('action'=>'admin', 'command'=>'mortalize_user', 'user_id'=>$this->id), 1);
 				$dvars['LINK']     = sprintf('<img src="%smod/users/img/deity.gif" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('users', 'Deity'));
 				$links[] = javascript('confirm', $dvars);
 			} else {
 				$dvars['QUESTION'] = dgettext('users', 'Are you sure you want to deify this user?');
-				$dvars['ADDRESS']  = Core\Text::linkAddress('users', array('action'=>'admin', 'command'=>'deify_user', 'user_id'=>$this->id), 1);
+				$dvars['ADDRESS']  = \core\Text::linkAddress('users', array('action'=>'admin', 'command'=>'deify_user', 'user_id'=>$this->id), 1);
 				$dvars['LINK']     = sprintf('<img src="%smod/users/img/man.gif" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('users', 'Mortal'));
 				$links[] = javascript('confirm', $dvars);
 			}
@@ -868,14 +868,14 @@ class PHPWS_User {
 		if ($this->isActive()) {
 			if (!$this->deity) {
 				$linkVar['command'] = 'deactivateUser';
-				$template['ACTIVE'] = Core\Text::secureLink(dgettext('users', 'Yes'), 'users', $linkVar, null, dgettext('users', 'Deactivate this user'));
+				$template['ACTIVE'] = \core\Text::secureLink(dgettext('users', 'Yes'), 'users', $linkVar, null, dgettext('users', 'Deactivate this user'));
 			} else {
 				$template['ACTIVE'] =  dgettext('users', 'Yes');
 			}
 		} else {
 			if (!$this->deity) {
 				$linkVar['command'] = 'activateUser';
-				$template['ACTIVE'] =  Core\Text::secureLink(dgettext('users', 'No'), 'users', $linkVar, null, dgettext('users', 'Activate this user'));
+				$template['ACTIVE'] =  \core\Text::secureLink(dgettext('users', 'No'), 'users', $linkVar, null, dgettext('users', 'Activate this user'));
 			} else {
 				$template['ACTIVE'] = dgettext('users', 'No');
 			}
@@ -895,18 +895,18 @@ class PHPWS_User {
 
 		$jsvar['QUESTION'] = sprintf(dgettext('users', 'Are you certain you want to delete the user &quot;%s&quot; permanently?'),
 		$this->getUsername());
-		$link = new Core\Link(null, 'users', array('action'=>'admin',
+		$link = new \core\Link(null, 'users', array('action'=>'admin',
                                                     'command'=>'deleteUser',
                                                     'user_id'=> $this->id), true);
 		$link->setSalted();
 		$jsvar['ADDRESS'] = $link->getAddress();
-		$jsvar['LINK']    = Core\Icon::show('delete');
+		$jsvar['LINK']    = \core\Icon::show('delete');
 
 		$linkVar['command'] = 'editUser';
-		$links[] = Core\Text::secureLink(Core\Icon::show('edit'), 'users', $linkVar);
+		$links[] = \core\Text::secureLink(core\Icon::show('edit'), 'users', $linkVar);
 
 		$linkVar['command'] = 'setUserPermissions';
-		$links[] = Core\Text::secureLink(Core\Icon::show('permission'), 'users', $linkVar);
+		$links[] = \core\Text::secureLink(core\Icon::show('permission'), 'users', $linkVar);
 
 		if (!$this->isDeity() && ($this->id != Current_User::getId())) {
 			$links[] = Layout::getJavascript('confirm', $jsvar);
@@ -930,11 +930,11 @@ class PHPWS_User {
 	 */
 	public function loadScript()
 	{
-		$db = new Core\DB('users_auth_scripts');
+		$db = new \core\DB('users_auth_scripts');
 		$db->addWhere('id', $this->authorize);
 		$db->addColumn('filename');
 		$filename = $db->select('one');
-		if (Core\Error::logIfError($filename)) {
+		if (core\Error::logIfError($filename)) {
 			return;
 		}
 
@@ -943,7 +943,7 @@ class PHPWS_User {
 		$this->auth_name   = preg_replace('/\.php$/i', '', $filename);
 
 		if (!is_file($this->auth_path)) {
-			Core\Error::log(USER_ERR_MISSING_AUTH, 'users', 'User_Authorization', $this->auth_path);
+			core\Error::log(USER_ERR_MISSING_AUTH, 'users', 'User_Authorization', $this->auth_path);
 			return false;
 		} else {
 			return true;

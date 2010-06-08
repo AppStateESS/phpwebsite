@@ -4,8 +4,8 @@
  * @version $Id$
  */
 
-Core\Core::requireInc('demographics', 'errorDefines.php');
-Core\Core::initModClass('demographics', 'Demographics_User.php');
+core\Core::requireInc('demographics', 'errorDefines.php');
+core\Core::initModClass('demographics', 'Demographics_User.php');
 define('DEMOGRAPHICS_DEFAULT_LIMIT', 255);
 
 class Demographics {
@@ -14,7 +14,7 @@ class Demographics {
      */
     public static function getFields()
     {
-        $db = new Core\DB('demographics');
+        $db = new \core\DB('demographics');
         $columns = $db->getTableColumns();
         return $columns;
     }
@@ -118,7 +118,7 @@ class Demographics {
             return TRUE;
         }
 
-        $db = new Core\DB('demographics');
+        $db = new \core\DB('demographics');
         return $db->dropTableColumn($field_name);
     }
 
@@ -176,7 +176,7 @@ class Demographics {
                 break;
         }
 
-        $db = new Core\DB('demographics');
+        $db = new \core\DB('demographics');
         return $db->addTableColumn($field_name, $parameter);
     }
 
@@ -186,7 +186,7 @@ class Demographics {
      */
     public function unregister($module)
     {
-        $file = Core\Core::getConfigFile($module, 'demographics.php');
+        $file = \core\Core::getConfigFile($module, 'demographics.php');
 
         if (!is_file($file)) {
             PHPWS_Boost::addLog($module, dgettext('demographics', 'No demographics file found.'));
@@ -214,7 +214,7 @@ class Demographics {
         }
 
         if (isset($table)) {
-            $db = new Core\DB($table);
+            $db = new \core\DB($table);
             $db->setDistinct(true);
             $db->addJoin('left', $table, 'demographics', 'user_id', 'user_id');
             $db->addJoin('left', 'demographics', 'users', 'user_id', 'id');
@@ -228,7 +228,7 @@ class Demographics {
             $db->addColumn('users.active', null, 'active_user');
             $db->addColumn('demographics.user_id', null, '_base_id');
         } else {
-            $db = new Core\DB('demographics');
+            $db = new \core\DB('demographics');
         }
 
         $db->addWhere('user_id', $ids);
@@ -236,7 +236,7 @@ class Demographics {
 
         if ($class_name) {
             $list = $db->getObjects($class_name);
-            if (Core\Error::logIfError($list) || !is_array($list)) {
+            if (core\Error::logIfError($list) || !is_array($list)) {
                 $list = array();
             } else {
                 foreach ($list as $key=>$value) {
@@ -245,7 +245,7 @@ class Demographics {
             }
         } else {
             $list = $db->select();
-            if (Core\Error::logIfError($list) || !is_array($list)) {
+            if (core\Error::logIfError($list) || !is_array($list)) {
                 $list = array();
             } else  {
                 foreach ($list as $key=>$value) {

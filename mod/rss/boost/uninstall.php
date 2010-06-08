@@ -7,8 +7,8 @@
 
 function rss_uninstall()
 {
-    Core\DB::dropTable('rss_channel');
-    Core\DB::dropTable('rss_feeds');
+    \core\DB::dropTable('rss_channel');
+    \core\DB::dropTable('rss_feeds');
     return TRUE;
 }
 

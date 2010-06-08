@@ -9,7 +9,7 @@
  */
 
 require_once PHPWS_SOURCE_DIR . 'mod/categories/inc/errorDefines.php';
-Core\Core::initModClass('categories', 'Category.php');
+core\Core::initModClass('categories', 'Category.php');
 
 define('CAT_LINK_DIVIDERS', '&gt;&gt;');
 
@@ -22,7 +22,7 @@ class Categories {
         }
         $remove_list = $content = NULL;
 
-        $key = Core\Key::getCurrent();
+        $key = \core\Key::getCurrent();
 
         if (empty($key) || $key->isDummy()) {
             return;
@@ -41,7 +41,7 @@ class Categories {
             $vars['subaction'] = 'set_item_category';
             $vars['key_id'] = $key->id;
 
-            $js_vars['address'] = Core\Text::linkAddress('categories', $vars, TRUE);
+            $js_vars['address'] = \core\Text::linkAddress('categories', $vars, TRUE);
             $link = javascript('open_window', $js_vars);
             MiniAdmin::add('categories', $link);
         } else {
@@ -74,7 +74,7 @@ class Categories {
             }
         }
 
-        $form = new Core\Form('category_list');
+        $form = new \core\Form('category_list');
         $form->addHidden('module', 'categories');
         $form->addHidden('action', 'admin');
         $form->addHidden('subaction', 'post_item');
@@ -115,9 +115,9 @@ class Categories {
 
             $template['AVAILABLE'] = dgettext('categories', 'Available categories');
             $template['CURRENT'] = dgettext('categories', 'Currently assigned');
-            $content = Core\Template::process($template, 'categories', 'popup_menu.tpl');
+            $content = \core\Template::process($template, 'categories', 'popup_menu.tpl');
         } else {
-            $content = Core\Template::process($template, 'categories', 'menu_bar.tpl');
+            $content = \core\Template::process($template, 'categories', 'menu_bar.tpl');
         }
 
         return $content;
@@ -142,7 +142,7 @@ class Categories {
     {
         $vars['action'] = 'view';
 
-        $db = new Core\DB('phpws_key');
+        $db = new \core\DB('phpws_key');
 
         if (!empty($module)) {
             $vars['ref_mod'] = $module;
@@ -158,8 +158,8 @@ class Categories {
 
             $result = $db->select('count');
 
-            if (Core\Error::isError($result)) {
-                Core\Error::log($result);
+            if (core\Error::isError($result)) {
+                \core\Error::log($result);
                 return NULL;
             }
             $db->resetWhere();
@@ -170,7 +170,7 @@ class Categories {
 
             $title = $category->title . $items;
 
-            $link = Core\Text::moduleLink($title, 'categories', $vars);
+            $link = \core\Text::moduleLink($title, 'categories', $vars);
 
             if (!empty($category->children)) {
                 $link .= Categories::makeLink($category->children, $module);
@@ -179,14 +179,14 @@ class Categories {
             $template['link_row'][] = array('LINK' => $link);
         }
 
-        $links = Core\Template::process($template, 'categories', 'simple_list.tpl');
+        $links = \core\Template::process($template, 'categories', 'simple_list.tpl');
         return $links;
     }
 
 
     public static function _getItemsCategories($key)
     {
-        $db = new Core\DB('categories');
+        $db = new \core\DB('categories');
         $db->addWhere('category_items.key_id', $key->id);
         $db->addWhere('id', 'category_items.cat_id');
         $cat_result = $db->getObjects('Category');
@@ -218,12 +218,12 @@ class Categories {
     public static function catList($key)
     {
         if (empty($key)) {
-            $key = Core\Key::getCurrent();
+            $key = \core\Key::getCurrent();
         } elseif (is_numeric($key)) {
-            $key = new Core\Key($key);
+            $key = new \core\Key($key);
         }
 
-        if (!Core\Key::checkKey($key, FALSE)) {
+        if (!core\Key::checkKey($key, FALSE)) {
             return NULL;
         }
 
@@ -276,7 +276,7 @@ class Categories {
      */
     public static function getCurrent($key_id)
     {
-        $db = new Core\DB('category_items');
+        $db = new \core\DB('category_items');
         $db->addWhere('key_id', (int)$key_id);
         $db->addColumn('cat_id');
         return $db->select('col');
@@ -285,7 +285,7 @@ class Categories {
 
     public static function getCategories($mode='sorted', $drop=NULL)
     {
-        $db = new Core\DB('categories');
+        $db = new \core\DB('categories');
 
         switch ($mode){
             case 'sorted':
@@ -357,7 +357,7 @@ class Categories {
 
     public function getTopLevel()
     {
-        $db = new Core\DB('categories');
+        $db = new \core\DB('categories');
         $db->addWhere('parent', 0);
         return $db->getObjects('Category');
     }
@@ -368,7 +368,7 @@ class Categories {
 
         $top_level = Categories::getTopLevel();
 
-        $tpl = new Core\Template('categories');
+        $tpl = new \core\Template('categories');
         $tpl->setFile('list.tpl');
 
         if (!empty($top_level)) {
@@ -385,7 +385,7 @@ class Categories {
         }
 
         $tpl->setCurrentBlock('parent-row');
-        $tpl->setData(array('PARENT' => Core\Text::moduleLink( dgettext('categories', 'Top Level'), 'categories', $vars)));
+        $tpl->setData(array('PARENT' => \core\Text::moduleLink( dgettext('categories', 'Top Level'), 'categories', $vars)));
         $tpl->parseCurrentBlock();
 
         if (!empty($category)) {
@@ -412,7 +412,7 @@ class Categories {
 
     public function getModuleListing($cat_id=NULL)
     {
-                $db = new Core\DB('category_items');
+                $db = new \core\DB('category_items');
         if (isset($cat_id)) {
             $db->addWhere('cat_id' , (int)$cat_id);
         }
@@ -420,7 +420,7 @@ class Categories {
         $db->addColumn('key_id');
         $db->addColumn('module');
 
-        Core\Key::restrictView($db);
+        \core\Key::restrictView($db);
 
         $result = $db->select();
 
@@ -428,7 +428,7 @@ class Categories {
             return NULL;
         }
 
-        $mod_names = Core\Core::getModuleNames();
+        $mod_names = \core\Core::getModuleNames();
 
         foreach ($result as $keys) {
             extract($keys);
@@ -460,21 +460,21 @@ class Categories {
         $vars['action'] = 'view';
         $vars['id'] = $category->getId();
 
-        $tpl = new Core\Template('categories');
+        $tpl = new \core\Template('categories');
         $tpl->setFile('module_list.tpl');
 
         $tpl->setCurrentBlock('module-row');
         foreach ($module_list as $mod_key => $module){
             $vars['ref_mod'] = $mod_key;
-            $template['module-row'][] = array('MODULE_ROW' => Core\Text::moduleLink($module, 'categories', $vars));
+            $template['module-row'][] = array('MODULE_ROW' => \core\Text::moduleLink($module, 'categories', $vars));
         }
 
-        return Core\Template::process($template, 'categories', 'module_list.tpl');
+        return \core\Template::process($template, 'categories', 'module_list.tpl');
     }
 
     public static function removeModule($module)
     {
-        $db = new Core\DB('category_items');
+        $db = new \core\DB('category_items');
         $db->addWhere('module', $module);
         $db->delete();
     }
@@ -501,7 +501,7 @@ class Categories {
                 }
                 return javascript('multiple_select', $vars);
             } else {
-                $form = new Core\Form;
+                $form = new \core\Form;
                 $form->addMultiple($select_name, $categories);
                 if (!empty($match) && is_array($match)) {
                     $form->setMatch($select_name, $match);
@@ -509,7 +509,7 @@ class Categories {
                 return $form->get($select_name);
             }
         } else {
-            $form = new Core\Form;
+            $form = new \core\Form;
             $form->addSelect($select_name, $categories);
             if (!empty($match) && is_string($match)) {
                 $form->setMatch($select_name, $match);

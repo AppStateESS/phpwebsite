@@ -61,9 +61,9 @@ class vShop_Order {
 
     public function init()
     {
-        $db = new Core\DB('vshop_orders');
+        $db = new \core\DB('vshop_orders');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -84,7 +84,7 @@ class vShop_Order {
 
     public function setEmail($email)
     {
-        if (Core\Text::isValidInput($email, 'email')) {
+        if (core\Text::isValidInput($email, 'email')) {
             $this->email = $email;
             return true;
         } else {
@@ -188,7 +188,7 @@ class vShop_Order {
         }
 
         if ($print) {
-            return dgettext('vshop', 'Order #') . Core\Text::parseOutput($this->id) . ' - ' . Core\Text::parseOutput($this->first_name) . ' ' . Core\Text::parseOutput($this->last_name);
+            return dgettext('vshop', 'Order #') . \core\Text::parseOutput($this->id) . ' - ' . \core\Text::parseOutput($this->first_name) . ' ' . \core\Text::parseOutput($this->last_name);
         } else {
             return $this->id . ' ' . $this->first_name . ' ' . $this->last_name;
         }
@@ -202,7 +202,7 @@ class vShop_Order {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->first_name) . ' ' . Core\Text::parseOutput($this->last_name);
+            return \core\Text::parseOutput($this->first_name) . ' ' . \core\Text::parseOutput($this->last_name);
         } else {
             return $this->first_name . ' ' . $this->last_name;
         }
@@ -216,21 +216,21 @@ class vShop_Order {
 
         if ($print) {
             $address = null;
-            $address .= Core\Text::parseOutput($this->address_1);
+            $address .= \core\Text::parseOutput($this->address_1);
             if ($this->address_2) {
-                $address .= '<br />' . Core\Text::parseOutput($this->address_2);
+                $address .= '<br />' . \core\Text::parseOutput($this->address_2);
             }
             if ($this->city) {
-                $address .= '<br />' . Core\Text::parseOutput($this->city);
+                $address .= '<br />' . \core\Text::parseOutput($this->city);
             }
             if ($this->state) {
-                $address .= ', ' . Core\Text::parseOutput($this->state);
+                $address .= ', ' . \core\Text::parseOutput($this->state);
             }
             if ($this->country) {
-                $address .= '<br />' . Core\Text::parseOutput($this->country);
+                $address .= '<br />' . \core\Text::parseOutput($this->country);
             }
             if ($this->postal_code) {
-                $address .= '<br />' . Core\Text::parseOutput($this->postal_code);
+                $address .= '<br />' . \core\Text::parseOutput($this->postal_code);
             }
             return $address;
         } else {
@@ -245,7 +245,7 @@ class vShop_Order {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->phone);
+            return \core\Text::parseOutput($this->phone);
         } else {
             return $this->phone;
         }
@@ -258,7 +258,7 @@ class vShop_Order {
         }
 
         if ($print) {
-            return '<a href="mailto:' . $this->email . '">' . Core\Text::parseOutput($this->email) . '</a>';
+            return '<a href="mailto:' . $this->email . '">' . \core\Text::parseOutput($this->email) . '</a>';
         } else {
             return $this->email;
         }
@@ -271,7 +271,7 @@ class vShop_Order {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->comments);
+            return \core\Text::parseOutput($this->comments);
         } else {
             return $this->comments;
         }
@@ -310,7 +310,7 @@ class vShop_Order {
     {
 //print_r($this->order_array);
         if (!$this->id) {
-            Core\Core::errorPage(404);
+            \core\Core::errorPage(404);
         }
 
         $tpl['ORDER_LINKS'] = $this->links();
@@ -338,7 +338,7 @@ class vShop_Order {
         $tpl['PAY_METHOD_LABEL'] = dgettext('vshop', 'Payment method:');
         $tpl['PAY_METHOD'] = $this->getPay_method(true);
 
-        return Core\Template::process($tpl, 'vshop', 'view_order.tpl');
+        return \core\Template::process($tpl, 'vshop', 'view_order.tpl');
     }
 
 
@@ -349,7 +349,7 @@ class vShop_Order {
         if (Current_User::allow('vshop', 'edit_orders')) {
             $vars['id'] = $this->id;
             $vars['aop']  = 'edit_order';
-            $links[] = Core\Text::secureLink(dgettext('vshop', 'Edit order'), 'vshop', $vars);
+            $links[] = \core\Text::secureLink(dgettext('vshop', 'Edit order'), 'vshop', $vars);
         }
 
         $links = array_merge($links, vShop::navLinks());
@@ -365,9 +365,9 @@ class vShop_Order {
         }
 
         /* delete the order */
-        $db = new Core\DB('vshop_orders');
+        $db = new \core\DB('vshop_orders');
         $db->addWhere('id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
     }
 
@@ -381,21 +381,21 @@ class vShop_Order {
 
             if ($_GET['tab'] == 'orders') {
                 $vars['aop']  = 'edit_order';
-                $label = Core\Icon::show('edit');
-                $links[] = Core\Text::secureLink($label, 'vshop', $vars);
+                $label = \core\Icon::show('edit');
+                $links[] = \core\Text::secureLink($label, 'vshop', $vars);
             }
 
             $vars['aop'] = 'delete_order';
-            $js['ADDRESS'] = Core\Text::linkAddress('vshop', $vars, true);
+            $js['ADDRESS'] = \core\Text::linkAddress('vshop', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('vshop', 'Are you sure you want to delete order %s from %s?'), $this->id, $this->getCustomer());
-            $js['LINK'] = Core\Icon::show('delete');
+            $js['LINK'] = \core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
 
             if ($_GET['tab'] == 'orders') {
                 $vars['aop'] = 'cancel_order';
-                $js['ADDRESS'] = Core\Text::linkAddress('vshop', $vars, true);
+                $js['ADDRESS'] = \core\Text::linkAddress('vshop', $vars, true);
                 $js['QUESTION'] = sprintf(dgettext('vshop', 'Are you sure you want to cancel order %s from %s?'), $this->id, $this->getCustomer());
-                $js['LINK'] = Core\Icon::show('cancel');
+                $js['LINK'] = \core\Icon::show('cancel');
                 $links[] = javascript('confirm', $js);
             }
 
@@ -413,7 +413,7 @@ class vShop_Order {
 
             $vars['aop'] = 'set_status';
 
-            $js_vars['address'] = Core\Text::linkAddress('vshop', $vars, true);
+            $js_vars['address'] = \core\Text::linkAddress('vshop', $vars, true);
             $link = javascript('open_window', $js_vars);
             
             $tpl['STATUS'] = $link;
@@ -430,10 +430,10 @@ class vShop_Order {
 
     public function save()
     {
-        $db = new Core\DB('vshop_orders');
+        $db = new \core\DB('vshop_orders');
 
         $result = $db->saveObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -442,7 +442,7 @@ class vShop_Order {
 
     public function updateInventory($add=false)
     {
-        Core\Core::initModClass('vshop', 'vShop_Item.php');
+        \core\Core::initModClass('vshop', 'vShop_Item.php');
         foreach ($this->order_array['items'] as $id=>$var) {
             $item = new vShop_Item($this->order_array['items'][$id]['id']);
             $old_qty = $item->stock;
@@ -461,7 +461,7 @@ class vShop_Order {
     {
         $vars['aop']  = 'view_order';
         $vars['order'] = $this->id;
-        return Core\Text::moduleLink(dgettext('vshop', $this->getTitle(true)), 'vshop', $vars);
+        return \core\Text::moduleLink(dgettext('vshop', $this->getTitle(true)), 'vshop', $vars);
     }
 
 

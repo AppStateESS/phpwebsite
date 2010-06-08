@@ -27,15 +27,15 @@ function signup_update(&$content, $currentVersion)
         case version_compare($currentVersion, '1.1.0', '<'):
             $content[] = '<pre>';
             PHPWS_Boost::registerMyModule('signup', 'users', $content);
-            $db = new Core\DB('signup_sheet');
-            if (Core\Error::logIfError($db->addTableColumn('contact_email', 'varchar(255) default NULL'))) {
+            $db = new \core\DB('signup_sheet');
+            if (core\Error::logIfError($db->addTableColumn('contact_email', 'varchar(255) default NULL'))) {
                 $content[] = '--- Failed creating new column on signup_sheet.</pre>';
                 return false;
             } else {
                 $content[] = '--- contact_email column created successfully on signup_sheet table.';
             }
 
-            if (Core\Error::logIfError($db->addTableColumn('multiple', 'smallint NOT NULL default 0'))) {
+            if (core\Error::logIfError($db->addTableColumn('multiple', 'smallint NOT NULL default 0'))) {
                 $content[] = '--- Failed creating new column on signup_sheet.</pre>';
                 return false;
             } else {
@@ -72,15 +72,15 @@ function signup_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '1.1.2', '<'):
             $content[] = '<pre>';
-            $db = new Core\DB('signup_sheet');
-            if (Core\Error::logIfError($db->addTableColumn('contact_email', 'varchar(255) default NULL'))) {
+            $db = new \core\DB('signup_sheet');
+            if (core\Error::logIfError($db->addTableColumn('contact_email', 'varchar(255) default NULL'))) {
                 $content[] = '--- Failed creating new column on signup_sheet.</pre>';
                 return false;
             } else {
                 $content[] = '--- contact_email column created successfully on signup_sheet table.';
             }
 
-            if (Core\Error::logIfError($db->addTableColumn('multiple', 'smallint NOT NULL default 0'))) {
+            if (core\Error::logIfError($db->addTableColumn('multiple', 'smallint NOT NULL default 0'))) {
                 $content[] = '--- Failed creating new column on signup_sheet.</pre>';
                 return false;
             } else {
@@ -122,12 +122,12 @@ function signup_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '1.3.0', '<'):
             $content[] = '<pre>';
-            $db = new Core\DB('signup_peeps');
+            $db = new \core\DB('signup_peeps');
             $db->addTableColumn('extra1', 'varchar(255) null');
             $db->addTableColumn('extra2', 'varchar(255) null');
             $db->addTableColumn('extra3', 'varchar(255) null');
             $db->query('update signup_peeps set extra1 = organization');
-            $db = new Core\DB('signup_sheet');
+            $db = new \core\DB('signup_sheet');
             $db->addTableColumn('extra1', 'varchar(255) null');
             $db->addTableColumn('extra2', 'varchar(255) null');
             $db->addTableColumn('extra3', 'varchar(255) null');

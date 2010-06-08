@@ -14,7 +14,7 @@ if (!Current_User::authorized('version')) {
     return;
 }
 
-Core\Core::initModClass('version', 'Admin.php');
+core\Core::initModClass('version', 'Admin.php');
 Version_Admin::main();
 
 ?>

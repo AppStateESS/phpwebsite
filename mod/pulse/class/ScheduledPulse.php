@@ -67,18 +67,18 @@ abstract class ScheduledPulse
 
     public static function getInstance(array $r)
     {
-        Core\Core::initModClass($r['module'], $r['class_file']);
+        \core\Core::initModClass($r['module'], $r['class_file']);
         $sp = new $r['class']();
-        Core\Core::plugObject($sp, $r);
+        \core\Core::plugObject($sp, $r);
         return $sp;
     }
 
     public function load()
     {
-        $db = new Core\DB('pulse_schedule');
+        $db = new \core\DB('pulse_schedule');
         $result = $db->loadObject($this);
 
-        if(Core\Error::logIfError($result)) {
+        if(core\Error::logIfError($result)) {
             return FALSE;
         }
         return TRUE;
@@ -86,10 +86,10 @@ abstract class ScheduledPulse
 
     public function save()
     {
-        $db = new Core\DB('pulse_schedule');
+        $db = new \core\DB('pulse_schedule');
         $result = $db->saveObject($this);
 
-        if(Core\Error::logIfError($result)) {
+        if(core\Error::logIfError($result)) {
             return FALSE;
         }
         return TRUE;

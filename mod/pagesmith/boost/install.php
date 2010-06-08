@@ -1,8 +1,8 @@
 <?php
 function pagesmith_install(&$content)
 {
-	Core\Core::initModClass('pagesmith', 'PS_Page.php');
-	Core\Core::initModClass('pagesmith', 'PS_Text.php');
+	core\Core::initModClass('pagesmith', 'PS_Page.php');
+	core\Core::initModClass('pagesmith', 'PS_Text.php');
 	$page = new PS_Page;
 	$page->setTitle('Welcome to phpWebSite!');
 	$page->template = 'text_only';

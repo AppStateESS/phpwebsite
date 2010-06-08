@@ -4,7 +4,7 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-$icon = Core\Icon::get('edit');
+$icon = \core\Icon::get('edit');
 $icon->setStyle('float : left; margin-right : 5px;');
 
 define('PS_EDIT', $icon->__toString());

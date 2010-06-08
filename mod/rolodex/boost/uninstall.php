@@ -25,16 +25,16 @@
 function rolodex_uninstall(&$content) {
 
     $dir = PHPWS_HOME_DIR . 'images/rolodex/';
-    if (Core\File::rmdir($dir)) {
+    if (core\File::rmdir($dir)) {
         $content[] = dgettext('rolodex', 'Rolodex images removed.');
     } else {
         $content[] = dgettext('rolodex', 'There was a problem deleting the rolodex images. You may want to do it manually.');
     }
-    Core\DB::dropTable('rolodex_member');
-    Core\DB::dropTable('rolodex_location');
-    Core\DB::dropTable('rolodex_feature');
-    Core\DB::dropTable('rolodex_location_items');
-    Core\DB::dropTable('rolodex_feature_items');
+    \core\DB::dropTable('rolodex_member');
+    \core\DB::dropTable('rolodex_location');
+    \core\DB::dropTable('rolodex_feature');
+    \core\DB::dropTable('rolodex_location_items');
+    \core\DB::dropTable('rolodex_feature_items');
     $content[] = dgettext('rolodex', 'Rolodex tables dropped.');
 
     return true;

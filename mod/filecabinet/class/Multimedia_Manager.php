@@ -3,7 +3,7 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-Core\Core::initModClass('filecabinet', 'Multimedia.php');
+core\Core::initModClass('filecabinet', 'Multimedia.php');
 
 class FC_Multimedia_Manager {
     public $multimedia = null;
@@ -27,7 +27,7 @@ class FC_Multimedia_Manager {
                     Current_User::disallow();
                 }
                 $this->multimedia->delete();
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
             case 'post_multimedia_upload':
@@ -49,7 +49,7 @@ class FC_Multimedia_Manager {
                     Clipboard::copy($this->multimedia->title, $this->multimedia->getTag(), true,
                     sprintf('[filecabinet:media:%s]', $this->multimedia->id));
                 }
-                Core\Core::goBack();
+                \core\Core::goBack();
                 break;
 
             case 'edit_embed':
@@ -88,12 +88,12 @@ class FC_Multimedia_Manager {
             $this->message = dgettext('filecabinet', 'Unable to process embedded information.');
             return false;
         }
-        return !Core\Error::logIfError($this->multimedia->save(false, false));
+        return !core\Error::logIfError($this->multimedia->save(false, false));
     }
 
     public function editEmbed()
     {
-        $form = new Core\Form('embedd');
+        $form = new \core\Form('embedd');
         $form->addHidden('module', 'filecabinet');
         $form->addHidden('mop', 'post_embed');
         $form->addHidden('folder_id', $this->folder->id);
@@ -102,7 +102,7 @@ class FC_Multimedia_Manager {
         $form->setSize('embed_id', 30);
         $form->setLabel('embed_id', dgettext('filecabinet', 'Url or id'));
 
-        $directories = Core\File::listDirectories(PHPWS_SOURCE_DIR . 'mod/filecabinet/inc/embed/');
+        $directories = \core\File::listDirectories(PHPWS_SOURCE_DIR . 'mod/filecabinet/inc/embed/');
 
         foreach ($directories as $dir) {
             $file = sprintf('%smod/filecabinet/inc/embed/%s/data.php', PHPWS_SOURCE_DIR, $dir);
@@ -126,7 +126,7 @@ class FC_Multimedia_Manager {
             $tpl['ERROR'] = $this->message;
         }
 
-        $this->content = Core\Template::process($tpl, 'filecabinet', 'embed_edit.tpl');
+        $this->content = \core\Template::process($tpl, 'filecabinet', 'embed_edit.tpl');
     }
 
 
@@ -144,7 +144,7 @@ class FC_Multimedia_Manager {
         if (isset($_REQUEST['ms']) && $_REQUEST['ms'] > 1000) {
             $this->setMaxSize($_REQUEST['ms']);
         } else {
-            $this->setMaxSize(Core\Settings::get('filecabinet', 'max_multimedia_size'));
+            $this->setMaxSize(core\Settings::get('filecabinet', 'max_multimedia_size'));
         }
     }
 
@@ -155,7 +155,7 @@ class FC_Multimedia_Manager {
         }
 
         
-        $form = new Core\Form;
+        $form = new \core\Form;
         $form->addHidden('module',    'filecabinet');
         $form->addHidden('mop',       'post_multimedia_upload');
         $form->addHidden('ms',        $this->max_size);
@@ -204,7 +204,7 @@ class FC_Multimedia_Manager {
             $template['CURRENT_MULTIMEDIA_LABEL'] = dgettext('filecabinet', 'Current multimedia');
             $template['CURRENT_MULTIMEDIA_ICON']  = $this->multimedia->getThumbnail();
             $template['CURRENT_MULTIMEDIA_FILE']  = $this->multimedia->file_name;
-            $ow['address'] = Core\Text::linkAddress('filecabinet', array('aop' =>'change_tn',
+            $ow['address'] = \core\Text::linkAddress('filecabinet', array('aop' =>'change_tn',
                                                                           'type'=>'mm',
                                                                           'id'  =>$this->multimedia->id),
             true);
@@ -239,7 +239,7 @@ class FC_Multimedia_Manager {
         if ($this->message) {
             $template['ERROR'] = $this->message;
         }
-        $this->content = Core\Template::process($template, 'filecabinet', 'multimedia_edit.tpl');
+        $this->content = \core\Template::process($template, 'filecabinet', 'multimedia_edit.tpl');
     }
 
     public function setMaxSize($size)
@@ -254,8 +254,8 @@ class FC_Multimedia_Manager {
         // importPost in File_Common
         $result = $this->multimedia->importPost('file_name');
 
-        if (Core\Error::isError($result)) {
-            Core\Error::log($result);
+        if (core\Error::isError($result)) {
+            \core\Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
             $this->content = dgettext('filecabinet', 'An error occurred when trying to save your multimedia file.');
@@ -268,8 +268,8 @@ class FC_Multimedia_Manager {
                 $result = $this->multimedia->save();
             }
 
-            if (Core\Error::isError($result)) {
-                Core\Error::log($result);
+            if (core\Error::isError($result)) {
+                \core\Error::log($result);
                 $this->content = dgettext('filecabinet', 'An error occurred when trying to save your multimedia file.');
                 $this->content .= '<br /><strong>' . $result->getMessage() . '</strong>';
                 $this->content .= '<br /><br />' . javascript('close_window', array('value'=> dgettext('filecabinet', 'Close this window')));

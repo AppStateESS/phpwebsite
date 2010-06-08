@@ -23,7 +23,7 @@
  */
 
 
-Core\Core::initModClass('elections', 'ELEC_Runtime.php');
+core\Core::initModClass('elections', 'ELEC_Runtime.php');
 ELEC_Runtime::showBlock();
 
 ?>

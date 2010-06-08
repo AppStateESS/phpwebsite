@@ -5,7 +5,7 @@
  */
 
 
-if (Core\Settings::get('blog', 'home_page_display')) {
+if (core\Settings::get('blog', 'home_page_display')) {
     if (!isset($_REQUEST['module'])) {
         $content = Blog_User::show();
         Layout::add($content, 'blog', 'view', TRUE);

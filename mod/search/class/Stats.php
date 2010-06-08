@@ -26,7 +26,7 @@ class Search_Stats {
 
         $insert = FALSE;
 
-        $db = new Core\DB('search_stats');
+        $db = new \core\DB('search_stats');
 
         $word_count = count($words);
 
@@ -74,7 +74,7 @@ class Search_Stats {
 
     public function save($insert=TRUE)
     {
-        $db = new Core\DB('search_stats');
+        $db = new \core\DB('search_stats');
         $this->keyword = trim($this->keyword);
         if (!$insert) {
             $db->addWhere('keyword', $this->keyword);

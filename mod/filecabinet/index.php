@@ -9,7 +9,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-Core\Core::initModClass('filecabinet', 'Cabinet.php');
+core\Core::initModClass('filecabinet', 'Cabinet.php');
 $cabinet = new Cabinet;
 
 if (isset($_REQUEST['uop'])) {

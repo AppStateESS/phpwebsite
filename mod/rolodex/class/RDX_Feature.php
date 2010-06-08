@@ -44,9 +44,9 @@ class Rolodex_Feature {
 
     public function init()
     {
-        $db = new Core\DB('rolodex_feature');
+        $db = new \core\DB('rolodex_feature');
         $result = $db->loadObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -63,7 +63,7 @@ class Rolodex_Feature {
 
     public function setDescription($description)
     {
-        $this->description = Core\Text::parseInput($description);
+        $this->description = \core\Text::parseInput($description);
     }
 
 
@@ -81,7 +81,7 @@ class Rolodex_Feature {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->title);
+            return \core\Text::parseOutput($this->title);
         } else {
             return $this->title;
         }
@@ -95,7 +95,7 @@ class Rolodex_Feature {
         }
 
         if ($print) {
-            return Core\Text::parseOutput($this->description);
+            return \core\Text::parseOutput($this->description);
         } else {
             return $this->description;
         }
@@ -113,7 +113,7 @@ class Rolodex_Feature {
 
     public function getQtyMembers()
     {
-        $db = new Core\DB('rolodex_feature_items');
+        $db = new \core\DB('rolodex_feature_items');
         $db->addWhere('feature_id', $this->id);
         $num = $db->count();
         return $num;
@@ -135,12 +135,12 @@ class Rolodex_Feature {
             return;
         }
 
-        $db = new Core\DB('rolodex_feature');
+        $db = new \core\DB('rolodex_feature');
         $db->addWhere('id', $this->id);
-        Core\Error::logIfError($db->delete());
-        $db = new Core\DB('rolodex_feature_items');
+        \core\Error::logIfError($db->delete());
+        $db = new \core\DB('rolodex_feature_items');
         $db->addWhere('feature_id', $this->id);
-        Core\Error::logIfError($db->delete());
+        \core\Error::logIfError($db->delete());
 
     }
 
@@ -151,13 +151,13 @@ class Rolodex_Feature {
 
         if (Current_User::allow('rolodex', 'settings', null, null, true)){
             $vars['aop']  = 'edit_feature';
-            $label = Core\Icon::show('edit');
-            $links[] = Core\Text::secureLink($label, 'rolodex', $vars);
+            $label = \core\Icon::show('edit');
+            $links[] = \core\Text::secureLink($label, 'rolodex', $vars);
 
             $vars['aop'] = 'delete_feature';
-            $js['ADDRESS'] = Core\Text::linkAddress('rolodex', $vars, true);
+            $js['ADDRESS'] = \core\Text::linkAddress('rolodex', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('rolodex', 'Are you sure you want to delete the feature %s?'), $this->getTitle());
-            $js['LINK'] = Core\Icon::show('delete');
+            $js['LINK'] = \core\Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -175,7 +175,7 @@ class Rolodex_Feature {
         if (Current_User::allow('rolodex', 'settings', null, null, true)) {
             $vars['feature'] = $this->id;
             $vars['aop']  = 'edit_feature';
-            $links[] = Core\Text::secureLink(dgettext('rolodex', 'Edit feature'), 'rolodex', $vars);
+            $links[] = \core\Text::secureLink(dgettext('rolodex', 'Edit feature'), 'rolodex', $vars);
         }
 
         $links = array_merge($links, Rolodex::navLinks());
@@ -187,9 +187,9 @@ class Rolodex_Feature {
 
     public function save()
     {
-        $db = new Core\DB('rolodex_feature');
+        $db = new \core\DB('rolodex_feature');
         $result = $db->saveObject($this);
-        if (Core\Error::isError($result)) {
+        if (core\Error::isError($result)) {
             return $result;
         }
 
@@ -198,10 +198,10 @@ class Rolodex_Feature {
 
     public function viewLink()
     {
-//        return Core\Text::rewriteLink($this->title, 'rolodex', $this->id);
+//        return \core\Text::rewriteLink($this->title, 'rolodex', $this->id);
         $vars['uop']  = 'view_feature';
         $vars['feature'] = $this->id;
-        return Core\Text::moduleLink(dgettext('rolodex', $this->title), 'rolodex', $vars);
+        return \core\Text::moduleLink(dgettext('rolodex', $this->title), 'rolodex', $vars);
     }
 
 

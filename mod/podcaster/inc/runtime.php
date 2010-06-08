@@ -23,7 +23,7 @@
  */
 
 
-Core\Core::initModClass('podcaster', 'PCR_Runtime.php');
+core\Core::initModClass('podcaster', 'PCR_Runtime.php');
 PCR_Runtime::showBlock();
 
 ?>

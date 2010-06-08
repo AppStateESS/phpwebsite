@@ -14,7 +14,7 @@ if (!defined('REMEMBER_ME_LIFE')) {
 
 function my_page()
 {
-    Core\Core::initModClass('help', 'Help.php');
+    \core\Core::initModClass('help', 'Help.php');
     if (isset($_REQUEST['subcommand'])) {
         $subcommand = $_REQUEST['subcommand'];
     }
@@ -44,11 +44,11 @@ function my_page()
             if (is_array($result)) {
                 $content = User_Settings::userForm($user, $result);
             } else {
-                if (Core\Error::logIfError($user->save())) {
+                if (core\Error::logIfError($user->save())) {
                     $content = dgettext('users', 'An error occurred while updating your user account.');
                 } else {
                     $_SESSION['User'] = $user;
-                    Core\Core::reroute('index.php?module=users&action=user&tab=users&save=1');
+                    \core\Core::reroute('index.php?module=users&action=user&tab=users&save=1');
                 }
             }
             break;
@@ -56,7 +56,7 @@ function my_page()
 
     $template['CONTENT'] = $content;
 
-    return Core\Template::process($template, 'users', 'my_page/main.tpl');
+    return \core\Template::process($template, 'users', 'my_page/main.tpl');
 }
 
 class User_Settings {
@@ -64,7 +64,7 @@ class User_Settings {
     public static function userForm(PHPWS_User $user, $message=NULL)
     {
         javascript('jquery');
-        $form = new Core\Form;
+        $form = new \core\Form;
 
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');
@@ -122,7 +122,7 @@ class User_Settings {
         if (isset($_REQUEST['timezone'])) {
             $user_tz = $_REQUEST['timezone'];
         } else {
-            $user_tz = Core\Cookie::read('user_tz');
+            $user_tz = \core\Cookie::read('user_tz');
         }
 
         $form->addSelect('timezone', $timezones);
@@ -132,7 +132,7 @@ class User_Settings {
         if (isset($_REQUEST['dst']) && $_REQUEST['timezone'] != 'server') {
             $dst = $_REQUEST['dst'];
         } else {
-            $dst = Core\Cookie::read('user_dst');
+            $dst = \core\Cookie::read('user_dst');
         }
 
         $form->addCheckbox('dst', 1);
@@ -142,7 +142,7 @@ class User_Settings {
         if (isset($_POST['cp'])) {
             $cp = (int)$_POST['cp'];
         } else {
-            $cp = (int)Core\Cookie::read('user_cp');
+            $cp = (int)core\Cookie::read('user_cp');
         }
 
         $form->addCheckbox('cp', 1);
@@ -153,7 +153,7 @@ class User_Settings {
             // User must authorize locally
             if ($_SESSION['User']->authorize == 1) {
                 $form->addCheckbox('remember_me', 1);
-                if (Core\Cookie::read('remember_me')) {
+                if (core\Cookie::read('remember_me')) {
                     $form->setMatch('remember_me', 1);
                 }
                 $form->setLabel('remember_me', dgettext('users', 'Remember me'));
@@ -164,7 +164,7 @@ class User_Settings {
         $form->addSubmit('submit', dgettext('users', 'Update my information'));
 
         if (!DISABLE_TRANSLATION && !FORCE_DEFAULT_LANGUAGE) {
-            $language_file = Core\Core::getConfigFile('users', 'languages.php');
+            $language_file = \core\Core::getConfigFile('users', 'languages.php');
 
             if ($language_file) {
                 include $language_file;
@@ -206,7 +206,7 @@ class User_Settings {
         $template['LOCAL_INFO'] = dgettext('users', 'Localization');
         $template['PREF'] = dgettext('users', 'Preferences');
 
-        return Core\Template::process($template, 'users', 'my_page/user_setting.tpl');
+        return \core\Template::process($template, 'users', 'my_page/user_setting.tpl');
     }
 
     public function setTZ()
@@ -216,59 +216,59 @@ class User_Settings {
         }
 
         if ($_POST['timezone'] == 'server') {
-            Core\Cookie::delete('user_tz');
-            Core\Cookie::delete('user_dst');
+            \core\Cookie::delete('user_tz');
+            \core\Cookie::delete('user_dst');
             return;
         } else {
-            Core\Cookie::write('user_tz', strip_tags($_POST['timezone']));
+            \core\Cookie::write('user_tz', strip_tags($_POST['timezone']));
         }
 
 
         if (isset($_POST['dst'])){
-            Core\Cookie::write('user_dst', 1);
+            \core\Cookie::write('user_dst', 1);
         } else {
-            Core\Cookie::delete('user_dst');
+            \core\Cookie::delete('user_dst');
         }
     }
 
     public function setCP()
     {
         if (isset($_POST['cp'])) {
-            Core\Cookie::write('user_cp', 1);
+            \core\Cookie::write('user_cp', 1);
         } else {
-            Core\Cookie::delete('user_cp');
+            \core\Cookie::delete('user_cp');
         }
     }
 
     public function setEditor()
     {
         if (!preg_match('/\W/', $_POST['editor'])) {
-            Core\Cookie::write('phpws_editor', $_POST['editor']);
+            \core\Cookie::write('phpws_editor', $_POST['editor']);
         }
     }
 
     public function rememberMe()
     {
         // User must authorize locally
-        if ( Core\Settings::get('users', 'allow_remember') && $_SESSION['User']->authorize == 1) {
+        if ( \core\Settings::get('users', 'allow_remember') && $_SESSION['User']->authorize == 1) {
             if (isset($_POST['remember_me'])) {
-                $db = new Core\DB('user_authorization');
+                $db = new \core\DB('user_authorization');
                 $db->addColumn('password');
                 $db->addWhere('username', $_SESSION['User']->username);
                 $password = $db->select('one');
                 if (empty($password)) {
                     return false;
-                } elseif (Core\Error::isError($password)) {
-                    Core\Error::log($password);
+                } elseif (core\Error::isError($password)) {
+                    \core\Error::log($password);
                     return false;
                 }
 
                 $remember['username'] = $_SESSION['User']->username;
                 $remember['password'] = $password;
                 $time_to_live = time() + (86400 * REMEMBER_ME_LIFE);
-                Core\Cookie::write('remember_me', serialize($remember), $time_to_live);
+                \core\Cookie::write('remember_me', serialize($remember), $time_to_live);
             } else {
-                Core\Cookie::delete('remember_me');
+                \core\Cookie::delete('remember_me');
             }
         }
     }

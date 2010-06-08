@@ -1,6 +1,6 @@
 <?php
 
-Core\Core::initModClass('notification', 'NQ.php');
+core\Core::initModClass('notification', 'NQ.php');
 
 NQ::init();
 

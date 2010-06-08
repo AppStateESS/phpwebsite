@@ -23,7 +23,7 @@
  */
 
 
-Core\Core::initModClass('vlist', 'vList_Runtime.php');
+core\Core::initModClass('vlist', 'vList_Runtime.php');
 vList_Runtime::showBlock();
 
 ?>

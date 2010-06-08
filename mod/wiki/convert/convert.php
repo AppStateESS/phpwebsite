@@ -42,7 +42,7 @@ function convert()
         return dgettext('wiki', 'OLD_WIKI_IMAGES in Wiki conversion script needs to be set BEFORE continuing.');
     }
 
-    $mod_list = Core\Core::installModList();
+    $mod_list = \core\Core::installModList();
 
     if (!in_array('wiki', $mod_list))
     {
@@ -81,7 +81,7 @@ function step1()
     {
         $batch->clear();
         $_SESSION['wiki_convert_step'] = 2;
-        Convert::forward(Core\Core::getHomeHttp() . 'index.php?command=convert&package=wiki');
+        Convert::forward(core\Core::getHomeHttp() . 'index.php?command=convert&package=wiki');
         return dgettext('wiki', 'No wiki pages to convert.');
     }
     $batch->setTotalItems($total);
@@ -122,7 +122,7 @@ function step1()
     {
         $batch->clear();
         $_SESSION['wiki_convert_step'] = 2;
-        Convert::forward(Core\Core::getHomeHttp() . 'index.php?command=convert&package=wiki');
+        Convert::forward(core\Core::getHomeHttp() . 'index.php?command=convert&package=wiki');
     }
 
     return implode('<br />', $content);
@@ -139,7 +139,7 @@ function step2()
     {
         $batch->clear();
         $_SESSION['wiki_convert_step'] = 3;
-        Convert::forward(Core\Core::getHomeHttp() . 'index.php?command=convert&package=wiki');
+        Convert::forward(core\Core::getHomeHttp() . 'index.php?command=convert&package=wiki');
         return dgettext('wiki', 'No interwiki links to convert.');
     }
     $batch->setTotalItems($total);
@@ -180,7 +180,7 @@ function step2()
     {
         $batch->clear();
         $_SESSION['wiki_convert_step'] = 3;
-        Convert::forward(Core\Core::getHomeHttp() . 'index.php?command=convert&package=wiki');
+        Convert::forward(core\Core::getHomeHttp() . 'index.php?command=convert&package=wiki');
     }
 
     return implode('<br />', $content);
@@ -293,10 +293,10 @@ function runBatch(&$db, &$batch)
 
 function convertPage($page)
 {
-    Core\Core::initModClass('wiki', 'WikiManager.php');
-    Core\Core::initModClass('wiki', 'WikiPage.php');
-    Core\Core::initModClass('version', 'Version.php');
-    Core\Core::initModClass('search', 'Search.php');
+    \core\Core::initModClass('wiki', 'WikiManager.php');
+    \core\Core::initModClass('wiki', 'WikiPage.php');
+    \core\Core::initModClass('version', 'Version.php');
+    \core\Core::initModClass('search', 'Search.php');
 
     $newpage = new WikiPage($page['label']);
     $newpage->setPagetext($page['pagetext']);
@@ -310,7 +310,7 @@ function convertPage($page)
 
     if (PEAR::isError($result))
     {
-        Core\Error::log($result);
+        \core\Error::log($result);
         return FALSE;
     }
 
@@ -324,8 +324,8 @@ function convertPage($page)
 
 function convertInterwiki($interwiki)
 {
-    Core\Core::initModClass('wiki', 'WikiManager.php');
-    Core\Core::initModClass('wiki', 'InterWiki.php');
+    \core\Core::initModClass('wiki', 'WikiManager.php');
+    \core\Core::initModClass('wiki', 'InterWiki.php');
 
     $newinterwiki = new InterWiki;
     $newinterwiki->setLabel($interwiki['label']);
@@ -337,7 +337,7 @@ function convertInterwiki($interwiki)
 
 function convertImage($image)
 {
-    Core\Core::initModClass('wiki', 'WikiImage.php');
+    \core\Core::initModClass('wiki', 'WikiImage.php');
 
     $newimage = new WikiImage;
     $newimage->setOwnerId(Current_User::getId());
@@ -347,11 +347,11 @@ function convertImage($image)
     $newimage->setType($image['type']);
     $newimage->setSummary($image['summary']);
 
-    $db = new Core\DB('wiki_images');
+    $db = new \core\DB('wiki_images');
     $result = $db->saveObject($newimage);
     if (PEAR::isError($result))
     {
-        Core\Error::log($result);
+        \core\Error::log($result);
         return FALSE;
     }
 
