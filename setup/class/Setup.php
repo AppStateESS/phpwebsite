@@ -80,7 +80,7 @@ class Setup {
                 $this->content[] = dgettext('core','Remove the following file and refresh to continue:');
                 $this->content[] = '<pre>' . $configDir . 'config.php</pre>';
             } elseif ($this->writeConfigFile()) {
-                PHPWS_Core::killSession('configSettings');
+                Core\Core::killSession('configSettings');
                 $this->content[] = dgettext('core','Your configuration file was written successfully!') . '<br />';
                 $this->content[] = '<a href="index.php?step=3">' . dgettext('core','Move on to Step 3') . '</a>';
             } else {
@@ -125,7 +125,7 @@ class Setup {
         if(!file_put_contents($filename, implode("\n", $config_file))) {
             return false;
         } else {
-            $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>", str_replace('setup/', '', PHPWS_Core::getHomeHttp()));
+            $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>", str_replace('setup/', '', Core\Core::getHomeHttp()));
             return file_put_contents($location . 'source.php', $source_http);
         }
     }
@@ -257,16 +257,16 @@ class Setup {
         $dbobj = new DB;
         $db = $dbobj->connect($dsn);
 
-        if (PHPWS_Error::isError($db)) {
-            PHPWS_Error::log($db);
+        if (Core\Error::isError($db)) {
+            Core\Error::log($db);
             $this->messages[] = dgettext('core','Unable to connect.');
             $this->messages[] = dgettext('core','Check your configuration settings.');
             return false;
         }
 
         $result = $db->query('CREATE DATABASE ' . $this->getConfigSet('dbname'));
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($db);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($db);
             $this->messages[] = dgettext('core','Unable to create the database.');
             $this->messages[] = dgettext('core','You will need to create it manually and rerun the setup.');
             return false;
@@ -317,8 +317,8 @@ class Setup {
             $pear_db = new DB;
             $connection = $pear_db->connect($dsn);
 
-            if (PHPWS_Error::isError($connection)) {
-                PHPWS_Error::log($connection);
+            if (Core\Error::isError($connection)) {
+                Core\Error::log($connection);
                 return 0;
             }
             $connection->disconnect();
@@ -328,13 +328,13 @@ class Setup {
         $tdb = new DB;
         $result = $tdb->connect($dsn);
 
-        if (PHPWS_Error::isError($result)) {
+        if (Core\Error::isError($result)) {
             // mysql delivers the first error, postgres the second
             if ($result->getCode() == DB_ERROR_NOSUCHDB ||
             $result->getCode() == DB_ERROR_CONNECT_FAILED) {
                 return -1;
             } else {
-                PHPWS_Error::log($connection);
+                Core\Error::log($connection);
                 return 0;
             }
         }
@@ -565,24 +565,24 @@ class Setup {
         require_once('File.php');
         $this->content[] = dgettext('core','Importing core database file.');
 
-        $db = new PHPWS_DB;
+        $db = new Core\DB;
         $result = $db->importFile('core/boost/install.sql');
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             $this->content[] = dgettext('core','Some errors occurred while creating the core database tables.');
             $this->content[] = dgettext('core','Please check your error log file.');
             return false;
         }
 
         if ($result == true) {
-            $db = new PHPWS_DB('core_version');
+            $db = new Core\DB('core_version');
             include(PHPWS_SOURCE_DIR . 'core/boost/boost.php');
             $db->addValue('version', $version);
             $result = $db->insert();
 
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Core\Error::isError($result)) {
+                Core\Error::log($result);
                 $this->content[] = dgettext('core','Some errors occurred while creating the core database tables.');
                 $this->content[] = dgettext('core','Please check your error log file.');
                 return false;
@@ -601,8 +601,8 @@ class Setup {
         }
         $result = $_SESSION['Boost']->install(false);
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Core\Error::isError($result)) {
+            Core\Error::log($result);
             $this->content[] = dgettext('core','An error occurred while trying to install your modules.')
             . ' ' . dgettext('core','Please check your error logs and try again.');
             return true;
@@ -625,7 +625,7 @@ class Setup {
 
     public function installCoreModules()
     {
-        $modules = PHPWS_Core::coreModList();
+        $modules = Core\Core::coreModList();
         return $this->installModules($modules);
     }
 
@@ -649,14 +649,14 @@ class Setup {
         $tpl = new PHPWS_Template;
         $tpl->setFile("setup/templates/setup.tpl", true);
         if (is_array($this->content)) {
-            $content = PHPWS_Text::tag_implode('p', $this->content);
+            $content = Core\Text::tag_implode('p', $this->content);
         } else {
             $content = & $this->content;
         }
 
         if (!empty($this->messages)) {
             if (is_array($this->messages)) {
-                $message = PHPWS_Text::tag_implode('p', $this->messages);
+                $message = Core\Text::tag_implode('p', $this->messages);
             } else {
                 $message = & $this->messages;
             }
@@ -769,7 +769,7 @@ class Setup {
 
         if (!$allow_install) {
             $this->title = dgettext('core', 'Cannot install phpWebSite because of the following reasons:');
-            $this->content = '<ul>' . PHPWS_Text::tag_implode('li', $crit) . '</ul>';
+            $this->content = '<ul>' . Core\Text::tag_implode('li', $crit) . '</ul>';
             $this->display();
         } else {
             $_SESSION['server_passed'] = true;
@@ -819,7 +819,7 @@ class Setup {
 
             case '5':
                 if ($this->postUser()) {
-                    $db = new PHPWS_DB('users');
+                    $db = new Core\DB('users');
                     $result = $db->select();
                     if (empty($result)) {
                         $_SESSION['User']->setDisplayName('Administrator');
@@ -828,8 +828,8 @@ class Setup {
                         $this->step = 6;
                         $this->goToStep();
                         break;
-                    } elseif (PHPWS_Error::isError($result)) {
-                        PHPWS_Error::log($result);
+                    } elseif (Core\Error::isError($result)) {
+                        Core\Error::log($result);
                         $this->content[] = dgettext('core', 'Sorry an error occurred. Please check your logs.');
                     } else {
                         $this->content[] = dgettext('core', 'Cannot create a new user. Initial user already exists.');

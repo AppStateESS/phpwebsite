@@ -17,14 +17,11 @@ if (!is_file('../config/core/config.php')) {
 include '../config/core/config.php';
 require_once PHPWS_SOURCE_DIR . 'core/class/Init.php';
 
-PHPWS_Core::initCoreClass('Database.php');
-PHPWS_Core::initCoreClass('Form.php');
-PHPWS_Core::initCoreClass('Template.php');
 require_once PHPWS_SOURCE_DIR . 'inc/Functions.php';
 
-PHPWS_Core::initModClass('users', 'Current_User.php');
-PHPWS_Core::initModClass('boost', 'Boost.php');
-PHPWS_Core::initModClass('layout', 'Layout.php');
+Core\Core::initModClass('users', 'Current_User.php');
+Core\Core::initModClass('boost', 'Boost.php');
+Core\Core::initModClass('layout', 'Layout.php');
 
 session_start();
 
@@ -43,7 +40,7 @@ class PHPWS_SiteManager
         if (!Current_User::isLogged() && !isset($_POST['phpws_username'])) {
             $command = 'login';
         } elseif (!Current_User::isDeity() && !isset($_POST['phpws_username'])) {
-            PHPWS_Core::killAllSessions();
+            Core\Core::killAllSessions();
             $command = 'login';
         } elseif (!isset($_REQUEST['command'])) {
             $command = 'main';
@@ -63,10 +60,10 @@ class PHPWS_SiteManager
                     $message = _('Username and password combination not found.');
                     $content = PHPWS_SiteManager::loginForm();
                 } elseif (!Current_User::isDeity()) {
-                    PHPWS_Core::killAllSessions();
+                    Core\Core::killAllSessions();
                     $content = _('You must be a deity to run Site Manager.');
                 } else {
-                    PHPWS_Core::reroute('manager.php?command=main');
+                    Core\Core::reroute('manager.php?command=main');
                 }
 
                 break;
@@ -81,7 +78,7 @@ class PHPWS_SiteManager
                 $module = new PHPWS_Module($_GET['module_title']);
                 $boost->addModule($module);
                 $boost->uninstall();
-                PHPWS_Core::goBack();
+                Core\Core::goBack();
                 break;
         }
 
@@ -115,7 +112,7 @@ class PHPWS_SiteManager
 
     function main()
     {
-        $db = new PHPWS_DB('modules');
+        $db = new Core\DB('modules');
         $db->addOrder('title');
         $result = $db->select();
 

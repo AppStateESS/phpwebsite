@@ -21,9 +21,8 @@ require_once './core/class/Template.php';
 require_once './setup/class/Setup.php';
 
 // Core is loaded in Init
-PHPWS_Core::initCoreClass('Form.php');
-PHPWS_Core::initModClass('boost', 'Boost.php');
-PHPWS_Core::initModClass('users', 'Current_User.php');
+Core\Core::initModClass('boost', 'Boost.php');
+Core\Core::initModClass('users', 'Current_User.php');
 
 $setup = new Setup;
 
